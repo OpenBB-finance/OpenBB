@@ -18,7 +18,7 @@ interactions:
       string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"PM","exchangeName":"NYQ","instrumentType":"EQUITY","firstTradeDate":1205760600,"regularMarketTime":1675112402,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":103.83,"chartPreviousClose":103.76,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","start":1675155600,"end":1675175400,"gmtoffset":-18000},"regular":{"timezone":"EST","start":1675175400,"end":1675198800,"gmtoffset":-18000},"post":{"timezone":"EST","start":1675198800,"end":1675213200,"gmtoffset":-18000}},"dataGranularity":"1d","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1675089000],"indicators":{"quote":[{"high":[104.58999633789062],"open":[103.31999969482422],"low":[103.25],"close":[103.83000183105469],"volume":[5358000]}],"adjclose":[{"adjclose":[103.83000183105469]}]}}],"error":null}}'
     headers:
       Age:
-      - '0'
+      - '1'
       Connection:
       - keep-alive
       Expect-CT:

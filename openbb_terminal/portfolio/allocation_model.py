@@ -158,7 +158,6 @@ def get_sectors_allocation(
     if not etf_ticker_value.empty:
         # Loop through each etf and multiply sector weights by current value
         for item in tqdm(etf_ticker_value.index.values, desc="Loading ETF data"):
-
             # TODO: This can be improved by caching this info similar to what is done in stocks
             etf_info = yf.Ticker(item).info
 
@@ -395,11 +394,9 @@ def get_portfolio_allocation(
     etf_global_alloc = pd.DataFrame(columns=[category, "Portfolio Value"])
 
     if not etf_ticker_value.empty:
-
         no_info = []
         # Loop through each etf and multiply sector weights by current value
         for item in tqdm(etf_ticker_value.index.values, desc="Loading ETF data"):
-
             etf_weight = get_symbol_allocation(
                 symbol=item, category=category, col_name="Portfolio Value"
             )

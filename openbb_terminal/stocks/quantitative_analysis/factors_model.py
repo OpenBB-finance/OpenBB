@@ -28,7 +28,6 @@ def get_fama_raw() -> pd.DataFrame:
     with urlopen(
         "http://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_Factors_CSV.zip"
     ) as url:
-
         # Download Zipfile and create pandas DataFrame
         with ZipFile(BytesIO(url.read())) as zipfile:
             with zipfile.open("F-F_Research_Data_Factors.CSV") as zip_open:

@@ -356,7 +356,6 @@ def load(
         s_interval = f"{interval}min"
 
     else:
-
         if source == "AlphaVantage":
             s_start = start_date
             int_string = "Minute"

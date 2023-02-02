@@ -60,7 +60,6 @@ def display_altcoin_index(
         if df.empty:
             console.print("\nError scraping blockchain central\n")
         else:
-
             # This plot has 1 axis
             if not external_axes:
                 _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)

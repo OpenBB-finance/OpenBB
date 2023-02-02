@@ -219,7 +219,6 @@ def darkpool_otc(
     df_ats, d_ats_reg = finra_model.getATSdata(input_limit, tier)
 
     if not df_ats.empty and d_ats_reg:
-
         symbols = list(
             dict(
                 sorted(d_ats_reg.items(), key=lambda item: item[1], reverse=True)

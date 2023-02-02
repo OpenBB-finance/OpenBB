@@ -115,7 +115,6 @@ class Operation:
 
 
 class OperationLogger:
-
     last_method: Dict[Any, Any] = {}
 
     def __init__(
@@ -231,7 +230,6 @@ class OperationLogger:
         """
 
         if func_module == "openbb_terminal.keys_model":
-
             from openbb_terminal.core.log.generation.settings_logger import (  # pylint: disable=C0415
                 log_keys,
             )

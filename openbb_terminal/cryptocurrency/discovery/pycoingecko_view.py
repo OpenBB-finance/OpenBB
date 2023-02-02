@@ -124,7 +124,6 @@ def display_gainers(
     df = pycoingecko_model.get_gainers(limit=limit, interval=interval, sortby=sortby)
 
     if not df.empty:
-
         for col in ["Volume [$]", "Market Cap"]:
             if col in df.columns:
                 df[col] = df[col].apply(lambda x: lambda_very_long_number_formatter(x))
@@ -172,7 +171,6 @@ def display_losers(
     df = pycoingecko_model.get_losers(limit=limit, interval=interval, sortby=sortby)
 
     if not df.empty:
-
         for col in ["Volume [$]", "Market Cap"]:
             if col in df.columns:
                 df[col] = df[col].apply(lambda x: lambda_very_long_number_formatter(x))

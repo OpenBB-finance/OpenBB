@@ -402,14 +402,14 @@ files = [
 
 [[package]]
 name = "astroid"
-version = "2.13.3"
+version = "2.13.5"
 description = "An abstract syntax tree for Python with inference support."
 category = "dev"
 optional = false
 python-versions = ">=3.7.2"
 files = [
-    {file = "astroid-2.13.3-py3-none-any.whl", hash = "sha256:14c1603c41cc61aae731cad1884a073c4645e26f126d13ac8346113c95577f3b"},
-    {file = "astroid-2.13.3.tar.gz", hash = "sha256:6afc22718a48a689ca24a97981ad377ba7fb78c133f40335dfd16772f29bcfb1"},
+    {file = "astroid-2.13.5-py3-none-any.whl", hash = "sha256:6891f444625b6edb2ac798829b689e95297e100ddf89dbed5a8c610e34901501"},
+    {file = "astroid-2.13.5.tar.gz", hash = "sha256:df164d5ac811b9f44105a72b8f9d5edfb7b5b2d7e979b04ea377a77b3229114a"},
 ]
 
 [package.dependencies]
@@ -656,14 +656,14 @@ test-tox-coverage = ["coverage (>=5.5)"]
 
 [[package]]
 name = "beautifulsoup4"
-version = "4.11.1"
+version = "4.11.2"
 description = "Screen-scraping library"
 category = "main"
 optional = false
 python-versions = ">=3.6.0"
 files = [
-    {file = "beautifulsoup4-4.11.1-py3-none-any.whl", hash = "sha256:58d5c3d29f5a36ffeb94f02f0d786cd53014cf9b3b3951d42e0080d8a9498d30"},
-    {file = "beautifulsoup4-4.11.1.tar.gz", hash = "sha256:ad9aa55b65ef2808eb405f46cf74df7fcb7044d5cbc26487f96eb2ef2e436693"},
+    {file = "beautifulsoup4-4.11.2-py3-none-any.whl", hash = "sha256:0e79446b10b3ecb499c1556f7e228a53e64a2bfcebd455f370d8927cb5b59e39"},
+    {file = "beautifulsoup4-4.11.2.tar.gz", hash = "sha256:bc4bdda6717de5a2987436fb8d72f45dc90dd856bdfd512a1314ce90349a0106"},
 ]
 
 [package.dependencies]
@@ -675,34 +675,46 @@ lxml = ["lxml"]
 
 [[package]]
 name = "black"
-version = "22.12.0"
+version = "23.1.0"
 description = "The uncompromising code formatter."
 category = "dev"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "black-22.12.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:9eedd20838bd5d75b80c9f5487dbcb06836a43833a37846cf1d8c1cc01cef59d"},
-    {file = "black-22.12.0-cp310-cp310-win_amd64.whl", hash = "sha256:159a46a4947f73387b4d83e87ea006dbb2337eab6c879620a3ba52699b1f4351"},
-    {file = "black-22.12.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:d30b212bffeb1e252b31dd269dfae69dd17e06d92b87ad26e23890f3efea366f"},
-    {file = "black-22.12.0-cp311-cp311-win_amd64.whl", hash = "sha256:7412e75863aa5c5411886804678b7d083c7c28421210180d67dfd8cf1221e1f4"},
-    {file = "black-22.12.0-cp37-cp37m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:c116eed0efb9ff870ded8b62fe9f28dd61ef6e9ddd28d83d7d264a38417dcee2"},
-    {file = "black-22.12.0-cp37-cp37m-win_amd64.whl", hash = "sha256:1f58cbe16dfe8c12b7434e50ff889fa479072096d79f0a7f25e4ab8e94cd8350"},
-    {file = "black-22.12.0-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:77d86c9f3db9b1bf6761244bc0b3572a546f5fe37917a044e02f3166d5aafa7d"},
-    {file = "black-22.12.0-cp38-cp38-win_amd64.whl", hash = "sha256:82d9fe8fee3401e02e79767016b4907820a7dc28d70d137eb397b92ef3cc5bfc"},
-    {file = "black-22.12.0-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:101c69b23df9b44247bd88e1d7e90154336ac4992502d4197bdac35dd7ee3320"},
-    {file = "black-22.12.0-cp39-cp39-win_amd64.whl", hash = "sha256:559c7a1ba9a006226f09e4916060982fd27334ae1998e7a38b3f33a37f7a2148"},
-    {file = "black-22.12.0-py3-none-any.whl", hash = "sha256:436cc9167dd28040ad90d3b404aec22cedf24a6e4d7de221bec2730ec0c97bcf"},
-    {file = "black-22.12.0.tar.gz", hash = "sha256:229351e5a18ca30f447bf724d007f890f97e13af070bb6ad4c0a441cd7596a2f"},
+    {file = "black-23.1.0-cp310-cp310-macosx_10_16_arm64.whl", hash = "sha256:b6a92a41ee34b883b359998f0c8e6eb8e99803aa8bf3123bf2b2e6fec505a221"},
+    {file = "black-23.1.0-cp310-cp310-macosx_10_16_universal2.whl", hash = "sha256:57c18c5165c1dbe291d5306e53fb3988122890e57bd9b3dcb75f967f13411a26"},
+    {file = "black-23.1.0-cp310-cp310-macosx_10_16_x86_64.whl", hash = "sha256:9880d7d419bb7e709b37e28deb5e68a49227713b623c72b2b931028ea65f619b"},
+    {file = "black-23.1.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:e6663f91b6feca5d06f2ccd49a10f254f9298cc1f7f49c46e498a0771b507104"},
+    {file = "black-23.1.0-cp310-cp310-win_amd64.whl", hash = "sha256:9afd3f493666a0cd8f8df9a0200c6359ac53940cbde049dcb1a7eb6ee2dd7074"},
+    {file = "black-23.1.0-cp311-cp311-macosx_10_16_arm64.whl", hash = "sha256:bfffba28dc52a58f04492181392ee380e95262af14ee01d4bc7bb1b1c6ca8d27"},
+    {file = "black-23.1.0-cp311-cp311-macosx_10_16_universal2.whl", hash = "sha256:c1c476bc7b7d021321e7d93dc2cbd78ce103b84d5a4cf97ed535fbc0d6660648"},
+    {file = "black-23.1.0-cp311-cp311-macosx_10_16_x86_64.whl", hash = "sha256:382998821f58e5c8238d3166c492139573325287820963d2f7de4d518bd76958"},
+    {file = "black-23.1.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:2bf649fda611c8550ca9d7592b69f0637218c2369b7744694c5e4902873b2f3a"},
+    {file = "black-23.1.0-cp311-cp311-win_amd64.whl", hash = "sha256:121ca7f10b4a01fd99951234abdbd97728e1240be89fde18480ffac16503d481"},
+    {file = "black-23.1.0-cp37-cp37m-macosx_10_16_x86_64.whl", hash = "sha256:a8471939da5e824b891b25751955be52ee7f8a30a916d570a5ba8e0f2eb2ecad"},
+    {file = "black-23.1.0-cp37-cp37m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:8178318cb74f98bc571eef19068f6ab5613b3e59d4f47771582f04e175570ed8"},
+    {file = "black-23.1.0-cp37-cp37m-win_amd64.whl", hash = "sha256:a436e7881d33acaf2536c46a454bb964a50eff59b21b51c6ccf5a40601fbef24"},
+    {file = "black-23.1.0-cp38-cp38-macosx_10_16_arm64.whl", hash = "sha256:a59db0a2094d2259c554676403fa2fac3473ccf1354c1c63eccf7ae65aac8ab6"},
+    {file = "black-23.1.0-cp38-cp38-macosx_10_16_universal2.whl", hash = "sha256:0052dba51dec07ed029ed61b18183942043e00008ec65d5028814afaab9a22fd"},
+    {file = "black-23.1.0-cp38-cp38-macosx_10_16_x86_64.whl", hash = "sha256:49f7b39e30f326a34b5c9a4213213a6b221d7ae9d58ec70df1c4a307cf2a1580"},
+    {file = "black-23.1.0-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:162e37d49e93bd6eb6f1afc3e17a3d23a823042530c37c3c42eeeaf026f38468"},
+    {file = "black-23.1.0-cp38-cp38-win_amd64.whl", hash = "sha256:8b70eb40a78dfac24842458476135f9b99ab952dd3f2dab738c1881a9b38b753"},
+    {file = "black-23.1.0-cp39-cp39-macosx_10_16_arm64.whl", hash = "sha256:a29650759a6a0944e7cca036674655c2f0f63806ddecc45ed40b7b8aa314b651"},
+    {file = "black-23.1.0-cp39-cp39-macosx_10_16_universal2.whl", hash = "sha256:bb460c8561c8c1bec7824ecbc3ce085eb50005883a6203dcfb0122e95797ee06"},
+    {file = "black-23.1.0-cp39-cp39-macosx_10_16_x86_64.whl", hash = "sha256:c91dfc2c2a4e50df0026f88d2215e166616e0c80e86004d0003ece0488db2739"},
+    {file = "black-23.1.0-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:2a951cc83ab535d248c89f300eccbd625e80ab880fbcfb5ac8afb5f01a258ac9"},
+    {file = "black-23.1.0-cp39-cp39-win_amd64.whl", hash = "sha256:0680d4380db3719ebcfb2613f34e86c8e6d15ffeabcf8ec59355c5e7b85bb555"},
+    {file = "black-23.1.0-py3-none-any.whl", hash = "sha256:7a0f701d314cfa0896b9001df70a530eb2472babb76086344e688829efd97d32"},
+    {file = "black-23.1.0.tar.gz", hash = "sha256:b0bd97bea8903f5a2ba7219257a44e3f1f9d00073d6cc1add68f0beec69692ac"},
 ]
 
 [package.dependencies]
 click = ">=8.0.0"
-ipython = {version = ">=7.8.0", optional = true, markers = "extra == \"jupyter\""}
 mypy-extensions = ">=0.4.3"
+packaging = ">=22.0"
 pathspec = ">=0.9.0"
 platformdirs = ">=2"
-tokenize-rt = {version = ">=3.2.0", optional = true, markers = "extra == \"jupyter\""}
-tomli = {version = ">=1.1.0", markers = "python_full_version < \"3.11.0a7\""}
+tomli = {version = ">=1.1.0", markers = "python_version < \"3.11\""}
 typing-extensions = {version = ">=3.10.0.0", markers = "python_version < \"3.10\""}
 
 [package.extras]
@@ -846,14 +858,14 @@ exceptiongroup = {version = "*", markers = "python_version < \"3.11\""}
 
 [[package]]
 name = "ccxt"
-version = "2.7.12"
+version = "2.7.32"
 description = "A JavaScript / Python / PHP cryptocurrency trading library with support for 130+ exchanges"
 category = "main"
 optional = false
 python-versions = "*"
 files = [
-    {file = "ccxt-2.7.12-py2.py3-none-any.whl", hash = "sha256:ad64cea01f8d91e928acc6e1f69672062c55954b063832a05ff7d5f40d3495d5"},
-    {file = "ccxt-2.7.12.tar.gz", hash = "sha256:414b500a0d63fbf5b260f7fd8aa00915d82c46157d4cf779dce73ecc6a58acb5"},
+    {file = "ccxt-2.7.32-py2.py3-none-any.whl", hash = "sha256:a5cd8e41ca8b6f9a2e35f967b84867a50be61e32bb9806e09e79ab784cd9cda1"},
+    {file = "ccxt-2.7.32.tar.gz", hash = "sha256:083ef9dda6c64a3c5b7873a454c999e49c3e6c857b190d50044349f03097a028"},
 ]
 
 [package.dependencies]
@@ -1914,14 +1926,14 @@ files = [
 
 [[package]]
 name = "finnhub-python"
-version = "2.4.15"
+version = "2.4.16"
 description = "Finnhub API"
 category = "main"
 optional = false
 python-versions = "*"
 files = [
-    {file = "finnhub-python-2.4.15.tar.gz", hash = "sha256:5a9f9cb61571783ee8f49b770b4ce962e5af237ec9231824b8a8403bbdd0cef2"},
-    {file = "finnhub_python-2.4.15-py3-none-any.whl", hash = "sha256:68a73e67ac21dad09b522bad52d5782c573a678b92ebba3e89e112af176a8de5"},
+    {file = "finnhub-python-2.4.16.tar.gz", hash = "sha256:ca951031a5fecdc1815b07f4545cc49ff646a6eb32e2149fceeb368787482bbf"},
+    {file = "finnhub_python-2.4.16-py3-none-any.whl", hash = "sha256:9ef290cc372b84120a95509f2290fee50d543d81e30c0accafa52f8a43fd1b49"},
 ]
 
 [package.dependencies]
@@ -2498,14 +2510,14 @@ socks = ["socksio (>=1.0.0,<2.0.0)"]
 
 [[package]]
 name = "identify"
-version = "2.5.16"
+version = "2.5.17"
 description = "File identification library for Python"
 category = "dev"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "identify-2.5.16-py2.py3-none-any.whl", hash = "sha256:832832a58ecc1b8f33d5e8cb4f7d3db2f5c7fbe922dfee5f958b48fed691501a"},
-    {file = "identify-2.5.16.tar.gz", hash = "sha256:c47acedfe6495b1c603ed7e93469b26e839cab38db4155113f36f718f8b3dc47"},
+    {file = "identify-2.5.17-py2.py3-none-any.whl", hash = "sha256:7d526dd1283555aafcc91539acc061d8f6f59adb0a7bba462735b0a318bff7ed"},
+    {file = "identify-2.5.17.tar.gz", hash = "sha256:93cc61a861052de9d4c541a7acb7e3dcc9c11b398a2144f6e52ae5285f5f4f06"},
 ]
 
 [package.extras]
@@ -2938,14 +2950,14 @@ test = ["codecov", "coverage", "ipykernel (>=6.5)", "ipython", "mypy", "pre-comm
 
 [[package]]
 name = "jupyter-core"
-version = "5.1.5"
+version = "5.2.0"
 description = "Jupyter core package. A base package on which Jupyter projects rely."
 category = "main"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "jupyter_core-5.1.5-py3-none-any.whl", hash = "sha256:83064d61bb2a9bc874e8184331c117b3778c2a7e1851f60cb00d273ceb3285ae"},
-    {file = "jupyter_core-5.1.5.tar.gz", hash = "sha256:8e54c48cde1e0c8345f64bcf9658b78044ddf02b273726cea9d9f59be4b02130"},
+    {file = "jupyter_core-5.2.0-py3-none-any.whl", hash = "sha256:4bdc2928c37f6917130c667d8b8708f20aee539d8283c6be72aabd2a4b4c83b0"},
+    {file = "jupyter_core-5.2.0.tar.gz", hash = "sha256:1407cdb4c79ee467696c04b76633fc1884015fa109323365a6372c8e890cc83f"},
 ]
 
 [package.dependencies]
@@ -4336,14 +4348,14 @@ six = "*"
 
 [[package]]
 name = "openpyxl"
-version = "3.0.10"
+version = "3.1.0"
 description = "A Python library to read/write Excel 2010 xlsx/xlsm files"
 category = "main"
 optional = false
 python-versions = ">=3.6"
 files = [
-    {file = "openpyxl-3.0.10-py2.py3-none-any.whl", hash = "sha256:0ab6d25d01799f97a9464630abacbb34aafecdcaa0ef3cba6d6b3499867d0355"},
-    {file = "openpyxl-3.0.10.tar.gz", hash = "sha256:e47805627aebcf860edb4edf7987b1309c1b3632f3750538ed962bbcc3bd7449"},
+    {file = "openpyxl-3.1.0-py2.py3-none-any.whl", hash = "sha256:24d7d361025d186ba91eff58135d50855cf035a84371b891e58fb6eb5125660f"},
+    {file = "openpyxl-3.1.0.tar.gz", hash = "sha256:eccedbe1cdd8b2494057e73959b496821141038dbb7eb9266ea59e3f34208231"},
 ]
 
 [package.dependencies]
@@ -7137,14 +7149,14 @@ test = ["pytest"]
 
 [[package]]
 name = "sphinxcontrib-htmlhelp"
-version = "2.0.0"
+version = "2.0.1"
 description = "sphinxcontrib-htmlhelp is a sphinx extension which renders HTML help files"
 category = "dev"
 optional = false
-python-versions = ">=3.6"
+python-versions = ">=3.8"
 files = [
-    {file = "sphinxcontrib-htmlhelp-2.0.0.tar.gz", hash = "sha256:f5f8bb2d0d629f398bf47d0d69c07bc13b65f75a81ad9e2f71a63d4b7a2f6db2"},
-    {file = "sphinxcontrib_htmlhelp-2.0.0-py2.py3-none-any.whl", hash = "sha256:d412243dfb797ae3ec2b59eca0e52dac12e75a241bf0e4eb861e450d06c6ed07"},
+    {file = "sphinxcontrib-htmlhelp-2.0.1.tar.gz", hash = "sha256:0cbdd302815330058422b98a113195c9249825d681e18f11e8b1f78a2f11efff"},
+    {file = "sphinxcontrib_htmlhelp-2.0.1-py3-none-any.whl", hash = "sha256:c38cb46dccf316c79de6e5515e1770414b797162b23cd3d06e67020e1d2a6903"},
 ]
 
 [package.extras]
@@ -7841,14 +7853,14 @@ typing-extensions = "*"
 
 [[package]]
 name = "torchmetrics"
-version = "0.11.0"
+version = "0.11.1"
 description = "PyTorch native Metrics"
 category = "main"
 optional = true
 python-versions = ">=3.7"
 files = [
-    {file = "torchmetrics-0.11.0-py3-none-any.whl", hash = "sha256:f809c3cb86a0bd3d8743df0888040257e20d371a937ff9114f582a60ce1a1c67"},
-    {file = "torchmetrics-0.11.0.tar.gz", hash = "sha256:c838e0491d80775daadd0802e27ae3af112a52086c9ba8cbcd1e2807243c89ac"},
+    {file = "torchmetrics-0.11.1-py3-none-any.whl", hash = "sha256:9987d7c21b081cceef246a72be1ce25bf29c842764f59dda54f59e3b4cd1970b"},
+    {file = "torchmetrics-0.11.1.tar.gz", hash = "sha256:de2e9feb3316f798ab08b318302ff04e764f47e691f0847f780044279fa176ca"},
 ]
 
 [package.dependencies]
@@ -7927,14 +7939,14 @@ requests = "*"
 
 [[package]]
 name = "traitlets"
-version = "5.8.1"
+version = "5.9.0"
 description = "Traitlets Python configuration system"
 category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "traitlets-5.8.1-py3-none-any.whl", hash = "sha256:a1ca5df6414f8b5760f7c5f256e326ee21b581742114545b462b35ffe3f04861"},
-    {file = "traitlets-5.8.1.tar.gz", hash = "sha256:32500888f5ff7bbf3b9267ea31748fa657aaf34d56d85e60f91dda7dc7f5785b"},
+    {file = "traitlets-5.9.0-py3-none-any.whl", hash = "sha256:9e6ec080259b9a5940c797d58b613b5e31441c2257b87c2e795c5228ae80d2d8"},
+    {file = "traitlets-5.9.0.tar.gz", hash = "sha256:f6cde21a9c68cf756af02035f72d5a723bf607e862e7be33ece505abf4a3bad9"},
 ]
 
 [package.extras]
@@ -8931,4 +8943,4 @@ prediction = ["torch", "pytorch-lightning", "u8darts"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8,<3.11, !=3.9.7"
-content-hash = "f32af0f0a6b209dfdb3692731b9cd26eec602fd7cf7e09b3a84529f90b446386"
+content-hash = "4d8a37396a09f6ac0348a24e8ee3e503abf12439a736a6f17bb7ef8fb031ab65"

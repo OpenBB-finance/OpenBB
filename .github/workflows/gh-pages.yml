@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - release/*
 
 jobs:
   generate:
@@ -64,6 +65,7 @@ jobs:
       # Docs: https://github.com/peaceiris/actions-gh-pages#%EF%B8%8F-docusaurus
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
+        if: startsWith(github.ref, 'refs/heads/main')
         with:
           github_token: ${{ secrets.DEPLOY_TOKEN }}
           publish_dir: ./website/build
