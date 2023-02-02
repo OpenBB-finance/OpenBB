@@ -128,6 +128,7 @@ def test_remove_cli_history_file_exception():
 
 # Patch the config classes
 class obbff:
+    SYNC_ENABLED = True
     USE_WATERMARK = True
     TIMEZONE = "America/New_York"
 
@@ -162,17 +163,36 @@ CONFIGS = {
 }
 
 
+@pytest.mark.parametrize(
+    "sync",
+    [
+        "False",
+        "True",
+    ],
+)
 @patch("openbb_terminal.session.local_model.obbff", obbff)
 @patch("openbb_terminal.session.local_model.cfg_plot", cfg_plot)
 @patch("openbb_terminal.session.local_model.paths", paths)
 @patch("openbb_terminal.session.local_model.cfg", cfg)
-def test_apply_configs():
+def test_apply_configs_sync(sync: str):
+    CONFIGS["features_settings"]["SYNC_ENABLED"] = sync
     local_model.apply_configs(CONFIGS)
 
-    assert obbff.USE_WATERMARK is False
-    assert obbff.TIMEZONE == "Europe/London"
-    assert cfg_plot.PLOT_DPI == 95
-    assert cfg_plot.PLOT_HEIGHT_PERCENTAGE == 50.5
-    assert paths.USER_DATA_DIRECTORY == Path("some/path/to/user/data")
-    assert cfg.API_KEY_ALPHAVANTAGE == "test_av"
-    assert cfg.API_FRED_KEY == "test_fred"
+    if sync == "False":
+        assert obbff.SYNC_ENABLED is False
+        assert obbff.USE_WATERMARK is True
+        assert obbff.TIMEZONE == "America/New_York"
+        assert cfg_plot.PLOT_DPI == 100
+        assert cfg_plot.PLOT_HEIGHT_PERCENTAGE == 50.0
+        assert paths.USER_DATA_DIRECTORY == Path("user_home/OpenBBUserData")
+        assert cfg.API_KEY_ALPHAVANTAGE == "REPLACE_ME"
+        assert cfg.API_FRED_KEY == "REPLACE_ME"
+    else:
+        assert obbff.SYNC_ENABLED is True
+        assert obbff.USE_WATERMARK is False
+        assert obbff.TIMEZONE == "Europe/London"
+        assert cfg_plot.PLOT_DPI == 95
+        assert cfg_plot.PLOT_HEIGHT_PERCENTAGE == 50.5
+        assert paths.USER_DATA_DIRECTORY == Path("some/path/to/user/data")
+        assert cfg.API_KEY_ALPHAVANTAGE == "test_av"
+        assert cfg.API_FRED_KEY == "test_fred"
