@@ -6,6 +6,7 @@ import os
 
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
+from openbb_terminal.core.plots.backend import plots_backend
 from openbb_terminal.cryptocurrency.cryptocurrency_helpers import read_data_file
 from openbb_terminal.cryptocurrency.defi import llama_model
 from openbb_terminal.decorators import log_start_end
@@ -101,6 +102,7 @@ def display_defi_protocols(
 
     df = llama_model.get_defi_protocols(limit, sortby, ascend, description)
 
+    plots_backend().send_table(df, title="DeFi Protocols")
 
     print_rich_table(df.head(limit), headers=list(df.columns), show_index=False)
 
