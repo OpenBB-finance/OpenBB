@@ -489,18 +489,16 @@
   },
   "funds": {
     "country": ["MorningStar"],
-    "overview": ["Investing"],
     "search": ["MorningStar"],
     "load": ["MorningStar"],
     "info": ["MorningStar"],
     "plot": ["MorningStar"],
     "sector": ["MorningStar"],
-    "equity": ["YahooFinance"],
+    "carbon" : ["MorningStar"],
+    "exclusion" : ["MorningStar"],
+    "holdings": ["MorningStar"],
     "alswe": ["Avanza"],
-    "infoswe": ["Avanza"],
-    "carbon_metrics" : ["MorningStar"],
-    "exclusion_policy" : ["MorningStar"],
-    "holdings": ["MorningStar"]
+    "infoswe": ["Avanza"]
   },
   "futures": {
     "search": ["YahooFinance"],

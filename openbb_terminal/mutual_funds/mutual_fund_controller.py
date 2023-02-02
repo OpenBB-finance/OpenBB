@@ -19,7 +19,6 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.mutual_funds import (
-    investpy_model,
     avanza_view,
     mstarpy_view,
 )
@@ -107,8 +106,10 @@ class FundController(BaseController):
         mt.add_cmd("plot", self.fund_symbol)
         mt.add_cmd("sector", self.fund_symbol)
         mt.add_cmd("holdings", self.fund_symbol)
-        mt.add_cmd("carbon_metrics", self.fund_symbol)
-        mt.add_cmd("exclusion_policy", self.fund_symbol)
+        mt.add_cmd("carbon", self.fund_symbol)
+        mt.add_cmd("exclusion", self.fund_symbol)
+        mt.add_cmd("alswe", self.fund_symbol)
+        mt.add_cmd("infoswe", self.fund_symbol)
 
         if self.country == "sweden":
             mt.add_cmd("alswe", self.fund_symbol)
@@ -151,16 +152,6 @@ class FundController(BaseController):
                     "Avanza implementation currently only supports funds from sweden."
                 )
                 return self.queue
-            if self.fund_name == "":
-                if self.fund_symbol != "":
-                    self.fund_symbol = investpy_model.get_fund_name_from_symbol(
-                        self.fund_symbol
-                    )
-                else:
-                    console.print(
-                        "No fund loaded. Please use `load` first.\n", style="bold"
-                    )
-                    return self.queue
             if self.fund_name.upper() not in ava_fund.index.str.upper().to_numpy():
                 console.print("No fund data. Please use another fund", style="bold")
                 return self.queue
@@ -189,16 +180,6 @@ class FundController(BaseController):
                     "Avanza implementation currently only supports funds from sweden."
                 )
                 return self.queue
-            if self.fund_name == "":
-                if self.fund_symbol != "":
-                    self.fund_symbol = investpy_model.get_fund_name_from_symbol(
-                        self.fund_symbol
-                    )
-                else:
-                    console.print(
-                        "No fund loaded. Please use `load` first.\n", style="bold"
-                    )
-                    return self.queue
             if self.fund_name.upper() not in ava_fund.index.str.upper().to_numpy():
                 console.print("No fund data. Please use another fund", style="bold")
                 return self.queue
@@ -445,7 +426,7 @@ class FundController(BaseController):
         return self.queue
 
     @log_start_end(log=logger)
-    def call_carbon_metrics(self, other_args: List[str]):
+    def call_carbon(self, other_args: List[str]):
         """Process carbon_metrics command"""
         parser = argparse.ArgumentParser(
             add_help=False,
@@ -461,7 +442,7 @@ class FundController(BaseController):
         return self.queue
 
     @log_start_end(log=logger)
-    def call_exclusion_policy(self, other_args: List[str]):
+    def call_exclusion(self, other_args: List[str]):
         """Process exclusion_policy command"""
         parser = argparse.ArgumentParser(
             add_help=False,
