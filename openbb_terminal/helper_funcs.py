@@ -2050,8 +2050,8 @@ def update_news_from_tweet_to_be_displayed() -> str:
         if news_tweet_to_use:
             global NEWS_TWEET
 
-            tweet_hr = last_tweet_dt.hour
-            tweet_min = last_tweet_dt.minute
+            tweet_hr = f"{last_tweet_dt.hour}"
+            tweet_min = f"{last_tweet_dt.minute}"
             # Update time based on timezone specified by user
             if obbff.USE_DATETIME and get_user_timezone_or_invalid() != "INVALID":
                 if dhours > 0 or dminutes > 0:
