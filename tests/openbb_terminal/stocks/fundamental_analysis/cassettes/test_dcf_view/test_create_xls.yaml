@@ -17884,7 +17884,7 @@ interactions:
         Tpr+7R+//eOfxQkjJgHpB3gekr7U2AVV+82vlaf+r2m1//OqDyos/BnFY/df/x/wijqbSwcaAA==
     headers:
       Age:
-      - '2'
+      - '0'
       Connection:
       - keep-alive
       Expect-CT:
@@ -17945,7 +17945,7 @@ interactions:
       string: '{"timeseries":{"result":[{"meta":{"symbol":["AEIS"],"type":["trailingPegRatio"]}}],"error":null}}'
     headers:
       Age:
-      - '0'
+      - '1'
       Connection:
       - keep-alive
       Expect-CT:
@@ -18417,7 +18417,7 @@ interactions:
         AA==
     headers:
       Age:
-      - '0'
+      - '1'
       Connection:
       - keep-alive
       Expect-CT:
@@ -18447,9 +18447,9 @@ interactions:
       vary:
       - Origin,Accept-Encoding
       x-envoy-decorator-operation:
-      - finance-chart-api--mtls-production-bf1.finance-k8s.svc.yahoo.local:4080/*
+      - finance-chart-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
-      - '9'
+      - '10'
       x-request-id:
       - 54ff5cea-2f63-4594-a967-ff92efd9518b
       x-yahoo-request-id:
