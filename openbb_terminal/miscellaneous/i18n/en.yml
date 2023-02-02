@@ -89,7 +89,7 @@ en:
   forecast: timeseries forecasting with machine learning
   portfolio: perform portfolio optimization and look at portfolio performance and attribution
   dashboards: interactive dashboards using voila and jupyter notebooks
-  stocks/filings: the most-recent form submissions to the SEC 
+  stocks/filings: the most-recent form submissions to the SEC
   stocks/search: search a specific stock ticker for analysis
   stocks/load: load a specific stock ticker and additional info for analysis
   stocks/_ticker: Stock
@@ -863,8 +863,8 @@ en:
   funds/forecast: forecasting techniques
   funds/country_ms: set a country for filtering
   funds/holdings: holdings of the loaded funds
-  funds/carbon_metrics: carbon metrics
-  funds/exclusion_policy: exclusion policy
+  funds/carbon: carbon metrics
+  funds/exclusion: exclusion policy
   funds/_country_ms: Current Country MorningStar
   alternative/hn: Hacker News most popular stories
   alternative/covid: COVID menu,                 cases, deaths, rates

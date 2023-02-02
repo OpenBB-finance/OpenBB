@@ -141,9 +141,9 @@ def display_holdings(loaded_funds: mstarpy.Funds, holding_type: str = "all"):
     if isinstance(holdings, pd.DataFrame):
         if holdings.empty:
             if holding_type != "all":
-                console.print(f"The funds does not hold {holding_type} assets 🤨")
+                console.print(f"The funds does not hold {holding_type} assets.")
             else:
-                console.print("No holdings displayed 🤨")
+                console.print("No holdings to be displayed.")
 
         else:
             print_rich_table(

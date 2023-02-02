@@ -43,8 +43,8 @@ class FundController(BaseController):
         "alswe",
         "infoswe",
         "holdings",
-        "carbon_metrics",
-        "exclusion_policy",
+        "carbon",
+        "exclusion",
         "forecast",
     ]
 
@@ -152,7 +152,7 @@ class FundController(BaseController):
                 )
                 return self.queue
             if self.fund_name.upper() not in ava_fund.index.str.upper().to_numpy():
-                console.print("No fund data. Please use another fund", style="bold")
+                console.print("No fund data. Please use another fund")
                 return self.queue
             avanza_view.display_allocation(self.fund_name, ns_parser.focus)
 
@@ -180,7 +180,7 @@ class FundController(BaseController):
                 )
                 return self.queue
             if self.fund_name.upper() not in ava_fund.index.str.upper().to_numpy():
-                console.print("No fund data. Please use another fund", style="bold")
+                console.print("No fund data. Please use another fund")
                 return self.queue
             avanza_view.display_info(self.fund_name)
 
@@ -333,9 +333,7 @@ class FundController(BaseController):
         )
         if ns_parser:
             if not self.fund_symbol:
-                console.print(
-                    "No fund loaded.  Please use `load` first to plot.\n", style="bold"
-                )
+                console.print("No fund loaded.  Please use `load` first to plot.")
                 return self.queue
             mstarpy_view.display_historical(
                 self.funds_loaded,
@@ -364,7 +362,6 @@ class FundController(BaseController):
             default="equity",
         )
         if other_args and "-" not in other_args[0][0]:
-            print("insert")
             other_args.insert(0, "-t")
 
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
@@ -410,12 +407,16 @@ class FundController(BaseController):
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="carbon_metrics",
+            prog="carbon",
             description="Show funds carbon metrcis.",
         )
 
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
+            if not self.fund_symbol:
+                console.print("No fund loaded.  Please use `load` first to plot.")
+                return self.queue
+
             mstarpy_view.display_carbon_metrics(self.funds_loaded)
 
         return self.queue
@@ -426,12 +427,16 @@ class FundController(BaseController):
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="exclusion_policy",
+            prog="exclusion",
             description="Show funds exclsuion policy.",
         )
 
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
+            if not self.fund_symbol:
+                console.print("No fund loaded.  Please use `load` first to plot.")
+                return self.queue
+
             mstarpy_view.display_exclusion_policy(self.funds_loaded)
 
         return self.queue
