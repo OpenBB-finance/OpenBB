@@ -1,6 +1,7 @@
 # IMPORTATION STANDARD
 
 # IMPORTATION THIRDPARTY
+from pathlib import Path
 import pytest
 import json
 from unittest.mock import patch, mock_open
@@ -123,3 +124,55 @@ def test_remove_cli_history_file_exception():
 
     os_mock.path.isfile.assert_called_with(local_model.HIST_FILE_PATH)
     os_mock.remove.assert_called_with(local_model.HIST_FILE_PATH)
+
+
+# Patch the config classes
+class obbff:
+    USE_WATERMARK = True
+    TIMEZONE = "America/New_York"
+
+
+class cfg_plot:
+    PLOT_DPI = 100
+    PLOT_HEIGHT_PERCENTAGE = 50.0
+
+
+class paths:
+    USER_DATA_DIRECTORY = Path("user_home/OpenBBUserData")
+
+
+class cfg:
+    API_KEY_ALPHAVANTAGE = "REPLACE_ME"
+    API_FRED_KEY = "REPLACE_ME"
+
+
+# Configs to apply
+CONFIGS = {
+    "features_settings": {
+        "USE_WATERMARK": "False",
+        "TIMEZONE": "Europe/London",
+        "PLOT_DPI": "95",
+        "PLOT_HEIGHT_PERCENTAGE": "50.5",
+        "USER_DATA_DIRECTORY": "some/path/to/user/data",
+    },
+    "features_keys": {
+        "API_KEY_ALPHAVANTAGE": "test_av",
+        "API_FRED_KEY": "test_fred",
+    },
+}
+
+
+@patch("openbb_terminal.session.local_model.obbff", obbff)
+@patch("openbb_terminal.session.local_model.cfg_plot", cfg_plot)
+@patch("openbb_terminal.session.local_model.paths", paths)
+@patch("openbb_terminal.session.local_model.cfg", cfg)
+def test_apply_configs():
+    local_model.apply_configs(CONFIGS)
+
+    assert obbff.USE_WATERMARK is False
+    assert obbff.TIMEZONE == "Europe/London"
+    assert cfg_plot.PLOT_DPI == 95
+    assert cfg_plot.PLOT_HEIGHT_PERCENTAGE == 50.5
+    assert paths.USER_DATA_DIRECTORY == Path("some/path/to/user/data")
+    assert cfg.API_KEY_ALPHAVANTAGE == "test_av"
+    assert cfg.API_FRED_KEY == "test_fred"
