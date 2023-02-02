@@ -56,7 +56,6 @@ def display_sentiment_compare(
         console.print("No sentiments found.")
 
     else:
-
         # This plot has 1 axis
         if not external_axes:
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
@@ -148,7 +147,6 @@ def display_sentiment_correlation(
         console.print("No sentiments found.")
 
     else:
-
         # This plot has 1 axis
         if not external_axes:
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)

@@ -459,7 +459,6 @@ def get_earnings(symbol: str, quarterly: bool = False) -> pd.DataFrame:
         if not result_json or len(result_json) < 2:
             console.print("No data found from Alpha Vantage\n")
         else:
-
             df_fa = pd.json_normalize(result_json)
 
             if quarterly:

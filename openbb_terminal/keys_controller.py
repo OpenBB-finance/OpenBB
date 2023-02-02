@@ -448,7 +448,6 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             return
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
-
             slash_components = "".join([f"/{val}" for val in self.queue])
             useragent = " ".join(ns_parser.user_agent) + " " + slash_components
             useragent = useragent.replace('"', "")
