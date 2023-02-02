@@ -320,17 +320,14 @@ class FundController(BaseController):
             prog="plot",
             description="Plot historical data.",
         )
-
         parser.add_argument(
             "-c",
             default="",
             choices=["category", "index", "both"],
             dest="compare",
-            metavar="compare",
             type=str.lower,
             help="Compare funds performance with its category or index",
         )
-
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
         )
@@ -357,17 +354,15 @@ class FundController(BaseController):
             prog="sector",
             description="Show funds, index, category sector breakdown.",
         )
-
         parser.add_argument(
             "-t",
             "--type",
             type=str,
-            choices=["equity", "fixed income"],
+            choices=["equity", "fixed_income"],
             dest="type",
             help="asset type to select",
             default="equity",
         )
-
         if other_args and "-" not in other_args[0][0]:
             print("insert")
             other_args.insert(0, "-t")
@@ -376,9 +371,7 @@ class FundController(BaseController):
 
         if ns_parser:
             if not self.fund_symbol:
-                console.print(
-                    "No fund loaded.  Please use `load` first to plot.\n", style="bold"
-                )
+                console.print("No fund loaded.  Please use `load` first.")
                 return self.queue
 
             mstarpy_view.display_sector(self.funds_loaded, asset_type=ns_parser.type)

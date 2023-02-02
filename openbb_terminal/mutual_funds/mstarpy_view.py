@@ -229,24 +229,32 @@ def display_sector(loaded_funds: mstarpy.Funds, asset_type: str = "equity"):
     asset_type: str
         can be equity or fixed income
     """
-    d = loaded_funds.sector()
-    fig, ax = plt.subplots(figsize=(10, 10))
-
-    width = -0.3
     if asset_type == "equity":
         key = "EQUITY"
     else:
         key = "FIXEDINCOME"
 
+    d = loaded_funds.sector()[key]
+    fig, ax = plt.subplots(figsize=(10, 10))
+
+    width = -0.3
+
     title = "Sector breakdown of "
     for x in ["fund", "index", "category"]:
-        name = d[key][f"{x}Name"]
+        name = d[f"{x}Name"]
+        data = d[f"{x}Portfolio"]
 
-        data = d[key][f"{x}Portfolio"]
-        portfolio_date = data["portfolioDate"][:10]
+        p_date = data["portfolioDate"]
+        portfolio_date = p_date[:10] if p_date else ""
         data.pop("portfolioDate")
+
         labels = list(data.keys())
         values = list(data.values())
+
+        # if all values are 0, skip
+        values = [0 if v is None else v for v in values]
+        if sum(values) == 0:
+            continue
 
         label_loc = np.arange(len(labels))  # the label locations
 
