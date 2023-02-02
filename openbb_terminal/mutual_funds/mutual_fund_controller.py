@@ -242,10 +242,10 @@ class FundController(BaseController):
             country_candidate = ns_parser.name
             if country_candidate.lower() in self.fund_countries:
                 self.country = country_candidate
-                console.print(f"country {country_candidate.title()} selected")
+                console.print(f"{country_candidate.title()} selected.")
             else:
                 console.print(
-                    f"{country_candidate.title()} not a valid country to select."
+                    f'" {country_candidate.title()} " not a valid country to select.'
                 )
 
         return self.queue
@@ -355,7 +355,6 @@ class FundController(BaseController):
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
         )
         if ns_parser:
-
             if not self.fund_symbol:
                 console.print(
                     "No fund loaded.  Please use `load` first to plot.\n", style="bold"
