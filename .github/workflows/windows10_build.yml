@@ -68,7 +68,7 @@ jobs:
           path: '.\build\nsis\OpenBB Terminal Setup.exe'
       - name: Run Integration Tests
         run: |
-          dist\OpenBBTerminal\OpenBBTerminal.exe C:\Users\Administrator\actions-runner\_work\OpenBBTerminal\OpenBBTerminal\openbb_terminal\miscellaneous\integration_tests_scripts -t
+          dist\OpenBBTerminal\OpenBBTerminal.exe -t
       # Cleaning ------------------------
       # Make sure to add Remove-Item C:\Users\Administrator\Desktop\OPENBB-exports -Recurse whenever integration tests get fixed
       - name: Remove Previous Build
