@@ -57,7 +57,7 @@
     "@jupyterlab/services": "^6.2.8",
     "@jupyterlab/settingregistry": "^3.2.8",
     "@jupyterlab/terminal": "^3.2.8",
-    "@jupyterlab/translation": "^3.2.8",
+    "@jupyterlab/translation": "^3.5.2",
     "@jupyterlab/ui-components": "^3.2.8",
     "@lumino/algorithm": "^1.9.1",
     "marked": "^4.0.10"
