@@ -151,9 +151,9 @@ def get_full_option_chain(symbol: str) -> pd.DataFrame:
     """
     expirations = get_expiration_dates(symbol)
     chain = pd.DataFrame()
-    for exp in expirations:
+    for exp in tqdm(expirations):
         chain = pd.concat([chain, get_option_chain(symbol, exp)])
-    return chain
+    return chain.sort_values(by=["expiration", "strike"]).reset_index(drop=True)
 
 
 @log_start_end(log=logger)

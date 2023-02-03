@@ -131,8 +131,9 @@ def get_option_expirations(symbol: str, source: str = "Nasdaq") -> list:
     if source == "YahooFinance":
         return yfinance_model.option_expirations(symbol)
     if source == "Nasdaq":
-        return nasdaq_model.get_expirations(symbol)
-
+        return nasdaq_model.option_expirations(symbol)
+    if source == "Intrinio":
+        return intrinio_model.get_expiration_dates(symbol)
     logger.info("Invalid Source")
     return pd.DataFrame()
 
