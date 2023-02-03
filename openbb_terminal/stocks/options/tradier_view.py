@@ -25,6 +25,7 @@ logger = logging.getLogger(__name__)
 
 warnings.filterwarnings("ignore")
 
+
 # pylint: disable=too-many-arguments
 @log_start_end(log=logger)
 def display_historical(

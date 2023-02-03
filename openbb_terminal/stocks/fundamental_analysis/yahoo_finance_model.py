@@ -2,25 +2,22 @@
 __docformat__ = "numpy"
 
 import logging
+import re
+import ssl
 from datetime import datetime, timedelta
 from typing import Optional, Tuple
 from urllib.request import Request, urlopen
-import re
 
-import ssl
 import numpy as np
 import pandas as pd
 import yfinance as yf
-
 from bs4 import BeautifulSoup
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import lambda_long_number_format
+from openbb_terminal.helpers_denomination import transform as transform_by_denomination
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.fundamental_analysis.fa_helper import clean_df_index
-from openbb_terminal.helpers_denomination import (
-    transform as transform_by_denomination,
-)
 
 logger = logging.getLogger(__name__)
 # pylint: disable=W0212
@@ -313,7 +310,6 @@ def get_mktcap(
         symbol, start=start_date, progress=False, threads=False, ignore_tz=True
     )
     if not df_data.empty:
-
         data = yf.Ticker(symbol).fast_info
         if data:
             df_data["Adj Close"] = df_data["Adj Close"] * data["shares"]

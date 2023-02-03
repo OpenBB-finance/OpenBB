@@ -84,7 +84,13 @@ def show_macro_data(
 
     legend = []
     for column in df_rounded.columns:
-        parameter_units = f"Units: {units[column[0]][column[1]]}"
+        if transform:
+            if transform in ["TPOP", "TOYA", "TPGP"]:
+                parameter_units = "Units: %"
+            elif transform in ["TUSD", "TNOR"]:
+                parameter_units = "Units: Level"
+        else:
+            parameter_units = f"Units: {units[column[0]][column[1]]}"
         country_label = column[0].replace("_", " ")
         parameter_label = econdb_model.PARAMETERS[column[1]]["name"]
         if len(parameters) > 1 and len(countries) > 1:
@@ -120,7 +126,6 @@ def show_macro_data(
     df_rounded.columns = ["_".join(column) for column in df_rounded.columns]
 
     if raw:
-
         print_rich_table(
             df_rounded.fillna("-").iloc[-10:],
             headers=list(df_rounded.columns),
@@ -217,7 +222,6 @@ def show_treasuries(
         theme.visualize_output()
 
     if raw:
-
         print_rich_table(
             treasury_data.iloc[-10:],
             headers=list(treasury_data.columns),

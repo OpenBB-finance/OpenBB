@@ -17,7 +17,6 @@ from openbb_terminal import keys_model
     [("OPENBB_API_TEST", "TEST_KEY", True), ("OPENBB_API_TEST", "TEST_KEY", False)],
 )
 def test_set_key(env_var_name: str, env_var_value: str, persist: bool):
-
     # Route .env file location
     keys_model.USER_ENV_FILE = Path(os.path.dirname(__file__), ".tmp")
 
@@ -53,7 +52,6 @@ def test_get_keys():
 
 
 def set_naive_environment(env_var_name_list: List[str]) -> None:
-
     tmp_env = Path(os.path.dirname(__file__), ".tmp")
 
     # Remove keys from patched os.environ
@@ -77,9 +75,7 @@ def assert_keys_and_status(
     env_var_name_list: List[str],
     status: str,
 ) -> None:
-
     for i, env_var_name in enumerate(env_var_name_list):
-
         dotenv_var = keys_model.dotenv.get_key(
             str(keys_model.USER_ENV_FILE), key_to_get=env_var_name
         )
@@ -132,7 +128,6 @@ def assert_keys_and_status(
     ],
 )
 def test_set_av_key(args: List[str], persist: bool, show_output: bool, expected: str):
-
     env_var_name_list = [
         "OPENBB_API_KEY_ALPHAVANTAGE",
     ]
@@ -181,7 +176,6 @@ def test_set_av_key(args: List[str], persist: bool, show_output: bool, expected:
     ],
 )
 def test_set_fmp_key(args: List[str], persist: bool, show_output: bool, expected: str):
-
     env_var_name_list = [
         "OPENBB_API_KEY_FINANCIALMODELINGPREP",
     ]
@@ -232,7 +226,6 @@ def test_set_fmp_key(args: List[str], persist: bool, show_output: bool, expected
 def test_set_quandl_key(
     args: List[str], persist: bool, show_output: bool, expected: str
 ):
-
     env_var_name_list = [
         "OPENBB_API_KEY_QUANDL",
     ]
@@ -283,7 +276,6 @@ def test_set_quandl_key(
 def test_set_polygon_key(
     args: List[str], persist: bool, show_output: bool, expected: str
 ):
-
     env_var_name_list = [
         "OPENBB_API_POLYGON_KEY",
     ]
@@ -332,7 +324,6 @@ def test_set_polygon_key(
     ],
 )
 def test_set_fred_key(args: List[str], persist: bool, show_output: bool, expected: str):
-
     env_var_name_list = [
         "OPENBB_API_FRED_KEY",
     ]
@@ -381,7 +372,6 @@ def test_set_fred_key(args: List[str], persist: bool, show_output: bool, expecte
     ],
 )
 def test_set_news_key(args: List[str], persist: bool, show_output: bool, expected: str):
-
     env_var_name_list = [
         "OPENBB_API_NEWS_TOKEN",
     ]
@@ -432,7 +422,6 @@ def test_set_news_key(args: List[str], persist: bool, show_output: bool, expecte
 def test_set_tradier_key(
     args: List[str], persist: bool, show_output: bool, expected: str
 ):
-
     env_var_name_list = [
         "OPENBB_API_TRADIER_TOKEN",
     ]
@@ -481,7 +470,6 @@ def test_set_tradier_key(
     ],
 )
 def test_set_cmc_key(args: List[str], persist: bool, show_output: bool, expected: str):
-
     env_var_name_list = [
         "OPENBB_API_CMC_KEY",
     ]
@@ -532,7 +520,6 @@ def test_set_cmc_key(args: List[str], persist: bool, show_output: bool, expected
 def test_set_finnhub_key(
     args: List[str], persist: bool, show_output: bool, expected: str
 ):
-
     env_var_name_list = [
         "OPENBB_API_FINNHUB_KEY",
     ]
@@ -581,7 +568,6 @@ def test_set_finnhub_key(
     ],
 )
 def test_set_iex_key(args: List[str], persist: bool, show_output: bool, expected: str):
-
     env_var_name_list = [
         "OPENBB_API_IEX_TOKEN",
     ]
@@ -632,7 +618,6 @@ def test_set_iex_key(args: List[str], persist: bool, show_output: bool, expected
 def test_set_reddit_key(
     args: List[str], persist: bool, show_output: bool, expected: str
 ):
-
     env_var_name_list = [
         "OPENBB_API_REDDIT_CLIENT_ID",
         "OPENBB_API_REDDIT_CLIENT_SECRET",
@@ -691,7 +676,6 @@ def test_set_reddit_key(
 def test_set_bitquery_key(
     args: List[str], persist: bool, show_output: bool, expected: str
 ):
-
     env_var_name_list = [
         "OPENBB_API_BITQUERY_KEY",
     ]
@@ -742,7 +726,6 @@ def test_set_bitquery_key(
 def test_set_twitter_key(
     args: List[str], persist: bool, show_output: bool, expected: str
 ):
-
     env_var_name_list = [
         "OPENBB_API_TWITTER_KEY",
         "OPENBB_API_TWITTER_SECRET_KEY",
@@ -795,7 +778,6 @@ def test_set_twitter_key(
     ],
 )
 def test_set_rh_key(args: List[str], persist: bool, show_output: bool, expected: str):
-
     env_var_name_list = [
         "OPENBB_RH_USERNAME",
         "OPENBB_RH_PASSWORD",
@@ -848,7 +830,6 @@ def test_set_rh_key(args: List[str], persist: bool, show_output: bool, expected:
 def test_set_degiro_key(
     args: List[str], persist: bool, show_output: bool, expected: str
 ):
-
     env_var_name_list = [
         "OPENBB_DG_USERNAME",
         "OPENBB_DG_PASSWORD",
@@ -903,7 +884,6 @@ def test_set_degiro_key(
 def test_set_oanda_key(
     args: List[str], persist: bool, show_output: bool, expected: str
 ):
-
     env_var_name_list = [
         "OPENBB_OANDA_ACCOUNT",
         "OPENBB_OANDA_TOKEN",
@@ -958,7 +938,6 @@ def test_set_oanda_key(
 def test_set_binance_key(
     args: List[str], persist: bool, show_output: bool, expected: str
 ):
-
     env_var_name_list = [
         "OPENBB_API_BINANCE_KEY",
         "OPENBB_API_BINANCE_SECRET",
@@ -1009,7 +988,6 @@ def test_set_binance_key(
     ],
 )
 def test_set_si_key(args: List[str], persist: bool, show_output: bool, expected: str):
-
     env_var_name_list = [
         "OPENBB_API_SENTIMENTINVESTOR_TOKEN",
     ]
@@ -1060,7 +1038,6 @@ def test_set_si_key(args: List[str], persist: bool, show_output: bool, expected:
 def test_set_coinbase_key(
     args: List[str], persist: bool, show_output: bool, expected: str
 ):
-
     env_var_name_list = [
         "OPENBB_API_COINBASE_KEY",
         "OPENBB_API_COINBASE_SECRET",
@@ -1115,7 +1092,6 @@ def test_set_coinbase_key(
 def test_set_walert_key(
     args: List[str], persist: bool, show_output: bool, expected: str
 ):
-
     env_var_name_list = [
         "OPENBB_API_WHALE_ALERT_KEY",
     ]
@@ -1166,7 +1142,6 @@ def test_set_walert_key(
 def test_set_glassnode_key(
     args: List[str], persist: bool, show_output: bool, expected: str
 ):
-
     env_var_name_list = [
         "OPENBB_API_GLASSNODE_KEY",
     ]
@@ -1217,7 +1192,6 @@ def test_set_glassnode_key(
 def test_set_coinglass_key(
     args: List[str], persist: bool, show_output: bool, expected: str
 ):
-
     env_var_name_list = [
         "OPENBB_API_COINGLASS_KEY",
     ]
@@ -1268,7 +1242,6 @@ def test_set_coinglass_key(
 def test_set_cpanic_key(
     args: List[str], persist: bool, show_output: bool, expected: str
 ):
-
     env_var_name_list = [
         "OPENBB_API_CRYPTO_PANIC_KEY",
     ]
@@ -1319,7 +1292,6 @@ def test_set_cpanic_key(
 def test_set_ethplorer_key(
     args: List[str], persist: bool, show_output: bool, expected: str
 ):
-
     env_var_name_list = [
         "OPENBB_API_ETHPLORER_KEY",
     ]
@@ -1370,7 +1342,6 @@ def test_set_ethplorer_key(
 def test_set_smartstake_key(
     args: List[str], persist: bool, show_output: bool, expected: str
 ):
-
     env_var_name_list = [
         "OPENBB_API_SMARTSTAKE_KEY",
         "OPENBB_API_SMARTSTAKE_TOKEN",
@@ -1423,7 +1394,6 @@ def test_set_smartstake_key(
 def test_set_github_key(
     args: List[str], persist: bool, show_output: bool, expected: str
 ):
-
     env_var_name_list = [
         "OPENBB_API_GITHUB_KEY",
     ]
@@ -1474,7 +1444,6 @@ def test_set_github_key(
 def test_set_messari_key(
     args: List[str], persist: bool, show_output: bool, expected: str
 ):
-
     env_var_name_list = [
         "OPENBB_API_MESSARI_KEY",
     ]
@@ -1525,7 +1494,6 @@ def test_set_messari_key(
 def test_set_eodhd_key(
     args: List[str], persist: bool, show_output: bool, expected: str
 ):
-
     env_var_name_list = [
         "OPENBB_API_EODHD_KEY",
     ]
@@ -1576,7 +1544,6 @@ def test_set_eodhd_key(
 def test_set_santiment_key(
     args: List[str], persist: bool, show_output: bool, expected: str
 ):
-
     env_var_name_list = [
         "OPENBB_API_SANTIMENT_KEY",
     ]
@@ -1627,7 +1594,6 @@ def test_set_santiment_key(
 def test_set_tokenterminal_key(
     args: List[str], persist: bool, show_output: bool, expected: str
 ):
-
     env_var_name_list = [
         "OPENBB_API_TOKEN_TERMINAL_KEY",
     ]
@@ -1678,7 +1644,6 @@ def test_set_tokenterminal_key(
 def test_set_shroom_key(
     args: List[str], persist: bool, show_output: bool, expected: str
 ):
-
     env_var_name_list = [
         "OPENBB_API_SHROOM_KEY",
     ]

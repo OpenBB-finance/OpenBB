@@ -1,6 +1,6 @@
 # OpenBB Documentation Website
 
-This repository contains the source code for the OpenBB Documentation Website. 
+This repository contains the source code for the OpenBB Documentation Website.
 
 The website was built using [Docusaurus](https://docusaurus.io/), a modern static website generator and [TailwindCSS](https://tailwindcss.com) as styling solution.
 The final website can be found at [https://docs.openbb.co](https://docs.openbb.co).
@@ -60,11 +60,21 @@ This command generates static content into the `build` directory and can be serv
 
 
 
+## Run tests
+
+```bash
+pytest tests/website --autodoc
+```
+
+> If tests are run locally, the `--autodoc` flag is required, otherwise tests will be skipped.
+
+> To install necessary dependencies for tests, run `poetry install -E doc` in the root directory of the repository.
+
 ## Contributing
 
 We welcome contributions to the OpenBB Documentation Website.
 
---- 
+---
 <details><summary>DEPRECATED - OLD README</summary>
 <p>
 
