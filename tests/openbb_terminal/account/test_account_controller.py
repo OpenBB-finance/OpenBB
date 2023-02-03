@@ -327,7 +327,6 @@ def test_call_sync(mocker, other_args, sync):
     ],
 )
 def test_call_pull(mocker, input_value):
-
     DIFF = {"TIMEZONE": "Europe/London"}
 
     controller = account_controller.AccountController(queue=None)

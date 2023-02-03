@@ -141,7 +141,6 @@ def test_logout_user(guest):
         patch(path + "User.clear") as mock_clear_user,
         patch(path + "plt.close") as mock_plt_close,
     ):
-
         auth_header = "Bearer test_token"
         token = "test_token"
         session_model.logout(auth_header, token, guest)

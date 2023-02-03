@@ -28,7 +28,7 @@ TEST_SESSION = {
 )
 def test_get_session_exception(email: str, password: str, save: bool):
     path = "openbb_terminal.session.sdk_session."
-    with (patch(path + "session_model.create_session") as mock_create_session):
+    with patch(path + "session_model.create_session") as mock_create_session:
         mock_create_session.return_value = {}
 
         with pytest.raises(Exception):
@@ -49,7 +49,7 @@ def test_get_session_exception(email: str, password: str, save: bool):
 )
 def test_get_session(email: str, password: str, save: bool):
     path = "openbb_terminal.session.sdk_session."
-    with (patch(path + "session_model.create_session") as mock_create_session):
+    with patch(path + "session_model.create_session") as mock_create_session:
         mock_create_session.return_value = TEST_SESSION
 
         sdk_session.get_session(email=email, password=password, save=save)
@@ -102,7 +102,6 @@ def test_login(
         patch(path + "Local.get_session") as mock_local_get_session,
         patch(path + "get_session") as mock_hub_get_session,
     ):
-
         if has_session:
             mock_local_get_session.return_value = TEST_SESSION
         else:

@@ -230,7 +230,6 @@ class OperationLogger:
         """
 
         if func_module == "openbb_terminal.keys_model":
-
             from openbb_terminal.core.log.generation.settings_logger import (  # pylint: disable=import-outside-toplevel
                 log_keys,
             )
