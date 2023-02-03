@@ -187,19 +187,19 @@ def cast_set_attr(obj, name, value):
 
 
 def get_routine(
-    name: str, routines_folder: Path = USER_ROUTINES_DIRECTORY
+    file_name: str, routines_folder: Path = USER_ROUTINES_DIRECTORY
 ) -> Optional[str]:
     """Get the routine.
 
     Returns
     -------
-    str
+    file_name : str
         The routine.
     routines_folder : Path
         The routines folder.
     """
     try:
-        with open(routines_folder / name) as f:
+        with open(routines_folder / file_name) as f:
             routine = "".join(f.readlines())
         return routine
     except Exception:

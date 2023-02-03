@@ -1,3 +1,4 @@
+import json
 from typing import Dict, Optional
 import requests
 
@@ -285,7 +286,9 @@ def clear_user_configs(
 def upload_routine(
     auth_header: str,
     name: str = "",
+    description: str = "",
     routine: str = "",
+    override: bool = False,
     base_url=BASE_URL,
     timeout: int = TIMEOUT,
 ) -> Optional[requests.Response]:
@@ -299,13 +302,21 @@ def upload_routine(
         The name of the routine.
     routine : str
         The routine.
+    override : bool
+        Whether to override the routine if it already exists.
     base_url : str
         The base url, by default BASE_URL
     timeout : int
         The timeout, by default TIMEOUT
     """
 
-    data = {"name": name, "script": routine}
+    data = {
+        "name": name,
+        "description": description,
+        "script": routine,
+        "override": override,
+    }
+    print("Data: ", data)
 
     try:
         response = requests.post(
@@ -314,10 +325,12 @@ def upload_routine(
             json=data,
             timeout=timeout,
         )
+        print("Response: ", response.content)
         if response.status_code == 200:
             console.print("[green]Successfully uploaded your routine.[/green]")
-        else:
-            console.print("[red]Error uploading your routine.[/red]")
+        elif json.loads(response.content)["detail"] != "Script name already exists":
+            # TODO: Ask Colin to return specific error code here
+            console.print("[red]Failed to upload your routine.[/red]")
         return response
     except requests.exceptions.ConnectionError:
         console.print("[red]Connection error.[/red]")

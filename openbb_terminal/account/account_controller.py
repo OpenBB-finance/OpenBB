@@ -28,6 +28,7 @@ class AccountController(BaseController):
         "sync",
         "pull",
         "clear",
+        "upload",
     ]
 
     PATH = "/account/"
@@ -35,7 +36,6 @@ class AccountController(BaseController):
     def __init__(self, queue: List[str] = None):
         super().__init__(queue)
         self.ROUTINE_FILES: Dict[str, Path] = {}
-        self.ROUTINE_CHOICES: Dict[str, None] = {}
         self.update_runtime_choices()
 
     def update_runtime_choices(self):
@@ -44,10 +44,11 @@ class AccountController(BaseController):
             filepath.name: filepath
             for filepath in USER_ROUTINES_DIRECTORY.rglob("*.openbb")
         }
-        self.ROUTINE_CHOICES = {filename: None for filename in self.ROUTINE_FILES}
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
             choices["sync"] = {"--on": {}, "--off": {}}
+            choices["upload"]["--file"] = {c: {} for c in self.ROUTINE_FILES}
+            choices["upload"]["-f"] = choices["upload"]["--file"]
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
@@ -58,6 +59,7 @@ class AccountController(BaseController):
         mt.add_cmd("sync")
         mt.add_cmd("pull")
         mt.add_cmd("clear")
+        mt.add_cmd("upload")
         console.print(text=mt.menu_text, menu="Account")
 
     @log_start_end(log=logger)
@@ -151,3 +153,72 @@ class AccountController(BaseController):
                 Hub.clear_user_configs(auth_header=User.get_auth_header())
             else:
                 console.print("\n[info]Aborted.[/info]")
+
+    @log_start_end(log=logger)
+    def call_upload(self, other_args: List[str]):
+        """Upload"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="upload",
+            description="Upload a routine to the cloud.",
+        )
+        parser.add_argument(
+            "-f",
+            "--file",
+            type=str,
+            dest="file",
+            required="-h" not in other_args,
+            help="The file to be loaded",
+            choices={c: {} for c in self.ROUTINE_FILES},
+            metavar="FILE",
+        )
+        parser.add_argument(
+            "-d",
+            "--description",
+            type=str,
+            dest="description",
+            help="The description of the routine",
+            default="Description.",
+        )
+        parser.add_argument(
+            "-n",
+            "--name",
+            type=str,
+            dest="name",
+            help="The name of the routine",
+        )
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            routine = Local.get_routine(file_name=ns_parser.file)
+
+            if routine:
+                if not ns_parser.name:
+                    name = ns_parser.file.split(".openbb")[0]
+                else:
+                    name = ns_parser.name
+
+                response = Hub.upload_routine(
+                    auth_header=User.get_auth_header(),
+                    name=name,
+                    description=ns_parser.description,
+                    routine=routine,
+                )
+                if response is not None and response.status_code == 400:
+                    detail = json.loads(response.content)["detail"]
+                    if detail == "Script name already exists":
+                        i = console.input(
+                            "A routine with the same name already exists, "
+                            "do you want to overwrite it? (y/n): "
+                        )
+                        console.print("")
+                        if i.lower() in ["y", "yes"]:
+                            Hub.upload_routine(
+                                auth_header=User.get_auth_header(),
+                                name=name,
+                                description=ns_parser.description,
+                                routine=routine,
+                                override=True,
+                            )
+                        else:
+                            console.print("[info]Aborted.[/info]")
