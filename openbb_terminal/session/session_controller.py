@@ -25,7 +25,7 @@ def get_user_input() -> Tuple[str, str, bool]:
     Tuple[str, str, bool]
         The user email, password and save login option.
     """
-    console.print("\nPlease enter your credentials:", style="info")
+    console.print("[info]\nPlease enter your credentials:[/info]")
 
     s: PromptSession = PromptSession()
 
