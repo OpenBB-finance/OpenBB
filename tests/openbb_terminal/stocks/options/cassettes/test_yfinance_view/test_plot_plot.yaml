@@ -122,7 +122,7 @@ interactions:
         3G633c1ebB7W67///n+ZHGh3kKMAAA==
     headers:
       Age:
-      - '1'
+      - '0'
       Connection:
       - keep-alive
       Expect-CT:
@@ -305,7 +305,7 @@ interactions:
       vary:
       - Origin,Accept-Encoding
       x-envoy-decorator-operation:
-      - finance-quote-api--mtls-production-bf1.finance-k8s.svc.yahoo.local:4080/*
+      - finance-quote-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
       - '47'
       x-request-id:

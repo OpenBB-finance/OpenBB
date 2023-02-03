@@ -383,7 +383,6 @@ def test_custom_reset(fx_pair, expected):
     ],
 )
 def test_call_load(other_args, recorder):
-
     controller = forex_controller.ForexController(queue=None)
     controller.call_load(other_args=other_args)
 
