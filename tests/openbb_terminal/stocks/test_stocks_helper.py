@@ -162,7 +162,7 @@ def test_display_candle(mocker, use_matplotlib):
     intraday = False
     stocks_helper.display_candle(
         symbol=s_ticker,
-        input_data==df_stock,
+        data=df_stock,
         use_matplotlib=use_matplotlib,
         intraday=intraday,
     )

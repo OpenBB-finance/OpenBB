@@ -538,7 +538,7 @@ class ETFController(BaseController):
 
                 stocks_helper.display_candle(
                     symbol=self.etf_name,
-                    input_data=data,
+                    data=data,
                     use_matplotlib=ns_parser.plotly,
                     intraday=False,
                     add_trend=ns_parser.trendlines,
