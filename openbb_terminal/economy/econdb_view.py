@@ -80,7 +80,13 @@ def show_macro_data(
     fig = OpenBBFigure(yaxis=dict(side="right"))
 
     for column in df_rounded.columns:
-        parameter_units = f"Units: {units[column[0]][column[1]]}"
+        if transform:
+            if transform in ["TPOP", "TOYA", "TPGP"]:
+                parameter_units = "Units: %"
+            elif transform in ["TUSD", "TNOR"]:
+                parameter_units = "Units: Level"
+        else:
+            parameter_units = f"Units: {units[column[0]][column[1]]}"
         country_label = column[0].replace("_", " ")
         parameter_label = econdb_model.PARAMETERS[column[1]]["name"]
         if len(parameters) > 1 and len(countries) > 1:
