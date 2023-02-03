@@ -118,7 +118,7 @@ class AccountController(BaseController):
             else:
                 console.print(f"sync is {sync}, use --on or --off to change.")
 
-    def call_pull(self, _):
+    def call_pull(self, other_args: List[str]):
         """Pull data"""
         parser = argparse.ArgumentParser(
             add_help=False,
@@ -126,7 +126,7 @@ class AccountController(BaseController):
             prog="pull",
             description="Pull and apply stored configurations from the cloud.",
         )
-        ns_parser = self.parse_simple_args(parser, _)
+        ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
             response = Hub.fetch_user_configs(User.get_session())
             if response:
@@ -144,7 +144,7 @@ class AccountController(BaseController):
                 else:
                     console.print("No changes to apply.", style="info")
 
-    def call_clear(self, _):
+    def call_clear(self, other_args: List[str]):
         """Clear data"""
         parser = argparse.ArgumentParser(
             add_help=False,
@@ -152,7 +152,7 @@ class AccountController(BaseController):
             prog="clear",
             description="Clear stored configurations from the cloud.",
         )
-        ns_parser = self.parse_simple_args(parser, _)
+        ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
             i = console.input(
                 "[red]This action is irreversible![/red]\n"

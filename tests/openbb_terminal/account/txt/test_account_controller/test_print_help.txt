@@ -1,0 +1,5 @@
+Cloud storage of keys, settings and feature flags:
+    sync               Turns the cloud synchronization on/off
+    pull               Pull data from cloud
+    clear              Clear data from cloud
+
