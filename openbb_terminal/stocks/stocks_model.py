@@ -31,17 +31,26 @@ def load_stock_intrinio(
         page_size=10000,
     )
     df = pd.DataFrame(stock.to_dict()["stock_prices"])[
-        ["open", "high", "low", "close", "adj_close", "date", "volume"]
+        [
+            "adj_open",
+            "adj_high",
+            "adj_low",
+            "close",
+            "adj_close",
+            "date",
+            "adj_volume",
+            "dividend",
+        ]
     ]
     df["date"] = pd.DatetimeIndex(df["date"])
     df = df.set_index("date").rename(
         columns={
             "adj_close": "Adj Close",
-            "open": "Open",
+            "adj_open": "Open",
             "close": "Close",
-            "high": "High",
-            "low": "Low",
-            "volume": "Volume",
+            "adj_high": "High",
+            "adj_low": "Low",
+            "adj_volume": "Volume",
         }
     )[::-1]
 

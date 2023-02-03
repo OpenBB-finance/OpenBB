@@ -473,7 +473,7 @@ def load(
 
 def display_candle(
     symbol: str,
-    data: pd.DataFrame = None,
+    input_data: pd.DataFrame = None,
     use_matplotlib: bool = True,
     intraday: bool = False,
     add_trend: bool = False,
@@ -499,7 +499,7 @@ def display_candle(
     ----------
     symbol: str
         Ticker name
-    data: pd.DataFrame
+    input_data: pd.DataFrame
         Stock dataframe
     use_matplotlib: bool
         Flag to use matplotlib instead of interactive plotly chart
@@ -541,6 +541,12 @@ def display_candle(
     >>> from openbb_terminal.sdk import openbb
     >>> openbb.stocks.candle("AAPL")
     """
+    # We are not actually showing adj close in candle.  This hasn't been an issue so far, but adding
+    # in intrinio returns all adjusted columns,so some care here is needed or else we end up with
+    # mixing up close and adj close
+    data = input_data.copy()
+    if "Adj Close" in data.columns:
+        data = data.drop(columns=["Close"]).rename(columns={"Adj Close": "Close"})
 
     if start_date is None:
         start_date = (datetime.now() - timedelta(days=1100)).strftime("%Y-%m-%d")
