@@ -109,6 +109,8 @@ grpcio = "^1.51.1"
 jupyterlab-widgets = "^3.0.3"
 packaging = ">=22.0"
 pywry = "^0.2.4"
+SPARQLWrapper = "^2.0.0"
+
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.2"
