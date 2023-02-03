@@ -40,7 +40,7 @@ jobs:
         # on powershell where it creates a new shell every time for every step
         run: |
           conda activate obb
-          pip install -r requirements-win.txt
+          python -m pip install -r requirements-win.txt
       - name: Install Specific Papermill
         run: |
           conda activate obb
