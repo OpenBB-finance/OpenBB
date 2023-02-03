@@ -51,7 +51,7 @@
     "@jupyterlab/application": "^3.2.8",
     "@jupyterlab/launcher": "^3.2.8",
     "@jupyterlab/mainmenu": "^3.2.8",
-    "marked": "^4.0.10"
+    "marked": "^4.2.5"
   },
   "devDependencies": {
     "@jupyterlab/builder": "^3.2.8",
