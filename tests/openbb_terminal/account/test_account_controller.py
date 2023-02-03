@@ -1,8 +1,10 @@
 # IMPORTATION STANDARD
 import os
+import json
 
 # IMPORTATION THIRDPARTY
 import pytest
+from requests import Response
 
 # IMPORTATION INTERNAL
 from openbb_terminal.account import account_controller
@@ -10,6 +12,26 @@ from openbb_terminal.account import account_controller
 # pylint: disable=E1101
 # pylint: disable=W0603
 # pylint: disable=E1111
+
+TEST_SESSION = {
+    "access_token": "test_token",
+    "token_type": "bearer",
+    "uuid": "test_uuid",
+}
+
+CONFIGS = {
+    "features_settings": {
+        "USE_WATERMARK": "False",
+        "TIMEZONE": "Europe/London",
+        "PLOT_DPI": "95",
+        "PLOT_HEIGHT_PERCENTAGE": "50.5",
+        "USER_DATA_DIRECTORY": "some/path/to/user/data",
+    },
+    "features_keys": {
+        "API_KEY_ALPHAVANTAGE": "test_av",
+        "API_FRED_KEY": "test_fred",
+    },
+}
 
 
 @pytest.fixture(scope="module")
@@ -274,7 +296,6 @@ def test_call_sync(mocker, other_args, sync):
     controller = account_controller.AccountController(queue=None)
     path_controller = "openbb_terminal.account.account_controller"
 
-    # MOCK SWITCH
     mock_set_obbff = mocker.patch(
         target=f"{path_controller}.FeatureFlagsController.set_feature_flag"
     )
@@ -295,4 +316,83 @@ def test_call_sync(mocker, other_args, sync):
             "OPENBB_SYNC_ENABLED", not sync, force=True
         )
 
+    assert controller.queue == []
+
+
+@pytest.mark.parametrize(
+    "input_value",
+    [
+        "y",
+        "n",
+    ],
+)
+def test_call_pull(mocker, input_value):
+
+    DIFF = {"TIMEZONE": "Europe/London"}
+
+    controller = account_controller.AccountController(queue=None)
+    path_controller = "openbb_terminal.account.account_controller"
+
+    response = Response()
+    response.status_code = 200
+    response._content = json.dumps(CONFIGS)  # pylint: disable=protected-access
+
+    mock_fetch_user_configs = mocker.patch(
+        target=f"{path_controller}.Hub.fetch_user_configs",
+        return_value=response,
+    )
+    mock_get_session = mocker.patch(
+        target=f"{path_controller}.User.get_session",
+        return_value=TEST_SESSION,
+    )
+    mock_get_diff = mocker.patch(
+        target=f"{path_controller}.get_diff",
+        return_value=DIFF,
+    )
+    mock_input = mocker.patch(
+        target=f"{path_controller}.console.input",
+        return_value=input_value,
+    )
+    mock_apply_configs = mocker.patch(
+        target=f"{path_controller}.Local.apply_configs",
+    )
+    controller.call_pull(other_args=list())
+
+    mock_fetch_user_configs.assert_called_once_with(TEST_SESSION)
+    mock_get_session.assert_called_once()
+    mock_get_diff.assert_called_once_with(configs=CONFIGS)
+    mock_input.assert_called_once()
+    if input_value == "y":
+        mock_apply_configs.assert_called_once_with(configs=DIFF)
+    else:
+        mock_apply_configs.assert_not_called()
+    assert controller.queue == []
+
+
+@pytest.mark.parametrize(
+    "input_value",
+    [
+        "y",
+        "n",
+    ],
+)
+def test_call_clear(mocker, input_value):
+    controller = account_controller.AccountController(queue=None)
+    path_controller = "openbb_terminal.account.account_controller"
+
+    mock_input = mocker.patch(
+        target=f"{path_controller}.console.input",
+        return_value=input_value,
+    )
+    mock_clear_user_configs = mocker.patch(
+        target=f"{path_controller}.Hub.clear_user_configs",
+    )
+    controller.call_clear(other_args=list())
+
+    mock_input.assert_called_once()
+
+    if input_value == "y":
+        mock_clear_user_configs.assert_called_once()
+    else:
+        mock_clear_user_configs.assert_not_called()
     assert controller.queue == []

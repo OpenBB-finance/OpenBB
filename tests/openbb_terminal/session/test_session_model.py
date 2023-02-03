@@ -16,6 +16,20 @@ TEST_SESSION = {
     "uuid": "test_uuid",
 }
 
+CONFIGS = {
+    "features_settings": {
+        "USE_WATERMARK": "False",
+        "TIMEZONE": "Europe/London",
+        "PLOT_DPI": "95",
+        "PLOT_HEIGHT_PERCENTAGE": "50.5",
+        "USER_DATA_DIRECTORY": "some/path/to/user/data",
+    },
+    "features_keys": {
+        "API_KEY_ALPHAVANTAGE": "test_av",
+        "API_FRED_KEY": "test_fred",
+    },
+}
+
 
 @pytest.mark.parametrize(
     "email, password, save",
@@ -98,7 +112,7 @@ def test_login_success_response():
     ):
         response = Response()
         response.status_code = 200
-        response._content = json.dumps(TEST_SESSION)  # pylint: disable=protected-access
+        response._content = json.dumps(CONFIGS)  # pylint: disable=protected-access
         mock_fetch_user_configs.return_value = response
 
         assert session_model.login(TEST_SESSION) == session_model.LoginStatus.SUCCESS

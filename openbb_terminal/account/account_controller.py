@@ -138,11 +138,11 @@ class AccountController(BaseController):
                     )
                     if i.lower() in ["y", "yes"]:
                         Local.apply_configs(configs=configs_diff)
-                        console.print("\nDone.", style="info")
+                        console.print("\n[info]Done.[/info]")
                     else:
-                        console.print("\nAborted.", style="info")
+                        console.print("\n[info]Aborted.[/info]")
                 else:
-                    console.print("No changes to apply.", style="info")
+                    console.print("\n[info]No changes to apply.[/info]")
 
     def call_clear(self, other_args: List[str]):
         """Clear data"""
@@ -162,7 +162,7 @@ class AccountController(BaseController):
                 console.print("")
                 Hub.clear_user_configs(auth_header=User.get_auth_header())
             else:
-                console.print("\nAborted.", style="info")
+                console.print("\n[info]Aborted.[/info]")
 
     # @log_start_end(log=logger)
     # def call_upload(self, other_args: List[str]):
