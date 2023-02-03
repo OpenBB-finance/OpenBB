@@ -689,6 +689,7 @@ def main():
     if "--test" in sys.argv:
         sys.argv.remove("--test")
 
+    os.environ["OPENBB_ENABLE_QUICK_EXIT"] = "False"
     os.environ["OPENBB_LOG_COLLECT"] = "False"
     os.environ["OPENBB_USE_ION"] = "True"
     os.environ["OPENBB_USE_PROMPT_TOOLKIT"] = "False"
