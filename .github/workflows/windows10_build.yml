@@ -40,7 +40,7 @@ jobs:
         # on powershell where it creates a new shell every time for every step
         run: |
           conda activate obb
-          poetry install
+          poetry install -vvv
       - name: Poetry Install Portfolio Optimization and Forecasting Toolkits
         run: |
           conda activate obb
