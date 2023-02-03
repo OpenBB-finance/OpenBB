@@ -1,6 +1,5 @@
 # IMPORTATION STANDARD
 import os
-from unittest.mock import patch
 
 # IMPORTATION THIRDPARTY
 import pytest
