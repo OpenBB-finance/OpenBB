@@ -62,6 +62,7 @@ class StocksController(StockBaseController):
         "ins",
         "gov",
         "res",
+        "dd",
         "fa",
         "bt",
         "ca",
@@ -624,6 +625,30 @@ class StocksController(StockBaseController):
 
             self.queue = self.load_class(
                 ResearchController, self.ticker, self.start, self.interval, self.queue
+            )
+        else:
+            console.print("Use 'load <ticker>' prior to this command!")
+
+    @log_start_end(log=logger)
+    def call_dd(self, _):
+        """Process dd command."""
+
+        console.print(
+            "The dd (Due Diligence) menu has been integrated into the fa (Fundamental Analysis) menu. "
+            "Opening the Fundamental Analysis menu instead..\n"
+        )
+
+        if self.ticker:
+            from openbb_terminal.stocks.fundamental_analysis import fa_controller
+
+            self.queue = self.load_class(
+                fa_controller.FundamentalAnalysisController,
+                self.ticker,
+                self.start,
+                self.interval,
+                self.stock,
+                self.suffix,
+                self.queue,
             )
         else:
             console.print("Use 'load <ticker>' prior to this command!")
