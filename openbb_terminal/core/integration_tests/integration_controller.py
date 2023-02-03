@@ -665,7 +665,7 @@ def parse_args_and_run():
         if ns_parser.subprocesses is None or ns_parser.subprocesses > 0:
             console.print(
                 "WARNING: verbose mode and multiprocessing are not compatible. "
-                "The output of the scripts is mixed up. Consider running without --subproc.\n",
+                "The output of the scripts is mixed up. Consider running with --subproc 0.\n",
                 style="yellow",
             )
 
