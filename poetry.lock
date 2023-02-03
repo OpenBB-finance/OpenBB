@@ -1568,6 +1568,17 @@ optional = false
 python-versions = "*"
 
 [[package]]
+name = "isodate"
+version = "0.6.1"
+description = "An ISO 8601 date/time/duration parser and formatter"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+six = "*"
+
+[[package]]
 name = "isort"
 version = "5.10.1"
 description = "A Python utility / library to sort Python imports."
@@ -3208,7 +3219,7 @@ python-versions = "*"
 
 [[package]]
 name = "pyrsistent"
-version = "0.18.1"
+version = "0.19.3"
 description = "Persistent/Functional/Immutable data structures"
 category = "main"
 optional = false
@@ -3459,7 +3470,7 @@ python-versions = ">=3.7"
 
 [[package]]
 name = "pywry"
-version = "0.2.3"
+version = "0.2.4"
 description = ""
 category = "main"
 optional = false
@@ -3531,6 +3542,26 @@ python-versions = ">=2.7"
 
 [package.extras]
 full = ["numpy"]
+
+[[package]]
+name = "rdflib"
+version = "6.2.0"
+description = "RDFLib is a Python library for working with RDF, a simple yet powerful language for representing information."
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+isodate = "*"
+pyparsing = "*"
+
+[package.extras]
+berkeleydb = ["berkeleydb"]
+dev = ["black (==22.6.0)", "flake8", "isort", "mypy", "pep8-naming", "types-setuptools", "flakeheaven"]
+docs = ["myst-parser", "sphinx (<6)", "sphinxcontrib-apidoc", "sphinxcontrib-kroki", "sphinx-autodoc-typehints"]
+html = ["html5lib"]
+networkx = ["networkx"]
+tests = ["html5lib", "pytest", "pytest-cov"]
 
 [[package]]
 name = "regex"
@@ -3906,6 +3937,23 @@ description = "A modern CSS selector implementation for Beautiful Soup."
 category = "main"
 optional = false
 python-versions = ">=3.6"
+
+[[package]]
+name = "sparqlwrapper"
+version = "2.0.0"
+description = "SPARQL Endpoint interface to Python"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+rdflib = ">=6.1.1"
+
+[package.extras]
+dev = ["setuptools (>=3.7.1)", "mypy (>=0.931)", "pandas (>=1.3.5)", "pandas-stubs (>=1.2.0.48)"]
+docs = ["sphinx (<5)", "sphinx-rtd-theme"]
+keepalive = ["keepalive (>=0.5)"]
+pandas = ["pandas (>=1.3.5)"]
 
 [[package]]
 name = "sphinx"
@@ -4907,7 +4955,7 @@ prediction = ["torch", "pytorch-lightning", "u8darts"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8,<3.11, !=3.9.7"
-content-hash = "3d662e1f1f987cc9807672274848420977881d6f489117fd22a7551be11a5c75"
+content-hash = "d5ca0f942c43ab3df6a7fca6d0b0a9ae964532cac2ba918311f0822bd17bd8f1"
 
 [metadata.files]
 absl-py = []
@@ -5033,6 +5081,7 @@ ipython = []
 ipython-genutils = []
 ipywidgets = []
 iso8601 = []
+isodate = []
 isort = []
 jedi = []
 jedi-language-server = []
@@ -5181,6 +5230,7 @@ pyzmq = []
 qdldl = []
 quandl = []
 rapidfuzz = []
+rdflib = []
 regex = []
 requests = []
 requests-oauthlib = []
@@ -5211,6 +5261,7 @@ sniffio = []
 snowballstemmer = []
 socketio-client-nexus = []
 soupsieve = []
+sparqlwrapper = []
 sphinx = []
 sphinxcontrib-applehelp = []
 sphinxcontrib-devhelp = []
