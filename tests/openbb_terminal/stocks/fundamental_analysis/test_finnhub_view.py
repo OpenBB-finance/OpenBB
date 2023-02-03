@@ -33,7 +33,6 @@ def test_rating_over_time(mocker):
 @pytest.mark.default_cassette("test_rating_over_time_TSLA")
 @pytest.mark.vcr(mode="none")
 def test_rating_over_time_plt(capsys, mocker):
-
     # MOCK VISUALIZE_OUTPUT
     mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
 
@@ -50,7 +49,6 @@ def test_rating_over_time_plt(capsys, mocker):
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 def test_rating_over_time_invalid_ticker(mocker):
-
     # MOCK VISUALIZE_OUTPUT
     mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
 

@@ -81,7 +81,6 @@ def show_indices(
             label = index
 
         if not indices_data[index].empty:
-
             if returns:
                 indices_data.index.name = "date"
                 data_to_percent = 100 * (indices_data[index].values - 1)

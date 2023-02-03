@@ -18063,7 +18063,7 @@ interactions:
         RS3yb5yIRqvmgGCgyYiLvun+vybYp3dPhJzd8Xg4bl7dPd7cPD39BwOtwm5uHgAA
     headers:
       Age:
-      - '0'
+      - '1'
       Connection:
       - keep-alive
       Expect-CT:
@@ -18095,7 +18095,7 @@ interactions:
       x-envoy-decorator-operation:
       - finance-chart-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
-      - '6'
+      - '10'
       x-request-id:
       - 64451621-66bd-4ff3-82b5-1b9583ef960b
       x-yahoo-request-id:

@@ -119,7 +119,6 @@ class ParametersController(BaseController):
             mt.add_raw("\n")
             mt.add_info("_parameters_")
             if self.current_model:
-
                 max_len = max(len(k) for k in self.params.keys())
                 for k, v in self.params.items():
                     v = params_helpers.booltostr(v)

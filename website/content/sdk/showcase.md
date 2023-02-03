@@ -6,7 +6,9 @@ import ShowcaseItem from "@site/src/components/General/ShowcaseItem"
 
 # Showcase
 
-This page contains a list of projects that use the OpenBB SDK. If you have a project that uses the SDK, please feel free to add it to the list [here](#).
+This page contains a list of projects that use the OpenBB SDK.
+
+If you have a project that uses the OpenBB SDK, please feel free to add it [here](#).
 
 ---
 
@@ -46,4 +48,6 @@ Your browser does not support the video tag.
 
 :::tip
 
-Know/have a product powered by OpenBB SDK? Add it [here](#).
+Find more open source projects on GitHub [here](https://github.com/search?q=topic:openbb&type=Repositories&l=&l=)
+
+

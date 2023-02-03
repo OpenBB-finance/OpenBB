@@ -89,7 +89,7 @@ def display_balance(
         return
 
     total = np.sum(df["Amount"])
-    console.print(f"\nYou currently have {total} coins and the breakdown is:")
+    console.print(f"You currently have {total} coins and the breakdown is:\n")
 
     print_rich_table(
         df, headers=df.columns, show_index=True, title="Account Holdings for Assets"

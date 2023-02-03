@@ -114,7 +114,6 @@ def load_stock_yf(
 def load_stock_eodhd(
     symbol: str, start_date: datetime, end_date: datetime, weekly: bool, monthly: bool
 ) -> pd.DataFrame:
-
     int_ = "d"
     if weekly:
         int_ = "w"
