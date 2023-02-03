@@ -35,7 +35,7 @@ jobs:
           conda activate obb
           conda env list
           python -m poetry --version
-      - name: Poetry Install
+      - name: Requirements Install
         # Conda activate needs to be run every time because of the way that the workflow steps work
         # on powershell where it creates a new shell every time for every step
         run: |
@@ -50,7 +50,8 @@ jobs:
       - name: Build Terminal.spec file
         run: |
           conda activate obb
-          python -m pyinstaller build/pyinstaller/terminal.spec --clean
+          python -m pip list
+          pyinstaller build/pyinstaller/terminal.spec --clean
       - name: Move Files into App Folder
         run: cp -r .\dist\OpenBBTerminal\ .\build\nsis\app\
       # don't need this because log collection is turned off
