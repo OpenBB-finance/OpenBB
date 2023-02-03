@@ -44,8 +44,8 @@ jobs:
       - name: Install Specific Papermill
         run: |
           conda activate obb
-          pip uninstall papermill -y
-          pip install git+https://github.com/nteract/papermill.git@main
+          python -m pip uninstall papermill -y
+          python -m pip install git+https://github.com/nteract/papermill.git@main
       # Building ------------
       - name: Build Terminal.spec file
         run: |
