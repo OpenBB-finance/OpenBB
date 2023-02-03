@@ -173,12 +173,15 @@ def hist(
 
     Because this generates a dataframe, we can easily plot the close price for a SPY put:
     (Note that Tradier requires an API key)
-    >>> openbb.stocks.options.hist("SPY", "2022-11-18", 400, call=False, source="Tradier").plot(y="close)
+    >>> openbb.stocks.options.hist("SPY", "2022-11-18", 400, call=False, source="Tradier").plot(y="close")
     """
     if source.lower() == "chartexchange":
         return chartexchange_model.get_option_history(symbol, exp, call, strike)
     if source.lower() == "tradier":
         return tradier_model.get_historical_options(symbol, exp, strike, not call)
+    if source.lower() == "intrinio":
+        occ_symbol = f"{symbol}{''.join(exp[2:].split('-'))}{'C' if call else 'P'}{str(int(1000*strike)).zfill(8)}"
+        return intrinio_model.get_historical_options(occ_symbol)
     return pd.DataFrame()
 
 

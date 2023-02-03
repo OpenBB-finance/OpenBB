@@ -127,8 +127,6 @@ class OptionsController(BaseController):
         self,
         ticker: str,
         queue: List[str] = None,
-        full_chain: pd.DataFrame = None,
-        chain: pd.DataFrame = None,
     ):
         """Constructor"""
         super().__init__(queue)
@@ -136,8 +134,9 @@ class OptionsController(BaseController):
         self.ticker = ticker
         self.prices = pd.DataFrame(columns=["Price", "Chance"])
         self.selected_date = ""
-        self.chain: pd.DataFrame = chain if chain else pd.DataFrame()
-        self.full_chain: pd.DataFrame = full_chain if full_chain else pd.DataFrame()
+        self.chain: pd.DataFrame = pd.DataFrame()
+        self.full_chain: pd.DataFrame = pd.DataFrame()
+
         self.current_price = 0.0
         # Keeps track of initial source of load so we can use correct commands later
         self.source = ""
@@ -543,7 +542,7 @@ class OptionsController(BaseController):
             "--strike",
             dest="strike",
             type=float,
-            required="--chain" in other_args or "-h" not in other_args,
+            required="--chain" not in other_args and "-h" not in other_args,
             help="Strike price to look at",
         )
         parser.add_argument(
@@ -593,19 +592,23 @@ class OptionsController(BaseController):
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
-            if self.ticker:
-                if self.selected_date:
-                    if not self.chain.empty and (
-                        (
-                            ns_parser.put
-                            and ns_parser.strike
-                            in [float(strike) for strike in self.chain["strike"]]
+            if self.ticker or "--chain" in other_args:
+                if self.selected_date or "--chain" in other_args:
+                    if (
+                        not self.chain.empty
+                        and (
+                            (
+                                ns_parser.put
+                                and ns_parser.strike
+                                in [float(strike) for strike in self.chain["strike"]]
+                            )
+                            or (
+                                not ns_parser.put
+                                and ns_parser.strike
+                                in [float(strike) for strike in self.chain["strike"]]
+                            )
                         )
-                        or (
-                            not ns_parser.put
-                            and ns_parser.strike
-                            in [float(strike) for strike in self.chain["strike"]]
-                        )
+                        or "--chain" in other_args
                     ):
                         syncretism_view.view_historical_greeks(
                             symbol=self.ticker,
@@ -763,7 +766,12 @@ class OptionsController(BaseController):
             help="Flag for showing put option",
         )
         parser.add_argument(
-            "-c", "--chain", dest="chain_id", type=str, help="OCC option symbol"
+            "-c",
+            "--chain",
+            dest="chain_id",
+            type=str,
+            help="Option symbol",
+            default=None,
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-s")
@@ -775,34 +783,39 @@ class OptionsController(BaseController):
             limit=10,
         )
         if ns_parser:
-            if not self.ticker:
+            if not self.ticker and ns_parser.chain_id is None:
                 console.print("No ticker loaded. First use `load <ticker>`")
                 return
-            if not self.selected_date:
+            if not self.selected_date and ns_parser.chain_id is None:
                 console.print("No expiry loaded. First use `exp <expiry date>`")
                 return
-            if not self.chain.empty and (
-                (
-                    ns_parser.put
-                    and ns_parser.strike
-                    not in [float(strike) for strike in self.chain["strike"]]
+            if (
+                not self.chain.empty
+                and (
+                    (
+                        ns_parser.put
+                        and ns_parser.strike
+                        not in [float(strike) for strike in self.chain["strike"]]
+                    )
+                    or (
+                        not ns_parser.put
+                        and ns_parser.strike
+                        not in [float(strike) for strike in self.chain["strike"]]
+                    )
                 )
-                or (
-                    not ns_parser.put
-                    and ns_parser.strike
-                    not in [float(strike) for strike in self.chain["strike"]]
-                )
+                and ns_parser.chain_id is None
             ):
                 console.print("No correct strike input")
                 return
             if ns_parser.source == "ChartExchange":
                 chartexchange_view.display_raw(
-                    self.ticker,
-                    self.selected_date,
-                    not ns_parser.put,
-                    ns_parser.strike,
-                    ns_parser.limit,
-                    ns_parser.export,
+                    symbol=self.ticker,
+                    expiry=self.selected_date,
+                    call=not ns_parser.put,
+                    price=ns_parser.strike,
+                    limit=ns_parser.limit,
+                    export=ns_parser.export,
+                    chain_id=ns_parser.chain_id,
                     sheet_name=" ".join(ns_parser.sheet_name)
                     if ns_parser.sheet_name
                     else None,

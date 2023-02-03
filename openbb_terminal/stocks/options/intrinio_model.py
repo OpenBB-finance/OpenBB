@@ -291,3 +291,46 @@ def get_last_price(symbol: str) -> float:
     return (
         intrinio.SecurityApi().get_security_realtime_price(symbol, source="").last_price
     )
+
+
+@log_start_end(log=logger)
+def get_historical_options(symbol: str) -> pd.DataFrame:
+    """Get historical pricing option chain for a given symbol
+
+    Parameters
+    ----------
+    symbol : str
+        Symbol to get historical option chain for.  Should be an OCC chain label
+
+    Returns
+    -------
+    pd.DataFrame
+        Dataframe of historical option chain
+    """
+    historical = pd.DataFrame(api.get_options_prices_eod(symbol).to_dict()["prices"])
+    historical = historical[
+        [
+            "date",
+            "close",
+            "volume",
+            "open",
+            "open_interest",
+            "high",
+            "low",
+            "implied_volatility",
+            "delta",
+            "gamma",
+            "theta",
+            "vega",
+        ]
+    ]
+    historical["date"] = pd.DatetimeIndex(historical.date)
+    # Just in case
+    historical["Adj Close"] = historical["close"]
+    historical = historical.set_index("date").rename(
+        columns={
+            "open_interest": "openInterest",
+            "implied_volatility": "impliedVolatility",
+        }
+    )
+    return historical
