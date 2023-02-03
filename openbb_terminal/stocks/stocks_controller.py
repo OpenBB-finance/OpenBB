@@ -633,25 +633,12 @@ class StocksController(StockBaseController):
     def call_dd(self, _):
         """Process dd command."""
 
+        # TODO: Get rid of the call_dd on the next release since it has been deprecated.
+
         console.print(
             "The dd (Due Diligence) menu has been integrated into the fa (Fundamental Analysis) menu. "
-            "Opening the Fundamental Analysis menu instead..\n"
+            "Please use this menu instead.\n"
         )
-
-        if self.ticker:
-            from openbb_terminal.stocks.fundamental_analysis import fa_controller
-
-            self.queue = self.load_class(
-                fa_controller.FundamentalAnalysisController,
-                self.ticker,
-                self.start,
-                self.interval,
-                self.stock,
-                self.suffix,
-                self.queue,
-            )
-        else:
-            console.print("Use 'load <ticker>' prior to this command!")
 
     @log_start_end(log=logger)
     def call_ca(self, _):
