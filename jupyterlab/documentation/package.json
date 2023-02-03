@@ -48,7 +48,7 @@
     "watch:src": "tsc -w"
   },
   "dependencies": {
-    "@jupyterlab/application": "^3.2.8",
+    "@jupyterlab/application": "^3.5.2",
     "@jupyterlab/launcher": "^3.2.8",
     "@jupyterlab/mainmenu": "^3.2.8",
     "marked": "^4.0.10"
