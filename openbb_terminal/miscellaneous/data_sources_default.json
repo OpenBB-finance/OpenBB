@@ -489,14 +489,15 @@
     "fwd": ["FXEmpire"]
   },
   "funds": {
-    "country": ["Investing"],
-    "overview": ["Investing"],
-    "search": ["Investing"],
-    "load": ["Investing"],
-    "info": ["Investing"],
-    "plot": ["Investing"],
-    "sector": ["YahooFinance"],
-    "equity": ["YahooFinance"],
+    "country": ["MorningStar"],
+    "search": ["MorningStar"],
+    "load": ["MorningStar"],
+    "info": ["MorningStar"],
+    "plot": ["MorningStar"],
+    "sector": ["MorningStar"],
+    "carbon" : ["MorningStar"],
+    "exclusion" : ["MorningStar"],
+    "holdings": ["MorningStar"],
     "alswe": ["Avanza"],
     "infoswe": ["Avanza"]
   },

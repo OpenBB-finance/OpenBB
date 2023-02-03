@@ -9,7 +9,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - python-requests/2.27.1
+      - python-requests/2.28.1
     method: GET
     uri: https://www.econdb.com/api/series/?dataset=FRB_H15&v=Instrument&h=TIME&instrument=%5BTCMNOM%5D&from=2015-01-04&to=2015-01-28&freq=%5B203&UNIT=%5BPERCENT:_PER_YEAR%5D&format=json&page_size=500&expand=both
   response:
@@ -30,11 +30,11 @@ interactions:
         3dLGdm9tabe1pS3xHm6ZrixtqXXPcG08wwf7j65irfcZrrXPcO0/neH3xx9KFFlAtBwAAA==
     headers:
       Allow:
-      - GET, POST, HEAD, OPTIONS
+      - GET, HEAD, OPTIONS
       CF-Cache-Status:
       - DYNAMIC
       CF-RAY:
-      - 6f0a2a039e278242-IAD
+      - 793b31a118ceb918-AMS
       Connection:
       - keep-alive
       Content-Encoding:
@@ -42,15 +42,13 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Wed, 23 Mar 2022 21:12:14 GMT
-      Expect-CT:
-      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      - Fri, 03 Feb 2023 12:33:14 GMT
       NEL:
       - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
       Referrer-Policy:
       - same-origin
       Report-To:
-      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v3?s=QmGz3jO9vax3C%2FkoRl%2F83R2uqsoTA68H3lP3QO%2BTHdN1PS3sp55uMRI8zCj57E5socNVkQ7r6anTxf%2BLS8SdYHmzJnvxysL1dlwgHMsdva%2BlR5Lg%2B7%2FcW%2BO%2B2WGVXpWg"}],"group":"cf-nel","max_age":604800}'
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v3?s=ZUFPBDVwwRAJ1xh4Gx7hxT74p9%2BTR0qdH9EqCucdNMdDqU0Wt18itogCHiGbd4E2j3dy248KsZzzUr5RJKg8c89LKmxuoAE4l6OG2Z7QdOEYz9rIfjgADeZH0VMj6VSbWWy7OTEjCZkMo5Eo"}],"group":"cf-nel","max_age":604800}'
       Server:
       - cloudflare
       Transfer-Encoding:

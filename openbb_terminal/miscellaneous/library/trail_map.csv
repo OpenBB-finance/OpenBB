@@ -13,6 +13,9 @@ alt.oss.search,openbb_terminal.alternative.oss.github_model.search_repos,
 alt.oss._make_request,openbb_terminal.alternative.oss.runa_model._make_request,
 alt.oss._retry_session,openbb_terminal.alternative.oss.runa_model._retry_session,
 alt.oss.ross,openbb_terminal.alternative.oss.runa_model.get_startups,openbb_terminal.alternative.oss.runa_view.display_rossindex
+alt.realestate.get_estate_sales,openbb_terminal.alternative.realestate.landRegistry_model.get_estate_sales,
+alt.realestate.get_towns_sold_prices,openbb_terminal.alternative.realestate.landRegistry_model.get_towns_sold_prices,
+alt.realestate.get_region_stats,openbb_terminal.alternative.realestate.landRegistry_model.get_region_stats,
 stocks.ba.headlines,openbb_terminal.common.behavioural_analysis.finbrain_model.get_sentiment,openbb_terminal.common.behavioural_analysis.finbrain_view.display_sentiment_analysis
 stocks.ba.mentions,openbb_terminal.common.behavioural_analysis.google_model.get_mentions,openbb_terminal.common.behavioural_analysis.google_view.display_mentions
 stocks.ba.queries,openbb_terminal.common.behavioural_analysis.google_model.get_queries,

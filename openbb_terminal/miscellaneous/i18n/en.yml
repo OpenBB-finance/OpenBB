@@ -89,7 +89,7 @@ en:
   forecast: timeseries forecasting with machine learning
   portfolio: perform portfolio optimization and look at portfolio performance and attribution
   dashboards: interactive dashboards using voila and jupyter notebooks
-  stocks/filings: the most-recent form submissions to the SEC 
+  stocks/filings: the most-recent form submissions to the SEC
   stocks/search: search a specific stock ticker for analysis
   stocks/load: load a specific stock ticker and additional info for analysis
   stocks/_ticker: Stock
@@ -862,9 +862,15 @@ en:
   funds/alswe: display fund allocation (sector, country, holdings)
   funds/infoswe: get fund information
   funds/forecast: forecasting techniques
+  funds/country_ms: set a country for filtering
+  funds/holdings: holdings of the loaded funds
+  funds/carbon: carbon metrics
+  funds/exclusion: exclusion policy
+  funds/_country_ms: Current Country MorningStar
   alternative/hn: Hacker News most popular stories
   alternative/covid: COVID menu,                 cases, deaths, rates
   alternative/oss: Open Source menu,           star history, repos information
+  alternative/realestate: Real Estate menu,           sold prices, HPIs
   alternative/covid/slopes: get countries with highest slope in cases
   alternative/covid/country: select country for data
   alternative/covid/_country: Country
@@ -876,6 +882,14 @@ en:
   alternative/oss/rs: repo summary
   alternative/oss/sh: repo star history
   alternative/oss/tr: top starred repos
+  alternative/realestate/sales: list UK house sales via postcode
+  alternative/realestate/_postcode: UK Postcode
+  alternative/realestate/townsales: list UK house sales via town
+  alternative/realestate/_town: Town
+  alternative/realestate/_startdate: Start Date <YYYY-MM-DD>
+  alternative/realestate/_enddate: End Date <YYYY-MM-DD>
+  alternative/realestate/regionstats: retrieve UK sold house price stats by region
+  alternative/realestate/_region: Region
   econometrics/_data_loc: Looking for data in
   econometrics/load: load a dataset (also works with StatsModels datasets)
   econometrics/export: export a processed dataset
