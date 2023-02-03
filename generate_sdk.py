@@ -542,7 +542,6 @@ class BuildCategoryModelClasses:
         """Writes the main sdk file. This is the file that we initialize the SDK with openbb."""
 
         with open(REPO_ROOT / "sdk.py", "w") as f:
-
             f.write(
                 f'{get_sdk_imports_text()}class OpenBBSDK:\r    """OpenBB SDK Class.\r'
             )
