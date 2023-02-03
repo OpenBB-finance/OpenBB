@@ -181,6 +181,9 @@ def process_option_chain(data: pd.DataFrame, source: str) -> pd.DataFrame:
 
         df = pd.concat([calls, puts]).drop_duplicates()
 
+    elif source == "Intrinio":
+        df = data.copy()
+
     elif source == "YahooFinance":
         call_columns = ["expiration", "strike"] + [
             col for col in data.columns if col.endswith("_c")
@@ -673,7 +676,7 @@ def get_abs_market_delta(
     underlying_price : float
         Theoretical underlying price
     df : pd.DataFrame
-        Dataframe of option chain.  Requires the follownig columns: implied_volatility, dte, open_interest, strike, type
+        Dataframe of option chain.  Requires the following columns: impliedVolatility, dte, openInterest, strike, optionType
     rf_rate : float, optional
         Optional risk free rate for calculation, by default 0.03
 
@@ -687,18 +690,18 @@ def get_abs_market_delta(
     ValueError
         If any of the required columns are not in the dataframe
     """
-    for col in ["implied_volatility", "dte", "open_interest", "strike", "type"]:
+    for col in ["impliedVolatility", "dte", "openInterest", "strike", "optionType"]:
         if col not in df.columns:
             raise ValueError(f"{col} needs to be in df")
     df["new_delta"] = delta_at_strike(
         df.strike.to_numpy(),
         underlying_price,
-        df.implied_volatility.to_numpy(),
+        df.impliedVolatility.to_numpy(),
         df.dte.to_numpy(),
-        df.type.to_numpy(),
+        df.optionType.to_numpy(),
         rf_rate,
     )
-    return np.abs(np.sum(df["new_delta"].to_numpy() * df["open_interest"].to_numpy()))
+    return np.abs(np.sum(df["new_delta"].to_numpy() * df["openInterest"].to_numpy()))
 
 
 @log_start_end(log=logger)
@@ -721,7 +724,7 @@ def get_market_gamma(
     underlying_price : float
         Theoretical underlying price
     df : pd.DataFrame
-        Dataframe of option chain.  Requires the following columns: implied_volatility, dte, open_interest, strike, type
+        Dataframe of option chain.  Requires the following columns: impliedVolatility, dte, openInterest, strike, optionType
     abs_mg : bool, optional
         Flag to indicate if getting gamma neutral by default True
     rf_rate : float, optional
@@ -737,18 +740,18 @@ def get_market_gamma(
     ValueError
         If any of the required columns are not in the dataframe
     """
-    for col in ["implied_volatility", "dte", "open_interest", "strike", "type"]:
+    for col in ["impliedVolatility", "dte", "openInterest", "strike", "optionType"]:
         if col not in df.columns:
             raise ValueError(f"{col} needs to be in df")
     df["new_gamma"] = gamma_at_strike(
         df.strike.to_numpy(),
         underlying_price,
-        df.implied_volatility.to_numpy(),
+        df.impliedVolatility.to_numpy(),
         df.dte.to_numpy(),
         rf_rate,
     )
-    fact = np.where(df.type == "put", -1, 1)
-    mg = np.sum(df["new_gamma"].to_numpy() * df["open_interest"].to_numpy() * fact)
+    fact = np.where(df.optionType == "put", -1, 1)
+    mg = np.sum(df["new_gamma"].to_numpy() * df["openInterest"].to_numpy() * fact)
     if abs_mg:
         # gamma neutral
         return np.abs(np.sum(mg))

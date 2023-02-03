@@ -86,7 +86,7 @@ class OptionsController(BaseController):
         "binom",
         "vsurf",
         "greeks",
-        # TODO: add "eodchain" when this controller is refactored,
+        "eodchain",
     ]
     CHOICES_MENUS = [
         "pricing",
@@ -215,16 +215,19 @@ class OptionsController(BaseController):
                 self.current_price = last_price if last_price else 0.0
             elif self.source == "Nasdaq":
                 self.current_price = nasdaq_model.get_last_price(self.ticker)
+            elif self.source == "Intrinio":
+                self.current_price = intrinio_model.get_last_price(self.ticker)
             else:
                 self.current_price = yfinance_model.get_last_price(self.ticker)
 
     def set_expiry_dates(self):
-        if self.source == "Tradier":
-            self.expiry_dates = tradier_model.option_expirations(self.ticker)
-        elif self.source == "Nasdaq":
-            self.expiry_dates = nasdaq_model.option_expirations(self.ticker)
-        else:
-            self.expiry_dates = yfinance_model.option_expirations(self.ticker)
+        self.expiry_dates = self.full_chain.expiration.unique().tolist()
+        # if self.source == "Tradier":
+        #     self.expiry_dates = tradier_model.option_expirations(self.ticker)
+        # elif self.source == "Nasdaq":
+        #     self.expiry_dates = nasdaq_model.option_expirations(self.ticker)
+        # else:
+        #     self.expiry_dates = yfinance_model.option_expirations(self.ticker)
 
     def update_runtime_choices(self):
         """Update runtime choices"""
@@ -291,7 +294,7 @@ class OptionsController(BaseController):
         mt.add_cmd("parity", self.ticker and self.selected_date)
         mt.add_cmd("binom", self.ticker and self.selected_date)
         mt.add_cmd("greeks", self.ticker and self.selected_date)
-        # TODO: add after refactored mt.add_cmd("eodchain", self.ticker)
+        mt.add_cmd("eodchain", self.ticker and self.selected_date)
         mt.add_raw("\n")
         mt.add_menu("pricing", self.ticker and self.selected_date)
         mt.add_menu("hedge", self.ticker and self.selected_date)
@@ -1578,7 +1581,6 @@ class OptionsController(BaseController):
             if not self.ticker:
                 console.print("No ticker loaded. First use `load <ticker>`")
                 return
-            # TODO: Make all models return self.data
-            # self.data = intrinio_model.get_full_chain_eod(
-            #     self.ticker, datetime.strftime(ns_parser.date, "%Y-%m-%d")
-            # )
+            self.full_chain = intrinio_model.get_full_chain_eod(
+                self.ticker, datetime.strftime(ns_parser.date, "%Y-%m-%d")
+            )

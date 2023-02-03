@@ -125,7 +125,13 @@ def get_option_chain(
     ]
     chain = chain.drop(columns=columns_to_drop).reset_index(drop=True)
     # Fill nan values with 0
-    chain = chain.fillna(0).rename(columns={"type": "option_type"})
+    chain = chain.fillna(0).rename(
+        columns={
+            "type": "optionType",
+            "open_interest": "openInterest",
+            "implied_volatility": "impliedVolatility",
+        }
+    )
     return chain
 
 
@@ -226,8 +232,16 @@ def get_full_chain_eod(symbol: str, date: str) -> pd.DataFrame:
             full_chain = pd.concat([full_chain, temp])
     if full_chain.empty:
         return pd.DataFrame()
-    full_chain = full_chain.sort_values(by=["expiration", "strike"]).reset_index(
-        drop=True
+    full_chain = (
+        full_chain.sort_values(by=["expiration", "strike"])
+        .reset_index(drop=True)
+        .rename(
+            columns={
+                "type": "optionType",
+                "open_interest": "openInterest",
+                "implied_volatility": "impliedVolatility",
+            }
+        )
     )
     if full_chain.empty:
         logger.info("No options found for %s on %s", symbol, date)
@@ -257,4 +271,23 @@ def get_close_at_date(symbol: str, date: str) -> float:
             symbol, "adj_close_price", start_date=date, end_date=date, frequency="daily"
         )
         .to_dict()["historical_data"][0]["value"]
+    )
+
+
+@log_start_end(log=logger)
+def get_last_price(symbol: str) -> float:
+    """Get the last price of a ticker
+
+    Parameters
+    ----------
+    symbol : str
+        Ticker to get last price for
+
+    Returns
+    -------
+    float
+        Last price of ticker
+    """
+    return (
+        intrinio.SecurityApi().get_security_realtime_price(symbol, source="").last_price
     )
