@@ -1,7 +1,6 @@
 import logging
 from typing import Union
 
-from datetime import datetime
 import mstarpy
 import matplotlib.pyplot as plt
 import numpy as np
@@ -59,8 +58,8 @@ def display_exclusion_policy(loaded_funds: mstarpy.Funds):
 @log_start_end(log=logger)
 def display_historical(
     loaded_funds: mstarpy.Funds,
-    start_date: datetime,
-    end_date: datetime,
+    start_date: str,
+    end_date: str,
     comparison: str = "",
 ):
     """Display historical fund, category, index price
@@ -69,13 +68,18 @@ def display_historical(
     ----------
     loaded_funds: mstarpy.funds
         class mstarpy.Funds instantiated with selected funds
+    start_date: str
+        start date of the period to be displayed
+    end_date: str
+        end date of the period to be displayed
+    comparison: str
+        type of comparison, can be index, category, both
     """
-    start_date = datetime.strptime(start_date,"%Y-%m-%d")
-    end_date = datetime.strptime(end_date,"%Y-%m-%d")
+
     title = f"Performance of {loaded_funds.name}"
-    
+
     if not comparison:
-        data = loaded_funds.nav(start_date,end_date,frequency="daily")
+        data = loaded_funds.nav(start_date, end_date, frequency="daily")
         fig, ax = plt.subplots(figsize=(10, 10))
         ax.set_xlabel("Date")
         ax.set_ylabel("Nav")

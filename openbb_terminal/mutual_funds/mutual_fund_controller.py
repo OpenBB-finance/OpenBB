@@ -36,7 +36,6 @@ class FundController(BaseController):
         "resources",
         "country",
         "search",
-        "info",
         "load",
         "plot",
         "sector",
@@ -45,22 +44,9 @@ class FundController(BaseController):
         "holdings",
         "carbon",
         "exclusion",
-        "forecast",
     ]
 
     fund_countries = list(mapping_country.keys())
-    search_by_choices = ["name", "issuer", "isin", "symbol"]
-    search_cols = [
-        "country",
-        "name",
-        "symbol",
-        "issuer",
-        "isin",
-        "asset_class",
-        "currency",
-        "underlying",
-    ]
-    focus_choices = ["all", "country", "sector", "holding"]
     PATH = "/funds/"
     FILE_PATH = os.path.join(os.path.dirname(__file__), "README.md")
     CHOICES_GENERATION = True
@@ -75,8 +61,8 @@ class FundController(BaseController):
         self.fund_symbol = ""
         self.fund_isin = ""
         self.TRY_RELOAD = True
-        self.end_date = datetime.today()
-        self.start_date = datetime.today() - timedelta(365)
+        self.end_date = ""
+        self.start_date = ""
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices_default
@@ -110,10 +96,6 @@ class FundController(BaseController):
         mt.add_cmd("alswe", self.fund_symbol and self.country == "sweden")
         mt.add_cmd("infoswe", self.fund_symbol and self.country == "sweden")
 
-        if self.country == "sweden":
-            mt.add_cmd("alswe", self.fund_symbol)
-            mt.add_cmd("infoswe", self.fund_symbol)
-            mt.add_cmd("forecast", self.fund_symbol)
         console.print(text=mt.menu_text, menu="Mutual Funds")
 
     def custom_reset(self):
@@ -129,13 +111,14 @@ class FundController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="alswe",
-            description="Show allocation of a swedish fund.",
+            description="Show allocation of a swedish fund. "
+            "To get a list of available funds, check the file `avanza_fund_ID.csv`.",
         )
         parser.add_argument(
             "--focus",
             dest="focus",
             type=str,
-            choices=self.focus_choices,
+            choices=["all", "country", "sector", "holding"],
             default="all",
             help="The focus of the funds exposure/allocation",
         )
@@ -169,7 +152,8 @@ class FundController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="infoswe",
-            description="Show fund info of a swedish fund.",
+            description="Show fund info of a swedish fund. "
+            "To get a list of available funds, check the file `avanza_fund_ID.csv`.",
         )
 
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
@@ -280,7 +264,7 @@ class FundController(BaseController):
             "-s",
             "--start",
             type=valid_date,
-            default=(datetime.now() - timedelta(days=1100)).strftime("%Y-%m-%d"),
+            default=(datetime.now() - timedelta(days=365)).strftime("%Y-%m-%d"),
             dest="start",
             help="The starting date (format YYYY-MM-DD) of the stock",
         )
@@ -296,6 +280,12 @@ class FundController(BaseController):
             other_args.insert(0, "--fund")
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
+            if not self.country:
+                console.print(
+                    "[yellow]Loading without a country selected "
+                    " might result in unexpected results.[/yellow]"
+                )
+
             funds_loaded = mstarpy_view.display_load(
                 term=ns_parser.fund, country=self.country
             )
@@ -342,9 +332,9 @@ class FundController(BaseController):
                 console.print("No fund loaded.  Please use `load` first to plot.")
                 return self.queue
             mstarpy_view.display_historical(
-                self.funds_loaded,
-                self.start_date,
-                self.end_date,
+                loaded_funds=self.funds_loaded,
+                start_date=datetime.strptime(self.start_date, "%Y-%m-%d"),
+                end_date=datetime.strptime(self.end_date, "%Y-%m-%d"),
                 comparison=ns_parser.compare,
             )
         return self.queue
@@ -403,6 +393,10 @@ class FundController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
         if ns_parser:
+            if not self.fund_symbol:
+                console.print("No fund loaded.  Please use `load` first.")
+                return self.queue
+
             mstarpy_view.display_holdings(self.funds_loaded, ns_parser.type)
 
         return self.queue
@@ -420,7 +414,7 @@ class FundController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if not self.fund_symbol:
-                console.print("No fund loaded.  Please use `load` first to plot.")
+                console.print("No fund loaded.  Please use `load` first.")
                 return self.queue
 
             mstarpy_view.display_carbon_metrics(self.funds_loaded)
