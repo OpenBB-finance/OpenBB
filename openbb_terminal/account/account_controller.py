@@ -17,10 +17,6 @@ from openbb_terminal.session import local_model as Local
 from openbb_terminal.session.user import User
 from openbb_terminal.account.account_model import get_diff
 
-# from openbb_terminal.session.user import User
-
-# from openbb_terminal.session import hub_model as Hub
-# from openbb_terminal.session import local_model as Local
 
 logger = logging.getLogger(__name__)
 
@@ -32,8 +28,6 @@ class AccountController(BaseController):
         "sync",
         "pull",
         "clear",
-        # "upload",
-        # "download",
     ]
 
     PATH = "/account/"
@@ -54,9 +48,6 @@ class AccountController(BaseController):
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
             choices["sync"] = {"--on": {}, "--off": {}}
-            # choices["upload"]["--file"] = self.ROUTINE_CHOICES
-            # choices["upload"]["-f"] = choices["upload"]["--file"]
-
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
@@ -67,9 +58,6 @@ class AccountController(BaseController):
         mt.add_cmd("sync")
         mt.add_cmd("pull")
         mt.add_cmd("clear")
-        # mt.add_info("_routines_")
-        # mt.add_cmd("upload")
-        # mt.add_cmd("download")
         console.print(text=mt.menu_text, menu="Account")
 
     @log_start_end(log=logger)
@@ -163,43 +151,3 @@ class AccountController(BaseController):
                 Hub.clear_user_configs(auth_header=User.get_auth_header())
             else:
                 console.print("\n[info]Aborted.[/info]")
-
-    # @log_start_end(log=logger)
-    # def call_upload(self, other_args: List[str]):
-    #     """Upload"""
-    #     parser = argparse.ArgumentParser(
-    #         add_help=False,
-    #         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-    #         prog="load",
-    #         description="Load your portfolio transactions.",
-    #     )
-    #     parser.add_argument(
-    #         "-f",
-    #         "--file",
-    #         type=str,
-    #         dest="file",
-    #         required="-h" not in other_args,
-    #         help="The file to be loaded",
-    #         choices={c: {} for c in self.ROUTINE_FILES},
-    #         metavar="FILE",
-    #     )
-    #     parser.add_argument(
-    #         "-n",
-    #         "--name",
-    #         type=str,
-    #         dest="name",
-    #         required="-h" not in other_args,
-    #         help="The name of the routine",
-    #     )
-    #     if other_args and "-" not in other_args[0][0]:
-    #         other_args.insert(0, "-f")
-    #     ns_parser = self.parse_known_args_and_warn(parser, other_args)
-    #     if ns_parser:
-    #         routine = Local.get_routine(ns_parser.file)
-    #         if routine:
-    #             Hub.upload_routine(ns_parser.name, routine)
-
-    # @log_start_end(log=logger)
-    # def call_download(self, _):
-    #     """Download"""
-    #     Hub.download_routine()
