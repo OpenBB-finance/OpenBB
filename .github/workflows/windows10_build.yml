@@ -51,7 +51,7 @@ jobs:
         run: |
           conda activate obb
           python -m pip list
-          pyinstaller build/pyinstaller/terminal.spec --clean
+          python -m PyInstaller build/pyinstaller/terminal.spec --clean
       - name: Move Files into App Folder
         run: cp -r .\dist\OpenBBTerminal\ .\build\nsis\app\
       # don't need this because log collection is turned off
