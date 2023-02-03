@@ -33,7 +33,7 @@ venv_path = Path(sys.executable).parent.parent.resolve()
 
 pathex = os.path.join(os.path.dirname(os.__file__), "site-packages")
 
-print(f"Pathx: {pathx}")
+print(f"Pathx: {pathex}")
 
 
 # Removing unused ARM64 binary
