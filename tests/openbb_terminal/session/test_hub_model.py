@@ -37,7 +37,7 @@ def test_create_session_success(email, password):
 
 
 @pytest.mark.parametrize("email, password", TEST_EMAIL_PASSWORD)
-def test_create_session_connError(email, password):
+def test_create_session_connection_error(email, password):
     with patch("requests.post") as mock_post:
         mock_post.side_effect = requests.exceptions.ConnectionError
         response = hub_model.create_session(email, password)
@@ -76,7 +76,7 @@ def test_delete_session_success(auth_header, token):
 
 
 @pytest.mark.parametrize("auth_header, token", TEST_HEADER_TOKEN)
-def test_delete_session_connError(auth_header, token):
+def test_delete_session_connection_error(auth_header, token):
     with patch("requests.post") as mock_post:
         mock_post.side_effect = requests.exceptions.ConnectionError
         response = hub_model.delete_session(auth_header, token)
@@ -183,3 +183,314 @@ def test_get_session_failed_to_request():
         result = hub_model.get_session("email", "password")
         assert result == {}
         create_session_mock.assert_called_once_with("email", "password")
+
+
+@pytest.mark.parametrize("token_type, access_token", [("TokenType", "AccessToken")])
+def test_fetch_user_configs_success(token_type, access_token):
+    mock_response = MagicMock(spec=requests.Response)
+    mock_response.status_code = 200
+    mock_response.json.return_value = {"configs": "info"}
+
+    with patch(
+        "openbb_terminal.session.hub_model.requests.get", return_value=mock_response
+    ) as requests_get_mock:
+        session = {"token_type": token_type, "access_token": access_token}
+        result = hub_model.fetch_user_configs(session)
+        assert result == mock_response
+        requests_get_mock.assert_called_once()
+        _, kwargs = requests_get_mock.call_args
+        assert kwargs["url"] == hub_model.BASE_URL + "terminal/user"
+        assert kwargs["headers"] == {
+            "Authorization": f"{token_type.title()} {access_token}"
+        }
+        assert kwargs["timeout"] == hub_model.TIMEOUT
+
+
+def test_fetch_user_configs_failure():
+    mock_response = MagicMock(spec=requests.Response)
+    mock_response.status_code = 404
+
+    with patch("requests.get", return_value=mock_response) as get_mock:
+        session = {"token_type": "Bearer", "access_token": "abc123"}
+        result = hub_model.fetch_user_configs(session)
+        assert isinstance(result, requests.Response)
+        get_mock.assert_called_once_with(
+            url=hub_model.BASE_URL + "terminal/user",
+            headers={"Authorization": "Bearer abc123"},
+            timeout=hub_model.TIMEOUT,
+        )
+
+
+def test_fetch_user_configs_connection_error():
+    with patch(
+        "requests.get", side_effect=requests.exceptions.ConnectionError
+    ) as get_mock:
+        session = {"token_type": "Bearer", "access_token": "abc123"}
+        result = hub_model.fetch_user_configs(session)
+        assert result is None
+        get_mock.assert_called_once_with(
+            url=hub_model.BASE_URL + "terminal/user",
+            headers={"Authorization": "Bearer abc123"},
+            timeout=hub_model.TIMEOUT,
+        )
+
+
+def test_fetch_user_configs_timeout():
+    with patch("requests.get", side_effect=requests.exceptions.Timeout) as get_mock:
+        session = {"token_type": "Bearer", "access_token": "abc123"}
+        result = hub_model.fetch_user_configs(session)
+        assert result is None
+        get_mock.assert_called_once_with(
+            url=hub_model.BASE_URL + "terminal/user",
+            headers={"Authorization": "Bearer abc123"},
+            timeout=hub_model.TIMEOUT,
+        )
+
+
+def test_fetch_user_configs_exception():
+    with patch("requests.get", side_effect=Exception) as get_mock:
+        session = {"token_type": "Bearer", "access_token": "abc123"}
+        result = hub_model.fetch_user_configs(session)
+        assert result is None
+        get_mock.assert_called_once_with(
+            url=hub_model.BASE_URL + "terminal/user",
+            headers={"Authorization": "Bearer abc123"},
+            timeout=hub_model.TIMEOUT,
+        )
+
+
+@pytest.mark.parametrize(
+    "key, value, type_, auth_header",
+    [
+        ("key", "value", "keys", "auth_header"),
+        ("key", "value", "settings", "auth_header"),
+    ],
+)
+def test_patch_user_configs_success(key, value, type_, auth_header):
+    mock_response = MagicMock(spec=requests.Response)
+    mock_response.status_code = 200
+
+    with patch(
+        "openbb_terminal.session.hub_model.requests.patch", return_value=mock_response
+    ) as requests_patch_mock:
+        result = hub_model.patch_user_configs(key, value, type_, auth_header)
+
+        assert result.status_code == mock_response.status_code
+        requests_patch_mock.assert_called_once()
+        _, kwargs = requests_patch_mock.call_args
+        assert kwargs["url"] == hub_model.BASE_URL + "terminal/user"
+        assert kwargs["headers"] == {"Authorization": f"{auth_header}"}
+        assert kwargs["json"] == {"key": f"features_{type_}.{key}", "value": value}
+        assert kwargs["timeout"] == hub_model.TIMEOUT
+
+
+def test_patch_user_configs_failure():
+    mock_response = MagicMock(spec=requests.Response)
+    mock_response.status_code = 400
+
+    with patch(
+        "openbb_terminal.session.hub_model.requests.patch", return_value=mock_response
+    ) as requests_patch_mock:
+        result = hub_model.patch_user_configs("key", "value", "keys", "auth_header")
+
+        assert result.status_code == mock_response.status_code
+        requests_patch_mock.assert_called_once()
+        _, kwargs = requests_patch_mock.call_args
+        assert kwargs["url"] == hub_model.BASE_URL + "terminal/user"
+        assert kwargs["headers"] == {"Authorization": "auth_header"}
+        assert kwargs["json"] == {"key": "features_keys.key", "value": "value"}
+        assert kwargs["timeout"] == hub_model.TIMEOUT
+
+
+def test_patch_user_configs_connection_error():
+    with patch(
+        "openbb_terminal.session.hub_model.requests.patch"
+    ) as requests_patch_mock:
+        requests_patch_mock.side_effect = requests.exceptions.ConnectionError()
+
+        result = hub_model.patch_user_configs("key", "value", "keys", "auth_header")
+
+        assert result is None
+        requests_patch_mock.assert_called_once()
+        _, kwargs = requests_patch_mock.call_args
+        assert kwargs["url"] == hub_model.BASE_URL + "terminal/user"
+        assert kwargs["headers"] == {"Authorization": "auth_header"}
+        assert kwargs["json"] == {"key": "features_keys.key", "value": "value"}
+        assert kwargs["timeout"] == hub_model.TIMEOUT
+
+
+def test_patch_user_configs_timeout():
+    with patch(
+        "openbb_terminal.session.hub_model.requests.patch"
+    ) as requests_patch_mock:
+        requests_patch_mock.side_effect = requests.exceptions.Timeout()
+
+        result = hub_model.patch_user_configs("key", "value", "keys", "auth_header")
+
+        assert result is None
+        requests_patch_mock.assert_called_once()
+        _, kwargs = requests_patch_mock.call_args
+        assert kwargs["url"] == hub_model.BASE_URL + "terminal/user"
+        assert kwargs["headers"] == {"Authorization": "auth_header"}
+        assert kwargs["json"] == {"key": "features_keys.key", "value": "value"}
+        assert kwargs["timeout"] == hub_model.TIMEOUT
+
+
+def test_patch_user_configs_exception():
+    with patch(
+        "openbb_terminal.session.hub_model.requests.patch"
+    ) as requests_patch_mock:
+        requests_patch_mock.side_effect = Exception()
+
+        result = hub_model.patch_user_configs("key", "value", "keys", "auth_header")
+
+        assert result is None
+        requests_patch_mock.assert_called_once()
+        _, kwargs = requests_patch_mock.call_args
+        assert kwargs["url"] == hub_model.BASE_URL + "terminal/user"
+        assert kwargs["headers"] == {"Authorization": "auth_header"}
+        assert kwargs["json"] == {"key": "features_keys.key", "value": "value"}
+        assert kwargs["timeout"] == hub_model.TIMEOUT
+
+
+def test_clear_user_configs_success():
+    mock_response = MagicMock(spec=requests.Response)
+    mock_response.status_code = 200
+
+    with patch(
+        "openbb_terminal.session.hub_model.requests.put", return_value=mock_response
+    ) as requests_put_mock:
+        result = hub_model.clear_user_configs("auth_header")
+
+        assert result.status_code == mock_response.status_code
+        requests_put_mock.assert_called_once()
+        _, kwargs = requests_put_mock.call_args
+        assert kwargs["url"] == hub_model.BASE_URL + "terminal/user"
+        assert kwargs["headers"] == {"Authorization": "auth_header"}
+        assert kwargs["json"] == {"features_keys": {}, "features_settings": {}}
+        assert kwargs["timeout"] == hub_model.TIMEOUT
+
+
+def test_clear_user_configs_failure():
+    mock_response = MagicMock(spec=requests.Response)
+    mock_response.status_code = 400
+
+    with patch(
+        "openbb_terminal.session.hub_model.requests.put", return_value=mock_response
+    ) as requests_put_mock:
+        result = hub_model.clear_user_configs("auth_header")
+
+        assert result.status_code == mock_response.status_code
+        requests_put_mock.assert_called_once()
+        _, kwargs = requests_put_mock.call_args
+        assert kwargs["url"] == hub_model.BASE_URL + "terminal/user"
+        assert kwargs["headers"] == {"Authorization": "auth_header"}
+        assert kwargs["json"] == {"features_keys": {}, "features_settings": {}}
+        assert kwargs["timeout"] == hub_model.TIMEOUT
+
+
+def test_clear_user_configs_timeout():
+    with patch(
+        "openbb_terminal.session.hub_model.requests.put",
+        side_effect=requests.exceptions.Timeout,
+    ) as requests_put_mock:
+        result = hub_model.clear_user_configs("auth_header")
+
+        assert result is None
+        requests_put_mock.assert_called_once()
+        _, kwargs = requests_put_mock.call_args
+        assert kwargs["url"] == hub_model.BASE_URL + "terminal/user"
+        assert kwargs["headers"] == {"Authorization": "auth_header"}
+        assert kwargs["json"] == {"features_keys": {}, "features_settings": {}}
+        assert kwargs["timeout"] == hub_model.TIMEOUT
+
+
+def test_clear_user_configs_connection_error():
+    with patch("openbb_terminal.session.hub_model.requests.put") as requests_put_mock:
+        requests_put_mock.side_effect = requests.exceptions.ConnectionError()
+        result = hub_model.clear_user_configs("auth_header")
+
+        assert result is None
+        requests_put_mock.assert_called_once()
+        _, kwargs = requests_put_mock.call_args
+        assert kwargs["url"] == hub_model.BASE_URL + "terminal/user"
+        assert kwargs["headers"] == {"Authorization": "auth_header"}
+        assert kwargs["json"] == {"features_keys": {}, "features_settings": {}}
+        assert kwargs["timeout"] == hub_model.TIMEOUT
+
+
+def test_clear_user_configs_exception():
+    with patch(
+        "openbb_terminal.session.hub_model.requests.put", side_effect=Exception
+    ) as requests_put_mock:
+        result = hub_model.clear_user_configs("auth_header")
+
+        assert result is None
+        requests_put_mock.assert_called_once()
+        _, kwargs = requests_put_mock.call_args
+        assert kwargs["url"] == hub_model.BASE_URL + "terminal/user"
+        assert kwargs["headers"] == {"Authorization": "auth_header"}
+        assert kwargs["json"] == {"features_keys": {}, "features_settings": {}}
+        assert kwargs["timeout"] == hub_model.TIMEOUT
+
+
+def test_upload_routine_success():
+    mock_response = MagicMock(spec=requests.Response)
+    mock_response.status_code = 200
+
+    with patch(
+        "openbb_terminal.session.hub_model.requests.post", return_value=mock_response
+    ) as requests_post_mock:
+        result = hub_model.upload_routine("auth_header", "name", "routine")
+
+        assert result.status_code == mock_response.status_code
+        requests_post_mock.assert_called_once()
+        _, kwargs = requests_post_mock.call_args
+        assert kwargs["url"] == hub_model.BASE_URL + "terminal/script"
+        assert kwargs["headers"] == {"Authorization": "auth_header"}
+        assert kwargs["json"] == {"name": "name", "script": "routine"}
+        assert kwargs["timeout"] == hub_model.TIMEOUT
+
+
+def test_upload_routine_failure():
+    mock_response = MagicMock(spec=requests.Response)
+    mock_response.status_code = 400
+
+    with patch(
+        "openbb_terminal.session.hub_model.requests.post", return_value=mock_response
+    ) as requests_post_mock:
+        result = hub_model.upload_routine("auth_header", "name", "routine")
+
+        assert result.status_code == mock_response.status_code
+        requests_post_mock.assert_called_once()
+        _, kwargs = requests_post_mock.call_args
+        assert kwargs["url"] == hub_model.BASE_URL + "terminal/script"
+        assert kwargs["headers"] == {"Authorization": "auth_header"}
+        assert kwargs["json"] == {"name": "name", "script": "routine"}
+        assert kwargs["timeout"] == hub_model.TIMEOUT
+
+
+def test_upload_routine_connection_error():
+    with patch(
+        "openbb_terminal.session.hub_model.requests.post",
+        side_effect=requests.exceptions.ConnectionError,
+    ):
+        result = hub_model.upload_routine("auth_header", "name", "routine")
+        assert result is None
+
+
+def test_upload_routine_timeout():
+    with patch(
+        "openbb_terminal.session.hub_model.requests.post",
+        side_effect=requests.exceptions.Timeout,
+    ):
+        result = hub_model.upload_routine("auth_header", "name", "routine")
+        assert result is None
+
+
+def test_upload_routine_exception():
+    with patch(
+        "openbb_terminal.session.hub_model.requests.post", side_effect=Exception
+    ):
+        result = hub_model.upload_routine("auth_header", "name", "routine")
+        assert result is None

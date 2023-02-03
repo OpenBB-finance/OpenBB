@@ -332,5 +332,8 @@ def upload_routine(
 
 def download_routine() -> Optional[requests.Response]:
     """Download a routine from the server."""
+
+    # TODO: Implement test on `test_hub_model.py` when this is implemented.
+
     console.print("[red]Not implemented yet.[/red]")
     return None
