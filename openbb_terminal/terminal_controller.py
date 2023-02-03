@@ -107,6 +107,7 @@ class TerminalController(BaseController):
         "sources",
         "forecast",
         "futures",
+        "funds",
     ]
 
     PATH = "/"
@@ -191,6 +192,7 @@ class TerminalController(BaseController):
         mt.add_menu("forex")
         mt.add_menu("futures")
         mt.add_menu("alternative")
+        mt.add_menu("funds")
         mt.add_raw("\n")
         mt.add_info("_others_")
         mt.add_menu("econometrics")
@@ -487,6 +489,14 @@ class TerminalController(BaseController):
         from openbb_terminal.futures.futures_controller import FuturesController
 
         self.queue = self.load_class(FuturesController, self.queue)
+
+    def call_funds(self, _):
+        """Process etf command"""
+        from openbb_terminal.mutual_funds.mutual_fund_controller import (
+            FundController,
+        )
+
+        self.queue = self.load_class(FundController, self.queue)
 
     def call_intro(self, _):
         """Process intro command."""

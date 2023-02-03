@@ -869,6 +869,11 @@ en:
   funds/alswe: display fund allocation (sector, country, holdings)
   funds/infoswe: get fund information
   funds/forecast: forecasting techniques
+  funds/country_ms: set a country for filtering
+  funds/holdings: holdings of the loaded funds
+  funds/carbon: carbon metrics
+  funds/exclusion: exclusion policy
+  funds/_country_ms: Current Country MorningStar
   alternative/hn: Hacker News most popular stories
   alternative/covid: COVID menu,                 cases, deaths, rates
   alternative/oss: Open Source menu,           star history, repos information
