@@ -40,15 +40,7 @@ jobs:
         # on powershell where it creates a new shell every time for every step
         run: |
           conda activate obb
-          poetry install -vvv
-      - name: Poetry Install Portfolio Optimization and Forecasting Toolkits
-        run: |
-          conda activate obb
-          poetry install -E all
-      - name: Poetry Install Installer
-        run: |
-          conda activate obb
-          poetry install -E installer
+          pip install -r requirements-win.txt
       - name: Install Specific Papermill
         run: |
           conda activate obb
