@@ -28,18 +28,20 @@ sector_dict = {
 
 
 @log_start_end(log=logger)
-def display_allocation(name: str, focus: str):
+def display_allocation(name: str, isin: str, focus: str):
     """Displays the allocation of the selected swedish fund
 
     Parameters
     ----------
     name: str
         Full name of the fund
+    isin: str
+        ISIN of the fund
     focus: str
         The focus of the displayed allocation/exposure of the fund
     """
     # Taken from: https://github.com/northern-64bit/Portfolio-Report-Generator/tree/main
-    fund_data = avanza_model.get_data(name.upper())
+    fund_data = avanza_model.get_data(isin)
     if focus in ["holding", "all"]:
         table_row = []
         console.print("")
@@ -81,15 +83,15 @@ def display_allocation(name: str, focus: str):
 
 
 @log_start_end(log=logger)
-def display_info(name: str):
+def display_info(isin: str):
     """Displays info of swedish funds
 
     Parameters
     ----------
-    name: str
-        Full name of the fund
+    isin: str
+        ISIN of the fund
     """
-    fund_data = avanza_model.get_data(name.upper())
+    fund_data = avanza_model.get_data(isin)
     text = f"\nSwedish Description:\n\n{fund_data['description']}\n\nThe fund is managed by:\n"
     for manager in fund_data["fundManagers"]:
         text = text + f"\t- {manager['name']} since {manager['startDate']}\n"
