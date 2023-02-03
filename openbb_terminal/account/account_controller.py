@@ -118,7 +118,7 @@ class AccountController(BaseController):
             else:
                 console.print(f"sync is {sync}, use --on or --off to change.")
 
-    def call_pull(self, _):
+    def call_pull(self, other_args: List[str]):
         """Pull data"""
         parser = argparse.ArgumentParser(
             add_help=False,
@@ -126,7 +126,7 @@ class AccountController(BaseController):
             prog="pull",
             description="Pull and apply stored configurations from the cloud.",
         )
-        ns_parser = self.parse_simple_args(parser, _)
+        ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
             response = Hub.fetch_user_configs(User.get_session())
             if response:
@@ -138,13 +138,13 @@ class AccountController(BaseController):
                     )
                     if i.lower() in ["y", "yes"]:
                         Local.apply_configs(configs=configs_diff)
-                        console.print("\nDone.", style="info")
+                        console.print("\n[info]Done.[/info]")
                     else:
-                        console.print("\nAborted.", style="info")
+                        console.print("\n[info]Aborted.[/info]")
                 else:
-                    console.print("No changes to apply.", style="info")
+                    console.print("\n[info]No changes to apply.[/info]")
 
-    def call_clear(self, _):
+    def call_clear(self, other_args: List[str]):
         """Clear data"""
         parser = argparse.ArgumentParser(
             add_help=False,
@@ -152,7 +152,7 @@ class AccountController(BaseController):
             prog="clear",
             description="Clear stored configurations from the cloud.",
         )
-        ns_parser = self.parse_simple_args(parser, _)
+        ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
             i = console.input(
                 "[red]This action is irreversible![/red]\n"
@@ -162,7 +162,7 @@ class AccountController(BaseController):
                 console.print("")
                 Hub.clear_user_configs(auth_header=User.get_auth_header())
             else:
-                console.print("\nAborted.", style="info")
+                console.print("\n[info]Aborted.[/info]")
 
     # @log_start_end(log=logger)
     # def call_upload(self, other_args: List[str]):

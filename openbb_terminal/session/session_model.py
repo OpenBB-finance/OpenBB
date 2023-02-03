@@ -92,7 +92,7 @@ def logout(
             return
 
         r = Hub.delete_session(auth_header, token)
-        if r and r.status_code != 200:
+        if not r or r.status_code != 200:
             success = False
     User.clear()
 
