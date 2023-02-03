@@ -690,6 +690,7 @@ def main():
 
     os.environ["OPENBB_LOG_COLLECT"] = "False"
     os.environ["OPENBB_USE_ION"] = "False"
+    os.environ["OPENBB_USE_PROMPT_TOOLKIT"] = "False"
     os.environ["DEBUG_MODE"] = "true"
 
     parse_args_and_run()
