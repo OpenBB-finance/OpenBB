@@ -366,6 +366,7 @@ function on_submit(popup_id, on_annotation = null) {
             line: { color: popup_data.color },
             xaxis: main_trace.xaxis,
             yaxis: main_trace.yaxis,
+            connectgaps: true,
           };
         }
 
