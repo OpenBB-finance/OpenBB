@@ -370,7 +370,6 @@ def run_test_files(
     -------
     Tuple[int, int, Dict[str, Dict[str, Any]], float]
     """
-    os.environ["DEBUG_MODE"] = "true"
     n_successes = 0
     n_failures = 0
     fails: Dict[str, Dict[str, Any]] = {}
@@ -689,10 +688,9 @@ def main():
     if "--test" in sys.argv:
         sys.argv.remove("--test")
 
-    os.environ["OPENBB_ENABLE_QUICK_EXIT"] = "True"
     os.environ["OPENBB_LOG_COLLECT"] = "False"
     os.environ["OPENBB_USE_ION"] = "False"
-    os.environ["OPENBB_USE_PROMPT_TOOLKIT"] = "False"
+    os.environ["DEBUG_MODE"] = "true"
 
     parse_args_and_run()
 
