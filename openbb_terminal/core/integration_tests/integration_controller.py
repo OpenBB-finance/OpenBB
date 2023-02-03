@@ -19,7 +19,7 @@ from openbb_terminal.core.config.paths import (
     MISCELLANEOUS_DIRECTORY,
     REPOSITORY_DIRECTORY,
 )
-from openbb_terminal.helper_funcs import check_positive
+from openbb_terminal.helper_funcs import check_non_negative
 from openbb_terminal.rich_config import console
 from openbb_terminal.terminal_controller import (
     insert_start_slash,
@@ -379,7 +379,7 @@ def run_test_files(
 
         start = time.time()
 
-        if verbose and not subprocesses:
+        if subprocesses == 0:
             console.print(
                 f"* Running {n} script(s) sequentially...\n",
                 style="bold",
@@ -633,7 +633,7 @@ def parse_args_and_run():
         help="The number of subprocesses to use to run the tests."
         " Default is the minimum between number of collected scripts and CPUs.",
         dest="subprocesses",
-        type=check_positive,
+        type=check_non_negative,
         default=None,
     )
     parser.add_argument(
@@ -661,12 +661,13 @@ def parse_args_and_run():
 
     special_args_dict = {x: getattr(ns_parser, x) for x in special_arguments_values}
 
-    if ns_parser.verbose and ns_parser.subprocesses:
-        console.print(
-            "WARNING: verbose mode and multiprocessing are not compatible. "
-            "The output of the scripts is mixed up. Consider running without --subproc.\n",
-            style="yellow",
-        )
+    if ns_parser.verbose:
+        if ns_parser.subprocesses is None or ns_parser.subprocesses > 0:
+            console.print(
+                "WARNING: verbose mode and multiprocessing are not compatible. "
+                "The output of the scripts is mixed up. Consider running with --subproc 0.\n",
+                style="yellow",
+            )
 
     if ns_parser.list_:
         return display_available_scripts(ns_parser.path, ns_parser.skip)
@@ -688,10 +689,11 @@ def main():
     if "--test" in sys.argv:
         sys.argv.remove("--test")
 
+    os.environ["OPENBB_ENABLE_QUICK_EXIT"] = "False"
     os.environ["OPENBB_LOG_COLLECT"] = "False"
-    os.environ["OPENBB_USE_ION"] = "False"
+    os.environ["OPENBB_USE_ION"] = "True"
     os.environ["OPENBB_USE_PROMPT_TOOLKIT"] = "False"
-    os.environ["DEBUG_MODE"] = "true"
+    os.environ["DEBUG_MODE"] = "True"
 
     parse_args_and_run()
 
