@@ -50,6 +50,7 @@ class OpenBBSDK:
         Submodules:
             `covid`: Covid Module
             `oss`: Oss Module
+            `realestate`: Realestate Module
 
         Attributes:
             `hn`: Get top stories from HackerNews.\n

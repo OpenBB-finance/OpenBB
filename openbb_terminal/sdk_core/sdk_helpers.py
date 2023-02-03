@@ -1,9 +1,6 @@
 """OpenBB Terminal SDK Helpers."""
 from traceback import format_stack
-from typing import (
-    Any,
-    Optional,
-)
+from typing import Any, Optional
 
 
 def check_suppress_logging(suppress_dict: dict) -> bool:

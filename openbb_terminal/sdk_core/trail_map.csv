@@ -13,6 +13,9 @@ alt.oss.ross,alt_oss_runa_model.get_startups,alt_oss_runa_view.display_rossindex
 alt.oss.search,alt_oss_github_model.search_repos,
 alt.oss.summary,alt_oss_github_model.get_repo_summary,alt_oss_github_view.display_repo_summary
 alt.oss.top,alt_oss_github_model.get_top_repos,alt_oss_github_view.display_top_repos
+alt.realestate.get_estate_sales,alt_realestate_landRegistry_model.get_estate_sales,
+alt.realestate.get_region_stats,alt_realestate_landRegistry_model.get_region_stats,
+alt.realestate.get_towns_sold_prices,alt_realestate_landRegistry_model.get_towns_sold_prices,
 crypto.candle,crypto_helpers.plot_candles,
 crypto.chart,crypto_helpers.plot_chart,
 crypto.dd.active,crypto_dd_glassnode_model.get_active_addresses,crypto_dd_glassnode_view.display_active_addresses

@@ -76,3 +76,21 @@ class AltOss(Category):
         self.summary_chart = lib.alt_oss_github_view.display_repo_summary
         self.top = lib.alt_oss_github_model.get_top_repos
         self.top_chart = lib.alt_oss_github_view.display_top_repos
+
+
+class AltRealestate(Category):
+    """OpenBB SDK Realestate Module.
+
+    Attributes:
+        `get_estate_sales`: All sales for specified postcode.\n
+        `get_region_stats`: Get regional house price statistics.\n
+        `get_towns_sold_prices`: Get towns sold house price data.\n
+    """
+
+    def __init__(self):
+        super().__init__()
+        self.get_estate_sales = lib.alt_realestate_landRegistry_model.get_estate_sales
+        self.get_region_stats = lib.alt_realestate_landRegistry_model.get_region_stats
+        self.get_towns_sold_prices = (
+            lib.alt_realestate_landRegistry_model.get_towns_sold_prices
+        )

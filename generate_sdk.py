@@ -565,6 +565,11 @@ class BuildCategoryModelClasses:
 
     def build(self) -> None:
         """Builds the SDK."""
+        for path in ["sdk_core/models", "sdk_core/controllers"]:
+            for file in (REPO_ROOT / path).glob("*.py"):
+                if file.name != "__init__.py":
+                    file.unlink()
+
         for category, d in self.categories.items():
             if isinstance(d, Trailmap) or category == "root":
                 continue

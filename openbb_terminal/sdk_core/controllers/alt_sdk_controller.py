@@ -9,6 +9,7 @@ class AltController(model.AltRoot):
     Submodules:
         `covid`: Covid Module
         `oss`: Oss Module
+        `realestate`: Realestate Module
 
     Attributes:
         `hn`: Get top stories from HackerNews.\n
@@ -52,3 +53,15 @@ class AltController(model.AltRoot):
         """
 
         return model.AltOss()
+
+    @property
+    def realestate(self):
+        """OpenBB SDK Alt Realestate Submodule
+
+        Attributes:
+            `get_estate_sales`: All sales for specified postcode.\n
+            `get_region_stats`: Get regional house price statistics.\n
+            `get_towns_sold_prices`: Get towns sold house price data.\n
+        """
+
+        return model.AltRealestate()

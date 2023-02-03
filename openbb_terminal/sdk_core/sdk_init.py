@@ -9,6 +9,7 @@ import openbb_terminal.alternative.oss.github_model as alt_oss_github_model
 import openbb_terminal.alternative.oss.github_view as alt_oss_github_view
 import openbb_terminal.alternative.oss.runa_model as alt_oss_runa_model
 import openbb_terminal.alternative.oss.runa_view as alt_oss_runa_view
+import openbb_terminal.alternative.realestate.landRegistry_model as alt_realestate_landRegistry_model
 
 # Crypto Helpers
 import openbb_terminal.cryptocurrency.cryptocurrency_helpers as crypto_helpers
