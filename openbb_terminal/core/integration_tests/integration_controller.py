@@ -689,9 +689,9 @@ def main():
         sys.argv.remove("--test")
 
     os.environ["OPENBB_LOG_COLLECT"] = "False"
-    os.environ["OPENBB_USE_ION"] = "False"
+    os.environ["OPENBB_USE_ION"] = "True"
     os.environ["OPENBB_USE_PROMPT_TOOLKIT"] = "False"
-    os.environ["DEBUG_MODE"] = "true"
+    os.environ["DEBUG_MODE"] = "True"
 
     parse_args_and_run()
 
