@@ -14,7 +14,7 @@ from openbb_terminal.rich_config import console
 def display_welcome_message():
     """Display welcome message"""
     with open(PACKAGE_DIRECTORY / "session" / "banner.txt") as f:
-        console.print(f.read(), style="menu")
+        console.print(f"[menu]{f.read()}[/menu]")
 
 
 def get_user_input() -> Tuple[str, str, bool]:
