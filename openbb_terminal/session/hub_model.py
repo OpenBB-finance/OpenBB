@@ -316,7 +316,6 @@ def upload_routine(
         "script": routine,
         "override": override,
     }
-    print("Data: ", data)
 
     try:
         response = requests.post(
@@ -325,7 +324,6 @@ def upload_routine(
             json=data,
             timeout=timeout,
         )
-        print("Response: ", response.content)
         if response.status_code == 200:
             console.print("[green]Successfully uploaded your routine.[/green]")
         elif json.loads(response.content)["detail"] != "Script name already exists":
