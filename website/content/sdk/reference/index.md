@@ -22,7 +22,7 @@
 - [top](/sdk/reference/alt/oss/top)
 
 ## crypto
-- [candle](/sdk/reference/crypto/candle)
+- [candles](/sdk/reference/crypto/candles)
 - [chart](/sdk/reference/crypto/chart)
 
 ### dd
@@ -31,7 +31,7 @@
 - [balance](/sdk/reference/crypto/dd/balance)
 - [basic](/sdk/reference/crypto/dd/basic)
 - [binance_available_quotes_for_each_coin](/sdk/reference/crypto/dd/binance_available_quotes_for_each_coin)
-- [candle](/sdk/reference/crypto/dd/candle)
+- [candles](/sdk/reference/crypto/dd/candles)
 - [change](/sdk/reference/crypto/dd/change)
 - [check_valid_binance_str](/sdk/reference/crypto/dd/check_valid_binance_str)
 - [close](/sdk/reference/crypto/dd/close)
@@ -534,6 +534,7 @@
 - [shorted](/sdk/reference/stocks/dps/shorted)
 - [sidtc](/sdk/reference/stocks/dps/sidtc)
 - [spos](/sdk/reference/stocks/dps/spos)
+- [volexch](/sdk/reference/stocks/dps/volexch)
 
 ### fa
 - [analysis](/sdk/reference/stocks/fa/analysis)
