@@ -336,7 +336,7 @@ class BuildCategoryModelClasses:
             f.write(
                 "        if not lib.FORECASTING:\r            raise NotImplementedError("
                 "'Forecasting is not enabled in your OpenBB installation. To enable, "
-                '`pip install pip install "openbb[all]"`\')\r'
+                '`pip install "openbb[all]"`\')\r'
             )
             add_indent = "    "
             f.write("        if lib.FORECASTING:\r")
@@ -344,7 +344,7 @@ class BuildCategoryModelClasses:
             f.write(
                 "        if not lib.OPTIMIZATION:\r            raise NotImplementedError("
                 "'Optimization is not enabled in your OpenBB installation. To enable, "
-                '`pip install pip install "openbb[all]"`\')\r'
+                '`pip install "openbb[all]"`\')\r'
             )
             add_indent = "    "
             f.write("        if lib.OPTIMIZATION:\r")
