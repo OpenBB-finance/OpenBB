@@ -566,8 +566,14 @@ class BuildCategoryModelClasses:
         """Builds the SDK."""
         for path in ["sdk_core/models", "sdk_core/controllers"]:
             for file in (REPO_ROOT / path).glob("*.py"):
-                if file.name != "__init__.py":
-                    file.unlink()
+                if file.name == "__init__.py":
+                    with open(file, "w") as f:
+                        f.write(
+                            "# flake8: noqa\r"
+                            "# pylint: disable=unused-import,wrong-import-order\r\r"
+                        )
+                    continue
+                file.unlink()
 
         for category, d in self.categories.items():
             if isinstance(d, Trailmap) or category == "root":
