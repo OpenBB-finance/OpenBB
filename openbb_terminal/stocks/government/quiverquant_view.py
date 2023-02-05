@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
+from typing import Optional
 
 import numpy as np
 import pandas as pd
@@ -299,7 +300,7 @@ def plot_government(
     symbol: str,
     gov_type: str,
     external_axes: bool = False,
-):
+) -> Optional[OpenBBFigure]:
     """Helper for plotting government trading
 
     Parameters
@@ -382,7 +383,7 @@ def display_government_trading(
             title=f"Government Trading for {symbol.upper()}",
         )
     else:
-        plot_government(df_gov, symbol, gov_type, external_axes)
+        fig = plot_government(df_gov, symbol, gov_type, external_axes)
 
     export_data(
         export,
@@ -391,6 +392,8 @@ def display_government_trading(
         df_gov,
         sheet_name,
     )
+
+    return None if raw else fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -563,7 +566,7 @@ def display_qtr_contracts(
         sheet_name,
     )
 
-    return None if not fig else fig.show(external=external_axes)
+    return None if raw else fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)

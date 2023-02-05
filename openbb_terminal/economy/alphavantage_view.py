@@ -13,7 +13,9 @@ from openbb_terminal.economy import alphavantage_model
 from openbb_terminal.helper_funcs import (
     export_data,
     print_rich_table,
-)  # is_valid_axes_count,; plot_autoscale,
+)
+
+# is_valid_axes_count,; plot_autoscale,
 from openbb_terminal.rich_config import console
 
 # import matplotlib

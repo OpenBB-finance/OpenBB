@@ -6,7 +6,10 @@ from typing import Optional
 import matplotlib
 import numpy as np
 import pandas as pd
-from matplotlib import dates as mdates, pyplot as plt
+from matplotlib import (
+    dates as mdates,
+    pyplot as plt,
+)
 
 from openbb_terminal import config_plot as cfgPlot
 from openbb_terminal.config_terminal import theme

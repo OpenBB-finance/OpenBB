@@ -2,16 +2,16 @@
 __docformat__ = "numpy"
 
 import logging
-from ast import literal_eval
 import webbrowser
+from ast import literal_eval
 from typing import List
 
 import pandas as pd
 from finvizfinance.group import performance, spectrum, valuation
 
-from openbb_terminal.rich_config import console
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import get_user_agent, request
+from openbb_terminal.rich_config import console
 
 # pylint: disable=unsupported-assignment-operation
 

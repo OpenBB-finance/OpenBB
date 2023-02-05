@@ -1,13 +1,14 @@
-from datetime import datetime, timedelta
-import logging
 import json
+import logging
+from datetime import datetime, timedelta
 from typing import Optional
 
 import pandas as pd
+
 from openbb_terminal import config_terminal as cfg
-from openbb_terminal.decorators import log_start_end, check_api_key
+from openbb_terminal.decorators import check_api_key, log_start_end
+from openbb_terminal.helper_funcs import request, str_date_to_timestamp
 from openbb_terminal.rich_config import console
-from openbb_terminal.helper_funcs import str_date_to_timestamp, request
 
 # pylint: disable=unsupported-assignment-operation
 

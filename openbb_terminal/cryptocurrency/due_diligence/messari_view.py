@@ -10,10 +10,18 @@ from typing import Optional
 
 import numpy as np
 import pandas as pd
-from matplotlib import dates as mdates, pyplot as plt, ticker
+from matplotlib import (
+    dates as mdates,
+    pyplot as plt,
+    ticker,
+)
 
-from openbb_terminal import config_plot as cfgPlot, feature_flags as obbff
+from openbb_terminal import (
+    config_plot as cfgPlot,
+    feature_flags as obbff,
+)
 from openbb_terminal.config_terminal import theme
+from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.cryptocurrency import cryptocurrency_helpers
 from openbb_terminal.cryptocurrency.dataframe_helpers import prettify_paragraph
 from openbb_terminal.cryptocurrency.due_diligence.messari_model import (
@@ -651,6 +659,7 @@ def display_fundraising(
         Whether to return the figure object or not, by default False
     """
     (summary, df_sales_rounds, df_treasury_accs, df_details) = get_fundraising(symbol)
+    fig: OpenBBFigure = None
     if summary:
         summary = prettify_paragraph(summary)
         console.print(summary, "\n")
@@ -701,7 +710,24 @@ def display_fundraising(
             labels.append("Rewards/Airdrops")
         if len(values) > 0 and sum(values) > 0:
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
-
+            fig = OpenBBFigure.create_subplots(
+                1,
+                3,
+                specs=[[{"type": "domain"}, {"type": "pie", "colspan": 2}, None]],
+                row_heights=[1],
+                column_widths=[0.1, 0.8, 0.1],
+            )
+            fig.set_title(f"{symbol} Fundraising Distribution")
+            fig.add_pie(
+                labels=labels,
+                values=[s / 100 for s in values],
+                textinfo="label+percent",
+                hoverinfo="label+percent",
+                automargin=True,
+                rotation=45,
+                row=1,
+                col=2,
+            )
             ax.pie(
                 [s / 100 for s in values],
                 normalize=False,
@@ -712,6 +738,15 @@ def display_fundraising(
                 startangle=90,
                 colors=theme.get_colors()[1:4],
             )
+            fig.update_traces(
+                textposition="outside",
+                textfont_size=15,
+                marker=dict(
+                    colors=theme.get_colors()[1:4],
+                    line=dict(color="#F5EFF3", width=0.8),
+                ),
+            )
+            fig.add_pie()
             ax.set_title(f"{symbol} Fundraising Distribution")
             if obbff.USE_ION:
                 plt.ion()
@@ -734,3 +769,5 @@ def display_fundraising(
         df_details,
         sheet_name,
     )
+
+    return None if not fig else fig.show(external=external_axes)

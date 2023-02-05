@@ -4,7 +4,10 @@ __docformat__ = "numpy"
 import logging
 import os
 
-from matplotlib import pyplot as plt, ticker
+from matplotlib import (
+    pyplot as plt,
+    ticker,
+)
 
 from openbb_terminal.alternative.oss import github_model
 from openbb_terminal.config_plot import PLOT_DPI

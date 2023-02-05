@@ -16,7 +16,7 @@ from openbb_terminal.economy import econdb_model
 from openbb_terminal.helper_funcs import (
     export_data,
     print_rich_table,
-)  # plot_autoscale,
+)
 
 logger = logging.getLogger(__name__)
 

@@ -5,7 +5,7 @@ import pandas as pd
 import pytest
 
 # IMPORTATION INTERNAL
-from openbb_terminal.stocks.discovery import finnhub_view, finnhub_model
+from openbb_terminal.stocks.discovery import finnhub_model, finnhub_view
 
 
 @pytest.fixture(scope="module")
