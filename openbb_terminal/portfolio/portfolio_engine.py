@@ -196,7 +196,7 @@ class PortfolioEngine:
 
         # Load transactions from file
         if path.endswith(".xlsx"):
-            if environ.get("DEBUG_MODE", "false") != "true":
+            if str(environ.get("DEBUG_MODE", "false")).lower() != "true":
                 warnings.filterwarnings(
                     "ignore", category=UserWarning, module="openpyxl"
                 )
