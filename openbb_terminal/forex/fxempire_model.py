@@ -1,6 +1,7 @@
 """FXEmpire Model"""
 
 import logging
+
 import pandas as pd
 
 from openbb_terminal.decorators import log_start_end

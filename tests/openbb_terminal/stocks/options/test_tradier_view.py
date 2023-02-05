@@ -1,5 +1,6 @@
 # IMPORTATION THIRDPARTY
 import pytest
+
 from openbb_terminal import rich_config
 
 # IMPORTATION INTERNAL

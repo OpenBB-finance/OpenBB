@@ -8,9 +8,8 @@ from matplotlib import pyplot as plt
 from matplotlib import ticker
 from matplotlib.lines import Line2D
 
-from openbb_terminal.config_terminal import theme
-from openbb_terminal.decorators import check_api_key
 from openbb_terminal import config_plot as cfgPlot
+from openbb_terminal.config_terminal import theme
 from openbb_terminal.cryptocurrency.due_diligence.glassnode_model import (
     get_active_addresses,
     get_exchange_balances,
@@ -18,11 +17,11 @@ from openbb_terminal.cryptocurrency.due_diligence.glassnode_model import (
     get_hashrate,
     get_non_zero_addresses,
 )
-from openbb_terminal.decorators import log_start_end
+from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
-    plot_autoscale,
     is_valid_axes_count,
+    plot_autoscale,
 )
 
 logger = logging.getLogger(__name__)
