@@ -1,6 +1,6 @@
+import logging
 import sys
 from typing import Optional
-import logging
 
 from matplotlib import pyplot
 from prompt_toolkit import PromptSession

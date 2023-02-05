@@ -1,4 +1,5 @@
 from typing import Dict, Optional
+
 import requests
 
 from openbb_terminal.rich_config import console

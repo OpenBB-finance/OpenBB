@@ -1,11 +1,12 @@
 from pathlib import Path
-from typing import Dict, Any
+from typing import Any, Dict
+
+from openbb_terminal import config_plot as cfg_plot
+from openbb_terminal import config_terminal as cfg
+from openbb_terminal import feature_flags as obbff
+from openbb_terminal.base_helpers import strtobool
 from openbb_terminal.core.config import paths
 from openbb_terminal.rich_config import console
-from openbb_terminal import feature_flags as obbff
-from openbb_terminal import config_terminal as cfg
-from openbb_terminal import config_plot as cfg_plot
-from openbb_terminal.base_helpers import strtobool
 
 
 def get_diff(configs: dict) -> dict:

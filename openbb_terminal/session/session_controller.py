@@ -1,14 +1,16 @@
 from typing import Tuple
+
 from prompt_toolkit import PromptSession
-from openbb_terminal import terminal_controller
+
 import openbb_terminal.session.local_model as Local
+from openbb_terminal import terminal_controller
+from openbb_terminal.core.config.paths import PACKAGE_DIRECTORY
+from openbb_terminal.rich_config import console
 from openbb_terminal.session.session_model import (
     LoginStatus,
     create_session,
     login,
 )
-from openbb_terminal.core.config.paths import PACKAGE_DIRECTORY
-from openbb_terminal.rich_config import console
 
 
 def display_welcome_message():

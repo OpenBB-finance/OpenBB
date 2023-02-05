@@ -8,6 +8,7 @@ import os
 import os.path
 from pathlib import Path
 from typing import List, Optional, Union
+
 import pytz
 
 # IMPORTATION THIRDPARTY
@@ -15,12 +16,12 @@ from dotenv import set_key
 
 # IMPORTATION INTERNAL
 from openbb_terminal import config_plot as cfg_plot
+from openbb_terminal import featflags_controller as obbff_ctrl
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.core.config import paths
-from openbb_terminal import featflags_controller as obbff_ctrl
 from openbb_terminal.core.config.paths import (
-    USER_ENV_FILE,
     USER_DATA_SOURCES_DEFAULT_FILE,
+    USER_ENV_FILE,
 )
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
@@ -31,7 +32,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console, MenuText
+from openbb_terminal.rich_config import MenuText, console
 from openbb_terminal.session.hub_model import patch_user_configs
 from openbb_terminal.session.user import User
 

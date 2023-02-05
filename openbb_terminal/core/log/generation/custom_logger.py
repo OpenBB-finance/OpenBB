@@ -1,14 +1,12 @@
 # IMPORTATION STANDARD
 import logging
 
+from openbb_terminal.core.log.generation import settings_logger, user_logger
+from openbb_terminal.core.log.generation.common import do_rollover
+
 # IMPORTATION THIRDPARTY
-
-
 # IMPORTATION INTERNAL
 from openbb_terminal.loggers import setup_logging
-from openbb_terminal.core.log.generation import settings_logger
-from openbb_terminal.core.log.generation import user_logger
-from openbb_terminal.core.log.generation.common import do_rollover
 
 logger = logging.getLogger(__name__)
 

@@ -8,9 +8,8 @@ from types import FunctionType, ModuleType
 # IMPORTATION INTERNAL
 import openbb_terminal.feature_flags as obbff
 from openbb_terminal import config_terminal as cfg
-from openbb_terminal.terminal_helper import is_packaged_application
 from openbb_terminal.core.log.generation.common import do_rollover
-
+from openbb_terminal.terminal_helper import is_packaged_application
 
 SENSITIVE_WORDS = [
     "API",

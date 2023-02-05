@@ -5,11 +5,11 @@ __docformat__ = "numpy"
 import argparse
 import contextlib
 import difflib
+import importlib
 import logging
 import os
 import re
 import sys
-import importlib
 import time
 import webbrowser
 from datetime import datetime
@@ -25,8 +25,6 @@ from prompt_toolkit.styles import Style
 from rich import panel
 
 from openbb_terminal import feature_flags as obbff
-from openbb_terminal.session.user import User
-from openbb_terminal.session import session_controller
 from openbb_terminal.common import feedparser_view
 from openbb_terminal.core.config.paths import (
     HOME_DIRECTORY,
@@ -37,19 +35,24 @@ from openbb_terminal.core.config.paths import (
     USER_ROUTINES_DIRECTORY,
     load_dotenv_with_priority,
 )
+from openbb_terminal.core.log.generation.custom_logger import log_terminal
 from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_positive,
     get_flair,
     parse_and_split_input,
 )
-from openbb_terminal.menu import session, is_papermill
+from openbb_terminal.keys_model import first_time_user
+from openbb_terminal.menu import is_papermill, session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.reports.reports_model import ipykernel_launcher
 from openbb_terminal.rich_config import MenuText, console
+from openbb_terminal.session import session_controller
+from openbb_terminal.session.user import User
 from openbb_terminal.terminal_helper import (
     bootup,
     check_for_updates,
+    is_installer,
     is_packaged_application,
     is_reset,
     print_goodbye,
@@ -57,10 +60,7 @@ from openbb_terminal.terminal_helper import (
     suppress_stdout,
     update_terminal,
     welcome_message,
-    is_installer,
 )
-from openbb_terminal.keys_model import first_time_user
-from openbb_terminal.core.log.generation.custom_logger import log_terminal
 
 # pylint: disable=too-many-public-methods,import-outside-toplevel, too-many-function-args
 # pylint: disable=too-many-branches,no-member,C0302,too-many-return-statements, inconsistent-return-statements

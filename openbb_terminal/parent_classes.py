@@ -18,8 +18,6 @@ import pandas as pd
 from prompt_toolkit.formatted_text import HTML
 from prompt_toolkit.styles import Style
 from rich.markdown import Markdown
-from openbb_terminal.session.session_model import logout
-from openbb_terminal.session.user import User
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.config_terminal import theme
@@ -47,6 +45,8 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.rich_config import console, get_ordered_list_sources
+from openbb_terminal.session.session_model import logout
+from openbb_terminal.session.user import User
 from openbb_terminal.stocks import stocks_helper
 from openbb_terminal.terminal_helper import open_openbb_documentation
 
