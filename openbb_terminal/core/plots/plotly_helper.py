@@ -229,7 +229,7 @@ class OpenBBFigure(go.Figure):
             self.__dict__ = fig.__dict__
 
         self._has_secondary_y = kwargs.pop("has_secondary_y", False)
-        self._date_xaxs = {}
+        self._date_xaxs = dict()
 
         if xaxis := kwargs.pop("xaxis", None):
             self.update_xaxes(xaxis)

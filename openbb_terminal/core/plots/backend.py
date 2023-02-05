@@ -204,7 +204,7 @@ class Backend(PyWry):
         """Close the backend."""
         if not reset:
             self.del_temp()
-        super().close()
+        super().close(reset)
 
 
 async def download_plotly_js():
