@@ -151,14 +151,7 @@ class Backend(PyWry):
             Title to display in the window, by default ""
         """
         self.check_backend()
-        self.outgoing.append(
-            json.dumps(
-                {
-                    "html_path": self.get_nostr_client_html(),
-                    **self.get_kwargs(title),
-                }
-            )
-        )
+        self.send_url(self.nostr_html.as_uri())
 
     def send_html(self, html_str: str = "", html_path: str = "", title: str = ""):
         """Send html to backend.
@@ -229,7 +222,7 @@ class Backend(PyWry):
         """Close the backend."""
         if not reset:
             self.del_temp()
-        super().close()
+        super().close(reset)
 
 
 async def download_plotly_js():
