@@ -332,7 +332,7 @@ function OpenBBMain(plotly_figure) {
   }, 100);
 
   // We check to see if window.save_png is defined and true
-  if (window.save_png != undefined && window.save_png) {
+  if (window.save_image != undefined && window.export_image) {
     // We click the toImage button to save the chart as a png
     globals.barButtons["Download plot as a png"].click();
     // we use a timeout to make sure the image is saved before closing

@@ -481,7 +481,7 @@ class StocksController(StockBaseController):
                                     f"[red]{num} is not a valid moving average, must be an integer greater than 1."
                                 )
 
-                    fig = stocks_helper.display_candle(
+                    figure_export = stocks_helper.display_candle(
                         symbol=self.ticker,
                         data=data,
                         add_trend=ns_parser.trendlines,
@@ -498,7 +498,7 @@ class StocksController(StockBaseController):
                     f"{self.ticker}",
                     self.stock,
                     " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None,
-                    fig=fig,
+                    figure=figure_export,
                 )
             else:
                 console.print("No ticker loaded. First use 'load <ticker>'")

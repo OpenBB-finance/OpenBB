@@ -8,6 +8,7 @@ from matplotlib import pyplot as plt
 
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
+from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import (
     camel_case_split,
@@ -116,6 +117,7 @@ def display_income_statement(
         rows_plot = len(plot)
         income_plot_data = df_income.transpose()
         income_plot_data.columns = income_plot_data.columns.str.lower()
+        income_plot_data = income_plot_data.drop("reportedCurrency")
 
         if not ratios:
             (df_rounded, denomination) = transform_by_denomination(income_plot_data)
@@ -126,23 +128,37 @@ def display_income_statement(
             denomination = ""
 
         if rows_plot == 1:
-            fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-            df_rounded[plot[0].replace("_", "")].plot()
+            fig = OpenBBFigure()
+            fig.add_scatter(
+                x=df_rounded.index,
+                y=df_rounded[plot[0].replace("_", "")],
+                name=plot[0].replace("_", ""),
+            )
             title = (
                 f"{plot[0].replace('_', ' ').lower()} {'QoQ' if quarterly else 'YoY'} Growth of {symbol.upper()}"
                 if ratios
                 else f"{plot[0].replace('_', ' ')} of {symbol.upper()} {denomination}"
             )
-            plt.title(title)
-            theme.style_primary_axis(ax)
-            theme.visualize_output()
+            fig.update_layout(title=title)
+
         else:
-            fig, axes = plt.subplots(rows_plot)
+            fig = OpenBBFigure.create_subplots(
+                rows=rows_plot, cols=1, y_title=denomination, x_title="Date"
+            )
             for i in range(rows_plot):
-                axes[i].plot(df_rounded[plot[i].replace("_", "")])
-                axes[i].set_title(f"{plot[i].replace('_', ' ')} {denomination}")
-            theme.style_primary_axis(axes[0])
-            fig.autofmt_xdate()
+                fig.add_scatter(
+                    x=df_rounded.index,
+                    y=df_rounded[plot[i].replace("_", "")],
+                    name=plot[i].replace("_", ""),
+                    row=i + 1,
+                    col=1,
+                )
+                fig.set_title(
+                    f"{plot[i].replace('_', ' ')} {denomination}", row=i + 1, col=1
+                )
+
+            fig.show()
+
     else:
         indexes = df_income.index
         new_indexes = [camel_case_split(ind) for ind in indexes]

@@ -1,5 +1,4 @@
 import asyncio
-import atexit
 import json
 import os
 import re
@@ -87,13 +86,15 @@ class Backend(PyWry):
             return str(icon_path)
         return ""
 
-    def send_figure(self, fig: go.Figure, png_path: str = ""):
+    def send_figure(self, fig: go.Figure, export_image: str = ""):
         """Send a Plotly figure to the backend
 
         Parameters
         ----------
         fig : go.Figure
             Plotly figure to send to backend.
+        export_image : str, optional
+            Path to export image to, by default ""
         """
         self.check_backend()
         title = re.sub(
@@ -104,7 +105,7 @@ class Backend(PyWry):
                 {
                     "html_path": self.get_plotly_html(),
                     "plotly": json.loads(fig.to_json()),
-                    "png_path": png_path,
+                    "export_image": export_image,
                     **self.get_kwargs(title),
                 }
             )
@@ -192,13 +193,18 @@ class Backend(PyWry):
     def del_temp(self):
         """Delete the temporary html file"""
         for file in (self.plotly_html, self.table_html):
-            if file.exists():
-                file.unlink(missing_ok=True)
+            file.unlink(missing_ok=True)
 
     def start(self, debug: bool = False):
         """Starts the backend WindowManager process"""
         if self.isatty:
             super().start(debug)
+
+    def close(self, reset: bool = False):
+        """Close the backend."""
+        if not reset:
+            self.del_temp()
+        super().close()
 
 
 async def download_plotly_js():
@@ -237,5 +243,4 @@ def plots_backend() -> Backend:
     global BACKEND  # pylint: disable=W0603
     if BACKEND is None:
         BACKEND = Backend()
-        atexit.register(BACKEND.del_temp)
     return BACKEND
