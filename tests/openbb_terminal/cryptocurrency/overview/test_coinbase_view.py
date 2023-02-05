@@ -1,11 +1,8 @@
 import pytest
-from openbb_terminal.cryptocurrency.due_diligence import (
-    coinbase_view as dd_coinbase_view,
-)
-from openbb_terminal.portfolio.brokers.coinbase import (
-    coinbase_view as bro_coinbase_view,
-)
+
+from openbb_terminal.cryptocurrency.due_diligence import coinbase_view as dcv
 from openbb_terminal.cryptocurrency.overview import coinbase_view as ov_coinbase_view
+from openbb_terminal.portfolio.brokers.coinbase import coinbase_view as bcv
 from tests.helpers.helpers import check_print
 
 
@@ -23,7 +20,7 @@ def test_display_candles(mocker):
         [1631232000, 0.07088, 0.07476, 0.07382, 0.07159, 13264.33844153],
         [1631145600, 0.07369, 0.07669, 0.07599, 0.07378, 12462.35265359],
     ]
-    dd_coinbase_view.display_candles("ETH-BTC", "1day", "")
+    dcv.display_candles("ETH-BTC", "1day", "")
 
 
 @check_print(assert_in="Value")
@@ -43,7 +40,7 @@ def test_display_stats(mocker):
         "last": "3333.19000000",
         "volume_30day": "1019451.11188405",
     }
-    dd_coinbase_view.display_stats("ETH-USDT", "")
+    dcv.display_stats("ETH-USDT", "")
 
 
 @check_print(assert_in="price")
@@ -71,7 +68,7 @@ def test_display_trades(mocker):
             "side": "sell",
         },
     ]
-    dd_coinbase_view.display_trades("ETH-USDT", limit=100, side=None, export="")
+    dcv.display_trades("ETH-USDT", limit=100, side=None, export="")
 
 
 @check_print(assert_in="product_id")
@@ -130,7 +127,7 @@ def test_display_orders(mocker):
             "settled": False,
         },
     ]
-    bro_coinbase_view.display_orders(2, "created_at", descend=True, export="")
+    bcv.display_orders(2, "created_at", descend=True, export="")
 
 
 @check_print(assert_in="crypto_address")
@@ -188,9 +185,7 @@ def test_display_deposits(mocker):
             },
         ],
     )
-    bro_coinbase_view.display_deposits(
-        2, "created_at", "deposit", descend=True, export=""
-    )
+    bcv.display_deposits(2, "created_at", "deposit", descend=True, export="")
 
 
 @check_print(assert_in="balance")
@@ -228,7 +223,7 @@ def test_display_history(mocker):
             },
         },
     ]
-    bro_coinbase_view.display_history("ETH", "", None, 2)
+    bcv.display_history("ETH", "", None, 2)
 
 
 @check_print(assert_in="base_currency")

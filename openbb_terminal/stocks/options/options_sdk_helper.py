@@ -9,9 +9,9 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.stocks.options import (
     chartexchange_model,
     nasdaq_model,
+    op_helpers,
     tradier_model,
     yfinance_model,
-    op_helpers,
 )
 
 logger = logging.getLogger(__name__)

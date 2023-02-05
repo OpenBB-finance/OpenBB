@@ -3,8 +3,8 @@ __docformat__ = "numpy"
 import configparser
 import datetime
 import logging
-from typing import List, Tuple
 import random
+from typing import List, Tuple
 
 import numpy as np
 import pandas as pd
@@ -13,13 +13,11 @@ from finvizfinance.screener import ticker
 from pandas.plotting import register_matplotlib_converters
 from sklearn.preprocessing import MinMaxScaler
 
-
-from openbb_terminal.decorators import log_start_end
-
 from openbb_terminal.core.config.paths import (
-    USER_PRESETS_DIRECTORY,
     MISCELLANEOUS_DIRECTORY,
+    USER_PRESETS_DIRECTORY,
 )
+from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.screener import finviz_model
 

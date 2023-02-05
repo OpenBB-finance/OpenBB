@@ -7,21 +7,22 @@ import argparse
 import logging
 from typing import List, Optional
 
-from openbb_terminal.custom_prompt_toolkit import NestedCompleter
-
 from openbb_terminal import feature_flags as obbff
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.portfolio.portfolio_optimization.parameters import params_view
-from openbb_terminal.portfolio.portfolio_optimization.parameters import params_helpers
+from openbb_terminal.portfolio.portfolio_optimization.parameters import (
+    params_helpers,
+    params_view,
+)
 from openbb_terminal.portfolio.portfolio_optimization.parameters.params_statics import (
     AVAILABLE_OPTIONS,
-    DEFAULT_PARAMETERS,
     DEFAULT_BOOL,
+    DEFAULT_PARAMETERS,
     MODEL_PARAMS,
 )
-from openbb_terminal.rich_config import console, MenuText
+from openbb_terminal.rich_config import MenuText, console
 
 logger = logging.getLogger(__name__)
 

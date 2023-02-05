@@ -2,10 +2,10 @@
 __docformat__ = "numpy"
 
 # IMPORTATION STANDARD
-import os
-import os.path
 import argparse
 import logging
+import os
+import os.path
 from pathlib import Path
 from typing import List, Optional, Union
 import pytz

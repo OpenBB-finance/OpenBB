@@ -1,12 +1,10 @@
 # IMPORTATION STANDARD
-import platform
 import json
 import logging
+import platform
 from types import FunctionType, ModuleType
 
 # IMPORTATION THIRDPARTY
-
-
 # IMPORTATION INTERNAL
 import openbb_terminal.feature_flags as obbff
 from openbb_terminal import config_terminal as cfg

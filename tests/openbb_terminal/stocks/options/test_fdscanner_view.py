@@ -3,10 +3,10 @@
 # IMPORTATION THIRDPARTY
 import pytest
 
-# IMPORTATION INTERNAL
-from openbb_terminal.stocks.options import fdscanner_view
 from openbb_terminal import helper_funcs
 
+# IMPORTATION INTERNAL
+from openbb_terminal.stocks.options import fdscanner_view
 
 # pylint: disable=E1101
 

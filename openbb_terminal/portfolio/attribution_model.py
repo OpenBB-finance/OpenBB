@@ -1,13 +1,13 @@
 """Attribution Model"""
 __docformat__ = "numpy"
 
-from datetime import datetime
-from datetime import date
 import logging
+from datetime import date, datetime
 from typing import Dict
 
-import yfinance as yf
 import pandas as pd
+import yfinance as yf
+
 from openbb_terminal.decorators import log_start_end
 
 logger = logging.getLogger(__name__)
