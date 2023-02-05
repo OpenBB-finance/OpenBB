@@ -4,7 +4,7 @@ from openbb_terminal.sdk_core.models import portfolio_sdk_model as model
 
 
 class PortfolioController(model.PortfolioRoot):
-    """OpenBB SDK Portfolio Module.
+    """Portfolio Module.
 
     Submodules:
         `alloc`: Alloc Module
@@ -47,7 +47,7 @@ class PortfolioController(model.PortfolioRoot):
 
     @property
     def alloc(self):
-        """OpenBB SDK Portfolio Alloc Submodule
+        """Portfolio Alloc Submodule
 
         Attributes:
             `assets`: Display portfolio asset allocation compared to the benchmark\n
@@ -60,7 +60,7 @@ class PortfolioController(model.PortfolioRoot):
 
     @property
     def metric(self):
-        """OpenBB SDK Portfolio Metric Submodule
+        """Portfolio Metric Submodule
 
         Attributes:
             `calmar`: Get calmar ratio\n
@@ -86,7 +86,7 @@ class PortfolioController(model.PortfolioRoot):
 
     @property
     def po(self):
-        """OpenBB SDK Portfolio Portfolio Optimization Submodule
+        """Portfolio Portfolio Optimization Submodule
 
         Attributes:
             `blacklitterman`: Optimize decorrelation weights\n

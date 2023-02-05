@@ -8,15 +8,12 @@ import openbb_terminal.config_terminal as cfg
 from openbb_terminal import helper_funcs as helper  # noqa: F401
 from openbb_terminal.config_terminal import theme
 
-from openbb_terminal.core.log.generation.settings_logger import log_all_settings
 from openbb_terminal.cryptocurrency.due_diligence.pycoingecko_model import Coin
 from openbb_terminal.dashboards.dashboards_controller import DashboardsController
 from openbb_terminal.helper_classes import TerminalStyle  # noqa: F401
-from openbb_terminal.loggers import setup_logging
 from openbb_terminal.reports import widget_helpers as widgets  # noqa: F401
 from openbb_terminal.reports.reports_controller import ReportController
 
-from openbb_terminal.sdk_core.sdk_helpers import check_suppress_logging
 import openbb_terminal.sdk_core.sdk_init as lib
 from openbb_terminal.sdk_core import (
     controllers as ctrl,
@@ -25,11 +22,6 @@ from openbb_terminal.sdk_core import (
 
 logger = logging.getLogger(__name__)
 theme.applyMPLstyle()
-
-SUPPRESS_LOGGING_CLASSES = {
-    ReportController: "ReportController",
-    DashboardsController: "DashboardsController",
-}
 
 
 class OpenBBSDK:
@@ -45,7 +37,7 @@ class OpenBBSDK:
 
     @property
     def alt(self):
-        """OpenBB SDK Alt Submodule
+        """Alternative Submodule
 
         Submodules:
             `covid`: Covid Module
@@ -61,7 +53,7 @@ class OpenBBSDK:
 
     @property
     def crypto(self):
-        """OpenBB SDK Crypto Submodule
+        """Cryptocurrency Submodule
 
         Submodules:
             `dd`: Due Diligence Module
@@ -84,7 +76,7 @@ class OpenBBSDK:
 
     @property
     def econometrics(self):
-        """OpenBB SDK Econometrics Submodule
+        """Econometrics Submodule
 
         Attributes:
             `bgod`: Calculate test statistics for autocorrelation\n
@@ -121,7 +113,7 @@ class OpenBBSDK:
 
     @property
     def economy(self):
-        """OpenBB SDK Economy Submodule
+        """Economy Submodule
 
         Attributes:
             `available_indices`: Get available indices\n
@@ -177,7 +169,7 @@ class OpenBBSDK:
 
     @property
     def etf(self):
-        """OpenBB SDK Etf Submodule
+        """Etf Submodule
 
         Submodules:
             `disc`: Discovery Module
@@ -204,7 +196,7 @@ class OpenBBSDK:
 
     @property
     def forecast(self):
-        """OpenBB SDK Forecast Submodule
+        """Forecasting Submodule
 
         Attributes:
             `anom`: Get Quantile Anomaly Detection Data\n
@@ -270,7 +262,7 @@ class OpenBBSDK:
 
     @property
     def forex(self):
-        """OpenBB SDK Forex Submodule
+        """Forex Submodule
 
         Submodules:
             `oanda`: Oanda Module
@@ -287,7 +279,7 @@ class OpenBBSDK:
 
     @property
     def futures(self):
-        """OpenBB SDK Futures Submodule
+        """Futures Submodule
 
         Attributes:
             `curve`: Get curve futures [Source: Yahoo Finance]\n
@@ -301,7 +293,7 @@ class OpenBBSDK:
 
     @property
     def keys(self):
-        """OpenBB SDK Keys Submodule
+        """Keys Submodule
 
         Attributes:
             `av`: Set Alpha Vantage key\n
@@ -345,7 +337,7 @@ class OpenBBSDK:
 
     @property
     def portfolio(self):
-        """OpenBB SDK Portfolio Submodule
+        """Portfolio Submodule
 
         Submodules:
             `alloc`: Alloc Module
@@ -390,7 +382,7 @@ class OpenBBSDK:
 
     @property
     def qa(self):
-        """OpenBB SDK Qa Submodule
+        """Quantitative Analysis Submodule
 
         Attributes:
             `acf`: Plots Auto and Partial Auto Correlation of returns and change in returns\n
@@ -434,7 +426,7 @@ class OpenBBSDK:
 
     @property
     def stocks(self):
-        """OpenBB SDK Stocks Submodule
+        """Stocks Submodule
 
         Submodules:
             `ba`: Behavioral Analysis Module
@@ -467,7 +459,7 @@ class OpenBBSDK:
 
     @property
     def ta(self):
-        """OpenBB SDK Ta Submodule
+        """Technical Analysis Submodule
 
         Attributes:
             `ad`: Calculate AD technical indicator\n
@@ -521,18 +513,19 @@ class OpenBBSDK:
 
 
 class SDKLogger:
-    def __init__(self):
-        self.__suppress_logging = check_suppress_logging(
-            suppress_dict=SUPPRESS_LOGGING_CLASSES
-        )
+    def __init__(self) -> None:
         self.__check_initialize_logging()
 
     def __check_initialize_logging(self):
-        if not self.__suppress_logging:
+        if not cfg.LOGGING_SUPPRESS:
             self.__initialize_logging()
 
     @staticmethod
-    def __initialize_logging():
+    def __initialize_logging() -> None:
+        # pylint: disable=C0415
+        from openbb_terminal.core.log.generation.settings_logger import log_all_settings
+        from openbb_terminal.loggers import setup_logging
+
         cfg.LOGGING_SUB_APP = "sdk"
         setup_logging()
         log_all_settings()

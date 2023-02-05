@@ -5,7 +5,7 @@ import openbb_terminal.sdk_core.sdk_init as lib
 
 
 class EconometricsRoot(Category):
-    """OpenBB SDK Econometrics Module
+    """Econometrics Module
 
     Attributes:
         `bgod`: Calculate test statistics for autocorrelation\n
@@ -37,6 +37,8 @@ class EconometricsRoot(Category):
         `root`: Calculate test statistics for unit roots\n
         `root_chart`: Determine the normality of a timeseries.\n
     """
+
+    _location_path = "econometrics"
 
     def __init__(self):
         super().__init__()

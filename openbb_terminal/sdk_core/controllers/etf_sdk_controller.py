@@ -4,7 +4,7 @@ from openbb_terminal.sdk_core.models import etf_sdk_model as model
 
 
 class EtfController(model.EtfRoot):
-    """OpenBB SDK Etf Module.
+    """Etf Module.
 
     Submodules:
         `disc`: Discovery Module
@@ -29,7 +29,7 @@ class EtfController(model.EtfRoot):
 
     @property
     def disc(self):
-        """OpenBB SDK Etf Discovery Submodule
+        """Etf Discovery Submodule
 
         Attributes:
             `mover`: Scrape data for top etf movers.\n
@@ -39,7 +39,7 @@ class EtfController(model.EtfRoot):
 
     @property
     def scr(self):
-        """OpenBB SDK Etf Scr Submodule
+        """Etf Scr Submodule
 
         Attributes:
             `screen`: Screens the etfs pulled from my repo (https://github.com/jmaslek/etf_scraper),\n

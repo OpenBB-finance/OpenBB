@@ -4,7 +4,7 @@ from openbb_terminal.sdk_core.models import alt_sdk_model as model
 
 
 class AltController(model.AltRoot):
-    """OpenBB SDK Alternative Module.
+    """Alternative Module.
 
     Submodules:
         `covid`: Covid Module
@@ -18,7 +18,7 @@ class AltController(model.AltRoot):
 
     @property
     def covid(self):
-        """OpenBB SDK Alt Covid Submodule
+        """Alternative Covid Submodule
 
         Attributes:
             `global_cases`: Get historical cases for given country.\n
@@ -35,7 +35,7 @@ class AltController(model.AltRoot):
 
     @property
     def oss(self):
-        """OpenBB SDK Alt Oss Submodule
+        """Alternative Oss Submodule
 
         Attributes:
             `_make_request`: Helper method to scrap.\n
@@ -56,7 +56,7 @@ class AltController(model.AltRoot):
 
     @property
     def realestate(self):
-        """OpenBB SDK Alt Realestate Submodule
+        """Alternative Realestate Submodule
 
         Attributes:
             `get_estate_sales`: All sales for specified postcode.\n

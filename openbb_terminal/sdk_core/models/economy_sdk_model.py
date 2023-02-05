@@ -5,7 +5,7 @@ import openbb_terminal.sdk_core.sdk_init as lib
 
 
 class EconomyRoot(Category):
-    """OpenBB SDK Economy Module
+    """Economy Module
 
     Attributes:
         `available_indices`: Get available indices\n
@@ -56,6 +56,8 @@ class EconomyRoot(Category):
         `ycrv`: Gets yield curve data from FRED\n
         `ycrv_chart`: Display yield curve based on US Treasury rates for a specified date.\n
     """
+
+    _location_path = "economy"
 
     def __init__(self):
         super().__init__()

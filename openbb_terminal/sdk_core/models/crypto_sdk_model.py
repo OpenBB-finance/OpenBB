@@ -5,7 +5,7 @@ import openbb_terminal.sdk_core.sdk_init as lib
 
 
 class CryptoRoot(Category):
-    """OpenBB SDK Cryptocurrency Module
+    """Cryptocurrency Module
 
     Attributes:
         `candle`: Plot candle chart from dataframe. [Source: Binance]\n
@@ -14,6 +14,8 @@ class CryptoRoot(Category):
         `load`: Load crypto currency to get data for\n
         `price`: Returns price and confidence interval from pyth live feed. [Source: Pyth]\n
     """
+
+    _location_path = "crypto"
 
     def __init__(self):
         super().__init__()
@@ -25,7 +27,7 @@ class CryptoRoot(Category):
 
 
 class CryptoDueDiligence(Category):
-    """OpenBB SDK Due Diligence Module.
+    """Due Diligence Module.
 
     Attributes:
         `active`: Returns active addresses of a certain symbol\n
@@ -106,6 +108,8 @@ class CryptoDueDiligence(Category):
         `twitter`: Get twitter timeline for given coin id. Not more than last 50 tweets [Source: CoinPaprika]\n
         `twitter_chart`: Prints table showing twitter timeline for given coin id. Not more than last 50 tweets [Source: CoinPaprika]\n
     """
+
+    _location_path = "crypto.dd"
 
     def __init__(self):
         super().__init__()
@@ -201,7 +205,7 @@ class CryptoDueDiligence(Category):
 
 
 class CryptoDeFi(Category):
-    """OpenBB SDK DeFi Module.
+    """DeFi Module.
 
     Attributes:
         `anchor_data`: Returns anchor protocol earnings data of a certain terra address\n
@@ -247,6 +251,8 @@ class CryptoDeFi(Category):
         `vaults`: Get DeFi Vaults Information. DeFi Vaults are pools of funds with an assigned strategy which main goal is to\n
         `vaults_chart`: Prints table showing Top DeFi Vaults - pools of funds with an assigned strategy which main goal is to\n
     """
+
+    _location_path = "crypto.defi"
 
     def __init__(self):
         super().__init__()
@@ -309,7 +315,7 @@ class CryptoDeFi(Category):
 
 
 class CryptoDiscovery(Category):
-    """OpenBB SDK Discovery Module.
+    """Discovery Module.
 
     Attributes:
         `categories_keys`: Get list of categories keys\n
@@ -335,6 +341,8 @@ class CryptoDiscovery(Category):
         `trending`: Returns trending coins [Source: CoinGecko]\n
         `trending_chart`: Prints table showing trending coins [Source: CoinGecko]\n
     """
+
+    _location_path = "crypto.disc"
 
     def __init__(self):
         super().__init__()
@@ -365,7 +373,7 @@ class CryptoDiscovery(Category):
 
 
 class CryptoNFT(Category):
-    """OpenBB SDK NFT Module.
+    """NFT Module.
 
     Attributes:
         `collections`: Get nft collections [Source: https://nftpricefloor.com/]\n
@@ -375,6 +383,8 @@ class CryptoNFT(Category):
         `stats`: Get stats of a nft collection [Source: opensea.io]\n
         `stats_chart`: Prints table showing collection stats. [Source: opensea.io]\n
     """
+
+    _location_path = "crypto.nft"
 
     def __init__(self):
         super().__init__()
@@ -387,7 +397,7 @@ class CryptoNFT(Category):
 
 
 class CryptoOnChain(Category):
-    """OpenBB SDK OnChain Module.
+    """OnChain Module.
 
     Attributes:
         `baas`: Get an average bid and ask prices, average spread for given crypto pair for chosen time period.\n
@@ -435,6 +445,8 @@ class CryptoOnChain(Category):
         `whales`: Whale Alert's API allows you to retrieve live and historical transaction data from major blockchains.\n
         `whales_chart`: Display huge value transactions from major blockchains. [Source: https://docs.whale-alert.io/]\n
     """
+
+    _location_path = "crypto.onchain"
 
     def __init__(self):
         super().__init__()
@@ -507,7 +519,7 @@ class CryptoOnChain(Category):
 
 
 class CryptoOverview(Category):
-    """OpenBB SDK Overview Module.
+    """Overview Module.
 
     Attributes:
         `altindex`: Get altcoin index overtime\n
@@ -562,6 +574,8 @@ class CryptoOverview(Category):
         `wfpe`: Scrapes coin withdrawal fees per exchange\n
         `wfpe_chart`: Coin withdrawal fees per exchange\n
     """
+
+    _location_path = "crypto.ov"
 
     def __init__(self):
         super().__init__()
@@ -629,7 +643,7 @@ class CryptoOverview(Category):
 
 
 class CryptoTools(Category):
-    """OpenBB SDK Tools Module.
+    """Tools Module.
 
     Attributes:
         `apy`: Converts apr into apy\n
@@ -637,6 +651,8 @@ class CryptoTools(Category):
         `il`: Calculates Impermanent Loss in a custom liquidity pool\n
         `il_chart`: Displays Impermanent Loss in a custom liquidity pool\n
     """
+
+    _location_path = "crypto.tools"
 
     def __init__(self):
         super().__init__()

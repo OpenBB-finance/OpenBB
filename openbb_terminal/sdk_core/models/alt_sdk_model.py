@@ -5,12 +5,14 @@ import openbb_terminal.sdk_core.sdk_init as lib
 
 
 class AltRoot(Category):
-    """OpenBB SDK Alternative Module
+    """Alternative Module
 
     Attributes:
         `hn`: Get top stories from HackerNews.\n
         `hn_chart`: View top stories from HackerNews.\n
     """
+
+    _location_path = "alt"
 
     def __init__(self):
         super().__init__()
@@ -19,7 +21,7 @@ class AltRoot(Category):
 
 
 class AltCovid(Category):
-    """OpenBB SDK Covid Module.
+    """Covid Module.
 
     Attributes:
         `global_cases`: Get historical cases for given country.\n
@@ -31,6 +33,8 @@ class AltCovid(Category):
         `stat`: Show historical cases and deaths by country.\n
         `stat_chart`: Prints table showing historical cases and deaths by country.\n
     """
+
+    _location_path = "alt.covid"
 
     def __init__(self):
         super().__init__()
@@ -45,7 +49,7 @@ class AltCovid(Category):
 
 
 class AltOss(Category):
-    """OpenBB SDK Oss Module.
+    """Oss Module.
 
     Attributes:
         `_make_request`: Helper method to scrap.\n
@@ -61,6 +65,8 @@ class AltOss(Category):
         `top`: Get repos sorted by stars or forks. Can be filtered by categories.\n
         `top_chart`: Plots repo summary [Source: https://api.github.com].\n
     """
+
+    _location_path = "alt.oss"
 
     def __init__(self):
         super().__init__()
@@ -79,13 +85,15 @@ class AltOss(Category):
 
 
 class AltRealestate(Category):
-    """OpenBB SDK Realestate Module.
+    """Realestate Module.
 
     Attributes:
         `get_estate_sales`: All sales for specified postcode.\n
         `get_region_stats`: Get regional house price statistics.\n
         `get_towns_sold_prices`: Get towns sold house price data.\n
     """
+
+    _location_path = "alt.realestate"
 
     def __init__(self):
         super().__init__()

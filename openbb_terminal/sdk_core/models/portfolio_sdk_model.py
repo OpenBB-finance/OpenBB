@@ -5,7 +5,7 @@ import openbb_terminal.sdk_core.sdk_init as lib
 
 
 class PortfolioRoot(Category):
-    """OpenBB SDK Portfolio Module
+    """Portfolio Module
 
     Attributes:
         `bench`: Load benchmark into portfolio\n
@@ -40,6 +40,8 @@ class PortfolioRoot(Category):
         `yret`: Get yearly returns\n
         `yret_chart`: Display yearly returns\n
     """
+
+    _location_path = "portfolio"
 
     def __init__(self):
         super().__init__()
@@ -77,7 +79,7 @@ class PortfolioRoot(Category):
 
 
 class PortfolioAlloc(Category):
-    """OpenBB SDK Alloc Module.
+    """Alloc Module.
 
     Attributes:
         `assets`: Display portfolio asset allocation compared to the benchmark\n
@@ -85,6 +87,8 @@ class PortfolioAlloc(Category):
         `regions`: Display portfolio region allocation compared to the benchmark\n
         `sectors`: Display portfolio sector allocation compared to the benchmark\n
     """
+
+    _location_path = "portfolio.alloc"
 
     def __init__(self):
         super().__init__()
@@ -95,7 +99,7 @@ class PortfolioAlloc(Category):
 
 
 class PortfolioMetric(Category):
-    """OpenBB SDK Metric Module.
+    """Metric Module.
 
     Attributes:
         `calmar`: Get calmar ratio\n
@@ -116,6 +120,8 @@ class PortfolioMetric(Category):
         `trackerr`: Get tracking error\n
         `volatility`: Get volatility for portfolio and benchmark selected\n
     """
+
+    _location_path = "portfolio.metric"
 
     def __init__(self):
         super().__init__()
@@ -139,7 +145,7 @@ class PortfolioMetric(Category):
 
 
 class PortfolioPortfolioOptimization(Category):
-    """OpenBB SDK Portfolio Optimization Module.
+    """Portfolio Optimization Module.
 
     Attributes:
         `blacklitterman`: Optimize decorrelation weights\n
@@ -170,13 +176,19 @@ class PortfolioPortfolioOptimization(Category):
         `show`: Show portfolio optimization results\n
     """
 
+    _location_path = "portfolio.po"
+
     def __init__(self):
         super().__init__()
-        if not lib.OPTIMIZATION:
-            raise NotImplementedError(
-                'Optimization is not enabled in your OpenBB installation. To enable, `pip install pip install "openbb[all]"`'
-            )
-        if lib.OPTIMIZATION:
+
+        if not lib.OPTIMIZATION_TOOLKIT_ENABLED:
+            # pylint: disable=C0415
+
+            from openbb_terminal.rich_config import console
+
+            console.print(lib.OPTIMIZATION_TOOLKIT_WARNING)
+
+        if lib.OPTIMIZATION_TOOLKIT_ENABLED:
             self.blacklitterman = lib.portfolio_optimization_po_model.get_blacklitterman
             self.dividend = lib.portfolio_optimization_po_model.get_dividend
             self.ef = lib.portfolio_optimization_po_model.get_ef

@@ -5,7 +5,7 @@ import openbb_terminal.sdk_core.sdk_init as lib
 
 
 class FuturesRoot(Category):
-    """OpenBB SDK Futures Module
+    """Futures Module
 
     Attributes:
         `curve`: Get curve futures [Source: Yahoo Finance]\n
@@ -14,6 +14,8 @@ class FuturesRoot(Category):
         `historical_chart`: Display historical futures [Source: Yahoo Finance]\n
         `search`: Get search futures [Source: Yahoo Finance]\n
     """
+
+    _location_path = "futures"
 
     def __init__(self):
         super().__init__()

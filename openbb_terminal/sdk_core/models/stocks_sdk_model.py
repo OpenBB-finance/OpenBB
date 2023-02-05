@@ -5,7 +5,7 @@ import openbb_terminal.sdk_core.sdk_init as lib
 
 
 class StocksRoot(Category):
-    """OpenBB SDK Stocks Module
+    """Stocks Module
 
     Attributes:
         `candle`: Show candle plot of loaded ticker.\n
@@ -17,6 +17,8 @@ class StocksRoot(Category):
         `search`: Search selected query for tickers.\n
         `tob`: Get top of book bid and ask for ticker on exchange [CBOE.com]\n
     """
+
+    _location_path = "stocks"
 
     def __init__(self):
         super().__init__()
@@ -31,7 +33,7 @@ class StocksRoot(Category):
 
 
 class StocksBehavioralAnalysis(Category):
-    """OpenBB SDK Behavioral Analysis Module.
+    """Behavioral Analysis Module.
 
     Attributes:
         `bullbear`: Gets bullbear sentiment for ticker [Source: stocktwits].\n
@@ -62,6 +64,8 @@ class StocksBehavioralAnalysis(Category):
         `watchlist`: Get reddit users watchlists [Source: reddit].\n
         `wsb`: Get wsb posts [Source: reddit].\n
     """
+
+    _location_path = "stocks.ba"
 
     def __init__(self):
         super().__init__()
@@ -97,7 +101,7 @@ class StocksBehavioralAnalysis(Category):
 
 
 class StocksComparisonAnalysis(Category):
-    """OpenBB SDK Comparison Analysis Module.
+    """Comparison Analysis Module.
 
     Attributes:
         `balance`: Get balance data. [Source: Marketwatch].\n
@@ -117,6 +121,8 @@ class StocksComparisonAnalysis(Category):
         `volume`: Get stock volume. [Source: Yahoo Finance]\n
         `volume_chart`: Display stock volume. [Source: Yahoo Finance]\n
     """
+
+    _location_path = "stocks.ca"
 
     def __init__(self):
         super().__init__()
@@ -139,7 +145,7 @@ class StocksComparisonAnalysis(Category):
 
 
 class StocksDueDiligence(Category):
-    """OpenBB SDK Due Diligence Module.
+    """Due Diligence Module.
 
     Attributes:
         `analyst`: Get analyst data. [Source: Finviz]\n
@@ -155,6 +161,8 @@ class StocksDueDiligence(Category):
         `sec`: Get SEC filings for a given stock ticker. [Source: Market Watch]\n
         `supplier`: Get suppliers from ticker provided. [Source: CSIMarket]\n
     """
+
+    _location_path = "stocks.dd"
 
     def __init__(self):
         super().__init__()
@@ -173,7 +181,7 @@ class StocksDueDiligence(Category):
 
 
 class StocksDiscovery(Category):
-    """OpenBB SDK Discovery Module.
+    """Discovery Module.
 
     Attributes:
         `active`: Get stocks ordered in descending order by intraday trade volume. [Source: Yahoo Finance]\n
@@ -195,6 +203,8 @@ class StocksDiscovery(Category):
         `ulc`: Get Yahoo Finance potentially undervalued large cap stocks.\n
         `upcoming`: Returns a DataFrame with upcoming earnings\n
     """
+
+    _location_path = "stocks.disc"
 
     def __init__(self):
         super().__init__()
@@ -219,7 +229,7 @@ class StocksDiscovery(Category):
 
 
 class StocksDarkpoolShorts(Category):
-    """OpenBB SDK Darkpool Shorts Module.
+    """Darkpool Shorts Module.
 
     Attributes:
         `ctb`: Get stocks with highest cost to borrow [Source: Interactive Broker]\n
@@ -240,6 +250,8 @@ class StocksDarkpoolShorts(Category):
         `spos`: Get net short position. [Source: Stockgrid]\n
         `spos_chart`: Plot net short position. [Source: Stockgrid]\n
     """
+
+    _location_path = "stocks.dps"
 
     def __init__(self):
         super().__init__()
@@ -263,7 +275,7 @@ class StocksDarkpoolShorts(Category):
 
 
 class StocksFundamentalAnalysis(Category):
-    """OpenBB SDK Fundamental Analysis Module.
+    """Fundamental Analysis Module.
 
     Attributes:
         `analysis`: Save time reading SEC filings with the help of machine learning. [Source: https://eclect.us]\n
@@ -304,6 +316,8 @@ class StocksFundamentalAnalysis(Category):
         `sust`: Get sustainability metrics from yahoo\n
         `website`: Gets website of company from yfinance\n
     """
+
+    _location_path = "stocks.fa"
 
     def __init__(self):
         super().__init__()
@@ -347,7 +361,7 @@ class StocksFundamentalAnalysis(Category):
 
 
 class StocksGovernment(Category):
-    """OpenBB SDK Government Module.
+    """Government Module.
 
     Attributes:
         `contracts`: Get government contracts for ticker [Source: quiverquant.com]\n
@@ -370,6 +384,8 @@ class StocksGovernment(Category):
         `topsells`: Get top sell government trading [Source: quiverquant.com]\n
         `topsells_chart`: Top sell government trading [Source: quiverquant.com]\n
     """
+
+    _location_path = "stocks.gov"
 
     def __init__(self):
         super().__init__()
@@ -399,7 +415,7 @@ class StocksGovernment(Category):
 
 
 class StocksInsiders(Category):
-    """OpenBB SDK Insiders Module.
+    """Insiders Module.
 
     Attributes:
         `act`: Get insider activity. [Source: Business Insider]\n
@@ -422,6 +438,8 @@ class StocksInsiders(Category):
         `print_insider_data_chart`: Print insider data\n
         `stats`: Get OpenInsider stats for ticker\n
     """
+
+    _location_path = "stocks.ins"
 
     def __init__(self):
         super().__init__()
@@ -451,7 +469,7 @@ class StocksInsiders(Category):
 
 
 class StocksOptions(Category):
-    """OpenBB SDK Options Module.
+    """Options Module.
 
         Submodules:
         `screen`: Screen Module
@@ -481,6 +499,8 @@ class StocksOptions(Category):
         `vsurf`: Gets IV surface for calls and puts for ticker\n
         `vsurf_chart`: Display vol surface\n
     """
+
+    _location_path = "stocks.options"
 
     def __init__(self):
         super().__init__()
@@ -512,7 +532,7 @@ class StocksOptions(Category):
 
 
 class StocksQuantitativeAnalysis(Category):
-    """OpenBB SDK Quantitative Analysis Module.
+    """Quantitative Analysis Module.
 
     Attributes:
         `beta`: Calculate beta for a ticker and a reference ticker.\n
@@ -521,6 +541,8 @@ class StocksQuantitativeAnalysis(Category):
         `fama_raw`: Gets base Fama French data to calculate risk\n
         `historical_5`: Get 5 year monthly historical performance for a ticker with dividends filtered\n
     """
+
+    _location_path = "stocks.qa"
 
     def __init__(self):
         super().__init__()
@@ -532,7 +554,7 @@ class StocksQuantitativeAnalysis(Category):
 
 
 class StocksScreener(Category):
-    """OpenBB SDK Screener Module.
+    """Screener Module.
 
     Attributes:
         `historical`: View historical price of stocks that meet preset\n
@@ -540,6 +562,8 @@ class StocksScreener(Category):
         `screener_data`: Screener Overview\n
         `screener_data_chart`: Screener one of the following: overview, valuation, financial, ownership, performance, technical.\n
     """
+
+    _location_path = "stocks.screener"
 
     def __init__(self):
         super().__init__()
@@ -550,7 +574,7 @@ class StocksScreener(Category):
 
 
 class StocksSectorIndustryAnalysis(Category):
-    """OpenBB SDK Sector Industry Analysis Module.
+    """Sector Industry Analysis Module.
 
     Attributes:
         `countries`: Get all countries in Yahoo Finance data based on sector or industry. [Source: Finance Database]\n
@@ -571,6 +595,8 @@ class StocksSectorIndustryAnalysis(Category):
         `sectors`: Get all sectors in Yahoo Finance data based on country or industry. [Source: Finance Database]\n
         `stocks_data`: Get stocks data based on a list of stocks and the finance key. The function searches for the\n
     """
+
+    _location_path = "stocks.sia"
 
     def __init__(self):
         super().__init__()
@@ -614,7 +640,7 @@ class StocksSectorIndustryAnalysis(Category):
 
 
 class StocksTechnicalAnalysis(Category):
-    """OpenBB SDK Technical Analysis Module.
+    """Technical Analysis Module.
 
     Attributes:
         `recom`: Get tradingview recommendation based on technical indicators\n
@@ -626,6 +652,8 @@ class StocksTechnicalAnalysis(Category):
         `view`: Get finviz image for given ticker\n
         `view_chart`: View finviz image for ticker\n
     """
+
+    _location_path = "stocks.ta"
 
     def __init__(self):
         super().__init__()
@@ -640,7 +668,7 @@ class StocksTechnicalAnalysis(Category):
 
 
 class StocksTradingHours(Category):
-    """OpenBB SDK Trading Hours Module.
+    """Trading Hours Module.
 
     Attributes:
         `all`: Get all exchanges.\n
@@ -653,6 +681,8 @@ class StocksTradingHours(Category):
         `open`: Get open exchanges.\n
         `open_chart`: Display open exchanges.\n
     """
+
+    _location_path = "stocks.th"
 
     def __init__(self):
         super().__init__()

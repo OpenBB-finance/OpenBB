@@ -423,6 +423,7 @@ from openbb_terminal.stocks.tradinghours import (
 )
 
 # Forecast Extras
+
 try:
     import darts  # pyright: reportMissingImports=false
 
@@ -430,7 +431,7 @@ try:
     # Failures later on, also importing utils ensures that darts is installed correctly
     from darts import utils
 
-    FORECASTING = True
+    FORECASTING_TOOLKIT_ENABLED = True
     from openbb_terminal.forecast import (
         anom_model as forecast_anom_model,
         anom_view as forecast_anom_view,
@@ -474,7 +475,7 @@ try:
         trans_view as forecast_trans_view,
     )
 except ImportError:
-    FORECASTING = False
+    FORECASTING_TOOLKIT_ENABLED = False
 
 
 # Portfolio
@@ -490,6 +491,23 @@ try:
         po_view as portfolio_optimization_po_view,
     )
 
-    OPTIMIZATION = True
+    OPTIMIZATION_TOOLKIT_ENABLED = True
 except ModuleNotFoundError:
-    OPTIMIZATION = False
+    OPTIMIZATION_TOOLKIT_ENABLED = False
+
+FORECASTING_TOOLKIT_WARNING = (
+    "[yellow]"
+    "Forecasting Toolkit is disabled. "
+    "To use the Forecasting features please install the toolkit following the "
+    "instructions here: https://docs.openbb.co/sdk/quickstart/installation/"
+    "\n"
+    "[/yellow]"
+)
+OPTIMIZATION_TOOLKIT_WARNING = (
+    "[yellow]"
+    "Portfolio Optimization Toolkit is disabled. "
+    "To use the Optimization features please install the toolkit following the "
+    "instructions here: https://docs.openbb.co/sdk/quickstart/installation/"
+    "\n"
+    "[/yellow]"
+)

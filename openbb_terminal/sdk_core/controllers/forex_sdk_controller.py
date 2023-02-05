@@ -4,7 +4,7 @@ from openbb_terminal.sdk_core.models import forex_sdk_model as model
 
 
 class ForexController(model.ForexRoot):
-    """OpenBB SDK Forex Module.
+    """Forex Module.
 
     Submodules:
         `oanda`: Oanda Module
@@ -19,7 +19,7 @@ class ForexController(model.ForexRoot):
 
     @property
     def oanda(self):
-        """OpenBB SDK Forex Oanda Submodule
+        """Forex Oanda Submodule
 
         Attributes:
             `calendar`: Request data of significant events calendar.\n

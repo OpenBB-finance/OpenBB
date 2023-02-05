@@ -5,7 +5,7 @@ import openbb_terminal.sdk_core.sdk_init as lib
 
 
 class EtfRoot(Category):
-    """OpenBB SDK Etf Module
+    """Etf Module
 
     Attributes:
         `candle`: Show candle plot of loaded ticker.\n
@@ -23,6 +23,8 @@ class EtfRoot(Category):
         `symbols`: Gets all etf names and symbols\n
         `weights`: Return sector weightings allocation of ETF. [Source: Yahoo Finance]\n
     """
+
+    _location_path = "etf"
 
     def __init__(self):
         super().__init__()
@@ -43,11 +45,13 @@ class EtfRoot(Category):
 
 
 class EtfDiscovery(Category):
-    """OpenBB SDK Discovery Module.
+    """Discovery Module.
 
     Attributes:
         `mover`: Scrape data for top etf movers.\n
     """
+
+    _location_path = "etf.disc"
 
     def __init__(self):
         super().__init__()
@@ -55,12 +59,14 @@ class EtfDiscovery(Category):
 
 
 class EtfScr(Category):
-    """OpenBB SDK Scr Module.
+    """Scr Module.
 
     Attributes:
         `screen`: Screens the etfs pulled from my repo (https://github.com/jmaslek/etf_scraper),\n
         `screen_chart`: Display screener output\n
     """
+
+    _location_path = "etf.scr"
 
     def __init__(self):
         super().__init__()

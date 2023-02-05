@@ -5,7 +5,7 @@ import openbb_terminal.sdk_core.sdk_init as lib
 
 
 class TaRoot(Category):
-    """OpenBB SDK Technical Analysis Module
+    """Technical Analysis Module
 
     Attributes:
         `ad`: Calculate AD technical indicator\n
@@ -54,6 +54,8 @@ class TaRoot(Category):
         `wma`: Gets weighted moving average (WMA) for stock\n
         `zlma`: Gets zero-lagged exponential moving average (ZLEMA) for stock\n
     """
+
+    _location_path = "ta"
 
     def __init__(self):
         super().__init__()

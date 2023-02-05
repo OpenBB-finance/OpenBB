@@ -5,7 +5,7 @@ import openbb_terminal.sdk_core.sdk_init as lib
 
 
 class ForecastRoot(Category):
-    """OpenBB SDK Forecasting Module
+    """Forecasting Module
 
     Attributes:
         `anom`: Get Quantile Anomaly Detection Data\n
@@ -67,13 +67,19 @@ class ForecastRoot(Category):
         `trans_chart`: Display Transformer forecast\n
     """
 
+    _location_path = "forecast"
+
     def __init__(self):
         super().__init__()
-        if not lib.FORECASTING:
-            raise NotImplementedError(
-                'Forecasting is not enabled in your OpenBB installation. To enable, `pip install pip install "openbb[all]"`'
-            )
-        if lib.FORECASTING:
+
+        if not lib.FORECASTING_TOOLKIT_ENABLED:
+            # pylint: disable=C0415
+
+            from openbb_terminal.rich_config import console
+
+            console.print(lib.FORECASTING_TOOLKIT_WARNING)
+
+        if lib.FORECASTING_TOOLKIT_ENABLED:
             self.anom = lib.forecast_anom_model.get_anomaly_detection_data
             self.anom_chart = lib.forecast_anom_view.display_anomaly_detection
             self.atr = lib.forecast_model.add_atr

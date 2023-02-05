@@ -1,19 +1,16 @@
-import csv
 import glob
-import importlib
-import inspect
 import os
 import re
 import subprocess
+import sys
 from pathlib import Path
-from types import FunctionType
 from typing import Any, Dict, List, Optional, TextIO
 
 import pandas as pd
 
 from openbb_terminal.rich_config import console
-from openbb_terminal.sdk_core.sdk_helpers import clean_attr_desc, get_sdk_imports_text
-from openbb_terminal.sdk_core.sdk_init import FORECASTING, OPTIMIZATION
+from openbb_terminal.sdk_core.sdk_helpers import get_sdk_imports_text
+from openbb_terminal.sdk_core.trail_map import Trailmap, get_trailmaps
 
 REPO_ROOT = Path(__file__).parent.joinpath("openbb_terminal").resolve()
 
@@ -47,16 +44,19 @@ sub_names = {
 
 sdk_openbb_var = """
 class SDKLogger:
-    def __init__(self):
-        self.__suppress_logging = check_suppress_logging(suppress_dict=SUPPRESS_LOGGING_CLASSES)
+    def __init__(self) -> None:
         self.__check_initialize_logging()
 
     def __check_initialize_logging(self):
-        if not self.__suppress_logging:
+        if not cfg.LOGGING_SUPPRESS:
             self.__initialize_logging()
 
     @staticmethod
-    def __initialize_logging():
+    def __initialize_logging() -> None:
+        # pylint: disable=C0415
+        from openbb_terminal.core.log.generation.settings_logger import log_all_settings
+        from openbb_terminal.loggers import setup_logging
+
         cfg.LOGGING_SUB_APP = "sdk"
         setup_logging()
         log_all_settings()
@@ -66,103 +66,6 @@ openbb = OpenBBSDK()\r\r
 """
 
 disable_lines = "# flake8: noqa\r# pylint: disable=C0301,R0902,R0903\r"
-
-
-class FuncAttr:
-    def __init__(self, func: str):
-        self.short_doc: Optional[str] = None
-        self.long_doc: Optional[str] = None
-        self.func_def: Optional[str] = None
-        self.path: Optional[str] = None
-        self.lineon: Optional[int] = None
-        self.full_path: Optional[str] = None
-        self.func_unwrapped: Optional[FunctionType] = None
-        self.func_wrapped: Optional[FunctionType] = None
-        self.get_func_attrs(func)
-
-    def get_func_attrs(self, func: str) -> None:
-        attr = getattr(
-            importlib.import_module("openbb_terminal.sdk_core.sdk_init"),
-            func.split(".")[0],
-        )
-        func_attr = getattr(attr, func.split(".")[1])
-        self.func_wrapped = func_attr
-
-        add_juan = 0
-        if hasattr(func_attr, "__wrapped__"):
-            while hasattr(func_attr, "__wrapped__"):
-                func_attr = func_attr.__wrapped__
-            add_juan = 1
-
-        self.func_unwrapped = func_attr
-        self.lineon = inspect.getsourcelines(func_attr)[1] + add_juan
-
-        self.func_def = self.get_definition()
-        self.long_doc = func_attr.__doc__
-        self.short_doc = clean_attr_desc(func_attr)
-
-        self.path = inspect.getfile(func_attr)
-        full_path = (
-            inspect.getfile(func_attr).replace("\\", "/").split("openbb_terminal/")[1]
-        )
-        self.full_path = f"openbb_terminal/{full_path}"
-
-    def get_definition(self) -> str:
-        """Creates the function definition to be used in SDK docs."""
-        funcspec = inspect.getfullargspec(self.func_unwrapped)
-
-        definition = ""
-        added_comma = False
-        for arg in funcspec.args:
-            annotation = (
-                funcspec.annotations[arg] if arg in funcspec.annotations else "Any"
-            )
-            if arg in funcspec.annotations:
-                annotation = (
-                    str(annotation)
-                    .replace("<class '", "")
-                    .replace("'>", "")
-                    .replace("typing.", "")
-                    .replace("pandas.core.frame.", "pd.")
-                    .replace("pandas.core.series.", "pd.")
-                    .replace("openbb_terminal.portfolio.", "")
-                )
-            definition += f"{arg}: {annotation}, "
-            added_comma = True
-
-        if added_comma:
-            definition = definition[:-2]
-
-        return_def = (
-            funcspec.annotations["return"].__name__
-            if "return" in funcspec.annotations
-            and hasattr(funcspec.annotations["return"], "__name__")
-            and funcspec.annotations["return"] is not None
-            else "None"
-        )
-        definition = (
-            f"def {self.func_unwrapped.__name__}({definition }) -> {return_def}"
-        )
-        return definition
-
-
-class Trailmap:
-    def __init__(self, trailmap: str, model: str, view: Optional[str] = None):
-        tmap = trailmap.split(".")
-        if len(tmap) == 1:
-            tmap = ["root", tmap[0]]
-        self.class_attr: str = tmap.pop(-1)
-        self.location_path = tmap
-        self.model = model
-        self.view = view if view else None
-        self.view_name = "_chart"
-        self.model_func: Optional[str] = f"lib.{model}" if model else None
-        self.view_func: Optional[str] = f"lib.{view}" if view else None
-        self.func_attrs: Dict[str, FuncAttr] = {}
-        if model:
-            self.func_attrs["model"] = FuncAttr(self.model)
-        if view:
-            self.func_attrs["view"] = FuncAttr(self.view)
 
 
 class BuildCategoryModelClasses:
@@ -255,7 +158,7 @@ class BuildCategoryModelClasses:
         else:
             class_name = f"{category.title()}{cls_type}"
         f.write(
-            f'class {class_name}:\r    """OpenBB SDK {self.get_subcat_fullname(category)} Module.\r'
+            f'class {class_name}:\r    """{self.get_subcat_fullname(category)} Module.\r'
         )
 
     def write_class_property(
@@ -275,13 +178,21 @@ class BuildCategoryModelClasses:
         def_name = category if not subcat else subcat
         if subcat:
             subcat = f" {self.get_subcat_fullname(subcat)}"
+
+        category = sub_names.get(category, category.title())
+
         f.write(
             f"    @property\r    def {def_name}(self):\r        "
-            f'"""OpenBB SDK {category.title()}{subcat} Submodule\r'
+            f'"""{category}{subcat} Submodule\r'
         )
 
     def write_class_attr_docs(
-        self, d: dict, f: TextIO, module: bool = True, sdk_root: bool = False
+        self,
+        d: dict,
+        f: TextIO,
+        module: bool = True,
+        sdk_root: bool = False,
+        trail: list = None,
     ) -> None:
         """Writes the class attribute docs to the category file.
 
@@ -295,6 +206,8 @@ class BuildCategoryModelClasses:
             If the category is a module, by default True
         sdk_root : bool, optional
             If this is the sdk root file, by default False
+        trail : list, optional
+            The trail to the function, by default None
         """
         add_indent = "" if module else "    "
         added_attributes = False
@@ -312,12 +225,13 @@ class BuildCategoryModelClasses:
                             f"{add_indent}        `{v.class_attr}{view}`: {v.func_attrs[key].short_doc}\\n\r"
                         )
 
+        f.write(f'{add_indent}    """\r\r')
+        if trail:
+            f.write(f'    _location_path = "{".".join(trail)}"\r')
         if module:
-            f.write('    """\r\r    def __init__(self):\r        super().__init__()\r')
+            f.write("    def __init__(self):\r        super().__init__()\r")
         elif sdk_root:
-            f.write('    """\r\r    def __init__(self):\r        SDKLogger()\r')
-        else:
-            f.write(f'{add_indent}    """\r\r')
+            f.write("    def __init__(self):\r        SDKLogger()\r")
 
     def write_class_attributes(
         self, d: dict, f: TextIO, cat: Optional[str] = None
@@ -330,24 +244,27 @@ class BuildCategoryModelClasses:
             The dictionary of the category.
         f : TextIO
             The file to write to.
+        cat : Optional[str], optional
+            The category name, by default None
         """
         add_indent = ""
-        if cat == "forecast":
+
+        missing_deps = {
+            "forecast": "FORECASTING_TOOLKIT",
+            "po": "OPTIMIZATION_TOOLKIT",
+        }
+
+        if cat in missing_deps:
             f.write(
-                "        if not lib.FORECASTING:\r            raise NotImplementedError("
-                "'Forecasting is not enabled in your OpenBB installation. To enable, "
-                '`pip install "openbb[all]"`\')\r'
+                f"""
+        if not lib.{missing_deps[cat]}_ENABLED:\r
+            # pylint: disable=C0415
+            from openbb_terminal.rich_config import console
+            console.print(lib.{missing_deps[cat]}_WARNING)\r\r"""
             )
+
             add_indent = "    "
-            f.write("        if lib.FORECASTING:\r")
-        if cat == "po":
-            f.write(
-                "        if not lib.OPTIMIZATION:\r            raise NotImplementedError("
-                "'Optimization is not enabled in your OpenBB installation. To enable, "
-                '`pip install "openbb[all]"`\')\r'
-            )
-            add_indent = "    "
-            f.write("        if lib.OPTIMIZATION:\r")
+            f.write(f"        if lib.{missing_deps[cat]}_ENABLED:\r")
 
         for v in d.values():
             if isinstance(v, Trailmap):
@@ -379,9 +296,9 @@ class BuildCategoryModelClasses:
         self.root_modules[category] = f"{category.title().replace(' ', '')}Root"
 
         f.write(f"class {self.root_modules[category]}(Category):\r")
-        f.write(f'    """OpenBB SDK {subname.title()} Module\r')
+        f.write(f'    """{subname.title()} Module\r')
 
-        self.write_class_attr_docs(d, f)
+        self.write_class_attr_docs(d, f, trail=[category])
         self.write_class_attributes(d, f, category)
 
     def write_nested_category(self, category: str, d: dict, f: TextIO) -> None:
@@ -402,12 +319,14 @@ class BuildCategoryModelClasses:
             subname = self.get_subcat_fullname(nested_category)
 
             class_name = f"{category.title()}{subname.replace(' ', '')}(Category)"
-            f.write(f'class {class_name}:\r    """OpenBB SDK {subname} Module.\r')
+            f.write(f'class {class_name}:\r    """{subname} Module.\r')
 
             self.write_nested_submodule_docs(nested_dict, f)
 
             if isinstance(nested_dict, dict):
-                self.write_class_attr_docs(nested_dict, f)
+                self.write_class_attr_docs(
+                    nested_dict, f, trail=[category, nested_category]
+                )
                 self.write_class_attributes(nested_dict, f, nested_category)
 
     def write_submodule_doc(
@@ -600,33 +519,10 @@ class BuildCategoryModelClasses:
         subprocess.check_call(["black", "openbb_terminal"])
 
 
-def get_trailmaps() -> List[Trailmap]:
-    trailmaps = []
-    with open(REPO_ROOT / "sdk_core/trail_map.csv") as f:
-        reader = csv.reader(f)
-        next(reader)
-        for row in reader:
-            trail, model, view = row
-            if not FORECASTING and "forecast" in trail:
-                console.print(
-                    f"[bold red]Forecasting is disabled. {trail} will not be included in the SDK.[/bold red]"
-                )
-                continue
-            if not OPTIMIZATION and "portfolio.po" in trail:
-                console.print(
-                    f"[bold red]Optimization is disabled. {trail} will not be included in the SDK.[/bold red]"
-                )
-                continue
-            trail_map = Trailmap(trail, model, view)
-            trailmaps.append(trail_map)
-
-    return trailmaps
-
-
 def generate_sdk():
     trailmaps = get_trailmaps()
     BuildCategoryModelClasses(trailmaps).build()
-    console.print("[green]SDK Generated Successfully.[/green]")
+    console.print("[green]SDK Generated Successfully.[/]")
     return
 
 
@@ -640,4 +536,14 @@ def sort_csv():
     df.to_csv(REPO_ROOT / "sdk_core/trail_map.csv", index=True)
 
 
-generate_sdk()
+if __name__ == "__main__":
+    sys_args = sys.argv
+    if len(sys_args) > 1:
+        if sys_args[1] == "sort":
+            console.print("\n\n[bright_magenta]Sorting CSV...[/]\n")
+            sort_csv()
+        else:
+            console.print("[red]Invalid argument.\n Accepted arguments: sort[/]")
+
+    console.print("[yellow]Generating SDK...[/]")
+    generate_sdk()

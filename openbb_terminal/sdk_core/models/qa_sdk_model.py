@@ -5,7 +5,7 @@ import openbb_terminal.sdk_core.sdk_init as lib
 
 
 class QaRoot(Category):
-    """OpenBB SDK Quantitative Analysis Module
+    """Quantitative Analysis Module
 
     Attributes:
         `acf`: Plots Auto and Partial Auto Correlation of returns and change in returns\n
@@ -44,6 +44,8 @@ class QaRoot(Category):
         `var`: Gets value at risk for specified stock dataframe.\n
         `var_chart`: Prints table showing VaR of dataframe.\n
     """
+
+    _location_path = "qa"
 
     def __init__(self):
         super().__init__()

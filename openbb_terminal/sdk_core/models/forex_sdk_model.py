@@ -5,7 +5,7 @@ import openbb_terminal.sdk_core.sdk_init as lib
 
 
 class ForexRoot(Category):
-    """OpenBB SDK Forex Module
+    """Forex Module
 
     Attributes:
         `candle`: Show candle plot for fx data.\n
@@ -14,6 +14,8 @@ class ForexRoot(Category):
         `load`: Load forex for two given symbols.\n
         `quote`: Get forex quote.\n
     """
+
+    _location_path = "forex"
 
     def __init__(self):
         super().__init__()
@@ -25,7 +27,7 @@ class ForexRoot(Category):
 
 
 class ForexOanda(Category):
-    """OpenBB SDK Oanda Module.
+    """Oanda Module.
 
     Attributes:
         `calendar`: Request data of significant events calendar.\n
@@ -55,6 +57,8 @@ class ForexOanda(Category):
         `summary`: Request Oanda account summary.\n
         `summary_chart`: Print Oanda account summary.\n
     """
+
+    _location_path = "forex.oanda"
 
     def __init__(self):
         super().__init__()

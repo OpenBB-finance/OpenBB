@@ -5,7 +5,7 @@ import openbb_terminal.sdk_core.sdk_init as lib
 
 
 class KeysRoot(Category):
-    """OpenBB SDK Keys Module
+    """Keys Module
 
     Attributes:
         `av`: Set Alpha Vantage key\n
@@ -44,6 +44,8 @@ class KeysRoot(Category):
         `twitter`: Set Twitter key\n
         `walert`: Set Walert key\n
     """
+
+    _location_path = "keys"
 
     def __init__(self):
         super().__init__()
