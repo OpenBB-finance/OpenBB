@@ -221,6 +221,8 @@ class OpenBBFigure(go.Figure):
         Returns the figure as a subplot of another figure
     """
 
+    plotlyjs_path: Path = PLOTLYJS_PATH
+
     def __init__(self, fig: go.Figure = None, **kwargs) -> None:
         super().__init__()
         if fig:
@@ -476,6 +478,20 @@ class OpenBBFigure(go.Figure):
         """
         if wrap:
             title = "<br>".join(textwrap.wrap(title, width=wrap_width))
+
+        if kwargs.get("row", None) is not None and kwargs.get("col", None) is not None:
+            self.add_annotation(
+                text=title,
+                showarrow=False,
+                xref="x domain",
+                yref="y domain",
+                x=0.5,
+                y=1.0,
+                xanchor="center",
+                yanchor="bottom",
+                **kwargs,
+            )
+            return self
 
         self.update_layout(title=dict(text=title, **kwargs))
         return self
@@ -751,18 +767,20 @@ class OpenBBFigure(go.Figure):
             )
         )
 
-    def show(self, *args, external: bool = False, **kwargs) -> None:
+    def show(
+        self, *args, external: bool = False, export_image: str = "", **kwargs
+    ) -> None:
         """Show the figure
 
         Parameters
         ----------
         external : `bool`, optional
             Whether to return the figure object instead of showing it, by default False
+        export_image : `str`, optional
+            The path to export the figure image to, by default ""
         """
         if external:
             return self
-
-        png_path = kwargs.pop("png_path", "")
 
         if kwargs.pop("margin", True):
             self._adjust_margins()
@@ -791,7 +809,7 @@ class OpenBBFigure(go.Figure):
         if plots_backend().isatty:
             try:
                 # We send the figure to the backend to be displayed
-                return plots_backend().send_figure(self, png_path=png_path)
+                return plots_backend().send_figure(self, export_image)
             except Exception:
                 # If the backend fails, we just show the figure normally
                 # This is a very rare case, but it's better to have a fallback
