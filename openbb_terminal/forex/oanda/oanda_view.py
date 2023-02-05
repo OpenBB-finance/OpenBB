@@ -4,15 +4,11 @@ __docformat__ = "numpy"
 import logging
 from typing import Dict, Optional, Union
 
-import matplotlib.pyplot as plt
-import matplotlib.ticker as mticker
-import mplfinance as mpf
 import pandas as pd
-import pandas_ta as ta
-import seaborn as sns
 
-from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
+from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
+from openbb_terminal.core.plots.plotly_ta.ta_class import PlotlyTA
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.forex.oanda.oanda_model import (
     account_summary_request,
@@ -29,7 +25,6 @@ from openbb_terminal.forex.oanda.oanda_model import (
     pending_orders_request,
     positionbook_plot_data_request,
 )
-from openbb_terminal.helper_funcs import plot_autoscale
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -318,56 +313,24 @@ def show_candles(
         Whether to return the figure object or not, by default False
     """
     df_candles = get_candles_dataframe(instrument, granularity, candlecount)
-    if (
-        df_candles is not False
-        and not df_candles.empty
-        and additional_charts is not None
-    ):
-        plots_to_add, legends, subplot_legends = add_plots(
-            df_candles, additional_charts
-        )
-    else:
-        plots_to_add, legends, subplot_legends = None, [], []
 
-    candle_chart_kwargs = {
-        "type": "candle",
-        "style": theme.mpf_style,
-        "mav": (20, 50),
-        "volume": True,
-        "xrotation": theme.xticks_rotation,
-        "scale_padding": {"left": 0.3, "right": 1, "top": 0.8, "bottom": 0.8},
-        "update_width_config": {
-            "candle_linewidth": 0.6,
-            "candle_width": 0.8,
-            "volume_linewidth": 0.8,
-            "volume_width": 0.8,
-        },
-        "warn_too_much_data": 10000,
-    }
-    # This plot has 2 axes
-    candle_chart_kwargs["returnfig"] = True
-    candle_chart_kwargs["figratio"] = (10, 7)
-    candle_chart_kwargs["figscale"] = 1.10
-    candle_chart_kwargs["figsize"] = plot_autoscale()
-    if plots_to_add:
-        candle_chart_kwargs["addplot"] = plots_to_add
+    if not (has_volume := False) and "Volume" in df_candles.columns:
+        has_volume = bool(df_candles["Volume"].sum() > 0)
+
+    indicators = dict(rma=dict(length=[20, 50]))
+    defaults = dict(ema=dict(length=10), sma=dict(length=[20, 50]))
+    if additional_charts:
+        for key, value in additional_charts.items():
+            if value:
+                indicators[key] = defaults.get(key, {})
+
     if isinstance(df_candles, pd.DataFrame):
-        fig, ax = mpf.plot(df_candles, **candle_chart_kwargs)
-        fig.suptitle(
-            f"{instrument} {granularity}",
-            x=0.055,
-            y=0.965,
-            horizontalalignment="left",
-        )
-        if len(legends) > 0:
-            ax[0].legend(legends)
-        # pylint: disable=C0200
-        for i in range(0, len(subplot_legends), 2):
-            ax[subplot_legends[i]].legend(subplot_legends[i + 1])
-        theme.visualize_output(force_tight_layout=False)
-    else:
-        logger.error("Data not found")
-        console.print("[red]Data not found[/red]\n")
+        df_candles.name = f"{instrument} {granularity}"
+        fig = PlotlyTA.plot(df_candles, indicators, volume=has_volume)
+        return fig.show(external=external_axes)
+
+    logger.error("Data not found")
+    console.print("[red]Data not found[/red]\n")
 
 
 @log_start_end(log=logger)
@@ -395,85 +358,6 @@ def calendar(instrument: str, days: int = 7):
 
 
 @log_start_end(log=logger)
-def add_plots(df: pd.DataFrame, additional_charts: Dict[str, bool]):
-    """Add additional plots to the candle chart.
-
-    Parameters
-    ----------
-    df : pd.DataFrame
-        The source data
-    additional_charts : Dict[str, bool]
-        A dictionary of flags to include additional charts
-
-    Returns
-    -------
-    Tuple
-        Tuple of lists containing the plots, legends and subplot legends
-    """
-    panel_number = 2
-    plots_to_add = []
-    legends = []
-    subplot_legends = []
-
-    if additional_charts["ad"]:
-        ad = ta.ad(df["High"], df["Low"], df["Close"], df["Volume"])
-        ad_plot = mpf.make_addplot(ad, panel=panel_number)
-        plots_to_add.append(ad_plot)
-        subplot_legends.extend([panel_number * 2, ["AD"]])
-        panel_number += 1
-
-    if additional_charts["bbands"]:
-        bbands = ta.bbands(df["Close"])
-        bbands = bbands.drop("BBB_5_2.0", axis=1)
-        bbands_plot = mpf.make_addplot(bbands, panel=0)
-        plots_to_add.append(bbands_plot)
-        legends.extend(["Lower BBand", "Middle BBand", "Upper BBand"])
-
-    if additional_charts["cci"]:
-        cci = ta.cci(df["High"], df["Low"], df["Close"])
-        cci_plot = mpf.make_addplot(cci, panel=panel_number)
-        plots_to_add.append(cci_plot)
-        subplot_legends.extend([panel_number * 2, ["CCI"]])
-        panel_number += 1
-
-    if additional_charts["ema"]:
-        ema = ta.ema(df["Close"])
-        ema_plot = mpf.make_addplot(ema, panel=0)
-        plots_to_add.append(ema_plot)
-        legends.append("10 EMA")
-
-    if additional_charts["rsi"]:
-        rsi = ta.rsi(df["Close"])
-        rsi_plot = mpf.make_addplot(rsi, panel=panel_number)
-        plots_to_add.append(rsi_plot)
-        subplot_legends.extend([panel_number * 2, ["RSI"]])
-        panel_number += 1
-
-    if additional_charts["obv"]:
-        obv = ta.obv(df["Close"], df["Volume"])
-        obv_plot = mpf.make_addplot(obv, panel=panel_number)
-        plots_to_add.append(obv_plot)
-        subplot_legends.extend([panel_number * 2, ["OBV"]])
-        panel_number += 1
-
-    if additional_charts["sma"]:
-        sma_length = [20, 50]
-        for length in sma_length:
-            sma = ta.sma(df["Close"], length=length)
-            sma_plot = mpf.make_addplot(sma, panel=0)
-            plots_to_add.append(sma_plot)
-            legends.append(f"{length} SMA")
-
-    if additional_charts["vwap"]:
-        vwap = ta.vwap(df["High"], df["Low"], df["Close"], df["Volume"])
-        vwap_plot = mpf.make_addplot(vwap, panel=0)
-        plots_to_add.append(vwap_plot)
-        legends.append("vwap")
-
-    return plots_to_add, legends, subplot_legends
-
-
-@log_start_end(log=logger)
 def book_plot(
     df: pd.DataFrame,
     instrument: str,
@@ -495,40 +379,24 @@ def book_plot(
     """
     df = df.apply(pd.to_numeric)
     df["shortCountPercent"] = df["shortCountPercent"] * -1
-    axis_origin = max(
-        abs(max(df["longCountPercent"])), abs(max(df["shortCountPercent"]))
+
+    fig = OpenBBFigure(xaxis_title="Count Percent", yaxis_title="Price")
+    fig.set_title(f"{instrument} {book_type}")
+
+    fig.add_bar(
+        x=df["longCountPercent"],
+        y=df["price"],
+        name="Count Percent",
+        marker_color=theme.up_color,
+        orientation="h",
     )
-
-    # This plot has 1 axis
-    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-
-    ax.set_xlim(-axis_origin, +axis_origin)
-
-    sns.barplot(
-        x="longCountPercent",
-        y="price",
-        data=df,
-        label="Count Percent",
-        color=theme.up_color,
-        orient="h",
+    fig.add_bar(
+        x=df["shortCountPercent"],
+        y=df["price"],
+        name="Prices",
+        marker_color=theme.down_color,
+        orientation="h",
     )
+    fig.update_layout(yaxis_nticks=20, bargap=0.01, bargroupgap=0.01)
 
-    sns.barplot(
-        x="shortCountPercent",
-        y="price",
-        data=df,
-        label="Prices",
-        color=theme.down_color,
-        orient="h",
-    )
-
-    ax.invert_yaxis()
-    ax.yaxis.set_major_locator(mticker.MultipleLocator(10))
-    ax.set_xlabel("Count Percent")
-    ax.set_ylabel("Price")
-    ax.set_title(f"{instrument} {book_type}")
-
-    theme.style_primary_axis(ax)
-
-    if not external_axes:
-        theme.visualize_output()
+    return fig.show(external=external_axes)
