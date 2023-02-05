@@ -264,6 +264,7 @@ def print_rich_table(
     automatic_coloring: bool = False,
     columns_to_auto_color: List[str] = None,
     rows_to_auto_color: List[str] = None,
+    export: bool = False,
 ):
     """Prepare a table from df in rich.
 
@@ -289,7 +290,12 @@ def print_rich_table(
         Columns to automatically color
     rows_to_auto_color: List[str]
         Rows to automatically color
+    export: bool
+        Whether we are exporting the table to a file. If so, we don't want to print it.
     """
+    if export:
+        return
+
     if obbff.USE_TABULATE_DF:
         table = Table(title=title, show_lines=True, show_header=show_header)
 
@@ -1351,7 +1357,7 @@ def export_data(
     func_name: str,
     df: pd.DataFrame = pd.DataFrame(),
     sheet_name: str = None,
-    fig: Optional[OpenBBFigure] = None,
+    figure: Optional[OpenBBFigure] = None,
 ) -> None:
     """Export data to a file.
 
@@ -1367,7 +1373,12 @@ def export_data(
         Dataframe of data to save
     sheet_name : str
         If provided.  The name of the sheet to save in excel file
+    figure : Optional[OpenBBFigure]
+        Figure object to save as image file
     """
+    if not figure:
+        figure = OpenBBFigure()
+
     if export_type:
         export_path = compose_export_path(func_name, dir_path)
         export_folder = str(export_path.parent)
@@ -1442,7 +1453,7 @@ def export_data(
                 exists, overwrite = ask_file_overwrite(saved_path)
                 if exists and not overwrite:
                     return
-                fig.show(png_path=saved_path)
+                figure.show(export_image=saved_path)
             elif exp_type.endswith("jpg"):
                 exists, overwrite = ask_file_overwrite(saved_path)
                 if exists and not overwrite:
@@ -1457,7 +1468,7 @@ def export_data(
                 exists, overwrite = ask_file_overwrite(saved_path)
                 if exists and not overwrite:
                     return
-                fig.show(png_path=saved_path)
+                figure.show(export_image=saved_path)
             else:
                 console.print("\nWrong export file specified.")
 

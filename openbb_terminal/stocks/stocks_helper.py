@@ -129,7 +129,7 @@ def search(
     exchange_country: str
         Search by exchange country to find stock matching
     all_exchanges: bool
-       Whether to search all exchanges, without this option only the United States market is searched
+        Whether to search all exchanges, without this option only the United States market is searched
     limit : int
         The limit of companies shown.
     export : str
