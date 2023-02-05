@@ -34,11 +34,7 @@ def show_plot(
     -------
     Plots the data.
     """
-    if external_axes is None:
-        _, ax1 = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-
-    else:
-        ax1, ax2 = external_axes
+    _, ax1 = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
     color_palette = theme.get_colors()
     ax_1_coloring = 0

@@ -526,13 +526,15 @@ def display_monthly_returns(
                 [1.0, up_colorway[4]],
             ]
         elif zero > 1:
-            zero = [
+            colorscale = [
                 [0.0, down_colorway[4]],
                 [1.0, down_colorway[6]],
             ]
 
-        for i, df, name in enumerate(
-            zip([portfolio_returns, benchmark_returns], ["Portfolio", "Benchmark"])
+        i = 0
+        # mypy does not like enumerate on zip
+        for df, name in zip(
+            [portfolio_returns, benchmark_returns], ["Portfolio", "Benchmark"]
         ):
             fig.add_heatmap(
                 z=df,
@@ -559,6 +561,7 @@ def display_monthly_returns(
                 row=i + 1,
                 col=1,
             )
+            i += 1
 
         fig.update_layout(
             margin=dict(l=0, r=60, t=0, b=0),

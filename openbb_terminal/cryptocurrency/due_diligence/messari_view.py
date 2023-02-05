@@ -6,7 +6,7 @@ __docformat__ = "numpy"
 import logging
 import os
 from datetime import datetime, timedelta
-from typing import Optional
+from typing import Optional, Union
 
 import numpy as np
 import pandas as pd
@@ -645,7 +645,7 @@ def display_fundraising(
     export: str = "",
     sheet_name: str = None,
     external_axes: bool = False,
-) -> None:
+) -> Union[OpenBBFigure, None]:
     """Display coin fundraising
     [Source: https://messari.io/]
 
@@ -659,7 +659,6 @@ def display_fundraising(
         Whether to return the figure object or not, by default False
     """
     (summary, df_sales_rounds, df_treasury_accs, df_details) = get_fundraising(symbol)
-    fig: OpenBBFigure = None
     if summary:
         summary = prettify_paragraph(summary)
         console.print(summary, "\n")
@@ -770,4 +769,4 @@ def display_fundraising(
         sheet_name,
     )
 
-    return None if not fig else fig.show(external=external_axes)
+    return None if df_details.empty else fig.show(external=external_axes)

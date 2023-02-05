@@ -1,4 +1,4 @@
-from typing import Any, List
+from typing import Any, List, Optional
 
 import pandas as pd
 
@@ -147,8 +147,8 @@ PLT_TBL_ROW_COLORS = (
 
 
 def de_increasing_color_list(
-    df_column: pd.DataFrame = None,
-    text: str = None,
+    df_column: Optional[pd.DataFrame] = None,
+    text: Optional[str] = None,
     contains_str: str = "-",
     increasing_color: str = PLT_STYLE_INCREASING,
     decreasing_color: str = PLT_STYLE_DECREASING,

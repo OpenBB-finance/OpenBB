@@ -3,9 +3,8 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Union
 
-import matplotlib.pyplot as plt
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
 
@@ -71,7 +70,7 @@ def display_plot(
     export: str = "",
     sheet_name: str = None,
     external_axes: bool = False,
-):
+) -> Union[OpenBBFigure, None]:
     """Plot data from a dataset
     Parameters
     ----------
@@ -119,7 +118,7 @@ def display_seasonality(
     max_lag: int = 24,
     alpha: float = 0.05,
     external_axes: bool = False,
-):
+) -> Union[OpenBBFigure, None]:
     """Plot seasonality from a dataset
 
     Parameters
@@ -166,8 +165,8 @@ def display_corr(
     dataset: pd.DataFrame,
     export: str = "",
     sheet_name: str = None,
-    external_axes: Optional[List[plt.axes]] = None,
-):
+    external_axes: bool = False,
+) -> Union[OpenBBFigure, None]:
     """Plot correlation coefficients for dataset features
 
     Parameters

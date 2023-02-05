@@ -3,7 +3,7 @@ import inspect
 import os
 import sys
 from pathlib import Path
-from typing import Any, Dict, List, Union, overload
+from typing import Any, Dict, List, Optional, Type, Union
 
 import pandas as pd
 
@@ -15,7 +15,7 @@ from openbb_terminal.core.plots.plotly_ta.base import PltTA
 from openbb_terminal.core.plots.plotly_ta.data_classes import ChartIndicators
 
 PLUGINS_PATH = Path(__file__).parent / "plugins"
-PLOTLY_TA: "PlotlyTA" = None
+PLOTLY_TA: Optional["PlotlyTA"] = None
 
 
 class PlotlyTA(PltTA):
@@ -72,13 +72,10 @@ class PlotlyTA(PltTA):
     """
 
     inchart_colors = theme.get_colors()
-    plugins = []
+    plugins: List[Type[PltTA]] = []
     df_ta: pd.DataFrame = None
-    close_column: str = "Close"
+    close_column: Optional[str] = "Close"
     show_volume = True
-    ma_mode: List[str] = []
-    inchart: List[str] = []
-    subplots: List[str] = []
     prepost: bool = False
 
     def __new__(cls, *args, **kwargs):
@@ -128,19 +125,19 @@ class PlotlyTA(PltTA):
     def __plot__(
         self,
         df_stock: Union[pd.DataFrame, pd.Series],
-        indicators: Union[ChartIndicators, Dict[str, Dict[str, Any]]] = None,
+        indicators: Optional[Union[ChartIndicators, Dict[str, Dict[str, Any]]]] = None,
         symbol: str = "",
         candles: bool = True,
         volume: bool = True,
         prepost: bool = False,
-        fig: OpenBBFigure = None,
+        fig: Optional[OpenBBFigure] = None,
     ) -> OpenBBFigure:
         """This method should not be called directly. Use the PlotlyTA.plot() static method instead."""
         if isinstance(df_stock, pd.Series):
             df_stock = df_stock.to_frame()
 
         if not isinstance(indicators, ChartIndicators):
-            indicators = ChartIndicators.from_dict(indicators)
+            indicators = ChartIndicators.from_dict(indicators or dict(dict()))
 
         self.indicators = indicators
         self.intraday = df_stock.index[-2].time() != df_stock.index[-1].time()
@@ -152,28 +149,15 @@ class PlotlyTA(PltTA):
 
         return self.plot_fig(fig=fig, symbol=symbol, candles=candles)
 
-    @overload
-    def plot(
-        self,
-        df_stock: Union[pd.DataFrame, pd.Series],
-        indicators: Union[ChartIndicators, Dict[str, Dict[str, Any]]] = None,
-        symbol: str = "",
-        candles: bool = True,
-        volume: bool = True,
-        prepost: bool = False,
-        fig: OpenBBFigure = None,
-    ) -> OpenBBFigure:
-        ...
-
     @staticmethod
     def plot(
         df_stock: Union[pd.DataFrame, pd.Series],
-        indicators: Union[ChartIndicators, Dict[str, Dict[str, Any]]] = None,
+        indicators: Optional[Union[ChartIndicators, Dict[str, Dict[str, Any]]]] = None,
         symbol: str = "",
         candles: bool = True,
         volume: bool = True,
         prepost: bool = False,
-        fig: OpenBBFigure = None,
+        fig: Optional[OpenBBFigure] = None,
     ) -> OpenBBFigure:
         """Plots the chart with the given indicators
 
@@ -257,6 +241,9 @@ class PlotlyTA(PltTA):
 
         try:
             indicator = self.indicators.get_indicator(subplot)
+            if indicator is None:
+                return False
+
             output = self.indicators.get_indicator_data(
                 self.df_stock.copy(),
                 indicator,
@@ -322,7 +309,7 @@ class PlotlyTA(PltTA):
         }
         return output
 
-    def init_plot(self, symbol: str = "", candles: bool = True):
+    def init_plot(self, symbol: str = "", candles: bool = True) -> OpenBBFigure:
         """Creates plotly figure with subplots
 
         Parameters
@@ -390,7 +377,7 @@ class PlotlyTA(PltTA):
 
     def plot_fig(
         self,
-        fig: OpenBBFigure = None,
+        fig: Optional[OpenBBFigure] = None,
         symbol: str = "",
         candles: bool = True,
     ) -> OpenBBFigure:
@@ -401,8 +388,7 @@ class PlotlyTA(PltTA):
         if hasattr(self.df_stock, "name") and not symbol:
             symbol = self.df_stock.name
 
-        if not fig:
-            fig = self.init_plot(symbol, candles)
+        figure = self.init_plot(symbol, candles) if fig is None else fig
 
         subplot_row, fig_new = 2, {}
         inchart_index, ma_done = 0, False
@@ -410,7 +396,7 @@ class PlotlyTA(PltTA):
         if self.show_volume and "Volume" in self.df_stock.columns:
             subplot_row += 1
 
-        fig = self.process_fig(fig)
+        figure = self.process_fig(figure)
 
         plot_indicators = sorted(
             self.indicators.get_active_ids(), key=lambda x: x in self.subplots
@@ -418,8 +404,8 @@ class PlotlyTA(PltTA):
         for indicator in plot_indicators:
             try:
                 if indicator in self.subplots:
-                    fig, subplot_row = getattr(self, f"plot_{indicator}")(
-                        fig, self.df_ta, subplot_row
+                    figure, subplot_row = getattr(self, f"plot_{indicator}")(
+                        figure, self.df_ta, subplot_row
                     )
                 elif indicator in self.ma_mode or indicator in self.inchart:
                     if indicator in self.ma_mode:
@@ -427,15 +413,15 @@ class PlotlyTA(PltTA):
                             continue
                         indicator, ma_done = "ma", True
 
-                    fig, inchart_index = getattr(self, f"plot_{indicator}")(
-                        fig, self.df_ta, inchart_index
+                    figure, inchart_index = getattr(self, f"plot_{indicator}")(
+                        figure, self.df_ta, inchart_index
                     )
                 elif indicator in ["fib", "srlines", "demark", "clenow"]:
-                    fig = getattr(self, f"plot_{indicator}")(fig, self.df_ta)
+                    figure = getattr(self, f"plot_{indicator}")(figure, self.df_ta)
                 else:
                     raise ValueError(f"Unknown indicator: {indicator}")
 
-                fig_new.update(fig.to_plotly_json())
+                fig_new.update(figure.to_plotly_json())
 
                 if subplot_row > 5 and indicator != plot_indicators[-1]:
                     remaining = plot_indicators[plot_indicators.index(indicator) + 1 :]
@@ -447,15 +433,17 @@ class PlotlyTA(PltTA):
                 console.print(f"[bold red]Error plotting {indicator}: {e}[/]")
                 continue
 
-        fig.update(fig_new)
-        fig.update_traces(selector=dict(type="scatter", mode="lines"), connectgaps=True)
-        fig.update_layout(showlegend=False)
-        fig.hide_holidays(self.prepost)
+        figure.update(fig_new)
+        figure.update_traces(
+            selector=dict(type="scatter", mode="lines"), connectgaps=True
+        )
+        figure.update_layout(showlegend=False)
+        figure.hide_holidays(self.prepost)
 
         # We remove xaxis labels from all but bottom subplot, and we make sure
         # they all match the bottom one
-        xbottom = list(fig.select_xaxes())[-1].anchor
-        for xa in fig.select_xaxes():
+        xbottom = list(figure.select_xaxes())[-1].anchor
+        for xa in figure.select_xaxes():
             if not self.show_volume and subplot_row == 2:
                 xa.showticklabels = True
                 break
@@ -464,7 +452,7 @@ class PlotlyTA(PltTA):
             if xa.anchor != xbottom:
                 xa.matches = xbottom.replace("y", "x")
 
-        return fig
+        return figure
 
     def process_fig(self, fig: OpenBBFigure) -> OpenBBFigure:
         """Processes fig to add subplots and volume
@@ -484,7 +472,7 @@ class PlotlyTA(PltTA):
             shared_xaxes=True, **self.get_fig_settings_dict()
         )
 
-        subplots = {}
+        subplots: Dict[str, Dict[str, List[Any]]] = {}
         grid_ref = fig._validate_get_grid_ref()  # pylint: disable=protected-access
         for r, plot_row in enumerate(grid_ref):
             for c, plot_refs in enumerate(plot_row):

@@ -269,14 +269,14 @@ def prepare_scale_train_valid_test(
             console.print(
                 "Cannot train enough input days to predict with loaded dataframe\n"
             )
-            return (None * 11, True)
+            return (None * 11, True)  # type: ignore
     if s_start_date:
         data = data[data.index >= s_start_date]
         if n_input_days + n_predict_days > data.shape[0]:
             console.print(
                 "Cannot train enough input days to predict with loaded dataframe\n"
             )
-            return (None * 11, True)
+            return (None * 11, True)  # type: ignore
 
     test_data = data.iloc[-n_input_days:]
     train_data = data.iloc[:-n_input_days]
@@ -848,7 +848,7 @@ def plot_residuals(
             shared_xaxes=False,
             subplot_titles=("Residuals Values", "ACF", "Distribution"),
             specs=[
-                [{"colspan": 2}, None],
+                [{"colspan": 2}, None],  # type: ignore
                 [{"type": "scatter"}, {"type": "histogram"}],
             ],
         )

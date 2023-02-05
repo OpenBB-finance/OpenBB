@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import Optional
+from typing import Optional, Union
 
 import numpy as np
 import pandas as pd
@@ -469,7 +469,7 @@ def display_qtr_contracts(
     export: str = "",
     sheet_name: str = None,
     external_axes: bool = False,
-):
+) -> Union[OpenBBFigure, None]:
     """Quarterly contracts [Source: quiverquant.com]
 
     Parameters
@@ -487,11 +487,10 @@ def display_qtr_contracts(
     external_axes : bool, optional
         Whether to return the figure object or not, by default False
     """
-    fig: OpenBBFigure = None
     symbols = quiverquant_model.get_qtr_contracts(analysis, limit)
 
     if symbols.empty:
-        return
+        return None
 
     if analysis in ("upmom", "downmom"):
         if raw:

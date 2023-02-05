@@ -1,4 +1,4 @@
-from typing import Any, Callable, Dict, Iterator, List
+from typing import Any, Callable, Dict, Iterator, List, Optional
 
 import pandas as pd
 
@@ -34,14 +34,14 @@ class PluginMeta(type):
 
     __indicators__: List[Indicator] = []
     __static_methods__: list = []
-    __ma_mode__: list = []
-    __inchart__: list = []
-    __subplots__: list = []
+    __ma_mode__: List[str] = []
+    __inchart__: List[str] = []
+    __subplots__: List[str] = []
 
     def __new__(mcs: type["PluginMeta"], *args: Any, **kwargs: Any) -> "PluginMeta":
         name, bases, attrs = args
-        indicators = {}
-        cls_attrs = {
+        indicators: Dict[str, Indicator] = {}
+        cls_attrs: Dict[str, list] = {
             "__ma_mode__": [],
             "__inchart__": [],
             "__subplots__": [],
@@ -76,7 +76,7 @@ class PluginMeta(type):
 
         return new_cls
 
-    def __iter__(cls: type["PluginMeta"]) -> Iterator[Indicator]:
+    def __iter__(cls: type["PluginMeta"]) -> Iterator[Indicator]:  # type: ignore
         return iter(cls.__indicators__)
 
     # pylint: disable=unused-argument
@@ -87,20 +87,19 @@ class PluginMeta(type):
 class PltTA(metaclass=PluginMeta):
     """The base class that all Plotly plugins must inherit from."""
 
-    indicators: ChartIndicators = None
+    indicators: ChartIndicators
     intraday: bool = False
-    df_stock: pd.DataFrame = None
-    df_ta: pd.DataFrame = None
-    close_column: str = "Close"
-    params: Dict[str, TAIndicator] = None
-    ma_mode: List[str] = []
+    df_stock: pd.DataFrame
+    df_ta: pd.DataFrame
+    close_column: Optional[str] = "Close"
+    params: Dict[str, TAIndicator] = {}
     inchart_colors: List[str] = []
 
     __static_methods__: list = []
     __indicators__: List[Indicator] = []
-    __ma_mode__: list = []
-    __inchart__: list = []
-    __subplots__: list = []
+    __ma_mode__: List[str] = []
+    __inchart__: List[str] = []
+    __subplots__: List[str] = []
 
     # pylint: disable=unused-argument
     def __new__(cls, *args: Any, **kwargs: Any) -> "PltTA":
@@ -126,6 +125,14 @@ class PltTA(metaclass=PluginMeta):
                     getattr(self, attr).extend(value)
 
         return self
+
+    @property
+    def ma_mode(self) -> List[str]:
+        return list(set(self.__ma_mode__))
+
+    @ma_mode.setter
+    def ma_mode(self, value: List[str]):
+        self.__ma_mode__ = value
 
     def add_plugins(self, plugins: List["PltTA"]) -> None:
         """Add plugins to current instance"""

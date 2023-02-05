@@ -3,9 +3,7 @@ __docformat__ = "numpy"
 import datetime
 import logging
 import os
-from typing import List
-
-from pandas.plotting import register_matplotlib_converters
+from typing import List, Tuple, Union
 
 from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.decorators import log_start_end
@@ -14,8 +12,6 @@ from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.screener import yahoofinance_model
 
 logger = logging.getLogger(__name__)
-
-register_matplotlib_converters()
 
 
 @log_start_end(log=logger)
@@ -30,7 +26,7 @@ def historical(
     export: str = "",
     sheet_name: str = None,
     external_axes: bool = False,
-) -> List[str]:
+) -> Union[List[str], Tuple[List[str], OpenBBFigure]]:
     """View historical price of stocks that meet preset
 
     Parameters

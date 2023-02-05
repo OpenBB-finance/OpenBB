@@ -3,11 +3,12 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import Optional
+from typing import Optional, Union
 
 import pandas as pd
 
 from openbb_terminal.common.technical_analysis import momentum_model, ta_helpers
+from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.core.plots.plotly_ta.ta_class import PlotlyTA
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
@@ -25,7 +26,7 @@ def display_cci(
     export: str = "",
     sheet_name: str = None,
     external_axes: bool = False,
-):
+) -> Union[OpenBBFigure, None]:
     """Plots CCI Indicator
 
     Parameters
@@ -61,7 +62,7 @@ def display_cci(
         sheet_name,
     )
 
-    fig.show(external=external_axes)
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -74,7 +75,7 @@ def display_macd(
     export: str = "",
     sheet_name: str = None,
     external_axes: bool = False,
-):
+) -> Union[OpenBBFigure, None]:
     """Plots MACD signal
 
     Parameters
@@ -111,7 +112,7 @@ def display_macd(
         sheet_name,
     )
 
-    fig.show(external=external_axes)
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -124,7 +125,7 @@ def display_rsi(
     export: str = "",
     sheet_name: str = None,
     external_axes: bool = False,
-):
+) -> Union[OpenBBFigure, None]:
     """Plots RSI Indicator
 
     Parameters
@@ -145,8 +146,7 @@ def display_rsi(
         Whether to return the figure object or not, by default False
     """
     if isinstance(data, pd.DataFrame):
-        console.print("[red]Please send a series and not a dataframe[/red]\n")
-        return
+        return console.print("[red]Please send a series and not a dataframe[/red]\n")
 
     ta = PlotlyTA()
     fig = ta.plot(
@@ -165,7 +165,7 @@ def display_rsi(
         sheet_name,
     )
 
-    fig.show(external=external_axes)
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -178,7 +178,7 @@ def display_stoch(
     export: str = "",
     sheet_name: str = None,
     external_axes: bool = False,
-) -> None:
+) -> Union[OpenBBFigure, None]:
     """Plots stochastic oscillator signal
 
     Parameters
@@ -200,7 +200,7 @@ def display_stoch(
     """
     close_col = ta_helpers.check_columns(data)
     if close_col is None:
-        return
+        return None
 
     ta = PlotlyTA()
     fig = ta.plot(
@@ -219,7 +219,7 @@ def display_stoch(
         sheet_name,
     )
 
-    fig.show(external=external_axes)
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -230,7 +230,7 @@ def display_fisher(
     export: str = "",
     sheet_name: str = None,
     external_axes: bool = False,
-):
+) -> Union[OpenBBFigure, None]:
     """Plots Fisher Indicator
 
     Parameters
@@ -263,7 +263,7 @@ def display_fisher(
         sheet_name,
     )
 
-    fig.show(external=external_axes)
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -274,7 +274,7 @@ def display_cg(
     export: str = "",
     sheet_name: str = None,
     external_axes: bool = False,
-):
+) -> Union[OpenBBFigure, None]:
     """Plots center of gravity Indicator
 
     Parameters
@@ -318,7 +318,7 @@ def display_clenow_momentum(
     export: str = "",
     sheet_name: str = None,
     external_axes: bool = False,
-):
+) -> Union[OpenBBFigure, None]:
     """Prints table and plots clenow momentum
 
     Parameters
@@ -384,7 +384,7 @@ def display_demark(
     export: str = "",
     sheet_name: Optional[str] = "",
     external_axes: bool = False,
-):
+) -> Union[OpenBBFigure, None]:
     """Plot demark sequential indicator
 
     Parameters
@@ -408,7 +408,7 @@ def display_demark(
     """
     close_col = ta_helpers.check_columns(data, high=False, low=False)
     if close_col is None:
-        return
+        return None
 
     fig = PlotlyTA.plot(
         data,

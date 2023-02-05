@@ -5,7 +5,7 @@ __docformat__ = "numpy"
 import copy
 import logging
 import os
-from typing import Dict, List, Tuple
+from typing import Dict, List, Tuple, Union
 
 import numpy as np
 import pandas as pd
@@ -40,7 +40,7 @@ def display_plots_financials(
     external_axes: bool = False,
     raw: bool = False,
     already_loaded_stocks_data=None,
-) -> Tuple[Dict, List, OpenBBFigure]:
+) -> Union[Tuple[Dict, List], Tuple[Dict, List, OpenBBFigure]]:
     """Display financials bars comparing sectors, industry, analysis, countries, market cap and excluding exchanges.
 
     Parameters
@@ -191,6 +191,6 @@ def display_plots_financials(
     )
 
     if external_axes:
-        return (stocks_data, company_tickers, fig.show(external=external_axes))
+        return (stocks_data, company_tickers, fig)
 
     return stocks_data, company_tickers

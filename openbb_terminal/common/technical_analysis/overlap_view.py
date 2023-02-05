@@ -3,10 +3,11 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import List, Optional
+from typing import List, Optional, Union
 
 import pandas as pd
 
+from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.core.plots.plotly_ta.ta_class import PlotlyTA
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data
@@ -27,7 +28,7 @@ def view_ma(
     export: str = "",
     sheet_name: str = None,
     external_axes: bool = False,
-) -> None:
+) -> Union[OpenBBFigure, None]:
     """Plots MA technical indicator
 
     Parameters
@@ -76,7 +77,7 @@ def view_ma(
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
-        f"{ma_type.lower()}{'_'.join([str(win) for win in window])}",
+        f"{ma_type.lower()}{'_'.join([str(win) for win in window])}",  # type: ignore
         price_df,
         sheet_name,
     )
@@ -95,7 +96,7 @@ def view_vwap(
     export: str = "",
     sheet_name: str = None,
     external_axes: bool = False,
-):
+) -> Union[OpenBBFigure, None]:
     """Plots VWMA technical indicator
 
     Parameters

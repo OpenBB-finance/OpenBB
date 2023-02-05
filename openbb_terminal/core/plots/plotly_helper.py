@@ -48,6 +48,7 @@ class TerminalStyle:
 
     console_styles_available: Dict[str, Path] = {}
     console_style: Dict[str, Any] = {}
+    console_style_name: Optional[str] = ""
 
     line_color: str = ""
     up_color: str = ""
@@ -74,7 +75,7 @@ class TerminalStyle:
             The name of the Rich style to use, by default ""
         """
         self.plt_style = plt_style or self.plt_style
-        self.console_style = console_style
+        self.console_style_name = console_style
         self.load_available_styles()
         self.load_style()
 
@@ -223,13 +224,13 @@ class OpenBBFigure(go.Figure):
 
     plotlyjs_path: Path = PLOTLYJS_PATH
 
-    def __init__(self, fig: go.Figure = None, **kwargs) -> None:
+    def __init__(self, fig: Optional[go.Figure] = None, **kwargs) -> None:
         super().__init__()
         if fig:
             self.__dict__ = fig.__dict__
 
         self._has_secondary_y = kwargs.pop("has_secondary_y", False)
-        self._date_xaxs = dict()
+        self._date_xaxs: dict = {}
 
         if xaxis := kwargs.pop("xaxis", None):
             self.update_xaxes(xaxis)
@@ -254,11 +255,11 @@ class OpenBBFigure(go.Figure):
         rows: int = 1,
         cols: int = 1,
         shared_xaxes: bool = True,
-        vertical_spacing: float = None,
-        horizontal_spacing: float = None,
-        subplot_titles: Union[List[str], tuple] = None,
-        row_width: List[Union[float, int]] = None,
-        specs: List[List[Dict[Any, Any]]] = None,
+        vertical_spacing: Optional[float] = None,
+        horizontal_spacing: Optional[float] = None,
+        subplot_titles: Optional[Union[List[str], tuple]] = None,
+        row_width: Optional[List[Union[float, int]]] = None,
+        specs: Optional[List[List[Optional[Dict[Any, Any]]]]] = None,
         **kwargs,
     ) -> "OpenBBFigure":
         """Create a new Plotly figure with subplots
@@ -349,8 +350,8 @@ class OpenBBFigure(go.Figure):
     def add_histplot(
         self,
         dataset: Union[List[List[float]], np.ndarray, pd.Series],
-        name: Union[str, List[str]] = None,
-        colors: List[str] = None,
+        name: Optional[Union[str, List[str]]] = None,
+        colors: Optional[List[str]] = None,
         bins: Union[int, str] = 15,
         curve: Literal["normal", "kde"] = "normal",
         show_curve: bool = True,
@@ -379,9 +380,9 @@ class OpenBBFigure(go.Figure):
         if isinstance(colors, str):
             colors = [colors]
         if not name:
-            name = [None] * len(valid_x)
+            name = [None] * len(valid_x)  # type: ignore
         if not colors:
-            colors = [None] * len(valid_x)
+            colors = [None] * len(valid_x)  # type: ignore
 
         max_y = 0
         for i, (x_i, name_i, color_i) in enumerate(zip(valid_x, name, colors)):
@@ -419,12 +420,13 @@ class OpenBBFigure(go.Figure):
                     col=col,
                 )
             if show_curve:
+                # type: ignore
                 if curve == "kde":
                     curve_x = [None] * len(valid_x)
                     curve_y = [None] * len(valid_x)
                     # pylint: disable=consider-using-enumerate
                     for index in range(len(valid_x)):
-                        curve_x[index] = [
+                        curve_x[index] = [  # type: ignore
                             res_min + xx * (res_max - res_min) / 500
                             for xx in range(500)
                         ]
@@ -433,15 +435,15 @@ class OpenBBFigure(go.Figure):
                         )
                     for index in range(len(valid_x)):
                         self.add_scatter(
-                            x=curve_x[index],
-                            y=curve_y[index] / bins,
+                            x=curve_x[index],  # type: ignore
+                            y=curve_y[index] / bins,  # type: ignore
                             name=name_i,
                             mode="lines",
                             marker=dict(color=color_i),
                             row=row,
                             col=col,
                         )
-                        max_y = max(max_y, max(curve_y[index]) / bins)
+                        max_y = max(max_y, max(curve_y[index]) / bins)  # type: ignore
 
                 else:
                     y = (
@@ -499,8 +501,8 @@ class OpenBBFigure(go.Figure):
     def set_xaxis_title(
         self,
         title: str,
-        row: int = None,
-        col: int = None,
+        row: Optional[int] = None,
+        col: Optional[int] = None,
         **kwargs,
     ) -> "OpenBBFigure":
         """Set the x axis title of the figure or subplot (if row and col are specified)
@@ -518,7 +520,7 @@ class OpenBBFigure(go.Figure):
         return self
 
     def set_yaxis_title(
-        self, title: str, row: int = None, col: int = None, **kwargs
+        self, title: str, row: Optional[int] = None, col: Optional[int] = None, **kwargs
     ) -> "OpenBBFigure":
         """Set the y axis title of the figure or subplot (if row and col are specified)
 
@@ -535,7 +537,10 @@ class OpenBBFigure(go.Figure):
         return self
 
     def xaxis_type(
-        self, xaxis_type: str = "category", row: int = None, col: int = None
+        self,
+        xaxis_type: str = "category",
+        row: Optional[int] = None,
+        col: Optional[int] = None,
     ) -> None:
         """Set the xaxis type of the figure or subplot (if row and col are specified)
 
@@ -554,8 +559,8 @@ class OpenBBFigure(go.Figure):
         self,
         y: float,
         name: str,
-        line: dict = None,
-        legendrank: int = None,
+        line: Optional[dict] = None,
+        legendrank: Optional[int] = None,
         **kwargs,
     ) -> None:
         """Add a horizontal line with a legend label
@@ -591,8 +596,8 @@ class OpenBBFigure(go.Figure):
         self,
         x: float,
         name: str,
-        line: dict = None,
-        legendrank: int = None,
+        line: Optional[dict] = None,
+        legendrank: Optional[int] = None,
         **kwargs,
     ) -> None:
         """Add a vertical line with a legend label
@@ -702,12 +707,12 @@ class OpenBBFigure(go.Figure):
 
     def add_legend_label(
         self,
-        trace: str = None,
-        label: str = None,
-        mode: str = None,
-        marker: dict = None,
-        line_dash: str = None,
-        legendrank: int = None,
+        trace: Optional[str] = None,
+        label: Optional[str] = None,
+        mode: Optional[str] = None,
+        marker: Optional[dict] = None,
+        line_dash: Optional[str] = None,
+        legendrank: Optional[int] = None,
         **kwargs,
     ) -> None:
         """Adds a legend label
@@ -769,7 +774,7 @@ class OpenBBFigure(go.Figure):
 
     def show(
         self, *args, external: bool = False, export_image: str = "", **kwargs
-    ) -> None:
+    ) -> Optional["OpenBBFigure"]:
         """Show the figure
 
         Parameters
@@ -780,7 +785,7 @@ class OpenBBFigure(go.Figure):
             The path to export the figure image to, by default ""
         """
         if external:
-            return self
+            return self  # type: ignore
 
         if kwargs.pop("margin", True):
             self._adjust_margins()
@@ -987,7 +992,7 @@ class OpenBBFigure(go.Figure):
             return
 
         mkt_holidays = USFederalHolidayCalendar().holidays(
-            start=dateindex.min(), end=dateindex.max()
+            start=dateindex.min(), end=dateindex.max()  # type: ignore
         )
         rangebreaks = [
             dict(values=[date.strftime("%Y-%m-%d") for date in mkt_holidays]),
@@ -997,7 +1002,7 @@ class OpenBBFigure(go.Figure):
         # We add a rangebreak if the first and second time are not the same
         # since daily data will have the same time (00:00)
         for entry in self._date_xaxs.values():
-            breaks = rangebreaks.copy()
+            breaks: List[Any] = rangebreaks.copy()
             if entry["x"][-1].time() != entry["x"][-2].time():
                 if prepost:
                     breaks.append(dict(bounds=[20.00, 4.00], pattern="hour"))
@@ -1267,9 +1272,9 @@ class OpenBBFigure(go.Figure):
         m: Optional[int] = None,
         max_lag: int = 20,
         alpha=0.05,
-        marker: dict = None,
-        row: int = None,
-        col: int = None,
+        marker: Optional[dict] = None,
+        row: Optional[int] = None,
+        col: Optional[int] = None,
         pacf: bool = False,
         **kwargs,
     ) -> None:

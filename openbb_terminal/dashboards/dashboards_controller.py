@@ -12,7 +12,7 @@ import threading
 import time
 from pathlib import Path
 from subprocess import PIPE, STDOUT
-from typing import List, Union
+from typing import List
 
 import numpy as np
 import psutil
@@ -184,7 +184,7 @@ class DashboardsController(BaseController):
                 response = "y"
 
             if ns_parser.dark and not ns_parser.jupyter:
-                file += " --theme=dark"
+                cmd += " --theme=dark"
 
             if ns_parser.input or response.lower() == "y" and not process_check:
                 cfg.LOGGING_SUPPRESS = True
@@ -237,7 +237,7 @@ class DashboardsController(BaseController):
 
     def check_processes(
         self, ns_parser: argparse.Namespace, filepath: Path = None
-    ) -> Union[str, bool]:
+    ) -> str:
         """Checks if a process is already running, and returns the url."""
         if not filepath:
             filepath = Path(__file__).absolute()
@@ -257,7 +257,7 @@ class DashboardsController(BaseController):
                 path = filepath.relative_to(Path(process.cwd())).as_posix()
                 return f"http://localhost:{port}/voila/render/{path}?"
 
-        return False
+        return ""
 
     @staticmethod
     def get_free_port() -> int:

@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
+from typing import Union
 
 import numpy as np
 import pandas as pd
@@ -87,7 +88,7 @@ def display_sentiment(
     export: str = "",
     sheet_name: str = None,
     external_axes: bool = False,
-):
+) -> Union[OpenBBFigure, None]:
     """Plots sentiments from symbol
 
     Parameters
@@ -111,7 +112,7 @@ def display_sentiment(
     df_tweets = twitter_model.get_sentiment(symbol, n_tweets, n_days_past)
 
     if df_tweets.empty:
-        return
+        return None
 
     if compare:
         plots_kwargs = dict(
@@ -130,7 +131,7 @@ def display_sentiment(
             row_heights=[0.6, 0.4],
         )
 
-    fig = OpenBBFigure.create_subplots(**plots_kwargs)
+    fig = OpenBBFigure.create_subplots(**plots_kwargs)  # type: ignore
 
     fig.add_scatter(
         x=pd.to_datetime(df_tweets["created_at"]),

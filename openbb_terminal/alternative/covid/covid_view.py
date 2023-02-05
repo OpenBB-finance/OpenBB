@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
+from typing import Union
 
 import pandas as pd
 
@@ -20,7 +21,7 @@ logger = logging.getLogger(__name__)
 def plot_covid_ov(
     country: str,
     external_axes: bool = False,
-) -> None:
+) -> Union[OpenBBFigure, None]:
     """Plots historical cases and deaths by country.
 
     Parameters
@@ -33,7 +34,7 @@ def plot_covid_ov(
     cases = covid_model.get_global_cases(country) / 1_000
     deaths = covid_model.get_global_deaths(country)
     if cases.empty or deaths.empty:
-        return
+        return None
     ov = pd.concat([cases, deaths], axis=1)
     ov.columns = ["Cases", "Deaths"]
 
@@ -101,7 +102,7 @@ def plot_covid_stat(
     country: str,
     stat: str = "cases",
     external_axes: bool = False,
-) -> None:
+) -> Union[OpenBBFigure, None]:
     """Plots historical stat by country.
 
     Parameters
@@ -129,8 +130,7 @@ def plot_covid_stat(
         color = theme.get_colors(reverse=True)[0]
         fig.set_yaxis_title(f"{stat.title()} (Deaths/Cases)")
     else:
-        console.print("Invalid stat selected.\n")
-        return
+        return console.print("Invalid stat selected.\n")
 
     fig.add_scatter(
         x=data.index,

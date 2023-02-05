@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
+from typing import Union
 
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.core.plots.backend import plots_backend
@@ -21,7 +22,7 @@ def display_grouped_defi_protocols(
     export: str = "",
     sheet_name: str = None,
     external_axes: bool = False,
-) -> None:
+) -> Union[OpenBBFigure, None]:
     """Plots top dApps (in terms of TVL) grouped by chain.
     [Source: https://docs.llama.fi/api]
 
@@ -125,7 +126,7 @@ def display_historical_tvl(
     export: str = "",
     sheet_name: str = None,
     external_axes: bool = False,
-):
+) -> Union[OpenBBFigure, None]:
     """Plots historical TVL of different dApps
     [Source: https://docs.llama.fi/api]
 
@@ -167,6 +168,8 @@ def display_historical_tvl(
 
         return fig.show(external=external_axes)
 
+    return None
+
 
 @log_start_end(log=logger)
 def display_defi_tvl(
@@ -174,7 +177,7 @@ def display_defi_tvl(
     export: str = "",
     sheet_name: str = None,
     external_axes: bool = False,
-) -> None:
+) -> Union[OpenBBFigure, None]:
     """Plots historical values of the total sum of TVLs from all listed protocols.
     [Source: https://docs.llama.fi/api]
 

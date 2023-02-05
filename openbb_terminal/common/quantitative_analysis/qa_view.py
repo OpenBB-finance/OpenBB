@@ -8,7 +8,7 @@ import logging
 import os
 import warnings
 from datetime import datetime
-from typing import Any, List, Optional
+from typing import Any, Dict, List, Optional, Union
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -76,7 +76,7 @@ def display_hist(
     symbol: str = "",
     bins: int = 15,
     external_axes: bool = False,
-) -> None:
+) -> Union[OpenBBFigure, None]:
     """Plots histogram of data
 
     Parameters
@@ -143,8 +143,8 @@ def display_cdf(
     symbol: str = "",
     export: str = "",
     sheet_name: str = None,
-    external_axes: Optional[List[plt.Axes]] = None,
-):
+    external_axes: bool = False,
+) -> Union[OpenBBFigure, None]:
     """Plots Cumulative Distribution Function
 
     Parameters
@@ -243,7 +243,7 @@ def display_bw(
     symbol: str = "",
     yearly: bool = True,
     external_axes: bool = False,
-) -> None:
+) -> Union[OpenBBFigure, None]:
     """Plots box and whisker plots
 
     Parameters
@@ -332,7 +332,7 @@ def display_acf(
     symbol: str = "",
     lags: int = 15,
     external_axes: bool = False,
-) -> None:
+) -> Union[OpenBBFigure, None]:
     """Plots Auto and Partial Auto Correlation of returns and change in returns
 
     Parameters
@@ -376,14 +376,14 @@ def display_acf(
     np_diff = np.diff(data.values)
 
     # Diff Auto - correlation function for original time series
-    fig.add_corr_plot(np_diff, lags, row=1, col=1, **kwargs)
+    fig.add_corr_plot(np_diff, lags, row=1, col=1, **kwargs)  # type: ignore
     # Diff Partial auto - correlation function for original time series
-    fig.add_corr_plot(np_diff, lags, row=1, col=2, pacf=True, method="ywm", **kwargs)
+    fig.add_corr_plot(np_diff, lags, row=1, col=2, pacf=True, method="ywm", **kwargs)  # type: ignore
     # Diff Diff Auto-correlation function for original time series
-    fig.add_corr_plot(np.diff(np_diff), lags, row=2, col=1, **kwargs)
+    fig.add_corr_plot(np.diff(np_diff), lags, row=2, col=1, **kwargs)  # type: ignore
     # Diff Diff Partial auto-correlation function for original time series
     fig.add_corr_plot(
-        np.diff(np_diff), lags, row=2, col=2, pacf=True, method="ywm", **kwargs
+        np.diff(np_diff), lags, row=2, col=2, pacf=True, method="ywm", **kwargs  # type: ignore
     )
 
     return fig.show(external=external_axes)
@@ -395,7 +395,7 @@ def display_qqplot(
     target: str,
     symbol: str = "",
     external_axes: bool = False,
-) -> None:
+) -> Union[OpenBBFigure, None]:
     """Plots QQ plot for data against normal quantiles
 
     Parameters
@@ -462,7 +462,7 @@ def display_cusum(
     threshold: float = 5,
     drift: float = 2.1,
     external_axes: bool = False,
-):
+) -> Union[OpenBBFigure, None]:
     """Plots Cumulative sum algorithm (CUSUM) to detect abrupt changes in data
 
     Parameters
@@ -608,8 +608,8 @@ def display_seasonal(
     multiplicative: bool = False,
     export: str = "",
     sheet_name: str = None,
-    external_axes: Optional[List[plt.Axes]] = None,
-) -> None:
+    external_axes: bool = False,
+) -> Union[OpenBBFigure, None]:
     """Plots seasonal decomposition data
 
     Parameters
@@ -868,7 +868,7 @@ def display_line(
     export: str = "",
     sheet_name: str = None,
     external_axes: bool = False,
-) -> None:
+) -> Union[OpenBBFigure, None]:
     """Display line plot of data
 
     Parameters
@@ -923,7 +923,7 @@ def display_line(
                 fig.add_vline(x=marker_date, line=dict(color=theme.up_color, width=2))
 
         if markers_scatter:
-            scatter = dict(x=[], y=[])
+            scatter: Dict[str, list] = dict(x=[], y=[])
             for n, marker_date in enumerate(markers_scatter):
                 price_location_idx = data.index.get_loc(marker_date, method="nearest")
                 # algo to improve text placement of highlight event number
@@ -1084,7 +1084,7 @@ def display_es(
 
 def display_sharpe(
     data: pd.DataFrame, rfr: float = 0, window: float = 252, external_axes: bool = False
-) -> None:
+) -> Union[OpenBBFigure, None]:
     """Plots Calculated the sharpe ratio
 
     Parameters
@@ -1116,7 +1116,7 @@ def display_sortino(
     window: float,
     adjusted: bool,
     external_axes: bool = False,
-) -> None:
+) -> Union[OpenBBFigure, None]:
     """Plots the sortino ratio
 
     Parameters
@@ -1153,7 +1153,7 @@ def display_omega(
     threshold_start: float = 0,
     threshold_end: float = 1.5,
     external_axes: bool = False,
-) -> None:
+) -> Union[OpenBBFigure, None]:
     """Plots the omega ratio
 
     Parameters

@@ -3,10 +3,12 @@ __docformat__ = "numpy"
 
 import logging
 import os
+from typing import Union
 
 import pandas as pd
 
 from openbb_terminal.common.technical_analysis import ta_helpers
+from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.core.plots.plotly_ta.ta_class import PlotlyTA
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data
@@ -26,7 +28,7 @@ def display_bbands(
     export: str = "",
     sheet_name: str = None,
     external_axes: bool = False,
-):
+) -> Union[OpenBBFigure, None]:
     """Plots bollinger bands
 
     Parameters
@@ -57,7 +59,7 @@ def display_bbands(
 
     close_col = ta_helpers.check_columns(data, high=False, low=False)
     if close_col is None:
-        return
+        return None
 
     export_data(
         export,
@@ -67,7 +69,7 @@ def display_bbands(
         sheet_name,
     )
 
-    fig.show(external=external_axes)
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -79,7 +81,7 @@ def display_donchian(
     export: str = "",
     sheet_name: str = None,
     external_axes: bool = False,
-):
+) -> Union[OpenBBFigure, None]:
     """Plots donchian channels
 
     Parameters
@@ -108,7 +110,7 @@ def display_donchian(
 
     close_col = ta_helpers.check_columns(data)
     if close_col is None:
-        return
+        return None
 
     export_data(
         export,
@@ -118,7 +120,7 @@ def display_donchian(
         sheet_name,
     )
 
-    fig.show(external=external_axes)
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -132,7 +134,7 @@ def view_kc(
     export: str = "",
     sheet_name: str = None,
     external_axes: bool = False,
-):
+) -> Union[OpenBBFigure, None]:
     """Plots Keltner Channels Indicator
 
     Parameters
@@ -168,7 +170,7 @@ def view_kc(
 
     close_col = ta_helpers.check_columns(data)
     if close_col is None:
-        return
+        return None
 
     export_data(
         export,
@@ -178,7 +180,7 @@ def view_kc(
         sheet_name,
     )
 
-    fig.show(external=external_axes)
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -191,7 +193,7 @@ def display_atr(
     export: str = "",
     sheet_name: str = None,
     external_axes: bool = False,
-):
+) -> Union[OpenBBFigure, None]:
     """Plots ATR
 
     Parameters
@@ -218,7 +220,7 @@ def display_atr(
 
     close_col = ta_helpers.check_columns(data)
     if close_col is None:
-        return
+        return None
 
     export_data(
         export,
@@ -228,4 +230,4 @@ def display_atr(
         sheet_name,
     )
 
-    fig.show(external=external_axes)
+    return fig.show(external=external_axes)

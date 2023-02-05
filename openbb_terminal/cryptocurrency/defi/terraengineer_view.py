@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
+from typing import Union
 
 import matplotlib.pyplot as plt
 from matplotlib import ticker
@@ -29,7 +30,7 @@ def display_terra_asset_history(
     export: str = "",
     sheet_name: str = None,
     external_axes: bool = False,
-) -> None:
+) -> Union[OpenBBFigure, None]:
     """Plots the 30-day history of specified asset in terra address
     [Source: https://terra.engineer/]
 
@@ -85,7 +86,7 @@ def display_anchor_yield_reserve(
     export: str = "",
     sheet_name: str = None,
     external_axes: bool = False,
-) -> None:
+) -> Union[OpenBBFigure, None]:
     """Plots the 30-day history of the Anchor Yield Reserve.
     [Source: https://terra.engineer/]
 
@@ -99,11 +100,12 @@ def display_anchor_yield_reserve(
 
     df = terraengineer_model.get_anchor_yield_reserve()
     if df.empty:
-        console.print("[red]No data was found[/red]\n")
-        return
+        return console.print("[red]No data was found[/red]\n")
 
     # This plot has 1 axis
     _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    fig = OpenBBFigure(yaxis_title="UST Amount")
+    fig.set_title("Anchor UST Yield Reserve")
 
     ax.plot(df["x"], df["y"])
     ax.set_ylabel("UST Amount")
@@ -111,6 +113,7 @@ def display_anchor_yield_reserve(
     ax.get_yaxis().set_major_formatter(
         ticker.FuncFormatter(lambda x, _: lambda_long_number_format(x))
     )
+    fig.add_scatter(x=df["x"], y=df["y"], name="UST Amount")
 
     cfg.theme.style_primary_axis(ax)
 
@@ -124,3 +127,5 @@ def display_anchor_yield_reserve(
         df,
         sheet_name,
     )
+
+    return fig.show(external=external_axes)

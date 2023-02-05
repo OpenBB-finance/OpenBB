@@ -322,7 +322,7 @@ def show_candles(
     if additional_charts:
         for key, value in additional_charts.items():
             if value:
-                indicators[key] = defaults.get(key, {})
+                indicators[key] = defaults.get(key, {}) or {}  # type: ignore
 
     if isinstance(df_candles, pd.DataFrame):
         df_candles.name = f"{instrument} {granularity}"

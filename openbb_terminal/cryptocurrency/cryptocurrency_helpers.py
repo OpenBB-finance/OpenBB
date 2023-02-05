@@ -756,7 +756,7 @@ def plot_chart(
     interval: str = "",
     external_axes: bool = False,
     yscale: str = "linear",
-) -> None:
+) -> Union[OpenBBFigure, None]:
     """Load data for Technical Analysis
 
     Parameters
@@ -781,8 +781,7 @@ def plot_chart(
     del interval
 
     if prices_df.empty:
-        console.print("There is not data to plot chart\n")
-        return
+        return console.print("There is not data to plot chart\n")
 
     exchange_str = f"/{exchange}" if source == "ccxt" else ""
     title = (
@@ -817,7 +816,7 @@ def plot_candles(  # pylint: disable=too-many-arguments
     external_axes: bool = False,
     yscale: str = "linear",
     raw: bool = False,
-) -> Optional[pd.DataFrame]:
+) -> Union[OpenBBFigure, Optional[pd.DataFrame], None]:
     """Plot candle chart from dataframe. [Source: Binance]
 
     Parameters
@@ -901,7 +900,7 @@ def plot_order_book(
     asks: np.ndarray,
     coin: str,
     external_axes: bool = False,
-) -> None:
+) -> Union[OpenBBFigure, None]:
     """
     Plots Bid/Ask. Can be used for Coinbase and Binance
 

@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
+from typing import Union
 
 from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.cryptocurrency.defi import cryptosaurio_model
@@ -20,7 +21,7 @@ def display_anchor_data(
     sheet_name: str = None,
     show_transactions: bool = False,
     external_axes: bool = False,
-) -> None:
+) -> Union[OpenBBFigure, None]:
     """Plots anchor protocol earnings data of a certain terra address
     [Source: https://cryptosaurio.com/]
 

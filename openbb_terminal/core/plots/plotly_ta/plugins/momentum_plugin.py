@@ -147,7 +147,7 @@ class Momentum(PltTA):
         _, _, fit_data = clenow_momentum(df_ta[self.close_column], window=window)
 
         fig.add_scatter(
-            x=df_ta.index[-window:],
+            x=df_ta.index[-window:],  # type: ignore
             y=pow(np.e, fit_data),
             name="CLenow",
             mode="lines",

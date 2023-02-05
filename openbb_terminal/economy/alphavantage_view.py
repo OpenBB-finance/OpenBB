@@ -49,7 +49,7 @@ def realtime_performance_sector(
 
     # pylint: disable=E1101
     if df_rtp.empty:
-        return
+        return None
 
     if raw:
         print_rich_table(
@@ -117,7 +117,7 @@ def display_real_gdp(
     gdp = alphavantage_model.get_real_gdp(interval, start_year)
 
     if gdp.empty:
-        return
+        return None
 
     int_string = "Annual" if interval == "a" else "Quarterly"
     year_str = str(start_year) if interval == "a" else str(list(gdp["date"])[-1].year)
@@ -171,8 +171,7 @@ def display_gdp_capita(
     """
     gdp = alphavantage_model.get_gdp_capita(start_year)
     if gdp.empty:
-        console.print("Error getting data.  Check API Key")
-        return
+        return console.print("Error getting data.  Check API Key")
 
     fig = OpenBBFigure(
         title=f"US GDP per Capita (Chained 2012 USD) from {start_year}",
@@ -226,8 +225,7 @@ def display_inflation(
     """
     inf = alphavantage_model.get_inflation(start_year)
     if inf.empty:
-        console.print("Error getting data.  Check API Key")
-        return
+        return console.print("Error getting data.  Check API Key")
 
     fig = OpenBBFigure(
         title=f"US Inflation from {list(inf['date'])[-1].year}",
@@ -284,8 +282,7 @@ def display_cpi(
     """
     cpi = alphavantage_model.get_cpi(interval, start_year)
     if cpi.empty:
-        console.print("Error getting data.  Check API Key")
-        return
+        return console.print("Error getting data.  Check API Key")
 
     int_string = "Semi-Annual" if interval == "s" else "Monthly"
     year_str = str(list(cpi["date"])[-1].year)
@@ -346,8 +343,7 @@ def display_treasury_yield(
     d_maturity = {"3m": "3month", "5y": "5year", "10y": "10year", "30y": "30year"}
     yld = alphavantage_model.get_treasury_yield(interval, maturity, start_date)
     if yld.empty:
-        console.print("Error getting data.  Check API Key")
-        return
+        return console.print("Error getting data.  Check API Key")
 
     fig = OpenBBFigure(
         title=f"{d_maturity[maturity]} Treasury Yield",
@@ -403,8 +399,7 @@ def display_unemployment(
     un = alphavantage_model.get_unemployment(start_year)
 
     if un.empty:
-        console.print("Error getting data. Check API Key")
-        return
+        return console.print("Error getting data. Check API Key")
 
     fig = OpenBBFigure(
         title=f"US Unemployment from {start_year}",

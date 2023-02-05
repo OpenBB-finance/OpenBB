@@ -159,10 +159,8 @@ def display_historical(
         External axes to plot on
     """
     console.print()
-    if external_axes is None:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    else:
-        ax = external_axes[0]
+    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+
     if data.empty:
         return
     ax.plot(data.index, data.Close)

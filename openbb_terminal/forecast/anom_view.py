@@ -57,7 +57,7 @@ def display_anomaly_detection(
     """
     data = helpers.clean_data(data, start_date, end_date, target_column)
     if not helpers.check_data(data, target_column):
-        return
+        return None
 
     (ticker_series, _, binary_anom) = anom_model.get_anomaly_detection_data(
         data=data,

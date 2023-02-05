@@ -44,7 +44,7 @@ def display_historical(
     export: str = "",
     sheet_name: str = None,
     external_axes: bool = False,
-):
+) -> Union[OpenBBFigure, None]:
     """Display historical stock prices. [Source: Yahoo Finance]
 
     Parameters
@@ -110,7 +110,7 @@ def display_volume(
     export: str = "",
     sheet_name: str = None,
     external_axes: bool = False,
-):
+) -> Union[OpenBBFigure, None]:
     """Display stock volume. [Source: Yahoo Finance]
 
     Parameters
@@ -162,7 +162,7 @@ def display_correlation(
     external_axes: bool = False,
     export: str = "",
     sheet_name: str = None,
-):
+) -> Union[OpenBBFigure, None]:
     """
     Correlation heatmap based on historical price comparison
     between similar companies. [Source: Yahoo Finance]
@@ -261,7 +261,7 @@ def display_sp500_comps_tsne(
     no_plot: bool = False,
     limit: int = 10,
     external_axes: bool = False,
-) -> Union[List[str], Tuple[List[str], OpenBBFigure]]:
+) -> Union[List[str], Tuple[List[str], Optional[OpenBBFigure]]]:
     """Runs TSNE on SP500 tickers (along with ticker if not in SP500).
     TSNE is a method of visualing higher dimensional data
     https://scikit-learn.org/stable/modules/generated/sklearn.manifold.TSNE.html

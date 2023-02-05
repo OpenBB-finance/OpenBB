@@ -19,7 +19,6 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.economy import investingcom_model
 from openbb_terminal.economy.economy_helpers import text_transform
 from openbb_terminal.helper_funcs import export_data, plot_autoscale, print_rich_table
-from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -218,21 +217,13 @@ def display_yieldcurve(
     df = investingcom_model.get_yieldcurve(country)
 
     if not df.empty:
-        if external_axes is None:
-            _, (ax1, ax2) = plt.subplots(
-                nrows=2,
-                ncols=1,
-                figsize=plot_autoscale(),
-                dpi=PLOT_DPI,
-                gridspec_kw={"height_ratios": [2, 1]},
-            )
-
-        else:
-            if len(external_axes) != 2:
-                logger.error("Expected list of 3 axis items")
-                console.print("[red]Expected list of 3 axis items.\n[/red]")
-                return
-            (ax1, ax2) = external_axes
+        _, (ax1, ax2) = plt.subplots(
+            nrows=2,
+            ncols=1,
+            figsize=plot_autoscale(),
+            dpi=PLOT_DPI,
+            gridspec_kw={"height_ratios": [2, 1]},
+        )
 
         ax1.plot(
             df["Tenor"],

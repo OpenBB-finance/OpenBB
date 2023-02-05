@@ -15,7 +15,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import riskfolio as rp
-from dateutil.relativedelta import FR, relativedelta
+from dateutil.relativedelta import relativedelta, FR
 from matplotlib.gridspec import GridSpec
 from matplotlib.lines import Line2D
 
@@ -2082,7 +2082,7 @@ def display_ef(
     seed: int = 123,
     tangency: bool = False,
     plot_tickers: bool = True,
-    external_axes: bool = False,
+    external_axes: Optional[List[plt.Axes]] = None,
 ):
     """
     Display efficient frontier
@@ -3735,7 +3735,7 @@ def additional_plots(
     dd: bool = False,
     rc_chart: bool = False,
     heat: bool = False,
-    external_axes: bool = False,
+    external_axes: Optional[List[plt.Axes]] = None,
 ):
     """
     Plot additional charts

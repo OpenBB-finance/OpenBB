@@ -5,7 +5,7 @@ import logging
 import os
 import re
 from datetime import date, datetime, timedelta
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Union
 
 import numpy as np
 import pandas as pd
@@ -75,7 +75,7 @@ def plot_plot(
     export: str = "",
     sheet_name: str = None,
     external_axes: bool = False,
-) -> None:
+) -> Union[OpenBBFigure, None]:
     """Generate a graph custom graph based on user input
 
     Parameters
@@ -169,7 +169,7 @@ def plot_payoff(
     symbol: str,
     expiry: str,
     external_axes: bool = False,
-) -> None:
+) -> Union[OpenBBFigure, None]:
     """Generate a graph showing the option payoff diagram"""
     x, yb, ya = generate_data(current_price, options, underlying)
 
@@ -184,7 +184,7 @@ def plot_payoff(
     else:
         plot.data[0].name = "Payoff"
 
-    return plot.show() if not external_axes else plot
+    return plot.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -374,7 +374,7 @@ def plot_expected_prices(
     symbol: str,
     expiry: str,
     external_axes: bool = False,
-) -> None:
+) -> Union[OpenBBFigure, None]:
     """Plot expected prices of the underlying asset at expiration
 
     Parameters
@@ -536,7 +536,7 @@ def display_vol_surface(
     sheet_name: str = None,
     z: str = "IV",
     external_axes: bool = False,
-):
+) -> Union[OpenBBFigure, None]:
     """Display vol surface
 
     Parameters
@@ -622,7 +622,7 @@ def display_vol_surface(
         sheet_name,
     )
 
-    fig.show(external=external_axes, margin=False)
+    return fig.show(external=external_axes, margin=False)
 
 
 @log_start_end(log=logger)

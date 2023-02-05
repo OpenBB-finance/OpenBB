@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
+from typing import Union
 
 import pandas as pd
 import plotly.express as px
@@ -34,7 +35,7 @@ def display_crypto_heatmap(
     export: str = "",
     sheet_name: str = None,
     external_axes: bool = False,
-) -> None:
+) -> Union[OpenBBFigure, None]:
     """Shows cryptocurrencies heatmap [Source: CoinGecko]
 
     Parameters
@@ -150,6 +151,8 @@ def display_crypto_heatmap(
         )
 
         return fig.show(external=external_axes, margin=False)
+
+    return None
 
 
 @log_start_end(log=logger)

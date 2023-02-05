@@ -53,9 +53,9 @@ class TAIndicator:
                 output = opt
         return output
 
-    def get_argument_values(self, label: str) -> Union[List[Any], None]:
+    def get_argument_values(self, label: str) -> List[Any]:
         """Returns arguments values by label"""
-        output = None
+        output = []
         options = self.get_args(label)
         if options is not None:
             output = options.values
@@ -64,7 +64,7 @@ class TAIndicator:
 
 @dataclass(**datacls_kwargs)
 class ChartIndicators:
-    indicators: Optional[List[TAIndicator]]
+    indicators: Optional[List[TAIndicator]] = None
 
     def __post_init__(self):
         self.indicators = (
@@ -86,21 +86,27 @@ class ChartIndicators:
         output = None
         indicator = self.get_indicator(name)
         if indicator is not None:
-            output = indicator.get_args(label).values
+            output = indicator.get_args(label)
+            if output is not None:
+                output = output.values
         return output
 
-    def get_indicators(self) -> List[TAIndicator]:
+    def get_indicators(self) -> Optional[List[TAIndicator]]:
         """Return active indicators and their arguments"""
         return self.indicators
 
     def get_params(self) -> Dict[str, TAIndicator]:
         """Return dictionary of active indicators and their arguments"""
-        output = {indicator.name: indicator for indicator in self.indicators}
+        output = {}
+        if self.indicators:
+            output = {indicator.name: indicator for indicator in self.indicators}
         return output
 
     def get_active_ids(self) -> List[str]:
         """Returns list of names of active indicators"""
-        active_ids = [indicator.name for indicator in self.indicators]
+        active_ids = []
+        if self.indicators:
+            active_ids = [indicator.name for indicator in self.indicators]
         return active_ids
 
     def get_arg_names(self, name: str) -> List[str]:
@@ -133,10 +139,10 @@ class ChartIndicators:
                 args.append({"label": arg, "values": indicators[indicator][arg]})
             data.append({"name": indicator, "args": args})
 
-        return cls(indicators=data)
+        return cls(indicators=data)  # type: ignore
 
     def to_dataframe(
-        self, df_ta: pd.DataFrame, ma_mode: List[str] = None
+        self, df_ta: pd.DataFrame, ma_mode: Optional[List[str]] = None
     ) -> pd.DataFrame:
         """Calculate technical analysis indicators and return dataframe"""
         output = df_ta.copy()
@@ -252,14 +258,14 @@ class TA_Data:
 
         elif indicator.name == "vwap":
             ta_columns = self.columns[indicator.name]
-            ta_columns = [self.df_ta[col] for col in ta_columns]
+            ta_columns = [self.df_ta[col] for col in ta_columns]  # type: ignore
 
             output = getattr(ta, indicator.name)(
                 *ta_columns,
             )
         elif indicator.name in self.columns:
             ta_columns = self.columns[indicator.name]
-            ta_columns = [self.df_ta[col] for col in ta_columns]
+            ta_columns = [self.df_ta[col] for col in ta_columns]  # type: ignore
 
             if indicator.get_argument_values("use_open") is True:
                 ta_columns.append(self.df_ta["Open"])
