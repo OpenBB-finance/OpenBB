@@ -30,6 +30,7 @@ from openbb_terminal.stocks.options import (
     chartexchange_view,
     fdscanner_view,
     intrinio_model,
+    intrinio_view,
     nasdaq_model,
     op_helpers,
     tradier_model,
@@ -820,8 +821,21 @@ class OptionsController(BaseController):
                     if ns_parser.sheet_name
                     else None,
                 )
+            if ns_parser.source == "Intrinio":
+                intrinio_view.display_historical(
+                    symbol=self.ticker,
+                    expiry=self.selected_date,
+                    strike=ns_parser.strike,
+                    put=ns_parser.put,
+                    raw=ns_parser.raw,
+                    chain_id=ns_parser.chain_id,
+                    export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
+                )
 
-            elif (
+            if (
                 ns_parser.source == "Tradier" and API_TRADIER_TOKEN != "REPLACE_ME"
             ):  # nosec
                 tradier_view.display_historical(
@@ -836,8 +850,6 @@ class OptionsController(BaseController):
                     if ns_parser.sheet_name
                     else None,
                 )
-            else:
-                console.print("TRADIER TOKEN not supplied.")
 
     @log_start_end(log=logger)
     def call_chains(self, other_args: List[str]):

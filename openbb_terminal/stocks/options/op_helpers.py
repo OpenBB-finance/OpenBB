@@ -676,7 +676,7 @@ def get_abs_market_delta(
     underlying_price : float
         Theoretical underlying price
     df : pd.DataFrame
-        Dataframe of option chain.  Requires the following columns: impliedVolatility, dte, openInterest, strike, optionType
+        Dataframe of option chain.  Requires the following columns: impliedVolatility,dte,openInterest,strike,optionType
     rf_rate : float, optional
         Optional risk free rate for calculation, by default 0.03
 
@@ -724,7 +724,7 @@ def get_market_gamma(
     underlying_price : float
         Theoretical underlying price
     df : pd.DataFrame
-        Dataframe of option chain.  Requires the following columns: impliedVolatility, dte, openInterest, strike, optionType
+        Dataframe of option chain.  Requires the following columns: impliedVolatility,dte,openInterest,strike,optionType
     abs_mg : bool, optional
         Flag to indicate if getting gamma neutral by default True
     rf_rate : float, optional

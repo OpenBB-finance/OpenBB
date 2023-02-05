@@ -33,7 +33,7 @@
       "oi": ["YahooFinance", "Tradier", "Nasdaq"],
       "vol": ["YahooFinance", "Tradier", "Nasdaq"],
       "voi": ["YahooFinance", "Tradier", "Nasdaq"],
-      "hist": ["ChartExchange", "Tradier"],
+      "hist": ["ChartExchange", "Tradier", "Intrinio"],
       "vsurf": ["YahooFinance"],
       "grhist": ["Syncretism"],
       "plot": ["YahooFinance"],

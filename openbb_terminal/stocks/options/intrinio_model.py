@@ -326,11 +326,14 @@ def get_historical_options(symbol: str) -> pd.DataFrame:
     ]
     historical["date"] = pd.DatetimeIndex(historical.date)
     # Just in case
-    historical["Adj Close"] = historical["close"]
-    historical = historical.set_index("date").rename(
-        columns={
-            "open_interest": "openInterest",
-            "implied_volatility": "impliedVolatility",
-        }
+    historical = (
+        historical.set_index("date")
+        .rename(
+            columns={
+                "open_interest": "openInterest",
+                "implied_volatility": "impliedVolatility",
+            }
+        )
+        .fillna(0)
     )
     return historical
