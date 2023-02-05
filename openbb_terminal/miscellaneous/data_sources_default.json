@@ -525,7 +525,12 @@
     "ffrmc": ["FRED"],
     "ycrv": ["FRED"],
     "iiycrv": ["FRED"],
-    "ecbycrv": ["ECB"]
+    "ecbycrv": ["ECB"],
+    "tbill": ["FRED", "EconDB"],
+    "cmn": ["FRED", "EconDB"],
+    "tips": ["FRED", "EconDB"],
+    "tbffr": ["FRED"],
+    "ty": ["YahooFinance"]
   },
   "alternative": {
     "oss": {

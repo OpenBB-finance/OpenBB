@@ -790,13 +790,19 @@ en:
   fixedincome/ecbmrofr: ECB main refinancing operations rate, fixed rate tender
   fixedincome/stir: plot countries (incl. forecasted) short term interest rate
   fixedincome/ltir: plot countries (incl. forecasted) long term interest rate
-  fixedincome/_constant_maturities_spreads_: Constant Maturity Spreads
-  fixedincome/tmc: 10-year treasury constant maturity minus selected treasury constant maturity
-  fixedincome/ffrmc: selected treasury constant maturity minus federal funds rate
   fixedincome/_yield_curves_: Yield curves
   fixedincome/ycrv: plot US yield curve
   fixedincome/iiycrv: plot US inflation-indexed yield curve
   fixedincome/ecbycrv: plot euro area yield curve
+  fixedincome/_us_government_securities_: US government securities
+  fixedincome/tbill: plot secondary market rate of treasury bills
+  fixedincome/cmn: plot nominal constant maturity treasuries
+  fixedincome/tips: plot treasury inflation protected securities (tips)
+  fixedincome/ty: plot treasury yields
+  fixedincome/_spreads_: Spreads
+  fixedincome/tmc: 10-year treasury constant maturity minus selected treasury constant maturity
+  fixedincome/ffrmc: selected treasury constant maturity minus federal funds rate
+  fixedincome/tbffr: selected treasury bill minus federal funds rate
   forex/_ticker: Ticker
   forex/_from: From
   forex/_to: To

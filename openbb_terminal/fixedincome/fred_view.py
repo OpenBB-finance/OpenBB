@@ -101,6 +101,37 @@ ID_TO_NAME_FFRMC = {
     "T5YFF": "5-Year",
     "T1YFF": "1-Year",
     "T6MFF": "6-Month",
+    "T3MFF": "3-Month",
+}
+ID_TO_NAME_SECONDARY = {
+    "TB3MS": "3-Month",
+    "DTB4WK": "4-Week",
+    "DTB1YR": "1-Year",
+    "DTB6": "6-Month"
+}
+ID_TO_NAME_TIPS = {
+    "DFII5": "5-Year",
+    "DFII7": "7-Year",
+    "DFII10": "10-Year",
+    "DFII20": "20-Year",
+    "DFII30": "30-Year",
+}
+ID_TO_NAME_CMN = {
+    "DGS1MO": "1 Month",
+    "DGS3MO": "3 Month",
+    "DGS6MO": "6 Month",
+    "DGS1": "1 Year",
+    "DGS2": "2 Year",
+    "DGS3": "3 Year",
+    "DGS5": "5 Year",
+    "DGS7": "7 Year",
+    "DGS10": "10 Year",
+    "DGS20": "20 Year",
+    "DGS30": "30 Year",
+}
+ID_TO_NAME_TBFFR = {
+    "TB3SMFFM": "3 Month",
+    "TB6SMFFM": "6 Month",
 }
 
 
@@ -1184,7 +1215,7 @@ def plot_ffrmc(
     Parameters
     ----------
     series_id: str
-        FRED ID of FFRMC data to plot, options: ['T10YFF', 'T5YFF', 'T1YFF', 'T6MFF']
+        FRED ID of FFRMC data to plot, options: ['T10YFF', 'T5YFF', 'T1YFF', 'T6MFF', 'T3MFF']
     start_date: Optional[str]
         Start date, formatted YYYY-MM-DD
     end_date: Optional[str]
@@ -1228,7 +1259,7 @@ def plot_ffrmc(
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
-        f"tmc, {series_id}",
+        f"ffrmc, {series_id}",
         df,
     )
 
@@ -1376,4 +1407,275 @@ def display_inflation_indexed_yield_curve(
         os.path.dirname(os.path.abspath(__file__)),
         "iiycrv",
         rates,
+    )
+
+
+@log_start_end(log=logger)
+@check_api_key(["API_FRED_KEY"])
+def plot_tbill(
+    series_id: str = "TB3MS",
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
+    export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
+):
+    """Plot Treasury Bill Secondary Market Rate.
+
+    A Treasury Bill (T-Bill) is a short-term U.S. government debt obligation backed by the Treasury Department with a
+    maturity of one year or less. Treasury bills are usually sold in denominations of $1,000. However, some can reach
+    a maximum denomination of $5 million in non-competitive bids. These securities are widely regarded as low-risk
+    and secure investments.
+
+    Parameters
+    ----------
+    series_id: str
+        FRED ID of Treasury Bill Secondary Market Rate data to plot, options: ['TB3MS', 'DTB4WK', 'DTB1YR', 'DTB6']
+    start_date: Optional[str]
+        Start date, formatted YYYY-MM-DD
+    end_date: Optional[str]
+        End date, formatted YYYY-MM-DD
+    export: str
+        Export data to csv or excel file
+    external_axes: Optional[List[plt.Axes]]
+        External axes (1 axis is expected in the list)
+    """
+    df = fred_model.get_series_data(
+        series_id=series_id, start_date=start_date, end_date=end_date
+    )
+
+    # This plot has 1 axis
+    if not external_axes:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    elif is_valid_axes_count(external_axes, 1):
+        (ax,) = external_axes
+    else:
+        return
+
+    colors = cycle(theme.get_colors())
+    ax.plot(
+        df.index,
+        df.values,
+        marker="o",
+        linestyle="dashed",
+        linewidth=2,
+        markersize=4,
+        color=next(colors, "#FCED00"),
+    )
+    ax.set_title(f"{ID_TO_NAME_SECONDARY[series_id]} Treasury Bill Secondary Market Rate, Discount Basis [Percent]")
+    theme.style_primary_axis(ax)
+
+    if external_axes is None:
+        theme.visualize_output()
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        f"tbill, {series_id}",
+        df,
+    )
+
+
+@log_start_end(log=logger)
+@check_api_key(["API_FRED_KEY"])
+def plot_cmn(
+    series_id: str = "DGS10",
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
+    export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
+):
+    """Plot Treasury Constant Maturity Nominal Market Yield.
+
+    Yields on Treasury nominal securities at “constant maturity” are interpolated by the U.S. Treasury from the daily
+    yield curve for non-inflation-indexed Treasury securities. This curve, which relates the yield on a security to
+    its time to maturity, is based on the closing market bid yields on actively traded Treasury securities in the
+    over-the-counter market. These market yields are calculated from composites of quotations obtained by the Federal
+    Reserve Bank of New York. The constant maturity yield values are read from the yield curve at fixed maturities,
+    currently 1, 3, and 6 months and 1, 2, 3, 5, 7, 10, 20, and 30 years. This method provides a yield for a 10-year
+    maturity, for example, even if no outstanding security has exactly 10 years remaining to maturity. Similarly,
+    yields on inflation-indexed securities at “constant maturity” are interpolated from the daily yield curve for
+    Treasury inflation protected securities in the over-the-counter market. The inflation-indexed constant maturity
+    yields are read from this yield curve at fixed maturities, currently 5, 7, 10, 20, and 30 years.
+
+    Parameters
+    ----------
+    series_id: str
+        FRED ID of Treasury Constant Maturity Nominal Market Yield data to plot, options: ['DGS1MO', 'DGS3MO', 'DGS6MO', 'DGS1', 'DGS2', 'DGS3', 'DGS5', 'DGS7', 'DGS10', 'DGS20', DGS30']
+    start_date: Optional[str]
+        Start date, formatted YYYY-MM-DD
+    end_date: Optional[str]
+        End date, formatted YYYY-MM-DD
+    export: str
+        Export data to csv or excel file
+    external_axes: Optional[List[plt.Axes]]
+        External axes (1 axis is expected in the list)
+    """
+    df = fred_model.get_series_data(
+        series_id=series_id, start_date=start_date, end_date=end_date
+    )
+
+    # This plot has 1 axis
+    if not external_axes:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    elif is_valid_axes_count(external_axes, 1):
+        (ax,) = external_axes
+    else:
+        return
+
+    colors = cycle(theme.get_colors())
+    ax.plot(
+        df.index,
+        df.values,
+        marker="o",
+        linestyle="dashed",
+        linewidth=2,
+        markersize=4,
+        color=next(colors, "#FCED00"),
+    )
+    ax.set_title(f"{ID_TO_NAME_CMN[series_id]}  Treasury Constant Maturity Nominal Market Yield [Percent]")
+    theme.style_primary_axis(ax)
+
+    if external_axes is None:
+        theme.visualize_output()
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        f"cmn, {series_id}",
+        df,
+    )
+
+
+@log_start_end(log=logger)
+@check_api_key(["API_FRED_KEY"])
+def plot_tips(
+    series_id: str = "DFII10",
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
+    export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
+):
+    """Plot Plot Yields on Treasury inflation protected securities (TIPS) adjusted to constant maturities.
+
+    Yields on Treasury nominal securities at “constant maturity” are interpolated by the U.S. Treasury from the daily
+    yield curve for non-inflation-indexed Treasury securities. This curve, which relates the yield on a security to
+    its time to maturity, is based on the closing market bid yields on actively traded Treasury securities in the
+    over-the-counter market. These market yields are calculated from composites of quotations obtained by the Federal
+    Reserve Bank of New York. The constant maturity yield values are read from the yield curve at fixed maturities,
+    currently 1, 3, and 6 months and 1, 2, 3, 5, 7, 10, 20, and 30 years. This method provides a yield for a 10-year
+    maturity, for example, even if no outstanding security has exactly 10 years remaining to maturity. Similarly,
+    yields on inflation-indexed securities at “constant maturity” are interpolated from the daily yield curve for
+    Treasury inflation protected securities in the over-the-counter market. The inflation-indexed constant maturity
+    yields are read from this yield curve at fixed maturities, currently 5, 7, 10, 20, and 30 years.
+
+    Parameters
+    ----------
+    series_id: str
+        FRED ID of TIPS adjusted to constant maturities data to plot, options: ['DFII5', 'DFII7', 'DFII10', 'DFII20', 'DFII30']
+    start_date: Optional[str]
+        Start date, formatted YYYY-MM-DD
+    end_date: Optional[str]
+        End date, formatted YYYY-MM-DD
+    export: str
+        Export data to csv or excel file
+    external_axes: Optional[List[plt.Axes]]
+        External axes (1 axis is expected in the list)
+    """
+    df = fred_model.get_series_data(
+        series_id=series_id, start_date=start_date, end_date=end_date
+    )
+
+    # This plot has 1 axis
+    if not external_axes:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    elif is_valid_axes_count(external_axes, 1):
+        (ax,) = external_axes
+    else:
+        return
+
+    colors = cycle(theme.get_colors())
+    ax.plot(
+        df.index,
+        df.values,
+        marker="o",
+        linestyle="dashed",
+        linewidth=2,
+        markersize=4,
+        color=next(colors, "#FCED00"),
+    )
+    ax.set_title(f"{ID_TO_NAME_TIPS[series_id]}  Yields on Treasury inflation protected securities (TIPS) adjusted to "
+                 f"constant maturities [Percent]")
+    theme.style_primary_axis(ax)
+
+    if external_axes is None:
+        theme.visualize_output()
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        f"tips, {series_id}",
+        df,
+    )
+
+
+@log_start_end(log=logger)
+@check_api_key(["API_FRED_KEY"])
+def plot_tbffr(
+    series_id: str = "TB3SMFFM",
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
+    export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
+):
+    """Plot Selected Treasury Bill Minus Federal Funds Rate data.
+
+    Parameters
+    ----------
+    series_id: str
+        FRED ID of TBFFR data to plot, options: ['TB3SMFFM', 'TB6SMFFM']
+    start_date: Optional[str]
+        Start date, formatted YYYY-MM-DD
+    end_date: Optional[str]
+        End date, formatted YYYY-MM-DD
+    export: str
+        Export data to csv or excel file
+    external_axes: Optional[List[plt.Axes]]
+        External axes (1 axis is expected in the list)
+    """
+    df = fred_model.get_series_data(
+        series_id=series_id, start_date=start_date, end_date=end_date
+    )
+
+    # This plot has 1 axis
+    if not external_axes:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    elif is_valid_axes_count(external_axes, 1):
+        (ax,) = external_axes
+    else:
+        return
+
+    colors = cycle(theme.get_colors())
+    ax.plot(
+        df.index,
+        df.values,
+        marker="o",
+        linestyle="dashed",
+        linewidth=2,
+        markersize=4,
+        color=next(colors, "#FCED00"),
+    )
+    ax.set_title(
+        ID_TO_NAME_TBFFR[series_id]
+        + " Treasury Bill Minus Federal Funds Rate [Percent]"
+    )
+    theme.style_primary_axis(ax)
+
+    if external_axes is None:
+        theme.visualize_output()
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        f"tbffr, {series_id}",
+        df,
     )
