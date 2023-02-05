@@ -5,8 +5,8 @@ from datetime import datetime
 from typing import List
 
 from reportlab.lib import colors
-from reportlab.pdfgen import canvas
 from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
+from reportlab.pdfgen import canvas
 from reportlab.platypus import Paragraph, Table, TableStyle
 
 

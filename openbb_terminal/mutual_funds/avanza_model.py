@@ -15,20 +15,19 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def get_data(name: str):
+def get_data(isin: str):
     """Gets the data from Avanza
 
     Parameters
     ----------
-    name: str
-        Full name of the fund
+    isin: str
+        ISIN of the fund
     """
     ava_fund = pd.read_csv(
         os.path.join("openbb_terminal", "mutual_funds", "avanza_fund_ID.csv"),
         index_col=0,
     )
-    ava_fund.index = ava_fund.index.str.upper()
-    fund_id = ava_fund.loc[name, "ID"]
+    fund_id = ava_fund.loc[ava_fund["ISIN"] == isin]["ID"].tolist()[0]
     url = f"https://www.avanza.se/_api/fund-guide/guide/{fund_id}"
     response = request(url)
     fund_data = response.json()

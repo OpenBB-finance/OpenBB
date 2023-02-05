@@ -2,7 +2,8 @@
 __docformat__ = "numpy"
 from typing import Dict, List
 
-from openpyxl.styles import Border, Side, Font, PatternFill, Alignment
+from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
+
 from openbb_terminal.helper_funcs import excel_columns, get_user_agent
 
 letters = excel_columns()

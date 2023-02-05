@@ -1,20 +1,17 @@
 # IMPORTATION STANDARD
-import platform
 import json
 import logging
+import platform
 from types import FunctionType, ModuleType
 
 # IMPORTATION THIRDPARTY
-
-
 # IMPORTATION INTERNAL
 import openbb_terminal.feature_flags as obbff
 from openbb_terminal import config_terminal as cfg
-from openbb_terminal.terminal_helper import is_packaged_application
 from openbb_terminal.core.log.generation.path_tracking_file_handler import (
     PathTrackingFileHandler,
 )
-
+from openbb_terminal.terminal_helper import is_packaged_application
 
 SENSITIVE_WORDS = [
     "API",
@@ -123,4 +120,7 @@ def do_rollover():
 
     for handler in logging.getLogger().handlers:
         if isinstance(handler, PathTrackingFileHandler):
-            handler.doRollover()
+            try:
+                handler.doRollover()
+            except PermissionError:
+                pass

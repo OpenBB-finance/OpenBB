@@ -1,15 +1,15 @@
 # IMPORTATION STANDARD
-import os
 import datetime
+import os
+
+import pandas as pd
 
 # IMPORTATION THIRDPARTY
 import pytest
-import pandas as pd
 from pandas import Timestamp
 
 # IMPORTATION INTERNAL
 from openbb_terminal.economy import economy_controller
-
 
 # pylint: disable=E1101
 # pylint: disable=W0603

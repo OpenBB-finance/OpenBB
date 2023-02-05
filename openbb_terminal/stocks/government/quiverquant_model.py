@@ -11,8 +11,8 @@ import pandas as pd
 from sklearn.linear_model import LinearRegression
 
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.rich_config import console
 from openbb_terminal.helper_funcs import request
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 

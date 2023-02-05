@@ -169,7 +169,7 @@ def display_watchlist(limit: int = 5):
                     n_tickers += 1
                 except Exception:
                     # console.print(e, "\n")
-                    pass
+                    pass  # noqa
             if n_tickers:
                 console.print(
                     "The following stock tickers have been mentioned more than once across the previous watchlists:"
@@ -269,7 +269,7 @@ def display_spac_community(limit: int = 10, popular: bool = False):
                     n_tickers += 1
                 except Exception:
                     # console.print(e, "\n")
-                    pass
+                    pass  # noqa
 
             if n_tickers:
                 console.print(
@@ -318,7 +318,7 @@ def display_spac(limit: int = 5):
                         s_watchlist_tickers += f"{t_ticker[1]} {t_ticker[0]}, "
                     n_tickers += 1
                 except Exception:
-                    pass
+                    pass  # noqa
             if n_tickers:
                 console.print(
                     "The following stock tickers have been mentioned more than once across the previous SPACs:"

@@ -2,11 +2,15 @@
 import logging
 import os
 
-from matplotlib import pyplot as plt, ticker
+from matplotlib import (
+    pyplot as plt,
+    ticker,
+)
 
 from openbb_terminal.alternative.oss import runa_model
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
+from openbb_terminal.core.plots.backend import plots_backend
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
@@ -59,6 +63,8 @@ def display_rossindex(
     if df.empty:
         console.print("\nError in runa request\n")
     else:
+        plots_backend().send_table(df, title="Runa ROSS Index")
+
         if sortby in runa_model.SORT_COLUMNS:
             df = df.sort_values(by=sortby, ascending=ascend)
         df = df.head(limit)
