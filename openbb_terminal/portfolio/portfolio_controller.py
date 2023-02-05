@@ -141,6 +141,7 @@ class PortfolioController(BaseController):
         self.portfolio_name: str = ""
         self.benchmark_name: str = ""
         self.original_benchmark_ticker = ""
+        self.recalculate_alloc = False
         self.risk_free_rate = 0
         self.portlist: List[str] = os.listdir(self.DEFAULT_HOLDINGS_PATH)
         self.portfolio = None
@@ -447,6 +448,7 @@ class PortfolioController(BaseController):
                         ns_parser.benchmark, ns_parser.benchmark
                     )
                     self.original_benchmark_ticker = ns_parser.benchmark
+                    self.recalculate_alloc = True
 
     @log_start_end(log=logger)
     def call_alloc(self, other_args: List[str]):
@@ -488,27 +490,31 @@ class PortfolioController(BaseController):
             ):
                 if ns_parser.agg == "assets":
                     portfolio_view.display_assets_allocation(
-                        self.portfolio,
-                        ns_parser.limit,
-                        ns_parser.tables,
+                        portfolio_engine=self.portfolio,
+                        limit=ns_parser.limit,
+                        tables=ns_parser.tables,
+                        recalculate=self.recalculate_alloc,
                     )
                 elif ns_parser.agg == "sectors":
                     portfolio_view.display_sectors_allocation(
-                        self.portfolio,
-                        ns_parser.limit,
-                        ns_parser.tables,
+                        portfolio_engine=self.portfolio,
+                        limit=ns_parser.limit,
+                        tables=ns_parser.tables,
+                        recalculate=self.recalculate_alloc,
                     )
                 elif ns_parser.agg == "countries":
                     portfolio_view.display_countries_allocation(
-                        self.portfolio,
-                        ns_parser.limit,
-                        ns_parser.tables,
+                        portfolio_engine=self.portfolio,
+                        limit=ns_parser.limit,
+                        tables=ns_parser.tables,
+                        recalculate=self.recalculate_alloc,
                     )
                 elif ns_parser.agg == "regions":
                     portfolio_view.display_regions_allocation(
-                        self.portfolio,
-                        ns_parser.limit,
-                        ns_parser.tables,
+                        portfolio_engine=self.portfolio,
+                        limit=ns_parser.limit,
+                        tables=ns_parser.tables,
+                        recalculate=self.recalculate_alloc,
                     )
                 else:
                     console.print(

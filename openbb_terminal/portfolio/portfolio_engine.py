@@ -118,7 +118,7 @@ class PortfolioEngine:
         self.tickers_list = None
         self.tickers: Dict[Any, Any] = {}
         self.benchmark_ticker: str = ""
-        self.benchmark_info = None
+        self.benchmark_info: Dict[Any, Any] = {}
         self.historical_trade_data = pd.DataFrame()
 
         # Portfolio
@@ -560,7 +560,8 @@ class PortfolioEngine:
         p_bar.refresh()
 
         try:
-            self.benchmark_info = yf.Ticker(symbol).info
+            self.benchmark_info = dict(yf.Ticker(symbol).info)
+            self.benchmark_info["symbol"] = symbol
         except Exception as _:  # noqa
             console.print(
                 f"[red]\n\nCould not get info for {symbol}."

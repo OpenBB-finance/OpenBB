@@ -2,6 +2,8 @@ portfolio
 load --example
 show
 bench QQQ
+bench FAKE_BENCH
+bench TSLA
 alloc assets -t -l 4
 alloc sectors -t -l 4
 alloc countries -t -l 4
