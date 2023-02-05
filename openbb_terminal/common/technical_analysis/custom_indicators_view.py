@@ -3,24 +3,26 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import Optional, Union, List
+from typing import List, Optional, Union
 
 import matplotlib.pyplot as plt
 import pandas as pd
 
-from openbb_terminal.config_terminal import theme
-from openbb_terminal.common.technical_analysis import custom_indicators_model
+from openbb_terminal.common.technical_analysis import (
+    custom_indicators_model,
+    ta_helpers,
+)
 from openbb_terminal.config_plot import PLOT_DPI
+from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
+    is_intraday,
+    is_valid_axes_count,
     plot_autoscale,
     print_rich_table,
     reindex_dates,
-    is_intraday,
-    is_valid_axes_count,
 )
-from openbb_terminal.common.technical_analysis import ta_helpers
 
 logger = logging.getLogger(__name__)
 

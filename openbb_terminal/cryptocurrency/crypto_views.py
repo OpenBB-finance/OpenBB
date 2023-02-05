@@ -1,7 +1,7 @@
 import os
 
-from openbb_terminal.helper_funcs import print_rich_table, export_data
 from openbb_terminal.cryptocurrency import crypto_models
+from openbb_terminal.helper_funcs import export_data, print_rich_table
 
 
 def find(

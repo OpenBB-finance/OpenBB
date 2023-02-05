@@ -1,7 +1,8 @@
 from datetime import datetime, timedelta
 from unittest.mock import MagicMock
-import pytest
+
 import pandas as pd
+import pytest
 
 from openbb_terminal.common.quantitative_analysis import qa_view
 
