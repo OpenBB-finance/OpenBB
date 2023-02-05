@@ -1671,7 +1671,12 @@ class FixedIncomeController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="str",
-            description='Plot short term interest rates from selected countries. \nShort-term interest rates are the rates at which short-term borrowings are effected between financial institutions or the rate at which short-term government paper is issued or traded in the market. Short-term interest rates are generally averages of daily rates, measured as a percentage. Short-term interest rates are based on three-month money market rates where available. Typical standardised names are "money market rate" and "treasury bill rate".',
+            description='Plot short term interest rates from selected countries. \nShort-term interest rates are the '
+                        'rates at which short-term borrowings are effected between financial institutions or the rate '
+                        'at which short-term government paper is issued or traded in the market. Short-term interest '
+                        'rates are generally averages of daily rates, measured as a percentage. Short-term interest '
+                        'rates are based on three-month money market rates where available. Typical standardised '
+                        'names are "money market rate" and "treasury bill rate".',
         )
         parser.add_argument(
             "-c",
@@ -1729,7 +1734,16 @@ class FixedIncomeController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="str",
-            description="Plot long term interest rates from selected countries. \nLong-term interest rates refer to government bonds maturing in ten years. Rates are mainly determined by the price charged by the lender, the risk from the borrower and the fall in the capital value. Long-term interest rates are generally averages of daily rates, measured as a percentage. These interest rates are implied by the prices at which the government bonds are traded on financial markets, not the interest rates at which the loans were issued. In all cases, they refer to bonds whose capital repayment is guaranteed by governments. Long-term interest rates are one of the determinants of business investment. Low long-term interest rates encourage investment in new equipment and high interest rates discourage it. Investment is, in turn, a major source of economic growth.",
+            description="Plot long term interest rates from selected countries. \nLong-term interest rates refer to "
+                        "government bonds maturing in ten years. Rates are mainly determined by the price charged by "
+                        "the lender, the risk from the borrower and the fall in the capital value. Long-term interest "
+                        "rates are generally averages of daily rates, measured as a percentage. These interest rates "
+                        "are implied by the prices at which the government bonds are traded on financial markets, "
+                        "not the interest rates at which the loans were issued. In all cases, they refer to bonds "
+                        "whose capital repayment is guaranteed by governments. Long-term interest rates are one of "
+                        "the determinants of business investment. Low long-term interest rates encourage investment "
+                        "in new equipment and high interest rates discourage it. Investment is, in turn, "
+                        "a major source of economic growth.",
         )
         parser.add_argument(
             "-c",
@@ -2044,4 +2058,282 @@ class FixedIncomeController(BaseController):
                 aaa_only=ns_parser.aaa_only,
                 raw=ns_parser.raw,
                 export=ns_parser.export,
+            )
+
+    @log_start_end(log=logger)
+    def call_tbill(self, other_args: List[str]):
+        """Process tbill command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="tbill",
+            description="Plot the Treasury Bill Secondary Market Rate.\nA Treasury Bill (T-Bill) is a short-term U.S. "
+                        "government debt obligation backed by the Treasury Department with a maturity of one year or "
+                        "less. Treasury bills are usually sold in denominations of $1,000. However, some can reach a "
+                        "maximum denomination of $5 million in non-competitive bids. These securities are widely "
+                        "regarded as low-risk and secure investments.",
+        )
+        parser.add_argument(
+            "-p",
+            "--parameter",
+            dest="parameter",
+            type=str,
+            help="Specific Treasury Bill Secondary Market Rate data to plot",
+            default="3_month",
+            choices=list(self.tbill_parameter_to_fred_id.keys()),
+        )
+        parser.add_argument(
+            "-s",
+            "--start",
+            dest="start_date",
+            type=valid_date,
+            help="Starting date (YYYY-MM-DD) of data",
+            default="1980-01-01",
+        )
+        parser.add_argument(
+            "-e",
+            "--end",
+            dest="end_date",
+            type=valid_date,
+            help="Ending date (YYYY-MM-DD) of data",
+            default=None,
+        )
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+        if ns_parser:
+            if ns_parser.source == "FRED":
+                fred_view.plot_tbill(
+                    self.tbill_parameter_to_fred_id[ns_parser.parameter],
+                    ns_parser.start_date,
+                    ns_parser.end_date,
+                    ns_parser.export,
+                )
+            elif ns_parser.source == "EconDB":
+                econdb_view.plot_tbill(
+                    ns_parser.parameter,
+                    ns_parser.start_date,
+                    ns_parser.end_date,
+                    ns_parser.export,
+                )
+
+    @log_start_end(log=logger)
+    def call_cmn(self, other_args: List[str]):
+        """Process cmn command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="cmn",
+            description="Plot the Treasury Constant Maturity Nominal Market Yield. \nYields on Treasury nominal "
+                        "securities at “constant maturity” are interpolated by the U.S. Treasury from the daily yield "
+                        "curve for non-inflation-indexed Treasury securities. This curve, which relates the yield on "
+                        "a security to its time to maturity, is based on the closing market bid yields on actively "
+                        "traded Treasury securities in the over-the-counter market. These market yields are "
+                        "calculated from composites of quotations obtained by the Federal Reserve Bank of New York. "
+                        "The constant maturity yield values are read from the yield curve at fixed maturities, "
+                        "currently 1, 3, and 6 months and 1, 2, 3, 5, 7, 10, 20, and 30 years. This method provides a "
+                        "yield for a 10-year maturity, for example, even if no outstanding security has exactly 10 "
+                        "years remaining to maturity. Similarly, yields on inflation-indexed securities at “constant "
+                        "maturity” are interpolated from the daily yield curve for Treasury inflation protected "
+                        "securities in the over-the-counter market. The inflation-indexed constant maturity yields "
+                        "are read from this yield curve at fixed maturities, currently 5, 7, 10, 20, and 30 years.",
+        )
+        parser.add_argument(
+            "-p",
+            "--parameter",
+            dest="parameter",
+            type=str,
+            help="Specific Treasury Constant Maturity Nominal Market Yield data to plot",
+            default="3_month",
+            choices=list(self.cmn_parameter_to_fred_id.keys()),
+        )
+        parser.add_argument(
+            "-s",
+            "--start",
+            dest="start_date",
+            type=valid_date,
+            help="Starting date (YYYY-MM-DD) of data",
+            default="1980-01-01",
+        )
+        parser.add_argument(
+            "-e",
+            "--end",
+            dest="end_date",
+            type=valid_date,
+            help="Ending date (YYYY-MM-DD) of data",
+            default=None,
+        )
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+        if ns_parser:
+            if ns_parser.source == "FRED":
+                fred_view.plot_cmn(
+                    self.cmn_parameter_to_fred_id[ns_parser.parameter],
+                    ns_parser.start_date,
+                    ns_parser.end_date,
+                    ns_parser.export,
+                )
+            elif ns_parser.source == "EconDB":
+                econdb_view.plot_cmn(
+                    ns_parser.parameter,
+                    ns_parser.start_date,
+                    ns_parser.end_date,
+                    ns_parser.export,
+                )
+
+    @log_start_end(log=logger)
+    def call_tips(self, other_args: List[str]):
+        """Process tips command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="tips",
+            description="Plot Yields on Treasury inflation protected securities (TIPS) adjusted to constant "
+                        "maturities. \nYields on Treasury nominal securities at “constant maturity” are interpolated "
+                        "by the U.S. Treasury from the daily yield curve for non-inflation-indexed Treasury "
+                        "securities. This curve, which relates the yield on a security to its time to maturity, "
+                        "is based on the closing market bid yields on actively traded Treasury securities in the "
+                        "over-the-counter market. These market yields are calculated from composites of quotations "
+                        "obtained by the Federal Reserve Bank of New York. The constant maturity yield values are "
+                        "read from the yield curve at fixed maturities, currently 1, 3, and 6 months and 1, 2, 3, 5, "
+                        "7, 10, 20, and 30 years. This method provides a yield for a 10-year maturity, for example, "
+                        "even if no outstanding security has exactly 10 years remaining to maturity. Similarly, "
+                        "yields on inflation-indexed securities at “constant maturity” are interpolated from the "
+                        "daily yield curve for Treasury inflation protected securities in the over-the-counter "
+                        "market. The inflation-indexed constant maturity yields are read from this yield curve at "
+                        "fixed maturities, currently 5, 7, 10, 20, and 30 years.",
+        )
+        parser.add_argument(
+            "-p",
+            "--parameter",
+            dest="parameter",
+            type=str,
+            help="Specific Yields on TIPS adjusted to constant maturities data to plot",
+            default="10_year",
+            choices=list(self.tips_parameter_to_fred_id.keys()),
+        )
+        parser.add_argument(
+            "-s",
+            "--start",
+            dest="start_date",
+            type=valid_date,
+            help="Starting date (YYYY-MM-DD) of data",
+            default="1980-01-01",
+        )
+        parser.add_argument(
+            "-e",
+            "--end",
+            dest="end_date",
+            type=valid_date,
+            help="Ending date (YYYY-MM-DD) of data",
+            default=None,
+        )
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+        if ns_parser:
+            if ns_parser.source == "FRED":
+                fred_view.plot_tips(
+                    self.tips_parameter_to_fred_id[ns_parser.parameter],
+                    ns_parser.start_date,
+                    ns_parser.end_date,
+                    ns_parser.export,
+                )
+            elif ns_parser.source == "EconDB":
+                econdb_view.plot_tips(
+                    ns_parser.parameter,
+                    ns_parser.start_date,
+                    ns_parser.end_date,
+                    ns_parser.export,
+                )
+
+    @log_start_end(log=logger)
+    def call_tbffr(self, other_args: List[str]):
+        """Process tbffr command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="tbffr",
+            description="Get Selected Treasury Bill Minus Federal Funds Rate.",
+        )
+        parser.add_argument(
+            "-p",
+            "--parameter",
+            dest="parameter",
+            type=str,
+            help="Selected Treasury Bill",
+            default="3_month",
+            choices=list(self.tbffr_parameter_to_fred_id.keys()),
+        )
+        parser.add_argument(
+            "-s",
+            "--start",
+            dest="start_date",
+            type=valid_date,
+            help="Starting date (YYYY-MM-DD) of data",
+            default=None,
+        )
+        parser.add_argument(
+            "-e",
+            "--end",
+            dest="end_date",
+            type=valid_date,
+            help="Ending date (YYYY-MM-DD) of data",
+            default=None,
+        )
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+        if ns_parser:
+            fred_view.plot_tbffr(
+                self.tbffr_parameter_to_fred_id[ns_parser.parameter],
+                ns_parser.start_date,
+                ns_parser.end_date,
+                ns_parser.export,
+            )
+
+    @log_start_end(log=logger)
+    def call_ty(self, other_args: List[str]):
+        """Process ty command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="ty",
+            description="Plot Selected Treasury Yield.",
+        )
+        parser.add_argument(
+            "-p",
+            "--parameter",
+            dest="parameter",
+            type=str,
+            help="Selected Treasury Yield",
+            default="10_year",
+            choices=["5_year", "10_year", "30_year"],
+        )
+        parser.add_argument(
+            "-s",
+            "--start",
+            dest="start_date",
+            type=valid_date,
+            help="Starting date (YYYY-MM-DD) of data",
+            default=None,
+        )
+        parser.add_argument(
+            "-e",
+            "--end",
+            dest="end_date",
+            type=valid_date,
+            help="Ending date (YYYY-MM-DD) of data",
+            default=None,
+        )
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+        if ns_parser:
+            yfinance_view.plot_ty(
+                ns_parser.parameter,
+                ns_parser.start_date,
+                ns_parser.end_date,
+                ns_parser.export,
             )
