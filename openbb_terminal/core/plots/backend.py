@@ -44,6 +44,7 @@ class Backend(PyWry):
         super().__init__(daemon=daemon, max_retries=max_retries)
         self.plotly_html: Path = (PLOTS_CORE_PATH / "plotly_temp.html").resolve()
         self.table_html: Path = (PLOTS_CORE_PATH / "table_temp.html").resolve()
+        self.nostr_html: Path = (PLOTS_CORE_PATH / "nostr_temp.html").resolve()
         self.inject_path_to_html()
         self.isatty = (
             not JUPYTER_NOTEBOOK
@@ -55,7 +56,7 @@ class Backend(PyWry):
     def inject_path_to_html(self):
         """Update the script tag in html with local path"""
         for html_file, temp_file in zip(
-            ["plotly.html", "table.html"], [self.plotly_html, self.table_html]
+            ["plotly.html", "table.html", "nostr.html"], [self.plotly_html, self.table_html, self.nostr_html]
         ):
             with open(PLOTS_CORE_PATH / html_file, encoding="utf-8") as file:  # type: ignore
                 html = file.read()
@@ -71,6 +72,12 @@ class Backend(PyWry):
         """Get the plotly html file"""
         if self.plotly_html and self.plotly_html.exists():
             return str(self.plotly_html)
+        return ""
+
+    def get_nostr_client_html(self) -> str:
+        """Get the nostr client html file"""
+        if self.nostr_html and self.nostr_html.exists():
+            return str(self.nostr_html)
         return ""
 
     def get_table_html(self) -> str:
@@ -130,6 +137,24 @@ class Backend(PyWry):
                     "plotly": df_table.to_json(orient="split"),
                     "width": 1200,
                     "height": 800,
+                    **self.get_kwargs(title),
+                }
+            )
+        )
+    
+    def send_nostr_client(self, title: str = ""):
+        """Send a nostr client to the backend
+
+        Parameters
+        ----------
+        title : str, optional
+            Title to display in the window, by default ""
+        """
+        self.check_backend()
+        self.outgoing.append(
+            json.dumps(
+                {
+                    "html_path": self.get_nostr_client_html(),
                     **self.get_kwargs(title),
                 }
             )

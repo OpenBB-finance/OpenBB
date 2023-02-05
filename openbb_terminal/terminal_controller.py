@@ -34,6 +34,7 @@ from openbb_terminal.core.config.paths import (
     USER_ROUTINES_DIRECTORY,
     load_dotenv_with_priority,
 )
+from openbb_terminal.core.plots.backend import plots_backend
 from openbb_terminal.core.log.generation.settings_logger import log_all_settings
 from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
@@ -87,6 +88,7 @@ class TerminalController(BaseController):
         "guess",
         "news",
         "intro",
+        "nostr"
     ]
     CHOICES_MENUS = [
         "stocks",
@@ -177,6 +179,7 @@ class TerminalController(BaseController):
         mt.add_cmd("record")
         mt.add_cmd("stop")
         mt.add_cmd("exe")
+        mt.add_cmd("nostr")
         mt.add_raw("\n")
         mt.add_info("_main_menu_")
         mt.add_menu("stocks")
@@ -347,6 +350,10 @@ class TerminalController(BaseController):
     def call_survey(_) -> None:
         """Process survey command."""
         webbrowser.open("https://openbb.co/survey")
+
+    def call_nostr(self, _) -> None:
+        """Process nostr command."""
+        plots_backend().send_nostr_client(title="Nostr")
 
     def call_update(self, _):
         """Process update command."""
