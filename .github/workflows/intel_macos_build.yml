@@ -36,7 +36,7 @@ jobs:
           echo $PATH
       # Set up caching for conda env so that the workflow runs quickly after the first time
       - name: Setup Conda Caching
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/conda_pkgs_dir
           key: conda-macos-3-9-${{ hashFiles('build/conda/conda-3-9-env-full.yaml') }}
@@ -55,29 +55,29 @@ jobs:
       - name: Run Poetry
         shell: bash -el {0}
         run: |
-          conda info
+          pip list
           poetry install
       - name: Install Pyinstaller
         shell: bash -el {0}
         run: |
-          conda info
+          pip list
           poetry install -E installer
       - name: Install Portfolio Optimization and Forecasting Toolkits
         shell: bash -el {0}
         run: |
-          conda info
+          pip list
           poetry install -E all
       - name: Install Specific Papermill
         shell: bash -el {0}
         run: |
-          conda info
+          pip list
           pip uninstall papermill -y
           pip install git+https://github.com/nteract/papermill.git@main
       # This is basically the same as build4mac.sh
       - name: Build Bundle
         shell: bash -el {0}
         run: |
-          conda info
+          pip list
           python -m PyInstaller build/pyinstaller/terminal.spec --clean
           osascript build/pyinstaller/setup_icons.applescript
           mkdir DMG
