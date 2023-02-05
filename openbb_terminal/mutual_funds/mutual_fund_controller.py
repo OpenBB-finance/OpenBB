@@ -6,6 +6,7 @@ import logging
 import os
 from datetime import datetime, timedelta
 from typing import List
+
 import pandas as pd
 
 from openbb_terminal import feature_flags as obbff
@@ -19,9 +20,6 @@ from openbb_terminal.helper_funcs import (
 from openbb_terminal.menu import session
 from openbb_terminal.mutual_funds import (
     avanza_view,
-    investpy_model,
-    investpy_view,
-    yfinance_view,
     mstarpy_view,
 )
 from openbb_terminal.mutual_funds.mutual_funds_utils import mapping_country
