@@ -3,8 +3,9 @@ __docformat__ = "numpy"
 
 import logging
 
-import pandas as pd
 import stocksera
+import pandas as pd
+
 from stocksera.exceptions import StockseraRequestException
 
 from openbb_terminal import config_terminal as cfg

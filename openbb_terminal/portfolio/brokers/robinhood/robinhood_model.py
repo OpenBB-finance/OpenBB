@@ -8,7 +8,8 @@ import numpy as np
 import pandas as pd
 from robin_stocks import robinhood
 
-from openbb_terminal.config_terminal import RH_PASSWORD as pw, RH_USERNAME as user
+from openbb_terminal.config_terminal import RH_PASSWORD as pw
+from openbb_terminal.config_terminal import RH_USERNAME as user
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
 

@@ -4,18 +4,18 @@ __docformat__ = "numpy"
 # pylint: disable=no-member
 
 import logging
-from datetime import datetime
-from typing import Any, Dict, Optional, Tuple, Union
+from typing import Dict, Any, Optional, Tuple, Union
 from urllib.error import HTTPError
+from datetime import datetime
 
 import pandas as pd
 import pandas_datareader.data as web
 import yfinance as yf
 
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import request
-from openbb_terminal.helpers_denomination import transform as transform_by_denomination
 from openbb_terminal.rich_config import console
+from openbb_terminal.helpers_denomination import transform as transform_by_denomination
+from openbb_terminal.helper_funcs import request
 
 logger = logging.getLogger(__name__)
 

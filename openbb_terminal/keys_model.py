@@ -3,40 +3,39 @@ __docformat__ = "numpy"
 
 # pylint: disable=too-many-lines
 
-import contextlib
-import io
+import sys
 import logging
 import os
-import sys
+import contextlib
 from enum import Enum
+import io
 from typing import Dict, List, Union
-
-import binance
 import dotenv
-import oandapyV20.endpoints.pricing
+import binance
 import pandas as pd
-import praw
-import pyEX
 import quandl
 import requests
 import stocksera
-from alpha_vantage.timeseries import TimeSeries
-from coinmarketcapapi import CoinMarketCapAPI
-from oandapyV20 import API as oanda_API
 from prawcore.exceptions import ResponseException
+import praw
+import pyEX
+import oandapyV20.endpoints.pricing
+from oandapyV20 import API as oanda_API
+from coinmarketcapapi import CoinMarketCapAPI
 from tokenterminal import TokenTerminal
-
-from openbb_terminal import config_terminal as cfg
-from openbb_terminal.core.config.paths import USER_ENV_FILE
+from alpha_vantage.timeseries import TimeSeries
 from openbb_terminal.cryptocurrency.coinbase_helpers import (
-    CoinbaseApiException,
     CoinbaseProAuth,
     make_coinbase_request,
+    CoinbaseApiException,
 )
-from openbb_terminal.helper_funcs import request
-from openbb_terminal.portfolio.brokers.degiro.degiro_model import DegiroModel
+from openbb_terminal import config_terminal as cfg
+from openbb_terminal.core.config.paths import USER_ENV_FILE
 from openbb_terminal.rich_config import console
+from openbb_terminal.helper_funcs import request
+
 from openbb_terminal.terminal_helper import suppress_stdout
+from openbb_terminal.portfolio.brokers.degiro.degiro_model import DegiroModel
 
 logger = logging.getLogger(__name__)
 

@@ -1,14 +1,13 @@
 """SmartStake Model"""
 __docformat__ = "numpy"
 
-from typing import Dict, Union
-
+from typing import Union, Dict
 import pandas as pd
 
-from openbb_terminal import config_terminal as cfg
 from openbb_terminal.decorators import check_api_key
-from openbb_terminal.helper_funcs import request
+from openbb_terminal import config_terminal as cfg
 from openbb_terminal.rich_config import console
+from openbb_terminal.helper_funcs import request
 
 
 @check_api_key(["API_SMARTSTAKE_KEY", "API_SMARTSTAKE_TOKEN"])

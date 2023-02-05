@@ -2,11 +2,11 @@
 import logging
 import re
 
+# IMPORTATION THIRDPARTY
+
 # IMPORTATION INTERNAL
 from openbb_terminal.core.config.paths import HOME_DIRECTORY
 from openbb_terminal.core.log.generation.settings import AppSettings
-
-# IMPORTATION THIRDPARTY
 
 
 class FormatterWithExceptions(logging.Formatter):

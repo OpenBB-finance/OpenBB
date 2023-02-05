@@ -3,7 +3,6 @@ __docformat__ = "numpy"
 
 import pandas as pd
 import yfinance as yf
-
 from openbb_terminal.forex import av_model
 
 

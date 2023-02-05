@@ -1,21 +1,20 @@
 """CoinGecko helpers"""
 __docformat__ = "numpy"
 
-import datetime as dt
 import json
-import logging
 import math
-import textwrap
+import datetime as dt
 from datetime import timezone
-from typing import Any, Dict, List, Optional, Sequence, Tuple, Union
+from typing import Sequence, Optional, Any, Dict, Tuple, Union, List
+import textwrap
+import logging
 
+from bs4 import BeautifulSoup
 import pandas as pd
 import requests
-from bs4 import BeautifulSoup
 from dateutil import parser
 from requests.adapters import HTTPAdapter, RetryError
 from urllib3.util.retry import Retry
-
 from openbb_terminal.helper_funcs import get_user_agent, request
 from openbb_terminal.rich_config import console
 

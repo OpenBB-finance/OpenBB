@@ -6,10 +6,10 @@ import logging
 import pandas as pd
 from alpha_vantage.sectorperformance import SectorPerformances
 
+from openbb_terminal.rich_config import console
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import get_user_agent, request
-from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 

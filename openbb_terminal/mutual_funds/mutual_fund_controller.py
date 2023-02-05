@@ -6,11 +6,11 @@ import logging
 import os
 from datetime import datetime, timedelta
 from typing import List
-
 import pandas as pd
 
-from openbb_terminal import feature_flags as obbff
+
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
+from openbb_terminal import feature_flags as obbff
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_FIGURES_ALLOWED,
@@ -18,10 +18,13 @@ from openbb_terminal.helper_funcs import (
     valid_date,
 )
 from openbb_terminal.menu import session
-from openbb_terminal.mutual_funds import avanza_view, mstarpy_view
+from openbb_terminal.mutual_funds import (
+    avanza_view,
+    mstarpy_view,
+)
 from openbb_terminal.mutual_funds.mutual_funds_utils import mapping_country
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import MenuText, console
+from openbb_terminal.rich_config import console, MenuText
 
 logger = logging.getLogger(__name__)
 

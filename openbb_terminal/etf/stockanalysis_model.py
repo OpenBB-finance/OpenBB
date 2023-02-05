@@ -2,8 +2,8 @@
 __docformat__ = "numpy"
 
 import logging
-import pathlib
 from typing import List, Tuple
+import pathlib
 
 import pandas as pd
 from bs4 import BeautifulSoup

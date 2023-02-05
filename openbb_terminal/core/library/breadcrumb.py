@@ -1,10 +1,11 @@
-from typing import Any, List, Optional
-
+from typing import Any, Optional, List
 import openbb_terminal.config_terminal as cfg
-from openbb_terminal import feature_flags as obbff
+
 from openbb_terminal.core.library.metadata import Metadata
-from openbb_terminal.core.library.operation import Operation
 from openbb_terminal.core.library.trail_map import TrailMap
+from openbb_terminal.core.library.operation import Operation
+
+from openbb_terminal import feature_flags as obbff
 
 # pylint: disable=import-outside-toplevel
 
@@ -158,10 +159,10 @@ class BreadcrumbLogger:
 
     @staticmethod
     def __initialize_logging() -> None:
-        from openbb_terminal.core.log.generation.settings_logger import (
-            log_all_settings,
-        )  # pylint: disable=C0415
         from openbb_terminal.loggers import setup_logging  # pylint: disable=C0415
+        from openbb_terminal.core.log.generation.settings_logger import (  # pylint: disable=C0415
+            log_all_settings,
+        )
 
         cfg.LOGGING_SUB_APP = "sdk"
         setup_logging()

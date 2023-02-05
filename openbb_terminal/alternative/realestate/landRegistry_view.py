@@ -4,9 +4,9 @@ __docformat__ = "numpy"
 import logging
 import os
 
-from openbb_terminal.alternative.realestate import landRegistry_model
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import export_data, print_rich_table
+from openbb_terminal.alternative.realestate import landRegistry_model
+from openbb_terminal.helper_funcs import print_rich_table, export_data
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)

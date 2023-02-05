@@ -7,7 +7,9 @@ import json
 import logging
 import os
 from pathlib import Path
-from typing import Dict, List
+from typing import List, Dict
+
+# IMPORTATION THIRDPARTY
 
 # IMPORTATION INTERNAL
 from openbb_terminal import feature_flags as obbff
@@ -16,10 +18,7 @@ from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import MenuText, console
-
-# IMPORTATION THIRDPARTY
-
+from openbb_terminal.rich_config import console, MenuText
 
 # pylint: disable=too-many-lines,no-member,too-many-public-methods,C0302
 # pylint:disable=import-outside-toplevel

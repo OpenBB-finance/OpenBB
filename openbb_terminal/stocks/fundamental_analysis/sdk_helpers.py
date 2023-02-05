@@ -2,13 +2,12 @@
 __docformat__ = "numpy"
 
 import pandas as pd
-
 from openbb_terminal.stocks.fundamental_analysis import (
-    av_model,
-    eodhd_model,
-    fmp_model,
-    polygon_model,
     yahoo_finance_model,
+    polygon_model,
+    av_model,
+    fmp_model,
+    eodhd_model,
 )
 
 

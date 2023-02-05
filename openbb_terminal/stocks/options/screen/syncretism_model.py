@@ -9,9 +9,9 @@ from typing import Dict, Tuple, Union
 import pandas as pd
 import yfinance as yf
 
+from openbb_terminal.helper_funcs import request
 from openbb_terminal.core.config.paths import USER_PRESETS_DIRECTORY
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import request
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.options import yfinance_model
 

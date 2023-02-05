@@ -1,8 +1,7 @@
 import logging
-
-import pandas as pd
 import pandas_market_calendars as mcal
 
+import pandas as pd
 from openbb_terminal.decorators import log_start_end
 
 logger = logging.getLogger(__name__)

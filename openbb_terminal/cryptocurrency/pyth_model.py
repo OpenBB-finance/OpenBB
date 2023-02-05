@@ -3,11 +3,12 @@ from typing import Tuple
 
 from pythclient.pythaccounts import PythPriceAccount, PythPriceStatus
 from pythclient.solana import (
-    SOLANA_DEVNET_HTTP_ENDPOINT,
-    SOLANA_DEVNET_WS_ENDPOINT,
     SolanaClient,
     SolanaPublicKey,
+    SOLANA_DEVNET_HTTP_ENDPOINT,
+    SOLANA_DEVNET_WS_ENDPOINT,
 )
+
 
 logger = logging.getLogger(__name__)
 

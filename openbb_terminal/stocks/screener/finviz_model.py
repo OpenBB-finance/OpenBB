@@ -11,11 +11,11 @@ from finvizfinance.screener import (
     valuation,
 )
 
-from openbb_terminal.core.config.paths import (
-    MISCELLANEOUS_DIRECTORY,
-    USER_PRESETS_DIRECTORY,
-)
 from openbb_terminal.decorators import log_start_end
+from openbb_terminal.core.config.paths import (
+    USER_PRESETS_DIRECTORY,
+    MISCELLANEOUS_DIRECTORY,
+)
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)

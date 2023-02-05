@@ -3,12 +3,10 @@ __docformat__ = "numpy"
 
 from datetime import datetime
 from typing import Optional
-
 import pandas as pd
-
 from openbb_terminal.config_terminal import API_POLYGON_KEY as api_key
-from openbb_terminal.decorators import check_api_key
 from openbb_terminal.helper_funcs import get_user_agent, request
+from openbb_terminal.decorators import check_api_key
 from openbb_terminal.rich_config import console
 
 # pylint: disable=unsupported-assignment-operation

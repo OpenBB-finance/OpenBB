@@ -1,5 +1,5 @@
-import logging
 from typing import List
+import logging
 
 import financedatabase as fd
 

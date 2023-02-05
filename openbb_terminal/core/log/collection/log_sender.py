@@ -1,22 +1,20 @@
 # IMPORTATION STANDARD
 from copy import deepcopy
-from pathlib import Path
-from queue import SimpleQueue
 from threading import Thread
+from queue import SimpleQueue
+from pathlib import Path
 
-from openbb_terminal.core.log.collection.s3_sender import send_to_s3
+# IMPORTATION THIRDPARTY
+
+# IMPORTATION INTERNAL
+from openbb_terminal.feature_flags import LOG_COLLECTION
 from openbb_terminal.core.log.constants import (
     ARCHIVES_FOLDER_NAME,
     S3_FOLDER_SUFFIX,
     TMP_FOLDER_NAME,
 )
+from openbb_terminal.core.log.collection.s3_sender import send_to_s3
 from openbb_terminal.core.log.generation.settings import Settings
-
-# IMPORTATION INTERNAL
-from openbb_terminal.feature_flags import LOG_COLLECTION
-
-# IMPORTATION THIRDPARTY
-
 
 # DO NOT USE THE FILE LOGGER IN THIS MODULE
 

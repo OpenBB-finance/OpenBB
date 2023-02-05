@@ -1,12 +1,11 @@
 """Token Terminal Model"""
 import logging
-from typing import Dict, List
 
+from typing import List, Dict
 import pandas as pd
 from tokenterminal import TokenTerminal
-
-from openbb_terminal import config_terminal as cfg
 from openbb_terminal.decorators import log_start_end
+from openbb_terminal import config_terminal as cfg
 
 logger = logging.getLogger(__name__)
 

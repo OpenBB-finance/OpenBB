@@ -5,17 +5,19 @@ import os
 
 import matplotlib.pyplot as plt
 
-from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
+from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
     lambda_long_number_format,
-    plot_autoscale,
     print_rich_table,
+    plot_autoscale,
 )
-from openbb_terminal.helpers_denomination import transform as transform_by_denomination
 from openbb_terminal.stocks.fundamental_analysis import polygon_model
+from openbb_terminal.helpers_denomination import (
+    transform as transform_by_denomination,
+)
 
 logger = logging.getLogger(__name__)
 

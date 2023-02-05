@@ -11,8 +11,8 @@ from bs4 import BeautifulSoup
 from dateutil import parser
 
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import request
 from openbb_terminal.rich_config import console
+from openbb_terminal.helper_funcs import request
 
 logger = logging.getLogger(__name__)
 

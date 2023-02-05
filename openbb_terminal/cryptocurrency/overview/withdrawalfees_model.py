@@ -4,6 +4,7 @@ import math
 from typing import Any, List
 
 import pandas as pd
+
 from bs4 import BeautifulSoup
 
 from openbb_terminal.decorators import log_start_end

@@ -1,11 +1,11 @@
 """Helper classes."""
 __docformat__ = "numpy"
+import os
+from pathlib import Path
 import argparse
 import json
-import os
 from importlib import machinery, util
-from pathlib import Path
-from typing import Dict, List, Optional, Union
+from typing import Union, List, Dict, Optional
 
 import matplotlib.pyplot as plt
 from matplotlib import font_manager, ticker

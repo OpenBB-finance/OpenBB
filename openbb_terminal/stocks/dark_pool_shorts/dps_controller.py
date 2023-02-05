@@ -8,8 +8,9 @@ from typing import List
 
 import pandas as pd
 
-from openbb_terminal import feature_flags as obbff
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
+
+from openbb_terminal import feature_flags as obbff
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
@@ -20,16 +21,16 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import StockBaseController
-from openbb_terminal.rich_config import MenuText, console
+from openbb_terminal.rich_config import console, MenuText
 from openbb_terminal.stocks.dark_pool_shorts import (
     finra_view,
-    ibkr_view,
     quandl_view,
     sec_view,
     shortinterest_view,
     stockgrid_view,
-    stocksera_view,
     yahoofinance_view,
+    ibkr_view,
+    stocksera_view,
 )
 
 logger = logging.getLogger(__name__)

@@ -5,10 +5,11 @@ from datetime import datetime
 from typing import Optional
 
 import pandas as pd
+
 from bs4 import BeautifulSoup
 
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import get_user_agent, request, str_date_to_timestamp
+from openbb_terminal.helper_funcs import get_user_agent, str_date_to_timestamp, request
 
 logger = logging.getLogger(__name__)
 

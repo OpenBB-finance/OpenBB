@@ -5,12 +5,12 @@ __docformat__ = "numpy"
 # flake8: noqa: E501
 
 import logging
-import warnings
 from typing import Dict, List, Optional, Tuple, Union
+import warnings
 
 import pandas as pd
-from numpy import floating
 from numpy.typing import NDArray
+from numpy import floating
 from riskfolio import rp
 
 from openbb_terminal.decorators import log_start_end
@@ -21,13 +21,13 @@ from openbb_terminal.portfolio.portfolio_optimization import (
 from openbb_terminal.portfolio.portfolio_optimization.parameters.params_helpers import (
     check_convert_parameters,
 )
-from openbb_terminal.portfolio.portfolio_optimization.po_engine import PoEngine
 from openbb_terminal.portfolio.portfolio_optimization.statics import (
-    DRAWDOWNS,
     RISK_NAMES,
     TERMINAL_TEMPLATE_MAP,
     TIME_FACTOR,
+    DRAWDOWNS,
 )
+from openbb_terminal.portfolio.portfolio_optimization.po_engine import PoEngine
 from openbb_terminal.rich_config import console
 
 warnings.filterwarnings("ignore")

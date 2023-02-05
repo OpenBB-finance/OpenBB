@@ -1,15 +1,15 @@
 """ Nestedcompleter for completion of OpenBB hierarchical data structures. """
 from typing import (
     Any,
-    Callable,
     Dict,
-    Iterable,
     List,
+    Set,
+    Iterable,
     Mapping,
     Optional,
-    Pattern,
-    Set,
     Union,
+    Pattern,
+    Callable,
 )
 
 from prompt_toolkit.completion import CompleteEvent, Completer, Completion

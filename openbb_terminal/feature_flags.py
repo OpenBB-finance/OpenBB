@@ -5,14 +5,16 @@ import os.path
 # IMPORTATION THIRDPARTY
 import i18n
 
-from openbb_terminal.base_helpers import load_env_vars, strtobool
-from openbb_terminal.core.config import paths_helper
-
 # IMPORTATION INTERNAL
 from openbb_terminal.core.config.paths import (
     MISCELLANEOUS_DIRECTORY,
     USER_DATA_SOURCES_DEFAULT_FILE,
     load_dotenv_with_priority,
+)
+from openbb_terminal.core.config import paths_helper
+from openbb_terminal.base_helpers import (
+    load_env_vars,
+    strtobool,
 )
 
 paths_helper.init_userdata()

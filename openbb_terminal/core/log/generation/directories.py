@@ -2,7 +2,6 @@
 import os
 import uuid
 from pathlib import Path
-
 from openbb_terminal.core.config.paths import USER_DATA_DIRECTORY
 
 # IMPORTATION THIRDPARTY

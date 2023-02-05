@@ -1,10 +1,9 @@
 """DappRadar model"""
 __docformat__ = "numpy"
 
-import logging
-
 # pylint: disable=C0301,E1137
 from typing import Optional
+import logging
 
 import pandas as pd
 

@@ -1,8 +1,8 @@
 """NASDAQ DataLink Model"""
 __docformat__ = "numpy"
 
-import logging
 from datetime import datetime
+import logging
 
 import pandas as pd
 import requests
@@ -11,6 +11,7 @@ import openbb_terminal.config_terminal as cfg
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import get_user_agent, request
 from openbb_terminal.rich_config import console
+
 
 logger = logging.getLogger(__name__)
 

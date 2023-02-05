@@ -1,2 +1,8 @@
 # flake8: noqa
-from . import defi, discovery, onchain, overview, technical_analysis
+from . import (
+    defi,
+    discovery,
+    onchain,
+    overview,
+    technical_analysis,
+)

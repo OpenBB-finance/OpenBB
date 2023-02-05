@@ -1,5 +1,4 @@
-from typing import Dict, List
-
+from typing import List, Dict
 from openbb_terminal.stocks.screener import finviz_view
 
 

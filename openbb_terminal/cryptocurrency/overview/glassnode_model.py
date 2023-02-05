@@ -1,11 +1,11 @@
-import logging
 from datetime import datetime
+import logging
 from typing import Optional
-
 from pandas import DataFrame
 
-from openbb_terminal.cryptocurrency.due_diligence.glassnode_model import get_close_price
 from openbb_terminal.decorators import log_start_end
+
+from openbb_terminal.cryptocurrency.due_diligence.glassnode_model import get_close_price
 
 # pylint: disable=unsupported-assignment-operation
 

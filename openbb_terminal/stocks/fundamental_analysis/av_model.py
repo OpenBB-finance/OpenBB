@@ -6,15 +6,15 @@ from typing import Dict, List
 
 import numpy as np
 import pandas as pd
-from alpha_vantage.fundamentaldata import FundamentalData
 
+from alpha_vantage.fundamentaldata import FundamentalData
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import lambda_long_number_format, request
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.fundamental_analysis import yahoo_finance_model
-from openbb_terminal.stocks.fundamental_analysis.fa_helper import clean_df_index
 from openbb_terminal.stocks.stocks_helper import clean_fraction
+from openbb_terminal.stocks.fundamental_analysis.fa_helper import clean_df_index
 
 logger = logging.getLogger(__name__)
 

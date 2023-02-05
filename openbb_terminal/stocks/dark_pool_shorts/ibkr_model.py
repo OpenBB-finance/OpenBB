@@ -1,10 +1,10 @@
 """ Interactive Broker Model """
 __docformat__ = "numpy"
 
-import ftplib
 import logging
-from io import BytesIO
 
+import ftplib
+from io import BytesIO
 import pandas as pd
 
 from openbb_terminal.decorators import log_start_end

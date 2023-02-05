@@ -2,7 +2,6 @@
 __docfromat__ = "numpy"
 
 import pandas as pd
-
 from openbb_terminal.cryptocurrency.discovery import (
     coinmarketcap_model,
     pycoingecko_model,

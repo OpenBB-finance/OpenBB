@@ -3,12 +3,12 @@ __docformat__ = "numpy"
 
 import logging
 from pathlib import Path
-from typing import Any, Dict, Optional
+from typing import Dict, Any, Optional
 
 import pandas as pd
 import statsmodels.api as sm
-from linearmodels.datasets import wage_panel
 from pandas import errors
+from linearmodels.datasets import wage_panel
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console

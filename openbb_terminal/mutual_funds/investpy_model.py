@@ -5,8 +5,8 @@ import logging
 from datetime import datetime, timedelta
 from typing import Tuple
 
-import investiny
 import investpy
+import investiny
 import pandas as pd
 from requests.exceptions import RequestException
 

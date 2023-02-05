@@ -1,7 +1,6 @@
 import pandas as pd
-
-from openbb_terminal.helper_funcs import print_rich_table
 from openbb_terminal.stocks import stocks_model
+from openbb_terminal.helper_funcs import print_rich_table
 
 
 def display_quote(symbol: str) -> pd.DataFrame:

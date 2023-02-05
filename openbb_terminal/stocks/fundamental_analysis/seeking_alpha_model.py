@@ -2,9 +2,8 @@
 __docformat__ = "numpy"
 
 import logging
-
-import pandas as pd
 import requests
+import pandas as pd
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import lambda_long_number_format

@@ -3,15 +3,15 @@ __docformat__ = "numpy"
 
 import logging
 import textwrap
-from typing import Any, Optional, Tuple
+from typing import Optional, Tuple, Any
 
 import numpy as np
 import pandas as pd
 
-import openbb_terminal.config_terminal as cfg
-from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import request
+import openbb_terminal.config_terminal as cfg
 from openbb_terminal.rich_config import console
+from openbb_terminal.decorators import check_api_key, log_start_end
 
 logger = logging.getLogger(__name__)
 

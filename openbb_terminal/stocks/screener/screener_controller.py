@@ -6,30 +6,31 @@ import datetime
 import logging
 from typing import List
 
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
+
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.core.config.paths import (
-    MISCELLANEOUS_DIRECTORY,
     USER_PRESETS_DIRECTORY,
+    MISCELLANEOUS_DIRECTORY,
 )
-from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_positive,
-    parse_and_split_input,
     valid_date,
+    parse_and_split_input,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import MenuText, console
+from openbb_terminal.rich_config import console, MenuText
 from openbb_terminal.stocks.comparison_analysis import ca_controller
 from openbb_terminal.stocks.screener import (
     finviz_model,
     finviz_view,
-    screener_helper,
-    screener_view,
     yahoofinance_view,
+    screener_view,
+    screener_helper,
 )
 
 logger = logging.getLogger(__name__)
