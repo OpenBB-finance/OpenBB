@@ -1,5 +1,6 @@
 import multiprocessing
 import sys
+
 from openbb_terminal import terminal_controller
 from openbb_terminal.core.integration_tests import integration_controller
 

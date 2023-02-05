@@ -2,20 +2,22 @@
 import logging
 import os
 from typing import List, Optional
+
 import matplotlib.pyplot as plt
-import pandas as pd
 import numpy as np
+import pandas as pd
+
+from openbb_terminal import config_terminal as cfg
+from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.cryptocurrency.overview import loanscan_model
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
+    is_valid_axes_count,
     plot_autoscale,
     print_rich_table,
-    is_valid_axes_count,
 )
 from openbb_terminal.rich_config import console
-from openbb_terminal import config_terminal as cfg
-from openbb_terminal.config_plot import PLOT_DPI
 
 logger = logging.getLogger(__name__)
 
