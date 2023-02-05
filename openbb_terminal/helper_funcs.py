@@ -48,6 +48,7 @@ from openbb_terminal.core.config.paths import (
     USER_EXPORTS_DIRECTORY,
     load_dotenv_with_priority,
 )
+from openbb_terminal.core.plots.backend import plots_backend
 from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.rich_config import console
 
@@ -1537,7 +1538,7 @@ def prefill_form(ticket_type, menu, path, command, message):
 
     url_params = urllib.parse.urlencode(params)
 
-    webbrowser.open(form_url + url_params)
+    plots_backend().send_url(form_url + url_params)
 
 
 def get_closing_price(ticker, days):

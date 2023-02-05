@@ -502,7 +502,6 @@ class BaseController(metaclass=ABCMeta):
             "--command",
             action="store",
             dest="command",
-            required="-h" not in other_args,
             choices=["generic"] + self.support_commands,
             help="Command that needs support",
         )
@@ -537,12 +536,12 @@ class BaseController(metaclass=ABCMeta):
 
         if ns_parser:
             prefill_form(
-                ticket_type=ns_parser.type,
-                menu=main_menu,
-                command=ns_parser.command,
-                message=" ".join(ns_parser.msg),
-                path=self.PATH,
-            )
+                    ticket_type=ns_parser.type,
+                    menu=main_menu,
+                    command=ns_parser.command,
+                    message=" ".join(ns_parser.msg),
+                    path=self.PATH,
+                )
 
     @log_start_end(log=logger)
     def call_wiki(self, other_args: List[str]) -> None:
