@@ -611,20 +611,36 @@ class OptionsController(BaseController):
                         )
                         or "--chain" in other_args
                     ):
-                        syncretism_view.view_historical_greeks(
-                            symbol=self.ticker,
-                            expiry=self.selected_date,
-                            strike=ns_parser.strike,
-                            greek=ns_parser.greek,
-                            chain_id=ns_parser.chain_id,
-                            put=ns_parser.put,
-                            raw=ns_parser.raw,
-                            limit=ns_parser.limit,
-                            export=ns_parser.export,
-                            sheet_name=" ".join(ns_parser.sheet_name)
-                            if ns_parser.sheet_name
-                            else None,
-                        )
+                        if ns_parser.source == "Syncretism":
+                            syncretism_view.view_historical_greeks(
+                                symbol=self.ticker,
+                                expiry=self.selected_date,
+                                strike=ns_parser.strike,
+                                greek=ns_parser.greek,
+                                chain_id=ns_parser.chain_id,
+                                put=ns_parser.put,
+                                raw=ns_parser.raw,
+                                limit=ns_parser.limit,
+                                export=ns_parser.export,
+                                sheet_name=" ".join(ns_parser.sheet_name)
+                                if ns_parser.sheet_name
+                                else None,
+                            )
+                        if ns_parser.source == "Intrinio":
+                            intrinio_view.view_historical_greeks(
+                                symbol=self.ticker,
+                                expiry=self.selected_date,
+                                strike=ns_parser.strike,
+                                greek=ns_parser.greek,
+                                chain_id=ns_parser.chain_id,
+                                put=ns_parser.put,
+                                raw=ns_parser.raw,
+                                limit=ns_parser.limit,
+                                export=ns_parser.export,
+                                sheet_name=" ".join(ns_parser.sheet_name)
+                                if ns_parser.sheet_name
+                                else None,
+                            )
                     else:
                         console.print("No correct strike input")
                 else:

@@ -23,11 +23,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import StockBaseController
-from openbb_terminal.rich_config import (
-    MenuText,
-    console,
-    translate,
-)
+from openbb_terminal.rich_config import MenuText, console, translate
 from openbb_terminal.stocks import cboe_view, stocks_helper, stocks_view
 from openbb_terminal.stocks.fundamental_analysis import fmp_view
 

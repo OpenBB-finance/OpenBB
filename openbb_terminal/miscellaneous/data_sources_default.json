@@ -35,7 +35,7 @@
       "voi": ["YahooFinance", "Tradier", "Nasdaq"],
       "hist": ["ChartExchange", "Tradier", "Intrinio"],
       "vsurf": ["YahooFinance"],
-      "grhist": ["Syncretism"],
+      "grhist": ["Syncretism", "Intrinio"],
       "plot": ["YahooFinance"],
       "parity": ["YahooFinance"],
       "binom": ["YahooFinance"],

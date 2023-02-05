@@ -48,8 +48,8 @@ from openbb_terminal.stocks.stocks_model import (
     load_stock_av,
     load_stock_eodhd,
     load_stock_iex_cloud,
-    load_stock_polygon,
     load_stock_intrinio,
+    load_stock_polygon,
     load_stock_yf,
 )
 
