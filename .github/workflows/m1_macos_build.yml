@@ -22,7 +22,7 @@ jobs:
     steps:
       # Checkout repository main branch. this allows for the commit hashes to line up
       - name: Checkout
-        uses: actions/checkout@v2.4.2
+        uses: actions/checkout@v3
       - name: Git Log
         run: git log
       # Install create-dmg
@@ -36,7 +36,7 @@ jobs:
           echo $PATH
       # Set up caching for conda env so that the workflow runs quickly after the first time
       - name: Setup Conda Caching
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/conda_pkgs_dir
           key: conda-macos-3-9-${{ hashFiles('build/conda/conda-3-9-env-full.yaml') }}
@@ -55,13 +55,9 @@ jobs:
           use-only-tar-bz2: true # Needed for caching some reason
 
       - name: Run Poetry
-        run: poetry install -vvv
-
-      - name: Install Pyinstaller
-        run: poetry install -E installer
-
-      - name: Poetry Install Portfolio Optimization and Forecasting Toolkits
-        run: poetry install -E all
+        run: |
+          conda activate "build_env"
+          poetry install -E installer -E all
 
       - name: Install Specific Papermill
         run: |
