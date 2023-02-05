@@ -55,15 +55,7 @@ jobs:
       - name: Run Poetry
         run: |
           pip list
-          poetry install
-      - name: Install Pyinstaller
-        run: |
-          pip list
-          poetry install -E installer
-      - name: Install Portfolio Optimization and Forecasting Toolkits
-        run: |
-          pip list
-          poetry install -E all
+          poetry install -E installer -E all
       - name: Install Specific Papermill
         run: |
           pip list
