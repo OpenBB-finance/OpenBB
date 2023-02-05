@@ -5,9 +5,9 @@ import logging
 from typing import List, Tuple
 
 import pandas as pd
-import requests
 
 from openbb_terminal.decorators import log_start_end
+from openbb_terminal.helper_funcs import request
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -65,7 +65,7 @@ def get_sentiments(symbols: List[str]) -> pd.DataFrame:
     symbols_to_remove = list()
     results_list = list()
     for ticker in symbols:
-        result = requests.get(f"https://api.finbrain.tech/v0/sentiments/{ticker}")
+        result = request(f"https://api.finbrain.tech/v0/sentiments/{ticker}")
         # Check status code, if its correct then convert to dict using .json()
         if result.status_code == 200:
             result_json = result.json()

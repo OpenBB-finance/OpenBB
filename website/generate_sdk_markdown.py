@@ -1,4 +1,4 @@
-import csv
+import csv  # noqa: I001
 import importlib
 import inspect
 import json
@@ -13,7 +13,11 @@ from docstring_parser import parse
 
 from openbb_terminal.core.library.trail_map import (
     FORECASTING_TOOLKIT_ENABLED as FORECASTING,
+)
+from openbb_terminal.core.library.trail_map import (
     MISCELLANEOUS_DIRECTORY,
+)
+from openbb_terminal.core.library.trail_map import (
     OPTIMIZATION_TOOLKIT_ENABLED as OPTIMIZATION,
 )
 from openbb_terminal.rich_config import console
@@ -126,7 +130,6 @@ class Trailmap:
         definition = ""
         added_comma = False
         for arg in funcspec:
-
             annotation = (
                 (
                     str(funcspec[arg].annotation)
@@ -325,7 +328,6 @@ def generate_markdown_section(meta: Dict[str, Any]):
     markdown += "---\n\n## Examples\n\n" if meta["examples"] else ""
     prev_snippet = "  "
     for example in meta["examples"]:
-
         if isinstance(example["snippet"], str) and ">>>" in example["snippet"]:
             snippet = example["snippet"].replace(">>> ", "")
             markdown += f"```python\n{snippet}\n```\n\n"

@@ -8,9 +8,8 @@ from typing import List
 
 import pandas as pd
 
-from openbb_terminal.custom_prompt_toolkit import NestedCompleter
-
 from openbb_terminal import feature_flags as obbff
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
@@ -21,16 +20,16 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import StockBaseController
-from openbb_terminal.rich_config import console, MenuText
+from openbb_terminal.rich_config import MenuText, console
 from openbb_terminal.stocks.dark_pool_shorts import (
     finra_view,
+    ibkr_view,
     quandl_view,
     sec_view,
     shortinterest_view,
     stockgrid_view,
-    yahoofinance_view,
-    ibkr_view,
     stocksera_view,
+    yahoofinance_view,
 )
 
 logger = logging.getLogger(__name__)
@@ -125,6 +124,9 @@ class DarkPoolShortsController(StockBaseController):
             yahoofinance_view.display_most_shorted(
                 limit=ns_parser.limit,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -160,6 +162,9 @@ class DarkPoolShortsController(StockBaseController):
                 ibkr_view.display_cost_to_borrow(
                     limit=ns_parser.number,
                     export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
             else:
                 stocksera_view.cost_to_borrow(
@@ -197,6 +202,9 @@ class DarkPoolShortsController(StockBaseController):
             shortinterest_view.high_short_interest(
                 limit=ns_parser.limit,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -247,6 +255,9 @@ class DarkPoolShortsController(StockBaseController):
                 limit=ns_parser.limit,
                 tier=ns_parser.tier,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -299,6 +310,9 @@ class DarkPoolShortsController(StockBaseController):
                 sortby=ns_parser.sort_field,
                 ascend=ns_parser.reverse,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -336,6 +350,9 @@ class DarkPoolShortsController(StockBaseController):
                 limit=ns_parser.limit,
                 sortby=ns_parser.sort_field,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -355,6 +372,9 @@ class DarkPoolShortsController(StockBaseController):
                 finra_view.darkpool_ats_otc(
                     symbol=self.ticker,
                     export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
             else:
                 console.print("No ticker loaded.\n")
@@ -414,6 +434,9 @@ class DarkPoolShortsController(StockBaseController):
                     limit=ns_parser.n_num,
                     raw=ns_parser.raw,
                     export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
             else:
                 console.print("No ticker loaded.\n")
@@ -452,6 +475,9 @@ class DarkPoolShortsController(StockBaseController):
                     limit=ns_parser.num,
                     raw=ns_parser.raw,
                     export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
             else:
                 console.print("No ticker loaded.\n")
@@ -487,6 +513,9 @@ class DarkPoolShortsController(StockBaseController):
                         limit=ns_parser.limit,
                         raw=ns_parser.raw,
                         export=ns_parser.export,
+                        sheet_name=" ".join(ns_parser.sheet_name)
+                        if ns_parser.sheet_name
+                        else None,
                     )
                 else:
                     stockgrid_view.short_interest_volume(
@@ -494,6 +523,9 @@ class DarkPoolShortsController(StockBaseController):
                         limit=ns_parser.limit,
                         raw=ns_parser.raw,
                         export=ns_parser.export,
+                        sheet_name=" ".join(ns_parser.sheet_name)
+                        if ns_parser.sheet_name
+                        else None,
                     )
             else:
                 console.print("No ticker loaded.\n")
@@ -552,6 +584,7 @@ class DarkPoolShortsController(StockBaseController):
     #                 asc=ns_parser.asc,
     #                 mpl=ns_parser.plotly,
     #                 export=ns_parser.export,
+    #                 sheet_name= " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None,
     #             )
     #         else:
     #             console.print("No ticker loaded.  Use `load ticker` first.")

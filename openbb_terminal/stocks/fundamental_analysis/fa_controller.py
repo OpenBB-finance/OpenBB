@@ -5,33 +5,32 @@ import logging
 from datetime import datetime, timedelta
 from typing import List
 
-from openbb_terminal.custom_prompt_toolkit import NestedCompleter
-
 from openbb_terminal import feature_flags as obbff
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_positive,
-    valid_date,
     list_from_str,
+    valid_date,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import StockBaseController
-from openbb_terminal.rich_config import console, MenuText, get_ordered_list_sources
+from openbb_terminal.rich_config import MenuText, console, get_ordered_list_sources
 from openbb_terminal.stocks import stocks_helper
 from openbb_terminal.stocks.fundamental_analysis import (
     av_view,
     business_insider_view,
     dcf_view,
     eclect_us_view,
-    finviz_view,
-    market_watch_view,
-    yahoo_finance_view,
-    polygon_view,
-    fmp_view,
     eodhd_view,
+    finviz_view,
+    fmp_view,
+    market_watch_view,
+    polygon_view,
     seeking_alpha_view,
+    yahoo_finance_view,
 )
 
 # pylint: disable=inconsistent-return-statements,C0302,R0904
@@ -173,7 +172,13 @@ class FundamentalAnalysisController(StockBaseController):
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            eclect_us_view.display_analysis(symbol=self.ticker, export=ns_parser.export)
+            eclect_us_view.display_analysis(
+                symbol=self.ticker,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )
 
     @log_start_end(log=logger)
     def call_mgmt(self, other_args: List[str]):
@@ -222,7 +227,13 @@ class FundamentalAnalysisController(StockBaseController):
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            finviz_view.display_screen_data(symbol=self.ticker, export=ns_parser.export)
+            finviz_view.display_screen_data(
+                symbol=self.ticker,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )
 
     @log_start_end(log=logger)
     def call_score(self, other_args: List[str]):
@@ -322,6 +333,9 @@ class FundamentalAnalysisController(StockBaseController):
                 limit=ns_parser.limit,
                 quarterly=ns_parser.b_quarter,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -377,6 +391,9 @@ class FundamentalAnalysisController(StockBaseController):
                 limit=ns_parser.limit,
                 quarterly=ns_parser.b_quarter,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -433,6 +450,9 @@ class FundamentalAnalysisController(StockBaseController):
                 limit=ns_parser.limit,
                 quarterly=ns_parser.b_quarter,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -485,6 +505,9 @@ class FundamentalAnalysisController(StockBaseController):
                 limit=ns_parser.limit,
                 quarterly=ns_parser.b_quarter,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -519,7 +542,13 @@ class FundamentalAnalysisController(StockBaseController):
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            yahoo_finance_view.display_info(self.ticker, export=ns_parser.export)
+            yahoo_finance_view.display_info(
+                self.ticker,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )
 
     @log_start_end(log=logger)
     def call_mktcap(self, other_args: List[str]):
@@ -587,7 +616,13 @@ class FundamentalAnalysisController(StockBaseController):
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
-            yahoo_finance_view.display_splits(self.ticker, export=ns_parser.export)
+            yahoo_finance_view.display_splits(
+                self.ticker,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )
 
     @log_start_end(log=logger)
     def call_shrs(self, other_args: List[str]):
@@ -746,6 +781,9 @@ class FundamentalAnalysisController(StockBaseController):
                     limit=ns_parser.limit,
                     plot=ns_parser.plot,
                     export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
             else:
                 console.print("Only US tickers are recognized.", "\n")
@@ -800,7 +838,13 @@ class FundamentalAnalysisController(StockBaseController):
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            av_view.display_key(symbol=self.ticker, export=ns_parser.export)
+            av_view.display_key(
+                symbol=self.ticker,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )
 
     @log_start_end(log=logger)
     def call_income(self, other_args: List[str]):
@@ -869,6 +913,9 @@ class FundamentalAnalysisController(StockBaseController):
                     ratios=ns_parser.ratios,
                     plot=ns_parser.plot,
                     export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
             elif ns_parser.source == "Polygon":
                 polygon_view.display_fundamentals(
@@ -879,6 +926,9 @@ class FundamentalAnalysisController(StockBaseController):
                     ratios=ns_parser.ratios,
                     plot=ns_parser.plot,
                     export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
             elif ns_parser.source == "FinancialModelingPrep":
                 fmp_view.display_income_statement(
@@ -888,6 +938,9 @@ class FundamentalAnalysisController(StockBaseController):
                     ratios=ns_parser.ratios,
                     plot=ns_parser.plot,
                     export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
             elif ns_parser.source == "YahooFinance":
                 yahoo_finance_view.display_fundamentals(
@@ -896,6 +949,9 @@ class FundamentalAnalysisController(StockBaseController):
                     ratios=ns_parser.ratios,
                     plot=ns_parser.plot,
                     export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                     limit=ns_parser.limit,
                 )
             elif ns_parser.source == "EODHD":
@@ -907,6 +963,9 @@ class FundamentalAnalysisController(StockBaseController):
                     ratios=ns_parser.ratios,
                     plot=ns_parser.plot,
                     export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
 
     @log_start_end(log=logger)
@@ -980,6 +1039,9 @@ class FundamentalAnalysisController(StockBaseController):
                     ratios=ns_parser.ratios,
                     plot=ns_parser.plot,
                     export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
             elif ns_parser.source == "Polygon":
                 polygon_view.display_fundamentals(
@@ -990,6 +1052,9 @@ class FundamentalAnalysisController(StockBaseController):
                     ratios=ns_parser.ratios,
                     plot=ns_parser.plot,
                     export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
             elif ns_parser.source == "FinancialModelingPrep":
                 fmp_view.display_balance_sheet(
@@ -999,6 +1064,9 @@ class FundamentalAnalysisController(StockBaseController):
                     ratios=ns_parser.ratios,
                     plot=ns_parser.plot,
                     export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
             elif ns_parser.source == "YahooFinance":
                 yahoo_finance_view.display_fundamentals(
@@ -1007,6 +1075,9 @@ class FundamentalAnalysisController(StockBaseController):
                     ratios=ns_parser.ratios,
                     plot=ns_parser.plot,
                     export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                     limit=ns_parser.limit,
                 )
             elif ns_parser.source == "EODHD":
@@ -1018,6 +1089,9 @@ class FundamentalAnalysisController(StockBaseController):
                     ratios=ns_parser.ratios,
                     plot=ns_parser.plot,
                     export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
 
     @log_start_end(log=logger)
@@ -1097,6 +1171,9 @@ class FundamentalAnalysisController(StockBaseController):
                     ratios=ns_parser.ratios,
                     plot=ns_parser.plot,
                     export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
             elif ns_parser.source == "FinancialModelingPrep":
                 fmp_view.display_cash_flow(
@@ -1106,6 +1183,9 @@ class FundamentalAnalysisController(StockBaseController):
                     ratios=ns_parser.ratios,
                     plot=ns_parser.plot,
                     export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
             elif ns_parser.source == "Polygon":
                 polygon_view.display_fundamentals(
@@ -1116,6 +1196,9 @@ class FundamentalAnalysisController(StockBaseController):
                     ratios=ns_parser.ratios,
                     plot=ns_parser.plot,
                     export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
             elif ns_parser.source == "YahooFinance":
                 yahoo_finance_view.display_fundamentals(
@@ -1124,6 +1207,9 @@ class FundamentalAnalysisController(StockBaseController):
                     ratios=ns_parser.ratios,
                     plot=ns_parser.plot,
                     export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                     limit=ns_parser.limit,
                 )
             elif ns_parser.source == "EODHD":
@@ -1135,6 +1221,9 @@ class FundamentalAnalysisController(StockBaseController):
                     ratios=ns_parser.ratios,
                     plot=ns_parser.plot,
                     export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
 
     @log_start_end(log=logger)
@@ -1178,6 +1267,9 @@ class FundamentalAnalysisController(StockBaseController):
                     limit=ns_parser.limit,
                     quarterly=ns_parser.b_quarter,
                     export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
             elif ns_parser.source == "YahooFinance":
                 yahoo_finance_view.display_earnings(
@@ -1256,6 +1348,9 @@ class FundamentalAnalysisController(StockBaseController):
             av_view.display_fraud(
                 symbol=self.ticker,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
                 detail=ns_parser.detail,
             )
 
@@ -1410,6 +1505,9 @@ class FundamentalAnalysisController(StockBaseController):
                 limit=ns_parser.limit,
                 quarterly=ns_parser.b_quarter,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)

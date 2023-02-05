@@ -4,9 +4,9 @@
 import difflib
 import json
 import logging
-from typing import Union, Optional, List
 import os
 from datetime import datetime, timedelta
+from typing import List, Optional, Union
 
 import ccxt
 import matplotlib.pyplot as plt
@@ -625,6 +625,7 @@ def load_yf_data(symbol: str, currency: str, interval: str, days: int):
         start=datetime.now() - timedelta(days=days),
         progress=False,
         interval=interval,
+        ignore_tz=True,
     ).sort_index(ascending=False)
 
     df_coin.index.names = ["date"]
@@ -638,7 +639,13 @@ def load_yf_data(symbol: str, currency: str, interval: str, days: int):
 
 
 def display_all_coins(
-    source: str, symbol: str, limit: int, skip: int, show_all: bool, export: str
+    source: str,
+    symbol: str,
+    limit: int,
+    skip: int,
+    show_all: bool,
+    export: str,
+    sheet_name: str,
 ) -> None:
     """Find similar coin by coin name,symbol or id.
     If you don't remember exact name or id of the Coin at CoinGecko, CoinPaprika, Coinbase, Binance
@@ -689,7 +696,6 @@ def display_all_coins(
         df.drop("index", axis=1, inplace=True)
 
     else:
-
         if source == "CoinGecko":
             coins_df = pycoingecko_model.get_coin_list().drop("index", axis=1)
             df = _create_closest_match_df(symbol.lower(), coins_df, limit, cutoff)
@@ -744,6 +750,7 @@ def display_all_coins(
         os.path.dirname(os.path.abspath(__file__)),
         "coins",
         df,
+        sheet_name,
     )
 
 

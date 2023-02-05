@@ -1,13 +1,13 @@
 """Attribution Model"""
 __docformat__ = "numpy"
 
-from datetime import datetime
-from datetime import date
 import logging
+from datetime import date, datetime
 from typing import Dict
 
-import yfinance as yf
 import pandas as pd
+import yfinance as yf
+
 from openbb_terminal.decorators import log_start_end
 
 logger = logging.getLogger(__name__)
@@ -129,7 +129,9 @@ def get_portfolio_sector_contributions(
     first_price = portfolio_trades["Date"].min()
 
     price_data = pd.DataFrame(
-        yf.download(asset_tickers, start=first_price, progress=False)["Adj Close"]
+        yf.download(asset_tickers, start=first_price, progress=False, ignore_tz=True)[
+            "Adj Close"
+        ]
     )  # returns series when one ticker, hence cast to df
 
     # if there is only one ticker the column name is "Adj Close" instead of the ticker,
@@ -166,7 +168,7 @@ def get_portfolio_sector_contributions(
 
     # filter passed off desired date here
     contrib_df["date"] = contrib_df["date"].dt.date
-    contrib_df = contrib_df[~(contrib_df["date"] < start_date)]
+    contrib_df = contrib_df[~(contrib_df["date"] < start_date.date())]
 
     # melt on datetime field
     contrib_df = pd.melt(contrib_df, id_vars="date")
@@ -386,6 +388,7 @@ def get_daily_sector_prices(start_date, end_date) -> dict:
                 start=start_date,
                 end=end_date,
                 progress=False,
+                ignore_tz=True,
             )["Adj Close"]
         }  # stores the data here
 

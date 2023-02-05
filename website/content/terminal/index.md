@@ -1,10 +1,8 @@
 ---
 sidebar_position: 1
 title: Introduction
-keywords: ["getting started", "openbb", "api", "beginner guide", "how to use openbb", "openbb keys", "openbb terminal", "openbb", "terminal"]
-excerpt: "This page guides you how to use the OpenBB terminal, developed by OpenBB."
-description: "The OpenBB Documentation provides guidance on how to use the OpenBB Terminal, a free, custom built
-financial terminal that will help you make more informed decisions, faster."
+keywords: [getting started, openbb, api, beginner guide, how to use openbb, openbb keys, openbb terminal, introduction, intro, how-to, how to, openbb, terminal]
+description: The OpenBB Documentation provides guidance on how to use the OpenBB Terminal, a free, custom built financial terminal that will help you make more informed decisions, faster.
 ---
 
 import Card from "@site/src/components/General/Card";

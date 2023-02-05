@@ -1,22 +1,24 @@
 """Portfolio Engine"""
 __docformat__ = "numpy"
 
-import warnings
-import logging
-from typing import Dict, Any
 import datetime
+import logging
+import warnings
+from os import environ
+from typing import Any, Dict
 
 import numpy as np
 import pandas as pd
 import yfinance as yf
 from tqdm import tqdm
+
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.rich_config import console
-from openbb_terminal.portfolio.portfolio_helper import (
-    make_equal_length,
-    get_info_from_ticker,
-)
 from openbb_terminal.portfolio.allocation_model import get_allocation
+from openbb_terminal.portfolio.portfolio_helper import (
+    get_info_from_ticker,
+    make_equal_length,
+)
+from openbb_terminal.rich_config import console
 from openbb_terminal.terminal_helper import suppress_stdout
 
 # pylint: disable=E1136,W0201,R0902,C0302
@@ -193,9 +195,10 @@ class PortfolioEngine:
 
         # Load transactions from file
         if path.endswith(".xlsx"):
-            warnings.filterwarnings(
-                "ignore", category=UserWarning, module="openpyxl", lineno=312
-            )
+            if environ.get("DEBUG_MODE", "false") != "true":
+                warnings.filterwarnings(
+                    "ignore", category=UserWarning, module="openpyxl"
+                )
             transactions = pd.read_excel(path)
         elif path.endswith(".csv"):
             transactions = pd.read_csv(path)
@@ -226,7 +229,6 @@ class PortfolioEngine:
         p_bar = tqdm(range(14), desc="Preprocessing transactions")
 
         try:
-
             # 0. If optional fields not in the transactions add missing
             optional_fields = [
                 "Sector",
@@ -514,6 +516,7 @@ class PortfolioEngine:
             start=self.inception_date - datetime.timedelta(days=1),
             threads=False,
             progress=False,
+            ignore_tz=True,
         )["Adj Close"]
 
         p_bar.n += 1
@@ -650,9 +653,9 @@ class PortfolioEngine:
         p_bar = tqdm(range(len(self.tickers)), desc="        Loading price data")
 
         for ticker_type, data in self.tickers.items():
-            price_data = yf.download(data, start=self.inception_date, progress=False)[
-                "Close" if use_close or ticker_type == "CRYPTO" else "Adj Close"
-            ]
+            price_data = yf.download(
+                data, start=self.inception_date, progress=False, ignore_tz=True
+            )["Close" if use_close or ticker_type == "CRYPTO" else "Adj Close"]
 
             # Set up column name if only 1 ticker (pd.DataFrame only does this if >1 ticker)
             if len(data) == 1:

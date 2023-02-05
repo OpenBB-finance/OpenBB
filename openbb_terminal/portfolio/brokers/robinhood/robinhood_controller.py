@@ -5,11 +5,9 @@ import argparse
 import logging
 from typing import List
 
-from openbb_terminal.custom_prompt_toolkit import NestedCompleter
-
-from openbb_terminal.decorators import check_api_key
 from openbb_terminal import feature_flags as obbff
-from openbb_terminal.decorators import log_start_end
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
+from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
 )
@@ -19,13 +17,12 @@ from openbb_terminal.portfolio.brokers.robinhood import (
     robinhood_model,
     robinhood_view,
 )
-from openbb_terminal.rich_config import console, MenuText
+from openbb_terminal.rich_config import MenuText, console
 
 logger = logging.getLogger(__name__)
 
 
 class RobinhoodController(BaseController):
-
     CHOICES_COMMANDS = ["holdings", "history"]
     CHOICES_MENUS = ["login"]
     valid_span = ["day", "week", "month", "3month", "year", "5year", "all"]
@@ -70,7 +67,12 @@ class RobinhoodController(BaseController):
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            robinhood_view.display_holdings(export=ns_parser.export)
+            robinhood_view.display_holdings(
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )
 
     @log_start_end(log=logger)
     def call_history(self, other_args: List[str]):
@@ -107,4 +109,7 @@ class RobinhoodController(BaseController):
                 interval=ns_parser.interval,
                 window=ns_parser.span,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )

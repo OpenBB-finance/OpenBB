@@ -3,18 +3,18 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import Tuple, Union, List, Optional
-
 import warnings
-from statsmodels.tools.sm_exceptions import ConvergenceWarning
+from typing import List, Optional, Tuple, Union
+
 import pandas as pd
 from darts import TimeSeries
 from darts.models import TFTModel
 from darts.utils.likelihood_models import QuantileRegression
+from statsmodels.tools.sm_exceptions import ConvergenceWarning
 
+from openbb_terminal.core.config.paths import USER_FORECAST_MODELS_DIRECTORY
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.forecast import helpers
-from openbb_terminal.core.config.paths import USER_FORECAST_MODELS_DIRECTORY
 
 warnings.simplefilter("ignore", ConvergenceWarning)
 
@@ -50,7 +50,6 @@ def get_tft_data(
     Optional[float],
     Optional[type[TFTModel]],
 ]:
-
     """Performs Temporal Fusion Transformer forecasting
     The TFT applies multi-head attention queries on future inputs from mandatory future_covariates.
     Specifying future encoders with add_encoders (read below) can automatically generate future

@@ -6,9 +6,10 @@ from datetime import datetime
 import pandas as pd
 import pytest
 
+from openbb_terminal import parent_classes
+
 # IMPORTATION INTERNAL
 from openbb_terminal.stocks.quantitative_analysis import qa_controller
-from openbb_terminal import parent_classes
 
 # pylint: disable=E1101
 # pylint: disable=W0603
@@ -315,6 +316,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 sortby="",
                 descend=True,
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -322,10 +324,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             ["--export=csv"],
             "qa_view.display_summary",
             [],
-            dict(
-                data=QA_CONTROLLER.stock,
-                export="csv",
-            ),
+            dict(data=QA_CONTROLLER.stock, export="csv", sheet_name=None),
         ),
         (
             "call_hist",
@@ -349,6 +348,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 data=QA_CONTROLLER.stock,
                 target=QA_CONTROLLER.target,
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -374,6 +374,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 target=QA_CONTROLLER.target,
                 window=1,
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -387,6 +388,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 target=QA_CONTROLLER.target,
                 multiplicative=True,
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -424,6 +426,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 target=QA_CONTROLLER.target,
                 window=1,
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -438,6 +441,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 window=1,
                 quantile=0.1,
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -451,6 +455,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 target=QA_CONTROLLER.target,
                 window=1,
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -464,6 +469,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 target=QA_CONTROLLER.target,
                 window=1,
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -475,6 +481,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 data=QA_CONTROLLER.stock,
                 target=QA_CONTROLLER.target,
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -499,6 +506,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 fuller_reg="ctt",
                 kpss_reg="ct",
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -538,7 +546,6 @@ def test_call_func(
 # pylint: enable=W0613
 
 
-@pytest.mark.skip(reason="yfinance is not working after website changes")
 @pytest.mark.vcr
 def test_call_load(mocker):
     yf_download = parent_classes.stocks_helper.yf.download

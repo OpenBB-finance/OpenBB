@@ -2,6 +2,7 @@
 __docformat__ = "numpy"
 
 import pandas as pd
+
 import openbb_terminal.cryptocurrency.due_diligence.pycoingecko_model as gecko
 
 

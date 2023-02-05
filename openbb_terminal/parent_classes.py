@@ -19,15 +19,16 @@ from prompt_toolkit.formatted_text import HTML
 from prompt_toolkit.styles import Style
 from rich.markdown import Markdown
 
+from openbb_terminal import feature_flags as obbff
+from openbb_terminal.config_terminal import theme
+from openbb_terminal.core.completer.choices import build_controller_choice_map
 from openbb_terminal.core.config.paths import (
     USER_CUSTOM_IMPORTS_DIRECTORY,
     USER_ROUTINES_DIRECTORY,
 )
-from openbb_terminal.decorators import log_start_end
+from openbb_terminal.cryptocurrency import cryptocurrency_helpers
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
-from openbb_terminal.menu import session
-from openbb_terminal import feature_flags as obbff
-from openbb_terminal.config_terminal import theme
+from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     check_file_type_saved,
     check_positive,
@@ -42,11 +43,10 @@ from openbb_terminal.helper_funcs import (
     system_clear,
     valid_date,
 )
+from openbb_terminal.menu import session
 from openbb_terminal.rich_config import console, get_ordered_list_sources
 from openbb_terminal.stocks import stocks_helper
 from openbb_terminal.terminal_helper import open_openbb_documentation
-from openbb_terminal.cryptocurrency import cryptocurrency_helpers
-from openbb_terminal.core.completer.choices import build_controller_choice_map
 
 logger = logging.getLogger(__name__)
 
@@ -100,6 +100,7 @@ class BaseController(metaclass=ABCMeta):
     CHOICES_MENUS: List[str] = []
     SUPPORT_CHOICES: dict = {}
     ABOUT_CHOICES: dict = {}
+    NEWS_CHOICES: dict = {}
     COMMAND_SEPARATOR = "/"
     KEYS_MENU = "keys" + COMMAND_SEPARATOR
     TRY_RELOAD = False
@@ -160,6 +161,7 @@ class BaseController(metaclass=ABCMeta):
             c for c in self.controller_choices if c not in self.CHOICES_COMMON
         ]
 
+        # Add in support options
         support_choices: dict = {c: {} for c in self.controller_choices}
 
         support_choices = {c: None for c in (["generic"] + self.support_commands)}
@@ -173,6 +175,10 @@ class BaseController(metaclass=ABCMeta):
         support_choices["--type"] = {c: None for c in (SUPPORT_TYPE)}
 
         self.SUPPORT_CHOICES = support_choices
+
+        # Add in news options
+        news_choices = ["--term", "-t", "--sources", "-s", "--help", "-h"]
+        self.NEWS_CHOICES = {c: None for c in news_choices}
 
     def check_path(self) -> None:
         """Check if command path is valid."""
@@ -322,7 +328,6 @@ class BaseController(metaclass=ABCMeta):
 
         # Navigation slash is being used first split commands
         elif len(actions) > 1:
-
             # Absolute path is specified
             if not actions[0]:
                 actions[0] = "home"
@@ -408,7 +413,7 @@ class BaseController(metaclass=ABCMeta):
             dest="command",
             default=None,
             help="Obtain documentation on the given command or menu",
-            choices=self.CHOICES_COMMANDS + self.CHOICES_MENUS,
+            choices=self.CHOICES_COMMANDS + self.CHOICES_MENUS + self.CHOICES_COMMON,
         )
 
         if other_args and "-" not in other_args[0][0]:
@@ -752,6 +757,19 @@ class BaseController(metaclass=ABCMeta):
                 dest="export",
                 help=help_export,
             )
+
+            # If excel is an option, add the sheet name
+            if export_allowed in [
+                EXPORT_ONLY_RAW_DATA_ALLOWED,
+                EXPORT_BOTH_RAW_DATA_AND_FIGURES,
+            ]:
+                parser.add_argument(
+                    "--sheet-name",
+                    dest="sheet_name",
+                    default=None,
+                    nargs="+",
+                    help="Name of excel sheet to save data to. Only valid for .xlsx files.",
+                )
 
         if raw:
             parser.add_argument(
@@ -1099,7 +1117,11 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                 )
                 if df_stock_candidate.empty:
                     return
-            if not df_stock_candidate.empty:
+            is_df = isinstance(df_stock_candidate, pd.DataFrame)
+            if not (
+                (is_df and df_stock_candidate.empty)
+                or (not is_df and not df_stock_candidate)
+            ):
                 self.stock = df_stock_candidate
                 if ns_parser.exchange:
                     self.add_info = stocks_helper.additional_info_about_ticker(
@@ -1145,8 +1167,11 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                 export_data(
                     ns_parser.export,
                     os.path.dirname(os.path.abspath(__file__)),
-                    "load",
+                    f"load_{self.ticker}",
                     self.stock.copy(),
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
 
 
@@ -1276,4 +1301,7 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
                     os.path.dirname(os.path.abspath(__file__)),
                     "load",
                     self.current_df.copy(),
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )

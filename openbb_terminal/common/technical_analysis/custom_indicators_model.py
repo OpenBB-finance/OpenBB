@@ -6,9 +6,9 @@ from typing import Any, Tuple
 
 import pandas as pd
 
+from openbb_terminal.common.technical_analysis import ta_helpers
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
-from openbb_terminal.common.technical_analysis import ta_helpers
 
 logger = logging.getLogger(__name__)
 

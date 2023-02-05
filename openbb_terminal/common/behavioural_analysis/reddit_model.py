@@ -3,9 +3,9 @@ __docformat__ = "numpy"
 # pylint:disable=too-many-lines
 
 import logging
+import warnings
 from datetime import datetime, timedelta
 from typing import List, Tuple
-import warnings
 
 import finviz
 import pandas as pd
@@ -528,7 +528,6 @@ def get_spac(
 
     try:
         for submission in submissions:
-
             # Get more information about post using PRAW api
             submission = praw_api.submission(id=submission.id)
 
@@ -814,13 +813,11 @@ def get_due_dilligence(
 
             # Ensure that the post hasn't been removed in the meanwhile
             if not submission.removed_by_category:
-
                 # Either just filter out Yolo, and Meme flairs, or focus on DD, based on b_DD flag
                 if (
                     submission.link_flair_text in l_flair_text,
                     submission.link_flair_text not in ["Yolo", "Meme"],
                 )[show_all_flairs]:
-
                     s_datetime = datetime.utcfromtimestamp(
                         submission.created_utc
                     ).strftime("%Y-%m-%d %H:%M:%S")

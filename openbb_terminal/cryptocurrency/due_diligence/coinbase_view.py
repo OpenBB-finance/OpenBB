@@ -3,11 +3,11 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import Optional, List
+from typing import List, Optional
 
+import matplotlib.pyplot as plt
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
-import matplotlib.pyplot as plt
 
 from openbb_terminal.cryptocurrency.cryptocurrency_helpers import plot_order_book
 from openbb_terminal.cryptocurrency.due_diligence import coinbase_model
@@ -23,6 +23,7 @@ register_matplotlib_converters()
 def display_order_book(
     symbol: str,
     export: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Plots a list of available currency pairs for trading. [Source: Coinbase]
@@ -44,12 +45,17 @@ def display_order_book(
         os.path.dirname(os.path.abspath(__file__)),
         "book",
         pd.DataFrame(market_book),
+        sheet_name,
     )
 
 
 @log_start_end(log=logger)
 def display_trades(
-    symbol: str, limit: int = 20, side: Optional[str] = None, export: str = ""
+    symbol: str,
+    limit: int = 20,
+    side: Optional[str] = None,
+    export: str = "",
+    sheet_name: str = None,
 ) -> None:
     """Prints table showing last N trades for chosen trading pair. [Source: Coinbase]
 
@@ -69,11 +75,19 @@ def display_trades(
 
     print_rich_table(df, headers=list(df.columns), show_index=False)
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "trades", df)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "trades",
+        df,
+        sheet_name,
+    )
 
 
 @log_start_end(log=logger)
-def display_candles(symbol: str, interval: str = "24hour", export: str = "") -> None:
+def display_candles(
+    symbol: str, interval: str = "24hour", export: str = "", sheet_name: str = None
+) -> None:
     """Prints table showing candles for chosen trading pair and time interval. [Source: Coinbase]
 
     Parameters
@@ -92,11 +106,17 @@ def display_candles(symbol: str, interval: str = "24hour", export: str = "") -> 
         df, headers=list(df.columns), show_index=True, title="Trading Pair Candles"
     )
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "candles", df)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "candles",
+        df,
+        sheet_name,
+    )
 
 
 @log_start_end(log=logger)
-def display_stats(symbol: str, export: str = "") -> None:
+def display_stats(symbol: str, export: str = "", sheet_name: str = None) -> None:
     """Prints table showing 24 hr stats for the product. Volume is in base currency units.
     Open, high and low are in quote currency units.  [Source: Coinbase]
 
@@ -117,4 +137,10 @@ def display_stats(symbol: str, export: str = "") -> None:
         title=f"Coinbase:{symbol.upper()} 24 hr Product Stats",
     )
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "stats", df)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "stats",
+        df,
+        sheet_name,
+    )

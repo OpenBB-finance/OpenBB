@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def sec_filings(symbol: str, limit: int = 5, export: str = ""):
+def sec_filings(symbol: str, limit: int = 5, export: str = "", sheet_name: str = None):
     """Display SEC filings for a given stock ticker. [Source: Market Watch]
 
     Parameters
@@ -21,6 +21,8 @@ def sec_filings(symbol: str, limit: int = 5, export: str = ""):
         Stock ticker symbol
     limit: int
         Number of ratings to display
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Export dataframe data to csv,json,xlsx file
     """
@@ -37,4 +39,5 @@ def sec_filings(symbol: str, limit: int = 5, export: str = ""):
         os.path.dirname(os.path.abspath(__file__)),
         "sec",
         df_financials,
+        sheet_name,
     )

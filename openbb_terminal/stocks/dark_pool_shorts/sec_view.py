@@ -3,25 +3,27 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import List, Optional
 from datetime import datetime, timedelta
+from typing import List, Optional
 
 import pandas as pd
 from matplotlib import pyplot as plt
 
+from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
-    print_rich_table,
-    plot_autoscale,
     is_valid_axes_count,
+    plot_autoscale,
+    print_rich_table,
 )
-from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.stocks import stocks_helper
 from openbb_terminal.stocks.dark_pool_shorts import sec_model
 
 logger = logging.getLogger(__name__)
+
+# pylint: disable=too-many-arguments
 
 
 @log_start_end(log=logger)
@@ -33,6 +35,7 @@ def fails_to_deliver(
     limit: int = 0,
     raw: bool = False,
     export: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display fails-to-deliver data for a given ticker. [Source: SEC]
@@ -51,6 +54,8 @@ def fails_to_deliver(
         Number of latest fails-to-deliver being printed
     raw: bool
         Print raw data
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Export dataframe data to csv,json,xlsx file
     external_axes: Optional[List[plt.Axes]], optional
@@ -117,4 +122,5 @@ def fails_to_deliver(
         os.path.dirname(os.path.abspath(__file__)),
         "ftd",
         ftds_data.reset_index(),
+        sheet_name,
     )

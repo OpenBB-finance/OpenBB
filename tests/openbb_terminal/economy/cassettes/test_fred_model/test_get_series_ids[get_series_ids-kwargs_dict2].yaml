@@ -1,0 +1,45 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.stlouisfed.org/fred/series/search?api_key=MOCK_API_KEY&file_type=json&search_text=xyz
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAEA6pWKkpNzCnJzE2NLy5JLCpRslIyMjAy1jUw1DUyV9JByKbmpaDL5RelpBbFJ1Uq
+        WSkVpyYWJWfEFyXmZSvpKBXnF5XEg2WVrJRSUouTlXSUkvNL80qUrAx0lPLT0opTIUzAcjJzM0uU
+        rAwNDAx0lIpTizJTi4uVrKJjawGUcQg+lwAAAA==
+    headers:
+      Accept-Ranges:
+      - bytes
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '142'
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Fri, 27 Jan 2023 17:00:53 GMT
+      ETag:
+      - W/"f251e9d2283cd8abcc87903c2a4b40fb-gzip-gzip"
+      Expires:
+      - Fri, 27 Jan 2023 17:10:53 GMT
+      Vary:
+      - Accept-Encoding
+      x-rate-limit-limit:
+      - '120'
+      x-rate-limit-remaining:
+      - '118'
+    status:
+      code: 200
+      message: OK
+version: 1

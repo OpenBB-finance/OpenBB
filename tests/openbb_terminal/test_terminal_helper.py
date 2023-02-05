@@ -2,6 +2,7 @@ import sys
 import unittest
 from contextlib import contextmanager
 from unittest.mock import patch
+
 import pytest
 
 from openbb_terminal import terminal_helper
@@ -78,7 +79,10 @@ def test_check_for_updates(mocker, last_release, current_release):
         },
     }
     mock_response = mocker.Mock(**attrs)
-    mocker.patch(target="requests.get", new=mocker.Mock(return_value=mock_response))
+    mocker.patch(
+        target="openbb_terminal.helper_funcs.request",
+        new=mocker.Mock(return_value=mock_response),
+    )
 
     # MOCK FF VERSION
     mocker.patch(

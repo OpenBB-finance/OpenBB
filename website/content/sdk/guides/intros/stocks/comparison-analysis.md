@@ -1,5 +1,7 @@
 ---
 title: Comparison Analysis
+keywords: [comparison, analysis, ca, menu, submenu, stocks, compare, correlation, similar, historical, hcorr, volume, income, balance, cashflow, sentiment, scorr, overview, valuation, financial, ownership, performance, technical, tsne, get --source Polygon, get --source Finnhub, get, set, add, rmv, Polygon, Finnhub, Finviz, Yahoo, yFinance, FinBrain, market, watch, openbb terminal]
+description: The Comparison Analysis menu provides the user with tools for comparison (similar) stocks. It is not necessary to load a ticker from the Stocks menu to use these features.
 ---
 
 The CA module provides programmatic access to the commands from within the OpenBB Terminal menu. Import the OpenBB SDK module, and then access the functions similarly to how the Terminal menus are navigated. The code completion will be activated upon entering `.`, after, `openbb.ca`
@@ -40,7 +42,7 @@ help(openbb.stocks.ca)
 `openbb.stocks.ca.balance` compares the balance sheets for a list of companies.
 
 ```python
-openbb.stocks.ca.balance(["TSLA","F", "GE"])
+openbb.stocks.ca.balance(["TSLA","F", "GE"], timeframe = '2021')
 ```
 
 | Item                                 | TSLA   | F       | GE      |
@@ -123,8 +125,12 @@ openbb.stocks.ca.screener(["f", "ge", "tsla"])
 Calculates the historical price (or returns) correlation for a list of tickers, over a specified window.
 
 ```python
-correlation,historical = openbb.stocks.ca.hcorr(similar = openbb.stocks.ca.similar('TSLA', source = 'Polygon'), candle_type = 'R', start_date = '2018-11-01')
-
+correlation,historical = (
+    openbb.stocks.ca.hcorr(similar = openbb.stocks.ca.similar('TSLA', source = 'Polygon'),
+    candle_type = 'R',
+    start_date = '2018-11-01'
+    )
+)
 correlation
 ```
 

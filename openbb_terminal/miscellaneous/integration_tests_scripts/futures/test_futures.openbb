@@ -1,0 +1,9 @@
+futures
+search -d Cheese
+search -c agriculture
+search -c agriculture -d orange
+historical OJ -s 2022-01-01 -e 2022-01-20
+historical M6B,MSF,M6E
+curve OJ
+curve CL --raw
+exit

@@ -11,7 +11,7 @@ from typing import List
 import numpy as np
 import pandas as pd
 import yfinance as yf
-from dateutil.relativedelta import relativedelta, FR
+from dateutil.relativedelta import FR, relativedelta
 
 from openbb_terminal.decorators import log_start_end
 
@@ -334,6 +334,16 @@ def process_returns(
     # Select stocks with low number of nans
     selected_stocks = np.isnan(stock_returns).sum(axis=0)
     selected_stocks = np.where(selected_stocks <= maxnan * stock_returns.shape[0])[0]
+    filtered_out = [
+        s
+        for s in stock_returns.columns
+        if s not in stock_returns.iloc[:, selected_stocks]
+    ]
+    if filtered_out:
+        print(
+            "The following stocks were filtered out, due to too many NaNs: "
+            + ", ".join(filtered_out)
+        )
     stock_returns = stock_returns.iloc[:, selected_stocks]
 
     # Replace values above and below threshold

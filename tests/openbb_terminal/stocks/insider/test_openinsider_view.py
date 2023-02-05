@@ -1,11 +1,12 @@
 # IMPORTATION STANDARD
 
 # IMPORTATION THIRDPARTY
-import pytest
 import pandas as pd
+import pytest
 
 # IMPORTATION INTERNAL
 from openbb_terminal.stocks.insider import openinsider_view
+
 
 # pylint: disable=E1101
 
@@ -38,6 +39,7 @@ def test_print_insider_filter(mocker):
         limit=5,
         links=False,
         export="csv",
+        sheet_name=None,
     )
 
 
@@ -83,7 +85,11 @@ def test_print_insider_data(color, mocker):
 @pytest.mark.vcr(record_mode="none")
 def test_print_insider_data_no_table(mocker):
     # MOCK GET
-    mocker.patch("requests.get")
+    attrs = {"status_code": 200, "text": ""}
+    mock_response = mocker.Mock(**attrs)
+    mocker.patch(
+        "openbb_terminal.helper_funcs.requests.get", return_value=mock_response
+    )
     mocker.patch(
         target="openbb_terminal.stocks.insider.openinsider_model.pd.read_html",
         return_value=[pd.DataFrame(columns=["1d", "1w", "1m", "6m"]) for _ in range(5)],

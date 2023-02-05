@@ -2,11 +2,12 @@
 __docformat__ = "numpy"
 
 import difflib
-from typing import List
 from datetime import datetime, timedelta
+from typing import List
 
-import yfinance as yf
 import pandas as pd
+import yfinance as yf
+
 from openbb_terminal.stocks.sector_industry_analysis import financedatabase_model
 
 
@@ -89,7 +90,7 @@ def get_market(start: datetime, ticker: str = "SPY") -> pd.DataFrame:
 
 def get_country(ticker):
     country = "NA"
-    data = yf.utils.get_json(f"https://finance.yahoo.com/quote/{ticker}")
+    data = yf.Ticker(ticker).stats()
 
     if "summaryProfile" in data:
         country = data["summaryProfile"]["country"]

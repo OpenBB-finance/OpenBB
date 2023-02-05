@@ -3,27 +3,26 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import Optional, List
+from typing import List, Optional
 
 import matplotlib.pyplot as plt
+import mplfinance as mpf
 import numpy as np
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
-import mplfinance as mpf
 
-from openbb_terminal.config_terminal import theme
-from openbb_terminal.common.technical_analysis import momentum_model
+from openbb_terminal.common.technical_analysis import momentum_model, ta_helpers
 from openbb_terminal.config_plot import PLOT_DPI
+from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
-    plot_autoscale,
-    reindex_dates,
     is_valid_axes_count,
+    plot_autoscale,
     print_rich_table,
+    reindex_dates,
 )
 from openbb_terminal.rich_config import console
-from openbb_terminal.common.technical_analysis import ta_helpers
 
 logger = logging.getLogger(__name__)
 
@@ -37,6 +36,7 @@ def display_cci(
     scalar: float = 0.0015,
     symbol: str = "",
     export: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plots CCI Indicator
@@ -119,6 +119,7 @@ def display_cci(
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
         "cci",
         df_ta,
+        sheet_name,
     )
 
 
@@ -130,6 +131,7 @@ def display_macd(
     n_signal: int = 9,
     symbol: str = "",
     export: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plots MACD signal
@@ -212,6 +214,7 @@ def display_macd(
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
         "macd",
         df_ta,
+        sheet_name,
     )
 
 
@@ -223,6 +226,7 @@ def display_rsi(
     drift: int = 1,
     symbol: str = "",
     export: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plots RSI Indicator
@@ -300,6 +304,7 @@ def display_rsi(
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
         "rsi",
         df_ta,
+        sheet_name,
     )
 
 
@@ -311,6 +316,7 @@ def display_stoch(
     slowkperiod: int = 3,
     symbol: str = "",
     export: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Plots stochastic oscillator signal
@@ -399,6 +405,7 @@ def display_stoch(
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
         "stoch",
         df_ta,
+        sheet_name,
     )
 
 
@@ -408,6 +415,7 @@ def display_fisher(
     window: int = 14,
     symbol: str = "",
     export: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plots Fisher Indicator
@@ -492,6 +500,7 @@ def display_fisher(
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
         "fisher",
         df_ta,
+        sheet_name,
     )
 
 
@@ -501,6 +510,7 @@ def display_cg(
     window: int = 14,
     symbol: str = "",
     export: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plots center of gravity Indicator
@@ -563,6 +573,7 @@ def display_cg(
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
         "cg",
         df_ta,
+        sheet_name,
     )
 
 
@@ -572,6 +583,7 @@ def display_clenow_momentum(
     symbol: str = "",
     window: int = 90,
     export: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Prints table and plots clenow momentum
@@ -638,6 +650,7 @@ def display_clenow_momentum(
         export,
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
         "clenow",
+        sheet_name,
     )
 
 
@@ -646,6 +659,7 @@ def display_demark(
     symbol: str = "",
     min_to_show: int = 5,
     export: str = "",
+    sheet_name: Optional[str] = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plot demark sequential indicator
@@ -753,4 +767,5 @@ def display_demark(
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
         "demark",
         stock_data,
+        sheet_name,
     )

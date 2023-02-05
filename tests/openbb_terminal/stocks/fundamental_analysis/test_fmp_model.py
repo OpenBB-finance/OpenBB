@@ -1,9 +1,9 @@
 # IMPORTATION STANDARD
 
 # IMPORTATION THIRDPARTY
-import pytest
 import numpy as np
 import pandas as pd
+import pytest
 
 # IMPORTATION INTERNAL
 from openbb_terminal.stocks.fundamental_analysis import fmp_model
@@ -70,6 +70,10 @@ def test_get_score():
         (
             "get_financial_growth",
             {"symbol": "PM", "limit": 5, "quarterly": False},
+        ),
+        (
+            "get_filings",
+            {},
         ),
     ],
 )
