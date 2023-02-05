@@ -12,9 +12,9 @@ from openbb_terminal.stocks.options import (
     chartexchange_model,
     intrinio_model,
     nasdaq_model,
+    op_helpers,
     tradier_model,
     yfinance_model,
-    op_helpers,
 )
 
 logger = logging.getLogger(__name__)

@@ -5,8 +5,7 @@ import logging
 import os
 
 from openbb_terminal.cryptocurrency.onchain import whale_alert_model
-from openbb_terminal.decorators import check_api_key
-from openbb_terminal.decorators import log_start_end
+from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
     lambda_long_number_format,

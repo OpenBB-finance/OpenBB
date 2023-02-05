@@ -2,12 +2,13 @@
 __docformat__ = "numpy"
 
 # IMPORTATION STANDARD
-import os
-import os.path
 import argparse
 import logging
+import os
+import os.path
 from pathlib import Path
 from typing import List
+
 import pytz
 
 # IMPORTATION THIRDPARTY
@@ -16,7 +17,7 @@ from dotenv import set_key
 # IMPORTATION INTERNAL
 from openbb_terminal import config_plot as cfg_plot
 from openbb_terminal import feature_flags as obbff
-from openbb_terminal.core.config.paths import USER_ENV_FILE, USER_DATA_DIRECTORY
+from openbb_terminal.core.config.paths import USER_DATA_DIRECTORY, USER_ENV_FILE
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
@@ -27,7 +28,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console, MenuText
+from openbb_terminal.rich_config import MenuText, console
 
 # pylint: disable=too-many-lines,no-member,too-many-public-methods,C0302
 # pylint: disable=import-outside-toplevel

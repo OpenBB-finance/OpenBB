@@ -1,11 +1,12 @@
 """ Comparison Analysis Marketwatch View """
 __docformat__ = "numpy"
 
-from datetime import datetime
 import logging
 import os
+from datetime import datetime
 from typing import List
 
+from openbb_terminal import rich_config
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
@@ -14,7 +15,6 @@ from openbb_terminal.helper_funcs import (
     print_rich_table,
 )
 from openbb_terminal.stocks.comparison_analysis import marketwatch_model
-from openbb_terminal import rich_config
 
 logger = logging.getLogger(__name__)
 

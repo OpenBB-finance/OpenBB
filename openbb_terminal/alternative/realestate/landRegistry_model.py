@@ -1,8 +1,9 @@
 """  UK Land Registry Model """
 __docformat__ = "numpy"
 
-import logging
 import io
+import logging
+
 import pandas as pd
 from SPARQLWrapper.Wrapper import CSV, SPARQLWrapper
 

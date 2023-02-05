@@ -18,9 +18,9 @@
   "dependencies": {
     "@cmfcmf/docusaurus-search-local": "^0.11.0",
     "@docusaurus/core": "2.2.0",
-    "@docusaurus/plugin-client-redirects": "^2.2.0",
+    "@docusaurus/plugin-client-redirects": "^2.3.1",
     "@docusaurus/plugin-content-docs": "^2.2.0",
-    "@docusaurus/preset-classic": "2.2.0",
+    "@docusaurus/preset-classic": "2.3.1",
     "@mdx-js/react": "^1.6.22",
     "@radix-ui/react-popover": "^1.0.2",
     "clsx": "^1.2.1",

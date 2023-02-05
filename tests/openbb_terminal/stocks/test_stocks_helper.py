@@ -1,14 +1,14 @@
 # IMPORTATION STANDARD
-from datetime import datetime
 import os
+from datetime import datetime
 
 # IMPORTATION THIRDPARTY
 import pytest
 
-# IMPORTATION INTERNAL
-from openbb_terminal.stocks import stocks_helper
-from openbb_terminal.stocks import stocks_view
 from openbb_terminal import helper_funcs
+
+# IMPORTATION INTERNAL
+from openbb_terminal.stocks import stocks_helper, stocks_view
 
 
 @pytest.fixture(scope="module")

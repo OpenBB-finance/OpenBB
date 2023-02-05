@@ -6,8 +6,8 @@ import logging
 import pandas as pd
 
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.stocks.discovery.disc_helpers import get_df
 from openbb_terminal.rich_config import console
+from openbb_terminal.stocks.discovery.disc_helpers import get_df
 
 logger = logging.getLogger(__name__)
 

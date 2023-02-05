@@ -3,16 +3,14 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import Tuple, Union, List
 import warnings
-
+from typing import List, Tuple, Union
 
 import pandas as pd
-
 from darts import TimeSeries
 from darts.models import RegressionModel
-from openbb_terminal.decorators import log_start_end
 
+from openbb_terminal.decorators import log_start_end
 from openbb_terminal.forecast import helpers
 
 logger = logging.getLogger(__name__)
