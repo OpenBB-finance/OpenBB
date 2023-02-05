@@ -145,6 +145,7 @@ def display_assets_allocation(
     portfolio_engine: PortfolioEngine,
     limit: int = 10,
     tables: bool = False,
+    recalculate: bool = False,
 ):
     """Display portfolio asset allocation compared to the benchmark
 
@@ -152,16 +153,19 @@ def display_assets_allocation(
     ----------
     portfolio_engine: PortfolioEngine
         Instance of PortfolioEngine class
-    tables: bool
-        Whether to include separate asset allocation tables
     limit: int
         The amount of assets you wish to show, by default this is set to 10
+    tables: bool
+        Whether to include separate asset allocation tables
+    recalculate: bool
+        Whether to recalculate the allocation
     """
 
     combined, portfolio_allocation, benchmark_allocation = get_assets_allocation(
         portfolio_engine=portfolio_engine,
         limit=limit,
         tables=True,
+        recalculate=recalculate,
     )
 
     display_category(
@@ -179,6 +183,7 @@ def display_sectors_allocation(
     portfolio_engine: PortfolioEngine,
     limit: int = 10,
     tables: bool = False,
+    recalculate: bool = False,
 ):
     """Display portfolio sector allocation compared to the benchmark
 
@@ -190,12 +195,15 @@ def display_sectors_allocation(
         The amount of assets you wish to show, by default this is set to 10
     tables: bool
         Whether to include separate asset allocation tables
+    recalculate: bool
+        Whether to recalculate the allocation
     """
 
     combined, portfolio_allocation, benchmark_allocation = get_sectors_allocation(
         portfolio_engine=portfolio_engine,
         limit=limit,
         tables=True,
+        recalculate=recalculate,
     )
 
     display_category(
@@ -213,6 +221,7 @@ def display_countries_allocation(
     portfolio_engine: PortfolioEngine,
     limit: int = 10,
     tables: bool = False,
+    recalculate: bool = False,
 ):
     """Display portfolio country allocation compared to the benchmark
 
@@ -224,12 +233,15 @@ def display_countries_allocation(
         The amount of assets you wish to show, by default this is set to 10
     tables: bool
         Whether to include separate asset allocation tables
+    recalculate: bool
+        Whether to recalculate the allocation
     """
 
     combined, portfolio_allocation, benchmark_allocation = get_countries_allocation(
         portfolio_engine=portfolio_engine,
         limit=limit,
         tables=True,
+        recalculate=recalculate,
     )
 
     display_category(
@@ -247,6 +259,7 @@ def display_regions_allocation(
     portfolio_engine: PortfolioEngine,
     limit: int = 10,
     tables: bool = False,
+    recalculate: bool = False,
 ):
     """Display portfolio region allocation compared to the benchmark
 
@@ -258,12 +271,15 @@ def display_regions_allocation(
         The amount of assets you wish to show, by default this is set to 10
     tables: bool
         Whether to include separate asset allocation tables
+    recalculate: bool
+        Whether to recalculate the allocation
     """
 
     combined, portfolio_allocation, benchmark_allocation = get_regions_allocation(
         portfolio_engine=portfolio_engine,
         limit=limit,
         tables=True,
+        recalculate=recalculate,
     )
 
     display_category(
