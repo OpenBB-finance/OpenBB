@@ -1,4 +1,4 @@
-let globals = { dark_mode: false };
+let globals = { dark_mode: false, modebarHidden: false };
 
 TITLE_DIV = undefined;
 TEXT_DIV = undefined;
@@ -332,3 +332,18 @@ function OpenBBMain(plotly_figure) {
     }, 500);
   }
 }
+
+// listen to cmd+h or ctrl+h to hide the modebar
+document.addEventListener("keydown", function (event) {
+  if (event.key == "h" && (event.ctrlKey || event.metaKey)) {
+    event.preventDefault();
+    const modebar = document.getElementsByClassName("modebar-container")[0];
+    if (globals.modebarHidden) {
+      modebar.style.display = "flex";
+      globals.modebarHidden = false;
+    } else {
+      modebar.style.display = "none";
+      globals.modebarHidden = true;
+    }
+  }
+});
