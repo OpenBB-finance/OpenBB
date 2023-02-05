@@ -50,9 +50,7 @@ jobs:
           show-channel-urls: true
           channel-priority: flexible
           environment-file: build/conda/conda-3-9-env-full.yaml
-          #activate-environment: build_env
-          auto-activate-base: true
-          activate-environment: ""
+          activate-environment: build_env
           use-only-tar-bz2: true # Needed for caching some reason
       - name: Run Poetry
         shell: bash -el {0}
