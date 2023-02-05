@@ -104,10 +104,12 @@ u8darts = {extras = ["torch"], version = "0.23.0", optional = true}
 docstring-parser = {version = "^0.15", optional = true}
 grpcio = "^1.51.1"
 jupyterlab-widgets = "^3.0.3"
+mstarpy = "^0.0.4"
 packaging = ">=22.0"
 rapidfuzz = "^2.13.7"
 pyex = "^0.5.0"
 streamlit = "^1.17.0"
+sparqlwrapper = "^2.0.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.2"
@@ -156,9 +158,9 @@ match = '((?!test_).)*\.py'
 line-length = 122
 target-version = "py38"
 # This is an introductory addition of ruff. We should look to adding:
-# D: pydocstyle, PD: pandas-vet, I: isort
+# D: pydocstyle, PD: pandas-vet
 # All options here: https://github.com/charliermarsh/ruff#supported-rules
-select = ["E", "W", "F", "Q", "W", "S", "UP"]
+select = ["E", "W", "F", "Q", "W", "S", "UP", "I"]
 ignore = ["S105", "S106", "S107"]
 
 [tool.ruff.per-file-ignores]

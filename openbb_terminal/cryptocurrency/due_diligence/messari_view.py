@@ -7,17 +7,18 @@ import logging
 import os
 from datetime import datetime, timedelta
 from typing import List, Optional
-import pandas as pd
+
 import numpy as np
+import pandas as pd
+from matplotlib import dates as mdates
 from matplotlib import pyplot as plt
 from matplotlib import ticker
-from matplotlib import dates as mdates
 
-from openbb_terminal.config_terminal import theme
-from openbb_terminal import feature_flags as obbff
-from openbb_terminal.cryptocurrency import cryptocurrency_helpers
-from openbb_terminal.decorators import check_api_key
 from openbb_terminal import config_plot as cfgPlot
+from openbb_terminal import feature_flags as obbff
+from openbb_terminal.config_terminal import theme
+from openbb_terminal.cryptocurrency import cryptocurrency_helpers
+from openbb_terminal.cryptocurrency.dataframe_helpers import prettify_paragraph
 from openbb_terminal.cryptocurrency.due_diligence.messari_model import (
     get_available_timeseries,
     get_fundraising,
@@ -31,16 +32,15 @@ from openbb_terminal.cryptocurrency.due_diligence.messari_model import (
     get_team,
     get_tokenomics,
 )
-from openbb_terminal.decorators import log_start_end
+from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
+    is_valid_axes_count,
     lambda_long_number_format,
     plot_autoscale,
     print_rich_table,
-    is_valid_axes_count,
 )
 from openbb_terminal.rich_config import console
-from openbb_terminal.cryptocurrency.dataframe_helpers import prettify_paragraph
 
 logger = logging.getLogger(__name__)
 

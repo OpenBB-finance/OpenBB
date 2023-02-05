@@ -61,7 +61,7 @@ setup_args = dict(
 )
 
 try:
-    from jupyter_packaging import wrap_installers, npm_builder, get_data_files
+    from jupyter_packaging import get_data_files, npm_builder, wrap_installers
 
     post_develop = npm_builder(
         build_cmd="install:extension", source_dir="src", build_dir=lab_path

@@ -2,20 +2,20 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import Optional, Tuple, Union, List
-
 import warnings
-from statsmodels.tools.sm_exceptions import ConvergenceWarning
+from typing import List, Optional, Tuple, Union
+
 import numpy as np
 import pandas as pd
 from darts import TimeSeries
+from darts.metrics import mape
 from darts.models import Theta
 from darts.utils.utils import SeasonalityMode
-from darts.metrics import mape
+from statsmodels.tools.sm_exceptions import ConvergenceWarning
 
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.rich_config import console
 from openbb_terminal.forecast import helpers
+from openbb_terminal.rich_config import console
 
 warnings.simplefilter("ignore", ConvergenceWarning)
 

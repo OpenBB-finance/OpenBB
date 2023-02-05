@@ -3,9 +3,10 @@
 # IMPORTATION THIRDPARTY
 import pytest
 
+from openbb_terminal import helper_funcs
+
 # IMPORTATION INTERNAL
 from openbb_terminal.etf.screener import screener_view
-from openbb_terminal import helper_funcs
 
 
 @pytest.fixture(scope="module")

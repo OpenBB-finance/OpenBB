@@ -4,9 +4,10 @@
 import pandas as pd
 import pytest
 
+from openbb_terminal import helper_funcs
+
 # IMPORTATION INTERNAL
 from openbb_terminal.common.behavioural_analysis import finbrain_view
-from openbb_terminal import helper_funcs
 
 
 @pytest.mark.default_cassette("test_display_sentiment_analysis")

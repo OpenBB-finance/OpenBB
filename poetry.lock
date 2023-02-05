@@ -858,14 +858,14 @@ exceptiongroup = {version = "*", markers = "python_version < \"3.11\""}
 
 [[package]]
 name = "ccxt"
-version = "2.7.32"
+version = "2.7.44"
 description = "A JavaScript / Python / PHP cryptocurrency trading library with support for 130+ exchanges"
 category = "main"
 optional = false
 python-versions = "*"
 files = [
-    {file = "ccxt-2.7.32-py2.py3-none-any.whl", hash = "sha256:a5cd8e41ca8b6f9a2e35f967b84867a50be61e32bb9806e09e79ab784cd9cda1"},
-    {file = "ccxt-2.7.32.tar.gz", hash = "sha256:083ef9dda6c64a3c5b7873a454c999e49c3e6c857b190d50044349f03097a028"},
+    {file = "ccxt-2.7.44-py2.py3-none-any.whl", hash = "sha256:5631d5e00632fa396bf61419096d8db5ef895af8fc4f5856849f27ec465a9d2d"},
+    {file = "ccxt-2.7.44.tar.gz", hash = "sha256:8c134b322b07430b3ac36619d73a05e605ac7a5b9ccc3496e0939e882f57c6b4"},
 ]
 
 [package.dependencies]
@@ -1963,14 +1963,14 @@ user_agent = ">=0.1.9,<0.2.0"
 
 [[package]]
 name = "finvizfinance"
-version = "0.14.4"
+version = "0.14.5"
 description = "Finviz Finance. Information downloader."
 category = "main"
 optional = false
 python-versions = ">=3.5"
 files = [
-    {file = "finvizfinance-0.14.4-py3-none-any.whl", hash = "sha256:0ef24ccf907053b83db7473df0360a4cb349b81fee925f7316f2d23216df8ebb"},
-    {file = "finvizfinance-0.14.4.tar.gz", hash = "sha256:de2a14dcc0371ac936f365881303dd4d2163910b5384f3153ab99c931d3d1a15"},
+    {file = "finvizfinance-0.14.5-py3-none-any.whl", hash = "sha256:1b22bfd7af36f01a08c6032e19f64e810ae3f42bfba681e9a2132226a5a90924"},
+    {file = "finvizfinance-0.14.5.tar.gz", hash = "sha256:c97fe0e69d681d9108113aed943988561665d0d4dbd64ffa0b666a2899c25899"},
 ]
 
 [package.dependencies]
@@ -2799,6 +2799,21 @@ files = [
     {file = "iso8601-0.1.16-py2.py3-none-any.whl", hash = "sha256:906714829fedbc89955d52806c903f2332e3948ed94e31e85037f9e0226b8376"},
     {file = "iso8601-0.1.16.tar.gz", hash = "sha256:36532f77cc800594e8f16641edae7f1baf7932f05d8e508545b95fc53c6dc85b"},
 ]
+
+[[package]]
+name = "isodate"
+version = "0.6.1"
+description = "An ISO 8601 date/time/duration parser and formatter"
+category = "main"
+optional = false
+python-versions = "*"
+files = [
+    {file = "isodate-0.6.1-py2.py3-none-any.whl", hash = "sha256:0751eece944162659049d35f4f549ed815792b38793f07cf73381c1c87cbed96"},
+    {file = "isodate-0.6.1.tar.gz", hash = "sha256:48c5881de7e8b0a0d648cb024c8062dc84e7b840ed81e864c7614fd3c127bde9"},
+]
+
+[package.dependencies]
+six = "*"
 
 [[package]]
 name = "isort"
@@ -3796,6 +3811,23 @@ matplotlib = "*"
 pandas = "*"
 
 [[package]]
+name = "mstarpy"
+version = "0.0.4"
+description = "Mutual funds data extraction from MorningStar with Python"
+category = "main"
+optional = false
+python-versions = "*"
+files = [
+    {file = "mstarpy-0.0.4-py3-none-any.whl", hash = "sha256:afc97588deb25170851f5290e70129930a2373f156509e83c327ada4dc3c16e9"},
+    {file = "mstarpy-0.0.4.tar.gz", hash = "sha256:32a75beeb039ebdaf5e40071000e31d78a18e0f54575227dfbabc46084e15f2a"},
+]
+
+[package.dependencies]
+beautifulsoup4 = ">=4.11.1"
+pandas = ">=1.4.3"
+requests = ">=2.28.1"
+
+[[package]]
 name = "multidict"
 version = "6.0.4"
 description = "multidict implementation"
@@ -3932,14 +3964,14 @@ python2 = ["typed-ast (>=1.4.0,<2)"]
 
 [[package]]
 name = "mypy-extensions"
-version = "0.4.3"
-description = "Experimental type system extensions for programs checked with the mypy typechecker."
+version = "1.0.0"
+description = "Type system extensions for programs checked with the mypy type checker."
 category = "main"
 optional = false
-python-versions = "*"
+python-versions = ">=3.5"
 files = [
-    {file = "mypy_extensions-0.4.3-py2.py3-none-any.whl", hash = "sha256:090fedd75945a69ae91ce1303b5824f428daf5a028d2f6ab8a299250a846f15d"},
-    {file = "mypy_extensions-0.4.3.tar.gz", hash = "sha256:2d82818f5bb3e369420cb3c4060a7970edba416647068eb4c5343488a6c604a8"},
+    {file = "mypy_extensions-1.0.0-py3-none-any.whl", hash = "sha256:4392f6c0eb8a5668a69e23d168ffa70f0be9ccfd32b5cc2d26a34ae5b844552d"},
+    {file = "mypy_extensions-1.0.0.tar.gz", hash = "sha256:75dbf8955dc00442a438fc4d0666508a9a97b6bd41aa2f0ffe9d2f2725af0782"},
 ]
 
 [[package]]
@@ -6371,6 +6403,31 @@ files = [
 full = ["numpy"]
 
 [[package]]
+name = "rdflib"
+version = "6.2.0"
+description = "RDFLib is a Python library for working with RDF, a simple yet powerful language for representing information."
+category = "main"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "rdflib-6.2.0-py3-none-any.whl", hash = "sha256:85c34a86dfc517a41e5f2425a41a0aceacc23983462b32e68610b9fad1383bca"},
+    {file = "rdflib-6.2.0.tar.gz", hash = "sha256:62dc3c86d1712db0f55785baf8047f63731fa59b2682be03219cb89262065942"},
+]
+
+[package.dependencies]
+isodate = "*"
+pyparsing = "*"
+setuptools = "*"
+
+[package.extras]
+berkeleydb = ["berkeleydb"]
+dev = ["black (==22.6.0)", "flake8", "flakeheaven", "isort", "mypy", "pep8-naming", "types-setuptools"]
+docs = ["myst-parser", "sphinx (<6)", "sphinx-autodoc-typehints", "sphinxcontrib-apidoc", "sphinxcontrib-kroki"]
+html = ["html5lib"]
+networkx = ["networkx"]
+tests = ["html5lib", "pytest", "pytest-cov"]
+
+[[package]]
 name = "regex"
 version = "2022.10.31"
 description = "Alternative regular expression module, to replace re."
@@ -7079,6 +7136,27 @@ files = [
     {file = "soupsieve-2.3.2.post1-py3-none-any.whl", hash = "sha256:3b2503d3c7084a42b1ebd08116e5f81aadfaea95863628c80a3b774a11b7c759"},
     {file = "soupsieve-2.3.2.post1.tar.gz", hash = "sha256:fc53893b3da2c33de295667a0e19f078c14bf86544af307354de5fcf12a3f30d"},
 ]
+
+[[package]]
+name = "sparqlwrapper"
+version = "2.0.0"
+description = "SPARQL Endpoint interface to Python"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "SPARQLWrapper-2.0.0-py3-none-any.whl", hash = "sha256:c99a7204fff676ee28e6acef327dc1ff8451c6f7217dcd8d49e8872f324a8a20"},
+    {file = "SPARQLWrapper-2.0.0.tar.gz", hash = "sha256:3fed3ebcc77617a4a74d2644b86fd88e0f32e7f7003ac7b2b334c026201731f1"},
+]
+
+[package.dependencies]
+rdflib = ">=6.1.1"
+
+[package.extras]
+dev = ["mypy (>=0.931)", "pandas (>=1.3.5)", "pandas-stubs (>=1.2.0.48)", "setuptools (>=3.7.1)"]
+docs = ["sphinx (<5)", "sphinx-rtd-theme"]
+keepalive = ["keepalive (>=0.5)"]
+pandas = ["pandas (>=1.3.5)"]
 
 [[package]]
 name = "sphinx"
@@ -8457,14 +8535,14 @@ files = [
 
 [[package]]
 name = "websocket-client"
-version = "1.5.0"
+version = "1.5.1"
 description = "WebSocket client for Python with low level API options"
 category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "websocket-client-1.5.0.tar.gz", hash = "sha256:561ca949e5bbb5d33409a37235db55c279235c78ee407802f1d2314fff8a8536"},
-    {file = "websocket_client-1.5.0-py3-none-any.whl", hash = "sha256:fb5d81b95d350f3a54838ebcb4c68a5353bbd1412ae8f068b1e5280faeb13074"},
+    {file = "websocket-client-1.5.1.tar.gz", hash = "sha256:3f09e6d8230892547132177f575a4e3e73cfdf06526e20cc02aa1c3b47184d40"},
+    {file = "websocket_client-1.5.1-py3-none-any.whl", hash = "sha256:cdf5877568b7e83aa7cf2244ab56a3213de587bbe0ce9d8b9600fc77b455d89e"},
 ]
 
 [package.extras]
@@ -8740,14 +8818,14 @@ scikit-learn = ["scikit-learn"]
 
 [[package]]
 name = "xlsxwriter"
-version = "3.0.7"
+version = "3.0.8"
 description = "A Python module for creating Excel XLSX files."
 category = "main"
 optional = true
 python-versions = ">=3.6"
 files = [
-    {file = "XlsxWriter-3.0.7-py3-none-any.whl", hash = "sha256:d79dadac9dcbff3c24281764b052b46bcdb391f3184f337c4c4e6ed8d2738d7d"},
-    {file = "XlsxWriter-3.0.7.tar.gz", hash = "sha256:1239958b12da12be6abf05b32f64ff162eb75fff0fdf00d901ca0f46dc0557cf"},
+    {file = "XlsxWriter-3.0.8-py3-none-any.whl", hash = "sha256:f5c7491b8450cf49968428f062355de16c9140aa24eafc466c9dfe107610bd44"},
+    {file = "XlsxWriter-3.0.8.tar.gz", hash = "sha256:ec77335fb118c36bc5ed1c89e33904d649e4989df2d7980f7d6a9dd95ee5874e"},
 ]
 
 [[package]]
@@ -8944,4 +9022,4 @@ prediction = ["torch", "pytorch-lightning", "u8darts"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8,<3.11, !=3.9.7"
-content-hash = "4d8a37396a09f6ac0348a24e8ee3e503abf12439a736a6f17bb7ef8fb031ab65"
+content-hash = "5a2b51cdb6c337880ebff91d0700ccfcaa3a5ea5a13276088e86b0caf36f1bdd"

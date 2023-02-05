@@ -71,7 +71,7 @@ jobs:
       # This is basically the same as build4mac.sh
       - name: Build Bundle
         run: |
-          pyinstaller build/pyinstaller/terminal.spec --clean
+          python -m PyInstaller build/pyinstaller/terminal.spec --clean
           osascript build/pyinstaller/setup_icons.applescript
           mkdir DMG
           cp -r build/pyinstaller/macOS_package_assets/* DMG/

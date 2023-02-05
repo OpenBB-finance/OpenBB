@@ -15,12 +15,9 @@ from openbb_terminal.common import feedparser_view, newsapi_view
 from openbb_terminal.common.quantitative_analysis import qa_view
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.stocks import cboe_view
-from openbb_terminal.stocks.fundamental_analysis import fmp_view
-
 from openbb_terminal.helper_funcs import (
-    EXPORT_ONLY_RAW_DATA_ALLOWED,
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
+    EXPORT_ONLY_RAW_DATA_ALLOWED,
     export_data,
     valid_date,
 )
@@ -31,8 +28,8 @@ from openbb_terminal.rich_config import (
     console,
     translate,
 )
-from openbb_terminal.stocks import stocks_helper
-from openbb_terminal.stocks import stocks_view
+from openbb_terminal.stocks import cboe_view, stocks_helper, stocks_view
+from openbb_terminal.stocks.fundamental_analysis import fmp_view
 
 # pylint: disable=R1710,import-outside-toplevel,R0913,R1702,no-member
 
