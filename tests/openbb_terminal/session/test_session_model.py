@@ -1,9 +1,10 @@
 # IMPORTATION STANDARD
 
 # IMPORTATION THIRDPARTY
-import os
 import json
+import os
 from unittest.mock import patch
+
 import pytest
 from requests import Response
 

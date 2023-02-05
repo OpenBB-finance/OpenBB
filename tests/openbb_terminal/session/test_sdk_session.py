@@ -2,6 +2,7 @@
 
 # IMPORTATION THIRDPARTY
 from unittest.mock import patch
+
 import pytest
 
 # IMPORTATION INTERNAL
