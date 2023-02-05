@@ -227,7 +227,7 @@ class PortfolioEngine:
             13. Populate fields Sector, Industry and Country
         """
 
-        p_bar = tqdm(range(14), desc="Preprocessing transactions")
+        p_bar = tqdm(range(14), desc="Preprocessing transactions", leave=False)
 
         try:
             # 0. If optional fields not in the transactions add missing
@@ -513,7 +513,7 @@ class PortfolioEngine:
             True if successful, False otherwise
         """
 
-        p_bar = tqdm(range(4), desc="         Loading benchmark")
+        p_bar = tqdm(range(4), desc="         Loading benchmark", leave=False)
 
         self.benchmark_historical_prices = yf.download(
             symbol,
@@ -672,7 +672,9 @@ class PortfolioEngine:
             whether to use close or adjusted close prices
         """
 
-        p_bar = tqdm(range(len(self.tickers)), desc="        Loading price data")
+        p_bar = tqdm(
+            range(len(self.tickers)), desc="        Loading price data", leave=False
+        )
 
         for ticker_type, data in self.tickers.items():
             price_data = yf.download(
@@ -803,7 +805,7 @@ class PortfolioEngine:
                 from any sales during the period [Cash Inflow(t)].
         """
 
-        p_bar = tqdm(range(1), desc="       Calculating returns")
+        p_bar = tqdm(range(1), desc="       Calculating returns", leave=False)
 
         trade_data = self.historical_trade_data
 
