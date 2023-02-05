@@ -2,6 +2,7 @@
 __docformat__ = "numpy"
 
 import pandas as pd
+
 from openbb_terminal.helper_funcs import get_user_agent, request
 from openbb_terminal.rich_config import console
 

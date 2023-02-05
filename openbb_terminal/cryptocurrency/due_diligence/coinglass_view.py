@@ -2,8 +2,7 @@ import logging
 import os
 
 import pandas as pd
-from matplotlib import pyplot as plt
-from matplotlib import ticker
+from matplotlib import pyplot as plt, ticker
 
 from openbb_terminal import config_plot as cfgPlot
 from openbb_terminal.config_terminal import theme

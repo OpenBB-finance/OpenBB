@@ -2,12 +2,13 @@
 __docformat__ = "numpy"
 
 import logging
-
 from datetime import datetime, timedelta
-from typing import List, Dict, Optional
+from typing import Dict, List, Optional
+
 import finnhub
 import pandas as pd
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
+
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import similar

@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
+
 import pandas as pd
 
 from openbb_terminal.decorators import log_start_end

@@ -14,10 +14,7 @@ from openbb_terminal.cryptocurrency.overview.tokenterminal_model import (
     get_fundamental_metrics,
 )
 from openbb_terminal.decorators import check_api_key, log_start_end
-from openbb_terminal.helper_funcs import (
-    export_data,
-    plot_autoscale,
-)
+from openbb_terminal.helper_funcs import export_data, plot_autoscale
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
