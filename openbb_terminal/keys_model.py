@@ -33,14 +33,11 @@ from openbb_terminal.cryptocurrency.coinbase_helpers import (
     CoinbaseProAuth,
     make_coinbase_request,
 )
-from openbb_terminal import config_terminal as cfg
-from openbb_terminal.core.config.paths import USER_ENV_FILE
 from openbb_terminal.rich_config import console
 from openbb_terminal.session.hub_model import patch_user_configs
 from openbb_terminal.session.user import User
 from openbb_terminal.helper_funcs import request
 from openbb_terminal.portfolio.brokers.degiro.degiro_model import DegiroModel
-from openbb_terminal.rich_config import console
 from openbb_terminal.terminal_helper import suppress_stdout
 
 logger = logging.getLogger(__name__)

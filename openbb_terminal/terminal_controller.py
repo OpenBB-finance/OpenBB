@@ -21,13 +21,12 @@ import pandas as pd
 from prompt_toolkit import PromptSession
 from prompt_toolkit.completion import NestedCompleter
 from prompt_toolkit.formatted_text import HTML
-import pandas as pd
-from openbb_terminal import feature_flags as obbff
-from openbb_terminal.session.user import User
-from openbb_terminal.terminal_helper import is_installer, is_packaged_application
-from openbb_terminal.session import session_controller
+from prompt_toolkit.styles import Style
+from rich import panel
 
 from openbb_terminal import feature_flags as obbff
+from openbb_terminal.session.user import User
+from openbb_terminal.session import session_controller
 from openbb_terminal.common import feedparser_view
 from openbb_terminal.core.config.paths import (
     HOME_DIRECTORY,
@@ -38,7 +37,6 @@ from openbb_terminal.core.config.paths import (
     USER_ROUTINES_DIRECTORY,
     load_dotenv_with_priority,
 )
-from openbb_terminal.core.log.generation.settings_logger import log_all_settings
 from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_positive,
@@ -59,11 +57,9 @@ from openbb_terminal.terminal_helper import (
     suppress_stdout,
     update_terminal,
     welcome_message,
+    is_installer,
 )
-from openbb_terminal.helper_funcs import parse_and_split_input
 from openbb_terminal.keys_model import first_time_user
-from openbb_terminal.common import feedparser_view
-from openbb_terminal.reports.reports_model import ipykernel_launcher
 from openbb_terminal.core.log.generation.custom_logger import log_terminal
 
 # pylint: disable=too-many-public-methods,import-outside-toplevel, too-many-function-args

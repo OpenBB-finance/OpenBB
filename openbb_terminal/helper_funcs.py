@@ -20,8 +20,6 @@ from functools import lru_cache
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple, Union
 
-import pytz
-import pandas as pd
 from rich.table import Table
 import iso8601
 import matplotlib
@@ -36,13 +34,12 @@ from holidays import US as us_holidays
 from pandas._config.config import get_option
 from pandas.plotting import register_matplotlib_converters
 from PIL import Image, ImageDraw
-from rich.table import Table
 from screeninfo import get_monitors
 
 from openbb_terminal import config_plot as cfgPlot
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal import feature_flags as obbff
-from openbb_terminal.core.config import paths
+from openbb_terminal.rich_config import console
 from openbb_terminal.core.config.paths import (
     HOME_DIRECTORY,
     USER_EXPORTS_DIRECTORY,
