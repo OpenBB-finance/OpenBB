@@ -53,18 +53,26 @@ jobs:
           activate-environment: build_env
           use-only-tar-bz2: true # Needed for caching some reason
       - name: Run Poetry
-        run: poetry install
+        run: |
+          conda activate "build_env"
+          poetry install
       - name: Install Pyinstaller
-        run: poetry install -E installer
+        run: |
+          conda activate "build_env"
+          poetry install -E installer
       - name: Install Portfolio Optimization and Forecasting Toolkits
-        run: poetry install -E all
+        run: |
+          conda activate "build_env"
+          poetry install -E all
       - name: Install Specific Papermill
         run: |
+          conda activate "build_env"
           pip uninstall papermill -y
           pip install git+https://github.com/nteract/papermill.git@main
       # This is basically the same as build4mac.sh
       - name: Build Bundle
         run: |
+          conda activate "build_env"
           python -m PyInstaller build/pyinstaller/terminal.spec --clean
           osascript build/pyinstaller/setup_icons.applescript
           mkdir DMG
