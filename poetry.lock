@@ -3536,7 +3536,7 @@ python-versions = ">=3.7"
 
 [[package]]
 name = "pywry"
-version = "0.2.4"
+version = "0.2.5"
 description = ""
 category = "main"
 optional = false
@@ -3547,7 +3547,7 @@ psutil = ">=5.8.0"
 websockets = ">=5.0.1"
 
 [package.extras]
-dev = ["maturin (==0.14.6)"]
+dev = ["maturin (==0.14.12)"]
 
 [[package]]
 name = "pyyaml"
@@ -5098,7 +5098,7 @@ prediction = ["torch", "pytorch-lightning", "u8darts"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8,<3.11, !=3.9.7"
-content-hash = "6082422c6e0601e87e9df33daa3393f6d4afffdb867ecf6db74e33622ecf41fd"
+content-hash = "268e3ba80702beb794372ea839033ff8f64a09ddf968c7ef9cac1ed46cc34ab4"
 
 [metadata.files]
 absl-py = []
