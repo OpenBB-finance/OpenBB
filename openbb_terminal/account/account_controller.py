@@ -1,6 +1,7 @@
 import argparse
 import json
 import logging
+import os
 from pathlib import Path
 from typing import Dict, List
 
@@ -43,16 +44,26 @@ class AccountController(BaseController):
 
     def update_runtime_choices(self):
         """Update runtime choices"""
-        self.ROUTINE_FILES = {
-            filepath.name: filepath
-            for filepath in USER_ROUTINES_DIRECTORY.rglob("*.openbb")
-        }
+        self.ROUTINE_FILES = self.get_routines()
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
             choices["sync"] = {"--on": {}, "--off": {}}
             choices["upload"]["--file"] = {c: {} for c in self.ROUTINE_FILES}
             choices["upload"]["-f"] = choices["upload"]["--file"]
             self.completer = NestedCompleter.from_nested_dict(choices)
+
+    def get_routines(self):
+        """Get routines"""
+        routines = {
+            filepath.name: filepath
+            for filepath in USER_ROUTINES_DIRECTORY.rglob("*.openbb")
+        }
+        user_folder = USER_ROUTINES_DIRECTORY / User.get_uuid()
+        if os.path.exists(user_folder):
+            routines.update(
+                {filepath.name: filepath for filepath in user_folder.rglob("*.openbb")}
+            )
+        return routines
 
     def print_help(self):
         """Print help"""
@@ -215,7 +226,7 @@ class AccountController(BaseController):
             "--name",
             type=str,
             dest="name",
-            help="The name of the routine",
+            help="The name of the routine.",
         )
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
@@ -290,15 +301,12 @@ class AccountController(BaseController):
                     script = data.get("script", "")
                     if script:
                         file_name = f"{ns_parser.name}.openbb"
-                        folder = USER_ROUTINES_DIRECTORY
-                        if Local.save_routine(
+                        file_path = Local.save_routine(
                             file_name=file_name,
                             routine=script,
-                            folder=USER_ROUTINES_DIRECTORY,
-                        ):
-                            console.print(
-                                f"[info]Location:[/info] {folder}/{file_name}"
-                            )
+                        )
+                        if file_path:
+                            console.print(f"[info]Location:[/info] {file_path}")
 
     @log_start_end(log=logger)
     def call_delete(self, other_args: List[str]):

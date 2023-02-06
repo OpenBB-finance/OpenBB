@@ -14,6 +14,7 @@ from openbb_terminal.core.config.paths import (
     USER_ROUTINES_DIRECTORY,
 )
 from openbb_terminal.rich_config import console
+from openbb_terminal.session.user import User
 
 SESSION_FILE_PATH = SETTINGS_DIRECTORY / "session.json"
 
@@ -199,17 +200,23 @@ def get_routine(
         The routines folder.
     """
     try:
-        with open(folder / file_name) as f:
+        user_folder = USER_ROUTINES_DIRECTORY / User.get_uuid()
+        if os.path.exists(user_folder / file_name):
+            file_path = user_folder / file_name
+        else:
+            file_path = folder / file_name
+
+        with open(file_path) as f:
             routine = "".join(f.readlines())
         return routine
     except Exception:
-        console.print("[red]\nFailed to find routine.[/red]")
+        console.print("[red]Failed to find routine.[/red]")
         return None
 
 
 def save_routine(
     file_name: str, routine: str, folder: Path = USER_ROUTINES_DIRECTORY
-) -> bool:
+) -> Optional[Path]:
     """Save the routine.
 
     Parameters
@@ -223,13 +230,19 @@ def save_routine(
 
     Returns
     -------
-    bool
-        The status of the save.
+    Optional[Path]
+        The path to the routine or None.
     """
     try:
-        with open(folder / file_name, "w") as f:
+        uuid = User.get_uuid()
+        user_folder = folder / uuid
+        if not os.path.exists(user_folder):
+            os.makedirs(user_folder)
+
+        file_path = user_folder / file_name
+        with open(file_path, "w") as f:
             f.write(routine)
-        return True
+        return user_folder / file_name
     except Exception:
         console.print("[red]\nFailed to save routine.[/red]")
-        return False
+        return None
