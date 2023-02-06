@@ -2,6 +2,7 @@
 __docformat__ = "numpy"
 
 import logging
+import os
 
 
 from openbb_terminal.decorators import log_start_end
@@ -9,13 +10,14 @@ from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.fundamental_analysis import seeking_alpha_model
 from openbb_terminal.helper_funcs import (
     print_rich_table,
+    export_data,
 )
 
 logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def display_eps_estimates(symbol: str):
+def display_eps_estimates(symbol: str, export: str = "", sheet_name: str = None):
     """Display eps Estimates
 
     Parameters
@@ -32,13 +34,21 @@ def display_eps_estimates(symbol: str):
             show_index=False,
             title=f"{symbol.upper()} EPS History and Estimations",
         )
+
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "eps_estimates",
+            eps_estimates,
+            sheet_name,
+        )
     else:
         console.print("No data found.")
         return
 
 
 @log_start_end(log=logger)
-def display_rev_estimates(symbol: str):
+def display_rev_estimates(symbol: str, export: str = "", sheet_name: str = None):
     """Display rev Estimates
 
     Parameters
@@ -55,6 +65,14 @@ def display_rev_estimates(symbol: str):
             headers=list(rev_estimates.columns),
             show_index=False,
             title=f"{symbol.upper()} Revenue History and Estimations",
+        )
+
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "rev_estimates",
+            rev_estimates,
+            sheet_name,
         )
     else:
         console.print("No data found.")

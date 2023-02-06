@@ -213,7 +213,11 @@ class FundamentalAnalysisController(StockBaseController):
         )
         if ns_parser:
             business_insider_view.display_management(
-                symbol=self.ticker, export=ns_parser.export
+                symbol=self.ticker,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -249,9 +253,21 @@ class FundamentalAnalysisController(StockBaseController):
                     else None,
                 )
             elif ns_parser.source == "AlphaVantage":
-                av_view.display_overview(self.ticker)
+                av_view.display_overview(
+                    self.ticker,
+                    export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
+                )
             elif ns_parser.source == "FinancialModelingPrep":
-                fmp_view.display_profile(self.ticker)
+                fmp_view.display_profile(
+                    self.ticker,
+                    export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
+                )
 
     @log_start_end(log=logger)
     def call_score(self, other_args: List[str]):
@@ -277,7 +293,14 @@ class FundamentalAnalysisController(StockBaseController):
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            fmp_view.valinvest_score(self.ticker, ns_parser.years)
+            fmp_view.valinvest_score(
+                self.ticker,
+                ns_parser.years,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )
 
     @log_start_end(log=logger)
     def call_enterprise(self, other_args: List[str]):
@@ -337,7 +360,12 @@ class FundamentalAnalysisController(StockBaseController):
                 )
             elif ns_parser.source == "YahooFinance":
                 yahoo_finance_view.display_mktcap(
-                    self.ticker, start_date=ns_parser.start, export=ns_parser.export
+                    self.ticker,
+                    start_date=ns_parser.start,
+                    export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
 
     @log_start_end(log=logger)
@@ -530,10 +558,18 @@ class FundamentalAnalysisController(StockBaseController):
             prog="epsfc",
             description="""Estimated EPS [Source: Seeking Alpha]""",
         )
-        ns_parser = self.parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
 
         if ns_parser:
-            seeking_alpha_view.display_eps_estimates(self.ticker)
+            seeking_alpha_view.display_eps_estimates(
+                self.ticker,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )
 
     @log_start_end(log=logger)
     def call_revfc(self, other_args: List[str]):
@@ -550,10 +586,20 @@ class FundamentalAnalysisController(StockBaseController):
 
         if ns_parser:
             if ns_parser.source == "SeekingAlpha":
-                seeking_alpha_view.display_rev_estimates(self.ticker)
+                seeking_alpha_view.display_rev_estimates(
+                    self.ticker,
+                    export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
+                )
             elif ns_parser.source == "YahooFinance":
                 yahoo_finance_view.display_calendar_earnings(
-                    symbol=self.ticker, export=ns_parser.export
+                    symbol=self.ticker,
+                    export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
 
     @log_start_end(log=logger)
@@ -604,7 +650,12 @@ class FundamentalAnalysisController(StockBaseController):
         if ns_parser:
             if not self.suffix:
                 yahoo_finance_view.display_shareholders(
-                    self.ticker, holder=ns_parser.holder, export=ns_parser.export
+                    self.ticker,
+                    holder=ns_parser.holder,
+                    export=ns_parser.export,
+                    heet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
             else:
                 console.print("Only US tickers are recognized.", "\n")
@@ -631,7 +682,11 @@ class FundamentalAnalysisController(StockBaseController):
         if ns_parser:
             if not self.suffix:
                 yahoo_finance_view.display_sustainability(
-                    self.ticker, export=ns_parser.export
+                    self.ticker,
+                    export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
             else:
                 console.print("Only US tickers are recognized.", "\n")

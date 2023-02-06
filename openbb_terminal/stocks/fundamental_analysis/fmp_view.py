@@ -23,13 +23,17 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
-def valinvest_score(symbol: str, years: int):
+def valinvest_score(symbol: str, years: int, export: str = "", sheet_name: str = None):
     """Value investing tool based on Warren Buffett, Joseph Piotroski and Benjamin Graham thoughts [Source: FMP]
 
     Parameters
     ----------
     symbol : str
         Fundamental analysis ticker symbol
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
+    export: str
+        Format to export data
     """
     scores = pd.DataFrame.from_dict(
         fmp_model.get_score(symbol, years), orient="index", columns=["Score"]
@@ -46,16 +50,28 @@ def valinvest_score(symbol: str, years: int):
             scores, title=f"Value Investing Scores [{years} Years]", show_index=True
         )
 
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "scores",
+            scores,
+            sheet_name,
+        )
+
 
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
-def display_profile(symbol: str):
+def display_profile(symbol: str, export: str = "", sheet_name: str = None):
     """Financial Modeling Prep ticker profile
 
     Parameters
     ----------
     symbol : str
         Fundamental analysis ticker symbol
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
+    export: str
+        Format to export data
     """
     profile = fmp_model.get_profile(symbol)
 
@@ -69,6 +85,14 @@ def display_profile(symbol: str):
 
         console.print(f"\nImage: {profile.loc['image'][0]}")
         console.print(f"\nDescription: {profile.loc['description'][0]}")
+
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "scores",
+            profile,
+            sheet_name,
+        )
     else:
         logger.error("Could not get data")
         console.print("[red]Unable to get data[/red]\n")
