@@ -366,7 +366,7 @@ def download_routine(
         console.print("[red]\nConnection timeout.[/red]")
         return None
     except Exception:
-        console.print("[red]Failed to delete your routine.[/red]")
+        console.print("[red]Failed to download your routine.[/red]")
         return None
 
 
@@ -399,4 +399,35 @@ def delete_routine(
         return None
     except Exception:
         console.print("[red]Failed to delete your routine.[/red]")
+        return None
+
+
+def list_routines(
+    auth_header: str,
+    page: int = 1,
+    size: int = 10,
+    base_url=BASE_URL,
+    timeout: int = TIMEOUT,
+) -> Optional[requests.Response]:
+    """List all routines from the server."""
+
+    fields = "name%2Cdescription"
+
+    try:
+        response = requests.get(
+            headers={"Authorization": auth_header},
+            url=f"{base_url}terminal/script?fields={fields}&page={page}&size={size}",
+            timeout=timeout,
+        )
+        if response.status_code != 200:
+            console.print("[red]Failed to list your routines.[/red]")
+        return response
+    except requests.exceptions.ConnectionError:
+        console.print("[red]Connection error.[/red]")
+        return None
+    except requests.exceptions.Timeout:
+        console.print("[red]\nConnection timeout.[/red]")
+        return None
+    except Exception:
+        console.print("[red]Failed to list your routines.[/red]")
         return None

@@ -4,6 +4,8 @@ import logging
 import os
 from pathlib import Path
 from typing import Dict, List
+import pandas as pd
+import numpy as np
 
 from prompt_toolkit.completion import NestedCompleter
 
@@ -12,6 +14,7 @@ from openbb_terminal.account.account_model import get_diff
 from openbb_terminal.core.config.paths import USER_ROUTINES_DIRECTORY
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.featflags_controller import FeatureFlagsController
+from openbb_terminal.helper_funcs import check_positive, print_rich_table
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import MenuText, console
@@ -175,23 +178,51 @@ class AccountController(BaseController):
 
     @log_start_end(log=logger)
     def call_list(self, other_args: List[str]):
-        """List"""
+        """List routines"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="list",
-            description="List saved routines.",
+            description="List routines available in the cloud.",
         )
         parser.add_argument(
-            "-n",
-            "--name",
-            type=str,
-            dest="name",
-            help="The name of the routine",
+            "-p",
+            "--page",
+            type=check_positive,
+            dest="page",
+            default=1,
+            help="The page number.",
+        )
+        parser.add_argument(
+            "-s",
+            "--size",
+            type=check_positive,
+            dest="size",
+            default=10,
+            help="The number of results per page.",
         )
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            pass
+            response = Hub.list_routines(
+                auth_header=User.get_auth_header(),
+                page=ns_parser.page,
+                size=ns_parser.size,
+            )
+            if response and response.status_code == 200:
+                data = response.json()
+                items = data.get("items", [])
+                if items:
+                    df = pd.DataFrame(items)
+                    df.index = np.arange(1, len(df) + 1)
+                    print_rich_table(
+                        df=df,
+                        title=f"Available routines - page {ns_parser.page}",
+                        headers=["Name", "Description"],
+                        show_index=True,
+                        index_name="#",
+                    )
+                else:
+                    console.print("[red]No routines found.[/red]")
 
     @log_start_end(log=logger)
     def call_upload(self, other_args: List[str]):
@@ -227,13 +258,14 @@ class AccountController(BaseController):
             type=str,
             dest="name",
             help="The name of the routine.",
+            nargs="+",
         )
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             routine = Local.get_routine(file_name=ns_parser.file)
             if routine:
                 name = (
-                    ns_parser.name
+                    " ".join(ns_parser.name)
                     if ns_parser.name
                     else ns_parser.file.split(".openbb")[0]
                 )
@@ -276,8 +308,9 @@ class AccountController(BaseController):
             "--name",
             type=str,
             dest="name",
-            help="The name of the routine",
+            help="The name of the routine.",
             required="-h" not in other_args,
+            nargs="+",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-n")
@@ -285,8 +318,9 @@ class AccountController(BaseController):
         if ns_parser:
             response = Hub.download_routine(
                 auth_header=User.get_auth_header(),
-                name=ns_parser.name,
+                name=" ".join(ns_parser.name),
             )
+
             if response and response.status_code == 200:
                 data = response.json()
                 if data:
@@ -300,7 +334,7 @@ class AccountController(BaseController):
 
                     script = data.get("script", "")
                     if script:
-                        file_name = f"{ns_parser.name}.openbb"
+                        file_name = f"{name}.openbb"
                         file_path = Local.save_routine(
                             file_name=file_name,
                             routine=script,
@@ -315,7 +349,7 @@ class AccountController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="delete",
-            description="Delete a routine to the cloud.",
+            description="Delete a routine on the cloud.",
         )
         parser.add_argument(
             "-n",
@@ -324,6 +358,7 @@ class AccountController(BaseController):
             dest="name",
             help="The name of the routine",
             required="-h" not in other_args,
+            nargs="+",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-n")
@@ -331,5 +366,5 @@ class AccountController(BaseController):
         if ns_parser:
             Hub.delete_routine(
                 auth_header=User.get_auth_header(),
-                name=ns_parser.name,
+                name=" ".join(ns_parser.name),
             )
