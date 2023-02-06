@@ -42,7 +42,6 @@ fast_info_map = {
 
 yf_info_choices = [
     "previousClose",
-    "regularMarketOpen",
     "twoHundredDayAverage",
     "trailingAnnualDividendYield",
     "payoutRatio",
@@ -51,7 +50,6 @@ yf_info_choices = [
     "navPrice",
     "averageDailyVolume10Day",
     "totalAssets",
-    "regular_market_previous_close",
     "fiftyDayAverage",
     "trailingAnnualDividendRate",
     "open",
@@ -68,11 +66,9 @@ yf_info_choices = [
     "priceHint",
     "currency",
     "trailingPE",
-    "regularMarketVolume",
     "lastMarket",
     "maxSupply",
     "openInterest",
-    "market_cap",
     "volumeAllCurrencies",
     "strikePrice",
     "averageVolume",

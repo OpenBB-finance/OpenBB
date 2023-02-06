@@ -289,7 +289,6 @@ def get_property_weights(
     value = get_kwarg("value", kwargs)
 
     s_property = get_kwarg("s_property", kwargs, default="marketCap")
-    s_property = yahoo_finance_model.fast_info_map.get(s_property, s_property)
 
     stock_prices = yahoo_finance_model.process_stocks(
         symbols, interval, start_date, end_date
@@ -306,17 +305,7 @@ def get_property_weights(
     prop = {}
     prop_sum = 0
     for stock in symbols:
-        info = yf.Ticker(stock).info
-        fast_info = yf.Ticker(stock).fast_info
-        info_dict = {}
-        if info:
-            info_dict.update(dict(info))
-        if fast_info:
-            info_dict.update(dict(fast_info))
-
-        stock_prop = info_dict.get(s_property, None)
-        if stock_prop is None:
-            stock_prop = 0
+        stock_prop = get_prop(symbol=stock, prop=s_property)
         prop[stock] = stock_prop
         prop_sum += stock_prop
 
@@ -327,6 +316,48 @@ def get_property_weights(
     weights = {k: value * v / prop_sum for k, v in prop.items()}
 
     return weights, stock_returns
+
+
+@log_start_end(log=logger)
+def get_prop(symbol, prop) -> float:
+    """Get property from yfinance
+
+    Parameters
+    ----------
+    symbol : str
+        Stock ticker
+    prop : str
+        Property to get
+
+    Returns
+    -------
+    dict
+        Ticker info
+    """
+    prop = yahoo_finance_model.fast_info_map.get(prop, prop)
+
+    try:
+        info = yf.Ticker(symbol).info
+    except Exception as _:  # noqa
+        info = None
+
+    try:
+        fast_info = yf.Ticker(symbol).fast_info
+    except Exception as _:  # noqa
+        fast_info = None
+
+    info_dict = {}
+    if info:
+        info_dict.update(dict(info))
+    if fast_info:
+        info_dict.update(dict(fast_info))
+
+    if info_dict:
+        value = info_dict.get(prop, 0.0)
+        if not value:
+            return 0.0
+        return value
+    return 0.0
 
 
 @log_start_end(log=logger)
