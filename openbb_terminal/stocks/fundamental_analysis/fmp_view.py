@@ -13,10 +13,8 @@ from openbb_terminal.decorators import check_api_key
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table, plot_autoscale
 from openbb_terminal.rich_config import console
+from openbb_terminal.stocks import stocks_helper
 from openbb_terminal.stocks.fundamental_analysis import fmp_model
-from openbb_terminal.helpers_denomination import (
-    transform as transform_by_denomination,
-)
 
 logger = logging.getLogger(__name__)
 
@@ -191,6 +189,10 @@ def display_income_statement(
     income = fmp_model.get_income(symbol, limit, quarterly, ratios, bool(plot))
 
     if not income.empty:
+
+        income.index = [stocks_helper.INCOME_PLOT["FinancialModelingPrep"][i] for i in
+                        [i.replace(" ", "_") for i in income.index.str.lower()]]
+
         if plot:
             income_plot_data = income[income.columns[::-1]]
             rows_plot = len(plot)
@@ -217,8 +219,12 @@ def display_income_statement(
                 fig.autofmt_xdate()
         else:
             income = income[income.columns[::-1]]
+            # Snake case to english
+            income.index = income.index.to_series().apply(
+                lambda x: x.replace("_", " ").title()
+            )
             print_rich_table(
-                income.drop(index=["Final link", "Link"]),
+                income.drop(index=["Final Link", "Link"]),
                 headers=list(income.columns),
                 title=f"{symbol.upper()} Income Statement"
                 if not ratios
@@ -228,7 +234,7 @@ def display_income_statement(
 
             pd.set_option("display.max_colwidth", None)
 
-            console.print(income.loc["Final link"].to_frame().to_string())
+            console.print(income.loc["Final Link"].to_frame().to_string())
             console.print()
             console.print(income.loc["Link"].to_frame().to_string())
             console.print()
@@ -270,6 +276,10 @@ def display_balance_sheet(
     balance = fmp_model.get_balance(symbol, limit, quarterly, ratios, bool(plot))
 
     if not balance.empty:
+
+        balance.index = [stocks_helper.BALANCE_PLOT["FinancialModelingPrep"][i] for i in
+                         [i.replace(" ", "_") for i in balance.index.str.lower()]]
+
         if plot:
             balance_plot_data = balance[balance.columns[::-1]]
             rows_plot = len(plot)
@@ -296,8 +306,12 @@ def display_balance_sheet(
                 fig.autofmt_xdate()
         else:
             balance = balance[balance.columns[::-1]]
+            # Snake case to english
+            balance.index = balance.index.to_series().apply(
+                lambda x: x.replace("_", " ").title()
+            )
             print_rich_table(
-                balance.drop(index=["Final link", "Link"]),
+                balance.drop(index=["Final Link", "Link"]),
                 headers=list(balance.columns),
                 title=f"{symbol.upper()} Balance Sheet",
                 show_index=True,
@@ -305,7 +319,7 @@ def display_balance_sheet(
 
             pd.set_option("display.max_colwidth", None)
 
-            console.print(balance.loc["Final link"].to_frame().to_string())
+            console.print(balance.loc["Final Link"].to_frame().to_string())
             console.print()
             console.print(balance.loc["Link"].to_frame().to_string())
             console.print()
@@ -347,6 +361,10 @@ def display_cash_flow(
     cash = fmp_model.get_cash(symbol, limit, quarterly, ratios, bool(plot))
 
     if not cash.empty:
+
+        cash.index = [stocks_helper.CASH_PLOT["FinancialModelingPrep"][i] for i in
+                         [i.replace(" ", "_") for i in cash.index.str.lower()]]
+
         if plot:
             cash_plot_data = cash[cash.columns[::-1]]
             rows_plot = len(plot)
@@ -373,6 +391,11 @@ def display_cash_flow(
                 fig.autofmt_xdate()
         else:
             cash = cash[cash.columns[::-1]]
+            # Snake case to english
+            cash.index = cash.index.to_series().apply(
+                lambda x: x.replace("_", " ").title()
+            )
+
             print_rich_table(
                 cash.drop(index=["Final link", "Link"]),
                 headers=list(cash.columns),
@@ -382,7 +405,7 @@ def display_cash_flow(
 
             pd.set_option("display.max_colwidth", None)
 
-            console.print(cash.loc["Final link"].to_frame().to_string())
+            console.print(cash.loc["Final Link"].to_frame().to_string())
             console.print()
             console.print(cash.loc["Link"].to_frame().to_string())
             console.print()

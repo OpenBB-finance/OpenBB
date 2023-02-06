@@ -17,6 +17,7 @@ from openbb_terminal.helper_funcs import (
     is_valid_axes_count,
 )
 from openbb_terminal.rich_config import console
+from openbb_terminal.stocks import stocks_helper
 from openbb_terminal.stocks.fundamental_analysis import av_model
 from openbb_terminal.helpers_denomination import (
     transform as transform_by_denomination,
@@ -106,6 +107,9 @@ def display_income_statement(
     if df_income.empty:
         return
 
+    df_income.index = [stocks_helper.INCOME_PLOT["AlphaVantage"][i] for i in
+                       [i.replace(" ", "_") for i in df_income.index.str.lower()]]
+
     if plot:
         rows_plot = len(plot)
         income_plot_data = df_income.transpose()
@@ -138,9 +142,10 @@ def display_income_statement(
             theme.style_primary_axis(axes[0])
             fig.autofmt_xdate()
     else:
-        indexes = df_income.index
-        new_indexes = [camel_case_split(ind) for ind in indexes]
-        df_income.index = new_indexes
+        # Snake case to english
+        df_income.index = df_income.index.to_series().apply(
+            lambda x: x.replace("_", " ").title()
+        )
 
         print_rich_table(
             df_income,
@@ -188,6 +193,9 @@ def display_balance_sheet(
     if df_balance.empty:
         return
 
+    df_balance.index = [stocks_helper.BALANCE_PLOT["AlphaVantage"][i] for i in
+                        [i.replace(" ", "_") for i in df_balance.index.str.lower()]]
+
     if plot:
         rows_plot = len(plot)
         balance_plot_data = df_balance.transpose()
@@ -221,10 +229,10 @@ def display_balance_sheet(
             fig.autofmt_xdate()
 
     else:
-
-        indexes = df_balance.index
-        new_indexes = [camel_case_split(ind) for ind in indexes]
-        df_balance.index = new_indexes
+        # Snake case to english
+        df_balance.index = df_balance.index.to_series().apply(
+            lambda x: x.replace("_", " ").title()
+        )
 
         print_rich_table(
             df_balance,
@@ -272,6 +280,9 @@ def display_cash_flow(
     if df_cash.empty:
         return
 
+    df_cash.index = [stocks_helper.CASH_PLOT["AlphaVantage"][i] for i in
+                        [i.replace(" ", "_") for i in df_cash.index.str.lower()]]
+
     if plot:
         rows_plot = len(plot)
         cash_plot_data = df_cash.transpose()
@@ -305,10 +316,10 @@ def display_cash_flow(
             fig.autofmt_xdate()
 
     else:
-
-        indexes = df_cash.index
-        new_indexes = [camel_case_split(ind) for ind in indexes]
-        df_cash.index = new_indexes
+        # Snake case to english
+        df_cash.index = df_cash.index.to_series().apply(
+            lambda x: x.replace("_", " ").title()
+        )
 
         print_rich_table(
             df_cash,

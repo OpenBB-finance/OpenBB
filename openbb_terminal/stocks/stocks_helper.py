@@ -33,8 +33,11 @@ from openbb_terminal.stocks.stock_statics import market_coverage_suffix
 from openbb_terminal.stocks.stock_statics import INTERVALS  # noqa: F401
 from openbb_terminal.stocks.stock_statics import SOURCES  # noqa: F401
 from openbb_terminal.stocks.stock_statics import INCOME_PLOT  # noqa: F401
+from openbb_terminal.stocks.stock_statics import INCOME_PLOT_CHOICES  # noqa: F401
 from openbb_terminal.stocks.stock_statics import BALANCE_PLOT  # noqa: F401
+from openbb_terminal.stocks.stock_statics import BALANCE_PLOT_CHOICES  # noqa: F401
 from openbb_terminal.stocks.stock_statics import CASH_PLOT  # noqa: F401
+from openbb_terminal.stocks.stock_statics import CASH_PLOT_CHOICES  # noqa: F401
 from openbb_terminal.stocks.stock_statics import CANDLE_SORT  # noqa: F401
 from openbb_terminal.stocks.stocks_model import (
     load_stock_av,

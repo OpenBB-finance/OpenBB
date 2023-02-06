@@ -14,6 +14,7 @@ from openbb_terminal.helper_funcs import (
     print_rich_table,
     plot_autoscale,
 )
+from openbb_terminal.stocks import stocks_helper
 from openbb_terminal.stocks.fundamental_analysis import polygon_model
 from openbb_terminal.helpers_denomination import (
     transform as transform_by_denomination,
@@ -64,6 +65,16 @@ def display_fundamentals(
 
     fundamentals = fundamentals.iloc[:, :limit]
     fundamentals = fundamentals[fundamentals.columns[::-1]]
+
+    if statement == "income":
+        fundamentals.index = [stocks_helper.INCOME_PLOT["Polygon"][i] for i in
+                              [i.replace(" ", "_") for i in fundamentals.index.str.lower()]]
+    elif statement == "balance":
+        fundamentals.index = [stocks_helper.BALANCE_PLOT["Polygon"][i] for i in
+                              [i.replace(" ", "_") for i in fundamentals.index.str.lower()]]
+    elif statement == "cash":
+        fundamentals.index = [stocks_helper.CASH_PLOT["Polygon"][i] for i in
+                              [i.replace(" ", "_") for i in fundamentals.index.str.lower()]]
 
     if plot:
         fundamentals_plot_data = fundamentals.copy().fillna(-1)
