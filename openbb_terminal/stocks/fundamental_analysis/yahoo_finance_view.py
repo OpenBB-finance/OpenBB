@@ -3,7 +3,6 @@ __docformat__ = "numpy"
 
 import logging
 import os
-import webbrowser
 from fractions import Fraction
 from typing import List, Optional
 
@@ -27,28 +26,6 @@ from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.fundamental_analysis import yahoo_finance_model
 
 logger = logging.getLogger(__name__)
-
-
-@log_start_end(log=logger)
-def open_headquarters_map(symbol: str):
-    """Headquarters location of the company
-    Parameters
-    ----------
-    symbol : str
-        Fundamental analysis ticker symbol
-    """
-    webbrowser.open(yahoo_finance_model.get_hq(symbol))
-
-
-@log_start_end(log=logger)
-def open_web(symbol: str):
-    """Website of the company
-    Parameters
-    ----------
-    symbol : str
-        Fundamental analysis ticker symbol
-    """
-    webbrowser.open(yahoo_finance_model.get_website(symbol))
 
 
 @log_start_end(log=logger)

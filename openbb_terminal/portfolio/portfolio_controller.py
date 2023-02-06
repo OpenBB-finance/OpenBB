@@ -269,9 +269,7 @@ class PortfolioController(BaseController):
     @log_start_end(log=logger)
     def call_bro(self, _):
         """Process bro command"""
-        from openbb_terminal.portfolio.brokers.bro_controller import (
-            BrokersController,
-        )
+        from openbb_terminal.portfolio.brokers.bro_controller import BrokersController
 
         self.queue = self.load_class(BrokersController, self.queue)
 
