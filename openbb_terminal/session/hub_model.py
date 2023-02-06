@@ -364,10 +364,10 @@ def download_routine(
             console.print("[red]Failed to download your routine.[/red]")
         return response
     except requests.exceptions.ConnectionError:
-        console.print("[red]Connection error.[/red]")
+        console.print(f"\n{CONNECTION_ERROR_MSG}")
         return None
     except requests.exceptions.Timeout:
-        console.print("[red]\nConnection timeout.[/red]")
+        console.print(f"\n{CONNECTION_TIMEOUT_MSG}")
         return None
     except Exception:
         console.print("[red]Failed to download your routine.[/red]")
@@ -396,10 +396,10 @@ def delete_routine(
             console.print("[red]Failed to delete your routine.[/red]")
         return response
     except requests.exceptions.ConnectionError:
-        console.print("[red]Connection error.[/red]")
+        console.print(f"\n{CONNECTION_ERROR_MSG}")
         return None
     except requests.exceptions.Timeout:
-        console.print("[red]\nConnection timeout.[/red]")
+        console.print(f"\n{CONNECTION_TIMEOUT_MSG}")
         return None
     except Exception:
         console.print("[red]Failed to delete your routine.[/red]")
@@ -427,10 +427,10 @@ def list_routines(
             console.print("[red]Failed to list your routines.[/red]")
         return response
     except requests.exceptions.ConnectionError:
-        console.print("[red]Connection error.[/red]")
+        console.print(f"\n{CONNECTION_ERROR_MSG}")
         return None
     except requests.exceptions.Timeout:
-        console.print("[red]\nConnection timeout.[/red]")
+        console.print(f"\n{CONNECTION_TIMEOUT_MSG}")
         return None
     except Exception:
         console.print("[red]Failed to list your routines.[/red]")
