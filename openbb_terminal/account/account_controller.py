@@ -28,7 +28,10 @@ class AccountController(BaseController):
         "sync",
         "pull",
         "clear",
+        "list",
         "upload",
+        "download",
+        "delete",
     ]
 
     PATH = "/account/"
@@ -61,7 +64,10 @@ class AccountController(BaseController):
         mt.add_cmd("clear")
         mt.add_raw("\n")
         mt.add_info("_routines_")
+        mt.add_cmd("list")
         mt.add_cmd("upload")
+        mt.add_cmd("download")
+        mt.add_cmd("delete")
         console.print(text=mt.menu_text, menu="Account")
 
     @log_start_end(log=logger)
@@ -157,6 +163,26 @@ class AccountController(BaseController):
                 console.print("\n[info]Aborted.[/info]")
 
     @log_start_end(log=logger)
+    def call_list(self, other_args: List[str]):
+        """List"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="list",
+            description="List saved routines.",
+        )
+        parser.add_argument(
+            "-n",
+            "--name",
+            type=str,
+            dest="name",
+            help="The name of the routine",
+        )
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            pass
+
+    @log_start_end(log=logger)
     def call_upload(self, other_args: List[str]):
         """Upload"""
         parser = argparse.ArgumentParser(
@@ -224,3 +250,43 @@ class AccountController(BaseController):
                             )
                         else:
                             console.print("[info]Aborted.[/info]")
+
+    @log_start_end(log=logger)
+    def call_download(self, other_args: List[str]):
+        """Download"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="download",
+            description="Download a routine to the cloud.",
+        )
+        parser.add_argument(
+            "-n",
+            "--name",
+            type=str,
+            dest="name",
+            help="The name of the routine",
+        )
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            pass
+
+    @log_start_end(log=logger)
+    def call_delete(self, other_args: List[str]):
+        """Delete"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="delete",
+            description="Delete a routine to the cloud.",
+        )
+        parser.add_argument(
+            "-n",
+            "--name",
+            type=str,
+            dest="name",
+            help="The name of the routine",
+        )
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            pass
