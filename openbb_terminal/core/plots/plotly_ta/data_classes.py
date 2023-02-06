@@ -13,6 +13,8 @@ from openbb_terminal.common.technical_analysis import ta_helpers
 from openbb_terminal.decorators import log_start_end
 
 logger = logging.getLogger(__name__)
+
+# pylint: disable=E1123
 datacls_kwargs = {"slots": True} if sys.version_info >= (3, 10) else {}
 
 
