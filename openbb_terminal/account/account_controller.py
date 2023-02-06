@@ -232,24 +232,22 @@ class AccountController(BaseController):
                     description=ns_parser.description,
                     routine=routine,
                 )
-                if response is not None and response.status_code == 400:
-                    detail = json.loads(response.content)["detail"]
-                    if detail == "Script name already exists":
-                        i = console.input(
-                            "A routine with the same name already exists, "
-                            "do you want to overwrite it? (y/n): "
+                if response is not None and response.status_code == 409:
+                    i = console.input(
+                        "A routine with the same name already exists, "
+                        "do you want to overwrite it? (y/n): "
+                    )
+                    console.print("")
+                    if i.lower() in ["y", "yes"]:
+                        Hub.upload_routine(
+                            auth_header=User.get_auth_header(),
+                            name=name,
+                            description=ns_parser.description,
+                            routine=routine,
+                            override=True,
                         )
-                        console.print("")
-                        if i.lower() in ["y", "yes"]:
-                            Hub.upload_routine(
-                                auth_header=User.get_auth_header(),
-                                name=name,
-                                description=ns_parser.description,
-                                routine=routine,
-                                override=True,
-                            )
-                        else:
-                            console.print("[info]Aborted.[/info]")
+                    else:
+                        console.print("[info]Aborted.[/info]")
 
     @log_start_end(log=logger)
     def call_download(self, other_args: List[str]):
@@ -258,7 +256,7 @@ class AccountController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="download",
-            description="Download a routine to the cloud.",
+            description="Download a routine from the cloud.",
         )
         parser.add_argument(
             "-n",
@@ -266,10 +264,14 @@ class AccountController(BaseController):
             type=str,
             dest="name",
             help="The name of the routine",
+            required="-h" not in other_args,
         )
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            pass
+            Hub.download_routine(
+                auth_header=User.get_auth_header(),
+                name=ns_parser.name,
+            )
 
     @log_start_end(log=logger)
     def call_delete(self, other_args: List[str]):
@@ -290,11 +292,7 @@ class AccountController(BaseController):
         )
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            response = Hub.delete_routine(
+            Hub.delete_routine(
                 auth_header=User.get_auth_header(),
                 name=ns_parser.name,
             )
-            if response is not None and response.status_code == 404:
-                detail = json.loads(response.content)["detail"]
-                if detail == "Script not found":
-                    console.print("[red]Routine not found.[/red]")

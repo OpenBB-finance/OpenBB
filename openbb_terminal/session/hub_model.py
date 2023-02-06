@@ -1,4 +1,3 @@
-import json
 from typing import Dict, Optional
 
 import requests
@@ -327,8 +326,7 @@ def upload_routine(
         )
         if response.status_code == 200:
             console.print("[green]Successfully uploaded your routine.[/green]")
-        elif json.loads(response.content)["detail"] != "Script name already exists":
-            # TODO: Ask Colin to return specific error code here
+        elif response.status_code != 409:  # 409: routine already exists
             console.print("[red]Failed to upload your routine.[/red]")
         return response
     except requests.exceptions.ConnectionError:
@@ -342,13 +340,36 @@ def upload_routine(
         return None
 
 
-def download_routine() -> Optional[requests.Response]:
+def download_routine(
+    auth_header: str,
+    name: str = "",
+    base_url=BASE_URL,
+    timeout: int = TIMEOUT,
+) -> Optional[requests.Response]:
     """Download a routine from the server."""
 
-    # TODO: Implement test on `test_hub_model.py` when this is implemented.
-
-    console.print("[red]Not implemented yet.[/red]")
-    return None
+    try:
+        response = requests.get(
+            headers={"Authorization": auth_header},
+            url=base_url + "terminal/script/" + name,
+            timeout=timeout,
+        )
+        if response.status_code == 200:
+            console.print("[green]Successfully downloaded your routine.[/green]")
+        elif response.status_code == 404:
+            console.print("[red]Routine not found.[/red]")
+        else:
+            console.print("[red]Failed to download your routine.[/red]")
+        return response
+    except requests.exceptions.ConnectionError:
+        console.print("[red]Connection error.[/red]")
+        return None
+    except requests.exceptions.Timeout:
+        console.print("[red]\nConnection timeout.[/red]")
+        return None
+    except Exception:
+        console.print("[red]Failed to delete your routine.[/red]")
+        return None
 
 
 def delete_routine(
@@ -367,8 +388,9 @@ def delete_routine(
         )
         if response.status_code == 200:
             console.print("[green]Successfully deleted your routine.[/green]")
-        elif json.loads(response.content)["detail"] != "Script not found":
-            # TODO: Ask Colin to return specific error code here
+        elif response.status_code == 404:
+            console.print("[red]Routine not found.[/red]")
+        else:
             console.print("[red]Failed to delete your routine.[/red]")
         return response
     except requests.exceptions.ConnectionError:
