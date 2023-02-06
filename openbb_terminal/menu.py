@@ -1,6 +1,6 @@
+import logging
 import sys
 from typing import Optional
-import logging
 
 from matplotlib import pyplot
 from prompt_toolkit import PromptSession
@@ -51,7 +51,7 @@ def inputhook(inputhook_context):
 try:
     if not is_jupyter() and not is_papermill():
         session: Optional[PromptSession] = PromptSession(
-            history=FileHistory(HIST_FILE_PATH)
+            history=FileHistory(str(HIST_FILE_PATH))
         )
         set_eventloop_with_inputhook(inputhook)
     else:

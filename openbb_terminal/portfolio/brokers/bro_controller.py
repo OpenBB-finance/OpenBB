@@ -14,7 +14,7 @@ from openbb_terminal.portfolio.brokers.ally import ally_controller
 from openbb_terminal.portfolio.brokers.coinbase import coinbase_controller
 from openbb_terminal.portfolio.brokers.degiro import degiro_controller
 from openbb_terminal.portfolio.brokers.robinhood import robinhood_controller
-from openbb_terminal.rich_config import console, MenuText
+from openbb_terminal.rich_config import MenuText, console
 
 logger = logging.getLogger(__name__)
 

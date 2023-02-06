@@ -1,18 +1,18 @@
 """Option helper functions"""
 __docformat__ = "numpy"
 
-from datetime import datetime, timedelta
 import logging
+from datetime import datetime, timedelta
 from math import e, log
-from typing import Union, Tuple
+from typing import Tuple, Union
 
 import numpy as np
 import pandas as pd
 from scipy.stats import norm
 
-from openbb_terminal.rich_config import console
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import get_rf
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 

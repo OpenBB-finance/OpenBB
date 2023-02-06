@@ -1,6 +1,6 @@
 # IMPORTATION STANDARD
-import os
 import json
+import os
 
 # IMPORTATION THIRDPARTY
 import pytest

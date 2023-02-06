@@ -7,7 +7,6 @@ import pytest
 # IMPORTATION INTERNAL
 from openbb_terminal.session import user
 
-
 # pylint: disable=protected-access, redefined-outer-name
 
 TEST_SESSION = {

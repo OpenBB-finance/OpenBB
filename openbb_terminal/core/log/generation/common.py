@@ -2,8 +2,6 @@
 import logging
 
 # IMPORTATION THIRDPARTY
-
-
 # IMPORTATION INTERNAL
 from openbb_terminal.core.log.generation.path_tracking_file_handler import (
     PathTrackingFileHandler,

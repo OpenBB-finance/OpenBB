@@ -4,9 +4,10 @@
 import pandas as pd
 import pytest
 
+from openbb_terminal import helper_funcs
+
 # IMPORTATION INTERNAL
 from openbb_terminal.stocks.fundamental_analysis import av_view
-from openbb_terminal import helper_funcs
 
 
 @pytest.fixture(scope="module")

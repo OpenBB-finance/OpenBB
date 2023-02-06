@@ -4,24 +4,25 @@ import os
 
 # IMPORTATION THIRDPARTY
 from typing import List, Optional, Tuple
+
 import matplotlib.pyplot as plt
 import pandas as pd
 
 # IMPORTATION INTERNAL
 import openbb_terminal.config_plot as cfp
 from openbb_terminal.config_terminal import theme
-from openbb_terminal.rich_config import console
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
+    export_data,
     is_valid_axes_count,
     plot_autoscale,
     print_rich_table,
-    export_data,
 )
+from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.options.op_helpers import (
     calculate_max_pain,
-    get_strikes,
     get_greeks,
+    get_strikes,
 )
 
 logger = logging.getLogger(__name__)

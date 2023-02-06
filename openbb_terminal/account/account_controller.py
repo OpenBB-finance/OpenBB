@@ -1,22 +1,22 @@
 import argparse
 import json
 import logging
-from typing import List, Dict
 from pathlib import Path
+from typing import Dict, List
 
 from prompt_toolkit.completion import NestedCompleter
-from openbb_terminal.featflags_controller import FeatureFlagsController
-from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console, MenuText
-from openbb_terminal.decorators import log_start_end
-from openbb_terminal.core.config.paths import USER_ROUTINES_DIRECTORY
+
 from openbb_terminal import feature_flags as obbff
+from openbb_terminal.account.account_model import get_diff
+from openbb_terminal.core.config.paths import USER_ROUTINES_DIRECTORY
+from openbb_terminal.decorators import log_start_end
+from openbb_terminal.featflags_controller import FeatureFlagsController
 from openbb_terminal.menu import session
+from openbb_terminal.parent_classes import BaseController
+from openbb_terminal.rich_config import MenuText, console
 from openbb_terminal.session import hub_model as Hub
 from openbb_terminal.session import local_model as Local
 from openbb_terminal.session.user import User
-from openbb_terminal.account.account_model import get_diff
-
 
 logger = logging.getLogger(__name__)
 
@@ -132,7 +132,7 @@ class AccountController(BaseController):
                     else:
                         console.print("\n[info]Aborted.[/info]")
                 else:
-                    console.print("\n[info]No changes to apply.[/info]")
+                    console.print("[info]No changes to apply.[/info]")
 
     def call_clear(self, other_args: List[str]):
         """Clear data"""
