@@ -292,7 +292,7 @@ class AccountController(BaseController):
                     )
                     console.print("")
                     if i.lower() in ["y", "yes"]:
-                        Hub.upload_routine(
+                        response = Hub.upload_routine(
                             auth_header=User.get_auth_header(),
                             name=name,
                             description=description,
@@ -301,6 +301,10 @@ class AccountController(BaseController):
                         )
                     else:
                         console.print("[info]Aborted.[/info]")
+
+                if response and response.status_code == 200:
+                    self.REMOTE_CHOICES.append(name)
+                    self.update_runtime_choices()
 
     @log_start_end(log=logger)
     def call_download(self, other_args: List[str]):
