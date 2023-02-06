@@ -1,10 +1,14 @@
-# pip install transformers sentencepiece
-# pip install sacremoses
+"""Script for creating automated translations for the i18n files.
+
+Dependencies of this script:
+transformers sentencepiece sacremoses
+"""
+
+import re
 
 import yaml
-from transformers import pipeline
 from tqdm import tqdm
-import re
+from transformers import pipeline
 
 url_pattern = (
     r"^(?:www\.)([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])?$"
@@ -23,7 +27,7 @@ languages = {
     "id": "Helsinki-NLP/opus-mt-en-id",
 }
 
-with open("en.yml", "r") as stream:
+with open("en.yml") as stream:
     try:
         file_content = yaml.safe_load(stream)
     except yaml.YAMLError as exc:
