@@ -17,7 +17,7 @@ concurrency:
 jobs:
   Windows-Build:
     name: Windows10 Build ENV
-    runs-on: windows-latest
+    runs-on: windows-2019
     # Configuring -------------
     steps:
       - name: Setup Windows Git Configuration # This is under the assumption that git is already installed on the system
