@@ -89,6 +89,7 @@ class FuncAttr:
         return definition
 
 
+# pylint: disable=R0903
 class Trailmap:
     def __init__(self, trailmap: str, model: str, view: Optional[str] = None):
         self.trailmap: str = trailmap
