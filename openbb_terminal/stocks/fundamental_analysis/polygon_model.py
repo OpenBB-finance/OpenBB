@@ -4,10 +4,10 @@ __docformat__ = "numpy"
 import logging
 
 import pandas as pd
-import requests
 
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.decorators import check_api_key, log_start_end
+from openbb_terminal.helper_funcs import request
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -37,7 +37,7 @@ def get_financials(
         Balance Sheets or Income Statements
     """
     # Note the filing date is over 30 years so will always get as many as allowed
-    json_request = requests.get(
+    json_request = request(
         "https://api.polygon.io/vX/reference/financials?"
         f"ticker={symbol}"
         f"&timeframe={['annual','quarterly'][quarterly]}"

@@ -225,7 +225,10 @@ def get_equal_weights(
         method=method,
     )
 
-    weights = {stock: value * round(1 / len(symbols), 5) for stock in symbols}
+    weights = {
+        stock: value * round(1 / len(stock_returns.columns), 5)
+        for stock in stock_returns.columns
+    }
 
     return weights, stock_returns
 
@@ -1203,7 +1206,6 @@ def get_max_decorrelation_portfolio(
     )
 
     try:
-
         # Building the portfolio object
         port = rp.Portfolio(returns=stock_returns)
 

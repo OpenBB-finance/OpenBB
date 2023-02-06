@@ -8,51 +8,52 @@ __docformat__ = "numpy"
 import logging
 import os
 from datetime import datetime, timedelta
-from typing import Any, Union, Optional, Iterable, List, Dict
+from typing import Any, Dict, Iterable, List, Optional, Union
 
 import financedatabase as fd
 import matplotlib.pyplot as plt
-from matplotlib.lines import Line2D
-from matplotlib.ticker import LogLocator, ScalarFormatter
 import mplfinance as mpf
 import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
 import pytz
-import requests
-from requests.exceptions import ReadTimeout
-
 import yfinance as yf
+from matplotlib.lines import Line2D
+from matplotlib.ticker import LogLocator, ScalarFormatter
 from plotly.subplots import make_subplots
+from requests.exceptions import ReadTimeout
 from scipy import stats
 
 from openbb_terminal import config_terminal as cfg
+from openbb_terminal.helper_funcs import (
+    export_data,
+    lambda_long_number_format_y_axis,
+    plot_autoscale,
+    print_rich_table,
+    request,
+)
+from openbb_terminal.rich_config import console
 
 # pylint: disable=unused-import
-from openbb_terminal.stocks.stock_statics import market_coverage_suffix
-from openbb_terminal.stocks.stock_statics import INTERVALS  # noqa: F401
-from openbb_terminal.stocks.stock_statics import SOURCES  # noqa: F401
-from openbb_terminal.stocks.stock_statics import INCOME_PLOT  # noqa: F401
-from openbb_terminal.stocks.stock_statics import INCOME_PLOT_CHOICES  # noqa: F401
-from openbb_terminal.stocks.stock_statics import BALANCE_PLOT  # noqa: F401
-from openbb_terminal.stocks.stock_statics import BALANCE_PLOT_CHOICES  # noqa: F401
-from openbb_terminal.stocks.stock_statics import CASH_PLOT  # noqa: F401
-from openbb_terminal.stocks.stock_statics import CASH_PLOT_CHOICES  # noqa: F401
-from openbb_terminal.stocks.stock_statics import CANDLE_SORT  # noqa: F401
+from openbb_terminal.stocks.stock_statics import (
+    BALANCE_PLOT,  # noqa: F401
+    BALANCE_PLOT_CHOICES,  # noqa: F401
+    CANDLE_SORT,  # noqa: F401
+    CASH_PLOT,  # noqa: F401
+    CASH_PLOT_CHOICES,  # noqa: F401
+    INCOME_PLOT,  # noqa: F401
+    INCOME_PLOT_CHOICES,  # noqa: F401
+    INTERVALS,  # noqa: F401
+    SOURCES,  # noqa: F401
+    market_coverage_suffix,
+)
 from openbb_terminal.stocks.stocks_model import (
     load_stock_av,
-    load_stock_yf,
     load_stock_eodhd,
     load_stock_iex_cloud,
     load_stock_polygon,
+    load_stock_yf,
 )
-from openbb_terminal.helper_funcs import (
-    export_data,
-    plot_autoscale,
-    print_rich_table,
-    lambda_long_number_format_y_axis,
-)
-from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -104,8 +105,10 @@ def search(
     sector: str = "",
     industry: str = "",
     exchange_country: str = "",
+    all_exchanges: bool = False,
     limit: int = 0,
     export: str = "",
+    sheet_name: Optional[str] = "",
 ) -> None:
     """Search selected query for tickers.
 
@@ -121,6 +124,8 @@ def search(
         Search by industry to find stocks matching the criteria
     exchange_country: str
         Search by exchange country to find stock matching
+    all_exchanges: bool
+       Whether to search all exchanges, without this option only the United States market is searched
     limit : int
         The limit of companies shown.
     export : str
@@ -138,6 +143,7 @@ def search(
         kwargs["sector"] = sector
     if industry:
         kwargs["industry"] = industry
+    kwargs["exclude_exchanges"] = False if exchange_country else not all_exchanges
 
     try:
         data = fd.select_equities(**kwargs)
@@ -161,6 +167,15 @@ def search(
         d = fd.search_products(
             data, query, search="long_name", case_sensitive=False, new_database=None
         )
+        d.update(
+            fd.search_products(
+                data,
+                query,
+                search="short_name",
+                case_sensitive=False,
+                new_database=None,
+            )
+        )
     else:
         d = data
 
@@ -168,7 +183,9 @@ def search(
         console.print("No companies found.\n")
         return
 
-    df = pd.DataFrame.from_dict(d).T[["long_name", "country", "sector", "industry"]]
+    df = pd.DataFrame.from_dict(d).T[
+        ["long_name", "short_name", "country", "sector", "industry", "exchange"]
+    ]
     if exchange_country:
         if exchange_country in market_coverage_suffix:
             suffix_tickers = [
@@ -187,10 +204,8 @@ def search(
         for x in v:
             exchange_suffix[x] = k
 
-    df["exchange"] = [
-        exchange_suffix.get(ticker.split(".")[1]) if "." in ticker else "USA"
-        for ticker in list(df.index)
-    ]
+    df["name"] = df["long_name"].combine_first(df["short_name"])
+    df = df[["name", "country", "sector", "industry", "exchange"]]
 
     title = "Companies found"
     if query:
@@ -206,12 +221,8 @@ def search(
     if not sector and industry:
         title += f" within {industry}"
 
-    df["exchange"] = df["exchange"].apply(
-        lambda x: x.replace("_", " ").title() if x else None
-    )
-    df["exchange"] = df["exchange"].apply(
-        lambda x: "United States" if x == "Usa" else None
-    )
+    df = df.fillna(value=np.nan)
+    df = df.iloc[df.isnull().sum(axis=1).mul(1).argsort()]
 
     print_rich_table(
         df.iloc[:limit] if limit else df,
@@ -220,7 +231,13 @@ def search(
         title=title,
     )
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "search", df)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "search",
+        df,
+        sheet_name,
+    )
 
 
 def load(
@@ -333,15 +350,17 @@ def load(
         else:
             console.print("[red]Invalid source for stock[/red]\n")
             return
-        if df_stock_candidate.empty:
-            return df_stock_candidate
+        is_df = isinstance(df_stock_candidate, pd.DataFrame)
+        if (is_df and df_stock_candidate.empty) or (
+            not is_df and not df_stock_candidate
+        ):
+            return pd.DataFrame()
 
         df_stock_candidate.index.name = "date"
         s_start = df_stock_candidate.index[0]
         s_interval = f"{interval}min"
 
     else:
-
         if source == "AlphaVantage":
             s_start = start_date
             int_string = "Minute"
@@ -388,7 +407,7 @@ def load(
                 f"/{end_date.strftime('%Y-%m-%d')}"
                 f"?adjusted=true&sort=desc&limit=49999&apiKey={cfg.API_POLYGON_KEY}"
             )
-            r = requests.get(request_url)
+            r = request(request_url)
             if r.status_code != 200:
                 console.print("[red]Error in polygon request[/red]")
                 return pd.DataFrame()
@@ -816,9 +835,12 @@ def load_ticker(
     >>> from openbb_terminal.sdk import openbb
     >>> msft_df = openbb.stocks.load("MSFT")
     """
-    df_data = yf.download(ticker, start=start_date, end=end_date, progress=False)
+    df_data = yf.download(
+        ticker, start=start_date, end=end_date, progress=False, ignore_tz=True
+    )
 
     df_data.index = pd.to_datetime(df_data.index)
+
     df_data["date_id"] = (df_data.index.date - df_data.index.date.min()).astype(
         "timedelta64[D]"
     )
@@ -1095,7 +1117,7 @@ def show_codes_polygon(ticker: str):
     if cfg.API_POLYGON_KEY == "REPLACE_ME":
         console.print("[red]Polygon API key missing[/red]\n")
         return
-    r = requests.get(link)
+    r = request(link)
     if r.status_code != 200:
         console.print("[red]Error in polygon request[/red]\n")
         return

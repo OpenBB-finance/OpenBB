@@ -246,6 +246,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 candle_type="h",
                 normalize=False,
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -262,6 +263,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 end_date="2022-12-11",
                 candle_type="h",
                 export="",
+                sheet_name=None,
                 display_full_matrix=False,
                 raw=False,
             ),
@@ -279,6 +281,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 start_date="2020-12-01",
                 end_date="2022-12-11",
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -293,6 +296,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 timeframe="MOCK_TIMEFRAME",
                 quarter=True,
                 export="",
+                sheet_name=None,
             ),
         ),
         (
@@ -308,6 +312,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 timeframe="MOCK_TIMEFRAME",
                 quarter=True,
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -323,6 +328,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 timeframe="MOCK_TIMEFRAME",
                 quarter=True,
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -336,6 +342,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 similar=["MOCK_SIMILAR_1", "MOCK_SIMILAR_2"],
                 raw=True,
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -349,6 +356,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 similar=["MOCK_SIMILAR_1", "MOCK_SIMILAR_2"],
                 raw=True,
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -361,6 +369,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 similar=["MOCK_SIMILAR_1", "MOCK_SIMILAR_2"],
                 data_type="overview",
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -373,6 +382,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 similar=["MOCK_SIMILAR_1", "MOCK_SIMILAR_2"],
                 data_type="valuation",
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -385,6 +395,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 similar=["MOCK_SIMILAR_1", "MOCK_SIMILAR_2"],
                 data_type="financial",
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -397,6 +408,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 similar=["MOCK_SIMILAR_1", "MOCK_SIMILAR_2"],
                 data_type="ownership",
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -409,6 +421,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 similar=["MOCK_SIMILAR_1", "MOCK_SIMILAR_2"],
                 data_type="performance",
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -421,6 +434,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 similar=["MOCK_SIMILAR_1", "MOCK_SIMILAR_2"],
                 data_type="technical",
                 export="csv",
+                sheet_name=None,
             ),
         ),
     ],

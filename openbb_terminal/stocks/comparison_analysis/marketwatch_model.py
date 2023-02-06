@@ -1,16 +1,15 @@
 """ Comparison Analysis Marketwatch Model """
 __docformat__ = "numpy"
 
-from datetime import datetime
 import logging
+from datetime import datetime
 from typing import Dict, List, Tuple
 
 import pandas as pd
-import requests
 from bs4 import BeautifulSoup
 
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import get_user_agent
+from openbb_terminal.helper_funcs import get_user_agent, request
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -49,7 +48,7 @@ def get_financial_comparisons(
     """
     l_timeframes, ddf_financials = prepare_comparison_financials(symbols, data, quarter)
 
-    if timeframe:
+    if timeframe and l_timeframes:
         if (timeframe == str(datetime.now().year - 1)) and quarter:
             timeframe = l_timeframes[-1]
         elif timeframe not in l_timeframes:
@@ -215,7 +214,7 @@ def prepare_df_financials(
     try:
         period = "quarter" if quarter else "annual"
         text_soup_financials = BeautifulSoup(
-            requests.get(
+            request(
                 financial_urls[statement][period].format(ticker),
                 headers={"User-Agent": get_user_agent()},
             ).text,
@@ -299,12 +298,13 @@ def prepare_comparison_financials(
         A dictionary of DataFrame with financial info from list of similar tickers
     """
 
+    if not similar:
+        console.print("[red]No similar tickers found.")
+        return [], {}
+
     financials = {}
-    for (
-        symbol
-    ) in (
-        similar.copy()
-    ):  # We need a copy since we are modifying the original potentially
+    # We need a copy since we are modifying the original potentially
+    for symbol in similar.copy():
         results = prepare_df_financials(symbol, statement, quarter)
         if results.empty:
             # If we have an empty result set, don't do further analysis on this symbol and remove it from consideration

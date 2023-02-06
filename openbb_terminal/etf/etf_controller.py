@@ -8,35 +8,35 @@ from datetime import datetime, timedelta
 from typing import List
 
 import yfinance as yf
-
 from thepassiveinvestor import create_ETF_report
+
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.common import newsapi_view
 from openbb_terminal.common.quantitative_analysis import qa_view
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.etf import (
+    etf_helper,
     financedatabase_view,
     stockanalysis_model,
     stockanalysis_view,
     yfinance_view,
 )
 from openbb_terminal.etf.discovery import disc_controller
-from openbb_terminal.etf import etf_helper
 from openbb_terminal.etf.screener import screener_controller
 from openbb_terminal.etf.technical_analysis import ta_controller
 from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_positive,
-    export_data,
-    valid_date,
     compose_export_path,
+    export_data,
     list_from_str,
+    valid_date,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console, MenuText
+from openbb_terminal.rich_config import MenuText, console
 from openbb_terminal.stocks import stocks_helper
 from openbb_terminal.stocks.comparison_analysis import ca_controller
 
@@ -178,12 +178,18 @@ class ETFController(BaseController):
                         name=name_to_search,
                         limit=ns_parser.limit,
                         export=ns_parser.export,
+                        sheet_name=" ".join(ns_parser.sheet_name)
+                        if ns_parser.sheet_name
+                        else None,
                     )
                 elif ns_parser.source == "StockAnalysis":
                     stockanalysis_view.display_etf_by_name(
                         name=name_to_search,
                         limit=ns_parser.limit,
                         export=ns_parser.export,
+                        sheet_name=" ".join(ns_parser.sheet_name)
+                        if ns_parser.sheet_name
+                        else None,
                     )
                 else:
                     console.print("Wrong source choice!\n")
@@ -193,6 +199,9 @@ class ETFController(BaseController):
                     description=description_to_search,
                     limit=ns_parser.limit,
                     export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
 
     @log_start_end(log=logger)
@@ -228,6 +237,7 @@ class ETFController(BaseController):
             dest="end",
             help="The ending date (format YYYY-MM-DD) of the ETF",
         )
+
         parser.add_argument(
             "-l",
             "--limit",
@@ -255,12 +265,17 @@ class ETFController(BaseController):
 
             self.etf_name = ns_parser.ticker.upper()
             self.etf_data = df_etf_candidate
-            quote_type = etf_helper.get_quote_type(self.etf_name)
-            if quote_type != "ETF":
-                console.print(f"{self.etf_name} is: {quote_type.lower()}")
             holdings = stockanalysis_model.get_etf_holdings(self.etf_name)
             if holdings.empty:
-                console.print("No company holdings found!")
+                quote_type = etf_helper.get_quote_type(self.etf_name)
+                if quote_type != "ETF":
+                    if quote_type == "N/A":
+                        console.print(
+                            "[red]Cannot determine ticker type.  Holdings only shown for ETFs\n[/red]"
+                        )
+                    else:
+                        console.print(f"{self.etf_name} is: {quote_type.lower()}")
+                    console.print("No company holdings found!")
             else:
                 self.etf_holdings.clear()
                 console.print("Top holdings found:")
@@ -301,7 +316,11 @@ class ETFController(BaseController):
 
         if ns_parser:
             stockanalysis_view.view_overview(
-                symbol=self.etf_name, export=ns_parser.export
+                symbol=self.etf_name,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -333,6 +352,9 @@ class ETFController(BaseController):
                     symbol=self.etf_name,
                     limit=ns_parser.limit,
                     export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
                 console.print()
             else:
@@ -529,6 +551,7 @@ class ETFController(BaseController):
                 os.path.dirname(os.path.abspath(__file__)),
                 f"{self.etf_name}",
                 self.etf_data,
+                ns_parser.sheet_name,
             )
 
     @log_start_end(log=logger)
@@ -586,6 +609,10 @@ class ETFController(BaseController):
                         f"[red]Could not find the file: {ns_parser.filename}[/red]\n"
                     )
                     return
+                except Exception:
+                    console.print("[red]Failed to create report.[/red]\n")
+                    return
+
                 console.print(
                     f"Created ETF report as {ns_parser.filename} in folder {ns_parser.folder} \n"
                 )
@@ -624,6 +651,9 @@ class ETFController(BaseController):
                 raw=ns_parser.raw,
                 min_pct_to_display=ns_parser.min,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -713,4 +743,10 @@ class ETFController(BaseController):
         )
         if ns_parser:
             etf_list = ns_parser.names.upper().split(",")
-            stockanalysis_view.view_comparisons(etf_list, export=ns_parser.export)
+            stockanalysis_view.view_comparisons(
+                etf_list,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )

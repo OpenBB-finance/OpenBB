@@ -4,31 +4,28 @@ __docformat__ = "numpy"
 import logging
 import os
 import webbrowser
-from typing import List, Optional
 from fractions import Fraction
+from typing import List, Optional
 
-import yfinance as yf
-import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
+import matplotlib.pyplot as plt
 import pandas as pd
+import yfinance as yf
 
-from openbb_terminal.config_terminal import theme
 from openbb_terminal.config_plot import PLOT_DPI
+from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
-    plot_autoscale,
-    print_rich_table,
     is_valid_axes_count,
     lambda_long_number_format,
+    plot_autoscale,
+    print_rich_table,
 )
+from openbb_terminal.helpers_denomination import transform as transform_by_denomination
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks import stocks_helper
 from openbb_terminal.stocks.fundamental_analysis import yahoo_finance_model
-from openbb_terminal.helpers_denomination import (
-    transform as transform_by_denomination,
-)
-
 
 logger = logging.getLogger(__name__)
 
@@ -56,12 +53,14 @@ def open_web(symbol: str):
 
 
 @log_start_end(log=logger)
-def display_info(symbol: str, export: str = ""):
+def display_info(symbol: str, export: str = "", sheet_name: str = None):
     """Yahoo Finance ticker info
     Parameters
     ----------
     symbol : str
         Fundamental analysis ticker symbol
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     """
@@ -87,11 +86,19 @@ def display_info(symbol: str, export: str = ""):
         console.print("Business Summary:")
         console.print(summary)
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "info", df_info)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "info",
+        df_info,
+        sheet_name,
+    )
 
 
 @log_start_end(log=logger)
-def display_shareholders(symbol: str, holder: str = "institutional", export: str = ""):
+def display_shareholders(
+    symbol: str, holder: str = "institutional", export: str = "", sheet_name: str = None
+):
     """Yahoo Finance ticker shareholders
     Parameters
     ----------
@@ -99,6 +106,8 @@ def display_shareholders(symbol: str, holder: str = "institutional", export: str
         Fundamental analysis ticker symbol
     holder: str
         Shareholder table to get.  Can be major/institutional/mutualfund
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     """
@@ -118,18 +127,24 @@ def display_shareholders(symbol: str, holder: str = "institutional", export: str
     )
 
     export_data(
-        export, os.path.dirname(os.path.abspath(__file__)), f"{holder}_holders", df
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        f"{holder}_holders",
+        df,
+        sheet_name,
     )
 
 
 @log_start_end(log=logger)
-def display_sustainability(symbol: str, export: str = ""):
+def display_sustainability(symbol: str, export: str = "", sheet_name: str = None):
     """Yahoo Finance ticker sustainability
 
     Parameters
     ----------
     symbol : str
         Fundamental analysis ticker symbol
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     """
@@ -153,18 +168,24 @@ def display_sustainability(symbol: str, export: str = ""):
         console.print("[red]Invalid data[/red]\n")
 
     export_data(
-        export, os.path.dirname(os.path.abspath(__file__)), "sust", df_sustainability
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "sust",
+        df_sustainability,
+        sheet_name,
     )
 
 
 @log_start_end(log=logger)
-def display_calendar_earnings(symbol: str, export: str = ""):
+def display_calendar_earnings(symbol: str, export: str = "", sheet_name: str = None):
     """Yahoo Finance ticker calendar earnings
 
     Parameters
     ----------
     symbol : str
         Fundamental analysis ticker symbol
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     """
@@ -179,7 +200,13 @@ def display_calendar_earnings(symbol: str, export: str = ""):
         title=f"{symbol.upper()} Calendar Earnings",
     )
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "cal", df_calendar)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "cal",
+        df_calendar,
+        sheet_name,
+    )
 
 
 @log_start_end(log=logger)
@@ -188,6 +215,7 @@ def display_dividends(
     limit: int = 12,
     plot: bool = True,
     export: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display historical dividends
@@ -200,6 +228,8 @@ def display_dividends(
         Number to show
     plot: bool
         Plots historical data
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
@@ -255,13 +285,20 @@ def display_dividends(
             show_index=True,
         )
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "divs", div_history)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "divs",
+        div_history,
+        sheet_name,
+    )
 
 
 @log_start_end(log=logger)
 def display_splits(
     symbol: str,
     export: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display splits and reverse splits events. [Source: Yahoo Finance]
@@ -270,6 +307,8 @@ def display_splits(
     ----------
     symbol: str
         Stock ticker symbol
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
@@ -332,7 +371,13 @@ def display_splits(
         show_index=True,
     )
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "splits", df_splits)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "splits",
+        df_splits,
+        sheet_name,
+    )
 
 
 @log_start_end(log=logger)
@@ -340,6 +385,7 @@ def display_mktcap(
     symbol: str,
     start_date: Optional[str] = None,
     export: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display market cap over time. [Source: Yahoo Finance]
@@ -350,6 +396,8 @@ def display_mktcap(
         Stock ticker symbol
     start_date: Optional[str]
         Initial date (e.g., 2021-10-01). Defaults to 3 years back
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
@@ -378,7 +426,13 @@ def display_mktcap(
     if not external_axes:
         theme.visualize_output()
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "mktcap", df_mktcap)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "mktcap",
+        df_mktcap,
+        sheet_name,
+    )
 
 
 @log_start_end(log=logger)
@@ -389,6 +443,7 @@ def display_fundamentals(
     ratios: bool = False,
     plot: list = None,
     export: str = "",
+    sheet_name: str = None,
 ):
     """Display tickers balance sheet, income statement or cash-flow
 
@@ -409,6 +464,8 @@ def display_fundamentals(
         Shows percentage change
     plot: list
         List of row labels to plot
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     """
@@ -496,33 +553,42 @@ def display_fundamentals(
             title=f"{symbol} {title_str} Currency: {symbol_currency}",
         )
     export_data(
-        export, os.path.dirname(os.path.abspath(__file__)), statement, fundamentals
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        statement,
+        fundamentals,
+        sheet_name,
     )
 
 
 @log_start_end(log=logger)
-def display_earnings(symbol: str, limit: int, export: str):
+def display_earnings(symbol: str, limit: int, export: str = "", sheet_name: str = None):
     """
 
     Parameters
     ----------
-    symbol
-    limit
-    export
-
-    Returns
-    -------
+    symbol: str
+        Stock ticker symbol
+    limit: int
+        Number of periods to show
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
+    export: str
+        Format to export data
 
     """
     earnings = yahoo_finance_model.get_earnings_history(symbol)
     if earnings.empty:
         return
-    earnings = earnings.drop(columns={"Symbol", "Company"}).fillna("-")
     print_rich_table(
         earnings.head(limit),
         headers=earnings.columns,
         title=f"Historical Earnings for {symbol}",
     )
     export_data(
-        export, os.path.dirname(os.path.abspath(__file__)), "earnings_yf", earnings
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "earnings_yf",
+        earnings,
+        sheet_name,
     )

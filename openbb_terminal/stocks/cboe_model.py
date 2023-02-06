@@ -4,8 +4,8 @@ __docformat__ = "numpy"
 from typing import Tuple
 
 import pandas as pd
-import requests
 
+from openbb_terminal.helper_funcs import request
 from openbb_terminal.rich_config import console
 
 
@@ -35,7 +35,7 @@ def get_top_of_book(
     # exchange need to be lower case.  Not sure why
     url = f"https://www.cboe.com/json/{exchange.lower()}/book/{symbol}"
 
-    r = requests.get(
+    r = request(
         url,
         headers={
             "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko)"

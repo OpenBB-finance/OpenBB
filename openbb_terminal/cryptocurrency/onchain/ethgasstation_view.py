@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def display_gwei_fees(export: str = "") -> None:
+def display_gwei_fees(export: str = "", sheet_name: str = None) -> None:
     """Current gwei fees
     [Source: https://ethgasstation.info]
 
@@ -40,4 +40,5 @@ def display_gwei_fees(export: str = "") -> None:
             os.path.dirname(os.path.abspath(__file__)),
             "gwei",
             df_fees,
+            sheet_name,
         )

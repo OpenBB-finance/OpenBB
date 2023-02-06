@@ -13,7 +13,9 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def display_newsletters(limit: int = 10, export: str = "") -> None:
+def display_newsletters(
+    limit: int = 10, export: str = "", sheet_name: str = None
+) -> None:
     """Prints table showing DeFi related substack newsletters.
     [Source: substack.com]
 
@@ -34,4 +36,10 @@ def display_newsletters(limit: int = 10, export: str = "") -> None:
         title="Substack Newsletters",
     )
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "newsletter", df)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "newsletter",
+        df,
+        sheet_name,
+    )

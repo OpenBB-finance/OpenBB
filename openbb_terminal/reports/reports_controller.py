@@ -13,12 +13,12 @@ from openbb_terminal import feature_flags as obbff
 from openbb_terminal.core.config.paths import (
     USER_CUSTOM_REPORTS_DIRECTORY,
 )
-from openbb_terminal.reports import reports_model
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console, MenuText
+from openbb_terminal.reports import reports_model
+from openbb_terminal.rich_config import MenuText, console
 
 # from openbb_terminal.terminal_helper import is_packaged_application
 
@@ -61,7 +61,6 @@ class ReportController(BaseController):
             )
 
         if session and obbff.USE_PROMPT_TOOLKIT:
-
             self.choices: dict = {c: {} for c in self.controller_choices}
             self.choices["run"] = {
                 "--file": {c: None for c in reports_model.USER_REPORTS},
@@ -70,7 +69,6 @@ class ReportController(BaseController):
                 "-p": "--parameters",
             }
             for report_name in self.REPORTS:
-
                 # Completer with limited user choices to avoid unforeseen problems
                 self.choices[report_name] = {}
                 for arg in self.PARAMETERS_DICT[report_name]:
@@ -100,7 +98,6 @@ class ReportController(BaseController):
         MAX_LEN_NAME = max(len(name) for name in self.REPORTS) + 2
         templates_string = ""
         for report_name in self.REPORTS:
-
             parameters_names = list(self.PARAMETERS_DICT[report_name].keys())
 
             if len(parameters_names) > 1 or not parameters_names:
@@ -179,10 +176,8 @@ class ReportController(BaseController):
         )
 
         if report_name in self.PARAMETERS_DICT:
-
             # Assign respective parameters as arguments
             for arg_name, arg_default in self.PARAMETERS_DICT[report_name].items():
-
                 choices = reports_model.get_arg_choices(report_name, arg_name)
 
                 getattr(parser, "add_argument")(

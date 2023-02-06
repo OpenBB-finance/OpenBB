@@ -8,9 +8,8 @@ from typing import List
 
 import yfinance as yf
 
-from openbb_terminal.custom_prompt_toolkit import NestedCompleter
-
 from openbb_terminal import feature_flags as obbff
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
@@ -19,7 +18,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console, MenuText
+from openbb_terminal.rich_config import MenuText, console
 from openbb_terminal.stocks.comparison_analysis import ca_controller
 from openbb_terminal.stocks.sector_industry_analysis import (
     financedatabase_model,
@@ -747,7 +746,6 @@ class SectorIndustryAnalysisController(BaseController):
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
-
             if not self.country and not self.sector and not self.industry:
                 console.print(
                     "[red]Select at least one filter from sector, country or industry.[/red]\n"
@@ -770,6 +768,9 @@ class SectorIndustryAnalysisController(BaseController):
                         self.exclude_exchanges,
                         ns_parser.limit,
                         ns_parser.export,
+                        " ".join(ns_parser.sheet_name)
+                        if ns_parser.sheet_name
+                        else None,
                         ns_parser.raw,
                         self.stocks_data,
                     )
@@ -833,7 +834,6 @@ class SectorIndustryAnalysisController(BaseController):
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES, limit=10, raw=True
         )
         if ns_parser:
-
             if not self.country and not self.sector and not self.industry:
                 console.print(
                     "[red]Select at least one filter from sector, country or industry.[/red]\n"
@@ -860,6 +860,9 @@ class SectorIndustryAnalysisController(BaseController):
                         exclude_exchanges=self.exclude_exchanges,
                         limit=ns_parser.limit,
                         export=ns_parser.export,
+                        sheet_name=" ".join(ns_parser.sheet_name)
+                        if ns_parser.sheet_name
+                        else None,
                         raw=ns_parser.raw,
                         already_loaded_stocks_data=self.stocks_data,
                     )
@@ -917,6 +920,7 @@ class SectorIndustryAnalysisController(BaseController):
                     self.mktcap,
                     self.exclude_exchanges,
                     ns_parser.export,
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None,
                     ns_parser.raw,
                     ns_parser.max_sectors_to_display,
                     ns_parser.min_pct_to_display_sector,

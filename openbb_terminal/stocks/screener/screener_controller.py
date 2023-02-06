@@ -4,31 +4,32 @@ __docformat__ = "numpy"
 import argparse
 import datetime
 import logging
-from pathlib import Path
 from typing import List
 
-from openbb_terminal.custom_prompt_toolkit import NestedCompleter
-
 from openbb_terminal import feature_flags as obbff
-from openbb_terminal.core.config.paths import USER_PRESETS_DIRECTORY
+from openbb_terminal.core.config.paths import (
+    MISCELLANEOUS_DIRECTORY,
+    USER_PRESETS_DIRECTORY,
+)
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_positive,
-    valid_date,
     parse_and_split_input,
+    valid_date,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console, MenuText
+from openbb_terminal.rich_config import MenuText, console
 from openbb_terminal.stocks.comparison_analysis import ca_controller
 from openbb_terminal.stocks.screener import (
     finviz_model,
     finviz_view,
-    yahoofinance_view,
-    screener_view,
     screener_helper,
+    screener_view,
+    yahoofinance_view,
 )
 
 logger = logging.getLogger(__name__)
@@ -55,7 +56,7 @@ class ScreenerController(BaseController):
         "technical",
     ]
 
-    PRESETS_PATH_DEFAULT = Path(__file__).parent / "presets"
+    PRESETS_PATH_DEFAULT = MISCELLANEOUS_DIRECTORY / "stocks" / "screener"
     preset_choices = {
         filepath.name.replace(".ini", ""): filepath
         for filepath in PRESETS_PATH.iterdir()
@@ -92,7 +93,10 @@ class ScreenerController(BaseController):
         See `BaseController.parse_input()` for details.
         """
         # Filtering out sorting parameters with forward slashes like P/E
-        sort_filter = r"((\ -s |\ --sort ).*?(P\/E|Fwd P\/E|P\/S|P\/B|P\/C|P\/FCF)*)"
+        f0 = r"(p\/e|fwd p\/e|p\/s|p\/b|p\/c|p\/fcf)"
+        f1 = r"(P\/E|Fwd P\/E|P\/S|P\/B|P\/C|P\/FCF)"
+
+        sort_filter = r"((\ -s |\ --sort ).*?" + r"(" + f0 + r"|" + f1 + r")" + r"*)"
 
         custom_filters = [sort_filter]
 
@@ -313,6 +317,9 @@ class ScreenerController(BaseController):
                 ascend=ns_parser.reverse,
                 sortby=sort_map[ns_parser.sort],
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -386,6 +393,9 @@ class ScreenerController(BaseController):
                 ascend=ns_parser.reverse,
                 sortby=sort_map[ns_parser.sort],
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -459,6 +469,9 @@ class ScreenerController(BaseController):
                 ascend=ns_parser.reverse,
                 sortby=sort_map[ns_parser.sort],
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -532,6 +545,9 @@ class ScreenerController(BaseController):
                 ascend=ns_parser.reverse,
                 sortby=sort_map[ns_parser.sort],
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -605,6 +621,9 @@ class ScreenerController(BaseController):
                 ascend=ns_parser.reverse,
                 sortby=sort_map[ns_parser.sort],
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -677,6 +696,9 @@ class ScreenerController(BaseController):
                 ascend=ns_parser.reverse,
                 sortby=sort_map[ns_parser.sort],
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)

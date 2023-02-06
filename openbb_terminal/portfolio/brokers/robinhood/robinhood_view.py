@@ -7,8 +7,8 @@ import os
 import matplotlib.pyplot as plt
 import mplfinance as mpf
 
-from openbb_terminal.config_terminal import theme
 from openbb_terminal import feature_flags as obbff
+from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
@@ -32,7 +32,7 @@ span_title_dict = {
 
 
 @log_start_end(log=logger)
-def display_holdings(export: str = ""):
+def display_holdings(export: str = "", sheet_name: str = None):
     """Display stock holdings in robinhood
 
     Parameters
@@ -50,11 +50,17 @@ def display_holdings(export: str = ""):
         os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))),
         "rh_holdings",
         holdings,
+        sheet_name,
     )
 
 
 @log_start_end(log=logger)
-def display_historical(interval: str = "day", window: str = "3month", export: str = ""):
+def display_historical(
+    interval: str = "day",
+    window: str = "3month",
+    export: str = "",
+    sheet_name: str = None,
+):
     """Display historical portfolio
 
     Parameters
@@ -95,4 +101,5 @@ def display_historical(interval: str = "day", window: str = "3month", export: st
         os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))),
         "rh_hist",
         hist,
+        sheet_name,
     )

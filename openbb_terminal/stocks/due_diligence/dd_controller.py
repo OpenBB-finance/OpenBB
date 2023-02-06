@@ -7,9 +7,8 @@ from typing import List
 
 from pandas.core.frame import DataFrame
 
-from openbb_terminal.custom_prompt_toolkit import NestedCompleter
-
 from openbb_terminal import feature_flags as obbff
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
@@ -18,7 +17,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import StockBaseController
-from openbb_terminal.rich_config import console, MenuText
+from openbb_terminal.rich_config import MenuText, console
 from openbb_terminal.stocks.due_diligence import (
     ark_view,
     business_insider_view,
@@ -112,7 +111,13 @@ class DueDiligenceController(StockBaseController):
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            finviz_view.analyst(symbol=self.ticker, export=ns_parser.export)
+            finviz_view.analyst(
+                symbol=self.ticker,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )
 
     @log_start_end(log=logger)
     def call_pt(self, other_args: List[str]):
@@ -151,6 +156,9 @@ class DueDiligenceController(StockBaseController):
                 limit=ns_parser.limit,
                 raw=ns_parser.raw,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -178,6 +186,9 @@ class DueDiligenceController(StockBaseController):
                 symbol=self.ticker,
                 estimate=ns_parser.estimate,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -218,6 +229,9 @@ class DueDiligenceController(StockBaseController):
                 limit=ns_parser.limit,
                 raw=ns_parser.raw,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -253,6 +267,9 @@ class DueDiligenceController(StockBaseController):
                 symbol=self.ticker,
                 limit=ns_parser.limit,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -287,6 +304,9 @@ class DueDiligenceController(StockBaseController):
                 symbol=self.ticker,
                 limit=ns_parser.limit,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -305,6 +325,9 @@ class DueDiligenceController(StockBaseController):
             csimarket_view.suppliers(
                 symbol=self.ticker,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -323,6 +346,9 @@ class DueDiligenceController(StockBaseController):
             csimarket_view.customers(
                 symbol=self.ticker,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -362,4 +388,7 @@ class DueDiligenceController(StockBaseController):
                 limit=ns_parser.limit,
                 show_symbol=ns_parser.show_symbol,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )

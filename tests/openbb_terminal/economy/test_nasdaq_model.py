@@ -33,7 +33,10 @@ def test_get_big_mac_index_no_response(mocker):
     # MOCK GET
     attrs = {"status_code": 400}
     mock_response = mocker.Mock(**attrs)
-    mocker.patch(target="requests.get", new=mocker.Mock(return_value=mock_response))
+    mocker.patch(
+        target="openbb_terminal.helper_funcs.requests.get",
+        new=mocker.Mock(return_value=mock_response),
+    )
 
     result_df = nasdaq_model.get_big_mac_index(country_code="VNM")
 

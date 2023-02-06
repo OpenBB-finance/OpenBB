@@ -3,9 +3,10 @@
 # IMPORTATION THIRDPARTY
 import pytest
 
+from openbb_terminal import helper_funcs
+
 # IMPORTATION INTERNAL
 from openbb_terminal.stocks.fundamental_analysis import fmp_view
-from openbb_terminal import helper_funcs
 
 
 @pytest.fixture(scope="module")
@@ -22,6 +23,12 @@ def vcr_config():
 @pytest.mark.record_stdout
 def test_valinvest_score():
     fmp_view.valinvest_score(symbol="PM")
+
+
+@pytest.mark.vcr
+@pytest.mark.record_stdout
+def test_display_filings():
+    fmp_view.display_filings()
 
 
 @pytest.mark.vcr

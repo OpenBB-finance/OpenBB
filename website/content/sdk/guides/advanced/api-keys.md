@@ -1,6 +1,8 @@
 ---
 title: Set API Keys
 sidebar_position: 1
+description: With the OpenBB SDK you can define your, often free, API key from various platforms like Alpha Vantage, FRED, IEX, Twitter, DeGiro, Binance and Coinglass. An API key is a set of random characters provided to you by a third party vendor that allows you to access data via their API endpoints. API keys can be managed directly from the SDK environment.
+keywords: [api, keys, api keys, data provider, data, free, alpha vantage, fred, iex, twitter, degiro, binance, coinglass, polygon, intrinio, openbb sdk]
 ---
 
 ## Accessing API Keys

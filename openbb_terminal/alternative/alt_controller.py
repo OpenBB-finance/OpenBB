@@ -5,17 +5,16 @@ import argparse
 import logging
 from typing import List
 
-from openbb_terminal.custom_prompt_toolkit import NestedCompleter
-
 from openbb_terminal import feature_flags as obbff
+from openbb_terminal.alternative import hackernews_view
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console, MenuText
-from openbb_terminal.alternative import hackernews_view
+from openbb_terminal.rich_config import MenuText, console
 
 logger = logging.getLogger(__name__)
 # pylint:disable=import-outside-toplevel
@@ -25,7 +24,7 @@ class AlternativeDataController(BaseController):
     """Alternative Controller class"""
 
     CHOICES_COMMANDS: List[str] = ["hn"]
-    CHOICES_MENUS = ["covid", "oss"]
+    CHOICES_MENUS = ["covid", "oss", "realestate"]
     PATH = "/alternative/"
     CHOICES_GENERATION = True
 
@@ -43,6 +42,7 @@ class AlternativeDataController(BaseController):
         mt = MenuText("alternative/")
         mt.add_menu("covid")
         mt.add_menu("oss")
+        mt.add_menu("realestate")
         mt.add_raw("\n")
         mt.add_cmd("hn")
         console.print(text=mt.menu_text, menu="Alternative")
@@ -80,4 +80,19 @@ class AlternativeDataController(BaseController):
         )
 
         if ns_parser:
-            hackernews_view.display_stories(limit=ns_parser.limit)
+            hackernews_view.display_stories(
+                limit=ns_parser.limit,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )
+
+    @log_start_end(log=logger)
+    def call_realestate(self, _):
+        """Process realestate command."""
+        from openbb_terminal.alternative.realestate.realestate_controller import (
+            RealEstateController,
+        )
+
+        self.queue = self.load_class(RealEstateController, self.queue)

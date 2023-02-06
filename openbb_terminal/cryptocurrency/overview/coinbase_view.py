@@ -5,8 +5,7 @@ import logging
 import os
 
 from openbb_terminal.cryptocurrency.overview import coinbase_model
-from openbb_terminal.decorators import check_api_key
-from openbb_terminal.decorators import log_start_end
+from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
     print_rich_table,
@@ -22,6 +21,7 @@ def display_trading_pairs(
     sortby: str = "quote_increment",
     ascend: bool = True,
     export: str = "",
+    sheet_name: str = None,
 ) -> None:
     """Displays a list of available currency pairs for trading. [Source: Coinbase]
 
@@ -51,4 +51,5 @@ def display_trading_pairs(
         os.path.dirname(os.path.abspath(__file__)),
         "cbpairs",
         df,
+        sheet_name,
     )

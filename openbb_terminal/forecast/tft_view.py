@@ -2,15 +2,14 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import Union, Optional, List
 from datetime import datetime
+from typing import List, Optional, Union
 
-import pandas as pd
 import matplotlib.pyplot as plt
+import pandas as pd
 
-from openbb_terminal.forecast import tft_model
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.forecast import helpers
+from openbb_terminal.forecast import helpers, tft_model
 
 logger = logging.getLogger(__name__)
 # pylint: disable=too-many-arguments
@@ -39,6 +38,7 @@ def display_tft_forecast(
     force_reset: bool = True,
     save_checkpoints: bool = True,
     export: str = "",
+    sheet_name: str = None,
     residuals: bool = False,
     forecast_only: bool = False,
     start_date: Optional[datetime] = None,
@@ -162,6 +162,7 @@ def display_tft_forecast(
         precision=precision,
         probabilistic=probabilistic,
         export=export,
+        sheet_name=sheet_name,
         forecast_only=forecast_only,
         naive=naive,
         export_pred_raw=export_pred_raw,

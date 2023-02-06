@@ -44,8 +44,7 @@ def test_display_ark_trades_no_tab(mocker):
     ark_view.display_ark_trades(symbol="TSLA")
 
 
-@pytest.mark.default_cassette("test_display_ark_trades_TSLA")
-@pytest.mark.vcr(record_mode="none")
+@pytest.mark.vcr
 def test_display_ark_trades_export(capsys, mocker):
     ark_view.export_data = mocker.Mock()
 

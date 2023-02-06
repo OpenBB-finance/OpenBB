@@ -1,9 +1,27 @@
 name-template: 'OpenBB Terminal v$NEXT_MINOR_VERSION'
 tag-template: 'v$NEXT_MINOR_VERSION'
+exclude-contributors:
+  - 'jmaslek'
+  - 'DidierRLopes'
+  - 'JerBouma'
+  - 'deeleeramone'
+  - 'hjoaquim'
+  - 'jose-donato'
+  - 'luqman-bello'
+  - 'martinb-bb'
+  - 'montezdesousa'
+  - 'tehcoderer'
+  - 'Chavithra'
+  - 'colin99d'
+  - 'northern-64bit'
+  - 'piiq'
+  - 'andrewkenreich'
 
 template: |
   ## Thank you and welcome to our new contributors 🔥
   $CONTRIBUTORS
+
+  ## What's new 🎉
 
   ## What's changed 🚀
   $CHANGES

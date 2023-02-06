@@ -7,9 +7,9 @@ import argparse
 import logging
 from typing import List
 
-from openbb_terminal.custom_prompt_toolkit import NestedCompleter
-
 from openbb_terminal import feature_flags as obbff
+from openbb_terminal.cryptocurrency.tools import tools_view
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
@@ -17,10 +17,9 @@ from openbb_terminal.helper_funcs import (
     check_positive,
     check_positive_float,
 )
-from openbb_terminal.cryptocurrency.tools import tools_view
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console, MenuText
+from openbb_terminal.rich_config import MenuText, console
 
 logger = logging.getLogger(__name__)
 
@@ -123,6 +122,9 @@ class ToolsController(BaseController):
                 initial_pool_value=ns_parser.value,
                 narrative=ns_parser.narrative,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -179,4 +181,7 @@ class ToolsController(BaseController):
                 compounding_times=ns_parser.compounding,
                 narrative=ns_parser.narrative,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )

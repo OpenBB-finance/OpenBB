@@ -3,12 +3,12 @@ __docformat__ = "numpy"
 # pylint:disable=too-many-arguments,unexpected-keyword-arg
 
 import logging
-from typing import Dict, Any, List
+from typing import Any, Dict, List
 
 import numpy as np
 import pandas as pd
-from tqdm import tqdm
 import yfinance as yf
+from tqdm import tqdm
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
@@ -143,6 +143,7 @@ def get_stocks_data(
                         start=f"{symbol_statement_rounded.columns[0]}-01-01",
                         end=f"{symbol_statement_rounded.columns[-1]}-12-31",
                         progress=False,
+                        ignore_tz=True,
                     )["Adj Close"]
 
                     for year in symbol_statement_rounded:
@@ -219,6 +220,8 @@ def change_type_dataframes(data: pd.DataFrame) -> pd.DataFrame:
     pd.DataFrame
         Adjusted DataFrame
     """
+
+    data.replace("-", 0, inplace=True)
     dataframe = data.apply(
         lambda x: x.astype(str).str.replace(",", "").astype(float), axis=1
     )

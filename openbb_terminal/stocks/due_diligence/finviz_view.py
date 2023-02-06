@@ -5,11 +5,11 @@ import logging
 import os
 from typing import Any, List
 
+from openbb_terminal import rich_config
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.due_diligence import finviz_model
-from openbb_terminal import rich_config
 
 logger = logging.getLogger(__name__)
 
@@ -62,7 +62,7 @@ def news(symbol: str, limit: int = 5):
 
 
 @log_start_end(log=logger)
-def analyst(symbol: str, export: str = ""):
+def analyst(symbol: str, export: str = "", sheet_name: str = None):
     """Display analyst ratings. [Source: Finviz]
 
     Parameters
@@ -86,4 +86,5 @@ def analyst(symbol: str, export: str = ""):
         os.path.dirname(os.path.abspath(__file__)),
         "analyst",
         df,
+        sheet_name,
     )

@@ -11,15 +11,12 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - python-requests/2.27.1
+      - python-requests/2.28.1
     method: GET
     uri: https://sandbox.tradier.com/v1/markets/options/expirations?symbol=AAPL&includeAllRoots=true&strikes=false
   response:
     body:
-      string: !!binary |
-        H4sIAAAAAAAAAE3OsQ6CQBCE4XfZ2kl29uAOeBVjQSIFjRqlMCG8u0J0b8uv2H9nlen9mJ/jMt9v
-        LxlWuY7LJMNZTM2gBlJOFV2AtY4EbQLCTYo3Kd40UAawBlqYOjJYHAWsgQ7sHT2Y/6DCPE36gu9K
-        ejod24ojeyAdtd+ffeX+57JtH7XI0fUrAQAA
+      string: '{"expirations":{"date":["2023-01-06","2023-01-13","2023-01-20","2023-01-27","2023-02-03","2023-02-10","2023-02-17","2023-02-24","2023-03-17","2023-04-21","2023-05-19","2023-06-16","2023-07-21","2023-08-18","2023-09-15","2023-10-20","2023-12-15","2024-01-19","2024-03-15","2024-06-21","2025-01-17","2025-06-20"]}}'
     headers:
       Access-Control-Allow-Headers:
       - accept, authorization
@@ -29,23 +26,21 @@ interactions:
       - '*'
       Connection:
       - keep-alive
-      Content-Encoding:
-      - gzip
       Content-Type:
       - application/json;charset=UTF-8
       Date:
-      - Thu, 10 Feb 2022 20:32:15 GMT
+      - Fri, 06 Jan 2023 11:58:13 GMT
       Transfer-Encoding:
       - chunked
       X-Ratelimit-Allowed:
       - '200'
       X-Ratelimit-Available:
-      - '199'
+      - '197'
       X-Ratelimit-Expiry:
-      - '1644525180000'
+      - '1673006340000'
       X-Ratelimit-Used:
-      - '1'
+      - '3'
     status:
       code: 200
-      message: OK
+      message: ''
 version: 1

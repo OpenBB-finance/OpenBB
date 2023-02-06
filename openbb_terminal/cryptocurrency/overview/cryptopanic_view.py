@@ -6,11 +6,12 @@ import os
 from typing import Optional
 
 from openbb_terminal.cryptocurrency.overview import cryptopanic_model
-from openbb_terminal.decorators import log_start_end
+from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
-from openbb_terminal.decorators import check_api_key
 
 logger = logging.getLogger(__name__)
+
+# pylint: disable=too-many-arguments
 
 
 @log_start_end(log=logger)
@@ -24,6 +25,7 @@ def display_news(
     ascend: bool = False,
     links: bool = False,
     export: str = "",
+    sheet_name: str = None,
 ) -> None:
     """Display recent posts from CryptoPanic news aggregator platform.
     [Source: https://cryptopanic.com/]
@@ -75,4 +77,5 @@ def display_news(
             os.path.dirname(os.path.abspath(__file__)),
             "news",
             df,
+            sheet_name,
         )

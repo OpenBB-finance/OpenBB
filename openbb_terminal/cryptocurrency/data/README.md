@@ -26,10 +26,10 @@ for category in categories:
 - Endpoint: [https://api.llama.fi/protocols](https://api.llama.fi/protocols)
 
 ```python
-import requests
+import request
 API_URL = "https://api.llama.fi"
 url = f"{API_URL}/protocols"
-r = requests.get(url)
+r = request(url)
 data = r.json()
 protocols = {}
 for protocol in data:

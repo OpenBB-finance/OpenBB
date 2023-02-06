@@ -1,9 +1,10 @@
 # IMPORTATION THIRDPARTY
 import pytest
 
+from openbb_terminal.common import common_model
+
 # IMPORTATION INTERNAL
 from openbb_terminal.econometrics import econometrics_view
-from openbb_terminal.common import common_model
 
 
 @pytest.mark.vcr()

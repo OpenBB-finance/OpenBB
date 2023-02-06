@@ -9,15 +9,14 @@ import pandas as pd
 from matplotlib import pyplot as plt
 from pandas.plotting import register_matplotlib_converters
 
-from openbb_terminal.decorators import check_api_key
-from openbb_terminal.config_terminal import theme
 from openbb_terminal.config_plot import PLOT_DPI
-from openbb_terminal.decorators import log_start_end
+from openbb_terminal.config_terminal import theme
+from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
+    is_valid_axes_count,
     plot_autoscale,
     print_rich_table,
-    is_valid_axes_count,
 )
 from openbb_terminal.stocks.due_diligence import finnhub_model
 
@@ -78,6 +77,7 @@ def rating_over_time(
     limit: int = 10,
     raw: bool = False,
     export: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Rating over time (monthly). [Source: Finnhub]
@@ -90,6 +90,8 @@ def rating_over_time(
         Number of last months ratings to show
     raw: bool
         Display raw data only
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]]
@@ -127,4 +129,5 @@ def rating_over_time(
         os.path.dirname(os.path.abspath(__file__)),
         "rot",
         df_rot,
+        sheet_name,
     )
