@@ -101,9 +101,10 @@ def get_diff_keys(keys: dict) -> dict:
     diff = {}
     if keys:
         for k, v in sorted(keys.items()):
-            old, new = get_var_diff(cfg, k, v)
-            if new is not None:
-                diff[k] = (old, new)
+            if hasattr(cfg, k):
+                old, new = get_var_diff(cfg, k, v)
+                if new is not None:
+                    diff[k] = (old, new)
 
     return diff
 
