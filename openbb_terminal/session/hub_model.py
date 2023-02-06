@@ -298,7 +298,7 @@ def upload_routine(
     Parameters
     ----------
     auth_header : str
-
+        The authorization header, e.g. "Bearer <token>".
     name : str
         The name of the routine.
     routine : str
@@ -349,3 +349,34 @@ def download_routine() -> Optional[requests.Response]:
 
     console.print("[red]Not implemented yet.[/red]")
     return None
+
+
+def delete_routine(
+    auth_header: str,
+    name: str = "",
+    base_url=BASE_URL,
+    timeout: int = TIMEOUT,
+) -> Optional[requests.Response]:
+    """Delete a routine from the server."""
+
+    try:
+        response = requests.delete(
+            headers={"Authorization": auth_header},
+            url=base_url + "terminal/script/" + name,
+            timeout=timeout,
+        )
+        if response.status_code == 200:
+            console.print("[green]Successfully deleted your routine.[/green]")
+        elif json.loads(response.content)["detail"] != "Script not found":
+            # TODO: Ask Colin to return specific error code here
+            console.print("[red]Failed to delete your routine.[/red]")
+        return response
+    except requests.exceptions.ConnectionError:
+        console.print("[red]Connection error.[/red]")
+        return None
+    except requests.exceptions.Timeout:
+        console.print("[red]\nConnection timeout.[/red]")
+        return None
+    except Exception:
+        console.print("[red]Failed to delete your routine.[/red]")
+        return None

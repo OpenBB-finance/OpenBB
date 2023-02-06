@@ -286,7 +286,15 @@ class AccountController(BaseController):
             type=str,
             dest="name",
             help="The name of the routine",
+            required="-h" not in other_args,
         )
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            pass
+            response = Hub.delete_routine(
+                auth_header=User.get_auth_header(),
+                name=ns_parser.name,
+            )
+            if response is not None and response.status_code == 404:
+                detail = json.loads(response.content)["detail"]
+                if detail == "Script not found":
+                    console.print("[red]Routine not found.[/red]")
