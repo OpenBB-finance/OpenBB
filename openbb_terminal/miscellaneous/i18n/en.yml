@@ -23,7 +23,7 @@ en:
   account/pull: Pull data from cloud
   account/clear: Clear data from cloud
   account/_routines_: Routines
-  account/list: List your saved routines
+  account/list: List available routines
   account/upload: Upload routine
   account/download: Download routine
   account/delete: Delete routine
