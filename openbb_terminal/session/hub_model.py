@@ -7,6 +7,9 @@ from openbb_terminal.rich_config import console
 BASE_URL = "https://payments.openbb.dev/"
 TIMEOUT = 15
 
+CONNECTION_ERROR_MSG = "[red]Connection error.[/red]"
+CONNECTION_TIMEOUT_MSG = "[red]Connection timeout.[/red]"
+
 
 def create_session(
     email: str, password: str, base_url: str = BASE_URL, timeout: int = TIMEOUT
@@ -37,10 +40,10 @@ def create_session(
         }
         return requests.post(url=base_url + "login", json=data, timeout=timeout)
     except requests.exceptions.ConnectionError:
-        console.print("\n[red]Connection error.[/red]")
+        console.print(f"\n{CONNECTION_ERROR_MSG}")
         return None
     except requests.exceptions.Timeout:
-        console.print("\n[red]Connection timeout.[/red]")
+        console.print(f"\n{CONNECTION_TIMEOUT_MSG}")
         return None
     except Exception:
         console.print("\n[red]Failed to request login info.[/red]")
@@ -79,10 +82,10 @@ def delete_session(
             console.print("[red]Failed to delete server session.[/red]")
         return response
     except requests.exceptions.ConnectionError:
-        console.print("[red]Connection error.[/red]")
+        console.print(f"\n{CONNECTION_ERROR_MSG}")
         return None
     except requests.exceptions.Timeout:
-        console.print("[red]\nConnection timeout.[/red]")
+        console.print(f"\n{CONNECTION_TIMEOUT_MSG}")
         return None
     except Exception:
         console.print("[red]Failed to delete server session.[/red]")
@@ -106,6 +109,7 @@ def process_session_response(response: requests.Response) -> dict:
         login = response.json()
         return login
     if response.status_code == 401:
+        print(response.json())
         console.print("\n[red]Wrong credentials.[/red]")
         return {}
     if response.status_code == 403:
@@ -169,10 +173,10 @@ def fetch_user_configs(
             console.print("[red]\nFailed to fetch configurations.[/red]")
         return response
     except requests.exceptions.ConnectionError:
-        console.print("[red]\nConnection error.[/red]")
+        console.print(f"\n{CONNECTION_ERROR_MSG}")
         return None
     except requests.exceptions.Timeout:
-        console.print("[red]\nConnection timeout.[/red]")
+        console.print(f"\n{CONNECTION_TIMEOUT_MSG}")
         return None
     except Exception:
         console.print("[red]\nFailed to fetch configurations.[/red]")
@@ -229,10 +233,10 @@ def patch_user_configs(
             console.print("[red]Failed to save remotely.[/red]")
         return response
     except requests.exceptions.ConnectionError:
-        console.print("[red]Connection error.[/red]")
+        console.print(f"\n{CONNECTION_ERROR_MSG}")
         return None
     except requests.exceptions.Timeout:
-        console.print("[red]\nConnection timeout.[/red]")
+        console.print(f"\n{CONNECTION_TIMEOUT_MSG}")
         return None
     except Exception:
         console.print("[red]Failed to save remotely.[/red]")
@@ -273,10 +277,10 @@ def clear_user_configs(
             console.print("[red]Failed to clear configurations.[/red]")
         return response
     except requests.exceptions.ConnectionError:
-        console.print("[red]Connection error.[/red]")
+        console.print(f"\n{CONNECTION_ERROR_MSG}")
         return None
     except requests.exceptions.Timeout:
-        console.print("[red]\nConnection timeout.[/red]")
+        console.print(f"\n{CONNECTION_TIMEOUT_MSG}")
         return None
     except Exception:
         console.print("[red]Failed to clear configurations.[/red]")
@@ -321,10 +325,10 @@ def upload_routine(
             console.print("[red]Error uploading your routine.[/red]")
         return response
     except requests.exceptions.ConnectionError:
-        console.print("[red]Connection error.[/red]")
+        console.print(f"\n{CONNECTION_ERROR_MSG}")
         return None
     except requests.exceptions.Timeout:
-        console.print("[red]\nConnection timeout.[/red]")
+        console.print(f"\n{CONNECTION_TIMEOUT_MSG}")
         return None
     except Exception:
         console.print("[red]Failed to upload your routine.[/red]")
