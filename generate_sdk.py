@@ -1,4 +1,3 @@
-import glob
 import os
 import re
 import subprocess
@@ -83,15 +82,15 @@ class BuildCategoryModelClasses:
             self.categories = self.add_todict(self.categories, local, tmap)
 
         for folder in ["models", "controllers"]:
-            if not os.path.exists(REPO_ROOT / f"sdk_core/{folder}"):
-                os.makedirs(REPO_ROOT / f"sdk_core/{folder}")
-            if not os.path.exists(REPO_ROOT / f"sdk_core/{folder}/__init__.py"):
+            if not (REPO_ROOT / f"sdk_core/{folder}").exists():
+                (REPO_ROOT / f"sdk_core/{folder}").mkdir()
+            if not (REPO_ROOT / f"sdk_core/{folder}/__init__.py").exists():
                 with open(REPO_ROOT / f"sdk_core/{folder}/__init__.py", "w") as f:
                     f.write(
                         "# flake8: noqa\r# pylint: disable=unused-import,wrong-import-order\r\r"
                     )
 
-        if not os.path.exists(REPO_ROOT / "sdk_core/__init__.py"):
+        if not (REPO_ROOT / "sdk_core/__init__.py").exists():
             with open(REPO_ROOT / "sdk_core/__init__.py", "w") as f:
                 f.write("")
 
@@ -503,13 +502,8 @@ class BuildCategoryModelClasses:
                 self.write_sdk_controller_file(category, d)
         self.write_sdk_file()
 
-        for path in [
-            "sdk.py",
-            "sdk_core/*.py",
-            "sdk_core/models/*.py",
-            "sdk_core/controllers/*.py",
-        ]:
-            for file in glob.glob(str(REPO_ROOT / path)):
+        for path in ["sdk.py", "sdk_core", "sdk_core/models", "sdk_core/controllers"]:
+            for file in (REPO_ROOT / path).glob("*.py"):
                 with open(file, "rb") as f:
                     content = f.read()
                 with open(file, "wb") as f:
