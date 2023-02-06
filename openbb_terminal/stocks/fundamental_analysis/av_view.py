@@ -3,17 +3,13 @@ __docformat__ = "numpy"
 
 import logging
 import os
+from typing import Union
 
-from matplotlib import pyplot as plt
-
-from openbb_terminal.config_plot import PLOT_DPI
-from openbb_terminal.config_terminal import theme
 from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import (
     camel_case_split,
     export_data,
-    plot_autoscale,
     print_rich_table,
 )
 from openbb_terminal.helpers_denomination import transform as transform_by_denomination
@@ -134,17 +130,14 @@ def display_income_statement(
                 y=df_rounded[plot[0].replace("_", "")],
                 name=plot[0].replace("_", ""),
             )
-            title = (
+            fig.set_title(
                 f"{plot[0].replace('_', ' ').lower()} {'QoQ' if quarterly else 'YoY'} Growth of {symbol.upper()}"
                 if ratios
                 else f"{plot[0].replace('_', ' ')} of {symbol.upper()} {denomination}"
             )
-            fig.update_layout(title=title)
-
+            fig.show()
         else:
-            fig = OpenBBFigure.create_subplots(
-                rows=rows_plot, cols=1, y_title=denomination, x_title="Date"
-            )
+            fig = OpenBBFigure.create_subplots(rows=rows_plot, cols=1)
             for i in range(rows_plot):
                 fig.add_scatter(
                     x=df_rounded.index,
@@ -233,23 +226,32 @@ def display_balance_sheet(
             denomination = ""
 
         if rows_plot == 1:
-            fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-            df_rounded[plot[0].replace("_", "")].plot()
-            title = (
+            fig = OpenBBFigure()
+            fig.set_title(
                 f"{plot[0].replace('_', ' ').lower()} {'QoQ' if quarterly else 'YoY'} Growth of {symbol.upper()}"
                 if ratios
                 else f"{plot[0].replace('_', ' ')} of {symbol.upper()} {denomination}"
             )
-            plt.title(title)
-            theme.style_primary_axis(ax)
-            theme.visualize_output()
+            fig.add_scatter(
+                x=df_rounded.index,
+                y=df_rounded[plot[0].replace("_", "")],
+                name=plot[0].replace("_", ""),
+            )
+            fig.show()
         else:
-            fig, axes = plt.subplots(rows_plot)
+            fig = OpenBBFigure.create_subplots(rows=rows_plot, cols=1)
             for i in range(rows_plot):
-                axes[i].plot(df_rounded[plot[i].replace("_", "")])
-                axes[i].set_title(f"{plot[i].replace('_', ' ')} {denomination}")
-            theme.style_primary_axis(axes[0])
-            fig.autofmt_xdate()
+                fig.add_scatter(
+                    x=df_rounded.index,
+                    y=df_rounded[plot[i].replace("_", "")],
+                    name=plot[i].replace("_", ""),
+                    row=i + 1,
+                    col=1,
+                )
+                fig.set_title(
+                    f"{plot[i].replace('_', ' ')} {denomination}", row=i + 1, col=1
+                )
+            fig.show()
 
     else:
         indexes = df_balance.index
@@ -323,23 +325,32 @@ def display_cash_flow(
             denomination = ""
 
         if rows_plot == 1:
-            fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-            df_rounded[plot[0].replace("_", "")].plot()
-            title = (
+            fig = OpenBBFigure()
+            fig.set_title(
                 f"{plot[0].replace('_', ' ').lower()} {'QoQ' if quarterly else 'YoY'} Growth of {symbol.upper()}"
                 if ratios
                 else f"{plot[0].replace('_', ' ')} of {symbol.upper()} {denomination}"
             )
-            plt.title(title)
-            theme.style_primary_axis(ax)
-            theme.visualize_output()
+            fig.add_scatter(
+                x=df_rounded.index,
+                y=df_rounded[plot[0].replace("_", "")],
+                name=plot[0].replace("_", ""),
+            )
+            fig.show()
         else:
-            fig, axes = plt.subplots(rows_plot)
+            fig = OpenBBFigure.create_subplots(rows=rows_plot, cols=1)
             for i in range(rows_plot):
-                axes[i].plot(df_rounded[plot[i].replace("_", "")])
-                axes[i].set_title(f"{plot[i].replace('_', ' ')} {denomination}")
-            theme.style_primary_axis(axes[0])
-            fig.autofmt_xdate()
+                fig.add_scatter(
+                    x=df_rounded.index,
+                    y=df_rounded[plot[i].replace("_", "")],
+                    name=plot[i].replace("_", ""),
+                    row=i + 1,
+                    col=1,
+                )
+                fig.set_title(
+                    f"{plot[i].replace('_', ' ')} {denomination}", row=i + 1, col=1
+                )
+            fig.show()
 
     else:
         indexes = df_cash.index
@@ -482,7 +493,7 @@ def display_dupont(
     export: str = "",
     sheet_name: str = None,
     external_axes: bool = False,
-):
+) -> Union[None, OpenBBFigure]:
     """Shows the extended dupont ratio
 
     Parameters
@@ -498,21 +509,24 @@ def display_dupont(
     """
     df = av_model.get_dupont(symbol)
     if df.empty:
-        return
+        return None
     if raw:
-        print_rich_table(
+        return print_rich_table(
             df, headers=list(df.columns), show_index=True, title="Extended Dupont"
         )
-        return
-    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
-    colors = theme.get_colors()
-    df.transpose().plot(kind="line", ax=ax, color=colors)
-    ax.set_title("Extended Dupont by Year")
-    theme.style_primary_axis(ax)
+    fig = OpenBBFigure().set_title("Extended Dupont by Year")
 
-    if not external_axes:
-        theme.visualize_output()
+    df = df.transpose()
+    for column in df:
+        fig.add_scatter(
+            x=df.index,
+            y=df[column],
+            name=column,
+            mode="lines",
+        )
+
+    fig.show()
 
     export_data(
         export,
@@ -521,3 +535,5 @@ def display_dupont(
         df,
         sheet_name,
     )
+
+    return fig.show(external=external_axes)

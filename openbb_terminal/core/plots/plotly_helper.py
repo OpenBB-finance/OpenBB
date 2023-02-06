@@ -785,11 +785,15 @@ class OpenBBFigure(go.Figure):
         export_image : `str`, optional
             The path to export the figure image to, by default ""
         """
+        if export_image and not plots_backend().isatty:
+            Path(export_image).touch()
+
         if external:
             return self  # type: ignore
 
         if kwargs.pop("margin", True):
             self._adjust_margins()
+
         self._apply_feature_flags()
         self._xaxis_tickformatstops()
 
@@ -843,7 +847,7 @@ class OpenBBFigure(go.Figure):
 
         tickformatstops = [
             dict(dtickrange=[None, 86_400_000], value="%I%p\n%b,%d"),
-            dict(dtickrange=[86_400_000, 604_800_000], value="%b\n%d"),
+            dict(dtickrange=[86_400_000, 604_800_000], value="%Y-%m-%d"),
         ]
         xhoverformat = "%I:%M%p %Y-%m-%d"
 
@@ -1177,7 +1181,7 @@ class OpenBBFigure(go.Figure):
                 xshift -= 150
 
             if yaxis2:
-                xshift = -110 if not yaxis2.title.text else -120
+                xshift = -110 if not yaxis2.title.text else -150
                 self.layout.margin["l"] += 50
 
             self.add_annotation(

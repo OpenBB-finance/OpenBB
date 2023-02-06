@@ -448,7 +448,7 @@ def display_fundamentals(
     elif statement == "cash-flow":
         title_str = "Cash Flow Statement"
 
-    if not fundamentals or fundamentals.empty:
+    if fundamentals is None or fundamentals.empty:
         # The empty data frame error handling done in model
         return None
 

@@ -96,6 +96,7 @@ class Backend(PyWry):
         export_image : str, optional
             Path to export image to, by default ""
         """
+
         self.check_backend()
         title = re.sub(
             r"<[^>]*>", "", fig.layout.title.text if fig.layout.title.text else "Plots"

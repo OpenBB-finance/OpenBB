@@ -6,14 +6,10 @@ import os
 from typing import List, Union
 
 import pandas as pd
-import plotly.graph_objects as go
-from matplotlib import pyplot as plt
 
-from openbb_terminal.config_plot import PLOT_DPI
-from openbb_terminal.config_terminal import theme
 from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import export_data, plot_autoscale
+from openbb_terminal.helper_funcs import export_data
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.dark_pool_shorts import finra_model
 
@@ -56,108 +52,91 @@ def darkpool_ats_otc(
     )
 
     if not ats.empty and not otc.empty:
-        fig.add_trace(
-            go.Bar(
-                x=ats.index,
-                y=(ats["totalWeeklyShareQuantity"] + otc["totalWeeklyShareQuantity"]),
-                name="ATS",
-                opacity=0.8,
-            ),
+        fig.add_bar(
+            x=ats.index,
+            y=(ats["totalWeeklyShareQuantity"] + otc["totalWeeklyShareQuantity"]),
+            name="ATS",
+            opacity=0.8,
             row=1,
             col=1,
             secondary_y=False,
         )
-        fig.add_trace(
-            go.Bar(
-                x=otc.index,
-                y=otc["totalWeeklyShareQuantity"],
-                name="OTC",
-                opacity=0.8,
-                yaxis="y2",
-                offset=0.0001,
-            ),
+        fig.add_bar(
+            x=otc.index,
+            y=otc["totalWeeklyShareQuantity"],
+            name="OTC",
+            opacity=0.8,
+            yaxis="y2",
+            offset=0.0001,
             row=1,
             col=1,
         )
 
     elif not ats.empty:
-        fig.add_trace(
-            go.Bar(
-                x=ats.index,
-                y=(ats["totalWeeklyShareQuantity"] + otc["totalWeeklyShareQuantity"]),
-                name="ATS",
-                opacity=0.8,
-            ),
+        fig.add_bar(
+            x=ats.index,
+            y=(ats["totalWeeklyShareQuantity"] + otc["totalWeeklyShareQuantity"]),
+            name="ATS",
+            opacity=0.8,
             row=1,
             col=1,
             secondary_y=False,
         )
 
     elif not otc.empty:
-        fig.add_trace(
-            go.Bar(
-                x=otc.index,
-                y=otc["totalWeeklyShareQuantity"],
-                name="OTC",
-                opacity=0.8,
-                yaxis="y2",
-                secondary_y=False,
-            ),
+        fig.add_bar(
+            x=otc.index,
+            y=otc["totalWeeklyShareQuantity"],
+            name="OTC",
+            opacity=0.8,
+            yaxis="y2",
+            secondary_y=False,
             row=1,
             col=1,
         )
 
     if not ats.empty:
-        fig.add_trace(
-            go.Scatter(
-                name="ATS",
-                x=ats.index,
-                y=ats["totalWeeklyShareQuantity"] / ats["totalWeeklyTradeCount"],
-                line=dict(color="#fdc708", width=2),
-                opacity=1,
-                showlegend=False,
-                yaxis="y2",
-            ),
+        fig.add_scatter(
+            name="ATS",
+            x=ats.index,
+            y=ats["totalWeeklyShareQuantity"] / ats["totalWeeklyTradeCount"],
+            line=dict(color="#fdc708", width=2),
+            opacity=1,
+            showlegend=False,
+            yaxis="y2",
             row=2,
             col=1,
         )
 
         if not otc.empty:
-            fig.add_trace(
-                go.Scatter(
-                    name="OTC",
-                    x=otc.index,
-                    y=otc["totalWeeklyShareQuantity"] / otc["totalWeeklyTradeCount"],
-                    line=dict(color="#d81aea", width=2),
-                    opacity=1,
-                    showlegend=False,
-                ),
-                row=2,
-                col=1,
-            )
-    else:
-        fig.add_trace(
-            go.Scatter(
+            fig.add_scatter(
                 name="OTC",
                 x=otc.index,
                 y=otc["totalWeeklyShareQuantity"] / otc["totalWeeklyTradeCount"],
                 line=dict(color="#d81aea", width=2),
                 opacity=1,
-                showlegend=False,
-            ),
+                row=2,
+                col=1,
+            )
+    else:
+        fig.add_scatter(
+            name="OTC",
+            x=otc.index,
+            y=otc["totalWeeklyShareQuantity"] / otc["totalWeeklyTradeCount"],
+            line=dict(color="#d81aea", width=2),
+            opacity=1,
             row=2,
             col=1,
         )
 
     fig.update_layout(
-        margin=dict(l=40),
+        margin=dict(t=30),
         title=f"<b>Dark Pools (ATS) vs OTC (Non-ATS) Data for {symbol}</b>",
-        title_x=0.025,
         title_font_size=14,
         yaxis3_title="Shares per Trade",
         yaxis_title="Total Weekly Shares",
         xaxis2_title="Weeks",
-        yaxis=dict(fixedrange=False, side="left", nticks=20),
+        yaxis=dict(fixedrange=False, nticks=20),
         yaxis2=dict(
             fixedrange=False,
             showgrid=False,
@@ -216,19 +195,10 @@ def plot_dark_pools_ats(
 
     """
 
-    # This plot has 1 axis
-    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
     fig = OpenBBFigure(xaxis_title="Weeks", yaxis_title="Total Weekly Shares")
     fig.set_title("Dark Pool (ATS) growing tickers")
 
     for symbol in symbols:
-        ax.plot(
-            pd.to_datetime(
-                data[data["issueSymbolIdentifier"] == symbol]["weekStartDate"]
-            ),
-            data[data["issueSymbolIdentifier"] == symbol]["totalWeeklyShareQuantity"]
-            / 1_000_000,
-        )
         fig.add_scatter(
             x=pd.to_datetime(
                 data[data["issueSymbolIdentifier"] == symbol]["weekStartDate"]
@@ -237,17 +207,6 @@ def plot_dark_pools_ats(
             name=symbol,
             mode="lines",
         )
-
-    ax.legend(symbols)
-    ax.set_ylabel("Total Weekly Shares [Million]")
-    ax.set_title("Dark Pool (ATS) growing tickers")
-    ax.set_xlabel("Weeks")
-    data["weekStartDate"] = pd.to_datetime(data["weekStartDate"])
-    ax.set_xlim(data["weekStartDate"].iloc[0], data["weekStartDate"].iloc[-1])
-    theme.style_primary_axis(ax)
-
-    if not external_axes:
-        theme.visualize_output()
 
     return fig.show(external=external_axes)
 

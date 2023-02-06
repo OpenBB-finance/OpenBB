@@ -7,12 +7,10 @@ from datetime import datetime, timedelta
 from typing import Optional
 
 import pandas as pd
-from matplotlib import pyplot as plt
 
-from openbb_terminal.config_plot import PLOT_DPI
-from openbb_terminal.config_terminal import theme
+from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import export_data, plot_autoscale, print_rich_table
+from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.stocks import stocks_helper
 from openbb_terminal.stocks.dark_pool_shorts import sec_model
 
@@ -71,33 +69,39 @@ def fails_to_deliver(
 
     ftds_data = sec_model.get_fails_to_deliver(symbol, start_date, end_date, limit)
 
-    # This plot has 2 axes
-    _, ax1 = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    ax2 = ax1.twinx()
-
-    ax1.bar(
-        ftds_data["SETTLEMENT DATE"],
-        ftds_data["QUANTITY (FAILS)"] / 1000,
-        label="Fail Quantity",
+    fig = OpenBBFigure.create_subplots(
+        shared_xaxes=True, specs=[[{"secondary_y": True}]]
     )
-    ax1.set_ylabel("Shares [K]")
-    ax1.set_title(f"Fails-to-deliver Data for {symbol}")
-    ax1.legend(loc="lower right")
-
     if limit > 0:
         data_ftd = data[data.index > (datetime.now() - timedelta(days=limit + 31))]
     else:
         data_ftd = data[data.index > start_date]
         data_ftd = data_ftd[data_ftd.index < end_date]
 
-    ax2.plot(data_ftd.index, data_ftd["Adj Close"], color="orange", label="Share Price")
-    ax2.set_ylabel("Share Price [$]")
-    ax2.legend(loc="upper right")
-
-    theme.style_twin_axes(ax1, ax2)
-
-    if not external_axes:
-        theme.visualize_output()
+    fig.add_bar(
+        name="Fail Quantity",
+        x=ftds_data["SETTLEMENT DATE"],
+        y=ftds_data["QUANTITY (FAILS)"],
+        secondary_y=False,
+    )
+    fig.add_scatter(
+        name="Share Price",
+        x=data_ftd.index,
+        y=data_ftd["Adj Close"],
+        yaxis="y2",
+        line=dict(width=3),
+        opacity=1,
+        secondary_y=True,
+    )
+    fig.update_layout(
+        margin=dict(l=30, r=0, t=30, b=10),
+        yaxis2=dict(title="Share Price [$]", overlaying="y", nticks=20),
+        yaxis=dict(side="left", title="Shares [K]", showgrid=False),
+        title=f"Fails-to-deliver Data for {symbol}",
+        xaxis_title="Date",
+        legend=dict(yanchor="bottom", y=0, xanchor="right", x=0.95),
+    )
+    fig.hide_holidays()
 
     if raw:
         print_rich_table(
@@ -114,3 +118,5 @@ def fails_to_deliver(
         ftds_data.reset_index(),
         sheet_name,
     )
+
+    return fig.show(external=external_axes)

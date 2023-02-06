@@ -6,21 +6,17 @@ import os
 from datetime import datetime, timedelta
 from typing import Optional
 
-import matplotlib.pyplot as plt
 from pandas.core.frame import DataFrame
-from pandas.plotting import register_matplotlib_converters
 
-from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
+from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import export_data, plot_autoscale, print_rich_table
+from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.due_diligence import business_insider_model
 from openbb_terminal.stocks.stocks_helper import load
 
 logger = logging.getLogger(__name__)
-
-register_matplotlib_converters()
 
 
 @log_start_end(log=logger)
@@ -82,41 +78,41 @@ def price_target_from_analysts(
         )
 
     else:
-        # This plot has 1 axis
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        fig = OpenBBFigure(yaxis_title="Share Price").set_title(
+            f"{symbol} (Time Series) and Price Target"
+        )
 
         # Slice start of ratings
         if start_date:
             df_analyst_data = df_analyst_data[start_date:]  # type: ignore
 
-        plot_column = "Close"
-        legend_price_label = "Close"
-
-        ax.plot(data.index, data[plot_column].values)
-
-        if start_date:
-            ax.plot(df_analyst_data.groupby(by=["Date"]).mean(numeric_only=True)[start_date:])  # type: ignore
-        else:
-            ax.plot(df_analyst_data.groupby(by=["Date"]).mean(numeric_only=True))
-
-        ax.scatter(
-            df_analyst_data.index,
-            df_analyst_data["Price Target"],
-            color=theme.down_color,
-            edgecolors=theme.up_color,
-            zorder=2,
+        fig.add_scatter(
+            x=data.index,
+            y=data["Close"].values,
+            name="Close",
+            line_width=2,
         )
 
-        ax.legend([legend_price_label, "Average Price Target", "Price Target"])
+        df_grouped = df_analyst_data.groupby(by=["Date"]).mean(numeric_only=True)
 
-        ax.set_title(f"{symbol} (Time Series) and Price Target")
-        ax.set_xlim(data.index[0], data.index[-1])
-        ax.set_ylabel("Share Price")
+        fig.add_scatter(
+            x=df_grouped.index,
+            y=df_grouped.values,
+            name="Average Price Target",
+        )
 
-        theme.style_primary_axis(ax)
-
-        if not external_axes:
-            theme.visualize_output()
+        fig.add_scatter(
+            x=df_analyst_data.index,
+            y=df_analyst_data["Price Target"].values,
+            name="Price Target",
+            mode="markers+lines",
+            marker=dict(
+                color=theme.down_color,
+                line=dict(color=theme.up_color, width=1),
+                size=10,
+            ),
+            line=dict(color=theme.get_colors()[1]),
+        )
 
     export_data(
         export,
@@ -125,6 +121,8 @@ def price_target_from_analysts(
         df_analyst_data,
         sheet_name,
     )
+
+    return None if raw else fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)

@@ -5,13 +5,11 @@ import datetime
 import logging
 import os
 
-import matplotlib.pyplot as plt
 import pandas as pd
 
-from openbb_terminal.config_plot import PLOT_DPI
-from openbb_terminal.config_terminal import theme
+from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.decorators import check_api_key, log_start_end
-from openbb_terminal.helper_funcs import export_data, plot_autoscale, print_rich_table
+from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.helpers_denomination import transform as transform_by_denomination
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.fundamental_analysis import fmp_model
@@ -228,23 +226,36 @@ def display_income_statement(
                 df_rounded = income_plot_data
                 denomination = ""
             if rows_plot == 1:
-                fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-                df_rounded[plot[0].replace("_", "")].plot()
+                fig = OpenBBFigure()
                 title = (
                     f"{plot[0].replace('_', ' ').lower()} {'QoQ' if quarterly else 'YoY'} Growth of {symbol.upper()}"
                     if ratios
                     else f"{plot[0].replace('_', ' ')} of {symbol.upper()} {denomination}"
                 )
-                plt.title(title)
-                theme.style_primary_axis(ax)
-                theme.visualize_output()
+                fig.add_scatter(
+                    x=df_rounded.index,
+                    y=df_rounded[plot[0].replace("_", "")],
+                    mode="lines",
+                    name=plot[0].replace("_", ""),
+                )
+                fig.set_title(title)
+                fig.show()
+
             else:
-                fig, axes = plt.subplots(rows_plot)
+                fig = OpenBBFigure.create_subplots(rows=rows_plot, cols=1)
                 for i in range(rows_plot):
-                    axes[i].plot(df_rounded[plot[i].replace("_", "")])
-                    axes[i].set_title(f"{plot[i].replace('_', ' ')} {denomination}")
-                theme.style_primary_axis(axes[0])
-                fig.autofmt_xdate()
+                    fig.add_scatter(
+                        x=df_rounded.index,
+                        y=df_rounded[plot[i].replace("_", "")],
+                        mode="lines",
+                        name=plot[i].replace("_", ""),
+                        row=i + 1,
+                        col=1,
+                    )
+                    fig.set_title(
+                        f"{plot[i].replace('_', ' ')} {denomination}", row=i + 1, col=1
+                    )
+
         else:
             income = income[income.columns[::-1]]
             print_rich_table(
@@ -324,23 +335,35 @@ def display_balance_sheet(
                 denomination = ""
 
             if rows_plot == 1:
-                fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-                df_rounded[plot[0].replace("_", "")].plot()
-                title = (
+                fig = OpenBBFigure()
+                fig.add_scatter(
+                    x=df_rounded.index,
+                    y=df_rounded[plot[0].replace("_", "")],
+                    mode="lines",
+                    name=plot[0].replace("_", " "),
+                )
+                fig.set_title(
                     f"{plot[0].replace('_', ' ').lower()} {'QoQ' if quarterly else 'YoY'} Growth of {symbol.upper()}"
                     if ratios
                     else f"{plot[0].replace('_', ' ')} of {symbol.upper()} {denomination}"
                 )
-                plt.title(title)
-                theme.style_primary_axis(ax)
-                theme.visualize_output()
+                fig.show()
             else:
-                fig, axes = plt.subplots(rows_plot)
+                fig = OpenBBFigure.create_subplots(rows=rows_plot, cols=1)
                 for i in range(rows_plot):
-                    axes[i].plot(df_rounded[plot[i].replace("_", "")])
-                    axes[i].set_title(f"{plot[i].replace('_', ' ')} {denomination}")
-                theme.style_primary_axis(axes[0])
-                fig.autofmt_xdate()
+                    fig.add_scatter(
+                        x=df_rounded.index,
+                        y=df_rounded[plot[i].replace("_", "")],
+                        mode="lines",
+                        name=plot[i].replace("_", " "),
+                        row=i + 1,
+                        col=1,
+                    )
+                    fig.set_title(
+                        f"{plot[i].replace('_', ' ')} {denomination}", row=i + 1, col=1
+                    )
+
+                fig.show()
         else:
             balance = balance[balance.columns[::-1]]
             print_rich_table(
@@ -416,23 +439,35 @@ def display_cash_flow(
                 denomination = ""
 
             if rows_plot == 1:
-                fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-                df_rounded[plot[0].replace("_", "")].plot()
-                title = (
+                fig = OpenBBFigure()
+                fig.add_scatter(
+                    x=df_rounded.index,
+                    y=df_rounded[plot[0].replace("_", "")],
+                    mode="lines",
+                    name=plot[0].replace("_", " "),
+                )
+                fig.set_title(
                     f"{plot[0].replace('_', ' ').lower()} {'QoQ' if quarterly else 'YoY'} Growth of {symbol.upper()}"
                     if ratios
                     else f"{plot[0].replace('_', ' ')} of {symbol.upper()} {denomination}"
                 )
-                plt.title(title)
-                theme.style_primary_axis(ax)
-                theme.visualize_output()
+                fig.show()
             else:
-                fig, axes = plt.subplots(rows_plot)
+                fig = OpenBBFigure.create_subplots(rows=rows_plot, cols=1)
                 for i in range(rows_plot):
-                    axes[i].plot(df_rounded[plot[i].replace("_", "")])
-                    axes[i].set_title(f"{plot[i].replace('_', ' ')} {denomination}")
-                theme.style_primary_axis(axes[0])
-                fig.autofmt_xdate()
+                    fig.add_scatter(
+                        x=df_rounded.index,
+                        y=df_rounded[plot[i].replace("_", "")],
+                        mode="lines",
+                        name=plot[i].replace("_", " "),
+                        row=i + 1,
+                        col=1,
+                    )
+                    fig.set_title(
+                        f"{plot[i].replace('_', ' ')} {denomination}", row=i + 1, col=1
+                    )
+
+                fig.show()
         else:
             cash = cash[cash.columns[::-1]]
             print_rich_table(

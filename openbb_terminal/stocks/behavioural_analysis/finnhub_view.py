@@ -3,16 +3,15 @@ __docformat__ = "numpy"
 
 import logging
 import os
+from typing import Union
 
-import numpy as np
 import pandas as pd
 import yfinance as yf
-from matplotlib import pyplot as plt
 
-from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
+from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.decorators import check_api_key, log_start_end
-from openbb_terminal.helper_funcs import export_data, plot_autoscale
+from openbb_terminal.helper_funcs import export_data
 from openbb_terminal.stocks.behavioural_analysis import finnhub_model
 
 logger = logging.getLogger(__name__)
@@ -25,7 +24,7 @@ def display_stock_price_headlines_sentiment(
     export: str = "",
     sheet_name: str = None,
     external_axes: bool = False,
-):
+) -> Union[None, OpenBBFigure]:
     """Display stock price and headlines sentiment using VADER model over time. [Source: Finnhub]
 
     Parameters
@@ -44,7 +43,7 @@ def display_stock_price_headlines_sentiment(
     if not sentiment.empty:
         sentiment_data = [item for sublist in sentiment.values for item in sublist]
 
-        df_stock = yf.download(
+        df_stock: pd.DataFrame = yf.download(
             symbol,
             start=min(sentiment.index).to_pydatetime().date(),
             interval="15m",
@@ -53,62 +52,67 @@ def display_stock_price_headlines_sentiment(
         )
 
         if not df_stock.empty:
-            # This plot has 2 axes
-            _, axes = plt.subplots(
-                figsize=plot_autoscale(),
-                dpi=PLOT_DPI,
-                nrows=2,
-                ncols=1,
-                sharex=True,
-                gridspec_kw={"height_ratios": [2, 1]},
+            fig = OpenBBFigure.create_subplots(
+                2, 1, shared_xaxes=True, row_heights=[1, 0.5]
             )
-            (ax1, ax2) = axes
 
-            ax1.set_title(f"Headlines sentiment and {symbol} price")
-            for uniquedate in np.unique(df_stock.index.date):
-                ax1.plot(
-                    df_stock[df_stock.index.date == uniquedate].index,
-                    df_stock[df_stock.index.date == uniquedate]["Adj Close"].values,
-                    c="#FCED00",
-                )
+            fig.add_scatter(
+                x=df_stock.index,
+                y=df_stock["Adj Close"].values,
+                name="Price",
+                line_color="#FCED00",
+                connectgaps=True,
+                row=1,
+                col=1,
+                showlegend=False,
+            )
 
-            ax1.set_ylabel("Stock Price")
-            theme.style_primary_axis(ax1)
-            theme.style_primary_axis(ax2)
-
-            ax2.plot(
-                sentiment.index,
-                pd.Series(sentiment_data)
+            fig.add_scatter(
+                x=sentiment.index,
+                y=pd.Series(sentiment_data)
                 .rolling(window=5, min_periods=1)
                 .mean()
                 .values,
-                c="#FCED00",
+                name="Sentiment",
+                line_color="#FCED00",
+                connectgaps=True,
+                row=2,
+                col=1,
             )
-            ax2.bar(
-                sentiment[sentiment.values >= 0].index,
-                [
+
+            fig.add_bar(
+                x=sentiment[sentiment.values >= 0].index,
+                y=[
                     item
                     for sublist in sentiment[sentiment.values >= 0].values
                     for item in sublist
                 ],
-                color=theme.up_color,
-                width=0.01,
+                name="Positive",
+                marker_color=theme.up_color,
+                row=2,
+                col=1,
             )
-            ax2.bar(
-                sentiment[sentiment.values < 0].index,
-                [
+
+            fig.add_bar(
+                x=sentiment[sentiment.values < 0].index,
+                y=[
                     item
                     for sublist in sentiment[sentiment.values < 0].values
                     for item in sublist
                 ],
-                color=theme.down_color,
-                width=0.01,
+                name="Negative",
+                marker_color=theme.down_color,
+                row=2,
+                col=1,
             )
-            ax2.yaxis.set_label_position("right")
-            ax2.set_ylabel("Headline Sentiment")
 
-            if external_axes is None:
-                theme.visualize_output()
+            fig.update_layout(
+                title=f"Headlines sentiment and {symbol} price",
+                xaxis_title="Date",
+                yaxis_title="Stock Price",
+                yaxis2_title="Headline Sentiment",
+            )
+            fig.hide_holidays()
 
             export_data(
                 export,
@@ -117,3 +121,7 @@ def display_stock_price_headlines_sentiment(
                 sentiment,
                 sheet_name,
             )
+
+            return fig.show(external=external_axes)
+
+    return None

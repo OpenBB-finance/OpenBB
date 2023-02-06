@@ -8,7 +8,6 @@ from datetime import datetime, timedelta
 from typing import Optional
 
 import pandas as pd
-from pandas.plotting import register_matplotlib_converters
 
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
@@ -23,7 +22,6 @@ from openbb_terminal.stocks.insider import businessinsider_model
 
 logger = logging.getLogger(__name__)
 
-register_matplotlib_converters()
 
 # pylint: disable=R0912,too-many-arguments
 

@@ -3,9 +3,9 @@ __docformat__ = "numpy"
 
 import logging
 import os
+from typing import Union
 
 import pandas as pd
-from pandas.plotting import register_matplotlib_converters
 
 from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.decorators import check_api_key, log_start_end
@@ -14,15 +14,13 @@ from openbb_terminal.stocks.due_diligence import finnhub_model
 
 logger = logging.getLogger(__name__)
 
-register_matplotlib_converters()
-
 
 @log_start_end(log=logger)
 def plot_rating_over_time(
     data: pd.DataFrame,
     symbol: str = "",
     external_axes: bool = False,
-):
+) -> Union[None, OpenBBFigure]:
     """Plot rating over time
 
     Parameters
@@ -62,7 +60,7 @@ def rating_over_time(
     export: str = "",
     sheet_name: str = None,
     external_axes: bool = False,
-):
+) -> Union[None, OpenBBFigure]:
     """Rating over time (monthly). [Source: Finnhub]
 
     Parameters
@@ -83,7 +81,15 @@ def rating_over_time(
     df_rot = finnhub_model.get_rating_over_time(symbol)
 
     if df_rot.empty:
-        return
+        return None
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "rot",
+        df_rot,
+        sheet_name,
+    )
 
     if raw:
         d_cols = {
@@ -105,12 +111,4 @@ def rating_over_time(
             title="Monthly Rating",
         )
     else:
-        plot_rating_over_time(df_rot.head(limit), symbol, external_axes)
-
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "rot",
-        df_rot,
-        sheet_name,
-    )
+        return plot_rating_over_time(df_rot.head(limit), symbol, external_axes)

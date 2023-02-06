@@ -3,15 +3,11 @@ __docformat__ = "numpy"
 import logging
 import os
 
-import matplotlib.pyplot as plt
-
-from openbb_terminal.config_plot import PLOT_DPI
-from openbb_terminal.config_terminal import theme
+from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
     lambda_long_number_format,
-    plot_autoscale,
     print_rich_table,
 )
 from openbb_terminal.stocks.fundamental_analysis import eodhd_model
@@ -97,25 +93,32 @@ def display_fundamentals(
             denomination = ""
 
         if rows_plot == 1:
-            fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-            ax.bar(df_rounded.index, df_rounded[plot[0].replace("_", " ")])
-            title = (
+            fig = OpenBBFigure()
+            fig.add_bar(
+                x=df_rounded.index,
+                y=df_rounded[plot[0].replace("_", " ")],
+                name=plot[0].replace("_", " "),
+            )
+            fig.set_title(
                 f"{plot[0].replace('_', ' ').capitalize()} QoQ Growth of {symbol.upper()}"
                 if ratios
                 else f"{plot[0].replace('_', ' ').capitalize()} of {symbol.upper()} {denomination}"
             )
-            plt.title(title)
-            theme.style_primary_axis(ax)
-            theme.visualize_output()
+            fig.show()
         else:
-            fig, axes = plt.subplots(rows_plot)
+            fig = OpenBBFigure.create_subplots(rows=rows_plot, cols=1)
             for i in range(rows_plot):
-                axes[i].bar(
-                    df_rounded.index, df_rounded[plot[i].replace("_", " ")], width=0.5
+                fig.add_bar(
+                    x=df_rounded.index,
+                    y=df_rounded[plot[i].replace("_", " ")],
+                    name=plot[i].replace("_", " "),
+                    row=i + 1,
+                    col=1,
                 )
-                axes[i].set_title(f"{plot[i].replace('_', ' ')} {denomination}")
-            theme.style_primary_axis(axes[0])
-            fig.autofmt_xdate()
+                fig.set_title(
+                    f"{plot[i].replace('_', ' ')} {denomination}", row=i + 1, col=1
+                )
+            fig.show()
     else:
         # Snake case to english
         fundamentals.index = fundamentals.index.to_series().apply(

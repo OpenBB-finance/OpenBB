@@ -1043,6 +1043,7 @@ en:
   forecast/show: Show a portion of a loaded dataset
   forecast/plot: Plot a specific column of a loaded dataset
   forecast/clean: Clean a dataset by filling or dropping NaNs
+  forecast/setndays: Set the default number of days to forecast
   forecast/desc: Show descriptive statistics of a dataset
   forecast/corr: Plot the correlation coefficients for dataset features
   forecast/season: Plot the seasonality for a dataset column
