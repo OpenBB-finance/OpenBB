@@ -19,6 +19,27 @@ logger = logging.getLogger(__name__)
 
 # pylint: disable=R0912, E1101
 
+fast_info_map = {
+    "previousClose": "previous_close",
+    "twoHundredDayAverage": "two_hundred_day_average",
+    "regularMarketDayHigh": "day_high",
+    "averageDailyVolume10Day": "ten_day_average_volume",
+    "regularMarketPreviousClose": "regular_market_previous_close",
+    "fiftyDayAverage": "fifty_day_average",
+    "open": "open",
+    "averageVolume10days": "ten_day_average_volume",
+    "regularMarketDayLow": "day_low",
+    "currency": "currency",
+    "marketCap": "market_cap",
+    "averageVolume": "three_month_average_volume",
+    "dayLow": "day_low",
+    "volume": "last_volume",
+    "fiftyTwoWeekHigh": "year_high",
+    "fiftyTwoWeekLow": "year_low",
+    "dayHigh": "day_high",
+    "regularMarketPrice": "last_price",
+}
+
 yf_info_choices = [
     "previousClose",
     "regularMarketOpen",
@@ -30,7 +51,7 @@ yf_info_choices = [
     "navPrice",
     "averageDailyVolume10Day",
     "totalAssets",
-    "regularMarketPreviousClose",
+    "regular_market_previous_close",
     "fiftyDayAverage",
     "trailingAnnualDividendRate",
     "open",
@@ -51,7 +72,7 @@ yf_info_choices = [
     "lastMarket",
     "maxSupply",
     "openInterest",
-    "marketCap",
+    "market_cap",
     "volumeAllCurrencies",
     "strikePrice",
     "averageVolume",

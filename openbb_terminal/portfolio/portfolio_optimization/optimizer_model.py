@@ -289,6 +289,7 @@ def get_property_weights(
     value = get_kwarg("value", kwargs)
 
     s_property = get_kwarg("s_property", kwargs, default="marketCap")
+    s_property = yahoo_finance_model.fast_info_map.get(s_property, s_property)
 
     stock_prices = yahoo_finance_model.process_stocks(
         symbols, interval, start_date, end_date
@@ -305,14 +306,22 @@ def get_property_weights(
     prop = {}
     prop_sum = 0
     for stock in symbols:
-        stock_prop = yf.Ticker(stock).info[s_property]
+        info = yf.Ticker(stock).info
+        fast_info = yf.Ticker(stock).fast_info
+        info_dict = {}
+        if info:
+            info_dict.update(dict(info))
+        if fast_info:
+            info_dict.update(dict(fast_info))
+
+        stock_prop = info_dict.get(s_property, None)
         if stock_prop is None:
             stock_prop = 0
         prop[stock] = stock_prop
         prop_sum += stock_prop
 
     if prop_sum == 0:
-        console.print(f"No {s_property} was found on list of tickers provided", "\n")
+        console.print(f"No '{s_property}' was found on list of tickers provided", "\n")
         return None, None
 
     weights = {k: value * v / prop_sum for k, v in prop.items()}
@@ -1367,6 +1376,9 @@ def get_black_litterman_portfolio(
             s_property="marketCap",
             value=value,
         )
+
+    if benchmark is None:
+        return None, stock_returns
 
     factor = time_factor[freq.upper()]
     risk_free_rate = risk_free_rate / factor
