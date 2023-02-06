@@ -43,6 +43,7 @@ class AccountController(BaseController):
     def __init__(self, queue: List[str] = None):
         super().__init__(queue)
         self.ROUTINE_FILES: Dict[str, Path] = {}
+        self.REMOTE_CHOICES: List[str] = []
         self.update_runtime_choices()
 
     def update_runtime_choices(self):
@@ -53,6 +54,10 @@ class AccountController(BaseController):
             choices["sync"] = {"--on": {}, "--off": {}}
             choices["upload"]["--file"] = {c: {} for c in self.ROUTINE_FILES}
             choices["upload"]["-f"] = choices["upload"]["--file"]
+            choices["download"]["--name"] = {c: {} for c in self.REMOTE_CHOICES}
+            choices["download"]["-n"] = choices["download"]["--name"]
+            choices["delete"]["--name"] = {c: {} for c in self.REMOTE_CHOICES}
+            choices["delete"]["-n"] = choices["delete"]["--name"]
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def get_routines(self):
@@ -214,6 +219,9 @@ class AccountController(BaseController):
                 if items:
                     df = pd.DataFrame(items)
                     df.index = np.arange(1, len(df) + 1)
+                    self.REMOTE_CHOICES = list(df["name"])
+                    self.update_runtime_choices()
+
                     print_rich_table(
                         df=df,
                         title=f"Available routines - page {ns_parser.page}",
@@ -364,7 +372,12 @@ class AccountController(BaseController):
             other_args.insert(0, "-n")
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            Hub.delete_routine(
+            name = " ".join(ns_parser.name)
+            response = Hub.delete_routine(
                 auth_header=User.get_auth_header(),
-                name=" ".join(ns_parser.name),
+                name=name,
             )
+            if response and response.status_code == 200:
+                if name in self.REMOTE_CHOICES:
+                    self.REMOTE_CHOICES.remove(name)
+                    self.update_runtime_choices()
