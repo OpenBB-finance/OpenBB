@@ -195,7 +195,7 @@ class PortfolioEngine:
 
         # Load transactions from file
         if path.endswith(".xlsx"):
-            if environ.get("DEBUG_MODE", "false") != "true":
+            if str(environ.get("DEBUG_MODE", "false")).lower() != "true":
                 warnings.filterwarnings(
                     "ignore", category=UserWarning, module="openpyxl"
                 )
@@ -695,7 +695,7 @@ class PortfolioEngine:
 
         # Make historical prices columns a multi-index. This helps the merging.
         self.portfolio_historical_prices.columns = pd.MultiIndex.from_product(
-            [["Close"], self.tickers_list]
+            [["Close"], self.portfolio_historical_prices.columns]
         )
 
         trade_data = pd.merge(
