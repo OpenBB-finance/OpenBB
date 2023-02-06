@@ -5,9 +5,9 @@ import logging
 from typing import List, Tuple
 
 import pandas as pd
-from openbb_terminal.helper_funcs import request
 
 from openbb_terminal.decorators import log_start_end
+from openbb_terminal.helper_funcs import request
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)

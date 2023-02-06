@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import logging
 import os
 from textwrap import fill
-from typing import Optional, List
+from typing import List, Optional
 
 from matplotlib import pyplot as plt
 
@@ -12,11 +12,7 @@ from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.economy import econdb_model
-from openbb_terminal.helper_funcs import (
-    plot_autoscale,
-    print_rich_table,
-    export_data,
-)
+from openbb_terminal.helper_funcs import export_data, plot_autoscale, print_rich_table
 
 logger = logging.getLogger(__name__)
 

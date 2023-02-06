@@ -3,13 +3,13 @@ __docformat__ = "numpy"
 
 import logging
 
-import pandas as pd
 import numpy as np
+import pandas as pd
 
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.decorators import check_api_key, log_start_end
-from openbb_terminal.rich_config import console
 from openbb_terminal.helper_funcs import request
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 

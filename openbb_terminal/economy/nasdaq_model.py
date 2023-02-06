@@ -4,15 +4,15 @@ __docformat__ = "numpy"
 import argparse
 import logging
 import os
+from datetime import datetime as dt
 from typing import List, Optional, Union
 
-from datetime import datetime as dt
 import pandas as pd
 
 from openbb_terminal.config_terminal import API_KEY_QUANDL
 from openbb_terminal.decorators import check_api_key, log_start_end
-from openbb_terminal.rich_config import console
 from openbb_terminal.helper_funcs import request
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 

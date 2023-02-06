@@ -7,20 +7,21 @@ from typing import List, Optional
 
 from matplotlib import pyplot as plt
 
-from openbb_terminal import config_terminal as cfg
+from openbb_terminal import (
+    config_plot as cfgPlot,
+    config_terminal as cfg,
+)
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.cryptocurrency.onchain.shroom_model import (
     get_daily_transactions,
     get_dapp_stats,
     get_total_value_locked,
 )
-from openbb_terminal.decorators import check_api_key
-from openbb_terminal import config_plot as cfgPlot
-from openbb_terminal.decorators import log_start_end
+from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
-    plot_autoscale,
     is_valid_axes_count,
+    plot_autoscale,
     print_rich_table,
 )
 from openbb_terminal.rich_config import console

@@ -10,16 +10,16 @@ import mplfinance as mpf
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
 
-from openbb_terminal.config_terminal import theme
 from openbb_terminal.common.technical_analysis import overlap_model
 from openbb_terminal.config_plot import PLOT_DPI
+from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
+    is_valid_axes_count,
+    lambda_long_number_format_y_axis,
     plot_autoscale,
     reindex_dates,
-    lambda_long_number_format_y_axis,
-    is_valid_axes_count,
 )
 from openbb_terminal.rich_config import console
 

@@ -1,8 +1,8 @@
 # IMPORTATION STANDARD
 
 # IMPORTATION THIRDPARTY
-import pytest
 import pandas as pd
+import pytest
 
 # IMPORTATION INTERNAL
 from openbb_terminal.stocks.fundamental_analysis import fmp_model

@@ -4,9 +4,10 @@ from datetime import datetime
 # IMPORTATION THIRDPARTY
 import pytest
 
+from openbb_terminal import helper_funcs
+
 # IMPORTATION INTERNAL
 from openbb_terminal.stocks.fundamental_analysis import business_insider_view
-from openbb_terminal import helper_funcs
 from openbb_terminal.stocks.stocks_helper import load
 
 

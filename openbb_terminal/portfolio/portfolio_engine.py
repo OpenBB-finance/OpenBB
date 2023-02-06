@@ -1,23 +1,24 @@
 """Portfolio Engine"""
 __docformat__ = "numpy"
 
-from os import environ
-import warnings
-import logging
-from typing import Dict, Any
 import datetime
+import logging
+import warnings
+from os import environ
+from typing import Any, Dict
 
 import numpy as np
 import pandas as pd
 import yfinance as yf
 from tqdm import tqdm
+
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.rich_config import console
-from openbb_terminal.portfolio.portfolio_helper import (
-    make_equal_length,
-    get_info_from_ticker,
-)
 from openbb_terminal.portfolio.allocation_model import get_allocation
+from openbb_terminal.portfolio.portfolio_helper import (
+    get_info_from_ticker,
+    make_equal_length,
+)
+from openbb_terminal.rich_config import console
 from openbb_terminal.terminal_helper import suppress_stdout
 
 # pylint: disable=E1136,W0201,R0902,C0302
@@ -194,7 +195,7 @@ class PortfolioEngine:
 
         # Load transactions from file
         if path.endswith(".xlsx"):
-            if environ.get("DEBUG_MODE", "false") != "true":
+            if str(environ.get("DEBUG_MODE", "false")).lower() != "true":
                 warnings.filterwarnings(
                     "ignore", category=UserWarning, module="openpyxl"
                 )
@@ -694,7 +695,7 @@ class PortfolioEngine:
 
         # Make historical prices columns a multi-index. This helps the merging.
         self.portfolio_historical_prices.columns = pd.MultiIndex.from_product(
-            [["Close"], self.tickers_list]
+            [["Close"], self.portfolio_historical_prices.columns]
         )
 
         trade_data = pd.merge(

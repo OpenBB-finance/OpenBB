@@ -1,12 +1,14 @@
 # IMPORTATION STANDARD
 import os
 
+import pandas as pd
+
 # IMPORTATION THIRDPARTY
 import pytest
-import pandas as pd
 
 # IMPORTATION INTERNAL
 from openbb_terminal.stocks.fundamental_analysis import fa_controller
+
 
 # pylint: disable=E1101
 # pylint: disable=W0603

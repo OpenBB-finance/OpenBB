@@ -1,6 +1,6 @@
 # IMPORTATION STANDARD
-import os
 import argparse
+import os
 
 # IMPORTATION THIRDPARTY
 import pandas as pd

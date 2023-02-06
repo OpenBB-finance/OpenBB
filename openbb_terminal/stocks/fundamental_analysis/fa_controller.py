@@ -7,20 +7,19 @@ from typing import List
 
 from pandas.core.frame import DataFrame
 
-from openbb_terminal.custom_prompt_toolkit import NestedCompleter
-
 from openbb_terminal import feature_flags as obbff
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_positive,
-    valid_date,
     list_from_str,
+    valid_date,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import StockBaseController
-from openbb_terminal.rich_config import console, MenuText, get_ordered_list_sources
+from openbb_terminal.rich_config import MenuText, console, get_ordered_list_sources
 from openbb_terminal.stocks import stocks_helper
 from openbb_terminal.stocks.fundamental_analysis import (
     ark_view,
@@ -29,15 +28,15 @@ from openbb_terminal.stocks.fundamental_analysis import (
     csimarket_view,
     dcf_view,
     eclect_us_view,
+    eodhd_view,
     finnhub_view,
     finviz_view,
-    market_watch_view,
-    yahoo_finance_view,
-    polygon_view,
     fmp_view,
-    eodhd_view,
+    market_watch_view,
     marketwatch_view,
+    polygon_view,
     seeking_alpha_view,
+    yahoo_finance_view,
 )
 
 # pylint: disable=inconsistent-return-statements,C0302,R0904

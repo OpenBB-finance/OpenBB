@@ -8,11 +8,9 @@ import logging
 from datetime import datetime, timedelta
 from typing import List
 
-from openbb_terminal.custom_prompt_toolkit import NestedCompleter
-
 from openbb_terminal import feature_flags as obbff
-from openbb_terminal.cryptocurrency.overview.glassnode_view import (
-    display_btc_rainbow,
+from openbb_terminal.cryptocurrency.discovery.pycoingecko_model import (
+    get_categories_keys,
 )
 from openbb_terminal.cryptocurrency.overview import (
     blockchaincenter_view,
@@ -28,19 +26,18 @@ from openbb_terminal.cryptocurrency.overview import (
     pycoingecko_view,
     rekt_model,
     rekt_view,
-    withdrawalfees_model,
-    withdrawalfees_view,
     tokenterminal_model,
     tokenterminal_view,
-)
-from openbb_terminal.cryptocurrency.discovery.pycoingecko_model import (
-    get_categories_keys,
+    withdrawalfees_model,
+    withdrawalfees_view,
 )
 from openbb_terminal.cryptocurrency.overview.blockchaincenter_model import DAYS
 from openbb_terminal.cryptocurrency.overview.coinpaprika_model import (
     get_all_contract_platforms,
 )
 from openbb_terminal.cryptocurrency.overview.coinpaprika_view import CURRENCIES
+from openbb_terminal.cryptocurrency.overview.glassnode_view import display_btc_rainbow
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
@@ -51,7 +48,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console, MenuText
+from openbb_terminal.rich_config import MenuText, console
 
 logger = logging.getLogger(__name__)
 

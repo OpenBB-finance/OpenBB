@@ -1,20 +1,18 @@
+import logging
 import os
 from datetime import datetime
-
-import logging
 from urllib.error import HTTPError
-import pyEX
+
+import fundamentalanalysis as fa  # Financial Modeling Prep
 import pandas as pd
+import pyEX
 import yfinance as yf
 from alpha_vantage.timeseries import TimeSeries
-import fundamentalanalysis as fa  # Financial Modeling Prep
 
-from openbb_terminal.decorators import log_start_end
-from openbb_terminal.decorators import check_api_key
-from openbb_terminal.rich_config import console
 from openbb_terminal import config_terminal as cfg
-from openbb_terminal.helper_funcs import request
-from openbb_terminal.helper_funcs import lambda_long_number_format
+from openbb_terminal.decorators import check_api_key, log_start_end
+from openbb_terminal.helper_funcs import lambda_long_number_format, request
+from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.fundamental_analysis.fa_helper import clean_df_index
 
 # pylint: disable=unsupported-assignment-operation,no-member

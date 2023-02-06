@@ -1,19 +1,18 @@
 """ Financial Modeling Prep Model"""
 __docformat__ = "numpy"
 import logging
-from typing import Dict, Any
-
 import warnings
-from requests.exceptions import HTTPError
+from typing import Any, Dict
 
 import fundamentalanalysis as fa  # Financial Modeling Prep
 import pandas as pd
 import valinvest
+from requests.exceptions import HTTPError
 
-from openbb_terminal.rich_config import console
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import lambda_long_number_format
+from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.fundamental_analysis.fa_helper import clean_df_index
 
 logger = logging.getLogger(__name__)

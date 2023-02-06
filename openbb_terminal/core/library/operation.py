@@ -1,12 +1,10 @@
 import json
 from importlib import import_module
-from logging import getLogger, Logger
+from inspect import signature
+from logging import Logger, getLogger
 from typing import Any, Callable, Dict, List, Optional
 
-from inspect import signature
-
 import openbb_terminal.config_terminal as cfg
-
 from openbb_terminal.core.library.metadata import Metadata
 from openbb_terminal.core.library.trail_map import TrailMap
 

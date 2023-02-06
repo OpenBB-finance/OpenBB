@@ -10,15 +10,13 @@ from typing import Any, Dict, List
 
 import openbb_terminal.config_terminal as cfg
 from openbb_terminal import feature_flags as obbff
-from openbb_terminal.core.config.paths import (
-    USER_CUSTOM_REPORTS_DIRECTORY,
-)
-from openbb_terminal.reports import reports_model
+from openbb_terminal.core.config.paths import USER_CUSTOM_REPORTS_DIRECTORY
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console, MenuText
+from openbb_terminal.reports import reports_model
+from openbb_terminal.rich_config import MenuText, console
 
 # from openbb_terminal.terminal_helper import is_packaged_application
 
@@ -148,9 +146,6 @@ class ReportController(BaseController):
 
         try:
             import darts  # pyright: reportMissingImports=false # noqa: F401, E501 # pylint: disable=C0415, W0611
-            from darts import (  # pyright: reportMissingImports=false, pylint: disable=C0415, W0611
-                utils,  # noqa: F401, E501
-            )
 
             FORECASTING_TOOLKIT_ENABLED = True
         except ImportError:
