@@ -30,7 +30,6 @@ def test_get_user_input_with_save(mock_prompt_session):
 
 
 def test_prompt():
-
     with patch(
         "openbb_terminal.session.session_controller.get_user_input",
         return_value=("email", "password", False),
@@ -41,7 +40,6 @@ def test_prompt():
         "openbb_terminal.session.session_controller.login_and_launch",
         return_value=True,
     ):
-
         session_controller.prompt()
         assert get_user_input_mock.call_count == 1
         create_session_mock.assert_called_once_with("email", "password", False)
@@ -49,7 +47,6 @@ def test_prompt():
 
 
 def test_prompt_guest_allowed():
-
     with patch(
         "openbb_terminal.session.session_controller.get_user_input",
         return_value=(None, None, False),
