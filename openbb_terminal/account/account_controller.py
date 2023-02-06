@@ -4,9 +4,9 @@ import logging
 import os
 from pathlib import Path
 from typing import Dict, List
-import pandas as pd
-import numpy as np
 
+import numpy as np
+import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
 
 from openbb_terminal import feature_flags as obbff
