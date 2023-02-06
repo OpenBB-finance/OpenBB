@@ -236,6 +236,9 @@ class PortfolioOptimizationController(BaseController):
         if categories:
             self.categories = dict(categories)
             self.available_categories = list(self.categories.keys())
+
+            if "CURRENT_INVESTED_AMOUNT" in self.available_categories:
+                self.available_categories.remove("CURRENT_INVESTED_AMOUNT")
         else:
             self.categories = dict()
             self.available_categories = list()
