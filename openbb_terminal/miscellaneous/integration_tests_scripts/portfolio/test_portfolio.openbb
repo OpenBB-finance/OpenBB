@@ -8,6 +8,11 @@ alloc assets -t -l 4
 alloc sectors -t -l 4
 alloc countries -t -l 4
 alloc regions -t -l 4
+bench SPY
+alloc assets -t -l 4
+alloc sectors -t -l 4
+alloc countries -t -l 4
+alloc regions -t -l 4
 attrib
 attrib --raw
 attrib --type absolute
