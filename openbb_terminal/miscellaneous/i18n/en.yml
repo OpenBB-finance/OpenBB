@@ -22,8 +22,8 @@ en:
   account/sync: Turns the cloud synchronization on/off
   account/pull: Pull data from cloud
   account/clear: Clear data from cloud
-  account/_routines_: Routines
-  account/list: List available routines
+  account/_routines_: Cloud storage of routines
+  account/list: List available routines in the cloud
   account/upload: Upload routine
   account/download: Download routine
   account/delete: Delete routine
