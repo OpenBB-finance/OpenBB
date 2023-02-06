@@ -1,20 +1,19 @@
 """ Investing.com Model """
 __docformat__ = "numpy"
 
-import logging
 import argparse
-
 import datetime
+import logging
 import math
 from typing import Dict, List, Tuple, Union
-import pandas as pd
 
-import pytz
 import investpy
+import pandas as pd
+import pytz
 from tqdm import tqdm
 
-from openbb_terminal.decorators import log_start_end
 from openbb_terminal import helper_funcs
+from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)

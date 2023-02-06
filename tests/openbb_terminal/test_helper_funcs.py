@@ -6,7 +6,7 @@ import pandas as pd
 import pytest
 
 # IMPORTATION INTERNAL
-from openbb_terminal.helper_funcs import export_data, check_start_less_than_end
+from openbb_terminal.helper_funcs import check_start_less_than_end, export_data
 
 # pylint: disable=E1101
 # pylint: disable=W0603

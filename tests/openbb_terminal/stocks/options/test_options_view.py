@@ -1,18 +1,18 @@
 # IMPORTATION STANDARD
 
 # IMPORTATION THIRDPARTY
-import pytest
 import pandas as pd
+import pytest
 
 # IMPORTATION INTERNAL
 from openbb_terminal.stocks.options.options_view import (
+    display_chains,
+    display_expiry_dates,
     get_calls_and_puts,
-    print_raw,
-    plot_vol,
     plot_oi,
     plot_voi,
-    display_expiry_dates,
-    display_chains,
+    plot_vol,
+    print_raw,
 )
 
 EXPIRY_DATES = [
