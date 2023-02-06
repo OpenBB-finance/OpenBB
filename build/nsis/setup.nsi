@@ -155,7 +155,7 @@ FunctionEnd
 Function .onInit
 ReadRegStr $0 HKCU "Software\Software\Microsoft\Windows\CurrentVersion\Uninstall\${UninstId}" "UninstallString"
 ${If} $0 != ""
-${AndIf} ${Cmd} `MessageBox MB_YESNO|MB_ICONQUESTION "It is highly recomended to uninstall the previous version of OpenBB Terminal - Please click Yes to proceed (Note - You will not lose your custom settings) - Or you can uninstall manually. " /SD IDYES IDYES`
+${AndIf} ${Cmd} `MessageBox MB_YESNO|MB_ICONQUESTION "It is highly recommended to uninstall the previous version of OpenBB Terminal - Please click Yes to proceed (Note - You will not lose your custom settings) - Or you can uninstall manually. " /SD IDYES IDYES`
 	!insertmacro UninstallExisting $0 $0
 	${If} $0 <> 0
 		MessageBox MB_YESNO|MB_ICONSTOP "Failed to uninstall, continue anyway?" /SD IDYES IDYES +2
