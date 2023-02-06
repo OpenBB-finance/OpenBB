@@ -893,7 +893,7 @@ def display_rolling_volatility(
     metric = "volatility"
     df = get_rolling_volatility(portfolio_engine, window)
     if df.empty:
-        return
+        return None
 
     df_portfolio = df["portfolio"]
     df_benchmark = df["benchmark"]
@@ -956,7 +956,7 @@ def display_rolling_sharpe(
     metric = "sharpe"
     df = get_rolling_sharpe(portfolio_engine, risk_free_rate, window)
     if df.empty:
-        return
+        return None
 
     df_portfolio = df["portfolio"]
     df_benchmark = df["benchmark"]
@@ -1009,7 +1009,7 @@ def display_rolling_sortino(
     metric = "sortino"
     df = get_rolling_sortino(portfolio_engine, risk_free_rate, window)
     if df.empty:
-        return
+        return None
 
     df_portfolio = df["portfolio"]
     df_benchmark = df["benchmark"]
@@ -1058,7 +1058,7 @@ def display_rolling_beta(
 
     rolling_beta = get_rolling_beta(portfolio_engine, window)
     if rolling_beta.empty:
-        return
+        return None
 
     metric = "beta"
 

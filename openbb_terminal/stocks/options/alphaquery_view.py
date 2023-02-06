@@ -4,6 +4,7 @@ __docforma__ = "numpy"
 import logging
 import os
 from datetime import datetime, timedelta
+from typing import Union
 
 from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.decorators import log_start_end
@@ -22,7 +23,7 @@ def display_put_call_ratio(
     export: str = "",
     sheet_name: str = None,
     external_axes: bool = False,
-):
+) -> Union[OpenBBFigure, None]:
     """Display put call ratio [Source: AlphaQuery.com]
 
     Parameters
@@ -40,8 +41,7 @@ def display_put_call_ratio(
     """
     pcr = alphaquery_model.get_put_call_ratio(symbol, window, start_date)
     if pcr.empty:
-        console.print("No data found.\n")
-        return
+        return console.print("No data found.\n")
 
     fig = OpenBBFigure().set_title(f"Put Call Ratio for {symbol.upper()}")
     fig.add_scatter(x=pcr.index, y=pcr["PCR"], name="Put Call Ratio")

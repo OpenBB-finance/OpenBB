@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import List
+from typing import List, Union
 
 import pandas as pd
 
@@ -23,7 +23,7 @@ def display_mentions(
     export: str = "",
     sheet_name: str = None,
     external_axes: bool = False,
-):
+) -> Union[OpenBBFigure, None]:
     """Plots weekly bars of stock's interest over time. other users watchlist. [Source: Google].
 
     Parameters
@@ -43,7 +43,7 @@ def display_mentions(
     df_interest = google_model.get_mentions(symbol)
 
     if df_interest.empty:
-        return
+        return None
 
     fig = OpenBBFigure(
         title=f"Interest over time on {symbol}",
@@ -152,7 +152,7 @@ def display_regions(
     export: str = "",
     sheet_name: str = None,
     external_axes: bool = False,
-):
+) -> Union[OpenBBFigure, None]:
     """Plots bars of regions based on stock's interest. [Source: Google].
 
     Parameters
@@ -171,7 +171,7 @@ def display_regions(
     df_interest_region = google_model.get_regions(symbol)
 
     if df_interest_region.empty:
-        return
+        return None
 
     df_interest_region = df_interest_region.head(limit)
     df = df_interest_region.sort_values([symbol], ascending=True)

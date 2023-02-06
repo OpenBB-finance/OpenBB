@@ -1,3 +1,4 @@
+# pylint: disable=C0302
 import json
 import os
 import textwrap
@@ -10,10 +11,10 @@ import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
 import plotly.io as pio
-import scipy.stats as stats
 import statsmodels.api as sm
 from pandas.tseries.holiday import USFederalHolidayCalendar
 from plotly.subplots import make_subplots
+from scipy import stats
 
 from openbb_terminal.base_helpers import console, strtobool
 from openbb_terminal.core.config.paths import (

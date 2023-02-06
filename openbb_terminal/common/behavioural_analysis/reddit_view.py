@@ -5,7 +5,7 @@ import logging
 import os
 import warnings
 from datetime import datetime
-from typing import Dict
+from typing import Dict, Union
 
 import finviz
 import matplotlib.pyplot as plt
@@ -410,7 +410,7 @@ def display_redditsent(
     export: str = "",
     sheet_name: str = None,
     external_axes: bool = False,
-):
+) -> Union[OpenBBFigure, None]:
     """Plots Reddit sentiment about a search term. Prints table showing if display is True.
 
     Parameters
@@ -444,8 +444,7 @@ def display_redditsent(
     )
 
     if df.empty:
-        console.print(f"No posts for {symbol} found")
-        return
+        return console.print(f"No posts for {symbol} found")
 
     if display:
         print_rich_table(df=df)

@@ -5,7 +5,7 @@ __docformat__ = "numpy"
 import logging
 import os
 from collections import OrderedDict
-from typing import Dict
+from typing import Dict, List, Tuple, Union
 
 import numpy as np
 import pandas as pd
@@ -99,7 +99,7 @@ def display_bars_financials(
     raw: bool = False,
     already_loaded_stocks_data: Dict = None,
     external_axes: bool = False,
-):
+) -> Union[Tuple[Dict, List], Tuple[Dict, List, OpenBBFigure]]:
     """Display financials bars comparing sectors, industry, analysis, countries, market cap and excluding exchanges.
 
     Parameters
@@ -291,7 +291,7 @@ def display_bars_financials(
         )
 
         if external_axes:
-            return stocks_data, company_tickers, fig.show(external=external_axes)
+            return stocks_data, company_tickers, fig
 
         fig.show()
 
@@ -301,10 +301,10 @@ def display_bars_financials(
         console.print(
             f"Only 1 company found '{list(metric_data.keys())[0]}'. No barchart will be depicted.\n"
         )
-        return stocks_data, [list(metric_data.values())[0][1]], None
+        return stocks_data, [list(metric_data.values())[0][1]]
 
     console.print("No company found. No barchart will be depicted.\n")
-    return dict(), list(), None
+    return dict(), list()
 
 
 @log_start_end(log=logger)
@@ -318,7 +318,7 @@ def display_companies_per_sector_in_country(
     max_sectors_to_display: int = 15,
     min_pct_to_display_sector: float = 0.015,
     external_axes: bool = False,
-):
+) -> Union[OpenBBFigure, None]:
     """Display number of companies per sector in a specific country (and market cap). [Source: Finance Database]
 
     Parameters
@@ -439,7 +439,7 @@ def display_companies_per_industry_in_country(
     max_industries_to_display: int = 15,
     min_pct_to_display_industry: float = 0.015,
     external_axes: bool = False,
-):
+) -> Union[OpenBBFigure, None]:
     """Display number of companies per industry in a specific country. [Source: Finance Database]
 
     Parameters
@@ -569,7 +569,7 @@ def display_companies_per_industry_in_sector(
     max_industries_to_display: int = 15,
     min_pct_to_display_industry: float = 0.015,
     external_axes: bool = False,
-):
+) -> Union[OpenBBFigure, None]:
     """Display number of companies per industry in a specific sector. [Source: Finance Database]
 
     Parameters
@@ -701,7 +701,7 @@ def display_companies_per_country_in_sector(
     max_countries_to_display: int = 15,
     min_pct_to_display_country: float = 0.015,
     external_axes: bool = False,
-):
+) -> Union[OpenBBFigure, None]:
     """Display number of companies per country in a specific sector. [Source: Finance Database]
 
     Parameters
@@ -826,7 +826,7 @@ def display_companies_per_country_in_industry(
     max_countries_to_display: int = 15,
     min_pct_to_display_country: float = 0.015,
     external_axes: bool = False,
-):
+) -> Union[OpenBBFigure, None]:
     """Display number of companies per country in a specific industry. [Source: Finance Database]
 
     Parameters
@@ -865,8 +865,7 @@ def display_companies_per_country_in_industry(
             del companies_per_country[key]
 
     if not companies_per_country:
-        console.print("No companies found with these parameters!\n")
-        return
+        return console.print("No companies found with these parameters!\n")
 
     df = pd.DataFrame.from_dict(companies_per_country, orient="index")
     df.index.name = "Country"

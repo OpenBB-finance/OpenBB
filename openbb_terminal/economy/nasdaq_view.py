@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import List
+from typing import List, Union
 
 from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.decorators import check_api_key, log_start_end
@@ -65,7 +65,7 @@ def display_big_mac_index(
     export: str = "",
     sheet_name: str = None,
     external_axes: bool = False,
-):
+) -> Union[OpenBBFigure, None]:
     """Display Big Mac Index for given countries
 
     Parameters
@@ -108,6 +108,6 @@ def display_big_mac_index(
         )
 
         return fig.show(external=external_axes)
-    else:
-        logger.error("Unable to get big mac data")
-        console.print("[red]Unable to get big mac data[/red]\n")
+
+    logger.error("Unable to get big mac data")
+    return console.print("[red]Unable to get big mac data[/red]\n")

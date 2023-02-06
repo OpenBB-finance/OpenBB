@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import List
+from typing import List, Union
 
 import pandas as pd
 import plotly.graph_objects as go
@@ -26,7 +26,7 @@ def darkpool_ats_otc(
     export: str = "",
     sheet_name: str = None,
     external_axes: bool = False,
-):
+) -> Union[OpenBBFigure, None]:
     """Display barchart of dark pool (ATS) and OTC (Non ATS) data. [Source: FINRA]
 
     Parameters
@@ -41,11 +41,10 @@ def darkpool_ats_otc(
 
     ats, otc = finra_model.getTickerFINRAdata(symbol)
     if ats.empty:
-        console.print("[red]Could not get data[/red]\n")
-        return
+        return console.print("[red]Could not get data[/red]\n")
 
     if ats.empty and otc.empty:
-        console.print("No ticker data found!")
+        return console.print("No ticker data found!")
 
     fig = OpenBBFigure.create_subplots(
         rows=2,
@@ -201,7 +200,9 @@ def darkpool_ats_otc(
 
 
 @log_start_end(log=logger)
-def plot_dark_pools_ats(data: pd.DataFrame, symbols: List, external_axes: bool = False):
+def plot_dark_pools_ats(
+    data: pd.DataFrame, symbols: List, external_axes: bool = False
+) -> Union[OpenBBFigure, None]:
     """Plots promising tickers based on growing ATS data
 
     Parameters
@@ -217,6 +218,8 @@ def plot_dark_pools_ats(data: pd.DataFrame, symbols: List, external_axes: bool =
 
     # This plot has 1 axis
     _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    fig = OpenBBFigure(xaxis_title="Weeks", yaxis_title="Total Weekly Shares")
+    fig.set_title("Dark Pool (ATS) growing tickers")
 
     for symbol in symbols:
         ax.plot(
@@ -225,6 +228,14 @@ def plot_dark_pools_ats(data: pd.DataFrame, symbols: List, external_axes: bool =
             ),
             data[data["issueSymbolIdentifier"] == symbol]["totalWeeklyShareQuantity"]
             / 1_000_000,
+        )
+        fig.add_scatter(
+            x=pd.to_datetime(
+                data[data["issueSymbolIdentifier"] == symbol]["weekStartDate"]
+            ),
+            y=data[data["issueSymbolIdentifier"] == symbol]["totalWeeklyShareQuantity"],
+            name=symbol,
+            mode="lines",
         )
 
     ax.legend(symbols)
@@ -238,6 +249,8 @@ def plot_dark_pools_ats(data: pd.DataFrame, symbols: List, external_axes: bool =
     if not external_axes:
         theme.visualize_output()
 
+    return fig.show(external=external_axes)
+
 
 @log_start_end(log=logger)
 def darkpool_otc(
@@ -247,7 +260,7 @@ def darkpool_otc(
     export: str = "",
     sheet_name: str = None,
     external_axes: bool = False,
-):
+) -> Union[OpenBBFigure, None]:
     """Display dark pool (ATS) data of tickers with growing trades activity. [Source: FINRA]
 
     Parameters
@@ -284,6 +297,5 @@ def darkpool_otc(
         )
 
         return plot_dark_pools_ats(df_ats, symbols, external_axes)
-    else:
-        console.print("[red]Could not get data[/red]\n")
-        return
+
+    return console.print("[red]Could not get data[/red]\n")

@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
+from typing import Union
 
 from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.cryptocurrency.defi import smartstake_model
@@ -23,7 +24,7 @@ def display_luna_circ_supply_change(
     supply_type: str = "lunaSupplyChallengeStats",
     limit: int = 5,
     external_axes: bool = False,
-):
+) -> Union[OpenBBFigure, None]:
     """Plots and prints table showing Luna circulating supply stats
 
     Parameters
@@ -46,7 +47,7 @@ def display_luna_circ_supply_change(
     df = smartstake_model.get_luna_supply_stats(supply_type, days)
 
     if df.empty:
-        return
+        return None
 
     fig = OpenBBFigure(xaxis_title="Time", yaxis_title="Luna Circulating Supply [M]")
     fig.set_title("Luna Circulating Supply Changes (In Millions)")

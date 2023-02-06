@@ -37,12 +37,11 @@ def plot_cost_to_borrow(
     external_axes : bool, optional
         Whether to return the figure object or not, by default False
     """
+    if data.empty:
+        return None
 
     fig = OpenBBFigure.create_subplots(1, 1, specs=[[{"secondary_y": True}]])
     fig.set_title(f"Cost to Borrow of {symbol}")
-
-    if data.empty:
-        return
 
     fig.add_bar(
         x=data.index,

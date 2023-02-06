@@ -126,16 +126,7 @@ def test_load_custom_output_wrong_path(path):
 
 @pytest.mark.default_cassette("test_display_candle")
 @pytest.mark.vcr
-@pytest.mark.parametrize(
-    "use_matplotlib",
-    [True, False],
-)
-def test_display_candle(mocker, use_matplotlib):
-    # MOCK VISUALIZE_OUTPUT
-    mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
-
-    mocker.patch("plotly.basedatatypes.BaseFigure.show")
-
+def test_display_candle():
     # LOAD DATA
     ticker = "GME"
     start = datetime.strptime("2020-12-01", "%Y-%m-%d")
@@ -157,12 +148,9 @@ def test_display_candle(mocker, use_matplotlib):
 
     # DISPLAY CANDLE
     s_ticker = "GME"
-    intraday = False
     stocks_helper.display_candle(
         symbol=s_ticker,
         data=df_stock,
-        use_matplotlib=use_matplotlib,
-        intraday=intraday,
     )
 
 

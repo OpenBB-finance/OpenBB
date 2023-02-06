@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
+from typing import Union
 
 from openbb_terminal.core.plots.plotly_helper import OpenBBFigure, theme
 from openbb_terminal.decorators import log_start_end
@@ -120,7 +121,7 @@ def short_interest_volume(
     export: str = "",
     sheet_name: str = None,
     external_axes: bool = False,
-):
+) -> Union[OpenBBFigure, None]:
     """Plot price vs short interest volume. [Source: Stockgrid]
 
     Parameters
@@ -269,7 +270,7 @@ def net_short_position(
     export: str = "",
     sheet_name: str = None,
     external_axes: bool = False,
-):
+) -> Union[OpenBBFigure, None]:
     """Plot net short position. [Source: Stockgrid]
 
     Parameters
@@ -289,8 +290,7 @@ def net_short_position(
 
     df = stockgrid_model.get_net_short_position(symbol)
     if df.empty:
-        console.print("[red]No data available[/red]\n")
-        return
+        return console.print("[red]No data available[/red]\n")
 
     if raw:
         df["dates"] = df["dates"].dt.date

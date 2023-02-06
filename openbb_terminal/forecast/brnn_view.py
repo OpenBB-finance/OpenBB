@@ -7,6 +7,7 @@ from typing import Optional, Union
 
 import pandas as pd
 
+from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.forecast import brnn_model, helpers
 
@@ -43,7 +44,7 @@ def display_brnn_forecast(
     naive: bool = False,
     export_pred_raw: bool = False,
     external_axes: bool = False,
-):
+) -> Union[OpenBBFigure, None]:
     """Display BRNN forecast
 
     Parameters
@@ -108,7 +109,7 @@ def display_brnn_forecast(
         data, start_date, end_date, target_column, past_covariates
     )
     if not helpers.check_data(data, target_column, past_covariates):
-        return
+        return None
     output_chunk_length = helpers.check_output(
         output_chunk_length, n_predict, bool(past_covariates)
     )
@@ -138,7 +139,7 @@ def display_brnn_forecast(
         save_checkpoints=save_checkpoints,
     )
     if ticker_series == []:
-        return
+        return None
 
     probabilistic = False
     fig = helpers.plot_forecast(

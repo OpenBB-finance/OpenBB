@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
+from typing import Union
 
 import pandas as pd
 
@@ -70,7 +71,7 @@ def display_raw(
     export: str = "",
     sheet_name: str = None,
     external_axes: bool = False,
-) -> None:
+) -> Union[OpenBBFigure, None]:
     """Return raw stock data[chartexchange]
 
     Parameters
@@ -93,8 +94,7 @@ def display_raw(
 
     df = chartexchange_model.get_option_history(symbol, expiry, call, price)[::-1]
     if df.empty:
-        console.print("[red]No data found[/red]\n")
-        return
+        return console.print("[red]No data found[/red]\n")
     df["Date"] = pd.to_datetime(df["Date"])
     df = df.set_index("Date")
 

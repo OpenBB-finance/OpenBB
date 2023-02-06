@@ -1,5 +1,5 @@
 """Cryptocurrency helpers"""
-# pylint: disable=too-many-lines,too-many-return-statements
+# pylint: disable=C0302,too-many-return-statements
 
 import difflib
 import json

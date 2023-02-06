@@ -72,7 +72,7 @@ def display_autoselect_forecast(
     """
     data = helpers.clean_data(data, start_date, end_date, target_column, None)
     if not helpers.check_data(data, target_column, None):
-        return
+        return None
 
     (
         ticker_series,
@@ -91,7 +91,7 @@ def display_autoselect_forecast(
     )
 
     if ticker_series == []:
-        return
+        return None
 
     probabilistic = False
     fig = helpers.plot_forecast(

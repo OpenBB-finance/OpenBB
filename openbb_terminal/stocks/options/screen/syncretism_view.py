@@ -142,19 +142,17 @@ def view_historical_greeks(
         Whether to return the figure object or not, by default False
     """
     df = syncretism_model.get_historical_greeks(symbol, expiry, strike, chain_id, put)
-    if df is None:
-        return
-    if df.empty:
-        return
+    if not df or df.empty:
+        return None
 
     if isinstance(limit, str):
         try:
             limit = int(limit)
         except ValueError:
-            console.print(
+            return console.print(
                 f"[red]Could not convert limit of {limit} to a number.[/red]\n"
             )
-            return
+
     if raw:
         print_rich_table(
             df.tail(limit),

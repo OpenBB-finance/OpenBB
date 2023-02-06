@@ -78,7 +78,7 @@ def display_theta_forecast(
 
     data = helpers.clean_data(data, start_date, end_date, target_column, None)
     if not helpers.check_data(data, target_column, None):
-        return
+        return None
     (
         ticker_series,
         historical_fcast,
@@ -96,7 +96,7 @@ def display_theta_forecast(
         forecast_horizon=forecast_horizon,
     )
     if ticker_series == []:
-        return
+        return None
 
     probabilistic = False
     fig = helpers.plot_forecast(

@@ -80,7 +80,7 @@ def display_regression(
         data, start_date, end_date, target_column, past_covariates
     )
     if not helpers.check_data(data, target_column, past_covariates):
-        return
+        return None
     output_chunk_length = helpers.check_output(
         output_chunk_length, n_predict, bool(past_covariates)
     )

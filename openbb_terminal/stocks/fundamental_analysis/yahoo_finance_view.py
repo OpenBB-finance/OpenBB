@@ -5,7 +5,7 @@ import logging
 import os
 import webbrowser
 from fractions import Fraction
-from typing import Optional
+from typing import Optional, Union
 
 import pandas as pd
 import yfinance as yf
@@ -148,7 +148,6 @@ def display_sustainability(symbol: str, export: str = "", sheet_name: str = None
 
     if df_sustainability.empty:
         console.print("No sustainability data found.", "\n")
-        return
 
     if not df_sustainability.empty:
         print_rich_table(
@@ -188,6 +187,7 @@ def display_calendar_earnings(symbol: str, export: str = "", sheet_name: str = N
     if df_calendar.empty:
         console.print("No calendar events found.\n")
         return
+
     print_rich_table(
         df_calendar,
         show_index=False,
@@ -212,7 +212,7 @@ def display_dividends(
     export: str = "",
     sheet_name: str = None,
     external_axes: bool = False,
-):
+) -> Union[OpenBBFigure, None]:
     """Display historical dividends
 
     Parameters
@@ -237,7 +237,7 @@ def display_dividends(
     """
     div_history = yahoo_finance_model.get_dividends(symbol)
     if div_history.empty:
-        return
+        return None
 
     export_data(
         export,
@@ -257,7 +257,7 @@ def display_dividends(
             title=f"{symbol.upper()} Historical Dividends",
             show_index=True,
         )
-        return
+        return None
 
     fig = OpenBBFigure(yaxis_title="Amount Paid ($)")
     fig.set_title(f"Dividend History for {symbol}")
@@ -279,7 +279,7 @@ def display_splits(
     export: str = "",
     sheet_name: str = None,
     external_axes: bool = False,
-):
+) -> Union[OpenBBFigure, None]:
     """Display splits and reverse splits events. [Source: Yahoo Finance]
 
     Parameters
@@ -295,14 +295,12 @@ def display_splits(
     """
     df_splits = yahoo_finance_model.get_splits(symbol)
     if df_splits.empty:
-        console.print("No splits or reverse splits events found.\n")
-        return
+        return console.print("No splits or reverse splits events found.\n")
 
     # Get all stock data since IPO
     df_data = yf.download(symbol, progress=False, threads=False)
     if df_data.empty:
-        console.print("No stock price data available.\n")
-        return
+        return console.print("No stock price data available.\n")
 
     fig = OpenBBFigure(yaxis_title="Price")
     fig.set_title(f"{symbol} splits and reverse splits events")
@@ -363,7 +361,7 @@ def display_mktcap(
     export: str = "",
     sheet_name: str = None,
     external_axes: bool = False,
-):
+) -> Union[OpenBBFigure, None]:
     """Display market cap over time. [Source: Yahoo Finance]
 
     Parameters
@@ -382,8 +380,7 @@ def display_mktcap(
 
     df_mktcap, currency = yahoo_finance_model.get_mktcap(symbol, start_date)
     if df_mktcap.empty:
-        console.print("No Market Cap data available.\n")
-        return
+        return console.print("No Market Cap data available.\n")
 
     fig = OpenBBFigure(yaxis_title=f"Market Cap in Billion ({currency})")
     fig.set_title(f"{symbol} Market Cap")
@@ -451,12 +448,9 @@ def display_fundamentals(
     elif statement == "cash-flow":
         title_str = "Cash Flow Statement"
 
-    if fundamentals is None:
-        return
-
-    if fundamentals.empty:
+    if not fundamentals or fundamentals.empty:
         # The empty data frame error handling done in model
-        return
+        return None
 
     symbol_currency = yahoo_finance_model.get_currency(symbol)
 
@@ -529,6 +523,8 @@ def display_fundamentals(
         fundamentals,
         sheet_name,
     )
+
+    return None
 
 
 @log_start_end(log=logger)

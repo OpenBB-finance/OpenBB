@@ -99,7 +99,7 @@ def display_rnn_forecast(
 
     data = helpers.clean_data(data, start_date, end_date, target_column, None)
     if not helpers.check_data(data, target_column, None):
-        return
+        return None
     (
         ticker_series,
         historical_fcast,
@@ -125,7 +125,7 @@ def display_rnn_forecast(
         save_checkpoints=save_checkpoints,
     )
     if ticker_series == []:
-        return
+        return None
 
     past_covariates = None
     probabilistic = True
