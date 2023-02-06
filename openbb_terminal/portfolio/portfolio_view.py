@@ -515,6 +515,7 @@ def display_monthly_returns(
             headers=benchmark_returns.columns,
             show_index=True,
         )
+
         export_data(
             export,
             os.path.dirname(os.path.abspath(__file__)),

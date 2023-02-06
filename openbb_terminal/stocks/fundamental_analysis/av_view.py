@@ -21,7 +21,7 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_ALPHAVANTAGE"])
-def display_overview(symbol: str):
+def display_overview(symbol: str, export: str = "", sheet_name: str = None):
     """Alpha Vantage stock ticker overview
 
     Parameters
@@ -39,6 +39,14 @@ def display_overview(symbol: str):
         headers=[""],
         title=f"{symbol} Overview",
         show_index=True,
+    )
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "overview",
+        df_fa,
+        sheet_name,
     )
 
     console.print(f"Company Description:\n\n{df_fa.loc['Description'][0]}")
@@ -477,7 +485,7 @@ A mckee less than 0.5 indicates a high risk of fraud.
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
-        "dupont",
+        "fraud",
         df,
         sheet_name,
     )

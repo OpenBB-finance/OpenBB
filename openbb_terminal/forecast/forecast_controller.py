@@ -5,12 +5,11 @@ __docformat__ = "numpy"
 # flake8: noqa
 import argparse
 import logging
-from typing import Any, Optional, List, Dict
+from typing import Any, Dict, List, Optional
 
 try:
-    import torch
-
     import darts
+    import torch
 
     darts_latest = "0.23.0"
     # check darts version
@@ -28,53 +27,52 @@ except ModuleNotFoundError:
     )
 import pandas as pd
 import psutil
-from openbb_terminal.core.config.paths import (
-    USER_EXPORTS_DIRECTORY,
-    USER_CUSTOM_IMPORTS_DIRECTORY,
-)
+
 from openbb_terminal import feature_flags as obbff
+from openbb_terminal.common import common_model
+from openbb_terminal.core.config.paths import (
+    USER_CUSTOM_IMPORTS_DIRECTORY,
+    USER_EXPORTS_DIRECTORY,
+)
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import (
-    check_positive,
-    check_positive_float,
-    NO_EXPORT,
-    EXPORT_ONLY_FIGURES_ALLOWED,
-    EXPORT_ONLY_RAW_DATA_ALLOWED,
-    log_and_raise,
-    valid_date,
-)
-
-from openbb_terminal.menu import session
-from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console, MenuText
 from openbb_terminal.forecast import (
-    forecast_model,
-    forecast_view,
-    autoselect_view,
+    anom_view,
     autoarima_view,
     autoces_view,
     autoets_view,
-    mstl_view,
-    rwd_view,
-    seasonalnaive_view,
+    autoselect_view,
+    brnn_view,
     expo_model,
     expo_view,
-    linregr_view,
-    nbeats_view,
-    regr_view,
-    tcn_view,
-    theta_view,
-    rnn_view,
-    brnn_view,
-    tft_view,
+    forecast_model,
+    forecast_view,
     helpers,
-    trans_view,
+    linregr_view,
+    mstl_view,
+    nbeats_view,
     nhits_view,
-    anom_view,
+    regr_view,
+    rnn_view,
+    rwd_view,
+    seasonalnaive_view,
+    tcn_view,
+    tft_view,
+    theta_view,
+    trans_view,
 )
-
-from openbb_terminal.common import common_model
+from openbb_terminal.helper_funcs import (
+    EXPORT_ONLY_FIGURES_ALLOWED,
+    EXPORT_ONLY_RAW_DATA_ALLOWED,
+    NO_EXPORT,
+    check_positive,
+    check_positive_float,
+    log_and_raise,
+    valid_date,
+)
+from openbb_terminal.menu import session
+from openbb_terminal.parent_classes import BaseController
+from openbb_terminal.rich_config import MenuText, console
 
 logger = logging.getLogger(__name__)
 empty_df = pd.DataFrame()

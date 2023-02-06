@@ -18,10 +18,7 @@ from openbb_terminal.helper_funcs import (
     valid_date,
 )
 from openbb_terminal.menu import session
-from openbb_terminal.mutual_funds import (
-    avanza_view,
-    mstarpy_view,
-)
+from openbb_terminal.mutual_funds import avanza_view, mstarpy_view
 from openbb_terminal.mutual_funds.mutual_funds_utils import mapping_country
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import MenuText, console

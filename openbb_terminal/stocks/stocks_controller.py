@@ -25,7 +25,6 @@ from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import StockBaseController
 from openbb_terminal.rich_config import MenuText, console, translate
 from openbb_terminal.stocks import cboe_view, stocks_helper, stocks_view
-from openbb_terminal.stocks.fundamental_analysis import fmp_view
 
 # pylint: disable=R1710,import-outside-toplevel,R0913,R1702,no-member
 
@@ -44,7 +43,6 @@ class StocksController(StockBaseController):
         "news",
         "resources",
         "codes",
-        "filings",
     ]
     CHOICES_MENUS = [
         "ta",
@@ -57,9 +55,9 @@ class StocksController(StockBaseController):
         "ins",
         "gov",
         "res",
+        "dd",
         "fa",
         "bt",
-        "dd",
         "ca",
         "options",
         "th",
@@ -104,7 +102,6 @@ class StocksController(StockBaseController):
                 stock_text += f" (from {self.start.strftime('%Y-%m-%d')})"
 
         mt = MenuText("stocks/", 100)
-        mt.add_cmd("filings")
         mt.add_cmd("search")
         mt.add_cmd("load")
         mt.add_raw("\n")
@@ -129,7 +126,6 @@ class StocksController(StockBaseController):
         mt.add_menu("ca")
         mt.add_menu("fa", self.ticker)
         mt.add_menu("res", self.ticker)
-        mt.add_menu("dd", self.ticker)
         mt.add_menu("bt", self.ticker)
         mt.add_menu("ta", self.ticker)
         mt.add_menu("qa", self.ticker)
@@ -146,45 +142,6 @@ class StocksController(StockBaseController):
                 else f"load {self.ticker}",
             ]
         return []
-
-    @log_start_end(log=logger)
-    def call_filings(self, other_args: List[str]) -> None:
-        """Process Filings command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="filings",
-            description="The most-recent filings submitted to the SEC",
-        )
-        parser.add_argument(
-            "-p",
-            "--pages",
-            dest="pages",
-            metavar="pages",
-            type=int,
-            default=1,
-            help="The number of pages to get data from (1000 entries/page; maximum 30 pages)",
-        )
-        parser.add_argument(
-            "-t",
-            "--today",
-            dest="today",
-            action="store_true",
-            default=False,
-            help="Show all filings from today",
-        )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-l")
-        ns_parser = self.parse_known_args_and_warn(
-            parser,
-            other_args,
-            EXPORT_ONLY_RAW_DATA_ALLOWED,
-            limit=5,
-        )
-        if ns_parser:
-            fmp_view.display_filings(
-                ns_parser.pages, ns_parser.limit, ns_parser.today, ns_parser.export
-            )
 
     @log_start_end(log=logger)
     def call_search(self, other_args: List[str]):
@@ -354,12 +311,16 @@ class StocksController(StockBaseController):
                 required="-h" not in other_args,
                 help=translate("stocks/QUOTE_ticker"),
             )
+
         # For the case where a user uses: 'quote BB'
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-t")
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            stocks_view.display_quote(ns_parser.s_ticker)
+            if ns_parser.source == "FinancialModelingPrep":
+                stocks_view.display_quote_fmp(ns_parser.s_ticker)
+            elif ns_parser.source == "YahooFinance":
+                stocks_view.display_quote_yf(ns_parser.s_ticker)
 
     @log_start_end(log=logger)
     def call_codes(self, _):
@@ -666,19 +627,13 @@ class StocksController(StockBaseController):
     @log_start_end(log=logger)
     def call_dd(self, _):
         """Process dd command."""
-        if self.ticker:
-            from openbb_terminal.stocks.due_diligence import dd_controller
 
-            self.queue = self.load_class(
-                dd_controller.DueDiligenceController,
-                self.ticker,
-                self.start,
-                self.interval,
-                self.stock,
-                self.queue,
-            )
-        else:
-            console.print("Use 'load <ticker>' prior to this command!")
+        # TODO: Get rid of the call_dd on the next release since it has been deprecated.
+
+        console.print(
+            "The dd (Due Diligence) menu has been integrated into the fa (Fundamental Analysis) menu. "
+            "Please use this menu instead.\n"
+        )
 
     @log_start_end(log=logger)
     def call_ca(self, _):
@@ -704,6 +659,7 @@ class StocksController(StockBaseController):
                 self.ticker,
                 self.start,
                 self.interval,
+                self.stock,
                 self.suffix,
                 self.queue,
             )

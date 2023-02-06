@@ -145,9 +145,7 @@ class ReportController(BaseController):
         #     return
 
         try:
-            # pyright: reportMissingImports=false # pylint: disable=C0415, W0611
-            import darts  # noqa: F401, E501
-            from darts import utils  # noqa: F401, E501
+            import darts  # pyright: reportMissingImports=false # noqa: F401, E501 # pylint: disable=C0415, W0611
 
             FORECASTING_TOOLKIT_ENABLED = True
         except ImportError:

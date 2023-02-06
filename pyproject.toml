@@ -180,7 +180,7 @@ force-wrap-aliases = true
 
 [tool.isort]
 profile = "black"
-line_length = 88
+line_length = 122
 skip_gitignore = true
 combine_as_imports = true
-src_paths = ["openbb_terminal", "tests"]
+src_paths = ["openbb_terminal"]
