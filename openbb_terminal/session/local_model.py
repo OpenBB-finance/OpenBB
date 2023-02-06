@@ -187,7 +187,7 @@ def cast_set_attr(obj, name, value):
 
 
 def get_routine(
-    file_name: str, routines_folder: Path = USER_ROUTINES_DIRECTORY
+    file_name: str, folder: Path = USER_ROUTINES_DIRECTORY
 ) -> Optional[str]:
     """Get the routine.
 
@@ -195,13 +195,41 @@ def get_routine(
     -------
     file_name : str
         The routine.
-    routines_folder : Path
+    folder : Path
         The routines folder.
     """
     try:
-        with open(routines_folder / file_name) as f:
+        with open(folder / file_name) as f:
             routine = "".join(f.readlines())
         return routine
     except Exception:
         console.print("[red]\nFailed to find routine.[/red]")
         return None
+
+
+def save_routine(
+    file_name: str, routine: str, folder: Path = USER_ROUTINES_DIRECTORY
+) -> bool:
+    """Save the routine.
+
+    Parameters
+    ----------
+    file_name : str
+        The routine.
+    routine : str
+        The routine.
+    folder : Path
+        The routines folder.
+
+    Returns
+    -------
+    bool
+        The status of the save.
+    """
+    try:
+        with open(folder / file_name, "w") as f:
+            f.write(routine)
+        return True
+    except Exception:
+        console.print("[red]\nFailed to save routine.[/red]")
+        return False

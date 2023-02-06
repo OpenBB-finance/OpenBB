@@ -354,11 +354,9 @@ def download_routine(
             url=base_url + "terminal/script/" + name,
             timeout=timeout,
         )
-        if response.status_code == 200:
-            console.print("[green]Successfully downloaded your routine.[/green]")
-        elif response.status_code == 404:
+        if response.status_code == 404:
             console.print("[red]Routine not found.[/red]")
-        else:
+        elif response.status_code != 200:
             console.print("[red]Failed to download your routine.[/red]")
         return response
     except requests.exceptions.ConnectionError:

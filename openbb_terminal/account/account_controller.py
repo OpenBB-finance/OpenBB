@@ -207,7 +207,8 @@ class AccountController(BaseController):
             type=str,
             dest="description",
             help="The description of the routine",
-            default="Description.",
+            default="",
+            nargs="+",
         )
         parser.add_argument(
             "-n",
@@ -219,17 +220,18 @@ class AccountController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             routine = Local.get_routine(file_name=ns_parser.file)
-
             if routine:
                 name = (
                     ns_parser.name
                     if ns_parser.name
                     else ns_parser.file.split(".openbb")[0]
                 )
+                description = " ".join(ns_parser.description)
+
                 response = Hub.upload_routine(
                     auth_header=User.get_auth_header(),
                     name=name,
-                    description=ns_parser.description,
+                    description=description,
                     routine=routine,
                 )
                 if response is not None and response.status_code == 409:
@@ -242,7 +244,7 @@ class AccountController(BaseController):
                         Hub.upload_routine(
                             auth_header=User.get_auth_header(),
                             name=name,
-                            description=ns_parser.description,
+                            description=description,
                             routine=routine,
                             override=True,
                         )
@@ -266,12 +268,37 @@ class AccountController(BaseController):
             help="The name of the routine",
             required="-h" not in other_args,
         )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-n")
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            Hub.download_routine(
+            response = Hub.download_routine(
                 auth_header=User.get_auth_header(),
                 name=ns_parser.name,
             )
+            if response and response.status_code == 200:
+                data = response.json()
+                if data:
+                    name = data.get("name", "")
+                    if name:
+                        console.print(f"[info]Name:[/info] {name}")
+
+                    description = data.get("description", "")
+                    if description:
+                        console.print(f"[info]Description:[/info] {description}")
+
+                    script = data.get("script", "")
+                    if script:
+                        file_name = f"{ns_parser.name}.openbb"
+                        folder = USER_ROUTINES_DIRECTORY
+                        if Local.save_routine(
+                            file_name=file_name,
+                            routine=script,
+                            folder=USER_ROUTINES_DIRECTORY,
+                        ):
+                            console.print(
+                                f"[info]Location:[/info] {folder}/{file_name}"
+                            )
 
     @log_start_end(log=logger)
     def call_delete(self, other_args: List[str]):
@@ -290,6 +317,8 @@ class AccountController(BaseController):
             help="The name of the routine",
             required="-h" not in other_args,
         )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-n")
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             Hub.delete_routine(
