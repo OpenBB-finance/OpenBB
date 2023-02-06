@@ -13,12 +13,9 @@ cash -l 2 --source YahooFinance
 cash -l 2 --source Polygon
 cash -l 2 --source AlphaVantage
 cash -l 2 --source FinancialModelingPrep
-data
 mgmt
 analysis
 score
-profile
-quote
 enterprise
 metrics
 ratios
@@ -26,22 +23,34 @@ growth
 warnings
 warnings -d
 dcfc
-info
-mktcap
+enterprise
 shrs
 shrs major
 shrs mutualfund
 sust
-cal
 divs
 divs -p
 splits
 overview
-key
 earnings --source YahooFinance
 earnings --source AlphaVantage
 fraud
 dupont
 epsfc
 revfc
+analysis
+rating
+rot
+rot -l 3 --raw
+pt
+pt -l 3 --raw
+est
+est -e annualrevenue
+est -e annualearnings
+est -e quarterearnings
+sec
+supplier
+customer
+load ${ticker=tsla}
+arktrades
 exit
