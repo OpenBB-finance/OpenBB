@@ -221,11 +221,11 @@ class AccountController(BaseController):
             routine = Local.get_routine(file_name=ns_parser.file)
 
             if routine:
-                if not ns_parser.name:
-                    name = ns_parser.file.split(".openbb")[0]
-                else:
-                    name = ns_parser.name
-
+                name = (
+                    ns_parser.name
+                    if ns_parser.name
+                    else ns_parser.file.split(".openbb")[0]
+                )
                 response = Hub.upload_routine(
                     auth_header=User.get_auth_header(),
                     name=name,
