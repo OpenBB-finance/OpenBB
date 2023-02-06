@@ -1,4 +1,5 @@
 from unittest.mock import patch
+
 import pytest
 
 from openbb_terminal.session import session_controller
