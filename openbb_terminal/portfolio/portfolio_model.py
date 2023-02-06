@@ -371,7 +371,36 @@ def get_monthly_returns(
         ],
     )
 
-    return monthly_returns, bench_monthly_returns
+    years = [
+        (year, instrument)
+        for year in monthly_returns.index
+        for instrument in ["Portfolio", "Benchmark", "Alpha"]
+    ]
+    total_monthly_returns = pd.DataFrame(
+        np.nan,
+        columns=monthly_returns.columns,
+        index=pd.MultiIndex.from_tuples(years, names=["Year", "Instrument"]),
+    )
+
+    for year in monthly_returns.index:
+        for instrument in ["Portfolio", "Benchmark", "Alpha"]:
+            if instrument == "Portfolio":
+                total_monthly_returns.loc[
+                    (year, instrument), monthly_returns.columns
+                ] = monthly_returns.loc[year].values
+            elif instrument == "Benchmark":
+                total_monthly_returns.loc[
+                    (year, instrument), monthly_returns.columns
+                ] = bench_monthly_returns.loc[year].values
+            elif instrument == "Alpha":
+                total_monthly_returns.loc[
+                    (year, instrument), monthly_returns.columns
+                ] = (
+                    monthly_returns.loc[year].values
+                    - bench_monthly_returns.loc[year].values
+                )
+
+    return monthly_returns, bench_monthly_returns, total_monthly_returns
 
 
 @log_start_end(log=logger)
