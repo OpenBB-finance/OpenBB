@@ -14,7 +14,7 @@ from openbb_terminal.sdk_core.sdk_init import (
 
 
 class FuncAttr:
-    def __init__(self, func: str):
+    def __init__(self, func: Optional[str] = None):
         self.short_doc: Optional[str] = None
         self.long_doc: Optional[str] = None
         self.func_def: Optional[str] = None
@@ -85,9 +85,7 @@ class FuncAttr:
             and funcspec.annotations["return"] is not None
             else "None"
         )
-        definition = (
-            f"def {self.func_unwrapped.__name__}({definition }) -> {return_def}"
-        )
+        definition = f"def {self.func_unwrapped.__name__}({definition }) -> {return_def}"  # type: ignore
         return definition
 
 
@@ -106,7 +104,7 @@ class Trailmap:
         self.view_func: Optional[str] = f"lib.{view}" if view else None
         self.func_attrs: Dict[str, FuncAttr] = {}
         self.func_attrs["model"] = FuncAttr(self.model)
-        self.func_attrs["view"] = FuncAttr(self.view)
+        self.func_attrs["view"] = FuncAttr(self.view)  # type: ignore
 
 
 def get_trailmaps() -> List[Trailmap]:
