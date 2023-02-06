@@ -1,5 +1,5 @@
-from unittest.mock import patch
 from pathlib import Path
+from unittest.mock import patch
 
 from openbb_terminal import config_plot as cfg_plot
 from openbb_terminal import config_terminal as cfg
@@ -13,7 +13,7 @@ def test_get_var_diff():
         attr_str = "string"
         attr_int = 10
         attr_float = 3.14
-        attr_path = Path("/tmp/test")
+        attr_path = Path("/tmp/test")  # noqa: S108
         attr_bool = True
 
     obj = TestObj()
@@ -31,8 +31,8 @@ def test_get_var_diff():
     assert result == (3.14, 6.28)
 
     # Test path attribute
-    result = account_model.get_var_diff(obj, "attr_path", "/tmp/new_test")
-    assert result == (Path("/tmp/test"), Path("/tmp/new_test"))
+    result = account_model.get_var_diff(obj, "attr_path", "/tmp/new_test")  # noqa: S108
+    assert result == (Path("/tmp/test"), Path("/tmp/new_test"))  # noqa: S108
 
     # Test bool attribute
     result = account_model.get_var_diff(obj, "attr_bool", "false")
