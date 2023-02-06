@@ -5,7 +5,7 @@ import requests
 
 from openbb_terminal.rich_config import console
 
-BASE_URL = "https://payments.openbb.dev/"
+BASE_URL = "http://127.0.0.1:8000/"
 TIMEOUT = 15
 
 

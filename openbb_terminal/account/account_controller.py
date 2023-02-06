@@ -59,6 +59,8 @@ class AccountController(BaseController):
         mt.add_cmd("sync")
         mt.add_cmd("pull")
         mt.add_cmd("clear")
+        mt.add_raw("\n")
+        mt.add_info("_routines_")
         mt.add_cmd("upload")
         console.print(text=mt.menu_text, menu="Account")
 
