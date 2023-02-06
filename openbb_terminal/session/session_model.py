@@ -55,10 +55,13 @@ def login(session: dict) -> LoginStatus:
         if response.status_code == 200:
             configs = json.loads(response.content)
             email = configs.get("email", "")
+            feature_settings = configs.get("features_settings", {})
             User.load_user_info(session, email)
             Local.apply_configs(configs=configs)
             User.update_flair(
-                flair=configs.get("features_settings", {}).get("USE_FLAIR", None)
+                flair=feature_settings.get("USE_FLAIR", None)
+                if feature_settings
+                else None
             )
             return LoginStatus.SUCCESS
         return LoginStatus.FAILED

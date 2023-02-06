@@ -28,14 +28,14 @@ def get_diff(configs: dict) -> dict:
 
     diff_settings = get_diff_settings(configs.get(SETTINGS, {}))
     if diff_settings:
-        console.print("Settings:", style="info")
+        console.print("[info]Settings:[/info]")
         for k, v in diff_settings.items():
             configs_diff[SETTINGS][k] = v[1]
             console.print(f"  [menu]{k}[/menu]: {v[0]} -> {v[1]}")
 
     diff_keys = get_diff_keys(configs.get(KEYS, {}))
     if diff_keys:
-        console.print("Keys:", style="info")
+        console.print("[info]Keys:[/info]")
         for k, v in diff_keys.items():
             configs_diff[KEYS][k] = v[1]
             console.print(f"  [menu]{k}[/menu]: {v[0]} -> {v[1]}")
