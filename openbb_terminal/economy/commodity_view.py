@@ -1,5 +1,5 @@
-import os
 import logging
+import os
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.economy import commodity_model

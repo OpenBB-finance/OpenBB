@@ -1,9 +1,11 @@
 from typing import Dict, List, Tuple
+
 import pandas as pd
+
 from openbb_terminal.portfolio.portfolio_optimization import (
     excel_model,
-    optimizer_model,
     optimizer_helper,
+    optimizer_model,
 )
 from openbb_terminal.portfolio.portfolio_optimization.parameters import params_view
 from openbb_terminal.rich_config import console

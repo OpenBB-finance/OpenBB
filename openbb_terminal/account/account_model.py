@@ -1,11 +1,12 @@
 from pathlib import Path
-from typing import Dict, Any
+from typing import Any, Dict
+
+from openbb_terminal import config_plot as cfg_plot
+from openbb_terminal import config_terminal as cfg
+from openbb_terminal import feature_flags as obbff
+from openbb_terminal.base_helpers import strtobool
 from openbb_terminal.core.config import paths
 from openbb_terminal.rich_config import console
-from openbb_terminal import feature_flags as obbff
-from openbb_terminal import config_terminal as cfg
-from openbb_terminal import config_plot as cfg_plot
-from openbb_terminal.base_helpers import strtobool
 
 
 def get_diff(configs: dict) -> dict:
@@ -100,9 +101,10 @@ def get_diff_keys(keys: dict) -> dict:
     diff = {}
     if keys:
         for k, v in sorted(keys.items()):
-            old, new = get_var_diff(cfg, k, v)
-            if new is not None:
-                diff[k] = (old, new)
+            if hasattr(cfg, k):
+                old, new = get_var_diff(cfg, k, v)
+                if new is not None:
+                    diff[k] = (old, new)
 
     return diff
 

@@ -4,18 +4,18 @@ __docformat__ = "numpy"
 # pylint: disable=no-member
 
 import logging
-from typing import Dict, Any, Optional, Tuple, Union
-from urllib.error import HTTPError
 from datetime import datetime
+from typing import Any, Dict, Optional, Tuple, Union
+from urllib.error import HTTPError
 
 import pandas as pd
 import pandas_datareader.data as web
 import yfinance as yf
 
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.rich_config import console
-from openbb_terminal.helpers_denomination import transform as transform_by_denomination
 from openbb_terminal.helper_funcs import request
+from openbb_terminal.helpers_denomination import transform as transform_by_denomination
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -409,9 +409,9 @@ PARAMETERS = {
 
 TRANSFORM = {
     "": "No transformation",
-    "TPOP": "total percentage change on period",
-    "TOYA": "total percentage since 1 year ago",
-    "TUSD": "level USD",
+    "TPOP": "Total percentage change on period",
+    "TOYA": "Total percentage since 1 year ago",
+    "TUSD": "Level USD",
     "TPGP": "Percentage of GDP",
     "TNOR": "Start = 100",
 }
@@ -610,6 +610,7 @@ def get_macro_data(
         if not df.empty:
             df = df.groupby(df.index.strftime("%Y-%m")).head(1)
             df.index = df.index.strftime("%Y-%m")
+            df = pd.to_numeric(df, errors="coerce").dropna()
 
     except HTTPError:
         return console.print(
@@ -730,11 +731,12 @@ def get_aggregated_macro_data(
     (df_rounded, denomination) = transform_by_denomination(country_data_df)
     df_rounded.index = pd.DatetimeIndex(df_rounded.index)
 
-    return (
-        df_rounded,
-        units,
-        f" [in {denomination}]" if denomination != "Units" else "",
-    )
+    if transform:
+        denomination_string = f" [{TRANSFORM[transform]}]"
+    else:
+        denomination_string = f" [in {denomination}]" if denomination != "Units" else ""
+
+    return (df_rounded, units, denomination_string)
 
 
 @log_start_end(log=logger)

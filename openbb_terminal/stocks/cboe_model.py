@@ -4,8 +4,8 @@ __docformat__ = "numpy"
 from typing import Tuple
 
 import pandas as pd
-from openbb_terminal.helper_funcs import request
 
+from openbb_terminal.helper_funcs import request
 from openbb_terminal.rich_config import console
 
 

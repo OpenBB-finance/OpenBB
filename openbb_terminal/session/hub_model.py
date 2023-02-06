@@ -1,9 +1,10 @@
 from typing import Dict, Optional
+
 import requests
 
 from openbb_terminal.rich_config import console
 
-BASE_URL = "http://127.0.0.1:8000/"
+BASE_URL = "https://payments.openbb.dev/"
 TIMEOUT = 15
 
 

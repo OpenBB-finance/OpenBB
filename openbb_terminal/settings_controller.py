@@ -2,12 +2,13 @@
 __docformat__ = "numpy"
 
 # IMPORTATION STANDARD
-import os
-import os.path
 import argparse
 import logging
+import os
+import os.path
 from pathlib import Path
 from typing import List, Optional, Union
+
 import pytz
 
 # IMPORTATION THIRDPARTY
@@ -15,12 +16,12 @@ from dotenv import set_key
 
 # IMPORTATION INTERNAL
 from openbb_terminal import config_plot as cfg_plot
+from openbb_terminal import featflags_controller as obbff_ctrl
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.core.config import paths
-from openbb_terminal import featflags_controller as obbff_ctrl
 from openbb_terminal.core.config.paths import (
-    USER_ENV_FILE,
     USER_DATA_SOURCES_DEFAULT_FILE,
+    USER_ENV_FILE,
 )
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
@@ -31,7 +32,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console, MenuText
+from openbb_terminal.rich_config import MenuText, console
 from openbb_terminal.session.hub_model import patch_user_configs
 from openbb_terminal.session.user import User
 
@@ -225,26 +226,42 @@ class SettingsController(BaseController):
             )
 
     @log_start_end(log=logger)
-    def call_colors(self, _):
+    def call_colors(self, other_args: List[str]):
         """Process colors command"""
-        console.print(
-            "\n1. Play with the terminal coloring embedded in our website https://openbb.co/customize\n"
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="autoscaling",
+            description="Set the use of autoscaling in the plots",
         )
-        console.print("2. Once happy, click 'Download Theme'\n")
-        console.print(
-            "3. The file 'openbb_config.richstyle.json' should be downloaded\n"
-        )
-        console.print(
-            "4. Insert that config file inside /OpenBBUserData/styles/user/\n"
-        )
-        console.print("5. Close the terminal and run it again.\n")
+        ns_parser = self.parse_simple_args(parser, other_args)
+        if ns_parser:
+            console.print(
+                "\n1. Play with the terminal coloring embedded in our website https://openbb.co/customize\n"
+            )
+            console.print("2. Once happy, click 'Download Theme'\n")
+            console.print(
+                "3. The file 'openbb_config.richstyle.json' should be downloaded\n"
+            )
+            console.print(
+                "4. Insert that config file inside /OpenBBUserData/styles/user/\n"
+            )
+            console.print("5. Close the terminal and run it again.\n")
 
     @log_start_end(log=logger)
-    def call_dt(self, _):
+    def call_dt(self, other_args: List[str]):
         """Process dt command"""
-        obbff_ctrl.FeatureFlagsController.set_feature_flag(
-            "OPENBB_USE_DATETIME", not obbff.USE_DATETIME
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="dt",
+            description="Set the use of datetime in the plots",
         )
+        ns_parser = self.parse_simple_args(parser, other_args)
+        if ns_parser:
+            obbff_ctrl.FeatureFlagsController.set_feature_flag(
+                "OPENBB_USE_DATETIME", not obbff.USE_DATETIME
+            )
 
     @log_start_end(log=logger)
     def call_source(self, other_args: List[str]):
@@ -282,11 +299,19 @@ class SettingsController(BaseController):
                 console.print(e)
 
     @log_start_end(log=logger)
-    def call_autoscaling(self, _):
+    def call_autoscaling(self, other_args: List[str]):
         """Process autoscaling command"""
-        obbff_ctrl.FeatureFlagsController.set_feature_flag(
-            "OPENBB_USE_PLOT_AUTOSCALING", not obbff.USE_PLOT_AUTOSCALING
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="autoscaling",
+            description="Set the use of autoscaling in the plots",
         )
+        ns_parser = self.parse_simple_args(parser, other_args)
+        if ns_parser:
+            obbff_ctrl.FeatureFlagsController.set_feature_flag(
+                "OPENBB_USE_PLOT_AUTOSCALING", not obbff.USE_PLOT_AUTOSCALING
+            )
 
     @log_start_end(log=logger)
     def call_dpi(self, other_args: List[str]):

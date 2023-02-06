@@ -1,7 +1,8 @@
 from datetime import datetime, timedelta
 from unittest.mock import MagicMock
-import pytest
+
 import pandas as pd
+import pytest
 
 from openbb_terminal.common.quantitative_analysis import qa_view
 
@@ -72,7 +73,10 @@ def test_display_cusum_fail():
 
 
 @pytest.mark.parametrize("yearly", [False, True])
-def test_display_seasonal(yearly):
+def test_display_seasonal(mocker, yearly):
+    mocker.patch(
+        "openbb_terminal.helper_funcs.ask_file_overwrite", return_value=(False, True)
+    )
     qa_view.display_seasonal("Data", df, "col2", yearly, "xlsx", None)
 
 

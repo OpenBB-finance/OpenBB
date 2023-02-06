@@ -1,16 +1,18 @@
 import importlib
+import json
 import logging
 import os
 import sys
-import json
 from enum import Enum
 from typing import Optional
+
 import matplotlib.pyplot as plt
-import openbb_terminal.session.local_model as Local
+
 import openbb_terminal.session.hub_model as Hub
-from openbb_terminal.session.user import User
+import openbb_terminal.session.local_model as Local
 from openbb_terminal.helper_funcs import system_clear
 from openbb_terminal.rich_config import console
+from openbb_terminal.session.user import User
 
 # pylint: disable=consider-using-f-string
 

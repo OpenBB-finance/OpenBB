@@ -2,12 +2,11 @@
 import json
 import logging
 
+from openbb_terminal.core.log.generation.common import do_rollover
+
 # IMPORTATION THIRDPARTY
-
-
 # IMPORTATION INTERNAL
 from openbb_terminal.session.user import User
-from openbb_terminal.core.log.generation.common import do_rollover
 
 logger = logging.getLogger(__name__)
 
