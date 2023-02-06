@@ -215,7 +215,6 @@ def display_income_statement(
     income = fmp_model.get_income(symbol, limit, quarterly, ratios, bool(plot))
 
     if not income.empty:
-
         income.index = [
             stocks_helper.INCOME_PLOT["FinancialModelingPrep"][i]
             for i in [i.replace(" ", "_") for i in income.index.str.lower()]
@@ -311,7 +310,6 @@ def display_balance_sheet(
     balance = fmp_model.get_balance(symbol, limit, quarterly, ratios, bool(plot))
 
     if not balance.empty:
-
         balance.index = [
             stocks_helper.BALANCE_PLOT["FinancialModelingPrep"][i]
             for i in [i.replace(" ", "_") for i in balance.index.str.lower()]
@@ -405,7 +403,6 @@ def display_cash_flow(
     cash = fmp_model.get_cash(symbol, limit, quarterly, ratios, bool(plot))
 
     if not cash.empty:
-
         cash.index = [
             stocks_helper.CASH_PLOT["FinancialModelingPrep"][i]
             for i in [i.replace(" ", "_") for i in cash.index.str.lower()]
