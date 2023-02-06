@@ -309,7 +309,7 @@ class DashboardsController(BaseController):
                 os.environ["PYTHONPATH"] = str(self.parent_path)
                 self.processes.append(
                     psutil.Popen(
-                        f"{cmd} --server.port {port} '{file}'",
+                        f"{cmd} --server.port {port} {file}",
                         stdout=PIPE,
                         stderr=STDOUT,
                         stdin=PIPE,
