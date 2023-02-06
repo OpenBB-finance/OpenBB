@@ -141,6 +141,7 @@ def display_assets_allocation(
     portfolio_engine: PortfolioEngine,
     limit: int = 10,
     tables: bool = False,
+    recalculate: bool = False,
 ):
     """Display portfolio asset allocation compared to the benchmark
 
@@ -148,16 +149,19 @@ def display_assets_allocation(
     ----------
     portfolio_engine: PortfolioEngine
         Instance of PortfolioEngine class
-    tables: bool
-        Whether to include separate asset allocation tables
     limit: int
         The amount of assets you wish to show, by default this is set to 10
+    tables: bool
+        Whether to include separate asset allocation tables
+    recalculate: bool
+        Whether to recalculate the allocation
     """
 
     combined, portfolio_allocation, benchmark_allocation = get_assets_allocation(
         portfolio_engine=portfolio_engine,
         limit=limit,
         tables=True,
+        recalculate=recalculate,
     )
 
     display_category(
@@ -175,6 +179,7 @@ def display_sectors_allocation(
     portfolio_engine: PortfolioEngine,
     limit: int = 10,
     tables: bool = False,
+    recalculate: bool = False,
 ):
     """Display portfolio sector allocation compared to the benchmark
 
@@ -186,12 +191,15 @@ def display_sectors_allocation(
         The amount of assets you wish to show, by default this is set to 10
     tables: bool
         Whether to include separate asset allocation tables
+    recalculate: bool
+        Whether to recalculate the allocation
     """
 
     combined, portfolio_allocation, benchmark_allocation = get_sectors_allocation(
         portfolio_engine=portfolio_engine,
         limit=limit,
         tables=True,
+        recalculate=recalculate,
     )
 
     display_category(
@@ -209,6 +217,7 @@ def display_countries_allocation(
     portfolio_engine: PortfolioEngine,
     limit: int = 10,
     tables: bool = False,
+    recalculate: bool = False,
 ):
     """Display portfolio country allocation compared to the benchmark
 
@@ -220,12 +229,15 @@ def display_countries_allocation(
         The amount of assets you wish to show, by default this is set to 10
     tables: bool
         Whether to include separate asset allocation tables
+    recalculate: bool
+        Whether to recalculate the allocation
     """
 
     combined, portfolio_allocation, benchmark_allocation = get_countries_allocation(
         portfolio_engine=portfolio_engine,
         limit=limit,
         tables=True,
+        recalculate=recalculate,
     )
 
     display_category(
@@ -243,6 +255,7 @@ def display_regions_allocation(
     portfolio_engine: PortfolioEngine,
     limit: int = 10,
     tables: bool = False,
+    recalculate: bool = False,
 ):
     """Display portfolio region allocation compared to the benchmark
 
@@ -254,12 +267,15 @@ def display_regions_allocation(
         The amount of assets you wish to show, by default this is set to 10
     tables: bool
         Whether to include separate asset allocation tables
+    recalculate: bool
+        Whether to recalculate the allocation
     """
 
     combined, portfolio_allocation, benchmark_allocation = get_regions_allocation(
         portfolio_engine=portfolio_engine,
         limit=limit,
         tables=True,
+        recalculate=recalculate,
     )
 
     display_category(
@@ -455,7 +471,8 @@ def display_yearly_returns(
 def display_monthly_returns(
     portfolio_engine: PortfolioEngine,
     window: str = "all",
-    raw: bool = False,
+    instrument: str = "both",
+    graph: bool = False,
     show_vals: bool = False,
     export: str = "",
     sheet_name: str = None,
@@ -470,27 +487,38 @@ def display_monthly_returns(
         Use `portfolio.load` to create a PortfolioEngine.
     window : str
         interval to compare cumulative returns and benchmark
-    raw : False
-        Display raw data from cumulative return
+    instrument : str
+        Display raw data from cumulative return, default is showing both the portfolio and benchmark in one table
     show_vals : False
         Show values on heatmap
     export : str
         Export certain type of data
+    sheet_name : str
+        Whether to export to a specific sheet name in an Excel file
     external_axes: plt.Axes
         Optional axes to display plot on
     """
 
-    portfolio_returns, benchmark_returns = get_monthly_returns(portfolio_engine, window)
+    portfolio_returns, benchmark_returns, total_monthly_returns = get_monthly_returns(
+        portfolio_engine, window
+    )
 
-    if raw:
+    if instrument == "portfolio":
         print_rich_table(
             portfolio_returns,
             title="Monthly returns - portfolio [%]",
             headers=portfolio_returns.columns,
             show_index=True,
         )
-        console.print("\n")
 
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "mret_portfolio",
+            portfolio_returns,
+            sheet_name,
+        )
+    elif instrument == "benchmark":
         print_rich_table(
             benchmark_returns,
             title="Monthly returns - benchmark [%]",
@@ -498,7 +526,49 @@ def display_monthly_returns(
             show_index=True,
         )
 
-    else:
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "mret_benchmark",
+            benchmark_returns,
+            sheet_name,
+        )
+    elif instrument == "both":
+        # Converts multi-index into readable rich table while keeping the multi-index intact for export
+        total_monthly_returns_rich = total_monthly_returns.copy()
+        total_monthly_returns_rich.insert(
+            0, "Instruments", total_monthly_returns_rich.index.get_level_values(1)
+        )
+        total_monthly_returns_rich.insert(
+            0,
+            "Year",
+            sum(
+                [
+                    [year, "", ""]
+                    for year in total_monthly_returns_rich.index.get_level_values(
+                        0
+                    ).unique()
+                ],
+                [],
+            ),
+        )
+
+        print_rich_table(
+            total_monthly_returns_rich,
+            title="Total Monthly returns [%]",
+            headers=total_monthly_returns_rich.columns,
+            show_index=False,
+        )
+
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "mret_total",
+            total_monthly_returns,
+            sheet_name,
+        )
+
+    if graph or show_vals:
         if external_axes is None:
             _, ax = plt.subplots(
                 2,
@@ -543,14 +613,6 @@ def display_monthly_returns(
 
         if external_axes is None:
             theme.visualize_output()
-
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "mret",
-        portfolio_returns,
-        sheet_name,
-    )
 
 
 @log_start_end(log=logger)

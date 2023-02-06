@@ -72,11 +72,16 @@ def get_assets_allocation(
     pd.DataFrame
         DataFrame with the portfolio's asset allocations
     """
-    benchmark_assets_allocation = pd.DataFrame(benchmark_info["holdings"])
-    benchmark_assets_allocation.rename(
-        columns={"symbol": "Symbol", "holdingPercent": "Benchmark"}, inplace=True
-    )
-    benchmark_assets_allocation.drop(columns=["holdingName"], inplace=True)
+    if "holdings" in benchmark_info:
+        benchmark_assets_allocation = pd.DataFrame(benchmark_info["holdings"])
+        benchmark_assets_allocation.rename(
+            columns={"symbol": "Symbol", "holdingPercent": "Benchmark"}, inplace=True
+        )
+        benchmark_assets_allocation.drop(columns=["holdingName"], inplace=True)
+    else:
+        benchmark_assets_allocation = pd.DataFrame(
+            columns=["Symbol", "Benchmark", "Sector", "Country"]
+        )
 
     portfolio_assets_allocation = (
         portfolio_trades[portfolio_trades["Type"] != "CASH"]
@@ -109,34 +114,37 @@ def get_sectors_allocation(
     Returns
     -------
     pd.DataFrame
-        DataFrame with regional allocations.
+        DataFrame with benchmark allocations.
     pd.DataFrame
-        DataFrame with country allocations
+        DataFrame with portfolio allocations
     """
 
-    benchmark_sectors_allocation = (
-        pd.DataFrame.from_dict(
-            data={
-                sector_name: allocation
-                for sector in benchmark_info["sectorWeightings"]
-                for sector_name, allocation in sector.items()
-            },
-            orient="index",
+    if "sectorWeightings" in benchmark_info:
+        benchmark_sectors_allocation = (
+            pd.DataFrame.from_dict(
+                data={
+                    sector_name: allocation
+                    for sector in benchmark_info["sectorWeightings"]
+                    for sector_name, allocation in sector.items()
+                },
+                orient="index",
+            )
+            .squeeze()
+            .sort_values(ascending=False)
         )
-        .squeeze()
-        .sort_values(ascending=False)
-    )
 
-    # Prettify sector allocations of benchmark to align with Portfolio Excel
-    prettified = [
-        sector.replace("_", " ").title()
-        for sector in benchmark_sectors_allocation.index
-    ]
+        # Prettify sector allocations of benchmark to align with Portfolio Excel
+        prettified = [
+            sector.replace("_", " ").title()
+            for sector in benchmark_sectors_allocation.index
+        ]
 
-    benchmark_sectors_allocation.index = prettified
-    benchmark_sectors_allocation = pd.DataFrame(benchmark_sectors_allocation)
-    benchmark_sectors_allocation.reset_index(inplace=True)
-    benchmark_sectors_allocation.columns = ["Sector", "Benchmark"]
+        benchmark_sectors_allocation.index = prettified
+        benchmark_sectors_allocation = pd.DataFrame(benchmark_sectors_allocation)
+        benchmark_sectors_allocation.reset_index(inplace=True)
+        benchmark_sectors_allocation.columns = ["Sector", "Benchmark"]
+    else:
+        benchmark_sectors_allocation = pd.DataFrame(columns=["Sector", "Benchmark"])
 
     # Define portfolio sector allocation
     # Aggregate sector value for stocks and crypto
@@ -243,9 +251,9 @@ def get_countries_allocation(
     Returns
     -------
     pd.DataFrame
-        DataFrame with regional allocations.
+        DataFrame with benchmark allocations.
     pd.DataFrame
-        DataFrame with country allocations
+        DataFrame with portfolio allocations
     """
 
     benchmark_allocation = get_symbol_allocation(
@@ -305,7 +313,7 @@ def get_symbol_allocation(
     Returns
     -------
     pd.DataFrame
-        Dictionary with country allocations
+        Dictionary with category allocations
     """
 
     if category == "Region":
@@ -332,7 +340,10 @@ def get_symbol_allocation(
     # Collect data from Fidelity about the portfolio composition of the benchmark
     URL = f"https://screener.fidelity.com/ftgw/etf/goto/snapshot/portfolioComposition.jhtml?symbols={symbol}"
     html = request(URL).content
-    df_list = pd.read_html(html)
+    try:
+        df_list = pd.read_html(html)
+    except ValueError:
+        return pd.DataFrame(columns=[category, col_name])
 
     # Find the ones that contain regions and countries
     for index, item in enumerate(df_list):

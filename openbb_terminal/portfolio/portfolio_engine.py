@@ -22,7 +22,8 @@ from openbb_terminal.rich_config import console
 from openbb_terminal.terminal_helper import suppress_stdout
 
 # pylint: disable=E1136,W0201,R0902,C0302
-# pylint: disable=unsupported-assignment-operation,redefined-outer-name,too-many-public-methods, consider-using-f-string
+# pylint: disable=unsupported-assignment-operation,redefined-outer-name
+# pylint: too-many-public-methods, consider-using-f-string,disable=raise-missing-from
 
 logger = logging.getLogger(__name__)
 
@@ -117,7 +118,7 @@ class PortfolioEngine:
         self.tickers_list = None
         self.tickers: Dict[Any, Any] = {}
         self.benchmark_ticker: str = ""
-        self.benchmark_info = None
+        self.benchmark_info: Dict[Any, Any] = {}
         self.historical_trade_data = pd.DataFrame()
 
         # Portfolio
@@ -226,7 +227,7 @@ class PortfolioEngine:
             13. Populate fields Sector, Industry and Country
         """
 
-        p_bar = tqdm(range(14), desc="Preprocessing transactions")
+        p_bar = tqdm(range(14), desc="Preprocessing transactions", leave=False)
 
         try:
             # 0. If optional fields not in the transactions add missing
@@ -495,7 +496,7 @@ class PortfolioEngine:
                         ] = info_list
 
     @log_start_end(log=logger)
-    def set_benchmark(self, symbol: str = "SPY", full_shares: bool = False):
+    def set_benchmark(self, symbol: str = "SPY", full_shares: bool = False) -> bool:
         """Load benchmark into portfolio.
 
         Parameters
@@ -505,11 +506,14 @@ class PortfolioEngine:
         full_shares: bool
             Whether to mimic the portfolio trades exactly (partial shares) or round down the
             quantity to the nearest number
+
+        Returns
+        -------
+        bool
+            True if successful, False otherwise
         """
 
-        p_bar = tqdm(range(4), desc="         Loading benchmark")
-
-        self.benchmark_ticker = symbol
+        p_bar = tqdm(range(4), desc="         Loading benchmark", leave=False)
 
         self.benchmark_historical_prices = yf.download(
             symbol,
@@ -518,6 +522,15 @@ class PortfolioEngine:
             progress=False,
             ignore_tz=True,
         )["Adj Close"]
+
+        if self.benchmark_historical_prices.empty:
+            console.print(
+                f"\n[red]Could not download benchmark data for {symbol}."
+                " Choose another symbol.\n[/red]"
+            )
+            return False
+
+        self.benchmark_ticker = symbol
 
         p_bar.n += 1
         p_bar.refresh()
@@ -538,11 +551,6 @@ class PortfolioEngine:
         p_bar.refresh()
 
         self.benchmark_returns = self.benchmark_historical_prices.pct_change().dropna()
-        self.benchmark_info = yf.Ticker(symbol).info
-
-        p_bar.n += 1
-        p_bar.refresh()
-
         (
             self.portfolio_returns,
             self.benchmark_returns,
@@ -550,6 +558,21 @@ class PortfolioEngine:
 
         p_bar.n += 1
         p_bar.refresh()
+
+        try:
+            self.benchmark_info = dict(yf.Ticker(symbol).info)
+            self.benchmark_info["symbol"] = symbol
+        except Exception as _:  # noqa
+            console.print(
+                f"[red]\n\nCould not get info for {symbol}."
+                " This affects 'alloc' command.[/red]\n"
+            )
+            return False
+
+        p_bar.n += 1
+        p_bar.refresh()
+
+        return True
 
     @log_start_end(log=logger)
     def __mimic_trades_for_benchmark(self, full_shares: bool = False):
@@ -650,7 +673,9 @@ class PortfolioEngine:
             whether to use close or adjusted close prices
         """
 
-        p_bar = tqdm(range(len(self.tickers)), desc="        Loading price data")
+        p_bar = tqdm(
+            range(len(self.tickers)), desc="        Loading price data", leave=False
+        )
 
         for ticker_type, data in self.tickers.items():
             price_data = yf.download(
@@ -781,7 +806,7 @@ class PortfolioEngine:
                 from any sales during the period [Cash Inflow(t)].
         """
 
-        p_bar = tqdm(range(1), desc="       Calculating returns")
+        p_bar = tqdm(range(1), desc="       Calculating returns", leave=False)
 
         trade_data = self.historical_trade_data
 
@@ -905,6 +930,12 @@ class PortfolioEngine:
         recalculate: bool
             Flag to force recalculate allocation if already exists
         """
+
+        if not self.benchmark_info:
+            return
+
+        if self.portfolio_trades.empty:
+            return
 
         if category == "Asset":
             if (
