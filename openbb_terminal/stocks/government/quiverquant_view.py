@@ -5,19 +5,19 @@ import logging
 import os
 from typing import List, Optional
 
+import matplotlib
 import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
-import matplotlib
 
-from openbb_terminal.config_terminal import theme
 from openbb_terminal.config_plot import PLOT_DPI
+from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
+    is_valid_axes_count,
     plot_autoscale,
     print_rich_table,
-    is_valid_axes_count,
 )
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.government import quiverquant_model
@@ -284,7 +284,6 @@ def display_last_contracts(
         title="Last Government Contracts",
     )
     if sum_contracts:
-
         # This plot has 1 axis
         if not external_axes:
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
@@ -459,7 +458,6 @@ def display_contracts(
         )
 
     if df_contracts.Amount.abs().sum() != 0:
-
         # This plot has 1 axis
         if not external_axes:
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
@@ -724,7 +722,6 @@ def display_top_lobbying(
             title="Top Lobbying Tickers",
         )
     else:
-
         # This plot has 1 axis
         if not external_axes:
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)

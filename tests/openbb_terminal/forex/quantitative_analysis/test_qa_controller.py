@@ -9,7 +9,6 @@ import pytest
 from openbb_terminal.forex.quantitative_analysis import qa_controller
 from tests.test_helpers import no_dfs
 
-
 DF_PAIR = pd.DataFrame.from_dict(
     data={
         pd.Timestamp("2020-11-30 00:00:00"): {

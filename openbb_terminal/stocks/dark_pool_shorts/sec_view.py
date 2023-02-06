@@ -3,21 +3,21 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import List, Optional
 from datetime import datetime, timedelta
+from typing import List, Optional
 
 import pandas as pd
 from matplotlib import pyplot as plt
 
+from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
-    print_rich_table,
-    plot_autoscale,
     is_valid_axes_count,
+    plot_autoscale,
+    print_rich_table,
 )
-from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.stocks import stocks_helper
 from openbb_terminal.stocks.dark_pool_shorts import sec_model
 

@@ -1,20 +1,20 @@
 """Portfolio Helper"""
 __docformat__ = "numpy"
 
-import logging
-from datetime import datetime, date
-import os
-from pathlib import Path
 import csv
+import logging
+import os
+from datetime import date, datetime
+from pathlib import Path
 from typing import List
+
+import pandas as pd
+import yfinance as yf
 from dateutil.relativedelta import relativedelta
 
-import yfinance as yf
-import pandas as pd
-
 from openbb_terminal.core.config.paths import USER_PORTFOLIO_DATA_DIRECTORY
-from openbb_terminal.rich_config import console
 from openbb_terminal.portfolio.statics import REGIONS
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -61,7 +61,7 @@ def is_ticker(ticker: str) -> bool:
         Whether the string is a ticker
     """
     item = yf.Ticker(ticker)
-    return "previousClose" in item.info
+    return "previous_close" in item.fast_info
 
 
 # TODO: Is this being used anywhere?

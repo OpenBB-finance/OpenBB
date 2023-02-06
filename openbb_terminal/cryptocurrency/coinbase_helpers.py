@@ -2,17 +2,18 @@
 __docformat__ = "numpy"
 
 import argparse
-import binascii
-import logging
-
-from typing import Optional, Any, Union
-import hmac
-import hashlib
-import time
 import base64
-import requests
+import binascii
+import hashlib
+import hmac
+import logging
+import time
+from typing import Any, Optional, Union
+
 from requests.auth import AuthBase
+
 import openbb_terminal.config_terminal as cfg
+from openbb_terminal.helper_funcs import request
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -26,9 +27,14 @@ class CoinbaseProAuth(AuthBase):
         self.secret_key = secret_key
         self.passphrase = passphrase
 
-    def __call__(self, request):
+    def __call__(self, request_coinbase):
         timestamp = str(time.time())
-        message = timestamp + request.method + request.path_url + (request.body or "")
+        message = (
+            timestamp
+            + request_coinbase.method
+            + request_coinbase.path_url
+            + (request_coinbase.body or "")
+        )
         message = message.encode("ascii")
 
         try:
@@ -39,7 +45,7 @@ class CoinbaseProAuth(AuthBase):
             logger.exception(str(e))
             signature_b64 = ""
 
-        request.headers.update(
+        request_coinbase.headers.update(
             {
                 "CB-ACCESS-SIGN": signature_b64,
                 "CB-ACCESS-TIMESTAMP": timestamp,
@@ -48,7 +54,7 @@ class CoinbaseProAuth(AuthBase):
                 "Content-Type": "application/json",
             }
         )
-        return request
+        return request_coinbase
 
 
 class CoinbaseRequestException(Exception):
@@ -119,7 +125,7 @@ def make_coinbase_request(
     """
 
     url = "https://api.pro.coinbase.com"
-    response = requests.get(url + endpoint, params=params, auth=auth)
+    response = request(url + endpoint, params=params, auth=auth)
 
     if not 200 <= response.status_code < 300:
         raise CoinbaseApiException(f"Invalid Authentication: {response.text}")

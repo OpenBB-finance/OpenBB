@@ -15,12 +15,9 @@ from openbb_terminal.common import feedparser_view, newsapi_view
 from openbb_terminal.common.quantitative_analysis import qa_view
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.stocks import cboe_view
-from openbb_terminal.stocks.fundamental_analysis import fmp_view
-
 from openbb_terminal.helper_funcs import (
-    EXPORT_ONLY_RAW_DATA_ALLOWED,
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
+    EXPORT_ONLY_RAW_DATA_ALLOWED,
     export_data,
     valid_date,
 )
@@ -31,8 +28,8 @@ from openbb_terminal.rich_config import (
     console,
     translate,
 )
-from openbb_terminal.stocks import stocks_helper
-from openbb_terminal.stocks import stocks_view
+from openbb_terminal.stocks import cboe_view, stocks_helper, stocks_view
+from openbb_terminal.stocks.fundamental_analysis import fmp_view
 
 # pylint: disable=R1710,import-outside-toplevel,R0913,R1702,no-member
 
@@ -200,7 +197,9 @@ class StocksController(StockBaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="search",
-            description="Show companies matching the search query",
+            description="Show companies matching the search query, country, sector, industry and/or exchange. "
+            "Note that by default only the United States exchanges are searched which tend to contain the most "
+            "extensive data for each company. To search all exchanges use the --all-exchanges flag.",
         )
         parser.add_argument(
             "-q",
@@ -255,6 +254,15 @@ class StocksController(StockBaseController):
             dest="exchange_country",
             help="Search by a specific exchange country to find stocks matching the criteria",
         )
+
+        parser.add_argument(
+            "-a",
+            "--all-exchanges",
+            default=False,
+            action="store_true",
+            dest="all_exchanges",
+            help="Whether to search all exchanges, without this option only the United States market is searched.",
+        )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-q")
         ns_parser = self.parse_known_args_and_warn(
@@ -279,6 +287,7 @@ class StocksController(StockBaseController):
                 sector=sector,
                 industry=industry,
                 exchange_country=exchange,
+                all_exchanges=ns_parser.all_exchanges,
                 limit=ns_parser.limit,
                 export=ns_parser.export,
                 sheet_name=" ".join(ns_parser.sheet_name)
@@ -551,7 +560,6 @@ class StocksController(StockBaseController):
                         sources=ns_parser.sources,
                     )
                 elif ns_parser.source == "Feedparser":
-
                     feedparser_view.display_news(
                         term=d_stock["shortName"].replace(" ", "+")
                         if "shortName" in d_stock

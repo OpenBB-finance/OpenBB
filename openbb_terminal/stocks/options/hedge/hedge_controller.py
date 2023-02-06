@@ -15,11 +15,11 @@ from openbb_terminal.helper_funcs import print_rich_table
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import MenuText, console
+from openbb_terminal.stocks import stocks_helper
 from openbb_terminal.stocks.options.hedge import hedge_view
 from openbb_terminal.stocks.options.hedge.hedge_model import add_hedge_option
 from openbb_terminal.stocks.options.yfinance_model import get_option_chain, get_price
 from openbb_terminal.stocks.options.yfinance_view import plot_payoff
-from openbb_terminal.stocks import stocks_helper
 
 # pylint: disable=R0902
 

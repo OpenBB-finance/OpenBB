@@ -6,14 +6,11 @@ import os
 
 from openbb_terminal.cryptocurrency.dataframe_helpers import (
     lambda_very_long_number_formatter,
-)
-from openbb_terminal.cryptocurrency.dataframe_helpers import (
     prettify_column_names,
 )
 from openbb_terminal.cryptocurrency.onchain import bitquery_model
-from openbb_terminal.decorators import log_start_end
+from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
-from openbb_terminal.decorators import check_api_key
 
 logger = logging.getLogger(__name__)
 
@@ -264,7 +261,6 @@ def display_ethereum_unique_senders(
 
     df = bitquery_model.get_ethereum_unique_senders(interval, limit, sortby, ascend)
     if not df.empty:
-
         column_names = ["uniqueSenders", "transactions", "maximumGasPrice"]
         column_names = prettify_column_names(column_names)
 
@@ -391,7 +387,6 @@ def display_spread_for_crypto_pair(
         symbol=symbol, to_symbol=to_symbol, limit=limit, sortby=sortby, ascend=ascend
     )
     if not df.empty:
-
         print_rich_table(
             df,
             headers=list(df.columns),

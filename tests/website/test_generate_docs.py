@@ -1,11 +1,10 @@
 from typing import Optional
+
 import pytest
 
 try:
-    from website import (
-        generate_sdk_markdown as gen_sdk,
-        generate_terminal_markdown as gen_term,
-    )
+    from website import generate_sdk_markdown as gen_sdk
+    from website import generate_terminal_markdown as gen_term
 except ImportError:
     pytest.skip(allow_module_level=True)
 

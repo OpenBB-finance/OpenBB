@@ -16,9 +16,9 @@ from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_FIGURES_ALLOWED,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
+    list_from_str,
     parse_and_split_input,
     valid_date,
-    list_from_str,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
@@ -37,18 +37,18 @@ from openbb_terminal.stocks.options import (
     yfinance_view,
 )
 from openbb_terminal.stocks.options.hedge import hedge_controller
+from openbb_terminal.stocks.options.options_view import (
+    display_chains,
+    display_expiry_dates,
+    plot_oi,
+    plot_voi,
+    plot_vol,
+)
 from openbb_terminal.stocks.options.pricing import pricing_controller
 from openbb_terminal.stocks.options.screen import (
     screener_controller,
     syncretism_model,
     syncretism_view,
-)
-from openbb_terminal.stocks.options.options_view import (
-    plot_vol,
-    plot_oi,
-    plot_voi,
-    display_expiry_dates,
-    display_chains,
 )
 
 # pylint: disable=R1710,C0302,R0916,R0902
@@ -141,6 +141,7 @@ class OptionsController(BaseController):
             else:
                 console.print("Loaded expiry dates from Tradier")
                 self.expiry_dates = tradier_model.option_expirations(self.ticker)
+                self.source = "Tradier"
 
             self.set_option_chain()
             self.set_current_price()
@@ -217,7 +218,6 @@ class OptionsController(BaseController):
     def update_runtime_choices(self):
         """Update runtime choices"""
         if session and obbff.USE_PROMPT_TOOLKIT:
-
             if not self.chain.empty:
                 strike = set(self.chain["strike"])
 
@@ -1251,9 +1251,6 @@ class OptionsController(BaseController):
                             y=ns_parser.y,
                             custom=ns_parser.custom,
                             export=ns_parser.export,
-                            sheet_name=" ".join(ns_parser.sheet_name)
-                            if ns_parser.sheet_name
-                            else None,
                         )
                 else:
                     console.print("No expiry loaded. First use `exp {expiry date}`")
@@ -1286,9 +1283,6 @@ class OptionsController(BaseController):
             yfinance_view.display_vol_surface(
                 self.ticker,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
                 z=ns_parser.z,
             )
 

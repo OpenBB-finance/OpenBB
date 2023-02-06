@@ -4,13 +4,14 @@ __docformat__ = "numpy"
 import logging
 import os
 from typing import List, Optional
+
 import squarify
+from matplotlib import cm, ticker
 from matplotlib import pyplot as plt
-from matplotlib import ticker
-from matplotlib import cm
 from pandas.plotting import register_matplotlib_converters
-from openbb_terminal import config_terminal as cfg
+
 import openbb_terminal.cryptocurrency.overview.pycoingecko_model as gecko
+from openbb_terminal import config_terminal as cfg
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.cryptocurrency.dataframe_helpers import (
@@ -19,9 +20,9 @@ from openbb_terminal.cryptocurrency.dataframe_helpers import (
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
+    is_valid_axes_count,
     plot_autoscale,
     print_rich_table,
-    is_valid_axes_count,
 )
 from openbb_terminal.rich_config import console
 
@@ -382,7 +383,6 @@ def display_stablecoins(
     df = gecko.get_stable_coins(limit, sortby=sortby, ascend=ascend)
 
     if not df.empty:
-
         total_market_cap = int(df["Market_Cap_[$]"].sum())
         df.columns = df.columns.str.replace("_", " ")
 
@@ -532,7 +532,6 @@ def display_exchanges(
     df = gecko.get_exchanges(sortby, ascend)
 
     if not df.empty:
-
         if links is True:
             df = df[["Rank", "Name", "Url"]]
         else:
@@ -709,7 +708,6 @@ def display_derivatives(
     df = gecko.get_derivatives(sortby=sortby, ascend=ascend)
 
     if not df.empty:
-
         print_rich_table(
             df.head(limit),
             headers=list(df.columns),

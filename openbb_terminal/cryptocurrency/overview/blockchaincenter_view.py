@@ -1,13 +1,13 @@
 """Blockchain Center View"""
 import logging
 import os
-from typing import List, Optional
 from datetime import datetime
+from typing import List, Optional
 
 from matplotlib import pyplot as plt
 
-from openbb_terminal.config_terminal import theme
 from openbb_terminal.config_plot import PLOT_DPI
+from openbb_terminal.config_terminal import theme
 from openbb_terminal.cryptocurrency.overview.blockchaincenter_model import (
     DAYS,
     get_altcoin_index,
@@ -15,8 +15,8 @@ from openbb_terminal.cryptocurrency.overview.blockchaincenter_model import (
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
-    plot_autoscale,
     is_valid_axes_count,
+    plot_autoscale,
 )
 from openbb_terminal.rich_config import console
 
@@ -60,7 +60,6 @@ def display_altcoin_index(
         if df.empty:
             console.print("\nError scraping blockchain central\n")
         else:
-
             # This plot has 1 axis
             if not external_axes:
                 _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)

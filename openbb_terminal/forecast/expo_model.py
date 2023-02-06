@@ -3,21 +3,20 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import Union, Optional, List, Tuple
-
 import warnings
-from statsmodels.tools.sm_exceptions import ConvergenceWarning
-from numpy import ndarray
+from typing import List, Optional, Tuple, Union
+
 import pandas as pd
 from darts import TimeSeries
+from darts.metrics import mape
 from darts.models import ExponentialSmoothing
 from darts.utils.utils import ModelMode, SeasonalityMode
-from darts.metrics import mape
+from numpy import ndarray
+from statsmodels.tools.sm_exceptions import ConvergenceWarning
 
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.rich_config import console
 from openbb_terminal.forecast import helpers
-
+from openbb_terminal.rich_config import console
 
 warnings.simplefilter("ignore", ConvergenceWarning)
 
@@ -48,7 +47,6 @@ def get_expo_data(
     Optional[Union[float, ndarray]],
     ExponentialSmoothing,
 ]:
-
     """Performs Probabilistic Exponential Smoothing forecasting
     This is a wrapper around statsmodels Holt-Winters' Exponential Smoothing;
     we refer to this link for the original and more complete documentation of the parameters.

@@ -5,8 +5,10 @@ import json
 import logging
 import os
 from typing import List
+
 import pandas as pd
 from pycoingecko import CoinGeckoAPI
+
 from openbb_terminal.decorators import log_start_end
 
 logger = logging.getLogger(__name__)
@@ -131,7 +133,6 @@ def get_coins(
     sortby: str = "Symbol",
     ascend: bool = False,
 ) -> pd.DataFrame:
-
     """Get N coins from CoinGecko [Source: CoinGecko]
 
     Parameters
@@ -248,7 +249,6 @@ def get_gainers_or_losers(
     )
 
     if sortby in GAINERS_LOSERS_COLUMNS:
-
         sorted_df = sorted_df[
             (sorted_df["Volume [$]"].notna()) & (sorted_df["Market Cap"].notna())
         ]

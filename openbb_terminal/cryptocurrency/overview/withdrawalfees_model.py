@@ -4,11 +4,10 @@ import math
 from typing import Any, List
 
 import pandas as pd
-import requests
 from bs4 import BeautifulSoup
 
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import get_user_agent
+from openbb_terminal.helper_funcs import get_user_agent, request
 
 logger = logging.getLogger(__name__)
 
@@ -134,7 +133,7 @@ def get_overall_withdrawal_fees(limit: int = 100) -> pd.DataFrame:
 
     COINS_PER_PAGE = 100
     withdrawal_fees_homepage = BeautifulSoup(
-        requests.get(
+        request(
             "https://withdrawalfees.com/",
             headers={"User-Agent": get_user_agent()},
         ).text,
@@ -157,7 +156,7 @@ def get_overall_withdrawal_fees(limit: int = 100) -> pd.DataFrame:
     if num_pages > 1:
         for idx in range(2, num_pages + 1):
             withdrawal_fees_homepage = BeautifulSoup(
-                requests.get(
+                request(
                     f"https://withdrawalfees.com/coins/page/{idx}",
                     headers={"User-Agent": get_user_agent()},
                 ).text,
@@ -189,7 +188,7 @@ def get_overall_exchange_withdrawal_fees() -> pd.DataFrame:
         Exchange, Coins, Lowest, Average, Median, Highest
     """
     exchange_withdrawal_fees = BeautifulSoup(
-        requests.get(
+        request(
             "https://withdrawalfees.com/exchanges",
             headers={"User-Agent": get_user_agent()},
         ).text,
@@ -222,7 +221,7 @@ def get_crypto_withdrawal_fees(
         - pd.DataFrame: Exchange, Withdrawal Fee, Minimum Withdrawal Amount
     """
     crypto_withdrawal_fees = BeautifulSoup(
-        requests.get(
+        request(
             f"https://withdrawalfees.com/coins/{symbol}",
             headers={"User-Agent": get_user_agent()},
         ).text,

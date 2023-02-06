@@ -1,19 +1,18 @@
 """Cramer Model"""
 __docformat__ = "numpy"
 
-import os
 import logging
+import os
 import re
 
-import pandas as pd
-import requests
+import certifi
 import numpy as np
+import pandas as pd
 import yfinance as yf
 from bs4 import BeautifulSoup
-import certifi
 
 from openbb_terminal.decorators import log_start_end
-
+from openbb_terminal.helper_funcs import request
 
 logger = logging.getLogger(__name__)
 
@@ -40,8 +39,9 @@ def get_cramer_daily(inverse: bool = True) -> pd.DataFrame:
     link = (
         "https://madmoney.thestreet.com/screener/index.cfm?showview=stocks&showrows=500"
     )
-    r = requests.post(
+    r = request(
         link,
+        method="POST",
         headers={
             "Content-Type": "application/x-www-form-urlencoded",
             "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "

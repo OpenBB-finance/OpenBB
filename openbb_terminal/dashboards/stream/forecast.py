@@ -1,13 +1,15 @@
-from datetime import timedelta, datetime, date
-from unittest.mock import patch
-from typing import Callable, Any
+from datetime import date, datetime, timedelta
 from inspect import signature
-import streamlit as st
+from typing import Any, Callable
+from unittest.mock import patch
+
 import pandas as pd
+import streamlit as st
 import yfinance as yf
-from openbb_terminal.sdk import openbb
+
 from openbb_terminal.forecast import helpers
 from openbb_terminal.rich_config import console
+from openbb_terminal.sdk import openbb
 
 st.set_page_config(layout="wide")
 
@@ -231,7 +233,6 @@ class Handler:
         ]
 
     def run(self):
-
         st.title("OpenBB Forecasting")  # Title does not like being in a column
 
         r1c1, r1c2, r1c3, r1c4, r1c5 = st.columns([2, 1, 1, 1, 1])

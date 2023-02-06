@@ -1,7 +1,7 @@
 ---
 title: Cryptocurrency
-keywords: ["crypto", "web3", "nft", "blockchain", "cryptocurrency"]
-excerpt: "The Introduction to Cryptocurrency explains how to use the Cryptocurrency and provides a brief description of its sub-menus"
+keywords: [crypto, web3, nft, blockchain, cryptocurrency]
+description: The Introduction to Cryptocurrency explains how to use the Cryptocurrency and provides a brief description of its sub-menus
 ---
 
 The Cryptocurrency menu allows you to discover trending cryptocurrency (<a href="/terminal/guides/intros/crypto/disc/" target="_blank" rel="noreferrer noopener">disc</a>). Additionally, you can also perform research of a specific coin (<a href="/terminal/guides/intros/crypto/dd" target="_blank" rel="noreferrer noopener">dd</a>),

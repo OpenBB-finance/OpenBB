@@ -2,15 +2,14 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import List, Tuple
 import pathlib
+from typing import List, Tuple
 
 import pandas as pd
-import requests
 from bs4 import BeautifulSoup
 
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import get_user_agent
+from openbb_terminal.helper_funcs import get_user_agent, request
 
 logger = logging.getLogger(__name__)
 
@@ -56,7 +55,7 @@ def get_etf_overview(symbol: str) -> pd.DataFrame:
     >>> from openbb_terminal.sdk import openbb
     >>> openbb.etf.overview("SPY")
     """
-    r = requests.get(
+    r = request(
         f"https://stockanalysis.com/etf/{symbol}",
         headers={"User-Agent": get_user_agent()},
     )
@@ -97,7 +96,7 @@ def get_etf_holdings(symbol: str) -> pd.DataFrame:
     """
 
     link = f"https://stockanalysis.com/etf/{symbol}/holdings/"
-    r = requests.get(link, headers={"User-Agent": get_user_agent()})
+    r = request(link, headers={"User-Agent": get_user_agent()})
     try:
         df = pd.read_html(r.content)[0]
         df["Symbol"] = df["Symbol"].fillna("N/A")

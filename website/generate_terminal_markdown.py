@@ -12,8 +12,8 @@ from openbb_terminal.rich_config import console
 from website.controller_doc_classes import (
     ControllerDoc,
     LoadControllersDoc,
-    sub_names_full as subnames,
 )
+from website.controller_doc_classes import sub_names_full as subnames
 
 website_path = Path(__file__).parent.absolute()
 USER_PATH = (f"{USER_DATA_DIRECTORY}", "`USER_DATA_DIRECTORY`")
@@ -47,7 +47,6 @@ def existing_markdown_file_examples(
     examples_dict: Dict[str, Union[str, List[str]]] = {}
 
     if os.path.exists(website_path / examples_path):
-
         with open(website_path / examples_path, encoding="utf-8") as f:
             content = f.read()
 
@@ -72,14 +71,12 @@ def process_cmd_parsers(ctrl: ControllerDoc) -> List[Dict[str, str]]:
 
     commands = []
     for cmd, parser in ctrl.cmd_parsers.items():
-
         actions = []
         for action in parser._actions:  # pylint: disable=protected-access
             if action.dest == "help":
                 continue
 
             if (default := action.default) is not None:
-
                 if isinstance(default, list):
                     default = ", ".join([str(x) for x in default])
 
@@ -90,10 +87,8 @@ def process_cmd_parsers(ctrl: ControllerDoc) -> List[Dict[str, str]]:
                         default = "datetime.now()"
 
             if (choices := action.choices) is not None:
-
                 # We do this so that range(0, N) objects are not converted to a list
                 if isinstance(choices, (dict, type({}.keys()), list)):
-
                     listdict: list = []
                     for choice in choices:
                         # We check for nested dicts
@@ -118,9 +113,13 @@ def process_cmd_parsers(ctrl: ControllerDoc) -> List[Dict[str, str]]:
                 # We do this to fix multiline docstrings for the markdown
                 doc = " ".join(doc.split()).replace(*USER_PATH)
 
+            if (flags := action.option_strings) is not None:
+                flags = "  ".join(flags)
+
             actions.append(
                 {
                     "opt_name": action.dest if action.dest else "",
+                    "flags": flags if flags else "",
                     "doc": doc if doc else "",
                     "default": f"{default}".replace(*USER_PATH),
                     "optional": not action.required,
@@ -175,14 +174,18 @@ description: OpenBB Terminal Function
 
     markdown += "---\n\n## Parameters\n\n"
     if cmd_meta["actions"]:
-        markdown += "| Name | Description | Default | Optional | Choices |\n"
-        markdown += "| ---- | ----------- | ------- | -------- | ------- |\n"
+        markdown += (
+            "| Name | Parameter | Description | Default | Optional | Choices |\n"
+        )
+        markdown += (
+            "| ---- | --------- | ----------- | ------- | -------- | ------- |\n"
+        )
 
         for param in cmd_meta["actions"]:
             if isinstance(param, dict):
                 markdown += (
-                    f"| {param['opt_name']} | {param['doc']} | {param['default']} "
-                    f"| {param['optional']} | {param['choices']} |\n"
+                    f"| {param['opt_name']} | {param['flags']} | {param['doc']} "
+                    f"| {param['default']} | {param['optional']} | {param['choices']} |\n"
                 )
     else:
         markdown += "This command has no parameters\n\n"

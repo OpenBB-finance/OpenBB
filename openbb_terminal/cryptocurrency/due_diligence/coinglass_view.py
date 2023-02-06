@@ -6,20 +6,19 @@ import pandas as pd
 from matplotlib import pyplot as plt
 from matplotlib import ticker
 
-from openbb_terminal.config_terminal import theme
 from openbb_terminal import config_plot as cfgPlot
+from openbb_terminal.config_terminal import theme
 from openbb_terminal.cryptocurrency.due_diligence.coinglass_model import (
-    get_liquidations,
     get_funding_rate,
+    get_liquidations,
     get_open_interest_per_exchange,
 )
-from openbb_terminal.decorators import check_api_key
-from openbb_terminal.decorators import log_start_end
+from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
+    is_valid_axes_count,
     lambda_long_number_format,
     plot_autoscale,
-    is_valid_axes_count,
 )
 
 logger = logging.getLogger(__name__)
@@ -128,7 +127,6 @@ def plot_data(
     ylabel: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
-
     # This plot has 2 axes
     if not external_axes:
         _, axes = plt.subplots(
@@ -180,7 +178,6 @@ def plot_data_bar(
     ylabel: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
-
     # This plot has 2 axes
     if not external_axes:
         _, axes = plt.subplots(

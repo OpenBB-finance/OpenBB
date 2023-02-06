@@ -1,14 +1,15 @@
 """Shroom model"""
-import logging
-from typing import List
 import json
+import logging
 import time
-import pandas as pd
-import requests
+from typing import List
 
-from openbb_terminal.rich_config import console
-from openbb_terminal.decorators import log_start_end, check_api_key
+import pandas as pd
+
 from openbb_terminal import config_terminal as cfg
+from openbb_terminal.decorators import check_api_key, log_start_end
+from openbb_terminal.helper_funcs import request
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -23,8 +24,9 @@ PAGE_NUMBER = 1
 
 
 def create_query(query: str):
-    r = requests.post(
+    r = request(
         "https://node-api.flipsidecrypto.com/queries",
+        method="POST",
         data=json.dumps({"sql": query, "ttlMinutes": TTL_MINUTES}),
         headers={
             "Accept": "application/json",
@@ -42,7 +44,7 @@ def create_query(query: str):
 
 
 def get_query_results(token):
-    r = requests.get(
+    r = request(
         f"https://node-api.flipsidecrypto.com/queries/{token}?pageNumber={PAGE_NUMBER}&pageSize={PAGE_SIZE}",
         headers={
             "Accept": "application/json",
@@ -173,7 +175,6 @@ def get_total_value_locked(
     symbol: str = "USDC",
     interval: int = 1,
 ) -> pd.DataFrame:
-
     """
     Get total value locked for a user/name address and symbol
     TVL measures the total amount of a token that is locked in a contract.

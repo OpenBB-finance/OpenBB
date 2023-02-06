@@ -4,7 +4,7 @@
 import pytest
 
 # IMPORTATION INTERNAL
-from openbb_terminal.stocks.fundamental_analysis import dcf_view, dcf_static
+from openbb_terminal.stocks.fundamental_analysis import dcf_static, dcf_view
 
 
 @pytest.fixture(scope="module")

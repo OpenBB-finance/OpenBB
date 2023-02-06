@@ -1,25 +1,25 @@
 """Yahoo Finance view"""
 __docformat__ = "numpy"
 
-from typing import Optional, List
-from itertools import cycle
 import logging
 import os
+from itertools import cycle
+from typing import List, Optional
 
 from matplotlib import pyplot as plt
 
-from openbb_terminal.config_terminal import theme
 from openbb_terminal.config_plot import PLOT_DPI
+from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.futures import yfinance_model
+from openbb_terminal.futures.futures_helper import make_white
 from openbb_terminal.helper_funcs import (
     export_data,
+    is_valid_axes_count,
     plot_autoscale,
     print_rich_table,
-    is_valid_axes_count,
 )
 from openbb_terminal.rich_config import console
-from openbb_terminal.futures.futures_helper import make_white
 
 logger = logging.getLogger(__name__)
 
@@ -118,7 +118,6 @@ def display_historical(
         return
 
     if raw or len(historicals) == 1:
-
         if not raw and len(historicals) == 1:
             console.print(
                 "\nA single datapoint is not enough to depict a chart, data is presented below."
@@ -133,7 +132,6 @@ def display_historical(
         console.print()
 
     else:
-
         # This plot has 1 axis
         if not external_axes:
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
