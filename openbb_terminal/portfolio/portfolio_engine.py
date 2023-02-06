@@ -720,7 +720,7 @@ class PortfolioEngine:
 
         # Make historical prices columns a multi-index. This helps the merging.
         self.portfolio_historical_prices.columns = pd.MultiIndex.from_product(
-            [["Close"], self.tickers_list]
+            [["Close"], self.portfolio_historical_prices.columns]
         )
 
         trade_data = pd.merge(
