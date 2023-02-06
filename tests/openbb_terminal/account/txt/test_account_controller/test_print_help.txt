@@ -4,7 +4,7 @@ Cloud storage of keys, settings and feature flags:
     clear              Clear data from cloud
 
 Cloud storage of routines:
-    list               List available routines in the cloud
+    list               List available routines
     upload             Upload routine
     download           Download routine
     delete             Delete routine
