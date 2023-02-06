@@ -158,7 +158,6 @@ def fetch_user_configs(
     Optional[requests.Response]
         The response from the get request.
     """
-
     token_type = session.get("token_type", "")
     token = session.get("access_token", "")
 
@@ -212,7 +211,6 @@ def patch_user_configs(
     Optional[requests.Response]
         The response from the patch request.
     """
-
     if type_ not in ["keys", "settings"]:
         console.print("[red]\nInvalid patch type.[/red]")
         return None
@@ -312,7 +310,6 @@ def upload_routine(
     timeout : int
         The timeout, by default TIMEOUT
     """
-
     data = {
         "name": name,
         "description": description,
@@ -349,8 +346,24 @@ def download_routine(
     base_url=BASE_URL,
     timeout: int = TIMEOUT,
 ) -> Optional[requests.Response]:
-    """Download a routine from the server."""
+    """Download a routine from the server.
 
+    Parameters
+    ----------
+    auth_header : str
+        The authorization header, e.g. "Bearer <token>".
+    name : str
+        The name of the routine.
+    base_url : str
+        The base url, by default BASE_URL
+    timeout : int
+        The timeout, by default TIMEOUT
+
+    Returns
+    -------
+    Optional[requests.Response]
+        The response from the get request.
+    """
     try:
         response = requests.get(
             headers={"Authorization": auth_header},
@@ -379,8 +392,24 @@ def delete_routine(
     base_url=BASE_URL,
     timeout: int = TIMEOUT,
 ) -> Optional[requests.Response]:
-    """Delete a routine from the server."""
+    """Delete a routine from the server.
 
+    Parameters
+    ----------
+    auth_header : str
+        The authorization header, e.g. "Bearer <token>".
+    name : str
+        The name of the routine.
+    base_url : str
+        The base url, by default BASE_URL
+    timeout : int
+        The timeout, by default TIMEOUT
+
+    Returns
+    -------
+    Optional[requests.Response]
+        The response from the delete request.
+    """
     try:
         response = requests.delete(
             headers={"Authorization": auth_header},
@@ -412,8 +441,26 @@ def list_routines(
     base_url=BASE_URL,
     timeout: int = TIMEOUT,
 ) -> Optional[requests.Response]:
-    """List all routines from the server."""
+    """List all routines from the server.
 
+    Parameters
+    ----------
+    auth_header : str
+        The authorization header, e.g. "Bearer <token>".
+    page : int
+        The page number.
+    size : int
+        The number of routines per page.
+    base_url : str
+        The base url, by default BASE_URL
+    timeout : int
+        The timeout, by default TIMEOUT
+
+    Returns
+    -------
+    Optional[requests.Response]
+        The response from the get request.
+    """
     fields = "name%2Cdescription"
 
     try:
