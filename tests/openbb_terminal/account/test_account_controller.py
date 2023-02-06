@@ -395,3 +395,19 @@ def test_call_clear(mocker, input_value):
     else:
         mock_clear_user_configs.assert_not_called()
     assert controller.queue == []
+
+
+def test_call_list():
+    pass
+
+
+def test_call_upload():
+    pass
+
+
+def test_call_download():
+    pass
+
+
+def test_call_delete():
+    pass
