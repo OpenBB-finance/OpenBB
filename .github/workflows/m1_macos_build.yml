@@ -56,7 +56,7 @@ jobs:
 
       - name: Run Poetry
         run: |
-          conda activate "build_env"
+          pip list
           poetry install -E installer -E all
 
       - name: Install Specific Papermill
