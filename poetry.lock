@@ -858,14 +858,14 @@ exceptiongroup = {version = "*", markers = "python_version < \"3.11\""}
 
 [[package]]
 name = "ccxt"
-version = "2.7.44"
+version = "2.7.52"
 description = "A JavaScript / Python / PHP cryptocurrency trading library with support for 130+ exchanges"
 category = "main"
 optional = false
 python-versions = "*"
 files = [
-    {file = "ccxt-2.7.44-py2.py3-none-any.whl", hash = "sha256:5631d5e00632fa396bf61419096d8db5ef895af8fc4f5856849f27ec465a9d2d"},
-    {file = "ccxt-2.7.44.tar.gz", hash = "sha256:8c134b322b07430b3ac36619d73a05e605ac7a5b9ccc3496e0939e882f57c6b4"},
+    {file = "ccxt-2.7.52-py2.py3-none-any.whl", hash = "sha256:832841376914d82d9d53190ae554a194dc352f1ebbfc5a033ab8da8e2f6c6fe5"},
+    {file = "ccxt-2.7.52.tar.gz", hash = "sha256:29ae8f6b59e185ebee6f9bbcd3e3c6525b138f248793d82963e737c4dddca414"},
 ]
 
 [package.dependencies]
@@ -8943,14 +8943,14 @@ requests = ">=2.26"
 
 [[package]]
 name = "zipp"
-version = "3.12.0"
+version = "3.12.1"
 description = "Backport of pathlib-compatible object wrapper for zip files"
 category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "zipp-3.12.0-py3-none-any.whl", hash = "sha256:9eb0a4c5feab9b08871db0d672745b53450d7f26992fd1e4653aa43345e97b86"},
-    {file = "zipp-3.12.0.tar.gz", hash = "sha256:73efd63936398aac78fd92b6f4865190119d6c91b531532e798977ea8dd402eb"},
+    {file = "zipp-3.12.1-py3-none-any.whl", hash = "sha256:6c4fe274b8f85ec73c37a8e4e3fa00df9fb9335da96fb789e3b96b318e5097b3"},
+    {file = "zipp-3.12.1.tar.gz", hash = "sha256:a3cac813d40993596b39ea9e93a18e8a2076d5c378b8bc88ec32ab264e04ad02"},
 ]
 
 [package.extras]
