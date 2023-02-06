@@ -135,7 +135,6 @@ def display_income_statement(
                 if ratios
                 else f"{plot[0].replace('_', ' ')} of {symbol.upper()} {denomination}"
             )
-            fig.show()
         else:
             fig = OpenBBFigure.create_subplots(rows=rows_plot, cols=1)
             for i in range(rows_plot):
@@ -150,7 +149,7 @@ def display_income_statement(
                     f"{plot[i].replace('_', ' ')} {denomination}", row=i + 1, col=1
                 )
 
-            fig.show()
+        fig.show()
 
     else:
         indexes = df_income.index

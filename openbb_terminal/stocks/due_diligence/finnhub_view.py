@@ -112,3 +112,5 @@ def rating_over_time(
         )
     else:
         return plot_rating_over_time(df_rot.head(limit), symbol, external_axes)
+
+    return None
