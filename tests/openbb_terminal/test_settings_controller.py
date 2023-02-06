@@ -12,8 +12,9 @@ def controller(mocker):
         True,
     )
     mocker.patch("openbb_terminal.settings_controller.session", True)
-    mocker.patch("openbb_terminal.settings_controller.set_key")
-    mocker.patch("openbb_terminal.settings_controller.obbff")
+    mocker.patch("openbb_terminal.settings_controller.set_cfg_plot")
+    mocker.patch("openbb_terminal.settings_controller.set_path_config")
+    mocker.patch("openbb_terminal.settings_controller.obbff_ctrl")
     return SettingsController()
 
 
