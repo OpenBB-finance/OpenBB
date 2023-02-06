@@ -4,9 +4,10 @@ import pandas as pd
 # IMPORTATION THIRDPARTY
 import pytest
 
+from openbb_terminal.common import common_model
+
 # IMPORTATION INTERNAL
 from openbb_terminal.econometrics import econometrics_model
-from openbb_terminal.common import common_model
 
 
 @pytest.mark.vcr()

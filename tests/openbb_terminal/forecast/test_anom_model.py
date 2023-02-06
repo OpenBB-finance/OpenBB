@@ -1,4 +1,5 @@
 import pytest
+
 from tests.openbb_terminal.forecast import conftest
 
 try:

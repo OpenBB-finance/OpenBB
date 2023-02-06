@@ -2,11 +2,12 @@
 __docformat__ = "numpy"
 
 import difflib
-from typing import List
 from datetime import datetime, timedelta
+from typing import List
 
-import yfinance as yf
 import pandas as pd
+import yfinance as yf
+
 from openbb_terminal.stocks.sector_industry_analysis import financedatabase_model
 
 

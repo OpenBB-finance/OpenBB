@@ -1,8 +1,8 @@
 # IMPORTATION STANDARD
 
 # IMPORTATION THIRDPARTY
-import pytest
 import pandas as pd
+import pytest
 
 # IMPORTATION INTERNAL
 from openbb_terminal.stocks.dark_pool_shorts import stocksera_view

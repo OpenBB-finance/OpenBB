@@ -6,9 +6,10 @@ from datetime import datetime
 import pandas as pd
 import pytest
 
+from openbb_terminal.stocks import stocks_helper
+
 # IMPORTATION INTERNAL
 from openbb_terminal.stocks.technical_analysis import ta_controller
-from openbb_terminal.stocks import stocks_helper
 
 # pylint: disable=E1101
 # pylint: disable=W0603

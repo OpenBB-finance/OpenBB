@@ -1,18 +1,18 @@
 # IMPORTATION STANDARD
 from typing import Callable
+
+import pandas as pd
 import pytest
 from pandas._typing import Axis
 from pandas.testing import assert_frame_equal
-import pandas as pd
 
 # IMPORTATION INTERNAL
-
 from openbb_terminal.helpers_denomination import (
     DENOMINATION,
-    transform as transform_by_denomination,
     get_denomination,
     get_denominations,
 )
+from openbb_terminal.helpers_denomination import transform as transform_by_denomination
 
 df = pd.DataFrame(
     data={"Revenue": [1000000, 2000000, 3000000], "EPS": [3, 4, 5]},

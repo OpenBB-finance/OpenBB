@@ -2,8 +2,8 @@
 
 # IMPORTATION THIRDPARTY
 import finviz.main_func
-import pytest
 import pandas as pd
+import pytest
 
 # IMPORTATION INTERNAL
 from openbb_terminal.stocks.fundamental_analysis import finviz_model

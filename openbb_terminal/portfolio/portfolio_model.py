@@ -5,15 +5,15 @@ import logging
 from typing import Tuple, Union
 
 import numpy as np
-import scipy
 import pandas as pd
+import scipy
 from sklearn.metrics import r2_score
+
 from openbb_terminal.common.quantitative_analysis import qa_model
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.portfolio.statics import PERIODS
-from openbb_terminal.portfolio import portfolio_helper, metrics_model
+from openbb_terminal.portfolio import metrics_model, portfolio_helper
 from openbb_terminal.portfolio.portfolio_engine import PortfolioEngine
-
+from openbb_terminal.portfolio.statics import PERIODS
 
 # pylint: disable=E1136,W0201,R0902,C0302, consider-using-f-string, consider-iterating-dictionary
 # pylint: disable=unsupported-assignment-operation,redefined-outer-name,too-many-public-methods
@@ -58,8 +58,8 @@ def generate_portfolio(
     transactions = PortfolioEngine.read_transactions(transactions_file_path)
     portfolio_engine = PortfolioEngine(transactions)
     portfolio_engine.generate_portfolio_data()
-    portfolio_engine.set_benchmark(symbol=benchmark_symbol, full_shares=full_shares)
     portfolio_engine.set_risk_free_rate(risk_free_rate)
+    portfolio_engine.set_benchmark(symbol=benchmark_symbol, full_shares=full_shares)
 
     return portfolio_engine
 
@@ -92,7 +92,7 @@ def get_transactions(portfolio_engine: PortfolioEngine) -> pd.DataFrame:
 @log_start_end(log=logger)
 def set_benchmark(
     portfolio_engine: PortfolioEngine, symbol: str, full_shares: bool = False
-):
+) -> bool:
     """Load benchmark into portfolio
 
     Parameters
@@ -106,6 +106,11 @@ def set_benchmark(
         Whether to mimic the portfolio trades exactly (partial shares) or round down the
         quantity to the nearest number
 
+    Returns
+    -------
+    bool
+        True if successful, False otherwise
+
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
@@ -113,7 +118,7 @@ def set_benchmark(
     >>> output = openbb.portfolio.bench(p, symbol="SPY")
     """
 
-    portfolio_engine.set_benchmark(symbol=symbol, full_shares=full_shares)
+    return portfolio_engine.set_benchmark(symbol=symbol, full_shares=full_shares)
 
 
 @log_start_end(log=logger)
@@ -366,7 +371,36 @@ def get_monthly_returns(
         ],
     )
 
-    return monthly_returns, bench_monthly_returns
+    years = [
+        (year, instrument)
+        for year in monthly_returns.index
+        for instrument in ["Portfolio", "Benchmark", "Alpha"]
+    ]
+    total_monthly_returns = pd.DataFrame(
+        np.nan,
+        columns=monthly_returns.columns,
+        index=pd.MultiIndex.from_tuples(years, names=["Year", "Instrument"]),
+    )
+
+    for year in monthly_returns.index:
+        for instrument in ["Portfolio", "Benchmark", "Alpha"]:
+            if instrument == "Portfolio":
+                total_monthly_returns.loc[
+                    (year, instrument), monthly_returns.columns
+                ] = monthly_returns.loc[year].values
+            elif instrument == "Benchmark":
+                total_monthly_returns.loc[
+                    (year, instrument), monthly_returns.columns
+                ] = bench_monthly_returns.loc[year].values
+            elif instrument == "Alpha":
+                total_monthly_returns.loc[
+                    (year, instrument), monthly_returns.columns
+                ] = (
+                    monthly_returns.loc[year].values
+                    - bench_monthly_returns.loc[year].values
+                )
+
+    return monthly_returns, bench_monthly_returns, total_monthly_returns
 
 
 @log_start_end(log=logger)
@@ -430,6 +464,13 @@ def join_allocation(
     pd.DataFrame
         DataFrame with portfolio and benchmark allocations
     """
+
+    if portfolio.empty:
+        portfolio = pd.DataFrame(columns=[column, "Portfolio"])
+
+    if benchmark.empty:
+        benchmark = pd.DataFrame(columns=[column, "Benchmark"])
+
     combined = pd.merge(portfolio, benchmark, on=column, how="left")
     combined["Difference"] = combined["Portfolio"] - combined["Benchmark"]
     combined = combined.replace(np.nan, "-")
