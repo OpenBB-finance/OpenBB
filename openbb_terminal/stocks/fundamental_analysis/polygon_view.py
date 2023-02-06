@@ -67,14 +67,20 @@ def display_fundamentals(
     fundamentals = fundamentals[fundamentals.columns[::-1]]
 
     if statement == "income":
-        fundamentals.index = [stocks_helper.INCOME_PLOT["Polygon"][i] for i in
-                              [i.replace(" ", "_") for i in fundamentals.index.str.lower()]]
+        fundamentals.index = [
+            stocks_helper.INCOME_PLOT["Polygon"][i]
+            for i in [i.replace(" ", "_") for i in fundamentals.index.str.lower()]
+        ]
     elif statement == "balance":
-        fundamentals.index = [stocks_helper.BALANCE_PLOT["Polygon"][i] for i in
-                              [i.replace(" ", "_") for i in fundamentals.index.str.lower()]]
+        fundamentals.index = [
+            stocks_helper.BALANCE_PLOT["Polygon"][i]
+            for i in [i.replace(" ", "_") for i in fundamentals.index.str.lower()]
+        ]
     elif statement == "cash":
-        fundamentals.index = [stocks_helper.CASH_PLOT["Polygon"][i] for i in
-                              [i.replace(" ", "_") for i in fundamentals.index.str.lower()]]
+        fundamentals.index = [
+            stocks_helper.CASH_PLOT["Polygon"][i]
+            for i in [i.replace(" ", "_") for i in fundamentals.index.str.lower()]
+        ]
 
     if plot:
         fundamentals_plot_data = fundamentals.copy().fillna(-1)

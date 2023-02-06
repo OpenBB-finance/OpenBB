@@ -190,8 +190,10 @@ def display_income_statement(
 
     if not income.empty:
 
-        income.index = [stocks_helper.INCOME_PLOT["FinancialModelingPrep"][i] for i in
-                        [i.replace(" ", "_") for i in income.index.str.lower()]]
+        income.index = [
+            stocks_helper.INCOME_PLOT["FinancialModelingPrep"][i]
+            for i in [i.replace(" ", "_") for i in income.index.str.lower()]
+        ]
 
         if plot:
             income_plot_data = income[income.columns[::-1]]
@@ -277,8 +279,10 @@ def display_balance_sheet(
 
     if not balance.empty:
 
-        balance.index = [stocks_helper.BALANCE_PLOT["FinancialModelingPrep"][i] for i in
-                         [i.replace(" ", "_") for i in balance.index.str.lower()]]
+        balance.index = [
+            stocks_helper.BALANCE_PLOT["FinancialModelingPrep"][i]
+            for i in [i.replace(" ", "_") for i in balance.index.str.lower()]
+        ]
 
         if plot:
             balance_plot_data = balance[balance.columns[::-1]]
@@ -362,8 +366,10 @@ def display_cash_flow(
 
     if not cash.empty:
 
-        cash.index = [stocks_helper.CASH_PLOT["FinancialModelingPrep"][i] for i in
-                         [i.replace(" ", "_") for i in cash.index.str.lower()]]
+        cash.index = [
+            stocks_helper.CASH_PLOT["FinancialModelingPrep"][i]
+            for i in [i.replace(" ", "_") for i in cash.index.str.lower()]
+        ]
 
         if plot:
             cash_plot_data = cash[cash.columns[::-1]]

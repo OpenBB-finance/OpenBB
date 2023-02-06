@@ -107,8 +107,10 @@ def display_income_statement(
     if df_income.empty:
         return
 
-    df_income.index = [stocks_helper.INCOME_PLOT["AlphaVantage"][i] for i in
-                       [i.replace(" ", "_") for i in df_income.index.str.lower()]]
+    df_income.index = [
+        stocks_helper.INCOME_PLOT["AlphaVantage"][i]
+        for i in [i.replace(" ", "_") for i in df_income.index.str.lower()]
+    ]
 
     if plot:
         rows_plot = len(plot)
@@ -193,8 +195,10 @@ def display_balance_sheet(
     if df_balance.empty:
         return
 
-    df_balance.index = [stocks_helper.BALANCE_PLOT["AlphaVantage"][i] for i in
-                        [i.replace(" ", "_") for i in df_balance.index.str.lower()]]
+    df_balance.index = [
+        stocks_helper.BALANCE_PLOT["AlphaVantage"][i]
+        for i in [i.replace(" ", "_") for i in df_balance.index.str.lower()]
+    ]
 
     if plot:
         rows_plot = len(plot)
@@ -280,8 +284,10 @@ def display_cash_flow(
     if df_cash.empty:
         return
 
-    df_cash.index = [stocks_helper.CASH_PLOT["AlphaVantage"][i] for i in
-                        [i.replace(" ", "_") for i in df_cash.index.str.lower()]]
+    df_cash.index = [
+        stocks_helper.CASH_PLOT["AlphaVantage"][i]
+        for i in [i.replace(" ", "_") for i in df_cash.index.str.lower()]
+    ]
 
     if plot:
         rows_plot = len(plot)

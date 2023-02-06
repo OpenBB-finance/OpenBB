@@ -420,16 +420,22 @@ def display_fundamentals(
 
     if statement == "balance-sheet":
         title_str = "Balance Sheet"
-        fundamentals.index = [stocks_helper.BALANCE_PLOT["YahooFinance"][i] for i in
-                              [i.replace(" ", "_") for i in fundamentals.index.str.lower()]]
+        fundamentals.index = [
+            stocks_helper.BALANCE_PLOT["YahooFinance"][i]
+            for i in [i.replace(" ", "_") for i in fundamentals.index.str.lower()]
+        ]
     elif statement == "financials":
         title_str = "Income Statement"
-        fundamentals.index = [stocks_helper.INCOME_PLOT["YahooFinance"][i] for i in
-                              [i.replace(" ", "_") for i in fundamentals.index.str.lower()]]
+        fundamentals.index = [
+            stocks_helper.INCOME_PLOT["YahooFinance"][i]
+            for i in [i.replace(" ", "_") for i in fundamentals.index.str.lower()]
+        ]
     elif statement == "cash-flow":
         title_str = "Cash Flow Statement"
-        fundamentals.index = [stocks_helper.CASH_PLOT["YahooFinance"][i] for i in
-                              [i.replace(" ", "_") for i in fundamentals.index.str.lower()]]
+        fundamentals.index = [
+            stocks_helper.CASH_PLOT["YahooFinance"][i]
+            for i in [i.replace(" ", "_") for i in fundamentals.index.str.lower()]
+        ]
 
     if fundamentals.empty:
         # The empty data frame error handling done in model

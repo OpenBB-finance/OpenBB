@@ -99,8 +99,8 @@ INCOME_PLOT = {
         "nonoperating_income_loss": "non_operating_income_loss",
         "operating_income_loss": "operating_income",
         "participating_securities_distributed_and_undistributed_earnings_loss_basic": "participating_securities_"
-                                                                                      "distributed_and_undistributed_ea"
-                                                                                      "rnings_loss_basic",
+        "distributed_and_undistributed_ea"
+        "rnings_loss_basic",
         "income_tax_expense_benefit": "income_tax_expense",
         "income_tax_expense_benefit_current": "current_income_tax_expense",
         "net_income_loss_attributable_to_parent": "net_income_loss_attributable_to_parent",
@@ -110,7 +110,7 @@ INCOME_PLOT = {
         "operating_expenses": "operating_expenses",
         "income_loss_from_continuing_operations_before_tax": "continuing_operations_net_income",
         "net_income_loss_attributable_to_noncontrolling_interest": "net_income_loss_attributable_to_"
-                                                                   "non_controlling_interest",
+        "non_controlling_interest",
         "income_loss_from_continuing_operations_after_tax": "income_before_tax",
         "revenues": "revenue",
         "net_income_loss_available_to_common_stockholders_basic": "net_income_available_to_common_shareholders",
@@ -430,7 +430,7 @@ BALANCE_PLOT_CHOICES = [
     "total_liabilities_and_stockholders_equity",
     "total_investments",
     "total_debt",
-    "net_debt"
+    "net_debt",
 ]
 CASH_PLOT = {
     "AlphaVantage": {
@@ -456,7 +456,7 @@ CASH_PLOT = {
         "dividend_payout_preferred_stock": "dividend_payout_preferred_stock",
         "proceeds_from_issuance_of_common_stock": "common_stock_issued",
         "proceeds_from_issuance_of_long_term_debt_and_capital_securities_net": "proceeds_from_issuance_of_long_term_"
-                                                                               "debt_and_capital_securities_net",
+        "debt_and_capital_securities_net",
         "proceeds_from_issuance_of_preferred_stock": "proceeds_from_issuance_of_preferred_stock",
         "proceeds_from_repurchase_of_equity": "proceeds_from_repurchase_of_equity",
         "proceeds_from_sale_of_treasury_stock": "proceeds_from_sale_of_treasury_stock",
@@ -594,5 +594,5 @@ CASH_PLOT_CHOICES = [
     "cash_at_beginning_of_period",
     "cash_at_end_of_period",
     "free_cash_flow",
-    "other_non_cash_items"
+    "other_non_cash_items",
 ]
