@@ -48,19 +48,6 @@ build/nsis/app
 DMG/*
 *.dmg
 
-# Jupyter Lab Extension build files
-jupyterlab/**/build
-jupyterlab/*/*.bundle.*
-jupyterlab/*/lib/
-jupyterlab/*/*/labextension/
-jupyterlab/*/node_modules/
-jupyterlab/*/*/node_modules/
-jupyterlab/*/*.egg-info/
-jupyterlab/*/.ipynb_checkpoints
-jupyterlab/*/*.tsbuildinfo
-jupyterlab/*/ui-tests/test-results/
-jupyterlab/*/ui-tests/tests/*.ts-snapshots/
-
 # User stylesheets
 styles/user
 
