@@ -3,6 +3,9 @@ import os
 
 from openbb_terminal.helper_classes import ModelsNamespace as _models
 
+# flake8: noqa
+# pylint: disable=unused-import
+
 from .binance_view import display_balance as balance, display_order_book as book
 from .coinbase_view import (
     display_order_book as cbbook,
@@ -57,10 +60,6 @@ from .tokenterminal_view import (
     display_description as desc,
     display_fundamental_metric_from_project_over_time as funot,
 )
-
-# flake8: noqa
-# pylint: disable=unused-import
-
 
 # Models
 models = _models(os.path.abspath(os.path.dirname(__file__)))
