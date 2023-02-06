@@ -520,6 +520,7 @@ class BuildCategoryModelClasses:
 
 
 def generate_sdk():
+    """Main function to generate the SDK."""
     trailmaps = get_trailmaps()
     BuildCategoryModelClasses(trailmaps).build()
     console.print("[green]SDK Generated Successfully.[/]")
@@ -527,12 +528,12 @@ def generate_sdk():
 
 
 def sort_csv():
+    """Sort the trail map csv alphabetically by trail name."""
     columns = ["trail", "model", "view"]
     df = pd.read_csv(
         REPO_ROOT / "sdk_core/trail_map.csv", usecols=columns, keep_default_na=False
     )
-    df.set_index("trail", inplace=True)
-    df.sort_index(inplace=True)
+    df = df.set_index("trail").sort_index()
     df.to_csv(REPO_ROOT / "sdk_core/trail_map.csv", index=True)
 
 
