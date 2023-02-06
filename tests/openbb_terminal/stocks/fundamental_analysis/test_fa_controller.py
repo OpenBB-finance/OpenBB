@@ -257,7 +257,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             "call_mgmt",
             "business_insider_view.display_management",
             ["--export=csv"],
-            {"symbol": "TSLA", "export": "csv"},
+            dict(symbol="TSLA", export="csv", sheet_name=None),
         ),
         (
             "call_overview",

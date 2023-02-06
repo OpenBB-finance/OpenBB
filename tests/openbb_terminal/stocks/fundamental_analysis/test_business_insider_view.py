@@ -69,6 +69,7 @@ def test_price_target_from_analysts_plt(capsys, interval, mocker, start):
         limit=None,
         raw=False,
         export=None,
+        sheet_name=None,
     )
     capsys.readouterr()
 
