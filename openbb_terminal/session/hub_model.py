@@ -109,7 +109,6 @@ def process_session_response(response: requests.Response) -> dict:
         login = response.json()
         return login
     if response.status_code == 401:
-        print(response.json())
         console.print("\n[red]Wrong credentials.[/red]")
         return {}
     if response.status_code == 403:
