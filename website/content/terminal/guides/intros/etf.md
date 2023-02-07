@@ -1,12 +1,10 @@
 ---
 title: ETF
-keywords: ['etfs', 'exchange traded funds', 'fund', 'basket', 'retail', 'stocks']
-excerpt: "The Introduction to ETFs explains how to use the
-menu and provides a brief description of its sub-menus"
+keywords: [etfs, exchange traded funds, fund, basket, retail, stocks, openbb terminal]
+description: The ETF menu enables you to lookup any ETF and obtain an overview about the chosen ETF. Furthermore, sub-menus reside in this menu that can be used to compare companies within the ETF, discover gainers and losers within discovery and apply advanced technical indicators. Lastly, it also has the option to export multiple ETFs to Excel.
 
 ---
-
-The ETF menu enables you to lookup any ETFand obtain an <a href="/terminal/reference/etf/overview" target="_blank" rel="noreferrer noopener">overview</a>, <a href="/terminal/reference/etf/holdings" target="_blank" rel="noreferrer noopener">holdings</a>, <a href="/terminal/reference/etf/weights" target="_blank" rel="noreferrer noopener">weights</a> and <a href="/terminal/reference/etf/news" target="_blank" rel="noreferrer noopener">news</a> about the chosen ETF. Furthermore, sub-menus reside in this menu that can be used to <a href="/terminal/guides/intros/stocks/comparison" target="_blank" rel="noreferrer noopener">compare companies</a> within the ETF, discover gainers and losers within <a href="/terminal/reference#disc" target="_blank" rel="noreferrer noopener">discovery</a> and apply advanced <a href="/terminal/guides/intros/common/ta" target="_blank" rel="noreferrer noopener">technical indicators</a> and <a href="/terminal/guides/intros/forecast" target="_blank" rel="noreferrer noopener">Forecasting menu</a>. Lastly, it also has the option to export multiple ETFs to Excel with <a href="/terminal/reference/etf/pir" target="_blank" rel="noreferrer noopener">pir</a>.
+The ETF menu enables you to lookup any ETF and obtain an <a href="/terminal/reference/etf/overview" target="_blank" rel="noreferrer noopener">overview</a>, <a href="/terminal/reference/etf/holdings" target="_blank" rel="noreferrer noopener">holdings</a>, <a href="/terminal/reference/etf/weights" target="_blank" rel="noreferrer noopener">weights</a> and <a href="/terminal/reference/etf/news" target="_blank" rel="noreferrer noopener">news</a> about the chosen ETF. Furthermore, sub-menus reside in this menu that can be used to <a href="/terminal/guides/intros/stocks/comparison" target="_blank" rel="noreferrer noopener">compare companies</a> within the ETF, discover gainers and losers within <a href="/terminal/reference#disc" target="_blank" rel="noreferrer noopener">discovery</a> and apply advanced <a href="/terminal/guides/intros/common/ta" target="_blank" rel="noreferrer noopener">technical indicators</a> and <a href="/terminal/guides/intros/forecast" target="_blank" rel="noreferrer noopener">Forecasting menu</a>. Lastly, it also has the option to export multiple ETFs to Excel with <a href="/terminal/reference/etf/pir" target="_blank" rel="noreferrer noopener">pir</a>.
 
 ### How to use
 

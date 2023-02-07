@@ -1,14 +1,14 @@
 # IMPORTATION STANDARD
-from datetime import datetime
 import os
+from datetime import datetime
 
 # IMPORTATION THIRDPARTY
 import pytest
 
-# IMPORTATION INTERNAL
-from openbb_terminal.stocks import stocks_helper
-from openbb_terminal.stocks import stocks_view
 from openbb_terminal import helper_funcs
+
+# IMPORTATION INTERNAL
+from openbb_terminal.stocks import stocks_helper, stocks_view
 
 
 @pytest.fixture(scope="module")
@@ -27,7 +27,7 @@ def vcr_config():
 
 @pytest.mark.vcr
 def test_quote():
-    stocks_view.display_quote("GME")
+    stocks_view.display_quote_fmp("GME")
 
 
 @pytest.mark.default_cassette("test_search")
@@ -42,11 +42,12 @@ def test_search(mocker, use_tab):
         target=helper_funcs.obbff, attribute="USE_TABULATE_DF", new=use_tab
     )
     stocks_helper.search(
-        query="sonae",
-        country="Portugal",
+        query="microsoft",
+        country="United_States",
         sector="",
         industry="",
         exchange_country="",
+        all_exchanges=False,
         limit=5,
         export="",
     )

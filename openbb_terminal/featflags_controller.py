@@ -15,7 +15,7 @@ from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console, MenuText
+from openbb_terminal.rich_config import MenuText, console
 
 # pylint: disable=too-many-lines,no-member,too-many-public-methods,C0302
 # pylint:disable=import-outside-toplevel
@@ -42,6 +42,7 @@ class FeatureFlagsController(BaseController):
         "rich",
         "richpanel",
         "tbhint",
+        "overwrite",
     ]
     PATH = "/featflags/"
 
@@ -73,8 +74,14 @@ class FeatureFlagsController(BaseController):
         mt.add_setting("watermark", obbff.USE_WATERMARK)
         mt.add_setting("cmdloc", obbff.USE_CMD_LOCATION_FIGURE)
         mt.add_setting("tbhint", obbff.TOOLBAR_HINT)
+        mt.add_setting("overwrite", obbff.FILE_OVERWITE)
 
         console.print(text=mt.menu_text, menu="Feature Flags")
+
+    def call_overwrite(self, _):
+        """Process overwrite command"""
+        obbff.FILE_OVERWITE = not obbff.FILE_OVERWITE
+        set_key(USER_ENV_FILE, "OPENBB_FILE_OVERWITE", str(obbff.FILE_OVERWITE))
 
     def call_retryload(self, _):
         """Process retryload command"""

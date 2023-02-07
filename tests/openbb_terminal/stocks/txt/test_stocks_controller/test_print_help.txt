@@ -1,5 +1,3 @@
-
-    filings            the most-recent form submissions to the SEC                     [FinancialModelingPrep]
     search             search a specific stock ticker for analysis                     [FinanceDatabase]
     load               load a specific stock ticker and additional info for analysis   [YahooFinance, IEXCloud, AlphaVantage, Polygon, EODHD]
 
@@ -9,7 +7,7 @@ Company:
 Exchange: 
 Currency: 
 
-[unvl]    quote              view the current price for a specific stock ticker[/unvl]              [YahooFinance]
+[unvl]    quote              view the current price for a specific stock ticker[/unvl]              [FinancialModelingPrep, YahooFinance]
 [unvl]    tob                view top of book for loaded ticker (US exchanges only)[/unvl]          [CBOE]
 [unvl]    candle             view a candle chart for a specific stock ticker[/unvl]
 [unvl]    codes              FIGI, SIK and SIC codes codes[/unvl]                                   [Polygon]
@@ -25,9 +23,8 @@ Currency:
 >   gov                government menu,              house trading, contracts, corporate lobbying
 >   ba                 behavioural analysis,         from reddit, stocktwits, twitter, google
 >   ca                 comparison analysis,          get similar, historical, correlation, financials
-[unvl]>   fa                 fundamental analysis,         income, balance, cash, earnings[/unvl]
+[unvl]>   fa                 fundamental analysis,         income, balance, cash, ratios, earnings, expectations[/unvl]
 [unvl]>   res                research web page,            macroaxis, yahoo finance, fool[/unvl]
-[unvl]>   dd                 in-depth due-diligence,       news, analyst, shorts, insider, sec[/unvl]
 [unvl]>   bt                 strategy backtester,          simple ema, ema cross, rsi strategies[/unvl]
 [unvl]>   ta                 technical analysis,           ema, macd, rsi, adx, bbands, obv[/unvl]
 [unvl]>   qa                 quantitative analysis,        decompose, cusum, residuals analysis[/unvl]

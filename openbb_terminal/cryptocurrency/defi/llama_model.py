@@ -7,13 +7,12 @@ from datetime import datetime
 
 import numpy as np
 import pandas as pd
-import requests
 
-from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import lambda_long_number_format
 from openbb_terminal.cryptocurrency.dataframe_helpers import (
     lambda_replace_underscores_in_column_names,
 )
+from openbb_terminal.decorators import log_start_end
+from openbb_terminal.helper_funcs import lambda_long_number_format, request
 
 logger = logging.getLogger(__name__)
 
@@ -61,7 +60,7 @@ def get_defi_protocols(
         Information about DeFi protocols
     """
 
-    response = requests.get(API_URL + "/protocols")
+    response = request(API_URL + "/protocols")
     columns = [
         "name",
         "symbol",
@@ -136,7 +135,7 @@ def get_defi_protocol(protocol: str) -> pd.DataFrame:
         Historical tvl
     """
     url = f"{API_URL}/protocol/{protocol}"
-    r = requests.get(url)
+    r = request(url)
     data = r.json()
 
     df = pd.DataFrame(data["tvl"])
@@ -176,7 +175,7 @@ def get_defi_tvl() -> pd.DataFrame:
     pd.DataFrame
         Historical values of total sum of Total Value Locked from all listed protocols.
     """
-    response = requests.get(API_URL + "/charts")
+    response = request(API_URL + "/charts")
     if response.status_code != 200:
         raise Exception(f"Status code: {response.status_code}. Reason: {response.text}")
     try:

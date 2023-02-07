@@ -4,8 +4,9 @@ __docformat__ = "numpy"
 import os
 import pathlib
 from datetime import datetime, timedelta
-import pandas as pd
+
 import mplfinance as mpf
+import pandas as pd
 
 from openbb_terminal.stocks import stocks_helper
 

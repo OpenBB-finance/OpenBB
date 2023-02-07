@@ -1,20 +1,22 @@
 """CoinGecko helpers"""
 __docformat__ = "numpy"
 
-import json
-import math
 import datetime as dt
-from datetime import timezone
-from typing import Sequence, Optional, Any, Dict, Tuple, Union, List
-import textwrap
+import json
 import logging
+import math
+import textwrap
+from datetime import timezone
+from typing import Any, Dict, List, Optional, Sequence, Tuple, Union
+
+import pandas as pd
 import requests
 from bs4 import BeautifulSoup
-import pandas as pd
 from dateutil import parser
 from requests.adapters import HTTPAdapter, RetryError
 from urllib3.util.retry import Retry
-from openbb_terminal.helper_funcs import get_user_agent
+
+from openbb_terminal.helper_funcs import get_user_agent, request
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -56,7 +58,7 @@ def get_btc_price() -> float:
         latest bitcoin price in usd.
     """
 
-    req = requests.get(
+    req = request(
         "https://api.coingecko.com/api/v3/simple/"
         "price?ids=bitcoin&vs_currencies=usd&include_market_cap"
         "=false&include_24hr_vol"
@@ -114,7 +116,7 @@ def scrape_gecko_data(url: str) -> BeautifulSoup:
     headers = {"User-Agent": get_user_agent()}
     session = _retry_session("https://www.coingecko.com")
     try:
-        req = session.get(url, headers=headers, timeout=5)
+        req = session.get(url, headers=headers)
     except Exception as error:
         logger.exception(error)
         console.print(error)

@@ -34,7 +34,7 @@ def test_invalid_response_status(func, kwargs_dict, mocker):
     mock_response = mocker.Mock(**attrs)
 
     mocker.patch(
-        target="requests.get",
+        target="openbb_terminal.helper_funcs.requests.get",
         new=mocker.Mock(return_value=mock_response),
     )
 

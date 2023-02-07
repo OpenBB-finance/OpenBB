@@ -15,7 +15,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import riskfolio as rp
-from dateutil.relativedelta import relativedelta, FR
+from dateutil.relativedelta import FR, relativedelta
 from matplotlib.gridspec import GridSpec
 from matplotlib.lines import Line2D
 
@@ -3964,7 +3964,6 @@ def additional_plots(
             theme.visualize_output()
 
     if heat:
-
         if len(weights) == 1:
             single_key = list(weights.keys())[0].upper()
             console.print(

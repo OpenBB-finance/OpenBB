@@ -15,24 +15,16 @@ from openbb_terminal.common import feedparser_view, newsapi_view
 from openbb_terminal.common.quantitative_analysis import qa_view
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.stocks import cboe_view
-from openbb_terminal.stocks.fundamental_analysis import fmp_view
-
 from openbb_terminal.helper_funcs import (
-    EXPORT_ONLY_RAW_DATA_ALLOWED,
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
+    EXPORT_ONLY_RAW_DATA_ALLOWED,
     export_data,
     valid_date,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import StockBaseController
-from openbb_terminal.rich_config import (
-    MenuText,
-    console,
-    translate,
-)
-from openbb_terminal.stocks import stocks_helper
-from openbb_terminal.stocks import stocks_view
+from openbb_terminal.rich_config import MenuText, console, translate
+from openbb_terminal.stocks import cboe_view, stocks_helper, stocks_view
 
 # pylint: disable=R1710,import-outside-toplevel,R0913,R1702,no-member
 
@@ -51,7 +43,6 @@ class StocksController(StockBaseController):
         "news",
         "resources",
         "codes",
-        "filings",
     ]
     CHOICES_MENUS = [
         "ta",
@@ -64,9 +55,9 @@ class StocksController(StockBaseController):
         "ins",
         "gov",
         "res",
+        "dd",
         "fa",
         "bt",
-        "dd",
         "ca",
         "options",
         "th",
@@ -111,7 +102,6 @@ class StocksController(StockBaseController):
                 stock_text += f" (from {self.start.strftime('%Y-%m-%d')})"
 
         mt = MenuText("stocks/", 100)
-        mt.add_cmd("filings")
         mt.add_cmd("search")
         mt.add_cmd("load")
         mt.add_raw("\n")
@@ -136,7 +126,6 @@ class StocksController(StockBaseController):
         mt.add_menu("ca")
         mt.add_menu("fa", self.ticker)
         mt.add_menu("res", self.ticker)
-        mt.add_menu("dd", self.ticker)
         mt.add_menu("bt", self.ticker)
         mt.add_menu("ta", self.ticker)
         mt.add_menu("qa", self.ticker)
@@ -155,52 +144,15 @@ class StocksController(StockBaseController):
         return []
 
     @log_start_end(log=logger)
-    def call_filings(self, other_args: List[str]) -> None:
-        """Process Filings command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="filings",
-            description="The most-recent filings submitted to the SEC",
-        )
-        parser.add_argument(
-            "-p",
-            "--pages",
-            dest="pages",
-            metavar="pages",
-            type=int,
-            default=1,
-            help="The number of pages to get data from (1000 entries/page; maximum 30 pages)",
-        )
-        parser.add_argument(
-            "-t",
-            "--today",
-            dest="today",
-            action="store_true",
-            default=False,
-            help="Show all filings from today",
-        )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-l")
-        ns_parser = self.parse_known_args_and_warn(
-            parser,
-            other_args,
-            EXPORT_ONLY_RAW_DATA_ALLOWED,
-            limit=5,
-        )
-        if ns_parser:
-            fmp_view.display_filings(
-                ns_parser.pages, ns_parser.limit, ns_parser.today, ns_parser.export
-            )
-
-    @log_start_end(log=logger)
     def call_search(self, other_args: List[str]):
         """Process search command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="search",
-            description="Show companies matching the search query",
+            description="Show companies matching the search query, country, sector, industry and/or exchange. "
+            "Note that by default only the United States exchanges are searched which tend to contain the most "
+            "extensive data for each company. To search all exchanges use the --all-exchanges flag.",
         )
         parser.add_argument(
             "-q",
@@ -255,6 +207,15 @@ class StocksController(StockBaseController):
             dest="exchange_country",
             help="Search by a specific exchange country to find stocks matching the criteria",
         )
+
+        parser.add_argument(
+            "-a",
+            "--all-exchanges",
+            default=False,
+            action="store_true",
+            dest="all_exchanges",
+            help="Whether to search all exchanges, without this option only the United States market is searched.",
+        )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-q")
         ns_parser = self.parse_known_args_and_warn(
@@ -279,8 +240,12 @@ class StocksController(StockBaseController):
                 sector=sector,
                 industry=industry,
                 exchange_country=exchange,
+                all_exchanges=ns_parser.all_exchanges,
                 limit=ns_parser.limit,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -346,12 +311,16 @@ class StocksController(StockBaseController):
                 required="-h" not in other_args,
                 help=translate("stocks/QUOTE_ticker"),
             )
+
         # For the case where a user uses: 'quote BB'
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-t")
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            stocks_view.display_quote(ns_parser.s_ticker)
+            if ns_parser.source == "FinancialModelingPrep":
+                stocks_view.display_quote_fmp(ns_parser.s_ticker)
+            elif ns_parser.source == "YahooFinance":
+                stocks_view.display_quote_yf(ns_parser.s_ticker)
 
     @log_start_end(log=logger)
     def call_codes(self, _):
@@ -488,6 +457,7 @@ class StocksController(StockBaseController):
                     os.path.dirname(os.path.abspath(__file__)),
                     f"{self.ticker}",
                     self.stock,
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None,
                 )
             else:
                 console.print("No ticker loaded. First use 'load <ticker>'")
@@ -547,7 +517,6 @@ class StocksController(StockBaseController):
                         sources=ns_parser.sources,
                     )
                 elif ns_parser.source == "Feedparser":
-
                     feedparser_view.display_news(
                         term=d_stock["shortName"].replace(" ", "+")
                         if "shortName" in d_stock
@@ -555,6 +524,9 @@ class StocksController(StockBaseController):
                         sources=ns_parser.sources,
                         limit=ns_parser.limit,
                         export=ns_parser.export,
+                        sheet_name=" ".join(ns_parser.sheet_name)
+                        if ns_parser.sheet_name
+                        else None,
                     )
             else:
                 console.print("Use 'load <ticker>' prior to this command!")
@@ -653,19 +625,13 @@ class StocksController(StockBaseController):
     @log_start_end(log=logger)
     def call_dd(self, _):
         """Process dd command."""
-        if self.ticker:
-            from openbb_terminal.stocks.due_diligence import dd_controller
 
-            self.queue = self.load_class(
-                dd_controller.DueDiligenceController,
-                self.ticker,
-                self.start,
-                self.interval,
-                self.stock,
-                self.queue,
-            )
-        else:
-            console.print("Use 'load <ticker>' prior to this command!")
+        # TODO: Get rid of the call_dd on the next release since it has been deprecated.
+
+        console.print(
+            "The dd (Due Diligence) menu has been integrated into the fa (Fundamental Analysis) menu. "
+            "Please use this menu instead.\n"
+        )
 
     @log_start_end(log=logger)
     def call_ca(self, _):
@@ -691,6 +657,7 @@ class StocksController(StockBaseController):
                 self.ticker,
                 self.start,
                 self.interval,
+                self.stock,
                 self.suffix,
                 self.queue,
             )

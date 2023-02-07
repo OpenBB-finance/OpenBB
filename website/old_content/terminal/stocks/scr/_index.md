@@ -43,7 +43,3 @@ Setting the preset to `short_squeeze_scan` and scanning with the `ownership` cat
 `set triangle_ascending`, show `techincal` & `overview`
 
 ![triangle_ascending preset with technical and overview categories](https://user-images.githubusercontent.com/85772166/173903827-15d6852e-90bf-4ea3-b008-47ce3c482380.png)
-
-Enter `exe stock_screener_demo.openbb` from the main menu to play a demonstration of the Stock Screener in the Terminal.
-
-Back to the <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/stocks/" target="_blank" rel="noreferrer noopener">Introduction Guide to the Stocks Menu</a>

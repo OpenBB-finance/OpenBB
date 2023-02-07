@@ -2,19 +2,45 @@
 __docformat__ = "numpy"
 
 import logging
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import List
 
 import numpy as np
 import pandas as pd
-import requests
 
 from openbb_terminal.decorators import log_start_end
+from openbb_terminal.helper_funcs import request
 from openbb_terminal.rich_config import console
-from openbb_terminal.stocks.options.op_helpers import get_dte_from_expiration as get_dte
 
 logger = logging.getLogger(__name__)
 # pylint: disable=unsupported-assignment-operation
+
+
+@log_start_end(log=logger)
+def get_dte_from_expiration(date: str) -> float:
+    """
+    Converts a date to total days until the option would expire.
+    This assumes that the date is in the form %B %d, %Y such as January 11, 2023
+    This calculates time from 'now' to 4 PM the date of expiration
+    This is particularly a helper for nasdaq results.
+
+    Parameters
+    ----------
+    date: str
+        Date in format %B %d, %Y
+
+    Returns
+    -------
+    float
+        Days to expiration as a decimal
+    """
+    # Get the date as a datetime and add 16 hours (4PM)
+    expiration_time = datetime.strptime(date, "%B %d, %Y") + timedelta(hours=16)
+    # Find total seconds from now
+    time_to_now = (expiration_time - datetime.now()).total_seconds()
+    # Convert to days
+    time_to_now /= 60 * 60 * 24
+    return time_to_now
 
 
 @log_start_end(log=logger)
@@ -38,57 +64,60 @@ def get_full_option_chain(symbol: str) -> pd.DataFrame:
             "fromdate=2010-09-09&todate=2030-09-09&excode=oprac&callput=callput&money=all&type=all"
         )
         # I have had issues with nasdaq requests, and this user agent seems to work in US and EU
-        response_json = requests.get(
+        response_json = request(
             url,
             headers={
                 "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)"
                 " AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.6 Safari/605.1.15"
             },
         ).json()
+
         if response_json["status"]["rCode"] == 200:
-            df = pd.DataFrame(response_json["data"]["table"]["rows"]).drop(
-                columns=["c_colour", "p_colour", "drillDownURL"]
-            )
-            df["expirygroup"] = (
-                df["expirygroup"].replace("", np.nan).fillna(method="ffill")
-            )
-            # Make numeric
-            columns_w_types = {
-                "c_Last": float,
-                "c_Change": float,
-                "c_Bid": float,
-                "c_Ask": float,
-                "c_Volume": int,
-                "c_Openinterest": int,
-                "strike": float,
-                "p_Last": float,
-                "p_Change": float,
-                "p_Bid": float,
-                "p_Ask": float,
-                "p_Volume": int,
-                "p_Openinterest": int,
-            }
-
-            for key, _ in columns_w_types.items():
-                df[key] = df[key].replace(",", "", regex=True)
-
-            df = (
-                df.fillna(np.nan)
-                .dropna(axis=0)
-                .replace("--", 0)
-                .astype(columns_w_types)
-            )
-            df["DTE"] = df["expirygroup"].apply(lambda t: get_dte(t))
-            df = df[df.DTE > 0]
-            df = df.drop(columns=["DTE"])
-            return df
+            return process_response(response_json)
 
     console.print(f"[red]{symbol} Option Chain not found.[/red]\n")
     return pd.DataFrame()
 
 
+def process_response(response_json):
+    df = pd.DataFrame(response_json["data"]["table"]["rows"]).drop(
+        columns=["c_colour", "p_colour", "drillDownURL"]
+    )
+    df["expirygroup"] = df["expirygroup"].replace("", np.nan).fillna(method="ffill")
+    # Make numeric
+    columns_w_types = {
+        "c_Last": float,
+        "c_Change": float,
+        "c_Bid": float,
+        "c_Ask": float,
+        "c_Volume": int,
+        "c_Openinterest": int,
+        "strike": float,
+        "p_Last": float,
+        "p_Change": float,
+        "p_Bid": float,
+        "p_Ask": float,
+        "p_Volume": int,
+        "p_Openinterest": int,
+    }
+
+    for key, _ in columns_w_types.items():
+        df[key] = df[key].replace(",", "", regex=True)
+
+    df = df.fillna(np.nan).dropna(axis=0).replace("--", 0).astype(columns_w_types)
+    df["DTE"] = df["expirygroup"].apply(lambda t: get_dte_from_expiration(t))
+    df = df[df.DTE > 0]
+    df = df.drop(columns=["DTE"])
+
+    df["expiration"] = pd.to_datetime(
+        df["expirygroup"], format="%B %d, %Y"
+    ).dt.strftime("%Y-%m-%d")
+
+    return df
+
+
 @log_start_end(log=logger)
-def get_expirations(symbol: str) -> List[str]:
+def option_expirations(symbol: str) -> List[str]:
     """Get available expirations
 
     Parameters
@@ -111,71 +140,6 @@ def get_expirations(symbol: str) -> List[str]:
 
 
 @log_start_end(log=logger)
-def get_chain_given_expiration(symbol: str, expiration: str) -> pd.DataFrame:
-    """Get option chain for symbol at a given expiration
-
-    Parameters
-    ----------
-    symbol: str
-        Symbol to get chain for
-    expiration: str
-        Expiration to get chain for
-
-    Returns
-    -------
-    pd.DataFrame
-        Dataframe of option chain
-    """
-    for asset in ["stocks", "index", "etf"]:
-        url = (
-            f"https://api.nasdaq.com/api/quote/{symbol}/option-chain?assetclass={asset}&"
-            f"fromdate={expiration}&todate={expiration}&excode=oprac&callput=callput&money=all&type=all"
-        )
-
-        response_json = requests.get(
-            url,
-            headers={
-                "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)"
-                " AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.6 Safari/605.1.15"
-            },
-        ).json()
-        if response_json["status"]["rCode"] == 200:
-            df = (
-                pd.DataFrame(
-                    response_json.get("data", {}).get("table", {}).get("rows", {})
-                )
-                .drop(columns=["c_colour", "p_colour", "drillDownURL", "expirygroup"])
-                .fillna(np.nan)
-                .dropna(axis=0)
-            )
-            # Make numeric
-            columns_w_types = {
-                "c_Last": float,
-                "c_Change": float,
-                "c_Bid": float,
-                "c_Ask": float,
-                "c_Volume": int,
-                "c_Openinterest": int,
-                "strike": float,
-                "p_Last": float,
-                "p_Change": float,
-                "p_Bid": float,
-                "p_Ask": float,
-                "p_Volume": int,
-                "p_Openinterest": int,
-            }
-
-            for key, _ in columns_w_types.items():
-                df[key] = df[key].replace(",", "", regex=True)
-
-            df = df.replace("--", 0).astype(columns_w_types)
-            return df
-
-    console.print(f"[red]{symbol} Option Chain not found.[/red]\n")
-    return pd.DataFrame()
-
-
-@log_start_end(log=logger)
 def get_last_price(symbol: str) -> float:
     """Get the last price from nasdaq
 
@@ -191,7 +155,7 @@ def get_last_price(symbol: str) -> float:
     """
     for asset in ["stocks", "index", "etf"]:
         url = f"https://api.nasdaq.com/api/quote/{symbol}/info?assetclass={asset}"
-        response_json = requests.get(
+        response_json = request(
             url,
             headers={
                 "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)"
@@ -228,7 +192,7 @@ def get_option_greeks(symbol: str, expiration: str) -> pd.DataFrame:
     """
     for asset in ["stocks", "index", "etf"]:
         url_greeks = f"https://api.nasdaq.com/api/quote/{symbol}/option-chain/greeks?assetclass={asset}&date={expiration}"
-        response_json = requests.get(
+        response_json = request(
             url_greeks,
             headers={
                 "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)"
@@ -236,7 +200,6 @@ def get_option_greeks(symbol: str, expiration: str) -> pd.DataFrame:
             },
         ).json()
         if response_json["status"]["rCode"] == 200:
-
             greeks = pd.DataFrame(response_json["data"]["table"]["rows"])
             greeks = greeks.drop(columns="url")
             return greeks

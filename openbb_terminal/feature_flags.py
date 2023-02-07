@@ -5,16 +5,14 @@ import os.path
 # IMPORTATION THIRDPARTY
 import i18n
 
+from openbb_terminal.base_helpers import load_env_vars, strtobool
+from openbb_terminal.core.config import paths_helper
+
 # IMPORTATION INTERNAL
 from openbb_terminal.core.config.paths import (
     MISCELLANEOUS_DIRECTORY,
     USER_DATA_SOURCES_DEFAULT_FILE,
     load_dotenv_with_priority,
-)
-from openbb_terminal.core.config import paths_helper
-from openbb_terminal.base_helpers import (
-    load_env_vars,
-    strtobool,
 )
 
 paths_helper.init_userdata()
@@ -30,6 +28,9 @@ except ImportError:
 else:
     WITH_GIT = True
 
+
+# Always overwrite exported files
+FILE_OVERWITE = load_env_vars("OPENBB_FILE_OVERWRITE", strtobool, False, "featflags")
 
 # Retry unknown commands with `load`
 RETRY_WITH_LOAD = load_env_vars("OPENBB_RETRY_WITH_LOAD", strtobool, False, "featflags")
@@ -146,7 +147,7 @@ try:
     else:
         raise Exception("Using git")
 except Exception:
-    version = "2.2.0"
+    version = "2.3.1"
 VERSION = str(os.getenv("OPENBB_VERSION", version))
 
 # Select the terminal translation language

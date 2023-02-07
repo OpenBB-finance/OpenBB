@@ -2,8 +2,8 @@ import os
 
 import dotenv
 
-from openbb_terminal.core.config.paths import USER_ENV_FILE, REPOSITORY_ENV_FILE
 from openbb_terminal.base_helpers import load_env_vars
+from openbb_terminal.core.config.paths import REPOSITORY_ENV_FILE, USER_ENV_FILE
 
 dotenv.load_dotenv(USER_ENV_FILE)
 dotenv.load_dotenv(REPOSITORY_ENV_FILE, override=True)

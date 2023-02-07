@@ -1,15 +1,15 @@
 """ Nestedcompleter for completion of OpenBB hierarchical data structures. """
 from typing import (
     Any,
+    Callable,
     Dict,
-    List,
-    Set,
     Iterable,
+    List,
     Mapping,
     Optional,
-    Union,
     Pattern,
-    Callable,
+    Set,
+    Union,
 )
 
 from prompt_toolkit.completion import CompleteEvent, Completer, Completion
@@ -52,7 +52,6 @@ class WordCompleter(Completer):
         match_middle: bool = False,
         pattern: Optional[Pattern[str]] = None,
     ) -> None:
-
         assert not (WORD and sentence)  # noqa: S101
 
         self.words = words
@@ -131,7 +130,6 @@ class NestedCompleter(Completer):
     def __init__(
         self, options: Dict[str, Optional[Completer]], ignore_case: bool = True
     ) -> None:
-
         self.flags_processed: List = list()
         self.original_options = options
         self.options = options

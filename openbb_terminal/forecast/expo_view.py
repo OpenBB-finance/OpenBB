@@ -2,15 +2,14 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import Union, Optional, List
 from datetime import datetime
+from typing import List, Optional, Union
 
-import pandas as pd
 import matplotlib.pyplot as plt
+import pandas as pd
 
-from openbb_terminal.forecast import expo_model
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.forecast import helpers
+from openbb_terminal.forecast import expo_model, helpers
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -30,6 +29,7 @@ def display_expo_forecast(
     start_window: float = 0.85,
     forecast_horizon: int = 5,
     export: str = "",
+    sheet_name: str = None,
     residuals: bool = False,
     forecast_only: bool = False,
     start_date: Optional[datetime] = None,
@@ -65,6 +65,8 @@ def display_expo_forecast(
         Size of sliding window from start of timeseries and onwards
     forecast_horizon: int
         Number of days to forecast when backtesting and retraining historical
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     residuals: bool
@@ -121,6 +123,7 @@ def display_expo_forecast(
         precision=precision,
         probabilistic=probabilistic,
         export=export,
+        sheet_name=sheet_name,
         forecast_only=forecast_only,
         naive=naive,
         export_pred_raw=export_pred_raw,

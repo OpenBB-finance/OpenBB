@@ -9,21 +9,20 @@ from typing import List
 
 import yfinance as yf
 
-from openbb_terminal.custom_prompt_toolkit import NestedCompleter
-
 from openbb_terminal import feature_flags as obbff
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_non_negative,
     check_positive,
-    valid_date,
     check_start_less_than_end,
+    valid_date,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console, MenuText, get_ordered_list_sources
+from openbb_terminal.rich_config import MenuText, console, get_ordered_list_sources
 from openbb_terminal.stocks.comparison_analysis import (
     finbrain_view,
     finnhub_model,
@@ -319,19 +318,20 @@ class ComparisonAnalysisController(BaseController):
                 elif ns_parser.source == "Finnhub":
                     self.similar = finnhub_model.get_similar_companies(self.ticker)
 
-                    self.user = "Finnhub"
-
-                    if self.ticker.upper() in self.similar:
-                        self.similar.remove(self.ticker.upper())
-
-                    if len(self.similar) > ns_parser.limit:
-                        random.shuffle(self.similar)
-                        self.similar = sorted(self.similar[: ns_parser.limit])
-                        console.print(
-                            f"The limit of stocks to compare are {ns_parser.limit}. The subsample will occur randomly.\n",
-                        )
-
                     if self.similar:
+                        self.user = "Finnhub"
+
+                        if self.ticker.upper() in self.similar:
+                            self.similar.remove(self.ticker.upper())
+
+                        if len(self.similar) > ns_parser.limit:
+                            random.shuffle(self.similar)
+                            self.similar = sorted(self.similar[: ns_parser.limit])
+                            console.print(
+                                f"The limit of stocks to compare are {ns_parser.limit}."
+                                " The subsample will occur randomly.\n",
+                            )
+
                         self.similar = [self.ticker] + self.similar
                         console.print(
                             f"[{self.user}] Similar Companies: {', '.join(self.similar)}",
@@ -503,6 +503,9 @@ class ComparisonAnalysisController(BaseController):
                     candle_type=ns_parser.type_candle,
                     normalize=ns_parser.normalize,
                     export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
 
             else:
@@ -567,6 +570,9 @@ class ComparisonAnalysisController(BaseController):
                     end_date=ns_parser.end.strftime("%Y-%m-%d"),
                     candle_type=ns_parser.type_candle,
                     export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                     display_full_matrix=ns_parser.display_full_matrix,
                     raw=ns_parser.raw,
                 )
@@ -612,6 +618,9 @@ class ComparisonAnalysisController(BaseController):
                 timeframe=ns_parser.s_timeframe,
                 quarter=ns_parser.b_quarter,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -654,6 +663,9 @@ class ComparisonAnalysisController(BaseController):
                     start_date=ns_parser.start.strftime("%Y-%m-%d"),
                     end_date=ns_parser.end.strftime("%Y-%m-%d"),
                     export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
 
             else:
@@ -696,6 +708,9 @@ class ComparisonAnalysisController(BaseController):
                 timeframe=ns_parser.s_timeframe,
                 quarter=ns_parser.b_quarter,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -736,6 +751,9 @@ class ComparisonAnalysisController(BaseController):
                 timeframe=ns_parser.s_timeframe,
                 quarter=ns_parser.b_quarter,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -766,6 +784,9 @@ class ComparisonAnalysisController(BaseController):
                     similar=self.similar,
                     raw=ns_parser.raw,
                     export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
             else:
                 console.print(
@@ -800,6 +821,9 @@ class ComparisonAnalysisController(BaseController):
                     similar=self.similar,
                     raw=ns_parser.raw,
                     export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
             else:
                 console.print("Please make sure there are similar tickers selected. \n")
@@ -824,6 +848,9 @@ class ComparisonAnalysisController(BaseController):
                     similar=self.similar,
                     data_type="overview",
                     export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
             else:
                 console.print(
@@ -850,6 +877,9 @@ class ComparisonAnalysisController(BaseController):
                     similar=self.similar,
                     data_type="valuation",
                     export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
             else:
                 console.print(
@@ -876,6 +906,9 @@ class ComparisonAnalysisController(BaseController):
                     similar=self.similar,
                     data_type="financial",
                     export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
             else:
                 console.print(
@@ -902,6 +935,9 @@ class ComparisonAnalysisController(BaseController):
                     similar=self.similar,
                     data_type="ownership",
                     export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
             else:
                 console.print(
@@ -928,6 +964,9 @@ class ComparisonAnalysisController(BaseController):
                     similar=self.similar,
                     data_type="performance",
                     export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
             else:
                 console.print(
@@ -954,6 +993,9 @@ class ComparisonAnalysisController(BaseController):
                     similar=self.similar,
                     data_type="technical",
                     export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
             else:
                 console.print(

@@ -1,16 +1,19 @@
+import logging
 import os
 from datetime import datetime
+from urllib.error import HTTPError
 
-import logging
-import pyEX
-import requests
+import fundamentalanalysis as fa  # Financial Modeling Prep
 import pandas as pd
+import pyEX
 import yfinance as yf
 from alpha_vantage.timeseries import TimeSeries
 
-from openbb_terminal.decorators import check_api_key
-from openbb_terminal.rich_config import console
 from openbb_terminal import config_terminal as cfg
+from openbb_terminal.decorators import check_api_key, log_start_end
+from openbb_terminal.helper_funcs import lambda_long_number_format, request
+from openbb_terminal.rich_config import console
+from openbb_terminal.stocks.fundamental_analysis.fa_helper import clean_df_index
 
 # pylint: disable=unsupported-assignment-operation,no-member
 
@@ -109,7 +112,6 @@ def load_stock_yf(
 def load_stock_eodhd(
     symbol: str, start_date: datetime, end_date: datetime, weekly: bool, monthly: bool
 ) -> pd.DataFrame:
-
     int_ = "d"
     if weekly:
         int_ = "w"
@@ -127,7 +129,7 @@ def load_stock_eodhd(
         f"order=d"
     )
 
-    r = requests.get(request_url)
+    r = request(request_url)
     if r.status_code != 200:
         console.print("[red]Invalid API Key for eodhistoricaldata [/red]")
         console.print(
@@ -219,7 +221,7 @@ def load_stock_polygon(
         f"{start_date.strftime('%Y-%m-%d')}/{end_date.strftime('%Y-%m-%d')}?adjusted=true"
         f"&sort=desc&limit=49999&apiKey={cfg.API_POLYGON_KEY}"
     )
-    r = requests.get(request_url)
+    r = request(request_url)
     if r.status_code != 200:
         console.print("[red]Error in polygon request[/red]")
         return pd.DataFrame()
@@ -251,7 +253,54 @@ def load_stock_polygon(
     return df_stock_candidate
 
 
-def load_quote(symbol: str) -> pd.DataFrame:
+@log_start_end(log=logger)
+@check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
+def get_quote_fmp(symbol: str) -> pd.DataFrame:
+    """Gets ticker quote from FMP
+
+    Parameters
+    ----------
+    symbol : str
+        Stock ticker symbol
+
+    Returns
+    -------
+    pd.DataFrame
+        Dataframe of ticker quote
+    """
+
+    df_fa = pd.DataFrame()
+
+    try:
+        df_fa = fa.quote(symbol, cfg.API_KEY_FINANCIALMODELINGPREP)
+    # Invalid API Keys
+    except ValueError:
+        console.print("[red]Invalid API Key[/red]\n")
+    # Premium feature, API plan is not authorized
+    except HTTPError:
+        console.print("[red]API Key not authorized for Premium feature[/red]\n")
+
+    if not df_fa.empty:
+        clean_df_index(df_fa)
+        df_fa.loc["Market cap"][0] = lambda_long_number_format(
+            df_fa.loc["Market cap"][0]
+        )
+        df_fa.loc["Shares outstanding"][0] = lambda_long_number_format(
+            df_fa.loc["Shares outstanding"][0]
+        )
+        df_fa.loc["Volume"][0] = lambda_long_number_format(df_fa.loc["Volume"][0])
+        # Check if there is a valid earnings announcement
+        if df_fa.loc["Earnings announcement"][0]:
+            earning_announcement = datetime.strptime(
+                df_fa.loc["Earnings announcement"][0][0:19], "%Y-%m-%dT%H:%M:%S"
+            )
+            df_fa.loc["Earnings announcement"][
+                0
+            ] = f"{earning_announcement.date()} {earning_announcement.time()}"
+    return df_fa
+
+
+def get_quote_yf(symbol: str) -> pd.DataFrame:
     """Ticker quote.  [Source: YahooFinance]
 
     Parameters
@@ -262,19 +311,21 @@ def load_quote(symbol: str) -> pd.DataFrame:
     ticker = yf.Ticker(symbol)
 
     try:
+        info = ticker.info
+        f_info = ticker.fast_info
         quote_df = pd.DataFrame(
             [
                 {
-                    "Symbol": ticker.info["symbol"],
-                    "Name": ticker.info["shortName"],
-                    "Price": ticker.info["regularMarketPrice"],
-                    "Open": ticker.info["regularMarketOpen"],
-                    "High": ticker.info["dayHigh"],
-                    "Low": ticker.info["dayLow"],
-                    "Previous Close": ticker.info["previousClose"],
-                    "Volume": ticker.info["volume"],
-                    "52 Week High": ticker.info["fiftyTwoWeekHigh"],
-                    "52 Week Low": ticker.info["fiftyTwoWeekLow"],
+                    "Symbol": symbol,
+                    "Name": info["shortName"],
+                    "Price": f_info["last_price"],
+                    "Open": f_info["open"],
+                    "High": f_info["day_high"],
+                    "Low": f_info["day_low"],
+                    "Previous Close": f_info["regular_market_previous_close"],
+                    "Volume": f_info["last_volume"],
+                    "52 Week High": f_info["year_high"],
+                    "52 Week Low": f_info["year_low"],
                 }
             ]
         )

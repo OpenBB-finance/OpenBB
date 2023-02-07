@@ -2,12 +2,13 @@
 import unittest
 from unittest import mock
 
-# pylint: disable=unused-import
-from tests.helpers.tools import (  # noqa: F401
-    parameterize_from_file,
-    pytest_generate_tests,
-)
 from openbb_terminal import thought_of_the_day
+
+# pylint: disable=unused-import
+from tests.helpers.tools import (
+    parameterize_from_file,
+    pytest_generate_tests,  # noqa: F401
+)
 
 assertions = unittest.TestCase("__init__")
 
@@ -22,7 +23,7 @@ class TestThoughtOfTheDay:
 
         assertions.assertEqual(a_totd.get_urls(), urls)
 
-    @mock.patch("openbb_terminal.thought_of_the_day.requests")
+    @mock.patch("openbb_terminal.helper_funcs.requests")
     @parameterize_from_file(
         "test_get_metadata",
         "../../tests/openbb_terminal/yaml/test_thought_of_the_day/thought_of_the_day.yaml",

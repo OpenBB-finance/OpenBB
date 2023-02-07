@@ -1,10 +1,7 @@
 ---
 title: Behavioral Analysis
-keywords:
-  [
-    "stocks", "stock", "options", "option", "call", "put"
-  ]
-excerpt: "This guide introduces the BA menu in the context of the OpenBB SDK."
+keywords: [stocks, behaviour, analysis, ba, headlines, snews, wsb, watchlist, popular, spac, trending, stalking, bullbear, messages, inter, sentiment, Google, Twitter, Reddit, Stocktwits, SentimentInvestor, Cramer, Jim, mentions, regions, interest, queries, rise, trend, hist, jcrd, jctr]
+description: The Behavioural Analysis menu offers the user tools for gauging the overall public sentiment of a company online. The complexity of the tools range from message board scrapers to deep learning algorithms for financial analysis and prediction. Sentiment is particularly useful for momentum trading strategies, discovery, and general fundamental research.
 ---
 
 The BA module provides programmatic access to the commands from within the OpenBB Terminal. Import the OpenBB SDK module, and then access the functions similarly to how the Terminal menus are navigated. The code completion will be activated upon entering `.`, after, `openbb.ba`

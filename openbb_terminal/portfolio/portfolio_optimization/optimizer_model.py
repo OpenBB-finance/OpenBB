@@ -5,27 +5,24 @@ __docformat__ = "numpy"
 # flake8: noqa: E501
 
 import logging
-from typing import Any, Dict, List, Optional, Tuple, Union
 from datetime import date
-
+from typing import Any, Dict, List, Optional, Tuple, Union
 
 import numpy as np
-from numpy.typing import NDArray
-from numpy import floating
 import pandas as pd
 import riskfolio as rp
-from dateutil.relativedelta import relativedelta, FR
 import yfinance as yf
+from dateutil.relativedelta import FR, relativedelta
+from numpy import floating
+from numpy.typing import NDArray
 from scipy.interpolate import interp1d
 
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.portfolio.portfolio_optimization import (
-    yahoo_finance_model,
-)
+from openbb_terminal.portfolio.portfolio_optimization import yahoo_finance_model
 from openbb_terminal.portfolio.portfolio_optimization.optimizer_helper import (
     get_kwarg,
-    validate_risk_measure,
     valid_property_infos,
+    validate_risk_measure,
 )
 from openbb_terminal.rich_config import console
 
@@ -1206,7 +1203,6 @@ def get_max_decorrelation_portfolio(
     )
 
     try:
-
         # Building the portfolio object
         port = rp.Portfolio(returns=stock_returns)
 

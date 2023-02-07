@@ -2,25 +2,22 @@
 __docformat__ = "numpy"
 
 import logging
+import re
+import ssl
 from datetime import datetime, timedelta
 from typing import Optional, Tuple
 from urllib.request import Request, urlopen
-import re
 
-import ssl
 import numpy as np
 import pandas as pd
 import yfinance as yf
-
 from bs4 import BeautifulSoup
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import lambda_long_number_format
+from openbb_terminal.helpers_denomination import transform as transform_by_denomination
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.fundamental_analysis.fa_helper import clean_df_index
-from openbb_terminal.helpers_denomination import (
-    transform as transform_by_denomination,
-)
 
 logger = logging.getLogger(__name__)
 # pylint: disable=W0212
@@ -207,52 +204,6 @@ def get_calendar_earnings(symbol: str) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def get_website(symbol: str) -> str:
-    """Gets website of company from yfinance
-
-    Parameters
-    ----------
-    symbol: str
-        Stock ticker symbol
-
-    Returns
-    -------
-    str
-        Company website"""
-    stock = yf.Ticker(symbol)
-    df_info = pd.DataFrame(stock.info.items(), columns=["Metric", "Value"])
-    return df_info[df_info["Metric"] == "website"]["Value"].values[0]
-
-
-@log_start_end(log=logger)
-def get_hq(symbol: str) -> str:
-    """Gets google map url for headquarter
-
-    Parameters
-    ----------
-    symbol: str
-        Stock ticker symbol
-
-    Returns
-    -------
-    str
-        Headquarter google maps url
-    """
-    stock = yf.Ticker(symbol)
-    df_info = pd.DataFrame(stock.info.items(), columns=["Metric", "Value"])
-    df_info = df_info.set_index("Metric")
-
-    maps = "https://www.google.com/maps/search/"
-    for field in ["address1", "address2", "city", "state", "zip", "country"]:
-        if field in df_info.index:
-            maps += (
-                df_info[df_info.index == field]["Value"].values[0].replace(" ", "+")
-                + ","
-            )
-    return maps[:-1]
-
-
-@log_start_end(log=logger)
 def get_dividends(symbol: str) -> pd.DataFrame:
     """Get historical dividend for ticker
 
@@ -313,13 +264,12 @@ def get_mktcap(
         symbol, start=start_date, progress=False, threads=False, ignore_tz=True
     )
     if not df_data.empty:
-
-        data = yf.Ticker(symbol).info
+        data = yf.Ticker(symbol).fast_info
         if data:
-            df_data["Adj Close"] = df_data["Adj Close"] * data["sharesOutstanding"]
+            df_data["Adj Close"] = df_data["Adj Close"] * data["shares"]
             df_data = df_data["Adj Close"]
 
-            currency = data["currency"]
+            currency = data["currency"] if data["currency"] else ""
 
     return df_data, currency
 

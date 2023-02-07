@@ -1,6 +1,8 @@
 ---
 sidebar_position: 1
 title: Installation
+description: The OpenBB Terminal can be directly installed on your computer via our installation programs. Within this section, you are guided through the installation process and how to launch the program. If you struggle with the installation process, please don’t hesitate to reach us on Discord or visit our contact page.
+keywords: [installation, installer, install, guide, mac, windows, linux, python, github, macos, how to, explanation, openbb terminal]
 ---
 
 import Tabs from '@theme/Tabs';
@@ -20,7 +22,7 @@ OpenBB Terminal is available on all major platforms. With Windows and macOS you 
 
 </div><p>Download the installer from the button below:</p>
 
-<InstallerButton type="windows" href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v2.2.0/Windows10.OpenBB.Terminal.v2.2.0.exe" label="Windows Installer" />
+<InstallerButton type="windows" href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v2.3.1/Windows10.OpenBB.Terminal.v2.3.1.exe" label="Windows Installer" />
 
 <p>Follow along with the instructions of the video or use the steps below to run the OpenBB Terminal:</p>
 
@@ -58,10 +60,10 @@ For Mac there are two installers available, one for Intel and one for Apple Sili
 
 <ul>
 <li>If you are using Mac Intel: <br />
-  <InstallerButton href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v2.2.0/x86.64.MacOS.OpenBB.Terminal.v2.2.0.dmg" label="Mac Intel Installer" />
+  <InstallerButton href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v2.3.1/x86.64.MacOS.OpenBB.Terminal.v2.3.1.dmg" label="Mac Intel Installer" />
 </li>
 <li>If you are using Mac Apple Silicon (M1): <br />
-  <InstallerButton href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v2.2.0/ARM64.MacOS.OpenBB.Terminal.v2.2.0.dmg" label="Mac M1 Installer" />
+  <InstallerButton href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v2.3.1/ARM64.MacOS.OpenBB.Terminal.v2.3.1.dmg" label="Mac M1 Installer" />
 </li>
 </ul>
 

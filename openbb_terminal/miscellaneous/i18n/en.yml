@@ -1,19 +1,20 @@
 en:
   _home_: Information, guides and support for the OpenBB Terminal
+  intro: introduction on the OpenBB Terminal
   about: discover the capabilities of the OpenBB Terminal (https://openbb.co/docs)
   support: pre-populate a support ticket for our team to evaluate
   survey: fill in our 2-minute survey so we better understand how we can improve the terminal
   update: attempt to update the terminal automatically (GitHub version)
-  exe: execute automated routine script
+  wiki: search for an expression in Wikipedia (https://www.wikipedia.org/)
   news: display news articles based on term and data sources
-  settings: tune settings (export folder, timezone, language, plot size)
+  keys: set API keys and check their validity
   featflags: enable and disable feature flags
   sources: select your preferred data sources
-  keys: set API keys and check their validity
-  wiki: search for an expression in Wikipedia (https://www.wikipedia.org/)
-  record: record session to be converted into a .openbb routine
-  stop: stop session recording
-  intro: introduction on the OpenBB Terminal
+  settings: tune settings (export folder, timezone, language, plot size)
+  _scripts_: Record and execute your own .openbb routine scripts
+  record: start recording current session
+  stop: stop session recording and convert to .openbb routine
+  exe: execute .openbb routine scripts (use exe --example for an example)
   _configure_: Configure your own terminal
   _main_menu_: Main menu
   keys/_keys_: This menu allows you to set your own API keys. Type 'about' for more information
@@ -88,7 +89,7 @@ en:
   forecast: timeseries forecasting with machine learning
   portfolio: perform portfolio optimization and look at portfolio performance and attribution
   dashboards: interactive dashboards using voila and jupyter notebooks
-  stocks/filings: the most-recent form submissions to the SEC 
+  stocks/filings: the most-recent form submissions to the SEC
   stocks/search: search a specific stock ticker for analysis
   stocks/load: load a specific stock ticker and additional info for analysis
   stocks/_ticker: Stock
@@ -107,9 +108,8 @@ en:
   stocks/gov: government menu,              house trading, contracts, corporate lobbying
   stocks/ba: behavioural analysis,         from reddit, stocktwits, twitter, google
   stocks/ca: comparison analysis,          get similar, historical, correlation, financials
-  stocks/fa: fundamental analysis,         income, balance, cash, earnings
+  stocks/fa: fundamental analysis,         income, balance, cash, ratios, earnings, expectations
   stocks/res: research web page,            macroaxis, yahoo finance, fool
-  stocks/dd: in-depth due-diligence,       news, analyst, shorts, insider, sec
   stocks/bt: strategy backtester,          simple ema, ema cross, rsi strategies
   stocks/ta: technical analysis,           ema, macd, rsi, adx, bbands, obv
   stocks/qa: quantitative analysis,        decompose, cusum, residuals analysis
@@ -327,37 +327,40 @@ en:
   stocks/ba/jctr: Jim Cramer's recommendations by ticker
   stocks/fa/load: load a specific stock ticker for analysis
   stocks/fa/_ticker: Ticker
-  stocks/fa/data: fundamental and technical data of company
-  stocks/fa/mgmt: management team of the company
-  stocks/fa/analysis: analyse SEC filings with the help of machine learning
-  stocks/fa/score: investing score from Warren Buffett and co
-  stocks/fa/warnings: company warnings according to Sean Seah book
-  stocks/fa/dcf: advanced Excel customizable discounted cash flow
-  stocks/fa/info: information scope of the company
-  stocks/fa/mktcap: estimated market cap
-  stocks/fa/shrs: shareholders (insiders, institutions and mutual funds)
-  stocks/fa/sust: sustainability values (environment, social and governance)
-  stocks/fa/cal: calendar earnings and estimates of the company
+  stocks/fa/_company_overview: Company Overview
+  stocks/fa/enterprise: company enterprise value
+  stocks/fa/overview: financial overview of the company
   stocks/fa/divs: show historical dividends for company
   stocks/fa/splits: stock split and reverse split events since IPO
-  stocks/fa/web: open web browser of the company
-  stocks/fa/hq: open HQ location of the company
+  stocks/fa/rating: analyst prices and ratings over time of the company
+  stocks/fa/rot: number of analyst ratings over time on a monthly basis
+  stocks/fa/score: value investing scores for any time period
+  stocks/fa/warnings: company warnings according to Sean Seah book
+  stocks/fa/sust: sustainability values (environment, social and governance)
+  stocks/fa/arktrades: get ARK trades for ticker
+  stocks/fa/_management_shareholders: Management and Ownership
+  stocks/fa/mgmt: management team of the company
+  stocks/fa/shrs: shareholders (insiders, institutions and mutual funds)
+  stocks/fa/supplier: list of suppliers for the company
+  stocks/fa/customer: list of customers of the company
+  stocks/fa/_financial_statements: Financial Statements
   stocks/fa/income: income statements of the company
-  stocks/fa/balance: balance sheet of the company
-  stocks/fa/overview: overview of the company
-  stocks/fa/key: company key metrics
-  stocks/fa/cash: cash flow of the company
-  stocks/fa/earnings: earnings dates and reported EPS
-  stocks/fa/fraud: key fraud ratios
-  stocks/fa/dupont: detailed breakdown for return on equity
-  stocks/fa/profile: company profile
-  stocks/fa/quote: detailed stock quote information
-  stocks/fa/enterprise: company enterprise value
-  stocks/fa/metrics: key metrics over time
-  stocks/fa/ratios: in-depth ratios over time
+  stocks/fa/balance: balance sheet statements of the company
+  stocks/fa/cash: cash flow statements of the company
   stocks/fa/growth: growth of financial statement items and ratios
+  stocks/fa/metrics: key financial metrics over time
+  stocks/fa/ratios: extensive set of ratios over time
+  stocks/fa/dupont: detailed breakdown for Return on Equity (RoE)
+  stocks/fa/fraud: key fraud ratios including M-score, Z-score and McKee
+  stocks/fa/sec: obtain recent SEC filings of the company
+  stocks/fa/analysis: analyse SEC filings with the help of machine learning
+  stocks/fa/_future_estimations: Future Expectations
+  stocks/fa/earnings: earnings dates and reported EPS
   stocks/fa/epsfc: Earning Estimate by Analysts - EPS
   stocks/fa/revfc: Earning Estimate by Analysts - Revenue
+  stocks/fa/est: quarter and year analysts earnings estimates
+  stocks/fa/pt: price targets over time
+  stocks/fa/dcf: advanced Excel customizable discounted cash flow
   stocks/fa/dcfc: determine the (historical) discounted cash flow
   stocks/res/_ticker: Ticker
   stocks/res/macroaxis: www.macroaxis.com
@@ -379,17 +382,6 @@ en:
   stocks/res/macrotrends: www.macrotrends.net
   stocks/res/newsfilter: www.newsfilter.io
   stocks/res/stockanalysis: www.stockanalysis.com
-  stocks/dd/load: load a specific stock ticker for analysis
-  stocks/dd/_ticker: Ticker
-  stocks/dd/analyst: analyst prices and ratings of the company
-  stocks/dd/rating: rating over time (daily)
-  stocks/dd/rot: number of analysts ratings over time (monthly)
-  stocks/dd/pt: price targets over time
-  stocks/dd/est: quarter and year analysts earnings estimates
-  stocks/dd/sec: SEC filings
-  stocks/dd/supplier: list of suppliers
-  stocks/dd/customer: list of customers
-  stocks/dd/arktrades: get ARK trades for ticker
   stocks/bt/_ticker: Ticker
   stocks/bt/whatif: what if you had bought X shares on day Y
   stocks/bt/ema: buy when price exceeds EMA(l)
@@ -892,9 +884,15 @@ en:
   funds/alswe: display fund allocation (sector, country, holdings)
   funds/infoswe: get fund information
   funds/forecast: forecasting techniques
+  funds/country_ms: set a country for filtering
+  funds/holdings: holdings of the loaded funds
+  funds/carbon: carbon metrics
+  funds/exclusion: exclusion policy
+  funds/_country_ms: Current Country MorningStar
   alternative/hn: Hacker News most popular stories
   alternative/covid: COVID menu,                 cases, deaths, rates
   alternative/oss: Open Source menu,           star history, repos information
+  alternative/realestate: Real Estate menu,           sold prices, HPIs
   alternative/covid/slopes: get countries with highest slope in cases
   alternative/covid/country: select country for data
   alternative/covid/_country: Country
@@ -906,6 +904,14 @@ en:
   alternative/oss/rs: repo summary
   alternative/oss/sh: repo star history
   alternative/oss/tr: top starred repos
+  alternative/realestate/sales: list UK house sales via postcode
+  alternative/realestate/_postcode: UK Postcode
+  alternative/realestate/townsales: list UK house sales via town
+  alternative/realestate/_town: Town
+  alternative/realestate/_startdate: Start Date <YYYY-MM-DD>
+  alternative/realestate/_enddate: End Date <YYYY-MM-DD>
+  alternative/realestate/regionstats: retrieve UK sold house price stats by region
+  alternative/realestate/_region: Region
   econometrics/_data_loc: Looking for data in
   econometrics/load: load a dataset (also works with StatsModels datasets)
   econometrics/export: export a processed dataset
@@ -939,7 +945,7 @@ en:
   econometrics/coint: co-integration test on a multitude of columns
   portfolio/bro: brokers holdings,   supports robinhood, ally, degiro, coinbase
   portfolio/po: portfolio optimization,  optimize your portfolio weights efficiently
-  portfolio/load: load transactions into the portfolio
+  portfolio/load: load transactions into the portfolio (use load --example for an example)
   portfolio/_loaded: Loaded transactions
   portfolio/_riskfreerate: Risk Free Rate
   portfolio/show: show existing transactions
@@ -998,7 +1004,7 @@ en:
   portfolio/bro/cb/deposits: show all your deposits or internal transfers
   portfolio/bro/cb/orders: show all your orders
   portfolio/po/file: file that contains portfolio risk parameters
-  portfolio/po/load: load tickers and categories from .xlsx or .csv file
+  portfolio/po/load: load tickers and categories from .xlsx or .csv file (use load --example for an example)
   portfolio/po/_loaded: Portfolio loaded
   portfolio/po/_tickers: Tickers
   portfolio/po/_categories: Categories
@@ -1096,4 +1102,6 @@ en:
   forecast/trans: Transformer Network (feat. Past covariates)
   forecast/tft: Temporal Fusion Transformer Network(feat. Past covariates)
   forecast/nhits: Neural Hierarchical Interpolation (feat. Past covariates)
+  forecast/_anomaly_: Anomaly Detection
+  forecast/anom: Quantile Anomaly Detector
   forecast/_comingsoon_: Coming Soon

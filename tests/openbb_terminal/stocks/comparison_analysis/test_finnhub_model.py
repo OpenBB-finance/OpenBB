@@ -25,7 +25,6 @@ def test_get_similar_companies(recorder):
 
 @pytest.mark.vcr(record_mode="none")
 def test_get_similar_companies_invalid_status(mocker, recorder):
-
     attrs = {
         "status_code": 400,
         "json.return_value": {"error": "mock error message"},
@@ -33,7 +32,10 @@ def test_get_similar_companies_invalid_status(mocker, recorder):
 
     mock_response = mocker.Mock(**attrs)
 
-    mocker.patch(target="requests.get", new=mocker.Mock(return_value=mock_response))
+    mocker.patch(
+        target="openbb_terminal.helper_funcs.requests.get",
+        new=mocker.Mock(return_value=mock_response),
+    )
     result = finnhub_model.get_similar_companies(symbol="TSLA")
 
     recorder.capture(result)

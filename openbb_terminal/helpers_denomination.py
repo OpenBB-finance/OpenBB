@@ -1,6 +1,7 @@
 """Denomination Helper functions"""
 
-from typing import Literal, Tuple, Callable, Dict
+from typing import Callable, Dict, Literal, Tuple
+
 import pandas as pd
 from pandas._typing import Axis
 

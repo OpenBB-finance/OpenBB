@@ -6,18 +6,14 @@ import argparse
 import logging
 from typing import List
 
-from openbb_terminal.custom_prompt_toolkit import NestedCompleter
-
 from openbb_terminal import feature_flags as obbff
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import (
-    EXPORT_ONLY_RAW_DATA_ALLOWED,
-    check_positive,
-)
+from openbb_terminal.helper_funcs import EXPORT_ONLY_RAW_DATA_ALLOWED, check_positive
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.portfolio.brokers.coinbase import coinbase_view
-from openbb_terminal.rich_config import console, MenuText
+from openbb_terminal.rich_config import MenuText, console
 
 logger = logging.getLogger(__name__)
 
@@ -98,6 +94,9 @@ class CoinbaseController(BaseController):
             coinbase_view.display_account(
                 currency=ns_parser.currency,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -136,7 +135,10 @@ class CoinbaseController(BaseController):
 
         if ns_parser:
             coinbase_view.display_history(
-                ns_parser.account, ns_parser.export, ns_parser.limit
+                ns_parser.account,
+                ns_parser.export,
+                ns_parser.sheet_name,
+                ns_parser.limit,
             )
 
     @log_start_end(log=logger)
@@ -190,6 +192,9 @@ class CoinbaseController(BaseController):
                 sortby=ns_parser.sortby,
                 descend=not ns_parser.reverse,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -249,4 +254,7 @@ class CoinbaseController(BaseController):
                 deposit_type=ns_parser.type,
                 descend=ns_parser.reverse,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )

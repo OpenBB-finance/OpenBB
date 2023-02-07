@@ -1,6 +1,6 @@
 stocks
 options
-load ${ticker=aapl}
+load aapl
 exp 0
 payoff
 list
