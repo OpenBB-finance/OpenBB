@@ -4,5 +4,4 @@ channels:
 dependencies:
   - python=3.9
   - pip
-  - pip:
-    - poetry==1.3.2
+  - poetry==1.3.2
