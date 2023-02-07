@@ -63,7 +63,7 @@ class AccountController(BaseController):
         """Get routines"""
         routines = {
             filepath.name: filepath
-            for filepath in USER_ROUTINES_DIRECTORY.rglob("*.openbb")
+            for filepath in USER_ROUTINES_DIRECTORY.glob("*.openbb")
         }
         user_folder = USER_ROUTINES_DIRECTORY / User.get_uuid()
         if os.path.exists(user_folder):
