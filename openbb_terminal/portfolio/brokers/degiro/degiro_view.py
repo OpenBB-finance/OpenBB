@@ -17,9 +17,7 @@ from degiro_connector.trading.models.trading_pb2 import (
 from openbb_terminal.decorators import check_api_key, log_start_end
 
 # IMPORTATION INTERNAL
-from openbb_terminal.helper_funcs import (
-    print_rich_table,
-)
+from openbb_terminal.helper_funcs import print_rich_table
 from openbb_terminal.portfolio.brokers.degiro.degiro_model import DegiroModel
 from openbb_terminal.rich_config import MenuText, console
 

@@ -15,11 +15,7 @@ from darts.metrics import mape
 from darts.models.forecasting.torch_forecasting_model import GlobalForecastingModel
 from darts.utils.statistics import plot_residuals_analysis
 from pytorch_lightning.callbacks.early_stopping import EarlyStopping
-from sklearn.metrics import (
-    mean_absolute_error,
-    mean_squared_error,
-    r2_score,
-)
+from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MaxAbsScaler, MinMaxScaler, Normalizer, StandardScaler
 

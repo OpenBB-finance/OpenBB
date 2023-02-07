@@ -8,12 +8,12 @@ import pandas as pd
 from bs4 import BeautifulSoup
 
 from openbb_terminal.core.config.paths import (
-    USER_PRESETS_DIRECTORY,
     MISCELLANEOUS_DIRECTORY,
+    USER_PRESETS_DIRECTORY,
 )
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.rich_config import console
 from openbb_terminal.helper_funcs import request
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 

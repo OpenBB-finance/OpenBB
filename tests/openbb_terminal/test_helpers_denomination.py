@@ -11,8 +11,8 @@ from openbb_terminal.helpers_denomination import (
     DENOMINATION,
     get_denomination,
     get_denominations,
+    transform as transform_by_denomination,
 )
-from openbb_terminal.helpers_denomination import transform as transform_by_denomination
 
 df = pd.DataFrame(
     data={"Revenue": [1000000, 2000000, 3000000], "EPS": [3, 4, 5]},

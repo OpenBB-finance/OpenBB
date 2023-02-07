@@ -6,8 +6,10 @@ import argparse
 import itertools
 import logging
 import os
-from datetime import date
-from datetime import datetime as dt
+from datetime import (
+    date,
+    datetime as dt,
+)
 from typing import Any, Dict, List
 
 import pandas as pd
