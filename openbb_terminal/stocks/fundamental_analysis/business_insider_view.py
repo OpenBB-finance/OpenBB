@@ -5,7 +5,7 @@ import logging
 import os
 import textwrap
 from datetime import datetime, timedelta
-from typing import Optional
+from typing import Optional, Union
 
 from pandas.core.frame import DataFrame
 

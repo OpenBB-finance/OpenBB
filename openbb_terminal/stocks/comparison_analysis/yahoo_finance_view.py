@@ -8,7 +8,6 @@ from typing import List, Optional, Tuple, Union
 
 import numpy as np
 import pandas as pd
-from pandas.plotting import register_matplotlib_converters
 from sklearn.preprocessing import MinMaxScaler
 
 from openbb_terminal.config_terminal import theme
@@ -21,7 +20,6 @@ logger = logging.getLogger(__name__)
 
 # pylint: disable=too-many-arguments
 
-register_matplotlib_converters()
 
 d_candle_types = {
     "o": "Open",

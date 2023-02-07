@@ -1,11 +1,11 @@
 import logging
 from typing import Union
 
-import matplotlib.pyplot as plt
 import mstarpy
 import numpy as np
 import pandas as pd
 
+from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import print_rich_table
 from openbb_terminal.mutual_funds import mstarpy_model
@@ -78,16 +78,18 @@ def display_historical(
 
     if not comparison:
         data = loaded_funds.nav(start_date, end_date, frequency="daily")
-        fig, ax = plt.subplots(figsize=(10, 10))
-        ax.set_xlabel("Date")
-        ax.set_ylabel("Nav")
+        fig = OpenBBFigure(xaxis_title="Date", yaxis_title="Nav").set_title(title)
+
         df = pd.DataFrame(data)
         df["date"] = pd.to_datetime(df["date"])
-        ax.plot(df.date, df.nav, label=loaded_funds.name)
-        ax.legend(loc="best")
-        ax.set_title(title)
-        ax.tick_params(axis="x", rotation=45)
-        fig.tight_layout(pad=2)
+        fig.add_scatter(
+            x=df.date,
+            y=df.nav,
+            name=f"{loaded_funds.name}",
+            mode="lines",
+        )
+
+        fig.show()
 
     else:
         data = loaded_funds.historicalData()
@@ -99,9 +101,7 @@ def display_historical(
             "category": ["fund", "category"],
             "both": ["fund", "index", "category"],
         }
-        fig, ax = plt.subplots(figsize=(10, 10))
-        ax.set_xlabel("Date")
-        ax.set_ylabel("Performance (Base 100)")
+        fig = OpenBBFigure(xaxis_title="Date", yaxis_title="Performance (Base 100)")
 
         for x in comparison_list[comparison]:
             df = pd.DataFrame(data["graphData"][x])
@@ -116,14 +116,20 @@ def display_historical(
                 key = f"{x}Name"
                 if key in data:
                     label = f"{x} : {data[key]}"
-                    title += f" vs {label}"
+                    title += f" vs {label},"
                 else:
                     label = x
-            ax.plot(df.date, df.base_100, label=label)
-        ax.legend(loc="best")
-        ax.set_title(title)
-        ax.tick_params(axis="x", rotation=45)
-        fig.tight_layout(pad=2)
+
+            fig.add_scatter(
+                x=df.date,
+                y=df.base_100,
+                name=f"{label}",
+                mode="lines",
+            )
+
+        fig.set_title(title.rstrip(","), wrap=True, wrap_width=70)
+        fig.update_layout(margin=dict(t=65))
+        fig.show()
 
 
 @log_start_end(log=logger)
@@ -238,11 +244,11 @@ def display_sector(loaded_funds: mstarpy.Funds, asset_type: str = "equity"):
         key = "FIXEDINCOME"
 
     d = loaded_funds.sector()[key]
-    fig, ax = plt.subplots(figsize=(10, 10))
+    fig = OpenBBFigure()
 
     width = -0.3
 
-    title = "Sector breakdown of "
+    title = "Sector breakdown of"
     for x in ["fund", "index", "category"]:
         name = d[f"{x}Name"]
         data = d[f"{x}Portfolio"]
@@ -259,15 +265,15 @@ def display_sector(loaded_funds: mstarpy.Funds, asset_type: str = "equity"):
         if sum(values) == 0:
             continue
 
-        label_loc = np.arange(len(labels))  # the label locations
-
-        ax.bar(label_loc + width, values, 0.3, label=f"{x} : {name} - {portfolio_date}")
+        fig.add_bar(
+            x=labels,
+            y=values,
+            name=f"{x} : {name} - {portfolio_date}",
+        )
         width += 0.3  # the width of the bars
 
-        title += f" {name}"
+        title += f" {name},"
 
-    ax.legend(loc="best")
-    ax.set_xticks(label_loc, labels)
-    ax.tick_params(axis="x", rotation=90)
-    ax.set_title(title)
-    fig.tight_layout(pad=2)
+    fig.update_layout(margin=dict(t=45), xaxis=dict(tickangle=-15))
+    fig.set_title(title.rstrip(","), wrap=True, wrap_width=60)
+    fig.show()

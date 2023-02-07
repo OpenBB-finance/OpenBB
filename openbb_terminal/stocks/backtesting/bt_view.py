@@ -6,22 +6,18 @@ import os
 from datetime import datetime
 from typing import Optional
 
-import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import yfinance as yf
-from pandas.plotting import register_matplotlib_converters
 
-from openbb_terminal.config_plot import PLOT_DPI
-from openbb_terminal.config_terminal import theme
+from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import export_data, is_intraday, plot_autoscale
+from openbb_terminal.helper_funcs import export_data, is_intraday
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.backtesting import bt_model
 
 logger = logging.getLogger(__name__)
 
-register_matplotlib_converters()
 
 np.seterr(divide="ignore")
 
@@ -147,16 +143,18 @@ def display_simple_ema(
         console.print("https://openbb.co/request-a-feature")
         return
 
-    # This plot has 1 axis
-    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    fig = OpenBBFigure(xaxis_title="Date").set_title(f"Equity for EMA({ema_length})")
 
     res = bt_model.ema_strategy(symbol, data, ema_length, spy_bt, no_bench)
-    res.plot(title=f"Equity for EMA({ema_length})", ax=ax)
+    df_res = res._get_series(None).rebase()  # pylint: disable=protected-access
 
-    theme.style_primary_axis(ax)
-
-    if not external_axes:
-        theme.visualize_output()
+    for col in df_res.columns:
+        fig.add_scatter(
+            x=df_res.index,
+            y=df_res[col],
+            mode="lines",
+            name=col,
+        )
 
     console.print(res.display(), "\n")
 
@@ -168,7 +166,7 @@ def display_simple_ema(
         sheet_name,
     )
 
-    return
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -215,18 +213,22 @@ def display_emacross(
         console.print("https://openbb.co/request-a-feature")
         return
 
-    # This plot has 1 axis
-    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    fig = OpenBBFigure(xaxis_title="Date").set_title(
+        f"Equity for EMA({short_ema})/EMA({long_ema})"
+    )
 
     res = bt_model.emacross_strategy(
         symbol, data, short_ema, long_ema, spy_bt, no_bench, shortable
     )
-    res.plot(title=f"EMA Cross for EMA({short_ema})/EMA({long_ema})", ax=ax)
+    df_res = res._get_series(None).rebase()  # pylint: disable=protected-access
 
-    theme.style_primary_axis(ax)
-
-    if not external_axes:
-        theme.visualize_output()
+    for col in df_res.columns:
+        fig.add_scatter(
+            x=df_res.index,
+            y=df_res[col],
+            mode="lines",
+            name=col,
+        )
 
     export_data(
         export,
@@ -235,7 +237,7 @@ def display_emacross(
         res.stats,
         sheet_name,
     )
-    return
+    return fig.show(external=external_axes)
 
 
 # pylint:disable=too-many-arguments
@@ -286,19 +288,22 @@ def display_rsi_strategy(
         console.print("https://openbb.co/request-a-feature")
         return
 
-    # This plot has 1 axis
-    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    fig = OpenBBFigure(xaxis_title="Date").set_title(
+        f"Equity for RSI({periods}) between ({low_rsi}, {high_rsi})"
+    )
 
     res = bt_model.rsi_strategy(
         symbol, data, periods, low_rsi, high_rsi, spy_bt, no_bench, shortable
     )
+    df_res = res._get_series(None).rebase()  # pylint: disable=protected-access
 
-    res.plot(title=f"RSI Strategy between ({low_rsi}, {high_rsi})", ax=ax)
-
-    theme.style_primary_axis(ax)
-
-    if not external_axes:
-        theme.visualize_output()
+    for col in df_res.columns:
+        fig.add_scatter(
+            x=df_res.index,
+            y=df_res[col],
+            mode="lines",
+            name=col,
+        )
 
     export_data(
         export,
@@ -307,4 +312,4 @@ def display_rsi_strategy(
         res.stats,
         sheet_name,
     )
-    return
+    return fig.show(external=external_axes)
