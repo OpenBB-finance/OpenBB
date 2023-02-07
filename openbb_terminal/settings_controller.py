@@ -15,8 +15,10 @@ import pytz
 from dotenv import set_key
 
 # IMPORTATION INTERNAL
-from openbb_terminal import config_plot as cfg_plot
-from openbb_terminal import feature_flags as obbff
+from openbb_terminal import (
+    config_plot as cfg_plot,
+    feature_flags as obbff,
+)
 from openbb_terminal.core.config.paths import USER_DATA_DIRECTORY, USER_ENV_FILE
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end

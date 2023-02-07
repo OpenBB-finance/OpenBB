@@ -1,7 +1,6 @@
 """ Financial Modeling Prep View """
 __docformat__ = "numpy"
 
-import datetime
 import logging
 import os
 
@@ -21,28 +20,55 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
-def valinvest_score(symbol: str):
+def valinvest_score(symbol: str, years: int, export: str = "", sheet_name: str = None):
     """Value investing tool based on Warren Buffett, Joseph Piotroski and Benjamin Graham thoughts [Source: FMP]
 
     Parameters
     ----------
     symbol : str
         Fundamental analysis ticker symbol
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
+    export: str
+        Format to export data
     """
-    score = fmp_model.get_score(symbol)
-    if score:
-        console.print(f"Score: {score:.2f}".rstrip("0").rstrip(".") + " %")
+    scores = pd.DataFrame.from_dict(
+        fmp_model.get_score(symbol, years), orient="index", columns=["Score"]
+    )
+
+    if not scores.empty:
+        updated_scores = []
+        for score in scores["Score"]:
+            updated_scores.append(f"{score:.2f}".rstrip("0").rstrip(".") + " %")
+
+        scores["Score"] = updated_scores
+
+        print_rich_table(
+            scores, title=f"Value Investing Scores [{years} Years]", show_index=True
+        )
+
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "scores",
+            scores,
+            sheet_name,
+        )
 
 
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
-def display_profile(symbol: str):
+def display_profile(symbol: str, export: str = "", sheet_name: str = None):
     """Financial Modeling Prep ticker profile
 
     Parameters
     ----------
     symbol : str
         Fundamental analysis ticker symbol
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
+    export: str
+        Format to export data
     """
     profile = fmp_model.get_profile(symbol)
 
@@ -56,29 +82,19 @@ def display_profile(symbol: str):
 
         console.print(f"\nImage: {profile.loc['image'][0]}")
         console.print(f"\nDescription: {profile.loc['description'][0]}")
+
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "scores",
+            profile,
+            sheet_name,
+        )
     else:
         logger.error("Could not get data")
         console.print("[red]Unable to get data[/red]\n")
 
     console.print()
-
-
-@log_start_end(log=logger)
-@check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
-def display_quote(symbol: str):
-    """Financial Modeling Prep ticker quote
-
-    Parameters
-    ----------
-    symbol : str
-        Fundamental analysis ticker symbol
-    """
-
-    quote = fmp_model.get_quote(symbol)
-    if quote.empty:
-        console.print("[red]Data not found[/red]\n")
-    else:
-        print_rich_table(quote, headers=[""], title=f"{symbol} Quote", show_index=True)
 
 
 @log_start_end(log=logger)
@@ -603,9 +619,9 @@ def display_financial_statement_growth(
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
 def display_filings(
+    ticker: str = "",
     pages: int = 1,
-    limit: int = 5,
-    today: bool = False,
+    limit: int = 20,
     export: str = "",
     sheet_name: str = None,
 ) -> None:
@@ -613,13 +629,10 @@ def display_filings(
 
     Parameters
     ----------
-
     pages: int = 1
         The range of most-rececnt pages to get entries from (1000 per page, max 30 pages)
-    limit: int = 5
-        Limit the number of entries to display (default: 5)
-    today: bool = False
-        Show all from today
+    limit: int = 20
+        Limit the number of entries to display (default: 20)
     export: str = ""
         Export data as csv, json, or xlsx
 
@@ -631,45 +644,82 @@ def display_filings(
     openbb.stocks.display_filings(today = True, export = "csv")
     """
     filings = fmp_model.get_filings(pages)
-    if today is True:
-        now: str = datetime.datetime.now().strftime("%Y-%m-%d")
-        iso_today: int = datetime.datetime.today().isoweekday()
-        if iso_today < 6 and not filings.empty:
-            filings = filings.filter(like=now, axis=0)
-            limit = 1000
-        else:
-            console.print(
-                "[red]No filings today, displaying the most recent submissions instead[/red]"
-            )
+    ticker_filings = filings[filings["Ticker"] == ticker.upper()]
 
-    if not filings.empty:
-        filings.reset_index(["Date"], inplace=True)
-        for _, row in filings.head(limit).iterrows():
-            console.print(
-                "Timestamp: ",
-                f"{row['Date']}",
-                "  US/Eastern",
-                "\n",
-                "Ticker: ",
-                f"{row['Ticker']}",
-                "\n",
-                "CIK: " f"{row['CIK']}",
-                "\n",
-                "Form Type: ",
-                f"{row['Form Type']}",
-                "\n",
-                f"{row['Title']}",
-                "\n",
-                f"{row['URL']}\n",
-                sep="",
-            )
+    if ticker_filings.empty:
+        console.print(
+            f"[red]No filings found for ticker {ticker}, consider increasing the value "
+            "for --pages. Showing recent filings instead.[/red]\n"
+        )
+        print_rich_table(
+            filings[:limit],
+            title=f"Recent SEC Filings [Limit: {limit}]",
+            show_index=True,
+        )
+    elif not ticker_filings.empty:
+        print_rich_table(
+            ticker_filings[:limit],
+            title=f"SEC Filings for {ticker} [Limit: {limit}]]",
+            show_index=True,
+        )
+
         export_data(
             export,
             os.path.dirname(os.path.abspath(__file__)),
             "filings",
-            filings,
+            ticker_filings,
             sheet_name,
         )
     else:
-        logger.error("Could not get data")
-        console.print("[red]Could not get data[/red]\n")
+        logger.error("Could not find any data.")
+        console.print("[red]Could not find any data for {ticker}[/red]\n")
+
+
+def add_color(value: str) -> str:
+    if "buy" in value.lower():
+        value = f"[green]{value}[/green]"
+    elif "sell" in value.lower():
+        value = f"[red]{value}[/red]"
+    return value
+
+
+@log_start_end(log=logger)
+def rating(symbol: str, limit: int = 10, export: str = "", sheet_name: str = None):
+    """Display ratings for a given ticker. [Source: Financial Modeling Prep]
+
+    Parameters
+    ----------
+    symbol: str
+        Stock ticker symbol
+    limit: int
+        Number of last days ratings to display
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
+    export: str
+        Export dataframe data to csv,json,xlsx file
+    """
+    df = fmp_model.get_rating(symbol)
+
+    if (isinstance(df, pd.DataFrame) and df.empty) or (
+        not isinstance(df, pd.DataFrame) and not df
+    ):
+        return
+
+    # TODO: This could be displayed in a nice rating plot over time
+
+    df = df.astype(str).applymap(lambda x: add_color(x))
+
+    print_rich_table(
+        df.head(limit),
+        headers=df.columns,
+        show_index=True,
+        title="Rating",
+    )
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "rot",
+        df,
+        sheet_name,
+    )
