@@ -248,7 +248,6 @@ class AccountController(BaseController):
             dest="file",
             required="-h" not in other_args,
             help="The file to be loaded",
-            choices={c: {} for c in self.ROUTINE_FILES},
             metavar="FILE",
         )
         parser.add_argument(
