@@ -3,17 +3,12 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from itertools import cycle
 from typing import List, Optional
 
-from matplotlib import pyplot as plt
-
-from openbb_terminal.config_plot import PLOT_DPI
-from openbb_terminal.config_terminal import theme
+from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.futures import yfinance_model
-from openbb_terminal.futures.futures_helper import make_white
-from openbb_terminal.helper_funcs import export_data, plot_autoscale, print_rich_table
+from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -102,15 +97,22 @@ def display_historical(
     symbols = symbols_validated
 
     if not symbols:
-        console.print("No symbol was provided.\n")
-        return
+        return console.print("No symbol was provided.\n")
 
     historicals = yfinance_model.get_historical_futures(
         symbols, expiry, start_date, end_date
     )
 
     if historicals.empty:
-        return
+        return None
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "historical",
+        historicals,
+        sheet_name,
+    )
 
     if raw or len(historicals) == 1:
         if not raw and len(historicals) == 1:
@@ -124,88 +126,67 @@ def display_historical(
             show_index=True,
             title="Futures timeseries",
         )
-        console.print()
+        return console.print()
 
-    else:
-        # This plot has 1 axis
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    fig = OpenBBFigure()
 
-        colors = cycle(theme.get_colors())
-        if len(symbols) > 1:
-            name = list()
-            for tick in historicals["Adj Close"].columns.tolist():
-                if len(historicals["Adj Close"][tick].dropna()) == 1:
-                    console.print(
-                        f"\nA single datapoint on {tick} is not enough to depict a chart, data shown below."
-                    )
-                    naming = yfinance_model.FUTURES_DATA[
-                        yfinance_model.FUTURES_DATA["Ticker"] == tick
-                    ]["Description"].values[0]
-                    print_rich_table(
-                        historicals["Adj Close"][tick].dropna().to_frame(),
-                        headers=[naming],
-                        show_index=True,
-                        title="Futures timeseries",
-                    )
-                    continue
-
-                name.append(
-                    yfinance_model.FUTURES_DATA[
-                        yfinance_model.FUTURES_DATA["Ticker"] == tick
-                    ]["Description"].values[0]
-                )
-                ax.plot(
-                    historicals["Adj Close"][tick].dropna().index,
-                    historicals["Adj Close"][tick].dropna().values,
-                    color=next(colors, "#FCED00"),
-                )
-                ax.legend(name)
-
-                theme.style_primary_axis(ax)
-
-                make_white(ax)
-
-            if external_axes is None:
-                theme.visualize_output()
-        else:
-            if len(historicals["Adj Close"]) == 1:
+    if len(symbols) > 1:
+        name = list()
+        for tick in historicals["Adj Close"].columns.tolist():
+            if len(historicals["Adj Close"][tick].dropna()) == 1:
                 console.print(
-                    f"\nA single datapoint on {symbols[0]} is not enough to depict a chart, data shown below."
+                    f"\nA single datapoint on {tick} is not enough to depict a chart, data shown below."
                 )
+                naming = yfinance_model.FUTURES_DATA[
+                    yfinance_model.FUTURES_DATA["Ticker"] == tick
+                ]["Description"].values[0]
                 print_rich_table(
-                    historicals,
-                    headers=list(historicals["Adj Close"].columns),
+                    historicals["Adj Close"][tick].dropna().to_frame(),
+                    headers=[naming],
                     show_index=True,
                     title="Futures timeseries",
                 )
+                continue
 
-            else:
-                name = yfinance_model.FUTURES_DATA[
-                    yfinance_model.FUTURES_DATA["Ticker"] == symbols[0]
+            name.append(
+                yfinance_model.FUTURES_DATA[
+                    yfinance_model.FUTURES_DATA["Ticker"] == tick
                 ]["Description"].values[0]
-                ax.plot(
-                    historicals["Adj Close"].dropna().index,
-                    historicals["Adj Close"].dropna().values,
-                    color=next(colors, "#FCED00"),
-                )
-                if expiry:
-                    ax.set_title(f"{name} with expiry {expiry}")
-                else:
-                    ax.set_title(name)
+            )
 
-                theme.style_primary_axis(ax)
+            fig.add_scatter(
+                x=historicals["Adj Close"][tick].dropna().index,
+                y=historicals["Adj Close"][tick].dropna().values,
+                name=name,
+            )
 
-                make_white(ax)
-                if external_axes is None:
-                    theme.visualize_output()
+    else:
+        if len(historicals["Adj Close"]) == 1:
+            console.print(
+                f"\nA single datapoint on {symbols[0]} is not enough to depict a chart, data shown below."
+            )
+            return print_rich_table(
+                historicals,
+                headers=list(historicals["Adj Close"].columns),
+                show_index=True,
+                title="Futures timeseries",
+            )
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "historical",
-        historicals,
-        sheet_name,
-    )
+        name = yfinance_model.FUTURES_DATA[
+            yfinance_model.FUTURES_DATA["Ticker"] == symbols[0]
+        ]["Description"].values[0]
+
+        fig.add_scatter(
+            x=historicals["Adj Close"].dropna().index,
+            y=historicals["Adj Close"].dropna().values,
+            name=name,
+        )
+        if expiry:
+            name = f"{name} with expiry {expiry}"
+
+        fig.set_title(name)
+
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -232,14 +213,20 @@ def display_curve(
         Whether to return the figure object or not, by default False
     """
     if symbol not in yfinance_model.FUTURES_DATA["Ticker"].unique().tolist():
-        console.print(f"[red]'{symbol}' is not a valid symbol[/red]")
-        return
+        return console.print(f"[red]'{symbol}' is not a valid symbol[/red]")
 
     df = yfinance_model.get_curve_futures(symbol)
 
     if df.empty:
-        console.print("[red]No future data found to generate curve.[/red]\n")
-        return
+        return console.print("[red]No future data found to generate curve.[/red]\n")
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "curve",
+        df,
+        sheet_name,
+    )
 
     if raw:
         print_rich_table(
@@ -248,36 +235,22 @@ def display_curve(
             show_index=True,
             title="Futures curve",
         )
-        console.print()
+        return console.print()
 
-    else:
-        # This plot has 1 axis
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    fig = OpenBBFigure()
 
-        name = yfinance_model.FUTURES_DATA[
-            yfinance_model.FUTURES_DATA["Ticker"] == symbol
-        ]["Description"].values[0]
-        colors = cycle(theme.get_colors())
-        ax.plot(
-            df.index,
-            df.values,
-            marker="o",
-            linestyle="dashed",
-            linewidth=2,
-            markersize=8,
-            color=next(colors, "#FCED00"),
-        )
-        make_white(ax)
-        ax.set_title(name)
-        theme.style_primary_axis(ax)
+    name = yfinance_model.FUTURES_DATA[yfinance_model.FUTURES_DATA["Ticker"] == symbol][
+        "Description"
+    ].values[0]
 
-        if external_axes is None:
-            theme.visualize_output()
+    fig.add_scatter(
+        x=df.index,
+        y=df["Futures"],
+        mode="lines+markers",
+        name=name,
+        line=dict(dash="dash", width=4),
+        marker=dict(size=10),
+    )
+    fig.set_title(name)
 
-        export_data(
-            export,
-            os.path.dirname(os.path.abspath(__file__)),
-            "curve",
-            df,
-            sheet_name,
-        )
+    return fig.show(external=external_axes)

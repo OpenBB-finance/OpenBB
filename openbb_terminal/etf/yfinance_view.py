@@ -6,13 +6,12 @@ import os
 from typing import Optional
 
 import pandas as pd
-from matplotlib import pyplot as plt
 
-from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
+from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.etf import yfinance_model
-from openbb_terminal.helper_funcs import export_data, plot_autoscale, print_rich_table
+from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -46,8 +45,7 @@ def display_etf_weightings(
     """
     sectors = yfinance_model.get_etf_sector_weightings(name)
     if not sectors:
-        console.print("No data was found for that ETF\n")
-        return
+        return console.print("No data was found for that ETF\n")
 
     holdings = pd.DataFrame(sectors, index=[0]).T
 
@@ -71,21 +69,47 @@ def display_etf_weightings(
             main_holdings["Others"] = 100 - sum(main_holdings.values())
 
         legend, values = zip(*main_holdings.items())
-        leg = [f"{le}\n{round(v,2)}%" for le, v in zip(legend, values)]
+        colors = theme.get_colors()
 
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-
-        ax.pie(
-            values,
-            labels=leg,
-            wedgeprops=theme.pie_wedgeprops,
-            colors=theme.get_colors(),
-            startangle=theme.pie_startangle,
+        fig = OpenBBFigure.create_subplots(
+            1,
+            3,
+            specs=[[{"type": "domain"}, {"type": "pie", "colspan": 2}, None]],
+            row_heights=[1],
+            column_widths=[0.1, 0.8, 0.1],
         )
-        ax.set_title(title)
-        theme.style_primary_axis(ax)
-        if external_axes is None:
-            theme.visualize_output()
+
+        fig.add_pie(
+            labels=legend,
+            values=values,
+            textinfo="label+percent",
+            hoverinfo="label+percent",
+            automargin=True,
+            rotation=45,
+            row=1,
+            col=2,
+        )
+        fig.update_traces(
+            textposition="outside",
+            textfont_size=15,
+            marker=dict(
+                colors=colors,
+                line=dict(color="#F5EFF3", width=0.8),
+            ),
+        )
+
+        fig.update_layout(
+            margin=dict(t=40, b=20),
+            title=dict(
+                text=title,
+                y=0.98,
+                x=0.5,
+                xanchor="center",
+                yanchor="top",
+            ),
+            colorway=colors,
+            showlegend=False,
+        )
 
     export_data(
         export,
@@ -94,6 +118,8 @@ def display_etf_weightings(
         holdings,
         sheet_name,
     )
+
+    return None if raw else fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
