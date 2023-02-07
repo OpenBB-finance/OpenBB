@@ -5,7 +5,7 @@ __docformat__ = "numpy"
 import logging
 import os
 from collections import OrderedDict
-from typing import Optional, Dict, List, Tuple, Union
+from typing import Dict, List, Optional, Tuple, Union
 
 import numpy as np
 import pandas as pd

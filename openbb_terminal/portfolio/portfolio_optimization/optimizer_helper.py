@@ -2,7 +2,7 @@
 __docformat__ = "numpy"
 
 import argparse
-from typing import Optional, Any
+from typing import Any, Optional
 
 import pandas as pd
 

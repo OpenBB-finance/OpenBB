@@ -5,7 +5,7 @@ import logging
 import os
 import warnings
 from datetime import datetime
-from typing import Optional, Dict, Union
+from typing import Dict, Optional, Union
 
 import finviz
 import matplotlib.pyplot as plt

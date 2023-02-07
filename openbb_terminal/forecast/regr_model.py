@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 
 import logging
 import warnings
-from typing import Optional, List, Tuple, Union
+from typing import List, Optional, Tuple, Union
 
 import pandas as pd
 from darts import TimeSeries

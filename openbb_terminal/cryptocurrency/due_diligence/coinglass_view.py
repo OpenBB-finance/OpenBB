@@ -1,5 +1,6 @@
 import logging
 import os
+from typing import Optional
 
 import pandas as pd
 from matplotlib import (
@@ -20,7 +21,6 @@ from openbb_terminal.helper_funcs import (
     lambda_long_number_format,
     plot_autoscale,
 )
-from typing import Optional
 
 logger = logging.getLogger(__name__)
 

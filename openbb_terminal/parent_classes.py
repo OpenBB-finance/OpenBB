@@ -11,7 +11,7 @@ import os
 import re
 from abc import ABCMeta, abstractmethod
 from datetime import datetime, timedelta
-from typing import Optional, Any, Dict, List, Union
+from typing import Any, Dict, List, Optional, Union
 
 import numpy as np
 import pandas as pd

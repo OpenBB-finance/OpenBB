@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 import logging
 import os
 from datetime import datetime
+from typing import Optional
 
 import pandas as pd
 
@@ -55,7 +56,6 @@ from openbb_terminal.portfolio.portfolio_model import (
     get_yearly_returns,
 )
 from openbb_terminal.rich_config import console
-from typing import Optional
 
 # pylint: disable=C0302,redefined-outer-name
 

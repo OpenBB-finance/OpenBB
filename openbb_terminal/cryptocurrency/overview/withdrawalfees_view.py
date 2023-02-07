@@ -1,6 +1,7 @@
 """Withdrawal Fees view"""
 import logging
 import os
+from typing import Optional
 
 from openbb_terminal.cryptocurrency.overview.withdrawalfees_model import (
     get_crypto_withdrawal_fees,
@@ -10,7 +11,6 @@ from openbb_terminal.cryptocurrency.overview.withdrawalfees_model import (
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
-from typing import Optional
 
 logger = logging.getLogger(__name__)
 

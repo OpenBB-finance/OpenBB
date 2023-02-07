@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 # pylint: disable=R0904, C0302, W0622
 import argparse
 import logging
-from typing import Optional, List
+from typing import List, Optional
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter

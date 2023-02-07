@@ -5,7 +5,7 @@ import logging
 import os
 from io import BytesIO
 from pathlib import Path
-from typing import Optional, Any, Dict, List, Tuple, Union
+from typing import Any, Dict, List, Optional, Tuple, Union
 from urllib.request import urlopen
 from zipfile import ZipFile
 

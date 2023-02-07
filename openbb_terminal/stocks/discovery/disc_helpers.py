@@ -1,9 +1,9 @@
 import re
+from typing import Optional
 
 import pandas as pd
 
 from openbb_terminal.helper_funcs import get_user_agent, request
-from typing import Optional
 
 
 def get_df(url: str, header: Optional[int] = None) -> pd.DataFrame:

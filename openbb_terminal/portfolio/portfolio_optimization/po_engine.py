@@ -1,4 +1,4 @@
-from typing import Optional, Dict, List, Tuple
+from typing import Dict, List, Optional, Tuple
 
 import pandas as pd
 

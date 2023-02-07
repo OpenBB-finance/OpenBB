@@ -2,6 +2,7 @@
 __docformat__ = "numpy"
 import logging
 import os
+from typing import Optional
 
 from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.decorators import check_api_key, log_start_end
@@ -12,7 +13,6 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.helpers_denomination import transform as transform_by_denomination
 from openbb_terminal.stocks.fundamental_analysis import polygon_model
-from typing import Optional
 
 logger = logging.getLogger(__name__)
 

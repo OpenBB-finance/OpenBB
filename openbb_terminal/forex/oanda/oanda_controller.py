@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import argparse
 import logging
-from typing import Optional, List, Union
+from typing import List, Optional, Union
 
 from openbb_terminal import (
     config_terminal as cfg,

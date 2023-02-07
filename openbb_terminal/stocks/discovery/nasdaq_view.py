@@ -4,12 +4,12 @@ __docformat__ = "numpy"
 import logging
 import os
 from datetime import datetime
+from typing import Optional
 
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.discovery import nasdaq_model
-from typing import Optional
 
 # pylint: disable=E1123
 

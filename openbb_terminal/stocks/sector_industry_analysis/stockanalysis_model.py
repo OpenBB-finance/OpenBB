@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 # pylint:disable=too-many-arguments,unexpected-keyword-arg
 
 import logging
-from typing import Optional, Any, Dict, List
+from typing import Any, Dict, List, Optional
 
 import numpy as np
 import pandas as pd

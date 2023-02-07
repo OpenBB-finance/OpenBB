@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import argparse
 import logging
-from typing import Optional, List
+from typing import List, Optional
 
 import matplotlib as mpl
 import pandas as pd

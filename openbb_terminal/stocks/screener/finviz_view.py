@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import difflib
 import logging
 import os
-from typing import Optional, List
+from typing import List, Optional
 
 import pandas as pd
 

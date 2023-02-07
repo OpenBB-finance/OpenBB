@@ -10,7 +10,7 @@ import sys
 # IMPORTATION STANDARD
 import webbrowser
 from contextlib import contextmanager
-from typing import Optional, List
+from typing import List, Optional
 
 import matplotlib.pyplot as plt
 

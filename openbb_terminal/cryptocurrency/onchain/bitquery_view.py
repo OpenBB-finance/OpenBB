@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
+from typing import Optional
 
 from openbb_terminal.cryptocurrency.dataframe_helpers import (
     lambda_very_long_number_formatter,
@@ -11,7 +12,6 @@ from openbb_terminal.cryptocurrency.dataframe_helpers import (
 from openbb_terminal.cryptocurrency.onchain import bitquery_model
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
-from typing import Optional
 
 logger = logging.getLogger(__name__)
 

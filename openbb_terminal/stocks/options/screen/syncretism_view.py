@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import configparser
 import logging
 import os
-from typing import Optional, List, Union
+from typing import List, Optional, Union
 
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.core.plots.plotly_helper import OpenBBFigure

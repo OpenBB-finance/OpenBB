@@ -5,7 +5,7 @@ import argparse
 import logging
 import os
 from datetime import datetime, timedelta
-from typing import Optional, List
+from typing import List, Optional
 
 import financedatabase
 import yfinance as yf

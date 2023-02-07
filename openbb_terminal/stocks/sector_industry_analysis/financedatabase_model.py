@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 # pylint:disable=too-many-arguments,unexpected-keyword-arg
 
 import logging
+from typing import Optional
 
 import financedatabase as fd
 import yfinance as yf
@@ -11,7 +12,6 @@ from tqdm import tqdm
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
-from typing import Optional
 
 logger = logging.getLogger(__name__)
 

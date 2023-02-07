@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
+from typing import Optional
 
 import pandas as pd
 
@@ -15,7 +16,6 @@ from openbb_terminal.helper_funcs import (
     print_rich_table,
 )
 from openbb_terminal.stocks.dark_pool_shorts import quandl_model
-from typing import Optional
 
 logger = logging.getLogger(__name__)
 

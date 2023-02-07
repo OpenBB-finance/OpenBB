@@ -7,11 +7,7 @@ from typing import Optional, Union
 
 from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.decorators import check_api_key, log_start_end
-from openbb_terminal.helper_funcs import (
-    camel_case_split,
-    export_data,
-    print_rich_table,
-)
+from openbb_terminal.helper_funcs import camel_case_split, export_data, print_rich_table
 from openbb_terminal.helpers_denomination import transform as transform_by_denomination
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.fundamental_analysis import av_model

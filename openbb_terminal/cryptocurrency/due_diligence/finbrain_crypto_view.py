@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
+from typing import Optional
 
 import numpy as np
 import pandas as pd
@@ -18,7 +19,6 @@ from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, plot_autoscale
 from openbb_terminal.rich_config import console
-from typing import Optional
 
 logger = logging.getLogger(__name__)
 

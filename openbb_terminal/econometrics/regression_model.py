@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import logging
 import os
 import warnings
-from typing import Optional, Any, Dict, List, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
 import pandas as pd
 import statsmodels

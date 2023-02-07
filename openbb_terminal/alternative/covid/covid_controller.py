@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import argparse
 import logging
 import pathlib
-from typing import Optional, List
+from typing import List, Optional
 
 import pandas as pd
 

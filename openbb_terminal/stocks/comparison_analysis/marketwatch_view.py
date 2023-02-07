@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import logging
 import os
 from datetime import datetime
-from typing import Optional, List
+from typing import List, Optional
 
 from openbb_terminal import rich_config
 from openbb_terminal.decorators import log_start_end

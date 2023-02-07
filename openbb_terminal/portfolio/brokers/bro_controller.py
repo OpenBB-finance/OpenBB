@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 # pylint: disable=R1710
 
 import logging
-from typing import Optional, List, Set
+from typing import List, Optional, Set
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter

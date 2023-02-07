@@ -5,7 +5,7 @@ __docformat__ = "numpy"
 
 import argparse
 import logging
-from typing import Optional, Dict, List
+from typing import Dict, List, Optional
 
 from tqdm import tqdm
 

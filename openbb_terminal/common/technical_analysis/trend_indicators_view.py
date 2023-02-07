@@ -3,13 +3,13 @@ __docformat__ = "numpy"
 
 import logging
 import os
+from typing import Optional
 
 import pandas as pd
 
 from openbb_terminal.core.plots.plotly_ta.ta_class import PlotlyTA
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data
-from typing import Optional
 
 logger = logging.getLogger(__name__)
 

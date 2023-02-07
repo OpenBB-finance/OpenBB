@@ -9,10 +9,7 @@ import pandas as pd
 
 from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.decorators import check_api_key, log_start_end
-from openbb_terminal.helper_funcs import (
-    export_data,
-    print_rich_table,
-)
+from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.stocks.fundamental_analysis import finnhub_model
 
 logger = logging.getLogger(__name__)

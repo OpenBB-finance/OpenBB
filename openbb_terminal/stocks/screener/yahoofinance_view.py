@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 import datetime
 import logging
 import os
-from typing import Optional, List, Tuple, Union
+from typing import List, Optional, Tuple, Union
 
 from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.decorators import log_start_end

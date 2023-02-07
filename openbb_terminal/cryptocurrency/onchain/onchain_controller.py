@@ -7,7 +7,7 @@ import argparse
 import difflib
 import logging
 from datetime import datetime, timedelta
-from typing import Optional, List
+from typing import List, Optional
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.cryptocurrency.due_diligence.glassnode_model import (

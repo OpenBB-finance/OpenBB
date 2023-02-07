@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
+from typing import Optional
 
 import pandas as pd
 
@@ -12,7 +13,6 @@ from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.helpers_denomination import transform as transform_by_denomination
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.fundamental_analysis import fmp_model
-from typing import Optional
 
 logger = logging.getLogger(__name__)
 

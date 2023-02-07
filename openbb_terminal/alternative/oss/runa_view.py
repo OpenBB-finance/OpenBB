@@ -1,6 +1,7 @@
 """Rekt view"""
 import logging
 import os
+from typing import Optional
 
 from matplotlib import (
     pyplot as plt,
@@ -19,7 +20,6 @@ from openbb_terminal.helper_funcs import (
     print_rich_table,
 )
 from openbb_terminal.rich_config import console
-from typing import Optional
 
 logger = logging.getLogger(__name__)
 

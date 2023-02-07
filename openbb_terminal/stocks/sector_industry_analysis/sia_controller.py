@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import argparse
 import difflib
 import logging
-from typing import Optional, List
+from typing import List, Optional
 
 import yfinance as yf
 

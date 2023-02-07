@@ -3,12 +3,12 @@ __docformat__ = "numpy"
 
 import logging
 import os
+from typing import Optional
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.etf.discovery import wsj_model
 from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
-from typing import Optional
 
 logger = logging.getLogger(__name__)
 

@@ -1,6 +1,7 @@
 """Rekt view"""
 import logging
 import os
+from typing import Optional
 
 from openbb_terminal.cryptocurrency.overview import rekt_model
 from openbb_terminal.decorators import log_start_end
@@ -10,7 +11,6 @@ from openbb_terminal.helper_funcs import (
     print_rich_table,
 )
 from openbb_terminal.rich_config import console
-from typing import Optional
 
 logger = logging.getLogger(__name__)
 

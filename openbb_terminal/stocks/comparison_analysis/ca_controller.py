@@ -5,7 +5,7 @@ import argparse
 import logging
 import random
 from datetime import datetime, timedelta
-from typing import Optional, List
+from typing import List, Optional
 
 import yfinance as yf
 

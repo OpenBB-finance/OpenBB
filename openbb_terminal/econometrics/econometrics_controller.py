@@ -8,7 +8,7 @@ import logging
 import os
 from itertools import chain
 from pathlib import Path
-from typing import Optional, Any, Dict, List
+from typing import Any, Dict, List, Optional
 
 import numpy as np
 import pandas as pd

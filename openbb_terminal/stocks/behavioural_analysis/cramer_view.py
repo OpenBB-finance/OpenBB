@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 import logging
 import os
 from datetime import datetime
+from typing import Optional
 
 import matplotlib.pyplot as plt
 import yfinance
@@ -15,7 +16,6 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, plot_autoscale, print_rich_table
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.behavioural_analysis import cramer_model
-from typing import Optional
 
 logger = logging.getLogger(__name__)
 

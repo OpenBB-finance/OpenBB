@@ -7,6 +7,7 @@ __docformat__ = "numpy"
 import logging
 import math
 import warnings
+from typing import Optional
 
 import matplotlib
 import matplotlib.pyplot as plt
@@ -31,7 +32,6 @@ from openbb_terminal.portfolio.portfolio_optimization.statics import (
     TIME_FACTOR,
 )
 from openbb_terminal.rich_config import console
-from typing import Optional
 
 warnings.filterwarnings("ignore")
 

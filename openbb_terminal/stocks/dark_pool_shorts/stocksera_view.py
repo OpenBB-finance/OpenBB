@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
+from typing import Optional
 
 import pandas as pd
 
@@ -16,7 +17,6 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.dark_pool_shorts import stocksera_model
-from typing import Optional
 
 logger = logging.getLogger(__name__)
 

@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
+from typing import Optional
 
 from pandas.plotting import register_matplotlib_converters
 
@@ -13,7 +14,6 @@ from openbb_terminal.cryptocurrency.due_diligence import coinpaprika_model
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
-from typing import Optional
 
 logger = logging.getLogger(__name__)
 
