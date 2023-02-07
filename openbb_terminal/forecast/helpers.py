@@ -21,7 +21,11 @@ from sklearn.preprocessing import MaxAbsScaler, MinMaxScaler, Normalizer, Standa
 from openbb_terminal import rich_config
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
-from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
+from openbb_terminal.core.plots.plotly_helper import (
+    OpenBBFigure,
+    theme as plotly_theme,
+)
+from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, plot_autoscale, print_rich_table
 from openbb_terminal.rich_config import console
 
@@ -438,6 +442,152 @@ def get_pl_kwargs(
     return pl_trainer_kwargs
 
 
+@log_start_end(log=logger)
+def plot_predicted(
+    predicted_values: type[TimeSeries],
+    fig: OpenBBFigure,
+    central_quantile: Union[float, str] = 0.5,
+    low_quantile: Optional[float] = 0.05,
+    high_quantile: Optional[float] = 0.95,
+    label: Optional[Union[str, List[str]]] = "",
+):
+    """Plots the predicted_values time series on the given figure.
+
+    Parameters
+    ----------
+    fig
+        The figure to plot on.
+    central_quantile
+        The quantile (between 0 and 1) to plot as a "central" value, if the series is stochastic (i.e., if
+        it has multiple samples). This will be applied on each component separately (i.e., to display quantiles
+        of the components' marginal distributions). For instance, setting `central_quantile=0.5` will plot the
+        median of each component. `central_quantile` can also be set to 'mean'.
+    low_quantile
+        The quantile to use for the lower bound of the plotted confidence interval. Similar to `central_quantile`,
+        this is applied to each component separately (i.e., displaying marginal distributions). No confidence
+        interval is shown if `confidence_low_quantile` is None (default 0.05).
+    high_quantile
+        The quantile to use for the upper bound of the plotted confidence interval. Similar to `central_quantile`,
+        this is applied to each component separately (i.e., displaying marginal distributions). No confidence
+        interval is shown if `high_quantile` is None (default 0.95).
+    label
+        A prefix that will appear in front of each component of the TimeSeries or a list of string of
+        length the number of components in the plotted TimeSeries (default "").
+    """
+
+    if central_quantile != "mean":
+        if not (isinstance(central_quantile, float) and 0.0 <= central_quantile <= 1.0):
+            raise ValueError(
+                'central_quantile must be either "mean", or a float between 0 and 1.'
+            )
+
+    if high_quantile is not None and low_quantile is not None:
+        if not (0.0 <= low_quantile <= 1.0 and 0.0 <= high_quantile <= 1.0):
+            raise ValueError(
+                "confidence interval low and high quantiles must be between 0 and 1."
+            )
+
+    if predicted_values.n_components > 10:
+        logger.warning(
+            "Number of components is larger than 10 (%s). Plotting only the first 10 components.",
+            predicted_values.n_components,
+        )
+
+    if not isinstance(label, str) and isinstance(label, list):
+        if not (
+            len(label) == predicted_values.n_components
+            or (predicted_values.n_components > 10 and len(label) >= 10)
+        ):
+            console.print(
+                "The label argument should have the same length as the number of plotted components "
+                f"({min(predicted_values.n_components, 10)}), only {len(label)} labels were provided"
+            )
+    else:
+        pass
+
+    # pylint: disable=protected-access
+    for i, c in enumerate(predicted_values._xa.component[:10]):
+        comp_name = str(c.values)
+        comp = predicted_values._xa.sel(component=c)
+
+        if comp.sample.size > 1:
+            if central_quantile == "mean":
+                central_series = comp.mean(dim="sample")
+            else:
+                central_series = comp.quantile(q=central_quantile, dim="sample")
+        else:
+            central_series = comp.mean(dim="sample")
+
+        if isinstance(label, list):
+            label_to_use = label[i]
+        else:
+            label_to_use = (
+                (f"{label}" + (f"_{i}" if len(predicted_values.components) > 1 else ""))
+                if label != ""
+                else comp_name
+            )
+
+        if central_series.shape[0] > 1:
+            fig.add_scatter(
+                x=central_series.date,
+                y=central_series.values,
+                mode="lines",
+                name=label_to_use,
+                line=dict(width=2, color=theme.up_color),
+            )
+
+        elif central_series.shape[0] == 1:
+            fig.add_scatter(
+                x=[predicted_values.start_time()],
+                y=[central_series.values[0]],
+                mode="markers",
+                name=label_to_use,
+            )
+
+        # Optionally show confidence intervals
+        if (
+            comp.sample.size > 1
+            and low_quantile is not None
+            and high_quantile is not None
+        ):
+            low_series = comp.quantile(q=low_quantile, dim="sample")
+            high_series = comp.quantile(q=high_quantile, dim="sample")
+            if low_series.shape[0] > 1:
+                # plotly fill
+                fig.add_scatter(
+                    x=predicted_values.time_index,
+                    y=high_series,
+                    name=f"High Confidence Interval ({high_quantile * 100}%)",
+                    mode="lines",
+                    line_width=0,
+                    opacity=0.2,
+                    showlegend=False,
+                )
+                fig.add_scatter(
+                    x=predicted_values.time_index,
+                    y=low_series,
+                    name=f"Low Confidence Interval ({low_quantile * 100}%)",
+                    fill="tonexty",
+                    mode="lines",
+                    fillcolor=plotly_theme.up_color_transparent.replace("0.50", "0.35"),
+                    line_width=0,
+                    opacity=0.2,
+                    showlegend=False,
+                )
+
+            else:
+                fig.add_scatter(
+                    x=[predicted_values.start_time(), predicted_values.start_time()],
+                    y=[low_series.values[0], high_series.values[0]],
+                    mode="lines",
+                    name=label_to_use,
+                    line_color=theme.up_color,
+                )
+
+    return fig
+
+
+@log_start_end(log=logger)
 def plot_forecast(
     name: str,
     target_col: str,
@@ -452,9 +602,9 @@ def plot_forecast(
     precision: Optional[int] = None,
     probabilistic: bool = False,
     export: str = "",
-    sheet_name: str = None,
-    low_quantile: float = None,
-    high_quantile: float = None,
+    sheet_name: Optional[str] = None,
+    low_quantile: Optional[float] = None,
+    high_quantile: Optional[float] = None,
     forecast_only: bool = False,
     naive: bool = False,
     export_pred_raw: bool = False,
@@ -506,13 +656,7 @@ def plot_forecast(
     if past_covariates:
         pred_label += " w/ past covs"
 
-    fig.add_scatter(
-        y=list(predicted_values.univariate_values()),
-        x=list(predicted_values.time_index),
-        name=pred_label,
-        line_color="#00AAFF",
-        mode="lines",
-    )
+    fig = plot_predicted(predicted_values, fig, label=pred_label, **quant_kwargs)
 
     fig.update_layout(
         title=dict(
@@ -576,7 +720,7 @@ def plot_forecast(
 def plot_explainability(
     model: type[GlobalForecastingModel],
     explainability_raw=False,
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.axes]] = None,
 ):
     """
@@ -645,7 +789,7 @@ def dt_format(x) -> str:
 
 def get_series(
     data: pd.DataFrame,
-    target_column: str = None,
+    target_column: Optional[str] = None,
     is_scaler: bool = True,
     time_col: str = "date",
 ) -> Tuple[Optional[Scaler], TimeSeries]:
