@@ -11,6 +11,7 @@ from tqdm import tqdm
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
+from typing import Optional
 
 logger = logging.getLogger(__name__)
 
@@ -107,9 +108,9 @@ def get_marketcap() -> list:
 
 @log_start_end(log=logger)
 def filter_stocks(
-    country: str = None,
-    sector: str = None,
-    industry: str = None,
+    country: Optional[str] = None,
+    sector: Optional[str] = None,
+    industry: Optional[str] = None,
     marketcap: str = "",
     exclude_exchanges: bool = True,
 ) -> list:

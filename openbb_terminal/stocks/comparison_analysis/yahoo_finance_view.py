@@ -42,7 +42,7 @@ def display_historical(
     candle_type: str = "a",
     normalize: bool = True,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: bool = False,
 ) -> Union[OpenBBFigure, None]:
     """Display historical stock prices. [Source: Yahoo Finance]
@@ -108,7 +108,7 @@ def display_volume(
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: bool = False,
 ) -> Union[OpenBBFigure, None]:
     """Display stock volume. [Source: Yahoo Finance]
@@ -161,7 +161,7 @@ def display_correlation(
     raw: bool = False,
     external_axes: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ) -> Union[OpenBBFigure, None]:
     """
     Correlation heatmap based on historical price comparison

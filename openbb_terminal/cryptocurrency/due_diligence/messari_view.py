@@ -56,7 +56,7 @@ def display_messari_timeseries_list(
     query: str = "",
     only_free: bool = True,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Prints table showing messari timeseries list
     [Source: https://messari.io/]
@@ -114,7 +114,7 @@ def display_messari_timeseries(
     end_date: Optional[str] = None,
     interval: str = "1d",
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: bool = False,
 ) -> None:
     """Plots messari timeseries
@@ -188,7 +188,7 @@ def display_marketcap_dominance(
     end_date: Optional[str] = None,
     interval: str = "1d",
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: bool = False,
 ) -> None:
     """Plots market dominance of a coin over time
@@ -246,7 +246,7 @@ def display_marketcap_dominance(
 
 @log_start_end(log=logger)
 @check_api_key(["API_MESSARI_KEY"])
-def display_links(symbol: str, export: str = "", sheet_name: str = None) -> None:
+def display_links(symbol: str, export: str = "", sheet_name: Optional[str] = None) -> None:
     """Prints table showing coin links
     [Source: https://messari.io/]
 
@@ -287,7 +287,7 @@ def display_roadmap(
     ascend: bool = True,
     limit: int = 5,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: bool = False,
 ) -> None:
     """Plots coin roadmap
@@ -384,7 +384,7 @@ def display_roadmap(
 def display_tokenomics(
     symbol: str,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: bool = False,
 ) -> None:
     """Plots coin tokenomics
@@ -466,7 +466,7 @@ def display_tokenomics(
 def display_project_info(
     symbol: str,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Prints table showing project info
     [Source: https://messari.io/]
@@ -508,7 +508,7 @@ def display_project_info(
 def display_investors(
     symbol: str,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Prints table showing coin investors
     [Source: https://messari.io/]
@@ -556,7 +556,7 @@ def display_investors(
 def display_team(
     symbol: str,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Prints table showing coin team
     [Source: https://messari.io/]
@@ -604,7 +604,7 @@ def display_team(
 def display_governance(
     symbol: str,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Prints table showing coin governance
     [Source: https://messari.io/]
@@ -643,7 +643,7 @@ def display_governance(
 def display_fundraising(
     symbol: str,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: bool = False,
 ) -> Union[OpenBBFigure, None]:
     """Display coin fundraising

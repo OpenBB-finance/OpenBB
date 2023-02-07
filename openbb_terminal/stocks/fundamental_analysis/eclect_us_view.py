@@ -8,12 +8,13 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.fundamental_analysis import eclect_us_model
+from typing import Optional
 
 logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def display_analysis(symbol: str, export: str = "", sheet_name: str = None) -> None:
+def display_analysis(symbol: str, export: str = "", sheet_name: Optional[str] = None) -> None:
     """Display analysis of SEC filings based on NLP model. [Source: https://eclect.us]
 
     Parameters

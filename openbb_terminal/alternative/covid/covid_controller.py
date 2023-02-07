@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import argparse
 import logging
 import pathlib
-from typing import List
+from typing import Optional, List
 
 import pandas as pd
 
@@ -33,7 +33,7 @@ class CovidController(BaseController):
     PATH = "/alternative/covid/"
     CHOICES_GENERATION = True
 
-    def __init__(self, queue: List[str] = None):
+    def __init__(self, queue: Optional[List[str]] = None):
         """Constructor"""
         super().__init__(queue)
 

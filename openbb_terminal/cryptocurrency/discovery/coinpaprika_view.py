@@ -8,6 +8,7 @@ import openbb_terminal.cryptocurrency.discovery.coinpaprika_model as paprika
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
+from typing import Optional
 
 logger = logging.getLogger(__name__)
 
@@ -20,7 +21,7 @@ def display_search_results(
     sortby: str = "id",
     ascend: bool = True,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Prints table showing Search over CoinPaprika. [Source: CoinPaprika]
 

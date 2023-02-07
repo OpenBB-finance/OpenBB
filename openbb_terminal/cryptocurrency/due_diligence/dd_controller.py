@@ -5,7 +5,7 @@ __docformat__ = "numpy"
 import argparse
 import logging
 from datetime import datetime, timedelta
-from typing import List
+from typing import Optional, List
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.cryptocurrency import cryptocurrency_helpers
@@ -118,7 +118,7 @@ class DueDiligenceController(CryptoBaseController):
         self,
         symbol=None,
         source=None,
-        queue: List[str] = None,
+        queue: Optional[List[str]] = None,
     ):
         """Constructor"""
         super().__init__(queue)

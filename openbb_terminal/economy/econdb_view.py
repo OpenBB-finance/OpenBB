@@ -23,8 +23,8 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def show_macro_data(
-    parameters: list = None,
-    countries: list = None,
+    parameters: Optional[list] = None,
+    countries: Optional[list] = None,
     transform: str = "",
     start_date: str = "1900-01-01",
     end_date: Optional[str] = None,
@@ -32,7 +32,7 @@ def show_macro_data(
     raw: bool = False,
     external_axes: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ) -> Union[OpenBBFigure, None]:
     """Show the received macro data about a company [Source: EconDB]
 
@@ -148,15 +148,15 @@ def show_macro_data(
 
 @log_start_end(log=logger)
 def show_treasuries(
-    instruments: list = None,
-    maturities: list = None,
+    instruments: Optional[list] = None,
+    maturities: Optional[list] = None,
     frequency: str = "monthly",
     start_date: str = "1900-01-01",
     end_date: Optional[str] = None,
     raw: bool = False,
     external_axes: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ) -> Union[OpenBBFigure, None]:
     """Display U.S. Treasury rates [Source: EconDB]
 

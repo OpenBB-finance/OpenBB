@@ -13,6 +13,7 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.etf import yfinance_model
 from openbb_terminal.helper_funcs import export_data, plot_autoscale, print_rich_table
 from openbb_terminal.rich_config import console
+from typing import Optional
 
 logger = logging.getLogger(__name__)
 
@@ -23,7 +24,7 @@ def display_etf_weightings(
     raw: bool = False,
     min_pct_to_display: float = 5,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: bool = False,
 ):
     """Display sector weightings allocation of ETF. [Source: Yahoo Finance]

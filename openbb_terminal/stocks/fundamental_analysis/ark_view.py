@@ -10,6 +10,7 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.fundamental_analysis import ark_model
+from typing import Optional
 
 logger = logging.getLogger(__name__)
 
@@ -20,7 +21,7 @@ def display_ark_trades(
     limit: int = 20,
     show_symbol: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Display ARK trades for ticker
 

@@ -9,6 +9,7 @@ from PIL import Image
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.economy import finviz_model
 from openbb_terminal.helper_funcs import export_data, print_rich_table
+from typing import Optional
 
 logger = logging.getLogger(__name__)
 
@@ -33,7 +34,7 @@ def display_valuation(
     sortby: str = "Name",
     ascend: bool = True,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Display group (sectors, industry or country) valuation data. [Source: Finviz]
 
@@ -75,7 +76,7 @@ def display_performance(
     sortby: str = "Name",
     ascend: bool = True,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """View group (sectors, industry or country) performance data. [Source: Finviz]
 
@@ -112,7 +113,7 @@ def display_performance(
 
 
 @log_start_end(log=logger)
-def display_spectrum(group: str = "sector", export: str = "", sheet_name: str = None):
+def display_spectrum(group: str = "sector", export: str = "", sheet_name: Optional[str] = None):
     """Display finviz spectrum in system viewer [Source: Finviz]
 
     Parameters
@@ -145,7 +146,7 @@ def display_future(
     sortby: str = "ticker",
     ascend: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Display table of a particular future type. [Source: Finviz]
 

@@ -8,12 +8,13 @@ from openbb_terminal import rich_config
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.stocks.fundamental_analysis import finviz_model
+from typing import Optional
 
 logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def display_screen_data(symbol: str, export: str = "", sheet_name: str = None):
+def display_screen_data(symbol: str, export: str = "", sheet_name: Optional[str] = None):
     """FinViz ticker screener
 
     Parameters
@@ -60,7 +61,7 @@ def lambda_category_color_red_green(val: str) -> str:
 
 
 @log_start_end(log=logger)
-def analyst(symbol: str, export: str = "", sheet_name: str = None):
+def analyst(symbol: str, export: str = "", sheet_name: Optional[str] = None):
     """Display analyst ratings. [Source: Finviz]
 
     Parameters

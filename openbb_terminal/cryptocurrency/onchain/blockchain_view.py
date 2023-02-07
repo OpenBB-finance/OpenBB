@@ -29,7 +29,7 @@ def display_btc_circulating_supply(
     start_date: str = "2010-01-01",
     end_date: Optional[str] = None,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: bool = False,
 ) -> None:
     """Returns BTC circulating supply [Source: https://api.blockchain.info/]
@@ -86,7 +86,7 @@ def display_btc_confirmed_transactions(
     start_date: str = "2010-01-01",
     end_date: Optional[str] = None,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: bool = False,
 ) -> None:
     """Returns BTC confirmed transactions [Source: https://api.blockchain.info/]
@@ -144,7 +144,7 @@ def display_btc_confirmed_transactions(
 def display_btc_single_block(
     blockhash: str,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Returns BTC block data. [Source: https://api.blockchain.info/]
     Parameters

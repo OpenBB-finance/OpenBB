@@ -6,7 +6,7 @@ import argparse
 import logging
 import webbrowser
 from datetime import datetime
-from typing import List
+from typing import Optional, List
 
 import pandas as pd
 
@@ -89,7 +89,7 @@ class TechnicalAnalysisController(StockBaseController):
         start: datetime,
         interval: str,
         stock: pd.DataFrame,
-        queue: List[str] = None,
+        queue: Optional[List[str]] = None,
     ):
         """Constructor"""
         super().__init__(queue)

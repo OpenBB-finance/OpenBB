@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import Union
+from typing import Optional, Union
 
 import matplotlib.pyplot as plt
 from matplotlib import ticker
@@ -28,7 +28,7 @@ def display_terra_asset_history(
     asset: str = "",
     address: str = "",
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: bool = False,
 ) -> Union[OpenBBFigure, None]:
     """Plots the 30-day history of specified asset in terra address
@@ -84,7 +84,7 @@ def display_terra_asset_history(
 @log_start_end(log=logger)
 def display_anchor_yield_reserve(
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: bool = False,
 ) -> Union[OpenBBFigure, None]:
     """Plots the 30-day history of the Anchor Yield Reserve.

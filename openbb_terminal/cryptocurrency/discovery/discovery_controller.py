@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 # pylint: disable=R0904, C0302, W0622, C0201
 import argparse
 import logging
-from typing import List
+from typing import Optional, List
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.cryptocurrency.discovery import (
@@ -45,7 +45,7 @@ class DiscoveryController(BaseController):
     PATH = "/crypto/disc/"
     CHOICES_GENERATION = True
 
-    def __init__(self, queue: List[str] = None):
+    def __init__(self, queue: Optional[List[str]] = None):
         """Constructor"""
         super().__init__(queue)
 

@@ -8,6 +8,7 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.etf.discovery import wsj_model
 from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
+from typing import Optional
 
 logger = logging.getLogger(__name__)
 
@@ -17,7 +18,7 @@ def show_top_mover(
     sort_type: str = "gainers",
     limit: int = 10,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """
     Show top ETF movers from wsj.com

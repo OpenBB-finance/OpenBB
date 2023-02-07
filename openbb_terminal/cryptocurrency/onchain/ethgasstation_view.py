@@ -6,12 +6,13 @@ from openbb_terminal.cryptocurrency.onchain.ethgasstation_model import get_gwei_
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
+from typing import Optional
 
 logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def display_gwei_fees(export: str = "", sheet_name: str = None) -> None:
+def display_gwei_fees(export: str = "", sheet_name: Optional[str] = None) -> None:
     """Current gwei fees
     [Source: https://ethgasstation.info]
 

@@ -12,6 +12,7 @@ from openbb_terminal.cryptocurrency.overview import loanscan_model
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, plot_autoscale, print_rich_table
 from openbb_terminal.rich_config import console
+from typing import Optional
 
 logger = logging.getLogger(__name__)
 
@@ -23,7 +24,7 @@ def display_crypto_rates(
     rate_type: str = "borrow",
     limit: int = 10,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: bool = False,
 ) -> None:
     """Displays crypto {borrow,supply} interest rates for cryptocurrencies across several platforms

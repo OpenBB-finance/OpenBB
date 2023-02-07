@@ -4,7 +4,7 @@ __docforma__ = "numpy"
 import logging
 import os
 from datetime import datetime, timedelta
-from typing import Union
+from typing import Optional, Union
 
 from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.decorators import log_start_end
@@ -21,7 +21,7 @@ def display_put_call_ratio(
     window: int = 30,
     start_date: str = (datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: bool = False,
 ) -> Union[OpenBBFigure, None]:
     """Display put call ratio [Source: AlphaQuery.com]

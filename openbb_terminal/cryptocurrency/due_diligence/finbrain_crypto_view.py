@@ -18,6 +18,7 @@ from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, plot_autoscale
 from openbb_terminal.rich_config import console
+from typing import Optional
 
 logger = logging.getLogger(__name__)
 
@@ -35,7 +36,7 @@ def display_crypto_sentiment_analysis(
     symbol: str,
     raw: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: bool = False,
 ) -> None:
     """Sentiment analysis from FinBrain for Cryptocurrencies

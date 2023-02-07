@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import List, Union
+from typing import Optional, List, Union
 
 import pandas as pd
 
@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 def darkpool_ats_otc(
     symbol: str,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: bool = False,
 ) -> Union[OpenBBFigure, None]:
     """Display barchart of dark pool (ATS) and OTC (Non ATS) data. [Source: FINRA]
@@ -217,7 +217,7 @@ def darkpool_otc(
     limit: int = 10,
     tier: str = "T1",
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: bool = False,
 ) -> Union[OpenBBFigure, None]:
     """Display dark pool (ATS) data of tickers with growing trades activity. [Source: FINRA]

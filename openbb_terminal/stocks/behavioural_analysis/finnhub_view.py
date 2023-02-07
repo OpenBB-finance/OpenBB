@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import Union
+from typing import Optional, Union
 
 import pandas as pd
 import yfinance as yf
@@ -22,7 +22,7 @@ logger = logging.getLogger(__name__)
 def display_stock_price_headlines_sentiment(
     symbol: str,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: bool = False,
 ) -> Union[None, OpenBBFigure]:
     """Display stock price and headlines sentiment using VADER model over time. [Source: Finnhub]

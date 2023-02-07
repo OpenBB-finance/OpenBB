@@ -5,7 +5,7 @@ __docformat__ = "numpy"
 import argparse
 import logging
 import os
-from typing import List
+from typing import Optional, List
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.cryptocurrency import cryptocurrency_helpers, pyth_model, pyth_view
@@ -82,7 +82,7 @@ class CryptoController(CryptoBaseController):
     FILE_PATH = os.path.join(os.path.dirname(__file__), "README.md")
     CHOICES_GENERATION = True
 
-    def __init__(self, queue: List[str] = None):
+    def __init__(self, queue: Optional[List[str]] = None):
         """Constructor"""
         super().__init__(queue)
 

@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import Union
+from typing import Optional, Union
 
 import pandas as pd
 
@@ -69,7 +69,7 @@ def display_raw(
     price: float = 90,
     limit: int = 10,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: bool = False,
 ) -> Union[OpenBBFigure, None]:
     """Return raw stock data[chartexchange]

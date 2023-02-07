@@ -25,7 +25,7 @@ def display_search(
     exchange: str = "",
     description: str = "",
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Display search futures [Source: Yahoo Finance]
 
@@ -67,7 +67,7 @@ def display_historical(
     end_date: Optional[str] = None,
     raw: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: bool = False,
 ):
     """Display historical futures [Source: Yahoo Finance]
@@ -213,7 +213,7 @@ def display_curve(
     symbol: str,
     raw: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: bool = False,
 ):
     """Display curve futures [Source: Yahoo Finance]

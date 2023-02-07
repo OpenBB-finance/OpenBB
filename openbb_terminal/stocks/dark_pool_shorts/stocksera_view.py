@@ -16,6 +16,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.dark_pool_shorts import stocksera_model
+from typing import Optional
 
 logger = logging.getLogger(__name__)
 
@@ -73,7 +74,7 @@ def cost_to_borrow(
     limit: int = 100,
     raw: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: bool = False,
 ):
     """Plot the short interest of a stock. This corresponds to the

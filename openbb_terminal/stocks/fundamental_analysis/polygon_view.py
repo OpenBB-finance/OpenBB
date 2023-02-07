@@ -12,6 +12,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.helpers_denomination import transform as transform_by_denomination
 from openbb_terminal.stocks.fundamental_analysis import polygon_model
+from typing import Optional
 
 logger = logging.getLogger(__name__)
 
@@ -24,9 +25,9 @@ def display_fundamentals(
     limit: int = 10,
     quarterly: bool = False,
     ratios: bool = False,
-    plot: list = None,
+    plot: Optional[list] = None,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Display tickers balance sheet or income statement
 

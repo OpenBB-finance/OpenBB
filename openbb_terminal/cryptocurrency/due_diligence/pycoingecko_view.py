@@ -25,7 +25,7 @@ def display_coin_potential_returns(
     limit: Optional[int] = None,
     price: Optional[int] = None,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Prints table showing potential returns of a certain coin. [Source: CoinGecko]
 
@@ -58,7 +58,7 @@ def display_coin_potential_returns(
 
 
 @log_start_end(log=logger)
-def display_info(symbol: str, export: str = "", sheet_name: str = None) -> None:
+def display_info(symbol: str, export: str = "", sheet_name: Optional[str] = None) -> None:
     """Prints table showing basic information about loaded coin. [Source: CoinGecko]
 
     Parameters
@@ -92,7 +92,7 @@ def display_info(symbol: str, export: str = "", sheet_name: str = None) -> None:
 
 
 @log_start_end(log=logger)
-def display_web(symbol: str, export: str = "", sheet_name: str = None) -> None:
+def display_web(symbol: str, export: str = "", sheet_name: Optional[str] = None) -> None:
     """Prints table showing found websites corresponding to loaded coin. [Source: CoinGecko]
 
     Parameters
@@ -126,7 +126,7 @@ def display_web(symbol: str, export: str = "", sheet_name: str = None) -> None:
 
 
 @log_start_end(log=logger)
-def display_social(symbol: str, export: str = "", sheet_name: str = None) -> None:
+def display_social(symbol: str, export: str = "", sheet_name: Optional[str] = None) -> None:
     """Prints table showing social media corresponding to loaded coin. [Source: CoinGecko]
 
     Parameters
@@ -156,7 +156,7 @@ def display_social(symbol: str, export: str = "", sheet_name: str = None) -> Non
 
 
 @log_start_end(log=logger)
-def display_dev(symbol: str, export: str = "", sheet_name: str = None) -> None:
+def display_dev(symbol: str, export: str = "", sheet_name: Optional[str] = None) -> None:
     """Prints table showing developers data for loaded coin. [Source: CoinGecko]
 
     Parameters
@@ -188,7 +188,7 @@ def display_dev(symbol: str, export: str = "", sheet_name: str = None) -> None:
 
 @log_start_end(log=logger)
 def display_ath(
-    symbol: str, currency: str = "usd", export: str = "", sheet_name: str = None
+    symbol: str, currency: str = "usd", export: str = "", sheet_name: Optional[str] = None
 ) -> None:
     """Prints table showing all time high data for loaded coin. [Source: CoinGecko]
 
@@ -218,7 +218,7 @@ def display_ath(
 
 @log_start_end(log=logger)
 def display_atl(
-    symbol: str, currency: str = "usd", export: str = "", sheet_name: str = None
+    symbol: str, currency: str = "usd", export: str = "", sheet_name: Optional[str] = None
 ) -> None:
     """Prints table showing all time low data for loaded coin. [Source: CoinGecko]
 
@@ -247,7 +247,7 @@ def display_atl(
 
 
 @log_start_end(log=logger)
-def display_score(symbol: str, export: str = "", sheet_name: str = None) -> None:
+def display_score(symbol: str, export: str = "", sheet_name: Optional[str] = None) -> None:
     """Prints table showing different kind of scores for loaded coin. [Source: CoinGecko]
 
     Parameters
@@ -278,7 +278,7 @@ def display_score(symbol: str, export: str = "", sheet_name: str = None) -> None
 
 
 @log_start_end(log=logger)
-def display_bc(symbol: str, export: str = "", sheet_name: str = None) -> None:
+def display_bc(symbol: str, export: str = "", sheet_name: Optional[str] = None) -> None:
     """Prints table showing urls to blockchain explorers. [Source: CoinGecko]
 
     Parameters
@@ -306,7 +306,7 @@ def display_bc(symbol: str, export: str = "", sheet_name: str = None) -> None:
 
 
 @log_start_end(log=logger)
-def display_market(symbol: str, export: str = "", sheet_name: str = None) -> None:
+def display_market(symbol: str, export: str = "", sheet_name: Optional[str] = None) -> None:
     """Prints table showing market data for loaded coin. [Source: CoinGecko]
 
     Parameters

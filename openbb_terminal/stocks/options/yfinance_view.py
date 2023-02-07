@@ -5,7 +5,7 @@ import logging
 import os
 import re
 from datetime import date, datetime, timedelta
-from typing import Any, Dict, List, Union
+from typing import Optional, Any, Dict, List, Union
 
 import numpy as np
 import pandas as pd
@@ -73,7 +73,7 @@ def plot_plot(
     y: str = "iv",
     custom: str = "",
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: bool = False,
 ) -> Union[OpenBBFigure, None]:
     """Generate a graph custom graph based on user input
@@ -193,10 +193,10 @@ def show_parity(
     expiry: str,
     put: bool = False,
     ask: bool = False,
-    mini: float = None,
-    maxi: float = None,
+    mini: Optional[float] = None,
+    maxi: Optional[float] = None,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Prints options and whether they are under or over priced [Source: Yahoo Finance]
 
@@ -307,9 +307,9 @@ def risk_neutral_vals(
     expiry: str,
     data: pd.DataFrame,
     put: bool = False,
-    mini: float = None,
-    maxi: float = None,
-    risk: float = None,
+    mini: Optional[float] = None,
+    maxi: Optional[float] = None,
+    risk: Optional[float] = None,
 ) -> None:
     """Prints current options prices and risk neutral values [Source: Yahoo Finance]
 
@@ -490,7 +490,7 @@ def show_binom(
     europe: bool = False,
     export: str = "",
     plot: bool = False,
-    vol: float = None,
+    vol: Optional[float] = None,
 ) -> None:
     """Get binomial pricing for option
 
@@ -533,7 +533,7 @@ def show_binom(
 def display_vol_surface(
     symbol: str,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     z: str = "IV",
     external_axes: bool = False,
 ) -> Union[OpenBBFigure, None]:
@@ -630,7 +630,7 @@ def show_greeks(
     symbol: str,
     expiry: str,
     div_cont: float = 0,
-    rf: float = None,
+    rf: Optional[float] = None,
     opt_type: int = 1,
     mini: float = -1,
     maxi: float = -1,

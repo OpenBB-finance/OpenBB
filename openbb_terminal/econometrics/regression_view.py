@@ -27,7 +27,7 @@ def display_panel(
     entity_effects: bool = False,
     time_effects: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Based on the regression type, this function decides what regression to run.
 
@@ -85,7 +85,7 @@ def display_dwat(
     dependent_variable: pd.Series,
     plot: bool = True,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.axes]] = None,
 ):
     """Show Durbin-Watson autocorrelation tests
@@ -146,7 +146,7 @@ def display_bgod(
     model: statsmodels.regression.linear_model.RegressionResultsWrapper,
     lags: int = 3,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Show Breusch-Godfrey autocorrelation test
 
@@ -193,7 +193,7 @@ def display_bgod(
 def display_bpag(
     model: statsmodels.regression.linear_model.RegressionResultsWrapper,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Show Breusch-Pagan heteroscedasticity test
 

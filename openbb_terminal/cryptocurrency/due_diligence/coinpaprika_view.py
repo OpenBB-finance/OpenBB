@@ -13,6 +13,7 @@ from openbb_terminal.cryptocurrency.due_diligence import coinpaprika_model
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
+from typing import Optional
 
 logger = logging.getLogger(__name__)
 
@@ -89,7 +90,7 @@ def display_twitter(
     sortby: str = "date",
     ascend: bool = True,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Prints table showing twitter timeline for given coin id. Not more than last 50 tweets [Source: CoinPaprika]
 
@@ -138,7 +139,7 @@ def display_events(
     ascend: bool = False,
     links: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Prints table showing all events for given coin id. [Source: CoinPaprika]
 
@@ -192,7 +193,7 @@ def display_exchanges(
     sortby: str = "adjusted_volume_24h_share",
     ascend: bool = True,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Prints table showing all exchanges for given coin id. [Source: CoinPaprika]
 
@@ -241,7 +242,7 @@ def display_markets(
     ascend: bool = True,
     links: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Prints table showing all markets for given coin id. [Source: CoinPaprika]
 
@@ -296,7 +297,7 @@ def display_price_supply(
     from_symbol: str = "BTC",
     to_symbol: str = "USD",
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Prints table showing ticker information for single coin [Source: CoinPaprika]
 
@@ -337,7 +338,7 @@ def display_price_supply(
 def display_basic(
     symbol: str = "BTC",
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Prints table showing basic information for coin. Like:
         name, symbol, rank, type, description, platform, proof_type, contract, tags, parent.

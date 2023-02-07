@@ -5,7 +5,7 @@ __docformat__ = "numpy"
 import logging
 import os
 from collections import OrderedDict
-from typing import Dict, List, Tuple, Union
+from typing import Optional, Dict, List, Tuple, Union
 
 import numpy as np
 import pandas as pd
@@ -95,9 +95,9 @@ def display_bars_financials(
     exclude_exchanges: bool = True,
     limit: int = 10,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     raw: bool = False,
-    already_loaded_stocks_data: Dict = None,
+    already_loaded_stocks_data: Optional[Dict] = None,
     external_axes: bool = False,
 ) -> Union[Tuple[Dict, List], Tuple[Dict, List, OpenBBFigure]]:
     """Display financials bars comparing sectors, industry, analysis, countries, market cap and excluding exchanges.
@@ -313,7 +313,7 @@ def display_companies_per_sector_in_country(
     mktcap: str = "Large",
     exclude_exchanges: bool = True,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     raw: bool = False,
     max_sectors_to_display: int = 15,
     min_pct_to_display_sector: float = 0.015,
@@ -434,7 +434,7 @@ def display_companies_per_industry_in_country(
     mktcap: str = "Large",
     exclude_exchanges: bool = True,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     raw: bool = False,
     max_industries_to_display: int = 15,
     min_pct_to_display_industry: float = 0.015,
@@ -564,7 +564,7 @@ def display_companies_per_industry_in_sector(
     mktcap: str = "Large",
     exclude_exchanges: bool = True,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     raw: bool = False,
     max_industries_to_display: int = 15,
     min_pct_to_display_industry: float = 0.015,
@@ -696,7 +696,7 @@ def display_companies_per_country_in_sector(
     mktcap: str = "Large",
     exclude_exchanges: bool = True,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     raw: bool = False,
     max_countries_to_display: int = 15,
     min_pct_to_display_country: float = 0.015,
@@ -821,7 +821,7 @@ def display_companies_per_country_in_industry(
     mktcap: str = "Large",
     exclude_exchanges: bool = True,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     raw: bool = False,
     max_countries_to_display: int = 15,
     min_pct_to_display_country: float = 0.015,

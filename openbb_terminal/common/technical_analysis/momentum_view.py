@@ -24,7 +24,7 @@ def display_cci(
     scalar: float = 0.0015,
     symbol: str = "",
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: bool = False,
 ) -> Union[OpenBBFigure, None]:
     """Plots CCI Indicator
@@ -73,7 +73,7 @@ def display_macd(
     n_signal: int = 9,
     symbol: str = "",
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: bool = False,
 ) -> Union[OpenBBFigure, None]:
     """Plots MACD signal
@@ -123,7 +123,7 @@ def display_rsi(
     drift: int = 1,
     symbol: str = "",
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: bool = False,
 ) -> Union[OpenBBFigure, None]:
     """Plots RSI Indicator
@@ -176,7 +176,7 @@ def display_stoch(
     slowkperiod: int = 3,
     symbol: str = "",
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: bool = False,
 ) -> Union[OpenBBFigure, None]:
     """Plots stochastic oscillator signal
@@ -228,7 +228,7 @@ def display_fisher(
     window: int = 14,
     symbol: str = "",
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: bool = False,
 ) -> Union[OpenBBFigure, None]:
     """Plots Fisher Indicator
@@ -272,7 +272,7 @@ def display_cg(
     window: int = 14,
     symbol: str = "",
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: bool = False,
 ) -> Union[OpenBBFigure, None]:
     """Plots center of gravity Indicator
@@ -316,7 +316,7 @@ def display_clenow_momentum(
     symbol: str = "",
     window: int = 90,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: bool = False,
 ) -> Union[OpenBBFigure, None]:
     """Prints table and plots clenow momentum

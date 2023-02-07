@@ -12,6 +12,7 @@ from openbb_terminal.helper_funcs import (
     print_rich_table,
 )
 from openbb_terminal.rich_config import console
+from typing import Optional
 
 logger = logging.getLogger(__name__)
 
@@ -25,7 +26,7 @@ def display_whales_transactions(
     ascend: bool = False,
     show_address: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Display huge value transactions from major blockchains. [Source: https://docs.whale-alert.io/]
 

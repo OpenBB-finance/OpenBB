@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import argparse
 import configparser
 import logging
-from typing import List
+from typing import Optional, List
 
 import pandas as pd
 
@@ -75,7 +75,7 @@ class InsiderController(StockBaseController):
         start: str,
         interval: str,
         stock: pd.DataFrame,
-        queue: List[str] = None,
+        queue: Optional[List[str]] = None,
     ):
         """Constructor"""
         super().__init__(queue)

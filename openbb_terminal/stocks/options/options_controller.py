@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import argparse
 import logging
 from datetime import datetime, timedelta
-from typing import List
+from typing import Optional, List
 
 import pandas as pd
 
@@ -121,7 +121,7 @@ class OptionsController(BaseController):
     PATH = "/stocks/options/"
     CHOICES_GENERATION = True
 
-    def __init__(self, ticker: str, queue: List[str] = None):
+    def __init__(self, ticker: str, queue: Optional[List[str]] = None):
         """Constructor"""
         super().__init__(queue)
 

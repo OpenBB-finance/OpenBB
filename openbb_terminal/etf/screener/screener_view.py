@@ -7,6 +7,7 @@ import os
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.etf.screener import screener_model
 from openbb_terminal.helper_funcs import export_data, print_rich_table
+from typing import Optional
 
 # pylint:disable=no-member
 
@@ -21,7 +22,7 @@ def view_screener(
     sortby: str,
     ascend: bool,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Display screener output
 

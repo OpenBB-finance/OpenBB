@@ -5,7 +5,7 @@ import logging
 import os
 from io import BytesIO
 from pathlib import Path
-from typing import Any, Dict, List, Tuple, Union
+from typing import Optional, Any, Dict, List, Tuple, Union
 from urllib.request import urlopen
 from zipfile import ZipFile
 
@@ -194,12 +194,12 @@ def insert_row(
 def set_cell(
     ws: worksheet,
     cell: str,
-    text: Union[int, str, float] = None,
-    font: str = None,
-    border: str = None,
-    fill: str = None,
-    alignment: str = None,
-    num_form: str = None,
+    text: Optional[Union[int, str, float]] = None,
+    font: Optional[str] = None,
+    border: Optional[str] = None,
+    fill: Optional[str] = None,
+    alignment: Optional[str] = None,
+    num_form: Optional[str] = None,
 ):
     """Set the value for a cell
 

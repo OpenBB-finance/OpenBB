@@ -13,6 +13,7 @@ from openbb_terminal.cryptocurrency.dataframe_helpers import (
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
+from typing import Optional
 
 logger = logging.getLogger(__name__)
 
@@ -71,7 +72,7 @@ CURRENCIES = [
 
 
 @log_start_end(log=logger)
-def display_global_market(export: str = "", sheet_name: str = None) -> None:
+def display_global_market(export: str = "", sheet_name: Optional[str] = None) -> None:
     """Return data frame with most important global crypto statistics like:
     market_cap_usd, volume_24h_usd, bitcoin_dominance_percentage, cryptocurrencies_number,
     market_cap_ath_value, market_cap_ath_date, volume_24h_ath_value, volume_24h_ath_date,
@@ -109,7 +110,7 @@ def display_all_coins_market_info(
     ascend: bool = True,
     limit: int = 15,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Displays basic market information for all coins from CoinPaprika API. [Source: CoinPaprika]
 
@@ -165,7 +166,7 @@ def display_all_coins_info(
     ascend: bool = True,
     limit: int = 15,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Displays basic coin information for all coins from CoinPaprika API. [Source: CoinPaprika]
 
@@ -221,7 +222,7 @@ def display_all_exchanges(
     ascend: bool = True,
     limit: int = 15,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ) -> None:
     """List exchanges from CoinPaprika API. [Source: CoinPaprika]
 
@@ -278,7 +279,7 @@ def display_exchange_markets(
     limit: int = 15,
     links: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Get all markets for given exchange [Source: CoinPaprika]
 
@@ -330,7 +331,7 @@ def display_exchange_markets(
 
 
 @log_start_end(log=logger)
-def display_all_platforms(export: str = "", sheet_name: str = None) -> None:
+def display_all_platforms(export: str = "", sheet_name: Optional[str] = None) -> None:
     """List all smart contract platforms like ethereum, solana, cosmos, polkadot, kusama.
     [Source: CoinPaprika]
 
@@ -362,7 +363,7 @@ def display_contracts(
     ascend: bool = True,
     limit: int = 15,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Gets all contract addresses for given platform. [Source: CoinPaprika]
 

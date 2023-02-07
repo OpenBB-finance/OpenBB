@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import Union
+from typing import Optional, Union
 
 from openbb_terminal.core.plots.plotly_helper import OpenBBFigure, theme
 from openbb_terminal.decorators import log_start_end
@@ -20,7 +20,7 @@ def dark_pool_short_positions(
     sortby: str = "dpp_dollar",
     ascend: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Get dark pool short positions. [Source: Stockgrid]
 
@@ -77,7 +77,7 @@ def dark_pool_short_positions(
 
 @log_start_end(log=logger)
 def short_interest_days_to_cover(
-    limit: int = 10, sortby: str = "float", export: str = "", sheet_name: str = None
+    limit: int = 10, sortby: str = "float", export: str = "", sheet_name: Optional[str] = None
 ):
     """Print short interest and days to cover. [Source: Stockgrid]
 
@@ -119,7 +119,7 @@ def short_interest_volume(
     limit: int = 84,
     raw: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: bool = False,
 ) -> Union[OpenBBFigure, None]:
     """Plot price vs short interest volume. [Source: Stockgrid]
@@ -268,7 +268,7 @@ def net_short_position(
     limit: int = 84,
     raw: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: bool = False,
 ) -> Union[OpenBBFigure, None]:
     """Plot net short position. [Source: Stockgrid]

@@ -27,7 +27,7 @@ def display_last_government(
     limit: int = 5,
     representative: str = "",
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Display last government trading [Source: quiverquant.com]
 
@@ -82,7 +82,7 @@ def display_government_buys(
     limit: int = 10,
     raw: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: bool = False,
 ):
     """Top buy government trading [Source: quiverquant.com]
@@ -158,7 +158,7 @@ def display_government_sells(
     limit: int = 10,
     raw: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: bool = False,
 ):
     """Top sell government trading [Source: quiverquant.com]
@@ -238,7 +238,7 @@ def display_last_contracts(
     limit: int = 20,
     sum_contracts: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: bool = False,
 ):
     """Last government contracts [Source: quiverquant.com]
@@ -343,7 +343,7 @@ def display_government_trading(
     past_transactions_months: int = 6,
     raw: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: bool = False,
 ):
     """Government trading for specific ticker [Source: quiverquant.com]
@@ -402,7 +402,7 @@ def display_contracts(
     past_transaction_days: int = 10,
     raw: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: bool = False,
 ):
     """Show government contracts for ticker [Source: quiverquant.com]
@@ -467,7 +467,7 @@ def display_qtr_contracts(
     limit: int = 5,
     raw: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: bool = False,
 ) -> Union[OpenBBFigure, None]:
     """Quarterly contracts [Source: quiverquant.com]
@@ -573,7 +573,7 @@ def display_hist_contracts(
     symbol: str,
     raw: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: bool = False,
 ):
     """Show historical quarterly government contracts [Source: quiverquant.com]
@@ -654,7 +654,7 @@ def display_top_lobbying(
     limit: int = 10,
     raw: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: bool = False,
 ):
     """Top lobbying tickers based on total spent

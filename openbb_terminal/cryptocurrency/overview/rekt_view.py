@@ -10,6 +10,7 @@ from openbb_terminal.helper_funcs import (
     print_rich_table,
 )
 from openbb_terminal.rich_config import console
+from typing import Optional
 
 logger = logging.getLogger(__name__)
 
@@ -21,7 +22,7 @@ def display_crypto_hacks(
     ascend: bool = False,
     slug: str = "polyntwork-rekt",
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Display list of major crypto-related hacks. If slug is passed
     individual crypto hack is displayed instead of list of crypto hacks

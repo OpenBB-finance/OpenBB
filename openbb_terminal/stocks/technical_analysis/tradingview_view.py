@@ -10,6 +10,7 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.technical_analysis import tradingview_model
+from typing import Optional
 
 logger = logging.getLogger(__name__)
 
@@ -21,7 +22,7 @@ def print_recommendation(
     exchange: str = "",
     interval: str = "",
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Print tradingview recommendation based on technical indicators
 

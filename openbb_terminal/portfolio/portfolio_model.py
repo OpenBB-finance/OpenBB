@@ -272,7 +272,7 @@ def get_yearly_returns(
 def get_monthly_returns(
     portfolio_engine: PortfolioEngine,
     window: str = "all",
-) -> Tuple[pd.DataFrame, pd.DataFrame]:
+) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     """Get monthly returns
 
     Parameters

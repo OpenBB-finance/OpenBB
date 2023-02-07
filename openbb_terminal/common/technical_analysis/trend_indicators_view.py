@@ -9,6 +9,7 @@ import pandas as pd
 from openbb_terminal.core.plots.plotly_ta.ta_class import PlotlyTA
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data
+from typing import Optional
 
 logger = logging.getLogger(__name__)
 
@@ -21,7 +22,7 @@ def display_adx(
     drift: int = 1,
     symbol: str = "",
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: bool = False,
 ):
     """Plots ADX indicator
@@ -70,7 +71,7 @@ def display_aroon(
     scalar: int = 100,
     symbol: str = "",
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: bool = False,
 ):
     """Plots Aroon indicator

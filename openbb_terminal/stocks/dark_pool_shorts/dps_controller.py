@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import argparse
 import logging
 from datetime import datetime, timedelta
-from typing import List
+from typing import Optional, List
 
 import pandas as pd
 
@@ -57,7 +57,7 @@ class DarkPoolShortsController(StockBaseController):
     CHOICES_GENERATION = True
 
     def __init__(
-        self, ticker: str, start: str, stock: pd.DataFrame, queue: List[str] = None
+        self, ticker: str, start: str, stock: pd.DataFrame, queue: Optional[List[str]] = None
     ):
         """Constructor"""
         super().__init__(queue)

@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import configparser
 import logging
 import os
-from typing import List, Union
+from typing import Optional, List, Union
 
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
@@ -54,7 +54,7 @@ def view_screener_output(
     preset: str,
     limit: int = 20,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ) -> List:
     """Print the output of screener
 
@@ -111,7 +111,7 @@ def view_historical_greeks(
     raw: bool = False,
     limit: Union[int, str] = 20,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: bool = False,
 ):
     """Plots historical greeks for a given option. [Source: Syncretism]

@@ -19,6 +19,7 @@ from openbb_terminal.helper_funcs import (
     print_rich_table,
 )
 from openbb_terminal.rich_config import console
+from typing import Optional
 
 logger = logging.getLogger(__name__)
 
@@ -29,7 +30,7 @@ def display_collections(
     show_sales: bool = False,
     limit: int = 5,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Display NFT collections. [Source: https://nftpricefloor.com/]
 
@@ -94,7 +95,7 @@ def display_floor_price(
     slug: str,
     limit: int = 10,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: bool = False,
     raw: bool = False,
 ):

@@ -8,12 +8,13 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.fundamental_analysis import seeking_alpha_model
+from typing import Optional
 
 logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def display_eps_estimates(symbol: str, export: str = "", sheet_name: str = None):
+def display_eps_estimates(symbol: str, export: str = "", sheet_name: Optional[str] = None):
     """Display eps Estimates
 
     Parameters
@@ -44,7 +45,7 @@ def display_eps_estimates(symbol: str, export: str = "", sheet_name: str = None)
 
 
 @log_start_end(log=logger)
-def display_rev_estimates(symbol: str, export: str = "", sheet_name: str = None):
+def display_rev_estimates(symbol: str, export: str = "", sheet_name: Optional[str] = None):
     """Display rev Estimates
 
     Parameters

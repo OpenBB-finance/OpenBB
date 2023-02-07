@@ -20,6 +20,7 @@ from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import print_rich_table
 from openbb_terminal.portfolio.brokers.degiro.degiro_model import DegiroModel
 from openbb_terminal.rich_config import MenuText, console
+from typing import Optional
 
 # pylint: disable=no-member
 
@@ -311,7 +312,7 @@ class DegiroView:
 
     @log_start_end(log=logger)
     @check_api_key(["DG_USERNAME", "DG_PASSWORD"])
-    def login(self, otp: int = None):
+    def login(self, otp: Optional[int] = None):
         # GET ATTRIBUTES
         degiro_model = self.__degiro_model
         credentials = degiro_model.login_default_credentials()

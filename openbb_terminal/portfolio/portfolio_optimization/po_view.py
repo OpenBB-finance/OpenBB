@@ -31,6 +31,7 @@ from openbb_terminal.portfolio.portfolio_optimization.statics import (
     TIME_FACTOR,
 )
 from openbb_terminal.rich_config import console
+from typing import Optional
 
 warnings.filterwarnings("ignore")
 
@@ -38,7 +39,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def display_ef(portfolio_engine: PoEngine = None, **kwargs):
+def display_ef(portfolio_engine: Optional[PoEngine] = None, **kwargs):
     """Display efficient frontier
 
     Parameters
@@ -245,7 +246,7 @@ def display_ef(portfolio_engine: PoEngine = None, **kwargs):
 
 
 @log_start_end(log=logger)
-def display_plot(portfolio_engine: PoEngine = None, chart_type: str = "pie", **kwargs):
+def display_plot(portfolio_engine: Optional[PoEngine] = None, chart_type: str = "pie", **kwargs):
     """
     Display efficient frontier
 

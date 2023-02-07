@@ -14,6 +14,7 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, plot_autoscale, print_rich_table
 from openbb_terminal.mutual_funds import investpy_model
 from openbb_terminal.rich_config import console
+from typing import Optional
 
 logger = logging.getLogger(__name__)
 
@@ -70,7 +71,7 @@ def display_overview(
     country: str = "united states",
     limit: int = 10,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Displays an overview of the main funds from a country.
 
@@ -140,7 +141,7 @@ def display_historical(
     data: pd.DataFrame,
     name: str = "",
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: bool = False,
 ):
     """Display historical fund price

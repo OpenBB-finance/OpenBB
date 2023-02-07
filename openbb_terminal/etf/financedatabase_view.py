@@ -10,6 +10,7 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.etf import financedatabase_model
 from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
+from typing import Optional
 
 logger = logging.getLogger(__name__)
 
@@ -19,7 +20,7 @@ def display_etf_by_name(
     name: str,
     limit: int = 10,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Display a selection of ETFs based on name filtered by total assets. [Source: Finance Database]
 
@@ -66,7 +67,7 @@ def display_etf_by_description(
     description: str,
     limit: int = 10,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Display a selection of ETFs based on description filtered by total assets.
     [Source: Finance Database]
@@ -114,7 +115,7 @@ def display_etf_by_category(
     category: str,
     limit: int = 10,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Display a selection of ETFs based on a category filtered by total assets.
     [Source: Finance Database]

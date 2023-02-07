@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 import argparse
 import logging
 from datetime import datetime, timedelta
-from typing import List
+from typing import Optional, List
 
 from pandas.core.frame import DataFrame
 
@@ -99,7 +99,7 @@ class FundamentalAnalysisController(StockBaseController):
         interval: str,
         stock: DataFrame,
         suffix: str = "",
-        queue: List[str] = None,
+        queue: Optional[List[str]] = None,
     ):
         """Constructor"""
         super().__init__(queue)

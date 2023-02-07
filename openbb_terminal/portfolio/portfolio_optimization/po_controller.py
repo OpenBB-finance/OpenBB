@@ -5,7 +5,7 @@ __docformat__ = "numpy"
 
 import argparse
 import logging
-from typing import Dict, List, Tuple
+from typing import Dict, List, Optional, Tuple
 
 from openbb_terminal import (
     feature_flags as obbff,
@@ -212,10 +212,10 @@ class PortfolioOptimizationController(BaseController):
 
     def __init__(
         self,
-        tickers: List[str] = None,
-        portfolios: Dict = None,
-        categories: Dict = None,
-        queue: List[str] = None,
+        tickers: Optional[List[str]] = None,
+        portfolios: Optional[Dict] = None,
+        categories: Optional[Dict] = None,
+        queue: Optional[List[str]] = None,
     ):
         """Constructor"""
         super().__init__(queue)
@@ -577,7 +577,7 @@ class PortfolioOptimizationController(BaseController):
                 else:
                     file_location = self.current_file  # type: ignore
 
-                self.params, self.current_model = params_view.load_file(file_location)
+                self.params, self.current_model = params_view.load_file(file_location)  # type: ignore
 
     @log_start_end(log=logger)
     def call_params(self, _):

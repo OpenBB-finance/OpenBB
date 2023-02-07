@@ -16,6 +16,7 @@ from openbb_terminal.cryptocurrency.due_diligence.tokenterminal_model import (
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import export_data, plot_autoscale
 from openbb_terminal.rich_config import console
+from typing import Optional
 
 logger = logging.getLogger(__name__)
 
@@ -26,7 +27,7 @@ def display_fundamental_metric_from_project_over_time(
     metric: str,
     project: str,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: bool = False,
 ):
     """Plots fundamental metric from a project over time [Source: Token Terminal]
@@ -97,7 +98,7 @@ def display_fundamental_metric_from_project_over_time(
 
 @log_start_end(log=logger)
 @check_api_key(["API_TOKEN_TERMINAL_KEY"])
-def display_description(project: str, export: str = "", sheet_name: str = None):
+def display_description(project: str, export: str = "", sheet_name: Optional[str] = None):
     """Prints description from a project [Source: Token Terminal]
 
     Parameters

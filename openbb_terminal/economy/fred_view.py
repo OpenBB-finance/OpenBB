@@ -75,7 +75,7 @@ def display_fred_series(
     get_data: bool = False,
     raw: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: bool = False,
 ):
     """Display (multiple) series from https://fred.stlouisfed.org. [Source: FRED]
@@ -166,7 +166,7 @@ def display_yield_curve(
     external_axes: bool = False,
     raw: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ) -> Union[OpenBBFigure, None]:
     """Display yield curve based on US Treasury rates for a specified date.
 

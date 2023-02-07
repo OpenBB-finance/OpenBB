@@ -22,13 +22,13 @@ logger = logging.getLogger(__name__)
 @log_start_end(log=logger)
 def fails_to_deliver(
     symbol: str,
-    data: pd.DataFrame = None,
+    data: Optional[pd.DataFrame] = None,
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
     limit: int = 0,
     raw: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: bool = False,
 ):
     """Display fails-to-deliver data for a given ticker. [Source: SEC]

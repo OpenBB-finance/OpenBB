@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import List
+from typing import Optional, List
 
 import numpy as np
 import pandas as pd
@@ -28,7 +28,7 @@ def display_sentiment_compare(
     similar: List[str],
     raw: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: bool = False,
 ):
     """Display sentiment for all ticker. [Source: FinBrain].
@@ -113,7 +113,7 @@ def display_sentiment_correlation(
     similar: List[str],
     raw: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: bool = False,
 ):
     """Plot correlation sentiments heatmap across similar companies. [Source: FinBrain].

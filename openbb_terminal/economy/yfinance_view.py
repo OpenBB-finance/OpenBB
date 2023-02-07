@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import Tuple, Union
+from typing import Optional, Tuple, Union
 
 import pandas as pd
 
@@ -24,14 +24,14 @@ logger = logging.getLogger(__name__)
 def show_indices(
     indices: list,
     interval: str = "1d",
-    start_date: int = None,
-    end_date: int = None,
+    start_date: Optional[int] = None,
+    end_date: Optional[int] = None,
     column: str = "Adj Close",
     returns: bool = False,
     raw: bool = False,
     external_axes: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ) -> Union[pd.DataFrame, Tuple[pd.DataFrame, OpenBBFigure]]:
     """Load (and show) the selected indices over time [Source: Yahoo Finance]
     Parameters

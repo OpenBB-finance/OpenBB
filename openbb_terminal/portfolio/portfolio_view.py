@@ -55,6 +55,7 @@ from openbb_terminal.portfolio.portfolio_model import (
     get_yearly_returns,
 )
 from openbb_terminal.rich_config import console
+from typing import Optional
 
 # pylint: disable=C0302,redefined-outer-name
 
@@ -98,7 +99,7 @@ def display_transactions(
     show_index=False,
     limit: int = 10,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Display portfolio transactions
 
@@ -389,7 +390,7 @@ def display_yearly_returns(
     window: str = "all",
     raw: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: bool = False,
 ):
     """Display yearly returns
@@ -465,7 +466,7 @@ def display_monthly_returns(
     graph: bool = False,
     show_vals: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: bool = False,
 ):
     """Display monthly returns
@@ -654,7 +655,7 @@ def display_daily_returns(
     raw: bool = False,
     limit: int = 10,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: bool = False,
 ):
     """Display daily returns
@@ -727,7 +728,7 @@ def display_distribution_returns(
     window: str = "all",
     raw: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: bool = False,
 ):
     """Display daily returns
@@ -798,7 +799,7 @@ def display_holdings_value(
     raw: bool = False,
     limit: int = 10,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: bool = False,
 ):
     """Display holdings of assets (absolute value)
@@ -864,7 +865,7 @@ def display_holdings_percentage(
     raw: bool = False,
     limit: int = 10,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: bool = False,
 ):
     """Display holdings of assets (in percentage)
@@ -934,7 +935,7 @@ def display_rolling_volatility(
     portfolio_engine: PortfolioEngine,
     window: str = "1y",
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: bool = False,
 ):
     """Display rolling volatility
@@ -995,7 +996,7 @@ def display_rolling_sharpe(
     risk_free_rate: float = 0,
     window: str = "1y",
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: bool = False,
 ):
     """Display rolling sharpe
@@ -1048,7 +1049,7 @@ def display_rolling_sortino(
     risk_free_rate: float = 0,
     window: str = "1y",
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: bool = False,
 ):
     """Display rolling sortino
@@ -1099,7 +1100,7 @@ def display_rolling_beta(
     portfolio_engine: PortfolioEngine,
     window: str = "1y",
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: bool = False,
 ):
     """Display rolling beta
@@ -1146,7 +1147,7 @@ def display_rolling_beta(
 def display_maximum_drawdown(
     portfolio_engine: PortfolioEngine,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: bool = False,
 ):
     """Display maximum drawdown curve
@@ -1200,7 +1201,7 @@ def display_maximum_drawdown(
 def display_rsquare(
     portfolio_engine: PortfolioEngine,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Display R-square
 
@@ -1235,7 +1236,7 @@ def display_rsquare(
 def display_skewness(
     portfolio_engine: PortfolioEngine,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Display skewness
 
@@ -1268,7 +1269,7 @@ def display_skewness(
 def display_kurtosis(
     portfolio_engine: PortfolioEngine,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Display kurtosis
 
@@ -1302,7 +1303,7 @@ def display_stats(
     portfolio_engine: PortfolioEngine,
     window: str = "all",
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Display stats
 
@@ -1337,7 +1338,7 @@ def display_stats(
 def display_volatility(
     portfolio_engine: PortfolioEngine,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Display volatility for multiple intervals
 
@@ -1371,7 +1372,7 @@ def display_sharpe_ratio(
     portfolio_engine: PortfolioEngine,
     risk_free_rate: float = 0,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Display sharpe ratio for multiple intervals
 
@@ -1407,7 +1408,7 @@ def display_sortino_ratio(
     portfolio_engine: PortfolioEngine,
     risk_free_rate: float = 0,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Display sortino ratio for multiple intervals
 
@@ -1442,7 +1443,7 @@ def display_sortino_ratio(
 def display_maximum_drawdown_ratio(
     portfolio_engine: PortfolioEngine,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Display maximum drawdown for multiple intervals
 
@@ -1475,7 +1476,7 @@ def display_maximum_drawdown_ratio(
 def display_gaintopain_ratio(
     portfolio_engine: PortfolioEngine,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Display gain-to-pain ratio for multiple intervals
 
@@ -1507,7 +1508,7 @@ def display_gaintopain_ratio(
 def display_tracking_error(
     portfolio_engine: PortfolioEngine,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Display tracking error for multiple intervals
 
@@ -1540,7 +1541,7 @@ def display_tracking_error(
 def display_information_ratio(
     portfolio_engine: PortfolioEngine,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Display information ratio for multiple intervals
 
@@ -1572,7 +1573,7 @@ def display_information_ratio(
 def display_tail_ratio(
     portfolio_engine: PortfolioEngine,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Display tail ratio for multiple intervals
 
@@ -1607,7 +1608,7 @@ def display_tail_ratio(
 def display_common_sense_ratio(
     portfolio_engine: PortfolioEngine,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Display common sense ratio for multiple intervals
 
@@ -1640,7 +1641,7 @@ def display_jensens_alpha(
     portfolio_engine: PortfolioEngine,
     risk_free_rate: float = 0,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Display jensens alpha for multiple intervals
 
@@ -1675,7 +1676,7 @@ def display_jensens_alpha(
 def display_calmar_ratio(
     portfolio_engine: PortfolioEngine,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Display calmar ratio for multiple intervals
 
@@ -1708,7 +1709,7 @@ def display_calmar_ratio(
 def display_kelly_criterion(
     portfolio_engine: PortfolioEngine,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Display kelly criterion for multiple intervals
 
@@ -1739,7 +1740,7 @@ def display_kelly_criterion(
 def display_payoff_ratio(
     portfolio_engine: PortfolioEngine,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Display payoff ratio for multiple intervals
 
@@ -1771,7 +1772,7 @@ def display_payoff_ratio(
 def display_profit_factor(
     portfolio_engine: PortfolioEngine,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Display profit factor for multiple intervals
 
@@ -1806,7 +1807,7 @@ def display_summary(
     window: str = "all",
     risk_free_rate: float = 0,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Display summary portfolio and benchmark returns
 

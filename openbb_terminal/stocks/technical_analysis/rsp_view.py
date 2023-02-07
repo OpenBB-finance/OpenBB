@@ -10,6 +10,7 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.technical_analysis import rsp_model
+from typing import Optional
 
 logger = logging.getLogger(__name__)
 
@@ -18,7 +19,7 @@ logger = logging.getLogger(__name__)
 def display_rsp(
     s_ticker: str = "",
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     tickers_show: bool = False,
 ):
     """Display Relative Strength Percentile [Source: https://github.com/skyte/relative-strength]

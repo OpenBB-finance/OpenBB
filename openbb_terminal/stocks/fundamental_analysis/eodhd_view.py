@@ -11,6 +11,7 @@ from openbb_terminal.helper_funcs import (
     print_rich_table,
 )
 from openbb_terminal.stocks.fundamental_analysis import eodhd_model
+from typing import Optional
 
 logger = logging.getLogger(__name__)
 
@@ -23,9 +24,9 @@ def display_fundamentals(
     limit: int = 10,
     quarterly: bool = False,
     ratios: bool = False,
-    plot: list = None,
+    plot: Optional[list] = None,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Display tickers balance sheet; income statement; cash flow statement
 

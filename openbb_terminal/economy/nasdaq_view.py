@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import List, Union
+from typing import Optional, List, Union
 
 from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.decorators import check_api_key, log_start_end
@@ -21,7 +21,7 @@ def display_economic_calendar(
     end_date: str,
     limit: int = 10,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Display economic calendar for specified country between start and end dates
 
@@ -60,10 +60,10 @@ def display_economic_calendar(
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_QUANDL"])
 def display_big_mac_index(
-    country_codes: List[str] = None,
+    country_codes: Optional[List[str]] = None,
     raw: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: bool = False,
 ) -> Union[OpenBBFigure, None]:
     """Display Big Mac Index for given countries

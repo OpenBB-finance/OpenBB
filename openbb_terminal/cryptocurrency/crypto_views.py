@@ -2,6 +2,7 @@ import os
 
 from openbb_terminal.cryptocurrency import crypto_models
 from openbb_terminal.helper_funcs import export_data, print_rich_table
+from typing import Optional
 
 
 def find(
@@ -10,7 +11,7 @@ def find(
     key: str = "symbol",
     limit: int = 10,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Find similar coin by coin name,symbol or id.
 

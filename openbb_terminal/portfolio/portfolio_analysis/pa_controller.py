@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import argparse
 import logging
 from pathlib import Path
-from typing import List
+from typing import Optional, List
 
 import pandas as pd
 
@@ -46,7 +46,7 @@ class PortfolioAnalysisController(BaseController):
     ]
     PATH = "/portfolio/pa/"
 
-    def __init__(self, queue: List[str] = None):
+    def __init__(self, queue: Optional[List[str]] = None):
         super().__init__(queue)
 
         self.portfolio_name = ""

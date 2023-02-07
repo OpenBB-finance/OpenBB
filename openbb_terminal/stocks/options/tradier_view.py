@@ -9,6 +9,7 @@ from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.stocks.options import tradier_model
+from typing import Optional
 
 logger = logging.getLogger(__name__)
 
@@ -23,7 +24,7 @@ def display_historical(
     strike: float = 0,
     put: bool = False,
     raw: bool = False,
-    chain_id: str = None,
+    chain_id: Optional[str] = None,
     export: str = "",
     sheet_name: str = "",
     external_axes: bool = False,

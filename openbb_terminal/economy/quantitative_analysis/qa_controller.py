@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import argparse
 import logging
-from typing import Dict, List
+from typing import Optional, Dict, List
 
 import numpy as np
 import pandas as pd
@@ -59,7 +59,7 @@ class QaController(StockBaseController):
     def __init__(
         self,
         all_economy_data: Dict,
-        queue: List[str] = None,
+        queue: Optional[List[str]] = None,
     ):
         """Constructor"""
         super().__init__(queue)

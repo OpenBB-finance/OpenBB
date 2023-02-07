@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import List
+from typing import Optional, List
 
 import pandas as pd
 
@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def upcoming_earning_release_dates(
-    num_pages: int = 5, limit: int = 1, export: str = "", sheet_name: str = None
+    num_pages: int = 5, limit: int = 1, export: str = "", sheet_name: Optional[str] = None
 ):
     """Displays upcoming earnings release dates
 
@@ -90,7 +90,7 @@ def upcoming_earning_release_dates(
 
 @log_start_end(log=logger)
 def news(
-    article_id: int = -1, limit: int = 5, export: str = "", sheet_name: str = None
+    article_id: int = -1, limit: int = 5, export: str = "", sheet_name: Optional[str] = None
 ):
     """Prints the latest news article list. [Source: Seeking Alpha]
 
@@ -157,7 +157,7 @@ def display_news(
     news_type: str = "Top-News",
     limit: int = 5,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Display news. [Source: SeekingAlpha]
 

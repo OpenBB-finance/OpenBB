@@ -19,6 +19,7 @@ from openbb_terminal.helper_funcs import (
     print_rich_table,
 )
 from openbb_terminal.rich_config import console
+from typing import Optional
 
 logger = logging.getLogger(__name__)
 
@@ -34,7 +35,7 @@ def display_rossindex(
     show_growth: bool = True,
     chart_type: str = "stars",
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: bool = False,
 ) -> None:
     """Plots list of startups from ross index [Source: https://runacap.com/]

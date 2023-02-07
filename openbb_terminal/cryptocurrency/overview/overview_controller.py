@@ -6,7 +6,7 @@ import argparse
 import difflib
 import logging
 from datetime import datetime, timedelta
-from typing import List
+from typing import Optional, List
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.cryptocurrency.discovery.pycoingecko_model import (
@@ -87,7 +87,7 @@ class OverviewController(BaseController):
     PATH = "/crypto/ov/"
     CHOICES_GENERATION = True
 
-    def __init__(self, queue: List[str] = None):
+    def __init__(self, queue: Optional[List[str]] = None):
         """Constructor"""
         super().__init__(queue)
 

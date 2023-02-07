@@ -35,7 +35,7 @@ def insider_activity(
     limit: int = 10,
     raw: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: bool = False,
 ):
     """Display insider activity. [Source: Business Insider]

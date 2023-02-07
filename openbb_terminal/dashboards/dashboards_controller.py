@@ -12,7 +12,7 @@ import threading
 import time
 from pathlib import Path
 from subprocess import PIPE, STDOUT
-from typing import List
+from typing import Optional, List
 
 import numpy as np
 import psutil
@@ -49,7 +49,7 @@ class DashboardsController(BaseController):
     ]
     PATH = "/dashboards/"
 
-    def __init__(self, queue: List[str] = None):
+    def __init__(self, queue: Optional[List[str]] = None):
         """Constructor"""
         super().__init__(queue)
         self.jupyter_token = None
@@ -128,7 +128,7 @@ class DashboardsController(BaseController):
         self.create_call_streamlit(other_args, "forecast")
 
     def create_call_voila(
-        self, other_args: List[str], name: str, filename: str = None
+        self, other_args: List[str], name: str, filename: Optional[str] = None
     ) -> None:
         filename = filename if filename else name
 
@@ -236,7 +236,7 @@ class DashboardsController(BaseController):
             process.kill()
 
     def check_processes(
-        self, ns_parser: argparse.Namespace, filepath: Path = None
+        self, ns_parser: argparse.Namespace, filepath: Optional[Path] = None
     ) -> str:
         """Checks if a process is already running, and returns the url."""
         if not filepath:
@@ -272,7 +272,7 @@ class DashboardsController(BaseController):
         return port
 
     def create_call_streamlit(
-        self, other_args: List[str], name: str, filename: str = None
+        self, other_args: List[str], name: str, filename: Optional[str] = None
     ) -> None:
         filename = filename if filename else name
 

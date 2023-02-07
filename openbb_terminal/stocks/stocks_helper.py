@@ -479,7 +479,7 @@ def load(
 
 def display_candle(
     symbol: str,
-    data: pd.DataFrame = None,
+    data: Optional[pd.DataFrame] = None,
     add_trend: bool = False,
     ma: Optional[Iterable[int]] = None,
     asset_type: str = "",

@@ -10,13 +10,14 @@ from openbb_terminal.cryptocurrency.overview.withdrawalfees_model import (
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
+from typing import Optional
 
 logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
 def display_overall_withdrawal_fees(
-    limit: int = 15, export: str = "", sheet_name: str = None
+    limit: int = 15, export: str = "", sheet_name: Optional[str] = None
 ) -> None:
     """Top coins withdrawal fees
     [Source: https://withdrawalfees.com/]
@@ -54,7 +55,7 @@ def display_overall_withdrawal_fees(
 
 @log_start_end(log=logger)
 def display_overall_exchange_withdrawal_fees(
-    export: str = "", sheet_name: str = None
+    export: str = "", sheet_name: Optional[str] = None
 ) -> None:
     """Exchange withdrawal fees
     [Source: https://withdrawalfees.com/]
@@ -90,7 +91,7 @@ def display_overall_exchange_withdrawal_fees(
 
 @log_start_end(log=logger)
 def display_crypto_withdrawal_fees(
-    symbol: str, export: str = "", sheet_name: str = None
+    symbol: str, export: str = "", sheet_name: Optional[str] = None
 ) -> None:
     """Coin withdrawal fees per exchange
     [Source: https://withdrawalfees.com/]

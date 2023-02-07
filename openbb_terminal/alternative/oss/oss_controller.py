@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import argparse
 import logging
-from typing import List
+from typing import Optional, List
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.alternative.oss import github_view, runa_model, runa_view
@@ -29,7 +29,7 @@ class OSSController(BaseController):
     PATH = "/alternative/oss/"
     CHOICES_GENERATION = True
 
-    def __init__(self, queue: List[str] = None):
+    def __init__(self, queue: Optional[List[str]] = None):
         """Constructor"""
         super().__init__(queue)
 

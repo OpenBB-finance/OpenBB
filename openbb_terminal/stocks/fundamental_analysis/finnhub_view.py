@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import Union
+from typing import Optional, Union
 
 import pandas as pd
 
@@ -61,7 +61,7 @@ def rating_over_time(
     limit: int = 10,
     raw: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: bool = False,
 ) -> Union[None, OpenBBFigure]:
     """Rating over time (monthly). [Source: Finnhub]

@@ -14,6 +14,7 @@ from openbb_terminal.cryptocurrency.due_diligence.binance_model import (
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
+from typing import Optional
 
 logger = logging.getLogger(__name__)
 
@@ -24,7 +25,7 @@ def display_order_book(
     limit: int = 100,
     to_symbol: str = "USDT",
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: bool = False,
 ) -> None:
     """Plots order book for currency. [Source: Binance]
@@ -64,7 +65,7 @@ def display_order_book(
 
 @log_start_end(log=logger)
 def display_balance(
-    from_symbol: str, to_symbol: str = "USDT", export: str = "", sheet_name: str = None
+    from_symbol: str, to_symbol: str = "USDT", export: str = "", sheet_name: Optional[str] = None
 ) -> None:
     """Prints table showing account holdings for asset. [Source: Binance]
 

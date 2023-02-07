@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import argparse
 import logging
-from typing import List
+from typing import Optional, List
 
 import numpy as np
 import pandas as pd
@@ -60,7 +60,7 @@ class QaController(CryptoBaseController):
         self,
         symbol: str,
         data: pd.DataFrame,
-        queue: List[str] = None,
+        queue: Optional[List[str]] = None,
     ):
         """Constructor"""
         super().__init__(queue)

@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import Union
+from typing import Optional, Union
 
 from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.cryptocurrency.defi import smartstake_model
@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 def display_luna_circ_supply_change(
     days: int = 30,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     supply_type: str = "lunaSupplyChallengeStats",
     limit: int = 5,
     external_axes: bool = False,

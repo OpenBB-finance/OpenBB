@@ -5,7 +5,7 @@ import logging
 import os
 import warnings
 from datetime import datetime
-from typing import Dict, Union
+from typing import Optional, Dict, Union
 
 import finviz
 import matplotlib.pyplot as plt
@@ -192,7 +192,7 @@ def display_popular_tickers(
     post_limit: int = 50,
     subreddits: str = "",
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Prints table showing latest popular tickers. [Source: Reddit].
 
@@ -408,7 +408,7 @@ def display_redditsent(
     subreddits: str = "all",
     display: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: bool = False,
 ) -> Union[OpenBBFigure, None]:
     """Plots Reddit sentiment about a search term. Prints table showing if display is True.

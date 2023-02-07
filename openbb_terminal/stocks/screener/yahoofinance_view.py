@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 import datetime
 import logging
 import os
-from typing import List, Tuple, Union
+from typing import Optional, List, Tuple, Union
 
 from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.decorators import log_start_end
@@ -24,7 +24,7 @@ def historical(
     type_candle: str = "a",
     normalize: bool = True,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: bool = False,
 ) -> Union[List[str], Tuple[List[str], OpenBBFigure]]:
     """View historical price of stocks that meet preset

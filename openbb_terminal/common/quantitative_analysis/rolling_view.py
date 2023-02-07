@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import Union
+from typing import Optional, Union
 
 import pandas as pd
 
@@ -22,7 +22,7 @@ def display_mean_std(
     symbol: str = "",
     window: int = 14,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: bool = False,
 ) -> Union[OpenBBFigure, None]:
     """Plots mean std deviation
@@ -116,7 +116,7 @@ def display_spread(
     symbol: str = "",
     window: int = 14,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: bool = False,
 ) -> Union[OpenBBFigure, None]:
     """Plots rolling spread
@@ -219,7 +219,7 @@ def display_quantile(
     window: int = 14,
     quantile: float = 0.5,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: bool = False,
 ) -> Union[OpenBBFigure, None]:
     """Plots rolling quantile
@@ -301,7 +301,7 @@ def display_skew(
     target: str,
     window: int = 14,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: bool = False,
 ) -> Union[OpenBBFigure, None]:
     """Plots rolling skew
@@ -376,7 +376,7 @@ def display_kurtosis(
     target: str,
     window: int = 14,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: bool = False,
 ) -> Union[OpenBBFigure, None]:
     """Plots rolling kurtosis

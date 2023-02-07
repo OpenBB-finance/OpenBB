@@ -10,6 +10,7 @@ from openbb_terminal.cryptocurrency.cryptocurrency_helpers import plot_order_boo
 from openbb_terminal.cryptocurrency.due_diligence import ccxt_model
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
+from typing import Optional
 
 logger = logging.getLogger(__name__)
 
@@ -20,7 +21,7 @@ def display_order_book(
     symbol: str,
     to_symbol: str,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: bool = False,
 ):
     """Plots order book for a coin in a given exchange
@@ -67,7 +68,7 @@ def display_trades(
     to_symbol: str,
     limit: int = 10,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Prints table showing trades for a coin in a given exchange
     [Source: https://docs.ccxt.com/en/latest/manual.html]

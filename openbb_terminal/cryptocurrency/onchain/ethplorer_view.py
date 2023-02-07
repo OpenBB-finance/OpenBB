@@ -11,6 +11,7 @@ from openbb_terminal.cryptocurrency.onchain import ethplorer_model
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
+from typing import Optional
 
 logger = logging.getLogger(__name__)
 # pylint: disable=unsupported-assignment-operation
@@ -24,7 +25,7 @@ def display_address_info(
     sortby: str = "index",
     ascend: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Display info about tokens for given ethereum blockchain balance e.g. ETH balance,
     balance of all tokens with name and symbol. [Source: Ethplorer]
@@ -74,7 +75,7 @@ def display_top_tokens(
     sortby: str = "rank",
     ascend: bool = True,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Display top ERC20 tokens [Source: Ethplorer]
 
@@ -121,7 +122,7 @@ def display_top_token_holders(
     sortby: str = "balance",
     ascend: bool = True,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Display info about top ERC20 token holders. [Source: Ethplorer]
 
@@ -167,7 +168,7 @@ def display_address_history(
     sortby: str = "timestamp",
     ascend: bool = True,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Display information about balance historical transactions. [Source: Ethplorer]
 
@@ -215,7 +216,7 @@ def display_token_info(
     address: str,
     social: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Display info about ERC20 token. [Source: Ethplorer]
 
@@ -259,7 +260,7 @@ def display_token_info(
 def display_tx_info(
     tx_hash: str,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Display info about transaction. [Source: Ethplorer]
 
@@ -297,7 +298,7 @@ def display_token_history(
     ascend: bool = False,
     hash_: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Display info about token history. [Source: Ethplorer]
 
@@ -356,7 +357,7 @@ def display_token_historical_prices(
     sortby: str = "date",
     ascend: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Display token historical prices with volume and market cap, and average price.
     [Source: Ethplorer]

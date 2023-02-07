@@ -7,7 +7,7 @@ import json
 import logging
 import os
 from pathlib import Path
-from typing import Dict, List
+from typing import Optional, Dict, List
 
 # IMPORTATION THIRDPARTY
 # IMPORTATION INTERNAL
@@ -39,7 +39,7 @@ class SourcesController(BaseController):
     ]
     PATH = "/sources/"
 
-    def __init__(self, queue: List[str] = None):
+    def __init__(self, queue: Optional[List[str]] = None):
         """Constructor"""
         super().__init__(queue)
 

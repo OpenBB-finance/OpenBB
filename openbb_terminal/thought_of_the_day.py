@@ -9,6 +9,7 @@ from bs4 import BeautifulSoup
 
 from openbb_terminal.helper_funcs import request
 from openbb_terminal.rich_config import console
+from typing import Optional
 
 __docformat__ = "numpy"
 
@@ -16,7 +17,7 @@ __docformat__ = "numpy"
 class ThoughtOfTheDay:
     """ThoughtOfTheDay class"""
 
-    def __init__(self, urls: dict[str, str] = None):
+    def __init__(self, urls: Optional[dict[str, str]] = None):
         """Constructor"""
 
         self.metadata: dict = {}

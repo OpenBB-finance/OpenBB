@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import difflib
 import logging
 import os
-from typing import List
+from typing import Optional, List
 
 import pandas as pd
 
@@ -131,7 +131,7 @@ def screener(
     ascend: bool = False,
     sortby: str = "",
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ) -> List[str]:
     """Screener one of the following: overview, valuation, financial, ownership, performance, technical.
 

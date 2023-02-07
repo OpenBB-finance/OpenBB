@@ -68,7 +68,7 @@ class LogSender(Thread):
         identifier = app_settings.identifier
 
         while True:
-            item: QueueItem = queue.get()
+            item: QueueItem = queue.get()  # type: ignore
             file = item.path
             last = item.last
 

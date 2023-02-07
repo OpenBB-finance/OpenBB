@@ -15,6 +15,7 @@ from openbb_terminal.helper_funcs import (
     print_rich_table,
 )
 from openbb_terminal.stocks.dark_pool_shorts import quandl_model
+from typing import Optional
 
 logger = logging.getLogger(__name__)
 
@@ -88,7 +89,7 @@ def short_interest(
     limit: int = 10,
     raw: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: bool = False,
 ):
     """Plot the short interest of a stock. This corresponds to the

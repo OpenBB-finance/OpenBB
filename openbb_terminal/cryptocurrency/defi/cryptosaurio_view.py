@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import Union
+from typing import Optional, Union
 
 from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.cryptocurrency.defi import cryptosaurio_model
@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 def display_anchor_data(
     address: str = "",
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     show_transactions: bool = False,
     external_axes: bool = False,
 ) -> Union[OpenBBFigure, None]:

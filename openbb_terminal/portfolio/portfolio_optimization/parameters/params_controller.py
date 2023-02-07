@@ -1,6 +1,6 @@
+# type: ignore
 """ Parameters Controller Module """
 __docformat__ = "numpy"
-
 # pylint: disable=C0302, no-else-return
 
 import argparse
@@ -64,7 +64,7 @@ class ParametersController(BaseController):
     def __init__(
         self,
         file: str,
-        queue: List[str] = None,
+        queue: Optional[List[str]] = None,
         params: Optional[dict] = None,
         current_model=None,
     ):

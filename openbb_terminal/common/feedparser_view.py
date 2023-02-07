@@ -8,6 +8,7 @@ from openbb_terminal.common import feedparser_model
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data
 from openbb_terminal.rich_config import console
+from typing import Optional
 
 logger = logging.getLogger(__name__)
 
@@ -18,7 +19,7 @@ def display_news(
     sources: str = "",
     limit: int = 5,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     sort: str = "published",
 ):
     """Plots news for a given term and source. [Source: Feedparser]

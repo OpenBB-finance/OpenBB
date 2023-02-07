@@ -10,7 +10,7 @@ from datetime import (
     date,
     datetime as dt,
 )
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 
 import pandas as pd
 
@@ -160,7 +160,7 @@ class EconomyController(BaseController):
     FILE_PATH = os.path.join(os.path.dirname(__file__), "README.md")
     CHOICES_GENERATION = True
 
-    def __init__(self, queue: List[str] = None):
+    def __init__(self, queue: Optional[List[str]] = None):
         """Constructor"""
         super().__init__(queue)
 
@@ -1668,7 +1668,7 @@ class EconomyController(BaseController):
             QaController,
         )
 
-        data: Dict = {}
+        data: Dict = {}  # type: ignore
         for source, _ in self.DATASETS.items():
             if not self.DATASETS[source].empty:
                 if len(self.DATASETS[source].columns) == 1:

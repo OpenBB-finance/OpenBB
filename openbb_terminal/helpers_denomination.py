@@ -1,6 +1,6 @@
 """Denomination Helper functions"""
 
-from typing import Callable, Dict, Literal, Tuple
+from typing import Optional, Callable, Dict, Literal, Tuple
 
 import pandas as pd
 from pandas._typing import Axis
@@ -13,10 +13,10 @@ DENOMINATION = Literal[
 def transform(
     df: pd.DataFrame,
     sourceDenomination: DENOMINATION = "Units",
-    targetDenomination: DENOMINATION = None,
-    maxValue: float = None,
+    targetDenomination: Optional[DENOMINATION] = None,
+    maxValue: Optional[float] = None,
     axis: Axis = 0,
-    skipPredicate: Callable[[pd.Series], bool] = None,
+    skipPredicate: Optional[Callable[[pd.Series], bool]] = None,
 ) -> Tuple[pd.DataFrame, DENOMINATION]:
     """Transforms data frame by denomination.
 

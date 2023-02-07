@@ -262,12 +262,12 @@ def print_rich_table(
     show_index: bool = False,
     title: str = "",
     index_name: str = "",
-    headers: Union[List[str], pd.Index] = None,
+    headers: Optional[Union[List[str], pd.Index]] = None,
     floatfmt: Union[str, List[str]] = ".2f",
     show_header: bool = True,
     automatic_coloring: bool = False,
-    columns_to_auto_color: List[str] = None,
-    rows_to_auto_color: List[str] = None,
+    columns_to_auto_color: Optional[List[str]] = None,
+    rows_to_auto_color: Optional[List[str]] = None,
     export: bool = False,
 ):
     """Prepare a table from df in rich.
@@ -1256,7 +1256,7 @@ def get_last_time_market_was_open(dt):
     return dt
 
 
-def check_file_type_saved(valid_types: List[str] = None):
+def check_file_type_saved(valid_types: Optional[List[str]] = None):
     """Provide valid types for the user to be able to select.
 
     Parameters
@@ -1360,7 +1360,7 @@ def export_data(
     dir_path: str,
     func_name: str,
     df: pd.DataFrame = pd.DataFrame(),
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     figure: Optional[OpenBBFigure] = None,
 ) -> None:
     """Export data to a file.

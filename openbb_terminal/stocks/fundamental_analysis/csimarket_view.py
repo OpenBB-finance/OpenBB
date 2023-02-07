@@ -10,13 +10,14 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.fundamental_analysis import csimarket_model
+from typing import Optional
 
 logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
 def suppliers(
-    symbol: str, export: str = "", sheet_name: str = None, limit: int = 10
+    symbol: str, export: str = "", sheet_name: Optional[str] = None, limit: int = 10
 ) -> None:
     """Display suppliers from ticker provided. [Source: CSIMarket]
 
@@ -51,7 +52,7 @@ def suppliers(
 
 
 @log_start_end(log=logger)
-def customers(symbol: str, export: str = "", sheet_name: str = None):
+def customers(symbol: str, export: str = "", sheet_name: Optional[str] = None):
     """Display customers from ticker provided. [Source: CSIMarket]
 
     Parameters

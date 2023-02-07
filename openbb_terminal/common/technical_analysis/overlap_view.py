@@ -21,12 +21,12 @@ logger = logging.getLogger(__name__)
 @log_start_end(log=logger)
 def view_ma(
     data: pd.Series,
-    window: List[int] = None,
+    window: Optional[List[int]] = None,
     offset: int = 0,
     ma_type: str = "EMA",
     symbol: str = "",
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: bool = False,
 ) -> Union[OpenBBFigure, None]:
     """Plots MA technical indicator
@@ -94,7 +94,7 @@ def view_vwap(
     offset: int = 0,
     interval: str = "",
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: bool = False,
 ) -> Union[OpenBBFigure, None]:
     """Plots VWMA technical indicator

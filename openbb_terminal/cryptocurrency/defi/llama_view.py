@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import Union
+from typing import Optional, Union
 
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.core.plots.backend import plots_backend
@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 def display_grouped_defi_protocols(
     limit: int = 50,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: bool = False,
 ) -> Union[OpenBBFigure, None]:
     """Plots top dApps (in terms of TVL) grouped by chain.
@@ -83,7 +83,7 @@ def display_defi_protocols(
     ascend: bool = False,
     description: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Prints table showing information about listed DeFi protocols, their current TVL and changes to it in
     the last hour/day/week. [Source: https://docs.llama.fi/api]
@@ -124,7 +124,7 @@ def display_defi_protocols(
 def display_historical_tvl(
     dapps: str = "",
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: bool = False,
 ) -> Union[OpenBBFigure, None]:
     """Plots historical TVL of different dApps
@@ -175,7 +175,7 @@ def display_historical_tvl(
 def display_defi_tvl(
     limit: int = 5,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: bool = False,
 ) -> Union[OpenBBFigure, None]:
     """Plots historical values of the total sum of TVLs from all listed protocols.
