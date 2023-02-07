@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import logging
 import os
 from datetime import datetime
-from typing import Optional
+from typing import Optional, Union
 
 import pandas as pd
 
@@ -468,7 +468,7 @@ def display_monthly_returns(
     export: str = "",
     sheet_name: Optional[str] = None,
     external_axes: bool = False,
-):
+) -> Union[None, OpenBBFigure]:
     """Display monthly returns
 
     Parameters
@@ -646,6 +646,8 @@ def display_monthly_returns(
         )
 
         return fig.show(external=external_axes)
+
+    return None
 
 
 @log_start_end(log=logger)
