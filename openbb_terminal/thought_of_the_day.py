@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import random
 import re
-from typing import Optional
 
 from bs4 import BeautifulSoup
 
@@ -17,7 +16,7 @@ __docformat__ = "numpy"
 class ThoughtOfTheDay:
     """ThoughtOfTheDay class"""
 
-    def __init__(self, urls: Optional[dict[str, str]] = None):  # noqa
+    def __init__(self, urls: dict[str, str] | None = None):
         """Constructor"""
 
         self.metadata: dict = {}
