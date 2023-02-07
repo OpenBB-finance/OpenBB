@@ -1335,6 +1335,8 @@ def ask_file_overwrite(file_path: str) -> Tuple[bool, bool]:
     # Jeroen asked for a flag to overwrite no matter what
     if obbff.FILE_OVERWITE:
         return False, True
+    if os.environ.get("TEST_MODE") == "True":
+        return False, True
     if os.path.exists(file_path):
         overwrite = input("\nFile already exists. Overwrite? [y/n]: ").lower()
         if overwrite == "y":
