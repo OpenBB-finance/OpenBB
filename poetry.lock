@@ -6149,21 +6149,6 @@ files = [
 tzdata = {version = "*", markers = "python_version >= \"3.6\""}
 
 [[package]]
-name = "pyupgrade"
-version = "2.38.4"
-description = "A tool to automatically upgrade syntax for newer versions."
-category = "dev"
-optional = false
-python-versions = ">=3.7"
-files = [
-    {file = "pyupgrade-2.38.4-py2.py3-none-any.whl", hash = "sha256:944ff993c396ddc2b9012eb3de4cda138eb4c149b22c6c560d4c8bfd0e180982"},
-    {file = "pyupgrade-2.38.4.tar.gz", hash = "sha256:1eb43a49f416752929741ba4d706bf3f33593d3cac9bdc217fc1ef55c047c1f4"},
-]
-
-[package.dependencies]
-tokenize-rt = "<5"
-
-[[package]]
 name = "pywin32"
 version = "305"
 description = "Python for Window Extensions"
@@ -7930,18 +7915,6 @@ doc = ["sphinx", "sphinx_rtd_theme"]
 test = ["flake8", "isort", "pytest"]
 
 [[package]]
-name = "tokenize-rt"
-version = "4.2.1"
-description = "A wrapper around the stdlib `tokenize` which roundtrips."
-category = "dev"
-optional = false
-python-versions = ">=3.6.1"
-files = [
-    {file = "tokenize_rt-4.2.1-py2.py3-none-any.whl", hash = "sha256:08a27fa032a81cf45e8858d0ac706004fcd523e8463415ddf1442be38e204ea8"},
-    {file = "tokenize_rt-4.2.1.tar.gz", hash = "sha256:0d4f69026fed520f8a1e0103aa36c406ef4661417f20ca643f913e33531b3b94"},
-]
-
-[[package]]
 name = "tokenterminal"
 version = "1.0.1"
 description = "Unofficial Token Terminal API client."
@@ -9174,4 +9147,4 @@ prediction = ["torch", "pytorch-lightning", "u8darts"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8,<3.11, !=3.9.7"
-content-hash = "6c2a74f16972598fcab8c55309dc783af476a27572188e263a1ff74c81ffeb6e"
+content-hash = "8148b6207ef3302f590a94da1cfca2cf5c90c40c0552e638691253d67daea309"
