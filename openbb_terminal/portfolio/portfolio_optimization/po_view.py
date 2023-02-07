@@ -20,16 +20,16 @@ from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import plot_autoscale
+from openbb_terminal.portfolio.portfolio_optimization.optimizer_helper import get_kwarg
+from openbb_terminal.portfolio.portfolio_optimization.po_engine import PoEngine
 from openbb_terminal.portfolio.portfolio_optimization.po_model import (
-    validate_inputs,
     get_ef,
+    validate_inputs,
 )
 from openbb_terminal.portfolio.portfolio_optimization.statics import (
     RISK_CHOICES,
     TIME_FACTOR,
 )
-from openbb_terminal.portfolio.portfolio_optimization.optimizer_helper import get_kwarg
-from openbb_terminal.portfolio.portfolio_optimization.po_engine import PoEngine
 from openbb_terminal.rich_config import console
 
 warnings.filterwarnings("ignore")

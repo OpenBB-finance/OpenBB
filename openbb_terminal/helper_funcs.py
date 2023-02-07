@@ -13,8 +13,11 @@ import types
 import urllib.parse
 import webbrowser
 from collections.abc import Iterable
-from datetime import date as d
-from datetime import datetime, timedelta
+from datetime import (
+    date as d,
+    datetime,
+    timedelta,
+)
 from difflib import SequenceMatcher
 from functools import lru_cache
 from pathlib import Path
@@ -37,9 +40,11 @@ from PIL import Image, ImageDraw
 from rich.table import Table
 from screeninfo import get_monitors
 
-from openbb_terminal import config_plot as cfgPlot
-from openbb_terminal import config_terminal as cfg
-from openbb_terminal import feature_flags as obbff
+from openbb_terminal import (
+    config_plot as cfgPlot,
+    config_terminal as cfg,
+    feature_flags as obbff,
+)
 from openbb_terminal.core.config import paths
 from openbb_terminal.core.config.paths import (
     HOME_DIRECTORY,

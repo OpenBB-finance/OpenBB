@@ -13,7 +13,134 @@ interactions:
   response:
     body:
       string: "[{\"symbol\":\"PM\",\"industry\":\"Tobacco\",\"country\":\"United States\",\"marketcap\":\"114
-        Billion\",\"shortname\":\"Philip Morris International Inc\",\"name\":\"0001413329-21-000091.txt\",\"date\":\"2021-10-27\",\"file_type\":\"10-Q\",\"cik\":\"0001413329\",\"daa_highlights\":[{\"kmeans_i\":74,\"sentence_i\":228,\"sentence\":\"The
+        Billion\",\"shortname\":\"Philip Morris International Inc\",\"name\":\"0001413329-22-000114.txt\",\"date\":\"2022-10-27\",\"file_type\":\"10-Q\",\"cik\":\"0001413329\",\"daa_highlights\":[{\"kmeans_i\":74,\"sentence_i\":67,\"sentence\":\"Swedish
+        Match Offer On May 11, 2022, Philip Morris Holland Holdings B. V. (\\\"PMHH\\\"),
+        an affiliate of PMI, announced a recommended public offer to the shareholders
+        of Swedish Match AB (\\\"Swedish Match\\\") to tender all shares in Swedish
+        Match (excluding treasury shares) to PMHH at a price of SEK 106 in cash per
+        share.\",\"good_or_bad\":\"bad\"},{\"kmeans_i\":74,\"sentence_i\":70,\"sentence\":\"On
+        October 25, 2022, PMHH announced that the European Commission has approved,
+        under the EU Merger Regulation, the proposed acquisition of Swedish Match,
+        subject to PMHH\u2019 s divestiture of Swedish Match\u2019 s subsidiary SMD
+        Logistics AB following the completion of the offer.\",\"good_or_bad\":\"bad\"},{\"kmeans_i\":74,\"sentence_i\":106,\"sentence\":\"Costs
+        associated with Swedish Match AB offer\u2013During the nine months ended September
+        30, 2022, we incurred pre-tax costs associated with the Swedish Match offer
+        of $266 million (representing $203 million net of income tax and a diluted
+        EPS charge of $0.13 per share) primarily related to financing costs, derivative
+        financials instruments and certain transaction related costs.\",\"good_or_bad\":\"bad\"},{\"kmeans_i\":74,\"sentence_i\":211,\"sentence\":\"Operating
+        income, excluding currency and acquisitions, increased by 4.6%, which included:
+        favorable comparisons versus the prior year period related to the 2021 Saudi
+        Arabia customs assessments of $246 million (as noted above for net revenues),
+        2021 asset impairment and exit costs of $170 million and 2021 asset acquisition
+        cost of $51 million, partly offset by the impact of 2022 costs associated
+        with the Swedish Match AB offer of $269 million, higher 68 Table of Contentsamortization
+        and impairment of intangibles (primarily $112 million related to impairment
+        charges in 2022), and 2022 charges related to the war in Ukraine of $128 million.\",\"good_or_bad\":\"bad\"},{\"kmeans_i\":74,\"sentence_i\":294,\"sentence\":\"The
+        TPD sets forth a comprehensive set of regulatory requirements for tobacco
+        products, including: \u2022 health warnings covering 65% of the front and
+        back panels of cigarette packs, with an option for member states to further
+        standardize tobacco packaging, including the introduction of plain packaging;
+        \u2022 a ban on characterizing flavors in some tobacco products, with a transition
+        period for menthol that expired in May 2020; \u2022 security features and
+        tracking and tracing measures that became effective in May 2019; and \u2022
+        a framework for the regulation of novel tobacco products and e-cigarettes,
+        including requirements for health warnings and information leaflets, a prohibition
+        on product packaging text related to reduced risk, and the introduction of
+        notification requirements or authorization procedures in advance of commercialization.\",\"good_or_bad\":\"bad\"},{\"kmeans_i\":74,\"sentence_i\":348,\"sentence\":\"Illicit
+        Trade: Illicit tobacco trade creates a cheap and unregulated supply of tobacco
+        products, undermines efforts to reduce smoking prevalence, especially among
+        youth, damages legitimate businesses and intellectual property rights, stimulates
+        organized crime, increases corruption and reduces government tax revenue.\",\"good_or_bad\":\"bad\"},{\"kmeans_i\":74,\"sentence_i\":461,\"sentence\":\"We
+        submitted to the FDA a Modified Risk Tobacco Product Application (\u201C MRTPA\u201D)
+        for our Platform 1 product in December 2016, and a Premarket Tobacco Product
+        Application (\u201C PMTA\u201D) for our Platform 1 product in March 2017.\",\"good_or_bad\":\"bad\"},{\"kmeans_i\":74,\"sentence_i\":474,\"sentence\":\"On
+        March 11, 2022, the FDA authorized our sMRTPA for IQOS 3 by issuing a Modified
+        Risk Granted Order\u2013Exposure Modification.\",\"good_or_bad\":\"bad\"},{\"kmeans_i\":74,\"sentence_i\":616,\"sentence\":\"On
+        October 25, 2022, PMHH announced that the European Commission has approved,
+        under the EU Merger Regulation, the proposed acquisition of Swedish Match,
+        subject to PMHH\u2019 s divestiture of Swedish Match\u2019 s subsidiary SMD
+        Logistics AB following the completion of the offer.\",\"good_or_bad\":\"bad\"},{\"kmeans_i\":74,\"sentence_i\":706,\"sentence\":\"South
+        & Southeast Asia-Total Market, PMI Shipment Volume and Market Share Commentaries
+        In the third quarter, the estimated total market in South & Southeast Asia
+        increased, mainly driven by: \u2022 India, up by 21.3%, primarily reflecting
+        a favorable comparison versus the prior year period, during which pandemic-related
+        restrictions impacted the movement of certain products, including tobacco;
+        and \u2022 Indonesia, up by 11.5%, mainly reflecting the impact on adult smoker
+        consumption of the easing of pandemic-related measures, which drove growth
+        in the tax-advantaged'below tier one'segment; partly offset by \u2022 Bangladesh,
+        down by 9.6%, primarily reflecting the impact of second-quarter 2022 excise
+        tax-driven price increases; and \u2022 the Philippines, down by 9.7%, mainly
+        reflecting the impact of first-quarter 2022 excise tax-driven price increases.\",\"good_or_bad\":\"bad\"},{\"kmeans_i\":7,\"sentence_i\":579,\"sentence\":\"We
+        contributed $45 million in 2020, $40 million in 2021, and expect to contribute
+        $35 million annually from 2022 through 2029, as specified in the amended pledge
+        agreement.\",\"good_or_bad\":\"bad\"}],\"rf_highlights\":[],\"price_change_5_days\":null,\"price_change_10_days\":null,\"price_change_20_days\":null,\"price_change_40_days\":null,\"original_filing_link\":\"https://www.sec.gov/Archives/edgar/data/1413329/0001413329-22-000114/0001413329-22-000114-index.htm\",\"financials_link\":\"https://www.sec.gov/cgi-bin/viewer?action=view&cik=1413329&accession_number=0001413329-22-000114&xbrl_type=v#\"},{\"symbol\":\"PM\",\"industry\":\"Tobacco\",\"country\":\"United
+        States\",\"marketcap\":\"114 Billion\",\"shortname\":\"Philip Morris International
+        Inc\",\"name\":\"0001413329-22-000072.txt\",\"date\":\"2022-07-29\",\"file_type\":\"10-Q\",\"cik\":\"0001413329\",\"daa_highlights\":[{\"kmeans_i\":74,\"sentence_i\":60,\"sentence\":\"War
+        in Ukraine to our condensed consolidated financial statements as well as the
+        \\\"Trade Policy\\\" and \\\"Cautionary Factors That May Affect Future Results\\\"
+        sections of this MD & A. Swedish Match OfferOn May 11, 2022, Philip Morris
+        Holland Holdings B. V. (\\\"PMHH\\\"), an affiliate of PMI, announced a recommended
+        public offer to the shareholders of Swedish Match AB (\\\"Swedish Match\\\")
+        to tender all shares in Swedish Match (excluding treasury shares) to PMHH
+        at a price of SEK 106 in cash per share.\",\"good_or_bad\":\"bad\"},{\"kmeans_i\":74,\"sentence_i\":84,\"sentence\":\"Costs
+        associated with Swedish Match AB offer\u2013During the second quarter of 2022,
+        we incurred pre-tax costs associated with the Swedish Match offer of $39 million
+        (representing $30 million net of income tax and a diluted EPS charge of $0.02
+        per share) primarily related to financing and certain transaction related
+        costs.\",\"good_or_bad\":\"bad\"},{\"kmeans_i\":74,\"sentence_i\":110,\"sentence\":\"Costs
+        associated with Swedish Match AB offer\u2013During the second quarter of 2022,
+        we incurred pre-tax costs associated with the Swedish Match offer of $39 million
+        (representing $30 million net of income tax and a diluted EPS charge of $0.02
+        per share) primarily related to financing and certain transaction related
+        costs.\",\"good_or_bad\":\"bad\"},{\"kmeans_i\":74,\"sentence_i\":182,\"sentence\":\"Operating
+        income, excluding currency and acquisitions, increased by 8.3%, notably reflecting
+        the following items: a favorable comparison versus the prior year period related
+        to the Saudi Arabia customs assessments of $246 million (as noted above for
+        net revenues) and asset impairment and exit costs of $127 million, partly
+        offset by 2022 charges related to the war in Ukraine of $122 million and 2022
+        costs associated with the Swedish Match AB offer of $52 million.\",\"good_or_bad\":\"bad\"},{\"kmeans_i\":74,\"sentence_i\":268,\"sentence\":\"The
+        TPD sets forth a comprehensive set of regulatory requirements for tobacco
+        products, including: \u2022 health warnings covering 65% of the front and
+        back panels of cigarette packs, with an option for member states to further
+        standardize tobacco packaging, including the introduction of plain packaging;
+        71 Table of Contents \u2022 a ban on characterizing flavors in some tobacco
+        products, with a transition period for menthol that expired in May 2020; \u2022
+        security features and tracking and tracing measures that became effective
+        in May 2019; and \u2022 a framework for the regulation of novel tobacco products
+        and e-cigarettes, including requirements for health warnings and information
+        leaflets, a prohibition on product packaging text related to reduced risk,
+        and the introduction of notification requirements or authorization procedures
+        in advance of commercialization.\",\"good_or_bad\":\"bad\"},{\"kmeans_i\":74,\"sentence_i\":317,\"sentence\":\"Illicit
+        Trade: Illicit tobacco trade creates a cheap and unregulated supply of tobacco
+        products, undermines efforts to reduce smoking prevalence, especially among
+        youth, damages legitimate businesses and intellectual property rights, stimulates
+        organized crime, increases corruption and reduces government tax revenue.\",\"good_or_bad\":\"bad\"},{\"kmeans_i\":74,\"sentence_i\":430,\"sentence\":\"We
+        submitted to the FDA a Modified Risk Tobacco Product Application (\u201C MRTPA\u201D)
+        for our Platform 1 product in December 2016, and a Premarket Tobacco Product
+        Application (\u201C PMTA\u201D) for our Platform 1 product in March 2017.\",\"good_or_bad\":\"bad\"},{\"kmeans_i\":74,\"sentence_i\":443,\"sentence\":\"On
+        March 11, 2022, the FDA authorized our sMRTPA for IQOS 3 by issuing a Modified
+        Risk Granted Order\u2013Exposure Modification.\",\"good_or_bad\":\"bad\"},{\"kmeans_i\":74,\"sentence_i\":664,\"sentence\":\"South
+        & Southeast Asia-Total Market, PMI Shipment Volume and Market Share Commentaries
+        In the second quarter, the estimated total market in South & Southeast Asia
+        increased, mainly driven by: \u2022 India, up by 25.0%, primarily reflecting
+        a favorable comparison versus the prior year period, during which pandemic-related
+        restrictions impacted the movement of certain products, including tobacco;
+        and \u2022 Indonesia, up by 6.6%, mainly reflecting the impact on adult smoker
+        consumption of the easing of pandemic-related measures, which drove growth
+        in the tax-advantaged'below tier one'segment; partly offset by \u2022 the
+        Philippines, down by 16.5%, primarily reflecting the impact of first-quarter
+        2022 excise tax-driven price increases and related trade inventory movements.\",\"good_or_bad\":\"bad\"},{\"kmeans_i\":13,\"sentence_i\":774,\"sentence\":\"During
+        the third quarter of 2021, our Board of Directors approved a 4.2% increase
+        in the quarterly dividend to $1.25 per common share.\",\"good_or_bad\":\"good\"},{\"kmeans_i\":74,\"sentence_i\":1003,\"sentence\":\"112
+        Table of ContentsRisks Related to the Acquisitions of OtiTopic, Inc. (\\\"OtiTopic\\\"),
+        Fertin Pharma A/G (\\\"Fertin Pharma\\\") and Vectura Group Ltd. (\\\"Vectura\\\")
+        As previously disclosed in this Form 10-Q, we have acquired Fertin Pharma
+        and Vectura, and have since launched a new Wellness and Healthcare business
+        consolidating these entities, Vectura Fertin Pharma (with the Fertin Pharma
+        acquisition and the Vectura acquisition being collectively referred to in
+        these Risk Factors as the\u201C Acquisitions\u201D).\",\"good_or_bad\":\"bad\"}],\"rf_highlights\":[],\"price_change_5_days\":null,\"price_change_10_days\":null,\"price_change_20_days\":null,\"price_change_40_days\":null,\"original_filing_link\":\"https://www.sec.gov/Archives/edgar/data/1413329/0001413329-22-000072/0001413329-22-000072-index.htm\",\"financials_link\":\"https://www.sec.gov/cgi-bin/viewer?action=view&cik=1413329&accession_number=0001413329-22-000072&xbrl_type=v#\"},{\"symbol\":\"PM\",\"industry\":\"Tobacco\",\"country\":\"United
+        States\",\"marketcap\":\"114 Billion\",\"shortname\":\"Philip Morris International
+        Inc\",\"name\":\"0001413329-21-000091.txt\",\"date\":\"2021-10-27\",\"file_type\":\"10-Q\",\"cik\":\"0001413329\",\"daa_highlights\":[{\"kmeans_i\":74,\"sentence_i\":228,\"sentence\":\"The
         TPD sets forth a comprehensive set of regulatory requirements for tobacco
         products, including: \u2022 health warnings covering 65% of the front and
         back panels of cigarette packs, with an option for member states to further
@@ -357,110 +484,16 @@ interactions:
         net revenues of the Latin America & Canada segment include $7 million in 2019
         and $5 million in 2018 related to the sale of RRPs.\",\"good_or_bad\":\"bad\"},{\"kmeans_i\":7,\"sentence_i\":462,\"sentence\":\"The
         net revenues of the Latin America & Canada segment include $18 million in
-        2019 and $14 million in 2018 related to the sale of RRPs.\",\"good_or_bad\":\"bad\"}],\"rf_highlights\":[],\"price_change_5_days\":-0.00012276,\"price_change_10_days\":0.00982192,\"price_change_20_days\":0.02467767,\"price_change_40_days\":0.06134758,\"original_filing_link\":\"https://www.sec.gov/Archives/edgar/data/1413329/0001413329-19-000071/0001413329-19-000071-index.htm\",\"financials_link\":\"https://www.sec.gov/cgi-bin/viewer?action=view&cik=1413329&accession_number=0001413329-19-000071&xbrl_type=v#\"},{\"symbol\":\"PM\",\"industry\":\"Tobacco\",\"country\":\"United
-        States\",\"marketcap\":\"114 Billion\",\"shortname\":\"Philip Morris International
-        Inc\",\"name\":\"0001413329-19-000055.txt\",\"date\":\"2019-07-25\",\"file_type\":\"10-q\",\"cik\":\"0001413329\",\"daa_highlights\":[{\"kmeans_i\":74,\"sentence_i\":200,\"sentence\":\"Illicit
-        Trade: The illicit tobacco trade creates a cheap and unregulated supply of
-        tobacco products, undermines efforts to reduce smoking prevalence, especially
-        among youth, damages legitimate businesses, stimulates organized crime, increases
-        corruption and reduces government tax revenue.\",\"good_or_bad\":\"bad\"},{\"kmeans_i\":74,\"sentence_i\":293,\"sentence\":\"We
-        submitted to the FDA a Modified Risk Tobacco Product Application (\u201C MRTPA\u201D)
-        for our Platform 1 product in December 2016, and a Premarket Tobacco Product
-        Application (\u201C PMTA\u201D) for our Platform 1 product in March 2017.\",\"good_or_bad\":\"bad\"},{\"kmeans_i\":74,\"sentence_i\":295,\"sentence\":\"The
-        FDA\u2019 s decision followed its comprehensive assessment of our PMTA. In
-        May 2017, the FDA formally accepted and filed our MRTPA for substantive scientific
-        review and, in June 2017, the FDA opened the period for the public to provide
-        comments on our application.\",\"good_or_bad\":\"bad\"},{\"kmeans_i\":7,\"sentence_i\":105,\"sentence\":\"-59-Table
-        of ContentsNet revenues include $2,709 million in 2019 and $2,147 million
-        in 2018 related to the sale of RRPs.\",\"good_or_bad\":\"bad\"},{\"kmeans_i\":7,\"sentence_i\":135,\"sentence\":\"Net
-        revenues include $1,466 million in 2019 and $1,020 million in 2018 related
-        to the sale of RRPs.\",\"good_or_bad\":\"bad\"},{\"kmeans_i\":7,\"sentence_i\":397,\"sentence\":\"The
-        net revenues of the European Union segment include $428 million in 2019 and
-        $182 million in 2018 related to the sale of RRPs.\",\"good_or_bad\":\"bad\"},{\"kmeans_i\":7,\"sentence_i\":400,\"sentence\":\"-72-Table
-        of ContentsThe net revenues of the European Union segment include $775 million
-        in 2019 and $334 million in 2018 related to the sale of RRPs.\",\"good_or_bad\":\"bad\"},{\"kmeans_i\":7,\"sentence_i\":403,\"sentence\":\"The
-        net revenues of the Eastern Europe segment include $182 million in 2019 and
-        $65 million in 2018 related to the sale of RRPs.\",\"good_or_bad\":\"bad\"},{\"kmeans_i\":7,\"sentence_i\":406,\"sentence\":\"The
-        net revenues of the Eastern Europe segment include $291 million in 2019 and
-        $105 million in 2018 related to the sale of RRPs.\",\"good_or_bad\":\"bad\"},{\"kmeans_i\":7,\"sentence_i\":409,\"sentence\":\"The
-        net revenues of the Middle East & Africa segment include $86 million in 2019
-        and $112 million in 2018 related to the sale of RRPs.\",\"good_or_bad\":\"bad\"},{\"kmeans_i\":7,\"sentence_i\":412,\"sentence\":\"The
-        net revenues of the Middle East & Africa segment include $185 million in 2019
-        and $189 million in 2018 related to the sale of RRPs.\",\"good_or_bad\":\"bad\"},{\"kmeans_i\":7,\"sentence_i\":420,\"sentence\":\"The
-        net revenues of the East Asia & Australia segment include $765 million in
-        2019 and $656 million in 2018 related to the sale of RRPs.\",\"good_or_bad\":\"bad\"},{\"kmeans_i\":7,\"sentence_i\":424,\"sentence\":\"The
-        net revenues of the East Asia & Australia segment include $1,448 million in
-        2019 and $1,510 million in 2018 related to the sale of RRPs.\",\"good_or_bad\":\"bad\"},{\"kmeans_i\":7,\"sentence_i\":430,\"sentence\":\"The
-        net revenues of the Latin America & Canada segment include $5 million in 2019
-        and $5 million in 2018 related to the sale of RRPs.\",\"good_or_bad\":\"bad\"},{\"kmeans_i\":7,\"sentence_i\":435,\"sentence\":\"The
-        net revenues of the Latin America & Canada segment include $11 million in
-        2019 and $9 million in 2018 related to the sale of RRPs.\",\"good_or_bad\":\"bad\"}],\"rf_highlights\":[],\"price_change_5_days\":-0.03713655,\"price_change_10_days\":-0.03678615,\"price_change_20_days\":-0.03129751,\"price_change_40_days\":-0.16851573,\"original_filing_link\":\"https://www.sec.gov/Archives/edgar/data/1413329/0001413329-19-000055/0001413329-19-000055-index.htm\",\"financials_link\":\"https://www.sec.gov/cgi-bin/viewer?action=view&cik=1413329&accession_number=0001413329-19-000055&xbrl_type=v#\"},{\"symbol\":\"PM\",\"industry\":\"Tobacco\",\"country\":\"United
-        States\",\"marketcap\":\"114 Billion\",\"shortname\":\"Philip Morris International
-        Inc\",\"name\":\"0001413329-19-000034.txt\",\"date\":\"2019-04-25\",\"file_type\":\"10-q\",\"cik\":\"0001413329\",\"daa_highlights\":[{\"kmeans_i\":74,\"sentence_i\":161,\"sentence\":\"Illicit
-        Trade: The illicit tobacco trade creates a cheap and unregulated supply of
-        tobacco products, undermines efforts to reduce smoking prevalence, especially
-        among youth, damages legitimate businesses, stimulates organized crime, increases
-        corruption and reduces government tax revenue.\",\"good_or_bad\":\"bad\"},{\"kmeans_i\":74,\"sentence_i\":253,\"sentence\":\"We
-        submitted to the FDA a Modified Risk Tobacco Product Application (\u201C MRTPA\u201D)
-        for our Platform 1 product in December 2016, and a Premarket Tobacco Product
-        Application (\u201C PMTA\u201D) for our Platform 1 product in March 2017.\",\"good_or_bad\":\"bad\"},{\"kmeans_i\":7,\"sentence_i\":88,\"sentence\":\"Net
-        revenues include $1,243 million in 2019 and $1,127 million in 2018 related
-        to the sale of RRPs.\",\"good_or_bad\":\"bad\"},{\"kmeans_i\":7,\"sentence_i\":352,\"sentence\":\"-59-Table
-        of ContentsThe net revenues of the European Union segment include $347 million
-        in 2019 and $152 million in 2018 related to the sale of RRPs.\",\"good_or_bad\":\"bad\"},{\"kmeans_i\":7,\"sentence_i\":356,\"sentence\":\"The
-        net revenues of the Eastern Europe segment include $108 million in 2019 and
-        $40 million in 2018 related to the sale of RRPs.\",\"good_or_bad\":\"bad\"},{\"kmeans_i\":7,\"sentence_i\":370,\"sentence\":\"The
-        net revenues of the East Asia & Australia segment include $683 million in
-        2019 and $854 million in 2018 related to the sale of RRPs.\",\"good_or_bad\":\"bad\"},{\"kmeans_i\":7,\"sentence_i\":374,\"sentence\":\"The
-        net revenues of the Latin America & Canada segment include $6 million in 2019
-        and $4 million in 2018 related to the sale of RRPs.\",\"good_or_bad\":\"bad\"},{\"kmeans_i\":95,\"sentence_i\":429,\"sentence\":\"The
-        net proceeds received are included in cash provided by operating activities
-        in the condensed consolidated statements of cash flows.\",\"good_or_bad\":\"bad\"},{\"kmeans_i\":28,\"sentence_i\":24,\"sentence\":\"Consolidated
-        Operating Results for the Three Months Ended March 31, 2019 During the quarter,
-        net revenues, excluding unfavorable currency, increased by 3.2%, driven primarily
-        by a favorable pricing variance, notably in Canada, Germany, Indonesia, Japan
-        and the Philippines, partly offset by Argentina, Saudi Arabia and Turkey.\",\"good_or_bad\":\"bad\"},{\"kmeans_i\":28,\"sentence_i\":82,\"sentence\":\"-49-Table
-        of ContentsDuring the quarter, net revenues, excluding unfavorable currency,
-        increased by 3.2%, driven primarily by a favorable pricing variance, notably
-        in Canada, Germany, Indonesia, Japan and the Philippines, partly offset by
-        Argentina, Saudi Arabia and Turkey.\",\"good_or_bad\":\"bad\"},{\"kmeans_i\":28,\"sentence_i\":110,\"sentence\":\"We
-        support a comprehensive regulatory framework for tobacco products based on
-        the principle of harm reduction, including mandated health warnings, minimum
-        age laws, restrictions on advertising, and public place smoking restrictions.\",\"good_or_bad\":\"bad\"},{\"kmeans_i\":28,\"sentence_i\":269,\"sentence\":\"In
-        the UAE, a product standard on minimum quality and safety of electronic nicotine-containing
-        products, including heat-not-burn products, was approved in March 2019.\",\"good_or_bad\":\"bad\"},{\"kmeans_i\":28,\"sentence_i\":332,\"sentence\":\"On
-        November 12, 2018, the WTO issued its decision agreeing with the Philippines
-        that criminal charges against PM Thailand and seven former and current employees
-        in connection with import entries of cigarettes from the Philippines during
-        the period of July 2003 to June 2006 are inconsistent with WTO customs valuation
-        rules.\",\"good_or_bad\":\"bad\"},{\"kmeans_i\":28,\"sentence_i\":351,\"sentence\":\"During
-        the quarter, net revenues, excluding unfavorable currency, increased by 15.8%,
-        reflecting a favorable pricing variance, driven principally by Germany, and
-        favorable volume/mix, primarily reflecting favorable heated tobacco unit volume
-        across the Region.\",\"good_or_bad\":\"bad\"},{\"kmeans_i\":28,\"sentence_i\":355,\"sentence\":\"During
-        the quarter, net revenues, excluding unfavorable currency, increased by 13.4%,
-        reflecting a favorable pricing variance, driven notably by Ukraine, and favorable
-        volume/mix, primarily driven by heated tobacco unit volume in Russia and Ukraine,
-        partly offset by lower cigarette volume in Russia.\",\"good_or_bad\":\"bad\"},{\"kmeans_i\":28,\"sentence_i\":364,\"sentence\":\"During
-        the quarter, net revenues, excluding unfavorable currency, increased by 8.6%,
-        reflecting: a favorable pricing variance, driven principally by Indonesia
-        and the Philippines, as well as a favorable volume/mix, mainly driven by favorable
-        cigarette volume and mix in the Philippines, largely offset by lower cigarette
-        volume and mix in Indonesia.\",\"good_or_bad\":\"bad\"},{\"kmeans_i\":28,\"sentence_i\":373,\"sentence\":\"During
-        the quarter, net revenues, excluding unfavorable currency, decreased by 3.2%,
-        reflecting: unfavorable volume/mix, mainly due to Argentina and Canada, partly
-        offset by a favorable pricing variance, notably in Canada and Mexico, partially
-        offset by Argentina reflecting, in part, the adoption of highly inflationary
-        accounting.\",\"good_or_bad\":\"bad\"}],\"rf_highlights\":[],\"price_change_5_days\":0.01591103,\"price_change_10_days\":0.00406746,\"price_change_20_days\":0.03170241,\"price_change_40_days\":-0.03797088,\"original_filing_link\":\"https://www.sec.gov/Archives/edgar/data/1413329/0001413329-19-000034/0001413329-19-000034-index.htm\",\"financials_link\":\"https://www.sec.gov/cgi-bin/viewer?action=view&cik=1413329&accession_number=0001413329-19-000034&xbrl_type=v#\"}]"
+        2019 and $14 million in 2018 related to the sale of RRPs.\",\"good_or_bad\":\"bad\"}],\"rf_highlights\":[],\"price_change_5_days\":-0.00012276,\"price_change_10_days\":0.00982192,\"price_change_20_days\":0.02467767,\"price_change_40_days\":0.06134758,\"original_filing_link\":\"https://www.sec.gov/Archives/edgar/data/1413329/0001413329-19-000071/0001413329-19-000071-index.htm\",\"financials_link\":\"https://www.sec.gov/cgi-bin/viewer?action=view&cik=1413329&accession_number=0001413329-19-000071&xbrl_type=v#\"}]"
     headers:
       Connection:
       - keep-alive
       Content-Length:
-      - '43790'
+      - '45866'
       Content-Type:
       - application/json
       Date:
-      - Mon, 18 Jul 2022 09:04:16 GMT
+      - Fri, 03 Feb 2023 13:54:09 GMT
       Server:
       - nginx/1.14.0 (Ubuntu)
     status:

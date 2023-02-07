@@ -1,6 +1,8 @@
 # IMPORTATION STANDARD
 import os
 
+import pandas as pd
+
 # IMPORTATION THIRDPARTY
 import pytest
 
@@ -29,10 +31,12 @@ def test_menu_with_queue(expected, mocker, queue):
         ),
         return_value=["quit"],
     )
+    stock = pd.DataFrame()
     result_menu = fa_controller.FundamentalAnalysisController(
         ticker="TSLA",
         start="10/25/2021",
         interval="1440min",
+        stock=stock,
         suffix="",
         queue=queue,
     ).menu()
@@ -69,8 +73,14 @@ def test_menu_without_queue_completion(mocker):
         return_value="quit",
     )
 
+    stock = pd.DataFrame()
     result_menu = fa_controller.FundamentalAnalysisController(
-        ticker="TSLA", start="10/25/2021", interval="1440min", suffix="", queue=None
+        ticker="TSLA",
+        start="10/25/2021",
+        interval="1440min",
+        stock=stock,
+        suffix="",
+        queue=None,
     ).menu()
 
     assert result_menu == ["help"]
@@ -116,8 +126,14 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
         new=mock_switch,
     )
 
+    stock = pd.DataFrame()
     result_menu = fa_controller.FundamentalAnalysisController(
-        ticker="TSLA", start="10/25/2021", interval="1440min", suffix="", queue=None
+        ticker="TSLA",
+        start="10/25/2021",
+        interval="1440min",
+        stock=stock,
+        suffix="",
+        queue=None,
     ).menu()
 
     assert result_menu == ["help"]
@@ -126,10 +142,12 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.record_stdout
 def test_print_help():
+    stock = pd.DataFrame()
     controller = fa_controller.FundamentalAnalysisController(
         ticker="TSLA",
         start="10/25/2021",
         interval="1440min",
+        stock=stock,
         suffix="",
     )
     controller.print_help()
@@ -148,10 +166,12 @@ def test_print_help():
     ],
 )
 def test_switch(an_input, expected_queue):
+    stock = pd.DataFrame()
     controller = fa_controller.FundamentalAnalysisController(
         ticker="",
         start="",
         interval="",
+        stock=stock,
         suffix="",
         queue=None,
     )
@@ -163,10 +183,12 @@ def test_switch(an_input, expected_queue):
 @pytest.mark.vcr(record_mode="none")
 def test_call_cls(mocker):
     mocker.patch("os.system")
+    stock = pd.DataFrame()
     controller = fa_controller.FundamentalAnalysisController(
         ticker="TSLA",
         start="10/25/2021",
         interval="1440min",
+        stock=stock,
         suffix="",
     )
     controller.call_cls([])
@@ -206,10 +228,12 @@ def test_call_cls(mocker):
     ],
 )
 def test_call_func_expect_queue(expected_queue, queue, func):
+    stock = pd.DataFrame()
     controller = fa_controller.FundamentalAnalysisController(
         ticker="",
         start="",
         interval="",
+        stock=stock,
         suffix="",
         queue=queue,
     )
@@ -219,7 +243,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
     assert controller.queue == expected_queue
 
 
-@pytest.mark.vcr(record_mode="none")
+@pytest.mark.vcr()
 @pytest.mark.parametrize(
     "tested_func, mocked_func, other_args, called_with",
     [
@@ -233,12 +257,12 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             "call_mgmt",
             "business_insider_view.display_management",
             ["--export=csv"],
-            {"symbol": "TSLA", "export": "csv"},
+            dict(symbol="TSLA", export="csv", sheet_name=None),
         ),
         (
-            "call_data",
+            "call_overview",
             "finviz_view.display_screen_data",
-            ["--export=csv"],
+            ["--source=Finviz", "--export=csv"],
             dict(symbol="TSLA", export="csv", sheet_name=None),
         ),
         (
@@ -248,9 +272,9 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             {"TSLA"},
         ),
         (
-            "call_info",
+            "call_overview",
             "yahoo_finance_view.display_info",
-            [],
+            ["--source=YahooFinance"],
             {"TSLA"},
         ),
         (
@@ -279,44 +303,38 @@ def test_call_func_expect_queue(expected_queue, queue, func):
         ),
         (
             "call_revfc",
+            "yahoo_finance_view.display_calendar_earnings",
+            ["--source=YahooFinance"],
+            {"TSLA"},
+        ),
+        (
+            "call_revfc",
             "seeking_alpha_view.display_rev_estimates",
             [],
             {"TSLA"},
         ),
         (
-            "call_cal",
-            "yahoo_finance_view.display_calendar_earnings",
-            [],
-            {"TSLA"},
-        ),
-        (
-            "call_hq",
-            "yahoo_finance_view.open_headquarters_map",
-            [],
-            {"TSLA"},
-        ),
-        (
-            "call_web",
-            "yahoo_finance_view.open_web",
-            [],
+            "call_earnings",
+            "yahoo_finance_view.display_earnings",
+            ["--source=YahooFinance"],
             {"TSLA"},
         ),
         (
             "call_overview",
             "av_view.display_overview",
-            [],
+            ["--source=AlphaVantage"],
             {"TSLA"},
         ),
         (
-            "call_key",
+            "call_metrics",
             "av_view.display_key",
-            [],
+            ["--source=AlphaVantage"],
             {"TSLA"},
         ),
         (
-            "call_key",
+            "call_metrics",
             "av_view.display_key",
-            ["--export=xlsx"],
+            ["--source=AlphaVantage", "--export=xlsx"],
             dict(symbol="TSLA", export="xlsx", sheet_name=None),
         ),
         (
@@ -493,7 +511,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
         (
             "call_earnings",
             "av_view.display_earnings",
-            ["--limit=5", "--quarter", "--export=csv", "--source=AlphaVantage"],
+            ["--limit=5", "--quarter", "--export=csv"],
             dict(symbol="TSLA", limit=5, quarterly=True, export="csv", sheet_name=None),
         ),
         (
@@ -519,6 +537,111 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             ["--debug"],
             {"symbol": "TSLA", "debug": True},
         ),
+        (
+            "call_rating",
+            "finviz_view.analyst",
+            ["--source=Finviz"],
+            {"symbol": "TSLA", "export": "", "sheet_name": None},
+        ),
+        (
+            "call_rating",
+            "finviz_view.analyst",
+            ["--source=Finviz", "--export=csv"],
+            {"symbol": "TSLA", "export": "csv", "sheet_name": None},
+        ),
+        (
+            "call_rating",
+            "finviz_view.analyst",
+            ["--source=Finviz", "--export=json"],
+            {"symbol": "TSLA", "export": "json", "sheet_name": None},
+        ),
+        (
+            "call_rating",
+            "finviz_view.analyst",
+            ["--source=Finviz", "--export=xlsx"],
+            {"symbol": "TSLA", "export": "xlsx", "sheet_name": None},
+        ),
+        (
+            "call_pt",
+            "business_insider_view.price_target_from_analysts",
+            ["--limit=10"],
+            {
+                "symbol": "TSLA",
+                "data": None,
+                "start_date": "10/25/2021",
+                "limit": 10,
+                "raw": False,
+                "export": "",
+                "sheet_name": None,
+            },
+        ),
+        (
+            "call_est",
+            "business_insider_view.estimates",
+            [],
+            {
+                "symbol": "TSLA",
+                "estimate": "annualearnings",
+                "export": "",
+                "sheet_name": None,
+            },
+        ),
+        (
+            "call_rot",
+            "finnhub_view.rating_over_time",
+            ["--limit=10"],
+            {
+                "symbol": "TSLA",
+                "limit": 10,
+                "raw": False,
+                "export": "",
+                "sheet_name": None,
+            },
+        ),
+        (
+            "call_rating",
+            "fmp_view.rating",
+            ["--source=FinancialModelingPrep", "--limit=10"],
+            {
+                "symbol": "TSLA",
+                "limit": 10,
+                "export": "",
+                "sheet_name": None,
+            },
+        ),
+        (
+            "call_sec",
+            "marketwatch_view.sec_filings",
+            ["--limit=10"],
+            {
+                "symbol": "TSLA",
+                "limit": 10,
+                "export": "",
+                "sheet_name": None,
+            },
+        ),
+        (
+            "call_supplier",
+            "csimarket_view.suppliers",
+            [],
+            {
+                "symbol": "TSLA",
+                "export": "",
+                "sheet_name": None,
+            },
+        ),
+        (
+            "call_arktrades",
+            "ark_view.display_ark_trades",
+            ["--limit=10", "--show_symbol"],
+            {
+                "symbol": "TSLA",
+                "limit": 10,
+                "export": "",
+                "show_symbol": True,
+                "sheet_name": None,
+            },
+        ),
     ],
 )
 def test_call_func(tested_func, mocked_func, other_args, called_with, mocker):
@@ -531,6 +654,7 @@ def test_call_func(tested_func, mocked_func, other_args, called_with, mocker):
         ticker="TSLA",
         start="10/25/2021",
         interval="1440min",
+        stock=None,
         suffix="",
     )
 
@@ -550,23 +674,35 @@ def test_call_func(tested_func, mocked_func, other_args, called_with, mocker):
     [
         "call_analysis",
         "call_mgmt",
-        "call_data",
-        "call_score",
-        "call_info",
-        "call_shrs",
-        "call_sust",
-        "call_cal",
-        "call_web",
-        "call_hq",
         "call_overview",
-        "call_key",
+        "call_enterprise",
+        "call_score",
+        "call_shrs",
+        "call_growth",
+        "call_metrics",
+        "call_sust",
         "call_income",
         "call_balance",
         "call_cash",
         "call_earnings",
         "call_fraud",
+        "call_divs",
         "call_dcf",
+        "call_dcfc",
+        "call_splits",
         "call_warnings",
+        "call_ratios",
+        "call_dupont",
+        "call_epsfc",
+        "call_revfc",
+        "call_pt",
+        "call_est",
+        "call_rot",
+        "call_rating",
+        "call_sec",
+        "call_supplier",
+        "call_customer",
+        "call_arktrades",
     ],
 )
 def test_call_func_no_parser(func, mocker):
@@ -575,10 +711,12 @@ def test_call_func_no_parser(func, mocker):
         ".FundamentalAnalysisController.parse_known_args_and_warn",
         return_value=None,
     )
+    stock = pd.DataFrame()
     controller = fa_controller.FundamentalAnalysisController(
         ticker="AAPL",
         start="10/25/2021",
         interval="1440min",
+        stock=stock,
         suffix="",
     )
 
@@ -596,10 +734,12 @@ def test_call_func_no_parser(func, mocker):
     ],
 )
 def test_custom_reset(expected, ticker):
+    stock = pd.DataFrame()
     controller = fa_controller.FundamentalAnalysisController(
         ticker=None,
         start="10/25/2021",
         interval="1440min",
+        stock=stock,
         suffix="",
     )
     controller.ticker = ticker

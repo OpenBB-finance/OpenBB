@@ -22,7 +22,7 @@ With the OpenBB SDK you can define your, often free, API key from various platfo
 | coinglass  | Coinglass                                | https://coinglass.github.io/API-Reference/#api-key                                 |
 | cpanic     | Crypto Panic                             | https://cryptopanic.com/developers/api/                                            |
 | degiro     | DeGiro                                   | https://www.degiro.com/                                                            |
-| eodhd      | EODHD                                    | https://eodhistoricaldata.com/                                                     |
+| eodhd      | EODHD                                    | https://eodhistoricaldata.com/r/?ref=869U7F4J                                      |
 | ethplorer  | Ethplorer                                | https://github.com/EverexIO/Ethplorer/wiki/Ethplorer-API                           |
 | finnhub    | Finnhub                                  | https://finnhub.io/                                                                |
 | fmp        | Financial Modelling Prep                 | https://site.financialmodelingprep.com/developer/docs/                             |
@@ -251,7 +251,7 @@ Click "Sign up" and go to the registrations process. After setting up your accou
 <details>
 <summary>EODHD</summary>
 
-Go to https://eodhistoricaldata.com/. You will be greeted with the following screen:
+Go to https://eodhistoricaldata.com/r/?ref=869U7F4J. You will be greeted with the following screen:
 
 <img width="500" alt="image" src="https://user-images.githubusercontent.com/46355364/207849214-23763c95-7314-42ae-b97d-cb5810686498.png"></img>
 
