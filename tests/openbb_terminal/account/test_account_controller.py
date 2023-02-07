@@ -262,7 +262,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
 def test_call_func_no_parser(func, mocker):
     # MOCK PARSE_KNOWN_ARGS_AND_WARN
     mocker.patch(
-        target="openbb_terminal.account.account_controller.AccountController.parse_simple_args",
+        target="openbb_terminal.account.account_controller.AccountController.parse_known_args_and_warn",
         return_value=None,
     )
     controller = account_controller.AccountController(queue=None)
@@ -270,7 +270,7 @@ def test_call_func_no_parser(func, mocker):
     func_result = getattr(controller, func)(other_args=list())
     assert func_result is None
     assert controller.queue == []
-    controller.parse_simple_args.assert_called_once()
+    controller.parse_known_args_and_warn.assert_called_once()
 
 
 @pytest.mark.vcr

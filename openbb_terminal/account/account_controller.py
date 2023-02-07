@@ -112,7 +112,7 @@ class AccountController(BaseController):
             action="store_true",
             default=False,
         )
-        ns_parser = self.parse_simple_args(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if ns_parser.on:
                 if not obbff.SYNC_ENABLED:
@@ -143,7 +143,7 @@ class AccountController(BaseController):
             prog="pull",
             description="Pull and apply stored configurations from the cloud.",
         )
-        ns_parser = self.parse_simple_args(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             response = Hub.fetch_user_configs(User.get_session())
             if response:
@@ -169,7 +169,7 @@ class AccountController(BaseController):
             prog="clear",
             description="Clear stored configurations from the cloud.",
         )
-        ns_parser = self.parse_simple_args(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             i = console.input(
                 "[red]This action is irreversible![/red]\n"
