@@ -42,6 +42,7 @@ class FeatureFlagsController(BaseController):
         "rich",
         "richpanel",
         "tbhint",
+        "overwrite",
     ]
     PATH = "/featflags/"
 
@@ -73,8 +74,14 @@ class FeatureFlagsController(BaseController):
         mt.add_setting("watermark", obbff.USE_WATERMARK)
         mt.add_setting("cmdloc", obbff.USE_CMD_LOCATION_FIGURE)
         mt.add_setting("tbhint", obbff.TOOLBAR_HINT)
+        mt.add_setting("overwrite", obbff.FILE_OVERWITE)
 
         console.print(text=mt.menu_text, menu="Feature Flags")
+
+    def call_overwrite(self, _):
+        """Process overwrite command"""
+        obbff.FILE_OVERWITE = not obbff.FILE_OVERWITE
+        set_key(USER_ENV_FILE, "OPENBB_FILE_OVERWITE", str(obbff.FILE_OVERWITE))
 
     def call_retryload(self, _):
         """Process retryload command"""

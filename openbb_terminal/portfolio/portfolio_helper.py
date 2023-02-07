@@ -19,7 +19,7 @@ from openbb_terminal.portfolio.statics import REGIONS
 logger = logging.getLogger(__name__)
 
 
-# pylint: disable=too-many-return-statements, too-many-lines, too-many-statements
+# pylint: disable=too-many-return-statements, too-many-lines, too-many-statements, consider-iterating-dictionary
 # pylint: disable=C0302
 
 
@@ -61,7 +61,7 @@ def is_ticker(ticker: str) -> bool:
         Whether the string is a ticker
     """
     item = yf.Ticker(ticker)
-    return "previousClose" in item.info
+    return "previous_close" in item.fast_info
 
 
 # TODO: Is this being used anywhere?
@@ -218,7 +218,7 @@ def get_info_update_file(ticker: str, file_path: Path, writemode: str) -> List[s
     # Pull ticker info from yf
     yf_ticker_info = yf.Ticker(ticker).info
 
-    if "sector" in yf_ticker_info.keys():
+    if "sector" in yf_ticker_info:
         # Ticker has valid sector
         # Replace the dash to UTF-8 readable
         ticker_info_list = [

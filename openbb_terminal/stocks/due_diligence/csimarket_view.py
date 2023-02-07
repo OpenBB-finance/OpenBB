@@ -15,7 +15,9 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def suppliers(symbol: str, export: str = "", limit: int = 10) -> None:
+def suppliers(
+    symbol: str, export: str = "", sheet_name: str = None, limit: int = 10
+) -> None:
     """Display suppliers from ticker provided. [Source: CSIMarket]
 
     Parameters
@@ -44,11 +46,12 @@ def suppliers(symbol: str, export: str = "", limit: int = 10) -> None:
         os.path.dirname(os.path.abspath(__file__)),
         "supplier",
         tickers,
+        sheet_name,
     )
 
 
 @log_start_end(log=logger)
-def customers(symbol: str, export: str = ""):
+def customers(symbol: str, export: str = "", sheet_name: str = None):
     """Display customers from ticker provided. [Source: CSIMarket]
 
     Parameters
@@ -74,4 +77,5 @@ def customers(symbol: str, export: str = ""):
         os.path.dirname(os.path.abspath(__file__)),
         "customer",
         pd.DataFrame(tickers),
+        sheet_name,
     )

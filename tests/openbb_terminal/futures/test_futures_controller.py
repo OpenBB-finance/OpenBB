@@ -218,6 +218,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 description="",
                 exchange="",
                 export="",
+                sheet_name=None,
             ),
         ),
         (
@@ -239,6 +240,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 end_date="2022-10-12",
                 raw=False,
                 export="",
+                sheet_name=None,
             ),
         ),
         (
@@ -253,6 +255,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 symbol="ES",
                 raw=False,
                 export="",
+                sheet_name=None,
             ),
         ),
     ],

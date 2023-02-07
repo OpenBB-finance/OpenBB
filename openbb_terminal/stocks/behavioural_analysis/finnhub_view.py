@@ -28,6 +28,7 @@ logger = logging.getLogger(__name__)
 def display_stock_price_headlines_sentiment(
     symbol: str,
     export: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display stock price and headlines sentiment using VADER model over time. [Source: Finnhub]
@@ -36,6 +37,8 @@ def display_stock_price_headlines_sentiment(
     ----------
     symbol : str
         Ticker of company
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
@@ -55,7 +58,6 @@ def display_stock_price_headlines_sentiment(
         )
 
         if not df_stock.empty:
-
             # This plot has 2 axes
             if external_axes is None:
                 _, axes = plt.subplots(
@@ -119,5 +121,9 @@ def display_stock_price_headlines_sentiment(
                 theme.visualize_output()
 
             export_data(
-                export, os.path.dirname(os.path.abspath(__file__)), "snews", sentiment
+                export,
+                os.path.dirname(os.path.abspath(__file__)),
+                "snews",
+                sentiment,
+                sheet_name,
             )

@@ -5,7 +5,7 @@ description: OpenBB SDK Function
 
 # process_chains
 
-Function to take in the requests.get and return a DataFrame
+Function to take in the request and return a DataFrame
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/options/tradier_model.py#L238)]
 

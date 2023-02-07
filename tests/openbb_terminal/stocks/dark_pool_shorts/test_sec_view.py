@@ -39,7 +39,6 @@ def vcr_config():
     [True, False],
 )
 def test_fails_to_deliver(mocker, raw):
-
     # MOCK VISUALIZE_OUTPUT
     mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
 
@@ -60,4 +59,5 @@ def test_fails_to_deliver(mocker, raw):
         limit=2,
         raw=raw,
         export="",
+        sheet_name=None,
     )

@@ -37,6 +37,7 @@ def show_indices(
     raw: bool = False,
     external_axes: Optional[List[plt.axes]] = None,
     export: str = "",
+    sheet_name: str = None,
 ):
     """Load (and show) the selected indices over time [Source: Yahoo Finance]
     Parameters
@@ -80,7 +81,6 @@ def show_indices(
             label = index
 
         if not indices_data[index].empty:
-
             if returns:
                 indices_data.index.name = "date"
                 data_to_percent = 100 * (indices_data[index].values - 1)
@@ -127,6 +127,7 @@ def show_indices(
             os.path.dirname(os.path.abspath(__file__)),
             "index_data",
             indices_data,
+            sheet_name,
         )
 
     return indices_data

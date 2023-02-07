@@ -8,8 +8,8 @@ import time
 from typing import Any, Optional
 
 import pandas as pd
-import requests
 
+from openbb_terminal.helper_funcs import request
 import openbb_terminal.config_terminal as cfg
 from openbb_terminal.rich_config import console
 from openbb_terminal.decorators import check_api_key, log_start_end
@@ -111,7 +111,7 @@ def make_request(**kwargs: Any) -> Optional[dict]:
             console.print(f"Cannot find news for {currency}.\n")
             return {}
 
-    response = requests.get(url)
+    response = request(url)
     response_json = response.json()
     result = None
 
@@ -217,7 +217,7 @@ def get_news(
             counter += 1
             try:
                 time.sleep(0.2)
-                res = requests.get(next_page).json()
+                res = request(next_page).json()
                 for post in res["results"]:
                     results.append(_parse_post(post))
                 next_page = res.get("next")

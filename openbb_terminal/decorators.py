@@ -32,7 +32,6 @@ def log_start_end(func=None, log=None):
     def decorator(func):
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
-
             logging_name = ""
 
             args_passed_in_function = [
@@ -129,7 +128,7 @@ def check_api_key(api_keys):
                     undefined_apis_name = ", ".join(undefined_apis)
                     console.print(
                         f"[red]{undefined_apis_name} not defined. "
-                        "Set API Keys in ~/.openbb_terminal/.env or under keys menu.[/red]\n"
+                        "Set API Keys in ~/.openbb_terminal/.env or under keys menu.[/red]"
                     )  # pragma: allowlist secret
                     return None
             return func(*args, **kwargs)

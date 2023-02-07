@@ -58,7 +58,7 @@ def test_get_ark_trades_by_ticker_invalid_status(mocker):
     mock_response = requests.Response()
     mock_response.status_code = 400
     mocker.patch(
-        target="requests.get",
+        target="openbb_terminal.helper_funcs.requests.get",
         new=mocker.Mock(return_value=mock_response),
     )
     result_df = ark_model.get_ark_trades_by_ticker(symbol="TSLA")

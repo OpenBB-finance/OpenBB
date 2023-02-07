@@ -71,6 +71,7 @@ from openbb_terminal.forecast import (
     helpers,
     trans_view,
     nhits_view,
+    anom_view,
 )
 
 from openbb_terminal.common import common_model
@@ -133,6 +134,7 @@ class ForecastController(BaseController):
         "season",
         "which",
         "nhits",
+        "anom",
     ]
     pandas_plot_choices = [
         "line",
@@ -303,6 +305,9 @@ class ForecastController(BaseController):
         mt.add_cmd("tcn", self.files)
         mt.add_cmd("trans", self.files)
         mt.add_cmd("tft", self.files)
+        mt.add_raw("\n")
+        mt.add_info("_anomaly_")
+        mt.add_cmd("anom", self.files)
 
         console.print(text=mt.menu_text, menu="Forecast")
 
@@ -744,7 +749,6 @@ class ForecastController(BaseController):
         )
 
         if ns_parser:
-
             console.print(
                 f"[green]Current Compute Device (CPU or GPU):[/green] {self.device.upper()}"
             )
@@ -926,7 +930,14 @@ class ForecastController(BaseController):
                 return
 
             df = self.datasets[ns_parser.target_dataset]
-            forecast_view.describe_df(df, ns_parser.target_dataset, ns_parser.export)
+            forecast_view.describe_df(
+                df,
+                ns_parser.target_dataset,
+                ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )
 
     @log_start_end(log=logger)
     def call_plot(self, other_args: List[str]):
@@ -1653,6 +1664,7 @@ class ForecastController(BaseController):
             self.datasets[ns_parser.target_dataset],
             ns_parser.type,
             ns_parser.target_dataset,
+            ns_parser.sheet_name,
         )
 
     # Best Statistical Model
@@ -3126,4 +3138,49 @@ class ForecastController(BaseController):
                 end_date=ns_parser.s_end_date,
                 naive=ns_parser.naive,
                 export_pred_raw=ns_parser.export_pred_raw,
+            )
+
+    @log_start_end(log=logger)
+    def call_anom(self, other_args: List[str]):
+        """Process ANOM command"""
+        parser = argparse.ArgumentParser(
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            add_help=False,
+            prog="anom",
+            description="""
+                Perform a Quantile Anomaly detection on a given dataset:
+                https://unit8co.github.io/darts/generated_api/darts.ad.detectors.quantile_detector.html
+            """,
+        )
+
+        # if user does not put in --dataset
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "--dataset")
+
+        parser = self.add_standard_args(
+            parser,
+            train_split=True,
+            target_column=True,
+            target_dataset=True,
+            forecast_only=True,
+            start=True,
+            end=True,
+        )
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            export_allowed=EXPORT_ONLY_FIGURES_ALLOWED,
+        )
+
+        if ns_parser:
+            if not helpers.check_parser_input(ns_parser, self.datasets):
+                return
+
+            anom_view.display_anomaly_detection(
+                data=self.datasets[ns_parser.target_dataset],
+                dataset_name=ns_parser.target_dataset,
+                target_column=ns_parser.target_column,
+                train_split=ns_parser.train_split,
+                start_date=ns_parser.s_start_date,
+                end_date=ns_parser.s_end_date,
             )

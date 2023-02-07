@@ -141,7 +141,6 @@ class BacktestingController(BaseController):
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-
             bt_view.display_simple_ema(
                 symbol=self.ticker,
                 data=self.stock,
@@ -149,6 +148,9 @@ class BacktestingController(BaseController):
                 spy_bt=ns_parser.spy,
                 no_bench=ns_parser.no_bench,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -214,6 +216,9 @@ class BacktestingController(BaseController):
                 no_bench=ns_parser.no_bench,
                 shortable=ns_parser.shortable,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -288,4 +293,7 @@ class BacktestingController(BaseController):
                 no_bench=ns_parser.no_bench,
                 shortable=ns_parser.shortable,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )

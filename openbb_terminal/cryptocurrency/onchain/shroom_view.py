@@ -32,6 +32,7 @@ logger = logging.getLogger(__name__)
 @check_api_key(["API_SHROOM_KEY"])
 def display_daily_transactions(
     export: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Get daily transactions for certain symbols in ethereum blockchain
@@ -46,6 +47,7 @@ def display_daily_transactions(
     symbols = ["DAI", "USDT", "BUSD", "USDC"]
     df = get_daily_transactions(symbols)
     if df.empty:
+        console.print("[red]No data found.[/red]")
         return
 
     # This plot has 1 axis
@@ -75,6 +77,7 @@ def display_daily_transactions(
         os.path.dirname(os.path.abspath(__file__)),
         "dt",
         df,
+        sheet_name,
     )
 
 
@@ -85,6 +88,7 @@ def display_dapp_stats(
     raw: bool = False,
     limit: int = 10,
     export: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Get daily transactions for certain symbols in ethereum blockchain
@@ -103,7 +107,7 @@ def display_dapp_stats(
     """
     df = get_dapp_stats(platform=platform)
     if df.empty:
-        console.print("No data found.", "\n")
+        console.print("[red]No data found.[/red]")
     elif not df.empty:
         if raw:
             print_rich_table(df.head(limit), headers=list(df.columns), show_index=True)
@@ -143,6 +147,7 @@ def display_dapp_stats(
         os.path.dirname(os.path.abspath(__file__)),
         "ds",
         df,
+        sheet_name,
     )
 
 
@@ -154,9 +159,9 @@ def display_total_value_locked(
     symbol: str = "USDC",
     interval: int = 1,
     export: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
-
     """
     Get total value locked for a certain address
     TVL measures the total amount of a token that is locked in a contract.
@@ -188,7 +193,7 @@ def display_total_value_locked(
     )
 
     if df.empty:
-        console.print("No data found.", "\n")
+        console.print("[red]No data found.[/red]")
         return
 
     # This plot has 1 axis
@@ -217,4 +222,5 @@ def display_total_value_locked(
         os.path.dirname(os.path.abspath(__file__)),
         "tvl",
         df,
+        sheet_name,
     )

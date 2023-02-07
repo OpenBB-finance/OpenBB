@@ -4,11 +4,11 @@ __docformat__ = "numpy"
 import logging
 
 import pandas as pd
-import requests
 
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.rich_config import console
+from openbb_terminal.helper_funcs import request
 
 logger = logging.getLogger(__name__)
 
@@ -28,7 +28,7 @@ def get_rating_over_time(symbol: str) -> pd.DataFrame:
     pd.DataFrame
         Get dataframe with ratings
     """
-    response = requests.get(
+    response = request(
         f"https://finnhub.io/api/v1/stock/recommendation?symbol={symbol}&token={cfg.API_FINNHUB_KEY}"
     )
     df = pd.DataFrame()

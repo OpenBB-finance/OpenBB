@@ -125,6 +125,9 @@ class CovidController(BaseController):
                 raw=ns_parser.raw,
                 limit=ns_parser.limit,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -150,6 +153,9 @@ class CovidController(BaseController):
                 raw=ns_parser.raw,
                 limit=ns_parser.limit,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -175,6 +181,9 @@ class CovidController(BaseController):
                 raw=ns_parser.raw,
                 limit=ns_parser.limit,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -200,6 +209,9 @@ class CovidController(BaseController):
                 raw=ns_parser.raw,
                 limit=ns_parser.limit,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -251,4 +263,8 @@ class CovidController(BaseController):
                 limit=ns_parser.limit,
                 ascend=ns_parser.reverse,
                 threshold=ns_parser.threshold,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )

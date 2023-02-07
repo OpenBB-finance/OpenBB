@@ -5,12 +5,11 @@ import logging
 from typing import Tuple
 
 import pandas as pd
-import requests
 from bs4 import BeautifulSoup
 from pandas.core.frame import DataFrame
 
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import get_user_agent
+from openbb_terminal.helper_funcs import get_user_agent, request
 
 logger = logging.getLogger(__name__)
 
@@ -31,7 +30,7 @@ def get_orders() -> Tuple[str, DataFrame]:
     )
 
     text_soup_url_orders = BeautifulSoup(
-        requests.get(url_orders, headers={"User-Agent": get_user_agent()}).text, "lxml"
+        request(url_orders, headers={"User-Agent": get_user_agent()}).text, "lxml"
     )
 
     l_orders = []

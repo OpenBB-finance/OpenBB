@@ -4,10 +4,9 @@ import logging
 from typing import Any, Dict
 
 import pandas as pd
-import requests
 
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import get_user_agent, log_and_raise
+from openbb_terminal.helper_funcs import get_user_agent, log_and_raise, request
 
 logger = logging.getLogger(__name__)
 
@@ -281,7 +280,7 @@ def get_rates(rate_type: str = "borrow") -> pd.DataFrame:
     if rate_type not in ("supply", "borrow"):
         raise Exception("Rate type not supported. Supported rates: borrow, supply")
 
-    response = requests.get(
+    response = request(
         f"{api_url}/v1/interest-rates",
         headers={"User-Agent": get_user_agent()},
     )

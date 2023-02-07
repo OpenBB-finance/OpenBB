@@ -16,7 +16,11 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def display_ark_trades(
-    symbol: str, limit: int = 20, show_symbol: bool = False, export: str = ""
+    symbol: str,
+    limit: int = 20,
+    show_symbol: bool = False,
+    export: str = "",
+    sheet_name: str = None,
 ):
     """Display ARK trades for ticker
 
@@ -58,5 +62,9 @@ def display_ark_trades(
     )
 
     export_data(
-        export, os.path.dirname(os.path.abspath(__file__)), "arktrades", ark_holdings
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "arktrades",
+        ark_holdings,
+        sheet_name,
     )
