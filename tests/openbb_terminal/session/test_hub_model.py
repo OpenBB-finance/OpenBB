@@ -505,3 +505,63 @@ def test_upload_routine_exception():
     ):
         result = hub_model.upload_routine("auth_header", "name", "routine")
         assert result is None
+
+
+def test_download_routine_success():
+    pass
+
+
+def test_download_routine_failure():
+    pass
+
+
+def test_download_routine_connection_error():
+    pass
+
+
+def test_download_routine_timeout():
+    pass
+
+
+def test_download_routine_exception():
+    pass
+
+
+def test_delete_routine_success():
+    pass
+
+
+def test_delete_routine_failure():
+    pass
+
+
+def test_delete_routine_connection_error():
+    pass
+
+
+def test_delete_routine_timeout():
+    pass
+
+
+def test_delete_routine_exception():
+    pass
+
+
+def test_list_routines_success():
+    pass
+
+
+def test_list_routines_failure():
+    pass
+
+
+def test_list_routines_connection_error():
+    pass
+
+
+def test_list_routines_timeout():
+    pass
+
+
+def test_list_routines_exception():
+    pass
