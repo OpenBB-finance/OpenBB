@@ -171,3 +171,14 @@ ignore = ["S105", "S106", "S107"]
 numpy = "np"
 pandas = "pd"
 seaborn = "sns"
+
+[tool.ruff.isort]
+combine-as-imports = true
+force-wrap-aliases = true
+
+[tool.isort]
+profile = "black"
+line_length = 122
+skip_gitignore = true
+combine_as_imports = true
+src_paths = ["openbb_terminal"]

@@ -1,0 +1,7 @@
+            Document Date      Type                 Category Amended                                                                                   Link
+Filing Date                                                                                                                                                
+02/01/2023            N/A  SC 13G/A  Institutional Ownership       *  https://www.marketwatch.com/investing/stock/tsla/financials/secfilings?docid=16356194
+01/31/2023     12/31/2022      10-K           Annual Reports          https://www.marketwatch.com/investing/stock/tsla/financials/secfilings?docid=16349444
+01/25/2023     01/20/2023       8-K           Special Events          https://www.marketwatch.com/investing/stock/tsla/financials/secfilings?docid=16335601
+01/03/2023     01/02/2023       8-K           Special Events          https://www.marketwatch.com/investing/stock/tsla/financials/secfilings?docid=16290601
+10/24/2022     09/30/2022      10-Q        Quarterly Reports          https://www.marketwatch.com/investing/stock/tsla/financials/secfilings?docid=16146849
