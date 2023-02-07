@@ -599,7 +599,7 @@ def test_list_routines(auth_header, page, size, base_url, timeout, status_code):
         _, kwargs = requests_get_mock.call_args
         assert (
             kwargs["url"]
-            == hub_model.BASE_URL
+            == base_url
             + f"terminal/script?fields=name%2Cdescription&page={page}&size={size}"
         )
         assert kwargs["headers"] == {"Authorization": auth_header}
