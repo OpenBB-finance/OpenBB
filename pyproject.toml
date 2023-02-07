@@ -160,7 +160,7 @@ target-version = "py38"
 # D: pydocstyle, PD: pandas-vet
 # All options here: https://github.com/charliermarsh/ruff#supported-rules
 select = ["E", "W", "F", "Q", "W", "S", "UP", "I", "PLC", "PLE", "PLR", "PLW"]
-# These ignores should be seen as temporary solutions to problems that NEED fixed
+# These ignores should be seen as temporary solutions to problems that will NEED fixed
 ignore = ["S105", "S106", "S107", "S110", "PLR2004", "PLR0911", "PLR0913", "PLR0912", "PLR0915"]
 
 [tool.ruff.per-file-ignores]
