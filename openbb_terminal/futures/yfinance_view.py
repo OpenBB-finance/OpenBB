@@ -131,7 +131,6 @@ def display_historical(
     fig = OpenBBFigure()
 
     if len(symbols) > 1:
-        name = list()
         for tick in historicals["Adj Close"].columns.tolist():
             if len(historicals["Adj Close"][tick].dropna()) == 1:
                 console.print(
@@ -148,11 +147,9 @@ def display_historical(
                 )
                 continue
 
-            name.append(
-                yfinance_model.FUTURES_DATA[
-                    yfinance_model.FUTURES_DATA["Ticker"] == tick
-                ]["Description"].values[0]
-            )
+            name = yfinance_model.FUTURES_DATA[
+                yfinance_model.FUTURES_DATA["Ticker"] == tick
+            ]["Description"].values[0]
 
             fig.add_scatter(
                 x=historicals["Adj Close"][tick].dropna().index,
@@ -182,7 +179,7 @@ def display_historical(
             name=name,
         )
         if expiry:
-            name = f"{name} with expiry {expiry}"
+            name += f" with expiry {expiry}"
 
         fig.set_title(name)
 

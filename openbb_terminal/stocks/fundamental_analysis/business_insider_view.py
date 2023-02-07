@@ -106,8 +106,7 @@ def price_target_from_analysts(
 
     df_analyst_data = business_insider_model.get_price_target_from_analysts(symbol)
     if df_analyst_data.empty:
-        console.print("[red]Could not get data for ticker.[/red]\n")
-        return
+        return console.print("[red]Could not get data for ticker.[/red]\n")
 
     if raw:
         df_analyst_data.index = df_analyst_data.index.strftime("%Y-%m-%d")
