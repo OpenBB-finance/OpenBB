@@ -167,7 +167,7 @@ def fetch_user_configs(
             headers={"Authorization": f"{token_type.title()} {token}"},
             timeout=timeout,
         )
-        if response.status_code not in [200, 401]:
+        if response.status_code not in [200, 401]:  # 401: invalid token
             console.print("[red]\nFailed to fetch configurations.[/red]")
         return response
     except requests.exceptions.ConnectionError:
