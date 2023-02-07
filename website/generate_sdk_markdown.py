@@ -13,11 +13,7 @@ from docstring_parser import parse
 
 from openbb_terminal.core.library.trail_map import (
     FORECASTING_TOOLKIT_ENABLED as FORECASTING,
-)
-from openbb_terminal.core.library.trail_map import (
     MISCELLANEOUS_DIRECTORY,
-)
-from openbb_terminal.core.library.trail_map import (
     OPTIMIZATION_TOOLKIT_ENABLED as OPTIMIZATION,
 )
 from openbb_terminal.rich_config import console

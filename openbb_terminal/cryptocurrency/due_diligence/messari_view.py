@@ -10,12 +10,16 @@ from typing import List, Optional
 
 import numpy as np
 import pandas as pd
-from matplotlib import dates as mdates
-from matplotlib import pyplot as plt
-from matplotlib import ticker
+from matplotlib import (
+    dates as mdates,
+    pyplot as plt,
+    ticker,
+)
 
-from openbb_terminal import config_plot as cfgPlot
-from openbb_terminal import feature_flags as obbff
+from openbb_terminal import (
+    config_plot as cfgPlot,
+    feature_flags as obbff,
+)
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.cryptocurrency import cryptocurrency_helpers
 from openbb_terminal.cryptocurrency.dataframe_helpers import prettify_paragraph

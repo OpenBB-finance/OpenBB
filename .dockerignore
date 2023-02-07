@@ -8,5 +8,4 @@ Dockerfile*
 .idea
 __pycache__
 .python-version
-jupyterlab/*/node_modules
 logs/

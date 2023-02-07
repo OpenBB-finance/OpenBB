@@ -14,9 +14,7 @@ from openbb_terminal.cryptocurrency.due_diligence.glassnode_model import (
     GLASSNODE_SUPPORTED_HASHRATE_ASSETS,
     INTERVALS_HASHRATE,
 )
-from openbb_terminal.cryptocurrency.due_diligence.glassnode_view import (
-    display_hashrate,
-)
+from openbb_terminal.cryptocurrency.due_diligence.glassnode_view import display_hashrate
 from openbb_terminal.cryptocurrency.onchain import (
     bitquery_model,
     bitquery_view,
