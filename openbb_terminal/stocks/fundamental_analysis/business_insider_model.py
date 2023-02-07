@@ -132,7 +132,7 @@ def get_price_target_from_analysts(symbol: str) -> pd.DataFrame:
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> df = openbb.stocks.dd.pt(symbol="AAPL")
+    >>> df = openbb.stocks.fa.pt(symbol="AAPL")
     """
     url_market_business_insider = (
         f"https://markets.businessinsider.com/stocks/{symbol.lower()}-stock"

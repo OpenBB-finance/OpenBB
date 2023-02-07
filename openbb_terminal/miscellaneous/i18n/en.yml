@@ -232,6 +232,7 @@ en:
   stocks/scr/ownership: ownership (e.g. Float, Insider Own, Short Ratio)
   stocks/scr/performance: performance (e.g. Perf Week, Perf YTD, Volatility M)
   stocks/scr/technical: technical (e.g. Beta, SMA50, 52W Low, RSI, Change)
+  stocks/scr/arktrades: get ARK trades for a chosen ticker
   stocks/scr/_screened_tickers: Last screened tickers
   stocks/scr/ca: take these to comparison analysis menu
   stocks/ins/view: view available presets
@@ -337,7 +338,6 @@ en:
   stocks/fa/score: value investing scores for any time period
   stocks/fa/warnings: company warnings according to Sean Seah book
   stocks/fa/sust: sustainability values (environment, social and governance)
-  stocks/fa/arktrades: get ARK trades for ticker
   stocks/fa/_management_shareholders: Management and Ownership
   stocks/fa/mgmt: management team of the company
   stocks/fa/shrs: shareholders (insiders, institutions and mutual funds)

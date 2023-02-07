@@ -22,7 +22,6 @@ from openbb_terminal.parent_classes import StockBaseController
 from openbb_terminal.rich_config import MenuText, console, get_ordered_list_sources
 from openbb_terminal.stocks import stocks_helper
 from openbb_terminal.stocks.fundamental_analysis import (
-    ark_view,
     av_view,
     business_insider_view,
     csimarket_view,
@@ -83,7 +82,6 @@ class FundamentalAnalysisController(StockBaseController):
         "est",
         "supplier",
         "customer",
-        "arktrades",
     ]
 
     PATH = "/stocks/fa/"
@@ -135,7 +133,6 @@ class FundamentalAnalysisController(StockBaseController):
         mt.add_cmd("score")
         mt.add_cmd("warnings")
         mt.add_cmd("sust", not self.suffix)
-        mt.add_cmd("arktrades")
         mt.add_raw("\n")
         mt.add_info("_management_shareholders")
         mt.add_cmd("mgmt")
@@ -1707,48 +1704,6 @@ class FundamentalAnalysisController(StockBaseController):
         if ns_parser:
             csimarket_view.customers(
                 symbol=self.ticker,
-                export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
-            )
-
-    @log_start_end(log=logger)
-    def call_arktrades(self, other_args):
-        """Process arktrades command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            prog="arktrades",
-            description="""
-                Get trades for ticker across all ARK funds.
-            """,
-        )
-        parser.add_argument(
-            "-l",
-            "--limit",
-            help="Limit of rows to show",
-            dest="limit",
-            default=10,
-            type=check_positive,
-        )
-        parser.add_argument(
-            "-s",
-            "--show_symbol",
-            action="store_true",
-            default=False,
-            help="Flag to show ticker in table",
-            dest="show_symbol",
-        )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-l")
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
-            ark_view.display_ark_trades(
-                symbol=self.ticker,
-                limit=ns_parser.limit,
-                show_symbol=ns_parser.show_symbol,
                 export=ns_parser.export,
                 sheet_name=" ".join(ns_parser.sheet_name)
                 if ns_parser.sheet_name

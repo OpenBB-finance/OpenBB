@@ -11,10 +11,9 @@ The Stocks menu is the high-level menu for the Public Equity asset class. It con
 |ba |Behavioural Analysis |Social Media, Sentiment, Trends |
 |bt |Strategy Backtester | Simple EMA, EMA Crossover & RSI Strategies |
 |ca |Comparison Analysis |Compare Historical Prices, Correlations, Financials |
-|dd |Due Diligence |Analyst Coverage, Price Targets, SEC Filings, Customers and Suppliers |
 |disc |Discovery |Upcoming Earnings and Dividends Calendar, Heatmaps, Trending News |
 |dps |Dark Pool and Short Data |Short Interest, Borrow Rates, Off-Exchange Short Volume |
-|fa |Fundamental Analysis |Financial Statements and Analysis |
+|fa |Fundamental Analysis |Financial Statements, Company Overviews, Analyst Coverage, Price Targets |
 |forecast |Forecasting and ML |Enter the Forecast Menu With the Loaded Ticker |
 |gov |Government |House and Senate Trading Disclosures, Lobbying Efforts, US Treasury Spending |
 |ins |Insider Trading |SEC Form 4 Disclosures & Screener |
