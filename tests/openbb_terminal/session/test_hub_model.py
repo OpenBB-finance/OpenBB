@@ -442,14 +442,19 @@ def test_upload_routine_success():
     with patch(
         "openbb_terminal.session.hub_model.requests.post", return_value=mock_response
     ) as requests_post_mock:
-        result = hub_model.upload_routine("auth_header", "name", "routine")
+        result = hub_model.upload_routine("auth_header", "name", "desc", "routine")
 
         assert result.status_code == mock_response.status_code
         requests_post_mock.assert_called_once()
         _, kwargs = requests_post_mock.call_args
         assert kwargs["url"] == hub_model.BASE_URL + "terminal/script"
         assert kwargs["headers"] == {"Authorization": "auth_header"}
-        assert kwargs["json"] == {"name": "name", "script": "routine"}
+        assert kwargs["json"] == {
+            "name": "name",
+            "description": "desc",
+            "script": "routine",
+            "override": False,
+        }
         assert kwargs["timeout"] == hub_model.TIMEOUT
 
 
@@ -460,14 +465,19 @@ def test_upload_routine_failure():
     with patch(
         "openbb_terminal.session.hub_model.requests.post", return_value=mock_response
     ) as requests_post_mock:
-        result = hub_model.upload_routine("auth_header", "name", "routine")
+        result = hub_model.upload_routine("auth_header", "name", "desc", "routine")
 
         assert result.status_code == mock_response.status_code
         requests_post_mock.assert_called_once()
         _, kwargs = requests_post_mock.call_args
         assert kwargs["url"] == hub_model.BASE_URL + "terminal/script"
         assert kwargs["headers"] == {"Authorization": "auth_header"}
-        assert kwargs["json"] == {"name": "name", "script": "routine"}
+        assert kwargs["json"] == {
+            "name": "name",
+            "description": "desc",
+            "script": "routine",
+            "override": False,
+        }
         assert kwargs["timeout"] == hub_model.TIMEOUT
 
 
