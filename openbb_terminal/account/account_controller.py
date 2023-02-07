@@ -237,6 +237,7 @@ class AccountController(BaseController):
             required="-h" not in other_args,
             help="The file to be loaded",
             metavar="FILE",
+            nargs="+",
         )
         parser.add_argument(
             "-d",
@@ -257,14 +258,14 @@ class AccountController(BaseController):
         )
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            routine = Local.get_routine(file_name=ns_parser.file)
+            routine = Local.get_routine(file_name=" ".join(ns_parser.file))
             if routine:
+                description = " ".join(ns_parser.description)
                 name = (
                     " ".join(ns_parser.name)
                     if ns_parser.name
                     else ns_parser.file.split(".openbb")[0]
                 )
-                description = " ".join(ns_parser.description)
 
                 response = Hub.upload_routine(
                     auth_header=User.get_auth_header(),
