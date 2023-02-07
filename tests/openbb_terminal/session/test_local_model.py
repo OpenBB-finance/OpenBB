@@ -197,3 +197,19 @@ def test_apply_configs_sync(sync: str):
         assert paths.USER_DATA_DIRECTORY == Path("some/path/to/user/data")
         assert cfg.API_KEY_ALPHAVANTAGE == "test_av"
         assert cfg.API_FRED_KEY == "test_fred"
+
+
+def test_get_routine():
+    pass
+
+
+def test_get_routine_not_exist():
+    pass
+
+
+def test_save_routine():
+    pass
+
+
+def test_save_routine_exception():
+    pass
