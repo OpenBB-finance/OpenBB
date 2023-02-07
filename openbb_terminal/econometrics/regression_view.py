@@ -3,17 +3,16 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import List, Optional
+from typing import Optional
 
 import pandas as pd
 import statsmodels
-from matplotlib import pyplot as plt
 
-from openbb_terminal.config_plot import PLOT_DPI
-from openbb_terminal.config_terminal import theme
+
+from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.econometrics import regression_model
-from openbb_terminal.helper_funcs import export_data, plot_autoscale, print_rich_table
+from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -86,7 +85,7 @@ def display_dwat(
     plot: bool = True,
     export: str = "",
     sheet_name: Optional[str] = None,
-    external_axes: Optional[List[plt.axes]] = None,
+    external_axes: bool = False,
 ):
     """Show Durbin-Watson autocorrelation tests
 
@@ -100,8 +99,8 @@ def display_dwat(
         Whether to plot the residuals
     export : str
         Format to export data
-    external_axes: Optional[List[plt.axes]]
-        External axes to plot on
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     autocorr = regression_model.get_dwat(model)
 
@@ -117,20 +116,17 @@ def display_dwat(
         )
 
     if plot:
-        if external_axes is None:
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        else:
-            ax = external_axes[0]
+        fig = OpenBBFigure(
+            yaxis_title="Residual", xaxis_title=dependent_variable.name.capitalize()
+        )
+        fig.set_title("Plot of Residuals")
 
-        ax.scatter(dependent_variable, model.resid)
-        ax.axhline(y=0, color="r", linestyle="-")
-        ax.set_ylabel("Residual")
-        ax.set_xlabel(dependent_variable.name.capitalize())
-        ax.set_title("Plot of Residuals")
-        theme.style_primary_axis(ax)
-
-        if external_axes is None:
-            theme.visualize_output()
+        fig.add_scatter(
+            x=dependent_variable,
+            y=model.resid,
+            mode="markers",
+        )
+        fig.add_hline(y=0, line=dict(color="red", dash="dash"))
 
     export_data(
         export,
@@ -139,6 +135,8 @@ def display_dwat(
         autocorr,
         sheet_name,
     )
+
+    return None if not plot else fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
