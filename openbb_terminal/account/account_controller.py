@@ -5,16 +5,15 @@ import os
 from pathlib import Path
 from typing import Dict, List
 
-import numpy as np
-import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
 
 from openbb_terminal import feature_flags as obbff
-from openbb_terminal.account.account_model import get_diff
+from openbb_terminal.account.account_model import get_diff, get_routines_info
+from openbb_terminal.account.account_view import display_routines_list
 from openbb_terminal.core.config.paths import USER_ROUTINES_DIRECTORY
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.featflags_controller import FeatureFlagsController
-from openbb_terminal.helper_funcs import check_positive, print_rich_table
+from openbb_terminal.helper_funcs import check_positive
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import MenuText, console
@@ -213,30 +212,13 @@ class AccountController(BaseController):
                 page=ns_parser.page,
                 size=ns_parser.size,
             )
-            if response and response.status_code == 200:
-                data = response.json()
-                items = data.get("items", [])
-                if items:
-                    df = pd.DataFrame(items)
-                    df.index = np.arange(1, len(df) + 1)
-                    self.REMOTE_CHOICES = list(df["name"])
-                    self.update_runtime_choices()
-
-                    page = data.get("page", ns_parser.page)
-                    pages = data.get("pages", "")
-                    title = f"Available routines - page {page}"
-                    if pages:
-                        title += f" of {pages}"
-
-                    print_rich_table(
-                        df=df,
-                        title=title,
-                        headers=["Name", "Description"],
-                        show_index=True,
-                        index_name="#",
-                    )
-                else:
-                    console.print("[red]No routines found.[/red]")
+            df, page, pages = get_routines_info(response)
+            if not df.empty:
+                self.REMOTE_CHOICES = list(df["name"])
+                self.update_runtime_choices()
+                display_routines_list(df, page, pages)
+            else:
+                console.print("[red]No routines found.[/red]")
 
     @log_start_end(log=logger)
     def call_upload(self, other_args: List[str]):
