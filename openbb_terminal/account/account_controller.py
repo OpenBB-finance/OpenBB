@@ -222,9 +222,15 @@ class AccountController(BaseController):
                     self.REMOTE_CHOICES = list(df["name"])
                     self.update_runtime_choices()
 
+                    page = data.get("page", ns_parser.page)
+                    pages = data.get("pages", "")
+                    title = f"Available routines - page {page}"
+                    if pages:
+                        title += f" of {pages}"
+
                     print_rich_table(
                         df=df,
-                        title=f"Available routines - page {ns_parser.page}",
+                        title=title,
                         headers=["Name", "Description"],
                         show_index=True,
                         index_name="#",
