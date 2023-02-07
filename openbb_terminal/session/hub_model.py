@@ -327,7 +327,9 @@ def upload_routine(
         if response.status_code == 200:
             console.print("[green]Successfully uploaded your routine.[/green]")
         elif response.status_code != 409:  # 409: routine already exists
-            console.print("[red]Failed to upload your routine.[/red]")
+            console.print(
+                "[red]" + response.json().get("detail", "Unknown error.") + "[/red]"
+            )
         return response
     except requests.exceptions.ConnectionError:
         console.print(f"\n{CONNECTION_ERROR_MSG}")
