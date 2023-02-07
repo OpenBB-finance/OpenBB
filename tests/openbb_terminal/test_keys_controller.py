@@ -246,3 +246,6 @@ def test_call_tokenterminal(other):
 @pytest.mark.parametrize("other", [[], ["-k", "1234", "-t", "456"]])
 def test_call_shroom(other):
     controller.call_shroom(other)
+
+
+# TODO: Add tests from openbb key

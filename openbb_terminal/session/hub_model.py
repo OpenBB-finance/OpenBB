@@ -4,7 +4,7 @@ import requests
 
 from openbb_terminal.rich_config import console
 
-BASE_URL = "https://payments.openbb.dev/"
+BASE_URL = "http://127.0.0.1:8000/"
 TIMEOUT = 15
 
 
@@ -36,6 +36,36 @@ def create_session(
             "remember": True,
         }
         return requests.post(url=base_url + "login", json=data, timeout=timeout)
+    except requests.exceptions.ConnectionError:
+        console.print("\n[red]Connection error.[/red]")
+        return None
+    except requests.exceptions.Timeout:
+        console.print("\n[red]Connection timeout.[/red]")
+        return None
+    except Exception:
+        console.print("\n[red]Failed to request login info.[/red]")
+        return None
+
+
+def create_session_from_token(
+    token: str, base_url: str = BASE_URL, timeout: int = TIMEOUT
+):
+    """Create a session from token.
+
+    Parameters
+    ----------
+    token : str
+        The token.
+    base_url : str
+        The base url, by default BASE_URL
+    timeout : int
+        The timeout, by default TIMEOUT
+    """
+    try:
+        data = {
+            "token": token,
+        }
+        return requests.post(url=base_url + "sdk/login", json=data, timeout=timeout)
     except requests.exceptions.ConnectionError:
         console.print("\n[red]Connection error.[/red]")
         return None
@@ -134,6 +164,25 @@ def get_session(email: str, password: str) -> dict:
     if response is None:
         return {}
     return process_session_response(response)
+
+
+def get_session_from_token(token: str) -> dict:
+    """Get the session info from token.
+
+    Parameters
+    ----------
+    token : str
+        The token.
+
+    Returns
+    -------
+    dict
+        The session info.
+    """
+    response = create_session_from_token(token)
+    if response.status_code == 200:
+        return response.json()
+    return {}
 
 
 def fetch_user_configs(

@@ -137,3 +137,7 @@ def test_logout():
             token=User.get_token(),
             guest=User.is_guest(),
         )
+
+
+# TODO: add test for whoami
+# TODO: update tests to consider the login using the token

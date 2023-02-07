@@ -171,3 +171,6 @@ def test_reload_openbb_modules():
         session_model.reload_openbb_modules()
 
     mock_reload.assert_called()
+
+
+# TODO: Add tests to create_session_from_token
