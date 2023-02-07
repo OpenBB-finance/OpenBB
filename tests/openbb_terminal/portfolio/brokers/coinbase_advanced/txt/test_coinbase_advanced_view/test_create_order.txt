@@ -1,0 +1,4 @@
+CoinbaseAdvApiException: Invalid Authentication: {"error":"unknown","error_details":"unknown value \"\\\"\\\"\" for enum coinbase.public_api.authed.retail_brokerage_api.OrderSide","message":"unknown value \"\\\"\\\"\" for enum coinbase.public_api.authed.retail_brokerage_api.OrderSide"}
+Empty DataFrame
+Columns: []
+Index: []
