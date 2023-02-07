@@ -117,7 +117,6 @@ pylint = "2.15.2"
 mypy = "^0.930"
 mock = "^4.0.3"
 codespell = "^2.0.0"
-pyupgrade = "^2.11.0"
 sphinx = "^4.5.0"
 myst-parser = "^0.15.2"
 black = "^23.1.0"
@@ -160,8 +159,9 @@ target-version = "py38"
 # This is an introductory addition of ruff. We should look to adding:
 # D: pydocstyle, PD: pandas-vet
 # All options here: https://github.com/charliermarsh/ruff#supported-rules
-select = ["E", "W", "F", "Q", "W", "S", "UP", "I"]
-ignore = ["S105", "S106", "S107"]
+select = ["E", "W", "F", "Q", "W", "S", "UP", "I", "PLC", "PLE", "PLR", "PLW"]
+# These ignores should be seen as temporary solutions to problems that NEED fixed
+ignore = ["S105", "S106", "S107", "S110", "PLR2004", "PLR0911", "PLR0913", "PLR0912", "PLR0915"]
 
 [tool.ruff.per-file-ignores]
 "tests/*" = ["S101"]
@@ -175,6 +175,12 @@ seaborn = "sns"
 [tool.ruff.isort]
 combine-as-imports = true
 force-wrap-aliases = true
+
+[tool.ruff.pylint]
+max-args=8
+max-branches=25
+max-returns=9
+max-statements=30
 
 [tool.isort]
 profile = "black"
