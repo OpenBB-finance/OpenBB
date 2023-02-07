@@ -1335,6 +1335,8 @@ def ask_file_overwrite(file_path: str) -> Tuple[bool, bool]:
     # Jeroen asked for a flag to overwrite no matter what
     if obbff.FILE_OVERWITE:
         return False, True
+    if os.environ.get("TEST_MODE") == "True":
+        return False, True
     if os.path.exists(file_path):
         overwrite = input("\nFile already exists. Overwrite? [y/n]: ").lower()
         if overwrite == "y":
@@ -2041,11 +2043,15 @@ def remove_timezone_from_dataframe(df: pd.DataFrame) -> pd.DataFrame:
     index_is_date = False
 
     # Find columns and index containing date data
-    if df.index.dtype.kind == "M" and df.index.dtype.tz is not None:
+    if (
+        df.index.dtype.kind == "M"
+        and hasattr(df.index.dtype, "tz")
+        and df.index.dtype.tz is not None
+    ):
         index_is_date = True
 
     for col, dtype in df.dtypes.items():
-        if dtype.kind == "M" and dtype.tz is not None:
+        if dtype.kind == "M" and hasattr(df.index.dtype, "tz") and dtype.tz is not None:
             date_cols.append(col)
 
     # Remove the timezone information
