@@ -315,30 +315,25 @@ from openbb_terminal.stocks.discovery import (
     yahoofinance_model as stocks_disc_yahoofinance_model,
 )
 
-# Stocks - Due Diligence
-from openbb_terminal.stocks.due_diligence import (
-    ark_model as stocks_dd_ark_model,
-    business_insider_model as stocks_dd_business_insider_model,
-    business_insider_view as stocks_dd_business_insider_view,
-    csimarket_model as stocks_dd_csimarket_model,
-    finnhub_model as stocks_dd_finnhub_model,
-    finnhub_view as stocks_dd_finnhub_view,
-    finviz_model as stocks_dd_finviz_model,
-    fmp_model as stocks_dd_fmp_model,
-    marketwatch_model as stocks_dd_marketwatch_model,
-    marketwatch_view as stocks_dd_marketwatch_view,
-)
-
 # Stocks - Fundamental Analysis
 from openbb_terminal.stocks.fundamental_analysis import (
+    ark_model as stocks_fa_ark_model,
+    ark_view as stocks_fa_ark_view,
     av_model as stocks_fa_av_model,
     av_view as stocks_fa_av_view,
     business_insider_model as stocks_fa_business_insider_model,
+    business_insider_view as stocks_fa_business_insider_view,
+    csimarket_model as stocks_fa_csimarket_model,
+    csimarket_view as stocks_fa_csimarket_view,
     dcf_model as stocks_fa_dcf_model,
     eclect_us_model as stocks_fa_eclect_us_model,
+    finnhub_model as stocks_fa_finnhub_model,
+    finnhub_view as stocks_fa_finnhub_view,
     finviz_model as stocks_fa_finviz_model,
     fmp_model as stocks_fa_fmp_model,
     fmp_view as stocks_fa_fmp_view,
+    marketwatch_model as stocks_fa_marketwatch_model,
+    marketwatch_view as stocks_fa_marketwatch_view,
     polygon_model as stocks_fa_polygon_model,
     polygon_view as stocks_fa_polygon_view,
     sdk_helpers as stocks_fa_sdk_helpers,

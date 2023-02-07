@@ -13,7 +13,8 @@ class StocksRoot(Category):
         `filings_chart`: Display recent forms submitted to the SEC\n
         `load`: Load a symbol to perform analysis using the string above as a template.\n
         `process_candle`: Process DataFrame into candle style plot.\n
-        `quote`: Ticker quote.  [Source: YahooFinance]\n
+        `quote_fmp`: Gets ticker quote from FMP\n
+        `quote_yf`: Ticker quote.  [Source: YahooFinance]\n
         `search`: Search selected query for tickers.\n
         `tob`: Get top of book bid and ask for ticker on exchange [CBOE.com]\n
     """
@@ -27,7 +28,8 @@ class StocksRoot(Category):
         self.filings_chart = lib.stocks_fa_fmp_view.display_filings
         self.load = lib.stocks_helper.load
         self.process_candle = lib.stocks_helper.process_candle
-        self.quote = lib.stocks_model.load_quote
+        self.quote_fmp = lib.stocks_model.get_quote_fmp
+        self.quote_yf = lib.stocks_model.get_quote_yf
         self.search = lib.stocks_helper.search
         self.tob = lib.stocks_cboe_model.get_top_of_book
 
@@ -144,42 +146,6 @@ class StocksComparisonAnalysis(Category):
         self.volume_chart = lib.stocks_ca_yahoo_finance_view.display_volume
 
 
-class StocksDueDiligence(Category):
-    """Due Diligence Module.
-
-    Attributes:
-        `analyst`: Get analyst data. [Source: Finviz]\n
-        `arktrades`: Gets a dataframe of ARK trades for ticker\n
-        `customer`: Print customers from ticker provided\n
-        `est`: Get analysts' estimates for a given ticker. [Source: Business Insider]\n
-        `news`: Get news from Finviz\n
-        `pt`: Get analysts' price targets for a given stock. [Source: Business Insider]\n
-        `pt_chart`: Display analysts' price targets for a given stock. [Source: Business Insider]\n
-        `rating`: Get ratings for a given ticker. [Source: Financial Modeling Prep]\n
-        `rot`: Get rating over time data. [Source: Finnhub]\n
-        `rot_chart`: Rating over time (monthly). [Source: Finnhub]\n
-        `sec`: Get SEC filings for a given stock ticker. [Source: Market Watch]\n
-        `supplier`: Get suppliers from ticker provided. [Source: CSIMarket]\n
-    """
-
-    _location_path = "stocks.dd"
-
-    def __init__(self):
-        super().__init__()
-        self.analyst = lib.stocks_dd_finviz_model.get_analyst_data
-        self.arktrades = lib.stocks_dd_ark_model.get_ark_trades_by_ticker
-        self.customer = lib.stocks_dd_csimarket_model.get_customers
-        self.est = lib.stocks_dd_business_insider_model.get_estimates
-        self.news = lib.stocks_dd_finviz_model.get_news
-        self.pt = lib.stocks_dd_business_insider_model.get_price_target_from_analysts
-        self.pt_chart = lib.stocks_dd_business_insider_view.price_target_from_analysts
-        self.rating = lib.stocks_dd_fmp_model.get_rating
-        self.rot = lib.stocks_dd_finnhub_model.get_rating_over_time
-        self.rot_chart = lib.stocks_dd_finnhub_view.rating_over_time
-        self.sec = lib.stocks_dd_marketwatch_model.get_sec_filings
-        self.supplier = lib.stocks_dd_csimarket_model.get_suppliers
-
-
 class StocksDiscovery(Category):
     """Discovery Module.
 
@@ -279,9 +245,12 @@ class StocksFundamentalAnalysis(Category):
 
     Attributes:
         `analysis`: Save time reading SEC filings with the help of machine learning. [Source: https://eclect.us]\n
+        `analyst`: Get analyst data. [Source: Finviz]\n
+        `arktrades`: Gets a dataframe of ARK trades for ticker\n
         `balance`: Get balance sheet.\n
         `cal`: Get calendar earnings for ticker symbol\n
         `cash`: Get Cash Flow.\n
+        `customer`: Print customers from ticker provided\n
         `data`: Get fundamental data from finviz\n
         `dcf`: Get stocks dcf from FMP\n
         `dcfc`: Get stocks dcf from FMP\n
@@ -290,12 +259,12 @@ class StocksFundamentalAnalysis(Category):
         `earnings`: Get earnings data.\n
         `enterprise`: Financial Modeling Prep ticker enterprise\n
         `epsfc`: Takes the ticker, asks for seekingalphaID and gets eps estimates\n
+        `est`: Get analysts' estimates for a given ticker. [Source: Business Insider]\n
         `fama_coe`: Use Fama and French to get the cost of equity for a company\n
         `fama_raw`: Get Fama French data\n
         `fraud`: Get fraud ratios based on fundamentals\n
         `growth`: Get financial statement growth\n
         `historical_5`: Get 5 year monthly historical performance for a ticker with dividends filtered\n
-        `hq`: Gets google map url for headquarter\n
         `income`: Get income statement.\n
         `info`: Gets ticker symbol info\n
         `key`: Get key metrics from overview\n
@@ -303,18 +272,24 @@ class StocksFundamentalAnalysis(Category):
         `mgmt`: Get company managers from Business Insider\n
         `mktcap`: Get market cap over time for ticker. [Source: Yahoo Finance]\n
         `mktcap_chart`: Display market cap over time. [Source: Yahoo Finance]\n
+        `news`: Get news from Finviz\n
         `overview`: Get alpha vantage company overview\n
         `profile`: Get ticker profile from FMP\n
-        `quote`: Gets ticker quote from FMP\n
+        `pt`: Get analysts' price targets for a given stock. [Source: Business Insider]\n
+        `pt_chart`: Display analysts' price targets for a given stock. [Source: Business Insider]\n
+        `rating`: Get ratings for a given ticker. [Source: Financial Modeling Prep]\n
         `ratios`: Get key ratios\n
         `revfc`: Takes the ticker, asks for seekingalphaID and gets rev estimates\n
+        `rot`: Get rating over time data. [Source: Finnhub]\n
+        `rot_chart`: Rating over time (monthly). [Source: Finnhub]\n
         `score`: Gets value score from fmp\n
+        `sec`: Get SEC filings for a given stock ticker. [Source: Market Watch]\n
         `shrs`: Get shareholders from yahoo\n
         `similar_dfs`: Get dataframes for similar companies\n
         `splits`: Get splits and reverse splits events. [Source: Yahoo Finance]\n
         `splits_chart`: Display splits and reverse splits events. [Source: Yahoo Finance]\n
+        `supplier`: Get suppliers from ticker provided. [Source: CSIMarket]\n
         `sust`: Get sustainability metrics from yahoo\n
-        `website`: Gets website of company from yfinance\n
     """
 
     _location_path = "stocks.fa"
@@ -322,9 +297,12 @@ class StocksFundamentalAnalysis(Category):
     def __init__(self):
         super().__init__()
         self.analysis = lib.stocks_fa_eclect_us_model.get_filings_analysis
+        self.analyst = lib.stocks_fa_finviz_model.get_analyst_data
+        self.arktrades = lib.stocks_fa_ark_model.get_ark_trades_by_ticker
         self.balance = lib.stocks_fa_sdk_helpers.get_balance_sheet
         self.cal = lib.stocks_fa_yahoo_finance_model.get_calendar_earnings
         self.cash = lib.stocks_fa_sdk_helpers.get_cash_flow
+        self.customer = lib.stocks_fa_csimarket_model.get_customers
         self.data = lib.stocks_fa_finviz_model.get_data
         self.dcf = lib.stocks_fa_fmp_model.get_dcf
         self.dcfc = lib.stocks_fa_fmp_model.get_dcf
@@ -333,12 +311,12 @@ class StocksFundamentalAnalysis(Category):
         self.earnings = lib.stocks_fa_sdk_helpers.earnings
         self.enterprise = lib.stocks_fa_fmp_model.get_enterprise
         self.epsfc = lib.stocks_fa_seeking_alpha_model.get_estimates_eps
+        self.est = lib.stocks_fa_business_insider_model.get_estimates
         self.fama_coe = lib.stocks_fa_dcf_model.get_fama_coe
         self.fama_raw = lib.stocks_fa_dcf_model.get_fama_raw
         self.fraud = lib.stocks_fa_av_model.get_fraud_ratios
         self.growth = lib.stocks_fa_fmp_model.get_financial_growth
         self.historical_5 = lib.stocks_fa_dcf_model.get_historical_5
-        self.hq = lib.stocks_fa_yahoo_finance_model.get_hq
         self.income = lib.stocks_fa_sdk_helpers.get_income_statement
         self.info = lib.stocks_fa_yahoo_finance_model.get_info
         self.key = lib.stocks_fa_av_model.get_key_metrics
@@ -346,18 +324,24 @@ class StocksFundamentalAnalysis(Category):
         self.mgmt = lib.stocks_fa_business_insider_model.get_management
         self.mktcap = lib.stocks_fa_yahoo_finance_model.get_mktcap
         self.mktcap_chart = lib.stocks_fa_yahoo_finance_view.display_mktcap
+        self.news = lib.stocks_fa_finviz_model.get_news
         self.overview = lib.stocks_fa_av_model.get_overview
         self.profile = lib.stocks_fa_fmp_model.get_profile
-        self.quote = lib.stocks_fa_fmp_model.get_quote
+        self.pt = lib.stocks_fa_business_insider_model.get_price_target_from_analysts
+        self.pt_chart = lib.stocks_fa_business_insider_view.price_target_from_analysts
+        self.rating = lib.stocks_fa_fmp_model.get_rating
         self.ratios = lib.stocks_fa_fmp_model.get_key_ratios
         self.revfc = lib.stocks_fa_seeking_alpha_model.get_estimates_rev
+        self.rot = lib.stocks_fa_finnhub_model.get_rating_over_time
+        self.rot_chart = lib.stocks_fa_finnhub_view.rating_over_time
         self.score = lib.stocks_fa_fmp_model.get_score
+        self.sec = lib.stocks_fa_marketwatch_model.get_sec_filings
         self.shrs = lib.stocks_fa_yahoo_finance_model.get_shareholders
         self.similar_dfs = lib.stocks_fa_dcf_model.get_similar_dfs
         self.splits = lib.stocks_fa_yahoo_finance_model.get_splits
         self.splits_chart = lib.stocks_fa_yahoo_finance_view.display_splits
+        self.supplier = lib.stocks_fa_csimarket_model.get_suppliers
         self.sust = lib.stocks_fa_yahoo_finance_model.get_sustainability
-        self.website = lib.stocks_fa_yahoo_finance_model.get_website
 
 
 class StocksGovernment(Category):

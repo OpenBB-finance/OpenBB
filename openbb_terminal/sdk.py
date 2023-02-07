@@ -431,7 +431,6 @@ class OpenBBSDK:
         Submodules:
             `ba`: Behavioral Analysis Module
             `ca`: Comparison Analysis Module
-            `dd`: Due Diligence Module
             `disc`: Discovery Module
             `dps`: Darkpool Shorts Module
             `fa`: Fundamental Analysis Module
@@ -450,7 +449,8 @@ class OpenBBSDK:
             `filings_chart`: Display recent forms submitted to the SEC\n
             `load`: Load a symbol to perform analysis using the string above as a template.\n
             `process_candle`: Process DataFrame into candle style plot.\n
-            `quote`: Ticker quote.  [Source: YahooFinance]\n
+            `quote_fmp`: Gets ticker quote from FMP\n
+            `quote_yf`: Ticker quote.  [Source: YahooFinance]\n
             `search`: Search selected query for tickers.\n
             `tob`: Get top of book bid and ask for ticker on exchange [CBOE.com]\n
         """
