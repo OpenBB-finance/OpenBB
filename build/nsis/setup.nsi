@@ -49,22 +49,22 @@
 
   ; Set UI language
   !insertmacro MUI_LANGUAGE "English"
-  
-  
+
+
   Var /GLOBAL installerPath
 
 
 
-  
-  
+
+
 ; StrContains
-; This function does a case sensitive searches for an occurrence of a substring in a string. 
-; It returns the substring if it is found. 
-; Otherwise it returns null(""). 
+; This function does a case sensitive searches for an occurrence of a substring in a string.
+; It returns the substring if it is found.
+; Otherwise it returns null("").
 ; Written by kenglish_hi
 ; Adapted from StrReplace written by dandaman32
- 
- 
+
+
 Var STR_HAYSTACK
 Var STR_NEEDLE
 Var STR_CONTAINS_VAR_1
@@ -72,7 +72,7 @@ Var STR_CONTAINS_VAR_2
 Var STR_CONTAINS_VAR_3
 Var STR_CONTAINS_VAR_4
 Var STR_RETURN_VAR
- 
+
 Function StrContains
   Exch $STR_NEEDLE
   Exch 1
@@ -94,22 +94,22 @@ Function StrContains
       Goto done
     done:
    Pop $STR_NEEDLE ;Prevent "invalid opcode" errors and keep the
-   Exch $STR_RETURN_VAR  
+   Exch $STR_RETURN_VAR
 FunctionEnd
- 
+
 !macro _StrContainsConstructor OUT NEEDLE HAYSTACK
   Push `${HAYSTACK}`
   Push `${NEEDLE}`
   Call StrContains
   Pop `${OUT}`
 !macroend
- 
+
 !define StrContains '!insertmacro "_StrContainsConstructor"'
-  
-  
+
+
 ;-------------------------------
 ; Uninstall Previous Version if exists
- 
+
 !macro UninstallExisting exitcode uninstcommand
 Push `${uninstcommand}`
 Call UninstallExisting
@@ -150,8 +150,8 @@ Pop $3
 Pop $2
 Exch $1 ; exitcode
 FunctionEnd
- 
- 
+
+
 Function .onInit
 ReadRegStr $0 HKCU "Software\Software\Microsoft\Windows\CurrentVersion\Uninstall\${UninstId}" "UninstallString"
 ${If} $0 != ""
@@ -163,22 +163,24 @@ ${AndIf} ${Cmd} `MessageBox MB_YESNO|MB_ICONQUESTION "It is highly recommended t
 	${EndIf}
 ${EndIf}
 FunctionEnd
- 
+
 ;--------------------------------
 ; Section - Install App
 
   Section "-hidden app"
     SectionIn RO
 	${StrContains} $0 "\OpenBB" "$INSTDIR"
+  ; Making sure here if user manually removes \openbb from their path that it still installs there
+  ; so we dont have issues with uninstaller later.
 	StrCmp $0 "" notfound
-	  MessageBox MB_OK 'Found string $0  $INSTDIR'
+	  ; MessageBox MB_OK 'Found string $0  $INSTDIR'
 	  SetOutPath "$INSTDIR"
 	  Goto done
 	notfound:
-		MessageBox MB_OK "$INSTDIR is 'bla'"
+		; MessageBox MB_OK "$INSTDIR is 'bla'"
 		SetOutPath "$INSTDIR\OpenBB"
 		StrCpy $InstDir "$INSTDIR\OpenBB"
-		MessageBox MB_OK 'Did not find string   "$INSTDIR\OpenBB"  "$installerPath"'
+		; MessageBox MB_OK 'Did not find string   "$INSTDIR\OpenBB"  "$installerPath"'
 	done:
 
     File /r "app\*.*"
@@ -231,19 +233,19 @@ FunctionEnd
 ; Section - Uninstaller
 
 Section "Uninstall"
-	
+
   ;Delete Shortcut
   Delete "$DESKTOP\${NAME}.lnk"
 
   ;Delete Directory
   Delete '$SMPROGRAMS\${Company}\${NAME}'
-  
+
   ;Delete Reg Key
   DeleteRegKey HKCU "Software\Software\Microsoft\Windows\CurrentVersion\Uninstall\${UninstId}"
 
   ;Delete Uninstall
   Delete "$INSTDIR\Uninstall.exe"
-  
+
 
   ;Delete Folder
   RMDir /r "$INSTDIR"
