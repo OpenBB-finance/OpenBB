@@ -83,7 +83,9 @@ def view_holdings(
 
 
 @log_start_end(log=logger)
-def view_comparisons(symbols: List[str], export: str = "", sheet_name: Optional[str] = None):
+def view_comparisons(
+    symbols: List[str], export: str = "", sheet_name: Optional[str] = None
+):
     """Show ETF comparisons
 
     Parameters

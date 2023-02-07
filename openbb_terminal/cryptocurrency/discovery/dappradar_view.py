@@ -20,7 +20,10 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def display_top_nfts(
-    limit: int = 10, sortby: str = "", export: str = "", sheet_name: Optional[str] = None
+    limit: int = 10,
+    sortby: str = "",
+    export: str = "",
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Prints table showing top nft collections [Source: https://dappradar.com/]
 
@@ -64,7 +67,10 @@ def display_top_nfts(
 
 @log_start_end(log=logger)
 def display_top_games(
-    limit: int = 10, export: str = "", sheet_name: Optional[str] = None, sortby: str = ""
+    limit: int = 10,
+    export: str = "",
+    sheet_name: Optional[str] = None,
+    sortby: str = "",
 ) -> None:
     """Prints table showing top blockchain games [Source: https://dappradar.com/]
 
@@ -103,7 +109,10 @@ def display_top_games(
 
 @log_start_end(log=logger)
 def display_top_dexes(
-    limit: int = 10, export: str = "", sheet_name: Optional[str] = None, sortby: str = ""
+    limit: int = 10,
+    export: str = "",
+    sheet_name: Optional[str] = None,
+    sortby: str = "",
 ) -> None:
     """Prints table showing top decentralized exchanges [Source: https://dappradar.com/]
 
@@ -142,7 +151,10 @@ def display_top_dexes(
 
 @log_start_end(log=logger)
 def display_top_dapps(
-    limit: int = 10, export: str = "", sheet_name: Optional[str] = None, sortby: str = ""
+    limit: int = 10,
+    export: str = "",
+    sheet_name: Optional[str] = None,
+    sortby: str = "",
 ) -> None:
     """Prints table showing top decentralized exchanges [Source: https://dappradar.com/]
 

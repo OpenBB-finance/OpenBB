@@ -176,7 +176,9 @@ def price_target_from_analysts(
 
 
 @log_start_end(log=logger)
-def estimates(symbol: str, estimate: str, export: str = "", sheet_name: Optional[str] = None):
+def estimates(
+    symbol: str, estimate: str, export: str = "", sheet_name: Optional[str] = None
+):
     """Display analysts' estimates for a given ticker. [Source: Business Insider]
 
     Parameters

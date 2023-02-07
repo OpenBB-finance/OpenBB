@@ -14,7 +14,9 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def display_eps_estimates(symbol: str, export: str = "", sheet_name: Optional[str] = None):
+def display_eps_estimates(
+    symbol: str, export: str = "", sheet_name: Optional[str] = None
+):
     """Display eps Estimates
 
     Parameters
@@ -45,7 +47,9 @@ def display_eps_estimates(symbol: str, export: str = "", sheet_name: Optional[st
 
 
 @log_start_end(log=logger)
-def display_rev_estimates(symbol: str, export: str = "", sheet_name: Optional[str] = None):
+def display_rev_estimates(
+    symbol: str, export: str = "", sheet_name: Optional[str] = None
+):
     """Display rev Estimates
 
     Parameters

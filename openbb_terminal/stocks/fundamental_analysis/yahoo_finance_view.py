@@ -69,7 +69,10 @@ def display_info(symbol: str, export: str = "", sheet_name: Optional[str] = None
 
 @log_start_end(log=logger)
 def display_shareholders(
-    symbol: str, holder: str = "institutional", export: str = "", sheet_name: Optional[str] = None
+    symbol: str,
+    holder: str = "institutional",
+    export: str = "",
+    sheet_name: Optional[str] = None,
 ):
     """Yahoo Finance ticker shareholders
     Parameters
@@ -108,7 +111,9 @@ def display_shareholders(
 
 
 @log_start_end(log=logger)
-def display_sustainability(symbol: str, export: str = "", sheet_name: Optional[str] = None):
+def display_sustainability(
+    symbol: str, export: str = "", sheet_name: Optional[str] = None
+):
     """Yahoo Finance ticker sustainability
 
     Parameters
@@ -148,7 +153,9 @@ def display_sustainability(symbol: str, export: str = "", sheet_name: Optional[s
 
 
 @log_start_end(log=logger)
-def display_calendar_earnings(symbol: str, export: str = "", sheet_name: Optional[str] = None):
+def display_calendar_earnings(
+    symbol: str, export: str = "", sheet_name: Optional[str] = None
+):
     """Yahoo Finance ticker calendar earnings
 
     Parameters
@@ -505,7 +512,9 @@ def display_fundamentals(
 
 
 @log_start_end(log=logger)
-def display_earnings(symbol: str, limit: int, export: str = "", sheet_name: Optional[str] = None):
+def display_earnings(
+    symbol: str, limit: int, export: str = "", sheet_name: Optional[str] = None
+):
     """
 
     Parameters

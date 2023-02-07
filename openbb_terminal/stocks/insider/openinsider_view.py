@@ -106,7 +106,10 @@ def lambda_green_highlight(values):
 
 @log_start_end(log=logger)
 def print_insider_data(
-    type_insider: str = "lcb", limit: int = 10, export: str = "", sheet_name: Optional[str] = None
+    type_insider: str = "lcb",
+    limit: int = 10,
+    export: str = "",
+    sheet_name: Optional[str] = None,
 ):
     """Print insider data
 

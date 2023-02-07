@@ -328,7 +328,9 @@ def display_global_market_info(
 
 
 @log_start_end(log=logger)
-def display_global_defi_info(export: str = "", sheet_name: Optional[str] = None) -> None:
+def display_global_defi_info(
+    export: str = "", sheet_name: Optional[str] = None
+) -> None:
     """Shows global statistics about Decentralized Finances. [Source: CoinGecko]
 
     Parameters

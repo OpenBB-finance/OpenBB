@@ -1591,7 +1591,9 @@ def get_relriskparity(
 
 
 @log_start_end(log=logger)
-def get_hrp(portfolio_engine: Optional[PoEngine] = None, **kwargs) -> Tuple[pd.DataFrame, Dict]:
+def get_hrp(
+    portfolio_engine: Optional[PoEngine] = None, **kwargs
+) -> Tuple[pd.DataFrame, Dict]:
     """Optimize with Hierarchical Risk Parity
 
     Parameters
@@ -1790,7 +1792,9 @@ def get_hrp(portfolio_engine: Optional[PoEngine] = None, **kwargs) -> Tuple[pd.D
 
 
 @log_start_end(log=logger)
-def get_herc(portfolio_engine: Optional[PoEngine] = None, **kwargs) -> Tuple[pd.DataFrame, Dict]:
+def get_herc(
+    portfolio_engine: Optional[PoEngine] = None, **kwargs
+) -> Tuple[pd.DataFrame, Dict]:
     """Optimize with Hierarchical Equal Risk Contribution (HERC) method.
 
     Parameters
@@ -1989,7 +1993,9 @@ def get_herc(portfolio_engine: Optional[PoEngine] = None, **kwargs) -> Tuple[pd.
 
 
 @log_start_end(log=logger)
-def get_nco(portfolio_engine: Optional[PoEngine] = None, **kwargs) -> Tuple[pd.DataFrame, Dict]:
+def get_nco(
+    portfolio_engine: Optional[PoEngine] = None, **kwargs
+) -> Tuple[pd.DataFrame, Dict]:
     """Optimize with Non-Convex Optimization (NCO) model.
 
     Parameters
@@ -2188,7 +2194,9 @@ def get_nco(portfolio_engine: Optional[PoEngine] = None, **kwargs) -> Tuple[pd.D
 
 
 @log_start_end(log=logger)
-def get_equal(portfolio_engine: Optional[PoEngine] = None, **kwargs) -> Tuple[pd.DataFrame, Dict]:
+def get_equal(
+    portfolio_engine: Optional[PoEngine] = None, **kwargs
+) -> Tuple[pd.DataFrame, Dict]:
     """Equally weighted portfolio, where weight = 1/# of symbols
 
     Parameters

@@ -113,7 +113,9 @@ def display_performance(
 
 
 @log_start_end(log=logger)
-def display_spectrum(group: str = "sector", export: str = "", sheet_name: Optional[str] = None):
+def display_spectrum(
+    group: str = "sector", export: str = "", sheet_name: Optional[str] = None
+):
     """Display finviz spectrum in system viewer [Source: Finviz]
 
     Parameters

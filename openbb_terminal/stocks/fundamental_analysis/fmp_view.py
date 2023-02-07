@@ -19,7 +19,9 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
-def valinvest_score(symbol: str, years: int, export: str = "", sheet_name: Optional[str] = None):
+def valinvest_score(
+    symbol: str, years: int, export: str = "", sheet_name: Optional[str] = None
+):
     """Value investing tool based on Warren Buffett, Joseph Piotroski and Benjamin Graham thoughts [Source: FMP]
 
     Parameters
@@ -720,7 +722,9 @@ def add_color(value: str) -> str:
 
 
 @log_start_end(log=logger)
-def rating(symbol: str, limit: int = 10, export: str = "", sheet_name: Optional[str] = None):
+def rating(
+    symbol: str, limit: int = 10, export: str = "", sheet_name: Optional[str] = None
+):
     """Display ratings for a given ticker. [Source: Financial Modeling Prep]
 
     Parameters

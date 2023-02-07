@@ -256,7 +256,10 @@ def show_df(
 
 @log_start_end(log=logger)
 def describe_df(
-    data: pd.DataFrame, name: str = "", export: str = "", sheet_name: Optional[str] = None
+    data: pd.DataFrame,
+    name: str = "",
+    export: str = "",
+    sheet_name: Optional[str] = None,
 ):
     new_df = forecast_model.describe_df(data)
     print_rich_table(

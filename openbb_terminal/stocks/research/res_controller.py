@@ -43,7 +43,11 @@ class ResearchController(BaseController):
     PATH = "/stocks/res/"
 
     def __init__(
-        self, ticker: str, start: datetime, interval: str, queue: Optional[List[str]] = None
+        self,
+        ticker: str,
+        start: datetime,
+        interval: str,
+        queue: Optional[List[str]] = None,
     ):
         """Constructor"""
         super().__init__(queue)

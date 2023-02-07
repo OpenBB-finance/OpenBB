@@ -22,7 +22,9 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def get_similar_companies(symbol: str, compare_list: Optional[List[str]] = None) -> List[str]:
+def get_similar_companies(
+    symbol: str, compare_list: Optional[List[str]] = None
+) -> List[str]:
     """Get similar companies from Finviz.
 
     Parameters

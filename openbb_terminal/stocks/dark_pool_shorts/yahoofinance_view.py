@@ -14,7 +14,9 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def display_most_shorted(limit: int = 10, export: str = "", sheet_name: Optional[str] = None):
+def display_most_shorted(
+    limit: int = 10, export: str = "", sheet_name: Optional[str] = None
+):
     """Display most shorted stocks screener. [Source: Yahoo Finance]
 
     Parameters

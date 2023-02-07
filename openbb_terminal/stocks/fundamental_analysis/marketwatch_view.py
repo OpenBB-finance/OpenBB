@@ -13,7 +13,9 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def sec_filings(symbol: str, limit: int = 5, export: str = "", sheet_name: Optional[str] = None):
+def sec_filings(
+    symbol: str, limit: int = 5, export: str = "", sheet_name: Optional[str] = None
+):
     """Display SEC filings for a given stock ticker. [Source: Market Watch]
 
     Parameters

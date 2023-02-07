@@ -24,7 +24,10 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def display_star_history(
-    repo: str, export: str = "", sheet_name: Optional[str] = None, external_axes: bool = False
+    repo: str,
+    export: str = "",
+    sheet_name: Optional[str] = None,
+    external_axes: bool = False,
 ) -> None:
     """Plots repo summary [Source: https://api.github.com].
 
@@ -123,7 +126,9 @@ def display_top_repos(
 
 
 @log_start_end(log=logger)
-def display_repo_summary(repo: str, export: str = "", sheet_name: Optional[str] = None) -> None:
+def display_repo_summary(
+    repo: str, export: str = "", sheet_name: Optional[str] = None
+) -> None:
     """Prints table showing repo summary [Source: https://api.github.com].
 
     Parameters

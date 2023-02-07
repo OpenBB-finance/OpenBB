@@ -73,7 +73,9 @@ class ComparisonAnalysisController(BaseController):
     PATH = "/stocks/ca/"
     CHOICES_GENERATION = True
 
-    def __init__(self, similar: Optional[List[str]] = None, queue: Optional[List[str]] = None):
+    def __init__(
+        self, similar: Optional[List[str]] = None, queue: Optional[List[str]] = None
+    ):
         """Constructor"""
         super().__init__(queue)
 

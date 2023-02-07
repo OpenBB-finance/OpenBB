@@ -14,7 +14,9 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def display_screen_data(symbol: str, export: str = "", sheet_name: Optional[str] = None):
+def display_screen_data(
+    symbol: str, export: str = "", sheet_name: Optional[str] = None
+):
     """FinViz ticker screener
 
     Parameters

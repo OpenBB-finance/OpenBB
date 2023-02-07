@@ -246,7 +246,9 @@ def display_marketcap_dominance(
 
 @log_start_end(log=logger)
 @check_api_key(["API_MESSARI_KEY"])
-def display_links(symbol: str, export: str = "", sheet_name: Optional[str] = None) -> None:
+def display_links(
+    symbol: str, export: str = "", sheet_name: Optional[str] = None
+) -> None:
     """Prints table showing coin links
     [Source: https://messari.io/]
 

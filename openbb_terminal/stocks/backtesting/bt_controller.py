@@ -42,7 +42,9 @@ class BacktestingController(BaseController):
     PATH = "/stocks/bt/"
     CHOICES_GENERATION = True
 
-    def __init__(self, ticker: str, stock: pd.DataFrame, queue: Optional[List[str]] = None):
+    def __init__(
+        self, ticker: str, stock: pd.DataFrame, queue: Optional[List[str]] = None
+    ):
         """Constructor"""
         super().__init__(queue)
 

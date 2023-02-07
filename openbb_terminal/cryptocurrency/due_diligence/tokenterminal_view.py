@@ -98,7 +98,9 @@ def display_fundamental_metric_from_project_over_time(
 
 @log_start_end(log=logger)
 @check_api_key(["API_TOKEN_TERMINAL_KEY"])
-def display_description(project: str, export: str = "", sheet_name: Optional[str] = None):
+def display_description(
+    project: str, export: str = "", sheet_name: Optional[str] = None
+):
     """Prints description from a project [Source: Token Terminal]
 
     Parameters

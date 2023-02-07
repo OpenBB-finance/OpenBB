@@ -29,7 +29,10 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def display_account_staking_info(
-    address: str = "", limit: int = 10, export: str = "", sheet_name: Optional[str] = None
+    address: str = "",
+    limit: int = 10,
+    export: str = "",
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Prints table showing staking info for provided terra account address [Source: https://fcd.terra.dev/swagger]
 

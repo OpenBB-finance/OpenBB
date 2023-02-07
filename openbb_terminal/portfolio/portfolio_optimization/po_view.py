@@ -246,7 +246,9 @@ def display_ef(portfolio_engine: Optional[PoEngine] = None, **kwargs):
 
 
 @log_start_end(log=logger)
-def display_plot(portfolio_engine: Optional[PoEngine] = None, chart_type: str = "pie", **kwargs):
+def display_plot(
+    portfolio_engine: Optional[PoEngine] = None, chart_type: str = "pie", **kwargs
+):
     """
     Display efficient frontier
 

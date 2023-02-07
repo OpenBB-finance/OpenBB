@@ -86,7 +86,10 @@ def display_trades(
 
 @log_start_end(log=logger)
 def display_candles(
-    symbol: str, interval: str = "24hour", export: str = "", sheet_name: Optional[str] = None
+    symbol: str,
+    interval: str = "24hour",
+    export: str = "",
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Prints table showing candles for chosen trading pair and time interval. [Source: Coinbase]
 
@@ -116,7 +119,9 @@ def display_candles(
 
 
 @log_start_end(log=logger)
-def display_stats(symbol: str, export: str = "", sheet_name: Optional[str] = None) -> None:
+def display_stats(
+    symbol: str, export: str = "", sheet_name: Optional[str] = None
+) -> None:
     """Prints table showing 24 hr stats for the product. Volume is in base currency units.
     Open, high and low are in quote currency units.  [Source: Coinbase]
 

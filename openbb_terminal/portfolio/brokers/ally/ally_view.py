@@ -13,7 +13,9 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def display_history(limit: int = 15, export: str = "", sheet_name: Optional[str] = None) -> None:
+def display_history(
+    limit: int = 15, export: str = "", sheet_name: Optional[str] = None
+) -> None:
     history = ally_model.get_history(limit)
     show_history = history[["amount", "date", "symbol", "transactiontype", "quantity"]]
     print_rich_table(

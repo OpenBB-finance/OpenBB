@@ -77,7 +77,10 @@ def dark_pool_short_positions(
 
 @log_start_end(log=logger)
 def short_interest_days_to_cover(
-    limit: int = 10, sortby: str = "float", export: str = "", sheet_name: Optional[str] = None
+    limit: int = 10,
+    sortby: str = "float",
+    export: str = "",
+    sheet_name: Optional[str] = None,
 ):
     """Print short interest and days to cover. [Source: Stockgrid]
 

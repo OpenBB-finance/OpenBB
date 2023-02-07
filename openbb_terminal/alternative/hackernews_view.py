@@ -13,7 +13,9 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def display_stories(limit: int = 10, export: str = "", sheet_name: Optional[str] = None) -> None:
+def display_stories(
+    limit: int = 10, export: str = "", sheet_name: Optional[str] = None
+) -> None:
     """View top stories from HackerNews.
     Parameters
     ----------

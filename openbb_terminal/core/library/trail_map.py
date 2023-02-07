@@ -69,7 +69,9 @@ class TrailMap:
         return df.to_dict(orient="index")
 
     @classmethod
-    def save_csv(cls, map_dict: Dict[str, Dict[str, str]], path: Optional[Path] = None) -> None:
+    def save_csv(
+        cls, map_dict: Dict[str, Dict[str, str]], path: Optional[Path] = None
+    ) -> None:
         path = path or cls.MAP_PATH
         df = pd.DataFrame.from_dict(data=map_dict, orient="index")
         df.index.name = "trail"

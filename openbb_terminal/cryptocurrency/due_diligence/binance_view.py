@@ -65,7 +65,10 @@ def display_order_book(
 
 @log_start_end(log=logger)
 def display_balance(
-    from_symbol: str, to_symbol: str = "USDT", export: str = "", sheet_name: Optional[str] = None
+    from_symbol: str,
+    to_symbol: str = "USDT",
+    export: str = "",
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Prints table showing account holdings for asset. [Source: Binance]
 

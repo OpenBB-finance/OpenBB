@@ -22,7 +22,10 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def display_sector(
-    name: str, min_pct_to_display: float = 5, export: str = "", sheet_name: Optional[str] = None
+    name: str,
+    min_pct_to_display: float = 5,
+    export: str = "",
+    sheet_name: Optional[str] = None,
 ):
     """Display sector weightings for fund
 
