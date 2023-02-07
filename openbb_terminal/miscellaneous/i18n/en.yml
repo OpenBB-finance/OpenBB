@@ -108,9 +108,8 @@ en:
   stocks/gov: government menu,              house trading, contracts, corporate lobbying
   stocks/ba: behavioural analysis,         from reddit, stocktwits, twitter, google
   stocks/ca: comparison analysis,          get similar, historical, correlation, financials
-  stocks/fa: fundamental analysis,         income, balance, cash, earnings
+  stocks/fa: fundamental analysis,         income, balance, cash, ratios, earnings, expectations
   stocks/res: research web page,            macroaxis, yahoo finance, fool
-  stocks/dd: in-depth due-diligence,       news, analyst, shorts, insider, sec
   stocks/bt: strategy backtester,          simple ema, ema cross, rsi strategies
   stocks/ta: technical analysis,           ema, macd, rsi, adx, bbands, obv
   stocks/qa: quantitative analysis,        decompose, cusum, residuals analysis
@@ -328,37 +327,40 @@ en:
   stocks/ba/jctr: Jim Cramer's recommendations by ticker
   stocks/fa/load: load a specific stock ticker for analysis
   stocks/fa/_ticker: Ticker
-  stocks/fa/data: fundamental and technical data of company
-  stocks/fa/mgmt: management team of the company
-  stocks/fa/analysis: analyse SEC filings with the help of machine learning
-  stocks/fa/score: investing score from Warren Buffett and co
-  stocks/fa/warnings: company warnings according to Sean Seah book
-  stocks/fa/dcf: advanced Excel customizable discounted cash flow
-  stocks/fa/info: information scope of the company
-  stocks/fa/mktcap: estimated market cap
-  stocks/fa/shrs: shareholders (insiders, institutions and mutual funds)
-  stocks/fa/sust: sustainability values (environment, social and governance)
-  stocks/fa/cal: calendar earnings and estimates of the company
+  stocks/fa/_company_overview: Company Overview
+  stocks/fa/enterprise: company enterprise value
+  stocks/fa/overview: financial overview of the company
   stocks/fa/divs: show historical dividends for company
   stocks/fa/splits: stock split and reverse split events since IPO
-  stocks/fa/web: open web browser of the company
-  stocks/fa/hq: open HQ location of the company
+  stocks/fa/rating: analyst prices and ratings over time of the company
+  stocks/fa/rot: number of analyst ratings over time on a monthly basis
+  stocks/fa/score: value investing scores for any time period
+  stocks/fa/warnings: company warnings according to Sean Seah book
+  stocks/fa/sust: sustainability values (environment, social and governance)
+  stocks/fa/arktrades: get ARK trades for ticker
+  stocks/fa/_management_shareholders: Management and Ownership
+  stocks/fa/mgmt: management team of the company
+  stocks/fa/shrs: shareholders (insiders, institutions and mutual funds)
+  stocks/fa/supplier: list of suppliers for the company
+  stocks/fa/customer: list of customers of the company
+  stocks/fa/_financial_statements: Financial Statements
   stocks/fa/income: income statements of the company
-  stocks/fa/balance: balance sheet of the company
-  stocks/fa/overview: overview of the company
-  stocks/fa/key: company key metrics
-  stocks/fa/cash: cash flow of the company
-  stocks/fa/earnings: earnings dates and reported EPS
-  stocks/fa/fraud: key fraud ratios
-  stocks/fa/dupont: detailed breakdown for return on equity
-  stocks/fa/profile: company profile
-  stocks/fa/quote: detailed stock quote information
-  stocks/fa/enterprise: company enterprise value
-  stocks/fa/metrics: key metrics over time
-  stocks/fa/ratios: in-depth ratios over time
+  stocks/fa/balance: balance sheet statements of the company
+  stocks/fa/cash: cash flow statements of the company
   stocks/fa/growth: growth of financial statement items and ratios
+  stocks/fa/metrics: key financial metrics over time
+  stocks/fa/ratios: extensive set of ratios over time
+  stocks/fa/dupont: detailed breakdown for Return on Equity (RoE)
+  stocks/fa/fraud: key fraud ratios including M-score, Z-score and McKee
+  stocks/fa/sec: obtain recent SEC filings of the company
+  stocks/fa/analysis: analyse SEC filings with the help of machine learning
+  stocks/fa/_future_estimations: Future Expectations
+  stocks/fa/earnings: earnings dates and reported EPS
   stocks/fa/epsfc: Earning Estimate by Analysts - EPS
   stocks/fa/revfc: Earning Estimate by Analysts - Revenue
+  stocks/fa/est: quarter and year analysts earnings estimates
+  stocks/fa/pt: price targets over time
+  stocks/fa/dcf: advanced Excel customizable discounted cash flow
   stocks/fa/dcfc: determine the (historical) discounted cash flow
   stocks/res/_ticker: Ticker
   stocks/res/macroaxis: www.macroaxis.com
@@ -380,17 +382,6 @@ en:
   stocks/res/macrotrends: www.macrotrends.net
   stocks/res/newsfilter: www.newsfilter.io
   stocks/res/stockanalysis: www.stockanalysis.com
-  stocks/dd/load: load a specific stock ticker for analysis
-  stocks/dd/_ticker: Ticker
-  stocks/dd/analyst: analyst prices and ratings of the company
-  stocks/dd/rating: rating over time (daily)
-  stocks/dd/rot: number of analysts ratings over time (monthly)
-  stocks/dd/pt: price targets over time
-  stocks/dd/est: quarter and year analysts earnings estimates
-  stocks/dd/sec: SEC filings
-  stocks/dd/supplier: list of suppliers
-  stocks/dd/customer: list of customers
-  stocks/dd/arktrades: get ARK trades for ticker
   stocks/bt/_ticker: Ticker
   stocks/bt/whatif: what if you had bought X shares on day Y
   stocks/bt/ema: buy when price exceeds EMA(l)
