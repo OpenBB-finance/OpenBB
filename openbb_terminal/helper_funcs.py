@@ -1415,6 +1415,9 @@ def export_data(
                 df.reset_index(drop=True, inplace=True)
                 df.to_json(saved_path)
             elif exp_type.endswith("xlsx"):
+                # since xlsx does not support datetimes with timezones we need to remove it
+                df = remove_timezone_from_dataframe(df)
+
                 if sheet_name is None:
                     exists, overwrite = ask_file_overwrite(saved_path)
                     if exists and not overwrite:
@@ -1461,9 +1464,9 @@ def export_data(
                     return
                 plt.savefig(saved_path)
             else:
-                console.print("\nWrong export file specified.")
+                console.print("Wrong export file specified.")
 
-            console.print(f"\nSaved file: {saved_path}")
+            console.print(f"Saved file: {saved_path}")
 
 
 def get_rf() -> float:
@@ -2017,3 +2020,41 @@ def request(url: str, method="GET", **kwargs) -> requests.Response:
             url, headers=headers, timeout=cfg.REQUEST_TIMEOUT, **kwargs
         )
     raise ValueError("Method must be GET or POST")
+
+
+def remove_timezone_from_dataframe(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Remove timezone information from a dataframe.
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+        The dataframe to remove timezone information from
+
+    Returns
+    -------
+    pd.DataFrame
+        The dataframe with timezone information removed
+    """
+
+    date_cols = []
+    index_is_date = False
+
+    # Find columns and index containing date data
+    if df.index.dtype.kind == "M" and df.index.dtype.tz is not None:
+        index_is_date = True
+
+    for col, dtype in df.dtypes.items():
+        if dtype.kind == "M" and dtype.tz is not None:
+            date_cols.append(col)
+
+    # Remove the timezone information
+    for col in date_cols:
+        df[col] = df[col].dt.date
+
+    if index_is_date:
+        index_name = df.index.name
+        df.index = df.index.date
+        df.index.name = index_name
+
+    return df
