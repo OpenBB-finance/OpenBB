@@ -7,8 +7,10 @@ import argparse
 import logging
 from typing import Dict, List, Tuple
 
-from openbb_terminal import feature_flags as obbff
-from openbb_terminal import parent_classes
+from openbb_terminal import (
+    feature_flags as obbff,
+    parent_classes,
+)
 from openbb_terminal.core.config.paths import (
     MISCELLANEOUS_DIRECTORY,
     USER_EXPORTS_DIRECTORY,
@@ -16,10 +18,7 @@ from openbb_terminal.core.config.paths import (
 )
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import (
-    check_non_negative,
-    get_rf,
-)
+from openbb_terminal.helper_funcs import check_non_negative, get_rf
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.portfolio.portfolio_optimization import (

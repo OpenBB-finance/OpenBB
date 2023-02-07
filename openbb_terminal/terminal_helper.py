@@ -15,8 +15,10 @@ from typing import List
 import matplotlib.pyplot as plt
 from packaging import version
 
-from openbb_terminal import feature_flags as obbff
-from openbb_terminal import thought_of_the_day as thought
+from openbb_terminal import (
+    feature_flags as obbff,
+    thought_of_the_day as thought,
+)
 
 # IMPORTATION INTERNAL
 from openbb_terminal.config_terminal import LOGGING_APP_NAME, LOGGING_COMMIT_HASH

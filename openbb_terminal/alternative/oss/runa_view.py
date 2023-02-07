@@ -3,8 +3,10 @@ import logging
 import os
 from typing import List, Optional
 
-from matplotlib import pyplot as plt
-from matplotlib import ticker
+from matplotlib import (
+    pyplot as plt,
+    ticker,
+)
 
 from openbb_terminal.alternative.oss import runa_model
 from openbb_terminal.config_plot import PLOT_DPI

@@ -1,0 +1,96 @@
+Date,Company,Rating,Price Target
+2021-10-21,Capital Depesche,BUY,1040.0
+2021-10-21,"ROTH Capital Partners, LLC",HOLD,250.0
+2021-10-21,Mizuho,BUY,950.0
+2021-10-27,Goldman Sachs,BUY,1125.0
+2021-10-28,Piper Sandler,BUY,1300.0
+2021-11-19,Wedbush Morgan Securities Inc.,BUY,1400.0
+2021-12-07,UBS,HOLD,1000.0
+2021-12-08,New Street Research,BUY,1580.0
+2021-12-28,Argus Research Company ,BUY,1313.0
+2021-12-31,Deutsche Bank,BUY,1200.0
+2022-01-03,Deutsche Bank,BUY,1200.0
+2022-01-03,J.P. Morgan,SELL,295.0
+2022-01-05,Mizuho,BUY,1300.0
+2022-01-18,Credit Suisse,HOLD,1025.0
+2022-01-27,Citigroup Corp.,SELL,313.0
+2022-01-27,Wells Fargo & Co,HOLD,910.0
+2022-01-27,J.P. Morgan,SELL,325.0
+2022-01-31,Credit Suisse,BUY,1025.0
+2022-02-14,Piper Sandler,BUY,1350.0
+2022-02-25,Daiwa Securities,BUY,900.0
+2022-04-04,J.P. Morgan,SELL,335.0
+2022-04-04,"Cowen and Company, LLC",HOLD,790.0
+2022-04-04,UBS,HOLD,1100.0
+2022-04-18,Piper Sandler,BUY,1260.0
+2022-04-19,Credit Suisse,BUY,1125.0
+2022-04-21,Oppenheimer & Co. Inc.,BUY,1291.0
+2022-04-21,Wells Fargo & Co,HOLD,960.0
+2022-04-21,Citigroup Corp.,SELL,375.0
+2022-04-21,J.P. Morgan,SELL,395.0
+2022-04-22,Deutsche Bank,BUY,1250.0
+2022-05-10,Berenberg,HOLD,900.0
+2022-05-12,Wells Fargo & Co,HOLD,900.0
+2022-05-18,Piper Sandler,BUY,1035.0
+2022-05-19,Wedbush Morgan Securities Inc.,BUY,1000.0
+2022-05-24,Daiwa Securities,BUY,800.0
+2022-06-01,Goldman Sachs,BUY,1000.0
+2022-06-03,"Cowen and Company, LLC",HOLD,700.0
+2022-06-09,UBS,BUY,1100.0
+2022-06-24,Credit Suisse,BUY,1000.0
+2022-06-27,Mizuho,BUY,1150.0
+2022-06-28,Deutsche Bank,BUY,1125.0
+2022-07-05,J.P. Morgan,SELL,385.0
+2022-07-11,Wells Fargo & Co,HOLD,820.0
+2022-07-13,Capital Depesche,BUY,801.0
+2022-07-14,Morgan Stanley,BUY,1150.0
+2022-07-18,Barclays Capital,SELL,380.0
+2022-07-19,Credit Suisse,BUY,1000.0
+2022-07-21,"Cowen and Company, LLC",HOLD,733.0
+2022-07-21,Capital Depesche,BUY,815.0
+2022-07-21,Wells Fargo & Co,HOLD,830.0
+2022-07-21,Bank of America Merrill Lynch,HOLD,950.0
+2022-07-21,Berenberg,HOLD,850.0
+2022-07-21,Mizuho,BUY,1175.0
+2022-08-02,Citigroup Corp.,SELL,424.0
+2022-08-25,Wedbush Morgan Securities Inc.,BUY,360.0
+2022-08-25,Morgan Stanley,BUY,383.329986572266
+2022-08-25,Berenberg,HOLD,290.0
+2022-08-29,Deutsche Bank,BUY,375.0
+2022-09-06,Wolfe Research,BUY,360.0
+2022-09-16,Deutsche Bank,BUY,400.0
+2022-09-29,Piper Sandler,BUY,340.0
+2022-10-04,Goldman Sachs,BUY,333.0
+2022-10-06,Mizuho,BUY,370.0
+2022-10-10,Morgan Stanley,BUY,350.0
+2022-10-14,Wells Fargo & Co,HOLD,230.0
+2022-10-20,Deutsche Bank,BUY,355.0
+2022-10-20,Wedbush Morgan Securities Inc.,BUY,300.0
+2022-10-20,RBC Capital Markets,BUY,325.0
+2022-10-20,Mizuho,BUY,330.0
+2022-10-25,Morgan Stanley,BUY,330.0
+2022-11-23,Citigroup Corp.,HOLD,176.0
+2022-12-14,Goldman Sachs,BUY,235.0
+2022-12-20,Evercore,HOLD,200.0
+2022-12-20,Daiwa Securities,BUY,177.0
+2022-12-20,Mizuho,BUY,285.0
+2022-12-21,Deutsche Bank,BUY,270.0
+2022-12-22,Capital Depesche,BUY,275.0
+2022-12-23,Wedbush Morgan Securities Inc.,BUY,175.0
+2022-12-28,Baird Patrick & Co,BUY,252.0
+2022-12-29,Morgan Stanley,BUY,250.0
+2023-01-03,Goldman Sachs,BUY,205.0
+2023-01-05,Mizuho,BUY,250.0
+2023-01-13,Wells Fargo & Co,HOLD,130.0
+2023-01-13,Citigroup Corp.,HOLD,140.0
+2023-01-17,Bank of America Merrill Lynch,HOLD,130.0
+2023-01-19,Piper Sandler,BUY,300.0
+2023-01-25,Morgan Stanley,BUY,220.0
+2023-01-25,J.P. Morgan,SELL,120.0
+2023-01-26,Citigroup Corp.,HOLD,146.0
+2023-01-26,Wedbush Morgan Securities Inc.,BUY,200.0
+2023-01-26,"Cowen and Company, LLC",HOLD,140.0
+2023-01-26,Wells Fargo & Co,HOLD,150.0
+2023-01-26,Wolfe Research,BUY,185.0
+2023-01-26,Bank of America Merrill Lynch,HOLD,155.0
+2023-01-30,Berenberg,BUY,200.0

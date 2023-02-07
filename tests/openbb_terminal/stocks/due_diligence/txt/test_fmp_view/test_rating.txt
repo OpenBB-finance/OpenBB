@@ -1,7 +1,0 @@
-                               Rating                        DCF      ROE      ROA                  DE                         PE                         PB
-date                                                                                                                                                        
-2021-11-16  [green]Strong Buy[/green]  [green]Strong Buy[/green]  Neutral  Neutral  [green]Buy[/green]  [green]Strong Buy[/green]  [green]Strong Buy[/green]
-2021-11-15  [green]Strong Buy[/green]  [green]Strong Buy[/green]  Neutral  Neutral  [green]Buy[/green]  [green]Strong Buy[/green]  [green]Strong Buy[/green]
-2021-11-12  [green]Strong Buy[/green]  [green]Strong Buy[/green]  Neutral  Neutral  [green]Buy[/green]  [green]Strong Buy[/green]  [green]Strong Buy[/green]
-2021-11-11  [green]Strong Buy[/green]  [green]Strong Buy[/green]  Neutral  Neutral  [green]Buy[/green]  [green]Strong Buy[/green]  [green]Strong Buy[/green]
-2021-11-10  [green]Strong Buy[/green]  [green]Strong Buy[/green]  Neutral  Neutral  [green]Buy[/green]  [green]Strong Buy[/green]  [green]Strong Buy[/green]

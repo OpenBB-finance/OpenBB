@@ -261,8 +261,8 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 country="",
                 sector="",
                 industry="",
-                exchange_country="",
                 all_exchanges=False,
+                exchange_country="",
                 export="csv",
                 sheet_name=None,
             ),
@@ -270,7 +270,14 @@ def test_call_func_expect_queue(expected_queue, func, queue):
         (
             "call_quote",
             [],
-            "stocks_view.display_quote",
+            "stocks_view.display_quote_fmp",
+            [],
+            dict(),
+        ),
+        (
+            "call_quote",
+            ["--source=YahooFinance"],
+            "stocks_view.display_quote_yf",
             [],
             dict(),
         ),
@@ -374,13 +381,6 @@ def test_call_func_expect_queue(expected_queue, func, queue):
         ),
         (
             "call_res",
-            [],
-            "StocksController.load_class",
-            [],
-            dict(),
-        ),
-        (
-            "call_dd",
             [],
             "StocksController.load_class",
             [],
@@ -507,7 +507,6 @@ def test_call_func_no_parser(func, mocker):
     [
         "call_candle",
         "call_res",
-        "call_dd",
         "call_fa",
         "call_bt",
         "call_ta",

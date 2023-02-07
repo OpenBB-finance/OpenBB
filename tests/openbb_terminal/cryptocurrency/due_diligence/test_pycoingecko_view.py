@@ -5,9 +5,7 @@ from unittest import TestCase, mock
 import pytest
 import vcr
 
-from openbb_terminal.cryptocurrency.cryptocurrency_helpers import (
-    load,
-)
+from openbb_terminal.cryptocurrency.cryptocurrency_helpers import load
 from openbb_terminal.cryptocurrency.due_diligence import pycoingecko_view
 from tests.helpers.helpers import check_print
 

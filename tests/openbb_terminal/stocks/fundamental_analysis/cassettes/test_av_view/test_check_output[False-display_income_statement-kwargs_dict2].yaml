@@ -23,27 +23,33 @@ interactions:
       CF-Cache-Status:
       - DYNAMIC
       CF-RAY:
-      - 72ca0bf5dc7e98f1-ARN
+      - 793ba6ac89b1d3ab-CDG
       Connection:
       - keep-alive
       Content-Encoding:
       - gzip
       Content-Type:
       - application/json
+      Cross-Origin-Opener-Policy:
+      - same-origin
       Date:
-      - Mon, 18 Jul 2022 09:03:53 GMT
-      Expect-CT:
-      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      - Fri, 03 Feb 2023 13:53:08 GMT
+      Referrer-Policy:
+      - same-origin
       Server:
       - cloudflare
+      Server-Timing:
+      - cf-q-config;dur=7.0000000960135e-06
       Transfer-Encoding:
       - chunked
       Vary:
-      - Cookie
+      - Cookie, Origin
       Via:
       - 1.1 vegur
+      X-Content-Type-Options:
+      - nosniff
       X-Frame-Options:
-      - SAMEORIGIN
+      - DENY
     status:
       code: 200
       message: OK
