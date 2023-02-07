@@ -5,6 +5,7 @@ __docformat__ = "numpy"
 
 import contextlib
 import io
+import json
 import logging
 import os
 import sys
@@ -36,7 +37,8 @@ from openbb_terminal.cryptocurrency.coinbase_helpers import (
 from openbb_terminal.helper_funcs import request
 from openbb_terminal.portfolio.brokers.degiro.degiro_model import DegiroModel
 from openbb_terminal.rich_config import console
-from openbb_terminal.session.hub_model import patch_user_configs
+from openbb_terminal.session.hub_model import BASE_URL, patch_user_configs
+from openbb_terminal.session.local_model import SESSION_FILE_PATH
 from openbb_terminal.session.user import User
 from openbb_terminal.terminal_helper import suppress_stdout
 
@@ -67,6 +69,7 @@ API_DICT: Dict = {
     "rh": "ROBINHOOD",
     "degiro": "DEGIRO",
     "oanda": "OANDA",
+    "openbb": "OPENBB",
     "binance": "BINANCE",
     "bitquery": "BITQUERY",
     "si": "SENTIMENT_INVESTOR",
@@ -2617,6 +2620,80 @@ def check_stocksera_key(show_output: bool = False):
             status = KeyStatus.DEFINED_TEST_PASSED
         except Exception as _:  # noqa: F841
             logger.warning("Stocksera key defined, test failed")
+            status = KeyStatus.DEFINED_TEST_FAILED
+
+    if show_output:
+        console.print(status.colorize() + "\n")
+    return str(status)
+
+
+def set_openbb_key(key: str, persist: bool = False, show_output: bool = False):
+    """Set OpenBB key.
+
+    Parameters
+    ----------
+    key: str
+        API key
+    persist: bool, optional
+        If False, api key change will be contained to where it was changed. For example, a Jupyter notebook session.
+        If True, api key change will be global, i.e. it will affect terminal environment variables.
+        By default, False.
+    show_output: bool, optional
+        Display status string or not. By default, False.
+
+    Returns
+    -------
+    str
+        Status of key set
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> openbb.keys.openbb(key="example_key")
+    """
+    set_key("OPENBB_API_OPENBB_KEY", key, persist)
+    return check_openbb_key(show_output)
+
+
+def check_openbb_key(show_output: bool = False):
+    """Check OpenBB key
+
+    Returns
+    -------
+    str
+        Status of key set
+    """
+    if cfg.API_OPENBB_KEY == "REPLACE_ME":
+        logger.info("OpenBB key not defined")
+        status = KeyStatus.NOT_DEFINED
+    else:
+        try:
+            access_token = ""
+
+            # TODO: is there a better way to test the key?
+            # This requires a valid session file
+
+            if os.path.isfile(SESSION_FILE_PATH):
+                with open(SESSION_FILE_PATH) as f:
+                    access_token = json.load(f).get("access_token")
+
+            headers = {
+                "Authorization": f"Bearer {access_token}",
+                "Content-Type": "application/json",
+            }
+            response = requests.request(
+                "GET", f"{BASE_URL}sdk/token", headers=headers, data={}
+            )
+            token = response.json().get("token")
+
+            if response.status_code == 200 and token == cfg.API_OPENBB_KEY:
+                logger.info("OpenBB key defined, test passed")
+                status = KeyStatus.DEFINED_TEST_PASSED
+            else:
+                logger.warning("OpenBB key defined, test failed")
+                status = KeyStatus.DEFINED_TEST_FAILED
+        except requests.exceptions.RequestException:
+            logger.warning("OpenBB key defined, test failed")
             status = KeyStatus.DEFINED_TEST_FAILED
 
     if show_output:

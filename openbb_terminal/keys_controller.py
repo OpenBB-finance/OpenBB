@@ -1155,3 +1155,31 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             self.status_dict["stocksera"] = keys_model.set_stocksera_key(
                 key=ns_parser.key, persist=True, show_output=True
             )
+
+    @log_start_end(log=logger)
+    def call_openbb(self, other_args: List[str]):
+        """Process openbb command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="openbb",
+            description="Set OpenBB API key. ",
+        )
+        parser.add_argument(
+            "-k",
+            "--key",
+            type=str,
+            dest="key",
+            help="key",
+        )
+        if not other_args:
+            console.print("For your API Key, visit: https://openbb.co/\n")
+            return
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-k")
+        ns_parser = self.parse_simple_args(parser, other_args)
+        if ns_parser:
+            self.status_dict["openbb"] = keys_model.set_openbb_key(
+                key=ns_parser.key, persist=True, show_output=True
+            )
