@@ -1,4 +1,5 @@
 # IMPORTATION STANDARD
+import datetime
 from pathlib import Path
 
 # IMPORTATION THIRDPARTY
@@ -6,7 +7,11 @@ import pandas as pd
 import pytest
 
 # IMPORTATION INTERNAL
-from openbb_terminal.helper_funcs import check_start_less_than_end, export_data
+from openbb_terminal.helper_funcs import (
+    check_start_less_than_end,
+    export_data,
+    remove_timezone_from_dataframe,
+)
 
 # pylint: disable=E1101
 # pylint: disable=W0603
@@ -107,3 +112,47 @@ def test_start_less_than_end():
     assert check_start_less_than_end(None, "2022-01-01") is False
     assert check_start_less_than_end("2022-01-02", None) is False
     assert check_start_less_than_end(None, None) is False
+
+
+@pytest.mark.parametrize(
+    "df, df_expected",
+    [
+        (
+            pd.DataFrame(
+                {
+                    "date1": pd.date_range("2021-01-01", periods=5, tz="Europe/London"),
+                    "date2": pd.date_range("2022-01-01", periods=5, tz="Europe/London"),
+                    "value1": [1, 2, 3, 4, 5],
+                    "value2": [6, 7, 8, 9, 10],
+                }
+            ),
+            pd.DataFrame(
+                {
+                    "date1": [
+                        datetime.date(2021, 1, 1),
+                        datetime.date(2021, 1, 2),
+                        datetime.date(2021, 1, 3),
+                        datetime.date(2021, 1, 4),
+                        datetime.date(2021, 1, 5),
+                    ],
+                    "date2": [
+                        datetime.date(2022, 1, 1),
+                        datetime.date(2022, 1, 2),
+                        datetime.date(2022, 1, 3),
+                        datetime.date(2022, 1, 4),
+                        datetime.date(2022, 1, 5),
+                    ],
+                    "value1": [1, 2, 3, 4, 5],
+                    "value2": [6, 7, 8, 9, 10],
+                }
+            ),
+        ),
+    ],
+)
+def test_remove_timezone_from_dataframe(df, df_expected):
+    # set date1 as index
+    df.set_index("date1", inplace=True)
+    df_expected.set_index("date1", inplace=True)
+
+    df_result = remove_timezone_from_dataframe(df)
+    assert df_result.equals(df_expected)
