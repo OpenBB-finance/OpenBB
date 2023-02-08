@@ -269,9 +269,7 @@ class PortfolioController(BaseController):
     @log_start_end(log=logger)
     def call_bro(self, _):
         """Process bro command"""
-        from openbb_terminal.portfolio.brokers.bro_controller import (
-            BrokersController,
-        )
+        from openbb_terminal.portfolio.brokers.bro_controller import BrokersController
 
         self.queue = self.load_class(BrokersController, self.queue)
 
@@ -281,13 +279,49 @@ class PortfolioController(BaseController):
         if OPTIMIZATION_TOOLKIT_ENABLED:
             if self.portfolio is None:
                 tickers = []
+                categories = None
             else:
                 tickers = self.portfolio.tickers_list
+                transactions = self.portfolio.get_transactions()
+
+                categories = {
+                    "ASSET_CLASS": {},
+                    "SECTOR": {},
+                    "INDUSTRY": {},
+                    "COUNTRY": {},
+                    "CURRENT_INVESTED_AMOUNT": {},
+                    "CURRENCY": {},
+                }
+                for _, transaction in transactions.iterrows():
+                    if transaction["Ticker"] not in categories["ASSET_CLASS"]:
+                        categories["ASSET_CLASS"][transaction["Ticker"]] = transaction[
+                            "Type"
+                        ]
+                        categories["SECTOR"][transaction["Ticker"]] = transaction[
+                            "Sector"
+                        ]
+                        categories["INDUSTRY"][transaction["Ticker"]] = transaction[
+                            "Industry"
+                        ]
+                        categories["COUNTRY"][transaction["Ticker"]] = transaction[
+                            "Country"
+                        ]
+                        categories["CURRENT_INVESTED_AMOUNT"][
+                            transaction["Ticker"]
+                        ] = transactions[
+                            transactions["Ticker"] == transaction["Ticker"]
+                        ][
+                            "Investment"
+                        ].sum()
+                        categories["CURRENCY"][transaction["Ticker"]] = transaction[
+                            "Currency"
+                        ]
+
             self.queue = self.load_class(
                 po_controller.PortfolioOptimizationController,
                 tickers,
                 None,
-                None,
+                categories,
                 self.queue,
             )
         else:

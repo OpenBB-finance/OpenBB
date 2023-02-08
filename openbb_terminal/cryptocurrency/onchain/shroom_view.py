@@ -7,8 +7,10 @@ from typing import List, Optional
 
 from matplotlib import pyplot as plt
 
-from openbb_terminal import config_plot as cfgPlot
-from openbb_terminal import config_terminal as cfg
+from openbb_terminal import (
+    config_plot as cfgPlot,
+    config_terminal as cfg,
+)
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.cryptocurrency.onchain.shroom_model import (
     get_daily_transactions,
