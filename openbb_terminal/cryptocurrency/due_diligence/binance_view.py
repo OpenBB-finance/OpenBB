@@ -3,10 +3,11 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import Optional
+from typing import Optional, Union
 
 import numpy as np
 
+from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.cryptocurrency.cryptocurrency_helpers import plot_order_book
 from openbb_terminal.cryptocurrency.due_diligence.binance_model import (
     get_balance,
@@ -27,7 +28,7 @@ def display_order_book(
     export: str = "",
     sheet_name: Optional[str] = None,
     external_axes: bool = False,
-) -> None:
+) -> Union[None, OpenBBFigure]:
     """Plots order book for currency. [Source: Binance]
 
     Parameters
@@ -52,7 +53,7 @@ def display_order_book(
     asks = np.asarray(market_book["asks"], dtype=float)
     bids = np.insert(bids, 2, bids[:, 1].cumsum(), axis=1)
     asks = np.insert(asks, 2, np.flipud(asks[:, 1]).cumsum(), axis=1)
-    plot_order_book(bids, asks, to_symbol, external_axes)
+    fig = plot_order_book(bids, asks, to_symbol)
 
     export_data(
         export,
@@ -61,6 +62,8 @@ def display_order_book(
         market_book,
         sheet_name,
     )
+
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)

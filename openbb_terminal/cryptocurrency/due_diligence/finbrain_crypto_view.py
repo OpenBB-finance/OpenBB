@@ -3,21 +3,20 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import Optional
+from typing import Optional, Union
 
 import numpy as np
 import pandas as pd
-from matplotlib import pyplot as plt
 
 from openbb_terminal import rich_config
 from openbb_terminal.common.behavioural_analysis.finbrain_model import get_sentiment
 from openbb_terminal.common.behavioural_analysis.finbrain_view import (
     lambda_sentiment_coloring,
 )
-from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
+from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import export_data, plot_autoscale
+from openbb_terminal.helper_funcs import export_data
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -38,7 +37,7 @@ def display_crypto_sentiment_analysis(
     export: str = "",
     sheet_name: Optional[str] = None,
     external_axes: bool = False,
-) -> None:
+) -> Union[None, OpenBBFigure]:
     """Sentiment analysis from FinBrain for Cryptocurrencies
 
     FinBrain collects the news headlines from 15+ major financial news
@@ -63,49 +62,47 @@ def display_crypto_sentiment_analysis(
     sentiment = get_sentiment(f"{symbol}-USD")  # Currently only USD pairs are available
 
     if sentiment.empty:
-        console.print(f"Couldn't find Sentiment Data for {symbol}\n")
-        return
+        return console.print(f"Couldn't find Sentiment Data for {symbol}\n")
 
     if not raw:
-        # This plot has 1 axis
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        fig = OpenBBFigure(xaxis_title="Time", yaxis_title="Finbrain's Sentiment Score")
 
-        for index, row in sentiment.iterrows():
-            ax.scatter(
-                index, float(row["Sentiment Analysis"]), s=75, color="white", zorder=3
-            )
-        ax.axhline(y=0, linestyle="--")
-        ax.set_xlabel("Time")
-        ax.set_ylabel("Finbrain's Sentiment Score")
         start_date = sentiment.index[0].strftime("%Y/%m/%d")
-        ax.set_title(
+        fig.set_title(
             f"FinBrain's Sentiment Analysis for {symbol}-USD since {start_date}"
         )
-        ax.set_ylim([-1.1, 1.1])
         senValues = np.array(pd.to_numeric(sentiment["Sentiment Analysis"].values))
         senNone = np.array(0 * len(sentiment))
-        ax.fill_between(
-            sentiment.index,
-            pd.to_numeric(sentiment["Sentiment Analysis"].values),
-            0,
-            where=(senValues < senNone),
-            alpha=0.30,
-            color=theme.down_color,
-            interpolate=True,
-        )
-        ax.fill_between(
-            sentiment.index,
-            pd.to_numeric(sentiment["Sentiment Analysis"].values),
-            0,
-            where=(senValues >= senNone),
-            alpha=0.30,
-            color=theme.up_color,
-            interpolate=True,
-        )
-        theme.style_primary_axis(ax)
-        if external_axes is None:
-            theme.visualize_output()
+        df_sentiment = sentiment["Sentiment Analysis"]
+        negative_yloc = np.where(senValues < senNone)[0]
+        positive_yloc = np.where(senValues > senNone)[0]
 
+        fig.add_scatter(
+            x=df_sentiment.index[positive_yloc],
+            y=pd.to_numeric(df_sentiment.values)[positive_yloc],
+            mode="lines+markers",
+            line_width=0,
+            name=symbol,
+        )
+        fig.add_scatter(
+            x=[df_sentiment.index[0], df_sentiment.index[-1]],
+            y=[0, 0],
+            fillcolor=theme.up_color,
+            line=dict(color="white", dash="dash"),
+            fill="tonexty",
+            mode="lines",
+            name=symbol,
+        )
+        fig.add_scatter(
+            x=df_sentiment.index[negative_yloc],
+            y=pd.to_numeric(df_sentiment.values)[negative_yloc],
+            fill="tonexty",
+            fillcolor=theme.down_color,
+            line_width=0,
+            mode="lines+markers",
+            name=symbol,
+        )
+        fig.update_traces(showlegend=False)
     else:
         sentiment.sort_index(ascending=True, inplace=True)
 
@@ -126,3 +123,5 @@ def display_crypto_sentiment_analysis(
         sentiment,
         sheet_name,
     )
+
+    return None if raw else fig.show(external=external_axes)

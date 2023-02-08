@@ -140,8 +140,7 @@ def display_simple_ema(
     if is_intraday(data):
         console.print("Backtesting on intraday data is not yet supported.")
         console.print("Submit a feature request to let us know that you need it here:")
-        console.print("https://openbb.co/request-a-feature")
-        return
+        return console.print("https://openbb.co/request-a-feature")
 
     fig = OpenBBFigure(xaxis_title="Date").set_title(f"Equity for EMA({ema_length})")
 
@@ -210,8 +209,7 @@ def display_emacross(
     if is_intraday(data):
         console.print("Backtesting on intraday data is not yet supported.")
         console.print("Submit a feature request to let us know that you need it here:")
-        console.print("https://openbb.co/request-a-feature")
-        return
+        return console.print("https://openbb.co/request-a-feature")
 
     fig = OpenBBFigure(xaxis_title="Date").set_title(
         f"Equity for EMA({short_ema})/EMA({long_ema})"
@@ -285,8 +283,7 @@ def display_rsi_strategy(
     if is_intraday(data):
         console.print("Backtesting on intraday data is not yet supported.")
         console.print("Submit a feature request to let us know that you need it here:")
-        console.print("https://openbb.co/request-a-feature")
-        return
+        return console.print("https://openbb.co/request-a-feature")
 
     fig = OpenBBFigure(xaxis_title="Date").set_title(
         f"Equity for RSI({periods}) between ({low_rsi}, {high_rsi})"

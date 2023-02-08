@@ -61,7 +61,7 @@ def display_adx(
         sheet_name,
     )
 
-    fig.show(external=external_axes)
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -110,4 +110,4 @@ def display_aroon(
         sheet_name,
     )
 
-    fig.show(external=external_axes)
+    return fig.show(external=external_axes)

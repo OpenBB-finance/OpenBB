@@ -3,12 +3,13 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import Optional
+from typing import Optional, Union
 
 # import matplotlib.pyplot as plt
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
 
+from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.cryptocurrency.cryptocurrency_helpers import plot_order_book
 from openbb_terminal.cryptocurrency.due_diligence import coinbase_model
 from openbb_terminal.decorators import log_start_end
@@ -25,7 +26,7 @@ def display_order_book(
     export: str = "",
     sheet_name: Optional[str] = None,
     external_axes: bool = False,
-) -> None:
+) -> Union[None, OpenBBFigure]:
     """Plots a list of available currency pairs for trading. [Source: Coinbase]
 
     Parameters
@@ -38,7 +39,7 @@ def display_order_book(
         Whether to return the figure object or not, by default False
     """
     bids, asks, pair, market_book = coinbase_model.get_order_book(symbol)
-    plot_order_book(bids, asks, pair, external_axes)
+    fig = plot_order_book(bids, asks, pair)
 
     export_data(
         export,
@@ -47,6 +48,8 @@ def display_order_book(
         pd.DataFrame(market_book),
         sheet_name,
     )
+
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)

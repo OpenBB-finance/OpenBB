@@ -63,7 +63,7 @@ PLT_FIB_COLORWAY: List[Any] = [
     "rgba(173, 0, 95, 0.9)",  # 0.618
     "rgb(235, 184, 0)",  # 0.65 Golden Pocket
     "rgb(162, 115, 206)",  # 1
-    dict(family="Arial Black", size=12),  # Fib's Text
+    dict(family="Arial Black", size=10),  # Fib's Text
     dict(color="rgba(0, 230, 195, 0.9)", width=0.9, dash="dash"),  # Fib Trendline
 ]
 

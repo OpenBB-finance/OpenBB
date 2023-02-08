@@ -123,6 +123,9 @@ class Custom(PltTA):
     @indicator()
     def plot_fib(self, fig: OpenBBFigure, df_ta: pd.DataFrame):
         """Adds fibonacci to plotly figure"""
+        limit = self.params["fib"].get_argument_values("limit") or 120
+        start_date = self.params["fib"].get_argument_values("start_date") or None
+        end_date = self.params["fib"].get_argument_values("end_date") or None
         (
             df_fib,
             min_date,
@@ -130,7 +133,7 @@ class Custom(PltTA):
             min_pr,
             max_pr,
             lvl_text,
-        ) = calculate_fib_levels(df_ta, 120, df_ta.index.max(), None)
+        ) = calculate_fib_levels(df_ta, limit, start_date, end_date)
         levels = df_fib.Price
         fibs = [
             "<b>0</b>",
@@ -141,11 +144,16 @@ class Custom(PltTA):
             "<b>0.65</b>",
             "<b>1</b>",
         ]
+        min_date = min_date.to_pydatetime()
+        max_date = max_date.to_pydatetime()
+        self.df_fib = df_fib
+
         fig.add_scatter(
             x=[min_date, max_date],
             y=[min_pr, max_pr],
             opacity=0.9,
             mode="lines",
+            connectgaps=True,
             line=PLT_FIB_COLORWAY[8],
             showlegend=False,
             row=1,
@@ -166,54 +174,28 @@ class Custom(PltTA):
                     df_ta2 = df_ta2.between_time("09:30", "20:00").copy()
 
         for i in range(7):
-            fig.add_scatter(
-                name=fibs[i],
-                x=[min_date, df_ta2.index.max()],
-                y=[levels[i], levels[i]],
-                opacity=0.9,
-                mode="lines",
-                line_color=PLT_FIB_COLORWAY[i],
-                line_width=1.5,
-                showlegend=False,
-                row=1,
-                col=1,
-            )
-
-        for i in range(7):
             idx_int = 4 if lvl_text == "left" else 5
-
             text_pos = f"top {lvl_text}" if i != idx_int else f"bottom {lvl_text}"
-            padding = 0.003 if interval > 15 else 0.0005
-            y_pos = (
-                levels[i] + (levels[i] * padding)
-                if i != idx_int
-                else levels[i] - (levels[i] * padding)
-            )
 
             if fibs[i] == "<b>0</b>":
                 text_pos = (
                     f"bottom {lvl_text}" if lvl_text != "right" else f"top {lvl_text}"
                 )
-                padding = 0.004 if interval > 15 else 0.0002
-                y_pos = (
-                    y_pos - (levels[i] * padding)
-                    if lvl_text != "right"
-                    else y_pos + (levels[i] * padding)
-                )
-
-            x_pos = max_date if max_date > min_date else min_date
-            x_pos = x_pos - timedelta(hours=2) if interval == 15 else x_pos
-            y_pos = levels[i] if levels[i] < 1 else y_pos
+            text = ["", f"{fibs[i]} ({levels[i]:{self.get_float_precision()}})"]
+            if lvl_text == "right":
+                text = [text[1], text[0]]
 
             fig.add_scatter(
                 name=fibs[i],
-                x=[x_pos],
-                y=[y_pos],
-                opacity=1,
-                mode="text",
-                text=f"{fibs[i]} ({levels[i]:{self.get_float_precision()}})",
+                x=[min_date, df_ta2.index.max()],
+                y=[levels[i], levels[i]],
+                opacity=0.9,
+                mode="lines+text",
+                text=text,
                 textposition=text_pos,
                 textfont=dict(PLT_FIB_COLORWAY[7], color=PLT_FIB_COLORWAY[i]),
+                line_color=PLT_FIB_COLORWAY[i],
+                line_width=1.5,
                 showlegend=False,
                 row=1,
                 col=1,

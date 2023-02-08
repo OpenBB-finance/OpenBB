@@ -5,22 +5,16 @@ import logging
 import os
 from typing import Optional, Union
 
-import matplotlib.pyplot as plt
 import pandas as pd
 
 from openbb_terminal.common.technical_analysis import (
-    custom_indicators_model,
     ta_helpers,
 )
-from openbb_terminal.config_plot import PLOT_DPI
-from openbb_terminal.config_terminal import theme
+from openbb_terminal.core.plots.plotly_ta.ta_class import OpenBBFigure, PlotlyTA
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
-    is_intraday,
-    plot_autoscale,
     print_rich_table,
-    reindex_dates,
 )
 
 logger = logging.getLogger(__name__)
@@ -36,7 +30,7 @@ def fibonacci_retracement(
     export: str = "",
     sheet_name: Optional[str] = None,
     external_axes: bool = False,
-):
+) -> Union[None, OpenBBFigure]:
     """Plots Calculated fibonacci retracement levels
 
     Parameters
@@ -64,69 +58,25 @@ def fibonacci_retracement(
     >>> df = openbb.stocks.load(symbol="aapl")
     >>> openbb.ta.fib_chart(data=df)
     """
-    (
-        df_fib,
-        min_date,
-        max_date,
-        min_pr,
-        max_pr,
-    ) = custom_indicators_model.calculate_fib_levels(data, limit, start_date, end_date)
-
-    levels = df_fib.Price
-
-    plot_data = reindex_dates(data)
-
-    # This plot has 2 axes
-    _, ax1 = plt.subplots(
-        figsize=plot_autoscale(),
-        dpi=PLOT_DPI,
-    )
-    ax2 = ax1.twinx()
+    data = pd.DataFrame(data)
+    data.index.name = "date"
 
     close_col = ta_helpers.check_columns(data)
     if close_col is None:
-        return
-    ax1.plot(plot_data[close_col])
+        return None
 
-    if is_intraday(data):
-        date_format = "%b %d %H:%M"
-    else:
-        date_format = "%Y-%m-%d"
-    min_date_index = plot_data[
-        plot_data["date"] == min_date.strftime(date_format)
-    ].index
-    max_date_index = plot_data[
-        plot_data["date"] == max_date.strftime(date_format)
-    ].index
-    ax1.plot(
-        [min_date_index, max_date_index],
-        [min_pr, max_pr],
+    ta = PlotlyTA()
+    fig = ta.plot(
+        data,
+        dict(fib=dict(limit=limit, start_date=start_date, end_date=end_date)),
+        f"Fibonacci Support for {symbol.upper()}",
+        False,
+        volume=False,
     )
 
-    for i in levels:
-        ax1.axhline(y=i, alpha=0.5)
-
-    for i in range(6):
-        ax1.fill_between(plot_data.index, levels[i], levels[i + 1], alpha=0.15)
-
-    ax1.set_xlim(plot_data.index[0], plot_data.index[-1])
-    ax1.set_title(f"Fibonacci Support for {symbol.upper()}")
-    ax1.set_yticks(levels)
-    ax1.set_yticklabels([0, 0.235, 0.382, 0.5, 0.618, 0.65, 1])
-    theme.style_primary_axis(
-        ax1,
-        data_index=plot_data.index.to_list(),
-        tick_labels=plot_data["date"].to_list(),
-    )
-
-    ax2.set_ylim(ax1.get_ylim())
-    ax2.set_ylabel("Price")
-    theme.style_primary_axis(ax2)
-
-    if external_axes is None:
-        theme.visualize_output()
+    if not external_axes:
         print_rich_table(
-            df_fib,
+            ta.df_fib,
             headers=["Fib Level", "Price"],
             show_index=False,
             title="Fibonacci retracement levels",
@@ -136,6 +86,8 @@ def fibonacci_retracement(
         export,
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
         "fib",
-        df_fib,
+        ta.df_ta,
         sheet_name,
     )
+
+    return fig.show(external=external_axes)

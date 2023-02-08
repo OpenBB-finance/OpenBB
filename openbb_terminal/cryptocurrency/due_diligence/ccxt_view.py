@@ -3,10 +3,11 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import Optional
+from typing import Optional, Union
 
 import numpy as np
 
+from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.cryptocurrency.cryptocurrency_helpers import plot_order_book
 from openbb_terminal.cryptocurrency.due_diligence import ccxt_model
 from openbb_terminal.decorators import log_start_end
@@ -23,7 +24,7 @@ def display_order_book(
     export: str = "",
     sheet_name: Optional[str] = None,
     external_axes: bool = False,
-):
+) -> Union[None, OpenBBFigure]:
     """Plots order book for a coin in a given exchange
     [Source: https://docs.ccxt.com/en/latest/manual.html]
 
@@ -45,11 +46,10 @@ def display_order_book(
     asks = np.asarray(market_book["asks"], dtype=float)
     bids = np.insert(bids, 2, bids[:, 1].cumsum(), axis=1)
     asks = np.insert(asks, 2, np.flipud(asks[:, 1]).cumsum(), axis=1)
-    plot_order_book(
+    fig = plot_order_book(
         bids,
         asks,
         f"{exchange.upper()}:{symbol.upper()}/{to_symbol.upper()}",
-        external_axes,
     )
 
     export_data(
@@ -59,6 +59,8 @@ def display_order_book(
         market_book,
         sheet_name,
     )
+
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)

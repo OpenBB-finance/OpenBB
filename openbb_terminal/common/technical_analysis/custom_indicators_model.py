@@ -74,7 +74,7 @@ def calculate_fib_levels(
             min_date = date1
             max_date = date0
     else:
-        data_to_use = data.iloc[limit:][close_col]
+        data_to_use = data.iloc[-limit:, :][close_col]
 
         min_pr = data_to_use.min()
         min_date = data_to_use.idxmin()
@@ -83,7 +83,7 @@ def calculate_fib_levels(
 
     fib_levels = [0, 0.235, 0.382, 0.5, 0.618, 0.65, 1]
 
-    lvl_text: str = "left" if min_date > max_date else "right"
+    lvl_text: str = "left" if min_date < max_date else "right"
     if min_date > max_date:
         min_date, max_date = max_date, min_date
         min_pr, max_pr = max_pr, min_pr

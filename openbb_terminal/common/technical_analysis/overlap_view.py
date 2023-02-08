@@ -65,6 +65,9 @@ def view_ma(
     price_df = pd.DataFrame(data)
     price_df.index.name = "date"
 
+    if not window:
+        window = [50]
+
     ta = PlotlyTA()
     fig = ta.plot(
         data,

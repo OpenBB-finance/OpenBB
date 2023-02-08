@@ -97,6 +97,7 @@ class PlotlyTA(PltTA):
         if not args and not kwargs:
             self._clear_data()
         else:
+            self.df_fib = None
             super().__init__(*args, **kwargs)
 
     @property
@@ -198,17 +199,19 @@ class PlotlyTA(PltTA):
         else:
             path = Path(os.getcwd())
 
-        console.print(f"[bold green]Loading plugins from {path}[/]")
-        console.print("[bold green]Plugins found:[/]")
+        if os.environ.get("DEBUG_MODE", "False").lower() == "true":
+            console.print(f"[bold green]Loading plugins from {path}[/]")
+            console.print("[bold green]Plugins found:[/]")
         for plugin in Path(__file__).parent.glob("plugins/*_plugin.py"):
-            console.print(f"    [bold red]{plugin.name}[/]")
             python_path = plugin.relative_to(path).with_suffix("")
-            console.print(f"        [bold yellow]{python_path}[/]")
-            console.print(f"        [bold bright_cyan]{__package__}[/]")
-            console.print(f"        [bold magenta]{python_path.parts}[/]")
-            console.print(
-                f"        [bold bright_magenta]{'.'.join(python_path.parts)}[/]"
-            )
+            if os.environ.get("DEBUG_MODE", "False").lower() == "true":
+                console.print(f"    [bold red]{plugin.name}[/]")
+                console.print(f"        [bold yellow]{python_path}[/]")
+                console.print(f"        [bold bright_cyan]{__package__}[/]")
+                console.print(f"        [bold magenta]{python_path.parts}[/]")
+                console.print(
+                    f"        [bold bright_magenta]{'.'.join(python_path.parts)}[/]"
+                )
             module = importlib.import_module(
                 ".".join(python_path.parts), package=__package__
             )

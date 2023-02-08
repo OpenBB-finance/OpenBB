@@ -91,6 +91,7 @@ class PltTA(metaclass=PluginMeta):
     intraday: bool = False
     df_stock: pd.DataFrame
     df_ta: pd.DataFrame
+    df_fib: pd.DataFrame
     close_column: Optional[str] = "Close"
     params: Dict[str, TAIndicator] = {}
     inchart_colors: List[str] = []

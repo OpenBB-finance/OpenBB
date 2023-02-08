@@ -912,13 +912,17 @@ class OpenBBFigure(go.Figure):
         """Return the figure as HTML"""
         kwargs.update(
             dict(
-                config={"displayModeBar": True, "scrollZoom": True},
+                config={
+                    "displayModeBar": True,
+                    "scrollZoom": True,
+                    "displaylogo": False,
+                },
                 include_plotlyjs=kwargs.get("include_plotlyjs", False),
                 full_html=False,
             )
         )
         if not plots_backend().isatty and self.data[0].type != "table":
-            self.layout.margin = dict(l=30, r=30, b=50, t=50, pad=0)
+            self.layout.margin = dict(l=60, r=30, b=50, t=50, pad=0)
 
         return super().to_html(*args, **kwargs)
 
@@ -970,7 +974,7 @@ class OpenBBFigure(go.Figure):
             for x in trace.x:
                 if isinstance(x, (int, float)):
                     break
-                if isinstance(x, (datetime, np.datetime64)):
+                if isinstance(x, (datetime, np.datetime64)) and len(trace.x) > 5:
                     output = trace.x
                     name = trace.name if hasattr(trace, "name") else f"{trace}"
                     self._date_xaxs[trace.xaxis] = {
