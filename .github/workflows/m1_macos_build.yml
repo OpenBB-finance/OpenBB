@@ -57,7 +57,7 @@ jobs:
       - name: Run Poetry
         run: |
           pip list
-          poetry install -E installer -E all
+          python -m pip install -r requirements-full.txt
 
       - name: Install Specific Papermill
         run: |

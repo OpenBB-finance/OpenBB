@@ -55,7 +55,7 @@ jobs:
       - name: Run Poetry
         run: |
           pip list
-          python -m pip install -r requirements-mac.txt
+          python -m pip install -r requirements-full.txt
       - name: Install Specific Papermill
         run: |
           pip list
