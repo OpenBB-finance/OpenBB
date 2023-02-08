@@ -52,7 +52,7 @@ jobs:
     - name: Run integration tests
       run: |
         source $VENV
-        python terminal.py -t --subproc 0 > result.txt
+        python terminal.py -t > result.txt
         cat result.txt
         grep "================================ integration test summary ================================" result.txt -A100 | tail --bytes=2000 > failed_tests.txt
 
