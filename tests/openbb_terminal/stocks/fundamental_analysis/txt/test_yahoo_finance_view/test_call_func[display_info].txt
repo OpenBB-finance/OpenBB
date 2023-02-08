@@ -40,12 +40,10 @@ Short name                           Philip Morris International Inc
 Long name                           Philip Morris International Inc.
 Is esg populated                                               False
 Gmt off set milliseconds                                       -18 M
-Quote type                                                    EQUITY
 Message board id                                       finmb_6569181
 Market                                                     us_market
 Enterprise to revenue                                          5.892
 Enterprise to ebitda                                          13.656
-52 week change                                                -0.001
 Forward EPS                                                    5.870
 Shares outstanding                                           1.550 B
 Book value                                                    -5.894
