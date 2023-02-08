@@ -4,7 +4,7 @@
 import pytest
 
 # IMPORTATION INTERNAL
-from openbb_terminal.stocks.fundamental_analysis import fmp_view
+from openbb_terminal.stocks.discovery import fmp_view
 
 
 @pytest.fixture(scope="module")
