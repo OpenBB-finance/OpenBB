@@ -60,5 +60,7 @@ jobs:
       uses: adrey/slack-file-upload-action@master
       with:
         token: ${{ secrets.SLACK_API_TOKEN }}
+        initial_comment: "Integration test summary"
+        title: "Integration test summary"
         path: failed_tests.txt
         channel: ${{ secrets.SLACK_CHANNEL_ID }}
