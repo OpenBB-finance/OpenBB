@@ -788,7 +788,6 @@ def get_prediction(
     elif metric == "mape":
         precision = mape(actual_series=val, pred_series=historical_fcast)
 
-    # capalize metic name
     console.print(f"{model_name} model obtains {metric.upper()}: {precision:.2f}% \n")
 
     # scale back
