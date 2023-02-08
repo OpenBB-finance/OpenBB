@@ -11,7 +11,7 @@ import pandas as pd
 from darts import TimeSeries
 from darts.dataprocessing.transformers import MissingValuesFiller, Scaler
 from darts.explainability.shap_explainer import ShapExplainer
-from darts.metrics import mape, rmse, mse
+from darts.metrics import mape, rmse, mse  # noqa: I001
 from darts.models.forecasting.torch_forecasting_model import GlobalForecastingModel
 from darts.utils.statistics import plot_residuals_analysis
 from pytorch_lightning.callbacks.early_stopping import EarlyStopping
