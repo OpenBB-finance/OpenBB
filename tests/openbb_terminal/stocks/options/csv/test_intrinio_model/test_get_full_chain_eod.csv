@@ -1,4 +1,4 @@
-,code,ticker,expiration,strike,type,date,close,close_bid,close_ask,volume,open,open_interest,high,low,implied_volatility,delta,gamma,theta,vega,dte
+,code,ticker,expiration,strike,optionType,date,close,close_bid,close_ask,volume,open,openInterest,high,low,impliedVolatility,delta,gamma,theta,vega,dte
 0,AAPL230106C00050000,AAPL,2023-01-06,50.0,call,2022-12-27,98.85,79.9,80.35,2,98.75,1,98.85,98.75,4e-05,1.0,0.0,-0.00579,0.0,0.0273972602739726
 1,AAPL230106P00050000,AAPL,2023-01-06,50.0,put,2022-12-27,0.01,0.0,0.01,1,0.01,1,0.01,0.01,2.0982,-0.00033,2e-05,-0.00325,0.00031,0.0273972602739726
 2,AAPL230106C00055000,AAPL,2023-01-06,55.0,call,2022-12-27,75.1,74.9,75.3,2,75.1,2,75.1,75.1,4e-05,1.0,0.0,-0.00637,0.0,0.0273972602739726

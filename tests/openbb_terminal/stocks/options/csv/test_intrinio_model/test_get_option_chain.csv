@@ -1,4 +1,4 @@
-,code,expiration,strike,option_type,close,volume,open_interest,implied_volatility,delta
+,code,expiration,strike,optionType,close,volume,openInterest,impliedVolatility,delta
 0,AAPL250117C00310000,2025-01-17,310.0,call,1.02974,45,3141,0.298091,0.053917
 1,AAPL250117C00300000,2025-01-17,300.0,call,1.23632,72,2454,0.298114,0.063111
 2,AAPL250117C00290000,2025-01-17,290.0,call,1.38217,0,394,0.294395,0.070047
