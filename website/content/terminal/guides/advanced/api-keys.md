@@ -7,15 +7,21 @@ keywords: [api, keys, api keys, data provider, data, free, alpha vantage, fred, 
 
 ## Accessing the keys menu
 
-Within the `keys` menu you can define your, often free, API key from various platforms like Alpha Vantage, FRED, IEX, Twitter, DeGiro, Binance and Coinglass. An API key is a set of random characters provided to you by a third party vendor that allows you to access data via their API endpoints.
+Within the `keys` menu you can define your, often free, API key from various platforms like Alpha Vantage, FRED, IEX, Twitter, DeGiro, Binance and Coinglass. An API key is a set of random characters provided to you by a third party vendor that allows you to access data via their API endpoints. You will notice that you need an API key when you receive a message like the following:
 
-You can access this menu from the homepage with `keys` which will open the menu as shown below:
+```
+(🦋) /stocks/fa/ $ rot
+
+API_FINNHUB_KEY not defined. Set API Keys in ~/.openbb_terminal/.env or under keys menu.
+```
+
+You can access the `keys` menu as mentioned above from the homepage with `keys` (or directly from your current menu with `/keys`). This will open the menu as shown below:
 
 <img width="800" alt="image" src="https://user-images.githubusercontent.com/85772166/194684312-f12b7f26-8a04-4efe-bc94-fa516b7186d3.png"></img>
 
 Within this menu you are able to set your API keys to access the commands that require that key. You can do so by typing the command followed by the API key, for example: `fred a215egade08a8d47cfd49c849658a2be`. When you press `ENTER` (⏎) the terminal will test whether this API key works. If it does, you receive the message `defined, test passed` and if it does not, you receive the message `defined, test failed`.
 
-To figure out where you can obtain the API key, you can enter the command (e.g. `av`) and press `ENTER` (⏎) or use the table below. **We recommend that you gradually obtain and set keys whenever you wish to use features that require an API key. For example, if you are interested in viewing recent news about a company, you should set the API key from the 'News API'.**
+To figure out where you can obtain the API key, you can enter the command (e.g. `av`) and press `ENTER` (⏎) or use the table below. We also provide an elaborate explanation where to find the API key in the next section. **We recommend that you gradually obtain and set keys whenever you wish to use features that require an API key. For example, if you are interested in viewing recent news about a company, you should set the API key from the 'News API'.**
 
 <details>
 <summary>Summary of API Key Providers</summary>
