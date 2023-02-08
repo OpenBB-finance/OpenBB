@@ -972,12 +972,12 @@ en:
   portfolio/bro/cb/history: show history of your account
   portfolio/bro/cb/deposits: show all your deposits or internal transfers
   portfolio/bro/cb/orders: show all your orders
-  portfolio/po/file: file that contains portfolio risk parameters
+  portfolio/po/file: file that contains portfolio risk parameters (use about for the parameter template)
   portfolio/po/load: load tickers and categories from .xlsx or .csv file (use load --example for an example)
   portfolio/po/_loaded: Portfolio loaded
   portfolio/po/_tickers: Tickers
   portfolio/po/_categories: Categories
-  portfolio/po/params/load: select portfolio parameter file
+  portfolio/po/params/load: select portfolio parameter file (use about for the parameter template)
   portfolio/po/params: specify and show portfolio risk parameters
   portfolio/po/_parameter: Parameter file
   portfolio/po/_mean_risk_optimization_: Mean Risk Optimization
