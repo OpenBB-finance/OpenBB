@@ -19,7 +19,10 @@ from openbb_terminal.cryptocurrency.discovery import (
 )
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import EXPORT_ONLY_RAW_DATA_ALLOWED, check_positive
+from openbb_terminal.helper_funcs import (
+    EXPORT_ONLY_RAW_DATA_ALLOWED,
+    check_positive,
+)
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import MenuText, console, get_ordered_list_sources
@@ -52,6 +55,16 @@ class DiscoveryController(BaseController):
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices_default
 
+            ordered_list_sources_top = get_ordered_list_sources(f"{self.PATH}top")
+            if ordered_list_sources_top and ordered_list_sources_top[0] == "CoinGecko":
+                choices["top"]["--sort"] = {
+                    c: {} for c in pycoingecko_view.COINS_COLUMNS
+                }
+            else:
+                choices["top"]["--sort"] = {c: {} for c in coinmarketcap_model.FILTERS}
+
+            choices["top"]["-s"] = choices["top"]["--sort"]
+
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
@@ -77,11 +90,6 @@ class DiscoveryController(BaseController):
             argument_sort_default = "Market Cap Rank"
         else:
             argument_sort_default = "CMC_Rank"
-
-        if ordered_list_sources_top and ordered_list_sources_top[0] == "CoinGecko":
-            argument_sort_choices = pycoingecko_view.COINS_COLUMNS
-        else:
-            argument_sort_choices = coinmarketcap_model.FILTERS
 
         parser = argparse.ArgumentParser(
             prog="top",
@@ -121,7 +129,6 @@ class DiscoveryController(BaseController):
             nargs="+",
             help="Sort by given column. Default: Market Cap Rank",
             default=argument_sort_default,
-            choices=argument_sort_choices,
             metavar="SORTBY",
         )
         parser.add_argument(
