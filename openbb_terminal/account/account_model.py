@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Any, Dict
+from typing import Any, Dict, Tuple
 
 from openbb_terminal import (
     config_plot as cfg_plot,
@@ -21,8 +21,8 @@ def get_diff(configs: dict) -> dict:
 
     Returns
     -------
-    bool
-        True if there is a diff.
+    dict
+        The diff.
     """
     SETTINGS = "features_settings"
     KEYS = "features_keys"
@@ -111,7 +111,7 @@ def get_diff_keys(keys: dict) -> dict:
     return diff
 
 
-def get_var_diff(obj, name, value):
+def get_var_diff(obj, name, value) -> Tuple[Any, Any]:
     """Set attribute in object.
 
     Parameters
@@ -122,6 +122,11 @@ def get_var_diff(obj, name, value):
         The attribute name.
     value : str
         The attribute value.
+
+    Returns
+    -------
+    Tuple[Any, Any]
+        The old and new values.
     """
     current_value = getattr(obj, name)
 
