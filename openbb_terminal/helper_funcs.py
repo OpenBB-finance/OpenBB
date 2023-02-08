@@ -789,6 +789,33 @@ def lambda_long_number_format(num, round_decimal=3) -> str:
     return num
 
 
+def revert_lambda_long_number_format(num_str: str) -> Union[float, str]:
+    """Revert the formatting of a long number if the input is a formatted number, otherwise return the input as is."""
+    magnitude_dict = {
+        "K": 1000,
+        "M": 1000000,
+        "B": 1000000000,
+        "T": 1000000000000,
+        "P": 1000000000000000,
+    }
+
+    num_as_list = num_str.strip().split()
+
+    if (
+        not isinstance(num_str, str)
+        or len(num_as_list) != 2
+        or num_as_list[1] not in magnitude_dict
+        or not num_as_list[0].replace(".", "").replace("-", "").isdigit()
+    ):
+        return num_str
+
+    num, unit = num_as_list
+    magnitude = magnitude_dict.get(unit)
+    if magnitude:
+        return float(num) * magnitude
+    return num_str
+
+
 def lambda_long_number_format_y_axis(df, y_column, ax):
     """Format long number that goes onto Y axis."""
     max_values = df[y_column].values.max()
@@ -1404,6 +1431,8 @@ def export_data(
                 },
                 regex=True,
             )
+
+            df = df.applymap(revert_lambda_long_number_format)
 
             if exp_type.endswith("csv"):
                 exists, overwrite = ask_file_overwrite(saved_path)
