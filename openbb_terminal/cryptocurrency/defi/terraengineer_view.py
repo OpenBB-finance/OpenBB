@@ -5,19 +5,10 @@ import logging
 import os
 from typing import Optional, Union
 
-import matplotlib.pyplot as plt
-from matplotlib import ticker
-
-from openbb_terminal import config_terminal as cfg
-from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.cryptocurrency.defi import terraengineer_model
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import (
-    export_data,
-    lambda_long_number_format,
-    plot_autoscale,
-)
+from openbb_terminal.helper_funcs import export_data
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -52,23 +43,9 @@ def display_terra_asset_history(
     if df.empty:
         console.print("[red]No data in the provided dataframe[/red]\n")
 
-    # This plot has 1 axis
-    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
     fig = OpenBBFigure(yaxis_title=f"{asset.upper()} Amount")
     fig.set_title(f"{asset.upper()} Amount in {address}")
-
-    ax.plot(df["x"], df["y"])
     fig.add_scatter(x=df["x"], y=df["y"], name=f"{asset.upper()} Amount")
-    ax.set_ylabel(f"{asset.upper()} Amount")
-    ax.set_title(f"{asset.upper()} Amount in {address}")
-    ax.get_yaxis().set_major_formatter(
-        ticker.FuncFormatter(lambda x, _: lambda_long_number_format(x))
-    )
-
-    cfg.theme.style_primary_axis(ax)
-
-    if not external_axes:
-        cfg.theme.visualize_output()
 
     export_data(
         export,
@@ -102,23 +79,10 @@ def display_anchor_yield_reserve(
     if df.empty:
         return console.print("[red]No data was found[/red]\n")
 
-    # This plot has 1 axis
-    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
     fig = OpenBBFigure(yaxis_title="UST Amount")
     fig.set_title("Anchor UST Yield Reserve")
 
-    ax.plot(df["x"], df["y"])
-    ax.set_ylabel("UST Amount")
-    ax.set_title("Anchor UST Yield Reserve")
-    ax.get_yaxis().set_major_formatter(
-        ticker.FuncFormatter(lambda x, _: lambda_long_number_format(x))
-    )
     fig.add_scatter(x=df["x"], y=df["y"], name="UST Amount")
-
-    cfg.theme.style_primary_axis(ax)
-
-    if not external_axes:
-        cfg.theme.visualize_output()
 
     export_data(
         export,

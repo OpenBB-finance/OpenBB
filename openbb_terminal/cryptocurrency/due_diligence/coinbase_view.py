@@ -5,9 +5,7 @@ import logging
 import os
 from typing import Optional, Union
 
-# import matplotlib.pyplot as plt
 import pandas as pd
-from pandas.plotting import register_matplotlib_converters
 
 from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.cryptocurrency.cryptocurrency_helpers import plot_order_book
@@ -16,8 +14,6 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
 
 logger = logging.getLogger(__name__)
-
-register_matplotlib_converters()
 
 
 @log_start_end(log=logger)

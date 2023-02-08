@@ -43,8 +43,7 @@ def display_daily_transactions(
     symbols = ["DAI", "USDT", "BUSD", "USDC"]
     df = get_daily_transactions(symbols)
     if df.empty:
-        console.print("[red]No data found.[/red]")
-        return
+        return console.print("[red]No data found.[/red]")
 
     # This plot has 1 axis
     _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)

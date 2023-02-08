@@ -52,7 +52,6 @@ class Volatility(PltTA):
             bbands_opacity = 0.8
         else:
             bbands_opacity = 0.8
-        print(df_ta.columns)
 
         fig.add_scatter(
             name=f"{columns_regex(df_ta, 'BBU')[0]}",
