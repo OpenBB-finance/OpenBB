@@ -6,8 +6,6 @@ on:
       - release/*
       - main
       - feature/*
-  
-  workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -18,8 +16,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
-      if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/release/')
+      if: github.event_name == 'push'
       uses: actions/checkout@v3
+
+    - name: Checkout specific ref
+      if: github.event_name == 'pull_request'
+      run: git fetch origin ${{ github.event.pull_request.head.ref }} && git checkout FETCH_HEAD
 
     - name: Setup Python 3.9
       uses: actions/setup-python@v4
