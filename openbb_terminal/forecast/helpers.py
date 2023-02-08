@@ -11,7 +11,7 @@ import pandas as pd
 from darts import TimeSeries
 from darts.dataprocessing.transformers import MissingValuesFiller, Scaler
 from darts.explainability.shap_explainer import ShapExplainer
-from darts.metrics import mape
+from darts.metrics import mape, rmse, mse
 from darts.models.forecasting.torch_forecasting_model import GlobalForecastingModel
 from darts.utils.statistics import plot_residuals_analysis
 from pytorch_lightning.callbacks.early_stopping import EarlyStopping
@@ -477,6 +477,7 @@ def plot_forecast(
     forecast_only: bool = False,
     naive: bool = False,
     export_pred_raw: bool = False,
+    metric: str = "mape",
     external_axes: Optional[List[plt.axes]] = None,
 ):
     quant_kwargs = {}
@@ -503,7 +504,14 @@ def plot_forecast(
     if naive:
         # show naive forecast shift timeseries by 1
         naive_fcast = naive_fcast.drop_before(historical_fcast.start_time())
-        naive_precision = mape(ticker_series, naive_fcast)
+
+        # calculate precision based on metric
+        if metric == "rsme":
+            naive_precision = rmse(ticker_series, naive_fcast)
+        elif metric == "mse":
+            naive_precision = mse(ticker_series, naive_fcast)
+        elif metric == "mape":
+            naive_precision = mape(ticker_series, naive_fcast)
 
         naive_fcast.plot(
             label=f"Naive+1: {naive_precision:.2f}%",
@@ -516,7 +524,7 @@ def plot_forecast(
         pred_label += " w/ past covs"
     predicted_values.plot(label=pred_label, **quant_kwargs, color="#00AAFF")
     ax.set_title(
-        f"{name} for <{ticker_name}> for next [{n_predict}] days (MAPE={precision:.2f}%)"
+        f"{name} for <{ticker_name}> for next [{n_predict}] days ({metric.upper()}={precision:.2f}%)"
     )
     ax.set_ylabel(target_col)
     ax.set_xlabel("Date")
@@ -719,6 +727,7 @@ def get_prediction(
     train_split: float,
     forecast_horizon: int,
     n_predict: int,
+    metric: str,
 ):
     _, val = ticker_series.split_before(train_split)
 
@@ -771,10 +780,16 @@ def get_prediction(
         else:
             prediction = best_model.predict(series=ticker_series, n=n_predict)
 
-    precision = mape(
-        actual_series=val, pred_series=historical_fcast
-    )  # mape = mean average percentage error
-    console.print(f"{model_name} model obtains MAPE: {precision:.2f}% \n")
+    # calculate precision based on metric (rmse, mse, mape)
+    if metric == "rmse":
+        precision = rmse(actual_series=val, pred_series=historical_fcast)
+    elif metric == "mse":
+        precision = mse(actual_series=val, pred_series=historical_fcast)
+    elif metric == "mape":
+        precision = mape(actual_series=val, pred_series=historical_fcast)
+
+    # capalize metic name
+    console.print(f"{model_name} model obtains {metric.upper()}: {precision:.2f}% \n")
 
     # scale back
     if use_scalers and isinstance(scaler, Scaler):
