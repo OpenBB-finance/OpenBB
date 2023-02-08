@@ -14,7 +14,6 @@ from openbb_terminal import (
     keys_model,
     keys_view,
 )
-from openbb_terminal.core.config.paths import USER_ENV_FILE
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import EXPORT_ONLY_RAW_DATA_ALLOWED

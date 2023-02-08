@@ -15,9 +15,11 @@ import pytz
 from dotenv import set_key
 
 # IMPORTATION INTERNAL
-from openbb_terminal import config_plot as cfg_plot
-from openbb_terminal import featflags_controller as obbff_ctrl
-from openbb_terminal import feature_flags as obbff
+from openbb_terminal import (
+    config_plot as cfg_plot,
+    featflags_controller as obbff_ctrl,
+    feature_flags as obbff,
+)
 from openbb_terminal.core.config import paths
 from openbb_terminal.core.config.paths import (
     USER_DATA_SOURCES_DEFAULT_FILE,

@@ -44,7 +44,6 @@ from openbb_terminal import (
     config_terminal as cfg,
     feature_flags as obbff,
 )
-from openbb_terminal.core.config import paths
 from openbb_terminal.core.config.paths import (
     HOME_DIRECTORY,
     USER_EXPORTS_DIRECTORY,
