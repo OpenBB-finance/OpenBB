@@ -166,6 +166,7 @@ en:
   stocks/th/all: show all markets
   stocks/th/exchange: show one exchange
   stocks/th/holidays: show all dates on which there is a market holiday
+  stocks/disc/filings: the most-recent form submissions to the SEC 
   stocks/disc/pipo: past IPOs dates
   stocks/disc/fipo: future IPOs dates
   stocks/disc/gainers: show latest top gainers
