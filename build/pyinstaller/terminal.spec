@@ -60,7 +60,6 @@ added_files = [
     (os.path.join(pathex, "user_agent"), "user_agent"),
     (os.path.join(pathex, "vaderSentiment"), "vaderSentiment"),
     (os.path.join(pathex, "prophet"), "prophet"),
-    (os.path.join(pathex, "torch"), "torch"),
     (os.path.join(pathex, "frozendict", "VERSION"), "frozendict"),
     (
         os.path.join(pathex, "linearmodels", "datasets"),
@@ -86,6 +85,10 @@ if is_win:
     added_files.append(
         (os.path.join(f"{os.path.dirname(scipy.__file__)}.libs"), "scipy.libs/"),
     )
+
+added_binaries = [
+    (os.path.join(pathex, "torch", "lib"), os.path.join("torch", "lib")),
+]
 # Python libraries that are explicitly pulled into the bundle
 hidden_imports = [
     "sklearn.utils._cython_blas",
@@ -104,20 +107,20 @@ hidden_imports = [
     "user_agent",
     "vaderSentiment",
     "frozendict",
-    "textwrap3",
     "pyEX",
     "feedparser",
     "_sysconfigdata__darwin_darwin",
     "prophet",
     "debugpy",
     "scipy.sparse.linalg._isolve._iterative",
+    "torch",
 ]
 
 
 analysis_kwargs = dict(
     scripts=[os.path.join(os.getcwd(), "terminal.py")],
     pathex=[pathex, "."],
-    binaries=[],
+    binaries=added_binaries,
     datas=added_files,
     hiddenimports=hidden_imports,
     hookspath=["build/pyinstaller/hooks"],
