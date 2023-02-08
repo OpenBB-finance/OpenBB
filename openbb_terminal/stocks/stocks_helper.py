@@ -475,7 +475,7 @@ def load(
 
 def display_candle(
     symbol: str,
-    data: pd.DataFrame = None,
+    data: pd.DataFrame = pd.DataFrame(),
     use_matplotlib: bool = True,
     intraday: bool = False,
     add_trend: bool = False,
@@ -546,7 +546,9 @@ def display_candle(
     # We are not actually showing adj close in candle.  This hasn't been an issue so far, but adding
     # in intrinio returns all adjusted columns,so some care here is needed or else we end up with
     # mixing up close and adj close
-    data = data.copy()
+
+    data = data.copy(deep=True)
+
     if "Adj Close" in data.columns:
         data = data.drop(columns=["Close"]).rename(columns={"Adj Close": "Close"})
 
