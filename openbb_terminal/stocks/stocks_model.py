@@ -3,8 +3,8 @@ import os
 from datetime import datetime
 from urllib.error import HTTPError
 
-import intrinio_sdk as intrinio
 import fundamentalanalysis as fa  # Financial Modeling Prep
+import intrinio_sdk as intrinio
 import pandas as pd
 import pyEX
 import yfinance as yf

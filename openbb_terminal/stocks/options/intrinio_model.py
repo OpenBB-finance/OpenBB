@@ -5,6 +5,7 @@ from datetime import datetime, timedelta
 from typing import List
 
 import intrinio_sdk as intrinio
+import numpy as np
 import pandas as pd
 from tqdm import tqdm
 
@@ -221,7 +222,7 @@ def get_full_chain_eod(symbol: str, date: str) -> pd.DataFrame:
     """
     expirations = get_expiration_dates(symbol)
     # Since we can't have expirations in the past, lets do something fun:
-    # Note that there is an issue with using >= in that when the date = expiration, the IV will be 0, so iv*dte = 0*0
+    # Note that there is an issue with using >= in that when the date = expiration, the dte will be 0, so iv*dte = 0*0
     expirations = list(filter(lambda x: x > date, expirations))
 
     full_chain = pd.DataFrame()
@@ -265,13 +266,22 @@ def get_close_at_date(symbol: str, date: str) -> float:
     float
         close price
     """
-    return (
-        intrinio.SecurityApi()
-        .get_security_historical_data(
-            symbol, "adj_close_price", start_date=date, end_date=date, frequency="daily"
+    # Catch error if the price or ticker doesnt exist
+    try:
+        return (
+            intrinio.SecurityApi()
+            .get_security_historical_data(
+                symbol,
+                "adj_close_price",
+                start_date=date,
+                end_date=date,
+                frequency="daily",
+            )
+            .to_dict()["historical_data"][0]["value"]
         )
-        .to_dict()["historical_data"][0]["value"]
-    )
+    except Exception as e:
+        logger.error("Error getting close price for %s on %s, error: %s", symbol, date, e)
+        return np.nan
 
 
 @log_start_end(log=logger)
