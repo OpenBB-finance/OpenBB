@@ -2126,6 +2126,7 @@ class ForecastController(BaseController):
             end=True,
             naive=True,
             export_pred_raw=True,
+            metric=True,
         )
         ns_parser = self.parse_known_args_and_warn(
             parser,
@@ -2155,6 +2156,7 @@ class ForecastController(BaseController):
                 end_date=ns_parser.s_end_date,
                 naive=ns_parser.naive,
                 export_pred_raw=ns_parser.export_pred_raw,
+                metric=ns_parser.metric,
             )
 
     @log_start_end(log=logger)
@@ -2187,6 +2189,7 @@ class ForecastController(BaseController):
             end=True,
             naive=True,
             export_pred_raw=True,
+            metric=True,
         )
         ns_parser = self.parse_known_args_and_warn(
             parser,
@@ -2214,6 +2217,7 @@ class ForecastController(BaseController):
                 end_date=ns_parser.s_end_date,
                 naive=ns_parser.naive,
                 export_pred_raw=ns_parser.export_pred_raw,
+                metric=ns_parser.metric,
             )
 
     @log_start_end(log=logger)
@@ -2273,6 +2277,7 @@ class ForecastController(BaseController):
             end=True,
             naive=True,
             export_pred_raw=True,
+            metric=True,
         )
         ns_parser = self.parse_known_args_and_warn(
             parser,
@@ -2309,6 +2314,7 @@ class ForecastController(BaseController):
                 end_date=ns_parser.s_end_date,
                 naive=ns_parser.naive,
                 export_pred_raw=ns_parser.export_pred_raw,
+                metric=ns_parser.metric,
             )
 
     @log_start_end(log=logger)
@@ -2385,6 +2391,7 @@ class ForecastController(BaseController):
             end=True,
             naive=True,
             export_pred_raw=True,
+            metric=True,
         )
         ns_parser = self.parse_known_args_and_warn(
             parser,
@@ -2427,6 +2434,7 @@ class ForecastController(BaseController):
                 end_date=ns_parser.s_end_date,
                 naive=ns_parser.naive,
                 export_pred_raw=ns_parser.export_pred_raw,
+                metric=ns_parser.metric,
             )
 
     @log_start_end(log=logger)
@@ -2494,6 +2502,7 @@ class ForecastController(BaseController):
             end=True,
             naive=True,
             export_pred_raw=True,
+            metric=True,
         )
         ns_parser = self.parse_known_args_and_warn(
             parser,
@@ -2537,6 +2546,7 @@ class ForecastController(BaseController):
                 end_date=ns_parser.s_end_date,
                 naive=ns_parser.naive,
                 export_pred_raw=ns_parser.export_pred_raw,
+                metric=ns_parser.metric,
             )
 
     @log_start_end(log=logger)
@@ -2644,6 +2654,7 @@ class ForecastController(BaseController):
             naive=True,
             explainability_raw=True,
             export_pred_raw=True,
+            metric=True,
         )
         ns_parser = self.parse_known_args_and_warn(
             parser,
@@ -2677,6 +2688,7 @@ class ForecastController(BaseController):
                 naive=ns_parser.naive,
                 explainability_raw=ns_parser.explainability_raw,
                 export_pred_raw=ns_parser.export_pred_raw,
+                metric=ns_parser.metric,
             )
 
     @log_start_end(log=logger)
@@ -2728,6 +2740,7 @@ class ForecastController(BaseController):
             end=True,
             naive=True,
             export_pred_raw=True,
+            metric=True,
         )
         ns_parser = self.parse_known_args_and_warn(
             parser,
@@ -2769,6 +2782,7 @@ class ForecastController(BaseController):
                 end_date=ns_parser.s_end_date,
                 naive=ns_parser.naive,
                 export_pred_raw=ns_parser.export_pred_raw,
+                metric=ns_parser.metric,
             )
 
     @log_start_end(log=logger)
@@ -2856,6 +2870,7 @@ class ForecastController(BaseController):
             end=True,
             naive=True,
             export_pred_raw=True,
+            metric=True,
         )
         ns_parser = self.parse_known_args_and_warn(
             parser,
@@ -2899,6 +2914,7 @@ class ForecastController(BaseController):
                 end_date=ns_parser.s_end_date,
                 naive=ns_parser.naive,
                 export_pred_raw=ns_parser.export_pred_raw,
+                metric=ns_parser.metric,
             )
 
     @log_start_end(log=logger)
@@ -2972,6 +2988,7 @@ class ForecastController(BaseController):
             end=True,
             naive=True,
             export_pred_raw=True,
+            metric=True,
         )
         ns_parser = self.parse_known_args_and_warn(
             parser,
@@ -3015,6 +3032,7 @@ class ForecastController(BaseController):
                 end_date=ns_parser.s_end_date,
                 naive=ns_parser.naive,
                 export_pred_raw=ns_parser.export_pred_raw,
+                metric=ns_parser.metric,
             )
 
     @log_start_end(log=logger)
@@ -3106,6 +3124,7 @@ class ForecastController(BaseController):
             end=True,
             naive=True,
             export_pred_raw=True,
+            metric=True,
         )
         ns_parser = self.parse_known_args_and_warn(
             parser,
@@ -3150,6 +3169,7 @@ class ForecastController(BaseController):
                 end_date=ns_parser.s_end_date,
                 naive=ns_parser.naive,
                 export_pred_raw=ns_parser.export_pred_raw,
+                metric=ns_parser.metric,
             )
 
     @log_start_end(log=logger)
