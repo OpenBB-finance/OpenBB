@@ -134,6 +134,7 @@ class AccountController(BaseController):
             else:
                 console.print(f"sync is {sync}, use --on or --off to change.")
 
+    @log_start_end(log=logger)
     def call_pull(self, other_args: List[str]):
         """Pull data"""
         parser = argparse.ArgumentParser(
@@ -160,6 +161,7 @@ class AccountController(BaseController):
                 else:
                     console.print("[info]No changes to apply.[/info]")
 
+    @log_start_end(log=logger)
     def call_clear(self, other_args: List[str]):
         """Clear data"""
         parser = argparse.ArgumentParser(
