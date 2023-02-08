@@ -5,8 +5,6 @@ import logging
 import os
 from typing import Optional
 
-from pandas.plotting import register_matplotlib_converters
-
 import openbb_terminal.cryptocurrency.due_diligence.pycoingecko_model as gecko
 from openbb_terminal.cryptocurrency import cryptocurrency_helpers
 from openbb_terminal.cryptocurrency.dataframe_helpers import wrap_text_in_df
@@ -14,8 +12,6 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
 
 logger = logging.getLogger(__name__)
-
-register_matplotlib_converters()
 
 
 @log_start_end(log=logger)

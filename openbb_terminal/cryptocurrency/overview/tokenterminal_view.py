@@ -2,11 +2,8 @@
 import logging
 import os
 
-from matplotlib import pyplot as plt
-
 from openbb_terminal import config_terminal as cfg
-from openbb_terminal.config_plot import PLOT_DPI
-from openbb_terminal.config_terminal import theme
+from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.cryptocurrency.overview.tokenterminal_model import (
     CATEGORIES,
     METRICS,
@@ -14,7 +11,7 @@ from openbb_terminal.cryptocurrency.overview.tokenterminal_model import (
     get_fundamental_metrics,
 )
 from openbb_terminal.decorators import check_api_key, log_start_end
-from openbb_terminal.helper_funcs import export_data, plot_autoscale
+from openbb_terminal.helper_funcs import export_data
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -52,74 +49,51 @@ def display_fundamental_metrics(
         Whether to return the figure object or not, by default False
     """
     if metric not in METRICS:
-        console.print(
+        return console.print(
             "[red]Invalid metric selected. See available metrics with get_possible_metrics()[/red]\n"
         )
-        return
 
     if category not in CATEGORIES and category != "":
-        console.print(
+        return console.print(
             "[red]Invalid category selected. See available categories with get_possible_categories()[/red]\n"
         )
-        return
 
     if timeline not in TIMELINES:
-        console.print(
+        return console.print(
             "[red]Invalid timeline selected. See available timelines with get_possible_timelines()[/red]\n"
         )
-        return
 
     metric_series = get_fundamental_metrics(
         metric=metric, category=category, timeline=timeline, ascend=ascend
     )
 
     if metric_series.empty:
-        console.print("\n[/red]No data found[/red]\n")
+        return console.print("\n[/red]No data found[/red]\n")
 
+    fig = OpenBBFigure()
+
+    fig.add_bar(
+        x=metric_series[:limit].index,
+        y=metric_series[:limit].values,
+        marker_color=cfg.theme.get_colors(reverse=True)[:limit],
+    )
+
+    if category:
+        fig.set_xaxis_title(category, tickangle=-15)
     else:
-        # This plot has 1 axis
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        fig.set_xaxis_title("Dapps and Blockchains", tickangle=-15)
 
-        num = max(metric_series[:limit].values)
-        magnitude = 0
-        while abs(num) >= 1000:
-            magnitude += 1
-            num /= 1000.0
+    if metric == "twitter_followers":
+        labeltouse = "Followers"
+    else:
+        labeltouse = "[USD]"
 
-        ax.bar(
-            metric_series[:limit].index,
-            metric_series[:limit].values
-            if magnitude == 0
-            else metric_series[:limit].values / (1000.0**magnitude),
-            color=cfg.theme.get_colors(reverse=True)[:limit],
-        )
+    fig.set_yaxis_title(f"{metric.replace('_', ' ').capitalize()} {labeltouse}")
 
-        if category:
-            ax.set_xlabel(category)
-        else:
-            ax.set_xlabel("Dapps and Blockchains")
+    fig.set_title(f"{metric.replace('_', ' ').capitalize()} from past {timeline}")
 
-        if metric == "twitter_followers":
-            if max(metric_series[:limit].values) < 10_000:
-                labeltouse = "Followers"
-            else:
-                labeltouse = f"[1{' KMBTP'[magnitude]}] Followers"
-        else:
-            if max(metric_series[:limit].values) < 10_000:
-                labeltouse = "[USD]"
-            else:
-                labeltouse = f"[1{' KMBTP'[magnitude]} USD]"
+    export_data(
+        export, os.path.dirname(os.path.abspath(__file__)), "fun", metric_series
+    )
 
-        ax.set_ylabel(f"{metric.replace('_', ' ').capitalize()} {labeltouse}")
-
-        ax.set_title(f"{metric.replace('_', ' ').capitalize()} from past {timeline}")
-        plt.xticks(rotation=45)
-
-        theme.style_primary_axis(ax)
-
-        if not external_axes:
-            theme.visualize_output()
-
-        export_data(
-            export, os.path.dirname(os.path.abspath(__file__)), "fun", metric_series
-        )
+    return fig.show(external=external_axes)

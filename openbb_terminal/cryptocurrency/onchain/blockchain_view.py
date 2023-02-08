@@ -4,19 +4,13 @@ __docformat__ = "numpy"
 import logging
 import os
 from datetime import datetime
-from typing import Optional
+from typing import Optional, Union
 
-import matplotlib.pyplot as plt
-from matplotlib import ticker
-
-from openbb_terminal.config_plot import PLOT_DPI
-from openbb_terminal.config_terminal import theme
+from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.cryptocurrency.onchain import blockchain_model
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
-    lambda_long_number_format,
-    plot_autoscale,
     print_rich_table,
     str_date_to_timestamp,
 )
@@ -31,7 +25,7 @@ def display_btc_circulating_supply(
     export: str = "",
     sheet_name: Optional[str] = None,
     external_axes: bool = False,
-) -> None:
+) -> Union[OpenBBFigure, None]:
     """Returns BTC circulating supply [Source: https://api.blockchain.info/]
 
     Parameters
@@ -59,18 +53,10 @@ def display_btc_circulating_supply(
         & (df["x"] < datetime.fromtimestamp(ts_end_date))
     ]
 
-    # This plot has 1 axis
-    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    fig = OpenBBFigure(yaxis_title="BTC")
+    fig.set_title("BTC Circulating Supply")
 
-    ax.plot(df["x"], df["y"])
-    ax.set_ylabel("BTC")
-    ax.set_title("BTC Circulating Supply")
-    ax.get_yaxis().set_major_formatter(
-        ticker.FuncFormatter(lambda x, _: lambda_long_number_format(x))
-    )
-
-    if not external_axes:
-        theme.visualize_output()
+    fig.add_scatter(x=df["x"], y=df["y"], mode="lines", showlegend=False)
 
     export_data(
         export,
@@ -80,6 +66,8 @@ def display_btc_circulating_supply(
         sheet_name,
     )
 
+    return fig.show(external=external_axes)
+
 
 @log_start_end(log=logger)
 def display_btc_confirmed_transactions(
@@ -88,7 +76,7 @@ def display_btc_confirmed_transactions(
     export: str = "",
     sheet_name: Optional[str] = None,
     external_axes: bool = False,
-) -> None:
+) -> Union[OpenBBFigure, None]:
     """Returns BTC confirmed transactions [Source: https://api.blockchain.info/]
 
     Parameters
@@ -116,20 +104,10 @@ def display_btc_confirmed_transactions(
         & (df["x"] < datetime.fromtimestamp(ts_end_date))
     ]
 
-    # This plot has 1 axis
-    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    fig = OpenBBFigure(yaxis_title="Transactions")
+    fig.set_title("BTC Confirmed Transactions")
 
-    ax.plot(df["x"], df["y"], lw=0.8)
-    ax.set_ylabel("Transactions")
-    ax.set_title("BTC Confirmed Transactions")
-    ax.get_yaxis().set_major_formatter(
-        ticker.FuncFormatter(lambda x, _: lambda_long_number_format(x))
-    )
-
-    theme.style_primary_axis(ax)
-
-    if not external_axes:
-        theme.visualize_output()
+    fig.add_scatter(x=df["x"], y=df["y"], mode="lines", showlegend=False)
 
     export_data(
         export,
@@ -138,6 +116,8 @@ def display_btc_confirmed_transactions(
         df,
         sheet_name,
     )
+
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)

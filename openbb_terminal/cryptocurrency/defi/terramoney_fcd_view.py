@@ -3,13 +3,13 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import Optional
+from typing import Optional, Union
 
 import matplotlib.pyplot as plt
-from matplotlib import ticker
 
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.config_plot import PLOT_DPI
+from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.cryptocurrency.dataframe_helpers import (
     lambda_very_long_number_formatter,
     prettify_column_names,
@@ -18,13 +18,14 @@ from openbb_terminal.cryptocurrency.defi import terramoney_fcd_model
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
-    lambda_long_number_format,
     plot_autoscale,
     print_rich_table,
 )
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
+
+# TODO: Test OpenBBFigure conversion
 
 
 @log_start_end(log=logger)
@@ -158,7 +159,7 @@ def display_account_growth(
     export: str = "",
     sheet_name: Optional[str] = None,
     external_axes: bool = False,
-) -> None:
+) -> Union[None, OpenBBFigure]:
     """Plots terra blockchain account growth history [Source: https://fcd.terra.dev/swagger]
 
     Parameters
@@ -183,8 +184,7 @@ def display_account_growth(
     opt = options[kind]
     label = "Cumulative" if cumulative and opt == "total" else "Daily"
 
-    # This plot has 1 axis
-    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    fig = OpenBBFigure(yaxis_title=f"{opt}")
 
     df = df.sort_values("date", ascending=False).head(limit)
     df = df.set_index("date")
@@ -192,19 +192,11 @@ def display_account_growth(
     start, end = df.index[-1], df.index[0]
 
     if cumulative:
-        ax.plot(df[opt], label=df[opt])
+        fig.add_scatter(x=df.index, y=df[opt], mode="lines", name=opt)
     else:
-        ax.bar(x=df.index, height=df[opt], label=df[opt])
+        fig.add_bar(x=df.index, y=df[opt], name=opt)
 
-    ax.set_ylabel(f"{opt}")
-    ax.get_yaxis().set_major_formatter(
-        ticker.FuncFormatter(lambda x, _: lambda_long_number_format(x))
-    )
-    ax.set_title(f"{label} number of {opt.lower()} in period from {start} to {end}")
-    cfg.theme.style_primary_axis(ax)
-
-    if not external_axes:
-        cfg.theme.visualize_output()
+    fig.set_title(f"{label} number of {opt.lower()} in period from {start} to {end}")
 
     export_data(
         export,
@@ -214,6 +206,8 @@ def display_account_growth(
         sheet_name,
     )
 
+    return fig.show(external=external_axes)
+
 
 @log_start_end(log=logger)
 def display_staking_ratio_history(
@@ -221,7 +215,7 @@ def display_staking_ratio_history(
     export: str = "",
     sheet_name: Optional[str] = None,
     external_axes: bool = False,
-) -> None:
+) -> Union[None, OpenBBFigure]:
     """Plots terra blockchain staking ratio history [Source: https://fcd.terra.dev/v1]
 
     Parameters
@@ -240,6 +234,10 @@ def display_staking_ratio_history(
 
     # This plot has 1 axis
     _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    fig = OpenBBFigure(yaxis_title="Staking ratio [%]")
+    fig.set_title(f"Staking ratio from {start} to {end}")
+
+    fig.add_scatter(x=df.index, y=df["stakingRatio"], mode="lines", name="stakingRatio")
 
     ax.plot(df, label=df["stakingRatio"])
     ax.set_ylabel("Staking ratio [%]")
@@ -258,6 +256,8 @@ def display_staking_ratio_history(
         sheet_name,
     )
 
+    return fig.show(external=external_axes)
+
 
 @log_start_end(log=logger)
 def display_staking_returns_history(
@@ -265,7 +265,7 @@ def display_staking_returns_history(
     export: str = "",
     sheet_name: Optional[str] = None,
     external_axes: bool = False,
-) -> None:
+) -> Union[None, OpenBBFigure]:
     """Plots terra blockchain staking returns history [Source: https://fcd.terra.dev/swagger]
 
     Parameters
@@ -280,14 +280,19 @@ def display_staking_returns_history(
     """
     # This plot has 1 axis
     _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    fig = OpenBBFigure(yaxis_title="Staking returns [%]")
 
     df = terramoney_fcd_model.get_staking_returns_history(limit)
 
     start, end = df.index[-1], df.index[0]
 
     ax.plot(df, label=df["annualizedReturn"])
+    fig.add_scatter(
+        x=df.index, y=df["annualizedReturn"], mode="lines", name="annualizedReturn"
+    )
     ax.set_ylabel("Staking returns [%]")
     ax.set_title(f"Staking returns from {start} to {end}")
+    fig.set_title(f"Staking returns from {start} to {end}")
 
     cfg.theme.style_primary_axis(ax)
 
@@ -301,3 +306,5 @@ def display_staking_returns_history(
         df,
         sheet_name,
     )
+
+    return fig.show(external=external_axes)

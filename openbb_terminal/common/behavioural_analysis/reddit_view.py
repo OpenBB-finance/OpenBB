@@ -25,6 +25,9 @@ from openbb_terminal.rich_config import console
 logger = logging.getLogger(__name__)
 
 
+# TODO: Test OpenBBFigure conversion
+
+
 @log_start_end(log=logger)
 @check_api_key(
     [

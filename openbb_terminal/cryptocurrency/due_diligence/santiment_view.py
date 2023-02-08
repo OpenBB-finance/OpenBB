@@ -1,16 +1,13 @@
 import logging
 import os
-from typing import Optional
+from typing import Optional, Union
 
-from matplotlib import pyplot as plt
-
-from openbb_terminal import config_plot as cfgPlot
-from openbb_terminal.config_terminal import theme
+from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.cryptocurrency.due_diligence.santiment_model import (
     get_github_activity,
 )
 from openbb_terminal.decorators import check_api_key, log_start_end
-from openbb_terminal.helper_funcs import export_data, plot_autoscale
+from openbb_terminal.helper_funcs import export_data
 
 logger = logging.getLogger(__name__)
 
@@ -26,7 +23,7 @@ def display_github_activity(
     export: str = "",
     sheet_name: Optional[str] = None,
     external_axes: bool = False,
-) -> None:
+) -> Union[OpenBBFigure, None]:
     """Returns a list of github activity for a given coin and time interval.
 
     [Source: https://santiment.net/]
@@ -58,21 +55,12 @@ def display_github_activity(
     )
 
     if df.empty:
-        return
+        return None
 
-    # This plot has 1 axis
-    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
+    fig = OpenBBFigure(yaxis_title=f"{symbol}'s Activity count")
+    fig.set_title(f"{symbol}'s Github activity over time")
 
-    ax.plot(df.index, df["value"])
-
-    ax.set_title(f"{symbol}'s Github activity over time")
-    ax.set_ylabel(f"{symbol}'s Activity count")
-    ax.set_xlim(df.index[0], df.index[-1])
-
-    theme.style_primary_axis(ax)
-
-    if not external_axes:
-        theme.visualize_output()
+    fig.add_scatter(x=df.index, y=df["value"], name=f"{symbol}'s Activity count")
 
     export_data(
         export,
@@ -81,3 +69,5 @@ def display_github_activity(
         df,
         sheet_name,
     )
+
+    return fig.show(external=external_axes)

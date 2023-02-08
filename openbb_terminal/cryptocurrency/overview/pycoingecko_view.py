@@ -7,25 +7,71 @@ from typing import Optional, Union
 
 import pandas as pd
 import plotly.express as px
-from matplotlib import pyplot as plt
-from pandas.plotting import register_matplotlib_converters
 
 import openbb_terminal.cryptocurrency.overview.pycoingecko_model as gecko
-from openbb_terminal import feature_flags as obbff
-from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.cryptocurrency.dataframe_helpers import (
     lambda_long_number_format_with_type_check,
 )
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import export_data, plot_autoscale, print_rich_table
+from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
-register_matplotlib_converters()
-
 # pylint: disable=R0904, C0302
+
+
+@log_start_end(log=logger)
+def plot_pie_chart(
+    labels: list,
+    values: list,
+    title: str,
+) -> OpenBBFigure:
+    """Plots a pie chart from a dataframe
+
+    Parameters
+    ----------
+    labels_list : list
+        List of labels
+    values_list : list
+        List of values
+    title : str
+        Title of the chart
+
+    Returns
+    -------
+    OpenBBFigure
+        Plotly figure object
+    """
+    fig = OpenBBFigure.create_subplots(
+        1,
+        3,
+        specs=[[{"type": "domain"}, {"type": "pie", "colspan": 2}, None]],
+        row_heights=[0.8],
+        vertical_spacing=0.1,
+        column_widths=[0.3, 0.8, 0.1],
+    )
+    fig.add_pie(
+        labels=labels,
+        values=values,
+        textinfo="label+percent",
+        showlegend=False,
+        hoverinfo="label+percent+value",
+        outsidetextfont=dict(size=14),
+        marker=dict(line=dict(color="white", width=1)),
+        automargin=True,
+        textposition="outside",
+        rotation=180,
+        row=1,
+        col=2,
+    )
+    fig.update_layout(
+        margin=dict(l=0, r=0, t=60, b=0),
+        title=dict(text=title, y=0.97, x=0.5, xanchor="center", yanchor="top"),
+    )
+
+    return fig
 
 
 @log_start_end(log=logger)
@@ -289,9 +335,6 @@ def display_global_market_info(
 
     if not df.empty:
         if pie:
-            fig = OpenBBFigure()
-            fig.set_title("Market Cap Distribution")
-
             df = df.loc[
                 df["Metric"].isin(
                     [
@@ -301,14 +344,10 @@ def display_global_market_info(
                     ]
                 )
             ]
-
-            fig.add_pie(
+            fig = plot_pie_chart(
                 labels=["BTC", "ETH", "Altcoins"],
                 values=df["Value"],
-                textinfo="label+percent",
-                showlegend=False,
-                hoverinfo="label+percent",
-                marker=dict(line=dict(color="white", width=0.5)),
+                title="Market Cap Distribution",
             )
             fig.show()
 
@@ -408,29 +447,10 @@ def display_stablecoins(
             labels_list = list(stables_to_display["Name"].values)
             labels_list.append("Others")
 
-            fig = OpenBBFigure()
-
-            fig.add_pie(
+            fig = plot_pie_chart(
                 labels=labels_list,
                 values=values_list,
-                textinfo="label+percent",
-                showlegend=False,
-                hoverinfo="label+percent",
-                marker=dict(line=dict(color="white", width=1)),
-                automargin=True,
-                textposition="outside",
-                rotation=180,
-            )
-
-            fig.update_layout(
-                margin=dict(l=0, r=0, t=60, b=0),
-                title=dict(
-                    text=f"Market cap distribution of top {limit} Stablecoins",
-                    y=0.97,
-                    x=0.5,
-                    xanchor="center",
-                    yanchor="top",
-                ),
+                title=f"Market cap distribution of top {limit} Stablecoins",
             )
             fig.show()
 
@@ -498,41 +518,14 @@ def display_categories(
             values_list.append(other_stables[f"% relative to top {limit}"].sum())
             labels_list = list(stables_to_display["Name"].values)
             labels_list.append("Others")
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-            fig = OpenBBFigure()
-            fig.add_pie(
+
+            fig = plot_pie_chart(
                 labels=labels_list,
                 values=values_list,
-                textinfo="label+percent",
-                showlegend=False,
-                hoverinfo="label+percent",
-                marker=dict(line=dict(color="white", width=1)),
-                automargin=True,
-                textposition="outside",
-                rotation=180,
-            )
-            ax.pie(
-                values_list,
-                labels=labels_list,
-                wedgeprops={"linewidth": 0.5, "edgecolor": "white"},
-                autopct="%1.0f%%",
-                startangle=90,
-            )
-            ax.set_title(f"Market Cap distribution of top {limit} crypto categories")
-            fig.update_layout(
-                margin=dict(l=0, r=0, t=60, b=0),
-                title=dict(
-                    text=f"Market Cap distribution of top {limit} crypto categories",
-                    y=0.97,
-                    x=0.5,
-                    xanchor="center",
-                    yanchor="top",
-                ),
+                title=f"Market Cap distribution of top {limit} crypto categories",
             )
             fig.show()
-            if obbff.USE_ION:
-                plt.ion()
-            plt.show()
+
         df = df.applymap(lambda x: lambda_long_number_format_with_type_check(x))
         print_rich_table(
             df.head(limit),

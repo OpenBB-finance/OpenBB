@@ -3,18 +3,16 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import Optional
+from typing import Optional, Union
 
 import numpy as np
 import pandas as pd
-from matplotlib import pyplot as plt
 
 from openbb_terminal import rich_config
 from openbb_terminal.common.behavioural_analysis import finbrain_model
-from openbb_terminal.config_plot import PLOT_DPI
-from openbb_terminal.config_terminal import theme
+from openbb_terminal.core.plots.plotly_helper import OpenBBFigure, theme
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import export_data, plot_autoscale, print_rich_table
+from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -33,7 +31,7 @@ def display_sentiment_analysis(
     export: str = "",
     sheet_name: Optional[str] = None,
     external_axes: bool = False,
-):
+) -> Union[None, OpenBBFigure]:
     """Plots Sentiment analysis from FinBrain. Prints table if raw is True. [Source: FinBrain]
 
     Parameters
@@ -51,59 +49,17 @@ def display_sentiment_analysis(
     """
     sentiment = finbrain_model.get_sentiment(symbol)
     if sentiment.empty:
-        console.print("No sentiment data found.\n")
-        return
+        return console.print("No sentiment data found.\n")
 
-    if not raw:
-        # This plot has 1 axis
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "headlines",
+        sentiment,
+        sheet_name,
+    )
 
-        for index, row in sentiment.iterrows():
-            if float(row["Sentiment Analysis"]) >= 0:
-                ax.scatter(
-                    index, float(row["Sentiment Analysis"]), s=100, color=theme.up_color
-                )
-            else:
-                ax.scatter(
-                    index,
-                    float(row["Sentiment Analysis"]),
-                    s=100,
-                    color=theme.down_color,
-                )
-        ax.axhline(y=0, linestyle="--")
-        ax.set_xlabel("Time")
-        ax.set_ylabel("Sentiment")
-        start_date = sentiment.index[-1].strftime("%Y/%m/%d")
-        ax.set_title(
-            f"FinBrain's Sentiment Analysis for {symbol.upper()} since {start_date}"
-        )
-        ax.set_ylim([-1.1, 1.1])
-        senValues = np.array(pd.to_numeric(sentiment["Sentiment Analysis"].values))
-        senNone = np.array(0 * len(sentiment))
-        ax.fill_between(
-            sentiment.index,
-            pd.to_numeric(sentiment["Sentiment Analysis"].values),
-            0,
-            where=(senValues < senNone),
-            alpha=0.30,
-            color=theme.down_color,
-            interpolate=True,
-        )
-        ax.fill_between(
-            sentiment.index,
-            pd.to_numeric(sentiment["Sentiment Analysis"].values),
-            0,
-            where=(senValues >= senNone),
-            alpha=0.30,
-            color=theme.up_color,
-            interpolate=True,
-        )
-        theme.style_primary_axis(ax)
-
-        if external_axes is None:
-            theme.visualize_output()
-
-    else:
+    if raw:
         if rich_config.USE_COLOR:
             color_df = sentiment["Sentiment Analysis"].apply(
                 lambda_sentiment_coloring, last_val=0
@@ -129,10 +85,50 @@ def display_sentiment_analysis(
                 show_index=True,
             )
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "headlines",
-        sentiment,
-        sheet_name,
+    fig = OpenBBFigure(
+        yaxis=dict(title="Sentiment", range=[-1.1, 1.1]), xaxis_title="Time"
     )
+
+    fig.add_hline(y=0, line_dash="dash")
+
+    start_date = sentiment.index[-1].strftime("%Y/%m/%d")
+
+    fig.set_title(
+        f"FinBrain's Sentiment Analysis for {symbol.upper()} since {start_date}"
+    )
+    senValues = np.array(pd.to_numeric(sentiment["Sentiment Analysis"].values))
+    senNone = np.array(0 * len(sentiment))
+    df_sentiment = sentiment["Sentiment Analysis"]
+    negative_yloc = np.where(senValues < senNone)[0]
+    positive_yloc = np.where(senValues > senNone)[0]
+
+    fig.add_scatter(
+        x=df_sentiment.index[positive_yloc],
+        y=pd.to_numeric(df_sentiment.values)[positive_yloc],
+        mode="lines+markers",
+        marker=dict(color=theme.up_color, size=15),
+        line_width=1,
+        name=symbol,
+    )
+    fig.add_scatter(
+        x=[df_sentiment.index[0], df_sentiment.index[-1]],
+        y=[0, 0],
+        fillcolor=theme.up_color_transparent.replace("0.5", "0.4"),
+        line=dict(color="white", dash="dash"),
+        fill="tonexty",
+        mode="lines",
+        name=symbol,
+    )
+    fig.add_scatter(
+        x=df_sentiment.index[negative_yloc],
+        y=pd.to_numeric(df_sentiment.values)[negative_yloc],
+        fill="tonexty",
+        fillcolor=theme.down_color_transparent.replace("0.5", "0.4"),
+        line_width=1,
+        mode="lines+markers",
+        marker=dict(color=theme.down_color, size=15),
+        name=symbol,
+    )
+    fig.update_traces(showlegend=False)
+
+    return fig.show(external=external_axes)

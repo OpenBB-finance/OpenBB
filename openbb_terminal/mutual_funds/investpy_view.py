@@ -3,16 +3,14 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import Optional
+from typing import Optional, Union
 
-import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
-from openbb_terminal.config_plot import PLOT_DPI
-from openbb_terminal.config_terminal import theme
+from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import export_data, plot_autoscale, print_rich_table
+from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.mutual_funds import investpy_model
 from openbb_terminal.rich_config import console
 
@@ -143,7 +141,7 @@ def display_historical(
     export: str = "",
     sheet_name: Optional[str] = None,
     external_axes: bool = False,
-):
+) -> Union[None, OpenBBFigure]:
     """Display historical fund price
 
     Parameters
@@ -156,22 +154,16 @@ def display_historical(
         Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
-    external_axes:Optional[List[plt.Axes]]:
-        External axes to plot on
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     console.print()
-    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-
     if data.empty:
-        return
-    ax.plot(data.index, data.Close)
-    ax.set_xlim([data.index[0], data.index[-1]])
-    ax.set_xlabel("Date")
-    ax.set_ylabel("Close Price")
-    ax.set_title(f"{name.title()} Price History")
-    theme.style_primary_axis(ax)
-    if external_axes is None:
-        theme.visualize_output()
+        return None
+
+    fig = OpenBBFigure(yaxis_title="Close Price", xaxis_title="Date")
+    fig.set_title(f"{name.title()} Price History")
+    fig.add_scatter(x=data.index, y=data.Close, name=name)
 
     export_data(
         export,
@@ -180,3 +172,5 @@ def display_historical(
         data,
         sheet_name,
     )
+
+    return fig.show(external=external_axes)

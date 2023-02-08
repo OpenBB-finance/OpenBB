@@ -2,18 +2,16 @@
 import logging
 import os
 from datetime import datetime
-from typing import Optional
+from typing import Optional, Union
 
-from matplotlib import pyplot as plt
-
-from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
+from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.cryptocurrency.overview.blockchaincenter_model import (
     DAYS,
     get_altcoin_index,
 )
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import export_data, plot_autoscale
+from openbb_terminal.helper_funcs import export_data
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -27,7 +25,7 @@ def display_altcoin_index(
     export: str = "",
     sheet_name: Optional[str] = None,
     external_axes: bool = False,
-) -> None:
+) -> Union[OpenBBFigure, None]:
     """Displays altcoin index overtime
     [Source: https://blockchaincenter.net]
 
@@ -54,28 +52,42 @@ def display_altcoin_index(
         df = get_altcoin_index(period, start_date, end_date)
 
         if df.empty:
-            console.print("\nError scraping blockchain central\n")
-        else:
-            # This plot has 1 axis
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+            return console.print("\nError scraping blockchain central\n")
 
-            ax.set_ylabel("Altcoin Index")
-            ax.axhline(y=75, color=theme.up_color, label="Altcoin Season (75)")
-            ax.axhline(y=25, color=theme.down_color, label="Bitcoin Season (25)")
-            ax.set_title(f"Altcoin Index (Performance based on {period} days)")
+        fig = OpenBBFigure(yaxis_title="Altcoin Index")
+        fig.set_title(f"Altcoin Index (Performance based on {period} days)")
+        fig.add_scatter(x=df.index, y=df["Value"], mode="lines", name="Altcoin Index")
 
-            ax.plot(df.index, df["Value"], label="Altcoin Index")
-            ax.legend(loc="best")
+        fig.add_hline(
+            y=75,
+            line_color=theme.up_color,
+            annotation=dict(
+                text="Altcoin Season (75)",
+                showarrow=False,
+                x=0.5,
+                xanchor="center",
+            ),
+        )
+        fig.add_hline(
+            y=25,
+            line_color=theme.down_color,
+            annotation=dict(
+                text="Bitcoin Season (25)",
+                showarrow=False,
+                x=0.5,
+                xanchor="center",
+                yshift=-30,
+            ),
+        )
 
-            theme.style_primary_axis(ax)
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "altindex",
+            df,
+            sheet_name,
+        )
 
-            if not external_axes:
-                theme.visualize_output()
+        return fig.show(external=external_axes)
 
-            export_data(
-                export,
-                os.path.dirname(os.path.abspath(__file__)),
-                "altindex",
-                df,
-                sheet_name,
-            )
+    return None
