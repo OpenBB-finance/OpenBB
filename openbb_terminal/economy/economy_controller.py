@@ -900,7 +900,7 @@ class EconomyController(BaseController):
 
                         # display only once in the last iteration
                         if i == len(indices) - 1:
-                            yfinance_view.show_indices(
+                            data = yfinance_view.show_indices(
                                 indices=indices,
                                 interval=ns_parser.interval,
                                 start_date=ns_parser.start_date,
@@ -913,6 +913,8 @@ class EconomyController(BaseController):
                                 else None,
                                 returns=ns_parser.returns,
                             )
+
+                            print(data)
 
                             self.update_runtime_choices()
                             if obbff.ENABLE_EXIT_AUTO_HELP:

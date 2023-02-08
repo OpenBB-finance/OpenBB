@@ -638,6 +638,7 @@ def get_index(
         interval=interval,
         progress=False,
         show_errors=False,
+        ignore_tz=True,
     )
 
     if column not in index_data.columns:
@@ -711,6 +712,8 @@ def get_indices(
 
     for index in indices:
         indices_data[index] = get_index(index, interval, start_date, end_date, column)
+
+        print(indices_data)
 
     if returns:
         indices_data = indices_data.pct_change().dropna()
