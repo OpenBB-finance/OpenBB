@@ -1,0 +1,24 @@
+[red]No filings found for ticker , consider increasing the value for --pages. Showing recent filings instead.[/red]
+
+                      Ticker      CIK Form Type                                                               Title                                                                                                URL
+Date                                                                                                                                                                                                                  
+2023-02-07 17:35:52     None  1254890    13F-HR               13F-HR - TAIYO LIFE INSURANCE CO (0001254890) (Filer)  https://www.sec.gov/Archives/edgar/data/1254890/000125489023000003/0001254890-23-000003-index.htm
+2023-02-07 17:34:44     None   759458    13F-HR             13F-HR - CANANDAIGUA NATIONAL CORP (0000759458) (Filer)   https://www.sec.gov/Archives/edgar/data/759458/000075945823000001/0000759458-23-000001-index.htm
+2023-02-07 17:30:36     ITUB  1132597       6-K               6-K - Itau Unibanco Holding S.A. (0001132597) (Filer)  https://www.sec.gov/Archives/edgar/data/1132597/000129281423000325/0001292814-23-000325-index.htm
+2023-02-07 17:29:43     SGBI  1104280      10-Q        10-Q - SANGUI BIOTECH INTERNATIONAL INC (0001104280) (Filer)  https://www.sec.gov/Archives/edgar/data/1104280/000109690623000276/0001096906-23-000276-index.htm
+2023-02-07 17:29:20     None  1426940    13F-HR      13F-HR - Horizon Investment Services, LLC (0001426940) (Filer)  https://www.sec.gov/Archives/edgar/data/1426940/000108514623000727/0001085146-23-000727-index.htm
+2023-02-07 17:28:20     None  1566030    13F-HR                  13F-HR - INVESTMENT HOUSE LLC (0001566030) (Filer)  https://www.sec.gov/Archives/edgar/data/1566030/000139834423002330/0001398344-23-002330-index.htm
+2023-02-07 17:27:25     ITUB  1132597       6-K               6-K - Itau Unibanco Holding S.A. (0001132597) (Filer)  https://www.sec.gov/Archives/edgar/data/1132597/000129281423000323/0001292814-23-000323-index.htm
+2023-02-07 17:26:15     PETS  1040130      10-Q                      10-Q - PETMED EXPRESS INC (0001040130) (Filer)  https://www.sec.gov/Archives/edgar/data/1040130/000104013023000013/0001040130-23-000013-index.htm
+2023-02-07 17:23:59     None  1602603    13F-HR                     13F-HR - Family Firm, Inc. (0001602603) (Filer)  https://www.sec.gov/Archives/edgar/data/1602603/000160260323000001/0001602603-23-000001-index.htm
+2023-02-07 17:23:11     ITUB  1132597       6-K               6-K - Itau Unibanco Holding S.A. (0001132597) (Filer)  https://www.sec.gov/Archives/edgar/data/1132597/000129281423000321/0001292814-23-000321-index.htm
+2023-02-07 17:20:40     NEWR  1448056      10-Q                         10-Q - NEW RELIC, INC. (0001448056) (Filer)  https://www.sec.gov/Archives/edgar/data/1448056/000144805623000011/0001448056-23-000011-index.htm
+2023-02-07 17:17:41     KREF  1631596      10-K      10-K - KKR Real Estate Finance Trust Inc. (0001631596) (Filer)  https://www.sec.gov/Archives/edgar/data/1631596/000163159623000009/0001631596-23-000009-index.htm
+2023-02-07 17:17:41  KREF-PA  1631596      10-K      10-K - KKR Real Estate Finance Trust Inc. (0001631596) (Filer)  https://www.sec.gov/Archives/edgar/data/1631596/000163159623000009/0001631596-23-000009-index.htm
+2023-02-07 17:16:46     None  1483738    13F-HR  13F-HR - Contrarius Investment Management Ltd (0001483738) (Filer)  https://www.sec.gov/Archives/edgar/data/1483738/000138713123001547/0001387131-23-001547-index.htm
+2023-02-07 17:15:56     DRUG  1827401       6-K            6-K - BRIGHT MINDS BIOSCIENCES INC. (0001827401) (Filer)  https://www.sec.gov/Archives/edgar/data/1827401/000106299323002395/0001062993-23-002395-index.htm
+2023-02-07 17:12:36     None  1882673    13F-HR               13F-HR - US Asset Management LLC (0001882673) (Filer)  https://www.sec.gov/Archives/edgar/data/1882673/000188267323000002/0001882673-23-000002-index.htm
+2023-02-07 17:12:01      VVV  1674910      10-Q                           10-Q - VALVOLINE INC (0001674910) (Filer)  https://www.sec.gov/Archives/edgar/data/1674910/000167491023000033/0001674910-23-000033-index.htm
+2023-02-07 17:11:47     None  1821455    13F-HR             13F-HR - MTC Wealth Management LLC (0001821455) (Filer)  https://www.sec.gov/Archives/edgar/data/1821455/000166773123000075/0001667731-23-000075-index.htm
+2023-02-07 17:11:05     AVXL  1314052      10-Q              10-Q - ANAVEX LIFE SCIENCES CORP. (0001314052) (Filer)  https://www.sec.gov/Archives/edgar/data/1314052/000173112223000152/0001731122-23-000152-index.htm
+2023-02-07 17:10:56     HIVE  1720424       6-K        6-K - HIVE Blockchain Technologies Ltd. (0001720424) (Filer)  https://www.sec.gov/Archives/edgar/data/1720424/000106299323002387/0001062993-23-002387-index.htm
