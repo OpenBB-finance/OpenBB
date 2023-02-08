@@ -240,7 +240,7 @@ class OpenBBFigure(go.Figure):
 
         if plots_backend().isatty:
             self.update_layout(
-                margin=dict(l=0, r=0, t=0, b=0, pad=0, autoexpand=True),
+                margin=dict(l=10, r=0, t=0, b=0, pad=0, autoexpand=True),
                 height=762,
                 width=1400,
                 **kwargs,
@@ -910,6 +910,7 @@ class OpenBBFigure(go.Figure):
 
     def to_html(self, *args, **kwargs) -> str:
         """Return the figure as HTML"""
+        self.update_traces(marker_line_width=0.0001, selector=dict(type="bar"))
         kwargs.update(
             dict(
                 config={
@@ -1136,7 +1137,7 @@ class OpenBBFigure(go.Figure):
     def _adjust_margins(self) -> None:
         """Adjust the margins of the figure"""
         margin_add = (
-            [90, 60, 80, 60, 0] if not self._has_secondary_y else [90, 50, 80, 40, 0]
+            [90, 60, 85, 60, 0] if not self._has_secondary_y else [90, 50, 85, 40, 0]
         )
 
         # We adjust margins
@@ -1151,7 +1152,7 @@ class OpenBBFigure(go.Figure):
                     self.layout.margin[key] = add
 
         if not plots_backend().isatty:
-            self.layout.margin = dict(l=30, r=40, b=80, t=50, pad=0)
+            self.layout.margin = dict(l=60, r=40, b=80, t=50, pad=0)
 
     def _set_watermark(self) -> None:
         """Sets the watermark for OpenBB Terminal"""
