@@ -51,9 +51,8 @@ def fails_to_deliver(
         Optionally specify the name of the sheet the data is exported to.
     export: str
         Export dataframe data to csv,json,xlsx file
-    external_axes: Optional[List[plt.Axes]], optional
-        External axes (2 axes are expected in the list), by default None
-
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
 
     if start_date is None:
