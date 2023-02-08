@@ -60,6 +60,9 @@ def get_full_option_chain(
     elif source == "YahooFinance":
         df = yfinance_model.get_full_option_chain(symbol)
 
+    elif source == "Intrinio":
+        df = intrinio_model.get_full_option_chain(symbol)
+
     else:
         logger.info("Invalid Source")
         return pd.DataFrame()
@@ -67,7 +70,7 @@ def get_full_option_chain(
     if expiration:
         df = df[df.expiration == expiration]
 
-    return op_helpers.process_option_chain(df, source)
+    return df
 
 
 def get_option_current_price(

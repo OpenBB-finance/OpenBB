@@ -154,7 +154,6 @@ def get_full_option_chain(symbol: str) -> pd.DataFrame:
     chain = pd.DataFrame()
     for exp in tqdm(expirations):
         chain = pd.concat([chain, get_option_chain(symbol, exp)])
-    print(chain.columns)
     return chain.sort_values(by=["expiration", "strike"]).reset_index(drop=True)
 
 
