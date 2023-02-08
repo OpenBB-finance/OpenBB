@@ -602,120 +602,6 @@ def display_categories_sa(
 
 
 @log_start_end(log=logger)
-def display_equal_weight(
-    symbols: List[str],
-    interval: str = "3y",
-    start_date: str = "",
-    end_date: str = "",
-    log_returns: bool = False,
-    freq: str = "D",
-    maxnan: float = 0.05,
-    threshold: float = 0,
-    method: str = "time",
-    risk_measure="mv",
-    risk_free_rate: float = 0,
-    alpha: float = 0.05,
-    value: float = 1,
-    table: bool = False,
-) -> Dict:
-    """
-    Equally weighted portfolio, where weight = 1/# of symbols
-
-    Parameters
-    ----------
-    symbols : List[str]
-        List of portfolio tickers
-    interval : str, optional
-        interval to look at returns from
-    start_date: str, optional
-        If not using interval, start date string (YYYY-MM-DD)
-    end_date: str, optional
-        If not using interval, end date string (YYYY-MM-DD). If empty use last
-        weekday.
-    log_returns: bool, optional
-        If True calculate log returns, else arithmetic returns. Default value
-        is False.
-    freq: str, optional
-        The frequency used to calculate returns. Default value is 'D'. Possible
-        values are:
-        - 'D' for daily returns.
-        - 'W' for weekly returns.
-        - 'M' for monthly returns.
-
-    maxnan: float, optional
-        Max percentage of nan values accepted per asset to be included in
-        returns.
-    threshold: float, optional
-        Value used to replace outliers that are higher to threshold.
-    method: str
-        Method used to fill nan values. Default value is 'time'. For more information see `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`__.
-    risk_measure: str, optional
-        The risk measure used to optimize the portfolio.
-        The default is 'MV'. Possible values are:
-
-        - 'MV': Standard Deviation.
-        - 'MAD': Mean Absolute Deviation.
-        - 'MSV': Semi Standard Deviation.
-        - 'FLPM': First Lower Partial Moment (Omega Ratio).
-        - 'SLPM': Second Lower Partial Moment (Sortino Ratio).
-        - 'CVaR': Conditional Value at Risk.
-        - 'EVaR': Entropic Value at Risk.
-        - 'WR': Worst Realization.
-        - 'ADD': Average Drawdown of uncompounded cumulative returns.
-        - 'UCI': Ulcer Index of uncompounded cumulative returns.
-        - 'CDaR': Conditional Drawdown at Risk of uncompounded cumulative returns.
-        - 'EDaR': Entropic Drawdown at Risk of uncompounded cumulative returns.
-        - 'MDD': Maximum Drawdown of uncompounded cumulative returns.
-
-    risk_free_rate: float, optional
-        Risk free rate, must be in the same interval of assets returns. Used for
-        'FLPM' and 'SLPM' and Sharpe objective function. The default is 0.
-    alpha: float, optional
-        Significance level of CVaR, EVaR, CDaR and EDaR.
-    value : float, optional
-        Amount to allocate to portfolio, by default 1.0
-    table: bool, optional
-        True if plot table weights, by default False
-    """
-    p = d_period(interval, start_date, end_date)
-    s_title = f"{p} Equally Weighted Portfolio\n"
-
-    weights, stock_returns = optimizer_model.get_equal_weights(
-        symbols=symbols,
-        interval=interval,
-        start_date=start_date,
-        end_date=end_date,
-        log_returns=log_returns,
-        freq=freq,
-        maxnan=maxnan,
-        threshold=threshold,
-        method=method,
-        value=value,
-    )
-
-    if not weights:
-        console.print("There is no solution with these parameters.")
-        return {}
-
-    if table:
-        console.print(s_title)
-        display_weights(weights)
-        portfolio_performance(
-            weights=weights,
-            data=stock_returns,
-            risk_measure=risk_choices[risk_measure],
-            risk_free_rate=risk_free_rate,
-            alpha=alpha,
-            # a_sim=a_sim,
-            # beta=beta,
-            # b_sim=beta_sim,
-            freq=freq,
-        )
-
-    return weights
-
-
-@log_start_end(log=logger)
 def display_property_weighting(
     symbols: List[str],
     interval: str = "3y",
@@ -726,7 +612,6 @@ def display_property_weighting(
     maxnan: float = 0.05,
     threshold: float = 0,
     method: str = "time",
-    s_property: str = "marketCap",
     risk_measure: str = "mv",
     risk_free_rate: float = 0,
     alpha: float = 0.05,
@@ -795,7 +680,7 @@ def display_property_weighting(
         True if plot table weights, by default False
     """
     p = d_period(interval, start_date, end_date)
-    s_title = f"{p} Weighted Portfolio based on " + s_property + "\n"
+    s_title = f"{p} Weighted Portfolio based on Market Cap \n"
 
     weights, stock_returns = optimizer_model.get_property_weights(
         symbols=symbols,
@@ -807,7 +692,6 @@ def display_property_weighting(
         maxnan=maxnan,
         threshold=threshold,
         method=method,
-        s_property=s_property,
         value=value,
     )
 

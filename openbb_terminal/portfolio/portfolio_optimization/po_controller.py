@@ -23,11 +23,9 @@ from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.portfolio.portfolio_optimization import (
     excel_model,
-    optimizer_helper,
     optimizer_model,
     optimizer_view,
     statics,
-    yahoo_finance_model,
 )
 from openbb_terminal.portfolio.portfolio_optimization.parameters import (
     params_controller,
@@ -160,16 +158,13 @@ class PortfolioOptimizationController(BaseController):
         "rpf",
         "load",
         "plot",
-        "equal",
-        "mktcap",
-        "dividend",
-        "property",
         "maxsharpe",
         "minrisk",
         "maxutil",
         "maxret",
         "maxdiv",
         "maxdecorr",
+        "mktcap",
         "blacklitterman",
         "riskparity",
         "relriskparity",
@@ -293,6 +288,7 @@ class PortfolioOptimizationController(BaseController):
         mt.add_cmd("maxret", self.tickers)
         mt.add_cmd("maxdiv", self.tickers)
         mt.add_cmd("maxdecorr", self.tickers)
+        mt.add_cmd("mktcap", self.tickers)
         mt.add_cmd("blacklitterman", self.tickers)
         mt.add_cmd("ef", self.tickers)
         mt.add_raw("\n")
@@ -308,13 +304,6 @@ class PortfolioOptimizationController(BaseController):
         mt.add_cmd("nco", self.tickers)
         mt.add_raw("\n")
 
-        mt.add_info("_other_optimization_techniques_")
-        mt.add_cmd("equal", self.tickers)
-        mt.add_cmd("mktcap", self.tickers)
-        mt.add_cmd("dividend", self.tickers)
-        mt.add_cmd("property", self.tickers)
-
-        mt.add_raw("\n")
         mt.add_param("_optimized_portfolio", ", ".join(self.portfolios.keys()))
         mt.add_raw("\n")
 
@@ -936,60 +925,6 @@ class PortfolioOptimizationController(BaseController):
                         )
 
     @log_start_end(log=logger)
-    def call_equal(self, other_args: List[str]):
-        """Process equal command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="equal",
-            description="Returns an equally weighted portfolio",
-        )
-        parser = self.po_parser(
-            parser,
-            rm=True,
-            mt=True,
-            p=True,
-            s=True,
-            e=True,
-            lr=True,
-            freq=True,
-            mn=True,
-            th=True,
-            r=True,
-            a=True,
-            v=True,
-            name="NAME_",
-        )
-        ns_parser = self.parse_known_args_and_warn(parser, other_args)
-        if ns_parser:
-            if len(self.tickers) < 2:
-                console.print(
-                    "Please have at least 2 loaded tickers to calculate weights.\n"
-                )
-                return
-
-            weights = optimizer_view.display_equal_weight(
-                symbols=self.tickers,
-                interval=ns_parser.historic_period,
-                start_date=ns_parser.start_period,
-                end_date=ns_parser.end_period,
-                log_returns=ns_parser.log_returns,
-                freq=ns_parser.return_frequency,
-                maxnan=ns_parser.max_nan,
-                threshold=ns_parser.threshold_value,
-                method=ns_parser.nan_fill_method,
-                risk_measure=ns_parser.risk_measure.lower(),
-                risk_free_rate=ns_parser.risk_free,
-                alpha=ns_parser.significance_level,
-                value=ns_parser.long_allocation,
-                table=True,
-            )
-
-            self.portfolios[ns_parser.name.upper()] = weights
-            self.count += 1
-            self.update_runtime_choices()
-
-    @log_start_end(log=logger)
     def call_mktcap(self, other_args: List[str]):
         """Process mktcap command"""
         parser = argparse.ArgumentParser(
@@ -1036,135 +971,6 @@ class PortfolioOptimizationController(BaseController):
                 maxnan=ns_parser.max_nan,
                 threshold=ns_parser.threshold_value,
                 method=ns_parser.nan_fill_method,
-                s_property="marketCap",
-                risk_measure=ns_parser.risk_measure.lower(),
-                risk_free_rate=ns_parser.risk_free,
-                alpha=ns_parser.significance_level,
-                value=ns_parser.long_allocation,
-                table=True,
-            )
-
-            self.portfolios[ns_parser.name.upper()] = weights
-            self.count += 1
-            self.update_runtime_choices()
-
-    @log_start_end(log=logger)
-    def call_dividend(self, other_args: List[str]):
-        """Process dividend command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="dividend",
-            description="Returns a portfolio that is weighted based dividend yield.",
-        )
-        parser = self.po_parser(
-            parser,
-            rm=True,
-            mt=True,
-            p=True,
-            s=True,
-            e=True,
-            lr=True,
-            freq=True,
-            mn=True,
-            th=True,
-            r=True,
-            a=True,
-            v=True,
-            name="DIVIDEND_",
-        )
-        ns_parser = self.parse_known_args_and_warn(parser, other_args)
-        if ns_parser:
-            if len(self.tickers) < 2:
-                console.print(
-                    "Please have at least 2 stocks selected to perform calculations."
-                )
-                return
-
-            console.print(
-                "[yellow]Optimization can take time. Please be patient...\n[/yellow]"
-            )
-
-            weights = optimizer_view.display_property_weighting(
-                symbols=self.tickers,
-                interval=ns_parser.historic_period,
-                start_date=ns_parser.start_period,
-                end_date=ns_parser.end_period,
-                log_returns=ns_parser.log_returns,
-                freq=ns_parser.return_frequency,
-                maxnan=ns_parser.max_nan,
-                threshold=ns_parser.threshold_value,
-                method=ns_parser.nan_fill_method,
-                s_property="dividendYield",
-                risk_measure=ns_parser.risk_measure.lower(),
-                risk_free_rate=ns_parser.risk_free,
-                alpha=ns_parser.significance_level,
-                value=ns_parser.long_allocation,
-                table=True,
-            )
-
-            self.portfolios[ns_parser.name.upper()] = weights
-            self.count += 1
-            self.update_runtime_choices()
-
-    @log_start_end(log=logger)
-    def call_property(self, other_args: List[str]):
-        """Process property command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="property",
-            description="Returns a portfolio that is weighted based on selected property.",
-        )
-        parser.add_argument(
-            "-pr",
-            "--property",
-            required=bool("-h" not in other_args),
-            type=optimizer_helper.check_valid_property_type,
-            dest="s_property",
-            choices=yahoo_finance_model.yf_info_choices,
-            help="""Property info to weight. Use one of yfinance info options.""",
-            metavar="PROPERTY",
-        )
-        parser = self.po_parser(
-            parser,
-            rm=True,
-            mt=True,
-            p=True,
-            s=True,
-            e=True,
-            lr=True,
-            freq=True,
-            mn=True,
-            th=True,
-            r=True,
-            a=True,
-            v=True,
-            name="PROPERTY_",
-        )
-        ns_parser = self.parse_known_args_and_warn(parser, other_args)
-        if ns_parser:
-            if len(self.tickers) < 2:
-                console.print(
-                    "Please have at least 2 stocks selected to perform calculations."
-                )
-                return
-
-            console.print(
-                "[yellow]Optimization can take time. Please be patient...\n[/yellow]"
-            )
-
-            weights = optimizer_view.display_property_weighting(
-                symbols=self.tickers,
-                interval=ns_parser.historic_period,
-                start_date=ns_parser.start_period,
-                end_date=ns_parser.end_period,
-                log_returns=ns_parser.log_returns,
-                freq=ns_parser.return_frequency,
-                maxnan=ns_parser.max_nan,
-                threshold=ns_parser.threshold_value,
-                method=ns_parser.nan_fill_method,
-                s_property=ns_parser.s_property,
                 risk_measure=ns_parser.risk_measure.lower(),
                 risk_free_rate=ns_parser.risk_free,
                 alpha=ns_parser.significance_level,
