@@ -302,19 +302,59 @@ def get_property_weights(
     prop = {}
     prop_sum = 0
     for stock in symbols:
-        stock_prop = yf.Ticker(stock).info[s_property]
-        if stock_prop is None:
-            stock_prop = 0
+        stock_prop = get_prop(symbol=stock, prop=s_property)
         prop[stock] = stock_prop
         prop_sum += stock_prop
 
     if prop_sum == 0:
-        console.print(f"No {s_property} was found on list of tickers provided", "\n")
+        console.print(f"No '{s_property}' was found on list of tickers provided", "\n")
         return None, None
 
     weights = {k: value * v / prop_sum for k, v in prop.items()}
 
     return weights, stock_returns
+
+
+@log_start_end(log=logger)
+def get_prop(symbol, prop) -> float:
+    """Get property from yfinance
+
+    Parameters
+    ----------
+    symbol : str
+        Stock ticker
+    prop : str
+        Property to get
+
+    Returns
+    -------
+    dict
+        Ticker info
+    """
+    prop = yahoo_finance_model.fast_info_map.get(prop, prop)
+
+    try:
+        info = yf.Ticker(symbol).info
+    except Exception as _:  # noqa
+        info = None
+
+    try:
+        fast_info = yf.Ticker(symbol).fast_info
+    except Exception as _:  # noqa
+        fast_info = None
+
+    info_dict = {}
+    if info:
+        info_dict.update(dict(info))
+    if fast_info:
+        info_dict.update(dict(fast_info))
+
+    if info_dict:
+        value = info_dict.get(prop, 0.0)
+        if not value:
+            return 0.0
+        return value
+    return 0.0
 
 
 @log_start_end(log=logger)
@@ -1364,6 +1404,9 @@ def get_black_litterman_portfolio(
             s_property="marketCap",
             value=value,
         )
+
+    if benchmark is None:
+        return None, stock_returns
 
     factor = time_factor[freq.upper()]
     risk_free_rate = risk_free_rate / factor
