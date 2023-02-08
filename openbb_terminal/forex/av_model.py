@@ -166,11 +166,7 @@ def get_historical(
 
             if (df.index.hour != 0).any():
                 # if intraday data, convert to local timezone
-                df.index = (
-                    df.index.tz_localize("UTC")
-                    .tz_convert(get_user_timezone())
-                    .normalize()
-                )
+                df.index = df.index.tz_localize("UTC").tz_convert(get_user_timezone())
 
             df = df.rename(
                 columns={
