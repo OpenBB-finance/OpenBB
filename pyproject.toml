@@ -142,7 +142,7 @@ nbmake = ">0.5.0"
 ruff = "^0.0.236"
 
 [tool.poetry.extras]
-prediction = ["torch", "pytorch-lightning", "u8darts"]
+prediction = ["torch", "pytorch-lightning", "u8darts", "lightgbm"]
 optimization = ["Riskfolio-Lib"]
 all = ["torch", "pytorch-lightning", "u8darts", "Riskfolio-Lib"]
 jupyterlab = ["jupyterlab-code-formatter", "jupyterlab-lsp", "jedi-language-server"]

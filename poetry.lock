@@ -9145,9 +9145,9 @@ doc = ["docstring-parser"]
 installer = ["pyinstaller"]
 jupyterlab = ["jupyterlab-code-formatter", "jupyterlab-lsp", "jedi-language-server"]
 optimization = ["Riskfolio-Lib"]
-prediction = ["torch", "pytorch-lightning", "u8darts"]
+prediction = ["torch", "pytorch-lightning", "u8darts", "lightgbm"]
 
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8,<3.11, !=3.9.7"
-content-hash = "1924f7bd67e59677fffb32552fb89898283ef39ace36aeb64b501170be02c8fb"
+content-hash = "11611d9e28613d20d182e9d2965e603167848998d18c3273edaa01552a20e5d1"
