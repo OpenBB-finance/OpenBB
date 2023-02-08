@@ -713,8 +713,6 @@ def get_indices(
     for index in indices:
         indices_data[index] = get_index(index, interval, start_date, end_date, column)
 
-        print(indices_data)
-
     if returns:
         indices_data = indices_data.pct_change().dropna()
         indices_data = indices_data + 1
