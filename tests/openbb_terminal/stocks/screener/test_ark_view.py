@@ -4,7 +4,7 @@
 import pytest
 
 # IMPORTATION INTERNAL
-from openbb_terminal.stocks.fundamental_analysis import ark_view
+from openbb_terminal.stocks.screener import ark_view
 
 # pytest.skip("skipping tests, ark views seems broken", allow_module_level=True)
 
