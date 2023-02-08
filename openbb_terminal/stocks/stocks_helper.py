@@ -815,9 +815,13 @@ def process_candle(data: pd.DataFrame) -> pd.DataFrame:
     -------
     DataFrame
         A Panda's data frame with columns Open, High, Low, Close, Adj Close, Volume,
-        OC-High, OC-Low.
+        date_id, OC-High, OC-Low.
     """
     df_data = data.copy()
+    df_data["date_id"] = (df_data.index.date - df_data.index.date.min()).astype(
+        "timedelta64[D]"
+    )
+    df_data["date_id"] = df_data["date_id"].dt.days + 1
 
     df_data["OC_High"] = df_data[["Open", "Close"]].max(axis=1)
     df_data["OC_Low"] = df_data[["Open", "Close"]].min(axis=1)
