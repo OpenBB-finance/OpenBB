@@ -649,7 +649,7 @@ class FundamentalAnalysisController(StockBaseController):
                     self.ticker,
                     holder=ns_parser.holder,
                     export=ns_parser.export,
-                    heet_name=" ".join(ns_parser.sheet_name)
+                    sheet_name=" ".join(ns_parser.sheet_name)
                     if ns_parser.sheet_name
                     else None,
                 )
