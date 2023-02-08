@@ -286,19 +286,13 @@ class SettingsController(BaseController):
             other_args.insert(0, "-f")
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
-            try:
-                console.print("Loading sources from: " + str(ns_parser.file))
-                with open(ns_parser.file):
-                    # Try to open the file to get an exception if the file doesn't exist
-                    pass
-
+            if os.path.exists(ns_parser.file):
                 obbff_ctrl.FeatureFlagsController.set_feature_flag(
                     "OPENBB_PREFERRED_DATA_SOURCE_FILE", ns_parser.file
                 )
-
-            except Exception as e:
-                console.print("Couldn't open the sources file!")
-                console.print(e)
+                console.print("[green]Sources file changed successfully![/green]")
+            else:
+                console.print("[red]Couldn't find the sources file![/red]")
 
     @log_start_end(log=logger)
     def call_autoscaling(self, other_args: List[str]):
