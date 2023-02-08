@@ -31,7 +31,6 @@ from openbb_terminal.stocks.options import (
     intrinio_model,
     intrinio_view,
     nasdaq_model,
-    op_helpers,
     tradier_model,
     tradier_view,
     yfinance_model,
@@ -195,14 +194,14 @@ class OptionsController(BaseController):
         else:
             self.source = "YahooFinance"
             df = yfinance_model.get_full_option_chain(self.ticker)
+            print(df.head())
 
         if (isinstance(df, pd.DataFrame) and df.empty) or (
             not isinstance(df, pd.DataFrame) and not df
         ):
             console.print("[red]Error loading option chain.[/red]")
             return
-
-        self.full_chain = op_helpers.process_option_chain(data=df, source=self.source)
+        self.full_chain = df.copy(deep=True)
         self.chain = self.full_chain.copy(deep=True)
 
         console.print("Loaded option chain from", self.source)
@@ -679,7 +678,7 @@ class OptionsController(BaseController):
                 )
                 console.print("Please try loading from a different source.")
                 console.print("Loading from YahooFinance now.")
-                self.expiry_dates = yfinance_model.option_expirations(self.ticker)
+                self.expiry_dates = nasdaq_model.option_expirations(self.ticker)
 
             self.update_runtime_choices()
 

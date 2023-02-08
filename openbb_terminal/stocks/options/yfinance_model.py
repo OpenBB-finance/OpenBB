@@ -16,6 +16,19 @@ from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
+sorted_chain_columns = [
+    "contractSymbol",
+    "optionType",
+    "expiration",
+    "strike",
+    "lastPrice",
+    "bid",
+    "ask",
+    "openInterest",
+    "volume",
+    "impliedVolatility",
+]
+
 
 def get_full_option_chain(symbol: str) -> pd.DataFrame:
     """Get all options for given ticker [Source: Yahoo Finance]
@@ -37,15 +50,21 @@ def get_full_option_chain(symbol: str) -> pd.DataFrame:
 
     for _date in tqdm(dates, desc="Getting option chains"):
         calls = ticker.option_chain(_date).calls
+        calls["optionType"] = "call"
+        calls["expiration"] = _date
+        calls = calls[sorted_chain_columns]
         puts = ticker.option_chain(_date).puts
-
-        calls.columns = [x + "_c" if x != "strike" else x for x in calls.columns]
-        puts.columns = [x + "_p" if x != "strike" else x for x in puts.columns]
+        puts["optionType"] = "put"
+        puts["expiration"] = _date
+        puts = puts[sorted_chain_columns]
 
         temp = pd.merge(calls, puts, how="outer", on="strike")
         temp["expiration"] = _date
-        options = pd.concat([options, temp], axis=0).reset_index(drop=True)
-
+        options = (
+            pd.concat([options, pd.concat([calls, puts])], axis=0)
+            .fillna(0)
+            .reset_index(drop=True)
+        )
     return options
 
 

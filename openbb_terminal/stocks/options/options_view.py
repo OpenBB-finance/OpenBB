@@ -473,10 +473,11 @@ def display_chains(
     sheet_name: str
         Optionally specify the name of the sheet to export to
     """
-
+    print(chain.head())
     min_strike, max_strike = get_strikes(
         min_sp=min_sp, max_sp=max_sp, current_price=current_price
     )
+    print(chain.head())
     chain = chain[chain["strike"] >= min_strike]
     chain = chain[chain["strike"] <= max_strike]
     calls, puts = get_calls_and_puts(chain)
@@ -489,6 +490,7 @@ def display_chains(
             puts=puts,
             show_all=True,
         )
+        print(chain.head())
         # if the greeks calculation went with no problems, otherwise keep the previous
         if not chain.empty:
             calls, puts = get_calls_and_puts(chain)
