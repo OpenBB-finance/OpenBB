@@ -41,6 +41,22 @@ default_columns = [
     "ask",
 ]
 
+sorted_chain_columns = [
+    "symbol",
+    "option_type",
+    "expiration",
+    "strike",
+    "bid",
+    "ask",
+    "open_interest",
+    "volume",
+    "mid_iv",
+    "delta",
+    "gamma",
+    "theta",
+    "vega",
+]
+
 
 @log_start_end(log=logger)
 @check_api_key(["API_TRADIER_TOKEN"])
@@ -148,8 +164,15 @@ def get_full_option_chain(symbol: str) -> pd.DataFrame:
     for expiry in tqdm(expirations, desc="Getting option chains"):
         chain = get_option_chain(symbol, expiry)
         options_dfs.append(chain)
-
-    return pd.concat(options_dfs)
+    chain = pd.concat(options_dfs)
+    chain = chain[sorted_chain_columns].rename(
+        columns={
+            "mid_iv": "iv",
+            "open_interest": "openInterest",
+            "option_type": "optionType",
+        }
+    )
+    return chain
 
 
 @log_start_end(log=logger)

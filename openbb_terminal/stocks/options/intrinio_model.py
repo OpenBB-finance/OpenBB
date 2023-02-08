@@ -266,7 +266,7 @@ def get_close_at_date(symbol: str, date: str) -> float:
     float
         close price
     """
-    # Catch error if the price or ticker doesnt exist
+    # Catch error if the price or ticker does not exist
     try:
         return (
             intrinio.SecurityApi()
@@ -280,7 +280,9 @@ def get_close_at_date(symbol: str, date: str) -> float:
             .to_dict()["historical_data"][0]["value"]
         )
     except Exception as e:
-        logger.error("Error getting close price for %s on %s, error: %s", symbol, date, e)
+        logger.error(
+            "Error getting close price for %s on %s, error: %s", symbol, date, e
+        )
         return np.nan
 
 

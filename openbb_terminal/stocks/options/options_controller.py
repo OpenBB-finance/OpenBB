@@ -16,7 +16,6 @@ from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_FIGURES_ALLOWED,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
-    list_from_str,
     parse_and_split_input,
     valid_date,
 )
@@ -221,13 +220,7 @@ class OptionsController(BaseController):
                 self.current_price = yfinance_model.get_last_price(self.ticker)
 
     def set_expiry_dates(self):
-        self.expiry_dates = self.full_chain.expiration.unique().tolist()
-        # if self.source == "Tradier":
-        #     self.expiry_dates = tradier_model.option_expirations(self.ticker)
-        # elif self.source == "Nasdaq":
-        #     self.expiry_dates = nasdaq_model.option_expirations(self.ticker)
-        # else:
-        #     self.expiry_dates = yfinance_model.option_expirations(self.ticker)
+        self.expiry_dates = self.full_chain.expiration.unique().tolist() or []
 
     def update_runtime_choices(self):
         """Update runtime choices"""
@@ -956,7 +949,6 @@ class OptionsController(BaseController):
                         sheet_name=" ".join(ns_parser.sheet_name)
                         if ns_parser.sheet_name
                         else None,
-                        to_display=list_from_str(ns_parser.to_display),
                     )
                 else:
                     console.print(

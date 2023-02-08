@@ -261,10 +261,11 @@ def get_greeks(
     if not all(
         col in chain_columns for col in ["strike", "impliedVolatility", "optionType"]
     ):
-        console.print(
-            "[red]It's not possible to calculate the greeks without the following "
-            "columns: `strike`, `impliedVolatility`, `optionType`.\n[/red]"
-        )
+        if "delta" not in chain_columns:
+            console.print(
+                "[red]It's not possible to calculate the greeks without the following "
+                "columns: `strike`, `impliedVolatility`, `optionType`.\n[/red]"
+            )
         return pd.DataFrame()
 
     risk_free = rf if rf is not None else get_rf()
