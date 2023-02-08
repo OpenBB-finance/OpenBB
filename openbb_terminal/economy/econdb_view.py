@@ -230,7 +230,7 @@ def show_treasuries(
             export,
             os.path.dirname(os.path.abspath(__file__)),
             "treasuries_data",
-            treasury_data,
+            treasury_data / 100,
             sheet_name,
         )
 
