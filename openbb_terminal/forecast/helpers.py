@@ -11,7 +11,7 @@ import pandas as pd
 from darts import TimeSeries
 from darts.dataprocessing.transformers import MissingValuesFiller, Scaler
 from darts.explainability.shap_explainer import ShapExplainer
-from darts.metrics import mape, rmse, mse  # noqa: I001
+from darts.metrics import mape, rmse, mse, smape  # noqa: I001
 from darts.models.forecasting.torch_forecasting_model import GlobalForecastingModel
 from darts.utils.statistics import plot_residuals_analysis
 from pytorch_lightning.callbacks.early_stopping import EarlyStopping
@@ -512,6 +512,8 @@ def plot_forecast(
             naive_precision = mse(ticker_series, naive_fcast)
         elif metric == "mape":
             naive_precision = mape(ticker_series, naive_fcast)
+        elif metric == "smape":
+            naive_precision = smape(ticker_series, naive_fcast)
 
         naive_fcast.plot(
             label=f"Naive+1: {naive_precision:.2f}%",
@@ -787,6 +789,8 @@ def get_prediction(
         precision = mse(actual_series=val, pred_series=historical_fcast)
     elif metric == "mape":
         precision = mape(actual_series=val, pred_series=historical_fcast)
+    elif metric == "smape":
+        precision = smape(actual_series=val, pred_series=historical_fcast)
 
     console.print(f"{model_name} model obtains {metric.upper()}: {precision:.2f}% \n")
 

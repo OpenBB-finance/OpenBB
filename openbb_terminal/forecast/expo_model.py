@@ -8,7 +8,7 @@ from typing import List, Optional, Tuple, Union
 
 import pandas as pd
 from darts import TimeSeries
-from darts.metrics import mape, rmse, mse  # noqa: I001
+from darts.metrics import mape, rmse, mse, smape  # noqa: I001
 from darts.models import ExponentialSmoothing
 from darts.utils.utils import ModelMode, SeasonalityMode
 from numpy import ndarray
@@ -159,6 +159,8 @@ def get_expo_data(
         precision = mse(actual_series=ticker_series, pred_series=historical_fcast_es)
     elif metric == "mape":
         precision = mape(actual_series=ticker_series, pred_series=historical_fcast_es)
+    elif metric == "smape":
+        precision = smape(actual_series=ticker_series, pred_series=historical_fcast_es)
 
     console.print(
         f"Exponential smoothing obtains {metric.upper()}: {precision:.2f}% \n"

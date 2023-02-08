@@ -639,7 +639,7 @@ class ForecastController(BaseController):
                 action="store",
                 dest="metric",
                 default="mape",
-                choices=["rmse", "mse", "mape"],
+                choices=["rmse", "mse", "mape", "smape"],
                 help="Calculate precision based on a specific metric (rmse, mse, mape)",
             )
 

@@ -8,7 +8,7 @@ from typing import List, Optional, Tuple, Union
 import numpy as np
 import pandas as pd
 from darts import TimeSeries
-from darts.metrics import mape, rmse, mse  # noqa: I001
+from darts.metrics import mape, rmse, mse, smape  # noqa: I001
 from darts.models import Theta
 from darts.utils.utils import SeasonalityMode
 from statsmodels.tools.sm_exceptions import ConvergenceWarning
@@ -147,6 +147,10 @@ def get_theta_data(
         precision = mse(actual_series=ticker_series, pred_series=historical_fcast_theta)
     elif metric == "mape":
         precision = mape(
+            actual_series=ticker_series, pred_series=historical_fcast_theta
+        )
+    elif metric == "smape":
+        precision = smape(
             actual_series=ticker_series, pred_series=historical_fcast_theta
         )
 
