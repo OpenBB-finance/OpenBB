@@ -54,6 +54,7 @@
       }
     },
     "disc": {
+      "filings": ["FinancialModelingPrep"],
       "pipo": ["Finnhub"],
       "fipo": ["Finnhub"],
       "gainers": ["YahooFinance"],
