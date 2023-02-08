@@ -796,7 +796,7 @@ interactions:
       Accept-Ranges:
       - bytes
       Age:
-      - '0'
+      - '8946'
       Cache-Control:
       - public, max-age=120
       Connection:
@@ -808,7 +808,7 @@ interactions:
       Content-Type:
       - text/html; charset=utf-8
       Date:
-      - Mon, 06 Feb 2023 21:16:39 GMT
+      - Mon, 06 Feb 2023 23:45:44 GMT
       ETag:
       - W/"3b19b-bRTqJmn9q4aSOO0krlYQuoFvSj0"
       Last-Modified:
@@ -819,9 +819,9 @@ interactions:
       Via:
       - 1.1 varnish, 1.1 varnish
       X-Cache:
-      - MISS, MISS
+      - MISS, HIT
       X-Cache-Hits:
-      - 0, 0
+      - 0, 1
       X-Country-Code:
       - NL
       X-Forwarded-For:
@@ -831,9 +831,9 @@ interactions:
       X-Powered-By:
       - Fenrir
       X-Served-By:
-      - cache-iad-kjyo7100134-IAD, cache-ams21021-AMS
+      - cache-iad-kjyo7100134-IAD, cache-ams21079-AMS
       X-Timer:
-      - S1675718197.263958,VS0,VE1901
+      - S1675727145.949122,VS0,VE1
     status:
       code: 200
       message: OK

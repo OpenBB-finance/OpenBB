@@ -638,6 +638,7 @@ def get_index(
         interval=interval,
         progress=False,
         show_errors=False,
+        ignore_tz=True,
     )
 
     if column not in index_data.columns:

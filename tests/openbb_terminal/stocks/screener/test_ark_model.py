@@ -6,7 +6,7 @@ import pytest
 import requests
 
 # IMPORTATION INTERNAL
-from openbb_terminal.stocks.fundamental_analysis import ark_model
+from openbb_terminal.stocks.screener import ark_model
 
 
 @pytest.fixture(scope="module")
