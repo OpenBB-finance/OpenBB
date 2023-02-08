@@ -28,8 +28,8 @@ def plot_covid_ov(
     ----------
     country: str
         Country to plot
-    external_axis: Optional[List[plt.Axes]]
-        List of external axes to include in plot
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     cases = covid_model.get_global_cases(country) / 1_000
     deaths = covid_model.get_global_deaths(country)
@@ -109,8 +109,8 @@ def plot_covid_stat(
     ----------
     country: str
         Country to plot
-    external_axis: Optional[List[plt.Axes]]
-        List of external axes to include in plot
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
 
     fig = OpenBBFigure(title=f"{country} COVID {stat}", xaxis_title="Date")

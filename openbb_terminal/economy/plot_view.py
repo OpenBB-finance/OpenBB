@@ -24,8 +24,8 @@ def show_plot(
         Data you wish to plot on the first y-axis.
     dataset_yaxis_2 : pd.DataFrame
         Data you wish to plot on the second y-axis.
-    external_axes: Optional[List[plt.axes]]
-        External axes to plot on
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
 
     Returns
     -------

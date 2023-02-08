@@ -350,8 +350,8 @@ def display_cointegration_test(
         Whether you wish to plot the z-values of all pairs.
     export : str
         Format to export data
-    external_axes:Optional[List[plt.axes]]
-        External axes to plot on
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     if len(datasets) < 2:
         return console.print(

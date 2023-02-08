@@ -41,8 +41,8 @@ def display_mean_std(
         Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
-    external_axes: Optional[List[plt.Axes]], optional
-        External axes (2 axes are expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     data = data[target]
     rolling_mean, rolling_std = rolling_model.get_rolling_avg(data, window)
@@ -137,8 +137,8 @@ def display_spread(
         Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
-    external_axes: Optional[List[plt.Axes]], optional
-        External axes (3 axes are expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     data = data[target]
     df_sd, df_var = rolling_model.get_spread(data, window)
@@ -320,8 +320,8 @@ def display_skew(
         Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
-    external_axes: Optional[List[plt.Axes]], optional
-        External axes (2 axes are expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     data = data[target]
     df_skew = rolling_model.get_skew(data, window)
@@ -395,8 +395,8 @@ def display_kurtosis(
         Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
-    external_axes: Optional[List[plt.Axes]], optional
-        External axes (2 axes are expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     data = data[target]
     df_kurt = rolling_model.get_kurtosis(data, window)

@@ -88,8 +88,8 @@ def display_raw(
         Number of rows to show
     export : str
         Export data as CSV, JSON, XLSX
-    external_axes: Optional[List[plt.Axes]]
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
 
     df = chartexchange_model.get_option_history(symbol, expiry, call, price)[::-1]

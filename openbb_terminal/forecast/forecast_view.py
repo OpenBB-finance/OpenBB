@@ -177,8 +177,8 @@ def display_corr(
         Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export image
-    external_axes:Optional[List[plt.axes]]
-        External axes to plot on
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
 
     fig = OpenBBFigure()

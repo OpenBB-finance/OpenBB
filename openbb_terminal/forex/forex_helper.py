@@ -254,8 +254,8 @@ def display_candle(
         From forex symbol
     ma : Optional[Iterable[int]]
         Moving averages
-    external_axes: Optional[List[plt.Axes]]
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     # We check if there's Volume data to avoid errors and empty subplots
     if not (has_volume := False) and "Volume" in data.columns:

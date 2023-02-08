@@ -98,6 +98,8 @@ def display_hist(
     >>> df = openbb.stocks.load("AAPL")
     >>> openbb.qa.hist(data=df, target="Adj Close")
     """
+    # TODO: Refactor add_histplot
+
     data = data[target]
 
     fig = OpenBBFigure.create_subplots(1, 1, shared_yaxes=False)

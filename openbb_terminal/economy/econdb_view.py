@@ -55,8 +55,8 @@ def show_macro_data(
         In what currency you wish to convert all values.
     raw : bool
         Whether to display the raw output.
-    external_axes: Optional[List[plt.axes]]
-        External axes to plot on
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     export : str
         Export data to csv,json,xlsx or png,jpg,pdf,svg file
 
@@ -172,8 +172,8 @@ def show_treasuries(
         End date, format "YEAR-MONTH-DAY", i.e. 2020-06-05.
     raw : bool
         Whether to display the raw output.
-    external_axes: Optional[List[plt.axes]]
-        External axes to plot on
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     export : str
         Export data to csv,json,xlsx or png,jpg,pdf,svg file
 
