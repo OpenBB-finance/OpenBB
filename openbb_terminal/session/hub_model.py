@@ -309,6 +309,11 @@ def upload_routine(
         The base url, by default BASE_URL
     timeout : int
         The timeout, by default TIMEOUT
+
+    Returns
+    -------
+    Optional[requests.Response]
+        The response from the post request.
     """
     data = {
         "name": name,
