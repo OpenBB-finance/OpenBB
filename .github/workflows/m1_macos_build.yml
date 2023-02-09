@@ -57,7 +57,7 @@ jobs:
       - name: Run Poetry
         run: |
           pip list
-          poetry install -E installer -E all
+          python -m pip install -r requirements-full.txt
 
       - name: Install Specific Papermill
         run: |
@@ -79,7 +79,9 @@ jobs:
           MACOS_KEYCHAIN_PWD: ${{ secrets.MACOS_KEYCHAIN_PWD }}
           MACOS_CODESIGN_IDENTITY: ${{ secrets.MACOS_CODESIGN_IDENTITY }}
         run: | # when pushing to main, make to generate new cert, and utilize secrets to store new password, and identity
-          echo "Decoding"
+          echo "Ensuring Keychain with same name does not exist"
+          rm -rf /Users/openbb/Library/Keychains/build.keychain-db
+          echo "Decoding certificate"
           echo $MACOS_CERTIFICATE | base64 --decode > certificate.p12
           echo "Creating Keychain"
           security create-keychain -p $MACOS_KEYCHAIN_PWD build.keychain

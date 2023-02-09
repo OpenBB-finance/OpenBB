@@ -4,6 +4,6 @@ channels:
 dependencies:
   - python=3.8
   - pip
-  - lightgbm=3.3.3
+  - conda-forge::lightgbm=3.3.3
   - pip:
     - poetry==1.3.2

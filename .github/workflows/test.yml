@@ -30,17 +30,15 @@ jobs:
           key: ${{ runner.os }}-linting-${{ hashFiles('**/poetry.lock') }}
           restore-keys: ${{ runner.os }}-linting-${{ hashFiles('**/poetry.lock') }}
 
-      - run: pip install bandit black codespell mypy==0.982 pyupgrade safety pylint==2.15.2 packaging==22 ruff==0.0.212
+      - run: pip install bandit black codespell mypy==0.982 safety pylint==2.15.2 packaging==22 ruff==0.0.243
       - run: pip install types-pytz types-requests types-termcolor types-tabulate types-PyYAML types-python-dateutil types-setuptools types-six
       - run: bandit -x ./tests -r . || true
       - run: black --diff --check .
       - run: codespell --ignore-words-list=commun,statics,ro,zar,zlot,jewl,ba,buil,coo,ether,hist,hsi,mape,navagation,operatio,pres,ser,yeld,shold,ist,varian,datas,ake,creat,vie,hel,ket,toke,certi,buidl,ot,te --quiet-level=2 --skip=./tests,.git,*.css,*.csv,*.html,*.ini,*.ipynb,*.js,*.json,*.lock,*.scss,*.txt,*.yaml,./build/pyinstaller,./website/config.toml
       - run: ruff .
       - run: mypy --ignore-missing-imports openbb_terminal
-      - run: shopt -s globstar && pyupgrade --py38-plus **/*.py
       - run: safety check
-      - run: |
-          pylint terminal.py openbb_terminal tests
+      - run: pylint terminal.py openbb_terminal tests
   test:
     name: Base Tests - Ubuntu-latest - Python 3.9
     runs-on: ubuntu-latest
@@ -83,7 +81,7 @@ jobs:
       - name: Start Terminal and exit
         run: |
           source $VENV
-          python terminal.py
+          yes "" | python terminal.py
   markdown-link-check:
     name: Markdown Linting
     runs-on: ubuntu-latest
@@ -152,7 +150,7 @@ jobs:
       - name: Start Terminal and exit
         run: |
           source $VENV
-          python terminal.py
+          yes "" | python terminal.py
   tests-conda:
     name: Anaconda Python Tests - (${{ matrix.python-version }}, ${{ matrix.os }})
     needs: test
@@ -256,4 +254,4 @@ jobs:
 
       - name: Start Terminal and exit
         shell: bash -l {0}
-        run: python terminal.py
+        run: yes "" | python terminal.py

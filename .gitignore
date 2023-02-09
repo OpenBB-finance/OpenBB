@@ -62,5 +62,5 @@ darts_logs/
 custom_imports/*.csv
 custom_imports/*/*.csv
 
-# lighnting logs
-lightning_logs/*
+# lightning logs
+lightning_logs/
