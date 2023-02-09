@@ -51,7 +51,14 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
     def check_keys_status(self) -> None:
         """Check keys status"""
         for api in tqdm(self.API_LIST, desc="Checking keys status"):
-            self.status_dict[api] = getattr(keys_model, "check_" + str(api) + "_key")()
+            if api == "openbb":
+                self.status_dict[api] = getattr(
+                    keys_model, "check_" + str(api) + "_personal_access_token"
+                )()
+            else:
+                self.status_dict[api] = getattr(
+                    keys_model, "check_" + str(api) + "_key"
+                )()
 
     def print_help(self):
         """Print help"""
