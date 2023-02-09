@@ -17,7 +17,8 @@ jobs:
     env:
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
     steps:
-    - uses: act10ns/slack@v1
+    - name: Slack Notification - Starting
+      uses: act10ns/slack@v1
       with:
         status: starting
         channel: '#workflows'
@@ -72,31 +73,10 @@ jobs:
         path: failed_tests.txt
         channel: ${{ secrets.SLACK_CHANNEL_ID }}
     
-    - uses: act10ns/slack@v1
+    - name: Slack Notification - Success/Failure
+      uses: act10ns/slack@v1
       with:
         status: ${{ job.status }}
         steps: ${{ toJson(steps) }}
         channel: '#workflows'
       if: always()
-
-  slack-workflow-status:
-      if: always()
-      name: Post Workflow Status To Slack
-      needs:
-        - integration-tests
-      runs-on: ubuntu-latest
-      # actions.read permission is required.
-      permissions:
-        actions: 'read'
-      steps:
-        - name: Slack Workflow Notification
-          uses: Gamesight/slack-workflow-status@master
-          with:
-            # Required Input
-            repo_token: ${{secrets.GITHUB_TOKEN}}
-            slack_webhook_url: ${{secrets.SLACK_WEBHOOK_URL}}
-            # Optional Input
-            channel: ${{ secrets.SLACK_CHANNEL_ID }}
-            name: 'Integration Test Workflow Status'
-            icon_emoji: ':poop:'
-            icon_url: 'https://avatars0.githubusercontent.com/u/1701160?s=96&v=4'
