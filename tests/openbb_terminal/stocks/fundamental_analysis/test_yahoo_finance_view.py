@@ -35,9 +35,7 @@ def vcr_config():
 )
 @pytest.mark.vcr
 @pytest.mark.record_stdout
-def test_call_func(func, mocker):
-    # MOCK VISUALIZE_OUTPUT
-    mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
+def test_call_func(func):
     getattr(yahoo_finance_view, func)(symbol="PM")
 
 

@@ -1,2 +1,4 @@
 No sustainability data found. 
 
+[red]Invalid data[/red]
+
