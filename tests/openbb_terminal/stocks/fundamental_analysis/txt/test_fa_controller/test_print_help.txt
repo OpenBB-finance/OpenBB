@@ -12,7 +12,6 @@ Company Overview:
     score              value investing scores for any time period                      [FinancialModelingPrep]
     warnings           company warnings according to Sean Seah book                    [MarketWatch]
     sust               sustainability values (environment, social and governance)      [YahooFinance]
-    arktrades          get ARK trades for ticker                                       [Cathiesark]
 
 Management and Ownership:
     mgmt               management team of the company                                  [BusinessInsider]

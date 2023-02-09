@@ -1,9 +1,0 @@
-script: test_stocks_filings.openbb
-- - - - - - - - - -
-
-stocks
-filings
-filings --limit 200
-filings --today
-filings --pages 30 --limit 30000
-exit

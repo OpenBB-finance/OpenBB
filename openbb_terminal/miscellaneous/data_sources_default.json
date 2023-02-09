@@ -54,6 +54,7 @@
       }
     },
     "disc": {
+      "filings": ["FinancialModelingPrep"],
       "pipo": ["Finnhub"],
       "fipo": ["Finnhub"],
       "gainers": ["YahooFinance"],
@@ -112,7 +113,8 @@
       "financial": ["Finviz"],
       "ownership": ["Finviz"],
       "performance": ["Finviz"],
-      "technical": ["Finviz"]
+      "technical": ["Finviz"],
+      "arktrades": ["Cathiesark"]
     },
     "ins": {
       "load": ["YahooFinance", "IEXCloud", "AlphaVantage", "Polygon", "EODHD"],
@@ -257,8 +259,7 @@
       "est": ["BusinessInsider"],
       "sec": ["MarketWatch", "FinancialModelingPrep"],
       "supplier": ["CSIMarket"],
-      "customer": ["CSIMarket"],
-      "arktrades": ["Cathiesark"]
+      "customer": ["CSIMarket"]
     },
     "bt": {
       "load": ["YahooFinance", "IEXCloud", "AlphaVantage", "Polygon", "EODHD"],
