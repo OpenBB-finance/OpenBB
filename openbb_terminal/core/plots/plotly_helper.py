@@ -463,7 +463,7 @@ class OpenBBFigure(go.Figure):
                         col=col,
                     )
 
-                    max_y = max(max_y, max(x_i))
+                    max_y = max(max_y, x_i)
 
         self.update_yaxes(position=0.0, range=[0, max_y], anchor="x", row=row, col=col)
 
@@ -1152,7 +1152,7 @@ class OpenBBFigure(go.Figure):
                     self.layout.margin[key] = add
 
         if not plots_backend().isatty:
-            self.layout.margin = dict(l=60, r=40, b=80, t=50, pad=0)
+            self.layout.margin = dict(l=60, r=60, b=80, t=50, pad=0)
 
     def _set_watermark(self) -> None:
         """Sets the watermark for OpenBB Terminal"""

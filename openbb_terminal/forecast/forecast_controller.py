@@ -1,7 +1,7 @@
 """Forecast Controller Module"""
 __docformat__ = "numpy"
 
-# pylint: disable=too-many-lines, too-many-branches, too-many-arguments, R0904,R0902,W0707
+# pylint: disable=C0302,too-many-branches,too-many-arguments,R0904,R0902,W0707
 # flake8: noqa
 import argparse
 import logging
