@@ -5,4 +5,4 @@ dependencies:
   - python=3.9.6
   - pip
   - poetry=1.1.13
-  - lightgbm=3.3.3
+  - lightgbm=3.3.5
