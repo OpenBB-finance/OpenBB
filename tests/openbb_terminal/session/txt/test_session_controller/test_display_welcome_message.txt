@@ -18,5 +18,8 @@
                 Investment research for Everyone, Anywhere.
 [/menu]
 
-Register     : [cmds]https://my.openbb.co/register[/cmds]
+Register     : [cmds]https://my.openbb.dev/register[/cmds]
 Ask support  : [cmds]https://openbb.co/support[/cmds]
+[yellow]
+WARNING: This is a pre-release version published for testing.[/yellow][yellow]
+Beware that your account will be deleted without notice.[/yellow]
