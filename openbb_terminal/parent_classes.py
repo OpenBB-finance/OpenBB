@@ -678,6 +678,13 @@ class BaseController(metaclass=ABCMeta):
         ns_parser = self.parse_simple_args(parser, other_args)
 
         if ns_parser:
+            if User.is_guest():
+                console.print(
+                    "[info]You are currently logged as a guest.\n"
+                    "Create an account here https://my.openbb.co/register.\n[/info]"
+                )
+                return
+
             logout(
                 auth_header=User.get_auth_header(),
                 token=User.get_token(),
@@ -952,7 +959,7 @@ class BaseController(metaclass=ABCMeta):
                 # Process the input command
                 self.queue = self.switch(an_input)
 
-                if an_input == "logout":
+                if an_input == "logout" and not User.is_guest():
                     return ["logout"]
 
                 if not self.queue or (
