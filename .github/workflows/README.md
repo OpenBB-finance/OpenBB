@@ -217,3 +217,28 @@ The next job, `tests-python`, runs tests for different versions of Python (3.8, 
 The next job, `full-test`, uses the GitHub Actions `checkout` action to checkout the code, followed by the `setup-python` action to set up the specified version of Python. Then, the `install-poetry` action is used to install the package manager Poetry, and a cache is set up using the `actions/cache` action to avoid re-installing dependencies. After that, the dependencies are installed using Poetry, and a list of installed packages is displayed. Then, the tests are run using `pytest`, and finally, the `terminal.py` script is started and exited.
 
 The last job, `tests-conda`, sets up a Miniconda environment using the `setup-miniconda` action. The environment is specified using a YAML file and is activated. Then, the tests are run.
+
+## Windows 10 Build Workflow
+This is a GitHub Actions workflow file that automates the build and testing process for the OpenBB Terminal on Windows 10. The workflow consists of two jobs:
+
+1.  Windows-Build
+2.  Build-Exe
+
+-   The Windows-Build job does the following:
+    -   Sets up the Windows Git configuration for long file paths.
+    -   Checks out the repository code.
+    -   Sets up Python 3.9 and creates an OpenBB environment using poetry.
+    -   Installs necessary packages and builds the terminal using PyInstaller.
+    -   Uploads the built artifact to GitHub as an artifact.
+-   The Build-Exe job does the following:
+    -   Sets up the Windows Git configuration for long file paths.
+    -   Checks out the repository code.
+    -   Downloads the built artifact from the previous Windows-Build job.
+    -   Copies the files into an app folder for building the EXE file.
+    -   Builds the EXE file using NSIS.
+    -   Uploads the built EXE as an artifact to GitHub.
+    -   Runs integration tests on the terminal and saves the results to a text file.
+    -   Uploads the test results summary to Slack.
+    -   Cleans up previous build files and artifacts.
+
+This workflow is triggered by the `workflow_dispatch` event and runs in concurrency with other workflows in the same group, with the ability to cancel in-progress builds. The concurrency group is defined as `${{ github.workflow }}-${{ github.ref }}`.
