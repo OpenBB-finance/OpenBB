@@ -1,5 +1,6 @@
 import openbb_terminal.feature_flags as obbff
 from openbb_terminal.rich_config import console
+from openbb_terminal.session.hub_model import REGISTER_LINK
 
 
 class User:
@@ -59,7 +60,7 @@ class User:
         else:
             console.print(
                 "[info]You are currently logged as a guest.\n"
-                "Create an account here https://my.openbb.co/register.[/info]"
+                f"Create an account here {REGISTER_LINK}.[/info]"
             )
 
     @classmethod
