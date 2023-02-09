@@ -326,7 +326,7 @@ class StocksController(StockBaseController):
             )
 
     @log_start_end(log=logger)
-    def codes(self, _):
+    def call_codes(self, _):
         """Process codes command."""
         parser = argparse.ArgumentParser(
             add_help=False,

@@ -17,11 +17,10 @@ def vcr_config():
     }
 
 
-@pytest.mark.vcr()
-@pytest.mark.record_stdout
+@pytest.mark.vcr
 @pytest.mark.parametrize(
     "name",
-    ["SPY"],
+    ["VTI"],
 )
 def test_display_etf_weightings(name, mocker):
     mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")

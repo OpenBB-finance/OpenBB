@@ -40,7 +40,7 @@ def get_etf_sector_weightings(name: str) -> Dict:
             "This endpoint is only for premium members. Please visit the subscription page to upgrade the "
             "plan (Starter or higher) at https://financialmodelingprep.com/developer/docs/pricing"
         )
-        return Dict()
+        return dict()
 
     if "Error Message" in data:
         raise ValueError(data["Error Message"])

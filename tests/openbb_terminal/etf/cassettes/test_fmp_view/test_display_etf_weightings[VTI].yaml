@@ -7,7 +7,7 @@ interactions:
       Host:
       - financialmodelingprep.com
     method: GET
-    uri: https://financialmodelingprep.com/api/v3/etf-sector-weightings/SPY?apikey=MOCK_API_KEY
+    uri: https://financialmodelingprep.com/api/v3/etf-sector-weightings/VTI?apikey=MOCK_API_KEY
   response:
     body:
       string: "{\n  \"Error Message\": \"Invalid API KEY. Please retry or visit our
@@ -31,7 +31,7 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Thu, 09 Feb 2023 16:18:11 GMT
+      - Thu, 09 Feb 2023 16:30:36 GMT
       ETag:
       - W/"9a-ufKRTAmgqkT6Vv3bqU5trChBRE8"
       Server:
