@@ -215,6 +215,13 @@ def test_call_func_expect_queue(expected_queue, func, queue):
     "tested_func, other_args, mocked_func, called_args, called_kwargs",
     [
         (
+            "call_equal",
+            [],
+            "optimizer_view.display_equal_weight",
+            [],
+            dict(),
+        ),
+        (
             "call_mktcap",
             [],
             "optimizer_view.display_property_weighting",

@@ -30,6 +30,10 @@ Hierarchical Clustering Models:
 [unvl]    herc               hierarchical equal risk contribution[/unvl]
 [unvl]    nco                nested clustering optimization[/unvl]
 
+Other Optimization Techniques:
+[unvl]    equal              equal weighted portfolio[/unvl]
+[unvl]    mktcap             weighted according to market cap[/unvl]
+
 Optimized portfolio: 
 
 [unvl]    rpf                remove portfolios from the list of saved portfolios[/unvl]
