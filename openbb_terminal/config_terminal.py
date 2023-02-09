@@ -1,24 +1,20 @@
 # IMPORTATION STANDARD
 import os
 
-# IMPORTATION THIRDPARTY
-import dotenv
-
+# IMPORTATION INTERNAL
 from openbb_terminal.base_helpers import load_env_vars, strtobool
-from openbb_terminal.core.config.paths import (
-    PACKAGE_ENV_FILE,
-    REPOSITORY_ENV_FILE,
-    USER_ENV_FILE,
-)
-
 from .helper_classes import TerminalStyle as _TerminalStyle
 
-# IMPORTATION INTERNAL
-
-
-dotenv.load_dotenv(USER_ENV_FILE)
-dotenv.load_dotenv(REPOSITORY_ENV_FILE, override=True)
-dotenv.load_dotenv(PACKAGE_ENV_FILE, override=True)
+SENSITIVE_KEYS = [
+    "RH_USERNAME",
+    "RH_PASSWORD",
+    "DG_USERNAME",
+    "DG_PASSWORD",
+    "DG_TOTP_SECRET",
+    "OANDA_ACCOUNT_TYPE",
+    "OANDA_ACCOUNT",
+    "OANDA_TOKEN",
+]
 
 # Network requests
 # Set request timeout

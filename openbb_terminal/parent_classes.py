@@ -45,6 +45,8 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.rich_config import console, get_ordered_list_sources
+from openbb_terminal.session.session_model import logout
+from openbb_terminal.session.user import User
 from openbb_terminal.stocks import stocks_helper
 from openbb_terminal.terminal_helper import open_openbb_documentation
 
@@ -94,6 +96,8 @@ class BaseController(metaclass=ABCMeta):
         "record",
         "stop",
         "screenshot",
+        "logout",
+        "whoami",
     ]
 
     CHOICES_COMMANDS: List[str] = []
@@ -284,13 +288,14 @@ class BaseController(metaclass=ABCMeta):
 
     def log_queue(self) -> None:
         """Log command queue."""
-        joined_queue = self.COMMAND_SEPARATOR.join(self.queue)
-        if self.queue and not self.contains_keys(joined_queue):
-            logger.info(
-                "QUEUE: {'path': '%s', 'queue': '%s'}",
-                self.PATH,
-                joined_queue,
-            )
+        if self.queue:
+            joined_queue = self.COMMAND_SEPARATOR.join(self.queue)
+            if not self.contains_keys(joined_queue):
+                logger.info(
+                    "QUEUE: {'path': '%s', 'queue': '%s'}",
+                    self.PATH,
+                    joined_queue,
+                )
 
     def log_cmd_and_queue(
         self, known_cmd: str, other_args_str: str, the_input: str
@@ -670,6 +675,40 @@ class BaseController(metaclass=ABCMeta):
         if ns_parser:
             screenshot()
 
+    @log_start_end(log=logger)
+    def call_logout(self, other_args: List[str]) -> None:
+        """Process logout command."""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="logout",
+            description="Logout from OpenBB",
+        )
+        ns_parser = self.parse_simple_args(parser, other_args)
+
+        if ns_parser:
+            logout(
+                auth_header=User.get_auth_header(),
+                token=User.get_token(),
+                guest=User.is_guest(),
+                cls=True,
+            )
+
+    @log_start_end(log=logger)
+    def call_whoami(self, other_args: List[str]) -> None:
+        """Process whoami command."""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="whoami",
+            description="Show current user",
+        )
+        ns_parser = self.parse_simple_args(parser, other_args)
+
+        if ns_parser:
+            User.whoami()
+            console.print("")
+
     @staticmethod
     def parse_simple_args(parser: argparse.ArgumentParser, other_args: List[str]):
         """Parse list of arguments into the supplied parser.
@@ -921,6 +960,10 @@ class BaseController(metaclass=ABCMeta):
 
                 # Process the input command
                 self.queue = self.switch(an_input)
+
+                if an_input == "logout":
+                    return ["logout"]
+
                 if not self.queue or (
                     self.queue and self.queue[0] not in ("quit", "help")
                 ):
