@@ -630,18 +630,6 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 "sheet_name": None,
             },
         ),
-        (
-            "call_arktrades",
-            "ark_view.display_ark_trades",
-            ["--limit=10", "--show_symbol"],
-            {
-                "symbol": "TSLA",
-                "limit": 10,
-                "export": "",
-                "show_symbol": True,
-                "sheet_name": None,
-            },
-        ),
     ],
 )
 def test_call_func(tested_func, mocked_func, other_args, called_with, mocker):
@@ -702,7 +690,6 @@ def test_call_func(tested_func, mocked_func, other_args, called_with, mocker):
         "call_sec",
         "call_supplier",
         "call_customer",
-        "call_arktrades",
     ],
 )
 def test_call_func_no_parser(func, mocker):
