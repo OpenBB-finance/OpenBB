@@ -11,17 +11,16 @@ from typing import Any, Dict, List, Optional, Tuple, Union
 import numpy as np
 import pandas as pd
 import riskfolio as rp
-import yfinance as yf
 from dateutil.relativedelta import FR, relativedelta
 from numpy import floating
 from numpy.typing import NDArray
 from scipy.interpolate import interp1d
 
 from openbb_terminal.decorators import log_start_end
+from openbb_terminal.stocks.fundamental_analysis import fmp_model
 from openbb_terminal.portfolio.portfolio_optimization import yahoo_finance_model
 from openbb_terminal.portfolio.portfolio_optimization.optimizer_helper import (
     get_kwarg,
-    valid_property_infos,
     validate_risk_measure,
 )
 from openbb_terminal.rich_config import console
@@ -235,7 +234,7 @@ def get_property_weights(
     symbols: List[str],
     **kwargs,
 ) -> Tuple[Optional[Dict[str, Any]], Optional[pd.DataFrame]]:
-    """Calculate portfolio weights based on selected property
+    """Calculate portfolio weights based on selected property, currently this is only market cap.
 
     Parameters
     ----------
@@ -264,8 +263,6 @@ def get_property_weights(
         Value used to replace outliers that are higher to threshold.
     method: str
         Method used to fill nan values. Default value is 'time'. For more information see `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`__.
-    s_property : str
-        Property to weight portfolio by
     value : float, optional
         Amount of money to allocate
 
@@ -285,8 +282,6 @@ def get_property_weights(
     method = get_kwarg("method", kwargs)
     value = get_kwarg("value", kwargs)
 
-    s_property = get_kwarg("s_property", kwargs, default="marketCap")
-
     stock_prices = yahoo_finance_model.process_stocks(
         symbols, interval, start_date, end_date
     )
@@ -300,15 +295,29 @@ def get_property_weights(
     )
 
     prop = {}
+    no_data = []
     prop_sum = 0
     for stock in symbols:
-        stock_prop = get_prop(symbol=stock, prop=s_property)
+        stock_prop = get_market_cap(stock)
         prop[stock] = stock_prop
         prop_sum += stock_prop
 
+        if not prop[stock]:
+            no_data.append(stock)
+
     if prop_sum == 0:
-        console.print(f"No '{s_property}' was found on list of tickers provided", "\n")
+        console.print(
+            "No market cap data has been found for all selected tickers. Not able to optimize the portfolio.",
+            "\n",
+        )
         return None, None
+    if no_data:
+        console.print(
+            "No market cap data has been found for the following tickers: "
+            + ", ".join(no_data)
+            + ". Therefore, these will be excluded from the optimization process.",
+            "\n",
+        )
 
     weights = {k: value * v / prop_sum for k, v in prop.items()}
 
@@ -316,45 +325,38 @@ def get_property_weights(
 
 
 @log_start_end(log=logger)
-def get_prop(symbol, prop) -> float:
-    """Get property from yfinance
+def get_market_cap(symbol) -> float:
+    """Get market cap from FinancialModelingPrep
 
     Parameters
     ----------
     symbol : str
         Stock ticker
-    prop : str
-        Property to get
 
     Returns
     -------
-    dict
-        Ticker info
+    updated_value : float
+        value of market cap
     """
-    prop = yahoo_finance_model.fast_info_map.get(prop, prop)
+    market_cap = fmp_model.get_enterprise(symbol)
 
-    try:
-        info = yf.Ticker(symbol).info
-    except Exception as _:  # noqa
-        info = None
+    if not market_cap.empty:
+        latest_year = market_cap.columns[0]
 
-    try:
-        fast_info = yf.Ticker(symbol).fast_info
-    except Exception as _:  # noqa
-        fast_info = None
+        value = market_cap[latest_year].loc["Market capitalization"]
 
-    info_dict = {}
-    if info:
-        info_dict.update(dict(info))
-    if fast_info:
-        info_dict.update(dict(fast_info))
+        if "M" in value:
+            updated_value = float(value.split(" M")[0]) * 1000000
+        elif "B" in value:
+            updated_value = float(value.split(" B")[0]) * 1000000000
+        elif "T" in value:
+            updated_value = float(value.split(" T")[0]) * 1000000000000
+        else:
+            updated_value = float(value)
+    else:
+        updated_value = 0
 
-    if info_dict:
-        value = info_dict.get(prop, 0.0)
-        if not value:
-            return 0.0
-        return value
-    return 0.0
+    return updated_value
 
 
 @log_start_end(log=logger)
@@ -1401,7 +1403,6 @@ def get_black_litterman_portfolio(
             maxnan=maxnan,
             threshold=threshold,
             method=method,
-            s_property="marketCap",
             value=value,
         )
 
@@ -2959,18 +2960,6 @@ def generate_random_portfolios(
         w = value * w
 
     return w
-
-
-@log_start_end(log=logger)
-def get_properties() -> List[str]:
-    """Get properties to use on property optimization.
-
-    Returns
-    -------
-    List[str]:
-        List of available properties to use on property optimization.
-    """
-    return valid_property_infos
 
 
 @log_start_end(log=logger)
