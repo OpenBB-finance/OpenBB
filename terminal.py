@@ -11,13 +11,15 @@ from openbb_terminal.terminal_helper import is_installer
 if __name__ == "__main__":
     multiprocessing.freeze_support()
     sent_args = sys.argv[1:]
+
+    # Remove when authentication is fully implemented
     load_dotenv_with_priority()
     auth = str(os.getenv("OPENBB_ENABLE_AUTHENTICATION")).lower()
-    clear_openbb_env_vars()
 
     if "-t" in sent_args or "--test" in sent_args:
         integration_controller.main()
     elif auth == "true":
+        clear_openbb_env_vars()
         session_controller.main(guest_allowed=not is_installer())
     else:
         session_controller.launch_terminal()
