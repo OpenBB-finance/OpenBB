@@ -102,7 +102,7 @@ jobs:
       - name: Start Terminal and exit
         run: |
           source $VENV
-          python terminal.py
+          yes "" | python terminal.py
   markdown-link-check:
     name: Markdown Linting
     runs-on: ubuntu-latest
@@ -171,7 +171,7 @@ jobs:
       - name: Start Terminal and exit
         run: |
           source $VENV
-          python terminal.py
+          yes "" | python terminal.py
   tests-conda:
     name: Anaconda Python Tests - (${{ matrix.python-version }}, ${{ matrix.os }})
     needs: test
@@ -275,4 +275,4 @@ jobs:
 
       - name: Start Terminal and exit
         shell: bash -l {0}
-        run: python terminal.py
+        run: yes "" | python terminal.py

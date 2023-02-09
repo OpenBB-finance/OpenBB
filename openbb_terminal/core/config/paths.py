@@ -21,7 +21,6 @@ def load_dotenv_with_priority():
 
 def get_user_data_directory():
     """Gets user data path from .env file or returns default path"""
-    load_dotenv_with_priority()
     if os.getenv("OPENBB_USER_DATA_DIRECTORY"):
         user_data_directory = Path(os.getenv("OPENBB_USER_DATA_DIRECTORY"))
     else:
@@ -38,6 +37,7 @@ PACKAGE_ENV_FILE = PACKAGE_DIRECTORY / ".env"
 PLOTS_CORE_DIRECTORY = PACKAGE_DIRECTORY / "core" / "plots"
 
 SETTINGS_DIRECTORY = HOME_DIRECTORY / ".openbb_terminal"
+HIST_FILE_PATH = SETTINGS_DIRECTORY / ".openbb_terminal.his"
 USER_ENV_FILE = SETTINGS_DIRECTORY / ".env"
 USER_DATA_DIRECTORY = get_user_data_directory()
 USER_EXPORTS_DIRECTORY = USER_DATA_DIRECTORY / "exports"

@@ -232,6 +232,14 @@ def is_packaged_application() -> bool:
     return LOGGING_APP_NAME == "gst_packaged"
 
 
+def is_installer() -> bool:
+    """Tell whether or not it is a packaged version."""
+    # TODO: Merge this with is_packaged_application
+    if getattr(sys, "frozen", False) and hasattr(sys, "_MEIPASS"):
+        return True
+    return False
+
+
 def bootup():
     if sys.platform == "win32":
         # Enable VT100 Escape Sequence for WINDOWS 10 Ver. 1607

@@ -8,9 +8,7 @@ from types import FunctionType, ModuleType
 # IMPORTATION INTERNAL
 import openbb_terminal.feature_flags as obbff
 from openbb_terminal import config_terminal as cfg
-from openbb_terminal.core.log.generation.path_tracking_file_handler import (
-    PathTrackingFileHandler,
-)
+from openbb_terminal.core.log.generation.common import do_rollover
 from openbb_terminal.terminal_helper import is_packaged_application
 
 SENSITIVE_WORDS = [
@@ -28,14 +26,15 @@ SENSITIVE_WORDS = [
 logger = logging.getLogger(__name__)
 
 
-def log_all_settings() -> None:
+def log_all_settings(with_rollover: bool = True) -> None:
     """Log all settings"""
     log_settings()
     log_config_terminal()
     log_feature_flags()
     log_keys()
 
-    do_rollover()
+    if with_rollover:
+        do_rollover()
 
 
 def log_settings() -> None:
@@ -113,14 +112,3 @@ def log_keys() -> None:
             current_keys[cfg_var_name] = "not_defined"
 
     logger.info("KEYS: %s ", json.dumps(current_keys))
-
-
-def do_rollover():
-    """RollOver the log file."""
-
-    for handler in logging.getLogger().handlers:
-        if isinstance(handler, PathTrackingFileHandler):
-            try:
-                handler.doRollover()
-            except PermissionError:
-                pass

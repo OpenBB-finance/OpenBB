@@ -1,6 +1,6 @@
 Loading Daily data for TSLA with starting period 2020-02-05.
                                    Company Rating  Price Target
-Date                                                           
+Date
 2023-02-06  Wedbush Morgan Securities Inc.    BUY    225.000000
 2023-01-30                       Berenberg    BUY    200.000000
 2023-01-26   Bank of America Merrill Lynch   HOLD    155.000000
