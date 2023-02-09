@@ -58,6 +58,7 @@ jobs:
       run: poetry install --no-interaction -E optimization
 
     - name: Run integration tests
+      id: integration-tests
       run: |
         source $VENV
         python terminal.py -t > result.txt
