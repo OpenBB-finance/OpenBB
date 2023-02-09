@@ -1,2 +1,2 @@
 [info]You are currently logged as a guest.
-Create an account here https://my.openbb.co/register.[/info]
+Create an account here https://my.openbb.dev/register.[/info]
