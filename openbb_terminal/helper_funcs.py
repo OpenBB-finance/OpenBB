@@ -21,6 +21,7 @@ from functools import lru_cache
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple, Union
 
+import dateutil
 import dotenv
 import iso8601
 import matplotlib
@@ -594,6 +595,15 @@ def valid_date(s: str) -> datetime:
         raise argparse.ArgumentTypeError(f"Not a valid date: {s}") from value_error
 
 
+def is_valid_date(s: str) -> bool:
+    """Check if date is in valid format."""
+    try:
+        dateutil.parser.parse(s)
+        return True
+    except ValueError:
+        return False
+
+
 def valid_repo(repo: str) -> str:
     """Argparse type to check github repo is in valid format."""
     result = re.search(r"^[a-zA-Z0-9-_.]+\/[a-zA-Z0-9-_.]+$", repo)  # noqa: W605
@@ -741,6 +751,7 @@ def revert_lambda_long_number_format(num_str: str) -> Union[float, str]:
     if (
         len(num_as_list) == 1
         and num_as_list[0].replace(".", "").replace("-", "").isdigit()
+        and not is_valid_date(num_str)
     ):
         return float(num_str)
 
