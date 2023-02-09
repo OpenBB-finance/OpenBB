@@ -14,7 +14,16 @@ concurrency:
 jobs:
   integration-tests:
     runs-on: ubuntu-latest
+    env:
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
     steps:
+    - uses: act10ns/slack@v1
+      with:
+        status: starting
+        channel: '#workflows'
+        message: Starting Docker Build and Push...
+      if: always()
+
     - name: Checkout code
       if: github.event_name == 'push'
       uses: actions/checkout@v3
@@ -62,6 +71,13 @@ jobs:
         title: "Integration test summary"
         path: failed_tests.txt
         channel: ${{ secrets.SLACK_CHANNEL_ID }}
+    
+    - uses: act10ns/slack@v1
+      with:
+        status: ${{ job.status }}
+        steps: ${{ toJson(steps) }}
+        channel: '#workflows'
+      if: always()
 
   slack-workflow-status:
       if: always()
