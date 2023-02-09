@@ -548,8 +548,8 @@ flake8 = "^3.9.0"
 After updating the `pyproject.toml` you will have to export the `requirements` files using the following commands :
 
 ```bash
-poetry export -f requirements.txt  -o requirements.txt --without-hashes --dev
-poetry export -f requirements.txt  -o requirements-full.txt --extras prediction --extras optimization --without-hashes --dev
+poetry export -f requirements.txt  -o requirements.txt --without-hashes --with dev
+poetry export -f requirements.txt  -o requirements-full.txt --extras prediction --extras optimization --without-hashes --with dev
 ```
 
 # 4. Maintain `unit tests`

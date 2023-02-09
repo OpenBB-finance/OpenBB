@@ -11,7 +11,6 @@ Company Overview:
     rot                number of analyst ratings over time on a monthly basis          [Finnhub]
     score              value investing scores for any time period                      [FinancialModelingPrep]
     warnings           company warnings according to Sean Seah book                    [MarketWatch]
-    sust               sustainability values (environment, social and governance)      [YahooFinance]
 
 Management and Ownership:
     mgmt               management team of the company                                  [BusinessInsider]
@@ -34,7 +33,7 @@ Financial Statements:
 Future Expectations:
     earnings           earnings dates and reported EPS                                 [AlphaVantage, YahooFinance]
     epsfc              Earning Estimate by Analysts - EPS                              [SeekingAlpha]
-    revfc              Earning Estimate by Analysts - Revenue                          [SeekingAlpha, YahooFinance]
+    revfc              Earning Estimate by Analysts - Revenue                          [SeekingAlpha]
     est                quarter and year analysts earnings estimates                    [BusinessInsider]
     pt                 price targets over time                                         [BusinessInsider]
     dcf                advanced Excel customizable discounted cash flow                [StockAnalysis]

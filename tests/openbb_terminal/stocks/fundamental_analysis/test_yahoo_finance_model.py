@@ -23,8 +23,6 @@ def vcr_config():
     "func",
     [
         # "get_info",  CHECK HOW TO MOCK TIMEZONE
-        "get_sustainability",
-        "get_calendar_earnings",
         "get_dividends",
         "get_splits",
     ],

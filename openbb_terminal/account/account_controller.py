@@ -308,10 +308,11 @@ class AccountController(BaseController):
             routine = Local.get_routine(file_name=" ".join(ns_parser.file))
             if routine:
                 description = " ".join(ns_parser.description)
+
                 name = (
                     " ".join(ns_parser.name)
                     if ns_parser.name
-                    else ns_parser.file.split(".openbb")[0]
+                    else " ".join(ns_parser.file).split(sep=".openbb", maxsplit=-1)[0]
                 )
 
                 response = Hub.upload_routine(
