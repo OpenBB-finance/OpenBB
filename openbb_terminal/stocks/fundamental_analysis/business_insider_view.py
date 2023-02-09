@@ -101,7 +101,7 @@ def price_target_from_analysts(
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> openbb.stocks.dd.pt_chart(symbol="AAPL")
+    >>> openbb.stocks.fa.pt_chart(symbol="AAPL")
     """
 
     if start_date is None:
