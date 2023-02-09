@@ -13,7 +13,6 @@ Use your best judgment, and feel free to propose changes to this document in a p
     - [View](#view)
     - [Controller](#controller)
     - [Add SDK endpoint](#add-sdk-endpoint)
-    - [Add Documentation](#add-documentation)
     - [Open a Pull Request](#open-a-pull-request)
     - [Review Process](#review-process)
   - [Understand Code Structure](#understand-code-structure)
@@ -310,160 +309,38 @@ In addition, note the `self.load_class` which allows to not create a new DarkPoo
 
 In order to add a command to the SDK, follow these steps:
 
-1. Go to the `sdk.py` file and scroll to the `functions` dictionary, it should look like this:
+1. Go to the `trail_map.csv` file located in `openbb_terminal/miscellaneous/library`, which should look like this:
 
-    ```python
-    functions = {
-        "stocks.get_news": {
-            "model": "openbb_terminal.common.newsapi_model.get_news",
-        },
-        "stocks.load": {
-            "model": "openbb_terminal.stocks.stocks_helper.load",
-        },
-        "stocks.candle": {
-            "model": "openbb_terminal.stocks.stocks_helper.load",
-            "view": "openbb_terminal.stocks.stocks_helper.display_candle",
-        },
+    ```csv
+    trail,model,view
 
-    ...
+    stocks.fa.rot,openbb_terminal.stocks.fundamental_analysis.finnhub_model.get_rating_over_time,openbb_terminal.stocks.fundamental_analysis.finnhub_view.rating_over_time
+    stocks.fa.analyst,openbb_terminal.stocks.fundamental_analysis.finviz_model.get_analyst_data,
     ```
 
-2. Add a new key to the dictionary, which corresponds to the way the added command shall be accessed from the sdk.
-This is called the `virtual path`. In this case it should be `stocks.dps.shorted`.
-3. Now it is time to add the value to the key. This key shall be another dictionary with a `model` key and possibly a
-`view` key.
-   1. The model keys value should be the path from project root to the new commands model function as a string. This
-   case it is `openbb_terminal.stocks.dark_pool_shorts.yahoofinance_model.get_most_shorted`.
-   2. If and **only if** the view function of the command **displays a chart**, then the `view` key and its value is
-   the view functions path from the project root as a string. In this example the view function of the only prints a
-   table and thus this step can be ignored.
-4. Done!!! The final new dictionary looks like this after the added example:
+    In this file, the trail represents the path to the function to be called. The model represents the path to the model function and the view represents the path to the view function.  Note that the second line does not have an associated view function, so we leave that column empty (the trailing comma is required to load).
 
-    ```python
-    functions = {
-        ...
+2. Add your new function to this structure.  In our example of the `shorted` function, our trail would be `stocks.dps.shorted`.  The model is the path to the _model function that was written: `openbb_terminal.stocks.dark_pool_shorts.yahoofinance_model.get_most_shorted`.  The view is the path to the _view function that was written: `openbb_terminal.stocks.dark_pool_shorts.yahoofinance_view.display_most_shorted`.  The added line of the file should look like this:
 
-        "stocks.dps.shorted": {
-            "model": "openbb_terminal.stocks.dark_pool_shorts.yahoofinance_model.get_most_shorted",
-        },
-
-        ...
-    ```
-
-### Add Documentation
-
-To check whether documentation is added correctly follow [Hugo Server instructions](/website/README.md).
-
-This is the structure that the documentation follows:
-
-```txt
-website/content/_index.md
-               /stocks/_index.md
-                      /load/_index.md
-                      /candle/_index.md
-                      /discovery/_index.md
-                                /ipo/_index.md
-                                    /...
-                                /...
-                      /...
-               /cryptocurrency/_index.md
-                              /chart/_index.md
-                              /defi/_index.md
-                                   /borrow/_index.md
-                                   /...
-                              /...
-               /...
-               /common/_index.md
-                      /technical_analysis/_index.md
-                                         /ema/_index.md
-                                         /...
-                      /...
-```
-
-Note that the `common` folder holds features that are common across contexts, e.g. `technical analysis` can be performed on both `stocks` or `crytpo`.
-
-To add a new command, there are two main actions that need to be done:
-
-1. Create a directory with the name of the command and a `_index.md` file within. Examples:
-
-   - When adding `ipo`, since this command belongs to context `stocks` and category `discovery`, we added a `ipo` folder with a `_index.md` file within to `website/content/stocks/discovery`.
-
-   - When adding `candle`, since this command belongs to context `stocks`, we added a `candle` folder with a `_index.md` file within to `website/content/stocks/`.
-
-2. The `_index.md` file should have the output of the `command -h` followed by a screenshot example of what the user can expect. Note that you can now drag and drop the images while editing the readme file on the remote web version of your PR branch. Github will create a link for it with format (<https://user-images.githubusercontent.com/***/***.file_format>).
-
-    Example:
-
-    ---
-
-    ```shell
-    usage: ipo [--past PAST_DAYS] [--future FUTURE_DAYS]
-    ```
-
-    Past and future IPOs. [Source: <https://finnhub.io>]
-
-    - --past : Number of past days to look for IPOs. Default 0.
-    - --future : Number of future days to look for IPOs. Default 10.
-
-    <IMAGE HERE - Use drag and drop hint mentioned above>
-
-    ---
-
-3. Update the Navigation bar to match the content you've added. This is done by adding 2 lines of code to `website/data/menu/`, i.e. a `name` and a `ref`. Example:
-
-    ```python
-    ---
-    main:
-      - name: stocks
-        ref: "/stocks"
-        sub:
-          - name: load
-            ref: "/stocks/load"
-          - name: candle
-            ref: "/stocks/candle"
-          - name: discovery
-            ref: "/stocks/discovery"
-            sub:
-              - name: ipo
-                ref: "/stocks/discovery/ipo"
-              - name: map
-                ref: "/stocks/discovery/map"
+    ```csv
+    stocks.dps.shorted,openbb_terminal.stocks.dark_pool_shorts.yahoofinance_model.get_most_shorted,openbb_terminal.stocks.dark_pool_shorts.yahoofinance_view.display_most_shorted
     ```
 
 ### Open a Pull Request
 
-Once you're happy with what you have, push your branch to remote. E.g. `git push origin feature/AmazingFeature`
+Once you're happy with what you have, push your branch to remote. E.g. `git push origin feature/AmazingFeature`.  Note that we follow gitflow naming convention, so your branch name should be prefixed with `feature/` or `hotfix/` depending on the type of work you are doing.
+
 A user may create a **Draft Pull Request** when he/she wants to discuss implementation with the team.
 
-The team will then assign your PR one of the following labels:
-
-| Label name     | Description                         | Example                                        |
-| -------------- | ----------------------------------- | ---------------------------------------------- |
-| `feat XS`      | Extra small feature                 | Add a preset                                   |
-| `feat S`       | Small T-Shirt size Feature          | New single command added                       |
-| `feat M`       | Medium T-Shirt size feature         | Multiple commands added from same data source  |
-| `feat L`       | Large T-Shirt size Feature          | New category added under context               |
-| `feat XL`      | Extra Large feature                 | New context added                              |
-| `enhancement`  | Enhancement                         | Add new parameter to existing command          |
-| `bug`          | Fix a bug                           | Fixes terminal crashing or warning message     |
-| `build`        | Build-related work                  | Fix a github action that is breaking the build |
-| `tests`        | Test-related work                   | Add/improve tests                              |
-| `docs`         | Improvements on documentation       | Add/improve documentation                      |
-| `refactor`     | Refactor code                       | Changing argparse location                     |
-| `docker`       | Docker-related work                 | Add/improve docker                             |
-| `help wanted`  | Extra attention is needed           | When a contributor needs help                  |
-| `do not merge` | Label to prevent pull request merge | When PR is not ready to be merged just yet     |
 
 ### Review Process
 
 As soon as the Pull Request is opened, our repository has a specific set of github actions that will not only run
 linters on the branch just pushed, but also run pytest on it. This allows for another layer of safety on the code developed.
 
-In addition, our team is known for performing `diligent` code reviews. This not only allows us to reduce the amount of
-iterations on that code and have it to be more future proof, but also allows the developer to learn/improve his coding skills.
+In addition, our team is known for performing `diligent` code reviews. This not only allows us to reduce the amount of iterations on that code and have it to be more future proof, but also allows the developer to learn/improve his coding skills.
 
-Often in the past the reviewers have suggested better coding practices, e.g. using `1_000_000` instead of `1000000` for
-better visibility, or suggesting a speed optimization improvement.
+Often in the past the reviewers have suggested better coding practices, e.g. using `1_000_000` instead of `1000000` forbetter visibility, or suggesting a speed optimization improvement.
 
 ## Understand Code Structure
 
