@@ -1,6 +1,7 @@
 from typing import Tuple
 
 from prompt_toolkit import PromptSession
+from openbb_terminal.session.hub_model import REGISTER_LINK
 
 import openbb_terminal.session.local_model as Local
 from openbb_terminal import terminal_controller
@@ -17,7 +18,7 @@ def display_welcome_message():
     """Display welcome message"""
     with open(PACKAGE_DIRECTORY / "session" / "banner.txt") as f:
         console.print(f"[menu]{f.read()}[/menu]\n")
-        console.print("Register     : [cmds]https://my.openbb.co/register[/cmds]")
+        console.print(f"Register     : [cmds]{REGISTER_LINK}[/cmds]")
         console.print("Ask support  : [cmds]https://openbb.co/support[/cmds]")
 
 
