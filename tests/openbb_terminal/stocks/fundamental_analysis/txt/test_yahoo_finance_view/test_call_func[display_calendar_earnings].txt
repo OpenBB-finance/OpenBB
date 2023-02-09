@@ -1,2 +1,0 @@
-      Earnings Date Earnings Average Earnings Low Earnings High Revenue Average Revenue Low Revenue High
-Value    02/09/2023            1.240        1.080         1.360         7.580 B     7.178 B      7.928 B
