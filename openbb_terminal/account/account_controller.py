@@ -21,6 +21,7 @@ from openbb_terminal.session import (
     hub_model as Hub,
     local_model as Local,
 )
+from openbb_terminal.session.session_model import logout
 from openbb_terminal.session.user import User
 
 logger = logging.getLogger(__name__)
@@ -30,6 +31,8 @@ class AccountController(BaseController):
     """Account Controller Class"""
 
     CHOICES_COMMANDS = [
+        "login",
+        "logout",
         "sync",
         "pull",
         "clear",
@@ -78,6 +81,9 @@ class AccountController(BaseController):
         """Print help"""
 
         mt = MenuText("account/", 100)
+        mt.add_info("_authentication_")
+        mt.add_cmd("logout")
+        mt.add_raw("\n")
         mt.add_info("_info_")
         mt.add_cmd("sync")
         mt.add_cmd("pull")
@@ -89,6 +95,44 @@ class AccountController(BaseController):
         mt.add_cmd("download")
         mt.add_cmd("delete")
         console.print(text=mt.menu_text, menu="Account")
+
+    @log_start_end(log=logger)
+    def call_login(self, other_args: List[str]) -> None:
+        """Process login command."""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="login",
+            description="Login to OpenBB",
+        )
+        ns_parser = self.parse_simple_args(parser, other_args)
+
+        if ns_parser:
+            logout(
+                auth_header=User.get_auth_header(),
+                token=User.get_token(),
+                guest=User.is_guest(),
+                cls=True,
+            )
+
+    @log_start_end(log=logger)
+    def call_logout(self, other_args: List[str]) -> None:
+        """Process logout command."""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="logout",
+            description="Logout from OpenBB",
+        )
+        ns_parser = self.parse_simple_args(parser, other_args)
+
+        if ns_parser:
+            logout(
+                auth_header=User.get_auth_header(),
+                token=User.get_token(),
+                guest=User.is_guest(),
+                cls=True,
+            )
 
     @log_start_end(log=logger)
     def call_sync(self, other_args: List[str]):

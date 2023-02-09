@@ -110,7 +110,6 @@ def logout(
     clear_openbb_env_vars()
     remove_log_handlers()
     reload_openbb_modules()
-    User.set_logged(True)
 
     plt.close("all")
 

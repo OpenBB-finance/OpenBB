@@ -8,7 +8,6 @@ class User:
     _token: str = ""
     _uuid: str = ""
     _email: str = ""
-    _logged: bool = False
 
     @classmethod
     def load_user_info(cls, session: dict, email: str):
@@ -74,16 +73,6 @@ class User:
     def is_guest(cls):
         """Check if user is guest."""
         return not bool(cls._token)
-
-    @classmethod
-    def get_logged(cls):
-        """Check if user was logged."""
-        return cls._logged
-
-    @classmethod
-    def set_logged(cls, logged: bool):
-        """Set logged status."""
-        cls._logged = logged
 
     @classmethod
     def is_sync_enabled(cls):

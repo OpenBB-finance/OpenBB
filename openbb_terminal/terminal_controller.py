@@ -945,6 +945,10 @@ def terminal(jobs_cmds: List[str] = None, test_mode=False):
                 an_input = input(f"{get_flair()} / $ ")
 
         try:
+
+            if an_input == "logout":
+                break
+
             # Process the input command
             t_controller.queue = t_controller.switch(an_input)
 
@@ -957,10 +961,6 @@ def terminal(jobs_cmds: List[str] = None, test_mode=False):
                 ret_code = reset(t_controller.queue if t_controller.queue else [])
                 if ret_code != 0:
                     print_goodbye()
-                    break
-
-            if an_input == "logout":
-                if User.get_logged():
                     break
 
         except SystemExit:

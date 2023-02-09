@@ -12,6 +12,7 @@ from openbb_terminal.session.session_model import (
     create_session,
     login,
 )
+from openbb_terminal.session.session_model import clear_openbb_env_vars
 
 
 def display_welcome_message():
@@ -113,6 +114,7 @@ def main(guest_allowed: bool = True):
     guest_allowed : bool, optional
         Allow guest login, by default True
     """
+    clear_openbb_env_vars()
     local_session = Local.get_session()
     if not local_session:
         prompt(guest_allowed=guest_allowed)
