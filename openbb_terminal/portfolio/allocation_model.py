@@ -2,13 +2,14 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import Dict, Tuple
+from typing import Tuple
 
 import pandas as pd
 import yfinance as yf
 from tqdm import tqdm
 
 from openbb_terminal.decorators import log_start_end
+from openbb_terminal.etf import fmp_model, stockanalysis_model
 from openbb_terminal.helper_funcs import request
 from openbb_terminal.rich_config import console
 
@@ -17,7 +18,7 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def get_allocation(
-    category: str, benchmark_info: Dict, portfolio_trades: pd.DataFrame
+    category: str, benchmark_ticker: str, portfolio_trades: pd.DataFrame
 ) -> Tuple[pd.DataFrame, pd.DataFrame]:
     """Get category allocation for benchmark and portfolio
 
@@ -25,8 +26,8 @@ def get_allocation(
     ----------
     category: str
         Chosen category: Asset, Sector, Country or Region
-    benchmark_info: Dict
-        Dictionary containing Yahoo Finance information
+    benchmark_ticker: str
+        The ticker of the benchmark
     portfolio_trades: pd.DataFrame
         Object containing trades made within the portfolio
 
@@ -39,13 +40,13 @@ def get_allocation(
     """
 
     if category == "Asset":
-        return get_assets_allocation(benchmark_info, portfolio_trades)
+        return get_assets_allocation(benchmark_ticker, portfolio_trades)
     if category == "Sector":
-        return get_sectors_allocation(benchmark_info, portfolio_trades)
+        return get_sectors_allocation(benchmark_ticker, portfolio_trades)
     if category == "Country":
-        return get_countries_allocation(benchmark_info, portfolio_trades)
+        return get_countries_allocation(benchmark_ticker, portfolio_trades)
     if category == "Region":
-        return get_regions_allocation(benchmark_info, portfolio_trades)
+        return get_regions_allocation(benchmark_ticker, portfolio_trades)
     console.print(
         "Category not available. Choose from: Asset, Sector, Country or Region."
     )
@@ -54,14 +55,14 @@ def get_allocation(
 
 @log_start_end(log=logger)
 def get_assets_allocation(
-    benchmark_info: Dict, portfolio_trades: pd.DataFrame
+    benchmark_ticker: str, portfolio_trades: pd.DataFrame
 ) -> Tuple[pd.DataFrame, pd.DataFrame]:
     """Get assets allocation for benchmark and portfolio [Source: Yahoo Finance]
 
     Parameters
     ----------
-    benchmark_info: Dict
-        Dictionary containing Yahoo Finance information
+    benchmark_ticker: str
+        The ticker of the benchmark
     portfolio_trades: pd.DataFrame
         Object containing trades made within the portfolio
 
@@ -72,16 +73,20 @@ def get_assets_allocation(
     pd.DataFrame
         DataFrame with the portfolio's asset allocations
     """
-    if "holdings" in benchmark_info:
-        benchmark_assets_allocation = pd.DataFrame(benchmark_info["holdings"])
-        benchmark_assets_allocation.rename(
-            columns={"symbol": "Symbol", "holdingPercent": "Benchmark"}, inplace=True
-        )
-        benchmark_assets_allocation.drop(columns=["holdingName"], inplace=True)
-    else:
-        benchmark_assets_allocation = pd.DataFrame(
-            columns=["Symbol", "Benchmark", "Sector", "Country"]
-        )
+
+    benchmark_assets_allocation = stockanalysis_model.get_etf_holdings(
+        benchmark_ticker
+    ).reset_index()
+    benchmark_assets_allocation.rename(
+        columns={"symbol": "Symbol", "% Of Etf": "Benchmark"}, inplace=True
+    )
+    benchmark_assets_allocation.drop(columns=["Name", "Shares"], inplace=True)
+
+    benchmark_values_formatted = []
+    for benchmark_value in benchmark_assets_allocation["Benchmark"].values:
+        benchmark_values_formatted.append(float(benchmark_value.strip("%")) / 100)
+
+    benchmark_assets_allocation["Benchmark"] = benchmark_values_formatted
 
     portfolio_assets_allocation = (
         portfolio_trades[portfolio_trades["Type"] != "CASH"]
@@ -100,14 +105,14 @@ def get_assets_allocation(
 
 @log_start_end(log=logger)
 def get_sectors_allocation(
-    benchmark_info: Dict, portfolio_trades: pd.DataFrame
+    benchmark_ticker: str, portfolio_trades: pd.DataFrame
 ) -> Tuple[pd.DataFrame, pd.DataFrame]:
     """Get sector allocation for benchmark and portfolio [Source: Yahoo Finance]
 
     Parameters
     ----------
-    benchmark_info: Dict
-        Dictionary containing Yahoo Finance information
+    benchmark_ticker: str
+        The ticker of the benchmark
     portfolio_trades: pd.DataFrame
         Object containing trades made within the portfolio
 
@@ -119,32 +124,20 @@ def get_sectors_allocation(
         DataFrame with portfolio allocations
     """
 
-    if "sectorWeightings" in benchmark_info:
-        benchmark_sectors_allocation = (
-            pd.DataFrame.from_dict(
-                data={
-                    sector_name: allocation
-                    for sector in benchmark_info["sectorWeightings"]
-                    for sector_name, allocation in sector.items()
-                },
-                orient="index",
-            )
-            .squeeze()
-            .sort_values(ascending=False)
+    sectors = fmp_model.get_etf_sector_weightings(benchmark_ticker)
+
+    sector_weights_formatted = {}
+    for sector_weight in sectors:
+        sector_weights_formatted[sector_weight["sector"]] = (
+            float(sector_weight["weightPercentage"].strip("%")) / 100
         )
 
-        # Prettify sector allocations of benchmark to align with Portfolio Excel
-        prettified = [
-            sector.replace("_", " ").title()
-            for sector in benchmark_sectors_allocation.index
-        ]
-
-        benchmark_sectors_allocation.index = prettified
-        benchmark_sectors_allocation = pd.DataFrame(benchmark_sectors_allocation)
-        benchmark_sectors_allocation.reset_index(inplace=True)
-        benchmark_sectors_allocation.columns = ["Sector", "Benchmark"]
-    else:
-        benchmark_sectors_allocation = pd.DataFrame(columns=["Sector", "Benchmark"])
+    benchmark_sectors_allocation = pd.DataFrame(
+        [sector_weights_formatted]
+    ).T.reset_index()
+    benchmark_sectors_allocation.rename(
+        columns={"index": "Sector", 0: "Benchmark"}, inplace=True
+    )
 
     # Define portfolio sector allocation
     # Aggregate sector value for stocks and crypto
@@ -237,14 +230,14 @@ def get_sectors_allocation(
 
 @log_start_end(log=logger)
 def get_countries_allocation(
-    benchmark_info: Dict, portfolio_trades: pd.DataFrame
+    benchmark_ticker: str, portfolio_trades: pd.DataFrame
 ) -> Tuple[pd.DataFrame, pd.DataFrame]:
     """Get countries allocation for benchmark and portfolio [Source: Yahoo Finance]
 
     Parameters
     ----------
-    benchmark_info: Dict
-        Dictionary containing Yahoo Finance information
+    benchmark_ticker: str
+        The ticker of the benchmark
     portfolio_trades: pd.DataFrame
         Object containing trades made within the portfolio
 
@@ -257,7 +250,7 @@ def get_countries_allocation(
     """
 
     benchmark_allocation = get_symbol_allocation(
-        symbol=benchmark_info["symbol"], category="Country", col_name="Benchmark"
+        symbol=benchmark_ticker, category="Country", col_name="Benchmark"
     )
 
     portfolio_allocation = get_portfolio_allocation(
@@ -269,14 +262,14 @@ def get_countries_allocation(
 
 @log_start_end(log=logger)
 def get_regions_allocation(
-    benchmark_info: Dict, portfolio_trades: pd.DataFrame
+    benchmark_ticker: str, portfolio_trades: pd.DataFrame
 ) -> Tuple[pd.DataFrame, pd.DataFrame]:
     """Get regions allocation for benchmark and portfolio [Source: Yahoo Finance]
 
     Parameters
     ----------
-    benchmark_info: Dict
-        Dictionary containing Yahoo Finance information
+    benchmark_ticker: str
+        The ticker of the benchmark
     portfolio_trades: pd.DataFrame
         Object containing trades made within the portfolio
 
@@ -288,7 +281,7 @@ def get_regions_allocation(
         DataFrame with country allocations
     """
     benchmark_allocation = get_symbol_allocation(
-        symbol=benchmark_info["symbol"], category="Region", col_name="Benchmark"
+        symbol=benchmark_ticker, category="Region", col_name="Benchmark"
     )
 
     portfolio_allocation = get_portfolio_allocation(

@@ -491,6 +491,25 @@
     "historical": ["YahooFinance"],
     "curve": ["YahooFinance"]
   },
+  "portfolio": {
+    "po": {
+      "maxsharpe": ["YahooFinance"],
+      "minrisk": ["YahooFinance"],
+      "maxutil": ["YahooFinance"],
+      "maxret": ["YahooFinance"],
+      "maxdiv": ["YahooFinance"],
+      "maxdecorr": ["YahooFinance"],
+      "blacklitterman": ["FinancialModelingPrep"],
+      "ef": ["YahooFinance"],
+      "riskparity": ["YahooFinance"],
+      "relriskparity": ["YahooFinance"],
+      "hrp": ["YahooFinance"],
+      "herc": ["YahooFinance"],
+      "nco": ["YahooFinance"],
+      "equal": ["YahooFinance"],
+      "mktcap": ["FinancialModelingPrep"]
+    }
+  },
   "alternative": {
     "oss": {
       "rossidx": ["RunaCapital"],

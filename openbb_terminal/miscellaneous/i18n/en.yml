@@ -980,7 +980,7 @@ en:
   portfolio/po/_mean_risk_optimization_: Mean Risk Optimization
   portfolio/po/maxsharpe: maximal Sharpe ratio portfolio (a.k.a the tangency portfolio)
   portfolio/po/minrisk: minimum risk portfolio
-  portfolio/po/maxutil: maximal risk averse utility function, given some risk aversion parameter
+  portfolio/po/maxutil: maximal risk averse utility function
   portfolio/po/maxret: maximal return portfolio
   portfolio/po/maxdiv: maximum diversification portfolio
   portfolio/po/maxdecorr: maximum decorrelation portfolio
