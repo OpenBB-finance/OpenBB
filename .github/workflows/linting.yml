@@ -16,7 +16,6 @@ on:
       - 'feature/*'
       - 'hotfix/*'
       - 'release/*'
-  merge_group:
 
 # Cancel previous runs that are not yet completed.
 concurrency:

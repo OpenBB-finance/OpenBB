@@ -17,7 +17,6 @@ on:
   push:
     branches:
       - release/*
-  merge_group:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
