@@ -60,9 +60,10 @@ def display_etf_weightings(
         sector_weights_formatted[sector_weight["sector"]] = (
             float(sector_weight["weightPercentage"].strip("%")) / 100
         )
+    sector_weights_formatted = dict(sorted(sector_weights_formatted.items()))
 
     if raw:
-        sectors_df = pd.DataFrame(sectors)
+        sectors_df = pd.DataFrame(sectors).sort_values(by="sector")
         print_rich_table(
             sectors_df,
             headers=["Sector", "Weight"],
