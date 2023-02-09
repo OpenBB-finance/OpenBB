@@ -986,7 +986,6 @@ en:
   portfolio/po/maxret: maximal return portfolio
   portfolio/po/maxdiv: maximum diversification portfolio
   portfolio/po/maxdecorr: maximum decorrelation portfolio
-  portfolio/po/mktcap: weighted according to market cap
   portfolio/po/blacklitterman: black litterman portfolio
   portfolio/po/ef: show the efficient frontier
   portfolio/po/_risk_parity_optimization_: Risk Parity Optimization
@@ -996,6 +995,9 @@ en:
   portfolio/po/hrp: hierarchical risk parity
   portfolio/po/herc: hierarchical equal risk contribution
   portfolio/po/nco: nested clustering optimization
+  portfolio/po/_other_optimization_techniques_: Other Optimization Techniques
+  portfolio/po/equal: equal weighted portfolio
+  portfolio/po/mktcap: weighted according to market cap
   portfolio/po/_optimized_portfolio: Optimized portfolio
   portfolio/po/rpf: remove portfolios from the list of saved portfolios
   portfolio/po/show: show selected portfolios and categories from the list of saved portfolios

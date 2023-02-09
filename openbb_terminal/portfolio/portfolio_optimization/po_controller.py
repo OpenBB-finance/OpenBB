@@ -164,13 +164,14 @@ class PortfolioOptimizationController(BaseController):
         "maxret",
         "maxdiv",
         "maxdecorr",
-        "mktcap",
         "blacklitterman",
         "riskparity",
         "relriskparity",
         "hrp",
         "herc",
         "nco",
+        "mktcap",
+        "equal",
         "ef",
         "file",
     ]
@@ -302,6 +303,11 @@ class PortfolioOptimizationController(BaseController):
         mt.add_cmd("hrp", self.tickers)
         mt.add_cmd("herc", self.tickers)
         mt.add_cmd("nco", self.tickers)
+        mt.add_raw("\n")
+
+        mt.add_info("_other_optimization_techniques_")
+        mt.add_cmd("equal", self.tickers)
+        mt.add_cmd("mktcap", self.tickers)
         mt.add_raw("\n")
 
         mt.add_param("_optimized_portfolio", ", ".join(self.portfolios.keys()))
@@ -923,6 +929,60 @@ class PortfolioOptimizationController(BaseController):
                             rc_chart=ns_parser.rc_chart,
                             heat=ns_parser.heat,
                         )
+
+    @log_start_end(log=logger)
+    def call_equal(self, other_args: List[str]):
+        """Process equal command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="equal",
+            description="Returns an equally weighted portfolio",
+        )
+        parser = self.po_parser(
+            parser,
+            rm=True,
+            mt=True,
+            p=True,
+            s=True,
+            e=True,
+            lr=True,
+            freq=True,
+            mn=True,
+            th=True,
+            r=True,
+            a=True,
+            v=True,
+            name="NAME_",
+        )
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            if len(self.tickers) < 2:
+                console.print(
+                    "Please have at least 2 loaded tickers to calculate weights.\n"
+                )
+                return
+
+            weights = optimizer_view.display_equal_weight(
+                symbols=self.tickers,
+                interval=ns_parser.historic_period,
+                start_date=ns_parser.start_period,
+                end_date=ns_parser.end_period,
+                log_returns=ns_parser.log_returns,
+                freq=ns_parser.return_frequency,
+                maxnan=ns_parser.max_nan,
+                threshold=ns_parser.threshold_value,
+                method=ns_parser.nan_fill_method,
+                risk_measure=ns_parser.risk_measure.lower(),
+                risk_free_rate=ns_parser.risk_free,
+                alpha=ns_parser.significance_level,
+                value=ns_parser.long_allocation,
+                table=True,
+            )
+
+            self.portfolios[ns_parser.name.upper()] = weights
+            self.count += 1
+            self.update_runtime_choices()
 
     @log_start_end(log=logger)
     def call_mktcap(self, other_args: List[str]):

@@ -296,6 +296,7 @@ def get_property_weights(
     )
 
     prop = {}
+    no_data = []
     prop_sum = 0
     for stock in symbols:
         stock_prop = get_market_cap(stock)
@@ -303,17 +304,21 @@ def get_property_weights(
         prop_sum += stock_prop
 
         if not prop[stock]:
-            console.print(
-                f"No market cap value has been found for {stock} "
-                "and therefore will not have any allocation.",
-                "\n",
-            )
+            no_data.append(stock)
 
     if prop_sum == 0:
         console.print(
-            "No market cap data has been found for all selected tickers.", "\n"
+            "No market cap data has been found for all selected tickers. Not able to optimize the portfolio.",
+            "\n",
         )
         return None, None
+    if no_data:
+        console.print(
+            "No market cap data has been found for the following tickers: "
+            + ", ".join(no_data)
+            + ". Therefore, these will be excluded from the optimization process.",
+            "\n",
+        )
 
     weights = {k: value * v / prop_sum for k, v in prop.items()}
 
