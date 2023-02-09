@@ -281,6 +281,7 @@ def display_bars_financials(
                 margin=dict(t=40),
                 showlegend=False,
             )
+            fig.show()
 
         export_data(
             export,
@@ -292,8 +293,6 @@ def display_bars_financials(
 
         if external_axes:
             return stocks_data, company_tickers, fig
-
-        fig.show()
 
         return stocks_data, company_tickers
 
@@ -368,55 +367,6 @@ def display_companies_per_sector_in_country(
     title += f"in {country}\n"
     title += "excl. exchanges" if exclude_exchanges else " incl. exchanges"
 
-    if raw:
-        print_rich_table(df, headers=list(df.columns), show_index=True, title=title)
-    else:
-        if len(companies_per_sector) > 1:
-            total_num_companies = sum(companies_per_sector.values())
-            min_companies_to_represent = round(
-                min_pct_to_display_sector * total_num_companies
-            )
-            filter_sectors_to_display = (
-                np.array(list(companies_per_sector.values()))
-                > min_companies_to_represent
-            )
-
-            if any(filter_sectors_to_display):
-                if not all(filter_sectors_to_display):
-                    num_sectors_to_display = np.where(~filter_sectors_to_display)[0][0]
-
-                    if num_sectors_to_display < max_sectors_to_display:
-                        max_sectors_to_display = num_sectors_to_display
-
-            else:
-                console.print(
-                    "The minimum threshold percentage specified is too high, thus it will be ignored."
-                )
-
-            if len(companies_per_sector) > max_sectors_to_display:
-                companies_per_sector_sliced = dict(
-                    list(companies_per_sector.items())[: max_sectors_to_display - 1]
-                )
-                companies_per_sector_sliced["Others"] = sum(
-                    dict(
-                        list(companies_per_sector.items())[max_sectors_to_display - 1 :]
-                    ).values()
-                )
-
-                legend, values = zip(*companies_per_sector_sliced.items())
-
-            else:
-                legend, values = zip(*companies_per_sector.items())
-
-            fig = plot_pie_chart(labels=legend, values=values, title=title)
-
-        elif len(companies_per_sector) == 1:
-            return console.print(
-                f"Only 1 sector found '{list(companies_per_sector.keys())[0]}'. No pie chart will be depicted."
-            )
-        else:
-            return console.print("No sector found. No pie chart will be depicted.")
-
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
@@ -425,7 +375,57 @@ def display_companies_per_sector_in_country(
         sheet_name,
     )
 
-    return None if raw else fig.show(external=external_axes)
+    if raw:
+        return print_rich_table(
+            df, headers=list(df.columns), show_index=True, title=title
+        )
+
+    if len(companies_per_sector) > 1:
+        total_num_companies = sum(companies_per_sector.values())
+        min_companies_to_represent = round(
+            min_pct_to_display_sector * total_num_companies
+        )
+        filter_sectors_to_display = (
+            np.array(list(companies_per_sector.values())) > min_companies_to_represent
+        )
+
+        if any(filter_sectors_to_display):
+            if not all(filter_sectors_to_display):
+                num_sectors_to_display = np.where(~filter_sectors_to_display)[0][0]
+
+                if num_sectors_to_display < max_sectors_to_display:
+                    max_sectors_to_display = num_sectors_to_display
+
+        else:
+            console.print(
+                "The minimum threshold percentage specified is too high, thus it will be ignored."
+            )
+
+        if len(companies_per_sector) > max_sectors_to_display:
+            companies_per_sector_sliced = dict(
+                list(companies_per_sector.items())[: max_sectors_to_display - 1]
+            )
+            companies_per_sector_sliced["Others"] = sum(
+                dict(
+                    list(companies_per_sector.items())[max_sectors_to_display - 1 :]
+                ).values()
+            )
+
+            legend, values = zip(*companies_per_sector_sliced.items())
+
+        else:
+            legend, values = zip(*companies_per_sector.items())
+
+        return plot_pie_chart(labels=legend, values=values, title=title).show(
+            external=external_axes
+        )
+
+    elif len(companies_per_sector) == 1:
+        return console.print(
+            f"Only 1 sector found '{list(companies_per_sector.keys())[0]}'. No pie chart will be depicted."
+        )
+    else:
+        return console.print("No sector found. No pie chart will be depicted.")
 
 
 @log_start_end(log=logger)
@@ -492,61 +492,6 @@ def display_companies_per_industry_in_country(
     title += f"in {country}\n"
     title += "excl. exchanges" if exclude_exchanges else " incl. exchanges"
 
-    if raw:
-        print_rich_table(df, headers=list(df.columns), show_index=True, title=title)
-    else:
-        if len(companies_per_industry) > 1:
-            total_num_companies = sum(companies_per_industry.values())
-            min_companies_to_represent = round(
-                min_pct_to_display_industry * total_num_companies
-            )
-            filter_industries_to_display = (
-                np.array(list(companies_per_industry.values()))
-                > min_companies_to_represent
-            )
-
-            if any(filter_industries_to_display):
-                if not all(filter_industries_to_display):
-                    num_industries_to_display = np.where(~filter_industries_to_display)[
-                        0
-                    ][0]
-
-                    if num_industries_to_display < max_industries_to_display:
-                        max_industries_to_display = num_industries_to_display
-
-            else:
-                console.print(
-                    "The minimum threshold percentage specified is too high, thus it will be ignored."
-                )
-
-            if len(companies_per_industry) > max_industries_to_display:
-                companies_per_industry_sliced = dict(
-                    list(companies_per_industry.items())[
-                        : max_industries_to_display - 1
-                    ]
-                )
-                companies_per_industry_sliced["Others"] = sum(
-                    dict(
-                        list(companies_per_industry.items())[
-                            max_industries_to_display - 1 :
-                        ]
-                    ).values()
-                )
-
-                legend, values = zip(*companies_per_industry_sliced.items())
-
-            else:
-                legend, values = zip(*companies_per_industry.items())
-
-            fig = plot_pie_chart(labels=legend, values=values, title=title)
-
-        elif len(companies_per_industry) == 1:
-            return console.print(
-                f"Only 1 industry found '{list(companies_per_industry.keys())[0]}'. No pie chart will be depicted."
-            )
-        else:
-            return console.print("No industry found. No pie chart will be depicted.")
-
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
@@ -555,7 +500,61 @@ def display_companies_per_industry_in_country(
         sheet_name,
     )
 
-    return None if raw else fig.show(external=external_axes)
+    if raw:
+        return print_rich_table(
+            df, headers=list(df.columns), show_index=True, title=title
+        )
+
+    if len(companies_per_industry) > 1:
+        total_num_companies = sum(companies_per_industry.values())
+        min_companies_to_represent = round(
+            min_pct_to_display_industry * total_num_companies
+        )
+        filter_industries_to_display = (
+            np.array(list(companies_per_industry.values())) > min_companies_to_represent
+        )
+
+        if any(filter_industries_to_display):
+            if not all(filter_industries_to_display):
+                num_industries_to_display = np.where(~filter_industries_to_display)[0][
+                    0
+                ]
+
+                if num_industries_to_display < max_industries_to_display:
+                    max_industries_to_display = num_industries_to_display
+
+        else:
+            console.print(
+                "The minimum threshold percentage specified is too high, thus it will be ignored."
+            )
+
+        if len(companies_per_industry) > max_industries_to_display:
+            companies_per_industry_sliced = dict(
+                list(companies_per_industry.items())[: max_industries_to_display - 1]
+            )
+            companies_per_industry_sliced["Others"] = sum(
+                dict(
+                    list(companies_per_industry.items())[
+                        max_industries_to_display - 1 :
+                    ]
+                ).values()
+            )
+
+            legend, values = zip(*companies_per_industry_sliced.items())
+
+        else:
+            legend, values = zip(*companies_per_industry.items())
+
+        return plot_pie_chart(labels=legend, values=values, title=title).show(
+            external=external_axes
+        )
+
+    elif len(companies_per_industry) == 1:
+        return console.print(
+            f"Only 1 industry found '{list(companies_per_industry.keys())[0]}'. No pie chart will be depicted."
+        )
+    else:
+        return console.print("No industry found. No pie chart will be depicted.")
 
 
 @log_start_end(log=logger)
@@ -619,66 +618,6 @@ def display_companies_per_industry_in_sector(
     title += f"in {sector} sector\n"
     title += "excl. exchanges" if exclude_exchanges else " incl. exchanges"
 
-    if raw:
-        print_rich_table(
-            df,
-            headers=list(df.columns),
-            show_index=True,
-            title=title,
-        )
-    else:
-        if len(companies_per_industry) > 1:
-            total_num_companies = sum(companies_per_industry.values())
-            min_companies_to_represent = round(
-                min_pct_to_display_industry * total_num_companies
-            )
-            filter_industries_to_display = (
-                np.array(list(companies_per_industry.values()))
-                > min_companies_to_represent
-            )
-
-            if any(filter_industries_to_display):
-                if not all(filter_industries_to_display):
-                    num_industries_to_display = np.where(~filter_industries_to_display)[
-                        0
-                    ][0]
-
-                    if num_industries_to_display < max_industries_to_display:
-                        max_industries_to_display = num_industries_to_display
-
-            else:
-                console.print(
-                    "The minimum threshold percentage specified is too high, thus it will be ignored."
-                )
-
-            if len(companies_per_industry) > max_industries_to_display:
-                companies_per_industry_sliced = dict(
-                    list(companies_per_industry.items())[
-                        : max_industries_to_display - 1
-                    ]
-                )
-                companies_per_industry_sliced["Others"] = sum(
-                    dict(
-                        list(companies_per_industry.items())[
-                            max_industries_to_display - 1 :
-                        ]
-                    ).values()
-                )
-
-                legend, values = zip(*companies_per_industry_sliced.items())
-
-            else:
-                legend, values = zip(*companies_per_industry.items())
-
-            fig = plot_pie_chart(labels=legend, values=values, title=title)
-
-        elif len(companies_per_industry) == 1:
-            return console.print(
-                f"Only 1 industry found '{list(companies_per_industry.keys())[0]}'. No pie chart will be depicted."
-            )
-        else:
-            return console.print("No industry found. No pie chart will be depicted.")
-
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
@@ -687,7 +626,64 @@ def display_companies_per_industry_in_sector(
         sheet_name,
     )
 
-    return None if raw else fig.show(external=external_axes)
+    if raw:
+        return print_rich_table(
+            df,
+            headers=list(df.columns),
+            show_index=True,
+            title=title,
+        )
+
+    if len(companies_per_industry) > 1:
+        total_num_companies = sum(companies_per_industry.values())
+        min_companies_to_represent = round(
+            min_pct_to_display_industry * total_num_companies
+        )
+        filter_industries_to_display = (
+            np.array(list(companies_per_industry.values())) > min_companies_to_represent
+        )
+
+        if any(filter_industries_to_display):
+            if not all(filter_industries_to_display):
+                num_industries_to_display = np.where(~filter_industries_to_display)[0][
+                    0
+                ]
+
+                if num_industries_to_display < max_industries_to_display:
+                    max_industries_to_display = num_industries_to_display
+
+        else:
+            console.print(
+                "The minimum threshold percentage specified is too high, thus it will be ignored."
+            )
+
+        if len(companies_per_industry) > max_industries_to_display:
+            companies_per_industry_sliced = dict(
+                list(companies_per_industry.items())[: max_industries_to_display - 1]
+            )
+            companies_per_industry_sliced["Others"] = sum(
+                dict(
+                    list(companies_per_industry.items())[
+                        max_industries_to_display - 1 :
+                    ]
+                ).values()
+            )
+
+            legend, values = zip(*companies_per_industry_sliced.items())
+
+        else:
+            legend, values = zip(*companies_per_industry.items())
+
+        return plot_pie_chart(labels=legend, values=values, title=title).show(
+            external=external_axes
+        )
+
+    elif len(companies_per_industry) == 1:
+        return console.print(
+            f"Only 1 industry found '{list(companies_per_industry.keys())[0]}'. No pie chart will be depicted."
+        )
+    else:
+        return console.print("No industry found. No pie chart will be depicted.")
 
 
 @log_start_end(log=logger)
@@ -751,59 +747,6 @@ def display_companies_per_country_in_sector(
     title += f"in {sector} sector\n"
     title += "excl. exchanges" if exclude_exchanges else " incl. exchanges"
 
-    if raw:
-        print_rich_table(df, headers=list(df.columns), show_index=True, title=title)
-    else:
-        if len(companies_per_country) > 1:
-            total_num_companies = sum(companies_per_country.values())
-            min_companies_to_represent = round(
-                min_pct_to_display_country * total_num_companies
-            )
-            filter_countries_to_display = (
-                np.array(list(companies_per_country.values()))
-                > min_companies_to_represent
-            )
-
-            if any(filter_countries_to_display):
-                if not all(filter_countries_to_display):
-                    num_countries_to_display = np.where(~filter_countries_to_display)[
-                        0
-                    ][0]
-
-                    if num_countries_to_display < max_countries_to_display:
-                        max_countries_to_display = num_countries_to_display
-
-            else:
-                console.print(
-                    "The minimum threshold percentage specified is too high, thus it will be ignored."
-                )
-
-            if len(companies_per_country) > max_countries_to_display:
-                companies_per_country_sliced = dict(
-                    list(companies_per_country.items())[: max_countries_to_display - 1]
-                )
-                companies_per_country_sliced["Others"] = sum(
-                    dict(
-                        list(companies_per_country.items())[
-                            max_countries_to_display - 1 :
-                        ]
-                    ).values()
-                )
-
-                legend, values = zip(*companies_per_country_sliced.items())
-
-            else:
-                legend, values = zip(*companies_per_country.items())
-
-            fig = plot_pie_chart(labels=legend, values=values, title=title)
-
-        elif len(companies_per_country) == 1:
-            return console.print(
-                f"Only 1 country found '{list(companies_per_country.keys())[0]}'. No pie chart will be depicted."
-            )
-        else:
-            return console.print("No country found. No pie chart will be depicted.")
-
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
@@ -812,7 +755,57 @@ def display_companies_per_country_in_sector(
         sheet_name,
     )
 
-    return None if raw else fig.show(external=external_axes)
+    if raw:
+        return print_rich_table(
+            df, headers=list(df.columns), show_index=True, title=title
+        )
+
+    if len(companies_per_country) > 1:
+        total_num_companies = sum(companies_per_country.values())
+        min_companies_to_represent = round(
+            min_pct_to_display_country * total_num_companies
+        )
+        filter_countries_to_display = (
+            np.array(list(companies_per_country.values())) > min_companies_to_represent
+        )
+
+        if any(filter_countries_to_display):
+            if not all(filter_countries_to_display):
+                num_countries_to_display = np.where(~filter_countries_to_display)[0][0]
+
+                if num_countries_to_display < max_countries_to_display:
+                    max_countries_to_display = num_countries_to_display
+
+        else:
+            console.print(
+                "The minimum threshold percentage specified is too high, thus it will be ignored."
+            )
+
+        if len(companies_per_country) > max_countries_to_display:
+            companies_per_country_sliced = dict(
+                list(companies_per_country.items())[: max_countries_to_display - 1]
+            )
+            companies_per_country_sliced["Others"] = sum(
+                dict(
+                    list(companies_per_country.items())[max_countries_to_display - 1 :]
+                ).values()
+            )
+
+            legend, values = zip(*companies_per_country_sliced.items())
+
+        else:
+            legend, values = zip(*companies_per_country.items())
+
+        return plot_pie_chart(labels=legend, values=values, title=title).show(
+            external=external_axes
+        )
+
+    elif len(companies_per_country) == 1:
+        return console.print(
+            f"Only 1 country found '{list(companies_per_country.keys())[0]}'. No pie chart will be depicted."
+        )
+    else:
+        return console.print("No country found. No pie chart will be depicted.")
 
 
 @log_start_end(log=logger)
@@ -876,59 +869,6 @@ def display_companies_per_country_in_industry(
     title += f"per country in {industry} industry\n"
     title += "excl. exchanges" if exclude_exchanges else " incl. exchanges"
 
-    if raw:
-        print_rich_table(df, headers=list(df.columns), show_index=True, title=title)
-    else:
-        if len(companies_per_country) > 1:
-            total_num_companies = sum(companies_per_country.values())
-            min_companies_to_represent = round(
-                min_pct_to_display_country * total_num_companies
-            )
-            filter_countries_to_display = (
-                np.array(list(companies_per_country.values()))
-                > min_companies_to_represent
-            )
-
-            if any(filter_countries_to_display):
-                if not all(filter_countries_to_display):
-                    num_countries_to_display = np.where(~filter_countries_to_display)[
-                        0
-                    ][0]
-
-                    if num_countries_to_display < max_countries_to_display:
-                        max_countries_to_display = num_countries_to_display
-
-            else:
-                console.print(
-                    "The minimum threshold percentage specified is too high, thus it will be ignored."
-                )
-
-            if len(companies_per_country) > max_countries_to_display:
-                companies_per_country_sliced = dict(
-                    list(companies_per_country.items())[: max_countries_to_display - 1]
-                )
-                companies_per_country_sliced["Others"] = sum(
-                    dict(
-                        list(companies_per_country.items())[
-                            max_countries_to_display - 1 :
-                        ]
-                    ).values()
-                )
-
-                legend, values = zip(*companies_per_country_sliced.items())
-
-            else:
-                legend, values = zip(*companies_per_country.items())
-
-            fig = plot_pie_chart(labels=legend, values=values, title=title)
-
-        elif len(companies_per_country) == 1:
-            return console.print(
-                f"Only 1 country found '{list(companies_per_country.keys())[0]}'. No pie chart will be depicted."
-            )
-        else:
-            return console.print("No country found. No pie chart will be depicted.")
-
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
@@ -937,4 +877,54 @@ def display_companies_per_country_in_industry(
         sheet_name,
     )
 
-    return None if raw else fig.show(external=external_axes)
+    if raw:
+        return print_rich_table(
+            df, headers=list(df.columns), show_index=True, title=title
+        )
+
+    if len(companies_per_country) > 1:
+        total_num_companies = sum(companies_per_country.values())
+        min_companies_to_represent = round(
+            min_pct_to_display_country * total_num_companies
+        )
+        filter_countries_to_display = (
+            np.array(list(companies_per_country.values())) > min_companies_to_represent
+        )
+
+        if any(filter_countries_to_display):
+            if not all(filter_countries_to_display):
+                num_countries_to_display = np.where(~filter_countries_to_display)[0][0]
+
+                if num_countries_to_display < max_countries_to_display:
+                    max_countries_to_display = num_countries_to_display
+
+        else:
+            console.print(
+                "The minimum threshold percentage specified is too high, thus it will be ignored."
+            )
+
+        if len(companies_per_country) > max_countries_to_display:
+            companies_per_country_sliced = dict(
+                list(companies_per_country.items())[: max_countries_to_display - 1]
+            )
+            companies_per_country_sliced["Others"] = sum(
+                dict(
+                    list(companies_per_country.items())[max_countries_to_display - 1 :]
+                ).values()
+            )
+
+            legend, values = zip(*companies_per_country_sliced.items())
+
+        else:
+            legend, values = zip(*companies_per_country.items())
+
+        return plot_pie_chart(labels=legend, values=values, title=title).show(
+            external=external_axes
+        )
+
+    elif len(companies_per_country) == 1:
+        return console.print(
+            f"Only 1 country found '{list(companies_per_country.keys())[0]}'. No pie chart will be depicted."
+        )
+    else:
+        return console.print("No country found. No pie chart will be depicted.")

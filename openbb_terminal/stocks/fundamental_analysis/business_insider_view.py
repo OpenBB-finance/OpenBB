@@ -108,52 +108,6 @@ def price_target_from_analysts(
     if df_analyst_data.empty:
         return console.print("[red]Could not get data for ticker.[/red]\n")
 
-    if raw:
-        df_analyst_data.index = df_analyst_data.index.strftime("%Y-%m-%d")
-        print_rich_table(
-            df_analyst_data.sort_index(ascending=False).head(limit),
-            headers=list(df_analyst_data.columns),
-            show_index=True,
-            title="Analyst Price Targets",
-        )
-
-    else:
-        fig = OpenBBFigure(yaxis_title="Share Price").set_title(
-            f"{symbol} (Time Series) and Price Target"
-        )
-
-        # Slice start of ratings
-        if start_date:
-            df_analyst_data = df_analyst_data[start_date:]  # type: ignore
-
-        fig.add_scatter(
-            x=data.index,
-            y=data["Close"].values,
-            name="Close",
-            line_width=2,
-        )
-
-        df_grouped = df_analyst_data.groupby(by=["Date"]).mean(numeric_only=True)
-
-        fig.add_scatter(
-            x=df_grouped.index,
-            y=df_grouped.values,
-            name="Average Price Target",
-        )
-
-        fig.add_scatter(
-            x=df_analyst_data.index,
-            y=df_analyst_data["Price Target"].values,
-            name="Price Target",
-            mode="markers+lines",
-            marker=dict(
-                color=theme.down_color,
-                line=dict(color=theme.up_color, width=1),
-                size=10,
-            ),
-            line=dict(color=theme.get_colors()[1]),
-        )
-
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
@@ -162,7 +116,52 @@ def price_target_from_analysts(
         sheet_name,
     )
 
-    return None if raw else fig.show(external=external_axes)
+    if raw:
+        df_analyst_data.index = df_analyst_data.index.strftime("%Y-%m-%d")
+        return print_rich_table(
+            df_analyst_data.sort_index(ascending=False).head(limit),
+            headers=list(df_analyst_data.columns),
+            show_index=True,
+            title="Analyst Price Targets",
+        )
+
+    fig = OpenBBFigure(yaxis_title="Share Price").set_title(
+        f"{symbol} (Time Series) and Price Target"
+    )
+
+    # Slice start of ratings
+    if start_date:
+        df_analyst_data = df_analyst_data[start_date:]  # type: ignore
+
+    fig.add_scatter(
+        x=data.index,
+        y=data["Close"].values,
+        name="Close",
+        line_width=2,
+    )
+
+    df_grouped = df_analyst_data.groupby(by=["Date"]).mean(numeric_only=True)
+
+    fig.add_scatter(
+        x=df_grouped.index,
+        y=df_grouped.values,
+        name="Average Price Target",
+    )
+
+    fig.add_scatter(
+        x=df_analyst_data.index,
+        y=df_analyst_data["Price Target"].values,
+        name="Price Target",
+        mode="markers+lines",
+        marker=dict(
+            color=theme.down_color,
+            line=dict(color=theme.up_color, width=1),
+            size=10,
+        ),
+        line=dict(color=theme.get_colors()[1]),
+    )
+
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)

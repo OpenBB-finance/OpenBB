@@ -681,38 +681,6 @@ def display_daily_returns(
 
     df = get_daily_returns(portfolio_engine, window)
 
-    if raw:
-        print_rich_table(
-            df.tail(limit),
-            title="Portfolio and Benchmark daily returns",
-            headers=["Portfolio [%]", "Benchmark [%]"],
-            show_index=True,
-        )
-    else:
-        clrs_portfolio = [
-            theme.down_color if (x < 0) else theme.up_color for x in df["portfolio"]
-        ]
-        clrs_benchmark = [
-            theme.down_color if (x < 0) else theme.up_color for x in df["benchmark"]
-        ]
-
-        fig = OpenBBFigure(xaxis_title="Date", yaxis_title="Returns [%]")
-        fig.set_title(f"Daily Returns [%] in period {window}")
-
-        fig.add_bar(
-            x=df.index,
-            y=df["portfolio"],
-            name="Portfolio",
-            marker_color=clrs_portfolio,
-        )
-
-        fig.add_bar(
-            x=df.index,
-            y=df["benchmark"],
-            name="Benchmark",
-            marker_color=clrs_benchmark,
-        )
-
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
@@ -721,7 +689,39 @@ def display_daily_returns(
         sheet_name,
     )
 
-    return fig.show(external=external_axes) if not raw else None
+    if raw:
+        return print_rich_table(
+            df.tail(limit),
+            title="Portfolio and Benchmark daily returns",
+            headers=["Portfolio [%]", "Benchmark [%]"],
+            show_index=True,
+        )
+
+    clrs_portfolio = [
+        theme.down_color if (x < 0) else theme.up_color for x in df["portfolio"]
+    ]
+    clrs_benchmark = [
+        theme.down_color if (x < 0) else theme.up_color for x in df["benchmark"]
+    ]
+
+    fig = OpenBBFigure(xaxis_title="Date", yaxis_title="Returns [%]")
+    fig.set_title(f"Daily Returns [%] in period {window}")
+
+    fig.add_bar(
+        x=df.index,
+        y=df["portfolio"],
+        name="Portfolio",
+        marker_color=clrs_portfolio,
+    )
+
+    fig.add_bar(
+        x=df.index,
+        y=df["benchmark"],
+        name="Benchmark",
+        marker_color=clrs_benchmark,
+    )
+
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -757,32 +757,6 @@ def display_distribution_returns(
 
     stats = df.describe()
 
-    if raw:
-        print_rich_table(
-            stats,
-            title=f"Stats for Portfolio and Benchmark in period {window}",
-            show_index=True,
-            headers=["Portfolio", "Benchmark"],
-        )
-
-    else:
-        fig = OpenBBFigure(xaxis_title="Returns [%]", yaxis_title="Density")
-        fig.set_title(f"Returns distribution in period {window}")
-
-        fig.add_histogram(
-            x=df_portfolio,
-            name="Portfolio",
-            histnorm="probability density",
-            marker_color=theme.up_color,
-        )
-
-        fig.add_histogram(
-            x=df_benchmark,
-            name="Benchmark",
-            histnorm="probability density",
-            marker_color=theme.down_color,
-        )
-
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
@@ -791,7 +765,32 @@ def display_distribution_returns(
         sheet_name,
     )
 
-    return fig.show(external=external_axes) if not raw else None
+    if raw:
+        return print_rich_table(
+            stats,
+            title=f"Stats for Portfolio and Benchmark in period {window}",
+            show_index=True,
+            headers=["Portfolio", "Benchmark"],
+        )
+
+    fig = OpenBBFigure(xaxis_title="Returns [%]", yaxis_title="Density")
+    fig.set_title(f"Returns distribution in period {window}")
+
+    fig.add_histogram(
+        x=df_portfolio,
+        name="Portfolio",
+        histnorm="probability density",
+        marker_color=theme.up_color,
+    )
+
+    fig.add_histogram(
+        x=df_benchmark,
+        name="Benchmark",
+        histnorm="probability density",
+        marker_color=theme.down_color,
+    )
+
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -827,28 +826,6 @@ def display_holdings_value(
 
     all_holdings = get_holdings_value(portfolio_engine)
 
-    if raw:
-        print_rich_table(
-            all_holdings.tail(limit),
-            title="Holdings of assets (absolute value)",
-            headers=all_holdings.columns,
-            show_index=True,
-        )
-    else:
-        if not unstack and "Total Value" in all_holdings.columns:
-            all_holdings.drop(columns=["Total Value"], inplace=True)
-
-        fig = OpenBBFigure(xaxis_title="Date", yaxis_title="Holdings ($)")
-        fig.set_title("Total Holdings (value)")
-
-        for col in all_holdings.columns:
-            fig.add_scatter(
-                x=all_holdings.index,
-                y=all_holdings[col].values,
-                name=col,
-                stackgroup="one",
-            )
-
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
@@ -857,7 +834,29 @@ def display_holdings_value(
         sheet_name,
     )
 
-    return fig.show(external=external_axes) if not raw else None
+    if raw:
+        return print_rich_table(
+            all_holdings.tail(limit),
+            title="Holdings of assets (absolute value)",
+            headers=all_holdings.columns,
+            show_index=True,
+        )
+
+    if not unstack and "Total Value" in all_holdings.columns:
+        all_holdings.drop(columns=["Total Value"], inplace=True)
+
+    fig = OpenBBFigure(xaxis_title="Date", yaxis_title="Holdings ($)")
+    fig.set_title("Total Holdings (value)")
+
+    for col in all_holdings.columns:
+        fig.add_scatter(
+            x=all_holdings.index,
+            y=all_holdings[col].values,
+            name=col,
+            stackgroup="one",
+        )
+
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -893,34 +892,6 @@ def display_holdings_percentage(
 
     all_holdings = get_holdings_percentage(portfolio_engine)
 
-    if raw:
-        # No need to account for time since this is daily data
-        all_holdings.index = all_holdings.index.date
-
-        all_holdings.columns = [f"{col} [%]" for col in all_holdings.columns]
-
-        print_rich_table(
-            all_holdings.tail(limit),
-            title="Holdings of assets (in percentage)",
-            headers=all_holdings.columns,
-            show_index=True,
-        )
-
-    else:
-        if not unstack and "Total Value" in all_holdings.columns:
-            all_holdings.drop(columns=["Total Value"], inplace=True)
-
-        fig = OpenBBFigure(xaxis_title="Date", yaxis_title="Holdings (%)")
-        fig.set_title("Total Holdings (percentage)")
-
-        for col in all_holdings.columns:
-            fig.add_scatter(
-                x=all_holdings.index,
-                y=all_holdings[col].values,
-                name=col,
-                stackgroup="one",
-            )
-
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
@@ -929,7 +900,34 @@ def display_holdings_percentage(
         sheet_name,
     )
 
-    return fig.show(external=external_axes) if not raw else None
+    if raw:
+        # No need to account for time since this is daily data
+        all_holdings.index = all_holdings.index.date
+
+        all_holdings.columns = [f"{col} [%]" for col in all_holdings.columns]
+
+        return print_rich_table(
+            all_holdings.tail(limit),
+            title="Holdings of assets (in percentage)",
+            headers=all_holdings.columns,
+            show_index=True,
+        )
+
+    if not unstack and "Total Value" in all_holdings.columns:
+        all_holdings.drop(columns=["Total Value"], inplace=True)
+
+    fig = OpenBBFigure(xaxis_title="Date", yaxis_title="Holdings (%)")
+    fig.set_title("Total Holdings (percentage)")
+
+    for col in all_holdings.columns:
+        fig.add_scatter(
+            x=all_holdings.index,
+            y=all_holdings[col].values,
+            name=col,
+            stackgroup="one",
+        )
+
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)

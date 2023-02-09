@@ -372,18 +372,7 @@ def display_government_trading(
     )
 
     if df_gov.empty:
-        console.print(f"No {gov_type} trading data found\n")
-        return
-
-    if raw:
-        print_rich_table(
-            df_gov,
-            headers=list(df_gov.columns),
-            show_index=False,
-            title=f"Government Trading for {symbol.upper()}",
-        )
-    else:
-        fig = plot_government(df_gov, symbol, gov_type, external_axes)
+        return console.print(f"No {gov_type} trading data found\n")
 
     export_data(
         export,
@@ -393,7 +382,17 @@ def display_government_trading(
         sheet_name,
     )
 
-    return None if raw else fig.show(external=external_axes)
+    if raw:
+        return print_rich_table(
+            df_gov,
+            headers=list(df_gov.columns),
+            show_index=False,
+            title=f"Government Trading for {symbol.upper()}",
+        )
+
+    fig = plot_government(df_gov, symbol, gov_type, external_axes)
+
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -492,71 +491,6 @@ def display_qtr_contracts(
     if symbols.empty:
         return None
 
-    if analysis in ("upmom", "downmom"):
-        if raw:
-            print_rich_table(
-                pd.DataFrame(symbols.values),
-                headers=["symbols"],
-                show_index=True,
-                title="Quarterly Contracts",
-            )
-        else:
-            titles = {
-                "upmom": "Highest increasing quarterly Government Contracts",
-                "downmom": "Highest decreasing quarterly Government Contracts",
-            }
-
-            fig = OpenBBFigure(xaxis_title="Quarter", yaxis_title="Amount ($1M)")
-
-            fig.set_title(title=titles[analysis])
-
-            max_amount = 0
-            quarter_ticks = []
-            df_contracts = quiverquant_model.get_government_trading("quarter-contracts")
-            for symbol in symbols:
-                amounts = (
-                    df_contracts[df_contracts["Ticker"] == symbol]
-                    .sort_values(by=["Year", "Qtr"])["Amount"]
-                    .values
-                )
-
-                qtr = (
-                    df_contracts[df_contracts["Ticker"] == symbol]
-                    .sort_values(by=["Year", "Qtr"])["Qtr"]
-                    .values
-                )
-                year = (
-                    df_contracts[df_contracts["Ticker"] == symbol]
-                    .sort_values(by=["Year", "Qtr"])["Year"]
-                    .values
-                )
-
-                fig.add_scatter(
-                    x=np.arange(0, len(amounts)),
-                    y=amounts / 1_000_000,
-                    mode="lines+markers",
-                    name=symbol,
-                    marker=dict(size=16, line=dict(width=0), symbol="star"),
-                )
-
-                if len(amounts) > max_amount:
-                    max_amount = len(amounts)
-                    quarter_ticks = [
-                        f"{quarter[0]} - Q{quarter[1]} " for quarter in zip(year, qtr)
-                    ]
-                    fig.update_layout(
-                        xaxis=dict(
-                            tickmode="array",
-                            tickvals=np.arange(0, len(amounts)),
-                            ticktext=quarter_ticks,
-                        )
-                    )
-
-    elif analysis == "total":
-        print_rich_table(
-            symbols, headers=["Total"], title="Quarterly Contracts", show_index=True
-        )
-
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
@@ -565,7 +499,72 @@ def display_qtr_contracts(
         sheet_name,
     )
 
-    return None if raw else fig.show(external=external_axes)
+    if analysis in ("upmom", "downmom"):
+        if raw:
+            return print_rich_table(
+                pd.DataFrame(symbols.values),
+                headers=["symbols"],
+                show_index=True,
+                title="Quarterly Contracts",
+            )
+
+        titles = {
+            "upmom": "Highest increasing quarterly Government Contracts",
+            "downmom": "Highest decreasing quarterly Government Contracts",
+        }
+
+        fig = OpenBBFigure(xaxis_title="Quarter", yaxis_title="Amount ($1M)")
+
+        fig.set_title(title=titles[analysis])
+
+        max_amount = 0
+        quarter_ticks = []
+        df_contracts = quiverquant_model.get_government_trading("quarter-contracts")
+        for symbol in symbols:
+            amounts = (
+                df_contracts[df_contracts["Ticker"] == symbol]
+                .sort_values(by=["Year", "Qtr"])["Amount"]
+                .values
+            )
+
+            qtr = (
+                df_contracts[df_contracts["Ticker"] == symbol]
+                .sort_values(by=["Year", "Qtr"])["Qtr"]
+                .values
+            )
+            year = (
+                df_contracts[df_contracts["Ticker"] == symbol]
+                .sort_values(by=["Year", "Qtr"])["Year"]
+                .values
+            )
+
+            fig.add_scatter(
+                x=np.arange(0, len(amounts)),
+                y=amounts / 1_000_000,
+                mode="lines+markers",
+                name=symbol,
+                marker=dict(size=16, line=dict(width=0), symbol="star"),
+            )
+
+            if len(amounts) > max_amount:
+                max_amount = len(amounts)
+                quarter_ticks = [
+                    f"{quarter[0]} - Q{quarter[1]} " for quarter in zip(year, qtr)
+                ]
+                fig.update_layout(
+                    xaxis=dict(
+                        tickmode="array",
+                        tickvals=np.arange(0, len(amounts)),
+                        ticktext=quarter_ticks,
+                    )
+                )
+
+            return fig.show(external=external_axes)
+
+    if analysis == "total":
+        print_rich_table(
+            symbols, headers=["Total"], title="Quarterly Contracts", show_index=True
+        )
 
 
 @log_start_end(log=logger)
@@ -594,50 +593,7 @@ def display_hist_contracts(
     df_contracts = quiverquant_model.get_hist_contracts(symbol)
 
     if df_contracts.empty:
-        return
-
-    if raw:
-        print_rich_table(
-            df_contracts,
-            headers=list(df_contracts.columns),
-            floatfmt=[".0f", ".0f", ".2f"],
-            title="Historical Quarterly Government Contracts",
-        )
-
-    else:
-        amounts = df_contracts.sort_values(by=["Year", "Qtr"])["Amount"].values
-
-        qtr = df_contracts.sort_values(by=["Year", "Qtr"])["Qtr"].values
-        year = df_contracts.sort_values(by=["Year", "Qtr"])["Year"].values
-
-        quarter_ticks = [
-            f"{quarter[0]}" if quarter[1] == 1 else "" for quarter in zip(year, qtr)
-        ]
-
-        fig = OpenBBFigure(
-            xaxis=dict(
-                title="Quarter",
-                tickmode="array",
-                tickvals=np.arange(0, len(amounts)),
-                ticktext=quarter_ticks,
-            ),
-            yaxis_title="Amount ($1k)",
-        )
-
-        fig.set_title(f"Historical Quarterly Government Contracts for {symbol.upper()}")
-
-        fig.add_scatter(
-            x=np.arange(0, len(amounts)),
-            y=amounts / 1000,
-            mode="lines+markers",
-            name=symbol,
-            marker=dict(
-                size=15,
-                line=dict(width=2, color=theme.get_colors()[0]),
-                color=theme.down_color,
-            ),
-            line=dict(color=theme.get_colors()[0]),
-        )
+        return None
 
     export_data(
         export,
@@ -646,7 +602,49 @@ def display_hist_contracts(
         sheet_name,
     )
 
-    return None if raw else fig.show(external=external_axes)
+    if raw:
+        return print_rich_table(
+            df_contracts,
+            headers=list(df_contracts.columns),
+            floatfmt=[".0f", ".0f", ".2f"],
+            title="Historical Quarterly Government Contracts",
+        )
+
+    amounts = df_contracts.sort_values(by=["Year", "Qtr"])["Amount"].values
+
+    qtr = df_contracts.sort_values(by=["Year", "Qtr"])["Qtr"].values
+    year = df_contracts.sort_values(by=["Year", "Qtr"])["Year"].values
+
+    quarter_ticks = [
+        f"{quarter[0]}" if quarter[1] == 1 else "" for quarter in zip(year, qtr)
+    ]
+
+    fig = OpenBBFigure(
+        xaxis=dict(
+            title="Quarter",
+            tickmode="array",
+            tickvals=np.arange(0, len(amounts)),
+            ticktext=quarter_ticks,
+        ),
+        yaxis_title="Amount ($1k)",
+    )
+
+    fig.set_title(f"Historical Quarterly Government Contracts for {symbol.upper()}")
+
+    fig.add_scatter(
+        x=np.arange(0, len(amounts)),
+        y=amounts / 1000,
+        mode="lines+markers",
+        name=symbol,
+        marker=dict(
+            size=15,
+            line=dict(width=2, color=theme.get_colors()[0]),
+            color=theme.down_color,
+        ),
+        line=dict(color=theme.get_colors()[0]),
+    )
+
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -682,26 +680,6 @@ def display_top_lobbying(
         df_lobbying.groupby("Ticker")["Amount"].agg("sum")
     ).sort_values(by="Amount", ascending=False)
 
-    if raw:
-        print_rich_table(
-            lobbying_by_ticker.head(limit),
-            headers=["Amount ($100k)"],
-            show_index=True,
-            title="Top Lobbying Tickers",
-        )
-    else:
-        df = lobbying_by_ticker.head(limit)
-
-        fig = OpenBBFigure(xaxis_title="Ticker", yaxis_title="Total Amount ($100k)")
-        fig.set_title(f"Corporate Lobbying Spent since {df_lobbying['Date'].min()}")
-
-        fig.add_bar(
-            x=df.index,
-            y=df.Amount,
-            name="Amount ($100k)",
-            marker_color=theme.get_colors(),
-        )
-
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
@@ -710,7 +688,27 @@ def display_top_lobbying(
         sheet_name,
     )
 
-    return None if raw else fig.show(external=external_axes)
+    if raw:
+        return print_rich_table(
+            lobbying_by_ticker.head(limit),
+            headers=["Amount ($100k)"],
+            show_index=True,
+            title="Top Lobbying Tickers",
+        )
+
+    df = lobbying_by_ticker.head(limit)
+
+    fig = OpenBBFigure(xaxis_title="Ticker", yaxis_title="Total Amount ($100k)")
+    fig.set_title(f"Corporate Lobbying Spent since {df_lobbying['Date'].min()}")
+
+    fig.add_bar(
+        x=df.index,
+        y=df.Amount,
+        name="Amount ($100k)",
+        marker_color=theme.get_colors(),
+    )
+
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)

@@ -142,7 +142,7 @@ def view_historical_greeks(
         Whether to return the figure object or not, by default False
     """
     df = syncretism_model.get_historical_greeks(symbol, expiry, strike, chain_id, put)
-    if not df or df.empty:
+    if df is None or df.empty:
         return None
 
     if isinstance(limit, str):

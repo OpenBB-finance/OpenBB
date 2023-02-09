@@ -44,72 +44,13 @@ def display_etf_weightings(
         Whether to return the figure object or not, by default False
     """
     sectors = yfinance_model.get_etf_sector_weightings(name)
+
     if not sectors:
         return console.print("No data was found for that ETF\n")
 
     holdings = pd.DataFrame(sectors, index=[0]).T
 
     title = f"Sector holdings of {name}"
-
-    if raw:
-        console.print(f"\n{title}")
-        holdings.columns = ["% of holdings in the sector"]
-        print_rich_table(
-            holdings,
-            headers=list(holdings.columns),
-            show_index=True,
-            title="Sector Weightings Allocation",
-        )
-
-    else:
-        main_holdings = holdings[holdings.values > min_pct_to_display].to_dict()[
-            holdings.columns[0]
-        ]
-        if len(main_holdings) < len(holdings):
-            main_holdings["Others"] = 100 - sum(main_holdings.values())
-
-        legend, values = zip(*main_holdings.items())
-        colors = theme.get_colors()
-
-        fig = OpenBBFigure.create_subplots(
-            1,
-            3,
-            specs=[[{"type": "domain"}, {"type": "pie", "colspan": 2}, None]],
-            row_heights=[1],
-            column_widths=[0.1, 0.8, 0.1],
-        )
-
-        fig.add_pie(
-            labels=legend,
-            values=values,
-            textinfo="label+percent",
-            hoverinfo="label+percent",
-            automargin=True,
-            rotation=45,
-            row=1,
-            col=2,
-        )
-        fig.update_traces(
-            textposition="outside",
-            textfont_size=15,
-            marker=dict(
-                colors=colors,
-                line=dict(color="#F5EFF3", width=0.8),
-            ),
-        )
-
-        fig.update_layout(
-            margin=dict(t=40, b=20),
-            title=dict(
-                text=title,
-                y=0.98,
-                x=0.5,
-                xanchor="center",
-                yanchor="top",
-            ),
-            colorway=colors,
-            showlegend=False,
-        )
 
     export_data(
         export,
@@ -119,7 +60,66 @@ def display_etf_weightings(
         sheet_name,
     )
 
-    return None if raw else fig.show(external=external_axes)
+    if raw:
+        console.print(f"\n{title}")
+        holdings.columns = ["% of holdings in the sector"]
+        return print_rich_table(
+            holdings,
+            headers=list(holdings.columns),
+            show_index=True,
+            title="Sector Weightings Allocation",
+        )
+
+    main_holdings = holdings[holdings.values > min_pct_to_display].to_dict()[
+        holdings.columns[0]
+    ]
+    if len(main_holdings) < len(holdings):
+        main_holdings["Others"] = 100 - sum(main_holdings.values())
+
+    legend, values = zip(*main_holdings.items())
+    colors = theme.get_colors()
+
+    fig = OpenBBFigure.create_subplots(
+        1,
+        3,
+        specs=[[{"type": "domain"}, {"type": "pie", "colspan": 2}, None]],
+        row_heights=[1],
+        column_widths=[0.1, 0.8, 0.1],
+    )
+
+    fig.add_pie(
+        labels=legend,
+        values=values,
+        textinfo="label+percent",
+        hoverinfo="label+percent",
+        automargin=True,
+        rotation=45,
+        row=1,
+        col=2,
+    )
+    fig.update_traces(
+        textposition="outside",
+        textfont_size=15,
+        marker=dict(
+            colors=colors,
+            line=dict(color="#F5EFF3", width=0.8),
+        ),
+    )
+
+    fig.update_layout(
+        margin=dict(t=40, b=20),
+        title=dict(
+            text=title,
+            y=0.98,
+            x=0.5,
+            xanchor="center",
+            yanchor="top",
+        ),
+        colorway=colors,
+        showlegend=False,
+    )
+
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)

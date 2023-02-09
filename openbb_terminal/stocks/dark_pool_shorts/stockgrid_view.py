@@ -146,114 +146,6 @@ def short_interest_volume(
     if df.empty:
         return console.print("[red]No data available[/red]\n")
 
-    if raw:
-        df.date = df.date.dt.date
-
-        print_rich_table(
-            df.iloc[:limit],
-            headers=list(df.columns),
-            show_index=False,
-            title="Price vs Short Volume",
-        )
-    else:
-        # Output data
-        fig = OpenBBFigure.create_subplots(
-            rows=2,
-            cols=1,
-            shared_xaxes=True,
-            vertical_spacing=0.06,
-            horizontal_spacing=0,
-            row_width=[0.3, 0.6],
-            specs=[[{"secondary_y": True}], [{"secondary_y": False}]],
-        )
-        # pycodestyle: disable=E501,E203
-        fig.add_scatter(
-            name=symbol,
-            x=df["date"],
-            y=prices[len(prices) - len(df) :],  # pycodestyle: disable=E501,E203
-            line=dict(color="#fdc708", width=2),
-            connectgaps=True,
-            yaxis="y2",
-            opacity=1,
-            showlegend=False,
-            row=1,
-            col=1,
-            secondary_y=True,
-        )
-        fig.add_bar(
-            x=df["date"],
-            y=df["Total Vol. [1M]"],
-            name="Total Volume",
-            marker_color=theme.up_color,
-            row=1,
-            col=1,
-            secondary_y=False,
-        )
-        fig.add_bar(
-            x=df["date"],
-            y=df["Short Vol. [1M]"],
-            name="Short Volume",
-            marker_color=theme.down_color,
-            row=1,
-            col=1,
-            secondary_y=False,
-        )
-        fig.add_scatter(
-            name="Short Vol. %",
-            x=df["date"],
-            y=df["Short Vol. %"],
-            line=dict(width=2),
-            connectgaps=True,
-            opacity=1,
-            showlegend=False,
-            row=2,
-            col=1,
-            secondary_y=False,
-        )
-
-        fig.update_traces(hovertemplate="%{y:.2f}")
-        fig.update_layout(
-            margin=dict(l=40, r=0),
-            title=f"<b>Price vs Short Volume Interest for {symbol}</b>",
-            title_x=0.025,
-            title_font_size=14,
-            yaxis2_title="Stock Price ($)",
-            yaxis_title="FINRA Volume [M]",
-            yaxis3_title="Short Vol. %",
-            yaxis=dict(
-                side="left",
-                fixedrange=False,
-                showgrid=False,
-                titlefont=dict(color="#d81aea"),
-                tickfont=dict(color="#d81aea"),
-                nticks=20,
-                title_standoff=20,
-                layer="above traces",
-            ),
-            yaxis2=dict(
-                side="right",
-                fixedrange=False,
-                anchor="x",
-                overlaying="y",
-                titlefont=dict(color="#fdc708"),
-                tickfont=dict(color="#fdc708"),
-                nticks=10,
-                layer="below traces",
-                title_standoff=10,
-            ),
-            yaxis3=dict(
-                fixedrange=False,
-                titlefont=dict(color="#9467bd"),
-                tickfont=dict(color="#9467bd"),
-                nticks=10,
-            ),
-            hovermode="x unified",
-            spikedistance=1,
-            hoverdistance=1,
-        )
-
-        fig.hide_holidays()
-
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
@@ -262,7 +154,114 @@ def short_interest_volume(
         sheet_name,
     )
 
-    return None if raw else fig.show(external=external_axes)
+    if raw:
+        df.date = df.date.dt.date
+
+        return print_rich_table(
+            df.iloc[:limit],
+            headers=list(df.columns),
+            show_index=False,
+            title="Price vs Short Volume",
+        )
+
+    fig = OpenBBFigure.create_subplots(
+        rows=2,
+        cols=1,
+        shared_xaxes=True,
+        vertical_spacing=0.06,
+        horizontal_spacing=0,
+        row_width=[0.3, 0.6],
+        specs=[[{"secondary_y": True}], [{"secondary_y": False}]],
+    )
+    # pycodestyle: disable=E501,E203
+    fig.add_scatter(
+        name=symbol,
+        x=df["date"],
+        y=prices[len(prices) - len(df) :],  # pycodestyle: disable=E501,E203
+        line=dict(color="#fdc708", width=2),
+        connectgaps=True,
+        yaxis="y2",
+        opacity=1,
+        showlegend=False,
+        row=1,
+        col=1,
+        secondary_y=True,
+    )
+    fig.add_bar(
+        x=df["date"],
+        y=df["Total Vol. [1M]"],
+        name="Total Volume",
+        marker_color=theme.up_color,
+        row=1,
+        col=1,
+        secondary_y=False,
+    )
+    fig.add_bar(
+        x=df["date"],
+        y=df["Short Vol. [1M]"],
+        name="Short Volume",
+        marker_color=theme.down_color,
+        row=1,
+        col=1,
+        secondary_y=False,
+    )
+    fig.add_scatter(
+        name="Short Vol. %",
+        x=df["date"],
+        y=df["Short Vol. %"],
+        line=dict(width=2),
+        connectgaps=True,
+        opacity=1,
+        showlegend=False,
+        row=2,
+        col=1,
+        secondary_y=False,
+    )
+
+    fig.update_traces(hovertemplate="%{y:.2f}")
+    fig.update_layout(
+        margin=dict(l=40, r=0),
+        title=f"<b>Price vs Short Volume Interest for {symbol}</b>",
+        title_x=0.025,
+        title_font_size=14,
+        yaxis2_title="Stock Price ($)",
+        yaxis_title="FINRA Volume [M]",
+        yaxis3_title="Short Vol. %",
+        yaxis=dict(
+            side="left",
+            fixedrange=False,
+            showgrid=False,
+            titlefont=dict(color="#d81aea"),
+            tickfont=dict(color="#d81aea"),
+            nticks=20,
+            title_standoff=20,
+            layer="above traces",
+        ),
+        yaxis2=dict(
+            side="right",
+            fixedrange=False,
+            anchor="x",
+            overlaying="y",
+            titlefont=dict(color="#fdc708"),
+            tickfont=dict(color="#fdc708"),
+            nticks=10,
+            layer="below traces",
+            title_standoff=10,
+        ),
+        yaxis3=dict(
+            fixedrange=False,
+            titlefont=dict(color="#9467bd"),
+            tickfont=dict(color="#9467bd"),
+            nticks=10,
+        ),
+        hovermode="x unified",
+        spikedistance=1,
+        hoverdistance=1,
+    )
+
+    fig.hide_holidays()
+
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -295,81 +294,6 @@ def net_short_position(
     if df.empty:
         return console.print("[red]No data available[/red]\n")
 
-    if raw:
-        df["dates"] = df["dates"].dt.date
-
-        print_rich_table(
-            df.iloc[:limit],
-            headers=list(df.columns),
-            show_index=False,
-            title="Net Short Positions",
-        )
-
-    else:
-        df = df.sort_values(by=["dates"])
-
-        fig = OpenBBFigure.create_subplots(
-            rows=1,
-            cols=1,
-            shared_xaxes=True,
-            specs=[[{"secondary_y": False}]],
-        )
-        fig.add_bar(
-            x=df["dates"],
-            y=df["Net Short Vol. (1k $)"],
-            name="Net Short Vol. (1k $)",
-            marker_color=theme.down_color,
-            row=1,
-            col=1,
-            secondary_y=False,
-        )
-        fig.add_scatter(
-            name="Position (1M $)",
-            x=df["dates"],
-            y=df["Position (1M $)"],
-            connectgaps=True,
-            marker_color=theme.up_color,
-            row=1,
-            col=1,
-            secondary_y=True,
-            yaxis="y2",
-        )
-        fig.update_traces(hovertemplate="%{y:.2f}")
-        fig.update_layout(
-            margin=dict(l=40, r=0),
-            title=f"<b>Net Short Vol. vs Position for {symbol}</b>",
-            title_x=0.025,
-            title_font_size=14,
-            yaxis2_title="Net Short Vol. (1k $)",
-            yaxis_title="Position (1M $)",
-            yaxis=dict(
-                side="left",
-                fixedrange=False,
-                showgrid=False,
-                titlefont=dict(color="#d81aea"),
-                tickfont=dict(color="#d81aea"),
-                nticks=20,
-                title_standoff=20,
-                layer="above traces",
-            ),
-            yaxis2=dict(
-                side="right",
-                fixedrange=False,
-                anchor="x",
-                overlaying="y",
-                titlefont=dict(color="#fdc708"),
-                tickfont=dict(color="#fdc708"),
-                nticks=10,
-                layer="below traces",
-                title_standoff=10,
-            ),
-            hovermode="x unified",
-            spikedistance=1,
-            hoverdistance=1,
-        )
-
-        fig.hide_holidays()
-
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
@@ -378,4 +302,78 @@ def net_short_position(
         sheet_name,
     )
 
-    return None if raw else fig.show(external=external_axes)
+    if raw:
+        df["dates"] = df["dates"].dt.date
+
+        return print_rich_table(
+            df.iloc[:limit],
+            headers=list(df.columns),
+            show_index=False,
+            title="Net Short Positions",
+        )
+
+    df = df.sort_values(by=["dates"])
+
+    fig = OpenBBFigure.create_subplots(
+        rows=1,
+        cols=1,
+        shared_xaxes=True,
+        specs=[[{"secondary_y": False}]],
+    )
+    fig.add_bar(
+        x=df["dates"],
+        y=df["Net Short Vol. (1k $)"],
+        name="Net Short Vol. (1k $)",
+        marker_color=theme.down_color,
+        row=1,
+        col=1,
+        secondary_y=False,
+    )
+    fig.add_scatter(
+        name="Position (1M $)",
+        x=df["dates"],
+        y=df["Position (1M $)"],
+        connectgaps=True,
+        marker_color=theme.up_color,
+        row=1,
+        col=1,
+        secondary_y=True,
+        yaxis="y2",
+    )
+    fig.update_traces(hovertemplate="%{y:.2f}")
+    fig.update_layout(
+        margin=dict(l=40, r=0),
+        title=f"<b>Net Short Vol. vs Position for {symbol}</b>",
+        title_x=0.025,
+        title_font_size=14,
+        yaxis2_title="Net Short Vol. (1k $)",
+        yaxis_title="Position (1M $)",
+        yaxis=dict(
+            side="left",
+            fixedrange=False,
+            showgrid=False,
+            titlefont=dict(color="#d81aea"),
+            tickfont=dict(color="#d81aea"),
+            nticks=20,
+            title_standoff=20,
+            layer="above traces",
+        ),
+        yaxis2=dict(
+            side="right",
+            fixedrange=False,
+            anchor="x",
+            overlaying="y",
+            titlefont=dict(color="#fdc708"),
+            tickfont=dict(color="#fdc708"),
+            nticks=10,
+            layer="below traces",
+            title_standoff=10,
+        ),
+        hovermode="x unified",
+        spikedistance=1,
+        hoverdistance=1,
+    )
+
+    fig.hide_holidays()
+
+    return fig.show(external=external_axes)

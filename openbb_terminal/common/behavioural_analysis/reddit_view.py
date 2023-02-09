@@ -452,6 +452,16 @@ def display_redditsent(
     if display:
         print_rich_table(df=df)
 
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "polarity_scores",
+        df,
+        sheet_name,
+    )
+
+    console.print(f"Sentiment Analysis for {symbol} is {avg_polarity}\n")
+
     if graphic:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
@@ -467,14 +477,4 @@ def display_redditsent(
         )
         fig.add_bar(x=polarity_scores)
 
-    console.print(f"Sentiment Analysis for {symbol} is {avg_polarity}\n")
-
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "polarity_scores",
-        df,
-        sheet_name,
-    )
-
-    return fig.show(external=external_axes) if graphic else None
+        return fig.show(external=external_axes)

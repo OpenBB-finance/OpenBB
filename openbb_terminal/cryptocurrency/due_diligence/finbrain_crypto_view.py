@@ -64,58 +64,6 @@ def display_crypto_sentiment_analysis(
     if sentiment.empty:
         return console.print(f"Couldn't find Sentiment Data for {symbol}\n")
 
-    if not raw:
-        fig = OpenBBFigure(xaxis_title="Time", yaxis_title="Finbrain's Sentiment Score")
-
-        start_date = sentiment.index[0].strftime("%Y/%m/%d")
-        fig.set_title(
-            f"FinBrain's Sentiment Analysis for {symbol}-USD since {start_date}"
-        )
-        senValues = np.array(pd.to_numeric(sentiment["Sentiment Analysis"].values))
-        senNone = np.array(0 * len(sentiment))
-        df_sentiment = sentiment["Sentiment Analysis"]
-        negative_yloc = np.where(senValues < senNone)[0]
-        positive_yloc = np.where(senValues > senNone)[0]
-
-        fig.add_scatter(
-            x=df_sentiment.index[positive_yloc],
-            y=pd.to_numeric(df_sentiment.values)[positive_yloc],
-            mode="lines+markers",
-            line_width=0,
-            name=symbol,
-        )
-        fig.add_scatter(
-            x=[df_sentiment.index[0], df_sentiment.index[-1]],
-            y=[0, 0],
-            fillcolor=theme.up_color,
-            line=dict(color="white", dash="dash"),
-            fill="tonexty",
-            mode="lines",
-            name=symbol,
-        )
-        fig.add_scatter(
-            x=df_sentiment.index[negative_yloc],
-            y=pd.to_numeric(df_sentiment.values)[negative_yloc],
-            fill="tonexty",
-            fillcolor=theme.down_color,
-            line_width=0,
-            mode="lines+markers",
-            name=symbol,
-        )
-        fig.update_traces(showlegend=False)
-    else:
-        sentiment.sort_index(ascending=True, inplace=True)
-
-        if rich_config.USE_COLOR:
-            console.print(
-                sentiment["Sentiment Analysis"]
-                .apply(lambda_sentiment_coloring, last_val=0)
-                .to_string(),
-                "\n",
-            )
-        else:
-            console.print(sentiment.to_string(), "\n")
-
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
@@ -124,4 +72,55 @@ def display_crypto_sentiment_analysis(
         sheet_name,
     )
 
-    return None if raw else fig.show(external=external_axes)
+    if raw:
+        sentiment.sort_index(ascending=True, inplace=True)
+
+        if rich_config.USE_COLOR:
+            return console.print(
+                sentiment["Sentiment Analysis"]
+                .apply(lambda_sentiment_coloring, last_val=0)
+                .to_string(),
+                "\n",
+            )
+
+        return console.print(sentiment.to_string(), "\n")
+
+    start_date = sentiment.index[0].strftime("%Y/%m/%d")
+
+    fig = OpenBBFigure(xaxis_title="Time", yaxis_title="Finbrain's Sentiment Score")
+    fig.set_title(f"FinBrain's Sentiment Analysis for {symbol}-USD since {start_date}")
+
+    senValues = np.array(pd.to_numeric(sentiment["Sentiment Analysis"].values))
+    senNone = np.array(0 * len(sentiment))
+    df_sentiment = sentiment["Sentiment Analysis"]
+    negative_yloc = np.where(senValues < senNone)[0]
+    positive_yloc = np.where(senValues > senNone)[0]
+
+    fig.add_scatter(
+        x=df_sentiment.index[positive_yloc],
+        y=pd.to_numeric(df_sentiment.values)[positive_yloc],
+        mode="lines+markers",
+        line_width=0,
+        name=symbol,
+    )
+    fig.add_scatter(
+        x=[df_sentiment.index[0], df_sentiment.index[-1]],
+        y=[0, 0],
+        fillcolor=theme.up_color,
+        line=dict(color="white", dash="dash"),
+        fill="tonexty",
+        mode="lines",
+        name=symbol,
+    )
+    fig.add_scatter(
+        x=df_sentiment.index[negative_yloc],
+        y=pd.to_numeric(df_sentiment.values)[negative_yloc],
+        fill="tonexty",
+        fillcolor=theme.down_color,
+        line_width=0,
+        mode="lines+markers",
+        name=symbol,
+    )
+    fig.update_traces(showlegend=False)
+
+    return fig.show(external=external_axes)

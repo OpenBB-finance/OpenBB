@@ -115,6 +115,14 @@ def display_dwat(
             f"be problematic. Please consider lags of the dependent or independent variable."
         )
 
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        f"{dependent_variable.name}_dwat",
+        autocorr,
+        sheet_name,
+    )
+
     if plot:
         fig = OpenBBFigure(
             yaxis_title="Residual", xaxis_title=dependent_variable.name.capitalize()
@@ -128,15 +136,7 @@ def display_dwat(
         )
         fig.add_hline(y=0, line=dict(color="red", dash="dash"))
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        f"{dependent_variable.name}_dwat",
-        autocorr,
-        sheet_name,
-    )
-
-    return None if not plot else fig.show(external=external_axes)
+        return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)

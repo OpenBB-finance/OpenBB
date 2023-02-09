@@ -414,6 +414,7 @@ class StocksController(StockBaseController):
             limit=20,
         )
         if ns_parser:
+            figure_export = None
             if self.ticker:
                 if ns_parser.raw:
                     qa_view.display_raw(

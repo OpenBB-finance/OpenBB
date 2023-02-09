@@ -75,6 +75,8 @@ def display_historical(
             sheet_name,
         )
 
+    df_hist.columns = [x.title() for x in df_hist.columns]
+
     fig = OpenBBFigure.create_subplots(
         rows=2,
         cols=1,
@@ -95,10 +97,8 @@ def display_historical(
         row=1,
         col=1,
     )
-    fig.add_volume(
-        y=df_hist["Volume"],
-        x=df_hist.index,
-        name="Volume",
+    fig.add_stock_volume(
+        df_hist,
         row=2,
         col=1,
     )

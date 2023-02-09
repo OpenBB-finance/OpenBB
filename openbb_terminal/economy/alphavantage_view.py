@@ -44,33 +44,6 @@ def realtime_performance_sector(
     if df_rtp.empty:
         return None
 
-    if raw:
-        print_rich_table(
-            df_rtp,
-            show_index=False,
-            headers=df_rtp.columns,
-            title="Real-Time Performance",
-        )
-
-    else:
-        df_rtp.set_index("Sector", inplace=True)
-        df_rtp = df_rtp.squeeze(axis=1)
-        colors = [theme.up_color if x > 0 else theme.down_color for x in df_rtp.values]
-
-        fig = OpenBBFigure(
-            title="Real Time Performance (%) per Sector",
-            yaxis=dict(side="right", dtick=1, title="Sector"),
-        )
-        fig.add_bar(
-            orientation="h",
-            x=df_rtp.values,
-            y=df_rtp.index,
-            name="Performance (%)",
-            marker_color=colors,
-            showlegend=False,
-        )
-        fig.update_layout(xaxis=dict(nticks=10))
-
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
@@ -79,7 +52,33 @@ def realtime_performance_sector(
         sheet_name,
     )
 
-    return fig.show(external=external_axes) if not raw else None
+    if raw:
+        return print_rich_table(
+            df_rtp,
+            show_index=False,
+            headers=df_rtp.columns,
+            title="Real-Time Performance",
+        )
+
+    df_rtp.set_index("Sector", inplace=True)
+    df_rtp = df_rtp.squeeze(axis=1)
+    colors = [theme.up_color if x > 0 else theme.down_color for x in df_rtp.values]
+
+    fig = OpenBBFigure(
+        title="Real Time Performance (%) per Sector",
+        yaxis=dict(side="right", dtick=1, title="Sector"),
+    )
+    fig.add_bar(
+        orientation="h",
+        x=df_rtp.values,
+        y=df_rtp.index,
+        name="Performance (%)",
+        marker_color=colors,
+        showlegend=False,
+    )
+    fig.update_layout(xaxis=dict(nticks=10))
+
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)

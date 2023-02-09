@@ -78,95 +78,6 @@ def insider_activity(
     else:
         df_insider = df_ins.copy()
 
-    if raw:
-        df_insider.index = pd.to_datetime(df_insider.index).date
-
-        print_rich_table(
-            df_insider.sort_index(ascending=False)
-            .head(n=limit)
-            .applymap(lambda x: x.replace(".00", "").replace(",", "")),
-            headers=list(df_insider.columns),
-            show_index=True,
-            title="Insider Activity",
-        )
-    else:
-        close_col = "Adj Close" if interval == "1440min" else "Close"
-
-        fig = OpenBBFigure(yaxis_title="Share Price")
-        fig.set_title(f"{symbol.upper()}'s Insider Trading Activity & Share Price")
-
-        fig.add_scatter(x=data.index, y=data[close_col].values, name=symbol)
-
-        df_insider["Trade"] = df_insider.apply(
-            lambda row: (1, -1)[row.Type == "Sell"]
-            * float(row["Shares Traded"].replace(",", "")),
-            axis=1,
-        )
-
-        min_price, max_price = data[close_col].min(), data[close_col].max()
-        price_range = max_price - min_price
-
-        ins_buy = (
-            df_insider[df_insider["Type"] == "Buy"]
-            .groupby(by=["Date"])
-            .sum(numeric_only=True)
-        )
-        ins_sell = (
-            df_insider[df_insider["Type"] == "Sell"]
-            .groupby(by=["Date"])
-            .sum(numeric_only=True)
-        )
-
-        maxshares = ins_buy["Trade"].max()
-        minshares = ins_sell["Trade"].min()
-
-        if math.isnan(maxshares):
-            shares_range = minshares
-        elif math.isnan(minshares):
-            shares_range = maxshares
-        else:
-            shares_range = maxshares - minshares
-
-        n_proportion = price_range / shares_range
-
-        for ind in ins_sell.index:
-            if ind in data.index:
-                ind_dt = ind
-            else:
-                ind_dt = get_next_stock_market_days(ind, 1)[0]
-
-            n_stock_price = data[close_col][ind_dt]
-            ins_loc = ins_sell.index.get_loc(ind_dt, method="nearest")
-
-            ymin = n_stock_price + n_proportion * float(ins_sell["Trade"][ins_loc])
-            fig.add_scatter(
-                x=[ind_dt, ind_dt],
-                y=[ymin, n_stock_price],
-                mode="lines",
-                line=dict(color=theme.down_color, width=5),
-                name="Insider Selling",
-                showlegend=ind == ins_sell.index[0],
-            )
-
-        for ind in ins_buy.index:
-            if ind in data.index:
-                ind_dt = ind
-            else:
-                ind_dt = get_next_stock_market_days(ind, 1)[0]
-
-            n_stock_price = data[close_col][ind_dt]
-            ins_loc = ins_sell.index.get_loc(ind_dt, method="nearest")
-
-            ymax = n_stock_price + n_proportion * float(ins_buy["Trade"][ins_loc])
-            fig.add_scatter(
-                x=[ind_dt, ind_dt],
-                y=[n_stock_price, ymax],
-                mode="lines",
-                line=dict(color=theme.up_color, width=5),
-                name="Insider Buying",
-                showlegend=ind == ins_buy.index[0],
-            )
-
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
@@ -175,4 +86,93 @@ def insider_activity(
         sheet_name,
     )
 
-    return None if raw else fig.show(external=external_axes)
+    if raw:
+        df_insider.index = pd.to_datetime(df_insider.index).date
+
+        return print_rich_table(
+            df_insider.sort_index(ascending=False)
+            .head(n=limit)
+            .applymap(lambda x: x.replace(".00", "").replace(",", "")),
+            headers=list(df_insider.columns),
+            show_index=True,
+            title="Insider Activity",
+        )
+
+    close_col = "Adj Close" if interval == "1440min" else "Close"
+
+    fig = OpenBBFigure(yaxis_title="Share Price")
+    fig.set_title(f"{symbol.upper()}'s Insider Trading Activity & Share Price")
+
+    fig.add_scatter(x=data.index, y=data[close_col].values, name=symbol)
+
+    df_insider["Trade"] = df_insider.apply(
+        lambda row: (1, -1)[row.Type == "Sell"]
+        * float(row["Shares Traded"].replace(",", "")),
+        axis=1,
+    )
+
+    min_price, max_price = data[close_col].min(), data[close_col].max()
+    price_range = max_price - min_price
+
+    ins_buy = (
+        df_insider[df_insider["Type"] == "Buy"]
+        .groupby(by=["Date"])
+        .sum(numeric_only=True)
+    )
+    ins_sell = (
+        df_insider[df_insider["Type"] == "Sell"]
+        .groupby(by=["Date"])
+        .sum(numeric_only=True)
+    )
+
+    maxshares = ins_buy["Trade"].max()
+    minshares = ins_sell["Trade"].min()
+
+    if math.isnan(maxshares):
+        shares_range = minshares
+    elif math.isnan(minshares):
+        shares_range = maxshares
+    else:
+        shares_range = maxshares - minshares
+
+    n_proportion = price_range / shares_range
+
+    for ind in ins_sell.index:
+        if ind in data.index:
+            ind_dt = ind
+        else:
+            ind_dt = get_next_stock_market_days(ind, 1)[0]
+
+        n_stock_price = data[close_col][ind_dt]
+        ins_loc = ins_sell.index.get_loc(ind_dt, method="nearest")
+
+        ymin = n_stock_price + n_proportion * float(ins_sell["Trade"][ins_loc])
+        fig.add_scatter(
+            x=[ind_dt, ind_dt],
+            y=[ymin, n_stock_price],
+            mode="lines",
+            line=dict(color=theme.down_color, width=5),
+            name="Insider Selling",
+            showlegend=ind == ins_sell.index[0],
+        )
+
+    for ind in ins_buy.index:
+        if ind in data.index:
+            ind_dt = ind
+        else:
+            ind_dt = get_next_stock_market_days(ind, 1)[0]
+
+        n_stock_price = data[close_col][ind_dt]
+        ins_loc = ins_sell.index.get_loc(ind_dt, method="nearest")
+
+        ymax = n_stock_price + n_proportion * float(ins_buy["Trade"][ins_loc])
+        fig.add_scatter(
+            x=[ind_dt, ind_dt],
+            y=[n_stock_price, ymax],
+            mode="lines",
+            line=dict(color=theme.up_color, width=5),
+            name="Insider Buying",
+            showlegend=ind == ins_buy.index[0],
+        )
+
+    return fig.show(external=external_axes)
