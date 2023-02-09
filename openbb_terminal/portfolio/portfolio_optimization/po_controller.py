@@ -289,7 +289,6 @@ class PortfolioOptimizationController(BaseController):
         mt.add_cmd("maxret", self.tickers)
         mt.add_cmd("maxdiv", self.tickers)
         mt.add_cmd("maxdecorr", self.tickers)
-        mt.add_cmd("mktcap", self.tickers)
         mt.add_cmd("blacklitterman", self.tickers)
         mt.add_cmd("ef", self.tickers)
         mt.add_raw("\n")
