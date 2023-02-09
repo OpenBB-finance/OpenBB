@@ -249,5 +249,3 @@ The data from `dpotc`, statistics for individual NMS tickers, shows weekly OTC a
 ````
 
 <img alt="dpotc" src="https://user-images.githubusercontent.com/46355364/171170366-234aea6b-fe0d-4735-8942-4a672d0683ef.png"></img>
-
-Run a live demo of these features by entering `exe routines/darkpool_demo.openbb` into the Terminal from the home screen.
