@@ -7,7 +7,7 @@ Company:
 Exchange: 
 Currency: 
 
-[unvl]    quote              view the current price for a specific stock ticker[/unvl]              [FinancialModelingPrep, YahooFinance]
+[unvl]    quote              view the current price for a specific stock ticker[/unvl]              [FinancialModelingPrep]
 [unvl]    tob                view top of book for loaded ticker (US exchanges only)[/unvl]          [CBOE]
 [unvl]    candle             view a candle chart for a specific stock ticker[/unvl]
 [unvl]    codes              FIGI, SIK and SIC codes codes[/unvl]                                   [Polygon]

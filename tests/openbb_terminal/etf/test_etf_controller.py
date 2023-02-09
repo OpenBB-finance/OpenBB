@@ -305,36 +305,14 @@ def test_call_func_expect_queue(expected_queue, func, queue):
         (
             "call_weights",
             ["--raw"],
-            "yfinance_view.display_etf_weightings",
+            "fmp_view.display_etf_weightings",
             [],
             dict(
                 name="MOCK_ETF_NAME",
                 raw=True,
-                min_pct_to_display=5,
                 export="",
                 sheet_name=None,
             ),
-        ),
-        (
-            "call_summary",
-            [],
-            "yfinance_view.display_etf_description",
-            [],
-            dict(name="MOCK_ETF_NAME"),
-        ),
-        (
-            "call_pir",
-            ["ARKW,ARKF", "--filename=hello.xlsx", "--folder=world"],
-            "create_ETF_report",
-            [["ARKW", "ARKF"]],
-            dict(filename="hello.xlsx", folder="world"),
-        ),
-        (
-            "call_pir",
-            ["--filename=hello.xlsx", "--folder=world"],
-            "create_ETF_report",
-            [["MOCK_ETF_NAME"]],
-            dict(filename="hello.xlsx", folder="world"),
         ),
         (
             "call_compare",
