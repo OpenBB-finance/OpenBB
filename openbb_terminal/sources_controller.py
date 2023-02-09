@@ -12,7 +12,7 @@ from typing import Dict, List
 # IMPORTATION THIRDPARTY
 # IMPORTATION INTERNAL
 from openbb_terminal import feature_flags as obbff
-from openbb_terminal.core.config.paths import MISCELLANEOUS_DIRECTORY
+from openbb_terminal.core.config.paths import USER_DATA_SOURCES_DEFAULT_FILE
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.menu import session
@@ -43,10 +43,22 @@ class SourcesController(BaseController):
         """Constructor"""
         super().__init__(queue)
 
-        self.commands_with_sources = dict()
+        self.commands_with_sources: Dict[str, List[str]] = {}
+        self.load_sources_json()
 
+        if session and obbff.USE_PROMPT_TOOLKIT:
+            choices: dict = {c: {} for c in self.controller_choices}
+            choices["get"] = {c: None for c in list(self.commands_with_sources.keys())}
+            choices["set"] = {c: None for c in list(self.commands_with_sources.keys())}
+            for cmd in list(self.commands_with_sources.keys()):
+                choices["set"][cmd] = {c: None for c in self.commands_with_sources[cmd]}
+
+            self.completer = NestedCompleter.from_nested_dict(choices)
+
+    def load_sources_json(self):
+        """Load the .json file"""
         # Loading in both source files: default sources and user sources
-        default_data_source = MISCELLANEOUS_DIRECTORY / "data_sources_default.json"
+        default_data_source = USER_DATA_SOURCES_DEFAULT_FILE
         user_data_source = Path(obbff.PREFERRED_DATA_SOURCE_FILE)
 
         # Opening default sources file from the repository root
@@ -80,15 +92,6 @@ class SourcesController(BaseController):
                         context
                     ][menu]
 
-        if session and obbff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.controller_choices}
-            choices["get"] = {c: None for c in list(self.commands_with_sources.keys())}
-            choices["set"] = {c: None for c in list(self.commands_with_sources.keys())}
-            for cmd in list(self.commands_with_sources.keys()):
-                choices["set"][cmd] = {c: None for c in self.commands_with_sources[cmd]}
-
-            self.completer = NestedCompleter.from_nested_dict(choices)
-
     def print_help(self):
         """Print help"""
         mt = MenuText("sources/")
@@ -121,6 +124,7 @@ class SourcesController(BaseController):
             other_args.insert(0, "-c")
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
+            self.load_sources_json()
             try:
                 the_item = self.commands_with_sources[ns_parser.cmd]
             except KeyError:
@@ -171,6 +175,8 @@ class SourcesController(BaseController):
                 other_args.insert(2, "-s")
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
+            self.load_sources_json()
+
             menus = ns_parser.cmd.split("_")
             num_menus = len(menus)
 

@@ -104,4 +104,4 @@ jobs:
 
       - name: Start Terminal and exit
         shell: bash -l {0}
-        run: python terminal.py
+        run: yes "" | python terminal.py

@@ -36,6 +36,8 @@ from openbb_terminal.cryptocurrency.coinbase_helpers import (
 from openbb_terminal.helper_funcs import request
 from openbb_terminal.portfolio.brokers.degiro.degiro_model import DegiroModel
 from openbb_terminal.rich_config import console
+from openbb_terminal.session.hub_model import patch_user_configs
+from openbb_terminal.session.user import User
 from openbb_terminal.terminal_helper import suppress_stdout
 
 logger = logging.getLogger(__name__)
@@ -227,7 +229,7 @@ def set_key(env_var_name: str, env_var_value: str, persist: bool = False) -> Non
         If True, api key change will be global, i.e. it will affect terminal environment variables.
         By default, False.
     """
-    if persist:
+    if persist and User.is_guest():
         os.environ[env_var_name] = env_var_value
         dotenv.set_key(str(USER_ENV_FILE), env_var_name, env_var_value)
 
@@ -237,6 +239,20 @@ def set_key(env_var_name: str, env_var_value: str, persist: bool = False) -> Non
 
     # Set cfg.env_var_name = env_var_value
     setattr(cfg, env_var_name, env_var_value)
+
+    # Send api key to server
+    if (
+        not User.is_guest()
+        and User.is_sync_enabled()
+        and env_var_name not in cfg.SENSITIVE_KEYS
+        and env_var_name.startswith("API_")
+    ):
+        patch_user_configs(
+            key=env_var_name,
+            value=env_var_value,
+            type_="keys",
+            auth_header=User.get_auth_header(),
+        )
 
 
 def get_keys(show: bool = False) -> pd.DataFrame:
