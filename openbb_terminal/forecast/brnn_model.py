@@ -38,6 +38,7 @@ def get_brnn_data(
     model_save_name: str = "brnn_model",
     force_reset: bool = True,
     save_checkpoints: bool = True,
+    metric: str = "mape",
 ) -> Tuple[
     Optional[List[TimeSeries]],
     Optional[List[TimeSeries]],
@@ -84,6 +85,8 @@ def get_brnn_data(
         discarded). Defaults to True.
     save_checkpoints: bool
         Whether or not to automatically save the untrained model and checkpoints from training. Defaults to True.
+    metric: str
+        Metric to use for model selection. Defaults to "mape".
 
     Returns
     -------
@@ -174,4 +177,5 @@ def get_brnn_data(
         train_split,
         forecast_horizon,
         n_predict,
+        metric,
     )
