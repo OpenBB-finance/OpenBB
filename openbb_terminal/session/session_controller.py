@@ -20,6 +20,10 @@ def display_welcome_message():
         console.print(f"[menu]{f.read()}[/menu]\n")
         console.print(f"Register     : [cmds]{REGISTER_LINK}[/cmds]")
         console.print("Ask support  : [cmds]https://openbb.co/support[/cmds]")
+        console.print(
+            "[yellow]\nWARNING: This is a preliminary version published for testing.[/yellow]"
+            "[yellow]\nBeware that your account might be deleted or changed without notice.[/yellow]"
+        )
 
 
 def get_user_input() -> Tuple[str, str, bool]:
