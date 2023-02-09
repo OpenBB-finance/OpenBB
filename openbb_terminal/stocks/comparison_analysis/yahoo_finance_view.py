@@ -200,7 +200,6 @@ def display_correlation(
         mask[np.triu_indices(len(mask))] = True
         df_corr = correlations.mask(mask)
 
-    df_corr[df_corr < 0] = np.nan
     df_corr.fillna("", inplace=True)
 
     fig = OpenBBFigure()
