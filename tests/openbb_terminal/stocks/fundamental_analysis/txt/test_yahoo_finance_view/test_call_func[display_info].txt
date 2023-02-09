@@ -4,9 +4,9 @@ Day high                                103.240
 Day low                                 101.392
 Exchange                                    NYQ
 Fifty day average                       101.828
-Last price                              101.670
-Last volume                             1.362 M
-Market cap                            157.609 B
+Last price                              102.110
+Last volume                             2.438 M
+Market cap                            158.291 B
 Open                                    102.390
 Previous close                          101.470
 Quote type                               EQUITY

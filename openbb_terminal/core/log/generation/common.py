@@ -15,5 +15,6 @@ def do_rollover():
         if isinstance(handler, PathTrackingFileHandler):
             try:
                 handler.doRollover()
+            # IGNORE PermissionError : WINDOWS FILE OPEN
             except PermissionError:
                 pass

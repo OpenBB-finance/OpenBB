@@ -348,7 +348,6 @@ en:
   stocks/fa/rot: number of analyst ratings over time on a monthly basis
   stocks/fa/score: value investing scores for any time period
   stocks/fa/warnings: company warnings according to Sean Seah book
-  stocks/fa/sust: sustainability values (environment, social and governance)
   stocks/fa/_management_shareholders: Management and Ownership
   stocks/fa/mgmt: management team of the company
   stocks/fa/shrs: shareholders (insiders, institutions and mutual funds)
@@ -687,10 +686,8 @@ en:
   etf/overview: get overview
   etf/holdings: top company holdings
   etf/weights: sector weights allocation
-  etf/summary: summary description of the ETF
   etf/candle: view a candle chart for ETF
   etf/news: latest news of the company
-  etf/pir: create (multiple) passive investor excel report(s)
   etf/compare: compare multiple different ETFs
   etf/ta: technical analysis,           ema, macd, rsi, adx, bbands, obv
   etf/disc/gainers: top gainers
@@ -993,7 +990,7 @@ en:
   portfolio/po/_mean_risk_optimization_: Mean Risk Optimization
   portfolio/po/maxsharpe: maximal Sharpe ratio portfolio (a.k.a the tangency portfolio)
   portfolio/po/minrisk: minimum risk portfolio
-  portfolio/po/maxutil: maximal risk averse utility function, given some risk aversion parameter
+  portfolio/po/maxutil: maximal risk averse utility function
   portfolio/po/maxret: maximal return portfolio
   portfolio/po/maxdiv: maximum diversification portfolio
   portfolio/po/maxdecorr: maximum decorrelation portfolio
@@ -1007,10 +1004,8 @@ en:
   portfolio/po/herc: hierarchical equal risk contribution
   portfolio/po/nco: nested clustering optimization
   portfolio/po/_other_optimization_techniques_: Other Optimization Techniques
-  portfolio/po/equal: equally weighted
-  portfolio/po/mktcap: weighted according to market cap (property marketCap)
-  portfolio/po/dividend: weighted according to dividend yield (property dividendYield)
-  portfolio/po/property: weight according to selected info property
+  portfolio/po/equal: equal weighted portfolio
+  portfolio/po/mktcap: weighted according to market cap
   portfolio/po/_optimized_portfolio: Optimized portfolio
   portfolio/po/rpf: remove portfolios from the list of saved portfolios
   portfolio/po/show: show selected portfolios and categories from the list of saved portfolios

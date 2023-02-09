@@ -48,12 +48,12 @@ def test_price_target_from_analysts_raw():
     )
 
 
-@pytest.mark.default_cassette("test_price_target_from_analysts_TSLA")
 @pytest.mark.vcr
-@pytest.mark.parametrize("start", [datetime.strptime("2021-12-05", "%Y-%m-%d")])
-@pytest.mark.parametrize("interval", [1440])
-def test_price_target_from_analysts_plt(capsys, interval, start):
+@pytest.mark.record_stdout
+def test_price_target_from_analysts_plt():
     ticker = "TSLA"
+    interval = 1440
+    start = datetime.strptime("2021-12-05", "%Y-%m-%d")
     stock = load(symbol=ticker, start_date=start, interval=interval)
 
     business_insider_view.price_target_from_analysts(
@@ -65,7 +65,6 @@ def test_price_target_from_analysts_plt(capsys, interval, start):
         export=None,
         sheet_name=None,
     )
-    capsys.readouterr()
 
 
 @pytest.mark.vcr

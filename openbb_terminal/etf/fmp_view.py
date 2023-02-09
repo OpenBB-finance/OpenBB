@@ -1,4 +1,4 @@
-"""Yahoo Finance view"""
+"""FinancialModelingPrep view"""
 __docformat__ = "numpy"
 
 import logging
@@ -10,8 +10,11 @@ import pandas as pd
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.etf import yfinance_model
-from openbb_terminal.helper_funcs import export_data, print_rich_table
+from openbb_terminal.etf import fmp_model
+from openbb_terminal.helper_funcs import (
+    export_data,
+    print_rich_table,
+)
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -21,12 +24,11 @@ logger = logging.getLogger(__name__)
 def display_etf_weightings(
     name: str,
     raw: bool = False,
-    min_pct_to_display: float = 5,
     export: str = "",
     sheet_name: Optional[str] = None,
     external_axes: bool = False,
 ):
-    """Display sector weightings allocation of ETF. [Source: Yahoo Finance]
+    """Display sector weightings allocation of ETF. [Source: FinancialModelingPrep]
 
     Parameters
     ----------
@@ -43,12 +45,9 @@ def display_etf_weightings(
     external_axes : bool, optional
         Whether to return the figure object or not, by default False
     """
-    sectors = yfinance_model.get_etf_sector_weightings(name)
-
+    sectors = fmp_model.get_etf_sector_weightings(name)
     if not sectors:
         return console.print("No data was found for that ETF\n")
-
-    holdings = pd.DataFrame(sectors, index=[0]).T
 
     title = f"Sector holdings of {name}"
 
@@ -56,27 +55,27 @@ def display_etf_weightings(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "weights",
-        holdings,
+        pd.DataFrame([sector_weights_formatted]).T,
         sheet_name,
     )
 
     if raw:
-        console.print(f"\n{title}")
-        holdings.columns = ["% of holdings in the sector"]
+        sectors_df = pd.DataFrame(sectors).sort_values(by="sector")
         return print_rich_table(
-            holdings,
-            headers=list(holdings.columns),
-            show_index=True,
-            title="Sector Weightings Allocation",
+            sectors_df,
+            headers=["Sector", "Weight"],
+            show_index=False,
+            title=f"\n{title}",
         )
 
-    main_holdings = holdings[holdings.values > min_pct_to_display].to_dict()[
-        holdings.columns[0]
-    ]
-    if len(main_holdings) < len(holdings):
-        main_holdings["Others"] = 100 - sum(main_holdings.values())
+    sector_weights_formatted = {}
+    for sector_weight in sectors:
+        sector_weights_formatted[sector_weight["sector"]] = (
+            float(sector_weight["weightPercentage"].strip("%")) / 100
+        )
+    sector_weights_formatted = dict(sorted(sector_weights_formatted.items()))
 
-    legend, values = zip(*main_holdings.items())
+    legend, values = zip(*sector_weights_formatted.items())
     colors = theme.get_colors()
 
     fig = OpenBBFigure.create_subplots(
@@ -120,20 +119,3 @@ def display_etf_weightings(
     )
 
     return fig.show(external=external_axes)
-
-
-@log_start_end(log=logger)
-def display_etf_description(name: str):
-    """Display ETF description summary. [Source: Yahoo Finance]
-
-    Parameters
-    ----------
-    name: str
-        ETF name
-    """
-    description = yfinance_model.get_etf_summary_description(name)
-    if not description:
-        console.print("No data was found for that ETF\n")
-        return
-
-    console.print(description, "\n")

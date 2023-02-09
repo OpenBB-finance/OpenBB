@@ -95,7 +95,6 @@ if is_win:
         (os.path.join(f"{os.path.dirname(scipy.__file__)}.libs"), "scipy.libs/"),
     )
 
-
 # Python libraries that are explicitly pulled into the bundle
 hidden_imports = [
     "sklearn.utils._cython_blas",
@@ -114,7 +113,6 @@ hidden_imports = [
     "user_agent",
     "vaderSentiment",
     "frozendict",
-    "textwrap3",
     "pyEX",
     "feedparser",
     "_sysconfigdata__darwin_darwin",

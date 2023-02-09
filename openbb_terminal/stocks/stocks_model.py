@@ -255,7 +255,7 @@ def load_stock_polygon(
 
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
-def get_quote_fmp(symbol: str) -> pd.DataFrame:
+def get_quote(symbol: str) -> pd.DataFrame:
     """Gets ticker quote from FMP
 
     Parameters
@@ -298,63 +298,3 @@ def get_quote_fmp(symbol: str) -> pd.DataFrame:
                 0
             ] = f"{earning_announcement.date()} {earning_announcement.time()}"
     return df_fa
-
-
-def get_quote_yf(symbol: str) -> pd.DataFrame:
-    """Ticker quote.  [Source: YahooFinance]
-
-    Parameters
-    ----------
-    symbol : str
-        Ticker
-    """
-    ticker = yf.Ticker(symbol)
-
-    try:
-        info = ticker.info
-        f_info = ticker.fast_info
-        quote_df = pd.DataFrame(
-            [
-                {
-                    "Symbol": symbol,
-                    "Name": info["shortName"],
-                    "Price": f_info["last_price"],
-                    "Open": f_info["open"],
-                    "High": f_info["day_high"],
-                    "Low": f_info["day_low"],
-                    "Previous Close": f_info["regular_market_previous_close"],
-                    "Volume": f_info["last_volume"],
-                    "52 Week High": f_info["year_high"],
-                    "52 Week Low": f_info["year_low"],
-                }
-            ]
-        )
-
-        quote_df["Change"] = quote_df["Price"] - quote_df["Previous Close"]
-        quote_df["Change %"] = quote_df.apply(
-            lambda x: f'{((x["Change"] / x["Previous Close"]) * 100):.2f}%',
-            axis="columns",
-        )
-        for c in [
-            "Price",
-            "Open",
-            "High",
-            "Low",
-            "Previous Close",
-            "52 Week High",
-            "52 Week Low",
-            "Change",
-        ]:
-            quote_df[c] = quote_df[c].apply(lambda x: f"{x:.2f}")
-        quote_df["Volume"] = quote_df["Volume"].apply(lambda x: f"{x:,}")
-
-        quote_df = quote_df.set_index("Symbol")
-
-        quote_data = quote_df.T
-
-        return quote_data
-
-    except KeyError:
-        logger.exception("Invalid stock ticker")
-        console.print(f"Invalid stock ticker: {symbol}")
-        return pd.DataFrame()
