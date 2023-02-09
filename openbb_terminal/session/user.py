@@ -8,6 +8,7 @@ class User:
     _token: str = ""
     _uuid: str = ""
     _email: str = ""
+    _logged: bool = False
 
     @classmethod
     def load_user_info(cls, session: dict, email: str):
@@ -75,6 +76,16 @@ class User:
         return not bool(cls._token)
 
     @classmethod
+    def get_logged(cls):
+        """Check if user was logged."""
+        return cls._logged
+
+    @classmethod
+    def set_logged(cls, logged: bool):
+        """Set logged status."""
+        cls._logged = logged
+
+    @classmethod
     def is_sync_enabled(cls):
         """Check if sync is enabled."""
         return obbff.SYNC_ENABLED
@@ -93,6 +104,6 @@ class User:
     def print_guest_message(cls):
         """Print guest message."""
         console.print(
-            "[info]You are currently logged as a guest.\n"
+            "[info]You are currently logged as a guest, you have to login first.\n"
             f"Create an account here {REGISTER_LINK}.\n[/info]"
         )

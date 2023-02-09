@@ -958,8 +958,9 @@ class BaseController(metaclass=ABCMeta):
                 # Process the input command
                 self.queue = self.switch(an_input)
 
-                if an_input == "logout" and not User.is_guest():
-                    return ["logout"]
+                if an_input == "logout":
+                    if User.get_logged():
+                        return ["logout"]
 
             except SystemExit:
                 if not self.contains_keys(an_input):

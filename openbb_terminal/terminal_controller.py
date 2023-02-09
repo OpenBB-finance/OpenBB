@@ -959,8 +959,9 @@ def terminal(jobs_cmds: List[str] = None, test_mode=False):
                     print_goodbye()
                     break
 
-            if an_input == "logout" and not User.is_guest():
-                break
+            if an_input == "logout":
+                if User.get_logged():
+                    break
 
         except SystemExit:
             logger.exception(

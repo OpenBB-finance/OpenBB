@@ -99,17 +99,19 @@ def logout(
         r = Hub.delete_session(auth_header, token)
         if not r or r.status_code != 200:
             success = False
-    User.clear()
+        User.clear()
+
+        if not Local.remove_session_file():
+            success = False
+
+    if not Local.remove_cli_history_file():
+        success = False
 
     clear_openbb_env_vars()
     remove_log_handlers()
     reload_openbb_modules()
+    User.set_logged(True)
 
-    if not Local.remove_session_file():
-        success = False
-
-    if not Local.remove_cli_history_file():
-        success = False
     plt.close("all")
 
     if success:
