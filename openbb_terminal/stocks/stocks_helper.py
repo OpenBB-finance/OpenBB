@@ -106,7 +106,8 @@ def search(
     limit: int = 0,
     export: str = "",
     sheet_name: Optional[str] = "",
-) -> None:
+    export_to_file: bool = True,
+) -> Optional[pd.DataFrame]:
     """Search selected query for tickers.
 
     Parameters
@@ -127,6 +128,13 @@ def search(
         The limit of companies shown.
     export : str
         Export data
+    export_to_file : bool
+        Whether results should be exported to file or not.
+
+    Returns
+    -------
+    df: Optional[pd.DataFrame]
+        Dataframe of search results if any results are found
 
     Examples
     --------
@@ -183,18 +191,13 @@ def search(
     df = pd.DataFrame.from_dict(d).T[
         ["long_name", "short_name", "country", "sector", "industry", "exchange"]
     ]
-    if exchange_country:
-        if exchange_country in market_coverage_suffix:
-            suffix_tickers = [
-                ticker.split(".")[1] if "." in ticker else ""
-                for ticker in list(df.index)
-            ]
-            df = df[
-                [
-                    val in market_coverage_suffix[exchange_country]
-                    for val in suffix_tickers
-                ]
-            ]
+    if exchange_country and exchange_country in market_coverage_suffix:
+        suffix_tickers = [
+            ticker.split(".")[1] if "." in ticker else "" for ticker in list(df.index)
+        ]
+        df = df[
+            [val in market_coverage_suffix[exchange_country] for val in suffix_tickers]
+        ]
 
     exchange_suffix = {}
     for k, v in market_coverage_suffix.items():
@@ -227,14 +230,16 @@ def search(
         headers=["Name", "Country", "Sector", "Industry", "Exchange"],
         title=title,
     )
+    if export_to_file:
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "search",
+            df,
+            sheet_name,
+        )
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "search",
-        df,
-        sheet_name,
-    )
+    return df
 
 
 def load(
