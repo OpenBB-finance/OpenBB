@@ -3,7 +3,7 @@ import json
 import logging
 import os
 from pathlib import Path
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 from prompt_toolkit.completion import NestedCompleter
 
@@ -41,7 +41,7 @@ class AccountController(BaseController):
 
     PATH = "/account/"
 
-    def __init__(self, queue: List[str] = None):
+    def __init__(self, queue: Optional[List[str]] = None):
         super().__init__(queue)
         self.ROUTINE_FILES: Dict[str, Path] = {}
         self.REMOTE_CHOICES: List[str] = []
@@ -51,7 +51,7 @@ class AccountController(BaseController):
         """Update runtime choices"""
         self.ROUTINE_FILES = self.get_routines()
         if session and obbff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.controller_choices}
+            choices: dict = {c: {} for c in self.controller_choices}  # type: ignore
             choices["sync"] = {"--on": {}, "--off": {}}
             choices["upload"]["--file"] = {c: {} for c in self.ROUTINE_FILES}
             choices["upload"]["-f"] = choices["upload"]["--file"]
