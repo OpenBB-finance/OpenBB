@@ -4,6 +4,7 @@ import requests
 
 from openbb_terminal.rich_config import console
 
+REGISTER_LINK = "https://my.openbb.dev/register"
 BASE_URL = "https://payments.openbb.dev/"
 TIMEOUT = 15
 
