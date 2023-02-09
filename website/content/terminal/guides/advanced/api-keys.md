@@ -188,7 +188,7 @@ Click "Registration". This opens up the following screen:
 
 <img width="500" alt="image" src="https://user-images.githubusercontent.com/46355364/207849324-00d4a916-8260-45c0-9714-289e0a0574c0.png"></img>
 
-Once you have registered, you can find the API Key next to "API TOKEN". Enter this API key into the OpenBB Terminal by typing `/keys/cpanic KEY`.
+Once you have registered, you can find the API Key next to "API TOKEN". Enter this API key into the OpenBB Terminal by typing `/keys/eodhd KEY`.
 
 <img width="500" alt="image" src="https://user-images.githubusercontent.com/46355364/207849462-37471270-929a-45c5-a164-a84249b19231.png"></img>
 
