@@ -235,7 +235,7 @@ def display_covid_stat(
     """
     data = covid_model.get_covid_stat(country, stat, limit)
     if plot:
-        plot_covid_stat(country, stat)
+        plot_covid_stat(country, stat, external_axes=raw or bool(export))
 
     if raw:
         print_rich_table(

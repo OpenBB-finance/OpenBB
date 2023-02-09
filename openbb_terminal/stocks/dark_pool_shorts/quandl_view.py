@@ -128,7 +128,7 @@ def short_interest(
     )
     df_short_interest["% of Volume Shorted"] = [round(pct, 2) for pct in vol_pct]
 
-    plot_short_interest(symbol, df_short_interest, nyse, external_axes)
+    fig = plot_short_interest(symbol, df_short_interest, nyse, external_axes or raw)
 
     if raw:
         df_short_interest["% of Volume Shorted"] = df_short_interest[
@@ -137,8 +137,6 @@ def short_interest(
         df_short_interest = df_short_interest.applymap(
             lambda x: lambda_long_number_format(x)
         ).sort_index(ascending=False)
-
-        df_short_interest.index = df_short_interest.index.date
 
         print_rich_table(
             df_short_interest,
@@ -154,3 +152,5 @@ def short_interest(
         df_short_interest,
         sheet_name,
     )
+
+    return fig

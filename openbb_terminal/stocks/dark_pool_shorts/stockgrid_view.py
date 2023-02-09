@@ -173,6 +173,8 @@ def short_interest_volume(
         row_width=[0.3, 0.6],
         specs=[[{"secondary_y": True}], [{"secondary_y": False}]],
     )
+    fig.set_title(f"Price vs Short Volume Interest for {symbol}")
+
     # pycodestyle: disable=E501,E203
     fig.add_scatter(
         name=symbol,
@@ -220,10 +222,7 @@ def short_interest_volume(
 
     fig.update_traces(hovertemplate="%{y:.2f}")
     fig.update_layout(
-        margin=dict(l=40, r=0),
-        title=f"<b>Price vs Short Volume Interest for {symbol}</b>",
-        title_x=0.025,
-        title_font_size=14,
+        margin=dict(l=40),
         yaxis2_title="Stock Price ($)",
         yaxis_title="FINRA Volume [M]",
         yaxis3_title="Short Vol. %",
@@ -231,10 +230,7 @@ def short_interest_volume(
             side="left",
             fixedrange=False,
             showgrid=False,
-            titlefont=dict(color="#d81aea"),
-            tickfont=dict(color="#d81aea"),
-            nticks=20,
-            title_standoff=20,
+            nticks=15,
             layer="above traces",
         ),
         yaxis2=dict(
@@ -242,16 +238,12 @@ def short_interest_volume(
             fixedrange=False,
             anchor="x",
             overlaying="y",
-            titlefont=dict(color="#fdc708"),
-            tickfont=dict(color="#fdc708"),
             nticks=10,
             layer="below traces",
             title_standoff=10,
         ),
         yaxis3=dict(
             fixedrange=False,
-            titlefont=dict(color="#9467bd"),
-            tickfont=dict(color="#9467bd"),
             nticks=10,
         ),
         hovermode="x unified",
@@ -318,8 +310,10 @@ def net_short_position(
         rows=1,
         cols=1,
         shared_xaxes=True,
-        specs=[[{"secondary_y": False}]],
+        specs=[[{"secondary_y": True}]],
     )
+    fig.set_title(f"Net Short Vol. vs Position for {symbol}")
+
     fig.add_bar(
         x=df["dates"],
         y=df["Net Short Vol. (1k $)"],
@@ -342,20 +336,14 @@ def net_short_position(
     )
     fig.update_traces(hovertemplate="%{y:.2f}")
     fig.update_layout(
-        margin=dict(l=40, r=0),
-        title=f"<b>Net Short Vol. vs Position for {symbol}</b>",
-        title_x=0.025,
-        title_font_size=14,
+        margin=dict(l=40),
         yaxis2_title="Net Short Vol. (1k $)",
         yaxis_title="Position (1M $)",
         yaxis=dict(
             side="left",
             fixedrange=False,
             showgrid=False,
-            titlefont=dict(color="#d81aea"),
-            tickfont=dict(color="#d81aea"),
-            nticks=20,
-            title_standoff=20,
+            nticks=15,
             layer="above traces",
         ),
         yaxis2=dict(
@@ -363,8 +351,6 @@ def net_short_position(
             fixedrange=False,
             anchor="x",
             overlaying="y",
-            titlefont=dict(color="#fdc708"),
-            tickfont=dict(color="#fdc708"),
             nticks=10,
             layer="below traces",
             title_standoff=10,

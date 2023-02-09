@@ -25,4 +25,100 @@ interactions:
     status:
       code: 503
       message: Service Unavailable
+- request:
+    body: "--2330fbd12e4711a062fefac5827d3a38\r\nContent-Disposition: form-data; name=\"key\"\r\n\r\ngst-app/logs/7dfe280a-4d58-4847-9621-04090c2f2739/gst_1675882093.2023-02-08_13.log\r\n--2330fbd12e4711a062fefac5827d3a38\r\nContent-Disposition:
+      form-data; name=\"x-amz-algorithm\"\r\n\r\nAWS4-HMAC-SHA256\r\n--2330fbd12e4711a062fefac5827d3a38\r\nContent-Disposition:
+      form-data; name=\"x-amz-credential\"\r\n\r\nASIAWJBK4EZQA7DAI3GW/20230209/us-east-2/s3/aws4_request\r\n--2330fbd12e4711a062fefac5827d3a38\r\nContent-Disposition:
+      form-data; name=\"x-amz-date\"\r\n\r\n20230209T194318Z\r\n--2330fbd12e4711a062fefac5827d3a38\r\nContent-Disposition:
+      form-data; name=\"x-amz-security-token\"\r\n\r\nIQoJb3JpZ2luX2VjEAsaCXVzLWVhc3QtMiJIMEYCIQD+GIvsV7LSR8EU318Sc4WrjuHYQ0wrDfgJkXa3HDYTywIhAPk3e1yTcdMBFweTJ/O8gr9BRo3WhJltGQ4zMWWng4yXKosDCJX//////////wEQABoMNDMxNzM0MTM4NDY0IgzpKBm3IbUPo28RbZAq3wLBgqPEWpkJNSu054241NbJx+1O5u6W8La2uG4EhwS09kFkO37G1wsPVrMdeirU6HpFLqhewqp9sOmo8LVh5csUjtA/Z1ogQ8C05+o4t2bmN2QEm+gTEd69BkrOsw5dIioxh2jY6Drs8fVdkx/dxuEBEruKgRhb462LyWJ52fmRmo3q147VLIo+IKsdJQCkBqwOE46qtLjOAsa8GilCumhlnI9m9r69c0dHmwANP2YFByM6sH9ZQwUhNGX6PYaFYwsel9nXA8M+8iA2/a0eFofB7VJ9Ih+lSSbXO/D3SYkmXcCYyNiVqtPoLw66AP8A508E5i4vVwWvLalKnPfJskSPH5aMrAZNfsVgWTFSFC/66EGk6AFXbbo3avBieoMGfdw5NCPXNnfhf04/bSahIZo7XOOIXUNJbGlImRqXfOLDj0ItqJaB9KQGpHUqhaHrlsNCxn1vbssFVqkl4wElejMwuZGVnwY6nQGpIakgKNqA17j8d6vK40gOu34EhvLLsuu28re5r9aLILbK25awWsbh0aKCdyS62ebFW8soyuXvyGs0g/I7o6tgFNBxPxD69ZP3HoF1PqsLh7gq5YmmoFJgrATnvCbbFTeR8DuiBjmg2zKAIJgs0zDUkfgYB4+U6LhKd68huOnG6DgNcQr49or3XQGFPH8cx5g94EUH7W1tYqBgWgzZ\r\n--2330fbd12e4711a062fefac5827d3a38\r\nContent-Disposition:
+      form-data; name=\"policy\"\r\n\r\neyJleHBpcmF0aW9uIjogIjIwMjMtMDItMDlUMTk6NDg6MThaIiwgImNvbmRpdGlvbnMiOiBbeyJidWNrZXQiOiAiZ3N0LWxvZ2dpbmcifSwgeyJrZXkiOiAiZ3N0LWFwcC9sb2dzLzdkZmUyODBhLTRkNTgtNDg0Ny05NjIxLTA0MDkwYzJmMjczOS9nc3RfMTY3NTg4MjA5My4yMDIzLTAyLTA4XzEzLmxvZyJ9LCB7IngtYW16LWFsZ29yaXRobSI6ICJBV1M0LUhNQUMtU0hBMjU2In0sIHsieC1hbXotY3JlZGVudGlhbCI6ICJBU0lBV0pCSzRFWlFBN0RBSTNHVy8yMDIzMDIwOS91cy1lYXN0LTIvczMvYXdzNF9yZXF1ZXN0In0sIHsieC1hbXotZGF0ZSI6ICIyMDIzMDIwOVQxOTQzMThaIn0sIHsieC1hbXotc2VjdXJpdHktdG9rZW4iOiAiSVFvSmIzSnBaMmx1WDJWakVBc2FDWFZ6TFdWaGMzUXRNaUpJTUVZQ0lRRCtHSXZzVjdMU1I4RVUzMThTYzRXcmp1SFlRMHdyRGZnSmtYYTNIRFlUeXdJaEFQazNlMXlUY2RNQkZ3ZVRKL084Z3I5QlJvM1doSmx0R1E0ek1XV25nNHlYS29zRENKWC8vLy8vLy8vLy93RVFBQm9NTkRNeE56TTBNVE00TkRZMElnenBLQm0zSWJVUG8yOFJiWkFxM3dMQmdxUEVXcGtKTlN1MDU0MjQxTmJKeCsxTzV1Nlc4TGEydUc0RWh3UzA5a0ZrTzM3RzF3c1BWck1kZWlyVTZIcEZMcWhld3FwOXNPbW84TFZoNWNzVWp0QS9aMW9nUThDMDUrbzR0MmJtTjJRRW0rZ1RFZDY5QmtyT3N3NWRJaW94aDJqWTZEcnM4ZlZka3gvZHh1RUJFcnVLZ1JoYjQ2Mkx5V0o1MmZtUm1vM3ExNDdWTElvK0lLc2RKUUNrQnF3T0U0NnF0TGpPQXNhOEdpbEN1bWhsbkk5bTlyNjljMGRIbXdBTlAyWUZCeU02c0g5WlF3VWhOR1g2UFlhRll3c2VsOW5YQThNKzhpQTIvYTBlRm9mQjdWSjlJaCtsU1NiWE8vRDNTWWttWGNDWXlOaVZxdFBvTHc2NkFQOEE1MDhFNWk0dlZ3V3ZMYWxLblBmSnNrU1BINWFNckFaTmZzVmdXVEZTRkMvNjZFR2s2QUZYYmJvM2F2Qmllb01HZmR3NU5DUFhObmZoZjA0L2JTYWhJWm83WE9PSVhVTkpiR2xJbVJxWGZPTERqMEl0cUphQjlLUUdwSFVxaGFIcmxzTkN4bjF2YnNzRlZxa2w0d0VsZWpNd3VaR1Zud1k2blFHcElha2dLTnFBMTdqOGQ2dks0MGdPdTM0RWh2TExzdXUyOHJlNXI5YUxJTGJLMjVhd1dzYmgwYUtDZHlTNjJlYkZXOHNveXVYdnlHczBnL0k3bzZ0Z0ZOQnhQeEQ2OVpQM0hvRjFQcXNMaDdncTVZbW1vRkpnckFUbnZDYmJGVGVSOER1aUJqbWcyektBSUpnczB6RFVrZmdZQjQrVTZMaEtkNjhodU9uRzZEZ05jUXI0OW9yM1hRR0ZQSDhjeDVnOTRFVUg3VzF0WXFCZ1dneloifV19\r\n--2330fbd12e4711a062fefac5827d3a38\r\nContent-Disposition:
+      form-data; name=\"x-amz-signature\"\r\n\r\nda5a62210e20fc994dca8a23da57846b009bfe358c639f29d5b95b4666710d44\r\n--2330fbd12e4711a062fefac5827d3a38\r\nContent-Disposition:
+      form-data; name=\"file\"; filename=\"gst_1675882093.2023-02-08_13.log\"\r\n\r\nI|gst|sha:d1d6fb00|7dfe280a-4d58-4847-9621-04090c2f2739|1675882093|NA|2023-02-08T13:48:13-0500|openbb_terminal.loggers|setup_handlers|146|Logging
+      configuration finished\r\nI|gst|sha:d1d6fb00|7dfe280a-4d58-4847-9621-04090c2f2739|1675882093|NA|2023-02-08T13:48:13-0500|openbb_terminal.loggers|setup_handlers|147|Logging
+      set to file\r\nI|gst|sha:d1d6fb00|7dfe280a-4d58-4847-9621-04090c2f2739|1675882093|NA|2023-02-08T13:48:13-0500|openbb_terminal.loggers|setup_handlers|148|Verbosity
+      set to 20\r\nI|gst|sha:d1d6fb00|7dfe280a-4d58-4847-9621-04090c2f2739|1675882093|NA|2023-02-08T13:48:13-0500|openbb_terminal.loggers|setup_handlers|149|LOGFORMAT:
+      %(levelname)s-%(appName)s-%(commitHash)s-%(appId)s-%(sessionId)s-%(userId)s-%(asctime)s-%(name)s-%(funcName)s-%(lineno)s-%(message)s\r\nI|gst|sha:d1d6fb00|7dfe280a-4d58-4847-9621-04090c2f2739|1675882093|NA|2023-02-08T13:48:13-0500|openbb_terminal.terminal_controller|terminal|816|START\r\nI|gst|sha:d1d6fb00|7dfe280a-4d58-4847-9621-04090c2f2739|1675882093|NA|2023-02-08T13:48:13-0500|openbb_terminal.core.log.generation.settings_logger|log_settings|62|SETTINGS:
+      {\"tab\": \"True\", \"cls\": \"False\", \"color\": \"True\", \"promptkit\":
+      \"True\", \"thoughts\": \"False\", \"reporthtml\": \"True\", \"exithelp\": \"True\",
+      \"rcontext\": \"True\", \"rich\": \"True\", \"richpanel\": \"True\", \"ion\":
+      \"True\", \"watermark\": \"True\", \"autoscaling\": \"False\", \"dt\": \"True\",
+      \"packaged\": \"False\", \"python\": \"3.10.8\", \"os\": \"Windows\"} \r\nI|gst|sha:d1d6fb00|7dfe280a-4d58-4847-9621-04090c2f2739|1675882093|NA|2023-02-08T13:48:13-0500|openbb_terminal.core.log.generation.settings_logger|log_config_terminal|80|CONFIG_TERMINAL:
+      {\"LOGGING_APP_NAME\": \"gst\", \"LOGGING_COMMIT_HASH\": \"REPLACE_ME\", \"LOGGING_FREQUENCY\":
+      \"H\", \"LOGGING_HANDLERS\": \"file\", \"LOGGING_ROLLING_CLOCK\": \"0\", \"LOGGING_SUB_APP\":
+      \"terminal\", \"LOGGING_SUPPRESS\": \"False\", \"LOGGING_VERBOSITY\": \"20\",
+      \"MPL_STYLE\": \"dark\", \"PACKAGE_ENV_FILE\": \"C:\\\\Users\\\\teh_coderer\\\\Documents\\\\GitHub\\\\OpenBBTerminalMine\\\\openbb_terminal\\\\.env\",
+      \"PAPERMILL_NOTEBOOK_REPORT_PORT\": \"8888\", \"PATH_TO_SELENIUM_DRIVER\": \"\",
+      \"PMF_STYLE\": \"dark\", \"REPOSITORY_ENV_FILE\": \"C:\\\\Users\\\\teh_coderer\\\\Documents\\\\GitHub\\\\OpenBBTerminalMine\\\\.env\",
+      \"REQUEST_TIMEOUT\": \"5\", \"RICH_STYLE\": \"dark\", \"WEBDRIVER_TO_USE\":
+      \"chrome\", \"_TerminalStyle\": \"<class 'openbb_terminal.helper_classes.TerminalStyle'>\",
+      \"theme\": \"<openbb_terminal.helper_classes.TerminalStyle object at 0x00000187E60D8D30>\"}
+      \r\nI|gst|sha:d1d6fb00|7dfe280a-4d58-4847-9621-04090c2f2739|1675882093|NA|2023-02-08T13:48:13-0500|openbb_terminal.core.log.generation.settings_logger|log_feature_flags|97|FEATURE_FLAGS:
+      {\"ENABLE_CHECK_API\": \"1\", \"ENABLE_EXIT_AUTO_HELP\": \"1\", \"ENABLE_QUICK_EXIT\":
+      \"0\", \"ENABLE_RICH\": \"1\", \"ENABLE_RICH_PANEL\": \"1\", \"ENABLE_THOUGHTS_DAY\":
+      \"0\", \"EXPORT_FOLDER_PATH\": \"\", \"FILE_OVERWITE\": \"0\", \"GUESS_EASTER_EGG_FILE\":
+      \"C:\\\\Users\\\\teh_coderer\\\\Documents\\\\GitHub\\\\OpenBBTerminalMine\\\\guess_game.json\",
+      \"LOG_COLLECTION\": \"0\", \"MISCELLANEOUS_DIRECTORY\": \"C:\\\\Users\\\\teh_coderer\\\\Documents\\\\GitHub\\\\OpenBBTerminalMine\\\\openbb_terminal\\\\miscellaneous\",
+      \"OPEN_REPORT_AS_HTML\": \"1\", \"PREFERRED_DATA_SOURCE_FILE\": \"C:\\\\Users\\\\teh_coderer\\\\OpenBBUserData\\\\data_sources_default.json\",
+      \"REMEMBER_CONTEXTS\": \"1\", \"RETRY_WITH_LOAD\": \"0\", \"TOOLBAR_HINT\":
+      \"1\", \"USER_DATA_SOURCES_DEFAULT_FILE\": \"C:\\\\Users\\\\teh_coderer\\\\OpenBBUserData\\\\data_sources_default.json\",
+      \"USE_CLEAR_AFTER_CMD\": \"0\", \"USE_CMD_LOCATION_FIGURE\": \"1\", \"USE_COLOR\":
+      \"1\", \"USE_DATETIME\": \"1\", \"USE_FLAIR\": \":openbb\", \"USE_ION\": \"1\",
+      \"USE_LANGUAGE\": \"en\", \"USE_PLOT_AUTOSCALING\": \"0\", \"USE_PROMPT_TOOLKIT\":
+      \"1\", \"USE_TABULATE_DF\": \"1\", \"USE_WATERMARK\": \"1\", \"VERSION\": \"2.3.1\",
+      \"WITH_GIT\": \"True\", \"i18n_dict_location\": \"C:\\\\Users\\\\teh_coderer\\\\Documents\\\\GitHub\\\\OpenBBTerminalMine\\\\openbb_terminal\\\\miscellaneous\\\\i18n\",
+      \"version\": \"2.3.1\"} \r\nI|gst|sha:d1d6fb00|7dfe280a-4d58-4847-9621-04090c2f2739|1675882093|NA|2023-02-08T13:48:13-0500|openbb_terminal.core.log.generation.settings_logger|log_keys|115|KEYS:
+      {\"API_BINANCE_KEY\": \"defined\", \"API_BINANCE_SECRET\": \"defined\", \"API_BITQUERY_KEY\":
+      \"not_defined\", \"API_CMC_KEY\": \"not_defined\", \"API_COINBASE_KEY\": \"not_defined\",
+      \"API_COINBASE_PASS_PHRASE\": \"not_defined\", \"API_COINBASE_SECRET\": \"not_defined\",
+      \"API_COINGLASS_KEY\": \"defined\", \"API_CRYPTO_PANIC_KEY\": \"defined\", \"API_EODHD_KEY\":
+      \"not_defined\", \"API_ETHPLORER_KEY\": \"defined\", \"API_FINNHUB_KEY\": \"defined\",
+      \"API_FRED_KEY\": \"defined\", \"API_GITHUB_KEY\": \"defined\", \"API_GLASSNODE_KEY\":
+      \"not_defined\", \"API_IEX_TOKEN\": \"defined\", \"API_KEY_ALPHAVANTAGE\": \"defined\",
+      \"API_KEY_FINANCIALMODELINGPREP\": \"defined\", \"API_KEY_QUANDL\": \"defined\",
+      \"API_MESSARI_KEY\": \"not_defined\", \"API_NEWS_TOKEN\": \"defined\", \"API_POLYGON_KEY\":
+      \"defined\", \"API_REDDIT_CLIENT_ID\": \"not_defined\", \"API_REDDIT_CLIENT_SECRET\":
+      \"not_defined\", \"API_REDDIT_PASSWORD\": \"not_defined\", \"API_REDDIT_USERNAME\":
+      \"not_defined\", \"API_REDDIT_USER_AGENT\": \"not_defined\", \"API_SANTIMENT_KEY\":
+      \"not_defined\", \"API_SENTIMENTINVESTOR_TOKEN\": \"not_defined\", \"API_SHROOM_KEY\":
+      \"not_defined\", \"API_SMARTSTAKE_KEY\": \"not_defined\", \"API_SMARTSTAKE_TOKEN\":
+      \"not_defined\", \"API_STOCKSERA_KEY\": \"defined\", \"API_TOKEN_TERMINAL_KEY\":
+      \"defined\", \"API_TRADIER_TOKEN\": \"defined\", \"API_TWITTER_BEARER_TOKEN\":
+      \"defined\", \"API_TWITTER_KEY\": \"not_defined\", \"API_TWITTER_SECRET_KEY\":
+      \"not_defined\", \"API_WHALE_ALERT_KEY\": \"defined\"} \r\n\r\n--2330fbd12e4711a062fefac5827d3a38--\r\n"
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '8927'
+      Content-Type:
+      - multipart/form-data; boundary=2330fbd12e4711a062fefac5827d3a38
+      User-Agent:
+      - python-requests/2.28.2
+    method: POST
+    uri: https://gst-logging.s3.amazonaws.com/
+  response:
+    body:
+      string: ''
+    headers:
+      Date:
+      - Thu, 09 Feb 2023 19:43:19 GMT
+      ETag:
+      - '"aab27ef7097e78dceb70482c40e96e37"'
+      Location:
+      - https://gst-logging.s3.amazonaws.com/gst-app%2Flogs%2F7dfe280a-4d58-4847-9621-04090c2f2739%2Fgst_1675882093.2023-02-08_13.log
+      Server:
+      - AmazonS3
+      x-amz-id-2:
+      - j/ckfSvIGOk2knBTNq46/1CbPWZ7vsKnc1bxAA9q/RJ+yl4ohq9OeGZen/WiuxgLZNE1YuaAJpw=
+      x-amz-request-id:
+      - K8G0S40XWT85XZM9
+      x-amz-server-side-encryption:
+      - AES256
+    status:
+      code: 204
+      message: No Content
 version: 1

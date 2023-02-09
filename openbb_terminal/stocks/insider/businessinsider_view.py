@@ -144,7 +144,7 @@ def insider_activity(
             ind_dt = get_next_stock_market_days(ind, 1)[0]
 
         n_stock_price = data[close_col][ind_dt]
-        ins_loc = ins_sell.index.get_loc(ind_dt, method="nearest")
+        ins_loc = ins_sell.index.get_indexer([ind_dt], method="nearest")
 
         ymin = n_stock_price + n_proportion * float(ins_sell["Trade"][ins_loc])
         fig.add_scatter(
@@ -163,7 +163,7 @@ def insider_activity(
             ind_dt = get_next_stock_market_days(ind, 1)[0]
 
         n_stock_price = data[close_col][ind_dt]
-        ins_loc = ins_sell.index.get_loc(ind_dt, method="nearest")
+        ins_loc = ins_buy.index.get_indexer([ind_dt], method="nearest")
 
         ymax = n_stock_price + n_proportion * float(ins_buy["Trade"][ins_loc])
         fig.add_scatter(

@@ -131,4 +131,92 @@ interactions:
     status:
       code: 400
       message: ''
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87
+        Safari/537.36
+      X-MBX-APIKEY:
+      - test_key
+    method: GET
+    uri: https://api.binance.com/sapi/v1/account/apiRestrictions?timestamp=1675966581490&signature=ea193de1b7f9397796d9d43cd26f50c04b2c4fb839a624fafff6f501d50267f6
+  response:
+    body:
+      string: "{\n  \"code\": 0,\n  \"msg\": \"Service unavailable from a restricted
+        location according to 'b. Eligibility' in https://www.binance.com/en/terms.
+        Please contact customer service if you believe you received this message in
+        error.\"\n}"
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '224'
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 09 Feb 2023 18:16:22 GMT
+      Server:
+      - CloudFront
+      Via:
+      - 1.1 602ee531a7853a19c56cb957462f11be.cloudfront.net (CloudFront)
+      X-Amz-Cf-Id:
+      - s6vHJpfmQzNgckD4u4kKrYkAwr46eptL7A82s5POWZ8Y2e8dR4FAzw==
+      X-Amz-Cf-Pop:
+      - MSP50-P2
+      X-Cache:
+      - Error from cloudfront
+    status:
+      code: 451
+      message: ''
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87
+        Safari/537.36
+      X-MBX-APIKEY:
+      - test_key
+    method: GET
+    uri: https://api.binance.com/sapi/v1/account/apiRestrictions?timestamp=1675971825985&signature=5097e844aa916595bebf3dda8167d58056a05ee85c93ddd6412819dda9bb1323
+  response:
+    body:
+      string: "{\n  \"code\": 0,\n  \"msg\": \"Service unavailable from a restricted
+        location according to 'b. Eligibility' in https://www.binance.com/en/terms.
+        Please contact customer service if you believe you received this message in
+        error.\"\n}"
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '224'
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 09 Feb 2023 19:43:46 GMT
+      Server:
+      - CloudFront
+      Via:
+      - 1.1 f10aac07ec1e31d8b40ee8ef5feed6e6.cloudfront.net (CloudFront)
+      X-Amz-Cf-Id:
+      - -T5YS3oxInGfgrjcmQVHg8LGB282BaIi_ROaguTIFTjbqbzdpRznGQ==
+      X-Amz-Cf-Pop:
+      - DFW56-P2
+      X-Cache:
+      - Error from cloudfront
+    status:
+      code: 451
+      message: ''
 version: 1
