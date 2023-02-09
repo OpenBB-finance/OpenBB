@@ -48,7 +48,6 @@ from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.reports.reports_model import ipykernel_launcher
 from openbb_terminal.rich_config import MenuText, console
 from openbb_terminal.session import session_controller
-from openbb_terminal.session.hub_model import REGISTER_LINK
 from openbb_terminal.session.user import User
 from openbb_terminal.terminal_helper import (
     bootup,
@@ -369,10 +368,7 @@ class TerminalController(BaseController):
         from openbb_terminal.account.account_controller import AccountController
 
         if User.is_guest():
-            console.print(
-                "[info]You need to be logged in to use this menu.\n"
-                f"Create an account here {REGISTER_LINK}.[/info]\n"
-            )
+            User.print_guest_message()
             return
         self.queue = self.load_class(AccountController, self.queue)
 

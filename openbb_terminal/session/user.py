@@ -58,10 +58,7 @@ class User:
                 sync = "OFF"
             console.print(f"[info]sync:[/info] {sync}")
         else:
-            console.print(
-                "[info]You are currently logged as a guest.\n"
-                f"Create an account here {REGISTER_LINK}.[/info]"
-            )
+            User.print_guest_message()
 
     @classmethod
     def clear(cls):
@@ -91,3 +88,11 @@ class User:
     def get_token(cls):
         """Get token."""
         return cls._token
+
+    @classmethod
+    def print_guest_message(cls):
+        """Print guest message."""
+        console.print(
+            "[info]You are currently logged as a guest.\n"
+            f"Create an account here {REGISTER_LINK}.\n[/info]"
+        )

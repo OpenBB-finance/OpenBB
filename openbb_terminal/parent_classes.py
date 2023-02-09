@@ -376,6 +376,9 @@ class BaseController(metaclass=ABCMeta):
 
         self.log_queue()
 
+        if not self.queue or (self.queue and self.queue[0] not in ("quit", "help")):
+            console.print()
+
         return self.queue
 
     @log_start_end(log=logger)
@@ -679,10 +682,7 @@ class BaseController(metaclass=ABCMeta):
 
         if ns_parser:
             if User.is_guest():
-                console.print(
-                    "[info]You are currently logged as a guest.\n"
-                    "Create an account here https://my.openbb.co/register.\n[/info]"
-                )
+                User.print_guest_message()
                 return
 
             logout(
@@ -705,7 +705,6 @@ class BaseController(metaclass=ABCMeta):
 
         if ns_parser:
             User.whoami()
-            console.print("")
 
     @staticmethod
     def parse_simple_args(parser: argparse.ArgumentParser, other_args: List[str]):
@@ -961,11 +960,6 @@ class BaseController(metaclass=ABCMeta):
 
                 if an_input == "logout" and not User.is_guest():
                     return ["logout"]
-
-                if not self.queue or (
-                    self.queue and self.queue[0] not in ("quit", "help")
-                ):
-                    console.print()
 
             except SystemExit:
                 if not self.contains_keys(an_input):
