@@ -97,7 +97,6 @@ def display_dapp_stats(
             x=df.index,
             y=df["n_users"],
             name="Number of Users",
-            secondary_y=False,
             marker_color=theme.down_color,
             secondary_y=False,
         )
@@ -106,7 +105,6 @@ def display_dapp_stats(
             x=df.index,
             y=df["fees"],
             name="Platform Fees",
-            secondary_y=True,
             marker_color=theme.up_color,
             secondary_y=True,
         )

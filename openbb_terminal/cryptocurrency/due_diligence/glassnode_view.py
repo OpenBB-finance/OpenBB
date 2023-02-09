@@ -266,10 +266,8 @@ def display_exchange_balances(
 
     fig = OpenBBFigure.create_subplots(specs=[[{"secondary_y": True}]])
     fig.set_title(
-        (
-            f"{symbol}: Total Balance in"
-            f" {'all exchanges' if exchange == 'aggregated' else exchange}"
-        )
+        f"{symbol}: Total Balance in"
+        f" {'all exchanges' if exchange == 'aggregated' else exchange}"
     )
 
     fig.set_yaxis_title(
