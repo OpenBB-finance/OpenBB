@@ -2627,13 +2627,15 @@ def check_stocksera_key(show_output: bool = False):
     return str(status)
 
 
-def set_openbb_key(key: str, persist: bool = False, show_output: bool = False):
-    """Set OpenBB key.
+def set_openbb_personal_access_token(
+    key: str, persist: bool = False, show_output: bool = False
+):
+    """Set OpenBB Personal Access Token.
 
     Parameters
     ----------
     key: str
-        API key
+        Personal Access Token
     persist: bool, optional
         If False, api key change will be contained to where it was changed. For example, a Jupyter notebook session.
         If True, api key change will be global, i.e. it will affect terminal environment variables.
@@ -2651,20 +2653,20 @@ def set_openbb_key(key: str, persist: bool = False, show_output: bool = False):
     >>> from openbb_terminal.sdk import openbb
     >>> openbb.keys.openbb(key="example_key")
     """
-    set_key("OPENBB_API_OPENBB_KEY", key, persist)
-    return check_openbb_key(show_output)
+    set_key("OPENBB_PERSONAL_ACCESS_TOKEN", key, persist)
+    return check_openbb_personal_access_token(show_output)
 
 
-def check_openbb_key(show_output: bool = False):
-    """Check OpenBB key
+def check_openbb_personal_access_token(show_output: bool = False):
+    """Check OpenBB Personal Access Token
 
     Returns
     -------
     str
         Status of key set
     """
-    if cfg.API_OPENBB_KEY == "REPLACE_ME":
-        logger.info("OpenBB key not defined")
+    if cfg.OPENBB_PERSONAL_ACCESS_TOKEN == "REPLACE_ME":
+        logger.info("OpenBB Personal Access Token not defined")
         status = KeyStatus.NOT_DEFINED
     else:
         try:
@@ -2686,14 +2688,17 @@ def check_openbb_key(show_output: bool = False):
             )
             token = response.json().get("token")
 
-            if response.status_code == 200 and token == cfg.API_OPENBB_KEY:
-                logger.info("OpenBB key defined, test passed")
+            if (
+                response.status_code == 200
+                and token == cfg.OPENBB_PERSONAL_ACCESS_TOKEN
+            ):
+                logger.info("OpenBB Personal Access Token defined, test passed")
                 status = KeyStatus.DEFINED_TEST_PASSED
             else:
-                logger.warning("OpenBB key defined, test failed")
+                logger.warning("OpenBB Personal Access Token. defined, test failed")
                 status = KeyStatus.DEFINED_TEST_FAILED
         except requests.exceptions.RequestException:
-            logger.warning("OpenBB key defined, test failed")
+            logger.warning("OpenBB Personal Access Token. defined, test failed")
             status = KeyStatus.DEFINED_TEST_FAILED
 
     if show_output:

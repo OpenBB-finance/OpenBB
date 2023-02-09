@@ -1166,7 +1166,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="openbb",
-            description="Set OpenBB API key. ",
+            description="Set OpenBB Personal Access Token. ",
         )
         parser.add_argument(
             "-k",
@@ -1176,13 +1176,13 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             help="key",
         )
         if not other_args:
-            console.print("For your API Key, visit: https://openbb.co/\n")
+            console.print("For your Personal Access Token, visit: https://openbb.co/\n")
             return
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-k")
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
-            self.status_dict["openbb"] = keys_model.set_openbb_key(
+            self.status_dict["openbb"] = keys_model.set_openbb_personal_access_token(
                 key=ns_parser.key, persist=True, show_output=True
             )
