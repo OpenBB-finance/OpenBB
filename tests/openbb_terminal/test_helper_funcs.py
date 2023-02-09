@@ -11,6 +11,7 @@ from openbb_terminal.helper_funcs import (
     check_start_less_than_end,
     export_data,
     remove_timezone_from_dataframe,
+    revert_lambda_long_number_format,
 )
 
 # pylint: disable=E1101
@@ -156,3 +157,38 @@ def test_remove_timezone_from_dataframe(df, df_expected):
 
     df_result = remove_timezone_from_dataframe(df)
     assert df_result.equals(df_expected)
+
+
+@pytest.mark.parametrize(
+    "value, expected",
+    [
+        (123, 123),
+        ("xpto", "xpto"),
+        (
+            "this isssssssssss a veryyyyy long stringgg",
+            "this isssssssssss a veryyyyy long stringgg",
+        ),
+        (None, None),
+        (True, True),
+        (0, 0),
+        ("2022-01-01", "2022-01-01"),
+        ("3/9/2022", "3/9/2022"),
+        ("2022-03-09 10:30:00", "2022-03-09 10:30:00"),
+        ("a 123", "a 123"),
+        ([1, 2, 3], [1, 2, 3]),
+        ("", ""),
+        ("-3 K", -3000.0),
+        ("-99 M", -99000000.0),
+        ("-125 B", -125000000000.0),
+        ("-15 T", -15000000000000.0),
+        ("-15 P", -15000000000000000.0),
+        ("-15 P xpto", "-15 P xpto"),
+        ("-15 P 3 K", "-15 P 3 K"),
+        ("15 P -3 K", "15 P -3 K"),
+        ("2.130", 2.130),
+        ("2,130.000", "2,130.000"),  # this is not a valid number
+        ("674,234.99", "674,234.99"),  # this is not a valid number
+    ],
+)
+def test_revert_lambda_long_number_format(value, expected):
+    assert revert_lambda_long_number_format(value) == expected
