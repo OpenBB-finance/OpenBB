@@ -1,26 +1,26 @@
 , ,Price,Chg,%Chg,Vol
-0,ProShares Ultra Bloomberg Natural Gas,5.86,-0.93,-13.7,70.9M
-1,Direxion Daily GOOGL Bull 1.5X Shares,21.13,-2.7888,-11.66,388.2K
-2,Direxion Daily S&P Biotech Bull 3X Shares,7.79,-0.89,-10.25,51.7M
-3,AMC Entertainment Holdings Inc. Dep. Pfd. (Rep. 1/100th Share Pfd. Series A),2.87,-0.24,-7.72,31.7M
-4,United States Natural Gas Fund L.P.,8.23,-0.64,-7.22,28.8M
-5,Direxion Daily Dow Jones Internet Bull 3X Shares,8.99,-0.66,-6.84,3.0M
-6,iPath Series B Bloomberg Natural Gas Subindex Total Return ETN,13.22,-0.95,-6.7,256.7K
-7,Direxion Daily Homebuilders & Supplies Bull 3X Shares,44.63,-3.06,-6.42,224.7K
-8,Direxion Daily Semiconductor Bull 3X Shares,16.49,-1.1,-6.25,72.4M
-9,AXS 2X Innovation ETF,72.2,-4.35,-5.68,356.9K
-10,ProShares UltraPro QQQ,24.99,-1.42,-5.38,181.3M
-11,MicroSectors FANG & Innovation 3x Leveraged ETN,39.41,-2.19,-5.26,428.5K
-12,Direxion Daily S&P 500 High Beta Bull 3X Shares,38.97,-2.12,-5.16,131.8K
-13,MicroSectors FANG+ Index 3X Leveraged ETN,86.52,-4.22,-4.65,1.6M
-14,Direxion Daily CSI China Internet Index Bull 2X Shares,56.86,-2.74,-4.6,330.7K
-15,Direxion Daily Small Cap Bull 3x Shares,41.81,-1.94,-4.43,9.9M
-16,ProShares UltraPro Russell2000,49.4,-2.29,-4.43,571.3K
-17,ProShares Ultra Technology,30.52,-1.4,-4.39,61.0K
-18,Direxion Daily Retail Bull 3x Shares,10.73,-0.49,-4.37,251.0K
-19,iShares MSCI Turkey ETF,29.79,-1.33,-4.27,1.0M
-20,-1x Short VIX Futures ETF,17.31,-0.75,-4.15,2.6M
-21,ETRACS Monthly Pay 2x Leveraged Small-Cap High Dividend ETN Series B,7.7263,-0.3277,-4.07,69.5K
-22,GraniteShares 1.5x Long Coinbase Daily ETF,11.62,-0.49,-4.05,448.8K
-23,ARK Genomic Revolution ETF,33.72,-1.42,-4.04,1.7M
-24,Direxion Daily FTSE China Bull 3X Shares,55.19,-2.28,-3.97,1.0M
+0,GraniteShares 1.5x Long Coinbase Daily ETF,10.59,-1.03,-8.86,159.2K
+1,Direxion Daily FTSE China Bear 3X Shares,8.3205,-0.7195,-7.96,968.1K
+2,Direxion Daily Semiconductor Bear 3X Shares,18.718,-1.502,-7.43,6.3M
+3,Direxion Daily S&P 500 High Beta Bear 3X Shares,4.02,-0.26,-6.07,152.2K
+4,2x Long VIX Futures ETF,18.49,-0.91,-4.69,121.1K
+5,MicroSectors FANG+ Index -3X Inverse Leveraged ETN,23.83,-1.11,-4.45,357.8K
+6,Direxion Daily Technology Bear 3x Shares,25.64,-1.14,-4.26,205.5K
+7,Direxion Daily S&P Biotech Bear 3X Shares,13.9688,-0.5812,-3.99,760.3K
+8,Breakwave Dry Bulk Shipping ETF,7.3225,-0.2975,-3.9,237.1K
+9,ProShares Ultra VIX Short-Term Futures ETF,4.93,-0.19,-3.71,2.5M
+10,Direxion Daily Dow Jones Internet Bear 3X Shares,20.2403,-0.7197,-3.43,67.7K
+11,ProShares UltraPro Short Russell 2000,38.41,-1.34,-3.37,91.1K
+12,ProShares UltraPro Short QQQ,33.982,-1.178,-3.35,13.3M
+13,Direxion Daily Small Cap Bear 3x Shares,24.99,-0.84,-3.25,766.8K
+14,AXS 1.25X NVDA Bear Daily ETF,21.62,-0.72,-3.22,51.5K
+15,AXS TSLA Bear Daily ETF,44.01,-1.41,-3.1,393.3K
+16,Direxion Daily GOOGL Bull 1.5X Shares,20.4752,-0.6548,-3.1,90.5K
+17,ProShares UltraShort FTSE Europe,10.44,-0.28,-2.61,73.6K
+18,MicroSectors Gold Miners 3X Inverse Leveraged ETN,6.62,-0.17,-2.5,59.4K
+19,Direxion Daily TSLA Bear 1X Shares,27.26,-0.69,-2.47,279.0K
+20,ProShares UltraPro Short Dow30,24.535,-0.615,-2.45,1.7M
+21,ProShares VIX Short-Term Futures ETF,9.2,-0.23,-2.44,255.0K
+22,Direxion Daily 20+ Year Treasury Bear 3X Shares,110.021,-2.729,-2.42,59.2K
+23,ProShares UltraPro Short S&P 500,13.27,-0.32,-2.35,2.5M
+24,ProShares Ultra Bloomberg Crude Oil,28.1701,-0.6599,-2.29,200.0K

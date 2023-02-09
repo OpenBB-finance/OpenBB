@@ -1,6 +1,6 @@
-                                               Price    Chg   %Chg    Vol
-0  ProShares UltraShort Bloomberg Natural Gas  64.95  7.910  13.87   2.3M
-1                             Sezzle Inc. CDI   0.51  0.060  13.33  50.1K
-2   Direxion Daily S&P Biotech Bear 3X Shares  14.55  1.380  10.48   7.5M
-3                     2x Long VIX Futures ETF  19.40  1.440   8.02   2.0M
-4         Direxion Daily GOOGL Bear 1X Shares  25.40  1.835   7.79  77.8K
+                                                            Price    Chg  %Chg     Vol
+0                Direxion Daily FTSE China Bull 3X Shares  59.640  4.450  8.06  276.6K
+1             Direxion Daily Semiconductor Bull 3X Shares  17.715  1.225  7.43   13.6M
+2  Direxion Daily CSI China Internet Index Bull 2X Shares  60.990  4.130  7.26   94.6K
+3                    Direxion Daily Retail Bull 3x Shares  11.220  0.490  4.57   66.0K
+4                    Direxion Daily TSLA Bull 1.5X Shares  13.200  0.570  4.51    3.5M
