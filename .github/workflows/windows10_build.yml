@@ -92,7 +92,7 @@ jobs:
       # This should autosign the installer now - We really need to only do this when needed though. ON RELEASE
       - name: Sign Installer
         run: |
-          & 'C:\Program Files (x86)\Windows Kits\10\bin\10.0.22000.0\x86\signtool.exe' sign /fd sha256 /tr http://ts.ssl.com /td sha256 /sha1 26a8e28dbe3b1db7407b92d7de97c290d4436a32 'C:\Users\Administrator\OpenBBTerminal\build\nsis\OpenBB Terminal Setup.exe'
+          & 'C:\Program Files (x86)\Windows Kits\10\bin\10.0.19041.0\x86\signtool.exe' sign /fd sha256 /tr http://ts.ssl.com /td sha256 /sha1 26a8e28dbe3b1db7407b92d7de97c290d4436a32 'C:\Users\Administrator\OpenBBTerminal\build\nsis\OpenBB Terminal Setup.exe'
 
       # - name: Run Integration Tests
       #   run: |
