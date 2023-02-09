@@ -185,6 +185,9 @@ def test_remove_timezone_from_dataframe(df, df_expected):
         ("-15 P xpto", "-15 P xpto"),
         ("-15 P 3 K", "-15 P 3 K"),
         ("15 P -3 K", "15 P -3 K"),
+        ("2.130", 2.130),
+        ("2,130.000", "2,130.000"),  # this is not a valid number
+        ("674,234.99", "674,234.99"),  # this is not a valid number
     ],
 )
 def test_revert_lambda_long_number_format(value, expected):

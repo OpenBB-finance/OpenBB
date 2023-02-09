@@ -21,7 +21,6 @@ from functools import lru_cache
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple, Union
 
-import dateutil
 import dotenv
 import iso8601
 import matplotlib
@@ -598,7 +597,7 @@ def valid_date(s: str) -> datetime:
 def is_valid_date(s: str) -> bool:
     """Check if date is in valid format."""
     try:
-        dateutil.parser.parse(s)
+        datetime.strptime(s, "%Y-%m-%d")
         return True
     except ValueError:
         return False
