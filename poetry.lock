@@ -2188,20 +2188,22 @@ python-versions = "*"
 
 [[package]]
 name = "mypy"
-version = "0.930"
+version = "1.0.0"
 description = "Optional static typing for Python"
 category = "dev"
 optional = false
-python-versions = ">=3.6"
+python-versions = ">=3.7"
 
 [package.dependencies]
 mypy-extensions = ">=0.4.3"
-tomli = ">=1.1.0"
+tomli = {version = ">=1.1.0", markers = "python_version < \"3.11\""}
 typing-extensions = ">=3.10"
 
 [package.extras]
 dmypy = ["psutil (>=4.0)"]
+install-types = ["pip"]
 python2 = ["typed-ast (>=1.4.0,<2)"]
+reports = ["lxml"]
 
 [[package]]
 name = "mypy-extensions"
@@ -5064,7 +5066,7 @@ prediction = ["torch", "pytorch-lightning", "u8darts"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8,<3.11, !=3.9.7"
-content-hash = "8b59d3adb985f6b1586d40087f128c9f0224a0bc8d1152ece42f304be8ae3483"
+content-hash = "5839ef287429ab3303ffa60cf2a3d9f2ed88f61237e31afc21fe0aa01654784f"
 
 [metadata.files]
 absl-py = []

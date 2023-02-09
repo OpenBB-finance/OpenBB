@@ -16,7 +16,7 @@ __docformat__ = "numpy"
 class ThoughtOfTheDay:
     """ThoughtOfTheDay class"""
 
-    def __init__(self, urls: dict[str, str] = None):
+    def __init__(self, urls: dict[str, str] | None = None):
         """Constructor"""
 
         self.metadata: dict = {}

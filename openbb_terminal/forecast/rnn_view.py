@@ -35,7 +35,7 @@ def display_rnn_forecast(
     force_reset: bool = True,
     save_checkpoints: bool = True,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     residuals: bool = False,
     forecast_only: bool = False,
     start_date: Optional[datetime] = None,

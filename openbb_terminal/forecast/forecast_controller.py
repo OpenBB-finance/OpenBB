@@ -160,7 +160,10 @@ class ForecastController(BaseController):
     list_dataset_cols: list = list()
 
     def __init__(
-        self, ticker: str = "", data: pd.DataFrame = empty_df, queue: List[str] = None
+        self,
+        ticker: str = "",
+        data: pd.DataFrame = empty_df,
+        queue: Optional[List[str]] = None,
     ):
         """Constructor"""
         super().__init__(queue)

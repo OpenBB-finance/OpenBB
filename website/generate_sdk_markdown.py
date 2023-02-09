@@ -457,7 +457,7 @@ def main() -> bool:
 
 
 def generate_index_markdown(
-    markdown: str, d: dict, level: int, path: Path = None
+    markdown: str, d: dict, level: int, path: Optional[Path] = None
 ) -> str:
     """Generates the index markdown for the given dictionary."""
     if path is None:

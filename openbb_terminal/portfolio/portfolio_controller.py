@@ -5,7 +5,7 @@ import argparse
 import logging
 import os
 from datetime import date
-from typing import List
+from typing import List, Optional
 
 import pandas as pd
 
@@ -107,7 +107,7 @@ class PortfolioController(BaseController):
     PATH = "/portfolio/"
     CHOICES_GENERATION = True
 
-    def __init__(self, queue: List[str] = None):
+    def __init__(self, queue: Optional[List[str]] = None):
         """Constructor"""
         super().__init__(queue)
         self.file_types = ["xlsx", "csv"]

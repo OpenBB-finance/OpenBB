@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import logging
 from datetime import datetime, timedelta
 from math import e, log
-from typing import Tuple, Union
+from typing import Optional, Tuple, Union
 
 import numpy as np
 import pandas as pd
@@ -212,7 +212,7 @@ def get_greeks(
     puts: pd.DataFrame,
     expire: str,
     div_cont: float = 0,
-    rf: float = None,
+    rf: Optional[float] = None,
     opt_type: int = 0,
     show_all: bool = False,
     show_extra_greeks: bool = False,

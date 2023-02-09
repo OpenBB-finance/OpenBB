@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 # IMPORTATION STANDARD
 import logging
-from typing import List
+from typing import List, Optional
 
 # IMPORTATION THIRDPARTY
 from dotenv import set_key
@@ -46,7 +46,7 @@ class FeatureFlagsController(BaseController):
     ]
     PATH = "/featflags/"
 
-    def __init__(self, queue: List[str] = None):
+    def __init__(self, queue: Optional[List[str]] = None):
         """Constructor"""
         super().__init__(queue)
 

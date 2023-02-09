@@ -113,7 +113,7 @@ class TerminalController(BaseController):
     GUESS_CORRECTLY = 0
     CHOICES_GENERATION = False
 
-    def __init__(self, jobs_cmds: List[str] = None):
+    def __init__(self, jobs_cmds: Optional[List[str]] = None):
         """Construct terminal controller."""
         super().__init__(jobs_cmds)
 
@@ -815,7 +815,7 @@ class TerminalController(BaseController):
 
 
 # pylint: disable=global-statement
-def terminal(jobs_cmds: List[str] = None, test_mode=False):
+def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
     """Terminal Menu."""
     if not test_mode:
         setup_logging()
@@ -986,7 +986,7 @@ def run_scripts(
     path: Path,
     test_mode: bool = False,
     verbose: bool = False,
-    routines_args: List[str] = None,
+    routines_args: Optional[List[str]] = None,
     special_arguments: Optional[Dict[str, str]] = None,
     output: bool = True,
 ):
@@ -1118,7 +1118,7 @@ def run_routine(file: str, routines_args=List[str]):
 def main(
     debug: bool,
     path_list: List[str],
-    routines_args: List[str] = None,
+    routines_args: Optional[List[str]] = None,
     **kwargs,
 ):
     """Run the terminal with various options.

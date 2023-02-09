@@ -44,7 +44,7 @@ def display_spread_matrix(
     raw: bool = False,
     external_axes: Optional[List[plt.Axes]] = None,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Display spread matrix. [Source: Investing.com]
 
@@ -212,7 +212,7 @@ def display_yieldcurve(
     external_axes: Optional[List[plt.Axes]] = None,
     raw: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Display yield curve for specified country. [Source: Investing.com]
 
@@ -304,7 +304,7 @@ def display_economic_calendar(
     end_date: str = "",
     limit=100,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Display economic calendar. [Source: Investing.com]
 

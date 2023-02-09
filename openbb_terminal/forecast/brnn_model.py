@@ -25,7 +25,7 @@ def get_brnn_data(
     target_column: str = "close",
     n_predict: int = 5,
     train_split: float = 0.85,
-    past_covariates: str = None,
+    past_covariates: Optional[str] = None,
     forecast_horizon: int = 5,
     input_chunk_length: int = 14,
     output_chunk_length: int = 5,

@@ -5,7 +5,7 @@ __docformat__ = "numpy"
 
 import argparse
 import logging
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 from tqdm import tqdm
 
@@ -36,7 +36,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
 
     def __init__(
         self,
-        queue: List[str] = None,
+        queue: Optional[List[str]] = None,
         menu_usage: bool = True,
         env_file: str = str(USER_ENV_FILE),
     ):

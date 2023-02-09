@@ -71,7 +71,7 @@ def display_overview(
     country: str = "united states",
     limit: int = 10,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Displays an overview of the main funds from a country.
 
@@ -141,7 +141,7 @@ def display_historical(
     data: pd.DataFrame,
     name: str = "",
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display historical fund price

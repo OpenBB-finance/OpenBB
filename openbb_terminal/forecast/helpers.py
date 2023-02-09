@@ -471,9 +471,9 @@ def plot_forecast(
     precision: Optional[int] = None,
     probabilistic: bool = False,
     export: str = "",
-    sheet_name: str = None,
-    low_quantile: float = None,
-    high_quantile: float = None,
+    sheet_name: Optional[str] = None,
+    low_quantile: Optional[float] = None,
+    high_quantile: Optional[float] = None,
     forecast_only: bool = False,
     naive: bool = False,
     export_pred_raw: bool = False,
@@ -570,7 +570,7 @@ def plot_forecast(
 def plot_explainability(
     model: type[GlobalForecastingModel],
     explainability_raw=False,
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.axes]] = None,
 ):
     """
@@ -639,7 +639,7 @@ def dt_format(x) -> str:
 
 def get_series(
     data: pd.DataFrame,
-    target_column: str = None,
+    target_column: Optional[str] = None,
     is_scaler: bool = True,
     time_col: str = "date",
 ) -> Tuple[Optional[Scaler], TimeSeries]:

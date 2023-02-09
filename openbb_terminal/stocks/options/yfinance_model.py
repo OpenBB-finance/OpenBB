@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import logging
 import math
 from datetime import date, datetime, timedelta
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
 import pandas as pd
 import yfinance as yf
@@ -273,7 +273,7 @@ def get_binom(
     strike: float = 0,
     put: bool = False,
     europe: bool = False,
-    vol: float = None,
+    vol: Optional[float] = None,
 ):
     """Gets binomial pricing for options
 

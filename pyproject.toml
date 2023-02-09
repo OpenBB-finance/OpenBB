@@ -114,7 +114,7 @@ SPARQLWrapper = "^2.0.0"
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.2"
 pylint = "2.15.2"
-mypy = "^0.930"
+mypy = "^1.0.0"
 mock = "^4.0.3"
 codespell = "^2.0.0"
 sphinx = "^4.5.0"
