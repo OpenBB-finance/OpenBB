@@ -207,7 +207,6 @@ def test_apply_configs_sync(sync: str):
     ],
 )
 def test_get_routine(mocker, exists: bool):
-
     file_name = "test_routine.openbb"
     uuid = "test_uuid"
     routine = "do something"
