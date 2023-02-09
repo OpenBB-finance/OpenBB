@@ -54,6 +54,8 @@ def login(
 
     if not session:
         session = get_session(email, password, token, keep_session)
+    else:
+        console.print("Using saved session to login.")
 
     if session_model.login(session) in [
         session_model.LoginStatus.FAILED,

@@ -248,7 +248,7 @@ def set_key(env_var_name: str, env_var_value: str, persist: bool = False) -> Non
         not User.is_guest()
         and User.is_sync_enabled()
         and env_var_name not in cfg.SENSITIVE_KEYS
-        and env_var_name.startswith("API_")
+        and (env_var_name.startswith("API_") or env_var_name.startswith("OPENBB_"))
     ):
         patch_user_configs(
             key=env_var_name,
@@ -285,14 +285,17 @@ def get_keys(show: bool = False) -> pd.DataFrame:
 
     # TODO: Refactor api variables without prefix API_ and extend API_SOURCE_KEY format
 
-    var_list = [v for v in dir(cfg) if v.startswith("API_")]
+    var_list = [v for v in dir(cfg) if v.startswith("API_") or v.startswith("OPENBB_")]
 
     current_keys = {}
 
     for cfg_var_name in var_list:
         cfg_var_value = getattr(cfg, cfg_var_name)
         if cfg_var_value != "REPLACE_ME":
-            current_keys[cfg_var_name[4:]] = cfg_var_value
+            if cfg_var_name.startswith("OPENBB_"):
+                current_keys[cfg_var_name] = cfg_var_value
+            else:
+                current_keys[cfg_var_name[4:]] = cfg_var_value
 
     if current_keys:
         df = pd.DataFrame.from_dict(current_keys, orient="index")
@@ -2653,7 +2656,7 @@ def set_openbb_personal_access_token(
     >>> from openbb_terminal.sdk import openbb
     >>> openbb.keys.openbb(key="example_key")
     """
-    set_key("OPENBB_PERSONAL_ACCESS_TOKEN", key, persist)
+    set_key("OPENBB_OPENBB_PERSONAL_ACCESS_TOKEN", key, persist)
     return check_openbb_personal_access_token(show_output)
 
 
@@ -2702,5 +2705,5 @@ def check_openbb_personal_access_token(show_output: bool = False):
             status = KeyStatus.DEFINED_TEST_FAILED
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
     return str(status)
