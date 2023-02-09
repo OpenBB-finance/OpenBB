@@ -138,6 +138,8 @@ def display_dwat(
 
         return fig.show(external=external_axes)
 
+    return None
+
 
 @log_start_end(log=logger)
 def display_bgod(

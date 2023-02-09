@@ -566,6 +566,8 @@ def display_qtr_contracts(
             symbols, headers=["Total"], title="Quarterly Contracts", show_index=True
         )
 
+    return None
+
 
 @log_start_end(log=logger)
 def display_hist_contracts(

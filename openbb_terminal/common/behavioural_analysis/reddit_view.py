@@ -478,3 +478,5 @@ def display_redditsent(
         fig.add_bar(x=polarity_scores)
 
         return fig.show(external=external_axes)
+
+    return None

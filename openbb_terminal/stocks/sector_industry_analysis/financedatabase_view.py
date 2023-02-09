@@ -420,12 +420,12 @@ def display_companies_per_sector_in_country(
             external=external_axes
         )
 
-    elif len(companies_per_sector) == 1:
+    if len(companies_per_sector) == 1:
         return console.print(
             f"Only 1 sector found '{list(companies_per_sector.keys())[0]}'. No pie chart will be depicted."
         )
-    else:
-        return console.print("No sector found. No pie chart will be depicted.")
+
+    return console.print("No sector found. No pie chart will be depicted.")
 
 
 @log_start_end(log=logger)
@@ -549,12 +549,12 @@ def display_companies_per_industry_in_country(
             external=external_axes
         )
 
-    elif len(companies_per_industry) == 1:
+    if len(companies_per_industry) == 1:
         return console.print(
             f"Only 1 industry found '{list(companies_per_industry.keys())[0]}'. No pie chart will be depicted."
         )
-    else:
-        return console.print("No industry found. No pie chart will be depicted.")
+
+    return console.print("No industry found. No pie chart will be depicted.")
 
 
 @log_start_end(log=logger)
@@ -678,12 +678,12 @@ def display_companies_per_industry_in_sector(
             external=external_axes
         )
 
-    elif len(companies_per_industry) == 1:
+    if len(companies_per_industry) == 1:
         return console.print(
             f"Only 1 industry found '{list(companies_per_industry.keys())[0]}'. No pie chart will be depicted."
         )
-    else:
-        return console.print("No industry found. No pie chart will be depicted.")
+
+    return console.print("No industry found. No pie chart will be depicted.")
 
 
 @log_start_end(log=logger)
@@ -800,12 +800,12 @@ def display_companies_per_country_in_sector(
             external=external_axes
         )
 
-    elif len(companies_per_country) == 1:
+    if len(companies_per_country) == 1:
         return console.print(
             f"Only 1 country found '{list(companies_per_country.keys())[0]}'. No pie chart will be depicted."
         )
-    else:
-        return console.print("No country found. No pie chart will be depicted.")
+
+    return console.print("No country found. No pie chart will be depicted.")
 
 
 @log_start_end(log=logger)
@@ -922,9 +922,9 @@ def display_companies_per_country_in_industry(
             external=external_axes
         )
 
-    elif len(companies_per_country) == 1:
+    if len(companies_per_country) == 1:
         return console.print(
             f"Only 1 country found '{list(companies_per_country.keys())[0]}'. No pie chart will be depicted."
         )
-    else:
-        return console.print("No country found. No pie chart will be depicted.")
+
+    return console.print("No country found. No pie chart will be depicted.")
