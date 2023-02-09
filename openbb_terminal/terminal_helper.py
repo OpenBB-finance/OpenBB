@@ -343,9 +343,6 @@ def reset(queue: Optional[List[str]] = None):
     plots_backend().close(reset=True)
     debug = os.environ.get("DEBUG_MODE", "False").lower() == "true"
 
-    if os.environ.get("TEST_MODE", "false").lower() == "true":
-        sys.exit(0)
-
     # we clear all openbb_terminal modules from sys.modules
     try:
         for module in list(sys.modules.keys()):

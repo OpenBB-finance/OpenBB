@@ -11,7 +11,7 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.forecast import helpers, nhits_model
 
 logger = logging.getLogger(__name__)
-# pylint: disable=too-many-arguments
+# pylint: disable=R0914
 
 
 @log_start_end(log=logger)

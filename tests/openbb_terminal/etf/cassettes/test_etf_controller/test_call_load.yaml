@@ -17894,4 +17894,60 @@ interactions:
     status:
       code: 200
       message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://query2.finance.yahoo.com/v8/finance/chart/ARKW?interval=1d&range=1d
+  response:
+    body:
+      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"ARKW","exchangeName":"PCX","instrumentType":"ETF","firstTradeDate":1412083800,"regularMarketTime":1675976309,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":50.44,"chartPreviousClose":52.27,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","start":1675933200,"end":1675953000,"gmtoffset":-18000},"regular":{"timezone":"EST","start":1675953000,"end":1675976400,"gmtoffset":-18000},"post":{"timezone":"EST","start":1675976400,"end":1675990800,"gmtoffset":-18000}},"dataGranularity":"1d","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1675976309],"indicators":{"quote":[{"open":[53.34000015258789],"low":[50.220001220703125],"volume":[736924],"close":[50.439998626708984],"high":[53.369998931884766]}],"adjclose":[{"adjclose":[50.439998626708984]}]}}],"error":null}}'
+    headers:
+      Age:
+      - '1'
+      Connection:
+      - keep-alive
+      Expect-CT:
+      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Strict-Transport-Security:
+      - max-age=15552000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      cache-control:
+      - public, max-age=10, stale-while-revalidate=20
+      content-length:
+      - '939'
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Thu, 09 Feb 2023 20:58:44 GMT
+      server:
+      - ATS
+      vary:
+      - Origin,Accept-Encoding
+      x-envoy-decorator-operation:
+      - finance-chart-api--mtls-canary-production-bf1.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '14'
+      x-request-id:
+      - 3988d344-c766-454b-9926-96cd839a8f29
+      x-yahoo-request-id:
+      - 51l5321huank5
+      y-rid:
+      - 51l5321huank5
+    status:
+      code: 200
+      message: OK
 version: 1

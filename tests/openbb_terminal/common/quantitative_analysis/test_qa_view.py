@@ -15,6 +15,7 @@ df = pd.DataFrame(data).set_index("date")
 df2 = pd.DataFrame(data2).set_index("date")
 series = pd.Series(dict(zip(dates, nums)), name="Series")
 
+
 # pylint: disable=unsupported-assignment-operation
 
 
@@ -68,7 +69,7 @@ def test_display_bw(external, yearly):
 
 @pytest.mark.parametrize("external, yearly", [(True, False)])
 def test_display_acf(external, yearly):
-    fig = qa_view.display_acf(df2, "col2", "Data", yearly, external)
+    fig = qa_view.display_acf(df, "col2", "Data", yearly, external)
     if external:
         assert fig.__class__.__name__ == "OpenBBFigure"
     else:
