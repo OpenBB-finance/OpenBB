@@ -438,10 +438,8 @@
     "load": ["YahooFinance"],
     "overview": ["StockAnalysis"],
     "holdings": ["StockAnalysis"],
-    "weights": ["YahooFinance"],
-    "summary": ["YahooFinance"],
+    "weights": ["FinancialModelingPrep"],
     "news": ["NewsApi"],
-    "pir": ["ThePassiveInvestor"],
     "compare": ["StockAnalysis"],
     "disc": {
       "gainers": ["WallStreetJournal"],

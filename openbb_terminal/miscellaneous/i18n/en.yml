@@ -676,10 +676,8 @@ en:
   etf/overview: get overview
   etf/holdings: top company holdings
   etf/weights: sector weights allocation
-  etf/summary: summary description of the ETF
   etf/candle: view a candle chart for ETF
   etf/news: latest news of the company
-  etf/pir: create (multiple) passive investor excel report(s)
   etf/compare: compare multiple different ETFs
   etf/ta: technical analysis,           ema, macd, rsi, adx, bbands, obv
   etf/disc/gainers: top gainers
