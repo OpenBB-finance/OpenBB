@@ -320,7 +320,10 @@ In order to add a command to the SDK, follow these steps:
 
     In this file, the trail represents the path to the function to be called. The model represents the path to the model function and the view represents the path to the view function.  Note that the second line does not have an associated view function, so we leave that column empty (the trailing comma is required to load).
 
-2. Add your new function to this structure.  In our example of the `shorted` function, our trail would be `stocks.dps.shorted`.  The model is the path to the _model function that was written: `openbb_terminal.stocks.dark_pool_shorts.yahoofinance_model.get_most_shorted`.  The view is the path to the _view function that was written: `openbb_terminal.stocks.dark_pool_shorts.yahoofinance_view.display_most_shorted`.  The added line of the file should look like this:
+2. Add your new function to this structure.  In our example of the `shorted` function, our trail would be `stocks.dps.shorted`.
+The model is the path to the `_model` function that was written, `openbb_terminal.stocks.dark_pool_shorts.yahoofinance_model.get_most_shorted`.
+The view is the path to the `_view` function that was written: `openbb_terminal.stocks.dark_pool_shorts.yahoofinance_view.display_most_shorted`.
+The added line of the file should look like this:
 
     ```csv
     stocks.dps.shorted,openbb_terminal.stocks.dark_pool_shorts.yahoofinance_model.get_most_shorted,openbb_terminal.stocks.dark_pool_shorts.yahoofinance_view.display_most_shorted
@@ -331,7 +334,6 @@ In order to add a command to the SDK, follow these steps:
 Once you're happy with what you have, push your branch to remote. E.g. `git push origin feature/AmazingFeature`.  Note that we follow gitflow naming convention, so your branch name should be prefixed with `feature/` or `hotfix/` depending on the type of work you are doing.
 
 A user may create a **Draft Pull Request** when he/she wants to discuss implementation with the team.
-
 
 ### Review Process
 
