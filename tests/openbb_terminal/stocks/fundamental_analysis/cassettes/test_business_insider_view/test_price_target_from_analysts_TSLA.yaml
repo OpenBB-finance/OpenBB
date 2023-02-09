@@ -252,9 +252,9 @@ interactions:
       vary:
       - Origin,Accept-Encoding
       x-envoy-decorator-operation:
-      - finance-chart-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
+      - finance-chart-api--mtls-canary-production-ir2.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
-      - '7'
+      - '5'
       x-request-id:
       - 78ec0f7f-22e6-4cb9-9a7f-90991e11590e
       x-yahoo-request-id:
