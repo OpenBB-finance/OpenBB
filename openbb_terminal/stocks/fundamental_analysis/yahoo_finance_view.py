@@ -112,39 +112,6 @@ def display_shareholders(
 
 
 @log_start_end(log=logger)
-def display_calendar_earnings(symbol: str, export: str = "", sheet_name: str = None):
-    """Yahoo Finance ticker calendar earnings
-
-    Parameters
-    ----------
-    symbol : str
-        Fundamental analysis ticker symbol
-    sheet_name: str
-        Optionally specify the name of the sheet the data is exported to.
-    export: str
-        Format to export data
-    """
-    df_calendar = yahoo_finance_model.get_calendar_earnings(symbol)
-    if df_calendar.empty:
-        console.print("No calendar events found.\n")
-        return
-    print_rich_table(
-        df_calendar,
-        show_index=False,
-        headers=list(df_calendar.columns),
-        title=f"{symbol.upper()} Calendar Earnings",
-    )
-
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "cal",
-        df_calendar,
-        sheet_name,
-    )
-
-
-@log_start_end(log=logger)
 def display_dividends(
     symbol: str,
     limit: int = 12,

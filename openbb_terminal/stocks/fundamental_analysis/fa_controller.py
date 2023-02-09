@@ -579,22 +579,13 @@ class FundamentalAnalysisController(StockBaseController):
         )
 
         if ns_parser:
-            if ns_parser.source == "SeekingAlpha":
-                seeking_alpha_view.display_rev_estimates(
-                    self.ticker,
-                    export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
-                )
-            elif ns_parser.source == "YahooFinance":
-                yahoo_finance_view.display_calendar_earnings(
-                    symbol=self.ticker,
-                    export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
-                )
+            seeking_alpha_view.display_rev_estimates(
+                self.ticker,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )
 
     @log_start_end(log=logger)
     def call_splits(self, other_args: List[str]):

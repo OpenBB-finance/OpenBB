@@ -239,7 +239,7 @@
       "metrics": ["FinancialModelingPrep", "AlphaVantage"],
       "ratios": ["FinancialModelingPrep"],
       "growth": ["FinancialModelingPrep"],
-      "revfc": ["SeekingAlpha", "YahooFinance"],
+      "revfc": ["SeekingAlpha"],
       "epsfc": ["SeekingAlpha"],
       "warnings": ["MarketWatch"],
       "dcf": ["StockAnalysis"],

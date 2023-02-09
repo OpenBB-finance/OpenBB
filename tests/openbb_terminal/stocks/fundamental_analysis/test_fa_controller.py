@@ -297,12 +297,6 @@ def test_call_func_expect_queue(expected_queue, queue, func):
         ),
         (
             "call_revfc",
-            "yahoo_finance_view.display_calendar_earnings",
-            ["--source=YahooFinance"],
-            {"TSLA"},
-        ),
-        (
-            "call_revfc",
             "seeking_alpha_view.display_rev_estimates",
             [],
             {"TSLA"},

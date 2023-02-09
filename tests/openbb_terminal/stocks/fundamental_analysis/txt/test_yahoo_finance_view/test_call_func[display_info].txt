@@ -3,18 +3,18 @@ Currency                                    USD
 Exchange                                    NYQ
 Timezone                       America/New_York
 Shares                                  1.550 B
-Market_cap                            158.430 B
-Last_price                              102.200
-Previous_close                          101.810
-Open                                    100.930
-Day_high                                102.360
-Day_low                                 100.600
-Regular_market_previous_close           101.810
-Last_volume                             3.939 M
-Fifty_day_average                       101.767
-Two_hundred_day_average                  97.618
-Ten_day_average_volume                  4.799 M
-Three_month_average_volume              4.877 M
+Market_cap                            158.578 B
+Last_price                              102.295
+Previous_close                          101.290
+Open                                    102.390
+Day_high                                103.240
+Day_low                                 101.584
+Regular_market_previous_close           101.290
+Last_volume                           518.900 K
+Fifty_day_average                       101.828
+Two_hundred_day_average                  97.611
+Ten_day_average_volume                  3.957 M
+Three_month_average_volume              4.872 M
 Year_high                               112.480
 Year_low                                 82.850
-Year_change                              -0.016
+Year_change                              -0.036
