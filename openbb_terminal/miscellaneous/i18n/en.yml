@@ -338,7 +338,6 @@ en:
   stocks/fa/rot: number of analyst ratings over time on a monthly basis
   stocks/fa/score: value investing scores for any time period
   stocks/fa/warnings: company warnings according to Sean Seah book
-  stocks/fa/sust: sustainability values (environment, social and governance)
   stocks/fa/_management_shareholders: Management and Ownership
   stocks/fa/mgmt: management team of the company
   stocks/fa/shrs: shareholders (insiders, institutions and mutual funds)

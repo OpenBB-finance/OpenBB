@@ -284,12 +284,6 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             {"TSLA"},
         ),
         (
-            "call_sust",
-            "yahoo_finance_view.display_sustainability",
-            [],
-            {"TSLA"},
-        ),
-        (
             "call_dupont",
             "av_view.display_dupont",
             [],
@@ -668,7 +662,6 @@ def test_call_func(tested_func, mocked_func, other_args, called_with, mocker):
         "call_shrs",
         "call_growth",
         "call_metrics",
-        "call_sust",
         "call_income",
         "call_balance",
         "call_cash",
