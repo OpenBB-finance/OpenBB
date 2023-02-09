@@ -8,7 +8,7 @@ from typing import List, Optional, Tuple, Union
 
 import pandas as pd
 from darts import TimeSeries
-from darts.metrics import mape
+from darts.metrics import mape, mse, rmse, smape
 from darts.models import ExponentialSmoothing
 from darts.utils.utils import ModelMode, SeasonalityMode
 from numpy import ndarray
@@ -40,6 +40,7 @@ def get_expo_data(
     n_predict: int = 5,
     start_window: float = 0.85,
     forecast_horizon: int = 5,
+    metric: str = "mape",
 ) -> Tuple[
     List[TimeSeries],
     List[TimeSeries],
@@ -76,6 +77,8 @@ def get_expo_data(
         Size of sliding window from start of timeseries and onwards
     forecast_horizon: int
         Number of days to forecast when backtesting and retraining historical
+    metric: str
+        Metric to use for backtesting. Defaults to MAPE.
 
     Returns
     -------
@@ -149,8 +152,19 @@ def get_expo_data(
     # we have the historical fcast, now lets train on entire set and predict.
     best_model.fit(ticker_series)
     probabilistic_forecast = best_model.predict(int(n_predict), num_samples=500)
-    precision = mape(actual_series=ticker_series, pred_series=historical_fcast_es)
-    console.print(f"Exponential smoothing obtains MAPE: {precision:.2f}% \n")
+
+    if metric == "rmse":
+        precision = rmse(actual_series=ticker_series, pred_series=historical_fcast_es)
+    elif metric == "mse":
+        precision = mse(actual_series=ticker_series, pred_series=historical_fcast_es)
+    elif metric == "mape":
+        precision = mape(actual_series=ticker_series, pred_series=historical_fcast_es)
+    elif metric == "smape":
+        precision = smape(actual_series=ticker_series, pred_series=historical_fcast_es)
+
+    console.print(
+        f"Exponential smoothing obtains {metric.upper()}: {precision:.2f}% \n"
+    )
 
     return (
         ticker_series,
