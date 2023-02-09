@@ -10,7 +10,6 @@ import pandas as pd
 from openbb_terminal.common import newsapi_model
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
-from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -47,7 +46,6 @@ def display_news(
     if tables:
         for table in tables:
             print_rich_table(table[0], title=table[1]["title"])
-            console.print("\n")
 
     export_data(
         export,
