@@ -152,8 +152,7 @@ class AccountController(BaseController):
                 configs_diff = get_diff(configs=json.loads(response.content))
                 if configs_diff:
                     i = console.input(
-                        "\nDo you want to overwrite your local configurations "
-                        "with the above? (y/n): "
+                        "\nDo you want to load the configurations above? (y/n): "
                     )
                     if i.lower() in ["y", "yes"]:
                         Local.apply_configs(configs=configs_diff)

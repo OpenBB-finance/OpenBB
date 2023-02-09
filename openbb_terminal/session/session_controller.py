@@ -16,7 +16,9 @@ from openbb_terminal.session.session_model import (
 def display_welcome_message():
     """Display welcome message"""
     with open(PACKAGE_DIRECTORY / "session" / "banner.txt") as f:
-        console.print(f"[menu]{f.read()}[/menu]")
+        console.print(f"[menu]{f.read()}[/menu]\n")
+        console.print("Register     : [cmds]https://my.openbb.co/register[/cmds]")
+        console.print("Ask support  : [cmds]https://openbb.co/support[/cmds]")
 
 
 def get_user_input() -> Tuple[str, str, bool]:
@@ -27,7 +29,9 @@ def get_user_input() -> Tuple[str, str, bool]:
     Tuple[str, str, bool]
         The user email, password and save login option.
     """
-    console.print("[info]\nPlease enter your credentials:[/info]")
+    console.print(
+        "[info]\nPlease enter your credentials or press enter for guest mode:[/info]"
+    )
 
     s: PromptSession = PromptSession()
 
