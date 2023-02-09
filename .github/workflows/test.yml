@@ -81,7 +81,7 @@ jobs:
       - name: Start Terminal and exit
         run: |
           source $VENV
-          python terminal.py
+          yes "" | python terminal.py
   markdown-link-check:
     name: Markdown Linting
     runs-on: ubuntu-latest
