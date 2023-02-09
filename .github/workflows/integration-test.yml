@@ -62,3 +62,25 @@ jobs:
         title: "Integration test summary"
         path: failed_tests.txt
         channel: ${{ secrets.SLACK_CHANNEL_ID }}
+
+  slack-workflow-status:
+      if: always()
+      name: Post Workflow Status To Slack
+      needs:
+        - integration-tests
+      runs-on: ubuntu-latest
+      # actions.read permission is required.
+      permissions:
+        actions: 'read'
+      steps:
+        - name: Slack Workflow Notification
+          uses: Gamesight/slack-workflow-status@master
+          with:
+            # Required Input
+            repo_token: ${{secrets.GITHUB_TOKEN}}
+            slack_webhook_url: ${{secrets.SLACK_WEBHOOK_URL}}
+            # Optional Input
+            channel: ${{ secrets.SLACK_CHANNEL_ID }}
+            name: 'Integration Test Workflow Status'
+            icon_emoji: ':poop:'
+            icon_url: 'https://avatars0.githubusercontent.com/u/1701160?s=96&v=4'
