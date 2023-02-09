@@ -63,12 +63,11 @@ def display_etf_weightings(
 
     if raw:
         sectors_df = pd.DataFrame(sectors)
-        console.print(f"\n{title}")
         print_rich_table(
             sectors_df,
             headers=["Sector", "Weight"],
             show_index=False,
-            title="Sector Weightings Allocation",
+            title=f"\n{title}",
         )
 
     else:
