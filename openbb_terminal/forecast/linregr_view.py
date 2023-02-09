@@ -34,6 +34,7 @@ def display_linear_regression(
     naive: bool = False,
     explainability_raw: bool = False,
     export_pred_raw: bool = False,
+    metric: str = "mape",
     external_axes: bool = False,
 ):
     """Display Linear Regression Forecasting
@@ -73,6 +74,12 @@ def display_linear_regression(
     naive: bool
         Whether to show the naive baseline. This just assumes the closing price will be the
         same as the previous day's closing price. Defaults to False.
+    explainability_raw: bool
+        Whether to show the raw explainability data. Defaults to False.
+    export_pred_raw: bool
+        Whether to export the raw prediction data. Defaults to False.
+    metric: str
+        The metric to use for the model. Defaults to "mape".
     external_axes : bool, optional
         Whether to return the figure object or not, by default False
     """
@@ -99,6 +106,7 @@ def display_linear_regression(
         forecast_horizon=forecast_horizon,
         output_chunk_length=output_chunk_length,
         lags=lags,
+        metric=metric,
     )
 
     probabilistic = True
@@ -120,6 +128,7 @@ def display_linear_regression(
         forecast_only=forecast_only,
         naive=naive,
         export_pred_raw=export_pred_raw,
+        metric=metric,
         external_axes=external_axes,
     )
     if residuals:
