@@ -112,15 +112,3 @@ def log_keys() -> None:
             current_keys[cfg_var_name] = "not_defined"
 
     logger.info("KEYS: %s ", json.dumps(current_keys))
-
-
-def do_rollover():
-    """RollOver the log file."""
-
-    for handler in logging.getLogger().handlers:
-        if isinstance(handler, PathTrackingFileHandler):
-            try:
-                handler.doRollover()
-            # Stop the PermissionError on Windows when the file is open
-            except PermissionError:
-                pass
