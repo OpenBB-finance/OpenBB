@@ -21,7 +21,7 @@ jobs:
       with:
         status: starting
         channel: '#workflows'
-        message: Starting Docker Build and Push...
+        message: Starting Integration Test...
       if: always()
 
     - name: Checkout code
