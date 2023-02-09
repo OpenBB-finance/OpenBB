@@ -425,9 +425,7 @@ class TerminalController(BaseController):
 
     def call_reports(self, _):
         """Process reports command."""
-        from openbb_terminal.reports.reports_controller import (
-            ReportController,
-        )
+        from openbb_terminal.reports.reports_controller import ReportController
 
         self.queue = self.load_class(ReportController, self.queue)
 
@@ -447,9 +445,7 @@ class TerminalController(BaseController):
 
     def call_alternative(self, _):
         """Process alternative command."""
-        from openbb_terminal.alternative.alt_controller import (
-            AlternativeDataController,
-        )
+        from openbb_terminal.alternative.alt_controller import AlternativeDataController
 
         self.queue = self.load_class(AlternativeDataController, self.queue)
 
@@ -463,17 +459,13 @@ class TerminalController(BaseController):
 
     def call_forecast(self, _):
         """Process forecast command."""
-        from openbb_terminal.forecast.forecast_controller import (
-            ForecastController,
-        )
+        from openbb_terminal.forecast.forecast_controller import ForecastController
 
         self.queue = self.load_class(ForecastController, "", pd.DataFrame(), self.queue)
 
     def call_portfolio(self, _):
         """Process portfolio command."""
-        from openbb_terminal.portfolio.portfolio_controller import (
-            PortfolioController,
-        )
+        from openbb_terminal.portfolio.portfolio_controller import PortfolioController
 
         self.queue = self.load_class(PortfolioController, self.queue)
 
@@ -491,9 +483,7 @@ class TerminalController(BaseController):
 
     def call_funds(self, _):
         """Process etf command"""
-        from openbb_terminal.mutual_funds.mutual_fund_controller import (
-            FundController,
-        )
+        from openbb_terminal.mutual_funds.mutual_fund_controller import FundController
 
         self.queue = self.load_class(FundController, self.queue)
 

@@ -1100,9 +1100,8 @@ The following linters are used by our codebase:
 | bandit       | security analyzer                 |
 | black        | code formatter                    |
 | codespell    | spelling checker                  |
-| flake8       | style guide enforcer              |
+| ruff         | a fast python linter              |
 | mypy         | static typing checker             |
-| pyupgrade    | upgrade syntax for newer versions |
 | safety       | checks security vulnerabilities   |
 | pylint       | bug and quality checker           |
 | markdownlint | markdown linter                   |

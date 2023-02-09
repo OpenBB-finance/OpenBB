@@ -11,8 +11,10 @@ from rich import panel
 from rich.console import Console, Theme
 from rich.text import Text
 
-from openbb_terminal import config_terminal as cfg
-from openbb_terminal import feature_flags as obbff
+from openbb_terminal import (
+    config_terminal as cfg,
+    feature_flags as obbff,
+)
 from openbb_terminal.core.config.paths import MISCELLANEOUS_DIRECTORY
 
 # pylint: disable=no-member,c-extension-no-member

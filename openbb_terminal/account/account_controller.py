@@ -17,8 +17,10 @@ from openbb_terminal.helper_funcs import check_positive
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import MenuText, console
-from openbb_terminal.session import hub_model as Hub
-from openbb_terminal.session import local_model as Local
+from openbb_terminal.session import (
+    hub_model as Hub,
+    local_model as Local,
+)
 from openbb_terminal.session.user import User
 
 logger = logging.getLogger(__name__)

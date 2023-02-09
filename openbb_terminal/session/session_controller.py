@@ -34,6 +34,9 @@ def get_user_input() -> Tuple[str, str, bool]:
     email = s.prompt(
         message="> Email: ",
     )
+    if not email:
+        return "", "", False
+
     password = s.prompt(
         message="> Password: ",
         is_password=True,
