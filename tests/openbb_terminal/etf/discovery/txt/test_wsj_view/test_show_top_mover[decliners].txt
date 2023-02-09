@@ -1,7 +1,6 @@
-                                                           Price   Chg   %Chg     Vol
-0       MicroSectors Gold Miners 3X Inverse Leveraged ETN  15.98 -4.10 -20.42  131.7K
-1         Direxion Daily Gold Miners Index Bear 2X Shares  17.50 -3.02 -14.72    4.9M
-2  Direxion Daily Junior Gold Miners Index Bear 2X Shares  10.02 -1.70 -14.51    6.0M
-3                   ProShares Ultra Bloomberg Natural Gas  29.13 -3.87 -11.73    2.5M
-4             Direxion Daily Semiconductor Bull 3X Shares  50.82 -5.16  -9.22   28.5M
-
+                                                                                 Price     Chg   %Chg     Vol
+0                                         ProShares Ultra Bloomberg Natural Gas   5.86 -0.9300 -13.70   70.9M
+1                                         Direxion Daily GOOGL Bull 1.5X Shares  21.13 -2.7888 -11.66  388.2K
+2                                     Direxion Daily S&P Biotech Bull 3X Shares   7.79 -0.8900 -10.25   51.7M
+3  AMC Entertainment Holdings Inc. Dep. Pfd. (Rep. 1/100th Share Pfd. Series A)   2.87 -0.2400  -7.72   31.7M
+4                                           United States Natural Gas Fund L.P.   8.23 -0.6400  -7.22   28.8M

@@ -1,0 +1,14 @@
+
+Sector holdings of SPY
+                    sector weightPercentage
+0              Real Estate            2.53%
+1        Consumer Cyclical           12.43%
+2          Basic Materials            2.34%
+3       Consumer Defensive             6.4%
+4               Technology           23.44%
+5   Communication Services           11.18%
+6       Financial Services           14.41%
+7                Utilities            2.64%
+8              Industrials            9.05%
+9                   Energy            2.68%
+10              Healthcare           12.89%

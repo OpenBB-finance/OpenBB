@@ -15,10 +15,8 @@ from openbb_terminal.common.quantitative_analysis import qa_view
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.etf import (
-    etf_helper,
     financedatabase_view,
     fmp_view,
-    stockanalysis_model,
     stockanalysis_view,
 )
 from openbb_terminal.etf.discovery import disc_controller
@@ -259,41 +257,11 @@ class ETFController(BaseController):
 
             self.etf_name = ns_parser.ticker.upper()
             self.etf_data = df_etf_candidate
-            holdings = stockanalysis_model.get_etf_holdings(self.etf_name)
-            if holdings.empty:
-                quote_type = etf_helper.get_quote_type(self.etf_name)
-                if quote_type != "ETF":
-                    if quote_type == "N/A":
-                        console.print(
-                            "[red]Cannot determine ticker type.  Holdings only shown for ETFs\n[/red]"
-                        )
-                    else:
-                        console.print(f"{self.etf_name} is: {quote_type.lower()}")
-                    console.print("No company holdings found!")
-            else:
-                self.etf_holdings.clear()
-                console.print("Top holdings found:")
-                for val in holdings["Name"].values[: ns_parser.limit].tolist():
-                    console.print(f"   {val}")
 
-                for tick, name in zip(
-                    holdings.index[: ns_parser.limit].tolist(),
-                    holdings["Name"].values[: ns_parser.limit].tolist(),
-                ):
-                    if tick != "N/A" and " " not in tick:
-                        if (
-                            "ETF" not in name
-                            and "Future" not in name
-                            and "Bill" not in name
-                            and "Portfolio" not in name
-                            and "%" not in name
-                        ):
-                            self.etf_holdings.append(tick)
-
-                if not self.etf_holdings:
-                    console.print("\n[red]No valid stock ticker was found![/red]")
-
-        console.print()
+            console.print(
+                f"Loading Daily data for {self.etf_name} with starting period {ns_parser.start.strftime('%Y-%m-%d')}.",
+                "\n",
+            )
 
     @log_start_end(log=logger)
     def call_overview(self, other_args: List[str]):

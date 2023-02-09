@@ -1,7 +1,6 @@
-                                                             Price     Chg   %Chg    Vol
-0               MicroSectors Gold Miners 3X Leveraged ETN  11.8000  1.9800  20.16   1.5M
-1         Direxion Daily Gold Miners Index Bull 2X Shares  53.1800  6.5900  14.14   4.7M
-2  Direxion Daily Junior Gold Miners Index Bull 2X Shares  66.3400  8.1200  13.95   2.1M
-3                              ELEMENTS ETN-Rogers Energy   3.3808  0.4008  13.45  81.1K
-4              ProShares UltraShort Bloomberg Natural Gas  49.6000  5.3700  12.14   1.4M
-
+                                               Price    Chg   %Chg    Vol
+0  ProShares UltraShort Bloomberg Natural Gas  64.95  7.910  13.87   2.3M
+1                             Sezzle Inc. CDI   0.51  0.060  13.33  50.1K
+2   Direxion Daily S&P Biotech Bear 3X Shares  14.55  1.380  10.48   7.5M
+3                     2x Long VIX Futures ETF  19.40  1.440   8.02   2.0M
+4         Direxion Daily GOOGL Bear 1X Shares  25.40  1.835   7.79  77.8K
