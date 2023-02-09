@@ -747,7 +747,7 @@ def revert_lambda_long_number_format(num_str: str) -> Union[float, str]:
 
     num_as_list = num_str.strip().split()
 
-    # If the input string is not a formatted number, return the input as is
+    # If the input string is a number parse it as float
     if (
         len(num_as_list) == 1
         and num_as_list[0].replace(".", "").replace("-", "").isdigit()
