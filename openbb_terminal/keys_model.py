@@ -36,6 +36,8 @@ from openbb_terminal.cryptocurrency.coinbase_helpers import (
 from openbb_terminal.helper_funcs import request
 from openbb_terminal.portfolio.brokers.degiro.degiro_model import DegiroModel
 from openbb_terminal.rich_config import console
+from openbb_terminal.session.hub_model import patch_user_configs
+from openbb_terminal.session.user import User
 from openbb_terminal.terminal_helper import suppress_stdout
 
 logger = logging.getLogger(__name__)
@@ -227,7 +229,7 @@ def set_key(env_var_name: str, env_var_value: str, persist: bool = False) -> Non
         If True, api key change will be global, i.e. it will affect terminal environment variables.
         By default, False.
     """
-    if persist:
+    if persist and User.is_guest():
         os.environ[env_var_name] = env_var_value
         dotenv.set_key(str(USER_ENV_FILE), env_var_name, env_var_value)
 
@@ -237,6 +239,20 @@ def set_key(env_var_name: str, env_var_value: str, persist: bool = False) -> Non
 
     # Set cfg.env_var_name = env_var_value
     setattr(cfg, env_var_name, env_var_value)
+
+    # Send api key to server
+    if (
+        not User.is_guest()
+        and User.is_sync_enabled()
+        and env_var_name not in cfg.SENSITIVE_KEYS
+        and env_var_name.startswith("API_")
+    ):
+        patch_user_configs(
+            key=env_var_name,
+            value=env_var_value,
+            type_="keys",
+            auth_header=User.get_auth_header(),
+        )
 
 
 def get_keys(show: bool = False) -> pd.DataFrame:
@@ -345,7 +361,7 @@ def check_av_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_PASSED
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -412,7 +428,7 @@ def check_fmp_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_INCONCLUSIVE
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -474,7 +490,7 @@ def check_quandl_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_FAILED
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -541,7 +557,7 @@ def check_polygon_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_INCONCLUSIVE
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -607,7 +623,7 @@ def check_fred_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_INCONCLUSIVE
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -673,7 +689,7 @@ def check_news_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_INCONCLUSIVE
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -744,7 +760,7 @@ def check_tradier_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_INCONCLUSIVE
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -806,7 +822,7 @@ def check_cmc_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_FAILED
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -872,7 +888,7 @@ def check_finnhub_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_INCONCLUSIVE
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -935,7 +951,7 @@ def check_iex_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_FAILED
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -1051,7 +1067,7 @@ def check_reddit_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_FAILED
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -1127,7 +1143,7 @@ def check_bitquery_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_FAILED
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -1222,7 +1238,7 @@ def check_twitter_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_INCONCLUSIVE
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -1291,7 +1307,7 @@ def check_rh_key(show_output: bool = False) -> str:
         status = KeyStatus.DEFINED_NOT_TESTED
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -1382,7 +1398,7 @@ def check_degiro_key(show_output: bool = False) -> str:
         del dg  # ensure the object is destroyed explicitly
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -1468,7 +1484,7 @@ def check_oanda_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_FAILED
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -1543,7 +1559,7 @@ def check_binance_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_FAILED
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -1617,7 +1633,7 @@ def check_si_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_FAILED
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -1706,7 +1722,7 @@ def check_coinbase_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_PASSED
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -1775,7 +1791,7 @@ def check_walert_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_FAILED
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -1848,7 +1864,7 @@ def check_glassnode_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_FAILED
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -1919,7 +1935,7 @@ def check_coinglass_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_INCONCLUSIVE
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -1982,7 +1998,7 @@ def check_cpanic_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_FAILED
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -2052,7 +2068,7 @@ def check_ethplorer_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_FAILED
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -2143,7 +2159,7 @@ def check_smartstake_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_FAILED
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -2200,7 +2216,7 @@ def check_github_key(show_output: bool = False) -> str:
         # only after certain amount of requests the user will get rate limited
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -2267,7 +2283,7 @@ def check_messari_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_FAILED
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -2329,7 +2345,7 @@ def check_eodhd_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_FAILED
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -2409,7 +2425,7 @@ def check_santiment_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_FAILED
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -2481,7 +2497,7 @@ def check_shroom_key(show_output: bool = False) -> str:
             logger.warning("Shroom key defined, test failed")
             status = KeyStatus.DEFINED_TEST_FAILED
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -2543,7 +2559,7 @@ def check_tokenterminal_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_PASSED
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -2604,5 +2620,5 @@ def check_stocksera_key(show_output: bool = False):
             status = KeyStatus.DEFINED_TEST_FAILED
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
     return str(status)

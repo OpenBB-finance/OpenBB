@@ -10,6 +10,7 @@ en:
   keys: set API keys and check their validity
   featflags: enable and disable feature flags
   sources: select your preferred data sources
+  account: manage your OpenBB account
   settings: tune settings (export folder, timezone, language, plot size)
   _scripts_: Record and execute your own .openbb routine scripts
   record: start recording current session
@@ -17,6 +18,15 @@ en:
   exe: execute .openbb routine scripts (use exe --example for an example)
   _configure_: Configure your own terminal
   _main_menu_: Main menu
+  account/_info_: Cloud storage of keys, settings and feature flags
+  account/sync: Turns the cloud synchronization on/off
+  account/pull: Pull data from cloud
+  account/clear: Clear data from cloud
+  account/_routines_: Cloud storage of routines
+  account/list: List available routines
+  account/upload: Upload routine
+  account/download: Download routine
+  account/delete: Delete routine
   keys/_keys_: This menu allows you to set your own API keys. Type 'about' for more information
   keys/mykeys: get your defined keys
   keys/_status_: Status
@@ -166,6 +176,7 @@ en:
   stocks/th/all: show all markets
   stocks/th/exchange: show one exchange
   stocks/th/holidays: show all dates on which there is a market holiday
+  stocks/disc/filings: the most-recent form submissions to the SEC 
   stocks/disc/pipo: past IPOs dates
   stocks/disc/fipo: future IPOs dates
   stocks/disc/gainers: show latest top gainers
@@ -232,6 +243,7 @@ en:
   stocks/scr/ownership: ownership (e.g. Float, Insider Own, Short Ratio)
   stocks/scr/performance: performance (e.g. Perf Week, Perf YTD, Volatility M)
   stocks/scr/technical: technical (e.g. Beta, SMA50, 52W Low, RSI, Change)
+  stocks/scr/arktrades: get ARK trades for a chosen ticker
   stocks/scr/_screened_tickers: Last screened tickers
   stocks/scr/ca: take these to comparison analysis menu
   stocks/ins/view: view available presets
@@ -337,7 +349,6 @@ en:
   stocks/fa/score: value investing scores for any time period
   stocks/fa/warnings: company warnings according to Sean Seah book
   stocks/fa/sust: sustainability values (environment, social and governance)
-  stocks/fa/arktrades: get ARK trades for ticker
   stocks/fa/_management_shareholders: Management and Ownership
   stocks/fa/mgmt: management team of the company
   stocks/fa/shrs: shareholders (insiders, institutions and mutual funds)
@@ -971,12 +982,12 @@ en:
   portfolio/bro/cb/history: show history of your account
   portfolio/bro/cb/deposits: show all your deposits or internal transfers
   portfolio/bro/cb/orders: show all your orders
-  portfolio/po/file: file that contains portfolio risk parameters
+  portfolio/po/file: file that contains portfolio risk parameters (use about for the parameter template)
   portfolio/po/load: load tickers and categories from .xlsx or .csv file (use load --example for an example)
   portfolio/po/_loaded: Portfolio loaded
   portfolio/po/_tickers: Tickers
   portfolio/po/_categories: Categories
-  portfolio/po/params/load: select portfolio parameter file
+  portfolio/po/params/load: select portfolio parameter file (use about for the parameter template)
   portfolio/po/params: specify and show portfolio risk parameters
   portfolio/po/_parameter: Parameter file
   portfolio/po/_mean_risk_optimization_: Mean Risk Optimization

@@ -23,7 +23,6 @@ from functools import lru_cache
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple, Union
 
-import dotenv
 import iso8601
 import matplotlib
 import matplotlib.pyplot as plt
@@ -45,12 +44,9 @@ from openbb_terminal import (
     config_terminal as cfg,
     feature_flags as obbff,
 )
-from openbb_terminal.core.config import paths
 from openbb_terminal.core.config.paths import (
     HOME_DIRECTORY,
-    USER_ENV_FILE,
     USER_EXPORTS_DIRECTORY,
-    load_dotenv_with_priority,
 )
 from openbb_terminal.rich_config import console
 
@@ -87,21 +83,6 @@ def set_command_location(cmd_loc: str):
     """
     global command_location
     command_location = cmd_loc
-
-
-# pylint: disable=global-statement
-def set_user_data_folder(env_file: str = ".env", path_folder: str = ""):
-    """Set user data folder location.
-
-    Parameters
-    ----------
-    env_file : str
-        Env file to be updated
-    path_folder: str
-        Path folder location
-    """
-    dotenv.set_key(env_file, "OPENBB_USER_DATA_DIRECTORY", path_folder)
-    paths.USER_DATA_DIRECTORY = Path(path_folder)
 
 
 def check_path(path: str) -> str:
@@ -1109,7 +1090,6 @@ def get_flair() -> str:
         else str(obbff.USE_FLAIR)
     )
 
-    set_default_timezone()
     if obbff.USE_DATETIME and get_user_timezone_or_invalid() != "INVALID":
         dtime = datetime.now(pytz.timezone(get_user_timezone())).strftime(
             "%Y %b %d, %H:%M"
@@ -1122,14 +1102,6 @@ def get_flair() -> str:
         return f"{dtime} {flair}"
 
     return flair
-
-
-def set_default_timezone() -> None:
-    """Set a default (America/New_York) timezone if one doesn't exist."""
-    load_dotenv_with_priority()
-    user_tz = os.getenv("OPENBB_TIMEZONE")
-    if not user_tz:
-        dotenv.set_key(USER_ENV_FILE, "OPENBB_TIMEZONE", "America/New_York")
 
 
 def is_timezone_valid(user_tz: str) -> bool:
@@ -1156,11 +1128,7 @@ def get_user_timezone() -> str:
     str
         user timezone based on .env file
     """
-    load_dotenv_with_priority()
-    user_tz = os.getenv("OPENBB_TIMEZONE")
-    if user_tz:
-        return user_tz
-    return ""
+    return obbff.TIMEZONE
 
 
 def get_user_timezone_or_invalid() -> str:
@@ -1175,21 +1143,6 @@ def get_user_timezone_or_invalid() -> str:
     if is_timezone_valid(user_tz):
         return f"{user_tz}"
     return "INVALID"
-
-
-def replace_user_timezone(user_tz: str) -> None:
-    """Replace user timezone.
-
-    Parameters
-    ----------
-    user_tz: str
-        User timezone to set
-    """
-    if is_timezone_valid(user_tz):
-        dotenv.set_key(USER_ENV_FILE, "OPENBB_TIMEZONE", user_tz)
-        console.print("Timezone successfully updated", "\n")
-    else:
-        console.print("Timezone selected is not valid", "\n")
 
 
 def str_to_bool(value) -> bool:
@@ -1335,6 +1288,8 @@ def ask_file_overwrite(file_path: str) -> Tuple[bool, bool]:
     # Jeroen asked for a flag to overwrite no matter what
     if obbff.FILE_OVERWITE:
         return False, True
+    if os.environ.get("TEST_MODE") == "True":
+        return False, True
     if os.path.exists(file_path):
         overwrite = input("\nFile already exists. Overwrite? [y/n]: ").lower()
         if overwrite == "y":
@@ -1415,6 +1370,9 @@ def export_data(
                 df.reset_index(drop=True, inplace=True)
                 df.to_json(saved_path)
             elif exp_type.endswith("xlsx"):
+                # since xlsx does not support datetimes with timezones we need to remove it
+                df = remove_timezone_from_dataframe(df)
+
                 if sheet_name is None:
                     exists, overwrite = ask_file_overwrite(saved_path)
                     if exists and not overwrite:
@@ -1461,9 +1419,9 @@ def export_data(
                     return
                 plt.savefig(saved_path)
             else:
-                console.print("\nWrong export file specified.")
+                console.print("Wrong export file specified.")
 
-            console.print(f"\nSaved file: {saved_path}")
+            console.print(f"Saved file: {saved_path}")
 
 
 def get_rf() -> float:
@@ -2017,3 +1975,45 @@ def request(url: str, method="GET", **kwargs) -> requests.Response:
             url, headers=headers, timeout=cfg.REQUEST_TIMEOUT, **kwargs
         )
     raise ValueError("Method must be GET or POST")
+
+
+def remove_timezone_from_dataframe(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Remove timezone information from a dataframe.
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+        The dataframe to remove timezone information from
+
+    Returns
+    -------
+    pd.DataFrame
+        The dataframe with timezone information removed
+    """
+
+    date_cols = []
+    index_is_date = False
+
+    # Find columns and index containing date data
+    if (
+        df.index.dtype.kind == "M"
+        and hasattr(df.index.dtype, "tz")
+        and df.index.dtype.tz is not None
+    ):
+        index_is_date = True
+
+    for col, dtype in df.dtypes.items():
+        if dtype.kind == "M" and hasattr(df.index.dtype, "tz") and dtype.tz is not None:
+            date_cols.append(col)
+
+    # Remove the timezone information
+    for col in date_cols:
+        df[col] = df[col].dt.date
+
+    if index_is_date:
+        index_name = df.index.name
+        df.index = df.index.date
+        df.index.name = index_name
+
+    return df

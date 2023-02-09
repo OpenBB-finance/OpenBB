@@ -39,7 +39,7 @@ def get_info(symbol: str) -> pd.DataFrame:
         DataFrame of yfinance information
     """
     stock = yf.Ticker(symbol)
-    df_info = pd.DataFrame(stock.info.items(), columns=["Metric", "Value"])
+    df_info = pd.DataFrame(stock.fast_info.items(), columns=["Metric", "Value"])
     df_info = df_info.set_index("Metric")
 
     clean_df_index(df_info)

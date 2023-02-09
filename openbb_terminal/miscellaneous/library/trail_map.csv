@@ -237,13 +237,7 @@ econometrics.pols,openbb_terminal.econometrics.regression_model.get_pols,
 econometrics.re,openbb_terminal.econometrics.regression_model.get_re,
 econometrics.get_regression_data,openbb_terminal.econometrics.regression_model.get_regression_data,
 econometrics.panel,openbb_terminal.econometrics.regression_model.get_regressions_results,openbb_terminal.econometrics.regression_view.display_panel
-economy.cpi,openbb_terminal.economy.alphavantage_model.get_cpi,openbb_terminal.economy.alphavantage_view.display_cpi
-economy.gdpc,openbb_terminal.economy.alphavantage_model.get_gdp_capita,openbb_terminal.economy.alphavantage_view.display_gdp_capita
-economy.inf,openbb_terminal.economy.alphavantage_model.get_inflation,openbb_terminal.economy.alphavantage_view.display_inflation
-economy.gdp,openbb_terminal.economy.alphavantage_model.get_real_gdp,openbb_terminal.economy.alphavantage_view.display_real_gdp
 economy.rtps,openbb_terminal.economy.alphavantage_model.get_sector_data,openbb_terminal.economy.alphavantage_view.realtime_performance_sector
-economy.tyld,openbb_terminal.economy.alphavantage_model.get_treasury_yield,openbb_terminal.economy.alphavantage_view.display_treasury_yield
-economy.unemp,openbb_terminal.economy.alphavantage_model.get_unemployment,openbb_terminal.economy.alphavantage_view.display_unemployment
 economy.macro,openbb_terminal.economy.econdb_model.get_aggregated_macro_data,openbb_terminal.economy.econdb_view.show_macro_data
 economy.macro_parameters,openbb_terminal.economy.econdb_model.get_macro_parameters,
 economy.macro_countries,openbb_terminal.economy.econdb_model.get_macro_countries,
@@ -379,7 +373,7 @@ stocks.disc.gtech,openbb_terminal.stocks.discovery.yahoofinance_model.get_gtech,
 stocks.disc.losers,openbb_terminal.stocks.discovery.yahoofinance_model.get_losers,
 stocks.disc.ugs,openbb_terminal.stocks.discovery.yahoofinance_model.get_ugs,
 stocks.disc.ulc,openbb_terminal.stocks.discovery.yahoofinance_model.get_ulc,
-stocks.fa.arktrades,openbb_terminal.stocks.fundamental_analysis.ark_model.get_ark_trades_by_ticker,
+stocks.screener.arktrades,openbb_terminal.stocks.screener.ark_model.get_ark_trades_by_ticker,
 stocks.fa.est,openbb_terminal.stocks.fundamental_analysis.business_insider_model.get_estimates,
 stocks.fa.pt,openbb_terminal.stocks.fundamental_analysis.business_insider_model.get_price_target_from_analysts,openbb_terminal.stocks.fundamental_analysis.business_insider_view.price_target_from_analysts
 stocks.fa.customer,openbb_terminal.stocks.fundamental_analysis.csimarket_model.get_customers,
@@ -409,7 +403,7 @@ stocks.fa.growth,openbb_terminal.stocks.fundamental_analysis.fmp_model.get_finan
 stocks.fa.metrics,openbb_terminal.stocks.fundamental_analysis.fmp_model.get_key_metrics,
 stocks.fa.ratios,openbb_terminal.stocks.fundamental_analysis.fmp_model.get_key_ratios,
 stocks.fa.profile,openbb_terminal.stocks.fundamental_analysis.fmp_model.get_profile,
-stocks.quote_fmp,openbb_terminal.stocks.fundamental_analysis.fmp_model.get_quote,
+stocks.quote_fmp,openbb_terminal.stocks.stocks_model.get_quote_fmp,
 stocks.fa.score,openbb_terminal.stocks.fundamental_analysis.fmp_model.get_score,
 stocks.fa.data,openbb_terminal.stocks.fundamental_analysis.finviz_model.get_data,
 stocks.fa.cal,openbb_terminal.stocks.fundamental_analysis.yahoo_finance_model.get_calendar_earnings,
@@ -497,7 +491,7 @@ stocks.load,openbb_terminal.stocks.stocks_helper.load,
 etf.load,openbb_terminal.stocks.stocks_helper.load,
 stocks.process_candle,openbb_terminal.stocks.stocks_helper.process_candle,
 stocks.search,openbb_terminal.stocks.stocks_helper.search,
-stocks.quote_yf,openbb_terminal.stocks.stocks_model.load_quote,
+stocks.quote_yf,openbb_terminal.stocks.stocks_model.get_quote_yf,
 stocks.tob,openbb_terminal.stocks.cboe_model.get_top_of_book,
 stocks.candle,openbb_terminal.stocks.stocks_helper.display_candle,
 crypto.load,openbb_terminal.cryptocurrency.cryptocurrency_helpers.load,
@@ -547,4 +541,7 @@ futures.search,openbb_terminal.futures.yfinance_model.get_search_futures,
 futures.historical,openbb_terminal.futures.yfinance_model.get_historical_futures,openbb_terminal.futures.yfinance_view.display_historical
 futures.curve,openbb_terminal.futures.yfinance_model.get_curve_futures,openbb_terminal.futures.yfinance_view.display_curve
 economy.get_groups,openbb_terminal.economy.finviz_model.get_groups,
-stocks.filings,openbb_terminal.stocks.fundamental_analysis.fmp_model.get_filings,openbb_terminal.stocks.fundamental_analysis.fmp_view.display_filings
+stocks.disc.filings,openbb_terminal.stocks.discovery.fmp_model.get_filings,openbb_terminal.stocks.discovery.fmp_view.display_filings
+stocks.fa.sec_fmp,openbb_terminal.stocks.fundamental_analysis.fmp_model.get_filings,openbb_terminal.stocks.fundamental_analysis.fmp_view.get_filings
+login,openbb_terminal.session.sdk_session.login,
+logout,openbb_terminal.session.sdk_session.logout,
