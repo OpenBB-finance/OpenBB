@@ -13,4 +13,7 @@ def do_rollover():
 
     for handler in logging.getLogger().handlers:
         if isinstance(handler, PathTrackingFileHandler):
-            handler.doRollover()
+            try:
+                handler.doRollover()
+            except PermissionError:
+                pass
