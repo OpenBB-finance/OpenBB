@@ -1,7 +1,7 @@
 {
   "stocks": {
     "search": ["FinanceDatabase"],
-    "quote": ["FinancialModelingPrep", "YahooFinance"],
+    "quote": ["FinancialModelingPrep"],
     "tob": ["CBOE"],
     "candle": [],
     "codes": ["Polygon"],
@@ -246,7 +246,6 @@
       "dcfc": ["FinancialModelingPrep"],
       "info": ["YahooFinance"],
       "shrs": ["YahooFinance"],
-      "sust": ["YahooFinance"],
       "cal": ["YahooFinance"],
       "divs": ["YahooFinance"],
       "splits": ["YahooFinance"],

@@ -317,10 +317,7 @@ class StocksController(StockBaseController):
             other_args.insert(0, "-t")
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            if ns_parser.source == "FinancialModelingPrep":
-                stocks_view.display_quote_fmp(ns_parser.s_ticker)
-            elif ns_parser.source == "YahooFinance":
-                stocks_view.display_quote_yf(ns_parser.s_ticker)
+            stocks_view.display_quote(ns_parser.s_ticker)
 
     @log_start_end(log=logger)
     def call_codes(self, _):
