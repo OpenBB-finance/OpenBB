@@ -197,3 +197,125 @@ def test_apply_configs_sync(sync: str):
         assert paths.USER_DATA_DIRECTORY == Path("some/path/to/user/data")
         assert cfg.API_KEY_ALPHAVANTAGE == "test_av"
         assert cfg.API_FRED_KEY == "test_fred"
+
+
+@pytest.mark.parametrize(
+    "exists",
+    [
+        False,
+        True,
+    ],
+)
+def test_get_routine(mocker, exists: bool):
+    file_name = "test_routine.openbb"
+    uuid = "test_uuid"
+    routine = "do something"
+
+    user_mock = mocker.patch(
+        "openbb_terminal.session.local_model.User.get_uuid", return_value=uuid
+    )
+    exists_mock = mocker.patch(
+        "openbb_terminal.session.local_model.os.path.exists", return_value=exists
+    )
+    open_mock = mocker.patch(
+        "openbb_terminal.session.local_model.open",
+        mock_open(read_data=json.dumps(routine)),
+    )
+
+    assert local_model.get_routine(file_name=file_name) == json.dumps(routine)
+
+    user_mock.assert_called_once()
+    exists_mock.assert_called_with(
+        local_model.USER_ROUTINES_DIRECTORY / uuid / file_name
+    )
+    if exists:
+        open_mock.assert_called_with(
+            local_model.USER_ROUTINES_DIRECTORY / uuid / file_name
+        )
+    else:
+        open_mock.assert_called_with(local_model.USER_ROUTINES_DIRECTORY / file_name)
+
+
+def test_get_routine_exception(mocker):
+    file_name = "test_routine.openbb"
+    uuid = "test_uuid"
+
+    user_mock = mocker.patch(
+        "openbb_terminal.session.local_model.User.get_uuid", return_value=uuid
+    )
+    exists_mock = mocker.patch("openbb_terminal.session.local_model.os.path.exists")
+    open_mock = mocker.patch(
+        "openbb_terminal.session.local_model.open",
+        side_effect=Exception("test exception"),
+    )
+
+    assert local_model.get_routine(file_name=file_name) is None
+
+    user_mock.assert_called_once()
+    exists_mock.assert_called_with(
+        local_model.USER_ROUTINES_DIRECTORY / uuid / file_name
+    )
+    open_mock.assert_called_with(local_model.USER_ROUTINES_DIRECTORY / uuid / file_name)
+
+
+@pytest.mark.parametrize(
+    "exists",
+    [
+        False,
+        True,
+    ],
+)
+def test_save_routine(mocker, exists: bool):
+    file_name = "test_routine.openbb"
+    uuid = "test_uuid"
+    routine = "do something"
+
+    user_mock = mocker.patch(
+        "openbb_terminal.session.local_model.User.get_uuid", return_value=uuid
+    )
+    exists_mock = mocker.patch(
+        "openbb_terminal.session.local_model.os.path.exists", return_value=exists
+    )
+    makedirs_mock = mocker.patch("openbb_terminal.session.local_model.os.makedirs")
+    open_mock = mocker.patch(
+        "openbb_terminal.session.local_model.open",
+    )
+
+    assert (
+        local_model.save_routine(file_name=file_name, routine=routine)
+        == local_model.USER_ROUTINES_DIRECTORY / uuid / file_name
+    )
+
+    user_mock.assert_called_once()
+    exists_mock.assert_called_with(local_model.USER_ROUTINES_DIRECTORY / uuid)
+    if exists:
+        makedirs_mock.assert_not_called()
+    else:
+        makedirs_mock.assert_called_with(local_model.USER_ROUTINES_DIRECTORY / uuid)
+
+    open_mock.assert_called_with(
+        local_model.USER_ROUTINES_DIRECTORY / uuid / file_name, "w"
+    )
+
+
+def test_save_routine_exception(mocker):
+    file_name = "test_routine.openbb"
+    uuid = "test_uuid"
+    routine = "do something"
+
+    user_mock = mocker.patch(
+        "openbb_terminal.session.local_model.User.get_uuid", return_value=uuid
+    )
+    exists_mock = mocker.patch("openbb_terminal.session.local_model.os.path.exists")
+    open_mock = mocker.patch(
+        "openbb_terminal.session.local_model.open",
+        side_effect=Exception("test exception"),
+    )
+
+    assert local_model.save_routine(file_name=file_name, routine=routine) is None
+
+    user_mock.assert_called_once()
+    exists_mock.assert_called_with(local_model.USER_ROUTINES_DIRECTORY / uuid)
+    open_mock.assert_called_with(
+        local_model.USER_ROUTINES_DIRECTORY / uuid / file_name, "w"
+    )

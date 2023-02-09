@@ -1,9 +1,11 @@
 from pathlib import Path
 from unittest.mock import patch
 
-from openbb_terminal import config_plot as cfg_plot
-from openbb_terminal import config_terminal as cfg
-from openbb_terminal import feature_flags as obbff
+from openbb_terminal import (
+    config_plot as cfg_plot,
+    config_terminal as cfg,
+    feature_flags as obbff,
+)
 from openbb_terminal.account import account_model
 from openbb_terminal.core.config import paths
 

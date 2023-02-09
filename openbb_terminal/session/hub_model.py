@@ -158,7 +158,6 @@ def fetch_user_configs(
     Optional[requests.Response]
         The response from the get request.
     """
-
     token_type = session.get("token_type", "")
     token = session.get("access_token", "")
 
@@ -168,7 +167,7 @@ def fetch_user_configs(
             headers={"Authorization": f"{token_type.title()} {token}"},
             timeout=timeout,
         )
-        if response.status_code not in [200, 401]:
+        if response.status_code not in [200, 401]:  # 401: invalid token
             console.print("[red]\nFailed to fetch configurations.[/red]")
         return response
     except requests.exceptions.ConnectionError:
@@ -212,7 +211,6 @@ def patch_user_configs(
     Optional[requests.Response]
         The response from the patch request.
     """
-
     if type_ not in ["keys", "settings"]:
         console.print("[red]\nInvalid patch type.[/red]")
         return None
@@ -289,7 +287,9 @@ def clear_user_configs(
 def upload_routine(
     auth_header: str,
     name: str = "",
+    description: str = "",
     routine: str = "",
+    override: bool = False,
     base_url=BASE_URL,
     timeout: int = TIMEOUT,
 ) -> Optional[requests.Response]:
@@ -298,18 +298,29 @@ def upload_routine(
     Parameters
     ----------
     auth_header : str
-
+        The authorization header, e.g. "Bearer <token>".
     name : str
         The name of the routine.
     routine : str
         The routine.
+    override : bool
+        Whether to override the routine if it already exists.
     base_url : str
         The base url, by default BASE_URL
     timeout : int
         The timeout, by default TIMEOUT
-    """
 
-    data = {"name": name, "script": routine}
+    Returns
+    -------
+    Optional[requests.Response]
+        The response from the post request.
+    """
+    data = {
+        "name": name,
+        "description": description,
+        "script": routine,
+        "override": override,
+    }
 
     try:
         response = requests.post(
@@ -320,8 +331,10 @@ def upload_routine(
         )
         if response.status_code == 200:
             console.print("[green]Successfully uploaded your routine.[/green]")
-        else:
-            console.print("[red]Error uploading your routine.[/red]")
+        elif response.status_code != 409:  # 409: routine already exists
+            console.print(
+                "[red]" + response.json().get("detail", "Unknown error.") + "[/red]"
+            )
         return response
     except requests.exceptions.ConnectionError:
         console.print(f"\n{CONNECTION_ERROR_MSG}")
@@ -334,10 +347,144 @@ def upload_routine(
         return None
 
 
-def download_routine() -> Optional[requests.Response]:
-    """Download a routine from the server."""
+def download_routine(
+    auth_header: str,
+    name: str = "",
+    base_url=BASE_URL,
+    timeout: int = TIMEOUT,
+) -> Optional[requests.Response]:
+    """Download a routine from the server.
 
-    # TODO: Implement test on `test_hub_model.py` when this is implemented.
+    Parameters
+    ----------
+    auth_header : str
+        The authorization header, e.g. "Bearer <token>".
+    name : str
+        The name of the routine.
+    base_url : str
+        The base url, by default BASE_URL
+    timeout : int
+        The timeout, by default TIMEOUT
 
-    console.print("[red]Not implemented yet.[/red]")
-    return None
+    Returns
+    -------
+    Optional[requests.Response]
+        The response from the get request.
+    """
+    try:
+        response = requests.get(
+            headers={"Authorization": auth_header},
+            url=base_url + "terminal/script/" + name,
+            timeout=timeout,
+        )
+        if response.status_code == 404:
+            console.print("[red]Routine not found.[/red]")
+        elif response.status_code != 200:
+            console.print("[red]Failed to download your routine.[/red]")
+        return response
+    except requests.exceptions.ConnectionError:
+        console.print(f"\n{CONNECTION_ERROR_MSG}")
+        return None
+    except requests.exceptions.Timeout:
+        console.print(f"\n{CONNECTION_TIMEOUT_MSG}")
+        return None
+    except Exception:
+        console.print("[red]Failed to download your routine.[/red]")
+        return None
+
+
+def delete_routine(
+    auth_header: str,
+    name: str = "",
+    base_url=BASE_URL,
+    timeout: int = TIMEOUT,
+) -> Optional[requests.Response]:
+    """Delete a routine from the server.
+
+    Parameters
+    ----------
+    auth_header : str
+        The authorization header, e.g. "Bearer <token>".
+    name : str
+        The name of the routine.
+    base_url : str
+        The base url, by default BASE_URL
+    timeout : int
+        The timeout, by default TIMEOUT
+
+    Returns
+    -------
+    Optional[requests.Response]
+        The response from the delete request.
+    """
+    try:
+        response = requests.delete(
+            headers={"Authorization": auth_header},
+            url=base_url + "terminal/script/" + name,
+            timeout=timeout,
+        )
+        if response.status_code == 200:
+            console.print("[green]Successfully deleted your routine.[/green]")
+        elif response.status_code == 404:
+            console.print("[red]Routine not found.[/red]")
+        else:
+            console.print("[red]Failed to delete your routine.[/red]")
+        return response
+    except requests.exceptions.ConnectionError:
+        console.print(f"\n{CONNECTION_ERROR_MSG}")
+        return None
+    except requests.exceptions.Timeout:
+        console.print(f"\n{CONNECTION_TIMEOUT_MSG}")
+        return None
+    except Exception:
+        console.print("[red]Failed to delete your routine.[/red]")
+        return None
+
+
+def list_routines(
+    auth_header: str,
+    page: int = 1,
+    size: int = 10,
+    base_url=BASE_URL,
+    timeout: int = TIMEOUT,
+) -> Optional[requests.Response]:
+    """List all routines from the server.
+
+    Parameters
+    ----------
+    auth_header : str
+        The authorization header, e.g. "Bearer <token>".
+    page : int
+        The page number.
+    size : int
+        The number of routines per page.
+    base_url : str
+        The base url, by default BASE_URL
+    timeout : int
+        The timeout, by default TIMEOUT
+
+    Returns
+    -------
+    Optional[requests.Response]
+        The response from the get request.
+    """
+    fields = "name%2Cdescription"
+
+    try:
+        response = requests.get(
+            headers={"Authorization": auth_header},
+            url=f"{base_url}terminal/script?fields={fields}&page={page}&size={size}",
+            timeout=timeout,
+        )
+        if response.status_code != 200:
+            console.print("[red]Failed to list your routines.[/red]")
+        return response
+    except requests.exceptions.ConnectionError:
+        console.print(f"\n{CONNECTION_ERROR_MSG}")
+        return None
+    except requests.exceptions.Timeout:
+        console.print(f"\n{CONNECTION_TIMEOUT_MSG}")
+        return None
+    except Exception:
+        console.print("[red]Failed to list your routines.[/red]")
+        return None

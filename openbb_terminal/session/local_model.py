@@ -16,6 +16,7 @@ from openbb_terminal.core.config.paths import (
     USER_ROUTINES_DIRECTORY,
 )
 from openbb_terminal.rich_config import console
+from openbb_terminal.session.user import User
 
 SESSION_FILE_PATH = SETTINGS_DIRECTORY / "session.json"
 
@@ -189,21 +190,61 @@ def cast_set_attr(obj, name, value):
 
 
 def get_routine(
-    name: str, routines_folder: Path = USER_ROUTINES_DIRECTORY
+    file_name: str, folder: Path = USER_ROUTINES_DIRECTORY
 ) -> Optional[str]:
     """Get the routine.
 
     Returns
     -------
-    str
+    file_name : str
         The routine.
-    routines_folder : Path
+    folder : Path
         The routines folder.
     """
     try:
-        with open(routines_folder / name) as f:
+        user_folder = USER_ROUTINES_DIRECTORY / User.get_uuid()
+        if os.path.exists(user_folder / file_name):
+            file_path = user_folder / file_name
+        else:
+            file_path = folder / file_name
+
+        with open(file_path) as f:
             routine = "".join(f.readlines())
         return routine
     except Exception:
-        console.print("[red]\nFailed to find routine.[/red]")
+        console.print("[red]Failed to find routine.[/red]")
+        return None
+
+
+def save_routine(
+    file_name: str, routine: str, folder: Path = USER_ROUTINES_DIRECTORY
+) -> Optional[Path]:
+    """Save the routine.
+
+    Parameters
+    ----------
+    file_name : str
+        The routine.
+    routine : str
+        The routine.
+    folder : Path
+        The routines folder.
+
+    Returns
+    -------
+    Optional[Path]
+        The path to the routine or None.
+    """
+    try:
+        uuid = User.get_uuid()
+        user_folder = folder / uuid
+        if not os.path.exists(user_folder):
+            os.makedirs(user_folder)
+
+        file_path = user_folder / file_name
+        with open(file_path, "w") as f:
+            f.write(routine)
+        return user_folder / file_name
+    except Exception:
+        console.print("[red]\nFailed to save routine.[/red]")
         return None

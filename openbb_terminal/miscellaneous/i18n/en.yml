@@ -22,9 +22,11 @@ en:
   account/sync: Turns the cloud synchronization on/off
   account/pull: Pull data from cloud
   account/clear: Clear data from cloud
-  account/_routines_: Routines
+  account/_routines_: Cloud storage of routines
+  account/list: List available routines
   account/upload: Upload routine
   account/download: Download routine
+  account/delete: Delete routine
   keys/_keys_: This menu allows you to set your own API keys. Type 'about' for more information
   keys/mykeys: get your defined keys
   keys/_status_: Status
