@@ -8,7 +8,7 @@ from typing import List, Optional, Tuple, Union
 
 import pandas as pd
 from darts import TimeSeries
-from darts.metrics import mape, rmse, mse, smape  # noqa: I001
+from darts.metrics import mape, mse, rmse, smape
 from darts.models import ExponentialSmoothing
 from darts.utils.utils import ModelMode, SeasonalityMode
 from numpy import ndarray
