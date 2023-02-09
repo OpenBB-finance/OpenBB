@@ -26,8 +26,6 @@ def vcr_config():
     [
         "display_info",
         "display_shareholders",
-        "display_sustainability",
-        "display_calendar_earnings",
         "display_dividends",
         "display_splits",
         "display_mktcap",
@@ -46,8 +44,6 @@ def test_call_func(func, mocker):
 @pytest.mark.parametrize(
     "func, mocked_func",
     [
-        ("display_sustainability", "get_sustainability"),
-        ("display_calendar_earnings", "get_calendar_earnings"),
         ("display_dividends", "get_dividends"),
         ("display_splits", "get_splits"),
     ],

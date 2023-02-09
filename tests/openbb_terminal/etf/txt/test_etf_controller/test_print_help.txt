@@ -1,5 +1,4 @@
 
-
     search             search ETF by name or description                               [FinanceDatabase, StockAnalysis]
     load               load ETF data                                                   [YahooFinance]
 
@@ -11,12 +10,10 @@ Major holdings:
 
 [unvl]    overview           get overview[/unvl]                                                    [StockAnalysis]
 [unvl]    holdings           top company holdings[/unvl]                                            [StockAnalysis]
-[unvl]    weights            sector weights allocation[/unvl]                                       [YahooFinance]
-[unvl]    summary            summary description of the ETF[/unvl]                                  [YahooFinance]
+[unvl]    weights            sector weights allocation[/unvl]                                       [FinancialModelingPrep]
 [unvl]    news               latest news of the company[/unvl]                                      [NewsApi]
 [unvl]    candle             view a candle chart for ETF[/unvl]
 
-[unvl]    pir                create (multiple) passive investor excel report(s)[/unvl]              [ThePassiveInvestor]
 [unvl]    compare            compare multiple different ETFs[/unvl]                                 [StockAnalysis]
 
 [unvl]>   ta                 technical analysis,           ema, macd, rsi, adx, bbands, obv[/unvl]
