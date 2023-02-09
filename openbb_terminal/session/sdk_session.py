@@ -1,6 +1,8 @@
 from openbb_terminal.rich_config import console
-from openbb_terminal.session import local_model as Local
-from openbb_terminal.session import session_model
+from openbb_terminal.session import (
+    local_model as Local,
+    session_model,
+)
 from openbb_terminal.session.user import User
 
 

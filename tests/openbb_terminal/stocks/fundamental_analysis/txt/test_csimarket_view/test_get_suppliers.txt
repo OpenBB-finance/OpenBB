@@ -1,0 +1,14 @@
+List of suppliers: Company Name, Revenue, Net Income, Net Margin, Cash Flow
+
+                    Company Name    Revenue  Net Income Net Margin  Cash Flow
+TICKER                                                                       
+HMC         Honda Motor Co. Ltd.  108264.49     5659.22     5.23 %   24088.27
+MT                 Arcelormittal   76571.00    15565.00    20.33 %    5600.00
+GM        General Motors Company   43108.00     2007.00     4.66 %   -1551.00
+TSLA                   Tesla Inc   24318.00     3707.00    15.24 %   -3225.00
+EC                 Ecopetrol S a   23422.95     4494.49    19.19 %    1295.61
+GE      General Electric Company   19084.00     -160.00          -    -854.00
+ACN                Accenture Plc   15747.80     1967.04    12.49 %   -1990.13
+CAT              Caterpillar Inc   14994.00     2040.00    13.61 %    3240.00
+KYO                 Kyocera Corp   13536.56     1044.69     7.72 %     207.28
+STM       Stmicroelectronics N v   12761.00     2006.00    15.72 %     219.00

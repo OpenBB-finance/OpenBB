@@ -113,7 +113,9 @@ def test_login_success_response():
     ):
         response = Response()
         response.status_code = 200
-        response._content = json.dumps(CONFIGS)  # pylint: disable=protected-access
+        response._content = json.dumps(  # pylint: disable=protected-access
+            CONFIGS
+        ).encode("utf-8")
         mock_fetch_user_configs.return_value = response
 
         assert session_model.login(TEST_SESSION) == session_model.LoginStatus.SUCCESS

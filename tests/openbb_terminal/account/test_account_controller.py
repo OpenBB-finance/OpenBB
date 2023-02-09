@@ -33,6 +33,18 @@ CONFIGS = {
     },
 }
 
+ROUTINES = {
+    "items": [
+        {"name": "scrip1", "description": "abc"},
+        {"name": "script2", "description": "def"},
+        {"name": "script3", "description": "ghi"},
+    ],
+    "total": 3,
+    "page": 1,
+    "size": 10,
+    "pages": 1,
+}
+
 
 @pytest.fixture(scope="module")
 def vcr_config():
@@ -241,12 +253,16 @@ def test_call_func_expect_queue(expected_queue, func, queue):
         "call_sync",
         "call_pull",
         "call_clear",
+        "call_list",
+        "call_upload",
+        "call_download",
+        "call_delete",
     ],
 )
 def test_call_func_no_parser(func, mocker):
     # MOCK PARSE_KNOWN_ARGS_AND_WARN
     mocker.patch(
-        target="openbb_terminal.account.account_controller.AccountController.parse_simple_args",
+        target="openbb_terminal.account.account_controller.AccountController.parse_known_args_and_warn",
         return_value=None,
     )
     controller = account_controller.AccountController(queue=None)
@@ -254,7 +270,7 @@ def test_call_func_no_parser(func, mocker):
     func_result = getattr(controller, func)(other_args=list())
     assert func_result is None
     assert controller.queue == []
-    controller.parse_simple_args.assert_called_once()
+    controller.parse_known_args_and_warn.assert_called_once()
 
 
 @pytest.mark.vcr
@@ -395,3 +411,135 @@ def test_call_clear(mocker, input_value):
     else:
         mock_clear_user_configs.assert_not_called()
     assert controller.queue == []
+
+
+@pytest.mark.record_stdout
+def test_call_list(mocker):
+    controller = account_controller.AccountController(queue=None)
+    path_controller = "openbb_terminal.account.account_controller"
+
+    mocker.patch(
+        target=f"{path_controller}.User.get_auth_header",
+        return_value="Bearer 123",
+    )
+    mock_list_routines = mocker.patch(
+        target=f"{path_controller}.Hub.list_routines",
+    )
+    response = Response()
+    response.status_code = 200
+    response._content = json.dumps(ROUTINES).encode(  # pylint: disable=protected-access
+        "utf-8"
+    )
+    mock_list_routines.return_value = response
+
+    controller.call_list(other_args=["--page", "1", "--size", "10"])
+
+    mock_list_routines.assert_called_once_with(
+        auth_header="Bearer 123", page=1, size=10
+    )
+
+
+def test_call_upload(mocker):
+    controller = account_controller.AccountController(queue=None)
+    path_controller = "openbb_terminal.account.account_controller"
+
+    mocker.patch(
+        target=f"{path_controller}.User.get_auth_header",
+        return_value="Bearer 123",
+    )
+    mock_get_routine = mocker.patch(
+        target=f"{path_controller}.Local.get_routine",
+        return_value="do something",
+    )
+    mock_upload_routine = mocker.patch(
+        target=f"{path_controller}.Hub.upload_routine",
+    )
+
+    controller.call_upload(
+        other_args=[
+            "--file",
+            "script1.openbb",
+            "--description",
+            "abc",
+            "--name",
+            "script1",
+        ]
+    )
+
+    mock_get_routine.assert_called_once_with(file_name="script1.openbb")
+    mock_upload_routine.assert_called_once_with(
+        auth_header="Bearer 123",
+        name="script1",
+        description="abc",
+        routine="do something",
+    )
+
+
+@pytest.mark.record_stdout
+def test_call_download(mocker):
+    controller = account_controller.AccountController(queue=None)
+    path_controller = "openbb_terminal.account.account_controller"
+
+    mocker.patch(
+        target=f"{path_controller}.User.get_auth_header",
+        return_value="Bearer 123",
+    )
+    mock_download_routine = mocker.patch(
+        target=f"{path_controller}.Hub.download_routine",
+    )
+    response = Response()
+    response.status_code = 200
+    content = {
+        "name": "script1",
+        "description": "abc",
+        "script": "do something",
+    }
+    response._content = json.dumps(content).encode(  # pylint: disable=protected-access
+        "utf-8"
+    )
+    mock_download_routine.return_value = response
+    mock_save_routine = mocker.patch(
+        target=f"{path_controller}.Local.save_routine",
+        return_value="path_to_file",
+    )
+
+    controller.call_download(
+        other_args=[
+            "--name",
+            "script1",
+        ]
+    )
+
+    mock_download_routine.assert_called_once_with(
+        auth_header="Bearer 123",
+        name="script1",
+    )
+    mock_save_routine.assert_called_once_with(
+        file_name="script1.openbb",
+        routine="do something",
+    )
+
+
+def test_call_delete(mocker):
+    controller = account_controller.AccountController(queue=None)
+    path_controller = "openbb_terminal.account.account_controller"
+
+    mocker.patch(
+        target=f"{path_controller}.User.get_auth_header",
+        return_value="Bearer 123",
+    )
+    mock_delete_routine = mocker.patch(
+        target=f"{path_controller}.Hub.delete_routine",
+    )
+
+    controller.call_delete(
+        other_args=[
+            "--name",
+            "script1",
+        ]
+    )
+
+    mock_delete_routine.assert_called_once_with(
+        auth_header="Bearer 123",
+        name="script1",
+    )

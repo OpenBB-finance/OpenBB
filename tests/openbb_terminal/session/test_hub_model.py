@@ -435,65 +435,191 @@ def test_clear_user_configs_exception():
         assert kwargs["timeout"] == hub_model.TIMEOUT
 
 
-def test_upload_routine_success():
+@pytest.mark.parametrize(
+    "auth_header, name, description, routine, override, base_url, timeout, status_code",
+    [
+        ("auth_header", "name", "description", "routine", True, "base_url", 10, 200),
+        ("auth_header", "name", "description", "routine", False, "base_url", 10, 400),
+    ],
+)
+def test_upload_routine(
+    auth_header, name, description, routine, override, base_url, timeout, status_code
+):
     mock_response = MagicMock(spec=requests.Response)
-    mock_response.status_code = 200
+    mock_response.status_code = status_code
 
     with patch(
         "openbb_terminal.session.hub_model.requests.post", return_value=mock_response
-    ) as requests_post_mock:
-        result = hub_model.upload_routine("auth_header", "name", "routine")
+    ) as requests_get_mock:
+        result = hub_model.upload_routine(
+            auth_header=auth_header,
+            name=name,
+            description=description,
+            routine=routine,
+            override=override,
+            base_url=base_url,
+            timeout=timeout,
+        )
 
         assert result.status_code == mock_response.status_code
-        requests_post_mock.assert_called_once()
-        _, kwargs = requests_post_mock.call_args
-        assert kwargs["url"] == hub_model.BASE_URL + "terminal/script"
-        assert kwargs["headers"] == {"Authorization": "auth_header"}
-        assert kwargs["json"] == {"name": "name", "script": "routine"}
-        assert kwargs["timeout"] == hub_model.TIMEOUT
+        requests_get_mock.assert_called_once()
+        _, kwargs = requests_get_mock.call_args
+        assert kwargs["url"] == base_url + "terminal/script"
+        assert kwargs["headers"] == {"Authorization": auth_header}
+        assert kwargs["timeout"] == timeout
 
 
-def test_upload_routine_failure():
-    mock_response = MagicMock(spec=requests.Response)
-    mock_response.status_code = 400
-
-    with patch(
-        "openbb_terminal.session.hub_model.requests.post", return_value=mock_response
-    ) as requests_post_mock:
-        result = hub_model.upload_routine("auth_header", "name", "routine")
-
-        assert result.status_code == mock_response.status_code
-        requests_post_mock.assert_called_once()
-        _, kwargs = requests_post_mock.call_args
-        assert kwargs["url"] == hub_model.BASE_URL + "terminal/script"
-        assert kwargs["headers"] == {"Authorization": "auth_header"}
-        assert kwargs["json"] == {"name": "name", "script": "routine"}
-        assert kwargs["timeout"] == hub_model.TIMEOUT
-
-
-def test_upload_routine_connection_error():
+@pytest.mark.parametrize(
+    "side_effect",
+    [
+        requests.exceptions.ConnectionError,
+        requests.exceptions.Timeout,
+        Exception,
+    ],
+)
+def test_upload_routine_error(side_effect):
     with patch(
         "openbb_terminal.session.hub_model.requests.post",
-        side_effect=requests.exceptions.ConnectionError,
+        side_effect=side_effect,
     ):
         result = hub_model.upload_routine("auth_header", "name", "routine")
         assert result is None
 
 
-def test_upload_routine_timeout():
+@pytest.mark.parametrize(
+    "auth_header, name, base_url, timeout, status_code",
+    [
+        ("auth_header", "name", "base_url", 10, 200),
+        ("other_header", "other name", "other_url", 10, 400),
+    ],
+)
+def test_download_routine(auth_header, name, base_url, timeout, status_code):
+    mock_response = MagicMock(spec=requests.Response)
+    mock_response.status_code = status_code
+
     with patch(
-        "openbb_terminal.session.hub_model.requests.post",
-        side_effect=requests.exceptions.Timeout,
+        "openbb_terminal.session.hub_model.requests.get", return_value=mock_response
+    ) as requests_get_mock:
+        result = hub_model.download_routine(
+            auth_header=auth_header, name=name, base_url=base_url, timeout=timeout
+        )
+
+        assert result.status_code == mock_response.status_code
+        requests_get_mock.assert_called_once()
+        _, kwargs = requests_get_mock.call_args
+        assert kwargs["url"] == base_url + f"terminal/script/{name}"
+        assert kwargs["headers"] == {"Authorization": auth_header}
+        assert kwargs["timeout"] == timeout
+
+
+@pytest.mark.parametrize(
+    "side_effect",
+    [
+        requests.exceptions.ConnectionError,
+        requests.exceptions.Timeout,
+        Exception,
+    ],
+)
+def test_download_routine_error(side_effect):
+    with patch(
+        "openbb_terminal.session.hub_model.requests.get",
+        side_effect=side_effect,
     ):
-        result = hub_model.upload_routine("auth_header", "name", "routine")
+        result = hub_model.download_routine("auth_header", "name", "routine")
         assert result is None
 
 
-def test_upload_routine_exception():
+@pytest.mark.parametrize(
+    "auth_header, name, base_url, timeout, status_code",
+    [
+        ("auth_header", "name", "base_url", 10, 200),
+        ("other_header", "other name", "other_url", 10, 400),
+    ],
+)
+def test_delete_routine(auth_header, name, base_url, timeout, status_code):
+    mock_response = MagicMock(spec=requests.Response)
+    mock_response.status_code = status_code
+
     with patch(
-        "openbb_terminal.session.hub_model.requests.post", side_effect=Exception
+        "openbb_terminal.session.hub_model.requests.delete", return_value=mock_response
+    ) as requests_get_mock:
+        result = hub_model.delete_routine(
+            auth_header=auth_header, name=name, base_url=base_url, timeout=timeout
+        )
+
+        assert result.status_code == mock_response.status_code
+        requests_get_mock.assert_called_once()
+        _, kwargs = requests_get_mock.call_args
+        assert kwargs["url"] == base_url + f"terminal/script/{name}"
+        assert kwargs["headers"] == {"Authorization": auth_header}
+        assert kwargs["timeout"] == timeout
+
+
+@pytest.mark.parametrize(
+    "side_effect",
+    [
+        requests.exceptions.ConnectionError,
+        requests.exceptions.Timeout,
+        Exception,
+    ],
+)
+def test_delete_routine_error(side_effect):
+    with patch(
+        "openbb_terminal.session.hub_model.requests.delete",
+        side_effect=side_effect,
     ):
-        result = hub_model.upload_routine("auth_header", "name", "routine")
+        result = hub_model.delete_routine("auth_header", "name")
+        assert result is None
+
+
+@pytest.mark.parametrize(
+    "auth_header, page, size, base_url, timeout, status_code",
+    [
+        ("auth_header", 1, 10, "base_url", 10, 200),
+        ("other_header", 2, 20, "other_url", 10, 400),
+    ],
+)
+def test_list_routines(auth_header, page, size, base_url, timeout, status_code):
+    mock_response = MagicMock(spec=requests.Response)
+    mock_response.status_code = status_code
+
+    with patch(
+        "openbb_terminal.session.hub_model.requests.get", return_value=mock_response
+    ) as requests_get_mock:
+        result = hub_model.list_routines(
+            auth_header=auth_header,
+            page=page,
+            size=size,
+            base_url=base_url,
+            timeout=timeout,
+        )
+
+        assert result.status_code == mock_response.status_code
+        requests_get_mock.assert_called_once()
+        _, kwargs = requests_get_mock.call_args
+        assert (
+            kwargs["url"]
+            == base_url
+            + f"terminal/script?fields=name%2Cdescription&page={page}&size={size}"
+        )
+        assert kwargs["headers"] == {"Authorization": auth_header}
+        assert kwargs["timeout"] == timeout
+
+
+@pytest.mark.parametrize(
+    "side_effect",
+    [
+        requests.exceptions.ConnectionError,
+        requests.exceptions.Timeout,
+        Exception,
+    ],
+)
+def test_list_routines_error(side_effect):
+    with patch(
+        "openbb_terminal.session.hub_model.requests.get",
+        side_effect=side_effect,
+    ):
+        result = hub_model.list_routines(auth_header="Bearer 123", page=1, size=10)
         assert result is None
 
 

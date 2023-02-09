@@ -15,9 +15,11 @@ import pytz
 from dotenv import set_key
 
 # IMPORTATION INTERNAL
-from openbb_terminal import config_plot as cfg_plot
-from openbb_terminal import featflags_controller as obbff_ctrl
-from openbb_terminal import feature_flags as obbff
+from openbb_terminal import (
+    config_plot as cfg_plot,
+    featflags_controller as obbff_ctrl,
+    feature_flags as obbff,
+)
 from openbb_terminal.core.config import paths
 from openbb_terminal.core.config.paths import (
     USER_DATA_SOURCES_DEFAULT_FILE,
@@ -284,19 +286,13 @@ class SettingsController(BaseController):
             other_args.insert(0, "-f")
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
-            try:
-                console.print("Loading sources from: " + str(ns_parser.file))
-                with open(ns_parser.file):
-                    # Try to open the file to get an exception if the file doesn't exist
-                    pass
-
+            if os.path.exists(ns_parser.file):
                 obbff_ctrl.FeatureFlagsController.set_feature_flag(
                     "OPENBB_PREFERRED_DATA_SOURCE_FILE", ns_parser.file
                 )
-
-            except Exception as e:
-                console.print("Couldn't open the sources file!")
-                console.print(e)
+                console.print("[green]Sources file changed successfully![/green]")
+            else:
+                console.print("[red]Couldn't find the sources file![/red]")
 
     @log_start_end(log=logger)
     def call_autoscaling(self, other_args: List[str]):

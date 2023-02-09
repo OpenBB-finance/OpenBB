@@ -1,9 +1,14 @@
 from pathlib import Path
-from typing import Any, Dict
+from typing import Any, Dict, Tuple
 
-from openbb_terminal import config_plot as cfg_plot
-from openbb_terminal import config_terminal as cfg
-from openbb_terminal import feature_flags as obbff
+import numpy as np
+import pandas as pd
+
+from openbb_terminal import (
+    config_plot as cfg_plot,
+    config_terminal as cfg,
+    feature_flags as obbff,
+)
 from openbb_terminal.base_helpers import strtobool
 from openbb_terminal.core.config import paths
 from openbb_terminal.rich_config import console
@@ -19,8 +24,8 @@ def get_diff(configs: dict) -> dict:
 
     Returns
     -------
-    bool
-        True if there is a diff.
+    dict
+        The diff.
     """
     SETTINGS = "features_settings"
     KEYS = "features_keys"
@@ -109,7 +114,7 @@ def get_diff_keys(keys: dict) -> dict:
     return diff
 
 
-def get_var_diff(obj, name, value):
+def get_var_diff(obj, name, value) -> Tuple[Any, Any]:
     """Set attribute in object.
 
     Parameters
@@ -120,6 +125,11 @@ def get_var_diff(obj, name, value):
         The attribute name.
     value : str
         The attribute value.
+
+    Returns
+    -------
+    Tuple[Any, Any]
+        The old and new values.
     """
     current_value = getattr(obj, name)
 
@@ -138,3 +148,29 @@ def get_var_diff(obj, name, value):
         return current_value, cast_value
 
     return None, None
+
+
+def get_routines_info(response) -> Tuple[pd.DataFrame, int, int]:
+    """Get the routines list.
+
+    Parameters
+    ----------
+    response : requests.Response
+        The response.
+
+    Returns
+    -------
+    Tuple[pd.DataFrame, int, int]
+        The routines list, the current page and the total number of pages.
+    """
+    df = pd.DataFrame()
+    if response and response.status_code == 200:
+        data = response.json()
+        page = data.get("page", 1)
+        pages = data.get("pages", 1)
+        items = data.get("items", [])
+        if items:
+            df = pd.DataFrame(items)
+            df.index = np.arange(1, len(df) + 1)
+
+    return df, page, pages
