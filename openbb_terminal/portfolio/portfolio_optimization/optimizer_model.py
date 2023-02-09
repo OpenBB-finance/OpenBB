@@ -21,7 +21,6 @@ from openbb_terminal.stocks.fundamental_analysis import fmp_model
 from openbb_terminal.portfolio.portfolio_optimization import yahoo_finance_model
 from openbb_terminal.portfolio.portfolio_optimization.optimizer_helper import (
     get_kwarg,
-    valid_property_infos,
     validate_risk_measure,
 )
 from openbb_terminal.rich_config import console
@@ -2961,18 +2960,6 @@ def generate_random_portfolios(
         w = value * w
 
     return w
-
-
-@log_start_end(log=logger)
-def get_properties() -> List[str]:
-    """Get properties to use on property optimization.
-
-    Returns
-    -------
-    List[str]:
-        List of available properties to use on property optimization.
-    """
-    return valid_property_infos
 
 
 @log_start_end(log=logger)
