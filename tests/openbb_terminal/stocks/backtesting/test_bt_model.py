@@ -59,7 +59,7 @@ def test_ema_strategy(mocker):
     ticker = "PM"
     start = datetime.strptime("2020-12-01", "%Y-%m-%d")
     end = datetime.strptime("2020-12-02", "%Y-%m-%d")
-    df_stock = stocks_helper.load_ticker(ticker=ticker, start_date=start, end_date=end)
+    df_stock = stocks_helper.load(symbol=ticker, start_date=start, end_date=end)
     back_test_instance = bt_model.ema_strategy(
         symbol=ticker,
         data=df_stock,
@@ -83,7 +83,7 @@ def test_emacross_strategy(mocker):
     ticker = "PM"
     start = datetime.strptime("2020-12-01", "%Y-%m-%d")
     end = datetime.strptime("2020-12-02", "%Y-%m-%d")
-    df_stock = stocks_helper.load_ticker(ticker=ticker, start_date=start, end_date=end)
+    df_stock = stocks_helper.load(symbol=ticker, start_date=start, end_date=end)
     back_test_instance = bt_model.emacross_strategy(
         symbol=ticker,
         data=df_stock,
@@ -109,7 +109,7 @@ def test_rsi_strategy(mocker):
     ticker = "PM"
     start = datetime.strptime("2020-12-01", "%Y-%m-%d")
     end = datetime.strptime("2020-12-02", "%Y-%m-%d")
-    df_stock = stocks_helper.load_ticker(ticker=ticker, start_date=start, end_date=end)
+    df_stock = stocks_helper.load(symbol=ticker, start_date=start, end_date=end)
     back_test_instance = bt_model.rsi_strategy(
         symbol=ticker,
         data=df_stock,

@@ -72,7 +72,9 @@ def get_spy_sector_contributions(
     try:
         weight_data = yf.Ticker(sectors_ticker).info["sectorWeightings"]
     except Exception as _:  # noqa
-        console.print("[red]Could not get info for S&P 500.")
+        console.print(
+            "[red]This functionality is currently unstable and will be removed in the near future."
+        )
         return pd.DataFrame()
 
     # reformat Data
