@@ -10,7 +10,7 @@ Search selected query for tickers.
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/stocks_helper.py#L98)]
 
 ```python
-openbb.stocks.search(query: str = "", country: str = "", sector: str = "", industry: str = "", exchange_country: str = "", limit: int = 0, export: str = "", sheet_name: Optional[str] = "")
+openbb.stocks.search(query: str = "", country: str = "", sector: str = "", industry: str = "", exchange_country: str = "", limit: int = 0)
 ```
 
 ---
@@ -25,16 +25,14 @@ openbb.stocks.search(query: str = "", country: str = "", sector: str = "", indus
 | industry         | str  | Search by industry to find stocks matching the criteria |         | True     |
 | exchange_country | str  | Search by exchange country to find stock matching       |         | True     |
 | limit            | int  | The limit of companies shown.                           | 0       | True     |
-| export           | str  | Export data                                             |         | True     |
-| sheet_name       | str  | Sheet Name                                              |         | True     |
 
 ---
 
 ## Returns
 
-| Type                   | Description                     |
-|------------------------|---------------------------------|
-| Optional[pd.DataFrame] | Search results if any are found |
+| Type         | Description    |
+|--------------|----------------|
+| pd.DataFrame | Search results |
 
 
 ---
