@@ -3,14 +3,14 @@ from enum import Enum
 from typing import Optional
 
 import matplotlib.pyplot as plt
+
+import openbb_terminal.session.hub_model as Hub
+import openbb_terminal.session.local_model as Local
 from openbb_terminal.base_helpers import (
     clear_openbb_env_vars,
     reload_openbb_config_modules,
     remove_log_handlers,
 )
-
-import openbb_terminal.session.hub_model as Hub
-import openbb_terminal.session.local_model as Local
 from openbb_terminal.helper_funcs import system_clear
 from openbb_terminal.rich_config import console
 from openbb_terminal.session.user import User

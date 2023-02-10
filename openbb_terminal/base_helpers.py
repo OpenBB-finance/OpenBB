@@ -4,6 +4,7 @@ import logging
 import os
 import sys
 from typing import Any, Callable, List, Literal, Optional
+
 from dotenv import load_dotenv
 from rich.console import Console
 
