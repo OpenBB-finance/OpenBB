@@ -1,7 +1,6 @@
 import sys
 import unittest
 from contextlib import contextmanager
-from unittest.mock import patch
 
 import pytest
 
