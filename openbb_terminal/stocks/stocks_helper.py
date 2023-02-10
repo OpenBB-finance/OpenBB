@@ -106,7 +106,6 @@ def search(
     limit: int = 0,
     export: str = "",
     sheet_name: Optional[str] = "",
-    export_to_file: bool = True,
 ) -> Optional[pd.DataFrame]:
     """Search selected query for tickers.
 
@@ -128,8 +127,6 @@ def search(
         The limit of companies shown.
     export : str
         Export data
-    export_to_file : bool
-        Whether results should be exported to file or not.
 
     Returns
     -------
@@ -230,14 +227,13 @@ def search(
         headers=["Name", "Country", "Sector", "Industry", "Exchange"],
         title=title,
     )
-    if export_to_file:
-        export_data(
-            export,
-            os.path.dirname(os.path.abspath(__file__)),
-            "search",
-            df,
-            sheet_name,
-        )
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "search",
+        df,
+        sheet_name,
+    )
 
     return df
 
