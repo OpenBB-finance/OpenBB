@@ -232,9 +232,12 @@ def is_packaged_application() -> bool:
 def is_auth_enabled() -> bool:
     """Tell whether or not authentication is enabled.
 
-    Returns:
-        bool: If authentication is enabled
+    Returns
+    -------
+    bool
+        If authentication is enabled
     """
+    # TODO: This function is a temporary way to block authentication
     return str(os.getenv("OPENBB_ENABLE_AUTHENTICATION")).lower() == "true"
 
 

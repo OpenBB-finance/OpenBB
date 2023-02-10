@@ -118,15 +118,21 @@ def load_dotenv_and_reload_configs():
 def reload_openbb_config_modules():
     """Reloads openbb config modules"""
 
-    config_modules = [
-        "openbb_terminal.config_plot",
-        "openbb_terminal.config_terminal",
-        "openbb_terminal.feature_flags",
-        "openbb_terminal.core.config",
-    ]
+    reload_openbb_modules(
+        to_reload=[
+            "openbb_terminal.config_plot",
+            "openbb_terminal.config_terminal",
+            "openbb_terminal.feature_flags",
+            "openbb_terminal.core.config",
+        ]
+    )
+
+
+def reload_openbb_modules(to_reload: List[str]):
+    """Reloads openbb config modules"""
     modules = sys.modules.copy()
     for module in modules:
-        if module in config_modules:
+        if module in to_reload:
             importlib.reload(sys.modules[module])
 
 
@@ -140,5 +146,5 @@ def clear_openbb_env_vars(exceptions: Optional[List[str]] = None):
     """Clear openbb environment variables."""
     for v in os.environ:
         if v.startswith("OPENBB"):
-            if v and v not in exceptions:
+            if exceptions and v not in exceptions:
                 os.environ.pop(v)

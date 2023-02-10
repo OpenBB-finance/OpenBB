@@ -14,7 +14,6 @@ from multiprocessing.pool import Pool
 from pathlib import Path
 from traceback import FrameSummary, extract_tb, format_list
 from typing import Any, Dict, List, Optional, Tuple
-from openbb_terminal.base_helpers import clear_openbb_env_vars
 
 from openbb_terminal.core.config.paths import (
     MISCELLANEOUS_DIRECTORY,
@@ -690,7 +689,6 @@ def main():
     if "--test" in sys.argv:
         sys.argv.remove("--test")
 
-    clear_openbb_env_vars()
     os.environ["OPENBB_ENABLE_QUICK_EXIT"] = "False"
     os.environ["OPENBB_LOG_COLLECT"] = "False"
     os.environ["OPENBB_USE_ION"] = "True"

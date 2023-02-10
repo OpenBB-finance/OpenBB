@@ -172,7 +172,8 @@ class TerminalController(BaseController):
         mt.add_cmd("news")
         mt.add_raw("\n")
         mt.add_info("_configure_")
-        mt.add_menu("account")
+        if is_auth_enabled():
+            mt.add_menu("account")
         mt.add_menu("keys")
         mt.add_menu("featflags")
         mt.add_menu("sources")
