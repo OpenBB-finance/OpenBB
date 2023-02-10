@@ -263,8 +263,6 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 industry="",
                 all_exchanges=False,
                 exchange_country="",
-                export="csv",
-                sheet_name=None,
             ),
         ),
         (

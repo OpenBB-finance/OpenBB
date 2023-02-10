@@ -45,7 +45,7 @@ interactions:
       x-envoy-decorator-operation:
       - finance-chart-api--mtls-canary-production-bf1.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
-      - '2'
+      - '3'
       x-request-id:
       - 0d473d1f-a7d9-46a8-a2ff-1ad16c14c293
       x-yahoo-request-id:
@@ -255,7 +255,7 @@ interactions:
       x-envoy-decorator-operation:
       - finance-chart-api--mtls-production-bf1.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
-      - '6'
+      - '11'
       x-request-id:
       - 486d74ef-4e48-437f-9a82-f07a88b926b3
       x-yahoo-request-id:

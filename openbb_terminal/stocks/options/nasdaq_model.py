@@ -15,6 +15,37 @@ from openbb_terminal.rich_config import console
 logger = logging.getLogger(__name__)
 # pylint: disable=unsupported-assignment-operation
 
+call_cols = [
+    "c_Last",
+    "c_Bid",
+    "c_Ask",
+    "c_Volume",
+    "c_Openinterest",
+    "strike",
+    "expiration",
+]
+put_cols = [
+    "p_Last",
+    "p_Bid",
+    "p_Ask",
+    "p_Volume",
+    "p_Openinterest",
+    "strike",
+    "expiration",
+]
+cols = ["lastPrice", "bid", "ask", "volume", "openInterest", "strike", "expiration"]
+
+sorted_chain_columns = [
+    "optionType",
+    "expiration",
+    "strike",
+    "lastPrice",
+    "bid",
+    "ask",
+    "openInterest",
+    "volume",
+]
+
 
 @log_start_end(log=logger)
 def get_dte_from_expiration(date: str) -> float:
@@ -84,6 +115,9 @@ def process_response(response_json):
         columns=["c_colour", "p_colour", "drillDownURL"]
     )
     df["expirygroup"] = df["expirygroup"].replace("", np.nan).fillna(method="ffill")
+    df["expiration"] = pd.to_datetime(
+        df["expirygroup"], format="%B %d, %Y"
+    ).dt.strftime("%Y-%m-%d")
     # Make numeric
     columns_w_types = {
         "c_Last": float,
@@ -109,11 +143,22 @@ def process_response(response_json):
     df = df[df.DTE > 0]
     df = df.drop(columns=["DTE"])
 
-    df["expiration"] = pd.to_datetime(
-        df["expirygroup"], format="%B %d, %Y"
-    ).dt.strftime("%Y-%m-%d")
+    # Process into consistent format
+    calls = df[call_cols].copy()
+    puts = df[put_cols].copy()
 
-    return df
+    calls.columns = cols
+    puts.columns = cols
+    calls["optionType"] = "call"
+    puts["optionType"] = "put"
+
+    chain = (
+        pd.concat([calls, puts], axis=0)
+        .sort_values(by=["expiration", "strike"])
+        .reset_index(drop=True)
+    )
+
+    return chain[sorted_chain_columns]
 
 
 @log_start_end(log=logger)

@@ -12,18 +12,17 @@ The functions in the Options sub-module are listed below, along with a short des
 
 |Path |Description |
 |:----|-----------:|
-|openbb.stocks.options.chains |Options Chains |
-|openbb.stocks.options.dte |Convert a Date in the Future to DTE |
-|openbb.stocks.options.expirations |List of Expiration Dates for the Underlying |
-|openbb.stocks.options.grhist |Historical Greeks for Individual Options |
-|openbb.stocks.options.hist |Historical Data from Tradier |
-|openbb.stocks.options.hist_ce |Historical Data from ChartExchange |
-|openbb.stocks.options.info |Options Statistics for the Underling from BarChart |
-|openbb.stocks.options.last_price |Last Price of the Underlying from Tradier |
-|openbb.stocks.options.pcr |Historical Put/Call Ratio |
-|openbb.stocks.options.screen |Options Screener |
-|openbb.stocks.options.unu |Unusual Options |
-|openbb.stocks.options.vsurf |Volatility Surface |
+|stocks.options.pcr| Put-Call Ratio |
+|stocks.options.info| Option Information |
+|stocks.options.unu| Unusual Options Activity|
+|stocks.options.hist|Historical Option Data|
+|stocks.options.chains | Option Chain Data|
+||stocks.options.eodchain | Get End of Day Option Chain Data|
+|stocks.options.vol| Display Volume plot|
+|stocks.options.oi| Display open interest plot|
+|stocks.options.voi| Display plot of volume and open interest|
+|stocks.options.expirations| Get Option Expirations|
+|stocks.options.vsurf|Show volatility surface|
 
 Alternatively, the contents of the menu or a function's docstrings can be printed using Python's built-in help.
 
@@ -87,21 +86,19 @@ openbb.stocks.options.pcr(start_date = '2012-01-01', window = 10, symbol = 'SPY'
 | 2022-12-01 00:00:00 | 0.9842 |
 | 2022-12-02 00:00:00 | 2.1346 |
 
-### Hist_CE
+### Chains
 
-The historical daily data of an individual option, from ChartExchange, includes open interest.
+Get the current option chain for a selected ticker.  We support the following sources: YahooFinance, Nasdaq,
+Tradier (Sandbox) and Intrinio.  Note that each API returns slightly different data fields.
 
 ```python
-openbb.stocks.options.hist_ce(symbol = 'SPY', price = '400', date = '2023-01-20', call = False)
+openbb.stocks.options.chains(symbol = 'SPY')
 ```
 
-|    | Date       |   Open |   High |   Low |   Close |   Change |   Volume |   Open Interest |   Change Since |
-|---:|:-----------|-------:|-------:|------:|--------:|---------:|---------:|----------------:|---------------:|
-|  0 | 2022-12-01 |   8.5  |  10.01 |  7.99 |    8.68 | -0.01251 |    11443 |           47690 |        0       |
-|  1 | 2022-11-30 |  14.44 |  15.68 |  8.79 |    8.79 | -0.3866  |    19763 |           46218 |       -0.01251 |
-|  2 | 2022-11-29 |  14.74 |  15.37 | 14.25 |   14.33 |  0.01415 |      666 |           45105 |       -0.39428 |
-|  3 | 2022-11-28 |  12.49 |  14.86 | 11.94 |   14.13 |  0.27297 |    10643 |           45828 |       -0.3857  |
-| 366 | 2021-05-21 |  37.72 |  37.72 | 37.59 |   37.59 | -0.01079 |        5 |               0 |       -0.76909 |
-| 367 | 2021-05-20 |  38    |  38    | 38    |   38    | -0.07317 |        2 |               0 |       -0.77158 |
-| 368 | 2021-05-19 |  41.67 |  41.67 | 41    |   41    |  0.07471 |       26 |               0 |       -0.78829 |
-| 369 | 2021-05-17 |  37.43 |  38.15 | 37.43 |   38.15 | -0.0453  |        3 |               0 |       -0.77248 |
+|    | contractSymbol      | optionType   | expiration   |   strike |   lastPrice |    bid |    ask |   openInterest |   volume |   impliedVolatility |
+|---:|:--------------------|:-------------|:-------------|---------:|------------:|-------:|-------:|---------------:|---------:|--------------------:|
+|  0 | AAPL230210C00050000 | call         | 2023-02-10   |       50 |      101.95 | 101.15 | 102.8  |            153 |       44 |             4.73438 |
+|  1 | AAPL230210C00055000 | call         | 2023-02-10   |       55 |       96.6  |  96.15 |  97.85 |             81 |        3 |             4.53125 |
+|  2 | AAPL230210C00070000 | call         | 2023-02-10   |       70 |       76.39 |  81.1  |  82.95 |              0 |        1 |             3.63281 |
+|  3 | AAPL230210C00075000 | call         | 2023-02-10   |       75 |       79.45 |  76.1  |  78.05 |              2 |        1 |             3.50781 |
+|  4 | AAPL230210C00080000 | call         | 2023-02-10   |       80 |       72.55 |  71.1  |  73.05 |              2 |        2 |             3.21094 |
