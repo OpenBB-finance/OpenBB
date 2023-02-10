@@ -1223,13 +1223,12 @@ def parse_args_and_run():
             " to see testing argument options."
         ),
     )
-    if str(os.getenv("OPENBB_ENABLE_AUTHENTICATION")).lower() == "true":
-        parser.add_argument(
-            "-u",
-            "--user-auth",
-            action="store_true",
-            help="Run terminal with user authentication.",
-        )
+    parser.add_argument(
+        "-u",
+        "--user-auth",
+        action="store_true",
+        help=argparse.SUPPRESS,
+    )
     # The args -m, -f and --HistoryManager.hist_file are used only in reports menu
     # by papermill and that's why they have suppress help.
     parser.add_argument(

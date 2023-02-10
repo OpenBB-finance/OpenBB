@@ -114,6 +114,7 @@ def main(guest_allowed: bool = True):
     guest_allowed : bool, optional
         Allow guest login, by default True
     """
+    clear_openbb_env_vars()
     local_session = Local.get_session()
     if not local_session:
         prompt(guest_allowed=guest_allowed)
