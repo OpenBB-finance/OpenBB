@@ -5,7 +5,6 @@ __docformat__ = "numpy"
 import argparse
 import contextlib
 import difflib
-import importlib
 import logging
 import os
 import re
@@ -33,7 +32,7 @@ from openbb_terminal.core.config.paths import (
     USER_DATA_DIRECTORY,
     USER_ENV_FILE,
     USER_ROUTINES_DIRECTORY,
-    load_dotenv_with_priority,
+    load_dotenv_and_reload,
 )
 from openbb_terminal.core.log.generation.custom_logger import log_terminal
 from openbb_terminal.helper_funcs import (
@@ -835,11 +834,7 @@ def terminal(jobs_cmds: List[str] = None, test_mode=False):
     """Terminal Menu."""
 
     if User.is_guest():
-        load_dotenv_with_priority()
-        modules = sys.modules.copy()
-        for module in modules:
-            if module.startswith("openbb"):
-                importlib.reload(sys.modules[module])
+        load_dotenv_and_reload()
 
     log_terminal(test_mode=test_mode)
 
