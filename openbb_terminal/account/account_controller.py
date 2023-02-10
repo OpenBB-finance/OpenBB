@@ -122,10 +122,9 @@ class AccountController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="logout",
-            description="Logout from OpenBB",
+            description="Logout from current session.",
         )
-        ns_parser = self.parse_simple_args(parser, other_args)
-
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             logout(
                 auth_header=User.get_auth_header(),

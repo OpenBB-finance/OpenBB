@@ -150,10 +150,10 @@ def test_logout_user(guest):
 
     if not guest:
         mock_delete_session.assert_called_once_with(auth_header, token)
-    mock_clear_user.assert_called_once()
+        mock_clear_user.assert_called_once()
+        mock_remove_session_file.assert_called_once()
     mock_clear_openbb_env_vars.assert_called_once()
     mock_reload_openbb_modules.assert_called_once()
-    mock_remove_session_file.assert_called_once()
     mock_remove_cli_history_file.assert_called_once()
     mock_plt_close.assert_called_once()
 
