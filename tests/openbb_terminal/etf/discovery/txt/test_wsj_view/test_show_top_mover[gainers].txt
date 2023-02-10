@@ -1,7 +1,6 @@
-                                                             Price     Chg   %Chg    Vol
-0               MicroSectors Gold Miners 3X Leveraged ETN  11.8000  1.9800  20.16   1.5M
-1         Direxion Daily Gold Miners Index Bull 2X Shares  53.1800  6.5900  14.14   4.7M
-2  Direxion Daily Junior Gold Miners Index Bull 2X Shares  66.3400  8.1200  13.95   2.1M
-3                              ELEMENTS ETN-Rogers Energy   3.3808  0.4008  13.45  81.1K
-4              ProShares UltraShort Bloomberg Natural Gas  49.6000  5.3700  12.14   1.4M
-
+                                                            Price    Chg  %Chg     Vol
+0                Direxion Daily FTSE China Bull 3X Shares  59.640  4.450  8.06  276.6K
+1             Direxion Daily Semiconductor Bull 3X Shares  17.715  1.225  7.43   13.6M
+2  Direxion Daily CSI China Internet Index Bull 2X Shares  60.990  4.130  7.26   94.6K
+3                    Direxion Daily Retail Bull 3x Shares  11.220  0.490  4.57   66.0K
+4                    Direxion Daily TSLA Bull 1.5X Shares  13.200  0.570  4.51    3.5M

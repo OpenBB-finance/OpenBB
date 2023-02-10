@@ -1,0 +1,3 @@
+[info]Name:[/info] script1
+[info]Description:[/info] abc
+[info]Location:[/info] path_to_file

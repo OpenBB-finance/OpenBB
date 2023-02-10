@@ -14,7 +14,6 @@ from openbb_terminal import (
     keys_model,
     keys_view,
 )
-from openbb_terminal.core.config.paths import USER_ENV_FILE
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import EXPORT_ONLY_RAW_DATA_ALLOWED
@@ -38,11 +37,9 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         self,
         queue: Optional[List[str]] = None,
         menu_usage: bool = True,
-        env_file: str = str(USER_ENV_FILE),
     ):
         """Constructor"""
         super().__init__(queue)
-        self.env_file = env_file
         if menu_usage:
             if session and obbff.USE_PROMPT_TOOLKIT:
                 choices: dict = {c: {} for c in self.controller_choices}

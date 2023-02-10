@@ -64,7 +64,6 @@ class FundamentalAnalysisController(StockBaseController):
         "mgmt",
         "splits",
         "shrs",
-        "sust",
         "overview",
         "income",
         "balance",
@@ -132,7 +131,6 @@ class FundamentalAnalysisController(StockBaseController):
         mt.add_cmd("rot")
         mt.add_cmd("score")
         mt.add_cmd("warnings")
-        mt.add_cmd("sust", not self.suffix)
         mt.add_raw("\n")
         mt.add_info("_management_shareholders")
         mt.add_cmd("mgmt")
@@ -581,22 +579,13 @@ class FundamentalAnalysisController(StockBaseController):
         )
 
         if ns_parser:
-            if ns_parser.source == "SeekingAlpha":
-                seeking_alpha_view.display_rev_estimates(
-                    self.ticker,
-                    export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
-                )
-            elif ns_parser.source == "YahooFinance":
-                yahoo_finance_view.display_calendar_earnings(
-                    symbol=self.ticker,
-                    export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
-                )
+            seeking_alpha_view.display_rev_estimates(
+                self.ticker,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )
 
     @log_start_end(log=logger)
     def call_splits(self, other_args: List[str]):
@@ -648,37 +637,6 @@ class FundamentalAnalysisController(StockBaseController):
                 yahoo_finance_view.display_shareholders(
                     self.ticker,
                     holder=ns_parser.holder,
-                    export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
-                )
-            else:
-                console.print("Only US tickers are recognized.", "\n")
-
-    @log_start_end(log=logger)
-    def call_sust(self, other_args: List[str]):
-        """Process sust command."""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="sust",
-            description="""
-                Print sustainability values of the company. The following fields are expected:
-                Palmoil, Controversialweapons, Gambling, Socialscore, Nuclear, Furleather, Alcoholic,
-                Gmo, Catholic, Socialpercentile, Peercount, Governancescore, Environmentpercentile,
-                Animaltesting, Tobacco, Total ESG, Highestcontroversy, ESG Performance, Coal, Pesticides,
-                Adult, Percentile, Peergroup, Smallarms, Environmentscore, Governancepercentile,
-                Militarycontract. [Source: Yahoo Finance]
-            """,
-        )
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
-            if not self.suffix:
-                yahoo_finance_view.display_sustainability(
-                    self.ticker,
                     export=ns_parser.export,
                     sheet_name=" ".join(ns_parser.sheet_name)
                     if ns_parser.sheet_name

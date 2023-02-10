@@ -317,5 +317,9 @@ class ConsoleAndPanel:
             else:
                 print(*args, **kwargs)
 
+    def input(self, *args, **kwargs):
+        self.print(*args, **kwargs, end="")
+        return input()
+
 
 console = ConsoleAndPanel()
