@@ -25,7 +25,7 @@ jobs:
         with:
           workflow: windows10_build.yml
           token: ${{ secrets.GITHUB_TOKEN }}
-          wait-for-completion-timeout: 2h
+          wait-for-completion-timeout: 3h
 
   trigger-macos-build:
     runs-on: ubuntu-latest
