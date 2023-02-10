@@ -139,7 +139,7 @@ pre-commit = "^2.16.0"
 pytest-cov = "^3.0.0"
 types-six = "^1.16.12"
 nbmake = ">0.5.0"
-ruff = "^0.0.236"
+ruff = "^0.0.244"
 
 [tool.poetry.extras]
 prediction = ["torch", "pytorch-lightning", "u8darts", "lightgbm"]
@@ -148,10 +148,6 @@ all = ["torch", "pytorch-lightning", "u8darts", "Riskfolio-Lib"]
 jupyterlab = ["jupyterlab-code-formatter", "jupyterlab-lsp", "jedi-language-server"]
 installer = ["pyinstaller"]
 doc = ["docstring-parser"]
-
-[tool.poetry.group.dev.dependencies]
-mypy = "^1.0.0"
-ruff = "^0.0.244"
 
 [build-system]
 requires = ["setuptools<65.5.0", "poetry-core>=1.0.0"]
