@@ -33,6 +33,8 @@ class OpenBBSDK:
 
     def __init__(self):
         SDKLogger()
+        self.login = lib.sdk_session.login
+        self.logout = lib.sdk_session.logout
         self.news = lib.common_feedparser_model.get_news
 
     @property
@@ -120,8 +122,6 @@ class OpenBBSDK:
             `bigmac`: Display Big Mac Index for given countries\n
             `bigmac_chart`: Display Big Mac Index for given countries\n
             `country_codes`: Get available country codes for Bigmac index\n
-            `cpi`: Get Consumer Price Index from Alpha Vantage\n
-            `cpi_chart`: Display US consumer price index (CPI) from AlphaVantage\n
             `currencies`: Scrape data for global currencies\n
             `events`: Get economic calendar for countries between specified dates\n
             `fred`: Get Series data. [Source: FRED]\n
@@ -130,17 +130,11 @@ class OpenBBSDK:
             `fred_notes`: Get series notes. [Source: FRED]\n
             `future`: Get futures data. [Source: Finviz]\n
             `futures`: Get futures data.\n
-            `gdp`: Get annual or quarterly Real GDP for US\n
-            `gdp_chart`: Display US GDP from AlphaVantage\n
-            `gdpc`: Real GDP per Capita for United States\n
-            `gdpc_chart`: Display US GDP per Capita from AlphaVantage\n
             `get_groups`: Get group available\n
             `glbonds`: Scrape data for global bonds\n
             `index`: Get data on selected indices over time [Source: Yahoo Finance]\n
             `index_chart`: Load (and show) the selected indices over time [Source: Yahoo Finance]\n
             `indices`: Get the top US indices\n
-            `inf`: Get historical Inflation for United States from AlphaVantage\n
-            `inf_chart`: Display US Inflation from AlphaVantage\n
             `macro`: This functions groups the data queried from the EconDB database [Source: EconDB]\n
             `macro_chart`: Show the received macro data about a company [Source: EconDB]\n
             `macro_countries`: This function returns the available countries and respective currencies.\n
@@ -155,10 +149,6 @@ class OpenBBSDK:
             `treasury`: Get U.S. Treasury rates [Source: EconDB]\n
             `treasury_chart`: Display U.S. Treasury rates [Source: EconDB]\n
             `treasury_maturities`: Get treasury maturity options [Source: EconDB]\n
-            `tyld`: Get historical yield for a given maturity\n
-            `tyld_chart`: Display historical treasury yield for given maturity\n
-            `unemp`: Get historical unemployment for United States\n
-            `unemp_chart`: Display US unemployment AlphaVantage\n
             `usbonds`: Scrape data for us bonds\n
             `valuation`: Get group (sectors, industry or country) valuation data. [Source: Finviz]\n
             `ycrv`: Gets yield curve data from FRED\n
@@ -187,9 +177,8 @@ class OpenBBSDK:
             `news`: Get news for a given term. [Source: NewsAPI]\n
             `news_chart`: Prints table showing news for a given term. [Source: NewsAPI]\n
             `overview`: Get overview data for selected etf\n
-            `summary`: Return summary description of ETF. [Source: Yahoo Finance]\n
             `symbols`: Gets all etf names and symbols\n
-            `weights`: Return sector weightings allocation of ETF. [Source: Yahoo Finance]\n
+            `weights`: Return sector weightings allocation of ETF. [Source: FinancialModelingPrep]\n
         """
 
         return ctrl.EtfController()
@@ -445,12 +434,9 @@ class OpenBBSDK:
 
         Attributes:
             `candle`: Show candle plot of loaded ticker.\n
-            `filings`: Get SEC Filings RSS feed, disseminated by FMP\n
-            `filings_chart`: Display recent forms submitted to the SEC\n
             `load`: Load a symbol to perform analysis using the string above as a template.\n
             `process_candle`: Process DataFrame into candle style plot.\n
-            `quote_fmp`: Gets ticker quote from FMP\n
-            `quote_yf`: Ticker quote.  [Source: YahooFinance]\n
+            `quote`: Gets ticker quote from FMP\n
             `search`: Search selected query for tickers.\n
             `tob`: Get top of book bid and ask for ticker on exchange [CBOE.com]\n
         """

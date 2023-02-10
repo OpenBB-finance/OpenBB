@@ -149,12 +149,9 @@ class PortfolioPortfolioOptimization(Category):
 
     Attributes:
         `blacklitterman`: Optimize decorrelation weights\n
-        `dividend`: Optimize weighted according to dividend yield\n
         `ef`: Get Efficient Frontier\n
         `ef_chart`: Display efficient frontier\n
-        `equal`: Equally weighted portfolio, where weight = 1/# of symbols\n
         `file`: Load portfolio optimization engine from file\n
-        `get_properties`: Get properties to use on property optimization.\n
         `hcp`: Builds hierarchical clustering based portfolios\n
         `herc`: Optimize with Hierarchical Equal Risk Contribution (HERC) method.\n
         `hrp`: Optimize with Hierarchical Risk Parity\n
@@ -166,11 +163,9 @@ class PortfolioPortfolioOptimization(Category):
         `maxsharpe`: Optimize Sharpe ratio weights\n
         `maxutil`: Optimize maximum utility weights\n
         `minrisk`: Optimize minimum risk weights\n
-        `mktcap`: Optimize weighted according to market capitalization\n
         `nco`: Optimize with Non-Convex Optimization (NCO) model.\n
         `plot`: Display efficient frontier\n
         `plot_chart`: Display efficient frontier\n
-        `property`: Optimize weighted according to property\n
         `relriskparity`: Optimize with Relaxed Risk Parity using the least squares approach\n
         `riskparity`: Optimize with Risk Parity using the risk budgeting approach\n
         `show`: Show portfolio optimization results\n
@@ -190,14 +185,9 @@ class PortfolioPortfolioOptimization(Category):
 
         if lib.OPTIMIZATION_TOOLKIT_ENABLED:
             self.blacklitterman = lib.portfolio_optimization_po_model.get_blacklitterman
-            self.dividend = lib.portfolio_optimization_po_model.get_dividend
             self.ef = lib.portfolio_optimization_po_model.get_ef
             self.ef_chart = lib.portfolio_optimization_po_view.display_ef
-            self.equal = lib.portfolio_optimization_po_model.get_equal
             self.file = lib.portfolio_optimization_po_model.load_parameters_file
-            self.get_properties = (
-                lib.portfolio_optimization_optimizer_model.get_properties
-            )
             self.hcp = lib.portfolio_optimization_optimizer_model.get_hcp_portfolio
             self.herc = lib.portfolio_optimization_po_model.get_herc
             self.hrp = lib.portfolio_optimization_po_model.get_hrp
@@ -209,11 +199,9 @@ class PortfolioPortfolioOptimization(Category):
             self.maxsharpe = lib.portfolio_optimization_po_model.get_maxsharpe
             self.maxutil = lib.portfolio_optimization_po_model.get_maxutil
             self.minrisk = lib.portfolio_optimization_po_model.get_minrisk
-            self.mktcap = lib.portfolio_optimization_po_model.get_mktcap
             self.nco = lib.portfolio_optimization_po_model.get_nco
             self.plot = lib.portfolio_optimization_po_view.display_plot
             self.plot_chart = lib.portfolio_optimization_po_view.display_plot
-            self.property = lib.portfolio_optimization_po_model.get_property
             self.relriskparity = lib.portfolio_optimization_po_model.get_relriskparity
             self.riskparity = lib.portfolio_optimization_po_model.get_riskparity
             self.show = lib.portfolio_optimization_po_model.show

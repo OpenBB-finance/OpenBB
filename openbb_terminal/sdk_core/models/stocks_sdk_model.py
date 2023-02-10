@@ -9,12 +9,9 @@ class StocksRoot(Category):
 
     Attributes:
         `candle`: Show candle plot of loaded ticker.\n
-        `filings`: Get SEC Filings RSS feed, disseminated by FMP\n
-        `filings_chart`: Display recent forms submitted to the SEC\n
         `load`: Load a symbol to perform analysis using the string above as a template.\n
         `process_candle`: Process DataFrame into candle style plot.\n
-        `quote_fmp`: Gets ticker quote from FMP\n
-        `quote_yf`: Ticker quote.  [Source: YahooFinance]\n
+        `quote`: Gets ticker quote from FMP\n
         `search`: Search selected query for tickers.\n
         `tob`: Get top of book bid and ask for ticker on exchange [CBOE.com]\n
     """
@@ -24,12 +21,9 @@ class StocksRoot(Category):
     def __init__(self):
         super().__init__()
         self.candle = lib.stocks_helper.display_candle
-        self.filings = lib.stocks_fa_fmp_model.get_filings
-        self.filings_chart = lib.stocks_fa_fmp_view.display_filings
         self.load = lib.stocks_helper.load
         self.process_candle = lib.stocks_helper.process_candle
-        self.quote_fmp = lib.stocks_model.get_quote_fmp
-        self.quote_yf = lib.stocks_model.get_quote_yf
+        self.quote = lib.stocks_model.get_quote
         self.search = lib.stocks_helper.search
         self.tob = lib.stocks_cboe_model.get_top_of_book
 
@@ -154,6 +148,8 @@ class StocksDiscovery(Category):
         `arkord`: Returns ARK orders in a Dataframe\n
         `asc`: Get Yahoo Finance small cap stocks with earnings growth rates better than 25%.\n
         `dividends`: Gets dividend calendar for given date.  Date represents Ex-Dividend Date\n
+        `filings`: Get SEC Filings RSS feed, disseminated by FMP\n
+        `filings_chart`: Display recent forms submitted to the SEC\n
         `fipo`: Future IPOs dates. [Source: Finnhub]\n
         `gainers`: Get top gainers. [Source: Yahoo Finance]\n
         `gtech`: Get technology stocks with revenue and earnings growth in excess of 25%. [Source: Yahoo Finance]\n
@@ -178,6 +174,8 @@ class StocksDiscovery(Category):
         self.arkord = lib.stocks_disc_ark_model.get_ark_orders
         self.asc = lib.stocks_disc_yahoofinance_model.get_asc
         self.dividends = lib.stocks_disc_nasdaq_model.get_dividend_cal
+        self.filings = lib.stocks_fa_fmp_model.get_filings
+        self.filings_chart = lib.stocks_disc_fmp_view.display_filings
         self.fipo = lib.stocks_disc_finnhub_model.get_future_ipo
         self.gainers = lib.stocks_disc_yahoofinance_model.get_gainers
         self.gtech = lib.stocks_disc_yahoofinance_model.get_gtech
@@ -246,7 +244,6 @@ class StocksFundamentalAnalysis(Category):
     Attributes:
         `analysis`: Save time reading SEC filings with the help of machine learning. [Source: https://eclect.us]\n
         `analyst`: Get analyst data. [Source: Finviz]\n
-        `arktrades`: Gets a dataframe of ARK trades for ticker\n
         `balance`: Get balance sheet.\n
         `cal`: Get calendar earnings for ticker symbol\n
         `cash`: Get Cash Flow.\n
@@ -284,12 +281,13 @@ class StocksFundamentalAnalysis(Category):
         `rot_chart`: Rating over time (monthly). [Source: Finnhub]\n
         `score`: Gets value score from fmp\n
         `sec`: Get SEC filings for a given stock ticker. [Source: Market Watch]\n
+        `sec_fmp`: Get SEC Filings RSS feed, disseminated by FMP\n
+        `sec_fmp_chart`: Display recent forms submitted to the SEC\n
         `shrs`: Get shareholders from yahoo\n
         `similar_dfs`: Get dataframes for similar companies\n
         `splits`: Get splits and reverse splits events. [Source: Yahoo Finance]\n
         `splits_chart`: Display splits and reverse splits events. [Source: Yahoo Finance]\n
         `supplier`: Get suppliers from ticker provided. [Source: CSIMarket]\n
-        `sust`: Get sustainability metrics from yahoo\n
     """
 
     _location_path = "stocks.fa"
@@ -298,7 +296,6 @@ class StocksFundamentalAnalysis(Category):
         super().__init__()
         self.analysis = lib.stocks_fa_eclect_us_model.get_filings_analysis
         self.analyst = lib.stocks_fa_finviz_model.get_analyst_data
-        self.arktrades = lib.stocks_fa_ark_model.get_ark_trades_by_ticker
         self.balance = lib.stocks_fa_sdk_helpers.get_balance_sheet
         self.cal = lib.stocks_fa_yahoo_finance_model.get_calendar_earnings
         self.cash = lib.stocks_fa_sdk_helpers.get_cash_flow
@@ -336,12 +333,13 @@ class StocksFundamentalAnalysis(Category):
         self.rot_chart = lib.stocks_fa_finnhub_view.rating_over_time
         self.score = lib.stocks_fa_fmp_model.get_score
         self.sec = lib.stocks_fa_marketwatch_model.get_sec_filings
+        self.sec_fmp = lib.stocks_fa_fmp_model.get_filings
+        self.sec_fmp_chart = lib.stocks_fa_fmp_view.display_filings
         self.shrs = lib.stocks_fa_yahoo_finance_model.get_shareholders
         self.similar_dfs = lib.stocks_fa_dcf_model.get_similar_dfs
         self.splits = lib.stocks_fa_yahoo_finance_model.get_splits
         self.splits_chart = lib.stocks_fa_yahoo_finance_view.display_splits
         self.supplier = lib.stocks_fa_csimarket_model.get_suppliers
-        self.sust = lib.stocks_fa_yahoo_finance_model.get_sustainability
 
 
 class StocksGovernment(Category):
@@ -461,21 +459,19 @@ class StocksOptions(Category):
     Attributes:
         `chains`: Get Option Chain For A Stock.  No greek data is returned\n
         `dte`: Gets days to expiration from yfinance option date\n
+        `eodchain`: Get full EOD option date across all expirations\n
         `expirations`: Get Option Chain Expirations\n
         `generate_data`: Gets x values, and y values before and after premiums\n
-        `grhist`: Get histoical option greeks\n
+        `grhist`: Get historical option greeks\n
         `grhist_chart`: Plots historical greeks for a given option. [Source: Syncretism]\n
         `hist`: Get historical option pricing.\n
-        `hist_ce`: Historic prices for a specific option [chartexchange]\n
-        `hist_ce_chart`: Return raw stock data[chartexchange]\n
-        `info`: Get info for a given ticker\n
+        `info`: Scrape barchart for options info\n
         `info_chart`: Scrapes Barchart.com for the options information\n
         `last_price`: Makes api request for last price\n
         `oi`: Plot open interest\n
         `pcr`: Gets put call ratio over last time window [Source: AlphaQuery.com]\n
         `pcr_chart`: Display put call ratio [Source: AlphaQuery.com]\n
         `price`: Get Option current price for a stock.\n
-        `process_chains`: Function to take in the request and return a DataFrame\n
         `unu`: Get unusual option activity from fdscanner.com\n
         `unu_chart`: Displays the unusual options table\n
         `voi`: Plot volume and open interest\n
@@ -490,6 +486,7 @@ class StocksOptions(Category):
         super().__init__()
         self.chains = lib.stocks_options_sdk_helper.get_full_option_chain
         self.dte = lib.stocks_options_yfinance_model.get_dte
+        self.eodchain = lib.stocks_options_intrinio_model.get_full_chain_eod
         self.expirations = lib.stocks_options_sdk_helper.get_option_expirations
         self.generate_data = lib.stocks_options_yfinance_model.generate_data
         self.grhist = lib.stocks_options_screen_syncretism_model.get_historical_greeks
@@ -497,16 +494,13 @@ class StocksOptions(Category):
             lib.stocks_options_screen_syncretism_view.view_historical_greeks
         )
         self.hist = lib.stocks_options_sdk_helper.hist
-        self.hist_ce = lib.stocks_options_chartexchange_model.get_option_history
-        self.hist_ce_chart = lib.stocks_options_chartexchange_view.display_raw
-        self.info = lib.stocks_options_yfinance_model.get_info
+        self.info = lib.stocks_options_barchart_model.get_options_info
         self.info_chart = lib.stocks_options_barchart_view.print_options_data
         self.last_price = lib.stocks_options_tradier_model.get_last_price
         self.oi = lib.stocks_options_view.plot_oi
         self.pcr = lib.stocks_options_alphaquery_model.get_put_call_ratio
         self.pcr_chart = lib.stocks_options_alphaquery_view.display_put_call_ratio
         self.price = lib.stocks_options_sdk_helper.get_option_current_price
-        self.process_chains = lib.stocks_options_tradier_model.process_chains
         self.unu = lib.stocks_options_fdscanner_model.unusual_options
         self.unu_chart = lib.stocks_options_fdscanner_view.display_options
         self.voi = lib.stocks_options_view.plot_voi
@@ -541,6 +535,7 @@ class StocksScreener(Category):
     """Screener Module.
 
     Attributes:
+        `arktrades`: Gets a dataframe of ARK trades for ticker\n
         `historical`: View historical price of stocks that meet preset\n
         `historical_chart`: View historical price of stocks that meet preset\n
         `screener_data`: Screener Overview\n
@@ -551,6 +546,7 @@ class StocksScreener(Category):
 
     def __init__(self):
         super().__init__()
+        self.arktrades = lib.stocks_screener_ark_model.get_ark_trades_by_ticker
         self.historical = lib.stocks_screener_yahoofinance_model.historical
         self.historical_chart = lib.stocks_screener_yahoofinance_view.historical
         self.screener_data = lib.stocks_screener_finviz_model.get_screener_data

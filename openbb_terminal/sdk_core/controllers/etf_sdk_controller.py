@@ -22,9 +22,8 @@ class EtfController(model.EtfRoot):
         `news`: Get news for a given term. [Source: NewsAPI]\n
         `news_chart`: Prints table showing news for a given term. [Source: NewsAPI]\n
         `overview`: Get overview data for selected etf\n
-        `summary`: Return summary description of ETF. [Source: Yahoo Finance]\n
         `symbols`: Gets all etf names and symbols\n
-        `weights`: Return sector weightings allocation of ETF. [Source: Yahoo Finance]\n
+        `weights`: Return sector weightings allocation of ETF. [Source: FinancialModelingPrep]\n
     """
 
     @property

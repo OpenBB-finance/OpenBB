@@ -2,6 +2,9 @@
 # noqa: F401
 
 
+# Session
+from openbb_terminal.session import sdk_session
+
 # Alternative
 import openbb_terminal.alternative.hackernews_model as alt_hackernews_model
 import openbb_terminal.alternative.hackernews_view as alt_hackernews_view
@@ -234,8 +237,8 @@ from openbb_terminal.etf import (
     financedatabase_view as etf_financedatabase_view,
     stockanalysis_model as etf_stockanalysis_model,
     stockanalysis_view as etf_stockanalysis_view,
-    yfinance_model as etf_yfinance_model,
-    yfinance_view as etf_yfinance_view,
+    fmp_model as etf_fmp_model,
+    fmp_view as etf_fmp_view,
 )
 
 # Forex
@@ -309,6 +312,7 @@ from openbb_terminal.stocks.dark_pool_shorts import (
 from openbb_terminal.stocks.discovery import (
     ark_model as stocks_disc_ark_model,
     finnhub_model as stocks_disc_finnhub_model,
+    fmp_view as stocks_disc_fmp_view,
     nasdaq_model as stocks_disc_nasdaq_model,
     seeking_alpha_model as stocks_disc_seeking_alpha_model,
     shortinterest_model as stocks_disc_shortinterest_model,
@@ -317,8 +321,6 @@ from openbb_terminal.stocks.discovery import (
 
 # Stocks - Fundamental Analysis
 from openbb_terminal.stocks.fundamental_analysis import (
-    ark_model as stocks_fa_ark_model,
-    ark_view as stocks_fa_ark_view,
     av_model as stocks_fa_av_model,
     av_view as stocks_fa_av_view,
     business_insider_model as stocks_fa_business_insider_model,
@@ -370,6 +372,8 @@ from openbb_terminal.stocks.options import (
     chartexchange_view as stocks_options_chartexchange_view,
     fdscanner_model as stocks_options_fdscanner_model,
     fdscanner_view as stocks_options_fdscanner_view,
+    intrinio_model as stocks_options_intrinio_model,
+    intrinio_view as stocks_options_intrinio_view,
     nasdaq_model as stocks_options_nasdaq_model,
     options_sdk_helper as stocks_options_sdk_helper,
     options_view as stocks_options_view,
@@ -389,6 +393,8 @@ from openbb_terminal.stocks.screener import (
     finviz_view as stocks_screener_finviz_view,
     yahoofinance_model as stocks_screener_yahoofinance_model,
     yahoofinance_view as stocks_screener_yahoofinance_view,
+    ark_model as stocks_screener_ark_model,
+    ark_view as stocks_screener_ark_view,
 )
 
 # Stocks - Sector Industry Analysis

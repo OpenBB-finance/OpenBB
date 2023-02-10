@@ -19,9 +19,8 @@ class EtfRoot(Category):
         `news`: Get news for a given term. [Source: NewsAPI]\n
         `news_chart`: Prints table showing news for a given term. [Source: NewsAPI]\n
         `overview`: Get overview data for selected etf\n
-        `summary`: Return summary description of ETF. [Source: Yahoo Finance]\n
         `symbols`: Gets all etf names and symbols\n
-        `weights`: Return sector weightings allocation of ETF. [Source: Yahoo Finance]\n
+        `weights`: Return sector weightings allocation of ETF. [Source: FinancialModelingPrep]\n
     """
 
     _location_path = "etf"
@@ -39,9 +38,8 @@ class EtfRoot(Category):
         self.news = lib.common_newsapi_model.get_news
         self.news_chart = lib.common_newsapi_view.display_news
         self.overview = lib.etf_stockanalysis_model.get_etf_overview
-        self.summary = lib.etf_yfinance_model.get_etf_summary_description
         self.symbols = lib.etf_stockanalysis_model.get_all_names_symbols
-        self.weights = lib.etf_yfinance_model.get_etf_sector_weightings
+        self.weights = lib.etf_fmp_model.get_etf_sector_weightings
 
 
 class EtfDiscovery(Category):

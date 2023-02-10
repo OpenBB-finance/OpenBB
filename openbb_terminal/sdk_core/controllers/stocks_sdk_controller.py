@@ -23,12 +23,9 @@ class StocksController(model.StocksRoot):
 
     Attributes:
         `candle`: Show candle plot of loaded ticker.\n
-        `filings`: Get SEC Filings RSS feed, disseminated by FMP\n
-        `filings_chart`: Display recent forms submitted to the SEC\n
         `load`: Load a symbol to perform analysis using the string above as a template.\n
         `process_candle`: Process DataFrame into candle style plot.\n
-        `quote_fmp`: Gets ticker quote from FMP\n
-        `quote_yf`: Ticker quote.  [Source: YahooFinance]\n
+        `quote`: Gets ticker quote from FMP\n
         `search`: Search selected query for tickers.\n
         `tob`: Get top of book bid and ask for ticker on exchange [CBOE.com]\n
     """
@@ -103,6 +100,8 @@ class StocksController(model.StocksRoot):
             `arkord`: Returns ARK orders in a Dataframe\n
             `asc`: Get Yahoo Finance small cap stocks with earnings growth rates better than 25%.\n
             `dividends`: Gets dividend calendar for given date.  Date represents Ex-Dividend Date\n
+            `filings`: Get SEC Filings RSS feed, disseminated by FMP\n
+            `filings_chart`: Display recent forms submitted to the SEC\n
             `fipo`: Future IPOs dates. [Source: Finnhub]\n
             `gainers`: Get top gainers. [Source: Yahoo Finance]\n
             `gtech`: Get technology stocks with revenue and earnings growth in excess of 25%. [Source: Yahoo Finance]\n
@@ -154,7 +153,6 @@ class StocksController(model.StocksRoot):
         Attributes:
             `analysis`: Save time reading SEC filings with the help of machine learning. [Source: https://eclect.us]\n
             `analyst`: Get analyst data. [Source: Finviz]\n
-            `arktrades`: Gets a dataframe of ARK trades for ticker\n
             `balance`: Get balance sheet.\n
             `cal`: Get calendar earnings for ticker symbol\n
             `cash`: Get Cash Flow.\n
@@ -192,12 +190,13 @@ class StocksController(model.StocksRoot):
             `rot_chart`: Rating over time (monthly). [Source: Finnhub]\n
             `score`: Gets value score from fmp\n
             `sec`: Get SEC filings for a given stock ticker. [Source: Market Watch]\n
+            `sec_fmp`: Get SEC Filings RSS feed, disseminated by FMP\n
+            `sec_fmp_chart`: Display recent forms submitted to the SEC\n
             `shrs`: Get shareholders from yahoo\n
             `similar_dfs`: Get dataframes for similar companies\n
             `splits`: Get splits and reverse splits events. [Source: Yahoo Finance]\n
             `splits_chart`: Display splits and reverse splits events. [Source: Yahoo Finance]\n
             `supplier`: Get suppliers from ticker provided. [Source: CSIMarket]\n
-            `sust`: Get sustainability metrics from yahoo\n
         """
 
         return model.StocksFundamentalAnalysis()
@@ -268,21 +267,19 @@ class StocksController(model.StocksRoot):
         Attributes:
             `chains`: Get Option Chain For A Stock.  No greek data is returned\n
             `dte`: Gets days to expiration from yfinance option date\n
+            `eodchain`: Get full EOD option date across all expirations\n
             `expirations`: Get Option Chain Expirations\n
             `generate_data`: Gets x values, and y values before and after premiums\n
-            `grhist`: Get histoical option greeks\n
+            `grhist`: Get historical option greeks\n
             `grhist_chart`: Plots historical greeks for a given option. [Source: Syncretism]\n
             `hist`: Get historical option pricing.\n
-            `hist_ce`: Historic prices for a specific option [chartexchange]\n
-            `hist_ce_chart`: Return raw stock data[chartexchange]\n
-            `info`: Get info for a given ticker\n
+            `info`: Scrape barchart for options info\n
             `info_chart`: Scrapes Barchart.com for the options information\n
             `last_price`: Makes api request for last price\n
             `oi`: Plot open interest\n
             `pcr`: Gets put call ratio over last time window [Source: AlphaQuery.com]\n
             `pcr_chart`: Display put call ratio [Source: AlphaQuery.com]\n
             `price`: Get Option current price for a stock.\n
-            `process_chains`: Function to take in the request and return a DataFrame\n
             `unu`: Get unusual option activity from fdscanner.com\n
             `unu_chart`: Displays the unusual options table\n
             `voi`: Plot volume and open interest\n
@@ -312,6 +309,7 @@ class StocksController(model.StocksRoot):
         """Stocks Screener Submodule
 
         Attributes:
+            `arktrades`: Gets a dataframe of ARK trades for ticker\n
             `historical`: View historical price of stocks that meet preset\n
             `historical_chart`: View historical price of stocks that meet preset\n
             `screener_data`: Screener Overview\n

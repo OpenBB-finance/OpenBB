@@ -12,8 +12,6 @@ class EconomyRoot(Category):
         `bigmac`: Display Big Mac Index for given countries\n
         `bigmac_chart`: Display Big Mac Index for given countries\n
         `country_codes`: Get available country codes for Bigmac index\n
-        `cpi`: Get Consumer Price Index from Alpha Vantage\n
-        `cpi_chart`: Display US consumer price index (CPI) from AlphaVantage\n
         `currencies`: Scrape data for global currencies\n
         `events`: Get economic calendar for countries between specified dates\n
         `fred`: Get Series data. [Source: FRED]\n
@@ -22,17 +20,11 @@ class EconomyRoot(Category):
         `fred_notes`: Get series notes. [Source: FRED]\n
         `future`: Get futures data. [Source: Finviz]\n
         `futures`: Get futures data.\n
-        `gdp`: Get annual or quarterly Real GDP for US\n
-        `gdp_chart`: Display US GDP from AlphaVantage\n
-        `gdpc`: Real GDP per Capita for United States\n
-        `gdpc_chart`: Display US GDP per Capita from AlphaVantage\n
         `get_groups`: Get group available\n
         `glbonds`: Scrape data for global bonds\n
         `index`: Get data on selected indices over time [Source: Yahoo Finance]\n
         `index_chart`: Load (and show) the selected indices over time [Source: Yahoo Finance]\n
         `indices`: Get the top US indices\n
-        `inf`: Get historical Inflation for United States from AlphaVantage\n
-        `inf_chart`: Display US Inflation from AlphaVantage\n
         `macro`: This functions groups the data queried from the EconDB database [Source: EconDB]\n
         `macro_chart`: Show the received macro data about a company [Source: EconDB]\n
         `macro_countries`: This function returns the available countries and respective currencies.\n
@@ -47,10 +39,6 @@ class EconomyRoot(Category):
         `treasury`: Get U.S. Treasury rates [Source: EconDB]\n
         `treasury_chart`: Display U.S. Treasury rates [Source: EconDB]\n
         `treasury_maturities`: Get treasury maturity options [Source: EconDB]\n
-        `tyld`: Get historical yield for a given maturity\n
-        `tyld_chart`: Display historical treasury yield for given maturity\n
-        `unemp`: Get historical unemployment for United States\n
-        `unemp_chart`: Display US unemployment AlphaVantage\n
         `usbonds`: Scrape data for us bonds\n
         `valuation`: Get group (sectors, industry or country) valuation data. [Source: Finviz]\n
         `ycrv`: Gets yield curve data from FRED\n
@@ -65,8 +53,6 @@ class EconomyRoot(Category):
         self.bigmac = lib.economy_nasdaq_model.get_big_mac_indices
         self.bigmac_chart = lib.economy_nasdaq_view.display_big_mac_index
         self.country_codes = lib.economy_nasdaq_model.get_country_codes
-        self.cpi = lib.economy_alphavantage_model.get_cpi
-        self.cpi_chart = lib.economy_alphavantage_view.display_cpi
         self.currencies = lib.economy_wsj_model.global_currencies
         self.events = lib.economy_nasdaq_model.get_economic_calendar
         self.fred = lib.economy_fred_model.get_aggregated_series_data
@@ -75,17 +61,11 @@ class EconomyRoot(Category):
         self.fred_notes = lib.economy_fred_model.get_series_notes
         self.future = lib.economy_finviz_model.get_futures
         self.futures = lib.economy_sdk_helpers.futures
-        self.gdp = lib.economy_alphavantage_model.get_real_gdp
-        self.gdp_chart = lib.economy_alphavantage_view.display_real_gdp
-        self.gdpc = lib.economy_alphavantage_model.get_gdp_capita
-        self.gdpc_chart = lib.economy_alphavantage_view.display_gdp_capita
         self.get_groups = lib.economy_finviz_model.get_groups
         self.glbonds = lib.economy_wsj_model.global_bonds
         self.index = lib.economy_yfinance_model.get_indices
         self.index_chart = lib.economy_yfinance_view.show_indices
         self.indices = lib.economy_wsj_model.us_indices
-        self.inf = lib.economy_alphavantage_model.get_inflation
-        self.inf_chart = lib.economy_alphavantage_view.display_inflation
         self.macro = lib.economy_econdb_model.get_aggregated_macro_data
         self.macro_chart = lib.economy_econdb_view.show_macro_data
         self.macro_countries = lib.economy_econdb_model.get_macro_countries
@@ -100,10 +80,6 @@ class EconomyRoot(Category):
         self.treasury = lib.economy_econdb_model.get_treasuries
         self.treasury_chart = lib.economy_econdb_view.show_treasuries
         self.treasury_maturities = lib.economy_econdb_model.get_treasury_maturities
-        self.tyld = lib.economy_alphavantage_model.get_treasury_yield
-        self.tyld_chart = lib.economy_alphavantage_view.display_treasury_yield
-        self.unemp = lib.economy_alphavantage_model.get_unemployment
-        self.unemp_chart = lib.economy_alphavantage_view.display_unemployment
         self.usbonds = lib.economy_wsj_model.us_bonds
         self.valuation = lib.economy_finviz_model.get_valuation_data
         self.ycrv = lib.economy_fred_model.get_yield_curve

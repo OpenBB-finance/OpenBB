@@ -90,12 +90,9 @@ class PortfolioController(model.PortfolioRoot):
 
         Attributes:
             `blacklitterman`: Optimize decorrelation weights\n
-            `dividend`: Optimize weighted according to dividend yield\n
             `ef`: Get Efficient Frontier\n
             `ef_chart`: Display efficient frontier\n
-            `equal`: Equally weighted portfolio, where weight = 1/# of symbols\n
             `file`: Load portfolio optimization engine from file\n
-            `get_properties`: Get properties to use on property optimization.\n
             `hcp`: Builds hierarchical clustering based portfolios\n
             `herc`: Optimize with Hierarchical Equal Risk Contribution (HERC) method.\n
             `hrp`: Optimize with Hierarchical Risk Parity\n
@@ -107,11 +104,9 @@ class PortfolioController(model.PortfolioRoot):
             `maxsharpe`: Optimize Sharpe ratio weights\n
             `maxutil`: Optimize maximum utility weights\n
             `minrisk`: Optimize minimum risk weights\n
-            `mktcap`: Optimize weighted according to market capitalization\n
             `nco`: Optimize with Non-Convex Optimization (NCO) model.\n
             `plot`: Display efficient frontier\n
             `plot_chart`: Display efficient frontier\n
-            `property`: Optimize weighted according to property\n
             `relriskparity`: Optimize with Relaxed Risk Parity using the least squares approach\n
             `riskparity`: Optimize with Risk Parity using the risk budgeting approach\n
             `show`: Show portfolio optimization results\n
