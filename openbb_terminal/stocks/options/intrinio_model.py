@@ -9,8 +9,8 @@ import numpy as np
 import pandas as pd
 
 from openbb_terminal import config_terminal as cfg
-from openbb_terminal.decorators import log_start_end
-from openbb_terminal.rich_config import optional_rich_track, console
+from openbb_terminal.decorators import check_api_key, log_start_end
+from openbb_terminal.rich_config import console, optional_rich_track
 
 logger = logging.getLogger(__name__)
 intrinio.ApiClient().set_api_key(cfg.API_INTRINIO_KEY)
@@ -71,6 +71,7 @@ def calculate_dte(chain_df: pd.DataFrame) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_INTRINIO_KEY"])
 def get_expiration_dates(
     symbol: str,
     start: str = (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d"),
@@ -98,6 +99,7 @@ def get_expiration_dates(
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_INTRINIO_KEY"])
 def get_option_chain(
     symbol: str,
     expiration: str,
@@ -141,6 +143,7 @@ def get_option_chain(
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_INTRINIO_KEY"])
 def get_full_option_chain(symbol: str, quiet: bool = False) -> pd.DataFrame:
     """Get option chain across all expirations
 
@@ -166,6 +169,7 @@ def get_full_option_chain(symbol: str, quiet: bool = False) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_INTRINIO_KEY"])
 def get_eod_chain_at_expiry_given_date(
     symbol: str, expiration: str, date: str, fillnans: bool = True
 ):
@@ -204,6 +208,7 @@ def get_eod_chain_at_expiry_given_date(
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_INTRINIO_KEY"])
 def get_full_chain_eod(symbol: str, date: str, quiet: bool = False) -> pd.DataFrame:
     """Get full EOD option date across all expirations
 
@@ -262,6 +267,7 @@ def get_full_chain_eod(symbol: str, date: str, quiet: bool = False) -> pd.DataFr
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_INTRINIO_KEY"])
 def get_close_at_date(symbol: str, date: str) -> float:
     """Get adjusted close price at a given date
 
@@ -298,6 +304,7 @@ def get_close_at_date(symbol: str, date: str) -> float:
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_INTRINIO_KEY"])
 def get_last_price(symbol: str) -> float:
     """Get the last price of a ticker
 
@@ -317,6 +324,7 @@ def get_last_price(symbol: str) -> float:
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_INTRINIO_KEY"])
 def get_historical_options(symbol: str) -> pd.DataFrame:
     """Get historical pricing option chain for a given symbol
 
