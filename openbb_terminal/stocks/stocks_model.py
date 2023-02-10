@@ -4,6 +4,7 @@ from datetime import datetime
 from urllib.error import HTTPError
 
 import fundamentalanalysis as fa  # Financial Modeling Prep
+import intrinio_sdk as intrinio
 import pandas as pd
 import pyEX
 import yfinance as yf
@@ -18,6 +19,45 @@ from openbb_terminal.stocks.fundamental_analysis.fa_helper import clean_df_index
 # pylint: disable=unsupported-assignment-operation,no-member
 
 logger = logging.getLogger(__name__)
+
+
+def load_stock_intrinio(
+    symbol: str, start_date: datetime, end_date: datetime
+) -> pd.DataFrame:
+    intrinio.ApiClient().set_api_key(cfg.API_INTRINIO_KEY)
+    api = intrinio.SecurityApi()
+    stock = api.get_security_stock_prices(
+        symbol.upper(),
+        start_date=start_date,
+        end_date=end_date,
+        frequency="daily",
+        page_size=10000,
+    )
+    df = pd.DataFrame(stock.to_dict()["stock_prices"])[
+        [
+            "adj_open",
+            "adj_high",
+            "adj_low",
+            "close",
+            "adj_close",
+            "date",
+            "adj_volume",
+            "dividend",
+        ]
+    ]
+    df["date"] = pd.DatetimeIndex(df["date"])
+    df = df.set_index("date").rename(
+        columns={
+            "adj_close": "Adj Close",
+            "adj_open": "Open",
+            "close": "Close",
+            "adj_high": "High",
+            "adj_low": "Low",
+            "adj_volume": "Volume",
+        }
+    )[::-1]
+
+    return df
 
 
 def load_stock_av(

@@ -4,11 +4,12 @@ __docformat__ = "numpy"
 import json
 import os
 from pathlib import Path
-from typing import Tuple
+from typing import Iterable, Tuple
 
 import i18n
 from rich import panel
 from rich.console import Console, Theme
+from rich.progress import track
 from rich.text import Text
 
 from openbb_terminal import (
@@ -323,3 +324,22 @@ class ConsoleAndPanel:
 
 
 console = ConsoleAndPanel()
+
+
+def optional_rich_track(
+    inputs: Iterable, suppress_output: bool = False, desc: str = ""
+):
+    """Generate a rich track progress bar if desired
+
+    Parameters
+    ----------
+    inputs : Iterable
+        The items to be looped through
+    suppress_output : bool, optional
+        Flag to suppress the output, by default False
+    desc : str, optional
+        String to describe the progress bar, by default ""
+    """
+    if suppress_output:
+        return inputs
+    return track(inputs, description=desc)
