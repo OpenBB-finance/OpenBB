@@ -1,6 +1,7 @@
 from typing import Tuple
 
 from prompt_toolkit import PromptSession
+from openbb_terminal.base_helpers import reload_openbb_modules
 
 import openbb_terminal.session.local_model as Local
 from openbb_terminal import terminal_controller
@@ -102,7 +103,6 @@ def login_and_launch(session: dict):
 
 def main():
     """Main function"""
-    clear_openbb_env_vars()
     local_session = Local.get_session()
     if not local_session:
         prompt()

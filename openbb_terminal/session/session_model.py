@@ -4,7 +4,7 @@ import logging
 import os
 import sys
 from enum import Enum
-from typing import Optional
+from typing import List, Optional
 
 import matplotlib.pyplot as plt
 
@@ -50,6 +50,8 @@ def login(session: dict) -> LoginStatus:
     session : dict
         The session info.
     """
+    clear_openbb_env_vars(exceptions=["OPENBB_ENABLE_AUTHENTICATION"])
+    reload_openbb_modules()
     response = Hub.fetch_user_configs(session)
     if response is not None:
         if response.status_code == 200:
@@ -117,11 +119,12 @@ def logout(
         console.print("[green]\nLogout successful.[/green]")
 
 
-def clear_openbb_env_vars():
+def clear_openbb_env_vars(exceptions: Optional[List[str]] = None):
     """Clear openbb environment variables."""
     for v in os.environ:
         if v.startswith("OPENBB"):
-            os.environ.pop(v)
+            if not v or v not in exceptions:
+                os.environ.pop(v)
 
 
 def remove_log_handlers():

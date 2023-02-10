@@ -32,7 +32,6 @@ from openbb_terminal.core.config.paths import (
     USER_DATA_DIRECTORY,
     USER_ENV_FILE,
     USER_ROUTINES_DIRECTORY,
-    load_dotenv_and_reload,
 )
 from openbb_terminal.core.log.generation.custom_logger import log_terminal
 from openbb_terminal.helper_funcs import (
@@ -832,9 +831,6 @@ class TerminalController(BaseController):
 # pylint: disable=global-statement
 def terminal(jobs_cmds: List[str] = None, test_mode=False):
     """Terminal Menu."""
-
-    if User.is_guest():
-        load_dotenv_and_reload()
 
     log_terminal(test_mode=test_mode)
 

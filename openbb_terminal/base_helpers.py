@@ -1,8 +1,16 @@
 # This is for helpers that do NOT import any OpenBB Modules
+import importlib
 import os
+import sys
 from typing import Any, Callable, Literal
-
+from dotenv import load_dotenv
 from rich.console import Console
+
+from openbb_terminal.core.config.paths import (
+    PACKAGE_ENV_FILE,
+    REPOSITORY_ENV_FILE,
+    USER_ENV_FILE,
+)
 
 console = Console()
 
@@ -85,3 +93,30 @@ def strtobool(val):
         raise ValueError(f"invalid truth value {val}")
 
     return output
+
+
+def load_dotenv_and_reload():
+    """Loads the dotenv files in the following order:
+    1. Repository .env file
+    2. Package .env file
+    3. User .env file
+
+    This allows the user to override the package settings with their own
+    settings, and the package to override the repository settings.
+
+    openbb_terminal modules are reloaded to refresh config files with new env,
+    otherwise they will use cache with old variables.
+    """
+    load_dotenv(REPOSITORY_ENV_FILE, override=True)
+    load_dotenv(PACKAGE_ENV_FILE, override=True)
+    load_dotenv(USER_ENV_FILE, override=True)
+
+    reload_openbb_modules()
+
+
+def reload_openbb_modules():
+    """Reloads all openbb modules"""
+    modules = sys.modules.copy()
+    for module in modules:
+        if module.startswith("openbb"):
+            importlib.reload(sys.modules[module])
