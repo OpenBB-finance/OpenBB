@@ -8,11 +8,10 @@ from typing import Any, Dict, List, Tuple
 
 import pandas as pd
 import yfinance as yf
-from tqdm import tqdm
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import get_rf
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import console, optional_rich_track
 
 logger = logging.getLogger(__name__)
 
@@ -30,13 +29,15 @@ sorted_chain_columns = [
 ]
 
 
-def get_full_option_chain(symbol: str) -> pd.DataFrame:
+def get_full_option_chain(symbol: str, quiet: bool = False) -> pd.DataFrame:
     """Get all options for given ticker [Source: Yahoo Finance]
 
     Parameters
     ----------
     symbol: str
         Stock ticker symbol
+    quiet: bool
+        Flag to suppress progress bar
 
     Returns
     -------
@@ -48,7 +49,9 @@ def get_full_option_chain(symbol: str) -> pd.DataFrame:
 
     options = pd.DataFrame()
 
-    for _date in tqdm(dates, desc="Getting option chains"):
+    for _date in optional_rich_track(
+        dates, suppress_output=quiet, desc="Getting Option Chain"
+    ):
         calls = ticker.option_chain(_date).calls
         calls["optionType"] = "call"
         calls["expiration"] = _date

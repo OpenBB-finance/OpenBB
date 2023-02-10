@@ -194,7 +194,6 @@ class OptionsController(BaseController):
         else:
             self.source = "YahooFinance"
             df = yfinance_model.get_full_option_chain(self.ticker)
-            print(df.head())
 
         if (isinstance(df, pd.DataFrame) and df.empty) or (
             not isinstance(df, pd.DataFrame) and not df

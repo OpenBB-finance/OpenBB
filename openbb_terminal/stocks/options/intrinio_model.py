@@ -7,10 +7,10 @@ from typing import List
 import intrinio_sdk as intrinio
 import numpy as np
 import pandas as pd
-from tqdm import tqdm
 
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.decorators import log_start_end
+from openbb_terminal.rich_config import optional_rich_track
 
 logger = logging.getLogger(__name__)
 intrinio.ApiClient().set_api_key(cfg.API_INTRINIO_KEY)
@@ -137,13 +137,15 @@ def get_option_chain(
 
 
 @log_start_end(log=logger)
-def get_full_option_chain(symbol: str) -> pd.DataFrame:
+def get_full_option_chain(symbol: str, quiet: bool = False) -> pd.DataFrame:
     """Get option chain across all expirations
 
     Parameters
     ----------
     symbol : str
         Symbol to get option chain for
+    quiet: bool
+        Flag to suppress progress bar
 
     Returns
     -------
@@ -152,7 +154,9 @@ def get_full_option_chain(symbol: str) -> pd.DataFrame:
     """
     expirations = get_expiration_dates(symbol)
     chain = pd.DataFrame()
-    for exp in tqdm(expirations):
+    for exp in optional_rich_track(
+        expirations, suppress_output=quiet, desc="Getting option chain"
+    ):
         chain = pd.concat([chain, get_option_chain(symbol, exp)])
     return chain.sort_values(by=["expiration", "strike"]).reset_index(drop=True)
 
@@ -196,7 +200,7 @@ def get_eod_chain_at_expiry_given_date(
 
 
 @log_start_end(log=logger)
-def get_full_chain_eod(symbol: str, date: str) -> pd.DataFrame:
+def get_full_chain_eod(symbol: str, date: str, quiet: bool = False) -> pd.DataFrame:
     """Get full EOD option date across all expirations
 
     Parameters
@@ -205,6 +209,8 @@ def get_full_chain_eod(symbol: str, date: str) -> pd.DataFrame:
         Symbol to get option chain for
     date : str
         Date to get EOD chain for
+    quiet:bool
+        Flag to suppress progress bar
 
     Returns
     -------
@@ -218,7 +224,6 @@ def get_full_chain_eod(symbol: str, date: str) -> pd.DataFrame:
     >>> from openbb_terminal.sdk import openbb
     >>> eod_chain = openbb.stocks.options.eodchain("AAPL", date="2022-12-23")
 
-    Note this will start a progress bar which indicates looping through all expirations
     """
     expirations = get_expiration_dates(symbol)
     # Since we can't have expirations in the past, lets do something fun:
@@ -227,7 +232,9 @@ def get_full_chain_eod(symbol: str, date: str) -> pd.DataFrame:
 
     full_chain = pd.DataFrame()
 
-    for exp in tqdm(expirations):
+    for exp in optional_rich_track(
+        expirations, suppress_output=quiet, desc="Getting Option Chain"
+    ):
         temp = get_eod_chain_at_expiry_given_date(symbol, exp, date)
         if not temp.empty:
             full_chain = pd.concat([full_chain, temp])
