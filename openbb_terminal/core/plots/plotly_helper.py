@@ -5,7 +5,13 @@ import textwrap
 from datetime import datetime
 from math import floor
 from pathlib import Path
-from typing import Any, Dict, List, Literal, Optional, Tuple, Union
+from typing import Any, Dict, List, Literal, Optional, Tuple, TypeVar, Union
+
+try:
+    # pylint: disable=W0611 # noqa: F401
+    from darts import TimeSeries
+except ImportError:
+    pass
 
 import numpy as np
 import pandas as pd
@@ -21,8 +27,6 @@ from openbb_terminal.core.config.paths import (
     MISCELLANEOUS_DIRECTORY,
     USER_DATA_DIRECTORY,
 )
-
-# noqa: F401 # pylint: disable=unused-import
 from openbb_terminal.core.plots.backend import PLOTLYJS_PATH, plots_backend
 from openbb_terminal.core.plots.config.openbb_styles import (
     PLT_COLORWAY,
@@ -30,6 +34,8 @@ from openbb_terminal.core.plots.config.openbb_styles import (
     PLT_INCREASING_COLORWAY,
     PLT_TBL_ROW_COLORS,
 )
+
+TimeSeriesT = TypeVar("TimeSeriesT", bound="TimeSeries")
 
 
 class TerminalStyle:
@@ -350,7 +356,7 @@ class OpenBBFigure(go.Figure):
 
     def add_histplot(
         self,
-        dataset: Union[List[List[float]], np.ndarray, pd.Series],
+        dataset: Union[np.ndarray, pd.Series, TimeSeriesT],
         name: Optional[Union[str, List[str]]] = None,
         colors: Optional[List[str]] = None,
         bins: Union[int, str] = 15,
@@ -366,7 +372,7 @@ class OpenBBFigure(go.Figure):
 
         Parameters
         ----------
-        dataset : `Union[List[List[float]], np.ndarray, pd.Series]`
+        dataset : `Union[np.ndarray, pd.Series, TimeSeriesT]`
             Data to plot
         name : `Optional[Union[str, List[str]]]`, optional
             Name of the plot, by default None
@@ -391,9 +397,9 @@ class OpenBBFigure(go.Figure):
         """
         callback = stats.norm if curve == "normal" else stats.gaussian_kde
 
-        def _validate_x(data: Union[List[List[float]], np.ndarray, pd.Series]):
+        def _validate_x(data: Union[np.ndarray, pd.Series, type[TimeSeriesT]]):
             if forecast:
-                data = data.univariate_values()
+                data = data.univariate_values()  # type: ignore
             if isinstance(data, pd.Series):
                 data = data.values
             if isinstance(data, np.ndarray):
@@ -425,9 +431,9 @@ class OpenBBFigure(go.Figure):
             x = np.linspace(res_min, res_max, 100)
             if show_hist:
                 if forecast:
-                    components = list(dataset.components[:4])
+                    components = list(dataset.components[:4])  # type: ignore
                     values = (
-                        dataset[components].all_values(copy=False).flatten(order="F")
+                        dataset[components].all_values(copy=False).flatten(order="F")  # type: ignore
                     )
                     n_components = len(components)
                     n_entries = len(values) // n_components
@@ -1365,7 +1371,7 @@ class OpenBBFigure(go.Figure):
 
         def _prepare_data_corr_plot(x, lags):
             zero = True
-            irregular = False if zero else True
+            irregular = False
             if lags is None:
                 # GH 4663 - use a sensible default value
                 nobs = x.shape[0]

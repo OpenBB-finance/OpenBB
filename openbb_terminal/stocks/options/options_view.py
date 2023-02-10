@@ -424,7 +424,7 @@ def display_chains(
     min_sp: float = -1,
     max_sp: float = -1,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Display chains
 
