@@ -270,14 +270,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
         (
             "call_quote",
             [],
-            "stocks_view.display_quote_fmp",
-            [],
-            dict(),
-        ),
-        (
-            "call_quote",
-            ["--source=YahooFinance"],
-            "stocks_view.display_quote_yf",
+            "stocks_view.display_quote",
             [],
             dict(),
         ),

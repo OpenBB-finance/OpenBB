@@ -96,7 +96,7 @@ GET_ALL_CONTRACT_PLATFORMS_DF = pd.DataFrame(
 )
 
 
-@pytest.mark.vcr(record_mode="none")
+@pytest.mark.vcr(record_mode="once")
 @pytest.mark.parametrize(
     "queue, expected",
     [
@@ -161,14 +161,14 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
     assert result_menu == ["help"]
 
 
-@pytest.mark.vcr(record_mode="none")
+@pytest.mark.vcr(record_mode="once")
 @pytest.mark.record_stdout
 def test_print_help():
     controller = overview_controller.OverviewController(queue=None)
     controller.print_help()
 
 
-@pytest.mark.vcr(record_mode="none")
+@pytest.mark.vcr(record_mode="once")
 @pytest.mark.parametrize(
     "an_input, expected_queue",
     [
@@ -190,7 +190,7 @@ def test_switch(an_input, expected_queue):
     assert queue == expected_queue
 
 
-@pytest.mark.vcr(record_mode="none")
+@pytest.mark.vcr(record_mode="once")
 def test_call_cls(mocker):
     mocker.patch("os.system")
 
@@ -201,7 +201,7 @@ def test_call_cls(mocker):
     os.system.assert_called_once_with("cls||clear")
 
 
-@pytest.mark.vcr(record_mode="none")
+@pytest.mark.vcr(record_mode="once")
 @pytest.mark.parametrize(
     "func, queue, expected_queue",
     [
