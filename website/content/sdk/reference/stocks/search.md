@@ -35,7 +35,6 @@ openbb.stocks.search(query: str = "", country: str = "", sector: str = "", indus
 | Type                   | Description                     |
 |------------------------|---------------------------------|
 | Optional[pd.DataFrame] | Search results if any are found |
----
 
 
 ---
