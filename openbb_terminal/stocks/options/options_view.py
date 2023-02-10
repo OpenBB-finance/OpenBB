@@ -49,6 +49,7 @@ def print_raw(
     puts_only: bool = False,
 ):
     if not puts_only:
+        calls = calls.copy().drop(columns=["optionType"])
         print_rich_table(
             calls,
             headers=list(calls.columns),
@@ -56,6 +57,7 @@ def print_raw(
             title=f"{title} - Calls",
         )
     if not calls_only:
+        puts = puts.copy().drop(columns=["optionType"])
         print_rich_table(
             puts,
             headers=list(puts.columns),
@@ -422,8 +424,7 @@ def display_chains(
     min_sp: float = -1,
     max_sp: float = -1,
     export: str = "",
-    sheet_name: Optional[str] = None,
-    to_display: Optional[list] = None,
+    sheet_name: str = None,
 ):
     """Display chains
 
@@ -445,14 +446,7 @@ def display_chains(
         Format for exporting data
     sheet_name: str
         Optionally specify the name of the sheet to export to
-    to_display: list
-        List of columns to display
     """
-    if to_display:
-        to_display += ["strike", "optionType"]
-        to_display = list(set(to_display))
-        chain = chain[to_display]
-
     min_strike, max_strike = get_strikes(
         min_sp=min_sp, max_sp=max_sp, current_price=current_price
     )
@@ -460,22 +454,22 @@ def display_chains(
     chain = chain[chain["strike"] >= min_strike]
     chain = chain[chain["strike"] <= max_strike]
     calls, puts = get_calls_and_puts(chain)
-
-    chain = get_greeks(
-        current_price=current_price,
-        calls=calls,
-        expire=expire,
-        puts=puts,
-        show_all=True,
-    )
-
-    # if the greeks calculation went with no problems, otherwise keep the previous
-    if not chain.empty:
-        calls, puts = get_calls_and_puts(chain)
-        console.print("Greeks calculated by OpenBB.")
-
-    calls = calls.sort_index(axis=1)
-    puts = puts.sort_index(axis=1)
+    # Tradier provides the greeks, so calculate them if they are not present
+    if "delta" not in chain.columns:
+        if "impliedVolatility" in chain.columns:
+            chain = get_greeks(
+                current_price=current_price,
+                calls=calls,
+                expire=expire,
+                puts=puts,
+                show_all=True,
+            )
+            # if the greeks calculation went with no problems, otherwise keep the previous
+            if not chain.empty:
+                calls, puts = get_calls_and_puts(chain)
+                console.print("Greeks calculated by OpenBB.")
+        else:
+            console.print("Greeks currently not supported without IV.")
 
     print_raw(calls, puts, "Option chain", calls_only, puts_only)
 

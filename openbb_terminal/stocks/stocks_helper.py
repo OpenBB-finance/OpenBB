@@ -7,6 +7,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
+from copy import deepcopy
 from datetime import datetime, timedelta
 from typing import Any, Dict, Iterable, List, Optional, Union
 
@@ -38,6 +39,7 @@ from openbb_terminal.stocks.stocks_model import (
     load_stock_av,
     load_stock_eodhd,
     load_stock_iex_cloud,
+    load_stock_intrinio,
     load_stock_polygon,
     load_stock_yf,
 )
@@ -351,6 +353,9 @@ def load(
             df_stock_candidate = load_stock_polygon(
                 symbol, start_date, end_date, weekly, monthly
             )
+
+        elif source == "Intrinio":
+            df_stock_candidate = load_stock_intrinio(symbol, start_date, end_date)
         else:
             console.print("[red]Invalid source for stock[/red]\n")
             return
@@ -407,6 +412,11 @@ def load(
                 s_start = start_date
 
             df_stock_candidate.index.name = "date"
+
+        elif source == "Intrinio":
+            console.print(
+                "[red]We currently do not support intraday data with Intrinio.[/red]\n"
+            )
 
         elif source == "Polygon":
             request_url = (
@@ -541,6 +551,17 @@ def display_candle(
     >>> from openbb_terminal.sdk import openbb
     >>> openbb.stocks.candle("AAPL")
     """
+    # We are not actually showing adj close in candle.  This hasn't been an issue so far, but adding
+    # in intrinio returns all adjusted columns,so some care here is needed or else we end up with
+    # mixing up close and adj close
+    if data is None:
+        # For mypy
+        data = pd.DataFrame()
+    data = deepcopy(data)
+
+    if "Adj Close" in data.columns:
+        data["Close"] = data["Adj Close"].copy()
+
     if start_date is None:
         start_date = (datetime.now() - timedelta(days=1100)).strftime("%Y-%m-%d")
 
@@ -586,52 +607,6 @@ def display_candle(
     fig.add_logscale_menus()
 
     return fig.show(external=external_axes)
-
-
-def load_ticker(
-    ticker: str,
-    start_date: Union[str, datetime],
-    end_date: Optional[Union[str, datetime]] = None,
-) -> pd.DataFrame:
-    """Load a ticker data from Yahoo Finance.
-
-    Adds a data index column data_id and Open-Close High/Low columns after loading.
-
-    Parameters
-    ----------
-    ticker : str
-        The stock ticker.
-    start_date : Union[str,datetime]
-        Start date to load stock ticker data formatted YYYY-MM-DD.
-    end_date : Union[str,datetime]
-        End date to load stock ticker data formatted YYYY-MM-DD.
-
-    Returns
-    -------
-    DataFrame
-        A Panda's data frame with columns Open, High, Low, Close, Adj Close, Volume,
-        date_id, OC-High, OC-Low.
-
-    Examples
-    --------
-    >>> from openbb_terminal.sdk import openbb
-    >>> msft_df = openbb.stocks.load("MSFT")
-    """
-    df_data = yf.download(
-        ticker, start=start_date, end=end_date, progress=False, ignore_tz=True
-    )
-
-    df_data.index = pd.to_datetime(df_data.index)
-
-    df_data["date_id"] = (df_data.index.date - df_data.index.date.min()).astype(
-        "timedelta64[D]"
-    )
-    df_data["date_id"] = df_data["date_id"].dt.days + 1
-
-    df_data["OC_High"] = df_data[["Open", "Close"]].max(axis=1)
-    df_data["OC_Low"] = df_data[["Open", "Close"]].min(axis=1)
-
-    return df_data
 
 
 def process_candle(data: pd.DataFrame) -> pd.DataFrame:
