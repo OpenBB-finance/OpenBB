@@ -1,7 +1,6 @@
-                                                           Price   Chg   %Chg     Vol
-0       MicroSectors Gold Miners 3X Inverse Leveraged ETN  15.98 -4.10 -20.42  131.7K
-1         Direxion Daily Gold Miners Index Bear 2X Shares  17.50 -3.02 -14.72    4.9M
-2  Direxion Daily Junior Gold Miners Index Bear 2X Shares  10.02 -1.70 -14.51    6.0M
-3                   ProShares Ultra Bloomberg Natural Gas  29.13 -3.87 -11.73    2.5M
-4             Direxion Daily Semiconductor Bull 3X Shares  50.82 -5.16  -9.22   28.5M
-
+                                                      Price     Chg  %Chg     Vol
+0       GraniteShares 1.5x Long Coinbase Daily ETF  10.5200 -1.1000 -9.47   97.0K
+1         Direxion Daily FTSE China Bear 3X Shares   8.3700 -0.6700 -7.41  802.4K
+2      Direxion Daily Semiconductor Bear 3X Shares  18.8085 -1.4115 -6.98    5.3M
+3  Direxion Daily S&P 500 High Beta Bear 3X Shares   4.0447 -0.2353 -5.50  118.6K
+4         Direxion Daily Technology Bear 3x Shares  25.6600 -1.1200 -4.18  172.7K

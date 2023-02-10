@@ -118,7 +118,6 @@ class PortfolioEngine:
         self.tickers_list = None
         self.tickers: Dict[Any, Any] = {}
         self.benchmark_ticker: str = ""
-        self.benchmark_info: Dict[Any, Any] = {}
         self.historical_trade_data = pd.DataFrame()
 
         # Portfolio
@@ -559,19 +558,6 @@ class PortfolioEngine:
         p_bar.n += 1
         p_bar.refresh()
 
-        try:
-            self.benchmark_info = dict(yf.Ticker(symbol).info)
-            self.benchmark_info["symbol"] = symbol
-        except Exception as _:  # noqa
-            console.print(
-                f"[red]\n\nCould not get info for {symbol}."
-                " This affects 'alloc' command.[/red]\n"
-            )
-            return False
-
-        p_bar.n += 1
-        p_bar.refresh()
-
         return True
 
     @log_start_end(log=logger)
@@ -931,10 +917,10 @@ class PortfolioEngine:
             Flag to force recalculate allocation if already exists
         """
 
-        if not self.benchmark_info:
-            return
-
-        if self.portfolio_trades.empty:
+        if not self.benchmark_ticker or self.portfolio_trades.empty:
+            console.print(
+                "Please load in a portfolio holdings first with `load --file` or obtain an example with `load --example`"
+            )
             return
 
         if category == "Asset":
@@ -946,7 +932,9 @@ class PortfolioEngine:
                 (
                     self.benchmark_assets_allocation,
                     self.portfolio_assets_allocation,
-                ) = get_allocation(category, self.benchmark_info, self.portfolio_trades)
+                ) = get_allocation(
+                    category, self.benchmark_ticker, self.portfolio_trades
+                )
         elif category == "Sector":
             if (
                 self.benchmark_sectors_allocation.empty
@@ -956,7 +944,9 @@ class PortfolioEngine:
                 (
                     self.benchmark_sectors_allocation,
                     self.portfolio_sectors_allocation,
-                ) = get_allocation(category, self.benchmark_info, self.portfolio_trades)
+                ) = get_allocation(
+                    category, self.benchmark_ticker, self.portfolio_trades
+                )
         elif category == "Country":
             if (
                 self.benchmark_countries_allocation.empty
@@ -966,7 +956,9 @@ class PortfolioEngine:
                 (
                     self.benchmark_countries_allocation,
                     self.portfolio_countries_allocation,
-                ) = get_allocation(category, self.benchmark_info, self.portfolio_trades)
+                ) = get_allocation(
+                    category, self.benchmark_ticker, self.portfolio_trades
+                )
         elif category == "Region":
             if (
                 self.benchmark_regions_allocation.empty
@@ -976,7 +968,9 @@ class PortfolioEngine:
                 (
                     self.benchmark_regions_allocation,
                     self.portfolio_regions_allocation,
-                ) = get_allocation(category, self.benchmark_info, self.portfolio_trades)
+                ) = get_allocation(
+                    category, self.benchmark_ticker, self.portfolio_trades
+                )
         else:
             console.print(
                 "Category not available. Choose from: Asset, Sector, Country or Region"

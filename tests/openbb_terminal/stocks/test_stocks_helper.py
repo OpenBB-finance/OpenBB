@@ -21,13 +21,14 @@ def vcr_config():
             ("token", "MOCK_TOKEN"),
             ("apikey", "MOCK_API_KEY"),
             ("apiKey", "MOCK_API_KEY2"),
+            ("api_key", "MOCK_API_KEY3"),
         ]
     }
 
 
 @pytest.mark.vcr
 def test_quote():
-    stocks_view.display_quote_fmp("GME")
+    stocks_view.display_quote("GME")
 
 
 @pytest.mark.default_cassette("test_search")
@@ -59,6 +60,7 @@ def test_search(mocker, use_tab):
     [
         (1440, "AlphaVantage"),
         (1440, "IEXCloud"),
+        (1440, "Intrinio"),
         (1440, "YahooFinance"),
         (60, "YahooFinance"),
         # (1440, "Polygon"),
@@ -164,12 +166,3 @@ def test_display_candle(mocker, use_matplotlib):
         use_matplotlib=use_matplotlib,
         intraday=intraday,
     )
-
-
-@pytest.mark.vcr
-def test_load_ticker(recorder):
-    ticker = "PM"
-    start = datetime.strptime("2020-12-01", "%Y-%m-%d")
-    end = datetime.strptime("2020-12-02", "%Y-%m-%d")
-    result_df = stocks_helper.load_ticker(ticker=ticker, start_date=start, end_date=end)
-    recorder.capture(result_df)

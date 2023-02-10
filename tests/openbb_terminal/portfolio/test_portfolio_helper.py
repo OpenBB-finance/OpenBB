@@ -23,7 +23,9 @@ def test_clean_name(recorder):
     recorder.capture(result)
 
 
+@pytest.mark.skip
 @pytest.mark.vcr
 def test_is_ticker():
+    #  TODO: This test queries yfinance and is not mocked
     result = portfolio_helper.is_ticker("aapl")
     assert result

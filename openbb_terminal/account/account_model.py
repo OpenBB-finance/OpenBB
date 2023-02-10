@@ -164,6 +164,8 @@ def get_routines_info(response) -> Tuple[pd.DataFrame, int, int]:
         The routines list, the current page and the total number of pages.
     """
     df = pd.DataFrame()
+    page = 1
+    pages = 1
     if response and response.status_code == 200:
         data = response.json()
         page = data.get("page", 1)

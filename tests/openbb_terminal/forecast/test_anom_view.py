@@ -10,5 +10,5 @@ def test_display_anom_forecast(tsla_csv):
     anom_view.display_anomaly_detection(
         tsla_csv,
         target_column="close",
-        start_window=0.5,
+        train_split=0.5,
     )

@@ -1,3 +1,3 @@
-        contractSymbol       lastTradeDate  strike  lastPrice  bid   ask  change  percentChange  volume  openInterest  impliedVolatility  inTheMoney contractSize currency optionType
-0  TSLA211231P00200000 2021-12-29 20:42:48   200.0       0.01  0.0  0.01     0.0            0.0    22.0          1892           6.125002       False      REGULAR      USD        put
-1  TSLA211231P00250000 2021-12-29 17:42:53   250.0       0.01  0.0  0.01     0.0            0.0     1.0           513           5.375003       False      REGULAR      USD        put
+        contractSymbol  strike  lastPrice  bid   ask  volume  openInterest  impliedVolatility  delta
+0  TSLA211231P00200000   200.0       0.01  0.0  0.01    22.0          1892           6.125002   -0.2
+1  TSLA211231P00250000   250.0       0.01  0.0  0.01     1.0           513           5.375003   -0.3

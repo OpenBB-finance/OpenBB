@@ -482,7 +482,7 @@ interactions:
         9vXnn3/6+ctvfvzj99//5S//H6TzsQwBSwEA
     headers:
       Age:
-      - '0'
+      - '1'
       Connection:
       - keep-alive
       Expect-CT:
@@ -568,7 +568,7 @@ interactions:
       vary:
       - Origin,Accept-Encoding
       x-envoy-decorator-operation:
-      - finance-chart-api--mtls-baseline-production-ir2.finance-k8s.svc.yahoo.local:4080/*
+      - finance-chart-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
       - '54'
       x-request-id:
@@ -596,7 +596,7 @@ interactions:
       string: '{"timeseries":{"result":[{"meta":{"symbol":["AAPL"],"type":["shares_out"]},"timestamp":[1633996800,1633996800,1635811200,1636070400,1636156800,1638489600,1638576000,1641772800,1643587200,1643932800,1644019200,1644537600,1646352000,1646438400,1647302400,1647475200,1648771200,1648857600,1648857600,1651622400,1654732800,1655078400,1659052800,1659139200,1659312000,1662076800,1663200000,1663286400,1663372800,1667260800,1667520000,1667520000,1667606400,1667606400,1670284800,1670371200,1672790400,1672963200,1674086400,1675555200],"shares_out":[16540600320,16530199552,16406400000,16464000000,16406400000,16507599872,16406400000,16334399488,16319399936,16596899840,16319399936,16319399936,16351800320,16319399936,16764800000,16319399936,16614800384,16319399936,16347499520,16185199616,16267200512,16185199616,16243000320,16185199616,16070800384,16070800384,15918600192,16380800000,16070800384,15908100096,15908100096,16612599808,15908100096,15965599744,16036100096,15908100096,16526300160,15908100096,15836199936,15821899776]}],"error":null}}'
     headers:
       Age:
-      - '0'
+      - '6'
       Connection:
       - keep-alive
       Expect-CT:
@@ -626,7 +626,7 @@ interactions:
       x-envoy-decorator-operation:
       - finance-company-fundamentals-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
-      - '1'
+      - '2'
       x-request-id:
       - 26553b1f-363b-4209-ad70-899ab8c07b9b
       x-yahoo-request-id:

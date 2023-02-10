@@ -1,0 +1,30 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json
+      User-Agent:
+      - Swagger-Codegen/6.22.2/python
+    method: GET
+    uri: https://api-v2.intrinio.com/options/expirations/AAPL?after=MOCK_AFTER&api_key=MOCK_API_KEY&before=MOCK_BEFORE
+  response:
+    body:
+      string: '{"expirations":["2024-06-21","2024-03-15","2024-01-19","2023-12-15","2023-10-20","2023-09-15","2023-07-21","2023-06-16","2023-05-19","2023-04-21","2023-03-17","2023-02-17","2023-02-10","2023-02-03","2023-01-27","2023-01-20","2023-01-13","2023-01-06"]}'
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '251'
+      Content-Type:
+      - application/json
+      Date:
+      - Sun, 01 Jan 2023 19:58:43 GMT
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+version: 1

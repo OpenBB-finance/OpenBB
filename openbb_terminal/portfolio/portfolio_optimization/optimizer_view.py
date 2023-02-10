@@ -620,7 +620,6 @@ def display_equal_weight(
 ) -> Dict:
     """
     Equally weighted portfolio, where weight = 1/# of symbols
-
     Parameters
     ----------
     symbols : List[str]
@@ -641,7 +640,6 @@ def display_equal_weight(
         - 'D' for daily returns.
         - 'W' for weekly returns.
         - 'M' for monthly returns.
-
     maxnan: float, optional
         Max percentage of nan values accepted per asset to be included in
         returns.
@@ -652,7 +650,6 @@ def display_equal_weight(
     risk_measure: str, optional
         The risk measure used to optimize the portfolio.
         The default is 'MV'. Possible values are:
-
         - 'MV': Standard Deviation.
         - 'MAD': Mean Absolute Deviation.
         - 'MSV': Semi Standard Deviation.
@@ -666,7 +663,6 @@ def display_equal_weight(
         - 'CDaR': Conditional Drawdown at Risk of uncompounded cumulative returns.
         - 'EDaR': Entropic Drawdown at Risk of uncompounded cumulative returns.
         - 'MDD': Maximum Drawdown of uncompounded cumulative returns.
-
     risk_free_rate: float, optional
         Risk free rate, must be in the same interval of assets returns. Used for
         'FLPM' and 'SLPM' and Sharpe objective function. The default is 0.
@@ -726,7 +722,6 @@ def display_property_weighting(
     maxnan: float = 0.05,
     threshold: float = 0,
     method: str = "time",
-    s_property: str = "marketCap",
     risk_measure: str = "mv",
     risk_free_rate: float = 0,
     alpha: float = 0.05,
@@ -795,7 +790,7 @@ def display_property_weighting(
         True if plot table weights, by default False
     """
     p = d_period(interval, start_date, end_date)
-    s_title = f"{p} Weighted Portfolio based on " + s_property + "\n"
+    s_title = f"{p} Weighted Portfolio based on Market Cap \n"
 
     weights, stock_returns = optimizer_model.get_property_weights(
         symbols=symbols,
@@ -807,7 +802,6 @@ def display_property_weighting(
         maxnan=maxnan,
         threshold=threshold,
         method=method,
-        s_property=s_property,
         value=value,
     )
 
