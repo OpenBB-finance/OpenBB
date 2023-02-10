@@ -132,47 +132,6 @@ def get_shareholders(symbol: str, holder: str = "institutional") -> pd.DataFrame
 
 
 @log_start_end(log=logger)
-def get_sustainability(symbol: str) -> pd.DataFrame:
-    """Get sustainability metrics from yahoo
-
-    Parameters
-    ----------
-    symbol : str
-        Stock ticker symbol
-
-    Returns
-    -------
-    pd.DataFrame
-        Dataframe of sustainability metrics
-    """
-    stock = yf.Ticker(symbol)
-    pd.set_option("display.max_colwidth", None)
-
-    df_sustainability = stock.sustainability
-
-    if df_sustainability is None or df_sustainability.empty:
-        return pd.DataFrame()
-
-    clean_df_index(df_sustainability)
-
-    df_sustainability = df_sustainability.rename(
-        index={
-            "Controversialweapons": "Controversial Weapons",
-            "Socialpercentile": "Social Percentile",
-            "Peercount": "Peer Count",
-            "Governancescore": "Governance Score",
-            "Environmentpercentile": "Environment Percentile",
-            "Animaltesting": "Animal Testing",
-            "Highestcontroversy": "Highest Controversy",
-            "Environmentscore": "Environment Score",
-            "Governancepercentile": "Governance Percentile",
-            "Militarycontract": "Military Contract",
-        }
-    )
-    return df_sustainability
-
-
-@log_start_end(log=logger)
 def get_calendar_earnings(symbol: str) -> pd.DataFrame:
     """Get calendar earnings for ticker symbol
 
