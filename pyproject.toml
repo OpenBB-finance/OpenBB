@@ -149,6 +149,10 @@ jupyterlab = ["jupyterlab-code-formatter", "jupyterlab-lsp", "jedi-language-serv
 installer = ["pyinstaller"]
 doc = ["docstring-parser"]
 
+[tool.poetry.group.dev.dependencies]
+mypy = "^1.0.0"
+ruff = "^0.0.244"
+
 [build-system]
 requires = ["setuptools<65.5.0", "poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"

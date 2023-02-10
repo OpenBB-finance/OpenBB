@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 # IMPORTATION STANDARD
 import logging
-from typing import List, Union
+from typing import List, Optional, Union
 
 # IMPORTATION THIRDPARTY
 from dotenv import set_key

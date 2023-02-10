@@ -5,6 +5,7 @@ __docformat__ = "numpy"
 # flake8: noqa: E501
 
 import logging
+from typing import Optional
 import math
 import warnings
 
@@ -31,7 +32,6 @@ from openbb_terminal.portfolio.portfolio_optimization.statics import (
     TIME_FACTOR,
 )
 from openbb_terminal.rich_config import console
-from typing import Optional
 
 warnings.filterwarnings("ignore")
 

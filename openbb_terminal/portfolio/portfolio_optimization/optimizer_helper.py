@@ -1,7 +1,7 @@
 """Optimization helpers"""
 __docformat__ = "numpy"
 
-from typing import Any
+from typing import Any, Optional
 
 import pandas as pd
 
