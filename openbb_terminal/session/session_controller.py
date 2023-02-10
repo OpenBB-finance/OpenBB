@@ -9,10 +9,10 @@ from openbb_terminal.rich_config import console
 from openbb_terminal.session.hub_model import REGISTER_URL
 from openbb_terminal.session.session_model import (
     LoginStatus,
+    clear_openbb_env_vars,
     create_session,
     login,
 )
-from openbb_terminal.session.session_model import clear_openbb_env_vars
 
 
 def display_welcome_message():

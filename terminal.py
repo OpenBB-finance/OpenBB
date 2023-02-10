@@ -1,8 +1,8 @@
 import multiprocessing
 import os
 import sys
-from openbb_terminal.core.config.paths import load_dotenv_with_priority
 
+from openbb_terminal.core.config.paths import load_dotenv_with_priority
 from openbb_terminal.core.integration_tests import integration_controller
 from openbb_terminal.session import session_controller
 from openbb_terminal.terminal_helper import is_installer

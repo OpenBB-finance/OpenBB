@@ -25,7 +25,6 @@ from prompt_toolkit.styles import Style
 from rich import panel
 
 from openbb_terminal import feature_flags as obbff
-from openbb_terminal.base_helpers import strtobool
 from openbb_terminal.common import feedparser_view
 from openbb_terminal.core.config.paths import (
     HOME_DIRECTORY,
