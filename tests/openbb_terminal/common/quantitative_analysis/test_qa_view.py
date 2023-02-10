@@ -1,13 +1,13 @@
 from datetime import datetime, timedelta
 from unittest.mock import MagicMock
-
+import numpy as np
 import pandas as pd
 import pytest
 
 from openbb_terminal.common.quantitative_analysis import qa_view
 
-dates = [datetime.now() - timedelta(days=x) for x in range(10)]
-nums = list(range(1, 11))
+dates = [datetime.now() - timedelta(days=x) for x in range(45)]
+nums = np.random.rand(45)
 data = {"date": dates, "col2": nums, "col1": [x - timedelta(days=1) for x in dates]}
 data2 = {"date": nums, "col2": nums, "col1": dates}
 fail_df = {"date": [(1, 2)], "col2": [], "col1": dates}
@@ -67,9 +67,9 @@ def test_display_bw(external, yearly):
         assert fig.__class__.__name__ == "MagicMock"
 
 
-@pytest.mark.parametrize("external, yearly", [(True, False)])
-def test_display_acf(external, yearly):
-    fig = qa_view.display_acf(df, "col2", "Data", yearly, external)
+@pytest.mark.parametrize("external", [False, True])
+def test_display_acf(external):
+    fig = qa_view.display_acf(df, "col2", "Data", external_axes=external)
     if external:
         assert fig.__class__.__name__ == "OpenBBFigure"
     else:

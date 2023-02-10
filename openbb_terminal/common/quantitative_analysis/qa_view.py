@@ -98,7 +98,6 @@ def display_hist(
     >>> df = openbb.stocks.load("AAPL")
     >>> openbb.qa.hist(data=df, target="Adj Close")
     """
-    # TODO: Refactor add_histplot
 
     data = data[target]
 
@@ -133,7 +132,6 @@ def display_hist(
             line=dict(color="white", width=2.5),
         ),
     )
-    fig.update_yaxes(autorange=True)
 
     return fig.show(external=external_axes)
 

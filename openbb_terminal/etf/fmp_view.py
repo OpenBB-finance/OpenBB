@@ -51,6 +51,13 @@ def display_etf_weightings(
 
     title = f"Sector holdings of {name}"
 
+    sector_weights_formatted = {}
+    for sector_weight in sectors:
+        sector_weights_formatted[sector_weight["sector"]] = (
+            float(sector_weight["weightPercentage"].strip("%")) / 100
+        )
+    sector_weights_formatted = dict(sorted(sector_weights_formatted.items()))
+
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
@@ -67,13 +74,6 @@ def display_etf_weightings(
             show_index=False,
             title=f"\n{title}",
         )
-
-    sector_weights_formatted = {}
-    for sector_weight in sectors:
-        sector_weights_formatted[sector_weight["sector"]] = (
-            float(sector_weight["weightPercentage"].strip("%")) / 100
-        )
-    sector_weights_formatted = dict(sorted(sector_weights_formatted.items()))
 
     legend, values = zip(*sector_weights_formatted.items())
     colors = theme.get_colors()

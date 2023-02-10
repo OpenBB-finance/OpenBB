@@ -358,17 +358,47 @@ class OpenBBFigure(go.Figure):
         show_curve: bool = True,
         show_rug: bool = True,
         show_hist: bool = True,
+        forecast: bool = False,
         row: int = 1,
         col: int = 1,
     ) -> None:
+        """Adds a histogram with a curve and rug plot if desired
+
+        Parameters
+        ----------
+        dataset : `Union[List[List[float]], np.ndarray, pd.Series]`
+            Data to plot
+        name : `Optional[Union[str, List[str]]]`, optional
+            Name of the plot, by default None
+        colors : `Optional[List[str]]`, optional
+            Colors of the plot, by default None
+        bins : `Union[int, str]`, optional
+            Number of bins, by default 15
+        curve : `Literal["normal", "kde"]`, optional
+            Type of curve to plot, by default "normal"
+        show_curve : `bool`, optional
+            Whether to show the curve, by default True
+        show_rug : `bool`, optional
+            Whether to show the rug plot, by default True
+        show_hist : `bool`, optional
+            Whether to show the histogram, by default True
+        forecast : `bool`, optional
+            Whether the data is a darts forecast TimeSeries, by default False
+        row : `int`, optional
+            Row of the subplot, by default 1
+        col : `int`, optional
+            Column of the subplot, by default 1
+        """
         callback = stats.norm if curve == "normal" else stats.gaussian_kde
 
         def _validate_x(data: Union[List[List[float]], np.ndarray, pd.Series]):
+            if forecast:
+                data = data.univariate_values()
             if isinstance(data, pd.Series):
                 data = data.values
             if isinstance(data, np.ndarray):
                 data = data.tolist()
-            if isinstance(data, list) and curve == "kde":
+            if isinstance(data, list):
                 data = [data]
 
             return data
@@ -394,23 +424,41 @@ class OpenBBFigure(go.Figure):
             res_min, res_max = min(x_i), max(x_i)
             x = np.linspace(res_min, res_max, 100)
             if show_hist:
-                self.add_histogram(
-                    x=x_i,
-                    name=name_i,
-                    marker_color=color_i,
-                    histnorm="probability",
-                    histfunc="count",
-                    nbinsx=bins,
-                    opacity=0.7,
-                    row=row,
-                    col=col,
-                )
+                if forecast:
+                    components = list(dataset.components[:4])
+                    values = (
+                        dataset[components].all_values(copy=False).flatten(order="F")
+                    )
+                    n_components = len(components)
+                    n_entries = len(values) // n_components
+                    for i, label in zip(range(n_components), components):
+                        self.add_histogram(
+                            x=values[i * n_entries : (i + 1) * n_entries],
+                            name=label,
+                            marker_color=color_i,
+                            nbinsx=bins,
+                            opacity=0.7,
+                            row=row,
+                            col=col,
+                        )
+                else:
+                    self.add_histogram(
+                        x=x_i,
+                        name=name_i,
+                        marker_color=color_i,
+                        nbinsx=bins,
+                        histnorm="probability density",
+                        histfunc="count",
+                        opacity=0.7,
+                        row=row,
+                        col=col,
+                    )
 
             if show_rug:
                 self.add_scatter(
                     x=x_i,
                     y=[0.002] * len(x_i),
-                    name=name_i,
+                    name=name_i if len(name) < 2 else name[1],
                     mode="markers",
                     marker=dict(
                         color=theme.down_color,
@@ -437,35 +485,38 @@ class OpenBBFigure(go.Figure):
                     for index in range(len(valid_x)):
                         self.add_scatter(
                             x=curve_x[index],  # type: ignore
-                            y=curve_y[index] / bins,  # type: ignore
+                            y=curve_y[index],  # type: ignore
                             name=name_i,
                             mode="lines",
+                            showlegend=False,
                             marker=dict(color=color_i),
                             row=row,
                             col=col,
                         )
-                        max_y = max(max_y, max(curve_y[index]) / bins)  # type: ignore
+                        max_y = max(max_y, max(curve_y[index]) * 1.2)  # type: ignore
 
                 else:
                     y = (
-                        callback(res_mean, res_std).pdf(valid_x)
-                        * len(x_i)
+                        callback(res_mean, res_std).pdf(x)
+                        * len(valid_x[0])
                         * (res_max - res_min)
+                        / bins
                     )
 
                     self.add_scatter(
-                        x=x if curve == "normal" else x_i,
-                        y=y / bins,
+                        x=x,
+                        y=y,
                         name=name_i,
                         mode="lines",
                         marker=dict(color=color_i),
+                        showlegend=False,
                         row=row,
                         col=col,
                     )
 
-                    max_y = max(max_y, x_i)
+                    max_y = max(max_y, max(y * 2))
 
-        self.update_yaxes(position=0.0, range=[0, max_y], anchor="x", row=row, col=col)
+        self.update_yaxes(position=0.0, range=[0, max_y], row=row, col=col)
 
         self.update_layout(barmode="overlay", bargap=0.01, bargroupgap=0)
 
@@ -866,6 +917,7 @@ class OpenBBFigure(go.Figure):
                 ],
                 type="date",
                 overwrite=True,
+                selector=dict(xaxis=entry["xaxis"]),
             )
             self.update_traces(
                 xhoverformat=xhoverformat, selector=dict(name=entry["name"])
@@ -1023,6 +1075,7 @@ class OpenBBFigure(go.Figure):
                 rangebreaks=breaks,
                 type="date",
                 overwrite=True,
+                selector=dict(xaxis=entry["xaxis"]),
             )
 
     @staticmethod
@@ -1279,8 +1332,8 @@ class OpenBBFigure(go.Figure):
     def add_corr_plot(
         self,
         series: pd.DataFrame,
-        m: Optional[int] = None,
         max_lag: int = 20,
+        m: Optional[int] = None,
         alpha=0.05,
         marker: Optional[dict] = None,
         row: Optional[int] = None,
@@ -1296,10 +1349,10 @@ class OpenBBFigure(go.Figure):
             Figure object to add plot to
         series : pd.DataFrame
             Dataframe to look at
-        m: Optional[int]
-            Optionally, a time lag to highlight on the plot. Default is none.
         max_lag : int, optional
             Number of lags to look at, by default 15
+        m: Optional[int]
+            Optionally, a time lag to highlight on the plot. Default is none.
         row : int, optional
             Row to add plot to, by default 1
         col : int, optional
@@ -1307,32 +1360,62 @@ class OpenBBFigure(go.Figure):
         pacf : bool, optional
             Flag to indicate whether to use partial autocorrelation or not, by default False
         """
-        mode = "lines"
-        if marker:
-            mode = "markers+lines"
-
+        mode = "markers+lines" if marker else "lines"
         line = kwargs.pop("line", None)
+
+        def _prepare_data_corr_plot(x, lags):
+            zero = True
+            irregular = False if zero else True
+            if lags is None:
+                # GH 4663 - use a sensible default value
+                nobs = x.shape[0]
+                lim = min(int(np.ceil(10 * np.log10(nobs))), nobs - 1)
+                lags = np.arange(not zero, lim + 1)
+            elif np.isscalar(lags):
+                lags = np.arange(not zero, int(lags) + 1)  # +1 for zero lag
+            else:
+                irregular = True
+                lags = np.asanyarray(lags).astype(int)
+            nlags = lags.max(0)
+
+            return lags, nlags, irregular
+
+        lags, nlags, irregular = _prepare_data_corr_plot(series, max_lag)
 
         callback = sm.tsa.stattools.pacf if pacf else sm.tsa.stattools.acf
         if not pacf:
-            kwargs.update(dict(bartlett_confint=True, fft=False))
+            kwargs.update(dict(fft=False))
 
-        r, confint = callback(
+        acf_x = callback(
             series,
-            nlags=max_lag,
+            nlags=nlags,
             alpha=alpha,
             **kwargs,
         )
 
+        acf_x, confint = acf_x[:2] if not pacf else acf_x
+
+        if irregular:
+            acf_x = acf_x[lags]
+
         try:
-            upp_band = [confint[lag][1] - r[lag] for lag in range(1, max_lag + 1)]
-            low_band = [-x for x in upp_band]
+            confint = confint[lags]
+            if lags[0] == 0:
+                lags = lags[1:]
+                confint = confint[1:]
+                acf_x = acf_x[1:]
+            lags = lags.astype(float)
+            lags[0] -= 0.5
+            lags[-1] += 0.5
+
+            upp_band = confint[:, 0] - acf_x
+            low_band = confint[:, 1] - acf_x
 
             # pylint: disable=C0200
-            for x in range(len(r)):
+            for x in range(len(acf_x)):
                 self.add_scatter(
                     x=(x, x),
-                    y=(0, r[x]),
+                    y=(0, acf_x[x]),
                     mode=mode,
                     marker=marker,
                     line=line,
@@ -1342,7 +1425,7 @@ class OpenBBFigure(go.Figure):
                 )
 
             self.add_scatter(
-                x=np.arange(1, max_lag + 1),
+                x=lags,
                 y=upp_band,
                 mode="lines",
                 line_color="rgba(0, 0, 0, 0)",
@@ -1350,8 +1433,9 @@ class OpenBBFigure(go.Figure):
                 row=row,
                 col=col,
             )
+
             self.add_scatter(
-                x=np.arange(1, max_lag + 1),
+                x=lags,
                 y=low_band,
                 mode="lines",
                 fillcolor="rgba(255, 217, 0, 0.30)",
@@ -1370,5 +1454,6 @@ class OpenBBFigure(go.Figure):
                 col=col,
             )
             self.update_traces(showlegend=False)
+
         except ValueError:
             pass

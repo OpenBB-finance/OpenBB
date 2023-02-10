@@ -528,6 +528,11 @@ def plot_predicted(
             )
 
         if central_series.shape[0] > 1:
+            for col in central_series.coords:
+                if isinstance(central_series.coords[col].values[0], np.datetime64):
+                    central_series = central_series.rename({col: "date"})
+                    break
+
             fig.add_scatter(
                 x=central_series.date,
                 y=central_series.values,
@@ -1023,8 +1028,9 @@ def plot_residuals(
 
         df_res = residuals.pd_dataframe()
         fig.add_scatter(x=df_res.index, y=df_res["close"], name="close", row=1, col=1)
-        fig.add_corr_plot(residuals.values(), row=2, col=1)
-        fig.add_histplot(residuals.univariate_values(), row=2, col=2, bins=num_bins)
+        fig.add_corr_plot(residuals.univariate_values(), row=2, col=1)
+        fig.add_histplot(residuals, row=2, col=2, bins=num_bins, forecast=True)
+        fig.update_traces(showlegend=False)
         fig.update_layout(hovermode="closest")
         fig.show()
 
