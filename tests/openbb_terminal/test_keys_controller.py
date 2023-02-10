@@ -248,4 +248,18 @@ def test_call_shroom(other):
     controller.call_shroom(other)
 
 
-# TODO: Add tests from openbb key
+@pytest.mark.vcr
+@pytest.mark.parametrize("other", [[], ["-k", "1234", "-t", "456"]])
+def test_call_openbb(mocker, other):
+    # MOCK GET
+    attrs = {
+        "status_code": 200,
+        "json.return_value": {"token": "MOCK_TOKEN"},
+    }
+    mock_response = mocker.Mock(**attrs)
+    mocker.patch(
+        target="openbb_terminal.keys_model.request",
+        new=mocker.Mock(return_value=mock_response),
+    )
+
+    controller.call_openbb(other)
