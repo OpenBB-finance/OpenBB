@@ -10,6 +10,7 @@ Preset: top_gainers.ini
     ownership          ownership (e.g. Float, Insider Own, Short Ratio)                [Finviz]
     performance        performance (e.g. Perf Week, Perf YTD, Volatility M)            [Finviz]
     technical          technical (e.g. Beta, SMA50, 52W Low, RSI, Change)              [Finviz]
+    arktrades          get ARK trades for a chosen ticker                              [Cathiesark]
 
 Last screened tickers: 
 

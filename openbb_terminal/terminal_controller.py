@@ -5,6 +5,7 @@ __docformat__ = "numpy"
 import argparse
 import contextlib
 import difflib
+import importlib
 import logging
 import os
 import re
@@ -34,7 +35,7 @@ from openbb_terminal.core.config.paths import (
     USER_ROUTINES_DIRECTORY,
     load_dotenv_with_priority,
 )
-from openbb_terminal.core.log.generation.settings_logger import log_all_settings
+from openbb_terminal.core.log.generation.custom_logger import log_terminal
 from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_positive,
@@ -42,14 +43,17 @@ from openbb_terminal.helper_funcs import (
     parse_and_split_input,
 )
 from openbb_terminal.keys_model import first_time_user
-from openbb_terminal.loggers import setup_logging
 from openbb_terminal.menu import is_papermill, session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.reports.reports_model import ipykernel_launcher
 from openbb_terminal.rich_config import MenuText, console
+from openbb_terminal.session import session_controller
+from openbb_terminal.session.hub_model import REGISTER_LINK
+from openbb_terminal.session.user import User
 from openbb_terminal.terminal_helper import (
     bootup,
     check_for_updates,
+    is_installer,
     is_packaged_application,
     is_reset,
     print_goodbye,
@@ -78,6 +82,7 @@ class TerminalController(BaseController):
     """Terminal Controller class."""
 
     CHOICES_COMMANDS = [
+        "account",
         "keys",
         "settings",
         "survey",
@@ -168,6 +173,7 @@ class TerminalController(BaseController):
         mt.add_cmd("news")
         mt.add_raw("\n")
         mt.add_info("_configure_")
+        mt.add_menu("account")
         mt.add_menu("keys")
         mt.add_menu("featflags")
         mt.add_menu("sources")
@@ -358,17 +364,29 @@ class TerminalController(BaseController):
                 "https://openbb.co/products/terminal#get-started\n"
             )
 
+    def call_account(self, _):
+        """Process account command."""
+        from openbb_terminal.account.account_controller import AccountController
+
+        if User.is_guest():
+            console.print(
+                "[info]You need to be logged in to use this menu.\n"
+                f"Create an account here {REGISTER_LINK}.[/info]\n"
+            )
+            return
+        self.queue = self.load_class(AccountController, self.queue)
+
     def call_keys(self, _):
         """Process keys command."""
         from openbb_terminal.keys_controller import KeysController
 
-        self.queue = self.load_class(KeysController, self.queue, env_file)
+        self.queue = self.load_class(KeysController, self.queue)
 
     def call_settings(self, _):
         """Process settings command."""
         from openbb_terminal.settings_controller import SettingsController
 
-        self.queue = self.load_class(SettingsController, self.queue, env_file)
+        self.queue = self.load_class(SettingsController, self.queue)
 
     def call_featflags(self, _):
         """Process feature flags command."""
@@ -817,10 +835,15 @@ class TerminalController(BaseController):
 # pylint: disable=global-statement
 def terminal(jobs_cmds: List[str] = None, test_mode=False):
     """Terminal Menu."""
-    if not test_mode:
-        setup_logging()
-    logger.info("START")
-    log_all_settings()
+
+    if User.is_guest():
+        load_dotenv_with_priority()
+        modules = sys.modules.copy()
+        for module in modules:
+            if module.startswith("openbb"):
+                importlib.reload(sys.modules[module])
+
+    log_terminal(test_mode=test_mode)
 
     if jobs_cmds is not None and jobs_cmds:
         logger.info("INPUT: %s", "/".join(jobs_cmds))
@@ -865,8 +888,6 @@ def terminal(jobs_cmds: List[str] = None, test_mode=False):
 
         t_controller.print_help()
         check_for_updates()
-
-    load_dotenv_with_priority()
 
     while ret_code:
         if obbff.ENABLE_QUICK_EXIT:
@@ -930,6 +951,7 @@ def terminal(jobs_cmds: List[str] = None, test_mode=False):
         try:
             # Process the input command
             t_controller.queue = t_controller.switch(an_input)
+
             if an_input in ("q", "quit", "..", "exit", "e"):
                 print_goodbye()
                 break
@@ -940,6 +962,9 @@ def terminal(jobs_cmds: List[str] = None, test_mode=False):
                 if ret_code != 0:
                     print_goodbye()
                     break
+
+            if an_input == "logout":
+                break
 
         except SystemExit:
             logger.exception(
@@ -971,6 +996,9 @@ def terminal(jobs_cmds: List[str] = None, test_mode=False):
 
                 console.print(f"[green]Replacing by '{an_input}'.[/green]")
                 t_controller.queue.insert(0, an_input)
+
+    if an_input == "logout":
+        return session_controller.main(guest_allowed=not is_installer())
 
 
 def insert_start_slash(cmds: List[str]) -> List[str]:

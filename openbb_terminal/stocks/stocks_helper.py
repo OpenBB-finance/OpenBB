@@ -803,52 +803,6 @@ def display_candle(
         return data
 
 
-def load_ticker(
-    ticker: str,
-    start_date: Union[str, datetime],
-    end_date: Optional[Union[str, datetime]] = None,
-) -> pd.DataFrame:
-    """Load a ticker data from Yahoo Finance.
-
-    Adds a data index column data_id and Open-Close High/Low columns after loading.
-
-    Parameters
-    ----------
-    ticker : str
-        The stock ticker.
-    start_date : Union[str,datetime]
-        Start date to load stock ticker data formatted YYYY-MM-DD.
-    end_date : Union[str,datetime]
-        End date to load stock ticker data formatted YYYY-MM-DD.
-
-    Returns
-    -------
-    DataFrame
-        A Panda's data frame with columns Open, High, Low, Close, Adj Close, Volume,
-        date_id, OC-High, OC-Low.
-
-    Examples
-    --------
-    >>> from openbb_terminal.sdk import openbb
-    >>> msft_df = openbb.stocks.load("MSFT")
-    """
-    df_data = yf.download(
-        ticker, start=start_date, end=end_date, progress=False, ignore_tz=True
-    )
-
-    df_data.index = pd.to_datetime(df_data.index)
-
-    df_data["date_id"] = (df_data.index.date - df_data.index.date.min()).astype(
-        "timedelta64[D]"
-    )
-    df_data["date_id"] = df_data["date_id"].dt.days + 1
-
-    df_data["OC_High"] = df_data[["Open", "Close"]].max(axis=1)
-    df_data["OC_Low"] = df_data[["Open", "Close"]].min(axis=1)
-
-    return df_data
-
-
 def process_candle(data: pd.DataFrame) -> pd.DataFrame:
     """Process DataFrame into candle style plot.
 

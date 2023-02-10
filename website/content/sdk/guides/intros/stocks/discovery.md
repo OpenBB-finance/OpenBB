@@ -22,6 +22,7 @@ A brief description below highlights the main Functions and Modules available in
 
 | Path                       |    Type    |                                  Description |
 | :------------------------- | :--------: | -------------------------------------------: |
+| openbb.stocks.disc.filings  |  Function  |                    Feed of new filings to the SEC |
 | openbb.stocks.disc.pipo           |  Function  |                               Past IPO Dates |
 | openbb.stocks.disc.active         |  Function  |            Stocks with Highest Trade Volumes |
 | openbb.stocks.disc.gainers        |  Function  |                           Latest Top Gainers |
@@ -46,6 +47,24 @@ help(openbb.stocks.disc)
 ```
 
 ## Examples
+
+## filings
+
+Get the most-recent form submissions to the SEC.
+
+```python
+filings = openbb.stocks.disc.filings()
+filings.head(3)
+```
+
+| Date                | Ticker   |     CIK | Form Type   | Title                                           | URL                                                                                               |
+|:--------------------|:---------|--------:|:------------|:------------------------------------------------|:--------------------------------------------------------------------------------------------------|
+| 2023-01-12 14:09:25 | CYBN     | 1833141 | 6-K         | 6-K - CYBIN INC. (0001833141) (Filer)           | https://www.sec.gov/Archives/edgar/data/1833141/000162828023000949/0001628280-23-000949-index.htm |
+| 2023-01-12 13:39:25 | RYAOF    | 1038683 | 6-K         | 6-K - RYANAIR HOLDINGS PLC (0001038683) (Filer) | https://www.sec.gov/Archives/edgar/data/1038683/000165495423000350/0001654954-23-000350-index.htm |
+| 2023-01-12 13:39:25 | RYAAY    | 1038683 | 6-K         | 6-K - RYANAIR HOLDINGS PLC (0001038683) (Filer) | https://www.sec.gov/Archives/edgar/data/1038683/000165495423000350/0001654954-23-000350-index.htm |
+
+
+````
 
 ### pipo
 

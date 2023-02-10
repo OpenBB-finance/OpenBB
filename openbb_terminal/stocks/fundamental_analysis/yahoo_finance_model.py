@@ -39,7 +39,7 @@ def get_info(symbol: str) -> pd.DataFrame:
         DataFrame of yfinance information
     """
     stock = yf.Ticker(symbol)
-    df_info = pd.DataFrame(stock.info.items(), columns=["Metric", "Value"])
+    df_info = pd.DataFrame(stock.fast_info.items(), columns=["Metric", "Value"])
     df_info = df_info.set_index("Metric")
 
     clean_df_index(df_info)
@@ -129,47 +129,6 @@ def get_shareholders(symbol: str, holder: str = "institutional") -> pd.DataFrame
     if holder == "mutualfund":
         return df_mutualfund_shareholders
     return pd.DataFrame()
-
-
-@log_start_end(log=logger)
-def get_sustainability(symbol: str) -> pd.DataFrame:
-    """Get sustainability metrics from yahoo
-
-    Parameters
-    ----------
-    symbol : str
-        Stock ticker symbol
-
-    Returns
-    -------
-    pd.DataFrame
-        Dataframe of sustainability metrics
-    """
-    stock = yf.Ticker(symbol)
-    pd.set_option("display.max_colwidth", None)
-
-    df_sustainability = stock.sustainability
-
-    if df_sustainability is None or df_sustainability.empty:
-        return pd.DataFrame()
-
-    clean_df_index(df_sustainability)
-
-    df_sustainability = df_sustainability.rename(
-        index={
-            "Controversialweapons": "Controversial Weapons",
-            "Socialpercentile": "Social Percentile",
-            "Peercount": "Peer Count",
-            "Governancescore": "Governance Score",
-            "Environmentpercentile": "Environment Percentile",
-            "Animaltesting": "Animal Testing",
-            "Highestcontroversy": "Highest Controversy",
-            "Environmentscore": "Environment Score",
-            "Governancepercentile": "Governance Percentile",
-            "Militarycontract": "Military Contract",
-        }
-    )
-    return df_sustainability
 
 
 @log_start_end(log=logger)

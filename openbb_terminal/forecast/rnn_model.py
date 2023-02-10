@@ -36,6 +36,7 @@ def get_rnn_data(
     input_chunk_size: int = 14,
     force_reset: bool = True,
     save_checkpoints: bool = True,
+    metric: str = "mape",
 ) -> Tuple[
     Optional[List[type[TimeSeries]]],
     Optional[List[type[TimeSeries]]],
@@ -77,6 +78,8 @@ def get_rnn_data(
     save_checkpoints: bool
         Whether or not to automatically save the untrained model and checkpoints from training.
         Defaults to True.
+    metric: str
+        Metric to use for model selection. Defaults to "mape".
 
     Returns
     -------
@@ -145,4 +148,5 @@ def get_rnn_data(
         train_split,
         forecast_horizon,
         n_predict,
+        metric,
     )

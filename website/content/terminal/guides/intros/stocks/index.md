@@ -11,10 +11,9 @@ The Stocks menu is the high-level menu for the Public Equity asset class. It con
 |ba |Behavioural Analysis |Social Media, Sentiment, Trends |
 |bt |Strategy Backtester | Simple EMA, EMA Crossover & RSI Strategies |
 |ca |Comparison Analysis |Compare Historical Prices, Correlations, Financials |
-|dd |Due Diligence |Analyst Coverage, Price Targets, SEC Filings, Customers and Suppliers |
 |disc |Discovery |Upcoming Earnings and Dividends Calendar, Heatmaps, Trending News |
 |dps |Dark Pool and Short Data |Short Interest, Borrow Rates, Off-Exchange Short Volume |
-|fa |Fundamental Analysis |Financial Statements and Analysis |
+|fa |Fundamental Analysis |Financial Statements, Company Overviews, Analyst Coverage, Price Targets |
 |forecast |Forecasting and ML |Enter the Forecast Menu With the Loaded Ticker |
 |gov |Government |House and Senate Trading Disclosures, Lobbying Efforts, US Treasury Spending |
 |ins |Insider Trading |SEC Form 4 Disclosures & Screener |
@@ -72,7 +71,7 @@ The first step in many workflows will be to load a stock symbol with historical 
 
 The data source for each function is located on the right-side of the menu. In the image below, this is depicted by the text in [blue].
 
-![Stocks Menu](https://user-images.githubusercontent.com/85772166/212164398-76e461b6-84bc-415f-891b-be9c588dd02b.png "Stocks Menu")
+![Stocks Menu](https://user-images.githubusercontent.com/85772166/205688600-afaf4663-37f7-492e-aa9b-7d5263abe27b.png "Stocks Menu")
 
 Attaching the source argument to a command enables users to select their preferred source. The default sources can be changed from the [`/sources` menu](https://docs.openbb.co/terminal/guides/advanced/changing-sources). To select the `source` as `NewsApi`, use the block below.
 
