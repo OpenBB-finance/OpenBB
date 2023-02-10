@@ -210,6 +210,10 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
         return_value=EXPIRY_DATES,
     )
     mocker.patch(
+        target=f"{path_controller}.yfinance_model.option_expirations",
+        return_value=[],
+    )
+    mocker.patch(
         target=f"{path_controller}.tradier_model.get_full_option_chain",
         return_value=CHAIN,
     )
@@ -993,6 +997,10 @@ def test_call_func_no_selected_date(func, mocker):
     # MOCK OPTION_EXPIRATIONS + CHAIN
     mocker.patch(
         target=f"{path_controller}.nasdaq_model.option_expirations",
+        return_value=[],
+    )
+    mocker.patch(
+        target=f"{path_controller}.yfinance_model.option_expirations",
         return_value=[],
     )
     mocker.patch(
