@@ -564,7 +564,6 @@ def display_candle(
             end_date,
             prepost,
             source,
-            iexrange,
             weekly,
             monthly,
         )
