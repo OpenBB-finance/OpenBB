@@ -203,8 +203,11 @@ class Backend(PyWry):
 
     def close(self, reset: bool = False):
         """Close the backend."""
-        if not reset:
+        if reset:
+            self.max_retries = 0
+        else:
             self.del_temp()
+
         super().close(reset)
 
 
