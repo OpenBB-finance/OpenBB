@@ -1,7 +1,6 @@
 from typing import Tuple
 
 from prompt_toolkit import PromptSession
-from openbb_terminal.base_helpers import reload_openbb_modules
 
 import openbb_terminal.session.local_model as Local
 from openbb_terminal import terminal_controller
@@ -10,7 +9,6 @@ from openbb_terminal.rich_config import console
 from openbb_terminal.session.hub_model import REGISTER_URL
 from openbb_terminal.session.session_model import (
     LoginStatus,
-    clear_openbb_env_vars,
     create_session,
     login,
 )

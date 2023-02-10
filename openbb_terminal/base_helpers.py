@@ -1,8 +1,9 @@
 # This is for helpers that do NOT import any OpenBB Modules
 import importlib
+import logging
 import os
 import sys
-from typing import Any, Callable, Literal
+from typing import Any, Callable, List, Literal, Optional
 from dotenv import load_dotenv
 from rich.console import Console
 
@@ -95,7 +96,7 @@ def strtobool(val):
     return output
 
 
-def load_dotenv_and_reload():
+def load_dotenv_and_reload_configs():
     """Loads the dotenv files in the following order:
     1. Repository .env file
     2. Package .env file
@@ -111,12 +112,33 @@ def load_dotenv_and_reload():
     load_dotenv(PACKAGE_ENV_FILE, override=True)
     load_dotenv(USER_ENV_FILE, override=True)
 
-    reload_openbb_modules()
+    reload_openbb_config_modules()
 
 
-def reload_openbb_modules():
-    """Reloads all openbb modules"""
+def reload_openbb_config_modules():
+    """Reloads openbb config modules"""
+
+    config_modules = [
+        "openbb_terminal.config_plot",
+        "openbb_terminal.config_terminal",
+        "openbb_terminal.feature_flags",
+        "openbb_terminal.core.config",
+    ]
     modules = sys.modules.copy()
     for module in modules:
-        if module.startswith("openbb"):
+        if module in config_modules:
             importlib.reload(sys.modules[module])
+
+
+def remove_log_handlers():
+    """Remove the log handlers - needs to be done before reloading modules."""
+    for handler in logging.root.handlers[:]:
+        logging.root.removeHandler(handler)
+
+
+def clear_openbb_env_vars(exceptions: Optional[List[str]] = None):
+    """Clear openbb environment variables."""
+    for v in os.environ:
+        if v.startswith("OPENBB"):
+            if v and v not in exceptions:
+                os.environ.pop(v)

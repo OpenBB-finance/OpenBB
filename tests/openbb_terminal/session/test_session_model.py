@@ -139,7 +139,9 @@ def test_logout_user(guest):
         patch(path + "Hub.delete_session") as mock_delete_session,
         patch(path + "Local.remove_session_file") as mock_remove_session_file,
         patch(path + "Local.remove_cli_history_file") as mock_remove_cli_history_file,
-        patch(path + "reload_openbb_modules") as mock_reload_openbb_modules,
+        patch(
+            path + "reload_openbb_config_modules"
+        ) as mock_reload_openbb_config_modules,
         patch(path + "clear_openbb_env_vars") as mock_clear_openbb_env_vars,
         patch(path + "User.clear") as mock_clear_user,
         patch(path + "plt.close") as mock_plt_close,
@@ -153,7 +155,7 @@ def test_logout_user(guest):
         mock_clear_user.assert_called_once()
         mock_remove_session_file.assert_called_once()
     mock_clear_openbb_env_vars.assert_called_once()
-    mock_reload_openbb_modules.assert_called_once()
+    mock_reload_openbb_config_modules.assert_called_once()
     mock_remove_cli_history_file.assert_called_once()
     mock_plt_close.assert_called_once()
 
@@ -166,10 +168,3 @@ def test_clear_openbb_env_vars():
         assert "OPENBB_TEST" not in os.environ
         assert "OPENBB_TEST2" not in os.environ
         assert "TEST" in os.environ
-
-
-def test_reload_openbb_modules():
-    with patch("openbb_terminal.session.session_model.importlib.reload") as mock_reload:
-        session_model.reload_openbb_modules()
-
-    mock_reload.assert_called()

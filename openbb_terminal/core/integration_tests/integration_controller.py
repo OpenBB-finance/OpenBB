@@ -14,6 +14,7 @@ from multiprocessing.pool import Pool
 from pathlib import Path
 from traceback import FrameSummary, extract_tb, format_list
 from typing import Any, Dict, List, Optional, Tuple
+from openbb_terminal.base_helpers import clear_openbb_env_vars
 
 from openbb_terminal.core.config.paths import (
     MISCELLANEOUS_DIRECTORY,
@@ -21,7 +22,6 @@ from openbb_terminal.core.config.paths import (
 )
 from openbb_terminal.helper_funcs import check_non_negative
 from openbb_terminal.rich_config import console
-from openbb_terminal.session.session_model import clear_openbb_env_vars
 from openbb_terminal.terminal_controller import (
     insert_start_slash,
     obbff,
