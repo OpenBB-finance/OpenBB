@@ -19,10 +19,9 @@ from openbb_terminal import (
     feature_flags as obbff,
     thought_of_the_day as thought,
 )
-from openbb_terminal.config_terminal import LOGGING_APP_NAME, LOGGING_COMMIT_HASH
 
 # IMPORTATION INTERNAL
-from openbb_terminal.core.config.paths import load_dotenv_with_priority
+from openbb_terminal.config_terminal import LOGGING_APP_NAME, LOGGING_COMMIT_HASH
 from openbb_terminal.helper_funcs import request
 from openbb_terminal.rich_config import console
 
@@ -236,9 +235,6 @@ def is_auth_enabled() -> bool:
     Returns:
         bool: If authentication is enabled
     """
-    # When authentication is fully implemented
-    # Remove the line below and references to is_auth_enabled
-    load_dotenv_with_priority()
     return str(os.getenv("OPENBB_ENABLE_AUTHENTICATION")).lower() == "true"
 
 
