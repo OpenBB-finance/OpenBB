@@ -4,7 +4,6 @@ __docformat__ = "numpy"
 
 import argparse
 import logging
-import webbrowser
 from datetime import datetime
 from typing import List
 
@@ -45,12 +44,16 @@ from openbb_terminal.stocks.technical_analysis import (
 logger = logging.getLogger(__name__)
 
 
+def no_ticker_message():
+    """Print message when no ticker is loaded"""
+    console.print("[red]No ticker loaded. Use 'load' command to load a symbol[/red]")
+
+
 class TechnicalAnalysisController(StockBaseController):
     """Technical Analysis Controller class"""
 
     CHOICES_COMMANDS = [
         "load",
-        "view",
         "summary",
         "recom",
         "ema",
@@ -162,20 +165,6 @@ class TechnicalAnalysisController(StockBaseController):
         return []
 
     # SPECIFIC
-
-    @log_start_end(log=logger)
-    def call_tv(self, other_args):
-        """Process tv command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="tv",
-            description="""View TradingView for technical analysis. [Source: TradingView]""",
-        )
-        ns_parser = self.parse_known_args_and_warn(parser, other_args)
-        if ns_parser:
-            webbrowser.open(f"https://www.tradingview.com/chart/?symbol={self.ticker}")
-
     @log_start_end(log=logger)
     def call_view(self, other_args: List[str]):
         """Process view command"""
@@ -189,6 +178,9 @@ class TechnicalAnalysisController(StockBaseController):
             parser, other_args, EXPORT_ONLY_FIGURES_ALLOWED
         )
         if ns_parser:
+            if not self.ticker:
+                no_ticker_message()
+                return
             finviz_view.view(self.ticker)
 
     @log_start_end(log=logger)
@@ -209,6 +201,9 @@ class TechnicalAnalysisController(StockBaseController):
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
+            if not self.ticker:
+                no_ticker_message()
+                return
             finbrain_view.technical_summary_report(self.ticker)
 
     @log_start_end(log=logger)
@@ -259,6 +254,9 @@ class TechnicalAnalysisController(StockBaseController):
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
+            if not self.ticker:
+                no_ticker_message()
+                return
             tradingview_view.print_recommendation(
                 symbol=self.ticker,
                 screener=ns_parser.screener,
@@ -317,6 +315,9 @@ class TechnicalAnalysisController(StockBaseController):
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
+            if not self.ticker:
+                no_ticker_message()
+                return
             overlap_view.view_ma(
                 ma_type="EMA",
                 symbol=self.ticker,
@@ -372,6 +373,9 @@ class TechnicalAnalysisController(StockBaseController):
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
+            if not self.ticker:
+                no_ticker_message()
+                return
             overlap_view.view_ma(
                 ma_type="SMA",
                 symbol=self.ticker,
@@ -424,6 +428,9 @@ class TechnicalAnalysisController(StockBaseController):
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
+            if not self.ticker:
+                no_ticker_message()
+                return
             overlap_view.view_ma(
                 ma_type="WMA",
                 symbol=self.ticker,
@@ -476,6 +483,9 @@ class TechnicalAnalysisController(StockBaseController):
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
+            if not self.ticker:
+                no_ticker_message()
+                return
             overlap_view.view_ma(
                 ma_type="HMA",
                 symbol=self.ticker,
@@ -531,6 +541,9 @@ class TechnicalAnalysisController(StockBaseController):
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
+            if not self.ticker:
+                no_ticker_message()
+                return
             overlap_view.view_ma(
                 ma_type="ZLMA",
                 symbol=self.ticker,
@@ -583,6 +596,9 @@ class TechnicalAnalysisController(StockBaseController):
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
+            if not self.ticker:
+                no_ticker_message()
+                return
             # Daily
             if self.interval == "1440min":
                 if ns_parser.start:
@@ -648,6 +664,9 @@ class TechnicalAnalysisController(StockBaseController):
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
+            if not self.ticker:
+                no_ticker_message()
+                return
             momentum_view.display_cci(
                 symbol=self.ticker,
                 data=self.stock,
@@ -707,6 +726,9 @@ class TechnicalAnalysisController(StockBaseController):
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
+            if not self.ticker:
+                no_ticker_message()
+                return
             momentum_view.display_macd(
                 symbol=self.ticker,
                 data=self.stock["Adj Close"],
@@ -770,6 +792,9 @@ class TechnicalAnalysisController(StockBaseController):
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
+            if not self.ticker:
+                no_ticker_message()
+                return
             momentum_view.display_rsi(
                 symbol=self.ticker,
                 data=self.stock["Adj Close"],
@@ -815,6 +840,9 @@ class TechnicalAnalysisController(StockBaseController):
         )
 
         if ns_parser:
+            if not self.ticker:
+                no_ticker_message()
+                return
             rsp_view.display_rsp(
                 s_ticker=self.ticker,
                 export=ns_parser.export,
@@ -871,6 +899,9 @@ class TechnicalAnalysisController(StockBaseController):
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
+            if not self.ticker:
+                no_ticker_message()
+                return
             momentum_view.display_stoch(
                 symbol=self.ticker,
                 data=self.stock,
@@ -915,6 +946,9 @@ class TechnicalAnalysisController(StockBaseController):
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
+            if not self.ticker:
+                no_ticker_message()
+                return
             momentum_view.display_fisher(
                 symbol=self.ticker,
                 data=self.stock,
@@ -957,6 +991,9 @@ class TechnicalAnalysisController(StockBaseController):
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
+            if not self.ticker:
+                no_ticker_message()
+                return
             momentum_view.display_cg(
                 symbol=self.ticker,
                 data=self.stock["Adj Close"],
@@ -1015,6 +1052,9 @@ class TechnicalAnalysisController(StockBaseController):
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
+            if not self.ticker:
+                no_ticker_message()
+                return
             trend_indicators_view.display_adx(
                 symbol=self.ticker,
                 data=self.stock,
@@ -1074,6 +1114,9 @@ class TechnicalAnalysisController(StockBaseController):
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
+            if not self.ticker:
+                no_ticker_message()
+                return
             trend_indicators_view.display_aroon(
                 symbol=self.ticker,
                 data=self.stock,
@@ -1142,6 +1185,9 @@ class TechnicalAnalysisController(StockBaseController):
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
+            if not self.ticker:
+                no_ticker_message()
+                return
             volatility_view.display_bbands(
                 symbol=self.ticker,
                 data=self.stock,
@@ -1193,6 +1239,9 @@ class TechnicalAnalysisController(StockBaseController):
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
+            if not self.ticker:
+                no_ticker_message()
+                return
             volatility_view.display_donchian(
                 symbol=self.ticker,
                 data=self.stock,
@@ -1264,6 +1313,9 @@ class TechnicalAnalysisController(StockBaseController):
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
+            if not self.ticker:
+                no_ticker_message()
+                return
             volatility_view.view_kc(
                 symbol=self.ticker,
                 data=self.stock,
@@ -1309,6 +1361,9 @@ class TechnicalAnalysisController(StockBaseController):
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
+            if not self.ticker:
+                no_ticker_message()
+                return
             volume_view.display_ad(
                 symbol=self.ticker,
                 data=self.stock,
@@ -1364,6 +1419,9 @@ class TechnicalAnalysisController(StockBaseController):
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
+            if not self.ticker:
+                no_ticker_message()
+                return
             volume_view.display_adosc(
                 symbol=self.ticker,
                 data=self.stock,
@@ -1398,6 +1456,9 @@ class TechnicalAnalysisController(StockBaseController):
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
+            if not self.ticker:
+                no_ticker_message()
+                return
             volume_view.display_obv(
                 symbol=self.ticker,
                 data=self.stock,
@@ -1446,6 +1507,9 @@ class TechnicalAnalysisController(StockBaseController):
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
+            if not self.ticker:
+                no_ticker_message()
+                return
             custom_indicators_view.fibonacci_retracement(
                 symbol=self.ticker,
                 data=self.stock,
@@ -1480,6 +1544,9 @@ class TechnicalAnalysisController(StockBaseController):
             parser, other_args, EXPORT_ONLY_FIGURES_ALLOWED
         )
         if ns_parser:
+            if not self.ticker:
+                no_ticker_message()
+                return
             if self.interval == "1440min":
                 momentum_view.display_clenow_momentum(
                     self.stock["Adj Close"],
@@ -1514,6 +1581,9 @@ class TechnicalAnalysisController(StockBaseController):
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
+            if not self.ticker:
+                no_ticker_message()
+                return
             momentum_view.display_demark(
                 self.stock,
                 self.ticker.upper(),
@@ -1569,6 +1639,9 @@ class TechnicalAnalysisController(StockBaseController):
         )
 
         if ns_parser:
+            if not self.ticker:
+                no_ticker_message()
+                return
             volatility_view.display_atr(
                 data=self.stock,
                 symbol=self.ticker,
