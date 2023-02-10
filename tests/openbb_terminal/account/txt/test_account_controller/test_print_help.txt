@@ -1,6 +1,3 @@
-Authentication:
-    logout             Log out from OpenBB account
-
 Cloud storage of keys, settings and feature flags:
     sync               Turns the cloud synchronization on/off
     pull               Pull data from cloud
@@ -11,4 +8,7 @@ Cloud storage of routines:
     upload             Upload routine
     download           Download routine
     delete             Delete routine
+
+Authentication:
+    logout             Log out from OpenBB account
 

@@ -146,5 +146,7 @@ def clear_openbb_env_vars(exceptions: Optional[List[str]] = None):
     """Clear openbb environment variables."""
     for v in os.environ:
         if v.startswith("OPENBB"):
-            if exceptions and v not in exceptions:
+            if not exceptions:
+                os.environ.pop(v)
+            elif v not in exceptions:
                 os.environ.pop(v)
