@@ -441,7 +441,7 @@ stocks.ins.blis,openbb_terminal.stocks.insider.sdk_helper.blis,
 stocks.ins.blos,openbb_terminal.stocks.insider.sdk_helper.blos,
 stocks.ins.blcs,openbb_terminal.stocks.insider.sdk_helper.blcs,
 stocks.options.pcr,openbb_terminal.stocks.options.alphaquery_model.get_put_call_ratio,openbb_terminal.stocks.options.alphaquery_view.display_put_call_ratio
-stocks.options.info,openbb_terminal.stocks.options.yfinance_model.get_info,openbb_terminal.stocks.options.barchart_view.print_options_data
+stocks.options.info,openbb_terminal.stocks.options.barchart_model.get_options_info,openbb_terminal.stocks.options.barchart_view.print_options_data
 stocks.options.unu,openbb_terminal.stocks.options.fdscanner_model.unusual_options,openbb_terminal.stocks.options.fdscanner_view.display_options
 stocks.options.screen.check_presets,openbb_terminal.stocks.options.screen.syncretism_model.check_presets,
 stocks.options.grhist,openbb_terminal.stocks.options.screen.syncretism_model.get_historical_greeks,openbb_terminal.stocks.options.screen.syncretism_view.view_historical_greeks
