@@ -7,6 +7,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
+from copy import deepcopy
 from datetime import datetime, timedelta
 from typing import Any, Dict, Iterable, List, Optional, Union
 
@@ -475,7 +476,7 @@ def load(
 
 def display_candle(
     symbol: str,
-    data: pd.DataFrame = pd.DataFrame(),
+    data: pd.DataFrame = None,
     use_matplotlib: bool = True,
     intraday: bool = False,
     add_trend: bool = False,
@@ -546,7 +547,10 @@ def display_candle(
     # We are not actually showing adj close in candle.  This hasn't been an issue so far, but adding
     # in intrinio returns all adjusted columns,so some care here is needed or else we end up with
     # mixing up close and adj close
-    data = data.copy(deep=True)
+    if data is None:
+        # For mypy
+        data = pd.DataFrame()
+    data = deepcopy(data)
 
     if "Adj Close" in data.columns:
         data["Close"] = data["Adj Close"].copy()
