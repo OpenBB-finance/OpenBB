@@ -1,7 +1,6 @@
 trail,model,view
 portfolio.po.blacklitterman,openbb_terminal.portfolio.portfolio_optimization.po_model.get_blacklitterman,
 portfolio.po.ef,openbb_terminal.portfolio.portfolio_optimization.po_model.get_ef,openbb_terminal.portfolio.portfolio_optimization.po_view.display_ef
-portfolio.po.equal,openbb_terminal.portfolio.portfolio_optimization.po_model.get_equal,
 portfolio.po.file,openbb_terminal.portfolio.portfolio_optimization.po_model.load_parameters_file,
 portfolio.po.herc,openbb_terminal.portfolio.portfolio_optimization.po_model.get_herc,
 portfolio.po.hrp,openbb_terminal.portfolio.portfolio_optimization.po_model.get_hrp,
@@ -13,7 +12,6 @@ portfolio.po.maxret,openbb_terminal.portfolio.portfolio_optimization.po_model.ge
 portfolio.po.maxsharpe,openbb_terminal.portfolio.portfolio_optimization.po_model.get_maxsharpe,
 portfolio.po.maxutil,openbb_terminal.portfolio.portfolio_optimization.po_model.get_maxutil,
 portfolio.po.minrisk,openbb_terminal.portfolio.portfolio_optimization.po_model.get_minrisk,
-portfolio.po.mktcap,openbb_terminal.portfolio.portfolio_optimization.po_model.get_mktcap,
 portfolio.po.nco,openbb_terminal.portfolio.portfolio_optimization.po_model.get_nco,
 portfolio.po.plot,openbb_terminal.portfolio.portfolio_optimization.po_view.display_plot,openbb_terminal.portfolio.portfolio_optimization.po_view.display_plot
 portfolio.po.relriskparity,openbb_terminal.portfolio.portfolio_optimization.po_model.get_relriskparity,

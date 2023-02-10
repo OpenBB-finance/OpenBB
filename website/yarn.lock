@@ -1629,6 +1629,28 @@
     url-loader "^4.1.1"
     webpack "^5.73.0"
 
+"@docusaurus/utils@2.3.1":
+  "integrity" "sha512-9WcQROCV0MmrpOQDXDGhtGMd52DHpSFbKLfkyaYumzbTstrbA5pPOtiGtxK1nqUHkiIv8UwexS54p0Vod2I1lg=="
+  "resolved" "https://registry.npmjs.org/@docusaurus/utils/-/utils-2.3.1.tgz"
+  "version" "2.3.1"
+  dependencies:
+    "@docusaurus/logger" "2.3.1"
+    "@svgr/webpack" "^6.2.1"
+    "escape-string-regexp" "^4.0.0"
+    "file-loader" "^6.2.0"
+    "fs-extra" "^10.1.0"
+    "github-slugger" "^1.4.0"
+    "globby" "^11.1.0"
+    "gray-matter" "^4.0.3"
+    "js-yaml" "^4.1.0"
+    "lodash" "^4.17.21"
+    "micromatch" "^4.0.5"
+    "resolve-pathname" "^3.0.0"
+    "shelljs" "^0.8.5"
+    "tslib" "^2.4.0"
+    "url-loader" "^4.1.1"
+    "webpack" "^5.73.0"
+
 "@floating-ui/core@^0.7.3":
   version "0.7.3"
   resolved "https://registry.yarnpkg.com/@floating-ui/core/-/core-0.7.3.tgz#d274116678ffae87f6b60e90f88cc4083eefab86"
