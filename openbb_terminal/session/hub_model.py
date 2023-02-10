@@ -183,9 +183,9 @@ def get_session_from_token(token: str) -> dict:
         The session info.
     """
     response = create_session_from_token(token)
-    if response.status_code == 200:
-        return response.json()
-    return {}
+    if response is None:
+        return {}
+    return process_session_response(response)
 
 
 def fetch_user_configs(
