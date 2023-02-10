@@ -61,6 +61,44 @@ def test_create_session_exception(email, password):
         assert response is None
 
 
+@pytest.mark.parametrize("token", [("test_token")])
+def test_create_session_from_token_success(token):
+    with patch("requests.post") as mock_post:
+        mock_post.return_value.json.return_value = TEST_RESPONSE
+        response = hub_model.create_session_from_token(token)
+        assert response.json() == TEST_RESPONSE
+
+        mock_post.assert_called_once_with(
+            url=hub_model.BASE_URL + "sdk/login",
+            json={"token": token},
+            timeout=hub_model.TIMEOUT,
+        )
+
+
+@pytest.mark.parametrize("token", [("test_token")])
+def test_create_session_from_token_connection_error(token):
+    with patch("requests.post") as mock_post:
+        mock_post.side_effect = requests.exceptions.ConnectionError
+        response = hub_model.create_session_from_token(token)
+        assert response is None
+
+
+@pytest.mark.parametrize("token", [("test_token")])
+def test_create_session_from_token_timeout(token):
+    with patch("requests.post") as mock_post:
+        mock_post.side_effect = requests.exceptions.Timeout
+        response = hub_model.create_session_from_token(token)
+        assert response is None
+
+
+@pytest.mark.parametrize("token", [("test_token")])
+def test_create_session_from_token_exception(token):
+    with patch("requests.post") as mock_post:
+        mock_post.side_effect = Exception
+        response = hub_model.create_session_from_token(token)
+        assert response is None
+
+
 @pytest.mark.parametrize("auth_header, token", TEST_HEADER_TOKEN)
 def test_delete_session_success(auth_header, token):
     with patch("requests.post") as mock_post:
@@ -184,6 +222,56 @@ def test_get_session_failed_to_request():
         result = hub_model.get_session("email", "password")
         assert result == {}
         create_session_mock.assert_called_once_with("email", "password")
+
+
+def test_get_session_from_token():
+    mock_response = MagicMock(spec=requests.Response)
+    mock_response.status_code = 200
+    mock_response.json.return_value = {"session": "info"}
+
+    with patch(
+        "openbb_terminal.session.hub_model.create_session_from_token",
+        return_value=mock_response,
+    ) as create_session_mock:
+        result = hub_model.get_session_from_token("token")
+        assert result == {"session": "info"}
+        create_session_mock.assert_called_once_with("token")
+
+
+def test_get_session_from_token_401():
+    mock_response = MagicMock(spec=requests.Response)
+    mock_response.status_code = 401
+
+    with patch(
+        "openbb_terminal.session.hub_model.create_session_from_token",
+        return_value=mock_response,
+    ) as create_session_mock:
+        result = hub_model.get_session_from_token("token")
+        assert result == {}
+        create_session_mock.assert_called_once_with("token")
+
+
+def test_get_session_from_token_403():
+    mock_response = MagicMock(spec=requests.Response)
+    mock_response.status_code = 403
+
+    with patch(
+        "openbb_terminal.session.hub_model.create_session_from_token",
+        return_value=mock_response,
+    ) as create_session_mock:
+        result = hub_model.get_session_from_token("token")
+        assert result == {}
+        create_session_mock.assert_called_once_with("token")
+
+
+def test_get_session_from_token_failed_to_request():
+    with patch(
+        "openbb_terminal.session.hub_model.create_session_from_token",
+        return_value=None,
+    ) as create_session_mock:
+        result = hub_model.get_session_from_token("token")
+        assert result == {}
+        create_session_mock.assert_called_once_with("token")
 
 
 @pytest.mark.parametrize("token_type, access_token", [("TokenType", "AccessToken")])
@@ -621,7 +709,3 @@ def test_list_routines_error(side_effect):
     ):
         result = hub_model.list_routines(auth_header="Bearer 123", page=1, size=10)
         assert result is None
-
-
-# TODO: Add tests to create_session_from_token
-# TODO: Add tests to get_session_from_token
