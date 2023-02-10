@@ -479,7 +479,6 @@ def display_candle(
     end_date: Optional[Union[datetime, str]] = None,
     prepost: bool = False,
     source: str = "YahooFinance",
-    iexrange: str = "ytd",
     weekly: bool = False,
     monthly: bool = False,
     external_axes: Optional[List[plt.Axes]] = None,
@@ -520,8 +519,6 @@ def display_candle(
         Pre and After hours data
     source: str
         Source of data extracted
-    iexrange: str
-        Timeframe to get IEX data.
     weekly: bool
         Flag to get weekly data
     monthly: bool
