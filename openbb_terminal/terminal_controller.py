@@ -52,7 +52,7 @@ from openbb_terminal.session.user import User
 from openbb_terminal.terminal_helper import (
     bootup,
     check_for_updates,
-    is_installer,
+    is_auth_enabled,
     is_packaged_application,
     is_reset,
     print_goodbye,
@@ -81,7 +81,6 @@ class TerminalController(BaseController):
     """Terminal Controller class."""
 
     CHOICES_COMMANDS = [
-        "account",
         "keys",
         "settings",
         "survey",
@@ -108,6 +107,9 @@ class TerminalController(BaseController):
         "futures",
         "funds",
     ]
+
+    if is_auth_enabled():
+        CHOICES_MENUS.append("account")
 
     PATH = "/"
 
@@ -994,7 +996,7 @@ def terminal(jobs_cmds: List[str] = None, test_mode=False):
                 t_controller.queue.insert(0, an_input)
 
     if an_input == "logout":
-        return session_controller.main(guest_allowed=not is_installer())
+        return session_controller.main()
 
 
 def insert_start_slash(cmds: List[str]) -> List[str]:
@@ -1222,12 +1224,12 @@ def parse_args_and_run():
             " to see testing argument options."
         ),
     )
-    parser.add_argument(
-        "-u",
-        "--user-auth",
-        action="store_true",
-        help=argparse.SUPPRESS,
-    )
+    if is_auth_enabled():
+        parser.add_argument(
+            "--login",
+            action="store_true",
+            help="Go to login prompt.",
+        )
     # The args -m, -f and --HistoryManager.hist_file are used only in reports menu
     # by papermill and that's why they have suppress help.
     parser.add_argument(

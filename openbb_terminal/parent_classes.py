@@ -47,7 +47,7 @@ from openbb_terminal.menu import session
 from openbb_terminal.rich_config import console, get_ordered_list_sources
 from openbb_terminal.session.user import User
 from openbb_terminal.stocks import stocks_helper
-from openbb_terminal.terminal_helper import open_openbb_documentation
+from openbb_terminal.terminal_helper import is_auth_enabled, open_openbb_documentation
 
 logger = logging.getLogger(__name__)
 
@@ -95,8 +95,10 @@ class BaseController(metaclass=ABCMeta):
         "record",
         "stop",
         "screenshot",
-        "whoami",
     ]
+
+    if is_auth_enabled():
+        CHOICES_COMMON += ["whoami"]
 
     CHOICES_COMMANDS: List[str] = []
     CHOICES_MENUS: List[str] = []

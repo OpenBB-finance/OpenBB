@@ -229,6 +229,15 @@ def is_packaged_application() -> bool:
     return LOGGING_APP_NAME == "gst_packaged"
 
 
+def is_auth_enabled() -> bool:
+    """Tell whether or not authentication is enabled.
+
+    Returns:
+        bool: If authentication is enabled
+    """
+    return str(os.getenv("OPENBB_ENABLE_AUTHENTICATION")).lower() == "true"
+
+
 def is_installer() -> bool:
     """Tell whether or not it is a packaged version."""
     # TODO: Merge this with is_packaged_application
