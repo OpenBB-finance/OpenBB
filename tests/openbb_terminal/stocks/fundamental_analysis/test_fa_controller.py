@@ -284,12 +284,6 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             {"TSLA"},
         ),
         (
-            "call_sust",
-            "yahoo_finance_view.display_sustainability",
-            [],
-            {"TSLA"},
-        ),
-        (
             "call_dupont",
             "av_view.display_dupont",
             [],
@@ -299,12 +293,6 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             "call_epsfc",
             "seeking_alpha_view.display_eps_estimates",
             [],
-            {"TSLA"},
-        ),
-        (
-            "call_revfc",
-            "yahoo_finance_view.display_calendar_earnings",
-            ["--source=YahooFinance"],
             {"TSLA"},
         ),
         (
@@ -630,18 +618,6 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 "sheet_name": None,
             },
         ),
-        (
-            "call_arktrades",
-            "ark_view.display_ark_trades",
-            ["--limit=10", "--show_symbol"],
-            {
-                "symbol": "TSLA",
-                "limit": 10,
-                "export": "",
-                "show_symbol": True,
-                "sheet_name": None,
-            },
-        ),
     ],
 )
 def test_call_func(tested_func, mocked_func, other_args, called_with, mocker):
@@ -680,7 +656,6 @@ def test_call_func(tested_func, mocked_func, other_args, called_with, mocker):
         "call_shrs",
         "call_growth",
         "call_metrics",
-        "call_sust",
         "call_income",
         "call_balance",
         "call_cash",
@@ -702,7 +677,6 @@ def test_call_func(tested_func, mocked_func, other_args, called_with, mocker):
         "call_sec",
         "call_supplier",
         "call_customer",
-        "call_arktrades",
     ],
 )
 def test_call_func_no_parser(func, mocker):

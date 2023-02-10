@@ -1,7 +1,7 @@
 {
   "stocks": {
     "search": ["FinanceDatabase"],
-    "quote": ["FinancialModelingPrep", "YahooFinance"],
+    "quote": ["FinancialModelingPrep"],
     "tob": ["CBOE"],
     "candle": [],
     "codes": ["Polygon"],
@@ -54,6 +54,7 @@
       }
     },
     "disc": {
+      "filings": ["FinancialModelingPrep"],
       "pipo": ["Finnhub"],
       "fipo": ["Finnhub"],
       "gainers": ["YahooFinance"],
@@ -112,7 +113,8 @@
       "financial": ["Finviz"],
       "ownership": ["Finviz"],
       "performance": ["Finviz"],
-      "technical": ["Finviz"]
+      "technical": ["Finviz"],
+      "arktrades": ["Cathiesark"]
     },
     "ins": {
       "load": ["YahooFinance", "IEXCloud", "AlphaVantage", "Polygon", "EODHD"],
@@ -237,14 +239,13 @@
       "metrics": ["FinancialModelingPrep", "AlphaVantage"],
       "ratios": ["FinancialModelingPrep"],
       "growth": ["FinancialModelingPrep"],
-      "revfc": ["SeekingAlpha", "YahooFinance"],
+      "revfc": ["SeekingAlpha"],
       "epsfc": ["SeekingAlpha"],
       "warnings": ["MarketWatch"],
       "dcf": ["StockAnalysis"],
       "dcfc": ["FinancialModelingPrep"],
       "info": ["YahooFinance"],
       "shrs": ["YahooFinance"],
-      "sust": ["YahooFinance"],
       "cal": ["YahooFinance"],
       "divs": ["YahooFinance"],
       "splits": ["YahooFinance"],
@@ -257,8 +258,7 @@
       "est": ["BusinessInsider"],
       "sec": ["MarketWatch", "FinancialModelingPrep"],
       "supplier": ["CSIMarket"],
-      "customer": ["CSIMarket"],
-      "arktrades": ["Cathiesark"]
+      "customer": ["CSIMarket"]
     },
     "bt": {
       "load": ["YahooFinance", "IEXCloud", "AlphaVantage", "Polygon", "EODHD"],
@@ -438,10 +438,8 @@
     "load": ["YahooFinance"],
     "overview": ["StockAnalysis"],
     "holdings": ["StockAnalysis"],
-    "weights": ["YahooFinance"],
-    "summary": ["YahooFinance"],
+    "weights": ["FinancialModelingPrep"],
     "news": ["NewsApi"],
-    "pir": ["ThePassiveInvestor"],
     "compare": ["StockAnalysis"],
     "disc": {
       "gainers": ["WallStreetJournal"],
@@ -492,6 +490,25 @@
     "search": ["YahooFinance"],
     "historical": ["YahooFinance"],
     "curve": ["YahooFinance"]
+  },
+  "portfolio": {
+    "po": {
+      "maxsharpe": ["YahooFinance"],
+      "minrisk": ["YahooFinance"],
+      "maxutil": ["YahooFinance"],
+      "maxret": ["YahooFinance"],
+      "maxdiv": ["YahooFinance"],
+      "maxdecorr": ["YahooFinance"],
+      "blacklitterman": ["FinancialModelingPrep"],
+      "ef": ["YahooFinance"],
+      "riskparity": ["YahooFinance"],
+      "relriskparity": ["YahooFinance"],
+      "hrp": ["YahooFinance"],
+      "herc": ["YahooFinance"],
+      "nco": ["YahooFinance"],
+      "equal": ["YahooFinance"],
+      "mktcap": ["FinancialModelingPrep"]
+    }
   },
   "alternative": {
     "oss": {

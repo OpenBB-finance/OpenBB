@@ -400,6 +400,19 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             [],
             dict(),
         ),
+        (
+            "call_arktrades",
+            ["TSLA"],
+            "ark_view.display_ark_trades",
+            [],
+            {
+                "symbol": "TSLA",
+                "limit": 10,
+                "export": "",
+                "show_symbol": False,
+                "sheet_name": None,
+            },
+        ),
     ],
 )
 def test_call_func_test(
