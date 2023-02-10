@@ -58,6 +58,7 @@ API_DICT: Dict = {
     "fmp": "FINANCIAL_MODELING_PREP",
     "quandl": "QUANDL",
     "polygon": "POLYGON",
+    "intrinio": "INTRINIO",
     "fred": "FRED",
     "news": "NEWSAPI",
     "tradier": "TRADIER",
@@ -2707,4 +2708,70 @@ def check_openbb_personal_access_token(show_output: bool = False):
 
     if show_output:
         console.print(status.colorize())
+    return str(status)
+
+
+def set_intrinio_key(key: str, persist: bool = False, show_output: bool = False) -> str:
+    """Set Intrinio key
+
+    Parameters
+    ----------
+    key: str
+        API key
+    persist: bool, optional
+        If False, api key change will be contained to where it was changed. For example, a Jupyter notebook session.
+        If True, api key change will be global, i.e. it will affect terminal environment variables.
+        By default, False.
+    show_output: bool, optional
+        Display status string or not. By default, False.
+
+    Returns
+    -------
+    str
+        Status of key set
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> openbb.keys.intrinio(key="example_key")
+    """
+
+    set_key("OPENBB_API_INTRINIO_KEY", key, persist)
+    return check_intrinio_key(show_output)
+
+
+def check_intrinio_key(show_output: bool = False) -> str:
+    """Check Polygon key
+
+    Parameters
+    ----------
+    show_output: bool
+        Display status string or not. By default, False.
+
+    Returns
+    -------
+    str
+        Status of key set
+    """
+
+    if cfg.API_INTRINIO_KEY == "REPLACE_ME":
+        logger.info("Intrinio key not defined")
+        status = KeyStatus.NOT_DEFINED
+    else:
+        r = request(
+            f"https://api-v2.intrinio.com/securities/AAPL/prices?api_key={cfg.API_INTRINIO_KEY}"
+        )
+        if r.status_code in [403, 401, 429]:
+            logger.warning("Intrinio key defined, test failed")
+            status = KeyStatus.DEFINED_TEST_FAILED
+        elif r.status_code == 200:
+            logger.info("Intrinio key defined, test passed")
+            status = KeyStatus.DEFINED_TEST_PASSED
+        else:
+            logger.warning("Intrinio key defined, test inconclusive")
+            status = KeyStatus.DEFINED_TEST_INCONCLUSIVE
+
+    if show_output:
+        console.print(status.colorize())
+
     return str(status)

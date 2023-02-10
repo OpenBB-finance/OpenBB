@@ -7,8 +7,6 @@ import argparse
 import logging
 from typing import Dict, List
 
-from tqdm import tqdm
-
 from openbb_terminal import (
     feature_flags as obbff,
     keys_model,
@@ -19,7 +17,12 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import EXPORT_ONLY_RAW_DATA_ALLOWED
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import MenuText, console, translate
+from openbb_terminal.rich_config import (
+    MenuText,
+    console,
+    optional_rich_track,
+    translate,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -50,7 +53,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
 
     def check_keys_status(self) -> None:
         """Check keys status"""
-        for api in tqdm(self.API_LIST, desc="Checking keys status"):
+        for api in optional_rich_track(self.API_LIST, desc="Checking keys status"):
             if api == "openbb":
                 self.status_dict[api] = getattr(
                     keys_model, "check_" + str(api) + "_personal_access_token"
@@ -233,6 +236,36 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
             self.status_dict["polygon"] = keys_model.set_polygon_key(
+                key=ns_parser.key, persist=True, show_output=True
+            )
+
+    @log_start_end(log=logger)
+    def call_intrinio(self, other_args: List[str]):
+        """Process polygon command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="intrinio",
+            description="Set Intrinio API key.",
+        )
+        parser.add_argument(
+            "-k",
+            "--key",
+            type=str,
+            dest="key",
+            help="key",
+        )
+        if not other_args:
+            console.print(
+                "For your API Key, sign up for a subscription: https://intrinio.com/starter-plan\n"
+            )
+            return
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-k")
+        ns_parser = self.parse_simple_args(parser, other_args)
+        if ns_parser:
+            self.status_dict["intrinio"] = keys_model.set_intrinio_key(
                 key=ns_parser.key, persist=True, show_output=True
             )
 
