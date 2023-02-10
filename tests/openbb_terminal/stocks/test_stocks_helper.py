@@ -50,7 +50,6 @@ def test_search(mocker, use_tab):
         exchange_country="",
         all_exchanges=False,
         limit=5,
-        export="",
     )
 
 
