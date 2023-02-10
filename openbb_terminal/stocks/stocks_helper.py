@@ -27,7 +27,6 @@ from scipy import stats
 
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.helper_funcs import (
-    export_data,
     lambda_long_number_format_y_axis,
     plot_autoscale,
     print_rich_table,
@@ -105,9 +104,7 @@ def search(
     exchange_country: str = "",
     all_exchanges: bool = False,
     limit: int = 0,
-    export: str = "",
-    sheet_name: Optional[str] = "",
-) -> None:
+) -> pd.DataFrame:
     """Search selected query for tickers.
 
     Parameters
@@ -126,8 +123,12 @@ def search(
        Whether to search all exchanges, without this option only the United States market is searched
     limit : int
         The limit of companies shown.
-    export : str
-        Export data
+
+    Returns
+    -------
+    df: pd.DataFrame
+        Dataframe of search results.
+        Empty Dataframe if none are found.
 
     Examples
     --------
@@ -156,10 +157,10 @@ def search(
         console.print(
             "[red]No companies were found that match the given criteria.[/red]\n"
         )
-        return
+        return pd.DataFrame()
     if not data:
         console.print("No companies found.\n")
-        return
+        return pd.DataFrame()
 
     if query:
         d = fd.search_products(
@@ -179,23 +180,18 @@ def search(
 
     if not d:
         console.print("No companies found.\n")
-        return
+        return pd.DataFrame()
 
     df = pd.DataFrame.from_dict(d).T[
         ["long_name", "short_name", "country", "sector", "industry", "exchange"]
     ]
-    if exchange_country:
-        if exchange_country in market_coverage_suffix:
-            suffix_tickers = [
-                ticker.split(".")[1] if "." in ticker else ""
-                for ticker in list(df.index)
-            ]
-            df = df[
-                [
-                    val in market_coverage_suffix[exchange_country]
-                    for val in suffix_tickers
-                ]
-            ]
+    if exchange_country and exchange_country in market_coverage_suffix:
+        suffix_tickers = [
+            ticker.split(".")[1] if "." in ticker else "" for ticker in list(df.index)
+        ]
+        df = df[
+            [val in market_coverage_suffix[exchange_country] for val in suffix_tickers]
+        ]
 
     exchange_suffix = {}
     for k, v in market_coverage_suffix.items():
@@ -229,13 +225,7 @@ def search(
         title=title,
     )
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "search",
-        df,
-        sheet_name,
-    )
+    return df
 
 
 def load(
