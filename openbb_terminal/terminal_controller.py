@@ -25,6 +25,7 @@ from prompt_toolkit.styles import Style
 from rich import panel
 
 from openbb_terminal import feature_flags as obbff
+from openbb_terminal.base_helpers import strtobool
 from openbb_terminal.common import feedparser_view
 from openbb_terminal.core.config.paths import (
     HOME_DIRECTORY,
@@ -945,7 +946,6 @@ def terminal(jobs_cmds: List[str] = None, test_mode=False):
                 an_input = input(f"{get_flair()} / $ ")
 
         try:
-
             if an_input == "logout":
                 break
 
@@ -1214,15 +1214,6 @@ def parse_args_and_run():
         type=lambda s: [str(item) for item in s.split(",")],
         default=None,
     )
-    # The args -m, -f and --HistoryManager.hist_file are used only in reports menu
-    # by papermill and that's why they have suppress help.
-    parser.add_argument(
-        "-m",
-        help=argparse.SUPPRESS,
-        dest="module",
-        default="",
-        type=str,
-    )
     parser.add_argument(
         "-t",
         "--test",
@@ -1231,6 +1222,22 @@ def parse_args_and_run():
             "Run the terminal in testing mode. Also run this option and '-h'"
             " to see testing argument options."
         ),
+    )
+    if str(os.getenv("OPENBB_ENABLE_AUTHENTICATION")).lower() == "true":
+        parser.add_argument(
+            "-u",
+            "--user-auth",
+            action="store_true",
+            help="Run terminal with user authentication.",
+        )
+    # The args -m, -f and --HistoryManager.hist_file are used only in reports menu
+    # by papermill and that's why they have suppress help.
+    parser.add_argument(
+        "-m",
+        help=argparse.SUPPRESS,
+        dest="module",
+        default="",
+        type=str,
     )
     parser.add_argument(
         "-f",

@@ -21,6 +21,7 @@ from openbb_terminal.core.config.paths import (
 )
 from openbb_terminal.helper_funcs import check_non_negative
 from openbb_terminal.rich_config import console
+from openbb_terminal.session.session_model import clear_openbb_env_vars
 from openbb_terminal.terminal_controller import (
     insert_start_slash,
     obbff,
@@ -689,6 +690,7 @@ def main():
     if "--test" in sys.argv:
         sys.argv.remove("--test")
 
+    clear_openbb_env_vars()
     os.environ["OPENBB_ENABLE_QUICK_EXIT"] = "False"
     os.environ["OPENBB_LOG_COLLECT"] = "False"
     os.environ["OPENBB_USE_ION"] = "True"
