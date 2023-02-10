@@ -1,8 +1,8 @@
 # IMPORTATION STANDARD
 import importlib
 import os
-from pathlib import Path
 import sys
+from pathlib import Path
 
 from dotenv import load_dotenv
 
