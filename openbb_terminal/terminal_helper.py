@@ -24,6 +24,7 @@ from openbb_terminal import (
 from openbb_terminal.config_terminal import LOGGING_APP_NAME, LOGGING_COMMIT_HASH
 from openbb_terminal.helper_funcs import request
 from openbb_terminal.rich_config import console
+from openbb_terminal.session.user import User
 
 # pylint: disable=too-many-statements,no-member,too-many-branches,C0302
 
@@ -350,15 +351,19 @@ def reset(queue: List[str] = None):
     logger.info("resetting")
     plt.close("all")
 
+    flag = ""
+    if not User.is_guest():
+        flag = " --login"
+
     if queue and len(queue) > 0:
         completed_process = subprocess.run(  # nosec
-            f"{sys.executable} terminal.py {'/'.join(queue) if len(queue) > 0 else ''}",
+            f"{sys.executable} terminal.py {'/'.join(queue) if len(queue) > 0 else ''}{flag}",
             shell=True,
             check=False,
         )
     else:
         completed_process = subprocess.run(  # nosec
-            f"{sys.executable} terminal.py", shell=True, check=False
+            f"{sys.executable} terminal.py{flag}", shell=True, check=False
         )
     if completed_process.returncode != 0:
         console.print("Unfortunately, resetting wasn't possible!\n")

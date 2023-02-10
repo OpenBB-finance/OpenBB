@@ -80,9 +80,6 @@ class AccountController(BaseController):
         """Print help"""
 
         mt = MenuText("account/", 100)
-        mt.add_info("_authentication_")
-        mt.add_cmd("logout")
-        mt.add_raw("\n")
         mt.add_info("_info_")
         mt.add_cmd("sync")
         mt.add_cmd("pull")
@@ -93,6 +90,9 @@ class AccountController(BaseController):
         mt.add_cmd("upload")
         mt.add_cmd("download")
         mt.add_cmd("delete")
+        mt.add_raw("\n")
+        mt.add_info("_authentication_")
+        mt.add_cmd("logout")
         console.print(text=mt.menu_text, menu="Account")
 
     @log_start_end(log=logger)
