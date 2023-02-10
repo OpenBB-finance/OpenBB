@@ -10,7 +10,7 @@ import pandas as pd
 
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.rich_config import optional_rich_track
+from openbb_terminal.rich_config import optional_rich_track, console
 
 logger = logging.getLogger(__name__)
 intrinio.ApiClient().set_api_key(cfg.API_INTRINIO_KEY)
@@ -53,8 +53,12 @@ def calculate_dte(chain_df: pd.DataFrame) -> pd.DataFrame:
     pd.DataFrame
         Dataframe with dte column added
     """
-    assert "date" in chain_df.columns  # noqa: S101
-    assert "expiration" in chain_df.columns  # noqa: S101
+    if "date" not in chain_df.columns:
+        console.print("date column not in dataframe")
+        return pd.DataFrame()
+    if "expiration" not in chain_df.columns:
+        console.print("expiration column not in dataframe")
+        return pd.DataFrame()
     chain_df["dte"] = chain_df.apply(
         lambda row: (
             datetime.strptime(row["expiration"], "%Y-%m-%d")
