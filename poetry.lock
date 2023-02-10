@@ -6172,21 +6172,21 @@ files = [
 
 [[package]]
 name = "pywry"
-version = "0.2.6"
+version = "0.2.7"
 description = ""
 category = "main"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "pywry-0.2.6-cp310-cp310-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:aa22e7a9e8553ec90230a77ad6c46ff7fdf34678c7b59edc11f49ef57e28e0e8"},
-    {file = "pywry-0.2.6-cp310-none-win_amd64.whl", hash = "sha256:4475e9c0e1bfb4f375b3807ea88a07d7bc621930f7ca8e653a510f4cbca3218e"},
-    {file = "pywry-0.2.6-cp311-cp311-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:433bec73359052888cfc41cfb3df9132b5acb6ce410a926ac729b2c496710d60"},
-    {file = "pywry-0.2.6-cp311-none-win_amd64.whl", hash = "sha256:ad1c1f893934ccd68511624acea3f293c77654642339be87914a30806303a71b"},
-    {file = "pywry-0.2.6-cp38-cp38-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:e2d2a4701ec2ed83f1161948a66be2828d38de9e0eefaf249500b6ceaa74bf9b"},
-    {file = "pywry-0.2.6-cp38-none-win_amd64.whl", hash = "sha256:a151e2f82bb7ee50a5c49a7f361330bd71f4e2ba5e3d8780465344c7265e4edf"},
-    {file = "pywry-0.2.6-cp39-cp39-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:4af5e3a58f202e4eac6b8d920baebf26c2d270d49075474a53e240c297eaf69a"},
-    {file = "pywry-0.2.6-cp39-none-win_amd64.whl", hash = "sha256:9b2426cb1f02643c5525a4fcf93ff62c665b1eb5984096c3ee45f0fcf199434b"},
-    {file = "pywry-0.2.6.tar.gz", hash = "sha256:1247255266c78e5d0509a065bf53b19d0e28441b8f0287d34bbbb403b4b75fc1"},
+    {file = "pywry-0.2.7-cp310-cp310-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:c913279632193c9ce8a3dfe94bd49761924f0dcfa6a32e0bb74de918aebba179"},
+    {file = "pywry-0.2.7-cp310-none-win_amd64.whl", hash = "sha256:689c9e5dc48bba7d12febbaa08bbd4593223dea7920a3656288d8f04c42010b5"},
+    {file = "pywry-0.2.7-cp311-cp311-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:1c6c832e14522d1f8542d1c978934e350eec5548e7392d5a40fa6bbe708e0ae3"},
+    {file = "pywry-0.2.7-cp311-none-win_amd64.whl", hash = "sha256:f29f3507a273c489b73d3bdb3d367e0eda263bc4ef312b35a814531cd021fd30"},
+    {file = "pywry-0.2.7-cp38-cp38-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:ef1939240b6ad0dfab689e95dd43ea3fd4dbd52a33676be888e225052d183666"},
+    {file = "pywry-0.2.7-cp38-none-win_amd64.whl", hash = "sha256:317ef65deb0bd916e66320a18e44d83793a69ca1316db87bf0ad5b178e865ca7"},
+    {file = "pywry-0.2.7-cp39-cp39-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:03951cfe04b2a0b2b9cd667d4fd513aa5cb9a30138c607e5204c0cd8802e2a61"},
+    {file = "pywry-0.2.7-cp39-none-win_amd64.whl", hash = "sha256:3061f72c0a2f6d216d8f69ca656b7205c4cb89653fcbb66e87cd06dbee16ebc8"},
+    {file = "pywry-0.2.7.tar.gz", hash = "sha256:3dd23fff56fdfc4221f6fa818890cf1dd38639918ec3c9e08907ce32e1f2ec39"},
 ]
 
 [package.dependencies]
@@ -9151,4 +9151,4 @@ prediction = ["torch", "pytorch-lightning", "u8darts", "lightgbm"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8,<3.11, !=3.9.7"
-content-hash = "537721e201ca30ea4f249c12b04a6af88202774fae4afc476d935233eb744204"
+content-hash = "ed628d1d91bff26a9242fa3846ab4f53cd2219b1c61bdf781646814d45d98a63"
