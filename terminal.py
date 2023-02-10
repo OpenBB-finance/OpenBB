@@ -11,7 +11,7 @@ if __name__ == "__main__":
     multiprocessing.freeze_support()
     sent_args = sys.argv[1:]
 
-    # Remove these 2 lines when authentication is fully implemented
+    # Remove this line when authentication is fully implemented
     # and remove the OPENBB_ENABLE_AUTHENTICATION variable
     load_dotenv_with_priority()
 
