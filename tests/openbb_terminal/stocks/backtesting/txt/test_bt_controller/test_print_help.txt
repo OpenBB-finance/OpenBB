@@ -1,4 +1,6 @@
+
 Ticker: TSLA
+    load               stocks/bt/load                                                  [YahooFinance, IEXCloud, AlphaVantage, Polygon, EODHD]
 
     whatif             what if you had bought X shares on day Y                        [YahooFinance]
 

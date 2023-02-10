@@ -303,7 +303,7 @@ class StocksController(StockBaseController):
             "--ticker",
             action="store",
             dest="s_ticker",
-            required="-h" not in other_args,
+            required=False,
             help=translate("stocks/QUOTE_ticker"),
         )
 

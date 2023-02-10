@@ -78,7 +78,6 @@ class TechnicalAnalysisController(StockBaseController):
         "adosc",
         "obv",
         "fib",
-        "tv",
         "clenow",
         "demark",
         "atr",
