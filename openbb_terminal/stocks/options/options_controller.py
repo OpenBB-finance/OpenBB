@@ -1604,6 +1604,7 @@ class OptionsController(BaseController):
             type=valid_date,
             dest="date",
             help="Date to get option chain for.  Format YYYY-MM-DD",
+            required="-h" not in other_args,
         )
 
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
