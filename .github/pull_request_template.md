@@ -19,7 +19,7 @@
 
 # Checklist:
 
-- [ ] I have adhered to the GitFlow naming convention and my branch name is in the format of `feature/feature-name` or `bugfix/bugfix-name`.
+- [ ] I have adhered to the GitFlow naming convention and my branch name is in the format of `feature/feature-name` or `hotfix/hotfix-name`.
 - [ ] Update [our documentation](https://openbb-finance.github.io/OpenBBTerminal/) following [these guidelines](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/website).  Update any user guides that are affected by the changes.
 - [ ] Update our tests following [these guidelines](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/tests).
 - [ ] Make sure you are following our [CONTRIBUTING guidelines](https://github.com/OpenBB-finance/OpenBBTerminal/blob/main/CONTRIBUTING.md).
