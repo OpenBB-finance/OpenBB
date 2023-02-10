@@ -2686,9 +2686,10 @@ def check_openbb_personal_access_token(show_output: bool = False):
                 "Authorization": f"Bearer {access_token}",
                 "Content-Type": "application/json",
             }
-            response = requests.request(
-                "GET", f"{BASE_URL}sdk/token", headers=headers, data={}
+            response = request(
+                url=f"{BASE_URL}sdk/token", method="GET", headers=headers
             )
+
             token = response.json().get("token")
 
             if (
