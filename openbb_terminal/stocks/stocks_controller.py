@@ -124,12 +124,13 @@ class StocksController(StockBaseController):
         mt.add_menu("gov")
         mt.add_menu("ba")
         mt.add_menu("ca")
-        mt.add_menu("fa", self.ticker)
+        mt.add_menu("fa")
+        mt.add_menu("bt")
+        mt.add_menu("ta")
+        mt.add_menu("qa")
+        mt.add_menu("forecast")
         mt.add_menu("res", self.ticker)
-        mt.add_menu("bt", self.ticker)
-        mt.add_menu("ta", self.ticker)
-        mt.add_menu("qa", self.ticker)
-        mt.add_menu("forecast", self.ticker)
+
         console.print(text=mt.menu_text, menu="Stocks")
 
     def custom_reset(self):
@@ -652,49 +653,40 @@ class StocksController(StockBaseController):
     @log_start_end(log=logger)
     def call_fa(self, _):
         """Process fa command."""
-        if self.ticker:
-            from openbb_terminal.stocks.fundamental_analysis import fa_controller
+        from openbb_terminal.stocks.fundamental_analysis import fa_controller
 
-            self.queue = self.load_class(
-                fa_controller.FundamentalAnalysisController,
-                self.ticker,
-                self.start,
-                self.interval,
-                self.stock,
-                self.suffix,
-                self.queue,
-            )
-        else:
-            console.print("Use 'load <ticker>' prior to this command!")
+        self.queue = self.load_class(
+            fa_controller.FundamentalAnalysisController,
+            self.ticker,
+            self.start,
+            self.interval,
+            self.stock,
+            self.suffix,
+            self.queue,
+        )
 
     @log_start_end(log=logger)
     def call_bt(self, _):
         """Process bt command."""
-        if self.ticker:
-            from openbb_terminal.stocks.backtesting import bt_controller
+        from openbb_terminal.stocks.backtesting import bt_controller
 
-            self.queue = self.load_class(
-                bt_controller.BacktestingController, self.ticker, self.stock, self.queue
-            )
-        else:
-            console.print("Use 'load <ticker>' prior to this command!")
+        self.queue = self.load_class(
+            bt_controller.BacktestingController, self.ticker, self.stock, self.queue
+        )
 
     @log_start_end(log=logger)
     def call_ta(self, _):
         """Process ta command."""
-        if self.ticker:
-            from openbb_terminal.stocks.technical_analysis import ta_controller
+        from openbb_terminal.stocks.technical_analysis import ta_controller
 
-            self.queue = self.load_class(
-                ta_controller.TechnicalAnalysisController,
-                self.ticker,
-                self.start,
-                self.interval,
-                self.stock,
-                self.queue,
-            )
-        else:
-            console.print("Use 'load <ticker>' prior to this command!")
+        self.queue = self.load_class(
+            ta_controller.TechnicalAnalysisController,
+            self.ticker,
+            self.start,
+            self.interval,
+            self.stock,
+            self.queue,
+        )
 
     @log_start_end(log=logger)
     def call_ba(self, _):
@@ -711,19 +703,16 @@ class StocksController(StockBaseController):
     @log_start_end(log=logger)
     def call_qa(self, _):
         """Process qa command."""
-        if self.ticker:
-            from openbb_terminal.stocks.quantitative_analysis import qa_controller
+        from openbb_terminal.stocks.quantitative_analysis import qa_controller
 
-            self.queue = self.load_class(
-                qa_controller.QaController,
-                self.ticker,
-                self.start,
-                self.interval,
-                self.stock,
-                self.queue,
-            )
-        else:
-            console.print("Use 'load <ticker>' prior to this command!")
+        self.queue = self.load_class(
+            qa_controller.QaController,
+            self.ticker,
+            self.start,
+            self.interval,
+            self.stock,
+            self.queue,
+        )
 
     @log_start_end(log=logger)
     def call_forecast(self, _):

@@ -194,7 +194,7 @@ class TerminalController(BaseController):
         mt.add_menu("alternative")
         mt.add_menu("funds")
         mt.add_raw("\n")
-        mt.add_info("_others_")
+        mt.add_info("_toolkits_")
         mt.add_menu("econometrics")
         mt.add_menu("forecast")
         mt.add_menu("portfolio")
