@@ -179,7 +179,7 @@ class PortfolioController(BaseController):
         mt.add_cmd("bench")
         mt.add_raw("\n")
         mt.add_param("_loaded", self.portfolio_name)
-        mt.add_param("_riskfreerate", f"{self.risk_free_rate}%")
+        mt.add_param("_riskfreerate", f"{self.risk_free_rate:.2%}")
         mt.add_param("_benchmark", self.benchmark_name)
         mt.add_raw("\n")
 
