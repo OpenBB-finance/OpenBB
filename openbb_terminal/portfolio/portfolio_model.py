@@ -52,7 +52,7 @@ def generate_portfolio(
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio/holdings_example.xlsx")
     """
 
     transactions = PortfolioEngine.read_transactions(transactions_file_path)
