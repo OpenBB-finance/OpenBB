@@ -97,7 +97,7 @@ class Backend(PyWry):
             Path to export image to, by default ""
         """
 
-        self.check_backend()
+        self.loop.run_until_complete(self.check_backend())
         title = re.sub(
             r"<[^>]*>", "", fig.layout.title.text if fig.layout.title.text else "Plots"
         )
@@ -122,7 +122,7 @@ class Backend(PyWry):
         title : str, optional
             Title to display in the window, by default ""
         """
-        self.check_backend()
+        self.loop.run_until_complete(self.check_backend())
 
         self.outgoing.append(
             json.dumps(
@@ -148,7 +148,7 @@ class Backend(PyWry):
         title : str, optional
             Title to display in the window, by default ""
         """
-        self.check_backend()
+        self.loop.run_until_complete(self.check_backend())
         message = json.dumps(
             {"html_str": html_str, "html_path": html_path, **self.get_kwargs(title)}
         )
@@ -168,7 +168,7 @@ class Backend(PyWry):
         height : int, optional
             Height of the window, by default 800
         """
-        self.check_backend()
+        self.loop.run_until_complete(self.check_backend())
         script = f"""
         <script>
             window.location.replace("{url}");
