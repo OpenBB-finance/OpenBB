@@ -6,7 +6,7 @@ import os
 from datetime import datetime
 from typing import Optional, Union
 
-from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
+from openbb_terminal import OpenBBFigure
 from openbb_terminal.cryptocurrency.onchain import blockchain_model
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (

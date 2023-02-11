@@ -10,7 +10,7 @@ import numpy as np
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
 
-from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
+from openbb_terminal import OpenBBFigure
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.economy import fred_model
 from openbb_terminal.helper_funcs import export_data, print_rich_table

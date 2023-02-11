@@ -8,7 +8,7 @@ from typing import Optional, Tuple
 import pandas as pd
 
 # IMPORTATION INTERNAL
-from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
+from openbb_terminal import OpenBBFigure
 
 # IMPORTATION INTERNAL
 from openbb_terminal.decorators import log_start_end

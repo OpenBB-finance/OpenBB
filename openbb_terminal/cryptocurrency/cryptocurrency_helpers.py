@@ -14,7 +14,7 @@ import pandas as pd
 import yfinance as yf
 from pycoingecko import CoinGeckoAPI
 
-from openbb_terminal.core.plots.plotly_helper import OpenBBFigure, theme
+from openbb_terminal import OpenBBFigure, theme
 from openbb_terminal.cryptocurrency.discovery import pycoingecko_model
 from openbb_terminal.cryptocurrency.due_diligence import coinpaprika_model
 from openbb_terminal.cryptocurrency.due_diligence.pycoingecko_model import (

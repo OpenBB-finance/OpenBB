@@ -7,7 +7,7 @@ from typing import Optional, Union
 
 import pandas as pd
 
-from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
+from openbb_terminal import OpenBBFigure
 from openbb_terminal.cryptocurrency.cryptocurrency_helpers import plot_order_book
 from openbb_terminal.cryptocurrency.due_diligence import coinbase_model
 from openbb_terminal.decorators import log_start_end

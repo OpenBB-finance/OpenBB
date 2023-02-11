@@ -9,7 +9,7 @@ import pandas as pd
 import plotly.express as px
 
 import openbb_terminal.cryptocurrency.overview.pycoingecko_model as gecko
-from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
+from openbb_terminal import OpenBBFigure
 from openbb_terminal.cryptocurrency.dataframe_helpers import (
     lambda_long_number_format_with_type_check,
 )

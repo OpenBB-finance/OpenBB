@@ -6,7 +6,7 @@ from typing import Optional, Union
 import pandas as pd
 
 from openbb_terminal import config_terminal as cfg
-from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
+from openbb_terminal import OpenBBFigure
 from openbb_terminal.cryptocurrency.overview import loanscan_model
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table

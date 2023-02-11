@@ -10,11 +10,7 @@ import random
 import re
 import sys
 import urllib.parse
-from datetime import (
-    date as d,
-    datetime,
-    timedelta,
-)
+from datetime import date as d, datetime, timedelta
 from difflib import SequenceMatcher
 from functools import lru_cache
 from pathlib import Path
@@ -37,16 +33,13 @@ from rich.table import Table
 from screeninfo import get_monitors
 
 from openbb_terminal import (
+    OpenBBFigure,
     config_plot as cfgPlot,
     config_terminal as cfg,
     feature_flags as obbff,
+    plots_backend,
 )
-from openbb_terminal.core.config.paths import (
-    HOME_DIRECTORY,
-    USER_EXPORTS_DIRECTORY,
-)
-from openbb_terminal.core.plots.backend import plots_backend
-from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
+from openbb_terminal.core.config.paths import HOME_DIRECTORY, USER_EXPORTS_DIRECTORY
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
 

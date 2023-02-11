@@ -5,7 +5,7 @@ from typing import Optional, Union
 
 import pandas as pd
 
-from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
+from openbb_terminal import OpenBBFigure
 from openbb_terminal.cryptocurrency.due_diligence.tokenterminal_model import (
     METRICS,
     get_description,

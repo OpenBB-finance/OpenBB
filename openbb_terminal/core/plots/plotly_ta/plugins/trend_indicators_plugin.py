@@ -1,6 +1,6 @@
 import pandas as pd
 
-from openbb_terminal.core.plots.plotly_helper import OpenBBFigure, theme
+from openbb_terminal import OpenBBFigure, theme
 from openbb_terminal.core.plots.plotly_ta.base import PltTA, indicator
 from openbb_terminal.core.plots.plotly_ta.data_classes import columns_regex
 

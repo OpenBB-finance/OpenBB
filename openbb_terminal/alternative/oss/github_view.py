@@ -5,8 +5,8 @@ import logging
 import os
 from typing import Optional, Union
 
+from openbb_terminal import OpenBBFigure
 from openbb_terminal.alternative.oss import github_model
-from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
 

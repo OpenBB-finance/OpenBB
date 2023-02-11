@@ -7,7 +7,7 @@ from typing import Optional, Union
 
 import numpy as np
 
-from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
+from openbb_terminal import OpenBBFigure
 from openbb_terminal.cryptocurrency.cryptocurrency_helpers import plot_order_book
 from openbb_terminal.cryptocurrency.due_diligence.binance_model import (
     get_balance,

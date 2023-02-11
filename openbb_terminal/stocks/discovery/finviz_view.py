@@ -7,7 +7,7 @@ from typing import Optional
 import pandas as pd
 import plotly.express as px
 
-from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
+from openbb_terminal import OpenBBFigure
 from openbb_terminal.helper_funcs import export_data
 from openbb_terminal.stocks.discovery import finviz_model
 

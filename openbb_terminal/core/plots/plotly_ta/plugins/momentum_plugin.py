@@ -3,7 +3,7 @@ import pandas as pd
 import pandas_ta as ta
 
 from openbb_terminal.common.technical_analysis.momentum_model import clenow_momentum
-from openbb_terminal.core.plots.plotly_helper import OpenBBFigure, theme
+from openbb_terminal import OpenBBFigure, theme
 from openbb_terminal.core.plots.plotly_ta.base import PltTA, indicator
 from openbb_terminal.core.plots.plotly_ta.data_classes import columns_regex
 

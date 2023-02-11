@@ -8,7 +8,7 @@ from typing import Dict, Optional, Union
 import pandas as pd
 import numpy as np
 
-from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
+from openbb_terminal import OpenBBFigure
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.econometrics import econometrics_model
 from openbb_terminal.econometrics.econometrics_helpers import get_ending

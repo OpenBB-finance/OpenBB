@@ -7,7 +7,7 @@ from openbb_terminal.common.technical_analysis.custom_indicators_model import (
     calculate_fib_levels,
 )
 from openbb_terminal.core.plots.config.openbb_styles import PLT_FIB_COLORWAY
-from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
+from openbb_terminal import OpenBBFigure
 from openbb_terminal.core.plots.plotly_ta.base import PltTA, indicator
 
 

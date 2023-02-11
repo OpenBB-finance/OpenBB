@@ -19,7 +19,7 @@ from openbb_terminal.core.plots.config.openbb_styles import (
     PLT_3DMESH_HOVERLABEL,
     PLT_3DMESH_SCENE,
 )
-from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
+from openbb_terminal import OpenBBFigure
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     excel_columns,

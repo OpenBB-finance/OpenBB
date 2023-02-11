@@ -11,7 +11,7 @@ import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
 
 from openbb_terminal.config_terminal import theme
-from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
+from openbb_terminal import OpenBBFigure
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.stocks.comparison_analysis import yahoo_finance_model

@@ -7,7 +7,7 @@ import os
 # from textwrap import fill
 from typing import Optional, Union
 
-from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
+from openbb_terminal import OpenBBFigure
 
 # from openbb_terminal.config_plot import PLOT_DPI
 # from openbb_terminal.config_terminal import theme

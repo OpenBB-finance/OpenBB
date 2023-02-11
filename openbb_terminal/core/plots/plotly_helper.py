@@ -246,7 +246,7 @@ class OpenBBFigure(go.Figure):
 
         if plots_backend().isatty:
             self.update_layout(
-                margin=dict(l=10, r=0, t=0, b=0, pad=0, autoexpand=True),
+                margin=dict(l=0, r=0, t=0, b=0, pad=0, autoexpand=True),
                 height=762,
                 width=1400,
                 **kwargs,

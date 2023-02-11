@@ -8,7 +8,7 @@ from typing import Optional, Tuple, Union
 
 import pandas as pd
 
-from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
+from openbb_terminal import OpenBBFigure
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.economy.yfinance_model import (
     INDICES,

@@ -2,7 +2,7 @@ import logging
 import os
 from typing import Optional, Union
 
-from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
+from openbb_terminal import OpenBBFigure
 from openbb_terminal.cryptocurrency.due_diligence.santiment_model import (
     get_github_activity,
 )
