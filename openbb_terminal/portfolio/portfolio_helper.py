@@ -174,13 +174,9 @@ def make_equal_length(df1: pd.DataFrame, df2: pd.DataFrame):
     """
     # Match the DataFrames so they share a similar length
     if len(df1) > len(df2):
-        df1 = df1[
-            df1.index.isin(df2.index)
-        ]
+        df1 = df1[df1.index.isin(df2.index)]
     elif len(df1) < len(df2):
-        df2 = df2[
-            df2.index.isin(df1.index)
-        ]
+        df2 = df2[df2.index.isin(df1.index)]
 
     return df1, df2
 
