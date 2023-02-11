@@ -86,28 +86,14 @@ def display_fundamentals(
         fundamentals_plot_data = fundamentals.copy().fillna(-1)
         rows_plot = len(plot)
         fundamentals_plot_data = fundamentals_plot_data.transpose()
-        fundamentals_plot_data.columns = fundamentals_plot_data.columns.str.lower()
-        fundamentals_plot_data.columns = [
-            x.replace("_", "") for x in list(fundamentals_plot_data.columns)
-        ]
-
-        if not ratios:
-            (df_rounded, denomination) = transform_by_denomination(
-                fundamentals_plot_data
-            )
-            if denomination == "Units":
-                denomination = ""
-        else:
-            df_rounded = fundamentals_plot_data
-            denomination = ""
 
         if rows_plot == 1:
             fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-            df_rounded[plot[0].replace("_", "")].plot()
+            fundamentals_plot_data[plot[0]].plot()
             title = (
                 f"{plot[0].replace('_', ' ').lower()} {'QoQ' if quarterly else 'YoY'} Growth of {symbol.upper()}"
                 if ratios
-                else f"{plot[0].replace('_', ' ')} of {symbol.upper()} {denomination}"
+                else f"{plot[0].replace('_', ' ')} of {symbol.upper()}"
             )
             plt.title(title)
             theme.style_primary_axis(ax)
@@ -115,8 +101,8 @@ def display_fundamentals(
         else:
             fig, axes = plt.subplots(rows_plot)
             for i in range(rows_plot):
-                axes[i].plot(df_rounded[plot[i].replace("_", "")])
-                axes[i].set_title(f"{plot[i].replace('_', ' ')} {denomination}")
+                axes[i].plot(fundamentals_plot_data[plot[i]])
+                axes[i].set_title(f"{plot[i].replace('_', ' ')}")
             theme.style_primary_axis(axes[0])
             fig.autofmt_xdate()
     else:

@@ -11,7 +11,6 @@ from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import export_data, plot_autoscale, print_rich_table
-from openbb_terminal.helpers_denomination import transform as transform_by_denomination
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks import stocks_helper
 from openbb_terminal.stocks.fundamental_analysis import fmp_model
@@ -240,15 +239,14 @@ def display_income_statement(
             income_plot_data = income[income.columns[::-1]]
             rows_plot = len(plot)
             income_plot_data = income_plot_data.transpose()
-            income_plot_data.columns = income_plot_data.columns.str.lower()
 
             if rows_plot == 1:
                 fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-                income_plot_data[plot[0].replace("_", "")].plot()
+                income_plot_data[plot[0]].plot()
                 title = (
-                    f"{plot[0].replace('_', ' ').lower()} {'QoQ' if quarterly else 'YoY'} Growth of {symbol.upper()}"
+                    f"{plot[0].replace('_', ' ').title()} {'QoQ' if quarterly else 'YoY'} Growth of {symbol.upper()}"
                     if ratios
-                    else f"{plot[0].replace('_', ' ')} of {symbol.upper()}"
+                    else f"{plot[0].replace('_', ' ').title()} of {symbol.upper()}"
                 )
                 plt.title(title)
                 theme.style_primary_axis(ax)
@@ -256,8 +254,8 @@ def display_income_statement(
             else:
                 fig, axes = plt.subplots(rows_plot)
                 for i in range(rows_plot):
-                    axes[i].plot(income_plot_data[plot[i].replace("_", "")])
-                    axes[i].set_title(f"{plot[i].replace('_', ' ')}")
+                    axes[i].plot(income_plot_data[plot[i]])
+                    axes[i].set_title(f"{plot[i].replace('_', ' ').title()}")
                 theme.style_primary_axis(axes[0])
                 fig.autofmt_xdate()
         else:
@@ -335,15 +333,14 @@ def display_balance_sheet(
             balance_plot_data = balance[balance.columns[::-1]]
             rows_plot = len(plot)
             balance_plot_data = balance_plot_data.transpose()
-            balance_plot_data.columns = balance_plot_data.columns.str.lower()
 
             if rows_plot == 1:
                 fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-                balance_plot_data[plot[0].replace("_", "")].plot()
+                balance_plot_data[plot[0]].plot()
                 title = (
-                    f"{plot[0].replace('_', ' ').lower()} {'QoQ' if quarterly else 'YoY'} Growth of {symbol.upper()}"
+                    f"{plot[0].replace('_', ' ').title()} {'QoQ' if quarterly else 'YoY'} Growth of {symbol.upper()}"
                     if ratios
-                    else f"{plot[0].replace('_', ' ')} of {symbol.upper()}"
+                    else f"{plot[0].replace('_', ' ').title()} of {symbol.upper()}"
                 )
                 plt.title(title)
                 theme.style_primary_axis(ax)
@@ -351,8 +348,8 @@ def display_balance_sheet(
             else:
                 fig, axes = plt.subplots(rows_plot)
                 for i in range(rows_plot):
-                    axes[i].plot(balance_plot_data[plot[i].replace("_", "")])
-                    axes[i].set_title(f"{plot[i].replace('_', ' ')}")
+                    axes[i].plot(balance_plot_data[plot[i]])
+                    axes[i].set_title(f"{plot[i].replace('_', ' ').title()}")
                 theme.style_primary_axis(axes[0])
                 fig.autofmt_xdate()
         else:
@@ -428,15 +425,14 @@ def display_cash_flow(
             cash_plot_data = cash[cash.columns[::-1]]
             rows_plot = len(plot)
             cash_plot_data = cash_plot_data.transpose()
-            cash_plot_data.columns = cash_plot_data.columns.str.lower()
 
             if rows_plot == 1:
                 fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-                cash_plot_data[plot[0].replace("_", "")].plot()
+                cash_plot_data[plot[0]].plot()
                 title = (
-                    f"{plot[0].replace('_', ' ').lower()} {'QoQ' if quarterly else 'YoY'} Growth of {symbol.upper()}"
+                    f"{plot[0].replace('_', ' ').title()} {'QoQ' if quarterly else 'YoY'} Growth of {symbol.upper()}"
                     if ratios
-                    else f"{plot[0].replace('_', ' ')} of {symbol.upper()}"
+                    else f"{plot[0].replace('_', ' ').title()} of {symbol.upper()}"
                 )
                 plt.title(title)
                 theme.style_primary_axis(ax)
@@ -444,8 +440,8 @@ def display_cash_flow(
             else:
                 fig, axes = plt.subplots(rows_plot)
                 for i in range(rows_plot):
-                    axes[i].plot(cash_plot_data[plot[i].replace("_", "")])
-                    axes[i].set_title(f"{plot[i].replace('_', ' ')}")
+                    axes[i].plot(cash_plot_data[plot[i]])
+                    axes[i].set_title(f"{plot[i].replace('_', ' ').title()}")
                 theme.style_primary_axis(axes[0])
                 fig.autofmt_xdate()
         else:
@@ -456,7 +452,7 @@ def display_cash_flow(
             )
 
             print_rich_table(
-                cash.drop(index=["Final link", "Link"]),
+                cash.drop(index=["Final Link", "Link"]),
                 headers=list(cash.columns),
                 title=f"{symbol.upper()} Cash Flow",
                 show_index=True,
