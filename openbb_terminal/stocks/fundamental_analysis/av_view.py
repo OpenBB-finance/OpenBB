@@ -150,9 +150,7 @@ def display_income_statement(
             fig.autofmt_xdate()
     else:
         # Snake case to english
-        df_income.index = df_income.index.to_series().apply(
-            lambda x: x.replace("_", " ").title()
-        )
+        df_income.index = [x.replace("_", " ").title() for x in df_income.index]
 
         print_rich_table(
             df_income,
@@ -239,9 +237,7 @@ def display_balance_sheet(
 
     else:
         # Snake case to english
-        df_balance.index = df_balance.index.to_series().apply(
-            lambda x: x.replace("_", " ").title()
-        )
+        df_balance.index = [x.replace("_", " ").title() for x in df_balance.index]
 
         print_rich_table(
             df_balance,
@@ -326,9 +322,7 @@ def display_cash_flow(
 
     else:
         # Snake case to english
-        df_cash.index = df_cash.index.to_series().apply(
-            lambda x: x.replace("_", " ").title()
-        )
+        df_cash.index = [x.replace("_", " ").title() for x in df_cash.index]
 
         print_rich_table(
             df_cash,
