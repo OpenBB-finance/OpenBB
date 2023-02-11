@@ -179,7 +179,7 @@ class PortfolioController(BaseController):
         mt.add_cmd("bench")
         mt.add_raw("\n")
         mt.add_param("_loaded", self.portfolio_name)
-        mt.add_param("_riskfreerate", f"{self.risk_free_rate:.2%}")
+        mt.add_param("_riskfreerate", f"{self.risk_free_rate}%")
         mt.add_param("_benchmark", self.benchmark_name)
         mt.add_raw("\n")
 
@@ -356,9 +356,9 @@ class PortfolioController(BaseController):
                 f"\n[bold][param]Portfolio:[/param][/bold] {self.portfolio_name}"
             )
 
-            self.risk_free_rate = ns_parser.risk_free_rate / 100
+            self.risk_free_rate = ns_parser.risk_free_rate
             console.print(
-                f"[bold][param]Risk Free Rate:[/param][/bold] {self.risk_free_rate:.2%}"
+                f"[bold][param]Risk Free Rate:[/param][/bold] {self.risk_free_rate}%"
             )
 
             self.benchmark_name = "SPDR S&P 500 ETF Trust (SPY)"
