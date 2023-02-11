@@ -683,7 +683,12 @@ def lambda_long_number_format(num, round_decimal=3) -> str:
         return f"{num_str} {' KMBTP'[magnitude]}".strip()
     if isinstance(num, int):
         num = str(num)
-    if isinstance(num, str) and num.lstrip("-").isdigit():
+    if (
+        isinstance(num, str)
+        and num.lstrip("-").isdigit()
+        and not num.lstrip("-").startswith("0")
+        and not is_valid_date(num)
+    ):
         num = int(num)
         num /= 1.0
         magnitude = 0
