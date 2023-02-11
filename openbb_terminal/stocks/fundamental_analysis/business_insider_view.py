@@ -8,6 +8,7 @@ from datetime import datetime, timedelta
 from typing import Optional, Union
 
 from pandas.core.frame import DataFrame
+from openbb_terminal.common.technical_analysis import ta_helpers
 
 from openbb_terminal.config_terminal import theme
 from openbb_terminal import OpenBBFigure
@@ -128,6 +129,7 @@ def price_target_from_analysts(
     fig = OpenBBFigure(yaxis_title="Share Price").set_title(
         f"{symbol} (Time Series) and Price Target"
     )
+    close_col = ta_helpers.check_columns(data, False, False)
 
     # Slice start of ratings
     if start_date:
@@ -135,7 +137,7 @@ def price_target_from_analysts(
 
     fig.add_scatter(
         x=data.index,
-        y=data["Close"].values,
+        y=data[close_col].values,
         name="Close",
         line_width=2,
     )
