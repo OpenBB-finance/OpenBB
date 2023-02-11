@@ -16,6 +16,6 @@ Ten day average volume                  3.785 M
 Three month average volume              4.861 M
 Timezone                       America/New_York
 Two hundred day average                  97.609
-Year change                              -0.054
+Year change                              -0.065
 Year high                               112.480
 Year low                                 82.850
