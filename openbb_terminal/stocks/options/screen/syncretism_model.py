@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import configparser
 import logging
 from pathlib import Path
-from typing import Dict, Tuple, Union
+from typing import Dict, Optional, Tuple, Union
 
 import pandas as pd
 import yfinance as yf
@@ -35,13 +35,13 @@ accepted_orders = [
 
 @log_start_end(log=logger)
 def get_historical_greeks(
-    symbol: str,
-    expiry: str,
-    strike: Union[str, float],
-    chain_id: str = "",
+    symbol: str = "",
+    expiry: Optional[str] = None,
+    strike: Optional[Union[str, float]] = None,
+    chain_id: Optional[str] = None,
     put: bool = False,
 ) -> pd.DataFrame:
-    """Get histoical option greeks
+    """Get historical option greeks
 
     Parameters
     ----------
