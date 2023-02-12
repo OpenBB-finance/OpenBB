@@ -1,4 +1,3 @@
-[yellow]You are not using the latest stable version[/yellow]
-[yellow]Check for updates at https://openbb.co/products/terminal#get-started[/yellow]
+[yellow]Unable to check for updates... Check your internet connection and try again...[/yellow]
 
 
