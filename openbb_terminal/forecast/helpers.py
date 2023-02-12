@@ -718,7 +718,7 @@ def plot_forecast(
 @log_start_end(log=logger)
 def plotly_shap_scatter_plot(
     shap_exp: Explanation,
-    max_display: Optional[int] = 20,
+    max_display: Optional[int] = None,
 ) -> OpenBBFigure:
     """Generate a shap values summary plot where features are ranked from
     highest mean absolute shap value to lowest, with point clouds shown
@@ -736,6 +736,9 @@ def plotly_shap_scatter_plot(
     OpenBBFigure
         The shap values summary plot.
     """
+    if max_display is None:
+        max_display = 20
+
     shap_values = shap_exp.values
     features = shap_exp.data
     feature_names = shap_exp.feature_names
