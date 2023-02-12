@@ -1,4 +1,5 @@
 import asyncio
+import atexit
 import json
 import os
 import re
@@ -51,6 +52,8 @@ class Backend(PyWry):
             and not strtobool(os.environ.get("TEST_MODE", False))
             and not strtobool(os.environ.get("OPENBB_ENABLE_QUICK_EXIT", False))
         )
+
+        atexit.register(self.close)
 
     def inject_path_to_html(self):
         """Update the script tag in html with local path"""
