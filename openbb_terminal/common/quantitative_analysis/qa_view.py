@@ -18,9 +18,9 @@ from pandas.plotting import register_matplotlib_converters
 from scipy import stats
 from statsmodels.graphics.gofplots import qqplot
 
+from openbb_terminal import OpenBBFigure
 from openbb_terminal.common.quantitative_analysis import qa_model
 from openbb_terminal.config_terminal import theme
-from openbb_terminal import OpenBBFigure
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
@@ -213,7 +213,6 @@ def display_cdf(
             x=minVal + (xt[1] - minVal) / 2,
             y=yt[1] + 0.04,
             text=label,
-            showarrow=False,
             font=dict(color=theme.down_color),
         )
         fig.add_shape(
@@ -940,7 +939,6 @@ def display_line(
                     x=marker_date,
                     y=data.iloc[price_location_idx],
                     text=str(n + 1),
-                    showarrow=False,
                     xshift=text_loc[0],
                     yshift=text_loc[1],
                 )

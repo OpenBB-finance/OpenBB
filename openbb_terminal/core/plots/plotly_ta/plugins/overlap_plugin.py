@@ -57,7 +57,6 @@ class Overlap(PltTA):
                     y=0.98,
                     font_size=14,
                     font_color=self.inchart_colors[i],
-                    showarrow=False,
                     opacity=1,
                 )
 
@@ -86,7 +85,6 @@ class Overlap(PltTA):
             y=0.98,
             font_size=14,
             font_color=self.inchart_colors[inchart_index],
-            showarrow=False,
         )
 
         return fig, inchart_index + 1

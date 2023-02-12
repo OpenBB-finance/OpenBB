@@ -25,6 +25,10 @@
         ]
     },
     "layout": {
+        "annotationdefaults": {
+            "showarrow": false
+        },
+        "autotypenumbers": "strict",
         "colorway": [
             "#ffed00",
             "#ef7d00",

@@ -2,8 +2,8 @@ import numpy as np
 import pandas as pd
 import pandas_ta as ta
 
-from openbb_terminal.common.technical_analysis.momentum_model import clenow_momentum
 from openbb_terminal import OpenBBFigure, theme
+from openbb_terminal.common.technical_analysis.momentum_model import clenow_momentum
 from openbb_terminal.core.plots.plotly_ta.base import PltTA, indicator
 from openbb_terminal.core.plots.plotly_ta.data_classes import columns_regex
 
@@ -81,7 +81,6 @@ class Momentum(PltTA):
             y=0.97,
             font_size=14,
             font_color="#e0b700",
-            showarrow=False,
         )
         fig["layout"][f"yaxis{subplot_row}"].update(nticks=5, autorange=True)
 
@@ -121,7 +120,6 @@ class Momentum(PltTA):
             y=0.97,
             font_size=14,
             font_color="#ffed00",
-            showarrow=False,
         )
         fig.add_annotation(
             xref=f"x{subplot_row} domain",
@@ -134,7 +132,6 @@ class Momentum(PltTA):
             yshift=-20,
             font_size=14,
             font_color="#ef7d00",
-            showarrow=False,
         )
         fig["layout"][f"yaxis{subplot_row}"].update(nticks=5, autorange=True)
 
@@ -166,7 +163,6 @@ class Momentum(PltTA):
             y=0.98,
             font_size=14,
             font_color=self.inchart_colors[inchart_index],
-            showarrow=False,
             opacity=1,
         )
         return fig, inchart_index + 1
@@ -224,7 +220,6 @@ class Momentum(PltTA):
             y=0.98,
             font_size=14,
             font_color=self.inchart_colors[inchart_index],
-            showarrow=False,
             opacity=1,
         )
 
@@ -268,7 +263,6 @@ class Momentum(PltTA):
             y=0.98,
             font_size=14,
             font_color="#e0b700",
-            showarrow=False,
         )
         fig.add_annotation(
             xref=f"x{subplot_row} domain",
@@ -280,7 +274,6 @@ class Momentum(PltTA):
             y=0.01,
             font_size=13,
             font_color="#9467bd",
-            showarrow=False,
         )
         fig.add_hrect(
             y0=2,
@@ -368,7 +361,6 @@ class Momentum(PltTA):
             y=0.98,
             font_size=14,
             font_color="#9467bd",
-            showarrow=False,
         )
         fig.add_annotation(
             xref=f"x{subplot_row} domain",
@@ -380,7 +372,6 @@ class Momentum(PltTA):
             font_size=13,
             xshift=-3,
             font_color="rgb(7, 166, 52)",
-            showarrow=False,
         )
         fig["layout"][f"yaxis{subplot_row}"].update(autorange=True, nticks=5)
 
@@ -411,7 +402,6 @@ class Momentum(PltTA):
             y=0.98,
             font_size=16,
             font_color="rgb(0, 122, 204, 1)",
-            showarrow=False,
         )
         fig.add_hrect(
             y0=70,
@@ -489,7 +479,6 @@ class Momentum(PltTA):
             y=0.98,
             font_size=16,
             font_color="#e0b700",
-            showarrow=False,
         )
         fig["layout"][f"yaxis{subplot_row}"].update(nticks=5, autorange=True)
 

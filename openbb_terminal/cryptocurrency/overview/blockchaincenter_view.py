@@ -4,8 +4,8 @@ import os
 from datetime import datetime
 from typing import Optional, Union
 
-from openbb_terminal.config_terminal import theme
 from openbb_terminal import OpenBBFigure
+from openbb_terminal.config_terminal import theme
 from openbb_terminal.cryptocurrency.overview.blockchaincenter_model import (
     DAYS,
     get_altcoin_index,
@@ -63,7 +63,6 @@ def display_altcoin_index(
             line_color=theme.up_color,
             annotation=dict(
                 text="Altcoin Season (75)",
-                showarrow=False,
                 x=0.5,
                 xanchor="center",
             ),
@@ -73,7 +72,6 @@ def display_altcoin_index(
             line_color=theme.down_color,
             annotation=dict(
                 text="Bitcoin Season (25)",
-                showarrow=False,
                 x=0.5,
                 xanchor="center",
                 yshift=-30,

@@ -38,7 +38,6 @@ class Volatility(PltTA):
             y=0.98,
             font_size=14,
             font_color=theme.get_colors()[1],
-            showarrow=False,
         )
         fig["layout"][f"yaxis{subplot_row}"].update(nticks=5, autorange=True)
 
@@ -98,7 +97,6 @@ class Volatility(PltTA):
             font_size=14,
             font_color=theme.get_colors()[1],
             opacity=0.5,
-            showarrow=False,
         )
 
         return fig, inchart_index + 1
@@ -151,7 +149,6 @@ class Volatility(PltTA):
             font_size=14,
             font_color="#B47DA0",
             opacity=0.5,
-            showarrow=False,
         )
 
         return fig, inchart_index + 1
@@ -204,7 +201,6 @@ class Volatility(PltTA):
             font_size=14,
             font_color="#B47DA0",
             opacity=0.5,
-            showarrow=False,
         )
 
         return fig, inchart_index + 1

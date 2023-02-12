@@ -57,7 +57,6 @@ class Trend(PltTA):
             y=0.97,
             font_size=14,
             font_color="#e0b700",
-            showarrow=False,
         )
         fig.add_annotation(
             xref=f"x{subplot_row} domain",
@@ -70,7 +69,6 @@ class Trend(PltTA):
             yshift=-20,
             font_size=14,
             font_color=theme.up_color,
-            showarrow=False,
         )
         fig.add_annotation(
             xref=f"x{subplot_row} domain",
@@ -83,7 +81,6 @@ class Trend(PltTA):
             yshift=-20,
             font_size=14,
             font_color=theme.down_color,
-            showarrow=False,
         )
         fig.add_hline(
             y=25,
@@ -136,7 +133,6 @@ class Trend(PltTA):
             y=1,
             font_size=14,
             font_color="#e0b700",
-            showarrow=False,
         )
         fig.add_annotation(
             xref=f"x{subplot_row} domain",
@@ -151,7 +147,6 @@ class Trend(PltTA):
             y=0.75,
             font_size=14,
             font_color=theme.down_color,
-            showarrow=False,
         )
         fig.add_hline(
             y=50,
@@ -188,7 +183,6 @@ class Trend(PltTA):
             y=0.98,
             font_size=14,
             font_color="#e0b700",
-            showarrow=False,
         )
         fig["layout"][f"yaxis{subplot_row}"].update(
             tickvals=[-100, 0, 100],

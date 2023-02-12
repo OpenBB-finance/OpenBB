@@ -9,8 +9,8 @@ from typing import Optional, Union
 import pandas as pd
 import yfinance as yf
 
-from openbb_terminal.config_terminal import theme
 from openbb_terminal import OpenBBFigure
+from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
@@ -227,7 +227,6 @@ def display_splits(
                 x=index,
                 y=df_data["Adj Close"].max(),
                 text=f"{frac.numerator}:{frac.denominator}",
-                showarrow=False,
                 xshift=20,
                 font=dict(color=theme.up_color),
             )
@@ -237,7 +236,6 @@ def display_splits(
                 x=index,
                 y=df_data["Adj Close"].max(),
                 text=f"{frac.numerator}:{frac.denominator}",
-                showarrow=False,
                 xshift=20,
                 font_color=theme.down_color,
             )
@@ -404,9 +402,7 @@ def display_fundamentals(
                     col=1,
                 )
                 title = f"{plot[i].replace('_', ' ')} {denomination}"
-                fig.add_annotation(
-                    x=0.5, y=1, row=i + 1, col=1, showarrow=False, text=title
-                )
+                fig.add_annotation(x=0.5, y=1, row=i + 1, col=1, text=title)
 
         fig.show()
 

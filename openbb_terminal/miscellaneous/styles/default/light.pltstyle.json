@@ -566,7 +566,8 @@
         "annotationdefaults": {
             "arrowcolor": "#2a3f5f",
             "arrowhead": 0,
-            "arrowwidth": 1
+            "arrowwidth": 1,
+            "showarrow": false
         },
         "autotypenumbers": "strict",
         "coloraxis": {
@@ -858,97 +859,6 @@
             "xanchor": "left",
             "y": 0.99,
             "yanchor": "top"
-        },
-        "xaxis2": {
-            "gridcolor": "#283442",
-            "linecolor": "#506784",
-            "rangeslider": {
-                "visible": false
-            },
-            "showgrid": true,
-            "showline": true,
-            "tickfont": {
-                "size": 16
-            },
-            "title": {
-                "standoff": 20
-            },
-            "zeroline": false
-        },
-        "xaxis3": {
-            "gridcolor": "#283442",
-            "linecolor": "#506784",
-            "rangeslider": {
-                "visible": false
-            },
-            "showgrid": true,
-            "showline": true,
-            "tickfont": {
-                "size": 16
-            },
-            "title": {
-                "standoff": 20
-            },
-            "zeroline": false
-        },
-        "yaxis2": {
-            "anchor": "x",
-            "fixedrange": false,
-            "gridcolor": "#283442",
-            "layer": "above traces",
-            "linecolor": "#506784",
-            "nticks": 6,
-            "overlaying": "y2",
-            "showline": true,
-            "side": "right",
-            "tick0": 0.5,
-            "tickfont": {
-                "size": 15
-            },
-            "title": {
-                "standoff": 10
-            },
-            "zeroline": false
-        },
-        "yaxis3": {
-            "anchor": "x",
-            "fixedrange": false,
-            "gridcolor": "#283442",
-            "layer": "above traces",
-            "linecolor": "#506784",
-            "nticks": 6,
-            "overlaying": "y3",
-            "showgrid": true,
-            "showline": true,
-            "side": "right",
-            "tick0": 0.5,
-            "tickfont": {
-                "size": 15
-            },
-            "title": {
-                "standoff": 10
-            },
-            "zeroline": false
-        },
-        "yaxis4": {
-            "anchor": "x",
-            "fixedrange": false,
-            "gridcolor": "#283442",
-            "layer": "above traces",
-            "linecolor": "#506784",
-            "nticks": 6,
-            "overlaying": "y4",
-            "showgrid": true,
-            "showline": true,
-            "side": "right",
-            "tick0": 0.5,
-            "tickfont": {
-                "size": 15
-            },
-            "title": {
-                "standoff": 10
-            },
-            "zeroline": false
         }
     }
 }

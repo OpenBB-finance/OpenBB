@@ -48,7 +48,6 @@ class Volume(PltTA):
             y=0.98,
             font_size=14,
             font_color=theme.get_colors()[1],
-            showarrow=False,
         )
         fig["layout"][f"yaxis{subplot_row}"].update(nticks=3, autorange=True)
 
@@ -79,7 +78,6 @@ class Volume(PltTA):
             y=0.98,
             font_size=14,
             font_color=theme.get_colors()[1],
-            showarrow=False,
         )
 
         return fig, subplot_row + 1
@@ -109,7 +107,6 @@ class Volume(PltTA):
             y=0.98,
             font_size=14,
             font_color=theme.get_colors()[1],
-            showarrow=False,
         )
         fig["layout"][f"yaxis{subplot_row}"].update(nticks=5, autorange=True)
 

@@ -11,9 +11,8 @@ from typing import Optional, Union
 import numpy as np
 import pandas as pd
 
-
-from openbb_terminal.config_terminal import theme
 from openbb_terminal import OpenBBFigure
+from openbb_terminal.config_terminal import theme
 from openbb_terminal.cryptocurrency import cryptocurrency_helpers
 from openbb_terminal.cryptocurrency.dataframe_helpers import prettify_paragraph
 from openbb_terminal.cryptocurrency.due_diligence.messari_model import (
@@ -340,7 +339,6 @@ def display_roadmap(
                         y=max_price * 0.7,
                         text=titles[counter],
                         textangle=90,
-                        showarrow=False,
                         font=dict(size=15),
                         xshift=10,
                     )

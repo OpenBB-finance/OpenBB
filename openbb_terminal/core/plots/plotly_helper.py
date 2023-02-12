@@ -542,7 +542,6 @@ class OpenBBFigure(go.Figure):
         if kwargs.get("row", None) is not None and kwargs.get("col", None) is not None:
             self.add_annotation(
                 text=title,
-                showarrow=False,
                 xref="x domain",
                 yref="y domain",
                 x=0.5,
@@ -1226,7 +1225,6 @@ class OpenBBFigure(go.Figure):
             opacity=0.5,
             xanchor="right",
             yanchor="bottom",
-            showarrow=False,
             yshift=-80,
             xshift=40,
         )
@@ -1261,7 +1259,6 @@ class OpenBBFigure(go.Figure):
                 yanchor="middle",
                 xanchor="left",
                 xshift=xshift,
-                showarrow=False,
             )
 
     # pylint: disable=import-outside-toplevel

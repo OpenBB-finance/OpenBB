@@ -8,10 +8,10 @@ from typing import Any, Dict, List, Optional, Type, Union
 
 import pandas as pd
 
+from openbb_terminal import OpenBBFigure
 from openbb_terminal.base_helpers import console
 from openbb_terminal.common.technical_analysis import ta_helpers
 from openbb_terminal.config_terminal import theme
-from openbb_terminal import OpenBBFigure
 from openbb_terminal.core.plots.plotly_ta.base import PltTA
 from openbb_terminal.core.plots.plotly_ta.data_classes import ChartIndicators
 
@@ -515,7 +515,6 @@ class PlotlyTA(PltTA):
                     y=0.96,
                     font_size=16,
                     font_color="#e0b700",
-                    showarrow=False,
                 )
                 fig.update_yaxes(nticks=5, row=row, col=col)
 

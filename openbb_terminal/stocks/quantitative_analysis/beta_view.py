@@ -69,7 +69,6 @@ def beta_view(
         x=0.9,
         y=0.1,
         text=beta_text,
-        showarrow=False,
         xref="paper",
         yref="paper",
         xanchor="right",
