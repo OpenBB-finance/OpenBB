@@ -666,7 +666,7 @@ def plot_forecast(
     fig.update_xaxes(
         range=[
             ticker_series.start_time(),
-            ticker_series.end_time() + timedelta(days=30),
+            ticker_series.end_time() + timedelta(days=30 + n_predict),
         ],
         autorange=False,
     )
