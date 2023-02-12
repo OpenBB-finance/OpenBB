@@ -813,7 +813,7 @@ def plotly_shap_scatter_plot(
             marker=dict(
                 color=cvals,
                 colorscale="Bluered",
-                showscale=True if i == 0 else False,
+                showscale=(pos == 0),
                 colorbar=dict(
                     x=-0.05,
                     thickness=10,
@@ -899,7 +899,6 @@ def plot_explainability(
     if explainability_raw:
         console.print("\n")
         console.print("[green]Exporting Raw Explainability DataFrame[/green]")
-        raw_df = raw_df
         export_data(
             "csv",
             os.path.dirname(os.path.abspath(__file__)),
