@@ -663,6 +663,13 @@ def plot_forecast(
     fig = plot_predicted(predicted_values, fig, label=pred_label, **quant_kwargs)
 
     fig.update_layout(title=dict(x=0.5, xanchor="center", yanchor="top"))
+    fig.update_xaxes(
+        range=[
+            ticker_series.start_time(),
+            ticker_series.end_time() + timedelta(days=30),
+        ],
+        autorange=False,
+    )
 
     if probabilistic:
         numeric_forecast = predicted_values.quantile_df()[f"{target_col}_0.5"].tail(
@@ -710,8 +717,8 @@ def plot_forecast(
 
 @log_start_end(log=logger)
 def plotly_shap_scatter_plot(
-    shap: Explanation,
-    shap_values_df: pd.DataFrame,
+    shap_exp: Explanation,
+    max_display: Optional[int] = 20,
 ) -> OpenBBFigure:
     """Generate a shap values summary plot where features are ranked from
     highest mean absolute shap value to lowest, with point clouds shown
@@ -719,31 +726,32 @@ def plotly_shap_scatter_plot(
 
     Parameters:
     -----------
-    shap: Explanation
+    shap_exp: Explanation
         The shap values for the model.
-    shap_values_df: pd.DataFrame
-        The shap values for the model as a dataframe.
+    max_display: Optional[int]
+        The maximum number of features to display. Defaults to 20.
 
     Returns:
     --------
     OpenBBFigure
         The shap values summary plot.
     """
+    shap_values = shap_exp.values
+    features = shap_exp.data
+    feature_names = shap_exp.feature_names
 
-    display_columns = (
-        shap_values_df.abs().mean().sort_values(ascending=False).index.tolist()
-    )
-
-    feature_order = np.argsort(np.sum(np.abs(shap.values), axis=0))
+    feature_order = np.argsort(np.sum(np.abs(shap_values), axis=0))
+    feature_order = feature_order[-min(max_display, len(feature_order)) :]
 
     fig = OpenBBFigure.create_subplots(
         1, 2, specs=[[{}, {}]], column_widths=[0.01, 0.99], horizontal_spacing=0
     )
+    fig.set_xaxis_title("SHAP value (impact on model output)")
 
     for pos, i in enumerate(feature_order):
         pos += 2
-        shaps = shap.values[:, i]
-        values = shap.data[:, i]
+        shaps = shap_values[:, i]
+        values = features[:, i]
         inds = np.arange(len(shaps))
         np.random.shuffle(inds)
         if values is not None:
@@ -836,12 +844,13 @@ def plotly_shap_scatter_plot(
                 size=10,
             ),
             hoverinfo="none",
-            name=display_columns[i],
+            name=feature_names[i],
             showlegend=False,
             row=1,
             col=2,
         )
 
+    display_columns = [feature_names[i] for i in feature_order]
     fig.update_yaxes(
         position=0,
         tickmode="array",
@@ -850,7 +859,10 @@ def plotly_shap_scatter_plot(
         automargin=False,
         range=[1.5, len(display_columns) + 1.5],
     )
-    fig.update_layout(margin=dict(r=190))
+    fig.update_layout(
+        margin=dict(r=190),
+        height=100 + len(display_columns) * 50,
+    )
 
     return fig
 
@@ -861,7 +873,7 @@ def plot_explainability(
     explainability_raw: bool = False,
     sheet_name: Optional[str] = None,
     external_axes: bool = False,
-):
+) -> Union[None, OpenBBFigure]:
     """
     Plot explainability of the model
 
@@ -887,18 +899,15 @@ def plot_explainability(
     shaps_ = shap_explain.explainers.shap_explanations(
         foreground_X_sampled, horizons, target_components
     )
-    shap = shaps_[1][target_components[0]]
 
-    raw_df = shap_explain.explain().get_explanation(horizon=1).pd_dataframe()
-
-    fig = plotly_shap_scatter_plot(shap, raw_df)
-    fig.set_title(f"Target: `{target_components[0]}` - Horizon: 1")
-
+    fig = plotly_shap_scatter_plot(shaps_[1][target_components[0]])
+    fig.set_title(f"Target: `{target_components[0]}` - Horizon: t+{1}")
     fig.add_vline(x=0, line_width=1.5, line_color="white", opacity=0.7)
 
     if explainability_raw:
         console.print("\n")
         console.print("[green]Exporting Raw Explainability DataFrame[/green]")
+        raw_df = shap_explain.explain().get_explanation(horizon=1).pd_dataframe()
         export_data(
             "csv",
             os.path.dirname(os.path.abspath(__file__)),
