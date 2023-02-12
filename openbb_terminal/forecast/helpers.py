@@ -5,7 +5,6 @@ import os
 from datetime import datetime, time, timedelta
 from typing import Any, Dict, List, Optional, Tuple, Union
 
-import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from darts import TimeSeries
@@ -14,19 +13,14 @@ from darts.explainability.shap_explainer import ShapExplainer
 from darts.metrics import mape, mse, rmse, smape
 from darts.models.forecasting.torch_forecasting_model import GlobalForecastingModel
 from pytorch_lightning.callbacks.early_stopping import EarlyStopping
+from shap import Explanation
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MaxAbsScaler, MinMaxScaler, Normalizer, StandardScaler
 
-from openbb_terminal import rich_config
-from openbb_terminal.config_plot import PLOT_DPI
-from openbb_terminal.config_terminal import theme
-from openbb_terminal.core.plots.plotly_helper import (
-    OpenBBFigure,
-    theme as plotly_theme,
-)
+from openbb_terminal import OpenBBFigure, rich_config, theme
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import export_data, plot_autoscale, print_rich_table
+from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -74,7 +68,6 @@ def plot_data_predictions(
         Whether to return the figure object or not, by default False
     """
 
-    # This plot has 1 axis
     fig = OpenBBFigure()
     fig.add_scatter(
         x=data.index,
@@ -97,13 +90,6 @@ def plot_data_predictions(
             mode="lines",
             line=dict(color=theme.down_color),
             name="Predictions",
-        )
-        fig.add_scatter(
-            x=y_dates_valid[i],
-            y=y_act,
-            mode="lines",
-            line=dict(color=theme.up_color),
-            name="Actual",
         )
         fig.add_scatter(
             x=y_dates_valid[i],
@@ -202,8 +188,6 @@ def plot_data_predictions(
         title=title,
         xaxis_title="Date",
         yaxis_title="Price",
-        legend_title="Legend",
-        font=dict(family="Courier New, monospace", size=18, color="#7f7f7f"),
     )
     return fig.show(external=external_axes)
 
@@ -455,22 +439,24 @@ def plot_predicted(
 
     Parameters
     ----------
-    fig
+    predicted_values: TimeSeries
+        The predicted values TimeSeries.
+    fig: OpenBBFigure
         The figure to plot on.
-    central_quantile
+    central_quantile: float or str
         The quantile (between 0 and 1) to plot as a "central" value, if the series is stochastic (i.e., if
         it has multiple samples). This will be applied on each component separately (i.e., to display quantiles
         of the components' marginal distributions). For instance, setting `central_quantile=0.5` will plot the
         median of each component. `central_quantile` can also be set to 'mean'.
-    low_quantile
+    low_quantile: float
         The quantile to use for the lower bound of the plotted confidence interval. Similar to `central_quantile`,
         this is applied to each component separately (i.e., displaying marginal distributions). No confidence
         interval is shown if `confidence_low_quantile` is None (default 0.05).
-    high_quantile
+    high_quantile: float
         The quantile to use for the upper bound of the plotted confidence interval. Similar to `central_quantile`,
         this is applied to each component separately (i.e., displaying marginal distributions). No confidence
         interval is shown if `high_quantile` is None (default 0.95).
-    label
+    label: str or list of str
         A prefix that will appear in front of each component of the TimeSeries or a list of string of
         length the number of components in the plotted TimeSeries (default "").
     """
@@ -574,7 +560,7 @@ def plot_predicted(
                     name=f"Low Confidence Interval ({low_quantile * 100}%)",
                     fill="tonexty",
                     mode="lines",
-                    fillcolor=plotly_theme.up_color_transparent.replace("0.50", "0.35"),
+                    fillcolor=theme.up_color_transparent.replace("0.50", "0.35"),
                     line_width=0,
                     opacity=0.2,
                     showlegend=False,
@@ -622,12 +608,15 @@ def plot_forecast(
     if high_quantile:
         quant_kwargs["high_quantile"] = high_quantile
 
-    fig = OpenBBFigure()
-
-    # ax = fig.get_axes()[0] # fig gives list of axes (only one for this case)
     naive_fcast: type[TimeSeries] = ticker_series.shift(1)
     if forecast_only:
         ticker_series = ticker_series.drop_before(historical_fcast.start_time())
+
+    fig = OpenBBFigure(yaxis_title=target_col, xaxis_title="Date")
+    fig.set_title(
+        f"{name} for <{ticker_name}> for next [{n_predict}]"
+        f" days ({metric.upper()}={precision:.2f}%)"
+    )
 
     fig.add_scatter(
         y=list(ticker_series.univariate_values()),
@@ -673,20 +662,7 @@ def plot_forecast(
 
     fig = plot_predicted(predicted_values, fig, label=pred_label, **quant_kwargs)
 
-    fig.update_layout(
-        title=dict(
-            text=f"{name} for <{ticker_name}> for next [{n_predict}] days ({metric.upper()}={precision:.2f}%)",
-            x=0.5,
-            xanchor="center",
-            yanchor="top",
-        ),
-        yaxis_title=target_col,
-        xaxis=dict(
-            title="Date",
-            type="date",
-            tickformat="%m/%d/%Y",
-        ),
-    )
+    fig.update_layout(title=dict(x=0.5, xanchor="center", yanchor="top"))
 
     if probabilistic:
         numeric_forecast = predicted_values.quantile_df()[f"{target_col}_0.5"].tail(
@@ -732,11 +708,159 @@ def plot_forecast(
     return fig.show(external=external_axes)
 
 
+@log_start_end(log=logger)
+def plotly_shap_scatter_plot(
+    shap: Explanation,
+    shap_values_df: pd.DataFrame,
+) -> OpenBBFigure:
+    """Generate a shap values summary plot where features are ranked from
+    highest mean absolute shap value to lowest, with point clouds shown
+    for each feature.
+
+    Parameters:
+    -----------
+    shap: Explanation
+        The shap values for the model.
+    shap_values_df: pd.DataFrame
+        The shap values for the model as a dataframe.
+
+    Returns:
+    --------
+    OpenBBFigure
+        The shap values summary plot.
+    """
+
+    display_columns = (
+        shap_values_df.abs().mean().sort_values(ascending=False).index.tolist()
+    )
+
+    feature_order = np.argsort(np.sum(np.abs(shap.values), axis=0))
+
+    fig = OpenBBFigure.create_subplots(
+        1, 2, specs=[[{}, {}]], column_widths=[0.01, 0.99], horizontal_spacing=0
+    )
+
+    for pos, i in enumerate(feature_order):
+        pos += 2
+        shaps = shap.values[:, i]
+        values = shap.data[:, i]
+        inds = np.arange(len(shaps))
+        np.random.shuffle(inds)
+        if values is not None:
+            values = values[inds]
+        shaps = shaps[inds]
+        values = np.array(values, dtype=np.float64)  # make sure this can be numeric
+
+        N = len(shaps)
+
+        nbins = 100
+        quant = np.round(
+            nbins * (shaps - np.min(shaps)) / (np.max(shaps) - np.min(shaps) + 1e-8)
+        )
+        inds = np.argsort(quant + np.random.randn(N) * 1e-6)
+        layer = 0
+        last_bin = -1
+        ys = np.zeros(N)
+        for ind in inds:
+            if quant[ind] != last_bin:
+                layer = 0
+            ys[ind] = np.ceil(layer / 2) * ((layer % 2) * 2 - 1)
+            layer += 1
+            last_bin = quant[ind]
+        ys *= 0.9 * (0.4 / np.max(ys + 1))
+
+        # trim the color range, but prevent the color range from collapsing
+        vmin = np.nanpercentile(values, 5)
+        vmax = np.nanpercentile(values, 95)
+        if vmin == vmax:
+            vmin = np.nanpercentile(values, 1)
+            vmax = np.nanpercentile(values, 99)
+            if vmin == vmax:
+                vmin = np.min(values)
+                vmax = np.max(values)
+
+        # fixes rare numerical precision issues
+        vmin = min(vmin, vmax)
+
+        # plot the nan values in the interaction feature as grey
+        nan_mask = np.isnan(values)
+        fig.add_scattergl(
+            x=shaps[nan_mask],
+            y=pos + ys[nan_mask],
+            mode="markers",
+            marker=dict(
+                color="#777777",
+                cmin=vmin,
+                cmax=vmax,
+                size=10,
+            ),
+            hoverinfo="none",
+            showlegend=False,
+            row=1,
+            col=2,
+        )
+
+        # plot the non-nan values colored by the trimmed feature value
+        cvals = values[np.invert(nan_mask)].astype(np.float64)
+        cvals_imp = cvals.copy()
+        cvals_imp[np.isnan(cvals)] = (vmin + vmax) / 2.0
+        cvals[cvals_imp > vmax] = vmax
+        cvals[cvals_imp < vmin] = vmin
+        fig.add_scattergl(
+            x=shaps[np.invert(nan_mask)],
+            y=pos + ys[np.invert(nan_mask)],
+            mode="markers",
+            marker=dict(
+                color=cvals,
+                colorscale="Bluered",
+                showscale=True if i == 0 else False,
+                colorbar=dict(
+                    x=-0.05,
+                    thickness=10,
+                    xpad=0,
+                    thicknessmode="pixels",
+                    title=dict(
+                        text="Feature Value",
+                        side="right",
+                        font=dict(size=12),
+                    ),
+                    tickmode="array",
+                    tickvals=[vmin, vmax],
+                    ticktext=["Low", "High"],
+                    tickfont=dict(size=12),
+                    ticklabelposition="outside left",
+                    borderwidth=0,
+                ),
+                cmin=vmin,
+                cmax=vmax,
+                size=10,
+            ),
+            hoverinfo="none",
+            name=display_columns[i],
+            showlegend=False,
+            row=1,
+            col=2,
+        )
+
+    fig.update_yaxes(
+        position=0,
+        tickmode="array",
+        ticktext=display_columns,
+        tickvals=np.arange(2, len(display_columns) + 2),
+        automargin=False,
+        range=[1.5, len(display_columns) + 1.5],
+    )
+    fig.update_layout(margin=dict(r=190))
+
+    return fig
+
+
+@log_start_end(log=logger)
 def plot_explainability(
     model: type[GlobalForecastingModel],
-    explainability_raw=False,
+    explainability_raw: bool = False,
     sheet_name: Optional[str] = None,
-    external_axes: Optional[List[plt.axes]] = None,
+    external_axes: bool = False,
 ):
     """
     Plot explainability of the model
@@ -747,24 +871,35 @@ def plot_explainability(
         The model to plot explainability for
     explainability_raw: bool
         Whether to plot raw explainability or not
-        external_axes: Optional[List[plt.axes]]
-        Optional list of axes to plot on
-
-    Returns
-    -------
-    None
+    sheet_name: Optional[str]
+        Optionally specify the name of the sheet the data is exported to.
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
-    if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    else:
-        ax = external_axes[0]
 
     shap_explain = ShapExplainer(model)
-    shap_explain.summary_plot(horizons=1)
+
+    # pylint: disable=W0212
+    horizons, target_components = shap_explain._check_horizons_and_targets(1, None)
+
+    foreground_X_sampled = shap_explain.explainers.background_X
+
+    shaps_ = shap_explain.explainers.shap_explanations(
+        foreground_X_sampled, horizons, target_components
+    )
+    shap = shaps_[1][target_components[0]]
+
+    raw_df = shap_explain.explain().get_explanation(horizon=1).pd_dataframe()
+
+    fig = plotly_shap_scatter_plot(shap, raw_df)
+    fig.set_title(f"Target: `{target_components[0]}` - Horizon: 1")
+
+    fig.add_vline(x=0, line_width=1.5, line_color="white", opacity=0.7)
+
     if explainability_raw:
         console.print("\n")
         console.print("[green]Exporting Raw Explainability DataFrame[/green]")
-        raw_df = shap_explain.explain().get_explanation(horizon=1).pd_dataframe()
+        raw_df = raw_df
         export_data(
             "csv",
             os.path.dirname(os.path.abspath(__file__)),
@@ -773,21 +908,7 @@ def plot_explainability(
             sheet_name,
         )
 
-    ax.yaxis.set_label_position("left")
-    ax.yaxis.tick_left()
-
-    # change the colour of the y axis tick labels
-    for t in ax.get_yticklabels():
-        t.set_color("white")
-
-    # change the colour of the x axis tick labels
-    for t in ax.get_xticklabels():
-        t.set_color("white")
-
-    theme.style_primary_axis(ax)
-
-    if not external_axes:
-        theme.visualize_output()
+    return fig.show(external=external_axes)
 
 
 def dt_format(x) -> str:
@@ -872,6 +993,7 @@ def fit_model(
     model.fit(**fit_kwargs)
 
 
+@log_start_end(log=logger)
 def get_prediction(
     model_name: str,
     probabilistic: bool,
@@ -979,6 +1101,7 @@ def check_parser_input(parser: argparse.ArgumentParser, datasets, *args) -> bool
     return True
 
 
+@log_start_end(log=logger)
 def plot_residuals(
     model: type[GlobalForecastingModel],
     past_covariates: Optional[str],
