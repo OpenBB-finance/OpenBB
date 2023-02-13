@@ -106,7 +106,7 @@ mstarpy = "^0.0.4"
 packaging = ">=22.0"
 rapidfuzz = "^2.13.7"
 streamlit = "^1.17.0"
-pywry = "^0.2.9"
+pywry = "^0.2.95"
 sparqlwrapper = "^2.0.0"
 y-py = "!=0.5.5"  # Untraceable third level dependency that requires cargo to be built
 psutil = "!=5.9.4"  # Forecasting menu and IPyKernel dependency broken on MacOs
