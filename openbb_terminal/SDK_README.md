@@ -279,9 +279,6 @@ df_yf = openbb.stocks.load("AAPL", source='YahooFinance')
 ## From AlphaVantage
 df_av = openbb.stocks.load("AAPL", source='AlphaVantage')
 
-## From IEXCloud
-df_iex = openbb.stocks.load("AAPL", source='IEXCloud')
-
 ## From Polygon
 df_pol = openbb.stocks.load("AAPL", source='Polygon')
 ```

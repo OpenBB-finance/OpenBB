@@ -1,21 +1,21 @@
                                           Value
 Currency                                    USD
-Day high                                103.240
-Day low                                 101.392
+Day high                                102.490
+Day low                                 100.980
 Exchange                                    NYQ
-Fifty day average                       101.917
-Last price                              102.110
-Last volume                             2.438 M
-Market cap                            158.291 B
-Open                                    102.390
-Previous close                          101.470
+Fifty day average                       102.007
+Last price                              102.360
+Last volume                             3.692 M
+Market cap                            158.682 B
+Open                                    102.170
+Previous close                          102.020
 Quote type                               EQUITY
-Regular market previous close           101.290
+Regular market previous close           102.020
 Shares                                  1.550 B
-Ten day average volume                  3.785 M
-Three month average volume              4.861 M
+Ten day average volume                  3.910 M
+Three month average volume              4.860 M
 Timezone                       America/New_York
-Two hundred day average                  97.609
-Year change                              -0.054
+Two hundred day average                  97.606
+Year change                              -0.063
 Year high                               112.480
 Year low                                 82.850

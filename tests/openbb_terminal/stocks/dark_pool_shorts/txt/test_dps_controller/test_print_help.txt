@@ -1,4 +1,4 @@
-    load               load a specific stock ticker for analysis                       [YahooFinance, IEXCloud, AlphaVantage, Polygon, EODHD]
+    load               load a specific stock ticker for analysis                       [YahooFinance, AlphaVantage, Polygon, EODHD]
 
     shorted            show most shorted stocks                                        [YahooFinance]
     ctb                cost to borrow of stocks                                        [InteractiveBrokers, Stocksera]
