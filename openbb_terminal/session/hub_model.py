@@ -4,8 +4,9 @@ import requests
 
 from openbb_terminal.rich_config import console
 
-REGISTER_LINK = "https://my.openbb.dev/register"
+REGISTER_URL = "https://my.openbb.dev/register"
 BASE_URL = "https://payments.openbb.dev/"
+# BASE_URL = "http://127.0.0.1:8000/"
 TIMEOUT = 15
 
 CONNECTION_ERROR_MSG = "[red]Connection error.[/red]"

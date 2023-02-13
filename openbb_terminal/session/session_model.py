@@ -1,8 +1,4 @@
-import importlib
 import json
-import logging
-import os
-import sys
 from enum import Enum
 from typing import Optional
 
@@ -10,6 +6,11 @@ import matplotlib.pyplot as plt
 
 import openbb_terminal.session.hub_model as Hub
 import openbb_terminal.session.local_model as Local
+from openbb_terminal.base_helpers import (
+    clear_openbb_env_vars,
+    reload_openbb_config_modules,
+    remove_log_handlers,
+)
 from openbb_terminal.helper_funcs import system_clear
 from openbb_terminal.rich_config import console
 from openbb_terminal.session.user import User
@@ -67,6 +68,8 @@ def login(session: dict) -> LoginStatus:
     session : dict
         The session info.
     """
+    clear_openbb_env_vars(exceptions=["OPENBB_ENABLE_AUTHENTICATION"])
+    reload_openbb_config_modules()
     response = Hub.fetch_user_configs(session)
     if response is not None:
         if response.status_code == 200:
@@ -116,39 +119,19 @@ def logout(
         r = Hub.delete_session(auth_header, token)
         if not r or r.status_code != 200:
             success = False
-    User.clear()
+        User.clear()
 
-    clear_openbb_env_vars()
-    remove_log_handlers()
-    reload_openbb_modules()
-
-    if not Local.remove_session_file():
-        success = False
+        if not Local.remove_session_file():
+            success = False
 
     if not Local.remove_cli_history_file():
         success = False
+
+    clear_openbb_env_vars()
+    remove_log_handlers()
+    reload_openbb_config_modules()
+
     plt.close("all")
 
     if success:
         console.print("[green]\nLogout successful.[/green]")
-
-
-def clear_openbb_env_vars():
-    """Clear openbb environment variables."""
-    for v in os.environ:
-        if v.startswith("OPENBB"):
-            os.environ.pop(v)
-
-
-def remove_log_handlers():
-    """Remove the log handlers - needs to be done before reloading modules."""
-    for handler in logging.root.handlers[:]:
-        logging.root.removeHandler(handler)
-
-
-def reload_openbb_modules():
-    """Reload all openbb modules to clear memorized variables."""
-    modules = sys.modules.copy()
-    for module in modules:
-        if module.startswith("openbb"):
-            importlib.reload(sys.modules[module])
