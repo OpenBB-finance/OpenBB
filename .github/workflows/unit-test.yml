@@ -102,7 +102,7 @@ jobs:
       - name: Start Terminal and exit
         run: |
           source $VENV
-          yes "" | python terminal.py
+          python terminal.py
 
   tests-python:
     name: Vanilla Python Tests - ${{ matrix.python-version }}
@@ -160,7 +160,7 @@ jobs:
       - name: Start Terminal and exit
         run: |
           source $VENV
-          yes "" | python terminal.py
+          python terminal.py
 
   full-test:
     name: Full Test Suite - (${{ matrix.python-version }}, ${{ matrix.os }})
@@ -219,7 +219,7 @@ jobs:
       - name: Start Terminal and exit
         run: |
           source $VENV
-          yes "" | python terminal.py
+          python terminal.py
 
   tests-conda:
     name: Anaconda Python Tests - (${{ matrix.python-version }}, ${{ matrix.os }})
@@ -324,4 +324,4 @@ jobs:
 
       - name: Start Terminal and exit
         shell: bash -l {0}
-        run: yes "" | python terminal.py
+        run: python terminal.py
