@@ -398,6 +398,7 @@ en:
   stocks/bt/ema: buy when price exceeds EMA(l)
   stocks/bt/emacross: buy when EMA(short) > EMA(long)
   stocks/bt/rsi: buy when RSI < low and sell when RSI > high
+  stocks/bt/load: load a specific stock ticker for analysis
   stocks/ta/_ticker: Ticker
   stocks/ta/view: view historical data and trendlines
   stocks/ta/summary: technical summary report

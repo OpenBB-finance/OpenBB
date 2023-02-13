@@ -108,11 +108,11 @@ class StocksController(StockBaseController):
         mt.add_raw("\n")
         mt.add_param("_ticker", stock_text)
         mt.add_raw("\n")
-        mt.add_cmd("quote", self.ticker)
-        mt.add_cmd("tob", self.ticker)
-        mt.add_cmd("candle", self.ticker)
-        mt.add_cmd("codes", self.ticker)
-        mt.add_cmd("news", self.ticker)
+        mt.add_cmd("quote")
+        mt.add_cmd("tob")
+        mt.add_cmd("candle")
+        mt.add_cmd("codes")
+        mt.add_cmd("news")
         mt.add_raw("\n")
         mt.add_menu("th")
         mt.add_menu("options")
@@ -357,6 +357,15 @@ class StocksController(StockBaseController):
             description="Shows historic data for a stock",
         )
         parser.add_argument(
+            "-t",
+            "--ticker",
+            dest="ticker",
+            help="Ticker to analyze",
+            type=str,
+            default=None,
+            required="-h" not in other_args and not self.ticker,
+        )
+        parser.add_argument(
             "-p",
             "--plotly",
             dest="plotly",
@@ -392,7 +401,6 @@ class StocksController(StockBaseController):
             help="Shows raw data instead of chart.",
         )
         parser.add_argument(
-            "-t",
             "--trend",
             action="store_true",
             default=False,
@@ -423,6 +431,9 @@ class StocksController(StockBaseController):
             limit=20,
         )
         if ns_parser:
+            if ns_parser.ticker:
+                self.ticker = ns_parser.ticker
+                self.custom_load_wrapper([self.ticker])
             if self.ticker:
                 if ns_parser.raw:
                     qa_view.display_raw(
@@ -480,6 +491,14 @@ class StocksController(StockBaseController):
             description="latest news of the company",
         )
         parser.add_argument(
+            "-t",
+            "--ticker",
+            action="store",
+            dest="ticker",
+            required="-h" not in other_args and not self.ticker,
+            help="Ticker to get data for",
+        )
+        parser.add_argument(
             "-d",
             "--date",
             action="store",
@@ -510,6 +529,9 @@ class StocksController(StockBaseController):
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED, limit=3
         )
         if ns_parser:
+            if ns_parser.ticker:
+                self.ticker = ns_parser.ticker
+                self.custom_load_wrapper([self.ticker])
             if self.ticker:
                 try:
                     d_stock = yf.Ticker(self.ticker).info
