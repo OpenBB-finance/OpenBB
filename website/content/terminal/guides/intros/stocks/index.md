@@ -123,13 +123,11 @@ optional arguments:
                         Path to load custom file. (default: None)
   -m, --monthly         Load monthly data (default: False)
   -w, --weekly          Load weekly data (default: False)
-  -r {ytd,1y,2y,5y,6m}, --iexrange {ytd,1y,2y,5y,6m}
-                        Range for using the iexcloud api. Longer range requires more tokens in account (default: ytd)
   --exchange            Show exchange information. (default: False)
   --performance         Show performance information. (default: False)
   -h, --help            show this help message (default: False)
   --export EXPORT       Export raw data into csv, json, xlsx (default: )
-  --source {YahooFinance,IEXCloud,AlphaVantage,Polygon,EODHD}
+  --source {YahooFinance,AlphaVantage,Polygon,EODHD}
                         Data source to select from (default: YahooFinance)
 ```
 
@@ -434,7 +432,7 @@ As an example, if you wish to obtain the ticker for Apple, you can do so with th
 ```
 (🦋) /stocks/ $ search -q apple
 
-                                              Companies found on term apple                                               
+                                              Companies found on term apple
 ┏━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┓
 ┃      ┃ Name                                ┃ Country       ┃ Sector             ┃ Industry                  ┃ Exchange ┃
 ┡━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━┩
@@ -459,7 +457,7 @@ With a variety of options to also discover country-specific and sector-specific 
 ```
 (🦋) /stocks/ $ search --sector technology --country united_kingdom -l 20
 
-                                  Companies found in United Kingdom within Technology                                   
+                                  Companies found in United Kingdom within Technology
 ┏━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┓
 ┃       ┃ Name                          ┃ Country        ┃ Sector     ┃ Industry                            ┃ Exchange ┃
 ┡━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━┩

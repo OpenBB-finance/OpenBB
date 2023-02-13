@@ -16,7 +16,6 @@ import dotenv
 import oandapyV20.endpoints.pricing
 import pandas as pd
 import praw
-import pyEX
 import quandl
 import requests
 import stocksera
@@ -62,7 +61,6 @@ API_DICT: Dict = {
     "tradier": "TRADIER",
     "cmc": "COINMARKETCAP",
     "finnhub": "FINNHUB",
-    "iex": "IEXCLOUD",
     "reddit": "REDDIT",
     "twitter": "TWITTER",
     "rh": "ROBINHOOD",
@@ -70,7 +68,6 @@ API_DICT: Dict = {
     "oanda": "OANDA",
     "binance": "BINANCE",
     "bitquery": "BITQUERY",
-    "si": "SENTIMENT_INVESTOR",
     "coinbase": "COINBASE",
     "walert": "WHALE_ALERT",
     "glassnode": "GLASSNODE",
@@ -894,69 +891,6 @@ def check_finnhub_key(show_output: bool = False) -> str:
     return str(status)
 
 
-def set_iex_key(key: str, persist: bool = False, show_output: bool = False) -> str:
-    """Set IEX Cloud key
-
-    Parameters
-    ----------
-    key: str
-        API key
-    persist: bool, optional
-        If False, api key change will be contained to where it was changed. For example, a Jupyter notebook session.
-        If True, api key change will be global, i.e. it will affect terminal environment variables.
-        By default, False.
-    show_output: bool, optional
-        Display status string or not. By default, False.
-
-    Returns
-    -------
-    str
-        Status of key set
-
-    Examples
-    --------
-    >>> from openbb_terminal.sdk import openbb
-    >>> openbb.keys.iex(key="example_key")
-    """
-
-    set_key("OPENBB_API_IEX_TOKEN", key, persist)
-    return check_iex_key(show_output)
-
-
-def check_iex_key(show_output: bool = False) -> str:
-    """Check IEX Cloud key
-
-    Parameters
-    ----------
-    show_output: bool, optional
-        Display status string or not. By default, False.
-
-    Returns
-    -------
-    str
-        Status of key set
-    """
-
-    if cfg.API_IEX_TOKEN == "REPLACE_ME":  # nosec
-        logger.info("IEX Cloud key not defined")
-        status = KeyStatus.NOT_DEFINED
-    else:
-        try:
-            pyEX.Client(  # pylint: disable=no-member
-                api_token=cfg.API_IEX_TOKEN, version="v1"
-            ).quote(symbol="AAPL")
-            logger.info("IEX Cloud key defined, test passed")
-            status = KeyStatus.DEFINED_TEST_PASSED
-        except Exception as _:  # noqa: F841
-            logger.warning("IEX Cloud key defined, test failed")
-            status = KeyStatus.DEFINED_TEST_FAILED
-
-    if show_output:
-        console.print(status.colorize())
-
-    return str(status)
-
-
 def set_reddit_key(
     client_id: str,
     client_secret: str,
@@ -1557,80 +1491,6 @@ def check_binance_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_PASSED
         except Exception:
             logger.warning("Binance key defined, test failed")
-            status = KeyStatus.DEFINED_TEST_FAILED
-
-    if show_output:
-        console.print(status.colorize())
-
-    return str(status)
-
-
-def set_si_key(
-    key: str,
-    persist: bool = False,
-    show_output: bool = False,
-) -> str:
-    """Set Sentimentinvestor key.
-
-    Parameters
-    ----------
-    key: str
-        API key
-    persist: bool, optional
-        If False, api key change will be contained to where it was changed. For example, a Jupyter notebook session.
-        If True, api key change will be global, i.e. it will affect terminal environment variables.
-        By default, False.
-    show_output: bool, optional
-        Display status string or not. By default, False.
-
-    Returns
-    -------
-    str
-        Status of key set
-
-    Examples
-    --------
-    >>> from openbb_terminal.sdk import openbb
-    >>> openbb.keys.si(key="example_key")
-    """
-
-    set_key("OPENBB_API_SENTIMENTINVESTOR_TOKEN", key, persist)
-
-    return check_si_key(show_output)
-
-
-def check_si_key(show_output: bool = False) -> str:
-    """Check Sentimentinvestor key
-
-    Parameters
-    ----------
-    show_output: bool, optional
-        Display status string or not. By default, False.
-
-    Returns
-    -------
-    str
-        Status of key set
-    """
-
-    si_keys = [cfg.API_SENTIMENTINVESTOR_TOKEN]
-    if "REPLACE_ME" in si_keys:
-        logger.info("Sentiment Investor key not defined")
-        status = KeyStatus.NOT_DEFINED
-    else:
-        try:
-            account = request(
-                f"https://api.sentimentinvestor.com/v1/trending"
-                f"?token={cfg.API_SENTIMENTINVESTOR_TOKEN}"
-            )
-            if account.ok and account.json().get("success", False):
-                logger.info("Sentiment Investor key defined, test passed")
-                status = KeyStatus.DEFINED_TEST_PASSED
-            else:
-                logger.warning("Sentiment Investor key defined, test failed")
-                status = KeyStatus.DEFINED_TEST_FAILED
-        except Exception:
-            logger.warning("Sentiment Investor key defined, test failed")
             status = KeyStatus.DEFINED_TEST_FAILED
 
     if show_output:
