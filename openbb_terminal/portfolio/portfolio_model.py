@@ -52,7 +52,7 @@ def generate_portfolio(
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio/holdings_example.xlsx")
     """
 
     transactions = PortfolioEngine.read_transactions(transactions_file_path)
@@ -82,7 +82,7 @@ def get_transactions(portfolio_engine: PortfolioEngine) -> pd.DataFrame:
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio/holdings_example.xlsx")
     >>> output = openbb.portfolio.show(p)
     """
 
@@ -114,7 +114,7 @@ def set_benchmark(
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio/holdings_example.xlsx")
     >>> output = openbb.portfolio.bench(p, symbol="SPY")
     """
 
@@ -154,7 +154,7 @@ def get_holdings_value(portfolio_engine: PortfolioEngine) -> pd.DataFrame:
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio/holdings_example.xlsx")
     >>> output = openbb.portfolio.holdv(p)
     """
 
@@ -188,7 +188,7 @@ def get_holdings_percentage(
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio/holdings_example.xlsx")
     >>> output = openbb.portfolio.holdp(p)
     """
 
@@ -227,7 +227,7 @@ def get_yearly_returns(
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio/holdings_example.xlsx")
     >>> output = openbb.portfolio.yret(p)
     """
 
@@ -291,7 +291,7 @@ def get_monthly_returns(
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio/holdings_example.xlsx")
     >>> output = openbb.portfolio.mret(p)
     """
 
@@ -414,7 +414,7 @@ def get_daily_returns(
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio/holdings_example.xlsx")
     >>> output = openbb.portfolio.dret(p)
     """
 
@@ -489,7 +489,7 @@ def get_distribution_returns(
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio/holdings_example.xlsx")
     >>> output = openbb.portfolio.distr(p)
     """
 
@@ -533,7 +533,7 @@ def get_maximum_drawdown(
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio/holdings_example.xlsx")
     >>> output = openbb.portfolio.maxdd(p)
     """
 
@@ -569,7 +569,7 @@ def get_rolling_volatility(
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio/holdings_example.xlsx")
     >>> output = openbb.portfolio.rvol(p)
     """
 
@@ -615,7 +615,7 @@ def get_rolling_sharpe(
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio/holdings_example.xlsx")
     >>> output = openbb.portfolio.rsharpe(p)
     """
 
@@ -663,7 +663,7 @@ def get_rolling_sortino(
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio/holdings_example.xlsx")
     >>> output = openbb.portfolio.rsort(p)
     """
 
@@ -709,7 +709,7 @@ def get_rolling_beta(
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio/holdings_example.xlsx")
     >>> output = openbb.portfolio.rbeta(p)
     """
 
@@ -745,7 +745,7 @@ def get_summary(
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio/holdings_example.xlsx")
     >>> output = openbb.portfolio.summary(p)
     """
 
@@ -837,7 +837,7 @@ def get_assets_allocation(
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio/holdings_example.xlsx")
     >>> output = openbb.portfolio.alloc.assets(p)
     """
 
@@ -881,7 +881,7 @@ def get_sectors_allocation(
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio/holdings_example.xlsx")
     >>> output = openbb.portfolio.alloc.sectors(p)
     """
 
@@ -925,7 +925,7 @@ def get_countries_allocation(
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio/holdings_example.xlsx")
     >>> output = openbb.portfolio.alloc.countries(p)
     """
 
@@ -969,7 +969,7 @@ def get_regions_allocation(
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio/holdings_example.xlsx")
     >>> output = openbb.portfolio.alloc.regions(p)
     """
 
@@ -1003,7 +1003,7 @@ def get_r2_score(portfolio_engine: PortfolioEngine) -> pd.DataFrame:
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio/holdings_example.xlsx")
     >>> output = openbb.portfolio.metric.rsquare(p)
     """
 
@@ -1041,7 +1041,7 @@ def get_skewness(portfolio_engine: PortfolioEngine) -> pd.DataFrame:
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio/holdings_example.xlsx")
     >>> output = openbb.portfolio.metric.skew(p)
     """
 
@@ -1088,7 +1088,7 @@ def get_kurtosis(portfolio_engine: PortfolioEngine) -> pd.DataFrame:
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio/holdings_example.xlsx")
     >>> output = openbb.portfolio.metric.kurtosis(p)
     """
 
@@ -1167,7 +1167,7 @@ def get_volatility(portfolio_engine: PortfolioEngine) -> pd.DataFrame:
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio/holdings_example.xlsx")
     >>> output = openbb.portfolio.metric.volatility(p)
     """
 
@@ -1220,7 +1220,7 @@ def get_sharpe_ratio(
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio/holdings_example.xlsx")
     >>> output = openbb.portfolio.metric.sharpe(p)
     """
 
@@ -1273,7 +1273,7 @@ def get_sortino_ratio(
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio/holdings_example.xlsx")
     >>> output = openbb.portfolio.metric.sortino(p)
     """
 
@@ -1322,7 +1322,7 @@ def get_maximum_drawdown_ratio(portfolio_engine: PortfolioEngine) -> pd.DataFram
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio/holdings_example.xlsx")
     >>> output = openbb.portfolio.metric.maxdrawdown(p)
     """
 
@@ -1369,7 +1369,7 @@ def get_gaintopain_ratio(portfolio_engine: PortfolioEngine) -> pd.DataFrame:
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio/holdings_example.xlsx")
     >>> output = openbb.portfolio.metric.gaintopain(p)
     """
 
@@ -1406,7 +1406,7 @@ def get_tracking_error(
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio/holdings_example.xlsx")
     >>> output = openbb.portfolio.metric.trackerr(p)
     """
 
@@ -1435,7 +1435,7 @@ def get_information_ratio(portfolio_engine: PortfolioEngine) -> pd.DataFrame:
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio/holdings_example.xlsx")
     >>> output = openbb.portfolio.metric.information(p)
     """
 
@@ -1475,7 +1475,7 @@ def get_tail_ratio(
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio/holdings_example.xlsx")
     >>> output = openbb.portfolio.metric.tail(p)
     """
 
@@ -1504,7 +1504,7 @@ def get_common_sense_ratio(portfolio_engine: PortfolioEngine) -> pd.DataFrame:
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio/holdings_example.xlsx")
     >>> output = openbb.portfolio.metric.commonsense(p)
     """
 
@@ -1544,7 +1544,7 @@ def get_jensens_alpha(
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio/holdings_example.xlsx")
     >>> output = openbb.portfolio.metric.jensens(p)
     """
 
@@ -1584,7 +1584,7 @@ def get_calmar_ratio(
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio/holdings_example.xlsx")
     >>> output = openbb.portfolio.metric.calmar(p)
     """
 
@@ -1617,7 +1617,7 @@ def get_kelly_criterion(portfolio_engine: PortfolioEngine) -> pd.DataFrame:
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio/holdings_example.xlsx")
     >>> output = openbb.portfolio.metric.kelly(p)
     """
 
@@ -1640,7 +1640,7 @@ def get_payoff_ratio(portfolio_engine: PortfolioEngine) -> pd.DataFrame:
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio/holdings_example.xlsx")
     >>> output = openbb.portfolio.metric.payoff(p)
     During some time periods there were no losing trades. Thus some values could not be calculated.
     """
@@ -1668,7 +1668,7 @@ def get_profit_factor(portfolio_engine: PortfolioEngine) -> pd.DataFrame:
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio/holdings_example.xlsx")
     >>> output = openbb.portfolio.metric.profitfactor(p)
     During some time periods there were no losing trades. Thus some values could not be calculated.
     """
@@ -1701,7 +1701,7 @@ def get_performance_vs_benchmark(
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio/holdings_example.xlsx")
     >>> output = openbb.portfolio.perf(p)
     """
 
@@ -1821,7 +1821,7 @@ def get_var(
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio/holdings_example.xlsx")
     >>> output = openbb.portfolio.var(p)
     """
 
@@ -1864,7 +1864,7 @@ def get_es(
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio/holdings_example.xlsx")
     >>> output = openbb.portfolio.es(p)
     """
 
@@ -1903,7 +1903,7 @@ def get_omega(
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio/holdings_example.xlsx")
     >>> output = openbb.portfolio.om(p)
     """
 
