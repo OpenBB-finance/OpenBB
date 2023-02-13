@@ -301,7 +301,6 @@ class OpenBBSDK:
             `get_keys_info`: Get info on available APIs to use in set_keys.\n
             `github`: Set GitHub key.\n
             `glassnode`: Set Glassnode key.\n
-            `iex`: Set IEX Cloud key\n
             `messari`: Set Messari key.\n
             `mykeys`: Get currently set API keys.\n
             `news`: Set News key\n
@@ -313,7 +312,6 @@ class OpenBBSDK:
             `santiment`: Set Santiment key.\n
             `set_keys`: Set API keys in bundle.\n
             `shroom`: Set Shroom key\n
-            `si`: Set Sentimentinvestor key.\n
             `smartstake`: Set Smartstake key.\n
             `stocksera`: Set Stocksera key.\n
             `tokenterminal`: Set Token Terminal key.\n

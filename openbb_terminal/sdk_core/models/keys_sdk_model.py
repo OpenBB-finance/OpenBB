@@ -24,7 +24,6 @@ class KeysRoot(Category):
         `get_keys_info`: Get info on available APIs to use in set_keys.\n
         `github`: Set GitHub key.\n
         `glassnode`: Set Glassnode key.\n
-        `iex`: Set IEX Cloud key\n
         `messari`: Set Messari key.\n
         `mykeys`: Get currently set API keys.\n
         `news`: Set News key\n
@@ -36,7 +35,6 @@ class KeysRoot(Category):
         `santiment`: Set Santiment key.\n
         `set_keys`: Set API keys in bundle.\n
         `shroom`: Set Shroom key\n
-        `si`: Set Sentimentinvestor key.\n
         `smartstake`: Set Smartstake key.\n
         `stocksera`: Set Stocksera key.\n
         `tokenterminal`: Set Token Terminal key.\n
@@ -65,7 +63,6 @@ class KeysRoot(Category):
         self.get_keys_info = lib.keys_model.get_keys_info
         self.github = lib.keys_model.set_github_key
         self.glassnode = lib.keys_model.set_glassnode_key
-        self.iex = lib.keys_model.set_iex_key
         self.messari = lib.keys_model.set_messari_key
         self.mykeys = lib.keys_model.get_keys
         self.news = lib.keys_model.set_news_key
@@ -77,7 +74,6 @@ class KeysRoot(Category):
         self.santiment = lib.keys_model.set_santiment_key
         self.set_keys = lib.keys_model.set_keys
         self.shroom = lib.keys_model.set_shroom_key
-        self.si = lib.keys_model.set_si_key
         self.smartstake = lib.keys_model.set_smartstake_key
         self.stocksera = lib.keys_model.set_stocksera_key
         self.tokenterminal = lib.keys_model.set_tokenterminal_key
