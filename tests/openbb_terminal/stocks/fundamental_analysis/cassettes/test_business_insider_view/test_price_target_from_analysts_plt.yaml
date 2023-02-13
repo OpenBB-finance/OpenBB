@@ -15,7 +15,7 @@ interactions:
       string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"TSLA","exchangeName":"NMS","instrumentType":"EQUITY","firstTradeDate":1277818200,"regularMarketTime":1676062804,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":196.89,"chartPreviousClose":207.32,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","end":1676298600,"start":1676278800,"gmtoffset":-18000},"regular":{"timezone":"EST","end":1676322000,"start":1676298600,"gmtoffset":-18000},"post":{"timezone":"EST","end":1676336400,"start":1676322000,"gmtoffset":-18000}},"dataGranularity":"1d","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1676039400],"indicators":{"quote":[{"volume":[204193800],"low":[192.88999938964844],"high":[206.1999969482422],"open":[202.22999572753906],"close":[196.88999938964844]}],"adjclose":[{"adjclose":[196.88999938964844]}]}}],"error":null}}'
     headers:
       Age:
-      - '0'
+      - '1'
       Connection:
       - keep-alive
       Expect-CT:
