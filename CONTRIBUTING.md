@@ -339,7 +339,7 @@ The added line of the file should look like this:
     stocks.dps.shorted,stocks_dps_yahoofinance_model.get_most_shorted,stocks_dps_yahoofinance_view.display_most_shorted
     ```
 
-4. Generate the SDK files by running `python generate_sdk.py` from the root of the project. This will automatically generate the SDK `openbb_terminal/sdk/sdk.py`, corresponding `openbb_terminal/sdk_core/controllers/` and `openbb_terminal/sdk_core/models/` class files.
+4. Generate the SDK files by running `python generate_sdk.py` from the root of the project. This will automatically generate the SDK `openbb_terminal/sdk.py`, corresponding `openbb_terminal/sdk_core/controllers/` and `openbb_terminal/sdk_core/models/` class files.
 
     To sort the `trail_map.csv` file and generate the SDK files, run the following command
 
