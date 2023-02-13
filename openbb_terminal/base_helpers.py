@@ -113,7 +113,8 @@ def load_dotenv_and_reload_configs():
     load_dotenv(PACKAGE_ENV_FILE, override=True)
     load_dotenv(USER_ENV_FILE, override=True)
 
-    reload_openbb_config_modules()
+    if not os.getenv("TEST_MODE"):
+        reload_openbb_config_modules()
 
 
 def reload_openbb_config_modules():
