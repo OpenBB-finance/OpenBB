@@ -1,5 +1,5 @@
 INTERVALS = [1, 5, 15, 30, 60]
-SOURCES = ["YahooFinance", "AlphaVantage", "IEXCloud", "EODHD"]
+SOURCES = ["YahooFinance", "AlphaVantage", "EODHD"]
 CANDLE_SORT = [
     "adjclose",
     "open",

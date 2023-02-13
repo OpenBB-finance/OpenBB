@@ -33,7 +33,7 @@ rsi -l 20 -u 80 -p 12
 rsi --spy
 rsi --no_bench --no_short
 ..
-load ${ticker=tsla} --source IEXCloud
+load ${ticker=tsla}
 bt
 whatif
 whatif -n 2.34

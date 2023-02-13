@@ -31,7 +31,6 @@ obb.stocks.load(
 The choices for `source` within this functionality are:
 
 - YahooFinance (default)
-- IEXCloud
 - AlphaVantage
 - Polygon
 - EODHD

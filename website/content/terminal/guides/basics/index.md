@@ -50,7 +50,7 @@ Continuing with the example mentioned at `quit`, revisit the `stocks` menu and l
 ```
 2022 May 19, 05:27 (🦋) /stocks/ $ load -h
 usage: load [-t TICKER] [-s START] [-e END] [-i {1,5,15,30,60}] [-p] [-f FILEPATH] [-m] [-w] [-r {ytd,1y,2y,5y,6m}] [--exchange] [--performance] [-h] [--export EXPORT]
-            [--source {YahooFinance,IEXCloud,AlphaVantage,Polygon,EODHD}]
+            [--source {YahooFinance,AlphaVantage,Polygon,EODHD}]
 
 Load stock ticker to perform analysis on. When the data source is yf, an Indian ticker can be loaded by using '.NS' at the end, e.g. 'SBIN.NS'.
 
@@ -67,13 +67,11 @@ optional arguments:
                         Path to load custom file. (default: None)
   -m, --monthly         Load monthly data (default: False)
   -w, --weekly          Load weekly data (default: False)
-  -r {ytd,1y,2y,5y,6m}, --iexrange {ytd,1y,2y,5y,6m}
-                        Range for using the iexcloud api. Longer range requires more tokens in account (default: ytd)
   --exchange            Show exchange information. (default: False)
   --performance         Show performance information. (default: False)
   -h, --help            show this help message (default: False)
   --export EXPORT       Export raw data into csv, json, xlsx (default: )
-  --source {YahooFinance,IEXCloud,AlphaVantage,Polygon,EODHD}
+  --source {YahooFinance,AlphaVantage,Polygon,EODHD}
                         Data source to select from (default: YahooFinance)
 
 For more information and examples, use 'about load' to access the related guide.
@@ -134,7 +132,7 @@ The [keys menu](/terminal/guides/advanced/api-keys) serves the purpose of provid
 
 ╭───────────────────────────────────────────────────────────────────────────────── Stocks - Fundamental Analysis ─────────────────────────────────────────────────────────────────────────────────╮
 │                                                                                                                                                                                                 │
-│     load               load a specific stock ticker for analysis                       [YahooFinance, IEXCloud, AlphaVantage, Polygon, EODHD]                                                   │
+│     load               load a specific stock ticker for analysis                       [YahooFinance, AlphaVantage, Polygon, EODHD]                                                   │
 │                                                                                                                                                                                                 │
 │ Ticker: TSLA                                                                                                                                                                                    │
 │                                                                                                                                                                                                 │
@@ -147,7 +145,7 @@ The [keys menu](/terminal/guides/advanced/api-keys) serves the purpose of provid
 │     rot                number of analyst ratings over time on a monthly basis          [Finnhub]                                                                                                │
 │     score              value investing scores for any time period                      [FinancialModelingPrep]                                                                                  │
 │     warnings           company warnings according to Sean Seah book                    [MarketWatch]                                                                                            │
-│     sust               sustainability values (environment, social and governance)      [YahooFinance]     
+│     sust               sustainability values (environment, social and governance)      [YahooFinance]
 ```
 
 Therefore, you need to acquire an API key from FinnHub through the website and enter the key within the [keys menu](/terminal/guides/advanced/api-keys).
