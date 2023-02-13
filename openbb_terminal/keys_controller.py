@@ -408,33 +408,6 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             )
 
     @log_start_end(log=logger)
-    def call_iex(self, other_args: List[str]):
-        """Process iex command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="iex",
-            description="Set IEX Cloud API key.",
-        )
-        parser.add_argument(
-            "-k",
-            "--key",
-            type=str,
-            dest="key",
-            help="key",
-        )
-        if not other_args:
-            console.print("For your API Key, visit: https://iexcloud.io")
-            return
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-k")
-        ns_parser = self.parse_simple_args(parser, other_args)
-        if ns_parser:
-            self.status_dict["iex"] = keys_model.set_iex_key(
-                key=ns_parser.key, persist=True, show_output=True
-            )
-
-    @log_start_end(log=logger)
     def call_reddit(self, other_args: List[str]):
         """Process reddit command"""
         parser = argparse.ArgumentParser(
@@ -735,33 +708,6 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
             self.status_dict["bitquery"] = keys_model.set_bitquery_key(
-                key=ns_parser.key, persist=True, show_output=True
-            )
-
-    @log_start_end(log=logger)
-    def call_si(self, other_args: List[str]):
-        """Process si command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="si",
-            description="Set Sentiment Investor API key.",
-        )
-        parser.add_argument(
-            "-k",
-            "--key",
-            type=str,
-            dest="key",
-            help="key",
-        )
-        if not other_args:
-            console.print("For your API Key, visit: https://sentimentinvestor.com")
-            return
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-k")
-        ns_parser = self.parse_simple_args(parser, other_args)
-        if ns_parser:
-            self.status_dict["si"] = keys_model.set_si_key(
                 key=ns_parser.key, persist=True, show_output=True
             )
 

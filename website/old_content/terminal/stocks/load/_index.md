@@ -4,7 +4,7 @@ usage: load [-t TICKER] [-s START] [-e END] [-i {1,5,15,30,60}] [--source {yf,av
 
 Load a symbol to perform analysis using the string above as a template. Optional arguments and their descriptions are listed below.
 
-The default source is, yFinance (<https://pypi.org/project/yfinance/>). Alternatively, one may select either AlphaVantage (<https://www.alphavantage.co/documentation/>) or IEX Cloud (<https://iexcloud.io/docs/api/>) as the data source for the analysis. Please note that certain analytical features are exclusive to the source.
+The default source is, yFinance (<https://pypi.org/project/yfinance/>). Alternatively, one may select either AlphaVantage (<https://www.alphavantage.co/documentation/>)  Please note that certain analytical features are exclusive to the source.
 
 To load a symbol from an exchange outside of the NYSE/NASDAQ default, use yFinance as the source and add the corresponding exchange to the end of the symbol. i.e. 'BNS.TO'.
 
@@ -32,8 +32,6 @@ optional arguments:
                         Path to load custom file. (default: None)
   -m, --monthly         Load monthly data (default: False)
   -w, --weekly          Load weekly data (default: False)
-  -r {ytd,1y,2y,5y,6m}, --iexrange {ytd,1y,2y,5y,6m}
-                        Range for using the iexcloud api. Note that longer range requires more tokens in account (default: ytd)
   -h, --help            show this help message (default: False)
 
 ```
