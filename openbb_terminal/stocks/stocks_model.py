@@ -145,8 +145,21 @@ def load_stock_yf(
     # Check that loading a stock was not successful
     if df_stock_candidate.empty:
         return pd.DataFrame()
-
+    df_stock_candidate_cols = [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Adj Close",
+        "Volume",
+        "Dividends",
+        "Stock Splits",
+    ]
     df_stock_candidate.index.name = "date", int_string
+    df_stock_candidate["Adj Close"] = df_stock_candidate["Close"].copy()
+    df_stock_candidate = pd.DataFrame(
+        data=df_stock_candidate, columns=df_stock_candidate_cols
+    )
     return df_stock_candidate
 
 
