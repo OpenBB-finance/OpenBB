@@ -1100,15 +1100,6 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
             dest="weekly",
         )
         parser.add_argument(
-            "-r",
-            "--iexrange",
-            dest="iexrange",
-            help="Range for using the iexcloud api.  Longer range requires more tokens in account",
-            choices=["ytd", "1y", "2y", "5y", "6m"],
-            type=str,
-            default="ytd",
-        )
-        parser.add_argument(
             "--exchange",
             dest="exchange",
             action="store_true",
@@ -1195,9 +1186,7 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                     self.ticker = ns_parser.ticker.upper()
                     self.suffix = ""
 
-                if ns_parser.source == "IEXCloud":
-                    self.start = self.stock.index[0].to_pydatetime()
-                elif ns_parser.source == "EODHD":
+                if ns_parser.source == "EODHD":
                     self.start = self.stock.index[0].to_pydatetime()
                 elif ns_parser.source == "eodhd":
                     self.start = self.stock.index[0].to_pydatetime()

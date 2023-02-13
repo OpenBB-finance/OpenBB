@@ -65,7 +65,7 @@ class QaController(StockBaseController):
     ]
 
     stock_interval = [1, 5, 15, 30, 60]
-    stock_sources = ["YahooFinance", "AlphaVantage", "IEXCloud"]
+    stock_sources = ["YahooFinance", "AlphaVantage"]
     distributions = ["laplace", "student_t", "logistic", "normal"]
     FULLER_REG = ["c", "ct", "ctt", "nc"]
     KPS_REG = ["c", "ct"]

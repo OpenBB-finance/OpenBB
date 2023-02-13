@@ -58,7 +58,6 @@ def test_search(mocker, use_tab):
     "interval, source",
     [
         (1440, "AlphaVantage"),
-        (1440, "IEXCloud"),
         (1440, "Intrinio"),
         (1440, "YahooFinance"),
         (60, "YahooFinance"),
