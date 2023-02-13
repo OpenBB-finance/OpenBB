@@ -50,7 +50,7 @@ ENV PATH="/home/python/.local/bin:${PATH}"
 
 RUN /bin/bash -c "source $HOME/.cargo/env"
 RUN pip install --upgrade pip wheel
-RUN pip install poetry==1.1.15
+RUN pip install poetry==1.3.2
 
 # SETUP OPENBB IMAGE
 FROM poetry as repository
