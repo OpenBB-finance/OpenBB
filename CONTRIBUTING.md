@@ -331,7 +331,7 @@ In order to add a command to the SDK, follow these steps:
     In this file, the trail represents the path to the function to be called. The model represents the import alias we gave to the `_model` file. The view represents the import alias we gave to the `_view` file.
 
 3. Add your new function to this structure.  In our example of the `shorted` function, our trail would be `stocks.dps.shorted`.
-The model is the import alias to the `_model` function that was written, `stocks_dps_yahoofinance_model.get_most_shorted`.
+The model is the import alias to the `_model` function that was written: `stocks_dps_yahoofinance_model.get_most_shorted`.
 The view is the import alias to the `_view` function that was written: `stocks_dps_yahoofinance_view.display_most_shorted`.
 The added line of the file should look like this:
 
