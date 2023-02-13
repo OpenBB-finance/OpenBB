@@ -65,6 +65,10 @@ def test_create_session(email, password, save):
 def test_login_no_response():
     path = "openbb_terminal.session.session_model."
     with (
+        patch(path + "clear_openbb_env_vars") as mock_clear_openbb_env_vars,
+        patch(
+            path + "reload_openbb_config_modules"
+        ) as mock_reload_openbb_config_modules,
         patch(path + "Hub.fetch_user_configs") as mock_fetch_user_configs,
         patch(path + "Local.apply_configs") as mock_apply_configs,
         patch(path + "User.load_user_info") as mock_load_user_info,
@@ -76,6 +80,8 @@ def test_login_no_response():
             session_model.login(TEST_SESSION) == session_model.LoginStatus.NO_RESPONSE
         )
 
+    mock_clear_openbb_env_vars.assert_called_once()
+    mock_reload_openbb_config_modules.assert_called_once()
     mock_fetch_user_configs.assert_called_once_with(TEST_SESSION)
     mock_apply_configs.assert_not_called()
     mock_load_user_info.assert_not_called()
@@ -85,6 +91,10 @@ def test_login_no_response():
 def test_login_fail_response():
     path = "openbb_terminal.session.session_model."
     with (
+        patch(path + "clear_openbb_env_vars") as mock_clear_openbb_env_vars,
+        patch(
+            path + "reload_openbb_config_modules"
+        ) as mock_reload_openbb_config_modules,
         patch(path + "Hub.fetch_user_configs") as mock_fetch_user_configs,
         patch(path + "Local.apply_configs") as mock_apply_configs,
         patch(path + "User.load_user_info") as mock_load_user_info,
@@ -96,6 +106,8 @@ def test_login_fail_response():
 
         assert session_model.login(TEST_SESSION) == session_model.LoginStatus.FAILED
 
+    mock_clear_openbb_env_vars.assert_called_once()
+    mock_reload_openbb_config_modules.assert_called_once()
     mock_fetch_user_configs.assert_called_once_with(TEST_SESSION)
     mock_apply_configs.assert_not_called()
     mock_load_user_info.assert_not_called()
@@ -105,6 +117,10 @@ def test_login_fail_response():
 def test_login_success_response():
     path = "openbb_terminal.session.session_model."
     with (
+        patch(path + "clear_openbb_env_vars") as mock_clear_openbb_env_vars,
+        patch(
+            path + "reload_openbb_config_modules"
+        ) as mock_reload_openbb_config_modules,
         patch(path + "Hub.fetch_user_configs") as mock_fetch_user_configs,
         patch(path + "Local.apply_configs") as mock_apply_configs,
         patch(path + "User.load_user_info") as mock_load_user_info,
@@ -119,6 +135,8 @@ def test_login_success_response():
 
         assert session_model.login(TEST_SESSION) == session_model.LoginStatus.SUCCESS
 
+    mock_clear_openbb_env_vars.assert_called_once()
+    mock_reload_openbb_config_modules.assert_called_once()
     mock_fetch_user_configs.assert_called_once_with(TEST_SESSION)
     mock_apply_configs.assert_called_once()
     mock_load_user_info.assert_called_once()
