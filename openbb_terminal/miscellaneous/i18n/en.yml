@@ -85,7 +85,7 @@ en:
   settings/_timezone: Timezone
   settings/source: specify data source file
   settings/_data_source: Data sources
-  _others_: Others
+  _toolkits_: OpenBB Toolkits
   stocks: access historical pricing data, options, sector and industry, and overall due diligence
   crypto: dive into onchain data, tokenomics, circulation supply, nfts and more
   etf: exchange traded funds. Historical pricing, compare holdings and screening
@@ -400,8 +400,8 @@ en:
   stocks/bt/ema: buy when price exceeds EMA(l)
   stocks/bt/emacross: buy when EMA(short) > EMA(long)
   stocks/bt/rsi: buy when RSI < low and sell when RSI > high
+  stocks/bt/load: load a specific stock ticker for analysis
   stocks/ta/_ticker: Ticker
-  stocks/ta/tv: open interactive chart on
   stocks/ta/view: view historical data and trendlines
   stocks/ta/summary: technical summary report
   stocks/ta/recom: recommendation based on technical indicators
