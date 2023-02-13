@@ -75,10 +75,6 @@ added_files = [
         os.path.join("statsmodels", "datasets"),
     ),
     (
-        os.path.join(pathex, "investpy", "resources"),
-        os.path.join("investpy", "resources"),
-    ),
-    (
         os.path.join(pathex, "debugpy", "_vendored"),
         os.path.join("debugpy", "_vendored"),
     ),

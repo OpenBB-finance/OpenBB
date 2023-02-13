@@ -9,11 +9,7 @@ from typing import Optional, Union
 import pandas as pd
 
 from openbb_terminal.common.quantitative_analysis import qa_view
-from openbb_terminal.config_terminal import theme
-from openbb_terminal.core.plots.plotly_helper import (
-    OpenBBFigure,
-    theme as plotly_theme,
-)
+from openbb_terminal.core.plots.plotly_helper import OpenBBFigure, theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.portfolio.portfolio_model import (
@@ -583,8 +579,8 @@ def display_monthly_returns(
         except ZeroDivisionError:
             zero = 2 if float(max(pb_maxs)) < 0 else -2
 
-        up_colorway = plotly_theme.up_colorway
-        down_colorway = plotly_theme.down_colorway
+        up_colorway = theme.up_colorway
+        down_colorway = theme.down_colorway
 
         colorscale = [
             [0.0, down_colorway[3]],
