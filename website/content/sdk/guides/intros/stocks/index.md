@@ -56,7 +56,6 @@ from openbb_terminal.sdk import openbb
 The first step in a workflow might be to collect historical price data. The `load` function has the ability to request data from multiple sources. The choices for `source` are currently:
 
 - YahooFinance (default)
-- IEXCloud
 - AlphaVantage
 - Polygon
 - EODHD
