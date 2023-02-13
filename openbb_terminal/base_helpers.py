@@ -119,7 +119,7 @@ def load_dotenv_and_reload_configs():
 def reload_openbb_config_modules():
     """Reloads openbb config modules"""
 
-    reload_openbb_modules(
+    reload_modules(
         to_reload=[
             "openbb_terminal.config_plot",
             "openbb_terminal.config_terminal",
@@ -129,8 +129,8 @@ def reload_openbb_config_modules():
     )
 
 
-def reload_openbb_modules(to_reload: List[str]):
-    """Reloads openbb config modules"""
+def reload_modules(to_reload: List[str]):
+    """Reloads modules"""
     modules = sys.modules.copy()
     for module in modules:
         if module in to_reload:
