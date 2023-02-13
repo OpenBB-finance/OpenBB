@@ -221,8 +221,6 @@ from openbb_terminal.economy import (
     finviz_view as economy_finviz_view,
     fred_model as economy_fred_model,
     fred_view as economy_fred_view,
-    investingcom_model as economy_investingcom_model,
-    investingcom_view as economy_investingcom_view,
     nasdaq_model as economy_nasdaq_model,
     nasdaq_view as economy_nasdaq_view,
     sdk_helpers as economy_sdk_helpers,
@@ -254,12 +252,6 @@ from openbb_terminal.forex import (
 from openbb_terminal.futures import (
     yfinance_model as futures_yfinance_model,
     yfinance_view as futures_yfinance_view,
-)
-
-# Mutual Funds
-from openbb_terminal.mutual_funds import (
-    investpy_model as mutual_funds_investpy_model,
-    investpy_view as mutual_funds_investpy_view,
 )
 
 # Stocks Helpers
