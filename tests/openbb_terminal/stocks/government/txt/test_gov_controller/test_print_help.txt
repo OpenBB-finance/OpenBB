@@ -6,7 +6,7 @@ Explore:
     qtrcontracts       quarterly government contracts analysis     [QuiverQuant]
     toplobbying        top corporate lobbying tickers              [QuiverQuant]
 
-    load               load a specific ticker for analysis         [YahooFinance, IEXCloud, AlphaVantage, Polygon, EODHD]
+    load               load a specific ticker for analysis         [YahooFinance, AlphaVantage, Polygon, EODHD]
 
 Ticker: 
 

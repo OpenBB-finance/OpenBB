@@ -1024,39 +1024,46 @@ Note that a `OPENBB_` is added so that the user knows that that environment vari
 
 One of the first steps once adding a new data source that requires an API key is to add that key to our [keys_controller.py](/openbb_terminal/keys_controller.py). This menu allows the user to set API keys and check their validity.
 
-The following code allows to check the validity of the IEX Cloud API key.
+The following code allows to check the validity of the Polygon API key.
 
 ```python
-def check_iex_key(show_output: bool = False) -> str:
-    """Check IEX Cloud key
+
+def check_polygon_key(show_output: bool = False) -> str:
+    """Check Polygon key
 
     Parameters
     ----------
-        show_output: bool
-            Display status string or not.
+    show_output: bool
+        Display status string or not. By default, False.
 
     Returns
     -------
-    status: str
-
+    str
+        Status of key set
     """
 
-    if cfg.API_IEX_TOKEN == "REPLACE_ME":  # nosec
-        logger.info("IEX Cloud key not defined")
+    if cfg.API_POLYGON_KEY == "REPLACE_ME":
+        logger.info("Polygon key not defined")
         status = KeyStatus.NOT_DEFINED
     else:
-        try:
-            pyEX.Client(api_token=cfg.API_IEX_TOKEN, version="v1").quote(symbol="AAPL")
-            logger.info("IEX Cloud key defined, test passed")
-            status = KeyStatus.DEFINED_TEST_PASSED
-        except Exception as _:  # noqa: F841
-            logger.warning("IEX Cloud key defined, test failed")
+        r = request(
+            "https://api.polygon.io/v2/aggs/ticker/AAPL/range/1/day/2020-06-01/2020-06-17"
+            f"?apiKey={cfg.API_POLYGON_KEY}"
+        )
+        if r.status_code in [403, 401]:
+            logger.warning("Polygon key defined, test failed")
             status = KeyStatus.DEFINED_TEST_FAILED
+        elif r.status_code == 200:
+            logger.info("Polygon key defined, test passed")
+            status = KeyStatus.DEFINED_TEST_PASSED
+        else:
+            logger.warning("Polygon key defined, test inconclusive")
+            status = KeyStatus.DEFINED_TEST_INCONCLUSIVE
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
-    return status
+    return str(status)
 ```
 
 Note that there are usually 3 states:
@@ -1071,13 +1078,13 @@ A function can then be created with the following format to allow the user to ch
 
 ```python
 @log_start_end(log=logger)
-def call_iex(self, other_args: List[str]):
-    """Process iex command"""
+def call_polygon(self, other_args: List[str]):
+    """Process polygon command"""
     parser = argparse.ArgumentParser(
         add_help=False,
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        prog="iex",
-        description="Set IEX Cloud API key.",
+        prog="polygon",
+        description="Set Polygon API key.",
     )
     parser.add_argument(
         "-k",
@@ -1087,13 +1094,14 @@ def call_iex(self, other_args: List[str]):
         help="key",
     )
     if not other_args:
-        console.print("For your API Key, visit: https://iexcloud.io\n")
+        console.print("For your API Key, visit: https://polygon.io\n")
         return
+
     if other_args and "-" not in other_args[0][0]:
         other_args.insert(0, "-k")
-    ns_parser = parse_simple_args(parser, other_args)
+    ns_parser = self.parse_simple_args(parser, other_args)
     if ns_parser:
-        self.status_dict["iex"] = keys_model.set_iex_key(
+        self.status_dict["polygon"] = keys_model.set_polygon_key(
             key=ns_parser.key, persist=True, show_output=True
         )
 ```
@@ -1148,7 +1156,6 @@ The convention is as follows:
         "candle": [],
         "load": [
             "YahooFinance",
-            "IEXCloud",
             "AlphaVantage",
             "Polygon",
             "EODHD"
@@ -1178,7 +1185,7 @@ The way to interpret this file is by following the path to a data source, e.g.
 
 - `stocks/search` relies on `FinanceDatabase`
 - `stocks/candle` does not rely on any data source. This means that it relies on data that has been loaded before.
-- `stocks/load` relies on `YahooFinance`, `IEXCloud`, `AlphaVantage`, `Polygon` or `EODHD`.
+- `stocks/load` relies on `YahooFinance`, `AlphaVantage`, `Polygon` or `EODHD`.
   - **The order is important as the first data source is the one utilized by default.**
 - `stoks/options/unu` relies on `FDScanner`.
 - `stocks/options/exp` relies on `YahooFinance` by default but `Tradier` and `Nasdaq` sources are allowed.
