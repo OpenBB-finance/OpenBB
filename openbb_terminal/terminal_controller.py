@@ -537,7 +537,7 @@ class TerminalController(BaseController):
             "The help menu shows the data sources supported by each command.\n\n"
             "For instance:\n"
             "[cmds]    load               load a specific stock ticker and additional info for analysis   [/cmds]"
-            "[src][YahooFinance, IEXCloud, AlphaVantage, Polygon, EODHD] [/src]\n\n"
+            "[src][YahooFinance, AlphaVantage, Polygon, EODHD] [/src]\n\n"
             "The user can go into the '[param]sources[/param]' menu and select their preferred default data source."
         )
         if input("") == "q":
