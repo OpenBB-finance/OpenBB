@@ -18,51 +18,83 @@ TEST_SESSION = {
 
 
 @pytest.mark.parametrize(
-    "email, password, save",
+    "email, password, token, save",
     [
         (
             "test_email",
             "test_pass",
+            "test_token",
             True,
         ),
     ],
 )
-def test_get_session_exception(email: str, password: str, save: bool):
+def test_get_session_exception(email: str, password: str, token: str, save: bool):
     path = "openbb_terminal.session.sdk_session."
     with patch(path + "session_model.create_session") as mock_create_session:
-        mock_create_session.return_value = {}
+        with patch(
+            path + "session_model.create_session_from_token"
+        ) as mock_create_session_from_token:
+            mock_create_session.return_value = {}
+            mock_create_session_from_token.return_value = {}
 
-        with pytest.raises(Exception):
-            sdk_session.get_session(email=email, password=password, save=save)
+            with pytest.raises(Exception):
+                sdk_session.get_session(
+                    email=email, password=password, token=token, save=save
+                )
 
-        mock_create_session.assert_called_once_with(email, password, save)
+            mock_create_session.assert_called_once_with(email, password, save)
+            mock_create_session_from_token.assert_called_once_with(token, save)
 
 
 @pytest.mark.parametrize(
-    "email, password, save",
+    "email, password, token, save",
     [
         (
             "test_email",
             "test_pass",
+            "test_token",
             True,
         ),
     ],
 )
-def test_get_session(email: str, password: str, save: bool):
+def test_get_session(email: str, password: str, token: str, save: bool):
     path = "openbb_terminal.session.sdk_session."
     with patch(path + "session_model.create_session") as mock_create_session:
         mock_create_session.return_value = TEST_SESSION
 
-        sdk_session.get_session(email=email, password=password, save=save)
+        sdk_session.get_session(email=email, password=password, token=token, save=save)
         mock_create_session.assert_called_once_with(email, password, save)
 
 
 @pytest.mark.parametrize(
-    "email, password, keep_session, has_session, status",
+    "email, password, token, save",
     [
         (
             "test_email",
             "test_pass",
+            "test_token",
+            True,
+        ),
+    ],
+)
+def test_get_session_from_token(email: str, password: str, token: str, save: bool):
+    path = "openbb_terminal.session.sdk_session."
+    with patch(
+        path + "session_model.create_session_from_token"
+    ) as mock_create_session_from_token:
+        mock_create_session_from_token.return_value = TEST_SESSION
+
+        sdk_session.get_session(email=email, password=password, token=token, save=save)
+        mock_create_session_from_token.assert_called_once_with(token, save)
+
+
+@pytest.mark.parametrize(
+    "email, password, token, keep_session, has_session, status",
+    [
+        (
+            "test_email",
+            "test_pass",
+            "test_token",
             True,
             False,
             LoginStatus.SUCCESS,
@@ -70,6 +102,7 @@ def test_get_session(email: str, password: str, save: bool):
         (
             "test_email",
             "test_pass",
+            "test_token",
             True,
             True,
             LoginStatus.SUCCESS,
@@ -77,6 +110,7 @@ def test_get_session(email: str, password: str, save: bool):
         (
             "test_email",
             "test_pass",
+            "test_token",
             True,
             False,
             LoginStatus.FAILED,
@@ -84,6 +118,7 @@ def test_get_session(email: str, password: str, save: bool):
         (
             "test_email",
             "test_pass",
+            "test_token",
             True,
             False,
             LoginStatus.NO_RESPONSE,
@@ -93,6 +128,7 @@ def test_get_session(email: str, password: str, save: bool):
 def test_login(
     email: str,
     password: str,
+    token: str,
     keep_session: bool,
     has_session: bool,
     status: LoginStatus,
@@ -114,16 +150,23 @@ def test_login(
         if status in [LoginStatus.FAILED, LoginStatus.NO_RESPONSE]:
             with pytest.raises(Exception):
                 sdk_session.login(
-                    email=email, password=password, keep_session=keep_session
+                    email=email,
+                    password=password,
+                    token=token,
+                    keep_session=keep_session,
                 )
         else:
-            sdk_session.login(email=email, password=password, keep_session=keep_session)
+            sdk_session.login(
+                email=email, password=password, token=token, keep_session=keep_session
+            )
 
         mock_local_get_session.assert_called_once()
         if has_session:
             mock_hub_get_session.assert_not_called()
         else:
-            mock_hub_get_session.assert_called_once_with(email, password, keep_session)
+            mock_hub_get_session.assert_called_once_with(
+                email, password, token, keep_session
+            )
         mock_login.assert_called_once_with(TEST_SESSION)
 
 
@@ -137,3 +180,21 @@ def test_logout():
             token=User.get_token(),
             guest=User.is_guest(),
         )
+
+
+@pytest.mark.record_stdout
+def test_whoami_guest():
+    sdk_session.whoami()
+
+
+@pytest.mark.record_stdout
+def test_whoami():
+    User.load_user_info(
+        {
+            "token_type": "MOCK_TOKEN_TYPE",
+            "access_token": "MOCK_ACCESS_TOKEN",
+            "uuid": "MOCK_UUID",
+        },
+        email="MOCK_EMAIL",
+    )
+    sdk_session.whoami()

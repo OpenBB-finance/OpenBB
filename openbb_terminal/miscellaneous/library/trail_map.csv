@@ -533,6 +533,7 @@ keys.santiment,openbb_terminal.keys_model.set_santiment_key,
 keys.tokenterminal,openbb_terminal.keys_model.set_tokenterminal_key,
 keys.shroom,openbb_terminal.keys_model.set_shroom_key,
 keys.stocksera,openbb_terminal.keys_model.set_stocksera_key,
+keys.openbb,openbb_terminal.keys_model.set_openbb_personal_access_token,
 futures.search,openbb_terminal.futures.yfinance_model.get_search_futures,
 futures.historical,openbb_terminal.futures.yfinance_model.get_historical_futures,openbb_terminal.futures.yfinance_view.display_historical
 futures.curve,openbb_terminal.futures.yfinance_model.get_curve_futures,openbb_terminal.futures.yfinance_view.display_curve
@@ -541,3 +542,4 @@ stocks.disc.filings,openbb_terminal.stocks.fundamental_analysis.fmp_model.get_fi
 stocks.fa.sec_fmp,openbb_terminal.stocks.fundamental_analysis.fmp_model.get_filings,openbb_terminal.stocks.fundamental_analysis.fmp_view.display_filings
 login,openbb_terminal.session.sdk_session.login,
 logout,openbb_terminal.session.sdk_session.logout,
+whoami,openbb_terminal.session.sdk_session.whoami,

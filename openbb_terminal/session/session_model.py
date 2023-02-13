@@ -43,6 +43,23 @@ def create_session(email: str, password: str, save: bool) -> dict:
     return session
 
 
+def create_session_from_token(token: str, save: bool) -> dict:
+    """Create a session from token.
+
+    Parameters
+    ----------
+    token : str
+        The token.
+    save : bool
+        Save the session.
+    """
+
+    session = Hub.get_session_from_token(token)
+    if session and save:
+        Local.save_session(session)
+    return session
+
+
 def login(session: dict) -> LoginStatus:
     """Login and load user info.
 
