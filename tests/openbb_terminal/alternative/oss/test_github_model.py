@@ -17,7 +17,7 @@ def vcr_config():
     }
 
 
-@pytest.mark.vcr
+@pytest.mark.vcr(record_mode="none")
 @pytest.mark.parametrize(
     "repo",
     [("openbb-finance/openbbterminal")],
