@@ -136,8 +136,8 @@ def load_stock_yf(
         start=start_date,
         end=end_date,
         progress=False,
-        auto_adjust = True,
-        actions = True,
+        auto_adjust=True,
+        actions=True,
         interval=int_,
         ignore_tz=True,
     ).dropna(axis=0)
