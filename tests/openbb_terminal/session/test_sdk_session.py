@@ -126,6 +126,7 @@ def test_get_session_from_token(email: str, password: str, token: str, save: boo
     ],
 )
 def test_login(
+    mocker,
     email: str,
     password: str,
     token: str,
@@ -134,40 +135,39 @@ def test_login(
     status: LoginStatus,
 ):
     path = "openbb_terminal.session.sdk_session."
-    with (
-        patch(path + "session_model.login") as mock_login,
-        patch(path + "Local.get_session") as mock_local_get_session,
-        patch(path + "get_session") as mock_hub_get_session,
-    ):
-        if has_session:
-            mock_local_get_session.return_value = TEST_SESSION
-        else:
-            mock_local_get_session.return_value = None
+    mock_login = mocker.patch(path + "session_model.login")
+    mock_local_get_session = mocker.patch(path + "Local.get_session")
+    mock_hub_get_session = mocker.patch(path + "get_session")
 
-        mock_hub_get_session.return_value = TEST_SESSION
-        mock_login.return_value = status
+    if has_session:
+        mock_local_get_session.return_value = TEST_SESSION
+    else:
+        mock_local_get_session.return_value = None
 
-        if status in [LoginStatus.FAILED, LoginStatus.NO_RESPONSE]:
-            with pytest.raises(Exception):
-                sdk_session.login(
-                    email=email,
-                    password=password,
-                    token=token,
-                    keep_session=keep_session,
-                )
-        else:
+    mock_hub_get_session.return_value = TEST_SESSION
+    mock_login.return_value = status
+
+    if status in [LoginStatus.FAILED, LoginStatus.NO_RESPONSE]:
+        with pytest.raises(Exception):
             sdk_session.login(
-                email=email, password=password, token=token, keep_session=keep_session
+                email=email,
+                password=password,
+                token=token,
+                keep_session=keep_session,
             )
+    else:
+        sdk_session.login(
+            email=email, password=password, token=token, keep_session=keep_session
+        )
 
-        mock_local_get_session.assert_called_once()
-        if has_session:
-            mock_hub_get_session.assert_not_called()
-        else:
-            mock_hub_get_session.assert_called_once_with(
-                email, password, token, keep_session
-            )
-        mock_login.assert_called_once_with(TEST_SESSION)
+    mock_local_get_session.assert_called_once()
+    if has_session:
+        mock_hub_get_session.assert_not_called()
+    else:
+        mock_hub_get_session.assert_called_once_with(
+            email, password, token, keep_session
+        )
+    mock_login.assert_called_once_with(TEST_SESSION)
 
 
 def test_logout():
