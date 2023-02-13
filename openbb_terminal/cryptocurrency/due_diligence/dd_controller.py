@@ -408,9 +408,8 @@ class DueDiligenceController(CryptoBaseController):
             default=(datetime.now() - timedelta(days=367)).strftime("%Y-%m-%d"),
         )
 
-        if other_args:
-            if not other_args[0][0] == "-":
-                other_args.insert(0, "-e")
+        if other_args and other_args[0][0] != "-":
+            other_args.insert(0, "-e")
 
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
@@ -483,7 +482,7 @@ class DueDiligenceController(CryptoBaseController):
             default=(datetime.now() - timedelta(days=367)).strftime("%Y-%m-%d"),
         )
 
-        if other_args and not other_args[0][0] == "-":
+        if other_args and other_args[0][0] != "-":
             other_args.insert(0, "-e")
 
         ns_parser = self.parse_known_args_and_warn(
@@ -615,15 +614,14 @@ class DueDiligenceController(CryptoBaseController):
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
-        if ns_parser:
-            if self.symbol:
-                pycoingecko_view.display_info(
-                    symbol=self.symbol,
-                    export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
-                )
+        if ns_parser and self.symbol:
+            pycoingecko_view.display_info(
+                symbol=self.symbol,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )
 
     @log_start_end(log=logger)
     def call_market(self, other_args):
@@ -665,15 +663,14 @@ class DueDiligenceController(CryptoBaseController):
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
-        if ns_parser:
-            if self.symbol:
-                pycoingecko_view.display_web(
-                    self.symbol,
-                    export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
-                )
+        if ns_parser and self.symbol:
+            pycoingecko_view.display_web(
+                self.symbol,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )
 
     @log_start_end(log=logger)
     def call_social(self, other_args):
@@ -881,7 +878,7 @@ class DueDiligenceController(CryptoBaseController):
             metavar="VS",
         )
 
-        if other_args and not other_args[0][0] == "-":
+        if other_args and other_args[0][0] != "-":
             other_args.insert(0, "-e")
 
         ns_parser = self.parse_known_args_and_warn(
@@ -929,7 +926,7 @@ class DueDiligenceController(CryptoBaseController):
             metavar="VS",
         )
 
-        if other_args and not other_args[0][0] == "-":
+        if other_args and other_args[0][0] != "-":
             other_args.insert(0, "-e")
 
         ns_parser = self.parse_known_args_and_warn(
@@ -953,10 +950,7 @@ class DueDiligenceController(CryptoBaseController):
         """Process balance command"""
         coin = self.symbol.upper()
         values = binance_model.show_available_pairs_for_given_symbol(coin)
-        if values:
-            quotes = values[1]
-        else:
-            quotes = None
+        quotes = values[1] if values else None
 
         parser = argparse.ArgumentParser(
             prog="balance",
@@ -1009,13 +1003,12 @@ class DueDiligenceController(CryptoBaseController):
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        if ns_parser:
-            if self.symbol:
-                coinpaprika_view.display_price_supply(
-                    self.symbol,
-                    ns_parser.vs,
-                    ns_parser.export,
-                )
+        if ns_parser and self.symbol:
+            coinpaprika_view.display_price_supply(
+                self.symbol,
+                ns_parser.vs,
+                ns_parser.export,
+            )
 
     @log_start_end(log=logger)
     def call_basic(self, other_args):
@@ -1031,12 +1024,11 @@ class DueDiligenceController(CryptoBaseController):
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        if ns_parser:
-            if self.symbol:
-                coinpaprika_view.display_basic(
-                    self.symbol,
-                    ns_parser.export,
-                )
+        if ns_parser and self.symbol:
+            coinpaprika_view.display_basic(
+                self.symbol,
+                ns_parser.export,
+            )
 
     @log_start_end(log=logger)
     def call_mkt(self, other_args):
@@ -1102,20 +1094,19 @@ class DueDiligenceController(CryptoBaseController):
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        if ns_parser:
-            if self.symbol:
-                coinpaprika_view.display_markets(
-                    from_symbol=self.symbol,
-                    to_symbol=ns_parser.vs,
-                    limit=ns_parser.limit,
-                    sortby=ns_parser.sortby,
-                    ascend=ns_parser.reverse,
-                    links=ns_parser.urls,
-                    export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
-                )
+        if ns_parser and self.symbol:
+            coinpaprika_view.display_markets(
+                from_symbol=self.symbol,
+                to_symbol=ns_parser.vs,
+                limit=ns_parser.limit,
+                sortby=ns_parser.sortby,
+                ascend=ns_parser.reverse,
+                links=ns_parser.urls,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )
 
     @log_start_end(log=logger)
     def call_ex(self, other_args):
@@ -1163,18 +1154,17 @@ class DueDiligenceController(CryptoBaseController):
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        if ns_parser:
-            if self.symbol:
-                coinpaprika_view.display_exchanges(
-                    symbol=self.symbol,
-                    limit=ns_parser.limit,
-                    sortby=ns_parser.sortby,
-                    ascend=ns_parser.reverse,
-                    export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
-                )
+        if ns_parser and self.symbol:
+            coinpaprika_view.display_exchanges(
+                symbol=self.symbol,
+                limit=ns_parser.limit,
+                sortby=ns_parser.sortby,
+                ascend=ns_parser.reverse,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )
 
     @log_start_end(log=logger)
     def call_events(self, other_args):
@@ -1232,19 +1222,18 @@ class DueDiligenceController(CryptoBaseController):
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        if ns_parser:
-            if self.symbol:
-                coinpaprika_view.display_events(
-                    symbol=self.symbol,
-                    limit=ns_parser.limit,
-                    sortby=ns_parser.sortby,
-                    ascend=ns_parser.reverse,
-                    links=ns_parser.urls,
-                    export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
-                )
+        if ns_parser and self.symbol:
+            coinpaprika_view.display_events(
+                symbol=self.symbol,
+                limit=ns_parser.limit,
+                sortby=ns_parser.sortby,
+                ascend=ns_parser.reverse,
+                links=ns_parser.urls,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )
 
     @log_start_end(log=logger)
     def call_twitter(self, other_args):
@@ -1293,18 +1282,17 @@ class DueDiligenceController(CryptoBaseController):
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        if ns_parser:
-            if self.symbol:
-                coinpaprika_view.display_twitter(
-                    symbol=self.symbol,
-                    limit=ns_parser.limit,
-                    sortby=ns_parser.sortby,
-                    ascend=ns_parser.reverse,
-                    export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
-                )
+        if ns_parser and self.symbol:
+            coinpaprika_view.display_twitter(
+                symbol=self.symbol,
+                limit=ns_parser.limit,
+                sortby=ns_parser.sortby,
+                ascend=ns_parser.reverse,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )
 
     @log_start_end(log=logger)
     def call_mcapdom(self, other_args: List[str]):
@@ -1513,15 +1501,14 @@ class DueDiligenceController(CryptoBaseController):
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
-        if ns_parser:
-            if self.symbol:
-                messari_view.display_tokenomics(
-                    symbol=self.symbol.upper(),
-                    export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
-                )
+        if ns_parser and self.symbol:
+            messari_view.display_tokenomics(
+                symbol=self.symbol.upper(),
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )
 
     @log_start_end(log=logger)
     def call_pi(self, other_args: List[str]):
@@ -1735,7 +1722,7 @@ class DueDiligenceController(CryptoBaseController):
             default="",
         )
 
-        if other_args and not other_args[0][0] == "-":
+        if other_args and other_args[0][0] != "-":
             other_args.insert(0, "-t")
 
         ns_parser = self.parse_known_args_and_warn(
@@ -1895,7 +1882,7 @@ class DueDiligenceController(CryptoBaseController):
             help="Choose project of interest",
         )
 
-        if other_args and not other_args[0][0] == "-":
+        if other_args and other_args[0][0] != "-":
             other_args.insert(0, "-p")
 
         ns_parser = self.parse_known_args_and_warn(
@@ -1929,18 +1916,17 @@ class DueDiligenceController(CryptoBaseController):
             help="Choose project of interest",
         )
 
-        if other_args and not other_args[0][0] == "-":
+        if other_args and other_args[0][0] != "-":
             other_args.insert(0, "-p")
 
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        if ns_parser:
-            if ns_parser.project in tokenterminal_model.get_project_ids():
-                tokenterminal_view.display_description(
-                    project=ns_parser.project,
-                    export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
-                )
+        if ns_parser and ns_parser.project in tokenterminal_model.get_project_ids():
+            tokenterminal_view.display_description(
+                project=ns_parser.project,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )

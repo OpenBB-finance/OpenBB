@@ -302,9 +302,8 @@ class OandaController(BaseController):
             type=str,
             help="The pending order ID to cancel.",
         )
-        if other_args:
-            if "-" not in other_args[0]:
-                other_args.insert(0, "-i")
+        if other_args and "-" not in other_args[0]:
+            other_args.insert(0, "-i")
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             orderID = ns_parser.orderID
@@ -372,9 +371,8 @@ class OandaController(BaseController):
             help="The number of units on the trade to close. If not set it "
             + "defaults to all units. ",
         )
-        if other_args:
-            if "-i" not in other_args[0] and "-h" not in other_args[0]:
-                other_args.insert(0, "-i")
+        if other_args and "-i" not in other_args[0] and "-h" not in other_args[0]:
+            other_args.insert(0, "-i")
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             orderID = ns_parser.orderID

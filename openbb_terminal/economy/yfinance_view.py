@@ -75,10 +75,7 @@ def show_indices(
         ax = external_axes[0]
 
     for index in indices:
-        if index.lower() in INDICES:
-            label = INDICES[index.lower()]["name"]
-        else:
-            label = index
+        label = INDICES[index.lower()]["name"] if index.lower() in INDICES else index
 
         if not indices_data[index].empty:
             if returns:

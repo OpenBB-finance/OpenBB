@@ -88,11 +88,10 @@ class OSSController(BaseController):
             export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,
             raw=True,
         )
-        if ns_parser:
-            if valid_repo(ns_parser.repo):
-                github_view.display_star_history(
-                    repo=ns_parser.repo, export=ns_parser.export
-                )
+        if ns_parser and valid_repo(ns_parser.repo):
+            github_view.display_star_history(
+                repo=ns_parser.repo, export=ns_parser.export
+            )
 
     @log_start_end(log=logger)
     def call_rs(self, other_args: List[str]):
@@ -116,15 +115,14 @@ class OSSController(BaseController):
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED, raw=True
         )
-        if ns_parser:
-            if valid_repo(ns_parser.repo):
-                github_view.display_repo_summary(
-                    repo=ns_parser.repo,
-                    export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
-                )
+        if ns_parser and valid_repo(ns_parser.repo):
+            github_view.display_repo_summary(
+                repo=ns_parser.repo,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )
 
     @log_start_end(log=logger)
     def call_rossidx(self, other_args: List[str]):

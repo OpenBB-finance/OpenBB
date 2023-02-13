@@ -279,10 +279,7 @@ class TerminalController(BaseController):
 
                 start = time.time()
                 console.print(f"\n[yellow]{task}[/yellow]\n")
-                if isinstance(session, PromptSession):
-                    an_input = session.prompt("GUESS / $ ")
-                else:
-                    an_input = ""
+                an_input = session.prompt("GUESS / $ ") if isinstance(session, PromptSession) else ""
                 time_dif = time.time() - start
 
                 # When there are multiple paths to same solution
@@ -679,10 +676,7 @@ class TerminalController(BaseController):
             return
 
         full_input = " ".join(other_args)
-        if " " in full_input:
-            other_args_processed = full_input.split(" ")
-        else:
-            other_args_processed = [full_input]
+        other_args_processed = full_input.split(" ") if " " in full_input else [full_input]
         self.queue = []
 
         path_routine = ""
@@ -733,103 +727,102 @@ class TerminalController(BaseController):
         if args and "-" not in args[0][0]:
             args.insert(0, "--file")
         ns_parser_exe = self.parse_simple_args(parser_exe, args)
-        if ns_parser_exe:
-            if ns_parser_exe.path or ns_parser_exe.example:
-                if ns_parser_exe.example:
-                    path = (
-                        MISCELLANEOUS_DIRECTORY / "routines" / "routine_example.openbb"
-                    )
-                    console.print(
-                        "[green]Executing an example, please type `about exe` "
-                        "to learn how to create your own script.[/green]\n"
-                    )
-                    time.sleep(3)
-                elif ns_parser_exe.path in self.ROUTINE_CHOICES["--file"]:
-                    path = self.ROUTINE_FILES[ns_parser_exe.path]
-                else:
-                    path = ns_parser_exe.path
+        if ns_parser_exe and (ns_parser_exe.path or ns_parser_exe.example):
+            if ns_parser_exe.example:
+                path = (
+                    MISCELLANEOUS_DIRECTORY / "routines" / "routine_example.openbb"
+                )
+                console.print(
+                    "[green]Executing an example, please type `about exe` "
+                    "to learn how to create your own script.[/green]\n"
+                )
+                time.sleep(3)
+            elif ns_parser_exe.path in self.ROUTINE_CHOICES["--file"]:
+                path = self.ROUTINE_FILES[ns_parser_exe.path]
+            else:
+                path = ns_parser_exe.path
 
-                with open(path) as fp:
-                    raw_lines = [
-                        x for x in fp if (not is_reset(x)) and ("#" not in x) and x
-                    ]
-                    raw_lines = [
-                        raw_line.strip("\n")
-                        for raw_line in raw_lines
-                        if raw_line.strip("\n")
-                    ]
+            with open(path) as fp:
+                raw_lines = [
+                    x for x in fp if (not is_reset(x)) and ("#" not in x) and x
+                ]
+                raw_lines = [
+                    raw_line.strip("\n")
+                    for raw_line in raw_lines
+                    if raw_line.strip("\n")
+                ]
 
-                    lines = list()
-                    for rawline in raw_lines:
-                        templine = rawline
+                lines = list()
+                for rawline in raw_lines:
+                    templine = rawline
 
-                        # Check if dynamic parameter exists in script
-                        if "$ARGV" in rawline:
-                            # Check if user has provided inputs through -i or --input
-                            if ns_parser_exe.routine_args:
-                                for i, arg in enumerate(ns_parser_exe.routine_args):
-                                    # Check what is the location of the ARGV to be replaced
-                                    if f"$ARGV[{i}]" in templine:
-                                        templine = templine.replace(f"$ARGV[{i}]", arg)
+                    # Check if dynamic parameter exists in script
+                    if "$ARGV" in rawline:
+                        # Check if user has provided inputs through -i or --input
+                        if ns_parser_exe.routine_args:
+                            for i, arg in enumerate(ns_parser_exe.routine_args):
+                                # Check what is the location of the ARGV to be replaced
+                                if f"$ARGV[{i}]" in templine:
+                                    templine = templine.replace(f"$ARGV[{i}]", arg)
 
-                                # Check if all ARGV have been removed, otherwise means that there are less inputs
-                                # when running the script than the script expects
-                                if "$ARGV" in templine:
-                                    console.print(
-                                        "[red]Not enough inputs were provided to fill in dynamic variables. "
-                                        "E.g. --input VAR1,VAR2,VAR3[/red]\n"
-                                    )
-                                    return
-
-                                lines.append(templine)
-                            # The script expects a parameter that the user has not provided
-                            else:
+                            # Check if all ARGV have been removed, otherwise means that there are less inputs
+                            # when running the script than the script expects
+                            if "$ARGV" in templine:
                                 console.print(
-                                    "[red]The script expects parameters, "
-                                    "run the script again with --input defined.[/red]\n"
+                                    "[red]Not enough inputs were provided to fill in dynamic variables. "
+                                    "E.g. --input VAR1,VAR2,VAR3[/red]\n"
                                 )
                                 return
-                        else:
+
                             lines.append(templine)
-
-                    simulate_argv = f"/{'/'.join([line.rstrip() for line in lines])}"
-                    file_cmds = simulate_argv.replace("//", "/home/").split()
-                    file_cmds = (
-                        insert_start_slash(file_cmds) if file_cmds else file_cmds
-                    )
-                    cmds_with_params = " ".join(file_cmds)
-                    self.queue = [
-                        val
-                        for val in parse_and_split_input(
-                            an_input=cmds_with_params, custom_filters=[]
-                        )
-                        if val
-                    ]
-
-                    if "export" in self.queue[0]:
-                        export_path = self.queue[0].split(" ")[1]
-                        # If the path selected does not start from the user root, give relative location from root
-                        if export_path[0] == "~":
-                            export_path = export_path.replace(
-                                "~", HOME_DIRECTORY.as_posix()
-                            )
-                        elif export_path[0] != "/":
-                            export_path = os.path.join(
-                                os.path.dirname(os.path.abspath(__file__)), export_path
-                            )
-
-                        # Check if the directory exists
-                        if os.path.isdir(export_path):
-                            console.print(
-                                f"Export data to be saved in the selected folder: '{export_path}'"
-                            )
+                        # The script expects a parameter that the user has not provided
                         else:
-                            os.makedirs(export_path)
                             console.print(
-                                f"[green]Folder '{export_path}' successfully created.[/green]"
+                                "[red]The script expects parameters, "
+                                "run the script again with --input defined.[/red]\n"
                             )
-                        obbff.EXPORT_FOLDER_PATH = export_path
-                        self.queue = self.queue[1:]
+                            return
+                    else:
+                        lines.append(templine)
+
+                simulate_argv = f"/{'/'.join([line.rstrip() for line in lines])}"
+                file_cmds = simulate_argv.replace("//", "/home/").split()
+                file_cmds = (
+                    insert_start_slash(file_cmds) if file_cmds else file_cmds
+                )
+                cmds_with_params = " ".join(file_cmds)
+                self.queue = [
+                    val
+                    for val in parse_and_split_input(
+                        an_input=cmds_with_params, custom_filters=[]
+                    )
+                    if val
+                ]
+
+                if "export" in self.queue[0]:
+                    export_path = self.queue[0].split(" ")[1]
+                    # If the path selected does not start from the user root, give relative location from root
+                    if export_path[0] == "~":
+                        export_path = export_path.replace(
+                            "~", HOME_DIRECTORY.as_posix()
+                        )
+                    elif export_path[0] != "/":
+                        export_path = os.path.join(
+                            os.path.dirname(os.path.abspath(__file__)), export_path
+                        )
+
+                    # Check if the directory exists
+                    if os.path.isdir(export_path):
+                        console.print(
+                            f"Export data to be saved in the selected folder: '{export_path}'"
+                        )
+                    else:
+                        os.makedirs(export_path)
+                        console.print(
+                            f"[green]Folder '{export_path}' successfully created.[/green]"
+                        )
+                    obbff.EXPORT_FOLDER_PATH = export_path
+                    self.queue = self.queue[1:]
 
 
 # pylint: disable=global-statement
@@ -1079,10 +1072,7 @@ def run_scripts(
         simulate_argv = f"/{'/'.join([line.rstrip() for line in lines])}"
         file_cmds = simulate_argv.replace("//", "/home/").split()
         file_cmds = insert_start_slash(file_cmds) if file_cmds else file_cmds
-        if export_folder:
-            file_cmds = [f"export {export_folder}{' '.join(file_cmds)}"]
-        else:
-            file_cmds = [" ".join(file_cmds)]
+        file_cmds = [f"export {export_folder}{' '.join(file_cmds)}"] if export_folder else [" ".join(file_cmds)]
 
         if not test_mode or verbose:
             terminal(file_cmds, test_mode=True)
@@ -1097,9 +1087,8 @@ def run_scripts(
                     first_cmd = file_cmds[0].split("/")[1]
                     with open(
                         whole_path / f"{stamp_str}_{first_cmd}_output.txt", "w"
-                    ) as output_file:
-                        with contextlib.redirect_stdout(output_file):
-                            terminal(file_cmds, test_mode=True)
+                    ) as output_file, contextlib.redirect_stdout(output_file):
+                        terminal(file_cmds, test_mode=True)
                 else:
                     terminal(file_cmds, test_mode=True)
 

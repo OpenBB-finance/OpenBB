@@ -115,7 +115,7 @@ def display_fund_info(name: str, country: str = "united states"):
     info = (
         investpy_model.get_fund_info(name, country)
         .reset_index(drop=False)
-        .applymap(lambda x: np.nan if not x else x)
+        .applymap(lambda x: x if x else np.nan)
         .dropna()
     )
     if info.empty:

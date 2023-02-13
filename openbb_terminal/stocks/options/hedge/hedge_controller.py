@@ -228,11 +228,7 @@ class HedgeController(BaseController):
                         "currency": currency,
                     }
 
-                    if opt_type == "Call":
-                        side = 1
-                    else:
-                        # Implies the option type is a put
-                        side = -1
+                    side = 1 if opt_type == "Call" else -1
 
                     date_obj = datetime.strptime(self.expiration, "%Y-%m-%d")
                     days = float((date_obj - datetime.now()).days + 1)

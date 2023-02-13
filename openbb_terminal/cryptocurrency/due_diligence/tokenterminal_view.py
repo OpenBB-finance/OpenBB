@@ -80,10 +80,7 @@ def display_fundamental_metric_from_project_over_time(
         else metric_over_time.values / 1e6,
     )
     ax.set_xlabel("Time")
-    if max(metric_over_time.values) < 10000:
-        labeltouse = "[USD]"
-    else:
-        labeltouse = "[1M USD]"
+    labeltouse = "[USD]" if max(metric_over_time.values) < 10000 else "[1M USD]"
     ax.set_ylabel(f"{metric.replace('_', ' ').capitalize()} {labeltouse}")
     ax.set_xlim([metric_over_time.index[0], metric_over_time.index[-1]])
 

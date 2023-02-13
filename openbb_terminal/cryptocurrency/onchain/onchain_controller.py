@@ -189,7 +189,7 @@ class OnchainController(BaseController):
             default=12,
         )
 
-        if other_args and not other_args[0][0] == "-":
+        if other_args and other_args[0][0] != "-":
             other_args.insert(0, "-u")
 
         ns_parser = self.parse_known_args_and_warn(
@@ -231,7 +231,7 @@ class OnchainController(BaseController):
             choices=shroom_model.DAPP_STATS_PLATFORM_CHOICES,
         )
 
-        if other_args and not other_args[0][0] == "-":
+        if other_args and other_args[0][0] != "-":
             other_args.insert(0, "-p")
 
         ns_parser = self.parse_known_args_and_warn(
@@ -413,7 +413,7 @@ class OnchainController(BaseController):
             default=(datetime.now()).strftime("%Y-%m-%d"),
         )
 
-        if other_args and not other_args[0][0] == "-":
+        if other_args and other_args[0][0] != "-":
             other_args.insert(0, "-c")
 
         ns_parser = self.parse_known_args_and_warn(
@@ -577,7 +577,7 @@ class OnchainController(BaseController):
             required="-h" not in other_args,
         )
 
-        if other_args and not other_args[0][0] == "-":
+        if other_args and other_args[0][0] != "-":
             other_args.insert(0, "--address")
 
         ns_parser = self.parse_known_args_and_warn(
@@ -1183,7 +1183,7 @@ class OnchainController(BaseController):
                 "Only works when raw data is displayed."
             ),
         )
-        if other_args and not other_args[0][0] == "-":
+        if other_args and other_args[0][0] != "-":
             other_args.insert(0, "-c")
 
         ns_parser = self.parse_known_args_and_warn(
@@ -1261,7 +1261,7 @@ class OnchainController(BaseController):
                 "Only works when raw data is displayed."
             ),
         )
-        if other_args and not other_args[0][0] == "-":
+        if other_args and other_args[0][0] != "-":
             other_args.insert(0, "-c")
 
         ns_parser = self.parse_known_args_and_warn(
@@ -1527,7 +1527,7 @@ class OnchainController(BaseController):
                 "Only works when raw data is displayed."
             ),
         )
-        if other_args and not other_args[0][0] == "-":
+        if other_args and other_args[0][0] != "-":
             other_args.insert(0, "-c")
 
         ns_parser = self.parse_known_args_and_warn(

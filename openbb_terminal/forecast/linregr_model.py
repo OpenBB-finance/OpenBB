@@ -80,10 +80,7 @@ def get_linear_regression_data(
         past_covariates, data, train_split, use_scalers
     )
 
-    if past_covariates is not None:
-        lags_past_covariates = lags
-    else:
-        lags_past_covariates = None
+    lags_past_covariates = lags if past_covariates is not None else None
 
     lin_reg_model = LinearRegressionModel(
         output_chunk_length=output_chunk_length,

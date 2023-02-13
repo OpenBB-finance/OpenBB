@@ -371,14 +371,8 @@ def get_yieldcurve(country: str = "United States") -> pd.DataFrame:
 
 def format_date(date: datetime.date) -> str:
     year = str(date.year)
-    if date.month < 10:
-        month = "0" + str(date.month)
-    else:
-        month = str(date.month)
-    if date.day < 10:
-        day = "0" + str(date.day)
-    else:
-        day = str(date.day)
+    month = "0" + str(date.month) if date.month < 10 else str(date.month)
+    day = "0" + str(date.day) if date.day < 10 else str(date.day)
 
     return day + "/" + month + "/" + year
 

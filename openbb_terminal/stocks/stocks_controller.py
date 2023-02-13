@@ -270,9 +270,8 @@ class StocksController(StockBaseController):
             dest="exchange",
         )
 
-        if not self.ticker:
-            if other_args and "-" not in other_args[0][0]:
-                other_args.insert(0, "-t")
+        if not self.ticker and other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-t")
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
         if ns_parser:
