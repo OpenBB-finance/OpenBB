@@ -1,3 +1,6 @@
+# pylint: disable=import-outside-toplevel
+
+
 def test_openbb(mocker):
     """Test the openbb function"""
     mock = mocker.patch("openbb_terminal.base_helpers.load_dotenv_and_reload_configs")
