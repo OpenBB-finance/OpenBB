@@ -210,6 +210,12 @@ def first_time_user() -> bool:
     bool
         Whether or not the user is a first time user
     """
+    if (
+        "OPENBB_PREVIOUS_USE" in os.environ
+        and os.environ["OPENBB_PREVIOUS_USE"] is True
+    ):
+        return False
+
     if USER_ENV_FILE.stat().st_size == 0:
         set_key("OPENBB_PREVIOUS_USE", "True", True)
         return True
