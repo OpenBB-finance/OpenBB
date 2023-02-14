@@ -5,7 +5,7 @@ import os
 import sys
 from typing import Any, Callable, List, Literal, Optional
 
-from dotenv import load_dotenv
+import dotenv
 from rich.console import Console
 
 from openbb_terminal.core.config.paths import (
@@ -98,22 +98,29 @@ def strtobool(val):
 
 
 def load_dotenv_and_reload_configs():
-    """Loads the dotenv files in the following order:
+    """
+    Loads the dotenv files
+
+    openbb_terminal modules are reloaded to refresh config files with new env,
+    otherwise they will use cache with old variables.
+    """
+    load_dotenv()
+    reload_openbb_config_modules()
+
+
+def load_dotenv():
+    """
+    Loads the dotenv files in the following order:
     1. Repository .env file
     2. Package .env file
     3. User .env file
 
     This allows the user to override the package settings with their own
     settings, and the package to override the repository settings.
-
-    openbb_terminal modules are reloaded to refresh config files with new env,
-    otherwise they will use cache with old variables.
     """
-    load_dotenv(REPOSITORY_ENV_FILE, override=True)
-    load_dotenv(PACKAGE_ENV_FILE, override=True)
-    load_dotenv(USER_ENV_FILE, override=True)
-
-    reload_openbb_config_modules()
+    dotenv.load_dotenv(REPOSITORY_ENV_FILE, override=True)
+    dotenv.load_dotenv(PACKAGE_ENV_FILE, override=True)
+    dotenv.load_dotenv(USER_ENV_FILE, override=True)
 
 
 def reload_openbb_config_modules():
