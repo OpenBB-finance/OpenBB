@@ -179,7 +179,7 @@ class Backend(PyWry):
         )
 
     def send_html(self, html_str: str = "", html_path: str = "", title: str = ""):
-        """Send html to backend.
+        """Send HTML to the backend to be displayed in a window.
 
         Parameters
         ----------
@@ -197,12 +197,12 @@ class Backend(PyWry):
         self.outgoing.append(message)
 
     def send_url(self, url: str, title: str = "", width: int = 1200, height: int = 800):
-        """Send url to backend.
+        """Send a URL to the backend to be displayed in a window.
 
         Parameters
         ----------
         url : str
-            URL to send to backend.
+            URL to display in the window.
         title : str, optional
             Title to display in the window, by default ""
         width : int, optional
@@ -244,6 +244,7 @@ class Backend(PyWry):
             super().start(debug)
 
     async def check_backend(self):
+        """We override to check if isatty"""
         if self.isatty:
             await super().check_backend()
 
