@@ -202,10 +202,9 @@ jobs:
           key: venv-${{ runner.os }}-v1-${{ hashFiles('**/poetry.lock') }}
 
       - name: Install dependencies
-        shell: bash -l {0}
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
         run: |
-          pip install -r requirements-full.txt
+          poetry install --no-interaction -E optimization
 
       - name: List installed packages
         shell: bash -l {0}
