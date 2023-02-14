@@ -48,4 +48,6 @@ jobs:
       run: poetry install --no-interaction -E optimization
 
     - name: Run code coverage tests
-      run: pytest --cov --cov-fail-under=90
+      run: |
+        source $VENV
+        pytest --cov --cov-fail-under=90
