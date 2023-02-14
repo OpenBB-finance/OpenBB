@@ -324,6 +324,11 @@ def pytest_addoption(parser: Parser):
         help="To run tests with the marker : @pytest.mark.optimization",
     )
     parser.addoption(
+        "--session",
+        action="store_true",
+        help="To run tests with the marker : @pytest.mark.session",
+    )
+    parser.addoption(
         "--rewrite-expected",
         action="store_true",
         help="To force `record_stdout` and `recorder` to rewrite all files.",

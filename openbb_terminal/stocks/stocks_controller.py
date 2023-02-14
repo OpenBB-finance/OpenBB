@@ -315,7 +315,7 @@ class StocksController(StockBaseController):
                 self.custom_load_wrapper([self.ticker])
 
             stocks_view.display_quote(
-                ns_parser.s_ticker,
+                self.ticker,
                 ns_parser.export,
                 " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None,
             )

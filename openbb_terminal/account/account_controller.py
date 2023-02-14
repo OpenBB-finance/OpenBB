@@ -21,6 +21,7 @@ from openbb_terminal.session import (
     hub_model as Hub,
     local_model as Local,
 )
+from openbb_terminal.session.session_model import logout
 from openbb_terminal.session.user import User
 
 logger = logging.getLogger(__name__)
@@ -30,6 +31,7 @@ class AccountController(BaseController):
     """Account Controller Class"""
 
     CHOICES_COMMANDS = [
+        "logout",
         "sync",
         "pull",
         "clear",
@@ -88,7 +90,28 @@ class AccountController(BaseController):
         mt.add_cmd("upload")
         mt.add_cmd("download")
         mt.add_cmd("delete")
+        mt.add_raw("\n")
+        mt.add_info("_authentication_")
+        mt.add_cmd("logout")
         console.print(text=mt.menu_text, menu="Account")
+
+    @log_start_end(log=logger)
+    def call_logout(self, other_args: List[str]) -> None:
+        """Process logout command."""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="logout",
+            description="Logout from current session.",
+        )
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            logout(
+                auth_header=User.get_auth_header(),
+                token=User.get_token(),
+                guest=User.is_guest(),
+                cls=True,
+            )
 
     @log_start_end(log=logger)
     def call_sync(self, other_args: List[str]):
