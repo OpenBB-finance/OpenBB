@@ -544,54 +544,6 @@ def test_set_finnhub_key(
     "args, persist, show_output, expected",
     [
         (
-            ["test_key"],
-            False,
-            True,
-            keys_model.KeyStatus.DEFINED_TEST_FAILED,
-        ),
-        (
-            ["test_key"],
-            False,
-            False,
-            keys_model.KeyStatus.DEFINED_TEST_FAILED,
-        ),
-        (
-            ["test_key"],
-            True,
-            True,
-            keys_model.KeyStatus.DEFINED_TEST_FAILED,
-        ),
-        (
-            ["REPLACE_ME"],
-            False,
-            True,
-            keys_model.KeyStatus.NOT_DEFINED,
-        ),
-    ],
-)
-def test_set_iex_key(args: List[str], persist: bool, show_output: bool, expected: str):
-    env_var_name_list = [
-        "OPENBB_API_IEX_TOKEN",
-    ]
-
-    set_naive_environment(env_var_name_list)
-
-    status = keys_model.set_iex_key(
-        key=args[0],
-        persist=persist,
-        show_output=show_output,
-    )
-
-    assert_keys_and_status(args, persist, expected, env_var_name_list, status)
-
-
-@patch.dict(os.environ, {})
-@pytest.mark.vcr
-@pytest.mark.record_stdout
-@pytest.mark.parametrize(
-    "args, persist, show_output, expected",
-    [
-        (
             ["test_id", "test_secret", "test_pass", "test_user", "test_agent"],
             False,
             True,
@@ -950,54 +902,6 @@ def test_set_binance_key(
     status = keys_model.set_binance_key(
         key=args[0],
         secret=args[1],
-        persist=persist,
-        show_output=show_output,
-    )
-
-    assert_keys_and_status(args, persist, expected, env_var_name_list, status)
-
-
-@patch.dict(os.environ, {})
-@pytest.mark.vcr
-@pytest.mark.record_stdout
-@pytest.mark.parametrize(
-    "args, persist, show_output, expected",
-    [
-        (
-            ["test_key"],
-            False,
-            True,
-            keys_model.KeyStatus.DEFINED_TEST_FAILED,
-        ),
-        (
-            ["test_key"],
-            False,
-            False,
-            keys_model.KeyStatus.DEFINED_TEST_FAILED,
-        ),
-        (
-            ["test_key"],
-            True,
-            True,
-            keys_model.KeyStatus.DEFINED_TEST_FAILED,
-        ),
-        (
-            ["REPLACE_ME"],
-            False,
-            True,
-            keys_model.KeyStatus.NOT_DEFINED,
-        ),
-    ],
-)
-def test_set_si_key(args: List[str], persist: bool, show_output: bool, expected: str):
-    env_var_name_list = [
-        "OPENBB_API_SENTIMENTINVESTOR_TOKEN",
-    ]
-
-    set_naive_environment(env_var_name_list)
-
-    status = keys_model.set_si_key(
-        key=args[0],
         persist=persist,
         show_output=show_output,
     )
@@ -1653,6 +1557,56 @@ def test_set_shroom_key(
     set_naive_environment(env_var_name_list)
 
     status = keys_model.set_shroom_key(
+        key=args[0],
+        persist=persist,
+        show_output=show_output,
+    )
+
+    assert_keys_and_status(args, persist, expected, env_var_name_list, status)
+
+
+@patch.dict(os.environ, {})
+@pytest.mark.vcr
+@pytest.mark.record_stdout
+@pytest.mark.parametrize(
+    "args, persist, show_output, expected",
+    [
+        (
+            ["test_key"],
+            False,
+            True,
+            keys_model.KeyStatus.DEFINED_TEST_FAILED,
+        ),
+        (
+            ["test_key"],
+            False,
+            False,
+            keys_model.KeyStatus.DEFINED_TEST_FAILED,
+        ),
+        (
+            ["test_key"],
+            True,
+            True,
+            keys_model.KeyStatus.DEFINED_TEST_FAILED,
+        ),
+        (
+            ["REPLACE_ME"],
+            False,
+            True,
+            keys_model.KeyStatus.NOT_DEFINED,
+        ),
+    ],
+)
+def test_set_openbb_key(
+    args: List[str], persist: bool, show_output: bool, expected: str
+):
+    env_var_name_list = [
+        "OPENBB_OPENBB_PERSONAL_ACCESS_TOKEN",
+    ]
+
+    set_naive_environment(env_var_name_list)
+
+    status = keys_model.set_openbb_personal_access_token(
         key=args[0],
         persist=persist,
         show_output=show_output,

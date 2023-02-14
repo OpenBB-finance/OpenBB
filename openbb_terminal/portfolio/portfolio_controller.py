@@ -179,7 +179,7 @@ class PortfolioController(BaseController):
         mt.add_cmd("bench")
         mt.add_raw("\n")
         mt.add_param("_loaded", self.portfolio_name)
-        mt.add_param("_riskfreerate", self.portfolio_name)
+        mt.add_param("_riskfreerate", f"{self.risk_free_rate}%")
         mt.add_param("_benchmark", self.benchmark_name)
         mt.add_raw("\n")
 
@@ -197,8 +197,6 @@ class PortfolioController(BaseController):
         mt.add_cmd("rbeta", self.portfolio_name and self.benchmark_name)
 
         mt.add_info("_metrics_")
-        mt.add_cmd("alloc", self.portfolio_name and self.benchmark_name)
-        mt.add_cmd("attrib", self.portfolio_name and self.benchmark_name)
         mt.add_cmd("summary", self.portfolio_name and self.benchmark_name)
         mt.add_cmd("alloc", self.portfolio_name and self.benchmark_name)
         mt.add_cmd("attrib", self.portfolio_name and self.benchmark_name)
@@ -210,51 +208,7 @@ class PortfolioController(BaseController):
         mt.add_cmd("es", self.portfolio_name and self.benchmark_name)
         mt.add_cmd("os", self.portfolio_name and self.benchmark_name)
 
-        port = bool(self.portfolio_name)
-        port_bench = bool(self.portfolio_name) and bool(self.benchmark_name)
-
-        help_text = f"""[menu]
->   bro              brokers holdings, \t\t supports: robinhood, ally, degiro, coinbase
->   po               portfolio optimization, \t optimize your portfolio weights efficiently[/menu]
-[cmds]
-    load             load transactions into the portfolio (use load --example for an example)
-    show             show existing transactions
-    bench            define the benchmark
-[/cmds]
-[param]Loaded transactions file:[/param] {self.portfolio_name}
-[param]Risk Free Rate:  [/param] {self.risk_free_rate:.2%}
-[param]Benchmark:[/param] {self.benchmark_name}
-
-[info]Graphs:[/info]{("[unvl]", "[cmds]")[port_bench]}
-    holdv            holdings of assets (absolute value)
-    holdp            portfolio holdings of assets (in percentage)
-    yret             yearly returns
-    mret             monthly returns
-    dret             daily returns
-    distr            distribution of daily returns
-    maxdd            maximum drawdown
-    rvol             rolling volatility
-    rsharpe          rolling sharpe
-    rsort            rolling sortino
-    rbeta            rolling beta
-{("[/unvl]", "[/cmds]")[port_bench]}
-[info]Metrics:[/info]{("[unvl]", "[cmds]")[port_bench]}
-    summary          all portfolio vs benchmark metrics for a certain period of choice
-    alloc            allocation on an asset, sector, countries or regions basis
-    attrib           display sector attribution of the portfolio compared to the S&P 500
-    metric           portfolio vs benchmark metric for all different periods
-    perf             performance of the portfolio versus benchmark{("[/unvl]", "[/cmds]")[port_bench]}
-
-[info]Risk Metrics:[/info]{("[unvl]", "[cmds]")[port]}
-    var              display value at risk
-    es               display expected shortfall
-    om               display omega ratio{("[/unvl]", "[/cmds]")[port]}
-        """
-        # TODO: Clean up the reports inputs
-        # TODO: Edit the allocation to allow the different asset classes
-        # [info]Reports:[/info]
-        #    ar          annual report for performance of a given portfolio
-        console.print(text=help_text, menu="Portfolio")
+        console.print(text=mt.menu_text, menu="Portfolio - Portfolio Optimization")
         self.update_choices()
 
     def custom_reset(self):
@@ -279,13 +233,49 @@ class PortfolioController(BaseController):
         if OPTIMIZATION_TOOLKIT_ENABLED:
             if self.portfolio is None:
                 tickers = []
+                categories = None
             else:
                 tickers = self.portfolio.tickers_list
+                transactions = self.portfolio.get_transactions()
+
+                categories = {
+                    "ASSET_CLASS": {},
+                    "SECTOR": {},
+                    "INDUSTRY": {},
+                    "COUNTRY": {},
+                    "CURRENT_INVESTED_AMOUNT": {},
+                    "CURRENCY": {},
+                }
+                for _, transaction in transactions.iterrows():
+                    if transaction["Ticker"] not in categories["ASSET_CLASS"]:
+                        categories["ASSET_CLASS"][transaction["Ticker"]] = transaction[
+                            "Type"
+                        ]
+                        categories["SECTOR"][transaction["Ticker"]] = transaction[
+                            "Sector"
+                        ]
+                        categories["INDUSTRY"][transaction["Ticker"]] = transaction[
+                            "Industry"
+                        ]
+                        categories["COUNTRY"][transaction["Ticker"]] = transaction[
+                            "Country"
+                        ]
+                        categories["CURRENT_INVESTED_AMOUNT"][
+                            transaction["Ticker"]
+                        ] = transactions[
+                            transactions["Ticker"] == transaction["Ticker"]
+                        ][
+                            "Investment"
+                        ].sum()
+                        categories["CURRENCY"][transaction["Ticker"]] = transaction[
+                            "Currency"
+                        ]
+
             self.queue = self.load_class(
                 po_controller.PortfolioOptimizationController,
                 tickers,
                 None,
-                None,
+                categories,
                 self.queue,
             )
         else:

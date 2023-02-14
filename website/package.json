@@ -16,21 +16,20 @@
     "typecheck": "tsc"
   },
   "dependencies": {
-    "@cmfcmf/docusaurus-search-local": "^0.11.0",
-    "@docusaurus/core": "2.2.0",
+    "@docusaurus/core": "^2.3.1",
     "@docusaurus/plugin-client-redirects": "^2.3.1",
-    "@docusaurus/plugin-content-docs": "^2.2.0",
-    "@docusaurus/preset-classic": "2.3.1",
+    "@docusaurus/plugin-content-docs": "^2.3.1",
+    "@docusaurus/preset-classic": "^2.3.1",
     "@mdx-js/react": "^1.6.22",
-    "@radix-ui/react-popover": "^1.0.2",
+    "@radix-ui/react-popover": "^1.0.3",
     "clsx": "^1.2.1",
     "prism-react-renderer": "^1.3.5",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "tailwindcss-radix": "^2.6.2"
+    "tailwindcss-radix": "^2.7.0"
   },
   "devDependencies": {
-    "@docusaurus/module-type-aliases": "2.2.0",
+    "@docusaurus/module-type-aliases": "^2.3.1",
     "@tailwindcss/typography": "^0.5.8",
     "@tsconfig/docusaurus": "^1.0.5",
     "autoprefixer": "^10.4.13",

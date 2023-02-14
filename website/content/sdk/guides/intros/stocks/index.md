@@ -15,10 +15,9 @@ The list below are the SDK functions within the Stocks module and a short descri
 | openbb.stocks.ba       | Sub-Module |                              Behavioural Analysis |
 | openbb.stocks.ca       | Sub-Module |                               Comparison Analysis |
 | openbb.stocks.candle   |  Function  |             OHLC + Volume + Moving Averages Chart |
-| openbb.stocks.dd       | Sub-Module |                                     Due Diligence |
 | openbb.stocks.disc     | Sub-Module |                                   Stock Discovery |
 | openbb.stocks.dps      | Sub-Module |                               Dark Pools & Shorts |
-| openbb.stocks.fa       | Sub-Module |                              Fundamental Analysis |
+| openbb.stocks.fa       | Sub-Module |         Fundamental Analysis & Future Estimations |
 | openbb.stocks.filings  |  Function  |                    Feed of new filings to the SEC |
 | openbb.stocks.gov      | Sub-Module | US Government, Lobbying & Representative Activity |
 | openbb.stocks.ins      | Sub-Module |           Corporate Insider Activity (SEC Form 4) |
@@ -57,7 +56,6 @@ from openbb_terminal.sdk import openbb
 The first step in a workflow might be to collect historical price data. The `load` function has the ability to request data from multiple sources. The choices for `source` are currently:
 
 - YahooFinance (default)
-- IEXCloud
 - AlphaVantage
 - Polygon
 - EODHD
@@ -305,7 +303,7 @@ screener_results.head(5)
 Get the links for SEC filings belonging to a company:
 
 ```python
-openbb.stocks.dd.sec(symbol = 'WMT')
+openbb.stocks.fa.sec(symbol = 'WMT')
 ```
 
 | Filing Date | Document Date | Type     | Category          | Amended | Link                                                                                 |

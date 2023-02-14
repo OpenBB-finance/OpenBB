@@ -26,7 +26,7 @@ Note that the Excel sheet requires the following columns:
 
 - **Date** - The date the trade occurred
 - **Name** - The name of the security
-- **Type** - The type of the security. Use Cash/Stock/Crypto/ETF as appropriate
+- **Type** - The type of the security. Use Stock/Crypto/ETF as appropriate
 - **Price** - The price the security was added or removed at, on a per-unit
   basis
 - **Quantity** - How much of the security in question was added or removed

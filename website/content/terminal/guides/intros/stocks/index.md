@@ -11,10 +11,9 @@ The Stocks menu is the high-level menu for the Public Equity asset class. It con
 |ba |Behavioural Analysis |Social Media, Sentiment, Trends |
 |bt |Strategy Backtester | Simple EMA, EMA Crossover & RSI Strategies |
 |ca |Comparison Analysis |Compare Historical Prices, Correlations, Financials |
-|dd |Due Diligence |Analyst Coverage, Price Targets, SEC Filings, Customers and Suppliers |
 |disc |Discovery |Upcoming Earnings and Dividends Calendar, Heatmaps, Trending News |
 |dps |Dark Pool and Short Data |Short Interest, Borrow Rates, Off-Exchange Short Volume |
-|fa |Fundamental Analysis |Financial Statements and Analysis |
+|fa |Fundamental Analysis |Financial Statements, Company Overviews, Analyst Coverage, Price Targets |
 |forecast |Forecasting and ML |Enter the Forecast Menu With the Loaded Ticker |
 |gov |Government |House and Senate Trading Disclosures, Lobbying Efforts, US Treasury Spending |
 |ins |Insider Trading |SEC Form 4 Disclosures & Screener |
@@ -72,7 +71,7 @@ The first step in many workflows will be to load a stock symbol with historical 
 
 The data source for each function is located on the right-side of the menu. In the image below, this is depicted by the text in [blue].
 
-![Stocks Menu](https://user-images.githubusercontent.com/85772166/212164398-76e461b6-84bc-415f-891b-be9c588dd02b.png "Stocks Menu")
+![Stocks Menu](https://user-images.githubusercontent.com/85772166/205688600-afaf4663-37f7-492e-aa9b-7d5263abe27b.png "Stocks Menu")
 
 Attaching the source argument to a command enables users to select their preferred source. The default sources can be changed from the [`/sources` menu](https://docs.openbb.co/terminal/guides/advanced/changing-sources). To select the `source` as `NewsApi`, use the block below.
 
@@ -124,13 +123,11 @@ optional arguments:
                         Path to load custom file. (default: None)
   -m, --monthly         Load monthly data (default: False)
   -w, --weekly          Load weekly data (default: False)
-  -r {ytd,1y,2y,5y,6m}, --iexrange {ytd,1y,2y,5y,6m}
-                        Range for using the iexcloud api. Longer range requires more tokens in account (default: ytd)
   --exchange            Show exchange information. (default: False)
   --performance         Show performance information. (default: False)
   -h, --help            show this help message (default: False)
   --export EXPORT       Export raw data into csv, json, xlsx (default: )
-  --source {YahooFinance,IEXCloud,AlphaVantage,Polygon,EODHD}
+  --source {YahooFinance,AlphaVantage,Polygon,EODHD}
                         Data source to select from (default: YahooFinance)
 ```
 
@@ -435,7 +432,7 @@ As an example, if you wish to obtain the ticker for Apple, you can do so with th
 ```
 (🦋) /stocks/ $ search -q apple
 
-                                              Companies found on term apple                                               
+                                              Companies found on term apple
 ┏━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┓
 ┃      ┃ Name                                ┃ Country       ┃ Sector             ┃ Industry                  ┃ Exchange ┃
 ┡━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━┩
@@ -460,7 +457,7 @@ With a variety of options to also discover country-specific and sector-specific 
 ```
 (🦋) /stocks/ $ search --sector technology --country united_kingdom -l 20
 
-                                  Companies found in United Kingdom within Technology                                   
+                                  Companies found in United Kingdom within Technology
 ┏━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┓
 ┃       ┃ Name                          ┃ Country        ┃ Sector     ┃ Industry                            ┃ Exchange ┃
 ┡━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━┩
