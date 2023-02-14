@@ -232,7 +232,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: ["ubuntu", "windows"]
+        os: ["ubuntu", "windows", "macos"]
         python-version: ["3.9"]
         dependencies: [""]
         include:
