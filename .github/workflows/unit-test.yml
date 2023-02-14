@@ -204,8 +204,7 @@ jobs:
       - name: Install dependencies
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
         run: |
-          source $VENV
-          pip install -r requirements-full.txt
+          poetry install --no-interaction -E optimization
 
       - name: List installed packages
         shell: bash -l {0}
