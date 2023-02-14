@@ -23,6 +23,8 @@ from openbb_terminal.stocks.options import chartexchange_model
 
 logger = logging.getLogger(__name__)
 
+# pylint: disable=too-many-arguments
+
 
 @log_start_end(log=logger)
 def plot_chart(
@@ -62,7 +64,9 @@ def display_raw(
     call: bool = True,
     price: float = 90,
     limit: int = 10,
+    chain_id: str = None,
     export: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Return raw stock data[chartexchange]
@@ -79,13 +83,17 @@ def display_raw(
         The strike of the expiration
     limit : int
         Number of rows to show
+    chain_id: str
+        Optional chain id instead of ticker and expiry and strike
     export : str
         Export data as CSV, JSON, XLSX
     external_axes: Optional[List[plt.Axes]]
         External axes (1 axis is expected in the list), by default None
     """
 
-    df = chartexchange_model.get_option_history(symbol, expiry, call, price)[::-1]
+    df = chartexchange_model.get_option_history(symbol, expiry, call, price, chain_id)[
+        ::-1
+    ]
     if df.empty:
         console.print("[red]No data found[/red]\n")
         return
@@ -123,6 +131,7 @@ def display_raw(
         os.path.dirname(os.path.abspath(__file__)),
         "hist",
         df,
+        sheet_name,
     )
     print_rich_table(
         df.head(limit),

@@ -5,17 +5,14 @@ import argparse
 import logging
 from typing import List
 
-from openbb_terminal.custom_prompt_toolkit import NestedCompleter
-
 from openbb_terminal import feature_flags as obbff
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.etf.discovery import wsj_view
-from openbb_terminal.helper_funcs import (
-    EXPORT_ONLY_RAW_DATA_ALLOWED,
-)
+from openbb_terminal.helper_funcs import EXPORT_ONLY_RAW_DATA_ALLOWED
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console, MenuText
+from openbb_terminal.rich_config import MenuText, console
 
 logger = logging.getLogger(__name__)
 
@@ -62,7 +59,14 @@ class DiscoveryController(BaseController):
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED, limit=10
         )
         if ns_parser:
-            wsj_view.show_top_mover("gainers", ns_parser.limit, ns_parser.export)
+            wsj_view.show_top_mover(
+                "gainers",
+                ns_parser.limit,
+                ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )
 
     @log_start_end(log=logger)
     def call_decliners(self, other_args):
@@ -81,7 +85,14 @@ class DiscoveryController(BaseController):
             limit=10,
         )
         if ns_parser:
-            wsj_view.show_top_mover("decliners", ns_parser.limit, ns_parser.export)
+            wsj_view.show_top_mover(
+                "decliners",
+                ns_parser.limit,
+                ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )
 
     @log_start_end(log=logger)
     def call_active(self, other_args):
@@ -100,4 +111,11 @@ class DiscoveryController(BaseController):
             limit=10,
         )
         if ns_parser:
-            wsj_view.show_top_mover("active", ns_parser.limit, ns_parser.export)
+            wsj_view.show_top_mover(
+                "active",
+                ns_parser.limit,
+                ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )

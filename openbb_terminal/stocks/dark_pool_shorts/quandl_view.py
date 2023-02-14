@@ -9,16 +9,15 @@ import matplotlib.ticker
 import pandas as pd
 from matplotlib import pyplot as plt
 
-from openbb_terminal.decorators import check_api_key
-from openbb_terminal.config_terminal import theme
-from openbb_terminal.decorators import log_start_end
 from openbb_terminal.config_plot import PLOT_DPI
+from openbb_terminal.config_terminal import theme
+from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
-    lambda_long_number_format,
-    print_rich_table,
-    plot_autoscale,
     is_valid_axes_count,
+    lambda_long_number_format,
+    plot_autoscale,
+    print_rich_table,
 )
 from openbb_terminal.stocks.dark_pool_shorts import quandl_model
 
@@ -100,6 +99,7 @@ def short_interest(
     limit: int = 10,
     raw: bool = False,
     export: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plot the short interest of a stock. This corresponds to the
@@ -162,4 +162,5 @@ def short_interest(
         os.path.dirname(os.path.abspath(__file__)),
         "psi(quandl)",
         df_short_interest,
+        sheet_name,
     )

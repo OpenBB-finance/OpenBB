@@ -1,5 +1,7 @@
 ---
 title: Basics
+description: The OpenBB Terminal is a modern investment research platform for everyone. It is a desktop application that allows you to access all the data and tools you need to make better investment decisions.
+keywords: [basics, installation, commands, menus, your own data, introduction, openbb terminal, explanation, basic usage, usage, how to]
 ---
 
 The OpenBB Terminal is based off the <a href="https://en.wikipedia.org/wiki/Command-line_interface" target="_blank" rel="noreferrer noopener">Command Line Interface (CLI)</a>
@@ -18,7 +20,6 @@ Throughout the entire terminal, the same set of colors are used which all share 
 - <b><span style={{color:"#FCED00"}}>Yellow</span></b>: represents descriptions of a parameter or variable.
 - <b>White</b>: represents text, usually in combination with a description that is in Yellow.
 
-
 ### Explanation of Menus
 
 Menus, depicted in <b><span style={{color:"#005CA9"}}>Dark Blue</span></b>, take you to a new section of the terminal referred to as a menu. For example, if you wish to view information about stocks, you can do so by typing `stocks` and pressing `ENTER` (⏎). This opens a new menu as depicted below.
@@ -27,7 +28,7 @@ Menus, depicted in <b><span style={{color:"#005CA9"}}>Dark Blue</span></b>, take
 
 Depending on the menu you are in, you are presented with a new set of commands and menus you can select. There are interactions in place between each menu. For example, when selecting a company within the `stocks` menu, the terminal will remember your selection when you visit the `fa` or `options` menu. See [Introduction to Stocks](/terminal/guides/intros/stocks).
 
-:::note **Pro tip:** you can quickly jump between menus by using a forward slash (`/`). For example, if I want to access the options menu, You can type `/stocks/options` to instantly arrive at this menu. You can do this from any location within theOpenBB Terminal!
+:::note **Pro tip:** you can quickly jump between menus by using a forward slash (`/`). For example, if I want to access the options menu, You can type `/stocks/options` to instantly arrive at this menu. You can do this from any location within the OpenBB Terminal!
 :::
 
 ### Explanation of Commands
@@ -49,7 +50,7 @@ Continuing with the example mentioned at `quit`, revisit the `stocks` menu and l
 ```
 2022 May 19, 05:27 (🦋) /stocks/ $ load -h
 usage: load [-t TICKER] [-s START] [-e END] [-i {1,5,15,30,60}] [-p] [-f FILEPATH] [-m] [-w] [-r {ytd,1y,2y,5y,6m}] [--exchange] [--performance] [-h] [--export EXPORT]
-            [--source {YahooFinance,IEXCloud,AlphaVantage,Polygon,EODHD}]
+            [--source {YahooFinance,AlphaVantage,Polygon,EODHD}]
 
 Load stock ticker to perform analysis on. When the data source is yf, an Indian ticker can be loaded by using '.NS' at the end, e.g. 'SBIN.NS'.
 
@@ -66,13 +67,11 @@ optional arguments:
                         Path to load custom file. (default: None)
   -m, --monthly         Load monthly data (default: False)
   -w, --weekly          Load weekly data (default: False)
-  -r {ytd,1y,2y,5y,6m}, --iexrange {ytd,1y,2y,5y,6m}
-                        Range for using the iexcloud api. Longer range requires more tokens in account (default: ytd)
   --exchange            Show exchange information. (default: False)
   --performance         Show performance information. (default: False)
   -h, --help            show this help message (default: False)
   --export EXPORT       Export raw data into csv, json, xlsx (default: )
-  --source {YahooFinance,IEXCloud,AlphaVantage,Polygon,EODHD}
+  --source {YahooFinance,AlphaVantage,Polygon,EODHD}
                         Data source to select from (default: YahooFinance)
 
 For more information and examples, use 'about load' to access the related guide.
@@ -109,11 +108,108 @@ We can check that this period has changed by looking into the <a href="https://w
 
 As mentioned in the <a href="#explanation-of-menus">Explanation of Menus</a>, some information also transfers over to other menus and this includes the loaded market data from <a href="/terminal/reference/stocks/load" target="_blank" rel="noreferrer noopener">load</a>. So, if you would visit the `ta` menu (which stands for <a href="https://www.investopedia.com/terms/t/technicalanalysis.asp" target="_blank" rel="noreferrer noopener">Technical Analysis</a>) you will see that, by running any command, the selected period above is depicted again. Return to the Stocks menu again by using `q` and use it again to return to the home screen which can be shown with `?`.
 
+### Expanding the Terminal with API keys
+The OpenBB Terminal is built on a lot of different data sources. The example above collects data from Yahoo Finance. This could be undesirable and therefore we allow for a variety of different data sources. Think of Polygon, IEX Cloud, Alpha Vantage and Binance to name a few. Some of these sources require you to set an API Key to connect with their data.
 
-### Defining your own source of data
+:::note Setting API Keys
+For an elaborate explanation of defining API keys to greatly extend the capabilities of the OpenBB Terminal, please have a look [**here**](/terminal/guides/advanced/api-keys).
+:::
 
-The OpenBB Terminal is built on a lot of different data sources. The example above collects data from Yahoo Finance. This could be undesirable and therefore we allow for a variety of different data sources. Think of Polygon, IEX Cloud, Alpha Vantage and Binance to name a few.
+This becomes apparent when you receive a message like the following:
 
-Some of these sources require you to set an API Key to connect with their data. You can find more information about setting these keys in the OpenBB Terminal [here](/terminal/guides/advanced/api-keys).
+```
+(🦋) /stocks/fa/ $ rot
 
-It is also possible to use your own datastreams. It could be that you have a dataset in Microsoft Excel or similar that you would like to import for usage within any of our functionalities. In that case, have a look [here](/terminal/guides/advanced/data).
+API_FINNHUB_KEY not defined. Set API Keys in ~/.openbb_terminal/.env or under keys menu.
+```
+
+We ensure that any source has a (usually extensive) free tier before we include the source. For example, you will be able to obtain 30+ years of fundamental data and query extensive economic databases by collecting just a few of the API keys.
+
+The [keys menu](/terminal/guides/advanced/api-keys) serves the purpose of providing you to set API keys so that this type of functionality becomes available. For example, in the case of `rot` you will see that the source is "FinnHub".
+
+```
+(🦋) /stocks/fa/ $ ?
+
+╭───────────────────────────────────────────────────────────────────────────────── Stocks - Fundamental Analysis ─────────────────────────────────────────────────────────────────────────────────╮
+│                                                                                                                                                                                                 │
+│     load               load a specific stock ticker for analysis                       [YahooFinance, AlphaVantage, Polygon, EODHD]                                                   │
+│                                                                                                                                                                                                 │
+│ Ticker: TSLA                                                                                                                                                                                    │
+│                                                                                                                                                                                                 │
+│ Company Overview:                                                                                                                                                                               │
+│     enterprise         company enterprise value                                        [FinancialModelingPrep, YahooFinance]                                                                    │
+│     overview           financial overview of the company                               [Finviz, FinancialModelingPrep, AlphaVantage, YahooFinance]                                              │
+│     divs               show historical dividends for company                           [YahooFinance]                                                                                           │
+│     splits             stock split and reverse split events since IPO                  [YahooFinance]                                                                                           │
+│     rating             analyst prices and ratings over time of the company             [Finviz, FinancialModelingPrep]                                                                          │
+│     rot                number of analyst ratings over time on a monthly basis          [Finnhub]                                                                                                │
+│     score              value investing scores for any time period                      [FinancialModelingPrep]                                                                                  │
+│     warnings           company warnings according to Sean Seah book                    [MarketWatch]                                                                                            │
+│     sust               sustainability values (environment, social and governance)      [YahooFinance]
+```
+
+Therefore, you need to acquire an API key from FinnHub through the website and enter the key within the [keys menu](/terminal/guides/advanced/api-keys).
+
+### Importing and exporting data
+
+Any type of data that you see within the OpenBB Terminal, you will be able to export to a variety of files like xlsx, csv and json.
+
+:::note The OpenBBUserData Folder
+All of the below examples are stored in the OpenBBUserData folder. This also applies to when you wish to import files, as is for example required within the [Portfolio menu](/terminal/guides/intros/portfolio). To find more information about this folder please have a look [**here**](/terminal/guides/advanced/data).
+:::
+
+For example, if you wish to download market data you can do so from the stocks menu with the following:
+
+```console
+/stocks/load AAPL -s 2010-01-01 --export xlsx
+```
+
+This results in the following:
+
+![Export Example](https://user-images.githubusercontent.com/46355364/214817681-fd5324c3-003c-45eb-adf4-96d5b41a3c02.png)
+
+We also allow you to define a file name, for example for the same stock tickers, we can also add in the filename. This time, we export to `csv`.
+
+```console
+/stocks/load AAPL -s 2010-01-01 --export apple.csv
+```
+
+Which results in the following:
+
+![Filename Example](https://user-images.githubusercontent.com/46355364/214818131-597b3bd0-9c66-43f1-bf0e-2c0a703e2645.png)
+
+Lastly, when you select the `xlsx` option, you can also specify the sheet name with `--sheet-name` which allows multiple datasets to be send to the same Excel file. Using the same stock ticker, we can define the following. First, get market data from the `stocks` menu:
+
+```console
+/stocks/load AAPL -s 2010-01-01 --export apple.xlsx --sheet-name Market Data
+```
+
+Then enter the `fa` (Fundamental Analysis) menu and type:
+
+**Income Statement:**
+
+```console
+income --source FinancialModelingPrep -l 10 --export apple.xlsx --sheet-name Income Statement
+```
+
+**Balance Sheet:**
+```console
+balance --source FinancialModelingPrep -l 10 --export apple.xlsx --sheet-name Balance Sheet
+```
+
+**Cash Flow Statement:**
+
+```console
+cash --source FinancialModelingPrep -l 10 --export apple.xlsx --sheet-name Cash Flow Statement
+```
+
+This generates a file for Apple with market data from 2010-01-01 until now and income, balance and cash flow statements over the last 10 years as seen in the image below.
+
+![Sheet Name Example](https://user-images.githubusercontent.com/46355364/214824561-6eaf3a88-746a-4abc-91e1-420c9036c00d.png)
+
+Next to that, we also allow exporting to images, this can be PNG, JPG, PDF and SVG. For example, using our `portfolio` menu we can export the charts to any type of format which again can be found within the `OpenBBUserData` folder.
+
+![image](https://user-images.githubusercontent.com/46355364/214819518-cec40468-9019-440c-8bfe-7bcabc207578.png)
+
+
+It is also possible to use your own datastreams. It could be that you have a dataset in Microsoft Excel or similar that you would like to import for usage within any of our functionalities. Often functionalities will have a `--file` argument which refers to your own file.

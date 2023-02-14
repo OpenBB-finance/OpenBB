@@ -2,14 +2,13 @@
 __docformat__ = "numpy"
 
 # pylint: disable=C0301,E1137
-from typing import Optional
 import logging
+from typing import Optional
 
 import pandas as pd
-import requests
 
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import get_user_agent
+from openbb_terminal.helper_funcs import get_user_agent, request
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -61,7 +60,7 @@ def _make_request(url: str, verbose: bool = True) -> Optional[dict]:
         "User-Agent": get_user_agent(),
         "referer": "https://dappradar.com/",
     }
-    response = requests.get(url, headers=headers)
+    response = request(url, headers=headers)
     if not 200 <= response.status_code < 300:
         if verbose:
             console.print(f"[red]dappradar api exception: {response.text}[/red]")

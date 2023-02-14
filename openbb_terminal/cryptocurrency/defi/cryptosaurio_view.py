@@ -4,19 +4,20 @@ __docformat__ = "numpy"
 import logging
 import os
 from typing import List, Optional
+
 import matplotlib.pyplot as plt
+
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.cryptocurrency.defi import cryptosaurio_model
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
+    is_valid_axes_count,
     plot_autoscale,
     print_rich_table,
-    is_valid_axes_count,
 )
 from openbb_terminal.rich_config import console
-
 
 logger = logging.getLogger(__name__)
 
@@ -25,6 +26,7 @@ logger = logging.getLogger(__name__)
 def display_anchor_data(
     address: str = "",
     export: str = "",
+    sheet_name: str = None,
     show_transactions: bool = False,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
@@ -78,4 +80,5 @@ def display_anchor_data(
         os.path.dirname(os.path.abspath(__file__)),
         "anchor",
         df,
+        sheet_name,
     )

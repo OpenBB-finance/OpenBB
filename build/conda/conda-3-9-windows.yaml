@@ -1,0 +1,8 @@
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.9
+  - poetry==1.3.2
+  - setuptools=64.0.2
+  - pip

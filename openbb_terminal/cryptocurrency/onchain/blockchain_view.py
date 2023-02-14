@@ -9,17 +9,17 @@ from typing import List, Optional
 import matplotlib.pyplot as plt
 from matplotlib import ticker
 
-from openbb_terminal.config_terminal import theme
 from openbb_terminal.config_plot import PLOT_DPI
+from openbb_terminal.config_terminal import theme
 from openbb_terminal.cryptocurrency.onchain import blockchain_model
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
+    is_valid_axes_count,
     lambda_long_number_format,
     plot_autoscale,
-    is_valid_axes_count,
-    str_date_to_timestamp,
     print_rich_table,
+    str_date_to_timestamp,
 )
 
 logger = logging.getLogger(__name__)
@@ -30,6 +30,7 @@ def display_btc_circulating_supply(
     start_date: str = "2010-01-01",
     end_date: Optional[str] = None,
     export: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Returns BTC circulating supply [Source: https://api.blockchain.info/]
@@ -82,6 +83,7 @@ def display_btc_circulating_supply(
         os.path.dirname(os.path.abspath(__file__)),
         "btccp",
         df,
+        sheet_name,
     )
 
 
@@ -90,6 +92,7 @@ def display_btc_confirmed_transactions(
     start_date: str = "2010-01-01",
     end_date: Optional[str] = None,
     export: str = "",
+    sheet_name: str = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Returns BTC confirmed transactions [Source: https://api.blockchain.info/]
@@ -144,6 +147,7 @@ def display_btc_confirmed_transactions(
         os.path.dirname(os.path.abspath(__file__)),
         "btcct",
         df,
+        sheet_name,
     )
 
 
@@ -151,6 +155,7 @@ def display_btc_confirmed_transactions(
 def display_btc_single_block(
     blockhash: str,
     export: str = "",
+    sheet_name: str = None,
 ) -> None:
     """Returns BTC block data. [Source: https://api.blockchain.info/]
     Parameters
@@ -199,4 +204,5 @@ def display_btc_single_block(
             os.path.dirname(os.path.abspath(__file__)),
             "btcblockdata",
             df_data,
+            sheet_name,
         )

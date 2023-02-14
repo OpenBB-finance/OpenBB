@@ -1,36 +1,34 @@
-# pylint: disable=too-many-arguments
-import os
+# pylint: disable=too-many-arguments,too-many-lines
 import argparse
-from typing import Any, Union, Optional, List, Dict, Tuple
-from datetime import timedelta, datetime, time
 import logging
-import pandas as pd
-import numpy as np
+import os
+from datetime import datetime, time, timedelta
+from typing import Any, Dict, List, Optional, Tuple, Union
+
 import matplotlib.pyplot as plt
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler, MinMaxScaler, MaxAbsScaler, Normalizer
-from sklearn.metrics import (
-    mean_absolute_error,
-    r2_score,
-    mean_squared_error,
-)
-from darts.dataprocessing.transformers import MissingValuesFiller, Scaler
-from darts.utils.statistics import plot_residuals_analysis
+import numpy as np
+import pandas as pd
 from darts import TimeSeries
-from darts.metrics import mape
-from darts.models.forecasting.torch_forecasting_model import GlobalForecastingModel
+from darts.dataprocessing.transformers import MissingValuesFiller, Scaler
 from darts.explainability.shap_explainer import ShapExplainer
+from darts.metrics import mape, mse, rmse, smape
+from darts.models.forecasting.torch_forecasting_model import GlobalForecastingModel
+from darts.utils.statistics import plot_residuals_analysis
 from pytorch_lightning.callbacks.early_stopping import EarlyStopping
-from openbb_terminal.rich_config import console
+from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import MaxAbsScaler, MinMaxScaler, Normalizer, StandardScaler
+
+from openbb_terminal import rich_config
+from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.helper_funcs import (
     export_data,
+    is_valid_axes_count,
     plot_autoscale,
     print_rich_table,
-    is_valid_axes_count,
 )
-from openbb_terminal.config_plot import PLOT_DPI
-from openbb_terminal import rich_config
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 logging.getLogger("pytorch_lightning").setLevel(logging.CRITICAL)  # No needed for now
@@ -96,7 +94,6 @@ def plot_data_predictions(
         label="Real data",
     )
     for i in range(len(y_valid) - 1):
-
         if scaler:
             y_pred = scaler.inverse_transform(preds[i].reshape(-1, 1)).ravel()
             y_act = scaler.inverse_transform(y_valid[i].reshape(-1, 1)).ravel()
@@ -403,7 +400,6 @@ def past_covs(
     is_scaler: bool = True,
 ):
     if past_covariates is not None:
-
         target_covariates_names = past_covariates.split(",")
 
         # create first covariate to then stack
@@ -475,11 +471,13 @@ def plot_forecast(
     precision: Optional[int] = None,
     probabilistic: bool = False,
     export: str = "",
+    sheet_name: str = None,
     low_quantile: float = None,
     high_quantile: float = None,
     forecast_only: bool = False,
     naive: bool = False,
     export_pred_raw: bool = False,
+    metric: str = "mape",
     external_axes: Optional[List[plt.axes]] = None,
 ):
     quant_kwargs = {}
@@ -506,7 +504,16 @@ def plot_forecast(
     if naive:
         # show naive forecast shift timeseries by 1
         naive_fcast = naive_fcast.drop_before(historical_fcast.start_time())
-        naive_precision = mape(ticker_series, naive_fcast)
+
+        # calculate precision based on metric
+        if metric == "rsme":
+            naive_precision = rmse(ticker_series, naive_fcast)
+        elif metric == "mse":
+            naive_precision = mse(ticker_series, naive_fcast)
+        elif metric == "mape":
+            naive_precision = mape(ticker_series, naive_fcast)
+        elif metric == "smape":
+            naive_precision = smape(ticker_series, naive_fcast)
 
         naive_fcast.plot(
             label=f"Naive+1: {naive_precision:.2f}%",
@@ -519,7 +526,7 @@ def plot_forecast(
         pred_label += " w/ past covs"
     predicted_values.plot(label=pred_label, **quant_kwargs, color="#00AAFF")
     ax.set_title(
-        f"{name} for <{ticker_name}> for next [{n_predict}] days (MAPE={precision:.2f}%)"
+        f"{name} for <{ticker_name}> for next [{n_predict}] days ({metric.upper()}={precision:.2f}%)"
     )
     ax.set_ylabel(target_col)
     ax.set_xlabel("Date")
@@ -538,7 +545,12 @@ def plot_forecast(
     print_pretty_prediction(numeric_forecast, data[target_col].iloc[-1])
 
     # user wants to export plot
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), name)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        name,
+        sheet_name,
+    )
 
     # user wants to export only raw predictions
     if export_pred_raw:
@@ -561,12 +573,14 @@ def plot_forecast(
             os.path.dirname(os.path.abspath(__file__)),
             name + "_predictions",
             numeric_forecast,
+            sheet_name,
         )
 
 
 def plot_explainability(
     model: type[GlobalForecastingModel],
     explainability_raw=False,
+    sheet_name: str = None,
     external_axes: Optional[List[plt.axes]] = None,
 ):
     """
@@ -601,6 +615,7 @@ def plot_explainability(
             os.path.dirname(os.path.abspath(__file__)),
             "explainability_raw",
             raw_df,
+            sheet_name,
         )
 
     ax.yaxis.set_label_position("left")
@@ -714,6 +729,7 @@ def get_prediction(
     train_split: float,
     forecast_horizon: int,
     n_predict: int,
+    metric: str,
 ):
     _, val = ticker_series.split_before(train_split)
 
@@ -766,10 +782,17 @@ def get_prediction(
         else:
             prediction = best_model.predict(series=ticker_series, n=n_predict)
 
-    precision = mape(
-        actual_series=val, pred_series=historical_fcast
-    )  # mape = mean average percentage error
-    console.print(f"{model_name} model obtains MAPE: {precision:.2f}% \n")
+    # calculate precision based on metric (rmse, mse, mape)
+    if metric == "rmse":
+        precision = rmse(actual_series=val, pred_series=historical_fcast)
+    elif metric == "mse":
+        precision = mse(actual_series=val, pred_series=historical_fcast)
+    elif metric == "mape":
+        precision = mape(actual_series=val, pred_series=historical_fcast)
+    elif metric == "smape":
+        precision = smape(actual_series=val, pred_series=historical_fcast)
+
+    console.print(f"{model_name} model obtains {metric.upper()}: {precision:.2f}% \n")
 
     # scale back
     if use_scalers and isinstance(scaler, Scaler):

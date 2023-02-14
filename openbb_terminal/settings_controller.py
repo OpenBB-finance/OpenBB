@@ -2,32 +2,41 @@
 __docformat__ = "numpy"
 
 # IMPORTATION STANDARD
-import os
-import os.path
 import argparse
 import logging
+import os
+import os.path
 from pathlib import Path
-from typing import List
+from typing import List, Optional, Union
+
 import pytz
 
 # IMPORTATION THIRDPARTY
 from dotenv import set_key
 
 # IMPORTATION INTERNAL
-from openbb_terminal import config_plot as cfg_plot
-from openbb_terminal import feature_flags as obbff
-from openbb_terminal.core.config.paths import USER_ENV_FILE, USER_DATA_DIRECTORY
+from openbb_terminal import (
+    config_plot as cfg_plot,
+    featflags_controller as obbff_ctrl,
+    feature_flags as obbff,
+)
+from openbb_terminal.core.config import paths
+from openbb_terminal.core.config.paths import (
+    USER_DATA_SOURCES_DEFAULT_FILE,
+    USER_ENV_FILE,
+)
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     get_flair,
     get_user_timezone_or_invalid,
-    replace_user_timezone,
-    set_user_data_folder,
+    parse_and_split_input,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console, MenuText
+from openbb_terminal.rich_config import MenuText, console
+from openbb_terminal.session.hub_model import patch_user_configs
+from openbb_terminal.session.user import User
 
 # pylint: disable=too-many-lines,no-member,too-many-public-methods,C0302
 # pylint: disable=import-outside-toplevel
@@ -56,8 +65,7 @@ class SettingsController(BaseController):
         "colors",
     ]
     PATH = "/settings/"
-
-    all_timezones = [tz.replace("/", "_") for tz in pytz.all_timezones]
+    CHOICES_GENERATION = True
 
     languages_available = [
         lang.strip(".yml")
@@ -71,10 +79,33 @@ class SettingsController(BaseController):
         self.env_file = env_file
 
         if session and obbff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.controller_choices}
-            choices["tz"] = {c: None for c in self.all_timezones}
+            choices: dict = self.choices_default
+            choices["tz"] = {c: None for c in pytz.all_timezones}
             choices["lang"] = {c: None for c in self.languages_available}
+            self.choices = choices
             self.completer = NestedCompleter.from_nested_dict(choices)
+
+        self.sort_filter = r"((tz\ -t |tz ).*?("
+        for tz in pytz.all_timezones:
+            tz = tz.replace("/", r"\/")
+            self.sort_filter += f"{tz}|"
+        self.sort_filter += ")*)"
+
+    def parse_input(self, an_input: str) -> List:
+        """Parse controller input
+
+        Overrides the parent class function to handle github org/repo path convention.
+        See `BaseController.parse_input()` for details.
+        """
+        # Filtering out
+        sort_filter = self.sort_filter
+
+        custom_filters = [sort_filter]
+
+        commands = parse_and_split_input(
+            an_input=an_input, custom_filters=custom_filters
+        )
+        return commands
 
     def print_help(self):
         """Print help"""
@@ -95,7 +126,7 @@ class SettingsController(BaseController):
         mt.add_raw("\n")
         mt.add_param(
             "_user_data_folder",
-            USER_DATA_DIRECTORY,
+            paths.USER_DATA_DIRECTORY,
         )
         mt.add_raw("\n")
         mt.add_cmd("tz")
@@ -134,26 +165,105 @@ class SettingsController(BaseController):
         mt.add_raw("\n")
         console.print(text=mt.menu_text, menu="Settings")
 
-    @log_start_end(log=logger)
-    def call_colors(self, _):
-        """Process colors command"""
-        console.print(
-            "\n1. Play with the terminal coloring embedded in our website https://openbb.co/customize\n"
-        )
-        console.print("2. Once happy, click 'Download Theme'\n")
-        console.print(
-            "3. The file 'openbb_config.richstyle.json' should be downloaded\n"
-        )
-        console.print(
-            "4. Insert that config file inside /OpenBBUserData/styles/user/\n"
-        )
-        console.print("5. Close the terminal and run it again.\n")
+    @staticmethod
+    def set_cfg_plot(name: str, value: Optional[Union[bool, str]]):
+        """Set plot config attribute
+
+        Parameters
+        ----------
+        name : str
+            Environment variable name
+        value : str
+            Environment variable value
+        """
+
+        if User.is_guest():
+            set_key(str(USER_ENV_FILE), name, str(value))
+
+        # Remove "OPENBB_" prefix from env_var
+        if name.startswith("OPENBB_"):
+            name = name[7:]
+
+        # Set obbff.env_var_name = not env_var_value
+        setattr(cfg_plot, name, value)
+
+        # Send feature flag to server
+        if not User.is_guest() and User.is_sync_enabled():
+            patch_user_configs(
+                key=name,
+                value=str(value),
+                type_="settings",
+                auth_header=User.get_auth_header(),
+            )
+
+    @staticmethod
+    def set_path_config(name: str, value: Optional[Union[Path, str]]):
+        """Set path config attribute
+
+        Parameters
+        ----------
+        name : str
+            Environment variable name
+        value : str
+            Environment variable value
+        """
+
+        if User.is_guest():
+            set_key(str(USER_ENV_FILE), name, str(value))
+
+        # Remove "OPENBB_" prefix from env_var
+        if name.startswith("OPENBB_"):
+            name = name[7:]
+
+        # Set obbff.env_var_name = not env_var_value
+        setattr(paths, name, value)
+
+        # Send feature flag to server
+        if not User.is_guest() and User.is_sync_enabled():
+            patch_user_configs(
+                key=name,
+                value=str(value),
+                type_="settings",
+                auth_header=User.get_auth_header(),
+            )
 
     @log_start_end(log=logger)
-    def call_dt(self, _):
+    def call_colors(self, other_args: List[str]):
+        """Process colors command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="autoscaling",
+            description="Set the use of autoscaling in the plots",
+        )
+        ns_parser = self.parse_simple_args(parser, other_args)
+        if ns_parser:
+            console.print(
+                "\n1. Play with the terminal coloring embedded in our website https://openbb.co/customize\n"
+            )
+            console.print("2. Once happy, click 'Download Theme'\n")
+            console.print(
+                "3. The file 'openbb_config.richstyle.json' should be downloaded\n"
+            )
+            console.print(
+                "4. Insert that config file inside /OpenBBUserData/styles/user/\n"
+            )
+            console.print("5. Close the terminal and run it again.\n")
+
+    @log_start_end(log=logger)
+    def call_dt(self, other_args: List[str]):
         """Process dt command"""
-        obbff.USE_DATETIME = not obbff.USE_DATETIME
-        set_key(USER_ENV_FILE, "OPENBB_USE_DATETIME", str(obbff.USE_DATETIME))
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="dt",
+            description="Set the use of datetime in the plots",
+        )
+        ns_parser = self.parse_simple_args(parser, other_args)
+        if ns_parser:
+            obbff_ctrl.FeatureFlagsController.set_feature_flag(
+                "OPENBB_USE_DATETIME", not obbff.USE_DATETIME
+            )
 
     @log_start_end(log=logger)
     def call_source(self, other_args: List[str]):
@@ -165,44 +275,39 @@ class SettingsController(BaseController):
             description="Preferred data source file.",
         )
         parser.add_argument(
-            "-v",
-            "--value",
+            "-f",
+            "--file",
             type=str,
-            default=os.getcwd() + os.path.sep + "sources.json.default",
-            dest="value",
-            help="value",
+            default=str(USER_DATA_SOURCES_DEFAULT_FILE),
+            dest="file",
+            help="file",
         )
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-v")
+            other_args.insert(0, "-f")
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
-            try:
-
-                the_path = os.getcwd() + os.path.sep + ns_parser.value
-                console.print("Loading sources from " + the_path)
-                with open(the_path):
-                    # Try to open the file to get an exception if the file doesn't exist
-                    pass
-
-            except Exception as e:
-                console.print("Couldn't open the sources file!")
-                console.print(e)
-            obbff.PREFERRED_DATA_SOURCE_FILE = ns_parser.value
-            set_key(
-                USER_ENV_FILE,
-                "OPENBB_PREFERRED_DATA_SOURCE_FILE",
-                str(ns_parser.value),
-            )
+            if os.path.exists(ns_parser.file):
+                obbff_ctrl.FeatureFlagsController.set_feature_flag(
+                    "OPENBB_PREFERRED_DATA_SOURCE_FILE", ns_parser.file
+                )
+                console.print("[green]Sources file changed successfully![/green]")
+            else:
+                console.print("[red]Couldn't find the sources file![/red]")
 
     @log_start_end(log=logger)
-    def call_autoscaling(self, _):
+    def call_autoscaling(self, other_args: List[str]):
         """Process autoscaling command"""
-        obbff.USE_PLOT_AUTOSCALING = not obbff.USE_PLOT_AUTOSCALING
-        set_key(
-            USER_ENV_FILE,
-            "OPENBB_USE_PLOT_AUTOSCALING",
-            str(obbff.USE_PLOT_AUTOSCALING),
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="autoscaling",
+            description="Set the use of autoscaling in the plots",
         )
+        ns_parser = self.parse_simple_args(parser, other_args)
+        if ns_parser:
+            obbff_ctrl.FeatureFlagsController.set_feature_flag(
+                "OPENBB_USE_PLOT_AUTOSCALING", not obbff.USE_PLOT_AUTOSCALING
+            )
 
     @log_start_end(log=logger)
     def call_dpi(self, other_args: List[str]):
@@ -225,8 +330,7 @@ class SettingsController(BaseController):
             other_args.insert(0, "-v")
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser and ns_parser.value:
-            set_key(USER_ENV_FILE, "OPENBB_PLOT_DPI", str(ns_parser.value))
-            cfg_plot.PLOT_DPI = ns_parser.value
+            SettingsController.set_cfg_plot("OPENBB_PLOT_DPI", ns_parser.value)
 
     @log_start_end(log=logger)
     def call_height(self, other_args: List[str]):
@@ -249,8 +353,7 @@ class SettingsController(BaseController):
             other_args.insert(0, "-v")
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
-            set_key(USER_ENV_FILE, "OPENBB_PLOT_HEIGHT", str(ns_parser.value))
-            cfg_plot.PLOT_HEIGHT = ns_parser.value
+            SettingsController.set_cfg_plot("OPENBB_PLOT_HEIGHT", ns_parser.value)
 
     @log_start_end(log=logger)
     def call_width(self, other_args: List[str]):
@@ -273,8 +376,7 @@ class SettingsController(BaseController):
             other_args.insert(0, "-v")
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
-            set_key(USER_ENV_FILE, "OPENBB_PLOT_WIDTH", str(ns_parser.value))
-            cfg_plot.PLOT_WIDTH = ns_parser.value
+            SettingsController.set_cfg_plot("OPENBB_PLOT_WIDTH", ns_parser.value)
 
     @log_start_end(log=logger)
     def call_pheight(self, other_args: List[str]):
@@ -288,7 +390,7 @@ class SettingsController(BaseController):
         parser.add_argument(
             "-v",
             "--value",
-            type=int,
+            type=float,
             dest="value",
             help="value",
         )
@@ -296,12 +398,9 @@ class SettingsController(BaseController):
             other_args.insert(0, "-v")
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
-            set_key(
-                USER_ENV_FILE,
-                "OPENBB_PLOT_HEIGHT_PERCENTAGE",
-                str(ns_parser.value),
+            SettingsController.set_cfg_plot(
+                "OPENBB_PLOT_HEIGHT_PERCENTAGE", ns_parser.value
             )
-            cfg_plot.PLOT_HEIGHT_PERCENTAGE = ns_parser.value
 
     @log_start_end(log=logger)
     def call_pwidth(self, other_args: List[str]):
@@ -323,12 +422,9 @@ class SettingsController(BaseController):
             other_args.insert(0, "-v")
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
-            set_key(
-                USER_ENV_FILE,
-                "OPENBB_PLOT_WIDTH_PERCENTAGE",
-                str(ns_parser.value),
+            SettingsController.set_cfg_plot(
+                "OPENBB_PLOT_WIDTH_PERCENTAGE", ns_parser.value
             )
-            cfg_plot.PLOT_WIDTH_PERCENTAGE = ns_parser.value
 
     @log_start_end(log=logger)
     def call_monitor(self, other_args: List[str]):
@@ -350,8 +446,7 @@ class SettingsController(BaseController):
             other_args.insert(0, "-v")
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
-            set_key(USER_ENV_FILE, "OPENBB_MONITOR", str(ns_parser.value))
-            cfg_plot.MONITOR = ns_parser.value
+            SettingsController.set_cfg_plot("OPENBB_MONITOR", ns_parser.value)
 
     @log_start_end(log=logger)
     def call_backend(self, other_args: List[str]):
@@ -373,11 +468,9 @@ class SettingsController(BaseController):
             other_args.insert(0, "-v")
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
-            set_key(USER_ENV_FILE, "OPENBB_BACKEND", str(ns_parser.value))
-            if ns_parser.value == "None":
-                cfg_plot.BACKEND = None  # type: ignore
-            else:
-                cfg_plot.BACKEND = ns_parser.value
+            SettingsController.set_cfg_plot(
+                "OPENBB_BACKEND", None if ns_parser.value == "None" else ns_parser.value
+            )
 
     @log_start_end(log=logger)
     def call_lang(self, other_args: List[str]):
@@ -402,8 +495,9 @@ class SettingsController(BaseController):
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
             if ns_parser.value:
-                set_key(USER_ENV_FILE, "OPENBB_USE_LANGUAGE", str(ns_parser.value))
-                obbff.USE_LANGUAGE = ns_parser.value
+                obbff_ctrl.FeatureFlagsController.set_feature_flag(
+                    "OPENBB_USE_LANGUAGE", ns_parser.value
+                )
             else:
                 console.print(
                     f"Languages available: {', '.join(self.languages_available)}"
@@ -424,16 +518,18 @@ class SettingsController(BaseController):
             dest="timezone",
             help="Choose timezone",
             required="-h" not in other_args,
-            choices=self.all_timezones,
+            metavar="TIMEZONE",
+            choices=pytz.all_timezones,
         )
 
         if other_args and "-t" not in other_args[0]:
             other_args.insert(0, "-t")
 
         ns_parser = self.parse_simple_args(parser, other_args)
-        if ns_parser:
-            if ns_parser.timezone:
-                replace_user_timezone(ns_parser.timezone.replace("_", "/", 1))
+        if ns_parser and ns_parser.timezone:
+            obbff_ctrl.FeatureFlagsController.set_feature_flag(
+                "OPENBB_TIMEZONE", ns_parser.timezone
+            )
 
     @log_start_end(log=logger)
     def call_flair(self, other_args: List[str]):
@@ -460,8 +556,10 @@ class SettingsController(BaseController):
                 ns_parser.emoji = ""
             else:
                 ns_parser.emoji = " ".join(ns_parser.emoji)
-            set_key(USER_ENV_FILE, "OPENBB_USE_FLAIR", str(ns_parser.emoji))
-            obbff.USE_FLAIR = ns_parser.emoji
+
+            obbff_ctrl.FeatureFlagsController.set_feature_flag(
+                "OPENBB_USE_FLAIR", ns_parser.emoji
+            )
 
     @log_start_end(log=logger)
     def call_userdata(self, other_args: List[str]):
@@ -504,9 +602,7 @@ class SettingsController(BaseController):
                         console.print(
                             f"User data to be saved in the default folder: '{default_path}'"
                         )
-                        set_user_data_folder(
-                            self.env_file, path_folder=str(default_path)
-                        )
+                        self.set_path_config("OPENBB_USER_DATA_DIRECTORY", default_path)
                         success_userdata = True
                     else:
                         # If the path selected does not start from the user root, give relative location from root
@@ -520,8 +616,8 @@ class SettingsController(BaseController):
                             console.print(
                                 f"User data to be saved in the selected folder: '{userdata_path}'"
                             )
-                            set_user_data_folder(
-                                self.env_file, path_folder=userdata_path
+                            self.set_path_config(
+                                "OPENBB_USER_DATA_DIRECTORY", userdata_path
                             )
                             success_userdata = True
                         else:
@@ -539,14 +635,14 @@ class SettingsController(BaseController):
                                 console.print(
                                     f"[green]Folder '{userdata_path}' successfully created.[/green]"
                                 )
-                                set_user_data_folder(
-                                    self.env_file, path_folder=userdata_path
+                                self.set_path_config(
+                                    "OPENBB_USER_DATA_DIRECTORY", userdata_path
                                 )
                             else:
                                 # Do not update userdata_folder path since we will keep the same as before
                                 console.print(
                                     "[yellow]User data to keep being saved in "
-                                    + f"the selected folder: {str(USER_DATA_DIRECTORY)}[/yellow]"
+                                    + f"the selected folder: {str(paths.USER_DATA_DIRECTORY)}[/yellow]"
                                 )
                             success_userdata = True
 

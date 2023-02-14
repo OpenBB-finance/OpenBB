@@ -2,15 +2,14 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import Union, Optional, List
 from datetime import datetime
+from typing import List, Optional, Union
 
-import pandas as pd
 import matplotlib.pyplot as plt
+import pandas as pd
 
-from openbb_terminal.forecast import rnn_model
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.forecast import helpers
+from openbb_terminal.forecast import helpers, rnn_model
 
 logger = logging.getLogger(__name__)
 # pylint: disable=too-many-arguments
@@ -36,12 +35,14 @@ def display_rnn_forecast(
     force_reset: bool = True,
     save_checkpoints: bool = True,
     export: str = "",
+    sheet_name: str = None,
     residuals: bool = False,
     forecast_only: bool = False,
     start_date: Optional[datetime] = None,
     end_date: Optional[datetime] = None,
     naive: bool = False,
     export_pred_raw: bool = False,
+    metric: str = "mape",
     external_axes: Optional[List[plt.axes]] = None,
 ):
     """Display RNN forecast
@@ -81,6 +82,8 @@ def display_rnn_forecast(
         Whether or not to automatically save the untrained model and checkpoints from training. Defaults to True.
     forecast_only: bool
         Whether to only show dates in the forecasting range. Defaults to False.
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     residuals: bool
@@ -92,6 +95,10 @@ def display_rnn_forecast(
     naive: bool
         Whether to show the naive baseline. This just assumes the closing price will be the same
         as the previous day's closing price. Defaults to False.
+    export_pred_raw: bool
+        Whether to export the raw predictions. Defaults to False.
+    metric: str
+        The metric to use for the forecast. Defaults to "mape".
     external_axes: Optional[List[plt.axes]]
         External axes to plot on
     """
@@ -122,6 +129,7 @@ def display_rnn_forecast(
         input_chunk_size=input_chunk_size,
         force_reset=force_reset,
         save_checkpoints=save_checkpoints,
+        metric=metric,
     )
     if ticker_series == []:
         return
@@ -142,9 +150,11 @@ def display_rnn_forecast(
         precision=precision,
         probabilistic=probabilistic,
         export=export,
+        sheet_name=sheet_name,
         forecast_only=forecast_only,
         naive=naive,
         export_pred_raw=export_pred_raw,
+        metric=metric,
         external_axes=external_axes,
     )
     if residuals:

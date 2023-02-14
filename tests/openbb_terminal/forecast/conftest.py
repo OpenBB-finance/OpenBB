@@ -1,7 +1,8 @@
 import os
+
+import pandas as pd
 import pytest
 from _pytest.nodes import Node
-import pandas as pd
 
 
 def create_path(*path: str) -> str:
@@ -31,6 +32,12 @@ def test_model(model, data, *args, **kwargs):
         predict_list = predict.quantile_df()
         predict_list = predict_list[predict_list.columns[0]].tolist()
     return predict_list, MAPE
+
+
+# make same fuction but for anomaly detection model
+def test_anom_model(model, data, *args, **kwargs):
+    ticker_series, anom_score, binary_anom = model(data, *args, **kwargs)
+    return ticker_series, anom_score, binary_anom
 
 
 def pytest_runtest_setup(item: Node):

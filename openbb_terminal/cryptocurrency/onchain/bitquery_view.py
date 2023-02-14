@@ -6,14 +6,11 @@ import os
 
 from openbb_terminal.cryptocurrency.dataframe_helpers import (
     lambda_very_long_number_formatter,
-)
-from openbb_terminal.cryptocurrency.dataframe_helpers import (
     prettify_column_names,
 )
 from openbb_terminal.cryptocurrency.onchain import bitquery_model
-from openbb_terminal.decorators import log_start_end
+from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
-from openbb_terminal.decorators import check_api_key
 
 logger = logging.getLogger(__name__)
 
@@ -28,6 +25,7 @@ def display_dex_trades(
     sortby: str = "tradeAmount",
     ascend: bool = True,
     export: str = "",
+    sheet_name: str = None,
 ) -> None:
     """Prints table showing Trades on Decentralized Exchanges aggregated by DEX or Month
     [Source: https://graphql.bitquery.io/]
@@ -80,6 +78,7 @@ def display_dex_trades(
             os.path.dirname(os.path.abspath(__file__)),
             "lt",
             df_data,
+            sheet_name,
         )
 
 
@@ -92,6 +91,7 @@ def display_daily_volume_for_given_pair(
     sortby: str = "date",
     ascend: bool = True,
     export: str = "",
+    sheet_name: str = None,
 ) -> None:
     """Prints table showing daily volume for given pair
     [Source: https://graphql.bitquery.io/]
@@ -153,6 +153,7 @@ def display_daily_volume_for_given_pair(
         os.path.dirname(os.path.abspath(__file__)),
         "dvcp",
         df_data,
+        sheet_name,
     )
 
 
@@ -165,6 +166,7 @@ def display_dex_volume_for_token(
     sortby: str = "tradeAmount",
     ascend: bool = True,
     export: str = "",
+    sheet_name: str = None,
 ) -> None:
     """Prints table showing token volume on different Decentralized Exchanges.
     [Source: https://graphql.bitquery.io/]
@@ -218,6 +220,7 @@ def display_dex_volume_for_token(
             os.path.dirname(os.path.abspath(__file__)),
             "tv",
             df_data,
+            sheet_name,
         )
 
 
@@ -229,6 +232,7 @@ def display_ethereum_unique_senders(
     sortby: str = "date",
     ascend: bool = True,
     export: str = "",
+    sheet_name: str = None,
 ) -> None:
     """Prints table showing number of unique ethereum addresses which made a transaction in given time interval
     [Source: https://graphql.bitquery.io/]
@@ -257,7 +261,6 @@ def display_ethereum_unique_senders(
 
     df = bitquery_model.get_ethereum_unique_senders(interval, limit, sortby, ascend)
     if not df.empty:
-
         column_names = ["uniqueSenders", "transactions", "maximumGasPrice"]
         column_names = prettify_column_names(column_names)
 
@@ -279,6 +282,7 @@ def display_ethereum_unique_senders(
             os.path.dirname(os.path.abspath(__file__)),
             "ueat",
             df_data,
+            sheet_name,
         )
 
 
@@ -291,6 +295,7 @@ def display_most_traded_pairs(
     sortby: str = "tradeAmount",
     ascend: bool = True,
     export: str = "",
+    sheet_name: str = None,
 ) -> None:
     """Prints table showing most traded crypto pairs on given decentralized exchange in chosen time period.
     [Source: https://graphql.bitquery.io/]
@@ -339,6 +344,7 @@ def display_most_traded_pairs(
             os.path.dirname(os.path.abspath(__file__)),
             "ttcp",
             df_data,
+            sheet_name,
         )
 
 
@@ -351,6 +357,7 @@ def display_spread_for_crypto_pair(
     sortby: str = "date",
     ascend: bool = True,
     export: str = "",
+    sheet_name: str = None,
 ) -> None:
     """Prints table showing an average bid and ask prices, average spread for given crypto pair for chosen
     time period. [Source: https://graphql.bitquery.io/]
@@ -380,7 +387,6 @@ def display_spread_for_crypto_pair(
         symbol=symbol, to_symbol=to_symbol, limit=limit, sortby=sortby, ascend=ascend
     )
     if not df.empty:
-
         print_rich_table(
             df,
             headers=list(df.columns),
@@ -393,4 +399,5 @@ def display_spread_for_crypto_pair(
             os.path.dirname(os.path.abspath(__file__)),
             "baas",
             df,
+            sheet_name,
         )

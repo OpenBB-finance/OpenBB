@@ -2,35 +2,32 @@
 """Main Testing Module"""
 __docformat__ = "numpy"
 
-from functools import partial
-from multiprocessing.pool import Pool
-from multiprocessing import cpu_count
-from pathlib import Path
-import re
-import time
-from typing import Any, List, Dict, Optional, Tuple
-from traceback import FrameSummary, format_list, extract_tb
 import argparse
 import logging
-import sys
 import os
-from openbb_terminal.helper_funcs import check_positive
+import re
+import sys
+import time
+from functools import partial
+from multiprocessing import cpu_count
+from multiprocessing.pool import Pool
+from pathlib import Path
+from traceback import FrameSummary, extract_tb, format_list
+from typing import Any, Dict, List, Optional, Tuple
 
-from openbb_terminal.rich_config import console
 from openbb_terminal.core.config.paths import (
     MISCELLANEOUS_DIRECTORY,
     REPOSITORY_DIRECTORY,
 )
+from openbb_terminal.helper_funcs import check_non_negative
+from openbb_terminal.rich_config import console
 from openbb_terminal.terminal_controller import (
     insert_start_slash,
-    terminal,
-    replace_dynamic,
     obbff,
+    replace_dynamic,
+    terminal,
 )
-from openbb_terminal.terminal_helper import (
-    is_reset,
-    suppress_stdout,
-)
+from openbb_terminal.terminal_helper import is_reset, suppress_stdout
 
 logger = logging.getLogger(__name__)
 special_arguments_values = [
@@ -128,7 +125,6 @@ def convert_list_to_test_files(path_list: List[str]) -> List[Path]:
     test_files = []
 
     for path in path_list:
-
         if path.startswith(
             str(Path("openbb_terminal", "core", "integration_tests", "scripts"))
         ):
@@ -374,18 +370,16 @@ def run_test_files(
     -------
     Tuple[int, int, Dict[str, Dict[str, Any]], float]
     """
-    os.environ["DEBUG_MODE"] = "true"
     n_successes = 0
     n_failures = 0
     fails: Dict[str, Dict[str, Any]] = {}
 
     if test_files:
-
         n = len(test_files)
 
         start = time.time()
 
-        if verbose and not subprocesses:
+        if subprocesses == 0:
             console.print(
                 f"* Running {n} script(s) sequentially...\n",
                 style="bold",
@@ -410,7 +404,6 @@ def run_test_files(
                 style="bold",
             )
             with Pool(processes=subprocesses) as pool:
-
                 # Choosing chunksize: line 477 .../lib/python3.9/multiprocessing/pool.py
                 chunksize, extra = divmod(n, subprocesses * 4)
                 if extra:
@@ -427,7 +420,6 @@ def run_test_files(
                         chunksize=chunksize,
                     )
                 ):
-
                     file_short_name, exception = result
                     if exception:
                         n_failures += 1
@@ -504,7 +496,6 @@ def display_summary(
         console.print("\n" + to_section_title("integration test summary"))
 
         for file, exception in fails.items():
-
             # Assuming the broken command is the last one called in the traceback
             broken_cmd = "unknown"
             frame: FrameSummary
@@ -642,7 +633,7 @@ def parse_args_and_run():
         help="The number of subprocesses to use to run the tests."
         " Default is the minimum between number of collected scripts and CPUs.",
         dest="subprocesses",
-        type=check_positive,
+        type=check_non_negative,
         default=None,
     )
     parser.add_argument(
@@ -670,12 +661,13 @@ def parse_args_and_run():
 
     special_args_dict = {x: getattr(ns_parser, x) for x in special_arguments_values}
 
-    if ns_parser.verbose and ns_parser.subprocesses:
-        console.print(
-            "WARNING: verbose mode and multiprocessing are not compatible. "
-            "The output of the scripts is mixed up. Consider running without --subproc.\n",
-            style="yellow",
-        )
+    if ns_parser.verbose:
+        if ns_parser.subprocesses is None or ns_parser.subprocesses > 0:
+            console.print(
+                "WARNING: verbose mode and multiprocessing are not compatible. "
+                "The output of the scripts is mixed up. Consider running with --subproc 0.\n",
+                style="yellow",
+            )
 
     if ns_parser.list_:
         return display_available_scripts(ns_parser.path, ns_parser.skip)
@@ -696,6 +688,12 @@ def main():
         sys.argv.remove("-t")
     if "--test" in sys.argv:
         sys.argv.remove("--test")
+
+    os.environ["OPENBB_ENABLE_QUICK_EXIT"] = "False"
+    os.environ["OPENBB_LOG_COLLECT"] = "False"
+    os.environ["OPENBB_USE_ION"] = "True"
+    os.environ["OPENBB_USE_PROMPT_TOOLKIT"] = "False"
+    os.environ["DEBUG_MODE"] = "True"
 
     parse_args_and_run()
 

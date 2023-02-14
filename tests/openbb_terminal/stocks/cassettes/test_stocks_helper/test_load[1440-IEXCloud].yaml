@@ -14,7 +14,7 @@ interactions:
     uri: https://cloud.iexapis.com/v1/stock/GME/chart/ytd?sort=desc&token=MOCK_TOKEN
   response:
     body:
-      string: The API key provided is not valid.
+      string: Access is restricted to paid subscribers. Please upgrade to gain access
     headers:
       Access-Control-Allow-Credentials:
       - 'true'
@@ -27,17 +27,17 @@ interactions:
       Connection:
       - keep-alive
       Date:
-      - Fri, 13 Jan 2023 18:11:12 GMT
+      - Wed, 01 Feb 2023 12:15:46 GMT
       Server:
       - nginx
       Set-Cookie:
-      - ctoken=345fd4a34f084f06a029c6862a6333c8; Max-Age=43200; Path=/; Expires=Sat,
-        14 Jan 2023 06:11:12 GMT
+      - ctoken=ac79cefe178c4addb3c828ae9549f6fd; Max-Age=43200; Path=/; Expires=Thu,
+        02 Feb 2023 00:15:46 GMT
       Strict-Transport-Security:
       - max-age=15768000
       Transfer-Encoding:
       - chunked
     status:
-      code: 403
-      message: The API key provided is not valid.
+      code: 402
+      message: Access is restricted to paid subscribers. Please upgrade to gain access
 version: 1
