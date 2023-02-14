@@ -301,11 +301,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-v1-pip-
 
-      - name: Uninstall Brotlipy
-        shell: bash -l {0}
-        run: |
-          conda remove brotlipy -y
-
       - name: Install dependencies (Bash)
         shell: bash -l {0}
         run: |
