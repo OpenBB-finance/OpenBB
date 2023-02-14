@@ -151,7 +151,7 @@ class Backend(PyWry):
             Title to display in the window, by default ""
         """
         self.check_backend()
-        self.send_url(self.nostr_html.as_uri())
+        self.send_url(f"/{self.nostr_html.as_uri()}", title="Nostr Client", width=1200, height=800)
 
     def send_html(self, html_str: str = "", html_path: str = "", title: str = ""):
         """Send html to backend.
