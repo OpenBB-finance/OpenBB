@@ -9,7 +9,7 @@ from types import FunctionType, ModuleType
 import openbb_terminal.feature_flags as obbff
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.core.log.generation.common import do_rollover
-from openbb_terminal.terminal_helper import is_packaged_application
+from openbb_terminal.terminal_helper import is_installer
 
 SENSITIVE_WORDS = [
     "API",
@@ -54,7 +54,7 @@ def log_settings() -> None:
     settings_dict["watermark"] = "True" if obbff.USE_WATERMARK else "False"
     settings_dict["autoscaling"] = "True" if obbff.USE_PLOT_AUTOSCALING else "False"
     settings_dict["dt"] = "True" if obbff.USE_DATETIME else "False"
-    settings_dict["packaged"] = "True" if is_packaged_application() else "False"
+    settings_dict["packaged"] = "True" if is_installer() else "False"
     settings_dict["python"] = str(platform.python_version())
     settings_dict["os"] = str(platform.system())
 
