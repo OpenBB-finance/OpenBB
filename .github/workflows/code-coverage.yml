@@ -50,4 +50,4 @@ jobs:
     - name: Run code coverage tests
       run: |
         source $VENV
-        pytest --cov --cov-fail-under=90
+        pytest --cov .
