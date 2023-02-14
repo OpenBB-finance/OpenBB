@@ -243,6 +243,10 @@ class Backend(PyWry):
         if self.isatty:
             super().start(debug)
 
+    async def check_backend(self):
+        if self.isatty:
+            await super().check_backend()
+
     def close(self, reset: bool = False):
         """Close the backend."""
         if reset:
