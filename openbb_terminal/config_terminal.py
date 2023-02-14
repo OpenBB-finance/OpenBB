@@ -3,6 +3,7 @@ import os
 
 # IMPORTATION INTERNAL
 from openbb_terminal.base_helpers import load_env_vars, strtobool
+
 from .helper_classes import TerminalStyle as _TerminalStyle
 
 SENSITIVE_KEYS = [

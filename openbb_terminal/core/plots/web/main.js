@@ -333,10 +333,20 @@ function OpenBBMain(plotly_figure) {
 
   // We check to see if window.save_png is defined and true
   if (window.save_image != undefined && window.export_image) {
-    // We click the toImage button to save the chart as a png
-    globals.barButtons["Download plot as a png"].click();
-    // we use a timeout to make sure the image is saved before closing
-    // before closing the window
+
+    // We get the extension of the file and check if it is valid
+    let extension = window.export_image.split(".").pop();
+
+    if (["jpg", "jpeg", "png", "svg"].includes(extension)) {
+      // We run Plotly.downloadImage to save the chart as an image
+      Plotly.downloadImage(CHART_DIV, {
+        format: extension.replace("jpg", "jpeg"),
+        width: CHART_DIV.clientWidth,
+        height: CHART_DIV.clientHeight,
+        filename: window.export_image.split("/").pop(),
+      });
+
+    }
     setTimeout(function () {
       window.close();
     }, 500);

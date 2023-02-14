@@ -54,7 +54,6 @@ from openbb_terminal.terminal_helper import (
     bootup,
     check_for_updates,
     is_installer,
-    is_packaged_application,
     is_reset,
     print_goodbye,
     reset,
@@ -70,7 +69,7 @@ logger = logging.getLogger(__name__)
 
 env_file = str(USER_ENV_FILE)
 
-if is_packaged_application():
+if is_installer():
     # Necessary for installer so that it can locate the correct certificates for
     # API calls and https
     # https://stackoverflow.com/questions/27835619/urllib-and-ssl-certificate-verify-failed-error/73270162#73270162
@@ -167,7 +166,7 @@ class TerminalController(BaseController):
         mt.add_cmd("about")
         mt.add_cmd("support")
         mt.add_cmd("survey")
-        if not is_packaged_application():
+        if not is_installer():
             mt.add_cmd("update")
         mt.add_cmd("wiki")
         mt.add_cmd("news")
@@ -356,7 +355,7 @@ class TerminalController(BaseController):
 
     def call_update(self, _):
         """Process update command."""
-        if not is_packaged_application():
+        if not is_installer():
             self.update_success = not update_terminal()
         else:
             console.print(
@@ -1160,6 +1159,7 @@ def main(
         E.g. GME,AMC,BTC-USD
     """
     if kwargs["module"] == "ipykernel_launcher":
+        bootup()
         ipykernel_launcher(kwargs["module_file"], kwargs["module_hist_file"])
 
     if debug:

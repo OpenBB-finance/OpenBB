@@ -471,7 +471,7 @@ class StocksController(StockBaseController):
                         prepost=ns_parser.prepost,
                         asset_type="Stock",
                         yscale="log" if ns_parser.logy else "linear",
-                        external_axes=ns_parser.export in ("png", "svg"),
+                        external_axes=ns_parser.is_image,
                     )
 
                 export_data(

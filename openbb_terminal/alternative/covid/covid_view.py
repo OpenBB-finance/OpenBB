@@ -182,7 +182,7 @@ def display_covid_ov(
     if country.lower() == "us":
         country = "US"
     if plot:
-        plot_covid_ov(country)
+        fig = plot_covid_ov(country, external_axes=raw or bool(export))
     if raw:
         data = covid_model.get_covid_ov(country, limit)
         print_rich_table(
@@ -201,6 +201,7 @@ def display_covid_ov(
             "ov",
             data,
             sheet_name,
+            figure=fig if fig.is_image_export(export) else None,
         )
 
 
@@ -235,7 +236,7 @@ def display_covid_stat(
     """
     data = covid_model.get_covid_stat(country, stat, limit)
     if plot:
-        plot_covid_stat(country, stat, external_axes=raw or bool(export))
+        fig = plot_covid_stat(country, stat, external_axes=raw or bool(export))
 
     if raw:
         print_rich_table(
@@ -258,6 +259,7 @@ def display_covid_stat(
             stat,
             data,
             sheet_name,
+            figure=fig if fig.is_image_export(export) else None,
         )
 
 

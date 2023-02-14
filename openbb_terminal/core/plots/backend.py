@@ -5,11 +5,14 @@ import os
 import re
 import sys
 from pathlib import Path
+from typing import Optional, Union
 
 import aiohttp
 import pandas as pd
 import plotly.graph_objects as go
 from pywry import PyWry
+from reportlab.graphics import renderPDF
+from svglib.svglib import svg2rlg
 
 from openbb_terminal.base_helpers import strtobool
 
@@ -89,7 +92,9 @@ class Backend(PyWry):
             return str(icon_path)
         return ""
 
-    def send_figure(self, fig: go.Figure, export_image: str = ""):
+    def send_figure(
+        self, fig: go.Figure, export_image: Optional[Union[Path, str]] = ""
+    ):
         """Send a Plotly figure to the backend
 
         Parameters
@@ -104,16 +109,42 @@ class Backend(PyWry):
         title = re.sub(
             r"<[^>]*>", "", fig.layout.title.text if fig.layout.title.text else "Plots"
         )
+
         self.outgoing.append(
             json.dumps(
                 {
                     "html_path": self.get_plotly_html(),
                     "plotly": json.loads(fig.to_json()),
-                    "export_image": export_image,
+                    "export_image": str(export_image).replace(".pdf", ".svg"),
                     **self.get_kwargs(title),
                 }
             )
         )
+        if export_image:
+            self.loop.run_until_complete(self.process_image(export_image))
+
+    async def process_image(self, export_image: Path):
+        """We check if the image has been exported to the path"""
+        pdf = export_image.suffix == ".pdf"
+        img_path = export_image.resolve()
+
+        if pdf:
+            img_path = img_path.with_suffix(".svg")
+
+        checks = 0
+        while not img_path.exists():
+            await asyncio.sleep(0.2)
+            checks += 1
+            if checks > 50:
+                break
+
+        if img_path.exists():
+            if pdf:
+                drawing = svg2rlg(img_path)
+                img_path.unlink(missing_ok=True)
+                renderPDF.drawToFile(drawing, str(export_image))
+
+            os.startfile(export_image)
 
     def send_table(self, df_table: pd.DataFrame, title: str = ""):
         """Sends table data to the backend to be displayed in a table.
@@ -207,7 +238,7 @@ class Backend(PyWry):
     def close(self, reset: bool = False):
         """Close the backend."""
         if reset:
-            self.max_retries = 30  # pylint: disable=W0201
+            self.max_retries = 50  # pylint: disable=W0201
         else:
             self.del_temp()
 

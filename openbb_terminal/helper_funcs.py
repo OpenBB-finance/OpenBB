@@ -10,7 +10,11 @@ import random
 import re
 import sys
 import urllib.parse
-from datetime import date as d, datetime, timedelta
+from datetime import (
+    date as d,
+    datetime,
+    timedelta,
+)
 from difflib import SequenceMatcher
 from functools import lru_cache
 from pathlib import Path
@@ -1265,7 +1269,7 @@ def compose_export_path(func_name: str, dir_path: str) -> Path:
     return full_path
 
 
-def ask_file_overwrite(file_path: str) -> Tuple[bool, bool]:
+def ask_file_overwrite(file_path: Path) -> Tuple[bool, bool]:
     """Helper to provide a prompt for overwriting existing files.
 
     Returns two values, the first is a boolean indicating if the file exists and the
@@ -1276,9 +1280,10 @@ def ask_file_overwrite(file_path: str) -> Tuple[bool, bool]:
         return False, True
     if os.environ.get("TEST_MODE") == "True":
         return False, True
-    if os.path.exists(file_path):
+    if file_path.exists():
         overwrite = input("\nFile already exists. Overwrite? [y/n]: ").lower()
         if overwrite == "y":
+            file_path.unlink(missing_ok=True)
             # File exists and user wants to overwrite
             return True, True
         # File exists and user does not want to overwrite
@@ -1318,23 +1323,29 @@ def export_data(
         figure = OpenBBFigure()
 
     if export_type:
-        export_path = compose_export_path(func_name, dir_path)
-        export_folder = str(export_path.parent)
-        export_filename = export_path.name
-        export_path.parent.mkdir(parents=True, exist_ok=True)
+        saved_path = compose_export_path(func_name, dir_path).resolve()
+        saved_path.parent.mkdir(parents=True, exist_ok=True)
         for exp_type in export_type.split(","):
             # In this scenario the path was provided, e.g. --export pt.csv, pt.jpg
             if "." in exp_type:
-                saved_path = os.path.join(export_folder, exp_type)
+                saved_path = saved_path.with_name(exp_type)
             # In this scenario we use the default filename
             else:
-                if ".OpenBB_openbb_terminal" in export_filename:
-                    export_filename = export_filename.replace(
-                        ".OpenBB_openbb_terminal", "OpenBBTerminal"
+                if ".OpenBB_openbb_terminal" in saved_path.name:
+                    saved_path = saved_path.with_name(
+                        saved_path.name.replace(
+                            ".OpenBB_openbb_terminal", "OpenBBTerminal"
+                        )
                     )
-                saved_path = os.path.join(
-                    export_folder, f"{export_filename}.{exp_type}"
-                )
+                saved_path = saved_path.with_suffix(f".{exp_type}")
+
+            is_xlsx = exp_type.endswith("xlsx")
+            if sheet_name is None and is_xlsx or not is_xlsx:
+                exists, overwrite = ask_file_overwrite(saved_path)
+
+            if exists and not overwrite:
+                existing = len(list(saved_path.parent.glob(saved_path.stem + "*")))
+                saved_path = saved_path.with_stem(f"{saved_path.stem}_{existing + 1}")
 
             df = df.replace(
                 {
@@ -1353,14 +1364,8 @@ def export_data(
             df = df.applymap(revert_lambda_long_number_format)
 
             if exp_type.endswith("csv"):
-                exists, overwrite = ask_file_overwrite(saved_path)
-                if exists and not overwrite:
-                    return
                 df.to_csv(saved_path)
             elif exp_type.endswith("json"):
-                exists, overwrite = ask_file_overwrite(saved_path)
-                if exists and not overwrite:
-                    return
                 df.reset_index(drop=True, inplace=True)
                 df.to_json(saved_path)
             elif exp_type.endswith("xlsx"):
@@ -1368,13 +1373,10 @@ def export_data(
                 df = remove_timezone_from_dataframe(df)
 
                 if sheet_name is None:
-                    exists, overwrite = ask_file_overwrite(saved_path)
-                    if exists and not overwrite:
-                        return
                     df.to_excel(saved_path, index=True, header=True)
 
                 else:
-                    if os.path.exists(saved_path):
+                    if saved_path.exists():
                         with pd.ExcelWriter(
                             saved_path,
                             mode="a",
@@ -1392,28 +1394,11 @@ def export_data(
                             df.to_excel(
                                 writer, sheet_name=sheet_name, index=True, header=True
                             )
-            elif exp_type.endswith("png"):
-                exists, overwrite = ask_file_overwrite(saved_path)
-                if exists and not overwrite:
-                    return
-                figure.show(export_image=saved_path)
-            elif exp_type.endswith("jpg"):
-                exists, overwrite = ask_file_overwrite(saved_path)
-                if exists and not overwrite:
-                    return
-                plt.savefig(saved_path)
-            elif exp_type.endswith("pdf"):
-                exists, overwrite = ask_file_overwrite(saved_path)
-                if exists and not overwrite:
-                    return
-                plt.savefig(saved_path)
-            elif exp_type.endswith("svg"):
-                exists, overwrite = ask_file_overwrite(saved_path)
-                if exists and not overwrite:
-                    return
+            elif saved_path.suffix in [".jpg", ".pdf", ".png", ".svg"]:
                 figure.show(export_image=saved_path)
             else:
                 console.print("Wrong export file specified.")
+                continue
 
             console.print(f"Saved file: {saved_path}")
 

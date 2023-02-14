@@ -48,8 +48,9 @@ def display_star_history(
             "sh",
             df,
             sheet_name,
+            figure=fig if fig.is_image_export(export) else None,
         )
-        return fig.show(external=external_axes)
+        return fig.show(external=external_axes or bool(export))
 
     return None
 
@@ -100,8 +101,9 @@ def display_top_repos(
             "tr",
             df,
             sheet_name,
+            figure=fig if fig.is_image_export(export) else None,
         )
-        return fig.show(external=external_axes)
+        return fig.show(external=external_axes or bool(export))
 
     return None
 

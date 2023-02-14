@@ -290,15 +290,7 @@ class CryptoController(CryptoBaseController):
             if not self.symbol:
                 console.print("No coin loaded. First use `load {symbol}`\n")
                 return
-            export_data(
-                ns_parser.export,
-                os.path.join(os.path.dirname(os.path.abspath(__file__))),
-                f"{self.symbol}",
-                self.current_df,
-                " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None,
-            )
-
-            plot_chart(
+            figure = plot_chart(
                 exchange=self.exchange,
                 source=self.source,
                 to_symbol=self.symbol,
@@ -306,6 +298,15 @@ class CryptoController(CryptoBaseController):
                 prices_df=self.current_df,
                 interval=self.current_interval,
                 yscale="log" if ns_parser.logy else "linear",
+                external_axes=ns_parser.is_image,
+            )
+            export_data(
+                ns_parser.export,
+                os.path.join(os.path.dirname(os.path.abspath(__file__))),
+                f"{self.symbol}",
+                self.current_df,
+                " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None,
+                figure=figure,
             )
 
     @log_start_end(log=logger)

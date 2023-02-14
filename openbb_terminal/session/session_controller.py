@@ -97,7 +97,7 @@ def login_and_launch(session: dict, guest_allowed: bool = True):
         Allow guest login, by default True
     """
     status = login(session)
-    if status == LoginStatus.SUCCESS:
+    if status in [LoginStatus.SUCCESS, LoginStatus.NO_RESPONSE]:
         launch_terminal()
     elif status == LoginStatus.FAILED:
         prompt(welcome=False, guest_allowed=guest_allowed)

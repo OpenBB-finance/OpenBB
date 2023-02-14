@@ -526,6 +526,21 @@ class OpenBBFigure(go.Figure):
 
         self.update_layout(barmode="overlay", bargap=0.01, bargroupgap=0)
 
+    def is_image_export(self, export: Optional[str] = "") -> bool:
+        """Checks if the export format is an image format
+
+        Parameters
+        ----------
+        export : `str`
+            Export format
+
+        Returns
+        -------
+        `bool`
+            True if the export format is an image format, False otherwise
+        """
+        return any(ext in export for ext in ["jpg", "pdf", "png", "svg"])
+
     def set_title(
         self, title: str, wrap: bool = False, wrap_width: int = 80, **kwargs
     ) -> "OpenBBFigure":
@@ -830,7 +845,11 @@ class OpenBBFigure(go.Figure):
         )
 
     def show(
-        self, *args, external: bool = False, export_image: str = "", **kwargs
+        self,
+        *args,
+        external: bool = False,
+        export_image: Optional[Union[Path, str]] = "",
+        **kwargs,
     ) -> Optional["OpenBBFigure"]:
         """Show the figure
 
@@ -838,11 +857,11 @@ class OpenBBFigure(go.Figure):
         ----------
         external : `bool`, optional
             Whether to return the figure object instead of showing it, by default False
-        export_image : `str`, optional
+        export_image : `Path`, optional
             The path to export the figure image to, by default ""
         """
         if export_image and not plots_backend().isatty:
-            Path(export_image).touch()
+            export_image.touch()
 
         if external:
             return self  # type: ignore

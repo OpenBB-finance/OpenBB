@@ -8,7 +8,6 @@ import subprocess  # nosec
 import sys
 
 # IMPORTATION STANDARD
-import webbrowser
 from contextlib import contextmanager
 from typing import List, Optional
 
@@ -23,7 +22,7 @@ from openbb_terminal import (
 )
 
 # IMPORTATION INTERNAL
-from openbb_terminal.config_terminal import LOGGING_APP_NAME, LOGGING_COMMIT_HASH
+from openbb_terminal.config_terminal import LOGGING_COMMIT_HASH
 from openbb_terminal.core.plots.backend import plots_backend
 from openbb_terminal.helper_funcs import request
 from openbb_terminal.rich_config import console
@@ -195,12 +194,12 @@ def open_openbb_documentation(
 
         path += command
 
-    full_url = f"{url}{path}".replace("//", "/")
+    full_url = f"{url}{path.replace('//', '/')}"
 
     if full_url[-1] == "/":
         full_url = full_url[:-1]
 
-    webbrowser.open(full_url)
+    plots_backend().send_url(full_url)
 
 
 def hide_splashscreen():
@@ -221,23 +220,9 @@ def hide_splashscreen():
         logger.info(e)
 
 
-def is_packaged_application() -> bool:
-    """Tell whether or not it is a packaged version (Windows or Mac installer).
-
-
-    Returns:
-        bool: If the application is packaged
-    """
-
-    return LOGGING_APP_NAME == "gst_packaged"
-
-
 def is_installer() -> bool:
-    """Tell whether or not it is a packaged version."""
-    # TODO: Merge this with is_packaged_application
-    if getattr(sys, "frozen", False) and hasattr(sys, "_MEIPASS"):
-        return True
-    return False
+    """Tell whether or not it is a packaged version (Windows or Mac installer"""
+    return getattr(sys, "frozen", False) and hasattr(sys, "_MEIPASS")
 
 
 def bootup():
@@ -245,7 +230,7 @@ def bootup():
         # Enable VT100 Escape Sequence for WINDOWS 10 Ver. 1607
         os.system("")  # nosec
         # Hide splashscreen loader of the packaged app
-        if is_packaged_application():
+        if is_installer():
             hide_splashscreen()
 
     try:
