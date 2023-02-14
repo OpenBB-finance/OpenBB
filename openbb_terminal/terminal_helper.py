@@ -21,7 +21,7 @@ from openbb_terminal import (
 )
 
 # IMPORTATION INTERNAL
-from openbb_terminal.config_terminal import LOGGING_APP_NAME, LOGGING_COMMIT_HASH
+from openbb_terminal.config_terminal import LOGGING_COMMIT_HASH
 from openbb_terminal.helper_funcs import request
 from openbb_terminal.rich_config import console
 
@@ -218,23 +218,9 @@ def hide_splashscreen():
         logger.info(e)
 
 
-def is_packaged_application() -> bool:
-    """Tell whether or not it is a packaged version (Windows or Mac installer).
-
-
-    Returns:
-        bool: If the application is packaged
-    """
-
-    return LOGGING_APP_NAME == "gst_packaged"
-
-
 def is_installer() -> bool:
-    """Tell whether or not it is a packaged version."""
-    # TODO: Merge this with is_packaged_application
-    if getattr(sys, "frozen", False) and hasattr(sys, "_MEIPASS"):
-        return True
-    return False
+    """Tell whether or not it is a packaged version (Windows or Mac installer"""
+    return getattr(sys, "frozen", False) and hasattr(sys, "_MEIPASS")
 
 
 def bootup():
