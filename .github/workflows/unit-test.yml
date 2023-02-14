@@ -88,9 +88,10 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y \
-              libgtk-3-dev \
-              libwebkit2gtk-4.0-dev \
+              build-essential \
               libsoup2.4-dev \
+              libgtk-3-dev \
+              libsoup3-dev \
               libssl-dev \
               curl \
               wget \
@@ -99,7 +100,9 @@ jobs:
               g++ \
               make \
               file \
-              librsvg2-dev
+              librsvg2-dev \
+              libwebkit2gtk-4.1-dev \
+              libayatana-appindicator3-dev
 
       - name: Load cached venv
         id: cached-poetry-dependencies
@@ -158,9 +161,10 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y \
-              libgtk-3-dev \
-              libwebkit2gtk-4.0-dev \
+              build-essential \
               libsoup2.4-dev \
+              libgtk-3-dev \
+              libsoup3-dev \
               libssl-dev \
               curl \
               wget \
@@ -169,7 +173,9 @@ jobs:
               g++ \
               make \
               file \
-              librsvg2-dev
+              librsvg2-dev \
+              libwebkit2gtk-4.1-dev \
+              libayatana-appindicator3-dev
 
       - name: Load cached venv
         id: cached-poetry-dependencies
