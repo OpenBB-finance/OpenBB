@@ -5,7 +5,6 @@ __docformat__ = "numpy"
 import argparse
 import contextlib
 import difflib
-import importlib
 import logging
 import os
 import re
@@ -33,7 +32,6 @@ from openbb_terminal.core.config.paths import (
     USER_DATA_DIRECTORY,
     USER_ENV_FILE,
     USER_ROUTINES_DIRECTORY,
-    load_dotenv_with_priority,
 )
 from openbb_terminal.core.log.generation.custom_logger import log_terminal
 from openbb_terminal.helper_funcs import (
@@ -48,12 +46,11 @@ from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.reports.reports_model import ipykernel_launcher
 from openbb_terminal.rich_config import MenuText, console
 from openbb_terminal.session import session_controller
-from openbb_terminal.session.hub_model import REGISTER_LINK
 from openbb_terminal.session.user import User
 from openbb_terminal.terminal_helper import (
     bootup,
     check_for_updates,
-    is_installer,
+    is_auth_enabled,
     is_packaged_application,
     is_reset,
     print_goodbye,
@@ -82,7 +79,6 @@ class TerminalController(BaseController):
     """Terminal Controller class."""
 
     CHOICES_COMMANDS = [
-        "account",
         "keys",
         "settings",
         "survey",
@@ -109,6 +105,9 @@ class TerminalController(BaseController):
         "futures",
         "funds",
     ]
+
+    if is_auth_enabled():
+        CHOICES_MENUS.append("account")
 
     PATH = "/"
 
@@ -173,7 +172,8 @@ class TerminalController(BaseController):
         mt.add_cmd("news")
         mt.add_raw("\n")
         mt.add_info("_configure_")
-        mt.add_menu("account")
+        if is_auth_enabled():
+            mt.add_menu("account")
         mt.add_menu("keys")
         mt.add_menu("featflags")
         mt.add_menu("sources")
@@ -369,10 +369,7 @@ class TerminalController(BaseController):
         from openbb_terminal.account.account_controller import AccountController
 
         if User.is_guest():
-            console.print(
-                "[info]You need to be logged in to use this menu.\n"
-                f"Create an account here {REGISTER_LINK}.[/info]\n"
-            )
+            User.print_guest_message()
             return
         self.queue = self.load_class(AccountController, self.queue)
 
@@ -836,13 +833,6 @@ class TerminalController(BaseController):
 def terminal(jobs_cmds: List[str] = None, test_mode=False):
     """Terminal Menu."""
 
-    if User.is_guest():
-        load_dotenv_with_priority()
-        modules = sys.modules.copy()
-        for module in modules:
-            if module.startswith("openbb"):
-                importlib.reload(sys.modules[module])
-
     log_terminal(test_mode=test_mode)
 
     if jobs_cmds is not None and jobs_cmds:
@@ -949,6 +939,9 @@ def terminal(jobs_cmds: List[str] = None, test_mode=False):
                 an_input = input(f"{get_flair()} / $ ")
 
         try:
+            if an_input == "logout":
+                break
+
             # Process the input command
             t_controller.queue = t_controller.switch(an_input)
 
@@ -962,9 +955,6 @@ def terminal(jobs_cmds: List[str] = None, test_mode=False):
                 if ret_code != 0:
                     print_goodbye()
                     break
-
-            if an_input == "logout":
-                break
 
         except SystemExit:
             logger.exception(
@@ -998,7 +988,7 @@ def terminal(jobs_cmds: List[str] = None, test_mode=False):
                 t_controller.queue.insert(0, an_input)
 
     if an_input == "logout":
-        return session_controller.main(guest_allowed=not is_installer())
+        return session_controller.main()
 
 
 def insert_start_slash(cmds: List[str]) -> List[str]:
@@ -1217,15 +1207,6 @@ def parse_args_and_run():
         type=lambda s: [str(item) for item in s.split(",")],
         default=None,
     )
-    # The args -m, -f and --HistoryManager.hist_file are used only in reports menu
-    # by papermill and that's why they have suppress help.
-    parser.add_argument(
-        "-m",
-        help=argparse.SUPPRESS,
-        dest="module",
-        default="",
-        type=str,
-    )
     parser.add_argument(
         "-t",
         "--test",
@@ -1234,6 +1215,21 @@ def parse_args_and_run():
             "Run the terminal in testing mode. Also run this option and '-h'"
             " to see testing argument options."
         ),
+    )
+    if is_auth_enabled():
+        parser.add_argument(
+            "--login",
+            action="store_true",
+            help="Go to login prompt.",
+        )
+    # The args -m, -f and --HistoryManager.hist_file are used only in reports menu
+    # by papermill and that's why they have suppress help.
+    parser.add_argument(
+        "-m",
+        help=argparse.SUPPRESS,
+        dest="module",
+        default="",
+        type=str,
     )
     parser.add_argument(
         "-f",

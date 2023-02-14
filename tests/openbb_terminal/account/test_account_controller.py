@@ -250,6 +250,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
 @pytest.mark.parametrize(
     "func",
     [
+        "call_logout",
         "call_sync",
         "call_pull",
         "call_clear",
@@ -271,6 +272,20 @@ def test_call_func_no_parser(func, mocker):
     assert func_result is None
     assert controller.queue == []
     controller.parse_known_args_and_warn.assert_called_once()
+
+
+def test_call_logout(mocker):
+    controller = account_controller.AccountController(queue=None)
+    path_controller = "openbb_terminal.account.account_controller"
+
+    mock_logout = mocker.patch(
+        target=f"{path_controller}.logout",
+    )
+
+    controller.call_logout([])
+
+    assert controller.queue == []
+    mock_logout.assert_called_once()
 
 
 @pytest.mark.vcr
