@@ -242,7 +242,7 @@ def bootup():
         # Enable VT100 Escape Sequence for WINDOWS 10 Ver. 1607
         os.system("")  # nosec
         # Hide splashscreen loader of the packaged app
-        if is_packaged_application():
+        if is_installer():
             hide_splashscreen()
 
     try:
