@@ -11,12 +11,12 @@ import pandas as pd
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
-    print_rich_table,
     lambda_long_number_format,
+    print_rich_table,
 )
-from openbb_terminal.terminal_helper import suppress_stdout
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.screener.finviz_model import get_screener_data
+from openbb_terminal.terminal_helper import suppress_stdout
 
 logger = logging.getLogger(__name__)
 

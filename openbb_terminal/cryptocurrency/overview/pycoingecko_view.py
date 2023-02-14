@@ -4,14 +4,20 @@ __docformat__ = "numpy"
 import logging
 import os
 from typing import List, Optional
+
 import squarify
-from matplotlib import pyplot as plt
-from matplotlib import ticker
-from matplotlib import cm
+from matplotlib import (
+    cm,
+    pyplot as plt,
+    ticker,
+)
 from pandas.plotting import register_matplotlib_converters
-from openbb_terminal import config_terminal as cfg
+
 import openbb_terminal.cryptocurrency.overview.pycoingecko_model as gecko
-from openbb_terminal import feature_flags as obbff
+from openbb_terminal import (
+    config_terminal as cfg,
+    feature_flags as obbff,
+)
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.cryptocurrency.dataframe_helpers import (
     lambda_long_number_format_with_type_check,
@@ -19,9 +25,9 @@ from openbb_terminal.cryptocurrency.dataframe_helpers import (
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
+    is_valid_axes_count,
     plot_autoscale,
     print_rich_table,
-    is_valid_axes_count,
 )
 from openbb_terminal.rich_config import console
 

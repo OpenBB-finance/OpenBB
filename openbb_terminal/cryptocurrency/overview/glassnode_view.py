@@ -6,20 +6,19 @@ from typing import List, Optional
 import matplotlib
 import numpy as np
 import pandas as pd
-from matplotlib import dates as mdates
-from matplotlib import pyplot as plt
-
-from openbb_terminal.config_terminal import theme
-from openbb_terminal.decorators import check_api_key
-from openbb_terminal import config_plot as cfgPlot
-from openbb_terminal.cryptocurrency.overview.glassnode_model import (
-    get_btc_rainbow,
+from matplotlib import (
+    dates as mdates,
+    pyplot as plt,
 )
-from openbb_terminal.decorators import log_start_end
+
+from openbb_terminal import config_plot as cfgPlot
+from openbb_terminal.config_terminal import theme
+from openbb_terminal.cryptocurrency.overview.glassnode_model import get_btc_rainbow
+from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
-    plot_autoscale,
     is_valid_axes_count,
+    plot_autoscale,
 )
 
 logger = logging.getLogger(__name__)

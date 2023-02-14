@@ -4,32 +4,31 @@ __docformat__ = "numpy"
 import argparse
 import logging
 import os
-from typing import List
 from datetime import date
+from typing import List
 
 import pandas as pd
 
-from openbb_terminal.custom_prompt_toolkit import NestedCompleter
-
 from openbb_terminal import feature_flags as obbff
+from openbb_terminal.common.quantitative_analysis import qa_view
+from openbb_terminal.core.config.paths import MISCELLANEOUS_DIRECTORY
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_FIGURES_ALLOWED,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
 )
-
 from openbb_terminal.menu import session
-from openbb_terminal.core.config.paths import MISCELLANEOUS_DIRECTORY
 from openbb_terminal.parent_classes import BaseController
+from openbb_terminal.portfolio import (
+    attribution_model,
+    portfolio_helper,
+    portfolio_view,
+    statics,
+)
 from openbb_terminal.portfolio.portfolio_model import generate_portfolio
-from openbb_terminal.portfolio import statics
-from openbb_terminal.portfolio import portfolio_view
-from openbb_terminal.portfolio import portfolio_helper
-from openbb_terminal.portfolio import attribution_model
-
-from openbb_terminal.rich_config import console, MenuText
-from openbb_terminal.common.quantitative_analysis import qa_view
+from openbb_terminal.rich_config import MenuText, console
 
 try:
     from openbb_terminal.portfolio.portfolio_optimization import po_controller
@@ -142,6 +141,7 @@ class PortfolioController(BaseController):
         self.portfolio_name: str = ""
         self.benchmark_name: str = ""
         self.original_benchmark_ticker = ""
+        self.recalculate_alloc = False
         self.risk_free_rate = 0
         self.portlist: List[str] = os.listdir(self.DEFAULT_HOLDINGS_PATH)
         self.portfolio = None
@@ -150,6 +150,10 @@ class PortfolioController(BaseController):
             self.update_choices()
             choices: dict = self.choices_default
             self.choices = choices
+            self.choices["bench"] = {
+                "--benchmark": {c: None for c in statics.BENCHMARK_CHOICES},
+                "-b": "--benchmark",
+            }
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def update_choices(self):
@@ -175,7 +179,7 @@ class PortfolioController(BaseController):
         mt.add_cmd("bench")
         mt.add_raw("\n")
         mt.add_param("_loaded", self.portfolio_name)
-        mt.add_param("_riskfreerate", self.portfolio_name)
+        mt.add_param("_riskfreerate", f"{self.risk_free_rate}%")
         mt.add_param("_benchmark", self.benchmark_name)
         mt.add_raw("\n")
 
@@ -193,8 +197,6 @@ class PortfolioController(BaseController):
         mt.add_cmd("rbeta", self.portfolio_name and self.benchmark_name)
 
         mt.add_info("_metrics_")
-        mt.add_cmd("alloc", self.portfolio_name and self.benchmark_name)
-        mt.add_cmd("attrib", self.portfolio_name and self.benchmark_name)
         mt.add_cmd("summary", self.portfolio_name and self.benchmark_name)
         mt.add_cmd("alloc", self.portfolio_name and self.benchmark_name)
         mt.add_cmd("attrib", self.portfolio_name and self.benchmark_name)
@@ -206,51 +208,7 @@ class PortfolioController(BaseController):
         mt.add_cmd("es", self.portfolio_name and self.benchmark_name)
         mt.add_cmd("os", self.portfolio_name and self.benchmark_name)
 
-        port = bool(self.portfolio_name)
-        port_bench = bool(self.portfolio_name) and bool(self.benchmark_name)
-
-        help_text = f"""[menu]
->   bro              brokers holdings, \t\t supports: robinhood, ally, degiro, coinbase
->   po               portfolio optimization, \t optimize your portfolio weights efficiently[/menu]
-[cmds]
-    load             load transactions into the portfolio (use load --example for an example)
-    show             show existing transactions
-    bench            define the benchmark
-[/cmds]
-[param]Loaded transactions file:[/param] {self.portfolio_name}
-[param]Risk Free Rate:  [/param] {self.risk_free_rate:.2%}
-[param]Benchmark:[/param] {self.benchmark_name}
-
-[info]Graphs:[/info]{("[unvl]", "[cmds]")[port_bench]}
-    holdv            holdings of assets (absolute value)
-    holdp            portfolio holdings of assets (in percentage)
-    yret             yearly returns
-    mret             monthly returns
-    dret             daily returns
-    distr            distribution of daily returns
-    maxdd            maximum drawdown
-    rvol             rolling volatility
-    rsharpe          rolling sharpe
-    rsort            rolling sortino
-    rbeta            rolling beta
-{("[/unvl]", "[/cmds]")[port_bench]}
-[info]Metrics:[/info]{("[unvl]", "[cmds]")[port_bench]}
-    summary          all portfolio vs benchmark metrics for a certain period of choice
-    alloc            allocation on an asset, sector, countries or regions basis
-    attrib           display sector attribution of the portfolio compared to the S&P 500
-    metric           portfolio vs benchmark metric for all different periods
-    perf             performance of the portfolio versus benchmark{("[/unvl]", "[/cmds]")[port_bench]}
-
-[info]Risk Metrics:[/info]{("[unvl]", "[cmds]")[port]}
-    var              display value at risk
-    es               display expected shortfall
-    om               display omega ratio{("[/unvl]", "[/cmds]")[port]}
-        """
-        # TODO: Clean up the reports inputs
-        # TODO: Edit the allocation to allow the different asset classes
-        # [info]Reports:[/info]
-        #    ar          annual report for performance of a given portfolio
-        console.print(text=help_text, menu="Portfolio")
+        console.print(text=mt.menu_text, menu="Portfolio - Portfolio Optimization")
         self.update_choices()
 
     def custom_reset(self):
@@ -265,9 +223,7 @@ class PortfolioController(BaseController):
     @log_start_end(log=logger)
     def call_bro(self, _):
         """Process bro command"""
-        from openbb_terminal.portfolio.brokers.bro_controller import (
-            BrokersController,
-        )
+        from openbb_terminal.portfolio.brokers.bro_controller import BrokersController
 
         self.queue = self.load_class(BrokersController, self.queue)
 
@@ -277,13 +233,49 @@ class PortfolioController(BaseController):
         if OPTIMIZATION_TOOLKIT_ENABLED:
             if self.portfolio is None:
                 tickers = []
+                categories = None
             else:
                 tickers = self.portfolio.tickers_list
+                transactions = self.portfolio.get_transactions()
+
+                categories = {
+                    "ASSET_CLASS": {},
+                    "SECTOR": {},
+                    "INDUSTRY": {},
+                    "COUNTRY": {},
+                    "CURRENT_INVESTED_AMOUNT": {},
+                    "CURRENCY": {},
+                }
+                for _, transaction in transactions.iterrows():
+                    if transaction["Ticker"] not in categories["ASSET_CLASS"]:
+                        categories["ASSET_CLASS"][transaction["Ticker"]] = transaction[
+                            "Type"
+                        ]
+                        categories["SECTOR"][transaction["Ticker"]] = transaction[
+                            "Sector"
+                        ]
+                        categories["INDUSTRY"][transaction["Ticker"]] = transaction[
+                            "Industry"
+                        ]
+                        categories["COUNTRY"][transaction["Ticker"]] = transaction[
+                            "Country"
+                        ]
+                        categories["CURRENT_INVESTED_AMOUNT"][
+                            transaction["Ticker"]
+                        ] = transactions[
+                            transactions["Ticker"] == transaction["Ticker"]
+                        ][
+                            "Investment"
+                        ].sum()
+                        categories["CURRENCY"][transaction["Ticker"]] = transaction[
+                            "Currency"
+                        ]
+
             self.queue = self.load_class(
                 po_controller.PortfolioOptimizationController,
                 tickers,
                 None,
-                None,
+                categories,
                 self.queue,
             )
         else:
@@ -417,7 +409,6 @@ class PortfolioController(BaseController):
             dest="benchmark",
             required="-h" not in other_args,
             help="Set the benchmark for the portfolio. By default, this is SPDR S&P 500 ETF Trust (SPY).",
-            choices={c: {} for c in statics.BENCHMARK_CHOICES},
             metavar="BENCHMARK",
         )
         parser.add_argument(
@@ -438,9 +429,14 @@ class PortfolioController(BaseController):
                     "[red]Please first load transactions file using 'load'[/red]"
                 )
             else:
-                self.benchmark_name = statics.BENCHMARK_CHOICES.get(ns_parser.benchmark)
-                self.original_benchmark_ticker = ns_parser.benchmark
-                self.portfolio.set_benchmark(ns_parser.benchmark, ns_parser.full_shares)
+                if self.portfolio.set_benchmark(
+                    ns_parser.benchmark, ns_parser.full_shares
+                ):
+                    self.benchmark_name = statics.BENCHMARK_CHOICES.get(
+                        ns_parser.benchmark, ns_parser.benchmark
+                    )
+                    self.original_benchmark_ticker = ns_parser.benchmark
+                    self.recalculate_alloc = True
 
     @log_start_end(log=logger)
     def call_alloc(self, other_args: List[str]):
@@ -482,27 +478,31 @@ class PortfolioController(BaseController):
             ):
                 if ns_parser.agg == "assets":
                     portfolio_view.display_assets_allocation(
-                        self.portfolio,
-                        ns_parser.limit,
-                        ns_parser.tables,
+                        portfolio_engine=self.portfolio,
+                        limit=ns_parser.limit,
+                        tables=ns_parser.tables,
+                        recalculate=self.recalculate_alloc,
                     )
                 elif ns_parser.agg == "sectors":
                     portfolio_view.display_sectors_allocation(
-                        self.portfolio,
-                        ns_parser.limit,
-                        ns_parser.tables,
+                        portfolio_engine=self.portfolio,
+                        limit=ns_parser.limit,
+                        tables=ns_parser.tables,
+                        recalculate=self.recalculate_alloc,
                     )
                 elif ns_parser.agg == "countries":
                     portfolio_view.display_countries_allocation(
-                        self.portfolio,
-                        ns_parser.limit,
-                        ns_parser.tables,
+                        portfolio_engine=self.portfolio,
+                        limit=ns_parser.limit,
+                        tables=ns_parser.tables,
+                        recalculate=self.recalculate_alloc,
                     )
                 elif ns_parser.agg == "regions":
                     portfolio_view.display_regions_allocation(
-                        self.portfolio,
-                        ns_parser.limit,
-                        ns_parser.tables,
+                        portfolio_engine=self.portfolio,
+                        limit=ns_parser.limit,
+                        tables=ns_parser.tables,
+                        recalculate=self.recalculate_alloc,
                     )
                 else:
                     console.print(
@@ -577,9 +577,13 @@ class PortfolioController(BaseController):
                 bench_result = attribution_model.get_spy_sector_contributions(
                     start_date, end_date
                 )
+                if bench_result.empty:
+                    return
                 portfolio_result = attribution_model.get_portfolio_sector_contributions(
                     start_date, self.portfolio.portfolio_trades
                 )
+                if portfolio_result.empty:
+                    return
 
                 # relative results - the proportions of return attribution
                 if ns_parser.type == "relative":
@@ -953,6 +957,23 @@ class PortfolioController(BaseController):
             metavar="PERIOD",
         )
         parser.add_argument(
+            "-i",
+            "--instrument",
+            type=str,
+            dest="instrument",
+            default="both",
+            choices=["both", "portfolio", "benchmark"],
+            help="Whether to show portfolio or benchmark monthly returns. By default both are shown in one table.",
+        )
+        parser.add_argument(
+            "-g",
+            "--graph",
+            action="store_true",
+            default=False,
+            dest="graph",
+            help="Plot the monthly returns on a heatmap",
+        )
+        parser.add_argument(
             "-s",
             "--show",
             action="store_true",
@@ -966,7 +987,7 @@ class PortfolioController(BaseController):
             parser,
             other_args,
             raw=True,
-            export_allowed=EXPORT_ONLY_FIGURES_ALLOWED,
+            export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
         )
 
         if ns_parser and self.portfolio is not None:
@@ -976,10 +997,13 @@ class PortfolioController(BaseController):
                 portfolio_view.display_monthly_returns(
                     self.portfolio,
                     ns_parser.period,
-                    ns_parser.raw,
+                    ns_parser.instrument,
+                    ns_parser.graph,
                     ns_parser.show_vals,
                     ns_parser.export,
-                    ns_parser.sheet_name,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
 
     @log_start_end(log=logger)
@@ -1021,7 +1045,9 @@ class PortfolioController(BaseController):
                     ns_parser.raw,
                     ns_parser.limit,
                     ns_parser.export,
-                    ns_parser.sheet_name,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
 
     @log_start_end(log=logger)
@@ -1043,9 +1069,6 @@ class PortfolioController(BaseController):
                 portfolio_view.display_maximum_drawdown(
                     self.portfolio,
                     export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
                 )
 
     @log_start_end(log=logger)
@@ -1279,18 +1302,26 @@ class PortfolioController(BaseController):
                         self.portfolio,
                         ns_parser.risk_free_rate / 100,
                         ns_parser.export,
-                        ns_parser.sheet_name,
+                        sheet_name=" ".join(ns_parser.sheet_name)
+                        if ns_parser.sheet_name
+                        else None,
                     )
                 elif ns_parser.metric == "sortino":
                     portfolio_view.display_sortino_ratio(
                         self.portfolio,
                         ns_parser.risk_free_rate / 100,
                         ns_parser.export,
-                        ns_parser.sheet_name,
+                        sheet_name=" ".join(ns_parser.sheet_name)
+                        if ns_parser.sheet_name
+                        else None,
                     )
                 elif ns_parser.metric == "maxdrawdown":
                     portfolio_view.display_maximum_drawdown_ratio(
-                        self.portfolio, ns_parser.export, ns_parser.sheet_name
+                        self.portfolio,
+                        ns_parser.export,
+                        sheet_name=" ".join(ns_parser.sheet_name)
+                        if ns_parser.sheet_name
+                        else None,
                     )
                 elif ns_parser.metric == "rsquare":
                     portfolio_view.display_rsquare(
@@ -1302,15 +1333,27 @@ class PortfolioController(BaseController):
                     )
                 elif ns_parser.metric == "gaintopain":
                     portfolio_view.display_gaintopain_ratio(
-                        self.portfolio, ns_parser.export, ns_parser.sheet_name
+                        self.portfolio,
+                        ns_parser.export,
+                        sheet_name=" ".join(ns_parser.sheet_name)
+                        if ns_parser.sheet_name
+                        else None,
                     )
                 elif ns_parser.metric == "trackerr":
                     portfolio_view.display_tracking_error(
-                        self.portfolio, ns_parser.export, ns_parser.sheet_name
+                        self.portfolio,
+                        ns_parser.export,
+                        sheet_name=" ".join(ns_parser.sheet_name)
+                        if ns_parser.sheet_name
+                        else None,
                     )
                 elif ns_parser.metric == "information":
                     portfolio_view.display_information_ratio(
-                        self.portfolio, ns_parser.export, ns_parser.sheet_name
+                        self.portfolio,
+                        ns_parser.export,
+                        sheet_name=" ".join(ns_parser.sheet_name)
+                        if ns_parser.sheet_name
+                        else None,
                     )
                 elif ns_parser.metric == "tail":
                     portfolio_view.display_tail_ratio(
@@ -1322,30 +1365,52 @@ class PortfolioController(BaseController):
                     )
                 elif ns_parser.metric == "commonsense":
                     portfolio_view.display_common_sense_ratio(
-                        self.portfolio, ns_parser.export, ns_parser.sheet_name
+                        self.portfolio,
+                        ns_parser.export,
+                        sheet_name=" ".join(ns_parser.sheet_name)
+                        if ns_parser.sheet_name
+                        else None,
                     )
                 elif ns_parser.metric == "jensens":
                     portfolio_view.display_jensens_alpha(
                         self.portfolio,
                         ns_parser.risk_free_rate / 100,
                         ns_parser.export,
-                        ns_parser.sheet_name,
+                        sheet_name=" ".join(ns_parser.sheet_name)
+                        if ns_parser.sheet_name
+                        else None,
                     )
                 elif ns_parser.metric == "calmar":
                     portfolio_view.display_calmar_ratio(
-                        self.portfolio, ns_parser.export, ns_parser.sheet_name
+                        self.portfolio,
+                        ns_parser.export,
+                        sheet_name=" ".join(ns_parser.sheet_name)
+                        if ns_parser.sheet_name
+                        else None,
                     )
                 elif ns_parser.metric == "kelly":
                     portfolio_view.display_kelly_criterion(
-                        self.portfolio, ns_parser.export, ns_parser.sheet_name
+                        self.portfolio,
+                        ns_parser.export,
+                        sheet_name=" ".join(ns_parser.sheet_name)
+                        if ns_parser.sheet_name
+                        else None,
                     )
                 elif ns_parser.metric == "payoff" and self.portfolio is not None:
                     portfolio_view.display_payoff_ratio(
-                        self.portfolio, ns_parser.export, ns_parser.sheet_name
+                        self.portfolio,
+                        ns_parser.export,
+                        sheet_name=" ".join(ns_parser.sheet_name)
+                        if ns_parser.sheet_name
+                        else None,
                     )
                 elif ns_parser.metric == "profitfactor" and self.portfolio is not None:
                     portfolio_view.display_profit_factor(
-                        self.portfolio, ns_parser.export, ns_parser.sheet_name
+                        self.portfolio,
+                        ns_parser.export,
+                        sheet_name=" ".join(ns_parser.sheet_name)
+                        if ns_parser.sheet_name
+                        else None,
                     )
 
     @log_start_end(log=logger)
@@ -1385,7 +1450,9 @@ class PortfolioController(BaseController):
                     ns_parser.period,
                     ns_parser.raw,
                     ns_parser.export,
-                    ns_parser.sheet_name,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
 
     @log_start_end(log=logger)
@@ -1432,7 +1499,9 @@ class PortfolioController(BaseController):
                     ns_parser.period,
                     ns_parser.risk_free_rate / 100,
                     ns_parser.export,
-                    ns_parser.sheet_name,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
 
 

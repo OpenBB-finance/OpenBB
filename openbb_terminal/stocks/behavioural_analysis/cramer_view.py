@@ -1,26 +1,26 @@
 """Cramer View"""
 __docformat__ = "numpy"
 
-import os
-from typing import Optional, List
 import logging
+import os
 from datetime import datetime
+from typing import List, Optional
 
 import matplotlib.pyplot as plt
-from matplotlib.dates import DateFormatter
 import yfinance
+from matplotlib.dates import DateFormatter
 
 import openbb_terminal.config_plot as cfp
 from openbb_terminal.config_terminal import theme
-from openbb_terminal.helper_funcs import (
-    print_rich_table,
-    export_data,
-    plot_autoscale,
-    is_valid_axes_count,
-)
-from openbb_terminal.stocks.behavioural_analysis import cramer_model
-from openbb_terminal.rich_config import console
 from openbb_terminal.decorators import log_start_end
+from openbb_terminal.helper_funcs import (
+    export_data,
+    is_valid_axes_count,
+    plot_autoscale,
+    print_rich_table,
+)
+from openbb_terminal.rich_config import console
+from openbb_terminal.stocks.behavioural_analysis import cramer_model
 
 logger = logging.getLogger(__name__)
 

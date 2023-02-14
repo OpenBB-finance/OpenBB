@@ -7,10 +7,9 @@ import os
 import pandas as pd
 
 from openbb_terminal.common.behavioural_analysis import finnhub_model
-from openbb_terminal.decorators import log_start_end
+from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import export_data
 from openbb_terminal.rich_config import console
-from openbb_terminal.decorators import check_api_key
 
 logger = logging.getLogger(__name__)
 

@@ -1,4 +1,5 @@
 import pytest
+
 from tests.openbb_terminal.forecast import conftest
 
 try:
@@ -7,5 +8,5 @@ except ImportError:
     pytest.skip(allow_module_level=True)
 
 
-def test_get_expo_model(tsla_csv):
-    conftest.test_model(anom_model.get_anomaly_detection_data, tsla_csv)
+def test_get_anom_model(tsla_csv):
+    conftest.test_anom_model(anom_model.get_anomaly_detection_data, tsla_csv)

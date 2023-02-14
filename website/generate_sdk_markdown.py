@@ -1,4 +1,4 @@
-import csv
+import csv  # noqa: I001
 import importlib
 import inspect
 import json

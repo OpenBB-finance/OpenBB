@@ -5,14 +5,14 @@ import logging
 from datetime import datetime
 from typing import Tuple
 
-import pandas as pd
 import numpy as np
+import pandas as pd
 
-from openbb_terminal.decorators import log_start_end
 from openbb_terminal.core.config.paths import USER_PORTFOLIO_DATA_DIRECTORY
-from openbb_terminal.rich_config import console
-from openbb_terminal.portfolio.statics import PERIODS
+from openbb_terminal.decorators import log_start_end
 from openbb_terminal.portfolio.portfolio_helper import filter_df_by_period
+from openbb_terminal.portfolio.statics import PERIODS
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 

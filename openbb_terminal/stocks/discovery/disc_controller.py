@@ -6,9 +6,8 @@ import logging
 from datetime import datetime
 from typing import List
 
-from openbb_terminal.custom_prompt_toolkit import NestedCompleter
-
 from openbb_terminal import feature_flags as obbff
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
@@ -20,17 +19,18 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
+from openbb_terminal.rich_config import MenuText, console
+from openbb_terminal.stocks import stocks_helper
 from openbb_terminal.stocks.discovery import (
     ark_view,
     finnhub_view,
+    finviz_view,
+    fmp_view,
     nasdaq_view,
     seeking_alpha_view,
     shortinterest_view,
     yahoofinance_view,
-    finviz_view,
 )
-from openbb_terminal.stocks import stocks_helper
-from openbb_terminal.rich_config import console, MenuText
 
 # pylint:disable=C0302
 
@@ -60,6 +60,7 @@ class DiscoveryController(BaseController):
         "rtat",
         "divcal",
         "heatmap",
+        "filings",
     ]
 
     arkord_sortby_choices = [
@@ -126,6 +127,7 @@ class DiscoveryController(BaseController):
     def print_help(self):
         """Print help"""
         mt = MenuText("stocks/disc/")
+        mt.add_cmd("filings", "FinancialModelingPrep")
         mt.add_cmd("pipo", "Finnhub")
         mt.add_cmd("fipo", "Finnhub")
         mt.add_cmd("gainers", "Yahoo Finance")
@@ -911,4 +913,43 @@ class DiscoveryController(BaseController):
                 sheet_name=" ".join(ns_parser.sheet_name)
                 if ns_parser.sheet_name
                 else None,
+            )
+
+    @log_start_end(log=logger)
+    def call_filings(self, other_args: List[str]) -> None:
+        """Process Filings command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="filings",
+            description="The most-recent filings submitted to the SEC",
+        )
+        parser.add_argument(
+            "-p",
+            "--pages",
+            dest="pages",
+            metavar="pages",
+            type=int,
+            default=1,
+            help="The number of pages to get data from (1000 entries/page; maximum 30 pages)",
+        )
+        parser.add_argument(
+            "-t",
+            "--today",
+            dest="today",
+            action="store_true",
+            default=False,
+            help="Show all filings from today",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            EXPORT_ONLY_RAW_DATA_ALLOWED,
+            limit=5,
+        )
+        if ns_parser:
+            fmp_view.display_filings(
+                ns_parser.pages, ns_parser.limit, ns_parser.today, ns_parser.export
             )

@@ -1,4 +1,5 @@
 import pytest
+
 from openbb_terminal.portfolio.brokers.coinbase import coinbase_controller
 
 

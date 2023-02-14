@@ -1,15 +1,15 @@
 # IMPORTATION STANDARD
-import os
 import datetime
+import os
+
+import pandas as pd
 
 # IMPORTATION THIRDPARTY
 import pytest
-import pandas as pd
 from pandas import Timestamp
 
 # IMPORTATION INTERNAL
 from openbb_terminal.economy import economy_controller
-
 
 # pylint: disable=E1101
 # pylint: disable=W0603
@@ -558,14 +558,6 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 map_filter="world",
             ),
         ),
-        # TODO: Add `Investing` to sources again when `investpy` is fixed
-        # (
-        #     "call_ycrv",
-        #     ["--country=portugal", "--export=csv", "--source=Investing"],
-        #     "investingcom_view.display_yieldcurve",
-        #     [],
-        #     dict(country="portugal", export="csv", sheet_name=None raw=False),
-        # ),
         (
             "call_events",
             [

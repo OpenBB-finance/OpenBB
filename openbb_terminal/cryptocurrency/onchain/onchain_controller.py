@@ -9,16 +9,12 @@ import logging
 from datetime import datetime, timedelta
 from typing import List
 
-from openbb_terminal.custom_prompt_toolkit import NestedCompleter
-
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.cryptocurrency.due_diligence.glassnode_model import (
     GLASSNODE_SUPPORTED_HASHRATE_ASSETS,
     INTERVALS_HASHRATE,
 )
-from openbb_terminal.cryptocurrency.due_diligence.glassnode_view import (
-    display_hashrate,
-)
+from openbb_terminal.cryptocurrency.due_diligence.glassnode_view import display_hashrate
 from openbb_terminal.cryptocurrency.onchain import (
     bitquery_model,
     bitquery_view,
@@ -31,6 +27,7 @@ from openbb_terminal.cryptocurrency.onchain import (
     whale_alert_model,
     whale_alert_view,
 )
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
@@ -41,7 +38,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console, MenuText
+from openbb_terminal.rich_config import MenuText, console
 
 logger = logging.getLogger(__name__)
 

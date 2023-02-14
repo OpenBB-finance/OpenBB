@@ -5,8 +5,10 @@ import json
 import logging
 import os
 from typing import List
+
 import pandas as pd
 from pycoingecko import CoinGeckoAPI
+
 from openbb_terminal.decorators import log_start_end
 
 logger = logging.getLogger(__name__)

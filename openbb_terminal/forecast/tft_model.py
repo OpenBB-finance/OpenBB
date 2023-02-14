@@ -3,18 +3,18 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import Tuple, Union, List, Optional
-
 import warnings
-from statsmodels.tools.sm_exceptions import ConvergenceWarning
+from typing import List, Optional, Tuple, Union
+
 import pandas as pd
 from darts import TimeSeries
 from darts.models import TFTModel
 from darts.utils.likelihood_models import QuantileRegression
+from statsmodels.tools.sm_exceptions import ConvergenceWarning
 
+from openbb_terminal.core.config.paths import USER_FORECAST_MODELS_DIRECTORY
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.forecast import helpers
-from openbb_terminal.core.config.paths import USER_FORECAST_MODELS_DIRECTORY
 
 warnings.simplefilter("ignore", ConvergenceWarning)
 
@@ -43,6 +43,7 @@ def get_tft_data(
     model_save_name: str = "tft_model",
     force_reset: bool = True,
     save_checkpoints: bool = True,
+    metric: str = "mape",
 ) -> Tuple[
     Optional[List[TimeSeries]],
     Optional[List[TimeSeries]],
@@ -101,6 +102,8 @@ def get_tft_data(
     save_checkpoints: (bool, optional)
         Whether or not to automatically save the untrained model and checkpoints from training.
         Defaults to True.
+    metric: (str, optional)
+        Metric to use for model selection. Defaults to "mape".
 
     Returns
     -------
@@ -204,4 +207,5 @@ def get_tft_data(
         train_split,
         forecast_horizon,
         n_predict,
+        metric,
     )

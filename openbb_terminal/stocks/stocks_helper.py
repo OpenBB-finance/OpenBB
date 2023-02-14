@@ -7,6 +7,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
+from copy import deepcopy
 from datetime import datetime, timedelta
 from typing import Any, Dict, Iterable, List, Optional, Union
 
@@ -26,7 +27,6 @@ from scipy import stats
 
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.helper_funcs import (
-    export_data,
     lambda_long_number_format_y_axis,
     plot_autoscale,
     print_rich_table,
@@ -35,17 +35,19 @@ from openbb_terminal.helper_funcs import (
 from openbb_terminal.rich_config import console
 
 # pylint: disable=unused-import
-from openbb_terminal.stocks.stock_statics import BALANCE_PLOT  # noqa: F401
-from openbb_terminal.stocks.stock_statics import CANDLE_SORT  # noqa: F401
-from openbb_terminal.stocks.stock_statics import CASH_PLOT  # noqa: F401
-from openbb_terminal.stocks.stock_statics import INCOME_PLOT  # noqa: F401
-from openbb_terminal.stocks.stock_statics import INTERVALS  # noqa: F401
-from openbb_terminal.stocks.stock_statics import SOURCES  # noqa: F401
-from openbb_terminal.stocks.stock_statics import market_coverage_suffix
+from openbb_terminal.stocks.stock_statics import (
+    BALANCE_PLOT,  # noqa: F401
+    CANDLE_SORT,  # noqa: F401
+    CASH_PLOT,  # noqa: F401
+    INCOME_PLOT,  # noqa: F401
+    INTERVALS,  # noqa: F401
+    SOURCES,  # noqa: F401
+    market_coverage_suffix,
+)
 from openbb_terminal.stocks.stocks_model import (
     load_stock_av,
     load_stock_eodhd,
-    load_stock_iex_cloud,
+    load_stock_intrinio,
     load_stock_polygon,
     load_stock_yf,
 )
@@ -102,9 +104,7 @@ def search(
     exchange_country: str = "",
     all_exchanges: bool = False,
     limit: int = 0,
-    export: str = "",
-    sheet_name: Optional[str] = "",
-) -> None:
+) -> pd.DataFrame:
     """Search selected query for tickers.
 
     Parameters
@@ -123,8 +123,12 @@ def search(
        Whether to search all exchanges, without this option only the United States market is searched
     limit : int
         The limit of companies shown.
-    export : str
-        Export data
+
+    Returns
+    -------
+    df: pd.DataFrame
+        Dataframe of search results.
+        Empty Dataframe if none are found.
 
     Examples
     --------
@@ -153,10 +157,10 @@ def search(
         console.print(
             "[red]No companies were found that match the given criteria.[/red]\n"
         )
-        return
+        return pd.DataFrame()
     if not data:
         console.print("No companies found.\n")
-        return
+        return pd.DataFrame()
 
     if query:
         d = fd.search_products(
@@ -176,23 +180,18 @@ def search(
 
     if not d:
         console.print("No companies found.\n")
-        return
+        return pd.DataFrame()
 
     df = pd.DataFrame.from_dict(d).T[
         ["long_name", "short_name", "country", "sector", "industry", "exchange"]
     ]
-    if exchange_country:
-        if exchange_country in market_coverage_suffix:
-            suffix_tickers = [
-                ticker.split(".")[1] if "." in ticker else ""
-                for ticker in list(df.index)
-            ]
-            df = df[
-                [
-                    val in market_coverage_suffix[exchange_country]
-                    for val in suffix_tickers
-                ]
-            ]
+    if exchange_country and exchange_country in market_coverage_suffix:
+        suffix_tickers = [
+            ticker.split(".")[1] if "." in ticker else "" for ticker in list(df.index)
+        ]
+        df = df[
+            [val in market_coverage_suffix[exchange_country] for val in suffix_tickers]
+        ]
 
     exchange_suffix = {}
     for k, v in market_coverage_suffix.items():
@@ -226,13 +225,7 @@ def search(
         title=title,
     )
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "search",
-        df,
-        sheet_name,
-    )
+    return df
 
 
 def load(
@@ -242,7 +235,6 @@ def load(
     end_date: Optional[Union[datetime, str]] = None,
     prepost: bool = False,
     source: str = "YahooFinance",
-    iexrange: str = "ytd",
     weekly: bool = False,
     monthly: bool = False,
     verbose: bool = True,
@@ -254,7 +246,6 @@ def load(
     The default source is, yFinance (https://pypi.org/project/yfinance/).
     Other sources:
             -   AlphaVantage (https://www.alphavantage.co/documentation/)
-            -   IEX Cloud (https://iexcloud.io/docs/api/)
             -   Eod Historical Data (https://eodhistoricaldata.com/financial-apis/)
 
     Please note that certain analytical features are exclusive to the specific source.
@@ -291,8 +282,6 @@ def load(
         Pre and After hours data
     source: str
         Source of data extracted
-    iexrange: str
-        Timeframe to get IEX data.
     weekly: bool
         Flag to get weekly data
     monthly: bool
@@ -335,13 +324,13 @@ def load(
                 symbol, start_date, end_date, weekly, monthly
             )
 
-        elif source == "IEXCloud":
-            df_stock_candidate = load_stock_iex_cloud(symbol, iexrange)
-
         elif source == "Polygon":
             df_stock_candidate = load_stock_polygon(
                 symbol, start_date, end_date, weekly, monthly
             )
+
+        elif source == "Intrinio":
+            df_stock_candidate = load_stock_intrinio(symbol, start_date, end_date)
         else:
             console.print("[red]Invalid source for stock[/red]\n")
             return
@@ -394,6 +383,11 @@ def load(
                 s_start = start_date
 
             df_stock_candidate.index.name = "date"
+
+        elif source == "Intrinio":
+            console.print(
+                "[red]We currently do not support intraday data with Intrinio.[/red]\n"
+            )
 
         elif source == "Polygon":
             request_url = (
@@ -475,7 +469,6 @@ def display_candle(
     end_date: Optional[Union[datetime, str]] = None,
     prepost: bool = False,
     source: str = "YahooFinance",
-    iexrange: str = "ytd",
     weekly: bool = False,
     monthly: bool = False,
     external_axes: Optional[List[plt.Axes]] = None,
@@ -516,8 +509,6 @@ def display_candle(
         Pre and After hours data
     source: str
         Source of data extracted
-    iexrange: str
-        Timeframe to get IEX data.
     weekly: bool
         Flag to get weekly data
     monthly: bool
@@ -532,6 +523,16 @@ def display_candle(
     >>> from openbb_terminal.sdk import openbb
     >>> openbb.stocks.candle("AAPL")
     """
+    # We are not actually showing adj close in candle.  This hasn't been an issue so far, but adding
+    # in intrinio returns all adjusted columns,so some care here is needed or else we end up with
+    # mixing up close and adj close
+    if data is None:
+        # For mypy
+        data = pd.DataFrame()
+    data = deepcopy(data)
+
+    if "Adj Close" in data.columns:
+        data["Close"] = data["Adj Close"].copy()
 
     if start_date is None:
         start_date = (datetime.now() - timedelta(days=1100)).strftime("%Y-%m-%d")
@@ -550,7 +551,6 @@ def display_candle(
             end_date,
             prepost,
             source,
-            iexrange,
             weekly,
             monthly,
         )
@@ -799,52 +799,6 @@ def display_candle(
             fig.show(config=dict({"scrollZoom": True}))
     else:
         return data
-
-
-def load_ticker(
-    ticker: str,
-    start_date: Union[str, datetime],
-    end_date: Optional[Union[str, datetime]] = None,
-) -> pd.DataFrame:
-    """Load a ticker data from Yahoo Finance.
-
-    Adds a data index column data_id and Open-Close High/Low columns after loading.
-
-    Parameters
-    ----------
-    ticker : str
-        The stock ticker.
-    start_date : Union[str,datetime]
-        Start date to load stock ticker data formatted YYYY-MM-DD.
-    end_date : Union[str,datetime]
-        End date to load stock ticker data formatted YYYY-MM-DD.
-
-    Returns
-    -------
-    DataFrame
-        A Panda's data frame with columns Open, High, Low, Close, Adj Close, Volume,
-        date_id, OC-High, OC-Low.
-
-    Examples
-    --------
-    >>> from openbb_terminal.sdk import openbb
-    >>> msft_df = openbb.stocks.load("MSFT")
-    """
-    df_data = yf.download(
-        ticker, start=start_date, end=end_date, progress=False, ignore_tz=True
-    )
-
-    df_data.index = pd.to_datetime(df_data.index)
-
-    df_data["date_id"] = (df_data.index.date - df_data.index.date.min()).astype(
-        "timedelta64[D]"
-    )
-    df_data["date_id"] = df_data["date_id"].dt.days + 1
-
-    df_data["OC_High"] = df_data[["Open", "Close"]].max(axis=1)
-    df_data["OC_Low"] = df_data[["Open", "Close"]].min(axis=1)
-
-    return df_data
 
 
 def process_candle(data: pd.DataFrame) -> pd.DataFrame:

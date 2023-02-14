@@ -3,48 +3,49 @@ __docformat__ = "numpy"
 # pylint:disable=too-many-lines,R1710,R0904,C0415,too-many-branches,unnecessary-dict-index-lookup
 
 import argparse
+import itertools
 import logging
 import os
-import itertools
-from datetime import date, datetime as dt
-from typing import List, Dict, Any
+from datetime import (
+    date,
+    datetime as dt,
+)
+from typing import Any, Dict, List
 
 import pandas as pd
 
-from openbb_terminal.custom_prompt_toolkit import NestedCompleter
-
-from openbb_terminal.decorators import check_api_key
 from openbb_terminal import feature_flags as obbff
-from openbb_terminal.decorators import log_start_end
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
+from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.economy import (
     alphavantage_view,
+    commodity_view,
+    econdb_model,
+    econdb_view,
     economy_helpers,
     finviz_model,
     finviz_view,
+    fred_model,
+    fred_view,
     nasdaq_model,
     nasdaq_view,
+    plot_view,
     wsj_view,
-    econdb_view,
-    econdb_model,
-    fred_view,
-    fred_model,
     yfinance_model,
     yfinance_view,
-    plot_view,
-    commodity_view,
 )
 from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_FIGURES_ALLOWED,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
+    list_from_str,
+    parse_and_split_input,
     print_rich_table,
     valid_date,
-    parse_and_split_input,
-    list_from_str,
 )
-from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console, MenuText
 from openbb_terminal.menu import session
+from openbb_terminal.parent_classes import BaseController
+from openbb_terminal.rich_config import MenuText, console
 
 logger = logging.getLogger(__name__)
 
@@ -256,8 +257,6 @@ class EconomyController(BaseController):
         mt.add_cmd("map")
         mt.add_cmd("bigmac")
         mt.add_cmd("ycrv")
-        # Comment out spread while investpy is donw :()
-        # mt.add_cmd("spread")
         mt.add_cmd("events")
         mt.add_cmd("edebt")
         mt.add_raw("\n")
@@ -613,10 +612,13 @@ class EconomyController(BaseController):
                 )
 
                 if not df.empty:
-                    df.columns = ["_".join(column) for column in df.columns]
-
                     if ns_parser.transform:
-                        df.columns = [df.columns[0] + f"_{ns_parser.transform}"]
+                        df.columns = [
+                            f"_{ns_parser.transform}_".join(column)
+                            for column in df.columns
+                        ]
+                    else:
+                        df.columns = ["_".join(column) for column in df.columns]
 
                     for column in df.columns:
                         if column in self.DATASETS["macro"].columns:
@@ -1243,13 +1245,20 @@ class EconomyController(BaseController):
                                     transform = ""
                                     if (
                                         len(split) == 3
-                                        and split[2] in econdb_model.TRANSFORM
+                                        and split[1] in econdb_model.TRANSFORM
                                     ):
                                         (
                                             country,
-                                            parameter_abbreviation,
                                             transform,
+                                            parameter_abbreviation,
                                         ) = split
+                                    elif (
+                                        len(split) == 4
+                                        and split[2] in econdb_model.TRANSFORM
+                                    ):
+                                        country = f"{split[0]} {split[1]}"
+                                        transform = split[2]
+                                        parameter_abbreviation = split[3]
                                     elif len(split) == 2:
                                         country, parameter_abbreviation = split
                                     else:
@@ -1259,6 +1268,7 @@ class EconomyController(BaseController):
                                     parameter = econdb_model.PARAMETERS[
                                         parameter_abbreviation
                                     ]["name"]
+
                                     units = self.UNITS[country.replace(" ", "_")][
                                         parameter_abbreviation
                                     ]
@@ -1313,13 +1323,20 @@ class EconomyController(BaseController):
                                     transform = ""
                                     if (
                                         len(split) == 3
-                                        and split[2] in econdb_model.TRANSFORM
+                                        and split[1] in econdb_model.TRANSFORM
                                     ):
                                         (
                                             country,
-                                            parameter_abbreviation,
                                             transform,
+                                            parameter_abbreviation,
                                         ) = split
+                                    elif (
+                                        len(split) == 4
+                                        and split[2] in econdb_model.TRANSFORM
+                                    ):
+                                        country = f"{split[0]} {split[1]}"
+                                        transform = split[2]
+                                        parameter_abbreviation = split[3]
                                     elif len(split) == 2:
                                         country, parameter_abbreviation = split
                                     else:

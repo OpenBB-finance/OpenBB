@@ -4,9 +4,10 @@ __docformat__ = "numpy"
 # pylint: disable=C0301,C0302
 
 import logging
-from typing import Any, Optional, Tuple
-from datetime import datetime, timedelta
 import re
+from datetime import datetime, timedelta
+from typing import Any, Optional, Tuple
+
 import pandas as pd
 
 from openbb_terminal import config_terminal as cfg

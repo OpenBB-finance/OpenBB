@@ -17,7 +17,7 @@ concurrency:
 jobs:
   Windows-Build:
     name: Windows10 Build ENV
-    runs-on: windows-latest
+    runs-on: windows-2019
     # Configuring -------------
     steps:
       - name: Setup Windows Git Configuration # This is under the assumption that git is already installed on the system
@@ -26,7 +26,7 @@ jobs:
           git config --system core.longpaths true
 
       - name: Checkout
-        uses: actions/checkout@v2.4.2
+        uses: actions/checkout@v3
 
       - name: Set up Python & Create OpenBB Environment
         uses: actions/setup-python@v4
@@ -38,10 +38,9 @@ jobs:
           python -m venv venv
           source venv/Scripts/activate
           python -m pip install --upgrade pip
-          python -m pip install poetry==1.1.13
           python -m pip install setuptools==64.0.2 wheel
           python -m pip install charset_normalizer==2.1.1
-          python -m poetry install -E installer -E all
+          python -m pip install -r requirements-full.txt
           python -m pip uninstall papermill -y
           python -m pip install git+https://github.com/nteract/papermill.git@main
           python -m PyInstaller build/pyinstaller/terminal.spec --clean
@@ -67,7 +66,7 @@ jobs:
           git config --system core.longpaths true
 
       - name: Checkout
-        uses: actions/checkout@v2.4.2
+        uses: actions/checkout@v3
 
       - name: Download Artifact
         uses: actions/download-artifact@v2
@@ -84,6 +83,12 @@ jobs:
         run: |
           C:\'.\Program Files (x86)\'\nsis\makensis.exe .\build\nsis\setup.nsi
 
+      # This should autosign the installer now - We really need to only do this when needed though. ON RELEASE
+      - name: Sign Installer
+        if: startsWith(github.ref, 'refs/heads/main')
+        run: |
+          & 'C:\Program Files (x86)\Windows Kits\10\bin\10.0.19041.0\x86\signtool.exe' sign /fd sha256 /tr http://ts.ssl.com /td sha256 /sha1 26a8e28dbe3b1db7407b92d7de97c290d4436a32 'C:\Users\Administrator\actions-runner\_work\OpenBBTerminal\OpenBBTerminal\build\nsis\OpenBB Terminal Setup.exe'
+
       - name: Save Build Artifact
         uses: actions/upload-artifact@v3
         with:
@@ -92,7 +97,18 @@ jobs:
 
       - name: Run Integration Tests
         run: |
-          dist\OpenBBTerminal\OpenBBTerminal.exe -t
+          dist\OpenBBTerminal\OpenBBTerminal.exe -t -s forecast cryptocurrency reports alternative economy futures econometrics dashboards portfolio stocks/test_stocks_options_screen.openbb stocks/test_stocks_options.openbb forex etf stocks/test_stocks_fa.openbb > result.txt
+          cat result.txt
+          Select-String "================================ integration test summary ================================" result.txt -Context 0,100 | Select-Object -Last 2000 | Out-File failed_tests.txt
+          
+      - name: Upload summary to Slack
+        uses: adrey/slack-file-upload-action@master
+        with:
+          token: ${{ secrets.SLACK_API_TOKEN }}
+          initial_comment: "Windows Build Integration test summary"
+          title: "Windows Build Integration test summary"
+          path: failed_tests.txt
+          channel: ${{ secrets.SLACK_CHANNEL_ID }}
 
       # Cleaning ------------------------
       # Make sure to add Remove-Item C:\Users\Administrator\Desktop\OPENBB-exports -Recurse whenever integration tests get fixed

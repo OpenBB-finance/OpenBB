@@ -6,28 +6,27 @@ import os
 from typing import List, Optional
 
 from matplotlib import pyplot as plt
-from openbb_terminal.config_terminal import theme
+
 from openbb_terminal.config_plot import PLOT_DPI
+from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import (
-    export_data,
-    print_rich_table,
-    plot_autoscale,
     camel_case_split,
+    export_data,
     is_valid_axes_count,
+    plot_autoscale,
+    print_rich_table,
 )
+from openbb_terminal.helpers_denomination import transform as transform_by_denomination
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.fundamental_analysis import av_model
-from openbb_terminal.helpers_denomination import (
-    transform as transform_by_denomination,
-)
 
 logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_ALPHAVANTAGE"])
-def display_overview(symbol: str):
+def display_overview(symbol: str, export: str = "", sheet_name: str = None):
     """Alpha Vantage stock ticker overview
 
     Parameters
@@ -45,6 +44,14 @@ def display_overview(symbol: str):
         headers=[""],
         title=f"{symbol} Overview",
         show_index=True,
+    )
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "overview",
+        df_fa,
+        sheet_name,
     )
 
     console.print(f"Company Description:\n\n{df_fa.loc['Description'][0]}")
@@ -454,7 +461,7 @@ A mckee less than 0.5 indicates a high risk of fraud.
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
-        "dupont",
+        "fraud",
         df,
         sheet_name,
     )

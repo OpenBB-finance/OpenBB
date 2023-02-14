@@ -2,7 +2,8 @@
 __docformat__ = "numpy"
 
 import pandas as pd
-from openbb_terminal.economy import wsj_model, finviz_model
+
+from openbb_terminal.economy import finviz_model, wsj_model
 
 
 def futures(source="WSJ", future_type: str = "Indices") -> pd.DataFrame:

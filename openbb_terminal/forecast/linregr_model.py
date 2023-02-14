@@ -3,16 +3,14 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import Tuple, Union, List, Optional
 import warnings
-
+from typing import List, Optional, Tuple, Union
 
 import pandas as pd
-
 from darts import TimeSeries
 from darts.models import LinearRegressionModel
-from openbb_terminal.decorators import log_start_end
 
+from openbb_terminal.decorators import log_start_end
 from openbb_terminal.forecast import helpers
 
 logger = logging.getLogger(__name__)
@@ -29,6 +27,7 @@ def get_linear_regression_data(
     output_chunk_length: int = 5,
     lags: Union[int, List[int]] = 14,
     random_state: Optional[int] = None,
+    metric: str = "mape",
 ) -> Tuple[
     List[TimeSeries],
     List[TimeSeries],
@@ -58,6 +57,8 @@ def get_linear_regression_data(
         lagged target values to predict the next time step
     random_state: Optional[int]
         The state for the model
+    metric: str
+        The metric to use for the model. Defaults to "mape".
 
     Returns
     -------
@@ -114,4 +115,5 @@ def get_linear_regression_data(
         train_split,
         forecast_horizon,
         n_predict,
+        metric,
     )

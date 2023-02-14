@@ -27,6 +27,4 @@ load -t TICKER [-s START] [-e END] [-i {1,5,15,30,60}] [-p] [-f FILEPATH] [-m] [
 | filepath | Path to load custom file. | None | True | None |
 | monthly | Load monthly data | False | True | None |
 | weekly | Load weekly data | False | True | None |
-| iexrange | Range for using the iexcloud api. Longer range requires more tokens in account | ytd | True | ytd, 1y, 2y, 5y, 6m |
-
 ---
