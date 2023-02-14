@@ -91,7 +91,7 @@ jobs:
               build-essential \
               libsoup2.4-dev \
               libgtk-3-dev \
-              libsoup3-dev \
+              libsoup-3.0-dev \
               libssl-dev \
               curl \
               wget \
@@ -164,7 +164,7 @@ jobs:
               build-essential \
               libsoup2.4-dev \
               libgtk-3-dev \
-              libsoup3-dev \
+              libsoup-3.0-dev \
               libssl-dev \
               curl \
               wget \
