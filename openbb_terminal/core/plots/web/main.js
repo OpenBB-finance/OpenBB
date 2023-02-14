@@ -230,24 +230,6 @@ function OpenBBMain(plotly_figure) {
 
   // We check for the dark mode
   if (graphs.layout.template.layout.mapbox.style == "dark") {
-    /*
-        // We add a style tag to the head of the document
-        // to change the color of the update menu
-        let style = document.createElement('style');
-        style.innerHTML = `
-        .updatemenu-item-rect {
-            fill: transparent !important;
-        }
-        .updatemenu-item-rect:hover {
-            fill: #00ACFF !important;
-            background-color: transparent !important;
-        }
-        .updatemenu-item-text:hover {
-            fill: #d1030d !important;
-        }
-        `;
-        document.getElementsByTagName('head')[0].appendChild(style);
-        */
     document.body.style.backgroundColor = "#000000";
     graphs.layout.template.layout.paper_bgcolor = "#000000";
     graphs.layout.template.layout.plot_bgcolor = "#000000";
@@ -335,12 +317,12 @@ function OpenBBMain(plotly_figure) {
   if (window.save_image != undefined && window.export_image) {
 
     // We get the extension of the file and check if it is valid
-    let extension = window.export_image.split(".").pop();
+    const extension = window.export_image.split(".").pop().replace("jpg", "jpeg");
 
-    if (["jpg", "jpeg", "png", "svg"].includes(extension)) {
+    if (["jpeg", "png", "svg"].includes(extension)) {
       // We run Plotly.downloadImage to save the chart as an image
       Plotly.downloadImage(CHART_DIV, {
-        format: extension.replace("jpg", "jpeg"),
+        format: extension,
         width: CHART_DIV.clientWidth,
         height: CHART_DIV.clientHeight,
         filename: window.export_image.split("/").pop(),

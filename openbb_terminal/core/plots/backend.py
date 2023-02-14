@@ -271,7 +271,6 @@ async def download_plotly_js():
 
     except Exception as err:  # pylint: disable=W0703
         print(f"Error downloading plotly.js: {err}")
-        print("Plotly.js will not be available")
 
 
 # To avoid having plotly.js in the repo, we download it if it's not present
