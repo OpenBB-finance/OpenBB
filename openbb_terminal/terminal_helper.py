@@ -241,7 +241,7 @@ def is_auth_enabled() -> bool:
     # TODO: This function is a temporary way to block authentication
     return (
         str(os.getenv("OPENBB_ENABLE_AUTHENTICATION")).lower() == "true"
-        and "--login" in sys.argv[1:]
+        or "--login" in sys.argv[1:]
     )
 
 
