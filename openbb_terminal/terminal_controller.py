@@ -194,7 +194,7 @@ class TerminalController(BaseController):
         mt.add_menu("alternative")
         mt.add_menu("funds")
         mt.add_raw("\n")
-        mt.add_info("_others_")
+        mt.add_info("_toolkits_")
         mt.add_menu("econometrics")
         mt.add_menu("forecast")
         mt.add_menu("portfolio")
@@ -537,7 +537,7 @@ class TerminalController(BaseController):
             "The help menu shows the data sources supported by each command.\n\n"
             "For instance:\n"
             "[cmds]    load               load a specific stock ticker and additional info for analysis   [/cmds]"
-            "[src][YahooFinance, IEXCloud, AlphaVantage, Polygon, EODHD] [/src]\n\n"
+            "[src][YahooFinance, AlphaVantage, Polygon, EODHD] [/src]\n\n"
             "The user can go into the '[param]sources[/param]' menu and select their preferred default data source."
         )
         if input("") == "q":
