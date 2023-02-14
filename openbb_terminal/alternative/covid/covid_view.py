@@ -263,7 +263,7 @@ def display_covid_stat(
             stat,
             data,
             sheet_name,
-            figure=fig if fig.is_image_export(export) else None, # type: ignore
+            figure=fig if fig.is_image_export(export) else None,  # type: ignore
         )
 
 
