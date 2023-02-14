@@ -9,3 +9,6 @@ Cloud storage of routines:
     download           Download routine
     delete             Delete routine
 
+Authentication:
+    logout             Log out from OpenBB account
+

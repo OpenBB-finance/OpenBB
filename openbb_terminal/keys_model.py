@@ -5,6 +5,7 @@ __docformat__ = "numpy"
 
 import contextlib
 import io
+import json
 import logging
 import os
 import sys
@@ -35,7 +36,8 @@ from openbb_terminal.cryptocurrency.coinbase_helpers import (
 from openbb_terminal.helper_funcs import request
 from openbb_terminal.portfolio.brokers.degiro.degiro_model import DegiroModel
 from openbb_terminal.rich_config import console
-from openbb_terminal.session.hub_model import patch_user_configs
+from openbb_terminal.session.hub_model import BASE_URL, patch_user_configs
+from openbb_terminal.session.local_model import SESSION_FILE_PATH
 from openbb_terminal.session.user import User
 from openbb_terminal.terminal_helper import suppress_stdout
 
@@ -66,6 +68,7 @@ API_DICT: Dict = {
     "rh": "ROBINHOOD",
     "degiro": "DEGIRO",
     "oanda": "OANDA",
+    "openbb": "OPENBB",
     "binance": "BINANCE",
     "bitquery": "BITQUERY",
     "coinbase": "COINBASE",
@@ -243,7 +246,7 @@ def set_key(env_var_name: str, env_var_value: str, persist: bool = False) -> Non
         not User.is_guest()
         and User.is_sync_enabled()
         and env_var_name not in cfg.SENSITIVE_KEYS
-        and env_var_name.startswith("API_")
+        and (env_var_name.startswith("API_") or env_var_name.startswith("OPENBB_"))
     ):
         patch_user_configs(
             key=env_var_name,
@@ -280,14 +283,17 @@ def get_keys(show: bool = False) -> pd.DataFrame:
 
     # TODO: Refactor api variables without prefix API_ and extend API_SOURCE_KEY format
 
-    var_list = [v for v in dir(cfg) if v.startswith("API_")]
+    var_list = [v for v in dir(cfg) if v.startswith("API_") or v.startswith("OPENBB_")]
 
     current_keys = {}
 
     for cfg_var_name in var_list:
         cfg_var_value = getattr(cfg, cfg_var_name)
         if cfg_var_value != "REPLACE_ME":
-            current_keys[cfg_var_name[4:]] = cfg_var_value
+            if cfg_var_name.startswith("OPENBB_"):
+                current_keys[cfg_var_name] = cfg_var_value
+            else:
+                current_keys[cfg_var_name[4:]] = cfg_var_value
 
     if current_keys:
         df = pd.DataFrame.from_dict(current_keys, orient="index")
@@ -2478,6 +2484,86 @@ def check_stocksera_key(show_output: bool = False):
             status = KeyStatus.DEFINED_TEST_PASSED
         except Exception as _:  # noqa: F841
             logger.warning("Stocksera key defined, test failed")
+            status = KeyStatus.DEFINED_TEST_FAILED
+
+    if show_output:
+        console.print(status.colorize())
+    return str(status)
+
+
+def set_openbb_personal_access_token(
+    key: str, persist: bool = False, show_output: bool = False
+):
+    """Set OpenBB Personal Access Token.
+
+    Parameters
+    ----------
+    key: str
+        Personal Access Token
+    persist: bool, optional
+        If False, api key change will be contained to where it was changed. For example, a Jupyter notebook session.
+        If True, api key change will be global, i.e. it will affect terminal environment variables.
+        By default, False.
+    show_output: bool, optional
+        Display status string or not. By default, False.
+
+    Returns
+    -------
+    str
+        Status of key set
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> openbb.keys.openbb(key="example_key")
+    """
+    set_key("OPENBB_OPENBB_PERSONAL_ACCESS_TOKEN", key, persist)
+    return check_openbb_personal_access_token(show_output)
+
+
+def check_openbb_personal_access_token(show_output: bool = False):
+    """Check OpenBB Personal Access Token
+
+    Returns
+    -------
+    str
+        Status of key set
+    """
+    if cfg.OPENBB_PERSONAL_ACCESS_TOKEN == "REPLACE_ME":
+        logger.info("OpenBB Personal Access Token not defined")
+        status = KeyStatus.NOT_DEFINED
+    else:
+        try:
+            access_token = ""
+
+            # TODO: is there a better way to test the key?
+            # This requires a valid session file
+
+            if os.path.isfile(SESSION_FILE_PATH):
+                with open(SESSION_FILE_PATH) as f:
+                    access_token = json.load(f).get("access_token")
+
+            headers = {
+                "Authorization": f"Bearer {access_token}",
+                "Content-Type": "application/json",
+            }
+            response = request(
+                url=f"{BASE_URL}sdk/token", method="GET", headers=headers
+            )
+
+            token = response.json().get("token")
+
+            if (
+                response.status_code == 200
+                and token == cfg.OPENBB_PERSONAL_ACCESS_TOKEN
+            ):
+                logger.info("OpenBB Personal Access Token defined, test passed")
+                status = KeyStatus.DEFINED_TEST_PASSED
+            else:
+                logger.warning("OpenBB Personal Access Token. defined, test failed")
+                status = KeyStatus.DEFINED_TEST_FAILED
+        except requests.exceptions.RequestException:
+            logger.warning("OpenBB Personal Access Token. defined, test failed")
             status = KeyStatus.DEFINED_TEST_FAILED
 
     if show_output:
