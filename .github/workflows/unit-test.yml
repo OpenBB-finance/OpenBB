@@ -211,17 +211,17 @@ jobs:
           source $VENV
           pip list
 
+      - name: Start Terminal and exit
+        run: |
+          source $VENV
+          python terminal.py
+
       - name: Run tests
         env:
           MPLBACKEND: Agg
         run: |
           source $VENV
           pytest tests/ --optimization --autodoc
-
-      - name: Start Terminal and exit
-        run: |
-          source $VENV
-          python terminal.py
 
   tests-conda:
     name: Anaconda Python Tests - (${{ matrix.python-version }}, ${{ matrix.os }})
