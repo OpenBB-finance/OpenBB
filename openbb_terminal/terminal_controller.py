@@ -868,7 +868,11 @@ def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
         welcome_message()
 
         if first_time_user():
-            t_controller.call_intro(None)
+            try:
+                t_controller.call_intro(None)
+                # TDDO: Fix the CI
+            except EOFError:
+                pass
 
         t_controller.print_help()
         check_for_updates()
