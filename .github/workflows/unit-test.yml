@@ -6,6 +6,7 @@ env:
   OPENBB_USE_ION: false
   OPENBB_USE_PROMPT_TOOLKIT: false
   OPENBB_FILE_OVERWRITE: true
+  OPENBB_ENABLE_CHECK_API: false
   PIP_DEFAULT_TIMEOUT: 100
 
 on:
@@ -102,7 +103,7 @@ jobs:
       - name: Start Terminal and exit
         run: |
           source $VENV
-          yes "" | python terminal.py
+          python terminal.py
 
   tests-python:
     name: Vanilla Python Tests - ${{ matrix.python-version }}
@@ -129,7 +130,7 @@ jobs:
       - name: Install Poetry
         uses: snok/install-poetry@v1
         with:
-          version: 1.1.13
+          version: 1.3.2
           virtualenvs-create: true
           virtualenvs-in-project: true
 
@@ -160,7 +161,7 @@ jobs:
       - name: Start Terminal and exit
         run: |
           source $VENV
-          yes "" | python terminal.py
+          python terminal.py
 
   full-test:
     name: Full Test Suite - (${{ matrix.python-version }}, ${{ matrix.os }})
@@ -188,7 +189,7 @@ jobs:
       - name: Install Poetry
         uses: snok/install-poetry@v1
         with:
-          version: 1.1.13
+          version: 1.3.2
           virtualenvs-create: true
           virtualenvs-in-project: true
 
@@ -219,7 +220,7 @@ jobs:
       - name: Start Terminal and exit
         run: |
           source $VENV
-          yes "" | python terminal.py
+          python terminal.py
 
   tests-conda:
     name: Anaconda Python Tests - (${{ matrix.python-version }}, ${{ matrix.os }})
@@ -324,4 +325,4 @@ jobs:
 
       - name: Start Terminal and exit
         shell: bash -l {0}
-        run: yes "" | python terminal.py
+        run: python terminal.py

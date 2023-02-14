@@ -3,6 +3,7 @@ import os
 
 # IMPORTATION INTERNAL
 from openbb_terminal.base_helpers import load_env_vars, strtobool
+
 from .helper_classes import TerminalStyle as _TerminalStyle
 
 SENSITIVE_KEYS = [
@@ -193,6 +194,11 @@ API_TOKEN_TERMINAL_KEY = os.getenv("OPENBB_API_TOKEN_TERMINAL_KEY") or "REPLACE_
 
 # https://stocksera.pythonanywhere.com/accounts/developers
 API_STOCKSERA_KEY = os.getenv("OPENBB_API_STOCKSERA_KEY") or "REPLACE_ME"
+
+# https://my.openbb.co
+OPENBB_PERSONAL_ACCESS_TOKEN = (
+    os.getenv("OPENBB_OPENBB_PERSONAL_ACCESS_TOKEN") or "REPLACE_ME"
+)
 
 # https://intrinio.com/starter-plan
 API_INTRINIO_KEY = os.getenv("OPENBB_API_INTRINIO_KEY") or "REPLACE_ME"
