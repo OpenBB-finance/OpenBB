@@ -939,7 +939,7 @@ def terminal(jobs_cmds: List[str] = None, test_mode=False):
                 an_input = input(f"{get_flair()} / $ ")
 
         try:
-            if an_input == "logout":
+            if an_input == "logout" and is_auth_enabled():
                 break
 
             # Process the input command
@@ -987,7 +987,7 @@ def terminal(jobs_cmds: List[str] = None, test_mode=False):
                 console.print(f"[green]Replacing by '{an_input}'.[/green]")
                 t_controller.queue.insert(0, an_input)
 
-    if an_input == "logout":
+    if an_input == "logout" and is_auth_enabled():
         return session_controller.main()
 
 
