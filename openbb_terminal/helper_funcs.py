@@ -1339,6 +1339,7 @@ def export_data(
                     )
                 saved_path = saved_path.with_suffix(f".{exp_type}")
 
+            exists, overwrite = False, False
             is_xlsx = exp_type.endswith("xlsx")
             if sheet_name is None and is_xlsx or not is_xlsx:
                 exists, overwrite = ask_file_overwrite(saved_path)
