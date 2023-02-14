@@ -239,7 +239,10 @@ def is_auth_enabled() -> bool:
         If authentication is enabled
     """
     # TODO: This function is a temporary way to block authentication
-    return str(os.getenv("OPENBB_ENABLE_AUTHENTICATION")).lower() == "true"
+    return (
+        str(os.getenv("OPENBB_ENABLE_AUTHENTICATION")).lower() == "true"
+        or "--login" in sys.argv[1:]
+    )
 
 
 def is_installer() -> bool:

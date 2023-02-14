@@ -2,7 +2,7 @@ import multiprocessing
 import sys
 
 from openbb_terminal.base_helpers import load_dotenv_and_reload_configs
-from openbb_terminal.terminal_helper import is_auth_enabled, is_installer
+from openbb_terminal.terminal_helper import is_auth_enabled
 
 if __name__ == "__main__":
     multiprocessing.freeze_support()
@@ -17,7 +17,7 @@ if __name__ == "__main__":
     else:
         from openbb_terminal.session import session_controller
 
-        if is_auth_enabled() and (is_installer() or "--login" in sent_args):
+        if is_auth_enabled():
             session_controller.main()
         else:
             session_controller.launch_terminal()
