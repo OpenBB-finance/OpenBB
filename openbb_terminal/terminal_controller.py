@@ -51,7 +51,7 @@ from openbb_terminal.terminal_helper import (
     bootup,
     check_for_updates,
     is_auth_enabled,
-    is_packaged_application,
+    is_installer,
     is_reset,
     print_goodbye,
     reset,
@@ -67,7 +67,7 @@ logger = logging.getLogger(__name__)
 
 env_file = str(USER_ENV_FILE)
 
-if is_packaged_application():
+if is_installer():
     # Necessary for installer so that it can locate the correct certificates for
     # API calls and https
     # https://stackoverflow.com/questions/27835619/urllib-and-ssl-certificate-verify-failed-error/73270162#73270162
@@ -166,7 +166,7 @@ class TerminalController(BaseController):
         mt.add_cmd("about")
         mt.add_cmd("support")
         mt.add_cmd("survey")
-        if not is_packaged_application():
+        if not is_installer():
             mt.add_cmd("update")
         mt.add_cmd("wiki")
         mt.add_cmd("news")
@@ -356,7 +356,7 @@ class TerminalController(BaseController):
 
     def call_update(self, _):
         """Process update command."""
-        if not is_packaged_application():
+        if not is_installer():
             self.update_success = not update_terminal()
         else:
             console.print(
@@ -429,7 +429,7 @@ class TerminalController(BaseController):
 
     def call_dashboards(self, _):
         """Process dashboards command."""
-        if not is_packaged_application():
+        if not is_installer():
             from openbb_terminal.dashboards.dashboards_controller import (
                 DashboardsController,
             )
@@ -939,7 +939,7 @@ def terminal(jobs_cmds: List[str] = None, test_mode=False):
                 an_input = input(f"{get_flair()} / $ ")
 
         try:
-            if an_input == "logout":
+            if an_input == "logout" and is_auth_enabled():
                 break
 
             # Process the input command
@@ -987,7 +987,7 @@ def terminal(jobs_cmds: List[str] = None, test_mode=False):
                 console.print(f"[green]Replacing by '{an_input}'.[/green]")
                 t_controller.queue.insert(0, an_input)
 
-    if an_input == "logout":
+    if an_input == "logout" and is_auth_enabled():
         return session_controller.main()
 
 
