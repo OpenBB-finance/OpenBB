@@ -539,6 +539,9 @@ class OpenBBFigure(go.Figure):
         `bool`
             True if the export format is an image format, False otherwise
         """
+        if not export:
+            return False
+
         return any(ext in export for ext in ["jpg", "pdf", "png", "svg"])
 
     def set_title(
@@ -861,6 +864,8 @@ class OpenBBFigure(go.Figure):
             The path to export the figure image to, by default ""
         """
         if export_image and not plots_backend().isatty:
+            if isinstance(export_image, str):
+                export_image = Path(export_image).resolve()
             export_image.touch()
 
         if external:

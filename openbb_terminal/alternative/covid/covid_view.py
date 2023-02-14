@@ -235,6 +235,7 @@ def display_covid_stat(
         Flag to plot data
     """
     data = covid_model.get_covid_stat(country, stat, limit)
+
     if plot:
         fig = plot_covid_stat(country, stat, external_axes=raw or bool(export))
 
@@ -247,6 +248,9 @@ def display_covid_stat(
             title=f"[bold]{country} COVID {stat}[/bold]",
         )
     if export:
+        if not plot:
+            fig = OpenBBFigure()
+
         data["date"] = data.index
         data = data.reset_index(drop=True)
         # make sure date is first column in export
@@ -259,7 +263,7 @@ def display_covid_stat(
             stat,
             data,
             sheet_name,
-            figure=fig if fig.is_image_export(export) else None,
+            figure=fig if fig.is_image_export(export) else None, # type: ignore
         )
 
 

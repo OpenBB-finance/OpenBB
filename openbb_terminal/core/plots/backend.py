@@ -110,6 +110,9 @@ class Backend(PyWry):
             r"<[^>]*>", "", fig.layout.title.text if fig.layout.title.text else "Plots"
         )
 
+        if export_image and isinstance(export_image, str):
+            export_image = Path(export_image).resolve()
+
         self.outgoing.append(
             json.dumps(
                 {
@@ -120,7 +123,7 @@ class Backend(PyWry):
                 }
             )
         )
-        if export_image:
+        if export_image and isinstance(export_image, Path):
             self.loop.run_until_complete(self.process_image(export_image))
 
     async def process_image(self, export_image: Path):
