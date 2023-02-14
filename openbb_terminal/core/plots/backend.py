@@ -3,6 +3,7 @@ import atexit
 import json
 import os
 import re
+import subprocess
 import sys
 from pathlib import Path
 from typing import Optional, Union
@@ -147,7 +148,11 @@ class Backend(PyWry):
                 img_path.unlink(missing_ok=True)
                 renderPDF.drawToFile(drawing, str(export_image))
 
-            os.startfile(export_image)
+            if sys.platform == "win32":
+                os.startfile(export_image)
+            else:
+                opener = "open" if sys.platform == "darwin" else "xdg-open"
+                subprocess.check_call([opener, export_image])
 
     def send_table(self, df_table: pd.DataFrame, title: str = ""):
         """Sends table data to the backend to be displayed in a table.
