@@ -36,19 +36,23 @@ news -h
 Which prints the reference information on the screen:
 
 ```console
-usage: news [-d N_START_DATE] [-o] [-s SOURCES] [-h] [--export {csv,json,xlsx}] [-l LIMIT] [--source {Feedparser,NewsApi}]
+usage: news [-t TICKER] [-d N_START_DATE] [-o] [-s SOURCES] [-h] [--export EXPORT] [--sheet-name SHEET_NAME [SHEET_NAME ...]] [-l LIMIT]
+            [--source {Feedparser,NewsApi}]
 
 latest news of the company
 
 optional arguments:
+  -t TICKER, --ticker TICKER
+                        Ticker to get data for
   -d N_START_DATE, --date N_START_DATE
                         The starting date (format YYYY-MM-DD) to search articles from
   -o, --oldest          Show oldest articles first
   -s SOURCES, --sources SOURCES
                         Show news only from the sources specified (e.g bloomberg,reuters)
   -h, --help            show this help message
-  --export {csv,json,xlsx}
-                        Export raw data into csv, json, xlsx
+  --export EXPORT       Export raw data into csv, json, xlsx
+  --sheet-name SHEET_NAME [SHEET_NAME ...]
+                        Name of excel sheet to save data to. Only valid for .xlsx files.
   -l LIMIT, --limit LIMIT
                         Number of entries to show in data.
   --source {Feedparser,NewsApi}
@@ -57,21 +61,9 @@ optional arguments:
 For more information and examples, use 'about news' to access the related guide.
 ```
 
-### Data Sources
+The first step in many workflows will be to load a stock symbol with historical data. The amount, granularity, and market coverage will vary by source. Users can elect to subscribe to any of the data sources accordingly. While no API keys are required to get started using the Terminal, acquiring these credentials at the free level will enhance the user experience with additional functionality. Refer to the [API keys guide](https://docs.openbb.co/terminal/guides/advanced/api-keys) for links to obtain each.
 
-The first step in many workflows will be to load a stock symbol with historical data. The amount, granularity, and market coverage will vary by source. Users can elect to subscribe to any of the data sources accordingly. While no API keys are required to get started using the Terminal, acquiring these credentials at the free level will enhance the user experience with additional functionality. Refer to the [API keys guide](https://docs.openbb.co/terminal/guides/advanced/api-keys) for links to obtain each. The data sources used in the Stocks menu that require API credentials are:
-
-- AlphaVantage
-- EODHD
-- Financial Modeling Prep
-- News
-- Polygon
-- Quandl
-- Tradier
-
-The data source for each function is located on the right-side of the menu. In the image below, this is depicted by the text in [blue].
-
-![Stocks Menu](https://user-images.githubusercontent.com/85772166/205688600-afaf4663-37f7-492e-aa9b-7d5263abe27b.png "Stocks Menu")
+<img width="800" alt="image" src="https://user-images.githubusercontent.com/46355364/218974442-563cb216-623f-4f98-b2e1-9f1bb0e1a199.png">
 
 Attaching the source argument to a command enables users to select their preferred source. The default sources can be changed from the [`/sources` menu](https://docs.openbb.co/terminal/guides/advanced/changing-sources). To select the `source` as `NewsApi`, use the block below.
 
@@ -79,27 +71,7 @@ Attaching the source argument to a command enables users to select their preferr
 news --source NewsApi
 ```
 
-### Sub-Menus
-
-Access the sub-menus, like `Fundamental Analysis` and `Technical Analysis`, by entering the abbreviation on the left-side of the screen, beside `>`, and pressing return. Alternatively, navigation can take the form of absolute paths. This makes it possible to quickly jump between all menus, from anywhere.
-
-[Fundamental Analysis](https://docs.openbb.co/terminal/guides/intros/stocks/fa)
-
-```console
-/stocks/fa
-```
-
-[Technical Analysis](https://docs.openbb.co/terminal/guides/intros/common/ta)
-
-```console
-/stocks/ta
-```
-
-Let's get started using the Stocks menu with some examples.
-
 ## Examples
-
-### Load
 
 The `load` function is a starting point for most functions, and parameters can be adjusted for intraday and resolution. It has many optional arguments which can be displayed for reference by attaching, `-h`, or, `--help`, to any function. Entering:
 
@@ -110,12 +82,18 @@ load -h
 Prints the dialogue on the screen:
 
 ```console
+usage: load [-t TICKER] [-s START] [-e END] [-i {1,5,15,30,60}] [-p] [-f FILEPATH] [-m] [-w] [--exchange] [--performance] [-h] [--export EXPORT]
+            [--sheet-name SHEET_NAME [SHEET_NAME ...]] [--source {YahooFinance,AlphaVantage,Polygon,EODHD,Intrinio}]
+
+Load stock ticker to perform analysis on. When the data source is yf, an Indian ticker can be loaded by using '.NS' at the end, e.g. 'SBIN.NS'. See available market
+in https://help.yahoo.com/kb/exchanges-data-providers-yahoo-finance-sln2310.html.
+
 optional arguments:
   -t TICKER, --ticker TICKER
                         Stock ticker (default: None)
   -s START, --start START
-                        The starting date (format YYYY-MM-DD) of the stock (default: 2020-01-09)
-  -e END, --end END     The ending date (format YYYY-MM-DD) of the stock (default: 2023-01-13)
+                        The starting date (format YYYY-MM-DD) of the stock (default: 2020-02-11)
+  -e END, --end END     The ending date (format YYYY-MM-DD) of the stock (default: 2023-02-15)
   -i {1,5,15,30,60}, --interval {1,5,15,30,60}
                         Intraday stock minutes (default: 1440)
   -p, --prepost         Pre/After market hours. Only works for 'yf' source, and intraday data (default: False)
@@ -127,74 +105,78 @@ optional arguments:
   --performance         Show performance information. (default: False)
   -h, --help            show this help message (default: False)
   --export EXPORT       Export raw data into csv, json, xlsx (default: )
-  --source {YahooFinance,AlphaVantage,Polygon,EODHD}
+  --sheet-name SHEET_NAME [SHEET_NAME ...]
+                        Name of excel sheet to save data to. Only valid for .xlsx files. (default: None)
+  --source {YahooFinance,AlphaVantage,Polygon,EODHD,Intrinio}
                         Data source to select from (default: YahooFinance)
+
+For more information and examples, use 'about load' to access the related guide.
 ```
 
 By default, a daily period, with three-years of OHLC+V data, from YahooFinance, is loaded to memory. Use the default settings like this:
 
 ```console
-load SPY
+load MSFT
 ```
 
 A message will print indicating the starting date from which the data begins.
 
 ```console
-Loading Daily data for SPY with starting period 2019-11-27.
+Loading Daily data for MSFT with starting period 2019-11-27.
 ```
 
 A simple way to get the entire history available from a source is to use an arbitrary starting date from a long time ago, like `1900-01-01`.
 
 ```console
-load SPY -s 1990-01-01
+load MSFT -s 1990-01-01
 ```
 
 The console print indicates the first date of history, provided by this source, is January 29, 1993.
 
 ```console
-Loading Daily data for SPY with starting period 1993-01-29.
+Loading Daily data for MSFT with starting period 1993-01-29.
 ```
 
 A range-bound window can also be loaded; for example, the dot-com era:
 
 ```console
-load SPY -s 1997-01-01 -e 2003-01-01
+load MSFT -s 1997-01-01 -e 2003-01-01
 ```
 
 The interval of the data can also be set as weekly or monthly; `-w` for weekly, and `-m` for monthly candles. The data will now start on a Monday or at the beginning of a month.
 
 ```console
-load SPY -s 1997-01-01 -e 2003-01-01 -w
+load MSFT -s 1997-01-01 -e 2003-01-01 -w
 ```
 
 Intraday data is also requested this way, only using the `-i` or `--interval` argument. One-minute data can be loaded like this:
 
 ```console
-load SPY -i 1
+load MSFT -i 1
 ```
 
 The performance table will not be displayed with intraday data, and we can see that five-days of one-minute candles are available from YahooFinance.
 
 ```console
-Loading Intraday 1min data for SPY with starting period 2022-11-25.
+Loading Intraday 1min data for MSFT with starting period 2022-11-25.
 ```
 
 This can be augmented further by adding pre/post market price candles. The `-p` flag is only applicable to YahooFinance, Polygon will automatically include the candles from 4AM-8PM US/Eastern when intraday is selected.
 
 ```console
-load spy -i 1 -p
+load MSFT -i 1 -p
 ```
 
 Data can also be exported directly from the `load` function as a CSV, JSON, or XLSX file. The file is created in the OpenBBUserData folder.
 
 ```console
-load spy -s 1990-01-01 -m --export spy_monthly.csv
+load MSFT -s 1990-01-01 -m --export msft_monthly.csv
 ```
 
 ```console
-Loading Daily data for SPY with starting period 1993-02-01.
+Loading Daily data for MSFT with starting period 1993-02-01.
 
-Saved file: /Users/{username}/OpenBBUserData/exports/spy_monthly.csv
+Saved file: /Users/{username}/OpenBBUserData/exports/msft_monthly.csv
 ```
 
 Exported files can also be loaded by declaring the `--file` argument. Place the file to import in the folder: `OpenBBUserData/custom_imports/stocks`
@@ -204,10 +186,14 @@ Exported files can also be loaded by declaring the `--file` argument. Place the 
 The `candle` command displays a chart of the loaded symbol. It needs no arguments to display, but modifiers can enhance the content of the chart. Commands can also be sequenced together with a `/` separating each individual command.
 
 ```console
-/stocks/load SPY -s 1990-01-01 -m/candle
+(🦋) /stocks/ $ load MSFT
+
+cLoading Daily data for MSFT with starting period 2020-02-11.
+
+(🦋) /stocks/ $ candle
 ```
 
-![candle](https://user-images.githubusercontent.com/85772166/205693156-18328092-f423-4a9b-a3c3-47319b3d27b3.png "candle")
+![candle](https://user-images.githubusercontent.com/46355364/218981911-90d38930-a621-43cc-873a-1c55db842e95.png)
 
 The help dialogue for the `candle` command shows how this chart can be supplemented with additional data; specifically, `-t` for trend, `--ma` for moving averages, and `--log` for a log scale.
 
@@ -218,22 +204,27 @@ candle -h
 Which prints to screen:
 
 ```console
-usage: candle [-p] [--sort {adjclose,open,close,high,low,volume,returns,logret}] [-r] [--raw] [-t] [--ma MOV_AVG] [--log] [-h] [--export {csv,json,xlsx,png,jpg,pdf,svg}] [-l LIMIT]
+usage: candle [-t TICKER] [-p] [--sort {adjclose,open,close,high,low,volume,returns,logret}] [-r] [--raw] [--trend] [--ma MOV_AVG] [--log] [-h] [--export EXPORT] [--sheet-name SHEET_NAME [SHEET_NAME ...]] [-l LIMIT]
 
 Shows historic data for a stock
 
 optional arguments:
+  -t TICKER, --ticker TICKER
+                        Ticker to analyze (default: None)
   -p, --plotly          Flag to show interactive plotly chart (default: True)
   --sort {adjclose,open,close,high,low,volume,returns,logret}
                         Choose a column to sort by. Only works when raw data is displayed. (default: )
-  -r, --reverse         Data is sorted in descending order by default. Reverse flag will sort it in an ascending way. Only works when raw data is displayed. (default: False)
+  -r, --reverse         Data is sorted in descending order by default. Reverse flag will sort it in an ascending way. Only works when raw data is displayed.
+                        (default: False)
   --raw                 Shows raw data instead of chart. (default: False)
-  -t, --trend           Flag to add high and low trends to candle (default: False)
-  --ma MOV_AVG          Add moving average in number of days to plot and separate by a comma. Value for ma (moving average) keyword needs to be greater than 1. (default: None)
+  --trend               Flag to add high and low trends to candle (default: False)
+  --ma MOV_AVG          Add moving average in number of days to plot and separate by a comma. Value for ma (moving average) keyword needs to be greater than 1.
+                        (default: None)
   --log                 Plot with y axis on log scale (default: False)
   -h, --help            show this help message (default: False)
-  --export {csv,json,xlsx,png,jpg,pdf,svg}
-                        Export raw data into csv, json, xlsx and figure into png, jpg, pdf, svg (default: )
+  --export EXPORT       Export raw data into csv, json, xlsx and figure into png, jpg, pdf, svg (default: )
+  --sheet-name SHEET_NAME [SHEET_NAME ...]
+                        Name of excel sheet to save data to. Only valid for .xlsx files. (default: None)
   -l LIMIT, --limit LIMIT
                         Number of entries to show in data. (default: 20)
 
@@ -243,14 +234,10 @@ For more information and examples, use 'about candle' to access the related guid
 Be sure to adjust the values for moving averages to correspond with the interval of the data loaded. Below adds movings averages for one and four year periods (because data loaded is monthly), and changes the y-axis to a log-scale.
 
 ```console
-candle --ma 12,48 --log
+candle --ma 20,30 --log
 ```
 
-![candle](https://user-images.githubusercontent.com/85772166/205697995-f4032ab5-143b-461b-a016-5b8e91a40374.png "candle")
-
-The look and feel of the `candle` chart can be altered with [custom style sheets](https://matplotlib.org/stable/tutorials/introductory/customizing.html#the-default-matplotlibrc-file) placed in `OpenBBUserData/styles/user`.
-
-### News
+![candle moving average log](https://user-images.githubusercontent.com/46355364/218982220-411e780a-aa8d-436e-b2db-3c95a981b6eb.png)
 
 Get ticker-related news headlines by entering `news` after loading a ticker.
 
@@ -261,44 +248,42 @@ news --source NewsApi
 The output will look like:
 
 ```console
-135 news articles for  SPDR+S&P+500 were found since 2022-11-24
+(🦋) /stocks/ $ news --source NewsApi
 
-              Earnings Results: Big Lots to address weak results with even lower prices: ‘We will own bargains and treasures’
-┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-┃ Content                                                                                                                                  ┃
-┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
-│ 2022-12-01 18:41:00                                                                                                                      │
-├──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┤
-│ Big Lots says it will address weak results by leaning into bargains and treasures in a much bigger way.                                  │
-├──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┤
-│ https://www.marketwatch.com/story/big-lots-to-address-weak-results-with-even-lower-prices-we-will-own-bargains-and-treasures-11669920117 │
-└──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+346 news articles for Tesla,+Inc. were found since 2023-02-08
 
-                                     Costco's Sales Update Slams the Stock. Strong Grocery Sales Weren't Enough.
-┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-┃ Content                                                                                                                                            ┃
-┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
-│ 2022-12-01 17:48:00                                                                                                                                │
-├────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┤
-│ Sales of food and sundries climbed by double digits, while, non-food categories were largely lower, hurt by products like electronics and jewelry. │
-├────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┤
-│ https://www.barrons.com/articles/costco-november-sales-51669916824                                                                                 │
-└────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
-
-                                                      Investors Pull $8 Billion From Major Stock ETFs
-┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-┃ Content                                                                                                                                                 ┃
-┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
-│ 2022-12-01 17:34:05                                                                                                                                     │
-├─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┤
-│ (Bloomberg) -- Exchange-traded fund investors took Wednesday’s stock-market surge as an opportunity to offload $8 billion of holdings in two of the     │
-│ biggest equity funds. Most Read from Bloomberg Investors pulled $5.8 billion from the $380 billion SPDR S&P 500…                                        │
-├─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┤
-│ https://biztoc.com/x/b81c9c421015a955                                                                                                                   │
-└─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+                                         Elon Musk says he may lead Twitter for almost another year
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Content                                                                                                                                   ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ 2023-02-15 07:57:55                                                                                                                       │
+├───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ The billionaire executive embarked on a search for a new CEO for Twitter in December, a person familiar with the search said at the time. │
+├───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ https://www.moneycontrol.com/news/world/elon-musk-says-he-may-lead-twitter-for-almost-another-year-10088481.html                          │
+└───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+                                                   Elon Musk Gave $1.9 Billion of Tesla Shares to Charity Last Year
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Content                                                                                                                                                            ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ 2023-02-15 06:46:08                                                                                                                                                │
+├────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ Tesla CEO Elon Musk now owns around 13% of the company. Elon Musk donated roughly $1.9 billion of Tesla Inc. stock to charity last year, according to a regulatory │
+│ filing made Tuesday. Mr. Musk, Tesla’s chief executive, reported having donated roughly 11.6 mil…                                                                  │
+├────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ https://biztoc.com/x/99aa746544171bae                                                                                                                              │
+└────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+                           Elon Musk Aims to Find Twitter CEO Successor Toward End of 2023
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Content                                                                                                           ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ 2023-02-15 06:14:49                                                                                               │
+├───────────────────────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ Elon Musk is aiming to find his successor to lead Twitter Inc. as chief executive officer toward the end of 2023. │
+├───────────────────────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ https://www.bloomberg.com/news/articles/2023-02-15/musk-aims-to-replace-himself-as-twitter-ceo-toward-end-of-2023 │
+└───────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
-
-### TOB
 
 The `tob` function is the "Top of Book", and it returns data during market hours.
 
@@ -325,8 +310,6 @@ Which displays an output like:
 └──────────┴───────────┴───────────┴──────────┘
 ```
 
-### Quote
-
 Get the current market price, during exchange hours.
 
 ```console
@@ -336,35 +319,57 @@ quote
 Displays a table:
 
 ```console
-          Ticker Quote
-┏━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━┓
-┃                ┃ SPY          ┃
-┡━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━┩
-│ Name           │ SPDR S&P 500 │
-├────────────────┼──────────────┤
-│ Price          │ 407.69       │
-├────────────────┼──────────────┤
-│ Open           │ 408.77       │
-├────────────────┼──────────────┤
-│ High           │ 410.00       │
-├────────────────┼──────────────┤
-│ Low            │ 404.75       │
-├────────────────┼──────────────┤
-│ Previous Close │ 407.68       │
-├────────────────┼──────────────┤
-│ Volume         │ 52,458,993   │
-├────────────────┼──────────────┤
-│ 52 Week High   │ 479.98       │
-├────────────────┼──────────────┤
-│ 52 Week Low    │ 348.11       │
-├────────────────┼──────────────┤
-│ Change         │ 0.01         │
-├────────────────┼──────────────┤
-│ Change %       │ 0.00%        │
-└────────────────┴──────────────┘
-```
+(🦋) /stocks/ $ quote
 
-### Codes
+                  TSLA Quote
+┏━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━┓
+┃                       ┃                     ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━┩
+│ Symbol                │ TSLA                │
+├───────────────────────┼─────────────────────┤
+│ Name                  │ Tesla, Inc.         │
+├───────────────────────┼─────────────────────┤
+│ Price                 │ 209.25              │
+├───────────────────────┼─────────────────────┤
+│ Changes percentage    │ 7.51                │
+├───────────────────────┼─────────────────────┤
+│ Change                │ 14.61               │
+├───────────────────────┼─────────────────────┤
+│ Day low               │ 189.45              │
+├───────────────────────┼─────────────────────┤
+│ Day high              │ 209.82              │
+├───────────────────────┼─────────────────────┤
+│ Year high             │ 384.29              │
+├───────────────────────┼─────────────────────┤
+│ Year low              │ 101.81              │
+├───────────────────────┼─────────────────────┤
+│ Market cap            │ 662.088 B           │
+├───────────────────────┼─────────────────────┤
+│ Price avg50           │ 152.95              │
+├───────────────────────┼─────────────────────┤
+│ Price avg200          │ 225.47              │
+├───────────────────────┼─────────────────────┤
+│ Exchange              │ NASDAQ              │
+├───────────────────────┼─────────────────────┤
+│ Volume                │ 214.769 M           │
+├───────────────────────┼─────────────────────┤
+│ Avg volume            │ 156755621           │
+├───────────────────────┼─────────────────────┤
+│ Open                  │ 191.94              │
+├───────────────────────┼─────────────────────┤
+│ Previous close        │ 194.64              │
+├───────────────────────┼─────────────────────┤
+│ Eps                   │ 3.44                │
+├───────────────────────┼─────────────────────┤
+│ Pe                    │ 60.83               │
+├───────────────────────┼─────────────────────┤
+│ Earnings announcement │ 2023-04-18 10:59:00 │
+├───────────────────────┼─────────────────────┤
+│ Shares outstanding    │ 3.164 B             │
+├───────────────────────┼─────────────────────┤
+│ Timestamp             │ 1676408405          │
+└───────────────────────┴─────────────────────┘
+```
 
 `codes` prints the CIK, Composite FIGI, Share Class FIGI, and SIC codes - when available - for a US-listed stock. This function requires a free API key from Polygon.
 
@@ -389,8 +394,6 @@ Prints the output:
 └──────────────────┴──────────────┘
 ```
 
-### Search
-
 The `search` function provides a way to find stocks by name, region, sector, industry and exchange location. The results can be easily exported as a CSV, JSON, or XLSX file.
 
 ```console
@@ -402,8 +405,8 @@ Prints the help dialogue for the command:
 ```console
 usage: search [-q QUERY [QUERY ...]] [-c country] [-s sector] [-i industry] [-e exchange] [-a] [-h] [--export EXPORT] [--sheet-name SHEET_NAME [SHEET_NAME ...]] [-l LIMIT]
 
-Show companies matching the search query, country, sector, industry and/or exchange. Note that by default only the United States exchanges are searched which tend to contain the most extensive
-data for each company. To search all exchanges use the --all-exchanges flag.
+Show companies matching the search query, country, sector, industry and/or exchange. Note that by default only the United States exchanges are searched which tend
+to contain the most extensive data for each company. To search all exchanges use the --all-exchanges flag.
 
 optional arguments:
   -q QUERY [QUERY ...], --query QUERY [QUERY ...]

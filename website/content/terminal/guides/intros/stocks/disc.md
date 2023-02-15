@@ -5,7 +5,7 @@ description: Introducing the Discovery menu, within the Stocks menu. This guide 
 ---
 The set of features within the Stocks Discovery submenu provides tools for discovering trade setups, for following trends, and for staying up with current events. Enter the menu from the <a href="/terminal/guides/intros/stocks/" target="_blank" rel="noreferrer noopener">Stocks menu</a> by typing, `disc`, and pressing, `ENTER` (⏎). Absolute path jumping is possible from anywhere, to anywhere. For example, jumping from the Portfolio Optimization submenu to the Stocks Discovery submenu:
 
-<img alt="Absolute path jumping to the Stocks Discovery submenu" src="https://user-images.githubusercontent.com/46355364/171173438-0bc7569e-1627-41a6-b9dc-5f5682fc2436.png"></img>
+<img width="800" alt="image" src="https://user-images.githubusercontent.com/46355364/218979936-5d842b62-8c0d-4800-bf7f-0fed8d70c073.png">
 
 ### How to use
 

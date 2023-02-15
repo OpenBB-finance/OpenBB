@@ -6,7 +6,7 @@ description: This guide introduces the Government submenu, within the Stocks men
 
 The features in this menu are intended to show the reported trades of elected officials, lobbyist activity, awarded contracts, and general spending of the United States Treasury Department. This menu only covers the USA, or companies that trade on US exchanges. The information in this menu is compiled by <a href="https://www.quiverquant.com/" target="_blank" rel="noreferrer noopener">QuiverQuant</a>. A ticker is not required to enter the menu; navigate there from anywhere in the terminal with absolute path jumping: `/stocks/gov`
 
-![The Government Menu](https://user-images.githubusercontent.com/85772166/173205843-1d9d5679-df73-4ec3-8b98-937f38ccac35.png)
+<img width="800" alt="image" src="https://user-images.githubusercontent.com/46355364/218980419-0535a83d-76c9-4079-a973-7bcd267038bb.png">
 
 ### How to use
 
