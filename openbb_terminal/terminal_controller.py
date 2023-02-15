@@ -24,7 +24,6 @@ from prompt_toolkit.styles import Style
 from rich import panel
 
 from openbb_terminal import feature_flags as obbff
-from openbb_terminal.base_helpers import load_dotenv
 from openbb_terminal.common import feedparser_view
 from openbb_terminal.core.config.paths import (
     HOME_DIRECTORY,
@@ -1176,7 +1175,6 @@ def main(
 
 def parse_args_and_run():
     """Parse input arguments and run terminal."""
-    load_dotenv()
     parser = argparse.ArgumentParser(
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="terminal",
@@ -1221,8 +1219,6 @@ def parse_args_and_run():
     parser.add_argument(
         "--login",
         action="store_true",
-        default=is_auth_enabled(),
-        dest="login",
         help="Go to login prompt.",
     )
     # The args -m, -f and --HistoryManager.hist_file are used only in reports menu
@@ -1260,17 +1256,14 @@ def parse_args_and_run():
         else:
             sys.exit(-1)
 
-    if ns_parser.login:
-        session_controller.main()
-    else:
-        main(
-            ns_parser.debug,
-            ns_parser.path,
-            ns_parser.routine_args,
-            module=ns_parser.module,
-            module_file=ns_parser.module_file,
-            module_hist_file=ns_parser.module_hist_file,
-        )
+    main(
+        ns_parser.debug,
+        ns_parser.path,
+        ns_parser.routine_args,
+        module=ns_parser.module,
+        module_file=ns_parser.module_file,
+        module_hist_file=ns_parser.module_hist_file,
+    )
 
 
 if __name__ == "__main__":
