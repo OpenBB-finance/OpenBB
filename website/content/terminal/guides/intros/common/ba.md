@@ -6,41 +6,11 @@ description: The Behavioural Analysis menu offers the user tools for gauging the
 
 The Behavioural Analysis menu offers the user tools for gauging the overall public sentiment of a company online. The complexity of the tools range from message board scrapers to deep learning algorithms for financial analysis and prediction. Sentiment is particularly useful for momentum trading strategies, discovery, and general fundamental research. Navigate into the menu from the <a href="/terminal/guides/intros/stocks/" target="_blank" rel="noreferrer noopener">Stocks</a> menu by entering, `ba`; or, using absolute paths from anywhere in the Terminal: `/stocks/ba`
 
-<img alt="The Behavioural Analysis submenu" src="https://user-images.githubusercontent.com/46355364/170242317-ae66ed0b-f2e8-4304-9231-ea833d01e0e2.png"></img>
+<img width="800" alt="image" src="https://user-images.githubusercontent.com/46355364/218975466-a52343f6-9f43-4ecc-88ac-f47afbd7f128.png"></img>
 
 ### How to use
 
-The commands with text, representing <a href="https://docs.openbb.co/terminal/guides/basics" target="_blank" rel="noreferrer noopener">commands</a>, do not require a ticker, faded commands will turn light blue when there is a ticker loaded.
-
-```
-(🦋) /stocks/ba/ $ load gme
-
-Loading Daily GME stock with starting period 2019-05-20 for analysis.
-
-Datetime: 2022 May 23 12:13
-Timezone: America/New_York
-Currency: USD
-Market:   CLOSED
-Company:  GameStop Corporation
-
-(🦋) /stocks/ba/ $ ?
-```
-
-<img alt="The Behavioural Analysis Menu with a loaded ticker" src="https://user-images.githubusercontent.com/46355364/170242757-3e29f690-7d29-4fe2-9e14-889c43e3142e.png"></img>
-
-Some data sources will require a valid API key, which can be obtained for free and then set using the Keys menu. To use all the features in this menu, obtain free API keys from these providers:
-
-- <a href="https://finnhub.io/" target="_blank" rel="noreferrer noopener">Finnhub</a><br/>
-- <a href="https://developer.twitter.com/" target="_blank" rel="noreferrer noopener">Twitter</a><br/>
-- <a href="https://old.reddit.com/prefs/apps/" target="_blank" rel="noreferrer noopener">Reddit</a><br/>
-- <a href="https://sentimentinvestor.com/" target="_blank" rel="noreferrer noopener">Sentiment
-  Investor</a><br/>
-
-See the <a href="/terminal/guides/advanced/api-keys" target="_blank" rel="noreferrer noopener">Set API keys</a> for help with API keys in the Terminal.
-
-### Examples
-
-As with every command, using the `-h` argument displays the help dialogue. Running the <a href="/terminal/reference/stocks/ba/headlines/" target="_blank" rel="noreferrer noopener">headlines</a> command returns the following:
+Some data sources will require a valid API key, which can be obtained for free and then set using the [Keys menu](https://docs.openbb.co/terminal/guides/advanced/api-keys). As with every command, using the `-h` argument displays the help dialogue. Running the <a href="/terminal/reference/stocks/ba/headlines/" target="_blank" rel="noreferrer noopener">headlines</a> command returns the following:
 
 ```
 (🦋) /stocks/ba/ $ headlines

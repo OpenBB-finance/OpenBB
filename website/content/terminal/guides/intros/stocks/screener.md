@@ -5,7 +5,7 @@ description: This guide introduces the Stock Screener, within the Stocks menu, b
 ---
 The Stock sScreener menu is a diverse tool for stock discovery. There are categories of statistics to use as metrics to sort the criteria defined in the preset file. The preset files are `.ini` files stored locally in the application folder: `~/OpenBBUserData/presets/stocks/screener` and they can be modified in any text editor. Get to the Stock Screener from the `Stocks` menu by typing `scr` and then pressing `enter`.
 
-<img width="1412" alt="The Stock Screener submenu" src="https://user-images.githubusercontent.com/85772166/173902919-2577b42a-f46a-4734-b153-9ccf498e3443.png"></img>
+<img width="800" alt="image" src="https://user-images.githubusercontent.com/46355364/218983524-8f86cdc8-e504-4b56-82d6-6d4e95c33c68.png"></img>
 
 ### How to use
 
@@ -54,11 +54,11 @@ To get started, simply choose one of the categories, like `technical`.
 
 The columns can be sorted with the optional argument `-s`, and autocomplete will present a list of choices.
 
-<img width="1132" alt="Sorting results" src="https://user-images.githubusercontent.com/85772166/173903096-0643a64f-4482-4de9-832b-d654af532a10.png"></img>
+<img width="800" alt="Sorting results" src="https://user-images.githubusercontent.com/85772166/173903096-0643a64f-4482-4de9-832b-d654af532a10.png"></img>
 
 To see a description of each preset, use `view`, and autocomplete will allow the user to scroll presets with the arrow keys to `set` the choice.
 
-<img width="1412" alt="Autocomplete with the set function" src="https://user-images.githubusercontent.com/85772166/173903152-c59f37f7-9b90-47ee-8ad1-87bb5939caa0.png"></img>
+<img width="800" alt="image" src="https://user-images.githubusercontent.com/46355364/218983695-c5efd052-e30e-44c1-80dd-2de0044c4e2c.png"></img>
 
 ### Examples
 
