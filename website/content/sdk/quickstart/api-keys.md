@@ -16,7 +16,7 @@ Which prints:
 
 ```console
     Set Reddit key
-    
+  
     Parameters
     ----------
     client_id: str
@@ -39,7 +39,7 @@ Which prints:
     -------
     str
         Status of key set
-    
+  
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
@@ -652,7 +652,7 @@ openbb.keys.santiment(key = 'REPLACE_WITH_KEY', persist = True)
 ### ShroomDK
 
 <details>
-<summary>Go to: https://app.santiment.net</summary>
+<summary>Go to: https://sdk.flipsidecrypto.xyz/shroomdk</summary>
 
 ![ShroomDK](https://user-images.githubusercontent.com/46355364/207850122-b8cd225e-0a65-4ea8-8069-0b40fff1600e.png)
 

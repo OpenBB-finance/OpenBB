@@ -606,7 +606,7 @@ Add it to the OpenBB Terminal by entering:
 ### ShroomDK
 
 <details>
-<summary>Go to: https://app.santiment.net</summary>
+<summary>Go to: https://sdk.flipsidecrypto.xyz/shroomdk</summary>
 
 ![ShroomDK](https://user-images.githubusercontent.com/46355364/207850122-b8cd225e-0a65-4ea8-8069-0b40fff1600e.png)
 
@@ -618,7 +618,7 @@ Once created, connect a wallet to complete minting the NFT license. The API key 
 
 ![ShroomDK](https://user-images.githubusercontent.com/46355364/207850380-b59554af-1e65-4616-921d-e02c9ecf1aad.png)
 
-Enter it into the OpenBB Terminal by typing,
+Enter it into the OpenBB Terminal by typing:
 
 ```console
 /keys/shroom REPLACE_WITH_KEY
