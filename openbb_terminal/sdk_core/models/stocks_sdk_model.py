@@ -252,6 +252,7 @@ class StocksFundamentalAnalysis(Category):
         `dcf`: Get stocks dcf from FMP\n
         `dcfc`: Get stocks dcf from FMP\n
         `divs`: Get historical dividend for ticker\n
+        `divs_chart`: Display historical dividends\n
         `dupont`: Get dupont ratios\n
         `earnings`: Get earnings data.\n
         `enterprise`: Financial Modeling Prep ticker enterprise\n
@@ -304,6 +305,7 @@ class StocksFundamentalAnalysis(Category):
         self.dcf = lib.stocks_fa_fmp_model.get_dcf
         self.dcfc = lib.stocks_fa_fmp_model.get_dcf
         self.divs = lib.stocks_fa_yahoo_finance_model.get_dividends
+        self.divs_chart = lib.stocks_fa_yahoo_finance_view.display_dividends
         self.dupont = lib.stocks_fa_av_model.get_dupont
         self.earnings = lib.stocks_fa_sdk_helpers.earnings
         self.enterprise = lib.stocks_fa_fmp_model.get_enterprise

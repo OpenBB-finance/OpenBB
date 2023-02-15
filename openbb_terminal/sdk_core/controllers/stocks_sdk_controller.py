@@ -161,6 +161,7 @@ class StocksController(model.StocksRoot):
             `dcf`: Get stocks dcf from FMP\n
             `dcfc`: Get stocks dcf from FMP\n
             `divs`: Get historical dividend for ticker\n
+            `divs_chart`: Display historical dividends\n
             `dupont`: Get dupont ratios\n
             `earnings`: Get earnings data.\n
             `enterprise`: Financial Modeling Prep ticker enterprise\n
