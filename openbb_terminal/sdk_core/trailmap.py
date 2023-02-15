@@ -1,7 +1,6 @@
 import importlib
 import inspect
 from pathlib import Path
-import sys
 from types import FunctionType
 from typing import Dict, List, Optional
 
@@ -135,7 +134,7 @@ def get_trailmaps(sort: bool = False) -> List[Trailmap]:
             f"[bold red]{error} is disabled and will not be included in the SDK.[/bold red]"
         )
         console.print(
-            f"[bold red]`poetry install -E all` to install all toolkits.[/bold red]"
+            "[bold red]`poetry install -E all` to install all toolkits.[/bold red]"
         )
 
     def load():
