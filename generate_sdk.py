@@ -122,10 +122,7 @@ class BuildCategoryModelClasses:
 
     def check_submodules(self, category: str) -> bool:
         """Checks if a category has submodules."""
-        for d in self.categories[category].values():
-            if isinstance(d, dict):
-                return True
-        return False
+        return any(isinstance(d, dict) for d in self.categories[category].values())
 
     def write_init_imports(self, importstr: str, filestr: str) -> None:
         """Checks if a category has submodules and adds the imports to the init file."""
@@ -172,7 +169,7 @@ class BuildCategoryModelClasses:
         subcat : Optional[str], optional
             The subcategory name, by default None
         """
-        def_name = category if not subcat else subcat
+        def_name = subcat if subcat else category
         if subcat:
             subcat = f" {self.get_subcat_fullname(subcat)}"
 

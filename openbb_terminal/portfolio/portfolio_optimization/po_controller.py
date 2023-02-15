@@ -568,7 +568,9 @@ class PortfolioOptimizationController(BaseController):
             else:
                 self.current_file = " ".join(ns_parser.file)
 
-                file_location = self.optimization_file_map.get(self.current_file, self.current_file)
+                file_location = self.optimization_file_map.get(
+                    self.current_file, self.current_file
+                )
                 self.params, self.current_model = params_view.load_file(file_location)
 
     @log_start_end(log=logger)
@@ -2203,7 +2205,11 @@ class PortfolioOptimizationController(BaseController):
                 p_views = ns_parser.p_views
                 q_views = ns_parser.q_views
 
-            benchmark = None if ns_parser.benchmark is None else self.portfolios[ns_parser.benchmark.upper()]
+            benchmark = (
+                None
+                if ns_parser.benchmark is None
+                else self.portfolios[ns_parser.benchmark.upper()]
+            )
 
             table = True
             if "historic_period_sa" in vars(ns_parser):

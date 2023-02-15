@@ -171,7 +171,11 @@ def print_insider_filter(
     export : str
         Format to export data
     """
-    link = f"http://openinsider.com/screener?s={symbol}" if symbol else get_open_insider_link(preset)
+    link = (
+        f"http://openinsider.com/screener?s={symbol}"
+        if symbol
+        else get_open_insider_link(preset)
+    )
 
     if not link:
         return

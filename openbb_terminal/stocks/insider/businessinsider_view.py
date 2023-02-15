@@ -145,10 +145,16 @@ def insider_activity(
                 .sum(numeric_only=True)
                 .index
             ):
-                ind_dt = ind if ind in data.index else get_next_stock_market_days(ind, 1)[0]
+                ind_dt = (
+                    ind if ind in data.index else get_next_stock_market_days(ind, 1)[0]
+                )
 
                 n_stock_price = 0
-                n_stock_price = data["Adj Close"][ind_dt] if interval == "1440min" else data["Close"][ind_dt]
+                n_stock_price = (
+                    data["Adj Close"][ind_dt]
+                    if interval == "1440min"
+                    else data["Close"][ind_dt]
+                )
 
                 bar_1 = ax.vlines(
                     x=ind_dt,
@@ -172,10 +178,16 @@ def insider_activity(
                 .sum(numeric_only=True)
                 .index
             ):
-                ind_dt = ind if ind in data.index else get_next_stock_market_days(ind, 1)[0]
+                ind_dt = (
+                    ind if ind in data.index else get_next_stock_market_days(ind, 1)[0]
+                )
 
                 n_stock_price = 0
-                n_stock_price = data["Adj Close"][ind_dt] if interval == "1440min" else data["Close"][ind_dt]
+                n_stock_price = (
+                    data["Adj Close"][ind_dt]
+                    if interval == "1440min"
+                    else data["Close"][ind_dt]
+                )
 
                 bar_2 = ax.vlines(
                     x=ind_dt,

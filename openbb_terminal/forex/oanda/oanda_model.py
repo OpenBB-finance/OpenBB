@@ -299,7 +299,11 @@ def create_order_request(
             "Error: An instrument should be loaded before running this command."
         )
         return False
-    price = round(price, 3) if "JPY" in instrument or "THB" in instrument or "HUF" in instrument else round(price, 5)
+    price = (
+        round(price, 3)
+        if "JPY" in instrument or "THB" in instrument or "HUF" in instrument
+        else round(price, 5)
+    )
     data = {
         "order": {
             "price": price,

@@ -114,7 +114,11 @@ class BaseController(metaclass=ABCMeta):
 
     @property
     def choices_default(self):
-        choices = build_controller_choice_map(controller=self) if self.CHOICES_GENERATION else {}
+        choices = (
+            build_controller_choice_map(controller=self)
+            if self.CHOICES_GENERATION
+            else {}
+        )
 
         return choices
 
@@ -1284,7 +1288,10 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
         )
 
         if ns_parser:
-            if ns_parser.source in ("YahooFinance", "CoinGecko") and ns_parser.vs == "usdt":
+            if (
+                ns_parser.source in ("YahooFinance", "CoinGecko")
+                and ns_parser.vs == "usdt"
+            ):
                 ns_parser.vs = "usd"
             (self.current_df) = cryptocurrency_helpers.load(
                 symbol=ns_parser.coin.lower(),

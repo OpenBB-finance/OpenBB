@@ -92,7 +92,11 @@ def get_past_ipo(
     """
     today = datetime.now()
 
-    start = (today - timedelta(days=num_days_behind)).strftime("%Y-%m-%d") if start_date is None else start_date
+    start = (
+        (today - timedelta(days=num_days_behind)).strftime("%Y-%m-%d")
+        if start_date is None
+        else start_date
+    )
 
     df_past_ipo = (
         get_ipo_calendar(start, today.strftime("%Y-%m-%d"))
@@ -129,7 +133,11 @@ def get_future_ipo(
     """
     today = datetime.now()
 
-    end = (today + timedelta(days=num_days_ahead)).strftime("%Y-%m-%d") if end_date is None else end_date
+    end = (
+        (today + timedelta(days=num_days_ahead)).strftime("%Y-%m-%d")
+        if end_date is None
+        else end_date
+    )
 
     df_future_ipo = (
         get_ipo_calendar(today.strftime("%Y-%m-%d"), end)

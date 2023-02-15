@@ -189,7 +189,11 @@ class MenuText:
             column alignment for the value. This allows for a better UX experience.
         """
         parameter_translated = i18n.t(self.menu_path + key_param)
-        space = (col_align - len(parameter_translated)) * " " if col_align > len(parameter_translated) else ""
+        space = (
+            (col_align - len(parameter_translated)) * " "
+            if col_align > len(parameter_translated)
+            else ""
+        )
         self.menu_text += f"[param]{parameter_translated}{space}:[/param] {value}\n"
 
     def add_cmd(self, key_command: str, condition: bool = True):

@@ -377,7 +377,9 @@ def load(
 
             df_stock_candidate.index = df_stock_candidate.index.tz_localize(None)
 
-            s_start = pytz.utc.localize(s_start_dt) if s_start_dt > start_date else start_date
+            s_start = (
+                pytz.utc.localize(s_start_dt) if s_start_dt > start_date else start_date
+            )
 
             df_stock_candidate.index.name = "date"
 
@@ -435,7 +437,9 @@ def load(
             )
             s_start_dt = df_stock_candidate.index[0]
 
-            s_start = pytz.utc.localize(s_start_dt) if s_start_dt > start_date else start_date
+            s_start = (
+                pytz.utc.localize(s_start_dt) if s_start_dt > start_date else start_date
+            )
             s_interval = f"{interval}min"
         int_string = "Intraday"
 

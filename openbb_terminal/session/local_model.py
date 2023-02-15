@@ -202,7 +202,11 @@ def get_routine(
     """
     try:
         user_folder = USER_ROUTINES_DIRECTORY / User.get_uuid()
-        file_path = user_folder / file_name if os.path.exists(user_folder / file_name) else folder / file_name
+        file_path = (
+            user_folder / file_name
+            if os.path.exists(user_folder / file_name)
+            else folder / file_name
+        )
 
         with open(file_path) as f:
             routine = "".join(f.readlines())

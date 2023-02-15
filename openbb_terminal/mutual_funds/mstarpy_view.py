@@ -203,7 +203,11 @@ def display_search(
         console.print("No matches found.")
         return
 
-    title = f"Mutual Funds from {country.title()} matching {term}" if country else f"Mutual Funds matching {term}"
+    title = (
+        f"Mutual Funds from {country.title()} matching {term}"
+        if country
+        else f"Mutual Funds matching {term}"
+    )
 
     print_rich_table(
         searches,

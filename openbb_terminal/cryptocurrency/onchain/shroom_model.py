@@ -200,7 +200,11 @@ def get_total_value_locked(
     if not (user_address or address_name):
         console.print("[red]No user address or address name provided.[/red]")
         return pd.DataFrame()
-    extra_sql = f"user_address = '{user_address}' and" if user_address else f"address_name = '{address_name}' and"
+    extra_sql = (
+        f"user_address = '{user_address}' and"
+        if user_address
+        else f"address_name = '{address_name}' and"
+    )
 
     sql = f"""
     SELECT

@@ -471,8 +471,12 @@ class PortfolioController(BaseController):
 
         ns_parser = self.parse_known_args_and_warn(parser, other_args, limit=10)
 
-        if ns_parser and self.portfolio is not None and check_portfolio_benchmark_defined(
-            self.portfolio_name, self.benchmark_name
+        if (
+            ns_parser
+            and self.portfolio is not None
+            and check_portfolio_benchmark_defined(
+                self.portfolio_name, self.benchmark_name
+            )
         ):
             if ns_parser.agg == "assets":
                 portfolio_view.display_assets_allocation(
@@ -636,8 +640,12 @@ class PortfolioController(BaseController):
 
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
-        if ns_parser and self.portfolio is not None and check_portfolio_benchmark_defined(
-            self.portfolio_name, self.benchmark_name
+        if (
+            ns_parser
+            and self.portfolio is not None
+            and check_portfolio_benchmark_defined(
+                self.portfolio_name, self.benchmark_name
+            )
         ):
             portfolio_view.display_performance_vs_benchmark(
                 self.portfolio,
@@ -919,8 +927,12 @@ class PortfolioController(BaseController):
             export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,
         )
 
-        if ns_parser and self.portfolio is not None and check_portfolio_benchmark_defined(
-            self.portfolio_name, self.benchmark_name
+        if (
+            ns_parser
+            and self.portfolio is not None
+            and check_portfolio_benchmark_defined(
+                self.portfolio_name, self.benchmark_name
+            )
         ):
             portfolio_view.display_yearly_returns(
                 self.portfolio,
@@ -983,8 +995,12 @@ class PortfolioController(BaseController):
             export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
         )
 
-        if ns_parser and self.portfolio is not None and check_portfolio_benchmark_defined(
-            self.portfolio_name, self.benchmark_name
+        if (
+            ns_parser
+            and self.portfolio is not None
+            and check_portfolio_benchmark_defined(
+                self.portfolio_name, self.benchmark_name
+            )
         ):
             portfolio_view.display_monthly_returns(
                 self.portfolio,
@@ -1027,8 +1043,12 @@ class PortfolioController(BaseController):
             export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,
         )
 
-        if ns_parser and self.portfolio is not None and check_portfolio_benchmark_defined(
-            self.portfolio_name, self.benchmark_name
+        if (
+            ns_parser
+            and self.portfolio is not None
+            and check_portfolio_benchmark_defined(
+                self.portfolio_name, self.benchmark_name
+            )
         ):
             portfolio_view.display_daily_returns(
                 self.portfolio,
@@ -1053,8 +1073,12 @@ class PortfolioController(BaseController):
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
         )
-        if ns_parser and self.portfolio is not None and check_portfolio_benchmark_defined(
-            self.portfolio_name, self.benchmark_name
+        if (
+            ns_parser
+            and self.portfolio is not None
+            and check_portfolio_benchmark_defined(
+                self.portfolio_name, self.benchmark_name
+            )
         ):
             portfolio_view.display_maximum_drawdown(
                 self.portfolio,
@@ -1085,8 +1109,12 @@ class PortfolioController(BaseController):
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
-        if ns_parser and self.portfolio is not None and check_portfolio_benchmark_defined(
-            self.portfolio_name, self.benchmark_name
+        if (
+            ns_parser
+            and self.portfolio is not None
+            and check_portfolio_benchmark_defined(
+                self.portfolio_name, self.benchmark_name
+            )
         ):
             portfolio_view.display_rolling_volatility(
                 self.portfolio,
@@ -1129,8 +1157,12 @@ class PortfolioController(BaseController):
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
-        if ns_parser and self.portfolio is not None and check_portfolio_benchmark_defined(
-            self.portfolio_name, self.benchmark_name
+        if (
+            ns_parser
+            and self.portfolio is not None
+            and check_portfolio_benchmark_defined(
+                self.portfolio_name, self.benchmark_name
+            )
         ):
             portfolio_view.display_rolling_sharpe(
                 self.portfolio,
@@ -1174,8 +1206,12 @@ class PortfolioController(BaseController):
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
-        if ns_parser and self.portfolio is not None and check_portfolio_benchmark_defined(
-            self.portfolio_name, self.benchmark_name
+        if (
+            ns_parser
+            and self.portfolio is not None
+            and check_portfolio_benchmark_defined(
+                self.portfolio_name, self.benchmark_name
+            )
         ):
             portfolio_view.display_rolling_sortino(
                 portfolio_engine=self.portfolio,
@@ -1211,8 +1247,12 @@ class PortfolioController(BaseController):
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
-        if ns_parser and self.portfolio is not None and check_portfolio_benchmark_defined(
-            self.portfolio_name, self.benchmark_name
+        if (
+            ns_parser
+            and self.portfolio is not None
+            and check_portfolio_benchmark_defined(
+                self.portfolio_name, self.benchmark_name
+            )
         ):
             portfolio_view.display_rolling_beta(
                 self.portfolio,
@@ -1426,8 +1466,12 @@ class PortfolioController(BaseController):
             raw=True,
             export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,
         )
-        if ns_parser and self.portfolio is not None and check_portfolio_benchmark_defined(
-            self.portfolio_name, self.benchmark_name
+        if (
+            ns_parser
+            and self.portfolio is not None
+            and check_portfolio_benchmark_defined(
+                self.portfolio_name, self.benchmark_name
+            )
         ):
             portfolio_view.display_distribution_returns(
                 self.portfolio,
@@ -1474,8 +1518,12 @@ class PortfolioController(BaseController):
             other_args,
             export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
         )
-        if ns_parser and self.portfolio is not None and check_portfolio_benchmark_defined(
-            self.portfolio_name, self.benchmark_name
+        if (
+            ns_parser
+            and self.portfolio is not None
+            and check_portfolio_benchmark_defined(
+                self.portfolio_name, self.benchmark_name
+            )
         ):
             portfolio_view.display_summary(
                 self.portfolio,

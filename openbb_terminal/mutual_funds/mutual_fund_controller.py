@@ -69,7 +69,11 @@ class FundController(BaseController):
     def print_help(self):
         """Print help"""
         if self.fund_name:
-            fund_string = f"{self.fund_name} ({self.fund_symbol})" if self.fund_symbol else f"{self.fund_name}"
+            fund_string = (
+                f"{self.fund_name} ({self.fund_symbol})"
+                if self.fund_symbol
+                else f"{self.fund_name}"
+            )
         else:
             fund_string = ""
         mt = MenuText("funds/")

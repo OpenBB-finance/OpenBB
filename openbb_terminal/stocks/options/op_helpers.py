@@ -303,7 +303,11 @@ def get_greeks(
         "Vega",
         "Theta",
     ]
-    columns = chain_columns + greek_columns if show_all else ["Strike", "Implied Vol"] + greek_columns
+    columns = (
+        chain_columns + greek_columns
+        if show_all
+        else ["Strike", "Implied Vol"] + greek_columns
+    )
 
     if show_extra_greeks:
         additional_columns = ["Rho", "Phi", "Charm", "Vanna", "Vomma"]

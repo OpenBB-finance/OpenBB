@@ -898,7 +898,11 @@ def clean_data(
     # check if target column is in data and if the target_column has any inf
     # replace all inf with nan. This is because darts does not handle inf
     # Creating a timeseries with fillna=True will replace all nan with interoplated values
-    if target_column and target_column in data.columns and data[target_column].isin([np.inf, -np.inf]).any():
+    if (
+        target_column
+        and target_column in data.columns
+        and data[target_column].isin([np.inf, -np.inf]).any()
+    ):
         console.print(
             f"[red]The target column [{target_column}] has inf values. Cleaning...[/red]\n"
         )
@@ -908,7 +912,10 @@ def clean_data(
     if past_covariates:
         covariates = past_covariates.split(",")
         for covariate in covariates:
-            if covariate in data.columns and data[covariate].isin([np.inf, -np.inf]).any():
+            if (
+                covariate in data.columns
+                and data[covariate].isin([np.inf, -np.inf]).any()
+            ):
                 console.print(
                     f"[red]The covariate:{covariate} has inf values. Cleaning...[/red]\n"
                 )

@@ -363,7 +363,11 @@ class OptionsController(BaseController):
         )
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            pars = {"x_min": ns_parser.min, "x_max": ns_parser.max} if ns_parser.min > 0 and ns_parser.max > 0 else {}
+            pars = (
+                {"x_min": ns_parser.min, "x_max": ns_parser.max}
+                if ns_parser.min > 0 and ns_parser.max > 0
+                else {}
+            )
 
             calculator_view.view_calculator(
                 strike=ns_parser.strike,

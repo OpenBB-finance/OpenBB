@@ -1555,7 +1555,11 @@ def is_valid_axes_count(
     if len(axes) == n:
         return True
 
-    print_text = custom_text if custom_text else f"Expected list of {n} axis item{'s' if n > 1 else ''}."
+    print_text = (
+        custom_text
+        if custom_text
+        else f"Expected list of {n} axis item{'s' if n > 1 else ''}."
+    )
 
     if prefix_text:
         print_text = f"{prefix_text} {print_text}"
@@ -1604,7 +1608,11 @@ def check_list_values(valid_values: List[str]):
         """
         success_values = list()
 
-        values_found = [val.strip() for val in given_values.split(",")] if "," in given_values else [given_values]
+        values_found = (
+            [val.strip() for val in given_values.split(",")]
+            if "," in given_values
+            else [given_values]
+        )
 
         for value in values_found:
             # check if the value is valid

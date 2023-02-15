@@ -170,7 +170,11 @@ def get_popular_tickers(
     pd.DataFrame
         DataFrame of top tickers from supplied subreddits
     """
-    sub_reddit_list = (subreddits.split(",") if "," in subreddits else [subreddits]) if subreddits else l_sub_reddits
+    sub_reddit_list = (
+        (subreddits.split(",") if "," in subreddits else [subreddits])
+        if subreddits
+        else l_sub_reddits
+    )
     d_watchlist_tickers: dict = {}
     l_watchlist_author = []
 
@@ -811,13 +815,13 @@ def get_due_dilligence(
             # Ensure that the post hasn't been removed in the meanwhile
             # Either just filter out Yolo, and Meme flairs, or focus on DD, based on b_DD flag
             if (
-                not submission.removed_by_category and
-                submission.link_flair_text in l_flair_text,
+                not submission.removed_by_category
+                and submission.link_flair_text in l_flair_text,
                 submission.link_flair_text not in ["Yolo", "Meme"],
             )[show_all_flairs]:
-                s_datetime = datetime.utcfromtimestamp(
-                    submission.created_utc
-                ).strftime("%Y-%m-%d %H:%M:%S")
+                s_datetime = datetime.utcfromtimestamp(submission.created_utc).strftime(
+                    "%Y-%m-%d %H:%M:%S"
+                )
                 s_link = f"https://old.reddit.com{submission.permalink}"
                 s_all_awards = "".join(
                     f"{award['count']} {award['name']}\n"

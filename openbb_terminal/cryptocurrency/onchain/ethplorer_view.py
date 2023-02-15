@@ -236,7 +236,11 @@ def display_token_info(
     )
 
     socials = ["website", "telegram", "reddit", "twitter", "coingecko"]
-    df = df[df["Metric"].isin(["balance", "name", "symbol"] + socials)] if social else df[~df["Metric"].isin(socials)]
+    df = (
+        df[df["Metric"].isin(["balance", "name", "symbol"] + socials)]
+        if social
+        else df[~df["Metric"].isin(socials)]
+    )
 
     print_rich_table(
         df, headers=list(df.columns), show_index=False, title="ERC20 Token Information"

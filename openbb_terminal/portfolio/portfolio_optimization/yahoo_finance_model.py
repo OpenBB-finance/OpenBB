@@ -383,7 +383,10 @@ def process_returns(
         stock_returns = stock_returns.resample(freq).last()
         if freq.upper() == ["W"] and last_day.weekday() < 4:
             stock_returns = stock_returns.iloc[:-1, :]
-        if freq.upper() == ["M"] and monthrange(last_day.year, last_day.month)[1] - last_day.day <= 5:
+        if (
+            freq.upper() == ["M"]
+            and monthrange(last_day.year, last_day.month)[1] - last_day.day <= 5
+        ):
             stock_returns = stock_returns.iloc[:-1, :]
 
     # Calculate returns

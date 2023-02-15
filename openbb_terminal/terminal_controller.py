@@ -279,7 +279,11 @@ class TerminalController(BaseController):
 
                 start = time.time()
                 console.print(f"\n[yellow]{task}[/yellow]\n")
-                an_input = session.prompt("GUESS / $ ") if isinstance(session, PromptSession) else ""
+                an_input = (
+                    session.prompt("GUESS / $ ")
+                    if isinstance(session, PromptSession)
+                    else ""
+                )
                 time_dif = time.time() - start
 
                 # When there are multiple paths to same solution
@@ -673,7 +677,9 @@ class TerminalController(BaseController):
             return
 
         full_input = " ".join(other_args)
-        other_args_processed = full_input.split(" ") if " " in full_input else [full_input]
+        other_args_processed = (
+            full_input.split(" ") if " " in full_input else [full_input]
+        )
         self.queue = []
 
         path_routine = ""
@@ -726,9 +732,7 @@ class TerminalController(BaseController):
         ns_parser_exe = self.parse_simple_args(parser_exe, args)
         if ns_parser_exe and (ns_parser_exe.path or ns_parser_exe.example):
             if ns_parser_exe.example:
-                path = (
-                    MISCELLANEOUS_DIRECTORY / "routines" / "routine_example.openbb"
-                )
+                path = MISCELLANEOUS_DIRECTORY / "routines" / "routine_example.openbb"
                 console.print(
                     "[green]Executing an example, please type `about exe` "
                     "to learn how to create your own script.[/green]\n"
@@ -784,9 +788,7 @@ class TerminalController(BaseController):
 
                 simulate_argv = f"/{'/'.join([line.rstrip() for line in lines])}"
                 file_cmds = simulate_argv.replace("//", "/home/").split()
-                file_cmds = (
-                    insert_start_slash(file_cmds) if file_cmds else file_cmds
-                )
+                file_cmds = insert_start_slash(file_cmds) if file_cmds else file_cmds
                 cmds_with_params = " ".join(file_cmds)
                 self.queue = [
                     val
@@ -1066,7 +1068,11 @@ def run_scripts(
         simulate_argv = f"/{'/'.join([line.rstrip() for line in lines])}"
         file_cmds = simulate_argv.replace("//", "/home/").split()
         file_cmds = insert_start_slash(file_cmds) if file_cmds else file_cmds
-        file_cmds = [f"export {export_folder}{' '.join(file_cmds)}"] if export_folder else [" ".join(file_cmds)]
+        file_cmds = (
+            [f"export {export_folder}{' '.join(file_cmds)}"]
+            if export_folder
+            else [" ".join(file_cmds)]
+        )
 
         if not test_mode or verbose:
             terminal(file_cmds, test_mode=True)

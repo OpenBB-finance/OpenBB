@@ -564,7 +564,9 @@ class EconometricsController(BaseController):
         )
 
         if ns_parser:
-            dataset_names = list(self.datasets.keys()) if not ns_parser.name else [ns_parser.name]
+            dataset_names = (
+                list(self.datasets.keys()) if not ns_parser.name else [ns_parser.name]
+            )
 
             for name in dataset_names:
                 df = self.datasets[name]
@@ -787,7 +789,11 @@ class EconometricsController(BaseController):
             index = ns_parser.index
 
             if index:
-                values_found = [val.strip() for val in index.split(",")] if "," in index else [index]
+                values_found = (
+                    [val.strip() for val in index.split(",")]
+                    if "," in index
+                    else [index]
+                )
 
                 columns = list()
                 for value in values_found:

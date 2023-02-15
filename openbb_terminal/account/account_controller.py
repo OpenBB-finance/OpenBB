@@ -416,9 +416,12 @@ class AccountController(BaseController):
                     auth_header=User.get_auth_header(),
                     name=name,
                 )
-                if response and response.status_code == 200:
-                    if name in self.REMOTE_CHOICES:
-                        self.REMOTE_CHOICES.remove(name)
-                        self.update_runtime_choices()
+                if (
+                    response
+                    and response.status_code == 200
+                    and name in self.REMOTE_CHOICES
+                ):
+                    self.REMOTE_CHOICES.remove(name)
+                    self.update_runtime_choices()
             else:
                 console.print("[info]Aborted.[/info]")

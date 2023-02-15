@@ -158,7 +158,11 @@ def open_openbb_documentation(
                 path = f"/guides/intros/{path}"
         else:  # user didn't pass argument and is in a menu
             menu = path.split("/")[-2]
-            path = f"/guides/intros/common/{menu}" if menu in ["ta", "ba", "qa"] else f"/guides/intros/{path}"
+            path = (
+                f"/guides/intros/common/{menu}"
+                if menu in ["ta", "ba", "qa"]
+                else f"/guides/intros/{path}"
+            )
 
     if command:
         if command == "keys":

@@ -412,7 +412,11 @@ def get_es(
         es_95 = -b * (1 - np.log(2 * 0.05)) + mean
         es_99 = -b * (1 - np.log(2 * 0.01)) + mean
 
-        es_custom = -b * (1 - np.log(2 * (1 - percentile))) + mean if 1 - percentile < 0.5 else 0
+        es_custom = (
+            -b * (1 - np.log(2 * (1 - percentile))) + mean
+            if 1 - percentile < 0.5
+            else 0
+        )
 
     elif distribution == "student_t":
         # Calculating ES based on the Student-t distribution
