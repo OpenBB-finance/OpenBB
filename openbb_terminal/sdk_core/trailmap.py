@@ -1,6 +1,7 @@
 import importlib
 import inspect
 from pathlib import Path
+import sys
 from types import FunctionType
 from typing import Dict, List, Optional
 
@@ -129,15 +130,27 @@ def get_trailmaps(sort: bool = False) -> List[Trailmap]:
 
         return df.to_dict(orient="index")
 
+    def print_error(error: str) -> None:
+        console.print(
+            f"[bold red]{error} is disabled and will not be included in the SDK.[/bold red]"
+        )
+        console.print(
+            f"[bold red]`poetry install -E all` to install all toolkits.[/bold red]"
+        )
+
     def load():
         map_dict = load_csv(path=MAP_PATH)
         if FORECASTING_TOOLKIT_ENABLED:
             map_forecasting_dict = load_csv(path=MAP_FORECASTING_PATH)
             map_dict.update(map_forecasting_dict)
+        else:
+            print_error("Forecasting")
 
         if OPTIMIZATION_TOOLKIT_ENABLED:
             map_optimization_dict = load_csv(path=MAP_OPTIMIZATION_PATH)
             map_dict.update(map_optimization_dict)
+        else:
+            print_error("Optimization")
 
         map_dict = dict(sorted(map_dict.items(), key=lambda item: item[0]))
 
@@ -147,16 +160,6 @@ def get_trailmaps(sort: bool = False) -> List[Trailmap]:
 
     for trail, attrs in map_dict.items():
         model, view = attrs["model"], attrs["view"]
-        if not FORECASTING_TOOLKIT_ENABLED and "forecast" in trail:
-            console.print(
-                f"[bold red]Forecasting is disabled. {trail} will not be included in the SDK.[/bold red]"
-            )
-            continue
-        if not OPTIMIZATION_TOOLKIT_ENABLED and "portfolio.po" in trail:
-            console.print(
-                f"[bold red]Optimization is disabled. {trail} will not be included in the SDK.[/bold red]"
-            )
-            continue
         trail_map = Trailmap(trail, model, view)
         trailmaps.append(trail_map)
 

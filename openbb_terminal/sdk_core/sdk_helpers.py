@@ -51,6 +51,25 @@ def class_repr(cls_dict: Dict[str, Any]) -> list:
     ]
 
 
+def helptext(func: Callable) -> Callable:
+    """Wrapper to preserve the help text of the function."""
+
+    def decorator(f: Callable) -> Callable:
+        for attr in [
+            "__doc__",
+            "__name__",
+            "__annotations__",
+            "__module__",
+            "__defaults__",
+            "__kwdefaults__",
+            "__dict__",
+        ]:
+            setattr(f, attr, getattr(func, attr))
+        return f
+
+    return decorator
+
+
 class Category:
     """The base class that all categories must inherit from."""
 
@@ -82,6 +101,7 @@ class Category:
 
         if callable(attr):
 
+            @helptext(attr)
             def wrapper(*args, **kwargs):
                 method = attr
 
