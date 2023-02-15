@@ -16,7 +16,6 @@
 [![Bugs Open][bugs-open-shield]][bugs-open-url]
 [![Bugs Closed][bugs-closed-shield]][bugs-closed-url]
 
-[![Build Status](https://github.com/OpenBB-finance/OpenBBTerminal/actions/workflows/test.yml/badge.svg?branch=master)](https://github.com/OpenBB-finance/OpenBBTerminal/actions)
 [![GitHub release](https://img.shields.io/github/release/OpenBB-finance/OpenBBTerminal.svg?maxAge=3600)](https://github.com/OpenBB-finance/OpenBBTerminal/releases)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![TODOs](https://badgen.net/https/api.tickgit.com/badgen/github.com/OpenBB-finance/OpenBBTerminal/main)](https://www.tickgit.com/browse?repo=github.com/OpenBB-finance/OpenBBTerminal&branch=main)
@@ -25,73 +24,48 @@
 [![Twitter](https://img.shields.io/twitter/url/https/twitter.com/openbb_finance.svg?style=social&label=Follow%20%40openbb_finance)](https://twitter.com/openbb_finance)
 
 <!-- PROJECT LOGO -->
-<br />
-<p align="center">
-  <a href="https://openbb.co/">
-    <img src="images/openbb_gradient.png" alt="Logo" width="1000">
-  </a>
 
+| OpenBB is committed to build the future of investment research by focusing on an open source infrastructure accessible to everyone, everywhere. |
+|:--:|
+| ![openbb.jpg](/images/openbb_gradient.png) | 
+| Check our open page at [openbb.co/open](openbb.co/open) |
+
+<br />
+
+<p align="center">
   <h3 align="center">OpenBB Terminal 🚀</h3>
   <h4 align="center">Documentation can be found at: https://openbb.co/docs </h4>
   <p align="center">Click on the GIF below for a DEMO of the terminal.</p>
 
-<p align="center">
-   <a href="https://www.youtube.com/watch?v=fqGPK8OVHLk" rel="OpenBB Terminal Demo">
-      <img src="images/openbb_terminal_illustration.gif" alt="OpenBB Terminal Illustration" width="100%"/>
-   </a>
-</p>
+  <p align="center">
+     <a href="https://www.youtube.com/watch?v=fqGPK8OVHLk" rel="OpenBB Terminal Demo">
+        <img src="images/openbb_terminal_illustration.gif" alt="OpenBB Terminal Illustration" width="100%"/>
+     </a>
+  </p>
 
   <p align="center">
-    Investment research for everyone.
-    <br />
     <a href="https://docs.openbb.co/terminal/quickstart/installation"><strong>≪  GETTING STARTED</strong></a>
     &nbsp · &nbsp <a href="https://github.com/OpenBB-finance/OpenBBTerminal/tree/master/CONTRIBUTING.md"><strong>CONTRIBUTING</strong></a> &nbsp · &nbsp
     <a href="https://docs.openbb.co/terminal">
     <strong>SEE FEATURES »</strong></a>
-    <br />
-    <br />
-    <a href="https://github.com/OpenBB-finance/OpenBBTerminal/issues/new?assignees=&labels=bug&template=bug_report.md&title=%5BBug%5D">
-    Report Bug</a>
-    ·
-    <a href="https://github.com/OpenBB-finance/OpenBBTerminal/issues/new?assignees=&labels=enhancement&template=enhancement.md&title=%5BIMPROVE%5D">
-    Suggest Improvement</a>
-    ·
-    <a href="https://github.com/OpenBB-finance/OpenBBTerminal/issues/new?assignees=&labels=new+feature&template=feature_request.md&title=%5BFR%5D">
-    Request a Feature</a>
   </p>
 </p>
 
 <!-- TABLE OF CONTENTS -->
-<details open="open">
+<details closed="closed">
   <summary><h2 style="display: inline-block">Table of Contents</h2></summary>
   <ol>
-    <li> <a href="#1-about-the-project">About The Project</a> </li>
-    <li><a href="#2-installation">Installation</a></li>
-    <li><a href="#3-contributing">Contributing</a></li>
-    <li><a href="#4-license">License</a></li>
-    <li><a href="#5-disclaimer">Disclaimer</a></li>
-    <li><a href="#6-contacts">Contacts</a></li>
-    <li><a href="#7-star-history">Star History</a></li>
-    <li><a href="#8-contributors">Contributors</a></li>
+    <li><a href="#1-installation">Installation</a></li>
+    <li><a href="#2-contributing">Contributing</a></li>
+    <li><a href="#3-license">License</a></li>
+    <li><a href="#4-disclaimer">Disclaimer</a></li>
+    <li><a href="#5-contacts">Contacts</a></li>
+    <li><a href="#6-star-history">Star History</a></li>
+    <li><a href="#7-contributors">Contributors</a></li>
   </ol>
 </details>
 
-## 1. About The Project
-
-**How it started:**
-
-OpenBBTerminal is an awesome stock and crypto market terminal that has been developed for fun, while I saw my GME shares tanking. But hey, I like the stock 💎🙌.
-
-**How it's going:**
-
-OpenBBTerminal provides a Python-based integrated environment for investment research, that allows
-an average joe retail trader to leverage state-of-the-art Data Science and Machine Learning technologies.
-
-As a Python-based environment, OpenBBTerminal opens access to numerous Python data libraries in Data Science
-(Pandas, Numpy, Scipy, Jupyter), Machine Learning (Pytorch, Sklearn, Flair), and Data Acquisition
-(Beautiful Soup, and numerous third-party APIs).
-
-## 2. Installation
+## 1. Installation
 
 If you wish to install the OpenBB Terminal or the OpenBB SDK, please use one of the following options:
 
@@ -107,42 +81,33 @@ If you wish to install the OpenBB Terminal or the OpenBB SDK, please use one of 
 |[PyPi](https://docs.openbb.co/sdk/quickstart/installation)|Recommended way if you just want to use the OpenBB SDK|
 |[Python](https://docs.openbb.co/terminal/quickstart/installation?tab=python)|If you wish to contribute to the development of the OpenBB SDK &nbsp; &nbsp; &nbsp; &nbsp;|
 
-## 3. Contributing
+## 2. Contributing
 
 There are three main ways of contributing to this project. (Hopefully you have starred the project by now ⭐️)
 
-**BECOME A CONTRIBUTOR**
+#### Become a Contributor
 
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Install the pre-commit hooks by running: `pre-commit install`
-      Any time you commit a change, linters will be run automatically. On changes, you will have to re-commit
-4. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-5. Push to your Branch (`git push origin feature/AmazingFeature`)
-6. Open a Pull Request
+* More information on our [CONTRIBUTING GUIDELINES](/CONTRIBUTING.md).
 
-You can read more details about adding a feature in our [CONTRIBUTING GUIDELINES](/CONTRIBUTING.md).
+#### Create a GitHub ticket
 
-**RAISE AN ISSUE OR REQUEST A FEATURE**
+Before creating a ticket make sure the one you are creating doesn't exist already [here](https://github.com/OpenBB-finance/OpenBBTerminal/issues)
 
-- Raise an issue by opening a [bug ticket](https://github.com/OpenBB-finance/OpenBBTerminal/issues).
-- Request a new  feature through a [feature request ticket](https://github.com/OpenBB-finance/OpenBBTerminal/issues).
+* [Report bug](https://github.com/OpenBB-finance/OpenBBTerminal/issues/new?assignees=&labels=bug&template=bug_report.md&title=%5BBug%5D)
+* [Suggest improvement](https://github.com/OpenBB-finance/OpenBBTerminal/issues/new?assignees=&labels=enhancement&template=enhancement.md&title=%5BIMPROVE%5D)
+* [Request a feature](https://github.com/OpenBB-finance/OpenBBTerminal/issues/new?assignees=&labels=new+feature&template=feature_request.md&title=%5BFR%5D)
 
-**JOIN US**
+#### Provide feedback
 
-Join [our Discord](https://openbb.co/discord) and provide us any feedback on The OpenBB Terminal.
+We are most active on [our Discord](https://openbb.co/discord), but feel free to reach out to us in any of [our social media](https://openbb.co/links) for feedback.
 
-## 4. License
+## 3. License
 
 Distributed under the MIT License. See
 [LICENSE](https://github.com/OpenBB-finance/OpenBBTerminal/blob/main/LICENSE) for more information.
 
-## 5. Disclaimer
+## 4. Disclaimer
 
-*"A few things I am not. I am not a cat. I am not an institutional investor, nor am I a hedge fund. I do not have
-clients and I do not provide personalized investment advice for fees or commissions."* DFV
-
-```text
 Trading in financial instruments involves high risks including the risk of losing some, or all, of your investment
 amount, and may not be suitable for all investors.
 
@@ -151,25 +116,24 @@ Before deciding to trade in a financial instrument you should be fully informed 
 The data contained in the OpenBBTerminal is not necessarily accurate.
 
 OpenBB and any provider of the data contained in this website will not accept liability for any loss or damage as a result of your trading, or your reliance on the information displayed.
-```
 
-## 6. Contacts
+## 5. Contacts
 
-If you have any questions about the terminal or anything OpenBB, feel free to email us at support@openbb.co
+If you have any questions about the terminal or anything OpenBB, feel free to email us at `support@openbb.co`
 
-If you want to say hi, or are interested in partnering with us, feel free to reach us at hello@openbb.co
+If you want to say hi, or are interested in partnering with us, feel free to reach us at `hello@openbb.co`
 
-Feel free to share loss porn, memes or any questions at:
+Any of our social media platforms: [openbb.co/links](www.openbb.co/links)
 
-- Twitter: [@openbb_finance](https://twitter.com/openbb_finance)
-- Discord: [openbb.co/discord](https://openbb.co/discord)
-- Reddit: [openbb.co/reddit](https://openbb.co/reddit)
+## 6. Star History
 
-## 7. Star History
+This is a proxyy of our growth and that we are just getting started. But for more metrics important to us check [openbb.co/open](www.openbb.co/open).
 
 [![Star History Chart](https://api.star-history.com/svg?repos=openbb-finance/OpenBBTerminal&type=Date)](https://star-history.com/#openbb-finance/OpenBBTerminal&Date)
 
-## 8. Contributors
+## 7. Contributors
+
+OpenBB wouldn't be OpenBB without you. If we are going to disrupt financial industry, every contribution counts. Thank you for being part of this journey.
 
 <a href="https://github.com/OpenBB-finance/OpenBBTerminal/graphs/contributors">
    <img src="https://contributors-img.web.app/image?repo=OpenBB-finance/OpenBBTerminal" width="800"/>
