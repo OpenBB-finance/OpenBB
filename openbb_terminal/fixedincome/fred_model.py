@@ -41,8 +41,6 @@ def get_series_data(
     pd.DataFrame
         Series data
     """
-    df = pd.DataFrame()
-
     try:
         # Necessary for installer so that it can locate the correct certificates for
         # API calls and https

@@ -65,27 +65,27 @@ class FixedIncomeController(BaseController):
 
     estr_parameter_to_fred_id = {
         "volume_weighted_trimmed_mean_rate": "ECBESTRVOLWGTTRMDMNRT",
-        "total_volume": "ECBESTRTOTVOL",
         "number_of_transactions": "ECBESTRNUMTRANS",
-        "rate_at_75th_percentile_of_volume": "ECBESTRRT75THPCTVOL",
         "number_of_active_banks": "ECBESTRNUMACTBANKS",
+        "total_volume": "ECBESTRTOTVOL",
         "share_of_volume_of_the_5_largest_active_banks": "ECBESTRSHRVOL5LRGACTBNK",
+        "rate_at_75th_percentile_of_volume": "ECBESTRRT75THPCTVOL",
         "rate_at_25th_percentile_of_volume": "ECBESTRRT25THPCTVOL",
     }
     estr_parameter_to_ecb_id = {
         "volume_weighted_trimmed_mean_rate": "EST.B.EU000A2X2A25.WT",
-        "total_volume": "EST.B.EU000A2X2A25.TT",
         "number_of_transactions": "EST.B.EU000A2X2A25.NT",
-        "rate_at_75th_percentile_of_volume": "EST.B.EU000A2X2A25.R75",
         "number_of_active_banks": "EST.B.EU000A2X2A25.NB",
+        "total_volume": "EST.B.EU000A2X2A25.TT",
         "share_of_volume_of_the_5_largest_active_banks": "EST.B.EU000A2X2A25.VL",
+        "rate_at_75th_percentile_of_volume": "EST.B.EU000A2X2A25.R75",
         "rate_at_25th_percentile_of_volume": "EST.B.EU000A2X2A25.R25",
     }
     sofr_parameter_to_fred_id = {
         "overnight": "SOFR",
-        "30_day": "SOFR30DAYAVG",
-        "90_day": "SOFR90DAYAVG",
-        "180_day": "SOFR180DAYAVG",
+        "30_day_average": "SOFR30DAYAVG",
+        "90_day_average": "SOFR90DAYAVG",
+        "180_day_average": "SOFR180DAYAVG",
         "index": "SOFRINDEX",
     }
     sonia_parameter_to_fred_id = {
@@ -248,7 +248,8 @@ class FixedIncomeController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="estr",
-            description="Get Euro Short-Term Rate data",
+            description="The euro short-term rate (€STR) reflects the wholesale "
+            "euro unsecured overnight borrowing costs of banks located in the euro area."
         )
         parser.add_argument(
             "-p",
@@ -285,6 +286,9 @@ class FixedIncomeController(BaseController):
                     ns_parser.start_date,
                     ns_parser.end_date,
                     ns_parser.export,
+                    " ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
             elif ns_parser.source == "ECB":
                 ecb_view.plot_estr(
@@ -292,6 +296,9 @@ class FixedIncomeController(BaseController):
                     ns_parser.start_date,
                     ns_parser.end_date,
                     ns_parser.export,
+                    " ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
 
     @log_start_end(log=logger)
@@ -301,7 +308,8 @@ class FixedIncomeController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="sofr",
-            description="Get Secured Overnight Financing Rate (SOFR) data",
+            description="Get Secured Overnight Financing Rate (SOFR) data from "
+            "the Federal Reserve Bank of New York",
         )
         parser.add_argument(
             "-p",
@@ -338,6 +346,9 @@ class FixedIncomeController(BaseController):
                     ns_parser.start_date,
                     ns_parser.end_date,
                     ns_parser.export,
+                    " ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
             elif ns_parser.source == "NYFED":
                 nyfed_view.plot_sofr(
@@ -345,6 +356,9 @@ class FixedIncomeController(BaseController):
                     ns_parser.start_date,
                     ns_parser.end_date,
                     ns_parser.export,
+                    " ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
 
     @log_start_end(log=logger)
@@ -390,6 +404,9 @@ class FixedIncomeController(BaseController):
                 ns_parser.start_date,
                 ns_parser.end_date,
                 ns_parser.export,
+                " ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -435,6 +452,9 @@ class FixedIncomeController(BaseController):
                 ns_parser.start_date,
                 ns_parser.end_date,
                 ns_parser.export,
+                " ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -483,6 +503,9 @@ class FixedIncomeController(BaseController):
                 ns_parser.start_date,
                 ns_parser.end_date,
                 ns_parser.export,
+                " ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -522,12 +545,18 @@ class FixedIncomeController(BaseController):
                     ns_parser.start_date,
                     ns_parser.end_date,
                     ns_parser.export,
+                    " ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
             elif ns_parser.source == "NYFED":
                 nyfed_view.plot_fftr(
                     ns_parser.start_date,
                     ns_parser.end_date,
                     ns_parser.export,
+                    " ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
 
     @log_start_end(log=logger)
@@ -577,6 +606,9 @@ class FixedIncomeController(BaseController):
                     ns_parser.start_date,
                     ns_parser.end_date,
                     ns_parser.export,
+                    " ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
             elif ns_parser.source == "NYFED":
                 nyfed_view.plot_effr(
@@ -584,6 +616,9 @@ class FixedIncomeController(BaseController):
                     ns_parser.start_date,
                     ns_parser.end_date,
                     ns_parser.export,
+                    " ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
 
     @log_start_end(log=logger)
@@ -633,6 +668,9 @@ class FixedIncomeController(BaseController):
                     ns_parser.start_date,
                     ns_parser.end_date,
                     ns_parser.export,
+                    " ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
             elif ns_parser.source == "NYFED":
                 nyfed_view.plot_obfr(
@@ -640,6 +678,9 @@ class FixedIncomeController(BaseController):
                     ns_parser.start_date,
                     ns_parser.end_date,
                     ns_parser.export,
+                    " ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
 
     @log_start_end(log=logger)
@@ -678,6 +719,9 @@ class FixedIncomeController(BaseController):
                 ns_parser.start_date,
                 ns_parser.end_date,
                 ns_parser.export,
+                " ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -717,6 +761,9 @@ class FixedIncomeController(BaseController):
                 ns_parser.start_date,
                 ns_parser.end_date,
                 ns_parser.export,
+                " ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -756,6 +803,9 @@ class FixedIncomeController(BaseController):
                 ns_parser.start_date,
                 ns_parser.end_date,
                 ns_parser.export,
+                " ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -804,6 +854,9 @@ class FixedIncomeController(BaseController):
                 ns_parser.start_date,
                 ns_parser.end_date,
                 ns_parser.export,
+                " ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -843,6 +896,9 @@ class FixedIncomeController(BaseController):
                 ns_parser.start_date,
                 ns_parser.end_date,
                 ns_parser.export,
+                " ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -882,6 +938,9 @@ class FixedIncomeController(BaseController):
                 ns_parser.start_date,
                 ns_parser.end_date,
                 ns_parser.export,
+                " ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -923,6 +982,9 @@ class FixedIncomeController(BaseController):
                 ns_parser.start_date,
                 ns_parser.end_date,
                 ns_parser.export,
+                " ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -986,6 +1048,9 @@ class FixedIncomeController(BaseController):
                 start_date=ns_parser.start_date,
                 end_date=ns_parser.end_date,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -1053,6 +1118,9 @@ class FixedIncomeController(BaseController):
                 start_date=ns_parser.start_date,
                 end_date=ns_parser.end_date,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -1102,6 +1170,9 @@ class FixedIncomeController(BaseController):
                 ns_parser.start_date,
                 ns_parser.end_date,
                 ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -1151,6 +1222,9 @@ class FixedIncomeController(BaseController):
                 ns_parser.start_date,
                 ns_parser.end_date,
                 ns_parser.export,
+                " ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -1199,6 +1273,9 @@ class FixedIncomeController(BaseController):
                 date=ns_parser.date.strftime("%Y-%m-%d") if ns_parser.date else "",
                 raw=ns_parser.raw,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -1246,6 +1323,9 @@ class FixedIncomeController(BaseController):
                 date=ns_parser.date.strftime("%Y-%m-%d") if ns_parser.date else "",
                 raw=ns_parser.raw,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -1319,6 +1399,9 @@ class FixedIncomeController(BaseController):
                 aaa_only=ns_parser.aaa_only,
                 raw=ns_parser.raw,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -1369,6 +1452,9 @@ class FixedIncomeController(BaseController):
                     ns_parser.start_date,
                     ns_parser.end_date,
                     ns_parser.export,
+                    " ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
             elif ns_parser.source == "EconDB":
                 econdb_view.plot_tbill(
@@ -1376,6 +1462,9 @@ class FixedIncomeController(BaseController):
                     ns_parser.start_date,
                     ns_parser.end_date,
                     ns_parser.export,
+                    " ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
 
     @log_start_end(log=logger)
@@ -1434,6 +1523,9 @@ class FixedIncomeController(BaseController):
                     ns_parser.start_date,
                     ns_parser.end_date,
                     ns_parser.export,
+                    " ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
             elif ns_parser.source == "EconDB":
                 econdb_view.plot_cmn(
@@ -1441,6 +1533,9 @@ class FixedIncomeController(BaseController):
                     ns_parser.start_date,
                     ns_parser.end_date,
                     ns_parser.export,
+                    " ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
 
     @log_start_end(log=logger)
@@ -1500,6 +1595,9 @@ class FixedIncomeController(BaseController):
                     ns_parser.start_date,
                     ns_parser.end_date,
                     ns_parser.export,
+                     " ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
             elif ns_parser.source == "EconDB":
                 econdb_view.plot_tips(
@@ -1507,6 +1605,9 @@ class FixedIncomeController(BaseController):
                     ns_parser.start_date,
                     ns_parser.end_date,
                     ns_parser.export,
+                    " ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
 
     @log_start_end(log=logger)
@@ -1552,6 +1653,9 @@ class FixedIncomeController(BaseController):
                 ns_parser.start_date,
                 ns_parser.end_date,
                 ns_parser.export,
+                " ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -1597,4 +1701,7 @@ class FixedIncomeController(BaseController):
                 ns_parser.start_date,
                 ns_parser.end_date,
                 ns_parser.export,
+                " ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )

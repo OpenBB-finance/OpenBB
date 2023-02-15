@@ -5,6 +5,7 @@ from typing import Optional, List
 from itertools import cycle
 import logging
 import os
+import pandas as pd
 
 from matplotlib import pyplot as plt
 
@@ -101,7 +102,7 @@ def plot_cmn(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         f"cmn, {maturity}",
-        df,
+        pd.DataFrame(df, columns=[maturity]) / 100,
     )
 
 
@@ -171,7 +172,7 @@ def plot_tips(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         f"tips, {maturity}",
-        df,
+        pd.DataFrame(df, columns=[maturity]) / 100,
     )
 
 
@@ -234,5 +235,5 @@ def plot_tbill(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         f"tbill, {maturity}",
-        df,
+        pd.DataFrame(df, columns=[maturity]) / 100,
     )

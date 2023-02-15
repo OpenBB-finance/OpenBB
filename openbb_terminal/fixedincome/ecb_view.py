@@ -6,6 +6,7 @@ from itertools import cycle
 import logging
 import os
 
+import pandas as pd
 from matplotlib import pyplot as plt
 
 from openbb_terminal.config_terminal import theme
@@ -39,6 +40,7 @@ def plot_estr(
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plot Euro Short-Term Rate (ESTR)
@@ -83,13 +85,21 @@ def plot_estr(
 
     if external_axes is None:
         theme.visualize_output()
+        
+    if export:
+        if "[Percent]" in ID_TO_NAME[series_id]:
+            # Check whether it is a percentage, relevant for exporting
+            df_transformed = pd.DataFrame(df, columns=[series_id]) / 100
+        else:
+            df_transformed = pd.DataFrame(df, columns=[series_id])
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        f"estr, {series_id}",
-        df,
-    )
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            series_id,
+            df_transformed,
+            sheet_name
+        )
 
 
 @log_start_end(log=logger)
@@ -101,6 +111,7 @@ def display_ecb_yield_curve(
     external_axes: Optional[List[plt.Axes]] = None,
     raw: bool = False,
     export: str = "",
+    sheet_name: str = "",
 ):
     """Display yield curve based on ECB Treasury rates for a specified date.
 
@@ -175,5 +186,6 @@ def display_ecb_yield_curve(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "ecbycrv",
-        rates,
+        pd.DataFrame(rates, columns=[date_of_yield]) / 100,
+        sheet_name
     )

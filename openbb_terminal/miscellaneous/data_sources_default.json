@@ -519,6 +519,7 @@
     "tips": ["FRED", "EconDB"],
     "tbffr": ["FRED"],
     "ty": ["YahooFinance"]
+  },
   "portfolio": {
     "po": {
       "maxsharpe": ["YahooFinance"],

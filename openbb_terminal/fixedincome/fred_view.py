@@ -37,7 +37,7 @@ ID_TO_NAME_SOFR = {
     "SOFR30DAYAVG": "30-Day Average SOFR [Percent]",
     "SOFR90DAYAVG": "90-Day Average SOFR [Percent]",
     "SOFR180DAYAVG": "180-Day Average SOFR [Percent]",
-    "SOFRINDEX": "SOFR Index",
+    "SOFRINDEX": "SOFR Index [Base = 04-2018]",
 }
 ID_TO_NAME_SONIA = {
     "IUDSOIA": "Daily Sterling Overnight Index Average (SONIA) Rate [Percent]",
@@ -142,6 +142,7 @@ def plot_estr(
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plot Euro Short-Term Rate (ESTR)
@@ -149,11 +150,15 @@ def plot_estr(
     Parameters
     ----------
     series_id: str
-        FRED ID of ESTR data to plot, options: ['ECBESTRVOLWGTTRMDMNRT', 'ECBESTRTOTVOL', 'ECBESTRNUMTRANS', 'ECBESTRRT75THPCTVOL', 'ECBESTRNUMACTBANKS', 'ECBESTRSHRVOL5LRGACTBNK', 'ECBESTRRT25THPCTVOL']
+        FRED ID of ESTR data to plot, options: ['ECBESTRVOLWGTTRMDMNRT',
+        'ECBESTRTOTVOL', 'ECBESTRNUMTRANS', 'ECBESTRRT75THPCTVOL',
+        'ECBESTRNUMACTBANKS', 'ECBESTRSHRVOL5LRGACTBNK', 'ECBESTRRT25THPCTVOL']
     start_date: Optional[str]
         Start date, formatted YYYY-MM-DD
     end_date: Optional[str]
         End date, formatted YYYY-MM-DD
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Export data to csv or excel file
     external_axes: Optional[List[plt.Axes]]
@@ -186,13 +191,21 @@ def plot_estr(
 
     if external_axes is None:
         theme.visualize_output()
+        
+    if export:
+        if "[Percent]" in ID_TO_NAME_ESTR[series_id]:
+            # Check whether it is a percentage, relevant for exporting
+            df_transformed = pd.DataFrame(df, columns=[series_id]) / 100
+        else:
+            df_transformed = pd.DataFrame(df, columns=[series_id])
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        f"estr, {series_id}",
-        df,
-    )
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            series_id,
+            df_transformed,
+            sheet_name
+        )
 
 
 @log_start_end(log=logger)
@@ -202,6 +215,7 @@ def plot_sofr(
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plot Secured Overnight Financing Rate (SOFR)
@@ -214,6 +228,8 @@ def plot_sofr(
         Start date, formatted YYYY-MM-DD
     end_date: Optional[str]
         End date, formatted YYYY-MM-DD
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Export data to csv or excel file
     external_axes: Optional[List[plt.Axes]]
@@ -245,14 +261,22 @@ def plot_sofr(
     theme.style_primary_axis(ax)
 
     if external_axes is None:
-        theme.visualize_output()
+            theme.visualize_output()
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        f"sofr, {series_id}",
-        df,
-    )
+    if export:
+        if "[Percent]" in ID_TO_NAME_SOFR[series_id]:
+            # Check whether it is a percentage, relevant for exporting
+            df_transformed = pd.DataFrame(df, columns=[series_id]) / 100
+        else:
+            df_transformed = pd.DataFrame(df, columns=[series_id])
+            
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            series_id,
+            df_transformed,
+            sheet_name
+        )
 
 
 @log_start_end(log=logger)
@@ -262,6 +286,7 @@ def plot_sonia(
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plot Sterling Overnight Index Average (SONIA)
@@ -306,13 +331,21 @@ def plot_sonia(
 
     if external_axes is None:
         theme.visualize_output()
-
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        f"sonia, {series_id}",
-        df,
-    )
+        
+    if export:
+        if "[Percent]" in ID_TO_NAME_SONIA[series_id]:
+            # Check whether it is a percentage, relevant for exporting
+            df_transformed = pd.DataFrame(df, columns=[series_id]) / 100
+        else:
+            df_transformed = pd.DataFrame(df, columns=[series_id])
+        
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            series_id,
+            df_transformed,
+            sheet_name
+        )
 
 
 @log_start_end(log=logger)
@@ -322,6 +355,7 @@ def plot_ameribor(
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plot American Interbank Offered Rate (AMERIBOR)
@@ -366,13 +400,21 @@ def plot_ameribor(
 
     if external_axes is None:
         theme.visualize_output()
+        
+    if export:
+        if "[Percent]" in ID_TO_NAME_AMERIBOR[series_id]:
+            # Check whether it is a percentage, relevant for exporting
+            df_transformed = pd.DataFrame(df, columns=[series_id]) / 100
+        else:
+            df_transformed = pd.DataFrame(df, columns=[series_id])
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        f"ameribor, {series_id}",
-        df,
-    )
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            series_id,
+            df_transformed,
+            sheet_name
+        )
 
 
 @log_start_end(log=logger)
@@ -382,6 +424,7 @@ def plot_ffer(
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plot Federal Funds Effective Rate.
@@ -432,13 +475,21 @@ def plot_ffer(
 
     if external_axes is None:
         theme.visualize_output()
+        
+    if export:
+        if "[Percent]" in ID_TO_NAME_FFER[series_id]:
+            # Check whether it is a percentage, relevant for exporting
+            df_transformed = pd.DataFrame(df, columns=[series_id]) / 100
+        else:
+            df_transformed = pd.DataFrame(df, columns=[series_id])
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        f"ffer, {series_id}",
-        df,
-    )
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            series_id,
+            df_transformed,
+            sheet_name
+        )
 
 
 @log_start_end(log=logger)
@@ -447,6 +498,7 @@ def plot_fftr(
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plot Federal Funds Target Range.
@@ -497,7 +549,8 @@ def plot_fftr(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "fftr",
-        df,
+        pd.DataFrame(df, columns=["FFTR"]) / 100,
+        sheet_name
     )
 
 
@@ -508,6 +561,7 @@ def plot_effr(
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plot Effective Federal Funds Rate.
@@ -556,13 +610,21 @@ def plot_effr(
 
     if external_axes is None:
         theme.visualize_output()
+        
+    if export:
+        if "[Percent]" in ID_TO_NAME_EFFR[series_id]:
+            # Check whether it is a percentage, relevant for exporting
+            df_transformed = pd.DataFrame(df, columns=[series_id]) / 100
+        else:
+            df_transformed = pd.DataFrame(df, columns=[series_id])
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        f"effr, {series_id}",
-        df,
-    )
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            series_id,
+            df_transformed,
+            sheet_name
+        )
 
 
 @log_start_end(log=logger)
@@ -572,6 +634,7 @@ def plot_obfr(
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plot Overnight Bank Funding Rate (OBFR).
@@ -621,12 +684,20 @@ def plot_obfr(
     if external_axes is None:
         theme.visualize_output()
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        f"obfr, {series_id}",
-        df,
-    )
+    if export:
+        if "[Percent]" in ID_TO_NAME_OBFR[series_id]:
+            # Check whether it is a percentage, relevant for exporting
+            df_transformed = pd.DataFrame(df, columns=[series_id]) / 100
+        else:
+            df_transformed = pd.DataFrame(df, columns=[series_id])
+
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            series_id,
+            df_transformed,
+            sheet_name
+        )
 
 
 @log_start_end(log=logger)
@@ -635,6 +706,7 @@ def plot_iorb(
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plot Interest Rate on Reserve Balances.
@@ -682,7 +754,8 @@ def plot_iorb(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "iorb",
-        df,
+        pd.DataFrame(df, columns=["IORB"]) / 100,
+        sheet_name
     )
 
 
@@ -692,6 +765,7 @@ def plot_projection(
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plot FOMC Summary of Economic Projections for the Fed Funds Rate.
@@ -780,6 +854,7 @@ def plot_projection(
         os.path.dirname(os.path.abspath(__file__)),
         "projection",
         df,
+        sheet_name
     )
 
 
@@ -789,6 +864,7 @@ def plot_oldprojection(
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plot Longer Run FOMC Summary of Economic Projections for the Fed Funds Rate.
@@ -877,6 +953,7 @@ def plot_oldprojection(
         os.path.dirname(os.path.abspath(__file__)),
         "oldprojection",
         df,
+        sheet_name
     )
 
 
@@ -887,6 +964,7 @@ def plot_dwpcr(
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plot Discount Window Primary Credit Rate.
@@ -943,8 +1021,9 @@ def plot_dwpcr(
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
-        f"dwpcr, {series_id}",
-        df,
+        series_id,
+        pd.DataFrame(df, columns=[series_id]) / 100,
+        sheet_name
     )
 
 
@@ -954,6 +1033,7 @@ def plot_ecbdfr(
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plot ECB Deposit Facility Rate for Euro Area.
@@ -1003,7 +1083,8 @@ def plot_ecbdfr(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "ecbdfr",
-        df,
+        pd.DataFrame(df, columns=["ECBDFR"]) / 100,
+        sheet_name
     )
 
 
@@ -1013,6 +1094,7 @@ def plot_ecbmlfr(
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plot ECB Marginal Lending Facility Rate for Euro Area.
@@ -1063,6 +1145,7 @@ def plot_ecbmlfr(
         os.path.dirname(os.path.abspath(__file__)),
         "ecbmlfr",
         df,
+        sheet_name
     )
 
 
@@ -1072,6 +1155,7 @@ def plot_ecbmrofr(
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plot ECB Marginal Lending Facility Rate for Euro Area.
@@ -1125,7 +1209,8 @@ def plot_ecbmrofr(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "ecbmrofr",
-        df,
+        pd.DataFrame(df, columns=["ECBMROFR"]) / 100,
+        sheet_name
     )
 
 
@@ -1136,6 +1221,7 @@ def plot_tmc(
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plot 10-Year Treasury Constant Maturity Minus Selected Treasury Constant Maturity data.
@@ -1192,8 +1278,9 @@ def plot_tmc(
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
-        f"tmc, {series_id}",
-        df,
+        series_id,
+        pd.DataFrame(df, columns=[series_id]) / 100,
+        sheet_name
     )
 
 
@@ -1204,6 +1291,7 @@ def plot_ffrmc(
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plot Selected Treasury Constant Maturity Minus Federal Funds Rate data.
@@ -1259,8 +1347,9 @@ def plot_ffrmc(
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
-        f"ffrmc, {series_id}",
-        df,
+        series_id,
+        pd.DataFrame(df, columns=[series_id]) / 100,
+        sheet_name
     )
 
 
@@ -1271,6 +1360,7 @@ def display_yield_curve(
     external_axes: Optional[List[plt.Axes]] = None,
     raw: bool = False,
     export: str = "",
+    sheet_name: str = "",
 ):
     """Display yield curve based on US Treasury rates for a specified date.
 
@@ -1333,7 +1423,8 @@ def display_yield_curve(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "ycrv",
-        rates,
+        pd.DataFrame(rates, columns=["YCRV"]) / 100,
+        sheet_name
     )
 
 
@@ -1344,6 +1435,7 @@ def display_inflation_indexed_yield_curve(
     external_axes: Optional[List[plt.Axes]] = None,
     raw: bool = False,
     export: str = "",
+    sheet_name: str = "",
 ):
     """Display inflation-indexed yield curve based on US Treasury rates for a specified date.
 
@@ -1406,7 +1498,8 @@ def display_inflation_indexed_yield_curve(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "iiycrv",
-        rates,
+        pd.DataFrame(rates, columns=["IIYCRV"]) / 100,
+        sheet_name
     )
 
 
@@ -1417,6 +1510,7 @@ def plot_tbill(
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plot Treasury Bill Secondary Market Rate.
@@ -1470,8 +1564,9 @@ def plot_tbill(
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
-        f"tbill, {series_id}",
-        df,
+        series_id,
+        pd.DataFrame(df, columns=["TBILL"]) / 100,
+        sheet_name
     )
 
 
@@ -1482,6 +1577,7 @@ def plot_cmn(
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plot Treasury Constant Maturity Nominal Market Yield.
@@ -1541,8 +1637,9 @@ def plot_cmn(
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
-        f"cmn, {series_id}",
-        df,
+        series_id,
+        pd.DataFrame(df, columns=["CMN"]) / 100,
+        sheet_name
     )
 
 
@@ -1553,6 +1650,7 @@ def plot_tips(
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plot Plot Yields on Treasury inflation protected securities (TIPS) adjusted to constant maturities.
@@ -1613,8 +1711,9 @@ def plot_tips(
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
-        f"tips, {series_id}",
-        df,
+        series_id,
+        pd.DataFrame(df, columns=["TIPS"]) / 100,
+        sheet_name
     )
 
 
@@ -1625,6 +1724,7 @@ def plot_tbffr(
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plot Selected Treasury Bill Minus Federal Funds Rate data.
@@ -1676,6 +1776,7 @@ def plot_tbffr(
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
-        f"tbffr, {series_id}",
-        df,
+        series_id,
+        pd.DataFrame(df, columns=["TBFFR"]) / 100,
+        sheet_name
     )

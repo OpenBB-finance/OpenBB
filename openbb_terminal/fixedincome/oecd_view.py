@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 from typing import Optional, List
 import logging
 import os
+import pandas as pd
 
 from matplotlib import pyplot as plt
 
@@ -27,6 +28,7 @@ def plot_short_term_interest_rate(
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Gets long term interest rates data from selected countries.
@@ -88,7 +90,8 @@ def plot_short_term_interest_rate(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         f"stir",
-        df,
+        pd.DataFrame(df, columns=["STIR"]) / 100,
+        sheet_name
     )
 
 
@@ -99,6 +102,7 @@ def plot_long_term_interest_rate(
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
     export: str = "",
+    sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Gets long term interest rates data from selected countries.
@@ -163,5 +167,6 @@ def plot_long_term_interest_rate(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         f"ltir",
-        df,
+        pd.DataFrame(df, columns=["LTIR"]) / 100,
+        sheet_name
     )

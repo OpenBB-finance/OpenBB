@@ -5,6 +5,7 @@ from typing import Optional, List
 from itertools import cycle
 import logging
 import os
+import pandas as pd
 
 from matplotlib import pyplot as plt
 
@@ -76,6 +77,6 @@ def plot_ty(
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
-        f"ty, {maturity}",
-        df,
+        maturity,
+        pd.DataFrame(df, columns=[maturity]) / 100,
     )
