@@ -10,7 +10,7 @@ The Cryptocurrency Decentralized Finance (DeFi) menu gives the user the ability 
 
 The Cryptocurrency Decentralized Finance (DeFi) menu is called upon by typing `defi`, while inside the `crypto` menu, which opens the following menu:
 
-![Cryptocurrency Decentralized Finance (DeFi) menu](https://user-images.githubusercontent.com/46355364/178734540-716f2232-20a4-4f31-b8a8-10c0badfd5dd.png)
+<img width="1512" alt="image" src="https://user-images.githubusercontent.com/46355364/218993889-59027f95-5819-4adc-bd4e-f829408a07a3.png">
 
 Alternatively, you can also type `/crypto/defi`. Within the Cryptocurrency Decentralized Finance (DeFi) menu you can find features that delve deeper in the world of decentralized finance.
 
@@ -19,7 +19,7 @@ Alternatively, you can also type `/crypto/defi`. Within the Cryptocurrency Decen
 Delving deeper in Uniswap, we can start bij looking at the tokens trade-able with `tokens`:
 
 ```txt
-2022 Jul 19, 11:04 (🦋) /crypto/defi/ $ tokens
+(🦋) /crypto/defi/ $ tokens
 
                              UniSwarp DEX Trade-able Tokens
 ┏━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┳━━━━━━━━━┓
@@ -70,7 +70,7 @@ Delving deeper in Uniswap, we can start bij looking at the tokens trade-able wit
 Furthermore, we can also look at the recently added pairs with `pairs`:
 
 ```txt
-2022 Jul 19, 11:03 (🦋) /crypto/defi/ $ pairs
+(🦋) /crypto/defi/ $ pairs
 
                             Latest Added Pairs on Uniswap DEX
 ┏━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━┓
@@ -101,7 +101,7 @@ When interested in dApps, it is possible to find the top DeFI dApps grouped by c
 Including a list of recent dApps with `ldapps`:
 
 ```txt
-2022 Jul 19, 11:01 (🦋) /crypto/defi/ $ ldapps
+(🦋) /crypto/defi/ $ ldapps
 
 ┏━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━┓
 ┃ Name         ┃ Symbol ┃ Category     ┃ Chains        ┃ Change 1H    ┃ Change 1D (%) ┃ Change 7D    ┃ TVL ($) ┃
