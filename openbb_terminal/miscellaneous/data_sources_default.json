@@ -13,7 +13,7 @@
       "closed": ["Bursa"],
       "all": ["Bursa"],
       "exchange": ["Bursa"],
-      "holidays":["PandasMarketCalendars"]
+      "holidays": ["PandasMarketCalendars"]
     },
     "options": {
       "unu": ["FDScanner"],
@@ -28,7 +28,7 @@
       "pcr": ["AlphaQuery"],
       "info": ["Barchart"],
       "chains": ["YahooFinance", "Tradier", "Nasdaq", "Intrinio"],
-      "eodchain":["Intrinio"],
+      "eodchain": ["Intrinio"],
       "oi": ["YahooFinance", "Tradier", "Nasdaq"],
       "vol": ["YahooFinance", "Tradier", "Nasdaq"],
       "voi": ["YahooFinance", "Tradier", "Nasdaq"],
@@ -231,7 +231,12 @@
         "EODHD",
         "YahooFinance"
       ],
-      "overview": ["Finviz", "FinancialModelingPrep", "AlphaVantage", "YahooFinance"],
+      "overview": [
+        "Finviz",
+        "FinancialModelingPrep",
+        "AlphaVantage",
+        "YahooFinance"
+      ],
       "mgmt": ["BusinessInsider"],
       "analysis": ["Elect"],
       "score": ["FinancialModelingPrep"],
@@ -345,9 +350,7 @@
       "th": ["Ethplorer"],
       "prices": ["Ethplorer"],
       "tx": ["Ethplorer"],
-      "dt": ["Shroom"],
-      "ds": ["Shroom"],
-      "tvl": ["Shroom"]
+      "query": ["Shroom"]
     },
     "defi": {
       "newsletter": ["Substack"],
@@ -481,8 +484,8 @@
     "info": ["MorningStar"],
     "plot": ["MorningStar"],
     "sector": ["MorningStar"],
-    "carbon" : ["MorningStar"],
-    "exclusion" : ["MorningStar"],
+    "carbon": ["MorningStar"],
+    "exclusion": ["MorningStar"],
     "holdings": ["MorningStar"],
     "alswe": ["Avanza"],
     "infoswe": ["Avanza"]

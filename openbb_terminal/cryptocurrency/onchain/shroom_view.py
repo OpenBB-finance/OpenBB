@@ -16,6 +16,7 @@ from openbb_terminal.cryptocurrency.onchain.shroom_model import (
     get_daily_transactions,
     get_dapp_stats,
     get_total_value_locked,
+    get_query_data
 )
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import (
@@ -27,6 +28,44 @@ from openbb_terminal.helper_funcs import (
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
+
+@log_start_end(log=logger)
+@check_api_key(["API_SHROOM_KEY"])
+def display_query(
+    query: str,
+    raw: bool = False,
+    limit: int = 10,
+    export: str = "",
+):
+    """Display query results from shroom
+    [Source: https://sdk.flipsidecrypto.xyz/shroomdk]
+
+    Parameters
+    ----------
+    query : str
+        Query string
+    raw : bool
+        Show raw data
+    limit : int
+        Limit of rows
+    export : str
+        Export dataframe data to csv,json,xlsx file
+    """
+    df = get_query_data(query)
+    if df.empty:
+        console.print("[red]No data found.[/red]")
+    elif not df.empty:
+        if raw:
+            console.print(df)
+        else:
+            print_rich_table(df.head(limit))
+
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "query",
+            df,
+        )
 
 
 @log_start_end(log=logger)
