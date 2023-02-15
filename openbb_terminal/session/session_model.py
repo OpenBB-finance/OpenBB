@@ -127,7 +127,7 @@ def logout(
     if not Local.remove_cli_history_file():
         success = False
 
-    clear_openbb_env_vars()
+    clear_openbb_env_vars(exceptions=["OPENBB_ENABLE_AUTHENTICATION"])
     remove_log_handlers()
     reload_openbb_config_modules()
 
