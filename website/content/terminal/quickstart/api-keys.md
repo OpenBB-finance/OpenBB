@@ -159,7 +159,7 @@ Click on, "Get Your Free API Key Now", which opens to the page:
 
 ![CoinMarketCap](https://user-images.githubusercontent.com/46355364/207831345-06a48efe-63b2-4804-bcf9-52fa4a73f7db.png)
 
-Once the account has been created, copy the API key dispalyed within the dashboard.
+Once the account has been created, copy the API key displayed within the dashboard.
 
 ![CoinMarketCap](https://user-images.githubusercontent.com/46355364/207831705-e9f95018-bba7-49a9-b057-3443bc839861.png)
 
