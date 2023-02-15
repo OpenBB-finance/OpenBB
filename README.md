@@ -117,6 +117,8 @@ The data contained in the OpenBBTerminal is not necessarily accurate.
 
 OpenBB and any provider of the data contained in this website will not accept liability for any loss or damage as a result of your trading, or your reliance on the information displayed.
 
+All names, logos, and brands of third parties that may be referenced in our sites, products or documentation are trademarks of their respective owners. Unless otherwise specified, OpenBB and its products and services are not endorsed by, sponsored by, or affiliated with these third parties. Our use of these names, logos, and brands is for identification purposes only, and does not imply any such endorsement, sponsorship, or affiliation.
+
 ## 5. Contacts
 
 If you have any questions about the terminal or anything OpenBB, feel free to email us at `support@openbb.co`
