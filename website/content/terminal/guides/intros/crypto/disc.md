@@ -10,12 +10,12 @@ The Cryptocurrency Discovery menu provides the option to look into a wide select
 
 The Cryptocurrency Discovery menu is called upon by typing `disc`, while inside the `crypto` menu, which opens the following menu:
 
-![Cryptocurrency Discovery Menu](https://user-images.githubusercontent.com/46355364/178532081-747a3a32-df67-4714-b969-074a4ee3e885.png)
+<img width="800" alt="image" src="https://user-images.githubusercontent.com/46355364/218994037-0dc20c77-b7dc-4095-9c12-f12e11d4da68.png"></img>
 
 Alternatively, you can also type `/crypto/disc`. Within the Cryptocurrency Discovery menu you have a variety of options to find that information about a coin, a NFT, a specific blockchain game, decentralized app or exchange. E.g. we can look into the top coins by typing `top` which returns the following table:
 
 ```
-2022 Jul 12, 05:06 (🦋) /crypto/disc/ $ top
+(🦋) /crypto/disc/ $ top
 
 ┏━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┓
 ┃ Symbol ┃ Name        ┃ Volume [$] ┃ Market Cap ┃ Market Cap Rank ┃ 7D Change [%] ┃ 24H Change [%] ┃
@@ -47,7 +47,7 @@ Alternatively, you can also type `/crypto/disc`. Within the Cryptocurrency Disco
 It is possible to delve deeper into a specific country by defining this for `top`. For example, you can look at stable coins by typing `top stablecoins` which returns the following:
 
 ```
-2022 Jul 12, 05:13 (🦋) /crypto/disc/ $ top stablecoins
+(🦋) /crypto/disc/ $ top stablecoins
 
 ┏━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┓
 ┃ Symbol ┃ Name            ┃ Volume [$] ┃ Market Cap ┃ Market Cap Rank ┃ 7D Change [%] ┃ 24H Change [%] ┃
@@ -77,7 +77,7 @@ It is possible to delve deeper into a specific country by defining this for `top
 Furthermore, we can also look into NFTs by calling `nft` where we can apply sorting by using the `--sort` flag and selecting one of the options (using the arrow keys). For example:
 
 ```
-2022 Jul 12, 05:16 (🦋) /crypto/disc/ $ nft --sort Avg Price [$]
+(🦋) /crypto/disc/ $ nft --sort Avg Price [$]
 
                                             Top NFT collections
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┓
@@ -118,7 +118,7 @@ Furthermore, we can also look into NFTs by calling `nft` where we can apply sort
 Lastly, we can obtain the top 5 decentralized applications, sorted by daily user by using `dapps` which returns the following:
 
 ```
-2022 Jul 12, 05:19 (🦋) /crypto/disc/ $ dapps -l 5
+(🦋) /crypto/disc/ $ dapps -l 5
 
                             Top Decentralized Applications
 ┏━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┓

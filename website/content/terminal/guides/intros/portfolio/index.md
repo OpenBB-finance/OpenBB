@@ -7,11 +7,11 @@ description: The Portfolio menu, and its sub-menus, are dedicated to properly ex
 The Portfolio menu, and its sub-menus, are dedicated to properly explaining and optimizing your own portfolio. With features to load your own orderbook (transactions) it is possible to compare your results to that of a <a href="https://www.investopedia.com/terms/b/benchmark.asp" target="_blank" rel="noreferrer noopener">benchmark</a>. For example, you are able to load both your portfolio and a benchmark (<a href="/terminal/reference/portfolio/load" target="_blank" rel="noreferrer noopener">load</a> and <a href="/terminal/reference/portfolio/bench" target="_blank" rel="noreferrer noopener">bench</a>), then have the option to look into the performance compared to the benchmark asking the question "_What if I invested all my money in the benchmark instead?_" (<a href="/terminal/reference/portfolio/perf" target="_blank" rel="noreferrer noopener">perf</a>) as well as see a wide variety of statistics and metrics (<a href="/terminal/reference/portfolio/rsharpe/" target="_blank" rel="noreferrer noopener">rsharpe</a>, <a href="/terminal/reference/portfolio/distr" target="_blank" rel="noreferrer noopener">distr</a>, <a href="/terminal/reference/portfolio/var" target="_blank" rel="noreferrer noopener">var</a>
 and <a href="/terminal/reference/portfolio/metric" target="_blank" rel="noreferrer noopener">metric</a>). Next to that, with these findings you can apply optimization techniques to your portfolio through the <a href="/terminal/guides/intros/portfolio/po/" target="_blank" rel="noreferrer noopener">Portfolio Optimization menu</a>.
 
-### How to use
+## How to use
 
 The Portfolio menu is called upon by typing `portfolio` which opens the following menu:
 
-![Portfolio Menu](https://user-images.githubusercontent.com/46355364/180178234-0cb80009-74d8-41fb-9f4c-fa393361903a.png)
+<img width="800" alt="image" src="https://user-images.githubusercontent.com/46355364/218995675-f09d21bc-9e64-4546-83d0-ce21e10b3b62.png"></img>
 
 The first step in using this menu is loading a portfolio with <a href="/terminal/reference/portfolio/load" target="_blank" rel="noreferrer noopener">load</a>. Within this guide, we provide an example file when running `load --example` which will be used to explain the functionality through the guide. 
 
@@ -107,11 +107,7 @@ After loading in the portfolio, it is time to select a benchmark. By default, th
 
 Note that the `bench` command has a large selection of products you can choose from. Instead of taking the index directly, an ETF product is used to represent something that you could have actually invested in. By using the `DOWN` (⌄) arrow and pressing `ENTER` (⏎) you can select a different benchmark.
 
-After defining both the portfolio and the benchmark, a lot more options become available:
-
-![Portfolio Menu after loading Portfolio and Benchmark](https://user-images.githubusercontent.com/46355364/180178329-0aca57bf-ad29-47cc-a787-298a4de4070a.png)
-
-For example, with `perf`, we can see how the portfolio performed compared to if you invested the same amount of money into the benchmark instead. This reflects the capabilities of you, as an investor, to outperform a passive strategy.
+With `perf`, we can see how the portfolio performed compared to if you invested the same amount of money into the benchmark instead. This reflects the capabilities of you, as an investor, to outperform a passive strategy.
 
 ```
 (🦋) /portfolio/ $ perf
@@ -161,7 +157,7 @@ Volatility for Portfolio and Benchmark
 └─────┴───────────────┴───────────────┘
 ```
 
-### Examples
+## Examples
 
 Starting off by loading in the OpenBB Example Portfolio again and changing the benchmark, the <a href="https://investor.vanguard.com/investment-products/etfs/profile/vti" target="_blank" rel="noreferrer noopener">Vanguard Total Stock Market ETF (VTI)</a>.
 
