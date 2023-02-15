@@ -33,7 +33,10 @@ class OpenBBSDK:
     """OpenBB SDK Class.
 
     Attributes:
+        `login`: Login and load user info.\n
+        `logout`: Logout and clear session.\n
         `news`: Get news for a given term and source. [Source: Feedparser]\n
+        `whoami`: Display user info.\n
     """
 
     def __init__(self):
@@ -41,6 +44,7 @@ class OpenBBSDK:
         self.login = lib.sdk_session.login
         self.logout = lib.sdk_session.logout
         self.news = lib.common_feedparser_model.get_news
+        self.whoami = lib.sdk_session.whoami
 
     @property
     def alt(self):
@@ -310,6 +314,7 @@ class OpenBBSDK:
             `mykeys`: Get currently set API keys.\n
             `news`: Set News key\n
             `oanda`: Set Oanda key\n
+            `openbb`: Set OpenBB Personal Access Token.\n
             `polygon`: Set Polygon key\n
             `quandl`: Set Quandl key\n
             `reddit`: Set Reddit key\n

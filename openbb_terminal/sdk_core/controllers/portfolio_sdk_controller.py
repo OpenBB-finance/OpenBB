@@ -93,7 +93,6 @@ class PortfolioController(model.PortfolioRoot):
             `ef`: Get Efficient Frontier\n
             `ef_chart`: Display efficient frontier\n
             `file`: Load portfolio optimization engine from file\n
-            `hcp`: Builds hierarchical clustering based portfolios\n
             `herc`: Optimize with Hierarchical Equal Risk Contribution (HERC) method.\n
             `hrp`: Optimize with Hierarchical Risk Parity\n
             `load`: Load portfolio optimization engine\n

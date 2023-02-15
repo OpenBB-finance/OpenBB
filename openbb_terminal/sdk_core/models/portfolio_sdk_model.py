@@ -152,7 +152,6 @@ class PortfolioPortfolioOptimization(Category):
         `ef`: Get Efficient Frontier\n
         `ef_chart`: Display efficient frontier\n
         `file`: Load portfolio optimization engine from file\n
-        `hcp`: Builds hierarchical clustering based portfolios\n
         `herc`: Optimize with Hierarchical Equal Risk Contribution (HERC) method.\n
         `hrp`: Optimize with Hierarchical Risk Parity\n
         `load`: Load portfolio optimization engine\n
@@ -188,7 +187,6 @@ class PortfolioPortfolioOptimization(Category):
             self.ef = lib.portfolio_optimization_po_model.get_ef
             self.ef_chart = lib.portfolio_optimization_po_view.display_ef
             self.file = lib.portfolio_optimization_po_model.load_parameters_file
-            self.hcp = lib.portfolio_optimization_optimizer_model.get_hcp_portfolio
             self.herc = lib.portfolio_optimization_po_model.get_herc
             self.hrp = lib.portfolio_optimization_po_model.get_hrp
             self.load = lib.portfolio_optimization_po_model.generate_portfolio

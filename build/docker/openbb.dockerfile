@@ -62,7 +62,7 @@ RUN chown python:python .openbb_terminal
 # SETUP OPENBB IMAGE
 FROM repository as dependencies
 
-RUN poetry install --no-root --no-dev --extras optimization --extras prediction
+RUN poetry install --no-root --no-dev --extras optimization --extras forecast
 
 # SETUP OPENBB IMAGE
 FROM dependencies as openbb

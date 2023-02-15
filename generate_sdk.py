@@ -9,7 +9,7 @@ import pandas as pd
 
 from openbb_terminal.rich_config import console
 from openbb_terminal.sdk_core.sdk_helpers import get_sdk_imports_text
-from openbb_terminal.sdk_core.trail_map import Trailmap, get_trailmaps
+from openbb_terminal.sdk_core.trailmap import Trailmap, get_trailmaps
 
 REPO_ROOT = Path(__file__).parent.joinpath("openbb_terminal").resolve()
 
@@ -513,32 +513,30 @@ class BuildCategoryModelClasses:
         subprocess.check_call(["black", "openbb_terminal"])
 
 
-def generate_sdk():
-    """Main function to generate the SDK."""
-    trailmaps = get_trailmaps()
+def generate_sdk(sort: bool = False) -> None:
+    """Main function to generate the SDK.
+
+    Parameters
+    ----------
+    sort : bool, optional
+        Whether to sort the CSVs, by default False
+    """
+    trailmaps = get_trailmaps(sort)
+
+    console.print("[yellow]Generating SDK...[/]")
     BuildCategoryModelClasses(trailmaps).build()
     console.print("[green]SDK Generated Successfully.[/]")
     return
 
 
-def sort_csv():
-    """Sort the trail map csv alphabetically by trail name."""
-    columns = ["trail", "model", "view"]
-    df = pd.read_csv(
-        REPO_ROOT / "sdk_core/trail_map.csv", usecols=columns, keep_default_na=False
-    )
-    df = df.set_index("trail").sort_index()
-    df.to_csv(REPO_ROOT / "sdk_core/trail_map.csv", index=True)
-
-
 if __name__ == "__main__":
     sys_args = sys.argv
+    sort = False
     if len(sys_args) > 1:
         if sys_args[1] == "sort":
+            sort = True
             console.print("\n\n[bright_magenta]Sorting CSV...[/]\n")
-            sort_csv()
         else:
             console.print("[red]Invalid argument.\n Accepted arguments: sort[/]")
 
-    console.print("[yellow]Generating SDK...[/]")
-    generate_sdk()
+    generate_sdk(sort)

@@ -1,8 +1,10 @@
-import csv
 import importlib
 import inspect
+from pathlib import Path
 from types import FunctionType
 from typing import Dict, List, Optional
+
+import pandas as pd
 
 from openbb_terminal.core.config.paths import PACKAGE_DIRECTORY
 from openbb_terminal.rich_config import console
@@ -108,24 +110,54 @@ class Trailmap:
         self.func_attrs["view"] = FuncAttr(self.view)  # type: ignore
 
 
-def get_trailmaps() -> List[Trailmap]:
+def get_trailmaps(sort: bool = False) -> List[Trailmap]:
     trailmaps = []
-    with open(PACKAGE_DIRECTORY / "sdk_core/trail_map.csv") as f:
-        reader = csv.reader(f)
-        next(reader)
-        for row in reader:
-            trail, model, view = row
-            if not FORECASTING_TOOLKIT_ENABLED and "forecast" in trail:
-                console.print(
-                    f"[bold red]Forecasting is disabled. {trail} will not be included in the SDK.[/bold red]"
-                )
-                continue
-            if not OPTIMIZATION_TOOLKIT_ENABLED and "portfolio.po" in trail:
-                console.print(
-                    f"[bold red]Optimization is disabled. {trail} will not be included in the SDK.[/bold red]"
-                )
-                continue
-            trail_map = Trailmap(trail, model, view)
-            trailmaps.append(trail_map)
+
+    MAP_PATH = PACKAGE_DIRECTORY / "sdk_core" / "trail_map.csv"
+    MAP_FORECASTING_PATH = PACKAGE_DIRECTORY / "sdk_core" / "trail_map_forecasting.csv"
+    MAP_OPTIMIZATION_PATH = (
+        PACKAGE_DIRECTORY / "sdk_core" / "trail_map_optimization.csv"
+    )
+
+    def load_csv(path: Path = None) -> pd.DataFrame:
+        path = path or MAP_PATH
+        df = pd.read_csv(path, keep_default_na=False)
+        df = df.set_index("trail")
+        if sort:
+            df = df.sort_index()
+            df.to_csv(path, index=True)
+
+        return df.to_dict(orient="index")
+
+    def load():
+        map_dict = load_csv(path=MAP_PATH)
+        if FORECASTING_TOOLKIT_ENABLED:
+            map_forecasting_dict = load_csv(path=MAP_FORECASTING_PATH)
+            map_dict.update(map_forecasting_dict)
+
+        if OPTIMIZATION_TOOLKIT_ENABLED:
+            map_optimization_dict = load_csv(path=MAP_OPTIMIZATION_PATH)
+            map_dict.update(map_optimization_dict)
+
+        map_dict = dict(sorted(map_dict.items(), key=lambda item: item[0]))
+
+        return map_dict
+
+    map_dict = load()
+
+    for trail, attrs in map_dict.items():
+        model, view = attrs["model"], attrs["view"]
+        if not FORECASTING_TOOLKIT_ENABLED and "forecast" in trail:
+            console.print(
+                f"[bold red]Forecasting is disabled. {trail} will not be included in the SDK.[/bold red]"
+            )
+            continue
+        if not OPTIMIZATION_TOOLKIT_ENABLED and "portfolio.po" in trail:
+            console.print(
+                f"[bold red]Optimization is disabled. {trail} will not be included in the SDK.[/bold red]"
+            )
+            continue
+        trail_map = Trailmap(trail, model, view)
+        trailmaps.append(trail_map)
 
     return trailmaps
