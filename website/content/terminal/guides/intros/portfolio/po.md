@@ -10,7 +10,7 @@ The Portfolio Optimization menu allows the user to apply advanced optimization t
 
 The portfolio optimization menu can be reached by visiting the `portfolio` menu and typing `po` (or alternatively, typing `/portfolio/po` from any location). This opens the following menu:
 
-<img src="https://user-images.githubusercontent.com/46355364/171144243-dbdc09e8-609e-4dc3-abb8-8148405e7308.png"></img>
+<img width="800" alt="image" src="https://user-images.githubusercontent.com/46355364/218996021-63d4b1f9-efad-4303-bdde-7de3115157a7.png">
 
 The first step in using this menu is loading a portfolio with <a href="/terminal/reference/portfolio/po/load" target="_blank" rel="noreferrer noopener">load</a>. Within this guide, we provide an example file when running `load --example` which will be used to explain the functionality through the guide. 
 
