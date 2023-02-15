@@ -99,6 +99,7 @@ const config = {
         appId: "7D1HQ0IXAS",
         apiKey: "a2e289977b4b663ed9cf3d4635a438fd",
         indexName: "openbbterminal",
+        contextualSearch: false,
       },
     }),
 };
