@@ -140,10 +140,11 @@ class Trailmap:
         self.func_attrs["model"] = FuncAttr()
         self.func_attrs["view"] = FuncAttr()
         for k, cls in self.func_attrs.items():
-            if not getattr(self, f"{k}_func"):
-                continue
-            cls.get_func_attrs(getattr(self, f"{k}"))
-            cls.func_def = cls.get_definition(tmap, self.class_attr, view=k == "view")
+            if getattr(self, f"{k}_func"):
+                cls.get_func_attrs(getattr(self, f"{k}"))
+                cls.func_def = cls.get_definition(
+                    tmap, self.class_attr, view=k == "view"
+                )
 
 
 def get_trailmaps(sort: bool = False) -> List[Trailmap]:
