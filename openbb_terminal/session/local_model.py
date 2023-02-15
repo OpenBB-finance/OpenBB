@@ -1,7 +1,7 @@
 import json
 import os
 from pathlib import Path
-from typing import Optional
+from typing import Optional, Union
 
 from openbb_terminal import (
     config_plot as cfg_plot,
@@ -213,8 +213,11 @@ def get_routine(
 
 
 def save_routine(
-    file_name: str, routine: str, folder: Path = USER_ROUTINES_DIRECTORY
-) -> Optional[Path]:
+    file_name: str,
+    routine: str,
+    folder: Path = USER_ROUTINES_DIRECTORY,
+    force: bool = False,
+) -> Union[Optional[Path], str]:
     """Save the routine.
 
     Parameters
@@ -225,10 +228,12 @@ def save_routine(
         The routine.
     folder : Path
         The routines folder.
+    force : bool
+        Force the save.
 
     Returns
     -------
-    Optional[Path]
+    Optional[Path, str]
         The path to the routine or None.
     """
     try:
@@ -238,6 +243,8 @@ def save_routine(
             os.makedirs(user_folder)
 
         file_path = user_folder / file_name
+        if os.path.exists(file_path) and not force:
+            return "File already exists"
         with open(file_path, "w") as f:
             f.write(routine)
         return user_folder / file_name

@@ -21,6 +21,7 @@ from openbb_terminal.session import (
     hub_model as Hub,
     local_model as Local,
 )
+from openbb_terminal.session.session_model import logout
 from openbb_terminal.session.user import User
 
 logger = logging.getLogger(__name__)
@@ -30,6 +31,7 @@ class AccountController(BaseController):
     """Account Controller Class"""
 
     CHOICES_COMMANDS = [
+        "logout",
         "sync",
         "pull",
         "clear",
@@ -88,7 +90,28 @@ class AccountController(BaseController):
         mt.add_cmd("upload")
         mt.add_cmd("download")
         mt.add_cmd("delete")
+        mt.add_raw("\n")
+        mt.add_info("_authentication_")
+        mt.add_cmd("logout")
         console.print(text=mt.menu_text, menu="Account")
+
+    @log_start_end(log=logger)
+    def call_logout(self, other_args: List[str]) -> None:
+        """Process logout command."""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="logout",
+            description="Logout from current session.",
+        )
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            logout(
+                auth_header=User.get_auth_header(),
+                token=User.get_token(),
+                guest=User.is_guest(),
+                cls=True,
+            )
 
     @log_start_end(log=logger)
     def call_sync(self, other_args: List[str]):
@@ -150,11 +173,12 @@ class AccountController(BaseController):
                     i = console.input(
                         "\nDo you want to load the configurations above? (y/n): "
                     )
+                    console.print("")
                     if i.lower() in ["y", "yes"]:
                         Local.apply_configs(configs=configs_diff)
-                        console.print("\n[info]Done.[/info]")
+                        console.print("[info]Done.[/info]")
                     else:
-                        console.print("\n[info]Aborted.[/info]")
+                        console.print("[info]Aborted.[/info]")
                 else:
                     console.print("[info]No changes to apply.[/info]")
 
@@ -170,14 +194,14 @@ class AccountController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             i = console.input(
-                "[red]This action is irreversible![/red]\n"
+                "[bold red]This action is irreversible![/bold red]\n"
                 "Are you sure you want to permanently delete your data? (y/n): "
             )
+            console.print("")
             if i.lower() in ["y", "yes"]:
-                console.print("")
                 Hub.clear_user_configs(auth_header=User.get_auth_header())
             else:
-                console.print("\n[info]Aborted.[/info]")
+                console.print("[info]Aborted.[/info]")
 
     @log_start_end(log=logger)
     def call_list(self, other_args: List[str]):
@@ -276,7 +300,7 @@ class AccountController(BaseController):
                 if response is not None and response.status_code == 409:
                     i = console.input(
                         "A routine with the same name already exists, "
-                        "do you want to overwrite it? (y/n): "
+                        "do you want to replace it? (y/n): "
                     )
                     console.print("")
                     if i.lower() in ["y", "yes"]:
@@ -339,7 +363,23 @@ class AccountController(BaseController):
                             file_name=file_name,
                             routine=script,
                         )
-                        if file_path:
+                        if file_path == "File already exists":
+                            i = console.input(
+                                "\nA file with the same name already exists, "
+                                "do you want to replace it? (y/n): "
+                            )
+                            console.print("")
+                            if i.lower() in ["y", "yes"]:
+                                file_path = Local.save_routine(
+                                    file_name=file_name,
+                                    routine=script,
+                                    force=True,
+                                )
+                                if file_path:
+                                    console.print(f"[info]Location:[/info] {file_path}")
+                            else:
+                                console.print("[info]Aborted.[/info]")
+                        elif file_path:
                             console.print(f"[info]Location:[/info] {file_path}")
 
     @log_start_end(log=logger)
@@ -365,10 +405,20 @@ class AccountController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             name = " ".join(ns_parser.name)
-            response = Hub.delete_routine(
-                auth_header=User.get_auth_header(),
-                name=name,
+
+            i = console.input(
+                "[bold red]This action is irreversible![/bold red]\n"
+                "Are you sure you want to delete this routine? (y/n): "
             )
-            if response and response.status_code == 200 and name in self.REMOTE_CHOICES:
-                self.REMOTE_CHOICES.remove(name)
-                self.update_runtime_choices()
+            console.print("")
+            if i.lower() in ["y", "yes"]:
+                response = Hub.delete_routine(
+                    auth_header=User.get_auth_header(),
+                    name=name,
+                )
+                if response and response.status_code == 200:
+                    if name in self.REMOTE_CHOICES:
+                        self.REMOTE_CHOICES.remove(name)
+                        self.update_runtime_choices()
+            else:
+                console.print("[info]Aborted.[/info]")

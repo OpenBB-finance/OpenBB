@@ -1,19 +1,20 @@
 [tool.poetry]
 name = "openbb"
-version = "2.3.1"
+version = "2.4.0"
 description = "Investment Research for Everyone, Anywhere."
 license = "MIT"
 authors = ["Didier Rodrigues Lopes"]
 packages = [
     { include = "openbb_terminal" },
 ]
+include = ["terminal.py"]
 readme = "website/content/sdk/quickstart/installation.md"
 homepage = "https://openbb.co"
 repository = "https://github.com/OpenBB-finance/OpenBBTerminal"
 documentation = "https://docs.openbb.co/sdk"
 
 [tool.poetry.scripts]
-openbb = 'openbb_terminal.terminal_controller:parse_args_and_run'
+openbb = 'terminal:main'
 
 [tool.poetry.dependencies]
 python = "^3.8,<3.11, !=3.9.7"
@@ -50,7 +51,6 @@ valinvest = "^0.0.2"
 bt = "^0.2.9"
 vaderSentiment = "3.3.2"
 GitPython = "^3.1.17"
-sentiment-investor = "^2.0.0"
 fred = "^3.1"
 financedatabase = "1.0.2"
 holidays = "^0.14.2"
@@ -67,7 +67,6 @@ pandas-market-calendars = "~3.2"
 ipympl = "^0.8.2"
 voila = ">=0.3.0"
 rich = "^12.6.0"
-investpy = "^1.0.7"
 dnspython = "^2.1.0"
 python-dotenv = "^0.19.2"
 Pygments = "^2.11.2"
@@ -93,7 +92,6 @@ pythclient = "^0.1.2"
 ipyflex = "^0.2.4"
 "ruamel.yaml" = "^0.17.21"
 setuptools = "<65.5.0"
-investiny = "^0.5.0"
 numpy = "1.23.4"
 papermill = "^2.4.0"
 stocksera = "^0.1.21"
@@ -108,7 +106,6 @@ jupyterlab-widgets = "^3.0.3"
 mstarpy = "^0.0.4"
 packaging = ">=22.0"
 rapidfuzz = "^2.13.7"
-pyex = "^0.5.0"
 streamlit = "^1.17.0"
 sparqlwrapper = "^2.0.0"
 y-py = "!=0.5.5"  # Untraceable third level dependency that requires cargo to be built
@@ -140,10 +137,10 @@ pre-commit = "^2.16.0"
 pytest-cov = "^3.0.0"
 types-six = "^1.16.12"
 nbmake = ">0.5.0"
-ruff = "^0.0.236"
+ruff = "^0.0.243"
 
 [tool.poetry.extras]
-prediction = ["torch", "pytorch-lightning", "u8darts", "lightgbm"]
+forecast = ["torch", "pytorch-lightning", "u8darts", "lightgbm"]
 optimization = ["Riskfolio-Lib"]
 all = ["torch", "pytorch-lightning", "u8darts", "Riskfolio-Lib"]
 jupyterlab = ["jupyterlab-code-formatter", "jupyterlab-lsp", "jedi-language-server"]

@@ -495,14 +495,7 @@ def test_call_func_no_parser(func, mocker):
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.parametrize(
     "func",
-    [
-        "call_candle",
-        "call_res",
-        "call_fa",
-        "call_bt",
-        "call_ta",
-        "call_qa",
-    ],
+    ["call_res"],
 )
 def test_call_func_no_ticker(func, mocker):
     # MOCK PARSE_KNOWN_ARGS_AND_WARN

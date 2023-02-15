@@ -6,7 +6,6 @@ from urllib.error import HTTPError
 import fundamentalanalysis as fa  # Financial Modeling Prep
 import intrinio_sdk as intrinio
 import pandas as pd
-import pyEX
 import yfinance as yf
 from alpha_vantage.timeseries import TimeSeries
 
@@ -137,6 +136,8 @@ def load_stock_yf(
         start=start_date,
         end=end_date,
         progress=False,
+        auto_adjust=True,
+        actions=True,
         interval=int_,
         ignore_tz=True,
     ).dropna(axis=0)
@@ -144,8 +145,21 @@ def load_stock_yf(
     # Check that loading a stock was not successful
     if df_stock_candidate.empty:
         return pd.DataFrame()
-
+    df_stock_candidate_cols = [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Adj Close",
+        "Volume",
+        "Dividends",
+        "Stock Splits",
+    ]
     df_stock_candidate.index.name = "date", int_string
+    df_stock_candidate["Adj Close"] = df_stock_candidate["Close"].copy()
+    df_stock_candidate = pd.DataFrame(
+        data=df_stock_candidate, columns=df_stock_candidate_cols
+    )
     return df_stock_candidate
 
 
@@ -203,45 +217,6 @@ def load_stock_eodhd(
     )
     df_stock_candidate["Date"] = pd.to_datetime(df_stock_candidate.Date)
     df_stock_candidate.set_index("Date", inplace=True)
-    df_stock_candidate.sort_index(ascending=True, inplace=True)
-    return df_stock_candidate
-
-
-@check_api_key(["API_IEX_TOKEN"])
-def load_stock_iex_cloud(symbol: str, iexrange: str) -> pd.DataFrame:
-    df_stock_candidate = pd.DataFrame()
-
-    try:
-        client = pyEX.Client(api_token=cfg.API_IEX_TOKEN, version="v1")
-
-        df_stock_candidate = client.chartDF(symbol, timeframe=iexrange)
-
-        # Check that loading a stock was not successful
-        if df_stock_candidate.empty:
-            console.print("No data found.")
-            return df_stock_candidate
-
-    except Exception as e:
-        if "The API key provided is not valid" in str(e):
-            console.print("[red]Invalid API Key[/red]")
-        else:
-            console.print(e)
-
-        return df_stock_candidate
-
-    df_stock_candidate = df_stock_candidate[
-        ["close", "fHigh", "fLow", "fOpen", "fClose", "volume"]
-    ]
-    df_stock_candidate = df_stock_candidate.rename(
-        columns={
-            "close": "Close",
-            "fHigh": "High",
-            "fLow": "Low",
-            "fOpen": "Open",
-            "fClose": "Adj Close",
-            "volume": "Volume",
-        }
-    )
     df_stock_candidate.sort_index(ascending=True, inplace=True)
     return df_stock_candidate
 
