@@ -415,7 +415,7 @@ Add this API key to the OpenBB Terminal by entering:
 <details>
 <summary>Go to: https://intrinio.com/starter-plan</summary>
 
-![Intrinio](intrinio.png)
+![Intrinio](https://user-images.githubusercontent.com/85772166/219207556-fcfee614-59f1-46ae-bff4-c63dd2f6991d.png)
 
 An API key will be issued with a subscription. Find the token value within the account dashboard, and enter it into the OpenBB Terminal with:
 
