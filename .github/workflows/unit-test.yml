@@ -7,6 +7,7 @@ env:
   OPENBB_USE_PROMPT_TOOLKIT: false
   OPENBB_FILE_OVERWRITE: true
   OPENBB_ENABLE_CHECK_API: false
+  OPENBB_PREVIOUS_USER: true
   PIP_DEFAULT_TIMEOUT: 100
 
 on:
@@ -34,7 +35,7 @@ jobs:
       check-changes: ${{ steps.check-changes.outputs.check-changes }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v1
+        uses: actions/checkout@v3
         with:
           fetch-depth: 100
           # The GitHub token is preserved by default but this job doesn't need
@@ -169,7 +170,7 @@ jobs:
     # Run only when a PR is merged or a push to release/* branch
     if: github.event_name == 'push' || github.event.pull_request.merged == true
     strategy:
-      fail-fast: true
+      fail-fast: false
       matrix:
         python-version: ["3.8", "3.9", "3.10"]
         os: [ubuntu-latest, macos-latest]
@@ -202,13 +203,19 @@ jobs:
 
       - name: Install dependencies
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
-        run: poetry install --no-interaction -E optimization
+        run: |
+          poetry install --no-interaction -E optimization
 
       - name: List installed packages
         shell: bash -l {0}
         run: |
           source $VENV
           pip list
+
+      - name: Start Terminal and exit
+        run: |
+          source $VENV
+          python terminal.py
 
       - name: Run tests
         env:
@@ -217,11 +224,6 @@ jobs:
           source $VENV
           pytest tests/ --optimization --autodoc
 
-      - name: Start Terminal and exit
-        run: |
-          source $VENV
-          python terminal.py
-
   tests-conda:
     name: Anaconda Python Tests - (${{ matrix.python-version }}, ${{ matrix.os }})
     runs-on: ${{ matrix.os }}-latest
@@ -229,7 +231,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: ["ubuntu", "windows"]
+        os: ["ubuntu", "windows", "macos"]
         python-version: ["3.9"]
         dependencies: [""]
         include:
@@ -300,11 +302,6 @@ jobs:
           key: ${{ runner.os }}-v1-3-9-pip-${{ hashFiles('requirements-full.txt') }}
           restore-keys: |
             ${{ runner.os }}-v1-pip-
-
-      - name: Uninstall Brotlipy
-        shell: bash -l {0}
-        run: |
-          conda remove brotlipy -y
 
       - name: Install dependencies (Bash)
         shell: bash -l {0}
