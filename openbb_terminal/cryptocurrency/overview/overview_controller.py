@@ -36,9 +36,7 @@ from openbb_terminal.cryptocurrency.overview.coinpaprika_model import (
     get_all_contract_platforms,
 )
 from openbb_terminal.cryptocurrency.overview.coinpaprika_view import CURRENCIES
-from openbb_terminal.cryptocurrency.overview.glassnode_view import (
-    display_btc_rainbow,
-)
+from openbb_terminal.cryptocurrency.overview.glassnode_view import display_btc_rainbow
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (

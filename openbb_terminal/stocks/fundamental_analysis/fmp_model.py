@@ -2,11 +2,9 @@
 __docformat__ = "numpy"
 import logging
 import warnings
-from datetime import datetime
-from typing import Optional
+from typing import Any, Dict
 
 import fundamentalanalysis as fa  # Financial Modeling Prep
-import numpy as np
 import pandas as pd
 import valinvest
 from requests.exceptions import HTTPError
@@ -19,36 +17,57 @@ from openbb_terminal.stocks.fundamental_analysis.fa_helper import clean_df_index
 
 logger = logging.getLogger(__name__)
 
+# pylint: disable=protected-access
+
 
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
-def get_score(symbol: str) -> Optional[np.number]:
+def get_score(symbol: str, years: int) -> Dict[str, Any]:
     """Gets value score from fmp
 
     Parameters
     ----------
     symbol : str
         Stock ticker symbol
+    years : int
+        The amount of years to use to calculate the score
 
     Returns
     -------
     np.number
         Value score
     """
-
-    value_score = None
-
     try:
         valstock = valinvest.Fundamental(symbol, cfg.API_KEY_FINANCIALMODELINGPREP)
         warnings.filterwarnings("ignore", category=FutureWarning)
-        value_score = 100 * (valstock.fscore() / 9)
+        scores = {
+            "Beta Score": 100 * (valstock.beta_score() / 9),
+            "CROIC Score": 100
+            * (valstock._score(valstock.croic_growth, years=years) / 9),
+            "Debt Cost Score": 100
+            * (valstock._score(valstock.debt_cost_growth, years=years) / 9),
+            "EBITDA Cover Score": 100
+            * (valstock._score(valstock.ebitda_cover_growth, years=years) / 9),
+            "EBITDA Score": 100
+            * (valstock._score(valstock.ebitda_growth, years=years) / 9),
+            "EPS Score": 100 * (valstock._score(valstock.eps_growth, years=years) / 9),
+            "Equity Buyback Score": 100
+            * (valstock._score(valstock.eq_buyback_growth, years=years) / 9),
+            "Revenue Score": 100
+            * (valstock._score(valstock.revenue_growth, years=years) / 9),
+            "ROIC Score": 100
+            * (valstock._score(valstock.roic_growth, years=years) / 9),
+        }
+
+        # This resembles the same methodology as valstock.fscore
+        scores["Total Score"] = sum(scores.values())
         warnings.filterwarnings("ignore", category=FutureWarning)
     except KeyError:
         console.print("[red]Invalid API Key[/red]\n")
     # Invalid ticker (Ticker should be a NASDAQ 100 ticker or SP 500 ticker)
     except ValueError as e:
         console.print(e, "\n")
-    return value_score
+    return scores
 
 
 @log_start_end(log=logger)
@@ -77,53 +96,6 @@ def get_profile(symbol: str) -> pd.DataFrame:
     except HTTPError:
         console.print("[red]API Key not authorized for Premium feature[/red]\n")
     return df
-
-
-@log_start_end(log=logger)
-@check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
-def get_quote(symbol: str) -> pd.DataFrame:
-    """Gets ticker quote from FMP
-
-    Parameters
-    ----------
-    symbol : str
-        Stock ticker symbol
-
-    Returns
-    -------
-    pd.DataFrame
-        Dataframe of ticker quote
-    """
-
-    df_fa = pd.DataFrame()
-
-    try:
-        df_fa = fa.quote(symbol, cfg.API_KEY_FINANCIALMODELINGPREP)
-    # Invalid API Keys
-    except ValueError:
-        console.print("[red]Invalid API Key[/red]\n")
-    # Premium feature, API plan is not authorized
-    except HTTPError:
-        console.print("[red]API Key not authorized for Premium feature[/red]\n")
-
-    if not df_fa.empty:
-        clean_df_index(df_fa)
-        df_fa.loc["Market cap"][0] = lambda_long_number_format(
-            df_fa.loc["Market cap"][0]
-        )
-        df_fa.loc["Shares outstanding"][0] = lambda_long_number_format(
-            df_fa.loc["Shares outstanding"][0]
-        )
-        df_fa.loc["Volume"][0] = lambda_long_number_format(df_fa.loc["Volume"][0])
-        # Check if there is a valid earnings announcement
-        if df_fa.loc["Earnings announcement"][0]:
-            earning_announcement = datetime.strptime(
-                df_fa.loc["Earnings announcement"][0][0:19], "%Y-%m-%dT%H:%M:%S"
-            )
-            df_fa.loc["Earnings announcement"][
-                0
-            ] = f"{earning_announcement.date()} {earning_announcement.time()}"
-    return df_fa
 
 
 @log_start_end(log=logger)
@@ -568,9 +540,20 @@ def clean_metrics_df(data: pd.DataFrame, num: int, mask: bool = True) -> pd.Data
     # iloc will fail if number is greater than number of columns
     num = min(num, data.shape[1])
     data = data.iloc[:, 0:num]
+
     if mask:
         data = data.mask(data.astype(object).eq(num * ["None"])).dropna()
         data = data.mask(data.astype(object).eq(num * ["0"])).dropna()
+
+    date_rows = {
+        "calendarYear": "%Y",
+        "fillingDate": "%Y-%m-%d",
+        "acceptedDate": "%Y-%m-%d %H:%M:%S",
+    }
+    for row, dt_type in date_rows.items():
+        if row in data.index:
+            data.loc[row] = pd.to_datetime(data.loc[row], format=dt_type)
+
     data = data.applymap(lambda x: lambda_long_number_format(x))
     clean_df_index(data)
     data.columns.name = "Fiscal Date Ending"
@@ -649,4 +632,41 @@ def get_filings(
         console.print(e)
         df = pd.DataFrame()
 
+    return df
+
+
+@log_start_end(log=logger)
+@check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
+def get_rating(symbol: str) -> pd.DataFrame:
+    """Get ratings for a given ticker. [Source: Financial Modeling Prep]
+
+    Parameters
+    ----------
+    symbol : str
+        Stock ticker symbol
+
+    Returns
+    -------
+    pd.DataFrame
+        Rating data
+    """
+    if cfg.API_KEY_FINANCIALMODELINGPREP:
+        try:
+            df = fa.rating(symbol, cfg.API_KEY_FINANCIALMODELINGPREP)
+            l_recoms = [col for col in df.columns if "Recommendation" in col]
+            l_recoms_show = [
+                recom.replace("rating", "")
+                .replace("Details", "")
+                .replace("Recommendation", "")
+                for recom in l_recoms
+            ]
+            l_recoms_show[0] = "Rating"
+            df = df[l_recoms]
+            df.columns = l_recoms_show
+        except ValueError as e:
+            console.print(f"[red]{e}[/red]\n")
+            logger.exception(str(e))
+            df = pd.DataFrame()
+    else:
+        df = pd.DataFrame()
     return df

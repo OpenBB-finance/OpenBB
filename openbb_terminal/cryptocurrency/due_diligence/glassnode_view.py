@@ -4,8 +4,10 @@ from datetime import datetime
 from typing import List, Optional
 
 import numpy as np
-from matplotlib import pyplot as plt
-from matplotlib import ticker
+from matplotlib import (
+    pyplot as plt,
+    ticker,
+)
 from matplotlib.lines import Line2D
 
 from openbb_terminal import config_plot as cfgPlot

@@ -1,3 +1,3 @@
-        contractSymbol       lastTradeDate  strike  lastPrice    bid    ask     change  percentChange  volume  openInterest  impliedVolatility  inTheMoney contractSize currency optionType
-0  TSLA211231C00200000 2021-12-29 15:01:33   200.0     878.02  884.5  887.0 -11.849976      -1.331652    30.0            36           9.468754        True      REGULAR      USD       call
-1  TSLA211231C00250000 2021-12-10 15:09:36   250.0     744.20  834.5  837.0   0.000000       0.000000    11.0            12           8.238286        True      REGULAR      USD       call
+        contractSymbol  strike  lastPrice    bid    ask  volume  openInterest  impliedVolatility  delta
+0  TSLA211231C00200000   200.0     878.02  884.5  887.0    30.0            36           9.468754    0.0
+1  TSLA211231C00250000   250.0     744.20  834.5  837.0    11.0            12           8.238286    0.0

@@ -1,4 +1,4 @@
-# IMPORTATION STANDARD
+# IMPORTS STANDARD
 import json
 import os
 import pathlib
@@ -6,22 +6,27 @@ from typing import Any, Dict, List, Optional, Type
 
 import importlib_metadata
 
-# IMPORTATION THIRDPARTY
+# IMPORTS THIRD-PARTY
 import matplotlib
 import pandas as pd
 import pytest
+import yfinance.utils
 from _pytest.capture import MultiCapture, SysCapture
 from _pytest.config import Config
 from _pytest.config.argparsing import Parser
 from _pytest.fixtures import SubRequest
 from _pytest.mark.structures import Mark
 
-# IMPORTATION INTERNAL
-from openbb_terminal import decorators, helper_funcs
-from openbb_terminal import feature_flags as obbff
+# IMPORTS INTERNAL
+from openbb_terminal import (
+    decorators,
+    feature_flags as obbff,
+    helper_funcs,
+)
 from openbb_terminal.base_helpers import strtobool
 
 # pylint: disable=redefined-outer-name
+
 
 DISPLAY_LIMIT: int = 500
 EXTENSIONS_ALLOWED: List[str] = ["csv", "json", "txt"]
@@ -319,6 +324,11 @@ def pytest_addoption(parser: Parser):
         help="To run tests with the marker : @pytest.mark.optimization",
     )
     parser.addoption(
+        "--session",
+        action="store_true",
+        help="To run tests with the marker : @pytest.mark.session",
+    )
+    parser.addoption(
         "--rewrite-expected",
         action="store_true",
         help="To force `record_stdout` and `recorder` to rewrite all files.",
@@ -376,6 +386,16 @@ def rewrite_expected(request: SubRequest) -> bool:
 @pytest.fixture(autouse=True)
 def mock_matplotlib(mocker):
     mocker.patch("matplotlib.pyplot.show")
+
+
+# pylint: disable=protected-access
+@pytest.fixture(autouse=True)
+def mock_yfinance_tzcache(mocker):
+    mocker.patch.object(
+        target=yfinance.utils,
+        attribute="_TzCache",
+        new=yfinance.utils._TzCacheDummy,
+    )
 
 
 @pytest.fixture

@@ -3,7 +3,6 @@ __docformat__ = "numpy"
 
 import logging
 import os
-import webbrowser
 from fractions import Fraction
 from typing import List, Optional
 
@@ -27,28 +26,6 @@ from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.fundamental_analysis import yahoo_finance_model
 
 logger = logging.getLogger(__name__)
-
-
-@log_start_end(log=logger)
-def open_headquarters_map(symbol: str):
-    """Headquarters location of the company
-    Parameters
-    ----------
-    symbol : str
-        Fundamental analysis ticker symbol
-    """
-    webbrowser.open(yahoo_finance_model.get_hq(symbol))
-
-
-@log_start_end(log=logger)
-def open_web(symbol: str):
-    """Website of the company
-    Parameters
-    ----------
-    symbol : str
-        Fundamental analysis ticker symbol
-    """
-    webbrowser.open(yahoo_finance_model.get_website(symbol))
 
 
 @log_start_end(log=logger)
@@ -130,80 +107,6 @@ def display_shareholders(
         os.path.dirname(os.path.abspath(__file__)),
         f"{holder}_holders",
         df,
-        sheet_name,
-    )
-
-
-@log_start_end(log=logger)
-def display_sustainability(symbol: str, export: str = "", sheet_name: str = None):
-    """Yahoo Finance ticker sustainability
-
-    Parameters
-    ----------
-    symbol : str
-        Fundamental analysis ticker symbol
-    sheet_name: str
-        Optionally specify the name of the sheet the data is exported to.
-    export: str
-        Format to export data
-    """
-
-    df_sustainability = yahoo_finance_model.get_sustainability(symbol)
-
-    if df_sustainability.empty:
-        console.print("No sustainability data found.", "\n")
-        return
-
-    if not df_sustainability.empty:
-        print_rich_table(
-            df_sustainability,
-            headers=list(df_sustainability),
-            title=f"{symbol.upper()} Sustainability",
-            show_index=True,
-        )
-
-    else:
-        logger.error("Invalid data")
-        console.print("[red]Invalid data[/red]\n")
-
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "sust",
-        df_sustainability,
-        sheet_name,
-    )
-
-
-@log_start_end(log=logger)
-def display_calendar_earnings(symbol: str, export: str = "", sheet_name: str = None):
-    """Yahoo Finance ticker calendar earnings
-
-    Parameters
-    ----------
-    symbol : str
-        Fundamental analysis ticker symbol
-    sheet_name: str
-        Optionally specify the name of the sheet the data is exported to.
-    export: str
-        Format to export data
-    """
-    df_calendar = yahoo_finance_model.get_calendar_earnings(symbol)
-    if df_calendar.empty:
-        console.print("No calendar events found.\n")
-        return
-    print_rich_table(
-        df_calendar,
-        show_index=False,
-        headers=list(df_calendar.columns),
-        title=f"{symbol.upper()} Calendar Earnings",
-    )
-
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "cal",
-        df_calendar,
         sheet_name,
     )
 

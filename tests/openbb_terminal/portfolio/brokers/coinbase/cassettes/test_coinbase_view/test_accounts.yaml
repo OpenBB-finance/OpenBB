@@ -19,7 +19,7 @@ interactions:
       Content-Type:
       - application/json
       User-Agent:
-      - python-requests/2.27.1
+      - Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:82.1) Gecko/20100101 Firefox/82.1
     method: GET
     uri: https://api.pro.coinbase.com/accounts
   response:
@@ -39,7 +39,7 @@ interactions:
       CF-Cache-Status:
       - MISS
       CF-RAY:
-      - 727750f4ce961ee7-AMS
+      - 796d68c208beb920-AMS
       Cache-Control:
       - no-store
       Connection:
@@ -49,11 +49,9 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Fri, 08 Jul 2022 08:05:41 GMT
+      - Thu, 09 Feb 2023 14:49:00 GMT
       Etag:
       - W/"1d-mmRSeO9uba2rhQtGfy4YjixIkt4"
-      Expect-CT:
-      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
       Server:
       - cloudflare
       Strict-Transport-Security:

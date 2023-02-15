@@ -26,11 +26,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import (
-    MenuText,
-    console,
-    get_ordered_list_sources,
-)
+from openbb_terminal.rich_config import MenuText, console, get_ordered_list_sources
 from openbb_terminal.stocks import stocks_helper
 
 # pylint: disable=R1710,import-outside-toplevel
@@ -196,7 +192,7 @@ class ForexController(BaseController):
                     console.print(
                         "\n[red]No historical data loaded.\n\n"
                         f"Make sure you have appropriate access for the '{ns_parser.source}' data source "
-                        f"and that '{ns_parser.source}' supports the requested range.[/red]\n"
+                        f"and that '{ns_parser.source}' supports the requested range.[/red]"
                     )
                 else:
                     self.data.index.name = "date"

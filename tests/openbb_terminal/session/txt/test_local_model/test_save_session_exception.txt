@@ -1,0 +1,1 @@
+[red]Failed to save session info.[/red]

@@ -12,11 +12,7 @@ from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.economy import econdb_model
-from openbb_terminal.helper_funcs import (
-    export_data,
-    plot_autoscale,
-    print_rich_table,
-)
+from openbb_terminal.helper_funcs import export_data, plot_autoscale, print_rich_table
 
 logger = logging.getLogger(__name__)
 
@@ -234,7 +230,7 @@ def show_treasuries(
             export,
             os.path.dirname(os.path.abspath(__file__)),
             "treasuries_data",
-            treasury_data,
+            treasury_data / 100,
             sheet_name,
         )
 

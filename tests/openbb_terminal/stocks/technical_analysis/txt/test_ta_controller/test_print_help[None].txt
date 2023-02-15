@@ -1,6 +1,6 @@
 Ticker: Intraday MOCK_INTERVAL MOCK_TICKER
 
-    tv                 open interactive chart on                             [TradingView]
+    tv                 stocks/ta/tv                                          [TradingView]
     recom              recommendation based on technical indicators          [TradingView]
     view               view historical data and trendlines                   [Finviz]
     summary            technical summary report                              [FinBrain]
