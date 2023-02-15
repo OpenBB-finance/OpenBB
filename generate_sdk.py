@@ -5,8 +5,6 @@ import sys
 from pathlib import Path
 from typing import Any, Dict, List, Optional, TextIO
 
-import pandas as pd
-
 from openbb_terminal.rich_config import console
 from openbb_terminal.sdk_core.sdk_helpers import get_sdk_imports_text
 from openbb_terminal.sdk_core.trailmap import Trailmap, get_trailmaps
