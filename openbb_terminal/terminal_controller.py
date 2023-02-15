@@ -1220,11 +1220,12 @@ def parse_args_and_run():
             " to see testing argument options."
         ),
     )
-    parser.add_argument(
-        "--login",
-        action="store_true",
-        help="Go to login prompt.",
-    )
+    if is_auth_enabled():
+        parser.add_argument(
+            "--login",
+            action="store_true",
+            help="Go to login prompt.",
+        )
     # The args -m, -f and --HistoryManager.hist_file are used only in reports menu
     # by papermill and that's why they have suppress help.
     parser.add_argument(
