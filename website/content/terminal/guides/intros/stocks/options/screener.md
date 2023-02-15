@@ -5,7 +5,7 @@ description: This guide introduces the user to the Options Screener, located wit
 ---
 The OpenBB options screener is a versatile discovery tool for an options trader.
 
-![The Options Screener Menu](https://user-images.githubusercontent.com/85772166/172467269-8752d7fe-a9c6-4cf6-bc6f-3f5a011037e4.png)
+<img width="1512" alt="image" src="https://user-images.githubusercontent.com/46355364/218988416-611d5381-c379-418f-8be7-24242103f9f5.png">
 
 The screener makes use of presets (.ini files) that are stored locally within `~/OpenBBUserData/presets/stocks/options/`
 
@@ -192,7 +192,7 @@ max-vega-100d =
 min-rho-100d =
 max-rho-100d =
 ````
-### How to use
+## How to use
 
 The commands `set` and `view` will show the filters present. The command reads the contents of the preset file every time the command is called, which makes changes fast and easy; simply open it in a text editor.
 
@@ -222,11 +222,8 @@ The columns for the output of the screener have been abbreviated to be:
 ````
 CS: Contract Symbol; S: Symbol, T: Option Type; Str: Strike; Exp v: Expiration; IV: Implied Volatility; LP: Last Price; B: Bid; A: Ask; V: Volume; OI: Open Interest; Y: Yield; MY: Monthly Yield; SMP: Regular Market Price; SMDL: Regular Market Day Low; SMDH: Regular Market Day High; LU: Last Trade Date; LC: Last Crawl; ITM: In The Money; PC: Price Change; PB: Price-to-book.
 ````
-The default number of results returned is 10, add the `-l` flag with the number of desired results to change.
 
-![Options Screener preset: Highest OI](https://user-images.githubusercontent.com/85772166/172467821-9f548d96-c97a-4933-86b4-7eb0946bc6db.png)
-
-<h2>Examples</h2>
+## Examples
 
 Using the preset, "3DTE_Degenerate":
 
