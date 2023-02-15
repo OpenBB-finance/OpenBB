@@ -8,7 +8,7 @@ The OpenBB Terminal is based off the <a href="https://en.wikipedia.org/wiki/Comm
 which is installed by default on every computer. By opening the application you have installed from the [Installation Page](/terminal/quickstart/installation),
 you are greeted with the following interface:
 
-<img src="https://user-images.githubusercontent.com/85772166/194683764-ae1c6c0a-8d50-4533-b930-ec4b601017b8.png" width="800"/>
+<img width="800" alt="image" src="https://user-images.githubusercontent.com/46355364/218973939-deb992e3-52cc-400f-a00f-4d9addbcedd4.png">
 
 The OpenBB Terminal is centered around keyboard input. To navigate and perform analysis you will have to type in the name of the command followed by an `ENTER` (⏎). If you wish to see information about the OpenBB Terminal you can do so by typing `about` and then press `ENTER` (⏎). As you are typing, you will notice that you receive suggestions, by using the `DOWN` (⌄) arrow and pressing `ENTER` (⏎) you can select the command and execute it.
 
@@ -24,7 +24,7 @@ Throughout the entire terminal, the same set of colors are used which all share 
 
 Menus, depicted in <b><span style={{color:"#005CA9"}}>Dark Blue</span></b>, take you to a new section of the terminal referred to as a menu. For example, if you wish to view information about stocks, you can do so by typing `stocks` and pressing `ENTER` (⏎). This opens a new menu as depicted below.
 
-<a target="_blank" href="https://user-images.githubusercontent.com/85772166/194683870-7888ad2f-5d38-4484-96a5-cbe95bf52d5b.png"><img src="https://user-images.githubusercontent.com/85772166/194683870-7888ad2f-5d38-4484-96a5-cbe95bf52d5b.png" alt="Stocks Menu" width="800"/></a>
+<img width="800" alt="image" src="https://user-images.githubusercontent.com/46355364/218974442-563cb216-623f-4f98-b2e1-9f1bb0e1a199.png">
 
 Depending on the menu you are in, you are presented with a new set of commands and menus you can select. There are interactions in place between each menu. For example, when selecting a company within the `stocks` menu, the terminal will remember your selection when you visit the `fa` or `options` menu. See [Introduction to Stocks](/terminal/guides/intros/stocks).
 
@@ -48,18 +48,18 @@ the commands that you are able to use from any menu in the terminal (see <a href
 Continuing with the example mentioned at `quit`, revisit the `stocks` menu and look at the commands. At the top you will see a command named <a href="/terminal/reference/stocks/load" target="_blank" rel="noreferrer noopener">load</a>. To understand what this command can do, you can use `load -h` followed by `ENTER` (⏎). The `-h` stands for `help` and every command will have this feature. This will return the following:
 
 ```
-2022 May 19, 05:27 (🦋) /stocks/ $ load -h
-usage: load [-t TICKER] [-s START] [-e END] [-i {1,5,15,30,60}] [-p] [-f FILEPATH] [-m] [-w] [-r {ytd,1y,2y,5y,6m}] [--exchange] [--performance] [-h] [--export EXPORT]
-            [--source {YahooFinance,AlphaVantage,Polygon,EODHD}]
+usage: load [-t TICKER] [-s START] [-e END] [-i {1,5,15,30,60}] [-p] [-f FILEPATH] [-m] [-w] [--exchange] [--performance] [-h] [--export EXPORT] [--sheet-name SHEET_NAME [SHEET_NAME ...]]
+            [--source {YahooFinance,AlphaVantage,Polygon,EODHD,Intrinio}]
 
-Load stock ticker to perform analysis on. When the data source is yf, an Indian ticker can be loaded by using '.NS' at the end, e.g. 'SBIN.NS'.
+Load stock ticker to perform analysis on. When the data source is yf, an Indian ticker can be loaded by using '.NS' at the end, e.g. 'SBIN.NS'. See available market in https://help.yahoo.com/kb/exchanges-data-
+providers-yahoo-finance-sln2310.html.
 
 optional arguments:
   -t TICKER, --ticker TICKER
                         Stock ticker (default: None)
   -s START, --start START
-                        The starting date (format YYYY-MM-DD) of the stock (default: 2020-01-09)
-  -e END, --end END     The ending date (format YYYY-MM-DD) of the stock (default: 2023-01-13)
+                        The starting date (format YYYY-MM-DD) of the stock (default: 2020-02-11)
+  -e END, --end END     The ending date (format YYYY-MM-DD) of the stock (default: 2023-02-15)
   -i {1,5,15,30,60}, --interval {1,5,15,30,60}
                         Intraday stock minutes (default: 1440)
   -p, --prepost         Pre/After market hours. Only works for 'yf' source, and intraday data (default: False)
@@ -71,7 +71,9 @@ optional arguments:
   --performance         Show performance information. (default: False)
   -h, --help            show this help message (default: False)
   --export EXPORT       Export raw data into csv, json, xlsx (default: )
-  --source {YahooFinance,AlphaVantage,Polygon,EODHD}
+  --sheet-name SHEET_NAME [SHEET_NAME ...]
+                        Name of excel sheet to save data to. Only valid for .xlsx files. (default: None)
+  --source {YahooFinance,AlphaVantage,Polygon,EODHD,Intrinio}
                         Data source to select from (default: YahooFinance)
 
 For more information and examples, use 'about load' to access the related guide.
@@ -81,9 +83,10 @@ For more information and examples, use 'about load' to access the related guide.
 This shows you all **arguments** the command has. These are additional options you can provide to the command. Each default value is also displayed which is used when you do not select this option. For example, if I would use the <a href="https://www.investopedia.com/ask/answers/12/what-is-a-stock-ticker.asp" target="_blank" rel="noreferrer noopener">stock ticker</a> of Amazon (AMZN, which can also be found with `search amazon`), I can use `load AMZN` which will return the following:
 
 ```
-2023 Jan 13, 11:22 (🦋) /stocks/ $ load AMZN
+(🦋) /stocks/ $ load AMZN
 
-Loading Daily data for AMZN with starting period 2020-01-09.
+Loading Daily data for AMZN with starting period 2020-02-11.
+
 ```
 
 The default values you see within `load -h` have been inputted here. E.g. the starting period is 2019-05-15. I can decide to change these default values by calling the argument and inputting a different value.
@@ -93,18 +96,19 @@ Whenever you wish to apply an optional argument, you use the related shortcode, 
 Let's change the starting and ending period of the data that is being loaded in by doing the following:
 
 ```
-2023 Jan 13, 11:23 (🦋) /stocks/ $ load AMZN -s 2005-01-01 -e 2010-01-01
+(🦋) /stocks/ $ load AMZN -s 2005-01-01 -e 2010-01-01
 
 Loading Daily data for AMZN with starting period 2005-01-03.
+
 ```
 
 We can check that this period has changed by looking into the <a href="https://www.investopedia.com/trading/candlestick-charting-what-is-it/" target="_blank" rel="noreferrer noopener">candle chart</a> with `candle`. This, again shares the same `-h` argument. This results in the following which indeed depicts our selected period.
 
 ```
-2022 May 19, 05:44 (🦋) /stocks/ $ candle
+(🦋) /stocks/ $ candle
 ```
 
-<a target="_blank" href="https://user-images.githubusercontent.com/46355364/169503345-a9409637-dc7a-4193-9c87-38b1b6ee1a08.png"><img src="https://user-images.githubusercontent.com/46355364/169503345-a9409637-dc7a-4193-9c87-38b1b6ee1a08.png" alt="Amazon Candle Chart" width="800"/></a>
+![Candlestick Chart Amazon](https://user-images.githubusercontent.com/46355364/218974887-f7d6bc81-4d25-4ef2-9854-0a6bebc351d1.png)
 
 As mentioned in the <a href="#explanation-of-menus">Explanation of Menus</a>, some information also transfers over to other menus and this includes the loaded market data from <a href="/terminal/reference/stocks/load" target="_blank" rel="noreferrer noopener">load</a>. So, if you would visit the `ta` menu (which stands for <a href="https://www.investopedia.com/terms/t/technicalanalysis.asp" target="_blank" rel="noreferrer noopener">Technical Analysis</a>) you will see that, by running any command, the selected period above is depicted again. Return to the Stocks menu again by using `q` and use it again to return to the home screen which can be shown with `?`.
 
