@@ -10,7 +10,7 @@ The Econometrics menu's purpose is to provide the user the ability to perform st
 
 The Econometrics menu is called upon by typing `econometrics` which opens the following menu:
 
-<img width="800" alt="image" src="https://user-images.githubusercontent.com/46355364/218989834-1bb3e52a-9f11-4b34-b5bd-aff77a978972.png">
+<img width="800" alt="image" src="https://user-images.githubusercontent.com/46355364/218989834-1bb3e52a-9f11-4b34-b5bd-aff77a978972.png"></img>
 
 You have the ability to load in your own custom datasets but there is also the option to use example datasets which are used within this guide as well. These datasets can be found by using the <a href="/terminal/reference/econometrics/load" target="_blank" rel="noreferrer noopener">load</a> command and typing `load --examples`. See below:
 

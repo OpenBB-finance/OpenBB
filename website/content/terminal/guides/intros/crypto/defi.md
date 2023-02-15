@@ -10,7 +10,7 @@ The Cryptocurrency Decentralized Finance (DeFi) menu gives the user the ability 
 
 The Cryptocurrency Decentralized Finance (DeFi) menu is called upon by typing `defi`, while inside the `crypto` menu, which opens the following menu:
 
-<img width="1512" alt="image" src="https://user-images.githubusercontent.com/46355364/218993889-59027f95-5819-4adc-bd4e-f829408a07a3.png">
+<img width="1512" alt="image" src="https://user-images.githubusercontent.com/46355364/218993889-59027f95-5819-4adc-bd4e-f829408a07a3.png"></img>
 
 Alternatively, you can also type `/crypto/defi`. Within the Cryptocurrency Decentralized Finance (DeFi) menu you can find features that delve deeper in the world of decentralized finance.
 

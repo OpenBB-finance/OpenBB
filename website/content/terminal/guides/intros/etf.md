@@ -10,7 +10,7 @@ The ETF menu enables you to lookup any ETF and obtain an <a href="/terminal/refe
 
 The ETF menu is called upon by typing `etf` which opens the following menu:
 
-<img width="800" alt="image" src="https://user-images.githubusercontent.com/46355364/218991629-fcf0c38b-e690-4720-9510-494c4cb25dba.png">
+<img width="800" alt="image" src="https://user-images.githubusercontent.com/46355364/218991629-fcf0c38b-e690-4720-9510-494c4cb25dba.png"></img>
 
 You now have the ability to look up any ETF. With the example below, the `load` command is used to load an ETF.
 

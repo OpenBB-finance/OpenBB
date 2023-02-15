@@ -12,7 +12,7 @@ The Quantitative Analysis menu is a common menu to three asset classes:
 - <a href = "/terminal/guides/intros/forex/" target= "_blank"  rel="noreferrer noopener">Forex</a>
 - <a href = "/terminal/guides/intros/stocks/" target = "_blank"  rel="noreferrer noopener">Stocks</a>
 
-<img width="800" alt="image" src="https://user-images.githubusercontent.com/46355364/218976291-b31cf033-636d-4534-8327-062b8d573263.png">
+<img width="800" alt="image" src="https://user-images.githubusercontent.com/46355364/218976291-b31cf033-636d-4534-8327-062b8d573263.png"></img>
 
 ### How to use
 

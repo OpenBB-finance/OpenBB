@@ -5,7 +5,7 @@ description: An Introduction to the Trading Hours menu, within the Stocks menu. 
 ---
 This set of features is for checking the operating status of markets globally. To access the Trading Hours features, enter `th` from the <a href="/terminal/guides/intros/stocks/" target="_blank" rel="noreferrer noopener">Stocks menu</a>. Alternatively, a user can access the submenu with absolute path navigation from anywhere in the Terminal: `/stocks/th`
 
-<img width="800" alt="image" src="https://user-images.githubusercontent.com/46355364/218986176-7e995a97-8689-4440-beb8-43bde85f1a92.png">
+<img width="800" alt="image" src="https://user-images.githubusercontent.com/46355364/218986176-7e995a97-8689-4440-beb8-43bde85f1a92.png"></img>
 
 ## How to use
 

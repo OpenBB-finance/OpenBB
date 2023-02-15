@@ -11,7 +11,7 @@ The most promising sectors are chosen first under the top-down strategy, and the
 
 When you have loaded in a ticker, the menu automatically finds the corresponding industry, sector, country and market cap.
 
-<img width="800" alt="image" src="https://user-images.githubusercontent.com/46355364/218983925-ccdc19dd-a96c-46a8-b148-ff2aa17e0be0.png">
+<img width="800" alt="image" src="https://user-images.githubusercontent.com/46355364/218983925-ccdc19dd-a96c-46a8-b148-ff2aa17e0be0.png"></img>
 
 Based on this information, you can get insights in a variety of datapoints, for example with `cps` you are able to see the companies based per sector and market cap:
 

@@ -11,7 +11,7 @@ and <a href="/terminal/reference/portfolio/metric" target="_blank" rel="noreferr
 
 The Portfolio menu is called upon by typing `portfolio` which opens the following menu:
 
-<img width="800" alt="image" src="https://user-images.githubusercontent.com/46355364/218995675-f09d21bc-9e64-4546-83d0-ce21e10b3b62.png">
+<img width="800" alt="image" src="https://user-images.githubusercontent.com/46355364/218995675-f09d21bc-9e64-4546-83d0-ce21e10b3b62.png"></img>
 
 The first step in using this menu is loading a portfolio with <a href="/terminal/reference/portfolio/load" target="_blank" rel="noreferrer noopener">load</a>. Within this guide, we provide an example file when running `load --example` which will be used to explain the functionality through the guide. 
 
