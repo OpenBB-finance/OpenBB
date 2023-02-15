@@ -119,7 +119,7 @@ def get_trailmaps(sort: bool = False) -> List[Trailmap]:
         PACKAGE_DIRECTORY / "sdk_core" / "trail_map_optimization.csv"
     )
 
-    def load_csv(path: Path = None) -> pd.DataFrame:
+    def load_csv(path: Optional[Path] = None) -> Dict[str, Dict[str, str]]:
         path = path or MAP_PATH
         df = pd.read_csv(path, keep_default_na=False)
         df = df.set_index("trail")
