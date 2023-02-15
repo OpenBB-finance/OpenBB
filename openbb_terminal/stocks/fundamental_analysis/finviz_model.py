@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 from datetime import datetime
-from typing import Dict, List
+from typing import Any, Dict, List
 
 import finviz
 import pandas as pd
@@ -107,6 +107,23 @@ def get_analyst_price_targets_workaround(
 
             analyst_price_targets.append(data)
     except Exception:
-        pass
+        pass  # noqa
 
     return analyst_price_targets[:last_ratings]
+
+
+@log_start_end(log=logger)
+def get_news(symbol: str) -> List[Any]:
+    """Get news from Finviz
+
+    Parameters
+    ----------
+    symbol : str
+        Stock ticker symbol
+
+    Returns
+    -------
+    List[Any]
+        News
+    """
+    return finviz.get_news(symbol)
