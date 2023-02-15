@@ -528,13 +528,12 @@ def generate_sdk(sort: bool = False) -> None:
 
 
 if __name__ == "__main__":
-    sys_args = sys.argv
-    sort = False
-    if len(sys_args) > 1:
-        if sys_args[1] == "sort":
-            sort = True
+    sort_csv = False
+    if len(sys.argv) > 1:
+        if sys.argv[1] == "sort":
+            sort_csv = True
             console.print("\n\n[bright_magenta]Sorting CSV...[/]\n")
         else:
             console.print("[red]Invalid argument.\n Accepted arguments: sort[/]")
 
-    generate_sdk(sort)
+    generate_sdk(sort_csv)
