@@ -6,6 +6,7 @@ import logging
 
 import openbb_terminal.config_terminal as cfg
 from openbb_terminal import helper_funcs as helper  # noqa: F401
+from openbb_terminal.base_helpers import load_dotenv_and_reload_configs
 from openbb_terminal.config_terminal import theme
 
 from openbb_terminal.cryptocurrency.due_diligence.pycoingecko_model import Coin
@@ -19,6 +20,10 @@ from openbb_terminal.sdk_core import (
     controllers as ctrl,
     models as model,
 )
+from openbb_terminal.session.user import User
+
+if User.is_guest():
+    load_dotenv_and_reload_configs()
 
 logger = logging.getLogger(__name__)
 theme.applyMPLstyle()

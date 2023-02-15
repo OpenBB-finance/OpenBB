@@ -45,10 +45,9 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.rich_config import console, get_ordered_list_sources
-from openbb_terminal.session.session_model import logout
 from openbb_terminal.session.user import User
 from openbb_terminal.stocks import stocks_helper
-from openbb_terminal.terminal_helper import open_openbb_documentation
+from openbb_terminal.terminal_helper import is_auth_enabled, open_openbb_documentation
 
 logger = logging.getLogger(__name__)
 
@@ -96,9 +95,10 @@ class BaseController(metaclass=ABCMeta):
         "record",
         "stop",
         "screenshot",
-        "logout",
-        "whoami",
     ]
+
+    if is_auth_enabled():
+        CHOICES_COMMON += ["whoami"]
 
     CHOICES_COMMANDS: List[str] = []
     CHOICES_MENUS: List[str] = []
@@ -384,6 +384,9 @@ class BaseController(metaclass=ABCMeta):
             )(other_args)
 
         self.log_queue()
+
+        if not self.queue or (self.queue and self.queue[0] not in ("quit", "help")):
+            console.print()
 
         return self.queue
 
@@ -676,25 +679,6 @@ class BaseController(metaclass=ABCMeta):
             screenshot()
 
     @log_start_end(log=logger)
-    def call_logout(self, other_args: List[str]) -> None:
-        """Process logout command."""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="logout",
-            description="Logout from OpenBB",
-        )
-        ns_parser = self.parse_simple_args(parser, other_args)
-
-        if ns_parser:
-            logout(
-                auth_header=User.get_auth_header(),
-                token=User.get_token(),
-                guest=User.is_guest(),
-                cls=True,
-            )
-
-    @log_start_end(log=logger)
     def call_whoami(self, other_args: List[str]) -> None:
         """Process whoami command."""
         parser = argparse.ArgumentParser(
@@ -707,7 +691,6 @@ class BaseController(metaclass=ABCMeta):
 
         if ns_parser:
             User.whoami()
-            console.print("")
 
     @staticmethod
     def parse_simple_args(parser: argparse.ArgumentParser, other_args: List[str]):
@@ -963,11 +946,6 @@ class BaseController(metaclass=ABCMeta):
 
                 if an_input == "logout":
                     return ["logout"]
-
-                if not self.queue or (
-                    self.queue and self.queue[0] not in ("quit", "help")
-                ):
-                    console.print()
 
             except SystemExit:
                 if not self.contains_keys(an_input):
