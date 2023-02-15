@@ -27,7 +27,7 @@
 
 | OpenBB is committed to build the future of investment research by focusing on an open source infrastructure accessible to everyone, everywhere. |
 |:--:|
-| ![openbb.jpg](/images/openbb_gradient.png) | 
+| ![openbb.jpg](/images/openbb_gradient.png) |
 | Check our website at [openbb.co](www.openbb.co) |
 
 <br />
@@ -85,11 +85,11 @@ If you wish to install the OpenBB Terminal or the OpenBB SDK, please use one of 
 
 There are three main ways of contributing to this project. (Hopefully you have starred the project by now ⭐️)
 
-#### Become a Contributor
+### Become a Contributor
 
 * More information on our [CONTRIBUTING GUIDELINES](/CONTRIBUTING.md).
 
-#### Create a GitHub ticket
+### Create a GitHub ticket
 
 Before creating a ticket make sure the one you are creating doesn't exist already [here](https://github.com/OpenBB-finance/OpenBBTerminal/issues)
 
@@ -97,7 +97,7 @@ Before creating a ticket make sure the one you are creating doesn't exist alread
 * [Suggest improvement](https://github.com/OpenBB-finance/OpenBBTerminal/issues/new?assignees=&labels=enhancement&template=enhancement.md&title=%5BIMPROVE%5D)
 * [Request a feature](https://github.com/OpenBB-finance/OpenBBTerminal/issues/new?assignees=&labels=new+feature&template=feature_request.md&title=%5BFR%5D)
 
-#### Provide feedback
+### Provide feedback
 
 We are most active on [our Discord](https://openbb.co/discord), but feel free to reach out to us in any of [our social media](https://openbb.co/links) for feedback.
 
