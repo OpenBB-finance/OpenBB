@@ -60,7 +60,7 @@ def login(
 
     status = session_model.login(session)
     if status != session_model.LoginStatus.SUCCESS:
-        raise Exception(f"Login failed with status `{status}`.")
+        raise Exception(f"Login failed with status `{status.value}`.")
 
     console.print("[green]Login successful.[/green]")
 
