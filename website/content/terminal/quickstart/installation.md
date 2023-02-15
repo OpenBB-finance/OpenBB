@@ -385,7 +385,7 @@ poetry install -E optimization
 To install the Machine Learning Toolkit run:
 
 ```bash
-poetry install -E prediction
+poetry install -E forecast
 ```
 
 To install both the Portfolio Optimization and the Machine Learning Toolkit run:

@@ -309,24 +309,42 @@ In addition, note the `self.load_class` which allows to not create a new DarkPoo
 
 In order to add a command to the SDK, follow these steps:
 
-1. Go to the `trail_map.csv` file located in `openbb_terminal/miscellaneous/library`, which should look like this:
+1. If you've created a new model or view file, add the import with an alias to `openbb_terminal/sdk_core/sdk_init.py` following this structure:
+
+    ```python
+    # Stocks - Fundamental Analysis
+    from openbb_terminal.stocks.fundamental_analysis import (
+        finviz_model as stocks_fa_finviz_model,
+        finnhub_model as stocks_fa_finnhub_model,
+        finnhub_view as stocks_fa_finnhub_view,
+    )
+    ```
+
+2. Go to the `trail_map.csv` file located in `openbb_terminal/sdk_core`, which should look like this:
 
     ```csv
     trail,model,view
-
-    stocks.fa.rot,openbb_terminal.stocks.fundamental_analysis.finnhub_model.get_rating_over_time,openbb_terminal.stocks.fundamental_analysis.finnhub_view.rating_over_time
-    stocks.fa.analyst,openbb_terminal.stocks.fundamental_analysis.finviz_model.get_analyst_data,
+    stocks.fa.analyst,stocks_fa_finviz_model.get_analyst_data,
+    stocks.fa.rot,stocks_fa_finnhub_model.get_rating_over_time,stocks_fa_finnhub_view.rating_over_time
     ```
 
-    In this file, the trail represents the path to the function to be called. The model represents the path to the model function and the view represents the path to the view function.  Note that the second line does not have an associated view function, so we leave that column empty (the trailing comma is required to load).
+    In this file, the trail represents the path to the function to be called. The model represents the import alias we gave to the `_model` file. The view represents the import alias we gave to the `_view` file.
 
-2. Add your new function to this structure.  In our example of the `shorted` function, our trail would be `stocks.dps.shorted`.
-The model is the path to the `_model` function that was written, `openbb_terminal.stocks.dark_pool_shorts.yahoofinance_model.get_most_shorted`.
-The view is the path to the `_view` function that was written: `openbb_terminal.stocks.dark_pool_shorts.yahoofinance_view.display_most_shorted`.
+3. Add your new function to this structure.  In our example of the `shorted` function, our trail would be `stocks.dps.shorted`.
+The model is the import alias to the `_model` function that was written: `stocks_dps_yahoofinance_model.get_most_shorted`.
+The view is the import alias to the `_view` function that was written: `stocks_dps_yahoofinance_view.display_most_shorted`.
 The added line of the file should look like this:
 
     ```csv
-    stocks.dps.shorted,openbb_terminal.stocks.dark_pool_shorts.yahoofinance_model.get_most_shorted,openbb_terminal.stocks.dark_pool_shorts.yahoofinance_view.display_most_shorted
+    stocks.dps.shorted,stocks_dps_yahoofinance_model.get_most_shorted,stocks_dps_yahoofinance_view.display_most_shorted
+    ```
+
+4. Generate the SDK files by running `python generate_sdk.py` from the root of the project. This will automatically generate the SDK `openbb_terminal/sdk.py`, corresponding `openbb_terminal/sdk_core/controllers/` and `openbb_terminal/sdk_core/models/` class files.
+
+    To sort the `trail_map.csv` file and generate the SDK files, run the following command
+
+    ```bash
+    python generate_sdk.py sort
     ```
 
 ### Open a Pull Request
