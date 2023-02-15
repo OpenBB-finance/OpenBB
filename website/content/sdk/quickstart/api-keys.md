@@ -446,7 +446,7 @@ openbb.keys.iex(key = 'REPLACE_WITH_KEY', persist = True)
 <details>
 <summary>Go to: https://intrinio.com/starter-plan</summary>
 
-![Intrinio](intrinio.png)
+![Intrinio](https://user-images.githubusercontent.com/85772166/219207307-d6605460-ae2c-46d3-8b4e-f82057cfce59.png)
 
 An API key will be issued with a subscription. Find the token value within the account dashboard, and enter it into the OpenBB SDK with:
 
