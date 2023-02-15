@@ -6,9 +6,9 @@ description: The Introduction to Dark Pools & Short Data, within the Stocks menu
 
 The purpose of this menu is to provide the user with tools for gauging the level of short interest, FTD rate, and off-exchange volume in a <a href="https://www.law.cornell.edu/cfr/text/17/242.600" target="_blank" rel="noreferrer noopener">NMS security</a>. There are also commands for looking at market as a whole. Enter the submenu from the <a href="/terminal/guides/intros/stocks" target="_blank" rel="noreferrer noopener">Stocks menu</a> by typing, `dps`, and hitting `ENTER` (⏎).
 
-<img alt="The Dark Pools Menu" src="https://user-images.githubusercontent.com/46355364/171151760-9f65424e-b4d6-41a7-b31f-e9bc1c723bd9.png"></img>
+<img width="800" alt="image" src="https://user-images.githubusercontent.com/46355364/218979380-df541217-ecc3-4a4c-b23b-4fcfe891f69f.png"></img>
 
-To use every feature in the Dark Pools menu, an API key for <a href="https://www.quandl.com/" target="_blank" rel="noreferrer noopener">Quandl</a> must be obtained (for free) and authorized on the local installation. See the <a href="/terminal/guides/advanced/api-keys" target="_blank" rel="noreferrer noopener">Getting Started Guide</a> for help setting up the API keys in the OpenBB Terminal. The four commands at the bottom of the menu rely on a loaded ticker while the six above do not.
+To use every feature in the Dark Pools menu, an API key for <a href="https://www.quandl.com/" target="_blank" rel="noreferrer noopener">Quandl</a> must be obtained (for free) and authorized on the local installation. See the <a href="/terminal/guides/advanced/api-keys" target="_blank" rel="noreferrer noopener">Setting API Keys Guide</a> for help setting up the API keys in the OpenBB Terminal. The four commands at the bottom of the menu rely on a loaded ticker while the six above do not.
 
 ### How to use
 
@@ -214,12 +214,6 @@ Load AAPL and request a 1-year chart of the net short volume and position. This 
 (🦋) /stocks/dps/ $ load AAPL
 
 Loading Daily AAPL stock with starting period 2019-05-28 for analysis.
-
-Datetime: 2022 May 30 14:59
-Timezone: America/New_York
-Currency: USD
-Market:   CLOSED
-Company:  Apple Inc.
 
 (🦋) /stocks/dps/ $ spos
 ````

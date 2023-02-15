@@ -6,16 +6,16 @@ description: An Introduction to Cryptocurrency Onchain, within the Cryptocurrenc
 
 The Cryptocurrency Onchain menu provides access to features that determine market sentiment by leveraging data from a blockchain ledger. This can be, among other things, blockchain hashrates (<a href="/terminal/reference/crypto/onchain/hr/" target="_blank" rel="noreferrer noopener">hr</a>), confirmed transactions (<a href="/terminal/reference/crypto/onchain/btcct/" target="_blank" rel="noreferrer noopener">btcct</a>) and top traded crypto pairs (<a href="/terminal/reference/crypto/onchain/ttcp/" target="_blank" rel="noreferrer noopener">ttcp</a>).
 
-### How to use
+## How to use
 
 The Cryptocurrency Onchain menu is called upon by typing `onchain`, while inside the `crypto` menu, which opens the following menu:
 
-![Cryptocurrency Onchain Menu](https://user-images.githubusercontent.com/46355364/178532254-8f4ef039-fab5-4ac5-afbf-584f8ce711c4.png)
+<img width="800" alt="image" src="https://user-images.githubusercontent.com/46355364/218995146-05608017-ec78-41e1-a476-350ca5964378.png"></img>
 
 Alternatively, you can also type `/crypto/onchain`. Within the Cryptocurrency Onchain menu you can find features examining transaction data and crypto wallet balances, both of which are helpful when deciding whether to invest. E.g. we can look into the top ERC20 token by typing `top` which returns the following table:
 
 ```
-2022 Jul 12, 08:45 (🦋) /crypto/onchain/ $ top
+(🦋) /crypto/onchain/ $ top
 
                                                      Top ERC20 Tokens
 ┏━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┓
@@ -43,18 +43,18 @@ Alternatively, you can also type `/crypto/onchain`. Within the Cryptocurrency On
 └──────┴─────────────────┴─────────┴──────────┴──────────┴────────────────┴──────────────┴──────────────┴─────────────────┘
 ```
 
-### Examples
+## Examples
 
 To access much of the Ethereum features, an ethereum address needs to be entered. As an example this can be `0x71C7656EC7ab88b098defB751B7401B5f6d8976F` which can be entered within the <a href="/terminal/reference/crypto/onchain/address/" target="_blank" rel="noreferrer noopener">address</a> command as follows:
 
 ```
-2022 Jul 12, 08:48 (🦋) /crypto/onchain/ $ address 0x71C7656EC7ab88b098defB751B7401B5f6d8976F
+(🦋) /crypto/onchain/ $ address 0x71C7656EC7ab88b098defB751B7401B5f6d8976F
 ```
 
 Which allows you to see the <a href="/terminal/reference/crypto/onchain/balance/" target="_blank" rel="noreferrer noopener">balance</a> and <a href="/terminal/reference/crypto/onchain/hist/" target="_blank" rel="noreferrer noopener">hist</a> which returns the following for `balance`:
 
 ```
-2022 Jul 12, 08:53 (🦋) /crypto/onchain/ $ balance
+(🦋) /crypto/onchain/ $ balance
 
                                                  Blockchain Token Information
 ┏━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┓
@@ -85,8 +85,7 @@ Which allows you to see the <a href="/terminal/reference/crypto/onchain/balance/
 And `hist` returns the following:
 
 ```
-
-2022 Jul 12, 08:53 (🦋) /crypto/onchain/ $ hist
+(🦋) /crypto/onchain/ $ hist
 
                                              Historical Transactions Information
 ┏━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┓
