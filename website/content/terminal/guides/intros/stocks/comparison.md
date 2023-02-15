@@ -5,34 +5,26 @@ description: The Comparison Analysis menu provides the user with tools for compa
 ---
 The Comparison Analysis menu provides the user with tools for comparison (similar) stocks. It is not necessary to load a ticker from the <a href="/terminal/guides/intros/stocks" target="_blank" rel="noreferrer noopener">Stocks menu</a> to use these features. Enter the Comparison Analysis submenu by typing `ca` and pressing `ENTER` (⏎).
 
-<a target="_blank" href="https://user-images.githubusercontent.com/46355364/171148283-2cbb5942-dc56-4276-a30c-7cbc045627a1.png"><img alt="Comparison Analysis Menu" src="https://user-images.githubusercontent.com/46355364/171148283-2cbb5942-dc56-4276-a30c-7cbc045627a1.png"></img></a>
+<img width="800" alt="image" src="https://user-images.githubusercontent.com/46355364/218978432-a47e817c-30c6-4dbb-bb86-52a1eb83901d.png">
 
 ### How to use
 
-To add a primary ticker, or to swap it for another, enter `ticker AMZN`. The command has three sources, use: `getfinnhub`, `getpolygon`
+To add a primary ticker, or to swap it for another, enter `ticker WMT`. The command has three sources, use: `getfinnhub`, `getpolygon`
 and `getfinviz` to access the different sources. Sources may return different results.
 
 ````
-(🦋) /stocks/ca/ $ getfinviz
-[Finviz] Similar Companies: WMT, BIG, BJ, COST, DG, DLTR, OLLI, PSMT, TGT, TUEM
+(🦋) /stocks/ca/ $ get --source Finviz
 
-(🦋) /stocks/ca/ $ getpoly
+[Finviz] Similar Companies: WMT, BIG, BJ, COST, DG, DLTR, OLLI, PSMT, TGT
+
+(🦋) /stocks/ca/ $ get --source Polygon
+
 [Polygon] Similar Companies: WMT, AMZN, COST, EBAY, DLTR, KSS, JCP, TGT, M, DG
-
-(🦋) /stocks/ca/ $ getfinnhub
-[Finnhub] Similar Companies: WMT, COST, BJ, PSMT
 ````
-Using any of these commands will automatically populate the list of similar companies for analysis. Furthermore, `add` & `rmv` allows the user to make modifications, or create a list from scratch.
 
-<a target="_blank" href="https://user-images.githubusercontent.com/46355364/171148589-08cc106f-4e1d-4d94-92b5-09190f1798d4.png"><img alt="Get similar companies for analysis" src="https://user-images.githubusercontent.com/46355364/171148589-08cc106f-4e1d-4d94-92b5-09190f1798d4.png"></img></a>
-
-To show a correlation matrix, use the `hcorr` command. The start dates can be modified, which changes the results, to show correlation over different periods. For example, obtain a one year correlation matrix with `hcorr`:
+Using any of these commands will automatically populate the list of similar companies for analysis. Furthermore, `add` & `rmv` allows the user to make modifications, or create a list from scratch. To show a correlation matrix, use the `hcorr` command. The start dates can be modified, which changes the results, to show correlation over different periods. For example, obtain a one year correlation matrix with `hcorr`:
 
 <a target="_blank" href="https://user-images.githubusercontent.com/46355364/171148882-a0f1c57a-6761-4fbc-a03f-e5213a52c7f0.png"><img alt="One year correlation matrix" src="https://user-images.githubusercontent.com/46355364/171148882-a0f1c57a-6761-4fbc-a03f-e5213a52c7f0.png"></img></a>
-
-Or, by adjusting the date, it is possible to define a correlation matrix with a different time horizon, e.g `hcorr -s 2022-01-01`:
-
-<a target="_blank" href="https://user-images.githubusercontent.com/46355364/171149853-1a84e9af-7099-4a72-b687-01f2e32d0485.png"><img alt="YTD correlation matrix" src="https://user-images.githubusercontent.com/46355364/171149853-1a84e9af-7099-4a72-b687-01f2e32d0485.png"></img></a>
 
 The list of similar companies can be compared by a number of fundamental metrics.
 
