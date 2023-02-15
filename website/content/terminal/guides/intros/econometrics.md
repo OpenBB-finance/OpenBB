@@ -10,7 +10,7 @@ The Econometrics menu's purpose is to provide the user the ability to perform st
 
 The Econometrics menu is called upon by typing `econometrics` which opens the following menu:
 
-![Econometrics Menu OpenBB Terminal](https://user-images.githubusercontent.com/46355364/174588406-7f120cf7-933e-4bef-a7f6-ba0c7c7d5028.png)
+<img width="800" alt="image" src="https://user-images.githubusercontent.com/46355364/218989834-1bb3e52a-9f11-4b34-b5bd-aff77a978972.png"></img>
 
 You have the ability to load in your own custom datasets but there is also the option to use example datasets which are used within this guide as well. These datasets can be found by using the <a href="/terminal/reference/econometrics/load" target="_blank" rel="noreferrer noopener">load</a> command and typing `load --examples`. See below:
 
@@ -88,20 +88,22 @@ As there is a clear difference between time series data, which is 1-dimensional 
 To demonstrate the usage of the menu, the <a href="https://www.statsmodels.org/dev/datasets/generated/longley.html" target="_blank" rel="noreferrer noopener">longley</a> dataset is loaded in. This can be done by `load longley` as shown below:
 
 ```
-2022 Jun 20, 04:36 (🦋) /econometrics/ $ load longley
+(🦋) /econometrics/ $ load --file longley
 
-2022 Jun 20, 04:38 (🦋) /econometrics/ $ ?
+
+(🦋) /econometrics/ $ ?
+
 ╭─────────────────────────────────────────────────────────────────────────────────────────────────── Econometrics ───────────────────────────────────────────────────────────────────────────────────────────────────╮
 │                                                                                                                                                                                                                    │
 │ Looking for data in:                                                                                                                                                                                               │
-│                                                                                                                                                                                                                    │
-│         /Users/jeroenbouma/Documents/OpenBB Terminal/custom_imports                                                                                                                                                │
+│         /Users/jeroenbouma/OpenBBUserData/exports                                                                                                                                                                  │
+│         /Users/jeroenbouma/OpenBBUserData/custom_imports/econometrics                                                                                                                                              │
 │                                                                                                                                                                                                                    │
 │     load               load a dataset (also works with StatsModels datasets)                                                                                                                                       │
 │     remove             remove one of the loaded datasets                                                                                                                                                           │
 │                                                                                                                                                                                                                    │
 │ Loaded files and data columns:                                                                                                                                                                                     │
-│   longley : totemp, gnpdefl, gnp, unemp, armed, pop, year                                                                                                                                                          │
+│         longley : totemp, gnpdefl, gnp, unemp, armed, pop, year                                                                                                                                                    │
 │                                                                                                                                                                                                                    │
 │ Exploration:                                                                                                                                                                                                       │
 │     show               show a portion of a loaded dataset                                                                                                                                                          │
@@ -129,13 +131,13 @@ To demonstrate the usage of the menu, the <a href="https://www.statsmodels.org/d
 │     bgod               Breusch-Godfrey autocorrelation tests with lags on the residuals of the regression                                                                                                          │
 │     bpag               Breusch-Pagan heteroscedasticity test on the residuals of the regression                                                                                                                    │
 │                                                                                                                                                                                                                    │
-╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── OpenBB Terminal v1.3.0 (https://openbb.co) ─╯
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── OpenBB Terminal v2.4.0 (https://openbb.co) ─╯
 ```
 
 Beneath `Loaded files and data columns` you can find the longley dataset and its columns. You can create an alias for this dataset with the `-a` argument as shown within the <a href="/terminal/reference/econometrics/ols" target="_blank" rel="noreferrer noopener">ols</a> command. To see a portion of this dataset, the <a href="/terminal/reference/econometrics/show" target="_blank" rel="noreferrer noopener">show</a> command can be used as shown below:
 
 ```
-2022 Jun 20, 04:38 (🦋) /econometrics/ $ show
+(🦋) /econometrics/ $ show
 
                     Dataset longley | Showing 10 of 16 rows
 ┏━━━┳━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┓
@@ -166,7 +168,7 @@ Beneath `Loaded files and data columns` you can find the longley dataset and its
 This can be extended by also showing the descriptive statistics, this can be done with the <a href="/terminal/reference/econometrics/desc" target="_blank" rel="noreferrer noopener">desc</a> command and including the `longley` dataset. This command also allows descriptive statistics for individual columns to be displayed (e.g. `desc longley.totemp`)
 
 ```
-2022 Jun 20, 04:44 (🦋) /econometrics/ $ desc longley
+(🦋) /econometrics/ $ desc longley
 
                          Statistics for dataset: 'longley'
 ┏━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┓
@@ -193,7 +195,7 @@ This can be extended by also showing the descriptive statistics, this can be don
 It is possible to check for a variety of assumptions, e.g. normality, unit root, granger and co-integration. The commands `norm` and `root` are shown below. Note that due to the small size of the dataset, many of these tests are not statistically significant.
 
 ```
-2022 Jun 20, 04:49 (🦋) /econometrics/ $ norm longley.gnp
+(🦋) /econometrics/ $ norm longley.gnp
 
                    Normality test from dataset 'longley' of 'gnp'
 ┏━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┓
@@ -205,7 +207,7 @@ It is possible to check for a variety of assumptions, e.g. normality, unit root,
 └───────────┴──────────┴──────────┴─────────────┴──────────────┴────────────────────┘
 
 
-2022 Jun 20, 04:49 (🦋) /econometrics/ $ root longley.pop
+(🦋) /econometrics/ $ root longley.pop
 
 Unitroot from dataset 'longley of 'pop'
 ┏━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━┓
@@ -226,7 +228,7 @@ Unitroot from dataset 'longley of 'pop'
 The longley dataset is known for the ability to create an OLS regression that results in a <a href="https://www.investopedia.com/terms/r/r-squared.asp" target="_blank" rel="noreferrer noopener">R-squared</a> of 1.0 due to the fact that the US macroeconomic variables are known to be highly collinear. See the following regression performed with the <a href="/terminal/reference/econometrics/ols" target="_blank" rel="noreferrer noopener">ols</a> command:
 
 ```
-2022 Jun 20, 04:56 (🦋) /econometrics/ $ ols -d longley.totemp -i longley.gnpdefl,longley.gnp,longley.unemp,longley.armed,longley.pop,longley.year
+(🦋) /econometrics/ $ ols -d longley.totemp -i longley.gnpdefl,longley.gnp,longley.unemp,longley.armed,longley.pop,longley.year
                                  OLS Regression Results
 =======================================================================================
 Dep. Variable:         longley.totemp   R-squared (uncentered):                   1.000
@@ -269,7 +271,7 @@ The argument `-d` refers to the dependent variable, in this example `longley.tot
 After running the regression estimation, it is possible to perform tests on the residuals of the model. E.g. for autocorrelation and heteroscedasity as shown below with the <a href="/terminal/reference/econometrics/bgod" target="_blank" rel="noreferrer noopener">bgod</a> and <a href="/terminal/reference/econometrics/bpag" target="_blank" rel="noreferrer noopener">bpag</a> commands.
 
 ```
-2022 Jun 20, 05:00 (🦋) /econometrics/ $ bgod
+(🦋) /econometrics/ $ bgod
 
 Breusch-Godfrey autocorrelation test [Lags: 3]
 ┏━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┓
@@ -286,7 +288,7 @@ Breusch-Godfrey autocorrelation test [Lags: 3]
 
 The result 0.02 indicates no existence of autocorrelation.
 
-2022 Jun 20, 05:00 (🦋) /econometrics/ $ bpag
+(🦋) /econometrics/ $ bpag
 
 Breusch-Pagan heteroscedasticity test
 ┏━━━━━━━━━━┳━━━━━━━━━━━━━━━┓
@@ -311,20 +313,22 @@ Within the examples of `load --examples` there is one panel dataset available na
 Here, the dataset is loaded in and an alias is used by using the `-a` argument. The available columns are displayed under `Loaded files and data columns`.
 
 ```
-2022 Jun 20, 05:13 (🦋) /econometrics/ $ load wage_panel -a wp
+(🦋) /econometrics/ $ load --file wage_panel -a wp
 
-2022 Jun 20, 05:13 (🦋) /econometrics/ $ ?
+
+(🦋) /econometrics/ $ ?
+
 ╭─────────────────────────────────────────────────────────────────────────────────────────────────── Econometrics ───────────────────────────────────────────────────────────────────────────────────────────────────╮
 │                                                                                                                                                                                                                    │
 │ Looking for data in:                                                                                                                                                                                               │
-│                                                                                                                                                                                                                    │
-│         /Users/jeroenbouma/Documents/OpenBB Terminal/custom_imports                                                                                                                                                │
+│         /Users/jeroenbouma/OpenBBUserData/exports                                                                                                                                                                  │
+│         /Users/jeroenbouma/OpenBBUserData/custom_imports/econometrics                                                                                                                                              │
 │                                                                                                                                                                                                                    │
 │     load               load a dataset (also works with StatsModels datasets)                                                                                                                                       │
 │     remove             remove one of the loaded datasets                                                                                                                                                           │
 │                                                                                                                                                                                                                    │
 │ Loaded files and data columns:                                                                                                                                                                                     │
-│   wp : nr, year, black, exper, hisp, hours, married, educ, union, lwage, expersq, occupation                                                                                                                       │
+│         wp : nr, year, black, exper, hisp, hours, married, educ, union, lwage, expersq, occupation                                                                                                                 │
 │                                                                                                                                                                                                                    │
 │ Exploration:                                                                                                                                                                                                       │
 │     show               show a portion of a loaded dataset                                                                                                                                                          │
@@ -352,20 +356,20 @@ Here, the dataset is loaded in and an alias is used by using the `-a` argument. 
 │     bgod               Breusch-Godfrey autocorrelation tests with lags on the residuals of the regression                                                                                                          │
 │     bpag               Breusch-Pagan heteroscedasticity test on the residuals of the regression                                                                                                                    │
 │                                                                                                                                                                                                                    │
-╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── OpenBB Terminal v1.3.0 (https://openbb.co) ─╯
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── OpenBB Terminal v2.4.0 (https://openbb.co) ─╯                                                                      
 ```
 
 To run panel regressions with <a href="/terminal/reference/econometrics/panel" target="_blank" rel="noreferrer noopener">panel</a> it is important to define both _entity_ (e.g. company) and _time_ (e.g. year). Trying to run the `panel` command would right now result in the following:
 
 ```
-2022 Jun 20, 05:17 (🦋) /econometrics/ $ panel -d wp.lwage -i wp.black,wp.hisp,wp.exper,wp.expersq,wp.married,wp.educ,wp.union,wp.year
+(🦋) /econometrics/ $ panel -d wp.lwage -i wp.black,wp.hisp,wp.exper,wp.expersq,wp.married,wp.educ,wp.union,wp.year
 The column 'lwage' from the dataset 'wp' is not a MultiIndex. Make sure you set the index correctly with the index (e.g. index wp -i lwage,nr) command where the first level is the entity (e.g. Tesla Inc.) and the second level the date (e.g. 2021-03-31)
 ```
 
 To see the effect of defining a `MultiIndex`, first a portion of the data is shown with the <a href="/terminal/reference/econometrics/show" target="_blank" rel="noreferrer noopener">show</a> command as seen below:
 
 ```
-2022 Jun 20, 05:22 (🦋) /econometrics/ $ show
+(🦋) /econometrics/ $ show
 
                                       Dataset wp | Showing 10 of 4360 rows
 ┏━━━┳━━━━━━━┳━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━┳━━━━━━━━━┳━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━┓
@@ -396,10 +400,10 @@ To see the effect of defining a `MultiIndex`, first a portion of the data is sho
 Within this dataset the `nr` and `year` columns define the _entity_ and _time_. To allow panel regression estimations, it is important that this is defined accordingly with the <a href="/terminal/reference/econometrics/index_cmd" target="_blank" rel="noreferrer noopener">index</a> command. This can be done with the following (and showing the changed dataset afterwards):
 
 ```
-2022 Jun 20, 05:22 (🦋) /econometrics/ $ index wp -i nr,year
+(🦋) /econometrics/ $ index wp -i nr,year
 Successfully updated 'wp' index to be 'nr, year'
 
-2022 Jun 20, 05:27 (🦋) /econometrics/ $ show
+(🦋) /econometrics/ $ show
 
                                            Dataset wp | Showing 10 of 4360 rows
 ┏━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━┳━━━━━━━━━┳━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━┓
@@ -430,7 +434,7 @@ Successfully updated 'wp' index to be 'nr, year'
 The columns `nr` and `year` still exists within the dataset and could have been dropped with the `-d` argument if desired. However, in this case the `year` column is relevant for generating time effects in Pooled OLS, Fixed Effects and Random Effects estimations. To be able to do this, the type of the year column needs to be changed accordingly. The type of the columns can be displayed with the <a href="/terminal/reference/econometrics/type" target="_blank" rel="noreferrer noopener">type</a> command as follows:
 
 ```
-2022 Jun 20, 05:27 (🦋) /econometrics/ $ type wp
+(🦋) /econometrics/ $ type wp
 
            wp
 ┏━━━━━━━━━━━━┳━━━━━━━━━┓
@@ -476,10 +480,10 @@ The dtype `int64` refers to numbers without decimals (e.g. 1, 2, 3) while the dt
 For the panel regressions, it can be beneficial to see time effects from `year`. Therefore, the type of the `year` column should be altered to `category`. This can be done with the following command:
 
 ```
-2022 Jun 20, 05:33 (🦋) /econometrics/ $ type wp.year --format category
+(🦋) /econometrics/ $ type wp.year --format category
 Update 'wp.year' with type 'category'
 
-2022 Jun 20, 05:40 (🦋) /econometrics/ $ type
+(🦋) /econometrics/ $ type
 
            wp
 ┏━━━━━━━━━━━━┳━━━━━━━━━━┓
@@ -522,7 +526,7 @@ The dataset is now properly configured to allow for proper panel regressions. Th
 As an example, a **Random Effects** regression is performed. Here, the column after the `-d` argument refers to the dependent variable and the columns after the `-i` argument refer to the independent variables.
 
 ```
-2022 Jun 20, 05:51 (🦋) /econometrics/ $ panel -d wp.lwage -i wp.black,wp.hisp,wp.exper,wp.expersq,wp.married,wp.educ,wp.union,wp.year -r re
+(🦋) /econometrics/ $ panel -d wp.lwage -i wp.black,wp.hisp,wp.exper,wp.expersq,wp.married,wp.educ,wp.union,wp.year -r re
 
 
                         RandomEffects Estimation Summary
@@ -570,9 +574,7 @@ wp.year.1987     0.1348     0.0817     1.6504     0.0989     -0.0253      0.2950
 
 Doing research both as a student or professor for a university or as a professional often requires the findings to be easily replicated. Furthermore, as many steps could be required it can be very beneficial to have the ability to make small adjustments without needing to re-do every single step again. This is where `.openbb` files play an important role.
 
-By going to the main menu as depicted below, the `exe` command can be used. With this command you can run `.openbb` scripts that automatically run a set of commands similarly to that of the Stata do-files and SPSS syntax files. These scripts are located where the application is located inside the `routines` folder.
-
-![Econometrics Menu Routine Exe OpenBB Terminal](https://user-images.githubusercontent.com/46355364/174588513-5c52ea20-548a-4c2b-a4c1-6054e2d71786.png)
+By going to the main menu as depicted below, the `exe` command can be used. With this command you can run `.openbb` scripts that automatically run a set of commands similarly to that of the Stata do-files and SPSS syntax files. These scripts are located where the application is located inside the `routines` folder. Please find a more elaborate explanation in the [Scripts & Routines Guide](/terminal/guides/advanced/scripts-and-routines).
 
 This demo file has the following contents:
 
