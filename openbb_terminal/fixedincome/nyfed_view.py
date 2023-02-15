@@ -5,6 +5,7 @@ from typing import Optional, List
 from itertools import cycle
 import logging
 import os
+import pandas as pd
 
 from matplotlib import pyplot as plt
 
@@ -104,13 +105,20 @@ def plot_sofr(
 
     if external_axes is None:
         theme.visualize_output()
+        
+    if export:
+        if "[Percent]" in SERIES_TO_NAME_SOFR[series]:
+            # Check whether it is a percentage, relevant for exporting
+            df_transformed = pd.DataFrame(df, columns=[series]) / 100
+        else:
+            df_transformed = pd.DataFrame(df, columns=[series])
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        f"sofr, {series}",
-        df,
-    )
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            series,
+            df_transformed,
+        )
 
 
 @log_start_end(log=logger)
@@ -166,8 +174,8 @@ def plot_fftr(
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
-        f"fftr",
-        df,
+        "fftr",
+        pd.DataFrame(df, columns=["FFTR"]) / 100,
     )
 
 
@@ -224,13 +232,20 @@ def plot_effr(
 
     if external_axes is None:
         theme.visualize_output()
+        
+    if export:
+        if "[Percent]" in SERIES_TO_NAME_EFFR[series]:
+            # Check whether it is a percentage, relevant for exporting
+            df_transformed = pd.DataFrame(df, columns=[series]) / 100
+        else:
+            df_transformed = pd.DataFrame(df, columns=[series])
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        f"effr, {series}",
-        df,
-    )
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            series,
+            df_transformed,
+        )
 
 
 @log_start_end(log=logger)
@@ -287,9 +302,16 @@ def plot_obfr(
     if external_axes is None:
         theme.visualize_output()
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        f"obfr, {series}",
-        df,
-    )
+    if export:
+        if "[Percent]" in SERIES_TO_NAME_OBFR[series]:
+            # Check whether it is a percentage, relevant for exporting
+            df_transformed = pd.DataFrame(df, columns=[series]) / 100
+        else:
+            df_transformed = pd.DataFrame(df, columns=[series])
+            
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            series,
+            df_transformed,
+        )

@@ -1582,6 +1582,9 @@ class FixedIncomeController(BaseController):
                 ns_parser.start_date,
                 ns_parser.end_date,
                 ns_parser.export,
+                " ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -1621,6 +1624,9 @@ class FixedIncomeController(BaseController):
                 ns_parser.start_date,
                 ns_parser.end_date,
                 ns_parser.export,
+                " ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -1662,6 +1668,9 @@ class FixedIncomeController(BaseController):
                 ns_parser.start_date,
                 ns_parser.end_date,
                 ns_parser.export,
+                " ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -1725,6 +1734,9 @@ class FixedIncomeController(BaseController):
                 start_date=ns_parser.start_date,
                 end_date=ns_parser.end_date,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -1792,6 +1804,9 @@ class FixedIncomeController(BaseController):
                 start_date=ns_parser.start_date,
                 end_date=ns_parser.end_date,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -1841,6 +1856,9 @@ class FixedIncomeController(BaseController):
                 ns_parser.start_date,
                 ns_parser.end_date,
                 ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -1890,6 +1908,9 @@ class FixedIncomeController(BaseController):
                 ns_parser.start_date,
                 ns_parser.end_date,
                 ns_parser.export,
+                " ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -1938,6 +1959,9 @@ class FixedIncomeController(BaseController):
                 date=ns_parser.date.strftime("%Y-%m-%d") if ns_parser.date else "",
                 raw=ns_parser.raw,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -1985,6 +2009,9 @@ class FixedIncomeController(BaseController):
                 date=ns_parser.date.strftime("%Y-%m-%d") if ns_parser.date else "",
                 raw=ns_parser.raw,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -2058,6 +2085,9 @@ class FixedIncomeController(BaseController):
                 aaa_only=ns_parser.aaa_only,
                 raw=ns_parser.raw,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -2108,6 +2138,9 @@ class FixedIncomeController(BaseController):
                     ns_parser.start_date,
                     ns_parser.end_date,
                     ns_parser.export,
+                    " ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
             elif ns_parser.source == "EconDB":
                 econdb_view.plot_tbill(
@@ -2115,6 +2148,9 @@ class FixedIncomeController(BaseController):
                     ns_parser.start_date,
                     ns_parser.end_date,
                     ns_parser.export,
+                    " ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
 
     @log_start_end(log=logger)
@@ -2173,6 +2209,9 @@ class FixedIncomeController(BaseController):
                     ns_parser.start_date,
                     ns_parser.end_date,
                     ns_parser.export,
+                    " ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
             elif ns_parser.source == "EconDB":
                 econdb_view.plot_cmn(
@@ -2180,6 +2219,9 @@ class FixedIncomeController(BaseController):
                     ns_parser.start_date,
                     ns_parser.end_date,
                     ns_parser.export,
+                    " ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
 
     @log_start_end(log=logger)
@@ -2239,6 +2281,9 @@ class FixedIncomeController(BaseController):
                     ns_parser.start_date,
                     ns_parser.end_date,
                     ns_parser.export,
+                     " ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
             elif ns_parser.source == "EconDB":
                 econdb_view.plot_tips(
@@ -2246,6 +2291,9 @@ class FixedIncomeController(BaseController):
                     ns_parser.start_date,
                     ns_parser.end_date,
                     ns_parser.export,
+                    " ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
 
     @log_start_end(log=logger)
@@ -2291,6 +2339,9 @@ class FixedIncomeController(BaseController):
                 ns_parser.start_date,
                 ns_parser.end_date,
                 ns_parser.export,
+                " ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -2336,4 +2387,7 @@ class FixedIncomeController(BaseController):
                 ns_parser.start_date,
                 ns_parser.end_date,
                 ns_parser.export,
+                " ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
