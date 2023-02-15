@@ -41,5 +41,5 @@ def test_anom_model(model, data, *args, **kwargs):
 
 
 def pytest_runtest_setup(item: Node):
-    if not item.config.getoption("--prediction"):
-        pytest.skip(msg="Runs only with option : --prediction")
+    if not item.config.getoption("--forecast"):
+        pytest.skip(msg="Runs only with option : --forecast")

@@ -73,7 +73,7 @@ conda install -c conda-forge lightgbm=3.3.3 -y
 Install the Forecasting Toolkit
 
 ```bash
-pip install "openbb[prediction]"
+pip install "openbb[forecast]"
 ```
 
 #### 5.3 **If you would like to use both Portfolio Optimization and ML forecast features**

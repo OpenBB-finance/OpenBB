@@ -314,9 +314,9 @@ def record_stdout_format_kwargs(
 
 def pytest_addoption(parser: Parser):
     parser.addoption(
-        "--prediction",
+        "--forecast",
         action="store_true",
-        help="To run tests with the marker : @pytest.mark.prediction",
+        help="To run tests with the marker : @pytest.mark.forecast",
     )
     parser.addoption(
         "--optimization",
