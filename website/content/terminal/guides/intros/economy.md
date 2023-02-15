@@ -353,7 +353,7 @@ A hypothesis could be that the more volatile the price of oil is, the lower the 
 Now, combine these two graphs with the `plot` command. This helps in visually depicting a (negative) relationship.
 
 ```
-2022 Jun 30, 08:00 (🦋) /economy/ $ plot --y1 Germany_CONF --y2 OVXCLS
+(🦋) /economy/ $ plot --y1 Germany_CONF --y2 OVXCLS
 ```
 
 ![CBOE Crude OIL ETF Volatility Index and Consumer Confidence Germany](https://user-images.githubusercontent.com/46355364/176680645-79b8f44d-adc7-49e4-b749-80188f22850f.png)
