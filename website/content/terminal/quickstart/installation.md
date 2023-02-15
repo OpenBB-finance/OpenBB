@@ -37,7 +37,7 @@ OpenBB Terminal is available on all major platforms. With Windows and macOS you 
 
 </div><p>Download the installer from the button below:</p>
 
-<InstallerButton type="windows" href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v2.4.0/Windows.OpenBB.Terminal.v2.4.0.exe" label="Windows Installer" />
+<InstallerButton type="windows" href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v2.4.0/Windows.OpenBB.Terminal.2.4.0.exe" label="Windows Installer" />
 
 <p>Follow along with the instructions of the video or use the steps below to run the OpenBB Terminal:</p>
 
