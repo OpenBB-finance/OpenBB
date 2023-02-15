@@ -11,7 +11,7 @@ The Cryptocurrency Due Diligence menu gives the user the ability to delve deeper
 
 The Cryptocurrency Due Diligence menu is called upon by typing `dd` (after loading a coin), while inside the `crypto` menu, which opens the following menu:
 
-<img width="1512" alt="image" src="https://user-images.githubusercontent.com/46355364/218993627-272a15ef-bcb2-481b-bf38-c6faec709235.png">
+<img width="1512" alt="image" src="https://user-images.githubusercontent.com/46355364/218993627-272a15ef-bcb2-481b-bf38-c6faec709235.png"></img>
 
 This menu requires you to load a coin with the `load` command. Thus, alternatively, you can also type `/crypto/load BTC/dd`. Within the Cryptocurrency Due Diligence menu you can find features examining an extensive amount of metrics about the loaded coin. As an example, you can see the latest trades done on the loaded coin with `trades`:
 

@@ -10,7 +10,7 @@ The Economy menu enables you to obtain market overviews (<a href="/terminal/refe
 
 The Economy menu is called upon by typing `economy` which opens the following menu:
 
-<img width="800" alt="image" src="https://user-images.githubusercontent.com/46355364/218990930-84338dbb-64eb-4243-82ff-8d0423f7066c.png">
+<img width="800" alt="image" src="https://user-images.githubusercontent.com/46355364/218990930-84338dbb-64eb-4243-82ff-8d0423f7066c.png"></img>
 
 Within the Economy menu you have a variety of options ranging from treasury rates to population growth to country financial performance. As this is quite extensive, the guide has two sections. The first section will discuss valuations and performance and the second section discusses the databases.
 

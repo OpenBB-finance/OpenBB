@@ -10,7 +10,7 @@ The Cryptocurrency Discovery menu provides the option to look into a wide select
 
 The Cryptocurrency Discovery menu is called upon by typing `disc`, while inside the `crypto` menu, which opens the following menu:
 
-<img width="800" alt="image" src="https://user-images.githubusercontent.com/46355364/218994037-0dc20c77-b7dc-4095-9c12-f12e11d4da68.png">
+<img width="800" alt="image" src="https://user-images.githubusercontent.com/46355364/218994037-0dc20c77-b7dc-4095-9c12-f12e11d4da68.png"></img>
 
 Alternatively, you can also type `/crypto/disc`. Within the Cryptocurrency Discovery menu you have a variety of options to find that information about a coin, a NFT, a specific blockchain game, decentralized app or exchange. E.g. we can look into the top coins by typing `top` which returns the following table:
 

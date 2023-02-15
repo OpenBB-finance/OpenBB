@@ -26,7 +26,7 @@ All commands in this menu will rely on the interval and window chosen when <a hr
 
 To begin, enter the menu from one of the menus listed above by entering `ta`.
 
-<img width="800" alt="image" src="https://user-images.githubusercontent.com/46355364/218977681-de39092f-5381-46dd-b5b5-915fc6ee506f.png">
+<img width="800" alt="image" src="https://user-images.githubusercontent.com/46355364/218977681-de39092f-5381-46dd-b5b5-915fc6ee506f.png"></img>
 
 Choose a beginning and end date to see a volume-weighted average price chart of the loaded ticker. `vwap --start 2022-01-01 --end 2022-06-17`
 

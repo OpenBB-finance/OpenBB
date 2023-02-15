@@ -8,7 +8,7 @@ This set of features is for composing hypothetical outcomes through user-defined
 
 The Pricing submenu is accessible after selecting an<a href="/terminal/reference/stocks/options/exp" target="_blank" rel="noreferrer noopener">expiration</a> date for the options chain. Type, `pricing`, and press enter for access.
 
-<img width="800" alt="image" src="https://user-images.githubusercontent.com/46355364/218987795-887c2f76-73f3-44ff-a6f5-35b392616186.png">
+<img width="800" alt="image" src="https://user-images.githubusercontent.com/46355364/218987795-887c2f76-73f3-44ff-a6f5-35b392616186.png"></img>
 
 ## How to use
 

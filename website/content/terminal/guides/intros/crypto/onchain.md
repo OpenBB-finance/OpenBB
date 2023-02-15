@@ -10,7 +10,7 @@ The Cryptocurrency Onchain menu provides access to features that determine marke
 
 The Cryptocurrency Onchain menu is called upon by typing `onchain`, while inside the `crypto` menu, which opens the following menu:
 
-<img width="800" alt="image" src="https://user-images.githubusercontent.com/46355364/218995146-05608017-ec78-41e1-a476-350ca5964378.png">
+<img width="800" alt="image" src="https://user-images.githubusercontent.com/46355364/218995146-05608017-ec78-41e1-a476-350ca5964378.png"></img>
 
 Alternatively, you can also type `/crypto/onchain`. Within the Cryptocurrency Onchain menu you can find features examining transaction data and crypto wallet balances, both of which are helpful when deciding whether to invest. E.g. we can look into the top ERC20 token by typing `top` which returns the following table:
 

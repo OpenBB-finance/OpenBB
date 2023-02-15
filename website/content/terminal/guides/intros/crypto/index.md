@@ -12,7 +12,7 @@ NFT (<a href="/terminal/guides/intros/crypto/nft" target="_blank" rel="noreferre
 
 The Cryptocurrency menu is called upon by typing `crypto` which opens the following menu:
 
-<img width="800" alt="image" src="https://user-images.githubusercontent.com/46355364/218994185-0afe6b70-df8a-4ed3-a26a-0de4da834c7e.png">
+<img width="800" alt="image" src="https://user-images.githubusercontent.com/46355364/218994185-0afe6b70-df8a-4ed3-a26a-0de4da834c7e.png"></img>
 
 You have the ability to search a coin with `find` based on its name or symbol. An example:
 

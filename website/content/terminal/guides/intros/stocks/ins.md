@@ -6,7 +6,7 @@ description: This guide introduces the Insider Trading submenu, within the Stock
 
 The Insider Trading menu gives stock screener for SEC Form 4 filings and researching individual companies for executive and director transactions. Navigate to the Insider Trading submenu from the `stocks` menu by typing `ins` and pressing `enter`. The features in this menu function only for companies registered with the SEC, that also trade in public markets.
 
-<img width="800" alt="image" src="https://user-images.githubusercontent.com/46355364/218983223-b1d7e55f-4bcc-4b4f-99d8-a5159eddc941.png">
+<img width="800" alt="image" src="https://user-images.githubusercontent.com/46355364/218983223-b1d7e55f-4bcc-4b4f-99d8-a5159eddc941.png"></img>
 
 ### How to use
 

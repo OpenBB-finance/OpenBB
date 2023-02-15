@@ -10,7 +10,7 @@ The Forex menu enables you to <a href="/terminal/reference/forex/load" target="_
 
 The Forex menu is called upon by typing `forex` which opens the following menu:
 
-<img width="800" alt="image" src="https://user-images.githubusercontent.com/46355364/218992918-54ea252b-d8b8-46e2-8da7-0b6d471f8a64.png">
+<img width="800" alt="image" src="https://user-images.githubusercontent.com/46355364/218992918-54ea252b-d8b8-46e2-8da7-0b6d471f8a64.png"></img>
 
 For example, you are able to show the quote of the currency pair by using the <a href="/terminal/reference/forex/quote" target="_blank" rel="noreferrer noopener">quote</a> command:
 

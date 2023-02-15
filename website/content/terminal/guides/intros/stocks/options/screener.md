@@ -5,7 +5,7 @@ description: This guide introduces the user to the Options Screener, located wit
 ---
 The OpenBB options screener is a versatile discovery tool for an options trader.
 
-<img width="1512" alt="image" src="https://user-images.githubusercontent.com/46355364/218988416-611d5381-c379-418f-8be7-24242103f9f5.png">
+<img width="1512" alt="image" src="https://user-images.githubusercontent.com/46355364/218988416-611d5381-c379-418f-8be7-24242103f9f5.png"></img>
 
 The screener makes use of presets (.ini files) that are stored locally within `~/OpenBBUserData/presets/stocks/options/`
 
