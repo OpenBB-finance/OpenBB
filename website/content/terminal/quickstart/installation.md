@@ -33,11 +33,11 @@ OpenBB Terminal is available on all major platforms. With Windows and macOS you 
 <Tabs>
   <TabItem value="windows" label="Windows">
   <div class="gdoc-page">
-  <p>This section provides you with the installation file as well as the guide to install the OpenBB Terminal via Windows.</p>
+  <p>This section provides you with the installation file as well as the guide to install the OpenBB Terminal via Windows (10 or greater).</p>
 
 </div><p>Download the installer from the button below:</p>
 
-<InstallerButton type="windows" href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v2.3.1/Windows10.OpenBB.Terminal.v2.3.1.exe" label="Windows Installer" />
+<InstallerButton type="windows" href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v2.4.0/Windows.OpenBB.Terminal.v2.4.0.exe" label="Windows Installer" />
 
 <p>Follow along with the instructions of the video or use the steps below to run the OpenBB Terminal:</p>
 
@@ -72,13 +72,13 @@ OpenBB Terminal is available on all major platforms. With Windows and macOS you 
 For Mac there are two installers available, one for Intel and one for Apple Silicon (M1). Please download the correct one for your machine.
 
 <div className="flex justify-between">
-<div className="flex items-center flex-col">If you are using Mac Intel: 
-  <InstallerButton href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v2.3.1/x86.64.MacOS.OpenBB.Terminal.v2.3.1.dmg" label="Mac Intel Installer" />
+<div className="flex items-center flex-col">If you are using Mac Intel:
+  <InstallerButton href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v2.4.0/x86.64.MacOS.OpenBB.Terminal.v2.4.0.dmg" label="Mac Intel Installer" />
   </div>
   <br/>
 <div className="flex items-center flex-col">
-If you are using Mac Apple Silicon (M1): 
-  <InstallerButton href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v2.3.1/ARM64.MacOS.OpenBB.Terminal.v2.3.1.dmg" label="Mac M1 Installer" />
+If you are using Mac Apple Silicon (M1):
+  <InstallerButton href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v2.4.0/ARM64.MacOS.OpenBB.Terminal.v2.4.0.dmg" label="Mac M1 Installer" />
   </div>
 </div>
 

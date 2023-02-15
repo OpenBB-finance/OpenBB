@@ -10,7 +10,7 @@
   !define NAME "OpenBB Terminal"
   !define COMPANY "OpenBB"
   !define APPFILE "OpenBBTerminal.exe"
-  !define VERSION "2.3.1"
+  !define VERSION "2.4.0"
   !define SLUG "${NAME} v${VERSION}"
 
 ;--------------------------------
