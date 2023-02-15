@@ -58,11 +58,9 @@ def login(
     else:
         console.print("Using local session to login.")
 
-    if session_model.login(session) in [
-        session_model.LoginStatus.FAILED,
-        session_model.LoginStatus.NO_RESPONSE,
-    ]:
-        raise Exception("Login failed.")
+    status = session_model.login(session)
+    if status != session_model.LoginStatus.SUCCESS:
+        raise Exception(f"Login failed with status `{status}`.")
 
     console.print("[green]Login successful.[/green]")
 
