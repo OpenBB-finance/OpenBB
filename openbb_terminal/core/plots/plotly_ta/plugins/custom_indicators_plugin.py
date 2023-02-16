@@ -3,11 +3,11 @@ from datetime import datetime, timedelta
 import numpy as np
 import pandas as pd
 
+from openbb_terminal import OpenBBFigure
 from openbb_terminal.common.technical_analysis.custom_indicators_model import (
     calculate_fib_levels,
 )
 from openbb_terminal.core.plots.config.openbb_styles import PLT_FIB_COLORWAY
-from openbb_terminal import OpenBBFigure
 from openbb_terminal.core.plots.plotly_ta.base import PltTA, indicator
 
 
@@ -175,11 +175,11 @@ class Custom(PltTA):
 
         for i in range(7):
             idx_int = 4 if lvl_text == "left" else 5
-            text_pos = f"top {lvl_text}" if i != idx_int else f"bottom {lvl_text}"
+            text_pos = f"bottom {lvl_text}" if i != idx_int else f"top {lvl_text}"
 
             if fibs[i] == "<b>0</b>":
                 text_pos = (
-                    f"bottom {lvl_text}" if lvl_text != "right" else f"top {lvl_text}"
+                    f"top {lvl_text}" if lvl_text != "right" else f"bottom {lvl_text}"
                 )
             text = ["", f"{fibs[i]} ({levels[i]:{self.get_float_precision()}})"]
             if lvl_text == "right":
