@@ -659,9 +659,7 @@ def revoke_personal_access_token(
     headers = {"Authorization": auth_header}
 
     try:
-        response = requests.delete(
-            url=url, headers=headers, timeout=timeout
-        )
+        response = requests.delete(url=url, headers=headers, timeout=timeout)
 
         if response.status_code not in [200, 202]:
             console.print("[red]Failed to revoke personal access token.[/red]")
