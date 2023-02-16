@@ -8,7 +8,6 @@ import logging
 from typing import Optional
 import math
 import warnings
-from typing import Optional
 
 import matplotlib
 import matplotlib.pyplot as plt
