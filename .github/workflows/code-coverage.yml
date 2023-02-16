@@ -48,8 +48,6 @@ jobs:
       run: poetry install --no-interaction -E optimization
 
     - name: Run code coverage tests
-      env:
-          MPLBACKEND: Agg
       run: |
         source $VENV
         pytest --cov .
