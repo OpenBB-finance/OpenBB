@@ -1,7 +1,7 @@
 """Chartexchange model"""
 
 import logging
-from typing import Union
+from typing import Optional, Union
 
 import pandas as pd
 from bs4 import BeautifulSoup
@@ -20,7 +20,7 @@ def get_option_history(
     date: str = "2021-02-05",
     call: bool = True,
     price: Union[str, Union[int, float]] = "90",
-    chain_id: str = None,
+    chain_id: Optional[str] = None,
 ) -> pd.DataFrame:
     """Historic prices for a specific option [chartexchange]
 

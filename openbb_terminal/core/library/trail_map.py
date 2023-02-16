@@ -62,14 +62,16 @@ class TrailMap:
     )
 
     @classmethod
-    def load_csv(cls, path: Path = None) -> Dict[str, Dict[str, str]]:
+    def load_csv(cls, path: Optional[Path] = None) -> Dict[str, Dict[str, str]]:
         path = path or cls.MAP_PATH
         df = pd.read_csv(path, keep_default_na=False)
         df.set_index("trail", inplace=True)
         return df.to_dict(orient="index")
 
     @classmethod
-    def save_csv(cls, map_dict: Dict[str, Dict[str, str]], path: Path = None) -> None:
+    def save_csv(
+        cls, map_dict: Dict[str, Dict[str, str]], path: Optional[Path] = None
+    ) -> None:
         path = path or cls.MAP_PATH
         df = pd.DataFrame.from_dict(data=map_dict, orient="index")
         df.index.name = "trail"
