@@ -140,6 +140,7 @@ def display_fred_series(
         )
 
     if get_data:
+        fig.show(external=external_axes)
         return data, detail
 
     return fig.show(external=external_axes)
