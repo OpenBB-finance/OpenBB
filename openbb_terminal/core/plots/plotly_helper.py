@@ -945,11 +945,79 @@ class OpenBBFigure(go.Figure):
                     dict(dtickrange=["M1", None], value="%Y-%m-%d"),
                 ],
                 type="date",
-                overwrite=True,
-                selector=dict(xaxis=entry["xaxis"]),
+                selector=dict(anchor=entry["yaxis"]),
             )
             self.update_traces(
                 xhoverformat=xhoverformat, selector=dict(name=entry["name"])
+            )
+
+    def get_dateindex(self) -> Optional[List[datetime]]:
+        """Return the dateindex of the figure
+
+        Returns
+        -------
+        `list`
+            The dateindex
+
+        Returns
+        -------
+        `list`
+            The dateindex
+        """
+        output: Optional[List[datetime]] = None
+
+        for trace in self.select_traces(
+            lambda trace: hasattr(trace, "x") and trace.x is not None
+        ):
+            for x in trace.x:
+                if isinstance(x, (datetime, np.datetime64)) and len(trace.x) > 5:
+                    output = trace.x
+                    name = trace.name if hasattr(trace, "name") else f"{trace}"
+                    self._date_xaxs[trace.xaxis] = {
+                        "x": trace.x,
+                        "xaxis": trace.xaxis,
+                        "yaxis": trace.yaxis,
+                        "name": name,
+                    }
+
+        return output
+
+    def hide_holidays(self, prepost: bool = False) -> None:
+        """Add rangebreaks to hide holidays on the xaxis
+
+        Parameters
+        ----------
+        dateindex : `pandas.DatetimeIndex`
+            The date index
+        prepost : `bool`, optional
+            Whether to add rangebreaks for pre and post market hours, by default False
+        """
+        if (dateindex := self.get_dateindex()) is None:
+            return
+
+        mkt_holidays: List[datetime] = USFederalHolidayCalendar().holidays(
+            start=min(dateindex), end=max(dateindex)
+        )
+
+        rangebreaks = [
+            dict(values=[date.strftime("%Y-%m-%d") for date in mkt_holidays]),
+            dict(bounds=["sat", "mon"]),
+        ]
+
+        # We add a rangebreak if the first and second time are not the same
+        # since daily data will have the same time (00:00)
+        for entry in self._date_xaxs.values():
+            breaks: List[Any] = rangebreaks.copy()
+            if entry["x"][-1].time() != entry["x"][-2].time():
+                if prepost:
+                    breaks.append(dict(bounds=[20.00, 4.00], pattern="hour"))
+                else:
+                    breaks.append(dict(bounds=[15.99, 9.50], pattern="hour"))
+
+            self.update_xaxes(
+                rangebreaks=breaks,
+                type="date",
+                selector=dict(anchor=entry["yaxis"]),
             )
 
     def to_subplot(
@@ -1034,78 +1102,6 @@ class OpenBBFigure(go.Figure):
             color_list.append(PLT_TBL_ROW_COLORS[0])
 
         return color_list
-
-    def get_dateindex(self) -> Optional[List[datetime]]:
-        """Return the dateindex of the figure
-
-        Returns
-        -------
-        `list`
-            The dateindex
-
-        Returns
-        -------
-        `list`
-            The dateindex
-        """
-        output = None
-
-        for trace in self.select_traces(
-            lambda trace: hasattr(trace, "x") and trace.x is not None
-        ):
-            for x in trace.x:
-                if isinstance(x, (int, float)):
-                    break
-                if isinstance(x, (datetime, np.datetime64)) and len(trace.x) > 5:
-                    output = trace.x
-                    name = trace.name if hasattr(trace, "name") else f"{trace}"
-                    self._date_xaxs[trace.xaxis] = {
-                        "x": trace.x,
-                        "xaxis": trace.xaxis,
-                        "yaxis": trace.yaxis,
-                        "name": name,
-                    }
-                    break
-
-        return output
-
-    def hide_holidays(self, prepost: bool = False) -> None:
-        """Add rangebreaks to hide holidays on the xaxis
-
-        Parameters
-        ----------
-        dateindex : `pandas.DatetimeIndex`
-            The date index
-        prepost : `bool`, optional
-            Whether to add rangebreaks for pre and post market hours, by default False
-        """
-        if (dateindex := self.get_dateindex()) is None:
-            return
-
-        mkt_holidays = USFederalHolidayCalendar().holidays(
-            start=dateindex.min(), end=dateindex.max()  # type: ignore
-        )
-        rangebreaks = [
-            dict(values=[date.strftime("%Y-%m-%d") for date in mkt_holidays]),
-            dict(bounds=["sat", "mon"]),
-        ]
-
-        # We add a rangebreak if the first and second time are not the same
-        # since daily data will have the same time (00:00)
-        for entry in self._date_xaxs.values():
-            breaks: List[Any] = rangebreaks.copy()
-            if entry["x"][-1].time() != entry["x"][-2].time():
-                if prepost:
-                    breaks.append(dict(bounds=[20.00, 4.00], pattern="hour"))
-                else:
-                    breaks.append(dict(bounds=[15.99, 9.50], pattern="hour"))
-
-            self.update_xaxes(
-                rangebreaks=breaks,
-                type="date",
-                overwrite=True,
-                selector=dict(xaxis=entry["xaxis"]),
-            )
 
     @staticmethod
     def _tbl_values(df: pd.DataFrame, print_index: bool) -> Tuple[List[str], List]:
