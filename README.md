@@ -28,7 +28,7 @@
 | OpenBB is committed to build the future of investment research by focusing on an open source infrastructure accessible to everyone, everywhere. |
 |:--:|
 | ![openbb.jpg](/images/openbb_gradient.png) |
-| Check our website at [openbb.co](www.openbb.co) |
+| Check our website at [openbb.co](https://openbb.co) |
 
 <br />
 
@@ -126,11 +126,11 @@ If you have any questions about the terminal or anything OpenBB, feel free to em
 
 If you want to say hi, or are interested in partnering with us, feel free to reach us at `hello@openbb.co`
 
-Any of our social media platforms: [openbb.co/links](www.openbb.co/links)
+Any of our social media platforms: [openbb.co/links](https://openbb.co/links)
 
 ## 6. Star History
 
-This is a proxyy of our growth and that we are just getting started. But for more metrics important to us check [openbb.co/open](www.openbb.co/open).
+This is a proxy of our growth and that we are just getting started. But for more metrics important to us check [openbb.co/open](https://openbb.co/open).
 
 [![Star History Chart](https://api.star-history.com/svg?repos=openbb-finance/OpenBBTerminal&type=Date)](https://star-history.com/#openbb-finance/OpenBBTerminal&Date)
 
