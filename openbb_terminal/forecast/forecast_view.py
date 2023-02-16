@@ -249,6 +249,23 @@ def show_df(
     export: str = "",
     sheet_name: Optional[str] = None,
 ):
+    """Show a dataframe in a table
+
+    Parameters
+    ----------
+    data: pd.DataFrame
+        The dataframe to show
+    limit: int
+        The number of rows to show
+    limit_col: int
+        The number of columns to show
+    name: str
+        The name of the dataframe
+    export: str
+        Format to export data
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
+    """
     console.print(
         f"[green]{name} dataset has shape (row, column): {data.shape}\n[/green]"
     )
@@ -282,6 +299,19 @@ def describe_df(
     export: str = "",
     sheet_name: Optional[str] = None,
 ):
+    """Show descriptive statistics for a dataframe
+
+    Parameters
+    ----------
+    data: pd.DataFrame
+        The dataframe to show
+    name: str
+        The name of the dataframe
+    export: str
+        Format to export data
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
+    """
     new_df = forecast_model.describe_df(data)
     print_rich_table(
         new_df,
@@ -302,6 +332,20 @@ def describe_df(
 def export_df(
     data: pd.DataFrame, export: str, name: str = "", sheet_name: Optional[str] = None
 ) -> None:
+    """Export a dataframe to a file
+
+    Parameters
+    ----------
+    data: pd.DataFrame
+        The dataframe to export
+    export: str
+        The format to export the dataframe to
+    name: str
+        The name of the dataframe
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
+    """
+
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),

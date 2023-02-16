@@ -21,9 +21,10 @@ from openbb_terminal import (
 )
 
 # IMPORTATION INTERNAL
-from openbb_terminal.config_terminal import LOGGING_APP_NAME, LOGGING_COMMIT_HASH
+from openbb_terminal.config_terminal import LOGGING_COMMIT_HASH
 from openbb_terminal.helper_funcs import request
 from openbb_terminal.rich_config import console
+from openbb_terminal.session.user import User
 
 # pylint: disable=too-many-statements,no-member,too-many-branches,C0302
 
@@ -218,23 +219,24 @@ def hide_splashscreen():
         logger.info(e)
 
 
-def is_packaged_application() -> bool:
-    """Tell whether or not it is a packaged version (Windows or Mac installer).
+def is_auth_enabled() -> bool:
+    """Tell whether or not authentication is enabled.
 
-
-    Returns:
-        bool: If the application is packaged
+    Returns
+    -------
+    bool
+        If authentication is enabled
     """
-
-    return LOGGING_APP_NAME == "gst_packaged"
+    # TODO: This function is a temporary way to block authentication
+    return (
+        str(os.getenv("OPENBB_ENABLE_AUTHENTICATION")).lower() == "true"
+        or "--login" in sys.argv[1:]
+    )
 
 
 def is_installer() -> bool:
-    """Tell whether or not it is a packaged version."""
-    # TODO: Merge this with is_packaged_application
-    if getattr(sys, "frozen", False) and hasattr(sys, "_MEIPASS"):
-        return True
-    return False
+    """Tell whether or not it is a packaged version (Windows or Mac installer"""
+    return getattr(sys, "frozen", False) and hasattr(sys, "_MEIPASS")
 
 
 def bootup():
@@ -242,7 +244,7 @@ def bootup():
         # Enable VT100 Escape Sequence for WINDOWS 10 Ver. 1607
         os.system("")  # nosec
         # Hide splashscreen loader of the packaged app
-        if is_packaged_application():
+        if is_installer():
             hide_splashscreen()
 
     try:
@@ -338,15 +340,19 @@ def reset(queue: Optional[List[str]] = None):
     logger.info("resetting")
     plt.close("all")
 
+    flag = ""
+    if not User.is_guest():
+        flag = " --login"
+
     if queue and len(queue) > 0:
         completed_process = subprocess.run(  # nosec
-            f"{sys.executable} terminal.py {'/'.join(queue) if len(queue) > 0 else ''}",
+            f"{sys.executable} terminal.py {'/'.join(queue) if len(queue) > 0 else ''}{flag}",
             shell=True,
             check=False,
         )
     else:
         completed_process = subprocess.run(  # nosec
-            f"{sys.executable} terminal.py", shell=True, check=False
+            f"{sys.executable} terminal.py{flag}", shell=True, check=False
         )
     if completed_process.returncode != 0:
         console.print("Unfortunately, resetting wasn't possible!\n")

@@ -17,7 +17,7 @@ API_FINNHUB_KEY not defined. Set API Keys in ~/.openbb_terminal/.env or under ke
 
 You can access the `keys` menu as mentioned above from the homepage with `keys` (or directly from your current menu with `/keys`). This will open the menu as shown below:
 
-<img width="800" alt="image" src="https://user-images.githubusercontent.com/85772166/194684312-f12b7f26-8a04-4efe-bc94-fa516b7186d3.png"></img>
+<img width="800" alt="image" src="https://user-images.githubusercontent.com/46355364/219021978-41caff4c-65e2-4169-983f-3e66fdce4563.png"></img>
 
 Within this menu you are able to set your API keys to access the commands that require that key. You can do so by typing the command followed by the API key, for example: `fred a215egade08a8d47cfd49c849658a2be`. When you press `ENTER` (⏎) the terminal will test whether this API key works. If it does, you receive the message `defined, test passed` and if it does not, you receive the message `defined, test failed`.
 
@@ -43,7 +43,6 @@ To figure out where you can obtain the API key, you can enter the command (e.g. 
 | fred          | Federal Reserve Economic Database (FRED) | https://fred.stlouisfed.org                                                        |
 | github        | GitHub                                   | https://docs.github.com/en/rest/guides/getting-started-with-the-rest-api           |
 | glassnode     | Glassnode                                | https://docs.glassnode.com/basic-api/api-key#how-to-get-an-api-key/                |
-| iex           | IEX Cloud                                | https://iexcloud.io/                                                               |
 | messari       | Messari                                  | https://messari.io/api/docs                                                        |
 | news          | News API                                 | https://newsapi.org/                                                               |
 | oanda         | Oanda                                    | https://developer.oanda.com                                                        |
@@ -87,8 +86,8 @@ Go to https://www.binance.com/en/support/faq/how-to-create-api-360002502072 You 
 
 These instructions should provide clear guidance how to set up an API Key. Enter this API key into the OpenBB Terminal by typing `/keys/binance -k KEY -s SECRET`.
 
- </details> 
- 
+ </details>
+
 <details>
 <summary>Bitquery</summary>
 
@@ -104,8 +103,8 @@ After creating an account and verifying your email address, you will be able to 
 
 <img width="500" alt="image" src="https://user-images.githubusercontent.com/46355364/207840833-35c1b12c-9b4b-43fe-a33e-f7b92c43a011.png"></img>
 
- </details> 
-  
+ </details>
+
 <details>
 <summary>CoinMarketCap</summary>
 
@@ -121,8 +120,8 @@ Once you have created an account, you will be able to find your API key in the f
 
 <img width="500" alt="image" src="https://user-images.githubusercontent.com/46355364/207831705-e9f95018-bba7-49a9-b057-3443bc839861.png"></img>
 
- </details> 
-  
+ </details>
+
 <details>
 <summary>CoinBase</summary>
 
@@ -164,8 +163,8 @@ Once you have created your account, your API Key will be displayed under "Your f
 
 <img width="500" alt="image" src="https://user-images.githubusercontent.com/46355364/207848971-3e4771b7-1faa-45fe-955f-81bd736b16b7.png"></img>
 
- </details> 
- 
+ </details>
+
 <details>
 <summary>DeGiro</summary>
 
@@ -286,27 +285,6 @@ After you have created your account, go to https://studio.glassnode.com/settings
 </details>
 
 <details>
-<summary>IEX Cloud</summary>
-
-Go to https://iexcloud.io You will be greeted with the following screen:
-
-<img width="500" alt="image" src="https://user-images.githubusercontent.com/46355364/207833088-e879e9f2-3180-4e50-ba9e-f40ee958f98a.png"></img>
-
-Press "Sign in". This opens up the following screen:
-
-<img width="500" alt="image" src="https://user-images.githubusercontent.com/46355364/207833011-542d6ef0-0bdf-494a-83cb-c0a6741df2a3.png"></img>
-
-Once you have signed up you are asked what kind of plan you would like. You have the option to start a free plan at the bottom.
-
-<img width="500" alt="image" src="https://user-images.githubusercontent.com/46355364/207833303-4ebb2880-0b4c-4008-9b33-0e8ee6836027.png"></img>
-
-Once you have confirmed you email address, you can find your API Key under "Access & Security". Enter this API key into the OpenBB Terminal by typing `/keys/iex KEY`
-
-<img width="500" alt="image" src="https://user-images.githubusercontent.com/46355364/207833540-c1e25500-22e9-43c3-a89e-b05dd446f2a5.png"></img>
-
-</details>
-
-<details>
 <summary>Messari</summary>
 
 Go to https://messari.io You will be greeted with the following screen:
@@ -369,7 +347,7 @@ Once signed up you will find the API Key at the bottom. Enter this API key into 
 <img width="500" alt="image" src="https://user-images.githubusercontent.com/46355364/207826258-b1f318fa-fd9c-41d9-bf5c-fe16722e6601.png"></img>
 
 </details>
-  
+
 <details>
 <summary>Quandl</summary>
 

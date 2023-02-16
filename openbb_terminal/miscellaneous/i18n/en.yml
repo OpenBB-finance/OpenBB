@@ -18,6 +18,8 @@ en:
   exe: execute .openbb routine scripts (use exe --example for an example)
   _configure_: Configure your own terminal
   _main_menu_: Main menu
+  account/_authentication_: Authentication
+  account/logout: Log out from OpenBB account
   account/_info_: Cloud storage of keys, settings and feature flags
   account/sync: Turns the cloud synchronization on/off
   account/pull: Pull data from cloud
@@ -83,7 +85,7 @@ en:
   settings/_timezone: Timezone
   settings/source: specify data source file
   settings/_data_source: Data sources
-  _others_: Others
+  _toolkits_: OpenBB Toolkits
   stocks: access historical pricing data, options, sector and industry, and overall due diligence
   crypto: dive into onchain data, tokenomics, circulation supply, nfts and more
   etf: exchange traded funds. Historical pricing, compare holdings and screening
@@ -177,7 +179,7 @@ en:
   stocks/th/all: show all markets
   stocks/th/exchange: show one exchange
   stocks/th/holidays: show all dates on which there is a market holiday
-  stocks/disc/filings: the most-recent form submissions to the SEC 
+  stocks/disc/filings: the most-recent form submissions to the SEC
   stocks/disc/pipo: past IPOs dates
   stocks/disc/fipo: future IPOs dates
   stocks/disc/gainers: show latest top gainers
@@ -398,8 +400,8 @@ en:
   stocks/bt/ema: buy when price exceeds EMA(l)
   stocks/bt/emacross: buy when EMA(short) > EMA(long)
   stocks/bt/rsi: buy when RSI < low and sell when RSI > high
+  stocks/bt/load: load a specific stock ticker for analysis
   stocks/ta/_ticker: Ticker
-  stocks/ta/tv: open interactive chart on
   stocks/ta/view: view historical data and trendlines
   stocks/ta/summary: technical summary report
   stocks/ta/recom: recommendation based on technical indicators

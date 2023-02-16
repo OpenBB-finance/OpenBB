@@ -6,7 +6,7 @@
     "candle": [],
     "codes": ["Polygon"],
     "news": ["Feedparser", "NewsApi"],
-    "load": ["YahooFinance", "IEXCloud", "AlphaVantage", "Polygon", "EODHD", "Intrinio"],
+    "load": ["YahooFinance", "AlphaVantage", "Polygon", "EODHD", "Intrinio"],
     "th": {
       "symbol": ["FinanceDatabase"],
       "open": ["Bursa"],
@@ -93,7 +93,7 @@
       "vis": ["StockAnalysis"]
     },
     "dps": {
-      "load": ["YahooFinance", "IEXCloud", "AlphaVantage", "Polygon", "EODHD"],
+      "load": ["YahooFinance", "AlphaVantage", "Polygon", "EODHD"],
       "shorted": ["YahooFinance"],
       "ctb": ["InteractiveBrokers", "Stocksera"],
       "hsi": ["Shortinterest"],
@@ -118,7 +118,7 @@
       "arktrades": ["Cathiesark"]
     },
     "ins": {
-      "load": ["YahooFinance", "IEXCloud", "AlphaVantage", "Polygon", "EODHD"],
+      "load": ["YahooFinance", "AlphaVantage", "Polygon", "EODHD"],
       "view": [],
       "set": [],
       "filter": ["OpenInsider"],
@@ -147,7 +147,7 @@
       "tispm": ["OpenInsider"]
     },
     "gov": {
-      "load": ["YahooFinance", "IEXCloud", "AlphaVantage", "Polygon", "EODHD"],
+      "load": ["YahooFinance", "AlphaVantage", "Polygon", "EODHD"],
       "lasttrades": ["QuiverQuant"],
       "topbuys": ["QuiverQuant"],
       "topsells": ["QuiverQuant"],
@@ -160,7 +160,7 @@
       "lobbying": ["QuiverQuant"]
     },
     "ba": {
-      "load": ["YahooFinance", "IEXCloud", "AlphaVantage", "Polygon", "EODHD"],
+      "load": ["YahooFinance", "AlphaVantage", "Polygon", "EODHD"],
       "headlines": ["FinBrain"],
       "snews": ["Finnhub"],
       "wsb": ["Reddit"],
@@ -187,7 +187,7 @@
       "jctr": ["JimCramer"]
     },
     "ca": {
-      "load": ["YahooFinance", "IEXCloud", "AlphaVantage", "Polygon", "EODHD"],
+      "load": ["YahooFinance", "AlphaVantage", "Polygon", "EODHD"],
       "tsne": ["YahooFinance"],
       "get": ["Finviz", "Polygon", "Finnhub"],
       "set": [],
@@ -209,7 +209,7 @@
       "technical": ["Finviz"]
     },
     "fa": {
-      "load": ["YahooFinance", "IEXCloud", "AlphaVantage", "Polygon", "EODHD"],
+      "load": ["YahooFinance", "AlphaVantage", "Polygon", "EODHD"],
       "income": [
         "FinancialModelingPrep",
         "Polygon",
@@ -262,21 +262,21 @@
       "customer": ["CSIMarket"]
     },
     "bt": {
-      "load": ["YahooFinance", "IEXCloud", "AlphaVantage", "Polygon", "EODHD"],
+      "load": ["YahooFinance", "AlphaVantage", "Polygon", "EODHD"],
       "whatif": ["YahooFinance"]
     },
     "ta": {
-      "load": ["YahooFinance", "IEXCloud", "AlphaVantage", "Polygon", "EODHD"],
+      "load": ["YahooFinance", "AlphaVantage", "Polygon", "EODHD"],
       "tv": ["TradingView"],
       "recom": ["TradingView"],
       "view": ["Finviz"],
       "summary": ["FinBrain"]
     },
     "qa": {
-      "load": ["YahooFinance", "IEXCloud", "AlphaVantage", "Polygon", "EODHD"]
+      "load": ["YahooFinance", "AlphaVantage", "Polygon", "EODHD"]
     },
     "pred": {
-      "load": ["YahooFinance", "IEXCloud", "AlphaVantage", "Polygon", "EODHD"]
+      "load": ["YahooFinance", "AlphaVantage", "Polygon", "EODHD"]
     }
   },
   "crypto": {
