@@ -511,9 +511,9 @@ class PlotlyTA(PltTA):
                     text="<b>Volume</b>",
                     x=0,
                     xanchor="right",
-                    xshift=-8,
+                    xshift=-6,
                     y=0.96,
-                    font_size=16,
+                    font_size=14,
                     font_color="#e0b700",
                 )
                 fig.update_yaxes(nticks=5, row=row, col=col)
