@@ -558,3 +558,6 @@ def test_call_delete(mocker):
         auth_header="Bearer 123",
         name="script1",
     )
+
+
+# TODO: add tests to `call_generate`

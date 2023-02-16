@@ -39,6 +39,9 @@ class AccountController(BaseController):
         "upload",
         "download",
         "delete",
+        "generate",
+        "show",
+        "revoke",
     ]
 
     PATH = "/account/"
@@ -90,6 +93,11 @@ class AccountController(BaseController):
         mt.add_cmd("upload")
         mt.add_cmd("download")
         mt.add_cmd("delete")
+        mt.add_raw("\n")
+        mt.add_info("_personal_access_token_")
+        mt.add_cmd("generate")
+        mt.add_cmd("show")
+        mt.add_cmd("revoke")
         mt.add_raw("\n")
         mt.add_info("_authentication_")
         mt.add_cmd("logout")
@@ -426,3 +434,39 @@ class AccountController(BaseController):
                         self.update_runtime_choices()
             else:
                 console.print("[info]Aborted.[/info]")
+
+    @log_start_end(log=logger)
+    def call_generate(self, other_args: List[str]) -> None:
+        """Process token command."""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="token",
+            description="Generate an OpenBB Personal Access Token.",
+        )
+        parser.add_argument(
+            "-d",
+            "--days",
+            dest="days",
+            help="Number of days the token will be valid",
+            type=check_positive,
+            default=30,
+        )
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            i = console.input(
+                "[bold yellow]This will revoke any token that was previously generated."
+                "\nThis action is irreversible.[/bold yellow]"
+                "\nAre you sure you want to generate a new token? (y/n): "
+            )
+            if i.lower() not in ["y", "yes"]:
+                console.print("\n[info]Aborted.[/info]")
+                return
+
+            response = Hub.generate_personal_access_token(
+                auth_header=User.get_auth_header(), days=ns_parser.days
+            )
+            if response and response.status_code == 200:
+                token = response.json().get("token", "")
+                if token:
+                    console.print(f"\n[info]Token:[/info] {token}")

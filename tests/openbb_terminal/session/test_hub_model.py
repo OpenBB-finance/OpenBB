@@ -709,3 +709,6 @@ def test_list_routines_error(side_effect):
     ):
         result = hub_model.list_routines(auth_header="Bearer 123", page=1, size=10)
         assert result is None
+
+
+# TODO: add test for `generate_openbb_personal_access_token`
