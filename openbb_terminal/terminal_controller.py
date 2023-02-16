@@ -955,10 +955,8 @@ def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
 
             # Check if the user wants to reset application
             if an_input in ("r", "reset") or t_controller.update_success:
-                ret_code = reset(t_controller.queue if t_controller.queue else [])
-                if ret_code != 0:
-                    print_goodbye()
-                    break
+                reset(t_controller.queue if t_controller.queue else [])
+                break
 
         except SystemExit:
             logger.exception(
