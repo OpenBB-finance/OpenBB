@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def get_bullbear(symbol: str) -> Tuple[int, int, int, int]:
+def get_bullbear(symbol: str, cache_timeout=500) -> Tuple[int, int, int, int]:
     """Gets bullbear sentiment for ticker [Source: stocktwits].
 
     Parameters
@@ -29,7 +29,10 @@ def get_bullbear(symbol: str) -> Tuple[int, int, int, int]:
         Number of bullish statements,
         Number of bearish statements,
     """
-    result = request(f"https://api.stocktwits.com/api/2/streams/symbol/{symbol}.json")
+    result = request(
+        f"https://api.stocktwits.com/api/2/streams/symbol/{symbol}.json",
+        cache_timeout=cache_timeout,
+    )
     if result.status_code == 200:
         result_json = result.json()
         watchlist_count = result_json["symbol"]["watchlist_count"]

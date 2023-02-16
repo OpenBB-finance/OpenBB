@@ -48,6 +48,30 @@ from openbb_terminal.core.config.paths import (
 )
 from openbb_terminal.rich_config import console
 
+from requests_cache import CachedSession
+
+
+session = CachedSession(
+    # "demo_cache",
+    # # use_cache_dir=True,  # Save files in the default user cache dir
+    # # cache_control=True,  # Use Cache-Control headers for expiration, if available
+    expire_after=timedelta(days=1),  # Otherwise expire responses after one day
+    # allowable_methods=[
+    #     "GET",
+    #     "POST",
+    # ],  # Cache POST requests to avoid sending the same data twice
+    # # allowable_codes=[
+    # #     200,
+    # #     400,
+    # # ],  # Cache 400 responses as a solemn reminder of your failures
+    # # ignored_parameters=[
+    # #     "api_key"
+    # # ],  # Don't match this param or save it in the cache
+    # match_headers=True,  # Match all request headers
+    # stale_if_error=True,  # In case of request errors, use stale cache data if possible
+)
+
+
 logger = logging.getLogger(__name__)
 
 register_matplotlib_converters()
@@ -1886,18 +1910,49 @@ def request(url: str, method="GET", **kwargs) -> requests.Response:
     ValueError
         If invalid method is passed
     """
+
     # We want to add a user agent to the request, so check if there are any headers
     # If there are headers, check if there is a user agent, if not add one.
     # Some requests seem to work only with a specific user agent, so we want to be able to override it.
     headers = kwargs.pop("headers") if "headers" in kwargs else {}
+    cache_timeout = kwargs.pop("cache_timeout") if "cache_timeout" in kwargs else 60
     if "User-Agent" not in headers:
         headers["User-Agent"] = get_user_agent()
     if method.upper() == "GET":
-        return requests.get(url, headers=headers, timeout=cfg.REQUEST_TIMEOUT, **kwargs)
-    if method.upper() == "POST":
-        return requests.post(
+        # Override the Cache expire_after if we want
+        session.expire_after = timedelta(seconds=cache_timeout)
+
+        response = session.get(
             url, headers=headers, timeout=cfg.REQUEST_TIMEOUT, **kwargs
         )
+        print(
+            "cache_timeout",
+            cache_timeout,
+            "from_cache",
+            response.from_cache,
+            "created at:",
+            response.created_at,
+            "expires at:",
+            response.expires,
+            "is_expired:",
+            response.is_expired,
+        )
+        return response
+    if method.upper() == "POST":
+        response = session.post(
+            url, headers=headers, timeout=cfg.REQUEST_TIMEOUT, **kwargs
+        )
+        print(
+            "from_cache",
+            response.from_cache,
+            "created at:",
+            response.created_at,
+            "expires at:",
+            response.expires,
+            "is_expired:",
+            response.is_expired,
+        )
+        return response
     raise ValueError("Method must be GET or POST")
 
 
