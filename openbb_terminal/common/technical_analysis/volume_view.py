@@ -29,7 +29,7 @@ def display_ad(
     use_open: bool = False,
     symbol: str = "",
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plots AD technical indicator
@@ -148,7 +148,7 @@ def display_adosc(
     use_open: bool = False,
     symbol: str = "",
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plots AD Osc Indicator
@@ -255,7 +255,7 @@ def display_obv(
     data: pd.DataFrame,
     symbol: str = "",
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plots OBV technical indicator

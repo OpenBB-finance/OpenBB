@@ -8,7 +8,7 @@ import logging
 import os
 from itertools import chain
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 
 import numpy as np
 import pandas as pd
@@ -108,7 +108,7 @@ class EconometricsController(BaseController):
     loaded_dataset_cols = "\n"
     list_dataset_cols: List = list()
 
-    def __init__(self, queue: List[str] = None):
+    def __init__(self, queue: Optional[List[str]] = None):
         """Constructor"""
         super().__init__(queue)
         self.files: List[str] = list()
