@@ -11,11 +11,11 @@ def get_session(email: str, password: str, token: str, save: bool):
 
     if token:
         console.print("Creating session from token.")
-        session = session_model.create_session_from_token(token, save)
+        session = session_model.create_session_from_token(token, save)  # type: ignore
 
     if not session:
         console.print("Creating session from email and password.")
-        session = session_model.create_session(email, password, save)
+        session = session_model.create_session(email, password, save)  # type: ignore
 
     if not (isinstance(session, dict) and session):
         raise Exception("Failed to create session.")
@@ -53,15 +53,14 @@ def login(
     session = Local.get_session()
 
     if not session:
+        console.print("No local session found. Creating new session.")
         session = get_session(email, password, token, keep_session)
     else:
-        console.print("Using saved session to login.")
+        console.print("Using local session to login.")
 
-    if session_model.login(session) in [
-        session_model.LoginStatus.FAILED,
-        session_model.LoginStatus.NO_RESPONSE,
-    ]:
-        raise Exception("Login failed.")
+    status = session_model.login(session)
+    if status != session_model.LoginStatus.SUCCESS:
+        raise Exception(f"Login failed with status `{status.value}`.")
 
     console.print("[green]Login successful.[/green]")
 

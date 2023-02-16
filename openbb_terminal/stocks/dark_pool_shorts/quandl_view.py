@@ -99,7 +99,7 @@ def short_interest(
     limit: int = 10,
     raw: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plot the short interest of a stock. This corresponds to the

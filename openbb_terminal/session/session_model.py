@@ -1,6 +1,6 @@
 import json
 from enum import Enum
-from typing import Optional
+from typing import Any, Optional
 
 import matplotlib.pyplot as plt
 
@@ -22,9 +22,10 @@ class LoginStatus(Enum):
     SUCCESS = "success"
     FAILED = "failed"
     NO_RESPONSE = "no_response"
+    UNAUTHORIZED = "unauthorized"
 
 
-def create_session(email: str, password: str, save: bool) -> dict:
+def create_session(email: str, password: str, save: bool) -> dict[Any, Any]:
     """Create a session.
 
     Parameters
@@ -43,7 +44,7 @@ def create_session(email: str, password: str, save: bool) -> dict:
     return session
 
 
-def create_session_from_token(token: str, save: bool) -> dict:
+def create_session_from_token(token: str, save: bool) -> dict[Any, Any]:
     """Create a session from token.
 
     Parameters
@@ -84,6 +85,8 @@ def login(session: dict) -> LoginStatus:
                 else None
             )
             return LoginStatus.SUCCESS
+        if response.status_code == 401:
+            return LoginStatus.UNAUTHORIZED
         return LoginStatus.FAILED
     return LoginStatus.NO_RESPONSE
 
@@ -127,7 +130,7 @@ def logout(
     if not Local.remove_cli_history_file():
         success = False
 
-    clear_openbb_env_vars()
+    clear_openbb_env_vars(exceptions=["OPENBB_ENABLE_AUTHENTICATION"])
     remove_log_handlers()
     reload_openbb_config_modules()
 

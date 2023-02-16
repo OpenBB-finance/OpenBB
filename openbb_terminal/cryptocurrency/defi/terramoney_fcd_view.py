@@ -30,7 +30,10 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def display_account_staking_info(
-    address: str = "", limit: int = 10, export: str = "", sheet_name: str = None
+    address: str = "",
+    limit: int = 10,
+    export: str = "",
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Prints table showing staking info for provided terra account address [Source: https://fcd.terra.dev/swagger]
 
@@ -67,7 +70,7 @@ def display_validators(
     sortby: str = "votingPower",
     ascend: bool = True,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Prints table showing information about terra validators [Source: https://fcd.terra.dev/swagger]
 
@@ -117,7 +120,7 @@ def display_gov_proposals(
     sortby: str = "id",
     ascend: bool = True,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Prints table showing terra blockchain governance proposals list [Source: https://fcd.terra.dev/swagger]
 
@@ -154,7 +157,7 @@ def display_account_growth(
     cumulative: bool = False,
     limit: int = 90,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Plots terra blockchain account growth history [Source: https://fcd.terra.dev/swagger]
@@ -222,7 +225,7 @@ def display_account_growth(
 def display_staking_ratio_history(
     limit: int = 90,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Plots terra blockchain staking ratio history [Source: https://fcd.terra.dev/v1]
@@ -271,7 +274,7 @@ def display_staking_ratio_history(
 def display_staking_returns_history(
     limit: int = 90,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Plots terra blockchain staking returns history [Source: https://fcd.terra.dev/swagger]

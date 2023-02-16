@@ -2,6 +2,7 @@
 __docformat__ = "numpy"
 import logging
 import os
+from typing import Optional
 
 import matplotlib.pyplot as plt
 
@@ -28,9 +29,9 @@ def display_fundamentals(
     limit: int = 10,
     quarterly: bool = False,
     ratios: bool = False,
-    plot: list = None,
+    plot: Optional[list] = None,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Display tickers balance sheet or income statement
 

@@ -25,7 +25,7 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_ALPHAVANTAGE"])
-def display_overview(symbol: str, export: str = "", sheet_name: str = None):
+def display_overview(symbol: str, export: str = "", sheet_name: Optional[str] = None):
     """Alpha Vantage stock ticker overview
 
     Parameters
@@ -58,7 +58,7 @@ def display_overview(symbol: str, export: str = "", sheet_name: str = None):
 
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_ALPHAVANTAGE"])
-def display_key(symbol: str, export: str = "", sheet_name: str = None):
+def display_key(symbol: str, export: str = "", sheet_name: Optional[str] = None):
     """Alpha Vantage key metrics
 
     Parameters
@@ -91,9 +91,9 @@ def display_income_statement(
     limit: int = 5,
     quarterly: bool = False,
     ratios: bool = False,
-    plot: list = None,
+    plot: Optional[list] = None,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Alpha Vantage income statement
 
@@ -177,9 +177,9 @@ def display_balance_sheet(
     limit: int = 5,
     quarterly: bool = False,
     ratios: bool = False,
-    plot: list = None,
+    plot: Optional[list] = None,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Alpha Vantage balance sheet statement
 
@@ -264,9 +264,9 @@ def display_cash_flow(
     limit: int = 5,
     quarterly: bool = False,
     ratios: bool = False,
-    plot: list = None,
+    plot: Optional[list] = None,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Alpha Vantage income statement
 
@@ -349,7 +349,7 @@ def display_earnings(
     limit: int = 5,
     quarterly: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Alpha Vantage earnings
 
@@ -392,7 +392,7 @@ def display_earnings(
 def display_fraud(
     symbol: str,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     help_text: bool = False,
     color: bool = True,
     detail: bool = False,
@@ -458,7 +458,7 @@ def display_dupont(
     symbol: str,
     raw: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Shows the extended dupont ratio

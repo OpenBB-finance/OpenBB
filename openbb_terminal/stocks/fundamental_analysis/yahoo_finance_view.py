@@ -30,7 +30,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def display_info(symbol: str, export: str = "", sheet_name: str = None):
+def display_info(symbol: str, export: str = "", sheet_name: Optional[str] = None):
     """Yahoo Finance ticker info
     Parameters
     ----------
@@ -74,7 +74,10 @@ def display_info(symbol: str, export: str = "", sheet_name: str = None):
 
 @log_start_end(log=logger)
 def display_shareholders(
-    symbol: str, holder: str = "institutional", export: str = "", sheet_name: str = None
+    symbol: str,
+    holder: str = "institutional",
+    export: str = "",
+    sheet_name: Optional[str] = None,
 ):
     """Yahoo Finance ticker shareholders
     Parameters
@@ -118,7 +121,7 @@ def display_dividends(
     limit: int = 12,
     plot: bool = True,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display historical dividends
@@ -201,7 +204,7 @@ def display_dividends(
 def display_splits(
     symbol: str,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display splits and reverse splits events. [Source: Yahoo Finance]
@@ -288,7 +291,7 @@ def display_mktcap(
     symbol: str,
     start_date: Optional[str] = None,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display market cap over time. [Source: Yahoo Finance]
@@ -344,9 +347,9 @@ def display_fundamentals(
     statement: str,
     limit: int = 12,
     ratios: bool = False,
-    plot: list = None,
+    plot: Optional[list] = None,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Display tickers balance sheet, income statement or cash-flow
 
@@ -465,7 +468,9 @@ def display_fundamentals(
 
 
 @log_start_end(log=logger)
-def display_earnings(symbol: str, limit: int, export: str = "", sheet_name: str = None):
+def display_earnings(
+    symbol: str, limit: int, export: str = "", sheet_name: Optional[str] = None
+):
     """
 
     Parameters

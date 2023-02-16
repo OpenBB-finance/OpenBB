@@ -1,19 +1,20 @@
 [tool.poetry]
 name = "openbb"
-version = "2.3.1"
+version = "2.4.0"
 description = "Investment Research for Everyone, Anywhere."
 license = "MIT"
 authors = ["Didier Rodrigues Lopes"]
 packages = [
     { include = "openbb_terminal" },
 ]
-readme = "website/content/sdk/quickstart/installation.md"
+include = ["terminal.py"]
+readme = "website/content/sdk/quickstart/pypi.md"
 homepage = "https://openbb.co"
 repository = "https://github.com/OpenBB-finance/OpenBBTerminal"
 documentation = "https://docs.openbb.co/sdk"
 
 [tool.poetry.scripts]
-openbb = 'openbb_terminal.terminal_controller:parse_args_and_run'
+openbb = 'terminal:main'
 
 [tool.poetry.dependencies]
 python = "^3.8,<3.11, !=3.9.7"
@@ -115,7 +116,7 @@ intrinio-sdk = "^6.22.2"
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.2"
 pylint = "2.15.2"
-mypy = "^0.930"
+mypy = "^1.0.0"
 mock = "^4.0.3"
 codespell = "^2.0.0"
 pydocstyle = "^6.3.0"
@@ -136,10 +137,10 @@ pre-commit = "^2.16.0"
 pytest-cov = "^3.0.0"
 types-six = "^1.16.12"
 nbmake = ">0.5.0"
-ruff = "^0.0.236"
+ruff = "^0.0.247"
 
 [tool.poetry.extras]
-prediction = ["torch", "pytorch-lightning", "u8darts", "lightgbm"]
+forecast = ["torch", "pytorch-lightning", "u8darts", "lightgbm"]
 optimization = ["Riskfolio-Lib"]
 all = ["torch", "pytorch-lightning", "u8darts", "Riskfolio-Lib"]
 jupyterlab = ["jupyterlab-code-formatter", "jupyterlab-lsp", "jedi-language-server"]

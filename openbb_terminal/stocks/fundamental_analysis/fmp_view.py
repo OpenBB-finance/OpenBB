@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
+from typing import Optional
 
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -20,7 +21,9 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
-def valinvest_score(symbol: str, years: int, export: str = "", sheet_name: str = None):
+def valinvest_score(
+    symbol: str, years: int, export: str = "", sheet_name: Optional[str] = None
+):
     """Value investing tool based on Warren Buffett, Joseph Piotroski and Benjamin Graham thoughts [Source: FMP]
 
     Parameters
@@ -58,7 +61,7 @@ def valinvest_score(symbol: str, years: int, export: str = "", sheet_name: str =
 
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
-def display_profile(symbol: str, export: str = "", sheet_name: str = None):
+def display_profile(symbol: str, export: str = "", sheet_name: Optional[str] = None):
     """Financial Modeling Prep ticker profile
 
     Parameters
@@ -104,7 +107,7 @@ def display_enterprise(
     limit: int = 5,
     quarterly: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Financial Modeling Prep ticker enterprise
 
@@ -162,7 +165,7 @@ def display_discounted_cash_flow(
     limit: int = 5,
     quarterly: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Financial Modeling Prep ticker discounted cash flow
 
@@ -204,9 +207,9 @@ def display_income_statement(
     limit: int = 5,
     quarterly: bool = False,
     ratios: bool = False,
-    plot: list = None,
+    plot: Optional[list] = None,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Financial Modeling Prep ticker income statement
 
@@ -298,9 +301,9 @@ def display_balance_sheet(
     limit: int = 5,
     quarterly: bool = False,
     ratios: bool = False,
-    plot: list = None,
+    plot: Optional[list] = None,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Financial Modeling Prep ticker balance sheet
 
@@ -390,9 +393,9 @@ def display_cash_flow(
     limit: int = 5,
     quarterly: bool = False,
     ratios: bool = False,
-    plot: list = None,
+    plot: Optional[list] = None,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Financial Modeling Prep ticker cash flow
 
@@ -483,7 +486,7 @@ def display_key_metrics(
     limit: int = 5,
     quarterly: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Financial Modeling Prep ticker key metrics
 
@@ -530,7 +533,7 @@ def display_financial_ratios(
     limit: int = 5,
     quarterly: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Financial Modeling Prep ticker ratios
 
@@ -577,7 +580,7 @@ def display_financial_statement_growth(
     limit: int = 5,
     quarterly: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Financial Modeling Prep ticker growth
 
@@ -623,7 +626,7 @@ def display_filings(
     pages: int = 1,
     limit: int = 20,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Display recent forms submitted to the SEC
 
@@ -684,7 +687,9 @@ def add_color(value: str) -> str:
 
 
 @log_start_end(log=logger)
-def rating(symbol: str, limit: int = 10, export: str = "", sheet_name: str = None):
+def rating(
+    symbol: str, limit: int = 10, export: str = "", sheet_name: Optional[str] = None
+):
     """Display ratings for a given ticker. [Source: Financial Modeling Prep]
 
     Parameters
