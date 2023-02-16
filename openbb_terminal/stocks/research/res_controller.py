@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import logging
 import webbrowser
 from datetime import datetime
-from typing import List
+from typing import List, Optional
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
@@ -43,7 +43,11 @@ class ResearchController(BaseController):
     PATH = "/stocks/res/"
 
     def __init__(
-        self, ticker: str, start: datetime, interval: str, queue: List[str] = None
+        self,
+        ticker: str,
+        start: datetime,
+        interval: str,
+        queue: Optional[List[str]] = None,
     ):
         """Constructor"""
         super().__init__(queue)

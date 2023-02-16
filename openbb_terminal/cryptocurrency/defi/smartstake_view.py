@@ -28,7 +28,7 @@ logger = logging.getLogger(__name__)
 def display_luna_circ_supply_change(
     days: int = 30,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     supply_type: str = "lunaSupplyChallengeStats",
     limit: int = 5,
     external_axes: Optional[List[plt.Axes]] = None,

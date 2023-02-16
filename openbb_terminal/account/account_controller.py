@@ -3,7 +3,7 @@ import json
 import logging
 import os
 from pathlib import Path
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 from prompt_toolkit.completion import NestedCompleter
 
@@ -46,7 +46,7 @@ class AccountController(BaseController):
 
     PATH = "/account/"
 
-    def __init__(self, queue: List[str] = None):
+    def __init__(self, queue: Optional[List[str]] = None):
         super().__init__(queue)
         self.ROUTINE_FILES: Dict[str, Path] = {}
         self.REMOTE_CHOICES: List[str] = []

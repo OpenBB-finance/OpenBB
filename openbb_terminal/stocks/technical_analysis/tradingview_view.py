@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
+from typing import Optional
 
 import pandas as pd
 
@@ -21,7 +22,7 @@ def print_recommendation(
     exchange: str = "",
     interval: str = "",
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Print tradingview recommendation based on technical indicators
 
