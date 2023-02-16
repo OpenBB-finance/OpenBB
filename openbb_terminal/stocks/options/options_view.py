@@ -83,7 +83,7 @@ def plot_vol(
     puts_only: bool = False,
     raw: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plot volume
@@ -190,7 +190,7 @@ def plot_oi(
     puts_only: bool = False,
     raw: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plot open interest
@@ -296,7 +296,7 @@ def plot_voi(
     max_sp: float = -1,
     raw: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plot volume and open interest
@@ -452,7 +452,7 @@ def display_chains(
     min_sp: float = -1,
     max_sp: float = -1,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Display chains
 

@@ -34,7 +34,7 @@ def historical(
     type_candle: str = "a",
     normalize: bool = True,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> List[str]:
     """View historical price of stocks that meet preset

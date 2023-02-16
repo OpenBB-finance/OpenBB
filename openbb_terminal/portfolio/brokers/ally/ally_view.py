@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
+from typing import Optional
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
@@ -12,7 +13,9 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def display_history(limit: int = 15, export: str = "", sheet_name: str = None) -> None:
+def display_history(
+    limit: int = 15, export: str = "", sheet_name: Optional[str] = None
+) -> None:
     history = ally_model.get_history(limit)
     show_history = history[["amount", "date", "symbol", "transactiontype", "quantity"]]
     print_rich_table(
@@ -32,7 +35,7 @@ def display_history(limit: int = 15, export: str = "", sheet_name: str = None) -
 
 
 @log_start_end(log=logger)
-def display_holdings(export: str = "", sheet_name: str = None) -> None:
+def display_holdings(export: str = "", sheet_name: Optional[str] = None) -> None:
     """Display holdings from ally account
 
     Parameters
@@ -56,7 +59,7 @@ def display_holdings(export: str = "", sheet_name: str = None) -> None:
 
 
 @log_start_end(log=logger)
-def display_balances(export: str = "", sheet_name: str = None) -> None:
+def display_balances(export: str = "", sheet_name: Optional[str] = None) -> None:
     """Display balances from ally account
 
     Parameters
@@ -112,7 +115,7 @@ def display_top_lists(
     exchange: str = "",
     limit: int = 20,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """
     Display top lists from ally Invest API.  Documentation for parameters below:

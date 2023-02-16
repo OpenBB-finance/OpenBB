@@ -28,7 +28,7 @@ def display_terra_asset_history(
     asset: str = "",
     address: str = "",
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Plots the 30-day history of specified asset in terra address
@@ -84,7 +84,7 @@ def display_terra_asset_history(
 @log_start_end(log=logger)
 def display_anchor_yield_reserve(
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Plots the 30-day history of the Anchor Yield Reserve.
