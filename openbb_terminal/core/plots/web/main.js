@@ -39,7 +39,7 @@ function OpenBBMain(plotly_figure) {
     displaylogo: false,
     displayModeBar: true,
     toImageButtonOptions: {
-      format: "png",
+      format: "svg",
       filename: openbbFilename(graphs),
       height: CHART_DIV.clientHeight,
       width: CHART_DIV.clientWidth,

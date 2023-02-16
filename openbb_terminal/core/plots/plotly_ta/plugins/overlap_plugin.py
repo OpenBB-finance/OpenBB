@@ -1,8 +1,12 @@
+import logging
+
 import pandas as pd
 
 from openbb_terminal import OpenBBFigure
 from openbb_terminal.core.plots.plotly_ta.base import PltTA, indicator
 from openbb_terminal.core.plots.plotly_ta.data_classes import columns_regex
+
+logger = logging.getLogger(__name__)
 
 
 class Overlap(PltTA):
@@ -43,8 +47,9 @@ class Overlap(PltTA):
                         active_mas.append(column)
                         inchart_index += 1
 
-                except Exception:
-                    continue
+                except Exception as e:
+                    logger.exception("Error adding %s to plot - %s", ma.upper(), e)
+
             for i, ma in enumerate(active_mas):
                 fig.add_annotation(
                     xref="paper",
