@@ -137,7 +137,7 @@ pre-commit = "^2.16.0"
 pytest-cov = "^3.0.0"
 types-six = "^1.16.12"
 nbmake = ">0.5.0"
-ruff = "^0.0.243"
+ruff = "^0.0.247"
 
 [tool.poetry.extras]
 forecast = ["torch", "pytorch-lightning", "u8darts", "lightgbm"]
