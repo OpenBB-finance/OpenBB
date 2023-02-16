@@ -398,9 +398,9 @@ class Momentum(PltTA):
             text="<b>RSI</b>",
             x=0,
             xanchor="right",
-            xshift=-8,
+            xshift=-6,
             y=0.98,
-            font_size=16,
+            font_size=14,
             font_color="rgb(0, 122, 204, 1)",
         )
         fig.add_hrect(
@@ -475,9 +475,9 @@ class Momentum(PltTA):
             text="<b>STOCH</b>",
             x=0,
             xanchor="right",
-            xshift=-8,
+            xshift=-6,
             y=0.98,
-            font_size=16,
+            font_size=14,
             font_color="#e0b700",
         )
         fig["layout"][f"yaxis{subplot_row}"].update(nticks=5, autorange=True)
