@@ -24,7 +24,6 @@ from openbb_terminal import (
 from openbb_terminal.config_terminal import LOGGING_COMMIT_HASH
 from openbb_terminal.helper_funcs import request
 from openbb_terminal.rich_config import console
-from openbb_terminal.session.user import User
 
 # pylint: disable=too-many-statements,no-member,too-many-branches,C0302
 
@@ -340,10 +339,7 @@ def reset(queue: Optional[List[str]] = None):
     logger.info("resetting")
     plt.close("all")
 
-    flag = ""
-    if not User.is_guest():
-        flag = " --login"
-
+    debug = os.environ.get("DEBUG_MODE", "False").lower() == "true"
     # we clear all openbb_terminal modules from sys.modules
     try:
         for module in list(sys.modules.keys()):
@@ -352,11 +348,10 @@ def reset(queue: Optional[List[str]] = None):
                 del sys.modules[module]
 
         # pylint: disable=import-outside-toplevel
-        from terminal import main
+        from openbb_terminal.terminal_controller import main
 
-        sys.argv = [sys.argv[0]] + ["/".join(queue) if len(queue) > 0 else ""] + [flag]
         # we run the terminal again
-        main()  # type: ignore
+        main(debug, ["/".join(queue) if len(queue) > 0 else ""], module="")  # type: ignore
 
     except Exception as e:
         logger.exception("Exception: %s", str(e))
