@@ -42,10 +42,7 @@ from openbb_terminal import (
     config_terminal as cfg,
     feature_flags as obbff,
 )
-from openbb_terminal.core.config.paths import (
-    HOME_DIRECTORY,
-    USER_EXPORTS_DIRECTORY,
-)
+from openbb_terminal.core.config.paths import HOME_DIRECTORY, USER_EXPORTS_DIRECTORY
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -1889,7 +1886,7 @@ def request(url: str, method="GET", **kwargs) -> requests.Response:
     # We want to add a user agent to the request, so check if there are any headers
     # If there are headers, check if there is a user agent, if not add one.
     # Some requests seem to work only with a specific user agent, so we want to be able to override it.
-    headers = kwargs.pop("headers") if "headers" in kwargs else {}
+    headers = kwargs.pop("headers", {})
     if "User-Agent" not in headers:
         headers["User-Agent"] = get_user_agent()
     if method.upper() == "GET":
