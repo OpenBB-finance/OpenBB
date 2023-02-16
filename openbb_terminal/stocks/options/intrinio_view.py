@@ -35,7 +35,7 @@ def display_historical(
     raw: bool = False,
     chain_id: Optional[str] = None,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Plot historical option prices

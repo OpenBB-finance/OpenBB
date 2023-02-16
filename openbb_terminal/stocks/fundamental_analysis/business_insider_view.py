@@ -8,10 +8,10 @@ from datetime import datetime, timedelta
 from typing import Optional, Union
 
 from pandas.core.frame import DataFrame
-from openbb_terminal.common.technical_analysis import ta_helpers
 
-from openbb_terminal.config_terminal import theme
 from openbb_terminal import OpenBBFigure
+from openbb_terminal.common.technical_analysis import ta_helpers
+from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,

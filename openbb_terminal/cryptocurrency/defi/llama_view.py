@@ -5,9 +5,11 @@ import logging
 import os
 from typing import Optional, Union
 
-from openbb_terminal import config_terminal as cfg
+from openbb_terminal import (
+    OpenBBFigure,
+    config_terminal as cfg,
+)
 from openbb_terminal.core.plots.backend import plots_backend
-from openbb_terminal import OpenBBFigure
 from openbb_terminal.cryptocurrency.cryptocurrency_helpers import read_data_file
 from openbb_terminal.cryptocurrency.defi import llama_model
 from openbb_terminal.decorators import log_start_end

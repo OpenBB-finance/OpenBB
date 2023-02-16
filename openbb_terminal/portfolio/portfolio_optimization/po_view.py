@@ -5,6 +5,7 @@ __docformat__ = "numpy"
 # flake8: noqa: E501
 
 import logging
+from typing import Optional
 import math
 import warnings
 from typing import Optional

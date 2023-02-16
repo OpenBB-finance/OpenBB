@@ -553,6 +553,7 @@ class PortfolioOptimizationController(BaseController):
             help="Parameter file to be used",
             choices=self.optimization_file_map.keys(),
             metavar="FILE",
+            type=str,
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "--file")

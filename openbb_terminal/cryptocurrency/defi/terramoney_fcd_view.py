@@ -7,9 +7,11 @@ from typing import Optional, Union
 
 import matplotlib.pyplot as plt
 
-from openbb_terminal import config_terminal as cfg
+from openbb_terminal import (
+    OpenBBFigure,
+    config_terminal as cfg,
+)
 from openbb_terminal.config_plot import PLOT_DPI
-from openbb_terminal import OpenBBFigure
 from openbb_terminal.cryptocurrency.dataframe_helpers import (
     lambda_very_long_number_formatter,
     prettify_column_names,

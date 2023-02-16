@@ -8,7 +8,6 @@ from typing import Optional
 import pandas as pd
 import statsmodels
 
-
 from openbb_terminal import OpenBBFigure
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.econometrics import regression_model

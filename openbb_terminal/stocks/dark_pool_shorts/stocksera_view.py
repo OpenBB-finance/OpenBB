@@ -7,8 +7,8 @@ from typing import Optional
 
 import pandas as pd
 
-from openbb_terminal.config_terminal import theme
 from openbb_terminal import OpenBBFigure
+from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,

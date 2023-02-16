@@ -5,8 +5,8 @@ import logging
 import os
 from typing import Dict, Optional, Union
 
-import pandas as pd
 import numpy as np
+import pandas as pd
 
 from openbb_terminal import OpenBBFigure
 from openbb_terminal.decorators import log_start_end

@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import configparser
 import logging
 from pathlib import Path
-from typing import Optional, Dict, Tuple, Union
+from typing import Dict, Optional, Tuple, Union
 
 import pandas as pd
 import yfinance as yf
