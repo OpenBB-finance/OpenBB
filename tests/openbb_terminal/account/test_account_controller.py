@@ -561,3 +561,5 @@ def test_call_delete(mocker):
 
 
 # TODO: add tests to `call_generate`
+# TODO: add tests to `call_show`
+# TODO: add tests to `call_revoke`

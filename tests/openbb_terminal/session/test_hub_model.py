@@ -711,4 +711,6 @@ def test_list_routines_error(side_effect):
         assert result is None
 
 
-# TODO: add test for `generate_openbb_personal_access_token`
+# TODO: add test for `generate_personal_access_token
+# TODO: add test for `get_personal_access_token
+# TODO: add test for `revoke_personal_access_token

@@ -470,3 +470,44 @@ class AccountController(BaseController):
                 token = response.json().get("token", "")
                 if token:
                     console.print(f"\n[info]Token:[/info] {token}")
+
+    @log_start_end(log=logger)
+    def call_show(self, other_args: List[str]) -> None:
+        """Process show command."""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="show",
+            description="Show your current OpenBB Personal Access Token.",
+        )
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            response = Hub.get_personal_access_token(auth_header=User.get_auth_header())
+            if response and response.status_code == 200:
+                token = response.json().get("token", "")
+                if token:
+                    console.print(f"[info]Token:[/info] {token}")
+
+    @log_start_end(log=logger)
+    def call_revoke(self, other_args: List[str]) -> None:
+        """Process revoke command."""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="revoke",
+            description="Revoke your current OpenBB Personal Access Token.",
+        )
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            i = console.input(
+                "[bold red]This action is irreversible![/bold red]\n"
+                "Are you sure you want to revoke your token? (y/n): "
+            )
+            if i.lower() in ["y", "yes"]:
+                response = Hub.revoke_personal_access_token(
+                    auth_header=User.get_auth_header()
+                )
+                if response and response.status_code in [200, 202]:
+                    console.print("[info]Token revoked.[/info]")
+            else:
+                console.print("[info]Aborted.[/info]")
