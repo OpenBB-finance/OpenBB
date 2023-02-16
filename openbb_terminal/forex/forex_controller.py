@@ -5,7 +5,7 @@ import argparse
 import logging
 import os
 from datetime import datetime, timedelta
-from typing import List
+from typing import List, Optional
 
 import pandas as pd
 
@@ -61,7 +61,7 @@ class ForexController(BaseController):
     FILE_PATH = os.path.join(os.path.dirname(__file__), "README.md")
     CHOICES_GENERATION = True
 
-    def __init__(self, queue: List[str] = None):
+    def __init__(self, queue: Optional[List[str]] = None):
         """Construct Data."""
         super().__init__(queue)
 

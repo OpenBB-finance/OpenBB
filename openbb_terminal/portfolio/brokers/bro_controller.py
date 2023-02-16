@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 # pylint: disable=R1710
 
 import logging
-from typing import List, Set
+from typing import List, Optional, Set
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
@@ -27,7 +27,7 @@ class BrokersController(BaseController):
     PATH = "/portfolio/bro/"
     CHOICES_GENERATION = True
 
-    def __init__(self, queue: List[str] = None):
+    def __init__(self, queue: Optional[List[str]] = None):
         """Constructor"""
         super().__init__(queue)
 
