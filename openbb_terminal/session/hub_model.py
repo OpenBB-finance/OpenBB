@@ -573,9 +573,7 @@ def generate_personal_access_token(
     }
 
     try:
-        response = requests.request(
-            method="PUT", url=url, headers=headers, data=payload, timeout=timeout
-        )
+        response = requests.put(url=url, headers=headers, data=payload, timeout=timeout)
 
         if response.status_code != 200:
             console.print("[red]Failed to generate personal access token.[/red]")
@@ -618,9 +616,7 @@ def get_personal_access_token(
     headers = {"Authorization": auth_header}
 
     try:
-        response = requests.request(
-            method="GET", url=url, headers=headers, timeout=timeout
-        )
+        response = requests.get(url=url, headers=headers, timeout=timeout)
 
         if response.status_code != 200:
             console.print("[red]Failed to get personal access token.[/red]")
@@ -663,8 +659,8 @@ def revoke_personal_access_token(
     headers = {"Authorization": auth_header}
 
     try:
-        response = requests.request(
-            method="DELETE", url=url, headers=headers, timeout=timeout
+        response = requests.delete(
+            url=url, headers=headers, timeout=timeout
         )
 
         if response.status_code not in [200, 202]:
