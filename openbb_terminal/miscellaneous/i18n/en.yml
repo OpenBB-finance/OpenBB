@@ -780,9 +780,7 @@ en:
   fixedincome/sonia: sterling overnight index average (sonia)
   fixedincome/ameribor: american interbank offered rate (ameribor)
   fixedincome/_central_bank_rates_: Central bank rates
-  fixedincome/ffer: federal funds effective rate
-  fixedincome/fftr: federal funds target range
-  fixedincome/effr: effective federal funds rate (effr)
+  fixedincome/effr: effective federal funds rate
   fixedincome/obfr: overnight bank funding rate (obfr)
   fixedincome/iorb: interest rate on reserve balances
   fixedincome/projection: FOMC summary of economic projections for the fed funds rate

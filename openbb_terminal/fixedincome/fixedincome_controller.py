@@ -12,7 +12,7 @@ from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.fixedincome import ecb_view, nyfed_view, oecd_view, econdb_view, yfinance_view
+from openbb_terminal.fixedincome import ecb_view, oecd_view, econdb_view, yfinance_view
 from openbb_terminal.fixedincome import fred_view
 
 from openbb_terminal.helper_funcs import (
@@ -35,10 +35,8 @@ class FixedIncomeController(BaseController):
         "sofr",
         "sonia",
         "ameribor",
-        "ffer",
         "fftr",
         "effr",
-        "obfr",
         "iorb",
         "projection",
         "oldprojection",
@@ -110,37 +108,20 @@ class FixedIncomeController(BaseController):
         "30_day_ma": "AMBOR30",
         "90_day_ma": "AMBOR90",
     }
-    ffer_parameter_to_fred_id = {
+
+    effr_parameter_to_fred_id = {
         "monthly": "FEDFUNDS",
         "daily": "DFF",
         "weekly": "FF",
         "daily_excl_weekend": "RIFSPFFNB",
         "annual": "RIFSPFFNA",
         "biweekly": "RIFSPFFNBWAW",
+        "volume": "EFFRVOL"
     }
-    effr_parameter_to_fred_id = {
-        "rate": "EFFR",
-        "volume": "EFFRVOL",
-        "1th_percentile": "EFFR1",
-        "25th_percentile": "EFFR25",
-        "75th_percentile": "EFFR75",
-        "99th_percentile": "EFFR99",
-    }
-    effr_parameter_to_nyfed_id = {
-        "rate": "percentRate",
-        "volume": "volumeInBillions",
-        "1th_percentile": "percentPercentile1",
-        "25th_percentile": "percentPercentile25",
-        "75th_percentile": "percentPercentile75",
-        "99th_percentile": "percentPercentile99",
-    }
+
     obfr_parameter_to_fred_id = {
-        "rate": "OBFR",
+        "daily": "OBFR",
         "volume": "OBFRVOL",
-        "1th_percentile": "EFFR1",
-        "25th_percentile": "EFFR25",
-        "75th_percentile": "EFFR75",
-        "99th_percentile": "EFFR99",
     }
     dwpcr_parameter_to_fred_id = {
         "daily_excl_weekend": "DPCREDIT",
@@ -209,10 +190,7 @@ class FixedIncomeController(BaseController):
         mt.add_cmd("ameribor")
         mt.add_raw("\n")
         mt.add_info("_central_bank_rates_")
-        mt.add_cmd("ffer")
-        mt.add_cmd("fftr")
         mt.add_cmd("effr")
-        mt.add_cmd("obfr")
         mt.add_cmd("iorb")
         mt.add_cmd("projection")
         mt.add_cmd("oldprojection")
@@ -248,8 +226,12 @@ class FixedIncomeController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="estr",
-            description="The euro short-term rate (€STR) reflects the wholesale "
-            "euro unsecured overnight borrowing costs of banks located in the euro area."
+            description="The euro short-term rate (€STR) reflects the wholesale euro "
+            "unsecured overnight borrowing costs of banks located in the euro area. The "
+            "€STR is published on each TARGET2 business day based on transactions conducted "
+            "and settled on the previous TARGET2 business day (the reporting date “T”) "
+            "with a maturity date of T+1 which are deemed to have been executed at arm’s "
+            "length and thus reflect market rates in an unbiased way."
         )
         parser.add_argument(
             "-p",
@@ -308,8 +290,10 @@ class FixedIncomeController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="sofr",
-            description="Get Secured Overnight Financing Rate (SOFR) data from "
-            "the Federal Reserve Bank of New York",
+            description="The Secured Overnight Financing Rate (SOFR) is a "
+            "broad measure of the cost of borrowing cash overnight collateralized "
+            "by Treasury securities. The SOFR is calculated as a volume-weighted "
+            "median of transaction-level tri-party repo data. ",
         )
         parser.add_argument(
             "-p",
@@ -340,26 +324,15 @@ class FixedIncomeController(BaseController):
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
-            if ns_parser.source == "FRED":
-                fred_view.plot_sofr(
-                    self.sofr_parameter_to_fred_id[ns_parser.parameter],
-                    ns_parser.start_date,
-                    ns_parser.end_date,
-                    ns_parser.export,
-                    " ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
-                )
-            elif ns_parser.source == "NYFED":
-                nyfed_view.plot_sofr(
-                    ns_parser.parameter,
-                    ns_parser.start_date,
-                    ns_parser.end_date,
-                    ns_parser.export,
-                    " ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
-                )
+            fred_view.plot_sofr(
+                self.sofr_parameter_to_fred_id[ns_parser.parameter],
+                ns_parser.start_date,
+                ns_parser.end_date,
+                ns_parser.export,
+                " ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )
 
     @log_start_end(log=logger)
     def call_sonia(self, other_args: List[str]):
@@ -368,7 +341,10 @@ class FixedIncomeController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="sonia",
-            description="Get Sterling Overnight Index Average (SONIA) data",
+            description="SONIA (Sterling Overnight Index Average) is an important "
+            "interest rate benchmark. SONIA is based on actual transactions and "
+            "reflects the average of the interest rates that banks pay to borrow "
+            "sterling overnight from other financial institutions and other institutional investors.",
         )
         parser.add_argument(
             "-p",
@@ -416,7 +392,10 @@ class FixedIncomeController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="ameribor",
-            description="Get American Interbank Offered Rate (AMERIBOR) data",
+            description="Ameribor (short for the American interbank offered rate) is "
+            "a benchmark interest rate that reflects the true cost of short-term interbank borrowing. "
+            "This rate is based on transactions in overnight unsecured loans conducted on the American "
+            "Financial Exchange (AFX)."
         )
         parser.add_argument(
             "-p",
@@ -458,108 +437,6 @@ class FixedIncomeController(BaseController):
             )
 
     @log_start_end(log=logger)
-    def call_ffer(self, other_args: List[str]):
-        """Process ffer command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="ffer",
-            description="Get Federal Funds Effective Rate data\nA bank rate is the interest rate a nation's central "
-            "bank charges to its domestic banks to borrow money. The rates central banks charge are set "
-            "to stabilize the economy. In the United States, the Federal Reserve System's Board of "
-            "Governors set the bank rate, also known as the discount rate.",
-        )
-        parser.add_argument(
-            "-p",
-            "--parameter",
-            dest="parameter",
-            type=str,
-            help="Specific Federal Funds Effective Rate data to retrieve",
-            default="monthly",
-            choices=list(self.ffer_parameter_to_fred_id.keys()),
-        )
-        parser.add_argument(
-            "-s",
-            "--start",
-            dest="start_date",
-            type=valid_date,
-            help="Starting date (YYYY-MM-DD) of data",
-            default=None,
-        )
-        parser.add_argument(
-            "-e",
-            "--end",
-            dest="end_date",
-            type=valid_date,
-            help="Ending date (YYYY-MM-DD) of data",
-            default=None,
-        )
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
-        )
-        if ns_parser:
-            fred_view.plot_ffer(
-                self.ffer_parameter_to_fred_id[ns_parser.parameter],
-                ns_parser.start_date,
-                ns_parser.end_date,
-                ns_parser.export,
-                " ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
-            )
-
-    @log_start_end(log=logger)
-    def call_fftr(self, other_args: List[str]):
-        """Process fftr command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="fftr",
-            description="Get Federal Funds Target Range data.\nA bank rate is the interest rate a nation's central "
-            "bank charges to its domestic banks to borrow money. The rates central banks charge are set "
-            "to stabilize the economy. In the United States, the Federal Reserve System's Board of "
-            "Governors set the bank rate, also known as the discount rate.",
-        )
-        parser.add_argument(
-            "-s",
-            "--start",
-            dest="start_date",
-            type=valid_date,
-            help="Starting date (YYYY-MM-DD) of data",
-            default="1980-01-01",
-        )
-        parser.add_argument(
-            "-e",
-            "--end",
-            dest="end_date",
-            type=valid_date,
-            help="Ending date (YYYY-MM-DD) of data",
-            default=None,
-        )
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
-        )
-        if ns_parser:
-            if ns_parser.source == "FRED":
-                fred_view.plot_fftr(
-                    ns_parser.start_date,
-                    ns_parser.end_date,
-                    ns_parser.export,
-                    " ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
-                )
-            elif ns_parser.source == "NYFED":
-                nyfed_view.plot_fftr(
-                    ns_parser.start_date,
-                    ns_parser.end_date,
-                    ns_parser.export,
-                    " ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
-                )
-
-    @log_start_end(log=logger)
     def call_effr(self, other_args: List[str]):
         """Process effr command"""
         parser = argparse.ArgumentParser(
@@ -577,7 +454,7 @@ class FixedIncomeController(BaseController):
             dest="parameter",
             type=str,
             help="Specific Effective Federal Funds Rate data to retrieve",
-            default="rate",
+            default="monthly",
             choices=list(self.effr_parameter_to_fred_id.keys()),
         )
         parser.add_argument(
@@ -586,7 +463,7 @@ class FixedIncomeController(BaseController):
             dest="start_date",
             type=valid_date,
             help="Starting date (YYYY-MM-DD) of data",
-            default="1980-01-01",
+            default="1900-01-01",
         )
         parser.add_argument(
             "-e",
@@ -596,87 +473,47 @@ class FixedIncomeController(BaseController):
             help="Ending date (YYYY-MM-DD) of data",
             default=None,
         )
+        
+        parser.add_argument(
+            "-o",
+            "--overnight",
+            dest="overnight",
+            action="store_true",
+            help="Gets the Overnight Bank Funding Rate",
+            default=False,
+        )
+        parser.add_argument(
+            "-q",
+            "--quantiles",
+            dest="quantiles",
+            action="store_true",
+            help="Whether to show 1, 25, 75 and 99 percentiles",
+            default=False,
+        )
+        parser.add_argument(
+            "-t",
+            "--target",
+            dest="target",
+            action="store_true",
+            help="Whether to show the target range data",
+            default=False,
+        )
+        
         ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES, raw=True
         )
         if ns_parser:
-            if ns_parser.source == "FRED":
+            if ns_parser.overnight and ns_parser.target or ns_parser.quantiles:
+                console.print("The Overnight Bank Funding Rate has no target and quantiles data.")
+            else:
                 fred_view.plot_effr(
                     self.effr_parameter_to_fred_id[ns_parser.parameter],
                     ns_parser.start_date,
                     ns_parser.end_date,
-                    ns_parser.export,
-                    " ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
-                )
-            elif ns_parser.source == "NYFED":
-                nyfed_view.plot_effr(
-                    self.effr_parameter_to_nyfed_id[ns_parser.parameter],
-                    ns_parser.start_date,
-                    ns_parser.end_date,
-                    ns_parser.export,
-                    " ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
-                )
-
-    @log_start_end(log=logger)
-    def call_obfr(self, other_args: List[str]):
-        """Process obfr command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="obfr",
-            description="Get Overnight Bank Funding Rate data.\nA bank rate is the interest rate a nation's central "
-            "bank charges to its domestic banks to borrow money. The rates central banks charge are set "
-            "to stabilize the economy. In the United States, the Federal Reserve System's Board of "
-            "Governors set the bank rate, also known as the discount rate.",
-        )
-        parser.add_argument(
-            "-p",
-            "--parameter",
-            dest="parameter",
-            type=str,
-            help="Specific Overnight Bank Funding Rate data to retrieve",
-            default="rate",
-            choices=list(self.obfr_parameter_to_fred_id.keys()),
-        )
-        parser.add_argument(
-            "-s",
-            "--start",
-            dest="start_date",
-            type=valid_date,
-            help="Starting date (YYYY-MM-DD) of data",
-            default="1980-01-01",
-        )
-        parser.add_argument(
-            "-e",
-            "--end",
-            dest="end_date",
-            type=valid_date,
-            help="Ending date (YYYY-MM-DD) of data",
-            default=None,
-        )
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
-        )
-        if ns_parser:
-            if ns_parser.source == "FRED":
-                fred_view.plot_obfr(
-                    self.obfr_parameter_to_fred_id[ns_parser.parameter],
-                    ns_parser.start_date,
-                    ns_parser.end_date,
-                    ns_parser.export,
-                    " ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
-                )
-            elif ns_parser.source == "NYFED":
-                nyfed_view.plot_obfr(
-                    self.effr_parameter_to_nyfed_id[ns_parser.parameter],
-                    ns_parser.start_date,
-                    ns_parser.end_date,
+                    ns_parser.overnight,
+                    ns_parser.quantiles,
+                    ns_parser.target,
+                    ns_parser.raw,
                     ns_parser.export,
                     " ".join(ns_parser.sheet_name)
                     if ns_parser.sheet_name

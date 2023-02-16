@@ -61,30 +61,19 @@ ID_TO_NAME_AMERIBOR = {
     "AMBOR30": "30-Day Moving Average AMERIBOR Benchmark Interest Rate",
     "AMBOR90": "90-Day Moving Average AMERIBOR Benchmark Interest Rate",
 }
-ID_TO_NAME_FFER = {
-    "FEDFUNDS": "Monthly",
-    "DFF": "Daily (incl. Weekends)",
-    "FF": "Weekly",
-    "RIFSPFFNB": "Daily (excl. Weekends)",
-    "RIFSPFFNA": "Annual",
-    "RIFSPFFNBWAW": "Biweekly",
-}
 ID_TO_NAME_EFFR = {
-    "EFFR": "Effective Federal Funds Rate [Percent]",
-    "EFFRVOL": "Effective Federal Funds Volume [Billions of USD]",
-    "EFFR1": "Effective Federal Funds Rate: 1th Percentile [Percent]",
-    "EFFR25": "Effective Federal Funds Rate: 25th Percentile [Percent]",
-    "EFFR75": "Effective Federal Funds Rate: 75th Percentile [Percent]",
-    "EFFR99": "Effective Federal Funds Rate: 99th Percentile [Percent]",
+    "FEDFUNDS": "Monthly Effective Federal Funds Rate",
+    "EFFR": "Daily Effective Federal Funds Rate",
+    "DFF": "Daily Effective Federal Funds Rate",
+    "OBFR": "Daily Overnight Bank Funding Rate",
+    "FF": "Weekly Effective Federal Funds Rate",
+    "RIFSPFFNB": "Daily (Excl. Weekends) Effective Federal Funds Rate",
+    "RIFSPFFNA": "Annual Effective Federal Funds Rate",
+    "RIFSPFFNBWAW": "Biweekly Effective Federal Funds Rate",
+    "EFFRVOL": "Effective Federal Funds Volume",
+    "OBFRVOL": "Overnight Bank Funding Volume",
 }
-ID_TO_NAME_OBFR = {
-    "OBFR": "Overnight Bank Funding Rate [Percent]",
-    "OBFRVOL": "Overnight Bank Funding Volume [Billions of USD]",
-    "OBFR1": "Overnight Bank Funding Rate: 1th Percentile [Percent]",
-    "OBFR25": "Overnight Bank Funding Rate: 25th Percentile [Percent]",
-    "OBFR75": "Overnight Bank Funding Rate: 75th Percentile [Percent]",
-    "OBFR99": "Overnight Bank Funding Rate: 99th Percentile [Percent]",
-}
+
 ID_TO_NAME_DWPCR = {
     "MPCREDIT": "Monthly",
     "RIFSRPF02ND": "Daily (incl. Weekends)",
@@ -132,6 +121,16 @@ ID_TO_NAME_CMN = {
 ID_TO_NAME_TBFFR = {
     "TB3SMFFM": "3 Month",
     "TB6SMFFM": "6 Month",
+}
+
+NAME_TO_ID_PROJECTION = {
+    "Range High": ['FEDTARRHLR', 'FEDTARRH'],
+    "Central tendency High": ['FEDTARCTHLR', 'FEDTARCTH'],
+    "Median": ['FEDTARMDLR', 'FEDTARMD'],
+    "Range Midpoint": ['FEDTARRMLR', 'FEDTARRM'],
+    "Central tendency Midpoint": ['FEDTARCTMLR', 'FEDTARCTM'],
+    "Range Low": ['FEDTARRLLR', 'FEDTARRL'],
+    "Central tendency Low": ['FEDTARCTLLR', 'FEDTARCTL'],
 }
 
 
@@ -416,82 +415,6 @@ def plot_ameribor(
             sheet_name
         )
 
-
-@log_start_end(log=logger)
-@check_api_key(["API_FRED_KEY"])
-def plot_ffer(
-    series_id: str = "FEDFUNDS",
-    start_date: Optional[str] = None,
-    end_date: Optional[str] = None,
-    export: str = "",
-    sheet_name: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
-):
-    """Plot Federal Funds Effective Rate.
-
-    A bank rate is the interest rate a nation's central bank charges to its domestic banks to borrow money. The rates
-    central banks charge are set to stabilize the economy. In the United States, the Federal Reserve System's Board
-    of Governors set the bank rate, also known as the discount rate.
-
-    Parameters
-    ----------
-    series_id: str
-        FRED ID of FFER data to plot, options: ['FEDFUNDS', 'DFF', 'FF', 'RIFSPFFNB', 'RIFSPFFNA', 'RIFSPFFNBWAW']
-    start_date: Optional[str]
-        Start date, formatted YYYY-MM-DD
-    end_date: Optional[str]
-        End date, formatted YYYY-MM-DD
-    export: str
-        Export data to csv or excel file
-    external_axes: Optional[List[plt.Axes]]
-        External axes (1 axis is expected in the list)
-    """
-    df = fred_model.get_series_data(
-        series_id=series_id, start_date=start_date, end_date=end_date
-    )
-
-    # This plot has 1 axis
-    if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
-
-    colors = cycle(theme.get_colors())
-    ax.plot(
-        df.index,
-        df.values,
-        marker="o",
-        linestyle="dashed",
-        linewidth=2,
-        markersize=4,
-        color=next(colors, "#FCED00"),
-    )
-    ax.set_title(
-        "Federal Funds Effective Rate " + ID_TO_NAME_FFER[series_id] + " [Percent]"
-    )
-    theme.style_primary_axis(ax)
-
-    if external_axes is None:
-        theme.visualize_output()
-        
-    if export:
-        if "[Percent]" in ID_TO_NAME_FFER[series_id]:
-            # Check whether it is a percentage, relevant for exporting
-            df_transformed = pd.DataFrame(df, columns=[series_id]) / 100
-        else:
-            df_transformed = pd.DataFrame(df, columns=[series_id])
-
-        export_data(
-            export,
-            os.path.dirname(os.path.abspath(__file__)),
-            series_id,
-            df_transformed,
-            sheet_name
-        )
-
-
 @log_start_end(log=logger)
 @check_api_key(["API_FRED_KEY"])
 def plot_fftr(
@@ -557,9 +480,13 @@ def plot_fftr(
 @log_start_end(log=logger)
 @check_api_key(["API_FRED_KEY"])
 def plot_effr(
-    series_id: str = "EFFR",
+    series_id: str = "FEDFUNDS",
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
+    overnight: bool = False,
+    quantiles: bool = False,
+    target: bool = False,
+    raw: bool = False,
     export: str = "",
     sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
@@ -583,114 +510,105 @@ def plot_effr(
     external_axes: Optional[List[plt.Axes]]
         External axes (1 axis is expected in the list)
     """
-    df = fred_model.get_series_data(
-        series_id=series_id, start_date=start_date, end_date=end_date
-    )
-
-    # This plot has 1 axis
-    if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
-
-    colors = cycle(theme.get_colors())
-    ax.plot(
-        df.index,
-        df.values,
-        marker="o",
-        linestyle="dashed",
-        linewidth=2,
-        markersize=4,
-        color=next(colors, "#FCED00"),
-    )
-    ax.set_title(ID_TO_NAME_EFFR[series_id])
-    theme.style_primary_axis(ax)
-
-    if external_axes is None:
-        theme.visualize_output()
-        
-    if export:
-        if "[Percent]" in ID_TO_NAME_EFFR[series_id]:
-            # Check whether it is a percentage, relevant for exporting
-            df_transformed = pd.DataFrame(df, columns=[series_id]) / 100
+    if overnight:
+        # This piece of code adjusts the series id when the user wants to plot the overnight rate
+        if series_id == "DFF":
+            series_id = "OBFR"
+        elif series_id == "EFFRVOL":
+            series_id = "OBFRVOL"
         else:
-            df_transformed = pd.DataFrame(df, columns=[series_id])
+            console.print("The Overnight Banking Federal Rate only supports Daily data.")
+            series_id = "OBFR"
 
-        export_data(
-            export,
-            os.path.dirname(os.path.abspath(__file__)),
-            series_id,
-            df_transformed,
-            sheet_name
+    if quantiles or target and not overnight:
+        data_series = [series_id if series_id != 'EFFRVOL' else "EFFR"]
+        series_id = series_id if series_id != 'EFFRVOL' else "EFFR"
+        
+        if quantiles:
+            data_series.extend(['EFFR1', 'EFFR25', 'EFFR75', 'EFFR99'])
+        if target:
+            data_series.extend(['DFEDTARU', 'DFEDTARL'])
+        
+        for series in data_series:
+            data = pd.DataFrame(fred_model.get_series_data(
+                series_id=series, start_date=start_date, end_date=end_date), columns=[series]
+            )
+            if series == series_id:
+                df = data
+            else:
+                df = pd.concat([df, data], axis=1)
+                
+        df = df.dropna()
+                
+        # This plot has 1 axis
+        if not external_axes:
+            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        elif is_valid_axes_count(external_axes, 1):
+            (ax,) = external_axes
+        else:
+            return
+
+        colors = cycle(theme.get_colors())
+        for column in df.columns:
+            ax.plot(
+                df[column],
+                linewidth=3 if column == series_id else 1,
+                color=next(colors),
+        )
+        ax.set_title(ID_TO_NAME_EFFR[series_id])
+        ax.legend(data_series)
+        ax.set_ylabel("Yield (%)")
+        theme.style_primary_axis(ax)
+
+        if external_axes is None:
+            theme.visualize_output()
+    else:
+        df = fred_model.get_series_data(
+            series_id=series_id, start_date=start_date, end_date=end_date
         )
 
-
-@log_start_end(log=logger)
-@check_api_key(["API_FRED_KEY"])
-def plot_obfr(
-    series_id: str = "OBFR",
-    start_date: Optional[str] = None,
-    end_date: Optional[str] = None,
-    export: str = "",
-    sheet_name: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
-):
-    """Plot Overnight Bank Funding Rate (OBFR).
-
-    A bank rate is the interest rate a nation's central bank charges to its domestic banks to borrow money. The rates
-    central banks charge are set to stabilize the economy. In the United States, the Federal Reserve System's Board
-    of Governors set the bank rate, also known as the discount rate.
-
-    Parameters
-    ----------
-    series_id: str
-        FRED ID of OBFR data to plot, options: ['OBFR', 'OBFRVOL', 'OBFR1', 'OBFR25', 'OBFR75', 'OBFR99']
-    start_date: Optional[str]
-        Start date, formatted YYYY-MM-DD
-    end_date: Optional[str]
-        End date, formatted YYYY-MM-DD
-    export: str
-        Export data to csv or excel file
-    external_axes: Optional[List[plt.Axes]]
-        External axes (1 axis is expected in the list)
-    """
-    df = fred_model.get_series_data(
-        series_id=series_id, start_date=start_date, end_date=end_date
-    )
-
-    # This plot has 1 axis
-    if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
-
-    colors = cycle(theme.get_colors())
-    ax.plot(
-        df.index,
-        df.values,
-        marker="o",
-        linestyle="dashed",
-        linewidth=2,
-        markersize=4,
-        color=next(colors, "#FCED00"),
-    )
-    ax.set_title(ID_TO_NAME_OBFR[series_id])
-    theme.style_primary_axis(ax)
-
-    if external_axes is None:
-        theme.visualize_output()
-
-    if export:
-        if "[Percent]" in ID_TO_NAME_OBFR[series_id]:
-            # Check whether it is a percentage, relevant for exporting
-            df_transformed = pd.DataFrame(df, columns=[series_id]) / 100
+        # This plot has 1 axis
+        if not external_axes:
+            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        elif is_valid_axes_count(external_axes, 1):
+            (ax,) = external_axes
         else:
-            df_transformed = pd.DataFrame(df, columns=[series_id])
+            return
 
+        colors = cycle(theme.get_colors())
+        ax.plot(
+            df.index,
+            df.values,
+            linewidth=2,
+            color=next(colors),
+        )
+        ax.set_title(ID_TO_NAME_EFFR[series_id])
+        ax.set_ylabel("Yield (%)" if series_id not in ["EFFRVOL", "OBFRVOL"] else "Billions in USD" )
+        theme.style_primary_axis(ax)
+
+        if external_axes is None:
+            theme.visualize_output()
+            
+    if export or raw:
+        if not quantiles and not target:
+            if series_id != "EFFRVOL":
+                # Check whether it is a percentage, relevant for exporting
+                df_transformed = pd.DataFrame(df, columns=[series_id]) / 100
+            else:
+                df_transformed = pd.DataFrame(df, columns=[series_id])
+        else:
+            df_transformed = df / 100
+    
+    if raw:   
+        print_rich_table(
+            df_transformed.iloc[-10:],
+            headers=list(df_transformed.columns),
+            show_index=True,
+            title=ID_TO_NAME_EFFR[series_id],
+            floatfmt=".3f",
+        )
+    
+    if export:
         export_data(
             export,
             os.path.dirname(os.path.abspath(__file__)),
@@ -785,38 +703,14 @@ def plot_projection(
     external_axes: Optional[List[plt.Axes]]
         External axes (1 axis is expected in the list)
     """
-    df_range_high = fred_model.get_series_data(
-        series_id="FEDTARRH", start_date=start_date, end_date=end_date
-    )
-    df_central_tendency_high = fred_model.get_series_data(
-        series_id="FEDTARCTH", start_date=start_date, end_date=end_date
-    )
-    df_median = fred_model.get_series_data(
-        series_id="FEDTARMD", start_date=start_date, end_date=end_date
-    )
-    df_range_midpoint = fred_model.get_series_data(
-        series_id="FEDTARRM", start_date=start_date, end_date=end_date
-    )
-    df_central_tendency_midpoint = fred_model.get_series_data(
-        series_id="FEDTARCTM", start_date=start_date, end_date=end_date
-    )
-    df_range_low = fred_model.get_series_data(
-        series_id="FEDTARRL", start_date=start_date, end_date=end_date
-    )
-    df_central_tendency_low = fred_model.get_series_data(
-        series_id="FEDTARCTL", start_date=start_date, end_date=end_date
-    )
-    df = pd.DataFrame(
-        [
-            df_range_high,
-            df_central_tendency_high,
-            df_median,
-            df_range_midpoint,
-            df_central_tendency_midpoint,
-            df_range_low,
-            df_central_tendency_low,
-        ]
-    ).transpose()
+    data_series = {}
+
+    for projection, values in NAME_TO_ID_PROJECTION.items():
+        df_past = fred_model.get_series_data(series_id=values[0])
+        df_future = fred_model.get_series_data(series_id=values[1])
+        
+        # Only add the future projections that are not in the past
+        data_series[projection] = pd.concat([df_past, df_future.loc[df_past.index[-1]:]], axis=0)
 
     # This plot has 1 axis
     if not external_axes:
@@ -826,24 +720,17 @@ def plot_projection(
     else:
         return
 
-    ax.plot(
-        df.index,
-        df.values,
-    )
+    for legend, df in data_series.items():
+        ax.plot(
+            df.index,
+            df.values,
+            label=legend,
+        )
+        
     ax.set_title(
         "FOMC Summary of Economic Projections for the Fed Funds Rate [Percent]"
     )
-    ax.legend(
-        [
-            "Range High",
-            "Central tendency High",
-            "Median",
-            "Range Midpoint",
-            "Central tendency Midpoint",
-            "Range Low",
-            "Central tendency Low",
-        ]
-    )
+
     theme.style_primary_axis(ax)
 
     if external_axes is None:
