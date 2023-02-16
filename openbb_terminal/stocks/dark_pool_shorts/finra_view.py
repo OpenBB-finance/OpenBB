@@ -27,7 +27,7 @@ logger = logging.getLogger(__name__)
 def darkpool_ats_otc(
     symbol: str,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display barchart of dark pool (ATS) and OTC (Non ATS) data. [Source: FINRA]
@@ -195,7 +195,7 @@ def darkpool_otc(
     limit: int = 10,
     tier: str = "T1",
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display dark pool (ATS) data of tickers with growing trades activity. [Source: FINRA]

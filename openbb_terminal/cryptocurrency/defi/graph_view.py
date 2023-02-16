@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
+from typing import Optional
 
 from openbb_terminal.cryptocurrency.dataframe_helpers import (
     lambda_very_long_number_formatter,
@@ -23,7 +24,7 @@ def display_uni_tokens(
     sortby: str = "index",
     ascend: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Prints table showing tokens trade-able on Uniswap DEX.
     [Source: https://thegraph.com/en/]
@@ -73,7 +74,7 @@ def display_uni_tokens(
 
 
 @log_start_end(log=logger)
-def display_uni_stats(export: str = "", sheet_name: str = None) -> None:
+def display_uni_stats(export: str = "", sheet_name: Optional[str] = None) -> None:
     """Prints table showing base statistics about Uniswap DEX. [Source: https://thegraph.com/en/]
     [Source: https://thegraph.com/en/]
 
@@ -113,7 +114,7 @@ def display_recently_added(
     sortby: str = "created",
     ascend: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Prints table showing Lastly added pairs on Uniswap DEX.
     [Source: https://thegraph.com/en/]
@@ -179,7 +180,7 @@ def display_uni_pools(
     sortby: str = "volumeUSD",
     ascend: bool = True,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Prints table showing uniswap pools by volume.
     [Source: https://thegraph.com/en/]
@@ -232,7 +233,7 @@ def display_last_uni_swaps(
     sortby: str = "timestamp",
     ascend: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Prints table showing last swaps done on Uniswap
     [Source: https://thegraph.com/en/]

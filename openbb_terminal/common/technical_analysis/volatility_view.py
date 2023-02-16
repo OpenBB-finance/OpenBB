@@ -32,7 +32,7 @@ def display_bbands(
     n_std: float = 2,
     mamode: str = "sma",
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plots bollinger bands
@@ -118,7 +118,7 @@ def display_donchian(
     upper_length: int = 20,
     lower_length: int = 20,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plots donchian channels
@@ -204,7 +204,7 @@ def view_kc(
     offset: int = 0,
     symbol: str = "",
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plots Keltner Channels Indicator
@@ -302,7 +302,7 @@ def display_atr(
     mamode: str = "sma",
     offset: int = 0,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plots ATR

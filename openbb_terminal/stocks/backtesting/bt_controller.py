@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import argparse
 import logging
-from typing import List
+from typing import List, Optional
 
 import matplotlib as mpl
 import pandas as pd
@@ -47,7 +47,9 @@ class BacktestingController(StockBaseController):
     PATH = "/stocks/bt/"
     CHOICES_GENERATION = True
 
-    def __init__(self, ticker: str, stock: pd.DataFrame, queue: List[str] = None):
+    def __init__(
+        self, ticker: str, stock: pd.DataFrame, queue: Optional[List[str]] = None
+    ):
         """Constructor"""
         super().__init__(queue)
 

@@ -26,7 +26,7 @@ def display_news(
     limit: int = 25,
     ascend: bool = True,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Prints table showing recent posts from CryptoPanic news aggregator platform.
     [Source: https://cryptopanic.com/]

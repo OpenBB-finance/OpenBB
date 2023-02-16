@@ -1,7 +1,7 @@
 """Optimization helpers"""
 __docformat__ = "numpy"
 
-from typing import Any
+from typing import Any, Optional
 
 import pandas as pd
 
@@ -55,7 +55,7 @@ def validate_risk_measure(risk_measure: str, warning: bool = True) -> str:
     return "MV"
 
 
-def get_kwarg(key: str, kwargs: dict, default: Any = None) -> Any:
+def get_kwarg(key: str, kwargs: dict, default: Optional[Any] = None) -> Any:
     """Get a key from kwargs
 
     If key is in kwargs, returns it.

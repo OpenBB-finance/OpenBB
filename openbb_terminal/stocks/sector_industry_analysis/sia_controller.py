@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import argparse
 import difflib
 import logging
-from typing import List
+from typing import List, Optional
 
 import yfinance as yf
 
@@ -162,7 +162,7 @@ class SectorIndustryAnalysisController(BaseController):
     def __init__(
         self,
         ticker: str,
-        queue: List[str] = None,
+        queue: Optional[List[str]] = None,
     ):
         """Constructor"""
         super().__init__(queue)

@@ -122,7 +122,7 @@ def display_simple_ema(
     spy_bt: bool = True,
     no_bench: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Strategy where stock is bought when Price > EMA(l)
@@ -191,7 +191,7 @@ def display_emacross(
     no_bench: bool = False,
     shortable: bool = True,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):  # pylint: disable=R0913
     """Strategy where we go long/short when EMA(short) is greater than/less than EMA(short)
@@ -265,7 +265,7 @@ def display_rsi_strategy(
     no_bench: bool = False,
     shortable: bool = True,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Strategy that buys when the stock is less than a threshold and shorts when it exceeds a threshold.
