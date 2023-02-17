@@ -307,6 +307,7 @@ class OpenBBSDK:
             `coinbase`: Set Coinbase key\n
             `coinglass`: Set Coinglass key.\n
             `cpanic`: Set Cpanic key.\n
+            `databento`: Set DataBento key\n
             `degiro`: Set Degiro key\n
             `eodhd`: Set Eodhd key.\n
             `ethplorer`: Set Ethplorer key.\n
