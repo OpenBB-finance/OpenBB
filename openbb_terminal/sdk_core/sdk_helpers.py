@@ -92,9 +92,8 @@ class Operation:
     def about(self):
         import webbrowser
 
-        trail = self._trail
-        url = "https://docs.openbb.co/sdk/reference/"
-        url += "/".join(trail.split("."))
+        trail = "/".join(self._trail.split("."))
+        url = f"https://docs.openbb.co/sdk/reference/{trail}"
         webbrowser.open(url)
 
 
