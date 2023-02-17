@@ -1,7 +1,6 @@
 # -*- mode: python ; coding: utf-8 -*-
 import os
 import shutil
-import subprocess
 import sys
 from pathlib import Path
 
@@ -40,12 +39,12 @@ binary_to_remove.unlink(missing_ok=True)
 build_assets_folder = os.path.join(os.getcwd(), "build", "pyinstaller")
 
 # Removing inspect hook
-destination = Path(
-    os.path.join(pathex, "pyinstaller/hooks/rthooks", "pyi_rth_inspect.py")
-)
+# destination = Path(
+#     os.path.join(pathex, "pyinstaller/hooks/rthooks", "pyi_rth_inspect.py")
+# )
 print("Replacing Pyinstaller Hook: pyi_rth_inspect.py")
-source = os.path.join(build_assets_folder, "hooks", "pyi_rth_inspect.py")
-subprocess.run(["cp", source, str(destination)], check=True)
+# source = os.path.join(build_assets_folder, "hooks", "pyi_rth_inspect.py")
+# subprocess.run(["cp", source, str(destination)], check=True)
 
 
 # Get latest commit
@@ -85,11 +84,7 @@ added_files = [
     (shutil.which("jupyter-lab"), "."),
     (shutil.which("streamlit"), "."),
 ]
-if is_win:
-    print("Adding scipy.libs to bundle")
-    added_files.append(
-        (os.path.join(f"{os.path.dirname(scipy.__file__)}.libs"), "scipy.libs/"),
-    )
+
 
 # Python libraries that are explicitly pulled into the bundle
 hidden_imports = [
@@ -114,7 +109,6 @@ hidden_imports = [
     "prophet",
     "debugpy",
     "pywry.pywry",
-    "scipy.sparse.linalg._isolve._iterative",
 ]
 
 
@@ -139,9 +133,9 @@ pyz = PYZ(a.pure, a.zipped_data, cipher=analysis_kwargs["cipher"])
 
 # Executable icon
 if is_win:
-    exe_icon = (os.path.join(os.getcwd(), "images", "openbb_icon.ico"),)
+    exe_icon = os.path.join(os.getcwd(), "images", "openbb_icon.ico")
 if is_darwin:
-    exe_icon = (os.path.join(os.getcwd(), "images", "openbb.icns"),)
+    exe_icon = os.path.join(os.getcwd(), "images", "openbb.icns")
 
 block_cipher = None
 # PyWry
@@ -169,10 +163,10 @@ pywry_exe = EXE(
     pywry_a.scripts,
     [],
     exclude_binaries=True,
-    name="pywry_backend",
+    name="OpenBBPlotsBackend",
     debug=False,
     bootloader_ignore_signals=False,
-    strip=False,
+    strip=True,
     upx=True,
     upx_exclude=[],
     console=True,
@@ -194,8 +188,8 @@ exe_kwargs = dict(
     name=NAME,
     debug=False,
     bootloader_ignore_signals=False,
-    strip=False,
-    upx=False,
+    strip=True,
+    upx=True,
     upx_exclude=[],
     console=True,
     disable_windowed_traceback=False,
@@ -218,7 +212,7 @@ elif build_type == "folder":
         a.datas,
     ]
     collect_kwargs = dict(
-        strip=False,
+        strip=True,
         upx=True,
         upx_exclude=[],
         name=NAME,
@@ -235,7 +229,8 @@ if is_win:
         text_size=12,
         text_color="white",
     )
-    exe_args += [splash, splash.binaries]
+    exe_args += [splash]
+    collect_args += [splash.binaries]
 
 
 exe = EXE(*exe_args, **exe_kwargs)
