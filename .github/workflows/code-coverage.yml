@@ -1,9 +1,6 @@
 name: Code Coverage Tests
 
-on:
-  push:
-    branches:
-      - feature/*
+on: workflow_dispatch
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
