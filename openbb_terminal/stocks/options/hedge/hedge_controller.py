@@ -502,7 +502,7 @@ class HedgeController(BaseController):
 
                 for _, value in self.options.items():
                     if value:
-                        option_side: str = "Long" if value["sign"] == 1 else "Short"
+                        option_side: str = "Long" if value["sign"] == 1 else "Short"  # type: ignore
                         positions = positions.append(
                             [
                                 [
