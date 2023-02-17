@@ -82,7 +82,7 @@ added_files = [
     (os.path.join(pathex, "blib2to3", "PatternGrammar.txt"), "blib2to3"),
     (shutil.which("voila"), "."),
     (shutil.which("jupyter-lab"), "."),
-    (shutil.which("streamlit"), "."),
+    (shutil.which("tensorboard"), "."),
     (os.path.join(pathex, "tensorboard"), "tensorboard"),
     (os.path.join(pathex, "pytorch_lightning"), "pytorch_lightning"),
     (os.path.join(pathex, "lightning_fabric"), "lightning_fabric"),
