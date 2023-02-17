@@ -59,7 +59,7 @@ class AccountController(BaseController):
         """Update runtime choices"""
         self.ROUTINE_FILES = self.get_routines()
         if session and obbff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.controller_choices}
+            choices: dict = {c: {} for c in self.controller_choices}  # type: ignore
             choices["sync"] = {"--on": {}, "--off": {}}
             choices["upload"]["--file"] = {c: {} for c in self.ROUTINE_FILES}
             choices["upload"]["-f"] = choices["upload"]["--file"]

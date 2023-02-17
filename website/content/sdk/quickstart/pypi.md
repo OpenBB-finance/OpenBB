@@ -3,7 +3,7 @@
 
 | OpenBB is committed to build the future of investment research by focusing on an open source infrastructure accessible to everyone, everywhere. |
 |:--:|
-| <img width="1000" alt="Screenshot 2023-02-14 at 5 12 08 PM" src="https://user-images.githubusercontent.com/25267873/218899768-1f0964b8-326c-4f35-af6f-ea0946ac970b.png"> | 
+| ![OpenBBLogo](https://user-images.githubusercontent.com/25267873/218899768-1f0964b8-326c-4f35-af6f-ea0946ac970b.png) |
 | Check our website at [openbb.co](www.openbb.co) |
 
 
@@ -41,10 +41,10 @@ ___
 
 Access raw financial data from any data source that you are interested. The open source nature of this SDK makes it so that this is an ever-growing project and that everyone can contribute to.
 
-![image-20221025-092439 2](https://user-images.githubusercontent.com/25267873/218906336-cebd1fc8-7e7a-45bc-a5fc-641eb19c3e8c.png)
+![Stocks Load](https://user-images.githubusercontent.com/25267873/218906336-cebd1fc8-7e7a-45bc-a5fc-641eb19c3e8c.png)
 
 #### GENERATE INSIGHTS 10X FASTER
 
 For most of the functionalities, adding `_chart` to the function will allow you to visualize the output directly from a Jupyter Notebook. Not only speeding up the time it takes to create a plot for the data you are interested in, but making building custom reports much faster.
 
-<img width="992" alt="Group 550" src="https://user-images.githubusercontent.com/25267873/218906112-b2272d43-11fc-4ec1-9a8f-b2d8e2ed7dc1.png">
+![Economy Treasury Chart](https://user-images.githubusercontent.com/25267873/218906112-b2272d43-11fc-4ec1-9a8f-b2d8e2ed7dc1.png)
