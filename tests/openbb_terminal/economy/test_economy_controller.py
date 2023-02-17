@@ -621,6 +621,9 @@ def test_call_func(
     # MOCK REMOVE
     mocker.patch(target=f"{path_controller}.os.remove")
 
+    # MOCK UPDATE_RUNTIME_CHOICES
+    mocker.patch(target=f"{path_controller}.EconomyController.update_runtime_choices")
+
     if mocked_func:
         mock = mocker.Mock()
         mocker.patch(
@@ -765,6 +768,9 @@ def test_call_macro(mocked_func, other_args, called_args, called_kwargs, mocker)
 
     # MOCK REMOVE
     mocker.patch(target=f"{path_controller}.os.remove")
+
+    # MOCK UPDATE_RUNTIME_CHOICES
+    mocker.patch(target=f"{path_controller}.EconomyController.update_runtime_choices")
     # MOCK the econdb.get_aggregated_macro_data
     mocker.patch(
         target=f"{path_controller}.econdb_model.get_aggregated_macro_data",
@@ -798,6 +804,9 @@ def test_call_fred_query(mocker):
 
     # MOCK REMOVE
     mocker.patch(target=f"{path_controller}.os.remove")
+
+    # MOCK UPDATE_RUNTIME_CHOICES
+    mocker.patch(target=f"{path_controller}.EconomyController.update_runtime_choices")
 
     mocker.patch(
         target=f"{path_controller}.fred_model.get_series_notes",
@@ -873,6 +882,9 @@ def test_call_fred_params(mocked_func, other_args, called_args, called_kwargs, m
     # MOCK REMOVE
     mocker.patch(target=f"{path_controller}.os.remove")
 
+    # MOCK UPDATE_RUNTIME_CHOICES
+    mocker.patch(target=f"{path_controller}.EconomyController.update_runtime_choices")
+
     # MOCK the fred functions used
     mocker.patch(
         target=f"{path_controller}.fred_model.check_series_id",
@@ -934,6 +946,9 @@ def test_call_index(mocker):
 
     # MOCK REMOVE
     mocker.patch(target=f"{path_controller}.os.remove")
+
+    # MOCK UPDATE_RUNTIME_CHOICES
+    mocker.patch(target=f"{path_controller}.EconomyController.update_runtime_choices")
 
     # MOCK the fred functions used
     mocker.patch(
@@ -1007,6 +1022,9 @@ def test_call_treasury(mocked_func, other_args, called_args, called_kwargs, mock
 
     # MOCK REMOVE
     mocker.patch(target=f"{path_controller}.os.remove")
+
+    # MOCK UPDATE_RUNTIME_CHOICES
+    mocker.patch(target=f"{path_controller}.EconomyController.update_runtime_choices")
     # MOCK the econdb.get_aggregated_macro_data
     mocker.patch(
         target=f"{path_controller}.econdb_model.get_treasuries",

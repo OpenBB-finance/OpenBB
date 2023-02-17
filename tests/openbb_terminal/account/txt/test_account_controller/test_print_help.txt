@@ -9,6 +9,11 @@ Cloud storage of routines:
     download           Download routine
     delete             Delete routine
 
+OpenBB Personal Access Token:
+    generate           Generate a Personal Access Token
+    show               Shows the current Personal Access Token
+    revoke             Revoke the Personal Access Token
+
 Authentication:
     logout             Log out from OpenBB account
 
