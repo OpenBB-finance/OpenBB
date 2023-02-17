@@ -115,7 +115,7 @@ class FuncAttr:
         trail = ".".join([t for t in location_path if t != ""])
         sdk_name = class_attr if not view else f"{class_attr}_chart"
 
-        trail = trail.lstrip("root.")
+        trail = trail.lstrip("root.")  # pylint: disable=E1310
         sdk_path = f"{f'openbb.{trail}' if trail else 'openbb'}.{sdk_name}"
 
         return f"{sdk_path}({definition })"
