@@ -24,7 +24,6 @@ def vcr_config():
 @pytest.mark.parametrize(
     "func",
     [
-        "display_info",
         "display_shareholders",
         "display_dividends",
         "display_splits",
@@ -35,6 +34,11 @@ def vcr_config():
 @pytest.mark.record_stdout
 def test_call_func(func):
     getattr(yahoo_finance_view, func)(symbol="PM")
+
+
+@pytest.mark.vcr
+def test_display_info():
+    yahoo_finance_view.display_info(symbol="TSLA")
 
 
 @pytest.mark.vcr(record_mode="none")
