@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import argparse
 import logging
-from typing import List
+from typing import List, Optional
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
@@ -46,7 +46,7 @@ class GovController(StockBaseController):
     def __init__(
         self,
         ticker: str,
-        queue: List[str] = None,
+        queue: Optional[List[str]] = None,
     ):
         """Constructor"""
         super().__init__(queue)

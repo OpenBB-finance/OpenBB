@@ -28,7 +28,7 @@ logger = logging.getLogger(__name__)
 def display_stock_price_headlines_sentiment(
     symbol: str,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display stock price and headlines sentiment using VADER model over time. [Source: Finnhub]

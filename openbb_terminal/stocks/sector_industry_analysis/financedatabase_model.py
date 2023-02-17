@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 # pylint:disable=too-many-arguments,unexpected-keyword-arg
 
 import logging
+from typing import Optional
 
 import financedatabase as fd
 import yfinance as yf
@@ -107,9 +108,9 @@ def get_marketcap() -> list:
 
 @log_start_end(log=logger)
 def filter_stocks(
-    country: str = None,
-    sector: str = None,
-    industry: str = None,
+    country: Optional[str] = None,
+    sector: Optional[str] = None,
+    industry: Optional[str] = None,
     marketcap: str = "",
     exclude_exchanges: bool = True,
 ) -> list:

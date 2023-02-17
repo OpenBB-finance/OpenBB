@@ -39,7 +39,7 @@ jobs:
         run: poetry install --no-interaction --no-root -E doc
 
       - name: Install packages
-        run: poetry install --no-interaction -E prediction -E doc -E optimization
+        run: poetry install --no-interaction -E forecast -E doc -E optimization
 
       - run: |
           source $VENV
