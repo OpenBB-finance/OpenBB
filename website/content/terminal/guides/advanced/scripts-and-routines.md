@@ -31,13 +31,13 @@ With the macro recorder, it is easy to get started; just enter `record`. To foll
 record/stocks/load qqq/forecast/expo QQQ/autoselect QQQ/stop
 ```
 
-![Routines](routines1.png)
+![Routines](https://user-images.githubusercontent.com/85772166/219550644-26ecaf27-cbf9-4314-8f3b-d9f20e8fcb88.png)
 
-![Routines](routines2.png)
+![Routines](https://user-images.githubusercontent.com/85772166/219550698-3b1cd675-4e1f-4d3e-a630-9ed00b689b2b.png)
 
 The routine has been successfully captured, and the next time the Terminal is opened, this routine will be visible when calling the `exe` function.
 
-![Routines](routines3.png)
+![Routines](https://user-images.githubusercontent.com/85772166/219550745-06d9a8d5-a85d-45c9-aa58-b5adaad16a08.png)
 
 ## Editing & Inserting Arguments
 
@@ -75,7 +75,7 @@ Open the file with a text editor, make the changes, save the file, and then run 
 exe demo_routine.openbb --input SPY
 ```
 
-![Routines](routines4.png)
+![Routines](https://user-images.githubusercontent.com/85772166/219550837-fe6ece69-2336-40fc-8db9-fc7b62b784c6.png)
 
 Additional variables can be assigned to perform other functions, a date for example. Let's modify the routine file to include a start date as part of the `load` function. For those following along at home, modify the second command in the script to be:
 
@@ -89,13 +89,13 @@ The additional argument is added to the previous `exe` syntax as a comma-separat
 exe demo_routine.openbb --input SPY,2022-01-01
 ```
 
-![Routines](routines5.png)
+![Routines](https://user-images.githubusercontent.com/85772166/219550901-13205851-a12f-4ef9-85f4-a2bfa24be9c9.png)
 
 This process is limited only to the imagination. Large, reptitive, tasks can be automated by extrapolating on the process above.
 
 ## Commenting
 
-Commenting within an OpenBB routine file provides the creator to communicate with the end-user. Commented lines - beginning with, "#" - are passed over during execution of the routine. Let's update the example routine file with a few commments to illustrate.
+Commenting within an OpenBB routine file is how the author of a script can communicate to the end-user. Commented lines - beginning with, "#" - are passed over during execution of the routine. Let's update the example routine file with a few commments to illustrate.
 
 ```console
 # This routine is a demonstration of the OpenBB routine files.
@@ -113,5 +113,7 @@ expo $ARGV[0]
 autoselect $ARGV[0]
 
 # End of routine
-# Please note that the outputs of this routine will be different than depicted, because, you are now in the future.
+# Please note that the outputs of this routine will be different than the depictions above, because, you are now in the future.
 ```
+
+For convenience, the routine file constructed in the example above can be downloaded directly [here](https://github.com/OpenBB-finance/OpenBBTerminal/files/10763257/demo_routine.openbb.zip).
