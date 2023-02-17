@@ -672,6 +672,8 @@ def plot_projection(
         f"FOMC {'Long Run ' if long_run else ''}Summary of Economic Projections\n"
         "for the Federal Funds Rate"
     )
+    ax.legend(prop={"size": 8}, loc='lower left')
+    ax.set_ylabel("Yield (%)")
 
     for legend, df in data_series_df.items():
         fig.add_scatter(
