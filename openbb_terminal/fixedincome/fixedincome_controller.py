@@ -501,7 +501,7 @@ class FixedIncomeController(BaseController):
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES, raw=True
         )
         if ns_parser:
-            if ns_parser.overnight and ns_parser.target or ns_parser.quantiles:
+            if ns_parser.overnight and (ns_parser.target or ns_parser.quantiles):
                 console.print("The Overnight Bank Funding Rate has no target and quantiles data.")
             else:
                 fred_view.plot_effr(
