@@ -324,6 +324,7 @@ from openbb_terminal.sdk_core import (
     controllers as ctrl,
     models as model,
 )
+from openbb_terminal import feature_flags as obbff
 from openbb_terminal.session.user import User
 
 if User.is_guest():
