@@ -8,7 +8,7 @@ import pandas as pd
 import requests
 from pydantic import BaseModel
 
-from openbb_terminal.config_terminal import API_DATABENTO_KEY as key
+from openbb_terminal import config_terminal as cfg
 from openbb_terminal.helper_funcs import request
 from openbb_terminal.rich_config import console
 
@@ -51,7 +51,7 @@ class DataBento(BaseModel):
             "stype_in": "smart",
             "stype_out": "product_id",
         }
-        auth = requests.auth.HTTPBasicAuth(key, "")
+        auth = requests.auth.HTTPBasicAuth(cfg.API_DATABENTO_KEY, "")
         # This seems to only work for futures?  Assume the user is entering correct stock ticker
         if self.exchange == "XNAS.ITCH":
             return True
@@ -93,8 +93,7 @@ class DataBento(BaseModel):
             "stype_in": self.stype,
             "encoding": "csv",
         }
-        auth = requests.auth.HTTPBasicAuth(key, "")
-        print(key)
+        auth = requests.auth.HTTPBasicAuth(cfg.API_DATABENTO_KEY, "")
         return self.process_request(base_url, params, auth)
 
     def process_request(self, base_url, params, auth) -> pd.DataFrame:
