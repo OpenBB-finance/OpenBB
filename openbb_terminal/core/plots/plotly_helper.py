@@ -522,7 +522,14 @@ class OpenBBFigure(go.Figure):
 
                     max_y = max(max_y, max(y * 2))
 
-        self.update_yaxes(position=0.0, range=[0, max_y], row=row, col=col)
+        self.update_yaxes(
+            position=0.0,
+            range=[0, max_y],
+            row=row,
+            col=col,
+            automargin=False,
+            autorange=False,
+        )
 
         self.update_layout(barmode="overlay", bargap=0.01, bargroupgap=0)
 

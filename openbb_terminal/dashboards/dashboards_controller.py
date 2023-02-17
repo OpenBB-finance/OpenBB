@@ -248,7 +248,8 @@ class DashboardsController(BaseController):
                 continue
 
             cmdline = " ".join(process.cmdline())
-            port = re.findall(r"--port (\d+)", cmdline)[0]
+            port = re.findall(r"--port (\d+)", cmdline)
+            port = port[0] if port else ""
 
             if ns_parser.jupyter and re.findall(r"jupyter-lab --no", cmdline):
                 return f"http://localhost:{port}/lab/tree/{filepath.name}?token={self.jupyter_token}"
