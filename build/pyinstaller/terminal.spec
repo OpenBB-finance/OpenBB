@@ -83,6 +83,9 @@ added_files = [
     (shutil.which("voila"), "."),
     (shutil.which("jupyter-lab"), "."),
     (shutil.which("streamlit"), "."),
+    (os.path.join(pathex, "tensorboard"), "tensorboard"),
+    (os.path.join(pathex, "pytorch_lightning"), "pytorch_lightning"),
+    (os.path.join(pathex, "lightning_fabric"), "lightning_fabric"),
 ]
 
 
@@ -109,6 +112,9 @@ hidden_imports = [
     "prophet",
     "debugpy",
     "pywry.pywry",
+    "tensorboard",
+    "pytorch_lightning",
+    "lightning_fabric",
 ]
 
 

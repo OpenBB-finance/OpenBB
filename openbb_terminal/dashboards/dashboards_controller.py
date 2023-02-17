@@ -233,6 +233,8 @@ class DashboardsController(BaseController):
     def kill_processes(self) -> None:
         """Kills all processes started by this class."""
         for process in self.processes:
+            for child in process.children(recursive=True):
+                child.kill()
             process.kill()
 
     def check_processes(
