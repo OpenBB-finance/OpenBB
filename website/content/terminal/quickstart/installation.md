@@ -37,7 +37,7 @@ OpenBB Terminal is available on all major platforms. With Windows and macOS you 
 
 </div><p>Download the installer from the button below:</p>
 
-<InstallerButton type="windows" href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v2.4.0/Windows.OpenBB.Terminal.v2.4.0.exe" label="Windows Installer" />
+<InstallerButton type="windows" href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v2.4.1/Windows.OpenBB.Terminal.v2.4.1.exe" label="Windows Installer" />
 
 <p>Follow along with the instructions of the video or use the steps below to run the OpenBB Terminal:</p>
 
@@ -73,12 +73,12 @@ For Mac there are two installers available, one for Intel and one for Apple Sili
 
 <div className="flex justify-between">
 <div className="flex items-center flex-col">If you are using Mac Intel:
-  <InstallerButton href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v2.4.0/x86.64.MacOS.OpenBB.Terminal.v2.4.0.dmg" label="Mac Intel Installer" />
+  <InstallerButton href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v2.4.1/x86.64.MacOS.OpenBB.Terminal.v2.4.1.dmg" label="Mac Intel Installer" />
   </div>
   <br/>
 <div className="flex items-center flex-col">
 If you are using Mac Apple Silicon (M1):
-  <InstallerButton href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v2.4.0/ARM64.MacOS.OpenBB.Terminal.v2.4.0.dmg" label="Mac M1 Installer" />
+  <InstallerButton href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v2.4.1/ARM64.MacOS.OpenBB.Terminal.v2.4.1.dmg" label="Mac M1 Installer" />
   </div>
 </div>
 
