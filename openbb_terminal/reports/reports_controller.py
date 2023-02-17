@@ -59,7 +59,7 @@ class ReportController(BaseController):
             )
 
         if session and obbff.USE_PROMPT_TOOLKIT:
-            self.choices: dict = {c: {} for c in self.controller_choices}
+            self.choices: dict = {c: {} for c in self.controller_choices}  # type: ignore
             self.choices["run"] = {
                 "--file": {c: None for c in reports_model.USER_REPORTS},
                 "-f": "--file",
