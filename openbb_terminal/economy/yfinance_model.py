@@ -673,8 +673,8 @@ def get_available_indices() -> Dict[str, Dict[str, str]]:
 def get_indices(
     indices: list,
     interval: str = "1d",
-    start_date: int = None,
-    end_date: int = None,
+    start_date: Optional[int] = None,
+    end_date: Optional[int] = None,
     column: str = "Adj Close",
     returns: bool = False,
 ) -> pd.DataFrame:

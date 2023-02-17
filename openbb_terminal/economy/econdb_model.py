@@ -658,8 +658,8 @@ def get_macro_countries() -> Dict[str, str]:
 
 @log_start_end(log=logger)
 def get_aggregated_macro_data(
-    parameters: list = None,
-    countries: list = None,
+    parameters: Optional[list] = None,
+    countries: Optional[list] = None,
     transform: str = "",
     start_date: str = "1900-01-01",
     end_date: Optional[str] = None,
@@ -741,8 +741,8 @@ def get_aggregated_macro_data(
 
 @log_start_end(log=logger)
 def get_treasuries(
-    instruments: list = None,
-    maturities: list = None,
+    instruments: Optional[list] = None,
+    maturities: Optional[list] = None,
     frequency: str = "monthly",
     start_date: str = "1900-01-01",
     end_date: Optional[str] = None,

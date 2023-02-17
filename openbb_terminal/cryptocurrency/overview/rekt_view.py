@@ -1,6 +1,7 @@
 """Rekt view"""
 import logging
 import os
+from typing import Optional
 
 from openbb_terminal.cryptocurrency.overview import rekt_model
 from openbb_terminal.decorators import log_start_end
@@ -21,7 +22,7 @@ def display_crypto_hacks(
     ascend: bool = False,
     slug: str = "polyntwork-rekt",
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Display list of major crypto-related hacks. If slug is passed
     individual crypto hack is displayed instead of list of crypto hacks
