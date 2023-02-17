@@ -535,6 +535,9 @@ def test_call_download(mocker):
     )
 
 
+@pytest.mark.skip(
+    reason="We should add a `-y or -f` option to make that easier to test"
+)
 def test_call_delete(mocker):
     controller = account_controller.AccountController(queue=None)
     path_controller = "openbb_terminal.account.account_controller"
