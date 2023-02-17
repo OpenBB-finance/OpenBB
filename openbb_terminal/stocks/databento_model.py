@@ -1,4 +1,5 @@
 __docformat__ = "numpy"
+import logging
 from datetime import datetime, timedelta
 from io import StringIO
 from typing import Optional
@@ -9,6 +10,9 @@ from pydantic import BaseModel
 
 from openbb_terminal.config_terminal import API_DATABENTO_KEY as key
 from openbb_terminal.helper_funcs import request
+from openbb_terminal.rich_config import console
+
+logger = logging.getLogger(__name__)
 
 # pylint:disable=too-few-public-methods
 
@@ -48,7 +52,16 @@ class DataBento(BaseModel):
             "stype_out": "product_id",
         }
         auth = requests.auth.HTTPBasicAuth(key, "")
+        # This seems to only work for futures?  Assume the user is entering correct stock ticker
+        if self.exchange == "XNAS.ITCH":
+            return True
         result = request(base_url, params=params, auth=auth)
+        if "message" not in result.json():
+            logger.error("Error validating symbol")
+            console.print(
+                "Issue validating symbol.  Please check with DataBento that the symbol and dates are valid."
+            )
+            return False
         return result.json()["message"] != "Not found"
 
     def get_historical_futures(self):
@@ -81,14 +94,15 @@ class DataBento(BaseModel):
             "encoding": "csv",
         }
         auth = requests.auth.HTTPBasicAuth(key, "")
-
+        print(key)
         return self.process_request(base_url, params, auth)
 
     def process_request(self, base_url, params, auth) -> pd.DataFrame:
         """Takes the request and returns the adjusted dataframe"""
         r = request(base_url, params=params, auth=auth)
         if r.status_code != 200:
-            raise Exception(f"Error: {r.status_code}")
+            print(r.text)
+            raise Exception(f"Error: Status Code {r.status_code}")
         df = pd.read_csv(StringIO(r.text))
         df["time"] = pd.to_datetime(df.ts_event, unit="ns")
         df[["open", "high", "low", "close"]] /= 1_000_000_000
