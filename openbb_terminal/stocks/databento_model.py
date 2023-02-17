@@ -2,7 +2,6 @@ __docformat__ = "numpy"
 import logging
 from datetime import datetime, timedelta
 from io import StringIO
-from typing import Optional
 
 import pandas as pd
 import requests
@@ -57,7 +56,6 @@ class DataBento(BaseModel):
             return True
         result = request(base_url, params=params, auth=auth)
         if "message" not in result.json():
-            logger.error("Error validating symbol")
             console.print(
                 "Issue validating symbol.  Please check with DataBento that the symbol and dates are valid."
             )
@@ -100,7 +98,6 @@ class DataBento(BaseModel):
         """Takes the request and returns the adjusted dataframe"""
         r = request(base_url, params=params, auth=auth)
         if r.status_code != 200:
-            print(r.text)
             raise Exception(f"Error: Status Code {r.status_code}")
         df = pd.read_csv(StringIO(r.text))
         df["time"] = pd.to_datetime(df.ts_event, unit="ns")
@@ -137,9 +134,7 @@ def get_historical_stock(symbol: str, start_date: str, end_date: str) -> pd.Data
     return db.get_historical_stock()
 
 
-def get_historical_futures(
-    symbol: str, start_date: Optional[str] = None, end_date: Optional[str] = None
-) -> pd.DataFrame:
+def get_historical_futures(symbol: str, start_date: str, end_date: str) -> pd.DataFrame:
     """Gets historical EODfutures data from DataBento.  Currently, just CME is supported.
 
     Parameters
