@@ -54,7 +54,7 @@ def class_repr(cls_dict: Dict[str, Any]) -> list:
 
 
 class Operation:
-    def __init__(self, name: str, trail: str, func: Optional[Callable] = None) -> None:
+    def __init__(self, name: str, trail: str, func: Callable) -> None:
         self._trail = trail
         self._method = func
         self._name = name
@@ -90,6 +90,7 @@ class Operation:
         return method_result
 
     def about(self):
+        # pylint: disable=C0415
         import webbrowser
 
         trail = "/".join(self._trail.split("."))
@@ -128,13 +129,14 @@ class Category:
 
         if callable(attr) and not isinstance(attr, Operation):
             # We set the attribute to the wrapped function so that we don't
-            # have to wrap it again if it is called again.
+            # have to wrap it when called again.
             setattr(self, name, Operation(name=name, trail=trail, func=attr))
             return getattr(self, name)
 
         return attr
 
     def about(self):
+        # pylint: disable=C0415
         import webbrowser
 
         trail = "/".join(self._location_path.split("."))
