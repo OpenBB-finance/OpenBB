@@ -1,5 +1,5 @@
-import multiprocessing
 import sys
+from multiprocessing import freeze_support
 
 from openbb_terminal.base_helpers import load_dotenv_and_reload_configs
 from openbb_terminal.terminal_helper import is_auth_enabled
@@ -8,7 +8,6 @@ from openbb_terminal.terminal_helper import is_auth_enabled
 
 
 def main():
-    multiprocessing.freeze_support()
     sent_args = sys.argv[1:]
 
     load_dotenv_and_reload_configs()
@@ -27,4 +26,5 @@ def main():
 
 
 if __name__ == "__main__":
+    freeze_support()
     main()
