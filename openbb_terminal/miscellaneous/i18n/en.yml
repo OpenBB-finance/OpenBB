@@ -783,8 +783,7 @@ en:
   fixedincome/effr: effective federal funds rate
   fixedincome/obfr: overnight bank funding rate (obfr)
   fixedincome/iorb: interest rate on reserve balances
-  fixedincome/projection: FOMC summary of economic projections for the fed funds rate
-  fixedincome/oldprojection: longer run FOMC summary of economic projections for the fed funds rate
+  fixedincome/projection: FOMC Summary of Economic Projections for the Federal Funds Rate
   fixedincome/dwpcr: discount window primary credit rate
   fixedincome/ecbdfr: ECB deposit facility rate
   fixedincome/ecbmlfr: ECB marginal facility rate

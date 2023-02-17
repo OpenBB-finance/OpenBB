@@ -39,7 +39,6 @@ class FixedIncomeController(BaseController):
         "effr",
         "iorb",
         "projection",
-        "oldprojection",
         "dwpcr",
         "ecbdfr",
         "ecbmlfr",
@@ -193,7 +192,6 @@ class FixedIncomeController(BaseController):
         mt.add_cmd("effr")
         mt.add_cmd("iorb")
         mt.add_cmd("projection")
-        mt.add_cmd("oldprojection")
         mt.add_cmd("dwpcr")
         mt.add_cmd("ecbdfr")
         mt.add_cmd("ecbmlfr")
@@ -568,77 +566,23 @@ class FixedIncomeController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="projection",
-            description="Get FOMC Summary of Economic Projections for the Fed Funds Rate.\nA bank rate is the "
-            "interest rate a nation's central bank charges to its domestic banks to borrow money. The "
-            "rates central banks charge are set to stabilize the economy. In the United States, "
-            "the Federal Reserve System's Board of Governors set the bank rate, also known as the "
-            "discount rate.",
+            description="Get FOMC Summary of Economic Projections for the Fed Funds Rate."
         )
         parser.add_argument(
-            "-s",
-            "--start",
-            dest="start_date",
-            type=valid_date,
-            help="Starting date (YYYY-MM-DD) of data",
-            default=None,
-        )
-        parser.add_argument(
-            "-e",
-            "--end",
-            dest="end_date",
-            type=valid_date,
-            help="Ending date (YYYY-MM-DD) of data",
-            default=None,
+            "-l",
+            "--long-run",
+            dest="long_run",
+            action="store_true",
+            help="Whether to show the long run projection",
+            default=False,
         )
         ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES, raw=True
         )
         if ns_parser:
             fred_view.plot_projection(
-                ns_parser.start_date,
-                ns_parser.end_date,
-                ns_parser.export,
-                " ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
-            )
-
-    @log_start_end(log=logger)
-    def call_oldprojection(self, other_args: List[str]):
-        """Process oldprojection command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="oldprojection",
-            description="Get Longer Run FOMC Summary of Economic Projections for the Fed Funds Rate.\nA bank rate is "
-            "the interest rate a nation's central bank charges to its domestic banks to borrow money. The "
-            "rates central banks charge are set to stabilize the economy. In the United States, "
-            "the Federal Reserve System's Board of Governors set the bank rate, also known as the "
-            "discount rate.",
-        )
-        parser.add_argument(
-            "-s",
-            "--start",
-            dest="start_date",
-            type=valid_date,
-            help="Starting date (YYYY-MM-DD) of data",
-            default=None,
-        )
-        parser.add_argument(
-            "-e",
-            "--end",
-            dest="end_date",
-            type=valid_date,
-            help="Ending date (YYYY-MM-DD) of data",
-            default=None,
-        )
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
-        )
-        if ns_parser:
-            fred_view.plot_oldprojection(
-                ns_parser.start_date,
-                ns_parser.end_date,
+                ns_parser.long_run,
+                ns_parser.raw,
                 ns_parser.export,
                 " ".join(ns_parser.sheet_name)
                 if ns_parser.sheet_name

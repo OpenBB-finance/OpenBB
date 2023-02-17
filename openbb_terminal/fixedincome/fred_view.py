@@ -124,13 +124,13 @@ ID_TO_NAME_TBFFR = {
 }
 
 NAME_TO_ID_PROJECTION = {
-    "Range High": ['FEDTARRHLR', 'FEDTARRH'],
-    "Central tendency High": ['FEDTARCTHLR', 'FEDTARCTH'],
-    "Median": ['FEDTARMDLR', 'FEDTARMD'],
-    "Range Midpoint": ['FEDTARRMLR', 'FEDTARRM'],
-    "Central tendency Midpoint": ['FEDTARCTMLR', 'FEDTARCTM'],
-    "Range Low": ['FEDTARRLLR', 'FEDTARRL'],
-    "Central tendency Low": ['FEDTARCTLLR', 'FEDTARCTL'],
+    "Range High": [ 'FEDTARRH', 'FEDTARRHLR'],
+    "Central tendency High": ['FEDTARCTH', 'FEDTARCTHLR'],
+    "Median": ['FEDTARMD', 'FEDTARMDLR'],
+    "Range Midpoint": ['FEDTARRM', 'FEDTARRMLR'],
+    "Central tendency Midpoint": ['FEDTARCTM', 'FEDTARCTMLR'],
+    "Range Low": ['FEDTARRL', 'FEDTARRLLR'],
+    "Central tendency Low": ['FEDTARCTL', 'FEDTARCTLLR'],
 }
 
 
@@ -505,8 +505,18 @@ def plot_effr(
         Start date, formatted YYYY-MM-DD
     end_date: Optional[str]
         End date, formatted YYYY-MM-DD
+    overnight: bool
+        Whether you want to plot the Overnight Banking Federal Rate
+    quantiles: bool
+        Whether you want to see the 1, 25, 75 and 99 percentiles
+    target: bool
+        Whether you want to see the high and low target range
+    raw : bool
+        Show raw data
     export: str
         Export data to csv or excel file
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     external_axes: Optional[List[plt.Axes]]
         External axes (1 axis is expected in the list)
     """
@@ -680,37 +690,31 @@ def plot_iorb(
 @log_start_end(log=logger)
 @check_api_key(["API_FRED_KEY"])
 def plot_projection(
-    start_date: Optional[str] = None,
-    end_date: Optional[str] = None,
+    long_run: bool = False,
+    raw: bool = False,
     export: str = "",
     sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plot FOMC Summary of Economic Projections for the Fed Funds Rate.
 
-    A bank rate is the interest rate a nation's central bank charges to its domestic banks to borrow money. The rates
-    central banks charge are set to stabilize the economy. In the United States, the Federal Reserve System's Board
-    of Governors set the bank rate, also known as the discount rate.
-
     Parameters
     ----------
-    start_date: Optional[str]
-        Start date, formatted YYYY-MM-DD
-    end_date: Optional[str]
-        End date, formatted YYYY-MM-DD
+    long_run: str
+        Whether to plot the long run projection.
     export: str
         Export data to csv or excel file
+    raw : bool
+        Show raw data
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     external_axes: Optional[List[plt.Axes]]
         External axes (1 axis is expected in the list)
     """
     data_series = {}
-
-    for projection, values in NAME_TO_ID_PROJECTION.items():
-        df_past = fred_model.get_series_data(series_id=values[0])
-        df_future = fred_model.get_series_data(series_id=values[1])
         
-        # Only add the future projections that are not in the past
-        data_series[projection] = pd.concat([df_past, df_future.loc[df_past.index[-1]:]], axis=0)
+    for projection, values in NAME_TO_ID_PROJECTION.items():
+        data_series[projection] = fred_model.get_series_data(series_id=values[long_run])
 
     # This plot has 1 axis
     if not external_axes:
@@ -719,130 +723,46 @@ def plot_projection(
         (ax,) = external_axes
     else:
         return
+    
+    data_series_df = pd.DataFrame.from_dict(data_series).dropna()
+    data_series_df.index = pd.to_datetime(data_series_df.index).date
 
     for legend, df in data_series.items():
         ax.plot(
-            df.index,
-            df.values,
+            data_series_df[legend].index,
+            data_series_df[legend].values,
+            linestyle="dashed" if legend != "Median" else "solid",
+            linewidth=1 if legend != "Median" else 2,
             label=legend,
         )
         
     ax.set_title(
-        "FOMC Summary of Economic Projections for the Fed Funds Rate [Percent]"
+        f"FOMC {'Long Run ' if long_run else ''}Summary of Economic Projections\nfor the Federal Funds Rate"
     )
+    ax.legend(prop={"size": 8}, loc='lower left')
+    ax.set_ylabel("Yield (%)")
 
     theme.style_primary_axis(ax)
 
     if external_axes is None:
         theme.visualize_output()
+        
+    if raw:
+        print_rich_table(
+            data_series_df,
+            headers=list(data_series_df.columns),
+            show_index=True,
+            title= f"FOMC {'Long Run ' if long_run else ''}Summary of "
+            "Economic Projections for the Federal Funds Rate",
+        )
 
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "projection",
-        df,
+        data_series_df,
         sheet_name
     )
-
-
-@log_start_end(log=logger)
-@check_api_key(["API_FRED_KEY"])
-def plot_oldprojection(
-    start_date: Optional[str] = None,
-    end_date: Optional[str] = None,
-    export: str = "",
-    sheet_name: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
-):
-    """Plot Longer Run FOMC Summary of Economic Projections for the Fed Funds Rate.
-
-    A bank rate is the interest rate a nation's central bank charges to its domestic banks to borrow money. The rates
-    central banks charge are set to stabilize the economy. In the United States, the Federal Reserve System's Board
-    of Governors set the bank rate, also known as the discount rate.
-
-    Parameters
-    ----------
-    start_date: Optional[str]
-        Start date, formatted YYYY-MM-DD
-    end_date: Optional[str]
-        End date, formatted YYYY-MM-DD
-    export: str
-        Export data to csv or excel file
-    external_axes: Optional[List[plt.Axes]]
-        External axes (1 axis is expected in the list)
-    """
-    df_range_high = fred_model.get_series_data(
-        series_id="FEDTARRHLR", start_date=start_date, end_date=end_date
-    )
-    df_central_tendency_high = fred_model.get_series_data(
-        series_id="FEDTARCTHLR", start_date=start_date, end_date=end_date
-    )
-    df_median = fred_model.get_series_data(
-        series_id="FEDTARMDLR", start_date=start_date, end_date=end_date
-    )
-    df_range_midpoint = fred_model.get_series_data(
-        series_id="FEDTARRMLR", start_date=start_date, end_date=end_date
-    )
-    df_central_tendency_midpoint = fred_model.get_series_data(
-        series_id="FEDTARCTMLR", start_date=start_date, end_date=end_date
-    )
-    df_range_low = fred_model.get_series_data(
-        series_id="FEDTARRLLR", start_date=start_date, end_date=end_date
-    )
-    df_central_tendency_low = fred_model.get_series_data(
-        series_id="FEDTARCTLLR", start_date=start_date, end_date=end_date
-    )
-    df = pd.DataFrame(
-        [
-            df_range_high,
-            df_central_tendency_high,
-            df_median,
-            df_range_midpoint,
-            df_central_tendency_midpoint,
-            df_range_low,
-            df_central_tendency_low,
-        ]
-    ).transpose()
-
-    # This plot has 1 axis
-    if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
-
-    ax.plot(
-        df.index,
-        df.values,
-    )
-    ax.set_title(
-        "Longer Run FOMC Summary of Economic Projections for the Fed Funds Rate [Percent]"
-    )
-    ax.legend(
-        [
-            "Range High",
-            "Central tendency High",
-            "Median",
-            "Range Midpoint",
-            "Central tendency Midpoint",
-            "Range Low",
-            "Central tendency Low",
-        ]
-    )
-    theme.style_primary_axis(ax)
-
-    if external_axes is None:
-        theme.visualize_output()
-
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "oldprojection",
-        df,
-        sheet_name
-    )
-
 
 @log_start_end(log=logger)
 @check_api_key(["API_FRED_KEY"])
