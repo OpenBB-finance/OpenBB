@@ -95,7 +95,7 @@ This process is limited only to the imagination. Large, reptitive, tasks can be 
 
 ## Commenting
 
-Commenting within an OpenBB routine file is how the author of a script can communicate to the end-user. Commented lines - beginning with, "#" - are passed over during execution of the routine. Let's update the example routine file with a few commments to illustrate.
+Commenting within an OpenBB routine file is how the author of a script can communicate to the end-user. Commented lines - beginning with, "#" - are passed over during execution of the routine. Let's update the example routine file with a few comments to illustrate.
 
 ```console
 # This routine is a demonstration of the OpenBB routine files.
