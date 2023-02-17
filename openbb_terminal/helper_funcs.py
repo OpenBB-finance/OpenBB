@@ -49,10 +49,10 @@ from openbb_terminal.core.config.paths import (
 from openbb_terminal.rich_config import console
 
 from requests_cache import CachedSession
-
+import sqlite3
 
 session = CachedSession(
-    # "demo_cache",
+    "openbb_cache",
     # # use_cache_dir=True,  # Save files in the default user cache dir
     # # cache_control=True,  # Use Cache-Control headers for expiration, if available
     expire_after=timedelta(days=1),  # Otherwise expire responses after one day
@@ -71,6 +71,14 @@ session = CachedSession(
     # stale_if_error=True,  # In case of request errors, use stale cache data if possible
 )
 
+# remove expired sessions from sqlite
+session.cache.delete(expired=True)
+# When content is deleted from an SQLite database, the content is not usually erased but
+# rather the space used to hold the content is marked as being available for reuse.
+# So we VACUUM the database to remove the unused space.
+conn = sqlite3.connect("openbb_cache.sqlite", isolation_level=None)
+conn.execute("VACUUM")
+conn.close()
 
 logger = logging.getLogger(__name__)
 
@@ -1915,11 +1923,13 @@ def request(url: str, method="GET", **kwargs) -> requests.Response:
     # If there are headers, check if there is a user agent, if not add one.
     # Some requests seem to work only with a specific user agent, so we want to be able to override it.
     headers = kwargs.pop("headers") if "headers" in kwargs else {}
+    # settings cache to 60s if not specified in kwargs
     cache_timeout = kwargs.pop("cache_timeout") if "cache_timeout" in kwargs else 60
     if "User-Agent" not in headers:
         headers["User-Agent"] = get_user_agent()
     if method.upper() == "GET":
         # Override the Cache expire_after if we want
+
         session.expire_after = timedelta(seconds=cache_timeout)
 
         response = session.get(
