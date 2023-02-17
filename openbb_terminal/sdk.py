@@ -20,6 +20,7 @@ from openbb_terminal.sdk_core import (
     controllers as ctrl,
     models as model,
 )
+from openbb_terminal import feature_flags as obbff
 from openbb_terminal.session.user import User
 
 if User.is_guest():
@@ -38,6 +39,8 @@ class OpenBBSDK:
         `news`: Get news for a given term and source. [Source: Feedparser]\n
         `whoami`: Display user info.\n
     """
+
+    __version__ = obbff.VERSION
 
     def __init__(self):
         SDKLogger()
