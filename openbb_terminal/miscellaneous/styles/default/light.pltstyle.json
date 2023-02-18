@@ -723,9 +723,7 @@
             "#af87ff"
         ],
         "font": {
-            "color": "#2a3f5f",
-            "family": "Fira Code",
-            "size": 18
+            "color": "#2a3f5f"
         },
         "geo": {
             "bgcolor": "white",
@@ -817,9 +815,6 @@
             "gridcolor": "#EBF0F8",
             "linecolor": "#EBF0F8",
             "ticks": "",
-            "title": {
-                "standoff": 20
-            },
             "zerolinecolor": "#EBF0F8",
             "zerolinewidth": 2,
             "rangeslider": {
@@ -828,8 +823,9 @@
             "showgrid": true,
             "showline": true,
             "tickfont": {
-                "size": 16
+                "size": 15
             },
+            "mirror": true,
             "zeroline": false
         },
         "yaxis": {
@@ -837,25 +833,23 @@
             "gridcolor": "#EBF0F8",
             "linecolor": "#EBF0F8",
             "ticks": "",
-            "title": {
-                "standoff": 10
+            "tickfont": {
+                "size": 15
             },
             "zerolinecolor": "#EBF0F8",
             "zerolinewidth": 2,
             "fixedrange": false,
-            "nticks": 6,
+            "nticks": 8,
             "showgrid": true,
             "showline": true,
             "side": "right",
+            "mirror": true,
             "zeroline": false
         },
         "dragmode": "pan",
         "legend": {
             "bgcolor": "rgba(0, 0, 0, 0)",
-            "font": {
-                "size": 15
-            },
-            "x": 0.01,
+            "x": 1.03,
             "xanchor": "left",
             "y": 0.99,
             "yanchor": "top"

@@ -11,7 +11,7 @@ try:
     import darts
     import torch
 
-    darts_latest = "0.23.0"
+    darts_latest = "0.23.1"
     # check darts version
     if darts.__version__ != darts_latest:
         print(f"You are currently using Darts version {darts.__version__}")

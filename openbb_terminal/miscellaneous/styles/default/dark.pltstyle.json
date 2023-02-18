@@ -73,7 +73,7 @@
             "showgrid": true,
             "showline": true,
             "tickfont": {
-                "size": 16
+                "size": 14
             },
             "zeroline": false,
             "title": {

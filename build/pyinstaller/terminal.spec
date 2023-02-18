@@ -83,11 +83,13 @@ added_files = [
     (shutil.which("voila"), "."),
     (shutil.which("jupyter-lab"), "."),
     (shutil.which("streamlit"), "."),
-    (shutil.which("tensorboard"), "."),
-    (os.path.join(pathex, "tensorboard"), "tensorboard"),
-    (os.path.join(pathex, "pytorch_lightning"), "pytorch_lightning"),
-    (os.path.join(pathex, "lightning_fabric"), "lightning_fabric"),
 ]
+
+if is_win:
+    print("Adding scipy.libs to bundle")
+    added_files.append(
+        (os.path.join(f"{os.path.dirname(scipy.__file__)}.libs"), "scipy.libs/"),
+    )
 
 
 # Python libraries that are explicitly pulled into the bundle
@@ -113,9 +115,7 @@ hidden_imports = [
     "prophet",
     "debugpy",
     "pywry.pywry",
-    "tensorboard",
-    "pytorch_lightning",
-    "lightning_fabric",
+    "scipy.sparse.linalg._isolve._iterative",
 ]
 
 
@@ -173,7 +173,7 @@ pywry_exe = EXE(
     name="OpenBBPlotsBackend",
     debug=False,
     bootloader_ignore_signals=False,
-    strip=True,
+    strip=False,
     upx=True,
     upx_exclude=[],
     console=True,
@@ -195,8 +195,8 @@ exe_kwargs = dict(
     name=NAME,
     debug=False,
     bootloader_ignore_signals=False,
-    strip=True,
-    upx=True,
+    strip=False,
+    upx=False,
     upx_exclude=[],
     console=True,
     disable_windowed_traceback=False,
@@ -219,7 +219,7 @@ elif build_type == "folder":
         a.datas,
     ]
     collect_kwargs = dict(
-        strip=True,
+        strip=False,
         upx=True,
         upx_exclude=[],
         name=NAME,

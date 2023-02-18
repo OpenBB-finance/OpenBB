@@ -55,7 +55,7 @@ class TerminalStyle:
 
     console_styles_available: Dict[str, Path] = {}
     console_style: Dict[str, Any] = {}
-    console_style_name: Optional[str] = ""
+    console_style_name: str = "dark"
 
     line_color: str = ""
     up_color: str = ""
@@ -82,18 +82,31 @@ class TerminalStyle:
             The name of the Rich style to use, by default ""
         """
         self.plt_style = plt_style or self.plt_style
-        self.console_style_name = console_style
+        self.console_style_name = console_style or self.console_style_name
         self.load_available_styles()
-        self.load_style()
 
-    def apply_style(self) -> None:
+        for style in ["openbb_config", console_style, "dark"]:
+            if style in self.console_styles_available:
+                console_json = self.console_styles_available[style]
+                break
+
+        self.console_style = self.load_json_style(console_json)
+        self.load_style(plt_style)
+
+    def apply_style(self, style: str = "dark") -> None:
         """Apply the style to the libraries."""
+        if style != self.plt_style:
+            self.load_style(style)
+
+        style = style.lower().replace("light", "white")
+
         if self.plt_style and self.plotly_template:
             pio.templates["openbb"] = go.layout.Template(self.plotly_template)
-            style = (
-                "plotly_white" if self.plt_style == "light" else "plotly_dark+openbb"
-            )
-            pio.templates.default = style
+            if style in ["dark", "white"]:
+                pio.templates.default = f"plotly_{style}+openbb"
+                return
+
+            pio.templates.default = "openbb"
 
     def load_available_styles_from_folder(self, folder: Path) -> None:
         """Load custom styles from folder.
@@ -111,25 +124,33 @@ class TerminalStyle:
         if not folder.exists():
             return
 
-        for file in folder.glob("*.pltstyle.json"):
-            self.plt_styles_available[file.name.replace(".pltstyle.json", "")] = file
+        for attr, ext in zip(
+            ["plt_styles_available", "console_styles_available"],
+            ["*.pltstyle.json", "*.richstyle.json"],
+        ):
+            for file in folder.glob(ext):
+                getattr(self, attr)[file.name.replace(ext, "")] = file
 
     def load_available_styles(self) -> None:
         """Load custom styles from default and user folders."""
         self.load_available_styles_from_folder(self.DEFAULT_STYLES_LOCATION)
         self.load_available_styles_from_folder(self.USER_STYLES_LOCATION)
 
-    def load_json_style(self, file: Path) -> None:
+    def load_json_style(self, file: Path) -> Dict[str, Any]:
         """Load style from json file.
 
         Parameters
         ----------
         file : str
             Path to the file containing the style
-        """
 
+        Returns
+        -------
+        Dict[str, Any]
+            Style as a dictionary
+        """
         with open(file) as f:
-            self.plotly_template = json.load(f)
+            return json.load(f)
 
     def load_style(self, style: str = "") -> None:
         """Load style from file.
@@ -154,7 +175,7 @@ class TerminalStyle:
             Name of the style to load
         """
         self.plt_style = style
-        self.load_json_style(self.plt_styles_available[style])
+        self.plotly_template = self.load_json_style(self.plt_styles_available[style])
         line = self.plotly_template.pop("line", {})
 
         self.up_color = line.get("up_color", "#00ACFF")
@@ -210,7 +231,7 @@ class OpenBBFigure(go.Figure):
     -------------
     create_subplots(rows: `int`, cols: `int`, **kwargs) -> `OpenBBFigure`
         Creates a subplots figure
-    to_table(df: `pd.DataFrame`, columnwidth: `list`, print_index: `bool`, ...)
+    to_table(data: `pd.DataFrame`, columnwidth: `list`, print_index: `bool`, ...)
         Converts a DataFrame to a table figure
 
     Methods
@@ -841,17 +862,15 @@ class OpenBBFigure(go.Figure):
         if not label:
             raise ValueError("Label must be specified")
 
-        self.add_trace(
-            go.Scatter(
-                x=[None],
-                y=[None],
-                mode=mode or "lines",
-                name=label,
-                marker=marker or dict(),
-                line_dash=line_dash or "solid",
-                legendrank=legendrank,
-                **kwargs,
-            )
+        self.add_scatter(
+            x=[None],
+            y=[None],
+            mode=mode or "lines",
+            name=label,
+            marker=marker or dict(),
+            line_dash=line_dash or "solid",
+            legendrank=legendrank,
+            **kwargs,
         )
 
     def show(
@@ -867,16 +886,13 @@ class OpenBBFigure(go.Figure):
         ----------
         external : `bool`, optional
             Whether to return the figure object instead of showing it, by default False
-        export_image : `Path`, optional
+        export_image : `Union[Path, str]`, optional
             The path to export the figure image to, by default ""
         """
         if export_image and not plots_backend().isatty:
             if isinstance(export_image, str):
                 export_image = Path(export_image).resolve()
             export_image.touch()
-
-        if external:
-            return self  # type: ignore
 
         if kwargs.pop("margin", True):
             self._adjust_margins()
@@ -897,6 +913,9 @@ class OpenBBFigure(go.Figure):
                     activecolor="#d1030d",
                 ),
             )
+
+        if external:
+            return self  # type: ignore
 
         # We check if in Terminal Pro to return the JSON
         if strtobool(os.environ.get("TERMINAL_PRO", False)):
@@ -965,11 +984,6 @@ class OpenBBFigure(go.Figure):
         -------
         `list`
             The dateindex
-
-        Returns
-        -------
-        `list`
-            The dateindex
         """
         output: Optional[List[datetime]] = None
 
@@ -994,8 +1008,6 @@ class OpenBBFigure(go.Figure):
 
         Parameters
         ----------
-        dateindex : `pandas.DatetimeIndex`
-            The date index
         prepost : `bool`, optional
             Whether to add rangebreaks for pre and post market hours, by default False
         """
@@ -1069,27 +1081,23 @@ class OpenBBFigure(go.Figure):
         self.update_traces(marker_line_width=0.0001, selector=dict(type="bar"))
         kwargs.update(
             dict(
-                config={
-                    "displayModeBar": True,
-                    "scrollZoom": True,
-                    "displaylogo": False,
-                },
-                include_plotlyjs=kwargs.get("include_plotlyjs", False),
+                config={"scrollZoom": True, "displaylogo": False},
+                include_plotlyjs=kwargs.pop("include_plotlyjs", False),
                 full_html=False,
             )
         )
         if not plots_backend().isatty and self.data[0].type != "table":
-            self.layout.margin = dict(l=60, r=30, b=50, t=50, pad=0)
+            self.layout.margin = dict(l=10, r=50, b=50, t=50, pad=0)
 
         return super().to_html(*args, **kwargs)
 
     @staticmethod
-    def row_colors(df: pd.DataFrame) -> Optional[List[str]]:
+    def row_colors(data: pd.DataFrame) -> Optional[List[str]]:
         """Return the row colors of the table
 
         Parameters
         ----------
-        df : `pandas.DataFrame`
+        data : `pandas.DataFrame`
             The dataframe
 
         Returns
@@ -1097,8 +1105,8 @@ class OpenBBFigure(go.Figure):
         `list`
             The list of colors
         """
-        row_count = len(df)
-        # we determine how many rows in `df` and then create a list with alternating
+        row_count = len(data)
+        # we determine how many rows in `data` and then create a list with alternating
         # row colors
         row_odd_count = floor(row_count / 2) + row_count % 2
         row_even_count = floor(row_count / 2)
@@ -1111,12 +1119,12 @@ class OpenBBFigure(go.Figure):
         return color_list
 
     @staticmethod
-    def _tbl_values(df: pd.DataFrame, print_index: bool) -> Tuple[List[str], List]:
+    def _tbl_values(data: pd.DataFrame, print_index: bool) -> Tuple[List[str], List]:
         """Return the values of the table
 
         Parameters
         ----------
-        df : `pandas.DataFrame`
+        data : `pandas.DataFrame`
             The dataframe to convert
         print_index : `bool`
             Whether to print the index
@@ -1128,13 +1136,13 @@ class OpenBBFigure(go.Figure):
         """
         if print_index:
             header_values = list(
-                [df.index.name if df.index.name is not None else "", *df.columns]
+                [data.index.name if data.index.name is not None else "", *data.columns]
             )
-            cell_values = [df.index, *[df[col] for col in df]]
+            cell_values = [data.index, *[data[col] for col in data]]
 
         else:
-            header_values = df.columns.to_list()
-            cell_values = [df[col] for col in df]
+            header_values = data.columns.to_list()
+            cell_values = [data[col] for col in data]
 
         header_values = [f"<b>{x}</b>" for x in header_values]
 
@@ -1143,7 +1151,7 @@ class OpenBBFigure(go.Figure):
     @classmethod
     def to_table(
         cls,
-        df: pd.DataFrame,
+        data: pd.DataFrame,
         columnwidth: Optional[List[Union[int, float]]] = None,
         print_index: bool = True,
         **kwargs,
@@ -1152,14 +1160,14 @@ class OpenBBFigure(go.Figure):
 
         Parameters
         ----------
-        df : `pandas.DataFrame`
+        data : `pandas.DataFrame`
             The dataframe to convert
         columnwidth : `list`, optional
             The width of each column, by default None (auto)
         print_index : `bool`, optional
             Whether to print the index, by default True
         height : `int`, optional
-            The height of the table, by default len(df.index) * 28 + 25
+            The height of the table, by default len(data.index) * 28 + 25
         width : `int`, optional
             The width of the table, by default sum(columnwidth) * 8.7
 
@@ -1173,14 +1181,17 @@ class OpenBBFigure(go.Figure):
             # we get the length of each column using the max length of the column
             # name and the max length of the column values as the column width
             columnwidth = [
-                max(len(str(df[col].name)), df[col].astype(str).str.len().max())
-                for col in df.columns
+                max(len(str(data[col].name)), data[col].astype(str).str.len().max())
+                for col in data.columns
             ]
             # we add the length of the index column if we are printing the index
             if print_index:
                 columnwidth.insert(
                     0,
-                    max(len(str(df.index.name)), df.index.astype(str).str.len().max()),
+                    max(
+                        len(str(data.index.name)),
+                        data.index.astype(str).str.len().max(),
+                    ),
                 )
 
             # we add a percentage of max to the min column width
@@ -1189,14 +1200,16 @@ class OpenBBFigure(go.Figure):
                 for x in columnwidth
             ]
 
-        header_values, cell_values = cls._tbl_values(df, print_index)
+        header_values, cell_values = cls._tbl_values(data, print_index)
 
-        if (height := kwargs.get("height", None)) and height < len(df.index) * 28 + 25:
+        if (height := kwargs.get("height", None)) and height < len(
+            data.index
+        ) * 28 + 25:
             kwargs.pop("height")
         if (width := kwargs.get("width", None)) and width < sum(columnwidth) * 8.7:
             kwargs.pop("width")
 
-        height = kwargs.pop("height", len(df.index) * 28 + 25)
+        height = kwargs.pop("height", len(data.index) * 28 + 25)
         width = kwargs.pop("width", sum(columnwidth) * 8.7)
 
         fig: OpenBBFigure = cls()
@@ -1237,7 +1250,7 @@ class OpenBBFigure(go.Figure):
                     self.layout.margin[key] = add
 
         if not plots_backend().isatty:
-            self.layout.margin = dict(l=60, r=60, b=80, t=50, pad=0)
+            self.layout.margin = dict(l=40, r=60, b=80, t=50, pad=0)
 
     def _set_watermark(self) -> None:
         """Sets the watermark for OpenBB Terminal"""
