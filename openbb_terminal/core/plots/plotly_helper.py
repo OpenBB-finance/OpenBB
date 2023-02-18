@@ -93,7 +93,7 @@ class TerminalStyle:
         self.console_style = self.load_json_style(console_json)
         self.load_style(plt_style)
 
-    def apply_style(self, style: str = "dark") -> None:
+    def apply_style(self, style: Optional[str] = "dark") -> None:
         """Apply the style to the libraries."""
         if style != self.plt_style:
             self.load_style(style)
@@ -152,7 +152,7 @@ class TerminalStyle:
         with open(file) as f:
             return json.load(f)
 
-    def load_style(self, style: str = "") -> None:
+    def load_style(self, style: Optional[str] = "") -> None:
         """Load style from file.
 
         Parameters
