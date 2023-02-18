@@ -9,22 +9,21 @@ The OpenBB Terminal offers a variety of ways to export financial data. This can 
 
 ## The OpenBBUserData Folder
 
-The `OpenBBUserData` folder's default location is the home of the system user account. By default this will be the following paths:
+The `OpenBBUserData` folder is where files are saved when they are created from within the OpenBB Terminal, like exports and generated reports. It is also where user-generated files are stored, such as:
+
+- Screener presets
+- Portfolio files
+- Exported files
+- Files to be imported by various functions
+- Styles and themes
+
+The folder's location is at the root of user account for the operating system.
+
+- Linux: `~/home/<YOUR_USERNAME>/OpenBBUserData`
 - macOS: `Macintosh HD/Users/<YOUR_USERNAME>/OpenBBUserData`
-- Windows: `C:/Users/<YOUR_USERNAME>/OpenBBUserData`
+- Windows: `C:\Users\<YOUR_USERNAME>\OpenBBUserData`
 
-Within the folder you can find files that you have exported as well as files that you wish to import directly into the OpenBB Terminal. For example, this could be an orderbook which you can store in `OpenBBUserData/portfolio/holdings`.
-
-![OpenBBUserData Folder](https://user-images.githubusercontent.com/85772166/195742985-19f0e420-d8f7-4fea-a145-a0243b8f2ddc.png)
-
-This folder contains all things user-created. For example:
-
- - Screener presets
- - Portfolio files
- - Exported files
- - Files to be imported by various functions
- - Styles and themes
- - Preferred data sources
+**Note:** With a WSL-enabled Windows installation, this folder will be under the Linux partition
 
 **Note:** With a WSL-enabled Windows installation, this folder will be under the Linux partition
 
@@ -35,27 +34,43 @@ Within many of the functionalities, we offer the capability to export to Excel (
 For example, if you wish to download market data you can do so from the stocks menu with the following:
 
 ```console
-/stocks/load AAPL -s 2010-01-01 --export xlsx
+/economy/ycrv --help
 ```
 
-This results in the following:
-
-![Export Example](https://user-images.githubusercontent.com/46355364/214817681-fd5324c3-003c-45eb-adf4-96d5b41a3c02.png)
-
-We also allow you to define a file name, for example for the same stock tickers, we can also add in the filename. This time, we export to `csv`.
-
 ```console
-/stocks/load AAPL -s 2010-01-01 --export apple.csv
+usage: ycrv [-d DATE] [-h] [--export EXPORT] [--sheet-name SHEET_NAME [SHEET_NAME ...]] [--raw]
+
+Generate country yield curve. The yield curve shows the bond rates at different maturities.
+
+options:
+  -d DATE, --date DATE  Date to get data from FRED. If not supplied, the most recent entry will be used. (default: None)
+  -h, --help            show this help message (default: False)
+  --export EXPORT       Export raw data into csv, json, xlsx (default: )
+  --sheet-name SHEET_NAME [SHEET_NAME ...]
+                        Name of excel sheet to save data to. Only valid for .xlsx files. (default: None)
+  --raw                 Flag to display raw data (default: False)
+
+For more information and examples, use 'about ycrv' to access the related guide.
+
 ```
 
-Which results in the following:
+For exporting data from tables, the valid output types are:
 
-![Filename Example](https://user-images.githubusercontent.com/46355364/214818131-597b3bd0-9c66-43f1-bf0e-2c0a703e2645.png)
+- CSV
+- JSON
+- XLSX
 
-Lastly, when you select the `xlsx` option, you can also specify the sheet name with `--sheet-name` which allows multiple datasets to be send to the same Excel file. Using the same stock ticker, we can define the following. First, get market data from the `stocks` menu:
+Images can be exported as:
+
+- JPG
+- PDF
+- PNG
+- SVG
+
+Deploying the `--export` flag can include just the file type:
 
 ```console
-/stocks/load AAPL -s 2010-01-01 --export apple.xlsx --sheet-name Market Data
+/stocks/ $ load aapl --export csv
 ```
 
 Then enter the `fa` (Fundamental Analysis) menu and copy and paste the code below. This requires an API key from FinancialModelingPrep which you can obtain for free. Please have a look [here](https://docs.openbb.co/terminal/quickstart/api-keys).
@@ -67,13 +82,32 @@ balance --source FinancialModelingPrep -l 10 --export apple.xlsx --sheet-name Ba
 cash --source FinancialModelingPrep -l 10 --export apple.xlsx --sheet-name Cash Flow Statement
 ```
 
-This generates a file for Apple with market data from 2010-01-01 until now and income, balance and cash flow statements over the last 10 years as seen in the image below.
+```console
+Loading Daily data for AAPL with starting period 2020-02-13.
+Saved file: /Users/danglewood/OpenBBUserData/exports/aapl_daily.csv
+```
 
-![Sheet Name Example](https://user-images.githubusercontent.com/46355364/214824561-6eaf3a88-746a-4abc-91e1-420c9036c00d.png)
+When `xlsx` is the file type, an additional argument for the sheet name is available. The purpose of this functionality is to export multiple items to the same spreadsheet; for example:
 
-Next to that, we also allow exporting to images, this can be PNG, JPG, PDF and SVG. For example, using our `portfolio` menu we can export the charts to any type of format which again can be found within the `OpenBBUserData` folder.
+```console
+/stocks/load aapl --export watchlist.xlsx --sheet-name AAPL
+```
 
-![image](https://user-images.githubusercontent.com/46355364/214819518-cec40468-9019-440c-8bfe-7bcabc207578.png)
+```console
+Loading Daily data for AAPL with starting period 2020-02-13.
+Saved file: /Users/danglewood/OpenBBUserData/exports/watchlist.xlsx
+```
+
+```console
+/stocks/load msft --export watchlist.xlsx --sheet-name MSFT
+```
+
+```console
+Loading Daily data for MSFT with starting period 2020-02-13.
+Saved file: /Users/danglewood/OpenBBUserData/exports/watchlist.xlsx
+```
+
+![Exporting Data](exports1.png)
 
 ## Importing Data
 
