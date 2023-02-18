@@ -93,12 +93,14 @@ class TerminalStyle:
         self.console_style = self.load_json_style(console_json)
         self.load_style(plt_style)
 
-    def apply_style(self, style: Optional[str] = "dark") -> None:
+    def apply_style(self, style: Optional[str] = "") -> None:
         """Apply the style to the libraries."""
+        style = style or self.plt_style
+
         if style != self.plt_style:
             self.load_style(style)
 
-        style = style.lower().replace("light", "white")
+        style = style.lower().replace("light", "white")  # type: ignore
 
         if self.plt_style and self.plotly_template:
             pio.templates["openbb"] = go.layout.Template(self.plotly_template)
@@ -160,8 +162,7 @@ class TerminalStyle:
         style : str
             Name of the style to load
         """
-        if not style:
-            style = self.plt_style
+        style = style or self.plt_style
 
         if style in self.plt_styles_available:
             self.load_plt_style(style)
