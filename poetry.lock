@@ -9099,7 +9099,7 @@ test = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 
 [extras]
-all = ["torch", "pytorch-lightning", "u8darts", "Riskfolio-Lib"]
+all = ["torch", "pytorch-lightning", "u8darts", "Riskfolio-Lib", "lightgbm", "tensorboard"]
 doc = ["docstring-parser"]
 forecast = ["torch", "pytorch-lightning", "u8darts", "lightgbm", "tensorboard"]
 installer = ["pyinstaller"]
@@ -9109,4 +9109,4 @@ optimization = ["Riskfolio-Lib"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8,<3.11, !=3.9.7"
-content-hash = "ac0d5e289a57d67429da99b45cad1f77f602e87d6caa405672f9eb9fcd3c7678"
+content-hash = "7b5fa6b18626d23b6e97a3ab6341960793350f7295f068ee796599cbc426332a"

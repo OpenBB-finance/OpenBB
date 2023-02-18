@@ -145,7 +145,7 @@ ruff = "^0.0.247"
 [tool.poetry.extras]
 forecast = ["torch", "pytorch-lightning", "u8darts", "lightgbm", "tensorboard"]
 optimization = ["Riskfolio-Lib"]
-all = ["torch", "pytorch-lightning", "u8darts", "Riskfolio-Lib"]
+all = ["torch", "pytorch-lightning", "u8darts", "Riskfolio-Lib","lightgbm", "tensorboard"]
 jupyterlab = ["jupyterlab-code-formatter", "jupyterlab-lsp", "jedi-language-server"]
 installer = ["pyinstaller"]
 doc = ["docstring-parser"]
