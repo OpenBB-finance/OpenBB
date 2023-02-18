@@ -1,7 +1,7 @@
 """Quantitative Analysis View"""
 __docformat__ = "numpy"
 
-# pylint: disable=too-many-lines
+# pylint: disable=C0302
 
 
 import logging

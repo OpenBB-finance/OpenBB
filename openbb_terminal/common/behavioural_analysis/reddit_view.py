@@ -21,7 +21,7 @@ from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import export_data, plot_autoscale, print_rich_table
 from openbb_terminal.rich_config import console
 
-# pylint: disable=R0913
+# pylint: disable=R0913,C0302
 logger = logging.getLogger(__name__)
 
 
