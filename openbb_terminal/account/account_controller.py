@@ -7,7 +7,10 @@ from typing import Dict, List, Optional
 
 from prompt_toolkit.completion import NestedCompleter
 
-from openbb_terminal import feature_flags as obbff
+from openbb_terminal import (
+    feature_flags as obbff,
+    keys_model,
+)
 from openbb_terminal.account.account_model import get_diff, get_routines_info
 from openbb_terminal.account.account_view import display_routines_list
 from openbb_terminal.core.config.paths import USER_ROUTINES_DIRECTORY
@@ -39,6 +42,9 @@ class AccountController(BaseController):
         "upload",
         "download",
         "delete",
+        "generate",
+        "show",
+        "revoke",
     ]
 
     PATH = "/account/"
@@ -90,6 +96,11 @@ class AccountController(BaseController):
         mt.add_cmd("upload")
         mt.add_cmd("download")
         mt.add_cmd("delete")
+        mt.add_raw("\n")
+        mt.add_info("_personal_access_token_")
+        mt.add_cmd("generate")
+        mt.add_cmd("show")
+        mt.add_cmd("revoke")
         mt.add_raw("\n")
         mt.add_info("_authentication_")
         mt.add_cmd("logout")
@@ -424,5 +435,101 @@ class AccountController(BaseController):
                     if name in self.REMOTE_CHOICES:
                         self.REMOTE_CHOICES.remove(name)
                         self.update_runtime_choices()
+            else:
+                console.print("[info]Aborted.[/info]")
+
+    @log_start_end(log=logger)
+    def call_generate(self, other_args: List[str]) -> None:
+        """Process generate command."""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="generate",
+            description="Generate an OpenBB Personal Access Token.",
+        )
+        parser.add_argument(
+            "-d",
+            "--days",
+            dest="days",
+            help="Number of days the token will be valid",
+            type=check_positive,
+            default=30,
+        )
+        parser.add_argument(
+            "-s",
+            "--save",
+            dest="save",
+            default=False,
+            help="Save the token to the keys",
+            action="store_true",
+        )
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            i = console.input(
+                "[bold yellow]This will revoke any token that was previously generated."
+                "\nThis action is irreversible.[/bold yellow]"
+                "\nAre you sure you want to generate a new token? (y/n): "
+            )
+            if i.lower() not in ["y", "yes"]:
+                console.print("\n[info]Aborted.[/info]")
+                return
+
+            response = Hub.generate_personal_access_token(
+                auth_header=User.get_auth_header(), days=ns_parser.days
+            )
+            if response and response.status_code == 200:
+                token = response.json().get("token", "")
+                if token:
+                    console.print(f"\n[info]Token:[/info] {token}\n")
+
+                    save_to_keys = False
+                    if not ns_parser.save:
+                        save_to_keys = console.input(
+                            "Would you like to save the token to the keys? (y/n): "
+                        ).lower() in ["y", "yes"]
+
+                    if save_to_keys or ns_parser.save:
+                        keys_model.set_openbb_personal_access_token(
+                            key=token, persist=True, show_output=True
+                        )
+
+    @log_start_end(log=logger)
+    def call_show(self, other_args: List[str]) -> None:
+        """Process show command."""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="show",
+            description="Show your current OpenBB Personal Access Token.",
+        )
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            response = Hub.get_personal_access_token(auth_header=User.get_auth_header())
+            if response and response.status_code == 200:
+                token = response.json().get("token", "")
+                if token:
+                    console.print(f"[info]Token:[/info] {token}")
+
+    @log_start_end(log=logger)
+    def call_revoke(self, other_args: List[str]) -> None:
+        """Process revoke command."""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="revoke",
+            description="Revoke your current OpenBB Personal Access Token.",
+        )
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            i = console.input(
+                "[bold red]This action is irreversible![/bold red]\n"
+                "Are you sure you want to revoke your token? (y/n): "
+            )
+            if i.lower() in ["y", "yes"]:
+                response = Hub.revoke_personal_access_token(
+                    auth_header=User.get_auth_header()
+                )
+                if response and response.status_code in [200, 202]:
+                    console.print("[info]Token revoked.[/info]")
             else:
                 console.print("[info]Aborted.[/info]")
