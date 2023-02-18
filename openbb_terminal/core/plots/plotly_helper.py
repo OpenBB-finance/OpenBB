@@ -1,4 +1,4 @@
-# pylint: disable=C0302
+# pylint: disable=C0302,R0902
 import json
 import os
 import textwrap
@@ -55,7 +55,6 @@ class TerminalStyle:
 
     console_styles_available: Dict[str, Path] = {}
     console_style: Dict[str, Any] = {}
-    console_style_name: str = "dark"
 
     line_color: str = ""
     up_color: str = ""
@@ -82,15 +81,17 @@ class TerminalStyle:
             The name of the Rich style to use, by default ""
         """
         self.plt_style = plt_style or self.plt_style
-        self.console_style_name = console_style or self.console_style_name
+        console_style = console_style or "dark"
         self.load_available_styles()
 
-        for style in ["openbb_config", console_style, "dark"]:
+        console_json_path = self.console_styles_available.get("dark", None)
+        for style in ["openbb_config", console_style]:
             if style in self.console_styles_available:
-                console_json = self.console_styles_available[style]
+                console_json_path = self.console_styles_available[style]
                 break
 
-        self.console_style = self.load_json_style(console_json)
+        if console_json_path:
+            self.console_style = self.load_json_style(console_json_path)
         self.load_style(plt_style)
 
     def apply_style(self, style: Optional[str] = "") -> None:
@@ -128,9 +129,9 @@ class TerminalStyle:
 
         for attr, ext in zip(
             ["plt_styles_available", "console_styles_available"],
-            ["*.pltstyle.json", "*.richstyle.json"],
+            [".pltstyle.json", ".richstyle.json"],
         ):
-            for file in folder.glob(ext):
+            for file in folder.glob(f"*{ext}"):
                 getattr(self, attr)[file.name.replace(ext, "")] = file
 
     def load_available_styles(self) -> None:
