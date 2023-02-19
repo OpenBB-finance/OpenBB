@@ -98,7 +98,8 @@ def strtobool(val):
 
 
 def load_dotenv_and_reload_configs():
-    """Loads the dotenv files in the following order:
+    """
+    Loads the dotenv files in the following order:
     1. Repository .env file
     2. Package .env file
     3. User .env file

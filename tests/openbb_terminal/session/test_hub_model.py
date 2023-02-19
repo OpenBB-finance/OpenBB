@@ -1,3 +1,4 @@
+import json
 from unittest.mock import MagicMock, patch
 
 import pytest
@@ -708,4 +709,139 @@ def test_list_routines_error(side_effect):
         side_effect=side_effect,
     ):
         result = hub_model.list_routines(auth_header="Bearer 123", page=1, size=10)
+        assert result is None
+
+
+@pytest.mark.parametrize(
+    "auth_header, base_url, timeout, days, status_code",
+    [
+        ("auth_header", "base_url", 10, 10, 200),
+        ("other_header", "other_url", 10, 10, 400),
+    ],
+)
+def test_generate_personal_access_token(
+    auth_header, base_url, timeout, days, status_code
+):
+    mock_response = MagicMock(spec=requests.Response)
+    mock_response.status_code = status_code
+
+    with patch(
+        "openbb_terminal.session.hub_model.requests.put", return_value=mock_response
+    ) as requests_put_mock:
+        result = hub_model.generate_personal_access_token(
+            auth_header=auth_header, base_url=base_url, timeout=timeout, days=days
+        )
+
+        assert result.status_code == mock_response.status_code
+        requests_put_mock.assert_called_once()
+        _, kwargs = requests_put_mock.call_args
+        assert kwargs["url"] == base_url + "/sdk/token"
+        assert kwargs["headers"] == {
+            "Authorization": auth_header,
+            "Content-Type": "application/json",
+        }
+        assert kwargs["data"] == json.dumps({"days": days})
+        assert kwargs["timeout"] == timeout
+
+
+@pytest.mark.parametrize(
+    "side_effect",
+    [
+        requests.exceptions.ConnectionError,
+        requests.exceptions.Timeout,
+        Exception,
+    ],
+)
+def test_generate_personal_access_token_error(side_effect):
+    with patch(
+        "openbb_terminal.session.hub_model.requests.put",
+        side_effect=side_effect,
+    ):
+        result = hub_model.generate_personal_access_token("auth_header", 10)
+        assert result is None
+
+
+@pytest.mark.parametrize(
+    "auth_header, base_url, timeout, status_code",
+    [
+        ("auth_header", "base_url", 10, 200),
+        ("other_header", "other_url", 10, 400),
+    ],
+)
+def test_get_personal_access_token(auth_header, base_url, timeout, status_code):
+    mock_response = MagicMock(spec=requests.Response)
+    mock_response.status_code = status_code
+
+    with patch(
+        "openbb_terminal.session.hub_model.requests.get", return_value=mock_response
+    ) as requests_get_mock:
+        result = hub_model.get_personal_access_token(
+            auth_header=auth_header, base_url=base_url, timeout=timeout
+        )
+
+        assert result.status_code == mock_response.status_code
+        requests_get_mock.assert_called_once()
+        _, kwargs = requests_get_mock.call_args
+        assert kwargs["url"] == base_url + "/sdk/token"
+        assert kwargs["headers"] == {"Authorization": auth_header}
+        assert kwargs["timeout"] == timeout
+
+
+@pytest.mark.parametrize(
+    "side_effect",
+    [
+        requests.exceptions.ConnectionError,
+        requests.exceptions.Timeout,
+        Exception,
+    ],
+)
+def test_get_personal_access_token_error(side_effect):
+    with patch(
+        "openbb_terminal.session.hub_model.requests.get",
+        side_effect=side_effect,
+    ):
+        result = hub_model.get_personal_access_token("auth_header")
+        assert result is None
+
+
+@pytest.mark.parametrize(
+    "auth_header, base_url, timeout, status_code",
+    [
+        ("auth_header", "base_url", 10, 200),
+        ("other_header", "other_url", 10, 400),
+    ],
+)
+def test_revoke_personal_access_token(auth_header, base_url, timeout, status_code):
+    mock_response = MagicMock(spec=requests.Response)
+    mock_response.status_code = status_code
+
+    with patch(
+        "openbb_terminal.session.hub_model.requests.get", return_value=mock_response
+    ) as requests_get_mock:
+        result = hub_model.get_personal_access_token(
+            auth_header=auth_header, base_url=base_url, timeout=timeout
+        )
+
+        assert result.status_code == mock_response.status_code
+        requests_get_mock.assert_called_once()
+        _, kwargs = requests_get_mock.call_args
+        assert kwargs["url"] == base_url + "/sdk/token"
+        assert kwargs["headers"] == {"Authorization": auth_header}
+        assert kwargs["timeout"] == timeout
+
+
+@pytest.mark.parametrize(
+    "side_effect",
+    [
+        requests.exceptions.ConnectionError,
+        requests.exceptions.Timeout,
+        Exception,
+    ],
+)
+def test_revoke_personal_access_token_error(side_effect):
+    with patch(
+        "openbb_terminal.session.hub_model.requests.delete",
+        side_effect=side_effect,
+    ):
+        result = hub_model.revoke_personal_access_token("auth_header")
         assert result is None

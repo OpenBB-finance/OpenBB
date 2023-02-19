@@ -28,7 +28,7 @@ def display_etf_weightings(
     name: str,
     raw: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display sector weightings allocation of ETF. [Source: FinancialModelingPrep]

@@ -29,7 +29,7 @@ def display_economic_calendar(
     end_date: str,
     limit: int = 10,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Display economic calendar for specified country between start and end dates
 
@@ -68,10 +68,10 @@ def display_economic_calendar(
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_QUANDL"])
 def display_big_mac_index(
-    country_codes: List[str] = None,
+    country_codes: Optional[List[str]] = None,
     raw: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display Big Mac Index for given countries

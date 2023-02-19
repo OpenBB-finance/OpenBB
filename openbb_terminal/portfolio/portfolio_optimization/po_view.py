@@ -5,6 +5,7 @@ __docformat__ = "numpy"
 # flake8: noqa: E501
 
 import logging
+from typing import Optional
 import math
 import warnings
 
@@ -38,7 +39,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def display_ef(portfolio_engine: PoEngine = None, **kwargs):
+def display_ef(portfolio_engine: Optional[PoEngine] = None, **kwargs):
     """Display efficient frontier
 
     Parameters
@@ -245,7 +246,9 @@ def display_ef(portfolio_engine: PoEngine = None, **kwargs):
 
 
 @log_start_end(log=logger)
-def display_plot(portfolio_engine: PoEngine = None, chart_type: str = "pie", **kwargs):
+def display_plot(
+    portfolio_engine: Optional[PoEngine] = None, chart_type: str = "pie", **kwargs
+):
     """
     Display efficient frontier
 

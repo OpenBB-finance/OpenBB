@@ -34,7 +34,7 @@ def display_historical(
     strike: float = 0,
     put: bool = False,
     raw: bool = False,
-    chain_id: str = None,
+    chain_id: Optional[str] = None,
     export: str = "",
     sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,

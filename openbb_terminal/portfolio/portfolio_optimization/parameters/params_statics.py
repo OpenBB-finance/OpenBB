@@ -1,7 +1,9 @@
+from typing import Dict
+
 DEFAULT_RANGE = [value / 1000 for value in range(0, 1001)]
 DEFAULT_BOOL = ["True", "False"]
 
-AVAILABLE_OPTIONS = {
+AVAILABLE_OPTIONS: Dict = {
     "historic_period": ["d", "w", "mo", "y", "ytd", "max"],
     "start_period": ["Any"],
     "end_period": ["Any"],

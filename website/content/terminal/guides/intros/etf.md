@@ -10,10 +10,9 @@ The ETF menu enables you to lookup any ETF and obtain an <a href="/terminal/refe
 
 The ETF menu is called upon by typing `etf` which opens the following menu:
 
-![ETF Menu](https://openbb-web-assets.s3.amazonaws.com/docs/etf.png)
+<img width="800" alt="image" src="https://user-images.githubusercontent.com/46355364/218991629-fcf0c38b-e690-4720-9510-494c4cb25dba.png"></img>
 
 You now have the ability to look up any ETF. With the example below, the `load` command is used to load an ETF.
-
 
 ```
 (🦋) /etf/ $ load voo
@@ -22,7 +21,6 @@ Loading Daily data for VOO with starting period 2022-02-08.
 ```
 
 Now we can use `holdings` to see the makeup of VOO
-
 
 ```
 2022 Jun 21, 09:14 (🦋) /etf/ holdings
@@ -53,41 +51,29 @@ Now we can use `holdings` to see the makeup of VOO
 └───────┴─────────────────────────────────┴──────────┴───────────┘
 ```
 
-
 To then view the stock chart, you can call <a href="/terminal/reference/etf/candle" target="_blank" rel="noreferrer noopener">candle</a> which shows a candle chart for the defined period (by default set to a year by `load`):
 
 ![Candle Chart of VOO](https://user-images.githubusercontent.com/46355364/174823545-6695f9b0-864c-4b94-a612-baa8087d1858.png)
 
-By calling `?` or `help` the ETF menu re-appears. Here you can see that multiple commands menus have turned blue. Because of loading a ticker, these menus can now be used in combination with the chosen ticker.
-
-![ETF Menu with ETF Loaded](https://openbb-web-assets.s3.amazonaws.com/docs/load_etf.png)
-
-For example, the ETF's weights can now be depicted with the following:
+The ETF's weights can now be depicted with the following:
 
 ```
-2022 Jun 21, 09:45 (🦋) /etf/ $ weights
+(🦋) /etf/ $ weights
 ```
 
 Which shows the following graph:
 
-![Weights of VOO](https://user-images.githubusercontent.com/46355364/174823708-bdf1221f-c183-435a-b436-f0319123f13d.png)
+![Figure_1](https://user-images.githubusercontent.com/46355364/218991849-d75c51f7-2343-4614-ad26-0f435670f4f0.png)
 
-### Sub-menus available
-
-The ETF menu has a few sub-menus available to delve further into a specific ETF or screen multiple ETFs at the same time. To find more information about each menu, click on one of the following:
-
-- <a href="/terminal/guides/intros/stocks/comparison" target="_blank" rel="noreferrer noopener">Introduction to Comparison Analysis</a>: have the ability to compare companies within the ETF based on, among other things, correlation, financial statements, sentiment, valuations and performance.
-- <a href="/terminal/guides/intros/common/ta" target="_blank" rel="noreferrer noopener">Introduction to Technical Analysis</a>: analysis the chosen ETF's historical data extensively with moving averages and momentum, trend, volatility and volume indicators.
-- <a href="/terminal/guides/intros/forecast/" target="_blank" rel="noreferrer noopener">Introduction to Forecasting menu</a>: apply advanced AI and Machine Learning models to form prediction of future ETF prices including Recurrent Neural Network (RNN), Autoregressive Integrated Moving Average (ARIMA) and Monte Carlo forecasting.
-
-### Examples
+## Examples
 
 If we want to learn more about a total market ETF, we can do the following, starting from the `etf` menu and using the `ld` command where we specify with `-l` we wish to see `15` ETFs max.
 
 ```
 (🦋) /etf/ $ search --description total market -l 15
 
-                                                    ETFs by Total Assets                                                     
+
+                                                    ETFs by Total Assets
 ┏━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 ┃      ┃ Name                                               ┃ Family                            ┃ Category                  ┃
 ┡━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
@@ -141,6 +127,7 @@ We can now plot the corresponding ETF chart with <a href="/terminal/reference/et
 
 Now we can go ahead and explore more about the ETF by running <a href="/terminal/reference/etf/holdings" target="_blank" rel="noreferrer noopener">holdings</a>.
 
+```
 (🦋) /etf/ $ holdings
 
                            ETF Holdings                           

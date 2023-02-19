@@ -30,7 +30,7 @@ register_matplotlib_converters()
 
 
 @log_start_end(log=logger)
-def display_management(symbol: str, export: str = "", sheet_name: str = None):
+def display_management(symbol: str, export: str = "", sheet_name: Optional[str] = None):
     """Display company's managers
 
     Parameters
@@ -74,7 +74,7 @@ def price_target_from_analysts(
     limit: int = 10,
     raw: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display analysts' price targets for a given stock. [Source: Business Insider]
@@ -176,7 +176,9 @@ def price_target_from_analysts(
 
 
 @log_start_end(log=logger)
-def estimates(symbol: str, estimate: str, export: str = "", sheet_name: str = None):
+def estimates(
+    symbol: str, estimate: str, export: str = "", sheet_name: Optional[str] = None
+):
     """Display analysts' estimates for a given ticker. [Source: Business Insider]
 
     Parameters

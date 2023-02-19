@@ -73,7 +73,9 @@ class SettingsController(BaseController):
         if lang.endswith(".yml")
     ]
 
-    def __init__(self, queue: List[str] = None, env_file: str = str(USER_ENV_FILE)):
+    def __init__(
+        self, queue: Optional[List[str]] = None, env_file: str = str(USER_ENV_FILE)
+    ):
         """Constructor"""
         super().__init__(queue)
         self.env_file = env_file
