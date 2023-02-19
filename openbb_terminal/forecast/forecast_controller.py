@@ -232,7 +232,7 @@ class ForecastController(BaseController):
         # Load in any newly exported files
         self.DATA_FILES = forecast_model.get_default_files()
         if session and obbff.USE_PROMPT_TOOLKIT:
-            choices: dict = self.choices_default
+            choices: dict = self.choices_default  # type: ignore
 
             self.choices = choices
             self.completer = NestedCompleter.from_nested_dict(choices)

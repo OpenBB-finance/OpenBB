@@ -1,6 +1,4 @@
-
-1 Failed download:
-- TSLA: No data found for this date range, symbol may be delisted
+Loading Daily data for TSLA with starting period 2020-02-10.
                                    Company Rating  Price Target
 Date                                                           
 2023-02-06  Wedbush Morgan Securities Inc.    BUY    225.000000
