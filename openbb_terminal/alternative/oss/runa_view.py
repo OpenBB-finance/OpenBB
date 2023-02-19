@@ -127,4 +127,5 @@ def display_rossindex(
             sheet_name,
         )
 
-        return fig.show(external=external_axes)
+        if show_chart or show_growth:
+            return fig.show(external=external_axes)
