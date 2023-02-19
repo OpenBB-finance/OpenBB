@@ -5,15 +5,10 @@ import logging
 import os
 from typing import Optional
 
-import matplotlib.pyplot as plt
-import mplfinance as mpf
-
-from openbb_terminal import feature_flags as obbff
-from openbb_terminal.config_terminal import theme
+from openbb_terminal import OpenBBFigure
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import export_data, plot_autoscale, print_rich_table
+from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.portfolio.brokers.robinhood import robinhood_model
-from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -71,27 +66,17 @@ def display_historical(
     """
     hist = robinhood_model.get_historical(interval, window)
 
-    mpf.plot(
-        hist,
-        type="candle",
-        style=theme.mpf_style,
-        title=f"\nPortfolio for {span_title_dict[window]}",
-        ylabel="Equity ($)",
-        xrotation=10,
-        figratio=(10, 7),
-        figscale=1.10,
-        scale_padding={"left": 0.3, "right": 1, "top": 0.8, "bottom": 0.8},
-        figsize=(plot_autoscale()),
-        update_width_config=dict(
-            candle_linewidth=0.6,
-            candle_width=0.8,
-            volume_linewidth=0.8,
-            volume_width=0.8,
-        ),
+    fig = OpenBBFigure(xaxis_title="Date", yaxis_title="Equity ($)")
+    fig.set_title(f"Portfolio for {span_title_dict[window]}")
+
+    fig.add_candlestick(
+        x=hist.index,
+        open=hist["Open"],
+        high=hist["High"],
+        low=hist["Low"],
+        close=hist["Close"],
+        name="Equity",
     )
-    if obbff.USE_ION:
-        plt.ion()
-    console.print()
 
     export_data(
         export,
@@ -100,3 +85,5 @@ def display_historical(
         hist,
         sheet_name,
     )
+
+    fig.show()

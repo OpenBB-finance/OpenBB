@@ -130,11 +130,10 @@ def plot_vol(
         print_raw(calls, puts, title, calls_only, puts_only)
 
     fig = OpenBBFigure(
-        title=title,
-        xaxis_title="Strike Price",
+        xaxis=dict(title="Strike Price", range=[min_strike, max_strike]),
         yaxis_title="Volume [1k]",
-        xaxis_range=[min_strike, max_strike],
     )
+    fig.set_title(title)
 
     if not puts_only:
         call_v = calls.set_index("strike")["volume"] / 1000
@@ -224,11 +223,11 @@ def plot_oi(
         print_raw(calls, puts, title, calls_only, puts_only)
 
     fig = OpenBBFigure(
-        title=title,
-        xaxis_title="Strike Price",
+        xaxis=dict(title="Strike Price", range=[min_strike, max_strike]),
         yaxis_title="Open Interest (1k) ",
-        xaxis_range=[min_strike, max_strike],
     )
+    fig.set_title(title)
+
     if not puts_only:
         call_oi = calls.set_index("strike")["openInterest"] / 1000
         fig.add_scatter(
@@ -338,46 +337,46 @@ def plot_voi(
         option_chain[["openInterest_call", "volume_call"]] / 1000
     )
 
-    fig = OpenBBFigure(title=title, xaxis_title="Volume", yaxis_title="Strike Price")
+    fig = OpenBBFigure(yaxis_title="Volume", xaxis_title="Strike Price")
+    fig.set_title(title)
 
     fig.add_bar(
-        x=option_chain.openInterest_call,
-        y=option_chain.strike,
+        x=option_chain.strike,
+        y=option_chain.openInterest_call,
         name="Calls: Open Interest",
         marker_color="lightgreen",
     )
     fig.add_bar(
-        x=option_chain.volume_call,
-        y=option_chain.strike,
+        x=option_chain.strike,
+        y=option_chain.volume_call,
         name="Calls: Volume",
         marker_color="green",
     )
     fig.add_bar(
-        x=option_chain.openInterest_put,
-        y=option_chain.strike,
+        x=option_chain.strike,
+        y=option_chain.openInterest_put,
         name="Puts: Open Interest",
         marker_color="pink",
     )
     fig.add_bar(
-        x=option_chain.volume_put,
-        y=option_chain.strike,
+        x=option_chain.strike,
+        y=option_chain.volume_put,
         name="Puts: Volume",
         marker_color="red",
     )
-    fig.add_hline_legend(
-        y=current_price,
+    fig.add_vline_legend(
+        x=current_price,
         name="Current stock price",
         line=dict(dash="dash", width=2, color="white"),
     )
-    fig.add_hline_legend(
-        y=max_pain,
+    fig.add_vline_legend(
+        x=max_pain,
         name=f"Max pain = {max_pain}",
         line=dict(dash="dash", width=2, color="red"),
     )
 
-    fig.update_traces(selector=dict(type="bar"), orientation="h")
     fig.update_layout(
-        barmode="relative", hovermode="y unified", yaxis_range=[min_strike, max_strike]
+        barmode="relative", hovermode="y unified", xaxis_range=[min_strike, max_strike]
     )
 
     if raw:

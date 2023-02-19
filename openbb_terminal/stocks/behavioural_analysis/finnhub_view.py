@@ -108,7 +108,7 @@ def display_stock_price_headlines_sentiment(
 
             fig.update_layout(
                 title=f"Headlines sentiment and {symbol} price",
-                xaxis_title="Date",
+                xaxis2_title="Date",
                 yaxis_title="Stock Price",
                 yaxis2_title="Headline Sentiment",
             )

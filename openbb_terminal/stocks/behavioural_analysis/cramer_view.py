@@ -4,16 +4,13 @@ __docformat__ = "numpy"
 import logging
 import os
 from datetime import datetime
-from typing import Optional
+from typing import Optional, Union
 
-import matplotlib.pyplot as plt
 import yfinance
-from matplotlib.dates import DateFormatter
 
-import openbb_terminal.config_plot as cfp
-from openbb_terminal.config_terminal import theme
+from openbb_terminal import OpenBBFigure, theme
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import export_data, plot_autoscale, print_rich_table
+from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.behavioural_analysis import cramer_model
 
@@ -71,7 +68,7 @@ def display_cramer_ticker(
     export: str = "",
     sheet_name: Optional[str] = None,
     external_axes: bool = False,
-):
+) -> Union[None, OpenBBFigure]:
     """Display ticker close with Cramer recommendations
 
     Parameters
@@ -84,36 +81,38 @@ def display_cramer_ticker(
         Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
-    external_axes: bool = False,
-        External axes to plot on
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
 
     df = cramer_model.get_cramer_ticker(symbol)
     if df.empty:
-        console.print(f"No recommendations found for {symbol}.\n")
-        return
+        return console.print(f"No recommendations found for {symbol}.\n")
 
-    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
+    fig = OpenBBFigure(xaxis_title="Date", yaxis_title="Price")
+    fig.set_title(f"{symbol.upper()} Close With Cramer Recommendations")
 
     close_prices = yfinance.download(symbol, start="2022-01-01", progress=False)[
         "Adj Close"
     ]
 
-    ax.plot(close_prices)
+    fig.add_scatter(
+        x=close_prices.index,
+        y=close_prices,
+        mode="lines",
+        name="Close",
+        showlegend=False,
+        line=dict(color=theme.line_color),
+    )
     color_map = {"Buy": theme.up_color, "Sell": theme.down_color}
     for name, group in df.groupby("Recommendation"):
-        ax.scatter(group.Date, group.Price, color=color_map[name], s=150, label=name)
-
-    ax.set_title(f"{symbol.upper()} Close With Cramer Recommendations")
-    theme.style_primary_axis(ax)
-    ax.legend(loc="best", scatterpoints=1)
-
-    # Overwrite default dote formatting
-    ax.xaxis.set_major_formatter(DateFormatter("%m/%d"))
-    ax.set_xlabel("Date")
-
-    if external_axes is None:
-        theme.visualize_output()
+        fig.add_scatter(
+            x=group.Date,
+            y=group.Price,
+            mode="markers",
+            name=name,
+            marker=dict(color=color_map[name], size=10),
+        )
 
     if raw:
         df["Date"] = df["Date"].apply(lambda x: x.strftime("%Y-%m-%d"))
@@ -126,3 +125,7 @@ def display_cramer_ticker(
         "jctr",
         sheet_name,
     )
+
+    fig.update_layout(legend=dict(yanchor="top", y=1, xanchor="right", x=1))
+
+    return fig.show(external=external_axes)

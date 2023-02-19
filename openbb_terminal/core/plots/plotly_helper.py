@@ -267,12 +267,13 @@ class OpenBBFigure(go.Figure):
         if yaxis := kwargs.pop("yaxis", None):
             self.update_yaxes(yaxis)
 
+        self.update_layout(**kwargs)
+
         if plots_backend().isatty:
             self.update_layout(
                 margin=dict(l=0, r=0, t=0, b=0, pad=0, autoexpand=True),
                 height=762,
                 width=1400,
-                **kwargs,
             )
 
     @property
@@ -1088,8 +1089,11 @@ class OpenBBFigure(go.Figure):
                 full_html=False,
             )
         )
+        self._apply_feature_flags()
+        self._xaxis_tickformatstops()
+
         if not plots_backend().isatty and self.data[0].type != "table":
-            self.layout.margin = dict(l=10, r=50, b=50, t=50, pad=0)
+            self.layout.margin = dict(l=60, r=60, b=80, t=50, pad=0)
 
         return super().to_html(*args, **kwargs)
 

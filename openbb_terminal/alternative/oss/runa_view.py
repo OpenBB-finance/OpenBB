@@ -1,11 +1,11 @@
 """Rekt view"""
 import logging
 import os
-from typing import Optional
+from typing import Optional, Union
 
+from openbb_terminal import OpenBBFigure
 from openbb_terminal.alternative.oss import runa_model
 from openbb_terminal.core.plots.backend import plots_backend
-from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
@@ -29,7 +29,7 @@ def display_rossindex(
     export: str = "",
     sheet_name: Optional[str] = None,
     external_axes: bool = False,
-) -> None:
+) -> Union[None, OpenBBFigure]:
     """Plots list of startups from ross index [Source: https://runacap.com/]
 
     Parameters
@@ -129,3 +129,5 @@ def display_rossindex(
 
         if show_chart or show_growth:
             return fig.show(external=external_axes)
+
+    return None
