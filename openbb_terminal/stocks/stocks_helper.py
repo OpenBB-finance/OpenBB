@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 # pylint: disable=unsupported-assignment-operation,too-many-lines
 # pylint: disable=no-member,too-many-branches,too-many-arguments
 # pylint: disable=inconsistent-return-statements
+# pylint: disable=consider-using-dict-items
 
 import logging
 import os
@@ -1142,7 +1143,7 @@ def verify_plot_options(command: str, source: str, plot: list) -> bool:
         )
         for column in incorrect_columns:
             possible_sources = []
-            for i in command_options:  # noqa: C0206
+            for i in command_options:
                 if column in list(command_options[i].values()):
                     possible_sources.append(i)
             if possible_sources:
