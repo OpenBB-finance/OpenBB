@@ -150,6 +150,7 @@ def display_messari_timeseries(
             x=df.index,
             y=df[df.columns[0]],
             mode="lines",
+            name=df.columns[0],
         )
 
         export_data(
@@ -213,6 +214,7 @@ def display_marketcap_dominance(
             x=df.index,
             y=df["marketcap_dominance"],
             mode="lines",
+            name=symbol.upper(),
         )
 
         export_data(

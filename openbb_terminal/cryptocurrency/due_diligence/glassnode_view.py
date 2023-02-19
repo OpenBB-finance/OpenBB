@@ -182,6 +182,7 @@ def display_exchange_net_position_change(
         x=df_addresses[df_addresses["v"] < 0].index,
         y=df_addresses[df_addresses["v"] < 0]["v"].values,
         mode="lines",
+        name="Negative",
         line_color=theme.down_color,
     )
     fig.add_scatter(
@@ -189,6 +190,7 @@ def display_exchange_net_position_change(
         y=np.zeros(len(df_addresses[df_addresses["v"] < 0])),
         mode="lines",
         fill="tonexty",
+        name="Negative",
         line_color=theme.down_color,
         fillcolor=theme.down_color,
     )
@@ -196,6 +198,7 @@ def display_exchange_net_position_change(
         x=df_addresses[df_addresses["v"] >= 0].index,
         y=df_addresses[df_addresses["v"] >= 0]["v"].values,
         mode="lines",
+        name="Positive",
         line_color=theme.up_color,
     )
     fig.add_scatter(
@@ -203,6 +206,7 @@ def display_exchange_net_position_change(
         y=np.zeros(len(df_addresses[df_addresses["v"] >= 0])),
         mode="lines",
         fill="tonexty",
+        name="Positive",
         line_color=theme.up_color,
         fillcolor=theme.up_color,
     )

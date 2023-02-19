@@ -717,7 +717,9 @@ def plot_forecast(
 
 @log_start_end(log=logger)
 def plotly_shap_scatter_plot(
-    shap_exp: Explanation,
+    shap_values: Explanation,
+    features: Optional[Union[pd.DataFrame, list, np.ndarray]] = None,
+    feature_names: Optional[List[str]] = None,
     max_display: Optional[int] = None,
 ) -> OpenBBFigure:
     """Generate a shap values summary plot where features are ranked from
@@ -728,6 +730,10 @@ def plotly_shap_scatter_plot(
     -----------
     shap_exp: Explanation
         The shap values for the model.
+    features : Optional[Union[pd.DataFrame, list, np.ndarray]]
+        Matrix of feature values (# samples x # features) or a feature_names list as shorthand
+    feature_names : Optional[List[str]]
+        Names of the features (length # features)
     max_display: Optional[int]
         The maximum number of features to display. Defaults to 20.
 
@@ -739,9 +745,33 @@ def plotly_shap_scatter_plot(
     if max_display is None:
         max_display = 20
 
+    shap_exp = shap_values
     shap_values = shap_exp.values
-    features = shap_exp.data
-    feature_names = shap_exp.feature_names
+    if features is None:
+        features = shap_exp.data
+    if feature_names is None:
+        feature_names = shap_exp.feature_names
+
+    idx2cat = None
+    # convert from a DataFrame or other types
+    if str(type(features)) == "<class 'pandas.core.frame.DataFrame'>":
+        if feature_names is None:
+            feature_names = features.columns
+        # feature index to category flag
+        idx2cat = features.dtypes.astype(str).isin(["object", "category"]).tolist()
+        features = features.values
+    elif isinstance(features, list):
+        if feature_names is None:
+            feature_names = features
+        features = None
+    elif (features is not None) and len(features.shape) == 1 and feature_names is None:
+        feature_names = features
+        features = None
+
+    num_features = shap_values.shape[1]
+
+    if feature_names is None:
+        feature_names = np.array([f"Feature {i}" for i in range(num_features)])
 
     feature_order = np.argsort(np.sum(np.abs(shap_values), axis=0))
     feature_order = feature_order[-min(max_display, len(feature_order)) :]
@@ -754,16 +784,25 @@ def plotly_shap_scatter_plot(
     for pos, i in enumerate(feature_order):
         pos += 2
         shaps = shap_values[:, i]
-        values = features[:, i]
+        values = None if features is None else features[:, i]
         inds = np.arange(len(shaps))
         np.random.shuffle(inds)
         if values is not None:
             values = values[inds]
         shaps = shaps[inds]
-        values = np.array(values, dtype=np.float64)  # make sure this can be numeric
+
+        colored_feature = True
+        try:
+            if idx2cat is not None and idx2cat[i]:  # check categorical feature
+                colored_feature = False
+            else:
+                values = np.array(
+                    values, dtype=np.float64
+                )  # make sure this can be numeric
+        except Exception:
+            colored_feature = False
 
         N = len(shaps)
-
         nbins = 100
         quant = np.round(
             nbins * (shaps - np.min(shaps)) / (np.max(shaps) - np.min(shaps) + 1e-8)
@@ -771,6 +810,7 @@ def plotly_shap_scatter_plot(
         inds = np.argsort(quant + np.random.randn(N) * 1e-6)
         layer = 0
         last_bin = -1
+
         ys = np.zeros(N)
         for ind in inds:
             if quant[ind] != last_bin:
@@ -780,78 +820,79 @@ def plotly_shap_scatter_plot(
             last_bin = quant[ind]
         ys *= 0.9 * (0.4 / np.max(ys + 1))
 
-        # trim the color range, but prevent the color range from collapsing
-        vmin = np.nanpercentile(values, 5)
-        vmax = np.nanpercentile(values, 95)
-        if vmin == vmax:
-            vmin = np.nanpercentile(values, 1)
-            vmax = np.nanpercentile(values, 99)
+        if features is not None and colored_feature:
+            # trim the color range, but prevent the color range from collapsing
+            vmin = np.nanpercentile(values, 5)
+            vmax = np.nanpercentile(values, 95)
             if vmin == vmax:
-                vmin = np.min(values)
-                vmax = np.max(values)
+                vmin = np.nanpercentile(values, 1)
+                vmax = np.nanpercentile(values, 99)
+                if vmin == vmax:
+                    vmin = np.min(values)
+                    vmax = np.max(values)
 
-        # fixes rare numerical precision issues
-        vmin = min(vmin, vmax)
+            # fixes rare numerical precision issues
+            vmin = min(vmin, vmax)
 
-        # plot the nan values in the interaction feature as grey
-        nan_mask = np.isnan(values)
-        fig.add_scattergl(
-            x=shaps[nan_mask],
-            y=pos + ys[nan_mask],
-            mode="markers",
-            marker=dict(
-                color="#777777",
-                cmin=vmin,
-                cmax=vmax,
-                size=10,
-            ),
-            hoverinfo="none",
-            showlegend=False,
-            row=1,
-            col=2,
-        )
-
-        # plot the non-nan values colored by the trimmed feature value
-        cvals = values[np.invert(nan_mask)].astype(np.float64)
-        cvals_imp = cvals.copy()
-        cvals_imp[np.isnan(cvals)] = (vmin + vmax) / 2.0
-        cvals[cvals_imp > vmax] = vmax
-        cvals[cvals_imp < vmin] = vmin
-        fig.add_scattergl(
-            x=shaps[np.invert(nan_mask)],
-            y=pos + ys[np.invert(nan_mask)],
-            mode="markers",
-            marker=dict(
-                color=cvals,
-                colorscale="Bluered",
-                showscale=(pos == 0),
-                colorbar=dict(
-                    x=-0.05,
-                    thickness=10,
-                    xpad=0,
-                    thicknessmode="pixels",
-                    title=dict(
-                        text="Feature Value",
-                        side="right",
-                        font=dict(size=12),
-                    ),
-                    tickmode="array",
-                    tickvals=[vmin, vmax],
-                    ticktext=["Low", "High"],
-                    tickfont=dict(size=12),
-                    ticklabelposition="outside left",
-                    borderwidth=0,
+            # plot the nan values in the interaction feature as grey
+            nan_mask = np.isnan(values)
+            fig.add_scattergl(
+                x=shaps[nan_mask],
+                y=pos + ys[nan_mask],
+                mode="markers",
+                marker=dict(
+                    color="#777777",
+                    cmin=vmin,
+                    cmax=vmax,
+                    size=10,
                 ),
-                cmin=vmin,
-                cmax=vmax,
-                size=10,
-            ),
-            hoverinfo="none",
-            name=feature_names[i],
-            showlegend=False,
-            row=1,
-            col=2,
-        )
+                hoverinfo="none",
+                showlegend=False,
+                row=1,
+                col=2,
+            )
+            # plot the non-nan values colored by the trimmed feature value
+            cvals = values[np.invert(nan_mask)].astype(np.float64)
+            cvals_imp = cvals.copy()
+            cvals_imp[np.isnan(cvals)] = (vmin + vmax) / 2.0
+            cvals[cvals_imp > vmax] = vmax
+            cvals[cvals_imp < vmin] = vmin
+
+            fig.add_scattergl(
+                x=shaps[np.invert(nan_mask)],
+                y=pos + ys[np.invert(nan_mask)],
+                mode="markers",
+                marker=dict(
+                    color=cvals,
+                    colorscale="Bluered",
+                    showscale=bool(pos == 2),
+                    colorbar=dict(
+                        x=-0.05,
+                        thickness=10,
+                        xpad=0,
+                        thicknessmode="pixels",
+                        title=dict(
+                            text="Feature Value",
+                            side="right",
+                            font=dict(size=12),
+                        ),
+                        tickmode="array",
+                        tickvals=[vmin, vmax],
+                        ticktext=["Low", "High"],
+                        tickfont=dict(size=12),
+                        ticklabelposition="outside left",
+                        borderwidth=0,
+                    ),
+                    cmin=vmin,
+                    cmax=vmax,
+                    size=10,
+                ),
+                hoverinfo="none",
+                name=feature_names[i],
+                showlegend=False,
+                row=1,
+                col=2,
+            )
 
     display_columns = [feature_names[i] for i in feature_order]
     fig.update_yaxes(
@@ -902,10 +943,11 @@ def plot_explainability(
     shaps_ = shap_explain.explainers.shap_explanations(
         foreground_X_sampled, horizons, target_components
     )
-
-    fig = plotly_shap_scatter_plot(shaps_[1][target_components[0]])
-    fig.set_title(f"Target: `{target_components[0]}` - Horizon: t+{1}")
-    fig.add_vline(x=0, line_width=1.5, line_color="white", opacity=0.7)
+    for t in target_components:
+        for h in horizons:
+            fig = plotly_shap_scatter_plot(shaps_[h][t], foreground_X_sampled)
+            fig.set_title(f"Target: `{t}` - Horizon: t+{h}")
+            fig.add_vline(x=0, line_width=1.5, line_color="white", opacity=0.7)
 
     if explainability_raw:
         console.print("\n")

@@ -477,7 +477,7 @@ class OpenBBFigure(go.Figure):
                         marker_color=color_i,
                         nbinsx=bins,
                         histnorm="probability density",
-                        histfunc="count",
+                        histfunc="sum",
                         opacity=0.7,
                         row=row,
                         col=col,
