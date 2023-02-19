@@ -1142,13 +1142,12 @@ def verify_plot_options(command: str, source: str, plot: list) -> bool:
         )
         for column in incorrect_columns:
             possible_sources = []
-            for i in command_options:
+            for i in command_options:  # noqa: C0206
                 if column in list(command_options[i].values()):
                     possible_sources.append(i)
             if possible_sources:
                 console.print(
-                    f"{column} can be plotted with the following sources: "
-                    + ", ".join(possible_sources)
+                    f"[red]{column} can be plotted with the following sources: {', '.join(possible_sources)}[/red]"
                 )
             else:
                 console.print(
