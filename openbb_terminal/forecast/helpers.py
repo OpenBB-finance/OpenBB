@@ -719,7 +719,7 @@ def plot_forecast(
 def plotly_shap_scatter_plot(
     shap_values: Explanation,
     features: Optional[Union[pd.DataFrame, list, np.ndarray]] = None,
-    feature_names: Optional[List[str]] = None,
+    feature_names: Optional[Union[List[str], np.ndarray]] = None,
     max_display: Optional[int] = None,
 ) -> OpenBBFigure:
     """Generate a shap values summary plot where features are ranked from
