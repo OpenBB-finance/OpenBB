@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Any, List, Optional, Type
+from typing import Any, List, Optional
 
 # pylint: disable=unidiomatic-typecheck
 
@@ -21,7 +21,7 @@ class Parameter:
     """
 
     name: str
-    type_: Type
+    type_: Any
     default: Any
     choices: Optional[List[Any]] = None
 

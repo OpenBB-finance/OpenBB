@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import argparse
 import logging
 from datetime import datetime
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 import pandas as pd
 
@@ -42,7 +42,7 @@ class HedgeController(BaseController):
     PATH = "/stocks/options/hedge/"
     CHOICES_GENERATION = True
 
-    def __init__(self, ticker: str, expiration: str, queue: List[str] = None):
+    def __init__(self, ticker: str, expiration: str, queue: Optional[List[str]] = None):
         """Constructor"""
         super().__init__(queue)
 
@@ -502,7 +502,7 @@ class HedgeController(BaseController):
 
                 for _, value in self.options.items():
                     if value:
-                        option_side: str = "Long" if value["sign"] == 1 else "Short"
+                        option_side: str = "Long" if value["sign"] == 1 else "Short"  # type: ignore
                         positions = positions.append(
                             [
                                 [

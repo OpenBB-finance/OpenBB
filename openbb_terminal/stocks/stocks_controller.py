@@ -5,7 +5,7 @@ import argparse
 import logging
 import os
 from datetime import datetime, timedelta
-from typing import List
+from typing import List, Optional
 
 import financedatabase
 import yfinance as yf
@@ -83,7 +83,7 @@ class StocksController(StockBaseController):
     TOB_EXCHANGES = ["BZX", "EDGX", "BYX", "EDGA"]
     CHOICES_GENERATION = True
 
-    def __init__(self, queue: List[str] = None):
+    def __init__(self, queue: Optional[List[str]] = None):
         """Construct stocks controller."""
         super().__init__(queue)
 
@@ -315,7 +315,7 @@ class StocksController(StockBaseController):
                 self.custom_load_wrapper([self.ticker])
 
             stocks_view.display_quote(
-                ns_parser.s_ticker,
+                self.ticker,
                 ns_parser.export,
                 " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None,
             )

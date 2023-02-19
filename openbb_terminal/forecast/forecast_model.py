@@ -56,7 +56,7 @@ def __sdk_dt_format(x) -> str:
 
 @log_start_end(log=logger)
 def get_options(
-    datasets: Dict[str, pd.DataFrame], dataset_name: str = None
+    datasets: Dict[str, pd.DataFrame], dataset_name: Optional[str] = None
 ) -> Dict[Union[str, Any], pd.DataFrame]:
     """Obtain columns-dataset combinations from loaded in datasets that can be used in other commands
 

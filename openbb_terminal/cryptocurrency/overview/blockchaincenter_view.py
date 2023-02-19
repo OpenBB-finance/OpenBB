@@ -29,7 +29,7 @@ def display_altcoin_index(
     start_date: str = "2010-01-01",
     end_date: Optional[str] = None,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Displays altcoin index overtime

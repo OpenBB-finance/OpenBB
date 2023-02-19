@@ -1,4 +1,5 @@
 trail,model,view
+forecast.anom,openbb_terminal.forecast.anom_model.get_anomaly_detection_data,openbb_terminal.forecast.anom_view.display_anomaly_detection
 forecast.atr,openbb_terminal.forecast.forecast_model.add_atr,
 forecast.autoarima,openbb_terminal.forecast.autoarima_model.get_autoarima_data,openbb_terminal.forecast.autoarima_view.display_autoarima_forecast
 forecast.autoces,openbb_terminal.forecast.autoces_model.get_autoces_data,openbb_terminal.forecast.autoces_view.display_autoces_forecast
@@ -36,4 +37,3 @@ forecast.tcn,openbb_terminal.forecast.tcn_model.get_tcn_data,openbb_terminal.for
 forecast.tft,openbb_terminal.forecast.tft_model.get_tft_data,openbb_terminal.forecast.tft_view.display_tft_forecast
 forecast.theta,openbb_terminal.forecast.theta_model.get_theta_data,openbb_terminal.forecast.theta_view.display_theta_forecast
 forecast.trans,openbb_terminal.forecast.trans_model.get_trans_data,openbb_terminal.forecast.trans_view.display_trans_forecast
-forecast.anom,openbb_terminal.forecast.anom_model.get_anomaly_detection_data,openbb_terminal.forecast.anom_view.display_anomaly_detection

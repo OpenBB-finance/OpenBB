@@ -1,5 +1,6 @@
 import logging
 import os
+from typing import Optional
 
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
@@ -11,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
-def display_quote(symbol: str, export: str = "", sheet_name: str = None):
+def display_quote(symbol: str, export: str = "", sheet_name: Optional[str] = None):
     """Financial Modeling Prep ticker quote
 
     Parameters
@@ -28,7 +29,9 @@ def display_quote(symbol: str, export: str = "", sheet_name: str = None):
     if quote.empty:
         console.print("[red]Data not found[/red]\n")
     else:
-        print_rich_table(quote, headers=[""], title=f"{symbol} Quote", show_index=True)
+        print_rich_table(
+            quote, headers=[""], title=f"{symbol.upper()} Quote", show_index=True
+        )
 
     export_data(
         export,

@@ -149,7 +149,7 @@ try:
     else:
         raise Exception("Using git")
 except Exception:
-    version = "2.3.1"
+    version = "2.4.1"
 VERSION = str(os.getenv("OPENBB_VERSION", version))
 
 # Select the terminal translation language

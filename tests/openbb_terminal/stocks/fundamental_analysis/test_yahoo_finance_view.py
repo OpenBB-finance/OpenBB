@@ -24,7 +24,6 @@ def vcr_config():
 @pytest.mark.parametrize(
     "func",
     [
-        "display_info",
         "display_shareholders",
         "display_dividends",
         "display_splits",
@@ -37,6 +36,11 @@ def test_call_func(func, mocker):
     # MOCK VISUALIZE_OUTPUT
     mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
     getattr(yahoo_finance_view, func)(symbol="PM")
+
+
+@pytest.mark.vcr
+def test_display_info():
+    yahoo_finance_view.display_info(symbol="TSLA")
 
 
 @pytest.mark.vcr(record_mode="none")

@@ -6,16 +6,16 @@ excerpt: An Introduction to Cryptocurrency Overview, within the Cryptocurrency M
 
 The Cryptocurrency Overview menu provides, among other things, the option to obtain a complete overview of the Cryptocurrency market (<a href="/terminal/reference/crypto/ov/global" target="_blank" rel="noreferrer noopener">global</a>), find cryptocurrency indexes and derivatives (<a href="/terminal/reference/crypto/ov/indexes" target="_blank" rel="noreferrer noopener">indexes</a> and <a href="/terminal/reference/crypto/ov/derivatives" target="_blank" rel="noreferrer noopener">derivatives</a>), news feeds (<a href="/terminal/reference/crypto/ov/news" target="_blank" rel="noreferrer noopener">news</a>) and fees (<a href="/terminal/reference/crypto/ov/wf" target="_blank" rel="noreferrer noopener">wf</a> and <a href="/terminal/reference/crypto/ov/ewf" target="_blank" rel="noreferrer noopener">ewf</a>)
 
-### How to use
+## How to use
 
 The Cryptocurrency Overview menu is called upon by typing `ov`, while inside the `crypto` menu, which opens the following menu:
 
-![Cryptocurrency Overview menu](https://user-images.githubusercontent.com/46355364/178532373-d03c32f5-df7b-487e-a4ae-b60f7297c48e.png)
+<img width="800" alt="image" src="https://user-images.githubusercontent.com/46355364/218995367-80545bf6-e396-4b6f-b81d-54e214a9d85e.png"></img>
 
 Alternatively, you can also type `/crypto/ov`. Within the Cryptocurrency Overview menu you have a variety of options to get an understanding of the global market, derivatives, heatmaps, a full list of exchanges, news, fees and borrow rates. Taking one of these as an example, `derivatives` returns a Futures table:
 
 ```
-2022 Jul 12, 05:36 (🦋) /crypto/ov/ $ derivatives
+(🦋) /crypto/ov/ $ derivatives
 
                                                              Crypto Derivatives
 ┏━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┓
@@ -58,7 +58,7 @@ Alternatively, you can also type `/crypto/ov`. Within the Cryptocurrency Overvie
 We can start by looking at some general information about the Cryptocurrency market by using `global`:
 
 ```
-2022 Jul 12, 05:38 (🦋) /crypto/ov/ $ global
+(🦋) /crypto/ov/ $ global
 
                  Global Statistics
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┓
@@ -87,7 +87,7 @@ We can start by looking at some general information about the Cryptocurrency mar
 To find an overview of all coins without segregating between different types of coins, we can use `info` which returns the following table:
 
 ```
-2022 Jul 12, 05:40 (🦋) /crypto/ov/ $ info
+(🦋) /crypto/ov/ $ info
 
 Displaying data vs USD
 
@@ -140,7 +140,7 @@ Displaying data vs USD
 And lastly, it is also possible to look at the stable coins in the market instead of the entire Cryptocurrency investment universe. This can be done with `stables` which returns the following:
 
 ```
-2022 Jul 12, 05:40 (🦋) /crypto/ov/ $ stables
+(🦋) /crypto/ov/ $ stables
 
 First 15 stablecoins have a total 152.551 B dollars of market cap.
 

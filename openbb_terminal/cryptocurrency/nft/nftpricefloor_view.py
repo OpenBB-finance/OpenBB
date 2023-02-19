@@ -31,7 +31,7 @@ def display_collections(
     show_sales: bool = False,
     limit: int = 5,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Display NFT collections. [Source: https://nftpricefloor.com/]
 
@@ -96,7 +96,7 @@ def display_floor_price(
     slug: str,
     limit: int = 10,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
     raw: bool = False,
 ):

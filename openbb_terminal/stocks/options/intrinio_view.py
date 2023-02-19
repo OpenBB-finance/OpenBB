@@ -33,9 +33,9 @@ def display_historical(
     strike: float = 0,
     put: bool = False,
     raw: bool = False,
-    chain_id: str = None,
+    chain_id: Optional[str] = None,
     export: str = "",
-    sheet_name: str = "",
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Plot historical option prices
@@ -133,7 +133,7 @@ def view_historical_greeks(
     raw: bool = False,
     limit: Union[int, str] = 20,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plots historical greeks for a given option. [Source: Syncretism]
