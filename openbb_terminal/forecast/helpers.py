@@ -754,7 +754,7 @@ def plotly_shap_scatter_plot(
 
     idx2cat = None
     # convert from a DataFrame or other types
-    if str(type(features)) == "<class 'pandas.core.frame.DataFrame'>":
+    if isinstance(features, pd.DataFrame):
         if feature_names is None:
             feature_names = features.columns
         # feature index to category flag
