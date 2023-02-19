@@ -5,13 +5,9 @@ import logging
 import os
 from typing import Optional, Union
 
-import matplotlib.pyplot as plt
-
 from openbb_terminal import (
     OpenBBFigure,
-    config_terminal as cfg,
 )
-from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.cryptocurrency.dataframe_helpers import (
     lambda_very_long_number_formatter,
     prettify_column_names,
@@ -20,14 +16,11 @@ from openbb_terminal.cryptocurrency.defi import terramoney_fcd_model
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
-    plot_autoscale,
     print_rich_table,
 )
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
-
-# TODO: Test OpenBBFigure conversion
 
 
 @log_start_end(log=logger)
@@ -206,7 +199,11 @@ def display_account_growth(
         "gacc",
         df,
         sheet_name,
+        figure=fig,
     )
+
+    if fig.is_image_export(export):
+        return fig
 
     return fig.show(external=external_axes)
 
@@ -234,21 +231,10 @@ def display_staking_ratio_history(
 
     start, end = df.index[-1], df.index[0]
 
-    # This plot has 1 axis
-    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
     fig = OpenBBFigure(yaxis_title="Staking ratio [%]")
     fig.set_title(f"Staking ratio from {start} to {end}")
 
     fig.add_scatter(x=df.index, y=df["stakingRatio"], mode="lines", name="stakingRatio")
-
-    ax.plot(df, label=df["stakingRatio"])
-    ax.set_ylabel("Staking ratio [%]")
-    ax.set_title(f"Staking ratio from {start} to {end}")
-
-    cfg.theme.style_primary_axis(ax)
-
-    if not external_axes:
-        cfg.theme.visualize_output()
 
     export_data(
         export,
@@ -256,7 +242,11 @@ def display_staking_ratio_history(
         "sratio",
         df,
         sheet_name,
+        figure=fig,
     )
+
+    if fig.is_image_export(export):
+        return fig
 
     return fig.show(external=external_axes)
 
@@ -280,26 +270,17 @@ def display_staking_returns_history(
         Whether to return the figure object or not, by default False
 
     """
-    # This plot has 1 axis
-    _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+
     fig = OpenBBFigure(yaxis_title="Staking returns [%]")
 
     df = terramoney_fcd_model.get_staking_returns_history(limit)
 
     start, end = df.index[-1], df.index[0]
 
-    ax.plot(df, label=df["annualizedReturn"])
     fig.add_scatter(
         x=df.index, y=df["annualizedReturn"], mode="lines", name="annualizedReturn"
     )
-    ax.set_ylabel("Staking returns [%]")
-    ax.set_title(f"Staking returns from {start} to {end}")
     fig.set_title(f"Staking returns from {start} to {end}")
-
-    cfg.theme.style_primary_axis(ax)
-
-    if not external_axes:
-        cfg.theme.visualize_output()
 
     export_data(
         export,
@@ -307,6 +288,10 @@ def display_staking_returns_history(
         "sreturn",
         df,
         sheet_name,
+        figure=fig,
     )
+
+    if fig.is_image_export(export):
+        return fig
 
     return fig.show(external=external_axes)

@@ -3,20 +3,12 @@ import logging
 import os
 from typing import Optional
 
-from matplotlib import (
-    pyplot as plt,
-    ticker,
-)
-
 from openbb_terminal.alternative.oss import runa_model
-from openbb_terminal.config_plot import PLOT_DPI
-from openbb_terminal.config_terminal import theme
 from openbb_terminal.core.plots.backend import plots_backend
+from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
-    lambda_long_number_format,
-    plot_autoscale,
     print_rich_table,
 )
 from openbb_terminal.rich_config import console
@@ -70,48 +62,52 @@ def display_rossindex(
             df = df.sort_values(by=sortby, ascending=ascend)
         df = df.head(limit)
         if show_chart:
-            _, ax1 = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-
-            for _, row in df[::-1].iterrows():
-                ax1.barh(
-                    y=row["GitHub"],
-                    width=row["Forks" if chart_type == "forks" else "Stars"],
-                )
-            ax1.set_xlabel("Forks" if chart_type == "forks" else "Stars")
-            ax1.get_xaxis().set_major_formatter(
-                ticker.FuncFormatter(lambda x, _: lambda_long_number_format(x))
+            fig = OpenBBFigure.create_subplots(
+                1,
+                3,
+                specs=[[{"type": "domain"}, {"type": "bar", "colspan": 2}, None]],
+                column_widths=[0.1, 0.8, 0.1],
             )
-            ax1.grid(axis="y")
-            ax1.yaxis.set_label_position("left")
-            ax1.yaxis.set_ticks_position("left")
-            ax1.set_ylabel("Company")
-            ax1.yaxis.set_tick_params(labelsize=8)
-            title = "Total Forks" if chart_type == "forks" else "Total Stars"
-            ax1.set_title(f"ROSS Index - {title}")
-            if external_axes is None:
-                theme.visualize_output()
+            fig.update_layout(
+                xaxis_title=chart_type.title(), yaxis=dict(title="Company", side="left")
+            )
+
+            fig.set_title(f"ROSS Index - Total {chart_type.title()}")
+
+            fig.add_bar(
+                x=df[chart_type.title()],
+                y=df["GitHub"],
+                orientation="h",
+                name=chart_type.title(),
+                text=df[chart_type.title()],
+                textposition="auto",
+                row=1,
+                col=2,
+            )
+
         if show_growth:
-            fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-
-            for _, row in df[::-1].iterrows():
-                ax.barh(
-                    y=row["GitHub"],
-                    width=row["FG" if chart_type == "forks" else "SG"],
-                )
-            ax.yaxis.set_label_position("left")
-            ax.yaxis.set_ticks_position("left")
-            ax.set_ylabel("Company")
-            ax.set_xlabel("Annual Growth [times]")
-            ax.yaxis.set_tick_params(labelsize=8)
-            title = (
-                "Forks Annual Growth"
-                if chart_type == "forks"
-                else "Stars Annual Growth"
+            fig = OpenBBFigure.create_subplots(
+                1,
+                3,
+                specs=[[{"type": "domain"}, {"type": "bar", "colspan": 2}, None]],
+                column_widths=[0.1, 0.8, 0.1],
             )
-            ax.set_title(f"ROSS Index - {title}")
-            fig.tight_layout()
-            if external_axes is None:
-                theme.visualize_output()
+            fig.update_layout(
+                xaxis_title="Annual Growth [times]",
+                yaxis=dict(title="Company", side="left"),
+            )
+            fig.set_title(f"ROSS Index - {chart_type.title()} Annual Growth")
+            fig.add_bar(
+                x=df["FG" if chart_type == "forks" else "SG"],
+                y=df["GitHub"],
+                orientation="h",
+                name="Annual Growth [times]",
+                text=df["FG" if chart_type == "forks" else "SG"],
+                textposition="auto",
+                row=1,
+                col=2,
+            )
+
         show_df = df.drop(["SG", "FG"], axis=1)
         show_df = show_df.fillna("")
         show_df["GitHub"] = show_df["GitHub"].str.wrap(10)
@@ -130,3 +126,5 @@ def display_rossindex(
             df,
             sheet_name,
         )
+
+        return fig.show(external=external_axes)

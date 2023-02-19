@@ -6,7 +6,6 @@ import os
 from typing import Dict, List, Optional, Union
 
 import pandas as pd
-from pandas.plotting import register_matplotlib_converters
 
 from openbb_terminal import OpenBBFigure
 from openbb_terminal.decorators import log_start_end
@@ -15,8 +14,6 @@ from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
-
-register_matplotlib_converters()
 
 
 @log_start_end(log=logger)
@@ -150,6 +147,8 @@ def display_seasonality(
     fig = OpenBBFigure()
     fig.add_corr_plot(series.values(), m=m, max_lag=max_lag, alpha=alpha)
 
+    fig.update_xaxes(autorange=False, range=[-1, max_lag + 1])
+
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
@@ -192,10 +191,9 @@ def display_corr(
         zmin=correlation.values.min(),
         zmax=1,
         showscale=True,
-        textfont=dict(color="black"),
         text=correlation,
         texttemplate="%{text:.2f}",
-        colorscale="RdBu",
+        colorscale="electric",
         colorbar=dict(
             thickness=10,
             thicknessmode="pixels",
@@ -208,6 +206,7 @@ def display_corr(
         xgap=1,
         ygap=1,
     )
+    fig.update_yaxes(autorange="reversed")
 
     export_data(
         export,

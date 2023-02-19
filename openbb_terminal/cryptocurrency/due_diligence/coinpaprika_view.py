@@ -5,8 +5,6 @@ import logging
 import os
 from typing import Optional
 
-from pandas.plotting import register_matplotlib_converters
-
 from openbb_terminal.cryptocurrency.dataframe_helpers import (
     lambda_long_number_format_with_type_check,
 )
@@ -17,7 +15,6 @@ from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
-register_matplotlib_converters()
 
 # pylint: disable=inconsistent-return-statements
 # pylint: disable=C0302, too-many-lines

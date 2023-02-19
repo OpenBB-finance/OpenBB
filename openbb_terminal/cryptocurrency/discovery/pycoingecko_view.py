@@ -5,8 +5,6 @@ import logging
 import os
 from typing import Optional
 
-from pandas.plotting import register_matplotlib_converters
-
 from openbb_terminal.core.plots.backend import plots_backend
 from openbb_terminal.cryptocurrency.dataframe_helpers import (
     lambda_very_long_number_formatter,
@@ -18,7 +16,6 @@ from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
-register_matplotlib_converters()
 
 # pylint: disable=R0904, C0302
 
