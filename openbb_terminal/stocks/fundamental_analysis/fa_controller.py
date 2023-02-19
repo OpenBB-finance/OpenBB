@@ -910,6 +910,10 @@ class FundamentalAnalysisController(StockBaseController):
                     "[red]Quarterly data currently unavailable for yfinance"
                     ", showing yearly.[/red]\n"
                 )
+            if stocks_helper.verify_plot_options(
+                "income", ns_parser.source, ns_parser.plot
+            ):
+                return
             if ns_parser.source == "AlphaVantage":
                 av_view.display_income_statement(
                     symbol=self.ticker,
@@ -1047,6 +1051,10 @@ class FundamentalAnalysisController(StockBaseController):
             if ns_parser.source == "YahooFinance" and ns_parser.b_quarter:
                 text = "Quarterly data currently unavailable for yfinance"
                 console.print(f"[red]{text}, showing yearly.[/red]\n")
+            if stocks_helper.verify_plot_options(
+                "balance", ns_parser.source, ns_parser.plot
+            ):
+                return
             if ns_parser.source == "AlphaVantage":
                 av_view.display_balance_sheet(
                     symbol=self.ticker,
@@ -1190,6 +1198,10 @@ class FundamentalAnalysisController(StockBaseController):
             if ns_parser.source == "YahooFinance" and ns_parser.b_quarter:
                 text = "Quarterly data currently unavailable for yfinance"
                 console.print(f"[red]{text}, showing yearly.[/red]\n")
+            if stocks_helper.verify_plot_options(
+                "cash", ns_parser.source, ns_parser.plot
+            ):
+                return
             if ns_parser.source == "AlphaVantage":
                 av_view.display_cash_flow(
                     symbol=self.ticker,

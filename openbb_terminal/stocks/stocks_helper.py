@@ -1121,3 +1121,38 @@ def map_parse_choices(choices: List[str]) -> Dict[str, str]:
     the_dict = {x.lower().replace(" ", "_"): x for x in choices}
     the_dict[""] = ""
     return the_dict
+
+
+def verify_plot_options(command: str, source: str, plot: list) -> bool:
+    if command == "cash":
+        command_options = CASH_PLOT
+    elif command == "balance":
+        command_options = BALANCE_PLOT
+    else:
+        command_options = INCOME_PLOT
+    options = list(command_options[source].values())
+
+    incorrect_columns = []
+    for column in plot:
+        if column not in options:
+            incorrect_columns.append(column)
+    if incorrect_columns:
+        console.print(
+            f"[red]The chosen columns to plot is not available for {source}.[/red]\n"
+        )
+        for column in incorrect_columns:
+            possible_sources = []
+            for i in command_options:
+                if column in list(command_options[i].values()):
+                    possible_sources.append(i)
+            if possible_sources:
+                console.print(
+                    f"{column} can be plotted with the following sources: "
+                    + ", ".join(possible_sources)
+                )
+            else:
+                console.print(
+                    f"[red]{column} does not exist in a existing data source.[/red]"
+                )
+        return True
+    return False
