@@ -3,14 +3,9 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import List, Optional, Union
+from typing import Optional, Union
 
-import matplotlib.pyplot as plt
-
-from openbb_terminal import (
-    OpenBBFigure,
-)
-from openbb_terminal.config_terminal import theme
+from openbb_terminal import OpenBBFigure, theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
@@ -125,7 +120,7 @@ def view_historical_greeks(
     limit: Union[int, str] = 20,
     export: str = "",
     sheet_name: Optional[str] = None,
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Plots historical greeks for a given option. [Source: Syncretism]
 
@@ -151,8 +146,8 @@ def view_historical_greeks(
         Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
 
     if chain_id:
