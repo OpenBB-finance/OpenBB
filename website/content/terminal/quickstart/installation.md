@@ -1,5 +1,5 @@
 ---
-sidebar_position: 1
+Sidebar_position: 2
 title: Installation
 description: The OpenBB Terminal can be directly installed on your computer via our installation programs. Within this section, you are guided through the installation process and how to launch the program. If you struggle with the installation process, please don’t hesitate to reach us on Discord or visit our contact page.
 keywords:
@@ -19,108 +19,108 @@ keywords:
     openbb terminal,
   ]
 ---
-
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import InstallerButton from "@site/src/components/General/InstallerButton";
 
-The OpenBB Terminal can be directly installed on your computer via our installation programs. Within this section, you are guided through the installation process and how to launch the program. If you struggle with the installation process, please don’t hesitate to reach us on [Discord](https://openbb.co/discord) or visit our [contact page](https://openbb.co/contact).
-
-OpenBB Terminal is available on all major platforms. With Windows and macOS you can make use of an installation file as found below. Furthermore, it is also possible to install the OpenBB Terminal with Docker or directly through Python which also offers support for Linux.
+The OpenBB Terminal can be directly installed on a Mac or Windows machine with the installer packages linked in the tabs below. While no installer package for Linux is currently available, it can be installed from the command line, via a Python virtual environment. Having trouble? Reach us on [Discord](https://openbb.co/discord) or visit our [contact page](https://openbb.co/contact).
 
 :::info Installation Instructions
 
 <Tabs>
-  <TabItem value="windows" label="Windows">
-  <div class="gdoc-page">
-  <p>This section provides you with the installation file as well as the guide to install the OpenBB Terminal via Windows (10 or greater).</p>
 
-</div><p>Download the installer from the button below:</p>
+Follow along with the instructions for the preferred installation method:
+
+## Installer Packages
+
+<TabItem value="windows" label="Windows">
+
+### 1. Windows Installer
+
+Install the OpenBB Terminal on Windows (10 or greater):
+
+#### 1.1 Download
+
+**Step 1:** Download the file by clicking on the button.
 
 <InstallerButton type="windows" href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v2.4.1/Windows.OpenBB.Terminal.v2.4.1.exe" label="Windows Installer" />
 
-<p>Follow along with the instructions of the video or use the steps below to run the OpenBB Terminal:</p>
+#### 1.2 Run Installer
 
-<iframe width="100%" height="450" src="https://www.youtube.com/embed/-Afp6o9YKGE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+**Step 2:** Open the downloaded file by double-clicking on it
 
-<div class="gdoc-columns">
+#### 1.3 Follow Prompts
 
-<div class="gdoc-columns__content gdoc-markdown--nested">
-    <p><strong>Step 1: Double-click the <code>.exe</code> file that got downloaded to your <code>Downloads</code> folder</strong></p>
-<p align="center"><a target="_blank" href="https://openbb-web-assets.s3.amazonaws.com/docs/installation/install_step_1.png"><img width="500" alt="windows_protected_your_pc" src="https://openbb-web-assets.s3.amazonaws.com/docs/installation/install_step_1.png"></img></a></p>
+**Step 3:** Follow the prompts to complete the installation process
 
-</div>
+#### 1.4 Launch
 
-<div class="gdoc-columns__content gdoc-markdown--nested">
-    <p><strong>Step 2: Follow the prompts clicking <code>Next ></code> where needed to complete the installation process</strong></p>
+**Step 4:** Launch the Terminal by double-clicking on the application shortcut added to the desktop.
 
-</div>
+**Note:** The first launch may take up to a few minutes, subsequent launches will be quicker.
 
-<div class="gdoc-columns__content gdoc-markdown--nested">
-    <p><strong>Step 3: Double-click on the application that appeared on your Desktop, you are now able to run the OpenBB Terminal</strong></p>
-    <p align="center"><a target="_blank" href="https://openbb-web-assets.s3.amazonaws.com/docs/installation/icon.png"><img width="100" alt="run_the_terminal" src="https://openbb-web-assets.s3.amazonaws.com/docs/installation/icon.png"></img></a></p>
-<p>The first time this takes a bit longer to load, this can take up to a few minutes. If everything was successful you should see a screen like the one below : </p>
-<p align="center"><img width="500" alt="run_the_terminal" src="https://openbb-web-assets.s3.amazonaws.com/docs/installation/final_install.png"></img></p>
-
-</div>
-
-</div>
 </TabItem>
 
 <TabItem value="mac" label="MacOS">
 
-For Mac there are two installers available, one for Intel and one for Apple Silicon (M1). Please download the correct one for your machine.
+### 2. MacOS Installer
+
+Install the OpenBB Terminal on MacOS (Big Sur or later). There are two versions of the installers available for MacOS, Apple Silicon (M1) and Intel-based. Apple Silicon users will need to install Rosetta prior to installation. Install Rosetta from the command line: 
+
+```console
+softwareupdate --install-rosetta
+```
 
 <div className="flex justify-between">
-<div className="flex items-center flex-col">If you are using Mac Intel:
+  <div className="flex items-center flex-col">Intel-based Mac:
   <InstallerButton href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v2.4.1/x86.64.MacOS.OpenBB.Terminal.v2.4.1.dmg" label="Mac Intel Installer" />
   </div>
-  <br/>
-<div className="flex items-center flex-col">
-If you are using Mac Apple Silicon (M1):
+
+  <div className="flex items-center flex-col">Mac Apple Silicon (M1):
   <InstallerButton href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v2.4.1/ARM64.MacOS.OpenBB.Terminal.v2.4.1.dmg" label="Mac M1 Installer" />
   </div>
 </div>
 
-<p>Follow along with the instructions of the video or use the steps below to run the OpenBB Terminal:</p>
+#### 2.1  Download
 
-<iframe width="100%" height="450" src="https://www.youtube.com/embed/lqIuJLuU2e0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+**Step 1:** Download the DMG file from the links above.
 
-<div class="gdoc-columns">
+#### 2.2 Mount DMG
 
-<div class="gdoc-columns__content gdoc-markdown--nested">
-    <p><strong>Step 1: Open the downloaded <code>OpenBB Terminal.dmg</code> and drag the <code>OpenBB Terminal</code> folder into your <code>Applications</code></strong></p>
-<p>A link to the <code>Applications</code> folder is presented on the screen.
-Note that this should take some time as it is extracting the files from the .dmg file.</p>
+**Step 2:** Mount the downloaded DMG file by double-clicking on it.
+
+#### 2.3 Drag Folder
+
+**Step 3:** Click and drag the OpenBB Terminal folder and hold it over the Applications shortcut. This opens a new Finder window, then drag the OpenBB Terminal folder into the Applications folder.
+
 <p align="center"><img width="70%" alt="image" src="https://user-images.githubusercontent.com/11668535/173027899-9b25ae4f-1eef-462c-9dc9-86086e9cf197.png"></img></p>
 
-</div>
+#### 2.4 Unmount DMG
 
-<div class="gdoc-columns__content gdoc-markdown--nested">
-    <p><strong>Step 2: Open the <code>OpenBB Terminal</code> app in the folder that you have just copied to your <code>Applications</code>.</strong></p>
-<p>During first launch if you get a message saying that the application can&rsquo;t be launched, do the following:
-Right-Click the app and select <code>Open</code>. You will see a message saying that macOS was not able to check whether the application contains malicious software. Click <code>Open</code> to proceed.</p>
-<p align="center"><img width="70%" alt="image" src="https://user-images.githubusercontent.com/11668535/173027798-b4d25a20-d932-4ed9-a8ce-f911c4ee4342.png"></img></p>
+**Step 4:** Unmount the installer, by "Ejecting OpenBB Terminal" from the locations in Finder.
 
-</div>
+#### 2.5 Launch
 
-</div>
+**Step 5:** Launch the application by double-clicking on the `OpenBB Terminal` application.
+
+**Note:** During the first launch, a warning message may appear. Click, "Open".
+<p align="center"><img src="mac_install1.png"></img></p>
+
 </TabItem>
-  <TabItem value="docker" label="Docker">
-  <p>Installing the OpenBB Terminal via Docker supports both Windows and Unix systems (Linux + MacOS). Installation differs a bit between operating system (Windows, macOS and Linux). Please select the section matching to your OS.
-</p>
 
-<p>Follow along with the instructions of the video or use the steps below to run the OpenBB Terminal:</p>
+## Docker
 
-<iframe width="100%" height="450" src="https://www.youtube.com/embed/NjXPIfDzQMk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<TabItem value="docker" label="Docker">
 
-## 1. Windows
+Installing the OpenBB Terminal via Docker supports both Windows and Unix systems (Linux + MacOS). Installation differs a bit between operating system (Windows, macOS and Linux). Please select the section matching to your OS.
 
-### 1.1. Install Docker Desktop
+### 1. Windows
+
+#### 1.1. Install Docker Desktop
 
 You can find `Docker Desktop` for Windows here: [Download Docker Desktop](https://www.docker.com/products/docker-desktop)
 
-### 1.2. Start Docker
+#### 1.2. Start Docker
 
 Execute the following command:
 
@@ -152,7 +152,7 @@ Server:
   Stopped: 10
 ```
 
-### 1.3. Install VcXsrv
+#### 1.3. Install VcXsrv
 
 To display charts with your container, you need : VcXsrv.
 
@@ -160,7 +160,7 @@ You can download VcXsrv here : [Download VcXsrv](https://sourceforge.net/project
 
 When running VcXsrv program check the option: `Disable access control`
 
-### 1.4. Pull and run the container
+#### 1.4. Pull and run the container
 
 Execute this commands:
 
@@ -174,13 +174,13 @@ This will download and run the file: `docker-compose.yaml`
 
 This file contents the settings to pull and run OpenBB Terminal Docker image.
 
-## 2. macOS
+### 2. MacOS
 
-### 2.1. Install and run Docker Desktop
+#### 2.1. Install and run Docker Desktop
 
 Install and run Docker Desktop as describe above in this document.
 
-### 2.2. Install XQuartz
+#### 2.2. Install XQuartz
 
 You can download XQuartz here: [Download XQuartz](https://www.xquartz.org)
 
@@ -196,7 +196,7 @@ Make sure both of these options are enabled:
 It should look like this:
 ![Screen Shot 2021-09-08 at 12 21 48 PM](https://user-images.githubusercontent.com/18151143/132548605-235d774b-9aa6-4a45-afcf-58fb775d376a.png)
 
-### 2.3. Get Docker IP
+#### 2.3. Get Docker IP
 
 To get Docker IP you can use this command:
 
@@ -204,7 +204,7 @@ To get Docker IP you can use this command:
 IP=$(ifconfig | grep inet | grep -v "127.0.0.1" | awk '$1=="inet" {print $2}')
 ```
 
-### 2.4. Pull and run the container
+#### 2.4. Pull and run the container
 
 Execute this commands:
 
@@ -221,13 +221,13 @@ This file contents the settings to pull and run OpenBB Terminal Docker image.
 
 The `xhost +$IP` and `DISPLAY=$IP:0` parts are there to allow charts display.
 
-## 3. Linux
+### 3. Linux
 
-### 3.1. Install and run Docker Desktop
+#### 3.1. Install and run Docker Desktop
 
 Install and run Docker Desktop as describe above in this document.
 
-### 3.2. Pull and run the container
+#### 3.2. Pull and run the container
 
 Execute this commands:
 
@@ -240,7 +240,9 @@ docker compose run openbb
 
 Note: if you're using remote docker host, you can connect with `ssh -X <FQDN/IP>`.
 
-## 4. Advanced: without Docker Compose
+### 4. Advanced
+
+#### Without Docker Compose
 
 To run directly the docker image you can use the following command:
 
@@ -252,163 +254,149 @@ docker run --rm -it \
 ```
 
 </TabItem>
-  <TabItem value="python" label="Python">
-  <p>This section guides you a long to install the OpenBB Terminal via Python. This installation type supports both Windows and Unix systems (Linux + MacOS).</p>
 
-<p>Follow along with the instructions of the video or use the steps below to run the OpenBB Terminal:</p>
+## Source Code
 
-<iframe width="100%" height="450" src="https://www.youtube.com/embed/rDYGmH-bQRk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<TabItem value="source code" label="Source Code">
 
-**NOTE for Windows users:** For Windows users who prefer to use an environment similar to what Linux and macOS users use, we recommend Windows Subsystem for Linux (WSL). WSL emulates a Linux machine inside your Windows system. If this is the case - jump to the <a href="#installing-wsl-only-for-windows-users">Installing WSL (Only for Windows users)</a> section before proceeding.
+The following instructions are for installing the OpenBB Terminal source code.
 
-### Installing the terminal
+### 1. System Preparation
 
-These steps are common in all operating systems (Windows with or without WSL, MacOS or Linux).
+Prepare the system by installing the following items:
 
-This project supports Python 3.8 and 3.9. By default, the newly created virtual environment will use Python 3.9.13
+#### 1.1 Install Miniconda
 
-Our current recommendation is to use this project with Anaconda's Python distribution - either full [**Anaconda3 Latest**](https://www.anaconda.com/products/distribution) or [**Miniconda3 Latest**](https://docs.conda.io/en/latest/miniconda.html) (recommended). Several features in this project utilize Machine Learning. Machine Learning Python dependencies are optional. For MacOS systems, the "Miniconda3 MacOSX 64-bit" version that works on both Intel and M1 macs is recommended.
+[Install Miniconda](https://docs.conda.io/en/latest/miniconda.html)
 
-**NOTE:** We recommend using `conda` and `poetry` because it just works. You can use other python
-distributions and use raw `pip` instead of `poetry` but you will very likely bump into installation
-issues.
-
-#### 1. [Install Miniconda](https://docs.conda.io/en/latest/miniconda.html)
-
-Miniconda is a python environment and package manager. It is required if you want to
-have the dependencies working straight away.
+Miniconda is a Python environment and package manager. It is required for installing certain dependencies..
 
 - Go [here](https://docs.conda.io/en/latest/miniconda.html#latest-miniconda-installer-links) to find the download for your operating system or use the links below:
+  
+  - Apple-Silicon Systems: [Miniconda for MacOS](https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-arm64.pkg)
+  - Intel-based Mac Systems: [Miniconda for MacOS](https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh)
+  - Linux and WSL Systems: [Miniconda for Linux](https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh)
+  - Raspberry PI Systems: [Miniconda for Raspberry PI](https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-aarch64.sh)
+  - Windows Systems: [Miniconda for Windows](https://repo.anaconda.com/miniconda/Miniconda3-latest-Windows-x86_64.exe)
 
-  - If you are using macOS [Miniconda for MacOS](https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh)
-  - If you are using WSL or Linux [Miniconda for Linux](https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh)
-  - If you are using a Raspberry PI [Miniconda for Raspberry PI](https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-aarch64.sh)
-  - If you are using Windows [Miniconda for Windows](https://repo.anaconda.com/miniconda/Miniconda3-latest-Windows-x86_64.exe).
+    **NOTE for Apple Silicon Users:** Install Rosetta from the command line: `softwareupdate --install-rosetta`
 
-    **ONLY REQUIRED ON WINDOWS IF NOT USING WSL**, Install/update Microsoft C++ Build Tools from here: <https://visualstudio.microsoft.com/visual-cpp-build-tools/>
+    **NOTE for Windows users:** Install/update Microsoft C++ Build Tools from [here](https://visualstudio.microsoft.com/visual-cpp-build-tools/).
 
-    **NOTE for macOS users:** The link above gets you the Intel version of miniconda meaning if you're on an Apple Silicon powered machine you will be using the terminal through Apple's rosetta2 layer. We recommend sticking to this distribution for better compatibility until the dependency developers fully catch up with Apple's transition to Apple Silicon.
+#### 1.2 Install CMake
 
-- After following the steps, confirm that you have it by opening a terminal and running: `conda -V`. The output should be something along the lines of: `conda 22.9.0`
+**CMake is required by several Python modules.**
 
-#### 2. Install CMake
+**For Windows:**
 
-CMake is required by several python modules.
+CMake is installed as a part of Microsoft C++ Build Tools. Skip ahead to the next step.
 
-**On Linux or Raspberry Pi:**
+**For MacOS:**
 
-```bash
-sudo apt update
-sudo apt install -y gcc cmake
-```
+Check if homebrew is installed by running `brew --version`
 
-**On macOS:**
-
-Check if you have homebrew installed by running `brew --version`
-
-If you don't have homebrew installed run:
+If Homebrew is not installed, run:
 
 ```bash
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 brew install cmake
+brew install gcc
 ```
 
-If you have homebrew installed run:
+If Homebrew is already installed:
 
 ```bash
 brew install cmake
+brew install gcc
 ```
 
-**On Windows:**
-
-If you have followed the instructions in step 1 of this guide CMake was installed as a part of you Microsoft C++ Build Tools
-
-#### 3. Install git
+**For Linux:**
 
 ```bash
-conda install -c anaconda git
+sudo apt update && sudo apt upgrade
+sudo apt install -y gcc cmake
 ```
 
-#### 4. Clone the Project
+#### 1.3 Linux and WSL Only
 
-- Via HTTPS: `git clone https://github.com/OpenBB-finance/OpenBBTerminal.git`
-- via SSH: `git clone git@github.com:OpenBB-finance/OpenBBTerminal.git`
+Since a WSL installation is headless by default (i.e., there is only access to a terminal running a Linux distribution) there are additional steps required to display visualizations. A more detailed tutorial is found, [here](https://medium.com/@shaoyenyu/make-matplotlib-works-correctly-with-x-server-in-wsl2-9d9928b4e36a).
 
-#### 5. Navigate into the project's folder
+- Dynamically export the DISPLAY environment variable in WSL2:
 
-```bash
-cd OpenBBTerminal/
+```console
+# add to the end of ~/.bashrc file
+export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2}'):0
+# source the file
+source ~/.bashrc
 ```
 
-#### 6. Create Environment
+- Download and install [VcXsrv](https://sourceforge.net/projects/vcxsrv/)
 
-You can name the environment whatever you want. Although you could use names such as: `welikethestock`, `thisistheway` or `diamondhands`, we recommend something simple and intuitive like `obb`. This is because this name will be used from now onwards.
+- When running the program is important to check "Disable access control"
 
-Please note, the following setup has been confirmed to work for all OS (including M1) with the standard miniconda distribution. If you are using a different distribution, you will need to install it manually before proceeding.
+After this, `VcXsrv` should be running successfully, and the machine is ready to proceed with the terminal installation.
 
-```bash
-conda env create -n obb --file build/conda/conda-3-9-env.yaml
+### 2. Create Python Environment
+
+The first step is to create the virtual Python environment. When a terminal window is opened, if the base Conda environment `(base)` is not activated automatically, enter:
+
+```console
+conda env list
 ```
 
-Or, to include machine learning type:
+Then copy the path which corresponds with `base`, and activate it with:
 
-```bash
-conda env create -n obb --file build/conda/conda-3-9-env-full.yaml
+```console
+conda activate REPLACE_WITH_PATH
 ```
 
-Note: Using python 3.10+ can lead to undesirable functionality for certain commands.
+Now create the environment by copying the code below into the command line:
 
-#### 7. Activate the virtual environment
+```console
+conda create -n obb -c conda-forge python=3.10.8 pip pybind11 cmake git cvxpy lightgbm poetry
+```
 
-```bash
+### 3. Activate Environment
+
+After the packages from Step 2 install, activate the newly created environment by entering:
+
+```console
 conda activate obb
 ```
 
-Note: At the end, you can deactivate it with: `conda deactivate`.
+### 4. Install OpenBB Terminal
 
-#### 8. Install dependencies with poetry
+From the command line, navigate into a folder where the installation should live. Do not continue without completing steps 1-3.
 
-Install the main dependencies with
+#### 4.1 Clone the Project
 
-```bash
-poetry install
+Cloning the GitHub repo will download the source code to the current working directory.
+
+```console
+git clone https://github.com/OpenBB-finance/OpenBBTerminal.git
 ```
 
-You are good to go with the core of the OpenBB Terminal. To install additional toolkits proceed with the following commands:
+#### 4.2 Navigate to OpenBBTerminal
 
-To install the Portfolio Optimization Toolkit run:
-
-```bash
-poetry install -E optimization
+```console
+cd OpenBBTerminal
 ```
 
-To install the Machine Learning Toolkit run:
-
-```bash
-poetry install -E forecast
-```
-
-To install both the Portfolio Optimization and the Machine Learning Toolkit run:
+#### 4.3 Install Remaining Packages
 
 ```bash
 poetry install -E all
 ```
 
-#### 9. You're ready to use the terminal!
+#### 4.4 Launch OpenBB Terminal
 
 Start the terminal by running:
-
-```bash
-openbb
-```
-
-Or the old-fashioned way:
 
 ```bash
 python terminal.py
 ```
 
-**NOTE:** When you close the terminal and re-open it, the only command you need to re-call is `conda activate obb` before you call `openbb` again.
+**NOTE:** When a terminal is re-opened, the Python environment will need to be activated again - `conda activate obb` - and the current working directory should be the `OpenBBTerminal` folder where the source code was cloned.
 
 **TROUBLESHOOT:** If you are having troubles with installation, check out the [FAQ page](/terminal/quickstart/faq). You can also reach for help on our [discord](https://discord.gg/Up2QGbMKHY).
 
@@ -416,16 +404,16 @@ python terminal.py
 
 By default we advise using `conda` and `poetry` for environment setup and dependency management. Conda ships binaries for packages like `numpy` so these dependencies are not built from source locally by `pip`. Poetry solves the dependency tree in a way that the dependencies of dependencies of dependencies use versions that are compatible with each other.
 
-If you are using a conda environment the `build/conda` folder contains multiple `.yaml` configuration files that you can choose from.
+For `Conda` environments, the `build/conda` folder contains multiple `.yaml` configuration files to choose from.
 
-If you are using other python distributions we highly recommend that you use some virtual environment like `virtualenv` or `pyenv` for installing the terminal dependency libraries.
+When using other python distributions we highly recommend a virtual environment like `virtualenv` or `pyenv` for installing the terminal dependency libraries.
 
-Requirements files that you can find in the project root:
+Requirements files that are found in the project root:
 
 - `requirements.txt` list all the dependencies without Machine Learning libraries
 - `requirements-full.txt` list all the dependencies with Machine Learning libraries
 
-You can install them with with pip
+They can be installed with `pip`:
 
 ```bash
 pip install -r requirements.txt
@@ -435,26 +423,8 @@ The dependency tree is solved by poetry.
 
 Note: The libraries specified in the requirements files have been tested and work for the purpose of this project, however, these may be older versions. Hence, it is recommended for the user to set up a virtual python environment prior to installing these. This allows to keep dependencies required by different projects in separate places.
 
-### Installing WSL (Only for Windows users)
-
-If you are using Windows you first you need to install WSL. The process is simple and a tutorial can be found [here](https://www.sitepoint.com/wsl2/). Once you reach the section **Update Linux** on that tutorial, you should have a linux machine installed and can proceed to the next steps.
-
-Since WSL installation is headless by default (i.e., you have only access to a terminal running a linux distribution) you need some extra steps to be able to visualize the charts produced by the terminal (more detailed tutorial [here](https://medium.com/@shaoyenyu/make-matplotlib-works-correctly-with-x-server-in-wsl2-9d9928b4e36a)):
-
-1. Dynamically export the DISPLAY environment variable in WSL2:
-
-   ```bash
-   # add to the end of ~/.bashrc file
-   export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2}'):0
-   # source the file
-   source ~/.bashrc
-   ```
-
-2. Download and install [VcXsrv](https://sourceforge.net/projects/vcxsrv/)
-3. When running the program is important to check "Disable access control"
-
-After this, `VcXsrv` should be running successfully and we can proceed to terminal installation.
 </TabItem>
+
 </Tabs>
 
 :::
