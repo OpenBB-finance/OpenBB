@@ -355,7 +355,9 @@ def load_from_ccxt(
 
     try:
         if interval not in list(CCXT_INTERVAL_MAP.keys()):
-            console.print(f"\nInvalid interval chosen for source, available intervals: {', '.join(list(CCXT_INTERVAL_MAP.keys()))}\n")
+            console.print(
+                f"\nInvalid interval chosen for source, available intervals: {', '.join(list(CCXT_INTERVAL_MAP.keys()))}\n"
+            )
         df = fetch_ccxt_ohlc(
             exchange,
             3,
@@ -373,9 +375,11 @@ def load_from_ccxt(
                 break
             i += 1
         first_date = pd.to_datetime(str(df.index.values[0]))
-        df = df.iloc[0: i]
+        df = df.iloc[0:i]
         if df.empty:
-            console.print(f"\nThe first data point retrieved was {first_date.strftime('%Y-%m-%d')}, thus the end date ({end_date.strftime('%Y-%m-%d')}) filtered out all of the data.\n")
+            console.print(
+                f"\nThe first data point retrieved was {first_date.strftime('%Y-%m-%d')}, thus the end date ({end_date.strftime('%Y-%m-%d')}) filtered out all of the data.\n"
+            )
             return pd.DataFrame()
     except Exception:
         console.print(f"\nPair {pair} not found on {exchange}\n")
@@ -552,7 +556,9 @@ def load(
     end_date = check_datetime(end_date, start=False)
 
     if source == "CCXT":
-        return load_from_ccxt(symbol, start_date, interval, exchange, to_symbol, end_date)
+        return load_from_ccxt(
+            symbol, start_date, interval, exchange, to_symbol, end_date
+        )
     if source == "CoinGecko":
         return load_from_coingecko(symbol, start_date, to_symbol)
     if source == "YahooFinance":
