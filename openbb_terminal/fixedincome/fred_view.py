@@ -61,7 +61,7 @@ ID_TO_NAME_AMERIBOR = {
     "AMBOR30": "30-Day Moving Average AMERIBOR Benchmark Interest Rate",
     "AMBOR90": "90-Day Moving Average AMERIBOR Benchmark Interest Rate",
 }
-ID_TO_NAME_EFFR = {
+ID_TO_NAME_FED = {
     "FEDFUNDS": "Monthly Effective Federal Funds Rate",
     "EFFR": "Daily Effective Federal Funds Rate",
     "DFF": "Daily Effective Federal Funds Rate",
@@ -131,6 +131,12 @@ NAME_TO_ID_PROJECTION = {
     "Central tendency Midpoint": ['FEDTARCTM', 'FEDTARCTMLR'],
     "Range Low": ['FEDTARRL', 'FEDTARRLLR'],
     "Central tendency Low": ['FEDTARCTL', 'FEDTARCTLLR'],
+}
+
+NAME_TO_ID_ECB = {
+    "deposit": "ECBDFR",
+    "lending": "ECBMLFR",
+    "refinancing": "ECBMRRFR"
 }
 
 
@@ -479,7 +485,7 @@ def plot_fftr(
 
 @log_start_end(log=logger)
 @check_api_key(["API_FRED_KEY"])
-def plot_effr(
+def plot_fed(
     series_id: str = "FEDFUNDS",
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
@@ -565,7 +571,7 @@ def plot_effr(
                 linewidth=3 if column == series_id else 1,
                 color=next(colors),
         )
-        ax.set_title(ID_TO_NAME_EFFR[series_id])
+        ax.set_title(ID_TO_NAME_FED[series_id])
         ax.legend(data_series)
         ax.set_ylabel("Yield (%)")
         theme.style_primary_axis(ax)
@@ -592,7 +598,7 @@ def plot_effr(
             linewidth=2,
             color=next(colors),
         )
-        ax.set_title(ID_TO_NAME_EFFR[series_id])
+        ax.set_title(ID_TO_NAME_FED[series_id])
         ax.set_ylabel("Yield (%)" if series_id not in ["EFFRVOL", "OBFRVOL"] else "Billions in USD" )
         theme.style_primary_axis(ax)
 
@@ -614,7 +620,7 @@ def plot_effr(
             df_transformed.iloc[-10:],
             headers=list(df_transformed.columns),
             show_index=True,
-            title=ID_TO_NAME_EFFR[series_id],
+            title=ID_TO_NAME_FED[series_id],
             floatfmt=".3f",
         )
     
@@ -696,7 +702,7 @@ def plot_projection(
     sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
-    """Plot FOMC Summary of Economic Projections for the Fed Funds Rate.
+    """Plot the Federal Reserve's projection of the federal funds rate.
 
     Parameters
     ----------
@@ -727,10 +733,10 @@ def plot_projection(
     data_series_df = pd.DataFrame.from_dict(data_series).dropna()
     data_series_df.index = pd.to_datetime(data_series_df.index).date
 
-    for legend, df in data_series.items():
+    for legend, df in data_series_df.items():
         ax.plot(
-            data_series_df[legend].index,
-            data_series_df[legend].values,
+            df.index,
+            df.values,
             linestyle="dashed" if legend != "Median" else "solid",
             linewidth=1 if legend != "Median" else 2,
             label=legend,
@@ -836,20 +842,22 @@ def plot_dwpcr(
 
 @log_start_end(log=logger)
 @check_api_key(["API_FRED_KEY"])
-def plot_ecbdfr(
+def plot_ecb(
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
+    interest_type: Optional[str] = None,
+    raw: bool = False,
     export: str = "",
     sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
-    """Plot ECB Deposit Facility Rate for Euro Area.
+    """Plot the key ECB interest rates.
 
-    The deposit facility rate is one of the three interest rates the ECB sets every six weeks as part of its monetary
-    policy. The rate defines the interest banks receive for depositing money with the central bank overnight.
+    The Governing Council of the ECB sets the key interest rates for the euro area:
 
-    A bank rate is the interest rate a nation's central bank charges to its domestic banks to borrow money. The rates
-    central banks charge are set to stabilize the economy.
+    - The interest rate on the main refinancing operations (MRO), which provide the bulk of liquidity to the banking system.
+    - The rate on the deposit facility, which banks may use to make overnight deposits with the Eurosystem.
+    - The rate on the marginal lending facility, which offers overnight credit to banks from the Eurosystem.
 
     Parameters
     ----------
@@ -862,10 +870,23 @@ def plot_ecbdfr(
     external_axes: Optional[List[plt.Axes]]
         External axes (1 axis is expected in the list)
     """
-    df = fred_model.get_series_data(
-        series_id="ECBDFR", start_date=start_date, end_date=end_date
-    )
+    
+    if interest_type:
+        df = pd.DataFrame(
+            fred_model.get_series_data(
+                series_id=NAME_TO_ID_ECB[interest_type], start_date=start_date, end_date=end_date),
+        columns=[interest_type])
 
+    else:
+        series_dictionary = {}
+            
+        for interest_name, value in NAME_TO_ID_ECB.items():
+            series_dictionary[interest_name.title()] = fred_model.get_series_data(
+                series_id=value, start_date=start_date, end_date=end_date)
+        
+        df = pd.DataFrame.from_dict(series_dictionary)
+        df.index = pd.to_datetime(df.index).date  
+        
     # This plot has 1 axis
     if not external_axes:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
@@ -875,16 +896,32 @@ def plot_ecbdfr(
         return
 
     colors = cycle(theme.get_colors())
-    ax.plot(
-        df.index,
-        df.values,
-        color=next(colors, "#FCED00"),
-    )
-    ax.set_title("ECB Deposit Facility Rate for Euro Area [Percent]")
+    
+    for series in df:
+        ax.plot(
+            df.index,
+            df[series],
+            color=next(colors, "#FCED00"),
+            label=series.title(),
+        )
+
+    title = f"ECB {interest_type.title()} Rate for Euro Area" if interest_type else "ECB Interest Rates for Euro Area"
+    ax.set_title(title)
+    ax.legend(loc='lower left')
+    ax.set_ylabel("Yield (%)")
     theme.style_primary_axis(ax)
 
     if external_axes is None:
         theme.visualize_output()
+        
+    if raw:   
+        print_rich_table(
+            df.iloc[-10:],
+            headers=list(df.columns),
+            show_index=True,
+            title=title,
+            floatfmt=".3f",
+        )
 
     export_data(
         export,

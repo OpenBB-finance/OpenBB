@@ -13,10 +13,11 @@ from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.fixedincome import ecb_view, oecd_view, econdb_view, yfinance_view
-from openbb_terminal.fixedincome import fred_view
+from openbb_terminal.fixedincome import fred_view, oecd_model
 
 from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
+    list_from_str,
     valid_date,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
 )
@@ -35,16 +36,12 @@ class FixedIncomeController(BaseController):
         "sofr",
         "sonia",
         "ameribor",
-        "fftr",
-        "effr",
+        "fed",
         "iorb",
         "projection",
         "dwpcr",
-        "ecbdfr",
-        "ecbmlfr",
-        "ecbmrofr",
-        "stir",
-        "ltir",
+        "ecb",
+        "treasury",
         "tmc",
         "ffrmc",
         "ycrv",
@@ -108,7 +105,7 @@ class FixedIncomeController(BaseController):
         "90_day_ma": "AMBOR90",
     }
 
-    effr_parameter_to_fred_id = {
+    fed_parameter_to_fred_id = {
         "monthly": "FEDFUNDS",
         "daily": "DFF",
         "weekly": "FF",
@@ -122,6 +119,7 @@ class FixedIncomeController(BaseController):
         "daily": "OBFR",
         "volume": "OBFRVOL",
     }
+    
     dwpcr_parameter_to_fred_id = {
         "daily_excl_weekend": "DPCREDIT",
         "monthly": "MPCREDIT",
@@ -177,6 +175,8 @@ class FixedIncomeController(BaseController):
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             self.choices: dict = self.choices_default
+            self.choices["treasury"]["--short"] = {c: None for c in oecd_model.COUNTRY_TO_CODE}
+            self.choices["treasury"]["--long"] = {c: None for c in oecd_model.COUNTRY_TO_CODE}
             self.completer = NestedCompleter.from_nested_dict(self.choices)  # type: ignore
 
     def print_help(self):
@@ -189,22 +189,17 @@ class FixedIncomeController(BaseController):
         mt.add_cmd("ameribor")
         mt.add_raw("\n")
         mt.add_info("_central_bank_rates_")
-        mt.add_cmd("effr")
-        mt.add_cmd("iorb")
+        mt.add_cmd("fed")
         mt.add_cmd("projection")
+        mt.add_cmd("iorb")
         mt.add_cmd("dwpcr")
-        mt.add_cmd("ecbdfr")
-        mt.add_cmd("ecbmlfr")
-        mt.add_cmd("ecbmrofr")
-        mt.add_cmd("stir")
-        mt.add_cmd("ltir")
+        mt.add_cmd("ecb")
         mt.add_raw("\n")
-        mt.add_info("_yield_curves_")
+        mt.add_info("_government_bonds_")
+        mt.add_cmd("treasury")
         mt.add_cmd("ycrv")
         mt.add_cmd("iiycrv")
         mt.add_cmd("ecbycrv")
-        mt.add_raw("\n")
-        mt.add_info("_us_government_securities_")
         mt.add_cmd("tbill")
         mt.add_cmd("cmn")
         mt.add_cmd("tips")
@@ -435,12 +430,12 @@ class FixedIncomeController(BaseController):
             )
 
     @log_start_end(log=logger)
-    def call_effr(self, other_args: List[str]):
-        """Process effr command"""
+    def call_fed(self, other_args: List[str]):
+        """Process fed command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="effr",
+            prog="fed",
             description="Get Effective Federal Funds Rate data.\nA bank rate is the interest rate a nation's central "
             "bank charges to its domestic banks to borrow money. The rates central banks charge are set "
             "to stabilize the economy. In the United States, the Federal Reserve System's Board of "
@@ -453,7 +448,7 @@ class FixedIncomeController(BaseController):
             type=str,
             help="Specific Effective Federal Funds Rate data to retrieve",
             default="monthly",
-            choices=list(self.effr_parameter_to_fred_id.keys()),
+            choices=list(self.fed_parameter_to_fred_id.keys()),
         )
         parser.add_argument(
             "-s",
@@ -504,8 +499,8 @@ class FixedIncomeController(BaseController):
             if ns_parser.overnight and (ns_parser.target or ns_parser.quantiles):
                 console.print("The Overnight Bank Funding Rate has no target and quantiles data.")
             else:
-                fred_view.plot_effr(
-                    self.effr_parameter_to_fred_id[ns_parser.parameter],
+                fred_view.plot_fed(
+                    self.fed_parameter_to_fred_id[ns_parser.parameter],
                     ns_parser.start_date,
                     ns_parser.end_date,
                     ns_parser.overnight,
@@ -566,7 +561,7 @@ class FixedIncomeController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="projection",
-            description="Get FOMC Summary of Economic Projections for the Fed Funds Rate."
+            description="Get the Federal Reserve's projection of the federal funds rate."
         )
         parser.add_argument(
             "-l",
@@ -641,17 +636,16 @@ class FixedIncomeController(BaseController):
             )
 
     @log_start_end(log=logger)
-    def call_ecbdfr(self, other_args: List[str]):
-        """Process ecbdfr command"""
+    def call_ecb(self, other_args: List[str]):
+        """Process ecb command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="ecbdfr",
-            description="Plot ECB Deposit Facility Rate for Euro Area. The deposit facility rate is one of the three "
-            "interest rates the ECB sets every six weeks as part of its monetary policy. The rate defines "
-            "the interest banks receive for depositing money with the central bank overnight. A bank rate "
-            "is the interest rate a nation's central bank charges to its domestic banks to borrow money. "
-            "The rates central banks charge are set to stabilize the economy.",
+            prog="ecb",
+            description="Plot the three interest rates the ECB sets "
+            "every six weeks as part of its monetary policy, these are the "
+            "interest rate on the main refinancing operations (MRO), the rate on "
+            "the deposit facility and the rate on the marginal lending facility."
         )
         parser.add_argument(
             "-s",
@@ -669,128 +663,55 @@ class FixedIncomeController(BaseController):
             help="Ending date (YYYY-MM-DD) of data",
             default=None,
         )
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
-        )
-        if ns_parser:
-            fred_view.plot_ecbdfr(
-                ns_parser.start_date,
-                ns_parser.end_date,
-                ns_parser.export,
-                " ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
-            )
-
-    @log_start_end(log=logger)
-    def call_ecbmlfr(self, other_args: List[str]):
-        """Process ecbmlfr command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="ecbmlfr",
-            description="Plot ECB Deposit Facility Rate for Euro Area. A standing facility of the Euro-system which "
-            "counterparties may use to receive overnight credit from a national central bank at a "
-            "pre-specified interest rate against eligible assets. A bank rate "
-            "is the interest rate a nation's central bank charges to its domestic banks to borrow money. "
-            "The rates central banks charge are set to stabilize the economy.",
-        )
         parser.add_argument(
-            "-s",
-            "--start",
-            dest="start_date",
-            type=valid_date,
-            help="Starting date (YYYY-MM-DD) of data",
-            default=None,
-        )
-        parser.add_argument(
-            "-e",
-            "--end",
-            dest="end_date",
-            type=valid_date,
-            help="Ending date (YYYY-MM-DD) of data",
-            default=None,
-        )
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
-        )
-        if ns_parser:
-            fred_view.plot_ecbmlfr(
-                ns_parser.start_date,
-                ns_parser.end_date,
-                ns_parser.export,
-                " ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
-            )
-
-    @log_start_end(log=logger)
-    def call_ecbmrofr(self, other_args: List[str]):
-        """Process ecbmrofr command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="ecbmrofr",
-            description="Plot ECB Main Refinancing Operations Rate: Fixed Rate Tenders for Euro Area. A regular open "
-            "market operation executed by the Euro-system (in the form of a reverse transaction) for the "
-            "purpose of providing the banking system with the amount of liquidity that the former deems "
-            "to be appropriate. Main refinancing operations are conducted through weekly standard tenders "
-            "(in which banks can bid for liquidity) and normally have a maturity of one week. A bank rate "
-            "is the interest rate a nation's central bank charges to its domestic banks to borrow money. "
-            "The rates central banks charge are set to stabilize the economy.",
-        )
-        parser.add_argument(
-            "-s",
-            "--start",
-            dest="start_date",
-            type=valid_date,
-            help="Starting date (YYYY-MM-DD) of data",
-            default=None,
-        )
-        parser.add_argument(
-            "-e",
-            "--end",
-            dest="end_date",
-            type=valid_date,
-            help="Ending date (YYYY-MM-DD) of data",
-            default=None,
-        )
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
-        )
-        if ns_parser:
-            fred_view.plot_ecbmrofr(
-                ns_parser.start_date,
-                ns_parser.end_date,
-                ns_parser.export,
-                " ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
-            )
-
-    @log_start_end(log=logger)
-    def call_stir(self, other_args: List[str]):
-        """Process stir command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="str",
-            description='Plot short term interest rates from selected countries. \nShort-term interest rates are the '
-                        'rates at which short-term borrowings are effected between financial institutions or the rate '
-                        'at which short-term government paper is issued or traded in the market. Short-term interest '
-                        'rates are generally averages of daily rates, measured as a percentage. Short-term interest '
-                        'rates are based on three-month money market rates where available. Typical standardised '
-                        'names are "money market rate" and "treasury bill rate".',
-        )
-        parser.add_argument(
-            "-c",
-            "--country",
+            "-t",
+            "--type",
+            dest="type",
             type=str,
-            action="store",
-            nargs="+",
-            dest="countries",
-            help="Countries to get data for.",
-            default=["USA"],
+            help="Whether to choose the deposit, marginal lending or main refinancing rate",
+            choices=["deposit", "lending", "refinancing"],
+            default=None
+        )
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES, raw=True
+        )
+        if ns_parser:
+            fred_view.plot_ecb(
+                ns_parser.start_date,
+                ns_parser.end_date,
+                ns_parser.type,
+                ns_parser.raw,
+                ns_parser.export,
+                " ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )
+
+    @log_start_end(log=logger)
+    def call_treasury(self, other_args: List[str]):
+        """Process treasury command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="treasury",
+            description='Plot short (3 month) and long (10 year) term interest rates from selected countries '
+            'including the possibility to plot forecasts for the next years.'
+            )
+        
+        parser.add_argument(
+            "--short",
+            type=str,
+            dest="short",
+            help="Countries to get short term (3 month) interest rates for.",
+            default=None,
+        )
+        
+        parser.add_argument(
+            "--long",
+            type=str,
+            dest="long",
+            help="Countries to get long term (10 year) interest rates for.",
+            default=None,
         )
         parser.add_argument(
             "-s",
@@ -813,7 +734,7 @@ class FixedIncomeController(BaseController):
             action="store_true",
             dest="forecast",
             default=False,
-            help="If True, plot forecasts for short term interest rates",
+            help="If True, plot forecasts for each interest rate",
         )
 
         ns_parser = self.parse_known_args_and_warn(
@@ -823,16 +744,24 @@ class FixedIncomeController(BaseController):
             raw=True,
         )
         if ns_parser:
-            oecd_view.plot_short_term_interest_rate(
-                countries=ns_parser.countries,
-                forecast=ns_parser.forecast,
-                start_date=ns_parser.start_date,
-                end_date=ns_parser.end_date,
-                export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
-            )
+            if ns_parser.short is None and ns_parser.long is None:
+                console.print("[red]Please provide at least one country to plot "
+                              "with --short (3 months) and/or --long (10 years).[/red]")
+            else:
+                short_term_countries = list_from_str(ns_parser.short.lower()) if ns_parser.short else None
+                long_term_countries = list_from_str(ns_parser.long.lower()) if ns_parser.long else None
+                oecd_view.plot_treasuries(
+                    short_term=short_term_countries,
+                    long_term=long_term_countries,
+                    forecast=ns_parser.forecast,
+                    start_date=ns_parser.start_date,
+                    end_date=ns_parser.end_date,
+                    raw=ns_parser.raw,
+                    export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
+                )
 
     @log_start_end(log=logger)
     def call_ltir(self, other_args: List[str]):

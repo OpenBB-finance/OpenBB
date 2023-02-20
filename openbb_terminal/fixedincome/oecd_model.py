@@ -12,6 +12,55 @@ from openbb_terminal.decorators import log_start_end
 logger = logging.getLogger(__name__)
 
 
+COUNTRY_TO_CODE = {
+    'australia':'AUS',
+    'austria':'AUT',
+    'belgium':'BEL',
+    'bulgaria':'BGR',
+    'brazil':'BRA',
+    'canada':'CAN',
+    'switzerland':'CHE',
+    'chile':'CHL',
+    'china':'CHN',
+    'colombia':'COL',
+    'costa_rica':'CRI',
+    'czech_republic':'CZE',
+    'germany':'DEU',
+    'denmark':'DNK',
+    'spain':'ESP',
+    'estonia':'EST',
+    'finland':'FIN',
+    'france':'FRA',
+    'united_kingdom':'GBR',
+    'greece':'GRC',
+    'croatia':'HRV',
+    'hungary':'HUN',
+    'indonesia':'IDN',
+    'india':'IND',
+    'ireland':'IRL',
+    'iceland':'ISL',
+    'israel':'ISR',
+    'italy':'ITA',
+    'japan':'JPN',
+    'korea':'KOR',
+    'lithuania':'LTU',
+    'luxembourg':'LUX',
+    'latvia':'LVA',
+    'mexico':'MEX',
+    'netherlands':'NLD',
+    'norway':'NOR',
+    'new_zealand':'NZL',
+    'poland':'POL',
+    'portugal':'PRT',
+    'romania':'ROU',
+    'russia':'RUS',
+    'slovak_republic':'SVK',
+    'slovenia':'SVN',
+    'sweden':'SWE',
+    'united_states':'USA',
+    'south_africa':'ZAF'
+}
+
 @log_start_end(log=logger)
 def get_interest_rate_data(
     data: str = "short",
@@ -66,6 +115,7 @@ def get_interest_rate_data(
             f"&separator=comma&csv-lang=en&startPeriod={start_date}&endPeriod={end_date}",
             index_col=5,
         )
+        data_name = "3 month"
     elif data == "short_forecast":
         if isinstance(start_date, datetime):
             month = start_date.month
@@ -84,6 +134,7 @@ def get_interest_rate_data(
             f"=code&separator=comma&csv-lang=en&startPeriod={start_date}&endPeriod={end_date}",
             index_col=5,
         )
+        data_name = "3 month with forecast"
     elif data == "long":
         if isinstance(start_date, datetime):
             start_date = start_date.strftime("%Y-%m")
@@ -98,6 +149,7 @@ def get_interest_rate_data(
             f"&separator=comma&csv-lang=en&startPeriod={start_date}&endPeriod={end_date}",
             index_col=5,
         )
+        data_name = "10 year"
     elif data == "long_forecast":
         if isinstance(start_date, datetime):
             month = start_date.month
@@ -116,14 +168,18 @@ def get_interest_rate_data(
             f"=code&separator=comma&csv-lang=en&startPeriod={start_date}&endPeriod={end_date}",
             index_col=5,
         )
+        data_name = "10 year with forecast"
     else:
         return pd.DataFrame()
     df = df.iloc[:, [0, 5]]
 
     result = pd.DataFrame()
     for country in countries:
-        temp = pd.DataFrame(df[df["LOCATION"] == country]["Value"])
-        temp.columns = [country]
+        temp = pd.DataFrame(df[df["LOCATION"] == COUNTRY_TO_CODE[country]]["Value"])
+        temp.columns = [f"{country} ({data_name})"]
         result = pd.concat([result, temp], axis=1)
+       
+    result.index = pd.to_datetime(result.index).date    
+    result.sort_index(inplace=True)
 
     return result

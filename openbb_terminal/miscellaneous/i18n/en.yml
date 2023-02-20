@@ -780,21 +780,18 @@ en:
   fixedincome/sonia: sterling overnight index average (sonia)
   fixedincome/ameribor: american interbank offered rate (ameribor)
   fixedincome/_central_bank_rates_: Central bank rates
-  fixedincome/effr: effective federal funds rate
+  fixedincome/fed: effective federal funds rate
   fixedincome/obfr: overnight bank funding rate (obfr)
   fixedincome/iorb: interest rate on reserve balances
-  fixedincome/projection: FOMC Summary of Economic Projections for the Federal Funds Rate
+  fixedincome/projection: the Federal Reserve's projection of the federal funds rate.
   fixedincome/dwpcr: discount window primary credit rate
-  fixedincome/ecbdfr: ECB deposit facility rate
-  fixedincome/ecbmlfr: ECB marginal facility rate
-  fixedincome/ecbmrofr: ECB main refinancing operations rate, fixed rate tender
-  fixedincome/stir: plot countries (incl. forecasted) short term interest rate
-  fixedincome/ltir: plot countries (incl. forecasted) long term interest rate
+  fixedincome/ecb: key ECB interest rates
+  fixedincome/treasury: plot countries (incl. forecasted) short term interest rate
   fixedincome/_yield_curves_: Yield curves
   fixedincome/ycrv: plot US yield curve
   fixedincome/iiycrv: plot US inflation-indexed yield curve
   fixedincome/ecbycrv: plot euro area yield curve
-  fixedincome/_us_government_securities_: US government securities
+  fixedincome/_government_bonds_: Government Bonds
   fixedincome/tbill: plot secondary market rate of treasury bills
   fixedincome/cmn: plot nominal constant maturity treasuries
   fixedincome/tips: plot treasury inflation protected securities (tips)
