@@ -5,9 +5,7 @@ __docformat__ = "numpy"
 
 import argparse
 import logging
-from typing import List
-
-from openbb_terminal.custom_prompt_toolkit import NestedCompleter
+from typing import List, Optional
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.cryptocurrency.defi import (
@@ -18,11 +16,12 @@ from openbb_terminal.cryptocurrency.defi import (
     graph_view,
     llama_model,
     llama_view,
+    smartstake_view,
     substack_view,
     terramoney_fcd_model,
     terramoney_fcd_view,
-    smartstake_view,
 )
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
@@ -32,7 +31,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console, MenuText
+from openbb_terminal.rich_config import MenuText, console
 
 logger = logging.getLogger(__name__)
 
@@ -63,7 +62,7 @@ class DefiController(BaseController):
     PATH = "/crypto/defi/"
     CHOICES_GENERATION = True
 
-    def __init__(self, queue: List[str] = None):
+    def __init__(self, queue: Optional[List[str]] = None):
         """Constructor"""
         super().__init__(queue)
 

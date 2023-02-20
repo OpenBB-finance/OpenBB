@@ -5,31 +5,29 @@ import argparse
 import logging
 import os
 from datetime import datetime, timedelta
-from typing import List
+from typing import List, Optional
 
 import pandas as pd
 
-from openbb_terminal.custom_prompt_toolkit import NestedCompleter
-from openbb_terminal.common.quantitative_analysis import qa_view
 from openbb_terminal import feature_flags as obbff
-from openbb_terminal.decorators import log_start_end
-from openbb_terminal.forex import forex_helper, fxempire_view, av_view
-from openbb_terminal.forex.forex_helper import FOREX_SOURCES, SOURCES_INTERVALS
+from openbb_terminal.common.quantitative_analysis import qa_view
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
+from openbb_terminal.decorators import check_api_key, log_start_end
+from openbb_terminal.forex import av_view, forex_helper, fxempire_view
+from openbb_terminal.forex.forex_helper import (
+    FOREX_SOURCES,
+    SOURCES_INTERVALS,
+    parse_forex_symbol,
+)
 from openbb_terminal.helper_funcs import (
-    valid_date,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     export_data,
+    valid_date,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import (
-    console,
-    MenuText,
-    get_ordered_list_sources,
-)
+from openbb_terminal.rich_config import MenuText, console, get_ordered_list_sources
 from openbb_terminal.stocks import stocks_helper
-from openbb_terminal.decorators import check_api_key
-from openbb_terminal.forex.forex_helper import parse_forex_symbol
 
 # pylint: disable=R1710,import-outside-toplevel
 
@@ -63,7 +61,7 @@ class ForexController(BaseController):
     FILE_PATH = os.path.join(os.path.dirname(__file__), "README.md")
     CHOICES_GENERATION = True
 
-    def __init__(self, queue: List[str] = None):
+    def __init__(self, queue: Optional[List[str]] = None):
         """Construct Data."""
         super().__init__(queue)
 
@@ -194,7 +192,7 @@ class ForexController(BaseController):
                     console.print(
                         "\n[red]No historical data loaded.\n\n"
                         f"Make sure you have appropriate access for the '{ns_parser.source}' data source "
-                        f"and that '{ns_parser.source}' supports the requested range.[/red]\n"
+                        f"and that '{ns_parser.source}' supports the requested range.[/red]"
                     )
                 else:
                     self.data.index.name = "date"

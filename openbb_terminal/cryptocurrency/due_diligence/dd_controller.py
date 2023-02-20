@@ -5,33 +5,32 @@ __docformat__ = "numpy"
 import argparse
 import logging
 from datetime import datetime, timedelta
-from typing import List
+from typing import List, Optional
 
-from openbb_terminal.custom_prompt_toolkit import NestedCompleter
-
-from openbb_terminal.cryptocurrency import cryptocurrency_helpers
 from openbb_terminal import feature_flags as obbff
-from openbb_terminal.cryptocurrency.overview import cryptopanic_model
-from openbb_terminal.cryptocurrency.due_diligence import tokenterminal_model
+from openbb_terminal.cryptocurrency import cryptocurrency_helpers
 from openbb_terminal.cryptocurrency.due_diligence import (
     binance_model,
     binance_view,
     ccxt_model,
     ccxt_view,
+    coinbase_model,
     coinbase_view,
     coinglass_model,
-    coinbase_model,
     coinglass_view,
     coinpaprika_view,
+    cryptopanic_view,
     glassnode_model,
     glassnode_view,
-    pycoingecko_view,
     messari_model,
     messari_view,
+    pycoingecko_view,
     santiment_view,
-    cryptopanic_view,
+    tokenterminal_model,
     tokenterminal_view,
 )
+from openbb_terminal.cryptocurrency.overview import cryptopanic_model
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
@@ -42,7 +41,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import CryptoBaseController
-from openbb_terminal.rich_config import console, MenuText
+from openbb_terminal.rich_config import MenuText, console
 
 logger = logging.getLogger(__name__)
 
@@ -119,7 +118,7 @@ class DueDiligenceController(CryptoBaseController):
         self,
         symbol=None,
         source=None,
-        queue: List[str] = None,
+        queue: Optional[List[str]] = None,
     ):
         """Constructor"""
         super().__init__(queue)
@@ -510,7 +509,6 @@ class DueDiligenceController(CryptoBaseController):
     @log_start_end(log=logger)
     def call_oi(self, other_args):
         """Process oi command"""
-        assert isinstance(self.symbol, str)  # noqa: S101
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -536,6 +534,7 @@ class DueDiligenceController(CryptoBaseController):
         )
 
         if ns_parser:
+            assert isinstance(self.symbol, str)  # noqa: S101
             coinglass_view.display_open_interest(
                 symbol=self.symbol.upper(),
                 interval=ns_parser.interval,
@@ -548,7 +547,6 @@ class DueDiligenceController(CryptoBaseController):
     @log_start_end(log=logger)
     def call_liquidations(self, other_args):
         """Process liquidations command"""
-        assert isinstance(self.symbol, str)  # noqa: S101
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -564,6 +562,7 @@ class DueDiligenceController(CryptoBaseController):
         )
 
         if ns_parser:
+            assert isinstance(self.symbol, str)  # noqa: S101
             coinglass_view.display_liquidations(
                 symbol=self.symbol.upper(),
                 export=ns_parser.export,
@@ -575,7 +574,6 @@ class DueDiligenceController(CryptoBaseController):
     @log_start_end(log=logger)
     def call_fundrate(self, other_args):
         """Process fundrate command"""
-        assert isinstance(self.symbol, str)  # noqa: S101
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -591,6 +589,7 @@ class DueDiligenceController(CryptoBaseController):
         )
 
         if ns_parser:
+            assert isinstance(self.symbol, str)  # noqa: S101
             coinglass_view.display_funding_rate(
                 symbol=self.symbol.upper(),
                 export=ns_parser.export,

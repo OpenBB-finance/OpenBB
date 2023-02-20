@@ -9,8 +9,8 @@ import pandas as pd
 
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.decorators import log_start_end
+from openbb_terminal.helper_funcs import get_user_timezone, request
 from openbb_terminal.rich_config import console
-from openbb_terminal.helper_funcs import request
 
 logger = logging.getLogger(__name__)
 
@@ -156,12 +156,17 @@ def get_historical(
             key = list(response_json.keys())[1]
 
             df = pd.DataFrame.from_dict(response_json[key], orient="index")
+            df.index = pd.to_datetime(df.index)
 
             if start_date and resolution != "i":
                 df = df[df.index > start_date]
 
             if end_date and resolution != "i":
                 df = df[df.index < end_date]
+
+            if (df.index.hour != 0).any():
+                # if intraday data, convert to local timezone
+                df.index = df.index.tz_localize("UTC").tz_convert(get_user_timezone())
 
             df = df.rename(
                 columns={

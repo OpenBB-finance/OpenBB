@@ -4,13 +4,14 @@ from datetime import datetime
 from typing import List, Optional
 
 import numpy as np
-from matplotlib import pyplot as plt
-from matplotlib import ticker
+from matplotlib import (
+    pyplot as plt,
+    ticker,
+)
 from matplotlib.lines import Line2D
 
-from openbb_terminal.config_terminal import theme
-from openbb_terminal.decorators import check_api_key
 from openbb_terminal import config_plot as cfgPlot
+from openbb_terminal.config_terminal import theme
 from openbb_terminal.cryptocurrency.due_diligence.glassnode_model import (
     get_active_addresses,
     get_exchange_balances,
@@ -18,11 +19,11 @@ from openbb_terminal.cryptocurrency.due_diligence.glassnode_model import (
     get_hashrate,
     get_non_zero_addresses,
 )
-from openbb_terminal.decorators import log_start_end
+from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
-    plot_autoscale,
     is_valid_axes_count,
+    plot_autoscale,
 )
 
 logger = logging.getLogger(__name__)
@@ -36,7 +37,7 @@ def display_active_addresses(
     end_date: Optional[str] = None,
     interval: str = "24h",
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Plots active addresses of a certain symbol over time
@@ -101,7 +102,7 @@ def display_non_zero_addresses(
     start_date: str = "2010-01-01",
     end_date: Optional[str] = None,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Plots addresses with non-zero balance of a certain symbol
@@ -165,7 +166,7 @@ def display_exchange_net_position_change(
     start_date: str = "2010-01-01",
     end_date: Optional[str] = None,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Plots 30d change of the supply held in exchange wallets.
@@ -249,7 +250,7 @@ def display_exchange_balances(
     end_date: Optional[str] = None,
     percentage: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Plots total amount of coins held on exchange addresses in units and percentage.
@@ -332,7 +333,7 @@ def display_hashrate(
     end_date: Optional[str] = None,
     interval: str = "24h",
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Plots dataframe with mean hashrate of btc or eth blockchain and symbol price.

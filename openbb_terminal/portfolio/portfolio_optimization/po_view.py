@@ -5,6 +5,7 @@ __docformat__ = "numpy"
 # flake8: noqa: E501
 
 import logging
+from typing import Optional
 import math
 import warnings
 
@@ -20,16 +21,16 @@ from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import plot_autoscale
+from openbb_terminal.portfolio.portfolio_optimization.optimizer_helper import get_kwarg
+from openbb_terminal.portfolio.portfolio_optimization.po_engine import PoEngine
 from openbb_terminal.portfolio.portfolio_optimization.po_model import (
-    validate_inputs,
     get_ef,
+    validate_inputs,
 )
 from openbb_terminal.portfolio.portfolio_optimization.statics import (
     RISK_CHOICES,
     TIME_FACTOR,
 )
-from openbb_terminal.portfolio.portfolio_optimization.optimizer_helper import get_kwarg
-from openbb_terminal.portfolio.portfolio_optimization.po_engine import PoEngine
 from openbb_terminal.rich_config import console
 
 warnings.filterwarnings("ignore")
@@ -38,7 +39,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def display_ef(portfolio_engine: PoEngine = None, **kwargs):
+def display_ef(portfolio_engine: Optional[PoEngine] = None, **kwargs):
     """Display efficient frontier
 
     Parameters
@@ -245,7 +246,9 @@ def display_ef(portfolio_engine: PoEngine = None, **kwargs):
 
 
 @log_start_end(log=logger)
-def display_plot(portfolio_engine: PoEngine = None, chart_type: str = "pie", **kwargs):
+def display_plot(
+    portfolio_engine: Optional[PoEngine] = None, chart_type: str = "pie", **kwargs
+):
     """
     Display efficient frontier
 

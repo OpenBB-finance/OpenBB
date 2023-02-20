@@ -13,13 +13,13 @@ import seaborn as sns
 from pandas.plotting import register_matplotlib_converters
 from sklearn.preprocessing import MinMaxScaler
 
-from openbb_terminal.config_terminal import theme
 from openbb_terminal.config_plot import PLOT_DPI
+from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
-    plot_autoscale,
     is_valid_axes_count,
+    plot_autoscale,
     print_rich_table,
 )
 from openbb_terminal.stocks.comparison_analysis import yahoo_finance_model
@@ -49,7 +49,7 @@ def display_historical(
     candle_type: str = "a",
     normalize: bool = True,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display historical stock prices. [Source: Yahoo Finance]
@@ -121,7 +121,7 @@ def display_volume(
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display stock volume. [Source: Yahoo Finance]
@@ -185,7 +185,7 @@ def display_correlation(
     raw: bool = False,
     external_axes: Optional[List[plt.Axes]] = None,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """
     Correlation heatmap based on historical price comparison

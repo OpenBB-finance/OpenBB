@@ -9,10 +9,10 @@ from typing import List, Optional
 import matplotlib.pyplot as plt
 from PIL import Image
 
-from openbb_terminal.config_terminal import theme
 from openbb_terminal.config_plot import PLOT_DPI
+from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import plot_autoscale, is_valid_axes_count
+from openbb_terminal.helper_funcs import is_valid_axes_count, plot_autoscale
 from openbb_terminal.stocks.technical_analysis import finviz_model
 
 logger = logging.getLogger(__name__)

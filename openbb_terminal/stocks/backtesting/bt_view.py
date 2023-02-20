@@ -12,14 +12,14 @@ import pandas as pd
 import yfinance as yf
 from pandas.plotting import register_matplotlib_converters
 
-from openbb_terminal.config_terminal import theme
 from openbb_terminal.config_plot import PLOT_DPI
+from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
     is_intraday,
-    plot_autoscale,
     is_valid_axes_count,
+    plot_autoscale,
 )
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.backtesting import bt_model
@@ -122,7 +122,7 @@ def display_simple_ema(
     spy_bt: bool = True,
     no_bench: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Strategy where stock is bought when Price > EMA(l)
@@ -191,7 +191,7 @@ def display_emacross(
     no_bench: bool = False,
     shortable: bool = True,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):  # pylint: disable=R0913
     """Strategy where we go long/short when EMA(short) is greater than/less than EMA(short)
@@ -265,7 +265,7 @@ def display_rsi_strategy(
     no_bench: bool = False,
     shortable: bool = True,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Strategy that buys when the stock is less than a threshold and shorts when it exceeds a threshold.

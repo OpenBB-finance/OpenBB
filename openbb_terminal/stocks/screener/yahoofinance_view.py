@@ -8,13 +8,13 @@ from typing import List, Optional
 import matplotlib.pyplot as plt
 from pandas.plotting import register_matplotlib_converters
 
-from openbb_terminal.config_terminal import theme
 from openbb_terminal.config_plot import PLOT_DPI
+from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
-    plot_autoscale,
     is_valid_axes_count,
+    plot_autoscale,
 )
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.screener import yahoofinance_model
@@ -34,7 +34,7 @@ def historical(
     type_candle: str = "a",
     normalize: bool = True,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> List[str]:
     """View historical price of stocks that meet preset

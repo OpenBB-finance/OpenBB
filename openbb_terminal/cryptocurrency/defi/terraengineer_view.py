@@ -5,7 +5,6 @@ import logging
 import os
 from typing import List, Optional
 
-
 import matplotlib.pyplot as plt
 from matplotlib import ticker
 
@@ -15,12 +14,11 @@ from openbb_terminal.cryptocurrency.defi import terraengineer_model
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
+    is_valid_axes_count,
     lambda_long_number_format,
     plot_autoscale,
-    is_valid_axes_count,
 )
 from openbb_terminal.rich_config import console
-
 
 logger = logging.getLogger(__name__)
 
@@ -30,7 +28,7 @@ def display_terra_asset_history(
     asset: str = "",
     address: str = "",
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Plots the 30-day history of specified asset in terra address
@@ -86,7 +84,7 @@ def display_terra_asset_history(
 @log_start_end(log=logger)
 def display_anchor_yield_reserve(
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Plots the 30-day history of the Anchor Yield Reserve.

@@ -1,0 +1,3 @@
+[info]email:[/info] MOCK_EMAIL
+[info]uuid:[/info] MOCK_UUID
+[info]sync:[/info] ON

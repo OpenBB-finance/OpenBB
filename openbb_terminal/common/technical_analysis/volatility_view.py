@@ -3,22 +3,21 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import Optional, List
+from typing import List, Optional
 
 import matplotlib.pyplot as plt
 import pandas as pd
 
-from openbb_terminal.config_terminal import theme
-from openbb_terminal.common.technical_analysis import volatility_model
+from openbb_terminal.common.technical_analysis import ta_helpers, volatility_model
 from openbb_terminal.config_plot import PLOT_DPI
+from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
+    is_valid_axes_count,
     plot_autoscale,
     reindex_dates,
-    is_valid_axes_count,
 )
-from openbb_terminal.common.technical_analysis import ta_helpers
 
 logger = logging.getLogger(__name__)
 
@@ -33,7 +32,7 @@ def display_bbands(
     n_std: float = 2,
     mamode: str = "sma",
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plots bollinger bands
@@ -119,7 +118,7 @@ def display_donchian(
     upper_length: int = 20,
     lower_length: int = 20,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plots donchian channels
@@ -205,7 +204,7 @@ def view_kc(
     offset: int = 0,
     symbol: str = "",
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plots Keltner Channels Indicator
@@ -303,7 +302,7 @@ def display_atr(
     mamode: str = "sma",
     offset: int = 0,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plots ATR

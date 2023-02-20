@@ -1,0 +1,35 @@
+Timestamp: 2023-02-07 17:35:52  US/Eastern
+Ticker: None
+CIK: 1254890
+Form Type: 13F-HR
+13F-HR - TAIYO LIFE INSURANCE CO (0001254890) (Filer)
+https://www.sec.gov/Archives/edgar/data/1254890/000125489023000003/0001254890-23-000003-index.htm
+
+Timestamp: 2023-02-07 17:34:44  US/Eastern
+Ticker: None
+CIK: 759458
+Form Type: 13F-HR
+13F-HR - CANANDAIGUA NATIONAL CORP (0000759458) (Filer)
+https://www.sec.gov/Archives/edgar/data/759458/000075945823000001/0000759458-23-000001-index.htm
+
+Timestamp: 2023-02-07 17:30:36  US/Eastern
+Ticker: ITUB
+CIK: 1132597
+Form Type: 6-K
+6-K - Itau Unibanco Holding S.A. (0001132597) (Filer)
+https://www.sec.gov/Archives/edgar/data/1132597/000129281423000325/0001292814-23-000325-index.htm
+
+Timestamp: 2023-02-07 17:29:43  US/Eastern
+Ticker: SGBI
+CIK: 1104280
+Form Type: 10-Q
+10-Q - SANGUI BIOTECH INTERNATIONAL INC (0001104280) (Filer)
+https://www.sec.gov/Archives/edgar/data/1104280/000109690623000276/0001096906-23-000276-index.htm
+
+Timestamp: 2023-02-07 17:29:20  US/Eastern
+Ticker: None
+CIK: 1426940
+Form Type: 13F-HR
+13F-HR - Horizon Investment Services, LLC (0001426940) (Filer)
+https://www.sec.gov/Archives/edgar/data/1426940/000108514623000727/0001085146-23-000727-index.htm
+

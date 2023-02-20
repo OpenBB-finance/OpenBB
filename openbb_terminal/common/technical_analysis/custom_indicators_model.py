@@ -2,13 +2,13 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import Any, Tuple
+from typing import Any, Optional, Tuple
 
 import pandas as pd
 
+from openbb_terminal.common.technical_analysis import ta_helpers
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
-from openbb_terminal.common.technical_analysis import ta_helpers
 
 logger = logging.getLogger(__name__)
 
@@ -17,8 +17,8 @@ logger = logging.getLogger(__name__)
 def calculate_fib_levels(
     data: pd.DataFrame,
     limit: int = 120,
-    start_date: Any = None,
-    end_date: Any = None,
+    start_date: Optional[Any] = None,
+    end_date: Optional[Any] = None,
 ) -> Tuple[pd.DataFrame, pd.Timestamp, pd.Timestamp, float, float]:
     """Calculate Fibonacci levels
 

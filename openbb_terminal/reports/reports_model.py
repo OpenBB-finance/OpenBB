@@ -5,26 +5,27 @@ import logging
 
 # pylint: disable=R1732, R0912
 import os
-from pathlib import Path
-from threading import Thread
 import webbrowser
 from ast import literal_eval
 from datetime import datetime
+from pathlib import Path
+from threading import Thread
 from typing import Any, Dict, List, Union
-from ipykernel.kernelapp import IPKernelApp
-import papermill as pm
+
 import pandas as pd
+import papermill as pm
+from ipykernel.kernelapp import IPKernelApp
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.core.config.paths import (
     MISCELLANEOUS_DIRECTORY,
+    USER_CUSTOM_REPORTS_DIRECTORY,
     USER_PORTFOLIO_DATA_DIRECTORY,
     USER_REPORTS_DIRECTORY,
-    USER_CUSTOM_REPORTS_DIRECTORY,
 )
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.rich_config import console
 from openbb_terminal.forex.forex_controller import FX_TICKERS
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -281,8 +282,8 @@ def create_output_path(input_path: str, parameters_dict: Dict[str, Any]) -> str:
         + "_"
         + f"{report_name}{args_to_output}"
     )
+    output_path = report_output_name.replace(".", "_")
     output_path = str(USER_REPORTS_DIRECTORY / report_output_name)
-    output_path = output_path.replace(".", "_")
 
     return output_path
 

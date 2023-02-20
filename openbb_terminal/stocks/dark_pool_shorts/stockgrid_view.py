@@ -8,14 +8,14 @@ from typing import List, Optional
 
 import matplotlib.pyplot as plt
 
-from openbb_terminal.config_terminal import theme
 from openbb_terminal.config_plot import PLOT_DPI
+from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
+    is_valid_axes_count,
     plot_autoscale,
     print_rich_table,
-    is_valid_axes_count,
 )
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.dark_pool_shorts import stockgrid_model
@@ -29,7 +29,7 @@ def dark_pool_short_positions(
     sortby: str = "dpp_dollar",
     ascend: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Get dark pool short positions. [Source: Stockgrid]
 
@@ -86,7 +86,10 @@ def dark_pool_short_positions(
 
 @log_start_end(log=logger)
 def short_interest_days_to_cover(
-    limit: int = 10, sortby: str = "float", export: str = "", sheet_name: str = None
+    limit: int = 10,
+    sortby: str = "float",
+    export: str = "",
+    sheet_name: Optional[str] = None,
 ):
     """Print short interest and days to cover. [Source: Stockgrid]
 
@@ -128,7 +131,7 @@ def short_interest_volume(
     limit: int = 84,
     raw: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plot price vs short interest volume. [Source: Stockgrid]
@@ -253,7 +256,7 @@ def net_short_position(
     limit: int = 84,
     raw: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plot net short position. [Source: Stockgrid]

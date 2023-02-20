@@ -5,6 +5,7 @@ The library includes both python code and html/css/js elements that can be found
 `./widgets` folder.
 """
 import os
+
 from jinja2 import Template
 
 

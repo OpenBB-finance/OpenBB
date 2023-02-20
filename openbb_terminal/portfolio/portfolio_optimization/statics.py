@@ -1,9 +1,9 @@
 from typing import List, Optional
+
 from openbb_terminal.helper_funcs import get_rf
 from openbb_terminal.portfolio.portfolio_optimization.parameters.Parameter import (
     Parameter,
 )
-
 
 PERIOD_CHOICES = [
     "1d",

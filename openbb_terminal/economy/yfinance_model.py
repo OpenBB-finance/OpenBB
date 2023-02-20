@@ -5,9 +5,9 @@ import logging
 from datetime import datetime
 from typing import Dict, Optional
 
+import financedatabase as fd
 import pandas as pd
 import yfinance as yf
-import financedatabase as fd
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
@@ -638,6 +638,7 @@ def get_index(
         interval=interval,
         progress=False,
         show_errors=False,
+        ignore_tz=True,
     )
 
     if column not in index_data.columns:
@@ -672,8 +673,8 @@ def get_available_indices() -> Dict[str, Dict[str, str]]:
 def get_indices(
     indices: list,
     interval: str = "1d",
-    start_date: int = None,
-    end_date: int = None,
+    start_date: Optional[int] = None,
+    end_date: Optional[int] = None,
     column: str = "Adj Close",
     returns: bool = False,
 ) -> pd.DataFrame:

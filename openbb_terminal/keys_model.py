@@ -3,39 +3,43 @@ __docformat__ = "numpy"
 
 # pylint: disable=too-many-lines
 
-import sys
+import contextlib
+import io
+import json
 import logging
 import os
-import contextlib
+import sys
 from enum import Enum
-import io
 from typing import Dict, List, Union
-import dotenv
+
 import binance
+import dotenv
+import oandapyV20.endpoints.pricing
 import pandas as pd
+import praw
 import quandl
 import requests
 import stocksera
-from prawcore.exceptions import ResponseException
-import praw
-import pyEX
-import oandapyV20.endpoints.pricing
-from oandapyV20 import API as oanda_API
-from coinmarketcapapi import CoinMarketCapAPI
-from tokenterminal import TokenTerminal
 from alpha_vantage.timeseries import TimeSeries
-from openbb_terminal.cryptocurrency.coinbase_helpers import (
-    CoinbaseProAuth,
-    make_coinbase_request,
-    CoinbaseApiException,
-)
+from coinmarketcapapi import CoinMarketCapAPI
+from oandapyV20 import API as oanda_API
+from prawcore.exceptions import ResponseException
+from tokenterminal import TokenTerminal
+
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.core.config.paths import USER_ENV_FILE
-from openbb_terminal.rich_config import console
+from openbb_terminal.cryptocurrency.coinbase_helpers import (
+    CoinbaseApiException,
+    CoinbaseProAuth,
+    make_coinbase_request,
+)
 from openbb_terminal.helper_funcs import request
-
-from openbb_terminal.terminal_helper import suppress_stdout
 from openbb_terminal.portfolio.brokers.degiro.degiro_model import DegiroModel
+from openbb_terminal.rich_config import console
+from openbb_terminal.session.hub_model import BASE_URL, patch_user_configs
+from openbb_terminal.session.local_model import SESSION_FILE_PATH
+from openbb_terminal.session.user import User
+from openbb_terminal.terminal_helper import suppress_stdout
 
 logger = logging.getLogger(__name__)
 
@@ -53,20 +57,20 @@ API_DICT: Dict = {
     "fmp": "FINANCIAL_MODELING_PREP",
     "quandl": "QUANDL",
     "polygon": "POLYGON",
+    "intrinio": "INTRINIO",
     "fred": "FRED",
     "news": "NEWSAPI",
     "tradier": "TRADIER",
     "cmc": "COINMARKETCAP",
     "finnhub": "FINNHUB",
-    "iex": "IEXCLOUD",
     "reddit": "REDDIT",
     "twitter": "TWITTER",
     "rh": "ROBINHOOD",
     "degiro": "DEGIRO",
     "oanda": "OANDA",
+    "openbb": "OPENBB",
     "binance": "BINANCE",
     "bitquery": "BITQUERY",
-    "si": "SENTIMENT_INVESTOR",
     "coinbase": "COINBASE",
     "walert": "WHALE_ALERT",
     "glassnode": "GLASSNODE",
@@ -226,7 +230,7 @@ def set_key(env_var_name: str, env_var_value: str, persist: bool = False) -> Non
         If True, api key change will be global, i.e. it will affect terminal environment variables.
         By default, False.
     """
-    if persist:
+    if persist and User.is_guest():
         os.environ[env_var_name] = env_var_value
         dotenv.set_key(str(USER_ENV_FILE), env_var_name, env_var_value)
 
@@ -236,6 +240,20 @@ def set_key(env_var_name: str, env_var_value: str, persist: bool = False) -> Non
 
     # Set cfg.env_var_name = env_var_value
     setattr(cfg, env_var_name, env_var_value)
+
+    # Send api key to server
+    if (
+        not User.is_guest()
+        and User.is_sync_enabled()
+        and env_var_name not in cfg.SENSITIVE_KEYS
+        and (env_var_name.startswith("API_") or env_var_name.startswith("OPENBB_"))
+    ):
+        patch_user_configs(
+            key=env_var_name,
+            value=env_var_value,
+            type_="keys",
+            auth_header=User.get_auth_header(),
+        )
 
 
 def get_keys(show: bool = False) -> pd.DataFrame:
@@ -265,14 +283,17 @@ def get_keys(show: bool = False) -> pd.DataFrame:
 
     # TODO: Refactor api variables without prefix API_ and extend API_SOURCE_KEY format
 
-    var_list = [v for v in dir(cfg) if v.startswith("API_")]
+    var_list = [v for v in dir(cfg) if v.startswith("API_") or v.startswith("OPENBB_")]
 
     current_keys = {}
 
     for cfg_var_name in var_list:
         cfg_var_value = getattr(cfg, cfg_var_name)
         if cfg_var_value != "REPLACE_ME":
-            current_keys[cfg_var_name[4:]] = cfg_var_value
+            if cfg_var_name.startswith("OPENBB_"):
+                current_keys[cfg_var_name] = cfg_var_value
+            else:
+                current_keys[cfg_var_name[4:]] = cfg_var_value
 
     if current_keys:
         df = pd.DataFrame.from_dict(current_keys, orient="index")
@@ -344,7 +365,7 @@ def check_av_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_PASSED
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -411,7 +432,7 @@ def check_fmp_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_INCONCLUSIVE
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -473,7 +494,7 @@ def check_quandl_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_FAILED
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -540,7 +561,7 @@ def check_polygon_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_INCONCLUSIVE
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -606,7 +627,7 @@ def check_fred_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_INCONCLUSIVE
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -672,7 +693,7 @@ def check_news_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_INCONCLUSIVE
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -743,7 +764,7 @@ def check_tradier_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_INCONCLUSIVE
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -805,7 +826,7 @@ def check_cmc_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_FAILED
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -871,70 +892,7 @@ def check_finnhub_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_INCONCLUSIVE
 
     if show_output:
-        console.print(status.colorize() + "\n")
-
-    return str(status)
-
-
-def set_iex_key(key: str, persist: bool = False, show_output: bool = False) -> str:
-    """Set IEX Cloud key
-
-    Parameters
-    ----------
-    key: str
-        API key
-    persist: bool, optional
-        If False, api key change will be contained to where it was changed. For example, a Jupyter notebook session.
-        If True, api key change will be global, i.e. it will affect terminal environment variables.
-        By default, False.
-    show_output: bool, optional
-        Display status string or not. By default, False.
-
-    Returns
-    -------
-    str
-        Status of key set
-
-    Examples
-    --------
-    >>> from openbb_terminal.sdk import openbb
-    >>> openbb.keys.iex(key="example_key")
-    """
-
-    set_key("OPENBB_API_IEX_TOKEN", key, persist)
-    return check_iex_key(show_output)
-
-
-def check_iex_key(show_output: bool = False) -> str:
-    """Check IEX Cloud key
-
-    Parameters
-    ----------
-    show_output: bool, optional
-        Display status string or not. By default, False.
-
-    Returns
-    -------
-    str
-        Status of key set
-    """
-
-    if cfg.API_IEX_TOKEN == "REPLACE_ME":  # nosec
-        logger.info("IEX Cloud key not defined")
-        status = KeyStatus.NOT_DEFINED
-    else:
-        try:
-            pyEX.Client(  # pylint: disable=no-member
-                api_token=cfg.API_IEX_TOKEN, version="v1"
-            ).quote(symbol="AAPL")
-            logger.info("IEX Cloud key defined, test passed")
-            status = KeyStatus.DEFINED_TEST_PASSED
-        except Exception as _:  # noqa: F841
-            logger.warning("IEX Cloud key defined, test failed")
-            status = KeyStatus.DEFINED_TEST_FAILED
-
-    if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -1050,7 +1008,7 @@ def check_reddit_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_FAILED
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -1126,7 +1084,7 @@ def check_bitquery_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_FAILED
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -1221,7 +1179,7 @@ def check_twitter_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_INCONCLUSIVE
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -1290,7 +1248,7 @@ def check_rh_key(show_output: bool = False) -> str:
         status = KeyStatus.DEFINED_NOT_TESTED
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -1381,7 +1339,7 @@ def check_degiro_key(show_output: bool = False) -> str:
         del dg  # ensure the object is destroyed explicitly
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -1467,7 +1425,7 @@ def check_oanda_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_FAILED
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -1542,81 +1500,7 @@ def check_binance_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_FAILED
 
     if show_output:
-        console.print(status.colorize() + "\n")
-
-    return str(status)
-
-
-def set_si_key(
-    key: str,
-    persist: bool = False,
-    show_output: bool = False,
-) -> str:
-    """Set Sentimentinvestor key.
-
-    Parameters
-    ----------
-    key: str
-        API key
-    persist: bool, optional
-        If False, api key change will be contained to where it was changed. For example, a Jupyter notebook session.
-        If True, api key change will be global, i.e. it will affect terminal environment variables.
-        By default, False.
-    show_output: bool, optional
-        Display status string or not. By default, False.
-
-    Returns
-    -------
-    str
-        Status of key set
-
-    Examples
-    --------
-    >>> from openbb_terminal.sdk import openbb
-    >>> openbb.keys.si(key="example_key")
-    """
-
-    set_key("OPENBB_API_SENTIMENTINVESTOR_TOKEN", key, persist)
-
-    return check_si_key(show_output)
-
-
-def check_si_key(show_output: bool = False) -> str:
-    """Check Sentimentinvestor key
-
-    Parameters
-    ----------
-    show_output: bool, optional
-        Display status string or not. By default, False.
-
-    Returns
-    -------
-    str
-        Status of key set
-    """
-
-    si_keys = [cfg.API_SENTIMENTINVESTOR_TOKEN]
-    if "REPLACE_ME" in si_keys:
-        logger.info("Sentiment Investor key not defined")
-        status = KeyStatus.NOT_DEFINED
-    else:
-        try:
-            account = request(
-                f"https://api.sentimentinvestor.com/v1/trending"
-                f"?token={cfg.API_SENTIMENTINVESTOR_TOKEN}"
-            )
-            if account.ok and account.json().get("success", False):
-                logger.info("Sentiment Investor key defined, test passed")
-                status = KeyStatus.DEFINED_TEST_PASSED
-            else:
-                logger.warning("Sentiment Investor key defined, test failed")
-                status = KeyStatus.DEFINED_TEST_FAILED
-        except Exception:
-            logger.warning("Sentiment Investor key defined, test failed")
-            status = KeyStatus.DEFINED_TEST_FAILED
-
-    if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -1705,7 +1589,7 @@ def check_coinbase_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_PASSED
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -1774,7 +1658,7 @@ def check_walert_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_FAILED
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -1847,7 +1731,7 @@ def check_glassnode_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_FAILED
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -1918,7 +1802,7 @@ def check_coinglass_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_INCONCLUSIVE
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -1981,7 +1865,7 @@ def check_cpanic_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_FAILED
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -2051,7 +1935,7 @@ def check_ethplorer_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_FAILED
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -2142,7 +2026,7 @@ def check_smartstake_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_FAILED
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -2199,7 +2083,7 @@ def check_github_key(show_output: bool = False) -> str:
         # only after certain amount of requests the user will get rate limited
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -2266,7 +2150,7 @@ def check_messari_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_FAILED
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -2328,7 +2212,7 @@ def check_eodhd_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_FAILED
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -2408,7 +2292,7 @@ def check_santiment_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_FAILED
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -2480,7 +2364,7 @@ def check_shroom_key(show_output: bool = False) -> str:
             logger.warning("Shroom key defined, test failed")
             status = KeyStatus.DEFINED_TEST_FAILED
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -2542,7 +2426,7 @@ def check_tokenterminal_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_PASSED
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
 
     return str(status)
 
@@ -2603,5 +2487,151 @@ def check_stocksera_key(show_output: bool = False):
             status = KeyStatus.DEFINED_TEST_FAILED
 
     if show_output:
-        console.print(status.colorize() + "\n")
+        console.print(status.colorize())
+    return str(status)
+
+
+def set_openbb_personal_access_token(
+    key: str, persist: bool = False, show_output: bool = False
+):
+    """Set OpenBB Personal Access Token.
+
+    Parameters
+    ----------
+    key: str
+        Personal Access Token
+    persist: bool, optional
+        If False, api key change will be contained to where it was changed. For example, a Jupyter notebook session.
+        If True, api key change will be global, i.e. it will affect terminal environment variables.
+        By default, False.
+    show_output: bool, optional
+        Display status string or not. By default, False.
+
+    Returns
+    -------
+    str
+        Status of key set
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> openbb.keys.openbb(key="example_key")
+    """
+    set_key("OPENBB_OPENBB_PERSONAL_ACCESS_TOKEN", key, persist)
+    return check_openbb_personal_access_token(show_output)
+
+
+def check_openbb_personal_access_token(show_output: bool = False):
+    """Check OpenBB Personal Access Token
+
+    Returns
+    -------
+    str
+        Status of key set
+    """
+    if cfg.OPENBB_PERSONAL_ACCESS_TOKEN == "REPLACE_ME":
+        logger.info("OpenBB Personal Access Token not defined")
+        status = KeyStatus.NOT_DEFINED
+    else:
+        try:
+            access_token = ""
+
+            # TODO: is there a better way to test the key?
+            # This requires a valid session file
+
+            if os.path.isfile(SESSION_FILE_PATH):
+                with open(SESSION_FILE_PATH) as f:
+                    access_token = json.load(f).get("access_token")
+
+            headers = {
+                "Authorization": f"Bearer {access_token}",
+                "Content-Type": "application/json",
+            }
+            response = request(
+                url=f"{BASE_URL}sdk/token", method="GET", headers=headers
+            )
+
+            token = response.json().get("token")
+
+            if (
+                response.status_code == 200
+                and token == cfg.OPENBB_PERSONAL_ACCESS_TOKEN
+            ):
+                logger.info("OpenBB Personal Access Token defined, test passed")
+                status = KeyStatus.DEFINED_TEST_PASSED
+            else:
+                logger.warning("OpenBB Personal Access Token. defined, test failed")
+                status = KeyStatus.DEFINED_TEST_FAILED
+        except requests.exceptions.RequestException:
+            logger.warning("OpenBB Personal Access Token. defined, test failed")
+            status = KeyStatus.DEFINED_TEST_FAILED
+
+    if show_output:
+        console.print(status.colorize())
+    return str(status)
+
+
+def set_intrinio_key(key: str, persist: bool = False, show_output: bool = False) -> str:
+    """Set Intrinio key
+
+    Parameters
+    ----------
+    key: str
+        API key
+    persist: bool, optional
+        If False, api key change will be contained to where it was changed. For example, a Jupyter notebook session.
+        If True, api key change will be global, i.e. it will affect terminal environment variables.
+        By default, False.
+    show_output: bool, optional
+        Display status string or not. By default, False.
+
+    Returns
+    -------
+    str
+        Status of key set
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> openbb.keys.intrinio(key="example_key")
+    """
+
+    set_key("OPENBB_API_INTRINIO_KEY", key, persist)
+    return check_intrinio_key(show_output)
+
+
+def check_intrinio_key(show_output: bool = False) -> str:
+    """Check Polygon key
+
+    Parameters
+    ----------
+    show_output: bool
+        Display status string or not. By default, False.
+
+    Returns
+    -------
+    str
+        Status of key set
+    """
+
+    if cfg.API_INTRINIO_KEY == "REPLACE_ME":
+        logger.info("Intrinio key not defined")
+        status = KeyStatus.NOT_DEFINED
+    else:
+        r = request(
+            f"https://api-v2.intrinio.com/securities/AAPL/prices?api_key={cfg.API_INTRINIO_KEY}"
+        )
+        if r.status_code in [403, 401, 429]:
+            logger.warning("Intrinio key defined, test failed")
+            status = KeyStatus.DEFINED_TEST_FAILED
+        elif r.status_code == 200:
+            logger.info("Intrinio key defined, test passed")
+            status = KeyStatus.DEFINED_TEST_PASSED
+        else:
+            logger.warning("Intrinio key defined, test inconclusive")
+            status = KeyStatus.DEFINED_TEST_INCONCLUSIVE
+
+    if show_output:
+        console.print(status.colorize())
+
     return str(status)

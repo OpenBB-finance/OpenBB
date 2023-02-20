@@ -1,8 +1,0 @@
-[red]It's not possible to calculate the greeks without the following columns: `strike`, `impliedVolatility`, `optionType`.
-[/red]
-  optionType  strike
-0       call   200.0
-1       call   250.0
-  optionType  strike
-0        put   200.0
-1        put   250.0

@@ -4,9 +4,9 @@
 import difflib
 import json
 import logging
-from typing import Union, Optional, List
 import os
 from datetime import datetime, timedelta
+from typing import List, Optional, Union
 
 import ccxt
 import matplotlib.pyplot as plt
@@ -114,7 +114,7 @@ YF_CURRENCY = [
 
 
 def check_datetime(
-    ck_date: Union[datetime, Union[str, None]] = None, start: bool = True
+    ck_date: Optional[Union[datetime, Union[str, None]]] = None, start: bool = True
 ) -> datetime:
     """Checks if given argument is string and attempts to convert to datetime.
 
@@ -487,11 +487,11 @@ def load_from_yahoofinance(
 
 def load(
     symbol: str,
-    start_date: Union[datetime, Union[str, None]] = None,
+    start_date: Optional[Union[datetime, Union[str, None]]] = None,
     interval: Union[str, int] = "1440",
     exchange: str = "binance",
     to_symbol: str = "usdt",
-    end_date: Union[datetime, Union[str, None]] = None,
+    end_date: Optional[Union[datetime, Union[str, None]]] = None,
     source: str = "CCXT",
 ) -> pd.DataFrame:
     """Load crypto currency to get data for
@@ -815,9 +815,9 @@ def plot_chart(
 
 def plot_candles(  # pylint: disable=too-many-arguments
     symbol: str,
-    data: pd.DataFrame = None,
-    start_date: Union[datetime, Union[str, None]] = None,
-    end_date: Union[datetime, Union[str, None]] = None,
+    data: Optional[pd.DataFrame] = None,
+    start_date: Optional[Union[datetime, Union[str, None]]] = None,
+    end_date: Optional[Union[datetime, Union[str, None]]] = None,
     interval: Union[str, int] = "1440",
     exchange: str = "binance",
     to_symbol: str = "usdt",

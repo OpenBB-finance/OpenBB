@@ -6,12 +6,10 @@ import argparse
 import logging
 import webbrowser
 from datetime import datetime
-from typing import List
+from typing import List, Optional
 
 import numpy as np
 import pandas as pd
-
-from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.common.technical_analysis import (
@@ -24,18 +22,19 @@ from openbb_terminal.common.technical_analysis import (
     volatility_view,
     volume_view,
 )
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     check_non_negative,
     check_positive,
-    check_positive_list,
     check_positive_float,
+    check_positive_list,
     valid_date,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import CryptoBaseController
-from openbb_terminal.rich_config import console, MenuText
+from openbb_terminal.rich_config import MenuText, console
 
 logger = logging.getLogger(__name__)
 
@@ -78,7 +77,7 @@ class TechnicalAnalysisController(CryptoBaseController):
         start: datetime,
         interval: str,
         stock: pd.DataFrame,
-        queue: List[str] = None,
+        queue: Optional[List[str]] = None,
     ):
         """Constructor"""
         super().__init__(queue)

@@ -39,7 +39,7 @@ def get_info(symbol: str) -> pd.DataFrame:
         DataFrame of yfinance information
     """
     stock = yf.Ticker(symbol)
-    df_info = pd.DataFrame(stock.info.items(), columns=["Metric", "Value"])
+    df_info = pd.DataFrame(stock.fast_info.items(), columns=["Metric", "Value"])
     df_info = df_info.set_index("Metric")
 
     clean_df_index(df_info)
@@ -132,47 +132,6 @@ def get_shareholders(symbol: str, holder: str = "institutional") -> pd.DataFrame
 
 
 @log_start_end(log=logger)
-def get_sustainability(symbol: str) -> pd.DataFrame:
-    """Get sustainability metrics from yahoo
-
-    Parameters
-    ----------
-    symbol : str
-        Stock ticker symbol
-
-    Returns
-    -------
-    pd.DataFrame
-        Dataframe of sustainability metrics
-    """
-    stock = yf.Ticker(symbol)
-    pd.set_option("display.max_colwidth", None)
-
-    df_sustainability = stock.sustainability
-
-    if df_sustainability is None or df_sustainability.empty:
-        return pd.DataFrame()
-
-    clean_df_index(df_sustainability)
-
-    df_sustainability = df_sustainability.rename(
-        index={
-            "Controversialweapons": "Controversial Weapons",
-            "Socialpercentile": "Social Percentile",
-            "Peercount": "Peer Count",
-            "Governancescore": "Governance Score",
-            "Environmentpercentile": "Environment Percentile",
-            "Animaltesting": "Animal Testing",
-            "Highestcontroversy": "Highest Controversy",
-            "Environmentscore": "Environment Score",
-            "Governancepercentile": "Governance Percentile",
-            "Militarycontract": "Military Contract",
-        }
-    )
-    return df_sustainability
-
-
-@log_start_end(log=logger)
 def get_calendar_earnings(symbol: str) -> pd.DataFrame:
     """Get calendar earnings for ticker symbol
 
@@ -201,52 +160,6 @@ def get_calendar_earnings(symbol: str) -> pd.DataFrame:
     )
 
     return df_calendar.T
-
-
-@log_start_end(log=logger)
-def get_website(symbol: str) -> str:
-    """Gets website of company from yfinance
-
-    Parameters
-    ----------
-    symbol: str
-        Stock ticker symbol
-
-    Returns
-    -------
-    str
-        Company website"""
-    stock = yf.Ticker(symbol)
-    df_info = pd.DataFrame(stock.info.items(), columns=["Metric", "Value"])
-    return df_info[df_info["Metric"] == "website"]["Value"].values[0]
-
-
-@log_start_end(log=logger)
-def get_hq(symbol: str) -> str:
-    """Gets google map url for headquarter
-
-    Parameters
-    ----------
-    symbol: str
-        Stock ticker symbol
-
-    Returns
-    -------
-    str
-        Headquarter google maps url
-    """
-    stock = yf.Ticker(symbol)
-    df_info = pd.DataFrame(stock.info.items(), columns=["Metric", "Value"])
-    df_info = df_info.set_index("Metric")
-
-    maps = "https://www.google.com/maps/search/"
-    for field in ["address1", "address2", "city", "state", "zip", "country"]:
-        if field in df_info.index:
-            maps += (
-                df_info[df_info.index == field]["Value"].values[0].replace(" ", "+")
-                + ","
-            )
-    return maps[:-1]
 
 
 @log_start_end(log=logger)
@@ -315,7 +228,7 @@ def get_mktcap(
             df_data["Adj Close"] = df_data["Adj Close"] * data["shares"]
             df_data = df_data["Adj Close"]
 
-            currency = data["currency"]
+            currency = data["currency"] if data["currency"] else ""
 
     return df_data, currency
 

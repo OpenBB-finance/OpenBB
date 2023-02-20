@@ -5,8 +5,8 @@ from datetime import datetime
 
 import pandas as pd
 
-from openbb_terminal.helper_funcs import request
 from openbb_terminal.decorators import log_start_end
+from openbb_terminal.helper_funcs import request
 
 logger = logging.getLogger(__name__)
 
