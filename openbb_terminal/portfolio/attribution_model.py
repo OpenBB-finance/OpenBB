@@ -9,7 +9,6 @@ import pandas as pd
 import yfinance as yf
 
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.rich_config import console
 from openbb_terminal.etf import fmp_model
 
 logger = logging.getLogger(__name__)
@@ -70,13 +69,13 @@ def get_spy_sector_contributions(
     # Load in info
     sp500_tickers_data = get_daily_sector_prices(start_date, end_date)
     weight_data = fmp_model.get_etf_sector_weightings(sectors_ticker)
-    
+
     # reformat Data
     weights: Dict[str, dict] = {"SPY": {}}
-    
+
     for sector in weight_data:
         weight_formatted = float(sector["weightPercentage"].strip("%")) / 100
-        weights[sectors_ticker][sector['sector']] = weight_formatted
+        weights[sectors_ticker][sector["sector"]] = weight_formatted
 
     # add the sectors + dates + adj close to the dataframe
     records = []
