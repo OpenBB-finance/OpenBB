@@ -35,7 +35,7 @@ jobs:
       check-changes: ${{ steps.check-changes.outputs.check-changes }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v1
+        uses: actions/checkout@v1 # v1 is used to preserve the git history and works with the git diff command
         with:
           fetch-depth: 0
           # The GitHub token is preserved by default but this job doesn't need
