@@ -249,9 +249,6 @@ class OperationLogger:
                 method_result=method_result,
                 method_chosen=self.__method_chosen,
             )
-            self.__log_if_login(
-                method_chosen=self.__method_chosen,
-            )
             self.__log_end(
                 logger=logger,
                 method_chosen=self.__method_chosen,
@@ -274,17 +271,6 @@ class OperationLogger:
                 f"Exception: {method_result}",
                 extra={"func_name_override": method_chosen.__name__},
             )
-
-    @staticmethod
-    def __log_if_login(
-        method_chosen: Callable,
-    ):
-        if method_chosen.__name__ == login.__name__:
-            from openbb_terminal.core.log.generation.user_logger import (  # pylint: disable=import-outside-toplevel
-                log_user,
-            )
-
-            log_user(with_rollover=False)
 
     @staticmethod
     def __log_end(logger: Logger, method_chosen: Callable):
