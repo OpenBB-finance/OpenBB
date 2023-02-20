@@ -120,6 +120,7 @@ def display_real_gdp(
     fig.add_scatter(
         x=gdp["date"],
         y=gdp["GDP"],
+        name="GDP",
     )
 
     export_data(
@@ -171,6 +172,7 @@ def display_gdp_capita(
     fig.add_scatter(
         x=gdp["date"],
         y=gdp["GDP"],
+        name="GDP",
     )
 
     export_data(
@@ -225,6 +227,7 @@ def display_inflation(
     fig.add_scatter(
         x=inf["date"],
         y=inf["Inflation"],
+        name="Inflation",
     )
 
     export_data(
@@ -285,6 +288,7 @@ def display_cpi(
     fig.add_scatter(
         x=cpi["date"],
         y=cpi["CPI"],
+        name="CPI",
     )
 
     export_data(
@@ -343,6 +347,7 @@ def display_treasury_yield(
     fig.add_scatter(
         x=yld["date"],
         y=yld["Yield"],
+        name="Yield",
     )
 
     export_data(
@@ -399,6 +404,7 @@ def display_unemployment(
     fig.add_scatter(
         x=un["date"],
         y=un["unemp"],
+        name="Unemployment",
     )
 
     export_data(

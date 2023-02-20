@@ -993,8 +993,11 @@ class OpenBBFigure(go.Figure):
         for trace in self.select_traces(
             lambda trace: hasattr(trace, "x") and trace.x is not None
         ):
-            for x in trace.x:
-                if isinstance(x, (datetime, np.datetime64)) and len(trace.x) > 5:
+            for x in trace.x[:2]:
+                if (
+                    isinstance(x, (datetime, np.datetime64, pd.DatetimeIndex))
+                    and len(trace.x) > 5
+                ):
                     output = trace.x
                     name = trace.name if hasattr(trace, "name") else f"{trace}"
                     self._date_xaxs[trace.xaxis] = {

@@ -30,5 +30,5 @@ Metrics:
 Risk Metrics:
 [unvl]    var                display value at risk[/unvl]
 [unvl]    es                 display expected shortfall[/unvl]
-[unvl]    os                 portfolio/os[/unvl]
+[unvl]    om                 display omega ratio[/unvl]
 

@@ -163,11 +163,11 @@ def view_historical_greeks(
 
     fig = OpenBBFigure.create_subplots(
         shared_xaxes=True,
-        subplot_titles=[
-            f"{(greek).capitalize()} historical for {symbol.upper()} {strike} {['Call','Put'][put]}"
-        ],
         specs=[[{"secondary_y": True}]],
         horizontal_spacing=0.1,
+    )
+    fig.set_title(
+        f"{(greek).capitalize()} historical for {symbol.upper()} {strike} {['Call','Put'][put]}"
     )
     fig.add_scatter(
         x=df.index,
@@ -194,6 +194,7 @@ def view_historical_greeks(
             side="right",
         ),
     )
+    fig.hide_holidays()
 
     export_data(
         export,
