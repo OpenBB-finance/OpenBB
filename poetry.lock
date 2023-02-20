@@ -6468,6 +6468,21 @@ socks = ["PySocks (>=1.5.6,!=1.5.7)"]
 use-chardet-on-py3 = ["chardet (>=3.0.2,<6)"]
 
 [[package]]
+name = "requests-futures"
+version = "1.0.0"
+description = "Asynchronous Python HTTP for Humans."
+category = "main"
+optional = false
+python-versions = "*"
+files = [
+    {file = "requests-futures-1.0.0.tar.gz", hash = "sha256:35547502bf1958044716a03a2f47092a89efe8f9789ab0c4c528d9c9c30bc148"},
+    {file = "requests_futures-1.0.0-py2.py3-none-any.whl", hash = "sha256:633804c773b960cef009efe2a5585483443c6eac3c39cc64beba2884013bcdd9"},
+]
+
+[package.dependencies]
+requests = ">=1.2.0"
+
+[[package]]
 name = "requests-oauthlib"
 version = "1.3.1"
 description = "OAuthlib authentication support for Requests."
@@ -6614,7 +6629,6 @@ files = [
     {file = "ruamel.yaml.clib-0.2.7-cp310-cp310-win_amd64.whl", hash = "sha256:d000f258cf42fec2b1bbf2863c61d7b8918d31ffee905da62dede869254d3b8a"},
     {file = "ruamel.yaml.clib-0.2.7-cp311-cp311-macosx_10_9_universal2.whl", hash = "sha256:045e0626baf1c52e5527bd5db361bc83180faaba2ff586e763d3d5982a876a9e"},
     {file = "ruamel.yaml.clib-0.2.7-cp311-cp311-macosx_12_6_arm64.whl", hash = "sha256:721bc4ba4525f53f6a611ec0967bdcee61b31df5a56801281027a3a6d1c2daf5"},
-    {file = "ruamel.yaml.clib-0.2.7-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.manylinux_2_24_x86_64.whl", hash = "sha256:41d0f1fa4c6830176eef5b276af04c89320ea616655d01327d5ce65e50575c94"},
     {file = "ruamel.yaml.clib-0.2.7-cp36-cp36m-macosx_10_9_x86_64.whl", hash = "sha256:4b3a93bb9bc662fc1f99c5c3ea8e623d8b23ad22f861eb6fce9377ac07ad6072"},
     {file = "ruamel.yaml.clib-0.2.7-cp36-cp36m-macosx_12_0_arm64.whl", hash = "sha256:a234a20ae07e8469da311e182e70ef6b199d0fbeb6c6cc2901204dd87fb867e8"},
     {file = "ruamel.yaml.clib-0.2.7-cp36-cp36m-manylinux2014_aarch64.whl", hash = "sha256:15910ef4f3e537eea7fe45f8a5d19997479940d9196f357152a09031c5be59f3"},
@@ -8692,6 +8706,29 @@ files = [
 ]
 
 [[package]]
+name = "yahooquery"
+version = "2.3.0"
+description = "Python interface to unofficial Yahoo Finance API endpoints"
+category = "main"
+optional = false
+python-versions = "*"
+files = [
+    {file = "yahooquery-2.3.0-py2.py3-none-any.whl", hash = "sha256:760c885da53ca25104000291c58fe53fe3df4b832ea424c32f8c429d2825e911"},
+    {file = "yahooquery-2.3.0.tar.gz", hash = "sha256:c51aee71ab90de52d1fa7e1288bc466f5ea0dfb6ac20f2c62c9dde461985f63b"},
+]
+
+[package.dependencies]
+lxml = ">=4.9.1"
+pandas = ">=0.24.0"
+requests-futures = ">=1.0.0"
+tqdm = ">=4.54.1"
+
+[package.extras]
+doc = ["mkdocs (>=1.1.2,<2.0.0)", "mkdocs-jupyter (>=0.12.0,<0.13.0)", "mkdocs-material (>=6.1.7,<7.0.0)"]
+premium = ["selenium (>=3.141.0)"]
+test = ["coverage (==5.2.1)", "pytest (==6.0.2)", "pytest-cov (==2.10.1)", "selenium (>=3.141.0)"]
+
+[[package]]
 name = "yarl"
 version = "1.8.2"
 description = "Yet another URL library"
@@ -8885,4 +8922,4 @@ optimization = ["Riskfolio-Lib"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8,<3.11, !=3.9.7"
-content-hash = "8a7372187c8ee5d9012fa0a65109fe3cfc71ca8f0159c5efd65df4415f5ac229"
+content-hash = "ecb2e6b98d259e95edb86faaeed404755d6f60146607891de7e4ea30f54f6e76"
