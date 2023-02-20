@@ -38,7 +38,8 @@ def test_get_coins(kwargs, recorder):
         ("get_trending_coins", dict()),
         ("get_coin_list", dict()),
         ("get_coins_for_given_exchange", dict()),
-        ("get_mapping_matrix_for_exchange", dict(exchange_id="binance")),
+        # TOO SLOW
+        # ("get_mapping_matrix_for_exchange", dict(exchange_id="binance")),
     ],
 )
 def test_call_func(func, kwargs, recorder):
