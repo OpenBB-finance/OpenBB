@@ -160,7 +160,10 @@ class ForecastController(BaseController):
     list_dataset_cols: list = list()
 
     def __init__(
-        self, ticker: str = "", data: pd.DataFrame = empty_df, queue: List[str] = None
+        self,
+        ticker: str = "",
+        data: pd.DataFrame = empty_df,
+        queue: Optional[List[str]] = None,
     ):
         """Constructor"""
         super().__init__(queue)
@@ -229,7 +232,7 @@ class ForecastController(BaseController):
         # Load in any newly exported files
         self.DATA_FILES = forecast_model.get_default_files()
         if session and obbff.USE_PROMPT_TOOLKIT:
-            choices: dict = self.choices_default
+            choices: dict = self.choices_default  # type: ignore
 
             self.choices = choices
             self.completer = NestedCompleter.from_nested_dict(choices)

@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import logging
 import os
 from datetime import datetime
-from typing import List
+from typing import List, Optional
 
 from openbb_terminal import rich_config
 from openbb_terminal.decorators import log_start_end
@@ -25,7 +25,7 @@ def display_income_comparison(
     timeframe: str = str(datetime.now().year - 1),
     quarter: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Display income data. [Source: Marketwatch].
 
@@ -82,7 +82,7 @@ def display_balance_comparison(
     timeframe: str = str(datetime.now().year - 1),
     quarter: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Compare balance between companies. [Source: Marketwatch]
 
@@ -139,7 +139,7 @@ def display_cashflow_comparison(
     timeframe: str = str(datetime.now().year - 1),
     quarter: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Compare cashflow between companies. [Source: Marketwatch]
 

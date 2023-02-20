@@ -1,6 +1,7 @@
 # IMPORTATION THIRDPARTY
 import logging
 from argparse import Namespace
+from typing import Optional
 
 # IMPORTATION THIRDPARTY
 import pandas as pd
@@ -311,7 +312,7 @@ class DegiroView:
 
     @log_start_end(log=logger)
     @check_api_key(["DG_USERNAME", "DG_PASSWORD"])
-    def login(self, otp: int = None):
+    def login(self, otp: Optional[int] = None):
         # GET ATTRIBUTES
         degiro_model = self.__degiro_model
         credentials = degiro_model.login_default_credentials()

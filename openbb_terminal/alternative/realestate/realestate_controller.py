@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import argparse
 import logging
 from datetime import datetime, timedelta
-from typing import List
+from typing import List, Optional
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.alternative.realestate import landRegistry_view
@@ -40,7 +40,7 @@ class RealEstateController(BaseController):
     CHOICES_GENERATION = True
     # FILE_PATH = os.path.join(os.path.dirname(__file__), "README.md")
 
-    def __init__(self, queue: List[str] = None):
+    def __init__(self, queue: Optional[List[str]] = None):
         """Construct Data."""
         super().__init__(queue)
 

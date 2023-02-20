@@ -5,7 +5,7 @@ __docformat__ = "numpy"
 import argparse
 import logging
 from datetime import datetime, timedelta
-from typing import List
+from typing import List, Optional
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.cryptocurrency import cryptocurrency_helpers
@@ -118,7 +118,7 @@ class DueDiligenceController(CryptoBaseController):
         self,
         symbol=None,
         source=None,
-        queue: List[str] = None,
+        queue: Optional[List[str]] = None,
     ):
         """Constructor"""
         super().__init__(queue)
@@ -509,7 +509,6 @@ class DueDiligenceController(CryptoBaseController):
     @log_start_end(log=logger)
     def call_oi(self, other_args):
         """Process oi command"""
-        assert isinstance(self.symbol, str)  # noqa: S101
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -535,6 +534,7 @@ class DueDiligenceController(CryptoBaseController):
         )
 
         if ns_parser:
+            assert isinstance(self.symbol, str)  # noqa: S101
             coinglass_view.display_open_interest(
                 symbol=self.symbol.upper(),
                 interval=ns_parser.interval,
@@ -547,7 +547,6 @@ class DueDiligenceController(CryptoBaseController):
     @log_start_end(log=logger)
     def call_liquidations(self, other_args):
         """Process liquidations command"""
-        assert isinstance(self.symbol, str)  # noqa: S101
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -563,6 +562,7 @@ class DueDiligenceController(CryptoBaseController):
         )
 
         if ns_parser:
+            assert isinstance(self.symbol, str)  # noqa: S101
             coinglass_view.display_liquidations(
                 symbol=self.symbol.upper(),
                 export=ns_parser.export,
@@ -574,7 +574,6 @@ class DueDiligenceController(CryptoBaseController):
     @log_start_end(log=logger)
     def call_fundrate(self, other_args):
         """Process fundrate command"""
-        assert isinstance(self.symbol, str)  # noqa: S101
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -590,6 +589,7 @@ class DueDiligenceController(CryptoBaseController):
         )
 
         if ns_parser:
+            assert isinstance(self.symbol, str)  # noqa: S101
             coinglass_view.display_funding_rate(
                 symbol=self.symbol.upper(),
                 export=ns_parser.export,
