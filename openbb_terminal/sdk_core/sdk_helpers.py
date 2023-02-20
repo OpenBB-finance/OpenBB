@@ -16,7 +16,6 @@ from openbb_terminal.sdk_core.sdk_init import (
     OPTIMIZATION_TOOLKIT_ENABLED,
     OPTIMIZATION_TOOLKIT_WARNING,
 )
-from openbb_terminal.session.sdk_session import login
 
 if not FORECASTING_TOOLKIT_ENABLED and not load_env_vars(
     "OPENBB_DISABLE_FORECASTING_WARNING", strtobool, False

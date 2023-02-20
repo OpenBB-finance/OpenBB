@@ -1,7 +1,7 @@
 # IMPORTATION STANDARD
 import logging
 
-from openbb_terminal.core.log.generation import settings_logger, user_logger
+from openbb_terminal.core.log.generation import settings_logger
 from openbb_terminal.core.log.generation.common import do_rollover
 
 # IMPORTATION THIRDPARTY

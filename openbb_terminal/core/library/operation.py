@@ -7,7 +7,6 @@ from typing import Any, Callable, Dict, List, Optional
 import openbb_terminal.config_terminal as cfg
 from openbb_terminal.core.library.metadata import Metadata
 from openbb_terminal.core.library.trail_map import TrailMap
-from openbb_terminal.session.sdk_session import login
 
 # pylint: disable=import-outside-toplevel
 
