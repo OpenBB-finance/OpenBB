@@ -73,7 +73,7 @@ def get_spy_sector_contributions(
         weight_data = yf.Ticker(sectors_ticker).info["sectorWeightings"]
     except Exception as _:  # noqa
         console.print(
-            "[red]This functionality is currently unstable and will be removed in the near future."
+            "[red]Sector weightings unavailable from YahooFinance.  We are working on replacement sources[/red]."
         )
         return pd.DataFrame()
 
