@@ -95,7 +95,7 @@ jobs:
           MPLBACKEND: Agg
         run: |
           source $VENV
-          pytest tests/ --optimization --cov --cov-fail-under=50 --autodoc
+          pytest tests/ --optimization --cov --cov-fail-under=50 --autodoc -n auto
 
       - name: Start Terminal and exit
         run: |

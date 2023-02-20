@@ -114,7 +114,18 @@ tenacity = "<8.0.0"  # Finviz, papermill and plotly dep. Pinned to avoid pip res
 intrinio-sdk = "^6.22.2"
 yahooquery = "^2.3.0"
 
-[tool.poetry.dev-dependencies]
+
+
+[tool.poetry.extras]
+forecast = ["torch", "pytorch-lightning", "u8darts", "lightgbm"]
+optimization = ["Riskfolio-Lib"]
+all = ["torch", "pytorch-lightning", "u8darts", "Riskfolio-Lib"]
+jupyterlab = ["jupyterlab-code-formatter", "jupyterlab-lsp", "jedi-language-server"]
+installer = ["pyinstaller"]
+doc = ["docstring-parser"]
+
+[tool.poetry.group.dev.dependencies]
+pytest-xdist = "^3.2.0"
 pytest = "^6.2.2"
 pylint = "2.15.2"
 mypy = "^1.0.0"
@@ -139,14 +150,6 @@ pytest-cov = "^3.0.0"
 types-six = "^1.16.12"
 nbmake = ">0.5.0"
 ruff = "^0.0.247"
-
-[tool.poetry.extras]
-forecast = ["torch", "pytorch-lightning", "u8darts", "lightgbm"]
-optimization = ["Riskfolio-Lib"]
-all = ["torch", "pytorch-lightning", "u8darts", "Riskfolio-Lib"]
-jupyterlab = ["jupyterlab-code-formatter", "jupyterlab-lsp", "jedi-language-server"]
-installer = ["pyinstaller"]
-doc = ["docstring-parser"]
 
 [build-system]
 requires = ["setuptools<65.5.0", "poetry-core>=1.0.0"]
