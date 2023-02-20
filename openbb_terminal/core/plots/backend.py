@@ -88,7 +88,7 @@ class Backend(PyWry):
 
     def get_window_icon(self) -> str:
         """Get the window icon"""
-        icon_path = PLOTS_CORE_PATH / "assets" / "icon.png"
+        icon_path = PLOTS_CORE_PATH / "assets" / "Terminal_icon.png"
         if icon_path.exists():
             return str(icon_path)
         return ""
