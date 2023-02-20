@@ -6,6 +6,7 @@ import re
 # IMPORTATION INTERNAL
 from openbb_terminal.core.config.paths import HOME_DIRECTORY
 from openbb_terminal.core.log.generation.settings import AppSettings
+from openbb_terminal.core.log.generation.user_logger import get_user_uuid
 
 
 class FormatterWithExceptions(logging.Formatter):
@@ -147,8 +148,9 @@ class FormatterWithExceptions(logging.Formatter):
             "appId": app_settings.identifier,
             "sessionId": app_settings.session_id,
             "commitHash": app_settings.commit_hash,
-            "userId": app_settings.user_id,
+            "userId": get_user_uuid(),
         }
+
         log_extra = self.extract_log_extra(record=record)
         log_prefix_content = {**log_prefix_content, **log_extra}
         log_prefix = self.LOGPREFIXFORMAT % log_prefix_content

@@ -19,5 +19,4 @@ def log_terminal(test_mode: bool):
 
     logger.info("START")
     settings_logger.log_all_settings(with_rollover=False)
-    user_logger.log_user(with_rollover=False)
     do_rollover()
