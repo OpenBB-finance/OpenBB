@@ -1631,7 +1631,7 @@ class EconomyController(BaseController):
             QaController,
         )
 
-        data: Dict = {}
+        data: Dict = {}  # type: ignore
         for source, _ in self.DATASETS.items():
             if not self.DATASETS[source].empty:
                 if len(self.DATASETS[source].columns) == 1:
