@@ -112,6 +112,55 @@ COUNTRY_TO_CODE_LONG = {
 }
 
 
+COUNTRY_TO_CODE = {
+    'australia':'AUS',
+    'austria':'AUT',
+    'belgium':'BEL',
+    'bulgaria':'BGR',
+    'brazil':'BRA',
+    'canada':'CAN',
+    'switzerland':'CHE',
+    'chile':'CHL',
+    'china':'CHN',
+    'colombia':'COL',
+    'costa_rica':'CRI',
+    'czech_republic':'CZE',
+    'germany':'DEU',
+    'denmark':'DNK',
+    'spain':'ESP',
+    'estonia':'EST',
+    'finland':'FIN',
+    'france':'FRA',
+    'united_kingdom':'GBR',
+    'greece':'GRC',
+    'croatia':'HRV',
+    'hungary':'HUN',
+    'indonesia':'IDN',
+    'india':'IND',
+    'ireland':'IRL',
+    'iceland':'ISL',
+    'israel':'ISR',
+    'italy':'ITA',
+    'japan':'JPN',
+    'korea':'KOR',
+    'lithuania':'LTU',
+    'luxembourg':'LUX',
+    'latvia':'LVA',
+    'mexico':'MEX',
+    'netherlands':'NLD',
+    'norway':'NOR',
+    'new_zealand':'NZL',
+    'poland':'POL',
+    'portugal':'PRT',
+    'romania':'ROU',
+    'russia':'RUS',
+    'slovak_republic':'SVK',
+    'slovenia':'SVN',
+    'sweden':'SWE',
+    'united_states':'USA',
+    'south_africa':'ZAF'
+}
+
 @log_start_end(log=logger)
 def get_interest_rate_data(
     data: str = "short",
@@ -237,6 +286,9 @@ def get_interest_rate_data(
             )
         temp.columns = [f"{country} ({data_name})"]
         result = pd.concat([result, temp], axis=1)
+       
+    result.index = pd.to_datetime(result.index).date    
+    result.sort_index(inplace=True)
 
     result.index = pd.to_datetime(result.index).date
     result.sort_index(inplace=True)

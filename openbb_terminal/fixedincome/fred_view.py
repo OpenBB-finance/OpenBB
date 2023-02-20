@@ -172,6 +172,12 @@ MOODY_TO_OPTIONS: Dict[str, Dict] = {
     "Spread": ["treasury", "fed_funds"],  # type: ignore
 }
 
+NAME_TO_ID_ECB = {
+    "deposit": "ECBDFR",
+    "lending": "ECBMLFR",
+    "refinancing": "ECBMRRFR"
+}
+
 
 @log_start_end(log=logger)
 @check_api_key(["API_FRED_KEY"])
