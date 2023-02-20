@@ -375,7 +375,7 @@ def test_call_pull(mocker, input_value):
         return_value=response,
     )
     mock_get_session = mocker.patch(
-        target=f"{path_controller}.User.get_session",
+        target=f"{path_controller}.User.profile.get_session",
         return_value=TEST_SESSION,
     )
     mock_get_diff = mocker.patch(
@@ -437,7 +437,7 @@ def test_call_list(mocker):
     path_controller = "openbb_terminal.account.account_controller"
 
     mocker.patch(
-        target=f"{path_controller}.User.get_auth_header",
+        target=f"{path_controller}.User.profile.get_auth_header",
         return_value="Bearer 123",
     )
     mock_list_routines = mocker.patch(
@@ -462,7 +462,7 @@ def test_call_upload(mocker):
     path_controller = "openbb_terminal.account.account_controller"
 
     mocker.patch(
-        target=f"{path_controller}.User.get_auth_header",
+        target=f"{path_controller}.User.profile.get_auth_header",
         return_value="Bearer 123",
     )
     mock_get_routine = mocker.patch(
@@ -499,7 +499,7 @@ def test_call_download(mocker):
     path_controller = "openbb_terminal.account.account_controller"
 
     mocker.patch(
-        target=f"{path_controller}.User.get_auth_header",
+        target=f"{path_controller}.User.profile.get_auth_header",
         return_value="Bearer 123",
     )
     mock_download_routine = mocker.patch(
@@ -546,7 +546,7 @@ def test_call_delete(mocker, monkeypatch):
     path_controller = "openbb_terminal.account.account_controller"
 
     mocker.patch(
-        target=f"{path_controller}.User.get_auth_header",
+        target=f"{path_controller}.User.profile.get_auth_header",
         return_value="Bearer 123",
     )
     mock_delete_routine = mocker.patch(
@@ -580,7 +580,7 @@ def test_call_generate(mocker, monkeypatch):
     ).encode("utf-8")
 
     mocker.patch(
-        target=f"{path_controller}.User.get_auth_header",
+        target=f"{path_controller}.User.profile.get_auth_header",
         return_value="Bearer 123",
     )
     mock_generate = mocker.patch(
@@ -617,7 +617,7 @@ def test_call_show(mocker):
     ).encode("utf-8")
 
     mocker.patch(
-        target=f"{path_controller}.User.get_auth_header",
+        target=f"{path_controller}.User.profile.get_auth_header",
         return_value="Bearer 123",
     )
     mock_get_token = mocker.patch(
@@ -636,7 +636,7 @@ def test_call_revoke(mocker, monkeypatch):
     response.status_code = 200
 
     mocker.patch(
-        target=f"{path_controller}.User.get_auth_header",
+        target=f"{path_controller}.User.profile.get_auth_header",
         return_value="Bearer 123",
     )
     mock_revoke_token = mocker.patch(
