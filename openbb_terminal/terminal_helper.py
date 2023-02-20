@@ -341,7 +341,7 @@ def reset(queue: Optional[List[str]] = None):
     plt.close("all")
 
     flag = ""
-    if not User.is_guest():
+    if not User.profile.is_guest():
         flag = " --login"
 
     if queue and len(queue) > 0:

@@ -69,7 +69,7 @@ def test_whoami(User, sync, guest):
     path = "openbb_terminal.session.user."
     with (
         patch(path + "obbff.SYNC_ENABLED", sync),
-        patch(path + "User.is_guest", return_value=guest),
+        patch(path + "User.profile.is_guest", return_value=guest),
     ):
         User.whoami()
 

@@ -78,6 +78,7 @@ def login(session: dict) -> LoginStatus:
             email = configs.get("email", "")
             feature_settings = configs.get("features_settings", {})
             User.load_user_info(session, email)
+            User.email = email
             Local.apply_configs(configs=configs)
             User.update_flair(
                 flair=feature_settings.get("USE_FLAIR", None)

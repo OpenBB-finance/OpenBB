@@ -363,7 +363,7 @@ from openbb_terminal.sdk_core import (
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.session.user import User
 
-if User.is_guest():
+if User.profile.is_guest():
     load_dotenv_and_reload_configs()
 
 logger = logging.getLogger(__name__)

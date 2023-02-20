@@ -230,7 +230,7 @@ def set_key(env_var_name: str, env_var_value: str, persist: bool = False) -> Non
         If True, api key change will be global, i.e. it will affect terminal environment variables.
         By default, False.
     """
-    if persist and User.is_guest():
+    if persist and User.profile.is_guest():
         os.environ[env_var_name] = env_var_value
         dotenv.set_key(str(USER_ENV_FILE), env_var_name, env_var_value)
 
@@ -243,7 +243,7 @@ def set_key(env_var_name: str, env_var_value: str, persist: bool = False) -> Non
 
     # Send api key to server
     if (
-        not User.is_guest()
+        not User.profile.is_guest()
         and User.is_sync_enabled()
         and env_var_name not in cfg.SENSITIVE_KEYS
         and (env_var_name.startswith("API_") or env_var_name.startswith("OPENBB_"))

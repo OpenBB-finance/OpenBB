@@ -120,7 +120,7 @@ class AccountController(BaseController):
             logout(
                 auth_header=User.get_auth_header(),
                 token=User.get_token(),
-                guest=User.is_guest(),
+                guest=User.profile.is_guest(),
                 cls=True,
             )
 

@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 
 def log_user(with_rollover: bool = True):
     """Log user"""
-    if not User.is_guest():
+    if not User.profile.is_guest():
         _log_user_info()
 
     if with_rollover:

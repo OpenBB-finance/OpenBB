@@ -94,7 +94,7 @@ class FeatureFlagsController(BaseController):
             Force remote storage of feature flag, by default False
         """
 
-        if User.is_guest():
+        if User.profile.is_guest():
             set_key(str(USER_ENV_FILE), name, str(value))
 
         # Remove "OPENBB_" prefix from env_var
@@ -105,7 +105,7 @@ class FeatureFlagsController(BaseController):
         setattr(obbff, name, value)
 
         # Send feature flag to server
-        if not User.is_guest() and User.is_sync_enabled() or force:
+        if not User.profile.is_guest() and User.is_sync_enabled() or force:
             patch_user_configs(
                 key=name,
                 value=str(value),

@@ -368,7 +368,7 @@ class TerminalController(BaseController):
         """Process account command."""
         from openbb_terminal.account.account_controller import AccountController
 
-        if User.is_guest():
+        if User.profile.is_guest():
             User.print_guest_message()
             return
         self.queue = self.load_class(AccountController, self.queue)
