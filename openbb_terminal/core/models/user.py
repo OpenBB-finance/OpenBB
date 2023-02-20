@@ -42,8 +42,9 @@ class UserModel:
             )
 
     @staticmethod
-    def clear():
+    def reset_flair():
         """Clear user info."""
+        # This is a temporary solution until we implement PreferencesModel.
         obbff.USE_FLAIR = ":openbb"
 
 

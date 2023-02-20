@@ -119,7 +119,7 @@ class AccountController(BaseController):
         if ns_parser:
             logout(
                 auth_header=User.profile.get_auth_header(),
-                token=User.get_token(),
+                token=User.profile.get_token(),
                 guest=User.profile.is_guest(),
                 cls=True,
             )

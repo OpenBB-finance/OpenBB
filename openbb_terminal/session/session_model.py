@@ -122,7 +122,7 @@ def logout(
         r = Hub.delete_session(auth_header, token)
         if not r or r.status_code != 200:
             success = False
-        User.clear()
+        User.reset_flair()
 
         if not Local.remove_session_file():
             success = False

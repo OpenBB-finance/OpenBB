@@ -4,6 +4,8 @@ from pydantic.dataclasses import dataclass
 from openbb_terminal.rich_config import console
 from openbb_terminal.session.hub_model import REGISTER_URL
 
+import openbb_terminal.feature_flags as obbff
+
 
 @dataclass(config=dict(validate_assignment=True))
 class ProfileModel:
@@ -90,6 +92,11 @@ class ProfileModel:
         if not self.is_guest():
             console.print(f"[info]email:[/info] {self.email}")
             console.print(f"[info]uuid:[/info] {self.uuid}")
+            if obbff.SYNC_ENABLED is True:
+                sync = "ON"
+            else:
+                sync = "OFF"
+            console.print(f"[info]sync:[/info] {sync}")
         else:
             self.print_guest_message()
 
