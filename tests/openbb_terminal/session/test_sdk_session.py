@@ -171,13 +171,13 @@ def test_login(
 
 
 def test_logout():
-    User.load_user_info(TEST_SESSION, "test@email.com")
+    User.profile.load_user_info(TEST_SESSION, "test@email.com")
     path = "openbb_terminal.session.sdk_session."
     with (patch(path + "session_model.logout") as mock_logout,):
         sdk_session.logout()
         mock_logout.assert_called_once_with(
-            auth_header=User.get_auth_header(),
-            token=User.get_token(),
+            auth_header=User.profile.get_auth_header(),
+            token=User.profile.get_token(),
             guest=User.profile.is_guest(),
         )
 
@@ -189,7 +189,7 @@ def test_whoami_guest():
 
 @pytest.mark.record_stdout
 def test_whoami():
-    User.load_user_info(
+    User.profile.load_user_info(
         {
             "token_type": "MOCK_TOKEN_TYPE",
             "access_token": "MOCK_ACCESS_TOKEN",

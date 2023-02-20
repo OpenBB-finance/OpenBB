@@ -68,7 +68,7 @@ def test_login_no_response(mocker):
     )
     mock_fetch_user_configs = mocker.patch(path + "Hub.fetch_user_configs")
     mock_apply_configs = mocker.patch(path + "Local.apply_configs")
-    mock_load_user_info = mocker.patch(path + "User.load_user_info")
+    mock_load_user_info = mocker.patch(path + "User.profile.load_user_info")
     mock_update_flair = mocker.patch(path + "User.update_flair")
 
     mock_fetch_user_configs.return_value = None
@@ -91,7 +91,7 @@ def test_login_fail_response(mocker):
     )
     mock_fetch_user_configs = mocker.patch(path + "Hub.fetch_user_configs")
     mock_apply_configs = mocker.patch(path + "Local.apply_configs")
-    mock_load_user_info = mocker.patch(path + "User.load_user_info")
+    mock_load_user_info = mocker.patch(path + "User.profile.load_user_info")
     mock_update_flair = mocker.patch(path + "User.update_flair")
 
     response = Response()
@@ -116,7 +116,7 @@ def test_login_success_response(mocker):
     )
     mock_fetch_user_configs = mocker.patch(path + "Hub.fetch_user_configs")
     mock_apply_configs = mocker.patch(path + "Local.apply_configs")
-    mock_load_user_info = mocker.patch(path + "User.load_user_info")
+    mock_load_user_info = mocker.patch(path + "User.profile.load_user_info")
     mock_update_flair = mocker.patch(path + "User.update_flair")
 
     response = Response()
@@ -152,7 +152,7 @@ def test_logout_user(mocker, guest):
         path + "reload_openbb_config_modules"
     )
     mock_clear_openbb_env_vars = mocker.patch(path + "clear_openbb_env_vars")
-    mock_clear_user = mocker.patch(path + "User.clear")
+    mock_clear_user = mocker.patch(path + "User.reset_flair")
     mock_plt_close = mocker.patch(path + "plt.close")
 
     auth_header = "Bearer test_token"

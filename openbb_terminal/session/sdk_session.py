@@ -90,4 +90,4 @@ def whoami():
     >>> from openbb_terminal.sdk import openbb
     >>> openbb.whoami()
     """
-    User.whoami()
+    User.profile.whoami()
