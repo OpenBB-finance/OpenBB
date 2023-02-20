@@ -173,14 +173,18 @@ def make_equal_length(df1: pd.DataFrame, df2: pd.DataFrame):
          Both DataFrames returned
     """
     # Match the DataFrames so they share a similar length
-    df2.columns = [i + "2" for i in df2.columns]
+    if isinstance(df1, pd.Series):
+        df1 = df1.to_frame()
+    if isinstance(df2, pd.Series):
+        df2 = df2.to_frame()
+    df2.columns = [str(i) + "2" for i in df2.columns]
     df_merged = df1.join(df2, how="outer")
     df_merged = df_merged.fillna(0)
 
     df1 = df_merged[df1.columns]
     df2 = df_merged[df2.columns]
 
-    df2.columns = [i[:-2] for i in df2.columns]
+    df2.columns = [i[:-1] for i in df2.columns]
 
     return df1, df2
 
