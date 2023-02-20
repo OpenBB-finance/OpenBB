@@ -5,31 +5,29 @@ import argparse
 import logging
 import os
 from datetime import datetime, timedelta
-from typing import List
+from typing import List, Optional
 
 import pandas as pd
 
-from openbb_terminal.custom_prompt_toolkit import NestedCompleter
-from openbb_terminal.common.quantitative_analysis import qa_view
 from openbb_terminal import feature_flags as obbff
-from openbb_terminal.decorators import log_start_end
-from openbb_terminal.forex import forex_helper, fxempire_view, av_view
-from openbb_terminal.forex.forex_helper import FOREX_SOURCES, SOURCES_INTERVALS
+from openbb_terminal.common.quantitative_analysis import qa_view
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
+from openbb_terminal.decorators import check_api_key, log_start_end
+from openbb_terminal.forex import av_view, forex_helper, fxempire_view
+from openbb_terminal.forex.forex_helper import (
+    FOREX_SOURCES,
+    SOURCES_INTERVALS,
+    parse_forex_symbol,
+)
 from openbb_terminal.helper_funcs import (
-    valid_date,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     export_data,
+    valid_date,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import (
-    console,
-    MenuText,
-    get_ordered_list_sources,
-)
+from openbb_terminal.rich_config import MenuText, console, get_ordered_list_sources
 from openbb_terminal.stocks import stocks_helper
-from openbb_terminal.decorators import check_api_key
-from openbb_terminal.forex.forex_helper import parse_forex_symbol
 
 # pylint: disable=R1710,import-outside-toplevel
 
@@ -63,7 +61,7 @@ class ForexController(BaseController):
     FILE_PATH = os.path.join(os.path.dirname(__file__), "README.md")
     CHOICES_GENERATION = True
 
-    def __init__(self, queue: List[str] = None):
+    def __init__(self, queue: Optional[List[str]] = None):
         """Construct Data."""
         super().__init__(queue)
 
@@ -150,8 +148,16 @@ class ForexController(BaseController):
             "--start",
             default=(datetime.now() - timedelta(days=365)),
             type=valid_date,
-            help="Start date of data.",
+            help="The starting date (format YYYY-MM-DD) of the forex pair",
             dest="start_date",
+        )
+        parser.add_argument(
+            "-e",
+            "--end",
+            type=valid_date,
+            default=datetime.now().strftime("%Y-%m-%d"),
+            dest="end",
+            help="The ending date (format YYYY-MM-DD) of the forex pair",
         )
 
         if other_args and "-" not in other_args[0][0]:
@@ -172,13 +178,13 @@ class ForexController(BaseController):
             self.to_symbol = ns_parser.ticker[3:]
 
             if self.to_symbol and self.from_symbol:
-
                 self.data = forex_helper.load(
                     to_symbol=self.to_symbol,
                     from_symbol=self.from_symbol,
                     resolution=ns_parser.resolution,
                     interval=ns_parser.interval,
                     start_date=ns_parser.start_date.strftime("%Y-%m-%d"),
+                    end_date=ns_parser.end.strftime("%Y-%m-%d"),
                     source=ns_parser.source,
                 )
 
@@ -186,23 +192,21 @@ class ForexController(BaseController):
                     console.print(
                         "\n[red]No historical data loaded.\n\n"
                         f"Make sure you have appropriate access for the '{ns_parser.source}' data source "
-                        f"and that '{ns_parser.source}' supports the requested range.[/red]\n"
+                        f"and that '{ns_parser.source}' supports the requested range.[/red]"
                     )
                 else:
                     self.data.index.name = "date"
+                    console.print(f"{self.from_symbol}-{self.to_symbol} loaded.")
 
                 export_data(
                     ns_parser.export,
                     os.path.dirname(os.path.abspath(__file__)),
                     "load",
                     self.data.copy(),
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None,
                 )
-
                 self.source = ns_parser.source
-                if self.source != "YahooFinance":
-                    console.print(f"{self.from_symbol}-{self.to_symbol} loaded.\n")
             else:
-
                 console.print("\n[red]Make sure to load.[/red]\n")
 
     @log_start_end(log=logger)
@@ -335,6 +339,7 @@ class ForexController(BaseController):
                 os.path.dirname(os.path.abspath(__file__)),
                 f"{self.fx_pair}",
                 self.data,
+                " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None,
             )
 
     @log_start_end(log=logger)
@@ -391,7 +396,10 @@ class ForexController(BaseController):
         if ns_parser:
             if self.fx_pair:
                 fxempire_view.display_forward_rates(
-                    self.to_symbol, self.from_symbol, ns_parser.export
+                    self.to_symbol,
+                    self.from_symbol,
+                    ns_parser.export,
+                    ns_parser.sheet_name,
                 )
             else:
                 logger.error("Make sure ba currency pair is loaded.")

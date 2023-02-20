@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
+from typing import Optional
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
@@ -13,7 +14,9 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def display_most_shorted(limit: int = 10, export: str = ""):
+def display_most_shorted(
+    limit: int = 10, export: str = "", sheet_name: Optional[str] = None
+):
     """Display most shorted stocks screener. [Source: Yahoo Finance]
 
     Parameters
@@ -39,4 +42,5 @@ def display_most_shorted(limit: int = 10, export: str = ""):
         os.path.dirname(os.path.abspath(__file__)),
         "shorted",
         df,
+        sheet_name,
     )

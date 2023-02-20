@@ -179,7 +179,7 @@ Several things worth noting here:
 @pytest.mark.default_cassette("example.yaml")
 @pytest.mark.vcr
 def test_default():
-    assert requests.get("http://httpbin.org/get").text == '{"get": true}'
+    assert request("http://httpbin.org/get").text == '{"get": true}'
 ```
 
 ## 3.2. View Test
@@ -548,8 +548,8 @@ flake8 = "^3.9.0"
 After updating the `pyproject.toml` you will have to export the `requirements` files using the following commands :
 
 ```bash
-poetry export -f requirements.txt  -o requirements.txt --without-hashes --dev
-poetry export -f requirements.txt  -o requirements-full.txt --extras prediction --extras optimization --without-hashes --dev
+poetry export -f requirements.txt  -o requirements.txt --without-hashes --with dev
+poetry export -f requirements.txt  -o requirements-full.txt --extras forecast --extras optimization --without-hashes --with dev
 ```
 
 # 4. Maintain `unit tests`

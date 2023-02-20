@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
+from typing import Optional
 
 import pandas as pd
 
@@ -19,6 +20,7 @@ def display_etf_by_name(
     name: str,
     limit: int = 10,
     export: str = "",
+    sheet_name: Optional[str] = None,
 ):
     """Display a selection of ETFs based on name filtered by total assets. [Source: Finance Database]
 
@@ -28,6 +30,8 @@ def display_etf_by_name(
         Search by name to find ETFs matching the criteria.
     limit: int
         Limit of ETFs to display
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Type of format to export data
     """
@@ -39,18 +43,24 @@ def display_etf_by_name(
     table_data = pd.DataFrame(data).T[
         ["long_name", "family", "category", "total_assets"]
     ]
+
+    # Sort by total assets but it is then dropped due to not being completely up to date
     table_data_sorted = table_data.sort_values(by="total_assets", ascending=False)
-    table_data_sorted["total_assets"] = table_data_sorted["total_assets"] / 1e6
+    table_data_sorted = table_data_sorted.drop("total_assets", axis=1)
 
     print_rich_table(
         table_data_sorted.iloc[:limit],
         show_index=True,
-        headers=["Name", "Family", "Category", "Total Assets [M]"],
+        headers=["Name", "Family", "Category"],
         title="ETFs by Total Assets",
     )
 
     export_data(
-        export, os.path.dirname(os.path.abspath(__file__)), "ln_fd", table_data_sorted
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "ln_fd",
+        table_data_sorted,
+        sheet_name,
     )
 
 
@@ -59,6 +69,7 @@ def display_etf_by_description(
     description: str,
     limit: int = 10,
     export: str = "",
+    sheet_name: Optional[str] = None,
 ):
     """Display a selection of ETFs based on description filtered by total assets.
     [Source: Finance Database]
@@ -69,6 +80,8 @@ def display_etf_by_description(
         Search by description to find ETFs matching the criteria.
     limit: int
         Limit of ETFs to display
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Type of format to export data
     """
@@ -80,17 +93,24 @@ def display_etf_by_description(
     table_data = pd.DataFrame(data).T[
         ["long_name", "family", "category", "total_assets"]
     ]
+    # Sort by total assets but it is then dropped due to not being completely up to date
     table_data_sorted = table_data.sort_values(by="total_assets", ascending=False)
-    table_data_sorted["total_assets"] = table_data_sorted["total_assets"] / 1e6
+    table_data_sorted = table_data_sorted.drop("total_assets", axis=1)
 
     print_rich_table(
         table_data_sorted.iloc[:limit],
         show_index=True,
-        headers=["Name", "Family", "Category", "Total Assets [M]"],
+        headers=["Name", "Family", "Category"],
         title="ETFs by Total Assets",
     )
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "ld", data)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "ld",
+        data,
+        sheet_name,
+    )
 
 
 @log_start_end(log=logger)
@@ -98,6 +118,7 @@ def display_etf_by_category(
     category: str,
     limit: int = 10,
     export: str = "",
+    sheet_name: Optional[str] = None,
 ):
     """Display a selection of ETFs based on a category filtered by total assets.
     [Source: Finance Database]
@@ -108,6 +129,8 @@ def display_etf_by_category(
         Search by description to find ETFs matching the criteria.
     limit: int
         Limit of ETFs to display
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Type of format to export data
     """
@@ -119,13 +142,14 @@ def display_etf_by_category(
     table_data = pd.DataFrame(data).T[
         ["long_name", "family", "category", "total_assets"]
     ]
+    # Sort by total assets but it is then dropped due to not being completely up to date
     table_data_sorted = table_data.sort_values(by="total_assets", ascending=False)
-    table_data_sorted["total_assets"] = table_data_sorted["total_assets"] / 1e6
+    table_data_sorted = table_data_sorted.drop("total_assets", axis=1)
 
     print_rich_table(
         table_data_sorted.iloc[:limit],
         show_index=True,
-        headers=["Name", "Family", "Category", "Total Assets [M]"],
+        headers=["Name", "Family", "Category"],
         title="ETFs by Category and Total Assets",
     )
 
@@ -134,4 +158,5 @@ def display_etf_by_category(
         os.path.join(os.path.dirname(os.path.abspath(__file__)), "screener"),
         "sbc",
         data,
+        sheet_name,
     )

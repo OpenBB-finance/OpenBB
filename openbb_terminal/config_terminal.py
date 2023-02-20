@@ -1,23 +1,25 @@
 # IMPORTATION STANDARD
 import os
 
-
-# IMPORTATION THIRDPARTY
-import dotenv
-
 # IMPORTATION INTERNAL
-
-from openbb_terminal.core.config.paths import (
-    PACKAGE_ENV_FILE,
-    USER_ENV_FILE,
-    REPOSITORY_ENV_FILE,
-)
 from openbb_terminal.base_helpers import load_env_vars, strtobool
+
 from .helper_classes import TerminalStyle as _TerminalStyle
 
-dotenv.load_dotenv(USER_ENV_FILE)
-dotenv.load_dotenv(REPOSITORY_ENV_FILE, override=True)
-dotenv.load_dotenv(PACKAGE_ENV_FILE, override=True)
+SENSITIVE_KEYS = [
+    "RH_USERNAME",
+    "RH_PASSWORD",
+    "DG_USERNAME",
+    "DG_PASSWORD",
+    "DG_TOTP_SECRET",
+    "OANDA_ACCOUNT_TYPE",
+    "OANDA_ACCOUNT",
+    "OANDA_TOKEN",
+]
+
+# Network requests
+# Set request timeout
+REQUEST_TIMEOUT = load_env_vars("OPENBB_REQUEST_TIMEOUT", int, 5)
 
 # Terminal UX section
 MPL_STYLE = os.getenv("OPENBB_MPLSTYLE") or "dark"
@@ -192,3 +194,11 @@ API_TOKEN_TERMINAL_KEY = os.getenv("OPENBB_API_TOKEN_TERMINAL_KEY") or "REPLACE_
 
 # https://stocksera.pythonanywhere.com/accounts/developers
 API_STOCKSERA_KEY = os.getenv("OPENBB_API_STOCKSERA_KEY") or "REPLACE_ME"
+
+# https://my.openbb.co
+OPENBB_PERSONAL_ACCESS_TOKEN = (
+    os.getenv("OPENBB_OPENBB_PERSONAL_ACCESS_TOKEN") or "REPLACE_ME"
+)
+
+# https://intrinio.com/starter-plan
+API_INTRINIO_KEY = os.getenv("OPENBB_API_INTRINIO_KEY") or "REPLACE_ME"

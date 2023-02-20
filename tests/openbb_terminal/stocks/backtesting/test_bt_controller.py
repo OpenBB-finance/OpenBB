@@ -13,6 +13,7 @@ from openbb_terminal.stocks.backtesting import bt_controller
 # pylint: disable=E1111
 
 EMPTY_DF = pd.DataFrame()
+NOT_EMPTY_DF = pd.DataFrame({"A": [1, 2, 3]})
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -225,11 +226,12 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             ["-l=2", "--spy", "--no_bench", "--export=csv"],
             dict(
                 symbol="MOCK_TICKER",
-                data=EMPTY_DF,
+                data=NOT_EMPTY_DF,
                 ema_length=2,
                 spy_bt=True,
                 no_bench=True,
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -246,13 +248,14 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             ],
             dict(
                 symbol="MOCK_TICKER",
-                data=EMPTY_DF,
+                data=NOT_EMPTY_DF,
                 short_ema=20,
                 long_ema=10,
                 spy_bt=True,
                 no_bench=True,
                 shortable=False,
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -269,7 +272,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             ],
             dict(
                 symbol="MOCK_TICKER",
-                data=EMPTY_DF,
+                data=NOT_EMPTY_DF,
                 periods=2,
                 low_rsi=20,
                 high_rsi=10,
@@ -277,6 +280,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 no_bench=True,
                 shortable=False,
                 export="csv",
+                sheet_name=None,
             ),
         ),
     ],
@@ -290,7 +294,7 @@ def test_call_func(tested_func, mocked_func, other_args, called_with, mocker):
     EMPTY_DF.drop(EMPTY_DF.index, inplace=True)
     controller = bt_controller.BacktestingController(
         ticker="MOCK_TICKER",
-        stock=EMPTY_DF,
+        stock=NOT_EMPTY_DF,
     )
     getattr(controller, tested_func)(other_args=other_args)
 

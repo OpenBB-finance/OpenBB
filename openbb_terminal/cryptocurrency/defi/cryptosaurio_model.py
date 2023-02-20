@@ -3,10 +3,11 @@ __docformat__ = "numpy"
 
 import logging
 from typing import Tuple
+
 import pandas as pd
-import requests
 
 from openbb_terminal.decorators import log_start_end
+from openbb_terminal.helper_funcs import request
 
 logger = logging.getLogger(__name__)
 
@@ -36,7 +37,7 @@ def get_anchor_data(address: str = "") -> Tuple[pd.DataFrame, pd.DataFrame, str]
             "Select a valid address. Valid terra addresses start with 'terra'"
         )
 
-    response = requests.get(f"{api_url}/get-anchor-protocol-data-v2/{address}")
+    response = request(f"{api_url}/get-anchor-protocol-data-v2/{address}")
     if response.status_code != 200:
         raise Exception(f"Status code: {response.status_code}. Reason: {response.text}")
 

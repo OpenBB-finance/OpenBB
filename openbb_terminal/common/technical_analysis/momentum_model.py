@@ -9,8 +9,8 @@ import pandas as pd
 import pandas_ta as ta
 from sklearn.linear_model import LinearRegression
 
-from openbb_terminal.decorators import log_start_end
 from openbb_terminal.common.technical_analysis import ta_helpers
+from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)

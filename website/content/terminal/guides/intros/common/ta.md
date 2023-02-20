@@ -1,42 +1,7 @@
 ---
 title: Technical Analysis
-keywords:
-  [
-    "technical",
-    "analysis",
-    "ta",
-    "t/a",
-    "intraday",
-    "daily",
-    "indicators",
-    "signals",
-    "average",
-    "moving",
-    "exponential",
-    "rsi",
-    "fibonacci",
-    "retracement",
-    "bollinger",
-    "heltner",
-    "accumulation",
-    "distribution",
-    "obv",
-    "on-balance",
-    "volume",
-    "volatility",
-    "trend",
-    "momentum",
-    "overlap",
-    "crypto",
-    "stocks",
-    "funds",
-    "etf",
-    "etfs",
-  ]
-date: "2022-06-17"
-type: guides
-status: publish
-excerpt: "This guide introduces the Technical Analysis menu, which is common across many sections of the OpenBB Terminal."
+keywords: [technical, analysis, ta, t/a, intraday, daily, indicators, signals, average, moving, exponential, rsi, fibonacci, retracement, bollinger, heltner, accumulation, distribution, obv, on-balance, volume, volatility, trend, momentum, overlap, crypto, stocks, funds, etf, etfs]
+description: This guide introduces the Technical Analysis menu, which is common across many sections of the OpenBB Terminal.
 ---
 
 The Technical Analysis menu offers the user a suite of tools for analyzing the technical components of an asset's trading history. The menu can be found in most wings of the Terminal:
@@ -61,7 +26,7 @@ All commands in this menu will rely on the interval and window chosen when <a hr
 
 To begin, enter the menu from one of the menus listed above by entering `ta`.
 
-![The Technical Analysis menu, with BTC loaded](https://user-images.githubusercontent.com/85772166/174499113-02648936-f8d1-40ca-8ba3-036fb4324666.png)
+<img width="800" alt="image" src="https://user-images.githubusercontent.com/46355364/218977681-de39092f-5381-46dd-b5b5-915fc6ee506f.png"></img>
 
 Choose a beginning and end date to see a volume-weighted average price chart of the loaded ticker. `vwap --start 2022-01-01 --end 2022-06-17`
 
@@ -93,7 +58,30 @@ The asset price is between the Middle and the Lower Bollinger Bands.
 
 `recom` projects buy & sell signals for the short-term.
 
-![Recommendations from T/A](https://user-images.githubusercontent.com/85772166/174499195-9d4f8604-dec9-453f-815d-6c89f2b8b216.png)
+```
+(🦋) /stocks/ta/ $ recom
+
+               Ticker Recommendation
+┏━━━━━━━━━┳━━━━━━━━━━━━━━━━┳━━━━━┳━━━━━━┳━━━━━━━━━┓
+┃         ┃ RECOMMENDATION ┃ BUY ┃ SELL ┃ NEUTRAL ┃
+┡━━━━━━━━━╇━━━━━━━━━━━━━━━━╇━━━━━╇━━━━━━╇━━━━━━━━━┩
+│ 1 month │ SELL           │ 2   │ 15   │ 9       │
+├─────────┼────────────────┼─────┼──────┼─────────┤
+│ 1 week  │ SELL           │ 5   │ 11   │ 10      │
+├─────────┼────────────────┼─────┼──────┼─────────┤
+│ 1 day   │ BUY            │ 11  │ 5    │ 10      │
+├─────────┼────────────────┼─────┼──────┼─────────┤
+│ 4 hours │ BUY            │ 15  │ 2    │ 9       │
+├─────────┼────────────────┼─────┼──────┼─────────┤
+│ 1 hour  │ BUY            │ 14  │ 3    │ 9       │
+├─────────┼────────────────┼─────┼──────┼─────────┤
+│ 15 min  │ BUY            │ 15  │ 3    │ 8       │
+├─────────┼────────────────┼─────┼──────┼─────────┤
+│ 5 min   │ BUY            │ 16  │ 2    │ 8       │
+├─────────┼────────────────┼─────┼──────┼─────────┤
+│ 1 min   │ BUY            │ 16  │ 3    │ 7       │
+└─────────┴────────────────┴─────┴──────┴─────────┘
+```
 
 Bollinger Bands with a 1-minute resolution for AMZN - `bbands`
 
@@ -103,6 +91,3 @@ Bollinger Bands with a 1-minute resolution for AMZN - `bbands`
 The Accumulation/Distribution line of AMZN - `ad`
 
 ![AMZN Accumulation/Distribution Line](https://user-images.githubusercontent.com/85772166/174499247-e63f8f57-a06a-446b-bca3-0fe89258fd4b.png)
-
-To play a demonstration of this menu in the OpenBB Terminal run,
-`exe ta_demo.openbb`, from the main menu.

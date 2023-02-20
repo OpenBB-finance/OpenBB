@@ -19,7 +19,7 @@ def vcr_config():
 def test_get_historical_options(recorder):
     result_df = tradier_model.get_historical_options(
         symbol="AAPL",
-        expiry="2022-02-25",
+        expiry="2025-01-17",
         strike=90.0,
         put=True,
         chain_id="",
@@ -31,11 +31,14 @@ def test_get_historical_options(recorder):
 def test_get_historical_options_invalid_status(mocker):
     mock_response = requests.Response()
     mock_response.status_code = 400
-    mocker.patch(target="requests.get", new=mocker.Mock(return_value=mock_response))
+    mocker.patch(
+        target="openbb_terminal.helper_funcs.requests.get",
+        new=mocker.Mock(return_value=mock_response),
+    )
 
     result_df = tradier_model.get_historical_options(
         symbol="AAPL",
-        expiry="2022-02-25",
+        expiry="2025-01-17",
         strike=90.0,
         put=True,
         chain_id="MOCK_CHAIN_ID",
@@ -53,7 +56,10 @@ def test_get_historical_options_no_data(mocker):
         attribute="json",
         return_value={"history": None},
     )
-    mocker.patch(target="requests.get", new=mocker.Mock(return_value=mock_response))
+    mocker.patch(
+        target="openbb_terminal.helper_funcs.requests.get",
+        new=mocker.Mock(return_value=mock_response),
+    )
 
     result_df = tradier_model.get_historical_options(
         symbol="AAPL",
@@ -81,7 +87,10 @@ def test_option_expirations_json_error(mocker):
         attribute="json",
         side_effect=TypeError(),
     )
-    mocker.patch(target="requests.get", new=mocker.Mock(return_value=mock_response))
+    mocker.patch(
+        target="openbb_terminal.helper_funcs.requests.get",
+        new=mocker.Mock(return_value=mock_response),
+    )
 
     result_list = tradier_model.option_expirations(symbol="AAPL")
 
@@ -92,7 +101,10 @@ def test_option_expirations_json_error(mocker):
 def test_option_expirations_invalid_status(mocker):
     mock_response = requests.Response()
     mock_response.status_code = 400
-    mocker.patch(target="requests.get", new=mocker.Mock(return_value=mock_response))
+    mocker.patch(
+        target="openbb_terminal.helper_funcs.requests.get",
+        new=mocker.Mock(return_value=mock_response),
+    )
 
     result_list = tradier_model.option_expirations(symbol="AAPL")
 
@@ -101,24 +113,27 @@ def test_option_expirations_invalid_status(mocker):
 
 @pytest.mark.vcr
 def test_get_option_chains(recorder):
-    result_df = tradier_model.get_option_chains(symbol="AAPL", expiry="2022-02-25")
-    recorder.capture(result_df)
+    chain = tradier_model.get_option_chain(symbol="AAPL", expiry="2025-01-17")
+    recorder.capture(chain)
 
 
 @pytest.mark.vcr(record_mode="none")
 def test_get_option_chains_invalid_status(mocker):
     mock_response = requests.Response()
     mock_response.status_code = 400
-    mocker.patch(target="requests.get", new=mocker.Mock(return_value=mock_response))
+    mocker.patch(
+        target="openbb_terminal.helper_funcs.requests.get",
+        new=mocker.Mock(return_value=mock_response),
+    )
 
-    result_df = tradier_model.get_option_chains(symbol="AAPL", expiry="2022-02-25")
+    result_df = tradier_model.get_option_chain(symbol="AAPL", expiry="2025-01-17")
 
     assert result_df.empty
 
 
 @pytest.mark.vcr
 def test_last_price(recorder):
-    result = tradier_model.last_price(symbol="AAPL")
+    result = tradier_model.get_last_price(symbol="AAPL")
     recorder.capture(result)
 
 
@@ -126,8 +141,11 @@ def test_last_price(recorder):
 def test_get_historical_greeks_invalid_status(mocker):
     mock_response = requests.Response()
     mock_response.status_code = 400
-    mocker.patch(target="requests.get", new=mocker.Mock(return_value=mock_response))
+    mocker.patch(
+        target="openbb_terminal.helper_funcs.requests.get",
+        new=mocker.Mock(return_value=mock_response),
+    )
 
-    result = tradier_model.last_price(symbol="AAPL")
+    result = tradier_model.get_last_price(symbol="AAPL")
 
     assert result is None

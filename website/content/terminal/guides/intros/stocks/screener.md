@@ -1,15 +1,27 @@
 ---
 title: Stock Screener
-keywords: ["screen", "screener", "stock", "stocks", "historical", "overview", "valuation", "financial", "ownership", "performance", "technical", "view", "set", "preset", "presets", "ini", "scan", "compare", "tickers", "metrics"]
-excerpt: "This guide introduces the Stock Screener, within the Stocks menu, briefly explains the features, and shows examples in context."
+keywords: [screen, screener, stock, stocks, historical, overview, valuation, financial, ownership, performance, technical, view, set, preset, presets, ini, scan, compare, tickers, metrics]
+description: This guide introduces the Stock Screener, within the Stocks menu, briefly explains the features, and shows examples in context.
 ---
 The Stock sScreener menu is a diverse tool for stock discovery. There are categories of statistics to use as metrics to sort the criteria defined in the preset file. The preset files are `.ini` files stored locally in the application folder: `~/OpenBBUserData/presets/stocks/screener` and they can be modified in any text editor. Get to the Stock Screener from the `Stocks` menu by typing `scr` and then pressing `enter`.
 
-<img width="1412" alt="The Stock Screener submenu" src="https://user-images.githubusercontent.com/85772166/173902919-2577b42a-f46a-4734-b153-9ccf498e3443.png"></img>
+<img width="800" alt="image" src="https://user-images.githubusercontent.com/46355364/218983524-8f86cdc8-e504-4b56-82d6-6d4e95c33c68.png"></img>
 
 ### How to use
 
-The default preset is `top_gainers.ini`. Use the commands `view` and `set` to select a new one. The file in the presets folder, `template.ini`, is a blank slate for creating something fresh. Modify individual parameters within the different presets to get more precision from a starting point. To get started, simply choose one of the categories to scour, like `technical`.
+The default preset is `top_gainers.ini`. Use the commands `view` and `set` to select a new one. Modify individual parameters within the different presets to get more precision from a starting point.
+
+:::note To create your own preset please use the following steps:
+
+1. Download the default preset as found [here](https://www.dropbox.com/s/xqdo5m87j1krh0h/stocks_screener_template.ini?dl=0).
+2. Place the `stocks_screener_template.ini` in the [OpenBBUserData](https://docs.openbb.co/terminal/guides/advanced/data) folder under `presets/stocks/screener`.
+3. Rename that file to something you find meaningful, e.g. `my_own_filter.ini`.
+4. Open the file you just renamed (e.g. `my_own_filter.ini`), and set the parameters you want to filter.
+5. It may be useful to play with the main source ([Finviz](https://finviz.com/screener.ashx)) since you can tweak these and understand how they influence the outcome of the filtered stocks.
+6. Start the terminal, and go to the `stocks/scr` menu. In there, you load in your template with `set`.
+:::
+
+To get started, simply choose one of the categories, like `technical`.
 
 ```
 (🦋) /stocks/scr/ $ technical
@@ -42,13 +54,11 @@ The default preset is `top_gainers.ini`. Use the commands `view` and `set` to se
 
 The columns can be sorted with the optional argument `-s`, and autocomplete will present a list of choices.
 
-<img width="1132" alt="Sorting results" src="https://user-images.githubusercontent.com/85772166/173903096-0643a64f-4482-4de9-832b-d654af532a10.png"></img>
+<img width="800" alt="Sorting results" src="https://user-images.githubusercontent.com/85772166/173903096-0643a64f-4482-4de9-832b-d654af532a10.png"></img>
 
 To see a description of each preset, use `view`, and autocomplete will allow the user to scroll presets with the arrow keys to `set` the choice.
 
-<img width="1412" alt="Autocomplete with the set function" src="https://user-images.githubusercontent.com/85772166/173903152-c59f37f7-9b90-47ee-8ad1-87bb5939caa0.png"></img>
-
-Unexpected results can be obtained through combining presets with the category of screen.
+<img width="800" alt="image" src="https://user-images.githubusercontent.com/46355364/218983695-c5efd052-e30e-44c1-80dd-2de0044c4e2c.png"></img>
 
 ### Examples
 

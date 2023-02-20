@@ -3,18 +3,17 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import Union, Optional, List, Tuple
-
 import warnings
+from typing import List, Optional, Tuple, Union
+
 import numpy as np
 import pandas as pd
-from statsforecast.models import RandomWalkWithDrift
 from statsforecast.core import StatsForecast
+from statsforecast.models import RandomWalkWithDrift
 
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.rich_config import console
 from openbb_terminal.forecast import helpers
-
+from openbb_terminal.rich_config import console
 
 warnings.simplefilter("ignore")
 
@@ -33,7 +32,6 @@ def get_rwd_data(
 ) -> Tuple[
     List[np.ndarray], List[np.ndarray], List[np.ndarray], Optional[float], StatsForecast
 ]:
-
     """Performs Random Walk with Drift forecasting
     This is a wrapper around StatsForecast RandomWalkWithDrift;
     we refer to this link for the original and more complete documentation of the parameters.

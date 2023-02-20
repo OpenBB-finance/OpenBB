@@ -5,23 +5,18 @@ import os.path
 # IMPORTATION THIRDPARTY
 import i18n
 
+from openbb_terminal.base_helpers import load_env_vars, strtobool
+from openbb_terminal.core.config import paths_helper
+
 # IMPORTATION INTERNAL
 from openbb_terminal.core.config.paths import (
     MISCELLANEOUS_DIRECTORY,
     USER_DATA_SOURCES_DEFAULT_FILE,
-    load_dotenv_with_priority,
-)
-from openbb_terminal.core.config import paths_helper
-from openbb_terminal.base_helpers import (
-    load_env_vars,
-    strtobool,
 )
 
 paths_helper.init_userdata()
 
 # pylint: disable=no-member,c-extension-no-member
-
-load_dotenv_with_priority()
 
 try:
     __import__("git")
@@ -30,6 +25,11 @@ except ImportError:
 else:
     WITH_GIT = True
 
+# Sync with OpenBB server
+SYNC_ENABLED = load_env_vars("OPENBB_SYNC_ENABLED", strtobool, True, "featflags")
+
+# Always overwrite exported files
+FILE_OVERWITE = load_env_vars("OPENBB_FILE_OVERWRITE", strtobool, False, "featflags")
 
 # Retry unknown commands with `load`
 RETRY_WITH_LOAD = load_env_vars("OPENBB_RETRY_WITH_LOAD", strtobool, False, "featflags")
@@ -44,9 +44,6 @@ USE_CLEAR_AFTER_CMD = load_env_vars(
 
 # Use coloring features
 USE_COLOR = load_env_vars("OPENBB_USE_COLOR", strtobool, True, "featflags")
-
-# Select console flair (choose from config_terminal.py list)
-USE_FLAIR = str(os.getenv("OPENBB_USE_FLAIR", ":openbb"))
 
 # Add date and time to command line
 USE_DATETIME = load_env_vars("OPENBB_USE_DATETIME", strtobool, True, "featflags")
@@ -130,6 +127,12 @@ PREFERRED_DATA_SOURCE_FILE = str(
     )
 )
 
+# Timezone
+TIMEZONE = str(os.getenv("OPENBB_TIMEZONE", "America/New_York"))
+
+# Select console flair (choose from config_terminal.py list)
+USE_FLAIR = str(os.getenv("OPENBB_USE_FLAIR", ":openbb"))
+
 # Guess file
 GUESS_EASTER_EGG_FILE = str(
     os.getenv(
@@ -146,7 +149,7 @@ try:
     else:
         raise Exception("Using git")
 except Exception:
-    version = "2.1.0"
+    version = "2.4.1"
 VERSION = str(os.getenv("OPENBB_VERSION", version))
 
 # Select the terminal translation language

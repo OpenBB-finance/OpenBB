@@ -2,7 +2,7 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import Dict, Union, Optional, List
+from typing import Dict, List, Optional, Union
 
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mticker
@@ -11,10 +11,9 @@ import pandas as pd
 import pandas_ta as ta
 import seaborn as sns
 
-from openbb_terminal.config_terminal import theme
 from openbb_terminal.config_plot import PLOT_DPI
-from openbb_terminal.decorators import check_api_key
-from openbb_terminal.decorators import log_start_end
+from openbb_terminal.config_terminal import theme
+from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.forex.oanda.oanda_model import (
     account_summary_request,
     cancel_pending_order_request,
@@ -30,7 +29,7 @@ from openbb_terminal.forex.oanda.oanda_model import (
     pending_orders_request,
     positionbook_plot_data_request,
 )
-from openbb_terminal.helper_funcs import plot_autoscale, is_valid_axes_count
+from openbb_terminal.helper_funcs import is_valid_axes_count, plot_autoscale
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)

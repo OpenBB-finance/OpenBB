@@ -3,21 +3,21 @@ __docformat__ = "numpy"
 
 import argparse
 import logging
-from typing import List, Union
+from typing import List, Optional, Union
 
-from openbb_terminal import config_terminal as cfg
-from openbb_terminal import feature_flags as obbff
+from openbb_terminal import (
+    config_terminal as cfg,
+    feature_flags as obbff,
+)
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.forex import av_model, forex_helper
 from openbb_terminal.forex.forex_helper import FOREX_SOURCES
 from openbb_terminal.forex.oanda import oanda_view
-from openbb_terminal.helper_funcs import (
-    check_non_negative_float,
-)
+from openbb_terminal.helper_funcs import check_non_negative_float
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console, MenuText
+from openbb_terminal.rich_config import MenuText, console
 
 logger = logging.getLogger(__name__)
 
@@ -47,7 +47,7 @@ class OandaController(BaseController):
     PATH = "/forex/oanda/"
     CHOICES_GENERATION = True
 
-    def __init__(self, queue: List[str] = None):
+    def __init__(self, queue: Optional[List[str]] = None):
         """Construct Data."""
         super().__init__(queue)
 

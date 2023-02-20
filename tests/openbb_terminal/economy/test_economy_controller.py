@@ -1,15 +1,15 @@
 # IMPORTATION STANDARD
-import os
 import datetime
+import os
+
+import pandas as pd
 
 # IMPORTATION THIRDPARTY
 import pytest
-import pandas as pd
 from pandas import Timestamp
 
 # IMPORTATION INTERNAL
 from openbb_terminal.economy import economy_controller
-
 
 # pylint: disable=E1101
 # pylint: disable=W0603
@@ -324,9 +324,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             ],
             "wsj_view.display_overview",
             [],
-            dict(
-                export="csv",
-            ),
+            dict(export="csv", sheet_name=None),
         ),
         (
             "call_futures",
@@ -335,9 +333,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             ],
             "wsj_view.display_futures",
             [],
-            dict(
-                export="csv",
-            ),
+            dict(export="csv", sheet_name=None),
         ),
         (
             "call_overview",
@@ -347,9 +343,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             ],
             "wsj_view.display_indices",
             [],
-            dict(
-                export="csv",
-            ),
+            dict(export="csv", sheet_name=None),
         ),
         (
             "call_overview",
@@ -359,9 +353,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             ],
             "wsj_view.display_usbonds",
             [],
-            dict(
-                export="csv",
-            ),
+            dict(export="csv", sheet_name=None),
         ),
         (
             "call_overview",
@@ -371,9 +363,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             ],
             "wsj_view.display_glbonds",
             [],
-            dict(
-                export="csv",
-            ),
+            dict(export="csv", sheet_name=None),
         ),
         (
             "call_futures",
@@ -382,9 +372,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             ],
             "wsj_view.display_futures",
             [],
-            dict(
-                export="csv",
-            ),
+            dict(export="csv", sheet_name=None),
         ),
         (
             "call_overview",
@@ -394,9 +382,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             ],
             "wsj_view.display_currencies",
             [],
-            dict(
-                export="csv",
-            ),
+            dict(export="csv", sheet_name=None),
         ),
         (
             "call_futures",
@@ -414,6 +400,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 sortby="ticker",
                 ascend=True,
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -432,6 +419,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 sortby="ticker",
                 ascend=True,
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -450,6 +438,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 sortby="ticker",
                 ascend=True,
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -468,6 +457,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 sortby="ticker",
                 ascend=True,
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -486,6 +476,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 sortby="ticker",
                 ascend=True,
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -503,6 +494,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 sortby="MarketCap",
                 ascend=True,
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -520,6 +512,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 sortby="P/E",
                 ascend=True,
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -537,6 +530,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 sortby="Name",
                 ascend=True,
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -564,14 +558,6 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 map_filter="world",
             ),
         ),
-        # TODO: Add `Investing` to sources again when `investpy` is fixed
-        # (
-        #     "call_ycrv",
-        #     ["--country=portugal", "--export=csv", "--source=Investing"],
-        #     "investingcom_view.display_yieldcurve",
-        #     [],
-        #     dict(country="portugal", export="csv", raw=False),
-        # ),
         (
             "call_events",
             [
@@ -588,6 +574,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 start_date="2022-10-20",
                 end_date="2022-10-21",
                 export="csv",
+                sheet_name=None,
                 limit=10,
             ),
         ),
@@ -607,6 +594,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 end_date="2023-10-20",
                 limit=10,
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -619,6 +607,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             [],
             dict(
                 export="csv",
+                sheet_name=None,
                 limit=20,
             ),
         ),
@@ -631,6 +620,9 @@ def test_call_func(
 
     # MOCK REMOVE
     mocker.patch(target=f"{path_controller}.os.remove")
+
+    # MOCK UPDATE_RUNTIME_CHOICES
+    mocker.patch(target=f"{path_controller}.EconomyController.update_runtime_choices")
 
     if mocked_func:
         mock = mocker.Mock()
@@ -706,9 +698,7 @@ def test_call_bigmac_countries(mocker):
     controller.call_bigmac(other_args=other_args)
 
     mock_print.assert_called_with(
-        country_codes=["VNM"],
-        raw=True,
-        export="csv",
+        country_codes=["VNM"], raw=True, export="csv", sheet_name=None
     )
 
 
@@ -729,6 +719,7 @@ def test_call_bigmac_countries(mocker):
                 symbol=False,
                 raw=False,
                 export="",
+                sheet_name=None,
             ),
         ),
         (
@@ -744,6 +735,7 @@ def test_call_bigmac_countries(mocker):
                 symbol=False,
                 raw=False,
                 export="",
+                sheet_name=None,
             ),
         ),
         (
@@ -766,6 +758,7 @@ def test_call_bigmac_countries(mocker):
                 symbol=False,
                 raw=True,
                 export="csv",
+                sheet_name=None,
             ),
         ),
     ],
@@ -775,6 +768,9 @@ def test_call_macro(mocked_func, other_args, called_args, called_kwargs, mocker)
 
     # MOCK REMOVE
     mocker.patch(target=f"{path_controller}.os.remove")
+
+    # MOCK UPDATE_RUNTIME_CHOICES
+    mocker.patch(target=f"{path_controller}.EconomyController.update_runtime_choices")
     # MOCK the econdb.get_aggregated_macro_data
     mocker.patch(
         target=f"{path_controller}.econdb_model.get_aggregated_macro_data",
@@ -809,6 +805,9 @@ def test_call_fred_query(mocker):
     # MOCK REMOVE
     mocker.patch(target=f"{path_controller}.os.remove")
 
+    # MOCK UPDATE_RUNTIME_CHOICES
+    mocker.patch(target=f"{path_controller}.EconomyController.update_runtime_choices")
+
     mocker.patch(
         target=f"{path_controller}.fred_model.get_series_notes",
         return_value=MOCK_FRED_NOTES,
@@ -841,6 +840,7 @@ def test_call_fred_query(mocker):
                 limit=100,
                 raw=False,
                 export="",
+                sheet_name=None,
                 get_data=True,
             ),
         ),
@@ -855,6 +855,7 @@ def test_call_fred_query(mocker):
                 limit=100,
                 raw=True,
                 export="csv",
+                sheet_name=None,
                 get_data=True,
             ),
         ),
@@ -869,6 +870,7 @@ def test_call_fred_query(mocker):
                 limit=100,
                 raw=False,
                 export="csv",
+                sheet_name=None,
                 get_data=True,
             ),
         ),
@@ -879,6 +881,9 @@ def test_call_fred_params(mocked_func, other_args, called_args, called_kwargs, m
 
     # MOCK REMOVE
     mocker.patch(target=f"{path_controller}.os.remove")
+
+    # MOCK UPDATE_RUNTIME_CHOICES
+    mocker.patch(target=f"{path_controller}.EconomyController.update_runtime_choices")
 
     # MOCK the fred functions used
     mocker.patch(
@@ -942,6 +947,9 @@ def test_call_index(mocker):
     # MOCK REMOVE
     mocker.patch(target=f"{path_controller}.os.remove")
 
+    # MOCK UPDATE_RUNTIME_CHOICES
+    mocker.patch(target=f"{path_controller}.EconomyController.update_runtime_choices")
+
     # MOCK the fred functions used
     mocker.patch(
         target=f"{path_controller}.yfinance_model.get_index",
@@ -970,6 +978,7 @@ def test_call_index(mocker):
             end_date=None,
             raw=False,
             export="",
+            sheet_name=None,
             interval="1d",
             column="Adj Close",
             returns=False,
@@ -1003,6 +1012,7 @@ MOCK_TREASURY_DEFAULT = pd.DataFrame.from_dict(
                 end_date="2022-11-04",
                 raw=False,
                 export="",
+                sheet_name=None,
             ),
         )
     ],
@@ -1012,6 +1022,9 @@ def test_call_treasury(mocked_func, other_args, called_args, called_kwargs, mock
 
     # MOCK REMOVE
     mocker.patch(target=f"{path_controller}.os.remove")
+
+    # MOCK UPDATE_RUNTIME_CHOICES
+    mocker.patch(target=f"{path_controller}.EconomyController.update_runtime_choices")
     # MOCK the econdb.get_aggregated_macro_data
     mocker.patch(
         target=f"{path_controller}.econdb_model.get_treasuries",

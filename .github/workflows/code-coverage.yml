@@ -1,0 +1,50 @@
+name: Code Coverage Tests
+
+on: workflow_dispatch
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  code-coverage:
+    runs-on: ubuntu-latest
+    env:
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+    steps:
+    - name: Checkout code
+      if: github.event_name == 'push'
+      uses: actions/checkout@v3
+
+    - name: Checkout specific ref
+      if: github.event_name == 'pull_request'
+      run: git fetch origin ${{ github.event.pull_request.head.ref }} && git checkout FETCH_HEAD
+
+    - name: Setup Python 3.9
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.9"
+        architecture: x64
+
+    - name: Install Poetry
+      uses: snok/install-poetry@v1
+      with:
+        version: 1.3.2
+        virtualenvs-create: true
+        virtualenvs-in-project: true
+
+    - name: Load cached venv
+      id: cached-poetry-dependencies
+      uses: actions/cache@v3
+      with:
+        path: .venv
+        key: venv-${{ runner.os }}-v1-${{ hashFiles('**/poetry.lock') }}
+
+    - name: Install dependencies
+      if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
+      run: poetry install --no-interaction -E optimization
+
+    - name: Run code coverage tests
+      run: |
+        source $VENV
+        pytest --cov --cov-fail-under=50

@@ -4,33 +4,37 @@ __docformat__ = "numpy"
 import argparse
 import logging
 from datetime import datetime
-from typing import List
+from typing import List, Optional
 
 import pandas as pd
 
-from openbb_terminal.custom_prompt_toolkit import NestedCompleter
-
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.common.quantitative_analysis import qa_view, rolling_view
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_FIGURES_ALLOWED,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
+    check_list_dates,
     check_positive,
     check_proportion_range,
-    check_list_dates,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import StockBaseController
-from openbb_terminal.rich_config import console, MenuText
+from openbb_terminal.rich_config import MenuText, console
+from openbb_terminal.stocks import stocks_helper
 from openbb_terminal.stocks.quantitative_analysis.beta_view import beta_view
 from openbb_terminal.stocks.quantitative_analysis.factors_view import capm_view
 from openbb_terminal.stocks.quantitative_analysis.qa_model import full_stock_df
-from openbb_terminal.stocks import stocks_helper
 
 # pylint: disable=C0302
 
 logger = logging.getLogger(__name__)
+
+
+def no_data_message():
+    """Print message when no ticker is loaded"""
+    console.print("[red]No data loaded. Use 'load' command to load a symbol[/red]")
 
 
 class QaController(StockBaseController):
@@ -66,7 +70,7 @@ class QaController(StockBaseController):
     ]
 
     stock_interval = [1, 5, 15, 30, 60]
-    stock_sources = ["YahooFinance", "AlphaVantage", "IEXCloud"]
+    stock_sources = ["YahooFinance", "AlphaVantage"]
     distributions = ["laplace", "student_t", "logistic", "normal"]
     FULLER_REG = ["c", "ct", "ctt", "nc"]
     KPS_REG = ["c", "ct"]
@@ -80,16 +84,18 @@ class QaController(StockBaseController):
         start: datetime,
         interval: str,
         stock: pd.DataFrame,
-        queue: List[str] = None,
+        queue: Optional[List[str]] = None,
     ):
         """Constructor"""
         super().__init__(queue)
-
-        self.stock = full_stock_df(stock)
+        if not stock.empty:
+            self.stock = full_stock_df(stock)
+        else:
+            self.stock = stock
         self.ticker = ticker
         self.start = start
         self.interval = interval
-        self.target = "returns"
+        self.target = "returns" if not stock.empty else ""
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices_default
@@ -176,6 +182,9 @@ class QaController(StockBaseController):
 
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
+            if self.stock.empty:
+                no_data_message()
+                return
             self.target = ns_parser.target
 
     @log_start_end(log=logger)
@@ -221,12 +230,18 @@ class QaController(StockBaseController):
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
+            if self.stock.empty:
+                no_data_message()
+                return
             qa_view.display_raw(
                 data=self.stock,
                 limit=ns_parser.limit,
                 sortby=ns_parser.sortby,
                 ascend=ns_parser.reverse,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -244,7 +259,16 @@ class QaController(StockBaseController):
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            qa_view.display_summary(data=self.stock, export=ns_parser.export)
+            if self.stock.empty:
+                no_data_message()
+                return
+            qa_view.display_summary(
+                data=self.stock,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )
 
     @log_start_end(log=logger)
     def call_line(self, other_args: List[str]):
@@ -281,6 +305,9 @@ class QaController(StockBaseController):
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
         )
         if ns_parser:
+            if self.stock.empty:
+                no_data_message()
+                return
             qa_view.display_line(
                 self.stock[self.target],
                 title=f"{self.ticker} {self.target}",
@@ -305,6 +332,9 @@ class QaController(StockBaseController):
         )
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
+            if self.stock.empty:
+                no_data_message()
+                return
             qa_view.display_hist(
                 symbol=self.ticker,
                 data=self.stock,
@@ -327,11 +357,17 @@ class QaController(StockBaseController):
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
+            if self.stock.empty:
+                no_data_message()
+                return
             qa_view.display_cdf(
                 data=self.stock,
                 symbol=self.ticker,
                 target=self.target,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -355,6 +391,9 @@ class QaController(StockBaseController):
         )
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
+            if self.stock.empty:
+                no_data_message()
+                return
             qa_view.display_bw(
                 data=self.stock,
                 symbol=self.ticker,
@@ -387,12 +426,18 @@ class QaController(StockBaseController):
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
+            if self.stock.empty:
+                no_data_message()
+                return
             qa_view.display_seasonal(
                 symbol=self.ticker,
                 data=self.stock,
                 target=self.target,
                 multiplicative=ns_parser.multiplicative,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -415,7 +460,9 @@ class QaController(StockBaseController):
                 max(self.stock[self.target].values)
                 - min(self.stock[self.target].values)
             )
-            / 40,
+            / 40
+            if not self.stock.empty
+            else 0,
             help="threshold",
         )
         parser.add_argument(
@@ -427,11 +474,16 @@ class QaController(StockBaseController):
                 max(self.stock[self.target].values)
                 - min(self.stock[self.target].values)
             )
-            / 80,
+            / 80
+            if not self.stock.empty
+            else 0,
             help="drift",
         )
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
+            if self.stock.empty:
+                no_data_message()
+                return
             qa_view.display_cusum(
                 data=self.stock,
                 target=self.target,
@@ -460,6 +512,9 @@ class QaController(StockBaseController):
         )
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
+            if self.stock.empty:
+                no_data_message()
+                return
             if self.target != "adjclose":
                 console.print(
                     "Target not adjclose.  For best results, use `pick adjclose` first."
@@ -496,12 +551,18 @@ class QaController(StockBaseController):
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
+            if self.stock.empty:
+                no_data_message()
+                return
             rolling_view.display_mean_std(
                 symbol=self.ticker,
                 data=self.stock,
                 target=self.target,
                 window=ns_parser.n_window,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -527,12 +588,18 @@ class QaController(StockBaseController):
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
+            if self.stock.empty:
+                no_data_message()
+                return
             rolling_view.display_spread(
                 data=self.stock,
                 symbol=self.ticker,
                 target=self.target,
                 window=ns_parser.n_window,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -575,6 +642,9 @@ class QaController(StockBaseController):
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
+            if self.stock.empty:
+                no_data_message()
+                return
             rolling_view.display_quantile(
                 data=self.stock,
                 symbol=self.ticker,
@@ -582,6 +652,9 @@ class QaController(StockBaseController):
                 window=ns_parser.n_window,
                 quantile=ns_parser.f_quantile,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -613,12 +686,18 @@ class QaController(StockBaseController):
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
+            if self.stock.empty:
+                no_data_message()
+                return
             rolling_view.display_skew(
                 symbol=self.ticker,
                 data=self.stock,
                 target=self.target,
                 window=ns_parser.n_window,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -650,12 +729,18 @@ class QaController(StockBaseController):
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
+            if self.stock.empty:
+                no_data_message()
+                return
             rolling_view.display_kurtosis(
                 symbol=self.ticker,
                 data=self.stock,
                 target=self.target,
                 window=ns_parser.n_window,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -673,6 +758,9 @@ class QaController(StockBaseController):
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
+            if self.stock.empty:
+                no_data_message()
+                return
             qa_view.display_normality(
                 data=self.stock, target=self.target, export=ns_parser.export
             )
@@ -690,6 +778,9 @@ class QaController(StockBaseController):
         )
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
+            if self.stock.empty:
+                no_data_message()
+                return
             qa_view.display_qqplot(
                 symbol=self.ticker, data=self.stock, target=self.target
             )
@@ -727,12 +818,18 @@ class QaController(StockBaseController):
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
+            if self.stock.empty:
+                no_data_message()
+                return
             qa_view.display_unitroot(
                 data=self.stock,
                 target=self.target,
                 fuller_reg=ns_parser.fuller_reg,
                 kpss_reg=ns_parser.kpss_reg,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -748,6 +845,9 @@ class QaController(StockBaseController):
         )
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
+            if not self.ticker:
+                no_data_message()
+                return
             capm_view(self.ticker)
 
     @log_start_end(log=logger)
@@ -780,12 +880,18 @@ class QaController(StockBaseController):
         # Work on the intersections
         interval = "".join(c for c in self.interval if c.isdigit())
         if ns_parser:
+            if self.stock.empty:
+                no_data_message()
+                return
             beta_view(
                 symbol=self.ticker,
                 ref_symbol=ns_parser.ref,
                 data=self.stock,
                 interval=interval,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -855,6 +961,9 @@ class QaController(StockBaseController):
             if ns_parser.adjusted and ns_parser.student_t:
                 console.print("Select the adjusted or the student_t parameter.\n")
             else:
+                if self.stock.empty:
+                    no_data_message()
+                    return
                 qa_view.display_var(
                     self.stock,
                     self.ticker,
@@ -906,6 +1015,9 @@ class QaController(StockBaseController):
 
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
+            if self.stock.empty:
+                no_data_message()
+                return
             qa_view.display_es(
                 self.stock,
                 self.ticker,
@@ -941,11 +1053,14 @@ class QaController(StockBaseController):
             action="store",
             dest="window",
             type=int,
-            default=min(len(self.stock["adjclose"].values), 252),
+            default=252,
             help="Rolling window length",
         )
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
+            if self.stock.empty:
+                no_data_message()
+                return
             data = self.stock["adjclose"]
             qa_view.display_sharpe(data, ns_parser.rfr, ns_parser.window)
 
@@ -983,12 +1098,15 @@ class QaController(StockBaseController):
             action="store",
             dest="window",
             type=int,
-            default=min(len(self.stock["returns"].values), 252),
+            default=252,
             help="Rolling window length",
         )
 
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
+            if self.stock.empty:
+                no_data_message()
+                return
             data = self.stock["returns"]
             qa_view.display_sortino(
                 data, ns_parser.target_return, ns_parser.window, ns_parser.adjusted
@@ -1030,6 +1148,9 @@ class QaController(StockBaseController):
 
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
+            if self.stock.empty:
+                no_data_message()
+                return
             data = self.stock["returns"]
             qa_view.display_omega(
                 data,

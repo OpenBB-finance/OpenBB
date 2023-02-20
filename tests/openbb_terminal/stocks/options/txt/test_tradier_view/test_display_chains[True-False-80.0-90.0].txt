@@ -1,3 +1,4 @@
-Empty DataFrame
-Columns: [vol, strike]
-Index: []
+   vol strike option_type
+13  51   80.0        call
+15   0   85.0        call
+17   2   90.0        call

@@ -5,12 +5,12 @@ __docformat__ = "numpy"
 # flake8: noqa: E501
 
 import logging
-from typing import Dict, List, Optional, Tuple, Union
 import warnings
+from typing import Dict, List, Optional, Tuple, Union
 
 import pandas as pd
-from numpy.typing import NDArray
 from numpy import floating
+from numpy.typing import NDArray
 from riskfolio import rp
 
 from openbb_terminal.decorators import log_start_end
@@ -21,13 +21,13 @@ from openbb_terminal.portfolio.portfolio_optimization import (
 from openbb_terminal.portfolio.portfolio_optimization.parameters.params_helpers import (
     check_convert_parameters,
 )
+from openbb_terminal.portfolio.portfolio_optimization.po_engine import PoEngine
 from openbb_terminal.portfolio.portfolio_optimization.statics import (
+    DRAWDOWNS,
     RISK_NAMES,
     TERMINAL_TEMPLATE_MAP,
     TIME_FACTOR,
-    DRAWDOWNS,
 )
-from openbb_terminal.portfolio.portfolio_optimization.po_engine import PoEngine
 from openbb_terminal.rich_config import console
 
 warnings.filterwarnings("ignore")
@@ -37,9 +37,9 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def generate_portfolio(
-    symbols_categories: Dict[str, Dict[str, str]] = None,
-    symbols_file_path: str = None,
-    parameters_file_path: str = None,
+    symbols_categories: Optional[Dict[str, Dict[str, str]]] = None,
+    symbols_file_path: Optional[str] = None,
+    parameters_file_path: Optional[str] = None,
 ) -> Union[PoEngine, None]:
     """Load portfolio optimization engine
 
@@ -273,7 +273,7 @@ def get_portfolio_performance(weights: Dict, data: pd.DataFrame, **kwargs) -> Di
 
 @log_start_end(log=logger)
 def get_maxsharpe(
-    portfolio_engine: PoEngine = None, **kwargs
+    portfolio_engine: Optional[PoEngine] = None, **kwargs
 ) -> Tuple[pd.DataFrame, Dict]:
     """Optimize Sharpe ratio weights
 
@@ -419,7 +419,7 @@ def get_maxsharpe(
 
 @log_start_end(log=logger)
 def get_minrisk(
-    portfolio_engine: PoEngine = None, **kwargs
+    portfolio_engine: Optional[PoEngine] = None, **kwargs
 ) -> Tuple[pd.DataFrame, Dict]:
     """Optimize minimum risk weights
 
@@ -565,7 +565,7 @@ def get_minrisk(
 
 @log_start_end(log=logger)
 def get_maxutil(
-    portfolio_engine: PoEngine = None, **kwargs
+    portfolio_engine: Optional[PoEngine] = None, **kwargs
 ) -> Tuple[pd.DataFrame, Dict]:
     """Optimize maximum utility weights
 
@@ -711,7 +711,7 @@ def get_maxutil(
 
 @log_start_end(log=logger)
 def get_maxret(
-    portfolio_engine: PoEngine = None, **kwargs
+    portfolio_engine: Optional[PoEngine] = None, **kwargs
 ) -> Tuple[pd.DataFrame, Dict]:
     """Optimize maximum return weights
 
@@ -857,7 +857,7 @@ def get_maxret(
 
 @log_start_end(log=logger)
 def get_maxdiv(
-    portfolio_engine: PoEngine = None, **kwargs
+    portfolio_engine: Optional[PoEngine] = None, **kwargs
 ) -> Tuple[pd.DataFrame, Dict]:
     """Optimize diversification weights
 
@@ -980,7 +980,7 @@ def get_maxdiv(
 
 @log_start_end(log=logger)
 def get_maxdecorr(
-    portfolio_engine: PoEngine = None, **kwargs
+    portfolio_engine: Optional[PoEngine] = None, **kwargs
 ) -> Tuple[pd.DataFrame, Dict]:
     """Optimize decorrelation weights
 
@@ -1081,7 +1081,7 @@ def get_maxdecorr(
 
 @log_start_end(log=logger)
 def get_blacklitterman(
-    portfolio_engine: PoEngine = None, **kwargs
+    portfolio_engine: Optional[PoEngine] = None, **kwargs
 ) -> Tuple[pd.DataFrame, Dict]:
     """Optimize decorrelation weights
 
@@ -1191,7 +1191,7 @@ def get_blacklitterman(
 
 @log_start_end(log=logger)
 def get_ef(
-    portfolio_engine: PoEngine = None, **kwargs
+    portfolio_engine: Optional[PoEngine] = None, **kwargs
 ) -> Tuple[
     pd.DataFrame,
     pd.DataFrame,
@@ -1315,7 +1315,7 @@ def get_ef(
 
 @log_start_end(log=logger)
 def get_riskparity(
-    portfolio_engine: PoEngine = None, **kwargs
+    portfolio_engine: Optional[PoEngine] = None, **kwargs
 ) -> Tuple[pd.DataFrame, Dict]:
     """Optimize with Risk Parity using the risk budgeting approach
 
@@ -1448,7 +1448,7 @@ def get_riskparity(
 
 @log_start_end(log=logger)
 def get_relriskparity(
-    portfolio_engine: PoEngine = None, **kwargs
+    portfolio_engine: Optional[PoEngine] = None, **kwargs
 ) -> Tuple[pd.DataFrame, Dict]:
     """Optimize with Relaxed Risk Parity using the least squares approach
 
@@ -1591,7 +1591,9 @@ def get_relriskparity(
 
 
 @log_start_end(log=logger)
-def get_hrp(portfolio_engine: PoEngine = None, **kwargs) -> Tuple[pd.DataFrame, Dict]:
+def get_hrp(
+    portfolio_engine: Optional[PoEngine] = None, **kwargs
+) -> Tuple[pd.DataFrame, Dict]:
     """Optimize with Hierarchical Risk Parity
 
     Parameters
@@ -1790,7 +1792,9 @@ def get_hrp(portfolio_engine: PoEngine = None, **kwargs) -> Tuple[pd.DataFrame, 
 
 
 @log_start_end(log=logger)
-def get_herc(portfolio_engine: PoEngine = None, **kwargs) -> Tuple[pd.DataFrame, Dict]:
+def get_herc(
+    portfolio_engine: Optional[PoEngine] = None, **kwargs
+) -> Tuple[pd.DataFrame, Dict]:
     """Optimize with Hierarchical Equal Risk Contribution (HERC) method.
 
     Parameters
@@ -1989,7 +1993,9 @@ def get_herc(portfolio_engine: PoEngine = None, **kwargs) -> Tuple[pd.DataFrame,
 
 
 @log_start_end(log=logger)
-def get_nco(portfolio_engine: PoEngine = None, **kwargs) -> Tuple[pd.DataFrame, Dict]:
+def get_nco(
+    portfolio_engine: Optional[PoEngine] = None, **kwargs
+) -> Tuple[pd.DataFrame, Dict]:
     """Optimize with Non-Convex Optimization (NCO) model.
 
     Parameters
@@ -2188,340 +2194,9 @@ def get_nco(portfolio_engine: PoEngine = None, **kwargs) -> Tuple[pd.DataFrame, 
 
 
 @log_start_end(log=logger)
-def get_equal(portfolio_engine: PoEngine = None, **kwargs) -> Tuple[pd.DataFrame, Dict]:
-    """Equally weighted portfolio, where weight = 1/# of symbols
-
-    Parameters
-    ----------
-    portfolio_engine : PoEngine, optional
-        Portfolio optimization engine, by default None
-        Use `portfolio.po.load` to load a portfolio engine
-    interval : str, optional
-        Interval to get data, by default '3y'
-    start_date : str, optional
-        If not using interval, start date string (YYYY-MM-DD), by default ""
-    end_date : str, optional
-        If not using interval, end date string (YYYY-MM-DD). If empty use last weekday, by default ""
-    log_returns : bool, optional
-        If True use log returns, else arithmetic returns, by default False
-    freq : str, optional
-        Frequency of returns, by default 'D'. Options: 'D' for daily, 'W' for weekly, 'M' for monthly
-    maxnan: float
-        Maximum percentage of NaNs allowed in the data, by default 0.05
-    threshold: float
-        Value used to replace outliers that are higher than threshold, by default 0.0
-    method: str
-        Method used to fill nan values, by default 'time'
-        For more information see `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`__.
-    value : float, optional
-        Amount to allocate to portfolio in long positions, by default 1.0
-
-    Returns
-    -------
-    Tuple[pd.DataFrame, Dict]
-        Tuple with weights and performance dictionary
-
-    Examples
-    --------
-    >>> from openbb_terminal.sdk import openbb
-    >>> d = {
-                "SECTOR": {
-                    "AAPL": "INFORMATION TECHNOLOGY",
-                    "MSFT": "INFORMATION TECHNOLOGY",
-                    "AMZN": "CONSUMER DISCRETIONARY",
-                },
-                "CURRENCY": {
-                    "AAPL": "USD",
-                    "MSFT": "USD",
-                    "AMZN": "USD",
-                },
-                "CURRENT_INVESTED_AMOUNT": {
-                    "AAPL": "100000.0",
-                    "MSFT": "200000.0",
-                    "AMZN": "300000.0",
-                },
-            }
-    >>> p = openbb.portfolio.po.load(symbols_categories=d)
-    >>> weights, performance = openbb.portfolio.po.equal(portfolio_engine=p)
-
-    >>> from openbb_terminal.sdk import openbb
-    >>> p = openbb.portfolio.po.load(symbols_file_path="~/openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
-    >>> weights, performance = openbb.portfolio.po.equal(portfolio_engine=p)
-    """
-
-    valid_symbols, valid_portfolio_engine, valid_kwargs = validate_inputs(
-        portfolio_engine, kwargs
-    )
-    if not valid_symbols:
-        return pd.DataFrame()
-
-    weights, returns = optimizer_model.get_equal_weights(
-        symbols=valid_symbols, **valid_kwargs
-    )
-    performance_dict = get_portfolio_performance(weights, returns, **valid_kwargs)
-
-    valid_portfolio_engine.set_weights(weights=weights)
-    valid_portfolio_engine.set_returns(returns=returns)
-
-    return valid_portfolio_engine.get_weights_df(warning=False), performance_dict
-
-
-@log_start_end(log=logger)
-def get_mktcap(
-    portfolio_engine: PoEngine = None, **kwargs
-) -> Tuple[pd.DataFrame, Dict]:
-    """Optimize weighted according to market capitalization
-
-    Parameters
-    ----------
-    portfolio_engine : PoEngine, optional
-        Portfolio optimization engine, by default None
-        Use `portfolio.po.load` to load a portfolio engine
-    interval : str, optional
-        Interval to get data, by default '3y'
-    start_date : str, optional
-        If not using interval, start date string (YYYY-MM-DD), by default ""
-    end_date : str, optional
-        If not using interval, end date string (YYYY-MM-DD). If empty use last weekday, by default ""
-    log_returns : bool, optional
-        If True use log returns, else arithmetic returns, by default False
-    freq : str, optional
-        Frequency of returns, by default 'D'. Options: 'D' for daily, 'W' for weekly, 'M' for monthly
-    maxnan: float
-        Maximum percentage of NaNs allowed in the data, by default 0.05
-    threshold: float
-        Value used to replace outliers that are higher than threshold, by default 0.0
-    method: str
-        Method used to fill nan values, by default 'time'
-        For more information see `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`__.
-    value : float, optional
-        Amount to allocate to portfolio in long positions, by default 1.0
-
-    Returns
-    -------
-    Tuple[pd.DataFrame, Dict]
-        Tuple with weights and performance dictionary
-
-    Examples
-    --------
-    >>> from openbb_terminal.sdk import openbb
-    >>> d = {
-                "SECTOR": {
-                    "AAPL": "INFORMATION TECHNOLOGY",
-                    "MSFT": "INFORMATION TECHNOLOGY",
-                    "AMZN": "CONSUMER DISCRETIONARY",
-                },
-                "CURRENCY": {
-                    "AAPL": "USD",
-                    "MSFT": "USD",
-                    "AMZN": "USD",
-                },
-                "CURRENT_INVESTED_AMOUNT": {
-                    "AAPL": "100000.0",
-                    "MSFT": "200000.0",
-                    "AMZN": "300000.0",
-                },
-            }
-    >>> p = openbb.portfolio.po.load(symbols_categories=d)
-    >>> weights, performance = openbb.portfolio.po.mktcap(portfolio_engine=p)
-
-    >>> from openbb_terminal.sdk import openbb
-    >>> p = openbb.portfolio.po.load(symbols_file_path="~/openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
-    >>> weights, performance = openbb.portfolio.po.mktcap(portfolio_engine=p)
-    """
-
-    valid_symbols, valid_portfolio_engine, valid_kwargs = validate_inputs(
-        portfolio_engine, kwargs
-    )
-    if not valid_symbols:
-        return pd.DataFrame()
-
-    weights, returns = optimizer_model.get_property_weights(
-        symbols=valid_symbols, s_property="marketCap", **valid_kwargs
-    )
-    performance_dict = get_portfolio_performance(weights, returns, **valid_kwargs)
-
-    valid_portfolio_engine.set_weights(weights=weights)
-    valid_portfolio_engine.set_returns(returns=returns)
-
-    return valid_portfolio_engine.get_weights_df(warning=False), performance_dict
-
-
-@log_start_end(log=logger)
-def get_dividend(
-    portfolio_engine: PoEngine = None, **kwargs
-) -> Tuple[pd.DataFrame, Dict]:
-    """Optimize weighted according to dividend yield
-
-    Parameters
-    ----------
-    portfolio_engine : PoEngine, optional
-        Portfolio optimization engine, by default None
-        Use `portfolio.po.load` to load a portfolio engine
-    interval : str, optional
-        Interval to get data, by default '3y'
-    start_date : str, optional
-        If not using interval, start date string (YYYY-MM-DD), by default ""
-    end_date : str, optional
-        If not using interval, end date string (YYYY-MM-DD). If empty use last weekday, by default ""
-    log_returns : bool, optional
-        If True use log returns, else arithmetic returns, by default False
-    freq : str, optional
-        Frequency of returns, by default 'D'. Options: 'D' for daily, 'W' for weekly, 'M' for monthly
-    maxnan: float
-        Maximum percentage of NaNs allowed in the data, by default 0.05
-    threshold: float
-        Value used to replace outliers that are higher than threshold, by default 0.0
-    method: str
-        Method used to fill nan values, by default 'time'
-        For more information see `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`__.
-    value : float, optional
-        Amount to allocate to portfolio in long positions, by default 1.0
-
-    Returns
-    -------
-    Tuple[pd.DataFrame, Dict]
-        Tuple with weights and performance dictionary
-
-    Examples
-    --------
-    >>> from openbb_terminal.sdk import openbb
-    >>> d = {
-                "SECTOR": {
-                    "AAPL": "INFORMATION TECHNOLOGY",
-                    "MSFT": "INFORMATION TECHNOLOGY",
-                    "AMZN": "CONSUMER DISCRETIONARY",
-                },
-                "CURRENCY": {
-                    "AAPL": "USD",
-                    "MSFT": "USD",
-                    "AMZN": "USD",
-                },
-                "CURRENT_INVESTED_AMOUNT": {
-                    "AAPL": "100000.0",
-                    "MSFT": "200000.0",
-                    "AMZN": "300000.0",
-                },
-            }
-    >>> p = openbb.portfolio.po.load(symbols_categories=d)
-    >>> weights, performance = openbb.portfolio.po.dividend(portfolio_engine=p)
-
-    >>> from openbb_terminal.sdk import openbb
-    >>> p = openbb.portfolio.po.load(symbols_file_path="~/openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
-    >>> weights, performance = openbb.portfolio.po.dividend(portfolio_engine=p)
-    """
-
-    valid_symbols, valid_portfolio_engine, valid_kwargs = validate_inputs(
-        portfolio_engine, kwargs
-    )
-    if not valid_symbols:
-        return pd.DataFrame()
-
-    weights, returns = optimizer_model.get_property_weights(
-        symbols=valid_symbols, s_property="dividendYield", **valid_kwargs
-    )
-    performance_dict = get_portfolio_performance(weights, returns, **valid_kwargs)
-
-    valid_portfolio_engine.set_weights(weights=weights)
-    valid_portfolio_engine.set_returns(returns=returns)
-
-    return valid_portfolio_engine.get_weights_df(warning=False), performance_dict
-
-
-@log_start_end(log=logger)
-def get_property(
-    portfolio_engine: PoEngine = None,
-    prop: str = "marketCap",
-    **kwargs,
-) -> Tuple[pd.DataFrame, Dict]:
-    """Optimize weighted according to property
-
-    Parameters
-    ----------
-    portfolio_engine : PoEngine, optional
-        Portfolio optimization engine, by default None
-        Use `portfolio.po.load` to load a portfolio engine
-    prop : str, optional
-        Property to use for optimization, by default 'marketCap'
-        Use `portfolio.po.get_properties() to get a list of available properties
-    interval : str, optional
-        Interval to get data, by default '3y'
-    start_date : str, optional
-        If not using interval, start date string (YYYY-MM-DD), by default ""
-    end_date : str, optional
-        If not using interval, end date string (YYYY-MM-DD). If empty use last weekday, by default ""
-    log_returns : bool, optional
-        If True use log returns, else arithmetic returns, by default False
-    freq : str, optional
-        Frequency of returns, by default 'D'. Options: 'D' for daily, 'W' for weekly, 'M' for monthly
-    maxnan: float
-        Maximum percentage of NaNs allowed in the data, by default 0.05
-    threshold: float
-        Value used to replace outliers that are higher than threshold, by default 0.0
-    method: str
-        Method used to fill nan values, by default 'time'
-        For more information see `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`__.
-    value : float, optional
-        Amount to allocate to portfolio in long positions, by default 1.0
-
-    Returns
-    -------
-    Tuple[pd.DataFrame, Dict]
-        Tuple with weights and performance dictionary
-
-    Examples
-    --------
-    >>> from openbb_terminal.sdk import openbb
-    >>> d = {
-                "SECTOR": {
-                    "AAPL": "INFORMATION TECHNOLOGY",
-                    "MSFT": "INFORMATION TECHNOLOGY",
-                    "AMZN": "CONSUMER DISCRETIONARY",
-                },
-                "CURRENCY": {
-                    "AAPL": "USD",
-                    "MSFT": "USD",
-                    "AMZN": "USD",
-                },
-                "CURRENT_INVESTED_AMOUNT": {
-                    "AAPL": "100000.0",
-                    "MSFT": "200000.0",
-                    "AMZN": "300000.0",
-                },
-            }
-    >>> p = openbb.portfolio.po.load(symbols_categories=d)
-    >>> weights, performance = openbb.portfolio.po.property(portfolio_engine=p)
-
-    >>> from openbb_terminal.sdk import openbb
-    >>> p = openbb.portfolio.po.load(symbols_file_path="~/openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
-    >>> weights, performance = openbb.portfolio.po.property(portfolio_engine=p, prop="forwardPE")
-    """
-
-    if prop is None:
-        console.print("No property provided")
-        return pd.DataFrame()
-
-    valid_symbols, valid_portfolio_engine, valid_kwargs = validate_inputs(
-        portfolio_engine, kwargs
-    )
-    if not valid_symbols:
-        return pd.DataFrame()
-
-    weights, returns = optimizer_model.get_property_weights(
-        symbols=valid_symbols, s_property=prop, **valid_kwargs
-    )
-    performance_dict = get_portfolio_performance(weights, returns, **valid_kwargs)
-
-    valid_portfolio_engine.set_weights(weights=weights)
-    valid_portfolio_engine.set_returns(returns=returns)
-
-    return valid_portfolio_engine.get_weights_df(warning=False), performance_dict
-
-
-@log_start_end(log=logger)
 def show(
     portfolio_engine: PoEngine,
-    category: str = None,
+    category: Optional[str] = None,
 ) -> Union[pd.DataFrame, pd.DataFrame]:
     """Show portfolio optimization results
 

@@ -1,14 +1,13 @@
 import json
 from importlib import import_module
-from logging import getLogger, Logger
+from inspect import signature
+from logging import Logger, getLogger
 from typing import Any, Callable, Dict, List, Optional
 
-from inspect import signature
-
 import openbb_terminal.config_terminal as cfg
-
 from openbb_terminal.core.library.metadata import Metadata
 from openbb_terminal.core.library.trail_map import TrailMap
+from openbb_terminal.session.sdk_session import login
 
 # pylint: disable=import-outside-toplevel
 
@@ -115,7 +114,6 @@ class Operation:
 
 
 class OperationLogger:
-
     last_method: Dict[Any, Any] = {}
 
     def __init__(
@@ -231,8 +229,7 @@ class OperationLogger:
         """
 
         if func_module == "openbb_terminal.keys_model":
-
-            from openbb_terminal.core.log.generation.settings_logger import (  # pylint: disable=C0415
+            from openbb_terminal.core.log.generation.settings_logger import (  # pylint: disable=import-outside-toplevel
                 log_keys,
             )
 
@@ -250,6 +247,9 @@ class OperationLogger:
             self.__log_exception_if_any(
                 logger=logger,
                 method_result=method_result,
+                method_chosen=self.__method_chosen,
+            )
+            self.__log_if_login(
                 method_chosen=self.__method_chosen,
             )
             self.__log_end(
@@ -274,6 +274,17 @@ class OperationLogger:
                 f"Exception: {method_result}",
                 extra={"func_name_override": method_chosen.__name__},
             )
+
+    @staticmethod
+    def __log_if_login(
+        method_chosen: Callable,
+    ):
+        if method_chosen.__name__ == login.__name__:
+            from openbb_terminal.core.log.generation.user_logger import (  # pylint: disable=import-outside-toplevel
+                log_user,
+            )
+
+            log_user(with_rollover=False)
 
     @staticmethod
     def __log_end(logger: Logger, method_chosen: Callable):

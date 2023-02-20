@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import argparse
 import logging
 from pathlib import Path
-from typing import List
+from typing import List, Optional
 
 import pandas as pd
 
@@ -14,10 +14,7 @@ from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.portfolio.portfolio_analysis import (
-    portfolio_model,
-    portfolio_view,
-)
+from openbb_terminal.portfolio.portfolio_analysis import portfolio_model, portfolio_view
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -49,8 +46,7 @@ class PortfolioAnalysisController(BaseController):
     ]
     PATH = "/portfolio/pa/"
 
-    def __init__(self, queue: List[str] = None):
-
+    def __init__(self, queue: Optional[List[str]] = None):
         super().__init__(queue)
 
         self.portfolio_name = ""

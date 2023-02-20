@@ -40,7 +40,7 @@ FROM debian as poetry
 ENV PATH="/home/python/.local/bin:${PATH}"
 
 RUN pip install --upgrade pip wheel
-RUN pip install poetry==1.1.15
+RUN pip install poetry==1.3.2
 
 # SETUP OPENBB IMAGE
 FROM poetry as repository
@@ -62,7 +62,7 @@ RUN chown python:python .openbb_terminal
 # SETUP OPENBB IMAGE
 FROM repository as dependencies
 
-RUN poetry install --no-root --no-dev --extras optimization --extras prediction
+RUN poetry install --no-root --no-dev --extras optimization --extras forecast
 
 # SETUP OPENBB IMAGE
 FROM dependencies as openbb

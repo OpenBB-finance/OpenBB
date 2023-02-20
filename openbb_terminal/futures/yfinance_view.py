@@ -1,26 +1,25 @@
 """Yahoo Finance view"""
 __docformat__ = "numpy"
 
-from typing import Optional, List
-from itertools import cycle
 import logging
 import os
+from itertools import cycle
+from typing import List, Optional
 
-from datetime import datetime, timedelta
 from matplotlib import pyplot as plt
 
-from openbb_terminal.config_terminal import theme
 from openbb_terminal.config_plot import PLOT_DPI
+from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.futures import yfinance_model
+from openbb_terminal.futures.futures_helper import make_white
 from openbb_terminal.helper_funcs import (
     export_data,
+    is_valid_axes_count,
     plot_autoscale,
     print_rich_table,
-    is_valid_axes_count,
 )
 from openbb_terminal.rich_config import console
-from openbb_terminal.futures.futures_helper import make_white
 
 logger = logging.getLogger(__name__)
 
@@ -31,6 +30,7 @@ def display_search(
     exchange: str = "",
     description: str = "",
     export: str = "",
+    sheet_name: Optional[str] = None,
 ):
     """Display search futures [Source: Yahoo Finance]
 
@@ -42,6 +42,8 @@ def display_search(
         Select the exchange where the future exists
     description: str
         Select the description of the future
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Type of format to export data
     """
@@ -58,6 +60,7 @@ def display_search(
         os.path.dirname(os.path.abspath(__file__)),
         "search",
         df,
+        sheet_name,
     )
 
 
@@ -66,8 +69,10 @@ def display_historical(
     symbols: List[str],
     expiry: str = "",
     start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
     raw: bool = False,
     export: str = "",
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display historical futures [Source: Yahoo Finance]
@@ -78,18 +83,19 @@ def display_historical(
         List of future timeseries symbols to display
     expiry: str
         Future expiry date with format YYYY-MM
-    start_date : Optional[str]
-        Initial date like string (e.g., 2021-10-01)
+    start_date: Optional[str]
+        Start date of the historical data with format YYYY-MM-DD
+    end_date: Optional[str]
+        End date of the historical data with format YYYY-MM-DD
     raw: bool
         Display futures timeseries in raw format
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Type of format to export data
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
-
-    if start_date is None:
-        start_date = (datetime.now() - timedelta(days=3 * 365)).strftime("%Y-%m-%d")
 
     symbols_validated = list()
     for symbol in symbols:
@@ -104,21 +110,21 @@ def display_historical(
         console.print("No symbol was provided.\n")
         return
 
-    historicals = yfinance_model.get_historical_futures(symbols, expiry)
+    historicals = yfinance_model.get_historical_futures(
+        symbols, expiry, start_date, end_date
+    )
 
     if historicals.empty:
-        console.print(f"No data was found for the symbols: {', '.join(symbols)}\n")
         return
 
     if raw or len(historicals) == 1:
-
         if not raw and len(historicals) == 1:
             console.print(
                 "\nA single datapoint is not enough to depict a chart, data is presented below."
             )
 
         print_rich_table(
-            historicals[historicals.index > datetime.strptime(start_date, "%Y-%m-%d")],
+            historicals,
             headers=list(historicals.columns),
             show_index=True,
             title="Futures timeseries",
@@ -126,7 +132,6 @@ def display_historical(
         console.print()
 
     else:
-
         # This plot has 1 axis
         if not external_axes:
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
@@ -147,12 +152,7 @@ def display_historical(
                         yfinance_model.FUTURES_DATA["Ticker"] == tick
                     ]["Description"].values[0]
                     print_rich_table(
-                        historicals[
-                            historicals["Adj Close"][tick].index
-                            > datetime.strptime(start_date, "%Y-%m-%d")
-                        ]["Adj Close"][tick]
-                        .dropna()
-                        .to_frame(),
+                        historicals["Adj Close"][tick].dropna().to_frame(),
                         headers=[naming],
                         show_index=True,
                         title="Futures timeseries",
@@ -171,10 +171,6 @@ def display_historical(
                 )
                 ax.legend(name)
 
-                first = datetime.strptime(start_date, "%Y-%m-%d")
-                if historicals["Adj Close"].index[0] > first:
-                    first = historicals["Adj Close"].index[0]
-                ax.set_xlim(first, historicals["Adj Close"].index[-1])
                 theme.style_primary_axis(ax)
 
                 make_white(ax)
@@ -187,10 +183,7 @@ def display_historical(
                     f"\nA single datapoint on {symbols[0]} is not enough to depict a chart, data shown below."
                 )
                 print_rich_table(
-                    historicals[
-                        historicals["Adj Close"].index
-                        > datetime.strptime(start_date, "%Y-%m-%d")
-                    ],
+                    historicals,
                     headers=list(historicals["Adj Close"].columns),
                     show_index=True,
                     title="Futures timeseries",
@@ -210,10 +203,6 @@ def display_historical(
                 else:
                     ax.set_title(name)
 
-                first = datetime.strptime(start_date, "%Y-%m-%d")
-                if historicals["Adj Close"].index[0] > first:
-                    first = historicals["Adj Close"].index[0]
-                ax.set_xlim(first, historicals["Adj Close"].index[-1])
                 theme.style_primary_axis(ax)
 
                 make_white(ax)
@@ -224,7 +213,8 @@ def display_historical(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "historical",
-        historicals[historicals.index > datetime.strptime(start_date, "%Y-%m-%d")],
+        historicals,
+        sheet_name,
     )
 
 
@@ -233,6 +223,7 @@ def display_curve(
     symbol: str,
     raw: bool = False,
     export: str = "",
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display curve futures [Source: Yahoo Finance]
@@ -243,6 +234,8 @@ def display_curve(
         Curve future symbol to display
     raw: bool
         Display futures timeseries in raw format
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Type of format to export data
     external_axes : Optional[List[plt.Axes]], optional
@@ -301,4 +294,5 @@ def display_curve(
             os.path.dirname(os.path.abspath(__file__)),
             "curve",
             df,
+            sheet_name,
         )
