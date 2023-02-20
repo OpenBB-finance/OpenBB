@@ -569,12 +569,10 @@ class PortfolioOptimizationController(BaseController):
             else:
                 self.current_file = " ".join(ns_parser.file)
 
-                if self.current_file in self.optimization_file_map:
-                    file_location = self.optimization_file_map[self.current_file]
-                else:
-                    file_location = self.current_file  # type: ignore
-
-                self.params, self.current_model = params_view.load_file(file_location)  # type: ignore
+                file_location = self.optimization_file_map.get(
+                    self.current_file, self.current_file
+                )
+                self.params, self.current_model = params_view.load_file(file_location)
 
     @log_start_end(log=logger)
     def call_params(self, _):
