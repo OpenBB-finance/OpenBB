@@ -1,6 +1,7 @@
 # -*- mode: python ; coding: utf-8 -*-
 import os
 import shutil
+import subprocess
 import sys
 from pathlib import Path
 
@@ -39,12 +40,12 @@ binary_to_remove.unlink(missing_ok=True)
 build_assets_folder = os.path.join(os.getcwd(), "build", "pyinstaller")
 
 # Removing inspect hook
-# destination = Path(
-#     os.path.join(pathex, "pyinstaller/hooks/rthooks", "pyi_rth_inspect.py")
-# )
+destination = Path(
+    os.path.join(pathex, "pyinstaller/hooks/rthooks", "pyi_rth_inspect.py")
+)
 print("Replacing Pyinstaller Hook: pyi_rth_inspect.py")
-# source = os.path.join(build_assets_folder, "hooks", "pyi_rth_inspect.py")
-# subprocess.run(["cp", source, str(destination)], check=True)
+source = os.path.join(build_assets_folder, "hooks", "pyi_rth_inspect.py")
+subprocess.run(["cp", source, str(destination)], check=True)
 
 
 # Get latest commit
@@ -83,6 +84,8 @@ added_files = [
     (shutil.which("voila"), "."),
     (shutil.which("jupyter-lab"), "."),
     (shutil.which("streamlit"), "."),
+    (os.path.join(pathex, "pytorch_lightning", "version.info"), "pytorch_lightning"),
+    (os.path.join(pathex, "lightning_fabric", "version.info"), "lightning_fabric"),
 ]
 
 if is_win:
@@ -116,6 +119,11 @@ hidden_imports = [
     "debugpy",
     "pywry.pywry",
     "scipy.sparse.linalg._isolve._iterative",
+    "tensorboard",
+    "tensorboard_data_server",
+    "tensorboard_plugin_wit",
+    "pytorch_lightning",
+    "lightning_fabric",
 ]
 
 

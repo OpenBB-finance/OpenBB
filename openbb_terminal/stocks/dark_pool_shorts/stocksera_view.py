@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import Optional
+from typing import Optional, Union
 
 import pandas as pd
 
@@ -76,7 +76,7 @@ def cost_to_borrow(
     export: str = "",
     sheet_name: Optional[str] = None,
     external_axes: bool = False,
-):
+) -> Union[None, OpenBBFigure]:
     """Plot the short interest of a stock. This corresponds to the
     number of shares that have been sold short but have not yet been
     covered or closed out. Either NASDAQ or NYSE [Source: Quandl]
@@ -95,15 +95,15 @@ def cost_to_borrow(
     """
     # Note: if you send an empty string stocksera will search every ticker
     if not symbol:
-        console.print("[red]No symbol provided[/red]\n")
-        return
+        return console.print("[red]No symbol provided[/red]\n")
+
     df_cost_to_borrow = stocksera_model.get_cost_to_borrow(symbol)
 
     df_cost_to_borrow = df_cost_to_borrow.head(limit)[::-1]
 
     pd.options.mode.chained_assignment = None
 
-    plot_cost_to_borrow(symbol, df_cost_to_borrow, external_axes)
+    fig = plot_cost_to_borrow(symbol, df_cost_to_borrow, True)
 
     if raw:
         df_cost_to_borrow["Available"] = df_cost_to_borrow["Available"].apply(
@@ -123,3 +123,5 @@ def cost_to_borrow(
         df_cost_to_borrow,
         sheet_name,
     )
+
+    return fig.show(external=external_axes)

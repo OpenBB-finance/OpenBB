@@ -102,7 +102,6 @@ def darkpool_ats_otc(
             y=ats["totalWeeklyShareQuantity"] / ats["totalWeeklyTradeCount"],
             line=dict(color="#fdc708", width=2),
             opacity=1,
-            showlegend=False,
             yaxis="y2",
             row=2,
             col=1,
