@@ -65,7 +65,7 @@ jobs:
     name: Base Tests - Ubuntu-latest - Python 3.9
     needs: [check-files-changed]
     runs-on: ubuntu-latest
-    if: ${{ needs.check-files-changed.outputs.check-changes == 'true' && github.event.pull_request.base.ref == 'develop'}}
+    if: ${{ needs.check-files-changed.outputs.check-changes == 'true' && github.event.pull_request.base.ref == 'develop' }}
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
