@@ -104,7 +104,8 @@ softwareupdate --install-rosetta
 **Step 5:** Launch the application by double-clicking on the `OpenBB Terminal` application.
 
 **Note:** During the first launch, a warning message may appear. Click, "Open".
-<p align="center"><img src="mac_install1.png"></img></p>
+
+![MacOS Installation](https://user-images.githubusercontent.com/85772166/220201620-1c42bbd4-7509-41fc-8df8-389f34fde58a.png)
 
 </TabItem>
 
