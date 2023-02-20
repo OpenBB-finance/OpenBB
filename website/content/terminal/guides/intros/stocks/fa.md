@@ -10,7 +10,7 @@ The Fundamental Analysis menu is a set of tools for measuring a company's intrin
 
 Enter the submenu from the <a href="/terminal/guides/intros/stocks/" target="_blank" rel="noreferrer noopener">Stocks menu</a>, with a ticker loaded.
 
-<img width="1166" alt="Fundamental Analysis Menu" src="https://user-images.githubusercontent.com/85772166/175221782-87f0d0df-3a50-4268-8af8-a5f1f12f3d32.png"></img>
+<img width="800" alt="image" src="https://user-images.githubusercontent.com/46355364/218980249-5d98c0e0-6fba-4f62-acb2-2984f5fd517b.png"></img>
 
 Some commands offer interpretations of the data, but, the majority are statements reported to the SEC. The `overview` command is a table of basic statistics, including price.
 ````

@@ -6,7 +6,7 @@ import logging
 import os
 
 # pylint: disable=R1732, R0912
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 
 import openbb_terminal.config_terminal as cfg
 from openbb_terminal import feature_flags as obbff
@@ -43,7 +43,7 @@ class ReportController(BaseController):
     REPORTS = sorted(list(set(CHOICES_COMMANDS).intersection(REPORTS)))
     PARAMETERS_DICT: Dict[str, Any] = {}
 
-    def __init__(self, queue: List[str] = None):
+    def __init__(self, queue: Optional[List[str]] = None):
         """Constructor"""
 
         super().__init__(queue)
@@ -59,7 +59,7 @@ class ReportController(BaseController):
             )
 
         if session and obbff.USE_PROMPT_TOOLKIT:
-            self.choices: dict = {c: {} for c in self.controller_choices}
+            self.choices: dict = {c: {} for c in self.controller_choices}  # type: ignore
             self.choices["run"] = {
                 "--file": {c: None for c in reports_model.USER_REPORTS},
                 "-f": "--file",

@@ -4,26 +4,40 @@ __docformat__ = "numpy"
 import logging
 import math
 from datetime import date, datetime, timedelta
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
 import pandas as pd
 import yfinance as yf
-from tqdm import tqdm
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import get_rf
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import console, optional_rich_track
 
 logger = logging.getLogger(__name__)
 
+sorted_chain_columns = [
+    "contractSymbol",
+    "optionType",
+    "expiration",
+    "strike",
+    "lastPrice",
+    "bid",
+    "ask",
+    "openInterest",
+    "volume",
+    "impliedVolatility",
+]
 
-def get_full_option_chain(symbol: str) -> pd.DataFrame:
+
+def get_full_option_chain(symbol: str, quiet: bool = False) -> pd.DataFrame:
     """Get all options for given ticker [Source: Yahoo Finance]
 
     Parameters
     ----------
     symbol: str
         Stock ticker symbol
+    quiet: bool
+        Flag to suppress progress bar
 
     Returns
     -------
@@ -35,17 +49,25 @@ def get_full_option_chain(symbol: str) -> pd.DataFrame:
 
     options = pd.DataFrame()
 
-    for _date in tqdm(dates, desc="Getting option chains"):
+    for _date in optional_rich_track(
+        dates, suppress_output=quiet, desc="Getting Option Chain"
+    ):
         calls = ticker.option_chain(_date).calls
+        calls["optionType"] = "call"
+        calls["expiration"] = _date
+        calls = calls[sorted_chain_columns]
         puts = ticker.option_chain(_date).puts
-
-        calls.columns = [x + "_c" if x != "strike" else x for x in calls.columns]
-        puts.columns = [x + "_p" if x != "strike" else x for x in puts.columns]
+        puts["optionType"] = "put"
+        puts["expiration"] = _date
+        puts = puts[sorted_chain_columns]
 
         temp = pd.merge(calls, puts, how="outer", on="strike")
         temp["expiration"] = _date
-        options = pd.concat([options, temp], axis=0).reset_index(drop=True)
-
+        options = (
+            pd.concat([options, pd.concat([calls, puts])], axis=0)
+            .fillna(0)
+            .reset_index(drop=True)
+        )
     return options
 
 
@@ -273,7 +295,7 @@ def get_binom(
     strike: float = 0,
     put: bool = False,
     europe: bool = False,
-    vol: float = None,
+    vol: Optional[float] = None,
 ):
     """Gets binomial pricing for options
 

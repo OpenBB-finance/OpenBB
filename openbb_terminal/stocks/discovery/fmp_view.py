@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 import datetime
 import logging
 import os
+from typing import Optional
 
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import export_data
@@ -20,7 +21,7 @@ def display_filings(
     limit: int = 5,
     today: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Display recent forms submitted to the SEC
     Parameters

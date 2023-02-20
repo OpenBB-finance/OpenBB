@@ -21,7 +21,7 @@ def display_tft_forecast(
     target_column: str = "close",
     dataset_name: str = "",
     n_predict: int = 5,
-    past_covariates: str = None,
+    past_covariates: Optional[str] = None,
     train_split: float = 0.85,
     forecast_horizon: int = 5,
     input_chunk_length: int = 14,
@@ -38,13 +38,14 @@ def display_tft_forecast(
     force_reset: bool = True,
     save_checkpoints: bool = True,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     residuals: bool = False,
     forecast_only: bool = False,
     start_date: Optional[datetime] = None,
     end_date: Optional[datetime] = None,
     naive: bool = False,
     export_pred_raw: bool = False,
+    metric: str = "mape",
     external_axes: Optional[List[plt.axes]] = None,
 ):
     """Display Temporal Fusion Transformer forecast
@@ -105,6 +106,8 @@ def display_tft_forecast(
     naive: bool
         Whether to show the naive baseline. This just assumes the closing price will be the same
         as the previous day's closing price. Defaults to False.
+    metric: str
+        The metric to use for the model. Defaults to "mape".
     external_axes:Optional[List[plt.axes]]
         External axes to plot on
     """
@@ -143,6 +146,7 @@ def display_tft_forecast(
         model_save_name=model_save_name,
         force_reset=force_reset,
         save_checkpoints=save_checkpoints,
+        metric=metric,
     )
     if ticker_series == []:
         return
@@ -166,6 +170,7 @@ def display_tft_forecast(
         forecast_only=forecast_only,
         naive=naive,
         export_pred_raw=export_pred_raw,
+        metric=metric,
         external_axes=external_axes,
     )
     if residuals:

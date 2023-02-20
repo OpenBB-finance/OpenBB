@@ -1,10 +1,13 @@
+import json
 from typing import Dict, Optional
 
 import requests
 
 from openbb_terminal.rich_config import console
 
+REGISTER_URL = "https://my.openbb.dev/register"
 BASE_URL = "https://payments.openbb.dev/"
+# BASE_URL = "http://127.0.0.1:8000/"
 TIMEOUT = 15
 
 CONNECTION_ERROR_MSG = "[red]Connection error.[/red]"
@@ -44,6 +47,36 @@ def create_session(
         return None
     except requests.exceptions.Timeout:
         console.print(f"\n{CONNECTION_TIMEOUT_MSG}")
+        return None
+    except Exception:
+        console.print("\n[red]Failed to request login info.[/red]")
+        return None
+
+
+def create_session_from_token(
+    token: str, base_url: str = BASE_URL, timeout: int = TIMEOUT
+):
+    """Create a session from token.
+
+    Parameters
+    ----------
+    token : str
+        The token.
+    base_url : str
+        The base url, by default BASE_URL
+    timeout : int
+        The timeout, by default TIMEOUT
+    """
+    try:
+        data = {
+            "token": token,
+        }
+        return requests.post(url=base_url + "sdk/login", json=data, timeout=timeout)
+    except requests.exceptions.ConnectionError:
+        console.print("\n[red]Connection error.[/red]")
+        return None
+    except requests.exceptions.Timeout:
+        console.print("\n[red]Connection timeout.[/red]")
         return None
     except Exception:
         console.print("\n[red]Failed to request login info.[/red]")
@@ -134,6 +167,25 @@ def get_session(email: str, password: str) -> dict:
         The session info.
     """
     response = create_session(email, password)
+    if response is None:
+        return {}
+    return process_session_response(response)
+
+
+def get_session_from_token(token: str) -> dict:
+    """Get the session info from token.
+
+    Parameters
+    ----------
+    token : str
+        The token.
+
+    Returns
+    -------
+    dict
+        The session info.
+    """
+    response = create_session_from_token(token)
     if response is None:
         return {}
     return process_session_response(response)
@@ -487,4 +539,139 @@ def list_routines(
         return None
     except Exception:
         console.print("[red]Failed to list your routines.[/red]")
+        return None
+
+
+def generate_personal_access_token(
+    auth_header: str, base_url: str = BASE_URL, timeout: int = TIMEOUT, days: int = 30
+) -> Optional[requests.Response]:
+    """
+    Generate an OpenBB Personal Access Token.
+
+    Parameters
+    ----------
+    auth_header : str
+        The authorization header, e.g. "Bearer <token>".
+    base_url : str
+        The base url, by default BASE_URL
+    timeout : int
+        The timeout, by default TIMEOUT
+    days : int
+        The number of days the token should be valid for.
+
+    Returns
+    -------
+    Optional[requests.Response]
+    """
+
+    url = f"{base_url}/sdk/token"
+
+    payload = json.dumps({"days": days})
+    headers = {
+        "Authorization": auth_header,
+        "Content-Type": "application/json",
+    }
+
+    try:
+        response = requests.put(url=url, headers=headers, data=payload, timeout=timeout)
+
+        if response.status_code != 200:
+            console.print("[red]Failed to generate personal access token.[/red]")
+
+        return response
+
+    except requests.exceptions.ConnectionError:
+        console.print(f"\n{CONNECTION_ERROR_MSG}")
+        return None
+    except requests.exceptions.Timeout:
+        console.print(f"\n{CONNECTION_TIMEOUT_MSG}")
+        return None
+    except Exception:
+        console.print("[red]Failed to generate personal access token.[/red]")
+        return None
+
+
+def get_personal_access_token(
+    auth_header: str, base_url: str = BASE_URL, timeout: int = TIMEOUT
+) -> Optional[requests.Response]:
+    """
+    Show the user's OpenBB Personal Access Token.
+
+    Parameters
+    ----------
+    auth_header : str
+        The authorization header, e.g. "Bearer <token>".
+    base_url : str
+        The base url, by default BASE_URL
+    timeout : int
+        The timeout, by default TIMEOUT
+
+    Returns
+    -------
+    Optional[requests.Response]
+    """
+
+    url = f"{base_url}/sdk/token"
+
+    headers = {"Authorization": auth_header}
+
+    try:
+        response = requests.get(url=url, headers=headers, timeout=timeout)
+
+        if response.status_code != 200:
+            console.print("[red]Failed to get personal access token.[/red]")
+
+        return response
+
+    except requests.exceptions.ConnectionError:
+        console.print(f"\n{CONNECTION_ERROR_MSG}")
+        return None
+    except requests.exceptions.Timeout:
+        console.print(f"\n{CONNECTION_TIMEOUT_MSG}")
+        return None
+    except Exception:
+        console.print("[red]Failed to get personal access token.[/red]")
+        return None
+
+
+def revoke_personal_access_token(
+    auth_header: str, base_url: str = BASE_URL, timeout: int = TIMEOUT
+) -> Optional[requests.Response]:
+    """
+    Delete the user's OpenBB Personal Access Token.
+
+    Parameters
+    ----------
+    auth_header : str
+        The authorization header, e.g. "Bearer <token>".
+    base_url : str
+        The base url, by default BASE_URL
+    timeout : int
+        The timeout, by default TIMEOUT
+
+    Returns
+    -------
+    Optional[requests.Response]
+    """
+
+    url = f"{base_url}/sdk/token"
+
+    headers = {"Authorization": auth_header}
+
+    try:
+        response = requests.delete(url=url, headers=headers, timeout=timeout)
+
+        if response.status_code not in [200, 202]:
+            console.print("[red]Failed to revoke personal access token.[/red]")
+
+        return response
+
+    except requests.exceptions.ConnectionError:
+        console.print(f"\n{CONNECTION_ERROR_MSG}")
+        return None
+    except requests.exceptions.Timeout:
+        console.print(f"\n{CONNECTION_TIMEOUT_MSG}")
+        return None
+    except Exception:
+        console.print("[red]Failed to revoke personal access token.[/red]")
         return None

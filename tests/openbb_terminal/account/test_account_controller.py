@@ -28,7 +28,7 @@ CONFIGS = {
         "USER_DATA_DIRECTORY": "some/path/to/user/data",
     },
     "features_keys": {
-        "API_KEY_ALPHAVANTAGE": "test_av",
+        "API_KEY_ALPHAVANTAGE": "test_av",  # pragma: allowlist secret
         "API_FRED_KEY": "test_fred",
     },
 }
@@ -250,6 +250,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
 @pytest.mark.parametrize(
     "func",
     [
+        "call_logout",
         "call_sync",
         "call_pull",
         "call_clear",
@@ -257,6 +258,9 @@ def test_call_func_expect_queue(expected_queue, func, queue):
         "call_upload",
         "call_download",
         "call_delete",
+        "call_generate",
+        "call_show",
+        "call_revoke",
     ],
 )
 def test_call_func_no_parser(func, mocker):
@@ -271,6 +275,20 @@ def test_call_func_no_parser(func, mocker):
     assert func_result is None
     assert controller.queue == []
     controller.parse_known_args_and_warn.assert_called_once()
+
+
+def test_call_logout(mocker):
+    controller = account_controller.AccountController(queue=None)
+    path_controller = "openbb_terminal.account.account_controller"
+
+    mock_logout = mocker.patch(
+        target=f"{path_controller}.logout",
+    )
+
+    controller.call_logout([])
+
+    assert controller.queue == []
+    mock_logout.assert_called_once()
 
 
 @pytest.mark.vcr
@@ -520,7 +538,10 @@ def test_call_download(mocker):
     )
 
 
-def test_call_delete(mocker):
+@pytest.mark.skip(
+    reason="We should add a `-y or -f` option to make that easier to test"
+)
+def test_call_delete(mocker, monkeypatch):
     controller = account_controller.AccountController(queue=None)
     path_controller = "openbb_terminal.account.account_controller"
 
@@ -531,6 +552,9 @@ def test_call_delete(mocker):
     mock_delete_routine = mocker.patch(
         target=f"{path_controller}.Hub.delete_routine",
     )
+    # mock user input
+    mock_input = "y"
+    monkeypatch.setattr(f"{path_controller}.console.input", lambda _: mock_input)
 
     controller.call_delete(
         other_args=[
@@ -543,3 +567,85 @@ def test_call_delete(mocker):
         auth_header="Bearer 123",
         name="script1",
     )
+
+
+def test_call_generate(mocker, monkeypatch):
+    controller = account_controller.AccountController(queue=None)
+    path_controller = "openbb_terminal.account.account_controller"
+
+    response = Response()
+    response.status_code = 200
+    response._content = json.dumps(  # pylint: disable=protected-access
+        {"token": "MOCK_TOKEN"}
+    ).encode("utf-8")
+
+    mocker.patch(
+        target=f"{path_controller}.User.get_auth_header",
+        return_value="Bearer 123",
+    )
+    mock_generate = mocker.patch(
+        target=f"{path_controller}.Hub.generate_personal_access_token",
+        return_value=response,
+    )
+
+    # mock user input
+    mock_input = "y"
+    monkeypatch.setattr(f"{path_controller}.console.input", lambda _: mock_input)
+
+    # mock save to keys
+    mocker.patch(
+        target=f"{path_controller}.keys_model.set_openbb_personal_access_token",
+        return_value=True,
+    )
+
+    controller.call_generate(other_args=["--save", "--days", "30"])
+
+    mock_generate.assert_called_once_with(
+        auth_header="Bearer 123",
+        days=30,
+    )
+
+
+def test_call_show(mocker):
+    controller = account_controller.AccountController(queue=None)
+    path_controller = "openbb_terminal.account.account_controller"
+
+    response = Response()
+    response.status_code = 200
+    response._content = json.dumps(  # pylint: disable=protected-access
+        {"token": "MOCK_TOKEN"}
+    ).encode("utf-8")
+
+    mocker.patch(
+        target=f"{path_controller}.User.get_auth_header",
+        return_value="Bearer 123",
+    )
+    mock_get_token = mocker.patch(
+        target=f"{path_controller}.Hub.get_personal_access_token",
+        return_value=response,
+    )
+    controller.call_show(other_args=[])
+    mock_get_token.assert_called_once_with(auth_header="Bearer 123")
+
+
+def test_call_revoke(mocker, monkeypatch):
+    controller = account_controller.AccountController(queue=None)
+    path_controller = "openbb_terminal.account.account_controller"
+
+    response = Response()
+    response.status_code = 200
+
+    mocker.patch(
+        target=f"{path_controller}.User.get_auth_header",
+        return_value="Bearer 123",
+    )
+    mock_revoke_token = mocker.patch(
+        target=f"{path_controller}.Hub.revoke_personal_access_token",
+        return_value=response,
+    )
+    # mock user input
+    mock_input = "y"
+    monkeypatch.setattr(f"{path_controller}.console.input", lambda _: mock_input)
+
+    controller.call_revoke(other_args=[])
+    mock_revoke_token.assert_called_once_with(auth_header="Bearer 123")

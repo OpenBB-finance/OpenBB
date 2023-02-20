@@ -21,12 +21,13 @@ def get_linear_regression_data(
     data: Union[pd.Series, pd.DataFrame],
     target_column: str = "close",
     n_predict: int = 5,
-    past_covariates: str = None,
+    past_covariates: Optional[str] = None,
     train_split: float = 0.85,
     forecast_horizon: int = 5,
     output_chunk_length: int = 5,
     lags: Union[int, List[int]] = 14,
     random_state: Optional[int] = None,
+    metric: str = "mape",
 ) -> Tuple[
     List[TimeSeries],
     List[TimeSeries],
@@ -56,6 +57,8 @@ def get_linear_regression_data(
         lagged target values to predict the next time step
     random_state: Optional[int]
         The state for the model
+    metric: str
+        The metric to use for the model. Defaults to "mape".
 
     Returns
     -------
@@ -112,4 +115,5 @@ def get_linear_regression_data(
         train_split,
         forecast_horizon,
         n_predict,
+        metric,
     )

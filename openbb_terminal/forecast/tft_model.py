@@ -27,7 +27,7 @@ def get_tft_data(
     data: Union[pd.Series, pd.DataFrame],
     target_column: str = "close",
     n_predict: int = 5,
-    past_covariates: str = None,
+    past_covariates: Optional[str] = None,
     train_split: float = 0.85,
     forecast_horizon: int = 5,
     input_chunk_length: int = 14,
@@ -43,6 +43,7 @@ def get_tft_data(
     model_save_name: str = "tft_model",
     force_reset: bool = True,
     save_checkpoints: bool = True,
+    metric: str = "mape",
 ) -> Tuple[
     Optional[List[TimeSeries]],
     Optional[List[TimeSeries]],
@@ -101,6 +102,8 @@ def get_tft_data(
     save_checkpoints: (bool, optional)
         Whether or not to automatically save the untrained model and checkpoints from training.
         Defaults to True.
+    metric: (str, optional)
+        Metric to use for model selection. Defaults to "mape".
 
     Returns
     -------
@@ -204,4 +207,5 @@ def get_tft_data(
         train_split,
         forecast_horizon,
         n_predict,
+        metric,
     )

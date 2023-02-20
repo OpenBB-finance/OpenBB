@@ -245,6 +245,7 @@ def get_income(
 
     df_fa = df_fa.iloc[:, 0:limit]
     df_fa_c = clean_metrics_df(df_fa, num=limit)
+    df_fa.index = df_fa_c.index
 
     return df_fa_c if not plot else df_fa
 
@@ -316,6 +317,7 @@ def get_balance(
 
     df_fa = df_fa.iloc[:, 0:limit]
     df_fa_c = clean_metrics_df(df_fa, num=limit)
+    df_fa.index = df_fa_c.index
 
     return df_fa_c if not plot else df_fa
 
@@ -384,6 +386,7 @@ def get_cash(
 
     df_fa = df_fa.iloc[:, 0:limit]
     df_fa_c = clean_metrics_df(df_fa, num=limit)
+    df_fa.index = df_fa_c.index
 
     return df_fa_c if not plot else df_fa
 
@@ -540,9 +543,20 @@ def clean_metrics_df(data: pd.DataFrame, num: int, mask: bool = True) -> pd.Data
     # iloc will fail if number is greater than number of columns
     num = min(num, data.shape[1])
     data = data.iloc[:, 0:num]
+
     if mask:
         data = data.mask(data.astype(object).eq(num * ["None"])).dropna()
         data = data.mask(data.astype(object).eq(num * ["0"])).dropna()
+
+    date_rows = {
+        "calendarYear": "%Y",
+        "fillingDate": "%Y-%m-%d",
+        "acceptedDate": "%Y-%m-%d %H:%M:%S",
+    }
+    for row, dt_type in date_rows.items():
+        if row in data.index:
+            data.loc[row] = pd.to_datetime(data.loc[row], format=dt_type)
+
     data = data.applymap(lambda x: lambda_long_number_format(x))
     clean_df_index(data)
     data.columns.name = "Fiscal Date Ending"

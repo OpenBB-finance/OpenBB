@@ -1,5 +1,6 @@
 import openbb_terminal.feature_flags as obbff
 from openbb_terminal.rich_config import console
+from openbb_terminal.session.hub_model import REGISTER_URL
 
 
 class User:
@@ -57,10 +58,7 @@ class User:
                 sync = "OFF"
             console.print(f"[info]sync:[/info] {sync}")
         else:
-            console.print(
-                "[info]You are currently logged as a guest.\n"
-                "Create an account here https://my.openbb.co/register.[/info]"
-            )
+            User.print_guest_message()
 
     @classmethod
     def clear(cls):
@@ -90,3 +88,11 @@ class User:
     def get_token(cls):
         """Get token."""
         return cls._token
+
+    @classmethod
+    def print_guest_message(cls):
+        """Print guest message."""
+        console.print(
+            "[info]You are currently logged as a guest.\n"
+            f"[info]Register: [/info][cmds]{REGISTER_URL}\n[/cmds]"
+        )

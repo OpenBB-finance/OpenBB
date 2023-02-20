@@ -229,20 +229,6 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             dict(),
         ),
         (
-            "call_dividend",
-            [],
-            "optimizer_view.display_property_weighting",
-            [],
-            dict(),
-        ),
-        (
-            "call_property",
-            ["--property=open"],
-            "optimizer_view.display_property_weighting",
-            [],
-            dict(),
-        ),
-        (
             "call_maxsharpe",
             [],
             "optimizer_view.display_max_sharpe",
