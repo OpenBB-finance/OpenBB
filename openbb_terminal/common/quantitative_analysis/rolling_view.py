@@ -3,20 +3,20 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import Optional, List
+from typing import List, Optional
 
 import matplotlib.pyplot as plt
 import pandas as pd
 
-from openbb_terminal.config_terminal import theme
 from openbb_terminal.common.quantitative_analysis import rolling_model
 from openbb_terminal.config_plot import PLOT_DPI
+from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
+    is_valid_axes_count,
     plot_autoscale,
     reindex_dates,
-    is_valid_axes_count,
 )
 
 logger = logging.getLogger(__name__)
@@ -29,7 +29,7 @@ def display_mean_std(
     symbol: str = "",
     window: int = 14,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Plots mean std deviation
@@ -142,7 +142,7 @@ def display_spread(
     symbol: str = "",
     window: int = 14,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plots rolling spread
@@ -257,7 +257,7 @@ def display_quantile(
     window: int = 14,
     quantile: float = 0.5,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Plots rolling quantile
@@ -356,7 +356,7 @@ def display_skew(
     target: str,
     window: int = 14,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Plots rolling skew
@@ -443,7 +443,7 @@ def display_kurtosis(
     target: str,
     window: int = 14,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plots rolling kurtosis

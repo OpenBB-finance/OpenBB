@@ -2,15 +2,14 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import Union, Optional, List
 from datetime import datetime
+from typing import List, Optional, Union
 
-import pandas as pd
 import matplotlib.pyplot as plt
+import pandas as pd
 
-from openbb_terminal.forecast import theta_model
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.forecast import helpers
+from openbb_terminal.forecast import helpers, theta_model
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -28,13 +27,14 @@ def display_theta_forecast(
     start_window: float = 0.85,
     forecast_horizon: int = 5,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     residuals: bool = False,
     forecast_only: bool = False,
     start_date: Optional[datetime] = None,
     end_date: Optional[datetime] = None,
     naive: bool = False,
     export_pred_raw: bool = False,
+    metric: str = "mape",
     external_axes: Optional[List[plt.axes]] = None,
 ):
     """Display Theta forecast
@@ -74,6 +74,10 @@ def display_theta_forecast(
     naive: bool
         Whether to show the naive baseline. This just assumes the closing price will be the same
         as the previous day's closing price. Defaults to False.
+    export_pred_raw: bool
+        Whether to export the raw predicted values. Defaults to False.
+    metric: str
+        The metric to use for backtesting. Defaults to "mape".
     external_axes:Optional[List[plt.axes]]
         External axes to plot on
     """
@@ -96,6 +100,7 @@ def display_theta_forecast(
         target_column=target_column,
         start_window=start_window,
         forecast_horizon=forecast_horizon,
+        metric=metric,
     )
     if ticker_series == []:
         return
@@ -120,6 +125,7 @@ def display_theta_forecast(
         naive=naive,
         export_pred_raw=export_pred_raw,
         external_axes=external_axes,
+        metric=metric,
     )
 
     if residuals:

@@ -3,9 +3,9 @@ __docformat__ = "numpy"
 # pylint:disable=too-many-lines
 
 import logging
+import warnings
 from datetime import datetime, timedelta
 from typing import List, Tuple
-import warnings
 
 import finviz
 import pandas as pd

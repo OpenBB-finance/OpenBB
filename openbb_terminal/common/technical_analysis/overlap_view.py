@@ -10,16 +10,16 @@ import mplfinance as mpf
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
 
-from openbb_terminal.config_terminal import theme
 from openbb_terminal.common.technical_analysis import overlap_model
 from openbb_terminal.config_plot import PLOT_DPI
+from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
+    is_valid_axes_count,
+    lambda_long_number_format_y_axis,
     plot_autoscale,
     reindex_dates,
-    lambda_long_number_format_y_axis,
-    is_valid_axes_count,
 )
 from openbb_terminal.rich_config import console
 
@@ -33,12 +33,12 @@ register_matplotlib_converters()
 @log_start_end(log=logger)
 def view_ma(
     data: pd.Series,
-    window: List[int] = None,
+    window: Optional[List[int]] = None,
     offset: int = 0,
     ma_type: str = "EMA",
     symbol: str = "",
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Plots MA technical indicator
@@ -144,7 +144,7 @@ def view_vwap(
     offset: int = 0,
     interval: str = "",
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plots VWMA technical indicator

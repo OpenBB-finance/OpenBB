@@ -2,30 +2,29 @@
 """Main Terminal Module."""
 __docformat__ = "numpy"
 
-from datetime import datetime
 import argparse
+import contextlib
 import difflib
 import logging
 import os
 import re
-from pathlib import Path
 import sys
-import webbrowser
-from typing import List, Dict, Optional
-import contextlib
 import time
+import webbrowser
+from datetime import datetime
+from pathlib import Path
+from typing import Dict, List, Optional
 
 import certifi
-from rich import panel
-
+import pandas as pd
 from prompt_toolkit import PromptSession
 from prompt_toolkit.completion import NestedCompleter
-from prompt_toolkit.styles import Style
 from prompt_toolkit.formatted_text import HTML
-import pandas as pd
-from openbb_terminal import feature_flags as obbff
-from openbb_terminal.terminal_helper import is_packaged_application
+from prompt_toolkit.styles import Style
+from rich import panel
 
+from openbb_terminal import feature_flags as obbff
+from openbb_terminal.common import feedparser_view
 from openbb_terminal.core.config.paths import (
     HOME_DIRECTORY,
     MISCELLANEOUS_DIRECTORY,
@@ -33,33 +32,33 @@ from openbb_terminal.core.config.paths import (
     USER_DATA_DIRECTORY,
     USER_ENV_FILE,
     USER_ROUTINES_DIRECTORY,
-    load_dotenv_with_priority,
 )
-
+from openbb_terminal.core.log.generation.custom_logger import log_terminal
 from openbb_terminal.helper_funcs import (
+    EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_positive,
     get_flair,
-    EXPORT_ONLY_RAW_DATA_ALLOWED,
+    parse_and_split_input,
 )
-from openbb_terminal.loggers import setup_logging
-from openbb_terminal.core.log.generation.settings_logger import log_all_settings
-from openbb_terminal.menu import session, is_papermill
+from openbb_terminal.keys_model import first_time_user
+from openbb_terminal.menu import is_papermill, session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console, MenuText
+from openbb_terminal.reports.reports_model import ipykernel_launcher
+from openbb_terminal.rich_config import MenuText, console
+from openbb_terminal.session import session_controller
+from openbb_terminal.session.user import User
 from openbb_terminal.terminal_helper import (
     bootup,
     check_for_updates,
+    is_auth_enabled,
+    is_installer,
     is_reset,
     print_goodbye,
     reset,
+    suppress_stdout,
     update_terminal,
     welcome_message,
-    suppress_stdout,
 )
-from openbb_terminal.helper_funcs import parse_and_split_input
-from openbb_terminal.keys_model import first_time_user
-from openbb_terminal.common import feedparser_view
-from openbb_terminal.reports.reports_model import ipykernel_launcher
 
 # pylint: disable=too-many-public-methods,import-outside-toplevel, too-many-function-args
 # pylint: disable=too-many-branches,no-member,C0302,too-many-return-statements, inconsistent-return-statements
@@ -68,7 +67,7 @@ logger = logging.getLogger(__name__)
 
 env_file = str(USER_ENV_FILE)
 
-if is_packaged_application():
+if is_installer():
     # Necessary for installer so that it can locate the correct certificates for
     # API calls and https
     # https://stackoverflow.com/questions/27835619/urllib-and-ssl-certificate-verify-failed-error/73270162#73270162
@@ -104,7 +103,11 @@ class TerminalController(BaseController):
         "sources",
         "forecast",
         "futures",
+        "funds",
     ]
+
+    if is_auth_enabled():
+        CHOICES_MENUS.append("account")
 
     PATH = "/"
 
@@ -114,7 +117,7 @@ class TerminalController(BaseController):
     GUESS_CORRECTLY = 0
     CHOICES_GENERATION = False
 
-    def __init__(self, jobs_cmds: List[str] = None):
+    def __init__(self, jobs_cmds: Optional[List[str]] = None):
         """Construct terminal controller."""
         super().__init__(jobs_cmds)
 
@@ -148,7 +151,7 @@ class TerminalController(BaseController):
         self.ROUTINE_CHOICES["--h"] = None
 
         if session and obbff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.controller_choices}
+            choices: dict = {c: {} for c in self.controller_choices}  # type: ignore
             choices["support"] = self.SUPPORT_CHOICES
             choices["exe"] = self.ROUTINE_CHOICES
             choices["news"] = self.NEWS_CHOICES
@@ -163,12 +166,14 @@ class TerminalController(BaseController):
         mt.add_cmd("about")
         mt.add_cmd("support")
         mt.add_cmd("survey")
-        if not is_packaged_application():
+        if not is_installer():
             mt.add_cmd("update")
         mt.add_cmd("wiki")
         mt.add_cmd("news")
         mt.add_raw("\n")
         mt.add_info("_configure_")
+        if is_auth_enabled():
+            mt.add_menu("account")
         mt.add_menu("keys")
         mt.add_menu("featflags")
         mt.add_menu("sources")
@@ -187,8 +192,9 @@ class TerminalController(BaseController):
         mt.add_menu("forex")
         mt.add_menu("futures")
         mt.add_menu("alternative")
+        mt.add_menu("funds")
         mt.add_raw("\n")
-        mt.add_info("_others_")
+        mt.add_info("_toolkits_")
         mt.add_menu("econometrics")
         mt.add_menu("forecast")
         mt.add_menu("portfolio")
@@ -350,7 +356,7 @@ class TerminalController(BaseController):
 
     def call_update(self, _):
         """Process update command."""
-        if not is_packaged_application():
+        if not is_installer():
             self.update_success = not update_terminal()
         else:
             console.print(
@@ -358,17 +364,26 @@ class TerminalController(BaseController):
                 "https://openbb.co/products/terminal#get-started\n"
             )
 
+    def call_account(self, _):
+        """Process account command."""
+        from openbb_terminal.account.account_controller import AccountController
+
+        if User.is_guest():
+            User.print_guest_message()
+            return
+        self.queue = self.load_class(AccountController, self.queue)
+
     def call_keys(self, _):
         """Process keys command."""
         from openbb_terminal.keys_controller import KeysController
 
-        self.queue = self.load_class(KeysController, self.queue, env_file)
+        self.queue = self.load_class(KeysController, self.queue)
 
     def call_settings(self, _):
         """Process settings command."""
         from openbb_terminal.settings_controller import SettingsController
 
-        self.queue = self.load_class(SettingsController, self.queue, env_file)
+        self.queue = self.load_class(SettingsController, self.queue)
 
     def call_featflags(self, _):
         """Process feature flags command."""
@@ -408,15 +423,13 @@ class TerminalController(BaseController):
 
     def call_reports(self, _):
         """Process reports command."""
-        from openbb_terminal.reports.reports_controller import (
-            ReportController,
-        )
+        from openbb_terminal.reports.reports_controller import ReportController
 
         self.queue = self.load_class(ReportController, self.queue)
 
     def call_dashboards(self, _):
         """Process dashboards command."""
-        if not is_packaged_application():
+        if not is_installer():
             from openbb_terminal.dashboards.dashboards_controller import (
                 DashboardsController,
             )
@@ -430,9 +443,7 @@ class TerminalController(BaseController):
 
     def call_alternative(self, _):
         """Process alternative command."""
-        from openbb_terminal.alternative.alt_controller import (
-            AlternativeDataController,
-        )
+        from openbb_terminal.alternative.alt_controller import AlternativeDataController
 
         self.queue = self.load_class(AlternativeDataController, self.queue)
 
@@ -446,17 +457,13 @@ class TerminalController(BaseController):
 
     def call_forecast(self, _):
         """Process forecast command."""
-        from openbb_terminal.forecast.forecast_controller import (
-            ForecastController,
-        )
+        from openbb_terminal.forecast.forecast_controller import ForecastController
 
         self.queue = self.load_class(ForecastController, "", pd.DataFrame(), self.queue)
 
     def call_portfolio(self, _):
         """Process portfolio command."""
-        from openbb_terminal.portfolio.portfolio_controller import (
-            PortfolioController,
-        )
+        from openbb_terminal.portfolio.portfolio_controller import PortfolioController
 
         self.queue = self.load_class(PortfolioController, self.queue)
 
@@ -471,6 +478,12 @@ class TerminalController(BaseController):
         from openbb_terminal.futures.futures_controller import FuturesController
 
         self.queue = self.load_class(FuturesController, self.queue)
+
+    def call_funds(self, _):
+        """Process etf command"""
+        from openbb_terminal.mutual_funds.mutual_fund_controller import FundController
+
+        self.queue = self.load_class(FundController, self.queue)
 
     def call_intro(self, _):
         """Process intro command."""
@@ -521,7 +534,7 @@ class TerminalController(BaseController):
             "The help menu shows the data sources supported by each command.\n\n"
             "For instance:\n"
             "[cmds]    load               load a specific stock ticker and additional info for analysis   [/cmds]"
-            "[src][YahooFinance, IEXCloud, AlphaVantage, Polygon, EODHD] [/src]\n\n"
+            "[src][YahooFinance, AlphaVantage, Polygon, EODHD] [/src]\n\n"
             "The user can go into the '[param]sources[/param]' menu and select their preferred default data source."
         )
         if input("") == "q":
@@ -817,12 +830,10 @@ class TerminalController(BaseController):
 
 
 # pylint: disable=global-statement
-def terminal(jobs_cmds: List[str] = None, test_mode=False):
+def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
     """Terminal Menu."""
-    if not test_mode:
-        setup_logging()
-    logger.info("START")
-    log_all_settings()
+
+    log_terminal(test_mode=test_mode)
 
     if jobs_cmds is not None and jobs_cmds:
         logger.info("INPUT: %s", "/".join(jobs_cmds))
@@ -863,12 +874,14 @@ def terminal(jobs_cmds: List[str] = None, test_mode=False):
         welcome_message()
 
         if first_time_user():
-            t_controller.call_intro(None)
+            try:
+                t_controller.call_intro(None)
+                # TDDO: Fix the CI
+            except EOFError:
+                pass
 
         t_controller.print_help()
         check_for_updates()
-
-    load_dotenv_with_priority()
 
     while ret_code:
         if obbff.ENABLE_QUICK_EXIT:
@@ -930,8 +943,12 @@ def terminal(jobs_cmds: List[str] = None, test_mode=False):
                 an_input = input(f"{get_flair()} / $ ")
 
         try:
+            if an_input == "logout" and is_auth_enabled():
+                break
+
             # Process the input command
             t_controller.queue = t_controller.switch(an_input)
+
             if an_input in ("q", "quit", "..", "exit", "e"):
                 print_goodbye()
                 break
@@ -974,6 +991,9 @@ def terminal(jobs_cmds: List[str] = None, test_mode=False):
                 console.print(f"[green]Replacing by '{an_input}'.[/green]")
                 t_controller.queue.insert(0, an_input)
 
+    if an_input == "logout" and is_auth_enabled():
+        return session_controller.main()
+
 
 def insert_start_slash(cmds: List[str]) -> List[str]:
     """Insert a slash at the beginning of a command sequence."""
@@ -988,7 +1008,7 @@ def run_scripts(
     path: Path,
     test_mode: bool = False,
     verbose: bool = False,
-    routines_args: List[str] = None,
+    routines_args: Optional[List[str]] = None,
     special_arguments: Optional[Dict[str, str]] = None,
     output: bool = True,
 ):
@@ -1120,7 +1140,7 @@ def run_routine(file: str, routines_args=List[str]):
 def main(
     debug: bool,
     path_list: List[str],
-    routines_args: List[str] = None,
+    routines_args: Optional[List[str]] = None,
     **kwargs,
 ):
     """Run the terminal with various options.
@@ -1191,15 +1211,6 @@ def parse_args_and_run():
         type=lambda s: [str(item) for item in s.split(",")],
         default=None,
     )
-    # The args -m, -f and --HistoryManager.hist_file are used only in reports menu
-    # by papermill and that's why they have suppress help.
-    parser.add_argument(
-        "-m",
-        help=argparse.SUPPRESS,
-        dest="module",
-        default="",
-        type=str,
-    )
     parser.add_argument(
         "-t",
         "--test",
@@ -1208,6 +1219,21 @@ def parse_args_and_run():
             "Run the terminal in testing mode. Also run this option and '-h'"
             " to see testing argument options."
         ),
+    )
+    if is_auth_enabled():
+        parser.add_argument(
+            "--login",
+            action="store_true",
+            help="Go to login prompt.",
+        )
+    # The args -m, -f and --HistoryManager.hist_file are used only in reports menu
+    # by papermill and that's why they have suppress help.
+    parser.add_argument(
+        "-m",
+        help=argparse.SUPPRESS,
+        dest="module",
+        default="",
+        type=str,
     )
     parser.add_argument(
         "-f",

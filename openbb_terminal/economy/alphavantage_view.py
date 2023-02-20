@@ -1,22 +1,22 @@
 """ Alpha Vantage View """
 __docformat__ = "numpy"
 
-from typing import List, Optional
 import logging
 import os
+from typing import List, Optional
 
 import matplotlib
 import matplotlib.pyplot as plt
-from openbb_terminal.decorators import check_api_key
-from openbb_terminal.config_terminal import theme
+
 from openbb_terminal import config_plot as cfp
-from openbb_terminal.decorators import log_start_end
+from openbb_terminal.config_terminal import theme
+from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.economy import alphavantage_model
 from openbb_terminal.helper_funcs import (
     export_data,
+    is_valid_axes_count,
     plot_autoscale,
     print_rich_table,
-    is_valid_axes_count,
 )
 from openbb_terminal.rich_config import console
 
@@ -28,7 +28,7 @@ logger = logging.getLogger(__name__)
 def realtime_performance_sector(
     raw: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display Real-Time Performance sector. [Source: AlphaVantage]
@@ -92,7 +92,7 @@ def display_real_gdp(
     start_year: int = 2010,
     raw: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display US GDP from AlphaVantage
@@ -151,7 +151,7 @@ def display_gdp_capita(
     start_year: int = 2010,
     raw: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display US GDP per Capita from AlphaVantage
@@ -209,7 +209,7 @@ def display_inflation(
     start_year: int = 2010,
     raw: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display US Inflation from AlphaVantage
@@ -267,7 +267,7 @@ def display_cpi(
     start_year: int = 2010,
     raw: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display US consumer price index (CPI) from AlphaVantage
@@ -328,7 +328,7 @@ def display_treasury_yield(
     start_date: str = "2010-01-01",
     raw: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display historical treasury yield for given maturity
@@ -390,7 +390,7 @@ def display_unemployment(
     start_year: int = 2010,
     raw: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display US unemployment AlphaVantage

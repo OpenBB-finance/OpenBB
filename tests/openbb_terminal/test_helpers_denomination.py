@@ -1,17 +1,17 @@
 # IMPORTATION STANDARD
 from typing import Callable
+
+import pandas as pd
 import pytest
 from pandas._typing import Axis
 from pandas.testing import assert_frame_equal
-import pandas as pd
 
 # IMPORTATION INTERNAL
-
 from openbb_terminal.helpers_denomination import (
     DENOMINATION,
-    transform as transform_by_denomination,
     get_denomination,
     get_denominations,
+    transform as transform_by_denomination,
 )
 
 df = pd.DataFrame(

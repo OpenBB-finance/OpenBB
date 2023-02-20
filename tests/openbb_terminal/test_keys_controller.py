@@ -121,12 +121,6 @@ def test_call_finnhub(other):
 
 
 @pytest.mark.vcr
-@pytest.mark.parametrize("other", [[], ["-k", "1234"], ["1234"]])
-def test_call_iex(other):
-    controller.call_iex(other)
-
-
-@pytest.mark.vcr
 @pytest.mark.parametrize(
     "other", [[], ["-i", "1234", "-s", "4", "-u", "5", "-p", "6", "-a", "7"]]
 )
@@ -168,12 +162,6 @@ def test_call_binance(other):
 @pytest.mark.parametrize("other", [[], ["-k", "1234"], ["1234"]])
 def test_call_bitquery(other):
     controller.call_bitquery(other)
-
-
-@pytest.mark.vcr
-@pytest.mark.parametrize("other", [[], ["-k", "1234"], ["1234"]])
-def test_call_si(other):
-    controller.call_si(other)
 
 
 @pytest.mark.vcr
@@ -246,3 +234,20 @@ def test_call_tokenterminal(other):
 @pytest.mark.parametrize("other", [[], ["-k", "1234", "-t", "456"]])
 def test_call_shroom(other):
     controller.call_shroom(other)
+
+
+@pytest.mark.vcr
+@pytest.mark.parametrize("other", [[], ["-k", "1234", "-t", "456"]])
+def test_call_openbb(mocker, other):
+    # MOCK GET
+    attrs = {
+        "status_code": 200,
+        "json.return_value": {"token": "MOCK_TOKEN"},
+    }
+    mock_response = mocker.Mock(**attrs)
+    mocker.patch(
+        target="openbb_terminal.keys_model.request",
+        new=mocker.Mock(return_value=mock_response),
+    )
+
+    controller.call_openbb(other)

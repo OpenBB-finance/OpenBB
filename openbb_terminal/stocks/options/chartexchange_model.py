@@ -1,7 +1,7 @@
 """Chartexchange model"""
 
 import logging
-from typing import Union
+from typing import Optional, Union
 
 import pandas as pd
 from bs4 import BeautifulSoup
@@ -20,6 +20,7 @@ def get_option_history(
     date: str = "2021-02-05",
     call: bool = True,
     price: Union[str, Union[int, float]] = "90",
+    chain_id: Optional[str] = None,
 ) -> pd.DataFrame:
     """Historic prices for a specific option [chartexchange]
 
@@ -33,17 +34,19 @@ def get_option_history(
         Whether to show a call or a put
     price : Union[str, Union[int, float]]
         Strike price for a specific option
+    chain_id: str
+        OCC option symbol.  Overwrites other inputs
 
     Returns
     -------
     historical : pd.Dataframe
         Historic information for an option
     """
-    url = (
-        f"https://chartexchange.com/symbol/opra-{symbol.lower()}{date.replace('-', '')}"
-    )
-    url += f"{'c' if call else 'p'}{float(price):g}/historical/"
-
+    if chain_id is None:
+        url = f"https://chartexchange.com/symbol/opra-{symbol.lower()}{date.replace('-', '')}"
+        url += f"{'c' if call else 'p'}{float(price):g}/historical/"
+    else:
+        url = f"https://chartexchange.com/symbol/opra-{chain_id}/historical/"
     data = request(url, headers={"User-Agent": get_user_agent()}).content
     soup = BeautifulSoup(data, "html.parser")
     table = soup.find("div", attrs={"style": "display: table; font-size: 0.9em; "})
@@ -58,6 +61,11 @@ def get_option_history(
             item = row.find_all("div")
             clean_rows.append([x.text for x in item])
     else:
+        if chain_id is not None:
+            console.print(
+                f"No data for {chain_id}.  Check that you are using OPRA notation.\n"
+            )
+            return pd.DataFrame()
         console.print("No data for this option\n")
         return pd.DataFrame()
 

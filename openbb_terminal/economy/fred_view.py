@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import logging
 import os
 import textwrap
-from typing import Optional, List, Tuple
+from typing import List, Optional, Tuple
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -13,14 +13,13 @@ from pandas.plotting import register_matplotlib_converters
 
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
-from openbb_terminal.decorators import check_api_key
-from openbb_terminal.decorators import log_start_end
+from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.economy import fred_model
 from openbb_terminal.helper_funcs import (
     export_data,
+    is_valid_axes_count,
     plot_autoscale,
     print_rich_table,
-    is_valid_axes_count,
 )
 from openbb_terminal.rich_config import console
 
@@ -83,7 +82,7 @@ def display_fred_series(
     get_data: bool = False,
     raw: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display (multiple) series from https://fred.stlouisfed.org. [Source: FRED]
@@ -192,7 +191,7 @@ def display_yield_curve(
     external_axes: Optional[List[plt.Axes]] = None,
     raw: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Display yield curve based on US Treasury rates for a specified date.
 

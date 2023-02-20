@@ -2,21 +2,18 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import Union, List, Optional
 from datetime import datetime
+from typing import List, Optional, Union
 
-import pandas as pd
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
 
-from openbb_terminal.forecast import anom_model
-from openbb_terminal.decorators import log_start_end
-from openbb_terminal.forecast import helpers
-from openbb_terminal.helper_funcs import (
-    plot_autoscale,
-)
-from openbb_terminal.config_terminal import theme
 from openbb_terminal.config_plot import PLOT_DPI
+from openbb_terminal.config_terminal import theme
+from openbb_terminal.decorators import log_start_end
+from openbb_terminal.forecast import anom_model, helpers
+from openbb_terminal.helper_funcs import plot_autoscale
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)

@@ -1,19 +1,20 @@
 [tool.poetry]
 name = "openbb"
-version = "2.3.1"
+version = "2.4.1"
 description = "Investment Research for Everyone, Anywhere."
 license = "MIT"
 authors = ["Didier Rodrigues Lopes"]
 packages = [
     { include = "openbb_terminal" },
 ]
-readme = "website/content/sdk/quickstart/installation.md"
+include = ["terminal.py"]
+readme = "website/content/sdk/quickstart/pypi.md"
 homepage = "https://openbb.co"
 repository = "https://github.com/OpenBB-finance/OpenBBTerminal"
 documentation = "https://docs.openbb.co/sdk"
 
 [tool.poetry.scripts]
-openbb = 'openbb_terminal.terminal_controller:parse_args_and_run'
+openbb = 'terminal:main'
 
 [tool.poetry.dependencies]
 python = "^3.8,<3.11, !=3.9.7"
@@ -22,9 +23,8 @@ iso8601 = "^0.1.14"
 FundamentalAnalysis = "^0.2.6"
 requests = "^2.25.1"
 alpha-vantage = "^2.3.1"
-finviz = "^1.3.4"
+finviz = "^1.3.4, !=1.4.5"
 bs4 = "^0.0.1"
-rapidfuzz = "^1.1.1"
 yfinance = "^0.2.9"
 psaw = "^0.0.12"
 praw = "^7.1.4"
@@ -51,8 +51,6 @@ valinvest = "^0.0.2"
 bt = "^0.2.9"
 vaderSentiment = "3.3.2"
 GitPython = "^3.1.17"
-pyEX = "^0.5.0"
-sentiment-investor = "^2.0.0"
 fred = "^3.1"
 financedatabase = "1.0.2"
 holidays = "^0.14.2"
@@ -69,7 +67,6 @@ pandas-market-calendars = "~3.2"
 ipympl = "^0.8.2"
 voila = ">=0.3.0"
 rich = "^12.6.0"
-investpy = "^1.0.7"
 dnspython = "^2.1.0"
 python-dotenv = "^0.19.2"
 Pygments = "^2.11.2"
@@ -88,15 +85,13 @@ jupyterlab-code-formatter = {version = "^1.4.10", optional = true}
 jupyterlab-lsp = {version = "^3.10.1", optional = true}
 jedi-language-server = {version = "^0.40.0", optional = true}
 tokenterminal = "^1.0.1"
-torch = {version = "1.11.0", optional = true}
-streamlit = "^1.12.2"
+torch = {version = "~1.11.0", optional = true}
 charset-normalizer = "2.1.1"
 watchdog = "^2.1.9"
 pythclient = "^0.1.2"
 ipyflex = "^0.2.4"
 "ruamel.yaml" = "^0.17.21"
 setuptools = "<65.5.0"
-investiny = "^0.5.0"
 numpy = "1.23.4"
 papermill = "^2.4.0"
 stocksera = "^0.1.21"
@@ -104,18 +99,28 @@ ipython = "8.5.0"
 protobuf = "3.20.1"
 pytorch-lightning = {version = "1.6.5", optional = true}
 u8darts = {extras = ["torch"], version = "0.23.0", optional = true}
+lightgbm = {version = "3.3.3", optional = true}  # locked because this is the latest version available on conda intel mac
 docstring-parser = {version = "^0.15", optional = true}
 grpcio = "^1.51.1"
 jupyterlab-widgets = "^3.0.3"
+mstarpy = "^0.0.4"
 packaging = ">=22.0"
+rapidfuzz = "^2.13.7"
+streamlit = "^1.17.0"
+sparqlwrapper = "^2.0.0"
+y-py = "!=0.5.5"  # Untraceable third level dependency that requires cargo to be built
+psutil = "!=5.9.4"  # Forecasting menu and IPyKernel dependency broken on MacOs
+tenacity = "<8.0.0"  # Finviz, papermill and plotly dep. Pinned to avoid pip resolution conflict due to finviz 1.4.5 release bug
+intrinio-sdk = "^6.22.2"
+yahooquery = "^2.3.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.2"
 pylint = "2.15.2"
-mypy = "^0.930"
+mypy = "^1.0.0"
 mock = "^4.0.3"
 codespell = "^2.0.0"
-pyupgrade = "^2.11.0"
+pydocstyle = "^6.3.0"
 sphinx = "^4.5.0"
 myst-parser = "^0.15.2"
 black = "^23.1.0"
@@ -133,10 +138,10 @@ pre-commit = "^2.16.0"
 pytest-cov = "^3.0.0"
 types-six = "^1.16.12"
 nbmake = ">0.5.0"
-ruff = "^0.0.236"
+ruff = "^0.0.247"
 
 [tool.poetry.extras]
-prediction = ["torch", "pytorch-lightning", "u8darts"]
+forecast = ["torch", "pytorch-lightning", "u8darts", "lightgbm"]
 optimization = ["Riskfolio-Lib"]
 all = ["torch", "pytorch-lightning", "u8darts", "Riskfolio-Lib"]
 jupyterlab = ["jupyterlab-code-formatter", "jupyterlab-lsp", "jedi-language-server"]
@@ -156,10 +161,11 @@ match = '((?!test_).)*\.py'
 line-length = 122
 target-version = "py38"
 # This is an introductory addition of ruff. We should look to adding:
-# D: pydocstyle, PD: pandas-vet, I: isort
+# D: pydocstyle, PD: pandas-vet
 # All options here: https://github.com/charliermarsh/ruff#supported-rules
-select = ["E", "W", "F", "Q", "W", "S", "UP"]
-ignore = ["S105", "S106", "S107"]
+select = ["E", "W", "F", "Q", "S", "UP", "I", "PLC", "PLE", "PLR", "PLW"]
+# These ignores should be seen as temporary solutions to problems that will NEED fixed
+ignore = ["S105", "S106", "S107", "S110", "PLR2004", "PLR0911", "PLR0913", "PLR0912", "PLR0915"]
 
 [tool.ruff.per-file-ignores]
 "tests/*" = ["S101"]
@@ -169,3 +175,20 @@ ignore = ["S105", "S106", "S107"]
 numpy = "np"
 pandas = "pd"
 seaborn = "sns"
+
+[tool.ruff.isort]
+combine-as-imports = true
+force-wrap-aliases = true
+
+[tool.ruff.pylint]
+max-args=8
+max-branches=25
+max-returns=9
+max-statements=30
+
+[tool.isort]
+profile = "black"
+line_length = 122
+skip_gitignore = true
+combine_as_imports = true
+src_paths = ["openbb_terminal"]

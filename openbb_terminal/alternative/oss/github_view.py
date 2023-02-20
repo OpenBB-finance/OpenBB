@@ -3,22 +3,25 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import Optional, List
+from typing import List, Optional
 
-from matplotlib import pyplot as plt
-from matplotlib import ticker
-from openbb_terminal.config_terminal import theme
+from matplotlib import (
+    pyplot as plt,
+    ticker,
+)
+
+from openbb_terminal.alternative.oss import github_model
 from openbb_terminal.config_plot import PLOT_DPI
+from openbb_terminal.config_terminal import theme
+from openbb_terminal.cryptocurrency.dataframe_helpers import (
+    lambda_long_number_format_with_type_check,
+)
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
+    is_valid_axes_count,
     plot_autoscale,
     print_rich_table,
-    is_valid_axes_count,
-)
-from openbb_terminal.alternative.oss import github_model
-from openbb_terminal.cryptocurrency.dataframe_helpers import (
-    lambda_long_number_format_with_type_check,
 )
 
 logger = logging.getLogger(__name__)
@@ -28,7 +31,7 @@ logger = logging.getLogger(__name__)
 def display_star_history(
     repo: str,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Plots repo summary [Source: https://api.github.com].
@@ -76,7 +79,7 @@ def display_top_repos(
     categories: str = "",
     limit: int = 10,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Plots repo summary [Source: https://api.github.com].
@@ -136,7 +139,9 @@ def display_top_repos(
 
 
 @log_start_end(log=logger)
-def display_repo_summary(repo: str, export: str = "", sheet_name: str = None) -> None:
+def display_repo_summary(
+    repo: str, export: str = "", sheet_name: Optional[str] = None
+) -> None:
     """Prints table showing repo summary [Source: https://api.github.com].
 
     Parameters

@@ -1,7 +1,8 @@
 from datetime import datetime
-import pytest
-from openbb_terminal.core.log.collection import logging_clock
 
+import pytest
+
+from openbb_terminal.core.log.collection import logging_clock
 
 clock = logging_clock.LoggingClock()
 now = datetime.now()

@@ -7,16 +7,15 @@ from typing import List, Optional
 
 import matplotlib.pyplot as plt
 
-from openbb_terminal.decorators import check_api_key
-from openbb_terminal.config_terminal import theme
 from openbb_terminal.config_plot import PLOT_DPI
-from openbb_terminal.decorators import log_start_end
+from openbb_terminal.config_terminal import theme
+from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.economy import nasdaq_model
 from openbb_terminal.helper_funcs import (
     export_data,
+    is_valid_axes_count,
     plot_autoscale,
     print_rich_table,
-    is_valid_axes_count,
 )
 from openbb_terminal.rich_config import console
 
@@ -30,7 +29,7 @@ def display_economic_calendar(
     end_date: str,
     limit: int = 10,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Display economic calendar for specified country between start and end dates
 
@@ -69,10 +68,10 @@ def display_economic_calendar(
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_QUANDL"])
 def display_big_mac_index(
-    country_codes: List[str] = None,
+    country_codes: Optional[List[str]] = None,
     raw: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display Big Mac Index for given countries

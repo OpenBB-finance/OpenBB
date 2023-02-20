@@ -12,31 +12,66 @@ NFT (<a href="/terminal/guides/intros/crypto/nft" target="_blank" rel="noreferre
 
 The Cryptocurrency menu is called upon by typing `crypto` which opens the following menu:
 
-<img width="1317" alt="image" src="https://user-images.githubusercontent.com/40023817/174688140-3fb055ba-aaef-487c-b978-10a88c04e349.png"></img>
+<img width="800" alt="image" src="https://user-images.githubusercontent.com/46355364/218994185-0afe6b70-df8a-4ed3-a26a-0de4da834c7e.png"></img>
 
 You have the ability to search a coin with `find` based on its name or symbol. An example:
 
-<img width="551" alt="image" src="https://user-images.githubusercontent.com/40023817/174688194-6d06b5fa-65c3-4c95-9c11-def35605fdbb.png"></img>
+```
+(🦋) /crypto/ $ find btc
+
+                           Similar Coins
+┏━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ index ┃ symbol ┃ id                     ┃ name                   ┃
+┡━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ 0     │ btc    │ bitcoin                │ Bitcoin                │
+├───────┼────────┼────────────────────────┼────────────────────────┤
+│ 1     │ xbtc   │ wrapped-bitcoin-stacks │ Wrapped Bitcoin-Stacks │
+├───────┼────────┼────────────────────────┼────────────────────────┤
+│ 2     │ wbtc   │ wrapped-bitcoin        │ Wrapped Bitcoin        │
+├───────┼────────┼────────────────────────┼────────────────────────┤
+│ 3     │ vbtc   │ venus-btc              │ Venus BTC              │
+├───────┼────────┼────────────────────────┼────────────────────────┤
+│ 4     │ tbtc   │ t-bitcoin              │ τBitcoin               │
+├───────┼────────┼────────────────────────┼────────────────────────┤
+│ 4     │ tbtc   │ tbtc                   │ tBTC                   │
+├───────┼────────┼────────────────────────┼────────────────────────┤
+│ 5     │ tbtc   │ t-bitcoin              │ τBitcoin               │
+├───────┼────────┼────────────────────────┼────────────────────────┤
+│ 5     │ tbtc   │ tbtc                   │ tBTC                   │
+├───────┼────────┼────────────────────────┼────────────────────────┤
+│ 6     │ sbtc   │ sbtc                   │ sBTC                   │
+├───────┼────────┼────────────────────────┼────────────────────────┤
+│ 6     │ sbtc   │ siambitcoin            │ SiamBitcoin            │
+├───────┼────────┼────────────────────────┼────────────────────────┤
+│ 7     │ sbtc   │ sbtc                   │ sBTC                   │
+├───────┼────────┼────────────────────────┼────────────────────────┤
+│ 7     │ sbtc   │ siambitcoin            │ SiamBitcoin            │
+├───────┼────────┼────────────────────────┼────────────────────────┤
+│ 8     │ rbtc   │ rootstock              │ Rootstock RSK          │
+├───────┼────────┼────────────────────────┼────────────────────────┤
+│ 9     │ pbtc   │ ptokens-btc            │ pTokens BTC [OLD]      │
+├───────┼────────┼────────────────────────┼────────────────────────┤
+│ 9     │ pbtc   │ ptokens-btc-2          │ pTokens BTC            │
+└───────┴────────┴────────────────────────┴────────────────────────┘
+```
 
 As a result, you can see a list of coins matching your search criteria. Once you identify the coin you are looking for, next step is to `load` it. See the example below:
 
-<img width="851" alt="image" src="https://user-images.githubusercontent.com/40023817/174688215-ae86ad39-a394-48c6-a6fc-bfd560296c89.png"></img>
+```
+(🦋) /crypto/ $ load BTC
+
+                                                   BTC/USD Performance
+┏━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┓
+┃             ┃        ┃         ┃        ┃          ┃         ┃                 ┃                 ┃                    ┃
+┃ Price (USD) ┃ 1D     ┃ 7D      ┃ 1M     ┃ 1Y       ┃ YTD     ┃ Volatility (1Y) ┃ Volume (7D avg) ┃ Circulating Supply ┃
+┡━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━┩
+│ 22220.80    │ 1.99 % │ -4.49 % │ 6.42 % │ -47.82 % │ 33.15 % │ 62.15 %         │ 24.32 B         │ 19.291 M           │
+└─────────────┴────────┴─────────┴────────┴──────────┴─────────┴─────────────────┴─────────────────┴────────────────────┘
+```
 
 To view the candle chart for the loaded crypto, you can call `candle`. This will show you the coin's historical prices and volume, as follows:
 
-<img width="786" alt="image" src="https://user-images.githubusercontent.com/40023817/174688395-cd201677-0f01-43d2-a22f-892ae63b25e2.png"></img>
-
-In case you want to adjust the default period, you can do so by specifying the number of days to go back in time.
-
-<img width="886" alt="image" src="https://user-images.githubusercontent.com/40023817/174688639-306ddc43-b202-436b-bbc2-c1bd6376c857.png"></img>
-
-You might be wondering, how can I know about all possible options? You can type in `command_name -h` or `load -h` in this case. Here you will find available optional arguments that you can play with.
-
-<img width="832" alt="image" src="https://user-images.githubusercontent.com/40023817/174688752-0e0286c6-ac78-42f8-8215-354bc951f182.png"></img>
-
-Lastly, by calling `?` or `help` or `h`, the `crypto` menu will be re-populated. Here you can see that several menus have turned blue, which mean you can enter any of them now. In order to use these menus, you are required to first `load` a coin.
-
-<img width="1349" alt="image" src="https://user-images.githubusercontent.com/40023817/174688823-16fbd8b0-d9ee-47b0-a2c3-fd90b749fc32.png"></img>
+<img width="800" alt="image" src="https://user-images.githubusercontent.com/40023817/174688395-cd201677-0f01-43d2-a22f-892ae63b25e2.png"></img>
 
 ### Sub-menus available
 
@@ -55,74 +90,26 @@ The Cryptocurrency menu has an extensive list of available sub-menus ranging fro
 
 When entering the `crypto` menu, you would typically want to load in a coin. Let's go with Ethereum. You can do this by specifying its symbol: `load eth`
 
-![Load ETH](https://user-images.githubusercontent.com/40023817/175827660-3b106e6e-2638-4536-939e-e38692ec1003.png)
+```
+(🦋) /crypto/ $ load eth
+
+                                                   ETH/USD Performance
+┏━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┓
+┃             ┃        ┃         ┃        ┃          ┃         ┃                 ┃                 ┃                    ┃
+┃ Price (USD) ┃ 1D     ┃ 7D      ┃ 1M     ┃ 1Y       ┃ YTD     ┃ Volatility (1Y) ┃ Volume (7D avg) ┃ Circulating Supply ┃
+┡━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━┩
+│ 1556.88     │ 2.76 % │ -6.89 % │ 0.28 % │ -46.93 % │ 28.17 % │ 83.45 %         │ 7.44 B          │ 120.500 M          │
+└─────────────┴────────┴─────────┴────────┴──────────┴─────────┴─────────────────┴─────────────────┴────────────────────┘
+
+```
 
 Let's checkout its sentiments from major headlines news by typing: `headlines`
 
-<img width="791" alt="image" src="https://user-images.githubusercontent.com/40023817/175827670-15042c5e-0650-486e-92fa-a154de13b208.png"></img>
+<img width="800" alt="image" src="https://user-images.githubusercontent.com/40023817/175827670-15042c5e-0650-486e-92fa-a154de13b208.png"></img>
 
-To perform further analysis, the best menu to enter is `dd`:
+To perform further analysis, the best menu to enter is `dd`. We can check out the project's roadmap and its effect to historical price, by typing `rm`
 
-```
-2022 Jun 29, 08:58 (🦋) /crypto/ $ dd
-╭────────────────────────────────────────────────────────────────────────────────────────────── Crypto - Due Diligence ──────────────────────────────────────────────────────────────────────────────────────────────╮
-│                                                                                                                                                                                                                    │
-│     load               load a specific cryptocurrency for analysis                                                                                                                                                 │
-│                                                                                                                                                                                                                    │
-│ Coin: eth                                                                                                                                                                                                          │
-│ Source:                                                                                                                                                                                                            │
-│                                                                                                                                                                                                                    │
-│ Overview:                                                                                                                                                                                                          │
-│     info               basic information about loaded coin                                                 [CoinGecko]                                                                                             │
-│     basic              basic information about loaded coin                                                 [CoinPaprika]                                                                                           │
-│     ath                all time high related stats for loaded coin                                         [CoinGecko]                                                                                             │
-│     atl                all time low related stats for loaded coin                                          [CoinGecko]                                                                                             │
-│     web                found websites for loaded coin e.g forum, homepage                                  [CoinGecko]                                                                                             │
-│     pi                 project information e.g. technology details, public repos, audits, vulns            [Messari]                                                                                               │
-│     gov                governance details                                                                  [Messari]                                                                                               │
-│     stats              coin stats                                                                          [Coinbase]                                                                                              │
-│     bc                 links to blockchain explorers for loaded coin                                       [CoinGecko]                                                                                             │
-│ Market:                                                                                                                                                                                                            │
-│     market             market stats about loaded coin                                                      [CoinGecko]                                                                                             │
-│     mkt                all markets for loaded coin                                                         [CoinPaprika]                                                                                           │
-│     binbook            order book                                                                          [Binance]                                                                                               │
-│     balance            coin balance                                                                        [Binance]                                                                                               │
-│     cbbook             order book                                                                          [Coinbase]                                                                                              │
-│     trades             last trades                                                                         [Coinbase]                                                                                              │
-│     ex                 all exchanges where loaded coin is listed                                           [CoinPaprika]                                                                                           │
-│     oi                 open interest per exchange                                                          [Coinglass]                                                                                             │
-│     eb                 total balance held on exchanges (in percentage and units)                           [Glassnode]                                                                                             │
-│ Metrics:                                                                                                                                                                                                           │
-│     mcapdom            market cap dominance                                                                [Messari]                                                                                               │
-│     active             active addresses                                                                    [Glassnode]                                                                                             │
-│     nonzero            addresses with non-zero balances                                                    [Glassnode]                                                                                             │
-│     change             30d change of supply held on exchange wallets                                       [Glassnode]                                                                                             │
-│     ps                 price and supply related metrics for loaded coin                                    [CoinPaprika]                                                                                           │
-│     mt                 messari timeseries e.g. twitter followers, circ supply, etc                         [Messari]                                                                                               │
-│ Contributors and Investors:                                                                                                                                                                                        │
-│     team               contributors (individuals and organizations)                                        [Messari]                                                                                               │
-│     inv                investors (individuals and organizations)                                           [Messari]                                                                                               │
-│ Tokenomics:                                                                                                                                                                                                        │
-│     tk                 tokenomics e.g. circulating/max/total supply, emission type, etc                    [Messari]                                                                                               │
-│     fr                 fundraising details e.g. treasury accounts, sales rounds, allocation                [Messari]                                                                                               │
-│ Roadmap and News:                                                                                                                                                                                                  │
-│     rm                 roadmap                                                                             [Messari]                                                                                               │
-│     events             events related to loaded coin                                                       [CoinPaprika]                                                                                           │
-│     news               loaded coin's most recent news                                                      [CryptoPanic]                                                                                           │
-│ Activity and Community:                                                                                                                                                                                            │
-│     links              links e.g. whitepaper, github, twitter, youtube, reddit, telegram                   [Messari]                                                                                               │
-│     social             social portals urls for loaded coin, e.g reddit, twitter                            [CoinGecko]                                                                                             │
-│     twitter            tweets for loaded coin                                                              [CoinPaprika]                                                                                           │
-│     score              different kind of scores for loaded coin, e.g developer score, sentiment score      [CoinGecko]                                                                                             │
-│     dev                github, bitbucket coin development statistics                                       [CoinGecko]                                                                                             │
-│     gh                 github activity over time                                                           [Santiment]                                                                                             │
-│                                                                                                                                                                                                                    │
-╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── OpenBB Terminal v1.5.0 (https://openbb.co) ─╯
-```
-
-We can check out the project's roadmap and its effect to historical price, by typing `rm`
-
-<img width="789" alt="image" src="https://user-images.githubusercontent.com/40023817/175827701-b6b01a67-b90a-4aac-94bf-b9f5a19023c5.png"></img>
+<img width="800" alt="image" src="https://user-images.githubusercontent.com/40023817/175827701-b6b01a67-b90a-4aac-94bf-b9f5a19023c5.png"></img>
 
 Once you have finished analyzing a specific coin, you would want to get a good understanding of the overall crypto market. To do that, head over to `ov` by typing `../ov`.
 
@@ -130,8 +117,8 @@ Once you have finished analyzing a specific coin, you would want to get a good u
 > performing 2 separate commands, you can combine them together using `/`. As
 > such `../ov` will take us back to previous menu, and then enter the `ov` menu.
 
-<img width="789" alt="image" src="https://user-images.githubusercontent.com/40023817/175827714-8545c2c4-88f3-4415-9e53-3c1938717c30.png"></img>
+<img width="800" alt="image" src="https://user-images.githubusercontent.com/40023817/175827714-8545c2c4-88f3-4415-9e53-3c1938717c30.png"></img>
 
 Bitcoin has such a big influence on the entire crypto market. So seeing whether we are in a Bitcoin season or a Altcoin season will be useful to your investment decisions. `altindex` is a great command for this purpose.
 
-<img width="786" alt="image" src="https://user-images.githubusercontent.com/40023817/175827720-323ea70c-6eab-4cc7-819c-9fe1339af380.png"></img>
+<img width="800" alt="image" src="https://user-images.githubusercontent.com/40023817/175827720-323ea70c-6eab-4cc7-819c-9fe1339af380.png"></img>

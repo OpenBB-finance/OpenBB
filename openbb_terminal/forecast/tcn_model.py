@@ -3,16 +3,16 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import Tuple, Union, List, Optional
 import warnings
+from typing import List, Optional, Tuple, Union
 
 import pandas as pd
-
 from darts import TimeSeries
 from darts.models import TCNModel
+
+from openbb_terminal.core.config.paths import USER_FORECAST_MODELS_DIRECTORY
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.forecast import helpers
-from openbb_terminal.core.config.paths import USER_FORECAST_MODELS_DIRECTORY
 
 logger = logging.getLogger(__name__)
 
@@ -22,7 +22,7 @@ def get_tcn_data(
     data: Union[pd.Series, pd.DataFrame],
     target_column: str = "close",
     n_predict: int = 5,
-    past_covariates: str = None,
+    past_covariates: Optional[str] = None,
     train_split: float = 0.85,
     forecast_horizon: int = 5,
     input_chunk_length: int = 14,
@@ -37,6 +37,7 @@ def get_tcn_data(
     model_save_name: str = "tcn_model",
     force_reset: bool = True,
     save_checkpoints: bool = True,
+    metric: str = "mape",
 ) -> Tuple[
     List[Optional[TimeSeries]],
     List[Optional[TimeSeries]],
@@ -86,6 +87,8 @@ def get_tcn_data(
     save_checkpoints: bool
         Whether or not to automatically save the untrained model and checkpoints from training.
         Defaults to True.
+    metric: str
+        Metric to use for model selection. Defaults to "mape".
 
     Returns
     -------
@@ -166,4 +169,5 @@ def get_tcn_data(
         train_split,
         forecast_horizon,
         n_predict,
+        metric,
     )

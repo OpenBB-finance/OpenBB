@@ -3,11 +3,12 @@ __docformat__ = "numpy"
 
 import logging
 import os
+from typing import Optional
 
+from openbb_terminal import rich_config
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.stocks.discovery import ark_model
-from openbb_terminal import rich_config
 
 logger = logging.getLogger(__name__)
 
@@ -38,7 +39,7 @@ def ark_orders_view(
     sells_only: bool = False,
     fund: str = "",
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Prints a table of the last N ARK Orders
 

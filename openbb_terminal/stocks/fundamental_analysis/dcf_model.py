@@ -5,7 +5,7 @@ import logging
 import os
 from io import BytesIO
 from pathlib import Path
-from typing import Any, Dict, List, Tuple, Union
+from typing import Any, Dict, List, Optional, Tuple, Union
 from urllib.request import urlopen
 from zipfile import ZipFile
 
@@ -17,9 +17,9 @@ from openpyxl import worksheet
 from sklearn.linear_model import LinearRegression
 
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.stocks.fundamental_analysis import dcf_static
 from openbb_terminal.helper_funcs import compose_export_path, request
 from openbb_terminal.rich_config import console
+from openbb_terminal.stocks.fundamental_analysis import dcf_static
 
 logger = logging.getLogger(__name__)
 
@@ -194,12 +194,12 @@ def insert_row(
 def set_cell(
     ws: worksheet,
     cell: str,
-    text: Union[int, str, float] = None,
-    font: str = None,
-    border: str = None,
-    fill: str = None,
-    alignment: str = None,
-    num_form: str = None,
+    text: Optional[Union[int, str, float]] = None,
+    font: Optional[str] = None,
+    border: Optional[str] = None,
+    fill: Optional[str] = None,
+    alignment: Optional[str] = None,
+    num_form: Optional[str] = None,
 ):
     """Set the value for a cell
 

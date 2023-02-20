@@ -23,10 +23,6 @@ def vcr_config():
     "func",
     [
         # "get_info",  CHECK HOW TO MOCK TIMEZONE
-        "get_sustainability",
-        "get_calendar_earnings",
-        "get_website",
-        "get_hq",
         "get_dividends",
         "get_splits",
     ],
@@ -55,7 +51,7 @@ def test_get_mktcap(recorder):
     recorder.capture_list(result_list)
 
 
-@pytest.mark.vcr(record_mode="none")
+@pytest.mark.vcr
 @pytest.mark.parametrize(
     "ticker, statement",
     [("ABBV", "cash-flow"), ("ABBV", "financials"), ("ABBV", "balance-sheet")],

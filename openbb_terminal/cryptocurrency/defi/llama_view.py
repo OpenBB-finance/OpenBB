@@ -15,10 +15,10 @@ from openbb_terminal.cryptocurrency.defi import llama_model
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
+    is_valid_axes_count,
     lambda_long_number_format,
     plot_autoscale,
     print_rich_table,
-    is_valid_axes_count,
 )
 
 logger = logging.getLogger(__name__)
@@ -28,7 +28,7 @@ logger = logging.getLogger(__name__)
 def display_grouped_defi_protocols(
     limit: int = 50,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Plots top dApps (in terms of TVL) grouped by chain.
@@ -101,7 +101,7 @@ def display_defi_protocols(
     ascend: bool = False,
     description: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Prints table showing information about listed DeFi protocols, their current TVL and changes to it in
     the last hour/day/week. [Source: https://docs.llama.fi/api]
@@ -137,7 +137,7 @@ def display_defi_protocols(
 def display_historical_tvl(
     dapps: str = "",
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plots historical TVL of different dApps
@@ -196,7 +196,7 @@ def display_historical_tvl(
 def display_defi_tvl(
     limit: int = 5,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Plots historical values of the total sum of TVLs from all listed protocols.

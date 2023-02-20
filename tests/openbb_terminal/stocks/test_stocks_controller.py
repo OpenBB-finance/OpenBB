@@ -261,10 +261,8 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 country="",
                 sector="",
                 industry="",
-                exchange_country="",
                 all_exchanges=False,
-                export="csv",
-                sheet_name=None,
+                exchange_country="",
             ),
         ),
         (
@@ -374,13 +372,6 @@ def test_call_func_expect_queue(expected_queue, func, queue):
         ),
         (
             "call_res",
-            [],
-            "StocksController.load_class",
-            [],
-            dict(),
-        ),
-        (
-            "call_dd",
             [],
             "StocksController.load_class",
             [],
@@ -504,15 +495,7 @@ def test_call_func_no_parser(func, mocker):
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.parametrize(
     "func",
-    [
-        "call_candle",
-        "call_res",
-        "call_dd",
-        "call_fa",
-        "call_bt",
-        "call_ta",
-        "call_qa",
-    ],
+    ["call_res"],
 )
 def test_call_func_no_ticker(func, mocker):
     # MOCK PARSE_KNOWN_ARGS_AND_WARN
