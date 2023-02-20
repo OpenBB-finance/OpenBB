@@ -6,3 +6,6 @@ class ConfigurationsModel:
     """Data model for configurations."""
 
     # To be implemented
+
+
+default_configurations = ConfigurationsModel()  # type: ignore

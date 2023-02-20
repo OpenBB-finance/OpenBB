@@ -6,3 +6,6 @@ class PreferencesModel:
     """Data model for preferences."""
 
     # To be implemented
+
+
+default_preferences = PreferencesModel()  # type: ignore
