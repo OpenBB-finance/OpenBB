@@ -167,10 +167,10 @@ def view_historical_greeks(
         try:
             limit = int(limit)
         except ValueError:
-            console.print(
+            return console.print(
                 f"[red]Could not convert limit of {limit} to a number.[/red]\n"
             )
-            return
+
     if raw:
         print_rich_table(
             df.tail(limit),
