@@ -411,7 +411,7 @@ After creating an account go to https://app.santiment.net/account#api-keys and g
 <details>
 <summary>ShroomDK</summary>
 
-Go to https://app.santiment.net You will be greeted with the following screen:
+Go to https://sdk.flipsidecrypto.xyz/shroomdk You will be greeted with the following screen:
 
 <img width="500" alt="image" src="https://user-images.githubusercontent.com/46355364/207850122-b8cd225e-0a65-4ea8-8069-0b40fff1600e.png"></img>
 
