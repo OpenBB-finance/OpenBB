@@ -16,6 +16,7 @@ settings = Settings(
         name="MOCK_COMMIT_HASH",
         identifier="MOCK_COMMIT_HASH",
         session_id="MOCK_SESSION_ID",
+        user_id="MOCK_USER_ID",
     ),
     aws_settings=AWSSettings(
         aws_access_key_id="MOCK_AWS_ACCESS_KEY_ID",

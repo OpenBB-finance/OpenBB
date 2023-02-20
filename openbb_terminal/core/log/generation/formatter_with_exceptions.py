@@ -36,8 +36,6 @@ class FormatterWithExceptions(logging.Formatter):
             record.funcName = record.func_name_override  # type: ignore
             record.lineno = 0
 
-        log_extra["userId"] = getattr(record, "user_id", "NA")
-
         if hasattr(record, "session_id"):
             log_extra["sessionId"] = record.session_id  # type: ignore
 
@@ -149,6 +147,7 @@ class FormatterWithExceptions(logging.Formatter):
             "appId": app_settings.identifier,
             "sessionId": app_settings.session_id,
             "commitHash": app_settings.commit_hash,
+            "userId": app_settings.user_id,
         }
         log_extra = self.extract_log_extra(record=record)
         log_prefix_content = {**log_prefix_content, **log_extra}
