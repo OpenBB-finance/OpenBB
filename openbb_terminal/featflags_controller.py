@@ -110,7 +110,7 @@ class FeatureFlagsController(BaseController):
                 key=name,
                 value=str(value),
                 type_="settings",
-                auth_header=User.get_auth_header(),
+                auth_header=User.profile.get_auth_header(),
             )
 
     def call_overwrite(self, _):

@@ -75,7 +75,7 @@ class AccountController(BaseController):
             filepath.name: filepath
             for filepath in USER_ROUTINES_DIRECTORY.glob("*.openbb")
         }
-        user_folder = USER_ROUTINES_DIRECTORY / User.get_uuid()
+        user_folder = USER_ROUTINES_DIRECTORY / User.profile.get_uuid()
         if os.path.exists(user_folder):
             routines.update(
                 {filepath.name: filepath for filepath in user_folder.rglob("*.openbb")}
@@ -118,7 +118,7 @@ class AccountController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             logout(
-                auth_header=User.get_auth_header(),
+                auth_header=User.profile.get_auth_header(),
                 token=User.get_token(),
                 guest=User.profile.is_guest(),
                 cls=True,
@@ -181,7 +181,7 @@ class AccountController(BaseController):
         )
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            response = Hub.fetch_user_configs(User.get_session())
+            response = Hub.fetch_user_configs(User.profile.get_session())
             if response:
                 configs_diff = get_diff(configs=json.loads(response.content))
                 if configs_diff:
@@ -214,7 +214,7 @@ class AccountController(BaseController):
             )
             console.print("")
             if i.lower() in ["y", "yes"]:
-                Hub.clear_user_configs(auth_header=User.get_auth_header())
+                Hub.clear_user_configs(auth_header=User.profile.get_auth_header())
             else:
                 console.print("[info]Aborted.[/info]")
 
@@ -246,7 +246,7 @@ class AccountController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             response = Hub.list_routines(
-                auth_header=User.get_auth_header(),
+                auth_header=User.profile.get_auth_header(),
                 page=ns_parser.page,
                 size=ns_parser.size,
             )
@@ -307,7 +307,7 @@ class AccountController(BaseController):
                 )
 
                 response = Hub.upload_routine(
-                    auth_header=User.get_auth_header(),
+                    auth_header=User.profile.get_auth_header(),
                     name=name,
                     description=description,
                     routine=routine,
@@ -320,7 +320,7 @@ class AccountController(BaseController):
                     console.print("")
                     if i.lower() in ["y", "yes"]:
                         response = Hub.upload_routine(
-                            auth_header=User.get_auth_header(),
+                            auth_header=User.profile.get_auth_header(),
                             name=name,
                             description=description,
                             routine=routine,
@@ -356,7 +356,7 @@ class AccountController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             response = Hub.download_routine(
-                auth_header=User.get_auth_header(),
+                auth_header=User.profile.get_auth_header(),
                 name=" ".join(ns_parser.name),
             )
 
@@ -428,7 +428,7 @@ class AccountController(BaseController):
             console.print("")
             if i.lower() in ["y", "yes"]:
                 response = Hub.delete_routine(
-                    auth_header=User.get_auth_header(),
+                    auth_header=User.profile.get_auth_header(),
                     name=name,
                 )
                 if response and response.status_code == 200:
@@ -475,7 +475,7 @@ class AccountController(BaseController):
                 return
 
             response = Hub.generate_personal_access_token(
-                auth_header=User.get_auth_header(), days=ns_parser.days
+                auth_header=User.profile.get_auth_header(), days=ns_parser.days
             )
             if response and response.status_code == 200:
                 token = response.json().get("token", "")
@@ -504,7 +504,9 @@ class AccountController(BaseController):
         )
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            response = Hub.get_personal_access_token(auth_header=User.get_auth_header())
+            response = Hub.get_personal_access_token(
+                auth_header=User.profile.get_auth_header()
+            )
             if response and response.status_code == 200:
                 token = response.json().get("token", "")
                 if token:
@@ -527,7 +529,7 @@ class AccountController(BaseController):
             )
             if i.lower() in ["y", "yes"]:
                 response = Hub.revoke_personal_access_token(
-                    auth_header=User.get_auth_header()
+                    auth_header=User.profile.get_auth_header()
                 )
                 if response and response.status_code in [200, 202]:
                     console.print("[info]Token revoked.[/info]")

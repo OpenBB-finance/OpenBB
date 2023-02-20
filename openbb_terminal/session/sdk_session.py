@@ -75,7 +75,7 @@ def logout():
     >>> openbb.logout()
     """
     session_model.logout(
-        auth_header=User.get_auth_header(),
+        auth_header=User.profile.get_auth_header(),
         token=User.get_token(),
         guest=User.profile.is_guest(),
     )

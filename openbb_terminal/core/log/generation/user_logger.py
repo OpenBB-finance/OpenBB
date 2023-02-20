@@ -22,5 +22,5 @@ def log_user(with_rollover: bool = True):
 
 def _log_user_info():
     """Log user info"""
-    user_info = {"user_uuid": User.get_uuid()}
+    user_info = {"user_uuid": User.profile.get_uuid()}
     logger.info("USER: %s ", json.dumps(user_info))

@@ -252,7 +252,7 @@ def set_key(env_var_name: str, env_var_value: str, persist: bool = False) -> Non
             key=env_var_name,
             value=env_var_value,
             type_="keys",
-            auth_header=User.get_auth_header(),
+            auth_header=User.profile.get_auth_header(),
         )
 
 

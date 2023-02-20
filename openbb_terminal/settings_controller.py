@@ -195,7 +195,7 @@ class SettingsController(BaseController):
                 key=name,
                 value=str(value),
                 type_="settings",
-                auth_header=User.get_auth_header(),
+                auth_header=User.profile.get_auth_header(),
             )
 
     @staticmethod
@@ -226,7 +226,7 @@ class SettingsController(BaseController):
                 key=name,
                 value=str(value),
                 type_="settings",
-                auth_header=User.get_auth_header(),
+                auth_header=User.profile.get_auth_header(),
             )
 
     @log_start_end(log=logger)

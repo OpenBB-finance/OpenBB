@@ -1,4 +1,4 @@
-from typing import Dict, Optional
+from typing import Dict
 from pydantic.dataclasses import dataclass
 
 from openbb_terminal.rich_config import console
@@ -9,11 +9,11 @@ from openbb_terminal.session.hub_model import REGISTER_URL
 class ProfileModel:
     """Data model for profile."""
 
-    token_type: Optional[str]
-    token: Optional[str]
-    uuid: Optional[str]
-    email: Optional[str]
-    username: Optional[str]
+    token_type: str
+    token: str
+    uuid: str
+    email: str
+    username: str
 
     def load_user_info(self, session: dict, email: str):
         """Load user info from login info.
@@ -31,32 +31,32 @@ class ProfileModel:
         self.email = email
         self.username = self.email[: self.email.find("@")]
 
-    def get_uuid(self) -> Optional[str]:
+    def get_uuid(self) -> str:
         """Get uuid.
 
         Returns
         -------
-        Optional[str]
+        str
             The uuid.
         """
         return self.uuid
 
-    def get_token(self) -> Optional[str]:
+    def get_token(self) -> str:
         """Get token.
 
         Returns
         -------
-        Optional[str]
+        str
             The token.
         """
         return self.token
 
-    def get_session(self) -> Dict[str, Optional[str]]:
+    def get_session(self) -> Dict[str, str]:
         """Get session info.
 
         Returns
         -------
-        Dict[str, Optional[str]]
+        Dict[str, str]
             The session info.
         """
         return {
@@ -65,10 +65,14 @@ class ProfileModel:
             "uuid": self.uuid,
         }
 
-    def get_auth_header(self) -> Optional[str]:
-        """Get auth header."""
-        if self.token_type is None or self.token is None:
-            return None
+    def get_auth_header(self) -> str:
+        """Get auth header.
+
+        Returns
+        -------
+        str
+            The auth header, e.g. "Bearer <token>".
+        """
         return f"{self.token_type.title()} {self.token}"
 
     def is_guest(self) -> bool:
@@ -98,10 +102,10 @@ class ProfileModel:
         )
 
 
-profile = ProfileModel(  # type: ignore
-    token_type=None,
-    token=None,
-    uuid=None,
-    email=None,
-    username=None,
+default_profile = ProfileModel(  # type: ignore
+    token_type="",
+    token="",
+    uuid="",
+    email="",
+    username="",
 )
