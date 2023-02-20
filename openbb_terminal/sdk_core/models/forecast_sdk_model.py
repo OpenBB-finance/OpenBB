@@ -28,9 +28,11 @@ class ForecastRoot(Category):
         `delete`: Delete a column from a dataframe\n
         `delta`: Calculate the %change of a variable based on a specific column\n
         `desc`: Returns statistics for a given df\n
+        `desc_chart`: Show descriptive statistics for a dataframe\n
         `ema`: A moving average provides an indication of the trend of the price movement\n
         `expo`: Performs Probabilistic Exponential Smoothing forecasting\n
         `expo_chart`: Display Probabilistic Exponential Smoothing forecast\n
+        `export`: Export a dataframe to a file\n
         `linregr`: Perform Linear Regression Forecasting\n
         `linregr_chart`: Display Linear Regression Forecasting\n
         `load`: Load custom file into dataframe.\n
@@ -55,6 +57,7 @@ class ForecastRoot(Category):
         `season_chart`: Plot seasonality from a dataset\n
         `seasonalnaive`: Performs Seasonal Naive forecasting\n
         `seasonalnaive_chart`: Display SeasonalNaive Model\n
+        `show`: Show a dataframe in a table\n
         `signal`: A price signal based on short/long term price.\n
         `sto`: Stochastic Oscillator %K and %D : A stochastic oscillator is a momentum indicator comparing a particular closing\n
         `tcn`: Perform TCN forecasting\n
@@ -136,7 +139,6 @@ class ForecastRoot(Category):
                 lib.forecast_seasonalnaive_view.display_seasonalnaive_forecast
             )
             self.show = lib.forecast_view.show_df
-            self.show_chart = lib.forecast_view.show_df
             self.signal = lib.forecast_model.add_signal
             self.sto = lib.forecast_model.add_sto
             self.tcn = lib.forecast_tcn_model.get_tcn_data

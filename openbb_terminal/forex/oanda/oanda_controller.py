@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import argparse
 import logging
-from typing import List, Union
+from typing import List, Optional, Union
 
 from openbb_terminal import (
     config_terminal as cfg,
@@ -47,7 +47,7 @@ class OandaController(BaseController):
     PATH = "/forex/oanda/"
     CHOICES_GENERATION = True
 
-    def __init__(self, queue: List[str] = None):
+    def __init__(self, queue: Optional[List[str]] = None):
         """Construct Data."""
         super().__init__(queue)
 

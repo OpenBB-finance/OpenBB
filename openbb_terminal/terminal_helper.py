@@ -9,7 +9,7 @@ import subprocess  # nosec
 import sys
 import webbrowser
 from contextlib import contextmanager
-from typing import List
+from typing import List, Optional
 
 # IMPORTATION THIRDPARTY
 import matplotlib.pyplot as plt
@@ -335,7 +335,7 @@ def welcome_message():
             console.print(e)
 
 
-def reset(queue: List[str] = None):
+def reset(queue: Optional[List[str]] = None):
     """Resets the terminal.  Allows for checking code or keys without quitting"""
     console.print("resetting...")
     logger.info("resetting")

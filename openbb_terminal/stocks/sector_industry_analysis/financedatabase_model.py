@@ -3,9 +3,10 @@ __docformat__ = "numpy"
 # pylint:disable=too-many-arguments,unexpected-keyword-arg
 
 import logging
+from typing import Optional
 
 import financedatabase as fd
-import yfinance as yf
+import yahooquery as yq
 from requests.exceptions import ReadTimeout
 from tqdm import tqdm
 
@@ -107,9 +108,9 @@ def get_marketcap() -> list:
 
 @log_start_end(log=logger)
 def filter_stocks(
-    country: str = None,
-    sector: str = None,
-    industry: str = None,
+    country: Optional[str] = None,
+    sector: Optional[str] = None,
+    industry: Optional[str] = None,
     marketcap: str = "",
     exclude_exchanges: bool = True,
 ) -> list:
@@ -178,22 +179,12 @@ def get_json(symbol: str) -> dict:
         Dictionary of json data
     """
 
-    data_stores = yf.data.TickerData(symbol).get_json_data_stores()
-
-    if "QuoteSummaryStore" not in data_stores:
-        # Problem in data. Either delisted, or Yahoo spam triggered
-        return {}
-
-    data = data_stores["QuoteSummaryStore"]
-    # add data about Shares Outstanding for companies' tickers if they are available
+    data = dict()
     try:
-        data["annualBasicAverageShares"] = data_stores["QuoteTimeSeriesStore"][
-            "timeSeries"
-        ]["annualBasicAverageShares"]
+        data["summaryProfile"] = yq.Ticker(symbol).summary_profile[symbol]
+        return data
     except Exception:
-        pass
-
-    return data
+        return data
 
 
 @log_start_end(log=logger)

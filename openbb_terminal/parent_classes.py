@@ -11,7 +11,7 @@ import os
 import re
 from abc import ABCMeta, abstractmethod
 from datetime import datetime, timedelta
-from typing import Any, Dict, List, Union
+from typing import Any, Dict, List, Optional, Union
 
 import numpy as np
 import pandas as pd
@@ -122,7 +122,7 @@ class BaseController(metaclass=ABCMeta):
 
         return choices
 
-    def __init__(self, queue: List[str] = None) -> None:
+    def __init__(self, queue: Optional[List[str]] = None) -> None:
         """Create the base class for any controller in the codebase.
 
         Used to simplify the creation of menus.

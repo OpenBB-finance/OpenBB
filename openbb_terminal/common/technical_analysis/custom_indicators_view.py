@@ -35,7 +35,7 @@ def fibonacci_retracement(
     end_date: Optional[Union[str, None]] = None,
     symbol: str = "",
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plots Calculated fibonacci retracement levels

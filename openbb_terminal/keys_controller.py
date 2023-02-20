@@ -5,7 +5,7 @@ __docformat__ = "numpy"
 
 import argparse
 import logging
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 from openbb_terminal import (
     feature_flags as obbff,
@@ -38,7 +38,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
 
     def __init__(
         self,
-        queue: List[str] = None,
+        queue: Optional[List[str]] = None,
         menu_usage: bool = True,
     ):
         """Constructor"""

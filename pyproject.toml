@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb"
-version = "2.4.0"
+version = "2.4.1"
 description = "Investment Research for Everyone, Anywhere."
 license = "MIT"
 authors = ["Didier Rodrigues Lopes"]
@@ -8,7 +8,7 @@ packages = [
     { include = "openbb_terminal" },
 ]
 include = ["terminal.py"]
-readme = "website/content/sdk/quickstart/installation.md"
+readme = "website/content/sdk/quickstart/pypi.md"
 homepage = "https://openbb.co"
 repository = "https://github.com/OpenBB-finance/OpenBBTerminal"
 documentation = "https://docs.openbb.co/sdk"
@@ -112,11 +112,23 @@ y-py = "!=0.5.5"  # Untraceable third level dependency that requires cargo to be
 psutil = "!=5.9.4"  # Forecasting menu and IPyKernel dependency broken on MacOs
 tenacity = "<8.0.0"  # Finviz, papermill and plotly dep. Pinned to avoid pip resolution conflict due to finviz 1.4.5 release bug
 intrinio-sdk = "^6.22.2"
+yahooquery = "^2.3.0"
 
-[tool.poetry.dev-dependencies]
+
+
+[tool.poetry.extras]
+forecast = ["torch", "pytorch-lightning", "u8darts", "lightgbm"]
+optimization = ["Riskfolio-Lib"]
+all = ["torch", "pytorch-lightning", "u8darts", "Riskfolio-Lib"]
+jupyterlab = ["jupyterlab-code-formatter", "jupyterlab-lsp", "jedi-language-server"]
+installer = ["pyinstaller"]
+doc = ["docstring-parser"]
+
+[tool.poetry.group.dev.dependencies]
+pytest-xdist = "^3.2.0"
 pytest = "^6.2.2"
 pylint = "2.15.2"
-mypy = "^0.930"
+mypy = "^1.0.0"
 mock = "^4.0.3"
 codespell = "^2.0.0"
 pydocstyle = "^6.3.0"
@@ -137,15 +149,8 @@ pre-commit = "^2.16.0"
 pytest-cov = "^3.0.0"
 types-six = "^1.16.12"
 nbmake = ">0.5.0"
-ruff = "^0.0.243"
-
-[tool.poetry.extras]
-forecast = ["torch", "pytorch-lightning", "u8darts", "lightgbm"]
-optimization = ["Riskfolio-Lib"]
-all = ["torch", "pytorch-lightning", "u8darts", "Riskfolio-Lib"]
-jupyterlab = ["jupyterlab-code-formatter", "jupyterlab-lsp", "jedi-language-server"]
-installer = ["pyinstaller"]
-doc = ["docstring-parser"]
+ruff = "^0.0.247"
+pytest-timeout = "^2.1.0"
 
 [build-system]
 requires = ["setuptools<65.5.0", "poetry-core>=1.0.0"]

@@ -11,14 +11,13 @@ from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import (
-    camel_case_split,
     export_data,
     is_valid_axes_count,
     plot_autoscale,
     print_rich_table,
 )
-from openbb_terminal.helpers_denomination import transform as transform_by_denomination
 from openbb_terminal.rich_config import console
+from openbb_terminal.stocks import stocks_helper
 from openbb_terminal.stocks.fundamental_analysis import av_model
 
 logger = logging.getLogger(__name__)
@@ -26,7 +25,7 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_ALPHAVANTAGE"])
-def display_overview(symbol: str, export: str = "", sheet_name: str = None):
+def display_overview(symbol: str, export: str = "", sheet_name: Optional[str] = None):
     """Alpha Vantage stock ticker overview
 
     Parameters
@@ -59,7 +58,7 @@ def display_overview(symbol: str, export: str = "", sheet_name: str = None):
 
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_ALPHAVANTAGE"])
-def display_key(symbol: str, export: str = "", sheet_name: str = None):
+def display_key(symbol: str, export: str = "", sheet_name: Optional[str] = None):
     """Alpha Vantage key metrics
 
     Parameters
@@ -92,9 +91,9 @@ def display_income_statement(
     limit: int = 5,
     quarterly: bool = False,
     ratios: bool = False,
-    plot: list = None,
+    plot: Optional[list] = None,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Alpha Vantage income statement
 
@@ -122,26 +121,22 @@ def display_income_statement(
     if df_income.empty:
         return
 
+    df_income.index = [
+        stocks_helper.INCOME_PLOT["AlphaVantage"][i]
+        for i in [i.replace(" ", "_") for i in df_income.index.str.lower()]
+    ]
+
     if plot:
         rows_plot = len(plot)
         income_plot_data = df_income.transpose()
-        income_plot_data.columns = income_plot_data.columns.str.lower()
-
-        if not ratios:
-            (df_rounded, denomination) = transform_by_denomination(income_plot_data)
-            if denomination == "Units":
-                denomination = ""
-        else:
-            df_rounded = income_plot_data
-            denomination = ""
 
         if rows_plot == 1:
             fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-            df_rounded[plot[0].replace("_", "")].plot()
+            income_plot_data[plot[0]].plot()
             title = (
                 f"{plot[0].replace('_', ' ').lower()} {'QoQ' if quarterly else 'YoY'} Growth of {symbol.upper()}"
                 if ratios
-                else f"{plot[0].replace('_', ' ')} of {symbol.upper()} {denomination}"
+                else f"{plot[0].replace('_', ' ')} of {symbol.upper()}"
             )
             plt.title(title)
             theme.style_primary_axis(ax)
@@ -149,14 +144,13 @@ def display_income_statement(
         else:
             fig, axes = plt.subplots(rows_plot)
             for i in range(rows_plot):
-                axes[i].plot(df_rounded[plot[i].replace("_", "")])
-                axes[i].set_title(f"{plot[i].replace('_', ' ')} {denomination}")
+                axes[i].plot(income_plot_data[plot[i]])
+                axes[i].set_title(f"{plot[i].replace('_', ' ')}")
             theme.style_primary_axis(axes[0])
             fig.autofmt_xdate()
     else:
-        indexes = df_income.index
-        new_indexes = [camel_case_split(ind) for ind in indexes]
-        df_income.index = new_indexes
+        # Snake case to english
+        df_income.index = [x.replace("_", " ").title() for x in df_income.index]
 
         print_rich_table(
             df_income,
@@ -183,9 +177,9 @@ def display_balance_sheet(
     limit: int = 5,
     quarterly: bool = False,
     ratios: bool = False,
-    plot: list = None,
+    plot: Optional[list] = None,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Alpha Vantage balance sheet statement
 
@@ -213,26 +207,22 @@ def display_balance_sheet(
     if df_balance.empty:
         return
 
+    df_balance.index = [
+        stocks_helper.BALANCE_PLOT["AlphaVantage"][i]
+        for i in [i.replace(" ", "_") for i in df_balance.index.str.lower()]
+    ]
+
     if plot:
         rows_plot = len(plot)
         balance_plot_data = df_balance.transpose()
-        balance_plot_data.columns = balance_plot_data.columns.str.lower()
-
-        if not ratios:
-            (df_rounded, denomination) = transform_by_denomination(balance_plot_data)
-            if denomination == "Units":
-                denomination = ""
-        else:
-            df_rounded = balance_plot_data
-            denomination = ""
 
         if rows_plot == 1:
             fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-            df_rounded[plot[0].replace("_", "")].plot()
+            balance_plot_data[plot[0]].plot()
             title = (
                 f"{plot[0].replace('_', ' ').lower()} {'QoQ' if quarterly else 'YoY'} Growth of {symbol.upper()}"
                 if ratios
-                else f"{plot[0].replace('_', ' ')} of {symbol.upper()} {denomination}"
+                else f"{plot[0].replace('_', ' ')} of {symbol.upper()}"
             )
             plt.title(title)
             theme.style_primary_axis(ax)
@@ -240,15 +230,14 @@ def display_balance_sheet(
         else:
             fig, axes = plt.subplots(rows_plot)
             for i in range(rows_plot):
-                axes[i].plot(df_rounded[plot[i].replace("_", "")])
-                axes[i].set_title(f"{plot[i].replace('_', ' ')} {denomination}")
+                axes[i].plot(balance_plot_data[plot[i]])
+                axes[i].set_title(f"{plot[i].replace('_', ' ')}")
             theme.style_primary_axis(axes[0])
             fig.autofmt_xdate()
 
     else:
-        indexes = df_balance.index
-        new_indexes = [camel_case_split(ind) for ind in indexes]
-        df_balance.index = new_indexes
+        # Snake case to english
+        df_balance.index = [x.replace("_", " ").title() for x in df_balance.index]
 
         print_rich_table(
             df_balance,
@@ -275,9 +264,9 @@ def display_cash_flow(
     limit: int = 5,
     quarterly: bool = False,
     ratios: bool = False,
-    plot: list = None,
+    plot: Optional[list] = None,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Alpha Vantage income statement
 
@@ -303,26 +292,22 @@ def display_cash_flow(
     if df_cash.empty:
         return
 
+    df_cash.index = [
+        stocks_helper.CASH_PLOT["AlphaVantage"][i]
+        for i in [i.replace(" ", "_") for i in df_cash.index.str.lower()]
+    ]
+
     if plot:
         rows_plot = len(plot)
         cash_plot_data = df_cash.transpose()
-        cash_plot_data.columns = cash_plot_data.columns.str.lower()
-
-        if not ratios:
-            (df_rounded, denomination) = transform_by_denomination(cash_plot_data)
-            if denomination == "Units":
-                denomination = ""
-        else:
-            df_rounded = cash_plot_data
-            denomination = ""
 
         if rows_plot == 1:
             fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-            df_rounded[plot[0].replace("_", "")].plot()
+            cash_plot_data[plot[0]].plot()
             title = (
                 f"{plot[0].replace('_', ' ').lower()} {'QoQ' if quarterly else 'YoY'} Growth of {symbol.upper()}"
                 if ratios
-                else f"{plot[0].replace('_', ' ')} of {symbol.upper()} {denomination}"
+                else f"{plot[0].replace('_', ' ')} of {symbol.upper()}"
             )
             plt.title(title)
             theme.style_primary_axis(ax)
@@ -330,15 +315,14 @@ def display_cash_flow(
         else:
             fig, axes = plt.subplots(rows_plot)
             for i in range(rows_plot):
-                axes[i].plot(df_rounded[plot[i].replace("_", "")])
-                axes[i].set_title(f"{plot[i].replace('_', ' ')} {denomination}")
+                axes[i].plot(cash_plot_data[plot[i]])
+                axes[i].set_title(f"{plot[i].replace('_', ' ')}")
             theme.style_primary_axis(axes[0])
             fig.autofmt_xdate()
 
     else:
-        indexes = df_cash.index
-        new_indexes = [camel_case_split(ind) for ind in indexes]
-        df_cash.index = new_indexes
+        # Snake case to english
+        df_cash.index = [x.replace("_", " ").title() for x in df_cash.index]
 
         print_rich_table(
             df_cash,
@@ -365,7 +349,7 @@ def display_earnings(
     limit: int = 5,
     quarterly: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Alpha Vantage earnings
 
@@ -408,7 +392,7 @@ def display_earnings(
 def display_fraud(
     symbol: str,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     help_text: bool = False,
     color: bool = True,
     detail: bool = False,
@@ -474,7 +458,7 @@ def display_dupont(
     symbol: str,
     raw: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Shows the extended dupont ratio

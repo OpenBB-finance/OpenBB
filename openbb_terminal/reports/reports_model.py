@@ -281,7 +281,7 @@ def create_output_path(input_path: str, parameters_dict: Dict[str, Any]) -> str:
         + "_"
         + f"{report_name}{args_to_output}"
     )
-    output_path = report_output_name.replace(".", "_")
+    report_output_name = report_output_name.replace(".", "_")
     output_path = str(USER_REPORTS_DIRECTORY / report_output_name)
 
     return output_path

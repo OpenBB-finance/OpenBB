@@ -20,6 +20,7 @@ from openbb_terminal.sdk_core import (
     controllers as ctrl,
     models as model,
 )
+from openbb_terminal import feature_flags as obbff
 from openbb_terminal.session.user import User
 
 if User.is_guest():
@@ -38,6 +39,8 @@ class OpenBBSDK:
         `news`: Get news for a given term and source. [Source: Feedparser]\n
         `whoami`: Display user info.\n
     """
+
+    __version__ = obbff.VERSION
 
     def __init__(self):
         SDKLogger()
@@ -217,9 +220,11 @@ class OpenBBSDK:
             `delete`: Delete a column from a dataframe\n
             `delta`: Calculate the %change of a variable based on a specific column\n
             `desc`: Returns statistics for a given df\n
+            `desc_chart`: Show descriptive statistics for a dataframe\n
             `ema`: A moving average provides an indication of the trend of the price movement\n
             `expo`: Performs Probabilistic Exponential Smoothing forecasting\n
             `expo_chart`: Display Probabilistic Exponential Smoothing forecast\n
+            `export`: Export a dataframe to a file\n
             `linregr`: Perform Linear Regression Forecasting\n
             `linregr_chart`: Display Linear Regression Forecasting\n
             `load`: Load custom file into dataframe.\n
@@ -244,6 +249,7 @@ class OpenBBSDK:
             `season_chart`: Plot seasonality from a dataset\n
             `seasonalnaive`: Performs Seasonal Naive forecasting\n
             `seasonalnaive_chart`: Display SeasonalNaive Model\n
+            `show`: Show a dataframe in a table\n
             `signal`: A price signal based on short/long term price.\n
             `sto`: Stochastic Oscillator %K and %D : A stochastic oscillator is a momentum indicator comparing a particular closing\n
             `tcn`: Perform TCN forecasting\n

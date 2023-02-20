@@ -5,7 +5,7 @@ import argparse
 import logging
 import random
 from datetime import datetime, timedelta
-from typing import List
+from typing import List, Optional
 
 import yfinance as yf
 
@@ -73,7 +73,9 @@ class ComparisonAnalysisController(BaseController):
     PATH = "/stocks/ca/"
     CHOICES_GENERATION = True
 
-    def __init__(self, similar: List[str] = None, queue: List[str] = None):
+    def __init__(
+        self, similar: Optional[List[str]] = None, queue: Optional[List[str]] = None
+    ):
         """Constructor"""
         super().__init__(queue)
 

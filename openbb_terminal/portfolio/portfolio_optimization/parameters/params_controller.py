@@ -64,7 +64,7 @@ class ParametersController(BaseController):
     def __init__(
         self,
         file: str,
-        queue: List[str] = None,
+        queue: Optional[List[str]] = None,
         params: Optional[dict] = None,
         current_model=None,
     ):

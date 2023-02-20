@@ -27,7 +27,7 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def display_inference(
-    symbol: str, limit: int = 100, export: str = "", sheet_name: str = None
+    symbol: str, limit: int = 100, export: str = "", sheet_name: Optional[str] = None
 ):
     """Prints Inference sentiment from past n tweets.
 
@@ -92,7 +92,7 @@ def display_sentiment(
     n_days_past: int = 2,
     compare: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plots sentiments from symbol

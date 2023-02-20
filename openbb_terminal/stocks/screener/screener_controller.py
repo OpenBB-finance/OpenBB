@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import argparse
 import datetime
 import logging
-from typing import List
+from typing import List, Optional
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.core.config.paths import (
@@ -77,7 +77,7 @@ class ScreenerController(BaseController):
     PATH = "/stocks/scr/"
     CHOICES_GENERATION = True
 
-    def __init__(self, queue: List[str] = None):
+    def __init__(self, queue: Optional[List[str]] = None):
         """Constructor"""
         super().__init__(queue)
 

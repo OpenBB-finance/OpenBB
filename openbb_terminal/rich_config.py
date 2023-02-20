@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import json
 import os
 from pathlib import Path
-from typing import Iterable, Tuple
+from typing import Iterable, Optional, Tuple, Union
 
 import i18n
 from rich import panel
@@ -221,7 +221,7 @@ class MenuText:
 
         self.menu_text += cmd + "\n"
 
-    def add_menu(self, key_menu: str, condition: bool = True):
+    def add_menu(self, key_menu: str, condition: Optional[Union[bool, str]] = True):
         """Append menu text (after translation from key) to a menu
 
         Parameters
