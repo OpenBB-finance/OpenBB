@@ -1,10 +1,10 @@
 from typing import Dict
+
 from pydantic.dataclasses import dataclass
 
+import openbb_terminal.feature_flags as obbff
 from openbb_terminal.rich_config import console
 from openbb_terminal.session.hub_model import REGISTER_URL
-
-import openbb_terminal.feature_flags as obbff
 
 
 @dataclass(config=dict(validate_assignment=True))

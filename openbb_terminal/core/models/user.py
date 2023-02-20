@@ -1,6 +1,6 @@
 from pydantic.dataclasses import dataclass
 
-from openbb_terminal.core.models.profile import ProfileModel, default_profile
+import openbb_terminal.feature_flags as obbff
 from openbb_terminal.core.models.configurations import (
     ConfigurationsModel,
     default_configurations,
@@ -13,8 +13,7 @@ from openbb_terminal.core.models.preferences import (
     PreferencesModel,
     default_preferences,
 )
-
-import openbb_terminal.feature_flags as obbff
+from openbb_terminal.core.models.profile import ProfileModel, default_profile
 
 
 @dataclass(config=dict(validate_assignment=True))
