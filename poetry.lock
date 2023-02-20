@@ -6468,6 +6468,21 @@ socks = ["PySocks (>=1.5.6,!=1.5.7)"]
 use-chardet-on-py3 = ["chardet (>=3.0.2,<6)"]
 
 [[package]]
+name = "requests-futures"
+version = "1.0.0"
+description = "Asynchronous Python HTTP for Humans."
+category = "main"
+optional = false
+python-versions = "*"
+files = [
+    {file = "requests-futures-1.0.0.tar.gz", hash = "sha256:35547502bf1958044716a03a2f47092a89efe8f9789ab0c4c528d9c9c30bc148"},
+    {file = "requests_futures-1.0.0-py2.py3-none-any.whl", hash = "sha256:633804c773b960cef009efe2a5585483443c6eac3c39cc64beba2884013bcdd9"},
+]
+
+[package.dependencies]
+requests = ">=1.2.0"
+
+[[package]]
 name = "requests-oauthlib"
 version = "1.3.1"
 description = "OAuthlib authentication support for Requests."
@@ -8692,6 +8707,29 @@ files = [
 ]
 
 [[package]]
+name = "yahooquery"
+version = "2.3.0"
+description = "Python interface to unofficial Yahoo Finance API endpoints"
+category = "main"
+optional = false
+python-versions = "*"
+files = [
+    {file = "yahooquery-2.3.0-py2.py3-none-any.whl", hash = "sha256:760c885da53ca25104000291c58fe53fe3df4b832ea424c32f8c429d2825e911"},
+    {file = "yahooquery-2.3.0.tar.gz", hash = "sha256:c51aee71ab90de52d1fa7e1288bc466f5ea0dfb6ac20f2c62c9dde461985f63b"},
+]
+
+[package.dependencies]
+lxml = ">=4.9.1"
+pandas = ">=0.24.0"
+requests-futures = ">=1.0.0"
+tqdm = ">=4.54.1"
+
+[package.extras]
+doc = ["mkdocs (>=1.1.2,<2.0.0)", "mkdocs-jupyter (>=0.12.0,<0.13.0)", "mkdocs-material (>=6.1.7,<7.0.0)"]
+premium = ["selenium (>=3.141.0)"]
+test = ["coverage (==5.2.1)", "pytest (==6.0.2)", "pytest-cov (==2.10.1)", "selenium (>=3.141.0)"]
+
+[[package]]
 name = "yarl"
 version = "1.8.2"
 description = "Yet another URL library"
@@ -8885,4 +8923,4 @@ optimization = ["Riskfolio-Lib"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8,<3.11, !=3.9.7"
-content-hash = "8a7372187c8ee5d9012fa0a65109fe3cfc71ca8f0159c5efd65df4415f5ac229"
+content-hash = "ecb2e6b98d259e95edb86faaeed404755d6f60146607891de7e4ea30f54f6e76"
