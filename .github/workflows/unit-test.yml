@@ -95,7 +95,7 @@ jobs:
           MPLBACKEND: Agg
         run: |
           source $VENV
-          pytest tests/ --optimization --cov --cov-fail-under=50 --autodoc -n auto --durations=10
+          pytest tests/ --optimization --cov --cov-fail-under=50 --autodoc -n auto --durations=10 --timeout=30
 
       - name: Start Terminal and exit
         run: |
@@ -153,7 +153,7 @@ jobs:
           MPLBACKEND: Agg
         run: |
           source $VENV
-          pytest tests/ --optimization --autodoc -n auto
+          pytest tests/ --optimization --autodoc -n auto --timeout=30
 
       - name: Start Terminal and exit
         run: |
@@ -218,7 +218,7 @@ jobs:
           MPLBACKEND: Agg
         run: |
           source $VENV
-          pytest tests/ --optimization --autodoc -n auto
+          pytest tests/ --optimization --autodoc -n auto --timeout=30
 
   tests-conda:
     name: Anaconda Python Tests - (${{ matrix.python-version }}, ${{ matrix.os }})
@@ -314,8 +314,7 @@ jobs:
         env:
           MPLBACKEND: Agg
         shell: bash -l {0}
-        run: pytest tests/ -m "not linux" --optimization -n auto
-
+        run: pytest tests/ -m "not linux" --optimization -n auto --timeout=30
       - name: Start Terminal and exit
         shell: bash -l {0}
         run: python terminal.py

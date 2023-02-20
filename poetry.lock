@@ -5803,6 +5803,21 @@ pytest = ">=3.5.0"
 vcrpy = ">=2.0.1"
 
 [[package]]
+name = "pytest-timeout"
+version = "2.1.0"
+description = "pytest plugin to abort hanging tests"
+category = "dev"
+optional = false
+python-versions = ">=3.6"
+files = [
+    {file = "pytest-timeout-2.1.0.tar.gz", hash = "sha256:c07ca07404c612f8abbe22294b23c368e2e5104b521c1790195561f37e1ac3d9"},
+    {file = "pytest_timeout-2.1.0-py3-none-any.whl", hash = "sha256:f6f50101443ce70ad325ceb4473c4255e9d74e3c7cd0ef827309dfa4c0d975c6"},
+]
+
+[package.dependencies]
+pytest = ">=5.0.0"
+
+[[package]]
 name = "pytest-xdist"
 version = "3.2.0"
 description = "pytest xdist plugin for distributed testing, most importantly across multiple CPUs"
@@ -8997,4 +9012,4 @@ optimization = ["Riskfolio-Lib"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8,<3.11, !=3.9.7"
-content-hash = "54decdfac027f9ba72be4b2475bf1c87166de8fc34b58a2fa59fcb8a7d5ab68c"
+content-hash = "bcade2608abd879755b6612e88630e34c18557294bbc48e1bec194aeda6cc31c"
