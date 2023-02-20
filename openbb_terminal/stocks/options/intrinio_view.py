@@ -121,7 +121,7 @@ def view_historical_greeks(
     export: str = "",
     sheet_name: Optional[str] = None,
     external_axes: bool = False,
-):
+) -> Union[None, OpenBBFigure]:
     """Plots historical greeks for a given option. [Source: Syncretism]
 
     Parameters
