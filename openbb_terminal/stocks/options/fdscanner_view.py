@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
+from typing import Optional
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
@@ -19,7 +20,7 @@ def display_options(
     calls_only: bool = False,
     puts_only: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Displays the unusual options table
 

@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import logging
 import os
 import warnings
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
 import pandas as pd
 import statsmodels
@@ -434,7 +434,9 @@ def get_fdols(Y: pd.DataFrame, X: pd.DataFrame) -> Any:
 
 
 @log_start_end(log=logger)
-def get_comparison(regressions: Dict, export: str = "", sheet_name: str = None):
+def get_comparison(
+    regressions: Dict, export: str = "", sheet_name: Optional[str] = None
+):
     """Compare regression results between Panel Data regressions.
 
     Parameters

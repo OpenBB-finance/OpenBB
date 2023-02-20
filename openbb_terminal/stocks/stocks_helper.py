@@ -47,7 +47,6 @@ from openbb_terminal.stocks.stock_statics import (
 from openbb_terminal.stocks.stocks_model import (
     load_stock_av,
     load_stock_eodhd,
-    load_stock_iex_cloud,
     load_stock_intrinio,
     load_stock_polygon,
     load_stock_yf,
@@ -236,7 +235,6 @@ def load(
     end_date: Optional[Union[datetime, str]] = None,
     prepost: bool = False,
     source: str = "YahooFinance",
-    iexrange: str = "ytd",
     weekly: bool = False,
     monthly: bool = False,
     verbose: bool = True,
@@ -248,7 +246,6 @@ def load(
     The default source is, yFinance (https://pypi.org/project/yfinance/).
     Other sources:
             -   AlphaVantage (https://www.alphavantage.co/documentation/)
-            -   IEX Cloud (https://iexcloud.io/docs/api/)
             -   Eod Historical Data (https://eodhistoricaldata.com/financial-apis/)
 
     Please note that certain analytical features are exclusive to the specific source.
@@ -285,8 +282,6 @@ def load(
         Pre and After hours data
     source: str
         Source of data extracted
-    iexrange: str
-        Timeframe to get IEX data.
     weekly: bool
         Flag to get weekly data
     monthly: bool
@@ -328,9 +323,6 @@ def load(
             df_stock_candidate = load_stock_eodhd(
                 symbol, start_date, end_date, weekly, monthly
             )
-
-        elif source == "IEXCloud":
-            df_stock_candidate = load_stock_iex_cloud(symbol, iexrange)
 
         elif source == "Polygon":
             df_stock_candidate = load_stock_polygon(
@@ -466,7 +458,7 @@ def load(
 
 def display_candle(
     symbol: str,
-    data: pd.DataFrame = None,
+    data: Optional[pd.DataFrame] = None,
     use_matplotlib: bool = True,
     intraday: bool = False,
     add_trend: bool = False,
@@ -477,7 +469,6 @@ def display_candle(
     end_date: Optional[Union[datetime, str]] = None,
     prepost: bool = False,
     source: str = "YahooFinance",
-    iexrange: str = "ytd",
     weekly: bool = False,
     monthly: bool = False,
     external_axes: Optional[List[plt.Axes]] = None,
@@ -518,8 +509,6 @@ def display_candle(
         Pre and After hours data
     source: str
         Source of data extracted
-    iexrange: str
-        Timeframe to get IEX data.
     weekly: bool
         Flag to get weekly data
     monthly: bool
@@ -562,7 +551,6 @@ def display_candle(
             end_date,
             prepost,
             source,
-            iexrange,
             weekly,
             monthly,
         )

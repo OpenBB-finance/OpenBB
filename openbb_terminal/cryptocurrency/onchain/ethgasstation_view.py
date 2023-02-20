@@ -1,6 +1,7 @@
 """ETH Gas Station view"""
 import logging
 import os
+from typing import Optional
 
 from openbb_terminal.cryptocurrency.onchain.ethgasstation_model import get_gwei_fees
 from openbb_terminal.decorators import log_start_end
@@ -11,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def display_gwei_fees(export: str = "", sheet_name: str = None) -> None:
+def display_gwei_fees(export: str = "", sheet_name: Optional[str] = None) -> None:
     """Current gwei fees
     [Source: https://ethgasstation.info]
 

@@ -47,18 +47,6 @@ def test_prompt():
         assert create_session_mock.call_count == 1
 
 
-def test_prompt_guest_allowed():
-    with patch(
-        "openbb_terminal.session.session_controller.get_user_input",
-        return_value=(None, None, False),
-    ) as get_user_input_mock, patch(
-        "openbb_terminal.session.session_controller.launch_terminal", return_value=True
-    ) as launch_terminal_mock:
-        session_controller.prompt(guest_allowed=True)
-        assert get_user_input_mock.call_count == 1
-        assert launch_terminal_mock.call_count == 1
-
-
 def test_launch_terminal():
     with patch(
         "openbb_terminal.session.session_controller.terminal_controller.parse_args_and_run",

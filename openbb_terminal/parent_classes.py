@@ -11,7 +11,7 @@ import os
 import re
 from abc import ABCMeta, abstractmethod
 from datetime import datetime, timedelta
-from typing import Any, Dict, List, Union
+from typing import Any, Dict, List, Optional, Union
 
 import numpy as np
 import pandas as pd
@@ -45,10 +45,9 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.rich_config import console, get_ordered_list_sources
-from openbb_terminal.session.session_model import logout
 from openbb_terminal.session.user import User
 from openbb_terminal.stocks import stocks_helper
-from openbb_terminal.terminal_helper import open_openbb_documentation
+from openbb_terminal.terminal_helper import is_auth_enabled, open_openbb_documentation
 
 logger = logging.getLogger(__name__)
 
@@ -96,9 +95,10 @@ class BaseController(metaclass=ABCMeta):
         "record",
         "stop",
         "screenshot",
-        "logout",
-        "whoami",
     ]
+
+    if is_auth_enabled():
+        CHOICES_COMMON += ["whoami"]
 
     CHOICES_COMMANDS: List[str] = []
     CHOICES_MENUS: List[str] = []
@@ -121,7 +121,7 @@ class BaseController(metaclass=ABCMeta):
 
         return choices
 
-    def __init__(self, queue: List[str] = None) -> None:
+    def __init__(self, queue: Optional[List[str]] = None) -> None:
         """Create the base class for any controller in the codebase.
 
         Used to simplify the creation of menus.
@@ -384,6 +384,9 @@ class BaseController(metaclass=ABCMeta):
             )(other_args)
 
         self.log_queue()
+
+        if not self.queue or (self.queue and self.queue[0] not in ("quit", "help")):
+            console.print()
 
         return self.queue
 
@@ -676,25 +679,6 @@ class BaseController(metaclass=ABCMeta):
             screenshot()
 
     @log_start_end(log=logger)
-    def call_logout(self, other_args: List[str]) -> None:
-        """Process logout command."""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="logout",
-            description="Logout from OpenBB",
-        )
-        ns_parser = self.parse_simple_args(parser, other_args)
-
-        if ns_parser:
-            logout(
-                auth_header=User.get_auth_header(),
-                token=User.get_token(),
-                guest=User.is_guest(),
-                cls=True,
-            )
-
-    @log_start_end(log=logger)
     def call_whoami(self, other_args: List[str]) -> None:
         """Process whoami command."""
         parser = argparse.ArgumentParser(
@@ -707,7 +691,6 @@ class BaseController(metaclass=ABCMeta):
 
         if ns_parser:
             User.whoami()
-            console.print("")
 
     @staticmethod
     def parse_simple_args(parser: argparse.ArgumentParser, other_args: List[str]):
@@ -964,11 +947,6 @@ class BaseController(metaclass=ABCMeta):
                 if an_input == "logout":
                     return ["logout"]
 
-                if not self.queue or (
-                    self.queue and self.queue[0] not in ("quit", "help")
-                ):
-                    console.print()
-
             except SystemExit:
                 if not self.contains_keys(an_input):
                     logger.exception(
@@ -1101,15 +1079,6 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
             dest="weekly",
         )
         parser.add_argument(
-            "-r",
-            "--iexrange",
-            dest="iexrange",
-            help="Range for using the iexcloud api.  Longer range requires more tokens in account",
-            choices=["ytd", "1y", "2y", "5y", "6m"],
-            type=str,
-            default="ytd",
-        )
-        parser.add_argument(
             "--exchange",
             dest="exchange",
             action="store_true",
@@ -1196,9 +1165,7 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                     self.ticker = ns_parser.ticker.upper()
                     self.suffix = ""
 
-                if ns_parser.source == "IEXCloud":
-                    self.start = self.stock.index[0].to_pydatetime()
-                elif ns_parser.source == "EODHD":
+                if ns_parser.source == "EODHD":
                     self.start = self.stock.index[0].to_pydatetime()
                 elif ns_parser.source == "eodhd":
                     self.start = self.stock.index[0].to_pydatetime()

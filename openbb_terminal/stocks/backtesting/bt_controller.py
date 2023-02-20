@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import argparse
 import logging
-from typing import List
+from typing import List, Optional
 
 import matplotlib as mpl
 import pandas as pd
@@ -18,7 +18,7 @@ from openbb_terminal.helper_funcs import (
     valid_date,
 )
 from openbb_terminal.menu import session
-from openbb_terminal.parent_classes import BaseController
+from openbb_terminal.parent_classes import StockBaseController
 from openbb_terminal.rich_config import MenuText, console
 
 # This code below aims to fix an issue with the fnn module, used by bt module
@@ -35,20 +35,26 @@ logger = logging.getLogger(__name__)
 mpl.use(default_backend)
 
 
-class BacktestingController(BaseController):
+def no_data_message():
+    """Print message when no ticker is loaded"""
+    console.print("[red]No data loaded. Use 'load' command to load a symbol[/red]")
+
+
+class BacktestingController(StockBaseController):
     """Backtesting Controller class"""
 
-    CHOICES_COMMANDS = ["ema", "emacross", "rsi", "whatif"]
+    CHOICES_COMMANDS = ["load", "ema", "emacross", "rsi", "whatif"]
     PATH = "/stocks/bt/"
     CHOICES_GENERATION = True
 
-    def __init__(self, ticker: str, stock: pd.DataFrame, queue: List[str] = None):
+    def __init__(
+        self, ticker: str, stock: pd.DataFrame, queue: Optional[List[str]] = None
+    ):
         """Constructor"""
         super().__init__(queue)
 
         self.ticker = ticker
         self.stock = stock
-
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices_default
 
@@ -57,7 +63,9 @@ class BacktestingController(BaseController):
     def print_help(self):
         """Print help"""
         mt = MenuText("stocks/bt/")
+        mt.add_raw("\n")
         mt.add_param("_ticker", self.ticker.upper())
+        mt.add_cmd("load")
         mt.add_raw("\n")
         mt.add_cmd("whatif")
         mt.add_raw("\n")
@@ -101,6 +109,9 @@ class BacktestingController(BaseController):
             other_args.insert(0, "-d")
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
+            if self.stock.empty:
+                no_data_message()
+                return
             bt_view.display_whatif_scenario(
                 symbol=self.ticker,
                 num_shares_acquired=ns_parser.num_shares_acquired,
@@ -141,6 +152,9 @@ class BacktestingController(BaseController):
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
+            if self.stock.empty:
+                no_data_message()
+                return
             bt_view.display_simple_ema(
                 symbol=self.ticker,
                 data=self.stock,
@@ -204,6 +218,9 @@ class BacktestingController(BaseController):
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
+            if self.stock.empty:
+                no_data_message()
+                return
             if ns_parser.long < ns_parser.short:
                 console.print("Short EMA period is longer than Long EMA period\n")
 
@@ -280,6 +297,9 @@ class BacktestingController(BaseController):
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
+            if self.stock.empty:
+                no_data_message()
+                return
             if ns_parser.high < ns_parser.low:
                 console.print("Low RSI value is higher than Low RSI value\n")
 

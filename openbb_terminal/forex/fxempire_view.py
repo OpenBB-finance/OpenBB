@@ -2,6 +2,7 @@
 
 import logging
 import os
+from typing import Optional
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.forex import fxempire_model
@@ -16,7 +17,7 @@ def display_forward_rates(
     to_symbol: str = "USD",
     from_symbol: str = "EUR",
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Display forward rates for currency pairs
 

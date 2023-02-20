@@ -1,9 +1,15 @@
-from openbb_terminal.sdk import openbb
+# pylint: disable=import-outside-toplevel
 
 
-def test_openbb():
+def test_openbb(mocker):
     """Test the openbb function"""
+    mock = mocker.patch("openbb_terminal.base_helpers.load_dotenv_and_reload_configs")
+    from openbb_terminal import feature_flags as obbff
+    from openbb_terminal.sdk import openbb
+
+    mock.assert_called_once()
     assert "stocks" in dir(openbb)
+    assert openbb.__version__ == obbff.VERSION
 
 
 # from importlib import import_module
