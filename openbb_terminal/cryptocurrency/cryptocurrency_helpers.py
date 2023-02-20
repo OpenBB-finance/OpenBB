@@ -356,7 +356,8 @@ def load_from_ccxt(
     try:
         if interval not in list(CCXT_INTERVAL_MAP.keys()):
             console.print(
-                f"\nInvalid interval chosen for source, available intervals: {', '.join(list(CCXT_INTERVAL_MAP.keys()))}\n"
+                f"\nInvalid interval chosen for source, "
+                f"available intervals: {', '.join(list(CCXT_INTERVAL_MAP.keys()))}\n"
             )
         df = fetch_ccxt_ohlc(
             exchange,
@@ -378,7 +379,8 @@ def load_from_ccxt(
         df = df.iloc[0:i]
         if df.empty:
             console.print(
-                f"\nThe first data point retrieved was {first_date.strftime('%Y-%m-%d')}, thus the end date ({end_date.strftime('%Y-%m-%d')}) filtered out all of the data.\n"
+                f"\nThe first data point retrieved was {first_date.strftime('%Y-%m-%d')}, "
+                f"thus the end date ({end_date.strftime('%Y-%m-%d')}) filtered out all of the data.\n"
             )
             return pd.DataFrame()
     except Exception:
