@@ -354,10 +354,10 @@ def load_from_ccxt(
     pair = f"{symbol.upper()}/{to_symbol.upper()}"
 
     try:
-        if interval not in list(CCXT_INTERVAL_MAP.keys()):
+        if interval not in [i for i in CCXT_INTERVAL_MAP]:
             console.print(
                 f"\nInvalid interval chosen for source, "
-                f"available intervals: {', '.join(list(CCXT_INTERVAL_MAP.keys()))}\n"
+                f"available intervals: {', '.join([i for i in CCXT_INTERVAL_MAP])}\n"
             )
         df = fetch_ccxt_ohlc(
             exchange,
