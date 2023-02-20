@@ -64,9 +64,9 @@ def display_raw(
     call: bool = True,
     price: float = 90,
     limit: int = 10,
-    chain_id: str = None,
+    chain_id: Optional[str] = None,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Return raw stock data[chartexchange]

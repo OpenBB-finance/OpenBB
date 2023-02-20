@@ -17,7 +17,7 @@ API_FINNHUB_KEY not defined. Set API Keys in ~/.openbb_terminal/.env or under ke
 
 You can access the `keys` menu as mentioned above from the homepage with `keys` (or directly from your current menu with `/keys`). This will open the menu as shown below:
 
-<img width="800" alt="image" src="https://user-images.githubusercontent.com/85772166/194684312-f12b7f26-8a04-4efe-bc94-fa516b7186d3.png"></img>
+<img width="800" alt="image" src="https://user-images.githubusercontent.com/46355364/219021978-41caff4c-65e2-4169-983f-3e66fdce4563.png"></img>
 
 Within this menu you are able to set your API keys to access the commands that require that key. You can do so by typing the command followed by the API key, for example: `fred a215egade08a8d47cfd49c849658a2be`. When you press `ENTER` (⏎) the terminal will test whether this API key works. If it does, you receive the message `defined, test passed` and if it does not, you receive the message `defined, test failed`.
 
@@ -187,7 +187,7 @@ Click "Registration". This opens up the following screen:
 
 <img width="500" alt="image" src="https://user-images.githubusercontent.com/46355364/207849324-00d4a916-8260-45c0-9714-289e0a0574c0.png"></img>
 
-Once you have registered, you can find the API Key next to "API TOKEN". Enter this API key into the OpenBB Terminal by typing `/keys/cpanic KEY`.
+Once you have registered, you can find the API Key next to "API TOKEN". Enter this API key into the OpenBB Terminal by typing `/keys/eodhd KEY`.
 
 <img width="500" alt="image" src="https://user-images.githubusercontent.com/46355364/207849462-37471270-929a-45c5-a164-a84249b19231.png"></img>
 
@@ -411,7 +411,7 @@ After creating an account go to https://app.santiment.net/account#api-keys and g
 <details>
 <summary>ShroomDK</summary>
 
-Go to https://app.santiment.net You will be greeted with the following screen:
+Go to https://sdk.flipsidecrypto.xyz/shroomdk You will be greeted with the following screen:
 
 <img width="500" alt="image" src="https://user-images.githubusercontent.com/46355364/207850122-b8cd225e-0a65-4ea8-8069-0b40fff1600e.png"></img>
 

@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 from datetime import datetime
-from typing import Any, Dict, List, Union
+from typing import Any, Dict, List, Optional, Union
 
 import numpy as np
 import pandas as pd
@@ -927,7 +927,7 @@ class CreateExcelFA:
         adds: List[str],
         subtracts: List[str],
         audit: bool = False,
-        text: str = None,
+        text: Optional[str] = None,
     ):
         col = 1 if audit else self.info["len_data"] + 1
         for i in range(self.info["len_data"] if audit else self.info["len_pred"]):
@@ -970,7 +970,7 @@ class CreateExcelFA:
 
     @log_start_end(log=logger)
     def custom_exp(
-        self, row: Union[int, str], text: str, ws: int = 1, column: str = None
+        self, row: Union[int, str], text: str, ws: int = 1, column: Optional[str] = None
     ):
         if ws == 1:
             rowT = row if isinstance(row, int) else self.title_to_row(row)

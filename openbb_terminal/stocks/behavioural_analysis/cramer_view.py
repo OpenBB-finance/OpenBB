@@ -27,7 +27,7 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def display_cramer_daily(
-    inverse: bool = True, export: str = "", sheet_name: str = None
+    inverse: bool = True, export: str = "", sheet_name: Optional[str] = None
 ):
     """Display Jim Cramer daily recommendations
 
@@ -74,7 +74,7 @@ def display_cramer_ticker(
     symbol: str,
     raw: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display ticker close with Cramer recommendations

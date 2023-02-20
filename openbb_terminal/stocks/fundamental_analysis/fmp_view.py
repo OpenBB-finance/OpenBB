@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
+from typing import Optional
 
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -11,8 +12,8 @@ from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import export_data, plot_autoscale, print_rich_table
-from openbb_terminal.helpers_denomination import transform as transform_by_denomination
 from openbb_terminal.rich_config import console
+from openbb_terminal.stocks import stocks_helper
 from openbb_terminal.stocks.fundamental_analysis import fmp_model
 
 logger = logging.getLogger(__name__)
@@ -20,7 +21,9 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
-def valinvest_score(symbol: str, years: int, export: str = "", sheet_name: str = None):
+def valinvest_score(
+    symbol: str, years: int, export: str = "", sheet_name: Optional[str] = None
+):
     """Value investing tool based on Warren Buffett, Joseph Piotroski and Benjamin Graham thoughts [Source: FMP]
 
     Parameters
@@ -58,7 +61,7 @@ def valinvest_score(symbol: str, years: int, export: str = "", sheet_name: str =
 
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
-def display_profile(symbol: str, export: str = "", sheet_name: str = None):
+def display_profile(symbol: str, export: str = "", sheet_name: Optional[str] = None):
     """Financial Modeling Prep ticker profile
 
     Parameters
@@ -104,7 +107,7 @@ def display_enterprise(
     limit: int = 5,
     quarterly: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Financial Modeling Prep ticker enterprise
 
@@ -162,7 +165,7 @@ def display_discounted_cash_flow(
     limit: int = 5,
     quarterly: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Financial Modeling Prep ticker discounted cash flow
 
@@ -204,9 +207,9 @@ def display_income_statement(
     limit: int = 5,
     quarterly: bool = False,
     ratios: bool = False,
-    plot: list = None,
+    plot: Optional[list] = None,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Financial Modeling Prep ticker income statement
 
@@ -230,26 +233,23 @@ def display_income_statement(
     income = fmp_model.get_income(symbol, limit, quarterly, ratios, bool(plot))
 
     if not income.empty:
+        income.index = [
+            stocks_helper.INCOME_PLOT["FinancialModelingPrep"][i]
+            for i in [i.replace(" ", "_") for i in income.index.str.lower()]
+        ]
+
         if plot:
             income_plot_data = income[income.columns[::-1]]
             rows_plot = len(plot)
             income_plot_data = income_plot_data.transpose()
-            income_plot_data.columns = income_plot_data.columns.str.lower()
 
-            if not ratios:
-                (df_rounded, denomination) = transform_by_denomination(income_plot_data)
-                if denomination == "Units":
-                    denomination = ""
-            else:
-                df_rounded = income_plot_data
-                denomination = ""
             if rows_plot == 1:
                 fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-                df_rounded[plot[0].replace("_", "")].plot()
+                income_plot_data[plot[0]].plot()
                 title = (
-                    f"{plot[0].replace('_', ' ').lower()} {'QoQ' if quarterly else 'YoY'} Growth of {symbol.upper()}"
+                    f"{plot[0].replace('_', ' ').title()} {'QoQ' if quarterly else 'YoY'} Growth of {symbol.upper()}"
                     if ratios
-                    else f"{plot[0].replace('_', ' ')} of {symbol.upper()} {denomination}"
+                    else f"{plot[0].replace('_', ' ').title()} of {symbol.upper()}"
                 )
                 plt.title(title)
                 theme.style_primary_axis(ax)
@@ -257,14 +257,18 @@ def display_income_statement(
             else:
                 fig, axes = plt.subplots(rows_plot)
                 for i in range(rows_plot):
-                    axes[i].plot(df_rounded[plot[i].replace("_", "")])
-                    axes[i].set_title(f"{plot[i].replace('_', ' ')} {denomination}")
+                    axes[i].plot(income_plot_data[plot[i]])
+                    axes[i].set_title(f"{plot[i].replace('_', ' ').title()}")
                 theme.style_primary_axis(axes[0])
                 fig.autofmt_xdate()
         else:
             income = income[income.columns[::-1]]
+            # Snake case to english
+            income.index = income.index.to_series().apply(
+                lambda x: x.replace("_", " ").title()
+            )
             print_rich_table(
-                income.drop(index=["Final link", "Link"]),
+                income.drop(index=["Final Link", "Link"]),
                 headers=list(income.columns),
                 title=f"{symbol.upper()} Income Statement"
                 if not ratios
@@ -274,7 +278,7 @@ def display_income_statement(
 
             pd.set_option("display.max_colwidth", None)
 
-            console.print(income.loc["Final link"].to_frame().to_string())
+            console.print(income.loc["Final Link"].to_frame().to_string())
             console.print()
             console.print(income.loc["Link"].to_frame().to_string())
             console.print()
@@ -297,9 +301,9 @@ def display_balance_sheet(
     limit: int = 5,
     quarterly: bool = False,
     ratios: bool = False,
-    plot: list = None,
+    plot: Optional[list] = None,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Financial Modeling Prep ticker balance sheet
 
@@ -323,29 +327,23 @@ def display_balance_sheet(
     balance = fmp_model.get_balance(symbol, limit, quarterly, ratios, bool(plot))
 
     if not balance.empty:
+        balance.index = [
+            stocks_helper.BALANCE_PLOT["FinancialModelingPrep"][i]
+            for i in [i.replace(" ", "_") for i in balance.index.str.lower()]
+        ]
+
         if plot:
             balance_plot_data = balance[balance.columns[::-1]]
             rows_plot = len(plot)
             balance_plot_data = balance_plot_data.transpose()
-            balance_plot_data.columns = balance_plot_data.columns.str.lower()
-
-            if not ratios:
-                (df_rounded, denomination) = transform_by_denomination(
-                    balance_plot_data
-                )
-                if denomination == "Units":
-                    denomination = ""
-            else:
-                df_rounded = balance_plot_data
-                denomination = ""
 
             if rows_plot == 1:
                 fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-                df_rounded[plot[0].replace("_", "")].plot()
+                balance_plot_data[plot[0]].plot()
                 title = (
-                    f"{plot[0].replace('_', ' ').lower()} {'QoQ' if quarterly else 'YoY'} Growth of {symbol.upper()}"
+                    f"{plot[0].replace('_', ' ').title()} {'QoQ' if quarterly else 'YoY'} Growth of {symbol.upper()}"
                     if ratios
-                    else f"{plot[0].replace('_', ' ')} of {symbol.upper()} {denomination}"
+                    else f"{plot[0].replace('_', ' ').title()} of {symbol.upper()}"
                 )
                 plt.title(title)
                 theme.style_primary_axis(ax)
@@ -353,14 +351,18 @@ def display_balance_sheet(
             else:
                 fig, axes = plt.subplots(rows_plot)
                 for i in range(rows_plot):
-                    axes[i].plot(df_rounded[plot[i].replace("_", "")])
-                    axes[i].set_title(f"{plot[i].replace('_', ' ')} {denomination}")
+                    axes[i].plot(balance_plot_data[plot[i]])
+                    axes[i].set_title(f"{plot[i].replace('_', ' ').title()}")
                 theme.style_primary_axis(axes[0])
                 fig.autofmt_xdate()
         else:
             balance = balance[balance.columns[::-1]]
+            # Snake case to english
+            balance.index = balance.index.to_series().apply(
+                lambda x: x.replace("_", " ").title()
+            )
             print_rich_table(
-                balance.drop(index=["Final link", "Link"]),
+                balance.drop(index=["Final Link", "Link"]),
                 headers=list(balance.columns),
                 title=f"{symbol.upper()} Balance Sheet",
                 show_index=True,
@@ -368,7 +370,7 @@ def display_balance_sheet(
 
             pd.set_option("display.max_colwidth", None)
 
-            console.print(balance.loc["Final link"].to_frame().to_string())
+            console.print(balance.loc["Final Link"].to_frame().to_string())
             console.print()
             console.print(balance.loc["Link"].to_frame().to_string())
             console.print()
@@ -391,9 +393,9 @@ def display_cash_flow(
     limit: int = 5,
     quarterly: bool = False,
     ratios: bool = False,
-    plot: list = None,
+    plot: Optional[list] = None,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Financial Modeling Prep ticker cash flow
 
@@ -417,27 +419,23 @@ def display_cash_flow(
     cash = fmp_model.get_cash(symbol, limit, quarterly, ratios, bool(plot))
 
     if not cash.empty:
+        cash.index = [
+            stocks_helper.CASH_PLOT["FinancialModelingPrep"][i]
+            for i in [i.replace(" ", "_") for i in cash.index.str.lower()]
+        ]
+
         if plot:
             cash_plot_data = cash[cash.columns[::-1]]
             rows_plot = len(plot)
             cash_plot_data = cash_plot_data.transpose()
-            cash_plot_data.columns = cash_plot_data.columns.str.lower()
-
-            if not ratios:
-                (df_rounded, denomination) = transform_by_denomination(cash_plot_data)
-                if denomination == "Units":
-                    denomination = ""
-            else:
-                df_rounded = cash_plot_data
-                denomination = ""
 
             if rows_plot == 1:
                 fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-                df_rounded[plot[0].replace("_", "")].plot()
+                cash_plot_data[plot[0]].plot()
                 title = (
-                    f"{plot[0].replace('_', ' ').lower()} {'QoQ' if quarterly else 'YoY'} Growth of {symbol.upper()}"
+                    f"{plot[0].replace('_', ' ').title()} {'QoQ' if quarterly else 'YoY'} Growth of {symbol.upper()}"
                     if ratios
-                    else f"{plot[0].replace('_', ' ')} of {symbol.upper()} {denomination}"
+                    else f"{plot[0].replace('_', ' ').title()} of {symbol.upper()}"
                 )
                 plt.title(title)
                 theme.style_primary_axis(ax)
@@ -445,14 +443,19 @@ def display_cash_flow(
             else:
                 fig, axes = plt.subplots(rows_plot)
                 for i in range(rows_plot):
-                    axes[i].plot(df_rounded[plot[i].replace("_", "")])
-                    axes[i].set_title(f"{plot[i].replace('_', ' ')} {denomination}")
+                    axes[i].plot(cash_plot_data[plot[i]])
+                    axes[i].set_title(f"{plot[i].replace('_', ' ').title()}")
                 theme.style_primary_axis(axes[0])
                 fig.autofmt_xdate()
         else:
             cash = cash[cash.columns[::-1]]
+            # Snake case to english
+            cash.index = cash.index.to_series().apply(
+                lambda x: x.replace("_", " ").title()
+            )
+
             print_rich_table(
-                cash.drop(index=["Final link", "Link"]),
+                cash.drop(index=["Final Link", "Link"]),
                 headers=list(cash.columns),
                 title=f"{symbol.upper()} Cash Flow",
                 show_index=True,
@@ -460,7 +463,7 @@ def display_cash_flow(
 
             pd.set_option("display.max_colwidth", None)
 
-            console.print(cash.loc["Final link"].to_frame().to_string())
+            console.print(cash.loc["Final Link"].to_frame().to_string())
             console.print()
             console.print(cash.loc["Link"].to_frame().to_string())
             console.print()
@@ -483,7 +486,7 @@ def display_key_metrics(
     limit: int = 5,
     quarterly: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Financial Modeling Prep ticker key metrics
 
@@ -530,7 +533,7 @@ def display_financial_ratios(
     limit: int = 5,
     quarterly: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Financial Modeling Prep ticker ratios
 
@@ -577,7 +580,7 @@ def display_financial_statement_growth(
     limit: int = 5,
     quarterly: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Financial Modeling Prep ticker growth
 
@@ -623,7 +626,7 @@ def display_filings(
     pages: int = 1,
     limit: int = 20,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Display recent forms submitted to the SEC
 
@@ -684,7 +687,9 @@ def add_color(value: str) -> str:
 
 
 @log_start_end(log=logger)
-def rating(symbol: str, limit: int = 10, export: str = "", sheet_name: str = None):
+def rating(
+    symbol: str, limit: int = 10, export: str = "", sheet_name: Optional[str] = None
+):
     """Display ratings for a given ticker. [Source: Financial Modeling Prep]
 
     Parameters

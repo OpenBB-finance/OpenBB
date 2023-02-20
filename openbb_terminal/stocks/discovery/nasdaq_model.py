@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 from datetime import datetime
+from typing import Optional
 
 import pandas as pd
 import requests
@@ -48,7 +49,7 @@ def get_retail_tickers() -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def get_dividend_cal(date: str = None) -> pd.DataFrame:
+def get_dividend_cal(date: Optional[str] = None) -> pd.DataFrame:
     """Gets dividend calendar for given date.  Date represents Ex-Dividend Date
 
     Parameters

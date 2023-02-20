@@ -72,7 +72,7 @@ def display_query(
 @check_api_key(["API_SHROOM_KEY"])
 def display_daily_transactions(
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Get daily transactions for certain symbols in ethereum blockchain
@@ -128,7 +128,7 @@ def display_dapp_stats(
     raw: bool = False,
     limit: int = 10,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Get daily transactions for certain symbols in ethereum blockchain
@@ -199,7 +199,7 @@ def display_total_value_locked(
     symbol: str = "USDC",
     interval: int = 1,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """

@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 # pylint: disable=unsupported-assignment-operation,too-many-lines
 # pylint: disable=no-member,too-many-branches,too-many-arguments
 # pylint: disable=inconsistent-return-statements
+# pylint: disable=consider-using-dict-items
 
 import logging
 import os
@@ -37,9 +38,12 @@ from openbb_terminal.rich_config import console
 # pylint: disable=unused-import
 from openbb_terminal.stocks.stock_statics import (
     BALANCE_PLOT,  # noqa: F401
+    BALANCE_PLOT_CHOICES,  # noqa: F401
     CANDLE_SORT,  # noqa: F401
     CASH_PLOT,  # noqa: F401
+    CASH_PLOT_CHOICES,  # noqa: F401
     INCOME_PLOT,  # noqa: F401
+    INCOME_PLOT_CHOICES,  # noqa: F401
     INTERVALS,  # noqa: F401
     SOURCES,  # noqa: F401
     market_coverage_suffix,
@@ -458,7 +462,7 @@ def load(
 
 def display_candle(
     symbol: str,
-    data: pd.DataFrame = None,
+    data: Optional[pd.DataFrame] = None,
     use_matplotlib: bool = True,
     intraday: bool = False,
     add_trend: bool = False,
@@ -1118,3 +1122,37 @@ def map_parse_choices(choices: List[str]) -> Dict[str, str]:
     the_dict = {x.lower().replace(" ", "_"): x for x in choices}
     the_dict[""] = ""
     return the_dict
+
+
+def verify_plot_options(command: str, source: str, plot: list) -> bool:
+    if command == "cash":
+        command_options = CASH_PLOT
+    elif command == "balance":
+        command_options = BALANCE_PLOT
+    else:
+        command_options = INCOME_PLOT
+    options = list(command_options[source].values())
+
+    incorrect_columns = []
+    for column in plot:
+        if column not in options:
+            incorrect_columns.append(column)
+    if incorrect_columns:
+        console.print(
+            f"[red]The chosen columns to plot is not available for {source}.[/red]\n"
+        )
+        for column in incorrect_columns:
+            possible_sources = []
+            for i in command_options:
+                if column in list(command_options[i].values()):
+                    possible_sources.append(i)
+            if possible_sources:
+                console.print(
+                    f"[red]{column} can be plotted with the following sources: {', '.join(possible_sources)}[/red]"
+                )
+            else:
+                console.print(
+                    f"[red]{column} does not exist in a existing data source.[/red]"
+                )
+        return True
+    return False

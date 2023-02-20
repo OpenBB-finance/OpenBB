@@ -3,11 +3,14 @@ import json
 import logging
 import os
 from pathlib import Path
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 from prompt_toolkit.completion import NestedCompleter
 
-from openbb_terminal import feature_flags as obbff
+from openbb_terminal import (
+    feature_flags as obbff,
+    keys_model,
+)
 from openbb_terminal.account.account_model import get_diff, get_routines_info
 from openbb_terminal.account.account_view import display_routines_list
 from openbb_terminal.core.config.paths import USER_ROUTINES_DIRECTORY
@@ -39,11 +42,14 @@ class AccountController(BaseController):
         "upload",
         "download",
         "delete",
+        "generate",
+        "show",
+        "revoke",
     ]
 
     PATH = "/account/"
 
-    def __init__(self, queue: List[str] = None):
+    def __init__(self, queue: Optional[List[str]] = None):
         super().__init__(queue)
         self.ROUTINE_FILES: Dict[str, Path] = {}
         self.REMOTE_CHOICES: List[str] = []
@@ -53,7 +59,7 @@ class AccountController(BaseController):
         """Update runtime choices"""
         self.ROUTINE_FILES = self.get_routines()
         if session and obbff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.controller_choices}
+            choices: dict = {c: {} for c in self.controller_choices}  # type: ignore
             choices["sync"] = {"--on": {}, "--off": {}}
             choices["upload"]["--file"] = {c: {} for c in self.ROUTINE_FILES}
             choices["upload"]["-f"] = choices["upload"]["--file"]
@@ -90,6 +96,11 @@ class AccountController(BaseController):
         mt.add_cmd("upload")
         mt.add_cmd("download")
         mt.add_cmd("delete")
+        mt.add_raw("\n")
+        mt.add_info("_personal_access_token_")
+        mt.add_cmd("generate")
+        mt.add_cmd("show")
+        mt.add_cmd("revoke")
         mt.add_raw("\n")
         mt.add_info("_authentication_")
         mt.add_cmd("logout")
@@ -177,11 +188,12 @@ class AccountController(BaseController):
                     i = console.input(
                         "\nDo you want to load the configurations above? (y/n): "
                     )
+                    console.print("")
                     if i.lower() in ["y", "yes"]:
                         Local.apply_configs(configs=configs_diff)
-                        console.print("\n[info]Done.[/info]")
+                        console.print("[info]Done.[/info]")
                     else:
-                        console.print("\n[info]Aborted.[/info]")
+                        console.print("[info]Aborted.[/info]")
                 else:
                     console.print("[info]No changes to apply.[/info]")
 
@@ -197,14 +209,14 @@ class AccountController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             i = console.input(
-                "[red]This action is irreversible![/red]\n"
+                "[bold red]This action is irreversible![/bold red]\n"
                 "Are you sure you want to permanently delete your data? (y/n): "
             )
+            console.print("")
             if i.lower() in ["y", "yes"]:
-                console.print("")
                 Hub.clear_user_configs(auth_header=User.get_auth_header())
             else:
-                console.print("\n[info]Aborted.[/info]")
+                console.print("[info]Aborted.[/info]")
 
     @log_start_end(log=logger)
     def call_list(self, other_args: List[str]):
@@ -303,7 +315,7 @@ class AccountController(BaseController):
                 if response is not None and response.status_code == 409:
                     i = console.input(
                         "A routine with the same name already exists, "
-                        "do you want to overwrite it? (y/n): "
+                        "do you want to replace it? (y/n): "
                     )
                     console.print("")
                     if i.lower() in ["y", "yes"]:
@@ -366,7 +378,23 @@ class AccountController(BaseController):
                             file_name=file_name,
                             routine=script,
                         )
-                        if file_path:
+                        if file_path == "File already exists":
+                            i = console.input(
+                                "\nA file with the same name already exists, "
+                                "do you want to replace it? (y/n): "
+                            )
+                            console.print("")
+                            if i.lower() in ["y", "yes"]:
+                                file_path = Local.save_routine(
+                                    file_name=file_name,
+                                    routine=script,
+                                    force=True,
+                                )
+                                if file_path:
+                                    console.print(f"[info]Location:[/info] {file_path}")
+                            else:
+                                console.print("[info]Aborted.[/info]")
+                        elif file_path:
                             console.print(f"[info]Location:[/info] {file_path}")
 
     @log_start_end(log=logger)
@@ -392,11 +420,116 @@ class AccountController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             name = " ".join(ns_parser.name)
-            response = Hub.delete_routine(
-                auth_header=User.get_auth_header(),
-                name=name,
+
+            i = console.input(
+                "[bold red]This action is irreversible![/bold red]\n"
+                "Are you sure you want to delete this routine? (y/n): "
+            )
+            console.print("")
+            if i.lower() in ["y", "yes"]:
+                response = Hub.delete_routine(
+                    auth_header=User.get_auth_header(),
+                    name=name,
+                )
+                if response and response.status_code == 200:
+                    if name in self.REMOTE_CHOICES:
+                        self.REMOTE_CHOICES.remove(name)
+                        self.update_runtime_choices()
+            else:
+                console.print("[info]Aborted.[/info]")
+
+    @log_start_end(log=logger)
+    def call_generate(self, other_args: List[str]) -> None:
+        """Process generate command."""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="generate",
+            description="Generate an OpenBB Personal Access Token.",
+        )
+        parser.add_argument(
+            "-d",
+            "--days",
+            dest="days",
+            help="Number of days the token will be valid",
+            type=check_positive,
+            default=30,
+        )
+        parser.add_argument(
+            "-s",
+            "--save",
+            dest="save",
+            default=False,
+            help="Save the token to the keys",
+            action="store_true",
+        )
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            i = console.input(
+                "[bold yellow]This will revoke any token that was previously generated."
+                "\nThis action is irreversible.[/bold yellow]"
+                "\nAre you sure you want to generate a new token? (y/n): "
+            )
+            if i.lower() not in ["y", "yes"]:
+                console.print("\n[info]Aborted.[/info]")
+                return
+
+            response = Hub.generate_personal_access_token(
+                auth_header=User.get_auth_header(), days=ns_parser.days
             )
             if response and response.status_code == 200:
-                if name in self.REMOTE_CHOICES:
-                    self.REMOTE_CHOICES.remove(name)
-                    self.update_runtime_choices()
+                token = response.json().get("token", "")
+                if token:
+                    console.print(f"\n[info]Token:[/info] {token}\n")
+
+                    save_to_keys = False
+                    if not ns_parser.save:
+                        save_to_keys = console.input(
+                            "Would you like to save the token to the keys? (y/n): "
+                        ).lower() in ["y", "yes"]
+
+                    if save_to_keys or ns_parser.save:
+                        keys_model.set_openbb_personal_access_token(
+                            key=token, persist=True, show_output=True
+                        )
+
+    @log_start_end(log=logger)
+    def call_show(self, other_args: List[str]) -> None:
+        """Process show command."""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="show",
+            description="Show your current OpenBB Personal Access Token.",
+        )
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            response = Hub.get_personal_access_token(auth_header=User.get_auth_header())
+            if response and response.status_code == 200:
+                token = response.json().get("token", "")
+                if token:
+                    console.print(f"[info]Token:[/info] {token}")
+
+    @log_start_end(log=logger)
+    def call_revoke(self, other_args: List[str]) -> None:
+        """Process revoke command."""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="revoke",
+            description="Revoke your current OpenBB Personal Access Token.",
+        )
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            i = console.input(
+                "[bold red]This action is irreversible![/bold red]\n"
+                "Are you sure you want to revoke your token? (y/n): "
+            )
+            if i.lower() in ["y", "yes"]:
+                response = Hub.revoke_personal_access_token(
+                    auth_header=User.get_auth_header()
+                )
+                if response and response.status_code in [200, 202]:
+                    console.print("[info]Token revoked.[/info]")
+            else:
+                console.print("[info]Aborted.[/info]")

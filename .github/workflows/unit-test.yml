@@ -35,7 +35,7 @@ jobs:
       check-changes: ${{ steps.check-changes.outputs.check-changes }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v1 # v1 is used to preserve the git history and works with the git diff command
         with:
           fetch-depth: 100
           # The GitHub token is preserved by default but this job doesn't need
@@ -46,20 +46,16 @@ jobs:
       - name: Check for changes to files to trigger unit test
         id: check-changes
         run: |
-          source_branch=$(jq -r .pull_request.head.ref "$GITHUB_EVENT_PATH")
-          target_branch=$(jq -r .pull_request.base.ref "$GITHUB_EVENT_PATH")
+          current_branch=$(jq -r .pull_request.base.ref "$GITHUB_EVENT_PATH")
 
-          if git diff --name-only origin/$target_branch HEAD | grep -E ".py$|openbb_terminal\/.*|pyproject.toml|poetry.lock|requirements.txt|requirements-full.txt"; then
+          if git diff --name-only origin/$current_branch HEAD | grep -E ".py$|openbb_terminal\/.*|pyproject.toml|poetry.lock|requirements.txt|requirements-full.txt"; then
             echo "check-changes=true" >> $GITHUB_OUTPUT
           else
             echo "check-changes=false" >> $GITHUB_OUTPUT
           fi
 
       - name: Show output of previous step
-        run: |
-          # echo "python-changes=${{ steps.python-changes.outputs.python-changes }}"
-          # echo "folder-changes=${{ steps.folder-changes.outputs.folder-changes }}"
-          echo "check-changes=${{ steps.check-changes.outputs.check-changes }}"
+        run:  echo "check-changes=${{ steps.check-changes.outputs.check-changes }}"
 
   base-test:
     name: Base Tests - Ubuntu-latest - Python 3.9
@@ -94,12 +90,12 @@ jobs:
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
         run: poetry install --no-interaction -E optimization
 
-      - name: Run tests
+      - name: Run tests and coverage test
         env:
           MPLBACKEND: Agg
         run: |
           source $VENV
-          pytest tests/ --optimization --autodoc
+          pytest tests/ --optimization --cov --cov-fail-under=50 --autodoc -n auto --durations=10 --timeout=30
 
       - name: Start Terminal and exit
         run: |
@@ -157,7 +153,7 @@ jobs:
           MPLBACKEND: Agg
         run: |
           source $VENV
-          pytest tests/ --optimization --autodoc
+          pytest tests/ --optimization --autodoc -n auto --timeout=30
 
       - name: Start Terminal and exit
         run: |
@@ -222,7 +218,7 @@ jobs:
           MPLBACKEND: Agg
         run: |
           source $VENV
-          pytest tests/ --optimization --autodoc
+          pytest tests/ --optimization --autodoc -n auto --timeout=30
 
   tests-conda:
     name: Anaconda Python Tests - (${{ matrix.python-version }}, ${{ matrix.os }})
@@ -318,8 +314,7 @@ jobs:
         env:
           MPLBACKEND: Agg
         shell: bash -l {0}
-        run: pytest tests/ -m "not linux" --optimization
-
+        run: pytest tests/ -m "not linux" --optimization -n auto --timeout=30
       - name: Start Terminal and exit
         shell: bash -l {0}
         run: python terminal.py

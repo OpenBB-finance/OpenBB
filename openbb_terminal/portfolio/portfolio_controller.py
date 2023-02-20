@@ -5,7 +5,7 @@ import argparse
 import logging
 import os
 from datetime import date
-from typing import List
+from typing import List, Optional
 
 import pandas as pd
 
@@ -107,7 +107,7 @@ class PortfolioController(BaseController):
     PATH = "/portfolio/"
     CHOICES_GENERATION = True
 
-    def __init__(self, queue: List[str] = None):
+    def __init__(self, queue: Optional[List[str]] = None):
         """Constructor"""
         super().__init__(queue)
         self.file_types = ["xlsx", "csv"]
@@ -206,7 +206,7 @@ class PortfolioController(BaseController):
         mt.add_info("_risk_")
         mt.add_cmd("var", self.portfolio_name and self.benchmark_name)
         mt.add_cmd("es", self.portfolio_name and self.benchmark_name)
-        mt.add_cmd("os", self.portfolio_name and self.benchmark_name)
+        mt.add_cmd("om", self.portfolio_name and self.benchmark_name)
 
         console.print(text=mt.menu_text, menu="Portfolio - Portfolio Optimization")
         self.update_choices()
@@ -356,9 +356,9 @@ class PortfolioController(BaseController):
                 f"\n[bold][param]Portfolio:[/param][/bold] {self.portfolio_name}"
             )
 
-            self.risk_free_rate = ns_parser.risk_free_rate / 100
+            self.risk_free_rate = ns_parser.risk_free_rate
             console.print(
-                f"[bold][param]Risk Free Rate:[/param][/bold] {self.risk_free_rate:.2%}"
+                f"[bold][param]Risk Free Rate:[/param][/bold] {self.risk_free_rate}%"
             )
 
             self.benchmark_name = "SPDR S&P 500 ETF Trust (SPY)"
@@ -894,7 +894,7 @@ class PortfolioController(BaseController):
                 )
             else:
                 console.print(
-                    "[red]Please first define the portfolio (via 'load')[/red]\n"
+                    "[red]Please define the portfolio first (via 'load')[/red]\n"
                 )
 
     @log_start_end(log=logger)
