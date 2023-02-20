@@ -186,21 +186,25 @@ def rvol(
     
     Returns
     -------
-    pd.DataFrame: rvol_cones
+    pd.DataFrame: rvol
         DataFrame of realized volatility quantiles.
     
     Examples
     --------
-    df = get_rvol_cones(symbol = "AAPL")
+    df = rvol(symbol = "AAPL")
     
-    df = get_rvol_cones(symbol = "AAPL", lower_q = 0.10, upper_q = 0.90)
+    df = rvol(symbol = "AAPL", lower_q = 0.10, upper_q = 0.90)
     """
+    if lower_q > 1:
+        lower_q = lower_q/100
+    if upper_q > 1:
+        upper_q = upper_q/100
+    
     lower_q_label = str((int(lower_q*100)))
     upper_q_label = str((int(upper_q*100)))
-    
-    rvol_cones: DataFrame = pd.DataFrame()
+    rvol_cones: pd.DataFrame = pd.DataFrame()
     quantiles = [lower_q, upper_q]
-    windows = [3,10,30,60,90,120,150,180,210,240]
+    windows = [3,10,30,60,90,120,150,180,210,240,300,360]
     data = data
     min_ = []
     max_ = []
@@ -208,8 +212,7 @@ def rvol(
     top_q = []
     bottom_q = []
     realized = []
-    data.index = data.index.date
-    data = pd.DataFrame(data).sort_index(ascending = False)
+    data = data.sort_index(ascending = False)
 
     def realized_vol(data, window=30):
         """Helper function for calculating realized volatility."""
