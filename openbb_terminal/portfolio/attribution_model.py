@@ -9,23 +9,23 @@ import pandas as pd
 import yfinance as yf
 
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.rich_config import console
+from openbb_terminal.etf import fmp_model
 
 logger = logging.getLogger(__name__)
 
 
 SPY_SECTORS_MAP = {
-    "S&P 500 Materials (Sector)": "basic_materials",
-    "S&P 500 Industrials (Sector)": "industrials",
-    "S&P 500 Consumer Discretionary (Sector)": "consumer_cyclical",
-    "S&P 500 Consumer Staples (Sector)": "consumer_defensive",
-    "S&P 500 Health Care (Sector)": "healthcare",
-    "S&P 500 Financials (Sector)": "financial_services",
-    "S&P 500 Information Technology (Sector)": "technology",
-    "S&P 500 Telecommunication Services (Sector)": "communication_services",
-    "S&P 500 Utilities (Sector)": "utilities",
-    "S&P 500 Real Estate (Sector)": "realestate",
-    "S&P 500 Energy (Sector)": "energy",
+    "S&P 500 Materials (Sector)": "Basic Materials",
+    "S&P 500 Industrials (Sector)": "Industrials",
+    "S&P 500 Consumer Discretionary (Sector)": "Consumer Cyclical",
+    "S&P 500 Consumer Staples (Sector)": "Consumer Defensive",
+    "S&P 500 Health Care (Sector)": "Healthcare",
+    "S&P 500 Financials (Sector)": "Financial Services",
+    "S&P 500 Information Technology (Sector)": "Technology",
+    "S&P 500 Telecommunication Services (Sector)": "Communication Services",
+    "S&P 500 Utilities (Sector)": "Utilities",
+    "S&P 500 Real Estate (Sector)": "Real Estate",
+    "S&P 500 Energy (Sector)": "Energy",
 }
 
 PF_SECTORS_MAP = {
@@ -64,23 +64,18 @@ def get_spy_sector_contributions(
     """
 
     # Sector Map
-
     sectors_ticker = "SPY"
 
     # Load in info
     sp500_tickers_data = get_daily_sector_prices(start_date, end_date)
-    try:
-        weight_data = yf.Ticker(sectors_ticker).info["sectorWeightings"]
-    except Exception as _:  # noqa
-        console.print(
-            "[red]This functionality is currently unstable and will be removed in the near future."
-        )
-        return pd.DataFrame()
+    weight_data = fmp_model.get_etf_sector_weightings(sectors_ticker)
 
     # reformat Data
     weights: Dict[str, dict] = {"SPY": {}}
+
     for sector in weight_data:
-        weights[sectors_ticker].update(sector)
+        weight_formatted = float(sector["weightPercentage"].strip("%")) / 100
+        weights[sectors_ticker][sector["sector"]] = weight_formatted
 
     # add the sectors + dates + adj close to the dataframe
     records = []
