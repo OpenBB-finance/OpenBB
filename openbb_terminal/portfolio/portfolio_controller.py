@@ -206,7 +206,7 @@ class PortfolioController(BaseController):
         mt.add_info("_risk_")
         mt.add_cmd("var", self.portfolio_name and self.benchmark_name)
         mt.add_cmd("es", self.portfolio_name and self.benchmark_name)
-        mt.add_cmd("os", self.portfolio_name and self.benchmark_name)
+        mt.add_cmd("om", self.portfolio_name and self.benchmark_name)
 
         console.print(text=mt.menu_text, menu="Portfolio - Portfolio Optimization")
         self.update_choices()
@@ -894,7 +894,7 @@ class PortfolioController(BaseController):
                 )
             else:
                 console.print(
-                    "[red]Please first define the portfolio (via 'load')[/red]\n"
+                    "[red]Please define the portfolio first (via 'load')[/red]\n"
                 )
 
     @log_start_end(log=logger)
