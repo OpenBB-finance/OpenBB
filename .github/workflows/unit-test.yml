@@ -37,7 +37,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v1 # v1 is used to preserve the git history and works with the git diff command
         with:
-          fetch-depth: 0
+          fetch-depth: 100
           # The GitHub token is preserved by default but this job doesn't need
           # to be able to push to GitHub.
           persist-credentials: false
