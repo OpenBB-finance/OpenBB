@@ -8,6 +8,7 @@ import requests
 from pydantic import BaseModel
 
 from openbb_terminal import config_terminal as cfg
+from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import request
 from openbb_terminal.rich_config import console
 
@@ -71,17 +72,15 @@ class DataBento(BaseModel):
             return pd.DataFrame()
         return self.get_historical()
 
+    logger = logging.getLogger(__name__)
+
+    @log_start_end(log=logger)
+    @check_api_key(["API_DATABENTO_KEY"])
     def get_historical(self) -> pd.DataFrame:
         """Prepares the request to be made.  I am using their https interface instead of their python client"""
 
         base_url = "https://hist.databento.com/v0/timeseries.stream"
-        if self.exchange == "GLBX.MDP3":
-            # This uses their smart contract notation to get the highest volume contract each day
-            # Getting the closest calendar results in low volume spreads
-            symbol = self.symbol + ".V.0"
-        else:
-            # Stock symbols are just the symbol
-            symbol = self.symbol
+        symbol = self.symbol + ".V.0" if self.exchange == "GLBX.MDP3" else self.symbol
         params = {
             "dataset": self.exchange,
             "symbols": symbol,
@@ -91,6 +90,7 @@ class DataBento(BaseModel):
             "stype_in": self.stype,
             "encoding": "csv",
         }
+        print(cfg.API_DATABENTO_KEY)
         auth = requests.auth.HTTPBasicAuth(cfg.API_DATABENTO_KEY, "")
         return self.process_request(base_url, params, auth)
 
@@ -117,8 +117,10 @@ class DataBento(BaseModel):
         return df
 
 
+@log_start_end(log=logger)
+@check_api_key(["API_DATABENTO_KEY"])
 def get_historical_stock(symbol: str, start_date: str, end_date: str) -> pd.DataFrame:
-    """Gets historical EOD data from DataBento.  Currnetly, just NASDAQ is supported.
+    """Gets historical EOD data from DataBento.  Currently, just NASDAQ is supported.
 
     Parameters
     ----------
@@ -134,6 +136,8 @@ def get_historical_stock(symbol: str, start_date: str, end_date: str) -> pd.Data
     return db.get_historical_stock()
 
 
+@log_start_end(log=logger)
+@check_api_key(["API_DATABENTO_KEY"])
 def get_historical_futures(symbol: str, start_date: str, end_date: str) -> pd.DataFrame:
     """Gets historical EODfutures data from DataBento.  Currently, just CME is supported.
 
