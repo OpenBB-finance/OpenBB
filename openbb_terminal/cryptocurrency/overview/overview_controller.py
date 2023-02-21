@@ -160,7 +160,7 @@ class OverviewController(BaseController):
             choices=get_categories_keys(),
             metavar="CATEGORY",
         )
-        if other_args and not other_args[0][0] == "-":
+        if other_args and other_args[0][0] != "-":
             other_args.insert(0, "-c")
 
         ns_parser = self.parse_known_args_and_warn(
@@ -226,7 +226,7 @@ class OverviewController(BaseController):
             help="Display N items",
             default=10,
         )
-        if other_args and not other_args[0][0] == "-":
+        if other_args and other_args[0][0] != "-":
             other_args.insert(0, "-m")
 
         ns_parser = self.parse_known_args_and_warn(
