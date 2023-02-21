@@ -230,19 +230,19 @@ class FixedIncomeController(BaseController):
         if ns_parser:
             if ns_parser.source == "FRED":
                 fred_view.plot_estr(
-                    self.estr_parameter_to_fred_id[ns_parser.parameter],
-                    ns_parser.start_date,
-                    ns_parser.end_date,
-                    ns_parser.export,
-                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None,
+                    series_id=self.estr_parameter_to_fred_id[ns_parser.parameter],
+                    start_date=ns_parser.start_date,
+                    end_date=ns_parser.end_date,
+                    export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None,
                 )
             elif ns_parser.source == "ECB":
                 ecb_view.plot_estr(
-                    self.estr_parameter_to_ecb_id[ns_parser.parameter],
-                    ns_parser.start_date,
-                    ns_parser.end_date,
-                    ns_parser.export,
-                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None,
+                    series_id=self.estr_parameter_to_ecb_id[ns_parser.parameter],
+                    start_date=ns_parser.start_date,
+                    end_date=ns_parser.end_date,
+                    export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None,
                 )
 
     @log_start_end(log=logger)

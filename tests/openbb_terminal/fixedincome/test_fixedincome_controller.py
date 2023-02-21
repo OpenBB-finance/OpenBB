@@ -1,7 +1,11 @@
 import os
 import pytest
-
+from datetime import datetime
 from openbb_terminal.fixedincome import fixedincome_controller
+
+
+MOCK_START = datetime.strptime("2022-01-01", "%Y-%m-%d")
+MOCK_END = datetime.strptime("2022-01-31", "%Y-%m-%d")
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -190,3 +194,67 @@ def test_call_func_expect_queue(expected_queue, func, queue):
 
     assert result is None
     assert controller.queue == expected_queue
+
+
+
+@pytest.mark.vcr(record_mode="none")
+@pytest.mark.parametrize(
+    "tested_func, other_args, mocked_func, called_args, called_kwargs",
+    [
+        (
+            "call_estr",
+            [
+                "-p=total_volume",
+                "-s=2022-01-01",
+                "-e=2022-01-31",
+                "--export=csv",
+            ],
+            "fred_view.plot_estr",
+            [],
+            dict(series_id="ECBESTRTOTVOL",
+                 start_date=MOCK_START,
+                 end_date=MOCK_END,
+                 export="csv",
+                 sheet_name=None),
+        ),
+        (
+            "call_estr",
+            [
+                "--source=ECB",
+                "-p=total_volume",
+                "-s=2022-01-01",
+                "-e=2022-01-31",
+                "--export=csv",
+            ],
+            "ecb_view.plot_estr",
+            [],
+            dict(series_id="EST.B.EU000A2X2A25.TT",
+                 start_date=MOCK_START,
+                 end_date=MOCK_END,
+                 export="csv",
+                 sheet_name=None),
+        ),
+    ],
+)
+def test_call_cmd(
+    tested_func, mocked_func, other_args, called_args, called_kwargs, mocker
+):
+    path_controller = "openbb_terminal.fixedincome.fixedincome_controller"
+
+    if mocked_func:
+        mock = mocker.Mock()
+        mocker.patch(
+            target=f"{path_controller}.{mocked_func}",
+            new=mock,
+        )
+
+        controller = fixedincome_controller.FixedIncomeController(queue=None)
+        getattr(controller, tested_func)(other_args)
+
+        if called_args or called_kwargs:
+            mock.assert_called_once_with(*called_args, **called_kwargs)
+        else:
+            mock.assert_called_once()
+    else:
+        controller = fixedincome_controller.FixedIncomeController(queue=None)
+        getattr(controller, tested_func)(other_args)
