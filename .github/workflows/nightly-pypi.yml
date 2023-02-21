@@ -14,7 +14,6 @@ concurrency:
 jobs:
   deploy-nightly-pypi:
     name: Build and publish nightly distributions 📦 to Test PyPI
-    if: startsWith(github.ref, 'refs/heads/feature/nightly-pypi')
     runs-on: ubuntu-latest
 
     steps:
@@ -27,7 +26,7 @@ jobs:
     - name: Update version in pyproject.toml
       run: |
         sed -i 's/name = ".*"/name = "openbb-nightly"/' pyproject.toml
-        sed -i "3s/version = \"\(.*\)\"/version = \"\1.dev$(date +%Y%m%d%s)\"/" pyproject.toml
+        sed -i "3s/version = \"\(.*\)\"/version = \"\1.dev$(date +%Y%m%d)\"/" pyproject.toml
         head pyproject.toml
 
     - name: Install pypa/build
@@ -49,5 +48,4 @@ jobs:
     - name: Publish distribution 📦 to Test PyPI
       uses: pypa/gh-action-pypi-publish@release/v1
       with:
-        password: ${{ secrets.NIGHTLY_TEST_PYPI_TOKEN }}
-        repository_url: https://test.pypi.org/legacy/
+        password: ${{ secrets.NIGHTLY_PYPI_API_TOKEN }}

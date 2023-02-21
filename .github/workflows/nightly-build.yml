@@ -55,3 +55,12 @@ jobs:
         with:
           workflow: docker.yml
           token: ${{ secrets.GITHUB_TOKEN }}
+  
+  trigger-pypi-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger PyPI Build
+        uses: aurelien-baudet/workflow-dispatch@v2
+        with:
+          workflow: nightly-pypi.yml
+          token: ${{ secrets.GITHUB_TOKEN }}
