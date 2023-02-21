@@ -546,7 +546,7 @@ class OpenBBFigure(go.Figure):
                         col=col,
                     )
 
-                    max_y = max(max_y, max(y * 2))  # pylint: disable=W3301
+                    max_y = max(max_y, max(y * 2))
 
         self.update_yaxes(
             position=0.0,
