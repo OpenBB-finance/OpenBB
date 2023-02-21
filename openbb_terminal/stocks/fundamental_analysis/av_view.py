@@ -7,9 +7,9 @@ from typing import Optional, Union
 
 from openbb_terminal import OpenBBFigure
 from openbb_terminal.decorators import check_api_key, log_start_end
-from openbb_terminal.helper_funcs import camel_case_split, export_data, print_rich_table
-from openbb_terminal.helpers_denomination import transform as transform_by_denomination
+from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
+from openbb_terminal.stocks import stocks_helper
 from openbb_terminal.stocks.fundamental_analysis import av_model
 
 logger = logging.getLogger(__name__)
@@ -113,52 +113,44 @@ def display_income_statement(
     if df_income.empty:
         return
 
+    df_income.index = [
+        stocks_helper.INCOME_PLOT["AlphaVantage"][i]
+        for i in [i.replace(" ", "_") for i in df_income.index.str.lower()]
+    ]
+
     if plot:
         rows_plot = len(plot)
         income_plot_data = df_income.transpose()
-        income_plot_data.columns = income_plot_data.columns.str.lower()
-        income_plot_data = income_plot_data.drop("reportedCurrency")
-
-        if not ratios:
-            (df_rounded, denomination) = transform_by_denomination(income_plot_data)
-            if denomination == "Units":
-                denomination = ""
-        else:
-            df_rounded = income_plot_data
-            denomination = ""
 
         if rows_plot == 1:
             fig = OpenBBFigure()
             fig.add_scatter(
-                x=df_rounded.index,
-                y=df_rounded[plot[0].replace("_", "")],
+                x=income_plot_data.index,
+                y=income_plot_data[plot[0]],
                 name=plot[0].replace("_", ""),
             )
             fig.set_title(
                 f"{plot[0].replace('_', ' ').lower()} {'QoQ' if quarterly else 'YoY'} Growth of {symbol.upper()}"
                 if ratios
-                else f"{plot[0].replace('_', ' ')} of {symbol.upper()} {denomination}"
+                else f"{plot[0].replace('_', ' ')} of {symbol.upper()}"
             )
         else:
             fig = OpenBBFigure.create_subplots(rows=rows_plot, cols=1)
             for i in range(rows_plot):
                 fig.add_scatter(
-                    x=df_rounded.index,
-                    y=df_rounded[plot[i].replace("_", "")],
+                    x=income_plot_data.index,
+                    y=income_plot_data[plot[i].replace("_", "")],
                     name=plot[i].replace("_", ""),
                     row=i + 1,
                     col=1,
                 )
-                fig.set_title(
-                    f"{plot[i].replace('_', ' ')} {denomination}", row=i + 1, col=1
-                )
+                fig.set_title(f"{plot[i].replace('_', ' ')}", row=i + 1, col=1)
 
         fig.show()
 
     else:
-        indexes = df_income.index
-        new_indexes = [camel_case_split(ind) for ind in indexes]
-        df_income.index = new_indexes
+        # Snake case to english
+        df_income.index = [x.replace("_", " ").title() for x in df_income.index]
 
         print_rich_table(
             df_income,
@@ -215,29 +207,25 @@ def display_balance_sheet(
     if df_balance.empty:
         return
 
+    df_balance.index = [
+        stocks_helper.BALANCE_PLOT["AlphaVantage"][i]
+        for i in [i.replace(" ", "_") for i in df_balance.index.str.lower()]
+    ]
+
     if plot:
         rows_plot = len(plot)
         balance_plot_data = df_balance.transpose()
-        balance_plot_data.columns = balance_plot_data.columns.str.lower()
-
-        if not ratios:
-            (df_rounded, denomination) = transform_by_denomination(balance_plot_data)
-            if denomination == "Units":
-                denomination = ""
-        else:
-            df_rounded = balance_plot_data
-            denomination = ""
 
         if rows_plot == 1:
             fig = OpenBBFigure()
             fig.set_title(
                 f"{plot[0].replace('_', ' ').lower()} {'QoQ' if quarterly else 'YoY'} Growth of {symbol.upper()}"
                 if ratios
-                else f"{plot[0].replace('_', ' ')} of {symbol.upper()} {denomination}"
+                else f"{plot[0].replace('_', ' ')} of {symbol.upper()}"
             )
             fig.add_scatter(
-                x=df_rounded.index,
-                y=df_rounded[plot[0].replace("_", "")],
+                x=balance_plot_data.index,
+                y=balance_plot_data[plot[0].replace("_", "")],
                 name=plot[0].replace("_", ""),
             )
             fig.show()
@@ -245,21 +233,18 @@ def display_balance_sheet(
             fig = OpenBBFigure.create_subplots(rows=rows_plot, cols=1)
             for i in range(rows_plot):
                 fig.add_scatter(
-                    x=df_rounded.index,
-                    y=df_rounded[plot[i].replace("_", "")],
+                    x=balance_plot_data.index,
+                    y=balance_plot_data[plot[i].replace("_", "")],
                     name=plot[i].replace("_", ""),
                     row=i + 1,
                     col=1,
                 )
-                fig.set_title(
-                    f"{plot[i].replace('_', ' ')} {denomination}", row=i + 1, col=1
-                )
+                fig.set_title(f"{plot[i].replace('_', ' ')}", row=i + 1, col=1)
             fig.show()
 
     else:
-        indexes = df_balance.index
-        new_indexes = [camel_case_split(ind) for ind in indexes]
-        df_balance.index = new_indexes
+        # Snake case to english
+        df_balance.index = [x.replace("_", " ").title() for x in df_balance.index]
 
         print_rich_table(
             df_balance,
@@ -314,29 +299,25 @@ def display_cash_flow(
     if df_cash.empty:
         return
 
+    df_cash.index = [
+        stocks_helper.CASH_PLOT["AlphaVantage"][i]
+        for i in [i.replace(" ", "_") for i in df_cash.index.str.lower()]
+    ]
+
     if plot:
         rows_plot = len(plot)
         cash_plot_data = df_cash.transpose()
-        cash_plot_data.columns = cash_plot_data.columns.str.lower()
-
-        if not ratios:
-            (df_rounded, denomination) = transform_by_denomination(cash_plot_data)
-            if denomination == "Units":
-                denomination = ""
-        else:
-            df_rounded = cash_plot_data
-            denomination = ""
 
         if rows_plot == 1:
             fig = OpenBBFigure()
             fig.set_title(
                 f"{plot[0].replace('_', ' ').lower()} {'QoQ' if quarterly else 'YoY'} Growth of {symbol.upper()}"
                 if ratios
-                else f"{plot[0].replace('_', ' ')} of {symbol.upper()} {denomination}"
+                else f"{plot[0].replace('_', ' ')} of {symbol.upper()}"
             )
             fig.add_scatter(
-                x=df_rounded.index,
-                y=df_rounded[plot[0].replace("_", "")],
+                x=cash_plot_data.index,
+                y=cash_plot_data[plot[0].replace("_", "")],
                 name=plot[0].replace("_", ""),
             )
             fig.show()
@@ -344,21 +325,18 @@ def display_cash_flow(
             fig = OpenBBFigure.create_subplots(rows=rows_plot, cols=1)
             for i in range(rows_plot):
                 fig.add_scatter(
-                    x=df_rounded.index,
-                    y=df_rounded[plot[i].replace("_", "")],
+                    x=cash_plot_data.index,
+                    y=cash_plot_data[plot[i].replace("_", "")],
                     name=plot[i].replace("_", ""),
                     row=i + 1,
                     col=1,
                 )
-                fig.set_title(
-                    f"{plot[i].replace('_', ' ')} {denomination}", row=i + 1, col=1
-                )
+                fig.set_title(f"{plot[i].replace('_', ' ')}", row=i + 1, col=1)
             fig.show()
 
     else:
-        indexes = df_cash.index
-        new_indexes = [camel_case_split(ind) for ind in indexes]
-        df_cash.index = new_indexes
+        # Snake case to english
+        df_cash.index = [x.replace("_", " ").title() for x in df_cash.index]
 
         print_rich_table(
             df_cash,
