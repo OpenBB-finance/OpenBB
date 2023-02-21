@@ -38,10 +38,11 @@ def get_short_interest(symbol: str, nyse: bool = False) -> pd.DataFrame:
     df = pd.DataFrame()
 
     try:
-        if nyse:
-            df = quandl.get(f"FINRA/FNYX_{symbol}")
-        else:
-            df = quandl.get(f"FINRA/FNSQ_{symbol}")
+        df = (
+            quandl.get(f"FINRA/FNYX_{symbol}")
+            if nyse
+            else quandl.get(f"FINRA/FNSQ_{symbol}")
+        )
 
     except AuthenticationError:
         console.print("[red]Invalid API Key[/red]\n")

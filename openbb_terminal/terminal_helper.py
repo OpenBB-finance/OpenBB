@@ -158,13 +158,14 @@ def open_openbb_documentation(
                 path = f"/guides/intros/{path}"
         else:  # user didn't pass argument and is in a menu
             menu = path.split("/")[-2]
-            if menu in ["ta", "ba", "qa"]:
-                path = f"/guides/intros/common/{menu}"
-            else:
-                path = f"/guides/intros/{path}"
+            path = (
+                f"/guides/intros/common/{menu}"
+                if menu in ["ta", "ba", "qa"]
+                else f"/guides/intros/{path}"
+            )
 
     if command:
-        if "keys" == command:
+        if command == "keys":
             path = "/guides/advanced/api-keys"
             command = ""
         elif "settings" in path or "featflags" in path:

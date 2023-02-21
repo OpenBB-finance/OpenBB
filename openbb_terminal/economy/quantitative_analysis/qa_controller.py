@@ -267,10 +267,7 @@ class QaController(StockBaseController):
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        if isinstance(self.data, pd.Series):
-            data = self.data.to_frame()
-        else:
-            data = self.data
+        data = self.data.to_frame() if isinstance(self.data, pd.Series) else self.data
         if ns_parser:
             qa_view.display_raw(
                 data=data,

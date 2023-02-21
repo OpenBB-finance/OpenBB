@@ -275,10 +275,9 @@ def display_candle(
     if "Volume" in data.columns:
         has_volume = bool(data["Volume"].sum() > 0)
 
-    if add_trend:
-        if (data.index[1] - data.index[0]).total_seconds() >= 86400:
-            data = stocks_helper.find_trendline(data, "OC_High", "high")
-            data = stocks_helper.find_trendline(data, "OC_Low", "low")
+    if add_trend and (data.index[1] - data.index[0]).total_seconds() >= 86400:
+        data = stocks_helper.find_trendline(data, "OC_High", "high")
+        data = stocks_helper.find_trendline(data, "OC_Low", "low")
 
     if use_matplotlib:
         ap0 = []

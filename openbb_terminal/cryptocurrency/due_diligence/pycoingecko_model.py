@@ -449,9 +449,7 @@ class Coin:
 
         social_dct = {}
         links = self._get_links()
-        for (
-            channel
-        ) in CHANNELS.keys():  # pylint: disable=consider-iterating-dictionary)
+        for channel in CHANNELS:  # pylint: disable=consider-iterating-dictionary)
             if channel in links:
                 value = links.get(channel, "")
                 if channel == "twitter_screen_name":
