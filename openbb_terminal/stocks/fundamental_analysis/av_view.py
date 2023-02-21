@@ -139,7 +139,7 @@ def display_income_statement(
             for i in range(rows_plot):
                 fig.add_scatter(
                     x=income_plot_data.index,
-                    y=income_plot_data[plot[i].replace("_", "")],
+                    y=income_plot_data[plot[i]],
                     name=plot[i].replace("_", ""),
                     row=i + 1,
                     col=1,
@@ -225,7 +225,7 @@ def display_balance_sheet(
             )
             fig.add_scatter(
                 x=balance_plot_data.index,
-                y=balance_plot_data[plot[0].replace("_", "")],
+                y=balance_plot_data[plot[0]],
                 name=plot[0].replace("_", ""),
             )
             fig.show()
@@ -234,7 +234,7 @@ def display_balance_sheet(
             for i in range(rows_plot):
                 fig.add_scatter(
                     x=balance_plot_data.index,
-                    y=balance_plot_data[plot[i].replace("_", "")],
+                    y=balance_plot_data[plot[i]],
                     name=plot[i].replace("_", ""),
                     row=i + 1,
                     col=1,
@@ -317,7 +317,7 @@ def display_cash_flow(
             )
             fig.add_scatter(
                 x=cash_plot_data.index,
-                y=cash_plot_data[plot[0].replace("_", "")],
+                y=cash_plot_data[plot[0]],
                 name=plot[0].replace("_", ""),
             )
             fig.show()
@@ -326,7 +326,7 @@ def display_cash_flow(
             for i in range(rows_plot):
                 fig.add_scatter(
                     x=cash_plot_data.index,
-                    y=cash_plot_data[plot[i].replace("_", "")],
+                    y=cash_plot_data[plot[i]],
                     name=plot[i].replace("_", ""),
                     row=i + 1,
                     col=1,

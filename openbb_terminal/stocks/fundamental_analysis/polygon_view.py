@@ -88,7 +88,7 @@ def display_fundamentals(
             fig = OpenBBFigure()
             fig.add_scatter(
                 x=fundamentals_plot_data.index,
-                y=fundamentals_plot_data[plot[0].replace("_", "")],
+                y=fundamentals_plot_data[plot[0]],
                 name=plot[0].replace("_", " "),
             )
             title = (
@@ -103,7 +103,7 @@ def display_fundamentals(
             for i in range(rows_plot):
                 fig.add_scatter(
                     x=fundamentals_plot_data.index,
-                    y=fundamentals_plot_data[plot[0].replace("_", "")],
+                    y=fundamentals_plot_data[plot[i]],
                     name=plot[i].replace("_", " "),
                     row=i + 1,
                     col=1,

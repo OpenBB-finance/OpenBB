@@ -381,7 +381,7 @@ def display_fundamentals(
         fundamentals_plot_data = fundamentals_plot_data.sort_index()
 
         if not ratios:
-            maximum_value = fundamentals_plot_data[plot[0].replace("_", " ")].max()
+            maximum_value = fundamentals_plot_data[plot[0]].max()
             (df_rounded, denomination) = transform_by_denomination(
                 fundamentals_plot_data, maxValue=maximum_value
             )
@@ -395,7 +395,7 @@ def display_fundamentals(
             fig = OpenBBFigure()
             fig.add_bar(
                 x=df_rounded.index,
-                y=df_rounded[plot[0].replace("_", " ")],
+                y=df_rounded[plot[0]],
                 name=plot[0].replace("_", " "),
             )
             title = (
@@ -409,7 +409,7 @@ def display_fundamentals(
             for i in range(rows_plot):
                 fig.add_bar(
                     x=df_rounded.index,
-                    y=df_rounded[plot[i].replace("_", " ")],
+                    y=df_rounded[plot[i]],
                     name=plot[i].replace("_", " "),
                     row=i + 1,
                     col=1,
