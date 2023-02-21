@@ -167,14 +167,13 @@ def atr(
         ).dropna()
     )
 
+
 @log_start_end(log=logger)
 def rvol(
-    data:pd.DataFrame,
-    lower_q:float = 0.25,
-    upper_q: float = 0.75
+    data: pd.DataFrame, lower_q: float = 0.25, upper_q: float = 0.75
 ) -> pd.DataFrame:
     """Returns a DataFrame of realized volatility quantiles.
-    
+
     Paramters
     ---------
     data: pd.DataFrame
@@ -183,28 +182,28 @@ def rvol(
         The lower quantile to calculate the realized volatility over time for.
     upper_q: float (default = 0.75)
         The upper quantile to calculate the realized volatility over time for.
-    
+
     Returns
     -------
     pd.DataFrame: rvol
         DataFrame of realized volatility quantiles.
-    
+
     Examples
     --------
     df = rvol(symbol = "AAPL")
-    
+
     df = rvol(symbol = "AAPL", lower_q = 0.10, upper_q = 0.90)
     """
     if lower_q > 1:
-        lower_q = lower_q/100
+        lower_q = lower_q / 100
     if upper_q > 1:
-        upper_q = upper_q/100
-    
-    lower_q_label = str((int(lower_q*100)))
-    upper_q_label = str((int(upper_q*100)))
+        upper_q = upper_q / 100
+
+    lower_q_label = str((int(lower_q * 100)))
+    upper_q_label = str((int(upper_q * 100)))
     rvol_cones: pd.DataFrame = pd.DataFrame()
     quantiles = [lower_q, upper_q]
-    windows = [3,10,30,60,90,120,150,180,210,240,300,360]
+    windows = [3, 10, 30, 60, 90, 120, 150, 180, 210, 240, 300, 360]
     data = data
     min_ = []
     max_ = []
@@ -212,7 +211,7 @@ def rvol(
     top_q = []
     bottom_q = []
     realized = []
-    data = data.sort_index(ascending = False)
+    data = data.sort_index(ascending=False)
 
     def realized_vol(data, window=30):
         """Helper function for calculating realized volatility."""
@@ -220,24 +219,32 @@ def rvol(
         log_return = (data["Close"] / data["Close"].shift(1)).apply(np.log)
 
         return log_return.rolling(window=window, center=False).std() * np.sqrt(252)
-    
+
     for window in windows:
-        
-            # Looping to build a dataframe with realized volatility over each window.
-        
-        estimator = realized_vol(window=window,data=data)
+        # Looping to build a dataframe with realized volatility over each window.
+
+        estimator = realized_vol(window=window, data=data)
         min_.append(estimator.min())
         max_.append(estimator.max())
         median.append(estimator.median())
         top_q.append(estimator.quantile(quantiles[1]))
         bottom_q.append(estimator.quantile(quantiles[0]))
         realized.append(estimator[-1])
-    
+
     df = [realized, min_, bottom_q, median, top_q, max_]
     pd.DataFrame(df).columns = windows
     df_windows = list(windows)
     df = pd.DataFrame(df, columns=df_windows)
-    df = df.rename(index = {0:'Realized', 1: 'Min', 2:'Lower 'f"{lower_q_label}"'%', 3:'Median', 4:'Upper 'f"{upper_q_label}"'%', 5: 'Max'})
+    df = df.rename(
+        index={
+            0: "Realized",
+            1: "Min",
+            2: "Lower " f"{lower_q_label}" "%",
+            3: "Median",
+            4: "Upper " f"{upper_q_label}" "%",
+            5: "Max",
+        }
+    )
     rvol_cones = df.copy()
 
     return rvol_cones.transpose()
