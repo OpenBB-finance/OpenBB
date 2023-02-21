@@ -822,10 +822,7 @@ def display_raw(
         Export data as CSV, JSON, XLSX
     """
 
-    if isinstance(data, pd.Series):
-        df1 = pd.DataFrame(data)
-    else:
-        df1 = data.copy()
+    df1 = pd.DataFrame(data) if isinstance(data, pd.Series) else data.copy()
 
     if sortby:
         try:
@@ -1131,10 +1128,7 @@ def display_sortino(
         Whether to return the figure object or not, by default False
     """
     sortino_ratio = qa_model.get_sortino(data, target_return, window, adjusted)
-    if adjusted:
-        str_adjusted = "Adjusted "
-    else:
-        str_adjusted = ""
+    str_adjusted = "Adjusted " if adjusted else ""
 
     data = sortino_ratio[int(window - 1) :]
 

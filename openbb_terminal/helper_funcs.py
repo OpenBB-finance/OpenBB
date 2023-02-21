@@ -131,9 +131,8 @@ def parse_and_split_input(an_input: str, custom_filters: List) -> List[str]:
         Command queue as list
     """
     # Make sure that the user can go back to the root when doing "/"
-    if an_input:
-        if an_input == "/":
-            an_input = "home"
+    if an_input and an_input == "/":
+        an_input = "home"
 
     # everything from ` -f ` to the next known extension
     file_flag = r"(\ -f |\ --file )"
@@ -313,13 +312,12 @@ def print_rich_table(
             for column in df.columns:
                 table.add_column(str(column))
 
-        if isinstance(floatfmt, list):
-            if len(floatfmt) != len(df.columns):
-                log_and_raise(
-                    ValueError(
-                        "Length of floatfmt list does not match length of DataFrame columns."
-                    )
+        if isinstance(floatfmt, list) and len(floatfmt) != len(df.columns):
+            log_and_raise(
+                ValueError(
+                    "Length of floatfmt list does not match length of DataFrame columns."
                 )
+            )
         if isinstance(floatfmt, str):
             floatfmt = [floatfmt for _ in range(len(df.columns))]
 
@@ -870,10 +868,7 @@ def is_intraday(df: pd.DataFrame) -> bool:
         True if data is intraday
     """
     granularity = df.index[1] - df.index[0]
-    if granularity >= timedelta(days=1):
-        intraday = False
-    else:
-        intraday = True
+    intraday = not granularity >= timedelta(days=1)
     return intraday
 
 
@@ -893,10 +888,7 @@ def reindex_dates(df: pd.DataFrame) -> pd.DataFrame:
     pd.DataFrame
         Reindexed dataframe
     """
-    if is_intraday(df):
-        date_format = "%b %d %H:%M"
-    else:
-        date_format = "%Y-%m-%d"
+    date_format = "%b %d %H:%M" if is_intraday(df) else "%Y-%m-%d"
     reindexed_df = df.reset_index()
     reindexed_df["date"] = reindexed_df["date"].dt.strftime(date_format)
     return reindexed_df
@@ -911,7 +903,7 @@ def get_data(tweet):
             "%Y-%m-%d %H:%M:%S"
         )
 
-    s_text = tweet["full_text"] if "full_text" in tweet.keys() else tweet["text"]
+    s_text = tweet["full_text"] if "full_text" in tweet else tweet["text"]
     return {"created_at": s_datetime, "text": s_text}
 
 
@@ -1556,10 +1548,11 @@ def is_valid_axes_count(
     if len(axes) == n:
         return True
 
-    if custom_text:
-        print_text = custom_text
-    else:
-        print_text = f"Expected list of {n} axis item{'s' if n>1 else ''}."
+    print_text = (
+        custom_text
+        if custom_text
+        else f"Expected list of {n} axis item{'s' if n > 1 else ''}."
+    )
 
     if prefix_text:
         print_text = f"{prefix_text} {print_text}"
@@ -1608,10 +1601,11 @@ def check_list_values(valid_values: List[str]):
         """
         success_values = list()
 
-        if "," in given_values:
-            values_found = [val.strip() for val in given_values.split(",")]
-        else:
-            values_found = [given_values]
+        values_found = (
+            [val.strip() for val in given_values.split(",")]
+            if "," in given_values
+            else [given_values]
+        )
 
         for value in values_found:
             # check if the value is valid

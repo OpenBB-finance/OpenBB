@@ -149,7 +149,7 @@ def display_historical_tvl(
 
     if isinstance(available_protocols, dict):
         for dapp in dapps.split(","):
-            if dapp in available_protocols.keys():
+            if dapp in available_protocols:
                 df = llama_model.get_defi_protocol(dapp)
                 if not df.empty:
                     fig.add_scatter(

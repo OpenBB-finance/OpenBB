@@ -72,10 +72,7 @@ def get_historical_greeks(
     if not chain_id:
         options = yfinance_model.get_option_chain(symbol, expiry)
 
-        if put:
-            options = options.puts
-        else:
-            options = options.calls
+        options = options.puts if put else options.calls
 
         selection = options.loc[options.strike == strike, "contractSymbol"]
         try:
@@ -357,9 +354,8 @@ def check_presets(preset_dict: dict) -> str:
             except Exception:
                 error += f"{key} : {value} , should be integer\n"
 
-        elif key == "order-by":
-            if value.replace('"', "") not in accepted_orders:
-                error += f"{key} : {value} not accepted ordering\n"
+        elif key == "order-by" and value.replace('"', "") not in accepted_orders:
+            error += f"{key} : {value} not accepted ordering\n"
     if error:
         logging.exception(error)
     return error

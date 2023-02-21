@@ -120,7 +120,7 @@ class ParametersController(BaseController):
             mt.add_raw("\n")
             mt.add_info("_parameters_")
             if self.current_model:
-                max_len = max(len(k) for k in self.params.keys())
+                max_len = max(len(k) for k in self.params)
                 for k, v in self.params.items():
                     v = params_helpers.booltostr(v)
                     all_params = DEFAULT_PARAMETERS + MODEL_PARAMS[self.current_model]
@@ -129,7 +129,7 @@ class ParametersController(BaseController):
                             f"    [param]{k}{' ' * (max_len - len(k))} :[/param] {v}\n"
                         )
             else:
-                max_len = max(len(k) for k in self.params.keys())
+                max_len = max(len(k) for k in self.params)
                 for k, v in self.params.items():
                     v = params_helpers.booltostr(v)
                     mt.add_raw(
@@ -306,11 +306,10 @@ class ParametersController(BaseController):
                 argument = ns_parser.argument[0]
                 value = ns_parser.argument[1]
 
-                if self.current_model:
-                    if argument not in self.params:
-                        console.print(
-                            "[red]The parameter you are trying to access is unused in this model.[/red]\n"
-                        )
+                if self.current_model and argument not in self.params:
+                    console.print(
+                        "[red]The parameter you are trying to access is unused in this model.[/red]\n"
+                    )
 
                 try:
                     value = float(value)

@@ -393,10 +393,9 @@ def load(
                 .tz_localize(None)
             )
 
-            if s_start_dt > start_date:
-                s_start = pytz.utc.localize(s_start_dt)
-            else:
-                s_start = start_date
+            s_start = (
+                pytz.utc.localize(s_start_dt) if s_start_dt > start_date else start_date
+            )
 
             df_stock_candidate.index.name = "date"
 
@@ -454,10 +453,9 @@ def load(
             )
             s_start_dt = df_stock_candidate.index[0]
 
-            if s_start_dt > start_date:
-                s_start = pytz.utc.localize(s_start_dt)
-            else:
-                s_start = start_date
+            s_start = (
+                pytz.utc.localize(s_start_dt) if s_start_dt > start_date else start_date
+            )
             s_interval = f"{interval}min"
         int_string = "Intraday"
 
@@ -568,10 +566,9 @@ def display_candle(
         )
         data = process_candle(data)
 
-    if add_trend:
-        if (data.index[1] - data.index[0]).total_seconds() >= 86400:
-            data = find_trendline(data, "OC_High", "high")
-            data = find_trendline(data, "OC_Low", "low")
+    if add_trend and (data.index[1] - data.index[0]).total_seconds() >= 86400:
+        data = find_trendline(data, "OC_High", "high")
+        data = find_trendline(data, "OC_Low", "low")
 
     if raw:
         return data

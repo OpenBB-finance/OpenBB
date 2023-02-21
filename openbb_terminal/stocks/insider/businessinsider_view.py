@@ -73,10 +73,8 @@ def insider_activity(
             "[red]The insider activity on the ticker does not exist.\n[/red]"
         )
 
-    if start_date:
-        df_insider = df_ins[start_date:].copy()  # type: ignore
-    else:
-        df_insider = df_ins.copy()
+    df_insider = df_ins[start_date:].copy() if start_date else df_ins.copy()  # type: ignore
+
 
     export_data(
         export,

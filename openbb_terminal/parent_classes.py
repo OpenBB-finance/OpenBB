@@ -114,10 +114,11 @@ class BaseController(metaclass=ABCMeta):
 
     @property
     def choices_default(self):
-        if self.CHOICES_GENERATION:
-            choices = build_controller_choice_map(controller=self)
-        else:
-            choices = {}
+        choices = (
+            build_controller_choice_map(controller=self)
+            if self.CHOICES_GENERATION
+            else {}
+        )
 
         return choices
 
@@ -584,10 +585,9 @@ class BaseController(metaclass=ABCMeta):
 
         ns_parser = self.parse_simple_args(parser, other_args)
 
-        if ns_parser:
-            if ns_parser.expression:
-                expression = " ".join(ns_parser.expression)
-                search_wikipedia(expression)
+        if ns_parser and ns_parser.expression:
+            expression = " ".join(ns_parser.expression)
+            search_wikipedia(expression)
 
     @log_start_end(log=logger)
     def call_record(self, other_args) -> None:
@@ -1295,9 +1295,11 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
         )
 
         if ns_parser:
-            if ns_parser.source in ("YahooFinance", "CoinGecko"):
-                if ns_parser.vs == "usdt":
-                    ns_parser.vs = "usd"
+            if (
+                ns_parser.source in ("YahooFinance", "CoinGecko")
+                and ns_parser.vs == "usdt"
+            ):
+                ns_parser.vs = "usd"
             (self.current_df) = cryptocurrency_helpers.load(
                 symbol=ns_parser.coin.lower(),
                 to_symbol=ns_parser.vs,
