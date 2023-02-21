@@ -18,7 +18,7 @@ jobs:
       with:
         python-version: "3.9"
 
-    - name: Update version in pyproject.toml
+    - name: Update version in pyproject.toml and Edit docs
       run: |
         sed -i 's/name = ".*"/name = "openbb-nightly"/' pyproject.toml
         sed -i "3s/version = \"\(.*\)\"/version = \"\1.dev$(date +%Y%m%d)\"/" pyproject.toml
