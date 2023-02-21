@@ -7,7 +7,7 @@ import logging
 from pathlib import Path
 from typing import List, Union, Optional, Dict, Tuple
 from functools import lru_cache
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta
 from datetime import date as d
 import types
 from collections.abc import Iterable
@@ -83,7 +83,7 @@ MENU_QUIT = 1
 MENU_RESET = 2
 
 NEWS_TWEET = ""
-LAST_TWEET_NEWS_UPDATE_CHECK_TIME = datetime.now(pytz.utc) - timedelta(hours=1)
+LAST_TWEET_NEWS_UPDATE_CHECK_TIME = None
 
 # Command location path to be shown in the figures depending on watermark flag
 command_location = ""
@@ -1984,8 +1984,10 @@ def update_news_from_tweet_to_be_displayed() -> str:
 
     # Check whether it has passed a certain amount of time since the last news update
     if (
-        datetime.now(pytz.utc) - LAST_TWEET_NEWS_UPDATE_CHECK_TIME
-    ).seconds > obbff.TOOLBAR_TWEET_NEWS_SECONDS_BETWEEN_UPDATES:
+        LAST_TWEET_NEWS_UPDATE_CHECK_TIME is None
+        or (datetime.now(pytz.utc) - LAST_TWEET_NEWS_UPDATE_CHECK_TIME).total_seconds
+        > obbff.TOOLBAR_TWEET_NEWS_SECONDS_BETWEEN_UPDATES
+    ):
         # This doesn't depende on the time of the tweet but the time that the check was made
         LAST_TWEET_NEWS_UPDATE_CHECK_TIME = datetime.now(pytz.utc)
 
@@ -2013,35 +2015,29 @@ def update_news_from_tweet_to_be_displayed() -> str:
         news_tweet_to_use = ""
         handle_to_use = ""
         url = ""
-        last_tweet_dt = (datetime.now() - timedelta(hours=1)).replace(
-            tzinfo=timezone.utc
-        )
+        last_tweet_dt = None
         for handle in news_sources_twitter_handles:
             try:
                 # Get last N tweets from each handle
-                for last_tweet in twitter_api.user_timeline(
+                timeline = twitter_api.user_timeline(
                     screen_name=handle,
                     count=obbff.TOOLBAR_TWEET_NEWS_NUM_LAST_TWEETS_TO_READ,
-                )[: obbff.TOOLBAR_TWEET_NEWS_NUM_LAST_TWEETS_TO_READ]:
-                    if "," in obbff.TOOLBAR_TWEET_NEWS_KEYWORDS:
-                        keywords = obbff.TOOLBAR_TWEET_NEWS_KEYWORDS.split(",")
-                    else:
-                        keywords = [obbff.TOOLBAR_TWEET_NEWS_KEYWORDS]
+                )
+                timeline = timeline[: obbff.TOOLBAR_TWEET_NEWS_NUM_LAST_TWEETS_TO_READ]
+                for last_tweet in timeline:
+                    keywords = obbff.TOOLBAR_TWEET_NEWS_KEYWORDS.split(",")
+                    more_recent = (
+                        last_tweet_dt is None or last_tweet.created_at > last_tweet_dt
+                    )
+                    with_keyword = any(key in last_tweet.text for key in keywords)
 
-                    # Check if the tweet contains a keywords
-                    if bool([key for key in keywords if key in last_tweet.text]):
-                        # Check if the tweet is newer than the last one
-                        # we want to grab the most recent one
-                        if last_tweet.created_at > last_tweet_dt:
-                            handle_to_use = handle
-                            last_tweet_dt = last_tweet.created_at
+                    if more_recent and with_keyword:
+                        handle_to_use = handle
+                        last_tweet_dt = last_tweet.created_at
 
-                            news_tweet_to_use = last_tweet.text
+                        news_tweet_to_use = last_tweet.text
 
-                            # Get url associated with tweet
-                            # Twitter has a weird API where the you just need the id of the tweet
-                            # and the username doesn't matter
-                            url = f"https://twitter.com/x/status/{last_tweet.id_str}"
+                        url = f"https://twitter.com/x/status/{last_tweet.id_str}"
 
             # In case the handle provided doesn't exist, we skip it
             except tweepy.errors.NotFound:
