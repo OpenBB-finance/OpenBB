@@ -1,0 +1,53 @@
+name: Deploy to PyPI - Nightly
+
+on:
+  push:
+    branches:
+      - feature/nightly-pypi
+
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  deploy-nightly-pypi:
+    name: Build and publish nightly distributions 📦 to Test PyPI
+    if: startsWith(github.ref, 'refs/heads/feature/nightly-pypi')
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup Python 3.9
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.9"
+
+    - name: Update version in pyproject.toml
+      run: |
+        sed -i 's/name = ".*"/name = "openbb-nightly"/' pyproject.toml
+        sed -i "3s/version = \"\(.*\)\"/version = \"\1.dev$(date +%Y%m%d)\"/" pyproject.toml
+        head pyproject.toml
+
+    - name: Install pypa/build
+      run: >-
+        python -m
+        pip install
+        build
+        --user
+
+    - name: Build a binary wheel and a source tarball
+      run: >-
+        python -m
+        build
+        --sdist
+        --wheel
+        --outdir dist/
+        .
+
+    - name: Publish distribution 📦 to Test PyPI
+      uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        password: ${{ secrets.NIGHTLY_TEST_PYPI_TOKEN }}
+        repository_url: https://test.pypi.org/legacy/
