@@ -134,7 +134,7 @@ def plot_covid_stat(
 
     fig.add_scatter(
         x=data.index,
-        y=data.values,
+        y=data[country].values,
         name=stat.title(),
         opacity=0.2,
         line_color=color,
@@ -142,7 +142,7 @@ def plot_covid_stat(
     )
     fig.add_scatter(
         x=data.index,
-        y=data.rolling(7).mean().values,
+        y=data[country].rolling(7).mean().values,
         name=f"{stat.title()} (7d avg)",
         line_color=color,
         hovertemplate="%{y:.2f}",
