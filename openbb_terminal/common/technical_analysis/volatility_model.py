@@ -2,6 +2,7 @@
 __docformat__ = "numpy"
 
 import logging
+
 import numpy as np
 import pandas as pd
 import pandas_ta as ta
@@ -199,12 +200,11 @@ def rvol(
     if upper_q > 1:
         upper_q = upper_q / 100
 
-    lower_q_label = str((int(lower_q * 100)))
-    upper_q_label = str((int(upper_q * 100)))
+    lower_q_label = str(int(lower_q * 100))
+    upper_q_label = str(int(upper_q * 100))
     rvol_cones: pd.DataFrame = pd.DataFrame()
     quantiles = [lower_q, upper_q]
     windows = [3, 10, 30, 60, 90, 120, 150, 180, 210, 240, 300, 360]
-    data = data
     min_ = []
     max_ = []
     median = []

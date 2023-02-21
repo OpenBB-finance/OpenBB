@@ -407,8 +407,8 @@ def display_rvol(
     """
 
     df_ta = volatility_model.rvol(data, lower_q=lower_q, upper_q=upper_q)
-    lower_q_label = str((int(lower_q * 100)))
-    upper_q_label = str((int(upper_q * 100)))
+    lower_q_label = str(int(lower_q * 100))
+    upper_q_label = str(int(upper_q * 100))
 
     plt.figure(figsize=[14, 7])
     plt.autoscale(enable=True, axis="both", tight=True)
