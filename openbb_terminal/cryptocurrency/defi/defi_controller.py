@@ -120,7 +120,7 @@ class DefiController(BaseController):
             default=False,
         )
 
-        if other_args and not other_args[0][0] == "-":
+        if other_args and other_args[0][0] != "-":
             other_args.insert(0, "--address")
 
         ns_parser = self.parse_known_args_and_warn(
@@ -165,7 +165,7 @@ class DefiController(BaseController):
             default=10,
         )
 
-        if other_args and not other_args[0][0] == "-":
+        if other_args and other_args[0][0] != "-":
             other_args.insert(0, "-a")
 
         ns_parser = self.parse_known_args_and_warn(
@@ -401,7 +401,7 @@ class DefiController(BaseController):
             required="-h" not in other_args,
             help="dApps to search historical TVL. Should be split by , e.g.: anchor,sushiswap,pancakeswap",
         )
-        if other_args and not other_args[0][0] == "-":
+        if other_args and other_args[0][0] != "-":
             other_args.insert(0, "-d")
 
         ns_parser = self.parse_known_args_and_warn(

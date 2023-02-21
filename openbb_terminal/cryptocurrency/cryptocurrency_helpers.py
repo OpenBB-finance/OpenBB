@@ -704,10 +704,7 @@ def display_all_coins(
 
     if show_all:
         coins_func = coins_func_map.get(source)
-        if coins_func:
-            df = coins_func()
-        else:
-            df = prepare_all_coins_df()
+        df = coins_func() if coins_func else prepare_all_coins_df()
 
     elif not source or source not in sources:
         df = prepare_all_coins_df()

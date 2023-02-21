@@ -226,9 +226,7 @@ class EconomyController(BaseController):
 
             if self.DATASETS:
                 options = [
-                    option
-                    for _, values in self.DATASETS.items()
-                    for option in values.keys()
+                    option for _, values in self.DATASETS.items() for option in values
                 ]
 
                 # help users to select multiple timeseries for one axis
@@ -1119,15 +1117,15 @@ class EconomyController(BaseController):
                     console.print(name)
                 return
 
-            if ns_parser.start_date:
-                start_date = ns_parser.start_date.strftime("%Y-%m-%d")
-            else:
-                start_date = None
+            start_date = (
+                ns_parser.start_date.strftime("%Y-%m-%d")
+                if ns_parser.start_date
+                else None
+            )
 
-            if ns_parser.end_date:
-                end_date = ns_parser.end_date.strftime("%Y-%m-%d")
-            else:
-                end_date = None
+            end_date = (
+                ns_parser.end_date.strftime("%Y-%m-%d") if ns_parser.end_date else None
+            )
 
             # TODO: Add `Investing` to sources again when `investpy` is fixed
 
@@ -1237,12 +1235,11 @@ class EconomyController(BaseController):
                                     units = self.UNITS[country.replace(" ", "_")][
                                         parameter_abbreviation
                                     ]
-                                    if transform:
-                                        transformtype = (
-                                            f" ({econdb_model.TRANSFORM[transform]}) "
-                                        )
-                                    else:
-                                        transformtype = " "
+                                    transformtype = (
+                                        f" ({econdb_model.TRANSFORM[transform]}) "
+                                        if transform
+                                        else " "
+                                    )
                                     dataset_yaxis1[
                                         f"{country}{transformtype}[{parameter}, Units: {units}]"
                                     ] = data[variable]
@@ -1314,12 +1311,11 @@ class EconomyController(BaseController):
                                     units = self.UNITS[country.replace(" ", "_")][
                                         parameter_abbreviation
                                     ]
-                                    if transform:
-                                        transformtype = (
-                                            f" ({econdb_model.TRANSFORM[transform]}) "
-                                        )
-                                    else:
-                                        transformtype = " "
+                                    transformtype = (
+                                        f" ({econdb_model.TRANSFORM[transform]}) "
+                                        if transform
+                                        else " "
+                                    )
                                     dataset_yaxis2[
                                         f"{country}{transformtype}[{parameter}, Units: {units}]"
                                     ] = data[variable]

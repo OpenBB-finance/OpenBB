@@ -43,13 +43,12 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
     ):
         """Constructor"""
         super().__init__(queue)
-        if menu_usage:
-            if session and obbff.USE_PROMPT_TOOLKIT:
-                choices: dict = {c: {} for c in self.controller_choices}
+        if menu_usage and session and obbff.USE_PROMPT_TOOLKIT:
+            choices: dict = {c: {} for c in self.controller_choices}
 
-                choices["support"] = self.SUPPORT_CHOICES
+            choices["support"] = self.SUPPORT_CHOICES
 
-                self.completer = NestedCompleter.from_nested_dict(choices)
+            self.completer = NestedCompleter.from_nested_dict(choices)
 
     def check_keys_status(self) -> None:
         """Check keys status"""

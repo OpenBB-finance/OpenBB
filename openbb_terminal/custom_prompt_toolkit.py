@@ -223,13 +223,13 @@ class NestedCompleter(Completer):
                     if cmd:
                         self.options = {
                             k: self.original_options.get(cmd).options[k]  # type: ignore
-                            for k in self.original_options.get(cmd).options.keys()  # type: ignore
+                            for k in self.original_options.get(cmd).options  # type: ignore
                             if k not in self.flags_processed
                         }
                     else:
                         self.options = {
                             k: self.original_options[k]
-                            for k in self.original_options.keys()
+                            for k in self.original_options
                             if k not in self.flags_processed
                         }
 
@@ -262,7 +262,7 @@ class NestedCompleter(Completer):
                 else:
                     self.options = {
                         k: self.original_options[k]
-                        for k in self.original_options.keys()
+                        for k in self.original_options
                         if k not in self.flags_processed
                     }
 
@@ -294,13 +294,13 @@ class NestedCompleter(Completer):
                         if cmd:
                             self.options = {
                                 k: self.original_options.get(cmd).options[k]  # type: ignore
-                                for k in self.original_options.get(cmd).options.keys()  # type: ignore
+                                for k in self.original_options.get(cmd).options  # type: ignore
                                 if k not in self.flags_processed
                             }
                         else:
                             self.options = {
                                 k: self.original_options[k]
-                                for k in self.original_options.keys()
+                                for k in self.original_options
                                 if k not in self.flags_processed
                             }
 
@@ -325,13 +325,13 @@ class NestedCompleter(Completer):
                     if cmd:
                         self.options = {
                             k: self.original_options.get(cmd).options[k]  # type: ignore
-                            for k in self.original_options.get(cmd).options.keys()  # type: ignore
+                            for k in self.original_options.get(cmd).options  # type: ignore
                             if k not in self.flags_processed
                         }
                     else:
                         self.options = {
                             k: self.original_options[k]
-                            for k in self.original_options.keys()
+                            for k in self.original_options
                             if k not in self.flags_processed
                         }
 
@@ -366,35 +366,32 @@ class NestedCompleter(Completer):
                     if cmd:
                         self.options = {
                             k: self.original_options.get(cmd).options[k]  # type: ignore
-                            for k in self.original_options.get(cmd).options.keys()  # type: ignore
+                            for k in self.original_options.get(cmd).options  # type: ignore
                             if k not in self.flags_processed
                         }
                     else:
                         self.options = {
                             k: self.original_options[k]
-                            for k in self.original_options.keys()
+                            for k in self.original_options
                             if k not in self.flags_processed
                         }
 
             command = self.options.get(cmd)
-            if command:
-                options = command.options  # type: ignore
-            else:
-                options = {}
-            command_options = [f"{cmd} {opt}" for opt in options.keys()]
+            options = command.options if command else {}  # type: ignore
+            command_options = [f"{cmd} {opt}" for opt in options]
             text_list = [text in val for val in command_options]
-            if cmd and cmd in self.options.keys() and text_list:
+            if cmd and cmd in self.options and text_list:
                 completer = WordCompleter(
                     list(self.options.get(cmd).options.keys()),  # type: ignore
                     ignore_case=self.ignore_case,
                 )
-            elif bool([val for val in self.options.keys() if text in val]):
+            elif bool([val for val in self.options if text in val]):
                 completer = WordCompleter(
                     list(self.options.keys()), ignore_case=self.ignore_case
                 )
             else:
                 # The user has delete part of the first command and we need to reset options
-                if bool([val for val in self.original_options.keys() if text in val]):
+                if bool([val for val in self.original_options if text in val]):
                     self.options = self.original_options
                     self.flags_processed = list()
                 completer = WordCompleter(
