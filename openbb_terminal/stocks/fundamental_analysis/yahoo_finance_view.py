@@ -346,8 +346,9 @@ def display_fundamentals(
 
     fundamentals = yahoo_finance_model.get_financials(symbol, statement, ratios)
 
-    if fundamentals is None:
-        return
+    if fundamentals is None or fundamentals.empty:
+        # The empty data frame error handling done in model
+        return None
 
     if statement == "balance-sheet":
         title_str = "Balance Sheet"
@@ -367,10 +368,6 @@ def display_fundamentals(
             stocks_helper.CASH_PLOT["YahooFinance"][i]
             for i in [i.replace(" ", "_") for i in fundamentals.index.str.lower()]
         ]
-
-    if fundamentals.empty:
-        # The empty data frame error handling done in model
-        return None
 
     symbol_currency = yahoo_finance_model.get_currency(symbol)
 
