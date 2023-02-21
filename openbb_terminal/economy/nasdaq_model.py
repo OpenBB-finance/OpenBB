@@ -4,15 +4,15 @@ __docformat__ = "numpy"
 import argparse
 import logging
 import os
+from datetime import datetime as dt
 from typing import List, Optional, Union
 
-from datetime import datetime as dt
 import pandas as pd
 
 from openbb_terminal.config_terminal import API_KEY_QUANDL
 from openbb_terminal.decorators import check_api_key, log_start_end
-from openbb_terminal.rich_config import console
 from openbb_terminal.helper_funcs import request
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -207,7 +207,7 @@ def get_big_mac_index(country_code: str = "USA") -> pd.DataFrame:
 
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_QUANDL"])
-def get_big_mac_indices(country_codes: List[str] = None) -> pd.DataFrame:
+def get_big_mac_indices(country_codes: Optional[List[str]] = None) -> pd.DataFrame:
     """Display Big Mac Index for given countries
 
     Parameters

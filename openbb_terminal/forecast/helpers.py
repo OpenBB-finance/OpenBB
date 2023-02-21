@@ -1,36 +1,34 @@
 # pylint: disable=too-many-arguments,too-many-lines
-import os
 import argparse
-from typing import Any, Union, Optional, List, Dict, Tuple
-from datetime import timedelta, datetime, time
 import logging
-import pandas as pd
-import numpy as np
+import os
+from datetime import datetime, time, timedelta
+from typing import Any, Dict, List, Optional, Tuple, Union
+
 import matplotlib.pyplot as plt
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler, MinMaxScaler, MaxAbsScaler, Normalizer
-from sklearn.metrics import (
-    mean_absolute_error,
-    r2_score,
-    mean_squared_error,
-)
-from darts.dataprocessing.transformers import MissingValuesFiller, Scaler
-from darts.utils.statistics import plot_residuals_analysis
+import numpy as np
+import pandas as pd
 from darts import TimeSeries
-from darts.metrics import mape
-from darts.models.forecasting.torch_forecasting_model import GlobalForecastingModel
+from darts.dataprocessing.transformers import MissingValuesFiller, Scaler
 from darts.explainability.shap_explainer import ShapExplainer
+from darts.metrics import mape, mse, rmse, smape
+from darts.models.forecasting.torch_forecasting_model import GlobalForecastingModel
+from darts.utils.statistics import plot_residuals_analysis
 from pytorch_lightning.callbacks.early_stopping import EarlyStopping
-from openbb_terminal.rich_config import console
+from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import MaxAbsScaler, MinMaxScaler, Normalizer, StandardScaler
+
+from openbb_terminal import rich_config
+from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.helper_funcs import (
     export_data,
+    is_valid_axes_count,
     plot_autoscale,
     print_rich_table,
-    is_valid_axes_count,
 )
-from openbb_terminal.config_plot import PLOT_DPI
-from openbb_terminal import rich_config
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 logging.getLogger("pytorch_lightning").setLevel(logging.CRITICAL)  # No needed for now
@@ -253,10 +251,7 @@ def prepare_scale_train_valid_test(
         "minmax": MinMaxScaler(),
         "normalization": Normalizer(),
     }
-    if Preprocess is None:
-        scaler = None
-    else:
-        scaler = pre_dict.get(Preprocess, None)
+    scaler = None if Preprocess is None else pre_dict.get(Preprocess, None)
 
     if s_end_date:
         data = data[data.index <= s_end_date]
@@ -473,12 +468,13 @@ def plot_forecast(
     precision: Optional[int] = None,
     probabilistic: bool = False,
     export: str = "",
-    sheet_name: str = None,
-    low_quantile: float = None,
-    high_quantile: float = None,
+    sheet_name: Optional[str] = None,
+    low_quantile: Optional[float] = None,
+    high_quantile: Optional[float] = None,
     forecast_only: bool = False,
     naive: bool = False,
     export_pred_raw: bool = False,
+    metric: str = "mape",
     external_axes: Optional[List[plt.axes]] = None,
 ):
     quant_kwargs = {}
@@ -505,7 +501,16 @@ def plot_forecast(
     if naive:
         # show naive forecast shift timeseries by 1
         naive_fcast = naive_fcast.drop_before(historical_fcast.start_time())
-        naive_precision = mape(ticker_series, naive_fcast)
+
+        # calculate precision based on metric
+        if metric == "rsme":
+            naive_precision = rmse(ticker_series, naive_fcast)
+        elif metric == "mse":
+            naive_precision = mse(ticker_series, naive_fcast)
+        elif metric == "mape":
+            naive_precision = mape(ticker_series, naive_fcast)
+        elif metric == "smape":
+            naive_precision = smape(ticker_series, naive_fcast)
 
         naive_fcast.plot(
             label=f"Naive+1: {naive_precision:.2f}%",
@@ -518,7 +523,7 @@ def plot_forecast(
         pred_label += " w/ past covs"
     predicted_values.plot(label=pred_label, **quant_kwargs, color="#00AAFF")
     ax.set_title(
-        f"{name} for <{ticker_name}> for next [{n_predict}] days (MAPE={precision:.2f}%)"
+        f"{name} for <{ticker_name}> for next [{n_predict}] days ({metric.upper()}={precision:.2f}%)"
     )
     ax.set_ylabel(target_col)
     ax.set_xlabel("Date")
@@ -572,7 +577,7 @@ def plot_forecast(
 def plot_explainability(
     model: type[GlobalForecastingModel],
     explainability_raw=False,
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.axes]] = None,
 ):
     """
@@ -641,7 +646,7 @@ def dt_format(x) -> str:
 
 def get_series(
     data: pd.DataFrame,
-    target_column: str = None,
+    target_column: Optional[str] = None,
     is_scaler: bool = True,
     time_col: str = "date",
 ) -> Tuple[Optional[Scaler], TimeSeries]:
@@ -721,6 +726,7 @@ def get_prediction(
     train_split: float,
     forecast_horizon: int,
     n_predict: int,
+    metric: str,
 ):
     _, val = ticker_series.split_before(train_split)
 
@@ -773,10 +779,17 @@ def get_prediction(
         else:
             prediction = best_model.predict(series=ticker_series, n=n_predict)
 
-    precision = mape(
-        actual_series=val, pred_series=historical_fcast
-    )  # mape = mean average percentage error
-    console.print(f"{model_name} model obtains MAPE: {precision:.2f}% \n")
+    # calculate precision based on metric (rmse, mse, mape)
+    if metric == "rmse":
+        precision = rmse(actual_series=val, pred_series=historical_fcast)
+    elif metric == "mse":
+        precision = mse(actual_series=val, pred_series=historical_fcast)
+    elif metric == "mape":
+        precision = mape(actual_series=val, pred_series=historical_fcast)
+    elif metric == "smape":
+        precision = smape(actual_series=val, pred_series=historical_fcast)
+
+    console.print(f"{model_name} model obtains {metric.upper()}: {precision:.2f}% \n")
 
     # scale back
     if use_scalers and isinstance(scaler, Scaler):
@@ -885,23 +898,28 @@ def clean_data(
     # check if target column is in data and if the target_column has any inf
     # replace all inf with nan. This is because darts does not handle inf
     # Creating a timeseries with fillna=True will replace all nan with interoplated values
-    if target_column and target_column in data.columns:
-        if data[target_column].isin([np.inf, -np.inf]).any():
-            console.print(
-                f"[red]The target column [{target_column}] has inf values. Cleaning...[/red]\n"
-            )
-            data = data.replace([np.inf, -np.inf], np.nan)
+    if (
+        target_column
+        and target_column in data.columns
+        and data[target_column].isin([np.inf, -np.inf]).any()
+    ):
+        console.print(
+            f"[red]The target column [{target_column}] has inf values. Cleaning...[/red]\n"
+        )
+        data = data.replace([np.inf, -np.inf], np.nan)
 
     # check if past covariates are in data and if they have any inf
     if past_covariates:
         covariates = past_covariates.split(",")
         for covariate in covariates:
-            if covariate in data.columns:
-                if data[covariate].isin([np.inf, -np.inf]).any():
-                    console.print(
-                        f"[red]The covariate:{covariate} has inf values. Cleaning...[/red]\n"
-                    )
-                    data = data.replace([np.inf, -np.inf], np.nan)
+            if (
+                covariate in data.columns
+                and data[covariate].isin([np.inf, -np.inf]).any()
+            ):
+                console.print(
+                    f"[red]The covariate:{covariate} has inf values. Cleaning...[/red]\n"
+                )
+                data = data.replace([np.inf, -np.inf], np.nan)
 
     if isinstance(data, pd.Series):
         col = data.name

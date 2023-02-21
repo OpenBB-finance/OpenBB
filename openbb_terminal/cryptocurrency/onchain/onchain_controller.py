@@ -7,18 +7,14 @@ import argparse
 import difflib
 import logging
 from datetime import datetime, timedelta
-from typing import List
-
-from openbb_terminal.custom_prompt_toolkit import NestedCompleter
+from typing import List, Optional
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.cryptocurrency.due_diligence.glassnode_model import (
     GLASSNODE_SUPPORTED_HASHRATE_ASSETS,
     INTERVALS_HASHRATE,
 )
-from openbb_terminal.cryptocurrency.due_diligence.glassnode_view import (
-    display_hashrate,
-)
+from openbb_terminal.cryptocurrency.due_diligence.glassnode_view import display_hashrate
 from openbb_terminal.cryptocurrency.onchain import (
     bitquery_model,
     bitquery_view,
@@ -31,6 +27,7 @@ from openbb_terminal.cryptocurrency.onchain import (
     whale_alert_model,
     whale_alert_view,
 )
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
@@ -41,7 +38,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console, MenuText
+from openbb_terminal.rich_config import MenuText, console
 
 logger = logging.getLogger(__name__)
 
@@ -93,7 +90,7 @@ class OnchainController(BaseController):
     PATH = "/crypto/onchain/"
     CHOICES_GENERATION = True
 
-    def __init__(self, queue: List[str] = None):
+    def __init__(self, queue: Optional[List[str]] = None):
         """Constructor"""
         super().__init__(queue)
 
@@ -192,7 +189,7 @@ class OnchainController(BaseController):
             default=12,
         )
 
-        if other_args and not other_args[0][0] == "-":
+        if other_args and other_args[0][0] != "-":
             other_args.insert(0, "-u")
 
         ns_parser = self.parse_known_args_and_warn(
@@ -234,7 +231,7 @@ class OnchainController(BaseController):
             choices=shroom_model.DAPP_STATS_PLATFORM_CHOICES,
         )
 
-        if other_args and not other_args[0][0] == "-":
+        if other_args and other_args[0][0] != "-":
             other_args.insert(0, "-p")
 
         ns_parser = self.parse_known_args_and_warn(
@@ -416,7 +413,7 @@ class OnchainController(BaseController):
             default=(datetime.now()).strftime("%Y-%m-%d"),
         )
 
-        if other_args and not other_args[0][0] == "-":
+        if other_args and other_args[0][0] != "-":
             other_args.insert(0, "-c")
 
         ns_parser = self.parse_known_args_and_warn(
@@ -580,7 +577,7 @@ class OnchainController(BaseController):
             required="-h" not in other_args,
         )
 
-        if other_args and not other_args[0][0] == "-":
+        if other_args and other_args[0][0] != "-":
             other_args.insert(0, "--address")
 
         ns_parser = self.parse_known_args_and_warn(
@@ -1186,7 +1183,7 @@ class OnchainController(BaseController):
                 "Only works when raw data is displayed."
             ),
         )
-        if other_args and not other_args[0][0] == "-":
+        if other_args and other_args[0][0] != "-":
             other_args.insert(0, "-c")
 
         ns_parser = self.parse_known_args_and_warn(
@@ -1264,7 +1261,7 @@ class OnchainController(BaseController):
                 "Only works when raw data is displayed."
             ),
         )
-        if other_args and not other_args[0][0] == "-":
+        if other_args and other_args[0][0] != "-":
             other_args.insert(0, "-c")
 
         ns_parser = self.parse_known_args_and_warn(
@@ -1530,7 +1527,7 @@ class OnchainController(BaseController):
                 "Only works when raw data is displayed."
             ),
         )
-        if other_args and not other_args[0][0] == "-":
+        if other_args and other_args[0][0] != "-":
             other_args.insert(0, "-c")
 
         ns_parser = self.parse_known_args_and_warn(

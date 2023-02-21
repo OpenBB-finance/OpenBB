@@ -4,6 +4,7 @@ import functools
 import logging
 import os
 from ssl import SSLError
+
 import pandas as pd
 from requests.exceptions import RequestException
 
@@ -59,7 +60,7 @@ def log_start_end(func=None, log=None):
                 extra={"func_name_override": func.__name__},
             )
 
-            if os.environ.get("DEBUG_MODE") == "true":
+            if str(os.environ.get("DEBUG_MODE")).lower() == "true":
                 value = func(*args, **kwargs)
                 log.info("END", extra={"func_name_override": func.__name__})
                 return value

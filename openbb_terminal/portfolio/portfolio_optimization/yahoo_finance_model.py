@@ -11,7 +11,7 @@ from typing import List
 import numpy as np
 import pandas as pd
 import yfinance as yf
-from dateutil.relativedelta import relativedelta, FR
+from dateutil.relativedelta import FR, relativedelta
 
 from openbb_terminal.decorators import log_start_end
 
@@ -19,9 +19,29 @@ logger = logging.getLogger(__name__)
 
 # pylint: disable=R0912, E1101
 
+fast_info_map = {
+    "previousClose": "previous_close",
+    "twoHundredDayAverage": "two_hundred_day_average",
+    "regularMarketDayHigh": "day_high",
+    "averageDailyVolume10Day": "ten_day_average_volume",
+    "regularMarketPreviousClose": "regular_market_previous_close",
+    "fiftyDayAverage": "fifty_day_average",
+    "open": "open",
+    "averageVolume10days": "ten_day_average_volume",
+    "regularMarketDayLow": "day_low",
+    "currency": "currency",
+    "marketCap": "market_cap",
+    "averageVolume": "three_month_average_volume",
+    "dayLow": "day_low",
+    "volume": "last_volume",
+    "fiftyTwoWeekHigh": "year_high",
+    "fiftyTwoWeekLow": "year_low",
+    "dayHigh": "day_high",
+    "regularMarketPrice": "last_price",
+}
+
 yf_info_choices = [
     "previousClose",
-    "regularMarketOpen",
     "twoHundredDayAverage",
     "trailingAnnualDividendYield",
     "payoutRatio",
@@ -30,7 +50,6 @@ yf_info_choices = [
     "navPrice",
     "averageDailyVolume10Day",
     "totalAssets",
-    "regularMarketPreviousClose",
     "fiftyDayAverage",
     "trailingAnnualDividendRate",
     "open",
@@ -47,11 +66,9 @@ yf_info_choices = [
     "priceHint",
     "currency",
     "trailingPE",
-    "regularMarketVolume",
     "lastMarket",
     "maxSupply",
     "openInterest",
-    "marketCap",
     "volumeAllCurrencies",
     "strikePrice",
     "averageVolume",
@@ -161,10 +178,7 @@ def process_stocks(
     stock_closes = None
 
     if start_date != "":
-        if end_date == "":
-            end_ = date.today()
-        else:
-            end_ = date.fromisoformat(end_date)
+        end_ = date.today() if end_date == "" else date.fromisoformat(end_date)
 
         # Check if end date is on weekend
         if end_.weekday() >= 5:
@@ -367,12 +381,13 @@ def process_returns(
     elif freq.upper() in ["W", "M"]:
         last_day = stock_returns.index[-1]
         stock_returns = stock_returns.resample(freq).last()
-        if freq.upper() == ["W"]:
-            if last_day.weekday() < 4:
-                stock_returns = stock_returns.iloc[:-1, :]
-        if freq.upper() == ["M"]:
-            if monthrange(last_day.year, last_day.month)[1] - last_day.day <= 5:
-                stock_returns = stock_returns.iloc[:-1, :]
+        if freq.upper() == ["W"] and last_day.weekday() < 4:
+            stock_returns = stock_returns.iloc[:-1, :]
+        if (
+            freq.upper() == ["M"]
+            and monthrange(last_day.year, last_day.month)[1] - last_day.day <= 5
+        ):
+            stock_returns = stock_returns.iloc[:-1, :]
 
     # Calculate returns
     if log_returns is True:

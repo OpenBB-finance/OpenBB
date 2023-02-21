@@ -4,9 +4,9 @@
 import difflib
 import json
 import logging
-from typing import Union, Optional, List
 import os
 from datetime import datetime, timedelta
+from typing import List, Optional, Union
 
 import ccxt
 import matplotlib.pyplot as plt
@@ -114,7 +114,7 @@ YF_CURRENCY = [
 
 
 def check_datetime(
-    ck_date: Union[datetime, Union[str, None]] = None, start: bool = True
+    ck_date: Optional[Union[datetime, Union[str, None]]] = None, start: bool = True
 ) -> datetime:
     """Checks if given argument is string and attempts to convert to datetime.
 
@@ -325,6 +325,7 @@ def load_from_ccxt(
     interval: str = "1440",
     exchange: str = "binance",
     to_symbol: str = "usdt",
+    end_date: datetime = datetime.now(),
 ) -> pd.DataFrame:
     """Load crypto currency data [Source: https://github.com/ccxt/ccxt]
 
@@ -341,6 +342,8 @@ def load_from_ccxt(
         The exchange to get data from.
     to_symbol: str
         Quote Currency (Defaults to usdt)
+    end_date: datetime
+        The datetime to stop at
 
     Returns
     -------
@@ -351,6 +354,11 @@ def load_from_ccxt(
     pair = f"{symbol.upper()}/{to_symbol.upper()}"
 
     try:
+        if interval not in list(CCXT_INTERVAL_MAP):
+            console.print(
+                f"\nInvalid interval chosen for source, "
+                f"available intervals: {', '.join(list(CCXT_INTERVAL_MAP))}\n"
+            )
         df = fetch_ccxt_ohlc(
             exchange,
             3,
@@ -361,6 +369,19 @@ def load_from_ccxt(
         )
         if df.empty:
             console.print(f"\nPair {pair} not found in {exchange}\n")
+            return pd.DataFrame()
+        i = 0
+        for date in df.index:
+            if date > end_date:
+                break
+            i += 1
+        first_date = pd.to_datetime(str(df.index.values[0]))
+        df = df.iloc[0:i]
+        if df.empty:
+            console.print(
+                f"\nThe first data point retrieved was {first_date.strftime('%Y-%m-%d')}, "
+                f"thus the end date ({end_date.strftime('%Y-%m-%d')}) filtered out all of the data.\n"
+            )
             return pd.DataFrame()
     except Exception:
         console.print(f"\nPair {pair} not found on {exchange}\n")
@@ -487,11 +508,11 @@ def load_from_yahoofinance(
 
 def load(
     symbol: str,
-    start_date: Union[datetime, Union[str, None]] = None,
+    start_date: Optional[Union[datetime, Union[str, None]]] = None,
     interval: Union[str, int] = "1440",
     exchange: str = "binance",
     to_symbol: str = "usdt",
-    end_date: Union[datetime, Union[str, None]] = None,
+    end_date: Optional[Union[datetime, Union[str, None]]] = None,
     source: str = "CCXT",
 ) -> pd.DataFrame:
     """Load crypto currency to get data for
@@ -537,7 +558,9 @@ def load(
     end_date = check_datetime(end_date, start=False)
 
     if source == "CCXT":
-        return load_from_ccxt(symbol, start_date, interval, exchange, to_symbol)
+        return load_from_ccxt(
+            symbol, start_date, interval, exchange, to_symbol, end_date
+        )
     if source == "CoinGecko":
         return load_from_coingecko(symbol, start_date, to_symbol)
     if source == "YahooFinance":
@@ -681,10 +704,7 @@ def display_all_coins(
 
     if show_all:
         coins_func = coins_func_map.get(source)
-        if coins_func:
-            df = coins_func()
-        else:
-            df = prepare_all_coins_df()
+        df = coins_func() if coins_func else prepare_all_coins_df()
 
     elif not source or source not in sources:
         df = prepare_all_coins_df()
@@ -815,9 +835,9 @@ def plot_chart(
 
 def plot_candles(  # pylint: disable=too-many-arguments
     symbol: str,
-    data: pd.DataFrame = None,
-    start_date: Union[datetime, Union[str, None]] = None,
-    end_date: Union[datetime, Union[str, None]] = None,
+    data: Optional[pd.DataFrame] = None,
+    start_date: Optional[Union[datetime, Union[str, None]]] = None,
+    end_date: Optional[Union[datetime, Union[str, None]]] = None,
     interval: Union[str, int] = "1440",
     exchange: str = "binance",
     to_symbol: str = "usdt",

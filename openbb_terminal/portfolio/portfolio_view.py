@@ -2,64 +2,59 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import List, Optional
 import os
-
 from datetime import datetime
+from typing import List, Optional
+
 import numpy as np
 import pandas as pd
-from matplotlib import pyplot as plt
 import seaborn as sns
+from matplotlib import pyplot as plt
 
 from openbb_terminal.common.quantitative_analysis import qa_view
-from openbb_terminal.config_terminal import theme
 from openbb_terminal.config_plot import PLOT_DPI
+from openbb_terminal.config_terminal import theme
+from openbb_terminal.decorators import log_start_end
+from openbb_terminal.helper_funcs import export_data, plot_autoscale, print_rich_table
 from openbb_terminal.portfolio.portfolio_model import (
     PortfolioEngine,
-    get_transactions,
+    get_assets_allocation,
+    get_calmar_ratio,
+    get_common_sense_ratio,
+    get_countries_allocation,
     get_daily_returns,
-    get_performance_vs_benchmark,
-    get_yearly_returns,
-    get_monthly_returns,
     get_distribution_returns,
-    get_holdings_value,
+    get_gaintopain_ratio,
     get_holdings_percentage,
-    get_rolling_volatility,
+    get_holdings_value,
+    get_information_ratio,
+    get_jensens_alpha,
+    get_kelly_criterion,
+    get_kurtosis,
+    get_maximum_drawdown,
+    get_maximum_drawdown_ratio,
+    get_monthly_returns,
+    get_payoff_ratio,
+    get_performance_vs_benchmark,
+    get_profit_factor,
+    get_r2_score,
+    get_regions_allocation,
+    get_rolling_beta,
     get_rolling_sharpe,
     get_rolling_sortino,
-    get_rolling_beta,
-    get_maximum_drawdown,
-    get_r2_score,
-    get_skewness,
-    get_kurtosis,
-    get_stats,
-    get_assets_allocation,
+    get_rolling_volatility,
     get_sectors_allocation,
-    get_countries_allocation,
-    get_regions_allocation,
-    get_volatility,
     get_sharpe_ratio,
+    get_skewness,
     get_sortino_ratio,
-    get_maximum_drawdown_ratio,
-    get_gaintopain_ratio,
-    get_tracking_error,
-    get_information_ratio,
-    get_tail_ratio,
-    get_common_sense_ratio,
-    get_jensens_alpha,
-    get_calmar_ratio,
-    get_kelly_criterion,
-    get_payoff_ratio,
-    get_profit_factor,
+    get_stats,
     get_summary,
+    get_tail_ratio,
+    get_tracking_error,
+    get_transactions,
+    get_volatility,
+    get_yearly_returns,
 )
-
-from openbb_terminal.helper_funcs import (
-    export_data,
-    plot_autoscale,
-    print_rich_table,
-)
-from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
 
 # pylint: disable=C0302,redefined-outer-name
@@ -104,7 +99,7 @@ def display_transactions(
     show_index=False,
     limit: int = 10,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Display portfolio transactions
 
@@ -146,6 +141,7 @@ def display_assets_allocation(
     portfolio_engine: PortfolioEngine,
     limit: int = 10,
     tables: bool = False,
+    recalculate: bool = False,
 ):
     """Display portfolio asset allocation compared to the benchmark
 
@@ -153,16 +149,19 @@ def display_assets_allocation(
     ----------
     portfolio_engine: PortfolioEngine
         Instance of PortfolioEngine class
-    tables: bool
-        Whether to include separate asset allocation tables
     limit: int
         The amount of assets you wish to show, by default this is set to 10
+    tables: bool
+        Whether to include separate asset allocation tables
+    recalculate: bool
+        Whether to recalculate the allocation
     """
 
     combined, portfolio_allocation, benchmark_allocation = get_assets_allocation(
         portfolio_engine=portfolio_engine,
         limit=limit,
         tables=True,
+        recalculate=recalculate,
     )
 
     display_category(
@@ -180,6 +179,7 @@ def display_sectors_allocation(
     portfolio_engine: PortfolioEngine,
     limit: int = 10,
     tables: bool = False,
+    recalculate: bool = False,
 ):
     """Display portfolio sector allocation compared to the benchmark
 
@@ -191,12 +191,15 @@ def display_sectors_allocation(
         The amount of assets you wish to show, by default this is set to 10
     tables: bool
         Whether to include separate asset allocation tables
+    recalculate: bool
+        Whether to recalculate the allocation
     """
 
     combined, portfolio_allocation, benchmark_allocation = get_sectors_allocation(
         portfolio_engine=portfolio_engine,
         limit=limit,
         tables=True,
+        recalculate=recalculate,
     )
 
     display_category(
@@ -214,6 +217,7 @@ def display_countries_allocation(
     portfolio_engine: PortfolioEngine,
     limit: int = 10,
     tables: bool = False,
+    recalculate: bool = False,
 ):
     """Display portfolio country allocation compared to the benchmark
 
@@ -225,12 +229,15 @@ def display_countries_allocation(
         The amount of assets you wish to show, by default this is set to 10
     tables: bool
         Whether to include separate asset allocation tables
+    recalculate: bool
+        Whether to recalculate the allocation
     """
 
     combined, portfolio_allocation, benchmark_allocation = get_countries_allocation(
         portfolio_engine=portfolio_engine,
         limit=limit,
         tables=True,
+        recalculate=recalculate,
     )
 
     display_category(
@@ -248,6 +255,7 @@ def display_regions_allocation(
     portfolio_engine: PortfolioEngine,
     limit: int = 10,
     tables: bool = False,
+    recalculate: bool = False,
 ):
     """Display portfolio region allocation compared to the benchmark
 
@@ -259,12 +267,15 @@ def display_regions_allocation(
         The amount of assets you wish to show, by default this is set to 10
     tables: bool
         Whether to include separate asset allocation tables
+    recalculate: bool
+        Whether to recalculate the allocation
     """
 
     combined, portfolio_allocation, benchmark_allocation = get_regions_allocation(
         portfolio_engine=portfolio_engine,
         limit=limit,
         tables=True,
+        recalculate=recalculate,
     )
 
     display_category(
@@ -379,7 +390,7 @@ def display_yearly_returns(
     window: str = "all",
     raw: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[plt.Axes] = None,
 ):
     """Display yearly returns
@@ -460,10 +471,11 @@ def display_yearly_returns(
 def display_monthly_returns(
     portfolio_engine: PortfolioEngine,
     window: str = "all",
-    raw: bool = False,
+    instrument: str = "both",
+    graph: bool = False,
     show_vals: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[plt.Axes] = None,
 ):
     """Display monthly returns
@@ -475,27 +487,38 @@ def display_monthly_returns(
         Use `portfolio.load` to create a PortfolioEngine.
     window : str
         interval to compare cumulative returns and benchmark
-    raw : False
-        Display raw data from cumulative return
+    instrument : str
+        Display raw data from cumulative return, default is showing both the portfolio and benchmark in one table
     show_vals : False
         Show values on heatmap
     export : str
         Export certain type of data
+    sheet_name : str
+        Whether to export to a specific sheet name in an Excel file
     external_axes: plt.Axes
         Optional axes to display plot on
     """
 
-    portfolio_returns, benchmark_returns = get_monthly_returns(portfolio_engine, window)
+    portfolio_returns, benchmark_returns, total_monthly_returns = get_monthly_returns(
+        portfolio_engine, window
+    )
 
-    if raw:
+    if instrument == "portfolio":
         print_rich_table(
             portfolio_returns,
             title="Monthly returns - portfolio [%]",
             headers=portfolio_returns.columns,
             show_index=True,
         )
-        console.print("\n")
 
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "mret_portfolio",
+            portfolio_returns,
+            sheet_name,
+        )
+    elif instrument == "benchmark":
         print_rich_table(
             benchmark_returns,
             title="Monthly returns - benchmark [%]",
@@ -503,7 +526,49 @@ def display_monthly_returns(
             show_index=True,
         )
 
-    else:
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "mret_benchmark",
+            benchmark_returns,
+            sheet_name,
+        )
+    elif instrument == "both":
+        # Converts multi-index into readable rich table while keeping the multi-index intact for export
+        total_monthly_returns_rich = total_monthly_returns.copy()
+        total_monthly_returns_rich.insert(
+            0, "Instruments", total_monthly_returns_rich.index.get_level_values(1)
+        )
+        total_monthly_returns_rich.insert(
+            0,
+            "Year",
+            sum(
+                [
+                    [year, "", ""]
+                    for year in total_monthly_returns_rich.index.get_level_values(
+                        0
+                    ).unique()
+                ],
+                [],
+            ),
+        )
+
+        print_rich_table(
+            total_monthly_returns_rich,
+            title="Total Monthly returns [%]",
+            headers=total_monthly_returns_rich.columns,
+            show_index=False,
+        )
+
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "mret_total",
+            total_monthly_returns,
+            sheet_name,
+        )
+
+    if graph or show_vals:
         if external_axes is None:
             _, ax = plt.subplots(
                 2,
@@ -549,14 +614,6 @@ def display_monthly_returns(
         if external_axes is None:
             theme.visualize_output()
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "mret",
-        portfolio_returns,
-        sheet_name,
-    )
-
 
 @log_start_end(log=logger)
 def display_daily_returns(
@@ -565,7 +622,7 @@ def display_daily_returns(
     raw: bool = False,
     limit: int = 10,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[plt.Axes] = None,
 ):
     """Display daily returns
@@ -642,7 +699,7 @@ def display_distribution_returns(
     window: str = "all",
     raw: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[plt.Axes] = None,
 ):
     """Display daily returns
@@ -732,7 +789,7 @@ def display_holdings_value(
     raw: bool = False,
     limit: int = 10,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[plt.Axes] = None,
 ):
     """Display holdings of assets (absolute value)
@@ -815,7 +872,7 @@ def display_holdings_percentage(
     raw: bool = False,
     limit: int = 10,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[plt.Axes] = None,
 ):
     """Display holdings of assets (in percentage)
@@ -901,7 +958,7 @@ def display_rolling_volatility(
     portfolio_engine: PortfolioEngine,
     window: str = "1y",
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display rolling volatility
@@ -962,7 +1019,7 @@ def display_rolling_sharpe(
     risk_free_rate: float = 0,
     window: str = "1y",
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display rolling sharpe
@@ -1025,7 +1082,7 @@ def display_rolling_sortino(
     risk_free_rate: float = 0,
     window: str = "1y",
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display rolling sortino
@@ -1087,7 +1144,7 @@ def display_rolling_beta(
     portfolio_engine: PortfolioEngine,
     window: str = "1y",
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display rolling beta
@@ -1151,7 +1208,7 @@ def display_rolling_beta(
 def display_maximum_drawdown(
     portfolio_engine: PortfolioEngine,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display maximum drawdown curve
@@ -1200,7 +1257,7 @@ def display_maximum_drawdown(
 def display_rsquare(
     portfolio_engine: PortfolioEngine,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Display R-square
 
@@ -1235,7 +1292,7 @@ def display_rsquare(
 def display_skewness(
     portfolio_engine: PortfolioEngine,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Display skewness
 
@@ -1268,7 +1325,7 @@ def display_skewness(
 def display_kurtosis(
     portfolio_engine: PortfolioEngine,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Display kurtosis
 
@@ -1302,7 +1359,7 @@ def display_stats(
     portfolio_engine: PortfolioEngine,
     window: str = "all",
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Display stats
 
@@ -1337,7 +1394,7 @@ def display_stats(
 def display_volatility(
     portfolio_engine: PortfolioEngine,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Display volatility for multiple intervals
 
@@ -1371,7 +1428,7 @@ def display_sharpe_ratio(
     portfolio_engine: PortfolioEngine,
     risk_free_rate: float = 0,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Display sharpe ratio for multiple intervals
 
@@ -1407,7 +1464,7 @@ def display_sortino_ratio(
     portfolio_engine: PortfolioEngine,
     risk_free_rate: float = 0,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Display sortino ratio for multiple intervals
 
@@ -1442,7 +1499,7 @@ def display_sortino_ratio(
 def display_maximum_drawdown_ratio(
     portfolio_engine: PortfolioEngine,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Display maximum drawdown for multiple intervals
 
@@ -1475,7 +1532,7 @@ def display_maximum_drawdown_ratio(
 def display_gaintopain_ratio(
     portfolio_engine: PortfolioEngine,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Display gain-to-pain ratio for multiple intervals
 
@@ -1507,7 +1564,7 @@ def display_gaintopain_ratio(
 def display_tracking_error(
     portfolio_engine: PortfolioEngine,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Display tracking error for multiple intervals
 
@@ -1540,7 +1597,7 @@ def display_tracking_error(
 def display_information_ratio(
     portfolio_engine: PortfolioEngine,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Display information ratio for multiple intervals
 
@@ -1572,7 +1629,7 @@ def display_information_ratio(
 def display_tail_ratio(
     portfolio_engine: PortfolioEngine,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Display tail ratio for multiple intervals
 
@@ -1607,7 +1664,7 @@ def display_tail_ratio(
 def display_common_sense_ratio(
     portfolio_engine: PortfolioEngine,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Display common sense ratio for multiple intervals
 
@@ -1640,7 +1697,7 @@ def display_jensens_alpha(
     portfolio_engine: PortfolioEngine,
     risk_free_rate: float = 0,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Display jensens alpha for multiple intervals
 
@@ -1675,7 +1732,7 @@ def display_jensens_alpha(
 def display_calmar_ratio(
     portfolio_engine: PortfolioEngine,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Display calmar ratio for multiple intervals
 
@@ -1708,7 +1765,7 @@ def display_calmar_ratio(
 def display_kelly_criterion(
     portfolio_engine: PortfolioEngine,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Display kelly criterion for multiple intervals
 
@@ -1739,7 +1796,7 @@ def display_kelly_criterion(
 def display_payoff_ratio(
     portfolio_engine: PortfolioEngine,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Display payoff ratio for multiple intervals
 
@@ -1771,7 +1828,7 @@ def display_payoff_ratio(
 def display_profit_factor(
     portfolio_engine: PortfolioEngine,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Display profit factor for multiple intervals
 
@@ -1806,7 +1863,7 @@ def display_summary(
     window: str = "all",
     risk_free_rate: float = 0,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Display summary portfolio and benchmark returns
 

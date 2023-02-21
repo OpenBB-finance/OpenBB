@@ -24,10 +24,7 @@ def vcr_config():
 @pytest.mark.parametrize(
     "func",
     [
-        "display_info",
         "display_shareholders",
-        "display_sustainability",
-        "display_calendar_earnings",
         "display_dividends",
         "display_splits",
         "display_mktcap",
@@ -41,13 +38,16 @@ def test_call_func(func, mocker):
     getattr(yahoo_finance_view, func)(symbol="PM")
 
 
+@pytest.mark.vcr
+def test_display_info():
+    yahoo_finance_view.display_info(symbol="TSLA")
+
+
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
     "func, mocked_func",
     [
-        ("display_sustainability", "get_sustainability"),
-        ("display_calendar_earnings", "get_calendar_earnings"),
         ("display_dividends", "get_dividends"),
         ("display_splits", "get_splits"),
     ],

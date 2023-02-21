@@ -3,23 +3,22 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import Optional, List
+from typing import List, Optional
 
 import matplotlib.pyplot as plt
 import pandas as pd
 
-from openbb_terminal.config_terminal import theme
 from openbb_terminal.alternative.covid import covid_model
 from openbb_terminal.config_plot import PLOT_DPI
+from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
+    is_valid_axes_count,
     plot_autoscale,
     print_rich_table,
-    is_valid_axes_count,
 )
 from openbb_terminal.rich_config import console
-
 
 logger = logging.getLogger(__name__)
 
@@ -133,7 +132,7 @@ def display_covid_ov(
     raw: bool = False,
     limit: int = 10,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     plot: bool = True,
 ) -> None:
     """Prints table showing historical cases and deaths by country.
@@ -185,7 +184,7 @@ def display_covid_stat(
     raw: bool = False,
     limit: int = 10,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     plot: bool = True,
 ) -> None:
     """Prints table showing historical cases and deaths by country.
@@ -242,7 +241,7 @@ def display_case_slopes(
     threshold: int = 10000,
     ascend: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Prints table showing countries with the highest case slopes.
 

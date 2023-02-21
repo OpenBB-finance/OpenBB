@@ -1,24 +1,22 @@
 """SentimentInvestor View"""
 __docformat__ = "numpy"
 
-import os
 import logging
-from typing import Optional, List
+import os
+from typing import List, Optional
 
 from matplotlib import pyplot as plt
 
-from openbb_terminal.decorators import check_api_key
+from openbb_terminal.config_plot import PLOT_DPI
+from openbb_terminal.config_terminal import theme
 from openbb_terminal.cryptocurrency.defi import smartstake_model
+from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
+    is_valid_axes_count,
     plot_autoscale,
     print_rich_table,
-    is_valid_axes_count,
 )
-from openbb_terminal.config_terminal import theme
-from openbb_terminal.config_plot import PLOT_DPI
-from openbb_terminal.decorators import log_start_end
-
 
 # pylint: disable=E1101
 
@@ -30,7 +28,7 @@ logger = logging.getLogger(__name__)
 def display_luna_circ_supply_change(
     days: int = 30,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     supply_type: str = "lunaSupplyChallengeStats",
     limit: int = 5,
     external_axes: Optional[List[plt.Axes]] = None,

@@ -3,24 +3,26 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import Optional, Union, List
+from typing import List, Optional, Union
 
 import matplotlib.pyplot as plt
 import pandas as pd
 
-from openbb_terminal.config_terminal import theme
-from openbb_terminal.common.technical_analysis import custom_indicators_model
+from openbb_terminal.common.technical_analysis import (
+    custom_indicators_model,
+    ta_helpers,
+)
 from openbb_terminal.config_plot import PLOT_DPI
+from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
+    is_intraday,
+    is_valid_axes_count,
     plot_autoscale,
     print_rich_table,
     reindex_dates,
-    is_intraday,
-    is_valid_axes_count,
 )
-from openbb_terminal.common.technical_analysis import ta_helpers
 
 logger = logging.getLogger(__name__)
 
@@ -33,7 +35,7 @@ def fibonacci_retracement(
     end_date: Optional[Union[str, None]] = None,
     symbol: str = "",
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plots Calculated fibonacci retracement levels
@@ -92,10 +94,7 @@ def fibonacci_retracement(
         return
     ax1.plot(plot_data[close_col])
 
-    if is_intraday(data):
-        date_format = "%b %d %H:%M"
-    else:
-        date_format = "%Y-%m-%d"
+    date_format = "%b %d %H:%M" if is_intraday(data) else "%Y-%m-%d"
     min_date_index = plot_data[
         plot_data["date"] == min_date.strftime(date_format)
     ].index

@@ -2,8 +2,7 @@ import logging
 import os
 from typing import Optional
 
-from openbb_terminal.decorators import log_start_end
-from openbb_terminal.decorators import check_api_key
+from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.stocks.discovery import finnhub_model
 
@@ -17,7 +16,7 @@ def past_ipo(
     start_date: Optional[str] = None,
     limit: int = 20,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Past IPOs dates. [Source: Finnhub]
 
@@ -59,7 +58,7 @@ def future_ipo(
     end_date: Optional[str] = None,
     limit: int = 20,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Future IPOs dates. [Source: Finnhub]
 

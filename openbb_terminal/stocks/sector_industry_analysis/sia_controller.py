@@ -4,13 +4,12 @@ __docformat__ = "numpy"
 import argparse
 import difflib
 import logging
-from typing import List
+from typing import List, Optional
 
 import yfinance as yf
 
-from openbb_terminal.custom_prompt_toolkit import NestedCompleter
-
 from openbb_terminal import feature_flags as obbff
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
@@ -19,7 +18,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console, MenuText
+from openbb_terminal.rich_config import MenuText, console
 from openbb_terminal.stocks.comparison_analysis import ca_controller
 from openbb_terminal.stocks.sector_industry_analysis import (
     financedatabase_model,
@@ -163,7 +162,7 @@ class SectorIndustryAnalysisController(BaseController):
     def __init__(
         self,
         ticker: str,
-        queue: List[str] = None,
+        queue: Optional[List[str]] = None,
     ):
         """Constructor"""
         super().__init__(queue)

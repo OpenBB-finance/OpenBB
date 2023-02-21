@@ -1,11 +1,12 @@
 """ Comparison Analysis Marketwatch View """
 __docformat__ = "numpy"
 
-from datetime import datetime
 import logging
 import os
-from typing import List
+from datetime import datetime
+from typing import List, Optional
 
+from openbb_terminal import rich_config
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
@@ -14,7 +15,6 @@ from openbb_terminal.helper_funcs import (
     print_rich_table,
 )
 from openbb_terminal.stocks.comparison_analysis import marketwatch_model
-from openbb_terminal import rich_config
 
 logger = logging.getLogger(__name__)
 
@@ -25,7 +25,7 @@ def display_income_comparison(
     timeframe: str = str(datetime.now().year - 1),
     quarter: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Display income data. [Source: Marketwatch].
 
@@ -82,7 +82,7 @@ def display_balance_comparison(
     timeframe: str = str(datetime.now().year - 1),
     quarter: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Compare balance between companies. [Source: Marketwatch]
 
@@ -139,7 +139,7 @@ def display_cashflow_comparison(
     timeframe: str = str(datetime.now().year - 1),
     quarter: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Compare cashflow between companies. [Source: Marketwatch]
 

@@ -1,18 +1,19 @@
 """Beta model"""
 __docformat__ = "numpy"
 
-from typing import Tuple
+from typing import Optional, Tuple
 
 import pandas as pd
 from scipy import stats
+
 from openbb_terminal.stocks import stocks_helper
 
 
 def beta_model(
     symbol: str,
     ref_symbol: str,
-    data: pd.DataFrame = None,
-    ref_data: pd.DataFrame = None,
+    data: Optional[pd.DataFrame] = None,
+    ref_data: Optional[pd.DataFrame] = None,
     interval: int = 1440,
 ) -> Tuple[pd.Series, pd.Series, float, float]:
     """Calculate beta for a ticker and a reference ticker.
@@ -35,13 +36,11 @@ def beta_model(
     Tuple[pd.Series, pd.Series, float, float]
         Stock ticker symbols close-to-close returns, Reference ticker symbols close-to-close returns, beta, alpha
     """
-    if data is None:
-        data = stocks_helper.load(symbol=symbol)
-    else:
-        # TODO: When loaded in the stocks menu, the stock df columns are all
-        # lowercase but when loaded via stocks_helper.load(ticker) they start
-        # with an uppercase char. This should be consistent.
-        data = data.rename({"close": "Close"}, axis=1)
+    data = (
+        stocks_helper.load(symbol=symbol)
+        if data is None
+        else data.rename({"close": "Close"}, axis=1)
+    )
     if ref_data is None:
         ref_data = stocks_helper.load(
             symbol=ref_symbol,

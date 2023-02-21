@@ -1,27 +1,29 @@
 """Portfolio Engine"""
 __docformat__ = "numpy"
 
-from os import environ
-import warnings
-import logging
-from typing import Dict, Any
 import datetime
+import logging
+import warnings
+from os import environ
+from typing import Any, Dict
 
 import numpy as np
 import pandas as pd
 import yfinance as yf
 from tqdm import tqdm
+
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.rich_config import console
-from openbb_terminal.portfolio.portfolio_helper import (
-    make_equal_length,
-    get_info_from_ticker,
-)
 from openbb_terminal.portfolio.allocation_model import get_allocation
+from openbb_terminal.portfolio.portfolio_helper import (
+    get_info_from_ticker,
+    make_equal_length,
+)
+from openbb_terminal.rich_config import console
 from openbb_terminal.terminal_helper import suppress_stdout
 
 # pylint: disable=E1136,W0201,R0902,C0302
-# pylint: disable=unsupported-assignment-operation,redefined-outer-name,too-many-public-methods, consider-using-f-string
+# pylint: disable=unsupported-assignment-operation,redefined-outer-name
+# pylint: too-many-public-methods, consider-using-f-string,disable=raise-missing-from
 
 logger = logging.getLogger(__name__)
 
@@ -116,7 +118,6 @@ class PortfolioEngine:
         self.tickers_list = None
         self.tickers: Dict[Any, Any] = {}
         self.benchmark_ticker: str = ""
-        self.benchmark_info = None
         self.historical_trade_data = pd.DataFrame()
 
         # Portfolio
@@ -194,7 +195,7 @@ class PortfolioEngine:
 
         # Load transactions from file
         if path.endswith(".xlsx"):
-            if environ.get("DEBUG_MODE", "false") != "true":
+            if str(environ.get("DEBUG_MODE", "false")).lower() != "true":
                 warnings.filterwarnings(
                     "ignore", category=UserWarning, module="openpyxl"
                 )
@@ -225,7 +226,7 @@ class PortfolioEngine:
             13. Populate fields Sector, Industry and Country
         """
 
-        p_bar = tqdm(range(14), desc="Preprocessing transactions")
+        p_bar = tqdm(range(14), desc="Preprocessing transactions", leave=False)
 
         try:
             # 0. If optional fields not in the transactions add missing
@@ -494,7 +495,7 @@ class PortfolioEngine:
                         ] = info_list
 
     @log_start_end(log=logger)
-    def set_benchmark(self, symbol: str = "SPY", full_shares: bool = False):
+    def set_benchmark(self, symbol: str = "SPY", full_shares: bool = False) -> bool:
         """Load benchmark into portfolio.
 
         Parameters
@@ -504,11 +505,14 @@ class PortfolioEngine:
         full_shares: bool
             Whether to mimic the portfolio trades exactly (partial shares) or round down the
             quantity to the nearest number
+
+        Returns
+        -------
+        bool
+            True if successful, False otherwise
         """
 
-        p_bar = tqdm(range(4), desc="         Loading benchmark")
-
-        self.benchmark_ticker = symbol
+        p_bar = tqdm(range(4), desc="         Loading benchmark", leave=False)
 
         self.benchmark_historical_prices = yf.download(
             symbol,
@@ -517,6 +521,15 @@ class PortfolioEngine:
             progress=False,
             ignore_tz=True,
         )["Adj Close"]
+
+        if self.benchmark_historical_prices.empty:
+            console.print(
+                f"\n[red]Could not download benchmark data for {symbol}."
+                " Choose another symbol.\n[/red]"
+            )
+            return False
+
+        self.benchmark_ticker = symbol
 
         p_bar.n += 1
         p_bar.refresh()
@@ -537,11 +550,6 @@ class PortfolioEngine:
         p_bar.refresh()
 
         self.benchmark_returns = self.benchmark_historical_prices.pct_change().dropna()
-        self.benchmark_info = yf.Ticker(symbol).info
-
-        p_bar.n += 1
-        p_bar.refresh()
-
         (
             self.portfolio_returns,
             self.benchmark_returns,
@@ -549,6 +557,8 @@ class PortfolioEngine:
 
         p_bar.n += 1
         p_bar.refresh()
+
+        return True
 
     @log_start_end(log=logger)
     def __mimic_trades_for_benchmark(self, full_shares: bool = False):
@@ -649,7 +659,9 @@ class PortfolioEngine:
             whether to use close or adjusted close prices
         """
 
-        p_bar = tqdm(range(len(self.tickers)), desc="        Loading price data")
+        p_bar = tqdm(
+            range(len(self.tickers)), desc="        Loading price data", leave=False
+        )
 
         for ticker_type, data in self.tickers.items():
             price_data = yf.download(
@@ -694,7 +706,7 @@ class PortfolioEngine:
 
         # Make historical prices columns a multi-index. This helps the merging.
         self.portfolio_historical_prices.columns = pd.MultiIndex.from_product(
-            [["Close"], self.tickers_list]
+            [["Close"], self.portfolio_historical_prices.columns]
         )
 
         trade_data = pd.merge(
@@ -780,7 +792,7 @@ class PortfolioEngine:
                 from any sales during the period [Cash Inflow(t)].
         """
 
-        p_bar = tqdm(range(1), desc="       Calculating returns")
+        p_bar = tqdm(range(1), desc="       Calculating returns", leave=False)
 
         trade_data = self.historical_trade_data
 
@@ -905,6 +917,12 @@ class PortfolioEngine:
             Flag to force recalculate allocation if already exists
         """
 
+        if not self.benchmark_ticker or self.portfolio_trades.empty:
+            console.print(
+                "Please load in a portfolio holdings first with `load --file` or obtain an example with `load --example`"
+            )
+            return
+
         if category == "Asset":
             if (
                 self.benchmark_assets_allocation.empty
@@ -914,7 +932,9 @@ class PortfolioEngine:
                 (
                     self.benchmark_assets_allocation,
                     self.portfolio_assets_allocation,
-                ) = get_allocation(category, self.benchmark_info, self.portfolio_trades)
+                ) = get_allocation(
+                    category, self.benchmark_ticker, self.portfolio_trades
+                )
         elif category == "Sector":
             if (
                 self.benchmark_sectors_allocation.empty
@@ -924,7 +944,9 @@ class PortfolioEngine:
                 (
                     self.benchmark_sectors_allocation,
                     self.portfolio_sectors_allocation,
-                ) = get_allocation(category, self.benchmark_info, self.portfolio_trades)
+                ) = get_allocation(
+                    category, self.benchmark_ticker, self.portfolio_trades
+                )
         elif category == "Country":
             if (
                 self.benchmark_countries_allocation.empty
@@ -934,7 +956,9 @@ class PortfolioEngine:
                 (
                     self.benchmark_countries_allocation,
                     self.portfolio_countries_allocation,
-                ) = get_allocation(category, self.benchmark_info, self.portfolio_trades)
+                ) = get_allocation(
+                    category, self.benchmark_ticker, self.portfolio_trades
+                )
         elif category == "Region":
             if (
                 self.benchmark_regions_allocation.empty
@@ -944,7 +968,9 @@ class PortfolioEngine:
                 (
                     self.benchmark_regions_allocation,
                     self.portfolio_regions_allocation,
-                ) = get_allocation(category, self.benchmark_info, self.portfolio_trades)
+                ) = get_allocation(
+                    category, self.benchmark_ticker, self.portfolio_trades
+                )
         else:
             console.print(
                 "Category not available. Choose from: Asset, Sector, Country or Region"

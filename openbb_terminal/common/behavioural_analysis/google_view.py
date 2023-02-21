@@ -3,20 +3,20 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import Optional, List
-import pandas as pd
+from typing import List, Optional
 
 import matplotlib.pyplot as plt
+import pandas as pd
 
-from openbb_terminal.config_terminal import theme
-from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.common.behavioural_analysis import google_model
+from openbb_terminal.config_plot import PLOT_DPI
+from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
+    is_valid_axes_count,
     plot_autoscale,
     print_rich_table,
-    is_valid_axes_count,
 )
 
 logger = logging.getLogger(__name__)
@@ -27,7 +27,7 @@ def display_mentions(
     symbol: str,
     start_date: str = "",
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plots weekly bars of stock's interest over time. other users watchlist. [Source: Google].
@@ -97,7 +97,7 @@ def display_correlation_interest(
     data: pd.DataFrame,
     words: List[str],
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plots interest over time of words/sentences versus stock price. [Source: Google].
@@ -173,7 +173,7 @@ def display_regions(
     symbol: str,
     limit: int = 5,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plots bars of regions based on stock's interest. [Source: Google].
@@ -229,7 +229,7 @@ def display_regions(
 
 @log_start_end(log=logger)
 def display_queries(
-    symbol: str, limit: int = 5, export: str = "", sheet_name: str = None
+    symbol: str, limit: int = 5, export: str = "", sheet_name: Optional[str] = None
 ):
     """Prints table showing top related queries with this stock's query. [Source: Google].
 
@@ -268,7 +268,7 @@ def display_queries(
 
 @log_start_end(log=logger)
 def display_rise(
-    symbol: str, limit: int = 10, export: str = "", sheet_name: str = None
+    symbol: str, limit: int = 10, export: str = "", sheet_name: Optional[str] = None
 ):
     """Prints top rising related queries with this stock's query. [Source: Google].
 

@@ -1,19 +1,19 @@
 """Yahoo Finance model"""
 __docformat__ = "numpy"
 
+import logging
 import os
 import sys
-import logging
-from typing import List, Optional
 from datetime import datetime, timedelta
+from typing import List, Optional
 
-import yfinance as yf
 import pandas as pd
+import yfinance as yf
 from dateutil.relativedelta import relativedelta
 
-from openbb_terminal.rich_config import console
-from openbb_terminal.decorators import log_start_end
 from openbb_terminal.core.config.paths import MISCELLANEOUS_DIRECTORY
+from openbb_terminal.decorators import log_start_end
+from openbb_terminal.rich_config import console
 
 # pylint: disable=attribute-defined-outside-init
 
@@ -40,7 +40,7 @@ MONTHS = {
 class HiddenPrints:
     def __enter__(self):
         self._original_stdout = sys.stdout
-        sys.stdout = open(os.devnull, "w")
+        sys.stdout = open(os.devnull, "w")  # noqa: SIM115
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         sys.stdout.close()

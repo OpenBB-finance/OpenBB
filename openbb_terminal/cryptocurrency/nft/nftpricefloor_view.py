@@ -6,7 +6,9 @@ __docformat__ = "numpy"
 import logging
 import os
 from typing import List, Optional
+
 from matplotlib import pyplot as plt
+
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
@@ -29,7 +31,7 @@ def display_collections(
     show_sales: bool = False,
     limit: int = 5,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Display NFT collections. [Source: https://nftpricefloor.com/]
 
@@ -94,7 +96,7 @@ def display_floor_price(
     slug: str,
     limit: int = 10,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
     raw: bool = False,
 ):

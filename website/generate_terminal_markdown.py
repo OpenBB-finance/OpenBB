@@ -113,9 +113,13 @@ def process_cmd_parsers(ctrl: ControllerDoc) -> List[Dict[str, str]]:
                 # We do this to fix multiline docstrings for the markdown
                 doc = " ".join(doc.split()).replace(*USER_PATH)
 
+            if (flags := action.option_strings) is not None:
+                flags = "  ".join(flags)
+
             actions.append(
                 {
                     "opt_name": action.dest if action.dest else "",
+                    "flags": flags if flags else "",
                     "doc": doc if doc else "",
                     "default": f"{default}".replace(*USER_PATH),
                     "optional": not action.required,
@@ -170,14 +174,18 @@ description: OpenBB Terminal Function
 
     markdown += "---\n\n## Parameters\n\n"
     if cmd_meta["actions"]:
-        markdown += "| Name | Description | Default | Optional | Choices |\n"
-        markdown += "| ---- | ----------- | ------- | -------- | ------- |\n"
+        markdown += (
+            "| Name | Parameter | Description | Default | Optional | Choices |\n"
+        )
+        markdown += (
+            "| ---- | --------- | ----------- | ------- | -------- | ------- |\n"
+        )
 
         for param in cmd_meta["actions"]:
             if isinstance(param, dict):
                 markdown += (
-                    f"| {param['opt_name']} | {param['doc']} | {param['default']} "
-                    f"| {param['optional']} | {param['choices']} |\n"
+                    f"| {param['opt_name']} | {param['flags']} | {param['doc']} "
+                    f"| {param['default']} | {param['optional']} | {param['choices']} |\n"
                 )
     else:
         markdown += "This command has no parameters\n\n"

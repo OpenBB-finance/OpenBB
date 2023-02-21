@@ -1,18 +1,14 @@
 """ Plot Controller """
 import os
-from typing import Optional, List, Dict, Any
 from textwrap import fill
+from typing import Any, Dict, List, Optional
 
 import pandas as pd
 from matplotlib import pyplot as plt
 
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
-from openbb_terminal.helper_funcs import (
-    plot_autoscale,
-    export_data,
-    print_rich_table,
-)
+from openbb_terminal.helper_funcs import export_data, plot_autoscale, print_rich_table
 
 
 def show_plot(
@@ -114,7 +110,7 @@ def show_options(
     raw: str = "",
     limit: int = 10,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """
     The ability to plot any data coming from EconDB, FRED or Yahoo Finance.

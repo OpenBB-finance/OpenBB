@@ -2,15 +2,14 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import Union, Optional, List
 from datetime import datetime
+from typing import List, Optional, Union
 
-import pandas as pd
 import matplotlib.pyplot as plt
+import pandas as pd
 
-from openbb_terminal.forecast import autoselect_model
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.forecast import helpers
+from openbb_terminal.forecast import autoselect_model, helpers
 
 logger = logging.getLogger(__name__)
 # pylint: disable=too-many-arguments
@@ -26,7 +25,7 @@ def display_autoselect_forecast(
     start_window: float = 0.85,
     forecast_horizon: int = 5,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     residuals: bool = False,
     forecast_only: bool = False,
     start_date: Optional[datetime] = None,

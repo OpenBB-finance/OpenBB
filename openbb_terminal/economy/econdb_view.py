@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import logging
 import os
 from textwrap import fill
-from typing import Optional, List
+from typing import List, Optional
 
 from matplotlib import pyplot as plt
 
@@ -12,19 +12,15 @@ from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.economy import econdb_model
-from openbb_terminal.helper_funcs import (
-    plot_autoscale,
-    print_rich_table,
-    export_data,
-)
+from openbb_terminal.helper_funcs import export_data, plot_autoscale, print_rich_table
 
 logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
 def show_macro_data(
-    parameters: list = None,
-    countries: list = None,
+    parameters: Optional[list] = None,
+    countries: Optional[list] = None,
     transform: str = "",
     start_date: str = "1900-01-01",
     end_date: Optional[str] = None,
@@ -32,7 +28,7 @@ def show_macro_data(
     raw: bool = False,
     external_axes: Optional[List[plt.axes]] = None,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Show the received macro data about a company [Source: EconDB]
 
@@ -84,7 +80,13 @@ def show_macro_data(
 
     legend = []
     for column in df_rounded.columns:
-        parameter_units = f"Units: {units[column[0]][column[1]]}"
+        if transform:
+            if transform in ["TPOP", "TOYA", "TPGP"]:
+                parameter_units = "Units: %"
+            elif transform in ["TUSD", "TNOR"]:
+                parameter_units = "Units: Level"
+        else:
+            parameter_units = f"Units: {units[column[0]][column[1]]}"
         country_label = column[0].replace("_", " ")
         parameter_label = econdb_model.PARAMETERS[column[1]]["name"]
         if len(parameters) > 1 and len(countries) > 1:
@@ -144,15 +146,15 @@ def show_macro_data(
 
 @log_start_end(log=logger)
 def show_treasuries(
-    instruments: list = None,
-    maturities: list = None,
+    instruments: Optional[list] = None,
+    maturities: Optional[list] = None,
     frequency: str = "monthly",
     start_date: str = "1900-01-01",
     end_date: Optional[str] = None,
     raw: bool = False,
     external_axes: Optional[List[plt.axes]] = None,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Display U.S. Treasury rates [Source: EconDB]
 
@@ -228,7 +230,7 @@ def show_treasuries(
             export,
             os.path.dirname(os.path.abspath(__file__)),
             "treasuries_data",
-            treasury_data,
+            treasury_data / 100,
             sheet_name,
         )
 

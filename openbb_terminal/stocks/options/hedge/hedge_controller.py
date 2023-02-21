@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import argparse
 import logging
 from datetime import datetime
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 import pandas as pd
 
@@ -15,11 +15,11 @@ from openbb_terminal.helper_funcs import print_rich_table
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import MenuText, console
+from openbb_terminal.stocks import stocks_helper
 from openbb_terminal.stocks.options.hedge import hedge_view
 from openbb_terminal.stocks.options.hedge.hedge_model import add_hedge_option
 from openbb_terminal.stocks.options.yfinance_model import get_option_chain, get_price
 from openbb_terminal.stocks.options.yfinance_view import plot_payoff
-from openbb_terminal.stocks import stocks_helper
 
 # pylint: disable=R0902
 
@@ -42,7 +42,7 @@ class HedgeController(BaseController):
     PATH = "/stocks/options/hedge/"
     CHOICES_GENERATION = True
 
-    def __init__(self, ticker: str, expiration: str, queue: List[str] = None):
+    def __init__(self, ticker: str, expiration: str, queue: Optional[List[str]] = None):
         """Constructor"""
         super().__init__(queue)
 
@@ -228,11 +228,7 @@ class HedgeController(BaseController):
                         "currency": currency,
                     }
 
-                    if opt_type == "Call":
-                        side = 1
-                    else:
-                        # Implies the option type is a put
-                        side = -1
+                    side = 1 if opt_type == "Call" else -1
 
                     date_obj = datetime.strptime(self.expiration, "%Y-%m-%d")
                     days = float((date_obj - datetime.now()).days + 1)
@@ -502,7 +498,7 @@ class HedgeController(BaseController):
 
                 for _, value in self.options.items():
                     if value:
-                        option_side: str = "Long" if value["sign"] == 1 else "Short"
+                        option_side: str = "Long" if value["sign"] == 1 else "Short"  # type: ignore
                         positions = positions.append(
                             [
                                 [

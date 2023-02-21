@@ -2,25 +2,29 @@
 __docformat__ = "numpy"
 
 # IMPORTATION STANDARD
-import webbrowser
-from contextlib import contextmanager
 import hashlib
 import logging
 import os
 import subprocess  # nosec
 import sys
-from typing import List
-from packaging import version
+import webbrowser
+from contextlib import contextmanager
+from typing import List, Optional
 
 # IMPORTATION THIRDPARTY
 import matplotlib.pyplot as plt
+from packaging import version
+
+from openbb_terminal import (
+    feature_flags as obbff,
+    thought_of_the_day as thought,
+)
 
 # IMPORTATION INTERNAL
-from openbb_terminal.config_terminal import LOGGING_APP_NAME, LOGGING_COMMIT_HASH
-from openbb_terminal import feature_flags as obbff
-from openbb_terminal import thought_of_the_day as thought
-from openbb_terminal.rich_config import console
+from openbb_terminal.config_terminal import LOGGING_COMMIT_HASH
 from openbb_terminal.helper_funcs import request
+from openbb_terminal.rich_config import console
+from openbb_terminal.session.user import User
 
 # pylint: disable=too-many-statements,no-member,too-many-branches,C0302
 
@@ -154,13 +158,14 @@ def open_openbb_documentation(
                 path = f"/guides/intros/{path}"
         else:  # user didn't pass argument and is in a menu
             menu = path.split("/")[-2]
-            if menu in ["ta", "ba", "qa"]:
-                path = f"/guides/intros/common/{menu}"
-            else:
-                path = f"/guides/intros/{path}"
+            path = (
+                f"/guides/intros/common/{menu}"
+                if menu in ["ta", "ba", "qa"]
+                else f"/guides/intros/{path}"
+            )
 
     if command:
-        if "keys" == command:
+        if command == "keys":
             path = "/guides/advanced/api-keys"
             command = ""
         elif "settings" in path or "featflags" in path:
@@ -215,15 +220,24 @@ def hide_splashscreen():
         logger.info(e)
 
 
-def is_packaged_application() -> bool:
-    """Tell whether or not it is a packaged version (Windows or Mac installer).
+def is_auth_enabled() -> bool:
+    """Tell whether or not authentication is enabled.
 
-
-    Returns:
-        bool: If the application is packaged
+    Returns
+    -------
+    bool
+        If authentication is enabled
     """
+    # TODO: This function is a temporary way to block authentication
+    return (
+        str(os.getenv("OPENBB_ENABLE_AUTHENTICATION")).lower() == "true"
+        or "--login" in sys.argv[1:]
+    )
 
-    return LOGGING_APP_NAME == "gst_packaged"
+
+def is_installer() -> bool:
+    """Tell whether or not it is a packaged version (Windows or Mac installer"""
+    return getattr(sys, "frozen", False) and hasattr(sys, "_MEIPASS")
 
 
 def bootup():
@@ -231,7 +245,7 @@ def bootup():
         # Enable VT100 Escape Sequence for WINDOWS 10 Ver. 1607
         os.system("")  # nosec
         # Hide splashscreen loader of the packaged app
-        if is_packaged_application():
+        if is_installer():
             hide_splashscreen()
 
     try:
@@ -321,21 +335,25 @@ def welcome_message():
             console.print(e)
 
 
-def reset(queue: List[str] = None):
+def reset(queue: Optional[List[str]] = None):
     """Resets the terminal.  Allows for checking code or keys without quitting"""
     console.print("resetting...")
     logger.info("resetting")
     plt.close("all")
 
+    flag = ""
+    if not User.is_guest():
+        flag = " --login"
+
     if queue and len(queue) > 0:
         completed_process = subprocess.run(  # nosec
-            f"{sys.executable} terminal.py {'/'.join(queue) if len(queue) > 0 else ''}",
+            f"{sys.executable} terminal.py {'/'.join(queue) if len(queue) > 0 else ''}{flag}",
             shell=True,
             check=False,
         )
     else:
         completed_process = subprocess.run(  # nosec
-            f"{sys.executable} terminal.py", shell=True, check=False
+            f"{sys.executable} terminal.py{flag}", shell=True, check=False
         )
     if completed_process.returncode != 0:
         console.print("Unfortunately, resetting wasn't possible!\n")

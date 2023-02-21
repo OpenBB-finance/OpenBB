@@ -6,23 +6,21 @@ __docformat__ = "numpy"
 import argparse
 import logging
 from datetime import datetime, timedelta
-from typing import List
-
-from openbb_terminal.custom_prompt_toolkit import NestedCompleter
+from typing import List, Optional
 
 from openbb_terminal import feature_flags as obbff
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
-
+from openbb_terminal.futures import yfinance_model, yfinance_view
 from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
-    valid_date,
     parse_and_split_input,
+    valid_date,
 )
-from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console, MenuText
 from openbb_terminal.menu import session
-from openbb_terminal.futures import yfinance_model, yfinance_view
+from openbb_terminal.parent_classes import BaseController
+from openbb_terminal.rich_config import MenuText, console
 
 logger = logging.getLogger(__name__)
 
@@ -52,7 +50,7 @@ class FuturesController(BaseController):
     PATH = "/futures/"
     CHOICES_GENERATION = True
 
-    def __init__(self, queue: List[str] = None):
+    def __init__(self, queue: Optional[List[str]] = None):
         """Constructor"""
         super().__init__(queue)
 

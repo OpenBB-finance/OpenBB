@@ -1,5 +1,6 @@
-import os
 import logging
+import os
+from typing import Optional
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.economy import commodity_model
@@ -25,7 +26,7 @@ def format_large_numbers(num: float) -> str:
 
 
 @log_start_end(log=logger)
-def display_debt(export: str = "", sheet_name: str = None, limit: int = 20):
+def display_debt(export: str = "", sheet_name: Optional[str] = None, limit: int = 20):
     """Displays external debt for given countries [Source: Wikipedia]
 
     Parameters

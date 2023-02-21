@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import Optional, List
+from typing import List, Optional
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -11,14 +11,14 @@ import pandas as pd
 from dateutil import parser as dparse
 
 import openbb_terminal.config_plot as cfg_plot
-from openbb_terminal.config_terminal import theme
 from openbb_terminal.common.behavioural_analysis import twitter_model
+from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
-    plot_autoscale,
     get_closing_price,
     is_valid_axes_count,
+    plot_autoscale,
 )
 from openbb_terminal.rich_config import console
 
@@ -27,7 +27,7 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def display_inference(
-    symbol: str, limit: int = 100, export: str = "", sheet_name: str = None
+    symbol: str, limit: int = 100, export: str = "", sheet_name: Optional[str] = None
 ):
     """Prints Inference sentiment from past n tweets.
 
@@ -92,7 +92,7 @@ def display_sentiment(
     n_days_past: int = 2,
     compare: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plots sentiments from symbol

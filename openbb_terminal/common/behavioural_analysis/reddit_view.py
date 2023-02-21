@@ -14,15 +14,14 @@ import praw
 import seaborn as sns
 
 from openbb_terminal.common.behavioural_analysis import reddit_model
-from openbb_terminal.config_terminal import theme
 from openbb_terminal.config_plot import PLOT_DPI
-from openbb_terminal.decorators import check_api_key
-from openbb_terminal.decorators import log_start_end
+from openbb_terminal.config_terminal import theme
+from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
+    is_valid_axes_count,
     plot_autoscale,
     print_rich_table,
-    is_valid_axes_count,
 )
 from openbb_terminal.rich_config import console
 
@@ -197,7 +196,7 @@ def display_popular_tickers(
     post_limit: int = 50,
     subreddits: str = "",
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Prints table showing latest popular tickers. [Source: Reddit].
 
@@ -413,7 +412,7 @@ def display_redditsent(
     subreddits: str = "all",
     display: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plots Reddit sentiment about a search term. Prints table showing if display is True.

@@ -13,7 +13,7 @@ on:
   schedule:
     - cron: "0 0 * * *"
 
-permissions: 
+permissions:
   actions: write
 
 jobs:
@@ -25,8 +25,8 @@ jobs:
         with:
           workflow: windows10_build.yml
           token: ${{ secrets.GITHUB_TOKEN }}
-          wait-for-completion-timeout: 2h
-  
+          wait-for-completion-timeout: 3h
+
   trigger-macos-build:
     runs-on: ubuntu-latest
     steps:
@@ -36,7 +36,7 @@ jobs:
           workflow: m1_macos_build.yml
           token: ${{ secrets.GITHUB_TOKEN }}
           wait-for-completion-timeout: 2h
-  
+
   trigger-intel-build:
     runs-on: ubuntu-latest
     steps:
@@ -46,7 +46,7 @@ jobs:
           workflow: intel_macos_build.yml
           token: ${{ secrets.GITHUB_TOKEN }}
           wait-for-completion-timeout: 2h
-  
+
   trigger-docker-build:
     runs-on: ubuntu-latest
     steps:
@@ -54,4 +54,13 @@ jobs:
         uses: aurelien-baudet/workflow-dispatch@v2
         with:
           workflow: docker.yml
+          token: ${{ secrets.GITHUB_TOKEN }}
+  
+  trigger-pypi-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger PyPI Build
+        uses: aurelien-baudet/workflow-dispatch@v2
+        with:
+          workflow: nightly-pypi.yml
           token: ${{ secrets.GITHUB_TOKEN }}

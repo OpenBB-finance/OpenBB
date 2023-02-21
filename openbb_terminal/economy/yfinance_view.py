@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import Optional, List
+from typing import List, Optional
 
 from matplotlib import pyplot as plt
 
@@ -12,14 +12,14 @@ from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.economy.yfinance_model import (
+    INDICES,
     get_indices,
     get_search_indices,
-    INDICES,
 )
 from openbb_terminal.helper_funcs import (
+    export_data,
     plot_autoscale,
     print_rich_table,
-    export_data,
     reindex_dates,
 )
 
@@ -30,14 +30,14 @@ logger = logging.getLogger(__name__)
 def show_indices(
     indices: list,
     interval: str = "1d",
-    start_date: int = None,
-    end_date: int = None,
+    start_date: Optional[int] = None,
+    end_date: Optional[int] = None,
     column: str = "Adj Close",
     returns: bool = False,
     raw: bool = False,
     external_axes: Optional[List[plt.axes]] = None,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Load (and show) the selected indices over time [Source: Yahoo Finance]
     Parameters
@@ -75,10 +75,7 @@ def show_indices(
         ax = external_axes[0]
 
     for index in indices:
-        if index.lower() in INDICES:
-            label = INDICES[index.lower()]["name"]
-        else:
-            label = index
+        label = INDICES[index.lower()]["name"] if index.lower() in INDICES else index
 
         if not indices_data[index].empty:
             if returns:

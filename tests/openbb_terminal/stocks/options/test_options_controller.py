@@ -1,6 +1,6 @@
 # IMPORTATION STANDARD
-import os
 import argparse
+import os
 
 # IMPORTATION THIRDPARTY
 import pandas as pd
@@ -202,7 +202,7 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
 
     # MOCK OPTION_EXPIRATIONS + CHAIN + LAST PRICE
     mocker.patch(
-        target=f"{path_controller}.yfinance_model.option_expirations",
+        target=f"{path_controller}.nasdaq_model.option_expirations",
         return_value=EXPIRY_DATES,
     )
     mocker.patch(
@@ -210,11 +210,23 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
         return_value=EXPIRY_DATES,
     )
     mocker.patch(
+        target=f"{path_controller}.yfinance_model.option_expirations",
+        return_value=[],
+    )
+    mocker.patch(
+        target=f"{path_controller}.tradier_model.get_full_option_chain",
+        return_value=CHAIN,
+    )
+    mocker.patch(
         target=f"{path_controller}.yfinance_model.get_full_option_chain",
         return_value=CHAIN,
     )
     mocker.patch(
         target=f"{path_controller}.yfinance_model.get_last_price",
+        return_value=100.0,
+    )
+    mocker.patch(
+        target=f"{path_controller}.tradier_model.get_last_price",
         return_value=100.0,
     )
 
@@ -951,9 +963,10 @@ def test_call_func(
     ],
 )
 def test_call_func_no_ticker(func, mocker):
+    m = mocker.Mock(**{"chain_id": None})
     mocker.patch(
         "openbb_terminal.stocks.options.options_controller.OptionsController.parse_known_args_and_warn",
-        return_value=True,
+        return_value=m,
     )
     controller = options_controller.OptionsController(ticker=None)
 
@@ -983,6 +996,10 @@ def test_call_func_no_selected_date(func, mocker):
 
     # MOCK OPTION_EXPIRATIONS + CHAIN
     mocker.patch(
+        target=f"{path_controller}.nasdaq_model.option_expirations",
+        return_value=[],
+    )
+    mocker.patch(
         target=f"{path_controller}.yfinance_model.option_expirations",
         return_value=[],
     )
@@ -994,10 +1011,14 @@ def test_call_func_no_selected_date(func, mocker):
         target=f"{path_controller}.yfinance_model.get_full_option_chain",
         return_value=None,
     )
-
+    mocker.patch(
+        target=f"{path_controller}.tradier_model.get_full_option_chain",
+        return_value=None,
+    )
     # MOCK PARSE_KNOWN_ARGS_AND_WARN
     ns = argparse.Namespace()
     ns.exp = ""  # set the exp attribute
+    ns.chain_id = None
     mocker.patch(
         "openbb_terminal.stocks.options.options_controller.OptionsController.parse_known_args_and_warn",
         return_value=ns,  # return the Namespace object

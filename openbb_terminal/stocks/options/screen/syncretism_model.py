@@ -4,14 +4,14 @@ __docformat__ = "numpy"
 import configparser
 import logging
 from pathlib import Path
-from typing import Dict, Tuple, Union
+from typing import Dict, Optional, Tuple, Union
 
 import pandas as pd
 import yfinance as yf
 
-from openbb_terminal.helper_funcs import request
 from openbb_terminal.core.config.paths import USER_PRESETS_DIRECTORY
 from openbb_terminal.decorators import log_start_end
+from openbb_terminal.helper_funcs import request
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.options import yfinance_model
 
@@ -35,13 +35,13 @@ accepted_orders = [
 
 @log_start_end(log=logger)
 def get_historical_greeks(
-    symbol: str,
-    expiry: str,
-    strike: Union[str, float],
-    chain_id: str = "",
+    symbol: str = "",
+    expiry: Optional[str] = None,
+    strike: Optional[Union[str, float]] = None,
+    chain_id: Optional[str] = None,
     put: bool = False,
 ) -> pd.DataFrame:
-    """Get histoical option greeks
+    """Get historical option greeks
 
     Parameters
     ----------
@@ -72,10 +72,7 @@ def get_historical_greeks(
     if not chain_id:
         options = yfinance_model.get_option_chain(symbol, expiry)
 
-        if put:
-            options = options.puts
-        else:
-            options = options.calls
+        options = options.puts if put else options.calls
 
         selection = options.loc[options.strike == strike, "contractSymbol"]
         try:
@@ -357,9 +354,8 @@ def check_presets(preset_dict: dict) -> str:
             except Exception:
                 error += f"{key} : {value} , should be integer\n"
 
-        elif key == "order-by":
-            if value.replace('"', "") not in accepted_orders:
-                error += f"{key} : {value} not accepted ordering\n"
+        elif key == "order-by" and value.replace('"', "") not in accepted_orders:
+            error += f"{key} : {value} not accepted ordering\n"
     if error:
         logging.exception(error)
     return error

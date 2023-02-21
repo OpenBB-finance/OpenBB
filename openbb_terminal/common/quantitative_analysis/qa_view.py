@@ -8,32 +8,32 @@ import logging
 import os
 import warnings
 from datetime import datetime
-from typing import Any, Optional, List
+from typing import Any, List, Optional
 
 import matplotlib
+import matplotlib.dates as mdates
 import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
-import matplotlib.dates as mdates
 import numpy as np
 import pandas as pd
 import seaborn as sns
 import statsmodels.api as sm
-from scipy import stats
 from detecta import detect_cusum
-from statsmodels.graphics.gofplots import qqplot
 from pandas.plotting import register_matplotlib_converters
+from scipy import stats
+from statsmodels.graphics.gofplots import qqplot
 
-from openbb_terminal.config_terminal import theme
 from openbb_terminal.common.quantitative_analysis import qa_model
 from openbb_terminal.config_plot import PLOT_DPI
+from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
+    is_valid_axes_count,
+    lambda_long_number_format,
     plot_autoscale,
     print_rich_table,
     reindex_dates,
-    lambda_long_number_format,
-    is_valid_axes_count,
 )
 from openbb_terminal.rich_config import console
 
@@ -51,7 +51,7 @@ def lambda_color_red(val: Any) -> str:
 
 @log_start_end(log=logger)
 def display_summary(
-    data: pd.DataFrame, export: str = "", sheet_name: str = None
+    data: pd.DataFrame, export: str = "", sheet_name: Optional[str] = None
 ) -> None:
     """Prints table showing summary statistics
 
@@ -164,7 +164,7 @@ def display_cdf(
     target: str,
     symbol: str = "",
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plots Cumulative Distribution Function
@@ -316,10 +316,7 @@ def display_bw(
 
     theme.style_primary_axis(ax)
     color = theme.get_colors()[0]
-    if yearly:
-        x_data = data.index.year
-    else:
-        x_data = data.index.month
+    x_data = data.index.year if yearly else data.index.month
     box_plot = sns.boxplot(
         x=x_data,
         y=data,
@@ -665,7 +662,7 @@ def display_seasonal(
     target: str,
     multiplicative: bool = False,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Plots seasonal decomposition data
@@ -810,7 +807,7 @@ def display_seasonal(
 
 @log_start_end(log=logger)
 def display_normality(
-    data: pd.DataFrame, target: str, export: str = "", sheet_name: str = None
+    data: pd.DataFrame, target: str, export: str = "", sheet_name: Optional[str] = None
 ) -> None:
     """Prints table showing normality statistics
 
@@ -852,7 +849,7 @@ def display_unitroot(
     fuller_reg: str = "c",
     kpss_reg: str = "c",
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Prints table showing unit root test calculations
 
@@ -895,7 +892,7 @@ def display_raw(
     ascend: bool = False,
     limit: int = 20,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Prints table showing raw stock data
 
@@ -913,10 +910,7 @@ def display_raw(
         Export data as CSV, JSON, XLSX
     """
 
-    if isinstance(data, pd.Series):
-        df1 = pd.DataFrame(data)
-    else:
-        df1 = data.copy()
+    df1 = pd.DataFrame(data) if isinstance(data, pd.Series) else data.copy()
 
     if sortby:
         try:
@@ -956,7 +950,7 @@ def display_line(
     markers_lines: Optional[List[datetime]] = None,
     markers_scatter: Optional[List[datetime]] = None,
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Display line plot of data
@@ -1213,10 +1207,7 @@ def display_sortino(
         adjust the sortino ratio
     """
     sortino_ratio = qa_model.get_sortino(data, target_return, window, adjusted)
-    if adjusted:
-        str_adjusted = "Adjusted "
-    else:
-        str_adjusted = ""
+    str_adjusted = "Adjusted " if adjusted else ""
 
     fig, ax = plt.subplots()
     ax.plot(sortino_ratio[int(window - 1) :])

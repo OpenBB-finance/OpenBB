@@ -1,18 +1,18 @@
 ,Date,Company,Symbol,Price,LastPrice,Change (%),Recommendation,InverseCramer
-0,06/15,Applied Materials ,AMAT,97.42,114.15,14.66,Buy,Sell
-1,06/15,AMN Healthcare Services ,AMN,103.32,101.67,-1.6199999999999999,Buy,Sell
-2,06/15,Alibaba ,BABA,108.03,119.53,9.62,Sell,Buy
-3,06/15,Dutch Bros ,BROS,34.17,34.42,0.73,Buy,Sell
-4,06/15,Chargepoint ,CHPT,13.36,11.87,-12.55,Sell,Buy
-5,06/15,Cleveland-Cliffs ,CLF,18.05,20.61,12.42,Sell,Buy
-6,06/15,Ford Motor ,F,12.27,12.8,4.14,Buy,Sell
-7,06/15,Eli Lilly ,LLY,292.99,342.21,14.38,Buy,Sell
-8,06/15,Meta Platforms ,META,169.35,143.27,-18.2,Buy,Sell
-9,06/15,Medical Properties Trust ,MPW,14.99,13.78,-8.780000000000001,Buy,Sell
-10,06/15,Nucor ,NUE,116.46,153.85,24.3,Buy,Sell
-11,06/15,Planet Fitness ,PLNT,64.42,80.87,20.34,Buy,Sell
-12,06/15,Prothena ,PRTA,23.68,55.1,57.02,Sell,Buy
-13,06/15,SoFi Technologies ,SOFI,5.94,5.87,-1.1900000000000002,Buy,Sell
-14,06/15,Toll Brothers ,TOL,44.38,56.04,20.810000000000002,Buy,Sell
-15,06/15,Woodside Energy Group ,WDS,22.11,26.39,16.220000000000002,Buy,Sell
-16,06/15,Whirlpool ,WHR,155.52,152.12,-2.2399999999999998,Buy,Sell
+0,06/15,Applied Materials ,AMAT,97.42,119.01,18.14,Buy,Sell
+1,06/15,AMN Healthcare Services ,AMN,103.32,99.77,-3.56,Buy,Sell
+2,06/15,Alibaba ,BABA,108.03,112.82,4.25,Sell,Buy
+3,06/15,Dutch Bros ,BROS,34.17,38.52,11.29,Buy,Sell
+4,06/15,Chargepoint ,CHPT,13.36,12.46,-7.22,Sell,Buy
+5,06/15,Cleveland-Cliffs ,CLF,18.05,21.89,17.54,Sell,Buy
+6,06/15,Ford Motor ,F,12.27,13.79,11.020000000000001,Buy,Sell
+7,06/15,Eli Lilly ,LLY,292.99,342.57,14.469999999999999,Buy,Sell
+8,06/15,Meta Platforms ,META,169.35,153.12,-10.6,Buy,Sell
+9,06/15,Medical Properties Trust ,MPW,14.99,12.93,-15.93,Buy,Sell
+10,06/15,Nucor ,NUE,116.46,174.98,33.44,Buy,Sell
+11,06/15,Planet Fitness ,PLNT,64.42,83.8,23.13,Buy,Sell
+12,06/15,Prothena ,PRTA,23.68,53.67,55.879999999999995,Sell,Buy
+13,06/15,SoFi Technologies ,SOFI,5.94,7.38,19.509999999999998,Buy,Sell
+14,06/15,Toll Brothers ,TOL,44.38,60.26,26.35,Buy,Sell
+15,06/15,Woodside Energy Group ,WDS,22.11,25.31,12.64,Buy,Sell
+16,06/15,Whirlpool ,WHR,155.52,156.5,0.63,Buy,Sell

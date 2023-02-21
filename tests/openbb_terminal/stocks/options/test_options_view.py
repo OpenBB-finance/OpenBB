@@ -1,18 +1,18 @@
 # IMPORTATION STANDARD
 
 # IMPORTATION THIRDPARTY
-import pytest
 import pandas as pd
+import pytest
 
 # IMPORTATION INTERNAL
 from openbb_terminal.stocks.options.options_view import (
+    display_chains,
+    display_expiry_dates,
     get_calls_and_puts,
-    print_raw,
-    plot_vol,
     plot_oi,
     plot_voi,
-    display_expiry_dates,
-    display_chains,
+    plot_vol,
+    print_raw,
 )
 
 EXPIRY_DATES = [
@@ -38,46 +38,30 @@ EXPIRY_DATES = [
 CALLS = pd.DataFrame(
     data={
         "contractSymbol": ["TSLA211231C00200000", "TSLA211231C00250000"],
-        "lastTradeDate": [
-            pd.Timestamp("2021-12-29 15:01:33"),
-            pd.Timestamp("2021-12-10 15:09:36"),
-        ],
         "strike": [200.0, 250.0],
         "lastPrice": [878.02, 744.2],
         "bid": [884.5, 834.5],
         "ask": [887.0, 837.0],
-        "change": [-11.849976, 0.0],
-        "percentChange": [-1.3316524, 0.0],
         "volume": [30.0, 11.0],
         "openInterest": [36, 12],
         "impliedVolatility": [9.46875408203125, 8.238286101074216],
-        "inTheMoney": [True, True],
-        "contractSize": ["REGULAR", "REGULAR"],
-        "currency": ["USD", "USD"],
         "optionType": ["call", "call"],
+        "delta": [0.0, 0.0],
     }
 )
 
 PUTS = pd.DataFrame(
     {
         "contractSymbol": ["TSLA211231P00200000", "TSLA211231P00250000"],
-        "lastTradeDate": [
-            pd.Timestamp("2021-12-29 20:42:48"),
-            pd.Timestamp("2021-12-29 17:42:53"),
-        ],
         "strike": [200.0, 250.0],
         "lastPrice": [0.01, 0.01],
         "bid": [0.0, 0.0],
         "ask": [0.01, 0.01],
-        "change": [0.0, 0.0],
-        "percentChange": [0.0, 0.0],
         "volume": [22.0, 1.0],
         "openInterest": [1892, 513],
         "impliedVolatility": [6.125002343749999, 5.375003281249999],
-        "inTheMoney": [False, False],
-        "contractSize": ["REGULAR", "REGULAR"],
-        "currency": ["USD", "USD"],
         "optionType": ["put", "put"],
+        "delta": [-0.2, -0.3],
     }
 )
 
@@ -200,7 +184,7 @@ def test_display_expiry_dates():
 @pytest.mark.record_stdout
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.parametrize(
-    "chain, current_price, expiry, min_sp, max_sp, calls_only, puts_only, to_display",
+    "chain, current_price, expiry, min_sp, max_sp, calls_only, puts_only",
     [
         (
             [
@@ -211,7 +195,6 @@ def test_display_expiry_dates():
                 -1,
                 False,
                 False,
-                ["strike", "optionType"],
             ]
         ),
     ],
@@ -224,7 +207,6 @@ def test_display_chains(
     max_sp,
     calls_only,
     puts_only,
-    to_display,
 ):
     display_chains(
         chain=chain,
@@ -234,5 +216,4 @@ def test_display_chains(
         max_sp=max_sp,
         calls_only=calls_only,
         puts_only=puts_only,
-        to_display=to_display,
     )

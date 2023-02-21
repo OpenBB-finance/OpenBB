@@ -7,21 +7,22 @@ import argparse
 import logging
 from typing import List, Optional
 
-from openbb_terminal.custom_prompt_toolkit import NestedCompleter
-
 from openbb_terminal import feature_flags as obbff
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.portfolio.portfolio_optimization.parameters import params_view
-from openbb_terminal.portfolio.portfolio_optimization.parameters import params_helpers
+from openbb_terminal.portfolio.portfolio_optimization.parameters import (
+    params_helpers,
+    params_view,
+)
 from openbb_terminal.portfolio.portfolio_optimization.parameters.params_statics import (
     AVAILABLE_OPTIONS,
-    DEFAULT_PARAMETERS,
     DEFAULT_BOOL,
+    DEFAULT_PARAMETERS,
     MODEL_PARAMS,
 )
-from openbb_terminal.rich_config import console, MenuText
+from openbb_terminal.rich_config import MenuText, console
 
 logger = logging.getLogger(__name__)
 
@@ -63,7 +64,7 @@ class ParametersController(BaseController):
     def __init__(
         self,
         file: str,
-        queue: List[str] = None,
+        queue: Optional[List[str]] = None,
         params: Optional[dict] = None,
         current_model=None,
     ):
@@ -119,7 +120,7 @@ class ParametersController(BaseController):
             mt.add_raw("\n")
             mt.add_info("_parameters_")
             if self.current_model:
-                max_len = max(len(k) for k in self.params.keys())
+                max_len = max(len(k) for k in self.params)
                 for k, v in self.params.items():
                     v = params_helpers.booltostr(v)
                     all_params = DEFAULT_PARAMETERS + MODEL_PARAMS[self.current_model]
@@ -128,7 +129,7 @@ class ParametersController(BaseController):
                             f"    [param]{k}{' ' * (max_len - len(k))} :[/param] {v}\n"
                         )
             else:
-                max_len = max(len(k) for k in self.params.keys())
+                max_len = max(len(k) for k in self.params)
                 for k, v in self.params.items():
                     v = params_helpers.booltostr(v)
                     mt.add_raw(
@@ -305,11 +306,10 @@ class ParametersController(BaseController):
                 argument = ns_parser.argument[0]
                 value = ns_parser.argument[1]
 
-                if self.current_model:
-                    if argument not in self.params:
-                        console.print(
-                            "[red]The parameter you are trying to access is unused in this model.[/red]\n"
-                        )
+                if self.current_model and argument not in self.params:
+                    console.print(
+                        "[red]The parameter you are trying to access is unused in this model.[/red]\n"
+                    )
 
                 try:
                     value = float(value)

@@ -19,7 +19,7 @@ interactions:
       Content-Type:
       - application/json
       User-Agent:
-      - python-requests/2.27.1
+      - Mozilla/5.0 (Windows NT 10.0; WOW64; rv:86.0) Gecko/20100101 Firefox/86.0
     method: GET
     uri: https://api.pro.coinbase.com/transfers?type=deposit
   response:
@@ -39,7 +39,7 @@ interactions:
       CF-Cache-Status:
       - MISS
       CF-RAY:
-      - 727750f278c3b930-AMS
+      - 796d68bf5eb50c35-AMS
       Cache-Control:
       - no-store
       Connection:
@@ -49,11 +49,9 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Fri, 08 Jul 2022 08:05:40 GMT
+      - Thu, 09 Feb 2023 14:49:00 GMT
       Etag:
       - W/"1d-mmRSeO9uba2rhQtGfy4YjixIkt4"
-      Expect-CT:
-      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
       Server:
       - cloudflare
       Strict-Transport-Security:

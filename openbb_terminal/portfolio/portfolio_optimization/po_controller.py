@@ -5,37 +5,33 @@ __docformat__ = "numpy"
 
 import argparse
 import logging
-from typing import List, Dict, Tuple
+from typing import Dict, List, Optional, Tuple
 
-from openbb_terminal.custom_prompt_toolkit import NestedCompleter
-
-from openbb_terminal import feature_flags as obbff
-from openbb_terminal import parent_classes
+from openbb_terminal import (
+    feature_flags as obbff,
+    parent_classes,
+)
 from openbb_terminal.core.config.paths import (
     MISCELLANEOUS_DIRECTORY,
     USER_EXPORTS_DIRECTORY,
     USER_PORTFOLIO_DATA_DIRECTORY,
 )
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import (
-    check_non_negative,
-    get_rf,
-)
+from openbb_terminal.helper_funcs import check_non_negative, get_rf
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.portfolio.portfolio_optimization import excel_model
 from openbb_terminal.portfolio.portfolio_optimization import (
-    optimizer_helper,
+    excel_model,
     optimizer_model,
     optimizer_view,
     statics,
 )
-from openbb_terminal.portfolio.portfolio_optimization import yahoo_finance_model
 from openbb_terminal.portfolio.portfolio_optimization.parameters import (
     params_controller,
     params_view,
 )
-from openbb_terminal.rich_config import console, MenuText
+from openbb_terminal.rich_config import MenuText, console
 
 logger = logging.getLogger(__name__)
 
@@ -162,10 +158,6 @@ class PortfolioOptimizationController(BaseController):
         "rpf",
         "load",
         "plot",
-        "equal",
-        "mktcap",
-        "dividend",
-        "property",
         "maxsharpe",
         "minrisk",
         "maxutil",
@@ -178,6 +170,8 @@ class PortfolioOptimizationController(BaseController):
         "hrp",
         "herc",
         "nco",
+        "mktcap",
+        "equal",
         "ef",
         "file",
     ]
@@ -214,10 +208,10 @@ class PortfolioOptimizationController(BaseController):
 
     def __init__(
         self,
-        tickers: List[str] = None,
-        portfolios: Dict = None,
-        categories: Dict = None,
-        queue: List[str] = None,
+        tickers: Optional[List[str]] = None,
+        portfolios: Optional[Dict] = None,
+        categories: Optional[Dict] = None,
+        queue: Optional[List[str]] = None,
     ):
         """Constructor"""
         super().__init__(queue)
@@ -237,6 +231,9 @@ class PortfolioOptimizationController(BaseController):
         if categories:
             self.categories = dict(categories)
             self.available_categories = list(self.categories.keys())
+
+            if "CURRENT_INVESTED_AMOUNT" in self.available_categories:
+                self.available_categories.remove("CURRENT_INVESTED_AMOUNT")
         else:
             self.categories = dict()
             self.available_categories = list()
@@ -257,18 +254,17 @@ class PortfolioOptimizationController(BaseController):
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def update_runtime_choices(self):
-        if session and obbff.USE_PROMPT_TOOLKIT:
-            if self.portfolios:
-                self.choices["show"]["--portfolios"] = {
-                    c: {} for c in list(self.portfolios.keys())
-                }
-                self.choices["rpf"]["--portfolios"] = {
-                    c: {} for c in list(self.portfolios.keys())
-                }
-                self.choices["plot"]["--portfolios"] = {
-                    c: {} for c in list(self.portfolios.keys())
-                }
-                self.completer = NestedCompleter.from_nested_dict(self.choices)
+        if session and obbff.USE_PROMPT_TOOLKIT and self.portfolios:
+            self.choices["show"]["--portfolios"] = {
+                c: {} for c in list(self.portfolios.keys())
+            }
+            self.choices["rpf"]["--portfolios"] = {
+                c: {} for c in list(self.portfolios.keys())
+            }
+            self.choices["plot"]["--portfolios"] = {
+                c: {} for c in list(self.portfolios.keys())
+            }
+            self.completer = NestedCompleter.from_nested_dict(self.choices)
 
     def print_help(self):
         """Print help"""
@@ -310,10 +306,8 @@ class PortfolioOptimizationController(BaseController):
         mt.add_info("_other_optimization_techniques_")
         mt.add_cmd("equal", self.tickers)
         mt.add_cmd("mktcap", self.tickers)
-        mt.add_cmd("dividend", self.tickers)
-        mt.add_cmd("property", self.tickers)
-
         mt.add_raw("\n")
+
         mt.add_param("_optimized_portfolio", ", ".join(self.portfolios.keys()))
         mt.add_raw("\n")
 
@@ -558,6 +552,7 @@ class PortfolioOptimizationController(BaseController):
             help="Parameter file to be used",
             choices=self.optimization_file_map.keys(),
             metavar="FILE",
+            type=str,
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "--file")
@@ -574,12 +569,10 @@ class PortfolioOptimizationController(BaseController):
             else:
                 self.current_file = " ".join(ns_parser.file)
 
-                if self.current_file in self.optimization_file_map:
-                    file_location = self.optimization_file_map[self.current_file]
-                else:
-                    file_location = self.current_file  # type: ignore
-
-                self.params, self.current_model = params_view.load_file(file_location)
+                file_location = self.optimization_file_map.get(
+                    self.current_file, self.current_file
+                )
+                self.params, self.current_model = params_view.load_file(file_location)  # type: ignore
 
     @log_start_end(log=logger)
     def call_params(self, _):
@@ -616,9 +609,8 @@ class PortfolioOptimizationController(BaseController):
             default=[],
             help="Show selected saved portfolios",
         )
-        if other_args:
-            if "-" not in other_args[0]:
-                other_args.insert(0, "-pf")
+        if other_args and "-" not in other_args[0]:
+            other_args.insert(0, "-pf")
 
         parser = self.po_parser(parser, ct=True)
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
@@ -655,9 +647,8 @@ class PortfolioOptimizationController(BaseController):
             default=[],
             help="portfolios to be removed from the saved portfolios",
         )
-        if other_args:
-            if "-" not in other_args[0]:
-                other_args.insert(0, "-pf")
+        if other_args and "-" not in other_args[0]:
+            other_args.insert(0, "-pf")
 
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
@@ -823,9 +814,8 @@ class PortfolioOptimizationController(BaseController):
             r=True,
             a=True,
         )
-        if other_args:
-            if "-" not in other_args[0]:
-                other_args.insert(0, "-pf")
+        if other_args and "-" not in other_args[0]:
+            other_args.insert(0, "-pf")
 
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
@@ -1035,135 +1025,6 @@ class PortfolioOptimizationController(BaseController):
                 maxnan=ns_parser.max_nan,
                 threshold=ns_parser.threshold_value,
                 method=ns_parser.nan_fill_method,
-                s_property="marketCap",
-                risk_measure=ns_parser.risk_measure.lower(),
-                risk_free_rate=ns_parser.risk_free,
-                alpha=ns_parser.significance_level,
-                value=ns_parser.long_allocation,
-                table=True,
-            )
-
-            self.portfolios[ns_parser.name.upper()] = weights
-            self.count += 1
-            self.update_runtime_choices()
-
-    @log_start_end(log=logger)
-    def call_dividend(self, other_args: List[str]):
-        """Process dividend command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="dividend",
-            description="Returns a portfolio that is weighted based dividend yield.",
-        )
-        parser = self.po_parser(
-            parser,
-            rm=True,
-            mt=True,
-            p=True,
-            s=True,
-            e=True,
-            lr=True,
-            freq=True,
-            mn=True,
-            th=True,
-            r=True,
-            a=True,
-            v=True,
-            name="DIVIDEND_",
-        )
-        ns_parser = self.parse_known_args_and_warn(parser, other_args)
-        if ns_parser:
-            if len(self.tickers) < 2:
-                console.print(
-                    "Please have at least 2 stocks selected to perform calculations."
-                )
-                return
-
-            console.print(
-                "[yellow]Optimization can take time. Please be patient...\n[/yellow]"
-            )
-
-            weights = optimizer_view.display_property_weighting(
-                symbols=self.tickers,
-                interval=ns_parser.historic_period,
-                start_date=ns_parser.start_period,
-                end_date=ns_parser.end_period,
-                log_returns=ns_parser.log_returns,
-                freq=ns_parser.return_frequency,
-                maxnan=ns_parser.max_nan,
-                threshold=ns_parser.threshold_value,
-                method=ns_parser.nan_fill_method,
-                s_property="dividendYield",
-                risk_measure=ns_parser.risk_measure.lower(),
-                risk_free_rate=ns_parser.risk_free,
-                alpha=ns_parser.significance_level,
-                value=ns_parser.long_allocation,
-                table=True,
-            )
-
-            self.portfolios[ns_parser.name.upper()] = weights
-            self.count += 1
-            self.update_runtime_choices()
-
-    @log_start_end(log=logger)
-    def call_property(self, other_args: List[str]):
-        """Process property command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="property",
-            description="Returns a portfolio that is weighted based on selected property.",
-        )
-        parser.add_argument(
-            "-pr",
-            "--property",
-            required=bool("-h" not in other_args),
-            type=optimizer_helper.check_valid_property_type,
-            dest="s_property",
-            choices=yahoo_finance_model.yf_info_choices,
-            help="""Property info to weight. Use one of yfinance info options.""",
-            metavar="PROPERTY",
-        )
-        parser = self.po_parser(
-            parser,
-            rm=True,
-            mt=True,
-            p=True,
-            s=True,
-            e=True,
-            lr=True,
-            freq=True,
-            mn=True,
-            th=True,
-            r=True,
-            a=True,
-            v=True,
-            name="PROPERTY_",
-        )
-        ns_parser = self.parse_known_args_and_warn(parser, other_args)
-        if ns_parser:
-            if len(self.tickers) < 2:
-                console.print(
-                    "Please have at least 2 stocks selected to perform calculations."
-                )
-                return
-
-            console.print(
-                "[yellow]Optimization can take time. Please be patient...\n[/yellow]"
-            )
-
-            weights = optimizer_view.display_property_weighting(
-                symbols=self.tickers,
-                interval=ns_parser.historic_period,
-                start_date=ns_parser.start_period,
-                end_date=ns_parser.end_period,
-                log_returns=ns_parser.log_returns,
-                freq=ns_parser.return_frequency,
-                maxnan=ns_parser.max_nan,
-                threshold=ns_parser.threshold_value,
-                method=ns_parser.nan_fill_method,
-                s_property=ns_parser.s_property,
                 risk_measure=ns_parser.risk_measure.lower(),
                 risk_free_rate=ns_parser.risk_free,
                 alpha=ns_parser.significance_level,
@@ -2345,10 +2206,11 @@ class PortfolioOptimizationController(BaseController):
                 p_views = ns_parser.p_views
                 q_views = ns_parser.q_views
 
-            if ns_parser.benchmark is None:
-                benchmark = None
-            else:
-                benchmark = self.portfolios[ns_parser.benchmark.upper()]
+            benchmark = (
+                None
+                if ns_parser.benchmark is None
+                else self.portfolios[ns_parser.benchmark.upper()]
+            )
 
             table = True
             if "historic_period_sa" in vars(ns_parser):

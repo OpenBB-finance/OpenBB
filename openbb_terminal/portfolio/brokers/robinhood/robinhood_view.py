@@ -3,18 +3,15 @@ __docformat__ = "numpy"
 
 import logging
 import os
+from typing import Optional
 
 import matplotlib.pyplot as plt
 import mplfinance as mpf
 
-from openbb_terminal.config_terminal import theme
 from openbb_terminal import feature_flags as obbff
+from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import (
-    export_data,
-    plot_autoscale,
-    print_rich_table,
-)
+from openbb_terminal.helper_funcs import export_data, plot_autoscale, print_rich_table
 from openbb_terminal.portfolio.brokers.robinhood import robinhood_model
 from openbb_terminal.rich_config import console
 
@@ -32,7 +29,7 @@ span_title_dict = {
 
 
 @log_start_end(log=logger)
-def display_holdings(export: str = "", sheet_name: str = None):
+def display_holdings(export: str = "", sheet_name: Optional[str] = None):
     """Display stock holdings in robinhood
 
     Parameters
@@ -59,7 +56,7 @@ def display_historical(
     interval: str = "day",
     window: str = "3month",
     export: str = "",
-    sheet_name: str = None,
+    sheet_name: Optional[str] = None,
 ):
     """Display historical portfolio
 
