@@ -183,6 +183,7 @@ def format_data_to_plot(data: pd.DataFrame, detail: dict) -> Tuple[pd.DataFrame,
 
     return data_to_plot, title
 
+
 @log_start_end(log=logger)
 @check_api_key(["API_FRED_KEY"])
 def display_yield_curve(

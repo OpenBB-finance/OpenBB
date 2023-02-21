@@ -1,0 +1,27 @@
+Reference rates:
+    estr               euro short-term rate (estr)                                     [FRED, ECB]
+    sofr               secured overnight financing rate (sofr)                         [FRED]
+    sonia              sterling overnight index average (sonia)                        [FRED]
+    ameribor           american interbank offered rate (ameribor)                      [FRED]
+
+Central bank rates:
+    fed                effective federal funds rate                                    [FRED]
+    projection         the Federal Reserve's projection of the federal funds rate.     [FRED]
+    iorb               interest rate on reserve balances                               [FRED]
+    dwpcr              discount window primary credit rate                             [FRED]
+    ecb                key ECB interest rates                                          [FRED]
+
+Government Bonds:
+    treasury           plot countries (including forecast) treasury rates              [OECD]
+    usrates            plot secondary market, constant maturity or inflation protected rates [FRED]
+    ycrv               plot US yield curve                                             [FRED]
+    ecbycrv            plot euro area yield curve                                      [ECB]
+
+Corporate Bonds:
+
+Spreads:
+
+    tmc                10-year treasury constant maturity minus selected treasury constant maturity [FRED]
+    ffrmc              selected treasury constant maturity minus federal funds rate    [FRED]
+    tbffr              selected treasury bill minus federal funds rate                 [FRED]
+
