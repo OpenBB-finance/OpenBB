@@ -8,7 +8,7 @@ from typing import Tuple
 import pandas as pd
 
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import console, optional_rich_track
 
 logger = logging.getLogger(__name__)
 
@@ -49,7 +49,7 @@ def get_ecb_yield_curve(
     yield_type: str = "spot_rate",
     return_date: bool = False,
     detailed: bool = False,
-    aaa_only: bool = True,
+    any_rating: bool = True,
 ) -> Tuple[pd.DataFrame, str]:
     """Gets euro area yield curve data from ECB.
 
@@ -97,11 +97,11 @@ def get_ecb_yield_curve(
     >>> ycrv_df, ycrv_date = openbb.fixedincome.ycrv(return_date=True)
     """
     if yield_type == "spot_rate":
-        yield_type = f"YC.B.U2.EUR.4F.G_N_{'A' if aaa_only else 'C'}.SV_C_YM.SR_"
+        yield_type = f"YC.B.U2.EUR.4F.G_N_{'A' if any_rating else 'C'}.SV_C_YM.SR_"
     elif yield_type == "instantaneous_forward":
-        yield_type = f"YC.B.U2.EUR.4F.G_N_{'A' if aaa_only else 'C'}.SV_C_YM.IF_"
+        yield_type = f"YC.B.U2.EUR.4F.G_N_{'A' if any_rating else 'C'}.SV_C_YM.IF_"
     elif yield_type == "par_yield":
-        yield_type = f"YC.B.U2.EUR.4F.G_N_{'A' if aaa_only else 'C'}.SV_C_YM.PY"
+        yield_type = f"YC.B.U2.EUR.4F.G_N_{'A' if any_rating else 'C'}.SV_C_YM.PY"
     else:
         console.print("[red]Incorrect input for parameter yield_type[/red]")
         if return_date:
@@ -109,6 +109,7 @@ def get_ecb_yield_curve(
         return pd.DataFrame()
 
     if detailed:
+        console.print("Note that due to the large amount of data, this may take a while. Use CTRL + C to cancel.")
         series_id = [
             f"{yield_type}{y}Y{m}M" if y != 0 else f"{yield_type}{m}M"
             for y in range(0, 30)
@@ -149,10 +150,14 @@ def get_ecb_yield_curve(
     if not date:
         date = (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d")
 
-    for i in range(len(series_id)):
-        temp = get_series_data(series_id[i], date, date)
-        temp.columns = [labels[i]]
-        df = pd.concat([df, temp], axis=1)
+    try:
+        for i in optional_rich_track( range(len(series_id)), desc="Obtaining yield curve data"):
+            temp = get_series_data(series_id[i], date, date)
+            temp.columns = [labels[i]]
+            df = pd.concat([df, temp], axis=1)
+    except KeyboardInterrupt:
+        console.print("Data collection was canceled.")
+        return pd.DataFrame(), date
 
     if df.empty:
         if return_date:
@@ -162,8 +167,13 @@ def get_ecb_yield_curve(
     # Drop rows with NaN -- corresponding to weekends typically
     df = df.dropna()
     if datetime.strptime(date, "%Y-%m-%d") not in df.index:
-        date_of_yield = df.index[-1].strftime("%Y-%m-%d")
-        rates = pd.DataFrame(df.iloc[-1, :].values, columns=["Rate"])
+        nearest_value = df.index.get_indexer([datetime.strptime(date, "%Y-%m-%d")], method='nearest')
+        date_of_yield = df.iloc[nearest_value].index[0].date()
+        series = df[df.index ==  df.iloc[nearest_value].index[0]]
+        if series.empty:
+            return pd.DataFrame(), date_of_yield
+        rates = pd.DataFrame(series.values.T, columns=["Rate"])
+        console.print(f"{date} not available, therefore selecting the nearest date, {date_of_yield}.")
     else:
         date_of_yield = date
         series = df[df.index == datetime.strptime(date, "%Y-%m-%d")]

@@ -499,20 +499,15 @@
     "fed": ["FRED"],
     "iorb": ["FRED"],
     "projection": ["FRED"],
-    "oldprojetion": ["FRED"],
     "dwpcr": ["FRED"],
     "ecb": ["FRED"],
     "treasury": ["OECD"],
+    "usrates": ["FRED"],
+    "ycrv": ["FRED"],
+    "ecbycrv": ["ECB"],
     "tmc": ["FRED"],
     "ffrmc": ["FRED"],
-    "ycrv": ["FRED"],
-    "iiycrv": ["FRED"],
-    "ecbycrv": ["ECB"],
-    "tbill": ["FRED", "EconDB"],
-    "cmn": ["FRED", "EconDB"],
-    "tips": ["FRED", "EconDB"],
-    "tbffr": ["FRED"],
-    "ty": ["YahooFinance"]
+    "tbffr": ["FRED"]
   },
   "portfolio": {
     "po": {

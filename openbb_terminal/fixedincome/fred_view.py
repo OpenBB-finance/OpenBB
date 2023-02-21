@@ -139,6 +139,21 @@ NAME_TO_ID_ECB = {
     "refinancing": "ECBMRRFR"
 }
 
+USARATES_TO_FRED_ID = {
+    "4_week": {"tbill": "DTB4WK"},
+    "1_month": { "cmn": "DGS1MO"},
+    "3_month": {"tbill": "TB3MS", "cmn": "DGS3MO"},
+    "6_month": {"tbill": "DTB6", "cmn": "DGS6MO"},
+    "1_year": {"tbill": "DTB1YR", "cmn": "DGS1"},
+    "2_year": {"cmn": "DGS2"},
+    "3_year": {"cmn": "DGS3"},
+    "5_year": {"tips": "DFII5", "cmn": "DGS5"},
+    "7_year": {"tips": "DFII7", "cmn": "DGS7"},
+    "10_year": {"tips": "DFII10", "cmn": "DGS10"},
+    "20_year": {"tips": "DFII20", "cmn": "DGS20"},
+    "30_year": {"tips": "DFII30", "cmn": "DGS30"},
+}
+
 
 @log_start_end(log=logger)
 @check_api_key(["API_FRED_KEY"])
@@ -1201,10 +1216,11 @@ def plot_ffrmc(
 @check_api_key(["API_FRED_KEY"])
 def display_yield_curve(
     date: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    inflation_adjusted: bool = False,
     raw: bool = False,
     export: str = "",
     sheet_name: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display yield curve based on US Treasury rates for a specified date.
 
@@ -1235,7 +1251,7 @@ def display_yield_curve(
     export : str
         Export data to csv,json,xlsx or png,jpg,pdf,svg file
     """
-    rates, date_of_yield = fred_model.get_yield_curve(date, True)
+    rates, date_of_yield = fred_model.get_yield_curve(date, True, inflation_adjusted)
     if rates.empty:
         console.print(f"[red]Yield data not found for {date_of_yield}.[/red]\n")
         return
@@ -1251,7 +1267,7 @@ def display_yield_curve(
     ax.set_ylabel("Rate (%)")
     theme.style_primary_axis(ax)
     if external_axes is None:
-        ax.set_title(f"US Yield Curve for {date_of_yield} ")
+        ax.set_title(f"US {'Real' if inflation_adjusted else 'Nominal'} Yield Curve for {date_of_yield} ")
         theme.visualize_output()
 
     if raw:
@@ -1259,7 +1275,7 @@ def display_yield_curve(
             rates,
             headers=list(rates.columns),
             show_index=False,
-            title=f"United States Yield Curve for {date_of_yield}",
+            title=f"United States {'Real' if inflation_adjusted else 'Nominal'} Yield Curve for {date_of_yield}",
             floatfmt=".3f",
         )
 
@@ -1267,105 +1283,46 @@ def display_yield_curve(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "ycrv",
-        pd.DataFrame(rates, columns=["YCRV"]) / 100,
+        rates.set_index('Maturity') / 100,
         sheet_name
     )
 
-
 @log_start_end(log=logger)
 @check_api_key(["API_FRED_KEY"])
-def display_inflation_indexed_yield_curve(
-    date: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+def plot_usrates(
+    parameter: str = "tbills",
+    maturity: str = "3_months",
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
     raw: bool = False,
     export: str = "",
     sheet_name: str = "",
-):
-    """Display inflation-indexed yield curve based on US Treasury rates for a specified date.
-
-    The graphic depiction of the relationship between the yield on bonds of the same credit quality but different
-    maturities is known as the yield curve. In the past, most market participants have constructed yield curves from
-    the observations of prices and yields in the Treasury market. Two reasons account for this tendency. First,
-    Treasury securities are viewed as free of default risk, and differences in creditworthiness do not affect yield
-    estimates. Second, as the most active bond market, the Treasury market offers the fewest problems of illiquidity
-    or infrequent trading. The key function of the Treasury yield curve is to serve as a benchmark for pricing bonds
-    and setting yields in other sectors of the debt market.
-
-    It is clear that the market’s expectations of future rate changes are one important determinant of the
-    yield-curve shape. For example, a steeply upward-sloping curve may indicate market expectations of near-term Fed
-    tightening or of rising inflation. However, it may be too restrictive to assume that the yield differences across
-    bonds with different maturities only reflect the market’s rate expectations. The well-known pure expectations
-    hypothesis has such an extreme implication. The pure expectations hypothesis asserts that all government bonds
-    have the same near-term expected return (as the nominally riskless short-term bond) because the return-seeking
-    activity of risk-neutral traders removes all expected return differentials across bonds.
-
-    Parameters
-    ----------
-    date: str
-        Date to get curve for. If None, gets most recent date (format yyyy-mm-dd)
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
-    raw : bool
-        Output only raw data
-    export : str
-        Export data to csv,json,xlsx or png,jpg,pdf,svg file
-    """
-    rates, date_of_yield = fred_model.get_inflation_indexed_yield_curve(date, True)
-    if rates.empty:
-        console.print(f"[red]Yield data not found for {date_of_yield}.[/red]\n")
-        return
-    if external_axes is None:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
-
-    ax.plot(rates["Maturity"], rates["Rate"], "-o")
-    ax.set_xlabel("Maturity")
-    ax.set_ylabel("Rate (%)")
-    theme.style_primary_axis(ax)
-    if external_axes is None:
-        ax.set_title(f"US Yield Curve for {date_of_yield} ")
-        theme.visualize_output()
-
-    if raw:
-        print_rich_table(
-            rates,
-            headers=list(rates.columns),
-            show_index=False,
-            title=f"United States Yield Curve for {date_of_yield}",
-            floatfmt=".3f",
-        )
-
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "iiycrv",
-        pd.DataFrame(rates, columns=["IIYCRV"]) / 100,
-        sheet_name
-    )
-
-
-@log_start_end(log=logger)
-@check_api_key(["API_FRED_KEY"])
-def plot_tbill(
-    series_id: str = "TB3MS",
-    start_date: Optional[str] = None,
-    end_date: Optional[str] = None,
-    export: str = "",
-    sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
-    """Plot Treasury Bill Secondary Market Rate.
+    """Plot various treasury rates from the United States
 
     A Treasury Bill (T-Bill) is a short-term U.S. government debt obligation backed by the Treasury Department with a
     maturity of one year or less. Treasury bills are usually sold in denominations of $1,000. However, some can reach
     a maximum denomination of $5 million in non-competitive bids. These securities are widely regarded as low-risk
     and secure investments.
+    
+    Yields on Treasury nominal securities at “constant maturity” are interpolated by the U.S. Treasury from the daily
+    yield curve for non-inflation-indexed Treasury securities. This curve, which relates the yield on a security to
+    its time to maturity, is based on the closing market bid yields on actively traded Treasury securities in the
+    over-the-counter market. These market yields are calculated from composites of quotations obtained by the Federal
+    Reserve Bank of New York. The constant maturity yield values are read from the yield curve at fixed maturities,
+    currently 1, 3, and 6 months and 1, 2, 3, 5, 7, 10, 20, and 30 years. This method provides a yield for a 10-year
+    maturity, for example, even if no outstanding security has exactly 10 years remaining to maturity. Similarly,
+    yields on inflation-indexed securities at “constant maturity” are interpolated from the daily yield curve for
+    Treasury inflation protected securities in the over-the-counter market. The inflation-indexed constant maturity
+    yields are read from this yield curve at fixed maturities, currently 5, 7, 10, 20, and 30 years.
 
     Parameters
     ----------
+    parameter: str
+        Either "tbills", "cmn", or "tips".
+    maturity: str
+        Depending on the chosen parameter, a set of maturities is available.
     series_id: str
         FRED ID of Treasury Bill Secondary Market Rate data to plot, options: ['TB3MS', 'DTB4WK', 'DTB1YR', 'DTB6']
     start_date: Optional[str]
@@ -1377,6 +1334,7 @@ def plot_tbill(
     external_axes: Optional[List[plt.Axes]]
         External axes (1 axis is expected in the list)
     """
+    series_id = USARATES_TO_FRED_ID[maturity][parameter]
     df = fred_model.get_series_data(
         series_id=series_id, start_date=start_date, end_date=end_date
     )
@@ -1393,170 +1351,37 @@ def plot_tbill(
     ax.plot(
         df.index,
         df.values,
-        marker="o",
-        linestyle="dashed",
-        linewidth=2,
-        markersize=4,
         color=next(colors, "#FCED00"),
     )
-    ax.set_title(f"{ID_TO_NAME_SECONDARY[series_id]} Treasury Bill Secondary Market Rate, Discount Basis [Percent]")
+    
+    if parameter == "tbill":
+        title = f"{maturity.replace('_', ' ').title()} Treasury Bill Secondary Market Rate, Discount Basis"
+    elif parameter == "cmn":
+        title = f"{maturity.replace('_', ' ').title()} Treasury Constant Maturity Nominal Market Yield"
+    elif parameter == "tips":
+        title = f"{maturity.replace('_', ' ').title()} Yields on Treasury inflation protected securities (TIPS) adjusted to constant maturities"
+
+    ax.set_title(title, fontsize=15)
+    ax.set_ylabel("Yield (%})")
     theme.style_primary_axis(ax)
 
     if external_axes is None:
         theme.visualize_output()
+        
+    if raw:
+        print_rich_table(
+            pd.DataFrame(df, columns=[parameter]).iloc[-10:],
+            title=title,
+            show_index=True,
+            floatfmt=".3f",
+        )
+        
 
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         series_id,
-        pd.DataFrame(df, columns=["TBILL"]) / 100,
-        sheet_name
-    )
-
-
-@log_start_end(log=logger)
-@check_api_key(["API_FRED_KEY"])
-def plot_cmn(
-    series_id: str = "DGS10",
-    start_date: Optional[str] = None,
-    end_date: Optional[str] = None,
-    export: str = "",
-    sheet_name: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
-):
-    """Plot Treasury Constant Maturity Nominal Market Yield.
-
-    Yields on Treasury nominal securities at “constant maturity” are interpolated by the U.S. Treasury from the daily
-    yield curve for non-inflation-indexed Treasury securities. This curve, which relates the yield on a security to
-    its time to maturity, is based on the closing market bid yields on actively traded Treasury securities in the
-    over-the-counter market. These market yields are calculated from composites of quotations obtained by the Federal
-    Reserve Bank of New York. The constant maturity yield values are read from the yield curve at fixed maturities,
-    currently 1, 3, and 6 months and 1, 2, 3, 5, 7, 10, 20, and 30 years. This method provides a yield for a 10-year
-    maturity, for example, even if no outstanding security has exactly 10 years remaining to maturity. Similarly,
-    yields on inflation-indexed securities at “constant maturity” are interpolated from the daily yield curve for
-    Treasury inflation protected securities in the over-the-counter market. The inflation-indexed constant maturity
-    yields are read from this yield curve at fixed maturities, currently 5, 7, 10, 20, and 30 years.
-
-    Parameters
-    ----------
-    series_id: str
-        FRED ID of Treasury Constant Maturity Nominal Market Yield data to plot, options: ['DGS1MO', 'DGS3MO', 'DGS6MO', 'DGS1', 'DGS2', 'DGS3', 'DGS5', 'DGS7', 'DGS10', 'DGS20', DGS30']
-    start_date: Optional[str]
-        Start date, formatted YYYY-MM-DD
-    end_date: Optional[str]
-        End date, formatted YYYY-MM-DD
-    export: str
-        Export data to csv or excel file
-    external_axes: Optional[List[plt.Axes]]
-        External axes (1 axis is expected in the list)
-    """
-    df = fred_model.get_series_data(
-        series_id=series_id, start_date=start_date, end_date=end_date
-    )
-
-    # This plot has 1 axis
-    if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
-
-    colors = cycle(theme.get_colors())
-    ax.plot(
-        df.index,
-        df.values,
-        marker="o",
-        linestyle="dashed",
-        linewidth=2,
-        markersize=4,
-        color=next(colors, "#FCED00"),
-    )
-    ax.set_title(f"{ID_TO_NAME_CMN[series_id]}  Treasury Constant Maturity Nominal Market Yield [Percent]")
-    theme.style_primary_axis(ax)
-
-    if external_axes is None:
-        theme.visualize_output()
-
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        series_id,
-        pd.DataFrame(df, columns=["CMN"]) / 100,
-        sheet_name
-    )
-
-
-@log_start_end(log=logger)
-@check_api_key(["API_FRED_KEY"])
-def plot_tips(
-    series_id: str = "DFII10",
-    start_date: Optional[str] = None,
-    end_date: Optional[str] = None,
-    export: str = "",
-    sheet_name: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
-):
-    """Plot Plot Yields on Treasury inflation protected securities (TIPS) adjusted to constant maturities.
-
-    Yields on Treasury nominal securities at “constant maturity” are interpolated by the U.S. Treasury from the daily
-    yield curve for non-inflation-indexed Treasury securities. This curve, which relates the yield on a security to
-    its time to maturity, is based on the closing market bid yields on actively traded Treasury securities in the
-    over-the-counter market. These market yields are calculated from composites of quotations obtained by the Federal
-    Reserve Bank of New York. The constant maturity yield values are read from the yield curve at fixed maturities,
-    currently 1, 3, and 6 months and 1, 2, 3, 5, 7, 10, 20, and 30 years. This method provides a yield for a 10-year
-    maturity, for example, even if no outstanding security has exactly 10 years remaining to maturity. Similarly,
-    yields on inflation-indexed securities at “constant maturity” are interpolated from the daily yield curve for
-    Treasury inflation protected securities in the over-the-counter market. The inflation-indexed constant maturity
-    yields are read from this yield curve at fixed maturities, currently 5, 7, 10, 20, and 30 years.
-
-    Parameters
-    ----------
-    series_id: str
-        FRED ID of TIPS adjusted to constant maturities data to plot, options: ['DFII5', 'DFII7', 'DFII10', 'DFII20', 'DFII30']
-    start_date: Optional[str]
-        Start date, formatted YYYY-MM-DD
-    end_date: Optional[str]
-        End date, formatted YYYY-MM-DD
-    export: str
-        Export data to csv or excel file
-    external_axes: Optional[List[plt.Axes]]
-        External axes (1 axis is expected in the list)
-    """
-    df = fred_model.get_series_data(
-        series_id=series_id, start_date=start_date, end_date=end_date
-    )
-
-    # This plot has 1 axis
-    if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
-
-    colors = cycle(theme.get_colors())
-    ax.plot(
-        df.index,
-        df.values,
-        marker="o",
-        linestyle="dashed",
-        linewidth=2,
-        markersize=4,
-        color=next(colors, "#FCED00"),
-    )
-    ax.set_title(f"{ID_TO_NAME_TIPS[series_id]}  Yields on Treasury inflation protected securities (TIPS) adjusted to "
-                 f"constant maturities [Percent]")
-    theme.style_primary_axis(ax)
-
-    if external_axes is None:
-        theme.visualize_output()
-
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        series_id,
-        pd.DataFrame(df, columns=["TIPS"]) / 100,
+        pd.DataFrame(df, columns=[parameter]) / 100,
         sheet_name
     )
 

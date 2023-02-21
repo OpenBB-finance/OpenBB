@@ -107,7 +107,7 @@ def display_ecb_yield_curve(
     date: str = "",
     yield_type: str = "spot_rate",
     detailed: bool = False,
-    aaa_only: bool = True,
+    any_rating: bool = True,
     external_axes: Optional[List[plt.Axes]] = None,
     raw: bool = False,
     export: str = "",
@@ -148,8 +148,9 @@ def display_ecb_yield_curve(
     export : str
         Export data to csv,json,xlsx or png,jpg,pdf,svg file
     """
+    print(date)
     rates, date_of_yield = ecb_model.get_ecb_yield_curve(
-        date, yield_type, True, detailed, aaa_only
+        date, yield_type, True, detailed, any_rating
     )
     if rates.empty:
         console.print(f"[red]Yield data not found for {date_of_yield}.[/red]\n")
@@ -167,8 +168,9 @@ def display_ecb_yield_curve(
     theme.style_primary_axis(ax)
     if external_axes is None:
         ax.set_title(
-            f"Euro Area{' AAA Bonds' if aaa_only else ' All Bonds'} {yield_type.replace('_', ' ').title()} "
-            f"Yield Curve for {date_of_yield}"
+            f"Euro Area{' AAA Bonds' if not any_rating else ' All Bonds'} {yield_type.replace('_', ' ').title()} "
+            f"Yield Curve for {date_of_yield}",
+            fontsize=15
         )
         theme.visualize_output()
 
@@ -177,7 +179,7 @@ def display_ecb_yield_curve(
             rates,
             headers=list(rates.columns),
             show_index=False,
-            title=f"Euro Area{' AAA Bonds' if aaa_only else ' All Bonds'} {yield_type.replace('_', ' ').title()} "
+            title=f"Euro Area{' AAA Bonds' if not any_rating else ' All Bonds'} {yield_type.replace('_', ' ').title()} "
             f"Yield Curve for {date_of_yield}",
             floatfmt=".3f",
         )
@@ -186,6 +188,6 @@ def display_ecb_yield_curve(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "ecbycrv",
-        pd.DataFrame(rates, columns=[date_of_yield]) / 100,
+        rates / 100,
         sheet_name
     )
