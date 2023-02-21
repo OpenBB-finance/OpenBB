@@ -15,7 +15,10 @@ from openbb_terminal.rich_config import console
 import warnings
 import os
 import whisper
-from transformers import pipeline
+
+# from transformers import pipeline
+from transformers import BartTokenizer, BartForConditionalGeneration
+import torch
 
 from openbb_terminal.forecast.whisper_utils import (
     slugify,
@@ -78,7 +81,8 @@ def transcribe_and_summarize(
         return
 
     # Use the pipeline to summarize the text
-    summarizer = pipeline("summarization", model="sshleifer/distilbart-cnn-12-6")
+    summarizer = BartForConditionalGeneration.from_pretrained("facebook/bart-large-cnn")
+    tokenizer = BartTokenizer.from_pretrained("facebook/bart-large-cnn")
 
     console.print("Transcribing and summarizing...")
     print(f"video: {video}")
@@ -110,32 +114,39 @@ def transcribe_and_summarize(
         # original text length
         original_text_length = len(all_text)
 
-        # Set the chunk size
-        chunk_size = 500
+        # get batches of tokens corresponding to the exact model_max_length
+        inputs_no_trunc = tokenizer(
+            all_text, max_length=None, return_tensors="pt", truncation=False
+        )
+        chunk_start = 0
+        chunk_end = tokenizer.model_max_length
+        inputs_batch_lst = []
+        while chunk_start <= len(inputs_no_trunc["input_ids"][0]):
+            inputs_batch = inputs_no_trunc["input_ids"][0][chunk_start:chunk_end]
+            inputs_batch = torch.unsqueeze(inputs_batch, 0)
+            inputs_batch_lst.append(inputs_batch)
+            chunk_start += tokenizer.model_max_length
+            chunk_end += tokenizer.model_max_length
 
-        if original_text_length > chunk_size:
-            # Split the input text into chunks
-            chunks = [
-                all_text[i : i + chunk_size]
-                for i in range(0, len(all_text), chunk_size)
-            ]
-
-            # Initialize an empty list to store the summaries
-            summaries = []
-
-            # Iterate over the chunks and summarize each one
-            for chunk in chunks:
-                summary = summarizer(chunk, max_length=chunk_size)
-                summaries.append(summary)
-
-            # Join the summaries together
-            summary_text = "".join(
-                [summary[0]["summary_text"] for summary in summaries]
+        # generate a summary on each batch
+        summary_ids_lst = [
+            summarizer.generate(
+                inputs, num_beams=4, max_length=100, early_stopping=True
             )
+            for inputs in inputs_batch_lst
+        ]
 
-        else:
-            summary = summarizer(all_text, max_length=original_text_length)
-            summary_text = summary[0]["summary_text"]
+        # decode the output and join into one string with one paragraph per summary batch
+        summary_batch_lst = []
+        for summary_id in summary_ids_lst:
+            summary_batch = [
+                tokenizer.decode(
+                    g, skip_special_tokens=True, clean_up_tokenization_spaces=False
+                )
+                for g in summary_id
+            ]
+            summary_batch_lst.append(summary_batch[0])
+        summary_text = "\n".join(summary_batch_lst)
 
         # Write summary and get reduction
         summary_text_length = len(summary_text)
