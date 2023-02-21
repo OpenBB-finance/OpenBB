@@ -583,69 +583,64 @@ class SettingsController(BaseController):
             other_args.insert(0, "--folder")
         ns_parser = self.parse_simple_args(parser, other_args)
 
-        if ns_parser:
-            if other_args or self.queue:
-                if other_args:
-                    userdata_path = ""
+        if ns_parser and (other_args or self.queue):
+            userdata_path = "" if other_args else "/"
+
+            userdata_path += "/".join([ns_parser.folder] + self.queue)
+            self.queue = []
+
+            userdata_path = userdata_path.replace("'", "").replace('"', "")
+
+            default_path = Path.home() / "OpenBBUserData"
+
+            success_userdata = False
+            while not success_userdata:
+                if userdata_path.upper() == "DEFAULT":
+                    console.print(
+                        f"User data to be saved in the default folder: '{default_path}'"
+                    )
+                    self.set_path_config("OPENBB_USER_DATA_DIRECTORY", default_path)
+                    success_userdata = True
                 else:
-                    # Re-add the initial slash for an absolute directory provided
-                    userdata_path = "/"
-
-                userdata_path += "/".join([ns_parser.folder] + self.queue)
-                self.queue = []
-
-                userdata_path = userdata_path.replace("'", "").replace('"', "")
-
-                default_path = Path.home() / "OpenBBUserData"
-
-                success_userdata = False
-                while not success_userdata:
-                    if userdata_path.upper() == "DEFAULT":
-                        console.print(
-                            f"User data to be saved in the default folder: '{default_path}'"
+                    # If the path selected does not start from the user root, give relative location from root
+                    if userdata_path[0] == "~":
+                        userdata_path = userdata_path.replace(
+                            "~", os.path.expanduser("~")
                         )
-                        self.set_path_config("OPENBB_USER_DATA_DIRECTORY", default_path)
+
+                    # Check if the directory exists
+                    if os.path.isdir(userdata_path):
+                        console.print(
+                            f"User data to be saved in the selected folder: '{userdata_path}'"
+                        )
+                        self.set_path_config(
+                            "OPENBB_USER_DATA_DIRECTORY", userdata_path
+                        )
                         success_userdata = True
                     else:
-                        # If the path selected does not start from the user root, give relative location from root
-                        if userdata_path[0] == "~":
-                            userdata_path = userdata_path.replace(
-                                "~", os.path.expanduser("~")
-                            )
+                        console.print(
+                            "[red]The path selected to user data does not exist![/red]\n"
+                        )
+                        user_opt = "None"
+                        while user_opt not in ("Y", "N"):
+                            user_opt = input(
+                                f"Do you wish to create folder: `{userdata_path}` ? [Y/N]\n"
+                            ).upper()
 
-                        # Check if the directory exists
-                        if os.path.isdir(userdata_path):
+                        if user_opt == "Y":
+                            os.makedirs(userdata_path)
                             console.print(
-                                f"User data to be saved in the selected folder: '{userdata_path}'"
+                                f"[green]Folder '{userdata_path}' successfully created.[/green]"
                             )
                             self.set_path_config(
                                 "OPENBB_USER_DATA_DIRECTORY", userdata_path
                             )
-                            success_userdata = True
                         else:
+                            # Do not update userdata_folder path since we will keep the same as before
                             console.print(
-                                "[red]The path selected to user data does not exist![/red]\n"
+                                "[yellow]User data to keep being saved in "
+                                + f"the selected folder: {str(paths.USER_DATA_DIRECTORY)}[/yellow]"
                             )
-                            user_opt = "None"
-                            while user_opt not in ("Y", "N"):
-                                user_opt = input(
-                                    f"Do you wish to create folder: `{userdata_path}` ? [Y/N]\n"
-                                ).upper()
-
-                            if user_opt == "Y":
-                                os.makedirs(userdata_path)
-                                console.print(
-                                    f"[green]Folder '{userdata_path}' successfully created.[/green]"
-                                )
-                                self.set_path_config(
-                                    "OPENBB_USER_DATA_DIRECTORY", userdata_path
-                                )
-                            else:
-                                # Do not update userdata_folder path since we will keep the same as before
-                                console.print(
-                                    "[yellow]User data to keep being saved in "
-                                    + f"the selected folder: {str(paths.USER_DATA_DIRECTORY)}[/yellow]"
-                                )
-                            success_userdata = True
+                        success_userdata = True
 
         console.print()

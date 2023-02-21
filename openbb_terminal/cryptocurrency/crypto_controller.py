@@ -256,7 +256,7 @@ class CryptoController(CryptoBaseController):
             upper_symbol = ns_parser.symbol.upper()
             if "-USD" not in ns_parser.symbol:
                 upper_symbol += "-USD"
-            if upper_symbol in pyth_model.ASSETS.keys():
+            if upper_symbol in pyth_model.ASSETS:
                 console.print(
                     "[param]If it takes too long, you can use 'Ctrl + C' to cancel.\n[/param]"
                 )
@@ -503,7 +503,7 @@ class CryptoController(CryptoBaseController):
             choices=range(1, 300),
             metavar="SKIP",
         )
-        if other_args and not other_args[0][0] == "-":
+        if other_args and other_args[0][0] != "-":
             other_args.insert(0, "-c")
 
         ns_parser = self.parse_known_args_and_warn(

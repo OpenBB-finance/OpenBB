@@ -158,7 +158,7 @@ class EconometricsController(BaseController):
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
             choices["load"] = {
-                "--file": {c: {} for c in self.DATA_FILES.keys()},
+                "--file": {c: {} for c in self.DATA_FILES},
                 "-f": "--file",
                 "-alias": None,
                 "-a": "-alias",
@@ -564,10 +564,9 @@ class EconometricsController(BaseController):
         )
 
         if ns_parser:
-            if not ns_parser.name:
-                dataset_names = list(self.datasets.keys())
-            else:
-                dataset_names = [ns_parser.name]
+            dataset_names = (
+                list(self.datasets.keys()) if not ns_parser.name else [ns_parser.name]
+            )
 
             for name in dataset_names:
                 df = self.datasets[name]
@@ -790,10 +789,11 @@ class EconometricsController(BaseController):
             index = ns_parser.index
 
             if index:
-                if "," in index:
-                    values_found = [val.strip() for val in index.split(",")]
-                else:
-                    values_found = [index]
+                values_found = (
+                    [val.strip() for val in index.split(",")]
+                    if "," in index
+                    else [index]
+                )
 
                 columns = list()
                 for value in values_found:
@@ -1735,32 +1735,31 @@ class EconometricsController(BaseController):
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
 
-        if ns_parser:
-            if ns_parser.ts:
-                # We are going to pass through a variable number of series, so datasets will be a list of series
-                if len(ns_parser.ts) > 1:
-                    datasets = []
-                    for series in ns_parser.ts:
-                        if "." not in series:
-                            console.print(
-                                "[red]Invalid time series format. Should be dataset.column, "
-                                "e.g. historical.open[/red]\n"
-                            )
-                        else:
-                            dataset, column = series.split(".")
-                            datasets.append(self.datasets[dataset][column])
+        if ns_parser and ns_parser.ts:
+            # We are going to pass through a variable number of series, so datasets will be a list of series
+            if len(ns_parser.ts) > 1:
+                datasets = []
+                for series in ns_parser.ts:
+                    if "." not in series:
+                        console.print(
+                            "[red]Invalid time series format. Should be dataset.column, "
+                            "e.g. historical.open[/red]\n"
+                        )
+                    else:
+                        dataset, column = series.split(".")
+                        datasets.append(self.datasets[dataset][column])
 
-                    econometrics_view.display_cointegration_test(
-                        *datasets,
-                        significant=ns_parser.significant,
-                        plot=ns_parser.plot,
-                        export=ns_parser.export,
-                        sheet_name=" ".join(ns_parser.sheet_name)
-                        if ns_parser.sheet_name
-                        else None,
-                    )
+                econometrics_view.display_cointegration_test(
+                    *datasets,
+                    significant=ns_parser.significant,
+                    plot=ns_parser.plot,
+                    export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
+                )
 
-                else:
-                    console.print(
-                        "[red]More than one dataset.column must be provided.\n[/red]"
-                    )
+            else:
+                console.print(
+                    "[red]More than one dataset.column must be provided.\n[/red]"
+                )

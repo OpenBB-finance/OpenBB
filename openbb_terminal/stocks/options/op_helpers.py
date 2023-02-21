@@ -23,15 +23,9 @@ logger = logging.getLogger(__name__)
 def get_strikes(
     min_sp: float, max_sp: float, current_price: float
 ) -> Tuple[float, float]:
-    if min_sp == -1:
-        min_strike = 0.75 * current_price
-    else:
-        min_strike = min_sp
+    min_strike = 0.75 * current_price if min_sp == -1 else min_sp
 
-    if max_sp == -1:
-        max_strike = 1.25 * current_price
-    else:
-        max_strike = max_sp
+    max_strike = 1.25 * current_price if max_sp == -1 else max_sp
 
     return min_strike, max_strike
 
@@ -309,13 +303,11 @@ def get_greeks(
         "Vega",
         "Theta",
     ]
-    if show_all:
-        columns = chain_columns + greek_columns
-    else:
-        columns = [
-            "Strike",
-            "Implied Vol",
-        ] + greek_columns
+    columns = (
+        chain_columns + greek_columns
+        if show_all
+        else ["Strike", "Implied Vol"] + greek_columns
+    )
 
     if show_extra_greeks:
         additional_columns = ["Rho", "Phi", "Charm", "Vanna", "Vomma"]

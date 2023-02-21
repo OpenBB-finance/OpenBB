@@ -23,6 +23,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.helpers_denomination import transform as transform_by_denomination
 from openbb_terminal.rich_config import console
+from openbb_terminal.stocks import stocks_helper
 from openbb_terminal.stocks.fundamental_analysis import yahoo_finance_model
 
 logger = logging.getLogger(__name__)
@@ -377,15 +378,27 @@ def display_fundamentals(
 
     fundamentals = yahoo_finance_model.get_financials(symbol, statement, ratios)
 
-    if statement == "balance-sheet":
-        title_str = "Balance Sheet"
-    elif statement == "financials":
-        title_str = "Income Statement"
-    elif statement == "cash-flow":
-        title_str = "Cash Flow Statement"
-
     if fundamentals is None:
         return
+
+    if statement == "balance-sheet":
+        title_str = "Balance Sheet"
+        fundamentals.index = [
+            stocks_helper.BALANCE_PLOT["YahooFinance"][i]
+            for i in [i.replace(" ", "_") for i in fundamentals.index.str.lower()]
+        ]
+    elif statement == "financials":
+        title_str = "Income Statement"
+        fundamentals.index = [
+            stocks_helper.INCOME_PLOT["YahooFinance"][i]
+            for i in [i.replace(" ", "_") for i in fundamentals.index.str.lower()]
+        ]
+    elif statement == "cash-flow":
+        title_str = "Cash Flow Statement"
+        fundamentals.index = [
+            stocks_helper.CASH_PLOT["YahooFinance"][i]
+            for i in [i.replace(" ", "_") for i in fundamentals.index.str.lower()]
+        ]
 
     if fundamentals.empty:
         # The empty data frame error handling done in model

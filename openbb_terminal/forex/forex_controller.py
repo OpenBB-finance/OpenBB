@@ -293,10 +293,12 @@ class ForexController(BaseController):
 
             data = stocks_helper.process_candle(self.data)
             if ns_parser.raw:
-                if ns_parser.trendlines:
-                    if (data.index[1] - data.index[0]).total_seconds() >= 86400:
-                        data = stocks_helper.find_trendline(data, "OC_High", "high")
-                        data = stocks_helper.find_trendline(data, "OC_Low", "low")
+                if (
+                    ns_parser.trendlines
+                    and (data.index[1] - data.index[0]).total_seconds() >= 86400
+                ):
+                    data = stocks_helper.find_trendline(data, "OC_High", "high")
+                    data = stocks_helper.find_trendline(data, "OC_Low", "low")
 
                 qa_view.display_raw(
                     data=data,
