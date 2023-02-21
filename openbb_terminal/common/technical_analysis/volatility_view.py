@@ -366,3 +366,72 @@ def display_atr(
         df_ta,
         sheet_name,
     )
+
+@log_start_end(log=logger)
+def display_rvol(
+    data: pd.DataFrame,
+    symbol: str = "",
+    lower_q:float = 0.25, 
+    upper_q: float = 0.75,
+    export: str = "",
+    sheet_name: Optional[str] = None,
+    external_axes: Optional[List[plt.Axes]] = None
+):
+    """Plots the realized volatility quantiles for the loaded ticker.
+    
+    Parameters
+    ----------
+    data: pd.DataFrame
+        DataFrame of OHLC prices.
+    symbol: str (default = "")
+        The ticker symbol.
+    lower_q: float (default = 0.25)
+        The lower quantile to calculate for.
+    upper_q: float (default = 0.75)
+        The upper quantile to for.
+    export : str
+        Format of export file
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
+
+    Examples
+    --------
+    df_ta = openbb.stocks.load('XLY')
+    openbb.ta.rvol_chart(data = df_ta, symbol = 'XLY')
+    
+    df_ta = openbb.stocks.load('XLE')
+    openbb.ta.rvol_chart(data = df_ta, symbol = "XLE", lower_q = 0.10, upper_q = 0.90)
+    """
+    
+    df_ta = volatility_model.rvol(data, lower_q = lower_q, upper_q = upper_q)
+    lower_q_label = str((int(lower_q*100)))
+    upper_q_label = str((int(upper_q*100)))
+    
+    plt.figure(figsize = [14,7])
+    plt.autoscale(enable = True, axis = 'both', tight = True)
+    plt.plot(df_ta.index, df_ta.Min, "-o", linewidth=1, label="Min")
+    plt.plot(df_ta.index, df_ta.Max, "-o", linewidth=1, label="Max")
+    plt.plot(df_ta.index, df_ta.Median, "-o", linewidth=1, label="Median")
+    plt.plot(df_ta.index, df_ta['Upper 'f"{upper_q_label}"'%'], "-o", linewidth=1, label = 'Upper 'f"{upper_q_label}"'%')
+    plt.plot(df_ta.index, df_ta['Lower 'f"{lower_q_label}"'%'], "-o", linewidth=1, label = 'Lower 'f"{lower_q_label}"'%')
+    plt.plot(df_ta.index, df_ta.Realized, "o-.", linewidth=1, label="Realized")
+    plt.ylabel(ylabel = 'Volatility', labelpad = -910, loc = 'top', rotation = 'horizontal')
+    plt.xlabel(xlabel = 'Window of Time (in days)', labelpad = 20, y = 0)
+    plt.title(label = 'Realized Volatility of 'f"{symbol}", loc= 'center', y = 1.0)
+    plt.legend(loc='best', ncol=6, fontsize = 'x-small')
+    plt.tick_params(axis='y', which='both', labelleft=False, labelright=True)
+    plt.xticks(df_ta.index)
+    plt.tight_layout(pad = 2.0)
+
+    if external_axes is None:
+        theme.visualize_output()
+     
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
+        "rvol",
+        df_ta,
+        sheet_name,
+    )
