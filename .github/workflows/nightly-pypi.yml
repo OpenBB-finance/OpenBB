@@ -1,11 +1,6 @@
 name: Deploy to PyPI - Nightly
 
-on:
-  push:
-    branches:
-      - feature/nightly-pypi
-
-  workflow_dispatch:
+on: workflow_dispatch
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
