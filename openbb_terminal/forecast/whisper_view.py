@@ -114,39 +114,28 @@ def transcribe_and_summarize(
         # original text length
         original_text_length = len(all_text)
 
-        # get batches of tokens corresponding to the exact model_max_length
-        inputs_no_trunc = tokenizer(
-            all_text, max_length=None, return_tensors="pt", truncation=False
-        )
-        chunk_start = 0
-        chunk_end = tokenizer.model_max_length
-        inputs_batch_lst = []
-        while chunk_start <= len(inputs_no_trunc["input_ids"][0]):
-            inputs_batch = inputs_no_trunc["input_ids"][0][chunk_start:chunk_end]
-            inputs_batch = torch.unsqueeze(inputs_batch, 0)
-            inputs_batch_lst.append(inputs_batch)
-            chunk_start += tokenizer.model_max_length
-            chunk_end += tokenizer.model_max_length
-
-        # generate a summary on each batch
-        summary_ids_lst = [
-            summarizer.generate(
-                inputs, num_beams=4, max_length=100, early_stopping=True
-            )
-            for inputs in inputs_batch_lst
+        # split the text into chunks
+        chunk_size = 1000
+        chunks = [
+            all_text[i : i + chunk_size] for i in range(0, len(all_text), chunk_size)
         ]
 
-        # decode the output and join into one string with one paragraph per summary batch
-        summary_batch_lst = []
-        for summary_id in summary_ids_lst:
-            summary_batch = [
-                tokenizer.decode(
-                    g, skip_special_tokens=True, clean_up_tokenization_spaces=False
-                )
-                for g in summary_id
-            ]
-            summary_batch_lst.append(summary_batch[0])
-        summary_text = "\n".join(summary_batch_lst)
+        # process each chunk and concatenate the summaries
+        summary_text = ""
+        for chunk in chunks:
+            # encode the chunk using the tokenizer
+            inputs = tokenizer(
+                chunk, return_tensors="pt", truncation=True, max_length=1024
+            )
+
+            # generate a summary using the model
+            summary_ids = summarizer.generate(
+                inputs["input_ids"], num_beams=4, max_length=100, early_stopping=True
+            )
+            summary = tokenizer.decode(summary_ids[0], skip_special_tokens=True)
+
+            # concatenate the summaries
+            summary_text += summary
 
         # Write summary and get reduction
         summary_text_length = len(summary_text)
