@@ -286,9 +286,8 @@ def generate_index_markdown(
         path = Path()
     for key in d:
         if isinstance(d[key], dict):
-            if path and path.name != key:
-                if key != "":
-                    markdown += f"\n{'#' * level} {key}\n"
+            if path and path.name != key and key != "":
+                markdown += f"\n{'#' * level} {key}\n"
             markdown = generate_index_markdown(markdown, d[key], level + 1, path)
         else:
             markdown += f"- [{key}]({d[key]})\n"
