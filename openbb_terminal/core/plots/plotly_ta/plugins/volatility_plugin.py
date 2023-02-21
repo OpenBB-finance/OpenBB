@@ -93,7 +93,7 @@ class Volatility(PltTA):
             y=0.98,
             font_size=14,
             font_color=theme.get_colors()[1],
-            opacity=0.5,
+            opacity=0.9,
         )
 
         return fig, inchart_index + 1

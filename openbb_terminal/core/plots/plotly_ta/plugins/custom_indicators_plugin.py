@@ -151,7 +151,7 @@ class Custom(PltTA):
         fig.add_scatter(
             x=[min_date, max_date],
             y=[min_pr, max_pr],
-            opacity=0.9,
+            opacity=0.85,
             mode="lines",
             connectgaps=True,
             line=PLT_FIB_COLORWAY[8],
@@ -180,7 +180,7 @@ class Custom(PltTA):
                 text_pos = (
                     f"top {lvl_text}" if lvl_text != "right" else f"bottom {lvl_text}"
                 )
-            text = ["", f"{fibs[i]} ({levels[i]:{self.get_float_precision()}})"]
+            text = ["", f"<b>{fibs[i]} ({levels[i]:{self.get_float_precision()}})</b>"]
             if lvl_text == "right":
                 text = [text[1], text[0]]
 

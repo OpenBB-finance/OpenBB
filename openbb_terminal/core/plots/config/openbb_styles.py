@@ -56,15 +56,15 @@ PLT_COLORWAY = [
 ]
 
 PLT_FIB_COLORWAY: List[Any] = [
-    "rgba(195, 50, 69, 0.9)",  # 0
-    "rgba(130, 38, 96, 0.9)",  # 0.235
+    "rgb(195, 50, 69)",  # 0
+    "rgb(130, 38, 96)",  # 0.235
     "rgb(120, 70, 200)",  # 0.382
-    "rgba(0, 93, 168, 0.9)",  # 0.5
-    "rgba(173, 0, 95, 0.9)",  # 0.618
+    "rgb(0, 93, 168)",  # 0.5
+    "rgb(173, 0, 95)",  # 0.618
     "rgb(235, 184, 0)",  # 0.65 Golden Pocket
     "rgb(162, 115, 206)",  # 1
     dict(family="Arial Black", size=10),  # Fib's Text
-    dict(color="rgba(0, 230, 195, 0.9)", width=0.9, dash="dash"),  # Fib Trendline
+    dict(color="rgb(0, 230, 195)", width=0.9, dash="dash"),  # Fib Trendline
 ]
 
 PLT_INCREASING_COLORWAY = [

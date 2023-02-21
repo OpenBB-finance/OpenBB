@@ -298,7 +298,7 @@ class PlotlyTA(PltTA):
         check_rows += 1 if "aroon" in subplots and (check_rows + 1) < 5 else 0
 
         output = row_params.get(str(check_rows), dict(rows=1, row_width=[1]))
-        output.update(dict(cols=1, vertical_spacing=0.06))
+        output.update(dict(cols=1, vertical_spacing=0.04))
 
         return output
 
