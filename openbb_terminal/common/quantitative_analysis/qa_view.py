@@ -644,7 +644,7 @@ def display_seasonal(
         )
 
     # Multiplicative model
-    fig = OpenBBFigure.create_subplots(4, 1, vertical_spacing=0.03)
+    fig = OpenBBFigure.create_subplots(4, 1, vertical_spacing=0.06)
     fig.set_title(f"{symbol} (Time-Series) {target} seasonal decomposition")
     colors = iter(theme.get_colors())
 

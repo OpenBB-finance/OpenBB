@@ -260,6 +260,8 @@ class OpenBBFigure(go.Figure):
             self.__dict__ = fig.__dict__
 
         self._has_secondary_y = kwargs.pop("has_secondary_y", False)
+        self._multi_rows = kwargs.pop("multi_rows", False)
+        self._added_logscale = False
         self._date_xaxs: dict = {}
 
         if xaxis := kwargs.pop("xaxis", None):
@@ -326,7 +328,7 @@ class OpenBBFigure(go.Figure):
             specs=specs or [[{}] * cols] * rows,
             **kwargs,
         )
-        kwargs = {}
+        kwargs = {"multi_rows": rows > 1}
         if specs and any(
             spec.get("secondary_y", False) for row in specs for spec in row if spec
         ):
@@ -940,7 +942,7 @@ class OpenBBFigure(go.Figure):
             legend=dict(
                 tracegroupgap=height / 4.5,
                 groupclick="toggleitem",
-                orientation="h",
+                orientation="v",
             ),
             barmode="overlay",
             bargap=0,
@@ -1096,7 +1098,27 @@ class OpenBBFigure(go.Figure):
         self._xaxis_tickformatstops()
 
         if not plots_backend().isatty and self.data[0].type != "table":
-            self.layout.margin = dict(l=60, r=60, b=80, t=50, pad=0)
+            margin = self.layout.margin
+            L, R, B, T = margin["l"], margin["r"], margin["b"], margin["t"]
+            for var, max_val in zip([L, R, B, T], [60, 50, 80, 40]):
+                if var is not None and var > max_val:
+                    var = max_val
+
+            self.layout.margin = dict(l=L, r=R, b=B, t=T, pad=0)
+            orientation = "v" if self.layout.legend.orientation is None else "h"
+
+            if self._multi_rows:
+                height = 600 if not self.layout.height else self.layout.height
+                self.update_layout(
+                    legend=dict(tracegroupgap=height / 4.5, groupclick="toggleitem")
+                )
+
+            self.update_layout(
+                legend=dict(orientation=orientation, x=1.10, font=dict(size=12)),
+                font=dict(size=14),
+            )
+            self.update_xaxes(tickfont=dict(size=13))
+            self.update_yaxes(tickfont=dict(size=13))
 
         return super().to_html(*args, **kwargs)
 
@@ -1244,7 +1266,7 @@ class OpenBBFigure(go.Figure):
     def _adjust_margins(self) -> None:
         """Adjust the margins of the figure"""
         margin_add = (
-            [90, 60, 85, 60, 0] if not self._has_secondary_y else [90, 50, 85, 40, 0]
+            [80, 60, 85, 60, 0] if not self._has_secondary_y else [80, 50, 85, 40, 0]
         )
 
         # We adjust margins
@@ -1259,7 +1281,14 @@ class OpenBBFigure(go.Figure):
                     self.layout.margin[key] = add
 
         if not plots_backend().isatty:
-            self.layout.margin = dict(l=40, r=60, b=80, t=50, pad=0)
+            org_margin = self.layout.margin
+            margin = dict(l=40, r=60, b=80, t=50, pad=0)
+            for key, max_val in zip(["l", "r", "b", "t"], [60, 50, 80, 40]):
+                org = org_margin[key] or 0
+                if (org + margin[key]) > max_val:
+                    self.layout.margin[key] = max_val
+                else:
+                    self.layout.margin[key] = org + margin[key]
 
     def _set_watermark(self) -> None:
         """Sets the watermark for OpenBB Terminal"""
@@ -1289,12 +1318,12 @@ class OpenBBFigure(go.Figure):
             xshift = -70 if yaxis.side == "right" else -80
 
             if self.layout.margin["l"] > 100:
-                xshift -= 150
+                xshift -= 50 if self._added_logscale else 150
 
-            if yaxis2 or yaxis.side == "left":
+            if (yaxis2 and yaxis2.side == "left") or yaxis.side == "left":
                 title = yaxis.title.text if not yaxis2 else yaxis2.title.text
                 xshift = -110 if not title else -150
-                self.layout.margin["l"] += 50
+                self.layout.margin["l"] += 70
 
             self.add_annotation(
                 x=0,
@@ -1322,6 +1351,7 @@ class OpenBBFigure(go.Figure):
 
     def add_logscale_menus(self) -> None:
         """Sets the menus for the figure"""
+        self._added_logscale = True
         self.update_layout(
             xaxis=dict(
                 rangeslider=dict(visible=False),

@@ -138,7 +138,7 @@ def display_sentiment_correlation(
 
     similar_string = ",".join(similar)
     fig = OpenBBFigure().set_title(
-        f"Sentiment correlation heatmap across <br>{similar_string}"
+        f"Sentiment correlation heatmap across {similar_string}"
     )
 
     mask = np.zeros((len(similar), len(similar)), dtype=bool)
