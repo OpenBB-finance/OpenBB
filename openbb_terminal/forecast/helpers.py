@@ -458,17 +458,21 @@ def plot_predicted(
         length the number of components in the plotted TimeSeries (default "").
     """
 
-    if central_quantile != "mean":
-        if not (isinstance(central_quantile, float) and 0.0 <= central_quantile <= 1.0):
-            raise ValueError(
-                'central_quantile must be either "mean", or a float between 0 and 1.'
-            )
+    if central_quantile != "mean" and not (
+        isinstance(central_quantile, float) and 0.0 <= central_quantile <= 1.0
+    ):
+        raise ValueError(
+            'central_quantile must be either "mean", or a float between 0 and 1.'
+        )
 
-    if high_quantile is not None and low_quantile is not None:
-        if not (0.0 <= low_quantile <= 1.0 and 0.0 <= high_quantile <= 1.0):
-            raise ValueError(
-                "confidence interval low and high quantiles must be between 0 and 1."
-            )
+    if (
+        high_quantile is not None
+        and low_quantile is not None
+        and not (0.0 <= low_quantile <= 1.0 and 0.0 <= high_quantile <= 1.0)
+    ):
+        raise ValueError(
+            "confidence interval low and high quantiles must be between 0 and 1."
+        )
 
     if predicted_values.n_components > 10:
         logger.warning(

@@ -47,10 +47,7 @@ class Volatility(PltTA):
     def plot_bbands(self, fig: OpenBBFigure, df_ta: pd.DataFrame, inchart_index: int):
         """Adds bollinger bands to plotly figure"""
 
-        if theme.plt_style == "light":
-            bbands_opacity = 0.8
-        else:
-            bbands_opacity = 0.8
+        bbands_opacity = 0.8 if theme.plt_style == "light" else 1
 
         fig.add_scatter(
             name=f"{columns_regex(df_ta, 'BBU')[0]}",

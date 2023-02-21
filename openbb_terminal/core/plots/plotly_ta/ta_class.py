@@ -194,10 +194,9 @@ class PlotlyTA(PltTA):
     @staticmethod
     def _locate_plugins() -> None:
         """Locate all the plugins in the plugins folder"""
-        if hasattr(sys, "frozen"):
-            path = Path(sys.executable).parent
-        else:
-            path = Path(os.getcwd())
+        path = (
+            Path(sys.executable).parent if hasattr(sys, "frozen") else Path(os.getcwd())
+        )
 
         if os.environ.get("DEBUG_MODE", "False").lower() == "true":
             console.print(f"[bold green]Loading plugins from {path}[/]")
@@ -220,9 +219,8 @@ class PlotlyTA(PltTA):
                     inspect.isclass(obj)
                     and issubclass(obj, (PltTA))
                     and obj != PlotlyTA.__class__
-                ):
-                    if obj not in PlotlyTA.plugins:
-                        PlotlyTA.plugins.append(obj)
+                ) and obj not in PlotlyTA.plugins:
+                    PlotlyTA.plugins.append(obj)
 
     def _clear_data(self):
         """Clears and resets all data to default values"""

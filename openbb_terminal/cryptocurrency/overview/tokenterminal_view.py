@@ -2,8 +2,10 @@
 import logging
 import os
 
-from openbb_terminal import config_terminal as cfg
-from openbb_terminal import OpenBBFigure
+from openbb_terminal import (
+    OpenBBFigure,
+    config_terminal as cfg,
+)
 from openbb_terminal.cryptocurrency.overview.tokenterminal_model import (
     CATEGORIES,
     METRICS,
@@ -83,10 +85,7 @@ def display_fundamental_metrics(
     else:
         fig.set_xaxis_title("Dapps and Blockchains", tickangle=-15)
 
-    if metric == "twitter_followers":
-        labeltouse = "Followers"
-    else:
-        labeltouse = "[USD]"
+    labeltouse = "Followers" if metric == "twitter_followers" else "[USD]"
 
     fig.set_yaxis_title(f"{metric.replace('_', ' ').capitalize()} {labeltouse}")
 

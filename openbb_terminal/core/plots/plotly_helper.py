@@ -586,6 +586,10 @@ class OpenBBFigure(go.Figure):
         ----------
         title : `str`
             Title of the figure
+        wrap : `bool`
+            If True, the title will be wrapped according to the wrap_width parameter
+        wrap_width : `int`
+            Width in characters to wrap the title if wrap is True, default is 80
         """
         if wrap:
             title = "<br>".join(textwrap.wrap(title, width=wrap_width))

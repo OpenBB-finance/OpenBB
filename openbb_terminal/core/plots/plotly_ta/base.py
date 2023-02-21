@@ -61,9 +61,8 @@ class PluginMeta(type):
                             f"Indicator {value.name} can't be a static method"
                         )
                     indicators[value.name] = value
-                elif is_static_method:
-                    if elem not in new_cls.__static_methods__:
-                        new_cls.__static_methods__.append(elem)
+                elif is_static_method and elem not in new_cls.__static_methods__:
+                    new_cls.__static_methods__.append(elem)
 
                 if elem in ["__ma_mode__", "__inchart__", "__subplots__"]:
                     cls_attrs[elem].extend(value)
@@ -121,9 +120,12 @@ class PltTA(metaclass=PluginMeta):
                 setattr(self, static_method, staticmethod(getattr(self, static_method)))
 
         for attr, value in cls.__dict__.items():
-            if attr in ["__ma_mode__", "__inchart__", "__subplots__"]:
-                if value not in getattr(self, attr):
-                    getattr(self, attr).extend(value)
+            if attr in [
+                "__ma_mode__",
+                "__inchart__",
+                "__subplots__",
+            ] and value not in getattr(self, attr):
+                getattr(self, attr).extend(value)
 
         return self
 
@@ -149,9 +151,12 @@ class PltTA(metaclass=PluginMeta):
                         self, static_method, staticmethod(getattr(self, static_method))
                     )
             for attr, value in plugin.__dict__.items():
-                if attr in ["__ma_mode__", "__inchart__", "__subplots__"]:
-                    if value not in getattr(self, attr):
-                        getattr(self, attr).extend(value)
+                if attr in [
+                    "__ma_mode__",
+                    "__inchart__",
+                    "__subplots__",
+                ] and value not in getattr(self, attr):
+                    getattr(self, attr).extend(value)
 
     def remove_plugins(self, plugins: List["PltTA"]) -> None:
         """Remove plugins from current instance"""

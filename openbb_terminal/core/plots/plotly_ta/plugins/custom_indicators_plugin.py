@@ -165,13 +165,12 @@ class Custom(PltTA):
             interval = (df_ta2.index[1] - df_ta2.index[0]).seconds / 60
             dt_unique_days = df_ta2.index.normalize().unique()
 
-            if interval not in [15, 30, 60]:
-                if len(dt_unique_days) <= 3:
-                    df_ta2 = df_ta2.loc[
-                        (df_ta2.index >= dt_unique_days[-1])
-                        & (df_ta2.index < datetime.now())
-                    ].copy()
-                    df_ta2 = df_ta2.between_time("09:30", "20:00").copy()
+            if interval not in [15, 30, 60] and len(dt_unique_days) <= 3:
+                df_ta2 = df_ta2.loc[
+                    (df_ta2.index >= dt_unique_days[-1])
+                    & (df_ta2.index < datetime.now())
+                ].copy()
+                df_ta2 = df_ta2.between_time("09:30", "20:00").copy()
 
         for i in range(7):
             idx_int = 4 if lvl_text == "left" else 5

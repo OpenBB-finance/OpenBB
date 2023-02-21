@@ -284,9 +284,8 @@ async def download_plotly_js():
 
 
 # To avoid having plotly.js in the repo, we download it if it's not present
-if not PLOTLYJS_PATH.exists():
-    if not JUPYTER_NOTEBOOK:
-        asyncio.run(download_plotly_js())
+if not PLOTLYJS_PATH.exists() and not JUPYTER_NOTEBOOK:
+    asyncio.run(download_plotly_js())
 
 
 def plots_backend() -> Backend:
