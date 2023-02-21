@@ -278,6 +278,8 @@ python terminal.py
 
 **TROUBLESHOOT:** If you are having troubles with installation, check out the [FAQ page](/terminal/quickstart/faq). You can also reach for help on our [discord](https://discord.gg/Up2QGbMKHY).
 
+</Tabitem>
+
 ## Docker
 
 <TabItem value="docker" label="Docker">
