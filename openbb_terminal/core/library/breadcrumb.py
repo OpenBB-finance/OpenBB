@@ -113,10 +113,7 @@ class Breadcrumb:
         trail = self._trail
         trail_map = self._trail_map
 
-        if trail == "":
-            trail_next = name
-        else:
-            trail_next = f"{trail}.{name}"
+        trail_next = name if trail == "" else f"{trail}.{name}"
 
         if trail_map.get_model_function(
             trail=trail_next

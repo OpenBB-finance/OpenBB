@@ -9,6 +9,7 @@ def test_openbb(mocker):
 
     mock.assert_called_once()
     assert "stocks" in dir(openbb)
+    assert "economy" in dir(openbb)
     assert openbb.__version__ == obbff.VERSION
 
 

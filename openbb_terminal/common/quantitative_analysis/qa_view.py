@@ -316,10 +316,7 @@ def display_bw(
 
     theme.style_primary_axis(ax)
     color = theme.get_colors()[0]
-    if yearly:
-        x_data = data.index.year
-    else:
-        x_data = data.index.month
+    x_data = data.index.year if yearly else data.index.month
     box_plot = sns.boxplot(
         x=x_data,
         y=data,
@@ -913,10 +910,7 @@ def display_raw(
         Export data as CSV, JSON, XLSX
     """
 
-    if isinstance(data, pd.Series):
-        df1 = pd.DataFrame(data)
-    else:
-        df1 = data.copy()
+    df1 = pd.DataFrame(data) if isinstance(data, pd.Series) else data.copy()
 
     if sortby:
         try:
@@ -1213,10 +1207,7 @@ def display_sortino(
         adjust the sortino ratio
     """
     sortino_ratio = qa_model.get_sortino(data, target_return, window, adjusted)
-    if adjusted:
-        str_adjusted = "Adjusted "
-    else:
-        str_adjusted = ""
+    str_adjusted = "Adjusted " if adjusted else ""
 
     fig, ax = plt.subplots()
     ax.plot(sortino_ratio[int(window - 1) :])
