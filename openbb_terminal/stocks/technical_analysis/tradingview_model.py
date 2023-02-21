@@ -83,10 +83,9 @@ def get_tradingview_recommendation(
             return pd.DataFrame()
         exchange = data["Exchange"]
 
-    if interval:
-        intervals = [interval]
-    else:
-        intervals = ["1M", "1W", "1d", "4h", "1h", "15m", "5m", "1m"]
+    intervals = (
+        [interval] if interval else ["1M", "1W", "1d", "4h", "1h", "15m", "5m", "1m"]
+    )
 
     df_recommendation = pd.DataFrame()
     index_recommendation = []

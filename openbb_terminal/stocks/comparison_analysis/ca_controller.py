@@ -264,10 +264,11 @@ class ComparisonAnalysisController(BaseController):
         if ns_parser:
             if self.ticker:
                 if ns_parser.source == "Finviz":
-                    if ns_parser.b_no_country:
-                        compare_list = ["Sector", "Industry"]
-                    else:
-                        compare_list = ["Sector", "Industry", "Country"]
+                    compare_list = (
+                        ["Sector", "Industry"]
+                        if ns_parser.b_no_country
+                        else ["Sector", "Industry", "Country"]
+                    )
 
                     self.similar = finviz_compare_model.get_similar_companies(
                         self.ticker, compare_list

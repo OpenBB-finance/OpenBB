@@ -76,10 +76,7 @@ def insider_activity(
         logger.warning("The insider activity on the ticker does not exist")
         console.print("[red]The insider activity on the ticker does not exist.\n[/red]")
     else:
-        if start_date:
-            df_insider = df_ins[start_date:].copy()  # type: ignore
-        else:
-            df_insider = df_ins.copy()
+        df_insider = df_ins[start_date:].copy() if start_date else df_ins.copy()  # type: ignore
 
         if raw:
             df_insider.index = pd.to_datetime(df_insider.index).date
@@ -148,16 +145,16 @@ def insider_activity(
                 .sum(numeric_only=True)
                 .index
             ):
-                if ind in data.index:
-                    ind_dt = ind
-                else:
-                    ind_dt = get_next_stock_market_days(ind, 1)[0]
+                ind_dt = (
+                    ind if ind in data.index else get_next_stock_market_days(ind, 1)[0]
+                )
 
                 n_stock_price = 0
-                if interval == "1440min":
-                    n_stock_price = data["Adj Close"][ind_dt]
-                else:
-                    n_stock_price = data["Close"][ind_dt]
+                n_stock_price = (
+                    data["Adj Close"][ind_dt]
+                    if interval == "1440min"
+                    else data["Close"][ind_dt]
+                )
 
                 bar_1 = ax.vlines(
                     x=ind_dt,
@@ -181,16 +178,16 @@ def insider_activity(
                 .sum(numeric_only=True)
                 .index
             ):
-                if ind in data.index:
-                    ind_dt = ind
-                else:
-                    ind_dt = get_next_stock_market_days(ind, 1)[0]
+                ind_dt = (
+                    ind if ind in data.index else get_next_stock_market_days(ind, 1)[0]
+                )
 
                 n_stock_price = 0
-                if interval == "1440min":
-                    n_stock_price = data["Adj Close"][ind_dt]
-                else:
-                    n_stock_price = data["Close"][ind_dt]
+                n_stock_price = (
+                    data["Adj Close"][ind_dt]
+                    if interval == "1440min"
+                    else data["Close"][ind_dt]
+                )
 
                 bar_2 = ax.vlines(
                     x=ind_dt,

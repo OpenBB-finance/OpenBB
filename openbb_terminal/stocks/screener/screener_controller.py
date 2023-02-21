@@ -235,10 +235,11 @@ class ScreenerController(BaseController):
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
-            if self.preset.strip(".ini") in finviz_model.d_signals:
-                preset = self.preset.strip(".ini")
-            else:
-                preset = self.preset
+            preset = (
+                self.preset.strip(".ini")
+                if self.preset.strip(".ini") in finviz_model.d_signals
+                else self.preset
+            )
             self.screen_tickers = yahoofinance_view.historical(
                 preset,
                 ns_parser.limit,
@@ -307,10 +308,11 @@ class ScreenerController(BaseController):
         )
 
         if ns_parser:
-            if self.preset.strip(".ini") in finviz_model.d_signals:
-                preset = self.preset.strip(".ini")
-            else:
-                preset = self.preset
+            preset = (
+                self.preset.strip(".ini")
+                if self.preset.strip(".ini") in finviz_model.d_signals
+                else self.preset
+            )
 
             sort_map = screener_helper.finviz_map("overview")
             self.screen_tickers = finviz_view.screener(
@@ -384,10 +386,11 @@ class ScreenerController(BaseController):
         )
 
         if ns_parser:
-            if self.preset.strip(".ini") in finviz_model.d_signals:
-                preset = self.preset.strip(".ini")
-            else:
-                preset = self.preset
+            preset = (
+                self.preset.strip(".ini")
+                if self.preset.strip(".ini") in finviz_model.d_signals
+                else self.preset
+            )
             sort_map = screener_helper.finviz_map("valuation")
             self.screen_tickers = finviz_view.screener(
                 loaded_preset=preset,
@@ -460,10 +463,11 @@ class ScreenerController(BaseController):
         )
 
         if ns_parser:
-            if self.preset.strip(".ini") in finviz_model.d_signals:
-                preset = self.preset.strip(".ini")
-            else:
-                preset = self.preset
+            preset = (
+                self.preset.strip(".ini")
+                if self.preset.strip(".ini") in finviz_model.d_signals
+                else self.preset
+            )
             sort_map = screener_helper.finviz_map("financial")
             self.screen_tickers = finviz_view.screener(
                 loaded_preset=preset,
@@ -536,10 +540,11 @@ class ScreenerController(BaseController):
         )
 
         if ns_parser:
-            if self.preset.strip(".ini") in finviz_model.d_signals:
-                preset = self.preset.strip(".ini")
-            else:
-                preset = self.preset
+            preset = (
+                self.preset.strip(".ini")
+                if self.preset.strip(".ini") in finviz_model.d_signals
+                else self.preset
+            )
             sort_map = screener_helper.finviz_map("ownership")
             self.screen_tickers = finviz_view.screener(
                 loaded_preset=preset,
@@ -613,10 +618,11 @@ class ScreenerController(BaseController):
 
         sort_map = screener_helper.finviz_map("performance")
         if ns_parser:
-            if self.preset.strip(".ini") in finviz_model.d_signals:
-                preset = self.preset.strip(".ini")
-            else:
-                preset = self.preset
+            preset = (
+                self.preset.strip(".ini")
+                if self.preset.strip(".ini") in finviz_model.d_signals
+                else self.preset
+            )
             self.screen_tickers = finviz_view.screener(
                 loaded_preset=preset,
                 data_type="performance",
@@ -687,10 +693,11 @@ class ScreenerController(BaseController):
         )
 
         if ns_parser:
-            if self.preset.strip(".ini") in finviz_model.d_signals:
-                preset = self.preset.strip(".ini")
-            else:
-                preset = self.preset
+            preset = (
+                self.preset.strip(".ini")
+                if self.preset.strip(".ini") in finviz_model.d_signals
+                else self.preset
+            )
             sort_map = screener_helper.finviz_map("technical")
             self.screen_tickers = finviz_view.screener(
                 loaded_preset=preset,

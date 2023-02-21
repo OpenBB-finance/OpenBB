@@ -350,10 +350,11 @@ def get_binom(
             und_vals.append(new)
 
     # Binomial tree for option values
-    if put:
-        opt_vals = [[max(strike - x, 0) for x in und_vals[-1]]]
-    else:
-        opt_vals = [[max(x - strike, 0) for x in und_vals[-1]]]
+    opt_vals = (
+        [[max(strike - x, 0) for x in und_vals[-1]]]
+        if put
+        else [[max(x - strike, 0) for x in und_vals[-1]]]
+    )
 
     j = 2
     while len(opt_vals[0]) > 1:
