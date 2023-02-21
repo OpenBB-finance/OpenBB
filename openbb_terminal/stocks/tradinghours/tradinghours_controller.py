@@ -83,13 +83,11 @@ class TradingHoursController(BaseController):
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
-        if self.symbol is not None:
-            if self.symbol_market_open:
-                exchange_opened = "OPENED"
-            else:
-                exchange_opened = "CLOSED"
-        else:
-            exchange_opened = ""
+        exchange_opened = (
+            ("OPENED" if self.symbol_market_open else "CLOSED")
+            if self.symbol is not None
+            else ""
+        )
 
         mt = MenuText("stocks/th/")
         mt.add_cmd("open")

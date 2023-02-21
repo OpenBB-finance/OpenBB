@@ -39,7 +39,7 @@ def parameterize_from_file(test_namespace: str, parameter_file: str) -> Callable
             idlist.append(scenario)
             argnames = []
             tempvalues = []
-            for argname in parameter_data[test_namespace][scenario].keys():
+            for argname in parameter_data[test_namespace][scenario]:
                 argnames.append(argname)
                 tempvalues.append(parameter_data[test_namespace][scenario][argname])
             argvalues.append(tempvalues)

@@ -107,7 +107,7 @@ class ToolsController(BaseController):
             help="Flag to show narrative instead of dataframe",
             default=False,
         )
-        if other_args and not other_args[0][0] == "-":
+        if other_args and other_args[0][0] != "-":
             other_args.insert(0, "-a")
 
         ns_parser = self.parse_known_args_and_warn(
@@ -168,7 +168,7 @@ class ToolsController(BaseController):
             default=False,
         )
 
-        if other_args and not other_args[0][0] == "-":
+        if other_args and other_args[0][0] != "-":
             other_args.insert(0, "--apr")
 
         ns_parser = self.parse_known_args_and_warn(
