@@ -46,10 +46,7 @@ def get_dark_pool_short_positions(
 
     field = d_fields_endpoints[sortby]
 
-    if ascend:
-        order = "asc"
-    else:
-        order = "desc"
+    order = "asc" if ascend else "desc"
 
     link = f"https://stockgridapp.herokuapp.com/get_dark_pool_data?top={field}&minmax={order}"
 

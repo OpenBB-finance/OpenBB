@@ -36,10 +36,7 @@ def load_file(path: str = "") -> Tuple[dict, str]:
         params_obj.optionxform = str  # type: ignore
         params: dict = dict(params_obj["OPENBB"].items())
 
-        if "technique" in params:
-            current_model = params["technique"]
-        else:
-            current_model = ""
+        current_model = params["technique"] if "technique" in params else ""
 
     elif str(path).endswith(".xlsx"):
         params, _ = excel_model.load_configuration(path)
@@ -50,7 +47,7 @@ def load_file(path: str = "") -> Tuple[dict, str]:
 
     converted_parameters = check_convert_parameters(received_parameters=params)
 
-    max_len = max(len(k) for k in converted_parameters.keys())
+    max_len = max(len(k) for k in converted_parameters)
     help_text = "[info]Parameters:[/info]\n"
 
     if current_model:

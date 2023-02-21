@@ -52,10 +52,7 @@ class User:
         if not User.is_guest():
             console.print(f"[info]email:[/info] {cls._email}")
             console.print(f"[info]uuid:[/info] {cls._uuid}")
-            if obbff.SYNC_ENABLED is True:
-                sync = "ON"
-            else:
-                sync = "OFF"
+            sync = "ON" if obbff.SYNC_ENABLED is True else "OFF"
             console.print(f"[info]sync:[/info] {sync}")
         else:
             User.print_guest_message()

@@ -63,10 +63,7 @@ def prepare_df_financials(
     if statement not in financial_urls:
         raise ValueError(f"type {statement} is not in {financial_urls.keys()}")
 
-    if quarter:
-        period = "quarter"
-    else:
-        period = "annual"
+    period = "quarter" if quarter else "annual"
 
     text_soup_financials = BeautifulSoup(
         request(

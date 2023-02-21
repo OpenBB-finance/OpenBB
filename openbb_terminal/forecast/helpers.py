@@ -251,10 +251,7 @@ def prepare_scale_train_valid_test(
         "minmax": MinMaxScaler(),
         "normalization": Normalizer(),
     }
-    if Preprocess is None:
-        scaler = None
-    else:
-        scaler = pre_dict.get(Preprocess, None)
+    scaler = None if Preprocess is None else pre_dict.get(Preprocess, None)
 
     if s_end_date:
         data = data[data.index <= s_end_date]
@@ -901,23 +898,28 @@ def clean_data(
     # check if target column is in data and if the target_column has any inf
     # replace all inf with nan. This is because darts does not handle inf
     # Creating a timeseries with fillna=True will replace all nan with interoplated values
-    if target_column and target_column in data.columns:
-        if data[target_column].isin([np.inf, -np.inf]).any():
-            console.print(
-                f"[red]The target column [{target_column}] has inf values. Cleaning...[/red]\n"
-            )
-            data = data.replace([np.inf, -np.inf], np.nan)
+    if (
+        target_column
+        and target_column in data.columns
+        and data[target_column].isin([np.inf, -np.inf]).any()
+    ):
+        console.print(
+            f"[red]The target column [{target_column}] has inf values. Cleaning...[/red]\n"
+        )
+        data = data.replace([np.inf, -np.inf], np.nan)
 
     # check if past covariates are in data and if they have any inf
     if past_covariates:
         covariates = past_covariates.split(",")
         for covariate in covariates:
-            if covariate in data.columns:
-                if data[covariate].isin([np.inf, -np.inf]).any():
-                    console.print(
-                        f"[red]The covariate:{covariate} has inf values. Cleaning...[/red]\n"
-                    )
-                    data = data.replace([np.inf, -np.inf], np.nan)
+            if (
+                covariate in data.columns
+                and data[covariate].isin([np.inf, -np.inf]).any()
+            ):
+                console.print(
+                    f"[red]The covariate:{covariate} has inf values. Cleaning...[/red]\n"
+                )
+                data = data.replace([np.inf, -np.inf], np.nan)
 
     if isinstance(data, pd.Series):
         col = data.name
