@@ -75,7 +75,6 @@ def insider_activity(
 
     df_insider = df_ins[start_date:].copy() if start_date else df_ins.copy()  # type: ignore
 
-
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
@@ -136,10 +135,7 @@ def insider_activity(
     n_proportion = price_range / shares_range
 
     for ind in ins_sell.index:
-        if ind in data.index:
-            ind_dt = ind
-        else:
-            ind_dt = get_next_stock_market_days(ind, 1)[0]
+        ind_dt = ind if ind in data.index else get_next_stock_market_days(ind, 1)[0]
 
         n_stock_price = data[close_col][ind_dt]
         ins_loc = ins_sell.index.get_indexer([ind_dt], method="nearest")
@@ -155,10 +151,7 @@ def insider_activity(
         )
 
     for ind in ins_buy.index:
-        if ind in data.index:
-            ind_dt = ind
-        else:
-            ind_dt = get_next_stock_market_days(ind, 1)[0]
+        ind_dt = ind if ind in data.index else get_next_stock_market_days(ind, 1)[0]
 
         n_stock_price = data[close_col][ind_dt]
         ins_loc = ins_buy.index.get_indexer([ind_dt], method="nearest")
