@@ -377,7 +377,7 @@ class NestedCompleter(Completer):
                         }
 
             command = self.options.get(cmd)
-            options = command.options if command else {}
+            options = command.options if command else {}  # type: ignore
             command_options = [f"{cmd} {opt}" for opt in options]
             text_list = [text in val for val in command_options]
             if cmd and cmd in self.options and text_list:

@@ -572,7 +572,7 @@ class PortfolioOptimizationController(BaseController):
                 file_location = self.optimization_file_map.get(
                     self.current_file, self.current_file
                 )
-                self.params, self.current_model = params_view.load_file(file_location)
+                self.params, self.current_model = params_view.load_file(file_location)  # type: ignore
 
     @log_start_end(log=logger)
     def call_params(self, _):
