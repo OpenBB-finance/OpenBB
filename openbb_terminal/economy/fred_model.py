@@ -4,7 +4,6 @@ __docformat__ = "numpy"
 import logging
 import os
 import textwrap
-from datetime import datetime, timedelta
 from typing import List, Optional, Tuple
 
 import certifi

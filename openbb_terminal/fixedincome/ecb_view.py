@@ -1,24 +1,24 @@
 """ ECB view """
 __docformat__ = "numpy"
 
-from typing import Optional, List
-from itertools import cycle
 import logging
 import os
+from itertools import cycle
+from typing import List, Optional
 
 import pandas as pd
 from matplotlib import pyplot as plt
 
-from openbb_terminal.config_terminal import theme
 from openbb_terminal.config_plot import PLOT_DPI
+from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
+from openbb_terminal.fixedincome import ecb_model
 from openbb_terminal.helper_funcs import (
     export_data,
-    plot_autoscale,
     is_valid_axes_count,
+    plot_autoscale,
     print_rich_table,
 )
-from openbb_terminal.fixedincome import ecb_model
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -74,10 +74,6 @@ def plot_estr(
     ax.plot(
         df.index,
         df.values,
-        marker="o",
-        linestyle="dashed",
-        linewidth=2,
-        markersize=4,
         color=next(colors, "#FCED00"),
     )
     ax.set_title(ID_TO_NAME[series_id])
@@ -85,7 +81,7 @@ def plot_estr(
 
     if external_axes is None:
         theme.visualize_output()
-        
+
     if export:
         if "[Percent]" in ID_TO_NAME[series_id]:
             # Check whether it is a percentage, relevant for exporting
@@ -98,7 +94,7 @@ def plot_estr(
             os.path.dirname(os.path.abspath(__file__)),
             series_id,
             df_transformed,
-            sheet_name
+            sheet_name,
         )
 
 
@@ -170,7 +166,7 @@ def display_ecb_yield_curve(
         ax.set_title(
             f"Euro Area{' AAA Bonds' if not any_rating else ' All Bonds'} {yield_type.replace('_', ' ').title()} "
             f"Yield Curve for {date_of_yield}",
-            fontsize=15
+            fontsize=15,
         )
         theme.visualize_output()
 
@@ -189,5 +185,5 @@ def display_ecb_yield_curve(
         os.path.dirname(os.path.abspath(__file__)),
         "ecbycrv",
         rates / 100,
-        sheet_name
+        sheet_name,
     )

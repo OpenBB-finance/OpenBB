@@ -2,8 +2,8 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import Dict, Any, Optional
 from datetime import datetime
+from typing import Any, Dict, Optional
 
 import pandas as pd
 import pandas_datareader.data as web

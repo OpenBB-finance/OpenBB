@@ -1,23 +1,23 @@
 """ EconDB view """
 __docformat__ = "numpy"
 
-from typing import Optional, List
-from itertools import cycle
 import logging
 import os
-import pandas as pd
+from itertools import cycle
+from typing import List, Optional
 
+import pandas as pd
 from matplotlib import pyplot as plt
 
-from openbb_terminal.config_terminal import theme
 from openbb_terminal.config_plot import PLOT_DPI
-from openbb_terminal.decorators import log_start_end, check_api_key
+from openbb_terminal.config_terminal import theme
+from openbb_terminal.decorators import check_api_key, log_start_end
+from openbb_terminal.fixedincome import econdb_model
 from openbb_terminal.helper_funcs import (
     export_data,
-    plot_autoscale,
     is_valid_axes_count,
+    plot_autoscale,
 )
-from openbb_terminal.fixedincome import econdb_model
 
 logger = logging.getLogger(__name__)
 
@@ -33,7 +33,7 @@ MATURITY_TO_ID = {
     "7_year": "7y",
     "10_year": "10y",
     "20_year": "20y",
-    "30_year": "30y"
+    "30_year": "30y",
 }
 
 
@@ -72,7 +72,13 @@ def plot_cmn(
     external_axes: Optional[List[plt.Axes]]
         External axes (1 axis is expected in the list)
     """
-    df = econdb_model.get_treasuries(instruments=["nominal"], maturities=[MATURITY_TO_ID[maturity]], frequency="daily", start_date=start_date, end_date=end_date)
+    df = econdb_model.get_treasuries(
+        instruments=["nominal"],
+        maturities=[MATURITY_TO_ID[maturity]],
+        frequency="daily",
+        start_date=start_date,
+        end_date=end_date,
+    )
 
     # This plot has 1 axis
     if not external_axes:
@@ -86,13 +92,11 @@ def plot_cmn(
     ax.plot(
         df.index,
         df.values,
-        marker="o",
-        linestyle="dashed",
-        linewidth=2,
-        markersize=4,
         color=next(colors, "#FCED00"),
     )
-    ax.set_title(f"{maturity.replace('-', ' ')} Treasury Constant Maturity Nominal Market Yield [Percent]")
+    ax.set_title(
+        f"{maturity.replace('-', ' ')} Treasury Constant Maturity Nominal Market Yield [Percent]"
+    )
     theme.style_primary_axis(ax)
 
     if external_axes is None:
@@ -141,7 +145,13 @@ def plot_tips(
     external_axes: Optional[List[plt.Axes]]
         External axes (1 axis is expected in the list)
     """
-    df = econdb_model.get_treasuries(instruments=["inflation"], maturities=[MATURITY_TO_ID[maturity]], frequency="daily", start_date=start_date, end_date=end_date)
+    df = econdb_model.get_treasuries(
+        instruments=["inflation"],
+        maturities=[MATURITY_TO_ID[maturity]],
+        frequency="daily",
+        start_date=start_date,
+        end_date=end_date,
+    )
 
     # This plot has 1 axis
     if not external_axes:
@@ -155,14 +165,12 @@ def plot_tips(
     ax.plot(
         df.index,
         df.values,
-        marker="o",
-        linestyle="dashed",
-        linewidth=2,
-        markersize=4,
         color=next(colors, "#FCED00"),
     )
-    ax.set_title(f"{maturity.replace('-', ' ')} Yields on Treasury inflation protected securities (TIPS) adjusted to "
-                 f"constant maturities [Percent]")
+    ax.set_title(
+        f"{maturity.replace('-', ' ')} Yields on Treasury inflation protected securities (TIPS) adjusted to "
+        f"constant maturities [Percent]"
+    )
     theme.style_primary_axis(ax)
 
     if external_axes is None:
@@ -205,7 +213,13 @@ def plot_tbill(
     external_axes: Optional[List[plt.Axes]]
         External axes (1 axis is expected in the list)
     """
-    df = econdb_model.get_treasuries(instruments=["secondary"], maturities=[MATURITY_TO_ID[maturity]], frequency="daily", start_date=start_date, end_date=end_date)
+    df = econdb_model.get_treasuries(
+        instruments=["secondary"],
+        maturities=[MATURITY_TO_ID[maturity]],
+        frequency="daily",
+        start_date=start_date,
+        end_date=end_date,
+    )
 
     # This plot has 1 axis
     if not external_axes:
@@ -219,13 +233,11 @@ def plot_tbill(
     ax.plot(
         df.index,
         df.values,
-        marker="o",
-        linestyle="dashed",
-        linewidth=2,
-        markersize=4,
         color=next(colors, "#FCED00"),
     )
-    ax.set_title(f"{maturity.replace('-', ' ')} Treasury Bill Secondary Market Rate, Discount Basis [Percent]")
+    ax.set_title(
+        f"{maturity.replace('-', ' ')} Treasury Bill Secondary Market Rate, Discount Basis [Percent]"
+    )
     theme.style_primary_axis(ax)
 
     if external_axes is None:

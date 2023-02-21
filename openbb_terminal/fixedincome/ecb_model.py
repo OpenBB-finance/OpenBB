@@ -109,7 +109,9 @@ def get_ecb_yield_curve(
         return pd.DataFrame()
 
     if detailed:
-        console.print("Note that due to the large amount of data, this may take a while. Use CTRL + C to cancel.")
+        console.print(
+            "Note that due to the large amount of data, this may take a while. Use CTRL + C to cancel."
+        )
         series_id = [
             f"{yield_type}{y}Y{m}M" if y != 0 else f"{yield_type}{m}M"
             for y in range(0, 30)
@@ -145,13 +147,14 @@ def get_ecb_yield_curve(
         return pd.DataFrame()
 
     # Add in logic that will get the most recent date.
-    get_last = False
 
     if not date:
         date = (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d")
 
     try:
-        for i in optional_rich_track( range(len(series_id)), desc="Obtaining yield curve data"):
+        for i in optional_rich_track(
+            range(len(series_id)), desc="Obtaining yield curve data"
+        ):
             temp = get_series_data(series_id[i], date, date)
             temp.columns = [labels[i]]
             df = pd.concat([df, temp], axis=1)
@@ -167,13 +170,17 @@ def get_ecb_yield_curve(
     # Drop rows with NaN -- corresponding to weekends typically
     df = df.dropna()
     if datetime.strptime(date, "%Y-%m-%d") not in df.index:
-        nearest_value = df.index.get_indexer([datetime.strptime(date, "%Y-%m-%d")], method='nearest')
+        nearest_value = df.index.get_indexer(
+            [datetime.strptime(date, "%Y-%m-%d")], method="nearest"
+        )
         date_of_yield = df.iloc[nearest_value].index[0].date()
-        series = df[df.index ==  df.iloc[nearest_value].index[0]]
+        series = df[df.index == df.iloc[nearest_value].index[0]]
         if series.empty:
             return pd.DataFrame(), date_of_yield
         rates = pd.DataFrame(series.values.T, columns=["Rate"])
-        console.print(f"{date} not available, therefore selecting the nearest date, {date_of_yield}.")
+        console.print(
+            f"{date} not available, therefore selecting the nearest date, {date_of_yield}."
+        )
     else:
         date_of_yield = date
         series = df[df.index == datetime.strptime(date, "%Y-%m-%d")]

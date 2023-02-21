@@ -1,25 +1,26 @@
 """ OECD view """
 __docformat__ = "numpy"
 
-from typing import Optional, List
 import logging
 import os
-import pandas as pd
+from typing import List, Optional
 
+import pandas as pd
 from matplotlib import pyplot as plt
 
-from openbb_terminal.config_terminal import theme
 from openbb_terminal.config_plot import PLOT_DPI
+from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
+from openbb_terminal.fixedincome import oecd_model
 from openbb_terminal.helper_funcs import (
     export_data,
-    plot_autoscale,
     is_valid_axes_count,
+    plot_autoscale,
     print_rich_table,
 )
-from openbb_terminal.fixedincome import oecd_model
 
 logger = logging.getLogger(__name__)
+
 
 @log_start_end(log=logger)
 def plot_treasuries(
@@ -40,7 +41,7 @@ def plot_treasuries(
     interest rates are generally averages of daily rates, measured as a percentage. Short-term interest rates are
     based on three-month money market rates where available. Typical standardised names are "money market rate" and
     "treasury bill rate".
-    
+
     Long-term interest rates refer to government bonds maturing in ten years. Rates are mainly determined by the
     price charged by the lender, the risk from the borrower and the fall in the capital value. Long-term interest
     rates are generally averages of daily rates, measured as a percentage. These interest rates are implied by the
@@ -49,7 +50,7 @@ def plot_treasuries(
     interest rates are one of the determinants of business investment. Low long-term interest rates encourage
     investment in new equipment and high interest rates discourage it. Investment is, in turn, a major source of
     economic growth.
-    
+
     Parameters
     ----------
     countries: list
@@ -66,7 +67,7 @@ def plot_treasuries(
         External axes (1 axis is expected in the list)
     """
     df_short, df_long = pd.DataFrame(), pd.DataFrame()
-    
+
     if short_term:
         df_short = oecd_model.get_interest_rate_data(
             f"short{'_forecast' if forecast else ''}",
@@ -81,7 +82,7 @@ def plot_treasuries(
             start_date if start_date is not None else "",
             end_date if end_date is not None else "",
         )
-        
+
     df = pd.concat([df_short, df_long], axis=1)
 
     # This plot has 1 axis
@@ -92,11 +93,7 @@ def plot_treasuries(
     else:
         return
 
-    ax.plot(
-        df.index,
-        df.values,
-        linewidth=1
-    )
+    ax.plot(df.index, df.values, linewidth=1)
     if short_term and long_term:
         title = f"Short and Long Term Interest Rates {' with forecasts' if forecast else ''}"
     elif short_term:
@@ -104,18 +101,18 @@ def plot_treasuries(
     elif long_term:
         title = f"Long Term Interest Rates {' with forecasts' if forecast else ''}"
     ax.set_title(title)
-    
+
     style_countries = [country.replace("_", " ").title() for country in df.columns]
     ax.legend(style_countries)
-    
+
     ax.set_ylabel("Yield (%)")
 
     theme.style_primary_axis(ax)
 
     if external_axes is None:
         theme.visualize_output()
-        
-    if raw:   
+
+    if raw:
         print_rich_table(
             df.iloc[-10:],
             headers=list(df.columns),
@@ -127,7 +124,7 @@ def plot_treasuries(
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
-        f"treasury",
+        "treasury",
         df / 100,
-        sheet_name
+        sheet_name,
     )

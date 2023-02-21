@@ -1,24 +1,24 @@
 """ FRED view """
 __docformat__ = "numpy"
 
-from typing import Optional, List
-from itertools import cycle
 import logging
 import os
+from itertools import cycle
+from typing import List, Optional
 
 import pandas as pd
 from matplotlib import pyplot as plt
 
-from openbb_terminal.config_terminal import theme
 from openbb_terminal.config_plot import PLOT_DPI
-from openbb_terminal.decorators import log_start_end, check_api_key
+from openbb_terminal.config_terminal import theme
+from openbb_terminal.decorators import check_api_key, log_start_end
+from openbb_terminal.fixedincome import fred_model
 from openbb_terminal.helper_funcs import (
     export_data,
-    plot_autoscale,
     is_valid_axes_count,
+    plot_autoscale,
     print_rich_table,
 )
-from openbb_terminal.fixedincome import fred_model
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -96,7 +96,7 @@ ID_TO_NAME_SECONDARY = {
     "TB3MS": "3-Month",
     "DTB4WK": "4-Week",
     "DTB1YR": "1-Year",
-    "DTB6": "6-Month"
+    "DTB6": "6-Month",
 }
 ID_TO_NAME_TIPS = {
     "DFII5": "5-Year",
@@ -124,24 +124,20 @@ ID_TO_NAME_TBFFR = {
 }
 
 NAME_TO_ID_PROJECTION = {
-    "Range High": [ 'FEDTARRH', 'FEDTARRHLR'],
-    "Central tendency High": ['FEDTARCTH', 'FEDTARCTHLR'],
-    "Median": ['FEDTARMD', 'FEDTARMDLR'],
-    "Range Midpoint": ['FEDTARRM', 'FEDTARRMLR'],
-    "Central tendency Midpoint": ['FEDTARCTM', 'FEDTARCTMLR'],
-    "Range Low": ['FEDTARRL', 'FEDTARRLLR'],
-    "Central tendency Low": ['FEDTARCTL', 'FEDTARCTLLR'],
+    "Range High": ["FEDTARRH", "FEDTARRHLR"],
+    "Central tendency High": ["FEDTARCTH", "FEDTARCTHLR"],
+    "Median": ["FEDTARMD", "FEDTARMDLR"],
+    "Range Midpoint": ["FEDTARRM", "FEDTARRMLR"],
+    "Central tendency Midpoint": ["FEDTARCTM", "FEDTARCTMLR"],
+    "Range Low": ["FEDTARRL", "FEDTARRLLR"],
+    "Central tendency Low": ["FEDTARCTL", "FEDTARCTLLR"],
 }
 
-NAME_TO_ID_ECB = {
-    "deposit": "ECBDFR",
-    "lending": "ECBMLFR",
-    "refinancing": "ECBMRRFR"
-}
+NAME_TO_ID_ECB = {"deposit": "ECBDFR", "lending": "ECBMLFR", "refinancing": "ECBMRRFR"}
 
 USARATES_TO_FRED_ID = {
     "4_week": {"tbill": "DTB4WK"},
-    "1_month": { "cmn": "DGS1MO"},
+    "1_month": {"cmn": "DGS1MO"},
     "3_month": {"tbill": "TB3MS", "cmn": "DGS3MO"},
     "6_month": {"tbill": "DTB6", "cmn": "DGS6MO"},
     "1_year": {"tbill": "DTB1YR", "cmn": "DGS1"},
@@ -200,10 +196,6 @@ def plot_estr(
     ax.plot(
         df.index,
         df.values,
-        marker="o",
-        linestyle="dashed",
-        linewidth=2,
-        markersize=4,
         color=next(colors, "#FCED00"),
     )
     ax.set_title(ID_TO_NAME_ESTR[series_id])
@@ -211,7 +203,7 @@ def plot_estr(
 
     if external_axes is None:
         theme.visualize_output()
-        
+
     if export:
         if "[Percent]" in ID_TO_NAME_ESTR[series_id]:
             # Check whether it is a percentage, relevant for exporting
@@ -224,7 +216,7 @@ def plot_estr(
             os.path.dirname(os.path.abspath(__file__)),
             series_id,
             df_transformed,
-            sheet_name
+            sheet_name,
         )
 
 
@@ -271,17 +263,13 @@ def plot_sofr(
     ax.plot(
         df.index,
         df.values,
-        marker="o",
-        linestyle="dashed",
-        linewidth=2,
-        markersize=4,
         color=next(colors, "#FCED00"),
     )
     ax.set_title(ID_TO_NAME_SOFR[series_id])
     theme.style_primary_axis(ax)
 
     if external_axes is None:
-            theme.visualize_output()
+        theme.visualize_output()
 
     if export:
         if "[Percent]" in ID_TO_NAME_SOFR[series_id]:
@@ -289,13 +277,13 @@ def plot_sofr(
             df_transformed = pd.DataFrame(df, columns=[series_id]) / 100
         else:
             df_transformed = pd.DataFrame(df, columns=[series_id])
-            
+
         export_data(
             export,
             os.path.dirname(os.path.abspath(__file__)),
             series_id,
             df_transformed,
-            sheet_name
+            sheet_name,
         )
 
 
@@ -340,10 +328,6 @@ def plot_sonia(
     ax.plot(
         df.index,
         df.values,
-        marker="o",
-        linestyle="dashed",
-        linewidth=2,
-        markersize=4,
         color=next(colors, "#FCED00"),
     )
     ax.set_title(ID_TO_NAME_SONIA[series_id])
@@ -351,20 +335,20 @@ def plot_sonia(
 
     if external_axes is None:
         theme.visualize_output()
-        
+
     if export:
         if "[Percent]" in ID_TO_NAME_SONIA[series_id]:
             # Check whether it is a percentage, relevant for exporting
             df_transformed = pd.DataFrame(df, columns=[series_id]) / 100
         else:
             df_transformed = pd.DataFrame(df, columns=[series_id])
-        
+
         export_data(
             export,
             os.path.dirname(os.path.abspath(__file__)),
             series_id,
             df_transformed,
-            sheet_name
+            sheet_name,
         )
 
 
@@ -409,10 +393,6 @@ def plot_ameribor(
     ax.plot(
         df.index,
         df.values,
-        marker="o",
-        linestyle="dashed",
-        linewidth=2,
-        markersize=4,
         color=next(colors, "#FCED00"),
     )
     ax.set_title(ID_TO_NAME_AMERIBOR[series_id])
@@ -420,7 +400,7 @@ def plot_ameribor(
 
     if external_axes is None:
         theme.visualize_output()
-        
+
     if export:
         if "[Percent]" in ID_TO_NAME_AMERIBOR[series_id]:
             # Check whether it is a percentage, relevant for exporting
@@ -433,8 +413,9 @@ def plot_ameribor(
             os.path.dirname(os.path.abspath(__file__)),
             series_id,
             df_transformed,
-            sheet_name
+            sheet_name,
         )
+
 
 @log_start_end(log=logger)
 @check_api_key(["API_FRED_KEY"])
@@ -494,7 +475,7 @@ def plot_fftr(
         os.path.dirname(os.path.abspath(__file__)),
         "fftr",
         pd.DataFrame(df, columns=["FFTR"]) / 100,
-        sheet_name
+        sheet_name,
     )
 
 
@@ -548,29 +529,31 @@ def plot_fed(
         elif series_id == "EFFRVOL":
             series_id = "OBFRVOL"
         else:
-            console.print("The Overnight Banking Federal Rate only supports Daily data.")
+            console.print(
+                "The Overnight Banking Federal Rate only supports Daily data."
+            )
             series_id = "OBFR"
 
     if quantiles or target and not overnight:
-        data_series = [series_id if series_id != 'EFFRVOL' else "EFFR"]
-        series_id = series_id if series_id != 'EFFRVOL' else "EFFR"
-        
+        data_series = [series_id if series_id != "EFFRVOL" else "EFFR"]
+        series_id = series_id if series_id != "EFFRVOL" else "EFFR"
+
         if quantiles:
-            data_series.extend(['EFFR1', 'EFFR25', 'EFFR75', 'EFFR99'])
+            data_series.extend(["EFFR1", "EFFR25", "EFFR75", "EFFR99"])
         if target:
-            data_series.extend(['DFEDTARU', 'DFEDTARL'])
-        
+            data_series.extend(["DFEDTARU", "DFEDTARL"])
+
         for series in data_series:
-            data = pd.DataFrame(fred_model.get_series_data(
-                series_id=series, start_date=start_date, end_date=end_date), columns=[series]
+            data = pd.DataFrame(
+                fred_model.get_series_data(
+                    series_id=series, start_date=start_date, end_date=end_date
+                ),
+                columns=[series],
             )
-            if series == series_id:
-                df = data
-            else:
-                df = pd.concat([df, data], axis=1)
-                
+            df = data if series == series_id else pd.concat([df, data], axis=1)
+
         df = df.dropna()
-                
+
         # This plot has 1 axis
         if not external_axes:
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
@@ -585,7 +568,7 @@ def plot_fed(
                 df[column],
                 linewidth=3 if column == series_id else 1,
                 color=next(colors),
-        )
+            )
         ax.set_title(ID_TO_NAME_FED[series_id])
         ax.legend(data_series)
         ax.set_ylabel("Yield (%)")
@@ -614,12 +597,16 @@ def plot_fed(
             color=next(colors),
         )
         ax.set_title(ID_TO_NAME_FED[series_id])
-        ax.set_ylabel("Yield (%)" if series_id not in ["EFFRVOL", "OBFRVOL"] else "Billions in USD" )
+        ax.set_ylabel(
+            "Yield (%)"
+            if series_id not in ["EFFRVOL", "OBFRVOL"]
+            else "Billions in USD"
+        )
         theme.style_primary_axis(ax)
 
         if external_axes is None:
             theme.visualize_output()
-            
+
     if export or raw:
         if not quantiles and not target:
             if series_id != "EFFRVOL":
@@ -629,8 +616,8 @@ def plot_fed(
                 df_transformed = pd.DataFrame(df, columns=[series_id])
         else:
             df_transformed = df / 100
-    
-    if raw:   
+
+    if raw:
         print_rich_table(
             df_transformed.iloc[-10:],
             headers=list(df_transformed.columns),
@@ -638,14 +625,14 @@ def plot_fed(
             title=ID_TO_NAME_FED[series_id],
             floatfmt=".3f",
         )
-    
+
     if export:
         export_data(
             export,
             os.path.dirname(os.path.abspath(__file__)),
             series_id,
             df_transformed,
-            sheet_name
+            sheet_name,
         )
 
 
@@ -704,7 +691,7 @@ def plot_iorb(
         os.path.dirname(os.path.abspath(__file__)),
         "iorb",
         pd.DataFrame(df, columns=["IORB"]) / 100,
-        sheet_name
+        sheet_name,
     )
 
 
@@ -733,7 +720,7 @@ def plot_projection(
         External axes (1 axis is expected in the list)
     """
     data_series = {}
-        
+
     for projection, values in NAME_TO_ID_PROJECTION.items():
         data_series[projection] = fred_model.get_series_data(series_id=values[long_run])
 
@@ -744,7 +731,7 @@ def plot_projection(
         (ax,) = external_axes
     else:
         return
-    
+
     data_series_df = pd.DataFrame.from_dict(data_series).dropna()
     data_series_df.index = pd.to_datetime(data_series_df.index).date
 
@@ -756,24 +743,24 @@ def plot_projection(
             linewidth=1 if legend != "Median" else 2,
             label=legend,
         )
-        
+
     ax.set_title(
         f"FOMC {'Long Run ' if long_run else ''}Summary of Economic Projections\nfor the Federal Funds Rate"
     )
-    ax.legend(prop={"size": 8}, loc='lower left')
+    ax.legend(prop={"size": 8}, loc="lower left")
     ax.set_ylabel("Yield (%)")
 
     theme.style_primary_axis(ax)
 
     if external_axes is None:
         theme.visualize_output()
-        
+
     if raw:
         print_rich_table(
             data_series_df,
             headers=list(data_series_df.columns),
             show_index=True,
-            title= f"FOMC {'Long Run ' if long_run else ''}Summary of "
+            title=f"FOMC {'Long Run ' if long_run else ''}Summary of "
             "Economic Projections for the Federal Funds Rate",
         )
 
@@ -782,8 +769,9 @@ def plot_projection(
         os.path.dirname(os.path.abspath(__file__)),
         "projection",
         data_series_df,
-        sheet_name
+        sheet_name,
     )
+
 
 @log_start_end(log=logger)
 @check_api_key(["API_FRED_KEY"])
@@ -830,10 +818,6 @@ def plot_dwpcr(
     ax.plot(
         df.index,
         df.values,
-        marker="o",
-        linestyle="dashed",
-        linewidth=2,
-        markersize=4,
         color=next(colors, "#FCED00"),
     )
     ax.set_title(
@@ -851,7 +835,7 @@ def plot_dwpcr(
         os.path.dirname(os.path.abspath(__file__)),
         series_id,
         pd.DataFrame(df, columns=[series_id]) / 100,
-        sheet_name
+        sheet_name,
     )
 
 
@@ -885,23 +869,28 @@ def plot_ecb(
     external_axes: Optional[List[plt.Axes]]
         External axes (1 axis is expected in the list)
     """
-    
+
     if interest_type:
         df = pd.DataFrame(
             fred_model.get_series_data(
-                series_id=NAME_TO_ID_ECB[interest_type], start_date=start_date, end_date=end_date),
-        columns=[interest_type])
+                series_id=NAME_TO_ID_ECB[interest_type],
+                start_date=start_date,
+                end_date=end_date,
+            ),
+            columns=[interest_type],
+        )
 
     else:
         series_dictionary = {}
-            
+
         for interest_name, value in NAME_TO_ID_ECB.items():
             series_dictionary[interest_name.title()] = fred_model.get_series_data(
-                series_id=value, start_date=start_date, end_date=end_date)
-        
+                series_id=value, start_date=start_date, end_date=end_date
+            )
+
         df = pd.DataFrame.from_dict(series_dictionary)
-        df.index = pd.to_datetime(df.index).date  
-        
+        df.index = pd.to_datetime(df.index).date
+
     # This plot has 1 axis
     if not external_axes:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
@@ -911,7 +900,7 @@ def plot_ecb(
         return
 
     colors = cycle(theme.get_colors())
-    
+
     for series in df:
         ax.plot(
             df.index,
@@ -920,16 +909,20 @@ def plot_ecb(
             label=series.title(),
         )
 
-    title = f"ECB {interest_type.title()} Rate for Euro Area" if interest_type else "ECB Interest Rates for Euro Area"
+    title = (
+        f"ECB {interest_type.title()} Rate for Euro Area"
+        if interest_type
+        else "ECB Interest Rates for Euro Area"
+    )
     ax.set_title(title)
-    ax.legend(loc='lower left')
+    ax.legend(loc="lower left")
     ax.set_ylabel("Yield (%)")
     theme.style_primary_axis(ax)
 
     if external_axes is None:
         theme.visualize_output()
-        
-    if raw:   
+
+    if raw:
         print_rich_table(
             df.iloc[-10:],
             headers=list(df.columns),
@@ -943,7 +936,7 @@ def plot_ecb(
         os.path.dirname(os.path.abspath(__file__)),
         "ecbdfr",
         pd.DataFrame(df, columns=["ECBDFR"]) / 100,
-        sheet_name
+        sheet_name,
     )
 
 
@@ -1000,11 +993,7 @@ def plot_ecbmlfr(
         theme.visualize_output()
 
     export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "ecbmlfr",
-        df,
-        sheet_name
+        export, os.path.dirname(os.path.abspath(__file__)), "ecbmlfr", df, sheet_name
     )
 
 
@@ -1069,7 +1058,7 @@ def plot_ecbmrofr(
         os.path.dirname(os.path.abspath(__file__)),
         "ecbmrofr",
         pd.DataFrame(df, columns=["ECBMROFR"]) / 100,
-        sheet_name
+        sheet_name,
     )
 
 
@@ -1118,10 +1107,6 @@ def plot_tmc(
     ax.plot(
         df.index,
         df.values,
-        marker="o",
-        linestyle="dashed",
-        linewidth=2,
-        markersize=4,
         color=next(colors, "#FCED00"),
     )
     ax.set_title(
@@ -1139,7 +1124,7 @@ def plot_tmc(
         os.path.dirname(os.path.abspath(__file__)),
         series_id,
         pd.DataFrame(df, columns=[series_id]) / 100,
-        sheet_name
+        sheet_name,
     )
 
 
@@ -1188,10 +1173,6 @@ def plot_ffrmc(
     ax.plot(
         df.index,
         df.values,
-        marker="o",
-        linestyle="dashed",
-        linewidth=2,
-        markersize=4,
         color=next(colors, "#FCED00"),
     )
     ax.set_title(
@@ -1208,7 +1189,7 @@ def plot_ffrmc(
         os.path.dirname(os.path.abspath(__file__)),
         series_id,
         pd.DataFrame(df, columns=[series_id]) / 100,
-        sheet_name
+        sheet_name,
     )
 
 
@@ -1267,7 +1248,9 @@ def display_yield_curve(
     ax.set_ylabel("Rate (%)")
     theme.style_primary_axis(ax)
     if external_axes is None:
-        ax.set_title(f"US {'Real' if inflation_adjusted else 'Nominal'} Yield Curve for {date_of_yield} ")
+        ax.set_title(
+            f"US {'Real' if inflation_adjusted else 'Nominal'} Yield Curve for {date_of_yield} "
+        )
         theme.visualize_output()
 
     if raw:
@@ -1283,9 +1266,10 @@ def display_yield_curve(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "ycrv",
-        rates.set_index('Maturity') / 100,
-        sheet_name
+        rates.set_index("Maturity") / 100,
+        sheet_name,
     )
+
 
 @log_start_end(log=logger)
 @check_api_key(["API_FRED_KEY"])
@@ -1305,7 +1289,7 @@ def plot_usrates(
     maturity of one year or less. Treasury bills are usually sold in denominations of $1,000. However, some can reach
     a maximum denomination of $5 million in non-competitive bids. These securities are widely regarded as low-risk
     and secure investments.
-    
+
     Yields on Treasury nominal securities at “constant maturity” are interpolated by the U.S. Treasury from the daily
     yield curve for non-inflation-indexed Treasury securities. This curve, which relates the yield on a security to
     its time to maturity, is based on the closing market bid yields on actively traded Treasury securities in the
@@ -1353,7 +1337,7 @@ def plot_usrates(
         df.values,
         color=next(colors, "#FCED00"),
     )
-    
+
     if parameter == "tbill":
         title = f"{maturity.replace('_', ' ').title()} Treasury Bill Secondary Market Rate, Discount Basis"
     elif parameter == "cmn":
@@ -1367,7 +1351,7 @@ def plot_usrates(
 
     if external_axes is None:
         theme.visualize_output()
-        
+
     if raw:
         print_rich_table(
             pd.DataFrame(df, columns=[parameter]).iloc[-10:],
@@ -1375,14 +1359,13 @@ def plot_usrates(
             show_index=True,
             floatfmt=".3f",
         )
-        
 
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         series_id,
         pd.DataFrame(df, columns=[parameter]) / 100,
-        sheet_name
+        sheet_name,
     )
 
 
@@ -1427,10 +1410,6 @@ def plot_tbffr(
     ax.plot(
         df.index,
         df.values,
-        marker="o",
-        linestyle="dashed",
-        linewidth=2,
-        markersize=4,
         color=next(colors, "#FCED00"),
     )
     ax.set_title(
@@ -1447,5 +1426,5 @@ def plot_tbffr(
         os.path.dirname(os.path.abspath(__file__)),
         series_id,
         pd.DataFrame(df, columns=["TBFFR"]) / 100,
-        sheet_name
+        sheet_name,
     )

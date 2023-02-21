@@ -1,19 +1,19 @@
 """ FRED model """
 __docformat__ = "numpy"
 
-from datetime import datetime, timedelta
-import os
 import logging
+import os
+from datetime import datetime, timedelta
 from typing import Optional, Tuple
-from requests import HTTPError
 
+import certifi
 import pandas as pd
 from fredapi import Fred
-import certifi
+from requests import HTTPError
 
 from openbb_terminal import config_terminal as cfg
+from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.rich_config import console
-from openbb_terminal.decorators import log_start_end, check_api_key
 
 # pylint: disable=attribute-defined-outside-init
 
@@ -148,7 +148,7 @@ def get_yield_curve(
     if not date:
         date = (datetime.now() - timedelta(days=7)).strftime("%Y-%m-%d")
         get_last = True
-        
+
     if inflation_adjusted:
         fred_series = YIELD_CURVE_SERIES_REAL
         years = YIELD_CURVE_REAL_RATES
@@ -183,11 +183,7 @@ def get_yield_curve(
             return pd.DataFrame(), date_of_yield
         rates = pd.DataFrame(series.values.T, columns=["Rate"])
 
-    rates.insert(
-        0,
-        "Maturity",
-        years
-    )
+    rates.insert(0, "Maturity", years)
     if return_date:
         return rates, date_of_yield
     return rates
