@@ -6,7 +6,11 @@ import pandas as pd
 import pytest
 
 # IMPORTATION INTERNAL
-from openbb_terminal.helper_funcs import export_data, check_start_less_than_end
+from openbb_terminal.helper_funcs import (
+    export_data,
+    check_start_less_than_end,
+    update_news_from_tweet_to_be_displayed,
+)
 
 # pylint: disable=E1101
 # pylint: disable=W0603
@@ -14,6 +18,16 @@ from openbb_terminal.helper_funcs import export_data, check_start_less_than_end
 # pylint: disable=W0621
 # pylint: disable=W0613
 # pylint: disable=R0912
+
+
+@pytest.fixture(scope="module")
+def vcr_config():
+    return {
+        "filter_headers": [
+            ("User-Agent", None),
+            ("Authorization", "MOCK_AUTHORIZATION"),
+        ],
+    }
 
 
 @pytest.fixture
@@ -107,3 +121,25 @@ def test_start_less_than_end():
     assert check_start_less_than_end(None, "2022-01-01") is False
     assert check_start_less_than_end("2022-01-02", None) is False
     assert check_start_less_than_end(None, None) is False
+
+
+@pytest.mark.vcr
+def test_update_news_from_tweet_to_be_displayed(mocker, recorder):
+    mocker.patch(
+        target="openbb_terminal.helper_funcs.LAST_TWEET_NEWS_UPDATE_CHECK_TIME",
+        new=None,
+    )
+    mocker.patch(
+        target="openbb_terminal.helper_funcs.obbff.TOOLBAR_TWEET_NEWS_SECONDS_BETWEEN_UPDATES",
+        new=300,
+    )
+    mocker.patch(
+        target="openbb_terminal.helper_funcs.obbff.TOOLBAR_TWEET_NEWS_NUM_LAST_TWEETS_TO_READ",
+        new=3,
+    )
+    mocker.patch(
+        target="openbb_terminal.helper_funcs.obbff.TOOLBAR_TWEET_NEWS_KEYWORDS",
+        new="BREAKING,JUST IN",
+    )
+    NEWS_TWEET = update_news_from_tweet_to_be_displayed()
+    recorder.capture(NEWS_TWEET)
