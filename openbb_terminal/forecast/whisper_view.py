@@ -2,6 +2,7 @@
 __docformat__ = "numpy"
 
 import logging
+from tqdm import tqdm
 from typing import Union, Optional, List
 from datetime import datetime
 
@@ -122,7 +123,8 @@ def transcribe_and_summarize(
 
         # process each chunk and concatenate the summaries
         summary_text = ""
-        for chunk in chunks:
+        # tqdm is used to show a progress bar
+        for chunk in tqdm(chunks):
             # encode the chunk using the tokenizer
             inputs = tokenizer(
                 chunk, return_tensors="pt", truncation=True, max_length=1024
