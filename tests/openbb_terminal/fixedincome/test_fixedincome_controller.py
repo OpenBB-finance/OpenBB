@@ -16,6 +16,10 @@ MOCK_START = datetime.strptime("2022-01-01", "%Y-%m-%d")
 MOCK_END = datetime.strptime("2022-01-31", "%Y-%m-%d")
 
 
+MOCK_START = datetime.strptime("2022-01-01", "%Y-%m-%d")
+MOCK_END = datetime.strptime("2022-01-31", "%Y-%m-%d")
+
+
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.parametrize(
     "queue, expected",
