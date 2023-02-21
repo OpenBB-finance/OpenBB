@@ -198,11 +198,15 @@ class PlotlyTA(PltTA):
             Path(sys.executable).parent if hasattr(sys, "frozen") else Path(os.getcwd())
         )
 
+        # This is for debugging purposes
         if os.environ.get("DEBUG_MODE", "False").lower() == "true":
             console.print(f"[bold green]Loading plugins from {path}[/]")
             console.print("[bold green]Plugins found:[/]")
+
         for plugin in Path(__file__).parent.glob("plugins/*_plugin.py"):
             python_path = plugin.relative_to(path).with_suffix("")
+
+            # This is for debugging purposes
             if os.environ.get("DEBUG_MODE", "False").lower() == "true":
                 console.print(f"    [bold red]{plugin.name}[/]")
                 console.print(f"        [bold yellow]{python_path}[/]")
@@ -211,6 +215,7 @@ class PlotlyTA(PltTA):
                 console.print(
                     f"        [bold bright_magenta]{'.'.join(python_path.parts)}[/]"
                 )
+
             module = importlib.import_module(
                 ".".join(python_path.parts), package=__package__
             )
@@ -275,40 +280,26 @@ class PlotlyTA(PltTA):
 
     def get_fig_settings_dict(self):
         """Returns dictionary with settings for plotly figure"""
-        check_active = self.indicators.get_active_ids()
+        row_params = {
+            "0": dict(rows=1, row_width=[1]),
+            "1": dict(rows=2, row_width=[0.3, 0.7]),
+            "2": dict(rows=3, row_width=[0.15, 0.15, 0.7]),
+            "3": dict(rows=4, row_width=[0.2, 0.2, 0.2, 0.4]),
+            "4": dict(rows=5, row_width=[0.15, 0.15, 0.15, 0.15, 0.4]),
+        }
 
+        check_active = self.indicators.get_active_ids()
         subplots = [subplot for subplot in self.subplots if subplot in check_active]
 
         if self.show_volume:
             subplots.append("volume")
 
         check_rows = min(len(self.check_subplots(subplots)), 4)
+        check_rows += 1 if "aroon" in subplots and (check_rows + 1) < 5 else 0
 
-        if "aroon" in subplots:
-            check_rows += 1
+        output = row_params.get(str(check_rows), dict(rows=1, row_width=[1]))
+        output.update(dict(cols=1, vertical_spacing=0.06))
 
-        if check_rows == 0:
-            rows = 1
-            row_width = [1]
-        elif check_rows == 1:
-            rows = 2
-            row_width = [0.3, 0.7]
-        elif check_rows == 2:
-            rows = 3
-            row_width = [0.15, 0.15, 0.7]
-        elif check_rows == 3:
-            rows = 4
-            row_width = [0.2, 0.2, 0.2, 0.4]
-        elif check_rows == 4:
-            rows = 5
-            row_width = [0.15, 0.15, 0.15, 0.15, 0.4]
-
-        output = {
-            "rows": rows,
-            "cols": 1,
-            "row_width": row_width,
-            "vertical_spacing": 0.06,
-        }
         return output
 
     def init_plot(self, symbol: str = "", candles: bool = True) -> OpenBBFigure:
@@ -358,6 +349,7 @@ class PlotlyTA(PltTA):
             )
             fig.update_layout(yaxis=dict(nticks=15))
             self.inchart_colors = theme.get_colors()[1:]
+
         if self.show_volume and "Volume" in self.df_stock.columns:
             colors = [
                 theme.down_color
@@ -387,16 +379,19 @@ class PlotlyTA(PltTA):
 
         self.df_ta = self.calculate_indicators()
 
-        if hasattr(self.df_stock, "name") and not symbol:
-            symbol = self.df_stock.name
+        symbol = (
+            self.df_stock.name
+            if hasattr(self.df_stock, "name") and not symbol
+            else symbol
+        )
 
         figure = self.init_plot(symbol, candles) if fig is None else fig
 
         subplot_row, fig_new = 2, {}
         inchart_index, ma_done = 0, False
-
-        if self.show_volume and "Volume" in self.df_stock.columns:
-            subplot_row += 1
+        subplot_row += (
+            1 if self.show_volume and "Volume" in self.df_stock.columns else 0
+        )
 
         figure = self.process_fig(figure)
 
