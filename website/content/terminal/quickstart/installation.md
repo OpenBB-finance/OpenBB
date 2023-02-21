@@ -111,7 +111,7 @@ softwareupdate --install-rosetta
 
 ## Source Code
 
-`<TabItem value="source code" label="Source Code">`
+<TabItem value="source_code" label="Source Code">
 
 The following instructions are for installing the OpenBB Terminal source code.
 
@@ -123,7 +123,7 @@ Prepare the system by installing the following items:
 
 [Install Miniconda](https://docs.conda.io/en/latest/miniconda.html)
 
-Miniconda is a Python environment and package manager. It is required for installing certain dependencies..
+Miniconda is a Python environment and package manager. It is required for installing certain dependencies.
 
 - Go [here](https://docs.conda.io/en/latest/miniconda.html#latest-miniconda-installer-links) to find the download for your operating system or use the links below:
 
@@ -201,7 +201,7 @@ The first step is to create the virtual Python environment.
 
 #### 2.1 Confirm Conda Base
 
-When a terminal window is opened, if the base Conda environment - look for `(base)` to the left of the curson on the command line - is not activated automatically, find the path for it by entering:
+When a terminal window is opened, if the base Conda environment - look for `(base)` to the left of the cursor on the command line - is not activated automatically, find the path for it by entering:
 
 ```console
 conda env list
@@ -276,7 +276,7 @@ python terminal.py
 
 **NOTE:** When a terminal is re-opened, the Python environment will need to be activated again - `conda activate obb` - and the current working directory should be the `OpenBBTerminal` folder where the source code was cloned.
 
-**TROUBLESHOOT:** If you are having troubles with installation, check out the [FAQ page](/terminal/quickstart/faq). You can also reach for help on our [discord](https://discord.gg/Up2QGbMKHY).
+**TROUBLESHOOTING:** Having difficulty getting through the installation, or encountering errors? Check out the [troubleshooting page](/terminal/quickstart/troubleshooting), or reach out to our [Discord](https://discord.gg/Up2QGbMKHY) community for help.
 
 </Tabitem>
 
