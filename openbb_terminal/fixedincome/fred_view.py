@@ -172,15 +172,11 @@ MOODY_TO_OPTIONS: Dict[str, Dict] = {
     "Spread": ["treasury", "fed_funds"],  # type: ignore
 }
 
-NAME_TO_ID_ECB = {
-    "deposit": "ECBDFR",
-    "lending": "ECBMLFR",
-    "refinancing": "ECBMRRFR"
-}
+NAME_TO_ID_ECB = {"deposit": "ECBDFR", "lending": "ECBMLFR", "refinancing": "ECBMRRFR"}
 
 USARATES_TO_FRED_ID = {
     "4_week": {"tbill": "DTB4WK"},
-    "1_month": { "cmn": "DGS1MO"},
+    "1_month": {"cmn": "DGS1MO"},
     "3_month": {"tbill": "TB3MS", "cmn": "DGS3MO"},
     "6_month": {"tbill": "DTB6", "cmn": "DGS6MO"},
     "1_year": {"tbill": "DTB1YR", "cmn": "DGS1"},
@@ -693,7 +689,7 @@ def plot_projection(
         f"FOMC {'Long Run ' if long_run else ''}Summary of Economic Projections\n"
         "for the Federal Funds Rate"
     )
-    ax.legend(prop={"size": 8}, loc='lower left')
+    ax.legend(prop={"size": 8}, loc="lower left")
     ax.set_ylabel("Yield (%)")
 
     for legend, df in data_series_df.items():
@@ -1057,7 +1053,7 @@ def plot_usrates(
     maturity of one year or less. Treasury bills are usually sold in denominations of $1,000. However, some can reach
     a maximum denomination of $5 million in non-competitive bids. These securities are widely regarded as low-risk
     and secure investments.
-    
+
     Yields on Treasury nominal securities at “constant maturity” are interpolated by the U.S. Treasury from the daily
     yield curve for non-inflation-indexed Treasury securities. This curve, which relates the yield on a security to
     its time to maturity, is based on the closing market bid yields on actively traded Treasury securities in the

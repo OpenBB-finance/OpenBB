@@ -28,7 +28,6 @@ from openbb_terminal.helper_funcs import (
     list_from_str,
     print_rich_table,
     valid_date,
-    EXPORT_ONLY_RAW_DATA_ALLOWED,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
@@ -1555,7 +1554,7 @@ class FixedIncomeController(BaseController):
             description="Plot the three interest rates the ECB sets "
             "every six weeks as part of its monetary policy, these are the "
             "interest rate on the main refinancing operations (MRO), the rate on "
-            "the deposit facility and the rate on the marginal lending facility."
+            "the deposit facility and the rate on the marginal lending facility.",
         )
         parser.add_argument(
             "-s",
@@ -1580,7 +1579,7 @@ class FixedIncomeController(BaseController):
             type=str,
             help="Whether to choose the deposit, marginal lending or main refinancing rate",
             choices=["deposit", "lending", "refinancing"],
-            default=None
+            default=None,
         )
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES, raw=True
@@ -1592,9 +1591,7 @@ class FixedIncomeController(BaseController):
                 ns_parser.type,
                 ns_parser.raw,
                 ns_parser.export,
-                " ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None,
             )
 
     @log_start_end(log=logger)
@@ -1604,10 +1601,10 @@ class FixedIncomeController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="treasury",
-            description='Plot short (3 month) and long (10 year) term interest rates from selected countries '
-            'including the possibility to plot forecasts for the next years.'
-            )
-        
+            description="Plot short (3 month) and long (10 year) term interest rates from selected countries "
+            "including the possibility to plot forecasts for the next years.",
+        )
+
         parser.add_argument(
             "--short",
             type=str,
@@ -1615,7 +1612,7 @@ class FixedIncomeController(BaseController):
             help="Countries to get short term (3 month) interest rates for.",
             default=None,
         )
-        
+
         parser.add_argument(
             "--long",
             type=str,
@@ -1655,11 +1652,17 @@ class FixedIncomeController(BaseController):
         )
         if ns_parser:
             if ns_parser.short is None and ns_parser.long is None:
-                console.print("[red]Please provide at least one country to plot "
-                              "with --short (3 months) and/or --long (10 years).[/red]")
+                console.print(
+                    "[red]Please provide at least one country to plot "
+                    "with --short (3 months) and/or --long (10 years).[/red]"
+                )
             else:
-                short_term_countries = list_from_str(ns_parser.short.lower()) if ns_parser.short else None
-                long_term_countries = list_from_str(ns_parser.long.lower()) if ns_parser.long else None
+                short_term_countries = (
+                    list_from_str(ns_parser.short.lower()) if ns_parser.short else None
+                )
+                long_term_countries = (
+                    list_from_str(ns_parser.long.lower()) if ns_parser.long else None
+                )
                 oecd_view.plot_treasuries(
                     short_term=short_term_countries,
                     long_term=long_term_countries,
@@ -1772,9 +1775,7 @@ class FixedIncomeController(BaseController):
                 ns_parser.start_date,
                 ns_parser.end_date,
                 ns_parser.export,
-                " ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None,
             )
 
     @log_start_end(log=logger)
@@ -1920,7 +1921,7 @@ class FixedIncomeController(BaseController):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="usrates",
             description="Plot various rates from the United States. This includes tbill (Treasury Bills), "
-            "Constant Maturity treasuries (cmn) and Inflation Protected Treasuries (TIPS)"
+            "Constant Maturity treasuries (cmn) and Inflation Protected Treasuries (TIPS)",
         )
         parser.add_argument(
             "-m",
@@ -1939,7 +1940,7 @@ class FixedIncomeController(BaseController):
             help="Choose either tbill (Treasury Bills), Constant Maturity treasuries (cmn) "
             "or Inflation Protected Treasuries (TIPS)",
             default="tbill",
-            choices=['tbill', 'cmn', 'tips']
+            choices=["tbill", "cmn", "tips"],
         )
         parser.add_argument(
             "-o",
@@ -1947,9 +1948,9 @@ class FixedIncomeController(BaseController):
             dest="options",
             action="store_true",
             help="See the available options",
-            default=False
+            default=False,
         )
-        
+
         parser.add_argument(
             "-s",
             "--start",
@@ -1974,11 +1975,16 @@ class FixedIncomeController(BaseController):
                 print_rich_table(
                     pd.DataFrame.from_dict(fred_view.USARATES_TO_FRED_ID).T.fillna("-"),
                     show_index=True,
-                    title="Available options including FRED Series name"
+                    title="Available options including FRED Series name",
                 )
-            elif ns_parser.parameter not in fred_view.USARATES_TO_FRED_ID[ns_parser.maturity]:
-                console.print(f"[red]Maturity {ns_parser.maturity.replace('_', ' ')} is not "
-                              f"available for {ns_parser.parameter}. Please use 'usrates --options'.[/red]")
+            elif (
+                ns_parser.parameter
+                not in fred_view.USARATES_TO_FRED_ID[ns_parser.maturity]
+            ):
+                console.print(
+                    f"[red]Maturity {ns_parser.maturity.replace('_', ' ')} is not "
+                    f"available for {ns_parser.parameter}. Please use 'usrates --options'.[/red]"
+                )
             else:
                 fred_view.plot_usrates(
                     ns_parser.parameter,
@@ -1987,9 +1993,7 @@ class FixedIncomeController(BaseController):
                     ns_parser.end_date,
                     ns_parser.raw,
                     ns_parser.export,
-                    " ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None,
                 )
 
     @log_start_end(log=logger)
@@ -2035,7 +2039,5 @@ class FixedIncomeController(BaseController):
                 ns_parser.start_date,
                 ns_parser.end_date,
                 ns_parser.export,
-                " ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None,
             )
