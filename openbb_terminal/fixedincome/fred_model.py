@@ -367,6 +367,13 @@ def get_yield_curve(
         date = datetime.now().strftime("%Y-%m-%d")
         start_date = (datetime.now() - timedelta(days=50)).strftime("%Y-%m-%d")
         get_last = True
+        
+    if inflation_adjusted:
+        fred_series = YIELD_CURVE_SERIES_REAL
+        years = YIELD_CURVE_REAL_RATES
+    else:
+        fred_series = YIELD_CURVE_SERIES_NOMINAL
+        years = YIELD_CURVE_NOMINAL_RATES
 
     if inflation_adjusted:
         fred_series = YIELD_CURVE_SERIES_REAL

@@ -142,6 +142,7 @@ def display_ecb_yield_curve(
     export : str
         Export data to csv,json,xlsx or png,jpg,pdf,svg file
     """
+    print(date)
     rates, date_of_yield = ecb_model.get_ecb_yield_curve(
         date, yield_type, True, detailed, any_rating
     )

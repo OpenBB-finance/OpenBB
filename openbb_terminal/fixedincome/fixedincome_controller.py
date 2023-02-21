@@ -1674,76 +1674,6 @@ class FixedIncomeController(BaseController):
                 )
 
     @log_start_end(log=logger)
-    def call_ltir(self, other_args: List[str]):
-        """Process ltir command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="str",
-            description="Plot long term interest rates from selected countries. \nLong-term interest rates refer to "
-                        "government bonds maturing in ten years. Rates are mainly determined by the price charged by "
-                        "the lender, the risk from the borrower and the fall in the capital value. Long-term interest "
-                        "rates are generally averages of daily rates, measured as a percentage. These interest rates "
-                        "are implied by the prices at which the government bonds are traded on financial markets, "
-                        "not the interest rates at which the loans were issued. In all cases, they refer to bonds "
-                        "whose capital repayment is guaranteed by governments. Long-term interest rates are one of "
-                        "the determinants of business investment. Low long-term interest rates encourage investment "
-                        "in new equipment and high interest rates discourage it. Investment is, in turn, "
-                        "a major source of economic growth.",
-        )
-        parser.add_argument(
-            "-c",
-            "--country",
-            type=str,
-            action="store",
-            nargs="+",
-            dest="countries",
-            help="Countries to get data for, use three letter country codes.",
-            default=["USA"],
-        )
-        parser.add_argument(
-            "-s",
-            "--start",
-            type=valid_date,
-            help="Start date of data, in YYYY-MM-DD format",
-            dest="start_date",
-            default=None,
-        )
-        parser.add_argument(
-            "-e",
-            "--end",
-            type=valid_date,
-            help="End date of data, in YYYY-MM-DD format",
-            dest="end_date",
-            default=None,
-        )
-        parser.add_argument(
-            "--forecast",
-            action="store_true",
-            dest="forecast",
-            default=False,
-            help="If True, plot forecasts for long term interest rates",
-        )
-
-        ns_parser = self.parse_known_args_and_warn(
-            parser,
-            other_args,
-            export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
-            raw=True,
-        )
-        if ns_parser:
-            oecd_view.plot_long_term_interest_rate(
-                countries=ns_parser.countries,
-                forecast=ns_parser.forecast,
-                start_date=ns_parser.start_date,
-                end_date=ns_parser.end_date,
-                export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
-            )
-
-    @log_start_end(log=logger)
     def call_tmc(self, other_args: List[str]):
         """Process tmc command"""
         parser = argparse.ArgumentParser(
@@ -1881,6 +1811,14 @@ class FixedIncomeController(BaseController):
             dest="date",
             default=None,
         )
+        parser.add_argument(
+            "-i",
+            "--inflation-adjusted",
+            action="store_true",
+            help="Whether to plot the inflation adjusted yield curve.",
+            dest="inflation_adjusted",
+            default=False,
+        )
         ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
@@ -1888,59 +1826,9 @@ class FixedIncomeController(BaseController):
             raw=True,
         )
         if ns_parser:
-
             fred_view.display_yield_curve(
                 date=ns_parser.date.strftime("%Y-%m-%d") if ns_parser.date else "",
-                raw=ns_parser.raw,
-                export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
-            )
-
-    @log_start_end(log=logger)
-    def call_iiycrv(self, other_args: List[str]):
-        """Process iiycrv command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="iiycrv",
-            description="Generate US inflation-indexed yield curve. \nThe yield curve shows the bond rates"
-            "at different maturities.\nThe graphic depiction of the relationship between the yield on bonds of the "
-            "same credit quality but different maturities is known as the yield curve. In the past, "
-            "most market participants have constructed yield curves from the observations of prices and "
-            "yields in the Treasury market. Two reasons account for this tendency. First, "
-            "Treasury securities are viewed as free of default risk, and differences in creditworthiness "
-            "do not affect yield estimates. Second, as the most active bond market, the Treasury market "
-            "offers the fewest problems of illiquidity or infrequent trading. The key function of the "
-            "Treasury yield curve is to serve as a benchmark for pricing bonds and setting yields in "
-            "other sectors of the debt market.\nIt is clear that the market’s expectations of future rate "
-            "changes are one important determinant of the yield-curve shape. For example, "
-            "a steeply upward-sloping curve may indicate market expectations of near-term Fed tightening "
-            "or of rising inflation. However, it may be too restrictive to assume that the yield "
-            "differences across bonds with different maturities only reflect the market’s rate "
-            "expectations. The well-known pure expectations hypothesis has such an extreme implication. "
-            "The pure expectations hypothesis asserts that all government bonds have the same near-term "
-            "expected return (as the nominally riskless short-term bond) because the return-seeking "
-            "activity of risk-neutral traders removes all expected return differentials across bonds.",
-        )
-        parser.add_argument(
-            "-d",
-            "--date",
-            type=valid_date,
-            help="Date to get data from FRED. If not supplied, the most recent entry will be used.",
-            dest="date",
-            default=None,
-        )
-        ns_parser = self.parse_known_args_and_warn(
-            parser,
-            other_args,
-            export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
-            raw=True,
-        )
-        if ns_parser:
-            fred_view.display_inflation_indexed_yield_curve(
-                date=ns_parser.date.strftime("%Y-%m-%d") if ns_parser.date else "",
+                inflation_adjusted=ns_parser.inflation_adjusted,
                 raw=ns_parser.raw,
                 export=ns_parser.export,
                 sheet_name=" ".join(ns_parser.sheet_name)
@@ -1999,11 +1887,11 @@ class FixedIncomeController(BaseController):
             help="If True, returns detailed data. Note that this is very slow.",
         )
         parser.add_argument(
-            "--aaa_only",
+            "--any-rating",
             action="store_true",
-            dest="aaa_only",
-            default=True,
-            help="If True, it only returns rates for AAA rated bonds. If False, it returns rates for all bonds.",
+            dest="any_rating",
+            default=False,
+            help="If False, it only returns rates for AAA rated bonds. If True, it returns rates for all bonds.",
         )
         ns_parser = self.parse_known_args_and_warn(
             parser,
@@ -2016,7 +1904,7 @@ class FixedIncomeController(BaseController):
                 date=ns_parser.date.strftime("%Y-%m-%d") if ns_parser.date else "",
                 yield_type=ns_parser.parameter,
                 detailed=ns_parser.detailed,
-                aaa_only=ns_parser.aaa_only,
+                any_rating=ns_parser.any_rating,
                 raw=ns_parser.raw,
                 export=ns_parser.export,
                 sheet_name=" ".join(ns_parser.sheet_name)
@@ -2025,98 +1913,43 @@ class FixedIncomeController(BaseController):
             )
 
     @log_start_end(log=logger)
-    def call_tbill(self, other_args: List[str]):
-        """Process tbill command"""
+    def call_usrates(self, other_args: List[str]):
+        """Process usrates command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="tbill",
-            description="Plot the Treasury Bill Secondary Market Rate.\nA Treasury Bill (T-Bill) is a short-term U.S. "
-                        "government debt obligation backed by the Treasury Department with a maturity of one year or "
-                        "less. Treasury bills are usually sold in denominations of $1,000. However, some can reach a "
-                        "maximum denomination of $5 million in non-competitive bids. These securities are widely "
-                        "regarded as low-risk and secure investments.",
+            prog="usrates",
+            description="Plot various rates from the United States. This includes tbill (Treasury Bills), "
+            "Constant Maturity treasuries (cmn) and Inflation Protected Treasuries (TIPS)"
         )
         parser.add_argument(
-            "-p",
-            "--parameter",
-            dest="parameter",
+            "-m",
+            "--maturity",
+            dest="maturity",
             type=str,
             help="Specific Treasury Bill Secondary Market Rate data to plot",
             default="3_month",
-            choices=list(self.tbill_parameter_to_fred_id.keys()),
-        )
-        parser.add_argument(
-            "-s",
-            "--start",
-            dest="start_date",
-            type=valid_date,
-            help="Starting date (YYYY-MM-DD) of data",
-            default="1980-01-01",
-        )
-        parser.add_argument(
-            "-e",
-            "--end",
-            dest="end_date",
-            type=valid_date,
-            help="Ending date (YYYY-MM-DD) of data",
-            default=None,
-        )
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
-        )
-        if ns_parser:
-            if ns_parser.source == "FRED":
-                fred_view.plot_tbill(
-                    self.tbill_parameter_to_fred_id[ns_parser.parameter],
-                    ns_parser.start_date,
-                    ns_parser.end_date,
-                    ns_parser.export,
-                    " ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
-                )
-            elif ns_parser.source == "EconDB":
-                econdb_view.plot_tbill(
-                    ns_parser.parameter,
-                    ns_parser.start_date,
-                    ns_parser.end_date,
-                    ns_parser.export,
-                    " ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
-                )
-
-    @log_start_end(log=logger)
-    def call_cmn(self, other_args: List[str]):
-        """Process cmn command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="cmn",
-            description="Plot the Treasury Constant Maturity Nominal Market Yield. \nYields on Treasury nominal "
-                        "securities at “constant maturity” are interpolated by the U.S. Treasury from the daily yield "
-                        "curve for non-inflation-indexed Treasury securities. This curve, which relates the yield on "
-                        "a security to its time to maturity, is based on the closing market bid yields on actively "
-                        "traded Treasury securities in the over-the-counter market. These market yields are "
-                        "calculated from composites of quotations obtained by the Federal Reserve Bank of New York. "
-                        "The constant maturity yield values are read from the yield curve at fixed maturities, "
-                        "currently 1, 3, and 6 months and 1, 2, 3, 5, 7, 10, 20, and 30 years. This method provides a "
-                        "yield for a 10-year maturity, for example, even if no outstanding security has exactly 10 "
-                        "years remaining to maturity. Similarly, yields on inflation-indexed securities at “constant "
-                        "maturity” are interpolated from the daily yield curve for Treasury inflation protected "
-                        "securities in the over-the-counter market. The inflation-indexed constant maturity yields "
-                        "are read from this yield curve at fixed maturities, currently 5, 7, 10, 20, and 30 years.",
+            choices=list(fred_view.USARATES_TO_FRED_ID.keys()),
         )
         parser.add_argument(
             "-p",
             "--parameter",
             dest="parameter",
             type=str,
-            help="Specific Treasury Constant Maturity Nominal Market Yield data to plot",
-            default="3_month",
-            choices=list(self.cmn_parameter_to_fred_id.keys()),
+            help="Choose either tbill (Treasury Bills), Constant Maturity treasuries (cmn) "
+            "or Inflation Protected Treasuries (TIPS)",
+            default="tbill",
+            choices=['tbill', 'cmn', 'tips']
         )
+        parser.add_argument(
+            "-o",
+            "--options",
+            dest="options",
+            action="store_true",
+            help="See the available options",
+            default=False
+        )
+        
         parser.add_argument(
             "-s",
             "--start",
@@ -2134,96 +1967,25 @@ class FixedIncomeController(BaseController):
             default=None,
         )
         ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES, raw=True
         )
         if ns_parser:
-            if ns_parser.source == "FRED":
-                fred_view.plot_cmn(
-                    self.cmn_parameter_to_fred_id[ns_parser.parameter],
-                    ns_parser.start_date,
-                    ns_parser.end_date,
-                    ns_parser.export,
-                    " ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
+            if ns_parser.options:
+                print_rich_table(
+                    pd.DataFrame.from_dict(fred_view.USARATES_TO_FRED_ID).T.fillna("-"),
+                    show_index=True,
+                    title="Available options including FRED Series name"
                 )
-            elif ns_parser.source == "EconDB":
-                econdb_view.plot_cmn(
+            elif ns_parser.parameter not in fred_view.USARATES_TO_FRED_ID[ns_parser.maturity]:
+                console.print(f"[red]Maturity {ns_parser.maturity.replace('_', ' ')} is not "
+                              f"available for {ns_parser.parameter}. Please use 'usrates --options'.[/red]")
+            else:
+                fred_view.plot_usrates(
                     ns_parser.parameter,
+                    ns_parser.maturity,
                     ns_parser.start_date,
                     ns_parser.end_date,
-                    ns_parser.export,
-                    " ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
-                )
-
-    @log_start_end(log=logger)
-    def call_tips(self, other_args: List[str]):
-        """Process tips command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="tips",
-            description="Plot Yields on Treasury inflation protected securities (TIPS) adjusted to constant "
-                        "maturities. \nYields on Treasury nominal securities at “constant maturity” are interpolated "
-                        "by the U.S. Treasury from the daily yield curve for non-inflation-indexed Treasury "
-                        "securities. This curve, which relates the yield on a security to its time to maturity, "
-                        "is based on the closing market bid yields on actively traded Treasury securities in the "
-                        "over-the-counter market. These market yields are calculated from composites of quotations "
-                        "obtained by the Federal Reserve Bank of New York. The constant maturity yield values are "
-                        "read from the yield curve at fixed maturities, currently 1, 3, and 6 months and 1, 2, 3, 5, "
-                        "7, 10, 20, and 30 years. This method provides a yield for a 10-year maturity, for example, "
-                        "even if no outstanding security has exactly 10 years remaining to maturity. Similarly, "
-                        "yields on inflation-indexed securities at “constant maturity” are interpolated from the "
-                        "daily yield curve for Treasury inflation protected securities in the over-the-counter "
-                        "market. The inflation-indexed constant maturity yields are read from this yield curve at "
-                        "fixed maturities, currently 5, 7, 10, 20, and 30 years.",
-        )
-        parser.add_argument(
-            "-p",
-            "--parameter",
-            dest="parameter",
-            type=str,
-            help="Specific Yields on TIPS adjusted to constant maturities data to plot",
-            default="10_year",
-            choices=list(self.tips_parameter_to_fred_id.keys()),
-        )
-        parser.add_argument(
-            "-s",
-            "--start",
-            dest="start_date",
-            type=valid_date,
-            help="Starting date (YYYY-MM-DD) of data",
-            default="1980-01-01",
-        )
-        parser.add_argument(
-            "-e",
-            "--end",
-            dest="end_date",
-            type=valid_date,
-            help="Ending date (YYYY-MM-DD) of data",
-            default=None,
-        )
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
-        )
-        if ns_parser:
-            if ns_parser.source == "FRED":
-                fred_view.plot_tips(
-                    self.tips_parameter_to_fred_id[ns_parser.parameter],
-                    ns_parser.start_date,
-                    ns_parser.end_date,
-                    ns_parser.export,
-                     " ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
-                )
-            elif ns_parser.source == "EconDB":
-                econdb_view.plot_tips(
-                    ns_parser.parameter,
-                    ns_parser.start_date,
-                    ns_parser.end_date,
+                    ns_parser.raw,
                     ns_parser.export,
                     " ".join(ns_parser.sheet_name)
                     if ns_parser.sheet_name
@@ -2270,54 +2032,6 @@ class FixedIncomeController(BaseController):
         if ns_parser:
             fred_view.plot_tbffr(
                 self.tbffr_parameter_to_fred_id[ns_parser.parameter],
-                ns_parser.start_date,
-                ns_parser.end_date,
-                ns_parser.export,
-                " ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
-            )
-
-    @log_start_end(log=logger)
-    def call_ty(self, other_args: List[str]):
-        """Process ty command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="ty",
-            description="Plot Selected Treasury Yield.",
-        )
-        parser.add_argument(
-            "-p",
-            "--parameter",
-            dest="parameter",
-            type=str,
-            help="Selected Treasury Yield",
-            default="10_year",
-            choices=["5_year", "10_year", "30_year"],
-        )
-        parser.add_argument(
-            "-s",
-            "--start",
-            dest="start_date",
-            type=valid_date,
-            help="Starting date (YYYY-MM-DD) of data",
-            default=None,
-        )
-        parser.add_argument(
-            "-e",
-            "--end",
-            dest="end_date",
-            type=valid_date,
-            help="Ending date (YYYY-MM-DD) of data",
-            default=None,
-        )
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
-        )
-        if ns_parser:
-            yfinance_view.plot_ty(
-                ns_parser.parameter,
                 ns_parser.start_date,
                 ns_parser.end_date,
                 ns_parser.export,
