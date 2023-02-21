@@ -1,14 +1,14 @@
 # IMPORTATION STANDARD
-from datetime import datetime
 import os
+from datetime import datetime
 
 # IMPORTATION THIRDPARTY
 import pytest
 
-# IMPORTATION INTERNAL
-from openbb_terminal.stocks import stocks_helper
-from openbb_terminal.stocks import stocks_view
 from openbb_terminal import helper_funcs
+
+# IMPORTATION INTERNAL
+from openbb_terminal.stocks import stocks_helper, stocks_view
 
 
 @pytest.fixture(scope="module")
@@ -21,6 +21,7 @@ def vcr_config():
             ("token", "MOCK_TOKEN"),
             ("apikey", "MOCK_API_KEY"),
             ("apiKey", "MOCK_API_KEY2"),
+            ("api_key", "MOCK_API_KEY3"),
         ]
     }
 
@@ -42,13 +43,13 @@ def test_search(mocker, use_tab):
         target=helper_funcs.obbff, attribute="USE_TABULATE_DF", new=use_tab
     )
     stocks_helper.search(
-        query="sonae",
-        country="Portugal",
+        query="microsoft",
+        country="United_States",
         sector="",
         industry="",
         exchange_country="",
+        all_exchanges=False,
         limit=5,
-        export="",
     )
 
 
@@ -57,7 +58,7 @@ def test_search(mocker, use_tab):
     "interval, source",
     [
         (1440, "AlphaVantage"),
-        (1440, "IEXCloud"),
+        (1440, "Intrinio"),
         (1440, "YahooFinance"),
         (60, "YahooFinance"),
         # (1440, "Polygon"),
@@ -163,12 +164,3 @@ def test_display_candle(mocker, use_matplotlib):
         use_matplotlib=use_matplotlib,
         intraday=intraday,
     )
-
-
-@pytest.mark.vcr
-def test_load_ticker(recorder):
-    ticker = "PM"
-    start = datetime.strptime("2020-12-01", "%Y-%m-%d")
-    end = datetime.strptime("2020-12-02", "%Y-%m-%d")
-    result_df = stocks_helper.load_ticker(ticker=ticker, start_date=start, end_date=end)
-    recorder.capture(result_df)

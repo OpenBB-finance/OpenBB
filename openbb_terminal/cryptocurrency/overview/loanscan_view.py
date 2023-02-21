@@ -2,20 +2,22 @@
 import logging
 import os
 from typing import List, Optional
+
 import matplotlib.pyplot as plt
-import pandas as pd
 import numpy as np
+import pandas as pd
+
+from openbb_terminal import config_terminal as cfg
+from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.cryptocurrency.overview import loanscan_model
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
+    is_valid_axes_count,
     plot_autoscale,
     print_rich_table,
-    is_valid_axes_count,
 )
 from openbb_terminal.rich_config import console
-from openbb_terminal import config_terminal as cfg
-from openbb_terminal.config_plot import PLOT_DPI
 
 logger = logging.getLogger(__name__)
 
@@ -27,6 +29,7 @@ def display_crypto_rates(
     rate_type: str = "borrow",
     limit: int = 10,
     export: str = "",
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Displays crypto {borrow,supply} interest rates for cryptocurrencies across several platforms
@@ -70,7 +73,6 @@ def display_crypto_rates(
         colors = iter(cfg.theme.get_colors(reverse=True))
 
         for asset in assets:
-
             width = df_non_null.loc[(df_non_null.variable == asset)]
             # silence Setcopywarnings
             pd.options.mode.chained_assignment = None
@@ -119,4 +121,5 @@ def display_crypto_rates(
             os.path.dirname(os.path.abspath(__file__)),
             "cr",
             df,
+            sheet_name,
         )

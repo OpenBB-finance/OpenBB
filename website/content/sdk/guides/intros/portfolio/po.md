@@ -1,9 +1,7 @@
 ---
 title: Portfolio Optimization
-keywords: ["portfolio", "optimization", "mean variance", "risk parity", "black litterman", "mean risk",
-"hierarchical clustering models"]
-excerpt: "The Introduction to Portfolio Optimization within the Portfolio menu explains how to use various portfolio
-optimization techniques and provides a brief description of its sub-menus"
+keywords: [portfolio, attribution, optimization, pnl, benchmark, return, volatility, metrics, broker, integration, report]
+description: The Portfolio Optimization menu allows the user to apply advanced optimization techniques to a portfolio of any type and of any size. It does so by introducing a multitude of optimization techniques ranging from mean-variance optimization to risk parity models and hierarchical clustering models. By providing Excel templates, the user can make sense of the vast array of parameters that each command has. E.g. think of the historic period you wish to use or which of the more than 10 risk measures and covariance methods should be used? These are questions the templates make easier to answer.
 ---
 The Portfolio Optimization menu allows the user to apply advanced optimization techniques to a portfolio of any type and of any size. It does so by introducing a multitude of optimization techniques ranging from <a href="https://www.investopedia.com/terms/m/meanvariance-analysis.asp" target="_blank" rel="noreferrer noopener">mean-variance optimization</a> to <a href="https://www.investopedia.com/terms/r/risk-parity.asp" target="_blank" rel="noreferrer noopener">risk parity models</a> and <a href="https://www.investopedia.com/terms/c/cluster_analysis.asp" target="_blank" rel="noreferrer noopener">hierarchical clustering models</a>. By providing Excel templates, the user can make sense of the vast array of parameters that each command has. E.g. think of the historic period you wish to use or which of the more than 10 risk measures and covariance methods should be used? These are questions the templates make easier to answer.
 
@@ -18,7 +16,20 @@ from openbb_terminal.sdk import openbb
 
 This menu requires the usage of the Excel templates to work properly. As there is a lot of complexity involved around these techniques, these templates allow the user to understand what values for each parameter are actually used and allow for an easy way to define the allocation.
 
-:::note For this there are two templates that need to be set, the **OpenBB Parameters Template** and the **60_40_Portfolio.xlsx**. These files can be found in [here](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/miscellaneous/portfolio_examples). One is in the `allocation` folder and the other is in `optimization`. the Select a file and press "Download" on the right, then place it into the OpenBBUserData folder. You can find more about this folder [here](/sdk/advanced/data).
+:::note If you wish to load in your own Excel allocation file, please follow the following steps:
+1. Download the Excel file that can be used as a template [here](https://www.dropbox.com/s/wp1lcq86exyngjy/allocation_example.xlsx?dl=0).
+2. Move the file inside the `portfolio/allocation` folder within the [OpenBBUserData](https://docs.openbb.co/terminal/guides/advanced/data) folder and, optionally, adjust the name to your liking.
+3. Open the Excel file and remove, edit or add to the values as you desire (e.g. your own allocation). This is the default template that is also loaded in with `load --example`.
+4. The file can now be used by following the guide.
+:::
+
+Furthermore, given the amount of options you can choose from in each command and giving the complexity of the topic, we also provide a parameter file (both .xlsx and .ini to adjust parameters in a user-friendly way).
+
+:::note If you wish to load in your own Excel or ini parameter file, please follow the following steps:
+1. Download the file that can be used as a template: [xlsx](https://www.dropbox.com/s/qfhd7ntj7mlwsuc/parameters_template.xlsx?dl=0) (recommended) or [ini](https://www.dropbox.com/s/3ehwg3hiwm89hgo/parameters_template.ini?dl=0) (advanced).
+2. Move the file inside the `portfolio/optimization` folder within the [OpenBBUserData](https://docs.openbb.co/terminal/guides/advanced/data) folder and, optionally, adjust the name to your liking.
+3. Open the file and set parameters as you wish.
+4. Open up the OpenBB Terminal, go to `portfolio/po` and type `file --file`. The file should then be one of the options.
 :::
 
 ### OpenBB Parameters Template
@@ -39,7 +50,7 @@ You can load in the portfolio template with the following code:
 import pandas as pd
 
 # Define your own orderbook path here, current value won't work
-order_book_path = "60_40_Portfolio.xlsx"
+order_book_path = "allocation_example.xlsx"
 
 # Read in the file
 order_book = pd.read_excel(order_book_path)
@@ -85,7 +96,7 @@ It is possible to use the commands without loading in the parameters template or
 
 ```python
 # Perform calculations
-weights_riskparity, data_returns_riskparity = openbb.portfolio.po.riskparity(p, interval="10y", risk_measure="CVaR")
+weights_riskparity, data_returns_riskparity = openbb.portfolio.po.riskparity(p, interval="5y", risk_measure="CVaR")
 
 weights_riskparity
 ```
@@ -108,13 +119,13 @@ Which returns:
 
 
 ## Examples
-To demonstrate the capabilities of the Portfolio Optimization menu, the entire <a href="https://www.investopedia.com/terms/s/sp500.asp" target="_blank" rel="noreferrer noopener">S&P 500 index</a> (as of 30th of May 2022) is used and optimized and analysed in a variety of ways. Starting by loading in the dataset with the following:
+Starting by loading in the same dataset again with the following:
 
 ```python
 import pandas as pd
 
 # Define your own orderbook path here, current value won't work
-order_book_path = "pathto/SP_500_Portfolio.xlsx"
+order_book_path = "allocation_example.xlsx"
 
 # Read in the file
 order_book = pd.read_excel(order_book_path)
@@ -126,29 +137,12 @@ order_book_cols = ['Ticker', 'Asset Class', 'Sector', 'Industry', 'Country',
 order_book = order_book[order_book_cols]
 
 # Load in the portfolio
-tickers, categories = openbb.portfolio.po.load(symbols_file_path=order_book_path)
+P = openbb.portfolio.po.load(symbols_file_path=order_book_path)
 ```
 
 Then, the <a href="https://jpm.pm-research.com/content/42/4/59.short" target="_blank" rel="noreferrer noopener">Hierarchical Risk Parity</a> technique is applied by using the following:
 
 ```python
-order_book_path = "pathto/SP_500_Portfolio.xlsx"
-
-order_book = pd.read_excel(order_book_path)
-# Adjust the columns accordingly
-order_book_cols = [
-    'Ticker',
-    'Asset Class',
-    'Sector',
-    'Industry',
-    'Country',
-    'Current Invested Amount',
-    'Currency',
-]
-
-order_book = order_book[order_book_cols]
-
-p = openbb.portfolio.po.load(symbols_file_path=order_book_path)
 riskparity, data_returns_riskparity = openbb.portfolio.po.hrp(p, interval="5y",
     risk_measure='SLPM',
     risk_aversion=0.8)
@@ -157,7 +151,7 @@ print(riskparity)
 print(data_returns_riskparity)
 ```
 
-This results in the following (the result is edited, as it would show 500 tickers, to prevent flooding this page):
+This results in a similar result as the following:
 
 |       |   Hierarchical Risk Parity |
 |:------|---------------------------:|

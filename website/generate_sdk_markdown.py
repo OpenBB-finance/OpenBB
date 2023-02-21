@@ -1,211 +1,27 @@
-import csv
-import importlib
 import inspect
 import json
 import os
 import shutil
 from pathlib import Path
-from types import FunctionType
-from typing import Any, Callable, Dict, ForwardRef, List, Literal, Optional, Union
+from typing import Any, Dict, Literal, Optional, Union
 
-import pandas as pd
 from docstring_parser import parse
 
-from openbb_terminal.core.library.trail_map import (
-    FORECASTING_TOOLKIT_ENABLED as FORECASTING,
-    MISCELLANEOUS_DIRECTORY,
-    OPTIMIZATION_TOOLKIT_ENABLED as OPTIMIZATION,
-)
-from openbb_terminal.rich_config import console
+from openbb_terminal.sdk_core.trailmap import Trailmap, get_trailmaps
 from website.controller_doc_classes import sub_names_full as subnames
 
-MAP_PATH = MISCELLANEOUS_DIRECTORY / "library" / "trail_map.csv"
-MAP_FORECASTING_PATH = MISCELLANEOUS_DIRECTORY / "library" / "trail_map_forecasting.csv"
-MAP_OPTIMIZATION_PATH = (
-    MISCELLANEOUS_DIRECTORY / "library" / "trail_map_optimization.csv"
-)
 website_path = Path(__file__).parent.absolute()
-
-
-def clean_attr_desc(attr: Optional[FunctionType] = None) -> Optional[str]:
-    """Clean the attribute description."""
-    if attr.__doc__ is None:
-        return None
-    return (
-        attr.__doc__.splitlines()[1].lstrip()
-        if not attr.__doc__.splitlines()[0]
-        else attr.__doc__.splitlines()[0].lstrip()
-        if attr.__doc__
-        else ""
-    )
-
-
-def get_signature_parameters(
-    function: Callable[..., Any], globalns: Dict[str, Any]
-) -> Dict[str, inspect.Parameter]:
-    signature = inspect.signature(function)
-    params = {}
-    cache: dict[str, Any] = {}
-    for name, parameter in signature.parameters.items():
-        annotation = parameter.annotation
-        if annotation is parameter.empty:
-            params[name] = parameter
-            continue
-        if annotation is None:
-            params[name] = parameter.replace(annotation=type(None))
-            continue
-
-        if isinstance(annotation, ForwardRef):
-            annotation = annotation.__forward_arg__
-
-        if isinstance(annotation, str):
-            annotation = eval(annotation, globalns, cache)  # pylint: disable=W0123
-
-        params[name] = parameter.replace(annotation=annotation)
-
-    return params
-
-
-class Trailmap:
-    def __init__(self, trailmap: str, model: str, view: Optional[str] = None):
-        tmap = trailmap.split(".")
-        if len(tmap) == 1:
-            tmap = ["", tmap[0]]
-        self.class_attr: str = tmap.pop(-1)
-        self.location_path = tmap
-        self.model = model
-        self.view = view if view else None
-        self.short_doc: Dict[str, Optional[str]] = {}
-        self.long_doc: Dict[str, str] = {}
-        self.lineon: Dict[str, int] = {}
-        self.full_path: Dict[str, str] = {}
-        self.func_def: Dict[str, str] = {}
-        self.func_attr: Dict[str, FunctionType] = {}
-        self.params: Dict[str, Dict[str, inspect.Parameter]] = {}
-        self.get_docstrings()
-
-    def get_docstrings(self) -> None:
-        """Gets the function docstrings. We get the short and long docstrings."""
-
-        for key, func in zip(["model", "view"], [self.model, self.view]):
-            if func:
-                module_path, function_name = func.rsplit(".", 1)
-                module = importlib.import_module(module_path)
-
-                func_attr = getattr(module, function_name)
-                add_juan = 0
-                if hasattr(func_attr, "__wrapped__"):
-                    func_attr = func_attr.__wrapped__
-                    if hasattr(func_attr, "__wrapped__"):
-                        func_attr = func_attr.__wrapped__
-                    add_juan = 1
-
-                self.func_attr[key] = func_attr
-                self.lineon[key] = inspect.getsourcelines(func_attr)[1] + add_juan
-
-                self.long_doc[key] = func_attr.__doc__
-                self.short_doc[key] = clean_attr_desc(func_attr)
-
-                self.params[key] = {}
-                for k, p in get_signature_parameters(
-                    func_attr, func_attr.__globals__
-                ).items():
-                    self.params[key][k] = p
-
-                self.func_def[key] = self.get_definition(key)
-                full_path = (
-                    inspect.getfile(self.func_attr[key])
-                    .replace("\\", "/")
-                    .split("openbb_terminal/")[1]
-                )
-                self.full_path[key] = f"openbb_terminal/{full_path}"
-
-    def get_definition(self, key: str) -> str:
-        """Creates the function definition to be used in SDK docs."""
-        funcspec = self.params[key]
-        definition = ""
-        added_comma = False
-        for arg in funcspec:
-
-            annotation = (
-                (
-                    str(funcspec[arg].annotation)
-                    .replace("<class '", "")
-                    .replace("'>", "")
-                    .replace("typing.", "")
-                    .replace("pandas.core.frame.", "pd.")
-                    .replace("pandas.core.series.", "pd.")
-                    .replace("openbb_terminal.portfolio.", "")
-                )
-                if funcspec[arg].annotation != inspect.Parameter.empty
-                else "Any"
-            )
-
-            default = ""
-            if funcspec[arg].default is not funcspec[arg].empty:
-                arg_default = (
-                    funcspec[arg].default
-                    if funcspec[arg].default is not inspect.Parameter.empty
-                    else "None"
-                )
-                default = (
-                    f" = {arg_default}"
-                    if not isinstance(arg_default, str)
-                    else f' = "{arg_default}"'
-                )
-            definition += f"{arg}: {annotation}{default}, "
-            added_comma = True
-
-        if added_comma:
-            definition = definition[:-2]
-
-        trail = ".".join([t for t in self.location_path if t != ""])
-        sdk_name = self.class_attr if key != "view" else f"{self.class_attr}_chart"
-        sdk_path = f"{f'openbb.{trail}' if trail else 'openbb'}.{sdk_name}"
-
-        definition = f"{sdk_path}({definition })"
-        return definition
-
-
-def get_trailmaps() -> List[Trailmap]:
-    trailmaps = []
-
-    def sort_csv(path: Path) -> None:
-        columns = ["trail", "model", "view"]
-        df = pd.read_csv(path, usecols=columns, keep_default_na=False)
-        df.set_index("trail", inplace=True)
-        df.sort_index(inplace=True)
-        df.to_csv(path, index=True)
-
-    for tmap_csv in [MAP_PATH, MAP_FORECASTING_PATH, MAP_OPTIMIZATION_PATH]:
-        sort_csv(tmap_csv)
-        if tmap_csv == MAP_FORECASTING_PATH and not FORECASTING:
-            console.print(
-                "[bold red]Forecasting is disabled. Forecasting will not be included in the Generation of Docs[/bold red]"
-            )
-            break
-        if tmap_csv == MAP_OPTIMIZATION_PATH and not OPTIMIZATION:
-            console.print(
-                "[bold red]Optimization is disabled. Optimization will not be included in the Generation of Docs[/bold red]"  # noqa: E501
-            )
-            break
-        with open(tmap_csv) as csvfile:
-            reader = csv.reader(csvfile, delimiter=",")
-            next(reader)
-            for row in reader:
-                trailmaps.append(Trailmap(*row))
-
-    return trailmaps
 
 
 def get_function_meta(trailmap: Trailmap, trail_type: Literal["model", "view"]):
     """Gets the function meta data."""
-    if trailmap.func_attr[trail_type] is None:
+    func_attr = trailmap.func_attrs[trail_type]
+    if not func_attr.func_unwrapped:
         return None
-    doc_parsed = parse(trailmap.long_doc[trail_type])
-    line = trailmap.lineon[trail_type]
-    path = trailmap.full_path[trail_type]
-    func_def = trailmap.func_def[trail_type]
+    doc_parsed = parse(func_attr.long_doc)
+    line = func_attr.lineon
+    path = func_attr.full_path
+    func_def = func_attr.func_def
     source_code_url = (
         "https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/"
         + path
@@ -216,8 +32,8 @@ def get_function_meta(trailmap: Trailmap, trail_type: Literal["model", "view"]):
     params = []
     for param in doc_parsed.params:
         arg_default = (
-            trailmap.params[trail_type][param.arg_name].default
-            if param.arg_name in trailmap.params[trail_type]
+            func_attr.params[param.arg_name].default
+            if param.arg_name in func_attr.params
             else None
         )
         params.append(
@@ -325,7 +141,6 @@ def generate_markdown_section(meta: Dict[str, Any]):
     markdown += "---\n\n## Examples\n\n" if meta["examples"] else ""
     prev_snippet = "  "
     for example in meta["examples"]:
-
         if isinstance(example["snippet"], str) and ">>>" in example["snippet"]:
             snippet = example["snippet"].replace(">>> ", "")
             markdown += f"```python\n{snippet}\n```\n\n"
@@ -405,6 +220,9 @@ def main() -> bool:
             shutil.rmtree(file)
     for trailmap in trailmaps:
         try:
+            if trailmap.location_path[0] == "root":
+                trailmap.location_path[0] = ""
+
             functions_dict = add_todict(
                 functions_dict, trailmap.location_path, trailmap
             )
@@ -422,7 +240,9 @@ def main() -> bool:
             with open(filepath, "w", **kwargs) as f:  # type: ignore
                 f.write(markdown)
         except Exception as e:
-            print(f"Error generating {trailmap.class_attr} - {e}")
+            print(
+                f"Error generating {trailmap.location_path} {trailmap.class_attr} - {e}"
+            )
             return False
 
     functions_dict = {
@@ -459,7 +279,7 @@ def main() -> bool:
 
 
 def generate_index_markdown(
-    markdown: str, d: dict, level: int, path: Path = None
+    markdown: str, d: dict, level: int, path: Optional[Path] = None
 ) -> str:
     """Generates the index markdown for the given dictionary."""
     if path is None:

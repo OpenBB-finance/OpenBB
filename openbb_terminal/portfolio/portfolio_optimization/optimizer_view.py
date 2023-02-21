@@ -15,7 +15,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import riskfolio as rp
-from dateutil.relativedelta import relativedelta, FR
+from dateutil.relativedelta import FR, relativedelta
 from matplotlib.gridspec import GridSpec
 from matplotlib.lines import Line2D
 
@@ -162,8 +162,8 @@ def portfolio_performance(
     risk_free_rate: float = 0,
     alpha: float = 0.05,
     a_sim: float = 100,
-    beta: float = None,
-    b_sim: float = None,
+    beta: Optional[float] = None,
+    b_sim: Optional[float] = None,
 ):
     """
     Prints portfolio performance indicators
@@ -620,7 +620,6 @@ def display_equal_weight(
 ) -> Dict:
     """
     Equally weighted portfolio, where weight = 1/# of symbols
-
     Parameters
     ----------
     symbols : List[str]
@@ -641,7 +640,6 @@ def display_equal_weight(
         - 'D' for daily returns.
         - 'W' for weekly returns.
         - 'M' for monthly returns.
-
     maxnan: float, optional
         Max percentage of nan values accepted per asset to be included in
         returns.
@@ -652,7 +650,6 @@ def display_equal_weight(
     risk_measure: str, optional
         The risk measure used to optimize the portfolio.
         The default is 'MV'. Possible values are:
-
         - 'MV': Standard Deviation.
         - 'MAD': Mean Absolute Deviation.
         - 'MSV': Semi Standard Deviation.
@@ -666,7 +663,6 @@ def display_equal_weight(
         - 'CDaR': Conditional Drawdown at Risk of uncompounded cumulative returns.
         - 'EDaR': Entropic Drawdown at Risk of uncompounded cumulative returns.
         - 'MDD': Maximum Drawdown of uncompounded cumulative returns.
-
     risk_free_rate: float, optional
         Risk free rate, must be in the same interval of assets returns. Used for
         'FLPM' and 'SLPM' and Sharpe objective function. The default is 0.
@@ -726,7 +722,6 @@ def display_property_weighting(
     maxnan: float = 0.05,
     threshold: float = 0,
     method: str = "time",
-    s_property: str = "marketCap",
     risk_measure: str = "mv",
     risk_free_rate: float = 0,
     alpha: float = 0.05,
@@ -795,7 +790,7 @@ def display_property_weighting(
         True if plot table weights, by default False
     """
     p = d_period(interval, start_date, end_date)
-    s_title = f"{p} Weighted Portfolio based on " + s_property + "\n"
+    s_title = f"{p} Weighted Portfolio based on Market Cap \n"
 
     weights, stock_returns = optimizer_model.get_property_weights(
         symbols=symbols,
@@ -807,7 +802,6 @@ def display_property_weighting(
         maxnan=maxnan,
         threshold=threshold,
         method=method,
-        s_property=s_property,
         value=value,
     )
 
@@ -1925,9 +1919,9 @@ def display_max_decorr(
 @log_start_end(log=logger)
 def display_black_litterman(
     symbols: List[str],
-    p_views: List = None,
-    q_views: List = None,
-    benchmark: Dict = None,
+    p_views: Optional[List] = None,
+    q_views: Optional[List] = None,
+    benchmark: Optional[Dict] = None,
     interval: str = "3y",
     start_date: str = "",
     end_date: str = "",
@@ -1939,7 +1933,7 @@ def display_black_litterman(
     objective: str = "Sharpe",
     risk_free_rate: float = 0,
     risk_aversion: float = 1,
-    delta: float = None,
+    delta: Optional[float] = None,
     equilibrium: bool = True,
     optimize: bool = True,
     value: float = 1.0,
@@ -2295,7 +2289,7 @@ def display_risk_parity(
     threshold: float = 0,
     method: str = "time",
     risk_measure: str = "mv",
-    risk_cont: List[str] = None,
+    risk_cont: Optional[List[str]] = None,
     risk_free_rate: float = 0,
     alpha: float = 0.05,
     target_return: float = -1,
@@ -2448,7 +2442,7 @@ def display_rel_risk_parity(
     threshold: float = 0,
     method: str = "time",
     version: str = "A",
-    risk_cont: List[str] = None,
+    risk_cont: Optional[List[str]] = None,
     penal_factor: float = 1,
     target_return: float = -1,
     mean: str = "hist",
@@ -2596,10 +2590,10 @@ def display_hcp(
     risk_aversion: float = 1.0,
     alpha: float = 0.05,
     a_sim: int = 100,
-    beta: float = None,
-    b_sim: int = None,
+    beta: Optional[float] = None,
+    b_sim: Optional[int] = None,
     linkage: str = "ward",
-    k: int = None,
+    k: Optional[int] = None,
     max_k: int = 10,
     bins_info: str = "KN",
     alpha_tail: float = 0.05,
@@ -2864,8 +2858,8 @@ def display_hrp(
     risk_aversion: float = 1.0,
     alpha: float = 0.05,
     a_sim: int = 100,
-    beta: float = None,
-    b_sim: int = None,
+    beta: Optional[float] = None,
+    b_sim: Optional[int] = None,
     linkage: str = "single",
     k: int = 0,
     max_k: int = 10,
@@ -3108,8 +3102,8 @@ def display_herc(
     risk_aversion: float = 1.0,
     alpha: float = 0.05,
     a_sim: int = 100,
-    beta: float = None,
-    b_sim: int = None,
+    beta: Optional[float] = None,
+    b_sim: Optional[int] = None,
     linkage: str = "ward",
     k: int = 0,
     max_k: int = 10,
@@ -3361,10 +3355,10 @@ def display_nco(
     risk_aversion: float = 1.0,
     alpha: float = 0.05,
     a_sim: int = 100,
-    beta: float = None,
-    b_sim: int = None,
+    beta: Optional[float] = None,
+    b_sim: Optional[int] = None,
     linkage: str = "ward",
-    k: int = None,
+    k: Optional[int] = None,
     max_k: int = 10,
     bins_info: str = "KN",
     alpha_tail: float = 0.05,
@@ -3720,7 +3714,7 @@ def pie_chart_weights(
 def additional_plots(
     weights: Dict,
     data: pd.DataFrame,
-    category_dict: Dict = None,
+    category_dict: Optional[Dict] = None,
     category: str = "",
     portfolio_name: str = "",
     freq: str = "D",
@@ -3728,8 +3722,8 @@ def additional_plots(
     risk_free_rate: float = 0,
     alpha: float = 0.05,
     a_sim: float = 100,
-    beta: float = None,
-    b_sim: float = None,
+    beta: Optional[float] = None,
+    b_sim: Optional[float] = None,
     pie: bool = False,
     hist: bool = False,
     dd: bool = False,
@@ -3964,7 +3958,6 @@ def additional_plots(
             theme.visualize_output()
 
     if heat:
-
         if len(weights) == 1:
             single_key = list(weights.keys())[0].upper()
             console.print(

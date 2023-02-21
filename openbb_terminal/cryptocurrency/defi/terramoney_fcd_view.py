@@ -11,17 +11,17 @@ from matplotlib import ticker
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.cryptocurrency.dataframe_helpers import (
-    prettify_column_names,
     lambda_very_long_number_formatter,
+    prettify_column_names,
 )
 from openbb_terminal.cryptocurrency.defi import terramoney_fcd_model
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
+    is_valid_axes_count,
     lambda_long_number_format,
     plot_autoscale,
     print_rich_table,
-    is_valid_axes_count,
 )
 from openbb_terminal.rich_config import console
 
@@ -30,7 +30,10 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def display_account_staking_info(
-    address: str = "", limit: int = 10, export: str = ""
+    address: str = "",
+    limit: int = 10,
+    export: str = "",
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Prints table showing staking info for provided terra account address [Source: https://fcd.terra.dev/swagger]
 
@@ -57,12 +60,17 @@ def display_account_staking_info(
         os.path.dirname(os.path.abspath(__file__)),
         "sinfo",
         df,
+        sheet_name,
     )
 
 
 @log_start_end(log=logger)
 def display_validators(
-    limit: int = 10, sortby: str = "votingPower", ascend: bool = True, export: str = ""
+    limit: int = 10,
+    sortby: str = "votingPower",
+    ascend: bool = True,
+    export: str = "",
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Prints table showing information about terra validators [Source: https://fcd.terra.dev/swagger]
 
@@ -101,6 +109,7 @@ def display_validators(
         os.path.dirname(os.path.abspath(__file__)),
         "validators",
         df_data,
+        sheet_name,
     )
 
 
@@ -111,6 +120,7 @@ def display_gov_proposals(
     sortby: str = "id",
     ascend: bool = True,
     export: str = "",
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Prints table showing terra blockchain governance proposals list [Source: https://fcd.terra.dev/swagger]
 
@@ -132,7 +142,13 @@ def display_gov_proposals(
 
     print_rich_table(df, headers=list(df.columns), floatfmt=".2f", show_index=False)
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "govp", df)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "govp",
+        df,
+        sheet_name,
+    )
 
 
 @log_start_end(log=logger)
@@ -141,6 +157,7 @@ def display_account_growth(
     cumulative: bool = False,
     limit: int = 90,
     export: str = "",
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Plots terra blockchain account growth history [Source: https://fcd.terra.dev/swagger]
@@ -200,6 +217,7 @@ def display_account_growth(
         os.path.dirname(os.path.abspath(__file__)),
         "gacc",
         df,
+        sheet_name,
     )
 
 
@@ -207,6 +225,7 @@ def display_account_growth(
 def display_staking_ratio_history(
     limit: int = 90,
     export: str = "",
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Plots terra blockchain staking ratio history [Source: https://fcd.terra.dev/v1]
@@ -247,6 +266,7 @@ def display_staking_ratio_history(
         os.path.dirname(os.path.abspath(__file__)),
         "sratio",
         df,
+        sheet_name,
     )
 
 
@@ -254,6 +274,7 @@ def display_staking_ratio_history(
 def display_staking_returns_history(
     limit: int = 90,
     export: str = "",
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Plots terra blockchain staking returns history [Source: https://fcd.terra.dev/swagger]
@@ -294,4 +315,5 @@ def display_staking_returns_history(
         os.path.dirname(os.path.abspath(__file__)),
         "sreturn",
         df,
+        sheet_name,
     )

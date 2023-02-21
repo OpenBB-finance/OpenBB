@@ -5,11 +5,10 @@ from datetime import datetime
 from typing import Optional
 
 import pandas as pd
-import requests
 from bs4 import BeautifulSoup
 
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import get_user_agent, str_date_to_timestamp
+from openbb_terminal.helper_funcs import get_user_agent, request, str_date_to_timestamp
 
 logger = logging.getLogger(__name__)
 
@@ -48,7 +47,7 @@ def get_altcoin_index(
     if period not in DAYS:
         return pd.DataFrame()
     soup = BeautifulSoup(
-        requests.get(
+        request(
             "https://www.blockchaincenter.net/altcoin-season-index/",
             headers={"User-Agent": get_user_agent()},
         ).content,

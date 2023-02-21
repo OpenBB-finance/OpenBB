@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
+from typing import Optional
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
@@ -19,6 +20,7 @@ def display_options(
     calls_only: bool = False,
     puts_only: bool = False,
     export: str = "",
+    sheet_name: Optional[str] = None,
 ):
     """Displays the unusual options table
 
@@ -34,6 +36,8 @@ def display_options(
         Flag to only show calls
     puts_only : bool
         Flag to show puts only
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         File type to export
     """
@@ -56,4 +60,5 @@ def display_options(
             os.path.dirname(os.path.abspath(__file__)),
             "unu_",
             data,
+            sheet_name,
         )

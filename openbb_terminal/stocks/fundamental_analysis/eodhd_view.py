@@ -2,17 +2,18 @@
 __docformat__ = "numpy"
 import logging
 import os
+from typing import Optional
 
 import matplotlib.pyplot as plt
 
-from openbb_terminal.config_terminal import theme
 from openbb_terminal.config_plot import PLOT_DPI
+from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
     lambda_long_number_format,
-    print_rich_table,
     plot_autoscale,
+    print_rich_table,
 )
 from openbb_terminal.stocks.fundamental_analysis import eodhd_model
 
@@ -27,8 +28,9 @@ def display_fundamentals(
     limit: int = 10,
     quarterly: bool = False,
     ratios: bool = False,
-    plot: list = None,
+    plot: Optional[list] = None,
     export: str = "",
+    sheet_name: Optional[str] = None,
 ):
     """Display tickers balance sheet; income statement; cash flow statement
 
@@ -46,6 +48,8 @@ def display_fundamentals(
         Shows percentage change, by default False
     plot: list
         List of row labels to plot
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     """
@@ -127,5 +131,9 @@ def display_fundamentals(
             title=f"{symbol} {title_str}",
         )
     export_data(
-        export, os.path.dirname(os.path.abspath(__file__)), statement, fundamentals
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        statement,
+        fundamentals,
+        sheet_name,
     )

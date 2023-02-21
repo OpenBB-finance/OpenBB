@@ -4,13 +4,14 @@ __docformat__ = "numpy"
 import logging
 import warnings
 from typing import Tuple, Union
+
+import numpy as np
 import pandas as pd
 import statsmodels.api as sm
+from scipy import stats
 from statsmodels.tools.sm_exceptions import MissingDataError
 from statsmodels.tsa.seasonal import DecomposeResult, seasonal_decompose
 from statsmodels.tsa.stattools import adfuller, kpss
-from scipy import stats
-import numpy as np
 
 from openbb_terminal.decorators import log_start_end
 
@@ -277,7 +278,6 @@ def get_var(
     std = data_return.std(axis=0)
 
     if adjusted_var:
-
         # Kurtosis
         # Measures height and sharpness of the central peak relative to that of a standard bell curve
         k = data_return.kurtosis(axis=0)

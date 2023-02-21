@@ -1,18 +1,16 @@
 ---
 title: Non Fungible Token (NFT)
-keywords: ["cryptocurrency", "nft", "Non Fungible Token", "tokenomics", "digital asset", "art"]
-excerpt: "An Introduction to Non Fungible Token (NFT), within the Cryptocurrency Menu,
-with a brief overview of the features."
-geekdocCollapseSection: true
+keywords: [cryptocurrency, nft, Non Fungible Token, tokenomics, digital asset, art]
+description: An Introduction to Non Fungible Token (NFT), within the Cryptocurrency Menu, with a brief overview of the features.
 ---
 
 The Non Fungible Token (NFT) menu gives the user the ability to dive into certain NFTs (<a href="/terminal/reference/crypto/nft/stats/" target="_blank" rel="noreferrer noopener">stats</a>).
 
-### How to use
+## How to use
 
 The Non Fungible Token (NFT) menu is called upon by typing `nft`, while inside the `crypto` menu, which opens the following menu:
 
-![Non Fungible Token (NFT) menu](https://user-images.githubusercontent.com/46355364/178734682-24b58a33-ae3d-4ef9-9f07-44fe713f6f16.png)
+<img width="800" alt="image" src="https://user-images.githubusercontent.com/46355364/218995031-6bfc4622-4c23-4ddc-93ad-c3b57ed11e3b.png"></img>
 
 Alternatively, you can also type `/crypto/nft`. Within the Non Fungible Token (NFT) menu you can explore the statistics of specific NFTs you are interested in.
 

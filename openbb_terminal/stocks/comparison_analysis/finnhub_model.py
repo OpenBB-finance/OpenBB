@@ -4,10 +4,9 @@ __docformat__ = "numpy"
 import logging
 from typing import List
 
-import requests
-
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.decorators import check_api_key, log_start_end
+from openbb_terminal.helper_funcs import request
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -29,7 +28,7 @@ def get_similar_companies(symbol: str) -> List[str]:
         List of similar companies
     """
 
-    response = requests.get(
+    response = request(
         f"https://finnhub.io/api/v1/stock/peers?symbol={symbol}&token={cfg.API_FINNHUB_KEY}"
     )
 

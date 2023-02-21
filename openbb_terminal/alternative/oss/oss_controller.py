@@ -3,23 +3,21 @@ __docformat__ = "numpy"
 
 import argparse
 import logging
-from typing import List
-
-from openbb_terminal.custom_prompt_toolkit import NestedCompleter
+from typing import List, Optional
 
 from openbb_terminal import feature_flags as obbff
-from openbb_terminal.alternative.oss import github_view
-from openbb_terminal.alternative.oss import runa_view, runa_model
+from openbb_terminal.alternative.oss import github_view, runa_model, runa_view
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
-    valid_repo,
     parse_and_split_input,
+    valid_repo,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console, MenuText
+from openbb_terminal.rich_config import MenuText, console
 
 logger = logging.getLogger(__name__)
 
@@ -31,7 +29,7 @@ class OSSController(BaseController):
     PATH = "/alternative/oss/"
     CHOICES_GENERATION = True
 
-    def __init__(self, queue: List[str] = None):
+    def __init__(self, queue: Optional[List[str]] = None):
         """Constructor"""
         super().__init__(queue)
 
@@ -121,7 +119,11 @@ class OSSController(BaseController):
         if ns_parser:
             if valid_repo(ns_parser.repo):
                 github_view.display_repo_summary(
-                    repo=ns_parser.repo, export=ns_parser.export
+                    repo=ns_parser.repo,
+                    export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
 
     @log_start_end(log=logger)
@@ -200,6 +202,9 @@ class OSSController(BaseController):
                 show_growth=ns_parser.show_growth,
                 chart_type=ns_parser.chart_type,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -244,4 +249,7 @@ class OSSController(BaseController):
                 categories=ns_parser.categories,
                 limit=ns_parser.limit,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )

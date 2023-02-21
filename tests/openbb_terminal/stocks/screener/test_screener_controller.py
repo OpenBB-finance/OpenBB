@@ -285,6 +285,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 ascend=True,
                 sortby="Ticker",
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -305,6 +306,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 ascend=True,
                 sortby="Ticker",
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -325,6 +327,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 ascend=True,
                 sortby="Ticker",
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -345,6 +348,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 ascend=True,
                 sortby="Ticker",
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -365,6 +369,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 ascend=True,
                 sortby="Ticker",
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -385,6 +390,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 ascend=True,
                 sortby="Ticker",
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -393,6 +399,19 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             "ca_controller.ComparisonAnalysisController.menu",
             [],
             dict(),
+        ),
+        (
+            "call_arktrades",
+            ["TSLA"],
+            "ark_view.display_ark_trades",
+            [],
+            {
+                "symbol": "TSLA",
+                "limit": 10,
+                "export": "",
+                "show_symbol": False,
+                "sheet_name": None,
+            },
         ),
     ],
 )

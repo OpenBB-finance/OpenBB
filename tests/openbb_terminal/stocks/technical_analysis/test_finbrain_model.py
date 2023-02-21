@@ -18,7 +18,10 @@ def test_get_technical_summary_report(recorder):
 def test_get_technical_summary_report_invalid_status(mocker):
     mock_response = requests.Response()
     mock_response.status_code = 400
-    mocker.patch(target="requests.get", new=mocker.Mock(return_value=mock_response))
+    mocker.patch(
+        target="openbb_terminal.helper_funcs.requests.get",
+        new=mocker.Mock(return_value=mock_response),
+    )
     result = finbrain_model.get_technical_summary_report(symbol="TSLA")
 
     assert result == ""
@@ -33,7 +36,10 @@ def test_get_technical_summary_report_invalid_json(mocker):
         attribute="json",
         side_effect=lambda: dict(),
     )
-    mocker.patch(target="requests.get", new=mocker.Mock(return_value=mock_response))
+    mocker.patch(
+        target="openbb_terminal.helper_funcs.requests.get",
+        new=mocker.Mock(return_value=mock_response),
+    )
     result = finbrain_model.get_technical_summary_report(symbol="TSLA")
 
     assert result == ""

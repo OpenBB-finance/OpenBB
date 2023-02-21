@@ -5,9 +5,7 @@ __docformat__ = "numpy"
 
 import argparse
 import logging
-from typing import List
-
-from openbb_terminal.custom_prompt_toolkit import NestedCompleter
+from typing import List, Optional
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.cryptocurrency.defi import (
@@ -18,11 +16,12 @@ from openbb_terminal.cryptocurrency.defi import (
     graph_view,
     llama_model,
     llama_view,
+    smartstake_view,
     substack_view,
     terramoney_fcd_model,
     terramoney_fcd_view,
-    smartstake_view,
 )
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
@@ -32,7 +31,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console, MenuText
+from openbb_terminal.rich_config import MenuText, console
 
 logger = logging.getLogger(__name__)
 
@@ -63,7 +62,7 @@ class DefiController(BaseController):
     PATH = "/crypto/defi/"
     CHOICES_GENERATION = True
 
-    def __init__(self, queue: List[str] = None):
+    def __init__(self, queue: Optional[List[str]] = None):
         """Constructor"""
         super().__init__(queue)
 
@@ -132,6 +131,9 @@ class DefiController(BaseController):
             cryptosaurio_view.display_anchor_data(
                 show_transactions=ns_parser.transactions,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
                 address=ns_parser.address,
             )
 
@@ -172,9 +174,12 @@ class DefiController(BaseController):
 
         if ns_parser:
             terramoney_fcd_view.display_account_staking_info(
-                export=ns_parser.export,
                 address=ns_parser.address,
                 limit=ns_parser.limit,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -222,10 +227,13 @@ class DefiController(BaseController):
         )
         if ns_parser:
             terramoney_fcd_view.display_validators(
-                export=ns_parser.export,
                 sortby=ns_parser.sortby,
                 ascend=ns_parser.reverse,
                 limit=ns_parser.limit,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -272,6 +280,9 @@ class DefiController(BaseController):
             terramoney_fcd_view.display_account_growth(
                 kind=ns_parser.kind,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
                 cumulative=ns_parser.cumulative,
                 limit=ns_parser.limit,
             )
@@ -302,7 +313,11 @@ class DefiController(BaseController):
 
         if ns_parser:
             terramoney_fcd_view.display_staking_ratio_history(
-                export=ns_parser.export, limit=ns_parser.limit
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+                limit=ns_parser.limit,
             )
 
     @log_start_end(log=logger)
@@ -331,7 +346,11 @@ class DefiController(BaseController):
 
         if ns_parser:
             terramoney_fcd_view.display_staking_returns_history(
-                export=ns_parser.export, limit=ns_parser.limit
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+                limit=ns_parser.limit,
             )
 
     @log_start_end(log=logger)
@@ -450,6 +469,9 @@ class DefiController(BaseController):
                 ascend=ns_parser.reverse,
                 description=ns_parser.description,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -479,7 +501,13 @@ class DefiController(BaseController):
         )
 
         if ns_parser:
-            llama_view.display_defi_tvl(limit=ns_parser.limit, export=ns_parser.export)
+            llama_view.display_defi_tvl(
+                limit=ns_parser.limit,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )
 
     @log_start_end(log=logger)
     def call_newsletter(self, other_args: List[str]):
@@ -509,7 +537,11 @@ class DefiController(BaseController):
 
         if ns_parser:
             substack_view.display_newsletters(
-                limit=ns_parser.limit, export=ns_parser.export
+                limit=ns_parser.limit,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -572,6 +604,9 @@ class DefiController(BaseController):
                 sortby=ns_parser.sortby,
                 ascend=ns_parser.reverse,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -592,7 +627,12 @@ class DefiController(BaseController):
         )
 
         if ns_parser:
-            graph_view.display_uni_stats(export=ns_parser.export)
+            graph_view.display_uni_stats(
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )
 
     @log_start_end(log=logger)
     def call_pairs(self, other_args: List[str]):
@@ -677,6 +717,9 @@ class DefiController(BaseController):
                 sortby=ns_parser.sortby,
                 ascend=ns_parser.reverse,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -730,6 +773,9 @@ class DefiController(BaseController):
                 sortby=ns_parser.sortby,
                 ascend=ns_parser.reverse,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -783,6 +829,9 @@ class DefiController(BaseController):
                 sortby=ns_parser.sortby,
                 ascend=ns_parser.reverse,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -880,6 +929,9 @@ class DefiController(BaseController):
                 ascend=ns_parser.reverse,
                 link=ns_parser.link,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     def call_lcsc(self, other_args: List[str]):
@@ -923,4 +975,7 @@ class DefiController(BaseController):
                 days=ns_parser.days,
                 limit=ns_parser.limit,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )

@@ -3,10 +3,10 @@ __docformat__ = "numpy"
 
 import logging
 import os
+from typing import Optional
 
 from openbb_terminal.cryptocurrency.onchain import whale_alert_model
-from openbb_terminal.decorators import check_api_key
-from openbb_terminal.decorators import log_start_end
+from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
     lambda_long_number_format,
@@ -26,6 +26,7 @@ def display_whales_transactions(
     ascend: bool = False,
     show_address: bool = False,
     export: str = "",
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Display huge value transactions from major blockchains. [Source: https://docs.whale-alert.io/]
 
@@ -77,4 +78,5 @@ def display_whales_transactions(
         os.path.dirname(os.path.abspath(__file__)),
         "whales",
         df_data,
+        sheet_name,
     )

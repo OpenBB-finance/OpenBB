@@ -4,10 +4,7 @@ __docformat__ = "numpy"
 # pylint: disable=R0904, C0302, W0622, C0201
 import argparse
 import logging
-from typing import List
-
-from openbb_terminal.custom_prompt_toolkit import NestedCompleter
-
+from typing import List, Optional
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.cryptocurrency.discovery import (
@@ -20,6 +17,7 @@ from openbb_terminal.cryptocurrency.discovery import (
     pycoingecko_model,
     pycoingecko_view,
 )
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
@@ -29,6 +27,7 @@ from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import console, MenuText, get_ordered_list_sources
 from openbb_terminal.stocks import stocks_helper
+
 
 logger = logging.getLogger(__name__)
 
@@ -51,12 +50,22 @@ class DiscoveryController(BaseController):
     PATH = "/crypto/disc/"
     CHOICES_GENERATION = True
 
-    def __init__(self, queue: List[str] = None):
+    def __init__(self, queue: Optional[List[str]] = None):
         """Constructor"""
         super().__init__(queue)
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices_default
+
+            ordered_list_sources_top = get_ordered_list_sources(f"{self.PATH}top")
+            if ordered_list_sources_top and ordered_list_sources_top[0] == "CoinGecko":
+                choices["top"]["--sort"] = {
+                    c: {} for c in pycoingecko_view.COINS_COLUMNS
+                }
+            else:
+                choices["top"]["--sort"] = {c: {} for c in coinmarketcap_model.FILTERS}
+
+            choices["top"]["-s"] = choices["top"]["--sort"]
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -83,11 +92,6 @@ class DiscoveryController(BaseController):
             argument_sort_default = "Market Cap Rank"
         else:
             argument_sort_default = "CMC_Rank"
-
-        if ordered_list_sources_top and ordered_list_sources_top[0] == "CoinGecko":
-            argument_sort_choices = pycoingecko_view.COINS_COLUMNS
-        else:
-            argument_sort_choices = coinmarketcap_model.FILTERS
 
         parser = argparse.ArgumentParser(
             prog="top",
@@ -155,6 +159,9 @@ class DiscoveryController(BaseController):
                     category=ns_parser.category,
                     limit=ns_parser.limit,
                     export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                     ascend=ns_parser.reverse,
                 )
             elif ns_parser.source == "CoinMarketCap":
@@ -163,6 +170,9 @@ class DiscoveryController(BaseController):
                     sortby=ns_parser.sortby,
                     ascend=ns_parser.reverse,
                     export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
 
     @log_start_end(log=logger)
@@ -205,6 +215,9 @@ class DiscoveryController(BaseController):
                 sortby=" ".join(ns_parser.sortby),
                 limit=ns_parser.limit,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -247,6 +260,9 @@ class DiscoveryController(BaseController):
                 sortby=" ".join(ns_parser.sortby),
                 limit=ns_parser.limit,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -289,6 +305,9 @@ class DiscoveryController(BaseController):
                 sortby=" ".join(ns_parser.sortby),
                 limit=ns_parser.limit,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -332,6 +351,9 @@ class DiscoveryController(BaseController):
                 sortby=" ".join(ns_parser.sortby),
                 limit=ns_parser.limit,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -389,6 +411,9 @@ class DiscoveryController(BaseController):
                 interval=ns_parser.interval,
                 limit=ns_parser.limit,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
                 sortby=" ".join(ns_parser.sortby),
             )
 
@@ -448,6 +473,9 @@ class DiscoveryController(BaseController):
                 interval=ns_parser.interval,
                 limit=ns_parser.limit,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
                 sortby=" ".join(ns_parser.sortby),
             )
 
@@ -470,6 +498,9 @@ class DiscoveryController(BaseController):
         if ns_parser:
             pycoingecko_view.display_trending(
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -547,6 +578,9 @@ class DiscoveryController(BaseController):
                 sortby=ns_parser.sortby,
                 ascend=ns_parser.reverse,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
                 query=" ".join(ns_parser.query),
                 category=ns_parser.category,
             )

@@ -1,0 +1,58 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Connection:
+      - close
+      Host:
+      - financialmodelingprep.com
+    method: GET
+    uri: https://financialmodelingprep.com/api/v3/etf-sector-weightings/VTI?apikey=MOCK_API_KEY
+  response:
+    body:
+      string: "[\n  {\n    \"sector\": \"Real Estate\",\n    \"weightPercentage\":
+        \"3.51%\"\n  },\n  {\n    \"sector\": \"Consumer Cyclical\",\n    \"weightPercentage\":
+        \"12.08%\"\n  },\n  {\n    \"sector\": \"Basic Materials\",\n    \"weightPercentage\":
+        \"2.54%\"\n  },\n  {\n    \"sector\": \"Consumer Defensive\",\n    \"weightPercentage\":
+        \"6.05%\"\n  },\n  {\n    \"sector\": \"Technology\",\n    \"weightPercentage\":
+        \"22.9%\"\n  },\n  {\n    \"sector\": \"Communication Services\",\n    \"weightPercentage\":
+        \"10.29%\"\n  },\n  {\n    \"sector\": \"Financial Services\",\n    \"weightPercentage\":
+        \"13.98%\"\n  },\n  {\n    \"sector\": \"Utilities\",\n    \"weightPercentage\":
+        \"2.51%\"\n  },\n  {\n    \"sector\": \"Industrials\",\n    \"weightPercentage\":
+        \"9.78%\"\n  },\n  {\n    \"sector\": \"Energy\",\n    \"weightPercentage\":
+        \"2.64%\"\n  },\n  {\n    \"sector\": \"Healthcare\",\n    \"weightPercentage\":
+        \"13.73%\"\n  }\n]"
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - X-Requested-With, content-type, auth-token, Authorization, stripe-signature,
+        APPS
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '3600'
+      Connection:
+      - close
+      Content-Length:
+      - '802'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 09 Feb 2023 14:50:15 GMT
+      ETag:
+      - W/"322-nWezyoQJTIsYTqhwz3KptScJrgs"
+      Server:
+      - nginx/1.14.0 (Ubuntu)
+      Vary:
+      - Accept-Encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - Express
+    status:
+      code: 200
+      message: OK
+version: 1

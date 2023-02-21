@@ -1,4 +1,5 @@
 trail,model,view
+forecast.anom,openbb_terminal.forecast.anom_model.get_anomaly_detection_data,openbb_terminal.forecast.anom_view.display_anomaly_detection
 forecast.atr,openbb_terminal.forecast.forecast_model.add_atr,
 forecast.autoarima,openbb_terminal.forecast.autoarima_model.get_autoarima_data,openbb_terminal.forecast.autoarima_view.display_autoarima_forecast
 forecast.autoces,openbb_terminal.forecast.autoces_model.get_autoces_data,openbb_terminal.forecast.autoces_view.display_autoces_forecast

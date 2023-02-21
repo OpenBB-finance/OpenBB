@@ -1,6 +1,8 @@
 ---
 title: Set API Keys
 sidebar_position: 1
+description: With the OpenBB SDK you can define your, often free, API key from various platforms like Alpha Vantage, FRED, IEX, Twitter, DeGiro, Binance and Coinglass. An API key is a set of random characters provided to you by a third party vendor that allows you to access data via their API endpoints. API keys can be managed directly from the SDK environment.
+keywords: [api, keys, api keys, data provider, data, free, alpha vantage, fred, iex, twitter, degiro, binance, coinglass, polygon, intrinio, openbb sdk]
 ---
 
 ## Accessing API Keys
@@ -20,14 +22,13 @@ With the OpenBB SDK you can define your, often free, API key from various platfo
 | coinglass  | Coinglass                                | https://coinglass.github.io/API-Reference/#api-key                                 |
 | cpanic     | Crypto Panic                             | https://cryptopanic.com/developers/api/                                            |
 | degiro     | DeGiro                                   | https://www.degiro.com/                                                            |
-| eodhd      | EODHD                                    | https://eodhistoricaldata.com/                                                     |
+| eodhd      | EODHD                                    | https://eodhistoricaldata.com/r/?ref=869U7F4J                                      |
 | ethplorer  | Ethplorer                                | https://github.com/EverexIO/Ethplorer/wiki/Ethplorer-API                           |
 | finnhub    | Finnhub                                  | https://finnhub.io/                                                                |
 | fmp        | Financial Modelling Prep                 | https://site.financialmodelingprep.com/developer/docs/                             |
 | fred       | Federal Reserve Economic Database (FRED) | https://fred.stlouisfed.org                                                        |
 | github     | GitHub                                   | https://docs.github.com/en/rest/guides/getting-started-with-the-rest-api           |
 | glassnode  | Glassnode                                | https://docs.glassnode.com/basic-api/api-key#how-to-get-an-api-key/                |
-| iex        | IEX Cloud                                | https://iexcloud.io/                                                               |
 | messari    | Messari                                  | https://messari.io/api/docs                                                        |
 | news       | News API                                 | https://newsapi.org/                                                               |
 | oanda      | Oanda                                    | https://developer.oanda.com                                                        |
@@ -249,7 +250,7 @@ Click "Sign up" and go to the registrations process. After setting up your accou
 <details>
 <summary>EODHD</summary>
 
-Go to https://eodhistoricaldata.com/. You will be greeted with the following screen:
+Go to https://eodhistoricaldata.com/r/?ref=869U7F4J. You will be greeted with the following screen:
 
 <img width="500" alt="image" src="https://user-images.githubusercontent.com/46355364/207849214-23763c95-7314-42ae-b97d-cb5810686498.png"></img>
 
@@ -295,7 +296,7 @@ If you already have an account, you can sign-in directly and obtain the API key,
 </details>
 
 <details>
-<summary>FRED</summary> 
+<summary>FRED</summary>
 
 Go to https://fred.stlouisfed.org. You will be greeted with the following screen:
 
@@ -315,7 +316,7 @@ Click on "Request API Key" and fill in information about why you wish to use FRE
 </details>
 
 <details>
-<summary>GitHub</summary> 
+<summary>GitHub</summary>
 
 Go to https://github.com/. You will be greeted with the following screen:
 
@@ -333,7 +334,7 @@ Once the app is created you are able to obtain the API Key. Enter this API key i
 </details>
 
 <details>
-<summary>Glassnode</summary> 
+<summary>Glassnode</summary>
 
 Go to https://studio.glassnode.com/. You will be greeted with the following screen:
 
@@ -349,27 +350,7 @@ After you have created your account, go to https://studio.glassnode.com/settings
 </details>
 
 <details>
-<summary>IEX Cloud</summary> 
-
-Go to https://iexcloud.io/. You will be greeted with the following screen:
-
-<img width="500" alt="image" src="https://user-images.githubusercontent.com/46355364/207833088-e879e9f2-3180-4e50-ba9e-f40ee958f98a.png"></img>
-
-Press "Sign in". This opens up the following screen:
-
-<img width="500" alt="image" src="https://user-images.githubusercontent.com/46355364/207833011-542d6ef0-0bdf-494a-83cb-c0a6741df2a3.png"></img>
-
-Once you have signed up you are asked what kind of plan you would like. You have the option to start a free plan at the bottom.
-
-<img width="500" alt="image" src="https://user-images.githubusercontent.com/46355364/207833303-4ebb2880-0b4c-4008-9b33-0e8ee6836027.png"></img>
-
-Once you have confirmed you email address, you can find your API Key under "Access & Security". Enter this API key into the OpenBB SDK by typing `openbb.keys.iex`
-
-<img width="500" alt="image" src="https://user-images.githubusercontent.com/46355364/207833540-c1e25500-22e9-43c3-a89e-b05dd446f2a5.png"></img>
-</details>
-
-<details>
-<summary>Messari</summary> 
+<summary>Messari</summary>
 
 Go to https://messari.io/. You will be greeted with the following screen:
 
@@ -385,7 +366,7 @@ Once you have signed up, go to https://messari.io/account/api where you will be 
 </details>
 
 <details>
-<summary>News API</summary> 
+<summary>News API</summary>
 
 Go to https://newsapi.org/. You will be greeted with the following screen:
 
@@ -401,7 +382,7 @@ Register for an account. The next screen will provide you with the API Key. Ente
 </details>
 
 <details>
-<summary>Oanda</summary> 
+<summary>Oanda</summary>
 
 Go to https://developer.oanda.com. You will be greeted with the following screen:
 
@@ -413,7 +394,7 @@ After you have created an account with Oanda, you will be able to find the API k
 </details>
 
 <details>
-<summary>Polygon</summary> 
+<summary>Polygon</summary>
 
 Go to https://polygon.io. You will be greeted with the following screen:
 
@@ -429,7 +410,7 @@ Once signed up you will find the API Key at the bottom. Enter this API key into 
 </details>
 
 <details>
-<summary>Quandl</summary> 
+<summary>Quandl</summary>
 
 Go to https://www.quandl.com. You will be greeted with the following screen:
 
@@ -459,7 +440,7 @@ Once you have filled out everything, you will receive an email when your applica
 </details>
 
 <details>
-<summary>Robinhood</summary> 
+<summary>Robinhood</summary>
 
 Go to https://robinhood.com/us/en/. You will be greeted with the following screen:
 
@@ -469,7 +450,7 @@ Click "Sign up" and go to the registrations process. After setting up your accou
 </details>
 
 <details>
-<summary>Santiment</summary> 
+<summary>Santiment</summary>
 
 Go to https://app.santiment.net/. You will be greeted with the following screen:
 
@@ -485,7 +466,7 @@ After creating an account go to https://app.santiment.net/account#api-keys and g
 </details>
 
 <details>
-<summary>ShroomDK</summary> 
+<summary>ShroomDK</summary>
 
 Go to https://app.santiment.net/. You will be greeted with the following screen:
 
@@ -517,7 +498,7 @@ Once you have created an account, go to "Developers" to access your API Key. Ent
 </details>
 
 <details>
-<summary>Token Terminal</summary> 
+<summary>Token Terminal</summary>
 
 Go to  https://tokenterminal.com/. You will be greeted with the following screen:
 
@@ -533,7 +514,7 @@ Once you have created an account, go to "API" to access your API Key. Enter this
 </details>
 
 <details>
-<summary>Tradier</summary> 
+<summary>Tradier</summary>
 
 Go to https://documentation.tradier.com/. You will be greeted with the following screen:
 
@@ -543,7 +524,7 @@ Click the button "Open Account" and start the sign-up process. Once you have gon
 </details>
 
 <details>
-<summary>Twitter</summary> 
+<summary>Twitter</summary>
 
 Go to https://developer.twitter.com. You will be greeted with the following screen:
 

@@ -1,9 +1,8 @@
 """Stocks Trading Hours Model."""
 
-from datetime import datetime
-
 import logging
 import os
+from datetime import datetime
 
 import pandas as pd
 import pytz

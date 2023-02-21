@@ -1,1 +1,11 @@
-Score: 77.78 %
+                        Score
+Beta Score            11.11 %
+CROIC Score           11.11 %
+Debt Cost Score        8.89 %
+EBITDA Cover Score    11.11 %
+EBITDA Score           5.56 %
+EPS Score              6.67 %
+Equity Buyback Score   6.67 %
+Revenue Score          6.67 %
+ROIC Score               10 %
+Total Score           77.78 %

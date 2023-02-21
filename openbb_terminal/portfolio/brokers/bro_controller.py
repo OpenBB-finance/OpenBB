@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 # pylint: disable=R1710
 
 import logging
-from typing import List, Set
+from typing import List, Optional, Set
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
@@ -14,7 +14,7 @@ from openbb_terminal.portfolio.brokers.ally import ally_controller
 from openbb_terminal.portfolio.brokers.coinbase import coinbase_controller
 from openbb_terminal.portfolio.brokers.degiro import degiro_controller
 from openbb_terminal.portfolio.brokers.robinhood import robinhood_controller
-from openbb_terminal.rich_config import console, MenuText
+from openbb_terminal.rich_config import MenuText, console
 
 logger = logging.getLogger(__name__)
 
@@ -27,7 +27,7 @@ class BrokersController(BaseController):
     PATH = "/portfolio/bro/"
     CHOICES_GENERATION = True
 
-    def __init__(self, queue: List[str] = None):
+    def __init__(self, queue: Optional[List[str]] = None):
         """Constructor"""
         super().__init__(queue)
 
