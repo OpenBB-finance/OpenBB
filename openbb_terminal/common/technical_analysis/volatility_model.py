@@ -174,7 +174,7 @@ def rvol(
 ) -> pd.DataFrame:
     """Returns a DataFrame of realized volatility quantiles.
 
-    Paramters
+    Parameters
     ---------
     data: pd.DataFrame
         DataFrame of the OHLC data.
