@@ -202,7 +202,7 @@ def rvol(
 
     lower_q_label = str(int(lower_q * 100))
     upper_q_label = str(int(upper_q * 100))
-    rvol_cones: pd.DataFrame = pd.DataFrame()
+    rvol: pd.DataFrame = pd.DataFrame()
     quantiles = [lower_q, upper_q]
     windows = [3, 10, 30, 60, 90, 120, 150, 180, 210, 240, 300, 360]
     min_ = []
@@ -231,10 +231,10 @@ def rvol(
         bottom_q.append(estimator.quantile(quantiles[0]))
         realized.append(estimator[-1])
 
-    df = [realized, min_, bottom_q, median, top_q, max_]
-    pd.DataFrame(df).columns = windows
+    df_ = [realized, min_, bottom_q, median, top_q, max_]
+    pd.DataFrame(df_).columns = windows
     df_windows = list(windows)
-    df = pd.DataFrame(df, columns=df_windows)
+    df = pd.DataFrame(df_, columns=df_windows)
     df = df.rename(
         index={
             0: "Realized",
@@ -245,6 +245,6 @@ def rvol(
             5: "Max",
         }
     )
-    rvol_cones = df.copy()
+    rvol = df.copy()
 
-    return rvol_cones.transpose()
+    return rvol.transpose()
