@@ -1,8 +1,9 @@
 import os
-import pytest
 from datetime import datetime
-from openbb_terminal.fixedincome import fixedincome_controller
 
+import pytest
+
+from openbb_terminal.fixedincome import fixedincome_controller
 
 MOCK_START = datetime.strptime("2022-01-01", "%Y-%m-%d")
 MOCK_END = datetime.strptime("2022-01-31", "%Y-%m-%d")
@@ -234,6 +235,22 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                  export="csv",
                  sheet_name=None),
         ),
+        (
+            "call_sofr",
+            [
+                "-p=180_day_average",
+                "-s=2022-01-01",
+                "-e=2022-01-31",
+                "--export=csv",
+            ],
+            "fred_view.plot_sofr",
+            [],
+            dict(series_id="SOFR180DAYAVG",
+                 start_date=MOCK_START,
+                 end_date=MOCK_END,
+                 export="csv",
+                 sheet_name=None),
+        )
     ],
 )
 def test_call_cmd(

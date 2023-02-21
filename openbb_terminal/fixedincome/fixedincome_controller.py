@@ -287,11 +287,11 @@ class FixedIncomeController(BaseController):
         )
         if ns_parser:
             fred_view.plot_sofr(
-                self.sofr_parameter_to_fred_id[ns_parser.parameter],
-                ns_parser.start_date,
-                ns_parser.end_date,
-                ns_parser.export,
-                " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None,
+                series_id=self.sofr_parameter_to_fred_id[ns_parser.parameter],
+                start_date=ns_parser.start_date,
+                end_date=ns_parser.end_date,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None,
             )
 
     @log_start_end(log=logger)
@@ -336,11 +336,11 @@ class FixedIncomeController(BaseController):
         )
         if ns_parser:
             fred_view.plot_sonia(
-                self.sonia_parameter_to_fred_id[ns_parser.parameter],
-                ns_parser.start_date,
-                ns_parser.end_date,
-                ns_parser.export,
-                " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None,
+                series_id=self.sonia_parameter_to_fred_id[ns_parser.parameter],
+                start_date=ns_parser.start_date,
+                end_date=ns_parser.end_date,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None,
             )
 
     @log_start_end(log=logger)
@@ -385,11 +385,11 @@ class FixedIncomeController(BaseController):
         )
         if ns_parser:
             fred_view.plot_ameribor(
-                self.ameribor_parameter_to_fred_id[ns_parser.parameter],
-                ns_parser.start_date,
-                ns_parser.end_date,
-                ns_parser.export,
-                " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None,
+                series_id=self.ameribor_parameter_to_fred_id[ns_parser.parameter],
+                start_date=ns_parser.start_date,
+                end_date=ns_parser.end_date,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None,
             )
 
     @log_start_end(log=logger)
@@ -465,15 +465,15 @@ class FixedIncomeController(BaseController):
                 )
             else:
                 fred_view.plot_fed(
-                    self.fed_parameter_to_fred_id[ns_parser.parameter],
-                    ns_parser.start_date,
-                    ns_parser.end_date,
-                    ns_parser.overnight,
-                    ns_parser.quantiles,
-                    ns_parser.target,
-                    ns_parser.raw,
-                    ns_parser.export,
-                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None,
+                    series_id=self.fed_parameter_to_fred_id[ns_parser.parameter],
+                    start_date=ns_parser.start_date,
+                    end_date=ns_parser.end_date,
+                    overnight=ns_parser.overnight,
+                    quantiles=ns_parser.quantiles,
+                    target=ns_parser.target,
+                    raw=ns_parser.raw,
+                    export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None,
                 )
 
     @log_start_end(log=logger)
@@ -509,10 +509,10 @@ class FixedIncomeController(BaseController):
         )
         if ns_parser:
             fred_view.plot_iorb(
-                ns_parser.start_date,
-                ns_parser.end_date,
-                ns_parser.export,
-                " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None,
+                start_date=ns_parser.start_date,
+                end_date=ns_parser.end_date,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None,
             )
 
     @log_start_end(log=logger)
@@ -537,10 +537,10 @@ class FixedIncomeController(BaseController):
         )
         if ns_parser:
             fred_view.plot_projection(
-                ns_parser.long_run,
-                ns_parser.raw,
-                ns_parser.export,
-                " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None,
+                long_run=ns_parser.long_run,
+                raw=ns_parser.raw,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None,
             )
 
     @log_start_end(log=logger)
@@ -585,11 +585,11 @@ class FixedIncomeController(BaseController):
         )
         if ns_parser:
             fred_view.plot_dwpcr(
-                self.dwpcr_parameter_to_fred_id[ns_parser.parameter],
-                ns_parser.start_date,
-                ns_parser.end_date,
-                ns_parser.export,
-                " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None,
+                series_id=self.dwpcr_parameter_to_fred_id[ns_parser.parameter],
+                start_date=ns_parser.start_date,
+                end_date=ns_parser.end_date,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None,
             )
 
     @log_start_end(log=logger)
@@ -634,12 +634,12 @@ class FixedIncomeController(BaseController):
         )
         if ns_parser:
             fred_view.plot_ecb(
-                ns_parser.start_date,
-                ns_parser.end_date,
-                ns_parser.type,
-                ns_parser.raw,
-                ns_parser.export,
-                " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None,
+                start_date=ns_parser.start_date,
+                end_date=ns_parser.end_date,
+                type=ns_parser.type,
+                raw=ns_parser.raw,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None,
             )
 
     @log_start_end(log=logger)
@@ -767,10 +767,10 @@ class FixedIncomeController(BaseController):
         )
         if ns_parser:
             fred_view.plot_tmc(
-                self.tmc_parameter_to_fred_id[ns_parser.parameter],
-                ns_parser.start_date,
-                ns_parser.end_date,
-                ns_parser.export,
+                series_id=self.tmc_parameter_to_fred_id[ns_parser.parameter],
+                start_date=ns_parser.start_date,
+                end_date=ns_parser.end_date,
+                export=ns_parser.export,
                 sheet_name=" ".join(ns_parser.sheet_name)
                 if ns_parser.sheet_name
                 else None,
@@ -819,11 +819,11 @@ class FixedIncomeController(BaseController):
         )
         if ns_parser:
             fred_view.plot_ffrmc(
-                self.ffrmc_parameter_to_fred_id[ns_parser.parameter],
-                ns_parser.start_date,
-                ns_parser.end_date,
-                ns_parser.export,
-                " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None,
+                series_id=self.ffrmc_parameter_to_fred_id[ns_parser.parameter],
+                start_date=ns_parser.start_date,
+                end_date=ns_parser.end_date,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None,
             )
 
     @log_start_end(log=logger)
@@ -1035,13 +1035,13 @@ class FixedIncomeController(BaseController):
                 )
             else:
                 fred_view.plot_usrates(
-                    ns_parser.parameter,
-                    ns_parser.maturity,
-                    ns_parser.start_date,
-                    ns_parser.end_date,
-                    ns_parser.raw,
-                    ns_parser.export,
-                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None,
+                    parameter=ns_parser.parameter,
+                    maturity=ns_parser.maturity,
+                    start_date=ns_parser.start_date,
+                    end_date=ns_parser.end_date,
+                    raw=ns_parser.raw,
+                    export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None,
                 )
 
     @log_start_end(log=logger)
@@ -1083,9 +1083,9 @@ class FixedIncomeController(BaseController):
         )
         if ns_parser:
             fred_view.plot_tbffr(
-                self.tbffr_parameter_to_fred_id[ns_parser.parameter],
-                ns_parser.start_date,
-                ns_parser.end_date,
-                ns_parser.export,
-                " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None,
+                series_id=self.tbffr_parameter_to_fred_id[ns_parser.parameter],
+                start_date=ns_parser.start_date,
+                end_date=ns_parser.end_date,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None,
             )
