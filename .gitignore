@@ -73,3 +73,6 @@ darts_logs/
 # User data
 custom_imports/*.csv
 custom_imports/*/*.csv
+
+# cache
+cache/
