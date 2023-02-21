@@ -537,8 +537,18 @@ def display_candle(
     # in intrinio returns all adjusted columns,so some care here is needed or else we end up with
     # mixing up close and adj close
     if data is None:
-        # For mypy
-        data = pd.DataFrame()
+        data = load(
+            symbol,
+            start_date,
+            interval,
+            end_date,
+            prepost,
+            source,
+            weekly,
+            monthly,
+        )
+        data = process_candle(data)
+
     data = deepcopy(data)
 
     if "Adj Close" in data.columns:
@@ -552,19 +562,6 @@ def display_candle(
 
     start_date = check_datetime(start_date)
     end_date = check_datetime(end_date, start=False)
-
-    if data is None:
-        data = load(
-            symbol,
-            start_date,
-            interval,
-            end_date,
-            prepost,
-            source,
-            weekly,
-            monthly,
-        )
-        data = process_candle(data)
 
     if add_trend and (data.index[1] - data.index[0]).total_seconds() >= 86400:
         data = find_trendline(data, "OC_High", "high")

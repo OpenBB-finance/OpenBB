@@ -161,7 +161,7 @@ def display_covid_ov(
     export: str = "",
     sheet_name: Optional[str] = None,
     plot: bool = True,
-) -> None:
+) -> Union[OpenBBFigure, None]:
     """Prints table showing historical cases and deaths by country.
 
     Parameters
@@ -179,10 +179,12 @@ def display_covid_ov(
     plot: bool
         Flag to display historical plot
     """
+    fig = OpenBBFigure()
+
     if country.lower() == "us":
         country = "US"
     if plot:
-        fig = plot_covid_ov(country, external_axes=raw or bool(export))
+        fig = plot_covid_ov(country, external_axes=True)
     if raw:
         data = covid_model.get_covid_ov(country, limit)
         print_rich_table(
@@ -204,6 +206,8 @@ def display_covid_ov(
             figure=fig if fig.is_image_export(export) else None,
         )
 
+    return fig.show(external=raw or bool(export))
+
 
 @log_start_end(log=logger)
 def display_covid_stat(
@@ -214,7 +218,7 @@ def display_covid_stat(
     export: str = "",
     sheet_name: Optional[str] = None,
     plot: bool = True,
-) -> None:
+) -> Union[OpenBBFigure, None]:
     """Prints table showing historical cases and deaths by country.
 
     Parameters
@@ -234,10 +238,11 @@ def display_covid_stat(
     plot : bool
         Flag to plot data
     """
+    fig = OpenBBFigure()
     data = covid_model.get_covid_stat(country, stat, limit)
 
     if plot:
-        fig = plot_covid_stat(country, stat, external_axes=raw or bool(export))
+        fig = plot_covid_stat(country, stat, external_axes=True)
 
     if raw:
         print_rich_table(
@@ -248,9 +253,6 @@ def display_covid_stat(
             title=f"[bold]{country} COVID {stat}[/bold]",
         )
     if export:
-        if not plot:
-            fig = OpenBBFigure()
-
         data["date"] = data.index
         data = data.reset_index(drop=True)
         # make sure date is first column in export
@@ -265,6 +267,8 @@ def display_covid_stat(
             sheet_name,
             figure=fig if fig.is_image_export(export) else None,  # type: ignore
         )
+
+    return fig.show(external=raw or bool(export))
 
 
 @log_start_end(log=logger)
