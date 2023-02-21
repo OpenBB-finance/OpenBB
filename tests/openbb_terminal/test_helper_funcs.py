@@ -223,5 +223,5 @@ def test_update_news_from_tweet_to_be_displayed(mocker, recorder):
         target="openbb_terminal.helper_funcs.obbff.TOOLBAR_TWEET_NEWS_KEYWORDS",
         new="BREAKING,JUST IN",
     )
-    NEWS_TWEET = update_news_from_tweet_to_be_displayed()
-    recorder.capture(NEWS_TWEET)
+    news_tweet = update_news_from_tweet_to_be_displayed()
+    recorder.capture(news_tweet)
