@@ -170,10 +170,11 @@ def get_popular_tickers(
     pd.DataFrame
         DataFrame of top tickers from supplied subreddits
     """
-    if subreddits:
-        sub_reddit_list = subreddits.split(",") if "," in subreddits else [subreddits]
-    else:
-        sub_reddit_list = l_sub_reddits
+    sub_reddit_list = (
+        (subreddits.split(",") if "," in subreddits else [subreddits])
+        if subreddits
+        else l_sub_reddits
+    )
     d_watchlist_tickers: dict = {}
     l_watchlist_author = []
 
@@ -223,31 +224,31 @@ def get_popular_tickers(
                 # Get more information about post using PRAW api
                 submission = praw_api.submission(id=submission.id)
 
-                if submission is not None:
-                    # Ensure that the post hasn't been removed by moderator in the meanwhile,
-                    # that there is a description and it's not just an image, that the flair is
-                    # meaningful, and that we aren't re-considering same author's content
-                    if (
-                        not submission.removed_by_category
-                        and (submission.selftext or submission.title)
-                        and submission.author.name not in l_watchlist_author
-                    ):
-                        l_tickers_found = find_tickers(submission)
+                # Ensure that the post hasn't been removed by moderator in the meanwhile,
+                # that there is a description and it's not just an image, that the flair is
+                # meaningful, and that we aren't re-considering same author's content
+                if (
+                    submission is not None
+                    and not submission.removed_by_category
+                    and (submission.selftext or submission.title)
+                    and submission.author.name not in l_watchlist_author
+                ):
+                    l_tickers_found = find_tickers(submission)
 
-                        if l_tickers_found:
-                            n_tickers += len(l_tickers_found)
+                    if l_tickers_found:
+                        n_tickers += len(l_tickers_found)
 
-                            # Add another author's name to the parsed watchlists
-                            l_watchlist_author.append(submission.author.name)
+                        # Add another author's name to the parsed watchlists
+                        l_watchlist_author.append(submission.author.name)
 
-                            # Lookup stock tickers within a watchlist
-                            for key in l_tickers_found:
-                                if key in d_watchlist_tickers:
-                                    # Increment stock ticker found
-                                    d_watchlist_tickers[key] += 1
-                                else:
-                                    # Initialize stock ticker found
-                                    d_watchlist_tickers[key] = 1
+                        # Lookup stock tickers within a watchlist
+                        for key in l_tickers_found:
+                            if key in d_watchlist_tickers:
+                                # Increment stock ticker found
+                                d_watchlist_tickers[key] += 1
+                            else:
+                                # Initialize stock ticker found
+                                d_watchlist_tickers[key] = 1
 
             except ResponseException as e:
                 logger.exception("Invalid response: %s", str(e))
@@ -812,37 +813,37 @@ def get_due_dilligence(
             submission = praw_api.submission(id=submission.id)
 
             # Ensure that the post hasn't been removed in the meanwhile
-            if not submission.removed_by_category:
-                # Either just filter out Yolo, and Meme flairs, or focus on DD, based on b_DD flag
-                if (
-                    submission.link_flair_text in l_flair_text,
-                    submission.link_flair_text not in ["Yolo", "Meme"],
-                )[show_all_flairs]:
-                    s_datetime = datetime.utcfromtimestamp(
-                        submission.created_utc
-                    ).strftime("%Y-%m-%d %H:%M:%S")
-                    s_link = f"https://old.reddit.com{submission.permalink}"
-                    s_all_awards = "".join(
-                        f"{award['count']} {award['name']}\n"
-                        for award in submission.all_awardings
-                    )
+            # Either just filter out Yolo, and Meme flairs, or focus on DD, based on b_DD flag
+            if (
+                not submission.removed_by_category
+                and submission.link_flair_text in l_flair_text,
+                submission.link_flair_text not in ["Yolo", "Meme"],
+            )[show_all_flairs]:
+                s_datetime = datetime.utcfromtimestamp(submission.created_utc).strftime(
+                    "%Y-%m-%d %H:%M:%S"
+                )
+                s_link = f"https://old.reddit.com{submission.permalink}"
+                s_all_awards = "".join(
+                    f"{award['count']} {award['name']}\n"
+                    for award in submission.all_awardings
+                )
 
-                    s_all_awards = s_all_awards[:-2]
+                s_all_awards = s_all_awards[:-2]
 
-                    data = [
-                        s_datetime,
-                        submission.subreddit,
-                        submission.link_flair_text,
-                        submission.title,
-                        submission.score,
-                        submission.num_comments,
-                        f"{round(100 * submission.upvote_ratio)}%",
-                        s_all_awards,
-                        s_link,
-                    ]
-                    subs.loc[len(subs)] = data
-                    # Increment count of valid posts found
-                    n_flair_posts_found += 1
+                data = [
+                    s_datetime,
+                    submission.subreddit,
+                    submission.link_flair_text,
+                    submission.title,
+                    submission.score,
+                    submission.num_comments,
+                    f"{round(100 * submission.upvote_ratio)}%",
+                    s_all_awards,
+                    s_link,
+                ]
+                subs.loc[len(subs)] = data
+                # Increment count of valid posts found
+                n_flair_posts_found += 1
 
             # Check if number of wanted posts found has been reached
             if n_flair_posts_found > limit - 1:

@@ -156,10 +156,7 @@ def display_plots_financials(
 
     (df, foundDenomination) = transform_by_denomination(df)
 
-    if currency:
-        denomination = f"[{currency} "
-    else:
-        denomination = "["
+    denomination = f"[{currency} " if currency else "["
 
     if denomination != "Units":
         denomination += f"{foundDenomination}]"

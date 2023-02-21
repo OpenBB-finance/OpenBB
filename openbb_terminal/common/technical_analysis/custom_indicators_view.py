@@ -94,10 +94,7 @@ def fibonacci_retracement(
         return
     ax1.plot(plot_data[close_col])
 
-    if is_intraday(data):
-        date_format = "%b %d %H:%M"
-    else:
-        date_format = "%Y-%m-%d"
+    date_format = "%b %d %H:%M" if is_intraday(data) else "%Y-%m-%d"
     min_date_index = plot_data[
         plot_data["date"] == min_date.strftime(date_format)
     ].index

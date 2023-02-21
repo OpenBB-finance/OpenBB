@@ -172,10 +172,7 @@ def display_load(
         Country to filter on
 
     """
-    if country:
-        iso_country = mapping_country[country]
-    else:
-        iso_country = ""
+    iso_country = mapping_country[country] if country else ""
     funds = mstarpy_model.load_funds(term, country=iso_country)
     if isinstance(funds, mstarpy.Funds):
         return funds
@@ -200,19 +197,17 @@ def display_search(
     limit: int
         Number to show
     """
-    if country:
-        iso_country = mapping_country[country]
-    else:
-        iso_country = ""
+    iso_country = mapping_country[country] if country else ""
     searches = mstarpy_model.search_funds(term, country=iso_country, pageSize=limit)
     if searches.empty:
         console.print("No matches found.")
         return
 
-    if country:
-        title = f"Mutual Funds from {country.title()} matching {term}"
-    else:
-        title = f"Mutual Funds matching {term}"
+    title = (
+        f"Mutual Funds from {country.title()} matching {term}"
+        if country
+        else f"Mutual Funds matching {term}"
+    )
 
     print_rich_table(
         searches,
@@ -232,10 +227,7 @@ def display_sector(loaded_funds: mstarpy.Funds, asset_type: str = "equity"):
     asset_type: str
         can be equity or fixed income
     """
-    if asset_type == "equity":
-        key = "EQUITY"
-    else:
-        key = "FIXEDINCOME"
+    key = "EQUITY" if asset_type == "equity" else "FIXEDINCOME"
 
     d = loaded_funds.sector()[key]
     fig, ax = plt.subplots(figsize=(10, 10))
