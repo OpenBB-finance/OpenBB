@@ -585,6 +585,22 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 export="",
             ),
         ),
+        (
+            "call_sofr",
+            [
+                "-p=180_day_average",
+                "-s=2022-01-01",
+                "-e=2022-01-31",
+                "--export=csv",
+            ],
+            "fred_view.plot_sofr",
+            [],
+            dict(series_id="SOFR180DAYAVG",
+                 start_date=MOCK_START,
+                 end_date=MOCK_END,
+                 export="csv",
+                 sheet_name=None),
+        )
     ],
 )
 def test_call_cmd(
