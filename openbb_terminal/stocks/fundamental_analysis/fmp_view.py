@@ -349,8 +349,8 @@ def display_balance_sheet(
             if rows_plot == 1:
                 fig = OpenBBFigure()
                 fig.add_scatter(
-                    x=income_plot_data.index,
-                    y=income_plot_data[plot[0].replace("_", "")],
+                    x=balance_plot_data.index,
+                    y=balance_plot_data[plot[0].replace("_", "")],
                     mode="lines",
                     name=plot[0].replace("_", " "),
                 )
@@ -364,8 +364,8 @@ def display_balance_sheet(
                 fig = OpenBBFigure.create_subplots(rows=rows_plot, cols=1)
                 for i in range(rows_plot):
                     fig.add_scatter(
-                        x=income_plot_data.index,
-                        y=income_plot_data[plot[i].replace("_", "")],
+                        x=balance_plot_data.index,
+                        y=balance_plot_data[plot[i].replace("_", "")],
                         mode="lines",
                         name=plot[i].replace("_", " "),
                         row=i + 1,
@@ -451,8 +451,8 @@ def display_cash_flow(
             if rows_plot == 1:
                 fig = OpenBBFigure()
                 fig.add_scatter(
-                    x=income_plot_data.index,
-                    y=income_plot_data[plot[0].replace("_", "")],
+                    x=cash_plot_data.index,
+                    y=cash_plot_data[plot[0].replace("_", "")],
                     mode="lines",
                     name=plot[0].replace("_", " "),
                 )
@@ -466,8 +466,8 @@ def display_cash_flow(
                 fig = OpenBBFigure.create_subplots(rows=rows_plot, cols=1)
                 for i in range(rows_plot):
                     fig.add_scatter(
-                        x=income_plot_data.index,
-                        y=income_plot_data[plot[i].replace("_", "")],
+                        x=cash_plot_data.index,
+                        y=cash_plot_data[plot[i].replace("_", "")],
                         mode="lines",
                         name=plot[i].replace("_", " "),
                         row=i + 1,
