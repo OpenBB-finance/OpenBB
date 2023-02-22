@@ -5,10 +5,10 @@ import logging
 
 import pandas as pd
 
-from openbb_terminal import config_terminal as cfg
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import request
 from openbb_terminal.rich_config import console
+from openbb_terminal.session.user import get_current_user
 
 logger = logging.getLogger(__name__)
 
@@ -29,7 +29,7 @@ def get_rating_over_time(symbol: str) -> pd.DataFrame:
         Get dataframe with ratings
     """
     response = request(
-        f"https://finnhub.io/api/v1/stock/recommendation?symbol={symbol}&token={cfg.API_FINNHUB_KEY}"
+        f"https://finnhub.io/api/v1/stock/recommendation?symbol={symbol}&token={get_current_user().credentials.API_FINNHUB_KEY}"
     )
     df = pd.DataFrame()
 

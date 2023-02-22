@@ -13,6 +13,7 @@ from binance.exceptions import BinanceAPIException
 import openbb_terminal.config_terminal as cfg
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.rich_config import console
+from openbb_terminal.session.user import get_current_user
 
 logger = logging.getLogger(__name__)
 
@@ -48,7 +49,11 @@ def _get_trading_pairs() -> List[dict]:
         ...
         ]
     """
-    client = Client(cfg.API_BINANCE_KEY, cfg.API_BINANCE_SECRET)
+    current_user = get_current_user()
+    client = Client(
+        current_user.credentials.API_BINANCE_KEY,
+        current_user.credentials.API_BINANCE_SECRET,
+    )
     ex_info = client.get_exchange_info()["symbols"]
     trading_pairs = [p for p in ex_info if p["status"] == "TRADING"]
     return trading_pairs
@@ -102,7 +107,11 @@ def check_valid_binance_str(symbol: str) -> str:
     str
         Symbol
     """
-    client = Client(cfg.API_BINANCE_KEY, cfg.API_BINANCE_SECRET)
+    current_user = get_current_user()
+    client = Client(
+        current_user.credentials.API_BINANCE_KEY,
+        current_user.credentials.API_BINANCE_SECRET,
+    )
     try:
         client.get_avg_price(symbol=symbol.upper())
         return symbol.upper()
@@ -166,7 +175,11 @@ def get_order_book(
     """
     pair = from_symbol + to_symbol
 
-    client = Client(cfg.API_BINANCE_KEY, cfg.API_BINANCE_SECRET)
+    current_user = get_current_user()
+    client = Client(
+        current_user.credentials.API_BINANCE_KEY,
+        current_user.credentials.API_BINANCE_SECRET,
+    )
 
     try:
         market_book = client.get_order_book(symbol=pair, limit=limit)
@@ -195,7 +208,11 @@ def get_balance(
     pd.DataFrame
         Dataframe with account holdings for an asset
     """
-    client = Client(cfg.API_BINANCE_KEY, cfg.API_BINANCE_SECRET)
+    current_user = get_current_user()
+    client = Client(
+        current_user.credentials.API_BINANCE_KEY,
+        current_user.credentials.API_BINANCE_SECRET,
+    )
 
     pair = from_symbol + to_symbol
     current_balance = client.get_asset_balance(asset=from_symbol)

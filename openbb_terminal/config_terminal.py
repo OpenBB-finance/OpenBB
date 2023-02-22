@@ -96,46 +96,46 @@ PATH_TO_SELENIUM_DRIVER = ""  # Replace with "PATH"
 # API_REDDIT_PASSWORD = os.getenv("OPENBB_API_REDDIT_PASSWORD") or "REPLACE_ME"
 
 # https://polygon.io
-API_POLYGON_KEY = os.getenv("OPENBB_API_POLYGON_KEY") or "REPLACE_ME"
+# API_POLYGON_KEY = os.getenv("OPENBB_API_POLYGON_KEY") or "REPLACE_ME"
 
 # https://developer.twitter.com
-API_TWITTER_KEY = os.getenv("OPENBB_API_TWITTER_KEY") or "REPLACE_ME"
-API_TWITTER_SECRET_KEY = os.getenv("OPENBB_API_TWITTER_SECRET_KEY") or "REPLACE_ME"
-API_TWITTER_BEARER_TOKEN = os.getenv("OPENBB_API_TWITTER_BEARER_TOKEN") or "REPLACE_ME"
+# API_TWITTER_KEY = os.getenv("OPENBB_API_TWITTER_KEY") or "REPLACE_ME"
+# API_TWITTER_SECRET_KEY = os.getenv("OPENBB_API_TWITTER_SECRET_KEY") or "REPLACE_ME"
+# API_TWITTER_BEARER_TOKEN = os.getenv("OPENBB_API_TWITTER_BEARER_TOKEN") or "REPLACE_ME"
 
 # https://fred.stlouisfed.org/docs/api/api_key.html
-API_FRED_KEY = os.getenv("OPENBB_API_FRED_KEY") or "REPLACE_ME"
+# API_FRED_KEY = os.getenv("OPENBB_API_FRED_KEY") or "REPLACE_ME"
 
 # https://newsapi.org
-API_NEWS_TOKEN = os.getenv("OPENBB_API_NEWS_TOKEN") or "REPLACE_ME"
+# API_NEWS_TOKEN = os.getenv("OPENBB_API_NEWS_TOKEN") or "REPLACE_ME"
 
 # Robinhood
-RH_USERNAME = os.getenv("OPENBB_RH_USERNAME") or "REPLACE_ME"
-RH_PASSWORD = os.getenv("OPENBB_RH_PASSWORD") or "REPLACE_ME"
+# RH_USERNAME = os.getenv("OPENBB_RH_USERNAME") or "REPLACE_ME"
+# RH_PASSWORD = os.getenv("OPENBB_RH_PASSWORD") or "REPLACE_ME"
 
 # Degiro
-DG_USERNAME = os.getenv("OPENBB_DG_USERNAME") or "REPLACE_ME"
-DG_PASSWORD = os.getenv("OPENBB_DG_PASSWORD") or "REPLACE_ME"
-DG_TOTP_SECRET = os.getenv("OPENBB_DG_TOTP_SECRET") or None
+# DG_USERNAME = os.getenv("OPENBB_DG_USERNAME") or "REPLACE_ME"
+# DG_PASSWORD = os.getenv("OPENBB_DG_PASSWORD") or "REPLACE_ME"
+# DG_TOTP_SECRET = os.getenv("OPENBB_DG_TOTP_SECRET") or None
 
 # https://developer.oanda.com
-OANDA_ACCOUNT_TYPE = os.getenv("OPENBB_OANDA_ACCOUNT_TYPE") or "REPLACE_ME"
-# "live" or "practice"
-OANDA_ACCOUNT = os.getenv("OPENBB_OANDA_ACCOUNT") or "REPLACE_ME"
-OANDA_TOKEN = os.getenv("OPENBB_OANDA_TOKEN") or "REPLACE_ME"
+# OANDA_ACCOUNT_TYPE = os.getenv("OPENBB_OANDA_ACCOUNT_TYPE") or "REPLACE_ME"
+# # "live" or "practice"
+# OANDA_ACCOUNT = os.getenv("OPENBB_OANDA_ACCOUNT") or "REPLACE_ME"
+# OANDA_TOKEN = os.getenv("OPENBB_OANDA_TOKEN") or "REPLACE_ME"
 
 # https://tradier.com/products/market-data-api
-API_TRADIER_TOKEN = os.getenv("OPENBB_API_TRADIER_TOKEN") or "REPLACE_ME"
+# API_TRADIER_TOKEN = os.getenv("OPENBB_API_TRADIER_TOKEN") or "REPLACE_ME"
 
 # https://coinmarketcap.com/api/
-API_CMC_KEY = os.getenv("OPENBB_API_CMC_KEY") or "REPLACE_ME"
+# API_CMC_KEY = os.getenv("OPENBB_API_CMC_KEY") or "REPLACE_ME"
 
 # https://www.binance.com/en/
-API_BINANCE_KEY = os.getenv("OPENBB_API_BINANCE_KEY") or "REPLACE_ME"
-API_BINANCE_SECRET = os.getenv("OPENBB_API_BINANCE_SECRET") or "REPLACE_ME"
+# API_BINANCE_KEY = os.getenv("OPENBB_API_BINANCE_KEY") or "REPLACE_ME"
+# API_BINANCE_SECRET = os.getenv("OPENBB_API_BINANCE_SECRET") or "REPLACE_ME"
 
 # https://finnhub.io
-API_FINNHUB_KEY = os.getenv("OPENBB_API_FINNHUB_KEY") or "REPLACE_ME"
+# API_FINNHUB_KEY = os.getenv("OPENBB_API_FINNHUB_KEY") or "REPLACE_ME"
 
 # https://iexcloud.io
 API_IEX_TOKEN = os.getenv("OPENBB_API_IEX_TOKEN") or "REPLACE_ME"

@@ -238,7 +238,7 @@ def load_stock_polygon(
         f"https://api.polygon.io/v2/aggs/ticker/"
         f"{symbol.upper()}/range/1/{timespan}/"
         f"{start_date.strftime('%Y-%m-%d')}/{end_date.strftime('%Y-%m-%d')}?adjusted=true"
-        f"&sort=desc&limit=49999&apiKey={cfg.API_POLYGON_KEY}"
+        f"&sort=desc&limit=49999&apiKey={get_current_user().credentials.API_POLYGON_KEY}"
     )
     r = request(request_url)
     if r.status_code != 200:

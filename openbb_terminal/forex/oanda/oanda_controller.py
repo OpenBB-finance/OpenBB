@@ -6,7 +6,6 @@ import logging
 from typing import List, Optional, Union
 
 from openbb_terminal import (
-    config_terminal as cfg,
     feature_flags as obbff,
 )
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
@@ -18,10 +17,11 @@ from openbb_terminal.helper_funcs import check_non_negative_float
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import MenuText, console
+from openbb_terminal.session.user import get_current_user
 
 logger = logging.getLogger(__name__)
 
-account = cfg.OANDA_ACCOUNT
+account = get_current_user().credentials.OANDA_ACCOUNT
 
 
 class OandaController(BaseController):

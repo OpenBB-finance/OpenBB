@@ -17,6 +17,7 @@ from openbb_terminal import config_terminal as cfg
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import get_user_agent, request
 from openbb_terminal.rich_config import console
+from openbb_terminal.session.user import get_current_user
 
 logger = logging.getLogger(__name__)
 
@@ -37,7 +38,7 @@ def check_series_id(series_id: str) -> Tuple[bool, dict]:
         Boolean if series ID exists,
         Dictionary of series information
     """
-    url = f"https://api.stlouisfed.org/fred/series?series_id={series_id}&api_key={cfg.API_FRED_KEY}&file_type=json"
+    url = f"https://api.stlouisfed.org/fred/series?series_id={series_id}&api_key={get_current_user().credentials.API_FRED_KEY}&file_type=json"
     r = request(url, headers={"User-Agent": get_user_agent()})
     # The above returns 200 if series is found
     # There seems to be an occasional bug giving a 503 response where the json decoding fails
@@ -80,7 +81,7 @@ def get_series_notes(search_query: str, limit: int = -1) -> pd.DataFrame:
         DataFrame of matched series
     """
 
-    fred.key(cfg.API_FRED_KEY)
+    fred.key(get_current_user().credentials.API_FRED_KEY)
     d_series = fred.search(search_query)
 
     df_fred = pd.DataFrame()
@@ -136,7 +137,7 @@ def get_series_ids(search_query: str, limit: int = -1) -> pd.DataFrame:
     pd.Dataframe
         Dataframe with series IDs and titles
     """
-    fred.key(cfg.API_FRED_KEY)
+    fred.key(get_current_user().credentials.API_FRED_KEY)
     d_series = fred.search(search_query)
 
     # Cover invalid api and empty search terms
@@ -192,7 +193,7 @@ def get_series_data(
         # https://stackoverflow.com/questions/27835619/urllib-and-ssl-certificate-verify-failed-error/73270162#73270162
         os.environ["REQUESTS_CA_BUNDLE"] = certifi.where()
         os.environ["SSL_CERT_FILE"] = certifi.where()
-        fredapi_client = Fred(cfg.API_FRED_KEY)
+        fredapi_client = Fred(get_current_user().credentials.API_FRED_KEY)
         df = fredapi_client.get_series(series_id, start_date, end_date)
     # Series does not exist & invalid api keys
     except HTTPError as e:
@@ -284,7 +285,7 @@ def get_yield_curve(
     # os.environ["REQUESTS_CA_BUNDLE"] = certifi.where()
     # os.environ["SSL_CERT_FILE"] = certifi.where()
 
-    fredapi_client = Fred(cfg.API_FRED_KEY)
+    fredapi_client = Fred(get_current_user().credentials.API_FRED_KEY)
     fred_series = {
         "1Month": "DGS1MO",
         "3Month": "DGS3MO",

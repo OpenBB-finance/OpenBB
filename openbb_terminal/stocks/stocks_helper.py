@@ -33,6 +33,7 @@ from openbb_terminal.helper_funcs import (
     request,
 )
 from openbb_terminal.rich_config import console
+from openbb_terminal.session.user import get_current_user
 
 # pylint: disable=unused-import
 from openbb_terminal.stocks.stock_statics import (
@@ -394,7 +395,7 @@ def load(
                 f"https://api.polygon.io/v2/aggs/ticker/"
                 f"{symbol.upper()}/range/{interval}/minute/{start_date.strftime('%Y-%m-%d')}"
                 f"/{end_date.strftime('%Y-%m-%d')}"
-                f"?adjusted=true&sort=desc&limit=49999&apiKey={cfg.API_POLYGON_KEY}"
+                f"?adjusted=true&sort=desc&limit=49999&apiKey={get_current_user().credentials.API_POLYGON_KEY}"
             )
             r = request(request_url)
             if r.status_code != 200:
@@ -1062,8 +1063,11 @@ def show_codes_polygon(ticker: str):
     ticker: str
         Stock ticker
     """
-    link = f"https://api.polygon.io/v3/reference/tickers/{ticker.upper()}?apiKey={cfg.API_POLYGON_KEY}"
-    if cfg.API_POLYGON_KEY == "REPLACE_ME":
+
+    current_user = get_current_user()
+
+    link = f"https://api.polygon.io/v3/reference/tickers/{ticker.upper()}?apiKey={current_user.credentials.API_POLYGON_KEY}"
+    if current_user.credentials.API_POLYGON_KEY == "REPLACE_ME":
         console.print("[red]Polygon API key missing[/red]\n")
         return
     r = request(link)

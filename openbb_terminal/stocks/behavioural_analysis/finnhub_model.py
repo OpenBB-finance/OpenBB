@@ -9,10 +9,10 @@ import finnhub
 import pandas as pd
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
-from openbb_terminal import config_terminal as cfg
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import similar
 from openbb_terminal.rich_config import console
+from openbb_terminal.session.user import get_current_user
 
 logger = logging.getLogger(__name__)
 
@@ -48,7 +48,9 @@ def get_company_news(
         end_date = datetime.now().strftime("%Y-%m-%d")
 
     try:
-        finnhub_client = finnhub.Client(api_key=cfg.API_FINNHUB_KEY)
+        finnhub_client = finnhub.Client(
+            api_key=get_current_user().credentials.API_FINNHUB_KEY
+        )
         articles = finnhub_client.company_news(
             symbol.upper(), _from=start_date, to=end_date
         )

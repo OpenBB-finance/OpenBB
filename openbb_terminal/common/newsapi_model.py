@@ -11,6 +11,7 @@ from openbb_terminal import config_terminal as cfg
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import request
 from openbb_terminal.rich_config import console
+from openbb_terminal.session.user import get_current_user
 
 logger = logging.getLogger(__name__)
 
@@ -57,7 +58,7 @@ def get_news(
             sources = ".com,".join(sources.split(","))
         link += f"&domains={sources}.com"
 
-    link += f"&apiKey={cfg.API_NEWS_TOKEN}"
+    link += f"&apiKey={get_current_user().credentials.API_NEWS_TOKEN}"
 
     response = request(link)
 
