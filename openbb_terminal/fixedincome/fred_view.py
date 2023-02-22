@@ -771,7 +771,7 @@ def plot_ameribor(
     else:
         ylabel = "Yield (%)"
         
-    ax.set_title(ID_TO_NAME_AMERIBOR[series_id])
+    ax.set_title(ID_TO_NAME_AMERIBOR[series_id], fontsize=15)
     ax.set_ylabel(ylabel)
     theme.style_primary_axis(ax)
 
@@ -1837,6 +1837,7 @@ def plot_icebofa(
     category: str = "all",
     area: str = "us",
     grade: str = "non_sovereign",
+    options: bool = False,
     description: bool = False,
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
@@ -1920,13 +1921,20 @@ def plot_icebofa(
     
     series = pd.read_excel(ice_bofa_path)
     
+    if options:
+        return print_rich_table(
+            series.drop(
+                ['Frequency', 'Units', 'Asset Class', 'FRED Series ID', 'Description'], axis=1)
+            [series['Type'].isin(['yield', 'yield_to_worst', 'total_return'] if data_type != 'spread' else ['spread'])]
+        )
+        
     series = series[
         (series['Type'] == data_type) &
         (series['Units'] == units) &
         (series['Frequency'] == 'daily') &
-        (series['Category'] == 'bonds') &
-        (series['Subcategory'] == category) &
-        (series['Region'] == area) &
+        (series['Asset Class'] == 'bonds') &
+        (series['Category'] == category) &
+        (series['Area'] == area) &
         (series['Grade'] == grade)
     ]
     
@@ -2090,6 +2098,7 @@ def plot_cp(
     maturity: str = "30d",
     category: str = "financial",
     grade: str = "aa",
+    options: bool = False,
     description: bool = False,
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
@@ -2129,6 +2138,11 @@ def plot_cp(
         category = "non_financial"
         
     series = pd.read_excel(commercial_paper_path)
+    
+    if options:
+        return print_rich_table(
+            series.drop(['Description', 'FRED Series ID'], axis=1)
+        )
     
     series = series[
         (series['Maturity'] == maturity) &
