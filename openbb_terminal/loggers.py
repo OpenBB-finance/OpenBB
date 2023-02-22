@@ -40,6 +40,7 @@ from openbb_terminal.core.log.generation.settings import (
     LogSettings,
     Settings,
 )
+from openbb_terminal.core.log.generation.user_logger import get_user_uuid
 
 logging.getLogger("requests").setLevel(LOGGING_VERBOSITY)
 logging.getLogger("urllib3").setLevel(LOGGING_VERBOSITY)
@@ -166,6 +167,7 @@ def setup_logging(
     name = app_name or LOGGING_APP_NAME
     identifier = get_app_id()
     session_id = session_id or str(START_TIMESTAMP)
+    user_id = get_user_uuid()
 
     # AWSSettings
     aws_access_key_id = LOGGING_AWS_ACCESS_KEY_ID
@@ -184,6 +186,7 @@ def setup_logging(
             name=name,
             identifier=identifier,
             session_id=session_id,
+            user_id=user_id,
         ),
         aws_settings=AWSSettings(
             aws_access_key_id=aws_access_key_id,
