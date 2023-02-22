@@ -377,7 +377,7 @@ def get_yield_curve(
         years = YIELD_CURVE_REAL_RATES
     elif spot_or_par:
         if spot_or_par == "spot":
-            years = YIELD_CURVE_SPOT_RATES
+            years = YIELD_CURVE_SPOT_RATES  # type: ignore
             fred_series = YIELD_CURVE_SERIES_CORPORATE_SPOT
         elif spot_or_par == "par":
             years = YIELD_CURVE_PAR_RATES
@@ -386,7 +386,7 @@ def get_yield_curve(
             console.print("Please select either 'spot' or 'par' rates.")
     else:
         fred_series = YIELD_CURVE_SERIES_NOMINAL
-        years = YIELD_CURVE_NOMINAL_RATES
+        years = YIELD_CURVE_NOMINAL_RATES  # type: ignore
 
     if inflation_adjusted:
         fred_series = YIELD_CURVE_SERIES_REAL

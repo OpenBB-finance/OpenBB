@@ -211,7 +211,7 @@ ICE_BOFA_TO_OPTIONS = {
     ],
 }
 
-MOODY_TO_OPTIONS = {
+MOODY_TO_OPTIONS: Dict[str, Dict] = {
     "Type": {
         "aaa": {
             "index": {
@@ -244,7 +244,7 @@ MOODY_TO_OPTIONS = {
             },
         },
     },
-    "Spread": ["treasury", "fed_funds"],
+    "Spread": ["treasury", "fed_funds"],  # type: ignore
 }
 
 CP_TO_OPTIONS = {
