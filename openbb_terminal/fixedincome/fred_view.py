@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 # IMPORTATION STANDARD
 import logging
+import pathlib
 import os
 from pathlib import Path
 from typing import Dict, List, Optional
@@ -187,6 +188,27 @@ USARATES_TO_FRED_ID = {
     "10_year": {"tips": "DFII10", "cmn": "DGS10"},
     "20_year": {"tips": "DFII20", "cmn": "DGS20"},
     "30_year": {"tips": "DFII30", "cmn": "DGS30"},
+}
+
+ICE_BOFA_TO_OPTIONS = {
+    'Type': ['total_return', 'yield', 'yield_to_worst'],
+    'Category': ['all', 'duration', 'eur', 'usd'],
+    'Area': ['asia', 'emea', 'eu', 'ex_g10', 'latin_america', 'us'],
+    'Grade': [
+        'a',
+        'aa',
+        'aaa',
+        'b',
+        'bb',
+        'bbb',
+        'ccc',
+        'crossover',
+        'high_grade',
+        'high_yield',
+        'non_financial',
+        'non_sovereign',
+        'private_sector',
+        'public_sector']
 }
 
 
