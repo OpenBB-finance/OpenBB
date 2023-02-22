@@ -11,11 +11,11 @@ from openbb_terminal.session.hub_model import REGISTER_URL
 class ProfileModel:
     """Data model for profile."""
 
-    token_type: str
-    token: str
-    uuid: str
-    email: str
-    username: str
+    token_type: str = ""
+    token: str = ""
+    uuid: str = ""
+    email: str = ""
+    username: str = ""
 
     def load_user_info(self, session: dict, email: str):
         """Load user info from login info.
@@ -109,10 +109,4 @@ class ProfileModel:
         )
 
 
-default_profile = ProfileModel(  # type: ignore
-    token_type="",
-    token="",
-    uuid="",
-    email="",
-    username="",
-)
+default_profile = ProfileModel()

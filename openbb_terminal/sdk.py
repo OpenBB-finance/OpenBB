@@ -1,13 +1,12 @@
 """OpenBB Terminal SDK."""
 # flake8: noqa
 # pylint: disable=unused-import,wrong-import-order
-# pylint: disable=C0302,W0611,R0902,R0903,C0412,C0301,not-callable
 import logging
 
 import openbb_terminal.config_terminal as cfg
 from openbb_terminal import helper_funcs as helper  # noqa: F401
 from openbb_terminal.base_helpers import load_dotenv_and_reload_configs
-from openbb_terminal.config_terminal import theme
+from openbb_terminal.config_terminal import Credentials, theme
 
 from openbb_terminal.cryptocurrency.due_diligence.pycoingecko_model import Coin
 from openbb_terminal.dashboards.dashboards_controller import DashboardsController
@@ -24,7 +23,8 @@ from openbb_terminal import feature_flags as obbff
 from openbb_terminal.session.user import User
 
 if User.profile.is_guest():
-    load_dotenv_and_reload_configs()
+    # load_dotenv_and_reload_configs()
+    Credentials.load_from_dotenv()
 
 logger = logging.getLogger(__name__)
 theme.applyMPLstyle()

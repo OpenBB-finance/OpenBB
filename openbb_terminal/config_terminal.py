@@ -3,8 +3,13 @@ import os
 
 # IMPORTATION INTERNAL
 from openbb_terminal.base_helpers import load_env_vars, strtobool
-
 from .helper_classes import TerminalStyle as _TerminalStyle
+
+from copy import deepcopy
+from openbb_terminal.core.models.credentials import default_credentials
+
+Credentials = deepcopy(default_credentials)
+
 
 SENSITIVE_KEYS = [
     "RH_USERNAME",

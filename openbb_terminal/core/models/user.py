@@ -1,18 +1,18 @@
 from pydantic.dataclasses import dataclass
 
 import openbb_terminal.feature_flags as obbff
-from openbb_terminal.core.models.configurations import (
-    ConfigurationsModel,
-    default_configurations,
-)
-from openbb_terminal.core.models.credentials import (
-    CredentialsModel,
-    default_credentials,
-)
-from openbb_terminal.core.models.preferences import (
-    PreferencesModel,
-    default_preferences,
-)
+# from openbb_terminal.core.models.configurations import (
+#     ConfigurationsModel,
+#     default_configurations,
+# )
+# from openbb_terminal.core.models.credentials import (
+#     CredentialsModel,
+#     default_credentials,
+# )
+# from openbb_terminal.core.models.preferences import (
+#     PreferencesModel,
+#     default_preferences,
+# )
 from openbb_terminal.core.models.profile import ProfileModel, default_profile
 
 
@@ -21,9 +21,9 @@ class UserModel:
     """Data model for user."""
 
     profile: ProfileModel
-    configurations: ConfigurationsModel
-    preferences: PreferencesModel
-    credentials: CredentialsModel
+    # configurations: ConfigurationsModel
+    # preferences: PreferencesModel
+    # credentials: CredentialsModel
 
     @staticmethod
     def is_sync_enabled():
@@ -55,7 +55,7 @@ class UserModel:
 
 default_user = UserModel(  # type: ignore
     profile=default_profile,
-    configurations=default_configurations,
-    preferences=default_preferences,
-    credentials=default_credentials,
+    # configurations=default_configurations,
+    # preferences=default_preferences,
+    # credentials=default_credentials,
 )
