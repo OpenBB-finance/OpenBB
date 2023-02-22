@@ -13,6 +13,7 @@ from openbb_terminal import config_terminal as cfg
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import lambda_long_number_format, request
 from openbb_terminal.rich_config import console
+from openbb_terminal.session.user import get_current_user
 from openbb_terminal.stocks.fundamental_analysis.fa_helper import clean_df_index
 
 # pylint: disable=unsupported-assignment-operation,no-member
@@ -67,7 +68,10 @@ def load_stock_av(
     interval_min: str = "1min",
 ) -> pd.DataFrame:
     try:
-        ts = TimeSeries(key=cfg.API_KEY_ALPHAVANTAGE, output_format="pandas")
+        ts = TimeSeries(
+            key=get_current_user().credentials.API_KEY_ALPHAVANTAGE,
+            output_format="pandas",
+        )
         if interval == "Minute":
             df_stock_candidate: pd.DataFrame = ts.get_intraday(
                 symbol=symbol, interval=interval_min

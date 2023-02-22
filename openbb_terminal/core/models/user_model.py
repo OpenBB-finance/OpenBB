@@ -1,7 +1,5 @@
 from pydantic.dataclasses import dataclass
 
-import openbb_terminal.feature_flags as obbff
-
 from openbb_terminal.core.models.user_profile import ProfileModel
 from openbb_terminal.core.models.user_credentials import CredentialsModel
 

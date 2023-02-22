@@ -121,6 +121,8 @@ def apply_configs(configs: dict):
     # with the same name. If they do, then this assignment will hit the first variable
     # that matches the name.
 
+    current_user = get_current_user()
+
     if configs:
         settings = configs.get("features_settings", {})
         sync = update_sync_flag(settings)
@@ -129,8 +131,8 @@ def apply_configs(configs: dict):
                 for k, v in settings.items():
                     if hasattr(obbff, k):
                         cast_set_attr(obbff, k, v)
-                    elif hasattr(cfg, k):
-                        cast_set_attr(cfg, k, v)
+                    elif hasattr(current_user.credentials, k):
+                        cast_set_attr(current_user.credentials, k, v)
                     elif hasattr(cfg_plot, k):
                         cast_set_attr(cfg_plot, k, v)
                     elif hasattr(paths, k):

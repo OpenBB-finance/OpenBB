@@ -10,6 +10,7 @@ from openbb_terminal import config_terminal as cfg
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import get_user_agent, request
 from openbb_terminal.rich_config import console
+from openbb_terminal.session.user import get_current_user
 
 logger = logging.getLogger(__name__)
 
@@ -23,8 +24,9 @@ def get_sector_data() -> pd.DataFrame:
     df_sectors : pd.Dataframe
         Real-time performance data
     """
+    current_user = get_current_user()
     sector_perf = SectorPerformances(
-        key=cfg.API_KEY_ALPHAVANTAGE, output_format="pandas"
+        key=current_user.credentials.API_KEY_ALPHAVANTAGE, output_format="pandas"
     )
 
     df_sectors, _ = sector_perf.get_sector()
@@ -62,7 +64,7 @@ def get_real_gdp(
 
     url = (
         "https://www.alphavantage.co/query?function=REAL_GDP"
-        + f"&interval={s_interval}&apikey={cfg.API_KEY_ALPHAVANTAGE}"
+        + f"&interval={s_interval}&apikey={get_current_user().credentials.API_KEY_ALPHAVANTAGE}"
     )
     r = request(url, headers={"User-Agent": get_user_agent()})
 
@@ -107,7 +109,7 @@ def get_gdp_capita(start_year: int = 2010) -> pd.DataFrame:
     """
     url = (
         "https://www.alphavantage.co/query?function=REAL_GDP_PER_CAPITA"
-        + f"&apikey={cfg.API_KEY_ALPHAVANTAGE}"
+        + f"&apikey={get_current_user().credentials.API_KEY_ALPHAVANTAGE}"
     )
     r = request(url, headers={"User-Agent": get_user_agent()})
     if r.status_code != 200:
@@ -150,7 +152,7 @@ def get_inflation(start_year: int = 2010) -> pd.DataFrame:
     """
     url = (
         "https://www.alphavantage.co/query?function=INFLATION"
-        + f"&apikey={cfg.API_KEY_ALPHAVANTAGE}"
+        + f"&apikey={get_current_user().credentials.API_KEY_ALPHAVANTAGE}"
     )
     r = request(url, headers={"User-Agent": get_user_agent()})
     if r.status_code != 200:
@@ -196,7 +198,7 @@ def get_cpi(interval: str = "m", start_year: int = 2010) -> pd.DataFrame:
     s_interval = "semiannual" if interval == "s" else "monthly"
     url = (
         f"https://www.alphavantage.co/query?function=CPI&interval={s_interval}"
-        + f"&apikey={cfg.API_KEY_ALPHAVANTAGE}"
+        + f"&apikey={get_current_user().credentials.API_KEY_ALPHAVANTAGE}"
     )
     r = request(url, headers={"User-Agent": get_user_agent()})
 
@@ -251,7 +253,7 @@ def get_treasury_yield(
     url = (
         "https://www.alphavantage.co/query?function=TREASURY_YIELD"
         + f"&interval={d_interval[interval]}"
-        + f"&maturity={d_maturity[maturity]}&apikey={cfg.API_KEY_ALPHAVANTAGE}"
+        + f"&maturity={d_maturity[maturity]}&apikey={get_current_user().credentials.API_KEY_ALPHAVANTAGE}"
     )
     r = request(url, headers={"User-Agent": get_user_agent()})
     if r.status_code != 200:
@@ -293,7 +295,7 @@ def get_unemployment(start_year: int = 2010) -> pd.DataFrame:
     pd.DataFrame
         Dataframe of historical yields
     """
-    url = f"https://www.alphavantage.co/query?function=UNEMPLOYMENT&apikey={cfg.API_KEY_ALPHAVANTAGE}"
+    url = f"https://www.alphavantage.co/query?function=UNEMPLOYMENT&apikey={get_current_user().credentials.API_KEY_ALPHAVANTAGE}"
     r = request(url, headers={"User-Agent": get_user_agent()})
     if r.status_code != 200:
         return pd.DataFrame()

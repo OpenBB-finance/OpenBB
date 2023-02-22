@@ -2,7 +2,6 @@
 import os
 
 # IMPORTATION INTERNAL
-from openbb_terminal.core.models.user_credentials import CredentialsModel
 from openbb_terminal.base_helpers import load_env_vars, strtobool
 from .helper_classes import TerminalStyle as _TerminalStyle
 
@@ -79,7 +78,7 @@ PATH_TO_SELENIUM_DRIVER = ""  # Replace with "PATH"
 # API Keys section
 
 # https://www.alphavantage.co
-API_KEY_ALPHAVANTAGE = os.getenv("OPENBB_API_KEY_ALPHAVANTAGE") or "REPLACE_ME"
+# API_KEY_ALPHAVANTAGE = os.getenv("OPENBB_API_KEY_ALPHAVANTAGE") or "REPLACE_ME"
 
 # https://financialmodelingprep.com/developer
 API_KEY_FINANCIALMODELINGPREP = (
