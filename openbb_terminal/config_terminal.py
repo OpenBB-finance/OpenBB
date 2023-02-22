@@ -2,7 +2,7 @@
 import os
 
 # IMPORTATION INTERNAL
-from openbb_terminal.core.models.credentials import CredentialsModel
+from openbb_terminal.core.models.user_credentials import CredentialsModel
 from openbb_terminal.base_helpers import load_env_vars, strtobool
 from .helper_classes import TerminalStyle as _TerminalStyle
 
