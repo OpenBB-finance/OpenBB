@@ -1877,48 +1877,6 @@ def plot_icebofa(
     elif data_type in ["yield", "yield_to_worst", "spread"]:
         units = "percent"
     
-    # Some data is only available for certain areas and grades
-    if category in ["duration", "eur"]:
-        if category == "duration":
-            if area != "us":
-                area = "us"
-                console.print("Setting region to 'usd' given the chosen "
-                            "subcategory and only data available.")
-            if grade != "non_sovereign":
-                grade = "non_sovereign" 
-                console.print("Setting grade to 'non_sovereign' given the chosen "
-                            "and only data available.")
-        elif category == "eur":
-            if area != "eu":
-                area = "eu"
-                console.print("Setting region to 'eu' given the chosen "
-                            "subcategory and only data available.")
-            if grade != "high_yield":
-                grade = "high_yield" 
-                console.print("Setting grade to 'high_yield' given the chosen "
-                            "subcategory and only data available.")
-                
-     # Some data is only available for certain categories and areas
-    elif grade in ["non_financial", "public_sector", "private_sector", "crossover"]:
-        if grade in ["non_financial", "public_sector"]:
-            if category != "usd":
-                category = "usd" 
-                console.print("Setting category to 'usd' given the chosen "
-                            "subcategory and only data available.")
-            if area != "ex_g10":
-                area = "ex_g10"
-                console.print("Setting region to 'ex_g10' given the chosen "
-                            "subcategory and only data available.")
-        elif grade in ["private_sector", "crossover"]:
-            if category != "all":
-                category = "all" 
-                console.print("Setting category to 'all' given the chosen "
-                            "subcategory and only data available.")
-            if area != "ex_g10":
-                area = "ex_g10"
-                console.print("Setting region to 'ex_g10' given the chosen "
-                            "subcategory and only data available.")
-    
     series = pd.read_excel(ice_bofa_path)
     
     if options:
