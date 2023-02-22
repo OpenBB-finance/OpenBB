@@ -939,6 +939,7 @@ class OpenBBFigure(go.Figure):
                 # This is done to avoid opening after exporting
                 if export_image:
                     self._exported = True
+
                 # We send the figure to the backend to be displayed
                 return plots_backend().send_figure(self, export_image)
             except Exception:
@@ -946,6 +947,15 @@ class OpenBBFigure(go.Figure):
                 # This is a very rare case, but it's better to have a fallback
                 if strtobool(os.environ.get("DEBUG_MODE", False)):
                     console.print_exception()
+
+                # We check if any figures were initialized before the backend failed
+                # If so, we show them with the default plotly backend
+                queue = plots_backend().get_pending()
+                for pending in queue:
+                    fig = json.loads(pending).get("plotly", {})
+                    if not fig:
+                        continue
+                    pio.show(fig, *args, **kwargs)
 
         height = 600 if not self.layout.height else self.layout.height
         self.update_layout(

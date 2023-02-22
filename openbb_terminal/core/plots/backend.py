@@ -80,6 +80,13 @@ class Backend(PyWry):
             return str(self.plotly_html)
         return ""
 
+    def get_pending(self) -> list:
+        """Get the pending data that has not been sent to the backend"""
+        pending = self.outgoing + self.init_engine
+        self.outgoing = []
+        self.init_engine = []
+        return pending
+
     def get_table_html(self) -> str:
         """Get the table html file"""
         if self.table_html and self.table_html.exists():
