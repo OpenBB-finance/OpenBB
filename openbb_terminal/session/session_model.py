@@ -14,7 +14,12 @@ from openbb_terminal.base_helpers import (
 )
 from openbb_terminal.helper_funcs import system_clear
 from openbb_terminal.rich_config import console
-from openbb_terminal.session.user import reset_flair, set_current_user
+from openbb_terminal.session.user import (
+    get_current_user,
+    reset_flair,
+    set_current_user,
+    update_flair,
+)
 
 # pylint: disable=consider-using-f-string
 
@@ -85,7 +90,7 @@ def login(session: dict) -> LoginStatus:
             feature_settings = configs.get("features_settings", {})
             hub_user.profile.load_user_info(session, email)
             Local.apply_configs(configs=configs)
-            hub_user.update_flair(
+            update_flair(
                 flair=feature_settings.get("USE_FLAIR", None)
                 if feature_settings
                 else None
@@ -128,7 +133,7 @@ def logout(
         r = Hub.delete_session(auth_header, token)
         if not r or r.status_code != 200:
             success = False
-        reset_flair()
+        reset_flair(get_current_user())
 
         if not Local.remove_session_file():
             success = False

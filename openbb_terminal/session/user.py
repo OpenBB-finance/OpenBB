@@ -53,7 +53,7 @@ def is_guest(user: UserModel) -> bool:
     return not bool(user.profile.token)
 
 
-def is_sync_enabled(_: UserModel) -> bool:
+def is_sync_enabled(user: UserModel) -> bool:
     """Check if sync is enabled."""
     # Use PreferencesModel when it is implemented.
     return obbff.SYNC_ENABLED
@@ -67,7 +67,25 @@ def guest_message():
     )
 
 
-def reset_flair():
+def reset_flair(user: UserModel):
     """Clear user info."""
-    # This is a temporary solution until we implement PreferencesModel.
+    # Use PreferencesModel when it is implemented.
     obbff.USE_FLAIR = ":openbb"
+
+
+def update_flair(flair: str):
+    """Update flair if user has not changed it.
+
+    Parameters
+    ----------
+    flair : str
+        The flair.
+    """
+    # Use PreferencesModel when it is implemented.
+    if flair is None:
+        MAX_FLAIR_LEN = 20
+        setattr(
+            obbff,
+            "USE_FLAIR",
+            "[" + get_current_user().profile.username[:MAX_FLAIR_LEN] + "]" + " 🦋",
+        )

@@ -17,19 +17,3 @@ class UserModel:
     credentials: CredentialsModel = CredentialsModel()
     # configurations: ConfigurationsModel
     # preferences: PreferencesModel
-
-    def update_flair(self, flair: str):
-        """Update flair if user has not changed it.
-
-        Parameters
-        ----------
-        flair : str
-            The flair.
-        """
-        if flair is None:
-            MAX_FLAIR_LEN = 20
-            setattr(
-                obbff,
-                "USE_FLAIR",
-                "[" + self.profile.username[:MAX_FLAIR_LEN] + "]" + " 🦋",
-            )
