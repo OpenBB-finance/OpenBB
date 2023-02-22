@@ -90,7 +90,6 @@ class DataBento(BaseModel):
             "stype_in": self.stype,
             "encoding": "csv",
         }
-        print(cfg.API_DATABENTO_KEY)
         auth = requests.auth.HTTPBasicAuth(cfg.API_DATABENTO_KEY, "")
         return self.process_request(base_url, params, auth)
 
