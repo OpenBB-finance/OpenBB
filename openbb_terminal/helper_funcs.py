@@ -1895,7 +1895,7 @@ def update_news_from_tweet_to_be_displayed() -> str:
         news_tweet_to_use = ""
         handle_to_use = ""
         url = ""
-        last_tweet_dt: Optional[datetime]  = None
+        last_tweet_dt: Optional[datetime] = None
         for handle in news_sources_twitter_handles:
             try:
                 # Get last N tweets from each handle
