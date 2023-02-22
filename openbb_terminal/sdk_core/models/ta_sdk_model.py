@@ -46,8 +46,8 @@ class TaRoot(Category):
         `obv_chart`: Plots OBV technical indicator\n
         `rsi`: Relative strength index\n
         `rsi_chart`: Plots RSI Indicator\n
-        `rvol`: Realized Volatility Cones\n
-        `rvol_chart`: Plots Realized Volatility Cones\n
+        `cones`: Realized Volatility Cones\n
+        `cones_chart`: Plots Realized Volatility Cones\n
         `sma`: Gets simple moving average (SMA) for stock\n
         `stoch`: Stochastic oscillator\n
         `stoch_chart`: Plots stochastic oscillator signal\n
@@ -99,8 +99,8 @@ class TaRoot(Category):
         self.obv_chart = lib.common_ta_volume_view.display_obv
         self.rsi = lib.common_ta_momentum_model.rsi
         self.rsi_chart = lib.common_ta_momentum_view.display_rsi
-        self.rvol = lib.common_ta_volatility_model.rvol
-        self.rvol_chart = lib.common_ta_volatility_view.display_rvol
+        self.cones = lib.common_ta_volatility_model.rvol
+        self.cones_chart = lib.common_ta_volatility_view.display_rvol
         self.sma = lib.common_ta_overlap_model.sma
         self.stoch = lib.common_ta_momentum_model.stoch
         self.stoch_chart = lib.common_ta_momentum_view.display_stoch

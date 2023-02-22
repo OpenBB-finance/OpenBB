@@ -641,6 +641,7 @@ en:
   crypto/ta/vwap: volume weighted average price
   crypto/ta/_momentum_: Momentum
   crypto/ta/cci: commodity channel index
+  crypto/ta/demark: Tom Demark's sequential indicator
   crypto/ta/macd: moving average convergence/divergence
   crypto/ta/rsi: relative strength index
   crypto/ta/stoch: stochastic oscillator
@@ -650,6 +651,7 @@ en:
   crypto/ta/adx: average directional movement index
   crypto/ta/aroon: aroon indicator
   crypto/ta/_volatility_: Volatility
+  crypto/ta/atr: average true range
   crypto/ta/bbands: bollinger bands
   crypto/ta/donchian: donchian channels
   crypto/ta/kc: keltner channels
