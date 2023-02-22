@@ -46,7 +46,7 @@ from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.reports.reports_model import ipykernel_launcher
 from openbb_terminal.rich_config import MenuText, console
 from openbb_terminal.session import session_controller
-from openbb_terminal.session.user import User
+from openbb_terminal.session.user import get_current_user, guest_message, is_guest
 from openbb_terminal.terminal_helper import (
     bootup,
     check_for_updates,
@@ -368,8 +368,10 @@ class TerminalController(BaseController):
         """Process account command."""
         from openbb_terminal.account.account_controller import AccountController
 
-        if User.profile.is_guest():
-            User.print_guest_message()
+        current_user = get_current_user()
+
+        if is_guest(current_user):
+            console.print(guest_message())
             return
         self.queue = self.load_class(AccountController, self.queue)
 

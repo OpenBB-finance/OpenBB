@@ -1,12 +1,5 @@
 from typing import Optional
-from dotenv import dotenv_values
 from pydantic.dataclasses import dataclass
-
-from openbb_terminal.core.config.paths import (
-    PACKAGE_ENV_FILE,
-    REPOSITORY_ENV_FILE,
-    USER_ENV_FILE,
-)
 
 
 @dataclass(config=dict(validate_assignment=True))
@@ -69,27 +62,3 @@ class CredentialsModel:
 
     # Others
     OPENBB_PERSONAL_ACCESS_TOKEN: str = "REPLACE_ME"
-
-    def load_from_dict(self, credentials: dict):
-        """Load credentials from dict.
-
-        Parameters
-        ----------
-        credentials : dict
-            The credentials.
-        """
-        for key, value in credentials.items():
-            if key.startswith("OPENBB_"):
-                key = key[7:]
-
-            if hasattr(self, key):
-                setattr(self, key, value)
-
-    def load_from_dotenv(self):
-        """Load credentials from environment variables."""
-        env = {
-            **dotenv_values(REPOSITORY_ENV_FILE),
-            **dotenv_values(PACKAGE_ENV_FILE),
-            **dotenv_values(USER_ENV_FILE),
-        }
-        self.load_from_dict(env)

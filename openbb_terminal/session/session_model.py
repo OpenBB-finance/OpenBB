@@ -3,6 +3,7 @@ from enum import Enum
 from typing import Any, Optional
 
 import matplotlib.pyplot as plt
+from openbb_terminal.core.models.user_model import UserModel
 
 import openbb_terminal.session.hub_model as Hub
 import openbb_terminal.session.local_model as Local
@@ -13,7 +14,7 @@ from openbb_terminal.base_helpers import (
 )
 from openbb_terminal.helper_funcs import system_clear
 from openbb_terminal.rich_config import console
-from openbb_terminal.session.user import User
+from openbb_terminal.session.user import reset_flair, set_current_user
 
 # pylint: disable=consider-using-f-string
 
@@ -69,6 +70,11 @@ def login(session: dict) -> LoginStatus:
     session : dict
         The session info.
     """
+
+    # create a new user
+    hub_user = UserModel()
+    set_current_user(hub_user)
+
     clear_openbb_env_vars(exceptions=["OPENBB_ENABLE_AUTHENTICATION"])
     reload_openbb_config_modules()
     response = Hub.fetch_user_configs(session)
@@ -77,9 +83,9 @@ def login(session: dict) -> LoginStatus:
             configs = json.loads(response.content)
             email = configs.get("email", "")
             feature_settings = configs.get("features_settings", {})
-            User.profile.load_user_info(session, email)
+            hub_user.profile.load_user_info(session, email)
             Local.apply_configs(configs=configs)
-            User.update_flair(
+            hub_user.update_flair(
                 flair=feature_settings.get("USE_FLAIR", None)
                 if feature_settings
                 else None
@@ -122,7 +128,7 @@ def logout(
         r = Hub.delete_session(auth_header, token)
         if not r or r.status_code != 200:
             success = False
-        User.reset_flair()
+        reset_flair()
 
         if not Local.remove_session_file():
             success = False

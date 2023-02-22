@@ -2,10 +2,12 @@ import multiprocessing
 import sys
 
 from openbb_terminal.base_helpers import load_dotenv_and_reload_configs
-import openbb_terminal.config_terminal as cfg
 from openbb_terminal.terminal_helper import is_auth_enabled
+from openbb_terminal.session.user import init_user
 
 # pylint: disable=import-outside-toplevel
+
+init_user()
 
 
 def main():
@@ -24,7 +26,6 @@ def main():
         if is_auth_enabled():
             session_controller.main()
         else:
-            cfg.Credentials.load_from_dotenv()
             session_controller.launch_terminal()
 
 

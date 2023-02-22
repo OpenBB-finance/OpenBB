@@ -7,9 +7,9 @@ from multiprocessing import AuthenticationError
 import pandas as pd
 import quandl
 
-from openbb_terminal import config_terminal as cfg
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.rich_config import console
+from openbb_terminal.session.user import get_current_user
 
 logger = logging.getLogger(__name__)
 
@@ -33,7 +33,7 @@ def get_short_interest(symbol: str, nyse: bool = False) -> pd.DataFrame:
     pd.DataFrame
         short interest volume data
     """
-    quandl.ApiConfig.api_key = cfg.Credentials.API_KEY_QUANDL
+    quandl.ApiConfig.api_key = get_current_user().credentials.API_KEY_QUANDL
 
     df = pd.DataFrame()
 

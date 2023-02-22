@@ -24,7 +24,7 @@ from openbb_terminal import (
 from openbb_terminal.config_terminal import LOGGING_COMMIT_HASH
 from openbb_terminal.helper_funcs import request
 from openbb_terminal.rich_config import console
-from openbb_terminal.session.user import User
+from openbb_terminal.session.user import get_current_user, is_guest
 
 # pylint: disable=too-many-statements,no-member,too-many-branches,C0302
 
@@ -341,7 +341,7 @@ def reset(queue: Optional[List[str]] = None):
     plt.close("all")
 
     flag = ""
-    if not User.profile.is_guest():
+    if not is_guest(get_current_user()):
         flag = " --login"
 
     if queue and len(queue) > 0:

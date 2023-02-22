@@ -16,7 +16,7 @@ from openbb_terminal.core.config.paths import (
     USER_ROUTINES_DIRECTORY,
 )
 from openbb_terminal.rich_config import console
-from openbb_terminal.session.user import User
+from openbb_terminal.session.user import get_current_user
 
 SESSION_FILE_PATH = SETTINGS_DIRECTORY / "session.json"
 
@@ -202,7 +202,8 @@ def get_routine(
         The routines folder.
     """
     try:
-        user_folder = USER_ROUTINES_DIRECTORY / User.profile.get_uuid()
+        current_user = get_current_user()
+        user_folder = USER_ROUTINES_DIRECTORY / current_user.profile.get_uuid()
         if os.path.exists(user_folder / file_name):
             file_path = user_folder / file_name
         else:
@@ -241,7 +242,8 @@ def save_routine(
         The path to the routine or None.
     """
     try:
-        uuid = User.profile.get_uuid()
+        current_user = get_current_user()
+        uuid = current_user.profile.get_uuid()
         user_folder = folder / uuid
         if not os.path.exists(user_folder):
             os.makedirs(user_folder)

@@ -36,7 +36,12 @@ from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import MenuText, console
 from openbb_terminal.session.hub_model import patch_user_configs
-from openbb_terminal.session.user import User
+from openbb_terminal.session.user import (
+    User,
+    get_current_user,
+    is_guest,
+    is_sync_enabled,
+)
 
 # pylint: disable=too-many-lines,no-member,too-many-public-methods,C0302
 # pylint: disable=import-outside-toplevel
@@ -179,7 +184,9 @@ class SettingsController(BaseController):
             Environment variable value
         """
 
-        if User.profile.is_guest():
+        current_user = get_current_user()
+
+        if is_guest(current_user):
             set_key(str(USER_ENV_FILE), name, str(value))
 
         # Remove "OPENBB_" prefix from env_var
@@ -190,12 +197,12 @@ class SettingsController(BaseController):
         setattr(cfg_plot, name, value)
 
         # Send feature flag to server
-        if not User.profile.is_guest() and User.is_sync_enabled():
+        if not is_guest(current_user) and is_sync_enabled(current_user):
             patch_user_configs(
                 key=name,
                 value=str(value),
                 type_="settings",
-                auth_header=User.profile.get_auth_header(),
+                auth_header=current_user.profile.get_auth_header(),
             )
 
     @staticmethod
@@ -210,7 +217,9 @@ class SettingsController(BaseController):
             Environment variable value
         """
 
-        if User.profile.is_guest():
+        current_user = get_current_user()
+
+        if is_guest(current_user):
             set_key(str(USER_ENV_FILE), name, str(value))
 
         # Remove "OPENBB_" prefix from env_var
@@ -221,12 +230,12 @@ class SettingsController(BaseController):
         setattr(paths, name, value)
 
         # Send feature flag to server
-        if not User.profile.is_guest() and User.is_sync_enabled():
+        if not is_guest(current_user) and is_sync_enabled(current_user):
             patch_user_configs(
                 key=name,
                 value=str(value),
                 type_="settings",
-                auth_header=User.profile.get_auth_header(),
+                auth_header=current_user.profile.get_auth_header(),
             )
 
     @log_start_end(log=logger)

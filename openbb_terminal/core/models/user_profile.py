@@ -1,10 +1,5 @@
 from typing import Dict
-
 from pydantic.dataclasses import dataclass
-
-import openbb_terminal.feature_flags as obbff
-from openbb_terminal.rich_config import console
-from openbb_terminal.session.hub_model import REGISTER_URL
 
 
 @dataclass(config=dict(validate_assignment=True))
@@ -76,34 +71,3 @@ class ProfileModel:
             The auth header, e.g. "Bearer <token>".
         """
         return f"{self.token_type.title()} {self.token}"
-
-    def is_guest(self) -> bool:
-        """Check if user is guest.
-
-        Returns
-        -------
-        bool
-            True if user is guest, False otherwise.
-        """
-        return not bool(self.token)
-
-    def whoami(self):
-        """Display user info."""
-        if not self.is_guest():
-            console.print(f"[info]email:[/info] {self.email}")
-            console.print(f"[info]uuid:[/info] {self.uuid}")
-            if obbff.SYNC_ENABLED is True:
-                sync = "ON"
-            else:
-                sync = "OFF"
-            console.print(f"[info]sync:[/info] {sync}")
-        else:
-            self.print_guest_message()
-
-    @staticmethod
-    def print_guest_message():
-        """Print guest message."""
-        console.print(
-            "[info]You are currently logged as a guest.\n"
-            f"[info]Register: [/info][cmds]{REGISTER_URL}\n[/cmds]"
-        )

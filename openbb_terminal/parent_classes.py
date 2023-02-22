@@ -45,7 +45,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.rich_config import console, get_ordered_list_sources
-from openbb_terminal.session.user import User
+from openbb_terminal.session.user import get_current_user, guest_message, is_guest
 from openbb_terminal.stocks import stocks_helper
 from openbb_terminal.terminal_helper import is_auth_enabled, open_openbb_documentation
 
@@ -690,7 +690,17 @@ class BaseController(metaclass=ABCMeta):
         ns_parser = self.parse_simple_args(parser, other_args)
 
         if ns_parser:
-            User.profile.whoami()
+            current_user = get_current_user()
+            if not is_guest(current_user):
+                console.print(f"[info]email:[/info] {current_user.profile.email}")
+                console.print(f"[info]uuid:[/info] {current_user.profile.uuid}")
+                if obbff.SYNC_ENABLED is True:
+                    sync = "ON"
+                else:
+                    sync = "OFF"
+                console.print(f"[info]sync:[/info] {sync}")
+            else:
+                console.print(guest_message())
 
     @staticmethod
     def parse_simple_args(parser: argparse.ArgumentParser, other_args: List[str]):

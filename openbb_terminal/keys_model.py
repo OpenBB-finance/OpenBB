@@ -38,7 +38,12 @@ from openbb_terminal.portfolio.brokers.degiro.degiro_model import DegiroModel
 from openbb_terminal.rich_config import console
 from openbb_terminal.session.hub_model import BASE_URL, patch_user_configs
 from openbb_terminal.session.local_model import SESSION_FILE_PATH
-from openbb_terminal.session.user import User
+from openbb_terminal.session.user import (
+    get_current_user,
+    is_guest,
+    is_sync_enabled,
+    set_current_user,
+)
 from openbb_terminal.terminal_helper import suppress_stdout
 
 logger = logging.getLogger(__name__)
@@ -230,7 +235,9 @@ def set_key(env_var_name: str, env_var_value: str, persist: bool = False) -> Non
         If True, api key change will be global, i.e. it will affect terminal environment variables.
         By default, False.
     """
-    if persist and User.profile.is_guest():
+    current_user = get_current_user()
+
+    if persist and is_guest(current_user):
         os.environ[env_var_name] = env_var_value
         dotenv.set_key(str(USER_ENV_FILE), env_var_name, env_var_value)
 
@@ -239,12 +246,13 @@ def set_key(env_var_name: str, env_var_value: str, persist: bool = False) -> Non
         env_var_name = env_var_name[7:]
 
     # Set cfg.env_var_name = env_var_value
-    setattr(cfg, env_var_name, env_var_value)
+    setattr(current_user.credentials, env_var_name, env_var_value)
+    set_current_user(current_user)
 
     # Send api key to server
     if (
-        not User.profile.is_guest()
-        and User.is_sync_enabled()
+        not is_guest(current_user)
+        and is_sync_enabled(current_user)
         and env_var_name not in cfg.SENSITIVE_KEYS
         and (env_var_name.startswith("API_") or env_var_name.startswith("OPENBB_"))
     ):
@@ -252,7 +260,7 @@ def set_key(env_var_name: str, env_var_value: str, persist: bool = False) -> Non
             key=env_var_name,
             value=env_var_value,
             type_="keys",
-            auth_header=User.profile.get_auth_header(),
+            auth_header=current_user.profile.get_auth_header(),
         )
 
 
@@ -480,12 +488,16 @@ def check_quandl_key(show_output: bool = False) -> str:
         Status of key set
     """
 
-    if cfg.Credentials.API_KEY_QUANDL == "REPLACE_ME":  # pragma: allowlist secret
+    current_user = get_current_user()
+
+    if (
+        current_user.credentials.API_KEY_QUANDL == "REPLACE_ME"
+    ):  # pragma: allowlist secret
         logger.info("Quandl key not defined")
         status = KeyStatus.NOT_DEFINED
     else:
         try:
-            quandl.save_key(cfg.Credentials.API_KEY_QUANDL)
+            quandl.save_key(current_user.credentials.API_KEY_QUANDL)
             quandl.get("EIA/PET_RWTC_D")
             logger.info("Quandl key defined, test passed")
             status = KeyStatus.DEFINED_TEST_PASSED

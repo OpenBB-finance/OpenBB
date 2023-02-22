@@ -3,7 +3,13 @@ from openbb_terminal.session import (
     local_model as Local,
     session_model,
 )
-from openbb_terminal.session.user import User
+from openbb_terminal.session.user import (
+    User,
+    get_current_user,
+    guest_message,
+    is_guest,
+    is_sync_enabled,
+)
 
 
 def get_session(email: str, password: str, token: str, save: bool):
@@ -74,10 +80,11 @@ def logout():
     >>> from openbb_terminal.sdk import openbb
     >>> openbb.logout()
     """
+    current_user = get_current_user()
     session_model.logout(
-        auth_header=User.profile.get_auth_header(),
-        token=User.profile.get_token(),
-        guest=User.profile.is_guest(),
+        auth_header=current_user.profile.get_auth_header(),
+        token=current_user.profile.get_token(),
+        guest=is_guest(current_user),
     )
 
 
@@ -90,4 +97,14 @@ def whoami():
     >>> from openbb_terminal.sdk import openbb
     >>> openbb.whoami()
     """
-    User.profile.whoami()
+    current_user = get_current_user()
+    if not is_guest(current_user):
+        console.print(f"[info]email:[/info] {current_user.profile.email}")
+        console.print(f"[info]uuid:[/info] {current_user.profile.uuid}")
+        if is_sync_enabled(current_user):
+            sync = "ON"
+        else:
+            sync = "OFF"
+        console.print(f"[info]sync:[/info] {sync}")
+    else:
+        console.print(guest_message())

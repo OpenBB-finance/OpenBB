@@ -9,8 +9,8 @@ import pandas as pd
 from requests.exceptions import RequestException
 
 from openbb_terminal import feature_flags as obbff
-from openbb_terminal.config_terminal import Credentials
-from openbb_terminal.rich_config import console  # pragma: allowlist secret
+from openbb_terminal.rich_config import console
+from openbb_terminal.session.user import get_current_user  # pragma: allowlist secret
 
 logger = logging.getLogger(__name__)
 
@@ -118,12 +118,12 @@ def check_api_key(api_keys):
             if obbff.ENABLE_CHECK_API:
                 import openbb_terminal.config_terminal as cfg
 
+                current_user = get_current_user()
                 undefined_apis = []
                 for key in api_keys:
                     # Get value of the API Keys
                     if (
-                        getattr(cfg, key) == "REPLACE_ME"
-                        and getattr(Credentials, key) == "REPLACE_ME"
+                        getattr(current_user.credentials, key) == "REPLACE_ME"
                     ) and key not in ["API_KEY_ALPHAVANTAGE"]:
                         undefined_apis.append(key)
 
