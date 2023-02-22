@@ -1,4 +1,3 @@
-from copy import deepcopy
-from openbb_terminal.core.models.user import default_user
+from openbb_terminal.core.models.user import UserModel
 
-User = deepcopy(default_user)
+User = UserModel()

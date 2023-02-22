@@ -1,6 +1,7 @@
 from pydantic.dataclasses import dataclass
 
 import openbb_terminal.feature_flags as obbff
+
 # from openbb_terminal.core.models.configurations import (
 #     ConfigurationsModel,
 #     default_configurations,
@@ -13,14 +14,14 @@ import openbb_terminal.feature_flags as obbff
 #     PreferencesModel,
 #     default_preferences,
 # )
-from openbb_terminal.core.models.profile import ProfileModel, default_profile
+from openbb_terminal.core.models.profile import ProfileModel
 
 
 @dataclass(config=dict(validate_assignment=True))
 class UserModel:
     """Data model for user."""
 
-    profile: ProfileModel
+    profile: ProfileModel = ProfileModel()
     # configurations: ConfigurationsModel
     # preferences: PreferencesModel
     # credentials: CredentialsModel
@@ -51,11 +52,3 @@ class UserModel:
         """Clear user info."""
         # This is a temporary solution until we implement PreferencesModel.
         obbff.USE_FLAIR = ":openbb"
-
-
-default_user = UserModel(  # type: ignore
-    profile=default_profile,
-    # configurations=default_configurations,
-    # preferences=default_preferences,
-    # credentials=default_credentials,
-)

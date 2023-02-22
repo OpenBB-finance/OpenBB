@@ -23,7 +23,7 @@ from openbb_terminal import feature_flags as obbff
 from openbb_terminal.session.user import User
 
 if User.profile.is_guest():
-    # load_dotenv_and_reload_configs()
+    load_dotenv_and_reload_configs()
     Credentials.load_from_dotenv()
 
 logger = logging.getLogger(__name__)

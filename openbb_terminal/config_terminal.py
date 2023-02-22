@@ -2,13 +2,11 @@
 import os
 
 # IMPORTATION INTERNAL
+from openbb_terminal.core.models.credentials import CredentialsModel
 from openbb_terminal.base_helpers import load_env_vars, strtobool
 from .helper_classes import TerminalStyle as _TerminalStyle
 
-from copy import deepcopy
-from openbb_terminal.core.models.credentials import default_credentials
-
-Credentials = deepcopy(default_credentials)
+Credentials = CredentialsModel()
 
 
 SENSITIVE_KEYS = [
@@ -75,6 +73,11 @@ LOGGING_VERBOSITY = load_env_vars("OPENBB_LOGGING_VERBOSITY", int, 20)
 LOGGING_SUB_APP = os.getenv("OPENBB_LOGGING_SUB_APP") or "terminal"
 LOGGING_SUPPRESS = False
 
+
+# Selenium Webbrowser drivers can be found at https://selenium-python.readthedocs.io/installation.html
+WEBDRIVER_TO_USE = "chrome"
+PATH_TO_SELENIUM_DRIVER = ""  # Replace with "PATH"
+
 # API Keys section
 
 # https://www.alphavantage.co
@@ -86,7 +89,7 @@ API_KEY_FINANCIALMODELINGPREP = (
 )
 
 # https://www.quandl.com/tools/api
-API_KEY_QUANDL = os.getenv("OPENBB_API_KEY_QUANDL") or "REPLACE_ME"
+# API_KEY_QUANDL = os.getenv("OPENBB_API_KEY_QUANDL") or "REPLACE_ME"
 
 # https://www.reddit.com/prefs/apps
 API_REDDIT_CLIENT_ID = os.getenv("OPENBB_API_REDDIT_CLIENT_ID") or "REPLACE_ME"
@@ -126,10 +129,6 @@ OANDA_TOKEN = os.getenv("OPENBB_OANDA_TOKEN") or "REPLACE_ME"
 
 # https://tradier.com/products/market-data-api
 API_TRADIER_TOKEN = os.getenv("OPENBB_API_TRADIER_TOKEN") or "REPLACE_ME"
-
-# Selenium Webbrowser drivers can be found at https://selenium-python.readthedocs.io/installation.html
-WEBDRIVER_TO_USE = "chrome"
-PATH_TO_SELENIUM_DRIVER = ""  # Replace with "PATH"
 
 # https://coinmarketcap.com/api/
 API_CMC_KEY = os.getenv("OPENBB_API_CMC_KEY") or "REPLACE_ME"

@@ -107,6 +107,3 @@ class ProfileModel:
             "[info]You are currently logged as a guest.\n"
             f"[info]Register: [/info][cmds]{REGISTER_URL}\n[/cmds]"
         )
-
-
-default_profile = ProfileModel()

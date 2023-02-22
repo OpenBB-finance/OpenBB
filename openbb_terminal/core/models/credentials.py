@@ -79,9 +79,11 @@ class CredentialsModel:
             The credentials.
         """
         for key, value in credentials.items():
-            if key.startswith("openbb_"):
-                k = key[7:]
-            setattr(self, k, value)
+            if key.startswith("OPENBB_"):
+                key = key[7:]
+
+            if hasattr(self, key):
+                setattr(self, key, value)
 
     def load_from_dotenv(self):
         """Load credentials from environment variables."""
@@ -91,6 +93,3 @@ class CredentialsModel:
             **dotenv_values(USER_ENV_FILE),
         }
         self.load_from_dict(env)
-
-
-default_credentials = CredentialsModel()

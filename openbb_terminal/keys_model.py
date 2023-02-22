@@ -480,12 +480,12 @@ def check_quandl_key(show_output: bool = False) -> str:
         Status of key set
     """
 
-    if cfg.API_KEY_QUANDL == "REPLACE_ME":  # pragma: allowlist secret
+    if cfg.Credentials.API_KEY_QUANDL == "REPLACE_ME":  # pragma: allowlist secret
         logger.info("Quandl key not defined")
         status = KeyStatus.NOT_DEFINED
     else:
         try:
-            quandl.save_key(cfg.API_KEY_QUANDL)
+            quandl.save_key(cfg.Credentials.API_KEY_QUANDL)
             quandl.get("EIA/PET_RWTC_D")
             logger.info("Quandl key defined, test passed")
             status = KeyStatus.DEFINED_TEST_PASSED
