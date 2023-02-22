@@ -541,7 +541,7 @@ ta.ma,common_ta_overlap_view.view_ma,common_ta_overlap_view.view_ma
 ta.macd,common_ta_momentum_model.macd,common_ta_momentum_view.display_macd
 ta.obv,common_ta_volume_model.obv,common_ta_volume_view.display_obv
 ta.rsi,common_ta_momentum_model.rsi,common_ta_momentum_view.display_rsi
-ta.rvol,common_ta_volatility_model.rvol,common_ta_volatility_view.display_rvol
+ta.cones,common_ta_volatility_model.rvol,common_ta_volatility_view.display_rvol
 ta.sma,common_ta_overlap_model.sma,
 ta.stoch,common_ta_momentum_model.stoch,common_ta_momentum_view.display_stoch
 ta.vwap,common_ta_overlap_model.vwap,common_ta_overlap_view.view_vwap

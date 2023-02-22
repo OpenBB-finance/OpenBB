@@ -195,56 +195,57 @@ def rvol(
 
     df = rvol(symbol = "AAPL", lower_q = 0.10, upper_q = 0.90)
     """
-    if lower_q > 1:
-        lower_q = lower_q / 100
-    if upper_q > 1:
-        upper_q = upper_q / 100
+    try:
+        lower_q_label = str(int(lower_q * 100))
+        upper_q_label = str(int(upper_q * 100))
+        rvol: pd.DataFrame = pd.DataFrame()
+        quantiles = [lower_q, upper_q]
+        windows = [3, 10, 30, 60, 90, 120, 150, 180, 210, 240, 300, 360]
+        min_ = []
+        max_ = []
+        median = []
+        top_q = []
+        bottom_q = []
+        realized = []
+        data = data.sort_index(ascending=False)
 
-    lower_q_label = str(int(lower_q * 100))
-    upper_q_label = str(int(upper_q * 100))
-    rvol: pd.DataFrame = pd.DataFrame()
-    quantiles = [lower_q, upper_q]
-    windows = [3, 10, 30, 60, 90, 120, 150, 180, 210, 240, 300, 360]
-    min_ = []
-    max_ = []
-    median = []
-    top_q = []
-    bottom_q = []
-    realized = []
-    data = data.sort_index(ascending=False)
+        def realized_vol(data, window=30):
+            """Helper function for calculating realized volatility."""
 
-    def realized_vol(data, window=30):
-        """Helper function for calculating realized volatility."""
+            log_return = (data["Close"] / data["Close"].shift(1)).apply(np.log)
 
-        log_return = (data["Close"] / data["Close"].shift(1)).apply(np.log)
+            return log_return.rolling(window=window, center=False).std() * np.sqrt(252)
 
-        return log_return.rolling(window=window, center=False).std() * np.sqrt(252)
+        for window in windows:
+            # Looping to build a dataframe with realized volatility over each window.
 
-    for window in windows:
-        # Looping to build a dataframe with realized volatility over each window.
+            estimator = realized_vol(window=window, data=data)
+            min_.append(estimator.min())
+            max_.append(estimator.max())
+            median.append(estimator.median())
+            top_q.append(estimator.quantile(quantiles[1]))
+            bottom_q.append(estimator.quantile(quantiles[0]))
+            realized.append(estimator[-1])
 
-        estimator = realized_vol(window=window, data=data)
-        min_.append(estimator.min())
-        max_.append(estimator.max())
-        median.append(estimator.median())
-        top_q.append(estimator.quantile(quantiles[1]))
-        bottom_q.append(estimator.quantile(quantiles[0]))
-        realized.append(estimator[-1])
+        df_ = [realized, min_, bottom_q, median, top_q, max_]
+        pd.DataFrame(df_).columns = windows
+        df_windows = list(windows)
+        df = pd.DataFrame(df_, columns=df_windows)
+        df = df.rename(
+            index={
+                0: "Realized",
+                1: "Min",
+                2: "Lower " f"{lower_q_label}" "%",
+                3: "Median",
+                4: "Upper " f"{upper_q_label}" "%",
+                5: "Max",
+            }
+        )
+        rvol = df.copy()
+        return rvol.transpose()
+        
+    except Exception as e:
+        rvol = pd.DataFrame()
+        print('There was an error with the selected quantile value. Values must be between 0 and 1.')
+        return rvol
 
-    df_ = [realized, min_, bottom_q, median, top_q, max_]
-    pd.DataFrame(df_).columns = windows
-    df_windows = list(windows)
-    df = pd.DataFrame(df_, columns=df_windows)
-    df = df.rename(
-        index={
-            0: "Realized",
-            1: "Min",
-            2: "Lower " f"{lower_q_label}" "%",
-            3: "Median",
-            4: "Upper " f"{upper_q_label}" "%",
-            5: "Max",
-        }
-    )
-    rvol = df.copy()
-
-    return rvol.transpose()
