@@ -12,6 +12,8 @@ from openbb_terminal.rich_config import console, optional_rich_track
 
 logger = logging.getLogger(__name__)
 
+# pylint: disable=too-many-return-statements
+
 
 @log_start_end(log=logger)
 def get_series_data(

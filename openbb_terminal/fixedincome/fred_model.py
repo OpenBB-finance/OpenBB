@@ -52,7 +52,7 @@ YIELD_CURVE_SERIES_CORPORATE_SPOT = {
     "30Year": "HQMCB30YR",
     "50Year": "HQMCB50YR",
     "75Year": "HQMCB75YR",
-    "100Year": "HQMCB100YR"
+    "100Year": "HQMCB100YR",
 }
 YIELD_CURVE_SERIES_CORPORATE_PAR = {
     "2Year": "HQMCB2YRP",
@@ -65,6 +65,7 @@ YIELD_CURVE_NOMINAL_RATES = [1 / 12, 0.25, 0.5, 1, 2, 3, 5, 7, 10, 20, 30]
 YIELD_CURVE_SPOT_RATES = [0.5, 1, 2, 3, 5, 7, 10, 20, 30, 50, 75, 100]
 YIELD_CURVE_REAL_RATES = [5, 7, 10, 20, 30]
 YIELD_CURVE_PAR_RATES = [2, 5, 10, 30]
+
 
 @log_start_end(log=logger)
 @check_api_key(["API_FRED_KEY"])
@@ -105,7 +106,10 @@ def get_series_data(
 @log_start_end(log=logger)
 @check_api_key(["API_FRED_KEY"])
 def get_yield_curve(
-    date: str = "", return_date: bool = False, inflation_adjusted: bool = False, spot_or_par: str = None
+    date: str = "",
+    return_date: bool = False,
+    inflation_adjusted: bool = False,
+    spot_or_par: str = None,
 ) -> Tuple[pd.DataFrame, str]:
     """Gets yield curve data from FRED.
 
@@ -156,7 +160,7 @@ def get_yield_curve(
     fredapi_client = Fred(cfg.API_FRED_KEY)
 
     df = pd.DataFrame()
-    
+
     # Check that the date is in the past
     today = datetime.now().strftime("%Y-%m-%d")
     if date and date >= today:
@@ -168,7 +172,9 @@ def get_yield_curve(
     # Add in logic that will get the most recent date
     if date:
         get_last = False
-        start_date = (datetime.strptime(date, "%Y-%m-%d") - timedelta(days=50)).strftime("%Y-%m-%d")
+        start_date = (
+            datetime.strptime(date, "%Y-%m-%d") - timedelta(days=50)
+        ).strftime("%Y-%m-%d")
     else:
         date = datetime.now().strftime("%Y-%m-%d")
         start_date = (datetime.now() - timedelta(days=50)).strftime("%Y-%m-%d")
@@ -194,7 +200,9 @@ def get_yield_curve(
         df = pd.concat(
             [
                 df,
-                pd.DataFrame(fredapi_client.get_series(s_id, start_date), columns=[key]),
+                pd.DataFrame(
+                    fredapi_client.get_series(s_id, start_date), columns=[key]
+                ),
             ],
             axis=1,
         )
@@ -210,10 +218,12 @@ def get_yield_curve(
         idx = -1 if get_last else 0
         date_of_yield = df.index[idx].strftime("%Y-%m-%d")
         rates = pd.DataFrame(df.iloc[idx, :].values, columns=["Rate"])
-        
+
         if spot_or_par:
-            console.print(f"Because {spot_or_par.title()} rates are published monthly, "
-                          f"the nearest date to {date} is used which is {date_of_yield}.")
+            console.print(
+                f"Because {spot_or_par.title()} rates are published monthly, "
+                f"the nearest date to {date} is used which is {date_of_yield}."
+            )
     else:
         date_of_yield = date
         series = df[df.index == date]

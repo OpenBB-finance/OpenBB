@@ -2,8 +2,8 @@
 __docformat__ = "numpy"
 
 import logging
-import pathlib
 import os
+import pathlib
 from itertools import cycle
 from typing import List, Optional
 
@@ -23,6 +23,8 @@ from openbb_terminal.helper_funcs import (
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
+
+# pylint: disable=too-many-lines
 
 ice_bofa_path = pathlib.Path(__file__).parent / "ice_bofa_indices.xlsx"
 commercial_paper_path = pathlib.Path(__file__).parent / "commercial_paper.xlsx"
@@ -156,256 +158,273 @@ USARATES_TO_FRED_ID = {
 }
 
 ICE_BOFA_TO_OPTIONS = {
-    'Type': ['total_return', 'yield', 'yield_to_worst'],
-    'Category': ['all', 'duration', 'eur', 'usd'],
-    'Area': ['asia', 'emea', 'eu', 'ex_g10', 'latin_america', 'us'],
-    'Grade': [
-        'a',
-        'aa',
-        'aaa',
-        'b',
-        'bb',
-        'bbb',
-        'ccc',
-        'crossover',
-        'high_grade',
-        'high_yield',
-        'non_financial',
-        'non_sovereign',
-        'private_sector',
-        'public_sector']
+    "Type": ["total_return", "yield", "yield_to_worst"],
+    "Category": ["all", "duration", "eur", "usd"],
+    "Area": ["asia", "emea", "eu", "ex_g10", "latin_america", "us"],
+    "Grade": [
+        "a",
+        "aa",
+        "aaa",
+        "b",
+        "bb",
+        "bbb",
+        "ccc",
+        "crossover",
+        "high_grade",
+        "high_yield",
+        "non_financial",
+        "non_sovereign",
+        "private_sector",
+        "public_sector",
+    ],
 }
 
 MOODY_TO_OPTIONS = {
-    "Type": {"aaa": {
-        'index': {
-            "id": "DAAA", "name": "Moody's Seasoned Aaa Corporate Bond Yield"},
-        'treasury': {
-            "id": "AAA10Y", "name": "Moody's Seasoned Aaa Corporate Bond Yield Relative to Yield on 10-Year Treasury Constant Maturity"},
-        "fed_funds": 
-            {"id": "AAAFF", "name": "Moody's Seasoned Aaa Corporate Bond Minus Federal Funds Rate"},
-    },
+    "Type": {
+        "aaa": {
+            "index": {
+                "id": "DAAA",
+                "name": "Moody's Seasoned Aaa Corporate Bond Yield",
+            },
+            "treasury": {
+                "id": "AAA10Y",
+                "name": "Moody's Seasoned Aaa Corporate Bond Yield Relative to Yield "
+                "on 10-Year Treasury Constant Maturity",
+            },
+            "fed_funds": {
+                "id": "AAAFF",
+                "name": "Moody's Seasoned Aaa Corporate Bond Minus Federal Funds Rate",
+            },
+        },
         "baa": {
-        'index': {
-            "id": "DBAA", "name": "Moody's Seasoned Baa Corporate Bond Yield"},
-        'treasury': {
-            "id": "BAA10Y", "name": "Moody's Seasoned Baa Corporate Bond Yield Relative to Yield on 10-Year Treasury Constant Maturity"},
-        "fed_funds": 
-            {"id": "BAAFF", "name": "Moody's Seasoned Baa Corporate Bond Minus Federal Funds Rate"},
+            "index": {
+                "id": "DBAA",
+                "name": "Moody's Seasoned Baa Corporate Bond Yield",
+            },
+            "treasury": {
+                "id": "BAA10Y",
+                "name": "Moody's Seasoned Baa Corporate Bond Yield Relative "
+                "to Yield on 10-Year Treasury Constant Maturity",
+            },
+            "fed_funds": {
+                "id": "BAAFF",
+                "name": "Moody's Seasoned Baa Corporate Bond Minus Federal Funds Rate",
+            },
+        },
     },
-    },
-    "Spread": ['treasury', 'fed_funds']
+    "Spread": ["treasury", "fed_funds"],
 }
 
 CP_TO_OPTIONS = {
-    'Maturity': ['15d', '30d', '60d', '7d', '90d', 'overnight'],
-    'Category': ['asset_backed', 'financial', 'non_financial', 'spread'],
-    'Grade': ['a2_p2', 'aa']
- }
+    "Maturity": ["15d", "30d", "60d", "7d", "90d", "overnight"],
+    "Category": ["asset_backed", "financial", "non_financial", "spread"],
+    "Grade": ["a2_p2", "aa"],
+}
 
 SPOT_TO_OPTIONS = {
-    'Maturity': [
-        '1y',
-        '1.5y',
-        '2y',
-        '2.5y',
-        '3y',
-        '3.5y',
-        '4y',
-        '4.5y',
-        '5y',
-        '5.5y',
-        '6 y',
-        '6y',
-        '6.5y',
-        '7y',
-        '7.5y',
-        '8y',
-        '8.5y',
-        '9y',
-        '9.5y',
-        '10y',
-        '10.5y',
-        '11y',
-        '11.5y',
-        '12y',
-        '12.5y',
-        '13y',
-        '13.5y',
-        '14y',
-        '14.5y',
-        '15y',
-        '15.5y',
-        '16y',
-        '16.5y',
-        '17y',
-        '17.5y',
-        '18y',
-        '18.5y',
-        '19y',
-        '19.5y',
-        '20y',
-        '20.5y',
-        '21y',
-        '21.5y',
-        '22y',
-        '22.5y',
-        '23y',
-        '23.5y',
-        '24y',
-        '24.5y',
-        '25y',
-        '25.5y',
-        '26y',
-        '26.5y',
-        '27y',
-        '27.5y',
-        '28y',
-        '28.5y',
-        '29y',
-        '29.5y',
-        '30y',
-        '30.5y',
-        '31y',
-        '31.5y',
-        '32y',
-        '32.5y',
-        '33y',
-        '33.5y',
-        '34y',
-        '34.5y',
-        '35y',
-        '35.5y',
-        '36y',
-        '36.5y',
-        '37y',
-        '37.5y',
-        '38y',
-        '38.5y',
-        '39y',
-        '39.5y',
-        '40y',
-        '40.5y',
-        '41y',
-        '41.5y',
-        '42y',
-        '42.5y',
-        '43y',
-        '43.5y',
-        '44y',
-        '44.5y',
-        '45y',
-        '45.5y',
-        '46y',
-        '46.5y',
-        '47y',
-        '47.5y',
-        '48y',
-        '48.5y',
-        '49y',
-        '49.5y',
-        '50y',
-        '50.5y',
-        '51y',
-        '51.5y',
-        '52y',
-        '52.5y',
-        '53y',
-        '53.5y',
-        '54y',
-        '54.5y',
-        '55y',
-        '55.5y',
-        '56y',
-        '56.5y',
-        '57y',
-        '57.5y',
-        '58y',
-        '58.5y',
-        '59y',
-        '59.5y',
-        '60y',
-        '60.5y',
-        '61y',
-        '61.5y',
-        '62y',
-        '62.5y',
-        '63y',
-        '63.5y',
-        '64y',
-        '64.5y',
-        '65y',
-        '65.5y',
-        '66y',
-        '66.5y',
-        '67y',
-        '67.5y',
-        '68y',
-        '68.5y',
-        '69y',
-        '69.5y',
-        '70y',
-        '70.5y',
-        '71y',
-        '71.5y',
-        '72y',
-        '72.5y',
-        '73y',
-        '73.5y',
-        '74y',
-        '74.5y',
-        '75y',
-        '75.5y',
-        '76y',
-        '76.5y',
-        '77y',
-        '77.5y',
-        '78y',
-        '78.5y',
-        '79y',
-        '79.5y',
-        '80y',
-        '80.5y',
-        '81y',
-        '81.5y',
-        '82y',
-        '82.5y',
-        '83y',
-        '83.5y',
-        '84y',
-        '84.5y',
-        '85y',
-        '85.5y',
-        '86y',
-        '86.5y',
-        '87y',
-        '87.5y',
-        '88y',
-        '88.5y',
-        '89y',
-        '89.5y',
-        '90y',
-        '90.5y',
-        '91y',
-        '91.5y',
-        '92y',
-        '92.5y',
-        '93y',
-        '93.5y',
-        '94y',
-        '94.5y',
-        '95y',
-        '95.5y',
-        '96y',
-        '96.5y',
-        '97y',
-        '97.5y',
-        '98y',
-        '98.5y',
-        '99y',
-        '99.5y',
-        '100y'],
-    'Category': ['spot_rate', 'par_yield']
+    "Maturity": [
+        "1y",
+        "1.5y",
+        "2y",
+        "2.5y",
+        "3y",
+        "3.5y",
+        "4y",
+        "4.5y",
+        "5y",
+        "5.5y",
+        "6 y",
+        "6y",
+        "6.5y",
+        "7y",
+        "7.5y",
+        "8y",
+        "8.5y",
+        "9y",
+        "9.5y",
+        "10y",
+        "10.5y",
+        "11y",
+        "11.5y",
+        "12y",
+        "12.5y",
+        "13y",
+        "13.5y",
+        "14y",
+        "14.5y",
+        "15y",
+        "15.5y",
+        "16y",
+        "16.5y",
+        "17y",
+        "17.5y",
+        "18y",
+        "18.5y",
+        "19y",
+        "19.5y",
+        "20y",
+        "20.5y",
+        "21y",
+        "21.5y",
+        "22y",
+        "22.5y",
+        "23y",
+        "23.5y",
+        "24y",
+        "24.5y",
+        "25y",
+        "25.5y",
+        "26y",
+        "26.5y",
+        "27y",
+        "27.5y",
+        "28y",
+        "28.5y",
+        "29y",
+        "29.5y",
+        "30y",
+        "30.5y",
+        "31y",
+        "31.5y",
+        "32y",
+        "32.5y",
+        "33y",
+        "33.5y",
+        "34y",
+        "34.5y",
+        "35y",
+        "35.5y",
+        "36y",
+        "36.5y",
+        "37y",
+        "37.5y",
+        "38y",
+        "38.5y",
+        "39y",
+        "39.5y",
+        "40y",
+        "40.5y",
+        "41y",
+        "41.5y",
+        "42y",
+        "42.5y",
+        "43y",
+        "43.5y",
+        "44y",
+        "44.5y",
+        "45y",
+        "45.5y",
+        "46y",
+        "46.5y",
+        "47y",
+        "47.5y",
+        "48y",
+        "48.5y",
+        "49y",
+        "49.5y",
+        "50y",
+        "50.5y",
+        "51y",
+        "51.5y",
+        "52y",
+        "52.5y",
+        "53y",
+        "53.5y",
+        "54y",
+        "54.5y",
+        "55y",
+        "55.5y",
+        "56y",
+        "56.5y",
+        "57y",
+        "57.5y",
+        "58y",
+        "58.5y",
+        "59y",
+        "59.5y",
+        "60y",
+        "60.5y",
+        "61y",
+        "61.5y",
+        "62y",
+        "62.5y",
+        "63y",
+        "63.5y",
+        "64y",
+        "64.5y",
+        "65y",
+        "65.5y",
+        "66y",
+        "66.5y",
+        "67y",
+        "67.5y",
+        "68y",
+        "68.5y",
+        "69y",
+        "69.5y",
+        "70y",
+        "70.5y",
+        "71y",
+        "71.5y",
+        "72y",
+        "72.5y",
+        "73y",
+        "73.5y",
+        "74y",
+        "74.5y",
+        "75y",
+        "75.5y",
+        "76y",
+        "76.5y",
+        "77y",
+        "77.5y",
+        "78y",
+        "78.5y",
+        "79y",
+        "79.5y",
+        "80y",
+        "80.5y",
+        "81y",
+        "81.5y",
+        "82y",
+        "82.5y",
+        "83y",
+        "83.5y",
+        "84y",
+        "84.5y",
+        "85y",
+        "85.5y",
+        "86y",
+        "86.5y",
+        "87y",
+        "87.5y",
+        "88y",
+        "88.5y",
+        "89y",
+        "89.5y",
+        "90y",
+        "90.5y",
+        "91y",
+        "91.5y",
+        "92y",
+        "92.5y",
+        "93y",
+        "93.5y",
+        "94y",
+        "94.5y",
+        "95y",
+        "95.5y",
+        "96y",
+        "96.5y",
+        "97y",
+        "97.5y",
+        "98y",
+        "98.5y",
+        "99y",
+        "99.5y",
+        "100y",
+    ],
+    "Category": ["spot_rate", "par_yield"],
 }
 
 ESTR_PARAMETER_TO_ECB_ID = {
@@ -487,6 +506,7 @@ TBFFR_PARAMETER_TO_FRED_ID = {
     "6_month": "TB6SMFFM",
 }
 
+
 @log_start_end(log=logger)
 @check_api_key(["API_FRED_KEY"])
 def plot_estr(
@@ -518,7 +538,7 @@ def plot_estr(
     """
     if series_id in ESTR_PARAMETER_TO_ECB_ID:
         series_id = ESTR_PARAMETER_TO_ECB_ID[series_id]
-        
+
     df = fred_model.get_series_data(
         series_id=series_id, start_date=start_date, end_date=end_date
     )
@@ -539,7 +559,7 @@ def plot_estr(
     )
     ax.set_title(ID_TO_NAME_ESTR[series_id], fontsize=15)
     theme.style_primary_axis(ax)
-    
+
     if series_id == "ECBESTRTOTVOL":
         ylabel = "Millions in EUR"
     elif series_id == "ECBESTRNUMACTBANKS":
@@ -548,7 +568,7 @@ def plot_estr(
         ylabel = "Number of Transactions"
     else:
         ylabel = "Yield (%)"
-    
+
     ax.set_ylabel(ylabel)
 
     if external_axes is None:
@@ -599,7 +619,7 @@ def plot_sofr(
     """
     if series_id in SOFR_PARAMETER_TO_FRED_ID:
         series_id = SOFR_PARAMETER_TO_FRED_ID[series_id]
-        
+
     df = fred_model.get_series_data(
         series_id=series_id, start_date=start_date, end_date=end_date
     )
@@ -619,7 +639,7 @@ def plot_sofr(
         color=next(colors, "#FCED00"),
     )
     ax.set_title(ID_TO_NAME_SOFR[series_id], fontsize=15)
-    ax.set_ylabel(f"Yield (%)" if series_id != 'SOFRINDEX' else "Index [Base = 04-2018]")
+    ax.set_ylabel("Yield (%)" if series_id != "SOFRINDEX" else "Index [Base = 04-2018]")
 
     theme.style_primary_axis(ax)
 
@@ -627,7 +647,7 @@ def plot_sofr(
         theme.visualize_output()
 
     if export:
-        if series_id != 'SOFRINDEX':
+        if series_id != "SOFRINDEX":
             # Check whether it is a percentage, relevant for exporting
             df_transformed = pd.DataFrame(df, columns=[series_id]) / 100
         else:
@@ -657,7 +677,8 @@ def plot_sonia(
     Parameters
     ----------
     series_id: str
-        FRED ID of SONIA data to plot, options: ['IUDSOIA', 'IUDZOS2', 'IUDZLS6', 'IUDZLS7', 'IUDZLS8', 'IUDZLS9', 'IUDZLT2']
+        FRED ID of SONIA data to plot, options: ['IUDSOIA', 'IUDZOS2',
+        'IUDZLS6', 'IUDZLS7', 'IUDZLS8', 'IUDZLS9', 'IUDZLT2']
     start_date: Optional[str]
         Start date, formatted YYYY-MM-DD
     end_date: Optional[str]
@@ -669,7 +690,7 @@ def plot_sonia(
     """
     if series_id in SONIA_PARAMETER_TO_FRED_ID:
         series_id = SONIA_PARAMETER_TO_FRED_ID[series_id]
-        
+
     df = fred_model.get_series_data(
         series_id=series_id, start_date=start_date, end_date=end_date
     )
@@ -688,23 +709,23 @@ def plot_sonia(
         df.values,
         color=next(colors, "#FCED00"),
     )
-    
-    if series_id == 'IUDZLT2':
+
+    if series_id == "IUDZLT2":
         ylabel = "Millions of GDP"
-    elif series_id == 'IUDZOS2':
+    elif series_id == "IUDZOS2":
         ylabel = "Index [Base = 04-2018]"
     else:
         ylabel = "Yield (%)"
-        
+
     ax.set_title(ID_TO_NAME_SONIA[series_id], fontsize=15)
     ax.set_ylabel(ylabel)
     theme.style_primary_axis(ax)
-    
+
     if external_axes is None:
         theme.visualize_output()
 
     if export:
-        if series_id not in ['IUDZOS2', 'IUDZLT2']:
+        if series_id not in ["IUDZOS2", "IUDZLT2"]:
             # Check whether it is a percentage, relevant for exporting
             df_transformed = pd.DataFrame(df, columns=[series_id]) / 100
         else:
@@ -734,7 +755,9 @@ def plot_ameribor(
     Parameters
     ----------
     series_id: str
-        FRED ID of AMERIBOR data to plot, options: ['AMERIBOR', 'AMBOR30T', 'AMBOR90T', 'AMBOR1W', 'AMBOR1M', 'AMBOR3M', 'AMBOR6M', 'AMBOR1Y', 'AMBOR2Y', 'AMBOR30', 'AMBOR90']
+        FRED ID of AMERIBOR data to plot, options: ['AMERIBOR', 'AMBOR30T',
+        'AMBOR90T', 'AMBOR1W', 'AMBOR1M', 'AMBOR3M', 'AMBOR6M', 'AMBOR1Y',
+        'AMBOR2Y', 'AMBOR30', 'AMBOR90']
     start_date: Optional[str]
         Start date, formatted YYYY-MM-DD
     end_date: Optional[str]
@@ -746,7 +769,7 @@ def plot_ameribor(
     """
     if series_id in AMERIBOR_PARAMETER_TO_FRED_ID:
         series_id = AMERIBOR_PARAMETER_TO_FRED_ID[series_id]
-        
+
     df = fred_model.get_series_data(
         series_id=series_id, start_date=start_date, end_date=end_date
     )
@@ -765,12 +788,9 @@ def plot_ameribor(
         df.values,
         color=next(colors, "#FCED00"),
     )
-    
-    if series_id in ['AMBOR30T', 'AMBOR90T']:
-        ylabel = "Index"
-    else:
-        ylabel = "Yield (%)"
-        
+
+    ylabel = "Index" if series_id in ["AMBOR30T", "AMBOR90T"] else "Yield (%)"
+
     ax.set_title(ID_TO_NAME_AMERIBOR[series_id], fontsize=15)
     ax.set_ylabel(ylabel)
     theme.style_primary_axis(ax)
@@ -902,7 +922,7 @@ def plot_fed(
     """
     if series_id in FED_PARAMETER_TO_FRED_ID:
         series_id = FED_PARAMETER_TO_FRED_ID[series_id]
-        
+
     if overnight:
         # This piece of code adjusts the series id when the user wants to plot the overnight rate
         if series_id == "DFF":
@@ -923,6 +943,8 @@ def plot_fed(
             data_series.extend(["EFFR1", "EFFR25", "EFFR75", "EFFR99"])
         if target:
             data_series.extend(["DFEDTARU", "DFEDTARL"])
+
+        df = pd.DataFrame()
 
         for series in data_series:
             data = pd.DataFrame(
@@ -1206,9 +1228,8 @@ def plot_dwpcr(
         color=next(colors, "#FCED00"),
     )
     ax.set_title(
-        "Discount Window Primary Credit Rate "
-        + ID_TO_NAME_DWPCR[series_id],
-        fontsize=10
+        "Discount Window Primary Credit Rate " + ID_TO_NAME_DWPCR[series_id],
+        fontsize=10,
     )
     theme.style_primary_axis(ax)
 
@@ -1239,7 +1260,8 @@ def plot_ecb(
 
     The Governing Council of the ECB sets the key interest rates for the euro area:
 
-    - The interest rate on the main refinancing operations (MRO), which provide the bulk of liquidity to the banking system.
+    - The interest rate on the main refinancing operations (MRO), which provide
+     the bulk of liquidity to the banking system.
     - The rate on the deposit facility, which banks may use to make overnight deposits with the Eurosystem.
     - The rate on the marginal lending facility, which offers overnight credit to banks from the Eurosystem.
 
@@ -1503,9 +1525,9 @@ def plot_tmc(
         "10-Year Treasury Constant Maturity Minus "
         + ID_TO_NAME_TMC[series_id]
         + " Treasury Constant Maturity",
-        fontsize=10
+        fontsize=10,
     )
-    
+
     ax.set_ylabel("Yield (%)")
     theme.style_primary_axis(ax)
 
@@ -1574,7 +1596,7 @@ def plot_ffrmc(
     ax.set_title(
         ID_TO_NAME_FFRMC[series_id]
         + " Treasury Constant Maturity Minus Federal Funds Rate",
-        fontsize=10
+        fontsize=10,
     )
     theme.style_primary_axis(ax)
 
@@ -1740,7 +1762,8 @@ def plot_usrates(
     elif parameter == "cmn":
         title = f"{maturity.replace('_', ' ').title()} Treasury Constant Maturity Nominal Market Yield"
     elif parameter == "tips":
-        title = f"{maturity.replace('_', ' ').title()} Yields on Treasury inflation protected securities (TIPS) adjusted to constant maturities"
+        title = f"{maturity.replace('_', ' ').title()} Yields on Treasury inflation protected securities "
+        "(TIPS) adjusted to constant maturities"
 
     ax.set_title(title, fontsize=15)
     ax.set_ylabel("Yield (%)")
@@ -1813,11 +1836,10 @@ def plot_tbffr(
         color=next(colors, "#FCED00"),
     )
     ax.set_title(
-        ID_TO_NAME_TBFFR[series_id]
-        + " Treasury Bill Minus Federal Funds Rate"
+        ID_TO_NAME_TBFFR[series_id] + " Treasury Bill Minus Federal Funds Rate"
     )
     theme.style_primary_axis(ax)
-    
+
     ax.set_ylabel("Yield (%)")
     if external_axes is None:
         theme.visualize_output()
@@ -1829,6 +1851,7 @@ def plot_tbffr(
         pd.DataFrame(df, columns=["TBFFR"]) / 100,
         sheet_name,
     )
+
 
 @log_start_end(log=logger)
 @check_api_key(["API_FRED_KEY"])
@@ -1876,33 +1899,40 @@ def plot_icebofa(
         units = "index"
     elif data_type in ["yield", "yield_to_worst", "spread"]:
         units = "percent"
-    
+
     series = pd.read_excel(ice_bofa_path)
-    
+
     if options:
         return print_rich_table(
             series.drop(
-                ['Frequency', 'Units', 'Asset Class', 'FRED Series ID', 'Description'], axis=1)
-            [series['Type'].isin(['yield', 'yield_to_worst', 'total_return'] if data_type != 'spread' else ['spread'])]
+                ["Frequency", "Units", "Asset Class", "FRED Series ID", "Description"],
+                axis=1,
+            )[
+                series["Type"].isin(
+                    ["yield", "yield_to_worst", "total_return"]
+                    if data_type != "spread"
+                    else ["spread"]
+                )
+            ]
         )
-        
+
     series = series[
-        (series['Type'] == data_type) &
-        (series['Units'] == units) &
-        (series['Frequency'] == 'daily') &
-        (series['Asset Class'] == 'bonds') &
-        (series['Category'] == category) &
-        (series['Area'] == area) &
-        (series['Grade'] == grade)
+        (series["Type"] == data_type)
+        & (series["Units"] == units)
+        & (series["Frequency"] == "daily")
+        & (series["Asset Class"] == "bonds")
+        & (series["Category"] == category)
+        & (series["Area"] == area)
+        & (series["Grade"] == grade)
     ]
-    
+
     if series.empty:
-        console.print('The combination of parameters does not result in any data.')
+        console.print("The combination of parameters does not result in any data.")
         return pd.DataFrame()
-    
+
     series_dictionary = {}
 
-    for series_id, title in series[['FRED Series ID', 'Title']].values:
+    for series_id, title in series[["FRED Series ID", "Title"]].values:
         series_dictionary[title] = fred_model.get_series_data(
             series_id=series_id, start_date=start_date, end_date=end_date
         )
@@ -1919,7 +1949,7 @@ def plot_icebofa(
         return
 
     colors = cycle(theme.get_colors())
-    
+
     for column in df.columns:
         ax.plot(
             df.index,
@@ -1931,11 +1961,11 @@ def plot_icebofa(
     if len(df.columns) > 1:
         title = "ICE BofA Bond Benchmark Indices"
         ax.set_title(title, fontsize=15)
-        ax.legend(prop={'size': 8})
+        ax.legend(prop={"size": 8})
     else:
-         ax.set_title(title, fontsize=10)
-        
-    ax.set_ylabel(f"Yield (%)" if units == "percent" else "Index")
+        ax.set_title(title, fontsize=10)
+
+    ax.set_ylabel("Yield (%)" if units == "percent" else "Index")
     theme.style_primary_axis(ax)
 
     if external_axes is None:
@@ -1948,9 +1978,9 @@ def plot_icebofa(
             show_index=True,
             floatfmt=".3f",
         )
-        
+
     if description:
-        for title, description_text in series[['Title', 'Description']].values:
+        for title, description_text in series[["Title", "Description"]].values:
             console.print(f"\n[bold]{title}[/bold]")
             console.print(description_text)
 
@@ -2001,12 +2031,12 @@ def plot_moody(
     external_axes: Optional[List[plt.Axes]]
         External axes (1 axis is expected in the list)
     """
-    series_id = MOODY_TO_OPTIONS['Type'][data_type][spread if spread else 'index']['id']
-    name =  MOODY_TO_OPTIONS['Type'][data_type][spread if spread else 'index']['name']
-   
+    series_id = MOODY_TO_OPTIONS["Type"][data_type][spread if spread else "index"]["id"]
+    name = MOODY_TO_OPTIONS["Type"][data_type][spread if spread else "index"]["name"]
+
     series = fred_model.get_series_data(
         series_id=series_id, start_date=start_date, end_date=end_date
-        )
+    )
 
     df = pd.DataFrame(series, columns=[f"{data_type}_{spread if spread else 'index'}"])
     df.index = pd.to_datetime(df.index).date
@@ -2025,9 +2055,9 @@ def plot_moody(
         df.index,
         df.values,
         color=next(colors, "#FCED00"),
-        )
+    )
 
-    ax.set_title(name, fontsize=10)    
+    ax.set_title(name, fontsize=10)
     ax.set_ylabel("Yield (%)")
     theme.style_primary_axis(ax)
 
@@ -2049,7 +2079,8 @@ def plot_moody(
         df / 100,
         sheet_name,
     )
-    
+
+
 @log_start_end(log=logger)
 @check_api_key(["API_FRED_KEY"])
 def plot_cp(
@@ -2091,30 +2122,30 @@ def plot_cp(
         External axes (1 axis is expected in the list)
     """
     if grade == "a2_p2" and category != "non_financial":
-        console.print("Setting category to 'non_financial' given "
-                      f"the chosen {grade} grade only has data for 'non_financial'.")
-        category = "non_financial"
-        
-    series = pd.read_excel(commercial_paper_path)
-    
-    if options:
-        return print_rich_table(
-            series.drop(['Description', 'FRED Series ID'], axis=1)
+        console.print(
+            "Setting category to 'non_financial' given "
+            f"the chosen {grade} grade only has data for 'non_financial'."
         )
-    
+        category = "non_financial"
+
+    series = pd.read_excel(commercial_paper_path)
+
+    if options:
+        return print_rich_table(series.drop(["Description", "FRED Series ID"], axis=1))
+
     series = series[
-        (series['Maturity'] == maturity) &
-        (series['Category'] == category) &
-        (series['Grade'] == grade)
+        (series["Maturity"] == maturity)
+        & (series["Category"] == category)
+        & (series["Grade"] == grade)
     ]
 
     if series.empty:
-        console.print('The combination of parameters does not result in any data.')
+        console.print("The combination of parameters does not result in any data.")
         return pd.DataFrame()
-    
+
     series_dictionary = {}
 
-    for series_id, title in series[['FRED Series ID', 'Title']].values:
+    for series_id, title in series[["FRED Series ID", "Title"]].values:
         series_dictionary[title] = fred_model.get_series_data(
             series_id=series_id, start_date=start_date, end_date=end_date
         )
@@ -2131,7 +2162,7 @@ def plot_cp(
         return
 
     colors = cycle(theme.get_colors())
-    
+
     for column in df.columns:
         ax.plot(
             df.index,
@@ -2143,10 +2174,10 @@ def plot_cp(
     if len(df.columns) > 1:
         title = "Commercial Paper Interest Rates"
         ax.set_title(title, fontsize=15)
-        ax.legend(prop={'size': 8})
+        ax.legend(prop={"size": 8})
     else:
-         ax.set_title(title, fontsize=10)
-        
+        ax.set_title(title, fontsize=10)
+
     ax.set_ylabel("Yield (%)")
     theme.style_primary_axis(ax)
 
@@ -2160,9 +2191,9 @@ def plot_cp(
             show_index=True,
             floatfmt=".3f",
         )
-        
+
     if description:
-        for title, description_text in series[['Title', 'Description']].values:
+        for title, description_text in series[["Title", "Description"]].values:
             console.print(f"\n[bold]{title}[/bold]")
             console.print(description_text)
 
@@ -2173,7 +2204,8 @@ def plot_cp(
         df / 100,
         sheet_name,
     )
-    
+
+
 @log_start_end(log=logger)
 @check_api_key(["API_FRED_KEY"])
 def plot_spot(
@@ -2188,9 +2220,9 @@ def plot_spot(
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """
-    The spot rate for any maturity is the yield on a bond that provides 
-    a single payment at that maturity.  This is a zero coupon bond.  Because each 
-    spot rate pertains to a single cashflow, it is the relevant interest rate 
+    The spot rate for any maturity is the yield on a bond that provides
+    a single payment at that maturity. This is a zero coupon bond. Because each
+    spot rate pertains to a single cashflow, it is the relevant interest rate
     concept for discounting a pension liability at the same maturity.
 
     Parameters
@@ -2217,19 +2249,20 @@ def plot_spot(
         External axes (1 axis is expected in the list)
     """
     series = pd.read_excel(spot_rates_path)
-    
+
     series = series[
-        (series['Maturity'].isin(maturity)) &
-        (series['Category'].isin(category)) 
+        (series["Maturity"].isin(maturity)) & (series["Category"].isin(category))
     ]
-    
-    if "par_yield" in category and "par_yield" not in series['Category'].values:
-        console.print("No Par Yield data available for (some of) the selected maturities. "
-                      "Only 2y, 5y, 10y and 30y is available.")
-    
+
+    if "par_yield" in category and "par_yield" not in series["Category"].values:
+        console.print(
+            "No Par Yield data available for (some of) the selected maturities. "
+            "Only 2y, 5y, 10y and 30y is available."
+        )
+
     series_dictionary = {}
 
-    for series_id, title in series[['FRED Series ID', 'Title']].values:
+    for series_id, title in series[["FRED Series ID", "Title"]].values:
         series_dictionary[title] = fred_model.get_series_data(
             series_id=series_id, start_date=start_date, end_date=end_date
         )
@@ -2246,7 +2279,7 @@ def plot_spot(
         return
 
     colors = cycle(theme.get_colors())
-    
+
     for column in df.columns:
         ax.plot(
             df.index,
@@ -2258,10 +2291,10 @@ def plot_spot(
     if len(df.columns) > 1:
         title = "High Quality Market (HQM) Corporate Bond Rates"
         ax.set_title(title, fontsize=15)
-        ax.legend(prop={'size': 8})
+        ax.legend(prop={"size": 8})
     else:
-         ax.set_title(title, fontsize=10)
-        
+        ax.set_title(title, fontsize=10)
+
     ax.set_ylabel("Yield (%)")
     theme.style_primary_axis(ax)
 
@@ -2275,9 +2308,9 @@ def plot_spot(
             show_index=True,
             floatfmt=".3f",
         )
-        
+
     if description:
-        for title, description_text in series[['Title', 'Description']].values:
+        for title, description_text in series[["Title", "Description"]].values:
             console.print(f"\n[bold]{title}[/bold]")
             console.print(description_text)
 
@@ -2288,7 +2321,8 @@ def plot_spot(
         df / 100,
         sheet_name,
     )
-    
+
+
 @log_start_end(log=logger)
 @check_api_key(["API_FRED_KEY"])
 def plot_hqm(
@@ -2301,8 +2335,8 @@ def plot_hqm(
 ):
     """
     The HQM yield curve represents the high quality corporate bond market, i.e.,
-    corporate bonds rated AAA, AA, or A.  The HQM curve contains two regression terms. These 
-    terms are adjustment factors that blend AAA, AA, and A bonds into a single HQM yield curve 
+    corporate bonds rated AAA, AA, or A.  The HQM curve contains two regression terms. These
+    terms are adjustment factors that blend AAA, AA, and A bonds into a single HQM yield curve
     that is the market-weighted average (MWA) quality of high quality bonds.
 
     Parameters
@@ -2321,22 +2355,24 @@ def plot_hqm(
         External axes (1 axis is expected in the list)
     """
     df = pd.DataFrame()
-    data_types = ["spot", "par"] if par else ['spot']
-    
+    data_types = ["spot", "par"] if par else ["spot"]
+
     for types in data_types:
-        subset, date_of_yield = fred_model.get_yield_curve(date, True, spot_or_par=types)
-        subset.set_index('Maturity', inplace=True)
+        subset, date_of_yield = fred_model.get_yield_curve(
+            date, True, spot_or_par=types
+        )
+        subset.set_index("Maturity", inplace=True)
         subset.columns = [types]
-        
+
         df = pd.concat([df, subset], axis=1)
-            
+
     if par:
         # Drop NaNs because of length mismatch
         df = df.dropna()
-        
+
     if df.empty:
         console.print(f"[red]Yield data not found at {date_of_yield}.[/red]\n")
-    
+
     # This plot has 1 axis
     if not external_axes:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
@@ -2344,16 +2380,16 @@ def plot_hqm(
         (ax,) = external_axes
     else:
         return
-    
+
     for types in data_types:
         ax.plot(df.index, df[types], label=f"{types.title()} Yield")
-        
+
     ax.set_title(f"Spot{'and Par' if par else ''} Yield Curve for {date_of_yield}")
     ax.set_xlabel("Maturity")
     ax.set_ylabel("Yield (%)")
     ax.legend() if par else None
     theme.style_primary_axis(ax)
-    
+
     if external_axes is None:
         theme.visualize_output()
 

@@ -21,6 +21,8 @@ from openbb_terminal.helper_funcs import (
 
 logger = logging.getLogger(__name__)
 
+# pylint: disable=too-many-arguments, too-many-function-args
+
 
 @log_start_end(log=logger)
 def plot_treasuries(

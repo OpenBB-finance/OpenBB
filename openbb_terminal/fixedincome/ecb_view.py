@@ -23,6 +23,8 @@ from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
+# pylint: disable=too-many-function-args
+
 ID_TO_NAME = {
     "EST.B.EU000A2X2A25.WT": "Euro Short-Term Rate: Volume-Weighted Trimmed Mean Rate [Percent]",
     "EST.B.EU000A2X2A25.TT": "Euro Short-Term Rate: Total Volume [Millions of EUR]",
@@ -58,7 +60,9 @@ def plot_estr(
     Parameters
     ----------
     series_id: str
-        ECB ID of ESTR data to plot, options: ['EST.B.EU000A2X2A25.WT', 'EST.B.EU000A2X2A25.TT', 'EST.B.EU000A2X2A25.NT', 'EST.B.EU000A2X2A25.R75', 'EST.B.EU000A2X2A25.NB', 'EST.B.EU000A2X2A25.VL', 'EST.B.EU000A2X2A25.R25']
+        ECB ID of ESTR data to plot, options: ['EST.B.EU000A2X2A25.WT', 'EST.B.EU000A2X2A25.TT',
+        'EST.B.EU000A2X2A25.NT', 'EST.B.EU000A2X2A25.R75', 'EST.B.EU000A2X2A25.NB',
+        'EST.B.EU000A2X2A25.VL', 'EST.B.EU000A2X2A25.R25']
     start_date: Optional[str]
         Start date, formatted YYYY-MM-DD
     end_date: Optional[str]
@@ -68,8 +72,7 @@ def plot_estr(
     external_axes: Optional[List[plt.Axes]]
         External axes (1 axis is expected in the list)
     """
-    if series_id in ESTR_PARAMETER_TO_ECB_ID:
-        series_id = ESTR_PARAMETER_TO_ECB_ID[series_id]
+    series_id = ESTR_PARAMETER_TO_ECB_ID.get(series_id)
 
     df = ecb_model.get_series_data(
         series_id, start_date if start_date else "", end_date if end_date else ""

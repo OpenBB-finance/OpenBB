@@ -64,8 +64,8 @@ class FixedIncomeController(BaseController):
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             self.choices: dict = self.choices_default
-            
-            # These values need to work with multi options which 
+
+            # These values need to work with multi options which
             # is why they are defined here
             self.choices["treasury"]["--short"] = {
                 c: None for c in oecd_model.COUNTRY_TO_CODE
@@ -73,13 +73,13 @@ class FixedIncomeController(BaseController):
             self.choices["treasury"]["--long"] = {
                 c: None for c in oecd_model.COUNTRY_TO_CODE
             }
-            
+
             self.choices["spot"]["--maturity"] = {
-                c: None for c in fred_view.SPOT_TO_OPTIONS['Maturity']
+                c: None for c in fred_view.SPOT_TO_OPTIONS["Maturity"]
             }
             self.choices["spot"]["-m"] = "--maturity"
             self.choices["spot"]["--category"] = {
-                c: None for c in fred_view.SPOT_TO_OPTIONS['Category']
+                c: None for c in fred_view.SPOT_TO_OPTIONS["Category"]
             }
             self.choices["spot"]["-c"] = "--category"
             self.completer = NestedCompleter.from_nested_dict(self.choices)  # type: ignore
@@ -700,7 +700,7 @@ class FixedIncomeController(BaseController):
             type=str,
             help="Selected treasury constant maturity to subtract",
             default="3_month",
-            choices=fred_view.TMC_PARAMETER_TO_FRED_ID.keys()
+            choices=fred_view.TMC_PARAMETER_TO_FRED_ID.keys(),
         )
         parser.add_argument(
             "-s",
@@ -1003,7 +1003,7 @@ class FixedIncomeController(BaseController):
                     if ns_parser.sheet_name
                     else None,
                 )
-                
+
     @log_start_end(log=logger)
     def call_icebofa(self, other_args: List[str]):
         """Process icebofa command"""
@@ -1014,7 +1014,7 @@ class FixedIncomeController(BaseController):
             description="Plot various rates from the United States. This includes tbill (Treasury Bills), "
             "Constant Maturity treasuries (cmn) and Inflation Protected Treasuries (TIPS)",
         )
-            
+
         parser.add_argument(
             "-t",
             "--type",
@@ -1022,9 +1022,9 @@ class FixedIncomeController(BaseController):
             type=str,
             help="What type you'd like to collect data for",
             default="yield",
-            choices=fred_view.ICE_BOFA_TO_OPTIONS['Type']
+            choices=fred_view.ICE_BOFA_TO_OPTIONS["Type"],
         )
-        
+
         parser.add_argument(
             "-c",
             "--category",
@@ -1032,9 +1032,9 @@ class FixedIncomeController(BaseController):
             type=str,
             help="What category you'd like to collect data for",
             default="all",
-            choices=fred_view.ICE_BOFA_TO_OPTIONS['Category']
+            choices=fred_view.ICE_BOFA_TO_OPTIONS["Category"],
         )
-        
+
         parser.add_argument(
             "-a",
             "--area",
@@ -1042,9 +1042,9 @@ class FixedIncomeController(BaseController):
             type=str,
             help="What region you'd like to collect data for",
             default="us",
-            choices=fred_view.ICE_BOFA_TO_OPTIONS['Area']
+            choices=fred_view.ICE_BOFA_TO_OPTIONS["Area"],
         )
-        
+
         parser.add_argument(
             "-g",
             "--grade",
@@ -1052,9 +1052,9 @@ class FixedIncomeController(BaseController):
             type=str,
             help="What grade you'd like to collect data for",
             default="non_sovereign",
-            choices=fred_view.ICE_BOFA_TO_OPTIONS['Grade']
+            choices=fred_view.ICE_BOFA_TO_OPTIONS["Grade"],
         )
-        
+
         parser.add_argument(
             "-o",
             "--options",
@@ -1063,7 +1063,7 @@ class FixedIncomeController(BaseController):
             help="See the available options",
             default=False,
         )
-        
+
         parser.add_argument(
             "-d",
             "--description",
@@ -1108,7 +1108,7 @@ class FixedIncomeController(BaseController):
                 if ns_parser.sheet_name
                 else None,
             )
-                
+
     @log_start_end(log=logger)
     def call_moody(self, other_args: List[str]):
         """Process moody command"""
@@ -1119,9 +1119,9 @@ class FixedIncomeController(BaseController):
             description="Moody's Aaa and Baa are investment bonds that acts as an index of "
             "the performance of all bonds given an Aaa or Baa rating by Moody's Investors Service respectively"
             "These corporate bonds often are used in macroeconomics as an alternative to the federal ten-year "
-            "Treasury Bill as an indicator of the interest rate."
+            "Treasury Bill as an indicator of the interest rate.",
         )
-            
+
         parser.add_argument(
             "-t",
             "--type",
@@ -1129,16 +1129,16 @@ class FixedIncomeController(BaseController):
             type=str,
             help="What type you'd like to collect data for",
             default="aaa",
-            choices=fred_view.MOODY_TO_OPTIONS['Type'].keys()
+            choices=fred_view.MOODY_TO_OPTIONS["Type"].keys(),
         )
-        
+
         parser.add_argument(
             "--spread",
             dest="spread",
             type=str,
             help="Whether you want to show the spread",
             default=None,
-            choices=fred_view.MOODY_TO_OPTIONS['Spread']
+            choices=fred_view.MOODY_TO_OPTIONS["Spread"],
         )
 
         parser.add_argument(
@@ -1173,7 +1173,6 @@ class FixedIncomeController(BaseController):
                 else None,
             )
 
-
     @log_start_end(log=logger)
     def call_cp(self, other_args: List[str]):
         """Process cp command"""
@@ -1184,9 +1183,9 @@ class FixedIncomeController(BaseController):
             description="Commercial paper (CP) consists of short-term, promissory notes "
             "issued primarily by corporations. Maturities range up to 270 days but average "
             "about 30 days. Many companies use CP to raise cash needed for current "
-            "transactions, and many find it to be a lower-cost alternative to bank loans."
+            "transactions, and many find it to be a lower-cost alternative to bank loans.",
         )
-            
+
         parser.add_argument(
             "-m",
             "--maturity",
@@ -1194,9 +1193,9 @@ class FixedIncomeController(BaseController):
             type=str,
             help="What type you'd like to collect data for",
             default="30d",
-            choices=fred_view.CP_TO_OPTIONS['Maturity']
+            choices=fred_view.CP_TO_OPTIONS["Maturity"],
         )
-        
+
         parser.add_argument(
             "-c",
             "--category",
@@ -1204,9 +1203,9 @@ class FixedIncomeController(BaseController):
             type=str,
             help="What category you'd like to collect data for",
             default="financial",
-            choices=fred_view.CP_TO_OPTIONS['Category']
+            choices=fred_view.CP_TO_OPTIONS["Category"],
         )
-        
+
         parser.add_argument(
             "-g",
             "--grade",
@@ -1214,9 +1213,9 @@ class FixedIncomeController(BaseController):
             type=str,
             help="What grade you'd like to collect data for",
             default="aa",
-            choices=fred_view.CP_TO_OPTIONS['Grade']
+            choices=fred_view.CP_TO_OPTIONS["Grade"],
         )
-        
+
         parser.add_argument(
             "-o",
             "--options",
@@ -1225,7 +1224,7 @@ class FixedIncomeController(BaseController):
             help="See the available options",
             default=False,
         )
-        
+
         parser.add_argument(
             "-d",
             "--description",
@@ -1269,7 +1268,7 @@ class FixedIncomeController(BaseController):
                 if ns_parser.sheet_name
                 else None,
             )
-                
+
     @log_start_end(log=logger)
     def call_spot(self, other_args: List[str]):
         """Process spot command"""
@@ -1280,27 +1279,27 @@ class FixedIncomeController(BaseController):
             description="The spot rate for any maturity is the yield on a bond that provides "
             "a single payment at that maturity.  This is a zero coupon bond.  Because each "
             "spot rate pertains to a single cashflow, it is the relevant interest rate "
-            "concept for discounting a pension liability at the same maturity."
+            "concept for discounting a pension liability at the same maturity.",
         )
-            
+
         parser.add_argument(
             "-m",
             "--maturity",
             dest="maturity",
             type=str,
             help="What maturity you'd like to collect data for",
-            default='10y'
+            default="10y",
         )
-        
+
         parser.add_argument(
             "-c",
             "--category",
             dest="category",
             type=str,
             help="What category you'd like to collect data for",
-            default='spot_rate',
+            default="spot_rate",
         )
-        
+
         parser.add_argument(
             "-d",
             "--description",
@@ -1332,7 +1331,7 @@ class FixedIncomeController(BaseController):
         if ns_parser:
             maturity = list_from_str(ns_parser.maturity)
             category = list_from_str(ns_parser.category)
-            
+
             fred_view.plot_spot(
                 maturity=maturity,
                 category=category,
@@ -1345,7 +1344,7 @@ class FixedIncomeController(BaseController):
                 if ns_parser.sheet_name
                 else None,
             )
-            
+
     @log_start_end(log=logger)
     def call_hqm(self, other_args: List[str]):
         """Process hqdm command"""
@@ -1358,23 +1357,23 @@ class FixedIncomeController(BaseController):
             "terms are adjustment factors that blend AAA, AA, and A bonds into a single HQM yield curve "
             "that is the market-weighted average (MWA) quality of high quality bonds.",
         )
-        
+
         parser.add_argument(
             "-d",
             "--date",
             dest="date",
             type=valid_date,
             help="Define the date of the yield curve.",
-            default=None
+            default=None,
         )
-        
+
         parser.add_argument(
             "-p",
             "--par",
             dest="par",
-            action='store_true',
+            action="store_true",
             help="Whether to include the Par Yield.",
-            default=False
+            default=False,
         )
 
         ns_parser = self.parse_known_args_and_warn(
@@ -1390,7 +1389,7 @@ class FixedIncomeController(BaseController):
                 if ns_parser.sheet_name
                 else None,
             )
-    
+
     @log_start_end(log=logger)
     def call_icespread(self, other_args: List[str]):
         """Process icespread command"""
@@ -1401,7 +1400,7 @@ class FixedIncomeController(BaseController):
             description="Plot various rates from the United States. This includes tbill (Treasury Bills), "
             "Constant Maturity treasuries (cmn) and Inflation Protected Treasuries (TIPS)",
         )
-        
+
         parser.add_argument(
             "-c",
             "--category",
@@ -1409,9 +1408,9 @@ class FixedIncomeController(BaseController):
             type=str,
             help="What category you'd like to collect data for",
             default="all",
-            choices=fred_view.ICE_BOFA_TO_OPTIONS['Category']
+            choices=fred_view.ICE_BOFA_TO_OPTIONS["Category"],
         )
-        
+
         parser.add_argument(
             "-a",
             "--area",
@@ -1419,9 +1418,9 @@ class FixedIncomeController(BaseController):
             type=str,
             help="What region you'd like to collect data for",
             default="us",
-            choices=fred_view.ICE_BOFA_TO_OPTIONS['Area']
+            choices=fred_view.ICE_BOFA_TO_OPTIONS["Area"],
         )
-        
+
         parser.add_argument(
             "-g",
             "--grade",
@@ -1429,9 +1428,9 @@ class FixedIncomeController(BaseController):
             type=str,
             help="What grade you'd like to collect data for",
             default="non_sovereign",
-            choices=fred_view.ICE_BOFA_TO_OPTIONS['Grade']
+            choices=fred_view.ICE_BOFA_TO_OPTIONS["Grade"],
         )
-        
+
         parser.add_argument(
             "-o",
             "--options",
@@ -1440,7 +1439,7 @@ class FixedIncomeController(BaseController):
             help="See the available options",
             default=False,
         )
-        
+
         parser.add_argument(
             "-d",
             "--description",
@@ -1471,7 +1470,7 @@ class FixedIncomeController(BaseController):
         )
         if ns_parser:
             fred_view.plot_icebofa(
-                data_type='spread',
+                data_type="spread",
                 category=ns_parser.category,
                 area=ns_parser.area,
                 grade=ns_parser.grade,

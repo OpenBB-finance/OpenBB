@@ -62,7 +62,8 @@ def plot_cmn(
     Parameters
     ----------
     maturity: str
-        Maturity to plot, options: ['1_month', '3_month', '6_month', '1_year', '2_year', '3_year', '5_year', '7_year', '10_year', '20_year', '30_year']
+        Maturity to plot, options: ['1_month', '3_month', '6_month', '1_year', '2_year',
+        '3_year', '5_year', '7_year', '10_year', '20_year', '30_year']
     start_date: Optional[str]
         Start date, formatted YYYY-MM-DD
     end_date: Optional[str]
