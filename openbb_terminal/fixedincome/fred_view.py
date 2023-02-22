@@ -211,6 +211,27 @@ ICE_BOFA_TO_OPTIONS = {
         'public_sector']
 }
 
+MOODY_TO_OPTIONS = {
+    "Type": {"aaa": {
+        'index': {
+            "id": "DAAA", "name": "Moody's Seasoned Aaa Corporate Bond Yield"},
+        'treasury': {
+            "id": "AAA10Y", "name": "Moody's Seasoned Aaa Corporate Bond Yield Relative to Yield on 10-Year Treasury Constant Maturity"},
+        "fed_funds": 
+            {"id": "AAAFF", "name": "Moody's Seasoned Aaa Corporate Bond Minus Federal Funds Rate"},
+    },
+        "baa": {
+        'index': {
+            "id": "DBAA", "name": "Moody's Seasoned Baa Corporate Bond Yield"},
+        'treasury': {
+            "id": "BAA10Y", "name": "Moody's Seasoned Baa Corporate Bond Yield Relative to Yield on 10-Year Treasury Constant Maturity"},
+        "fed_funds": 
+            {"id": "BAAFF", "name": "Moody's Seasoned Baa Corporate Bond Minus Federal Funds Rate"},
+    },
+    },
+    "Spread": ['treasury', 'fed_funds']
+}
+
 CP_TO_OPTIONS = {
     'Maturity': ['15d', '30d', '60d', '7d', '90d', 'overnight'],
     'Category': ['asset_backed', 'financial', 'non_financial', 'spread'],

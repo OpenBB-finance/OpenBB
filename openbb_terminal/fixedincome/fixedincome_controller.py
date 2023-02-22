@@ -2112,6 +2112,70 @@ class FixedIncomeController(BaseController):
                     if ns_parser.sheet_name
                     else None,
                 )
+                
+    @log_start_end(log=logger)
+    def call_moody(self, other_args: List[str]):
+        """Process moody command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="moody",
+            description="Moody's Aaa and Baa are investment bonds that acts as an index of "
+            "the performance of all bonds given an Aaa or Baa rating by Moody's Investors Service respectively"
+            "These corporate bonds often are used in macroeconomics as an alternative to the federal ten-year "
+            "Treasury Bill as an indicator of the interest rate."
+        )
+            
+        parser.add_argument(
+            "-t",
+            "--type",
+            dest="data_type",
+            type=str,
+            help="What type you'd like to collect data for",
+            default="aaa",
+            choices=fred_view.MOODY_TO_OPTIONS['Type'].keys()
+        )
+        
+        parser.add_argument(
+            "--spread",
+            dest="spread",
+            type=str,
+            help="Whether you want to show the spread",
+            default=None,
+            choices=fred_view.MOODY_TO_OPTIONS['Spread']
+        )
+
+        parser.add_argument(
+            "-s",
+            "--start",
+            dest="start_date",
+            type=valid_date,
+            help="Starting date (YYYY-MM-DD) of data",
+            default="1980-01-01",
+        )
+        parser.add_argument(
+            "-e",
+            "--end",
+            dest="end_date",
+            type=valid_date,
+            help="Ending date (YYYY-MM-DD) of data",
+            default=None,
+        )
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES, raw=True
+        )
+        if ns_parser:
+            fred_view.plot_moody(
+                data_type=ns_parser.data_type,
+                spread=ns_parser.spread,
+                start_date=ns_parser.start_date,
+                end_date=ns_parser.end_date,
+                raw=ns_parser.raw,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )
 
 
     @log_start_end(log=logger)
@@ -2121,8 +2185,10 @@ class FixedIncomeController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="cp",
-            description="Plot various rates from the United States. This includes tbill (Treasury Bills), "
-            "Constant Maturity treasuries (cmn) and Inflation Protected Treasuries (TIPS)",
+            description="Commercial paper (CP) consists of short-term, promissory notes "
+            "issued primarily by corporations. Maturities range up to 270 days but average "
+            "about 30 days. Many companies use CP to raise cash needed for current "
+            "transactions, and many find it to be a lower-cost alternative to bank loans."
         )
             
         parser.add_argument(
@@ -2221,8 +2287,10 @@ class FixedIncomeController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="spot",
-            description="Plot various rates from the United States. This includes tbill (Treasury Bills), "
-            "Constant Maturity treasuries (cmn) and Inflation Protected Treasuries (TIPS)",
+            description="The spot rate for any maturity is the yield on a bond that provides "
+            "a single payment at that maturity.  This is a zero coupon bond.  Because each "
+            "spot rate pertains to a single cashflow, it is the relevant interest rate "
+            "concept for discounting a pension liability at the same maturity."
         )
             
         parser.add_argument(
@@ -2281,6 +2349,51 @@ class FixedIncomeController(BaseController):
                 description=ns_parser.description,
                 start_date=ns_parser.start_date,
                 end_date=ns_parser.end_date,
+                raw=ns_parser.raw,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )
+            
+    @log_start_end(log=logger)
+    def call_hqm(self, other_args: List[str]):
+        """Process hqdm command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="hqm",
+            description="The HQM yield curve represents the high quality corporate bond market, i.e., "
+            "corporate bonds rated AAA, AA, or A.  The HQM curve contains two regression terms. These "
+            "terms are adjustment factors that blend AAA, AA, and A bonds into a single HQM yield curve "
+            "that is the market-weighted average (MWA) quality of high quality bonds.",
+        )
+        
+        parser.add_argument(
+            "-d",
+            "--date",
+            dest="date",
+            type=valid_date,
+            help="Define the date of the yield curve.",
+            default=None
+        )
+        
+        parser.add_argument(
+            "-p",
+            "--par",
+            dest="par",
+            action='store_true',
+            help="Whether to include the Par Yield.",
+            default=False
+        )
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES, raw=True
+        )
+        if ns_parser:
+            fred_view.plot_cycrv(
+                date=ns_parser.date.strftime("%Y-%m-%d") if ns_parser.date else "",
+                par=ns_parser.par,
                 raw=ns_parser.raw,
                 export=ns_parser.export,
                 sheet_name=" ".join(ns_parser.sheet_name)
