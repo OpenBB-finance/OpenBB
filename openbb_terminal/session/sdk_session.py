@@ -18,7 +18,7 @@ def get_session(email: str, password: str, token: str, save: bool):
         console.print("Creating session from token.")
         session = session_model.create_session_from_token(token, save)  # type: ignore
 
-    if not session:
+    if not session and email:
         console.print("Creating session from email and password.")
         session = session_model.create_session(email, password, save)  # type: ignore
 
@@ -55,11 +55,10 @@ def login(
     >>> from openbb_terminal.sdk import openbb
     >>> openbb.login(email="your_email", password="your_password")
     """
-
-    session = Local.get_session()
+    if not (email or token):
+        session = Local.get_session()
 
     if not session:
-        console.print("No local session found. Creating new session.")
         session = get_session(email, password, token, keep_session)
     else:
         console.print("Using local session to login.")
