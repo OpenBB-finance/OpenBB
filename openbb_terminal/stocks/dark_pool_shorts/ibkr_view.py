@@ -36,6 +36,7 @@ def display_cost_to_borrow(
             headers=list(df.columns),
             show_index=False,
             title="Highest Cost to Borrow",
+            export=bool(export),
         )
 
     export_data(
