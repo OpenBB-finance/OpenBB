@@ -59,7 +59,7 @@ try:
     )
     # A test to ensure that the Twitter API key is correct,
     # otherwise we disable the Toolbar with Tweet News
-    twitter_api.user_timeline(screen_name="openbb_finance", count=1)
+    twitter_api.get_user(screen_name="openbb_finance")
 except tweepy.errors.Unauthorized:
     # Set toolbar tweet news to False because the Twitter API is not set up correctly
     obbff.TOOLBAR_TWEET_NEWS = False
