@@ -184,3 +184,31 @@ def get_interest_rate_data(
     result.sort_index(inplace=True)
 
     return result
+
+
+def get_treasury(
+    short_term: Optional[list] = None,
+    long_term: Optional[list] = None,
+    forecast: bool = False,
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
+) -> pd.DataFrame:
+    df_short, df_long = pd.DataFrame(), pd.DataFrame()
+
+    if short_term:
+        df_short = get_interest_rate_data(
+            f"short{'_forecast' if forecast else ''}",
+            short_term,
+            start_date if start_date is not None else "",
+            end_date if end_date is not None else "",
+        )
+    if long_term:
+        df_long = get_interest_rate_data(
+            f"long{'_forecast' if forecast else ''}",
+            long_term,
+            start_date if start_date is not None else "",
+            end_date if end_date is not None else "",
+        )
+
+    df = pd.concat([df_short, df_long], axis=1)
+    return df

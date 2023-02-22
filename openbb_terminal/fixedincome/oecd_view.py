@@ -5,7 +5,6 @@ import logging
 import os
 from typing import List, Optional
 
-import pandas as pd
 from matplotlib import pyplot as plt
 
 from openbb_terminal.config_plot import PLOT_DPI
@@ -68,24 +67,7 @@ def plot_treasuries(
     external_axes: Optional[List[plt.Axes]]
         External axes (1 axis is expected in the list)
     """
-    df_short, df_long = pd.DataFrame(), pd.DataFrame()
-
-    if short_term:
-        df_short = oecd_model.get_interest_rate_data(
-            f"short{'_forecast' if forecast else ''}",
-            short_term,
-            start_date if start_date is not None else "",
-            end_date if end_date is not None else "",
-        )
-    if long_term:
-        df_long = oecd_model.get_interest_rate_data(
-            f"long{'_forecast' if forecast else ''}",
-            long_term,
-            start_date if start_date is not None else "",
-            end_date if end_date is not None else "",
-        )
-
-    df = pd.concat([df_short, df_long], axis=1)
+    df = oecd_model.get_treasury(short_term, long_term, forecast, start_date, end_date)
 
     # This plot has 1 axis
     if not external_axes:

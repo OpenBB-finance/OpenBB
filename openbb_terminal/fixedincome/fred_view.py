@@ -1087,8 +1087,7 @@ def plot_iorb(
     external_axes: Optional[List[plt.Axes]]
         External axes (1 axis is expected in the list)
     """
-    df = fred_model.get_iorb(start_date=start_date, end_date=end_date
-    )
+    df = fred_model.get_iorb(start_date=start_date, end_date=end_date)
 
     # This plot has 1 axis
     if not external_axes:
@@ -1291,26 +1290,9 @@ def plot_ecb(
         External axes (1 axis is expected in the list)
     """
 
-    if interest_type:
-        df = pd.DataFrame(
-            fred_model.get_series_data(
-                series_id=NAME_TO_ID_ECB[interest_type],
-                start_date=start_date,
-                end_date=end_date,
-            ),
-            columns=[interest_type],
-        )
-
-    else:
-        series_dictionary = {}
-
-        for interest_name, value in NAME_TO_ID_ECB.items():
-            series_dictionary[interest_name.title()] = fred_model.get_series_data(
-                series_id=value, start_date=start_date, end_date=end_date
-            )
-
-        df = pd.DataFrame.from_dict(series_dictionary)
-        df.index = pd.to_datetime(df.index).date
+    df = fred_model.get_ecb(
+        interest_type=interest_type, start_date=start_date, end_date=end_date
+    )
 
     # This plot has 1 axis
     if not external_axes:
@@ -1751,9 +1733,9 @@ def plot_usrates(
     external_axes: Optional[List[plt.Axes]]
         External axes (1 axis is expected in the list)
     """
-    series_id = USARATES_TO_FRED_ID[maturity][parameter]
-    df = fred_model.get_series_data(
-        series_id=series_id, start_date=start_date, end_date=end_date
+    series_id = fred_model.USARATES_TO_FRED_ID[maturity][parameter]
+    df = fred_model.get_usrates(
+        parameter=parameter, maturity=maturity, start_date=start_date, end_date=end_date
     )
 
     # This plot has 1 axis

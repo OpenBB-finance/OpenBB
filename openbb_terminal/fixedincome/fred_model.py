@@ -810,9 +810,11 @@ def get_fed(
         series_id=series_id, start_date=start_date, end_date=end_date
     )
 
-def get_iorb(    start_date: Optional[str] = None,
-    end_date: Optional[str] = None,)->pd.DataFrame:
 
+def get_iorb(
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
+) -> pd.DataFrame:
     return get_series_data(series_id="IORB", start_date=start_date, end_date=end_date)
 
 
@@ -822,15 +824,59 @@ def get_projection(long_run: bool = False):
     for projection, values in NAME_TO_ID_PROJECTION.items():
         data_series[projection] = get_series_data(series_id=values[long_run])
 
-
     data_series_df = pd.DataFrame.from_dict(data_series).dropna()
     data_series_df.index = pd.to_datetime(data_series_df.index).date
 
     return data_series_df
 
-def get_dwpcr(parameter:str="daily_excl_weekend",
-              start_date: Optional[str] = None,
-              end_date: Optional[str] = None,)->pd.DataFrame:
 
+def get_dwpcr(
+    parameter: str = "daily_excl_weekend",
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
+) -> pd.DataFrame:
     series_id = DWPCR_PARAMETER_TO_FRED_ID[parameter]
-    return get_series_data(series_id=series_id, start_date=start_date, end_date=end_date)
+    return get_series_data(
+        series_id=series_id, start_date=start_date, end_date=end_date
+    )
+
+
+def get_ecb(
+    interest_type: Optional[str] = None,
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
+) -> pd.DataFrame:
+    if interest_type:
+        df = pd.DataFrame(
+            get_series_data(
+                series_id=NAME_TO_ID_ECB[interest_type],
+                start_date=start_date,
+                end_date=end_date,
+            ),
+            columns=[interest_type],
+        )
+
+    else:
+        series_dictionary = {}
+
+        for interest_name, value in NAME_TO_ID_ECB.items():
+            series_dictionary[interest_name.title()] = get_series_data(
+                series_id=value, start_date=start_date, end_date=end_date
+            )
+
+        df = pd.DataFrame.from_dict(series_dictionary)
+        df.index = pd.to_datetime(df.index).date
+
+    return df
+
+
+def get_usrates(
+    parameter: str = "tbills",
+    maturity: str = "3_months",
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
+):
+    series_id = USARATES_TO_FRED_ID[maturity][parameter]
+    return get_series_data(
+        series_id=series_id, start_date=start_date, end_date=end_date
+    )
