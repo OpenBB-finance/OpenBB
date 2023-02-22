@@ -38,8 +38,8 @@ from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_positive,
     get_flair,
-    update_news_from_tweet_to_be_displayed,
     parse_and_split_input,
+    update_news_from_tweet_to_be_displayed,
 )
 from openbb_terminal.keys_model import first_time_user
 from openbb_terminal.menu import is_papermill, session
