@@ -82,5 +82,3 @@ class EconomyRoot(Category):
         self.treasury_maturities = lib.economy_econdb_model.get_treasury_maturities
         self.usbonds = lib.economy_wsj_model.us_bonds
         self.valuation = lib.economy_finviz_model.get_valuation_data
-        self.ycrv = lib.economy_fred_model.get_yield_curve
-        self.ycrv_chart = lib.economy_fred_view.display_yield_curve
