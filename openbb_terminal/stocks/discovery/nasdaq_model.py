@@ -27,7 +27,7 @@ def get_retail_tickers() -> pd.DataFrame:
         Dataframe of tickers
     """
     r = request(
-        f"https://data.nasdaq.com/api/v3/datatables/NDAQ/RTAT10/?api_key={cfg.API_KEY_QUANDL}"
+        f"https://data.nasdaq.com/api/v3/datatables/NDAQ/RTAT10/?api_key={cfg.Credentials.api_key_quandl}"
     )
 
     df = pd.DataFrame()

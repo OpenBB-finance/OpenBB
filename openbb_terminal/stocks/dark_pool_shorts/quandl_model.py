@@ -33,7 +33,7 @@ def get_short_interest(symbol: str, nyse: bool = False) -> pd.DataFrame:
     pd.DataFrame
         short interest volume data
     """
-    quandl.ApiConfig.api_key = cfg.API_KEY_QUANDL
+    quandl.ApiConfig.api_key = cfg.Credentials.API_KEY_QUANDL
 
     df = pd.DataFrame()
 
