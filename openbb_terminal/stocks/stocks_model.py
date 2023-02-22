@@ -291,7 +291,9 @@ def get_quote(symbol: str) -> pd.DataFrame:
     df_fa = pd.DataFrame()
 
     try:
-        df_fa = fa.quote(symbol, cfg.API_KEY_FINANCIALMODELINGPREP)
+        df_fa = fa.quote(
+            symbol, get_current_user().credentials.API_KEY_FINANCIALMODELINGPREP
+        )
     # Invalid API Keys
     except ValueError:
         console.print("[red]Invalid API Key[/red]\n")
