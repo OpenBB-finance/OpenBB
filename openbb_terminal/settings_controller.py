@@ -9,9 +9,8 @@ import os.path
 from pathlib import Path
 from typing import List, Optional, Union
 
-import pytz
-
 # IMPORTATION THIRDPARTY
+import pytz
 from dotenv import set_key
 
 # IMPORTATION INTERNAL
@@ -28,9 +27,9 @@ from openbb_terminal.core.config.paths import (
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
+    check_positive,
     get_flair,
     get_user_timezone_or_invalid,
-    check_positive,
     parse_and_split_input,
 )
 from openbb_terminal.menu import session

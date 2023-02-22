@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 # pylint: disable=C0301,C0302,R0902,global-statement,too-many-boolean-expressions
 
+# IMPORTS STANDARD
 import argparse
 import difflib
 import json
@@ -13,12 +14,14 @@ from abc import ABCMeta, abstractmethod
 from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional, Union
 
+# IMPORTS THIRDPARTY
 import numpy as np
 import pandas as pd
 from prompt_toolkit.formatted_text import HTML
 from prompt_toolkit.styles import Style
 from rich.markdown import Markdown
 
+# IMPORTS INTERNAL
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.core.completer.choices import build_controller_choice_map
@@ -41,8 +44,8 @@ from openbb_terminal.helper_funcs import (
     set_command_location,
     support_message,
     system_clear,
-    valid_date,
     update_news_from_tweet_to_be_displayed,
+    valid_date,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.rich_config import console, get_ordered_list_sources

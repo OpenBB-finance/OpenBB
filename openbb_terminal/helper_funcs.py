@@ -16,7 +16,6 @@ from datetime import (
     datetime,
     timedelta,
 )
-from dateutil.relativedelta import relativedelta
 from difflib import SequenceMatcher
 from functools import lru_cache
 from pathlib import Path
@@ -32,6 +31,7 @@ import pytz
 import requests
 import tweepy
 import yfinance as yf
+from dateutil.relativedelta import relativedelta
 from holidays import US as us_holidays
 from pandas._config.config import get_option
 from pandas.plotting import register_matplotlib_converters
@@ -1927,12 +1927,11 @@ def update_news_from_tweet_to_be_displayed() -> str:
             tweet_hr = f"{last_tweet_dt.hour}"
             tweet_min = f"{last_tweet_dt.minute}"
             # Update time based on timezone specified by user
-            if obbff.USE_DATETIME and get_user_timezone_or_invalid() != "INVALID":
-                if dhours > 0 or dminutes > 0:
-                    tweet_hr = f"{round((int(last_tweet_dt.hour) - dhours) % 60):02}"
-                    tweet_min = (
-                        f"{round((int(last_tweet_dt.minute) - dminutes) % 60):02}"
-                    )
+            if (
+                obbff.USE_DATETIME and get_user_timezone_or_invalid() != "INVALID"
+            ) and (dhours > 0 or dminutes > 0):
+                tweet_hr = f"{round((int(last_tweet_dt.hour) - dhours) % 60):02}"
+                tweet_min = f"{round((int(last_tweet_dt.minute) - dminutes) % 60):02}"
 
             # Update NEWS_TWEET with the new news tweet found
             news_tweet = f"{tweet_hr}:{tweet_min} - @{handle_to_use} - {url}\n\n{news_tweet_to_use}"
