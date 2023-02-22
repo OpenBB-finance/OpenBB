@@ -2091,27 +2091,21 @@ class FixedIncomeController(BaseController):
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES, raw=True
         )
         if ns_parser:
-            if ns_parser.options:
-                print_rich_table(
-                    pd.DataFrame.from_dict(fred_view.ICE_BOFA_TO_OPTIONS, orient='index').T.fillna("-"),
-                    show_index=False,
-                    title="Available options for each parameter",
-                )
-            else:
-                fred_view.plot_icebofa(
-                    data_type=ns_parser.data_type,
-                    category=ns_parser.category,
-                    area=ns_parser.area,
-                    grade=ns_parser.grade,
-                    description=ns_parser.description,
-                    start_date=ns_parser.start_date,
-                    end_date=ns_parser.end_date,
-                    raw=ns_parser.raw,
-                    export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
-                )
+            fred_view.plot_icebofa(
+                data_type=ns_parser.data_type,
+                category=ns_parser.category,
+                area=ns_parser.area,
+                grade=ns_parser.grade,
+                options=ns_parser.options,
+                description=ns_parser.description,
+                start_date=ns_parser.start_date,
+                end_date=ns_parser.end_date,
+                raw=ns_parser.raw,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )
                 
     @log_start_end(log=logger)
     def call_moody(self, other_args: List[str]):
@@ -2259,26 +2253,20 @@ class FixedIncomeController(BaseController):
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES, raw=True
         )
         if ns_parser:
-            if ns_parser.options:
-                print_rich_table(
-                    pd.DataFrame.from_dict(fred_view.CP_TO_OPTIONS, orient='index').T.fillna("-"),
-                    show_index=False,
-                    title="Available options for each parameter",
-                )
-            else:
-                fred_view.plot_cp(
-                    maturity=ns_parser.maturity,
-                    category=ns_parser.category,
-                    grade=ns_parser.grade,
-                    description=ns_parser.description,
-                    start_date=ns_parser.start_date,
-                    end_date=ns_parser.end_date,
-                    raw=ns_parser.raw,
-                    export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
-                )
+            fred_view.plot_cp(
+                maturity=ns_parser.maturity,
+                category=ns_parser.category,
+                grade=ns_parser.grade,
+                options=ns_parser.options,
+                description=ns_parser.description,
+                start_date=ns_parser.start_date,
+                end_date=ns_parser.end_date,
+                raw=ns_parser.raw,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )
                 
     @log_start_end(log=logger)
     def call_spot(self, other_args: List[str]):
@@ -2480,28 +2468,22 @@ class FixedIncomeController(BaseController):
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES, raw=True
         )
         if ns_parser:
-            if ns_parser.options:
-                print_rich_table(
-                    pd.DataFrame.from_dict(fred_view.ICE_BOFA_TO_OPTIONS, orient='index').drop('Type').T.fillna("-"),
-                    show_index=False,
-                    title="Available options for each parameter",
-                )
-            else:
-                fred_view.plot_icebofa(
-                    data_type='spread',
-                    category=ns_parser.category,
-                    area=ns_parser.area,
-                    grade=ns_parser.grade,
-                    description=ns_parser.description,
-                    start_date=ns_parser.start_date,
-                    end_date=ns_parser.end_date,
-                    raw=ns_parser.raw,
-                    export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
-                )
-    
+            fred_view.plot_icebofa(
+                data_type='spread',
+                category=ns_parser.category,
+                area=ns_parser.area,
+                grade=ns_parser.grade,
+                options=ns_parser.options,
+                description=ns_parser.description,
+                start_date=ns_parser.start_date,
+                end_date=ns_parser.end_date,
+                raw=ns_parser.raw,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )
+
     @log_start_end(log=logger)
     def call_tbffr(self, other_args: List[str]):
         """Process tbffr command"""
