@@ -1934,7 +1934,7 @@ class FixedIncomeController(BaseController):
             type=str,
             help="Specific Treasury Bill Secondary Market Rate data to plot",
             default="3_month",
-            choices=list(fred_view.USARATES_TO_FRED_ID.keys()),
+            choices=list(fred_model.USARATES_TO_FRED_ID.keys()),
         )
         parser.add_argument(
             "-p",
@@ -1977,13 +1977,15 @@ class FixedIncomeController(BaseController):
         if ns_parser:
             if ns_parser.options:
                 print_rich_table(
-                    pd.DataFrame.from_dict(fred_view.USARATES_TO_FRED_ID).T.fillna("-"),
+                    pd.DataFrame.from_dict(fred_model.USARATES_TO_FRED_ID).T.fillna(
+                        "-"
+                    ),
                     show_index=True,
                     title="Available options including FRED Series name",
                 )
             elif (
                 ns_parser.parameter
-                not in fred_view.USARATES_TO_FRED_ID[ns_parser.maturity]
+                not in fred_model.USARATES_TO_FRED_ID[ns_parser.maturity]
             ):
                 console.print(
                     f"[red]Maturity {ns_parser.maturity.replace('_', ' ')} is not "
@@ -2020,7 +2022,7 @@ class FixedIncomeController(BaseController):
             type=str,
             help="What type you'd like to collect data for",
             default="yield",
-            choices=fred_view.ICE_BOFA_TO_OPTIONS["Type"],
+            choices=fred_model.ICE_BOFA_TO_OPTIONS["Type"],
         )
 
         parser.add_argument(
@@ -2030,7 +2032,7 @@ class FixedIncomeController(BaseController):
             type=str,
             help="What category you'd like to collect data for",
             default="all",
-            choices=fred_view.ICE_BOFA_TO_OPTIONS["Category"],
+            choices=fred_model.ICE_BOFA_TO_OPTIONS["Category"],
         )
 
         parser.add_argument(
@@ -2040,7 +2042,7 @@ class FixedIncomeController(BaseController):
             type=str,
             help="What region you'd like to collect data for",
             default="us",
-            choices=fred_view.ICE_BOFA_TO_OPTIONS["Area"],
+            choices=fred_model.ICE_BOFA_TO_OPTIONS["Area"],
         )
 
         parser.add_argument(
@@ -2050,7 +2052,7 @@ class FixedIncomeController(BaseController):
             type=str,
             help="What grade you'd like to collect data for",
             default="non_sovereign",
-            choices=fred_view.ICE_BOFA_TO_OPTIONS["Grade"],
+            choices=fred_model.ICE_BOFA_TO_OPTIONS["Grade"],
         )
 
         parser.add_argument(
@@ -2191,7 +2193,7 @@ class FixedIncomeController(BaseController):
             type=str,
             help="What type you'd like to collect data for",
             default="30d",
-            choices=fred_view.CP_TO_OPTIONS["Maturity"],
+            choices=fred_model.CP_TO_OPTIONS["Maturity"],
         )
 
         parser.add_argument(
@@ -2201,7 +2203,7 @@ class FixedIncomeController(BaseController):
             type=str,
             help="What category you'd like to collect data for",
             default="financial",
-            choices=fred_view.CP_TO_OPTIONS["Category"],
+            choices=fred_model.CP_TO_OPTIONS["Category"],
         )
 
         parser.add_argument(
@@ -2211,7 +2213,7 @@ class FixedIncomeController(BaseController):
             type=str,
             help="What grade you'd like to collect data for",
             default="aa",
-            choices=fred_view.CP_TO_OPTIONS["Grade"],
+            choices=fred_model.CP_TO_OPTIONS["Grade"],
         )
 
         parser.add_argument(
@@ -2406,7 +2408,7 @@ class FixedIncomeController(BaseController):
             type=str,
             help="What category you'd like to collect data for",
             default="all",
-            choices=fred_view.ICE_BOFA_TO_OPTIONS["Category"],
+            choices=fred_model.ICE_BOFA_TO_OPTIONS["Category"],
         )
 
         parser.add_argument(
@@ -2416,7 +2418,7 @@ class FixedIncomeController(BaseController):
             type=str,
             help="What region you'd like to collect data for",
             default="us",
-            choices=fred_view.ICE_BOFA_TO_OPTIONS["Area"],
+            choices=fred_model.ICE_BOFA_TO_OPTIONS["Area"],
         )
 
         parser.add_argument(
@@ -2426,7 +2428,7 @@ class FixedIncomeController(BaseController):
             type=str,
             help="What grade you'd like to collect data for",
             default="non_sovereign",
-            choices=fred_view.ICE_BOFA_TO_OPTIONS["Grade"],
+            choices=fred_model.ICE_BOFA_TO_OPTIONS["Grade"],
         )
 
         parser.add_argument(
@@ -2499,7 +2501,7 @@ class FixedIncomeController(BaseController):
             type=str,
             help="Selected Treasury Bill",
             default="3_month",
-            choices=fred_view.TBFFR_PARAMETER_TO_FRED_ID.keys(),
+            choices=fred_model.TBFFR_PARAMETER_TO_FRED_ID.keys(),
         )
         parser.add_argument(
             "-s",
