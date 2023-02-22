@@ -72,97 +72,6 @@ commercial_paper_path = pathlib.Path(__file__).parent / "commercial_paper.xlsx"
 spot_rates_path = pathlib.Path(__file__).parent / "corporate_spot_rates.xlsx"
 
 
-ID_TO_NAME_SOFR = {
-    "SOFR": "Secured Overnight Financing Rate (SOFR)",
-    "SOFR30DAYAVG": "30-Day Average SOFR",
-    "SOFR90DAYAVG": "90-Day Average SOFR",
-    "SOFR180DAYAVG": "180-Day Average SOFR",
-    "SOFRINDEX": "SOFR Index",
-}
-ID_TO_NAME_SONIA = {
-    "IUDSOIA": "Daily Sterling Overnight Index Average (SONIA) Rate",
-    "IUDZOS2": "SONIA Compounded Index",
-    "IUDZLS6": "SONIA Rate: 10th percentile",
-    "IUDZLS7": "SONIA Rate: 25th percentile",
-    "IUDZLS8": "SONIA Rate: 75th percentile",
-    "IUDZLS9": "SONIA Rate: 90th percentile",
-    "IUDZLT2": "SONIA Rate Total Nominal Value",
-}
-ID_TO_NAME_AMERIBOR = {
-    "AMERIBOR": "Overnight Unsecured AMERIBOR Benchmark Interest Rate",
-    "AMBOR30T": "AMERIBOR Term-30 Derived Interest Rate Index",
-    "AMBOR90T": "AMERIBOR Term-90 Derived Interest Rate Index",
-    "AMBOR1W": "1-Week AMERIBOR Term Structure of Interest Rates",
-    "AMBOR1M": "1-Month AMERIBOR Term Structure of Interest Rates",
-    "AMBOR3M": "3-Month AMERIBOR Term Structure of Interest Rates",
-    "AMBOR6M": "6-Month AMERIBOR Term Structure of Interest Rates",
-    "AMBOR1Y": "1-Year AMERIBOR Term Structure of Interest Rates",
-    "AMBOR2Y": "2-Year AMERIBOR Term Structure of Interest Rates",
-    "AMBOR30": "30-Day Moving Average AMERIBOR Benchmark Interest Rate",
-    "AMBOR90": "90-Day Moving Average AMERIBOR Benchmark Interest Rate",
-}
-ID_TO_NAME_FED = {
-    "FEDFUNDS": "Monthly Effective Federal Funds Rate",
-    "EFFR": "Daily Effective Federal Funds Rate",
-    "DFF": "Daily Effective Federal Funds Rate",
-    "OBFR": "Daily Overnight Bank Funding Rate",
-    "FF": "Weekly Effective Federal Funds Rate",
-    "RIFSPFFNB": "Daily (Excl. Weekends) Effective Federal Funds Rate",
-    "RIFSPFFNA": "Annual Effective Federal Funds Rate",
-    "RIFSPFFNBWAW": "Biweekly Effective Federal Funds Rate",
-    "EFFRVOL": "Effective Federal Funds Volume",
-    "OBFRVOL": "Overnight Bank Funding Volume",
-}
-
-ID_TO_NAME_DWPCR = {
-    "MPCREDIT": "Monthly",
-    "RIFSRPF02ND": "Daily (incl. Weekends)",
-    "WPCREDIT": "Weekly",
-    "DPCREDIT": "Daily (excl. Weekends)",
-    "RIFSRPF02NA": "Annual",
-}
-ID_TO_NAME_TMC = {
-    "T10Y3M": "3-Month",
-    "T10Y2Y": "2-Year",
-}
-ID_TO_NAME_FFRMC = {
-    "T10YFF": "10-Year",
-    "T5YFF": "5-Year",
-    "T1YFF": "1-Year",
-    "T6MFF": "6-Month",
-    "T3MFF": "3-Month",
-}
-ID_TO_NAME_SECONDARY = {
-    "TB3MS": "3-Month",
-    "DTB4WK": "4-Week",
-    "DTB1YR": "1-Year",
-    "DTB6": "6-Month",
-}
-ID_TO_NAME_TIPS = {
-    "DFII5": "5-Year",
-    "DFII7": "7-Year",
-    "DFII10": "10-Year",
-    "DFII20": "20-Year",
-    "DFII30": "30-Year",
-}
-ID_TO_NAME_CMN = {
-    "DGS1MO": "1 Month",
-    "DGS3MO": "3 Month",
-    "DGS6MO": "6 Month",
-    "DGS1": "1 Year",
-    "DGS2": "2 Year",
-    "DGS3": "3 Year",
-    "DGS5": "5 Year",
-    "DGS7": "7 Year",
-    "DGS10": "10 Year",
-    "DGS20": "20 Year",
-    "DGS30": "30 Year",
-}
-ID_TO_NAME_TBFFR = {
-    "TB3SMFFM": "3 Month",
-    "TB6SMFFM": "6 Month",
-}
-
 NAME_TO_ID_PROJECTION = {
     "Range High": ["FEDTARRH", "FEDTARRHLR"],
     "Central tendency High": ["FEDTARCTH", "FEDTARCTHLR"],
@@ -247,13 +156,6 @@ MOODY_TO_OPTIONS: Dict[str, Dict] = {
     },
     "Spread": ["treasury", "fed_funds"],  # type: ignore
 }
-
-CP_TO_OPTIONS = {
-    "Maturity": ["15d", "30d", "60d", "7d", "90d", "overnight"],
-    "Category": ["asset_backed", "financial", "non_financial", "spread"],
-    "Grade": ["a2_p2", "aa"],
-}
-
 SPOT_TO_OPTIONS = {
     "Maturity": [
         "1y",
@@ -458,6 +360,11 @@ SPOT_TO_OPTIONS = {
         "100y",
     ],
     "Category": ["spot_rate", "par_yield"],
+}
+CP_TO_OPTIONS = {
+    "Maturity": ["15d", "30d", "60d", "7d", "90d", "overnight"],
+    "Category": ["asset_backed", "financial", "non_financial", "spread"],
+    "Grade": ["a2_p2", "aa"],
 }
 
 ESTR_PARAMETER_TO_ECB_ID = {
@@ -719,8 +626,9 @@ def get_estr(
 ) -> pd.DataFrame:
     series_id = ESTR_PARAMETER_TO_ECB_ID.get(parameter, "")
 
-    df = get_series_data(series_id=series_id, start_date=start_date, end_date=end_date)
-    return df
+    return pd.DataFrame(
+        get_series_data(series_id=series_id, start_date=start_date, end_date=end_date)
+    )
 
 
 @log_start_end(log=logger)
@@ -732,8 +640,9 @@ def get_sofr(
 ) -> pd.DataFrame:
     series_id = SOFR_PARAMETER_TO_FRED_ID.get(parameter, "")
 
-    df = get_series_data(series_id=series_id, start_date=start_date, end_date=end_date)
-    return df
+    return pd.DataFrame(
+        get_series_data(series_id=series_id, start_date=start_date, end_date=end_date)
+    )
 
 
 @log_start_end(log=logger)
@@ -745,8 +654,9 @@ def get_sonia(
 ) -> pd.DataFrame:
     series_id = SONIA_PARAMETER_TO_FRED_ID.get(parameter, "")
 
-    df = get_series_data(series_id=series_id, start_date=start_date, end_date=end_date)
-    return df
+    return pd.DataFrame(
+        get_series_data(series_id=series_id, start_date=start_date, end_date=end_date)
+    )
 
 
 @log_start_end(log=logger)
@@ -806,8 +716,8 @@ def get_fed(
 
         df = df.dropna()
         return df
-    return get_series_data(
-        series_id=series_id, start_date=start_date, end_date=end_date
+    return pd.DataFrame(
+        get_series_data(series_id=series_id, start_date=start_date, end_date=end_date)
     )
 
 
@@ -815,7 +725,9 @@ def get_iorb(
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
 ) -> pd.DataFrame:
-    return get_series_data(series_id="IORB", start_date=start_date, end_date=end_date)
+    return pd.DataFrame(
+        get_series_data(series_id="IORB", start_date=start_date, end_date=end_date)
+    )
 
 
 def get_projection(long_run: bool = False):
@@ -836,8 +748,8 @@ def get_dwpcr(
     end_date: Optional[str] = None,
 ) -> pd.DataFrame:
     series_id = DWPCR_PARAMETER_TO_FRED_ID[parameter]
-    return get_series_data(
-        series_id=series_id, start_date=start_date, end_date=end_date
+    return pd.DataFrame(
+        get_series_data(series_id=series_id, start_date=start_date, end_date=end_date)
     )
 
 
@@ -877,8 +789,8 @@ def get_usrates(
     end_date: Optional[str] = None,
 ):
     series_id = USARATES_TO_FRED_ID[maturity][parameter]
-    return get_series_data(
-        series_id=series_id, start_date=start_date, end_date=end_date
+    return pd.DataFrame(
+        get_series_data(series_id=series_id, start_date=start_date, end_date=end_date)
     )
 
 
@@ -1032,7 +944,7 @@ def get_tbffr(
 ) -> pd.DataFrame:
     series_id = TBFFR_PARAMETER_TO_FRED_ID[parameter]
 
-    return get_series_data(series_id, start_date, end_date)
+    return pd.DataFrame(get_series_data(series_id, start_date, end_date))
 
 
 def get_icespread(
@@ -1049,7 +961,7 @@ def get_ffrmc(
     end_date: Optional[str] = None,
 ) -> pd.DataFrame:
     series_id = FFRMC_PARAMETER_TO_FRED_ID[parameter]
-    return get_series_data(series_id, start_date, end_date)
+    return pd.DataFrame(get_series_data(series_id, start_date, end_date))
 
 
 def get_tmc(
@@ -1058,4 +970,4 @@ def get_tmc(
     end_date: Optional[str] = None,
 ) -> pd.DataFrame:
     series_id = TMC_PARAMETER_TO_FRED_ID[parameter]
-    return get_series_data(series_id, start_date, end_date)
+    return pd.DataFrame(get_series_data(series_id, start_date, end_date))
