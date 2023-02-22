@@ -38,6 +38,9 @@ from openbb_terminal.rich_config import MenuText, console
 
 logger = logging.getLogger(__name__)
 
+def no_ticker_message():
+    """Print message when no ticker is loaded"""
+    console.print("[red]No data loaded. Use 'load' command to load a symbol[/red]")
 
 def no_ticker_message():
     """Print message when no ticker is loaded"""
