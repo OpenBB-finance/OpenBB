@@ -650,28 +650,28 @@ def test_set_bitquery_key(
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
-    "args, persist, show_output, expected",
+    "access_token, persist, show_output, expected",
     [
         (
-            ["test_key", "test_secret", "test_access_token"],
+            "test_access_token",
             False,
             True,
             keys_model.KeyStatus.DEFINED_TEST_FAILED,
         ),
         (
-            ["test_key", "test_secret", "test_access_token"],
+            "test_access_token",
             False,
             False,
             keys_model.KeyStatus.DEFINED_TEST_FAILED,
         ),
         (
-            ["test_key", "test_secret", "test_access_token"],
+            "test_access_token",
             True,
             True,
             keys_model.KeyStatus.DEFINED_TEST_FAILED,
         ),
         (
-            ["REPLACE_ME", "REPLACE_ME", "REPLACE_ME"],
+            "REPLACE_ME",
             False,
             True,
             keys_model.KeyStatus.NOT_DEFINED,
@@ -679,7 +679,7 @@ def test_set_bitquery_key(
     ],
 )
 def test_set_twitter_key(
-    args: List[str], persist: bool, show_output: bool, expected: str
+    access_token: str, persist: bool, show_output: bool, expected: str
 ):
     env_var_name_list = [
         "OPENBB_API_TWITTER_BEARER_TOKEN",
@@ -688,12 +688,12 @@ def test_set_twitter_key(
     set_naive_environment(env_var_name_list)
 
     status = keys_model.set_twitter_key(
-        access_token=args[2],
+        access_token=access_token,
         persist=persist,
         show_output=show_output,
     )
 
-    assert_keys_and_status(args, persist, expected, env_var_name_list, status)
+    assert_keys_and_status([access_token], persist, expected, env_var_name_list, status)
 
 
 @patch.dict(os.environ, {})
