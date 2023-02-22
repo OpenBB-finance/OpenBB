@@ -72,7 +72,7 @@ def plot_estr(
     external_axes: Optional[List[plt.Axes]]
         External axes (1 axis is expected in the list)
     """
-    series_id = ESTR_PARAMETER_TO_ECB_ID.get(series_id)
+    series_id = ESTR_PARAMETER_TO_ECB_ID.get(series_id, "")
 
     df = ecb_model.get_series_data(
         series_id, start_date if start_date else "", end_date if end_date else ""

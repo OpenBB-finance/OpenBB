@@ -26,8 +26,8 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def plot_treasuries(
-    short_term: list = None,
-    long_term: list = None,
+    short_term: Optional[list] = None,
+    long_term: Optional[list] = None,
     forecast: bool = False,
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,

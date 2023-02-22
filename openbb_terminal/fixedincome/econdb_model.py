@@ -69,8 +69,8 @@ TREASURIES: Dict = {
 
 @log_start_end(log=logger)
 def get_treasuries(
-    instruments: list = None,
-    maturities: list = None,
+    instruments: Optional[list] = None,
+    maturities: Optional[list] = None,
     frequency: str = "monthly",
     start_date: str = "1900-01-01",
     end_date: Optional[str] = None,

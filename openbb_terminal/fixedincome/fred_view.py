@@ -5,7 +5,7 @@ import logging
 import os
 import pathlib
 from itertools import cycle
-from typing import List, Optional
+from typing import Dict, List, Optional
 
 import pandas as pd
 from matplotlib import pyplot as plt
@@ -179,7 +179,7 @@ ICE_BOFA_TO_OPTIONS = {
     ],
 }
 
-MOODY_TO_OPTIONS = {
+MOODY_TO_OPTIONS: Dict[str, Dict] = {
     "Type": {
         "aaa": {
             "index": {
@@ -212,7 +212,7 @@ MOODY_TO_OPTIONS = {
             },
         },
     },
-    "Spread": ["treasury", "fed_funds"],
+    "Spread": ["treasury", "fed_funds"],  # type: ignore
 }
 
 CP_TO_OPTIONS = {
@@ -1997,7 +1997,7 @@ def plot_icebofa(
 @check_api_key(["API_FRED_KEY"])
 def plot_moody(
     data_type: str = "aaa",
-    spread: str = None,
+    spread: Optional[str] = None,
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
     raw: bool = False,

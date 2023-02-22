@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 from datetime import datetime
+from typing import List, Optional
 
 import pandas as pd
 
@@ -64,7 +65,7 @@ COUNTRY_TO_CODE = {
 @log_start_end(log=logger)
 def get_interest_rate_data(
     data: str = "short",
-    countries: list = None,
+    countries: Optional[List[str]] = None,
     start_date: str = "",
     end_date: str = "",
 ) -> pd.DataFrame:
@@ -174,7 +175,7 @@ def get_interest_rate_data(
     df = df.iloc[:, [0, 5]]
 
     result = pd.DataFrame()
-    for country in countries:
+    for country in countries:  # type: ignore
         temp = pd.DataFrame(df[df["LOCATION"] == COUNTRY_TO_CODE[country]]["Value"])
         temp.columns = [f"{country} ({data_name})"]
         result = pd.concat([result, temp], axis=1)
