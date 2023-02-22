@@ -1,29 +1,20 @@
 from pydantic.dataclasses import dataclass
 
 import openbb_terminal.feature_flags as obbff
-from openbb_terminal.core.models.configurations import (
-    ConfigurationsModel,
-    default_configurations,
-)
-from openbb_terminal.core.models.credentials import (
-    CredentialsModel,
-    default_credentials,
-)
-from openbb_terminal.core.models.preferences import (
-    PreferencesModel,
-    default_preferences,
-)
-from openbb_terminal.core.models.profile import ProfileModel, default_profile
+# from openbb_terminal.core.models.user_configurations import ConfigurationsModel
+# from openbb_terminal.core.models.user_credentials import CredentialsModel
+# from openbb_terminal.core.models.user_preferences import PreferencesModel
+from openbb_terminal.core.models.user_profile import ProfileModel
 
 
 @dataclass(config=dict(validate_assignment=True))
 class UserModel:
     """Data model for user."""
 
-    profile: ProfileModel
-    configurations: ConfigurationsModel
-    preferences: PreferencesModel
-    credentials: CredentialsModel
+    profile: ProfileModel = ProfileModel()
+    # configurations: ConfigurationsModel
+    # preferences: PreferencesModel
+    # credentials: CredentialsModel
 
     @staticmethod
     def is_sync_enabled():
@@ -51,11 +42,3 @@ class UserModel:
         """Clear user info."""
         # This is a temporary solution until we implement PreferencesModel.
         obbff.USE_FLAIR = ":openbb"
-
-
-default_user = UserModel(  # type: ignore
-    profile=default_profile,
-    configurations=default_configurations,
-    preferences=default_preferences,
-    credentials=default_credentials,
-)

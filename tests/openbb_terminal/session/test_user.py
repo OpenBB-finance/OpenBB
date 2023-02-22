@@ -39,7 +39,7 @@ def test_load_user_info(User):
     assert User.profile.email == "test@email.com"
 
 
-@patch("openbb_terminal.core.models.user.obbff", obbff)
+@patch("openbb_terminal.core.models.user_model.obbff", obbff)
 def test_update_flair(User):
     """Test update flair."""
     User.update_flair(flair=None)
@@ -68,13 +68,13 @@ def test_get_uuid(User):
 def test_whoami(User, sync, guest):
     """Test whoami."""
     with (
-        patch("openbb_terminal.core.models.user.obbff.SYNC_ENABLED", sync),
+        patch("openbb_terminal.core.models.user_model.obbff.SYNC_ENABLED", sync),
         patch("openbb_terminal.session.user.User.profile.is_guest", return_value=guest),
     ):
         User.profile.whoami()
 
 
-@patch("openbb_terminal.core.models.user.obbff", obbff)
+@patch("openbb_terminal.core.models.user_model.obbff", obbff)
 def test_reset_flair(User):
     """Test reset_flair."""
     User.reset_flair()
