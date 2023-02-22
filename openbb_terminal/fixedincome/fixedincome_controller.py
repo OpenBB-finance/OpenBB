@@ -2113,6 +2113,180 @@ class FixedIncomeController(BaseController):
                     else None,
                 )
 
+
+    @log_start_end(log=logger)
+    def call_cp(self, other_args: List[str]):
+        """Process cp command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="cp",
+            description="Plot various rates from the United States. This includes tbill (Treasury Bills), "
+            "Constant Maturity treasuries (cmn) and Inflation Protected Treasuries (TIPS)",
+        )
+            
+        parser.add_argument(
+            "-m",
+            "--maturity",
+            dest="maturity",
+            type=str,
+            help="What type you'd like to collect data for",
+            default="30d",
+            choices=fred_view.CP_TO_OPTIONS['Maturity']
+        )
+        
+        parser.add_argument(
+            "-c",
+            "--category",
+            dest="category",
+            type=str,
+            help="What category you'd like to collect data for",
+            default="financial",
+            choices=fred_view.CP_TO_OPTIONS['Category']
+        )
+        
+        parser.add_argument(
+            "-g",
+            "--grade",
+            dest="grade",
+            type=str,
+            help="What grade you'd like to collect data for",
+            default="aa",
+            choices=fred_view.CP_TO_OPTIONS['Grade']
+        )
+        
+        parser.add_argument(
+            "-o",
+            "--options",
+            dest="options",
+            action="store_true",
+            help="See the available options",
+            default=False,
+        )
+        
+        parser.add_argument(
+            "-d",
+            "--description",
+            dest="description",
+            action="store_true",
+            help="Whether to provide a description of the data.",
+            default=False,
+        )
+
+        parser.add_argument(
+            "-s",
+            "--start",
+            dest="start_date",
+            type=valid_date,
+            help="Starting date (YYYY-MM-DD) of data",
+            default="1980-01-01",
+        )
+        parser.add_argument(
+            "-e",
+            "--end",
+            dest="end_date",
+            type=valid_date,
+            help="Ending date (YYYY-MM-DD) of data",
+            default=None,
+        )
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES, raw=True
+        )
+        if ns_parser:
+            if ns_parser.options:
+                print_rich_table(
+                    pd.DataFrame.from_dict(fred_view.CP_TO_OPTIONS, orient='index').T.fillna("-"),
+                    show_index=False,
+                    title="Available options for each parameter",
+                )
+            else:
+                fred_view.plot_cp(
+                    maturity=ns_parser.maturity,
+                    category=ns_parser.category,
+                    grade=ns_parser.grade,
+                    description=ns_parser.description,
+                    start_date=ns_parser.start_date,
+                    end_date=ns_parser.end_date,
+                    raw=ns_parser.raw,
+                    export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
+                )
+                
+    @log_start_end(log=logger)
+    def call_spot(self, other_args: List[str]):
+        """Process spot command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="spot",
+            description="Plot various rates from the United States. This includes tbill (Treasury Bills), "
+            "Constant Maturity treasuries (cmn) and Inflation Protected Treasuries (TIPS)",
+        )
+            
+        parser.add_argument(
+            "-m",
+            "--maturity",
+            dest="maturity",
+            type=str,
+            help="What maturity you'd like to collect data for",
+            default='10y'
+        )
+        
+        parser.add_argument(
+            "-c",
+            "--category",
+            dest="category",
+            type=str,
+            help="What category you'd like to collect data for",
+            default='spot_rate',
+        )
+        
+        parser.add_argument(
+            "-d",
+            "--description",
+            dest="description",
+            action="store_true",
+            help="Whether to provide a description of the data.",
+            default=False,
+        )
+
+        parser.add_argument(
+            "-s",
+            "--start",
+            dest="start_date",
+            type=valid_date,
+            help="Starting date (YYYY-MM-DD) of data",
+            default="1980-01-01",
+        )
+        parser.add_argument(
+            "-e",
+            "--end",
+            dest="end_date",
+            type=valid_date,
+            help="Ending date (YYYY-MM-DD) of data",
+            default=None,
+        )
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES, raw=True
+        )
+        if ns_parser:
+            maturity = list_from_str(ns_parser.maturity)
+            category = list_from_str(ns_parser.category)
+            
+            fred_view.plot_spot(
+                maturity=maturity,
+                category=category,
+                description=ns_parser.description,
+                start_date=ns_parser.start_date,
+                end_date=ns_parser.end_date,
+                raw=ns_parser.raw,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )
     
     @log_start_end(log=logger)
     def call_icespread(self, other_args: List[str]):
