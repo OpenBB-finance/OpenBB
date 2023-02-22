@@ -30,7 +30,11 @@ def display_quote(symbol: str, export: str = "", sheet_name: Optional[str] = Non
         console.print("[red]Data not found[/red]\n")
     else:
         print_rich_table(
-            quote, headers=[""], title=f"{symbol.upper()} Quote", show_index=True
+            quote,
+            headers=[""],
+            title=f"{symbol.upper()} Quote",
+            show_index=True,
+            export=bool(export),
         )
 
     export_data(

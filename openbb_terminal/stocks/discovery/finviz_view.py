@@ -2,7 +2,7 @@
 __docformat__ = "numpy"
 
 import os
-from typing import Optional
+from typing import Optional, Union
 
 import pandas as pd
 import plotly.express as px
@@ -12,7 +12,12 @@ from openbb_terminal.helper_funcs import export_data
 from openbb_terminal.stocks.discovery import finviz_model
 
 
-def display_heatmap(timeframe: str, export: str = "", sheet_name: Optional[str] = ""):
+def display_heatmap(
+    timeframe: str,
+    export: str = "",
+    sheet_name: Optional[str] = "",
+    external_axes: bool = False,
+) -> Union[None, OpenBBFigure]:
     """Display heatmap from finviz
 
     Parameters
@@ -23,11 +28,14 @@ def display_heatmap(timeframe: str, export: str = "", sheet_name: Optional[str] 
         Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
 
     dfs = finviz_model.get_heatmap_data(timeframe)
     if dfs.empty:
-        return
+        return None
+
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
@@ -109,4 +117,4 @@ def display_heatmap(timeframe: str, export: str = "", sheet_name: Optional[str] 
         ),
     )
 
-    fig.show(margin=False)
+    return fig.show(margin=False, external=external_axes)

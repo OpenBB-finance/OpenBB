@@ -72,6 +72,7 @@ def show_plot(
             "plot_macro_data",
             df,
             sheet_name,
+            fig,
         )
 
     return fig.show(external=external_axes)
@@ -113,6 +114,7 @@ def show_options(
                 show_index=True,
                 headers=list(df.columns),
                 title="Macro data",
+                export=bool(export),
             )
         if export:
             export_data(

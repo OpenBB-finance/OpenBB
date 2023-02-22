@@ -75,26 +75,6 @@ def insider_activity(
 
     df_insider = df_ins[start_date:].copy() if start_date else df_ins.copy()  # type: ignore
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "act",
-        df_insider,
-        sheet_name,
-    )
-
-    if raw:
-        df_insider.index = pd.to_datetime(df_insider.index).date
-
-        return print_rich_table(
-            df_insider.sort_index(ascending=False)
-            .head(n=limit)
-            .applymap(lambda x: x.replace(".00", "").replace(",", "")),
-            headers=list(df_insider.columns),
-            show_index=True,
-            title="Insider Activity",
-        )
-
     close_col = "Adj Close" if interval == "1440min" else "Close"
 
     fig = OpenBBFigure(yaxis_title="Share Price")
@@ -102,7 +82,8 @@ def insider_activity(
 
     fig.add_scatter(x=data.index, y=data[close_col].values, name=symbol)
 
-    df_insider["Trade"] = df_insider.apply(
+    df_insider_plot = df_insider.copy()
+    df_insider_plot["Trade"] = df_insider_plot.apply(
         lambda row: (1, -1)[row.Type == "Sell"]
         * float(row["Shares Traded"].replace(",", "")),
         axis=1,
@@ -112,12 +93,12 @@ def insider_activity(
     price_range = max_price - min_price
 
     ins_buy = (
-        df_insider[df_insider["Type"] == "Buy"]
+        df_insider_plot[df_insider_plot["Type"] == "Buy"]
         .groupby(by=["Date"])
         .sum(numeric_only=True)
     )
     ins_sell = (
-        df_insider[df_insider["Type"] == "Sell"]
+        df_insider_plot[df_insider_plot["Type"] == "Sell"]
         .groupby(by=["Date"])
         .sum(numeric_only=True)
     )
@@ -164,6 +145,28 @@ def insider_activity(
             line=dict(color=theme.up_color, width=5),
             name="Insider Buying",
             showlegend=ind == ins_buy.index[0],
+        )
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "act",
+        df_insider,
+        sheet_name,
+        fig,
+    )
+
+    if raw:
+        df_insider.index = pd.to_datetime(df_insider.index).date
+
+        return print_rich_table(
+            df_insider.sort_index(ascending=False)
+            .head(n=limit)
+            .applymap(lambda x: x.replace(".00", "").replace(",", "")),
+            headers=list(df_insider.columns),
+            show_index=True,
+            title="Insider Activity",
+            export=bool(export),
         )
 
     return fig.show(external=external_axes)

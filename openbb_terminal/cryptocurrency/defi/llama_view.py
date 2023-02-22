@@ -72,6 +72,7 @@ def display_grouped_defi_protocols(
         "gdapps",
         chains,
         sheet_name,
+        fig,
     )
 
     return fig.show(external=external_axes)
@@ -111,7 +112,12 @@ def display_defi_protocols(
     if interactive:
         plots_backend().send_table(df, title="DeFi Protocols")
     else:
-        print_rich_table(df.head(limit), headers=list(df.columns), show_index=False)
+        print_rich_table(
+            df.head(limit),
+            headers=list(df.columns),
+            show_index=False,
+            export=bool(export),
+        )
 
     export_data(
         export,
@@ -166,6 +172,7 @@ def display_historical_tvl(
             "dtvl",
             None,
             sheet_name,
+            fig,
         )
 
         return fig.show(external=external_axes)
@@ -208,6 +215,7 @@ def display_defi_tvl(
         "stvl",
         df_data,
         sheet_name,
+        fig,
     )
 
     return fig.show(external=external_axes)

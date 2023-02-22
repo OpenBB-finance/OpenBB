@@ -57,21 +57,23 @@ def display_crypto_sentiment_analysis(
     external_axes : bool, optional
         Whether to return the figure object or not, by default False
     """
+    fig = OpenBBFigure()
 
     sentiment = get_sentiment(f"{symbol}-USD")  # Currently only USD pairs are available
 
     if sentiment.empty:
         return console.print(f"Couldn't find Sentiment Data for {symbol}\n")
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "finbrain",
-        sentiment,
-        sheet_name,
-    )
+    if not fig.is_image_export(export):
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "finbrain",
+            sentiment,
+            sheet_name,
+        )
 
-    if raw:
+    if raw and not fig.is_image_export(export):
         sentiment.sort_index(ascending=True, inplace=True)
 
         if rich_config.USE_COLOR:
@@ -129,7 +131,7 @@ def display_crypto_sentiment_analysis(
             "finbrain",
             sentiment,
             sheet_name,
-            figure=fig,
+            fig,
         )
 
     return fig.show(external=external_axes)

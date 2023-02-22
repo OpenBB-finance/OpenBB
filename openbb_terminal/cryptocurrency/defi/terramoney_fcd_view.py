@@ -45,7 +45,11 @@ def display_account_staking_info(
     df, report = terramoney_fcd_model.get_staking_account_info(address)
     if not df.empty:
         print_rich_table(
-            df.head(limit), headers=list(df.columns), show_index=False, title=report
+            df.head(limit),
+            headers=list(df.columns),
+            show_index=False,
+            title=report,
+            export=bool(export),
         )
     else:
         console.print(f"[red]No data found for address {address}\n[/red]")
@@ -97,6 +101,7 @@ def display_validators(
         headers=list(df.columns),
         floatfmt=".2f",
         show_index=False,
+        export=bool(export),
     )
 
     export_data(
@@ -135,7 +140,13 @@ def display_gov_proposals(
 
     df = terramoney_fcd_model.get_proposals(status, sortby, ascend, limit)
 
-    print_rich_table(df, headers=list(df.columns), floatfmt=".2f", show_index=False)
+    print_rich_table(
+        df,
+        headers=list(df.columns),
+        floatfmt=".2f",
+        show_index=False,
+        export=bool(export),
+    )
 
     export_data(
         export,
@@ -199,11 +210,8 @@ def display_account_growth(
         "gacc",
         df,
         sheet_name,
-        figure=fig,
+        fig,
     )
-
-    if fig.is_image_export(export):
-        return fig
 
     return fig.show(external=external_axes)
 
@@ -242,11 +250,8 @@ def display_staking_ratio_history(
         "sratio",
         df,
         sheet_name,
-        figure=fig,
+        fig,
     )
-
-    if fig.is_image_export(export):
-        return fig
 
     return fig.show(external=external_axes)
 
@@ -288,10 +293,7 @@ def display_staking_returns_history(
         "sreturn",
         df,
         sheet_name,
-        figure=fig,
+        fig,
     )
-
-    if fig.is_image_export(export):
-        return fig
 
     return fig.show(external=external_axes)

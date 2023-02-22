@@ -42,12 +42,30 @@ def realtime_performance_sector(
     if df_rtp.empty:
         return None
 
+    df_rtp_plot = df_rtp.set_index("Sector").squeeze(axis=1)
+    colors = [theme.up_color if x > 0 else theme.down_color for x in df_rtp_plot.values]
+
+    fig = OpenBBFigure(
+        title="Real Time Performance (%) per Sector",
+        yaxis=dict(side="right", dtick=1, title="Sector"),
+    )
+    fig.add_bar(
+        orientation="h",
+        x=df_rtp_plot.values,
+        y=df_rtp_plot.index,
+        name="Performance (%)",
+        marker_color=colors,
+        showlegend=False,
+    )
+    fig.update_layout(xaxis=dict(nticks=10))
+
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "rtps",
         df_rtp,
         sheet_name,
+        fig,
     )
 
     if raw:
@@ -56,25 +74,8 @@ def realtime_performance_sector(
             show_index=False,
             headers=df_rtp.columns,
             title="Real-Time Performance",
+            export=bool(export),
         )
-
-    df_rtp.set_index("Sector", inplace=True)
-    df_rtp = df_rtp.squeeze(axis=1)
-    colors = [theme.up_color if x > 0 else theme.down_color for x in df_rtp.values]
-
-    fig = OpenBBFigure(
-        title="Real Time Performance (%) per Sector",
-        yaxis=dict(side="right", dtick=1, title="Sector"),
-    )
-    fig.add_bar(
-        orientation="h",
-        x=df_rtp.values,
-        y=df_rtp.index,
-        name="Performance (%)",
-        marker_color=colors,
-        showlegend=False,
-    )
-    fig.update_layout(xaxis=dict(nticks=10))
 
     return fig.show(external=external_axes)
 
@@ -129,10 +130,15 @@ def display_real_gdp(
         "gdp",
         gdp,
         sheet_name,
+        fig,
     )
     if raw:
         print_rich_table(
-            gdp.head(20), headers=["Date", "GDP"], show_index=False, title="US GDP"
+            gdp.head(20),
+            headers=["Date", "GDP"],
+            show_index=False,
+            title="US GDP",
+            export=bool(export),
         )
 
     return fig.show(external=external_axes)
@@ -181,6 +187,7 @@ def display_gdp_capita(
         "gdpc",
         gdp,
         sheet_name,
+        fig,
     )
     if raw:
         print_rich_table(
@@ -188,6 +195,7 @@ def display_gdp_capita(
             headers=["Date", "GDP"],
             show_index=False,
             title="US GDP Per Capita",
+            export=bool(export),
         )
 
     return fig.show(external=external_axes)
@@ -236,6 +244,7 @@ def display_inflation(
         "inf",
         inf,
         sheet_name,
+        fig,
     )
     if raw:
         print_rich_table(
@@ -243,6 +252,7 @@ def display_inflation(
             headers=["Date", "Inflation"],
             show_index=False,
             title="US Inflation",
+            export=bool(export),
         )
 
     return fig.show(external=external_axes)
@@ -297,10 +307,15 @@ def display_cpi(
         "cpi",
         cpi,
         sheet_name,
+        fig,
     )
     if raw:
         print_rich_table(
-            cpi.head(20), headers=["Date", "CPI"], show_index=False, title="US CPI"
+            cpi.head(20),
+            headers=["Date", "CPI"],
+            show_index=False,
+            title="US CPI",
+            export=bool(export),
         )
 
     return fig.show(external=external_axes)
@@ -356,6 +371,7 @@ def display_treasury_yield(
         "tyld",
         yld,
         sheet_name,
+        fig,
     )
     if raw:
         print_rich_table(
@@ -363,6 +379,7 @@ def display_treasury_yield(
             headers=["Date", "Yield"],
             title="Historical Treasury Yield",
             show_index=False,
+            export=bool(export),
         )
 
     return fig.show(external=external_axes)
@@ -413,6 +430,7 @@ def display_unemployment(
         "unemp",
         un,
         sheet_name,
+        fig,
     )
 
     if raw:
@@ -421,6 +439,7 @@ def display_unemployment(
             headers=["Date", "GDP"],
             title="US Unemployment",
             show_index=False,
+            export=bool(export),
         )
 
     return fig.show(external=external_axes)

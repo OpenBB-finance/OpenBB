@@ -97,7 +97,11 @@ def display_balance(
     console.print(f"You currently have {total} coins and the breakdown is:\n")
 
     print_rich_table(
-        df, headers=df.columns, show_index=True, title="Account Holdings for Assets"
+        df,
+        headers=df.columns,
+        show_index=True,
+        title="Account Holdings for Assets",
+        export=bool(export),
     )
 
     export_data(

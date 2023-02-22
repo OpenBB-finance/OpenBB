@@ -119,6 +119,7 @@ def display_raw(
         headers=list(df.columns),
         show_index=True,
         title=f"{symbol.upper()} raw data",
+        export=bool(export),
     )
 
     fig = plot_chart(df, option_type, symbol)

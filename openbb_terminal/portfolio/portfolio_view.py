@@ -121,6 +121,7 @@ def display_transactions(
             df=df[:limit],
             show_index=show_index,
             title=f"Last {limit if limit < len(df) else len(df)} transactions",
+            export=bool(export),
         )
 
         export_data(
@@ -405,7 +406,7 @@ def display_yearly_returns(
     external_axes : bool, optional
         Whether to return the figure object or not, by default False
     """
-
+    fig = OpenBBFigure()
     df = get_yearly_returns(portfolio_engine, window)
 
     if raw:
@@ -414,6 +415,7 @@ def display_yearly_returns(
             title="Yearly Portfolio and Benchmark returns",
             headers=["Portfolio [%]", "Benchmark [%]", "Difference [%]"],
             show_index=True,
+            export=bool(export),
         )
 
     else:
@@ -449,6 +451,7 @@ def display_yearly_returns(
         "yret",
         df,
         sheet_name,
+        fig,
     )
 
     return fig.show(external=external_axes)
@@ -485,6 +488,7 @@ def display_monthly_returns(
     external_axes : bool, optional
         Whether to return the figure object or not, by default False
     """
+    fig = OpenBBFigure()
 
     portfolio_returns, benchmark_returns, total_monthly_returns = get_monthly_returns(
         portfolio_engine, window
@@ -496,6 +500,7 @@ def display_monthly_returns(
             title="Monthly returns - portfolio [%]",
             headers=portfolio_returns.columns,
             show_index=True,
+            export=bool(export),
         )
 
         export_data(
@@ -511,6 +516,7 @@ def display_monthly_returns(
             title="Monthly returns - benchmark [%]",
             headers=benchmark_returns.columns,
             show_index=True,
+            export=bool(export),
         )
 
         export_data(
@@ -546,6 +552,7 @@ def display_monthly_returns(
             title="Total Monthly returns [%]",
             headers=total_monthly_returns_rich.columns,
             show_index=False,
+            export=bool(export),
         )
 
         export_data(
@@ -556,7 +563,7 @@ def display_monthly_returns(
             sheet_name,
         )
 
-    if graph or show_vals:
+    if graph or show_vals or fig.is_image_export(export):
         fig = OpenBBFigure.create_subplots(
             rows=2,
             cols=1,
@@ -641,6 +648,14 @@ def display_monthly_returns(
             showlegend=False,
         )
 
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "mret_heatmap",
+            sheet_name=sheet_name,
+            figure=fig,
+        )
+
         return fig.show(external=external_axes)
 
     return None
@@ -677,22 +692,6 @@ def display_daily_returns(
 
     df = get_daily_returns(portfolio_engine, window)
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "dret",
-        df,
-        sheet_name,
-    )
-
-    if raw:
-        return print_rich_table(
-            df.tail(limit),
-            title="Portfolio and Benchmark daily returns",
-            headers=["Portfolio [%]", "Benchmark [%]"],
-            show_index=True,
-        )
-
     clrs_portfolio = [
         theme.down_color if (x < 0) else theme.up_color for x in df["portfolio"]
     ]
@@ -716,6 +715,24 @@ def display_daily_returns(
         name="Benchmark",
         marker_color=clrs_benchmark,
     )
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "dret",
+        df,
+        sheet_name,
+        fig,
+    )
+
+    if raw:
+        return print_rich_table(
+            df.tail(limit),
+            title="Portfolio and Benchmark daily returns",
+            headers=["Portfolio [%]", "Benchmark [%]"],
+            show_index=True,
+            export=bool(export),
+        )
 
     return fig.show(external=external_axes)
 
@@ -753,22 +770,6 @@ def display_distribution_returns(
 
     stats = df.describe()
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "distr",
-        stats,
-        sheet_name,
-    )
-
-    if raw:
-        return print_rich_table(
-            stats,
-            title=f"Stats for Portfolio and Benchmark in period {window}",
-            show_index=True,
-            headers=["Portfolio", "Benchmark"],
-        )
-
     fig = OpenBBFigure(xaxis_title="Returns [%]", yaxis_title="Density")
     fig.set_title(f"Returns distribution in period {window}")
 
@@ -785,6 +786,24 @@ def display_distribution_returns(
         histnorm="probability density",
         marker_color=theme.down_color,
     )
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "distr",
+        stats,
+        sheet_name,
+        fig,
+    )
+
+    if raw:
+        return print_rich_table(
+            stats,
+            title=f"Stats for Portfolio and Benchmark in period {window}",
+            show_index=True,
+            headers=["Portfolio", "Benchmark"],
+            export=bool(export),
+        )
 
     return fig.show(external=external_axes)
 
@@ -822,22 +841,6 @@ def display_holdings_value(
 
     all_holdings = get_holdings_value(portfolio_engine)
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "holdv",
-        all_holdings,
-        sheet_name,
-    )
-
-    if raw:
-        return print_rich_table(
-            all_holdings.tail(limit),
-            title="Holdings of assets (absolute value)",
-            headers=all_holdings.columns,
-            show_index=True,
-        )
-
     if not unstack and "Total Value" in all_holdings.columns:
         all_holdings.drop(columns=["Total Value"], inplace=True)
 
@@ -850,6 +853,24 @@ def display_holdings_value(
             y=all_holdings[col].values,
             name=col,
             stackgroup="one",
+        )
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "holdv",
+        all_holdings,
+        sheet_name,
+        fig,
+    )
+
+    if raw:
+        return print_rich_table(
+            all_holdings.tail(limit),
+            title="Holdings of assets (absolute value)",
+            headers=all_holdings.columns,
+            show_index=True,
+            export=bool(export),
         )
 
     return fig.show(external=external_axes)
@@ -888,12 +909,27 @@ def display_holdings_percentage(
 
     all_holdings = get_holdings_percentage(portfolio_engine)
 
+    if not unstack and "Total Value" in all_holdings.columns:
+        all_holdings.drop(columns=["Total Value"], inplace=True)
+
+    fig = OpenBBFigure(xaxis_title="Date", yaxis_title="Holdings (%)")
+    fig.set_title("Total Holdings (percentage)")
+
+    for col in all_holdings.columns:
+        fig.add_scatter(
+            x=all_holdings.index,
+            y=all_holdings[col].values,
+            name=col,
+            stackgroup="one",
+        )
+
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "holdp",
         all_holdings,
         sheet_name,
+        fig,
     )
 
     if raw:
@@ -907,20 +943,7 @@ def display_holdings_percentage(
             title="Holdings of assets (in percentage)",
             headers=all_holdings.columns,
             show_index=True,
-        )
-
-    if not unstack and "Total Value" in all_holdings.columns:
-        all_holdings.drop(columns=["Total Value"], inplace=True)
-
-    fig = OpenBBFigure(xaxis_title="Date", yaxis_title="Holdings (%)")
-    fig.set_title("Total Holdings (percentage)")
-
-    for col in all_holdings.columns:
-        fig.add_scatter(
-            x=all_holdings.index,
-            y=all_holdings[col].values,
-            name=col,
-            stackgroup="one",
+            export=bool(export),
         )
 
     return fig.show(external=external_axes)
@@ -981,6 +1004,7 @@ def display_rolling_volatility(
         metric,
         df_portfolio.to_frame().join(df_benchmark),
         sheet_name,
+        fig,
     )
 
     return fig.show(external=external_axes)
@@ -1034,6 +1058,7 @@ def display_rolling_sharpe(
         metric,
         df_portfolio.to_frame().join(df_benchmark),
         sheet_name,
+        fig,
     )
 
     return fig.show(external=external_axes)
@@ -1086,6 +1111,7 @@ def display_rolling_sortino(
         metric,
         df_portfolio.to_frame().join(df_benchmark),
         sheet_name,
+        fig,
     )
 
     return fig.show(external=external_axes)
@@ -1134,6 +1160,7 @@ def display_rolling_beta(
         metric,
         rolling_beta,
         sheet_name,
+        fig,
     )
 
     return fig.show(external=external_axes)
@@ -1188,6 +1215,7 @@ def display_maximum_drawdown(
         "maxdd",
         drawdown,
         sheet_name,
+        fig,
     )
 
     return fig.show(external=external_axes)
@@ -1218,6 +1246,7 @@ def display_rsquare(
         headers=["R-Square Score"],
         show_index=True,
         floatfmt=".2%",
+        export=bool(export),
     )
     export_data(
         export,
@@ -1252,6 +1281,7 @@ def display_skewness(
         title="Skewness for Portfolio and Benchmark",
         show_index=True,
         floatfmt=".2f",
+        export=bool(export),
     )
     export_data(
         export,
@@ -1285,6 +1315,7 @@ def display_kurtosis(
         title="Kurtosis for Portfolio and Benchmark",
         show_index=True,
         floatfmt=".2f",
+        export=bool(export),
     )
     export_data(
         export,
@@ -1321,6 +1352,7 @@ def display_stats(
         title=f"Stats for Portfolio and Benchmark in period {window}",
         show_index=True,
         floatfmt=".3f",
+        export=bool(export),
     )
     export_data(
         export,
@@ -1353,6 +1385,7 @@ def display_volatility(
         title="Volatility for Portfolio and Benchmark",
         show_index=True,
         floatfmt=".2%",
+        export=bool(export),
     )
     export_data(
         export,
@@ -1389,6 +1422,7 @@ def display_sharpe_ratio(
         title="Sharpe ratio for Portfolio and Benchmark",
         show_index=True,
         floatfmt=".2f",
+        export=bool(export),
     )
     export_data(
         export,
@@ -1425,6 +1459,7 @@ def display_sortino_ratio(
         title="Sortino ratio for Portfolio and Benchmark",
         show_index=True,
         floatfmt=".2f",
+        export=bool(export),
     )
     export_data(
         export,
@@ -1458,6 +1493,7 @@ def display_maximum_drawdown_ratio(
         title="Maximum drawdown for Portfolio and Benchmark",
         show_index=True,
         floatfmt=".2f",
+        export=bool(export),
     )
     export_data(
         export,
@@ -1490,6 +1526,7 @@ def display_gaintopain_ratio(
         title="Gain-to-pain ratio for portfolio and benchmark",
         show_index=True,
         floatfmt=".2f",
+        export=bool(export),
     )
     export_data(
         export,
@@ -1523,6 +1560,7 @@ def display_tracking_error(
         title="Benchmark Tracking Error",
         show_index=True,
         floatfmt=".2%",
+        export=bool(export),
     )
     export_data(
         export,
@@ -1555,6 +1593,7 @@ def display_information_ratio(
         title="Information ratio for portfolio",
         show_index=True,
         floatfmt=".2f",
+        export=bool(export),
     )
     export_data(
         export,
@@ -1590,6 +1629,7 @@ def display_tail_ratio(
         title="Tail ratio for portfolio and benchmark",
         show_index=True,
         floatfmt=".2f",
+        export=bool(export),
     )
     export_data(
         export,
@@ -1622,6 +1662,7 @@ def display_common_sense_ratio(
         title="Common sense ratio for portfolio and benchmark",
         show_index=True,
         floatfmt=".2f",
+        export=bool(export),
     )
     export_data(
         export,
@@ -1658,6 +1699,7 @@ def display_jensens_alpha(
         title="Portfolio's jensen's alpha",
         show_index=True,
         floatfmt=".2%",
+        export=bool(export),
     )
     export_data(
         export,
@@ -1691,6 +1733,7 @@ def display_calmar_ratio(
         title="Calmar ratio for portfolio and benchmark",
         show_index=True,
         floatfmt=".2f",
+        export=bool(export),
     )
     export_data(
         export,
@@ -1723,6 +1766,7 @@ def display_kelly_criterion(
         title="Kelly criterion of the portfolio",
         show_index=True,
         floatfmt=".2%",
+        export=bool(export),
     )
     export_data(
         export,
@@ -1755,6 +1799,7 @@ def display_payoff_ratio(
         title="Portfolio's payoff ratio",
         show_index=True,
         floatfmt=".2f",
+        export=bool(export),
     )
     export_data(
         export,
@@ -1787,6 +1832,7 @@ def display_profit_factor(
         title="Portfolio's profit factor",
         show_index=True,
         floatfmt=".2f",
+        export=bool(export),
     )
     export_data(
         export,
@@ -1826,6 +1872,7 @@ def display_summary(
         title=f"Summary of Portfolio vs Benchmark for {window} period",
         show_index=True,
         headers=summary.columns,
+        export=bool(export),
     )
     export_data(
         export,
@@ -1937,12 +1984,16 @@ def display_attribution_categorization(
     attrib_type: str,
     plot_fields: list,
     show_table: bool = False,
+    external_axes: bool = False,
 ):
     """Display attribution for sector comparison to portfolio
 
     Parameters
     ----------
-    display: dataframe to be displayed
+    display: pd.DataFrame
+        Dataframe to display
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     if show_table:
         print_rich_table(
@@ -1968,4 +2019,4 @@ def display_attribution_categorization(
     fig.update_layout(yaxis=dict(nticks=20))
     fig.horizontal_legend(yanchor="top", y=1)
 
-    fig.show()
+    return fig.show(external=external_axes)

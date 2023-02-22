@@ -50,7 +50,9 @@ and we're investigating on finding a replacement.
         """,
         )
 
-    print_rich_table(recs, title=f"Jim Cramer Recommendations for {date}")
+    print_rich_table(
+        recs, title=f"Jim Cramer Recommendations for {date}", export=bool(export)
+    )
 
     export_data(
         export,
@@ -116,14 +118,17 @@ def display_cramer_ticker(
 
     if raw:
         df["Date"] = df["Date"].apply(lambda x: x.strftime("%Y-%m-%d"))
-        print_rich_table(df, title=f"Jim Cramer Recommendations for {symbol}")
+        print_rich_table(
+            df, title=f"Jim Cramer Recommendations for {symbol}", export=bool(export)
+        )
 
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
-        df,
         "jctr",
+        df,
         sheet_name,
+        fig,
     )
 
     fig.update_layout(legend=dict(yanchor="top", y=1, xanchor="right", x=1))

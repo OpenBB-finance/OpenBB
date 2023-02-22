@@ -756,6 +756,7 @@ def display_all_coins(
         headers=list(df.columns),
         show_index=False,
         title="Similar Coins",
+        export=bool(export),
     )
 
     export_data(

@@ -52,6 +52,7 @@ def display_daily_transactions(
         "dt",
         df,
         sheet_name,
+        fig,
     )
 
     return fig.show(external=external_axes)
@@ -85,31 +86,36 @@ def display_dapp_stats(
     """
     df = get_dapp_stats(platform=platform)
     if df.empty:
-        console.print("[red]No data found.[/red]")
-    elif not df.empty:
-        if raw:
-            print_rich_table(df.head(limit), headers=list(df.columns), show_index=True)
+        return console.print("[red]No data found.[/red]")
 
-        fig = OpenBBFigure.create_subplots(specs=[[{"secondary_y": True}]])
-        fig.set_title(f"{platform} stats")
-
-        fig.add_bar(
-            x=df.index,
-            y=df["n_users"],
-            name="Number of Users",
-            marker_color=theme.down_color,
-            secondary_y=False,
+    if raw:
+        print_rich_table(
+            df.head(limit),
+            headers=list(df.columns),
+            show_index=True,
+            export=bool(export),
         )
 
-        fig.add_scatter(
-            x=df.index,
-            y=df["fees"],
-            name="Platform Fees",
-            marker_color=theme.up_color,
-            secondary_y=True,
-        )
-        fig.update_yaxes(title_text="Number of Users", secondary_y=False, side="left")
-        fig.update_yaxes(title_text="Platform Fees [USD]", secondary_y=True)
+    fig = OpenBBFigure.create_subplots(specs=[[{"secondary_y": True}]])
+    fig.set_title(f"{platform} stats")
+
+    fig.add_bar(
+        x=df.index,
+        y=df["n_users"],
+        name="Number of Users",
+        marker_color=theme.down_color,
+        secondary_y=False,
+    )
+
+    fig.add_scatter(
+        x=df.index,
+        y=df["fees"],
+        name="Platform Fees",
+        marker_color=theme.up_color,
+        secondary_y=True,
+    )
+    fig.update_yaxes(title_text="Number of Users", secondary_y=False, side="left")
+    fig.update_yaxes(title_text="Platform Fees [USD]", secondary_y=True)
 
     export_data(
         export,
@@ -117,6 +123,7 @@ def display_dapp_stats(
         "ds",
         df,
         sheet_name,
+        fig,
     )
 
     return fig.show(external=external_axes)
@@ -183,6 +190,7 @@ def display_total_value_locked(
         "tvl",
         df,
         sheet_name,
+        fig,
     )
 
     return fig.show(external=external_axes)

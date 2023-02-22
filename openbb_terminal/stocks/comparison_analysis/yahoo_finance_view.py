@@ -95,6 +95,7 @@ def display_historical(
         "historical",
         df_similar,
         sheet_name,
+        fig,
     )
 
     return fig.show(external=external_axes)
@@ -144,6 +145,7 @@ def display_volume(
         "volume",
         df_similar,
         sheet_name,
+        fig,
     )
 
     return fig.show(external=external_axes)
@@ -234,6 +236,7 @@ def display_correlation(
             correlations,
             headers=[x.title().upper() for x in correlations.columns],
             show_index=True,
+            export=bool(export),
         )
 
     export_data(
@@ -242,6 +245,7 @@ def display_correlation(
         "hcorr",
         df_similar,
         sheet_name,
+        fig,
     )
 
     fig.update_layout(

@@ -79,13 +79,16 @@ class Volatility(PltTA):
             row=1,
             col=1,
         )
+        bbands_text = (
+            columns_regex(df_ta, "BBL")[0]
+            .replace("BBL_", "BB")
+            .replace("_", ",")
+            .split(".")[0]
+        )
         fig.add_annotation(
             xref="paper",
             yref="paper",
-            text=(
-                f"<b>BB{self.params['bbands'].get_argument_values('length') or ''},"
-                f"{self.params['bbands'].get_argument_values('scalar') or ''}</b>"
-            ),
+            text=f"<b>{bbands_text}</b>",
             x=0,
             xanchor="left",
             yshift=-inchart_index * 18,
@@ -145,7 +148,7 @@ class Volatility(PltTA):
             y=0.98,
             font_size=14,
             font_color="#B47DA0",
-            opacity=0.5,
+            opacity=0.9,
         )
 
         return fig, inchart_index + 1
@@ -197,7 +200,7 @@ class Volatility(PltTA):
             y=0.98,
             font_size=14,
             font_color="#B47DA0",
-            opacity=0.5,
+            opacity=0.9,
         )
 
         return fig, inchart_index + 1

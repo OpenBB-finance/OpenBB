@@ -114,6 +114,7 @@ def cost_to_borrow(
             headers=list(df_cost_to_borrow.columns),
             show_index=True,
             title=f"Cost to Borrow of {symbol}",
+            export=bool(export),
         )
 
     export_data(
@@ -122,6 +123,7 @@ def cost_to_borrow(
         "stocksera",
         df_cost_to_borrow,
         sheet_name,
+        fig,
     )
 
     return fig.show(external=external_axes)

@@ -62,18 +62,10 @@ def display_historical(
             df_hist,
             headers=[x.title() for x in df_hist.columns],
             title="Historical Option Prices",
+            export=bool(export),
         )
 
     op_type = ["call", "put"][put]
-
-    if export:
-        export_data(
-            export,
-            os.path.dirname(os.path.abspath(__file__)),
-            "hist",
-            df_hist,
-            sheet_name,
-        )
 
     df_hist.columns = [x.title() for x in df_hist.columns]
 
@@ -103,5 +95,15 @@ def display_historical(
         col=1,
     )
     fig.hide_holidays()
+
+    if export:
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "hist",
+            df_hist,
+            sheet_name,
+            fig,
+        )
 
     return fig.show(external=external_axes)

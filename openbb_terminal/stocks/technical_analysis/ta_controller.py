@@ -20,12 +20,14 @@ from openbb_terminal.common.technical_analysis import (
     volatility_view,
     volume_view,
 )
+from openbb_terminal.core.plots.plotly_ta.ta_class import PlotlyTA
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_FIGURES_ALLOWED,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
+    check_indicators,
     check_positive,
     check_positive_list,
     valid_date,
@@ -81,6 +83,7 @@ class TechnicalAnalysisController(StockBaseController):
         "clenow",
         "demark",
         "atr",
+        "multi",
     ]
     PATH = "/stocks/ta/"
     CHOICES_GENERATION = True
@@ -100,9 +103,17 @@ class TechnicalAnalysisController(StockBaseController):
         self.start = start
         self.interval = interval
         self.stock = stock
+        ta_cls = PlotlyTA()
+        indicators: dict = {
+            c.name.replace("plot_", ""): {} for c in ta_cls if c.name != "plot_ma"
+        }
+        indicators.update({c: {} for c in ta_cls.ma_mode})
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices_default
+
+            choices["multi"]["--indicators"] = dict(sorted(indicators.items()))
+            choices["multi"]["-i"] = "--indicators"
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -119,9 +130,7 @@ class TechnicalAnalysisController(StockBaseController):
         mt = MenuText("stocks/ta/", 90)
         mt.add_param("_ticker", stock_str)
         mt.add_raw("\n")
-        mt.add_cmd("tv")
         mt.add_cmd("recom")
-        mt.add_cmd("view")
         mt.add_cmd("summary")
         mt.add_raw("\n")
         mt.add_info("_overlap_")
@@ -155,6 +164,7 @@ class TechnicalAnalysisController(StockBaseController):
         mt.add_cmd("obv")
         mt.add_info("_custom_")
         mt.add_cmd("fib")
+        mt.add_cmd("multi")
         console.print(text=mt.menu_text, menu="Stocks - Technical Analysis")
 
     def custom_reset(self):
@@ -1651,4 +1661,52 @@ class TechnicalAnalysisController(StockBaseController):
                 sheet_name=" ".join(ns_parser.sheet_name)
                 if ns_parser.sheet_name
                 else None,
+            )
+
+    @log_start_end(log=logger)
+    def call_multi(self, other_args: List[str]):
+        """Process multi command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="multi",
+            description="""
+                Plot multiple indicators on the same chart separated by a comma.
+            """,
+        )
+        parser.add_argument(
+            "-i",
+            "--indicators",
+            dest="indicators",
+            type=check_indicators,
+            help="Indicators to plot",
+            required="--indicators" not in other_args,
+        )
+        parser.add_argument(
+            "-p",
+            "--period",
+            dest="period",
+            type=check_positive_list,
+            help="Period window moving averages",
+            default="20,50",
+            required=False,
+        )
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-i")
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+        if ns_parser:
+            if not self.ticker:
+                no_ticker_message()
+                return
+
+            custom_indicators_view.plot_multiple_indicators(
+                self.stock,
+                ns_parser.indicators,
+                self.ticker,
+                ns_parser.period,
+                ns_parser.export,
             )

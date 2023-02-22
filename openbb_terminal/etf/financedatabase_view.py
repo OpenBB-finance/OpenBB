@@ -53,6 +53,7 @@ def display_etf_by_name(
         show_index=True,
         headers=["Name", "Family", "Category"],
         title="ETFs by Total Assets",
+        export=bool(export),
     )
 
     export_data(
@@ -102,6 +103,7 @@ def display_etf_by_description(
         show_index=True,
         headers=["Name", "Family", "Category"],
         title="ETFs by Total Assets",
+        export=bool(export),
     )
 
     export_data(
@@ -151,6 +153,7 @@ def display_etf_by_category(
         show_index=True,
         headers=["Name", "Family", "Category"],
         title="ETFs by Category and Total Assets",
+        export=bool(export),
     )
 
     export_data(

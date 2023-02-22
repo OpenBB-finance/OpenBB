@@ -686,7 +686,8 @@ def plot_forecast(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         name,
-        sheet_name,
+        sheet_name=sheet_name,
+        figure=fig,
     )
 
     # user wants to export only raw predictions

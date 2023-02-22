@@ -152,10 +152,7 @@ def plot_plot(
     fig.add_scatter(x=x_data, y=y_data, mode="lines+markers")
 
     export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "plot",
-        sheet_name,
+        export, os.path.dirname(os.path.abspath(__file__)), "plot", sheet_name, fig
     )
 
     return fig.show(external=external_axes)
@@ -288,6 +285,7 @@ def show_parity(
         headers=[x.title() for x in show.columns],
         show_index=False,
         title=f"{symbol} Parity",
+        export=bool(export),
     )
     console.print(
         "[yellow]Warning: Low volume options may be difficult to trade.[/yellow]"
@@ -515,15 +513,23 @@ def show_binom(
     vol : float
         The annualized volatility for the underlying asset
     """
+    fig = OpenBBFigure()
+
     up, prob_up, discount, und_vals, opt_vals, days = yfinance_model.get_binom(
         symbol, expiry, strike, put, europe, vol
     )
 
+    if plot or fig.is_image_export(export):
+        fig = plot_expected_prices(und_vals, prob_up, symbol, expiry, True)
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "binomial",
+            figure=fig,
+        )
+
     if export:
         export_binomial_calcs(up, prob_up, discount, und_vals, opt_vals, days, symbol)
-
-    if plot:
-        plot_expected_prices(und_vals, prob_up, symbol, expiry)
 
     option = "put" if put else "call"
     console.print(
@@ -622,6 +628,7 @@ def display_vol_surface(
         "vsurf",
         data,
         sheet_name,
+        fig,
     )
 
     return fig.show(external=external_axes, margin=False)

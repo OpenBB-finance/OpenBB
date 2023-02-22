@@ -192,6 +192,7 @@ def display_sentiment(
         "sentiment",
         df_tweets,
         sheet_name,
+        fig,
     )
 
     return fig.show(external=external_axes)

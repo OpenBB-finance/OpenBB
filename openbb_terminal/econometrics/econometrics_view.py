@@ -51,6 +51,7 @@ def show_options(
                 headers=list(data_values.columns),
                 show_index=False,
                 title=f"Options for dataset: '{dataset}'",
+                export=bool(export),
             )
 
             export_data(
@@ -82,6 +83,8 @@ def display_plot(
     external_axes : bool, optional
         Whether to return the figure object or not, by default False
     """
+    fig = OpenBBFigure()
+
     if isinstance(data, pd.Series):
         data = {data.name: data}
     elif isinstance(data, pd.DataFrame):
@@ -95,17 +98,16 @@ def display_plot(
             )
             del data[dataset_col]
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "plot",
-        sheet_name,
-    )
+    if not fig.is_image_export(export):
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "plot",
+            sheet_name,
+        )
 
     # Check that there's at least a valid dataframe
     if data:
-        fig = OpenBBFigure()
-
         for dataset_col in data:
             try:
                 if isinstance(data[dataset_col], (pd.Series, pd.DataFrame)):
@@ -119,6 +121,15 @@ def display_plot(
                 print(f"Could not convert column: {dataset_col}")
             except TypeError:
                 print(f"Could not convert column: {dataset_col}")
+
+        if fig.is_image_export(export):
+            export_data(
+                export,
+                os.path.dirname(os.path.abspath(__file__)),
+                "plot",
+                sheet_name=sheet_name,
+                figure=fig,
+            )
 
         return fig.show(external=external_axes)
 
@@ -154,6 +165,8 @@ def display_norm(
     external_axes : bool, optional
         Whether to return the figure object or not, by default False
     """
+    fig = OpenBBFigure()
+
     if data.dtype not in [int, float, np.float64, np.int64]:
         console.print(
             f"The column type must be numeric. The provided column type is {data.dtype}. "
@@ -168,8 +181,9 @@ def display_norm(
             headers=list(results.columns),
             show_index=True,
             title=f"Normality test{ending}",
+            export=bool(export),
         )
-        if export:
+        if not fig.is_image_export(export):
             export_data(
                 export,
                 os.path.dirname(os.path.abspath(__file__)),
@@ -178,13 +192,22 @@ def display_norm(
                 sheet_name,
             )
 
-        if plot:
-            fig = OpenBBFigure()
+        if plot or fig.is_image_export(export):
             fig.set_title(f"Histogram{ending}", wrap=True, wrap_width=55)
 
             fig.add_histogram(x=data, name="Histogram", nbinsx=100)
 
             fig.update_layout(margin=dict(t=65))
+
+            if fig.is_image_export(export):
+                export_data(
+                    export,
+                    os.path.dirname(os.path.abspath(__file__)),
+                    f"{column}_{dataset}_norm",
+                    results,
+                    sheet_name,
+                    fig,
+                )
 
             return fig.show(external=external_axes)
 
@@ -234,6 +257,7 @@ def display_root(
             headers=list(results.columns),
             show_index=True,
             title=f"Unitroot {ending}",
+            export=bool(export),
         )
 
         export_data(
@@ -289,6 +313,7 @@ def display_granger(
             headers=list(granger_df.columns),
             show_index=True,
             title=f"Granger Causality Test [Y: {dependent_series.name} | X: {independent_series.name} | Lags: {lags}]",
+            export=bool(export),
         )
 
         result_ftest = round(granger_df.loc["params_ftest"]["P-value"], 3)
@@ -357,6 +382,7 @@ def display_cointegration_test(
         return console.print(
             "[red]Co-integration requires at least two time series.[/red]"
         )
+    fig = OpenBBFigure().set_title("Error correction terms")
 
     df: pd.DataFrame = econometrics_model.get_coint_df(*datasets)
 
@@ -373,22 +399,32 @@ def display_cointegration_test(
         show_index=True,
         index_name="Pairs",
         title="Cointegration Tests",
+        export=bool(export),
     )
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "coint",
-        df,
-        sheet_name,
-    )
-    if plot:
-        fig = OpenBBFigure().set_title("Error correction terms")
-
+    if not fig.is_image_export(export):
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "coint",
+            df,
+            sheet_name,
+        )
+    if plot or fig.is_image_export(export):
         z_values = econometrics_model.get_coint_df(*datasets, return_z=True)
 
         for pair, values in z_values.items():
             fig.add_scatter(x=values.index, y=values, name=pair, mode="lines")
+
+        if fig.is_image_export(export):
+            export_data(
+                export,
+                os.path.dirname(os.path.abspath(__file__)),
+                "coint",
+                df,
+                sheet_name,
+                fig,
+            )
 
         return fig.show(external=external_axes)
 

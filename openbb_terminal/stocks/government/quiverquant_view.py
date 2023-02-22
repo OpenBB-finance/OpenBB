@@ -64,6 +64,7 @@ def display_last_government(
         headers=list(df_gov.columns),
         show_index=False,
         title="Representative Trading",
+        export=bool(export),
     )
 
     export_data(
@@ -120,7 +121,11 @@ def display_government_buys(
             .head(n=limit)
         )
         print_rich_table(
-            df, headers=["Amount ($1k)"], show_index=True, title="Top Government Buys"
+            df,
+            headers=["Amount ($1k)"],
+            show_index=True,
+            title="Top Government Buys",
+            export=bool(export),
         )
 
     df_gov_sorted = (
@@ -146,6 +151,7 @@ def display_government_buys(
         "topbuys",
         df_gov,
         sheet_name,
+        fig,
     )
 
     return fig.show(external=external_axes)
@@ -200,6 +206,7 @@ def display_government_sells(
             headers=["Amount ($1k)"],
             show_index=True,
             title="Top Government Trades",
+            export=bool(export),
         )
 
     df_gov_sorted = (
@@ -227,6 +234,7 @@ def display_government_sells(
         "topsells",
         df_gov,
         sheet_name,
+        fig,
     )
 
     return fig.show(external=external_axes)
@@ -269,18 +277,8 @@ def display_last_contracts(
         headers=list(df.columns),
         show_index=False,
         title="Last Government Contracts",
+        export=bool(export),
     )
-
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "lastcontracts",
-        df,
-        sheet_name,
-    )
-
-    if not sum_contracts:
-        return
 
     df["Date"] = pd.to_datetime(df["Date"], format="%Y-%m-%d").dt.date
     df = df.groupby("Date").sum().div(1000)
@@ -290,6 +288,18 @@ def display_last_contracts(
 
     fig.add_bar(x=df.index, y=df["Amount"].values, marker_color=theme.get_colors())
     fig.update_layout(xaxis=dict(nticks=min(len(df.index) + 1, 10)))
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "lastcontracts",
+        df,
+        sheet_name,
+        fig,
+    )
+
+    if not sum_contracts:
+        return
 
     return fig.show(external=external_axes)
 
@@ -374,12 +384,15 @@ def display_government_trading(
     if df_gov.empty:
         return console.print(f"No {gov_type} trading data found\n")
 
+    fig = plot_government(df_gov, symbol, gov_type, True)
+
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "gtrades",
         df_gov,
         sheet_name,
+        fig,
     )
 
     if raw:
@@ -388,9 +401,8 @@ def display_government_trading(
             headers=list(df_gov.columns),
             show_index=False,
             title=f"Government Trading for {symbol.upper()}",
+            export=bool(export),
         )
-
-    fig = plot_government(df_gov, symbol, gov_type, external_axes)
 
     return fig.show(external=external_axes)
 
@@ -432,6 +444,7 @@ def display_contracts(
             headers=list(df_contracts.columns),
             show_index=False,
             title=f"Government Contracts for {symbol.upper()}",
+            export=bool(export),
         )
 
     if df_contracts.Amount.abs().sum() == 0:
@@ -455,6 +468,7 @@ def display_contracts(
         "contracts",
         df_contracts,
         sheet_name,
+        fig,
     )
 
     return fig.show(external=external_axes)
@@ -490,14 +504,6 @@ def display_qtr_contracts(
 
     if symbols.empty:
         return None
-
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "qtrcontracts",
-        symbols,
-        sheet_name,
-    )
 
     if analysis in ("upmom", "downmom"):
         if raw:
@@ -559,13 +565,32 @@ def display_qtr_contracts(
                     )
                 )
 
+                export_data(
+                    export,
+                    os.path.dirname(os.path.abspath(__file__)),
+                    "qtrcontracts",
+                    symbols,
+                    sheet_name,
+                    fig,
+                )
             return fig.show(external=external_axes)
 
     if analysis == "total":
         print_rich_table(
-            symbols, headers=["Total"], title="Quarterly Contracts", show_index=True
+            symbols,
+            headers=["Total"],
+            title="Quarterly Contracts",
+            show_index=True,
+            export=bool(export),
         )
 
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "qtrcontracts",
+        symbols,
+        sheet_name,
+    )
     return None
 
 
@@ -596,21 +621,6 @@ def display_hist_contracts(
 
     if df_contracts.empty:
         return None
-
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "histcont",
-        sheet_name,
-    )
-
-    if raw:
-        return print_rich_table(
-            df_contracts,
-            headers=list(df_contracts.columns),
-            floatfmt=[".0f", ".0f", ".2f"],
-            title="Historical Quarterly Government Contracts",
-        )
 
     amounts = df_contracts.sort_values(by=["Year", "Qtr"])["Amount"].values
 
@@ -645,6 +655,23 @@ def display_hist_contracts(
         ),
         line=dict(color=theme.get_colors()[0]),
     )
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "histcont",
+        sheet_name=sheet_name,
+        figure=fig,
+    )
+
+    if raw:
+        return print_rich_table(
+            df_contracts,
+            headers=list(df_contracts.columns),
+            floatfmt=[".0f", ".0f", ".2f"],
+            title="Historical Quarterly Government Contracts",
+            export=bool(export),
+        )
 
     return fig.show(external=external_axes)
 
@@ -682,22 +709,6 @@ def display_top_lobbying(
         df_lobbying.groupby("Ticker")["Amount"].agg("sum")
     ).sort_values(by="Amount", ascending=False)
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "lobbying",
-        df_lobbying,
-        sheet_name,
-    )
-
-    if raw:
-        return print_rich_table(
-            lobbying_by_ticker.head(limit),
-            headers=["Amount ($100k)"],
-            show_index=True,
-            title="Top Lobbying Tickers",
-        )
-
     df = lobbying_by_ticker.head(limit)
 
     fig = OpenBBFigure(xaxis_title="Ticker", yaxis_title="Total Amount ($100k)")
@@ -709,6 +720,24 @@ def display_top_lobbying(
         name="Amount ($100k)",
         marker_color=theme.get_colors(),
     )
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "lobbying",
+        df_lobbying,
+        sheet_name,
+        fig,
+    )
+
+    if raw:
+        return print_rich_table(
+            lobbying_by_ticker.head(limit),
+            headers=["Amount ($100k)"],
+            show_index=True,
+            title="Top Lobbying Tickers",
+            export=bool(export),
+        )
 
     return fig.show(external=external_axes)
 

@@ -54,6 +54,7 @@ def display_top_nfts(
         headers=list(df.columns),
         show_index=False,
         title="Top NFT collections",
+        export=bool(export),
     )
 
     export_data(
@@ -96,6 +97,7 @@ def display_top_games(
         headers=list(df.columns),
         show_index=False,
         title="Top Blockchain Games",
+        export=bool(export),
     )
 
     export_data(
@@ -138,6 +140,7 @@ def display_top_dexes(
         headers=list(df.columns),
         show_index=False,
         title="Top Decentralized Exchanges",
+        export=bool(export),
     )
 
     export_data(
@@ -180,6 +183,7 @@ def display_top_dapps(
         headers=list(df.columns),
         show_index=False,
         title="Top Decentralized Applications",
+        export=bool(export),
     )
 
     export_data(

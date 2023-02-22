@@ -34,7 +34,10 @@ def display_holdings(export: str = "", sheet_name: Optional[str] = None):
     """
     holdings = robinhood_model.get_holdings()
     print_rich_table(
-        holdings, headers=list(holdings.columns), title="Robinhood Holdings"
+        holdings,
+        headers=list(holdings.columns),
+        title="Robinhood Holdings",
+        export=bool(export),
     )
 
     export_data(
@@ -52,6 +55,7 @@ def display_historical(
     window: str = "3month",
     export: str = "",
     sheet_name: Optional[str] = None,
+    external_axes: bool = False,
 ):
     """Display historical portfolio
 
@@ -63,6 +67,10 @@ def display_historical(
         How long to look back, default="3month"
     export : str, optional
         Format to export data
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     hist = robinhood_model.get_historical(interval, window)
 
@@ -84,6 +92,7 @@ def display_historical(
         "rh_hist",
         hist,
         sheet_name,
+        fig,
     )
 
-    fig.show()
+    return fig.show(external=external_axes)

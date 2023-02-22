@@ -46,6 +46,7 @@ def display_debt(export: str = "", sheet_name: Optional[str] = None, limit: int 
         show_index=False,
         headers=debt_df.columns,
         title="External Debt (USD)",
+        export=bool(export),
     )
     if export:
         export_data(

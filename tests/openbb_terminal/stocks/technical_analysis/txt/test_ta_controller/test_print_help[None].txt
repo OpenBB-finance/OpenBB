@@ -1,8 +1,6 @@
 Ticker: Intraday MOCK_INTERVAL MOCK_TICKER
 
-    tv                 stocks/ta/tv                                          [TradingView]
     recom              recommendation based on technical indicators          [TradingView]
-    view               view historical data and trendlines                   [Finviz]
     summary            technical summary report                              [FinBrain]
 
 Overlap:
@@ -36,4 +34,5 @@ Volume:
     obv                on balance volume
 Custom:
     fib                fibonacci retracement
+    multi              plot multiple indicators on the same chart
 

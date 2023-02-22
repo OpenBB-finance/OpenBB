@@ -94,6 +94,7 @@ def display_luna_circ_supply_change(
         "lcsc",
         df[RAW_COLS],
         sheet_name,
+        fig,
     )
 
     df.index = df.index.strftime("%Y-%m-%d")
@@ -110,6 +111,7 @@ def display_luna_circ_supply_change(
         show_index=True,
         index_name="Time",
         title="Luna Circulating Supply Changes (in Millions)",
+        export=bool(export),
     )
 
     return fig.show(external=external_axes)

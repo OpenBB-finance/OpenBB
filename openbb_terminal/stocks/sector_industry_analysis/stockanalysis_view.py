@@ -160,32 +160,44 @@ def display_plots_financials(
         else:
             denomination = ""
 
-    if raw:
-        print_rich_table(
-            df.fillna("-"),
-            headers=list(df.columns),
-            show_index=True,
-            title=f"{item_name} {denomination}",
+    if not OpenBBFigure().is_image_export(export):
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            item_name,
+            df,
+            sheet_name,
         )
-    else:
-        fig = OpenBBFigure().set_title(f"{item_name} {denomination}")
-        for company in df.columns:
-            fig.add_scatter(
-                x=df.index,
-                y=df[company],
-                mode="lines+markers",
-                name=company,
-                marker=dict(size=16, line=dict(width=1)),
+        if raw:
+            return print_rich_table(
+                df.fillna("-"),
+                headers=list(df.columns),
+                show_index=True,
+                title=f"{item_name} {denomination}",
+                export=bool(export),
             )
-        fig.show(external=external_axes)
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        item_name,
-        df,
-        sheet_name,
-    )
+    fig = OpenBBFigure().set_title(f"{item_name} {denomination}")
+    for company in df.columns:
+        fig.add_scatter(
+            x=df.index,
+            y=df[company],
+            mode="lines+markers",
+            name=company,
+            marker=dict(size=16, line=dict(width=1)),
+        )
+
+    if fig.is_image_export(export):
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            item_name,
+            df,
+            sheet_name,
+            fig,
+        )
+
+    fig.show(external=external_axes)
 
     if external_axes:
         return (stocks_data, company_tickers, fig)

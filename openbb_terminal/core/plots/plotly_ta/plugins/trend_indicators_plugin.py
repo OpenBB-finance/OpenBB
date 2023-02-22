@@ -61,26 +61,17 @@ class Trend(PltTA):
         fig.add_annotation(
             xref=f"x{subplot_row} domain",
             yref=f"y{subplot_row} domain",
-            text="<b>D+</b>",
+            text=(
+                f"<span style='color: {theme.up_color}'>D+</span><br>"
+                f"<span style='color: {theme.down_color}'>D-</span>"
+            ),
             x=0,
             xanchor="right",
-            xshift=-20,
+            xshift=-14,
             y=0.97,
             yshift=-20,
             font_size=14,
             font_color=theme.up_color,
-        )
-        fig.add_annotation(
-            xref=f"x{subplot_row} domain",
-            yref=f"y{subplot_row} domain",
-            text="<b>D-</b>",
-            x=0,
-            xanchor="right",
-            xshift=-4,
-            y=0.97,
-            yshift=-20,
-            font_size=14,
-            font_color=theme.down_color,
         )
         fig.add_hline(
             y=25,

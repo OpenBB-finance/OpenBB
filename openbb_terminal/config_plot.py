@@ -27,6 +27,11 @@ if BACKEND == "None":
 PLOT_HEIGHT = load_env_vars("OPENBB_PLOT_HEIGHT", int, 500, "settings")
 PLOT_WIDTH = load_env_vars("OPENBB_PLOT_WIDTH", int, 800, "settings")
 
+# Whether to open plot image exports after they are created
+PLOT_OPEN_EXPORT = load_env_vars(
+    "OPENBB_PLOT_OPEN_EXPORT", strtobool, False, "settings"
+)
+
 # Used when USE_PLOT_AUTOSCALING is set to True
 PLOT_HEIGHT_PERCENTAGE = load_env_vars(
     "OPENBB_PLOT_HEIGHT_PERCENTAGE", float, 50.0, "settings"

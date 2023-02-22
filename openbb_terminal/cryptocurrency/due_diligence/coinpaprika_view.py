@@ -117,6 +117,7 @@ def display_twitter(
         headers=list(df.columns),
         show_index=False,
         title="Twitter Timeline",
+        export=bool(export),
     )
 
     export_data(
@@ -171,7 +172,11 @@ def display_events(
         df.drop("link", axis=1, inplace=True)
 
     print_rich_table(
-        df.head(limit), headers=list(df.columns), show_index=False, title="All Events"
+        df.head(limit),
+        headers=list(df.columns),
+        show_index=False,
+        title="All Events",
+        export=bool(export),
     )
 
     export_data(
@@ -219,6 +224,7 @@ def display_exchanges(
         headers=list(df.columns),
         show_index=False,
         title="All Exchanges",
+        export=bool(export),
     )
 
     export_data(
@@ -277,7 +283,11 @@ def display_markets(
         df.drop("market_url", axis=1, inplace=True)
 
     print_rich_table(
-        df.head(limit), headers=list(df.columns), show_index=False, title="All Markets"
+        df.head(limit),
+        headers=list(df.columns),
+        show_index=False,
+        title="All Markets",
+        export=bool(export),
     )
 
     export_data(
@@ -319,7 +329,11 @@ def display_price_supply(
     df = df.applymap(lambda x: lambda_long_number_format_with_type_check(x))
 
     print_rich_table(
-        df, headers=list(df.columns), show_index=False, title="Coin Information"
+        df,
+        headers=list(df.columns),
+        show_index=False,
+        title="Coin Information",
+        export=bool(export),
     )
 
     export_data(
@@ -357,7 +371,11 @@ def display_basic(
         return
 
     print_rich_table(
-        df, headers=list(df.columns), show_index=False, title="Basic Coin Information"
+        df,
+        headers=list(df.columns),
+        show_index=False,
+        title="Basic Coin Information",
+        export=bool(export),
     )
 
     export_data(

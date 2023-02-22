@@ -59,6 +59,7 @@ def display_historical(
     start_date: str,
     end_date: str,
     comparison: str = "",
+    external_axes: bool = False,
 ):
     """Display historical fund, category, index price
 
@@ -72,6 +73,8 @@ def display_historical(
         end date of the period to be displayed
     comparison: str
         type of comparison, can be index, category, both
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
 
     title = f"Performance of {loaded_funds.name}"
@@ -88,8 +91,6 @@ def display_historical(
             name=f"{loaded_funds.name}",
             mode="lines",
         )
-
-        fig.show()
 
     else:
         data = loaded_funds.historicalData()
@@ -129,7 +130,8 @@ def display_historical(
 
         fig.set_title(title.rstrip(","), wrap=True, wrap_width=70)
         fig.update_layout(margin=dict(t=65))
-        fig.show()
+
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -223,7 +225,9 @@ def display_search(
 
 
 @log_start_end(log=logger)
-def display_sector(loaded_funds: mstarpy.Funds, asset_type: str = "equity"):
+def display_sector(
+    loaded_funds: mstarpy.Funds, asset_type: str = "equity", external_axes: bool = False
+):
     """Display fund, category, index sector breakdown
 
     Parameters
@@ -232,6 +236,8 @@ def display_sector(loaded_funds: mstarpy.Funds, asset_type: str = "equity"):
         class mstarpy.Funds instantiated with selected funds
     asset_type: str
         can be equity or fixed income
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     key = "EQUITY" if asset_type == "equity" else "FIXEDINCOME"
 
@@ -268,4 +274,5 @@ def display_sector(loaded_funds: mstarpy.Funds, asset_type: str = "equity"):
 
     fig.update_layout(margin=dict(t=45), xaxis=dict(tickangle=-15))
     fig.set_title(title.rstrip(","), wrap=True, wrap_width=60)
-    fig.show()
+
+    return fig.show(external=external_axes)

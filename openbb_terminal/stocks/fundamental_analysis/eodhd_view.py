@@ -49,6 +49,8 @@ def display_fundamentals(
     export: str
         Format to export data
     """
+    fig = OpenBBFigure()
+
     fundamentals = eodhd_model.get_financials(symbol, statement, quarterly, ratios)
     title_str = {
         "Balance_Sheet": "Balance Sheet",
@@ -94,7 +96,6 @@ def display_fundamentals(
             denomination = ""
 
         if rows_plot == 1:
-            fig = OpenBBFigure()
             fig.add_bar(
                 x=df_rounded.index,
                 y=df_rounded[plot[0].replace("_", " ")],
@@ -105,7 +106,6 @@ def display_fundamentals(
                 if ratios
                 else f"{plot[0].replace('_', ' ').capitalize()} of {symbol.upper()} {denomination}"
             )
-            fig.show()
         else:
             fig = OpenBBFigure.create_subplots(rows=rows_plot, cols=1)
             for i in range(rows_plot):
@@ -119,7 +119,8 @@ def display_fundamentals(
                 fig.set_title(
                     f"{plot[i].replace('_', ' ')} {denomination}", row=i + 1, col=1
                 )
-            fig.show()
+
+        fig.show(external=fig.is_image_export(export))
     else:
         # Snake case to english
         fundamentals.index = fundamentals.index.to_series().apply(
@@ -132,11 +133,14 @@ def display_fundamentals(
             fundamentals.iloc[:, :limit].applymap(lambda x: "-" if x == "nan" else x),
             show_index=True,
             title=f"{symbol} {title_str}",
+            export=bool(export),
         )
+
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         statement,
         fundamentals,
         sheet_name,
+        fig,
     )

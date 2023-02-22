@@ -144,6 +144,7 @@ class PltTA(metaclass=PluginMeta):
                 # pylint: disable=unnecessary-dunder-call
                 if not hasattr(self, item.name):
                     setattr(self, item.name, item.func.__get__(self, type(self)))
+                    self.__indicators__.append(item)
 
             for static_method in plugin.__static_methods__:
                 if not hasattr(self, static_method):
@@ -163,6 +164,7 @@ class PltTA(metaclass=PluginMeta):
         for plugin in plugins:
             for item in plugin.__indicators__:
                 delattr(self, item.name)
+                self.__indicators__.remove(item)
 
             for static_method in plugin.__static_methods__:
                 delattr(self, static_method)

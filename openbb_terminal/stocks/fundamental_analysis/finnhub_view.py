@@ -109,6 +109,7 @@ def rating_over_time(
             headers=list(df_rot_raw.columns),
             show_index=False,
             title="Monthly Rating",
+            export=bool(export),
         )
     else:
         return plot_rating_over_time(df_rot.head(limit), symbol, external_axes)

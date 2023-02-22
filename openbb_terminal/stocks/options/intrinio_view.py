@@ -66,6 +66,7 @@ def display_historical(
             df_hist,
             headers=[x.title() for x in df_hist.columns],
             title="Historical Option Prices",
+            export=bool(export),
         )
 
     df_hist.columns = [x.title() for x in df_hist.columns]
@@ -103,6 +104,7 @@ def display_historical(
             "hist",
             df_hist,
             sheet_name,
+            fig,
         )
 
     return fig.show(external=external_axes)
@@ -177,6 +179,7 @@ def view_historical_greeks(
             headers=list(df.columns),
             title="Historical Greeks",
             show_index=True,
+            export=bool(export),
         )
 
     try:
@@ -224,6 +227,7 @@ def view_historical_greeks(
         "grhist",
         df,
         sheet_name,
+        fig,
     )
 
     return fig.show(external=external_axes)

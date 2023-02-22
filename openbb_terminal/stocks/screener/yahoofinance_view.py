@@ -85,6 +85,7 @@ def historical(
             "historical",
             df_screener,
             sheet_name,
+            fig,
         )
         fig.show(external=external_axes)
 

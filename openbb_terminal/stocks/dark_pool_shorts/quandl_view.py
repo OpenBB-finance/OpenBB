@@ -128,7 +128,7 @@ def short_interest(
     )
     df_short_interest["% of Volume Shorted"] = [round(pct, 2) for pct in vol_pct]
 
-    fig = plot_short_interest(symbol, df_short_interest, nyse, external_axes or raw)
+    fig = plot_short_interest(symbol, df_short_interest, nyse, True)
 
     if raw:
         df_short_interest["% of Volume Shorted"] = df_short_interest[
@@ -143,6 +143,7 @@ def short_interest(
             headers=list(df_short_interest.columns),
             show_index=True,
             title="Short Interest of Stock",
+            export=bool(export),
         )
 
     export_data(
@@ -151,6 +152,7 @@ def short_interest(
         "psi(quandl)",
         df_short_interest,
         sheet_name,
+        fig,
     )
 
-    return fig
+    return fig.show(external=external_axes)

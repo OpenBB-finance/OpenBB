@@ -99,14 +99,11 @@ def display_crypto_rates(
         index_name="Platform",
         show_index=True,
         title=f"Crypto {rate_type.capitalize()} Interest Rates",
+        export=bool(export),
     )
 
     export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "cr",
-        df,
-        sheet_name,
+        export, os.path.dirname(os.path.abspath(__file__)), "cr", df, sheet_name, fig
     )
 
     return fig.show(external=external_axes)

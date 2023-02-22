@@ -88,7 +88,11 @@ def display_global_market(export: str = "", sheet_name: Optional[str] = None) ->
     )
 
     print_rich_table(
-        df, headers=list(df.columns), show_index=False, title="Global Crypto Statistics"
+        df,
+        headers=list(df.columns),
+        show_index=False,
+        title="Global Crypto Statistics",
+        export=bool(export),
     )
 
     export_data(
@@ -145,6 +149,7 @@ def display_all_coins_market_info(
         headers=list(df.columns),
         show_index=False,
         title="Basic Market Information",
+        export=bool(export),
     )
 
     export_data(
@@ -201,6 +206,7 @@ def display_all_coins_info(
         headers=list(df.columns),
         show_index=False,
         title="Basic Coin Information",
+        export=bool(export),
     )
 
     export_data(
@@ -257,6 +263,7 @@ def display_all_exchanges(
         headers=list(df.columns),
         show_index=False,
         title="List Exchanges",
+        export=bool(export),
     )
 
     export_data(
@@ -316,6 +323,7 @@ def display_exchange_markets(
         headers=list(df.columns),
         show_index=False,
         title="Exchange Markets",
+        export=bool(export),
     )
 
     export_data(
@@ -341,7 +349,11 @@ def display_all_platforms(export: str = "", sheet_name: Optional[str] = None) ->
     df = paprika.get_all_contract_platforms()
 
     print_rich_table(
-        df, headers=list(df.columns), show_index=False, title="Smart Contract Platforms"
+        df,
+        headers=list(df.columns),
+        show_index=False,
+        title="Smart Contract Platforms",
+        export=bool(export),
     )
 
     export_data(
@@ -389,6 +401,7 @@ def display_contracts(
         headers=list(df.columns),
         show_index=False,
         title="Contract Addresses",
+        export=bool(export),
     )
 
     export_data(

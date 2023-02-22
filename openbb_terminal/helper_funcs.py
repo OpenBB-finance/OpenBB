@@ -44,6 +44,7 @@ from openbb_terminal import (
     plots_backend,
 )
 from openbb_terminal.core.config.paths import HOME_DIRECTORY, USER_EXPORTS_DIRECTORY
+from openbb_terminal.core.plots.plotly_ta.ta_class import PlotlyTA
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
 
@@ -467,6 +468,23 @@ def check_positive(value) -> int:
             argparse.ArgumentTypeError(f"{value} is an invalid positive int value")
         )
     return new_value
+
+
+def check_indicators(string: str) -> List[str]:
+    """Check if indicators are valid."""
+    ta_cls = PlotlyTA()
+    choices = sorted(
+        [c.name.replace("plot_", "") for c in ta_cls if c.name != "plot_ma"]
+        + ta_cls.ma_mode
+    )
+
+    strings = string.split(",")
+    for s in strings:
+        if s not in choices:
+            raise argparse.ArgumentTypeError(
+                f"\nInvalid choice: {s}, choose from \n    (`{'`, `'.join(choices)}`)",
+            )
+    return strings
 
 
 def check_positive_float(value) -> float:

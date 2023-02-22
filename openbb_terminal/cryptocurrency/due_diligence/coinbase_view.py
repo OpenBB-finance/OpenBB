@@ -72,7 +72,9 @@ def display_trades(
 
     df = coinbase_model.get_trades(symbol, limit, side)
 
-    print_rich_table(df, headers=list(df.columns), show_index=False)
+    print_rich_table(
+        df, headers=list(df.columns), show_index=False, export=bool(export)
+    )
 
     export_data(
         export,
@@ -105,7 +107,11 @@ def display_candles(
     df = coinbase_model.get_candles(symbol, interval)
 
     print_rich_table(
-        df, headers=list(df.columns), show_index=True, title="Trading Pair Candles"
+        df,
+        headers=list(df.columns),
+        show_index=True,
+        title="Trading Pair Candles",
+        export=bool(export),
     )
 
     export_data(
@@ -139,6 +145,7 @@ def display_stats(
         headers=list(df.columns),
         show_index=False,
         title=f"Coinbase:{symbol.upper()} 24 hr Product Stats",
+        export=bool(export),
     )
 
     export_data(

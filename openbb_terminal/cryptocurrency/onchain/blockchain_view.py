@@ -64,6 +64,7 @@ def display_btc_circulating_supply(
         "btccp",
         df,
         sheet_name,
+        fig,
     )
 
     return fig.show(external=external_axes)
@@ -115,6 +116,7 @@ def display_btc_confirmed_transactions(
         "btcct",
         df,
         sheet_name,
+        fig,
     )
 
     return fig.show(external=external_axes)
@@ -166,6 +168,7 @@ def display_btc_single_block(
             show_index=True,
             index_name="Metric",
             title=f"Block {int(df['height'])}",
+            export=bool(export),
         )
 
         export_data(

@@ -58,6 +58,7 @@ def display_summary(
         floatfmt=".3f",
         show_index=True,
         title="[bold]Summary Statistics[/bold]",
+        export=bool(export),
     )
 
     export_data(
@@ -230,6 +231,7 @@ def display_cdf(
         "cdf",
         pd.DataFrame(cdf),
         sheet_name,
+        fig,
     )
 
     return fig.show(external=external_axes)
@@ -712,6 +714,7 @@ def display_seasonal(
         "summary",
         cycle.join(trend),
         sheet_name,
+        fig,
     )
 
     return fig.show(external=external_axes)
@@ -743,6 +746,7 @@ def display_normality(
         headers=["Statistic", "p-value"],
         floatfmt=".4f",
         title="[bold]Normality Statistics[/bold]",
+        export=bool(export),
     )
 
     export_data(
@@ -786,6 +790,7 @@ def display_unitroot(
         headers=list(data.columns),
         title="[bold]Unit Root Calculation[/bold]",
         floatfmt=".4f",
+        export=bool(export),
     )
 
     export_data(
@@ -843,6 +848,7 @@ def display_raw(
         title="[bold]Raw Data[/bold]",
         show_index=True,
         floatfmt=".3f",
+        export=bool(export),
     )
 
     export_data(
@@ -964,6 +970,7 @@ def display_line(
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
         "line",
         sheet_name,
+        fig,
     )
 
     return fig.show(external=external_axes)

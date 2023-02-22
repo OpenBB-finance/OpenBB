@@ -82,6 +82,7 @@ def display_messari_timeseries_list(
                 headers=list(df.columns),
                 show_index=True,
                 title="Messari Timeseries",
+                export=bool(export),
             )
 
         export_data(
@@ -159,6 +160,7 @@ def display_messari_timeseries(
             "mt",
             df,
             sheet_name,
+            fig,
         )
 
         return fig.show(external=external_axes)
@@ -223,6 +225,7 @@ def display_marketcap_dominance(
             "mcapdom",
             df,
             sheet_name,
+            fig,
         )
 
         return fig.show(external=external_axes)
@@ -255,6 +258,7 @@ def display_links(
             headers=list(df.columns),
             show_index=False,
             title=f"{symbol} Links",
+            export=bool(export),
         )
 
         export_data(
@@ -294,6 +298,8 @@ def display_roadmap(
     external_axes : bool, optional
         Whether to return the figure object or not, by default False
     """
+    fig = OpenBBFigure()
+
     df = get_roadmap(symbol, ascend)
 
     if not df.empty:
@@ -302,14 +308,16 @@ def display_roadmap(
             headers=list(df.columns),
             show_index=False,
             title=f"{symbol} Roadmap",
+            export=bool(export),
         )
-        export_data(
-            export,
-            os.path.dirname(os.path.abspath(__file__)),
-            "rm",
-            df,
-            sheet_name,
-        )
+        if not fig.is_image_export(export):
+            export_data(
+                export,
+                os.path.dirname(os.path.abspath(__file__)),
+                "rm",
+                df,
+                sheet_name,
+            )
 
         df_prices, _ = cryptocurrency_helpers.load_yf_data(
             symbol=symbol,
@@ -358,6 +366,16 @@ def display_roadmap(
                 y=df_prices["Close"].values,
                 mode="lines",
             )
+
+            if fig.is_image_export(export):
+                export_data(
+                    export,
+                    os.path.dirname(os.path.abspath(__file__)),
+                    "rm",
+                    df,
+                    sheet_name,
+                    fig,
+                )
             return fig.show(external=external_axes)
 
     return console.print("\nUnable to retrieve data from Messari.\n")
@@ -393,6 +411,7 @@ def display_tokenomics(
             headers=list(df.columns),
             show_index=False,
             title=f"{symbol} Tokenomics",
+            export=bool(export),
         )
         fig = OpenBBFigure.create_subplots(
             specs=[[{"secondary_y": True}]], vertical_spacing=0.1
@@ -437,6 +456,7 @@ def display_tokenomics(
             "tk",
             df,
             sheet_name,
+            fig,
         )
         return fig.show(external=external_axes)
 
@@ -472,6 +492,7 @@ def display_project_info(
                 headers=list(df.columns),
                 show_index=False,
                 title=f"{symbol} {title}",
+                export=bool(export),
             )
         else:
             console.print(f"\n{title} not found\n")
@@ -510,6 +531,7 @@ def display_investors(
                 headers=list(df_individuals.columns),
                 show_index=False,
                 title=f"{symbol} Investors - Individuals",
+                export=bool(export),
             )
         else:
             console.print("\nIndividual investors not found\n")
@@ -519,6 +541,7 @@ def display_investors(
                 headers=list(df_organizations.columns),
                 show_index=False,
                 title=f"{symbol} Investors - Organizations",
+                export=bool(export),
             )
         else:
             console.print("\nInvestors - Organizations not found\n")
@@ -558,6 +581,7 @@ def display_team(
                 headers=list(df_individuals.columns),
                 show_index=False,
                 title=f"{symbol} Team - Individuals",
+                export=bool(export),
             )
         else:
             console.print("\nIndividual team members not found\n")
@@ -567,6 +591,7 @@ def display_team(
                 headers=list(df_organizations.columns),
                 show_index=False,
                 title=f"{symbol} Team - Organizations",
+                export=bool(export),
             )
         else:
             console.print("\nTeam organizations not found\n")
@@ -608,6 +633,7 @@ def display_governance(
                 headers=list(df.columns),
                 show_index=False,
                 title=f"{symbol} Governance details",
+                export=bool(export),
             )
         export_data(
             export,
@@ -653,6 +679,7 @@ def display_fundraising(
             headers=list(df_sales_rounds.columns),
             show_index=False,
             title=f"{symbol} Sales Rounds",
+            export=bool(export),
         )
     else:
         console.print("\nSales rounds not found\n")
@@ -663,6 +690,7 @@ def display_fundraising(
             headers=list(df_treasury_accs.columns),
             show_index=False,
             title=f"{symbol} Treasury Accounts",
+            export=bool(export),
         )
     else:
         console.print("\nTreasury accounts not found\n")
@@ -689,6 +717,7 @@ def display_fundraising(
             headers=list(df_details.columns),
             show_index=False,
             title=f"{symbol} Fundraising Details",
+            export=bool(export),
         )
         export_data(
             export,

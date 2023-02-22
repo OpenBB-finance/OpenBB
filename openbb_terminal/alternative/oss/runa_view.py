@@ -117,6 +117,7 @@ def display_rossindex(
             floatfmt=".1f",
             show_index=False,
             title="ROSS Index - the fastest-growing open-source startups",
+            export=bool(export),
         )
 
         export_data(

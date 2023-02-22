@@ -49,6 +49,7 @@ def display_anchor_data(
             headers=list(df_deposits.columns),
             show_index=False,
             title="Transactions history in Anchor Earn",
+            export=bool(export),
         )
 
     fig = OpenBBFigure(yaxis_title="Earnings Value [UST]")
@@ -62,6 +63,7 @@ def display_anchor_data(
         "anchor",
         df,
         sheet_name,
+        fig,
     )
 
     return fig.show(external=external_axes)

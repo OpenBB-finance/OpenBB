@@ -50,6 +50,8 @@ def display_fundamentals(
     export: str
         Format to export data
     """
+    fig = OpenBBFigure()
+
     fundamentals = polygon_model.get_financials(symbol, statement, quarterly, ratios)
     title_str = {
         "balance": "Balance Sheet",
@@ -85,7 +87,6 @@ def display_fundamentals(
         fundamentals_plot_data = fundamentals_plot_data.transpose()
 
         if rows_plot == 1:
-            fig = OpenBBFigure()
             fig.add_scatter(
                 x=fundamentals_plot_data.index,
                 y=fundamentals_plot_data[plot[0]],
@@ -97,7 +98,6 @@ def display_fundamentals(
                 else f"{plot[0].replace('_', ' ')} of {symbol.upper()}"
             )
             fig.set_title(title)
-            fig.show()
         else:
             fig = OpenBBFigure.create_subplots(rows=rows_plot, cols=1)
             for i in range(rows_plot):
@@ -110,7 +110,7 @@ def display_fundamentals(
                 )
                 fig.set_title(f"{plot[i].replace('_', ' ')}", row=i + 1, col=1)
 
-            fig.show()
+        fig.show(external=fig.is_image_export(export))
     else:
         # Snake case to english
         fundamentals.index = fundamentals.index.to_series().apply(
@@ -125,6 +125,7 @@ def display_fundamentals(
             title=f"{symbol} {title_str}"
             if not ratios
             else f"{'QoQ' if quarterly else 'YoY'} Change of {symbol} {title_str}",
+            export=bool(export),
         )
 
     export_data(
@@ -133,4 +134,5 @@ def display_fundamentals(
         statement,
         fundamentals,
         sheet_name,
+        fig,
     )

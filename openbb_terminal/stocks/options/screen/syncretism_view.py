@@ -91,7 +91,11 @@ def view_screener_output(
         df_res = df_res.head(limit)
 
     print_rich_table(
-        df_res, headers=list(df_res.columns), show_index=False, title="Screener Output"
+        df_res,
+        headers=list(df_res.columns),
+        show_index=False,
+        title="Screener Output",
+        export=bool(export),
     )
 
     return list(set(df_res["S"].values.tolist()))
@@ -159,6 +163,7 @@ def view_historical_greeks(
             headers=list(df.columns),
             title="Historical Greeks",
             show_index=True,
+            export=bool(export),
         )
 
     fig = OpenBBFigure.create_subplots(
@@ -202,6 +207,7 @@ def view_historical_greeks(
         "grhist",
         df,
         sheet_name,
+        fig,
     )
 
     return fig.show(external=external_axes)

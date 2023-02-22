@@ -99,106 +99,98 @@ def display_crypto_heatmap(
     """
     df = gecko.get_coins(limit, category)
     if df.empty:
-        console.print("\nNo cryptocurrencies found\n")
-    else:
-        df = df.fillna(
-            0
-        )  # to prevent errors with rounding when values aren't available
+        return console.print("\nNo cryptocurrencies found\n")
 
-        category_str = f"[{category}]" if category else ""
-        fig = OpenBBFigure.create_subplots(
-            print_grid=False,
-            vertical_spacing=0,
-            horizontal_spacing=-0,
-            specs=[[{"type": "domain"}]],
-            rows=1,
-            cols=1,
-        )
-        fig.set_title(f"Top {limit} Cryptocurrencies {category_str}")
+    df = df.fillna(0)  # to prevent errors with rounding when values aren't available
 
-        df_copy = df.copy()
-        the_row = "price_change_percentage_24h_in_currency"
-        df_copy["symbol"] = df_copy.apply(lambda row: row["symbol"].upper(), axis=1)
-        df_copy["change"] = df_copy.apply(lambda row: round(row[the_row], 2), axis=1)
+    category_str = f"[{category}]" if category else ""
+    fig = OpenBBFigure.create_subplots(
+        print_grid=False,
+        vertical_spacing=0,
+        horizontal_spacing=-0,
+        specs=[[{"type": "domain"}]],
+        rows=1,
+        cols=1,
+    )
+    fig.set_title(f"Top {limit} Cryptocurrencies {category_str}")
 
-        # index needs to get sorted - was matching with different values
-        df.sort_index(inplace=True)
-        df_copy.sort_index(inplace=True)
+    df_copy = df.copy()
+    the_row = "price_change_percentage_24h_in_currency"
+    df_copy["symbol"] = df_copy.apply(lambda row: row["symbol"].upper(), axis=1)
+    df_copy["change"] = df_copy.apply(lambda row: round(row[the_row], 2), axis=1)
 
-        color_bin = [-100, -2, -1, -0.001, 0.001, 1, 2, 100]
-        df_copy["colors"] = pd.cut(
-            df_copy["change"],
-            bins=color_bin,
-            labels=[
-                "rgb(246, 53, 56)",
-                "rgb(191, 64, 69)",
-                "rgb(139, 68, 78)",
-                "grey",
-                "rgb(53, 118, 78)",
-                "rgb(47, 158, 79)",
-                "rgb(48, 204, 90)",
-            ],
-        )
+    # index needs to get sorted - was matching with different values
+    df.sort_index(inplace=True)
+    df_copy.sort_index(inplace=True)
 
-        treemap = px.treemap(
-            df_copy,
-            path=["symbol"],
-            values="market_cap",
-            custom_data=[the_row],
-            color="colors",
-            color_discrete_map={
-                "(?)": "#262931",
-                "grey": "grey",
-                "rgb(246, 53, 56)": "rgb(246, 53, 56)",
-                "rgb(191, 64, 69)": "rgb(191, 64, 69)",
-                "rgb(139, 68, 78)": "rgb(139, 68, 78)",
-                "rgb(53, 118, 78)": "rgb(53, 118, 78)",
-                "rgb(47, 158, 79)": "rgb(47, 158, 79)",
-                "rgb(48, 204, 90)": "rgb(48, 204, 90)",
-            },
-        )
-        fig.add_trace(treemap["data"][0], row=1, col=1)
+    color_bin = [-100, -2, -1, -0.001, 0.001, 1, 2, 100]
+    df_copy["colors"] = pd.cut(
+        df_copy["change"],
+        bins=color_bin,
+        labels=[
+            "rgb(246, 53, 56)",
+            "rgb(191, 64, 69)",
+            "rgb(139, 68, 78)",
+            "grey",
+            "rgb(53, 118, 78)",
+            "rgb(47, 158, 79)",
+            "rgb(48, 204, 90)",
+        ],
+    )
 
-        fig.data[
-            0
-        ].texttemplate = (
-            "<br> <br> <b>%{label}<br>    %{customdata[0]:.2f}% <br> <br> <br><br><b>"
-        )
-        fig.data[0].insidetextfont = dict(
-            family="Arial Black",
-            size=30,
-            color="white",
-        )
+    treemap = px.treemap(
+        df_copy,
+        path=["symbol"],
+        values="market_cap",
+        custom_data=[the_row],
+        color="colors",
+        color_discrete_map={
+            "(?)": "#262931",
+            "grey": "grey",
+            "rgb(246, 53, 56)": "rgb(246, 53, 56)",
+            "rgb(191, 64, 69)": "rgb(191, 64, 69)",
+            "rgb(139, 68, 78)": "rgb(139, 68, 78)",
+            "rgb(53, 118, 78)": "rgb(53, 118, 78)",
+            "rgb(47, 158, 79)": "rgb(47, 158, 79)",
+            "rgb(48, 204, 90)": "rgb(48, 204, 90)",
+        },
+    )
+    fig.add_trace(treemap["data"][0], row=1, col=1)
 
-        fig.update_traces(
-            textinfo="label+text",
-            textposition="middle center",
-            selector=dict(type="treemap"),
-            marker_line_width=0.3,
-            marker_pad_b=20,
-            marker_pad_l=0,
-            marker_pad_r=0,
-            marker_pad_t=50,
-            tiling_pad=2,
-        )
-        fig.update_layout(
-            margin=dict(t=0, l=0, r=0, b=0),
-            paper_bgcolor="rgba(0,0,0,0)",
-            plot_bgcolor="rgba(0,0,0,0)",
-            hovermode=False,
-        )
+    fig.data[
+        0
+    ].texttemplate = (
+        "<br> <br> <b>%{label}<br>    %{customdata[0]:.2f}% <br> <br> <br><br><b>"
+    )
+    fig.data[0].insidetextfont = dict(
+        family="Arial Black",
+        size=30,
+        color="white",
+    )
 
-        export_data(
-            export,
-            os.path.dirname(os.path.abspath(__file__)),
-            "hm",
-            df,
-            sheet_name,
-        )
+    fig.update_traces(
+        textinfo="label+text",
+        textposition="middle center",
+        selector=dict(type="treemap"),
+        marker_line_width=0.3,
+        marker_pad_b=20,
+        marker_pad_l=0,
+        marker_pad_r=0,
+        marker_pad_t=50,
+        tiling_pad=2,
+    )
+    fig.update_layout(
+        margin=dict(t=0, l=0, r=0, b=0),
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",
+        hovermode=False,
+    )
 
-        return fig.show(external=external_axes, margin=False)
+    export_data(
+        export, os.path.dirname(os.path.abspath(__file__)), "hm", df, sheet_name, fig
+    )
 
-    return None
+    return fig.show(external=external_axes, margin=False)
 
 
 @log_start_end(log=logger)
@@ -224,7 +216,7 @@ def display_holdings_overview(
     limit: int
         The number of rows to show
     """
-
+    fig = OpenBBFigure()
     res = gecko.get_holdings_overview(symbol)
     stats_string = res[0]
     df = res[1]
@@ -232,41 +224,46 @@ def display_holdings_overview(
     df = df.head(limit)
 
     if df.empty:
-        console.print("\nZero companies holding this crypto\n")
-    else:
-        if show_bar:
-            fig = OpenBBFigure(xaxis_title="Company Symbol")
+        return console.print("\nZero companies holding this crypto\n")
 
-            fig.add_bar(x=df["Symbol"], y=df["Total Holdings"], name="Total Holdings")
+    if show_bar or fig.is_image_export(export):
+        fig = OpenBBFigure(xaxis_title="Company Symbol")
 
-            ylabel = "ETH Number"
-            title = "Total ETH Holdings per company"
+        fig.add_bar(x=df["Symbol"], y=df["Total Holdings"], name="Total Holdings")
 
-            if symbol == "bitcoin":
-                ylabel = "BTC Number"
-                title = "Total BTC Holdings per company"
+        ylabel = "ETH Number"
+        title = "Total ETH Holdings per company"
 
-            fig.set_title(title)
-            fig.set_yaxis_title(ylabel)
+        if symbol == "bitcoin":
+            ylabel = "BTC Number"
+            title = "Total BTC Holdings per company"
 
+        fig.set_title(title)
+        fig.set_yaxis_title(ylabel)
+
+        if not fig.is_image_export(export):
             fig.show()
 
-        console.print(f"\n{stats_string}\n")
-        df = df.applymap(lambda x: lambda_long_number_format_with_type_check(x))
-        print_rich_table(
-            df,
-            headers=list(df.columns),
-            show_index=False,
-            title="Public Companies Holding BTC or ETH",
-        )
+    console.print(f"\n{stats_string}\n")
+    df = df.applymap(lambda x: lambda_long_number_format_with_type_check(x))
+    print_rich_table(
+        df,
+        headers=list(df.columns),
+        show_index=False,
+        title="Public Companies Holding BTC or ETH",
+        export=bool(export),
+    )
 
-        export_data(
-            export,
-            os.path.dirname(os.path.abspath(__file__)),
-            "cghold",
-            df,
-            sheet_name,
-        )
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "cghold",
+        df,
+        sheet_name,
+        fig,
+    )
+
+    return None
 
 
 @log_start_end(log=logger)
@@ -299,6 +296,7 @@ def display_exchange_rates(
             headers=list(df.columns),
             show_index=False,
             title="Exchange Rates",
+            export=bool(export),
         )
 
         export_data(
@@ -330,11 +328,11 @@ def display_global_market_info(
     export : str
         Export dataframe data to csv,json,xlsx file
     """
-
+    fig = OpenBBFigure()
     df = gecko.get_global_info()
 
     if not df.empty:
-        if pie:
+        if pie or fig.is_image_export(export):
             df = df.loc[
                 df["Metric"].isin(
                     [
@@ -349,10 +347,15 @@ def display_global_market_info(
                 values=df["Value"],
                 title="Market Cap Distribution",
             )
-            fig.show()
+            if not fig.is_image_export(export):
+                fig.show()
 
         print_rich_table(
-            df, headers=list(df.columns), show_index=False, title="Global Statistics"
+            df,
+            headers=list(df.columns),
+            show_index=False,
+            title="Global Statistics",
+            export=bool(export),
         )
 
         export_data(
@@ -361,6 +364,7 @@ def display_global_market_info(
             "cgglobal",
             df,
             sheet_name,
+            fig,
         )
     else:
         console.print("Unable to retrieve data from CoinGecko.")
@@ -386,6 +390,7 @@ def display_global_defi_info(
             headers=list(df.columns),
             show_index=False,
             title="Global DEFI Statistics",
+            export=bool(export),
         )
 
         export_data(
@@ -430,6 +435,7 @@ def display_stablecoins(
     >>> from openbb_terminal.sdk import openbb
     >>> openbb.crypto.ov.stables_chart(sortby="Volume_[$]", ascend=True, limit=10)
     """
+    fig = OpenBBFigure()
 
     df = gecko.get_stable_coins(limit, sortby=sortby, ascend=ascend)
 
@@ -437,7 +443,7 @@ def display_stablecoins(
         total_market_cap = int(df["Market_Cap_[$]"].sum())
         df.columns = df.columns.str.replace("_", " ")
 
-        if pie:
+        if pie or fig.is_image_export(export):
             stables_to_display = df[df[f"Percentage [%] of top {limit}"] >= 1]
             other_stables = df[df[f"Percentage [%] of top {limit}"] < 1]
             values_list = list(
@@ -452,7 +458,8 @@ def display_stablecoins(
                 values=values_list,
                 title=f"Market cap distribution of top {limit} Stablecoins",
             )
-            fig.show()
+            if not fig.is_image_export(export):
+                fig.show()
 
         console.print(
             f"First {limit} stablecoins have a total "
@@ -466,6 +473,7 @@ def display_stablecoins(
             headers=list(df.columns),
             show_index=False,
             title="Stablecoin Data",
+            export=bool(export),
         )
 
         export_data(
@@ -474,6 +482,7 @@ def display_stablecoins(
             "cgstables",
             df,
             sheet_name,
+            fig,
         )
     else:
         console.print("\nUnable to retrieve data from CoinGecko.\n")
@@ -504,11 +513,12 @@ def display_categories(
     pie: bool
         Whether to show the pie chart
     """
+    fig = OpenBBFigure()
 
     df = gecko.get_top_crypto_categories(sortby)
     df_data = df
     if not df.empty:
-        if pie:
+        if pie or fig.is_image_export(export):
             df_data[f"% relative to top {limit}"] = (
                 df_data["Market Cap"] / df_data["Market Cap"].sum()
             ) * 100
@@ -524,7 +534,8 @@ def display_categories(
                 values=values_list,
                 title=f"Market Cap distribution of top {limit} crypto categories",
             )
-            fig.show()
+            if not fig.is_image_export(export):
+                fig.show()
 
         df = df.applymap(lambda x: lambda_long_number_format_with_type_check(x))
         print_rich_table(
@@ -532,6 +543,7 @@ def display_categories(
             headers=list(df.columns),
             floatfmt=".2f",
             show_index=False,
+            export=bool(export),
         )
 
         export_data(
@@ -540,6 +552,7 @@ def display_categories(
             "cgcategories",
             df_data,
             sheet_name,
+            fig,
         )
     else:
         console.print("\nUnable to retrieve data from CoinGecko.\n")
@@ -583,6 +596,7 @@ def display_exchanges(
             headers=list(df.columns),
             show_index=False,
             title="Top CoinGecko Exchanges",
+            export=bool(export),
         )
 
         export_data(
@@ -626,6 +640,7 @@ def display_platforms(
             headers=list(df.columns),
             show_index=False,
             title="Financial Platforms",
+            export=bool(export),
         )
 
         export_data(
@@ -669,6 +684,7 @@ def display_products(
             headers=list(df.columns),
             show_index=False,
             title="Financial Products",
+            export=bool(export),
         )
 
         export_data(
@@ -711,6 +727,7 @@ def display_indexes(
             headers=list(df.columns),
             show_index=False,
             title="Crypto Indexes",
+            export=bool(export),
         )
 
         export_data(
@@ -754,6 +771,7 @@ def display_derivatives(
             headers=list(df.columns),
             show_index=False,
             title="Crypto Derivatives",
+            export=bool(export),
         )
 
         export_data(

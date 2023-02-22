@@ -58,23 +58,6 @@ def display_etf_weightings(
         )
     sector_weights_formatted = dict(sorted(sector_weights_formatted.items()))
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "weights",
-        pd.DataFrame([sector_weights_formatted]).T,
-        sheet_name,
-    )
-
-    if raw:
-        sectors_df = pd.DataFrame(sectors).sort_values(by="sector")
-        return print_rich_table(
-            sectors_df,
-            headers=["Sector", "Weight"],
-            show_index=False,
-            title=f"\n{title}",
-        )
-
     legend, values = zip(*sector_weights_formatted.items())
     colors = theme.get_colors()
 
@@ -117,5 +100,24 @@ def display_etf_weightings(
         colorway=colors,
         showlegend=False,
     )
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "weights",
+        pd.DataFrame([sector_weights_formatted]).T,
+        sheet_name,
+        fig,
+    )
+
+    if raw:
+        sectors_df = pd.DataFrame(sectors).sort_values(by="sector")
+        return print_rich_table(
+            sectors_df,
+            headers=["Sector", "Weight"],
+            show_index=False,
+            title=f"\n{title}",
+            export=bool(export),
+        )
 
     return fig.show(external=external_axes)

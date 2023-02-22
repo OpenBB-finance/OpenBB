@@ -68,6 +68,7 @@ def display_github_activity(
         "gh",
         df,
         sheet_name,
+        fig,
     )
 
     return fig.show(external=external_axes)

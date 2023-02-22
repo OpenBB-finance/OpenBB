@@ -48,6 +48,7 @@ def display_management(symbol: str, export: str = "", sheet_name: Optional[str] 
             headers=list(df_new.columns),
             show_index=True,
             index_name="Name",
+            export=bool(export),
         )
 
         export_data(
@@ -109,31 +110,15 @@ def price_target_from_analysts(
     if df_analyst_data.empty:
         return console.print("[red]Could not get data for ticker.[/red]\n")
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "pt",
-        df_analyst_data,
-        sheet_name,
-    )
-
-    if raw:
-        df_analyst_data.index = df_analyst_data.index.strftime("%Y-%m-%d")
-        return print_rich_table(
-            df_analyst_data.sort_index(ascending=False).head(limit),
-            headers=list(df_analyst_data.columns),
-            show_index=True,
-            title="Analyst Price Targets",
-        )
-
     fig = OpenBBFigure(yaxis_title="Share Price").set_title(
         f"{symbol} (Time Series) and Price Target"
     )
     close_col = ta_helpers.check_columns(data, False, False)
+    df_analyst_plot = df_analyst_data.copy()
 
     # Slice start of ratings
     if start_date:
-        df_analyst_data = df_analyst_data[start_date:]  # type: ignore
+        df_analyst_plot = df_analyst_plot[start_date:]  # type: ignore
 
     fig.add_scatter(
         x=data.index,
@@ -142,7 +127,7 @@ def price_target_from_analysts(
         line_width=2,
     )
 
-    df_grouped = df_analyst_data.groupby(by=["Date"]).mean(numeric_only=True)
+    df_grouped = df_analyst_plot.groupby(by=["Date"]).mean(numeric_only=True)
 
     fig.add_scatter(
         x=df_grouped.index,
@@ -151,8 +136,8 @@ def price_target_from_analysts(
     )
 
     fig.add_scatter(
-        x=df_analyst_data.index,
-        y=df_analyst_data["Price Target"].values,
+        x=df_analyst_plot.index,
+        y=df_analyst_plot["Price Target"].values,
         name="Price Target",
         mode="markers+lines",
         marker=dict(
@@ -162,6 +147,25 @@ def price_target_from_analysts(
         ),
         line=dict(color=theme.get_colors()[1]),
     )
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "pt",
+        df_analyst_data,
+        sheet_name,
+        fig,
+    )
+
+    if raw:
+        df_analyst_data.index = df_analyst_data.index.strftime("%Y-%m-%d")
+        return print_rich_table(
+            df_analyst_data.sort_index(ascending=False).head(limit),
+            headers=list(df_analyst_data.columns),
+            show_index=True,
+            title="Analyst Price Targets",
+            export=bool(export),
+        )
 
     return fig.show(external=external_axes)
 
@@ -193,6 +197,7 @@ def estimates(
             headers=list(df_year_estimates.columns),
             show_index=True,
             title="Annual Earnings Estimates",
+            export=bool(export),
         )
         export_data(
             export,
@@ -208,6 +213,7 @@ def estimates(
             headers=list(df_quarter_earnings.columns),
             show_index=True,
             title="Quarterly Earnings Estimates",
+            export=bool(export),
         )
         export_data(
             export,
@@ -223,6 +229,7 @@ def estimates(
             headers=list(df_quarter_revenues.columns),
             show_index=True,
             title="Quarterly Revenue Estimates",
+            export=bool(export),
         )
 
         export_data(

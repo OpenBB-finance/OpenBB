@@ -73,6 +73,7 @@ def display_active_addresses(
         "active",
         df_addresses,
         sheet_name,
+        fig,
     )
 
     return fig.show(external=external_axes)
@@ -124,6 +125,7 @@ def display_non_zero_addresses(
         "nonzero",
         df_addresses,
         sheet_name,
+        fig,
     )
 
     return fig.show(external=external_axes)
@@ -218,6 +220,7 @@ def display_exchange_net_position_change(
         "change",
         df_addresses,
         sheet_name,
+        fig,
     )
 
     return fig.show(external=external_axes)
@@ -302,6 +305,7 @@ def display_exchange_balances(
         "eb",
         df_balance,
         sheet_name,
+        fig,
     )
 
     return fig.show(external=external_axes)
@@ -380,6 +384,7 @@ def display_hashrate(
         "hr",
         df,
         sheet_name,
+        fig,
     )
 
     return fig.show(external=external_axes)

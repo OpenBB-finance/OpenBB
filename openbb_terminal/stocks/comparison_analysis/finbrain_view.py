@@ -95,6 +95,7 @@ def display_sentiment_compare(
             df_sentiment,
             headers=list(df_sentiment.columns),
             title="Ticker Sentiment",
+            export=bool(export),
         )
 
     export_data(
@@ -103,6 +104,7 @@ def display_sentiment_compare(
         "sentiment",
         df_sentiment,
         sheet_name,
+        fig,
     )
 
     return fig.show(external=external_axes)
@@ -182,6 +184,7 @@ def display_sentiment_correlation(
             headers=list(corrs.columns),
             show_index=True,
             title="Correlation Sentiments",
+            export=bool(export),
         )
 
     export_data(
@@ -190,5 +193,6 @@ def display_sentiment_correlation(
         "scorr",
         corrs,
         sheet_name,
+        fig,
     )
     return fig.show(external=external_axes)

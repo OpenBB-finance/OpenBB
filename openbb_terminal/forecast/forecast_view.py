@@ -49,6 +49,7 @@ def show_options(
                 headers=list(data_values.columns),
                 show_index=False,
                 title=f"Options for dataset: '{dataset}'",
+                export=bool(export),
             )
 
             export_data(
@@ -99,7 +100,8 @@ def display_plot(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "plot",
-        sheet_name,
+        sheet_name=sheet_name,
+        figure=fig,
     )
 
     return fig.show(external=external_axes)
@@ -153,7 +155,8 @@ def display_seasonality(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "plot",
-        sheet_name,
+        sheet_name=sheet_name,
+        figure=fig,
     )
 
     return fig.show(external=external_axes)
@@ -207,14 +210,15 @@ def display_corr(
         ygap=1,
     )
     fig.update_yaxes(autorange="reversed")
+    fig.update_layout(margin=dict(l=0, r=120, t=0, b=0), title="Correlation Matrix")
 
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "plot",
-        sheet_name,
+        sheet_name=sheet_name,
+        figure=fig,
     )
-    fig.update_layout(margin=dict(l=0, r=120, t=0, b=0), title="Correlation Matrix")
     return fig.show(external=external_axes)
 
 
@@ -259,6 +263,7 @@ def show_df(
         headers=list(data.columns),
         show_index=True,
         title=f"Dataset {name} | Showing {limit} of {len(data)} rows",
+        export=bool(export),
     )
 
     export_data(
@@ -296,6 +301,7 @@ def describe_df(
         headers=list(data.describe().columns),
         show_index=True,
         title=f"Showing Descriptive Statistics for Dataset {name}",
+        export=bool(export),
     )
 
     export_data(

@@ -263,6 +263,8 @@ class OpenBBFigure(go.Figure):
         self._multi_rows = kwargs.pop("multi_rows", False)
         self._added_logscale = False
         self._date_xaxs: dict = {}
+        self._margin_adjusted = False
+        self._exported = False
 
         if xaxis := kwargs.pop("xaxis", None):
             self.update_xaxes(xaxis)
@@ -923,7 +925,7 @@ class OpenBBFigure(go.Figure):
                 ),
             )
 
-        if external:
+        if external or self._exported:
             return self  # type: ignore
 
         # We check if in Terminal Pro to return the JSON
@@ -933,6 +935,8 @@ class OpenBBFigure(go.Figure):
         kwargs.update(config=dict(scrollZoom=True, displaylogo=False))
         if plots_backend().isatty:
             try:
+                if export_image:
+                    self._exported = True
                 # We send the figure to the backend to be displayed
                 return plots_backend().send_figure(self, export_image)
             except Exception:
@@ -1269,6 +1273,9 @@ class OpenBBFigure(go.Figure):
 
     def _adjust_margins(self) -> None:
         """Adjust the margins of the figure"""
+        if self._margin_adjusted:
+            return
+
         margin_add = (
             [80, 60, 85, 60, 0] if not self._has_secondary_y else [80, 50, 85, 40, 0]
         )
@@ -1293,6 +1300,8 @@ class OpenBBFigure(go.Figure):
                     self.layout.margin[key] = max_val
                 else:
                     self.layout.margin[key] = org + margin[key]
+
+        self._margin_adjusted = True
 
     def _set_watermark(self) -> None:
         """Sets the watermark for OpenBB Terminal"""

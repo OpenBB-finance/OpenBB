@@ -101,6 +101,9 @@ def display_dwat(
     external_axes : bool, optional
         Whether to return the figure object or not, by default False
     """
+    fig = OpenBBFigure(
+        yaxis_title="Residual", xaxis_title=dependent_variable.name.capitalize()
+    )
     autocorr = regression_model.get_dwat(model)
 
     if 1.5 < autocorr < 2.5:
@@ -114,18 +117,16 @@ def display_dwat(
             f"be problematic. Please consider lags of the dependent or independent variable."
         )
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        f"{dependent_variable.name}_dwat",
-        autocorr,
-        sheet_name,
-    )
-
-    if plot:
-        fig = OpenBBFigure(
-            yaxis_title="Residual", xaxis_title=dependent_variable.name.capitalize()
+    if not fig.is_image_export(export):
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            f"{dependent_variable.name}_dwat",
+            autocorr,
+            sheet_name,
         )
+
+    if plot or fig.is_image_export(export):
         fig.set_title("Plot of Residuals")
 
         fig.add_scatter(
@@ -134,6 +135,16 @@ def display_dwat(
             mode="markers",
         )
         fig.add_hline(y=0, line=dict(color="red", dash="dash"))
+
+        if fig.is_image_export(export):
+            export_data(
+                export,
+                os.path.dirname(os.path.abspath(__file__)),
+                f"{dependent_variable.name}_residuals",
+                dependent_variable,
+                sheet_name,
+                fig,
+            )
 
         return fig.show(external=external_axes)
 
@@ -165,6 +176,7 @@ def display_bgod(
         headers=list(["Breusch-Godfrey"]),
         show_index=True,
         title=f"Breusch-Godfrey autocorrelation test [Lags: {lags}]",
+        export=bool(export),
     )
     p_value = df.loc["p-value"][0]
     if p_value > 0.05:
@@ -210,6 +222,7 @@ def display_bpag(
         headers=list(["Breusch-Pagan"]),
         show_index=True,
         title="Breusch-Pagan heteroscedasticity test",
+        export=bool(export),
     )
     p_value = df.loc["p-value"][0]
     if p_value > 0.05:

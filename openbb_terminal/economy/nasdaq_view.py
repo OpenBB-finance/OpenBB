@@ -46,6 +46,7 @@ def display_economic_calendar(
         title="Economic Calendar",
         show_index=False,
         headers=df.columns,
+        export=bool(export),
     )
     console.print()
     export_data(
@@ -97,6 +98,7 @@ def display_big_mac_index(
                 headers=list(big_mac.columns),
                 title="Big Mac Index",
                 show_index=True,
+                export=bool(export),
             )
 
         export_data(
@@ -105,6 +107,7 @@ def display_big_mac_index(
             "bigmac",
             big_mac,
             sheet_name,
+            fig,
         )
 
         return fig.show(external=external_axes)

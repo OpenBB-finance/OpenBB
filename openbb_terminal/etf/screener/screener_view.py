@@ -51,6 +51,7 @@ def view_screener(
         headers=list(screened_data.columns),
         show_index=True,
         title="Display Screener Output",
+        export=bool(export),
     )
 
     export_data(

@@ -108,6 +108,7 @@ def fails_to_deliver(
             headers=list(ftds_data.columns),
             show_index=False,
             title="Fails-To-Deliver Data",
+            export=bool(export),
         )
 
     export_data(
@@ -116,6 +117,7 @@ def fails_to_deliver(
         "ftd",
         ftds_data.reset_index(),
         sheet_name,
+        fig,
     )
 
     return fig.show(external=external_axes)

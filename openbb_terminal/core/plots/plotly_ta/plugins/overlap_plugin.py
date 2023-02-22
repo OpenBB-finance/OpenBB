@@ -21,7 +21,6 @@ class Overlap(PltTA):
     @indicator()
     def plot_ma(self, fig: OpenBBFigure, df_ta: pd.DataFrame, inchart_index: int):
         """Adds moving average to plotly figure"""
-        active_mas = []
         check_ma = [ma for ma in self.ma_mode if ma in self.indicators.get_active_ids()]
         if check_ma:
             for ma in check_ma:
@@ -44,26 +43,23 @@ class Overlap(PltTA):
                             row=1,
                             col=1,
                         )
-                        active_mas.append(column)
+                        fig.add_annotation(
+                            xref="paper",
+                            yref="paper",
+                            text=f"{column.replace('_', '').replace('RMA', 'MA')}",
+                            x=0,
+                            xanchor="left",
+                            yshift=-inchart_index * 18,
+                            xshift=-60,
+                            y=0.98,
+                            font_size=14,
+                            font_color=self.inchart_colors[inchart_index],
+                            opacity=1,
+                        )
                         inchart_index += 1
 
                 except Exception as e:
                     logger.exception("Error adding %s to plot - %s", ma.upper(), e)
-
-            for i, ma in enumerate(active_mas):
-                fig.add_annotation(
-                    xref="paper",
-                    yref="paper",
-                    text=f"{ma.replace('_', '').replace('RMA', 'MA')}",
-                    x=0,
-                    xanchor="left",
-                    yshift=-i * 18,
-                    xshift=-60,
-                    y=0.98,
-                    font_size=14,
-                    font_color=self.inchart_colors[i],
-                    opacity=1,
-                )
 
         return fig, inchart_index
 

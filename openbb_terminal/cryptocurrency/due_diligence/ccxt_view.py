@@ -94,6 +94,7 @@ def display_trades(
         headers=list(df.columns),
         show_index=False,
         title=f"Trades for {exchange.upper()}:{symbol.upper()}/{to_symbol.upper()}",
+        export=bool(export),
     )
 
     export_data(

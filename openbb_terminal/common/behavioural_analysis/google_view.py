@@ -73,6 +73,7 @@ def display_mentions(
         "mentions",
         df_interest,
         sheet_name,
+        fig,
     )
 
     return fig.show(external=external_axes)
@@ -140,6 +141,7 @@ def display_correlation_interest(
         "interest",
         df_interest,
         sheet_name,
+        fig,
     )
 
     return fig.show(external=external_axes)
@@ -197,6 +199,7 @@ def display_regions(
         "regions",
         df,
         sheet_name,
+        fig,
     )
 
     return fig.show(external=external_axes)
@@ -230,6 +233,7 @@ def display_queries(
         df,
         headers=list(df.columns),
         title=f"Top {symbol}'s related queries",
+        export=bool(export),
     )
 
     export_data(
@@ -267,6 +271,7 @@ def display_rise(
         df_related_queries,
         headers=list(df_related_queries.columns),
         title=f"Top rising {symbol}'s related queries",
+        export=bool(export),
     )
 
     export_data(

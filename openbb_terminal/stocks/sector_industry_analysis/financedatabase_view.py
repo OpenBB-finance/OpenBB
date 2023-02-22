@@ -138,6 +138,7 @@ def display_bars_financials(
     list
         List of tickers filtered
     """
+    fig = OpenBBFigure()
 
     if already_loaded_stocks_data:
         stocks_data = already_loaded_stocks_data
@@ -196,100 +197,108 @@ def display_bars_financials(
 
         df = df_all.head(limit)
 
-        if raw:
-            print_rich_table(
-                df, headers=list(df.columns), show_index=False, title="Bars Financials"
+        if not fig.is_image_export(export):
+            export_data(
+                export,
+                os.path.dirname(os.path.abspath(__file__)),
+                finance_metric,
+                df_all,
+                sheet_name,
             )
+            if raw:
+                return print_rich_table(
+                    df,
+                    headers=list(df.columns),
+                    show_index=False,
+                    title="Bars Financials",
+                    export=bool(export),
+                )
+
+        magnitude = 0
+        while max(company_metric) > 1_000 or abs(min(company_metric)) > 1_000:
+            company_metric = np.divide(company_metric, 1_000)
+            magnitude += 1
+
+        # check if the value is a percentage
+        if (magnitude == 0) and all(company_metric >= 0) and all(company_metric <= 1):
+            unit = "%"
+            company_metric = company_metric * 100
+
         else:
-            fig = OpenBBFigure()
+            unit = " KMBTP"[magnitude] if magnitude != 0 else ""
 
-            magnitude = 0
-            while max(company_metric) > 1_000 or abs(min(company_metric)) > 1_000:
-                company_metric = np.divide(company_metric, 1_000)
-                magnitude += 1
-
-            # check if the value is a percentage
-            if (
-                (magnitude == 0)
-                and all(company_metric >= 0)
-                and all(company_metric <= 1)
-            ):
-                unit = "%"
-                company_metric = company_metric * 100
-
-            else:
-                unit = " KMBTP"[magnitude] if magnitude != 0 else ""
-
-            for name, metric, ticker in zip(
-                company_name[::-1], company_metric[::-1], company_ticker[::-1]
-            ):
-                if len(name.split(" ")) > 6 and len(name) > 40:
-                    name = f'{" ".join(name.split(" ")[:4])}\n{" ".join(name.split(" ")[4:])}'
-
-                # We add spaces to all yaxis data, due to Fira Code font width issues
-                # to make sure that the names are cut off
-                fig.add_bar(
-                    x=[metric],
-                    y=[f"{name} ({ticker})     "],
-                    orientation="h",
-                    name=ticker,
-                    hovertext=f"{name} ({ticker})",
-                    hovertemplate="%{x:.2f}" + unit,
+        for name, metric, ticker in zip(
+            company_name[::-1], company_metric[::-1], company_ticker[::-1]
+        ):
+            if len(name.split(" ")) > 6 and len(name) > 40:
+                name = (
+                    f'{" ".join(name.split(" ")[:4])}\n{" ".join(name.split(" ")[4:])}'
                 )
 
-            metric_title = (
-                "".join(
-                    " " + char if char.isupper() else char.strip()
-                    for char in finance_metric
-                )
-                .strip()
-                .capitalize()
+            # We add spaces to all yaxis data, due to Fira Code font width issues
+            # to make sure that the names are cut off
+            fig.add_bar(
+                x=[metric],
+                y=[f"{name} ({ticker})     "],
+                orientation="h",
+                name=ticker,
+                hovertext=f"{name} ({ticker})",
+                hovertemplate="%{x:.2f}" + unit,
             )
 
-            benchmark = np.median(company_metric)
-            fig.add_vline(
-                x=benchmark, line_width=3, line_dash="dash", line_color="grey"
+        metric_title = (
+            "".join(
+                " " + char if char.isupper() else char.strip()
+                for char in finance_metric
             )
-
-            title = f"The {metric_title.title()} (benchmark: {benchmark:.2f}{unit}) of "
-            title += marketcap + " cap companies " if marketcap else "Companies "
-            if industry:
-                title += f"in {industry} industry "
-            elif sector:
-                title += f"in {sector} sector "
-
-            if country:
-                title += f"in {country}"
-                title += " " if (industry or sector) else ""
-
-            title += (
-                "(excl. data from international exchanges)"
-                if exclude_exchanges
-                else "(incl. data from international exchanges)"
-            )
-
-            fig.set_title(
-                title,
-                wrap=True,
-                wrap_width=80,
-                y=0.97,
-                x=0.5,
-                xanchor="center",
-                yanchor="top",
-            )
-            fig.update_layout(
-                margin=dict(t=40),
-                showlegend=False,
-            )
-            fig.show()
-
-        export_data(
-            export,
-            os.path.dirname(os.path.abspath(__file__)),
-            finance_metric,
-            df_all,
-            sheet_name,
+            .strip()
+            .capitalize()
         )
+
+        benchmark = np.median(company_metric)
+        fig.add_vline(x=benchmark, line_width=3, line_dash="dash", line_color="grey")
+
+        title = f"The {metric_title.title()} (benchmark: {benchmark:.2f}{unit}) of "
+        title += marketcap + " cap companies " if marketcap else "Companies "
+        if industry:
+            title += f"in {industry} industry "
+        elif sector:
+            title += f"in {sector} sector "
+
+        if country:
+            title += f"in {country}"
+            title += " " if (industry or sector) else ""
+
+        title += (
+            "(excl. data from international exchanges)"
+            if exclude_exchanges
+            else "(incl. data from international exchanges)"
+        )
+
+        fig.set_title(
+            title,
+            wrap=True,
+            wrap_width=80,
+            y=0.97,
+            x=0.5,
+            xanchor="center",
+            yanchor="top",
+        )
+        fig.update_layout(
+            margin=dict(t=40),
+            showlegend=False,
+        )
+        fig.show(external=fig.is_image_export(export))
+
+        if fig.is_image_export(export):
+            export_data(
+                export,
+                os.path.dirname(os.path.abspath(__file__)),
+                finance_metric,
+                df_all,
+                sheet_name,
+                fig,
+            )
 
         if external_axes:
             return stocks_data, company_tickers, fig
@@ -341,6 +350,7 @@ def display_companies_per_sector_in_country(
     external_axes : bool, optional
         Whether to return the figure object or not, by default False
     """
+
     companies_per_sector = financedatabase_model.get_companies_per_sector_in_country(
         country, mktcap, exclude_exchanges
     )
@@ -367,18 +377,22 @@ def display_companies_per_sector_in_country(
     title += f"in {country}\n"
     title += "excl. exchanges" if exclude_exchanges else " incl. exchanges"
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "cps",
-        df,
-        sheet_name,
-    )
-
-    if raw:
-        return print_rich_table(
-            df, headers=list(df.columns), show_index=True, title=title
+    if not OpenBBFigure().is_image_export(export):
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "cps",
+            df,
+            sheet_name,
         )
+        if raw:
+            return print_rich_table(
+                df,
+                headers=list(df.columns),
+                show_index=True,
+                title=title,
+                export=bool(export),
+            )
 
     if len(companies_per_sector) > 1:
         total_num_companies = sum(companies_per_sector.values())
@@ -416,9 +430,19 @@ def display_companies_per_sector_in_country(
         else:
             legend, values = zip(*companies_per_sector.items())
 
-        return plot_pie_chart(labels=legend, values=values, title=title).show(
-            external=external_axes
-        )
+        fig = plot_pie_chart(labels=legend, values=values, title=title)
+
+        if fig.is_image_export(export):
+            export_data(
+                export,
+                os.path.dirname(os.path.abspath(__file__)),
+                "cps",
+                df,
+                sheet_name,
+                fig,
+            )
+
+        return fig.show(external=external_axes)
 
     if len(companies_per_sector) == 1:
         return console.print(
@@ -464,6 +488,7 @@ def display_companies_per_industry_in_country(
         Whether to return the figure object or not, by default False
 
     """
+
     companies_per_industry = (
         financedatabase_model.get_companies_per_industry_in_country(
             country, mktcap, exclude_exchanges
@@ -492,18 +517,23 @@ def display_companies_per_industry_in_country(
     title += f"in {country}\n"
     title += "excl. exchanges" if exclude_exchanges else " incl. exchanges"
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "cpic",
-        df,
-        sheet_name,
-    )
-
-    if raw:
-        return print_rich_table(
-            df, headers=list(df.columns), show_index=True, title=title
+    if not OpenBBFigure().is_image_export(export):
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "cpic",
+            df,
+            sheet_name,
         )
+
+        if raw:
+            return print_rich_table(
+                df,
+                headers=list(df.columns),
+                show_index=True,
+                title=title,
+                export=bool(export),
+            )
 
     if len(companies_per_industry) > 1:
         total_num_companies = sum(companies_per_industry.values())
@@ -545,9 +575,18 @@ def display_companies_per_industry_in_country(
         else:
             legend, values = zip(*companies_per_industry.items())
 
-        return plot_pie_chart(labels=legend, values=values, title=title).show(
-            external=external_axes
-        )
+        fig = plot_pie_chart(labels=legend, values=values, title=title)
+
+        if fig.is_image_export(export):
+            export_data(
+                export,
+                os.path.dirname(os.path.abspath(__file__)),
+                "cpic",
+                df,
+                sheet_name,
+                fig,
+            )
+        return fig.show(external=external_axes)
 
     if len(companies_per_industry) == 1:
         return console.print(
@@ -592,6 +631,7 @@ def display_companies_per_industry_in_sector(
     external_axes : bool, optional
         Whether to return the figure object or not, by default False
     """
+
     companies_per_industry = financedatabase_model.get_companies_per_industry_in_sector(
         sector, mktcap, exclude_exchanges
     )
@@ -618,21 +658,23 @@ def display_companies_per_industry_in_sector(
     title += f"in {sector} sector\n"
     title += "excl. exchanges" if exclude_exchanges else " incl. exchanges"
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "cpis",
-        df,
-        sheet_name,
-    )
-
-    if raw:
-        return print_rich_table(
+    if not OpenBBFigure().is_image_export(export):
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "cpis",
             df,
-            headers=list(df.columns),
-            show_index=True,
-            title=title,
+            sheet_name,
         )
+
+        if raw:
+            return print_rich_table(
+                df,
+                headers=list(df.columns),
+                show_index=True,
+                title=title,
+                export=bool(export),
+            )
 
     if len(companies_per_industry) > 1:
         total_num_companies = sum(companies_per_industry.values())
@@ -674,9 +716,18 @@ def display_companies_per_industry_in_sector(
         else:
             legend, values = zip(*companies_per_industry.items())
 
-        return plot_pie_chart(labels=legend, values=values, title=title).show(
-            external=external_axes
-        )
+        fig = plot_pie_chart(labels=legend, values=values, title=title)
+
+        if fig.is_image_export(export):
+            export_data(
+                export,
+                os.path.dirname(os.path.abspath(__file__)),
+                "cpis",
+                df,
+                sheet_name,
+                fig,
+            )
+        return fig.show(external=external_axes)
 
     if len(companies_per_industry) == 1:
         return console.print(
@@ -721,6 +772,7 @@ def display_companies_per_country_in_sector(
     external_axes : bool, optional
         Whether to return the figure object or not, by default False
     """
+
     companies_per_country = financedatabase_model.get_companies_per_country_in_sector(
         sector, mktcap, exclude_exchanges
     )
@@ -747,18 +799,22 @@ def display_companies_per_country_in_sector(
     title += f"in {sector} sector\n"
     title += "excl. exchanges" if exclude_exchanges else " incl. exchanges"
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "cpcs",
-        df,
-        sheet_name,
-    )
-
-    if raw:
-        return print_rich_table(
-            df, headers=list(df.columns), show_index=True, title=title
+    if not OpenBBFigure().is_image_export(export):
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "cpcs",
+            df,
+            sheet_name,
         )
+        if raw:
+            return print_rich_table(
+                df,
+                headers=list(df.columns),
+                show_index=True,
+                title=title,
+                export=bool(export),
+            )
 
     if len(companies_per_country) > 1:
         total_num_companies = sum(companies_per_country.values())
@@ -796,9 +852,19 @@ def display_companies_per_country_in_sector(
         else:
             legend, values = zip(*companies_per_country.items())
 
-        return plot_pie_chart(labels=legend, values=values, title=title).show(
-            external=external_axes
-        )
+        fig = plot_pie_chart(labels=legend, values=values, title=title)
+
+        if fig.is_image_export(export):
+            export_data(
+                export,
+                os.path.dirname(os.path.abspath(__file__)),
+                "cpcs",
+                df,
+                sheet_name,
+                fig,
+            )
+
+        return fig.show(external=external_axes)
 
     if len(companies_per_country) == 1:
         return console.print(
@@ -869,18 +935,22 @@ def display_companies_per_country_in_industry(
     title += f"per country in {industry} industry\n"
     title += "excl. exchanges" if exclude_exchanges else " incl. exchanges"
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "cpci",
-        df,
-        sheet_name,
-    )
-
-    if raw:
-        return print_rich_table(
-            df, headers=list(df.columns), show_index=True, title=title
+    if not OpenBBFigure().is_image_export(export):
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "cpci",
+            df,
+            sheet_name,
         )
+        if raw:
+            return print_rich_table(
+                df,
+                headers=list(df.columns),
+                show_index=True,
+                title=title,
+                export=bool(export),
+            )
 
     if len(companies_per_country) > 1:
         total_num_companies = sum(companies_per_country.values())
@@ -918,9 +988,19 @@ def display_companies_per_country_in_industry(
         else:
             legend, values = zip(*companies_per_country.items())
 
-        return plot_pie_chart(labels=legend, values=values, title=title).show(
-            external=external_axes
-        )
+        fig = plot_pie_chart(labels=legend, values=values, title=title)
+
+        if fig.is_image_export(export):
+            export_data(
+                export,
+                os.path.dirname(os.path.abspath(__file__)),
+                "cpci",
+                df,
+                sheet_name,
+                fig,
+            )
+
+        return fig.show(external=external_axes)
 
     if len(companies_per_country) == 1:
         return console.print(

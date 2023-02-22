@@ -127,6 +127,7 @@ def display_fred_series(
                 headers=list(data.columns),
                 show_index=True,
                 index_name="Date",
+                export=bool(export),
             )
 
         export_data(
@@ -135,6 +136,7 @@ def display_fred_series(
             "fred",
             data,
             sheet_name,
+            fig,
         )
 
     if get_data:
@@ -205,6 +207,7 @@ def display_yield_curve(
             show_index=False,
             title=f"United States Yield Curve for {date_of_yield}",
             floatfmt=".3f",
+            export=bool(export),
         )
 
     export_data(
@@ -213,6 +216,7 @@ def display_yield_curve(
         "ycrv",
         rates,
         sheet_name,
+        fig,
     )
 
     return fig.show(external=external_axes)

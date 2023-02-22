@@ -48,9 +48,9 @@ def display_star_history(
             "sh",
             df,
             sheet_name,
-            figure=fig if fig.is_image_export(export) else None,
+            fig,
         )
-        return fig.show(external=external_axes or bool(export))
+        return fig.show(external=external_axes)
 
     return None
 
@@ -101,9 +101,9 @@ def display_top_repos(
             "tr",
             df,
             sheet_name,
-            figure=fig if fig.is_image_export(export) else None,
+            fig,
         )
-        return fig.show(external=external_axes or bool(export))
+        return fig.show(external=external_axes)
 
     return None
 
@@ -124,7 +124,11 @@ def display_repo_summary(
     data = github_model.get_repo_summary(repo)
     if not data.empty:
         print_rich_table(
-            data, headers=list(data.columns), show_index=False, title="Repo summary"
+            data,
+            headers=list(data.columns),
+            show_index=False,
+            title="Repo summary",
+            export=bool(export),
         )
 
         export_data(

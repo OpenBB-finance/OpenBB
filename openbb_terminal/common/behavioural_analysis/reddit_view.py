@@ -217,6 +217,7 @@ def display_popular_tickers(
             headers=list(popular_tickers_df.columns),
             show_index=False,
             title=f"The following TOP {limit} tickers have been mentioned",
+            export=bool(export),
         )
     else:
         console.print("No tickers found")
@@ -441,6 +442,7 @@ def display_redditsent(
     external_axes: Optional[List[plt.Axes]]
         If supplied, expect 1 external axis
     """
+    fig = OpenBBFigure()
 
     df, polarity_scores, avg_polarity = reddit_model.get_posts_about(
         symbol, limit, sortby, time_frame, full_search, subreddits
@@ -450,15 +452,16 @@ def display_redditsent(
         return console.print(f"No posts for {symbol} found")
 
     if display:
-        print_rich_table(df=df)
+        print_rich_table(df=df, export=bool(export))
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "polarity_scores",
-        df,
-        sheet_name,
-    )
+    if not fig.is_image_export(export):
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "polarity_scores",
+            df,
+            sheet_name,
+        )
 
     console.print(f"Sentiment Analysis for {symbol} is {avg_polarity}\n")
 
@@ -476,6 +479,16 @@ def display_redditsent(
             title=f"Sentiment Score of {symbol}", xaxis_title="Sentiment Score"
         )
         fig.add_bar(x=polarity_scores)
+
+        if fig.is_image_export(export):
+            export_data(
+                export,
+                os.path.dirname(os.path.abspath(__file__)),
+                "polarity_scores",
+                df,
+                sheet_name,
+                fig,
+            )
 
         return fig.show(external=external_axes)
 

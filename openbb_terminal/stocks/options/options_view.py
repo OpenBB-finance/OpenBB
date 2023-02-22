@@ -47,6 +47,7 @@ def print_raw(
     title: str,
     calls_only: bool = False,
     puts_only: bool = False,
+    export: str = "",
 ):
     if not puts_only:
         calls = calls.copy().drop(columns=["optionType"])
@@ -55,6 +56,7 @@ def print_raw(
             headers=list(calls.columns),
             show_index=False,
             title=f"{title} - Calls",
+            export=bool(export),
         )
     if not calls_only:
         puts = puts.copy().drop(columns=["optionType"])
@@ -63,6 +65,7 @@ def print_raw(
             headers=list(puts.columns),
             show_index=False,
             title=f"{title} - Puts",
+            export=bool(export),
         )
 
 
@@ -127,7 +130,7 @@ def plot_vol(
     title = f"Volume for {symbol.upper()} expiring {expiry}"
 
     if raw:
-        print_raw(calls, puts, title, calls_only, puts_only)
+        print_raw(calls, puts, title, calls_only, puts_only, export=export)
 
     fig = OpenBBFigure(
         xaxis=dict(title="Strike Price", range=[min_strike, max_strike]),
@@ -154,6 +157,7 @@ def plot_vol(
         f"vol_{symbol}_{expiry}",
         chain,
         sheet_name,
+        fig,
     )
 
     return fig.show(external=external_axes)
@@ -220,7 +224,7 @@ def plot_oi(
     title = f"Open Interest for {symbol.upper()} expiring {expiry}"
 
     if raw:
-        print_raw(calls, puts, title, calls_only, puts_only)
+        print_raw(calls, puts, title, calls_only, puts_only, export=export)
 
     fig = OpenBBFigure(
         xaxis=dict(title="Strike Price", range=[min_strike, max_strike]),
@@ -256,6 +260,7 @@ def plot_oi(
         f"oi_{symbol}_{expiry}",
         chain,
         sheet_name,
+        fig,
     )
 
     return fig.show(external=external_axes)
@@ -380,7 +385,7 @@ def plot_voi(
     )
 
     if raw:
-        print_raw(calls, puts, title)
+        print_raw(calls, puts, title, export=export)
 
     export_data(
         export,
@@ -388,6 +393,7 @@ def plot_voi(
         f"voi_{symbol}_{expiry}",
         chain,
         sheet_name,
+        fig,
     )
 
     return fig.show(external=external_axes)
@@ -470,7 +476,7 @@ def display_chains(
         else:
             console.print("Greeks currently not supported without IV.")
 
-    print_raw(calls, puts, "Option chain", calls_only, puts_only)
+    print_raw(calls, puts, "Option chain", calls_only, puts_only, export=export)
 
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "chain", chain, sheet_name

@@ -47,11 +47,7 @@ def display_put_call_ratio(
     fig.add_scatter(x=pcr.index, y=pcr["PCR"], name="Put Call Ratio")
 
     export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "pcr",
-        pcr,
-        sheet_name,
+        export, os.path.dirname(os.path.abspath(__file__)), "pcr", pcr, sheet_name, fig
     )
 
     return fig.show(external=external_axes)

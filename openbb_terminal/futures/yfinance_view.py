@@ -42,7 +42,7 @@ def display_search(
         console.print("[red]No futures data found.\n[/red]")
         return
 
-    print_rich_table(df)
+    print_rich_table(df, export=bool(export))
     console.print()
 
     export_data(
@@ -106,28 +106,6 @@ def display_historical(
     if historicals.empty:
         return None
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "historical",
-        historicals,
-        sheet_name,
-    )
-
-    if raw or len(historicals) == 1:
-        if not raw and len(historicals) == 1:
-            console.print(
-                "\nA single datapoint is not enough to depict a chart, data is presented below."
-            )
-
-        print_rich_table(
-            historicals,
-            headers=list(historicals.columns),
-            show_index=True,
-            title="Futures timeseries",
-        )
-        return console.print()
-
     fig = OpenBBFigure()
 
     if len(symbols) > 1:
@@ -183,6 +161,30 @@ def display_historical(
 
         fig.set_title(name)
 
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "historical",
+        historicals,
+        sheet_name,
+        fig,
+    )
+
+    if raw or len(historicals) == 1:
+        if not raw and len(historicals) == 1:
+            console.print(
+                "\nA single datapoint is not enough to depict a chart, data is presented below."
+            )
+
+        print_rich_table(
+            historicals,
+            headers=list(historicals.columns),
+            show_index=True,
+            title="Futures timeseries",
+            export=bool(export),
+        )
+        return console.print()
+
     return fig.show(external=external_axes)
 
 
@@ -217,23 +219,6 @@ def display_curve(
     if df.empty:
         return console.print("[red]No future data found to generate curve.[/red]\n")
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "curve",
-        df,
-        sheet_name,
-    )
-
-    if raw:
-        print_rich_table(
-            df,
-            headers=list(df.columns),
-            show_index=True,
-            title="Futures curve",
-        )
-        return console.print()
-
     fig = OpenBBFigure()
 
     name = yfinance_model.FUTURES_DATA[yfinance_model.FUTURES_DATA["Ticker"] == symbol][
@@ -249,5 +234,24 @@ def display_curve(
         marker=dict(size=10),
     )
     fig.set_title(name)
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "curve",
+        df,
+        sheet_name,
+        fig,
+    )
+
+    if raw:
+        print_rich_table(
+            df,
+            headers=list(df.columns),
+            show_index=True,
+            title="Futures curve",
+            export=bool(export),
+        )
+        return console.print()
 
     return fig.show(external=external_axes)

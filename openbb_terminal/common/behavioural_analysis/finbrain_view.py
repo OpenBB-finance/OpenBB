@@ -50,14 +50,6 @@ def display_sentiment_analysis(
     if sentiment.empty:
         return console.print("No sentiment data found.\n")
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "headlines",
-        sentiment,
-        sheet_name,
-    )
-
     if raw:
         if rich_config.USE_COLOR:
             color_df = sentiment["Sentiment Analysis"].apply(
@@ -72,6 +64,7 @@ def display_sentiment_analysis(
                 headers=["Sentiment"],
                 title="FinBrain Ticker Sentiment",
                 show_index=True,
+                export=bool(export),
             )
         else:
             print_rich_table(
@@ -82,6 +75,7 @@ def display_sentiment_analysis(
                 headers=["Sentiment"],
                 title="FinBrain Ticker Sentiment",
                 show_index=True,
+                export=bool(export),
             )
 
     fig = OpenBBFigure(
@@ -129,5 +123,14 @@ def display_sentiment_analysis(
         name=symbol,
     )
     fig.update_traces(showlegend=False)
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "headlines",
+        sentiment,
+        sheet_name,
+        fig,
+    )
 
     return fig.show(external=external_axes)

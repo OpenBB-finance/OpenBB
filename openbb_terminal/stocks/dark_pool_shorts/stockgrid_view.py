@@ -64,6 +64,7 @@ def dark_pool_short_positions(
         headers=list(df.columns),
         show_index=False,
         title=f"Data for: {dp_date}",
+        export=bool(export),
     )
 
     export_data(
@@ -105,6 +106,7 @@ def short_interest_days_to_cover(
         headers=list(df.columns),
         show_index=False,
         title=f"Data for: {dp_date}",
+        export=bool(export),
     )
 
     export_data(
@@ -162,6 +164,7 @@ def short_interest_volume(
             headers=list(df.columns),
             show_index=False,
             title="Price vs Short Volume",
+            export=bool(export),
         )
 
     fig = OpenBBFigure.create_subplots(
@@ -302,6 +305,7 @@ def net_short_position(
             headers=list(df.columns),
             show_index=False,
             title="Net Short Positions",
+            export=bool(export),
         )
 
     df = df.sort_values(by=["dates"])

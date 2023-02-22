@@ -49,6 +49,7 @@ def display_info(symbol: str, export: str = "", sheet_name: Optional[str] = None
             headers=list(df_info.columns),
             show_index=True,
             title=f"{symbol.upper()} Info",
+            export=bool(export),
         )
     else:
         logger.error("Invalid data")
@@ -100,6 +101,7 @@ def display_shareholders(
         headers=list(df.columns),
         show_index=False,
         title=f"{symbol.upper()} {title}",
+        export=bool(export),
     )
 
     export_data(
@@ -146,26 +148,6 @@ def display_dividends(
     if div_history.empty:
         return None
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "divs",
-        div_history,
-        sheet_name,
-    )
-
-    if not plot:
-        div_history.index = pd.to_datetime(div_history.index, format="%Y%m%d").strftime(
-            "%Y-%m-%d"
-        )
-        print_rich_table(
-            div_history.head(limit),
-            headers=["Amount Paid ($)", "Change"],
-            title=f"{symbol.upper()} Historical Dividends",
-            show_index=True,
-        )
-        return None
-
     fig = OpenBBFigure(yaxis_title="Amount Paid ($)")
     fig.set_title(f"Dividend History for {symbol}")
     fig.add_scatter(
@@ -176,6 +158,27 @@ def display_dividends(
         marker_color=theme.down_color,
         line_color=theme.get_colors()[0],
     )
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "divs",
+        div_history,
+        sheet_name,
+        fig,
+    )
+
+    if not plot:
+        div_history.index = pd.to_datetime(div_history.index, format="%Y%m%d").strftime(
+            "%Y-%m-%d"
+        )
+        return print_rich_table(
+            div_history.head(limit),
+            headers=["Amount Paid ($)", "Change"],
+            title=f"{symbol.upper()} Historical Dividends",
+            show_index=True,
+            export=bool(export),
+        )
 
     return fig.show(external=external_axes)
 
@@ -246,6 +249,7 @@ def display_splits(
         df_splits,
         title=f"{symbol.upper()} splits and reverse splits",
         show_index=True,
+        export=bool(export),
     )
 
     export_data(
@@ -254,6 +258,7 @@ def display_splits(
         "splits",
         df_splits,
         sheet_name,
+        fig,
     )
 
     return fig.show(external=external_axes)
@@ -304,6 +309,7 @@ def display_mktcap(
         "mktcap",
         df_mktcap,
         sheet_name,
+        fig,
     )
 
     return fig.show(external=external_axes)
@@ -343,7 +349,7 @@ def display_fundamentals(
     export: str
         Format to export data
     """
-
+    fig = OpenBBFigure()
     fundamentals = yahoo_finance_model.get_financials(symbol, statement, ratios)
 
     if fundamentals is None or fundamentals.empty:
@@ -392,7 +398,6 @@ def display_fundamentals(
             denomination = ""
 
         if rows_plot == 1:
-            fig = OpenBBFigure()
             fig.add_bar(
                 x=df_rounded.index,
                 y=df_rounded[plot[0]],
@@ -417,7 +422,7 @@ def display_fundamentals(
                 title = f"{plot[i].replace('_', ' ')} {denomination}"
                 fig.add_annotation(x=0.5, y=1, row=i + 1, col=1, text=title)
 
-        fig.show()
+        fig.show(external=fig.is_image_export(export))
 
     else:
         # Snake case to english
@@ -430,6 +435,7 @@ def display_fundamentals(
             formatted_df.iloc[:, :limit].applymap(lambda x: "-" if x == "nan" else x),
             show_index=True,
             title=f"{symbol} {title_str} Currency: {symbol_currency}",
+            export=bool(export),
         )
     export_data(
         export,
@@ -437,6 +443,7 @@ def display_fundamentals(
         statement,
         fundamentals,
         sheet_name,
+        fig,
     )
 
     return None
@@ -467,6 +474,7 @@ def display_earnings(
         earnings.head(limit),
         headers=earnings.columns,
         title=f"Historical Earnings for {symbol}",
+        export=bool(export),
     )
     export_data(
         export,

@@ -75,6 +75,7 @@ def display_fundamental_metric_from_project_over_time(
         "funot",
         metric_over_time,
         sheet_name,
+        fig,
     )
 
     return fig.show(external=external_axes)

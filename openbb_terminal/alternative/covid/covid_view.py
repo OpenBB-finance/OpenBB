@@ -183,7 +183,7 @@ def display_covid_ov(
 
     if country.lower() == "us":
         country = "US"
-    if plot:
+    if plot or fig.is_image_export(export):
         fig = plot_covid_ov(country, external_axes=True)
     if raw:
         data = covid_model.get_covid_ov(country, limit)
@@ -193,6 +193,7 @@ def display_covid_ov(
             show_index=True,
             index_name="Date",
             title=f"[bold]{country} COVID Numbers[/bold]",
+            export=bool(export),
         )
 
     if export:
@@ -203,10 +204,10 @@ def display_covid_ov(
             "ov",
             data,
             sheet_name,
-            figure=fig if fig.is_image_export(export) else None,
+            fig,
         )
 
-    return fig.show(external=raw or bool(export))
+    return fig.show(external=raw)
 
 
 @log_start_end(log=logger)
@@ -241,7 +242,7 @@ def display_covid_stat(
     fig = OpenBBFigure()
     data = covid_model.get_covid_stat(country, stat, limit)
 
-    if plot:
+    if plot or fig.is_image_export(export):
         fig = plot_covid_stat(country, stat, external_axes=True)  # type: ignore
 
     if raw:
@@ -251,6 +252,7 @@ def display_covid_stat(
             show_index=True,
             index_name="Date",
             title=f"[bold]{country} COVID {stat}[/bold]",
+            export=bool(export),
         )
     if export:
         data["date"] = data.index
@@ -265,10 +267,10 @@ def display_covid_stat(
             stat,
             data,
             sheet_name,
-            figure=fig if fig.is_image_export(export) else None,  # type: ignore
+            fig,
         )
 
-    return fig.show(external=raw or bool(export))
+    return fig.show(external=raw)
 
 
 @log_start_end(log=logger)
@@ -302,6 +304,7 @@ def display_case_slopes(
         show_index=True,
         index_name="Country",
         title=f"[bold]{('Highest','Lowest')[ascend]} Sloping Cases[/bold] (Cases/Day)",
+        export=bool(export),
     )
 
     export_data(

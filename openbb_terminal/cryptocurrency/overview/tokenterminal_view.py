@@ -92,7 +92,11 @@ def display_fundamental_metrics(
     fig.set_title(f"{metric.replace('_', ' ').capitalize()} from past {timeline}")
 
     export_data(
-        export, os.path.dirname(os.path.abspath(__file__)), "fun", metric_series
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "fun",
+        metric_series,
+        figure=fig,
     )
 
     return fig.show(external=external_axes)

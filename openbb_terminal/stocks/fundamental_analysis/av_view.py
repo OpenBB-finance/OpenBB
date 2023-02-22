@@ -35,6 +35,7 @@ def display_overview(symbol: str, export: str = "", sheet_name: Optional[str] = 
         headers=[""],
         title=f"{symbol} Overview",
         show_index=True,
+        export=bool(export),
     )
 
     export_data(
@@ -64,7 +65,11 @@ def display_key(symbol: str, export: str = "", sheet_name: Optional[str] = None)
         return
 
     print_rich_table(
-        df_key, headers=[""], title=f"{symbol} Key Metrics", show_index=True
+        df_key,
+        headers=[""],
+        title=f"{symbol} Key Metrics",
+        show_index=True,
+        export=bool(export),
     )
 
     export_data(
@@ -106,6 +111,8 @@ def display_income_statement(
     export: str
         Format to export data
     """
+    fig = OpenBBFigure()
+
     df_income = av_model.get_income_statements(
         symbol, limit, quarterly, ratios, bool(plot)
     )
@@ -146,7 +153,7 @@ def display_income_statement(
                 )
                 fig.set_title(f"{plot[i].replace('_', ' ')}", row=i + 1, col=1)
 
-        fig.show()
+        fig.show(external=fig.is_image_export(export))
 
     else:
         # Snake case to english
@@ -159,6 +166,7 @@ def display_income_statement(
             if not ratios
             else f"{'QoQ' if quarterly else 'YoY'} Change of {symbol} Income Statement",
             show_index=True,
+            export=bool(export),
         )
 
     export_data(
@@ -167,6 +175,7 @@ def display_income_statement(
         "income",
         df_income,
         sheet_name,
+        fig,
     )
 
 
@@ -200,6 +209,8 @@ def display_balance_sheet(
     export: str
         Format to export data
     """
+    fig = OpenBBFigure()
+
     df_balance = av_model.get_balance_sheet(
         symbol, limit, quarterly, ratios, bool(plot)
     )
@@ -228,7 +239,6 @@ def display_balance_sheet(
                 y=balance_plot_data[plot[0]],
                 name=plot[0].replace("_", ""),
             )
-            fig.show()
         else:
             fig = OpenBBFigure.create_subplots(rows=rows_plot, cols=1)
             for i in range(rows_plot):
@@ -240,8 +250,8 @@ def display_balance_sheet(
                     col=1,
                 )
                 fig.set_title(f"{plot[i].replace('_', ' ')}", row=i + 1, col=1)
-            fig.show()
 
+        fig.show(external=fig.is_image_export(export))
     else:
         # Snake case to english
         df_balance.index = [x.replace("_", " ").title() for x in df_balance.index]
@@ -253,6 +263,7 @@ def display_balance_sheet(
             if not ratios
             else f"{'QoQ' if quarterly else 'YoY'} Change of {symbol} Balance Sheet",
             show_index=True,
+            export=bool(export),
         )
 
     export_data(
@@ -261,6 +272,7 @@ def display_balance_sheet(
         "balance",
         df_balance,
         sheet_name,
+        fig,
     )
 
 
@@ -294,6 +306,8 @@ def display_cash_flow(
     export: str
         Format to export data
     """
+    fig = OpenBBFigure()
+
     df_cash = av_model.get_cash_flow(symbol, limit, quarterly, ratios, bool(plot))
 
     if df_cash.empty:
@@ -320,7 +334,6 @@ def display_cash_flow(
                 y=cash_plot_data[plot[0]],
                 name=plot[0].replace("_", ""),
             )
-            fig.show()
         else:
             fig = OpenBBFigure.create_subplots(rows=rows_plot, cols=1)
             for i in range(rows_plot):
@@ -332,8 +345,8 @@ def display_cash_flow(
                     col=1,
                 )
                 fig.set_title(f"{plot[i].replace('_', ' ')}", row=i + 1, col=1)
-            fig.show()
 
+        fig.show(external=fig.is_image_export(export))
     else:
         # Snake case to english
         df_cash.index = [x.replace("_", " ").title() for x in df_cash.index]
@@ -345,6 +358,7 @@ def display_cash_flow(
             if not ratios
             else f"{'QoQ' if quarterly else 'YoY'} Change of {symbol} Cash flow",
             show_index=True,
+            export=bool(export),
         )
 
     export_data(
@@ -353,6 +367,7 @@ def display_cash_flow(
         "cash",
         df_cash,
         sheet_name,
+        fig,
     )
 
 
@@ -390,6 +405,7 @@ def display_earnings(
         headers=list(df_fa.columns),
         show_index=False,
         title=f"{symbol} Earnings",
+        export=bool(export),
     )
 
     export_data(
@@ -441,6 +457,7 @@ def display_fraud(
         headers=list(df_color.columns),
         show_index=True,
         title="Fraud Risk Statistics",
+        export=bool(export),
     )
 
     help_message = """
@@ -493,7 +510,11 @@ def display_dupont(
         return None
     if raw:
         return print_rich_table(
-            df, headers=list(df.columns), show_index=True, title="Extended Dupont"
+            df,
+            headers=list(df.columns),
+            show_index=True,
+            title="Extended Dupont",
+            export=bool(export),
         )
 
     fig = OpenBBFigure().set_title("Extended Dupont by Year")
@@ -507,14 +528,13 @@ def display_dupont(
             mode="lines",
         )
 
-    fig.show()
-
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "dupont",
         df,
         sheet_name,
+        fig,
     )
 
     return fig.show(external=external_axes)

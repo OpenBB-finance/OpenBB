@@ -120,6 +120,7 @@ def display_stock_price_headlines_sentiment(
                 "snews",
                 sentiment,
                 sheet_name,
+                fig,
             )
 
             return fig.show(external=external_axes)

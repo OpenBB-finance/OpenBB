@@ -163,6 +163,7 @@ def display_simple_ema(
         "simple_ema",
         res.stats,
         sheet_name,
+        fig,
     )
 
     return fig.show(external=external_axes)
@@ -234,6 +235,7 @@ def display_emacross(
         "emacross",
         res.stats,
         sheet_name,
+        fig,
     )
     return fig.show(external=external_axes)
 
@@ -308,5 +310,6 @@ def display_rsi_strategy(
         "rsi_corss",
         res.stats,
         sheet_name,
+        fig,
     )
     return fig.show(external=external_axes)

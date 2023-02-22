@@ -129,6 +129,7 @@ def show_macro_data(
             headers=list(df_rounded.columns),
             show_index=True,
             title=f"Macro Data {denomination}",
+            export=bool(export),
         )
 
     if export:
@@ -138,6 +139,7 @@ def show_macro_data(
             "macro_data",
             df_rounded,
             sheet_name,
+            fig,
         )
 
     return fig.show(external=external_axes)
@@ -210,6 +212,7 @@ def show_treasuries(
             headers=list(treasury_data.columns),
             show_index=True,
             title="U.S. Treasuries",
+            export=bool(export),
         )
 
     if export:
@@ -219,6 +222,7 @@ def show_treasuries(
             "treasuries_data",
             treasury_data / 100,
             sheet_name,
+            fig,
         )
 
     return fig.show(external=external_axes)

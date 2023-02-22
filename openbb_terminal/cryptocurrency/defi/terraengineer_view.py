@@ -53,6 +53,7 @@ def display_terra_asset_history(
         "aterra",
         df,
         sheet_name,
+        fig,
     )
 
     return fig.show(external=external_axes)
@@ -90,6 +91,7 @@ def display_anchor_yield_reserve(
         "ayr",
         df,
         sheet_name,
+        fig,
     )
 
     return fig.show(external=external_axes)

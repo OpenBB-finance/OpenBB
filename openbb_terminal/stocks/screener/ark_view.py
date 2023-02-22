@@ -60,6 +60,7 @@ def display_ark_trades(
         headers=list(ark_holdings.columns),
         show_index=True,
         title="ARK Trades",
+        export=bool(export),
     )
 
     export_data(

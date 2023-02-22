@@ -99,6 +99,7 @@ def show_indices(
             headers=list(indices_data.columns),
             show_index=True,
             title=f"Indices [column: {column}]",
+            export=bool(export),
         )
 
     if export:
@@ -108,6 +109,7 @@ def show_indices(
             "index_data",
             indices_data,
             sheet_name,
+            fig,
         )
 
     if (output := indices_data) is not None and external_axes:

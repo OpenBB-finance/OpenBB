@@ -155,6 +155,7 @@ def display_btc_rainbow(
         "btcrb",
         df_data,
         sheet_name,
+        fig,
     )
 
     return fig.show(external=external_axes)

@@ -104,6 +104,7 @@ def display_mean_std(
         "rolling",
         rolling_mean.join(rolling_std, lsuffix="_mean", rsuffix="_std"),
         sheet_name,
+        fig,
     )
 
     return fig.show(external=external_axes)
@@ -206,6 +207,7 @@ def display_spread(
         "spread",
         df_sd.join(df_var, lsuffix="_sd", rsuffix="_var"),
         sheet_name,
+        fig,
     )
 
     return fig.show(external=external_axes)
@@ -289,6 +291,7 @@ def display_quantile(
         "quantile",
         df_med.join(df_quantile),
         sheet_name,
+        fig,
     )
 
     return fig.show(external=external_axes)
@@ -364,6 +367,7 @@ def display_skew(
         "skew",
         df_skew,
         sheet_name,
+        fig,
     )
 
     return fig.show(external=external_axes)
@@ -441,6 +445,7 @@ def display_kurtosis(
         "kurtosis",
         df_kurt,
         sheet_name,
+        fig,
     )
 
     return fig.show(external=external_axes)

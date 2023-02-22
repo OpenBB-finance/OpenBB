@@ -169,10 +169,8 @@ def darkpool_ats_otc(
         "dpotc_otc",
         otc,
         sheet_name,
+        fig,
     )
-
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "dpotc_ats", ats)
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "dpotc_otc", otc)
 
     return fig.show(external=external_axes)
 
@@ -246,14 +244,16 @@ def darkpool_otc(
             ).keys()
         )[:limit]
 
+        fig = plot_dark_pools_ats(df_ats, symbols, True)
+
         export_data(
             export,
             os.path.dirname(os.path.abspath(__file__)),
             "prom",
             df_ats,
             sheet_name,
+            fig,
         )
-
-        return plot_dark_pools_ats(df_ats, symbols, external_axes)
+        return fig.show(external=external_axes)
 
     return console.print("[red]Could not get data[/red]\n")

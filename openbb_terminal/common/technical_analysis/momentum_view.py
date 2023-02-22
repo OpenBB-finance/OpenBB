@@ -365,6 +365,7 @@ def display_clenow_momentum(
         headers=[""],
         title=f"Clenow Exponential Regression Factor on {symbol}",
         show_header=False,
+        export=bool(export),
     )
 
     export_data(
@@ -372,6 +373,7 @@ def display_clenow_momentum(
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
         "clenow",
         sheet_name,
+        fig,
     )
 
     return fig.show(external=external_axes)

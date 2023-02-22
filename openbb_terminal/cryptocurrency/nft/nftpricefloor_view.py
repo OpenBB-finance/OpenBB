@@ -36,6 +36,7 @@ def display_collections(
     export : str
         Export dataframe data to csv,json,xlsx file
     """
+    fig = OpenBBFigure()
     df = nftpricefloor_model.get_collections()
 
     if df.empty:
@@ -66,13 +67,15 @@ def display_collections(
                     x=df_collection.index, y=values, mode="lines", name=collection
                 )
 
-        fig.show()
+        if not fig.is_image_export(export):
+            fig.show()
 
     print_rich_table(
         df.head(limit),
         headers=list(df.columns),
         show_index=False,
         title="NFT Collections",
+        export=bool(export),
     )
 
     return export_data(
@@ -81,6 +84,7 @@ def display_collections(
         "collections",
         df,
         sheet_name,
+        fig,
     )
 
 
@@ -121,6 +125,7 @@ def display_floor_price(
             headers=list(df.columns),
             show_index=True,
             title=f"{slug} Floor Price",
+            export=bool(export),
         )
 
     fig = OpenBBFigure.create_subplots(
@@ -156,6 +161,7 @@ def display_floor_price(
         "fp",
         df,
         sheet_name,
+        fig,
     )
 
     return fig.show(external=external_axes)

@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import Optional
+from typing import Optional, Union
 
 import pandas as pd
 
@@ -25,7 +25,8 @@ def beta_view(
     interval: int = 1440,
     export: str = "",
     sheet_name: Optional[str] = None,
-) -> None:
+    external_axes: bool = False,
+) -> Union[None, OpenBBFigure]:
     """Display the beta scatterplot + linear regression.
 
     Parameters
@@ -40,6 +41,12 @@ def beta_view(
         The reference ticker symbols price data
     interval: int
         The interval of the ref_data. This will ONLY be used if ref_data is None
+    export : str
+        Export dataframe data or plot to csv,json,xlsx,jpeg,pdf,png,svg file
+    sheet_name : str
+        Optionally specify the name of the sheet the data is exported to.
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     try:
         sr, rr, beta, alpha = beta_model(
@@ -47,8 +54,7 @@ def beta_view(
         )
     except Exception as e:
         if str(e) == "Invalid ref ticker":
-            console.print(str(e) + "\n")
-            return
+            return console.print(str(e) + "\n")
         raise e
 
     beta_text = f"Raw Beta={round(beta, 2)}<br>Alpha={round(alpha, 2)}"
@@ -76,7 +82,6 @@ def beta_view(
     )
 
     fig.update_layout(showlegend=False)
-    fig.show()
 
     df = pd.DataFrame({"sr": sr, "rr": rr})
 
@@ -86,4 +91,7 @@ def beta_view(
         f"beta_alpha={alpha}_beta={beta}",
         df,
         sheet_name,
+        fig,
     )
+
+    return fig.show(external=external_axes)
