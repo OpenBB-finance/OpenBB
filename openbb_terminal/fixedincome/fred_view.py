@@ -26,6 +26,53 @@ logger = logging.getLogger(__name__)
 
 # pylint: disable=too-many-lines
 
+YIELD_CURVE_SERIES_NOMINAL = {
+    "1Month": "DGS1MO",
+    "3Month": "DGS3MO",
+    "6Month": "DGS6MO",
+    "1Year": "DGS1",
+    "2Year": "DGS2",
+    "3Year": "DGS3",
+    "5Year": "DGS5",
+    "7Year": "DGS7",
+    "10Year": "DGS10",
+    "20Year": "DGS20",
+    "30Year": "DGS30",
+}
+YIELD_CURVE_SERIES_REAL = {
+    "5Year": "DFII5",
+    "7Year": "DFII7",
+    "10Year": "DFII10",
+    "20Year": "DFII20",
+    "30Year": "DFII30",
+}
+
+YIELD_CURVE_SERIES_CORPORATE_SPOT = {
+    "6Month": "HQMCB6MT",
+    "1Year": "HQMCB1YR",
+    "2Year": "HQMCB2YR",
+    "3Year": "HQMCB3YR",
+    "5Year": "HQMCB5YR",
+    "7Year": "HQMCB7YR",
+    "10Year": "HQMCB10YR",
+    "20Year": "HQMCB20YR",
+    "30Year": "HQMCB30YR",
+    "50Year": "HQMCB50YR",
+    "75Year": "HQMCB75YR",
+    "100Year": "HQMCB100YR",
+}
+YIELD_CURVE_SERIES_CORPORATE_PAR = {
+    "2Year": "HQMCB2YRP",
+    "5Year": "HQMCB5YRP",
+    "10Year": "HQMCB10YRP",
+    "30Year": "HQMCB30YRP",
+}
+
+YIELD_CURVE_NOMINAL_RATES = [1 / 12, 0.25, 0.5, 1, 2, 3, 5, 7, 10, 20, 30]
+YIELD_CURVE_SPOT_RATES = [0.5, 1, 2, 3, 5, 7, 10, 20, 30, 50, 75, 100]
+YIELD_CURVE_REAL_RATES = [5, 7, 10, 20, 30]
+YIELD_CURVE_PAR_RATES = [2, 5, 10, 30]
+
 ice_bofa_path = pathlib.Path(__file__).parent / "ice_bofa_indices.xlsx"
 commercial_paper_path = pathlib.Path(__file__).parent / "commercial_paper.xlsx"
 spot_rates_path = pathlib.Path(__file__).parent / "corporate_spot_rates.xlsx"
@@ -510,7 +557,7 @@ TBFFR_PARAMETER_TO_FRED_ID = {
 @log_start_end(log=logger)
 @check_api_key(["API_FRED_KEY"])
 def plot_estr(
-    series_id: str = "ECBESTRVOLWGTTRMDMNRT",
+    parameter: str = "volume_weighted_trimmed_mean_rate",
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
     export: str = "",
@@ -536,13 +583,8 @@ def plot_estr(
     external_axes: Optional[List[plt.Axes]]
         External axes (1 axis is expected in the list)
     """
-    if series_id in ESTR_PARAMETER_TO_ECB_ID:
-        series_id = ESTR_PARAMETER_TO_ECB_ID[series_id]
-
-    df = fred_model.get_series_data(
-        series_id=series_id, start_date=start_date, end_date=end_date
-    )
-
+    df = fred_model.get_estr(parameter, start_date, end_date)
+    series_id = fred_model.ESTR_PARAMETER_TO_ECB_ID[parameter]
     # This plot has 1 axis
     if not external_axes:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
@@ -593,7 +635,7 @@ def plot_estr(
 @log_start_end(log=logger)
 @check_api_key(["API_FRED_KEY"])
 def plot_sofr(
-    series_id: str = "SOFR",
+    parameter: str = "overnight",
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
     export: str = "",
@@ -617,11 +659,10 @@ def plot_sofr(
     external_axes: Optional[List[plt.Axes]]
         External axes (1 axis is expected in the list)
     """
-    if series_id in SOFR_PARAMETER_TO_FRED_ID:
-        series_id = SOFR_PARAMETER_TO_FRED_ID[series_id]
+    series_id = fred_model.SOFR_PARAMETER_TO_FRED_ID[parameter]
 
-    df = fred_model.get_series_data(
-        series_id=series_id, start_date=start_date, end_date=end_date
+    df = fred_model.get_sofr(
+        parameter=parameter, start_date=start_date, end_date=end_date
     )
 
     # This plot has 1 axis
@@ -665,7 +706,7 @@ def plot_sofr(
 @log_start_end(log=logger)
 @check_api_key(["API_FRED_KEY"])
 def plot_sonia(
-    series_id: str = "IUDSOIA",
+    parameter: str = "rate",
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
     export: str = "",
@@ -688,11 +729,10 @@ def plot_sonia(
     external_axes: Optional[List[plt.Axes]]
         External axes (1 axis is expected in the list)
     """
-    if series_id in SONIA_PARAMETER_TO_FRED_ID:
-        series_id = SONIA_PARAMETER_TO_FRED_ID[series_id]
+    series_id = SONIA_PARAMETER_TO_FRED_ID[parameter]
 
-    df = fred_model.get_series_data(
-        series_id=series_id, start_date=start_date, end_date=end_date
+    df = fred_model.get_sonia(
+        parameter=parameter, start_date=start_date, end_date=end_date
     )
 
     # This plot has 1 axis
@@ -743,7 +783,7 @@ def plot_sonia(
 @log_start_end(log=logger)
 @check_api_key(["API_FRED_KEY"])
 def plot_ameribor(
-    series_id: str = "AMERIBOR",
+    parameter: str = "overnight",
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
     export: str = "",
@@ -767,11 +807,10 @@ def plot_ameribor(
     external_axes: Optional[List[plt.Axes]]
         External axes (1 axis is expected in the list)
     """
-    if series_id in AMERIBOR_PARAMETER_TO_FRED_ID:
-        series_id = AMERIBOR_PARAMETER_TO_FRED_ID[series_id]
+    series_id = fred_model.AMERIBOR_PARAMETER_TO_FRED_ID[parameter]
 
-    df = fred_model.get_series_data(
-        series_id=series_id, start_date=start_date, end_date=end_date
+    df = fred_model.get_ameribor(
+        parameter=parameter, start_date=start_date, end_date=end_date
     )
 
     # This plot has 1 axis
@@ -880,7 +919,7 @@ def plot_fftr(
 @log_start_end(log=logger)
 @check_api_key(["API_FRED_KEY"])
 def plot_fed(
-    series_id: str = "FEDFUNDS",
+    parameter: str = "monthly",
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
     overnight: bool = False,
@@ -920,8 +959,7 @@ def plot_fed(
     external_axes: Optional[List[plt.Axes]]
         External axes (1 axis is expected in the list)
     """
-    if series_id in FED_PARAMETER_TO_FRED_ID:
-        series_id = FED_PARAMETER_TO_FRED_ID[series_id]
+    series_id = fred_model.FED_PARAMETER_TO_FRED_ID[parameter]
 
     if overnight:
         # This piece of code adjusts the series id when the user wants to plot the overnight rate
@@ -939,23 +977,9 @@ def plot_fed(
         data_series = [series_id if series_id != "EFFRVOL" else "EFFR"]
         series_id = series_id if series_id != "EFFRVOL" else "EFFR"
 
-        if quantiles:
-            data_series.extend(["EFFR1", "EFFR25", "EFFR75", "EFFR99"])
-        if target:
-            data_series.extend(["DFEDTARU", "DFEDTARL"])
-
-        df = pd.DataFrame()
-
-        for series in data_series:
-            data = pd.DataFrame(
-                fred_model.get_series_data(
-                    series_id=series, start_date=start_date, end_date=end_date
-                ),
-                columns=[series],
-            )
-            df = data if series == series_id else pd.concat([df, data], axis=1)
-
-        df = df.dropna()
+        df = fred_model.get_fed(
+            parameter, start_date, end_date, overnight, quantiles, target
+        )
 
         # This plot has 1 axis
         if not external_axes:
@@ -980,10 +1004,9 @@ def plot_fed(
         if external_axes is None:
             theme.visualize_output()
     else:
-        df = fred_model.get_series_data(
-            series_id=series_id, start_date=start_date, end_date=end_date
+        df = fred_model.get_fed(
+            parameter, start_date, end_date, overnight, quantiles, target
         )
-
         # This plot has 1 axis
         if not external_axes:
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
@@ -991,7 +1014,6 @@ def plot_fed(
             (ax,) = external_axes
         else:
             return
-
         colors = cycle(theme.get_colors())
         ax.plot(
             df.index,

@@ -3,8 +3,9 @@ __docformat__ = "numpy"
 
 import logging
 import os
+import pathlib
 from datetime import datetime, timedelta
-from typing import Optional, Tuple
+from typing import Dict, Optional, Tuple
 
 import certifi
 import pandas as pd
@@ -65,6 +66,478 @@ YIELD_CURVE_NOMINAL_RATES = [1 / 12, 0.25, 0.5, 1, 2, 3, 5, 7, 10, 20, 30]
 YIELD_CURVE_SPOT_RATES = [0.5, 1, 2, 3, 5, 7, 10, 20, 30, 50, 75, 100]
 YIELD_CURVE_REAL_RATES = [5, 7, 10, 20, 30]
 YIELD_CURVE_PAR_RATES = [2, 5, 10, 30]
+
+ice_bofa_path = pathlib.Path(__file__).parent / "ice_bofa_indices.xlsx"
+commercial_paper_path = pathlib.Path(__file__).parent / "commercial_paper.xlsx"
+spot_rates_path = pathlib.Path(__file__).parent / "corporate_spot_rates.xlsx"
+
+
+ID_TO_NAME_SOFR = {
+    "SOFR": "Secured Overnight Financing Rate (SOFR)",
+    "SOFR30DAYAVG": "30-Day Average SOFR",
+    "SOFR90DAYAVG": "90-Day Average SOFR",
+    "SOFR180DAYAVG": "180-Day Average SOFR",
+    "SOFRINDEX": "SOFR Index",
+}
+ID_TO_NAME_SONIA = {
+    "IUDSOIA": "Daily Sterling Overnight Index Average (SONIA) Rate",
+    "IUDZOS2": "SONIA Compounded Index",
+    "IUDZLS6": "SONIA Rate: 10th percentile",
+    "IUDZLS7": "SONIA Rate: 25th percentile",
+    "IUDZLS8": "SONIA Rate: 75th percentile",
+    "IUDZLS9": "SONIA Rate: 90th percentile",
+    "IUDZLT2": "SONIA Rate Total Nominal Value",
+}
+ID_TO_NAME_AMERIBOR = {
+    "AMERIBOR": "Overnight Unsecured AMERIBOR Benchmark Interest Rate",
+    "AMBOR30T": "AMERIBOR Term-30 Derived Interest Rate Index",
+    "AMBOR90T": "AMERIBOR Term-90 Derived Interest Rate Index",
+    "AMBOR1W": "1-Week AMERIBOR Term Structure of Interest Rates",
+    "AMBOR1M": "1-Month AMERIBOR Term Structure of Interest Rates",
+    "AMBOR3M": "3-Month AMERIBOR Term Structure of Interest Rates",
+    "AMBOR6M": "6-Month AMERIBOR Term Structure of Interest Rates",
+    "AMBOR1Y": "1-Year AMERIBOR Term Structure of Interest Rates",
+    "AMBOR2Y": "2-Year AMERIBOR Term Structure of Interest Rates",
+    "AMBOR30": "30-Day Moving Average AMERIBOR Benchmark Interest Rate",
+    "AMBOR90": "90-Day Moving Average AMERIBOR Benchmark Interest Rate",
+}
+ID_TO_NAME_FED = {
+    "FEDFUNDS": "Monthly Effective Federal Funds Rate",
+    "EFFR": "Daily Effective Federal Funds Rate",
+    "DFF": "Daily Effective Federal Funds Rate",
+    "OBFR": "Daily Overnight Bank Funding Rate",
+    "FF": "Weekly Effective Federal Funds Rate",
+    "RIFSPFFNB": "Daily (Excl. Weekends) Effective Federal Funds Rate",
+    "RIFSPFFNA": "Annual Effective Federal Funds Rate",
+    "RIFSPFFNBWAW": "Biweekly Effective Federal Funds Rate",
+    "EFFRVOL": "Effective Federal Funds Volume",
+    "OBFRVOL": "Overnight Bank Funding Volume",
+}
+
+ID_TO_NAME_DWPCR = {
+    "MPCREDIT": "Monthly",
+    "RIFSRPF02ND": "Daily (incl. Weekends)",
+    "WPCREDIT": "Weekly",
+    "DPCREDIT": "Daily (excl. Weekends)",
+    "RIFSRPF02NA": "Annual",
+}
+ID_TO_NAME_TMC = {
+    "T10Y3M": "3-Month",
+    "T10Y2Y": "2-Year",
+}
+ID_TO_NAME_FFRMC = {
+    "T10YFF": "10-Year",
+    "T5YFF": "5-Year",
+    "T1YFF": "1-Year",
+    "T6MFF": "6-Month",
+    "T3MFF": "3-Month",
+}
+ID_TO_NAME_SECONDARY = {
+    "TB3MS": "3-Month",
+    "DTB4WK": "4-Week",
+    "DTB1YR": "1-Year",
+    "DTB6": "6-Month",
+}
+ID_TO_NAME_TIPS = {
+    "DFII5": "5-Year",
+    "DFII7": "7-Year",
+    "DFII10": "10-Year",
+    "DFII20": "20-Year",
+    "DFII30": "30-Year",
+}
+ID_TO_NAME_CMN = {
+    "DGS1MO": "1 Month",
+    "DGS3MO": "3 Month",
+    "DGS6MO": "6 Month",
+    "DGS1": "1 Year",
+    "DGS2": "2 Year",
+    "DGS3": "3 Year",
+    "DGS5": "5 Year",
+    "DGS7": "7 Year",
+    "DGS10": "10 Year",
+    "DGS20": "20 Year",
+    "DGS30": "30 Year",
+}
+ID_TO_NAME_TBFFR = {
+    "TB3SMFFM": "3 Month",
+    "TB6SMFFM": "6 Month",
+}
+
+NAME_TO_ID_PROJECTION = {
+    "Range High": ["FEDTARRH", "FEDTARRHLR"],
+    "Central tendency High": ["FEDTARCTH", "FEDTARCTHLR"],
+    "Median": ["FEDTARMD", "FEDTARMDLR"],
+    "Range Midpoint": ["FEDTARRM", "FEDTARRMLR"],
+    "Central tendency Midpoint": ["FEDTARCTM", "FEDTARCTMLR"],
+    "Range Low": ["FEDTARRL", "FEDTARRLLR"],
+    "Central tendency Low": ["FEDTARCTL", "FEDTARCTLLR"],
+}
+
+NAME_TO_ID_ECB = {"deposit": "ECBDFR", "lending": "ECBMLFR", "refinancing": "ECBMRRFR"}
+
+USARATES_TO_FRED_ID = {
+    "4_week": {"tbill": "DTB4WK"},
+    "1_month": {"cmn": "DGS1MO"},
+    "3_month": {"tbill": "TB3MS", "cmn": "DGS3MO"},
+    "6_month": {"tbill": "DTB6", "cmn": "DGS6MO"},
+    "1_year": {"tbill": "DTB1YR", "cmn": "DGS1"},
+    "2_year": {"cmn": "DGS2"},
+    "3_year": {"cmn": "DGS3"},
+    "5_year": {"tips": "DFII5", "cmn": "DGS5"},
+    "7_year": {"tips": "DFII7", "cmn": "DGS7"},
+    "10_year": {"tips": "DFII10", "cmn": "DGS10"},
+    "20_year": {"tips": "DFII20", "cmn": "DGS20"},
+    "30_year": {"tips": "DFII30", "cmn": "DGS30"},
+}
+
+ICE_BOFA_TO_OPTIONS = {
+    "Type": ["total_return", "yield", "yield_to_worst"],
+    "Category": ["all", "duration", "eur", "usd"],
+    "Area": ["asia", "emea", "eu", "ex_g10", "latin_america", "us"],
+    "Grade": [
+        "a",
+        "aa",
+        "aaa",
+        "b",
+        "bb",
+        "bbb",
+        "ccc",
+        "crossover",
+        "high_grade",
+        "high_yield",
+        "non_financial",
+        "non_sovereign",
+        "private_sector",
+        "public_sector",
+    ],
+}
+
+MOODY_TO_OPTIONS: Dict[str, Dict] = {
+    "Type": {
+        "aaa": {
+            "index": {
+                "id": "DAAA",
+                "name": "Moody's Seasoned Aaa Corporate Bond Yield",
+            },
+            "treasury": {
+                "id": "AAA10Y",
+                "name": "Moody's Seasoned Aaa Corporate Bond Yield Relative to Yield "
+                "on 10-Year Treasury Constant Maturity",
+            },
+            "fed_funds": {
+                "id": "AAAFF",
+                "name": "Moody's Seasoned Aaa Corporate Bond Minus Federal Funds Rate",
+            },
+        },
+        "baa": {
+            "index": {
+                "id": "DBAA",
+                "name": "Moody's Seasoned Baa Corporate Bond Yield",
+            },
+            "treasury": {
+                "id": "BAA10Y",
+                "name": "Moody's Seasoned Baa Corporate Bond Yield Relative "
+                "to Yield on 10-Year Treasury Constant Maturity",
+            },
+            "fed_funds": {
+                "id": "BAAFF",
+                "name": "Moody's Seasoned Baa Corporate Bond Minus Federal Funds Rate",
+            },
+        },
+    },
+    "Spread": ["treasury", "fed_funds"],  # type: ignore
+}
+
+CP_TO_OPTIONS = {
+    "Maturity": ["15d", "30d", "60d", "7d", "90d", "overnight"],
+    "Category": ["asset_backed", "financial", "non_financial", "spread"],
+    "Grade": ["a2_p2", "aa"],
+}
+
+SPOT_TO_OPTIONS = {
+    "Maturity": [
+        "1y",
+        "1.5y",
+        "2y",
+        "2.5y",
+        "3y",
+        "3.5y",
+        "4y",
+        "4.5y",
+        "5y",
+        "5.5y",
+        "6 y",
+        "6y",
+        "6.5y",
+        "7y",
+        "7.5y",
+        "8y",
+        "8.5y",
+        "9y",
+        "9.5y",
+        "10y",
+        "10.5y",
+        "11y",
+        "11.5y",
+        "12y",
+        "12.5y",
+        "13y",
+        "13.5y",
+        "14y",
+        "14.5y",
+        "15y",
+        "15.5y",
+        "16y",
+        "16.5y",
+        "17y",
+        "17.5y",
+        "18y",
+        "18.5y",
+        "19y",
+        "19.5y",
+        "20y",
+        "20.5y",
+        "21y",
+        "21.5y",
+        "22y",
+        "22.5y",
+        "23y",
+        "23.5y",
+        "24y",
+        "24.5y",
+        "25y",
+        "25.5y",
+        "26y",
+        "26.5y",
+        "27y",
+        "27.5y",
+        "28y",
+        "28.5y",
+        "29y",
+        "29.5y",
+        "30y",
+        "30.5y",
+        "31y",
+        "31.5y",
+        "32y",
+        "32.5y",
+        "33y",
+        "33.5y",
+        "34y",
+        "34.5y",
+        "35y",
+        "35.5y",
+        "36y",
+        "36.5y",
+        "37y",
+        "37.5y",
+        "38y",
+        "38.5y",
+        "39y",
+        "39.5y",
+        "40y",
+        "40.5y",
+        "41y",
+        "41.5y",
+        "42y",
+        "42.5y",
+        "43y",
+        "43.5y",
+        "44y",
+        "44.5y",
+        "45y",
+        "45.5y",
+        "46y",
+        "46.5y",
+        "47y",
+        "47.5y",
+        "48y",
+        "48.5y",
+        "49y",
+        "49.5y",
+        "50y",
+        "50.5y",
+        "51y",
+        "51.5y",
+        "52y",
+        "52.5y",
+        "53y",
+        "53.5y",
+        "54y",
+        "54.5y",
+        "55y",
+        "55.5y",
+        "56y",
+        "56.5y",
+        "57y",
+        "57.5y",
+        "58y",
+        "58.5y",
+        "59y",
+        "59.5y",
+        "60y",
+        "60.5y",
+        "61y",
+        "61.5y",
+        "62y",
+        "62.5y",
+        "63y",
+        "63.5y",
+        "64y",
+        "64.5y",
+        "65y",
+        "65.5y",
+        "66y",
+        "66.5y",
+        "67y",
+        "67.5y",
+        "68y",
+        "68.5y",
+        "69y",
+        "69.5y",
+        "70y",
+        "70.5y",
+        "71y",
+        "71.5y",
+        "72y",
+        "72.5y",
+        "73y",
+        "73.5y",
+        "74y",
+        "74.5y",
+        "75y",
+        "75.5y",
+        "76y",
+        "76.5y",
+        "77y",
+        "77.5y",
+        "78y",
+        "78.5y",
+        "79y",
+        "79.5y",
+        "80y",
+        "80.5y",
+        "81y",
+        "81.5y",
+        "82y",
+        "82.5y",
+        "83y",
+        "83.5y",
+        "84y",
+        "84.5y",
+        "85y",
+        "85.5y",
+        "86y",
+        "86.5y",
+        "87y",
+        "87.5y",
+        "88y",
+        "88.5y",
+        "89y",
+        "89.5y",
+        "90y",
+        "90.5y",
+        "91y",
+        "91.5y",
+        "92y",
+        "92.5y",
+        "93y",
+        "93.5y",
+        "94y",
+        "94.5y",
+        "95y",
+        "95.5y",
+        "96y",
+        "96.5y",
+        "97y",
+        "97.5y",
+        "98y",
+        "98.5y",
+        "99y",
+        "99.5y",
+        "100y",
+    ],
+    "Category": ["spot_rate", "par_yield"],
+}
+
+ESTR_PARAMETER_TO_ECB_ID = {
+    "volume_weighted_trimmed_mean_rate": "ECBESTRVOLWGTTRMDMNRT",
+    "number_of_transactions": "ECBESTRNUMTRANS",
+    "number_of_active_banks": "ECBESTRNUMACTBANKS",
+    "total_volume": "ECBESTRTOTVOL",
+    "share_of_volume_of_the_5_largest_active_banks": "ECBESTRSHRVOL5LRGACTBNK",
+    "rate_at_75th_percentile_of_volume": "ECBESTRRT75THPCTVOL",
+    "rate_at_25th_percentile_of_volume": "ECBESTRRT25THPCTVOL",
+}
+
+SOFR_PARAMETER_TO_FRED_ID = {
+    "overnight": "SOFR",
+    "30_day_average": "SOFR30DAYAVG",
+    "90_day_average": "SOFR90DAYAVG",
+    "180_day_average": "SOFR180DAYAVG",
+    "index": "SOFRINDEX",
+}
+SONIA_PARAMETER_TO_FRED_ID = {
+    "rate": "IUDSOIA",
+    "index": "IUDZOS2",
+    "10th_percentile": "IUDZLS6",
+    "25th_percentile": "IUDZLS7",
+    "75th_percentile": "IUDZLS8",
+    "90th_percentile": "IUDZLS9",
+    "total_nominal_value": "IUDZLT2",
+}
+AMERIBOR_PARAMETER_TO_FRED_ID = {
+    "overnight": "AMERIBOR",
+    "term_30": "AMBOR30T",
+    "term_90": "AMBOR90T",
+    "1_week_term_structure": "AMBOR1W",
+    "1_month_term_structure": "AMBOR1M",
+    "3_month_term_structure": "AMBOR3M",
+    "6_month_term_structure": "AMBOR6M",
+    "1_year_term_structure": "AMBOR1Y",
+    "2_year_term_structure": "AMBOR2Y",
+    "30_day_ma": "AMBOR30",
+    "90_day_ma": "AMBOR90",
+}
+
+FED_PARAMETER_TO_FRED_ID = {
+    "monthly": "FEDFUNDS",
+    "daily": "DFF",
+    "weekly": "FF",
+    "daily_excl_weekend": "RIFSPFFNB",
+    "annual": "RIFSPFFNA",
+    "biweekly": "RIFSPFFNBWAW",
+    "volume": "EFFRVOL",
+}
+
+OBFR_PARAMETER_TO_FRED_ID = {
+    "daily": "OBFR",
+    "volume": "OBFRVOL",
+}
+
+DWPCR_PARAMETER_TO_FRED_ID = {
+    "daily_excl_weekend": "DPCREDIT",
+    "monthly": "MPCREDIT",
+    "weekly": "WPCREDIT",
+    "daily": "RIFSRPF02ND",
+    "annual": "RIFSRPF02NA",
+}
+TMC_PARAMETER_TO_FRED_ID = {
+    "3_month": "T10Y3M",
+    "2_year": "T10Y2Y",
+}
+FFRMC_PARAMETER_TO_FRED_ID = {
+    "10_year": "T10YFF",
+    "5_year": "T5YFF",
+    "1_year": "T1YFF",
+    "6_month": "T6MFF",
+    "3_month": "T3MFF",
+}
+
+TBFFR_PARAMETER_TO_FRED_ID = {
+    "3_month": "TB3SMFFM",
+    "6_month": "TB6SMFFM",
+}
 
 
 @log_start_end(log=logger)
@@ -235,3 +708,104 @@ def get_yield_curve(
     if return_date:
         return rates, date_of_yield
     return rates
+
+
+@log_start_end(log=logger)
+@check_api_key(["API_FRED_KEY"])
+def get_estr(
+    parameter: str = "total_volume",
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
+) -> pd.DataFrame:
+    series_id = ESTR_PARAMETER_TO_ECB_ID.get(parameter, "")
+
+    df = get_series_data(series_id=series_id, start_date=start_date, end_date=end_date)
+    return df
+
+
+@log_start_end(log=logger)
+@check_api_key(["API_FRED_KEY"])
+def get_sofr(
+    parameter: str = "overnight",
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
+) -> pd.DataFrame:
+    series_id = SOFR_PARAMETER_TO_FRED_ID.get(parameter, "")
+
+    df = get_series_data(series_id=series_id, start_date=start_date, end_date=end_date)
+    return df
+
+
+@log_start_end(log=logger)
+@check_api_key(["API_FRED_KEY"])
+def get_sonia(
+    parameter: str = "rate",
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
+) -> pd.DataFrame:
+    series_id = SONIA_PARAMETER_TO_FRED_ID.get(parameter, "")
+
+    df = get_series_data(series_id=series_id, start_date=start_date, end_date=end_date)
+    return df
+
+
+@log_start_end(log=logger)
+@check_api_key(["API_FRED_KEY"])
+def get_ameribor(
+    parameter: str = "overnight",
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
+) -> pd.DataFrame:
+    series_id = AMERIBOR_PARAMETER_TO_FRED_ID.get(parameter, "")
+
+    df = get_series_data(series_id=series_id, start_date=start_date, end_date=end_date)
+    return df
+
+
+def get_fed(
+    parameter: str = "monthly",
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
+    overnight: bool = False,
+    quantiles: bool = False,
+    target: bool = False,
+) -> pd.DataFrame:
+    series_id = FED_PARAMETER_TO_FRED_ID[parameter]
+
+    if overnight:
+        # This piece of code adjusts the series id when the user wants to plot the overnight rate
+        if series_id == "DFF":
+            series_id = "OBFR"
+        elif series_id == "EFFRVOL":
+            series_id = "OBFRVOL"
+        else:
+            console.print(
+                "The Overnight Banking Federal Rate only supports Daily data."
+            )
+            series_id = "OBFR"
+
+    if quantiles or target and not overnight:
+        data_series = [series_id if series_id != "EFFRVOL" else "EFFR"]
+        series_id = series_id if series_id != "EFFRVOL" else "EFFR"
+
+        if quantiles:
+            data_series.extend(["EFFR1", "EFFR25", "EFFR75", "EFFR99"])
+        if target:
+            data_series.extend(["DFEDTARU", "DFEDTARL"])
+
+        df = pd.DataFrame()
+
+        for series in data_series:
+            data = pd.DataFrame(
+                get_series_data(
+                    series_id=series, start_date=start_date, end_date=end_date
+                ),
+                columns=[series],
+            )
+            df = data if series == series_id else pd.concat([df, data], axis=1)
+
+        df = df.dropna()
+        return df
+    return get_series_data(
+        series_id=series_id, start_date=start_date, end_date=end_date
+    )

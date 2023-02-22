@@ -12,7 +12,13 @@ import pandas as pd
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.fixedincome import ecb_view, fred_view, oecd_model, oecd_view
+from openbb_terminal.fixedincome import (
+    ecb_view,
+    fred_model,
+    fred_view,
+    oecd_model,
+    oecd_view,
+)
 from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
@@ -166,7 +172,7 @@ class FixedIncomeController(BaseController):
         if ns_parser:
             if ns_parser.source == "FRED":
                 fred_view.plot_estr(
-                    series_id=ns_parser.parameter,
+                    parameter=ns_parser.parameter,
                     start_date=ns_parser.start_date,
                     end_date=ns_parser.end_date,
                     export=ns_parser.export,
@@ -204,7 +210,7 @@ class FixedIncomeController(BaseController):
             type=str,
             help="Specific SOFR data to retrieve",
             default="overnight",
-            choices=fred_view.SOFR_PARAMETER_TO_FRED_ID.keys(),
+            choices=fred_model.SOFR_PARAMETER_TO_FRED_ID.keys(),
         )
         parser.add_argument(
             "-s",
@@ -227,7 +233,7 @@ class FixedIncomeController(BaseController):
         )
         if ns_parser:
             fred_view.plot_sofr(
-                series_id=ns_parser.parameter,
+                parameter=ns_parser.parameter,
                 start_date=ns_parser.start_date,
                 end_date=ns_parser.end_date,
                 export=ns_parser.export,
@@ -278,7 +284,7 @@ class FixedIncomeController(BaseController):
         )
         if ns_parser:
             fred_view.plot_sonia(
-                series_id=ns_parser.parameter,
+                parameter=ns_parser.parameter,
                 start_date=ns_parser.start_date,
                 end_date=ns_parser.end_date,
                 export=ns_parser.export,
@@ -329,7 +335,7 @@ class FixedIncomeController(BaseController):
         )
         if ns_parser:
             fred_view.plot_ameribor(
-                series_id=ns_parser.parameter,
+                parameter=ns_parser.parameter,
                 start_date=ns_parser.start_date,
                 end_date=ns_parser.end_date,
                 export=ns_parser.export,
@@ -411,7 +417,7 @@ class FixedIncomeController(BaseController):
                 )
             else:
                 fred_view.plot_fed(
-                    series_id=ns_parser.parameter,
+                    parameter=ns_parser.parameter,
                     start_date=ns_parser.start_date,
                     end_date=ns_parser.end_date,
                     overnight=ns_parser.overnight,
