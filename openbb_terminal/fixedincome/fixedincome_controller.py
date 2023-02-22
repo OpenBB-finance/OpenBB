@@ -543,7 +543,7 @@ class FixedIncomeController(BaseController):
         )
         if ns_parser:
             fred_view.plot_dwpcr(
-                series_id=ns_parser.parameter,
+                parameter=ns_parser.parameter,
                 start_date=ns_parser.start_date,
                 end_date=ns_parser.end_date,
                 export=ns_parser.export,

@@ -809,3 +809,28 @@ def get_fed(
     return get_series_data(
         series_id=series_id, start_date=start_date, end_date=end_date
     )
+
+def get_iorb(    start_date: Optional[str] = None,
+    end_date: Optional[str] = None,)->pd.DataFrame:
+
+    return get_series_data(series_id="IORB", start_date=start_date, end_date=end_date)
+
+
+def get_projection(long_run: bool = False):
+    data_series = {}
+
+    for projection, values in NAME_TO_ID_PROJECTION.items():
+        data_series[projection] = get_series_data(series_id=values[long_run])
+
+
+    data_series_df = pd.DataFrame.from_dict(data_series).dropna()
+    data_series_df.index = pd.to_datetime(data_series_df.index).date
+
+    return data_series_df
+
+def get_dwpcr(parameter:str="daily_excl_weekend",
+              start_date: Optional[str] = None,
+              end_date: Optional[str] = None,)->pd.DataFrame:
+
+    series_id = DWPCR_PARAMETER_TO_FRED_ID[parameter]
+    return get_series_data(series_id=series_id, start_date=start_date, end_date=end_date)

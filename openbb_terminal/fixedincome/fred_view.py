@@ -1087,8 +1087,7 @@ def plot_iorb(
     external_axes: Optional[List[plt.Axes]]
         External axes (1 axis is expected in the list)
     """
-    df = fred_model.get_series_data(
-        series_id="IORB", start_date=start_date, end_date=end_date
+    df = fred_model.get_iorb(start_date=start_date, end_date=end_date
     )
 
     # This plot has 1 axis
@@ -1145,10 +1144,7 @@ def plot_projection(
     external_axes: Optional[List[plt.Axes]]
         External axes (1 axis is expected in the list)
     """
-    data_series = {}
-
-    for projection, values in NAME_TO_ID_PROJECTION.items():
-        data_series[projection] = fred_model.get_series_data(series_id=values[long_run])
+    data_series_df = fred_model.get_projection(long_run=long_run)
 
     # This plot has 1 axis
     if not external_axes:
@@ -1157,9 +1153,6 @@ def plot_projection(
         (ax,) = external_axes
     else:
         return
-
-    data_series_df = pd.DataFrame.from_dict(data_series).dropna()
-    data_series_df.index = pd.to_datetime(data_series_df.index).date
 
     for legend, df in data_series_df.items():
         ax.plot(
@@ -1202,7 +1195,7 @@ def plot_projection(
 @log_start_end(log=logger)
 @check_api_key(["API_FRED_KEY"])
 def plot_dwpcr(
-    series_id: str = "DPCREDIT",
+    parameter: str = "DPCREDIT",
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
     export: str = "",
@@ -1228,11 +1221,10 @@ def plot_dwpcr(
     external_axes: Optional[List[plt.Axes]]
         External axes (1 axis is expected in the list)
     """
-    if series_id in DWPCR_PARAMETER_TO_FRED_ID:
-        series_id = DWPCR_PARAMETER_TO_FRED_ID[series_id]
+    series_id = fred_model.DWPCR_PARAMETER_TO_FRED_ID[parameter]
 
-    df = fred_model.get_series_data(
-        series_id=series_id, start_date=start_date, end_date=end_date
+    df = fred_model.get_dwpcr(
+        parameter=parameter, start_date=start_date, end_date=end_date
     )
 
     # This plot has 1 axis
