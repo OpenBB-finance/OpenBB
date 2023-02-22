@@ -1698,7 +1698,7 @@ class FixedIncomeController(BaseController):
             type=str,
             help="Selected treasury constant maturity to subtract",
             default="3_month",
-            choices=list(self.tmc_parameter_to_fred_id.keys()),
+            choices=fred_view.TMC_PARAMETER_TO_FRED_ID.keys()
         )
         parser.add_argument(
             "-s",
@@ -1721,7 +1721,7 @@ class FixedIncomeController(BaseController):
         )
         if ns_parser:
             fred_view.plot_tmc(
-                series_id=self.tmc_parameter_to_fred_id[ns_parser.parameter],
+                series_id=ns_parser.parameter,
                 start_date=ns_parser.start_date,
                 end_date=ns_parser.end_date,
                 export=ns_parser.export,
@@ -1750,7 +1750,7 @@ class FixedIncomeController(BaseController):
             type=str,
             help="Selected Treasury Constant Maturity",
             default="10_year",
-            choices=list(self.ffrmc_parameter_to_fred_id.keys()),
+            choices=fred_view.FFRMC_PARAMETER_TO_FRED_ID.keys(),
         )
         parser.add_argument(
             "-s",
@@ -1773,7 +1773,7 @@ class FixedIncomeController(BaseController):
         )
         if ns_parser:
             fred_view.plot_ffrmc(
-                series_id=self.ffrmc_parameter_to_fred_id[ns_parser.parameter],
+                series_id=ns_parser.parameter,
                 start_date=ns_parser.start_date,
                 end_date=ns_parser.end_date,
                 export=ns_parser.export,
@@ -2391,7 +2391,7 @@ class FixedIncomeController(BaseController):
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES, raw=True
         )
         if ns_parser:
-            fred_view.plot_cycrv(
+            fred_view.plot_hqm(
                 date=ns_parser.date.strftime("%Y-%m-%d") if ns_parser.date else "",
                 par=ns_parser.par,
                 raw=ns_parser.raw,
@@ -2518,7 +2518,7 @@ class FixedIncomeController(BaseController):
             type=str,
             help="Selected Treasury Bill",
             default="3_month",
-            choices=list(self.tbffr_parameter_to_fred_id.keys()),
+            choices=fred_view.TBFFR_PARAMETER_TO_FRED_ID.keys(),
         )
         parser.add_argument(
             "-s",
@@ -2541,7 +2541,7 @@ class FixedIncomeController(BaseController):
         )
         if ns_parser:
             fred_view.plot_tbffr(
-                series_id=self.tbffr_parameter_to_fred_id[ns_parser.parameter],
+                series_id=ns_parser.parameter,
                 start_date=ns_parser.start_date,
                 end_date=ns_parser.end_date,
                 export=ns_parser.export,

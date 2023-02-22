@@ -443,6 +443,85 @@ SPOT_TO_OPTIONS = {
     'Category': ['spot_rate', 'par_yield']
 }
 
+ESTR_PARAMETER_TO_ECB_ID = {
+    "volume_weighted_trimmed_mean_rate": "ECBESTRVOLWGTTRMDMNRT",
+    "number_of_transactions": "ECBESTRNUMTRANS",
+    "number_of_active_banks": "ECBESTRNUMACTBANKS",
+    "total_volume": "ECBESTRTOTVOL",
+    "share_of_volume_of_the_5_largest_active_banks": "ECBESTRSHRVOL5LRGACTBNK",
+    "rate_at_75th_percentile_of_volume": "ECBESTRRT75THPCTVOL",
+    "rate_at_25th_percentile_of_volume": "ECBESTRRT25THPCTVOL",
+}
+
+SOFR_PARAMETER_TO_FRED_ID = {
+    "overnight": "SOFR",
+    "30_day_average": "SOFR30DAYAVG",
+    "90_day_average": "SOFR90DAYAVG",
+    "180_day_average": "SOFR180DAYAVG",
+    "index": "SOFRINDEX",
+}
+SONIA_PARAMETER_TO_FRED_ID = {
+    "rate": "IUDSOIA",
+    "index": "IUDZOS2",
+    "10th_percentile": "IUDZLS6",
+    "25th_percentile": "IUDZLS7",
+    "75th_percentile": "IUDZLS8",
+    "90th_percentile": "IUDZLS9",
+    "total_nominal_value": "IUDZLT2",
+}
+AMERIBOR_PARAMETER_TO_FRED_ID = {
+    "overnight": "AMERIBOR",
+    "term_30": "AMBOR30T",
+    "term_90": "AMBOR90T",
+    "1_week_term_structure": "AMBOR1W",
+    "1_month_term_structure": "AMBOR1M",
+    "3_month_term_structure": "AMBOR3M",
+    "6_month_term_structure": "AMBOR6M",
+    "1_year_term_structure": "AMBOR1Y",
+    "2_year_term_structure": "AMBOR2Y",
+    "30_day_ma": "AMBOR30",
+    "90_day_ma": "AMBOR90",
+}
+
+FED_PARAMETER_TO_FRED_ID = {
+    "monthly": "FEDFUNDS",
+    "daily": "DFF",
+    "weekly": "FF",
+    "daily_excl_weekend": "RIFSPFFNB",
+    "annual": "RIFSPFFNA",
+    "biweekly": "RIFSPFFNBWAW",
+    "volume": "EFFRVOL",
+}
+
+OBFR_PARAMETER_TO_FRED_ID = {
+    "daily": "OBFR",
+    "volume": "OBFRVOL",
+}
+
+DWPCR_PARAMETER_TO_FRED_ID = {
+    "daily_excl_weekend": "DPCREDIT",
+    "monthly": "MPCREDIT",
+    "weekly": "WPCREDIT",
+    "daily": "RIFSRPF02ND",
+    "annual": "RIFSRPF02NA",
+}
+TMC_PARAMETER_TO_FRED_ID = {
+    "3_month": "T10Y3M",
+    "2_year": "T10Y2Y",
+}
+FFRMC_PARAMETER_TO_FRED_ID = {
+    "10_year": "T10YFF",
+    "5_year": "T5YFF",
+    "1_year": "T1YFF",
+    "6_month": "T6MFF",
+    "3_month": "T3MFF",
+}
+
+TBFFR_PARAMETER_TO_FRED_ID = {
+    "3_month": "TB3SMFFM",
+    "6_month": "TB6SMFFM",
+}
+
 @log_start_end(log=logger)
 @check_api_key(["API_FRED_KEY"])
 def plot_estr(
