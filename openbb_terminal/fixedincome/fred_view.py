@@ -1912,30 +1912,14 @@ def plot_icebofa(
             ]
         )
 
-    series = series[
-        (series["Type"] == data_type)
-        & (series["Units"] == units)
-        & (series["Frequency"] == "daily")
-        & (series["Asset Class"] == "bonds")
-        & (series["Category"] == category)
-        & (series["Area"] == area)
-        & (series["Grade"] == grade)
-    ]
-
-    if series.empty:
-        console.print("The combination of parameters does not result in any data.")
-        return pd.DataFrame()
-
-    series_dictionary = {}
-
-    for series_id, title in series[["FRED Series ID", "Title"]].values:
-        series_dictionary[title] = fred_model.get_series_data(
-            series_id=series_id, start_date=start_date, end_date=end_date
-        )
-
-    df = pd.DataFrame.from_dict(series_dictionary)
-    df.index = pd.to_datetime(df.index).date
-
+    df = fred_model.get_icebofa(
+        data_type=data_type,
+        category=category,
+        area=area,
+        grade=grade,
+        start_date=start_date,
+        end_date=end_date,
+    )
     # This plot has 1 axis
     if not external_axes:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
@@ -1959,6 +1943,7 @@ def plot_icebofa(
         ax.set_title(title, fontsize=15)
         ax.legend(prop={"size": 8})
     else:
+        title = df.columns[0]
         ax.set_title(title, fontsize=10)
 
     ax.set_ylabel("Yield (%)" if units == "percent" else "Index")
@@ -2027,15 +2012,13 @@ def plot_moody(
     external_axes: Optional[List[plt.Axes]]
         External axes (1 axis is expected in the list)
     """
-    series_id = MOODY_TO_OPTIONS["Type"][data_type][spread if spread else "index"]["id"]
-    name = MOODY_TO_OPTIONS["Type"][data_type][spread if spread else "index"]["name"]
+    name = fred_model.MOODY_TO_OPTIONS["Type"][data_type][
+        spread if spread else "index"
+    ]["name"]
 
-    series = fred_model.get_series_data(
-        series_id=series_id, start_date=start_date, end_date=end_date
+    df = fred_model.get_moody(
+        data_type=data_type, spread=spread, start_date=start_date, end_date=end_date
     )
-
-    df = pd.DataFrame(series, columns=[f"{data_type}_{spread if spread else 'index'}"])
-    df.index = pd.to_datetime(df.index).date
 
     # This plot has 1 axis
     if not external_axes:
@@ -2129,25 +2112,13 @@ def plot_cp(
     if options:
         return print_rich_table(series.drop(["Description", "FRED Series ID"], axis=1))
 
-    series = series[
-        (series["Maturity"] == maturity)
-        & (series["Category"] == category)
-        & (series["Grade"] == grade)
-    ]
-
-    if series.empty:
-        console.print("The combination of parameters does not result in any data.")
-        return pd.DataFrame()
-
-    series_dictionary = {}
-
-    for series_id, title in series[["FRED Series ID", "Title"]].values:
-        series_dictionary[title] = fred_model.get_series_data(
-            series_id=series_id, start_date=start_date, end_date=end_date
-        )
-
-    df = pd.DataFrame.from_dict(series_dictionary)
-    df.index = pd.to_datetime(df.index).date
+    df = fred_model.get_cp(
+        maturity=maturity,
+        category=category,
+        grade=grade,
+        start_date=start_date,
+        end_date=end_date,
+    )
 
     # This plot has 1 axis
     if not external_axes:
@@ -2172,6 +2143,7 @@ def plot_cp(
         ax.set_title(title, fontsize=15)
         ax.legend(prop={"size": 8})
     else:
+        title = df.columns[0]
         ax.set_title(title, fontsize=10)
 
     ax.set_ylabel("Yield (%)")
@@ -2245,26 +2217,9 @@ def plot_spot(
         External axes (1 axis is expected in the list)
     """
     series = pd.read_excel(spot_rates_path)
-
-    series = series[
-        (series["Maturity"].isin(maturity)) & (series["Category"].isin(category))
-    ]
-
-    if "par_yield" in category and "par_yield" not in series["Category"].values:
-        console.print(
-            "No Par Yield data available for (some of) the selected maturities. "
-            "Only 2y, 5y, 10y and 30y is available."
-        )
-
-    series_dictionary = {}
-
-    for series_id, title in series[["FRED Series ID", "Title"]].values:
-        series_dictionary[title] = fred_model.get_series_data(
-            series_id=series_id, start_date=start_date, end_date=end_date
-        )
-
-    df = pd.DataFrame.from_dict(series_dictionary)
-    df.index = pd.to_datetime(df.index).date
+    df = fred_model.get_spot(
+        maturity=maturity, category=category, start_date=start_date, end_date=end_date
+    )
 
     # This plot has 1 axis
     if not external_axes:
@@ -2289,6 +2244,7 @@ def plot_spot(
         ax.set_title(title, fontsize=15)
         ax.legend(prop={"size": 8})
     else:
+        title = df.columns[0]
         ax.set_title(title, fontsize=10)
 
     ax.set_ylabel("Yield (%)")
@@ -2350,25 +2306,9 @@ def plot_hqm(
     external_axes: Optional[List[plt.Axes]]
         External axes (1 axis is expected in the list)
     """
-    df = pd.DataFrame()
     data_types = ["spot", "par"] if par else ["spot"]
 
-    for types in data_types:
-        subset, date_of_yield = fred_model.get_yield_curve(
-            date, True, spot_or_par=types
-        )
-        subset.set_index("Maturity", inplace=True)
-        subset.columns = [types]
-
-        df = pd.concat([df, subset], axis=1)
-
-    if par:
-        # Drop NaNs because of length mismatch
-        df = df.dropna()
-
-    if df.empty:
-        console.print(f"[red]Yield data not found at {date_of_yield}.[/red]\n")
-
+    df, date_of_yield = fred_model.get_hqm(date=date, par=par)
     # This plot has 1 axis
     if not external_axes:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)

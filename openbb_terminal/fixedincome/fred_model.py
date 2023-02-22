@@ -5,7 +5,7 @@ import logging
 import os
 import pathlib
 from datetime import datetime, timedelta
-from typing import Dict, Optional, Tuple
+from typing import Dict, Optional, Tuple, List
 
 import certifi
 import pandas as pd
@@ -880,3 +880,146 @@ def get_usrates(
     return get_series_data(
         series_id=series_id, start_date=start_date, end_date=end_date
     )
+
+
+def get_icebofa(
+    data_type: str = "yield",
+    category: str = "all",
+    area: str = "us",
+    grade: str = "non_sovereign",
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
+) -> pd.DataFrame:
+    if data_type == "total_return":
+        units = "index"
+    elif data_type in ["yield", "yield_to_worst", "spread"]:
+        units = "percent"
+
+    series = pd.read_excel(ice_bofa_path)
+    series = series[
+        (series["Type"] == data_type)
+        & (series["Units"] == units)
+        & (series["Frequency"] == "daily")
+        & (series["Asset Class"] == "bonds")
+        & (series["Category"] == category)
+        & (series["Area"] == area)
+        & (series["Grade"] == grade)
+    ]
+
+    if series.empty:
+        console.print("The combination of parameters does not result in any data.")
+        return pd.DataFrame()
+
+    series_dictionary = {}
+
+    for series_id, title in series[["FRED Series ID", "Title"]].values:
+        series_dictionary[title] = get_series_data(
+            series_id=series_id, start_date=start_date, end_date=end_date
+        )
+
+    df = pd.DataFrame.from_dict(series_dictionary)
+    df.index = pd.to_datetime(df.index).date
+    return df
+
+
+def get_moody(
+    data_type: str = "aaa",
+    spread: Optional[str] = None,
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
+) -> pd.DataFrame:
+    series_id = MOODY_TO_OPTIONS["Type"][data_type][spread if spread else "index"]["id"]
+
+    series = get_series_data(
+        series_id=series_id, start_date=start_date, end_date=end_date
+    )
+
+    df = pd.DataFrame(series, columns=[f"{data_type}_{spread if spread else 'index'}"])
+    df.index = pd.to_datetime(df.index).date
+    return df
+
+
+def get_cp(
+    maturity: str = "30d",
+    category: str = "financial",
+    grade: str = "aa",
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
+):
+    if grade == "a2_p2" and category != "non_financial":
+        category = "non_financial"
+    series = pd.read_excel(commercial_paper_path)
+    series = series[
+        (series["Maturity"] == maturity)
+        & (series["Category"] == category)
+        & (series["Grade"] == grade)
+    ]
+
+    if series.empty:
+        console.print("The combination of parameters does not result in any data.")
+        return pd.DataFrame()
+
+    series_dictionary = {}
+
+    for series_id, title in series[["FRED Series ID", "Title"]].values:
+        series_dictionary[title] = get_series_data(
+            series_id=series_id, start_date=start_date, end_date=end_date
+        )
+
+    df = pd.DataFrame.from_dict(series_dictionary)
+    df.index = pd.to_datetime(df.index).date
+    return df
+
+
+def get_spot(
+    maturity: List = ["10y"],
+    category: List = ["spot_rate"],
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
+) -> pd.DataFrame:
+    series = pd.read_excel(spot_rates_path)
+
+    series = series[
+        (series["Maturity"].isin(maturity)) & (series["Category"].isin(category))
+    ]
+
+    if "par_yield" in category and "par_yield" not in series["Category"].values:
+        console.print(
+            "No Par Yield data available for (some of) the selected maturities. "
+            "Only 2y, 5y, 10y and 30y is available."
+        )
+
+    series_dictionary = {}
+
+    for series_id, title in series[["FRED Series ID", "Title"]].values:
+        series_dictionary[title] = get_series_data(
+            series_id=series_id, start_date=start_date, end_date=end_date
+        )
+
+    df = pd.DataFrame.from_dict(series_dictionary)
+    df.index = pd.to_datetime(df.index).date
+    return df
+
+
+def get_hqm(
+    date: Optional[str] = None,
+    par: bool = False,
+) -> Tuple[pd.DataFrame, str]:
+    df = pd.DataFrame()
+    data_types = ["spot", "par"] if par else ["spot"]
+
+    for types in data_types:
+        subset, date_of_yield = get_yield_curve(date, True, spot_or_par=types)
+        subset.set_index("Maturity", inplace=True)
+        subset.columns = [types]
+
+        df = pd.concat([df, subset], axis=1)
+
+    if par:
+        # Drop NaNs because of length mismatch
+        df = df.dropna()
+
+    if df.empty:
+        console.print(f"[red]Yield data not found at {date_of_yield}.[/red]\n")
+
+    return df, date_of_yield
