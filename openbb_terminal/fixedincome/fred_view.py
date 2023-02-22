@@ -176,6 +176,27 @@ ICE_BOFA_TO_OPTIONS = {
         'public_sector']
 }
 
+MOODY_TO_OPTIONS = {
+    "Type": {"aaa": {
+        'index': {
+            "id": "DAAA", "name": "Moody's Seasoned Aaa Corporate Bond Yield"},
+        'treasury': {
+            "id": "AAA10Y", "name": "Moody's Seasoned Aaa Corporate Bond Yield Relative to Yield on 10-Year Treasury Constant Maturity"},
+        "fed_funds": 
+            {"id": "AAAFF", "name": "Moody's Seasoned Aaa Corporate Bond Minus Federal Funds Rate"},
+    },
+        "baa": {
+        'index': {
+            "id": "DBAA", "name": "Moody's Seasoned Baa Corporate Bond Yield"},
+        'treasury': {
+            "id": "BAA10Y", "name": "Moody's Seasoned Baa Corporate Bond Yield Relative to Yield on 10-Year Treasury Constant Maturity"},
+        "fed_funds": 
+            {"id": "BAAFF", "name": "Moody's Seasoned Baa Corporate Bond Minus Federal Funds Rate"},
+    },
+    },
+    "Spread": ['treasury', 'fed_funds']
+}
+
 CP_TO_OPTIONS = {
     'Maturity': ['15d', '30d', '60d', '7d', '90d', 'overnight'],
     'Category': ['asset_backed', 'financial', 'non_financial', 'spread'],
@@ -699,8 +720,9 @@ def plot_fftr(
         df.index,
         df.values,
     )
-    ax.set_title("Federal Funds Target Range [Percent]")
+    ax.set_title("Federal Funds Target Range")
     ax.legend(["Upper limit", "Lower limit"])
+    ax.set_ylabel("Yield (%)")
     theme.style_primary_axis(ax)
 
     if external_axes is None:
@@ -916,7 +938,8 @@ def plot_iorb(
         df.values,
         color=next(colors, "#FCED00"),
     )
-    ax.set_title("Interest Rate on Reserve Balances [Percent]")
+    ax.set_title("Interest Rate on Reserve Balances")
+    ax.set_ylabel("Yield (%)")
     theme.style_primary_axis(ax)
 
     if external_axes is None:
@@ -1058,8 +1081,8 @@ def plot_dwpcr(
     )
     ax.set_title(
         "Discount Window Primary Credit Rate "
-        + ID_TO_NAME_DWPCR[series_id]
-        + " [Percent]"
+        + ID_TO_NAME_DWPCR[series_id],
+        fontsize=10
     )
     theme.style_primary_axis(ax)
 
@@ -1222,7 +1245,8 @@ def plot_ecbmlfr(
         df.values,
         color=next(colors, "#FCED00"),
     )
-    ax.set_title("ECB Marginal Lending Facility Rate for Euro Area [Percent]")
+    ax.set_title("ECB Marginal Lending Facility Rate for Euro Area")
+    ax.set_ylabel("Yield (%)")
     theme.style_primary_axis(ax)
 
     if external_axes is None:
@@ -1282,8 +1306,9 @@ def plot_ecbmrofr(
         color=next(colors, "#FCED00"),
     )
     ax.set_title(
-        "ECB Main Refinancing Operations Rate: Fixed Rate Tenders for Euro Area [Percent]"
+        "ECB Main Refinancing Operations Rate: Fixed Rate Tenders for Euro Area"
     )
+    ax.set_ylabel("Yield (%)")
     theme.style_primary_axis(ax)
 
     if external_axes is None:
@@ -1348,8 +1373,11 @@ def plot_tmc(
     ax.set_title(
         "10-Year Treasury Constant Maturity Minus "
         + ID_TO_NAME_TMC[series_id]
-        + " Treasury Constant Maturity [Percent]"
+        + " Treasury Constant Maturity",
+        fontsize=10
     )
+    
+    ax.set_ylabel("Yield (%)")
     theme.style_primary_axis(ax)
 
     if external_axes is None:
@@ -1413,7 +1441,8 @@ def plot_ffrmc(
     )
     ax.set_title(
         ID_TO_NAME_FFRMC[series_id]
-        + " Treasury Constant Maturity Minus Federal Funds Rate [Percent]"
+        + " Treasury Constant Maturity Minus Federal Funds Rate",
+        fontsize=10
     )
     theme.style_primary_axis(ax)
 
@@ -1481,7 +1510,7 @@ def display_yield_curve(
 
     ax.plot(rates["Maturity"], rates["Rate"], "-o")
     ax.set_xlabel("Maturity")
-    ax.set_ylabel("Rate (%)")
+    ax.set_ylabel("Yield (%)")
     theme.style_primary_axis(ax)
     if external_axes is None:
         ax.set_title(
@@ -1582,7 +1611,7 @@ def plot_usrates(
         title = f"{maturity.replace('_', ' ').title()} Yields on Treasury inflation protected securities (TIPS) adjusted to constant maturities"
 
     ax.set_title(title, fontsize=15)
-    ax.set_ylabel("Yield (%})")
+    ax.set_ylabel("Yield (%)")
     theme.style_primary_axis(ax)
 
     if external_axes is None:
@@ -1650,10 +1679,11 @@ def plot_tbffr(
     )
     ax.set_title(
         ID_TO_NAME_TBFFR[series_id]
-        + " Treasury Bill Minus Federal Funds Rate [Percent]"
+        + " Treasury Bill Minus Federal Funds Rate"
     )
     theme.style_primary_axis(ax)
-
+    
+    ax.set_ylabel("Yield (%)")
     if external_axes is None:
         theme.visualize_output()
 
@@ -1830,6 +1860,94 @@ def plot_icebofa(
         df / 100,
         sheet_name,
     )
+
+
+@log_start_end(log=logger)
+@check_api_key(["API_FRED_KEY"])
+def plot_moody(
+    data_type: str = "aaa",
+    spread: str = None,
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
+    raw: bool = False,
+    export: str = "",
+    sheet_name: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
+):
+    """Plot ICE BofA US Corporate Bond Index data.
+
+    Parameters
+    ----------
+    data_type: str
+        The type of data you want to see, either "yield", "yield_to_worst", "total_return", or "spread"
+    category: str
+        The type of category you want to see, either "all", "duration", "eur" or "usd".
+    area: str
+        The type of area you want to see, either "asia", "emea", "eu", "ex_g10", "latin_america" or "us"
+    grade: str
+        The type of grade you want to see, either "a", "aa", "aaa", "b", "bb", "bbb", "ccc", "crossover",
+        "high_grade", "high_yield", "non_financial", "non_sovereign", "private_sector", "public_sector"
+    start_date: Optional[str]
+        Start date, formatted YYYY-MM-DD
+    end_date: Optional[str]
+        End date, formatted YYYY-MM-DD
+    raw: bool
+        Show raw data
+    export: str
+        Export data to csv or excel file
+    sheet_name: str
+        Name of the sheet to export to
+    external_axes: Optional[List[plt.Axes]]
+        External axes (1 axis is expected in the list)
+    """
+    series_id = MOODY_TO_OPTIONS['Type'][data_type][spread if spread else 'index']['id']
+    name =  MOODY_TO_OPTIONS['Type'][data_type][spread if spread else 'index']['name']
+   
+    series = fred_model.get_series_data(
+        series_id=series_id, start_date=start_date, end_date=end_date
+        )
+
+    df = pd.DataFrame(series, columns=[f"{data_type}_{spread if spread else 'index'}"])
+    df.index = pd.to_datetime(df.index).date
+
+    # This plot has 1 axis
+    if not external_axes:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    elif is_valid_axes_count(external_axes, 1):
+        (ax,) = external_axes
+    else:
+        return
+
+    colors = cycle(theme.get_colors())
+
+    ax.plot(
+        df.index,
+        df.values,
+        color=next(colors, "#FCED00"),
+        )
+
+    ax.set_title(name, fontsize=10)    
+    ax.set_ylabel("Yield (%)")
+    theme.style_primary_axis(ax)
+
+    if external_axes is None:
+        theme.visualize_output()
+
+    if raw:
+        print_rich_table(
+            df.iloc[-10:],
+            title=name,
+            show_index=True,
+            floatfmt=".3f",
+        )
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "MOODY",
+        df / 100,
+        sheet_name,
+    )
     
 @log_start_end(log=logger)
 @check_api_key(["API_FRED_KEY"])
@@ -1962,7 +2080,11 @@ def plot_spot(
     sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
-    """Plot ICE BofA US Corporate Bond Index data.
+    """
+    The spot rate for any maturity is the yield on a bond that provides 
+    a single payment at that maturity.  This is a zero coupon bond.  Because each 
+    spot rate pertains to a single cashflow, it is the relevant interest rate 
+    concept for discounting a pension liability at the same maturity.
 
     Parameters
     ----------
@@ -2056,6 +2178,92 @@ def plot_spot(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "SPOT",
+        df / 100,
+        sheet_name,
+    )
+    
+@log_start_end(log=logger)
+@check_api_key(["API_FRED_KEY"])
+def plot_hqm(
+    date: Optional[str] = None,
+    par: bool = False,
+    raw: bool = False,
+    export: str = "",
+    sheet_name: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
+):
+    """
+    The HQM yield curve represents the high quality corporate bond market, i.e.,
+    corporate bonds rated AAA, AA, or A.  The HQM curve contains two regression terms. These 
+    terms are adjustment factors that blend AAA, AA, and A bonds into a single HQM yield curve 
+    that is the market-weighted average (MWA) quality of high quality bonds.
+
+    Parameters
+    ----------
+    date: str
+        The date of the yield curve you wish to plot
+    par: bool
+        Whether you wish to plot the par yield curve as well
+    raw: bool
+        Show raw data
+    export: str
+        Export data to csv or excel file
+    sheet_name: str
+        Name of the sheet to export to
+    external_axes: Optional[List[plt.Axes]]
+        External axes (1 axis is expected in the list)
+    """
+    df = pd.DataFrame()
+    data_types = ["spot", "par"] if par else ['spot']
+    
+    for types in data_types:
+        subset, date_of_yield = fred_model.get_yield_curve(date, True, spot_or_par=types)
+        subset.set_index('Maturity', inplace=True)
+        subset.columns = [types]
+        
+        df = pd.concat([df, subset], axis=1)
+            
+    if par:
+        # Drop NaNs because of length mismatch
+        df = df.dropna()
+        
+    if df.empty:
+        console.print(f"[red]Yield data not found at {date_of_yield}.[/red]\n")
+    
+    # This plot has 1 axis
+    if not external_axes:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    elif is_valid_axes_count(external_axes, 1):
+        (ax,) = external_axes
+    else:
+        return
+    
+    for types in data_types:
+        ax.plot(df.index, df[types], label=f"{types.title()} Yield")
+        
+    ax.set_title(f"Spot{'and Par' if par else ''} Yield Curve for {date_of_yield}")
+    ax.set_xlabel("Maturity")
+    ax.set_ylabel("Yield (%)")
+    ax.legend() if par else None
+    theme.style_primary_axis(ax)
+    
+    if external_axes is None:
+        theme.visualize_output()
+
+    if raw:
+        print_rich_table(
+            df,
+            headers=list(df.columns),
+            show_index=True,
+            index_name="Maturity",
+            title=f"Spot {'and Par' if par else ''} Yield Curve for {date_of_yield}",
+            floatfmt=".3f",
+        )
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "cycrv",
         df / 100,
         sheet_name,
     )

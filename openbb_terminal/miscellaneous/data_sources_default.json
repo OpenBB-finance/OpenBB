@@ -505,6 +505,12 @@
     "usrates": ["FRED"],
     "ycrv": ["FRED"],
     "ecbycrv": ["ECB"],
+    "icebofa": ["FRED"],
+    "moody": ["FRED"],
+    "spot": ["FRED"],
+    "cp": ["FRED"],
+    "hqm": ["FRED"],
+    "icespread": ["FRED"],
     "tmc": ["FRED"],
     "ffrmc": ["FRED"],
     "tbffr": ["FRED"]
