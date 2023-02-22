@@ -2,6 +2,7 @@
 __docformat__ = "numpy"
 
 import logging
+import pathlib
 import os
 from itertools import cycle
 from typing import List, Optional
@@ -22,6 +23,8 @@ from openbb_terminal.helper_funcs import (
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
+
+ice_bofa_path = pathlib.Path(__file__).parent / "ice_bofa_indices.xlsx"
 
 ID_TO_NAME_ESTR = {
     "ECBESTRVOLWGTTRMDMNRT": "Euro Short-Term Rate: Volume-Weighted Trimmed Mean Rate [Percent]",
@@ -148,6 +151,27 @@ USARATES_TO_FRED_ID = {
     "10_year": {"tips": "DFII10", "cmn": "DGS10"},
     "20_year": {"tips": "DFII20", "cmn": "DGS20"},
     "30_year": {"tips": "DFII30", "cmn": "DGS30"},
+}
+
+ICE_BOFA_TO_OPTIONS = {
+    'Type': ['total_return', 'yield', 'yield_to_worst'],
+    'Category': ['all', 'duration', 'eur', 'usd'],
+    'Area': ['asia', 'emea', 'eu', 'ex_g10', 'latin_america', 'us'],
+    'Grade': [
+        'a',
+        'aa',
+        'aaa',
+        'b',
+        'bb',
+        'bbb',
+        'ccc',
+        'crossover',
+        'high_grade',
+        'high_yield',
+        'non_financial',
+        'non_sovereign',
+        'private_sector',
+        'public_sector']
 }
 
 
@@ -1426,5 +1450,171 @@ def plot_tbffr(
         os.path.dirname(os.path.abspath(__file__)),
         series_id,
         pd.DataFrame(df, columns=["TBFFR"]) / 100,
+        sheet_name,
+    )
+
+@log_start_end(log=logger)
+@check_api_key(["API_FRED_KEY"])
+def plot_icebofa(
+    data_type: str = "yield",
+    category: str = "all",
+    area: str = "us",
+    grade: str = "non_sovereign",
+    description: bool = False,
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
+    raw: bool = False,
+    export: str = "",
+    sheet_name: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
+):
+    """Plot ICE BofA US Corporate Bond Index data.
+
+    Parameters
+    ----------
+    data_type: str
+        The type of data you want to see, either "yield", "yield_to_worst", "total_return", or "spread"
+    category: str
+        The type of category you want to see, either "all", "duration", "eur" or "usd".
+    area: str
+        The type of area you want to see, either "asia", "emea", "eu", "ex_g10", "latin_america" or "us"
+    grade: str
+        The type of grade you want to see, either "a", "aa", "aaa", "b", "bb", "bbb", "ccc", "crossover",
+        "high_grade", "high_yield", "non_financial", "non_sovereign", "private_sector", "public_sector"
+    start_date: Optional[str]
+        Start date, formatted YYYY-MM-DD
+    end_date: Optional[str]
+        End date, formatted YYYY-MM-DD
+    raw: bool
+        Show raw data
+    export: str
+        Export data to csv or excel file
+    sheet_name: str
+        Name of the sheet to export to
+    external_axes: Optional[List[plt.Axes]]
+        External axes (1 axis is expected in the list)
+    """
+    if data_type == "total_return":
+        units = "index"
+    elif data_type in ["yield", "yield_to_worst", "spread"]:
+        units = "percent"
+    
+    # Some data is only available for certain areas and grades
+    if category in ["duration", "eur"]:
+        if category == "duration":
+            if area != "us":
+                area = "us"
+                console.print("Setting region to 'usd' given the chosen "
+                            "subcategory and only data available.")
+            if grade != "non_sovereign":
+                grade = "non_sovereign" 
+                console.print("Setting grade to 'non_sovereign' given the chosen "
+                            "and only data available.")
+        elif category == "eur":
+            if area != "eu":
+                area = "eu"
+                console.print("Setting region to 'eu' given the chosen "
+                            "subcategory and only data available.")
+            if grade != "high_yield":
+                grade = "high_yield" 
+                console.print("Setting grade to 'high_yield' given the chosen "
+                            "subcategory and only data available.")
+                
+     # Some data is only available for certain categories and areas
+    elif grade in ["non_financial", "public_sector", "private_sector", "crossover"]:
+        if grade in ["non_financial", "public_sector"]:
+            if category != "usd":
+                category = "usd" 
+                console.print("Setting category to 'usd' given the chosen "
+                            "subcategory and only data available.")
+            if area != "ex_g10":
+                area = "ex_g10"
+                console.print("Setting region to 'ex_g10' given the chosen "
+                            "subcategory and only data available.")
+        elif grade in ["private_sector", "crossover"]:
+            if category != "all":
+                category = "all" 
+                console.print("Setting category to 'all' given the chosen "
+                            "subcategory and only data available.")
+            if area != "ex_g10":
+                area = "ex_g10"
+                console.print("Setting region to 'ex_g10' given the chosen "
+                            "subcategory and only data available.")
+    
+    icebofa = pd.read_excel(ice_bofa_path)
+    
+    series = icebofa[
+        (icebofa['Type'] == data_type) &
+        (icebofa['Units'] == units) &
+        (icebofa['Frequency'] == 'daily') &
+        (icebofa['Category'] == 'bonds') &
+        (icebofa['Subcategory'] == category) &
+        (icebofa['Region'] == area) &
+        (icebofa['Grade'] == grade)
+    ]
+    
+    if series.empty:
+        console.print('The combination of parameters does not result in any data.')
+        return pd.DataFrame()
+    
+    series_dictionary = {}
+
+    for series_id, title in series[['FRED Series ID', 'Title']].values:
+        series_dictionary[title] = fred_model.get_series_data(
+            series_id=series_id, start_date=start_date, end_date=end_date
+        )
+
+    df = pd.DataFrame.from_dict(series_dictionary)
+    df.index = pd.to_datetime(df.index).date
+
+    # This plot has 1 axis
+    if not external_axes:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    elif is_valid_axes_count(external_axes, 1):
+        (ax,) = external_axes
+    else:
+        return
+
+    colors = cycle(theme.get_colors())
+    
+    for column in df.columns:
+        ax.plot(
+            df.index,
+            df[column].values,
+            color=next(colors, "#FCED00"),
+            label=column,
+        )
+
+    if len(df.columns) > 1:
+        title = "ICE BofA Bond Benchmark Indices"
+        ax.set_title(title, fontsize=15)
+        ax.legend(prop={'size': 8})
+    else:
+         ax.set_title(title, fontsize=10)
+        
+    ax.set_ylabel(f"Yield (%)" if units == "percent" else "Index")
+    theme.style_primary_axis(ax)
+
+    if external_axes is None:
+        theme.visualize_output()
+
+    if raw:
+        print_rich_table(
+            df.iloc[-10:],
+            title=title,
+            show_index=True,
+            floatfmt=".3f",
+        )
+        
+    if description:
+        for title, description_text in series[['Title', 'Description']].values:
+            console.print(f"\n[bold]{title}[/bold]")
+            console.print(description_text)
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "ICEBOFA",
+        df / 100,
         sheet_name,
     )

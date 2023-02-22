@@ -796,7 +796,9 @@ en:
   fixedincome/ycrv: plot US yield curve
   fixedincome/ecbycrv: plot euro area yield curve
   fixedincome/_corporate_bonds_: Corporate Bonds
+  fixedincome/icebofa: display ICE BofA Corporate Indices
   fixedincome/_spreads_: Spreads
+  fixedincome/icespread: display spread between ICE BofA Corporate Indices and spot treasury curve 
   fixedincome/tmc: 10-year treasury constant maturity minus selected treasury constant maturity
   fixedincome/ffrmc: selected treasury constant maturity minus federal funds rate
   fixedincome/tbffr: selected treasury bill minus federal funds rate
