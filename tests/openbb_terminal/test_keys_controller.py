@@ -30,8 +30,6 @@ class MockCFG:
         self.API_REDDIT_USERNAME = kwargs.get("REDDIT_USERNAME", None)
         self.API_REDDIT_PASSWORD = kwargs.get("REDDIT_PASSWORD", None)
         self.API_REDDIT_USER_AGENT = kwargs.get("REDDIT_USER", None)
-        self.API_TWITTER_KEY = kwargs.get("TWITTER", None)
-        self.API_TWITTER_SECRET_KEY = kwargs.get("TWITTER", None)
         self.API_TWITTER_BEARER_TOKEN = kwargs.get("TWITTER", None)
         self.RH_USERNAME = kwargs.get("RH", None)
         self.RH_PASSWORD = kwargs.get("RH", None)

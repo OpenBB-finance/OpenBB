@@ -682,16 +682,12 @@ def test_set_twitter_key(
     args: List[str], persist: bool, show_output: bool, expected: str
 ):
     env_var_name_list = [
-        "OPENBB_API_TWITTER_KEY",
-        "OPENBB_API_TWITTER_SECRET_KEY",
         "OPENBB_API_TWITTER_BEARER_TOKEN",
     ]
 
     set_naive_environment(env_var_name_list)
 
     status = keys_model.set_twitter_key(
-        key=args[0],
-        secret=args[1],
         access_token=args[2],
         persist=persist,
         show_output=show_output,
