@@ -25,6 +25,8 @@ from openbb_terminal.rich_config import console
 logger = logging.getLogger(__name__)
 
 ice_bofa_path = pathlib.Path(__file__).parent / "ice_bofa_indices.xlsx"
+commercial_paper_path = pathlib.Path(__file__).parent / "commercial_paper.xlsx"
+spot_rates_path = pathlib.Path(__file__).parent / "corporate_spot_rates.xlsx"
 
 ID_TO_NAME_ESTR = {
     "ECBESTRVOLWGTTRMDMNRT": "Euro Short-Term Rate: Volume-Weighted Trimmed Mean Rate [Percent]",
@@ -174,6 +176,216 @@ ICE_BOFA_TO_OPTIONS = {
         'public_sector']
 }
 
+CP_TO_OPTIONS = {
+    'Maturity': ['15d', '30d', '60d', '7d', '90d', 'overnight'],
+    'Category': ['asset_backed', 'financial', 'non_financial', 'spread'],
+    'Grade': ['a2_p2', 'aa']
+ }
+
+SPOT_TO_OPTIONS = {
+    'Maturity': [
+        '1y',
+        '1.5y',
+        '2y',
+        '2.5y',
+        '3y',
+        '3.5y',
+        '4y',
+        '4.5y',
+        '5y',
+        '5.5y',
+        '6 y',
+        '6y',
+        '6.5y',
+        '7y',
+        '7.5y',
+        '8y',
+        '8.5y',
+        '9y',
+        '9.5y',
+        '10y',
+        '10.5y',
+        '11y',
+        '11.5y',
+        '12y',
+        '12.5y',
+        '13y',
+        '13.5y',
+        '14y',
+        '14.5y',
+        '15y',
+        '15.5y',
+        '16y',
+        '16.5y',
+        '17y',
+        '17.5y',
+        '18y',
+        '18.5y',
+        '19y',
+        '19.5y',
+        '20y',
+        '20.5y',
+        '21y',
+        '21.5y',
+        '22y',
+        '22.5y',
+        '23y',
+        '23.5y',
+        '24y',
+        '24.5y',
+        '25y',
+        '25.5y',
+        '26y',
+        '26.5y',
+        '27y',
+        '27.5y',
+        '28y',
+        '28.5y',
+        '29y',
+        '29.5y',
+        '30y',
+        '30.5y',
+        '31y',
+        '31.5y',
+        '32y',
+        '32.5y',
+        '33y',
+        '33.5y',
+        '34y',
+        '34.5y',
+        '35y',
+        '35.5y',
+        '36y',
+        '36.5y',
+        '37y',
+        '37.5y',
+        '38y',
+        '38.5y',
+        '39y',
+        '39.5y',
+        '40y',
+        '40.5y',
+        '41y',
+        '41.5y',
+        '42y',
+        '42.5y',
+        '43y',
+        '43.5y',
+        '44y',
+        '44.5y',
+        '45y',
+        '45.5y',
+        '46y',
+        '46.5y',
+        '47y',
+        '47.5y',
+        '48y',
+        '48.5y',
+        '49y',
+        '49.5y',
+        '50y',
+        '50.5y',
+        '51y',
+        '51.5y',
+        '52y',
+        '52.5y',
+        '53y',
+        '53.5y',
+        '54y',
+        '54.5y',
+        '55y',
+        '55.5y',
+        '56y',
+        '56.5y',
+        '57y',
+        '57.5y',
+        '58y',
+        '58.5y',
+        '59y',
+        '59.5y',
+        '60y',
+        '60.5y',
+        '61y',
+        '61.5y',
+        '62y',
+        '62.5y',
+        '63y',
+        '63.5y',
+        '64y',
+        '64.5y',
+        '65y',
+        '65.5y',
+        '66y',
+        '66.5y',
+        '67y',
+        '67.5y',
+        '68y',
+        '68.5y',
+        '69y',
+        '69.5y',
+        '70y',
+        '70.5y',
+        '71y',
+        '71.5y',
+        '72y',
+        '72.5y',
+        '73y',
+        '73.5y',
+        '74y',
+        '74.5y',
+        '75y',
+        '75.5y',
+        '76y',
+        '76.5y',
+        '77y',
+        '77.5y',
+        '78y',
+        '78.5y',
+        '79y',
+        '79.5y',
+        '80y',
+        '80.5y',
+        '81y',
+        '81.5y',
+        '82y',
+        '82.5y',
+        '83y',
+        '83.5y',
+        '84y',
+        '84.5y',
+        '85y',
+        '85.5y',
+        '86y',
+        '86.5y',
+        '87y',
+        '87.5y',
+        '88y',
+        '88.5y',
+        '89y',
+        '89.5y',
+        '90y',
+        '90.5y',
+        '91y',
+        '91.5y',
+        '92y',
+        '92.5y',
+        '93y',
+        '93.5y',
+        '94y',
+        '94.5y',
+        '95y',
+        '95.5y',
+        '96y',
+        '96.5y',
+        '97y',
+        '97.5y',
+        '98y',
+        '98.5y',
+        '99y',
+        '99.5y',
+        '100y'],
+    'Category': ['spot_rate', 'par_yield']
+}
 
 @log_start_end(log=logger)
 @check_api_key(["API_FRED_KEY"])
@@ -1541,16 +1753,16 @@ def plot_icebofa(
                 console.print("Setting region to 'ex_g10' given the chosen "
                             "subcategory and only data available.")
     
-    icebofa = pd.read_excel(ice_bofa_path)
+    series = pd.read_excel(ice_bofa_path)
     
-    series = icebofa[
-        (icebofa['Type'] == data_type) &
-        (icebofa['Units'] == units) &
-        (icebofa['Frequency'] == 'daily') &
-        (icebofa['Category'] == 'bonds') &
-        (icebofa['Subcategory'] == category) &
-        (icebofa['Region'] == area) &
-        (icebofa['Grade'] == grade)
+    series = series[
+        (series['Type'] == data_type) &
+        (series['Units'] == units) &
+        (series['Frequency'] == 'daily') &
+        (series['Category'] == 'bonds') &
+        (series['Subcategory'] == category) &
+        (series['Region'] == area) &
+        (series['Grade'] == grade)
     ]
     
     if series.empty:
@@ -1615,6 +1827,235 @@ def plot_icebofa(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "ICEBOFA",
+        df / 100,
+        sheet_name,
+    )
+    
+@log_start_end(log=logger)
+@check_api_key(["API_FRED_KEY"])
+def plot_cp(
+    maturity: str = "30d",
+    category: str = "financial",
+    grade: str = "aa",
+    description: bool = False,
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
+    raw: bool = False,
+    export: str = "",
+    sheet_name: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
+):
+    """Plot ICE BofA US Corporate Bond Index data.
+
+    Parameters
+    ----------
+    maturity: str
+        The maturity you want to see, either "overnight", "7d", "15d", "30d", "60d" or "90d"
+    category: str
+        The category you want to see, either "asset_backed", "financial" or "non_financial"
+    grade: str
+        The type of grade you want to see, either "a2_p2" or "aa"
+    description: bool
+        Whether you wish to obtain a description of the data.
+    start_date: Optional[str]
+        Start date, formatted YYYY-MM-DD
+    end_date: Optional[str]
+        End date, formatted YYYY-MM-DD
+    raw: bool
+        Show raw data
+    export: str
+        Export data to csv or excel file
+    sheet_name: str
+        Name of the sheet to export to
+    external_axes: Optional[List[plt.Axes]]
+        External axes (1 axis is expected in the list)
+    """
+    if grade == "a2_p2" and category != "non_financial":
+        console.print("Setting category to 'non_financial' given "
+                      f"the chosen {grade} grade only has data for 'non_financial'.")
+        category = "non_financial"
+        
+    series = pd.read_excel(commercial_paper_path)
+    
+    series = series[
+        (series['Maturity'] == maturity) &
+        (series['Category'] == category) &
+        (series['Grade'] == grade)
+    ]
+
+    if series.empty:
+        console.print('The combination of parameters does not result in any data.')
+        return pd.DataFrame()
+    
+    series_dictionary = {}
+
+    for series_id, title in series[['FRED Series ID', 'Title']].values:
+        series_dictionary[title] = fred_model.get_series_data(
+            series_id=series_id, start_date=start_date, end_date=end_date
+        )
+
+    df = pd.DataFrame.from_dict(series_dictionary)
+    df.index = pd.to_datetime(df.index).date
+
+    # This plot has 1 axis
+    if not external_axes:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    elif is_valid_axes_count(external_axes, 1):
+        (ax,) = external_axes
+    else:
+        return
+
+    colors = cycle(theme.get_colors())
+    
+    for column in df.columns:
+        ax.plot(
+            df.index,
+            df[column].values,
+            color=next(colors, "#FCED00"),
+            label=column,
+        )
+
+    if len(df.columns) > 1:
+        title = "Commercial Paper Interest Rates"
+        ax.set_title(title, fontsize=15)
+        ax.legend(prop={'size': 8})
+    else:
+         ax.set_title(title, fontsize=10)
+        
+    ax.set_ylabel("Yield (%)")
+    theme.style_primary_axis(ax)
+
+    if external_axes is None:
+        theme.visualize_output()
+
+    if raw:
+        print_rich_table(
+            df.iloc[-10:],
+            title=title,
+            show_index=True,
+            floatfmt=".3f",
+        )
+        
+    if description:
+        for title, description_text in series[['Title', 'Description']].values:
+            console.print(f"\n[bold]{title}[/bold]")
+            console.print(description_text)
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "CP",
+        df / 100,
+        sheet_name,
+    )
+    
+@log_start_end(log=logger)
+@check_api_key(["API_FRED_KEY"])
+def plot_spot(
+    maturity: List = ["10y"],
+    category: List = ["spot_rate"],
+    description: bool = False,
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
+    raw: bool = False,
+    export: str = "",
+    sheet_name: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
+):
+    """Plot ICE BofA US Corporate Bond Index data.
+
+    Parameters
+    ----------
+    maturity: str
+        The maturity you want to see, either "overnight", "7d", "15d", "30d", "60d" or "90d"
+    category: str
+        The category you want to see, either "asset_backed", "financial" or "non_financial"
+    grade: str
+        The type of grade you want to see, either "a2_p2" or "aa"
+    description: bool
+        Whether you wish to obtain a description of the data.
+    start_date: Optional[str]
+        Start date, formatted YYYY-MM-DD
+    end_date: Optional[str]
+        End date, formatted YYYY-MM-DD
+    raw: bool
+        Show raw data
+    export: str
+        Export data to csv or excel file
+    sheet_name: str
+        Name of the sheet to export to
+    external_axes: Optional[List[plt.Axes]]
+        External axes (1 axis is expected in the list)
+    """
+    series = pd.read_excel(spot_rates_path)
+    
+    series = series[
+        (series['Maturity'].isin(maturity)) &
+        (series['Category'].isin(category)) 
+    ]
+    
+    if "par_yield" in category and "par_yield" not in series['Category'].values:
+        console.print("No Par Yield data available for (some of) the selected maturities. "
+                      "Only 2y, 5y, 10y and 30y is available.")
+    
+    series_dictionary = {}
+
+    for series_id, title in series[['FRED Series ID', 'Title']].values:
+        series_dictionary[title] = fred_model.get_series_data(
+            series_id=series_id, start_date=start_date, end_date=end_date
+        )
+
+    df = pd.DataFrame.from_dict(series_dictionary)
+    df.index = pd.to_datetime(df.index).date
+
+    # This plot has 1 axis
+    if not external_axes:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    elif is_valid_axes_count(external_axes, 1):
+        (ax,) = external_axes
+    else:
+        return
+
+    colors = cycle(theme.get_colors())
+    
+    for column in df.columns:
+        ax.plot(
+            df.index,
+            df[column].values,
+            color=next(colors, "#FCED00"),
+            label=column,
+        )
+
+    if len(df.columns) > 1:
+        title = "High Quality Market (HQM) Corporate Bond Rates"
+        ax.set_title(title, fontsize=15)
+        ax.legend(prop={'size': 8})
+    else:
+         ax.set_title(title, fontsize=10)
+        
+    ax.set_ylabel("Yield (%)")
+    theme.style_primary_axis(ax)
+
+    if external_axes is None:
+        theme.visualize_output()
+
+    if raw:
+        print_rich_table(
+            df.iloc[-10:],
+            title=title,
+            show_index=True,
+            floatfmt=".3f",
+        )
+        
+    if description:
+        for title, description_text in series[['Title', 'Description']].values:
+            console.print(f"\n[bold]{title}[/bold]")
+            console.print(description_text)
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "SPOT",
         df / 100,
         sheet_name,
     )
