@@ -1895,7 +1895,7 @@ def update_news_from_tweet_to_be_displayed() -> str:
         news_tweet_to_use = ""
         handle_to_use = ""
         url = ""
-        last_tweet_dt = None
+        last_tweet_dt: Optional[datetime]  = None
         for handle in news_sources_twitter_handles:
             try:
                 # Get last N tweets from each handle
@@ -1923,7 +1923,7 @@ def update_news_from_tweet_to_be_displayed() -> str:
             except tweepy.errors.NotFound:
                 pass
 
-        if news_tweet_to_use:
+        if last_tweet_dt and news_tweet_to_use:
             tweet_hr = f"{last_tweet_dt.hour}"
             tweet_min = f"{last_tweet_dt.minute}"
             # Update time based on timezone specified by user
