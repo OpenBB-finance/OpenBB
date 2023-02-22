@@ -1,7 +1,7 @@
 import multiprocessing
 import sys
 
-from openbb_terminal.base_helpers import load_dotenv_and_reload_configs
+import openbb_terminal.core.load_env_data as _
 from openbb_terminal.terminal_helper import is_auth_enabled
 
 # pylint: disable=import-outside-toplevel
@@ -10,8 +10,6 @@ from openbb_terminal.terminal_helper import is_auth_enabled
 def main():
     multiprocessing.freeze_support()
     sent_args = sys.argv[1:]
-
-    load_dotenv_and_reload_configs()
 
     if "-t" in sent_args or "--test" in sent_args:
         from openbb_terminal.core.integration_tests import integration_controller

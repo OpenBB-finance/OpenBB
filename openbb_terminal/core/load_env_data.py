@@ -1,0 +1,3 @@
+from openbb_terminal.base_helpers import load_dotenv_and_reload_configs
+
+load_dotenv_and_reload_configs()
