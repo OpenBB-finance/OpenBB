@@ -2,19 +2,10 @@ from pydantic.dataclasses import dataclass
 
 import openbb_terminal.feature_flags as obbff
 
-# from openbb_terminal.core.models.configurations import (
-#     ConfigurationsModel,
-#     default_configurations,
-# )
-# from openbb_terminal.core.models.credentials import (
-#     CredentialsModel,
-#     default_credentials,
-# )
-# from openbb_terminal.core.models.preferences import (
-#     PreferencesModel,
-#     default_preferences,
-# )
-from openbb_terminal.core.models.profile import ProfileModel
+# from openbb_terminal.core.models.user_configurations import ConfigurationsModel
+# from openbb_terminal.core.models.user_credentials import CredentialsModel
+# from openbb_terminal.core.models.user_preferences import PreferencesModel
+from openbb_terminal.core.models.user_profile import ProfileModel
 
 
 @dataclass(config=dict(validate_assignment=True))
