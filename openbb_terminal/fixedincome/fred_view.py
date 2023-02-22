@@ -29,34 +29,34 @@ commercial_paper_path = pathlib.Path(__file__).parent / "commercial_paper.xlsx"
 spot_rates_path = pathlib.Path(__file__).parent / "corporate_spot_rates.xlsx"
 
 ID_TO_NAME_ESTR = {
-    "ECBESTRVOLWGTTRMDMNRT": "Euro Short-Term Rate: Volume-Weighted Trimmed Mean Rate [Percent]",
-    "ECBESTRTOTVOL": "Euro Short-Term Rate: Total Volume [Millions of EUR]",
+    "ECBESTRVOLWGTTRMDMNRT": "Euro Short-Term Rate: Volume-Weighted Trimmed Mean Rate",
+    "ECBESTRTOTVOL": "Euro Short-Term Rate: Total Volume",
     "ECBESTRNUMTRANS": "Euro Short-Term Rate: Number of Transactions",
-    "ECBESTRRT75THPCTVOL": "Euro Short-Term Rate: Rate at 75th Percentile of Volume [Percent]",
+    "ECBESTRRT75THPCTVOL": "Euro Short-Term Rate: Rate at 75th Percentile of Volume",
     "ECBESTRNUMACTBANKS": "Euro Short-Term Rate: Number of Active Banks",
-    "ECBESTRSHRVOL5LRGACTBNK": "Euro Short-Term Rate: Share of Volume of the 5 Largest Active Banks [Percent]",
-    "ECBESTRRT25THPCTVOL": "Euro Short-Term Rate: Rate at 25th Percentile of Volume [Percent]",
+    "ECBESTRSHRVOL5LRGACTBNK": "Euro Short-Term Rate: Share of Volume of the 5 Largest Active Bank",
+    "ECBESTRRT25THPCTVOL": "Euro Short-Term Rate: Rate at 25th Percentile of Volume",
 }
 ID_TO_NAME_SOFR = {
-    "SOFR": "Secured Overnight Financing Rate (SOFR) [Percent]",
-    "SOFR30DAYAVG": "30-Day Average SOFR [Percent]",
-    "SOFR90DAYAVG": "90-Day Average SOFR [Percent]",
-    "SOFR180DAYAVG": "180-Day Average SOFR [Percent]",
-    "SOFRINDEX": "SOFR Index [Base = 04-2018]",
+    "SOFR": "Secured Overnight Financing Rate (SOFR)",
+    "SOFR30DAYAVG": "30-Day Average SOFR",
+    "SOFR90DAYAVG": "90-Day Average SOFR",
+    "SOFR180DAYAVG": "180-Day Average SOFR",
+    "SOFRINDEX": "SOFR Index",
 }
 ID_TO_NAME_SONIA = {
-    "IUDSOIA": "Daily Sterling Overnight Index Average (SONIA) Rate [Percent]",
+    "IUDSOIA": "Daily Sterling Overnight Index Average (SONIA) Rate",
     "IUDZOS2": "SONIA Compounded Index",
-    "IUDZLS6": "SONIA Rate: 10th percentile [Percent]",
-    "IUDZLS7": "SONIA Rate: 25th percentile [Percent]",
-    "IUDZLS8": "SONIA Rate: 75th percentile [Percent]",
-    "IUDZLS9": "SONIA Rate: 90th percentile [Percent]",
-    "IUDZLT2": "SONIA Rate Total Nominal Value [Millions of GBP]",
+    "IUDZLS6": "SONIA Rate: 10th percentile",
+    "IUDZLS7": "SONIA Rate: 25th percentile",
+    "IUDZLS8": "SONIA Rate: 75th percentile",
+    "IUDZLS9": "SONIA Rate: 90th percentile",
+    "IUDZLT2": "SONIA Rate Total Nominal Value",
 }
 ID_TO_NAME_AMERIBOR = {
-    "AMERIBOR": "Overnight Unsecured AMERIBOR Benchmark Interest Rate [Percent]",
-    "AMBOR30T": "AMERIBOR Term-30 Derived Interest Rate Index [Percent]",
-    "AMBOR90T": "AMERIBOR Term-90 Derived Interest Rate Index [Percent]",
+    "AMERIBOR": "Overnight Unsecured AMERIBOR Benchmark Interest Rate",
+    "AMBOR30T": "AMERIBOR Term-30 Derived Interest Rate Index",
+    "AMBOR90T": "AMERIBOR Term-90 Derived Interest Rate Index",
     "AMBOR1W": "1-Week AMERIBOR Term Structure of Interest Rates",
     "AMBOR1M": "1-Month AMERIBOR Term Structure of Interest Rates",
     "AMBOR3M": "3-Month AMERIBOR Term Structure of Interest Rates",
@@ -408,6 +408,85 @@ SPOT_TO_OPTIONS = {
     'Category': ['spot_rate', 'par_yield']
 }
 
+ESTR_PARAMETER_TO_ECB_ID = {
+    "volume_weighted_trimmed_mean_rate": "ECBESTRVOLWGTTRMDMNRT",
+    "number_of_transactions": "ECBESTRNUMTRANS",
+    "number_of_active_banks": "ECBESTRNUMACTBANKS",
+    "total_volume": "ECBESTRTOTVOL",
+    "share_of_volume_of_the_5_largest_active_banks": "ECBESTRSHRVOL5LRGACTBNK",
+    "rate_at_75th_percentile_of_volume": "ECBESTRRT75THPCTVOL",
+    "rate_at_25th_percentile_of_volume": "ECBESTRRT25THPCTVOL",
+}
+
+SOFR_PARAMETER_TO_FRED_ID = {
+    "overnight": "SOFR",
+    "30_day_average": "SOFR30DAYAVG",
+    "90_day_average": "SOFR90DAYAVG",
+    "180_day_average": "SOFR180DAYAVG",
+    "index": "SOFRINDEX",
+}
+SONIA_PARAMETER_TO_FRED_ID = {
+    "rate": "IUDSOIA",
+    "index": "IUDZOS2",
+    "10th_percentile": "IUDZLS6",
+    "25th_percentile": "IUDZLS7",
+    "75th_percentile": "IUDZLS8",
+    "90th_percentile": "IUDZLS9",
+    "total_nominal_value": "IUDZLT2",
+}
+AMERIBOR_PARAMETER_TO_FRED_ID = {
+    "overnight": "AMERIBOR",
+    "term_30": "AMBOR30T",
+    "term_90": "AMBOR90T",
+    "1_week_term_structure": "AMBOR1W",
+    "1_month_term_structure": "AMBOR1M",
+    "3_month_term_structure": "AMBOR3M",
+    "6_month_term_structure": "AMBOR6M",
+    "1_year_term_structure": "AMBOR1Y",
+    "2_year_term_structure": "AMBOR2Y",
+    "30_day_ma": "AMBOR30",
+    "90_day_ma": "AMBOR90",
+}
+
+FED_PARAMETER_TO_FRED_ID = {
+    "monthly": "FEDFUNDS",
+    "daily": "DFF",
+    "weekly": "FF",
+    "daily_excl_weekend": "RIFSPFFNB",
+    "annual": "RIFSPFFNA",
+    "biweekly": "RIFSPFFNBWAW",
+    "volume": "EFFRVOL",
+}
+
+OBFR_PARAMETER_TO_FRED_ID = {
+    "daily": "OBFR",
+    "volume": "OBFRVOL",
+}
+
+DWPCR_PARAMETER_TO_FRED_ID = {
+    "daily_excl_weekend": "DPCREDIT",
+    "monthly": "MPCREDIT",
+    "weekly": "WPCREDIT",
+    "daily": "RIFSRPF02ND",
+    "annual": "RIFSRPF02NA",
+}
+TMC_PARAMETER_TO_FRED_ID = {
+    "3_month": "T10Y3M",
+    "2_year": "T10Y2Y",
+}
+FFRMC_PARAMETER_TO_FRED_ID = {
+    "10_year": "T10YFF",
+    "5_year": "T5YFF",
+    "1_year": "T1YFF",
+    "6_month": "T6MFF",
+    "3_month": "T3MFF",
+}
+
+TBFFR_PARAMETER_TO_FRED_ID = {
+    "3_month": "TB3SMFFM",
+    "6_month": "TB6SMFFM",
+}
+
 @log_start_end(log=logger)
 @check_api_key(["API_FRED_KEY"])
 def plot_estr(
@@ -437,6 +516,9 @@ def plot_estr(
     external_axes: Optional[List[plt.Axes]]
         External axes (1 axis is expected in the list)
     """
+    if series_id in ESTR_PARAMETER_TO_ECB_ID:
+        series_id = ESTR_PARAMETER_TO_ECB_ID[series_id]
+        
     df = fred_model.get_series_data(
         series_id=series_id, start_date=start_date, end_date=end_date
     )
@@ -455,14 +537,25 @@ def plot_estr(
         df.values,
         color=next(colors, "#FCED00"),
     )
-    ax.set_title(ID_TO_NAME_ESTR[series_id])
+    ax.set_title(ID_TO_NAME_ESTR[series_id], fontsize=15)
     theme.style_primary_axis(ax)
+    
+    if series_id == "ECBESTRTOTVOL":
+        ylabel = "Millions in EUR"
+    elif series_id == "ECBESTRNUMACTBANKS":
+        ylabel = "Number of Banks"
+    elif series_id == "ECBESTRNUMTRANS":
+        ylabel = "Number of Transactions"
+    else:
+        ylabel = "Yield (%)"
+    
+    ax.set_ylabel(ylabel)
 
     if external_axes is None:
         theme.visualize_output()
 
     if export:
-        if "[Percent]" in ID_TO_NAME_ESTR[series_id]:
+        if series_id not in ["ECBESTRTOTVOL", "ECBESTRNUMACTBANKS", "ECBESTRNUMTRANS"]:
             # Check whether it is a percentage, relevant for exporting
             df_transformed = pd.DataFrame(df, columns=[series_id]) / 100
         else:
@@ -504,6 +597,9 @@ def plot_sofr(
     external_axes: Optional[List[plt.Axes]]
         External axes (1 axis is expected in the list)
     """
+    if series_id in SOFR_PARAMETER_TO_FRED_ID:
+        series_id = SOFR_PARAMETER_TO_FRED_ID[series_id]
+        
     df = fred_model.get_series_data(
         series_id=series_id, start_date=start_date, end_date=end_date
     )
@@ -522,14 +618,16 @@ def plot_sofr(
         df.values,
         color=next(colors, "#FCED00"),
     )
-    ax.set_title(ID_TO_NAME_SOFR[series_id])
+    ax.set_title(ID_TO_NAME_SOFR[series_id], fontsize=15)
+    ax.set_ylabel(f"Yield (%)" if series_id != 'SOFRINDEX' else "Index [Base = 04-2018]")
+
     theme.style_primary_axis(ax)
 
     if external_axes is None:
         theme.visualize_output()
 
     if export:
-        if "[Percent]" in ID_TO_NAME_SOFR[series_id]:
+        if series_id != 'SOFRINDEX':
             # Check whether it is a percentage, relevant for exporting
             df_transformed = pd.DataFrame(df, columns=[series_id]) / 100
         else:
@@ -569,6 +667,9 @@ def plot_sonia(
     external_axes: Optional[List[plt.Axes]]
         External axes (1 axis is expected in the list)
     """
+    if series_id in SONIA_PARAMETER_TO_FRED_ID:
+        series_id = SONIA_PARAMETER_TO_FRED_ID[series_id]
+        
     df = fred_model.get_series_data(
         series_id=series_id, start_date=start_date, end_date=end_date
     )
@@ -587,14 +688,23 @@ def plot_sonia(
         df.values,
         color=next(colors, "#FCED00"),
     )
-    ax.set_title(ID_TO_NAME_SONIA[series_id])
+    
+    if series_id == 'IUDZLT2':
+        ylabel = "Millions of GDP"
+    elif series_id == 'IUDZOS2':
+        ylabel = "Index [Base = 04-2018]"
+    else:
+        ylabel = "Yield (%)"
+        
+    ax.set_title(ID_TO_NAME_SONIA[series_id], fontsize=15)
+    ax.set_ylabel(ylabel)
     theme.style_primary_axis(ax)
-
+    
     if external_axes is None:
         theme.visualize_output()
 
     if export:
-        if "[Percent]" in ID_TO_NAME_SONIA[series_id]:
+        if series_id not in ['IUDZOS2', 'IUDZLT2']:
             # Check whether it is a percentage, relevant for exporting
             df_transformed = pd.DataFrame(df, columns=[series_id]) / 100
         else:
@@ -634,6 +744,9 @@ def plot_ameribor(
     external_axes: Optional[List[plt.Axes]]
         External axes (1 axis is expected in the list)
     """
+    if series_id in AMERIBOR_PARAMETER_TO_FRED_ID:
+        series_id = AMERIBOR_PARAMETER_TO_FRED_ID[series_id]
+        
     df = fred_model.get_series_data(
         series_id=series_id, start_date=start_date, end_date=end_date
     )
@@ -652,14 +765,21 @@ def plot_ameribor(
         df.values,
         color=next(colors, "#FCED00"),
     )
+    
+    if series_id in ['AMBOR30T', 'AMBOR90T']:
+        ylabel = "Index"
+    else:
+        ylabel = "Yield (%)"
+        
     ax.set_title(ID_TO_NAME_AMERIBOR[series_id])
+    ax.set_ylabel(ylabel)
     theme.style_primary_axis(ax)
 
     if external_axes is None:
         theme.visualize_output()
 
     if export:
-        if "[Percent]" in ID_TO_NAME_AMERIBOR[series_id]:
+        if series_id not in ["AMBOR30T", "AMBOR90T"]:
             # Check whether it is a percentage, relevant for exporting
             df_transformed = pd.DataFrame(df, columns=[series_id]) / 100
         else:
@@ -780,6 +900,9 @@ def plot_fed(
     external_axes: Optional[List[plt.Axes]]
         External axes (1 axis is expected in the list)
     """
+    if series_id in FED_PARAMETER_TO_FRED_ID:
+        series_id = FED_PARAMETER_TO_FRED_ID[series_id]
+        
     if overnight:
         # This piece of code adjusts the series id when the user wants to plot the overnight rate
         if series_id == "DFF":
@@ -1061,6 +1184,9 @@ def plot_dwpcr(
     external_axes: Optional[List[plt.Axes]]
         External axes (1 axis is expected in the list)
     """
+    if series_id in DWPCR_PARAMETER_TO_FRED_ID:
+        series_id = DWPCR_PARAMETER_TO_FRED_ID[series_id]
+
     df = fred_model.get_series_data(
         series_id=series_id, start_date=start_date, end_date=end_date
     )
@@ -1352,6 +1478,9 @@ def plot_tmc(
     external_axes: Optional[List[plt.Axes]]
         External axes (1 axis is expected in the list)
     """
+    if series_id in TMC_PARAMETER_TO_FRED_ID:
+        series_id = TMC_PARAMETER_TO_FRED_ID[series_id]
+
     df = fred_model.get_series_data(
         series_id=series_id, start_date=start_date, end_date=end_date
     )
@@ -1421,6 +1550,9 @@ def plot_ffrmc(
     external_axes: Optional[List[plt.Axes]]
         External axes (1 axis is expected in the list)
     """
+    if series_id in FFRMC_PARAMETER_TO_FRED_ID:
+        series_id = FFRMC_PARAMETER_TO_FRED_ID[series_id]
+
     df = fred_model.get_series_data(
         series_id=series_id, start_date=start_date, end_date=end_date
     )
@@ -1659,6 +1791,9 @@ def plot_tbffr(
     external_axes: Optional[List[plt.Axes]]
         External axes (1 axis is expected in the list)
     """
+    if series_id in TBFFR_PARAMETER_TO_FRED_ID:
+        series_id = TBFFR_PARAMETER_TO_FRED_ID[series_id]
+
     df = fred_model.get_series_data(
         series_id=series_id, start_date=start_date, end_date=end_date
     )

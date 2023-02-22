@@ -33,6 +33,16 @@ ID_TO_NAME = {
     "EST.B.EU000A2X2A25.R25": "Euro Short-Term Rate: Rate at 25th Percentile of Volume [Percent]",
 }
 
+ESTR_PARAMETER_TO_ECB_ID = {
+    "volume_weighted_trimmed_mean_rate": "EST.B.EU000A2X2A25.WT",
+    "number_of_transactions": "EST.B.EU000A2X2A25.NT",
+    "number_of_active_banks": "EST.B.EU000A2X2A25.NB",
+    "total_volume": "EST.B.EU000A2X2A25.TT",
+    "share_of_volume_of_the_5_largest_active_banks": "EST.B.EU000A2X2A25.VL",
+    "rate_at_75th_percentile_of_volume": "EST.B.EU000A2X2A25.R75",
+    "rate_at_25th_percentile_of_volume": "EST.B.EU000A2X2A25.R25",
+}
+
 
 @log_start_end(log=logger)
 def plot_estr(
@@ -58,6 +68,9 @@ def plot_estr(
     external_axes: Optional[List[plt.Axes]]
         External axes (1 axis is expected in the list)
     """
+    if series_id in ESTR_PARAMETER_TO_ECB_ID:
+        series_id = ESTR_PARAMETER_TO_ECB_ID[series_id]
+
     df = ecb_model.get_series_data(
         series_id, start_date if start_date else "", end_date if end_date else ""
     )

@@ -58,93 +58,6 @@ class FixedIncomeController(BaseController):
     PATH = "/fixedincome/"
     CHOICES_GENERATION = True
 
-    estr_parameter_to_fred_id = {
-        "volume_weighted_trimmed_mean_rate": "ECBESTRVOLWGTTRMDMNRT",
-        "number_of_transactions": "ECBESTRNUMTRANS",
-        "number_of_active_banks": "ECBESTRNUMACTBANKS",
-        "total_volume": "ECBESTRTOTVOL",
-        "share_of_volume_of_the_5_largest_active_banks": "ECBESTRSHRVOL5LRGACTBNK",
-        "rate_at_75th_percentile_of_volume": "ECBESTRRT75THPCTVOL",
-        "rate_at_25th_percentile_of_volume": "ECBESTRRT25THPCTVOL",
-    }
-    estr_parameter_to_ecb_id = {
-        "volume_weighted_trimmed_mean_rate": "EST.B.EU000A2X2A25.WT",
-        "number_of_transactions": "EST.B.EU000A2X2A25.NT",
-        "number_of_active_banks": "EST.B.EU000A2X2A25.NB",
-        "total_volume": "EST.B.EU000A2X2A25.TT",
-        "share_of_volume_of_the_5_largest_active_banks": "EST.B.EU000A2X2A25.VL",
-        "rate_at_75th_percentile_of_volume": "EST.B.EU000A2X2A25.R75",
-        "rate_at_25th_percentile_of_volume": "EST.B.EU000A2X2A25.R25",
-    }
-    sofr_parameter_to_fred_id = {
-        "overnight": "SOFR",
-        "30_day_average": "SOFR30DAYAVG",
-        "90_day_average": "SOFR90DAYAVG",
-        "180_day_average": "SOFR180DAYAVG",
-        "index": "SOFRINDEX",
-    }
-    sonia_parameter_to_fred_id = {
-        "rate": "IUDSOIA",
-        "index": "IUDZOS2",
-        "10th_percentile": "IUDZLS6",
-        "25th_percentile": "IUDZLS7",
-        "75th_percentile": "IUDZLS8",
-        "90th_percentile": "IUDZLS9",
-        "total_nominal_value": "IUDZLT2",
-    }
-    ameribor_parameter_to_fred_id = {
-        "overnight": "AMERIBOR",
-        "term_30": "AMBOR30T",
-        "term_90": "AMBOR90T",
-        "1_week_term_structure": "AMBOR1W",
-        "1_month_term_structure": "AMBOR1M",
-        "3_month_term_structure": "AMBOR3M",
-        "6_month_term_structure": "AMBOR6M",
-        "1_year_term_structure": "AMBOR1Y",
-        "2_year_term_structure": "AMBOR2Y",
-        "30_day_ma": "AMBOR30",
-        "90_day_ma": "AMBOR90",
-    }
-
-    fed_parameter_to_fred_id = {
-        "monthly": "FEDFUNDS",
-        "daily": "DFF",
-        "weekly": "FF",
-        "daily_excl_weekend": "RIFSPFFNB",
-        "annual": "RIFSPFFNA",
-        "biweekly": "RIFSPFFNBWAW",
-        "volume": "EFFRVOL",
-    }
-
-    obfr_parameter_to_fred_id = {
-        "daily": "OBFR",
-        "volume": "OBFRVOL",
-    }
-
-    dwpcr_parameter_to_fred_id = {
-        "daily_excl_weekend": "DPCREDIT",
-        "monthly": "MPCREDIT",
-        "weekly": "WPCREDIT",
-        "daily": "RIFSRPF02ND",
-        "annual": "RIFSRPF02NA",
-    }
-    tmc_parameter_to_fred_id = {
-        "3_month": "T10Y3M",
-        "2_year": "T10Y2Y",
-    }
-    ffrmc_parameter_to_fred_id = {
-        "10_year": "T10YFF",
-        "5_year": "T5YFF",
-        "1_year": "T1YFF",
-        "6_month": "T6MFF",
-        "3_month": "T3MFF",
-    }
-
-    tbffr_parameter_to_fred_id = {
-        "3_month": "TB3SMFFM",
-        "6_month": "TB6SMFFM",
-    }
-
     def __init__(self, queue: List[str] = None):
         """Constructor"""
         super().__init__(queue)
@@ -229,7 +142,7 @@ class FixedIncomeController(BaseController):
             type=str,
             help="Specific Euro Short-Term Rate data to retrieve",
             default="volume_weighted_trimmed_mean_rate",
-            choices=list(self.estr_parameter_to_fred_id.keys()),
+            choices=ecb_view.ESTR_PARAMETER_TO_ECB_ID.keys(),
         )
         parser.add_argument(
             "-s",
@@ -253,7 +166,7 @@ class FixedIncomeController(BaseController):
         if ns_parser:
             if ns_parser.source == "FRED":
                 fred_view.plot_estr(
-                    series_id=self.estr_parameter_to_fred_id[ns_parser.parameter],
+                    series_id=ns_parser.parameter,
                     start_date=ns_parser.start_date,
                     end_date=ns_parser.end_date,
                     export=ns_parser.export,
@@ -263,7 +176,7 @@ class FixedIncomeController(BaseController):
                 )
             elif ns_parser.source == "ECB":
                 ecb_view.plot_estr(
-                    series_id=self.estr_parameter_to_ecb_id[ns_parser.parameter],
+                    series_id=ns_parser.parameter,
                     start_date=ns_parser.start_date,
                     end_date=ns_parser.end_date,
                     export=ns_parser.export,
@@ -291,7 +204,7 @@ class FixedIncomeController(BaseController):
             type=str,
             help="Specific SOFR data to retrieve",
             default="overnight",
-            choices=list(self.sofr_parameter_to_fred_id.keys()),
+            choices=fred_view.SOFR_PARAMETER_TO_FRED_ID.keys(),
         )
         parser.add_argument(
             "-s",
@@ -314,7 +227,7 @@ class FixedIncomeController(BaseController):
         )
         if ns_parser:
             fred_view.plot_sofr(
-                series_id=self.sofr_parameter_to_fred_id[ns_parser.parameter],
+                series_id=ns_parser.parameter,
                 start_date=ns_parser.start_date,
                 end_date=ns_parser.end_date,
                 export=ns_parser.export,
@@ -342,7 +255,7 @@ class FixedIncomeController(BaseController):
             type=str,
             help="Specific SONIA data to retrieve",
             default="rate",
-            choices=list(self.sonia_parameter_to_fred_id.keys()),
+            choices=fred_view.SONIA_PARAMETER_TO_FRED_ID.keys(),
         )
         parser.add_argument(
             "-s",
@@ -365,7 +278,7 @@ class FixedIncomeController(BaseController):
         )
         if ns_parser:
             fred_view.plot_sonia(
-                series_id=self.sonia_parameter_to_fred_id[ns_parser.parameter],
+                series_id=ns_parser.parameter,
                 start_date=ns_parser.start_date,
                 end_date=ns_parser.end_date,
                 export=ns_parser.export,
@@ -393,7 +306,7 @@ class FixedIncomeController(BaseController):
             type=str,
             help="Specific AMERIBOR data to retrieve",
             default="overnight",
-            choices=list(self.ameribor_parameter_to_fred_id.keys()),
+            choices=fred_view.AMERIBOR_PARAMETER_TO_FRED_ID.keys(),
         )
         parser.add_argument(
             "-s",
@@ -416,7 +329,7 @@ class FixedIncomeController(BaseController):
         )
         if ns_parser:
             fred_view.plot_ameribor(
-                series_id=self.ameribor_parameter_to_fred_id[ns_parser.parameter],
+                series_id=ns_parser.parameter,
                 start_date=ns_parser.start_date,
                 end_date=ns_parser.end_date,
                 export=ns_parser.export,
@@ -444,7 +357,7 @@ class FixedIncomeController(BaseController):
             type=str,
             help="Specific Effective Federal Funds Rate data to retrieve",
             default="monthly",
-            choices=list(self.fed_parameter_to_fred_id.keys()),
+            choices=fred_view.FED_PARAMETER_TO_FRED_ID.keys(),
         )
         parser.add_argument(
             "-s",
@@ -498,7 +411,7 @@ class FixedIncomeController(BaseController):
                 )
             else:
                 fred_view.plot_fed(
-                    series_id=self.fed_parameter_to_fred_id[ns_parser.parameter],
+                    series_id=ns_parser.parameter,
                     start_date=ns_parser.start_date,
                     end_date=ns_parser.end_date,
                     overnight=ns_parser.overnight,
@@ -601,7 +514,7 @@ class FixedIncomeController(BaseController):
             type=str,
             help="Specific Discount Window Primary Credit Rate data to retrieve",
             default="daily_excl_weekend",
-            choices=list(self.dwpcr_parameter_to_fred_id.keys()),
+            choices=fred_view.DWPCR_PARAMETER_TO_FRED_ID.keys(),
         )
         parser.add_argument(
             "-s",
@@ -624,7 +537,7 @@ class FixedIncomeController(BaseController):
         )
         if ns_parser:
             fred_view.plot_dwpcr(
-                series_id=self.dwpcr_parameter_to_fred_id[ns_parser.parameter],
+                series_id=ns_parser.parameter,
                 start_date=ns_parser.start_date,
                 end_date=ns_parser.end_date,
                 export=ns_parser.export,
@@ -787,7 +700,7 @@ class FixedIncomeController(BaseController):
             type=str,
             help="Selected treasury constant maturity to subtract",
             default="3_month",
-            choices=list(self.tmc_parameter_to_fred_id.keys()),
+            choices=fred_view.TMC_PARAMETER_TO_FRED_ID.keys()
         )
         parser.add_argument(
             "-s",
@@ -810,7 +723,7 @@ class FixedIncomeController(BaseController):
         )
         if ns_parser:
             fred_view.plot_tmc(
-                series_id=self.tmc_parameter_to_fred_id[ns_parser.parameter],
+                series_id=ns_parser.parameter,
                 start_date=ns_parser.start_date,
                 end_date=ns_parser.end_date,
                 export=ns_parser.export,
@@ -839,7 +752,7 @@ class FixedIncomeController(BaseController):
             type=str,
             help="Selected Treasury Constant Maturity",
             default="10_year",
-            choices=list(self.ffrmc_parameter_to_fred_id.keys()),
+            choices=fred_view.FFRMC_PARAMETER_TO_FRED_ID.keys(),
         )
         parser.add_argument(
             "-s",
@@ -862,7 +775,7 @@ class FixedIncomeController(BaseController):
         )
         if ns_parser:
             fred_view.plot_ffrmc(
-                series_id=self.ffrmc_parameter_to_fred_id[ns_parser.parameter],
+                series_id=ns_parser.parameter,
                 start_date=ns_parser.start_date,
                 end_date=ns_parser.end_date,
                 export=ns_parser.export,
@@ -1480,7 +1393,7 @@ class FixedIncomeController(BaseController):
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES, raw=True
         )
         if ns_parser:
-            fred_view.plot_cycrv(
+            fred_view.plot_hqm(
                 date=ns_parser.date.strftime("%Y-%m-%d") if ns_parser.date else "",
                 par=ns_parser.par,
                 raw=ns_parser.raw,
@@ -1607,7 +1520,7 @@ class FixedIncomeController(BaseController):
             type=str,
             help="Selected Treasury Bill",
             default="3_month",
-            choices=list(self.tbffr_parameter_to_fred_id.keys()),
+            choices=fred_view.TBFFR_PARAMETER_TO_FRED_ID.keys(),
         )
         parser.add_argument(
             "-s",
@@ -1630,7 +1543,7 @@ class FixedIncomeController(BaseController):
         )
         if ns_parser:
             fred_view.plot_tbffr(
-                series_id=self.tbffr_parameter_to_fred_id[ns_parser.parameter],
+                series_id=ns_parser.parameter,
                 start_date=ns_parser.start_date,
                 end_date=ns_parser.end_date,
                 export=ns_parser.export,
