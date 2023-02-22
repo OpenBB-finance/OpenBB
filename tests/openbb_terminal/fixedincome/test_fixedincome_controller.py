@@ -212,7 +212,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             "fred_view.plot_estr",
             [],
             dict(
-                series_id="total_volume",
+                parameter="total_volume",
                 start_date=MOCK_START,
                 end_date=MOCK_END,
                 export="csv",
@@ -231,7 +231,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             "ecb_view.plot_estr",
             [],
             dict(
-                series_id="total_volume",
+                parameter="total_volume",
                 start_date=MOCK_START,
                 end_date=MOCK_END,
                 export="csv",
@@ -249,7 +249,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             "fred_view.plot_sofr",
             [],
             dict(
-                series_id="180_day_average",
+                parameter="180_day_average",
                 start_date=MOCK_START,
                 end_date=MOCK_END,
                 export="csv",
@@ -267,7 +267,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             "fred_view.plot_sonia",
             [],
             dict(
-                series_id="index",
+                parameter="index",
                 start_date=MOCK_START,
                 end_date=MOCK_END,
                 export="csv",
@@ -285,7 +285,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             "fred_view.plot_ameribor",
             [],
             dict(
-                series_id="2_year_term_structure",
+                parameter="2_year_term_structure",
                 start_date=MOCK_START,
                 end_date=MOCK_END,
                 export="csv",
@@ -304,7 +304,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             "fred_view.plot_fed",
             [],
             dict(
-                series_id="monthly",
+                parameter="monthly",
                 start_date=MOCK_START,
                 end_date=MOCK_END,
                 export="csv",
@@ -342,7 +342,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             "fred_view.plot_dwpcr",
             [],
             dict(
-                series_id="annual",
+                parameter="annual",
                 start_date=MOCK_START,
                 end_date=MOCK_END,
                 export="csv",
@@ -450,7 +450,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             "fred_view.plot_tmc",
             [],
             dict(
-                series_id="3_month",
+                parameter="3_month",
                 start_date=MOCK_START,
                 end_date=MOCK_END,
                 sheet_name=None,
@@ -466,7 +466,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             "fred_view.plot_ffrmc",
             [],
             dict(
-                series_id="10_year",
+                parameter="10_year",
                 start_date=MOCK_START,
                 end_date=MOCK_END,
                 sheet_name=None,
@@ -482,7 +482,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             "fred_view.plot_tbffr",
             [],
             dict(
-                series_id="3_month",
+                parameter="3_month",
                 start_date=MOCK_START,
                 end_date=MOCK_END,
                 sheet_name=None,

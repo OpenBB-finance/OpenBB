@@ -1470,7 +1470,7 @@ def plot_ecbmrofr(
 @log_start_end(log=logger)
 @check_api_key(["API_FRED_KEY"])
 def plot_tmc(
-    series_id: str = "T10Y3M",
+    parameter: str = "3_month",
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
     export: str = "",
@@ -1496,11 +1496,10 @@ def plot_tmc(
     external_axes: Optional[List[plt.Axes]]
         External axes (1 axis is expected in the list)
     """
-    if series_id in TMC_PARAMETER_TO_FRED_ID:
-        series_id = TMC_PARAMETER_TO_FRED_ID[series_id]
+    series_id = fred_model.TMC_PARAMETER_TO_FRED_ID[parameter]
 
-    df = fred_model.get_series_data(
-        series_id=series_id, start_date=start_date, end_date=end_date
+    df = fred_model.get_tmc(
+        parameter=parameter, start_date=start_date, end_date=end_date
     )
 
     # This plot has 1 axis
@@ -1542,7 +1541,7 @@ def plot_tmc(
 @log_start_end(log=logger)
 @check_api_key(["API_FRED_KEY"])
 def plot_ffrmc(
-    series_id: str = "T10YFF",
+    parameter: str = "10_year",
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
     export: str = "",
@@ -1568,12 +1567,9 @@ def plot_ffrmc(
     external_axes: Optional[List[plt.Axes]]
         External axes (1 axis is expected in the list)
     """
-    if series_id in FFRMC_PARAMETER_TO_FRED_ID:
-        series_id = FFRMC_PARAMETER_TO_FRED_ID[series_id]
+    series_id = fred_model.FFRMC_PARAMETER_TO_FRED_ID[parameter]
 
-    df = fred_model.get_series_data(
-        series_id=series_id, start_date=start_date, end_date=end_date
-    )
+    df = fred_model.get_ffrmc(parameter, start_date, end_date)
 
     # This plot has 1 axis
     if not external_axes:
@@ -1788,7 +1784,7 @@ def plot_usrates(
 @log_start_end(log=logger)
 @check_api_key(["API_FRED_KEY"])
 def plot_tbffr(
-    series_id: str = "TB3SMFFM",
+    parameter: str = "TB3SMFFM",
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
     export: str = "",
@@ -1810,11 +1806,10 @@ def plot_tbffr(
     external_axes: Optional[List[plt.Axes]]
         External axes (1 axis is expected in the list)
     """
-    if series_id in TBFFR_PARAMETER_TO_FRED_ID:
-        series_id = TBFFR_PARAMETER_TO_FRED_ID[series_id]
+    series_id = fred_model.TBFFR_PARAMETER_TO_FRED_ID[parameter]
 
-    df = fred_model.get_series_data(
-        series_id=series_id, start_date=start_date, end_date=end_date
+    df = fred_model.get_tbffr(
+        parameter=parameter, start_date=start_date, end_date=end_date
     )
 
     # This plot has 1 axis

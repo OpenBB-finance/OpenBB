@@ -5,7 +5,7 @@ import logging
 import os
 import pathlib
 from datetime import datetime, timedelta
-from typing import Dict, Optional, Tuple, List
+from typing import Dict, List, Optional, Tuple
 
 import certifi
 import pandas as pd
@@ -1023,3 +1023,39 @@ def get_hqm(
         console.print(f"[red]Yield data not found at {date_of_yield}.[/red]\n")
 
     return df, date_of_yield
+
+
+def get_tbffr(
+    parameter: str = "3_month",
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
+) -> pd.DataFrame:
+    series_id = TBFFR_PARAMETER_TO_FRED_ID[parameter]
+
+    return get_series_data(series_id, start_date, end_date)
+
+
+def get_icespread(
+    category: str = "all",
+    area: str = "us",
+    grade: str = "non_sovereign",
+) -> pd.DataFrame:
+    return get_icebofa(data_type="spread", category=category, area=area, grade=grade)
+
+
+def get_ffrmc(
+    parameter: str = "10_year",
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
+) -> pd.DataFrame:
+    series_id = FFRMC_PARAMETER_TO_FRED_ID[parameter]
+    return get_series_data(series_id, start_date, end_date)
+
+
+def get_tmc(
+    parameter: str = "10_year",
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
+) -> pd.DataFrame:
+    series_id = TMC_PARAMETER_TO_FRED_ID[parameter]
+    return get_series_data(series_id, start_date, end_date)

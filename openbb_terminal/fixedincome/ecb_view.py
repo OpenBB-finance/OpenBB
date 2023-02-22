@@ -48,7 +48,7 @@ ESTR_PARAMETER_TO_ECB_ID = {
 
 @log_start_end(log=logger)
 def plot_estr(
-    series_id: str = "EST.B.EU000A2X2A25.WT",
+    parameter: str = "EST.B.EU000A2X2A25.WT",
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
     export: str = "",
@@ -72,7 +72,7 @@ def plot_estr(
     external_axes: Optional[List[plt.Axes]]
         External axes (1 axis is expected in the list)
     """
-    series_id = ESTR_PARAMETER_TO_ECB_ID.get(series_id, "")
+    series_id = ESTR_PARAMETER_TO_ECB_ID.get(parameter, "")
 
     df = ecb_model.get_series_data(
         series_id, start_date if start_date else "", end_date if end_date else ""
