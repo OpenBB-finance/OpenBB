@@ -1,7 +1,6 @@
 import multiprocessing
 import sys
 
-import openbb_terminal.core.load_env_data as _
 from openbb_terminal.terminal_helper import is_auth_enabled
 
 # pylint: disable=import-outside-toplevel
