@@ -80,7 +80,6 @@ MENU_GO_BACK = 0
 MENU_QUIT = 1
 MENU_RESET = 2
 
-NEWS_TWEET = ""
 LAST_TWEET_NEWS_UPDATE_CHECK_TIME = None
 
 # Command location path to be shown in the figures depending on watermark flag
@@ -1862,10 +1861,11 @@ def update_news_from_tweet_to_be_displayed() -> str:
     """
     global LAST_TWEET_NEWS_UPDATE_CHECK_TIME
 
+    news_tweet = ""
+
     # Check whether it has passed a certain amount of time since the last news update
-    if (
-        LAST_TWEET_NEWS_UPDATE_CHECK_TIME is None
-        or (datetime.now(pytz.utc) - LAST_TWEET_NEWS_UPDATE_CHECK_TIME).total_seconds
+    if LAST_TWEET_NEWS_UPDATE_CHECK_TIME is None or (
+        (datetime.now(pytz.utc) - LAST_TWEET_NEWS_UPDATE_CHECK_TIME).total_seconds()
         > obbff.TOOLBAR_TWEET_NEWS_SECONDS_BETWEEN_UPDATES
     ):
         # This doesn't depende on the time of the tweet but the time that the check was made
@@ -1924,8 +1924,6 @@ def update_news_from_tweet_to_be_displayed() -> str:
                 pass
 
         if news_tweet_to_use:
-            global NEWS_TWEET
-
             tweet_hr = f"{last_tweet_dt.hour}"
             tweet_min = f"{last_tweet_dt.minute}"
             # Update time based on timezone specified by user
@@ -1937,9 +1935,9 @@ def update_news_from_tweet_to_be_displayed() -> str:
                     )
 
             # Update NEWS_TWEET with the new news tweet found
-            NEWS_TWEET = f"{tweet_hr}:{tweet_min} - @{handle_to_use} - {url}\n\n{news_tweet_to_use}"
+            news_tweet = f"{tweet_hr}:{tweet_min} - @{handle_to_use} - {url}\n\n{news_tweet_to_use}"
 
-    return NEWS_TWEET
+    return news_tweet
 
 
 def check_start_less_than_end(start_date: str, end_date: str) -> bool:
