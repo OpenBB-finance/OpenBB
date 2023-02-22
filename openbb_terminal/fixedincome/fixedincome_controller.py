@@ -1721,7 +1721,7 @@ class FixedIncomeController(BaseController):
         )
         if ns_parser:
             fred_view.plot_tmc(
-                series_id=ns_parser.parameter,
+                parameter=ns_parser.parameter,
                 start_date=ns_parser.start_date,
                 end_date=ns_parser.end_date,
                 export=ns_parser.export,
@@ -1750,7 +1750,7 @@ class FixedIncomeController(BaseController):
             type=str,
             help="Selected Treasury Constant Maturity",
             default="10_year",
-            choices=fred_view.FFRMC_PARAMETER_TO_FRED_ID.keys(),
+            choices=fred_model.FFRMC_PARAMETER_TO_FRED_ID.keys(),
         )
         parser.add_argument(
             "-s",
@@ -1773,7 +1773,7 @@ class FixedIncomeController(BaseController):
         )
         if ns_parser:
             fred_view.plot_ffrmc(
-                series_id=ns_parser.parameter,
+                parameter=ns_parser.parameter,
                 start_date=ns_parser.start_date,
                 end_date=ns_parser.end_date,
                 export=ns_parser.export,
@@ -2522,7 +2522,7 @@ class FixedIncomeController(BaseController):
         )
         if ns_parser:
             fred_view.plot_tbffr(
-                series_id=ns_parser.parameter,
+                parameter=ns_parser.parameter,
                 start_date=ns_parser.start_date,
                 end_date=ns_parser.end_date,
                 export=ns_parser.export,
