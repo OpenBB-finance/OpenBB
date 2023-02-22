@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 # IMPORTATION STANDARD
 import logging
 import os
+import pathlib
 from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
