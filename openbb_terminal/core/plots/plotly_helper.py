@@ -935,6 +935,8 @@ class OpenBBFigure(go.Figure):
         kwargs.update(config=dict(scrollZoom=True, displaylogo=False))
         if plots_backend().isatty:
             try:
+                # We check if we need to export the image
+                # This is done to avoid opening after exporting
                 if export_image:
                     self._exported = True
                 # We send the figure to the backend to be displayed
