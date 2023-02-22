@@ -25,6 +25,7 @@ from openbb_terminal.session.user import get_current_user, is_guest
 current_user = get_current_user()
 
 if is_guest(current_user):
+    # After implementing the UserModel we will not need to load the dotenv here
     load_dotenv_and_reload_configs()
 
 logger = logging.getLogger(__name__)

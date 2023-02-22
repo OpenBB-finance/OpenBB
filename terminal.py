@@ -14,6 +14,7 @@ def main():
     multiprocessing.freeze_support()
     sent_args = sys.argv[1:]
 
+    # After implementing the UserModel we will not need to load the dotenv here
     load_dotenv_and_reload_configs()
 
     if "-t" in sent_args or "--test" in sent_args:

@@ -361,9 +361,11 @@ from openbb_terminal.sdk_core import (
     models as model,
 )
 from openbb_terminal import feature_flags as obbff
-from openbb_terminal.session.user import User
+from openbb_terminal.session.user import get_current_user, is_guest
 
-if User.profile.is_guest():
+current_user = get_current_user()
+
+if is_guest(current_user):
     load_dotenv_and_reload_configs()
 
 logger = logging.getLogger(__name__)
