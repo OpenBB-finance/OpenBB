@@ -51,15 +51,16 @@ from openbb_terminal.core.config.paths import (
 from openbb_terminal.rich_config import console
 
 try:
-    twitter_api = tweepy.API(
-        tweepy.OAuth2BearerHandler(
-            cfg.API_TWITTER_BEARER_TOKEN,
-        ),
-        timeout=5,
-    )
-    # A test to ensure that the Twitter API key is correct,
-    # otherwise we disable the Toolbar with Tweet News
-    twitter_api.get_user(screen_name="openbb_finance")
+    if obbff.TOOLBAR_TWEET_NEWS and cfg.API_TWITTER_BEARER_TOKEN != "REPLACE_ME":
+        twitter_api = tweepy.API(
+            tweepy.OAuth2BearerHandler(
+                cfg.API_TWITTER_BEARER_TOKEN,
+            ),
+            timeout=5,
+        )
+        # A test to ensure that the Twitter API key is correct,
+        # otherwise we disable the Toolbar with Tweet News
+        twitter_api.get_user(screen_name="openbb_finance")
 except tweepy.errors.Unauthorized:
     # Set toolbar tweet news to False because the Twitter API is not set up correctly
     obbff.TOOLBAR_TWEET_NEWS = False
