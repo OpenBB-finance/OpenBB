@@ -623,7 +623,8 @@ class EconomyController(BaseController):
                             self.DATASETS["macro"].drop(column, axis=1, inplace=True)
 
                     self.DATASETS["macro"] = pd.concat(
-                        [self.DATASETS["macro"], df], axis=1
+                        [self.DATASETS["macro"], df],
+                        axis=1,
                     )
 
                     # update units dict
