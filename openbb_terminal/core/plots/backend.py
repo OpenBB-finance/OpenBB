@@ -86,6 +86,7 @@ class Backend(PyWry):
 
     def get_pending(self) -> list:
         """Get the pending data that has not been sent to the backend."""
+        # pylint: disable=W0201,E0203
         pending = self.outgoing + self.init_engine
         self.outgoing: list = []
         self.init_engine: list = []
@@ -259,6 +260,7 @@ class Backend(PyWry):
         if self.isatty:
             await super().check_backend()
         else:
+            # pylint: disable=W0201
             self.loop = asyncio.get_event_loop()
 
     def close(self, reset: bool = False):
