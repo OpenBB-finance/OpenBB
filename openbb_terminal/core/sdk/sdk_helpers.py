@@ -9,13 +9,13 @@ import dotenv
 import openbb_terminal.config_terminal as cfg
 from openbb_terminal.base_helpers import load_env_vars, strtobool
 from openbb_terminal.core.config.paths import USER_ENV_FILE
-from openbb_terminal.rich_config import console
-from openbb_terminal.sdk_core.sdk_init import (
+from openbb_terminal.core.sdk.sdk_init import (
     FORECASTING_TOOLKIT_ENABLED,
     FORECASTING_TOOLKIT_WARNING,
     OPTIMIZATION_TOOLKIT_ENABLED,
     OPTIMIZATION_TOOLKIT_WARNING,
 )
+from openbb_terminal.rich_config import console
 
 if not FORECASTING_TOOLKIT_ENABLED and not load_env_vars(
     "OPENBB_DISABLE_FORECASTING_WARNING", strtobool, False
@@ -340,8 +340,8 @@ from openbb_terminal.helper_classes import TerminalStyle  # noqa: F401
 from openbb_terminal.reports import widget_helpers as widgets  # noqa: F401
 from openbb_terminal.reports.reports_controller import ReportController
 
-import openbb_terminal.sdk_core.sdk_init as lib
-from openbb_terminal.sdk_core import (
+import openbb_terminal.core.sdk.sdk_init as lib
+from openbb_terminal.core.sdk import (
     controllers as ctrl,
     models as model,
 )

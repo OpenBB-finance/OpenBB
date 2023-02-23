@@ -5,10 +5,10 @@ from typing import Any, Callable, Dict, ForwardRef, List, Optional
 
 import pandas as pd
 
-import openbb_terminal.sdk_core.sdk_init as lib
+import openbb_terminal.core.sdk.sdk_init as lib
 from openbb_terminal.core.config.paths import PACKAGE_DIRECTORY
+from openbb_terminal.core.sdk.sdk_helpers import clean_attr_desc
 from openbb_terminal.rich_config import console
-from openbb_terminal.sdk_core.sdk_helpers import clean_attr_desc
 
 
 def get_signature_parameters(
@@ -149,10 +149,10 @@ class Trailmap:
 def get_trailmaps(sort: bool = False) -> List[Trailmap]:
     trailmaps = []
 
-    MAP_PATH = PACKAGE_DIRECTORY / "sdk_core" / "trail_map.csv"
-    MAP_FORECASTING_PATH = PACKAGE_DIRECTORY / "sdk_core" / "trail_map_forecasting.csv"
+    MAP_PATH = PACKAGE_DIRECTORY / "core/sdk" / "trail_map.csv"
+    MAP_FORECASTING_PATH = PACKAGE_DIRECTORY / "core/sdk" / "trail_map_forecasting.csv"
     MAP_OPTIMIZATION_PATH = (
-        PACKAGE_DIRECTORY / "sdk_core" / "trail_map_optimization.csv"
+        PACKAGE_DIRECTORY / "core/sdk" / "trail_map_optimization.csv"
     )
 
     def load_csv(path: Optional[Path] = None) -> Dict[str, Dict[str, str]]:
