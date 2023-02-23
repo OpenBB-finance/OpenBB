@@ -1090,8 +1090,6 @@ def check_bitquery_key(show_output: bool = False) -> str:
 
 
 def set_twitter_key(
-    key: str,
-    secret: str,
     access_token: str,
     persist: bool = False,
     show_output: bool = False,
@@ -1128,8 +1126,6 @@ def set_twitter_key(
         )
     """
 
-    set_key("OPENBB_API_TWITTER_KEY", key, persist)
-    set_key("OPENBB_API_TWITTER_SECRET_KEY", secret, persist)
     set_key("OPENBB_API_TWITTER_BEARER_TOKEN", access_token, persist)
 
     return check_twitter_key(show_output)
@@ -1149,12 +1145,7 @@ def check_twitter_key(show_output: bool = False) -> str:
         Status of key set
     """
 
-    twitter_keys = [
-        cfg.API_TWITTER_KEY,
-        cfg.API_TWITTER_SECRET_KEY,
-        cfg.API_TWITTER_BEARER_TOKEN,
-    ]
-    if "REPLACE_ME" in twitter_keys:
+    if cfg.API_TWITTER_BEARER_TOKEN == "REPLACE_ME":
         logger.info("Twitter key not defined")
         status = KeyStatus.NOT_DEFINED
     else:
