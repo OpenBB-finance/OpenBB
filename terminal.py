@@ -1,7 +1,7 @@
 import multiprocessing
 import sys
 
-import openbb_terminal.core.session.user as _
+import openbb_terminal.core.session.current_user as _
 from openbb_terminal.base_helpers import load_dotenv_and_reload_configs
 from openbb_terminal.terminal_helper import is_auth_enabled
 

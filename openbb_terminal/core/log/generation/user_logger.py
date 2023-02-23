@@ -12,7 +12,7 @@ NO_USER_PLACEHOLDER = "NA"
 
 def get_user_uuid() -> str:
     """Get user UUID"""
-    if not is_guest():
+    if not is_local():
         return get_current_user().profile.get_uuid()
 
     return NO_USER_PLACEHOLDER

@@ -350,7 +350,7 @@ from openbb_terminal.core.session.current_user import get_current_user, is_guest
 
 current_user = get_current_user()
 
-if is_guest(current_user):
+if is_local():
     load_dotenv_and_reload_configs()
 
 logger = logging.getLogger(__name__)

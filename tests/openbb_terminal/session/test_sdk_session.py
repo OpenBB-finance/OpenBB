@@ -197,7 +197,7 @@ def test_logout(mocker, test_user):
         mock_logout.assert_called_once_with(
             auth_header=test_user.profile.get_auth_header(),
             token=test_user.profile.get_token(),
-            guest=is_guest(),
+            guest=is_local(),
         )
 
 

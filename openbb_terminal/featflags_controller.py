@@ -101,7 +101,7 @@ class FeatureFlagsController(BaseController):
 
         current_user = get_current_user()
         sync_enabled = current_user.preferences.SYNC_ENABLED
-        local_user = is_guest()
+        local_user = is_local()
 
         if local_user:
             set_key(str(USER_ENV_FILE), name, str(value))

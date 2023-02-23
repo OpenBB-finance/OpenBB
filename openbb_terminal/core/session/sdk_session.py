@@ -104,7 +104,7 @@ def whoami():
     >>> openbb.whoami()
     """
     current_user = get_current_user()
-    local_user = is_guest()
+    local_user = is_local()
     if not local_user:
         console.print(f"[info]email:[/info] {current_user.profile.email}")
         console.print(f"[info]uuid:[/info] {current_user.profile.uuid}")

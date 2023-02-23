@@ -25,7 +25,7 @@ from openbb_terminal.terminal_helper import is_auth_enabled
 
 current_user = get_current_user()
 
-if is_guest(current_user):
+if is_local():
     # After implementing the UserModel we will not need to load the dotenv here
     load_dotenv_and_reload_configs()
 
@@ -54,7 +54,7 @@ class OpenBBSDK:
         self._try_to_login()
 
     def _try_to_login(self):
-        if User.is_guest() and is_auth_enabled():
+        if User.is_local() and is_auth_enabled():
             try:
                 self.login()
             except Exception:

@@ -342,7 +342,7 @@ def reset(queue: Optional[List[str]] = None):
     plt.close("all")
 
     flag = ""
-    if not is_guest(get_current_user()):
+    if not is_local():
         flag = " --login"
 
     if queue and len(queue) > 0:

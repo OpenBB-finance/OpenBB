@@ -236,7 +236,7 @@ def set_key(name: str, value: str, persist: bool = False) -> None:
     """
     current_user = get_current_user()
 
-    if persist and is_guest():
+    if persist and is_local():
         dotenv.set_key(str(USER_ENV_FILE), name, value)
 
     # Remove "OPENBB_" prefix from env_var
@@ -247,7 +247,7 @@ def set_key(name: str, value: str, persist: bool = False) -> None:
     setattr(current_user.credentials, name, value)
     set_current_user(current_user)
     sync_enabled = current_user.preferences.SYNC_ENABLED
-    local_user = is_guest()
+    local_user = is_local()
 
     # Send api key to server
     if (

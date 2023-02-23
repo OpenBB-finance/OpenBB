@@ -31,7 +31,7 @@ def set_current_user(user: UserModel):
     __current_user = user
 
 
-def is_guest() -> bool:
+def is_local() -> bool:
     """Check if user is guest.
 
     Returns
