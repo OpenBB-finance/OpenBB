@@ -230,10 +230,7 @@ def getATSdata(limit: int = 1000, tier_ats: str = "T1") -> Tuple[pd.DataFrame, D
     Tuple[pd.DataFrame, Dict]
         Dark Pools (ATS) Data, Tickers from Dark Pools with better regression slope
     """
-    if tier_ats:
-        tiers = [tier_ats]
-    else:
-        tiers = ["T1", "T2", "OTCE"]
+    tiers = [tier_ats] if tier_ats else ["T1", "T2", "OTCE"]
     df_ats = pd.DataFrame()
 
     for tier in tiers:

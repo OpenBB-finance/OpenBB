@@ -272,6 +272,7 @@ def get_income(
 
     df_fa = df_fa.iloc[:, 0:limit]
     df_fa_c = clean_metrics_df(df_fa, num=limit)
+    df_fa.index = df_fa_c.index
 
     return df_fa_c if not plot else df_fa
 
@@ -347,6 +348,7 @@ def get_balance(
 
     df_fa = df_fa.iloc[:, 0:limit]
     df_fa_c = clean_metrics_df(df_fa, num=limit)
+    df_fa.index = df_fa_c.index
 
     return df_fa_c if not plot else df_fa
 
@@ -422,6 +424,7 @@ def get_cash(
 
     df_fa = df_fa.iloc[:, 0:limit]
     df_fa_c = clean_metrics_df(df_fa, num=limit)
+    df_fa.index = df_fa_c.index
 
     return df_fa_c if not plot else df_fa
 

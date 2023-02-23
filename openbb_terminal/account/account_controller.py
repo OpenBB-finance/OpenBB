@@ -155,16 +155,12 @@ class AccountController(BaseController):
                     FeatureFlagsController.set_feature_flag(
                         "OPENBB_SYNC_ENABLED", True, force=True
                     )
-            elif ns_parser.off:
-                if obbff.SYNC_ENABLED:
-                    FeatureFlagsController.set_feature_flag(
-                        "OPENBB_SYNC_ENABLED", False, force=True
-                    )
+            elif ns_parser.off and obbff.SYNC_ENABLED:
+                FeatureFlagsController.set_feature_flag(
+                    "OPENBB_SYNC_ENABLED", False, force=True
+                )
 
-            if obbff.SYNC_ENABLED:
-                sync = "ON"
-            else:
-                sync = "OFF"
+            sync = "ON" if obbff.SYNC_ENABLED else "OFF"
 
             if ns_parser.on or ns_parser.off:
                 console.print(f"[info]sync:[/info] {sync}")
@@ -437,10 +433,13 @@ class AccountController(BaseController):
                     auth_header=get_current_user().profile.get_auth_header(),
                     name=name,
                 )
-                if response and response.status_code == 200:
-                    if name in self.REMOTE_CHOICES:
-                        self.REMOTE_CHOICES.remove(name)
-                        self.update_runtime_choices()
+                if (
+                    response
+                    and response.status_code == 200
+                    and name in self.REMOTE_CHOICES
+                ):
+                    self.REMOTE_CHOICES.remove(name)
+                    self.update_runtime_choices()
             else:
                 console.print("[info]Aborted.[/info]")
 

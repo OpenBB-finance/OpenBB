@@ -120,9 +120,7 @@ def get_stars_history(repo: str) -> pd.DataFrame:
             stars[sorted_keys[i]] += stars[sorted_keys[i - 1]]
         df = pd.DataFrame(
             {
-                "Date": [
-                    datetime.strptime(date, "%Y-%m-%d").date() for date in stars.keys()
-                ],
+                "Date": [datetime.strptime(date, "%Y-%m-%d").date() for date in stars],
                 "Stars": stars.values(),
             }
         )

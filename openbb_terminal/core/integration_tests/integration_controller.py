@@ -259,10 +259,11 @@ def run_scripts(
         simulate_argv = f"/{'/'.join([line.rstrip() for line in lines])}"
         file_cmds = simulate_argv.replace("//", "/home/").split()
         file_cmds = insert_start_slash(file_cmds) if file_cmds else file_cmds
-        if export_folder:
-            file_cmds = [f"export {export_folder}{' '.join(file_cmds)}"]
-        else:
-            file_cmds = [" ".join(file_cmds)]
+        file_cmds = (
+            [f"export {export_folder}{' '.join(file_cmds)}"]
+            if export_folder
+            else [" ".join(file_cmds)]
+        )
 
         obbff.REMEMBER_CONTEXTS = 0
         if verbose:
@@ -661,13 +662,14 @@ def parse_args_and_run():
 
     special_args_dict = {x: getattr(ns_parser, x) for x in special_arguments_values}
 
-    if ns_parser.verbose:
-        if ns_parser.subprocesses is None or ns_parser.subprocesses > 0:
-            console.print(
-                "WARNING: verbose mode and multiprocessing are not compatible. "
-                "The output of the scripts is mixed up. Consider running with --subproc 0.\n",
-                style="yellow",
-            )
+    if ns_parser.verbose and (
+        ns_parser.subprocesses is None or ns_parser.subprocesses > 0
+    ):
+        console.print(
+            "WARNING: verbose mode and multiprocessing are not compatible. "
+            "The output of the scripts is mixed up. Consider running with --subproc 0.\n",
+            style="yellow",
+        )
 
     if ns_parser.list_:
         return display_available_scripts(ns_parser.path, ns_parser.skip)
