@@ -9,7 +9,7 @@ import pandas as pd
 from requests.exceptions import RequestException
 
 from openbb_terminal.rich_config import console
-from openbb_terminal.core.session.user import (
+from openbb_terminal.core.session.current_user import (
     get_current_user,
     set_current_user,
 )  # pragma: allowlist secret

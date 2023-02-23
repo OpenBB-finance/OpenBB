@@ -15,7 +15,7 @@ from openbb_terminal.core.log.generation.settings import Settings
 
 # IMPORTATION THIRDPARTY
 # IMPORTATION INTERNAL
-from openbb_terminal.core.session.user import get_current_user
+from openbb_terminal.core.session.current_user import get_current_user
 
 # DO NOT USE THE FILE LOGGER IN THIS MODULE
 

@@ -7,7 +7,7 @@ import argparse
 import logging
 from typing import Any, Dict, List, Optional
 
-from openbb_terminal.core.session.user import get_current_user
+from openbb_terminal.core.session.current_user import get_current_user
 
 try:
     import darts

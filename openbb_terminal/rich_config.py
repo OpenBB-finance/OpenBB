@@ -17,7 +17,7 @@ from openbb_terminal import (
     feature_flags as obbff,
 )
 from openbb_terminal.core.config.paths import MISCELLANEOUS_DIRECTORY
-from openbb_terminal.core.session.user import get_current_user
+from openbb_terminal.core.session.current_user import get_current_user
 
 # pylint: disable=no-member,c-extension-no-member
 

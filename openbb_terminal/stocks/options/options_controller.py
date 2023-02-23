@@ -20,7 +20,7 @@ from openbb_terminal.helper_funcs import (
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import MenuText, console, get_ordered_list_sources
-from openbb_terminal.core.session.user import get_current_user
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.stocks.options import (
     alphaquery_view,
     barchart_view,

@@ -4,7 +4,7 @@
 import pytest
 
 # IMPORTATION INTERNAL
-from openbb_terminal.core.models.user.user_model import (
+from openbb_terminal.core.models.user_model import (
     CredentialsModel,
     PreferencesModel,
     ProfileModel,

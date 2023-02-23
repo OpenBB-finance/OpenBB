@@ -23,7 +23,7 @@ from openbb_terminal.core.config.paths import (
     USER_PORTFOLIO_DATA_DIRECTORY,
     USER_REPORTS_DIRECTORY,
 )
-from openbb_terminal.core.session.user import get_current_user
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.forex.forex_controller import FX_TICKERS
 from openbb_terminal.rich_config import console

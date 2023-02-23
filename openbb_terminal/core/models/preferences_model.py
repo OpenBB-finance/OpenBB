@@ -1,7 +1,6 @@
 import os
 from pydantic import PositiveInt
 from pydantic.dataclasses import dataclass
-from pydantic import PositiveInt
 
 from openbb_terminal.core.config.paths import (
     USER_DATA_SOURCES_DEFAULT_FILE,

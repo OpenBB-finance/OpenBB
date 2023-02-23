@@ -25,7 +25,7 @@ from openbb_terminal.core.session import (
     local_model as Local,
 )
 from openbb_terminal.core.session.session_model import logout
-from openbb_terminal.core.session.user import get_current_user, is_guest
+from openbb_terminal.core.session.current_user import get_current_user, is_guest
 
 logger = logging.getLogger(__name__)
 

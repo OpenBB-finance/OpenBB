@@ -19,7 +19,7 @@ from openbb_terminal.core.config.paths import (
     MISCELLANEOUS_DIRECTORY,
     REPOSITORY_DIRECTORY,
 )
-from openbb_terminal.core.session.user import get_current_user, set_current_user
+from openbb_terminal.core.session.current_user import get_current_user, set_current_user
 from openbb_terminal.helper_funcs import check_non_negative
 from openbb_terminal.rich_config import console
 from openbb_terminal.terminal_controller import (

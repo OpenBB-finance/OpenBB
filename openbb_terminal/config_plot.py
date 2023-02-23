@@ -1,18 +1,18 @@
-import os
+# import os
 from openbb_terminal.base_helpers import load_env_vars
 
 PLOT_DPI = load_env_vars("OPENBB_PLOT_DPI", int, 100, "settings")
 
-# Backend to use for plotting
-BACKEND = os.getenv("OPENBB_BACKEND", "None")
-if BACKEND == "None":
-    BACKEND = None  # type: ignore
-# Examples:
-# "tkAgg" - This uses the tkinter library.  If unsure, set to this
-# "module://backend_interagg" - This is what pycharm defaults to in Scientific Mode
-# "MacOSX" - Mac default.  Does not work with backtesting
-# "Qt5Agg" - This requires the PyQt5 package is installed
-# See more: https://matplotlib.org/stable/tutorials/introductory/usage.html#the-builtin-backends
+# # Backend to use for plotting
+# BACKEND = os.getenv("OPENBB_BACKEND", "None")
+# if BACKEND == "None":
+#     BACKEND = None  # type: ignore
+# # Examples:
+# # "tkAgg" - This uses the tkinter library.  If unsure, set to this
+# # "module://backend_interagg" - This is what pycharm defaults to in Scientific Mode
+# # "MacOSX" - Mac default.  Does not work with backtesting
+# # "Qt5Agg" - This requires the PyQt5 package is installed
+# # See more: https://matplotlib.org/stable/tutorials/introductory/usage.html#the-builtin-backends
 
 # Used when USE_PLOT_AUTOSCALING is set to False
 PLOT_HEIGHT = load_env_vars("OPENBB_PLOT_HEIGHT", int, 500, "settings")

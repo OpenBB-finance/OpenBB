@@ -6,7 +6,7 @@ import argparse
 import logging
 from datetime import datetime, timedelta
 from typing import List, Optional
-from openbb_terminal.core.session.user import get_current_user
+from openbb_terminal.core.session.current_user import get_current_user
 
 from openbb_terminal.cryptocurrency import cryptocurrency_helpers
 from openbb_terminal.cryptocurrency.due_diligence import (

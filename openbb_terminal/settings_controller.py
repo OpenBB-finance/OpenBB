@@ -36,7 +36,7 @@ from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import MenuText, console
 from openbb_terminal.core.session.hub_model import patch_user_configs
-from openbb_terminal.core.session.user import (
+from opopenbb_terminal.core.session.current_user import (
     get_current_user,
     is_guest,
     set_current_user,

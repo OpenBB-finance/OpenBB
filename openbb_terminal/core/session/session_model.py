@@ -9,7 +9,7 @@ import openbb_terminal.core.session.local_model as Local
 from openbb_terminal.base_helpers import (
     remove_log_handlers,
 )
-from openbb_terminal.core.models.user.user_model import (
+from openbb_terminal.core.models.user_model import (
     UserModel,
     CredentialsModel,
     PreferencesModel,
@@ -17,7 +17,7 @@ from openbb_terminal.core.models.user.user_model import (
 )
 from openbb_terminal.helper_funcs import system_clear
 from openbb_terminal.rich_config import console
-from openbb_terminal.core.session.user import (
+from openbb_terminal.core.session.current_user import (
     set_current_user,
 )
 

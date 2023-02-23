@@ -12,7 +12,7 @@ from openbb_terminal import (
 from openbb_terminal.base_helpers import strtobool
 from openbb_terminal.core.config import paths
 from openbb_terminal.rich_config import console
-from openbb_terminal.core.session.user import get_current_user
+from openbb_terminal.core.session.current_user import get_current_user
 
 
 def get_diff(configs: dict) -> dict:

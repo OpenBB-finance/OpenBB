@@ -10,7 +10,7 @@ from openbb_terminal.core.config import paths_helper
 from openbb_terminal.core.config.paths import (
     MISCELLANEOUS_DIRECTORY,
 )
-from openbb_terminal.core.session.user import get_current_user
+from openbb_terminal.core.session.current_user import get_current_user
 
 paths_helper.init_userdata()
 

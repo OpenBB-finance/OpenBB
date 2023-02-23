@@ -21,7 +21,7 @@ from openbb_terminal.common.technical_analysis import (
     volatility_view,
     volume_view,
 )
-from openbb_terminal.core.session.user import get_current_user
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (

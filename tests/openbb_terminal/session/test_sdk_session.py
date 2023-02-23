@@ -6,7 +6,7 @@ from unittest.mock import patch
 import pytest
 
 # IMPORTATION INTERNAL
-from openbb_terminal.core.models.user.user_model import (
+from openbb_terminal.core.models.user_model import (
     CredentialsModel,
     PreferencesModel,
     ProfileModel,
@@ -14,7 +14,7 @@ from openbb_terminal.core.models.user.user_model import (
 )
 from openbb_terminal.core.session import sdk_session
 from openbb_terminal.core.session.session_model import LoginStatus
-from openbb_terminal.core.session.user import is_guest
+from openbb_terminal.core.session.current_user import is_guest
 
 TEST_SESSION = {
     "access_token": "test_token",

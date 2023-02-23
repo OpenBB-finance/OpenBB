@@ -8,7 +8,7 @@ from types import FunctionType, ModuleType
 # IMPORTATION INTERNAL
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.core.log.generation.common import do_rollover
-from openbb_terminal.core.session.user import get_current_user
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.terminal_helper import is_installer
 
 SENSITIVE_WORDS = [

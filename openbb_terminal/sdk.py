@@ -20,7 +20,7 @@ from openbb_terminal.sdk_core import (
     models as model,
 )
 from openbb_terminal import feature_flags as obbff
-from openbb_terminal.core.session.user import get_current_user, is_guest
+from openbb_terminal.core.session.current_user import get_current_user, is_guest
 from openbb_terminal.terminal_helper import is_auth_enabled
 
 current_user = get_current_user()

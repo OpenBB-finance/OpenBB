@@ -5,7 +5,7 @@ import json
 
 import pytest
 from requests import Response
-from openbb_terminal.core.models.user.user_model import UserModel
+from openbb_terminal.core.models.user_model import UserModel
 
 # IMPORTATION INTERNAL
 from openbb_terminal.core.session import session_model

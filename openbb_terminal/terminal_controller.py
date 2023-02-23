@@ -46,7 +46,7 @@ from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.reports.reports_model import ipykernel_launcher
 from openbb_terminal.rich_config import MenuText, console
 from openbb_terminal.core.session import session_controller
-from openbb_terminal.core.session.user import (
+from openbb_terminal.core.session.current_user import (
     get_current_user,
     is_guest,
     set_current_user,

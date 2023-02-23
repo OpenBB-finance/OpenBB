@@ -8,7 +8,7 @@ import difflib
 import logging
 from datetime import datetime, timedelta
 from typing import List, Optional
-from openbb_terminal.core.session.user import get_current_user
+from openbb_terminal.core.session.current_user import get_current_user
 
 from openbb_terminal.cryptocurrency.due_diligence.glassnode_model import (
     GLASSNODE_SUPPORTED_HASHRATE_ASSETS,

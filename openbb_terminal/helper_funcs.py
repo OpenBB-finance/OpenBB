@@ -43,7 +43,7 @@ from rich.table import Table
 from screeninfo import get_monitors
 
 # IMPORTS INTERNAL
-from openbb_terminal.core.session.user import get_current_user
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal import (
     config_plot as cfgPlot,
     config_terminal as cfg,

@@ -20,7 +20,7 @@ from openbb_terminal import (
     config_plot as cfgPlot,
 )
 from openbb_terminal.config_terminal import theme
-from openbb_terminal.core.session.user import get_current_user
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.cryptocurrency import cryptocurrency_helpers
 from openbb_terminal.cryptocurrency.dataframe_helpers import prettify_paragraph
 from openbb_terminal.cryptocurrency.due_diligence.messari_model import (

@@ -2,20 +2,18 @@
 
 # IMPORTATION THIRDPARTY
 import json
-from pathlib import Path
 from unittest.mock import mock_open, patch
 
 import pytest
 
 # IMPORTATION INTERNAL
-from openbb_terminal.core.models.user.user_model import (
+from openbb_terminal.core.models.user_model import (
     CredentialsModel,
     PreferencesModel,
     ProfileModel,
     UserModel,
 )
 from openbb_terminal.core.session import local_model
-from openbb_terminal.core.session.user import get_current_user
 
 TEST_SESSION = {
     "access_token": "test_token",
@@ -144,27 +142,6 @@ def test_remove_cli_history_file_exception():
     os_mock.remove.assert_called_with(local_model.HIST_FILE_PATH)
 
 
-# Patch the config classes
-class obbff:
-    SYNC_ENABLED = True
-    USE_WATERMARK = True
-    TIMEZONE = "America/New_York"
-
-
-class cfg_plot:
-    PLOT_DPI = 100
-    PLOT_HEIGHT_PERCENTAGE = 50.0
-
-
-class paths:
-    USER_DATA_DIRECTORY = Path("user_home/OpenBBUserData")
-
-
-class cfg:
-    API_KEY_ALPHAVANTAGE = "REPLACE_ME"
-    API_FRED_KEY = "REPLACE_ME"
-
-
 # Configs to apply
 CONFIGS = {
     "features_settings": {
@@ -188,10 +165,7 @@ CONFIGS = {
         "True",
     ],
 )
-@patch("openbb_terminal.core.session.local_model.obbff", obbff)
-@patch("openbb_terminal.core.session.local_model.cfg_plot", cfg_plot)
-@patch("openbb_terminal.core.session.local_model.paths", paths)
-def test_apply_configs_sync(mocker, sync: str, test_user):
+def test_apply_configs_sync(mocker, sync: str, test_user: UserModel):
     mocker.patch(
         target="openbb_terminal.core.session.local_model.get_current_user",
         return_value=test_user,
@@ -200,24 +174,25 @@ def test_apply_configs_sync(mocker, sync: str, test_user):
     CONFIGS["features_settings"]["SYNC_ENABLED"] = sync
     local_model.apply_configs(CONFIGS)
 
+    preferences = test_user.preferences
+    credentials = test_user.credentials
+
     if sync == "False":
-        assert obbff.SYNC_ENABLED is False
-        assert obbff.USE_WATERMARK is True
-        assert obbff.TIMEZONE == "America/New_York"
-        assert cfg_plot.PLOT_DPI == 100
-        assert cfg_plot.PLOT_HEIGHT_PERCENTAGE == 50.0
-        assert Path("user_home/OpenBBUserData") == paths.USER_DATA_DIRECTORY
-        assert test_user.credentials.API_KEY_ALPHAVANTAGE == "REPLACE_ME"
-        assert test_user.credentials.API_FRED_KEY == "REPLACE_ME"
+        assert preferences.SYNC_ENABLED is False
+        assert preferences.USE_WATERMARK is True
+        assert preferences.TIMEZONE == "America/New_York"
+        assert preferences.PLOT_DPI == 100
+        assert preferences.PLOT_HEIGHT_PERCENTAGE == 50.0
+        assert credentials.API_KEY_ALPHAVANTAGE == "REPLACE_ME"
+        assert credentials.API_FRED_KEY == "REPLACE_ME"
     else:
-        assert obbff.SYNC_ENABLED is True
-        assert obbff.USE_WATERMARK is False
-        assert obbff.TIMEZONE == "Europe/London"
-        assert cfg_plot.PLOT_DPI == 95
-        assert cfg_plot.PLOT_HEIGHT_PERCENTAGE == 50.5
-        assert Path("some/path/to/user/data") == paths.USER_DATA_DIRECTORY
-        assert test_user.credentials.API_KEY_ALPHAVANTAGE == "test_av"
-        assert test_user.credentials.API_FRED_KEY == "test_fred"
+        assert preferences.SYNC_ENABLED is True
+        assert preferences.USE_WATERMARK is False
+        assert preferences.TIMEZONE == "Europe/London"
+        assert preferences.PLOT_DPI == 95
+        assert preferences.PLOT_HEIGHT_PERCENTAGE == 50.5
+        assert credentials.API_KEY_ALPHAVANTAGE == "test_av"
+        assert credentials.API_FRED_KEY == "test_fred"
 
 
 @pytest.mark.parametrize(

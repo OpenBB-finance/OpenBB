@@ -14,7 +14,7 @@ from openbb_terminal.core.config.paths import (
     MISCELLANEOUS_DIRECTORY,
     USER_DATA_DIRECTORY,
 )
-from openbb_terminal.core.session.user import get_current_user
+from openbb_terminal.core.session.current_user import get_current_user
 
 
 # pylint: disable=too-few-public-methods

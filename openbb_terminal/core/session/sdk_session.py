@@ -6,7 +6,7 @@ from openbb_terminal.core.session import (
     local_model as Local,
     session_model,
 )
-from openbb_terminal.core.session.user import (
+from openbb_terminal.core.session.current_user import (
     get_current_user,
     is_guest,
 )
