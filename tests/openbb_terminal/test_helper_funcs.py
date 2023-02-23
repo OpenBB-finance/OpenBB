@@ -208,6 +208,10 @@ def test_revert_lambda_long_number_format(value, expected):
 @pytest.mark.vcr
 def test_update_news_from_tweet_to_be_displayed(mocker, recorder):
     mocker.patch(
+        target="openbb_terminal.helper_funcs.obbff.TOOLBAR_TWEET_NEWS",
+        new=True,
+    )
+    mocker.patch(
         target="openbb_terminal.helper_funcs.LAST_TWEET_NEWS_UPDATE_CHECK_TIME",
         new=None,
     )
@@ -223,5 +227,6 @@ def test_update_news_from_tweet_to_be_displayed(mocker, recorder):
         target="openbb_terminal.helper_funcs.obbff.TOOLBAR_TWEET_NEWS_KEYWORDS",
         new="BREAKING,JUST IN",
     )
+
     news_tweet = update_news_from_tweet_to_be_displayed()
     recorder.capture(news_tweet)
