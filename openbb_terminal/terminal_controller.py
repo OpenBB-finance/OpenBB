@@ -39,6 +39,7 @@ from openbb_terminal.helper_funcs import (
     check_positive,
     get_flair,
     parse_and_split_input,
+    update_news_from_tweet_to_be_displayed,
 )
 from openbb_terminal.keys_model import first_time_user
 from openbb_terminal.menu import is_papermill, session
@@ -62,6 +63,7 @@ from openbb_terminal.terminal_helper import (
 
 # pylint: disable=too-many-public-methods,import-outside-toplevel, too-many-function-args
 # pylint: disable=too-many-branches,no-member,C0302,too-many-return-statements, inconsistent-return-statements
+
 
 logger = logging.getLogger(__name__)
 
@@ -904,10 +906,57 @@ def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
 
         # Get input command from user
         else:
-            # Get input from user using auto-completion
-            if session and obbff.USE_PROMPT_TOOLKIT:
-                try:
-                    if obbff.TOOLBAR_HINT:
+            try:
+                # Get input from user using auto-completion
+                if session and obbff.USE_PROMPT_TOOLKIT:
+                    # Check if tweet news is enabled
+                    if obbff.TOOLBAR_TWEET_NEWS:
+                        news_tweet = update_news_from_tweet_to_be_displayed()
+
+                        # Check if there is a valid tweet news to be displayed
+                        if news_tweet:
+                            an_input = session.prompt(
+                                f"{get_flair()} / $ ",
+                                completer=t_controller.completer,
+                                search_ignore_case=True,
+                                bottom_toolbar=HTML(news_tweet),
+                                style=Style.from_dict(
+                                    {
+                                        "bottom-toolbar": "#ffffff bg:#333333",
+                                    }
+                                ),
+                            )
+
+                        else:
+                            # Check if toolbar hint was enabled
+                            if obbff.TOOLBAR_HINT:
+                                an_input = session.prompt(
+                                    f"{get_flair()} / $ ",
+                                    completer=t_controller.completer,
+                                    search_ignore_case=True,
+                                    bottom_toolbar=HTML(
+                                        '<style bg="ansiblack" fg="ansiwhite">[h]</style> help menu    '
+                                        '<style bg="ansiblack" fg="ansiwhite">[q]</style> return to previous menu'
+                                        '    <style bg="ansiblack" fg="ansiwhite">[e]</style> exit terminal    '
+                                        '<style bg="ansiblack" fg="ansiwhite">[cmd -h]</style> '
+                                        "see usage and available options    "
+                                        '<style bg="ansiblack" fg="ansiwhite">[about (cmd/menu)]</style> '
+                                    ),
+                                    style=Style.from_dict(
+                                        {
+                                            "bottom-toolbar": "#ffffff bg:#333333",
+                                        }
+                                    ),
+                                )
+                            else:
+                                an_input = session.prompt(
+                                    f"{get_flair()} / $ ",
+                                    completer=t_controller.completer,
+                                    search_ignore_case=True,
+                                )
+
+                    # Check if toolbar hint was enabled
+                    elif obbff.TOOLBAR_HINT:
                         an_input = session.prompt(
                             f"{get_flair()} / $ ",
                             completer=t_controller.completer,
@@ -918,7 +967,7 @@ def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
                                 '<style bg="ansiblack" fg="ansiwhite">[e]</style> exit terminal    '
                                 '<style bg="ansiblack" fg="ansiwhite">[cmd -h]</style> '
                                 "see usage and available options    "
-                                '<style bg="ansiblack" fg="ansiwhite">[about]</style> Getting Started Documentation'
+                                '<style bg="ansiblack" fg="ansiwhite">[about (cmd/menu)]</style> '
                             ),
                             style=Style.from_dict(
                                 {
@@ -932,14 +981,17 @@ def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
                             completer=t_controller.completer,
                             search_ignore_case=True,
                         )
-                except (KeyboardInterrupt, EOFError):
-                    print_goodbye()
-                    break
-            elif is_papermill():
-                pass
-            else:
+
+                elif is_papermill():
+                    pass
+
                 # Get input from user without auto-completion
-                an_input = input(f"{get_flair()} / $ ")
+                else:
+                    an_input = input(f"{get_flair()} / $ ")
+
+            except (KeyboardInterrupt, EOFError):
+                print_goodbye()
+                break
 
         try:
             if an_input == "logout" and is_auth_enabled():
