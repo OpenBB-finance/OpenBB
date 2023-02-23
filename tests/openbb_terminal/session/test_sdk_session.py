@@ -4,11 +4,12 @@
 from unittest.mock import patch
 
 import pytest
+from openbb_terminal.core.models.user_model import UserModel
 
 # IMPORTATION INTERNAL
 from openbb_terminal.session import sdk_session
 from openbb_terminal.session.session_model import LoginStatus
-from openbb_terminal.session.user import get_current_user
+from openbb_terminal.session.user import get_current_user, is_guest
 
 TEST_SESSION = {
     "access_token": "test_token",
@@ -170,16 +171,20 @@ def test_login(
     mock_login.assert_called_once_with(TEST_SESSION)
 
 
-def test_logout():
-    current_user = get_current_user()
-    current_user.profile.load_user_info(TEST_SESSION, "test@email.com")
+def test_logout(mocker):
+    test_user = UserModel()
+    test_user.profile.load_user_info(TEST_SESSION, "testy@email.com")
+    mocker.patch(
+        target="openbb_terminal.session.sdk_session.get_current_user",
+        return_value=test_user,
+    )
     path = "openbb_terminal.session.sdk_session."
     with (patch(path + "session_model.logout") as mock_logout,):
         sdk_session.logout()
         mock_logout.assert_called_once_with(
-            auth_header=current_user.profile.get_auth_header(),
-            token=current_user.profile.get_token(),
-            guest=current_user.profile.is_guest(),
+            auth_header=test_user.profile.get_auth_header(),
+            token=test_user.profile.get_token(),
+            guest=is_guest(test_user),
         )
 
 
@@ -189,8 +194,9 @@ def test_whoami_guest():
 
 
 @pytest.mark.record_stdout
-def test_whoami():
-    get_current_user().profile.load_user_info(
+def test_whoami(mocker):
+    test_user = UserModel()
+    test_user.profile.load_user_info(
         {
             "token_type": "MOCK_TOKEN_TYPE",
             "access_token": "MOCK_ACCESS_TOKEN",
@@ -198,4 +204,9 @@ def test_whoami():
         },
         email="MOCK_EMAIL",
     )
+    mocker.patch(
+        target="openbb_terminal.session.sdk_session.get_current_user",
+        return_value=test_user,
+    )
+
     sdk_session.whoami()

@@ -93,7 +93,8 @@ def login(session: dict) -> LoginStatus:
             update_flair(
                 flair=feature_settings.get("USE_FLAIR", None)
                 if feature_settings
-                else None
+                else None,
+                user=hub_user,
             )
             return LoginStatus.SUCCESS
         if response.status_code == 401:

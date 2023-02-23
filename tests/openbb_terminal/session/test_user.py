@@ -3,6 +3,7 @@ from unittest.mock import patch
 
 # IMPORTATION THIRDPARTY
 import pytest
+from openbb_terminal.core.models.user_model import UserModel
 
 # IMPORTATION INTERNAL
 from openbb_terminal.session import user
@@ -19,9 +20,10 @@ TEST_SESSION = {
 @pytest.fixture
 def User():
     """User fixture."""
-    user.User.profile.load_user_info(TEST_SESSION, "test@email.com")
-    user.User.update_flair(flair=None)
-    yield user.User
+    test_user = UserModel()
+    test_user.profile.load_user_info(TEST_SESSION, "test@email.com")
+    user.update_flair(flair=None, user=test_user)
+    yield test_user
 
 
 class obbff:
@@ -39,10 +41,10 @@ def test_load_user_info(User):
     assert User.profile.email == "test@email.com"
 
 
-@patch("openbb_terminal.core.models.user_model.obbff", obbff)
+@patch("openbb_terminal.session.user.obbff", obbff)
 def test_update_flair(User):
     """Test update flair."""
-    User.update_flair(flair=None)
+    user.update_flair(flair=None, user=User)
     assert obbff.USE_FLAIR == "[test] 🦋"
 
 
@@ -56,28 +58,10 @@ def test_get_uuid(User):
     assert User.profile.get_uuid() == "test_uuid"
 
 
-@pytest.mark.record_stdout
-@pytest.mark.parametrize(
-    "sync, guest",
-    [
-        (False, False),
-        (True, False),
-        (True, True),
-    ],
-)
-def test_whoami(User, sync, guest):
-    """Test whoami."""
-    with (
-        patch("openbb_terminal.core.models.user_model.obbff.SYNC_ENABLED", sync),
-        patch("openbb_terminal.session.user.User.profile.is_guest", return_value=guest),
-    ):
-        User.profile.whoami()
-
-
-@patch("openbb_terminal.core.models.user_model.obbff", obbff)
+@patch("openbb_terminal.session.user.obbff", obbff)
 def test_reset_flair(User):
     """Test reset_flair."""
-    User.reset_flair()
+    user.reset_flair(User)
     assert obbff.USE_FLAIR == ":openbb"
 
 
