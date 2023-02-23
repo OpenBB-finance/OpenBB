@@ -439,7 +439,8 @@ def get_estr(
     series_id = ESTR_PARAMETER_TO_ECB_ID.get(parameter, "")
 
     return pd.DataFrame(
-        get_series_data(series_id=series_id, start_date=start_date, end_date=end_date)
+        get_series_data(series_id=series_id, start_date=start_date, end_date=end_date),
+        columns=[series_id],
     )
 
 
@@ -464,7 +465,8 @@ def get_sofr(
     series_id = SOFR_PARAMETER_TO_FRED_ID.get(parameter, "")
 
     return pd.DataFrame(
-        get_series_data(series_id=series_id, start_date=start_date, end_date=end_date)
+        get_series_data(series_id=series_id, start_date=start_date, end_date=end_date),
+        columns=[series_id],
     )
 
 
@@ -489,7 +491,8 @@ def get_sonia(
     series_id = SONIA_PARAMETER_TO_FRED_ID.get(parameter, "")
 
     return pd.DataFrame(
-        get_series_data(series_id=series_id, start_date=start_date, end_date=end_date)
+        get_series_data(series_id=series_id, start_date=start_date, end_date=end_date),
+        columns=[series_id],
     )
 
 
@@ -513,8 +516,10 @@ def get_ameribor(
     """
     series_id = AMERIBOR_PARAMETER_TO_FRED_ID.get(parameter, "")
 
-    df = get_series_data(series_id=series_id, start_date=start_date, end_date=end_date)
-    return df
+    return pd.DataFrame(
+        get_series_data(series_id=series_id, start_date=start_date, end_date=end_date),
+        columns=[series_id],
+    )
 
 
 def get_fed(
@@ -579,7 +584,8 @@ def get_fed(
         df = df.dropna()
         return df
     return pd.DataFrame(
-        get_series_data(series_id=series_id, start_date=start_date, end_date=end_date)
+        get_series_data(series_id=series_id, start_date=start_date, end_date=end_date),
+        columns=[series_id],
     )
 
 
@@ -597,7 +603,8 @@ def get_iorb(
         End date, formatted YYYY-MM-DD
     """
     return pd.DataFrame(
-        get_series_data(series_id="IORB", start_date=start_date, end_date=end_date)
+        get_series_data(series_id="IORB", start_date=start_date, end_date=end_date),
+        columns=["IORB"],
     )
 
 
@@ -638,7 +645,8 @@ def get_dwpcr(
     """
     series_id = DWPCR_PARAMETER_TO_FRED_ID[parameter]
     return pd.DataFrame(
-        get_series_data(series_id=series_id, start_date=start_date, end_date=end_date)
+        get_series_data(series_id=series_id, start_date=start_date, end_date=end_date),
+        columns=[series_id],
     )
 
 
@@ -726,7 +734,8 @@ def get_usrates(
     """
     series_id = USARATES_TO_FRED_ID[maturity][parameter]
     return pd.DataFrame(
-        get_series_data(series_id=series_id, start_date=start_date, end_date=end_date)
+        get_series_data(series_id=series_id, start_date=start_date, end_date=end_date),
+        columns=[series_id],
     )
 
 
@@ -971,7 +980,9 @@ def get_tbffr(
     """
     series_id = TBFFR_PARAMETER_TO_FRED_ID[parameter]
 
-    return pd.DataFrame(get_series_data(series_id, start_date, end_date))
+    return pd.DataFrame(
+        get_series_data(series_id, start_date, end_date), columns=[series_id]
+    )
 
 
 def get_icespread(
@@ -1024,7 +1035,9 @@ def get_ffrmc(
         End date, formatted YYYY-MM-DD
     """
     series_id = FFRMC_PARAMETER_TO_FRED_ID[parameter]
-    return pd.DataFrame(get_series_data(series_id, start_date, end_date))
+    return pd.DataFrame(
+        get_series_data(series_id, start_date, end_date), columns=[series_id]
+    )
 
 
 def get_tmc(
@@ -1048,4 +1061,6 @@ def get_tmc(
         End date, formatted YYYY-MM-DD
     """
     series_id = TMC_PARAMETER_TO_FRED_ID[parameter]
-    return pd.DataFrame(get_series_data(series_id, start_date, end_date))
+    return pd.DataFrame(
+        get_series_data(series_id, start_date, end_date), columns=[series_id]
+    )

@@ -49,7 +49,9 @@ def get_series_data(
             )
             df = df.iloc[::-1]
             return df
-        except (Exception, HTTPError):
+        except KeyboardInterrupt as interrupt:
+            raise interrupt
+        except HTTPError:
             max_retries -= 1
             if max_retries == 0:
                 return pd.DataFrame()
@@ -168,26 +170,36 @@ def get_ecb_yield_curve(
         date = (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d")
 
     try:
-        with Pool(cpu_count()) as pool:
-            # To be able to use optional_rich_track with multiprocessing,
-            # we need to use imap_unordered
-            results = optional_rich_track(
-                pool.imap_unordered(
-                    partial(get_series_data, start_date=date, end_date=date),
-                    series_id,
-                ),
-                total=len(series_id),
-                desc="Obtaining yield curve data",
-            )
-            for i, result in enumerate(results):
-                if isinstance(result, pd.DataFrame) and result.empty:
-                    console.print(f"[red]No data for {series_id[i]}[/red]")
-                    # we remove the corresponding index from the list of years
-                    years.pop(i)
-                    continue
-                if not result.empty:
+        if detailed:
+            with Pool(cpu_count()) as pool:
+                # To be able to use optional_rich_track with multiprocessing,
+                # we need to use imap_unordered
+
+                results = optional_rich_track(
+                    pool.imap_unordered(
+                        partial(get_series_data, start_date=date, end_date=date),
+                        series_id,
+                    ),
+                    total=len(series_id),
+                    desc="Obtaining yield curve data",
+                )
+                for i, result in enumerate(results):
+                    if isinstance(result, pd.DataFrame) and result.empty:
+                        console.print(f"[red]No data for {series_id[i]}[/red]")
+                        # we remove the corresponding index from the list of years
+                        years.pop(i)
+                        continue
+
                     result.columns = [labels[i]]
                     df = pd.concat([df, result], axis=1)
+
+        else:
+            for i in optional_rich_track(
+                range(len(series_id)), desc="Obtaining yield curve data"
+            ):
+                temp = get_series_data(series_id[i], date, date)
+                temp.columns = [labels[i]]
+                df = pd.concat([df, temp], axis=1)
 
     except (Exception, KeyboardInterrupt):
         console.print("Data collection was canceled.")

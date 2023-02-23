@@ -69,6 +69,13 @@ def log_start_end(func=None, log=None):
                 value = func(*args, **kwargs)
                 logger_used.info("END", extra={"func_name_override": func.__name__})
                 return value
+            except KeyboardInterrupt:
+                console.print("\n[red]Interrupted by user[/red]")
+                logger_used.info(
+                    "Interrupted by user",
+                    extra={"func_name_override": func.__name__},
+                )
+                return []
             except RequestException as e:
                 console.print(
                     "[red]There was an error connecting to the API."

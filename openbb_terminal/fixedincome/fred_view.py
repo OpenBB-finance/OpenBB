@@ -212,7 +212,9 @@ def plot_estr(
     fig = OpenBBFigure(yaxis_title=ylabel_dict.get(series_id, "Yield (%)"))
     fig.set_title(ID_TO_NAME_ESTR[series_id])
 
-    fig.add_scatter(x=df.index, y=df.values, mode="lines", name=series_id, line_width=2)
+    fig.add_scatter(
+        x=df.index, y=df[series_id], mode="lines", name=series_id, line_width=2
+    )
 
     if export:
         if series_id not in ["ECBESTRTOTVOL", "ECBESTRNUMACTBANKS", "ECBESTRNUMTRANS"]:
@@ -273,7 +275,7 @@ def plot_sofr(
     )
     fig.set_title(ID_TO_NAME_SOFR[series_id])
 
-    fig.add_scatter(x=df.index, y=df.values, mode="lines", name=series_id)
+    fig.add_scatter(x=df.index, y=df[series_id], mode="lines", name=series_id)
 
     if export:
         if series_id != "SOFRINDEX":
@@ -334,7 +336,7 @@ def plot_sonia(
     fig = OpenBBFigure(yaxis_title=ylabel_dict.get(series_id, "Yield (%)"))
     fig.set_title(ID_TO_NAME_SONIA[series_id])
 
-    fig.add_scatter(x=df.index, y=df.values, mode="lines", name=series_id)
+    fig.add_scatter(x=df.index, y=df[series_id], mode="lines", name=series_id)
 
     if export:
         if series_id not in ["IUDZOS2", "IUDZLT2"]:
@@ -393,7 +395,7 @@ def plot_ameribor(
     )
     fig.set_title(ID_TO_NAME_AMERIBOR[series_id])
 
-    fig.add_scatter(x=df.index, y=df.values, mode="lines", name=series_id)
+    fig.add_scatter(x=df.index, y=df[series_id], mode="lines", name=series_id)
 
     if export:
         if series_id not in ["AMBOR30T", "AMBOR90T"]:
@@ -549,7 +551,7 @@ def plot_fed(
         )
 
         fig.add_scatter(
-            x=df.index, y=df.values, name=series_id, line_width=2, mode="lines"
+            x=df.index, y=df[series_id], name=series_id, line_width=2, mode="lines"
         )
         fig.set_yaxis_title(
             "Yield (%)"
@@ -619,7 +621,7 @@ def plot_iorb(
     fig = OpenBBFigure(yaxis_title="Yield (%)")
     fig.set_title("Interest Rate on Reserve Balances")
 
-    fig.add_scatter(x=df.index, y=df.values, name="IORB", line_width=2, mode="lines")
+    fig.add_scatter(x=df.index, y=df["IORB"], name="IORB", line_width=2, mode="lines")
 
     export_data(
         export,
@@ -736,7 +738,7 @@ def plot_dwpcr(
     fig = OpenBBFigure()
     fig.set_title(f"Discount Window Primary Credit Rate {ID_TO_NAME_DWPCR[series_id]}")
 
-    fig.add_scatter(x=df.index, y=df.values, name=series_id, mode="lines")
+    fig.add_scatter(x=df.index, y=df[series_id], name=series_id, mode="lines")
 
     export_data(
         export,
@@ -863,7 +865,7 @@ def plot_tmc(
         "  Treasury Constant Maturity"
     )
 
-    fig.add_scatter(x=df.index, y=df.values, name=series_id, mode="lines")
+    fig.add_scatter(x=df.index, y=df[series_id], name=series_id, mode="lines")
 
     export_data(
         export,
@@ -915,7 +917,7 @@ def plot_ffrmc(
         f"{ID_TO_NAME_FFRMC[series_id]} Treasury Constant Maturity Minus Federal Funds Rate"
     )
 
-    fig.add_scatter(x=df.index, y=df.values, name=series_id, mode="lines")
+    fig.add_scatter(x=df.index, y=df[series_id], name=series_id, mode="lines")
 
     export_data(
         export,
@@ -1064,7 +1066,7 @@ def plot_usrates(
     fig = OpenBBFigure(yaxis_title="Yield (%)")
     fig.set_title(title)
 
-    fig.add_scatter(x=df.index, y=df.values, name="Yield")
+    fig.add_scatter(x=df.index, y=df[series_id], name="Yield")
 
     if raw:
         print_rich_table(
@@ -1123,7 +1125,7 @@ def plot_tbffr(
         f"{ID_TO_NAME_TBFFR[series_id]} Treasury Bill Minus Federal Funds Rate"
     )
 
-    fig.add_scatter(x=df.index, y=df.values, name="Yield")
+    fig.add_scatter(x=df.index, y=df[series_id], name="Yield")
 
     export_data(
         export,
