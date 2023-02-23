@@ -626,7 +626,7 @@ class StocksController(StockBaseController):
         #     SectorIndustryAnalysisController, self.ticker, self.queue
         # )
 
-        # TODO: Get rid of the call_dd on the next release since it has been deprecated.
+        # TODO: Make the call_sia command available again after improving the functionality
 
         console.print(
             "The sia (Sector & Industry Analysis) menu is currently inactive as the functionality is "
