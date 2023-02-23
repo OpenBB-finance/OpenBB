@@ -8,7 +8,7 @@ from openbb_terminal.core.session import (
 )
 from openbb_terminal.core.session.current_user import (
     get_current_user,
-    is_guest,
+    is_local,
 )
 from openbb_terminal.core.session.constants import REGISTER_URL
 

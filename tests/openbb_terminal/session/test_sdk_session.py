@@ -14,7 +14,7 @@ from openbb_terminal.core.models.user_model import (
 )
 from openbb_terminal.core.session import sdk_session
 from openbb_terminal.core.session.session_model import LoginStatus
-from openbb_terminal.core.session.current_user import is_guest
+from openbb_terminal.core.session.current_user import is_local
 
 TEST_SESSION = {
     "access_token": "test_token",

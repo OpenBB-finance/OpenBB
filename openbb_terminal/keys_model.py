@@ -40,7 +40,7 @@ from openbb_terminal.core.session.hub_model import BASE_URL, patch_user_configs
 from openbb_terminal.core.session.local_model import SESSION_FILE_PATH
 from openbb_terminal.core.session.current_user import (
     get_current_user,
-    is_guest,
+    is_local,
     set_current_user,
 )
 from openbb_terminal.terminal_helper import suppress_stdout
