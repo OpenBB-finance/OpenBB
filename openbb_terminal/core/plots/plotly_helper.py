@@ -1,3 +1,4 @@
+"""Chart and style helpers for Plotly."""
 # pylint: disable=C0302,R0902
 import json
 import os
@@ -71,7 +72,7 @@ class TerminalStyle:
         plt_style: Optional[str] = "",
         console_style: Optional[str] = "",
     ):
-        """Initialize the class
+        """Initialize the class.
 
         Parameters
         ----------
@@ -218,7 +219,7 @@ theme.apply_style()
 
 # pylint: disable=R0913
 class OpenBBFigure(go.Figure):
-    """Custom Figure class for OpenBB Terminal
+    """Custom Figure class for OpenBB Terminal.
 
     Parameters
     ----------
@@ -282,6 +283,7 @@ class OpenBBFigure(go.Figure):
 
     @property
     def has_subplots(self):
+        """Has subplots property."""
         return self._has_subplots()
 
     @classmethod
@@ -297,7 +299,7 @@ class OpenBBFigure(go.Figure):
         specs: Optional[List[List[Optional[Dict[Any, Any]]]]] = None,
         **kwargs,
     ) -> "OpenBBFigure":
-        """Create a new Plotly figure with subplots
+        """Create a new Plotly figure with subplots.
 
         Parameters
         ----------
@@ -318,7 +320,6 @@ class OpenBBFigure(go.Figure):
         specs : `List[List[dict]]`, optional
             Subplot specs, by default `[[{}] * cols] * rows` (all subplots are the same size)
         """
-
         fig = make_subplots(
             rows=rows,
             cols=cols,
@@ -339,7 +340,7 @@ class OpenBBFigure(go.Figure):
         return cls(fig, **kwargs)
 
     def add_trend(self, data: pd.DataFrame) -> None:
-        """Add a trend line to the figure
+        """Add a trend line to the figure.
 
         Parameters
         ----------
@@ -351,7 +352,9 @@ class OpenBBFigure(go.Figure):
         try:
             if "OC_High_trend" in data.columns:
                 high_trend = data.loc[
-                    data["OC_High_trend"].idxmin() : data["OC_High_trend"].idxmax()
+                    data["OC_High_trend"]
+                    .idxmin() : data["OC_High_trend"]  # noqa: E203
+                    .idxmax()
                 ]
                 self.add_shape(
                     type="line",
@@ -366,7 +369,9 @@ class OpenBBFigure(go.Figure):
                 )
             if "OC_Low_trend" in data.columns:
                 low_trend = data.loc[
-                    data["OC_Low_trend"].idxmin() : data["OC_Low_trend"].idxmax()
+                    data["OC_Low_trend"]
+                    .idxmin() : data["OC_Low_trend"]  # noqa: E203
+                    .idxmax()
                 ]
                 self.add_shape(
                     type="line",
@@ -396,7 +401,7 @@ class OpenBBFigure(go.Figure):
         row: int = 1,
         col: int = 1,
     ) -> None:
-        """Adds a histogram with a curve and rug plot if desired
+        """Add a histogram with a curve and rug plot if desired.
 
         Parameters
         ----------
@@ -467,7 +472,7 @@ class OpenBBFigure(go.Figure):
                     n_entries = len(values) // n_components
                     for i, label in zip(range(n_components), components):
                         self.add_histogram(
-                            x=values[i * n_entries : (i + 1) * n_entries],
+                            x=values[i * n_entries : (i + 1) * n_entries],  # noqa: E203
                             name=label,
                             marker_color=color_i,
                             nbinsx=bins,
@@ -562,7 +567,7 @@ class OpenBBFigure(go.Figure):
         self.update_layout(barmode="overlay", bargap=0.01, bargroupgap=0)
 
     def is_image_export(self, export: Optional[str] = "") -> bool:
-        """Checks if the export format is an image format
+        """Check if the export format is an image format.
 
         Parameters
         ----------
@@ -582,7 +587,7 @@ class OpenBBFigure(go.Figure):
     def set_title(
         self, title: str, wrap: bool = False, wrap_width: int = 80, **kwargs
     ) -> "OpenBBFigure":
-        """Sets the main title of the figure
+        """Set the main title of the figure.
 
         Parameters
         ----------
@@ -619,7 +624,7 @@ class OpenBBFigure(go.Figure):
         col: Optional[int] = None,
         **kwargs,
     ) -> "OpenBBFigure":
-        """Set the x axis title of the figure or subplot (if row and col are specified)
+        """Set the x axis title of the figure or subplot (if row and col are specified).
 
         Parameters
         ----------
@@ -636,7 +641,7 @@ class OpenBBFigure(go.Figure):
     def set_yaxis_title(
         self, title: str, row: Optional[int] = None, col: Optional[int] = None, **kwargs
     ) -> "OpenBBFigure":
-        """Set the y axis title of the figure or subplot (if row and col are specified)
+        """Set the y axis title of the figure or subplot (if row and col are specified).
 
         Parameters
         ----------
@@ -656,7 +661,7 @@ class OpenBBFigure(go.Figure):
         row: Optional[int] = None,
         col: Optional[int] = None,
     ) -> None:
-        """Set the xaxis type of the figure or subplot (if row and col are specified)
+        """Set the xaxis type of the figure or subplot (if row and col are specified).
 
         Parameters
         ----------
@@ -677,7 +682,7 @@ class OpenBBFigure(go.Figure):
         legendrank: Optional[int] = None,
         **kwargs,
     ) -> None:
-        """Add a horizontal line with a legend label
+        """Add a horizontal line with a legend label.
 
         Parameters
         ----------
@@ -714,7 +719,7 @@ class OpenBBFigure(go.Figure):
         legendrank: Optional[int] = None,
         **kwargs,
     ) -> None:
-        """Add a vertical line with a legend label
+        """Add a vertical line with a legend label.
 
         Parameters
         ----------
@@ -752,7 +757,7 @@ class OpenBBFigure(go.Figure):
         orientation: str = "h",
         **kwargs,
     ) -> None:
-        """Set the legend to be horizontal
+        """Set the legend to be horizontal.
 
         Parameters
         ----------
@@ -787,7 +792,7 @@ class OpenBBFigure(go.Figure):
         col: int = 1,
         secondary_y: bool = False,
     ) -> None:
-        """Add the volume of a stock to the figure
+        """Add the volume of a stock to the figure.
 
         Parameters
         ----------
@@ -804,7 +809,6 @@ class OpenBBFigure(go.Figure):
         secondary_y : `bool`, optional
             Whether to use the secondary y axis, by default False
         """
-
         colors = [
             theme.down_color if row.Open < row[close_col] else theme.up_color
             for _, row in df_stock.iterrows()
@@ -829,7 +833,7 @@ class OpenBBFigure(go.Figure):
         legendrank: Optional[int] = None,
         **kwargs,
     ) -> None:
-        """Adds a legend label
+        """Add a legend label.
 
         Parameters
         ----------
@@ -854,7 +858,6 @@ class OpenBBFigure(go.Figure):
         ValueError
             If label is not specified and trace is not specified
         """
-
         if trace:
             for trace_ in self.data:
                 if trace_.name == trace:
@@ -891,7 +894,7 @@ class OpenBBFigure(go.Figure):
         export_image: Optional[Union[Path, str]] = "",
         **kwargs,
     ) -> Optional["OpenBBFigure"]:
-        """Show the figure
+        """Show the figure.
 
         Parameters
         ----------
@@ -972,7 +975,7 @@ class OpenBBFigure(go.Figure):
         return pio.show(self, *args, **kwargs)
 
     def _xaxis_tickformatstops(self) -> None:
-        """Sets the datetickformatstops for the xaxis if the x data is datetime"""
+        """Set the datetickformatstops for the xaxis if the x data is datetime."""
         if (dateindex := self.get_dateindex()) is None:
             return
 
@@ -1003,7 +1006,7 @@ class OpenBBFigure(go.Figure):
             )
 
     def get_dateindex(self) -> Optional[List[datetime]]:
-        """Return the dateindex of the figure
+        """Return the dateindex of the figure.
 
         Returns
         -------
@@ -1032,7 +1035,7 @@ class OpenBBFigure(go.Figure):
         return output
 
     def hide_holidays(self, prepost: bool = False) -> None:
-        """Add rangebreaks to hide holidays on the xaxis
+        """Add rangebreaks to hide holidays on the xaxis.
 
         Parameters
         ----------
@@ -1075,7 +1078,7 @@ class OpenBBFigure(go.Figure):
         secondary_y: bool = False,
         **kwargs,
     ) -> "OpenBBFigure":
-        """Return the figure as a subplot of another figure
+        """Return the figure as a subplot of another figure.
 
         Parameters
         ----------
@@ -1105,7 +1108,7 @@ class OpenBBFigure(go.Figure):
         return subplot
 
     def to_html(self, *args, **kwargs) -> str:
-        """Return the figure as HTML"""
+        """Return the figure as HTML."""
         self.update_traces(marker_line_width=0.0001, selector=dict(type="bar"))
         kwargs.update(
             dict(
@@ -1144,7 +1147,7 @@ class OpenBBFigure(go.Figure):
 
     @staticmethod
     def row_colors(data: pd.DataFrame) -> Optional[List[str]]:
-        """Return the row colors of the table
+        """Return the row colors of the table.
 
         Parameters
         ----------
@@ -1171,7 +1174,7 @@ class OpenBBFigure(go.Figure):
 
     @staticmethod
     def _tbl_values(data: pd.DataFrame, print_index: bool) -> Tuple[List[str], List]:
-        """Return the values of the table
+        """Return the values of the table.
 
         Parameters
         ----------
@@ -1207,7 +1210,7 @@ class OpenBBFigure(go.Figure):
         print_index: bool = True,
         **kwargs,
     ) -> "OpenBBFigure":
-        """Converts a dataframe to a table figure
+        """Convert a dataframe to a table figure.
 
         Parameters
         ----------
@@ -1227,7 +1230,6 @@ class OpenBBFigure(go.Figure):
         `plotly.graph_objects.Figure`
             The figure as a table
         """
-
         if not columnwidth:
             # we get the length of each column using the max length of the column
             # name and the max length of the column values as the column width
@@ -1284,7 +1286,7 @@ class OpenBBFigure(go.Figure):
         return fig
 
     def _adjust_margins(self) -> None:
-        """Adjust the margins of the figure"""
+        """Adjust the margins of the figure."""
         if self._margin_adjusted:
             return
 
@@ -1316,7 +1318,7 @@ class OpenBBFigure(go.Figure):
         self._margin_adjusted = True
 
     def _set_watermark(self) -> None:
-        """Sets the watermark for OpenBB Terminal"""
+        """Set the watermark for OpenBB Terminal."""
         self.add_annotation(
             yref="paper",
             xref="paper",
@@ -1334,7 +1336,7 @@ class OpenBBFigure(go.Figure):
 
     # pylint: disable=import-outside-toplevel
     def _add_cmd_source(self) -> None:
-        """Sets the watermark for OpenBB Terminal"""
+        """Set the watermark for OpenBB Terminal."""
         from openbb_terminal.helper_funcs import command_location
 
         if command_location:
@@ -1375,7 +1377,7 @@ class OpenBBFigure(go.Figure):
             self._set_watermark()
 
     def add_logscale_menus(self) -> None:
-        """Sets the menus for the figure"""
+        """Set the menus for the figure."""
         self._added_logscale = True
         self.update_layout(
             xaxis=dict(
@@ -1449,7 +1451,7 @@ class OpenBBFigure(go.Figure):
         pacf: bool = False,
         **kwargs,
     ) -> None:
-        """Adds a correlation plot to a figure object
+        """Add a correlation plot to a figure object.
 
         Parameters
         ----------
