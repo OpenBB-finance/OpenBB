@@ -1,6 +1,7 @@
+# ######### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ######### #
 # flake8: noqa
 # pylint: disable=C0301,R0902,R0903
-from openbb_terminal.sdk_core.models import forex_sdk_model as model
+from openbb_terminal.core.sdk.models import forex_sdk_model as model
 
 
 class ForexController(model.ForexRoot):
