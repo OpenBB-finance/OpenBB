@@ -657,16 +657,24 @@ class SettingsController(BaseController):
         console.print()
 
     @log_start_end(log=logger)
-    def call_tbnews(self, _):
+    def call_tbnews(self, other_args):
         """Process tbnews command"""
-        if obbff.TOOLBAR_TWEET_NEWS:
-            console.print("Will take effect when running terminal next.")
-        obbff.TOOLBAR_TWEET_NEWS = not obbff.TOOLBAR_TWEET_NEWS
-        set_key(
-            USER_ENV_FILE,
-            "OPENBB_TOOLBAR_TWEET_NEWS",
-            str(obbff.TOOLBAR_TWEET_NEWS),
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="tweetnews",
+            description="Tweak tweet news toolbal parameters",
         )
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            if obbff.TOOLBAR_TWEET_NEWS:
+                console.print("Will take effect when running terminal next.")
+            obbff.TOOLBAR_TWEET_NEWS = not obbff.TOOLBAR_TWEET_NEWS
+            set_key(
+                USER_ENV_FILE,
+                "OPENBB_TOOLBAR_TWEET_NEWS",
+                str(obbff.TOOLBAR_TWEET_NEWS),
+            )
 
     @log_start_end(log=logger)
     def call_tweetnews(self, other_args: List[str]):
