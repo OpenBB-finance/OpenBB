@@ -47,7 +47,8 @@ from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.reports.reports_model import ipykernel_launcher
 from openbb_terminal.rich_config import MenuText, console
 from openbb_terminal.session import session_controller
-from openbb_terminal.session.user import get_current_user, guest_message, is_guest
+from openbb_terminal.session.user import get_current_user, is_guest
+from openbb_terminal.session.constants import REGISTER_URL
 from openbb_terminal.terminal_helper import (
     bootup,
     check_for_updates,
@@ -374,7 +375,10 @@ class TerminalController(BaseController):
         current_user = get_current_user()
 
         if is_guest(current_user):
-            console.print(guest_message())
+            console.print((
+                "[info]You are currently logged as a guest.\n"
+                f"[info]Register: [/info][cmds]{REGISTER_URL}\n[/cmds]"
+            ))
             return
         self.queue = self.load_class(AccountController, self.queue)
 

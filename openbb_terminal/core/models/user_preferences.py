@@ -5,4 +5,4 @@ from pydantic.dataclasses import dataclass
 class PreferencesModel:
     """Data model for preferences."""
 
-    # To be implemented
+    SYNC_ENABLED: bool = True

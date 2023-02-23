@@ -49,7 +49,8 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.rich_config import console, get_ordered_list_sources
-from openbb_terminal.session.user import get_current_user, guest_message, is_guest
+from openbb_terminal.session.user import get_current_user, is_guest
+from openbb_terminal.session.constants import REGISTER_URL
 from openbb_terminal.stocks import stocks_helper
 from openbb_terminal.terminal_helper import is_auth_enabled, open_openbb_documentation
 
@@ -706,7 +707,10 @@ class BaseController(metaclass=ABCMeta):
                     sync = "OFF"
                 console.print(f"[info]sync:[/info] {sync}")
             else:
-                console.print(guest_message())
+                console.print((
+                    "[info]You are currently logged as a guest.\n"
+                    f"[info]Register: [/info][cmds]{REGISTER_URL}\n[/cmds]"
+                )))
 
     @staticmethod
     def parse_simple_args(parser: argparse.ArgumentParser, other_args: List[str]):

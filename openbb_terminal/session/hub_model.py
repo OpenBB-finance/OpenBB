@@ -4,14 +4,12 @@ from typing import Dict, Optional
 import requests
 
 from openbb_terminal.rich_config import console
-
-REGISTER_URL = "https://my.openbb.dev/register"
-BASE_URL = "https://payments.openbb.dev/"
-# BASE_URL = "http://127.0.0.1:8000/"
-TIMEOUT = 15
-
-CONNECTION_ERROR_MSG = "[red]Connection error.[/red]"
-CONNECTION_TIMEOUT_MSG = "[red]Connection timeout.[/red]"
+from openbb_terminal.session.constants import (
+    BASE_URL,
+    TIMEOUT,
+    CONNECTION_ERROR_MSG,
+    CONNECTION_TIMEOUT_MSG,
+)
 
 
 def create_session(

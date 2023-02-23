@@ -15,8 +15,6 @@ from openbb_terminal.core.models.user_model import UserModel
 from openbb_terminal.helper_funcs import system_clear
 from openbb_terminal.rich_config import console
 from openbb_terminal.session.user import (
-    get_current_user,
-    reset_flair,
     set_current_user,
     update_flair,
 )
@@ -133,7 +131,6 @@ def logout(
         r = Hub.delete_session(auth_header, token)
         if not r or r.status_code != 200:
             success = False
-        reset_flair(get_current_user())
 
         if not Local.remove_session_file():
             success = False

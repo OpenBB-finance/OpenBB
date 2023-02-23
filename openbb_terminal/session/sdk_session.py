@@ -8,10 +8,9 @@ from openbb_terminal.session import (
 )
 from openbb_terminal.session.user import (
     get_current_user,
-    guest_message,
     is_guest,
-    is_sync_enabled,
 )
+from openbb_terminal.session.constants import REGISTER_URL
 
 logger = logging.getLogger(__name__)
 
@@ -86,10 +85,11 @@ def logout():
     >>> openbb.logout()
     """
     current_user = get_current_user()
+    local_user = get_current_user()
     session_model.logout(
         auth_header=current_user.profile.get_auth_header(),
-        token=current_user.profile.get_token(),
-        guest=is_guest(current_user),
+        token=current_user.profile.token,
+        guest=local_user,
     )
 
 
@@ -104,13 +104,17 @@ def whoami():
     >>> openbb.whoami()
     """
     current_user = get_current_user()
-    if not is_guest(current_user):
+    local_user = is_guest()
+    if not local_user:
         console.print(f"[info]email:[/info] {current_user.profile.email}")
         console.print(f"[info]uuid:[/info] {current_user.profile.uuid}")
-        if is_sync_enabled(current_user):
+        if current_user.preferences.SYNC_ENABLED:
             sync = "ON"
         else:
             sync = "OFF"
         console.print(f"[info]sync:[/info] {sync}")
     else:
-        console.print(guest_message())
+        console.print((
+            "[info]You are currently logged as a guest.\n"
+            f"[info]Register: [/info][cmds]{REGISTER_URL}\n[/cmds]"
+        ))

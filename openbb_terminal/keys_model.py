@@ -41,7 +41,6 @@ from openbb_terminal.session.local_model import SESSION_FILE_PATH
 from openbb_terminal.session.user import (
     get_current_user,
     is_guest,
-    is_sync_enabled,
     set_current_user,
 )
 from openbb_terminal.terminal_helper import suppress_stdout
@@ -247,11 +246,13 @@ def set_key(name: str, value: str, persist: bool = False) -> None:
     # Add var to user
     setattr(current_user.credentials, name, value)
     set_current_user(current_user)
+    sync_enabled = current_user.preferences.SYNC_ENABLED
+    local_user = is_guest()
 
     # Send api key to server
     if (
-        not is_guest(current_user)
-        and is_sync_enabled(current_user)
+        not local_user
+        and sync_enabled
         and name not in cfg.SENSITIVE_KEYS
         and (name.startswith("API_") or name.startswith("OPENBB_"))
     ):

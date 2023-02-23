@@ -39,7 +39,6 @@ from openbb_terminal.session.hub_model import patch_user_configs
 from openbb_terminal.session.user import (
     get_current_user,
     is_guest,
-    is_sync_enabled,
 )
 
 # pylint: disable=too-many-lines,no-member,too-many-public-methods,C0302
@@ -195,8 +194,11 @@ class SettingsController(BaseController):
         """
 
         current_user = get_current_user()
+        sync_enabled = current_user.preferences.SYNC_ENABLED
+        local_user = is_guest()
 
-        if is_guest(current_user):
+
+        if local_user:
             set_key(str(USER_ENV_FILE), name, str(value))
 
         # Remove "OPENBB_" prefix from env_var
@@ -207,7 +209,7 @@ class SettingsController(BaseController):
         setattr(cfg_plot, name, value)
 
         # Send feature flag to server
-        if not is_guest(current_user) and is_sync_enabled(current_user):
+        if not local_user and sync_enabled:
             patch_user_configs(
                 key=name,
                 value=str(value),
@@ -228,8 +230,10 @@ class SettingsController(BaseController):
         """
 
         current_user = get_current_user()
+        sync_enabled = current_user.preferences.SYNC_ENABLED
+        local_user = is_guest()
 
-        if is_guest(current_user):
+        if local_user:
             set_key(str(USER_ENV_FILE), name, str(value))
 
         # Remove "OPENBB_" prefix from env_var
@@ -240,7 +244,7 @@ class SettingsController(BaseController):
         setattr(paths, name, value)
 
         # Send feature flag to server
-        if not is_guest(current_user) and is_sync_enabled(current_user):
+        if not local_user and sync_enabled:
             patch_user_configs(
                 key=name,
                 value=str(value),
