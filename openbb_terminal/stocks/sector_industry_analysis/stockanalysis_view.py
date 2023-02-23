@@ -32,7 +32,6 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def display_plots_financials(
-    equities,
     finance_key: str = "re",
     country: str = "United States",
     sector: str = "Communication Services",
@@ -104,7 +103,7 @@ def display_plots_financials(
         stocks_data = already_loaded_stocks_data
     else:
         company_tickers = filter_stocks(
-            equities, country, sector, industry, marketcap, exclude_exchanges
+            country, sector, industry, marketcap, exclude_exchanges
         )
 
         if len(company_tickers) <= 1:

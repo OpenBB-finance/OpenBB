@@ -746,7 +746,7 @@ def get_search_indices(keyword: list, limit: int = 10) -> pd.DataFrame:
     queried_indices = pd.concat(
         [
             queried_indices,
-            indices.data[indices.data.index.str.contains(keyword_adjusted)],
+            indices.search(index=keyword_adjusted),
         ]
     )
 

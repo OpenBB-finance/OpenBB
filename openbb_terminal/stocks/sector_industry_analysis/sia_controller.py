@@ -199,19 +199,19 @@ class SectorIndustryAnalysisController(BaseController):
             self.choices["industry"] = {
                 i: {}
                 for i in financedatabase_model.get_industries(
-                    country=self.country, sector=self.sector, equities=self.equities
+                    country=self.country, sector=self.sector
                 )
             }
             self.choices["sector"] = {
                 s: {}
                 for s in financedatabase_model.get_sectors(
-                    industry=self.industry, country=self.country, equities=self.equities
+                    industry=self.industry, country=self.country
                 )
             }
             self.choices["country"] = {
                 c: {}
                 for c in financedatabase_model.get_countries(
-                    industry=self.industry, sector=self.sector, equities=self.equities
+                    industry=self.industry, sector=self.sector
                 )
             }
             self.completer = NestedCompleter.from_nested_dict(self.choices)
@@ -319,9 +319,7 @@ class SectorIndustryAnalysisController(BaseController):
                 )
 
             self.country = self.equities.select().loc[self.ticker, "country"]
-            if self.country not in financedatabase_model.get_countries(
-                equities=self.equities
-            ):
+            if self.country not in financedatabase_model.get_countries():
                 similar_cmd = difflib.get_close_matches(
                     self.country,
                     financedatabase_model.get_countries(),
@@ -331,26 +329,20 @@ class SectorIndustryAnalysisController(BaseController):
                 if similar_cmd:
                     self.country = similar_cmd[0]
             self.sector = self.equities.select().loc[self.ticker, "sector"]
-            if self.sector not in financedatabase_model.get_sectors(
-                equities=self.equities
-            ):
-                print(self.sector)
-                print(financedatabase_model.get_sectors(equities=self.equities))
+            if self.sector not in financedatabase_model.get_sectors():
                 similar_cmd = difflib.get_close_matches(
                     self.sector,
-                    financedatabase_model.get_sectors(equities=self.equities),
+                    financedatabase_model.get_sectors(),
                     n=1,
                     cutoff=0.7,
                 )
                 if similar_cmd:
                     self.sector = similar_cmd[0]
             self.industry = self.equities.select().loc[self.ticker, "industry"]
-            if self.industry not in financedatabase_model.get_industries(
-                equities=self.equities
-            ):
+            if self.industry not in financedatabase_model.get_industries():
                 similar_cmd = difflib.get_close_matches(
                     self.industry,
-                    financedatabase_model.get_industries(equities=self.equities),
+                    financedatabase_model.get_industries(),
                     n=1,
                     cutoff=0.7,
                 )
@@ -371,6 +363,8 @@ class SectorIndustryAnalysisController(BaseController):
                     self.mktcap = "Large"
                 else:
                     self.mktcap = "Mid"
+            else:
+                self.mktcap = self.equities.select().loc[self.ticker, "market_cap"]
 
             self.stocks_data = {}
             self.update_runtime_choices()
@@ -399,14 +393,14 @@ class SectorIndustryAnalysisController(BaseController):
 
         if ns_parser:
             possible_industries = financedatabase_model.get_industries(
-                country=self.country, sector=self.sector, equities=self.equities
+                country=self.country, sector=self.sector
             )
             if ns_parser.name:
                 if " ".join(ns_parser.name) in possible_industries:
                     self.industry = " ".join(ns_parser.name)
                     # if we get the industry, then we also automatically know the sector
                     self.sector = financedatabase_model.get_sectors(
-                        industry=self.industry, equities=self.equities
+                        industry=self.industry
                     )[0]
                     self.update_runtime_choices()
                 else:
@@ -424,7 +418,7 @@ class SectorIndustryAnalysisController(BaseController):
                         self.industry = similar_cmd[0]
                         # if we get the industry, then we also automatically know the sector
                         self.sector = financedatabase_model.get_sectors(
-                            industry=self.industry, equities=self.equities
+                            industry=self.industry
                         )[0]
                         self.update_runtime_choices()
                     else:
@@ -465,7 +459,7 @@ class SectorIndustryAnalysisController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             possible_sectors = financedatabase_model.get_sectors(
-                self.industry, self.country, equities=self.equities
+                self.industry, self.country
             )
             if ns_parser.name:
                 if " ".join(ns_parser.name) in possible_sectors:
@@ -526,7 +520,7 @@ class SectorIndustryAnalysisController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             possible_countries = financedatabase_model.get_countries(
-                industry=self.industry, sector=self.sector, equities=self.equities
+                industry=self.industry, sector=self.sector
             )
             if ns_parser.name:
                 if " ".join(ns_parser.name) in possible_countries:
@@ -770,7 +764,6 @@ class SectorIndustryAnalysisController(BaseController):
                         self.stocks_data,
                         self.tickers,
                     ) = financedatabase_view.display_bars_financials(
-                        self.equities,
                         self.metric_yf_keys[ns_parser.metric][0],
                         self.metric_yf_keys[ns_parser.metric][1],
                         self.country,
@@ -861,7 +854,6 @@ class SectorIndustryAnalysisController(BaseController):
                         self.stocks_data,
                         self.tickers,
                     ) = stockanalysis_view.display_plots_financials(
-                        equities=self.equities,
                         finance_key=ns_parser.metric,
                         country=self.country,
                         sector=self.sector,
@@ -929,7 +921,6 @@ class SectorIndustryAnalysisController(BaseController):
                 console.print("The country parameter needs to be selected!\n")
             else:
                 financedatabase_view.display_companies_per_sector_in_country(
-                    equities=self.equities,
                     country=self.country,
                     mktcap=self.mktcap,
                     exclude_exchanges=self.exclude_exchanges,
@@ -984,7 +975,6 @@ class SectorIndustryAnalysisController(BaseController):
                 console.print("The country parameter needs to be selected!\n")
             else:
                 financedatabase_view.display_companies_per_industry_in_country(
-                    equities=self.equities,
                     country=self.country,
                     mktcap=self.mktcap,
                     exclude_exchanges=self.exclude_exchanges,
@@ -1036,7 +1026,6 @@ class SectorIndustryAnalysisController(BaseController):
                 console.print("The sector parameter needs to be selected!\n")
             else:
                 financedatabase_view.display_companies_per_industry_in_sector(
-                    equities=self.equities,
                     sector=self.sector,
                     mktcap=self.mktcap,
                     exclude_exchanges=self.exclude_exchanges,
@@ -1088,7 +1077,6 @@ class SectorIndustryAnalysisController(BaseController):
                 console.print("The sector parameter needs to be selected!\n")
             else:
                 financedatabase_view.display_companies_per_country_in_sector(
-                    equities=self.equities,
                     sector=self.sector,
                     mktcap=self.mktcap,
                     exclude_exchanges=self.exclude_exchanges,
@@ -1140,7 +1128,6 @@ class SectorIndustryAnalysisController(BaseController):
                 console.print("The industry parameter needs to be selected!\n")
             else:
                 financedatabase_view.display_companies_per_country_in_industry(
-                    equities=self.equities,
                     industry=self.industry,
                     mktcap=self.mktcap,
                     exclude_exchanges=self.exclude_exchanges,

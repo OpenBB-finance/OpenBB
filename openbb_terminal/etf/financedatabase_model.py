@@ -11,8 +11,6 @@ from openbb_terminal.decorators import log_start_end
 
 logger = logging.getLogger(__name__)
 
-etfs = fd.ETFs()
-
 
 @log_start_end(log=logger)
 def get_etfs_by_name(name: str) -> Dict:
@@ -28,6 +26,8 @@ def get_etfs_by_name(name: str) -> Dict:
     data : Dict[str, Any]
         Dictionary with ETFs that match a certain name
     """
+    etfs = fd.ETFs()
+
     data = etfs.search(long_name=name, exclude_exchanges=True)
     data = pd.concat([data, etfs.search(index=name, exclude_exchanges=True)])
 
@@ -49,6 +49,8 @@ def get_etfs_by_description(description: str) -> Dict:
     data: Dict[str, Any]
         Dictionary with ETFs that match a certain description
     """
+    etfs = fd.ETFs()
+
     return etfs.search(summary=description, exclude_exchanges=True)
 
 
@@ -67,6 +69,8 @@ def get_etfs_by_category(category: str) -> Dict:
     data: Dict[str, Any]
         Dictionary with ETFs that match a certain description
     """
+    etfs = fd.ETFs()
+
     return etfs.select(category=category, exclude_exchanges=True)
 
 
@@ -79,4 +83,6 @@ def get_etfs_categories() -> List[str]:
     List[str]
         ETF categories
     """
+    etfs = fd.ETFs()
+
     return etfs.options("category")

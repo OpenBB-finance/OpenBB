@@ -55,8 +55,9 @@ def show_equities(
         Show the country, sector or industry options.
     """
     if options is not None:
-        for option in fd.show_options("equities", options):
-            console.print(option)
+        for option in ["country", "sector", "industry_group", "industry"]:
+            console.print(option.title())
+            console.print(equities.options(option))
         return
 
     if country is not None:
@@ -84,7 +85,8 @@ def show_equities(
         [
             "long_name",
             "sector",
-            "industry_group" "industry",
+            "industry_group",
+            "industry",
             "country",
             "city",
             "website",

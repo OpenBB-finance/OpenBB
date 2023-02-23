@@ -152,12 +152,13 @@ def search(
     kwargs["exclude_exchanges"] = False if exchange_country else not all_exchanges
 
     try:
-        equities = fd.Equities()
+        equities_database = fd.Equities()
+
         if query:
-            data = equities.search(**kwargs, long_name=query)
-            data.update(equities.search(**kwargs, short_name=query))
+            data = equities_database.search(**kwargs, long_name=query)
+            data.update(equities_database.search(**kwargs, short_name=query))
         else:
-            data = equities.search(**kwargs)
+            data = equities_database.search(**kwargs)
     except ReadTimeout:
         console.print(
             "[red]Unable to retrieve company data from GitHub which limits the search"

@@ -38,7 +38,7 @@ def test_create_xls():
 
 @pytest.mark.skip(reason="Feature broken?")
 def test_create_workbook(mocker):
-    excel = dcf_view.CreateExcelFA(symbol="AAPL", audit=False)
+    excel = dcf_view.CreateExcelFA(symbol="AAPL", audit=False, beta=1)
 
     # MOCK GENERATE_PATH
     attrs = {

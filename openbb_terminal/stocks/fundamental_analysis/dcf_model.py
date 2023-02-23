@@ -293,6 +293,7 @@ def get_historical_5(symbol: str) -> pd.DataFrame:
     df = df.drop(["Dividends", "Stock Splits"], axis=1)
     df = df.dropna()
     df.index = [d.replace(tzinfo=None) for d in df.index]
+
     return df
 
 
@@ -332,7 +333,11 @@ def get_fama_coe(symbol: str) -> float:
 
 @log_start_end(log=logger)
 def others_in_sector(
-    symbol: str, sector: str, industry: str, no_filter: bool = False
+    symbol: str,
+    sector: str,
+    industry_group: str,
+    industry: str,
+    no_filter: bool = False,
 ) -> List[str]:
     """Get other stocks in a ticker's sector
 
@@ -356,11 +361,15 @@ def others_in_sector(
     industry = industry.replace("/", " ")
 
     equities = fd.Equities()
-    similars = equities.select(sector=sector, industry=industry)
+    similars = equities.select(
+        sector=sector, industry_group=industry_group, industry=industry
+    )
 
     # This filters similars to match market cap and removes ticker analyzed
     if symbol in similars.index:
+        print(symbol)
         market_cap = similars.loc[symbol]["market_cap"]
+        print(market_cap)
         similars.pop(symbol, None)
         if not no_filter:
             similars = {
@@ -420,7 +429,7 @@ def create_dataframe(symbol: str, statement: str, period: str = "annual"):
 
     soup = BeautifulSoup(r.content, "html.parser")
     phrase = soup.find(
-        "div", attrs={"class": "hidden pb-1 text-sm text-gray-600 lg:block"}
+        "div", attrs={"class": "hidden pb-1 text-sm text-faded lg:block"}
     )
     phrase = phrase.get_text().lower() if phrase else ""
 
@@ -490,7 +499,9 @@ def get_similar_dfs(symbol: str, info: Dict[str, Any], n: int, no_filter: bool =
     new_list : List[str, pd.DataFrame]
         A list of similar companies
     """
-    similars = others_in_sector(symbol, info["sector"], info["industry"], no_filter)
+    similars = others_in_sector(
+        symbol, info["sector"], info["industry_group"], info["industry"], no_filter
+    )
     i = 0
     new_list = []
     while i < n and similars:

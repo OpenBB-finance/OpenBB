@@ -69,6 +69,7 @@ class StocksController(StockBaseController):
     FILE_PATH = os.path.join(os.path.dirname(__file__), "README.md")
 
     try:
+        # This is meant to speed up the loading of the stocks menu
         database_url = "https://raw.githubusercontent.com/JerBouma/FinanceDatabase/main/Database/Categories"
         country = pd.read_csv(f"{database_url}/equities_countries.csv", header=None)[
             0
@@ -83,7 +84,7 @@ class StocksController(StockBaseController):
             0
         ].values.tolist()
     except Exception:
-        country, sector, industry = {}, {}, {}
+        country, sector, industry_group, industry = {}, {}, {}, {}
         console.print(
             "[red]Note: Some datasets from GitHub failed to load. This means that the `search` command and "
             "the /stocks/sia menu will not work. If other commands are failing please check your internet connection or "
@@ -203,7 +204,7 @@ class StocksController(StockBaseController):
         )
         parser.add_argument(
             "-g",
-            "--industry-group",
+            "--industrygroup",
             default="",
             choices=stocks_helper.format_parse_choices(self.industry_group),
             type=str.lower,
