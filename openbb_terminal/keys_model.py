@@ -437,7 +437,8 @@ def check_fmp_key(show_output: bool = False) -> str:
         status = KeyStatus.NOT_DEFINED
     else:
         r = request(
-            f"https://financialmodelingprep.com/api/v3/profile/AAPL?apikey={current_user.credentials.API_KEY_FINANCIALMODELINGPREP}"
+            f"https://financialmodelingprep.com/api/v3/profile/AAPL?apikey="
+            f"{current_user.credentials.API_KEY_FINANCIALMODELINGPREP}"
         )
         if r.status_code in [403, 401] or "Error Message" in str(r.content):
             logger.warning("Financial Modeling Prep key defined, test failed")
