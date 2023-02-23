@@ -11,7 +11,7 @@ from openbb_terminal.core.models.user_preferences import PreferencesModel
 class UserModel:
     """Data model for user."""
 
-    profile: ProfileModel = ProfileModel()
-    credentials: CredentialsModel = CredentialsModel()
     # configurations: ConfigurationsModel
+    profile: ProfileModel
+    credentials: CredentialsModel
     preferences: PreferencesModel

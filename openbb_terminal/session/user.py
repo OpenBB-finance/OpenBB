@@ -1,37 +1,22 @@
 # IMPORTS STANDARD
 from copy import deepcopy
-from typing import Any, Dict
-
-# IMPORTS THIRDPARTY
-from dotenv import dotenv_values
 
 # IMPORTS INTERNAL
-from openbb_terminal.core.config.paths import (
-    PACKAGE_ENV_FILE,
-    REPOSITORY_ENV_FILE,
-    USER_ENV_FILE,
-)
 from openbb_terminal.core.models.user_credentials import CredentialsModel
 from openbb_terminal.core.models.user_model import UserModel
+from openbb_terminal.core.models.user_preferences import PreferenceModel
+from openbb_terminal.core.models.user_profile import ProfileModel
+from openbb_terminal.session.env_handler import reading_env
 
-
-def __reading_env() -> Dict[str, Any]:
-    __env_dict = {
-        **dotenv_values(REPOSITORY_ENV_FILE),
-        **dotenv_values(PACKAGE_ENV_FILE),
-        **dotenv_values(USER_ENV_FILE),
-    }
-    __env_dict_filtered = {
-        k[len("OPENBBB_") - 1 :]: v
-        for k, v in __env_dict.items()
-        if k.startswith("OPENBB_")
-    }
-
-    return __env_dict_filtered
-
-
-__credentials = CredentialsModel(**__reading_env())
-__local_user = UserModel(credentials=__credentials)  # type:ignore
+__env_dict = reading_env()
+__credentials = CredentialsModel(**__env_dict)
+__preferences = PreferenceModel(**__env_dict)
+__profile = ProfileModel()
+__local_user = UserModel(
+    credentials=__credentials,
+    preferences=__preferences,
+    profile=__profile,
+)
 __current_user = None
 
 
