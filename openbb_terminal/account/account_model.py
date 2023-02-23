@@ -12,6 +12,7 @@ from openbb_terminal import (
 from openbb_terminal.base_helpers import strtobool
 from openbb_terminal.core.config import paths
 from openbb_terminal.rich_config import console
+from openbb_terminal.session.user import get_current_user
 
 
 def get_diff(configs: dict) -> dict:
@@ -103,11 +104,12 @@ def get_diff_keys(keys: dict) -> dict:
     dict
         The diff.
     """
+    current_user = get_current_user()
     diff = {}
     if keys:
         for k, v in sorted(keys.items()):
-            if hasattr(cfg, k):
-                old, new = get_var_diff(cfg, k, v)
+            if hasattr(current_user.credentials, k):
+                old, new = get_var_diff(current_user.credentials, k, v)
                 if new is not None:
                     diff[k] = (old, new)
 

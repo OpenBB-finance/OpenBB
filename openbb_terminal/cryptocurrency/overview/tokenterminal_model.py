@@ -5,7 +5,6 @@ from typing import List
 import pandas as pd
 from tokenterminal import TokenTerminal
 
-from openbb_terminal import config_terminal as cfg
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.session.user import get_current_user
 

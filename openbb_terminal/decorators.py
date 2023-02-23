@@ -116,8 +116,6 @@ def check_api_key(api_keys):
         @functools.wraps(func)
         def wrapper_decorator(*args, **kwargs):
             if obbff.ENABLE_CHECK_API:
-                import openbb_terminal.config_terminal as cfg
-
                 current_user = get_current_user()
                 undefined_apis = []
                 for key in api_keys:

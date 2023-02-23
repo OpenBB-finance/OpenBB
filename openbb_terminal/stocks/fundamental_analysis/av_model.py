@@ -8,7 +8,6 @@ import numpy as np
 import pandas as pd
 from alpha_vantage.fundamentaldata import FundamentalData
 
-from openbb_terminal import config_terminal as cfg
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import lambda_long_number_format, request
 from openbb_terminal.rich_config import console

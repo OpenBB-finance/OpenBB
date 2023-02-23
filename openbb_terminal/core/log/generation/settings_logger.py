@@ -9,6 +9,7 @@ from types import FunctionType, ModuleType
 import openbb_terminal.feature_flags as obbff
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.core.log.generation.common import do_rollover
+from openbb_terminal.session.user import get_current_user
 from openbb_terminal.terminal_helper import is_installer
 
 SENSITIVE_WORDS = [
@@ -99,12 +100,14 @@ def log_feature_flags() -> None:
 def log_keys() -> None:
     """Log keys"""
 
-    var_list = [v for v in dir(cfg) if v.startswith("API_")]
+    current_user = get_current_user()
+
+    var_list = [v for v in dir(current_user.credentials) if v.startswith("API_")]
 
     current_keys = {}
 
     for cfg_var_name in var_list:
-        cfg_var_value = getattr(cfg, cfg_var_name)
+        cfg_var_value = getattr(current_user.credentials, cfg_var_name)
 
         if cfg_var_value != "REPLACE_ME":
             current_keys[cfg_var_name] = "defined"

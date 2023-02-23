@@ -197,9 +197,9 @@ PATH_TO_SELENIUM_DRIVER = ""  # Replace with "PATH"
 # API_STOCKSERA_KEY = os.getenv("OPENBB_API_STOCKSERA_KEY") or "REPLACE_ME"
 
 # https://my.openbb.co
-OPENBB_PERSONAL_ACCESS_TOKEN = (
-    os.getenv("OPENBB_OPENBB_PERSONAL_ACCESS_TOKEN") or "REPLACE_ME"
-)
+# OPENBB_PERSONAL_ACCESS_TOKEN = (
+#     os.getenv("OPENBB_OPENBB_PERSONAL_ACCESS_TOKEN") or "REPLACE_ME"
+# )
 
 # https://intrinio.com/starter-plan
 # API_INTRINIO_KEY = os.getenv("OPENBB_API_INTRINIO_KEY") or "REPLACE_ME"

@@ -131,8 +131,8 @@ def apply_configs(configs: dict):
                 for k, v in settings.items():
                     if hasattr(obbff, k):
                         cast_set_attr(obbff, k, v)
-                    elif hasattr(current_user.credentials, k):
-                        cast_set_attr(current_user.credentials, k, v)
+                    elif hasattr(cfg, k):
+                        cast_set_attr(cfg, k, v)
                     elif hasattr(cfg_plot, k):
                         cast_set_attr(cfg_plot, k, v)
                     elif hasattr(paths, k):
@@ -141,8 +141,8 @@ def apply_configs(configs: dict):
             keys = configs.get("features_keys", {})
             if keys:
                 for k, v in keys.items():
-                    if hasattr(cfg, k):
-                        setattr(cfg, k, v)
+                    if hasattr(current_user.credentials, k):
+                        setattr(current_user.credentials, k, v)
 
 
 def update_sync_flag(settings: dict) -> bool:
