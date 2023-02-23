@@ -4,18 +4,32 @@
 from unittest.mock import patch
 
 import pytest
-from openbb_terminal.core.models.user.user_model import UserModel
 
 # IMPORTATION INTERNAL
+from openbb_terminal.core.models.user.user_model import (
+    CredentialsModel,
+    PreferencesModel,
+    ProfileModel,
+    UserModel,
+)
 from openbb_terminal.core.session import sdk_session
 from openbb_terminal.core.session.session_model import LoginStatus
-from openbb_terminal.core.session.user import get_current_user, is_guest
+from openbb_terminal.core.session.user import is_guest
 
 TEST_SESSION = {
     "access_token": "test_token",
     "token_type": "bearer",
     "uuid": "test_uuid",
 }
+
+
+@pytest.fixture(name="test_user")
+def fixture_test_user():
+    return UserModel(
+        credentials=CredentialsModel(),
+        preferences=PreferencesModel(),
+        profile=ProfileModel(),
+    )
 
 
 @pytest.mark.parametrize(
@@ -171,8 +185,7 @@ def test_login(
     mock_login.assert_called_once_with(TEST_SESSION)
 
 
-def test_logout(mocker):
-    test_user = UserModel()
+def test_logout(mocker, test_user):
     test_user.profile.load_user_info(TEST_SESSION, "testy@email.com")
     mocker.patch(
         target="openbb_terminal.core.session.sdk_session.get_current_user",
@@ -184,7 +197,7 @@ def test_logout(mocker):
         mock_logout.assert_called_once_with(
             auth_header=test_user.profile.get_auth_header(),
             token=test_user.profile.get_token(),
-            guest=is_guest(test_user),
+            guest=is_guest(),
         )
 
 
@@ -194,8 +207,7 @@ def test_whoami_guest():
 
 
 @pytest.mark.record_stdout
-def test_whoami(mocker):
-    test_user = UserModel()
+def test_whoami(mocker, test_user):
     test_user.profile.load_user_info(
         {
             "token_type": "MOCK_TOKEN_TYPE",

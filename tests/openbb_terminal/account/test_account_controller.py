@@ -8,7 +8,12 @@ from requests import Response
 
 # IMPORTATION INTERNAL
 from openbb_terminal.account import account_controller
-from openbb_terminal.core.models.user.user_model import UserModel
+from openbb_terminal.core.models.user.user_model import (
+    CredentialsModel,
+    PreferencesModel,
+    ProfileModel,
+    UserModel,
+)
 
 # pylint: disable=E1101
 # pylint: disable=W0603
@@ -58,6 +63,15 @@ def vcr_config():
             ("apiKey", "MOCK_API_KEY"),
         ],
     }
+
+
+@pytest.fixture(name="test_user")
+def fixture_test_user():
+    return UserModel(
+        credentials=CredentialsModel(),
+        preferences=PreferencesModel(),
+        profile=ProfileModel(),
+    )
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -361,13 +375,12 @@ def test_call_sync(mocker, other_args, sync):
         "n",
     ],
 )
-def test_call_pull(mocker, input_value):
+def test_call_pull(mocker, input_value, test_user):
     DIFF = {"TIMEZONE": "Europe/London"}
 
     controller = account_controller.AccountController(queue=None)
     path_controller = "openbb_terminal.account.account_controller"
 
-    test_user = UserModel()
     test_user.profile.token_type = TEST_SESSION["token_type"]
     test_user.profile.token = TEST_SESSION["access_token"]
     test_user.profile.uuid = TEST_SESSION["uuid"]
@@ -437,11 +450,10 @@ def test_call_clear(mocker, input_value):
 
 
 @pytest.mark.record_stdout
-def test_call_list(mocker):
+def test_call_list(mocker, test_user):
     controller = account_controller.AccountController(queue=None)
     path_controller = "openbb_terminal.account.account_controller"
 
-    test_user = UserModel()
     test_user.profile.token_type = "Bearer"
     test_user.profile.token = "123"
     mocker.patch(
@@ -466,11 +478,10 @@ def test_call_list(mocker):
     )
 
 
-def test_call_upload(mocker):
+def test_call_upload(mocker, test_user):
     controller = account_controller.AccountController(queue=None)
     path_controller = "openbb_terminal.account.account_controller"
 
-    test_user = UserModel()
     test_user.profile.token_type = "Bearer"
     test_user.profile.token = "123"
     mocker.patch(
@@ -507,11 +518,10 @@ def test_call_upload(mocker):
 
 
 @pytest.mark.record_stdout
-def test_call_download(mocker):
+def test_call_download(mocker, test_user):
     controller = account_controller.AccountController(queue=None)
     path_controller = "openbb_terminal.account.account_controller"
 
-    test_user = UserModel()
     test_user.profile.token_type = "Bearer"
     test_user.profile.token = "123"
     mocker.patch(
@@ -558,11 +568,10 @@ def test_call_download(mocker):
 @pytest.mark.skip(
     reason="We should add a `-y or -f` option to make that easier to test"
 )
-def test_call_delete(mocker, monkeypatch):
+def test_call_delete(mocker, monkeypatch, test_user):
     controller = account_controller.AccountController(queue=None)
     path_controller = "openbb_terminal.account.account_controller"
 
-    test_user = UserModel()
     test_user.profile.token_type = "Bearer"
     test_user.profile.token = "123"
     mocker.patch(
@@ -590,7 +599,7 @@ def test_call_delete(mocker, monkeypatch):
     )
 
 
-def test_call_generate(mocker, monkeypatch):
+def test_call_generate(mocker, monkeypatch, test_user):
     controller = account_controller.AccountController(queue=None)
     path_controller = "openbb_terminal.account.account_controller"
 
@@ -600,7 +609,6 @@ def test_call_generate(mocker, monkeypatch):
         {"token": "MOCK_TOKEN"}
     ).encode("utf-8")
 
-    test_user = UserModel()
     test_user.profile.token_type = "Bearer"
     test_user.profile.token = "123"
     mocker.patch(
@@ -631,7 +639,7 @@ def test_call_generate(mocker, monkeypatch):
     )
 
 
-def test_call_show(mocker):
+def test_call_show(mocker, test_user):
     controller = account_controller.AccountController(queue=None)
     path_controller = "openbb_terminal.account.account_controller"
 
@@ -641,7 +649,6 @@ def test_call_show(mocker):
         {"token": "MOCK_TOKEN"}
     ).encode("utf-8")
 
-    test_user = UserModel()
     test_user.profile.token_type = "Bearer"
     test_user.profile.token = "123"
     mocker.patch(
@@ -657,11 +664,10 @@ def test_call_show(mocker):
     mock_get_token.assert_called_once_with(auth_header="Bearer 123")
 
 
-def test_call_revoke(mocker, monkeypatch):
+def test_call_revoke(mocker, monkeypatch, test_user):
     controller = account_controller.AccountController(queue=None)
     path_controller = "openbb_terminal.account.account_controller"
 
-    test_user = UserModel()
     test_user.profile.token_type = "Bearer"
     test_user.profile.token = "123"
     mocker.patch(
