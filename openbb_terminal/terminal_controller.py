@@ -153,7 +153,7 @@ class TerminalController(BaseController):
         self.ROUTINE_CHOICES["--help"] = None
         self.ROUTINE_CHOICES["--h"] = None
 
-        if session and obbff.USE_PROMPT_TOOLKIT:
+        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}  # type: ignore
             choices["support"] = self.SUPPORT_CHOICES
             choices["exe"] = self.ROUTINE_CHOICES
