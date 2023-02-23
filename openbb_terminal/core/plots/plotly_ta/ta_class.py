@@ -355,7 +355,7 @@ class PlotlyTA(PltTA):
             self.inchart_colors = theme.get_colors()[1:]
 
         if self.show_volume and "Volume" in self.df_stock.columns:
-            fig.add_stock_volume(self.df_stock, self.close_column, row=2, col=1)
+            fig.add_stock_volume(self.df_stock, self.close_column, row=2, col=1)  # type: ignore
 
         fig.update_layout(yaxis_title="Price ($)")
         return fig
