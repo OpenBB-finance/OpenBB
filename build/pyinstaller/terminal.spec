@@ -84,8 +84,6 @@ added_files = [
     (shutil.which("voila"), "."),
     (shutil.which("jupyter-lab"), "."),
     (shutil.which("streamlit"), "."),
-    (os.path.join(pathex, "pytorch_lightning", "version.info"), "pytorch_lightning"),
-    (os.path.join(pathex, "lightning_fabric", "version.info"), "lightning_fabric"),
 ]
 
 if is_win:
@@ -119,11 +117,6 @@ hidden_imports = [
     "debugpy",
     "pywry.pywry",
     "scipy.sparse.linalg._isolve._iterative",
-    "tensorboard",
-    "tensorboard_data_server",
-    "tensorboard_plugin_wit",
-    "pytorch_lightning",
-    "lightning_fabric",
 ]
 
 
@@ -148,9 +141,9 @@ pyz = PYZ(a.pure, a.zipped_data, cipher=analysis_kwargs["cipher"])
 
 # Executable icon
 if is_win:
-    exe_icon = os.path.join(os.getcwd(), "images", "openbb_icon.ico")
+    exe_icon = (os.path.join(os.getcwd(), "images", "openbb_icon.ico"),)
 if is_darwin:
-    exe_icon = os.path.join(os.getcwd(), "images", "openbb.icns")
+    exe_icon = (os.path.join(os.getcwd(), "images", "openbb.icns"),)
 
 block_cipher = None
 # PyWry
@@ -244,8 +237,7 @@ if is_win:
         text_size=12,
         text_color="white",
     )
-    exe_args += [splash]
-    collect_args += [splash.binaries]
+    exe_args += [splash, splash.binaries]
 
 
 exe = EXE(*exe_args, **exe_kwargs)
