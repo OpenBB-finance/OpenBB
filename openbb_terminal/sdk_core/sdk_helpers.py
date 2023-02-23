@@ -16,7 +16,6 @@ from openbb_terminal.sdk_core.sdk_init import (
     OPTIMIZATION_TOOLKIT_ENABLED,
     OPTIMIZATION_TOOLKIT_WARNING,
 )
-from openbb_terminal.session.sdk_session import login
 
 if not FORECASTING_TOOLKIT_ENABLED and not load_env_vars(
     "OPENBB_DISABLE_FORECASTING_WARNING", strtobool, False
@@ -279,9 +278,6 @@ class OperationLogger:
                 method_result=method_result,
                 method_chosen=self.__method_chosen,
             )
-            self.__log_if_login(
-                method_chosen=self.__method_chosen,
-            )
             self.__log_end(
                 logger=logger,
                 method_chosen=self.__method_chosen,
@@ -304,17 +300,6 @@ class OperationLogger:
                 f"Exception: {method_result}",
                 extra={"func_name_override": method_chosen.__name__},
             )
-
-    @staticmethod
-    def __log_if_login(
-        method_chosen: Callable,
-    ):
-        if method_chosen.__name__ == login.__name__:
-            from openbb_terminal.core.log.generation.user_logger import (  # pylint: disable=import-outside-toplevel
-                log_user,
-            )
-
-            log_user(with_rollover=False)
 
     @staticmethod
     def __log_end(logger: Logger, method_chosen: Callable):

@@ -21,6 +21,7 @@ from openbb_terminal.sdk_core import (
 )
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.session.user import get_current_user, is_guest
+from openbb_terminal.terminal_helper import is_auth_enabled
 
 current_user = get_current_user()
 
@@ -50,6 +51,14 @@ class OpenBBSDK:
         self.logout = lib.sdk_session.logout
         self.news = lib.common_feedparser_model.get_news
         self.whoami = lib.sdk_session.whoami
+        self._try_to_login()
+
+    def _try_to_login(self):
+        if User.is_guest() and is_auth_enabled():
+            try:
+                self.login()
+            except Exception:
+                pass
 
     @property
     def alt(self):

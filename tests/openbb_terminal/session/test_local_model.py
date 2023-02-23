@@ -186,8 +186,8 @@ def test_apply_configs_sync(sync: str):
         assert obbff.TIMEZONE == "America/New_York"
         assert cfg_plot.PLOT_DPI == 100
         assert cfg_plot.PLOT_HEIGHT_PERCENTAGE == 50.0
-        assert paths.USER_DATA_DIRECTORY == Path("user_home/OpenBBUserData")
-        assert get_current_user().credentials == "REPLACE_ME"
+        assert Path("user_home/OpenBBUserData") == paths.USER_DATA_DIRECTORY
+        assert cfg.API_KEY_ALPHAVANTAGE == "REPLACE_ME"
         assert cfg.API_FRED_KEY == "REPLACE_ME"
     else:
         assert obbff.SYNC_ENABLED is True
@@ -195,8 +195,8 @@ def test_apply_configs_sync(sync: str):
         assert obbff.TIMEZONE == "Europe/London"
         assert cfg_plot.PLOT_DPI == 95
         assert cfg_plot.PLOT_HEIGHT_PERCENTAGE == 50.5
-        assert paths.USER_DATA_DIRECTORY == Path("some/path/to/user/data")
-        assert get_current_user().credentials == "test_av"
+        assert Path("some/path/to/user/data") == paths.USER_DATA_DIRECTORY
+        assert cfg.API_KEY_ALPHAVANTAGE == "test_av"
         assert cfg.API_FRED_KEY == "test_fred"
 
 

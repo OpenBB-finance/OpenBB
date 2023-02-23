@@ -29,7 +29,9 @@ import pandas as pd
 import pandas.io.formats.format
 import pytz
 import requests
+import tweepy
 import yfinance as yf
+from dateutil.relativedelta import relativedelta
 from holidays import US as us_holidays
 from pandas._config.config import get_option
 from pandas.plotting import register_matplotlib_converters
@@ -48,6 +50,22 @@ from openbb_terminal.core.config.paths import (
 )
 from openbb_terminal.rich_config import console
 
+try:
+    twitter_api = tweepy.API(
+        tweepy.OAuth2BearerHandler(
+            cfg.API_TWITTER_BEARER_TOKEN,
+        ),
+        timeout=5,
+    )
+    if obbff.TOOLBAR_TWEET_NEWS and cfg.API_TWITTER_BEARER_TOKEN != "REPLACE_ME":
+        # A test to ensure that the Twitter API key is correct,
+        # otherwise we disable the Toolbar with Tweet News
+        twitter_api.get_user(screen_name="openbb_finance")
+except tweepy.errors.Unauthorized:
+    # Set toolbar tweet news to False because the Twitter API is not set up correctly
+    obbff.TOOLBAR_TWEET_NEWS = False
+
+
 logger = logging.getLogger(__name__)
 
 register_matplotlib_converters()
@@ -63,11 +81,12 @@ MENU_GO_BACK = 0
 MENU_QUIT = 1
 MENU_RESET = 2
 
+LAST_TWEET_NEWS_UPDATE_CHECK_TIME = None
+
 # Command location path to be shown in the figures depending on watermark flag
 command_location = ""
 
-
-# pylint: disable=R0912
+# pylint: disable=R1702,R0912
 
 
 # pylint: disable=global-statement
@@ -132,9 +151,8 @@ def parse_and_split_input(an_input: str, custom_filters: List) -> List[str]:
         Command queue as list
     """
     # Make sure that the user can go back to the root when doing "/"
-    if an_input:
-        if an_input == "/":
-            an_input = "home"
+    if an_input and an_input == "/":
+        an_input = "home"
 
     # everything from ` -f ` to the next known extension
     file_flag = r"(\ -f |\ --file )"
@@ -308,13 +326,12 @@ def print_rich_table(
             for column in df.columns:
                 table.add_column(str(column))
 
-        if isinstance(floatfmt, list):
-            if len(floatfmt) != len(df.columns):
-                log_and_raise(
-                    ValueError(
-                        "Length of floatfmt list does not match length of DataFrame columns."
-                    )
+        if isinstance(floatfmt, list) and len(floatfmt) != len(df.columns):
+            log_and_raise(
+                ValueError(
+                    "Length of floatfmt list does not match length of DataFrame columns."
                 )
+            )
         if isinstance(floatfmt, str):
             floatfmt = [floatfmt for _ in range(len(df.columns))]
 
@@ -865,10 +882,7 @@ def is_intraday(df: pd.DataFrame) -> bool:
         True if data is intraday
     """
     granularity = df.index[1] - df.index[0]
-    if granularity >= timedelta(days=1):
-        intraday = False
-    else:
-        intraday = True
+    intraday = not granularity >= timedelta(days=1)
     return intraday
 
 
@@ -888,10 +902,7 @@ def reindex_dates(df: pd.DataFrame) -> pd.DataFrame:
     pd.DataFrame
         Reindexed dataframe
     """
-    if is_intraday(df):
-        date_format = "%b %d %H:%M"
-    else:
-        date_format = "%Y-%m-%d"
+    date_format = "%b %d %H:%M" if is_intraday(df) else "%Y-%m-%d"
     reindexed_df = df.reset_index()
     reindexed_df["date"] = reindexed_df["date"].dt.strftime(date_format)
     return reindexed_df
@@ -906,7 +917,7 @@ def get_data(tweet):
             "%Y-%m-%d %H:%M:%S"
         )
 
-    s_text = tweet["full_text"] if "full_text" in tweet.keys() else tweet["text"]
+    s_text = tweet["full_text"] if "full_text" in tweet else tweet["text"]
     return {"created_at": s_datetime, "text": s_text}
 
 
@@ -1563,10 +1574,11 @@ def is_valid_axes_count(
     if len(axes) == n:
         return True
 
-    if custom_text:
-        print_text = custom_text
-    else:
-        print_text = f"Expected list of {n} axis item{'s' if n>1 else ''}."
+    print_text = (
+        custom_text
+        if custom_text
+        else f"Expected list of {n} axis item{'s' if n > 1 else ''}."
+    )
 
     if prefix_text:
         print_text = f"{prefix_text} {print_text}"
@@ -1615,10 +1627,11 @@ def check_list_values(valid_values: List[str]):
         """
         success_values = list()
 
-        if "," in given_values:
-            values_found = [val.strip() for val in given_values.split(",")]
-        else:
-            values_found = [given_values]
+        values_found = (
+            [val.strip() for val in given_values.split(",")]
+            if "," in given_values
+            else [given_values]
+        )
 
         for value in values_found:
             # check if the value is valid
@@ -1837,6 +1850,94 @@ def str_date_to_timestamp(date: str) -> int:
     )
 
     return date_ts
+
+
+def update_news_from_tweet_to_be_displayed() -> str:
+    """Update news from tweet to be displayed.
+
+    Returns
+    -------
+    str
+        The news from tweet to be displayed
+    """
+    global LAST_TWEET_NEWS_UPDATE_CHECK_TIME
+
+    news_tweet = ""
+
+    # Check whether it has passed a certain amount of time since the last news update
+    if LAST_TWEET_NEWS_UPDATE_CHECK_TIME is None or (
+        (datetime.now(pytz.utc) - LAST_TWEET_NEWS_UPDATE_CHECK_TIME).total_seconds()
+        > obbff.TOOLBAR_TWEET_NEWS_SECONDS_BETWEEN_UPDATES
+    ):
+        # This doesn't depende on the time of the tweet but the time that the check was made
+        LAST_TWEET_NEWS_UPDATE_CHECK_TIME = datetime.now(pytz.utc)
+
+        dhours = 0
+        dminutes = 0
+        # Get timezone that corresponds to the user
+        if obbff.USE_DATETIME and get_user_timezone_or_invalid() != "INVALID":
+            utcnow = pytz.timezone("utc").localize(datetime.utcnow())  # generic time
+            here = utcnow.astimezone(pytz.timezone("Etc/UTC")).replace(tzinfo=None)
+            there = utcnow.astimezone(pytz.timezone(get_user_timezone())).replace(
+                tzinfo=None
+            )
+
+            offset = relativedelta(here, there)
+            dhours = offset.hours
+            dminutes = offset.minutes
+
+        if "," in obbff.TOOLBAR_TWEET_NEWS_ACCOUNTS_TO_TRACK:
+            news_sources_twitter_handles = (
+                obbff.TOOLBAR_TWEET_NEWS_ACCOUNTS_TO_TRACK.split(",")
+            )
+        else:
+            news_sources_twitter_handles = [obbff.TOOLBAR_TWEET_NEWS_ACCOUNTS_TO_TRACK]
+
+        news_tweet_to_use = ""
+        handle_to_use = ""
+        url = ""
+        last_tweet_dt: Optional[datetime] = None
+        for handle in news_sources_twitter_handles:
+            try:
+                # Get last N tweets from each handle
+                timeline = twitter_api.user_timeline(
+                    screen_name=handle,
+                    count=obbff.TOOLBAR_TWEET_NEWS_NUM_LAST_TWEETS_TO_READ,
+                )
+                timeline = timeline[: obbff.TOOLBAR_TWEET_NEWS_NUM_LAST_TWEETS_TO_READ]
+                for last_tweet in timeline:
+                    keywords = obbff.TOOLBAR_TWEET_NEWS_KEYWORDS.split(",")
+                    more_recent = (
+                        last_tweet_dt is None or last_tweet.created_at > last_tweet_dt
+                    )
+                    with_keyword = any(key in last_tweet.text for key in keywords)
+
+                    if more_recent and with_keyword:
+                        handle_to_use = handle
+                        last_tweet_dt = last_tweet.created_at
+
+                        news_tweet_to_use = last_tweet.text
+
+                        url = f"https://twitter.com/x/status/{last_tweet.id_str}"
+
+            # In case the handle provided doesn't exist, we skip it
+            except tweepy.errors.NotFound:
+                pass
+
+        if last_tweet_dt and news_tweet_to_use:
+            tweet_hr = f"{last_tweet_dt.hour}"
+            tweet_min = f"{last_tweet_dt.minute}"
+            # Update time based on timezone specified by user
+            if (
+                obbff.USE_DATETIME and get_user_timezone_or_invalid() != "INVALID"
+            ) and (dhours > 0 or dminutes > 0):
+                tweet_hr = f"{round((int(last_tweet_dt.hour) - dhours) % 60):02}"
+                tweet_min = f"{round((int(last_tweet_dt.minute) - dminutes) % 60):02}"
+
+            # Update NEWS_TWEET with the new news tweet found
+            news_tweet = f"{tweet_hr}:{tweet_min} - @{handle_to_use} - {url}\n\n{news_tweet_to_use}"
+
+    return news_tweet
 
 
 def check_start_less_than_end(start_date: str, end_date: str) -> bool:

@@ -227,9 +227,7 @@ class EconomyController(BaseController):
 
             if self.DATASETS:
                 options = [
-                    option
-                    for _, values in self.DATASETS.items()
-                    for option in values.keys()
+                    option for _, values in self.DATASETS.items() for option in values
                 ]
 
                 # help users to select multiple timeseries for one axis
@@ -625,7 +623,8 @@ class EconomyController(BaseController):
                             self.DATASETS["macro"].drop(column, axis=1, inplace=True)
 
                     self.DATASETS["macro"] = pd.concat(
-                        [self.DATASETS["macro"], df], axis=1
+                        [self.DATASETS["macro"], df],
+                        axis=1,
                     )
 
                     # update units dict
@@ -1154,15 +1153,15 @@ class EconomyController(BaseController):
                     console.print(name)
                 return
 
-            if ns_parser.start_date:
-                start_date = ns_parser.start_date.strftime("%Y-%m-%d")
-            else:
-                start_date = None
+            start_date = (
+                ns_parser.start_date.strftime("%Y-%m-%d")
+                if ns_parser.start_date
+                else None
+            )
 
-            if ns_parser.end_date:
-                end_date = ns_parser.end_date.strftime("%Y-%m-%d")
-            else:
-                end_date = None
+            end_date = (
+                ns_parser.end_date.strftime("%Y-%m-%d") if ns_parser.end_date else None
+            )
 
             # TODO: Add `Investing` to sources again when `investpy` is fixed
 
@@ -1272,12 +1271,11 @@ class EconomyController(BaseController):
                                     units = self.UNITS[country.replace(" ", "_")][
                                         parameter_abbreviation
                                     ]
-                                    if transform:
-                                        transformtype = (
-                                            f" ({econdb_model.TRANSFORM[transform]}) "
-                                        )
-                                    else:
-                                        transformtype = " "
+                                    transformtype = (
+                                        f" ({econdb_model.TRANSFORM[transform]}) "
+                                        if transform
+                                        else " "
+                                    )
                                     dataset_yaxis1[
                                         f"{country}{transformtype}[{parameter}, Units: {units}]"
                                     ] = data[variable]
@@ -1349,12 +1347,11 @@ class EconomyController(BaseController):
                                     units = self.UNITS[country.replace(" ", "_")][
                                         parameter_abbreviation
                                     ]
-                                    if transform:
-                                        transformtype = (
-                                            f" ({econdb_model.TRANSFORM[transform]}) "
-                                        )
-                                    else:
-                                        transformtype = " "
+                                    transformtype = (
+                                        f" ({econdb_model.TRANSFORM[transform]}) "
+                                        if transform
+                                        else " "
+                                    )
                                     dataset_yaxis2[
                                         f"{country}{transformtype}[{parameter}, Units: {units}]"
                                     ] = data[variable]
@@ -1634,6 +1631,7 @@ class EconomyController(BaseController):
             type=str,
             nargs="+",
             dest="query",
+            required="-h" not in other_args,
             help="Query to evaluate on loaded datasets",
         )
         if other_args and "-" not in other_args[0][0]:

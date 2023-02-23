@@ -80,10 +80,7 @@ def load(
             return wage_panel.load()
         return getattr(sm.datasets, file).load_pandas().data
 
-    if file in data_files:
-        full_file = data_files[file]
-    else:
-        full_file = file
+    full_file = data_files[file] if file in data_files else file
 
     if not Path(full_file).exists():
         console.print(f"[red]Cannot find the file {full_file}[/red]\n")

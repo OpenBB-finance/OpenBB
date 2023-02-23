@@ -43,13 +43,12 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
     ):
         """Constructor"""
         super().__init__(queue)
-        if menu_usage:
-            if session and obbff.USE_PROMPT_TOOLKIT:
-                choices: dict = {c: {} for c in self.controller_choices}
+        if menu_usage and session and obbff.USE_PROMPT_TOOLKIT:
+            choices: dict = {c: {} for c in self.controller_choices}
 
-                choices["support"] = self.SUPPORT_CHOICES
+            choices["support"] = self.SUPPORT_CHOICES
 
-                self.completer = NestedCompleter.from_nested_dict(choices)
+            self.completer = NestedCompleter.from_nested_dict(choices)
 
     def check_keys_status(self) -> None:
         """Check keys status"""
@@ -516,8 +515,6 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
             self.status_dict["twitter"] = keys_model.set_twitter_key(
-                key=ns_parser.key,
-                secret=ns_parser.secret,
                 access_token=ns_parser.token,
                 persist=True,
                 show_output=True,

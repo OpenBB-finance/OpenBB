@@ -158,10 +158,9 @@ def update_sync_flag(settings: dict) -> bool:
     bool
         The sync flag.
     """
-    if settings:
-        if settings.get("SYNC_ENABLED", "").lower() == "false":
-            obbff.SYNC_ENABLED = False
-            return False
+    if settings and settings.get("SYNC_ENABLED", "").lower() == "false":
+        obbff.SYNC_ENABLED = False
+        return False
     obbff.SYNC_ENABLED = True
     return True
 

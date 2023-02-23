@@ -100,10 +100,11 @@ def display_info(isin: str):
         + f"from {fund_data['adminCompany']['name']}.\nFund currency is {fund_data['currency']}"
         f" and it the fund started {fund_data['startDate']}."
     )
-    if fund_data["indexFund"]:
-        text = text + " It is a index fund."
-    else:
-        text = text + " It is not a index fund."
+    text = (
+        text + " It is a index fund."
+        if fund_data["indexFund"]
+        else text + " It is not a index fund."
+    )
     text = (
         text
         + f" The fund manages {str(fund_data['capital'])} {fund_data['currency']}. The "

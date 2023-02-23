@@ -104,7 +104,7 @@ class PoEngine:
             symbols = []
             for item in symbols_categories.items():
                 _, values = item
-                for v in values.keys():
+                for v in values:
                     symbols.append(v)
 
             return list(set(symbols))
