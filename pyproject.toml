@@ -108,6 +108,10 @@ docstring-parser = {version = "^0.15", optional = true}
 grpcio = "^1.51.1"
 jupyterlab-widgets = "^3.0.3"
 packaging = ">=22.0"
+openai-whisper = {version = "^20230124", optional = true}
+setuptools-rust = {version = "^1.5.2", optional = true}
+transformers = {version = "^4.26.1", optional = true}
+yt-dlp = {version = "^2023.2.17", optional = true}
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.2"
@@ -136,9 +140,9 @@ nbmake = ">0.5.0"
 ruff = "^0.0.210"
 
 [tool.poetry.extras]
-prediction = ["torch", "pytorch-lightning", "u8darts"]
+prediction = ["torch", "pytorch-lightning", "u8darts", "openai-whisper", "setuptools-rust", "transformers", "yt-dlp"]
 optimization = ["Riskfolio-Lib"]
-all = ["torch", "pytorch-lightning", "u8darts", "Riskfolio-Lib"]
+all = ["torch", "pytorch-lightning", "u8darts", "Riskfolio-Lib", "openai-whisper", "setuptools-rust", "transformers", "yt-dlp"]
 jupyterlab = ["jupyterlab-code-formatter", "jupyterlab-lsp", "jedi-language-server"]
 installer = ["pyinstaller"]
 doc = ["docstring-parser"]
