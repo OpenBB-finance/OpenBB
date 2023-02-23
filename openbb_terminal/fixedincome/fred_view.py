@@ -16,7 +16,7 @@ from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
-# pylint: disable=too-many-lines
+# pylint: disable=C0302,R0913,W0102
 
 ice_bofa_path = (Path(__file__).parent / "ice_bofa_indices.xlsx").resolve()
 commercial_paper_path = (Path(__file__).parent / "commercial_paper.xlsx").resolve()
