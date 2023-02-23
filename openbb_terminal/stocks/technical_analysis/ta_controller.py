@@ -1764,6 +1764,13 @@ class TechnicalAnalysisController(StockBaseController):
             default=False,
             help="If True, volatility is calculated for 365 days instead of 252.",
         )
+        parser.add_argument(
+            "--is_crypto",
+            dest="is_crypto",
+            action="store_true",
+            default=False,
+            help="If True, volatility is calculated for 365 days instead of 252.",
+        )
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
