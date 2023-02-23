@@ -326,7 +326,7 @@ def welcome_message():
     """
     console.print(f"\nWelcome to OpenBB Terminal v{obbff.VERSION}")
 
-    if obbff.ENABLE_THOUGHTS_DAY:
+    if get_current_user().preferences.ENABLE_THOUGHTS_DAY:
         console.print("---------------------------------")
         try:
             thought.get_thought_of_the_day()

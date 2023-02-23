@@ -18,9 +18,9 @@ from matplotlib import (
 
 from openbb_terminal import (
     config_plot as cfgPlot,
-    feature_flags as obbff,
 )
 from openbb_terminal.config_terminal import theme
+from openbb_terminal.core.session.user import get_current_user
 from openbb_terminal.cryptocurrency import cryptocurrency_helpers
 from openbb_terminal.cryptocurrency.dataframe_helpers import prettify_paragraph
 from openbb_terminal.cryptocurrency.due_diligence.messari_model import (
@@ -744,7 +744,7 @@ def display_fundraising(
                 colors=theme.get_colors()[1:4],
             )
             ax.set_title(f"{symbol} Fundraising Distribution")
-            if obbff.USE_ION:
+            if get_current_user().preferences.USE_ION:
                 plt.ion()
             plt.show()
 

@@ -18,13 +18,11 @@ from _pytest.fixtures import SubRequest
 from _pytest.mark.structures import Mark
 
 # IMPORTS INTERNAL
-import openbb_terminal.core.session.user  as _
+import openbb_terminal.core.session.user as user
 from openbb_terminal import (
     decorators,
-    feature_flags as obbff,
     helper_funcs,
 )
-from openbb_terminal.base_helpers import strtobool
 
 # pylint: disable=redefined-outer-name
 
@@ -38,7 +36,9 @@ EXTENSIONS_MATCHING: Dict[str, List[Type]] = {
 }
 
 os.environ["TEST_MODE"] = "True"
-obbff.ENABLE_EXIT_AUTO_HELP = strtobool("True")
+current_user = user.get_current_user()
+current_user.preferences.ENABLE_EXIT_AUTO_HELP = True
+user.set_current_user(current_user)
 
 
 class Record:

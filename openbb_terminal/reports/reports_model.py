@@ -23,6 +23,7 @@ from openbb_terminal.core.config.paths import (
     USER_PORTFOLIO_DATA_DIRECTORY,
     USER_REPORTS_DIRECTORY,
 )
+from openbb_terminal.core.session.user import get_current_user
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.forex.forex_controller import FX_TICKERS
 from openbb_terminal.rich_config import console
@@ -313,7 +314,7 @@ def execute_notebook(input_path, parameters, output_path):
 
         if not result["metadata"]["papermill"]["exception"]:
             console.print(f"\n[green]Notebook:[/green] {output_path}.ipynb")
-            if obbff.OPEN_REPORT_AS_HTML:
+            if get_current_user().preferences.OPEN_REPORT_AS_HTML:
                 report_output_path = os.path.join(
                     os.path.abspath(os.path.join(".")), output_path + ".html"
                 )

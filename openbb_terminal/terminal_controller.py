@@ -838,6 +838,8 @@ class TerminalController(BaseController):
 def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
     """Terminal Menu."""
 
+    current_user = get_current_user()
+
     log_terminal(test_mode=test_mode)
 
     if jobs_cmds is not None and jobs_cmds:
@@ -889,7 +891,7 @@ def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
         check_for_updates()
 
     while ret_code:
-        if obbff.ENABLE_QUICK_EXIT:
+        if current_user.preferences.ENABLE_QUICK_EXIT:
             console.print("Quick exit enabled")
             break
 
@@ -912,9 +914,9 @@ def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
         else:
             try:
                 # Get input from user using auto-completion
-                if session and obbff.USE_PROMPT_TOOLKIT:
+                if session and current_user.preferences.USE_PROMPT_TOOLKIT:
                     # Check if tweet news is enabled
-                    if obbff.TOOLBAR_TWEET_NEWS:
+                    if current_user.preferences.TOOLBAR_TWEET_NEWS:
                         news_tweet = update_news_from_tweet_to_be_displayed()
 
                         # Check if there is a valid tweet news to be displayed
@@ -933,7 +935,7 @@ def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
 
                         else:
                             # Check if toolbar hint was enabled
-                            if obbff.TOOLBAR_HINT:
+                            if current_user.preferences.TOOLBAR_HINT:
                                 an_input = session.prompt(
                                     f"{get_flair()} / $ ",
                                     completer=t_controller.completer,
@@ -960,7 +962,7 @@ def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
                                 )
 
                     # Check if toolbar hint was enabled
-                    elif obbff.TOOLBAR_HINT:
+                    elif current_user.preferences.TOOLBAR_HINT:
                         an_input = session.prompt(
                             f"{get_flair()} / $ ",
                             completer=t_controller.completer,

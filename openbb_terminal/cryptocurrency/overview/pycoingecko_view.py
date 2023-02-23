@@ -12,6 +12,7 @@ from matplotlib import (
     ticker,
 )
 from pandas.plotting import register_matplotlib_converters
+from openbb_terminal.core.session.user import get_current_user
 
 import openbb_terminal.cryptocurrency.overview.pycoingecko_model as gecko
 from openbb_terminal import (
@@ -304,7 +305,7 @@ def display_global_market_info(
                 startangle=90,
             )
             ax.set_title("Market cap distribution")
-            if obbff.USE_ION:
+            if get_current_user().preferences.USE_ION:
                 plt.ion()
             plt.show()
         print_rich_table(
@@ -412,7 +413,7 @@ def display_stablecoins(
                 startangle=90,
             )
             ax.set_title(f"Market cap distribution of top {limit} Stablecoins")
-            if obbff.USE_ION:
+            if get_current_user().preferences.USE_ION:
                 plt.ion()
             plt.show()
 
@@ -489,7 +490,7 @@ def display_categories(
                 startangle=90,
             )
             ax.set_title(f"Market Cap distribution of top {limit} crypto categories")
-            if obbff.USE_ION:
+            if get_current_user().preferences.USE_ION:
                 plt.ion()
             plt.show()
         df = df.applymap(lambda x: lambda_long_number_format_with_type_check(x))

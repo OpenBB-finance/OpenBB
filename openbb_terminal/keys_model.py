@@ -236,7 +236,7 @@ def set_key(name: str, value: str, persist: bool = False) -> None:
     """
     current_user = get_current_user()
 
-    if persist and is_guest(current_user):
+    if persist and is_guest():
         dotenv.set_key(str(USER_ENV_FILE), name, value)
 
     # Remove "OPENBB_" prefix from env_var

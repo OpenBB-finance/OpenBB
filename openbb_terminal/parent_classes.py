@@ -407,7 +407,10 @@ class BaseController(metaclass=ABCMeta):
     def call_home(self, _) -> None:
         """Process home command."""
         self.save_class()
-        if self.PATH.count("/") == 1 and obbff.ENABLE_EXIT_AUTO_HELP:
+        if (
+            self.PATH.count("/") == 1
+            and get_current_user().preferences.ENABLE_EXIT_AUTO_HELP
+        ):
             self.print_help()
         for _ in range(self.PATH.count("/") - 1):
             self.queue.insert(0, "quit")

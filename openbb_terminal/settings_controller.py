@@ -39,6 +39,7 @@ from openbb_terminal.core.session.hub_model import patch_user_configs
 from openbb_terminal.core.session.user import (
     get_current_user,
     is_guest,
+    set_current_user,
 )
 
 # pylint: disable=too-many-lines,no-member,too-many-public-methods,C0302
@@ -218,6 +219,7 @@ class SettingsController(BaseController):
 
         # Set current_user.preferences.name = value
         setattr(current_user.preferences, name, value)
+        set_current_user(current_user)
 
         # Send feature flag to server
         if not local_user and sync_enabled:
