@@ -20,7 +20,7 @@ proc_id = os.getpid()
 )
 def test_set_key(var_name: str, var_value: str, persist: bool):
     # Route .env file location
-    keys_model.USER_ENV_FILE = (TEST_PATH / f"{env_var_name}{proc_id}.tmp").resolve()
+    keys_model.USER_ENV_FILE = (TEST_PATH / f"{var_name}{proc_id}.tmp").resolve()
 
     # Test
     keys_model.set_key(var_name, var_value, persist)
@@ -50,8 +50,8 @@ def test_get_keys():
     assert isinstance(df, pd.DataFrame)
 
 
-def set_naive_environment(env_var_name_list: List[str]) -> None:
-    temp_name = "_".join(env_var_name_list).replace("OPENBB_", "").replace("API_", "")
+def set_naive_environment(var_name_list: List[str]) -> None:
+    temp_name = "_".join(var_name_list).replace("OPENBB_", "").replace("API_", "")
     tmp_env = (TEST_PATH / f"{temp_name}{proc_id}.tmp").resolve()
 
     # Remove keys from patched os.environ
