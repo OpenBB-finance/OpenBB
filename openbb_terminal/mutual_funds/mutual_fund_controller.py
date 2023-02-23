@@ -8,8 +8,8 @@ from datetime import datetime, timedelta
 from typing import List, Optional
 
 import pandas as pd
+from openbb_terminal.core.session.user import get_current_user
 
-from openbb_terminal import feature_flags as obbff
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
@@ -61,7 +61,7 @@ class FundController(BaseController):
         self.end_date = ""
         self.start_date = ""
 
-        if session and obbff.USE_PROMPT_TOOLKIT:
+        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices_default
             choices["country"].update({c: {} for c in self.fund_countries})
             self.completer = NestedCompleter.from_nested_dict(choices)

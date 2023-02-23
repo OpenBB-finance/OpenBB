@@ -22,7 +22,6 @@ from prompt_toolkit.styles import Style
 from rich.markdown import Markdown
 
 # IMPORTS INTERNAL
-from openbb_terminal import feature_flags as obbff
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.core.completer.choices import build_controller_choice_map
 from openbb_terminal.core.config.paths import (
@@ -206,6 +205,7 @@ class BaseController(metaclass=ABCMeta):
 
     def load_class(self, class_ins, *args, **kwargs):
         """Check for an existing instance of the controller before creating a new one."""
+        current_user = get_current_user()
         self.save_class()
         arguments = len(args) + len(kwargs)
         # Due to the 'arguments == 1' condition, we actually NEVER load a class
@@ -228,14 +228,18 @@ class BaseController(metaclass=ABCMeta):
             old_class.queue = self.queue
             old_class.load(*args[:-1], **kwargs)
             return old_class.menu()
-        if class_ins.PATH in controllers and arguments == 1 and obbff.REMEMBER_CONTEXTS:
+        if (
+            class_ins.PATH in controllers
+            and arguments == 1
+            and current_user.preferences.REMEMBER_CONTEXTS
+        ):
             old_class = controllers[class_ins.PATH]
             old_class.queue = self.queue
             return old_class.menu()
         # Add another case so options data is saved
         if (
             class_ins.PATH == "/stocks/options/"
-            and obbff.REMEMBER_CONTEXTS
+            and current_user.preferences.REMEMBER_CONTEXTS
             and "/stocks/options/" in controllers
         ):
             old_class = controllers[class_ins.PATH]
@@ -245,7 +249,7 @@ class BaseController(metaclass=ABCMeta):
 
     def save_class(self) -> None:
         """Save the current instance of the class to be loaded later."""
-        if obbff.REMEMBER_CONTEXTS:
+        if get_current_user().preferences.REMEMBER_CONTEXTS:
             controllers[self.PATH] = self
 
     def custom_reset(self) -> List[str]:
@@ -933,9 +937,9 @@ class BaseController(metaclass=ABCMeta):
 
                 try:
                     # Get input from user using auto-completion
-                    if session and obbff.USE_PROMPT_TOOLKIT:
+                    if session and current_user.preferences.USE_PROMPT_TOOLKIT:
                         # Check if tweet news is enabled
-                        if obbff.TOOLBAR_TWEET_NEWS:
+                        if current_user.preferences.TOOLBAR_TWEET_NEWS:
                             news_tweet = update_news_from_tweet_to_be_displayed()
 
                             # Check if there is a valid tweet news to be displayed
@@ -954,7 +958,7 @@ class BaseController(metaclass=ABCMeta):
 
                             else:
                                 # Check if toolbar hint was enabled
-                                if obbff.TOOLBAR_HINT:
+                                if current_user.preferences.TOOLBAR_HINT:
                                     an_input = session.prompt(
                                         f"{get_flair()} {self.PATH} $ ",
                                         completer=self.completer,
@@ -982,7 +986,7 @@ class BaseController(metaclass=ABCMeta):
                                     )
 
                         # Check if toolbar hint was enabled
-                        elif obbff.TOOLBAR_HINT:
+                        elif current_user.preferences.TOOLBAR_HINT:
                             an_input = session.prompt(
                                 f"{get_flair()} {self.PATH} $ ",
                                 completer=self.completer,

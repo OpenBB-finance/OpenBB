@@ -8,7 +8,7 @@ import subprocess  # nosec
 from typing import List, Optional
 
 import openbb_terminal.config_terminal as cfg
-from openbb_terminal import feature_flags as obbff
+from openbb_terminal.core.session.user import get_current_user
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.menu import session
@@ -41,7 +41,7 @@ class DashboardsController(BaseController):
         """Constructor"""
         super().__init__(queue)
 
-        if session and obbff.USE_PROMPT_TOOLKIT:
+        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
 
             choices["support"] = self.SUPPORT_CHOICES

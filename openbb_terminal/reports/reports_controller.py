@@ -9,8 +9,8 @@ import os
 from typing import Any, Dict, List, Optional
 
 import openbb_terminal.config_terminal as cfg
-from openbb_terminal import feature_flags as obbff
 from openbb_terminal.core.config.paths import USER_CUSTOM_REPORTS_DIRECTORY
+from openbb_terminal.core.session.user import get_current_user
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.menu import session
@@ -58,7 +58,7 @@ class ReportController(BaseController):
                 str(reports_model.REPORTS_FOLDER / report_name)
             )
 
-        if session and obbff.USE_PROMPT_TOOLKIT:
+        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             self.choices: dict = {c: {} for c in self.controller_choices}  # type: ignore
             self.choices["run"] = {
                 "--file": {c: None for c in reports_model.USER_REPORTS},

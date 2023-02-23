@@ -13,12 +13,12 @@ from typing import Any, Dict, List, Optional
 import numpy as np
 import pandas as pd
 
-from openbb_terminal import feature_flags as obbff
 from openbb_terminal.common import common_model
 from openbb_terminal.core.config.paths import (
     USER_CUSTOM_IMPORTS_DIRECTORY,
     USER_EXPORTS_DIRECTORY,
 )
+from openbb_terminal.core.session.user import get_current_user
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.econometrics import (
@@ -155,7 +155,7 @@ class EconometricsController(BaseController):
             if filepath.is_file()
         }
 
-        if session and obbff.USE_PROMPT_TOOLKIT:
+        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
             choices["load"] = {
                 "--file": {c: {} for c in self.DATA_FILES},
@@ -189,7 +189,7 @@ class EconometricsController(BaseController):
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def update_runtime_choices(self):
-        if session and obbff.USE_PROMPT_TOOLKIT:
+        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             dataset_columns = {
                 f"{dataset}.{column}": {}
                 for dataset, dataframe in self.datasets.items()

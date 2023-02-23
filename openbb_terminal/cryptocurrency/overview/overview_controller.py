@@ -7,8 +7,8 @@ import difflib
 import logging
 from datetime import datetime, timedelta
 from typing import List, Optional
+from openbb_terminal.core.session.user import get_current_user
 
-from openbb_terminal import feature_flags as obbff
 from openbb_terminal.cryptocurrency.discovery.pycoingecko_model import (
     get_categories_keys,
 )
@@ -91,7 +91,7 @@ class OverviewController(BaseController):
         """Constructor"""
         super().__init__(queue)
 
-        if session and obbff.USE_PROMPT_TOOLKIT:
+        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices_default
 
             choices["wfpe"].update(

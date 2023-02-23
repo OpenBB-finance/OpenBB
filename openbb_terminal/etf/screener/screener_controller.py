@@ -6,8 +6,8 @@ import argparse
 import configparser
 import logging
 from typing import List, Optional
+from openbb_terminal.core.session.user import get_current_user
 
-from openbb_terminal import feature_flags as obbff
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.etf import financedatabase_model, financedatabase_view
@@ -60,7 +60,7 @@ class ScreenerController(BaseController):
         self.preset = "etf_config"
         self.screen_tickers: List = list()
 
-        if session and obbff.USE_PROMPT_TOOLKIT:
+        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices_default
             choices["view"].update({c: None for c in self.PRESET_CHOICES})
             choices["set"].update({c: None for c in self.PRESET_CHOICES})

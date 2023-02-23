@@ -7,6 +7,8 @@ import argparse
 import logging
 from typing import Any, Dict, List, Optional
 
+from openbb_terminal.core.session.user import get_current_user
+
 try:
     import darts
     import torch
@@ -209,7 +211,7 @@ class ForecastController(BaseController):
         self.torch_version = torch.__version__
         self.darts_version = darts.__version__
 
-        if session and obbff.USE_PROMPT_TOOLKIT:
+        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices_default
 
             self.choices = choices
@@ -231,7 +233,7 @@ class ForecastController(BaseController):
     def update_runtime_choices(self):
         # Load in any newly exported files
         self.DATA_FILES = forecast_model.get_default_files()
-        if session and obbff.USE_PROMPT_TOOLKIT:
+        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices_default  # type: ignore
 
             self.choices = choices
