@@ -4,6 +4,7 @@ from typing import Any, Optional
 
 import matplotlib.pyplot as plt
 
+import openbb_terminal.feature_flags as obbff
 import openbb_terminal.session.hub_model as Hub
 import openbb_terminal.session.local_model as Local
 from openbb_terminal.base_helpers import (
@@ -16,10 +17,27 @@ from openbb_terminal.helper_funcs import system_clear
 from openbb_terminal.rich_config import console
 from openbb_terminal.session.user import (
     set_current_user,
-    update_flair,
 )
 
 # pylint: disable=consider-using-f-string
+
+
+def update_flair(flair: str, user: UserModel):
+    """Update flair if user has not changed it.
+
+    Parameters
+    ----------
+    flair : str
+        The flair.
+    """
+    # Use PreferencesModel when it is implemented.
+    if flair is None:
+        MAX_FLAIR_LEN = 20
+        setattr(
+            obbff,
+            "USE_FLAIR",
+            "[" + user.profile.username[:MAX_FLAIR_LEN] + "]" + " 🦋",
+        )
 
 
 class LoginStatus(Enum):

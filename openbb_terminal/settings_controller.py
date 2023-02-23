@@ -197,7 +197,6 @@ class SettingsController(BaseController):
         sync_enabled = current_user.preferences.SYNC_ENABLED
         local_user = is_guest()
 
-
         if local_user:
             set_key(str(USER_ENV_FILE), name, str(value))
 

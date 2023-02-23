@@ -6,7 +6,6 @@ from typing import Any, Dict
 from dotenv import dotenv_values
 
 # IMPORTS INTERNAL
-import openbb_terminal.feature_flags as obbff
 from openbb_terminal.core.config.paths import (
     PACKAGE_ENV_FILE,
     REPOSITORY_ENV_FILE,
@@ -14,7 +13,6 @@ from openbb_terminal.core.config.paths import (
 )
 from openbb_terminal.core.models.user_credentials import CredentialsModel
 from openbb_terminal.core.models.user_model import UserModel
-from openbb_terminal.session.hub_model import REGISTER_URL
 
 
 def __reading_env() -> Dict[str, Any]:
@@ -24,10 +22,13 @@ def __reading_env() -> Dict[str, Any]:
         **dotenv_values(USER_ENV_FILE),
     }
     __env_dict_filtered = {
-        k[len("OPENBBB_") - 1 :]: v for k, v in __env_dict.items() if k.startswith("OPENBB_")
+        k[len("OPENBBB_") - 1 :]: v
+        for k, v in __env_dict.items()
+        if k.startswith("OPENBB_")
     }
 
     return __env_dict_filtered
+
 
 __credentials = CredentialsModel(**__reading_env())
 __local_user = UserModel(credentials=__credentials)  # type:ignore
@@ -60,29 +61,3 @@ def is_guest() -> bool:
         True if user is guest, False otherwise.
     """
     return not bool(__current_user.profile.token)
-
-# Helpers
-
-
-def reset_flair(user: UserModel):
-    """Clear user info."""
-    # Use PreferencesModel when it is implemented.
-    obbff.USE_FLAIR = ":openbb"
-
-
-def update_flair(flair: str, user: UserModel):
-    """Update flair if user has not changed it.
-
-    Parameters
-    ----------
-    flair : str
-        The flair.
-    """
-    # Use PreferencesModel when it is implemented.
-    if flair is None:
-        MAX_FLAIR_LEN = 20
-        setattr(
-            obbff,
-            "USE_FLAIR",
-            "[" + user.profile.username[:MAX_FLAIR_LEN] + "]" + " 🦋",
-        )

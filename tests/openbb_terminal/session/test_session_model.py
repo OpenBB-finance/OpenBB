@@ -147,7 +147,6 @@ def test_logout_user(mocker, guest):
         path + "reload_openbb_config_modules"
     )
     mock_clear_openbb_env_vars = mocker.patch(path + "clear_openbb_env_vars")
-    mock_reset_flair = mocker.patch(path + "reset_flair")
     mock_plt_close = mocker.patch(path + "plt.close")
 
     auth_header = "Bearer test_token"
@@ -156,7 +155,6 @@ def test_logout_user(mocker, guest):
 
     if not guest:
         mock_delete_session.assert_called_once_with(auth_header, token)
-        mock_reset_flair.assert_called_once()
         mock_remove_session_file.assert_called_once()
     mock_clear_openbb_env_vars.assert_called_once()
     mock_reload_openbb_config_modules.assert_called_once()

@@ -375,10 +375,12 @@ class TerminalController(BaseController):
         current_user = get_current_user()
 
         if is_guest(current_user):
-            console.print((
-                "[info]You are currently logged as a guest.\n"
-                f"[info]Register: [/info][cmds]{REGISTER_URL}\n[/cmds]"
-            ))
+            console.print(
+                (
+                    "[info]You are currently logged as a guest.\n"
+                    f"[info]Register: [/info][cmds]{REGISTER_URL}\n[/cmds]"
+                )
+            )
             return
         self.queue = self.load_class(AccountController, self.queue)
 

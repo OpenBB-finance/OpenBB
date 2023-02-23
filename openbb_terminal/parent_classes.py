@@ -707,10 +707,12 @@ class BaseController(metaclass=ABCMeta):
                     sync = "OFF"
                 console.print(f"[info]sync:[/info] {sync}")
             else:
-                console.print((
-                    "[info]You are currently logged as a guest.\n"
-                    f"[info]Register: [/info][cmds]{REGISTER_URL}\n[/cmds]"
-                )))
+                console.print(
+                    (
+                        "[info]You are currently logged as a guest.\n"
+                        f"[info]Register: [/info][cmds]{REGISTER_URL}\n[/cmds]"
+                    )
+                )
 
     @staticmethod
     def parse_simple_args(parser: argparse.ArgumentParser, other_args: List[str]):
