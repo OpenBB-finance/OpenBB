@@ -12,7 +12,62 @@ interactions:
     uri: https://stockanalysis.com/etf/ARKQ
   response:
     body:
-      string: ''
+      string: "<!DOCTYPE html>\n<html lang=\"en-US\">\n<head>\n    <title>Just a moment...</title>\n
+        \   <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\n
+        \   <meta http-equiv=\"X-UA-Compatible\" content=\"IE=Edge\">\n    <meta name=\"robots\"
+        content=\"noindex,nofollow\">\n    <meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">\n
+        \   <link href=\"/cdn-cgi/styles/challenges.css\" rel=\"stylesheet\">\n    \n\n</head>\n<body
+        class=\"no-js\">\n    <div class=\"main-wrapper\" role=\"main\">\n    <div
+        class=\"main-content\">\n        <h1 class=\"zone-name-title h1\">\n            <img
+        class=\"heading-favicon\" src=\"/favicon.ico\" alt=\"Icon for stockanalysis.com\"\n
+        \                onerror=\"this.onerror=null;this.parentNode.removeChild(this)\">\n
+        \           stockanalysis.com\n        </h1>\n        <h2 class=\"h2\" id=\"challenge-running\">\n
+        \           Checking if the site connection is secure\n        </h2>\n        <noscript>\n
+        \           <div id=\"challenge-error-title\">\n                <div class=\"h2\">\n
+        \                   <span class=\"icon-wrapper\">\n                        <div
+        class=\"heading-icon warning-icon\"></div>\n                    </span>\n
+        \                   <span id=\"challenge-error-text\">\n                        Enable
+        JavaScript and cookies to continue\n                    </span>\n                </div>\n
+        \           </div>\n        </noscript>\n        <div id=\"trk_jschal_js\"
+        style=\"display:none;background-image:url('/cdn-cgi/images/trace/managed/nojs/transparent.gif?ray=79e0ce808cf10bcd')\"></div>\n
+        \       <div id=\"challenge-body-text\" class=\"core-msg spacer\">\n            stockanalysis.com
+        needs to review the security of your connection before proceeding.\n        </div>\n
+        \       <form id=\"challenge-form\" action=\"/etf/ARKQ?__cf_chl_f_tk=Irf9fvZMtigwJhfDsJfEL9hK603jTWvjBbBRdcOK2AY-1677164170-0-gaNycGzNCSU\"
+        method=\"POST\" enctype=\"application/x-www-form-urlencoded\">\n            <input
+        type=\"hidden\" name=\"md\" value=\"UYTcEzBhjBO5xeERh1DcCAdbg61kclt0XCmjqnP_MXE-1677164170-0-AQPYHTtjqGjjTZOZlDzNEIjFzn72yp_0Wbji-eeyULxwVhYGOqF7C63Llx2q4ZaOxMDivj1AZ4eJSNkSo1Dse_r3Z1jC67oMEiy6Z842EOHK-myHsceGOBdKhYmkaTgrb-bCHXiYJIhSg7RYfgtZaHtvrj_5qhu1c7J1KxRs8VPYgDgAaq_EFWleS6TNGBVb09icrnnf0orTKHo7ZKwjxzWebw0Da__a2mujd-XPgX3-EWOkwBh0jA_s6WV4Tbs8LmQYAm9Ntth4XrpcZL_sotcPcayokcV5WUSK-9xlabYhL-x4FYs5u3x59B48R7X35KI-mMmj1UoY8EaGPpY_cVKhdGBvDn2KonUCfe93T5ZSC8O6JmFsg1E1hlz2fIXGNr4J7bQ3Diy3zQsqjXJwIWDQyXAFWHsF7yDD4JXJZM7P37Rh9aKUY9mI6K6Dpqdmhuew-clvfxF4oc-iveEF-RShnQ6JMkg3pnf_xOM5cZHgp562kQgpRYNV0qbGsNpj7tz1kxzSzR8kbMVrSElRSb9wkAt3aU6lfSTiJUOXP7FtG7zlJ0p-RiffF_Z6uVBJGSd3dS4a6SAD-rX3JZ_9XWhPiQE8TUNtnpgNQ1hEbFePheE5dJkCFJ2XJQuqbalVxDxOJO1JTVbeomcYpTth47Tyah9sDtBrvTSJUwkiOuLFDv-6P9bzap5b75QAyxxkaMNp_HFkfOC09EWKdH2UjvEaSYWRBT0FvZ_AT7eWBg3Snz32P5dwtVuvA5FiyHuCTCxJ3qGxuHGEuMQARjMe3Ht1Hv9RLsDGWTl5_o_A2brYbMwRXM1EBzkWCxdWl-O_8EhQLWlTu8A1bbWffEc8lwQI_fi019p1gg_l_aALoRir1Z4ZvwVqxEQZXKTOSOK99TRJu6_19NbrjmfZFPMeOQR83FtqkdT1nGQum4Z3CvgOD9GfI270Ca63VBZIqtHhez7jXM-RgNfHX-Nxk9lMsYO6s6SV1KeEj-b4WZX0Af92vp8xyoJpFMCCTfDeGYj1Rc90NE2V4OpfuiRtie5BTLsmgTI0zUhSXEOoFxQ_2xkFi5TmQfQVxqka8e5XPtRuJbr8guz8h3eP-rQeauzlsOUYPv877axtquXkKVJHjHBdobkJDjO1O65ri7hOBSGUBJZ6y-VNI57NJ2z4Q3NYKjOMQMQlG8LK5omdGa34TWEqf1xyFBZK_czkUGVLLg69HfegS9dTGAbVaYOTw9EGIjklXyKs15d5LxNLOKx9FJP0c6XVnO-V3G9xSc_gqrypF-gMUZvJ8-2ZWcdUL9NslQyH1Fi7iqcdkjNfUT3FVopo-bkuBCicxOEDrQftiIdZ_de087KCJh2h75A64pByxpAuf5Wofvcii_Zk98aaDaxVUmTNpN2nx06SK5nTBuS-tPEy7Cm_n4_L9Q_YriZeu3sbroMmouBcwpRQVGupwzeItK2VFpPhA2jsNah1EUB_r5bZZ4wyy4pqsdG2b9wjurtZhVrMBtsrKW9PvZ4j2-qrj4DuwCTWOMlGhtafU4r94ndkZ0oYOliJ8ugGUsMLCazlu90OZP-84lKuQswml1cpvuZD9ZLHksuhney-SbYKOiO8W1y0nVmLVAcgUaBiwrhqE49KXtO9nN4czi3E9S1nKuZLi0JvwASE-2zspctAHCfT8m7r1MW08geVBWu-UX_eracXRpt5jo38opiiU7z_twviITntcXkLY2XBYHzfXLMHN17L0AjJjn0L_3CLmoJ-QMFWgJIDUxJ4g6esP-wcEWBB9zeFyUJHZqoK3wAyoJHtxKmodn0b3_MTx4Tj95UniUkiPZ_l7qO_4YQGkdSd8Gc1QCZSnM1qeJil7WwJHzc8HHJmyGeEeE5Cs03woAHvXUN0GC4y2Ku1jTskqClk98EjY4390ZanFA1Wu_s3wzwV584h8--_6FqRiBT_drEx_3wL3zOZAkwsKQZs7qXnvp0sY65YHRovyC_p46Ih1yxGceMg2Sblk9d70XYY0-Njyuw5LhgqfkQLOw45hZcuO9mbm0aVxa9vnPNPvNfnMy5sp55jVdlxwd5z3z05acZZGeQkUzTSn8PI5mWu1VnNsR08vRhwb5uZtX1GTXkADasz4ZJbZIO-9TRM2rB-abiWrL5KBI82gCUoNiW-CrouvwF4U11SkPspAiNxBcwp3FtumDtd2dfkEP7Db-dsKr2ZRbRbVRuJP7dJyimQecV1sRXaFtMAew9-A1Sv-RzKxJAhwTxJ0SuUhnRjIEq7gaHb9KaLGviUGC8ZhFEkrPCR\">\n
+        \       </form>\n    </div>\n</div>\n<script>\n    (function(){\n        window._cf_chl_opt={\n
+        \           cvId: '2',\n            cZone: 'stockanalysis.com',\n            cType:
+        'managed',\n            cNounce: '53707',\n            cRay: '79e0ce808cf10bcd',\n
+        \           cHash: 'f561c0adda3b4a1',\n            cUPMDTk: \"\\/etf\\/ARKQ?__cf_chl_tk=Irf9fvZMtigwJhfDsJfEL9hK603jTWvjBbBRdcOK2AY-1677164170-0-gaNycGzNCSU\",\n
+        \           cFPWv: 'g',\n            cTTimeMs: '1000',\n            cMTimeMs:
+        '0',\n            cTplV: 4,\n            cTplB: 'cf',\n            cRq: {\n
+        \               ru: 'aHR0cHM6Ly9zdG9ja2FuYWx5c2lzLmNvbS9ldGYvQVJLUQ==',\n
+        \               ra: 'TW96aWxsYS81LjAgKE1hY2ludG9zaDsgSW50ZWwgTWFjIE9TIFggMTAuMTA7IHJ2OjgyLjEpIEdlY2tvLzIwMTAwMTAxIEZpcmVmb3gvODIuMQ==',\n
+        \               rm: 'R0VU',\n                d: 'iZ2xVgWaUq8Hpy25+X+Y19Mv637rEMzl9/+oipJ0JpYrwj4tIjujkK9g3JZ/6cQcPHSX1f9W0q1WpRl/OUBV4PxmUkCuTPytjTJR5s8MOS4RsRkX9hYRdBYmfZOPJ2ERomPlSuI1p3UA6oqoox54/MeMdLBLS0GH3lU6IhhXrW9+P0T6/NFHaLDbjR+0loJ9i2MhpudUdgH9xfFqEGl124kb06/nlPDmDREGo2BZp5od63j4bSL0SQy28YxK/6qHq3g0FWqz43CqyOa0Mti0Br7jZbfFpJrducPTxkEWv3w6wHQyOWSpPflx1fiRWKxVukvksC3pMXLDkoEo7Wm4RJ5395gSfLpesBXmmnVF3kQYmfWMrW94Ko0j7f/yJBWEAPgE8cond3YGxmYz1AVSnW2dqbiA7btPwpP2fv3wO2J1l767fJbe1vJvjx17ZTLdJa/scOA3H0ZZ5P1hdeAiNQZTT1wM6UMwbhX0WREn28aMfHm7DgslHGDeOoVtqgTp+XvkNrklug/18+98rEuNpTqzjHuQ6gvZXuqDge5WaAgVTtYZmAkNEIZ01Ny7SjyEGragzBDpWtgae3MbHaJDhpI4qws+lneYdrjMUyZMzLYewFnm/ehVgqTI3lzOZP1gQnjqHlro3Sm8t6dSxR77VG3Svh5uW1olm99rYt7d3bidpE56QKAeGNi4fDTDZEymysVZrLvLuqOs9jxZNLhhsg==',\n
+        \               t: 'MTY3NzE2NDE3MC4zMzQwMDA=',\n                m: 'h7hSNs7bwIw3DCwFO6BKS3BVI1YSovGs4+NRz1e8tuM=',\n
+        \               i1: 'TI8RuJfHeuDn+u6pU+gCDQ==',\n                i2: 'mGrT+lmMmWJGsMb8rN5Yng==',\n
+        \               zh: 'xAdFrq3gXjvlS1QmjmxskcY9NWrxT6x2ZpWhcRkeyEk=',\n                uh:
+        'hYyAv7D4OdREE0JdUI7kf1EWHnhePEV9q30CvGaa8IQ=',\n                hh: 'hxDJ59vYlbjztT0fKuj2IQR6VOpme5l0wz7b0xa4sMw=',\n
+        \           }\n        };\n        var trkjs = document.createElement('img');\n
+        \       trkjs.setAttribute('src', '/cdn-cgi/images/trace/managed/js/transparent.gif?ray=79e0ce808cf10bcd');\n
+        \       trkjs.setAttribute('alt', '');\n        trkjs.setAttribute('style',
+        'display: none');\n        document.body.appendChild(trkjs);\n        var
+        cpo = document.createElement('script');\n        cpo.src = '/cdn-cgi/challenge-platform/h/g/orchestrate/managed/v1?ray=79e0ce808cf10bcd';\n
+        \       window._cf_chl_opt.cOgUHash = location.hash === '' && location.href.indexOf('#')
+        !== -1 ? '#' : location.hash;\n        window._cf_chl_opt.cOgUQuery = location.search
+        === '' && location.href.slice(0, location.href.length - window._cf_chl_opt.cOgUHash.length).indexOf('?')
+        !== -1 ? '?' : location.search;\n        if (window.history && window.history.replaceState)
+        {\n            var ogU = location.pathname + window._cf_chl_opt.cOgUQuery
+        + window._cf_chl_opt.cOgUHash;\n            history.replaceState(null, null,
+        \"\\/etf\\/ARKQ?__cf_chl_rt_tk=Irf9fvZMtigwJhfDsJfEL9hK603jTWvjBbBRdcOK2AY-1677164170-0-gaNycGzNCSU\"
+        + window._cf_chl_opt.cOgUHash);\n            cpo.onload = function() {\n                history.replaceState(null,
+        null, ogU);\n            };\n        }\n        document.getElementsByTagName('head')[0].appendChild(cpo);\n
+        \   }());\n</script>\n\n\n    <div class=\"footer\" role=\"contentinfo\">\n
+        \       <div class=\"footer-inner\">\n            <div class=\"clearfix diagnostic-wrapper\">\n
+        \               <div class=\"ray-id\">Ray ID: <code>79e0ce808cf10bcd</code></div>\n
+        \           </div>\n            <div class=\"text-center\" id=\"footer-text\">Performance
+        &amp; security by <a rel=\"noopener noreferrer\" href=\"https://www.cloudflare.com?utm_source=challenge&utm_campaign=m\"
+        target=\"_blank\">Cloudflare</a></div>\n        </div>\n    </div>\n</body>\n</html>\n"
     headers:
       CF-RAY:
       - 79e7503eadbf03d2-LIS
@@ -59,11 +114,11 @@ interactions:
       CF-Ray:
       - 79e7503eddea03d2-LIS
       Cache-Control:
-      - public, max-age=0, must-revalidate
+      - private, max-age=0, no-store, no-cache, must-revalidate, post-check=0, pre-check=0
       Connection:
-      - keep-alive
+      - close
       Content-Type:
-      - text/plain
+      - text/html; charset=UTF-8
       Date:
       - Fri, 24 Feb 2023 09:53:19 GMT
       Location:
