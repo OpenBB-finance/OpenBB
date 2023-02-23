@@ -12,6 +12,7 @@ from openbb_terminal.helper_funcs import (
     export_data,
     remove_timezone_from_dataframe,
     revert_lambda_long_number_format,
+    update_news_from_tweet_to_be_displayed,
 )
 
 # pylint: disable=E1101
@@ -20,6 +21,16 @@ from openbb_terminal.helper_funcs import (
 # pylint: disable=W0621
 # pylint: disable=W0613
 # pylint: disable=R0912
+
+
+@pytest.fixture(scope="module")
+def vcr_config():
+    return {
+        "filter_headers": [
+            ("User-Agent", None),
+            ("Authorization", "MOCK_AUTHORIZATION"),
+        ],
+    }
 
 
 @pytest.fixture
@@ -192,3 +203,30 @@ def test_remove_timezone_from_dataframe(df, df_expected):
 )
 def test_revert_lambda_long_number_format(value, expected):
     assert revert_lambda_long_number_format(value) == expected
+
+
+@pytest.mark.vcr
+def test_update_news_from_tweet_to_be_displayed(mocker, recorder):
+    mocker.patch(
+        target="openbb_terminal.helper_funcs.obbff.TOOLBAR_TWEET_NEWS",
+        new=True,
+    )
+    mocker.patch(
+        target="openbb_terminal.helper_funcs.LAST_TWEET_NEWS_UPDATE_CHECK_TIME",
+        new=None,
+    )
+    mocker.patch(
+        target="openbb_terminal.helper_funcs.obbff.TOOLBAR_TWEET_NEWS_SECONDS_BETWEEN_UPDATES",
+        new=300,
+    )
+    mocker.patch(
+        target="openbb_terminal.helper_funcs.obbff.TOOLBAR_TWEET_NEWS_NUM_LAST_TWEETS_TO_READ",
+        new=3,
+    )
+    mocker.patch(
+        target="openbb_terminal.helper_funcs.obbff.TOOLBAR_TWEET_NEWS_KEYWORDS",
+        new="BREAKING,JUST IN",
+    )
+
+    news_tweet = update_news_from_tweet_to_be_displayed()
+    recorder.capture(news_tweet)
