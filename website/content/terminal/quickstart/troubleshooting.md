@@ -3,7 +3,6 @@ title: Troubleshooting
 sidebar_position: 4
 keywords: [faq, questions, openbb, terminal, troubleshooting, errors, bugs, issues, problems, installation, contributors, developers, github, pip]
 ---
-
 Still experiencing trouble after consulting this page? Reach us on [Discord](https://openbb.co/discord) or visit our [contact page](https://openbb.co/contact).
 
 ## Installation and Updates
@@ -56,7 +55,7 @@ There may be an additional message that is printed from this error, stating: "Mi
 
 Download and install it. [https://visualstudio.microsoft.com/visual-cpp-build-tools/](https://visualstudio.microsoft.com/visual-cpp-build-tools/)
 
-Mac users may also encounter a similar error because a C++ compiler is not installed. Install Homebrew:
+Mac and Linux users may also encounter a similar error because a C++ compiler is not installed. Install Homebrew:
 
 ```console
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -68,6 +67,12 @@ Then run:
 brew install gcc
 brew install cmake
 ```
+
+</details>
+
+<details><summary>Miniconda3 will not install on ARM/Linux Raspberry Pi machines.</summary>
+
+Refer to this issue on the Conda [GitHub](https://github.com/conda/conda/issues/10723) page.
 
 </details>
 
@@ -146,11 +151,122 @@ pip install pip-system-certs
 
 <details><summary>Cannot connect due to proxy connection.</summary>
 
-Find the `.env` file (located at the root of the user account folder: (`~/.openbb_terminal/.env`), and add a line at the bottom of the file with: 
+Find the `.env` file (located at the root of the user account folder: (`~/.openbb_terminal/.env`), and add a line at the bottom of the file with:
 
 ```console
 HTTP_PROXY="<ADDRESS>" or HTTPS_PROXY="<ADDRESS>” 
 ```
+
+</details>
+
+<details><summary> Linux Ubuntu installation was successful but now hangs on launch.</summary>
+
+Check that VcXsvr - or an equivalent X-host - is running and configured prior to launch.
+
+</details>
+
+## General Operation
+
+<details><summary>Charts do not display on Linux/WSL or Docker installation.</summary>
+
+Check that X-11, or similar, is installed, open, and configured. Follow the instructions pertaining to the system here: [https://docs.openbb.co/terminal/quickstart/installation#3-configuring-your-x-server-to-show-plots](https://docs.openbb.co/terminal/quickstart/installation#3-configuring-your-x-server-to-show-plots)
+
+</details>
+
+<details><summary>How do I retrieve more results than is returned by default?</summary>
+
+Most functions will have either, `--start` and `--end` flags, or a `--limit` argument. Print the help dialogue for any command by attaching, `--help` or `-h`.
+
+</details>
+
+<details><summary>Does the portfolio menu allow for dividends, interest, or other distributions?</summary>
+
+Currently, this is only possible by manually updating the portfolio file.
+
+</details>
+
+<details><summary>Why does my Portfolio file fail to load?</summary>
+
+This can be the result of a formatting error, check the file in a simple text editor to observe any abnormalities in the formatting; or, it could be a bug - check the [GitHub issues page](https://github.com/OpenBB-finance/OpenBBTerminal/issues) for similar errors.
+
+- Check that all the necessary column titles are present.
+- Inspect the file to see if cells left blank have been filled unintentionally with 0 or NaN values.
+- A particular asset may not be able to load data. Check for valid historical data from the Stocks menu.
+- Format ticker symbols according to yFinance naming convention.
+- All dates must be entered as YYYY-MM-DD.
+- Transactions dated for today will fail to load historical data.
+- MacOS users should attempt to avoid using the Numbers application as it has a habit of changing the formatting while saving.
+
+Files can be formatted as either `.csv` or `.xlsx` files, and the required column headers are:
+
+`[Date,Type,Ticker,Side,Price,Quantity,Fees,Investment,Currency,Sector,Industry,Country,Region]`
+
+See the guide [here](https://docs.openbb.co/sdk/guides/intros/portfolio) for more information.
+
+</details>
+
+<details><summary>How do I change the chart styles?<summary>
+
+Place style sheets in this folder: `OpenBBUserData/styles/user`
+
+SDK users can refer to the documentation [here](https://docs.openbb.co/sdk/guides/advanced/chart-styling) for syntax. A sample Matplotlib configuration file can be copied from [here](https://matplotlib.org/stable/tutorials/introductory/customizing.html#the-default-matplotlibrc-file).
+
+</details>
+
+<details><summary>Can I change the colors of the text in the Terminal?</summary>
+
+Yes, follow the directions on this page: [https://openbb.co/products/terminal?customizeMenu=true#terminal](https://openbb.co/products/terminal?customizeMenu=true#terminal)
+
+</details>
+
+<details><summary>After setting the preset in the stocks screener, nothing happens.</summary>
+
+Print the current screen again with by entering, `?`. Does the name of the selected preset display? With a preset loaded, run the screener by entering one of the commands below:
+
+- Financial
+- Ownership
+- Overview
+- Performance
+- Technical
+- Valuation
+
+</details>
+
+<details><summary>Forecast functions say to enter a valid data set</summary>
+
+Because an unlimited number of data sets can be loaded into the Forecast menu, each function requires defining the specific data set to be used. Add the `-d` or `--dataset` argument to the command, along with the name of the desired data set.
+
+```console
+rnn -d SPY
+```
+
+</details>
+
+## Data and Sources
+
+Please note that OpenBB does not provide any data, it is an aggregator which provides users access to data from a variety of sources. OpenBB does not maintain or have any control over the raw data supplied. If there is a specific problem with the output from a data provider, please consider contacting them first.
+
+<details><summary>Data from today is missing.</summary>
+
+By default, the load function requests end-of-day daily data and is not included until the EOD summary has been published. The current day's data is considered intraday and is loaded when the `interval` argument is present.
+
+```console
+load SPY -i 60
+```
+
+</details>
+
+<details><summary>Can I stream live prices and news feeds?</summary>
+
+The OpenBB Terminal is not currently capable of streaming live feeds through websocket connections.
+
+</details>
+
+<details><summary>"Pair BTC/USDT not found in binance"</summary>
+
+US-based users are currently unable to access the Binance API. Please try loading the pair from a different source, for example:
+
+`load btc --source CCXT --exchange kraken`
 
 </details>
 
@@ -176,36 +292,6 @@ From the Windows Security menu, click on the Firewall & Network Protection tab, 
 It could be that you are running an outdated version in which the menu or command is not yet available. Please check the [installation guide](https://docs.openbb.co/terminal/quickstart/installation) to download the most recent release.
 
 Do note that it is also possible that the menu or command has been deprecated. If this is oversight, please reach out to us [here](https://openbb.co/support).
-
-</details>
-
-## General Operating Issues
-
-<details><summary>Why does my Portfolio file fail to load?</summary>
-
-This can be the result of a formatting error, check the file in a simple text editor to observe any abnormalities in the formatting; or, it could be a bug - check the [GitHub issues page](https://github.com/OpenBB-finance/OpenBBTerminal/issues) for similar errors.
-
-- Check that all the necessary column titles are present.
-- Inspect the file to see if cells left blank have been filled unintentionally with 0 or NaN values.
-- A particular asset may not be able to load data. Check for valid historical data from the Stocks menu.
-- Format ticker symbols according to yFinance naming convention.
-- All dates must be entered as YYYY-MM-DD.
-- Transactions dated for today will fail to load historical data.
-- MacOS users should attempt to avoid using the Numbers application as it has a habit of changing the formatting while saving.
-
-</details>
-
-## Data and Sources
-
-Please note that OpenBB does not provide any data, it is an aggregator which provides users access to data from a variety of sources. OpenBB does not maintain or have any control over the raw data supplied. If there is a specific problem with the output from a data provider, please consider contacting them first.
-
-<details><summary>Data from today is missing.</summary>
-
-By default, the load function requests end-of-day daily data and is not included until the EOD summary has been published. The current day's data is considered intraday and is loaded when the `interval` argument is present.
-
-```console
-load SPY -i 60
-```
 
 </details>
 
@@ -251,14 +337,29 @@ Alternatively, you can contact us via the following routes:
 
 ## Developer Issues
 
+<details><summary>Error: "git pull" fails because of a hot fix: cannot lock ref</summary>
+
+If the error message looks something like:
+
+```console
+cannot lock ref: 'refs/remotes/origin/hotfix' exists; cannot create
+```
+
+Try:
+
+```console
+git remote prune origin
+git pull
+```
+
+</details>
+
 <details><summary>What does it mean if it says wheel is missing?</summary>
-<p>
 
 If you receive any notifications regarding `wheel` missing, this could be due to this dependency missing.
 
 `conda install -c conda-forge wheel` or `pip install wheel`
 
-</p>
 </details>
 
 <details><summary>Why do these .whl files not exist?</summary>
@@ -277,23 +378,23 @@ When you try to add a package to Poetry it is possible that it causes a similar 
 
 If you run into trouble with Poetry, and the advice above did not help, your best bet is to try
 
-1. `poetry update --lock`
-2. `conda deactivate` -> `conda activate obb`, then try again
-3. Track down the offensive package and purge it from your anaconda `<environment_name>` folder, then try again
-   (removing through conda can sometimes leave locks behind)
-   | Platform  | Location                                      |
-   | --------- | --------------------------------------------- |
-   | Linux/Mac | "~/anaconda3/envs" or "~/opt/anaconda3/envs" |
-   | Windows   | "%userprofile%/anaconda3/envs"                |
-4. Completely nuke your conda environment folder and make a new environment from scratch
+- `poetry update --lock`
+- `conda deactivate` -> `conda activate obb`, then try again
+- Track down the offensive package and purge it from your anaconda `<environment_name>` folder, then try again
 
-- `conda deactivate`
-- `conda env remove -n obb`
-- `conda clean -a`
-- Make a new environment and install dependencies again.
+| Platform  | Location                                    |
+| --------- | ------------------------------------------- |
+| Linux/Mac | ~/anaconda3/envs, or , ~/opt/anaconda3/envs |
+| Windows   | %userprofile%/anaconda3/envs                |
 
-5. Reboot your computer and try again
-6. Submit a ticket on GitHub
+- Completely nuke your conda environment folder and make a new environment from scratch
+
+  - `conda deactivate`
+  - `conda env remove -n obb`
+  - `conda clean -a`
+  - Make a new environment and install dependencies again.
+- Reboot your computer and try again
+- Submit a ticket on GitHub
 
 </details>
 
