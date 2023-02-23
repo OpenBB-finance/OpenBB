@@ -7,45 +7,42 @@ import pandas as pd
 import pytest
 
 from openbb_terminal import keys_model
+from openbb_terminal.session.user import get_current_user
 
 
 # pylint: disable=R0902,R0903,W1404,C0302
 
 
 # Test persist
-@patch.dict(os.environ, {}, clear=True)
 @pytest.mark.parametrize(
-    "env_var_name, env_var_value, persist",
+    "var_name, var_value, persist",
     [("OPENBB_API_TEST", "TEST_KEY", True), ("OPENBB_API_TEST", "TEST_KEY", False)],
 )
-def test_set_key(env_var_name: str, env_var_value: str, persist: bool):
+def test_set_key(var_name: str, var_value: str, persist: bool):
     # Route .env file location
     keys_model.USER_ENV_FILE = Path(os.path.dirname(__file__), ".tmp")
 
     # Test
-    keys_model.set_key(env_var_name, env_var_value, persist)
+    keys_model.set_key(var_name, var_value, persist)
 
     # Get key from temp .env
     dotenv_key = keys_model.dotenv.get_key(
-        str(keys_model.USER_ENV_FILE), key_to_get=env_var_name
+        str(keys_model.USER_ENV_FILE), key_to_get=var_name
     )
 
     # Remove temp .env
     if keys_model.USER_ENV_FILE.is_file():
         os.remove(keys_model.USER_ENV_FILE)
 
-    # Get key from patched os.environ
-    os_key = os.getenv(env_var_name)
-
     # Get key from config_terminal.py
-    if env_var_name.startswith("OPENBB_"):
-        env_var_name = env_var_name[7:]
-        cfg_key = getattr(keys_model.cfg, env_var_name)
+    if var_name.startswith("OPENBB_"):
+        var_name = var_name[7:]
+        user_key = getattr(get_current_user().credentials, var_name)
 
     if persist is True:
-        assert dotenv_key == os_key == cfg_key == env_var_value
+        assert dotenv_key == user_key == var_value
     else:
-        assert (dotenv_key is None) and (os_key is None) and (cfg_key == env_var_value)
+        assert (dotenv_key is None) and (user_key == var_value)
 
 
 def test_get_keys():
@@ -53,13 +50,13 @@ def test_get_keys():
     assert isinstance(df, pd.DataFrame)
 
 
-def set_naive_environment(env_var_name_list: List[str]) -> None:
+def set_naive_environment(var_name_list: List[str]) -> None:
     tmp_env = Path(os.path.dirname(__file__), ".tmp")
 
     # Remove keys from patched os.environ
-    for env_var_name in env_var_name_list:
-        if env_var_name in os.environ:
-            os.environ.pop(env_var_name)
+    for var_name in var_name_list:
+        if var_name in os.environ:
+            os.environ.pop(var_name)
 
     # Remove .tmp content
     if tmp_env.is_file():
@@ -74,24 +71,22 @@ def assert_keys_and_status(
     args: List[str],
     persist: bool,
     expected: str,
-    env_var_name_list: List[str],
+    var_name_list: List[str],
     status: str,
 ) -> None:
-    for i, env_var_name in enumerate(env_var_name_list):
+    for i, var_name in enumerate(var_name_list):
         dotenv_var = keys_model.dotenv.get_key(
-            str(keys_model.USER_ENV_FILE), key_to_get=env_var_name
+            str(keys_model.USER_ENV_FILE), key_to_get=var_name
         )
 
-        os_var = os.getenv(env_var_name)
-
-        if env_var_name.startswith("OPENBB_"):
-            env_var_name = env_var_name[7:]
-        cfg_var = getattr(keys_model.cfg, env_var_name)
+        if var_name.startswith("OPENBB_"):
+            var_name = var_name[7:]
+        user_var = getattr(get_current_user().credentials, var_name)
 
         if persist is True:
-            assert dotenv_var == os_var == cfg_var == args[i]
+            assert dotenv_var == user_var == args[i]
         else:
-            assert (dotenv_var is None) and (os_var is None) and (cfg_var == args[i])
+            assert (dotenv_var is None) and (user_var == args[i])
 
         assert status == expected
 
@@ -130,11 +125,11 @@ def assert_keys_and_status(
     ],
 )
 def test_set_av_key(args: List[str], persist: bool, show_output: bool, expected: str):
-    env_var_name_list = [
+    var_name_list = [
         "OPENBB_API_KEY_ALPHAVANTAGE",
     ]
 
-    set_naive_environment(env_var_name_list)
+    set_naive_environment(var_name_list)
 
     status = keys_model.set_av_key(
         key=args[0],
@@ -142,7 +137,7 @@ def test_set_av_key(args: List[str], persist: bool, show_output: bool, expected:
         show_output=show_output,
     )
 
-    assert_keys_and_status(args, persist, expected, env_var_name_list, status)
+    assert_keys_and_status(args, persist, expected, var_name_list, status)
 
 
 @patch.dict(os.environ, {})
@@ -178,11 +173,11 @@ def test_set_av_key(args: List[str], persist: bool, show_output: bool, expected:
     ],
 )
 def test_set_fmp_key(args: List[str], persist: bool, show_output: bool, expected: str):
-    env_var_name_list = [
+    var_name_list = [
         "OPENBB_API_KEY_FINANCIALMODELINGPREP",
     ]
 
-    set_naive_environment(env_var_name_list)
+    set_naive_environment(var_name_list)
 
     status = keys_model.set_fmp_key(
         key=args[0],
@@ -190,7 +185,7 @@ def test_set_fmp_key(args: List[str], persist: bool, show_output: bool, expected
         show_output=show_output,
     )
 
-    assert_keys_and_status(args, persist, expected, env_var_name_list, status)
+    assert_keys_and_status(args, persist, expected, var_name_list, status)
 
 
 @patch.dict(os.environ, {})
@@ -228,11 +223,11 @@ def test_set_fmp_key(args: List[str], persist: bool, show_output: bool, expected
 def test_set_quandl_key(
     args: List[str], persist: bool, show_output: bool, expected: str
 ):
-    env_var_name_list = [
+    var_name_list = [
         "OPENBB_API_KEY_QUANDL",
     ]
 
-    set_naive_environment(env_var_name_list)
+    set_naive_environment(var_name_list)
 
     status = keys_model.set_quandl_key(
         key=args[0],
@@ -240,7 +235,7 @@ def test_set_quandl_key(
         show_output=show_output,
     )
 
-    assert_keys_and_status(args, persist, expected, env_var_name_list, status)
+    assert_keys_and_status(args, persist, expected, var_name_list, status)
 
 
 @patch.dict(os.environ, {})
@@ -278,11 +273,11 @@ def test_set_quandl_key(
 def test_set_polygon_key(
     args: List[str], persist: bool, show_output: bool, expected: str
 ):
-    env_var_name_list = [
+    var_name_list = [
         "OPENBB_API_POLYGON_KEY",
     ]
 
-    set_naive_environment(env_var_name_list)
+    set_naive_environment(var_name_list)
 
     status = keys_model.set_polygon_key(
         key=args[0],
@@ -290,7 +285,7 @@ def test_set_polygon_key(
         show_output=show_output,
     )
 
-    assert_keys_and_status(args, persist, expected, env_var_name_list, status)
+    assert_keys_and_status(args, persist, expected, var_name_list, status)
 
 
 @patch.dict(os.environ, {})
@@ -326,11 +321,11 @@ def test_set_polygon_key(
     ],
 )
 def test_set_fred_key(args: List[str], persist: bool, show_output: bool, expected: str):
-    env_var_name_list = [
+    var_name_list = [
         "OPENBB_API_FRED_KEY",
     ]
 
-    set_naive_environment(env_var_name_list)
+    set_naive_environment(var_name_list)
 
     status = keys_model.set_fred_key(
         key=args[0],
@@ -338,7 +333,7 @@ def test_set_fred_key(args: List[str], persist: bool, show_output: bool, expecte
         show_output=show_output,
     )
 
-    assert_keys_and_status(args, persist, expected, env_var_name_list, status)
+    assert_keys_and_status(args, persist, expected, var_name_list, status)
 
 
 @patch.dict(os.environ, {})
@@ -374,11 +369,11 @@ def test_set_fred_key(args: List[str], persist: bool, show_output: bool, expecte
     ],
 )
 def test_set_news_key(args: List[str], persist: bool, show_output: bool, expected: str):
-    env_var_name_list = [
+    var_name_list = [
         "OPENBB_API_NEWS_TOKEN",
     ]
 
-    set_naive_environment(env_var_name_list)
+    set_naive_environment(var_name_list)
 
     status = keys_model.set_news_key(
         key=args[0],
@@ -386,7 +381,7 @@ def test_set_news_key(args: List[str], persist: bool, show_output: bool, expecte
         show_output=show_output,
     )
 
-    assert_keys_and_status(args, persist, expected, env_var_name_list, status)
+    assert_keys_and_status(args, persist, expected, var_name_list, status)
 
 
 @patch.dict(os.environ, {})
@@ -424,11 +419,11 @@ def test_set_news_key(args: List[str], persist: bool, show_output: bool, expecte
 def test_set_tradier_key(
     args: List[str], persist: bool, show_output: bool, expected: str
 ):
-    env_var_name_list = [
+    var_name_list = [
         "OPENBB_API_TRADIER_TOKEN",
     ]
 
-    set_naive_environment(env_var_name_list)
+    set_naive_environment(var_name_list)
 
     status = keys_model.set_tradier_key(
         key=args[0],
@@ -436,7 +431,7 @@ def test_set_tradier_key(
         show_output=show_output,
     )
 
-    assert_keys_and_status(args, persist, expected, env_var_name_list, status)
+    assert_keys_and_status(args, persist, expected, var_name_list, status)
 
 
 @patch.dict(os.environ, {})
@@ -472,11 +467,11 @@ def test_set_tradier_key(
     ],
 )
 def test_set_cmc_key(args: List[str], persist: bool, show_output: bool, expected: str):
-    env_var_name_list = [
+    var_name_list = [
         "OPENBB_API_CMC_KEY",
     ]
 
-    set_naive_environment(env_var_name_list)
+    set_naive_environment(var_name_list)
 
     status = keys_model.set_cmc_key(
         key=args[0],
@@ -484,7 +479,7 @@ def test_set_cmc_key(args: List[str], persist: bool, show_output: bool, expected
         show_output=show_output,
     )
 
-    assert_keys_and_status(args, persist, expected, env_var_name_list, status)
+    assert_keys_and_status(args, persist, expected, var_name_list, status)
 
 
 @patch.dict(os.environ, {})
@@ -522,11 +517,11 @@ def test_set_cmc_key(args: List[str], persist: bool, show_output: bool, expected
 def test_set_finnhub_key(
     args: List[str], persist: bool, show_output: bool, expected: str
 ):
-    env_var_name_list = [
+    var_name_list = [
         "OPENBB_API_FINNHUB_KEY",
     ]
 
-    set_naive_environment(env_var_name_list)
+    set_naive_environment(var_name_list)
 
     status = keys_model.set_finnhub_key(
         key=args[0],
@@ -534,7 +529,7 @@ def test_set_finnhub_key(
         show_output=show_output,
     )
 
-    assert_keys_and_status(args, persist, expected, env_var_name_list, status)
+    assert_keys_and_status(args, persist, expected, var_name_list, status)
 
 
 @patch.dict(os.environ, {})
@@ -572,7 +567,7 @@ def test_set_finnhub_key(
 def test_set_reddit_key(
     args: List[str], persist: bool, show_output: bool, expected: str
 ):
-    env_var_name_list = [
+    var_name_list = [
         "OPENBB_API_REDDIT_CLIENT_ID",
         "OPENBB_API_REDDIT_CLIENT_SECRET",
         "OPENBB_API_REDDIT_PASSWORD",
@@ -580,7 +575,7 @@ def test_set_reddit_key(
         "OPENBB_API_REDDIT_USER_AGENT",
     ]
 
-    set_naive_environment(env_var_name_list)
+    set_naive_environment(var_name_list)
 
     status = keys_model.set_reddit_key(
         client_id=args[0],
@@ -592,7 +587,7 @@ def test_set_reddit_key(
         show_output=show_output,
     )
 
-    assert_keys_and_status(args, persist, expected, env_var_name_list, status)
+    assert_keys_and_status(args, persist, expected, var_name_list, status)
 
 
 @patch.dict(os.environ, {})
@@ -630,11 +625,11 @@ def test_set_reddit_key(
 def test_set_bitquery_key(
     args: List[str], persist: bool, show_output: bool, expected: str
 ):
-    env_var_name_list = [
+    var_name_list = [
         "OPENBB_API_BITQUERY_KEY",
     ]
 
-    set_naive_environment(env_var_name_list)
+    set_naive_environment(var_name_list)
 
     status = keys_model.set_bitquery_key(
         key=args[0],
@@ -642,7 +637,7 @@ def test_set_bitquery_key(
         show_output=show_output,
     )
 
-    assert_keys_and_status(args, persist, expected, env_var_name_list, status)
+    assert_keys_and_status(args, persist, expected, var_name_list, status)
 
 
 @patch.dict(os.environ, {})
@@ -680,13 +675,13 @@ def test_set_bitquery_key(
 def test_set_twitter_key(
     args: List[str], persist: bool, show_output: bool, expected: str
 ):
-    env_var_name_list = [
+    var_name_list = [
         "OPENBB_API_TWITTER_KEY",
         "OPENBB_API_TWITTER_SECRET_KEY",
         "OPENBB_API_TWITTER_BEARER_TOKEN",
     ]
 
-    set_naive_environment(env_var_name_list)
+    set_naive_environment(var_name_list)
 
     status = keys_model.set_twitter_key(
         key=args[0],
@@ -696,7 +691,7 @@ def test_set_twitter_key(
         show_output=show_output,
     )
 
-    assert_keys_and_status(args, persist, expected, env_var_name_list, status)
+    assert_keys_and_status(args, persist, expected, var_name_list, status)
 
 
 @patch.dict(os.environ, {})
@@ -732,12 +727,12 @@ def test_set_twitter_key(
     ],
 )
 def test_set_rh_key(args: List[str], persist: bool, show_output: bool, expected: str):
-    env_var_name_list = [
+    var_name_list = [
         "OPENBB_RH_USERNAME",
         "OPENBB_RH_PASSWORD",
     ]
 
-    set_naive_environment(env_var_name_list)
+    set_naive_environment(var_name_list)
 
     status = keys_model.set_rh_key(
         username=args[0],
@@ -746,7 +741,7 @@ def test_set_rh_key(args: List[str], persist: bool, show_output: bool, expected:
         show_output=show_output,
     )
 
-    assert_keys_and_status(args, persist, expected, env_var_name_list, status)
+    assert_keys_and_status(args, persist, expected, var_name_list, status)
 
 
 @patch.dict(os.environ, {})
@@ -784,13 +779,13 @@ def test_set_rh_key(args: List[str], persist: bool, show_output: bool, expected:
 def test_set_degiro_key(
     args: List[str], persist: bool, show_output: bool, expected: str
 ):
-    env_var_name_list = [
+    var_name_list = [
         "OPENBB_DG_USERNAME",
         "OPENBB_DG_PASSWORD",
         "OPENBB_DG_TOTP_SECRET",
     ]
 
-    set_naive_environment(env_var_name_list)
+    set_naive_environment(var_name_list)
 
     status = keys_model.set_degiro_key(
         username=args[0],
@@ -800,7 +795,7 @@ def test_set_degiro_key(
         show_output=show_output,
     )
 
-    assert_keys_and_status(args, persist, expected, env_var_name_list, status)
+    assert_keys_and_status(args, persist, expected, var_name_list, status)
 
 
 @patch.dict(os.environ, {})
@@ -838,13 +833,13 @@ def test_set_degiro_key(
 def test_set_oanda_key(
     args: List[str], persist: bool, show_output: bool, expected: str
 ):
-    env_var_name_list = [
+    var_name_list = [
         "OPENBB_OANDA_ACCOUNT",
         "OPENBB_OANDA_TOKEN",
         "OPENBB_OANDA_ACCOUNT_TYPE",
     ]
 
-    set_naive_environment(env_var_name_list)
+    set_naive_environment(var_name_list)
 
     status = keys_model.set_oanda_key(
         account=args[0],
@@ -854,7 +849,7 @@ def test_set_oanda_key(
         show_output=show_output,
     )
 
-    assert_keys_and_status(args, persist, expected, env_var_name_list, status)
+    assert_keys_and_status(args, persist, expected, var_name_list, status)
 
 
 @patch.dict(os.environ, {})
@@ -892,12 +887,12 @@ def test_set_oanda_key(
 def test_set_binance_key(
     args: List[str], persist: bool, show_output: bool, expected: str
 ):
-    env_var_name_list = [
+    var_name_list = [
         "OPENBB_API_BINANCE_KEY",
         "OPENBB_API_BINANCE_SECRET",
     ]
 
-    set_naive_environment(env_var_name_list)
+    set_naive_environment(var_name_list)
 
     status = keys_model.set_binance_key(
         key=args[0],
@@ -906,7 +901,7 @@ def test_set_binance_key(
         show_output=show_output,
     )
 
-    assert_keys_and_status(args, persist, expected, env_var_name_list, status)
+    assert_keys_and_status(args, persist, expected, var_name_list, status)
 
 
 @patch.dict(os.environ, {})
@@ -944,13 +939,13 @@ def test_set_binance_key(
 def test_set_coinbase_key(
     args: List[str], persist: bool, show_output: bool, expected: str
 ):
-    env_var_name_list = [
+    var_name_list = [
         "OPENBB_API_COINBASE_KEY",
         "OPENBB_API_COINBASE_SECRET",
         "OPENBB_API_COINBASE_PASS_PHRASE",
     ]
 
-    set_naive_environment(env_var_name_list)
+    set_naive_environment(var_name_list)
 
     status = keys_model.set_coinbase_key(
         key=args[0],
@@ -960,7 +955,7 @@ def test_set_coinbase_key(
         show_output=show_output,
     )
 
-    assert_keys_and_status(args, persist, expected, env_var_name_list, status)
+    assert_keys_and_status(args, persist, expected, var_name_list, status)
 
 
 @patch.dict(os.environ, {})
@@ -998,11 +993,11 @@ def test_set_coinbase_key(
 def test_set_walert_key(
     args: List[str], persist: bool, show_output: bool, expected: str
 ):
-    env_var_name_list = [
+    var_name_list = [
         "OPENBB_API_WHALE_ALERT_KEY",
     ]
 
-    set_naive_environment(env_var_name_list)
+    set_naive_environment(var_name_list)
 
     status = keys_model.set_walert_key(
         key=args[0],
@@ -1010,7 +1005,7 @@ def test_set_walert_key(
         show_output=show_output,
     )
 
-    assert_keys_and_status(args, persist, expected, env_var_name_list, status)
+    assert_keys_and_status(args, persist, expected, var_name_list, status)
 
 
 @patch.dict(os.environ, {})
@@ -1048,11 +1043,11 @@ def test_set_walert_key(
 def test_set_glassnode_key(
     args: List[str], persist: bool, show_output: bool, expected: str
 ):
-    env_var_name_list = [
+    var_name_list = [
         "OPENBB_API_GLASSNODE_KEY",
     ]
 
-    set_naive_environment(env_var_name_list)
+    set_naive_environment(var_name_list)
 
     status = keys_model.set_glassnode_key(
         key=args[0],
@@ -1060,7 +1055,7 @@ def test_set_glassnode_key(
         show_output=show_output,
     )
 
-    assert_keys_and_status(args, persist, expected, env_var_name_list, status)
+    assert_keys_and_status(args, persist, expected, var_name_list, status)
 
 
 @patch.dict(os.environ, {})
@@ -1098,11 +1093,11 @@ def test_set_glassnode_key(
 def test_set_coinglass_key(
     args: List[str], persist: bool, show_output: bool, expected: str
 ):
-    env_var_name_list = [
+    var_name_list = [
         "OPENBB_API_COINGLASS_KEY",
     ]
 
-    set_naive_environment(env_var_name_list)
+    set_naive_environment(var_name_list)
 
     status = keys_model.set_coinglass_key(
         key=args[0],
@@ -1110,7 +1105,7 @@ def test_set_coinglass_key(
         show_output=show_output,
     )
 
-    assert_keys_and_status(args, persist, expected, env_var_name_list, status)
+    assert_keys_and_status(args, persist, expected, var_name_list, status)
 
 
 @patch.dict(os.environ, {})
@@ -1148,11 +1143,11 @@ def test_set_coinglass_key(
 def test_set_cpanic_key(
     args: List[str], persist: bool, show_output: bool, expected: str
 ):
-    env_var_name_list = [
+    var_name_list = [
         "OPENBB_API_CRYPTO_PANIC_KEY",
     ]
 
-    set_naive_environment(env_var_name_list)
+    set_naive_environment(var_name_list)
 
     status = keys_model.set_cpanic_key(
         key=args[0],
@@ -1160,7 +1155,7 @@ def test_set_cpanic_key(
         show_output=show_output,
     )
 
-    assert_keys_and_status(args, persist, expected, env_var_name_list, status)
+    assert_keys_and_status(args, persist, expected, var_name_list, status)
 
 
 @patch.dict(os.environ, {})
@@ -1198,11 +1193,11 @@ def test_set_cpanic_key(
 def test_set_ethplorer_key(
     args: List[str], persist: bool, show_output: bool, expected: str
 ):
-    env_var_name_list = [
+    var_name_list = [
         "OPENBB_API_ETHPLORER_KEY",
     ]
 
-    set_naive_environment(env_var_name_list)
+    set_naive_environment(var_name_list)
 
     status = keys_model.set_ethplorer_key(
         key=args[0],
@@ -1210,7 +1205,7 @@ def test_set_ethplorer_key(
         show_output=show_output,
     )
 
-    assert_keys_and_status(args, persist, expected, env_var_name_list, status)
+    assert_keys_and_status(args, persist, expected, var_name_list, status)
 
 
 @patch.dict(os.environ, {})
@@ -1248,12 +1243,12 @@ def test_set_ethplorer_key(
 def test_set_smartstake_key(
     args: List[str], persist: bool, show_output: bool, expected: str
 ):
-    env_var_name_list = [
+    var_name_list = [
         "OPENBB_API_SMARTSTAKE_KEY",
         "OPENBB_API_SMARTSTAKE_TOKEN",
     ]
 
-    set_naive_environment(env_var_name_list)
+    set_naive_environment(var_name_list)
 
     status = keys_model.set_smartstake_key(
         key=args[0],
@@ -1262,7 +1257,7 @@ def test_set_smartstake_key(
         show_output=show_output,
     )
 
-    assert_keys_and_status(args, persist, expected, env_var_name_list, status)
+    assert_keys_and_status(args, persist, expected, var_name_list, status)
 
 
 @patch.dict(os.environ, {})
@@ -1300,11 +1295,11 @@ def test_set_smartstake_key(
 def test_set_github_key(
     args: List[str], persist: bool, show_output: bool, expected: str
 ):
-    env_var_name_list = [
+    var_name_list = [
         "OPENBB_API_GITHUB_KEY",
     ]
 
-    set_naive_environment(env_var_name_list)
+    set_naive_environment(var_name_list)
 
     status = keys_model.set_github_key(
         key=args[0],
@@ -1312,7 +1307,7 @@ def test_set_github_key(
         show_output=show_output,
     )
 
-    assert_keys_and_status(args, persist, expected, env_var_name_list, status)
+    assert_keys_and_status(args, persist, expected, var_name_list, status)
 
 
 @patch.dict(os.environ, {})
@@ -1350,11 +1345,11 @@ def test_set_github_key(
 def test_set_messari_key(
     args: List[str], persist: bool, show_output: bool, expected: str
 ):
-    env_var_name_list = [
+    var_name_list = [
         "OPENBB_API_MESSARI_KEY",
     ]
 
-    set_naive_environment(env_var_name_list)
+    set_naive_environment(var_name_list)
 
     status = keys_model.set_messari_key(
         key=args[0],
@@ -1362,7 +1357,7 @@ def test_set_messari_key(
         show_output=show_output,
     )
 
-    assert_keys_and_status(args, persist, expected, env_var_name_list, status)
+    assert_keys_and_status(args, persist, expected, var_name_list, status)
 
 
 @patch.dict(os.environ, {})
@@ -1400,11 +1395,11 @@ def test_set_messari_key(
 def test_set_eodhd_key(
     args: List[str], persist: bool, show_output: bool, expected: str
 ):
-    env_var_name_list = [
+    var_name_list = [
         "OPENBB_API_EODHD_KEY",
     ]
 
-    set_naive_environment(env_var_name_list)
+    set_naive_environment(var_name_list)
 
     status = keys_model.set_eodhd_key(
         key=args[0],
@@ -1412,7 +1407,7 @@ def test_set_eodhd_key(
         show_output=show_output,
     )
 
-    assert_keys_and_status(args, persist, expected, env_var_name_list, status)
+    assert_keys_and_status(args, persist, expected, var_name_list, status)
 
 
 @patch.dict(os.environ, {})
@@ -1450,11 +1445,11 @@ def test_set_eodhd_key(
 def test_set_santiment_key(
     args: List[str], persist: bool, show_output: bool, expected: str
 ):
-    env_var_name_list = [
+    var_name_list = [
         "OPENBB_API_SANTIMENT_KEY",
     ]
 
-    set_naive_environment(env_var_name_list)
+    set_naive_environment(var_name_list)
 
     status = keys_model.set_santiment_key(
         key=args[0],
@@ -1462,7 +1457,7 @@ def test_set_santiment_key(
         show_output=show_output,
     )
 
-    assert_keys_and_status(args, persist, expected, env_var_name_list, status)
+    assert_keys_and_status(args, persist, expected, var_name_list, status)
 
 
 @patch.dict(os.environ, {})
@@ -1500,11 +1495,11 @@ def test_set_santiment_key(
 def test_set_tokenterminal_key(
     args: List[str], persist: bool, show_output: bool, expected: str
 ):
-    env_var_name_list = [
+    var_name_list = [
         "OPENBB_API_TOKEN_TERMINAL_KEY",
     ]
 
-    set_naive_environment(env_var_name_list)
+    set_naive_environment(var_name_list)
 
     status = keys_model.set_tokenterminal_key(
         key=args[0],
@@ -1512,7 +1507,7 @@ def test_set_tokenterminal_key(
         show_output=show_output,
     )
 
-    assert_keys_and_status(args, persist, expected, env_var_name_list, status)
+    assert_keys_and_status(args, persist, expected, var_name_list, status)
 
 
 @patch.dict(os.environ, {})
@@ -1550,11 +1545,11 @@ def test_set_tokenterminal_key(
 def test_set_shroom_key(
     args: List[str], persist: bool, show_output: bool, expected: str
 ):
-    env_var_name_list = [
+    var_name_list = [
         "OPENBB_API_SHROOM_KEY",
     ]
 
-    set_naive_environment(env_var_name_list)
+    set_naive_environment(var_name_list)
 
     status = keys_model.set_shroom_key(
         key=args[0],
@@ -1562,7 +1557,7 @@ def test_set_shroom_key(
         show_output=show_output,
     )
 
-    assert_keys_and_status(args, persist, expected, env_var_name_list, status)
+    assert_keys_and_status(args, persist, expected, var_name_list, status)
 
 
 @patch.dict(os.environ, {})
@@ -1600,11 +1595,11 @@ def test_set_shroom_key(
 def test_set_openbb_key(
     args: List[str], persist: bool, show_output: bool, expected: str
 ):
-    env_var_name_list = [
+    var_name_list = [
         "OPENBB_OPENBB_PERSONAL_ACCESS_TOKEN",
     ]
 
-    set_naive_environment(env_var_name_list)
+    set_naive_environment(var_name_list)
 
     status = keys_model.set_openbb_personal_access_token(
         key=args[0],
@@ -1612,4 +1607,4 @@ def test_set_openbb_key(
         show_output=show_output,
     )
 
-    assert_keys_and_status(args, persist, expected, env_var_name_list, status)
+    assert_keys_and_status(args, persist, expected, var_name_list, status)
