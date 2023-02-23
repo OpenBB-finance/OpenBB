@@ -33,6 +33,7 @@ try:
     import yt_dlp
     from whisper.tokenizer import LANGUAGES, TO_LANGUAGE_CODE
     from openbb_terminal.forecast.whisper_utils import str2bool
+
     # if imports are successful, set flag to True
     WHISPER_AVAILABLE = True
 
@@ -67,7 +68,7 @@ from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     log_and_raise,
     valid_date,
-    parse_and_split_input
+    parse_and_split_input,
 )
 
 from openbb_terminal.menu import session
@@ -96,7 +97,7 @@ from openbb_terminal.forecast import (
     helpers,
     trans_view,
     nhits_view,
-    whisper_view,
+    whisper_model,
 )
 
 from openbb_terminal.common import common_model
@@ -3255,7 +3256,7 @@ class ForecastController(BaseController):
         )
 
         if ns_parser:
-            whisper_view.transcribe_and_summarize(
+            whisper_model.transcribe_and_summarize(
                 video=ns_parser.video,
                 model_name=ns_parser.model_name,
                 subtitles_format=ns_parser.subtitles_format,
