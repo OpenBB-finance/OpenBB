@@ -39,14 +39,12 @@ class DataBento(BaseModel):
     def validate_symbol(self):
         """Validates the symbol is supported by DataBento.  There is no API for this, so we will use their
         Symbology endpoint to see if something exists.  Doing a long time range can make this request on the order of
-        one minute, so lets just do end = end and start = end - 5 days"""
+        one minute, so try to keep smaller requests."""
         base_url = "https://hist.databento.com/v0/symbology.resolve"
         params = {
             "dataset": self.exchange,
             "symbols": self.symbol,
-            "start_date": (
-                datetime.strptime(self.end, "%Y-%m-%d") - timedelta(days=5)
-            ).strftime("%Y-%m-%d"),
+            "start_date": self.start,
             "end_date": self.end,
             "stype_in": "smart",
             "stype_out": "product_id",
@@ -58,7 +56,7 @@ class DataBento(BaseModel):
         result = request(base_url, params=params, auth=auth)
         if "message" not in result.json():
             console.print(
-                "Issue validating symbol.  Please check with DataBento that the symbol and dates are valid."
+                "Issue validating symbol in the date range. Please check with DataBento for symbology."
             )
             return False
         return result.json()["message"] != "Not found"
@@ -77,7 +75,8 @@ class DataBento(BaseModel):
     @log_start_end(log=logger)
     @check_api_key(["API_DATABENTO_KEY"])
     def get_historical(self) -> pd.DataFrame:
-        """Prepares the request to be made.  I am using their https interface instead of their python client"""
+        """Prepares the request to be made.  I am using their https interface instead of their python client.
+        Their next update will change symbol.V.0 to symbol.C.0"""
 
         base_url = "https://hist.databento.com/v0/timeseries.stream"
         symbol = self.symbol + ".V.0" if self.exchange == "GLBX.MDP3" else self.symbol

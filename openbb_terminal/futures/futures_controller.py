@@ -174,7 +174,7 @@ class FuturesController(BaseController):
             dest="end",
             type=valid_date,
             help="Final date. Default: today",
-            default=datetime.now() - timedelta(days=1),
+            default=datetime.now(),
         )
         parser.add_argument(
             "--expiry",
