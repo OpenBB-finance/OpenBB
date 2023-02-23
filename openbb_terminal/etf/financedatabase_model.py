@@ -12,6 +12,8 @@ from openbb_terminal.decorators import log_start_end
 
 logger = logging.getLogger(__name__)
 
+etfs = fd.ETFs()
+
 
 @log_start_end(log=logger)
 def get_etfs_by_name(name: str) -> Dict:
