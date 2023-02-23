@@ -1700,13 +1700,13 @@ class TechnicalAnalysisController(StockBaseController):
                 return
 
             volatility_view.display_cones(
-                data = self.stock,
-                symbol = self.ticker,
-                lower_q = ns_parser.lower_q,
-                upper_q = ns_parser.upper_q,
-                is_crypto = ns_parser.is_crypto,
+                data=self.stock,
+                symbol=self.ticker,
+                lower_q=ns_parser.lower_q,
+                upper_q=ns_parser.upper_q,
+                is_crypto=ns_parser.is_crypto,
                 export=ns_parser.export,
                 sheet_name=" ".join(ns_parser.sheet_name)
                 if ns_parser.sheet_name
-                else None,       
+                else None,
             )
