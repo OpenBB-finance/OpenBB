@@ -26,6 +26,5 @@ mkdir DMG
 cp -r build/pyinstaller/macOS_package_assets/* DMG/
 mv dist/OpenBBTerminal DMG/"$DISK_IMAGE_NAME"/.OpenBB
 
-/bin/bash "$BUNDLER_PATH" "$DISK_IMAGE_NAME" 0.0.1
 # Clean Up artifacts from this build
-rm -rf build/terminal && rm -rf dist && rm -rf DMG
+# rm -rf build/terminal && rm -rf dist && rm -rf DMG

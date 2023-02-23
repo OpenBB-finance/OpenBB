@@ -86,35 +86,35 @@ deleteInstallationDirectory() {
 }
 
 signFiles() {
-    codesign --deep --force --verify --verbose --options runtime --entitlements "$ENTITLEMENTS" -s "$APPLE_SIGNING_IDENTITY" DMG/OpenBB\ Terminal/.OpenBB/*.so
-    codesign --deep --force --verify --verbose --options runtime --entitlements "$ENTITLEMENTS" -s "$APPLE_SIGNING_IDENTITY" DMG/OpenBB\ Terminal/.OpenBB/*/*.so
-    codesign --deep --force --verify --verbose --options runtime --entitlements "$ENTITLEMENTS" -s "$APPLE_SIGNING_IDENTITY" DMG/OpenBB\ Terminal/.OpenBB/*/*/*.so
-    codesign --deep --force --verify --verbose --options runtime --entitlements "$ENTITLEMENTS" -s "$APPLE_SIGNING_IDENTITY" DMG/OpenBB\ Terminal/.OpenBB/*/*/*/*.so
-    codesign --deep --force --verify --verbose --options runtime --entitlements "$ENTITLEMENTS" -s "$APPLE_SIGNING_IDENTITY" DMG/OpenBB\ Terminal/.OpenBB/*/*/*/*/*.so
-    codesign --deep --force --verify --verbose --options runtime --entitlements "$ENTITLEMENTS" -s "$APPLE_SIGNING_IDENTITY" DMG/OpenBB\ Terminal/.OpenBB/*/*/*/*/*/*.so
+    codesign --deep --force --verify --verbose --options runtime --entitlements "$ENTITLEMENTS" -s "$APPLE_SIGNING_IDENTITY" build/pyinstaller/macOS-x64/target/darwinpkg/Applications/OpenBB\ Terminal/.OpenBB/*.so
+    codesign --deep --force --verify --verbose --options runtime --entitlements "$ENTITLEMENTS" -s "$APPLE_SIGNING_IDENTITY" build/pyinstaller/macOS-x64/target/darwinpkg/Applications/OpenBB\ Terminal/.OpenBB/*/*.so
+    codesign --deep --force --verify --verbose --options runtime --entitlements "$ENTITLEMENTS" -s "$APPLE_SIGNING_IDENTITY" build/pyinstaller/macOS-x64/target/darwinpkg/Applications/OpenBB\ Terminal/.OpenBB/*/*/*.so
+    codesign --deep --force --verify --verbose --options runtime --entitlements "$ENTITLEMENTS" -s "$APPLE_SIGNING_IDENTITY" build/pyinstaller/macOS-x64/target/darwinpkg/Applications/OpenBB\ Terminal/.OpenBB/*/*/*/*.so
+    codesign --deep --force --verify --verbose --options runtime --entitlements "$ENTITLEMENTS" -s "$APPLE_SIGNING_IDENTITY" build/pyinstaller/macOS-x64/target/darwinpkg/Applications/OpenBB\ Terminal/.OpenBB/*/*/*/*/*.so
+    codesign --deep --force --verify --verbose --options runtime --entitlements "$ENTITLEMENTS" -s "$APPLE_SIGNING_IDENTITY" build/pyinstaller/macOS-x64/target/darwinpkg/Applications/OpenBB\ Terminal/.OpenBB/*/*/*/*/*/*.so
     echo "Code Signing DYLIB Files"
-    codesign --deep --force --verify --verbose --options runtime --entitlements "$ENTITLEMENTS" -s "$APPLE_SIGNING_IDENTITY" DMG/OpenBB\ Terminal/.OpenBB/*.dylib
-    codesign --deep --force --verify --verbose --options runtime --entitlements "$ENTITLEMENTS" -s "$APPLE_SIGNING_IDENTITY" DMG/OpenBB\ Terminal/.OpenBB/*.dylib
-    codesign --deep --force --verify --verbose --options runtime --entitlements "$ENTITLEMENTS" -s "$APPLE_SIGNING_IDENTITY" DMG/OpenBB\ Terminal/.OpenBB/*/*/*.dylib
-    codesign --deep --force --verify --verbose --options runtime --entitlements "$ENTITLEMENTS" -s "$APPLE_SIGNING_IDENTITY" DMG/OpenBB\ Terminal/.OpenBB/*/*/*/*/*.dylib
-    codesign --deep --force --verify --verbose --options runtime --entitlements "$ENTITLEMENTS" -s "$APPLE_SIGNING_IDENTITY" DMG/OpenBB\ Terminal/.OpenBB/prophet/.dylibs/*.dylib
-    codesign --deep --force --verify --verbose --options runtime --entitlements "$ENTITLEMENTS" -s "$APPLE_SIGNING_IDENTITY" DMG/OpenBB\ Terminal/.OpenBB/prophet/stan_model/cmdstan-2.26.1/stan/lib/stan_math/lib/tbb/*.dylib
-    codesign --deep --force --verify --verbose --options runtime --entitlements "$ENTITLEMENTS" -s "$APPLE_SIGNING_IDENTITY" DMG/OpenBB\ Terminal/.OpenBB/torch/.dylibs/*.dylib
-    codesign --deep --force --verify --verbose --options runtime --entitlements "$ENTITLEMENTS" -s "$APPLE_SIGNING_IDENTITY" DMG/OpenBB\ Terminal/.OpenBB/sklearn/.dylibs/*.dylib
+    codesign --deep --force --verify --verbose --options runtime --entitlements "$ENTITLEMENTS" -s "$APPLE_SIGNING_IDENTITY" build/pyinstaller/macOS-x64/target/darwinpkg/Applications/OpenBB\ Terminal/.OpenBB/*.dylib
+    codesign --deep --force --verify --verbose --options runtime --entitlements "$ENTITLEMENTS" -s "$APPLE_SIGNING_IDENTITY" build/pyinstaller/macOS-x64/target/darwinpkg/Applications/OpenBB\ Terminal/.OpenBB/*.dylib
+    codesign --deep --force --verify --verbose --options runtime --entitlements "$ENTITLEMENTS" -s "$APPLE_SIGNING_IDENTITY" build/pyinstaller/macOS-x64/target/darwinpkg/Applications/OpenBB\ Terminal/.OpenBB/*/*/*.dylib
+    codesign --deep --force --verify --verbose --options runtime --entitlements "$ENTITLEMENTS" -s "$APPLE_SIGNING_IDENTITY" build/pyinstaller/macOS-x64/target/darwinpkg/Applications/OpenBB\ Terminal/.OpenBB/*/*/*/*/*.dylib
+    codesign --deep --force --verify --verbose --options runtime --entitlements "$ENTITLEMENTS" -s "$APPLE_SIGNING_IDENTITY" build/pyinstaller/macOS-x64/target/darwinpkg/Applications/OpenBB\ Terminal/.OpenBB/prophet/.dylibs/*.dylib
+    codesign --deep --force --verify --verbose --options runtime --entitlements "$ENTITLEMENTS" -s "$APPLE_SIGNING_IDENTITY" build/pyinstaller/macOS-x64/target/darwinpkg/Applications/OpenBB\ Terminal/.OpenBB/prophet/stan_model/cmdstan-2.26.1/stan/lib/stan_math/lib/tbb/*.dylib
+    codesign --deep --force --verify --verbose --options runtime --entitlements "$ENTITLEMENTS" -s "$APPLE_SIGNING_IDENTITY" build/pyinstaller/macOS-x64/target/darwinpkg/Applications/OpenBB\ Terminal/.OpenBB/torch/.dylibs/*.dylib
+    codesign --deep --force --verify --verbose --options runtime --entitlements "$ENTITLEMENTS" -s "$APPLE_SIGNING_IDENTITY" build/pyinstaller/macOS-x64/target/darwinpkg/Applications/OpenBB\ Terminal/.OpenBB/sklearn/.dylibs/*.dylib
     echo "Coce Signing LIB Files"
-    codesign --deep --force --verify --verbose --options runtime --entitlements "$ENTITLEMENTS" -s "$APPLE_SIGNING_IDENTITY" DMG/OpenBB\ Terminal/.OpenBB/*.lib
+    codesign --deep --force --verify --verbose --options runtime --entitlements "$ENTITLEMENTS" -s "$APPLE_SIGNING_IDENTITY" build/pyinstaller/macOS-x64/target/darwinpkg/Applications/OpenBB\ Terminal/.OpenBB/*.lib
     echo "Code Signing Other Files"
-    codesign --deep --force --verify --verbose --options runtime --entitlements "$ENTITLEMENTS" -s "$APPLE_SIGNING_IDENTITY" DMG/OpenBB\ Terminal/.OpenBB/prophet/stan_model/prophet_model.bin
-    codesign --deep --force --verify --verbose --options runtime --entitlements "$ENTITLEMENTS" -s "$APPLE_SIGNING_IDENTITY" DMG/OpenBB\ Terminal/.OpenBB/prophet/stan_model/cmdstan-2.26.1/bin/diagnose
-    codesign --deep --force --verify --verbose --options runtime --entitlements "$ENTITLEMENTS" -s "$APPLE_SIGNING_IDENTITY" DMG/OpenBB\ Terminal/.OpenBB/prophet/stan_model/cmdstan-2.26.1/bin/print
-    codesign --deep --force --verify --verbose --options runtime --entitlements "$ENTITLEMENTS" -s "$APPLE_SIGNING_IDENTITY" DMG/OpenBB\ Terminal/.OpenBB/prophet/stan_model/cmdstan-2.26.1/bin/stanc
-    codesign --deep --force --verify --verbose --options runtime --entitlements "$ENTITLEMENTS" -s "$APPLE_SIGNING_IDENTITY" DMG/OpenBB\ Terminal/.OpenBB/prophet/stan_model/cmdstan-2.26.1/bin/stansummary
-    codesign --deep --force --verify --verbose --options runtime --entitlements "$ENTITLEMENTS" -s "$APPLE_SIGNING_IDENTITY" DMG/OpenBB\ Terminal/.OpenBB/pyarrow/plasma-store-server
-    codesign --deep --force --verify --verbose --options runtime --entitlements "$ENTITLEMENTS" -s "$APPLE_SIGNING_IDENTITY" DMG/OpenBB\ Terminal/.OpenBB/torch/bin/protoc
-    codesign --deep --force --verify --verbose --options runtime --entitlements "$ENTITLEMENTS" -s "$APPLE_SIGNING_IDENTITY" DMG/OpenBB\ Terminal/.OpenBB/torch/bin/protoc-3.13.0.0
-    codesign --deep --force --verify --verbose --options runtime --entitlements "$ENTITLEMENTS" -s "$APPLE_SIGNING_IDENTITY" DMG/OpenBB\ Terminal/.OpenBB/torch/bin/torch_shm_manager
+    codesign --deep --force --verify --verbose --options runtime --entitlements "$ENTITLEMENTS" -s "$APPLE_SIGNING_IDENTITY" build/pyinstaller/macOS-x64/target/darwinpkg/Applications/OpenBB\ Terminal/.OpenBB/prophet/stan_model/prophet_model.bin
+    codesign --deep --force --verify --verbose --options runtime --entitlements "$ENTITLEMENTS" -s "$APPLE_SIGNING_IDENTITY" build/pyinstaller/macOS-x64/target/darwinpkg/Applications/OpenBB\ Terminal/.OpenBB/prophet/stan_model/cmdstan-2.26.1/bin/diagnose
+    codesign --deep --force --verify --verbose --options runtime --entitlements "$ENTITLEMENTS" -s "$APPLE_SIGNING_IDENTITY" build/pyinstaller/macOS-x64/target/darwinpkg/Applications/OpenBB\ Terminal/.OpenBB/prophet/stan_model/cmdstan-2.26.1/bin/print
+    codesign --deep --force --verify --verbose --options runtime --entitlements "$ENTITLEMENTS" -s "$APPLE_SIGNING_IDENTITY" build/pyinstaller/macOS-x64/target/darwinpkg/Applications/OpenBB\ Terminal/.OpenBB/prophet/stan_model/cmdstan-2.26.1/bin/stanc
+    codesign --deep --force --verify --verbose --options runtime --entitlements "$ENTITLEMENTS" -s "$APPLE_SIGNING_IDENTITY" build/pyinstaller/macOS-x64/target/darwinpkg/Applications/OpenBB\ Terminal/.OpenBB/prophet/stan_model/cmdstan-2.26.1/bin/stansummary
+    codesign --deep --force --verify --verbose --options runtime --entitlements "$ENTITLEMENTS" -s "$APPLE_SIGNING_IDENTITY" build/pyinstaller/macOS-x64/target/darwinpkg/Applications/OpenBB\ Terminal/.OpenBB/pyarrow/plasma-store-server
+    codesign --deep --force --verify --verbose --options runtime --entitlements "$ENTITLEMENTS" -s "$APPLE_SIGNING_IDENTITY" build/pyinstaller/macOS-x64/target/darwinpkg/Applications/OpenBB\ Terminal/.OpenBB/torch/bin/protoc
+    codesign --deep --force --verify --verbose --options runtime --entitlements "$ENTITLEMENTS" -s "$APPLE_SIGNING_IDENTITY" build/pyinstaller/macOS-x64/target/darwinpkg/Applications/OpenBB\ Terminal/.OpenBB/torch/bin/protoc-3.13.0.0
+    codesign --deep --force --verify --verbose --options runtime --entitlements "$ENTITLEMENTS" -s "$APPLE_SIGNING_IDENTITY" build/pyinstaller/macOS-x64/target/darwinpkg/Applications/OpenBB\ Terminal/.OpenBB/torch/bin/torch_shm_manager
     echo "Code Sign OpenBB Executable File"
-    codesign --deep --force --verify --verbose --options runtime --entitlements "$ENTITLEMENTS" -s "$APPLE_SIGNING_IDENTITY" DMG/OpenBB\ Terminal/.OpenBB/OpenBBTerminal
+    codesign --deep --force --verify --verbose --options runtime --entitlements "$ENTITLEMENTS" -s "$APPLE_SIGNING_IDENTITY" build/pyinstaller/macOS-x64/target/darwinpkg/Applications/OpenBB\ Terminal/.OpenBB/OpenBBTerminal
 }
 
 createInstallationDirectory() {
@@ -198,9 +198,9 @@ function createInstaller() {
 #Main script
 log_info "Installer generating process started."
 
-# signFiles
 copyDarwinDirectory
 copyBuildDirectory
+signFiles
 createInstaller
 
 log_info "Installer generating process finished"
