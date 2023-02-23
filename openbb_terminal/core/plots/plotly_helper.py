@@ -655,25 +655,6 @@ class OpenBBFigure(go.Figure):
         self.update_yaxes(title=title, row=row, col=col, **kwargs)
         return self
 
-    def xaxis_type(
-        self,
-        xaxis_type: str = "category",
-        row: Optional[int] = None,
-        col: Optional[int] = None,
-    ) -> None:
-        """Set the xaxis type of the figure or subplot (if row and col are specified).
-
-        Parameters
-        ----------
-        xaxis_type : `str`, optional
-            Type of xaxis, by default "category"
-        row : `int`, optional
-            Row number, by default None
-        col : `int`, optional
-            Column number, by default None
-        """
-        self.update_xaxes(type=xaxis_type, row=row, col=col)
-
     def add_hline_legend(
         self,
         y: float,

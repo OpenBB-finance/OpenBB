@@ -348,7 +348,6 @@ class PlotlyTA(PltTA):
                 x=self.df_stock.index,
                 y=self.df_stock[self.close_column],
                 name=f"{symbol} Close",
-                connectgaps=True,
                 row=1,
                 col=1,
             )
@@ -356,20 +355,7 @@ class PlotlyTA(PltTA):
             self.inchart_colors = theme.get_colors()[1:]
 
         if self.show_volume and "Volume" in self.df_stock.columns:
-            colors = [
-                theme.down_color
-                if row.Open < row[self.close_column]
-                else theme.up_color
-                for _, row in self.df_stock.iterrows()
-            ]
-            fig.add_bar(
-                x=self.df_stock.index,
-                y=self.df_stock["Volume"],
-                name="Volume",
-                marker_color=colors,
-                row=2,
-                col=1,
-            )
+            fig.add_stock_volume(self.df_stock, self.close_column, row=2, col=1)
 
         fig.update_layout(yaxis_title="Price ($)")
         return fig
