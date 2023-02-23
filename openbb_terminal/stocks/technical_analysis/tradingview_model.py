@@ -76,7 +76,9 @@ def get_tradingview_recommendation(
     """
 
     if not exchange:
-        s_req = f"https://www.alphavantage.co/query?function=OVERVIEW&symbol={symbol}&apikey={get_current_user().credentials.API_KEY_ALPHAVANTAGE}"
+        current_user = get_current_user()
+        s_req = f"https://www.alphavantage.co/query?function=OVERVIEW&symbol={symbol}&"
+        f"apikey={current_user.credentials.API_KEY_ALPHAVANTAGE}"
         result = request(s_req, stream=True)
         data = result.json()
         if not data:

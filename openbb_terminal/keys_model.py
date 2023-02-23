@@ -1931,7 +1931,10 @@ def check_cpanic_key(show_output: bool = False) -> str:
         logger.info("cpanic key not defined")
         status = KeyStatus.NOT_DEFINED
     else:
-        crypto_panic_url = f"https://cryptopanic.com/api/v1/posts/?auth_token={current_user.credentials.API_CRYPTO_PANIC_KEY}"
+        crypto_panic_url = (
+            "https://cryptopanic.com/api/v1/posts/?auth_token="
+            f"{current_user.credentials.API_CRYPTO_PANIC_KEY}"
+        )
         response = request(crypto_panic_url)
 
         if response.status_code == 200:
@@ -2157,7 +2160,9 @@ def check_github_key(show_output: bool = False) -> str:
 
     current_user = get_current_user()
 
-    if current_user.credentials.API_GITHUB_KEY == "REPLACE_ME":  # pragma: allowlist secret
+    if (
+        current_user.credentials.API_GITHUB_KEY == "REPLACE_ME"
+    ):  # pragma: allowlist secret
         logger.info("GitHub key not defined")
         status = KeyStatus.NOT_DEFINED
     else:
@@ -2217,7 +2222,8 @@ def check_messari_key(show_output: bool = False) -> str:
     current_user = get_current_user()
 
     if (
-        current_user.credentials.API_MESSARI_KEY == "REPLACE_ME"  # pragma: allowlist secret
+        current_user.credentials.API_MESSARI_KEY
+        == "REPLACE_ME"  # pragma: allowlist secret
     ):  # pragma: allowlist secret
         logger.info("Messari key not defined")
         status = KeyStatus.NOT_DEFINED
@@ -2289,7 +2295,10 @@ def check_eodhd_key(show_output: bool = False) -> str:
         logger.info("End of Day Historical Data key not defined")
         status = KeyStatus.NOT_DEFINED
     else:
-        request_url = f"https://eodhistoricaldata.com/api/exchanges-list/?api_token={current_user.credentials.API_EODHD_KEY}&fmt=json"
+        request_url = (
+            "https://eodhistoricaldata.com/api/exchanges-list/?api_token="
+            f"{current_user.credentials.API_EODHD_KEY}&fmt=json"
+        )
         r = request(request_url)
         if r.status_code == 200:
             logger.info("Eodhd key defined, test passed")
@@ -2510,7 +2519,9 @@ def check_tokenterminal_key(show_output: bool = False) -> str:
         logger.info("Token Terminal key not defined")
         status = KeyStatus.NOT_DEFINED
     else:
-        token_terminal = TokenTerminal(key=current_user.credentials.API_TOKEN_TERMINAL_KEY)
+        token_terminal = TokenTerminal(
+            key=current_user.credentials.API_TOKEN_TERMINAL_KEY
+        )
 
         if "message" in token_terminal.get_all_projects():
             logger.warning("Token Terminal key defined, test failed")

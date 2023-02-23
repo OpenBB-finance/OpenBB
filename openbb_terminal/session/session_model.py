@@ -3,7 +3,6 @@ from enum import Enum
 from typing import Any, Optional
 
 import matplotlib.pyplot as plt
-from openbb_terminal.core.models.user_model import UserModel
 
 import openbb_terminal.session.hub_model as Hub
 import openbb_terminal.session.local_model as Local
@@ -12,6 +11,7 @@ from openbb_terminal.base_helpers import (
     reload_openbb_config_modules,
     remove_log_handlers,
 )
+from openbb_terminal.core.models.user_model import UserModel
 from openbb_terminal.helper_funcs import system_clear
 from openbb_terminal.rich_config import console
 from openbb_terminal.session.user import (

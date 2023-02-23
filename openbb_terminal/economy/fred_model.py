@@ -13,7 +13,6 @@ import pandas as pd
 from fredapi import Fred
 from requests import HTTPError
 
-from openbb_terminal import config_terminal as cfg
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import get_user_agent, request
 from openbb_terminal.rich_config import console
@@ -38,7 +37,11 @@ def check_series_id(series_id: str) -> Tuple[bool, dict]:
         Boolean if series ID exists,
         Dictionary of series information
     """
-    url = f"https://api.stlouisfed.org/fred/series?series_id={series_id}&api_key={get_current_user().credentials.API_FRED_KEY}&file_type=json"
+    current_user = get_current_user()
+    url = (
+        f"https://api.stlouisfed.org/fred/series?series_id={series_id}&api_key="
+        f"{current_user.credentials.API_FRED_KEY}&file_type=json"
+    )
     r = request(url, headers={"User-Agent": get_user_agent()})
     # The above returns 200 if series is found
     # There seems to be an occasional bug giving a 503 response where the json decoding fails

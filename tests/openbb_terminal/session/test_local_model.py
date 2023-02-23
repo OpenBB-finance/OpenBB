@@ -9,6 +9,7 @@ import pytest
 
 # IMPORTATION INTERNAL
 from openbb_terminal.session import local_model
+from openbb_terminal.session.user import get_current_user
 
 TEST_SESSION = {
     "access_token": "test_token",

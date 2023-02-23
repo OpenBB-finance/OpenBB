@@ -1,4 +1,5 @@
 from typing import Dict
+
 from pydantic.dataclasses import dataclass
 
 

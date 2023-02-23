@@ -47,7 +47,10 @@ def get_overview(symbol: str) -> pd.DataFrame:
         Dataframe of fundamentals
     """
     # Request OVERVIEW data from Alpha Vantage API
-    s_req = f"https://www.alphavantage.co/query?function=OVERVIEW&symbol={symbol}&apikey={get_current_user().credentials.API_KEY_ALPHAVANTAGE}"
+    s_req = (
+        f"https://www.alphavantage.co/query?function=OVERVIEW&symbol={symbol}&apikey"
+        f"={get_current_user().credentials.API_KEY_ALPHAVANTAGE}"
+    )
     result = request(s_req, stream=True)
     result_json = result.json()
 
@@ -277,7 +280,11 @@ def get_balance_sheet(
     pd.DataFrame
         DataFrame of the balance sheet
     """
-    url = f"https://www.alphavantage.co/query?function=BALANCE_SHEET&symbol={symbol}&apikey={get_current_user().credentials}"
+    current_user = get_current_user()
+    url = (
+        f"https://www.alphavantage.co/query?function=BALANCE_SHEET&symbol={symbol}&"
+        f"apikey={current_user.credentials}"
+    )
     r = request(url)
     response_json = r.json()
     if check_premium_key(response_json):

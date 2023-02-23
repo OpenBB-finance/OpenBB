@@ -1,5 +1,8 @@
 from copy import deepcopy
+
 from dotenv import dotenv_values
+
+import openbb_terminal.feature_flags as obbff
 from openbb_terminal.core.config.paths import (
     PACKAGE_ENV_FILE,
     REPOSITORY_ENV_FILE,
@@ -8,7 +11,6 @@ from openbb_terminal.core.config.paths import (
 from openbb_terminal.core.models.user_credentials import CredentialsModel
 from openbb_terminal.core.models.user_model import UserModel
 from openbb_terminal.session.hub_model import REGISTER_URL
-import openbb_terminal.feature_flags as obbff
 
 env_dict = {
     **dotenv_values(REPOSITORY_ENV_FILE),

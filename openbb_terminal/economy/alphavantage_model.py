@@ -294,7 +294,11 @@ def get_unemployment(start_year: int = 2010) -> pd.DataFrame:
     pd.DataFrame
         Dataframe of historical yields
     """
-    url = f"https://www.alphavantage.co/query?function=UNEMPLOYMENT&apikey={get_current_user().credentials.API_KEY_ALPHAVANTAGE}"
+    current_user = get_current_user()
+    url = (
+        "https://www.alphavantage.co/query?function=UNEMPLOYMENT&apikey="
+        f"{current_user.credentials.API_KEY_ALPHAVANTAGE}"
+    )
     r = request(url, headers={"User-Agent": get_user_agent()})
     if r.status_code != 200:
         return pd.DataFrame()

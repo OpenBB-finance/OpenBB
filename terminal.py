@@ -2,8 +2,8 @@ import multiprocessing
 import sys
 
 from openbb_terminal.base_helpers import load_dotenv_and_reload_configs
-from openbb_terminal.terminal_helper import is_auth_enabled
 from openbb_terminal.session.user import init_user
+from openbb_terminal.terminal_helper import is_auth_enabled
 
 # pylint: disable=import-outside-toplevel
 

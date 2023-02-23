@@ -4,7 +4,6 @@ from openbb_terminal.session import (
     session_model,
 )
 from openbb_terminal.session.user import (
-    User,
     get_current_user,
     guest_message,
     is_guest,

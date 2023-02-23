@@ -1066,7 +1066,10 @@ def show_codes_polygon(ticker: str):
 
     current_user = get_current_user()
 
-    link = f"https://api.polygon.io/v3/reference/tickers/{ticker.upper()}?apiKey={current_user.credentials.API_POLYGON_KEY}"
+    link = (
+        f"https://api.polygon.io/v3/reference/tickers/{ticker.upper()}?apiKey="
+        f"{current_user.credentials.API_POLYGON_KEY}"
+    )
     if current_user.credentials.API_POLYGON_KEY == "REPLACE_ME":
         console.print("[red]Polygon API key missing[/red]\n")
         return
