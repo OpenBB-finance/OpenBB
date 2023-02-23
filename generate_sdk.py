@@ -59,6 +59,13 @@ class SDKLogger:
         setup_logging()
         log_all_settings()
 
+    @staticmethod
+    def _try_to_login(sdk: "OpenBBSDK"):
+        if User.is_guest() and is_auth_enabled():
+            try:
+                sdk.login()
+            except Exception:
+                pass
 
 openbb = OpenBBSDK()\r\r
 """
@@ -478,6 +485,9 @@ class BuildCategoryModelClasses:
             if root_attrs:
                 self.write_class_attr_docs(root_attrs, f, False, True)
                 self.write_class_attributes(root_attrs, f)
+                f.seek(f.tell() - 2, os.SEEK_SET)
+                f.truncate()
+                f.write("        SDKLogger._try_to_login(self)\r\r")
 
             for category in self.categories:
                 self.write_class_property(category, f)
@@ -514,8 +524,9 @@ class BuildCategoryModelClasses:
                 self.write_sdk_controller_file(category, d)
         self.write_sdk_file()
 
-        for path in ["sdk.py", "core/sdk", "core/sdk/models", "core/sdk/controllers"]:
-            for file in (REPO_ROOT / path).glob("*.py"):
+        for path in ["", "core/sdk", "core/sdk/models", "core/sdk/controllers"]:
+            pattern = "*.py" if path else "sdk.py"
+            for file in (REPO_ROOT / path).glob(pattern):
                 with open(file, "rb") as f:
                     content = f.read()
                 with open(file, "wb") as f:
