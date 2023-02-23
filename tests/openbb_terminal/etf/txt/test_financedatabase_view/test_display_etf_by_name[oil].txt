@@ -1,6 +1,7 @@
-                                                     long_name                             family                        category
-XOP            SPDR S&P Oil & Gas Exploration & Production ETF  SPDR State Street Global Advisors                   Equity Energy
-USO                                 United States Oil Fund, LP                   USCF Investments                            None
-OIH                            VanEck Vectors Oil Services ETF                             VanEck                   Equity Energy
-UCO                        ProShares Ultra Bloomberg Crude Oil                          ProShares  Trading--Leveraged Commodities
-GUSH  Direxion Daily S&P Oil & Gas Exp. & Prod. Bull 2X Shares                     Direxion Funds       Trading--Leveraged Equity
+                               long_name                         family category_group category
+symbol                                                                                         
+BNO     United States Brent Oil Fund, LP               USCF Investments            NaN      NaN
+CRAK     VanEck Vectors Oil Refiners ETF        VanEck Asset Management       Equities   Energy
+DBO                  Invesco DB Oil Fund  Invesco Investment Management            NaN      NaN
+DDG            ProShares Short Oil & Gas                      ProShares       Equities  Trading
+DIG            ProShares Ultra Oil & Gas                      ProShares       Equities  Trading

@@ -31,7 +31,7 @@ class ScreenerController(BaseController):
     ]
 
     PRESET_CHOICES = screener_model.get_preset_choices()
-    ETF_CATEGORY_LIST = financedatabase_model.get_etfs_categories()
+    ETF_CATEGORY_LIST = financedatabase_model.get_etfs_categories().tolist()
 
     sortby_screen_choices = [
         "Assets",

@@ -440,7 +440,6 @@ def get_companies_per_country_in_sector(
 
 @log_start_end(log=logger)
 def get_companies_per_country_in_industry(
-    equities,
     industry: str = "Metals & Mining",
     mktcap: str = "Large",
     exclude_exchanges: bool = True,

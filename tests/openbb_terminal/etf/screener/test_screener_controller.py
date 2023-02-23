@@ -233,10 +233,10 @@ def test_call_func_expect_queue(expected_queue, func, queue):
         ),
         (
             "call_sbc",
-            ["Bank Loan", "-l=3"],
+            ["Bonds", "-l=3"],
             "financedatabase_view.display_etf_by_category",
             [],
-            dict(category="Bank Loan", limit=3, export="", sheet_name=None),
+            dict(category="Bonds", limit=3, export="", sheet_name=None),
         ),
         (
             "call_view",

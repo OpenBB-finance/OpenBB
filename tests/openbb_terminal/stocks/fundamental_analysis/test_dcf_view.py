@@ -20,8 +20,8 @@ def vcr_config():
 
 @pytest.mark.vcr
 def test_create_xls():
-    for ticker in ["AEIS"]:
-        excel = dcf_view.CreateExcelFA(ticker, False)
+    for ticker in ["MSFT"]:
+        excel = dcf_view.CreateExcelFA(ticker, False, 1)
         df_is = excel.get_data("IS", 1, True)
         items_is = dcf_static.non_gaap_is + dcf_static.gaap_is
         for item in df_is.index:
