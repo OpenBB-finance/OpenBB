@@ -53,7 +53,7 @@ class DataBento(BaseModel):
         # This seems to only work for futures? Assume the user is entering correct stock ticker
         if self.exchange == "XNAS.ITCH":
             return True
-        result = request(base_url, params=params, auth=auth)
+        result = request(base_url, params=params, auth=auth, timeout=60)
         if "message" not in result.json():
             console.print(
                 "Issue validating symbol in the date range. Please check with DataBento for symbology."
@@ -69,8 +69,6 @@ class DataBento(BaseModel):
         if not self.validate_symbol():
             return pd.DataFrame()
         return self.get_historical()
-
-    logger = logging.getLogger(__name__)
 
     @log_start_end(log=logger)
     @check_api_key(["API_DATABENTO_KEY"])
@@ -97,7 +95,7 @@ class DataBento(BaseModel):
 
     def process_request(self, base_url, params, auth) -> pd.DataFrame:
         """Takes the request and returns the adjusted dataframe"""
-        r = request(base_url, params=params, auth=auth)
+        r = request(base_url, params=params, auth=auth, timeout=60)
         if r.status_code != 200:
             raise Exception(f"Error: Status Code {r.status_code}")
         df = pd.read_csv(StringIO(r.text))
