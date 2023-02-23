@@ -12,7 +12,7 @@ from openbb_terminal.base_helpers import (
     reload_openbb_config_modules,
     remove_log_handlers,
 )
-from openbb_terminal.core.models.user_model import UserModel
+from openbb_terminal.core.models.user.user_model import UserModel
 from openbb_terminal.helper_funcs import system_clear
 from openbb_terminal.rich_config import console
 from openbb_terminal.core.session.user import (

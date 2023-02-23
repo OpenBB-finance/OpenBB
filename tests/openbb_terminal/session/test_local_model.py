@@ -6,7 +6,7 @@ from pathlib import Path
 from unittest.mock import mock_open, patch
 
 import pytest
-from openbb_terminal.core.models.user_model import UserModel
+from openbb_terminal.core.models.user.user_model import UserModel
 
 # IMPORTATION INTERNAL
 from openbb_terminal.core.session import local_model
