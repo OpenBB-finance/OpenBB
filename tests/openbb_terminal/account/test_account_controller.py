@@ -9,7 +9,6 @@ from requests import Response
 # IMPORTATION INTERNAL
 from openbb_terminal.account import account_controller
 from openbb_terminal.core.models.user_model import UserModel
-from openbb_terminal.session.user import get_current_user
 
 # pylint: disable=E1101
 # pylint: disable=W0603
