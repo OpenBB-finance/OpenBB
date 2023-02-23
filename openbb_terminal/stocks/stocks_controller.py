@@ -128,7 +128,6 @@ class StocksController(StockBaseController):
         mt.add_menu("th")
         mt.add_menu("options")
         mt.add_menu("disc")
-        mt.add_menu("sia")
         mt.add_menu("dps")
         mt.add_menu("scr")
         mt.add_menu("ins")
@@ -618,13 +617,21 @@ class StocksController(StockBaseController):
 
     @log_start_end(log=logger)
     def call_sia(self, _):
-        """Process ins command."""
-        from openbb_terminal.stocks.sector_industry_analysis.sia_controller import (
-            SectorIndustryAnalysisController,
-        )
+        """Process sia command."""
+        # from openbb_terminal.stocks.sector_industry_analysis.sia_controller import (
+        #     SectorIndustryAnalysisController,
+        # )
 
-        self.queue = self.load_class(
-            SectorIndustryAnalysisController, self.ticker, self.queue
+        # self.queue = self.load_class(
+        #     SectorIndustryAnalysisController, self.ticker, self.queue
+        # )
+
+        # TODO: Get rid of the call_dd on the next release since it has been deprecated.
+
+        console.print(
+            "The sia (Sector & Industry Analysis) menu is currently inactive as the functionality is "
+            "better represented through the stocks/sia, stocks/fa and routines functionalities. "
+            "Improvements to this menu is on the projects list."
         )
 
     @log_start_end(log=logger)
