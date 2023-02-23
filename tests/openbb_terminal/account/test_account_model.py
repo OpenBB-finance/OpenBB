@@ -8,6 +8,9 @@ from openbb_terminal import (
 )
 from openbb_terminal.account import account_model
 from openbb_terminal.core.config import paths
+from openbb_terminal.core.models.user_credentials import CredentialsModel
+from openbb_terminal.core.models.user_model import UserModel
+from openbb_terminal.session.user import get_current_user
 
 
 def test_get_var_diff():
@@ -41,51 +44,118 @@ def test_get_var_diff():
     assert result == (True, False)
 
 
-def test_get_diff_keys():
-    class TestObject:  # pylint: disable=too-few-public-methods
-        a = 1
-        b = 2.0
-        c = "string"
+def test_get_diff_keys(mocker):
+    a = "API_KEY_ALPHAVANTAGE"
+    b = "API_KEY_FINANCIALMODELINGPREP"
+    c = "API_KEY_QUANDL"
 
-    test_keys = {"a": 2, "b": 3.0, "c": "new_string"}
-    with patch("openbb_terminal.account.account_model.cfg", TestObject):
-        diff = account_model.get_diff_keys(test_keys)
-        assert diff == {"a": (1, 2), "b": (2.0, 3.0), "c": ("string", "new_string")}
+    old_credentials = CredentialsModel(
+        **{
+            a: "key1",
+            b: "key2",
+            c: "key3",
+        }
+    )
+    test_user = UserModel(credentials=old_credentials)
 
+    new_credentials = {
+        a: "new_key1",
+        b: "new_key2",
+        c: "new_key3",
+    }
 
-def test_get_diff_keys_empty_keys():
-    class TestObject:  # pylint: disable=too-few-public-methods
-        a = 1
-        b = 2.0
-        c = "string"
+    mocker.patch(
+        target="openbb_terminal.account.account_model.get_current_user",
+        return_value=test_user,
+    )
 
-    test_keys = {}
-    with patch("openbb_terminal.account.account_model.cfg", TestObject):
-        diff = account_model.get_diff_keys(test_keys)
-        assert not diff and isinstance(diff, dict)
-
-
-def test_get_diff_keys_same_keys():
-    class TestObject:  # pylint: disable=too-few-public-methods
-        a = 1
-        b = 2.0
-        c = "string"
-
-    test_keys = {"a": 1, "b": 2.0, "c": "string"}
-    with patch("openbb_terminal.account.account_model.cfg", TestObject):
-        diff = account_model.get_diff_keys(test_keys)
-        assert not diff and isinstance(diff, dict)
+    diff = account_model.get_diff_keys(new_credentials)
+    assert diff == {
+        a: ("key1", "new_key1"),
+        b: ("key2", "new_key2"),
+        c: ("key3", "new_key3"),
+    }
 
 
-def test_get_diff_keys_new_keys():
-    class TestObject:  # pylint: disable=too-few-public-methods
-        a = 1
-        b = 2.0
+def test_get_diff_keys_empty_keys(mocker):
+    a = "API_KEY_ALPHAVANTAGE"
+    b = "API_KEY_FINANCIALMODELINGPREP"
+    c = "API_KEY_QUANDL"
 
-    test_keys = {"a": 1, "b": 2.0, "c": "string"}
-    with patch("openbb_terminal.account.account_model.cfg", TestObject):
-        diff = account_model.get_diff_keys(test_keys)
-        assert not diff and isinstance(diff, dict)
+    old_credentials = CredentialsModel(
+        **{
+            a: "key1",
+            b: "key2",
+            c: "key3",
+        }
+    )
+    test_user = UserModel(credentials=old_credentials)
+
+    new_credentials = {}
+
+    mocker.patch(
+        target="openbb_terminal.account.account_model.get_current_user",
+        return_value=test_user,
+    )
+
+    diff = account_model.get_diff_keys(new_credentials)
+    assert not diff and isinstance(diff, dict)
+
+
+def test_get_diff_keys_same_keys(mocker):
+    a = "API_KEY_ALPHAVANTAGE"
+    b = "API_KEY_FINANCIALMODELINGPREP"
+    c = "API_KEY_QUANDL"
+
+    old_credentials = CredentialsModel(
+        **{
+            a: "key1",
+            b: "key2",
+            c: "key3",
+        }
+    )
+    test_user = UserModel(credentials=old_credentials)
+
+    new_credentials = {
+        a: "key1",
+        b: "key2",
+        c: "key3",
+    }
+
+    mocker.patch(
+        target="openbb_terminal.account.account_model.get_current_user",
+        return_value=test_user,
+    )
+
+    diff = account_model.get_diff_keys(new_credentials)
+    assert not diff and isinstance(diff, dict)
+
+
+def test_get_diff_keys_new_keys(mocker):
+    a = "API_KEY_ALPHAVANTAGE"
+    b = "API_KEY_FINANCIALMODELINGPREP"
+
+    old_credentials = CredentialsModel(
+        **{
+            a: "key1",
+            b: "key2",
+        }
+    )
+    test_user = UserModel(credentials=old_credentials)
+
+    new_credentials = {
+        a: "key1",
+        b: "key2",
+        "NEW_CREDENTIAL": "new",
+    }
+
+    mocker.patch(
+        target="openbb_terminal.account.account_model.get_current_user",
+        return_value=test_user,
+    )
+
+    diff = account_model.get_diff_keys(new_credentials)
+    assert not diff and isinstance(diff, dict)
 
 
 def test_get_diff_settings_empty_settings():
