@@ -11,7 +11,7 @@ from alpha_vantage.fundamentaldata import FundamentalData
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import lambda_long_number_format, request
 from openbb_terminal.rich_config import console
-from openbb_terminal.session.user import get_current_user
+from openbb_terminal.core.session.user import get_current_user
 from openbb_terminal.stocks.fundamental_analysis import yahoo_finance_model
 from openbb_terminal.stocks.fundamental_analysis.fa_helper import clean_df_index
 from openbb_terminal.stocks.stocks_helper import clean_fraction

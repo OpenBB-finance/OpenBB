@@ -36,9 +36,9 @@ from openbb_terminal.cryptocurrency.coinbase_helpers import (
 from openbb_terminal.helper_funcs import request
 from openbb_terminal.portfolio.brokers.degiro.degiro_model import DegiroModel
 from openbb_terminal.rich_config import console
-from openbb_terminal.session.hub_model import BASE_URL, patch_user_configs
-from openbb_terminal.session.local_model import SESSION_FILE_PATH
-from openbb_terminal.session.user import (
+from openbb_terminal.core.session.hub_model import BASE_URL, patch_user_configs
+from openbb_terminal.core.session.local_model import SESSION_FILE_PATH
+from openbb_terminal.core.session.user import (
     get_current_user,
     is_guest,
     set_current_user,

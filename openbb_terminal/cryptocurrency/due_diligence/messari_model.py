@@ -20,7 +20,7 @@ from openbb_terminal.cryptocurrency.due_diligence.pycoingecko_model import (
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import lambda_long_number_format, request
 from openbb_terminal.rich_config import console
-from openbb_terminal.session.user import get_current_user
+from openbb_terminal.core.session.user import get_current_user
 
 # pylint: disable=unsupported-assignment-operation
 

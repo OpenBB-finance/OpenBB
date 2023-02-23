@@ -2,7 +2,7 @@ import multiprocessing
 import sys
 
 from openbb_terminal.base_helpers import load_dotenv_and_reload_configs
-from openbb_terminal.session.user import init_user
+from openbb_terminal.core.session.user import init_user
 from openbb_terminal.terminal_helper import is_auth_enabled
 
 # pylint: disable=import-outside-toplevel
@@ -22,7 +22,7 @@ def main():
 
         integration_controller.main()
     else:
-        from openbb_terminal.session import session_controller
+        from openbb_terminal.core.session import session_controller
 
         if is_auth_enabled():
             session_controller.main()

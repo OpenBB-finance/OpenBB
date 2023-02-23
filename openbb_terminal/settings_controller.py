@@ -35,8 +35,8 @@ from openbb_terminal.helper_funcs import (
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import MenuText, console
-from openbb_terminal.session.hub_model import patch_user_configs
-from openbb_terminal.session.user import (
+from openbb_terminal.core.session.hub_model import patch_user_configs
+from openbb_terminal.core.session.user import (
     get_current_user,
     is_guest,
 )

@@ -34,7 +34,7 @@ from openbb_terminal.helper_funcs import (
     request,
 )
 from openbb_terminal.rich_config import console
-from openbb_terminal.session.user import get_current_user
+from openbb_terminal.core.session.user import get_current_user
 
 # pylint: disable=unused-import
 from openbb_terminal.stocks.stock_statics import (

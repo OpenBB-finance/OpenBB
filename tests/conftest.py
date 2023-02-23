@@ -24,7 +24,7 @@ from openbb_terminal import (
     helper_funcs,
 )
 from openbb_terminal.base_helpers import strtobool
-from openbb_terminal.session.user import init_user
+from openbb_terminal.core.session.user import init_user
 
 # pylint: disable=redefined-outer-name
 

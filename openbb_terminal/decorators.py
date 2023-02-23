@@ -10,7 +10,7 @@ from requests.exceptions import RequestException
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.rich_config import console
-from openbb_terminal.session.user import get_current_user  # pragma: allowlist secret
+from openbb_terminal.core.session.user import get_current_user  # pragma: allowlist secret
 
 logger = logging.getLogger(__name__)
 

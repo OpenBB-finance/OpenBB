@@ -2,15 +2,15 @@ import logging
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
-from openbb_terminal.session import (
+from openbb_terminal.core.session import (
     local_model as Local,
     session_model,
 )
-from openbb_terminal.session.user import (
+from openbb_terminal.core.session.user import (
     get_current_user,
     is_guest,
 )
-from openbb_terminal.session.constants import REGISTER_URL
+from openbb_terminal.core.session.constants import REGISTER_URL
 
 logger = logging.getLogger(__name__)
 

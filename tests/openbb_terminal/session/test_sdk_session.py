@@ -7,9 +7,9 @@ import pytest
 from openbb_terminal.core.models.user_model import UserModel
 
 # IMPORTATION INTERNAL
-from openbb_terminal.session import sdk_session
-from openbb_terminal.session.session_model import LoginStatus
-from openbb_terminal.session.user import get_current_user, is_guest
+from openbb_terminal.core.session import sdk_session
+from openbb_terminal.core.session.session_model import LoginStatus
+from openbb_terminal.core.session.user import get_current_user, is_guest
 
 TEST_SESSION = {
     "access_token": "test_token",
@@ -30,7 +30,7 @@ TEST_SESSION = {
     ],
 )
 def test_get_session_exception(email: str, password: str, token: str, save: bool):
-    path = "openbb_terminal.session.sdk_session."
+    path = "openbb_terminal.core.session.sdk_session."
     with patch(path + "session_model.create_session") as mock_create_session:
         with patch(
             path + "session_model.create_session_from_token"
@@ -59,7 +59,7 @@ def test_get_session_exception(email: str, password: str, token: str, save: bool
     ],
 )
 def test_get_session(email: str, password: str, token: str, save: bool):
-    path = "openbb_terminal.session.sdk_session."
+    path = "openbb_terminal.core.session.sdk_session."
     with patch(path + "session_model.create_session") as mock_create_session:
         mock_create_session.return_value = TEST_SESSION
 
@@ -79,7 +79,7 @@ def test_get_session(email: str, password: str, token: str, save: bool):
     ],
 )
 def test_get_session_from_token(email: str, password: str, token: str, save: bool):
-    path = "openbb_terminal.session.sdk_session."
+    path = "openbb_terminal.core.session.sdk_session."
     with patch(
         path + "session_model.create_session_from_token"
     ) as mock_create_session_from_token:
@@ -135,7 +135,7 @@ def test_login(
     has_session: bool,
     status: LoginStatus,
 ):
-    path = "openbb_terminal.session.sdk_session."
+    path = "openbb_terminal.core.session.sdk_session."
     mock_login = mocker.patch(path + "session_model.login")
     mock_local_get_session = mocker.patch(path + "Local.get_session")
     mock_hub_get_session = mocker.patch(path + "get_session")
@@ -175,10 +175,10 @@ def test_logout(mocker):
     test_user = UserModel()
     test_user.profile.load_user_info(TEST_SESSION, "testy@email.com")
     mocker.patch(
-        target="openbb_terminal.session.sdk_session.get_current_user",
+        target="openbb_terminal.core.session.sdk_session.get_current_user",
         return_value=test_user,
     )
-    path = "openbb_terminal.session.sdk_session."
+    path = "openbb_terminal.core.session.sdk_session."
     with (patch(path + "session_model.logout") as mock_logout,):
         sdk_session.logout()
         mock_logout.assert_called_once_with(
@@ -205,7 +205,7 @@ def test_whoami(mocker):
         email="MOCK_EMAIL",
     )
     mocker.patch(
-        target="openbb_terminal.session.sdk_session.get_current_user",
+        target="openbb_terminal.core.session.sdk_session.get_current_user",
         return_value=test_user,
     )
 

@@ -2,12 +2,12 @@ from typing import Tuple
 
 from prompt_toolkit import PromptSession
 
-import openbb_terminal.session.local_model as Local
+import openbb_terminal.core.session.local_model as Local
 from openbb_terminal import terminal_controller
 from openbb_terminal.core.config.paths import PACKAGE_DIRECTORY
 from openbb_terminal.rich_config import console
-from openbb_terminal.session.hub_model import REGISTER_URL
-from openbb_terminal.session.session_model import (
+from openbb_terminal.core.session.hub_model import REGISTER_URL
+from openbb_terminal.core.session.session_model import (
     LoginStatus,
     create_session,
     login,

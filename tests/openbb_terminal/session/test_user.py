@@ -6,7 +6,7 @@ import pytest
 from openbb_terminal.core.models.user_model import UserModel
 
 # IMPORTATION INTERNAL
-from openbb_terminal.session import user
+from openbb_terminal.core.session import user
 
 # pylint: disable=protected-access, redefined-outer-name
 

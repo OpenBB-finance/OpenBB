@@ -3,7 +3,7 @@
 
 
 # Session
-from openbb_terminal.session import sdk_session
+from openbb_terminal.core.session import sdk_session
 
 # Alternative
 import openbb_terminal.alternative.hackernews_model as alt_hackernews_model

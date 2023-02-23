@@ -8,7 +8,7 @@ from requests import Response
 from openbb_terminal.core.models.user_model import UserModel
 
 # IMPORTATION INTERNAL
-from openbb_terminal.session import session_model
+from openbb_terminal.core.session import session_model
 
 TEST_SESSION = {
     "access_token": "test_token",
@@ -47,7 +47,7 @@ CONFIGS = {
     ],
 )
 def test_create_session(mocker, email, password, save):
-    path = "openbb_terminal.session.session_model."
+    path = "openbb_terminal.core.session.session_model."
     mock_get_session = mocker.patch(path + "Hub.get_session")
     mock_save_session = mocker.patch(path + "Local.save_session")
 
@@ -62,7 +62,7 @@ def test_create_session(mocker, email, password, save):
 
 
 def test_login_no_response(mocker):
-    path = "openbb_terminal.session.session_model."
+    path = "openbb_terminal.core.session.session_model."
     mock_clear_openbb_env_vars = mocker.patch(path + "clear_openbb_env_vars")
     mock_reload_openbb_config_modules = mocker.patch(
         path + "reload_openbb_config_modules"
@@ -83,7 +83,7 @@ def test_login_no_response(mocker):
 
 
 def test_login_fail_response(mocker):
-    path = "openbb_terminal.session.session_model."
+    path = "openbb_terminal.core.session.session_model."
     mock_clear_openbb_env_vars = mocker.patch(path + "clear_openbb_env_vars")
     mock_reload_openbb_config_modules = mocker.patch(
         path + "reload_openbb_config_modules"
@@ -106,7 +106,7 @@ def test_login_fail_response(mocker):
 
 
 def test_login_success_response(mocker):
-    path = "openbb_terminal.session.session_model."
+    path = "openbb_terminal.core.session.session_model."
     mock_clear_openbb_env_vars = mocker.patch(path + "clear_openbb_env_vars")
     mock_reload_openbb_config_modules = mocker.patch(
         path + "reload_openbb_config_modules"
@@ -139,7 +139,7 @@ def test_login_success_response(mocker):
     ],
 )
 def test_logout_user(mocker, guest):
-    path = "openbb_terminal.session.session_model."
+    path = "openbb_terminal.core.session.session_model."
     mock_delete_session = mocker.patch(path + "Hub.delete_session")
     mock_remove_session_file = mocker.patch(path + "Local.remove_session_file")
     mock_remove_cli_history_file = mocker.patch(path + "Local.remove_cli_history_file")

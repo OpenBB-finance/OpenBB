@@ -6,7 +6,7 @@ from openbb_terminal.core.models.user_credentials import CredentialsModel
 from openbb_terminal.core.models.user_model import UserModel
 from openbb_terminal.core.models.user_preferences import PreferenceModel
 from openbb_terminal.core.models.user_profile import ProfileModel
-from openbb_terminal.session.env_handler import reading_env
+from openbb_terminal.core.session.env_handler import reading_env
 
 __env_dict = reading_env()
 __credentials = CredentialsModel(**__env_dict)

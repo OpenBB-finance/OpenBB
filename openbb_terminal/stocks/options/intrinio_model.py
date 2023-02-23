@@ -10,7 +10,7 @@ import pandas as pd
 
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.rich_config import console, optional_rich_track
-from openbb_terminal.session.user import get_current_user
+from openbb_terminal.core.session.user import get_current_user
 
 logger = logging.getLogger(__name__)
 intrinio.ApiClient().set_api_key(get_current_user().credentials.API_INTRINIO_KEY)

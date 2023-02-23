@@ -46,9 +46,9 @@ from openbb_terminal.menu import is_papermill, session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.reports.reports_model import ipykernel_launcher
 from openbb_terminal.rich_config import MenuText, console
-from openbb_terminal.session import session_controller
-from openbb_terminal.session.user import get_current_user, is_guest
-from openbb_terminal.session.constants import REGISTER_URL
+from openbb_terminal.core.session import session_controller
+from openbb_terminal.core.session.user import get_current_user, is_guest
+from openbb_terminal.core.session.constants import REGISTER_URL
 from openbb_terminal.terminal_helper import (
     bootup,
     check_for_updates,

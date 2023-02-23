@@ -9,8 +9,8 @@ import pytest
 from openbb_terminal.core.models.user_model import UserModel
 
 # IMPORTATION INTERNAL
-from openbb_terminal.session import local_model
-from openbb_terminal.session.user import get_current_user
+from openbb_terminal.core.session import local_model
+from openbb_terminal.core.session.user import get_current_user
 
 TEST_SESSION = {
     "access_token": "test_token",
@@ -21,7 +21,7 @@ TEST_SESSION = {
 
 def test_save_session():
     open_mock = mock_open()
-    with patch("openbb_terminal.session.local_model.open", open_mock, create=True):
+    with patch("openbb_terminal.core.session.local_model.open", open_mock, create=True):
         local_model.save_session(data=TEST_SESSION)
 
     open_mock.assert_called_with(local_model.SESSION_FILE_PATH, "w")
@@ -31,7 +31,7 @@ def test_save_session():
 @pytest.mark.record_stdout
 def test_save_session_exception():
     open_mock = mock_open()
-    with patch("openbb_terminal.session.local_model.open", open_mock, create=True):
+    with patch("openbb_terminal.core.session.local_model.open", open_mock, create=True):
         open_mock.side_effect = Exception
         local_model.save_session(data=TEST_SESSION)
 
@@ -41,8 +41,8 @@ def test_save_session_exception():
 
 def test_get_session():
     open_mock = mock_open(read_data=json.dumps(TEST_SESSION))
-    with patch("openbb_terminal.session.local_model.os.path") as path_mock:
-        with patch("openbb_terminal.session.local_model.open", open_mock, create=True):
+    with patch("openbb_terminal.core.session.local_model.os.path") as path_mock:
+        with patch("openbb_terminal.core.session.local_model.open", open_mock, create=True):
             assert local_model.get_session() == TEST_SESSION
 
     path_mock.isfile.assert_called_with(local_model.SESSION_FILE_PATH)
@@ -52,9 +52,9 @@ def test_get_session():
 
 def test_get_session_not_exist():
     open_mock = mock_open()
-    with patch("openbb_terminal.session.local_model.os.path") as path_mock:
+    with patch("openbb_terminal.core.session.local_model.os.path") as path_mock:
         path_mock.isfile.return_value = False
-        with patch("openbb_terminal.session.local_model.open", open_mock, create=True):
+        with patch("openbb_terminal.core.session.local_model.open", open_mock, create=True):
             assert local_model.get_session() == {}
 
     path_mock.isfile.assert_called_with(local_model.SESSION_FILE_PATH)
@@ -65,8 +65,8 @@ def test_get_session_not_exist():
 @pytest.mark.record_stdout
 def test_get_session_exception():
     open_mock = mock_open()
-    with patch("openbb_terminal.session.local_model.os.path") as path_mock:
-        with patch("openbb_terminal.session.local_model.open", open_mock, create=True):
+    with patch("openbb_terminal.core.session.local_model.os.path") as path_mock:
+        with patch("openbb_terminal.core.session.local_model.open", open_mock, create=True):
             open_mock.side_effect = Exception
             assert local_model.get_session() == {}
 
@@ -76,7 +76,7 @@ def test_get_session_exception():
 
 
 def test_remove_session_file():
-    with patch("openbb_terminal.session.local_model.os") as os_mock:
+    with patch("openbb_terminal.core.session.local_model.os") as os_mock:
         assert local_model.remove_session_file() is True
 
     os_mock.path.isfile.assert_called_with(local_model.SESSION_FILE_PATH)
@@ -84,7 +84,7 @@ def test_remove_session_file():
 
 
 def test_remove_session_file_not_exist():
-    with patch("openbb_terminal.session.local_model.os") as os_mock:
+    with patch("openbb_terminal.core.session.local_model.os") as os_mock:
         os_mock.path.isfile.return_value = False
         assert local_model.remove_session_file() is True
 
@@ -94,7 +94,7 @@ def test_remove_session_file_not_exist():
 
 @pytest.mark.record_stdout
 def test_remove_session_file_exception():
-    with patch("openbb_terminal.session.local_model.os") as os_mock:
+    with patch("openbb_terminal.core.session.local_model.os") as os_mock:
         os_mock.remove.side_effect = Exception
         assert local_model.remove_session_file() is False
 
@@ -103,7 +103,7 @@ def test_remove_session_file_exception():
 
 
 def test_remove_cli_history_file():
-    with patch("openbb_terminal.session.local_model.os") as os_mock:
+    with patch("openbb_terminal.core.session.local_model.os") as os_mock:
         assert local_model.remove_cli_history_file() is True
 
     os_mock.path.isfile.assert_called_with(local_model.HIST_FILE_PATH)
@@ -111,7 +111,7 @@ def test_remove_cli_history_file():
 
 
 def test_remove_cli_history_file_not_exist():
-    with patch("openbb_terminal.session.local_model.os") as os_mock:
+    with patch("openbb_terminal.core.session.local_model.os") as os_mock:
         os_mock.path.isfile.return_value = False
         assert local_model.remove_cli_history_file() is True
 
@@ -121,7 +121,7 @@ def test_remove_cli_history_file_not_exist():
 
 @pytest.mark.record_stdout
 def test_remove_cli_history_file_exception():
-    with patch("openbb_terminal.session.local_model.os") as os_mock:
+    with patch("openbb_terminal.core.session.local_model.os") as os_mock:
         os_mock.remove.side_effect = Exception
         assert local_model.remove_cli_history_file() is False
 
@@ -173,13 +173,13 @@ CONFIGS = {
         "True",
     ],
 )
-@patch("openbb_terminal.session.local_model.obbff", obbff)
-@patch("openbb_terminal.session.local_model.cfg_plot", cfg_plot)
-@patch("openbb_terminal.session.local_model.paths", paths)
+@patch("openbb_terminal.core.session.local_model.obbff", obbff)
+@patch("openbb_terminal.core.session.local_model.cfg_plot", cfg_plot)
+@patch("openbb_terminal.core.session.local_model.paths", paths)
 def test_apply_configs_sync(mocker, sync: str):
     test_user = UserModel()
     mocker.patch(
-        target="openbb_terminal.session.local_model.get_current_user",
+        target="openbb_terminal.core.session.local_model.get_current_user",
         return_value=test_user,
     )
 
@@ -221,15 +221,15 @@ def test_get_routine(mocker, exists: bool):
     test_user = UserModel()
     test_user.profile.uuid = uuid
     mocker.patch(
-        target="openbb_terminal.session.local_model.get_current_user",
+        target="openbb_terminal.core.session.local_model.get_current_user",
         return_value=test_user,
     )
 
     exists_mock = mocker.patch(
-        "openbb_terminal.session.local_model.os.path.exists", return_value=exists
+        "openbb_terminal.core.session.local_model.os.path.exists", return_value=exists
     )
     open_mock = mocker.patch(
-        "openbb_terminal.session.local_model.open",
+        "openbb_terminal.core.session.local_model.open",
         mock_open(read_data=json.dumps(routine)),
     )
 
@@ -253,12 +253,12 @@ def test_get_routine_exception(mocker):
     test_user = UserModel()
     test_user.profile.uuid = uuid
     mocker.patch(
-        target="openbb_terminal.session.local_model.get_current_user",
+        target="openbb_terminal.core.session.local_model.get_current_user",
         return_value=test_user,
     )
-    exists_mock = mocker.patch("openbb_terminal.session.local_model.os.path.exists")
+    exists_mock = mocker.patch("openbb_terminal.core.session.local_model.os.path.exists")
     open_mock = mocker.patch(
-        "openbb_terminal.session.local_model.open",
+        "openbb_terminal.core.session.local_model.open",
         side_effect=Exception("test exception"),
     )
 
@@ -285,16 +285,16 @@ def test_save_routine(mocker, exists: bool):
     test_user = UserModel()
     test_user.profile.uuid = uuid
     mocker.patch(
-        target="openbb_terminal.session.local_model.get_current_user",
+        target="openbb_terminal.core.session.local_model.get_current_user",
         return_value=test_user,
     )
 
     exists_mock = mocker.patch(
-        "openbb_terminal.session.local_model.os.path.exists", return_value=exists
+        "openbb_terminal.core.session.local_model.os.path.exists", return_value=exists
     )
-    makedirs_mock = mocker.patch("openbb_terminal.session.local_model.os.makedirs")
+    makedirs_mock = mocker.patch("openbb_terminal.core.session.local_model.os.makedirs")
     open_mock = mocker.patch(
-        "openbb_terminal.session.local_model.open",
+        "openbb_terminal.core.session.local_model.open",
     )
 
     result = local_model.save_routine(file_name=file_name, routine=routine)
@@ -320,16 +320,16 @@ def test_save_routine_exception(mocker):
     test_user = UserModel()
     test_user.profile.uuid = uuid
     mocker.patch(
-        target="openbb_terminal.session.local_model.get_current_user",
+        target="openbb_terminal.core.session.local_model.get_current_user",
         return_value=test_user,
     )
 
     mocker.patch(
-        "openbb_terminal.session.local_model.os.path.exists", return_value=False
+        "openbb_terminal.core.session.local_model.os.path.exists", return_value=False
     )
-    mocker.patch("openbb_terminal.session.local_model.os.makedirs")
+    mocker.patch("openbb_terminal.core.session.local_model.os.makedirs")
     mocker.patch(
-        "openbb_terminal.session.local_model.open",
+        "openbb_terminal.core.session.local_model.open",
         side_effect=Exception("test exception"),
     )
 
