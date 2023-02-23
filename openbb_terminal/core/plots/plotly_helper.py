@@ -928,8 +928,8 @@ class OpenBBFigure(go.Figure):
         if external or self._exported:
             return self  # type: ignore
 
-        # We check if in Terminal Pro to return the JSON
-        if strtobool(os.environ.get("TERMINAL_PRO", False)):
+        # We check if in headless mode to return the JSON
+        if strtobool(os.environ.get("HEADLESS", False)):
             return self.to_json()
 
         kwargs.update(config=dict(scrollZoom=True, displaylogo=False))
