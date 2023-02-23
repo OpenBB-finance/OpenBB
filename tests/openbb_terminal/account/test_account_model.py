@@ -2,7 +2,6 @@ from pathlib import Path
 from unittest.mock import patch
 
 from openbb_terminal import (
-    config_plot as cfg_plot,
     config_terminal as cfg,
     feature_flags as obbff,
 )
@@ -165,7 +164,6 @@ def test_get_diff_settings_empty_settings():
 def test_get_diff_settings_no_diff():
     obbff.value = 1
     cfg.value = 1
-    cfg_plot.value = 1
     paths.value = 1
     diff = account_model.get_diff_settings({"value": 1})
     assert not diff and isinstance(diff, dict)
@@ -184,7 +182,6 @@ def test_get_diff_settings_cfg_diff():
 
 
 def test_get_diff_settings_cfg_plot_diff():
-    cfg_plot.value = 1
     diff = account_model.get_diff_settings({"value": 2})
     assert diff == {"value": (1, 2)}
 

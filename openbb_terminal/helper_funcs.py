@@ -45,7 +45,6 @@ from screeninfo import get_monitors
 # IMPORTS INTERNAL
 from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal import (
-    config_plot as cfgPlot,
     config_terminal as cfg,
 )
 from openbb_terminal.core.config.paths import (
@@ -1169,13 +1168,13 @@ def str_to_bool(value) -> bool:
 def get_screeninfo():
     """Get screeninfo."""
     screens = get_monitors()  # Get all available monitors
-    if len(screens) - 1 < cfgPlot.MONITOR:  # Check to see if chosen monitor is detected
+    if len(screens) - 1 < get_current_user().preferences.MONITOR:  # Check to see if chosen monitor is detected
         monitor = 0
         console.print(
-            f"Could not locate monitor {cfgPlot.MONITOR}, using primary monitor."
+            f"Could not locate monitor {get_current_user().preferences.MONITOR}, using primary monitor."
         )
     else:
-        monitor = cfgPlot.MONITOR
+        monitor = get_current_user().preferences.MONITOR
     main_screen = screens[monitor]  # Choose what monitor to get
 
     return (main_screen.width, main_screen.height)
@@ -1185,15 +1184,15 @@ def plot_autoscale():
     """Autoscale plot."""
     if current_user.preferences.USE_PLOT_AUTOSCALING:
         x, y = get_screeninfo()  # Get screen size
-        x = ((x) * cfgPlot.PLOT_WIDTH_PERCENTAGE * 10**-2) / (
-            cfgPlot.PLOT_DPI
+        x = ((x) * get_current_user().preferences.PLOT_WIDTH_PERCENTAGE * 10**-2) / (
+            get_current_user().preferences.PLOT_DPI
         )  # Calculate width
-        if cfgPlot.PLOT_HEIGHT_PERCENTAGE == 100:  # If full height
+        if get_current_user().preferences.PLOT_HEIGHT_PERCENTAGE == 100:  # If full height
             y = y - 60  # Remove the height of window toolbar
-        y = ((y) * cfgPlot.PLOT_HEIGHT_PERCENTAGE * 10**-2) / (cfgPlot.PLOT_DPI)
+        y = ((y) * get_current_user().preferences.PLOT_HEIGHT_PERCENTAGE * 10**-2) / (get_current_user().preferences.PLOT_DPI)
     else:  # If not autoscale, use size defined in config_plot.py
-        x = cfgPlot.PLOT_WIDTH / (cfgPlot.PLOT_DPI)
-        y = cfgPlot.PLOT_HEIGHT / (cfgPlot.PLOT_DPI)
+        x = get_current_user().preferences.PLOT_WIDTH / (get_current_user().preferences.PLOT_DPI)
+        y = get_current_user().preferences.PLOT_HEIGHT / (get_current_user().preferences.PLOT_DPI)
     return x, y
 
 

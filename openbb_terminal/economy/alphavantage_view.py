@@ -8,7 +8,7 @@ from typing import List, Optional
 import matplotlib
 import matplotlib.pyplot as plt
 
-from openbb_terminal import config_plot as cfp
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.economy import alphavantage_model
@@ -58,7 +58,7 @@ def realtime_performance_sector(
 
     else:
         if external_axes is None:
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
+            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI)
         elif is_valid_axes_count(external_axes, 1):
             (ax,) = external_axes
         else:
@@ -119,7 +119,7 @@ def display_real_gdp(
     year_str = str(start_year) if interval == "a" else str(list(gdp["date"])[-1].year)
 
     if external_axes is None:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI)
     elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
     else:
@@ -174,7 +174,7 @@ def display_gdp_capita(
 
     # This plot has 1 axis
     if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI)
     elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
     else:
@@ -231,7 +231,7 @@ def display_inflation(
         return
 
     if external_axes is None:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI)
     elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
     else:
@@ -294,7 +294,7 @@ def display_cpi(
     year_str = str(list(cpi["date"])[-1].year)
 
     if external_axes is None:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI)
     elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
     else:
@@ -355,7 +355,7 @@ def display_treasury_yield(
         return
 
     if external_axes is None:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI)
     elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
     else:
@@ -414,7 +414,7 @@ def display_unemployment(
         return
 
     if external_axes is None:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI)
     elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
     else:

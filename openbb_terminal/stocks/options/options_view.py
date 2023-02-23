@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 # IMPORTATION INTERNAL
-import openbb_terminal.config_plot as cfp
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
@@ -131,7 +131,7 @@ def plot_vol(
     min_strike, max_strike = get_strikes(min_sp, max_sp, current_price)
 
     if external_axes is None:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI)
     elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
     else:
@@ -238,7 +238,7 @@ def plot_oi(
     max_pain = get_max_pain(calls, puts)
 
     if external_axes is None:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI)
     elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
     else:
@@ -334,6 +334,7 @@ def plot_voi(
             expiry="2023-07-21",
         )
     """
+    current_user = get_current_user()
     calls, puts = get_calls_and_puts(chain)
 
     min_strike, max_strike = get_strikes(min_sp, max_sp, current_price)
@@ -362,7 +363,7 @@ def plot_voi(
     )
 
     if external_axes is None:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI)
     elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
     else:

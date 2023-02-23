@@ -16,9 +16,7 @@ from matplotlib import (
     ticker,
 )
 
-from openbb_terminal import (
-    config_plot as cfgPlot,
-)
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.cryptocurrency import cryptocurrency_helpers
@@ -155,7 +153,7 @@ def display_messari_timeseries(
     if not df.empty:
         # This plot has 1 axis
         if not external_axes:
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
+            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI)
         elif is_valid_axes_count(external_axes, 1):
             (ax,) = external_axes
         else:
@@ -228,7 +226,7 @@ def display_marketcap_dominance(
     if not df.empty:
         # This plot has 1 axis
         if not external_axes:
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
+            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI)
         elif is_valid_axes_count(external_axes, 1):
             (ax,) = external_axes
         else:
@@ -335,7 +333,7 @@ def display_roadmap(
         )
         if not df_prices.empty:
             if not external_axes:
-                _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
+                _, ax = plt.subplots(figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI)
             elif is_valid_axes_count(external_axes, 1):
                 (ax,) = external_axes
             else:
@@ -428,7 +426,7 @@ def display_tokenomics(
             title=f"{symbol} Tokenomics",
         )
         if not external_axes:
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
+            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI)
             ax2 = ax.twinx()
         elif is_valid_axes_count(external_axes, 2):
             (ax, ax2) = external_axes
@@ -730,7 +728,7 @@ def display_fundraising(
             labels.append("Rewards/Airdrops")
         if len(values) > 0 and sum(values) > 0:
             if not external_axes:
-                _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
+                _, ax = plt.subplots(figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI)
             elif is_valid_axes_count(external_axes, 1):
                 (ax,) = external_axes
             ax.pie(

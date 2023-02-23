@@ -10,7 +10,7 @@ import numpy as np
 import pandas as pd
 from dateutil import parser as dparse
 
-import openbb_terminal.config_plot as cfg_plot
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.common.behavioural_analysis import twitter_model
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
@@ -126,7 +126,7 @@ def display_sentiment(
         # This plot has 3 axes
         if external_axes is None:
             _, axes = plt.subplots(
-                3, 1, sharex=False, figsize=plot_autoscale(), dpi=cfg_plot.PLOT_DPI
+                3, 1, sharex=False, figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
             )
             ax1, ax2, ax3 = axes
         elif is_valid_axes_count(external_axes, 3):
@@ -137,7 +137,7 @@ def display_sentiment(
         # This plot has 2 axes
         if external_axes is None:
             _, axes = plt.subplots(
-                2, 1, sharex=True, figsize=plot_autoscale(), dpi=cfg_plot.PLOT_DPI
+                2, 1, sharex=True, figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
             )
             ax1, ax2 = axes
         elif is_valid_axes_count(external_axes, 2):

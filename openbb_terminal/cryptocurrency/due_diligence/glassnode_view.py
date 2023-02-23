@@ -10,7 +10,7 @@ from matplotlib import (
 )
 from matplotlib.lines import Line2D
 
-from openbb_terminal import config_plot as cfgPlot
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.cryptocurrency.due_diligence.glassnode_model import (
     get_active_addresses,
@@ -69,7 +69,7 @@ def display_active_addresses(
 
     # This plot has 1 axis
     if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI)
     elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
     else:
@@ -132,7 +132,7 @@ def display_non_zero_addresses(
 
     # This plot has 1 axis
     if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI)
     elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
     else:
@@ -202,7 +202,7 @@ def display_exchange_net_position_change(
 
     # This plot has 1 axis
     if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI)
     elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
     else:
@@ -288,7 +288,7 @@ def display_exchange_balances(
 
     # This plot has 2 axes
     if not external_axes:
-        _, ax1 = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
+        _, ax1 = plt.subplots(figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI)
         ax2 = ax1.twinx()
 
     elif is_valid_axes_count(external_axes, 2):
@@ -365,7 +365,7 @@ def display_hashrate(
 
     # This plot has 2 axes
     if not external_axes:
-        _, ax1 = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
+        _, ax1 = plt.subplots(figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI)
         ax2 = ax1.twinx()
 
     elif is_valid_axes_count(external_axes, 2):

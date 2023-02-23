@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 import yfinance
 from matplotlib.dates import DateFormatter
 
-import openbb_terminal.config_plot as cfp
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
@@ -99,7 +99,7 @@ def display_cramer_ticker(
         return
 
     if external_axes is None:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI)
     elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
     else:

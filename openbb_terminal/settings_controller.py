@@ -36,7 +36,7 @@ from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import MenuText, console
 from openbb_terminal.core.session.hub_model import patch_user_configs
-from opopenbb_terminal.core.session.current_user import (
+from openbb_terminal.core.session.current_user import (
     get_current_user,
     is_guest,
     set_current_user,
@@ -148,18 +148,18 @@ class SettingsController(BaseController):
             mt.add_cmd("pheight")
             mt.add_cmd("pwidth")
             mt.add_raw("\n")
-            mt.add_param("_plot_height_pct", cfg_plot.PLOT_HEIGHT_PERCENTAGE, 16)
-            mt.add_param("_plot_width_pct", cfg_plot.PLOT_WIDTH_PERCENTAGE, 16)
+            mt.add_param("_plot_height_pct", get_current_user().preferences.PLOT_HEIGHT_PERCENTAGE, 16)
+            mt.add_param("_plot_width_pct", get_current_user().preferences.PLOT_WIDTH_PERCENTAGE, 16)
         else:
             mt.add_cmd("height")
             mt.add_cmd("width")
             mt.add_raw("\n")
-            mt.add_param("_plot_height", cfg_plot.PLOT_HEIGHT, 12)
-            mt.add_param("_plot_width", cfg_plot.PLOT_WIDTH, 12)
+            mt.add_param("_plot_height", get_current_user().preferences.PLOT_HEIGHT, 12)
+            mt.add_param("_plot_width", get_current_user().preferences.PLOT_WIDTH, 12)
         mt.add_raw("\n")
         mt.add_cmd("dpi")
         mt.add_raw("\n")
-        mt.add_param("_dpi", cfg_plot.PLOT_DPI)
+        mt.add_param("_dpi", get_current_user().preferences.PLOT_DPI)
         mt.add_raw("\n")
         mt.add_cmd("backend")
         mt.add_raw("\n")
@@ -167,7 +167,7 @@ class SettingsController(BaseController):
         mt.add_raw("\n")
         mt.add_cmd("monitor")
         mt.add_raw("\n")
-        mt.add_param("_monitor", cfg_plot.MONITOR)
+        mt.add_param("_monitor", get_current_user().preferences.MONITOR)
         mt.add_raw("\n")
         mt.add_cmd("source")
         mt.add_raw("\n")

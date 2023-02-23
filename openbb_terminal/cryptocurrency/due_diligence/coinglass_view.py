@@ -8,7 +8,7 @@ from matplotlib import (
     ticker,
 )
 
-from openbb_terminal import config_plot as cfgPlot
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.cryptocurrency.due_diligence.coinglass_model import (
     get_funding_rate,
@@ -136,7 +136,7 @@ def plot_data(
     # This plot has 2 axes
     if not external_axes:
         _, axes = plt.subplots(
-            2, 1, sharex=True, figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI
+            2, 1, sharex=True, figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
         )
         (ax1, ax2) = axes
     elif is_valid_axes_count(external_axes, 2):
@@ -187,7 +187,7 @@ def plot_data_bar(
     # This plot has 2 axes
     if not external_axes:
         _, axes = plt.subplots(
-            2, 1, sharex=True, figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI
+            2, 1, sharex=True, figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
         )
         (ax1, ax2) = axes
     elif is_valid_axes_count(external_axes, 2):
