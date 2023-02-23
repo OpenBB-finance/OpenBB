@@ -22,30 +22,35 @@ PLOTLY_TA: Optional["PlotlyTA"] = None
 class PlotlyTA(PltTA):
     """Plotly Technical Analysis class
 
-    This class is a singleton. It is created once and then reused, so that
+    This class is a singleton. It is created and then reused, to assure
     the plugins are only loaded once. This is done by overriding the __new__
     method. The __init__ method is overridden to do nothing, except to clear
     the internal data structures.
 
     Attributes
     ----------
-        inchart_colors (List[str]): List of colors for inchart indicators
-        show_volume (bool): Show volume
-        ma_mode (List[str]): List of moving average modes
-        inchart (List[str]): List of inchart indicators
-        subplots (List[str]): List of subplots
+    inchart_colors (List[str]):
+        List of colors for inchart indicators
+    show_volume (bool):
+        Whether to show the volume subplot
+    ma_mode (List[str]):
+        List of available moving average modes
+    inchart (List[str]):
+        List of available inchart indicators
+    subplots (List[str]):
+        List of available subplots
 
     StaticMethods
-    --------------
-        plot(
-            df: pd.DataFrame,
-            indicators: ChartIndicators,
-            fig: Optional[OpenBBFigure] = None,
-            symbol: Optional[str] = "",
-            candles: bool = True,
-            volume: bool = True,
-        ) -> OpenBBFigure:
-            Plots the chart with the given indicators
+    -------------
+    plot(
+        df: pd.DataFrame,
+        indicators: ChartIndicators,
+        fig: Optional[OpenBBFigure] = None,
+        symbol: Optional[str] = "",
+        candles: bool = True,
+        volume: bool = True,
+    ) -> OpenBBFigure:
+        Plots the chart with the given indicators
 
 
     Examples
@@ -163,7 +168,7 @@ class PlotlyTA(PltTA):
         prepost: bool = False,
         fig: Optional[OpenBBFigure] = None,
     ) -> OpenBBFigure:
-        """Plots the chart with the given indicators
+        """Plot a chart with the given indicators.
 
         Parameters
         ----------
@@ -233,7 +238,7 @@ class PlotlyTA(PltTA):
                     PlotlyTA.plugins.append(obj)
 
     def _clear_data(self):
-        """Clears and resets all data to default values"""
+        """Clear and reset all data to default values"""
         self.df_stock = None
         self.indicators = {}
         self.params = None
@@ -241,11 +246,11 @@ class PlotlyTA(PltTA):
         self.show_volume = True
 
     def calculate_indicators(self):
-        """Returns dataframe with all indicators"""
+        """Return dataframe with all indicators"""
         return self.indicators.to_dataframe(self.df_stock.copy(), self.ma_mode)
 
     def get_subplot(self, subplot: str) -> bool:
-        """Returns True if subplots will be able to be plotted with current data"""
+        """Return True if subplots will be able to be plotted with current data"""
         if subplot == "volume":
             return self.show_volume
 
@@ -275,7 +280,7 @@ class PlotlyTA(PltTA):
         return output
 
     def check_subplots(self, subplots: list) -> list:
-        """Returns list of subplots that can be plotted with current data"""
+        """Return list of subplots that can be plotted with current data"""
         output = []
         for subplot in subplots:
             if self.get_subplot(subplot):
@@ -284,7 +289,7 @@ class PlotlyTA(PltTA):
         return output
 
     def get_fig_settings_dict(self):
-        """Returns dictionary with settings for plotly figure"""
+        """Return dictionary with settings for plotly figure"""
         row_params = {
             "0": dict(rows=1, row_width=[1]),
             "1": dict(rows=2, row_width=[0.3, 0.7]),
@@ -308,7 +313,7 @@ class PlotlyTA(PltTA):
         return output
 
     def init_plot(self, symbol: str = "", candles: bool = True) -> OpenBBFigure:
-        """Creates plotly figure with subplots
+        """Create plotly figure with subplots
 
         Parameters
         ----------
@@ -366,7 +371,22 @@ class PlotlyTA(PltTA):
         symbol: str = "",
         candles: bool = True,
     ) -> OpenBBFigure:
-        """Takes candle plotly fig and adds users active indicators"""
+        """Plot indicators on plotly figure
+
+        Parameters
+        ----------
+        fig : OpenBBFigure, optional
+            Plotly figure to plot indicators on, by default None
+        symbol : str, optional
+            Symbol to plot, by default uses the dataframe.name attribute if available or ""
+        candles : bool, optional
+            Plot a candlestick chart, by default True (if False, plots a line chart)
+
+        Returns
+        -------
+        fig : OpenBBFigure
+            Plotly figure with candlestick/line chart and volume bar chart (if enabled)
+        """
 
         self.df_ta = self.calculate_indicators()
 
@@ -443,7 +463,7 @@ class PlotlyTA(PltTA):
         return figure
 
     def process_fig(self, fig: OpenBBFigure) -> OpenBBFigure:
-        """Processes fig to add subplots and volume
+        """Process plotly figure before plotting indicators
 
         Parameters
         ----------
