@@ -1897,14 +1897,14 @@ testing = ["covdefaults (>=2.2.2)", "coverage (>=7.0.1)", "pytest (>=7.2)", "pyt
 
 [[package]]
 name = "financedatabase"
-version = "1.0.2"
+version = "2.0.3"
 description = "This is a database of 300.000+ symbols containing Equities, ETFs, Funds, Indices, Currencies, Cryptocurrencies and Money Markets."
 category = "main"
 optional = false
 python-versions = "*"
 files = [
-    {file = "financedatabase-1.0.2-py3-none-any.whl", hash = "sha256:2fbe8acea1a12d2e3371c81b075f357f61f34cae5e6d94de9b3afd68ff3c3a19"},
-    {file = "financedatabase-1.0.2.tar.gz", hash = "sha256:7b03d37ef5eef8433380d92122f2fd24bad741971518eaf1bd4a9c6f30763e23"},
+    {file = "financedatabase-2.0.3-py3-none-any.whl", hash = "sha256:80e16c0548437d7f444e0fadf073bf9061019885e44926d5b1f3f73ff374b97c"},
+    {file = "financedatabase-2.0.3.tar.gz", hash = "sha256:1634d0fa69d34739cdf0cc5ade323b8d955aec58c4599edff057a37b52287e8a"},
 ]
 
 [[package]]
@@ -9036,4 +9036,4 @@ optimization = ["Riskfolio-Lib"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8,<3.11, !=3.9.7"
-content-hash = "7cd8d3dbd44cbd51e198c39f54a44da7f1e0d0f4af674424aaa1cfc2beb95c14"
+content-hash = "23a6298ab96e53942f4561e2a5bfadea68e2f86b71207f42cd39c0f7cfccb663"
