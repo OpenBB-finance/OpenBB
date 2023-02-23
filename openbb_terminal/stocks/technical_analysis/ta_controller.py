@@ -1684,6 +1684,13 @@ class TechnicalAnalysisController(StockBaseController):
             default=0.75,
             help="The upper % quantile for calculations.",
         )
+        parser.add_argument(
+            "--is_crypto",
+            dest="is_crypto",
+            action="store_true",
+            default=False,
+            help="If True, volatility is calculated for 365 days instead of 252.",
+        )
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
@@ -1692,11 +1699,12 @@ class TechnicalAnalysisController(StockBaseController):
                 no_ticker_message()
                 return
 
-            volatility_view.display_rvol(
+            volatility_view.display_cones(
                 data = self.stock,
                 symbol = self.ticker,
                 lower_q = ns_parser.lower_q,
                 upper_q = ns_parser.upper_q,
+                is_crypto = ns_parser.is_crypto,
                 export=ns_parser.export,
                 sheet_name=" ".join(ns_parser.sheet_name)
                 if ns_parser.sheet_name

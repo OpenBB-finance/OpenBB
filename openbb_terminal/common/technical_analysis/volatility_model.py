@@ -170,8 +170,11 @@ def atr(
 
 
 @log_start_end(log=logger)
-def rvol(
-    data: pd.DataFrame, lower_q: float = 0.25, upper_q: float = 0.75
+def cones(
+    data: pd.DataFrame,
+    lower_q: float = 0.25,
+    upper_q: float = 0.75,
+    is_crypto: bool = False,
 ) -> pd.DataFrame:
     """Returns a DataFrame of realized volatility quantiles.
 
@@ -183,22 +186,25 @@ def rvol(
         The lower quantile to calculate the realized volatility over time for.
     upper_q: float (default = 0.75)
         The upper quantile to calculate the realized volatility over time for.
+    is_crypto: bool (default = False)
+        If true, volatility is calculated for 365 days instead of 252.
 
     Returns
     -------
-    pd.DataFrame: rvol
+    pd.DataFrame: cones
         DataFrame of realized volatility quantiles.
 
-    Examples
-    --------
-    df = rvol(symbol = "AAPL")
-
-    df = rvol(symbol = "AAPL", lower_q = 0.10, upper_q = 0.90)
+    Example
+    -------
+    df = openbb.stocks.load("AAPL")
+    cones_df = openbb.ta.cones(data = df, lower_q = 0.10, upper_q = 0.90)
     """
+
+    n_days: int = 365 if is_crypto else 252
+
     try:
         lower_q_label = str(int(lower_q * 100))
         upper_q_label = str(int(upper_q * 100))
-        rvol: pd.DataFrame = pd.DataFrame()
         quantiles = [lower_q, upper_q]
         windows = [3, 10, 30, 60, 90, 120, 150, 180, 210, 240, 300, 360]
         min_ = []
@@ -214,7 +220,9 @@ def rvol(
 
             log_return = (data["Close"] / data["Close"].shift(1)).apply(np.log)
 
-            return log_return.rolling(window=window, center=False).std() * np.sqrt(252)
+            return log_return.rolling(window=window, center=False).std() * np.sqrt(
+                n_days
+            )
 
         for window in windows:
             # Looping to build a dataframe with realized volatility over each window.
@@ -241,11 +249,12 @@ def rvol(
                 5: "Max",
             }
         )
-        rvol = df.copy()
-        return rvol.transpose()
-        
-    except Exception as e:
-        rvol = pd.DataFrame()
-        print('There was an error with the selected quantile value. Values must be between 0 and 1.')
-        return rvol
+        cones_df = df.copy()
+        return cones_df.transpose()
 
+    except Exception:
+        cones_df = pd.DataFrame()
+        print(
+            "There was an error with the selected quantile value. Values must be between 0 and 1."
+        )
+        return cones_df

@@ -539,5 +539,5 @@ ta.stoch,openbb_terminal.common.technical_analysis.momentum_model.stoch,openbb_t
 ta.vwap,openbb_terminal.common.technical_analysis.overlap_model.vwap,openbb_terminal.common.technical_analysis.overlap_view.view_vwap
 ta.wma,openbb_terminal.common.technical_analysis.overlap_model.wma,
 ta.zlma,openbb_terminal.common.technical_analysis.overlap_model.zlma,
-ta.cones,openbb_terminal.common.technical_analysis.volatility_model.rvol,openbb_terminal.common.technical_analysis.volatility_view.display_rvol
+ta.cones,openbb_terminal.common.technical_analysis.volatility_model.cones,openbb_terminal.common.technical_analysis.volatility_view.display_cones
 whoami,openbb_terminal.session.sdk_session.whoami,

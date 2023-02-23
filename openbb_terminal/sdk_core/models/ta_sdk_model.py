@@ -99,8 +99,8 @@ class TaRoot(Category):
         self.obv_chart = lib.common_ta_volume_view.display_obv
         self.rsi = lib.common_ta_momentum_model.rsi
         self.rsi_chart = lib.common_ta_momentum_view.display_rsi
-        self.cones = lib.common_ta_volatility_model.rvol
-        self.cones_chart = lib.common_ta_volatility_view.display_rvol
+        self.cones = lib.common_ta_volatility_model.cones
+        self.cones_chart = lib.common_ta_volatility_view.display_cones
         self.sma = lib.common_ta_overlap_model.sma
         self.stoch = lib.common_ta_momentum_model.stoch
         self.stoch_chart = lib.common_ta_momentum_view.display_stoch

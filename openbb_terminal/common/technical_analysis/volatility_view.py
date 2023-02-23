@@ -369,11 +369,12 @@ def display_atr(
 
 
 @log_start_end(log=logger)
-def display_rvol(
+def display_cones(
     data: pd.DataFrame,
     symbol: str = "",
     lower_q: float = 0.25,
     upper_q: float = 0.75,
+    is_crypto: bool = False,
     export: str = "",
     sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
@@ -390,6 +391,8 @@ def display_rvol(
         The lower quantile to calculate for.
     upper_q: float (default = 0.75)
         The upper quantile to for.
+    is_crypto: bool (default = False)
+        If true, volatility is calculated for 365 days instead of 252.
     export : str
         Format of export file
     sheet_name: str
@@ -400,12 +403,14 @@ def display_rvol(
     Examples
     --------
     df_ta = openbb.stocks.load('XLY')
-    openbb.ta.rvol_chart(data = df_ta, symbol = 'XLY')
+    openbb.ta.cones_chart(data = df_ta, symbol = 'XLY')
 
     df_ta = openbb.stocks.load('XLE')
-    openbb.ta.rvol_chart(data = df_ta, symbol = "XLE", lower_q = 0.10, upper_q = 0.90)
+    openbb.ta.cones_chart(data = df_ta, symbol = "XLE", lower_q = 0.10, upper_q = 0.90)
     """
-    df_ta = volatility_model.rvol(data, lower_q=lower_q, upper_q=upper_q)
+    df_ta = volatility_model.cones(
+        data, lower_q=lower_q, upper_q=upper_q, is_crypto=is_crypto
+    )
     lower_q_label = str(int(lower_q * 100))
     upper_q_label = str(int(upper_q * 100))
     if not df_ta.empty:
