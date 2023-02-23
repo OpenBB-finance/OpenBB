@@ -80,12 +80,12 @@ Riskfolio-Lib = {version = "^3.1.1", optional = true}
 ccxt = "^2.5.67"
 html5lib = "^1.1"
 feedparser = "^6.0.10"
-pyinstaller = {version = "^5.8.0", optional = true}
+pyinstaller = {version = "^4.10", optional = true}
 jupyterlab-code-formatter = {version = "^1.4.10", optional = true}
 jupyterlab-lsp = {version = "^3.10.1", optional = true}
 jedi-language-server = {version = "^0.40.0", optional = true}
 tokenterminal = "^1.0.1"
-torch = {version = "^1.13.0", optional = true}
+torch = {version = "~1.11.0", optional = true}
 watchdog = "^2.1.9"
 pythclient = "^0.1.2"
 ipyflex = "^0.2.4"
@@ -96,11 +96,10 @@ papermill = "^2.4.0"
 stocksera = "^0.1.21"
 ipython = "8.5.0"
 protobuf = "3.20.1"
-pytorch-lightning = {version = "1.9.2", optional = true}
-u8darts = {extras = ["torch"], version = "0.23.1", optional = true}
-lightgbm = {version = "3.3.5", optional = true}  # locked because this is the latest version available on conda intel mac
+pytorch-lightning = {version = "1.6.5", optional = true}
+u8darts = {extras = ["torch"], version = "0.23.0", optional = true}
+lightgbm = {version = "3.3.3", optional = true}  # locked because this is the latest version available on conda intel mac
 docstring-parser = {version = "^0.15", optional = true}
-tensorboard = {version = "2.12.0", optional = true}
 grpcio = "^1.51.1"
 jupyterlab-widgets = "^3.0.3"
 mstarpy = "^0.0.4"

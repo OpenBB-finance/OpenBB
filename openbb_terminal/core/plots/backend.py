@@ -5,6 +5,7 @@ import os
 import re
 import subprocess
 import sys
+from multiprocessing import current_process
 from pathlib import Path
 from typing import Optional, Union
 
@@ -55,6 +56,7 @@ class Backend(PyWry):
             and sys.stdin.isatty()
             and not strtobool(os.environ.get("TEST_MODE", False))
             and not strtobool(os.environ.get("OPENBB_ENABLE_QUICK_EXIT", False))
+            and current_process().name == "MainProcess"
         )
 
         atexit.register(self.close)
@@ -255,6 +257,8 @@ class Backend(PyWry):
         """We override to check if isatty"""
         if self.isatty:
             await super().check_backend()
+        else:
+            self.loop = asyncio.get_event_loop()
 
     def close(self, reset: bool = False):
         """Close the backend."""
