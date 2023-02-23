@@ -1,0 +1,43 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:86.0) Gecko/20100101 Firefox/86.0
+      authorization:
+      - Bearer test_access_token
+    method: GET
+    uri: https://api.twitter.com/2/tweets/search/recent?query=%28%5C%24AAPL%29+%28lang%3Aen%29&max_results=10&tweet.fields=created_at%2Clang
+  response:
+    body:
+      string: "{\n  \"title\": \"Unauthorized\",\n  \"type\": \"about:blank\",\n  \"status\":
+        401,\n  \"detail\": \"Unauthorized\"\n}"
+    headers:
+      cache-control:
+      - no-cache, no-store, max-age=0
+      content-length:
+      - '99'
+      content-type:
+      - application/problem+json
+      date:
+      - Wed, 22 Feb 2023 19:02:42 GMT
+      perf:
+      - '7626143928'
+      server:
+      - tsa_f
+      x-connection-hash:
+      - 3f3750f962a0710d9b7b049d65511b18352660e6b7ac534dd9681c87f9c1ea2f
+      x-response-time:
+      - '99'
+      x-transaction-id:
+      - ffeb1d211ef5b410
+    status:
+      code: 401
+      message: Unauthorized
+version: 1
