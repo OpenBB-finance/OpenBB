@@ -47,7 +47,6 @@ from openbb_terminal.core.session.user import get_current_user
 from openbb_terminal import (
     config_plot as cfgPlot,
     config_terminal as cfg,
-    feature_flags as obbff,
 )
 from openbb_terminal.core.config.paths import (
     HOME_DIRECTORY,
@@ -72,7 +71,7 @@ try:
         twitter_api.get_user(screen_name="openbb_finance")
 except tweepy.errors.Unauthorized:
     # Set toolbar tweet news to False because the Twitter API is not set up correctly
-    obbff.TOOLBAR_TWEET_NEWS = False
+    current_user.preferences.TOOLBAR_TWEET_NEWS = False
 
 
 logger = logging.getLogger(__name__)
@@ -303,10 +302,11 @@ def print_rich_table(
     rows_to_auto_color: List[str]
         Rows to automatically color
     """
-    if obbff.USE_TABULATE_DF:
+    current_user = get_current_user()
+    if current_user.preferences.USE_TABULATE_DF:
         table = Table(title=title, show_lines=True, show_header=show_header)
 
-        if obbff.USE_COLOR and automatic_coloring:
+        if current_user.preferences.USE_COLOR and automatic_coloring:
             if columns_to_auto_color:
                 for col in columns_to_auto_color:
                     # checks whether column exists
@@ -366,7 +366,7 @@ def print_rich_table(
             table.add_row(*row_idx)
         console.print(table)
     else:
-        if obbff.USE_COLOR and automatic_coloring:
+        if current_user.preferences.USE_COLOR and automatic_coloring:
             if columns_to_auto_color:
                 for col in columns_to_auto_color:
                     # checks whether column exists
@@ -1138,7 +1138,7 @@ def get_user_timezone() -> str:
     str
         user timezone based on .env file
     """
-    return obbff.TIMEZONE
+    return current_user.preferences.TIMEZONE
 
 
 def get_user_timezone_or_invalid() -> str:
@@ -1183,7 +1183,7 @@ def get_screeninfo():
 
 def plot_autoscale():
     """Autoscale plot."""
-    if obbff.USE_PLOT_AUTOSCALING:
+    if current_user.preferences.USE_PLOT_AUTOSCALING:
         x, y = get_screeninfo()  # Get screen size
         x = ((x) * cfgPlot.PLOT_WIDTH_PERCENTAGE * 10**-2) / (
             cfgPlot.PLOT_DPI
@@ -1296,7 +1296,8 @@ def ask_file_overwrite(file_path: str) -> Tuple[bool, bool]:
     second is a boolean indicating if the user wants to overwrite the file.
     """
     # Jeroen asked for a flag to overwrite no matter what
-    if obbff.FILE_OVERWITE:
+    current_user = get_current_user()
+    if current_user.preferences.FILE_OVERWITE:
         return False, True
     if os.environ.get("TEST_MODE") == "True":
         return False, True
@@ -1821,7 +1822,7 @@ def load_json(path: str) -> Dict[str, str]:
     except Exception as e:
         console.print(
             f"[red]Failed to load preferred source from file: "
-            f"{obbff.PREFERRED_DATA_SOURCE_FILE}[/red]"
+            f"{current_user.preferences.PREFERRED_DATA_SOURCE_FILE}[/red]"
         )
         console.print(f"[red]{e}[/red]")
         return {}
@@ -1881,7 +1882,7 @@ def update_news_from_tweet_to_be_displayed() -> str:
     # Check whether it has passed a certain amount of time since the last news update
     if LAST_TWEET_NEWS_UPDATE_CHECK_TIME is None or (
         (datetime.now(pytz.utc) - LAST_TWEET_NEWS_UPDATE_CHECK_TIME).total_seconds()
-        > obbff.TOOLBAR_TWEET_NEWS_SECONDS_BETWEEN_UPDATES
+        > current_user.preferences.TOOLBAR_TWEET_NEWS_SECONDS_BETWEEN_UPDATES
     ):
         # This doesn't depende on the time of the tweet but the time that the check was made
         LAST_TWEET_NEWS_UPDATE_CHECK_TIME = datetime.now(pytz.utc)
@@ -1889,7 +1890,10 @@ def update_news_from_tweet_to_be_displayed() -> str:
         dhours = 0
         dminutes = 0
         # Get timezone that corresponds to the user
-        if obbff.USE_DATETIME and get_user_timezone_or_invalid() != "INVALID":
+        if (
+            current_user.preferences.USE_DATETIME
+            and get_user_timezone_or_invalid() != "INVALID"
+        ):
             utcnow = pytz.timezone("utc").localize(datetime.utcnow())  # generic time
             here = utcnow.astimezone(pytz.timezone("Etc/UTC")).replace(tzinfo=None)
             there = utcnow.astimezone(pytz.timezone(get_user_timezone())).replace(
@@ -1900,12 +1904,14 @@ def update_news_from_tweet_to_be_displayed() -> str:
             dhours = offset.hours
             dminutes = offset.minutes
 
-        if "," in obbff.TOOLBAR_TWEET_NEWS_ACCOUNTS_TO_TRACK:
+        if "," in current_user.preferences.TOOLBAR_TWEET_NEWS_ACCOUNTS_TO_TRACK:
             news_sources_twitter_handles = (
-                obbff.TOOLBAR_TWEET_NEWS_ACCOUNTS_TO_TRACK.split(",")
+                current_user.preferences.TOOLBAR_TWEET_NEWS_ACCOUNTS_TO_TRACK.split(",")
             )
         else:
-            news_sources_twitter_handles = [obbff.TOOLBAR_TWEET_NEWS_ACCOUNTS_TO_TRACK]
+            news_sources_twitter_handles = [
+                current_user.preferences.TOOLBAR_TWEET_NEWS_ACCOUNTS_TO_TRACK
+            ]
 
         news_tweet_to_use = ""
         handle_to_use = ""
@@ -1916,11 +1922,15 @@ def update_news_from_tweet_to_be_displayed() -> str:
                 # Get last N tweets from each handle
                 timeline = twitter_api.user_timeline(
                     screen_name=handle,
-                    count=obbff.TOOLBAR_TWEET_NEWS_NUM_LAST_TWEETS_TO_READ,
+                    count=current_user.preferences.TOOLBAR_TWEET_NEWS_NUM_LAST_TWEETS_TO_READ,
                 )
-                timeline = timeline[: obbff.TOOLBAR_TWEET_NEWS_NUM_LAST_TWEETS_TO_READ]
+                timeline = timeline[
+                    : current_user.preferences.TOOLBAR_TWEET_NEWS_NUM_LAST_TWEETS_TO_READ
+                ]
                 for last_tweet in timeline:
-                    keywords = obbff.TOOLBAR_TWEET_NEWS_KEYWORDS.split(",")
+                    keywords = (
+                        current_user.preferences.TOOLBAR_TWEET_NEWS_KEYWORDS.split(",")
+                    )
                     more_recent = (
                         last_tweet_dt is None or last_tweet.created_at > last_tweet_dt
                     )
@@ -1943,7 +1953,8 @@ def update_news_from_tweet_to_be_displayed() -> str:
             tweet_min = f"{last_tweet_dt.minute}"
             # Update time based on timezone specified by user
             if (
-                obbff.USE_DATETIME and get_user_timezone_or_invalid() != "INVALID"
+                current_user.preferences.USE_DATETIME
+                and get_user_timezone_or_invalid() != "INVALID"
             ) and (dhours > 0 or dminutes > 0):
                 tweet_hr = f"{round((int(last_tweet_dt.hour) - dhours) % 60):02}"
                 tweet_min = f"{round((int(last_tweet_dt.minute) - dminutes) % 60):02}"

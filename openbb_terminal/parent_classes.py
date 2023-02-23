@@ -698,10 +698,11 @@ class BaseController(metaclass=ABCMeta):
 
         if ns_parser:
             current_user = get_current_user()
-            if not is_guest(current_user):
+            local_user = is_guest()
+            if not local_user:
                 console.print(f"[info]email:[/info] {current_user.profile.email}")
                 console.print(f"[info]uuid:[/info] {current_user.profile.uuid}")
-                if obbff.SYNC_ENABLED is True:
+                if current_user.preferences.SYNC_ENABLED is True:
                     sync = "ON"
                 else:
                     sync = "OFF"
@@ -730,11 +731,13 @@ class BaseController(metaclass=ABCMeta):
         ns_parser:
             Namespace with parsed arguments
         """
+        current_user = get_current_user()
+
         parser.add_argument(
             "-h", "--help", action="store_true", help="show this help message"
         )
 
-        if obbff.USE_CLEAR_AFTER_CMD:
+        if current_user.preferences.USE_CLEAR_AFTER_CMD:
             system_clear()
 
         try:
@@ -853,7 +856,9 @@ class BaseController(metaclass=ABCMeta):
                 help="Data source to select from",
             )
 
-        if obbff.USE_CLEAR_AFTER_CMD:
+        current_user = get_current_user()
+
+        if current_user.preferences.USE_CLEAR_AFTER_CMD:
             system_clear()
 
         try:
@@ -882,6 +887,8 @@ class BaseController(metaclass=ABCMeta):
 
     def menu(self, custom_path_menu_above: str = ""):
         """Enter controller menu."""
+
+        current_user = get_current_user()
         an_input = "HELP_ME"
 
         while True:
@@ -898,7 +905,7 @@ class BaseController(metaclass=ABCMeta):
                     if len(self.queue) > 1:
                         return self.queue[1:]
 
-                    if obbff.ENABLE_EXIT_AUTO_HELP:
+                    if current_user.preferences.ENABLE_EXIT_AUTO_HELP:
                         return ["help"]
                     return []
 
@@ -1052,7 +1059,10 @@ class BaseController(metaclass=ABCMeta):
                     console.print(f"[green]Replacing by '{an_input}'.[/green]\n")
                     self.queue.insert(0, an_input)
                 else:
-                    if self.TRY_RELOAD and obbff.RETRY_WITH_LOAD:
+                    if (
+                        self.TRY_RELOAD
+                        and get_current_user().preferences.RETRY_WITH_LOAD
+                    ):
                         console.print(f"\nTrying `load {an_input}`\n")
                         self.queue.insert(0, "load " + an_input)
 

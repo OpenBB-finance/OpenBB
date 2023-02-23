@@ -158,10 +158,11 @@ def update_sync_flag(settings: dict) -> bool:
     bool
         The sync flag.
     """
+    current_user = get_current_user()
     if settings and settings.get("SYNC_ENABLED", "").lower() == "false":
-        obbff.SYNC_ENABLED = False
+        current_user.preferences.SYNC_ENABLED = False
         return False
-    obbff.SYNC_ENABLED = True
+    current_user.preferences.SYNC_ENABLED = True
     return True
 
 

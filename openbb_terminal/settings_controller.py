@@ -85,7 +85,7 @@ class SettingsController(BaseController):
         super().__init__(queue)
         self.env_file = env_file
 
-        if session and obbff.USE_PROMPT_TOOLKIT:
+        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices_default
             choices["tz"] = {c: None for c in pytz.all_timezones}
             choices["lang"] = {c: None for c in self.languages_available}
@@ -122,14 +122,14 @@ class SettingsController(BaseController):
         mt.add_info("_info_")
         mt.add_raw("\n")
         mt.add_cmd("colors")
-        mt.add_setting("dt", obbff.USE_DATETIME)
+        mt.add_setting("dt", current_user.preferences.USE_DATETIME)
         mt.add_cmd("flair")
         mt.add_raw("\n")
         mt.add_param("_flair", get_flair())
         mt.add_raw("\n")
         mt.add_cmd("lang")
         mt.add_raw("\n")
-        mt.add_param("_language", obbff.USE_LANGUAGE)
+        mt.add_param("_language", current_user.preferences.USE_LANGUAGE)
         mt.add_raw("\n")
         mt.add_cmd("userdata")
         mt.add_raw("\n")
@@ -142,8 +142,8 @@ class SettingsController(BaseController):
         mt.add_raw("\n")
         mt.add_param("_timezone", get_user_timezone_or_invalid())
         mt.add_raw("\n")
-        mt.add_setting("autoscaling", obbff.USE_PLOT_AUTOSCALING)
-        if obbff.USE_PLOT_AUTOSCALING:
+        mt.add_setting("autoscaling", current_user.preferences.USE_PLOT_AUTOSCALING)
+        if current_user.preferences.USE_PLOT_AUTOSCALING:
             mt.add_cmd("pheight")
             mt.add_cmd("pwidth")
             mt.add_raw("\n")
@@ -170,17 +170,27 @@ class SettingsController(BaseController):
         mt.add_raw("\n")
         mt.add_cmd("source")
         mt.add_raw("\n")
-        mt.add_param("_data_source", obbff.PREFERRED_DATA_SOURCE_FILE)
+        mt.add_param(
+            "_data_source", current_user.preferences.PREFERRED_DATA_SOURCE_FILE
+        )
         mt.add_raw("\n")
-        mt.add_setting("tbnews", obbff.TOOLBAR_TWEET_NEWS)
-        if obbff.TOOLBAR_TWEET_NEWS:
+        mt.add_setting("tbnews", current_user.preferences.TOOLBAR_TWEET_NEWS)
+        if current_user.preferences.TOOLBAR_TWEET_NEWS:
             mt.add_raw("\n")
             mt.add_cmd("tweetnews")
             mt.add_raw("\n")
-            mt.add_param("_tbnu", obbff.TOOLBAR_TWEET_NEWS_SECONDS_BETWEEN_UPDATES)
-            mt.add_param("_nttli", obbff.TOOLBAR_TWEET_NEWS_NUM_LAST_TWEETS_TO_READ)
-            mt.add_param("_tatt", obbff.TOOLBAR_TWEET_NEWS_ACCOUNTS_TO_TRACK)
-            mt.add_param("_tk", obbff.TOOLBAR_TWEET_NEWS_KEYWORDS)
+            mt.add_param(
+                "_tbnu",
+                current_user.preferences.TOOLBAR_TWEET_NEWS_SECONDS_BETWEEN_UPDATES,
+            )
+            mt.add_param(
+                "_nttli",
+                current_user.preferences.TOOLBAR_TWEET_NEWS_NUM_LAST_TWEETS_TO_READ,
+            )
+            mt.add_param(
+                "_tatt", current_user.preferences.TOOLBAR_TWEET_NEWS_ACCOUNTS_TO_TRACK
+            )
+            mt.add_param("_tk", current_user.preferences.TOOLBAR_TWEET_NEWS_KEYWORDS)
         console.print(text=mt.menu_text, menu="Settings")
 
     @staticmethod
@@ -206,8 +216,8 @@ class SettingsController(BaseController):
         if name.startswith("OPENBB_"):
             name = name[7:]
 
-        # Set obbff.env_var_name = not env_var_value
-        setattr(cfg_plot, name, value)
+        # Set current_user.preferences.name = value
+        setattr(current_user.preferences, name, value)
 
         # Send feature flag to server
         if not local_user and sync_enabled:
@@ -288,7 +298,7 @@ class SettingsController(BaseController):
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
             obbff_ctrl.FeatureFlagsController.set_feature_flag(
-                "OPENBB_USE_DATETIME", not obbff.USE_DATETIME
+                "OPENBB_USE_DATETIME", not get_current_user().preferences.USE_DATETIME
             )
 
     @log_start_end(log=logger)
@@ -332,7 +342,8 @@ class SettingsController(BaseController):
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
             obbff_ctrl.FeatureFlagsController.set_feature_flag(
-                "OPENBB_USE_PLOT_AUTOSCALING", not obbff.USE_PLOT_AUTOSCALING
+                "OPENBB_USE_PLOT_AUTOSCALING",
+                not get_current_user().preferences.USE_PLOT_AUTOSCALING,
             )
 
     @log_start_end(log=logger)
@@ -680,13 +691,16 @@ class SettingsController(BaseController):
         )
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            if obbff.TOOLBAR_TWEET_NEWS:
+            current_user = get_current_user()
+            if current_user.preferences.TOOLBAR_TWEET_NEWS:
                 console.print("Will take effect when running terminal next.")
-            obbff.TOOLBAR_TWEET_NEWS = not obbff.TOOLBAR_TWEET_NEWS
+            current_user.preferences.TOOLBAR_TWEET_NEWS = (
+                not current_user.preferences.TOOLBAR_TWEET_NEWS
+            )
             set_key(
                 USER_ENV_FILE,
                 "OPENBB_TOOLBAR_TWEET_NEWS",
-                str(obbff.TOOLBAR_TWEET_NEWS),
+                str(current_user.preferences.TOOLBAR_TWEET_NEWS),
             )
 
     @log_start_end(log=logger)
@@ -736,33 +750,25 @@ class SettingsController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if ns_parser.time:
-                obbff.TOOLBAR_TWEET_NEWS_SECONDS_BETWEEN_UPDATES = ns_parser.time
-                set_key(
-                    USER_ENV_FILE,
+                obbff_ctrl.FeatureFlagsController.set_feature_flag(
                     "OPENBB_TOOLBAR_TWEET_NEWS_SECONDS_BETWEEN_UPDATES",
                     str(ns_parser.time),
                 )
 
             if ns_parser.number:
-                obbff.TOOLBAR_TWEET_NEWS_NUM_LAST_TWEETS_TO_READ = ns_parser.number
-                set_key(
-                    USER_ENV_FILE,
+                obbff_ctrl.FeatureFlagsController.set_feature_flag(
                     "OPENBB_TOOLBAR_TWEET_NEWS_NUM_LAST_TWEETS_TO_READ",
                     str(ns_parser.number),
                 )
 
             if ns_parser.accounts:
-                obbff.TOOLBAR_TWEET_NEWS_ACCOUNTS_TO_TRACK = ns_parser.accounts
-                set_key(
-                    USER_ENV_FILE,
+                obbff_ctrl.FeatureFlagsController.set_feature_flag(
                     "OPENBB_TOOLBAR_TWEET_NEWS_ACCOUNTS_TO_TRACK",
                     str(ns_parser.accounts),
                 )
 
             if ns_parser.keywords:
-                obbff.TOOLBAR_TWEET_NEWS_KEYWORDS = " ".join(ns_parser.keywords)
-                set_key(
-                    USER_ENV_FILE,
+                obbff_ctrl.FeatureFlagsController.set_feature_flag(
                     "OPENBB_TOOLBAR_TWEET_NEWS_KEYWORDS",
                     str(" ".join(ns_parser.keywords)),
                 )

@@ -150,17 +150,18 @@ class AccountController(BaseController):
         )
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
+            current_user = get_current_user()
             if ns_parser.on:
-                if not obbff.SYNC_ENABLED:
+                if not current_user.preferences.SYNC_ENABLED:
                     FeatureFlagsController.set_feature_flag(
                         "OPENBB_SYNC_ENABLED", True, force=True
                     )
-            elif ns_parser.off and obbff.SYNC_ENABLED:
+            elif ns_parser.off and current_user.preferences.SYNC_ENABLED:
                 FeatureFlagsController.set_feature_flag(
                     "OPENBB_SYNC_ENABLED", False, force=True
                 )
 
-            sync = "ON" if obbff.SYNC_ENABLED else "OFF"
+            sync = "ON" if current_user.preferences.SYNC_ENABLED else "OFF"
 
             if ns_parser.on or ns_parser.off:
                 console.print(f"[info]sync:[/info] {sync}")
