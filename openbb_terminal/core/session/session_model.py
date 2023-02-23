@@ -17,7 +17,7 @@ from openbb_terminal.core.models.user.user_model import (
     CredentialsModel,
     PreferencesModel,
     ProfileModel,
-),
+)
 from openbb_terminal.helper_funcs import system_clear
 from openbb_terminal.rich_config import console
 from openbb_terminal.core.session.user import (
