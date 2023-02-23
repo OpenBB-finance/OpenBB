@@ -1186,7 +1186,7 @@ def check_twitter_key(show_output: bool = False) -> str:
     """
 
     current_user = get_current_user()
-    if current_user.API_TWITTER_BEARER_TOKEN == "REPLACE_ME":
+    if current_user.credentials.API_TWITTER_BEARER_TOKEN == "REPLACE_ME":
         logger.info("Twitter key not defined")
         status = KeyStatus.NOT_DEFINED
     else:

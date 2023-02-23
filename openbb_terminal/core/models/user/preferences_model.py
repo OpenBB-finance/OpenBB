@@ -6,3 +6,4 @@ class PreferencesModel:
     """Data model for preferences."""
 
     SYNC_ENABLED: bool = True
+    TOOLBAR_TWEET_NEWS: bool = False

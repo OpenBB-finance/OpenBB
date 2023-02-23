@@ -2,8 +2,6 @@ from pydantic.dataclasses import dataclass
 
 from openbb_terminal.core.models.user.credentials_model import CredentialsModel
 from openbb_terminal.core.models.user.profile_model import ProfileModel
-
-# from openbb_terminal.core.models.configuration_model import ConfigurationsModel
 from openbb_terminal.core.models.user.preferences_model import PreferencesModel
 
 

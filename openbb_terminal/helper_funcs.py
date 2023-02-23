@@ -1,6 +1,8 @@
 """Helper functions."""
 __docformat__ = "numpy"
 # pylint: disable=too-many-lines
+
+# IMPORTS STANDARD
 import argparse
 import io
 import json
@@ -21,6 +23,7 @@ from functools import lru_cache
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple, Union
 
+# IMPORTS THIRDPARTY
 import iso8601
 import matplotlib
 import matplotlib.pyplot as plt
@@ -39,6 +42,9 @@ from PIL import Image, ImageDraw
 from rich.table import Table
 from screeninfo import get_monitors
 
+# IMPORTS INTERNAL
+from openbb_terminal.core.session.user import get_current_user
+    
 from openbb_terminal import (
     config_plot as cfgPlot,
     config_terminal as cfg,
@@ -51,13 +57,17 @@ from openbb_terminal.core.config.paths import (
 from openbb_terminal.rich_config import console
 
 try:
+    current_user = get_current_user()
     twitter_api = tweepy.API(
         tweepy.OAuth2BearerHandler(
-            cfg.API_TWITTER_BEARER_TOKEN,
+            current_user.credentials.API_TWITTER_BEARER_TOKEN,
         ),
         timeout=5,
     )
-    if obbff.TOOLBAR_TWEET_NEWS and cfg.API_TWITTER_BEARER_TOKEN != "REPLACE_ME":
+    if (
+        current_user.preferences.TOOLBAR_TWEET_NEWS
+        and current_user.credentials.API_TWITTER_BEARER_TOKEN != "REPLACE_ME"
+    ):
         # A test to ensure that the Twitter API key is correct,
         # otherwise we disable the Toolbar with Tweet News
         twitter_api.get_user(screen_name="openbb_finance")

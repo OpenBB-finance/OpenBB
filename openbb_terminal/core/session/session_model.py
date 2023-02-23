@@ -12,7 +12,12 @@ from openbb_terminal.base_helpers import (
     reload_openbb_config_modules,
     remove_log_handlers,
 )
-from openbb_terminal.core.models.user.user_model import UserModel
+from openbb_terminal.core.models.user.user_model import (
+    UserModel,
+    CredentialsModel,
+    PreferencesModel,
+    ProfileModel,
+),
 from openbb_terminal.helper_funcs import system_clear
 from openbb_terminal.rich_config import console
 from openbb_terminal.core.session.user import (
@@ -93,8 +98,11 @@ def login(session: dict) -> LoginStatus:
     """
 
     # create a new user
-    hub_user = UserModel()
-    set_current_user(hub_user)
+    hub_user = UserModel(
+        credentials=CredentialsModel(),
+        profile=ProfileModel(),
+        preferences=PreferencesModel(),
+    )
 
     clear_openbb_env_vars(exceptions=["OPENBB_ENABLE_AUTHENTICATION"])
     reload_openbb_config_modules()
@@ -105,6 +113,7 @@ def login(session: dict) -> LoginStatus:
             email = configs.get("email", "")
             feature_settings = configs.get("features_settings", {})
             hub_user.profile.load_user_info(session, email)
+            set_current_user(hub_user)
             Local.apply_configs(configs=configs)
             update_flair(
                 flair=feature_settings.get("USE_FLAIR", None)
