@@ -15,14 +15,13 @@ from openbb_terminal.helper_classes import TerminalStyle  # noqa: F401
 from openbb_terminal.reports import widget_helpers as widgets  # noqa: F401
 from openbb_terminal.reports.reports_controller import ReportController
 
-import openbb_terminal.sdk_core.sdk_init as lib
-from openbb_terminal.sdk_core import (
+import openbb_terminal.core.sdk.sdk_init as lib
+from openbb_terminal.core.sdk import (
     controllers as ctrl,
     models as model,
 )
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.session.user import User
-from openbb_terminal.terminal_helper import is_auth_enabled
 
 if User.is_guest():
     load_dotenv_and_reload_configs()
@@ -49,14 +48,6 @@ class OpenBBSDK:
         self.logout = lib.sdk_session.logout
         self.news = lib.common_feedparser_model.get_news
         self.whoami = lib.sdk_session.whoami
-        self._try_to_login()
-
-    def _try_to_login(self):
-        if User.is_guest() and is_auth_enabled():
-            try:
-                self.login()
-            except Exception:
-                pass
 
     @property
     def alt(self):
