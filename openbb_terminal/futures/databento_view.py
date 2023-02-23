@@ -51,7 +51,7 @@ def display_historical(
         symbol.upper(), start_date=start_date, end_date=end_date
     )
     if data.empty:
-        console.print(f"No data found for {symbol}")
+        console.print(f"No data found for {symbol}.")
         return
     # We check if there's Volume data to avoid errors and empty subplots
     has_volume = False

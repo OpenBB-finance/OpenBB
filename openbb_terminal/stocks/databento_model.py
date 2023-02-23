@@ -50,7 +50,7 @@ class DataBento(BaseModel):
             "stype_out": "product_id",
         }
         auth = requests.auth.HTTPBasicAuth(cfg.API_DATABENTO_KEY, "")
-        # This seems to only work for futures?  Assume the user is entering correct stock ticker
+        # This seems to only work for futures? Assume the user is entering correct stock ticker
         if self.exchange == "XNAS.ITCH":
             return True
         result = request(base_url, params=params, auth=auth)
@@ -90,7 +90,10 @@ class DataBento(BaseModel):
             "encoding": "csv",
         }
         auth = requests.auth.HTTPBasicAuth(cfg.API_DATABENTO_KEY, "")
-        return self.process_request(base_url, params, auth)
+        data = self.process_request(base_url, params, auth)
+        if data.empty:
+            console.print(f"No data found for symbol `{self.symbol}`.")
+        return data
 
     def process_request(self, base_url, params, auth) -> pd.DataFrame:
         """Takes the request and returns the adjusted dataframe"""
