@@ -738,10 +738,16 @@ def get_search_indices(keyword: list, limit: int = 10) -> pd.DataFrame:
         keyword.replace(",", " ") if isinstance(keyword, str) else " ".join(keyword)  # type: ignore
     )
 
-    indices = fd.select_indices()
+    indices = fd.Indices()
 
-    queried_indices = pd.DataFrame.from_dict(
-        fd.search_products(indices, keyword_adjusted, "short_name"), orient="index"
+    queried_indices = indices.search(
+        short_name=keyword_adjusted, exclude_exchanges=True
+    )
+    queried_indices = pd.concat(
+        [
+            queried_indices,
+            indices.data[indices.data.index.str.contains(keyword_adjusted)],
+        ]
     )
 
     queried_indices = queried_indices.iloc[:limit]

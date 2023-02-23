@@ -13,6 +13,8 @@ from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
+equities = fd.Equities()
+
 
 @log_start_end(log=logger)
 def show_equities(
@@ -64,7 +66,7 @@ def show_equities(
     if industry is not None:
         industry = " ".join(industry).title()
 
-    data = fd.select_equities(
+    data = equities.search(
         country=country,
         sector=sector,
         industry=industry,
@@ -72,19 +74,17 @@ def show_equities(
     )
 
     if name is not None:
-        data = fd.search_products(data, query=" ".join(name), search="long_name")
+        data = equities.search(long_name=" ".join(name))
     if description is not None:
-        data = fd.search_products(data, query=" ".join(description), search="summary")
+        data = equities.search(summary=" ".join(description))
     if marketcap is not None:
-        data = fd.search_products(
-            data, query=f"{''.join(marketcap)} Cap", search="market_cap"
-        )
+        data = equities.search(market_cap=f"{''.join(marketcap)} Cap")
 
     table_data = pd.DataFrame(data).T[
         [
             "long_name",
             "sector",
-            "industry",
+            "industry_group" "industry",
             "country",
             "city",
             "website",
@@ -98,6 +98,7 @@ def show_equities(
         headers=[
             "Name",
             "Sector",
+            "Industry Group",
             "Industry",
             "Country",
             "City",

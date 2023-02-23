@@ -104,6 +104,7 @@ def search(
     query: str = "",
     country: str = "",
     sector: str = "",
+    industry_group: str = "",
     industry: str = "",
     exchange_country: str = "",
     all_exchanges: bool = False,
@@ -146,10 +147,17 @@ def search(
         kwargs["sector"] = sector
     if industry:
         kwargs["industry"] = industry
+    if industry_group:
+        kwargs["industry_group"] = industry_group
     kwargs["exclude_exchanges"] = False if exchange_country else not all_exchanges
 
     try:
-        data = fd.select_equities(**kwargs)
+        equities = fd.Equities()
+        if query:
+            data = equities.search(**kwargs, long_name=query)
+            data.update(equities.search(**kwargs, short_name=query))
+        else:
+            data = equities.search(**kwargs)
     except ReadTimeout:
         console.print(
             "[red]Unable to retrieve company data from GitHub which limits the search"
@@ -162,33 +170,23 @@ def search(
             "[red]No companies were found that match the given criteria.[/red]\n"
         )
         return pd.DataFrame()
-    if not data:
+
+    if data.empty:
         console.print("No companies found.\n")
         return pd.DataFrame()
 
-    if query:
-        d = fd.search_products(
-            data, query, search="long_name", case_sensitive=False, new_database=None
-        )
-        d.update(
-            fd.search_products(
-                data,
-                query,
-                search="short_name",
-                case_sensitive=False,
-                new_database=None,
-            )
-        )
-    else:
-        d = data
-
-    if not d:
-        console.print("No companies found.\n")
-        return pd.DataFrame()
-
-    df = pd.DataFrame.from_dict(d).T[
-        ["long_name", "short_name", "country", "sector", "industry", "exchange"]
+    df = data[
+        [
+            "long_name",
+            "short_name",
+            "country",
+            "sector",
+            "industry_group",
+            "industry",
+            "exchange",
+        ]
     ]
+
     if exchange_country and exchange_country in market_coverage_suffix:
         suffix_tickers = [
             ticker.split(".")[1] if "." in ticker else "" for ticker in list(df.index)
@@ -202,8 +200,10 @@ def search(
         for x in v:
             exchange_suffix[x] = k
 
-    df["name"] = df["long_name"].combine_first(df["short_name"])
-    df = df[["name", "country", "sector", "industry", "exchange"]]
+    with pd.option_context("mode.chained_assignment", None):
+        df["name"] = df["long_name"].combine_first(df["short_name"])
+
+    df = df[["name", "country", "sector", "industry_group", "industry", "exchange"]]
 
     title = "Companies found"
     if query:
@@ -214,8 +214,12 @@ def search(
         title += f" in {country.replace('_', ' ').title()}"
     if sector:
         title += f" within {sector}"
+        if industry_group:
+            title += f" and {industry_group}"
         if industry:
             title += f" and {industry}"
+    if not sector and industry_group:
+        title += f" within {industry_group}"
     if not sector and industry:
         title += f" within {industry}"
 
@@ -225,7 +229,7 @@ def search(
     print_rich_table(
         df.iloc[:limit] if limit else df,
         show_index=True,
-        headers=["Name", "Country", "Sector", "Industry", "Exchange"],
+        headers=["Name", "Country", "Sector", "Industry Group", "Industry", "Exchange"],
         title=title,
     )
 

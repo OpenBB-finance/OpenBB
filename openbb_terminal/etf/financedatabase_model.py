@@ -5,10 +5,13 @@ import logging
 from typing import Dict, List
 
 import financedatabase as fd
+import pandas as pd
 
 from openbb_terminal.decorators import log_start_end
 
 logger = logging.getLogger(__name__)
+
+etfs = fd.ETFs()
 
 
 @log_start_end(log=logger)
@@ -25,8 +28,8 @@ def get_etfs_by_name(name: str) -> Dict:
     data : Dict[str, Any]
         Dictionary with ETFs that match a certain name
     """
-    data = fd.select_etfs()
-    data = fd.search_products(data, query=name, search="long_name")
+    data = etfs.search(long_name=name, exclude_exchanges=True)
+    data = pd.concat([data, etfs.search(index=name, exclude_exchanges=True)])
 
     return data
 
@@ -46,10 +49,7 @@ def get_etfs_by_description(description: str) -> Dict:
     data: Dict[str, Any]
         Dictionary with ETFs that match a certain description
     """
-    data = fd.select_etfs()
-    data = fd.search_products(data, query=description, search="summary")
-
-    return data
+    return etfs.search(summary=description, exclude_exchanges=True)
 
 
 @log_start_end(log=logger)
@@ -67,9 +67,7 @@ def get_etfs_by_category(category: str) -> Dict:
     data: Dict[str, Any]
         Dictionary with ETFs that match a certain description
     """
-    data = fd.select_etfs(category=category)
-
-    return data
+    return etfs.select(category=category, exclude_exchanges=True)
 
 
 @log_start_end(log=logger)
@@ -81,5 +79,4 @@ def get_etfs_categories() -> List[str]:
     List[str]
         ETF categories
     """
-
-    return fd.show_options("etfs")
+    return etfs.options("category")

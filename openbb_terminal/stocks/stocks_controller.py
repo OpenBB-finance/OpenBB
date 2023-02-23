@@ -7,7 +7,7 @@ import os
 from datetime import datetime, timedelta
 from typing import List, Optional
 
-import financedatabase
+import pandas as pd
 import yfinance as yf
 
 from openbb_terminal import feature_flags as obbff
@@ -69,9 +69,19 @@ class StocksController(StockBaseController):
     FILE_PATH = os.path.join(os.path.dirname(__file__), "README.md")
 
     try:
-        country = financedatabase.show_options("equities", "countries")
-        sector = financedatabase.show_options("equities", "sectors")
-        industry = financedatabase.show_options("equities", "industries")
+        database_url = "https://raw.githubusercontent.com/JerBouma/FinanceDatabase/main/Database/Categories"
+        country = pd.read_csv(f"{database_url}/equities_countries.csv", header=None)[
+            0
+        ].values.tolist()
+        sector = pd.read_csv(f"{database_url}/equities_sectors.csv", header=None)[
+            0
+        ].values.tolist()
+        industry_group = pd.read_csv(
+            f"{database_url}/equities_industry_groups.csv", header=None
+        )[0].values.tolist()
+        industry = pd.read_csv(f"{database_url}/equities_industries.csv", header=None)[
+            0
+        ].values.tolist()
     except Exception:
         country, sector, industry = {}, {}, {}
         console.print(
@@ -192,6 +202,16 @@ class StocksController(StockBaseController):
             help="Search by sector to find stocks matching the criteria",
         )
         parser.add_argument(
+            "-g",
+            "--industry-group",
+            default="",
+            choices=stocks_helper.format_parse_choices(self.industry_group),
+            type=str.lower,
+            metavar="industry_group",
+            dest="industry_group",
+            help="Search by industry group to find stocks matching the criteria",
+        )
+        parser.add_argument(
             "-i",
             "--industry",
             default="",
@@ -236,6 +256,9 @@ class StocksController(StockBaseController):
             industry = stocks_helper.map_parse_choices(self.industry)[
                 ns_parser.industry
             ]
+            industry_group = stocks_helper.map_parse_choices(self.industry_group)[
+                ns_parser.industry_group
+            ]
             exchange = stocks_helper.map_parse_choices(
                 list(stocks_helper.market_coverage_suffix.keys())
             )[ns_parser.exchange_country]
@@ -244,6 +267,7 @@ class StocksController(StockBaseController):
                 query=" ".join(ns_parser.query),
                 country=ns_parser.country,
                 sector=sector,
+                industry_group=industry_group,
                 industry=industry,
                 exchange_country=exchange,
                 all_exchanges=ns_parser.all_exchanges,

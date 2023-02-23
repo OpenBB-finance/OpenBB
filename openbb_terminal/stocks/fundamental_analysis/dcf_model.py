@@ -355,11 +355,12 @@ def others_in_sector(
     industry = industry.replace("—", " - ")
     industry = industry.replace("/", " ")
 
-    similars = fd.select_equities(sector=sector, industry=industry)
+    equities = fd.Equities()
+    similars = equities.select(sector=sector, industry=industry)
 
     # This filters similars to match market cap and removes ticker analyzed
-    if symbol in similars:
-        market_cap = similars[symbol]["market_cap"]
+    if symbol in similars.index:
+        market_cap = similars.loc[symbol]["market_cap"]
         similars.pop(symbol, None)
         if not no_filter:
             similars = {

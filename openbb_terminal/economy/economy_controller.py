@@ -841,6 +841,7 @@ class EconomyController(BaseController):
             "-q",
             "--query",
             type=str,
+            nargs="+",
             dest="query",
             help="Search for indices with given keyword",
         )
@@ -864,7 +865,8 @@ class EconomyController(BaseController):
         if ns_parser:
             indices = list_from_str(ns_parser.indices)
             if ns_parser.query and ns_parser.limit:
-                yfinance_view.search_indices(ns_parser.query, ns_parser.limit)
+                query = " ".join(ns_parser.query)
+                yfinance_view.search_indices(query, ns_parser.limit)
                 return self.queue
 
             if ns_parser.show_indices:

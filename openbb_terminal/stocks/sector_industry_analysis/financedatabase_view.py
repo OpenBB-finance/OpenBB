@@ -28,12 +28,13 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def display_bars_financials(
+    equities,
     finance_key: str = "financialData",
     finance_metric: str = "ebitda",
     country: str = "United States",
-    sector: str = "Communication Services",
-    industry: str = "Internet Content & Information",
-    marketcap: str = "Mega Cap",
+    sector: str = "Materials",
+    industry: str = "Metals & Mining",
+    marketcap: str = "Large Cap",
     exclude_exchanges: bool = True,
     limit: int = 10,
     export: str = "",
@@ -84,7 +85,7 @@ def display_bars_financials(
         stocks_data = already_loaded_stocks_data
     else:
         stocks_data = financedatabase_model.get_stocks_data(
-            country, sector, industry, marketcap, exclude_exchanges
+            equities, country, sector, industry, marketcap, exclude_exchanges
         )
 
     metric_data = {}
@@ -238,6 +239,7 @@ def display_bars_financials(
 
 @log_start_end(log=logger)
 def display_companies_per_sector_in_country(
+    equities,
     country: str = "United States",
     mktcap: str = "Large",
     exclude_exchanges: bool = True,
@@ -272,7 +274,7 @@ def display_companies_per_sector_in_country(
         External axes (1 axis is expected in the list), by default None
     """
     companies_per_sector = financedatabase_model.get_companies_per_sector_in_country(
-        country, mktcap, exclude_exchanges
+        equities, country, mktcap, exclude_exchanges
     )
 
     companies_per_sector = dict(
@@ -379,6 +381,7 @@ def display_companies_per_sector_in_country(
 
 @log_start_end(log=logger)
 def display_companies_per_industry_in_country(
+    equities,
     country: str = "United States",
     mktcap: str = "Large",
     exclude_exchanges: bool = True,
@@ -415,7 +418,7 @@ def display_companies_per_industry_in_country(
     """
     companies_per_industry = (
         financedatabase_model.get_companies_per_industry_in_country(
-            country, mktcap, exclude_exchanges
+            equities, country, mktcap, exclude_exchanges
         )
     )
 
@@ -530,7 +533,8 @@ def display_companies_per_industry_in_country(
 
 @log_start_end(log=logger)
 def display_companies_per_industry_in_sector(
-    sector: str = "Technology",
+    equities,
+    sector: str = "Materials",
     mktcap: str = "Large",
     exclude_exchanges: bool = True,
     export: str = "",
@@ -564,7 +568,7 @@ def display_companies_per_industry_in_sector(
         External axes (1 axis is expected in the list), by default None
     """
     companies_per_industry = financedatabase_model.get_companies_per_industry_in_sector(
-        sector, mktcap, exclude_exchanges
+        equities, sector, mktcap, exclude_exchanges
     )
 
     companies_per_industry = dict(
@@ -682,7 +686,8 @@ def display_companies_per_industry_in_sector(
 
 @log_start_end(log=logger)
 def display_companies_per_country_in_sector(
-    sector: str = "Technology",
+    equities,
+    sector: str = "Materials",
     mktcap: str = "Large",
     exclude_exchanges: bool = True,
     export: str = "",
@@ -716,7 +721,7 @@ def display_companies_per_country_in_sector(
         External axes (1 axis is expected in the list), by default None
     """
     companies_per_country = financedatabase_model.get_companies_per_country_in_sector(
-        sector, mktcap, exclude_exchanges
+        equities, sector, mktcap, exclude_exchanges
     )
 
     companies_per_country = dict(
@@ -827,7 +832,8 @@ def display_companies_per_country_in_sector(
 
 @log_start_end(log=logger)
 def display_companies_per_country_in_industry(
-    industry: str = "Internet Content & Information",
+    equities,
+    industry: str = "Metals & Mining",
     mktcap: str = "Large",
     exclude_exchanges: bool = True,
     export: str = "",
@@ -861,7 +867,7 @@ def display_companies_per_country_in_industry(
         External axes (1 axis is expected in the list), by default None
     """
     companies_per_country = financedatabase_model.get_companies_per_country_in_industry(
-        industry, mktcap, exclude_exchanges
+        equities, industry, mktcap, exclude_exchanges
     )
 
     companies_per_country = dict(
