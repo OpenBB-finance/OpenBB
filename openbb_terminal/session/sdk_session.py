@@ -1,9 +1,14 @@
+import logging
+
+from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
 from openbb_terminal.session import (
     local_model as Local,
     session_model,
 )
 from openbb_terminal.session.user import User
+
+logger = logging.getLogger(__name__)
 
 
 def get_session(email: str, password: str, token: str, save: bool):
@@ -13,7 +18,7 @@ def get_session(email: str, password: str, token: str, save: bool):
         console.print("Creating session from token.")
         session = session_model.create_session_from_token(token, save)  # type: ignore
 
-    if not session:
+    if not session and email:
         console.print("Creating session from email and password.")
         session = session_model.create_session(email, password, save)  # type: ignore
 
@@ -23,6 +28,7 @@ def get_session(email: str, password: str, token: str, save: bool):
     return session
 
 
+@log_start_end(log=logger)
 def login(
     email: str = "", password: str = "", token: str = "", keep_session: bool = False
 ):
@@ -49,11 +55,10 @@ def login(
     >>> from openbb_terminal.sdk import openbb
     >>> openbb.login(email="your_email", password="your_password")
     """
-
-    session = Local.get_session()
+    if not (email or token):
+        session = Local.get_session()
 
     if not session:
-        console.print("No local session found. Creating new session.")
         session = get_session(email, password, token, keep_session)
     else:
         console.print("Using local session to login.")
@@ -65,6 +70,7 @@ def login(
     console.print("[green]Login successful.[/green]")
 
 
+@log_start_end(log=logger)
 def logout():
     """
     Logout and clear session.
@@ -81,6 +87,7 @@ def logout():
     )
 
 
+@log_start_end(log=logger)
 def whoami():
     """
     Display user info.

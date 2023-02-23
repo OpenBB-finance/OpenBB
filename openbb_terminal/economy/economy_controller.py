@@ -623,7 +623,8 @@ class EconomyController(BaseController):
                             self.DATASETS["macro"].drop(column, axis=1, inplace=True)
 
                     self.DATASETS["macro"] = pd.concat(
-                        [self.DATASETS["macro"], df], axis=1
+                        [self.DATASETS["macro"], df],
+                        axis=1,
                     )
 
                     # update units dict
@@ -1630,6 +1631,7 @@ class EconomyController(BaseController):
             type=str,
             nargs="+",
             dest="query",
+            required="-h" not in other_args,
             help="Query to evaluate on loaded datasets",
         )
         if other_args and "-" not in other_args[0][0]:
