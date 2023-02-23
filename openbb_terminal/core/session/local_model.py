@@ -16,7 +16,7 @@ from openbb_terminal.core.config.paths import (
     USER_ROUTINES_DIRECTORY,
 )
 from openbb_terminal.rich_config import console
-from openbb_terminal.core.session.user import get_current_user
+from openbb_terminal.core.session.user import get_current_user, set_current_user
 
 SESSION_FILE_PATH = SETTINGS_DIRECTORY / "session.json"
 
@@ -143,6 +143,7 @@ def apply_configs(configs: dict):
                 for k, v in keys.items():
                     if hasattr(current_user.credentials, k):
                         setattr(current_user.credentials, k, v)
+                set_current_user(current_user)
 
 
 def update_sync_flag(settings: dict) -> bool:
