@@ -1,9 +1,10 @@
+"""Backend for Plotly."""
 import asyncio
 import atexit
 import json
 import os
 import re
-import subprocess
+import subprocess  # nosec: B404
 import sys
 from pathlib import Path
 from typing import Optional, Union
@@ -38,9 +39,10 @@ BACKEND = None
 
 
 class Backend(PyWry):
-    """Custom backend for Plotly"""
+    """Custom backend for Plotly."""
 
     def __new__(cls, *args, **kwargs):  # pylint: disable=W0613
+        """Create a singleton instance of the backend."""
         if not hasattr(cls, "instance"):
             cls.instance = super().__new__(cls)  # pylint: disable=E1120
         return cls.instance
@@ -60,7 +62,7 @@ class Backend(PyWry):
         atexit.register(self.close)
 
     def inject_path_to_html(self):
-        """Update the script tag in html with local path"""
+        """Update the script tag in html with local path."""
         for html_file, temp_file in zip(
             ["plotly.html", "table.html"], [self.plotly_html, self.table_html]
         ):
@@ -75,26 +77,26 @@ class Backend(PyWry):
                 file.write(html)
 
     def get_plotly_html(self) -> str:
-        """Get the plotly html file"""
+        """Get the plotly html file."""
         if self.plotly_html and self.plotly_html.exists():
             return str(self.plotly_html)
         return ""
 
     def get_pending(self) -> list:
-        """Get the pending data that has not been sent to the backend"""
+        """Get the pending data that has not been sent to the backend."""
         pending = self.outgoing + self.init_engine
-        self.outgoing = []
-        self.init_engine = []
+        self.outgoing: list = []
+        self.init_engine: list = []
         return pending
 
     def get_table_html(self) -> str:
-        """Get the table html file"""
+        """Get the table html file."""
         if self.table_html and self.table_html.exists():
             return str(self.table_html)
         return ""
 
     def get_window_icon(self) -> str:
-        """Get the window icon"""
+        """Get the window icon."""
         icon_path = PLOTS_CORE_PATH / "assets" / "Terminal_icon.png"
         if icon_path.exists():
             return str(icon_path)
@@ -103,7 +105,7 @@ class Backend(PyWry):
     def send_figure(
         self, fig: go.Figure, export_image: Optional[Union[Path, str]] = ""
     ):
-        """Send a Plotly figure to the backend
+        """Send a Plotly figure to the backend.
 
         Parameters
         ----------
@@ -112,7 +114,6 @@ class Backend(PyWry):
         export_image : str, optional
             Path to export image to, by default ""
         """
-
         self.loop.run_until_complete(self.check_backend())
         title = re.sub(
             r"<[^>]*>", "", fig.layout.title.text if fig.layout.title.text else "Plots"
@@ -135,7 +136,7 @@ class Backend(PyWry):
             self.loop.run_until_complete(self.process_image(export_image))
 
     async def process_image(self, export_image: Path):
-        """We check if the image has been exported to the path"""
+        """Check if the image has been exported to the path."""
         pdf = export_image.suffix == ".pdf"
         img_path = export_image.resolve()
 
@@ -157,13 +158,13 @@ class Backend(PyWry):
 
             if strtobool(os.environ.get("OPENBB_PLOT_OPEN_EXPORT", False)):
                 if sys.platform == "win32":
-                    os.startfile(export_image)
+                    os.startfile(export_image)  # nosec: B606
                 else:
                     opener = "open" if sys.platform == "darwin" else "xdg-open"
-                    subprocess.check_call([opener, export_image])
+                    subprocess.check_call([opener, export_image])  # nosec: B603
 
     def send_table(self, df_table: pd.DataFrame, title: str = ""):
-        """Sends table data to the backend to be displayed in a table.
+        """Send table data to the backend to be displayed in a table.
 
         Parameters
         ----------
@@ -235,24 +236,24 @@ class Backend(PyWry):
         self.outgoing.append(message)
 
     def get_kwargs(self, title: str = "") -> dict:
-        """Get the kwargs for the backend"""
+        """Get the kwargs for the backend."""
         return {
             "title": f"OpenBB - {title}",
             "icon": self.get_window_icon(),
         }
 
     def del_temp(self):
-        """Delete the temporary html file"""
+        """Delete the temporary html file."""
         for file in (self.plotly_html, self.table_html):
             file.unlink(missing_ok=True)
 
     def start(self, debug: bool = False):
-        """Starts the backend WindowManager process"""
+        """Start the backend WindowManager process."""
         if self.isatty:
             super().start(debug)
 
     async def check_backend(self):
-        """We override to check if isatty"""
+        """Override to check if isatty."""
         if self.isatty:
             await super().check_backend()
 
@@ -267,8 +268,7 @@ class Backend(PyWry):
 
 
 async def download_plotly_js():
-    """Downloads or updates plotly.js to the assets folder"""
-
+    """Download or updates plotly.js to the assets folder."""
     js_filename = PLOTLYJS_PATH.name
     try:
         # we use aiohttp to download plotly.js
@@ -297,7 +297,7 @@ if not PLOTLYJS_PATH.exists() and not JUPYTER_NOTEBOOK:
 
 
 def plots_backend() -> Backend:
-    """Get the backend"""
+    """Get the backend."""
     global BACKEND  # pylint: disable=W0603
     if BACKEND is None:
         BACKEND = Backend()
