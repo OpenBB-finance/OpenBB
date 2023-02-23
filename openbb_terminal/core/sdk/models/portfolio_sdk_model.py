@@ -1,7 +1,8 @@
+# ######### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ######### #
 # flake8: noqa
 # pylint: disable=C0301,R0902,R0903
-from openbb_terminal.sdk_core.sdk_helpers import Category
-import openbb_terminal.sdk_core.sdk_init as lib
+from openbb_terminal.core.sdk.sdk_helpers import Category
+import openbb_terminal.core.sdk.sdk_init as lib
 
 
 class PortfolioRoot(Category):
@@ -177,7 +178,6 @@ class PortfolioPortfolioOptimization(Category):
 
         if not lib.OPTIMIZATION_TOOLKIT_ENABLED:
             # pylint: disable=C0415
-
             from openbb_terminal.rich_config import console
 
             console.print(lib.OPTIMIZATION_TOOLKIT_WARNING)
