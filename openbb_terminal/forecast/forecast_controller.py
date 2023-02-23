@@ -3485,7 +3485,7 @@ class ForecastController(BaseController):
         )
 
         if ns_parser:
-            whisper_view.transcribe_and_summarize(
+            whisper_model.transcribe_and_summarize(
                 video=ns_parser.video,
                 model_name=ns_parser.model_name,
                 subtitles_format=ns_parser.subtitles_format,
