@@ -5,6 +5,7 @@ import json
 
 import pytest
 from requests import Response
+from openbb_terminal.core.models.user_model import UserModel
 
 # IMPORTATION INTERNAL
 from openbb_terminal.session import session_model
@@ -68,8 +69,7 @@ def test_login_no_response(mocker):
     )
     mock_fetch_user_configs = mocker.patch(path + "Hub.fetch_user_configs")
     mock_apply_configs = mocker.patch(path + "Local.apply_configs")
-    mock_load_user_info = mocker.patch(path + "User.profile.load_user_info")
-    mock_update_flair = mocker.patch(path + "User.update_flair")
+    mock_update_flair = mocker.patch(path + "update_flair")
 
     mock_fetch_user_configs.return_value = None
 
@@ -79,7 +79,6 @@ def test_login_no_response(mocker):
     mock_reload_openbb_config_modules.assert_called_once()
     mock_fetch_user_configs.assert_called_once_with(TEST_SESSION)
     mock_apply_configs.assert_not_called()
-    mock_load_user_info.assert_not_called()
     mock_update_flair.assert_not_called()
 
 
@@ -91,8 +90,7 @@ def test_login_fail_response(mocker):
     )
     mock_fetch_user_configs = mocker.patch(path + "Hub.fetch_user_configs")
     mock_apply_configs = mocker.patch(path + "Local.apply_configs")
-    mock_load_user_info = mocker.patch(path + "User.profile.load_user_info")
-    mock_update_flair = mocker.patch(path + "User.update_flair")
+    mock_update_flair = mocker.patch(path + "update_flair")
 
     response = Response()
     response.status_code = 400
@@ -104,7 +102,6 @@ def test_login_fail_response(mocker):
     mock_reload_openbb_config_modules.assert_called_once()
     mock_fetch_user_configs.assert_called_once_with(TEST_SESSION)
     mock_apply_configs.assert_not_called()
-    mock_load_user_info.assert_not_called()
     mock_update_flair.assert_not_called()
 
 
@@ -116,8 +113,7 @@ def test_login_success_response(mocker):
     )
     mock_fetch_user_configs = mocker.patch(path + "Hub.fetch_user_configs")
     mock_apply_configs = mocker.patch(path + "Local.apply_configs")
-    mock_load_user_info = mocker.patch(path + "User.profile.load_user_info")
-    mock_update_flair = mocker.patch(path + "User.update_flair")
+    mock_update_flair = mocker.patch(path + "update_flair")
 
     response = Response()
     response.status_code = 200
@@ -132,7 +128,6 @@ def test_login_success_response(mocker):
     mock_reload_openbb_config_modules.assert_called_once()
     mock_fetch_user_configs.assert_called_once_with(TEST_SESSION)
     mock_apply_configs.assert_called_once()
-    mock_load_user_info.assert_called_once()
     mock_update_flair.assert_called_once()
 
 
@@ -152,7 +147,7 @@ def test_logout_user(mocker, guest):
         path + "reload_openbb_config_modules"
     )
     mock_clear_openbb_env_vars = mocker.patch(path + "clear_openbb_env_vars")
-    mock_clear_user = mocker.patch(path + "User.reset_flair")
+    mock_reset_flair = mocker.patch(path + "reset_flair")
     mock_plt_close = mocker.patch(path + "plt.close")
 
     auth_header = "Bearer test_token"
@@ -161,7 +156,7 @@ def test_logout_user(mocker, guest):
 
     if not guest:
         mock_delete_session.assert_called_once_with(auth_header, token)
-        mock_clear_user.assert_called_once()
+        mock_reset_flair.assert_called_once()
         mock_remove_session_file.assert_called_once()
     mock_clear_openbb_env_vars.assert_called_once()
     mock_reload_openbb_config_modules.assert_called_once()

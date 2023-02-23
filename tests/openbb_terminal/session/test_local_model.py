@@ -6,6 +6,7 @@ from pathlib import Path
 from unittest.mock import mock_open, patch
 
 import pytest
+from openbb_terminal.core.models.user_model import UserModel
 
 # IMPORTATION INTERNAL
 from openbb_terminal.session import local_model
@@ -175,8 +176,13 @@ CONFIGS = {
 @patch("openbb_terminal.session.local_model.obbff", obbff)
 @patch("openbb_terminal.session.local_model.cfg_plot", cfg_plot)
 @patch("openbb_terminal.session.local_model.paths", paths)
-@patch("openbb_terminal.session.local_model.cfg", cfg)
-def test_apply_configs_sync(sync: str):
+def test_apply_configs_sync(mocker, sync: str):
+    test_user = UserModel()
+    mocker.patch(
+        target="openbb_terminal.session.local_model.get_current_user",
+        return_value=test_user,
+    )
+
     CONFIGS["features_settings"]["SYNC_ENABLED"] = sync
     local_model.apply_configs(CONFIGS)
 
@@ -187,8 +193,8 @@ def test_apply_configs_sync(sync: str):
         assert cfg_plot.PLOT_DPI == 100
         assert cfg_plot.PLOT_HEIGHT_PERCENTAGE == 50.0
         assert Path("user_home/OpenBBUserData") == paths.USER_DATA_DIRECTORY
-        assert cfg.API_KEY_ALPHAVANTAGE == "REPLACE_ME"
-        assert cfg.API_FRED_KEY == "REPLACE_ME"
+        assert test_user.credentials.API_KEY_ALPHAVANTAGE == "REPLACE_ME"
+        assert test_user.credentials.API_FRED_KEY == "REPLACE_ME"
     else:
         assert obbff.SYNC_ENABLED is True
         assert obbff.USE_WATERMARK is False
@@ -196,8 +202,8 @@ def test_apply_configs_sync(sync: str):
         assert cfg_plot.PLOT_DPI == 95
         assert cfg_plot.PLOT_HEIGHT_PERCENTAGE == 50.5
         assert Path("some/path/to/user/data") == paths.USER_DATA_DIRECTORY
-        assert cfg.API_KEY_ALPHAVANTAGE == "test_av"
-        assert cfg.API_FRED_KEY == "test_fred"
+        assert test_user.credentials.API_KEY_ALPHAVANTAGE == "test_av"
+        assert test_user.credentials.API_FRED_KEY == "test_fred"
 
 
 @pytest.mark.parametrize(
@@ -212,9 +218,13 @@ def test_get_routine(mocker, exists: bool):
     uuid = "test_uuid"
     routine = "do something"
 
-    user_mock = mocker.patch(
-        "openbb_terminal.session.local_model.User.profile.get_uuid", return_value=uuid
+    test_user = UserModel()
+    test_user.profile.uuid = uuid
+    mocker.patch(
+        target="openbb_terminal.session.local_model.get_current_user",
+        return_value=test_user,
     )
+
     exists_mock = mocker.patch(
         "openbb_terminal.session.local_model.os.path.exists", return_value=exists
     )
@@ -225,7 +235,6 @@ def test_get_routine(mocker, exists: bool):
 
     assert local_model.get_routine(file_name=file_name) == json.dumps(routine)
 
-    user_mock.assert_called_once()
     exists_mock.assert_called_with(
         local_model.USER_ROUTINES_DIRECTORY / uuid / file_name
     )
@@ -241,8 +250,11 @@ def test_get_routine_exception(mocker):
     file_name = "test_routine.openbb"
     uuid = "test_uuid"
 
-    user_mock = mocker.patch(
-        "openbb_terminal.session.local_model.User.profile.get_uuid", return_value=uuid
+    test_user = UserModel()
+    test_user.profile.uuid = uuid
+    mocker.patch(
+        target="openbb_terminal.session.local_model.get_current_user",
+        return_value=test_user,
     )
     exists_mock = mocker.patch("openbb_terminal.session.local_model.os.path.exists")
     open_mock = mocker.patch(
@@ -252,7 +264,6 @@ def test_get_routine_exception(mocker):
 
     assert local_model.get_routine(file_name=file_name) is None
 
-    user_mock.assert_called_once()
     exists_mock.assert_called_with(
         local_model.USER_ROUTINES_DIRECTORY / uuid / file_name
     )
@@ -271,9 +282,13 @@ def test_save_routine(mocker, exists: bool):
     uuid = "test_uuid"
     routine = "do something"
 
-    user_mock = mocker.patch(
-        "openbb_terminal.session.local_model.User.profile.get_uuid", return_value=uuid
+    test_user = UserModel()
+    test_user.profile.uuid = uuid
+    mocker.patch(
+        target="openbb_terminal.session.local_model.get_current_user",
+        return_value=test_user,
     )
+
     exists_mock = mocker.patch(
         "openbb_terminal.session.local_model.os.path.exists", return_value=exists
     )
@@ -294,7 +309,6 @@ def test_save_routine(mocker, exists: bool):
             local_model.USER_ROUTINES_DIRECTORY / uuid / file_name, "w"
         )
 
-    user_mock.assert_called_once()
     assert exists_mock.call_count == 2
 
 
@@ -303,9 +317,13 @@ def test_save_routine_exception(mocker):
     uuid = "test_uuid"
     routine = "do something"
 
+    test_user = UserModel()
+    test_user.profile.uuid = uuid
     mocker.patch(
-        "openbb_terminal.session.local_model.User.profile.get_uuid", return_value=uuid
+        target="openbb_terminal.session.local_model.get_current_user",
+        return_value=test_user,
     )
+
     mocker.patch(
         "openbb_terminal.session.local_model.os.path.exists", return_value=False
     )

@@ -70,7 +70,7 @@ def reset_flair(user: UserModel):
     obbff.USE_FLAIR = ":openbb"
 
 
-def update_flair(flair: str):
+def update_flair(flair: str, user: UserModel):
     """Update flair if user has not changed it.
 
     Parameters
@@ -84,5 +84,5 @@ def update_flair(flair: str):
         setattr(
             obbff,
             "USE_FLAIR",
-            "[" + get_current_user().profile.username[:MAX_FLAIR_LEN] + "]" + " 🦋",
+            "[" + user.profile.username[:MAX_FLAIR_LEN] + "]" + " 🦋",
         )
