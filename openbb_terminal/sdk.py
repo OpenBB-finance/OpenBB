@@ -289,6 +289,7 @@ class OpenBBSDK:
             `curve`: Get curve futures [Source: Yahoo Finance]\n
             `curve_chart`: Display curve futures [Source: Yahoo Finance]\n
             `historical`: Get historical futures data\n
+            `historical_chart`: Display historical futures [Source: Yahoo Finance]\n
             `search`: Get search futures [Source: Yahoo Finance]\n
         """
 
