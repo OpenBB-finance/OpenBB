@@ -53,7 +53,7 @@ class PlotlyTA(PltTA):
     >>> from openbb_terminal.sdk import openbb
     >>> from openbb_terminal.core.plots.plotly_ta.ta_class import PlotlyTA
 
-    >>> df = openbb.stocks.load("SPY", interval=15)
+    >>> df = openbb.stocks.load("SPY")
     >>> indicators = dict(
     >>>     sma=dict(length=[20, 50, 100]),
     >>>     adx=dict(length=14),
@@ -63,13 +63,15 @@ class PlotlyTA(PltTA):
     >>> fig = PlotlyTA.plot(df, indicators=indicators)
     >>> fig.show()
 
-    If you want to plot the chart with the same indicators, you can use the
-    PlotlyTA.plot() static method. This will reuse the same instance of the
-    PlotlyTA class, so that the plugins are only loaded once.
+    If you want to plot the chart with the same indicators, you can
+    reuse the same instance of the class as follows:
 
-    >>> fig = PlotlyTA.plot(df)
+    >>> ta = PlotlyTA()
+    >>> fig = ta.plot(df, indicators=indicators)
+    >>> df2 = openbb.stocks.load("AAPL")
+    >>> fig2 = ta.plot(df2)
     >>> fig.show()
-
+    >>> fig2.show()
     """
 
     inchart_colors = theme.get_colors()
@@ -187,6 +189,9 @@ class PlotlyTA(PltTA):
         fig : OpenBBFigure, optional
             Plotly figure to plot on, by default None
         """
+        if indicators is None and PLOTLY_TA is not None:
+            indicators = PLOTLY_TA.indicators
+
         return PlotlyTA().__plot__(
             df_stock, indicators, symbol, candles, volume, prepost, fig
         )
