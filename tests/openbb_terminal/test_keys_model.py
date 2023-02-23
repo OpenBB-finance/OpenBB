@@ -1,7 +1,6 @@
 import os
 from pathlib import Path
 from typing import List
-from unittest.mock import patch
 
 import pandas as pd
 import pytest
@@ -92,7 +91,8 @@ def assert_keys_and_status(
 
 
 # Alphavantage api is working with any key you pass, so expected is 1 with dummy keys
-@patch.dict(os.environ, {})
+
+
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
@@ -140,7 +140,6 @@ def test_set_av_key(args: List[str], persist: bool, show_output: bool, expected:
     assert_keys_and_status(args, persist, expected, var_name_list, status)
 
 
-@patch.dict(os.environ, {})
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
@@ -188,7 +187,6 @@ def test_set_fmp_key(args: List[str], persist: bool, show_output: bool, expected
     assert_keys_and_status(args, persist, expected, var_name_list, status)
 
 
-@patch.dict(os.environ, {})
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
@@ -238,7 +236,6 @@ def test_set_quandl_key(
     assert_keys_and_status(args, persist, expected, var_name_list, status)
 
 
-@patch.dict(os.environ, {})
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
@@ -288,7 +285,6 @@ def test_set_polygon_key(
     assert_keys_and_status(args, persist, expected, var_name_list, status)
 
 
-@patch.dict(os.environ, {})
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
@@ -336,7 +332,6 @@ def test_set_fred_key(args: List[str], persist: bool, show_output: bool, expecte
     assert_keys_and_status(args, persist, expected, var_name_list, status)
 
 
-@patch.dict(os.environ, {})
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
@@ -384,7 +379,6 @@ def test_set_news_key(args: List[str], persist: bool, show_output: bool, expecte
     assert_keys_and_status(args, persist, expected, var_name_list, status)
 
 
-@patch.dict(os.environ, {})
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
@@ -434,7 +428,6 @@ def test_set_tradier_key(
     assert_keys_and_status(args, persist, expected, var_name_list, status)
 
 
-@patch.dict(os.environ, {})
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
@@ -482,7 +475,6 @@ def test_set_cmc_key(args: List[str], persist: bool, show_output: bool, expected
     assert_keys_and_status(args, persist, expected, var_name_list, status)
 
 
-@patch.dict(os.environ, {})
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
@@ -532,7 +524,6 @@ def test_set_finnhub_key(
     assert_keys_and_status(args, persist, expected, var_name_list, status)
 
 
-@patch.dict(os.environ, {})
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
@@ -590,7 +581,6 @@ def test_set_reddit_key(
     assert_keys_and_status(args, persist, expected, var_name_list, status)
 
 
-@patch.dict(os.environ, {})
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
@@ -640,7 +630,6 @@ def test_set_bitquery_key(
     assert_keys_and_status(args, persist, expected, var_name_list, status)
 
 
-@patch.dict(os.environ, {})
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
@@ -694,7 +683,6 @@ def test_set_twitter_key(
     assert_keys_and_status(args, persist, expected, var_name_list, status)
 
 
-@patch.dict(os.environ, {})
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
@@ -744,7 +732,6 @@ def test_set_rh_key(args: List[str], persist: bool, show_output: bool, expected:
     assert_keys_and_status(args, persist, expected, var_name_list, status)
 
 
-@patch.dict(os.environ, {})
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
@@ -798,7 +785,6 @@ def test_set_degiro_key(
     assert_keys_and_status(args, persist, expected, var_name_list, status)
 
 
-@patch.dict(os.environ, {})
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
@@ -852,7 +838,6 @@ def test_set_oanda_key(
     assert_keys_and_status(args, persist, expected, var_name_list, status)
 
 
-@patch.dict(os.environ, {})
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
@@ -904,7 +889,6 @@ def test_set_binance_key(
     assert_keys_and_status(args, persist, expected, var_name_list, status)
 
 
-@patch.dict(os.environ, {})
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
@@ -958,7 +942,6 @@ def test_set_coinbase_key(
     assert_keys_and_status(args, persist, expected, var_name_list, status)
 
 
-@patch.dict(os.environ, {})
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
@@ -1008,7 +991,6 @@ def test_set_walert_key(
     assert_keys_and_status(args, persist, expected, var_name_list, status)
 
 
-@patch.dict(os.environ, {})
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
@@ -1058,7 +1040,6 @@ def test_set_glassnode_key(
     assert_keys_and_status(args, persist, expected, var_name_list, status)
 
 
-@patch.dict(os.environ, {})
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
@@ -1108,7 +1089,6 @@ def test_set_coinglass_key(
     assert_keys_and_status(args, persist, expected, var_name_list, status)
 
 
-@patch.dict(os.environ, {})
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
@@ -1158,7 +1138,6 @@ def test_set_cpanic_key(
     assert_keys_and_status(args, persist, expected, var_name_list, status)
 
 
-@patch.dict(os.environ, {})
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
@@ -1208,7 +1187,6 @@ def test_set_ethplorer_key(
     assert_keys_and_status(args, persist, expected, var_name_list, status)
 
 
-@patch.dict(os.environ, {})
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
@@ -1260,7 +1238,6 @@ def test_set_smartstake_key(
     assert_keys_and_status(args, persist, expected, var_name_list, status)
 
 
-@patch.dict(os.environ, {})
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
@@ -1310,7 +1287,6 @@ def test_set_github_key(
     assert_keys_and_status(args, persist, expected, var_name_list, status)
 
 
-@patch.dict(os.environ, {})
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
@@ -1360,7 +1336,6 @@ def test_set_messari_key(
     assert_keys_and_status(args, persist, expected, var_name_list, status)
 
 
-@patch.dict(os.environ, {})
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
@@ -1410,7 +1385,6 @@ def test_set_eodhd_key(
     assert_keys_and_status(args, persist, expected, var_name_list, status)
 
 
-@patch.dict(os.environ, {})
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
@@ -1460,7 +1434,6 @@ def test_set_santiment_key(
     assert_keys_and_status(args, persist, expected, var_name_list, status)
 
 
-@patch.dict(os.environ, {})
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
@@ -1510,7 +1483,6 @@ def test_set_tokenterminal_key(
     assert_keys_and_status(args, persist, expected, var_name_list, status)
 
 
-@patch.dict(os.environ, {})
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
@@ -1560,7 +1532,6 @@ def test_set_shroom_key(
     assert_keys_and_status(args, persist, expected, var_name_list, status)
 
 
-@patch.dict(os.environ, {})
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
