@@ -1,12 +1,16 @@
 # IMPORTATION STANDARD
-from unittest.mock import patch
 
 # IMPORTATION THIRDPARTY
 import pytest
-from openbb_terminal.core.models.user.user_model import UserModel
 
 # IMPORTATION INTERNAL
-from openbb_terminal.core.session import user
+from openbb_terminal.core.models.user.user_model import (
+    CredentialsModel,
+    PreferencesModel,
+    ProfileModel,
+    UserModel,
+)
+
 
 # pylint: disable=protected-access, redefined-outer-name
 
@@ -17,13 +21,15 @@ TEST_SESSION = {
 }
 
 
-@pytest.fixture
-def User():
-    """User fixture."""
-    test_user = UserModel()
+@pytest.fixture(name="test_user")
+def fixture_test_user():
+    test_user = UserModel(
+        credentials=CredentialsModel(),
+        preferences=PreferencesModel(),
+        profile=ProfileModel(),
+    )
     test_user.profile.load_user_info(TEST_SESSION, "test@email.com")
-    yield test_user
-
+    return test_user
 
 class obbff:
     """Mock obbff."""

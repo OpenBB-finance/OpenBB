@@ -6,9 +6,14 @@ from pathlib import Path
 from unittest.mock import mock_open, patch
 
 import pytest
-from openbb_terminal.core.models.user.user_model import UserModel
 
 # IMPORTATION INTERNAL
+from openbb_terminal.core.models.user.user_model import (
+    CredentialsModel,
+    PreferencesModel,
+    ProfileModel,
+    UserModel,
+)
 from openbb_terminal.core.session import local_model
 from openbb_terminal.core.session.user import get_current_user
 
@@ -17,6 +22,16 @@ TEST_SESSION = {
     "token_type": "bearer",
     "uuid": "test_uuid",
 }
+
+
+@pytest.fixture(name="test_user")
+def fixture_test_user():
+    return UserModel(
+        credentials=CredentialsModel(),
+        preferences=PreferencesModel(),
+        profile=ProfileModel(),
+    )
+
 
 
 def test_save_session():
@@ -176,8 +191,7 @@ CONFIGS = {
 @patch("openbb_terminal.core.session.local_model.obbff", obbff)
 @patch("openbb_terminal.core.session.local_model.cfg_plot", cfg_plot)
 @patch("openbb_terminal.core.session.local_model.paths", paths)
-def test_apply_configs_sync(mocker, sync: str):
-    test_user = UserModel()
+def test_apply_configs_sync(mocker, sync: str, test_user):
     mocker.patch(
         target="openbb_terminal.core.session.local_model.get_current_user",
         return_value=test_user,
@@ -213,12 +227,11 @@ def test_apply_configs_sync(mocker, sync: str):
         True,
     ],
 )
-def test_get_routine(mocker, exists: bool):
+def test_get_routine(mocker, exists: bool, test_user):
     file_name = "test_routine.openbb"
     uuid = "test_uuid"
     routine = "do something"
 
-    test_user = UserModel()
     test_user.profile.uuid = uuid
     mocker.patch(
         target="openbb_terminal.core.session.local_model.get_current_user",
@@ -246,11 +259,10 @@ def test_get_routine(mocker, exists: bool):
         open_mock.assert_called_with(local_model.USER_ROUTINES_DIRECTORY / file_name)
 
 
-def test_get_routine_exception(mocker):
+def test_get_routine_exception(mocker, test_user):
     file_name = "test_routine.openbb"
     uuid = "test_uuid"
 
-    test_user = UserModel()
     test_user.profile.uuid = uuid
     mocker.patch(
         target="openbb_terminal.core.session.local_model.get_current_user",
@@ -277,12 +289,11 @@ def test_get_routine_exception(mocker):
         True,
     ],
 )
-def test_save_routine(mocker, exists: bool):
+def test_save_routine(mocker, exists: bool, test_user):
     file_name = "test_routine.openbb"
     uuid = "test_uuid"
     routine = "do something"
 
-    test_user = UserModel()
     test_user.profile.uuid = uuid
     mocker.patch(
         target="openbb_terminal.core.session.local_model.get_current_user",
@@ -312,12 +323,11 @@ def test_save_routine(mocker, exists: bool):
     assert exists_mock.call_count == 2
 
 
-def test_save_routine_exception(mocker):
+def test_save_routine_exception(mocker, test_user):
     file_name = "test_routine.openbb"
     uuid = "test_uuid"
     routine = "do something"
 
-    test_user = UserModel()
     test_user.profile.uuid = uuid
     mocker.patch(
         target="openbb_terminal.core.session.local_model.get_current_user",

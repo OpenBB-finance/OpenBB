@@ -116,6 +116,8 @@ class SettingsController(BaseController):
 
     def print_help(self):
         """Print help"""
+        current_user = get_current_user()
+
         mt = MenuText("settings/")
         mt.add_info("_info_")
         mt.add_raw("\n")
@@ -160,7 +162,7 @@ class SettingsController(BaseController):
         mt.add_raw("\n")
         mt.add_cmd("backend")
         mt.add_raw("\n")
-        mt.add_param("_backend", cfg_plot.BACKEND)
+        mt.add_param("_backend", current_user.preferences.PLOT_BACKEND)
         mt.add_raw("\n")
         mt.add_cmd("monitor")
         mt.add_raw("\n")
