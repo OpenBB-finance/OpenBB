@@ -182,7 +182,8 @@ class AccountController(BaseController):
         )
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            response = Hub.fetch_user_configs(get_current_user().profile.get_session())
+            current_user = get_current_user()
+            response = Hub.fetch_user_configs(current_user.profile.get_session())
             if response:
                 configs_diff = get_diff(configs=json.loads(response.content))
                 if configs_diff:

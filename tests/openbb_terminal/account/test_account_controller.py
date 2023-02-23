@@ -8,6 +8,8 @@ from requests import Response
 
 # IMPORTATION INTERNAL
 from openbb_terminal.account import account_controller
+from openbb_terminal.core.models.user_model import UserModel
+from openbb_terminal.session.user import get_current_user
 
 # pylint: disable=E1101
 # pylint: disable=W0603
@@ -366,6 +368,12 @@ def test_call_pull(mocker, input_value):
     controller = account_controller.AccountController(queue=None)
     path_controller = "openbb_terminal.account.account_controller"
 
+    mocker.patch.object(
+        target=UserModel.profile,
+        attribute="get_session",
+        return_value=TEST_SESSION,
+    )
+
     response = Response()
     response.status_code = 200
     response._content = json.dumps(CONFIGS)  # pylint: disable=protected-access
@@ -373,10 +381,6 @@ def test_call_pull(mocker, input_value):
     mock_fetch_user_configs = mocker.patch(
         target=f"{path_controller}.Hub.fetch_user_configs",
         return_value=response,
-    )
-    mock_get_session = mocker.patch(
-        target=f"{path_controller}.User.profile.get_session",
-        return_value=TEST_SESSION,
     )
     mock_get_diff = mocker.patch(
         target=f"{path_controller}.get_diff",
@@ -392,7 +396,6 @@ def test_call_pull(mocker, input_value):
     controller.call_pull(other_args=list())
 
     mock_fetch_user_configs.assert_called_once_with(TEST_SESSION)
-    mock_get_session.assert_called_once()
     mock_get_diff.assert_called_once_with(configs=CONFIGS)
     mock_input.assert_called_once()
     if input_value == "y":
@@ -436,10 +439,12 @@ def test_call_list(mocker):
     controller = account_controller.AccountController(queue=None)
     path_controller = "openbb_terminal.account.account_controller"
 
-    mocker.patch(
-        target=f"{path_controller}.User.profile.get_auth_header",
+    mocker.patch.object(
+        target=UserModel.profile,
+        attribute="get_auth_header",
         return_value="Bearer 123",
     )
+
     mock_list_routines = mocker.patch(
         target=f"{path_controller}.Hub.list_routines",
     )
@@ -461,10 +466,12 @@ def test_call_upload(mocker):
     controller = account_controller.AccountController(queue=None)
     path_controller = "openbb_terminal.account.account_controller"
 
-    mocker.patch(
-        target=f"{path_controller}.User.profile.get_auth_header",
+    mocker.patch.object(
+        target=UserModel.profile,
+        attribute="get_auth_header",
         return_value="Bearer 123",
     )
+
     mock_get_routine = mocker.patch(
         target=f"{path_controller}.Local.get_routine",
         return_value="do something",
@@ -498,10 +505,12 @@ def test_call_download(mocker):
     controller = account_controller.AccountController(queue=None)
     path_controller = "openbb_terminal.account.account_controller"
 
-    mocker.patch(
-        target=f"{path_controller}.User.profile.get_auth_header",
+    mocker.patch.object(
+        target=UserModel.profile,
+        attribute="get_auth_header",
         return_value="Bearer 123",
     )
+
     mock_download_routine = mocker.patch(
         target=f"{path_controller}.Hub.download_routine",
     )
@@ -545,10 +554,12 @@ def test_call_delete(mocker, monkeypatch):
     controller = account_controller.AccountController(queue=None)
     path_controller = "openbb_terminal.account.account_controller"
 
-    mocker.patch(
-        target=f"{path_controller}.User.profile.get_auth_header",
+    mocker.patch.object(
+        target=UserModel.profile,
+        attribute="get_auth_header",
         return_value="Bearer 123",
     )
+
     mock_delete_routine = mocker.patch(
         target=f"{path_controller}.Hub.delete_routine",
     )
@@ -579,10 +590,12 @@ def test_call_generate(mocker, monkeypatch):
         {"token": "MOCK_TOKEN"}
     ).encode("utf-8")
 
-    mocker.patch(
-        target=f"{path_controller}.User.profile.get_auth_header",
+    mocker.patch.object(
+        target=UserModel.profile,
+        attribute="get_auth_header",
         return_value="Bearer 123",
     )
+
     mock_generate = mocker.patch(
         target=f"{path_controller}.Hub.generate_personal_access_token",
         return_value=response,
@@ -616,10 +629,12 @@ def test_call_show(mocker):
         {"token": "MOCK_TOKEN"}
     ).encode("utf-8")
 
-    mocker.patch(
-        target=f"{path_controller}.User.profile.get_auth_header",
+    mocker.patch.object(
+        target=UserModel.profile,
+        attribute="get_auth_header",
         return_value="Bearer 123",
     )
+
     mock_get_token = mocker.patch(
         target=f"{path_controller}.Hub.get_personal_access_token",
         return_value=response,
@@ -635,10 +650,12 @@ def test_call_revoke(mocker, monkeypatch):
     response = Response()
     response.status_code = 200
 
-    mocker.patch(
-        target=f"{path_controller}.User.profile.get_auth_header",
+    mocker.patch.object(
+        target=UserModel.profile,
+        attribute="get_auth_header",
         return_value="Bearer 123",
     )
+
     mock_revoke_token = mocker.patch(
         target=f"{path_controller}.Hub.revoke_personal_access_token",
         return_value=response,
