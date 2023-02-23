@@ -138,63 +138,63 @@ PATH_TO_SELENIUM_DRIVER = ""  # Replace with "PATH"
 # API_FINNHUB_KEY = os.getenv("OPENBB_API_FINNHUB_KEY") or "REPLACE_ME"
 
 # https://iexcloud.io
-API_IEX_TOKEN = os.getenv("OPENBB_API_IEX_TOKEN") or "REPLACE_ME"
+# API_IEX_TOKEN = os.getenv("OPENBB_API_IEX_TOKEN") or "REPLACE_ME"
 
 # https://www.sentimentinvestor.com
-API_SENTIMENTINVESTOR_TOKEN = (
-    os.getenv("OPENBB_API_SENTIMENTINVESTOR_TOKEN") or "REPLACE_ME"
-)
+# API_SENTIMENTINVESTOR_TOKEN = (
+#     os.getenv("OPENBB_API_SENTIMENTINVESTOR_TOKEN") or "REPLACE_ME"
+# )
 
 # https://pro.coinbase.com/profile/api
-API_COINBASE_KEY = os.getenv("OPENBB_API_COINBASE_KEY") or "REPLACE_ME"
-API_COINBASE_SECRET = os.getenv("OPENBB_API_COINBASE_SECRET") or "REPLACE_ME"
-API_COINBASE_PASS_PHRASE = os.getenv("OPENBB_API_COINBASE_PASS_PHRASE") or "REPLACE_ME"
+# API_COINBASE_KEY = os.getenv("OPENBB_API_COINBASE_KEY") or "REPLACE_ME"
+# API_COINBASE_SECRET = os.getenv("OPENBB_API_COINBASE_SECRET") or "REPLACE_ME"
+# API_COINBASE_PASS_PHRASE = os.getenv("OPENBB_API_COINBASE_PASS_PHRASE") or "REPLACE_ME"
 
 # https://alpaca.markets/docs/api-documentation/api-v2/
 # OPENBB_APCA_API_BASE_URL, OPENBB_APCA_API_KEY_ID and OPENBB_APCA_API_SECRET_KEY need to be set as env variable
 
 # https://docs.whale-alert.io/
-API_WHALE_ALERT_KEY = os.getenv("OPENBB_API_WHALE_ALERT_KEY") or "REPLACE_ME"
+# API_WHALE_ALERT_KEY = os.getenv("OPENBB_API_WHALE_ALERT_KEY") or "REPLACE_ME"
 
 # https://docs.glassnode.com/basic-api/api-key#how-to-get-an-api-key
-API_GLASSNODE_KEY = os.getenv("OPENBB_API_GLASSNODE_KEY") or "REPLACE_ME"
+# API_GLASSNODE_KEY = os.getenv("OPENBB_API_GLASSNODE_KEY") or "REPLACE_ME"
 
 # https://coinglass.github.io/API-Reference/#api-key
-API_COINGLASS_KEY = os.getenv("OPENBB_API_COINGLASS_KEY") or "REPLACE_ME"
+# API_COINGLASS_KEY = os.getenv("OPENBB_API_COINGLASS_KEY") or "REPLACE_ME"
 
 # https://github.com/EverexIO/Ethplorer/wiki/Ethplorer-API
-API_ETHPLORER_KEY = os.getenv("OPENBB_API_ETHPLORER_KEY") or "freekey"
+# API_ETHPLORER_KEY = os.getenv("OPENBB_API_ETHPLORER_KEY") or "freekey"
 
 # https://cryptopanic.com/developers/api/
-API_CRYPTO_PANIC_KEY = os.getenv("OPENBB_API_CRYPTO_PANIC_KEY") or "REPLACE_ME"
+# API_CRYPTO_PANIC_KEY = os.getenv("OPENBB_API_CRYPTO_PANIC_KEY") or "REPLACE_ME"
 
 # https://bitquery.io/pricing
-API_BITQUERY_KEY = os.getenv("OPENBB_API_BITQUERY_KEY") or "REPLACE_ME"
+# API_BITQUERY_KEY = os.getenv("OPENBB_API_BITQUERY_KEY") or "REPLACE_ME"
 
 # https://terra.smartstake.io/
-API_SMARTSTAKE_KEY = os.getenv("OPENBB_API_SMARTSTAKE_KEY") or "REPLACE_ME"
-API_SMARTSTAKE_TOKEN = os.getenv("OPENBB_API_SMARTSTAKE_TOKEN") or "REPLACE_ME"
+# API_SMARTSTAKE_KEY = os.getenv("OPENBB_API_SMARTSTAKE_KEY") or "REPLACE_ME"
+# API_SMARTSTAKE_TOKEN = os.getenv("OPENBB_API_SMARTSTAKE_TOKEN") or "REPLACE_ME"
 
 # https://messari.io/
-API_MESSARI_KEY = os.getenv("OPENBB_API_MESSARI_KEY") or "REPLACE_ME"
+# API_MESSARI_KEY = os.getenv("OPENBB_API_MESSARI_KEY") or "REPLACE_ME"
 
 # https://sdk.flipsidecrypto.xyz/shroomdk
-API_SHROOM_KEY = os.getenv("OPENBB_API_SHROOM_KEY") or "REPLACE_ME"
+# API_SHROOM_KEY = os.getenv("OPENBB_API_SHROOM_KEY") or "REPLACE_ME"
 
 # https://docs.github.com/en/rest/guides/getting-started-with-the-rest-api
-API_GITHUB_KEY = os.getenv("OPENBB_API_GITHUB_KEY") or "REPLACE_ME"
+# API_GITHUB_KEY = os.getenv("OPENBB_API_GITHUB_KEY") or "REPLACE_ME"
 
 # https://academy.santiment.net/products-and-plans/create-an-api-key/
-API_SANTIMENT_KEY = os.getenv("OPENBB_API_SANTIMENT_KEY") or "REPLACE_ME"
+# API_SANTIMENT_KEY = os.getenv("OPENBB_API_SANTIMENT_KEY") or "REPLACE_ME"
 
 # https://eodhistoricaldata.com/r/?ref=869U7F4J
-API_EODHD_KEY = os.getenv("OPENBB_API_EODHD_KEY") or "REPLACE_ME"
+# API_EODHD_KEY = os.getenv("OPENBB_API_EODHD_KEY") or "REPLACE_ME"
 
 # https://tokenterminal.com
-API_TOKEN_TERMINAL_KEY = os.getenv("OPENBB_API_TOKEN_TERMINAL_KEY") or "REPLACE_ME"
+# API_TOKEN_TERMINAL_KEY = os.getenv("OPENBB_API_TOKEN_TERMINAL_KEY") or "REPLACE_ME"
 
 # https://stocksera.pythonanywhere.com/accounts/developers
-API_STOCKSERA_KEY = os.getenv("OPENBB_API_STOCKSERA_KEY") or "REPLACE_ME"
+# API_STOCKSERA_KEY = os.getenv("OPENBB_API_STOCKSERA_KEY") or "REPLACE_ME"
 
 # https://my.openbb.co
 OPENBB_PERSONAL_ACCESS_TOKEN = (
@@ -202,4 +202,4 @@ OPENBB_PERSONAL_ACCESS_TOKEN = (
 )
 
 # https://intrinio.com/starter-plan
-API_INTRINIO_KEY = os.getenv("OPENBB_API_INTRINIO_KEY") or "REPLACE_ME"
+# API_INTRINIO_KEY = os.getenv("OPENBB_API_INTRINIO_KEY") or "REPLACE_ME"

@@ -5,9 +5,9 @@ import logging
 import pandas as pd
 import requests
 
-from openbb_terminal import config_terminal as cfg
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.rich_config import console
+from openbb_terminal.session.user import get_current_user
 
 logger = logging.getLogger(__name__)
 
@@ -36,7 +36,7 @@ def get_liquidations(symbol: str) -> pd.DataFrame:
 
     url = api_url + f"futures/liquidation_chart?symbol={symbol.upper()}"
 
-    headers = {"coinglassSecret": cfg.API_COINGLASS_KEY}
+    headers = {"coinglassSecret": get_current_user().credentials.API_COINGLASS_KEY}
 
     response = requests.request("GET", url, headers=headers)
 
@@ -100,7 +100,7 @@ def get_funding_rate(symbol: str) -> pd.DataFrame:
 
     url = api_url + f"futures/funding_rates_chart?symbol={symbol.upper()}&type=C"
 
-    headers = {"coinglassSecret": cfg.API_COINGLASS_KEY}
+    headers = {"coinglassSecret": get_current_user().credentials.API_COINGLASS_KEY}
 
     response = requests.request("GET", url, headers=headers)
 
@@ -168,7 +168,7 @@ def get_open_interest_per_exchange(symbol: str, interval: int = 0) -> pd.DataFra
         + f"futures/openInterest/chart?symbol={symbol.upper()}&interval={interval}"
     )
 
-    headers = {"coinglassSecret": cfg.API_COINGLASS_KEY}
+    headers = {"coinglassSecret": get_current_user().credentials.API_COINGLASS_KEY}
 
     response = requests.request("GET", url, headers=headers)
     df = pd.DataFrame()

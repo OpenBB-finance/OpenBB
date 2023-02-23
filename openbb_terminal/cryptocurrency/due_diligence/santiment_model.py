@@ -9,6 +9,7 @@ from openbb_terminal.cryptocurrency.discovery.pycoingecko_model import read_file
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import request
 from openbb_terminal.rich_config import console
+from openbb_terminal.session.user import get_current_user
 
 logger = logging.getLogger(__name__)
 
@@ -70,7 +71,7 @@ def get_github_activity(
 
     headers = {
         "Content-Type": "application/graphql",
-        "Authorization": f"Apikey {cfg.API_SANTIMENT_KEY}",
+        "Authorization": f"Apikey {get_current_user().credentials.API_SANTIMENT_KEY}",
     }
 
     data = (

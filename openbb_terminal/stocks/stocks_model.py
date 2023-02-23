@@ -9,7 +9,6 @@ import pandas as pd
 import yfinance as yf
 from alpha_vantage.timeseries import TimeSeries
 
-from openbb_terminal import config_terminal as cfg
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import lambda_long_number_format, request
 from openbb_terminal.rich_config import console
@@ -24,7 +23,7 @@ logger = logging.getLogger(__name__)
 def load_stock_intrinio(
     symbol: str, start_date: datetime, end_date: datetime
 ) -> pd.DataFrame:
-    intrinio.ApiClient().set_api_key(cfg.API_INTRINIO_KEY)
+    intrinio.ApiClient().set_api_key(get_current_user().credentials.API_INTRINIO_KEY)
     api = intrinio.SecurityApi()
     stock = api.get_security_stock_prices(
         symbol.upper(),
@@ -182,7 +181,7 @@ def load_stock_eodhd(
         f"{start_date.strftime('%Y-%m-%d')}&"
         f"to={end_date.strftime('%Y-%m-%d')}&"
         f"period={int_}&"
-        f"api_token={cfg.API_EODHD_KEY}&"
+        f"api_token={get_current_user().credentials.API_EODHD_KEY}&"
         f"fmt=json&"
         f"order=d"
     )

@@ -7,10 +7,13 @@ from tokenterminal import TokenTerminal
 
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.decorators import log_start_end
+from openbb_terminal.session.user import get_current_user
 
 logger = logging.getLogger(__name__)
 
-token_terminal = TokenTerminal(key=cfg.API_TOKEN_TERMINAL_KEY)
+token_terminal = TokenTerminal(
+    key=get_current_user().credentials.API_TOKEN_TERMINAL_KEY
+)
 
 # Fetch all data for projects'
 try:

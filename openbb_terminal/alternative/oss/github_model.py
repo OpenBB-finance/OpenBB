@@ -13,6 +13,7 @@ from openbb_terminal import config_terminal as cfg
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import get_user_agent, request
 from openbb_terminal.rich_config import console
+from openbb_terminal.session.user import get_current_user
 
 logger = logging.getLogger(__name__)
 
@@ -36,7 +37,7 @@ def get_github_data(url: str, **kwargs) -> Optional[Dict[str, Any]]:
     res = request(
         url,
         headers={
-            "Authorization": f"token {cfg.API_GITHUB_KEY}",
+            "Authorization": f"token {get_current_user().credentials.API_GITHUB_KEY}",
             "User-Agent": get_user_agent(),
             "Accept": "application/vnd.github.v3.star+json",
         },

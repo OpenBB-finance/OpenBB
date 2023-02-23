@@ -6,10 +6,10 @@ import logging
 import numpy as np
 import pandas as pd
 
-from openbb_terminal import config_terminal as cfg
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import request
 from openbb_terminal.rich_config import console
+from openbb_terminal.session.user import get_current_user
 
 logger = logging.getLogger(__name__)
 
@@ -42,7 +42,7 @@ def get_financials(
     request_url = (
         "https://eodhistoricaldata.com/api/fundamentals/"
         f"{symbol}?"
-        f"api_token={cfg.API_EODHD_KEY}"
+        f"api_token={get_current_user().credentials.API_EODHD_KEY}"
         f"&filter=Financials::{statement}"
         f"::{['yearly', 'quarterly'][quarterly]}"
     )
