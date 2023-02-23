@@ -24,7 +24,8 @@ from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
-# pylint: disable=too-many-lines
+# pylint: disable=too-many-arguments,inconsistent-return-statements,dangerous-default-value
+# pylint: disable=C0302
 
 ice_bofa_path = pathlib.Path(__file__).parent / "ice_bofa_indices.xlsx"
 commercial_paper_path = pathlib.Path(__file__).parent / "commercial_paper.xlsx"
@@ -697,10 +698,6 @@ def plot_iorb(
 ):
     """Plot Interest Rate on Reserve Balances.
 
-    A bank rate is the interest rate a nation's central bank charges to its domestic banks to borrow money. The rates
-    central banks charge are set to stabilize the economy. In the United States, the Federal Reserve System's Board
-    of Governors set the bank rate, also known as the discount rate.
-
     Parameters
     ----------
     start_date: Optional[str]
@@ -828,10 +825,6 @@ def plot_dwpcr(
 ):
     """Plot Discount Window Primary Credit Rate.
 
-    A bank rate is the interest rate a nation's central bank charges to its domestic banks to borrow money. The rates
-    central banks charge are set to stabilize the economy. In the United States, the Federal Reserve System's Board
-    of Governors set the bank rate, also known as the discount rate.
-
     Parameters
     ----------
     series_id: str
@@ -909,6 +902,8 @@ def plot_ecb(
         Start date, formatted YYYY-MM-DD
     end_date: Optional[str]
         End date, formatted YYYY-MM-DD
+    interest_type: Optional[str]
+        The ability to decide what interest rate to plot
     export: str
         Export data to csv or excel file
     external_axes: Optional[List[plt.Axes]]
@@ -964,130 +959,6 @@ def plot_ecb(
         os.path.dirname(os.path.abspath(__file__)),
         "ecbdfr",
         pd.DataFrame(df, columns=["ECBDFR"]) / 100,
-        sheet_name,
-    )
-
-
-@log_start_end(log=logger)
-@check_api_key(["API_FRED_KEY"])
-def plot_ecbmlfr(
-    start_date: Optional[str] = None,
-    end_date: Optional[str] = None,
-    export: str = "",
-    sheet_name: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
-):
-    """Plot ECB Marginal Lending Facility Rate for Euro Area.
-
-    A standing facility of the Euro-system which counterparties may use to receive overnight credit from a national
-    central bank at a pre-specified interest rate against eligible assets.
-
-    A bank rate is the interest rate a nation's central bank charges to its domestic banks to borrow money. The rates
-    central banks charge are set to stabilize the economy.
-
-    Parameters
-    ----------
-    start_date: Optional[str]
-        Start date, formatted YYYY-MM-DD
-    end_date: Optional[str]
-        End date, formatted YYYY-MM-DD
-    export: str
-        Export data to csv or excel file
-    external_axes: Optional[List[plt.Axes]]
-        External axes (1 axis is expected in the list)
-    """
-    df = fred_model.get_series_data(
-        series_id="ECBMLFR", start_date=start_date, end_date=end_date
-    )
-
-    # This plot has 1 axis
-    if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
-
-    colors = cycle(theme.get_colors())
-    ax.plot(
-        df.index,
-        df.values,
-        color=next(colors, "#FCED00"),
-    )
-    ax.set_title("ECB Marginal Lending Facility Rate for Euro Area")
-    ax.set_ylabel("Yield (%)")
-    theme.style_primary_axis(ax)
-
-    if external_axes is None:
-        theme.visualize_output()
-
-    export_data(
-        export, os.path.dirname(os.path.abspath(__file__)), "ecbmlfr", df, sheet_name
-    )
-
-
-@log_start_end(log=logger)
-@check_api_key(["API_FRED_KEY"])
-def plot_ecbmrofr(
-    start_date: Optional[str] = None,
-    end_date: Optional[str] = None,
-    export: str = "",
-    sheet_name: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
-):
-    """Plot ECB Marginal Lending Facility Rate for Euro Area.
-
-    A regular open market operation executed by the Euro-system (in the form of a reverse transaction) for the purpose
-    of providing the banking system with the amount of liquidity that the former deems to be appropriate. Main
-    refinancing operations are conducted through weekly standard tenders (in which banks can bid for liquidity) and
-    normally have a maturity of one week.
-
-    A bank rate is the interest rate a nation's central bank charges to its domestic banks to borrow money. The rates
-    central banks charge are set to stabilize the economy.
-
-    Parameters
-    ----------
-    start_date: Optional[str]
-        Start date, formatted YYYY-MM-DD
-    end_date: Optional[str]
-        End date, formatted YYYY-MM-DD
-    export: str
-        Export data to csv or excel file
-    external_axes: Optional[List[plt.Axes]]
-        External axes (1 axis is expected in the list)
-    """
-    df = fred_model.get_series_data(
-        series_id="ECBMRRFR", start_date=start_date, end_date=end_date
-    )
-
-    # This plot has 1 axis
-    if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
-
-    colors = cycle(theme.get_colors())
-    ax.plot(
-        df.index,
-        df.values,
-        color=next(colors, "#FCED00"),
-    )
-    ax.set_title(
-        "ECB Main Refinancing Operations Rate: Fixed Rate Tenders for Euro Area"
-    )
-    ax.set_ylabel("Yield (%)")
-    theme.style_primary_axis(ax)
-
-    if external_axes is None:
-        theme.visualize_output()
-
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "ecbmrofr",
-        pd.DataFrame(df, columns=["ECBMROFR"]) / 100,
         sheet_name,
     )
 
@@ -1181,8 +1052,8 @@ def plot_ffrmc(
 
     Parameters
     ----------
-    series_id: str
-        FRED ID of FFRMC data to plot, options: ['T10YFF', 'T5YFF', 'T1YFF', 'T6MFF', 'T3MFF']
+    parameter: str
+        FRED ID of FFRMC data to plot
     start_date: Optional[str]
         Start date, formatted YYYY-MM-DD
     end_date: Optional[str]
@@ -1379,8 +1250,10 @@ def plot_usrates(
     elif parameter == "cmn":
         title = f"{maturity.replace('_', ' ').title()} Treasury Constant Maturity Nominal Market Yield"
     elif parameter == "tips":
-        title = f"{maturity.replace('_', ' ').title()} Yields on Treasury inflation protected securities "
-        "(TIPS) adjusted to constant maturities"
+        title = (
+            f"{maturity.replace('_', ' ').title()} Yields on Treasury inflation protected "
+            "securities (TIPS) adjusted to constant maturities"
+        )
 
     ax.set_title(title, fontsize=15)
     ax.set_ylabel("Yield (%)")
@@ -1420,7 +1293,7 @@ def plot_tbffr(
 
     Parameters
     ----------
-    series_id: str
+    parameter: str
         FRED ID of TBFFR data to plot, options: ['TB3SMFFM', 'TB6SMFFM']
     start_date: Optional[str]
         Start date, formatted YYYY-MM-DD
@@ -1606,19 +1479,14 @@ def plot_moody(
     sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
-    """Plot ICE BofA US Corporate Bond Index data.
+    """Plot Moody Corporate Bond Index data
 
     Parameters
     ----------
     data_type: str
-        The type of data you want to see, either "yield", "yield_to_worst", "total_return", or "spread"
-    category: str
-        The type of category you want to see, either "all", "duration", "eur" or "usd".
-    area: str
-        The type of area you want to see, either "asia", "emea", "eu", "ex_g10", "latin_america" or "us"
-    grade: str
-        The type of grade you want to see, either "a", "aa", "aaa", "b", "bb", "bbb", "ccc", "crossover",
-        "high_grade", "high_yield", "non_financial", "non_sovereign", "private_sector", "public_sector"
+        The type of data you want to see, either "aaa" or "baa"
+    spread: Optional[str]
+        Whether you want to show the spread for treasury or fed_funds
     start_date: Optional[str]
         Start date, formatted YYYY-MM-DD
     end_date: Optional[str]
@@ -1695,7 +1563,7 @@ def plot_cp(
     sheet_name: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
-    """Plot ICE BofA US Corporate Bond Index data.
+    """Plot Commercial Paper
 
     Parameters
     ----------
@@ -1816,11 +1684,9 @@ def plot_spot(
     Parameters
     ----------
     maturity: str
-        The maturity you want to see, either "overnight", "7d", "15d", "30d", "60d" or "90d"
-    category: str
-        The category you want to see, either "asset_backed", "financial" or "non_financial"
-    grade: str
-        The type of grade you want to see, either "a2_p2" or "aa"
+        The maturity you want to see (ranging from '1y' to '100y')
+    category: list
+        The category you want to see ('par_yield' and/or 'spot_rate')
     description: bool
         Whether you wish to obtain a description of the data.
     start_date: Optional[str]
@@ -1943,7 +1809,9 @@ def plot_hqm(
     ax.set_title(f"Spot{'and Par' if par else ''} Yield Curve for {date_of_yield}")
     ax.set_xlabel("Maturity")
     ax.set_ylabel("Yield (%)")
-    ax.legend() if par else None
+
+    if par:
+        ax.legend()
     theme.style_primary_axis(ax)
 
     if external_axes is None:

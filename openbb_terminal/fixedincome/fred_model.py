@@ -16,7 +16,8 @@ from openbb_terminal import config_terminal as cfg
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.rich_config import console
 
-# pylint: disable=attribute-defined-outside-init
+# pylint: disable=attribute-defined-outside-init,dangerous-default-value
+# pylint: disable=C0302
 
 logger = logging.getLogger(__name__)
 
@@ -620,10 +621,21 @@ def get_yield_curve(
 @log_start_end(log=logger)
 @check_api_key(["API_FRED_KEY"])
 def get_estr(
-    parameter: str = "total_volume",
+    parameter: str = "volume_weighted_trimmed_mean_rate",
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
 ) -> pd.DataFrame:
+    """Obtain data for Euro Short-Term Rate (ESTR)
+
+    Parameters
+    ----------
+    parameter: str
+        The parameter to get data for.
+    start_date: Optional[str]
+        Start date, formatted YYYY-MM-DD
+    end_date: Optional[str]
+        End date, formatted YYYY-MM-DD
+    """
     series_id = ESTR_PARAMETER_TO_ECB_ID.get(parameter, "")
 
     return pd.DataFrame(
@@ -638,6 +650,17 @@ def get_sofr(
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
 ) -> pd.DataFrame:
+    """Obtain data for Secured Overnight Financing Rate (SOFR)
+
+    Parameters
+    ----------
+    parameter: str
+        The parameter to get data for.
+    start_date: Optional[str]
+        Start date, formatted YYYY-MM-DD
+    end_date: Optional[str]
+        End date, formatted YYYY-MM-DD
+    """
     series_id = SOFR_PARAMETER_TO_FRED_ID.get(parameter, "")
 
     return pd.DataFrame(
@@ -652,6 +675,17 @@ def get_sonia(
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
 ) -> pd.DataFrame:
+    """Obtain data for Sterling Overnight Index Average (SONIA)
+
+    Parameters
+    ----------
+    parameter: str
+        The parameter to get data for.
+    start_date: Optional[str]
+        Start date, formatted YYYY-MM-DD
+    end_date: Optional[str]
+        End date, formatted YYYY-MM-DD
+    """
     series_id = SONIA_PARAMETER_TO_FRED_ID.get(parameter, "")
 
     return pd.DataFrame(
@@ -666,6 +700,17 @@ def get_ameribor(
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
 ) -> pd.DataFrame:
+    """Obtain data for American Interbank Offered Rate (AMERIBOR)
+
+    Parameters
+    ----------
+    parameter: str
+        The parameter to get data for.
+    start_date: Optional[str]
+        Start date, formatted YYYY-MM-DD
+    end_date: Optional[str]
+        End date, formatted YYYY-MM-DD
+    """
     series_id = AMERIBOR_PARAMETER_TO_FRED_ID.get(parameter, "")
 
     df = get_series_data(series_id=series_id, start_date=start_date, end_date=end_date)
@@ -680,6 +725,23 @@ def get_fed(
     quantiles: bool = False,
     target: bool = False,
 ) -> pd.DataFrame:
+    """Obtain data for Effective Federal Funds Rate.
+
+    Parameters
+    ----------
+    parameter: str
+        The parameter to get data for.
+    start_date: Optional[str]
+        Start date, formatted YYYY-MM-DD
+    end_date: Optional[str]
+        End date, formatted YYYY-MM-DD
+    overnight: bool
+        Whether you want to plot the Overnight Banking Federal Rate
+    quantiles: bool
+        Whether you want to see the 1, 25, 75 and 99 percentiles
+    target: bool
+        Whether you want to see the high and low target range
+    """
     series_id = FED_PARAMETER_TO_FRED_ID[parameter]
 
     if overnight:
@@ -725,12 +787,28 @@ def get_iorb(
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
 ) -> pd.DataFrame:
+    """Obtain data for Interest Rate on Reserve Balances.
+
+    Parameters
+    ----------
+    start_date: Optional[str]
+        Start date, formatted YYYY-MM-DD
+    end_date: Optional[str]
+        End date, formatted YYYY-MM-DD
+    """
     return pd.DataFrame(
         get_series_data(series_id="IORB", start_date=start_date, end_date=end_date)
     )
 
 
 def get_projection(long_run: bool = False):
+    """Obtain data for the Federal Reserve's projection of the federal funds rate.
+
+    Parameters
+    ----------
+    long_run: str
+        Whether to obtain data for the long run projection.
+    """
     data_series = {}
 
     for projection, values in NAME_TO_ID_PROJECTION.items():
@@ -747,6 +825,17 @@ def get_dwpcr(
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
 ) -> pd.DataFrame:
+    """Obtain data for the Discount Window Primary Credit Rate.
+
+    Parameters
+    ----------
+    parameter: str
+        The parameter to get data for.
+    start_date: Optional[str]
+        Start date, formatted YYYY-MM-DD
+    end_date: Optional[str]
+        End date, formatted YYYY-MM-DD
+    """
     series_id = DWPCR_PARAMETER_TO_FRED_ID[parameter]
     return pd.DataFrame(
         get_series_data(series_id=series_id, start_date=start_date, end_date=end_date)
@@ -758,6 +847,24 @@ def get_ecb(
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
 ) -> pd.DataFrame:
+    """Obtain data for ECB interest rates.
+
+    The Governing Council of the ECB sets the key interest rates for the euro area:
+
+    - The interest rate on the main refinancing operations (MRO), which provide
+     the bulk of liquidity to the banking system.
+    - The rate on the deposit facility, which banks may use to make overnight deposits with the Eurosystem.
+    - The rate on the marginal lending facility, which offers overnight credit to banks from the Eurosystem.
+
+    Parameters
+    ----------
+    interest_type: Optional[str]
+        The ability to decide what interest rate to plot
+    start_date: Optional[str]
+        Start date, formatted YYYY-MM-DD
+    end_date: Optional[str]
+        End date, formatted YYYY-MM-DD
+    """
     if interest_type:
         df = pd.DataFrame(
             get_series_data(
@@ -788,6 +895,35 @@ def get_usrates(
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
 ):
+    """Plot various treasury rates from the United States
+
+    A Treasury Bill (T-Bill) is a short-term U.S. government debt obligation backed by the Treasury Department with a
+    maturity of one year or less. Treasury bills are usually sold in denominations of $1,000. However, some can reach
+    a maximum denomination of $5 million in non-competitive bids. These securities are widely regarded as low-risk
+    and secure investments.
+
+    Yields on Treasury nominal securities at “constant maturity” are interpolated by the U.S. Treasury from the daily
+    yield curve for non-inflation-indexed Treasury securities. This curve, which relates the yield on a security to
+    its time to maturity, is based on the closing market bid yields on actively traded Treasury securities in the
+    over-the-counter market. These market yields are calculated from composites of quotations obtained by the Federal
+    Reserve Bank of New York. The constant maturity yield values are read from the yield curve at fixed maturities,
+    currently 1, 3, and 6 months and 1, 2, 3, 5, 7, 10, 20, and 30 years. This method provides a yield for a 10-year
+    maturity, for example, even if no outstanding security has exactly 10 years remaining to maturity. Similarly,
+    yields on inflation-indexed securities at “constant maturity” are interpolated from the daily yield curve for
+    Treasury inflation protected securities in the over-the-counter market. The inflation-indexed constant maturity
+    yields are read from this yield curve at fixed maturities, currently 5, 7, 10, 20, and 30 years.
+
+    Parameters
+    ----------
+    parameter: str
+        Either "tbills", "cmn", or "tips".
+    maturity: str
+        Depending on the chosen parameter, a set of maturities is available.
+    start_date: Optional[str]
+        Start date, formatted YYYY-MM-DD
+    end_date: Optional[str]
+        End date, formatted YYYY-MM-DD
+    """
     series_id = USARATES_TO_FRED_ID[maturity][parameter]
     return pd.DataFrame(
         get_series_data(series_id=series_id, start_date=start_date, end_date=end_date)
@@ -802,6 +938,24 @@ def get_icebofa(
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
 ) -> pd.DataFrame:
+    """Get data for ICE BofA US Corporate Bond Indices.
+
+    Parameters
+    ----------
+    data_type: str
+        The type of data you want to see, either "yield", "yield_to_worst", "total_return", or "spread"
+    category: str
+        The type of category you want to see, either "all", "duration", "eur" or "usd".
+    area: str
+        The type of area you want to see, either "asia", "emea", "eu", "ex_g10", "latin_america" or "us"
+    grade: str
+        The type of grade you want to see, either "a", "aa", "aaa", "b", "bb", "bbb", "ccc", "crossover",
+        "high_grade", "high_yield", "non_financial", "non_sovereign", "private_sector", "public_sector"
+    start_date: Optional[str]
+        Start date, formatted YYYY-MM-DD
+    end_date: Optional[str]
+        End date, formatted YYYY-MM-DD
+    """
     if data_type == "total_return":
         units = "index"
     elif data_type in ["yield", "yield_to_worst", "spread"]:
@@ -840,6 +994,19 @@ def get_moody(
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
 ) -> pd.DataFrame:
+    """Get data for Moody Corporate Bond Index
+
+    Parameters
+    ----------
+    data_type: str
+        The type of data you want to see, either "aaa" or "baa"
+    spread: Optional[str]
+        Whether you want to show the spread for treasury or fed_funds
+    start_date: Optional[str]
+        Start date, formatted YYYY-MM-DD
+    end_date: Optional[str]
+        End date, formatted YYYY-MM-DD
+    """
     series_id = MOODY_TO_OPTIONS["Type"][data_type][spread if spread else "index"]["id"]
 
     series = get_series_data(
@@ -858,6 +1025,23 @@ def get_cp(
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
 ):
+    """Plot Commercial Paper
+
+    Parameters
+    ----------
+    maturity: str
+        The maturity you want to see, either "overnight", "7d", "15d", "30d", "60d" or "90d"
+    category: str
+        The category you want to see, either "asset_backed", "financial" or "non_financial"
+    grade: str
+        The type of grade you want to see, either "a2_p2" or "aa"
+    description: bool
+        Whether you wish to obtain a description of the data.
+    start_date: Optional[str]
+        Start date, formatted YYYY-MM-DD
+    end_date: Optional[str]
+        End date, formatted YYYY-MM-DD
+    """
     if grade == "a2_p2" and category != "non_financial":
         category = "non_financial"
     series = pd.read_excel(commercial_paper_path)
@@ -889,6 +1073,25 @@ def get_spot(
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
 ) -> pd.DataFrame:
+    """
+    The spot rate for any maturity is the yield on a bond that provides
+    a single payment at that maturity. This is a zero coupon bond. Because each
+    spot rate pertains to a single cashflow, it is the relevant interest rate
+    concept for discounting a pension liability at the same maturity.
+
+    Parameters
+    ----------
+    maturity: str
+        The maturity you want to see (ranging from '1y' to '100y')
+    category: list
+        The category you want to see ('par_yield' and/or 'spot_rate')
+    description: bool
+        Whether you wish to obtain a description of the data.
+    start_date: Optional[str]
+        Start date, formatted YYYY-MM-DD
+    end_date: Optional[str]
+        End date, formatted YYYY-MM-DD
+    """
     series = pd.read_excel(spot_rates_path)
 
     series = series[
@@ -917,6 +1120,19 @@ def get_hqm(
     date: Optional[str] = None,
     par: bool = False,
 ) -> Tuple[pd.DataFrame, str]:
+    """
+    The HQM yield curve represents the high quality corporate bond market, i.e.,
+    corporate bonds rated AAA, AA, or A.  The HQM curve contains two regression terms. These
+    terms are adjustment factors that blend AAA, AA, and A bonds into a single HQM yield curve
+    that is the market-weighted average (MWA) quality of high quality bonds.
+
+    Parameters
+    ----------
+    date: str
+        The date of the yield curve you wish to plot
+    par: bool
+        Whether you wish to plot the par yield curve as well
+    """
     df = pd.DataFrame()
     data_types = ["spot", "par"] if par else ["spot"]
 
@@ -942,6 +1158,17 @@ def get_tbffr(
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
 ) -> pd.DataFrame:
+    """Get data for Selected Treasury Bill Minus Federal Funds Rate.
+
+    Parameters
+    ----------
+    parameter: str
+        FRED ID of TBFFR data to plot, options: ['3_month', '6_month']
+    start_date: Optional[str]
+        Start date, formatted YYYY-MM-DD
+    end_date: Optional[str]
+        End date, formatted YYYY-MM-DD
+    """
     series_id = TBFFR_PARAMETER_TO_FRED_ID[parameter]
 
     return pd.DataFrame(get_series_data(series_id, start_date, end_date))
@@ -951,8 +1178,29 @@ def get_icespread(
     category: str = "all",
     area: str = "us",
     grade: str = "non_sovereign",
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
 ) -> pd.DataFrame:
-    return get_icebofa(data_type="spread", category=category, area=area, grade=grade)
+    """Get data for ICE BofA US Corporate Bond Spreads
+
+    Parameters
+    ----------
+    category: str
+        The type of category you want to see, either "all", "duration", "eur" or "usd".
+    area: str
+        The type of area you want to see, either "asia", "emea", "eu", "ex_g10", "latin_america" or "us"
+    grade: str
+        The type of grade you want to see, either "a", "aa", "aaa", "b", "bb", "bbb", "ccc", "crossover",
+        "high_grade", "high_yield", "non_financial", "non_sovereign", "private_sector", "public_sector"
+    """
+    return get_icebofa(
+        data_type="spread",
+        category=category,
+        area=area,
+        grade=grade,
+        start_date=start_date,
+        end_date=end_date,
+    )
 
 
 def get_ffrmc(
@@ -960,14 +1208,44 @@ def get_ffrmc(
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
 ) -> pd.DataFrame:
+    """Get data for Selected Treasury Constant Maturity Minus Federal Funds Rate
+
+    Constant maturity is the theoretical value of a U.S. Treasury that is based on recent values of auctioned U.S.
+    Treasuries. The value is obtained by the U.S. Treasury on a daily basis through interpolation of the Treasury
+    yield curve which, in turn, is based on closing bid-yields of actively-traded Treasury securities.
+
+    Parameters
+    ----------
+    parameter: str
+        FRED ID of FFRMC data to plot
+    start_date: Optional[str]
+        Start date, formatted YYYY-MM-DD
+    end_date: Optional[str]
+        End date, formatted YYYY-MM-DD
+    """
     series_id = FFRMC_PARAMETER_TO_FRED_ID[parameter]
     return pd.DataFrame(get_series_data(series_id, start_date, end_date))
 
 
 def get_tmc(
-    parameter: str = "10_year",
+    parameter: str = "3_month",
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
 ) -> pd.DataFrame:
+    """Get data for 10-Year Treasury Constant Maturity Minus Selected Treasury Constant Maturity.
+
+    Constant maturity is the theoretical value of a U.S. Treasury that is based on recent values of auctioned U.S.
+    Treasuries. The value is obtained by the U.S. Treasury on a daily basis through interpolation of the Treasury
+    yield curve which, in turn, is based on closing bid-yields of actively-traded Treasury securities.
+
+    Parameters
+    ----------
+    parameter: str
+        FRED ID of TMC data to plot, options: ['T10Y3M', 'T10Y3M']
+    start_date: Optional[str]
+        Start date, formatted YYYY-MM-DD
+    end_date: Optional[str]
+        End date, formatted YYYY-MM-DD
+    """
     series_id = TMC_PARAMETER_TO_FRED_ID[parameter]
     return pd.DataFrame(get_series_data(series_id, start_date, end_date))
