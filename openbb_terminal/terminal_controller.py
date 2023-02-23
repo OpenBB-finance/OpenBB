@@ -23,7 +23,6 @@ from prompt_toolkit.formatted_text import HTML
 from prompt_toolkit.styles import Style
 from rich import panel
 
-from openbb_terminal import feature_flags as obbff
 from openbb_terminal.common import feedparser_view
 from openbb_terminal.core.config.paths import (
     HOME_DIRECTORY,
@@ -47,7 +46,11 @@ from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.reports.reports_model import ipykernel_launcher
 from openbb_terminal.rich_config import MenuText, console
 from openbb_terminal.core.session import session_controller
-from openbb_terminal.core.session.user import get_current_user, is_guest
+from openbb_terminal.core.session.user import (
+    get_current_user,
+    is_guest,
+    set_current_user,
+)
 from openbb_terminal.core.session.constants import REGISTER_URL
 from openbb_terminal.terminal_helper import (
     bootup,
@@ -248,6 +251,8 @@ class TerminalController(BaseController):
         import json
         import random
 
+        current_user = get_current_user()
+
         if self.GUESS_NUMBER_TRIES_LEFT == 0 and self.GUESS_SUM_SCORE < 0.01:
             parser_exe = argparse.ArgumentParser(
                 add_help=False,
@@ -273,7 +278,7 @@ class TerminalController(BaseController):
                     self.GUESS_TOTAL_TRIES = ns_parser_guess.limit
 
         try:
-            with open(obbff.GUESS_EASTER_EGG_FILE) as f:
+            with open(current_user.preferences.GUESS_EASTER_EGG_FILE) as f:
                 # Load the file as a JSON document
                 json_doc = json.load(f)
 
@@ -349,7 +354,7 @@ class TerminalController(BaseController):
         except Exception as e:
             console.print(
                 f"[red]Failed to load guess game from file: "
-                f"{obbff.GUESS_EASTER_EGG_FILE}[/red]"
+                f"{current_user.preferences.GUESS_EASTER_EGG_FILE}[/red]"
             )
             console.print(f"[red]{e}[/red]")
 
@@ -830,7 +835,9 @@ class TerminalController(BaseController):
                         console.print(
                             f"[green]Folder '{export_path}' successfully created.[/green]"
                         )
-                    obbff.EXPORT_FOLDER_PATH = export_path
+                    current_user = get_current_user()
+                    current_user.preferences.EXPORT_FOLDER_PATH = export_path
+                    set_current_user(current_user)
                     self.queue = self.queue[1:]
 
 
@@ -874,7 +881,9 @@ def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
             console.print(
                 f"[green]Folder '{export_path}' successfully created.[/green]"
             )
-        obbff.EXPORT_FOLDER_PATH = export_path
+        current_user = get_current_user()
+        current_user.preferences.EXPORT_FOLDER_PATH = export_path
+        set_current_user(current_user)
 
     bootup()
     if not jobs_cmds:
