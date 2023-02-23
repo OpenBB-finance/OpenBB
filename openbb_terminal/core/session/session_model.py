@@ -4,12 +4,9 @@ from typing import Any, Optional
 
 import matplotlib.pyplot as plt
 
-import openbb_terminal.feature_flags as obbff
 import openbb_terminal.core.session.hub_model as Hub
 import openbb_terminal.core.session.local_model as Local
 from openbb_terminal.base_helpers import (
-    clear_openbb_env_vars,
-    reload_openbb_config_modules,
     remove_log_handlers,
 )
 from openbb_terminal.core.models.user.user_model import (
@@ -25,24 +22,6 @@ from openbb_terminal.core.session.user import (
 )
 
 # pylint: disable=consider-using-f-string
-
-
-def update_flair(flair: str, user: UserModel):
-    """Update flair if user has not changed it.
-
-    Parameters
-    ----------
-    flair : str
-        The flair.
-    """
-    # Use PreferencesModel when it is implemented.
-    if flair is None:
-        MAX_FLAIR_LEN = 20
-        setattr(
-            obbff,
-            "USE_FLAIR",
-            "[" + user.profile.username[:MAX_FLAIR_LEN] + "]" + " 🦋",
-        )
 
 
 class LoginStatus(Enum):
@@ -103,9 +82,6 @@ def login(session: dict) -> LoginStatus:
         profile=ProfileModel(),
         preferences=PreferencesModel(),
     )
-
-    clear_openbb_env_vars(exceptions=["OPENBB_ENABLE_AUTHENTICATION"])
-    reload_openbb_config_modules()
     response = Hub.fetch_user_configs(session)
     if response is not None:
         if response.status_code == 200:
@@ -115,12 +91,10 @@ def login(session: dict) -> LoginStatus:
             hub_user.profile.load_user_info(session, email)
             set_current_user(hub_user)
             Local.apply_configs(configs=configs)
-            update_flair(
-                flair=feature_settings.get("USE_FLAIR", None)
-                if feature_settings
-                else None,
-                user=hub_user,
-            )
+            if feature_settings.get("FLAIR", None) is None:
+                MAX_FLAIR_LEN = 20
+                flair = "[" + hub_user.profile.username[:MAX_FLAIR_LEN] + "]" + " 🦋"
+                setattr(hub_user.preferences, "FLAIR", flair)
             return LoginStatus.SUCCESS
         if response.status_code == 401:
             return LoginStatus.UNAUTHORIZED
@@ -166,9 +140,7 @@ def logout(
     if not Local.remove_cli_history_file():
         success = False
 
-    clear_openbb_env_vars(exceptions=["OPENBB_ENABLE_AUTHENTICATION"])
     remove_log_handlers()
-    reload_openbb_config_modules()
 
     plt.close("all")
 

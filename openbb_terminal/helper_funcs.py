@@ -1067,7 +1067,7 @@ def lett_to_num(word: str) -> str:
 
 def get_flair() -> str:
     """Get a flair icon."""
-    flairs = {
+    available_flairs = {
         ":openbb": "(🦋)",
         ":rocket": "(🚀)",
         ":diamond": "(💎)",
@@ -1093,13 +1093,14 @@ def get_flair() -> str:
         ":yy": "(☯)",
     }
 
-    flair = (
-        flairs[str(obbff.USE_FLAIR)]
-        if str(obbff.USE_FLAIR) in flairs
-        else str(obbff.USE_FLAIR)
-    )
+    current_user = get_current_user()  # pylint: disable=redefined-outer-name
+    current_flair = str(current_user.preferences.FLAIR)
+    flair = available_flairs.get(current_flair, current_flair)
 
-    if obbff.USE_DATETIME and get_user_timezone_or_invalid() != "INVALID":
+    if (
+        current_user.preferences.USE_DATETIME
+        and get_user_timezone_or_invalid() != "INVALID"
+    ):
         dtime = datetime.now(pytz.timezone(get_user_timezone())).strftime(
             "%Y %b %d, %H:%M"
         )

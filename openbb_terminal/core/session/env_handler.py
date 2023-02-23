@@ -11,6 +11,7 @@ from openbb_terminal.core.config.paths import (
     USER_ENV_FILE,
 )
 
+
 def reading_env() -> Dict[str, Any]:
     __env_dict = {
         **dotenv_values(REPOSITORY_ENV_FILE),
