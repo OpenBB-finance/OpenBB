@@ -488,7 +488,7 @@ def get_similar_dfs(symbol: str, info: Dict[str, Any], n: int, no_filter: bool =
     symbol : str
         The ticker symbol to create a dataframe for
     into : Dict[str,Any]
-        The dictionary produced from the yfinance.info function
+        The dictionary based on info collected from fd.Equities()
     n : int
         The number of similar companies to produce
     no_filter : bool

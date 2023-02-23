@@ -630,7 +630,7 @@ class StocksController(StockBaseController):
 
         console.print(
             "The sia (Sector & Industry Analysis) menu is currently inactive as the functionality is "
-            "better represented through the stocks/sia, stocks/fa and routines functionalities. "
+            "better represented through the stocks/ca, stocks/fa and routines functionalities. "
             "Improvements to this menu is on the projects list."
         )
 

@@ -36,7 +36,7 @@ def display_etf_by_name(
     data = financedatabase_model.get_etfs_by_name(name)
 
     if data.empty:
-        console.print("No data was found with that name\n")
+        console.print("No data was found with that name.")
         return
 
     table_data = data[["long_name", "family", "category_group", "category"]]
@@ -80,7 +80,7 @@ def display_etf_by_description(
     data = financedatabase_model.get_etfs_by_description(description)
 
     if data.empty:
-        console.print("No data was found with that description\n")
+        console.print("No data was found with that description.")
         return
 
     table_data = data[["long_name", "family", "category_group", "category"]]
@@ -124,7 +124,7 @@ def display_etf_by_category(
     data = financedatabase_model.get_etfs_by_category(category)
 
     if data.empty:
-        console.print("No data was found on that category\n")
+        console.print("No data was found on that category.")
         return
 
     table_data = data[["long_name", "family", "category_group", "category"]]
