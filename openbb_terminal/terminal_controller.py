@@ -104,6 +104,7 @@ class TerminalController(BaseController):
         "forecast",
         "futures",
         "funds",
+        "fixedincome",
     ]
 
     if is_auth_enabled():
@@ -191,6 +192,7 @@ class TerminalController(BaseController):
         mt.add_menu("economy")
         mt.add_menu("forex")
         mt.add_menu("futures")
+        mt.add_menu("fixedincome")
         mt.add_menu("alternative")
         mt.add_menu("funds")
         mt.add_raw("\n")
@@ -479,6 +481,14 @@ class TerminalController(BaseController):
         from openbb_terminal.mutual_funds.mutual_fund_controller import FundController
 
         self.queue = self.load_class(FundController, self.queue)
+
+    def call_fixedincome(self, _):
+        """Process fixedincome command."""
+        from openbb_terminal.fixedincome.fixedincome_controller import (
+            FixedIncomeController,
+        )
+
+        self.queue = self.load_class(FixedIncomeController, self.queue)
 
     def call_intro(self, _):
         """Process intro command."""

@@ -118,9 +118,9 @@ yahooquery = "^2.3.0"
 
 
 [tool.poetry.extras]
-forecast = ["torch", "pytorch-lightning", "u8darts", "lightgbm", "tensorboard"]
+forecast = ["torch", "pytorch-lightning", "u8darts", "lightgbm"]
 optimization = ["Riskfolio-Lib"]
-all = ["torch", "pytorch-lightning", "u8darts", "Riskfolio-Lib","lightgbm", "tensorboard"]
+all = ["torch", "pytorch-lightning", "u8darts", "Riskfolio-Lib","lightgbm"]
 jupyterlab = ["jupyterlab-code-formatter", "jupyterlab-lsp", "jedi-language-server"]
 installer = ["pyinstaller"]
 doc = ["docstring-parser"]
