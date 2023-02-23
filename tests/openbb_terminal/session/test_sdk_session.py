@@ -8,7 +8,7 @@ import pytest
 # IMPORTATION INTERNAL
 from openbb_terminal.session import sdk_session
 from openbb_terminal.session.session_model import LoginStatus
-from openbb_terminal.session.user import User
+from openbb_terminal.session.user import get_current_user
 
 TEST_SESSION = {
     "access_token": "test_token",
@@ -171,14 +171,15 @@ def test_login(
 
 
 def test_logout():
-    User.profile.load_user_info(TEST_SESSION, "test@email.com")
+    current_user = get_current_user()
+    current_user.profile.load_user_info(TEST_SESSION, "test@email.com")
     path = "openbb_terminal.session.sdk_session."
     with (patch(path + "session_model.logout") as mock_logout,):
         sdk_session.logout()
         mock_logout.assert_called_once_with(
-            auth_header=User.profile.get_auth_header(),
-            token=User.profile.get_token(),
-            guest=User.profile.is_guest(),
+            auth_header=current_user.profile.get_auth_header(),
+            token=current_user.profile.get_token(),
+            guest=current_user.profile.is_guest(),
         )
 
 
@@ -189,7 +190,7 @@ def test_whoami_guest():
 
 @pytest.mark.record_stdout
 def test_whoami():
-    User.profile.load_user_info(
+    get_current_user().profile.load_user_info(
         {
             "token_type": "MOCK_TOKEN_TYPE",
             "access_token": "MOCK_ACCESS_TOKEN",

@@ -24,6 +24,7 @@ from openbb_terminal import (
     helper_funcs,
 )
 from openbb_terminal.base_helpers import strtobool
+from openbb_terminal.session.user import init_user
 
 # pylint: disable=redefined-outer-name
 
@@ -38,6 +39,8 @@ EXTENSIONS_MATCHING: Dict[str, List[Type]] = {
 
 os.environ["TEST_MODE"] = "True"
 obbff.ENABLE_EXIT_AUTO_HELP = strtobool("True")
+
+init_user()
 
 
 class Record:
