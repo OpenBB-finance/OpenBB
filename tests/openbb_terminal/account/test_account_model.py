@@ -10,7 +10,6 @@ from openbb_terminal.account import account_model
 from openbb_terminal.core.config import paths
 from openbb_terminal.core.models.user_credentials import CredentialsModel
 from openbb_terminal.core.models.user_model import UserModel
-from openbb_terminal.session.user import get_current_user
 
 
 def test_get_var_diff():
