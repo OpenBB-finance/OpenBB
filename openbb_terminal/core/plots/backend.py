@@ -259,9 +259,6 @@ class Backend(PyWry):
         """Override to check if isatty."""
         if self.isatty:
             await super().check_backend()
-        else:
-            # pylint: disable=W0201
-            self.loop = asyncio.get_event_loop()
 
     def close(self, reset: bool = False):
         """Close the backend."""
