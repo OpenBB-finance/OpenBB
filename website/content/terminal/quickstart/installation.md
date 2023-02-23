@@ -1,7 +1,7 @@
 ---
 Sidebar_position: 2
 title: Installation
-description: The OpenBB Terminal can be directly installed on your computer via our installation programs. Within this section, you are guided through the installation process and how to launch the program. If you struggle with the installation process, please don’t hesitate to reach us on Discord or visit our contact page.
+description: The OpenBB Terminal can be directly installed on a Mac or Windows machine with the installer packages linked in the tabs below. While no installer package for Linux is currently available, it can be installed from the command line in a virtual Python environment. Having trouble? Reach us on [Discord](https://openbb.co/discord) or visit our [contact page](https://openbb.co/contact).
 keywords:
   [
     installation,
