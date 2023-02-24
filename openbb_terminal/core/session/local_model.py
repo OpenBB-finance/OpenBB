@@ -4,7 +4,6 @@ from pathlib import Path
 from typing import Optional, Union
 
 from openbb_terminal import (
-    config_plot as cfg_plot,
     config_terminal as cfg,
 )
 from openbb_terminal.base_helpers import strtobool
