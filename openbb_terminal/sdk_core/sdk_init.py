@@ -415,6 +415,13 @@ from openbb_terminal.stocks.tradinghours import (
     bursa_view as stocks_th_bursa_view,
 )
 
+# News Sentiment
+
+from openbb_terminal.NewsSentiment import (
+    Onclusivedata_model as news_onclusivedata_model,
+    Onclusivedata_view as news_onclusivedata_view,
+)
+
 # Forecast Extras
 
 try:
@@ -491,6 +498,35 @@ except ModuleNotFoundError:
 FORECASTING_TOOLKIT_WARNING = (
     "[yellow]"
     "Forecasting Toolkit is disabled. "
+    "To use the Forecasting features please install the toolkit following the "
+    "instructions here: https://docs.openbb.co/sdk/quickstart/installation/"
+    "\n"
+    "[/yellow]"
+)
+
+OPTIMIZATION_TOOLKIT_WARNING = (
+    "[yellow]"
+    "Portfolio Optimization Toolkit is disabled. "
+    "To use the Optimization features please install the toolkit following the "
+    "instructions here: https://docs.openbb.co/sdk/quickstart/installation/"
+    "\n"
+    "[/yellow]"
+)
+asting Toolkit is disabled. "
+    "To use the Forecasting features please install the toolkit following the "
+    "instructions here: https://docs.openbb.co/sdk/quickstart/installation/"
+    "\n"
+    "[/yellow]"
+)
+OPTIMIZATION_TOOLKIT_WARNING = (
+    "[yellow]"
+    "Portfolio Optimization Toolkit is disabled. "
+    "To use the Optimization features please install the toolkit following the "
+    "instructions here: https://docs.openbb.co/sdk/quickstart/installation/"
+    "\n"
+    "[/yellow]"
+)
+asting Toolkit is disabled. "
     "To use the Forecasting features please install the toolkit following the "
     "instructions here: https://docs.openbb.co/sdk/quickstart/installation/"
     "\n"

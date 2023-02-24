@@ -93,6 +93,7 @@ class TerminalController(BaseController):
     ]
     CHOICES_MENUS = [
         "stocks",
+        "newssentiment",
         "economy",
         "crypto",
         "portfolio",
@@ -188,6 +189,7 @@ class TerminalController(BaseController):
         mt.add_raw("\n")
         mt.add_info("_main_menu_")
         mt.add_menu("stocks")
+        mt.add_menu("newssentiment")
         mt.add_menu("crypto")
         mt.add_menu("etf")
         mt.add_menu("economy")
@@ -399,6 +401,14 @@ class TerminalController(BaseController):
         from openbb_terminal.stocks.stocks_controller import StocksController
 
         self.queue = self.load_class(StocksController, self.queue)
+
+    def call_newssentiment(self, _):
+        """Process News Sentiment command."""
+        from openbb_terminal.NewsSentiment.OnclusiveData_controller import (
+            OnclusiveDataController,
+        )
+
+        self.queue = self.load_class(OnclusiveDataController, self.queue)
 
     def call_crypto(self, _):
         """Process crypto command."""

@@ -1,4 +1,7 @@
 {
+  "newssentiment": {
+    "show":["Althub Platform"]
+  },
   "stocks": {
     "search": ["FinanceDatabase"],
     "quote": ["FinancialModelingPrep"],

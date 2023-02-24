@@ -278,6 +278,7 @@ keys.walert,keys_model.set_walert_key,
 login,sdk_session.login,
 logout,sdk_session.logout,
 news,common_feedparser_model.get_news,
+newssentiment.show,news_onclusivedata_model.get_data,news_onclusivedata_view.display_articles_data
 portfolio.alloc.assets,portfolio_model.get_assets_allocation,
 portfolio.alloc.countries,portfolio_model.get_countries_allocation,
 portfolio.alloc.regions,portfolio_model.get_regions_allocation,
