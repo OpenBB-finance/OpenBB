@@ -68,8 +68,6 @@ class EconomyController(BaseController):
         "map",
         "rtps",
         "bigmac",
-        "ycrv",
-        # "spread",
         "events",
         "edebt",
     ]
@@ -254,7 +252,6 @@ class EconomyController(BaseController):
         mt.add_cmd("futures")
         mt.add_cmd("map")
         mt.add_cmd("bigmac")
-        mt.add_cmd("ycrv")
         mt.add_cmd("events")
         mt.add_cmd("edebt")
         mt.add_raw("\n")
@@ -1042,42 +1039,6 @@ class EconomyController(BaseController):
                     self.update_runtime_choices()
                     if obbff.ENABLE_EXIT_AUTO_HELP:
                         self.print_help()
-
-    @log_start_end(log=logger)
-    def call_ycrv(self, other_args: List[str]):
-        """Process ycrv command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="ycrv",
-            description="Generate country yield curve. The yield curve shows the bond rates"
-            " at different maturities.",
-        )
-        parser.add_argument(
-            "-d",
-            "--date",
-            type=valid_date,
-            help="Date to get data from FRED. If not supplied, the most recent entry will be used.",
-            dest="date",
-            default=None,
-        )
-        ns_parser = self.parse_known_args_and_warn(
-            parser,
-            other_args,
-            export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
-            raw=True,
-        )
-        if ns_parser:
-            fred_view.display_yield_curve(
-                date=ns_parser.date.strftime("%Y-%m-%d") if ns_parser.date else "",
-                raw=ns_parser.raw,
-                export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
-            )
-
-            # TODO: Add `Investing` to sources again when `investpy` is fixed
 
     @log_start_end(log=logger)
     def call_events(self, other_args: List[str]):

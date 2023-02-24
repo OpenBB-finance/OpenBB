@@ -551,7 +551,7 @@ def plot_fed(
         )
 
         fig.add_scatter(
-            x=df.index, y=df[series_id], name=series_id, line_width=2, mode="lines"
+            x=df.index, y=df[series_id], name=series_id, line_width=2.5, mode="lines"
         )
         fig.set_yaxis_title(
             "Yield (%)"
@@ -778,6 +778,8 @@ def plot_ecb(
         Start date, formatted YYYY-MM-DD
     end_date: Optional[str]
         End date, formatted YYYY-MM-DD
+    interest_type: Optional[str]
+        The ability to decide what interest rate to plot
     export: str
         Export data to csv or excel file
     external_axes : bool, optional
@@ -1420,7 +1422,8 @@ def plot_spot(
     sheet_name: str = "",
     external_axes: bool = False,
 ):
-    """
+    """Plot Spot Rates for a given maturity
+
     The spot rate for any maturity is the yield on a bond that provides
     a single payment at that maturity. This is a zero coupon bond. Because each
     spot rate pertains to a single cashflow, it is the relevant interest rate
@@ -1429,11 +1432,9 @@ def plot_spot(
     Parameters
     ----------
     maturity: str
-        The maturity you want to see, either "overnight", "7d", "15d", "30d", "60d" or "90d"
-    category: str
-        The category you want to see, either "asset_backed", "financial" or "non_financial"
-    grade: str
-        The type of grade you want to see, either "a2_p2" or "aa"
+        The maturity you want to see (ranging from '1y' to '100y')
+    category: list
+        The category you want to see ('par_yield' and/or 'spot_rate')
     description: bool
         Whether you wish to obtain a description of the data.
     start_date: Optional[str]
@@ -1502,7 +1503,8 @@ def plot_hqm(
     sheet_name: str = "",
     external_axes: bool = False,
 ):
-    """P
+    """Plot the HQM yield curve
+
     The HQM yield curve represents the high quality corporate bond market, i.e.,
     corporate bonds rated AAA, AA, or A.  The HQM curve contains two regression terms. These
     terms are adjustment factors that blend AAA, AA, and A bonds into a single HQM yield curve

@@ -47,6 +47,8 @@ from openbb_terminal.stocks.stocks_model import (
     load_stock_yf,
 )
 
+from . import databento_model
+
 logger = logging.getLogger(__name__)
 
 exch_file_path = os.path.join(
@@ -343,6 +345,12 @@ def load(
 
         elif source == "Intrinio":
             df_stock_candidate = load_stock_intrinio(symbol, start_date, end_date)
+
+        elif source == "DataBento":
+            df_stock_candidate = databento_model.get_historical_stock(
+                symbol, start_date.strftime("%Y-%m-%d"), end_date.strftime("%Y-%m-%d")
+            )
+
         else:
             console.print("[red]Invalid source for stock[/red]\n")
             return
@@ -533,10 +541,19 @@ def display_candle(
     >>> from openbb_terminal.sdk import openbb
     >>> openbb.stocks.candle("AAPL")
     """
+    if start_date is None:
+        start_date = (datetime.now() - timedelta(days=1100)).strftime("%Y-%m-%d")
+
+    if end_date is None:
+        end_date = datetime.now().strftime("%Y-%m-%d")
+
+    start_date = check_datetime(start_date)
+    end_date = check_datetime(end_date, start=False)
+
     # We are not actually showing adj close in candle.  This hasn't been an issue so far, but adding
     # in intrinio returns all adjusted columns,so some care here is needed or else we end up with
     # mixing up close and adj close
-    if data is None:
+    if data is None or data.empty:
         data = load(
             symbol,
             start_date,
@@ -553,15 +570,6 @@ def display_candle(
 
     if "Adj Close" in data.columns:
         data["Close"] = data["Adj Close"].copy()
-
-    if start_date is None:
-        start_date = (datetime.now() - timedelta(days=1100)).strftime("%Y-%m-%d")
-
-    if end_date is None:
-        end_date = datetime.now().strftime("%Y-%m-%d")
-
-    start_date = check_datetime(start_date)
-    end_date = check_datetime(end_date, start=False)
 
     if add_trend and (data.index[1] - data.index[0]).total_seconds() >= 86400:
         data = find_trendline(data, "OC_High", "high")

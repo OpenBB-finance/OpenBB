@@ -6,7 +6,7 @@
     "candle": [],
     "codes": ["Polygon"],
     "news": ["Feedparser", "NewsApi"],
-    "load": ["YahooFinance", "AlphaVantage", "Polygon", "EODHD", "Intrinio"],
+    "load": ["YahooFinance", "AlphaVantage", "Polygon", "EODHD", "Intrinio", "DataBento"],
     "th": {
       "symbol": ["FinanceDatabase"],
       "open": ["Bursa"],
@@ -457,7 +457,6 @@
     "futures": ["WallStreetJournal", "Finviz"],
     "map": ["Finviz"],
     "bigmac": ["Nasdaq"],
-    "ycrv": ["FRED"],
     "events": ["Nasdaq"],
     "edebt": ["Wikipedia"],
     "rtps": ["AlphaVantage"],
@@ -489,7 +488,7 @@
   },
   "futures": {
     "search": ["YahooFinance"],
-    "historical": ["YahooFinance"],
+    "historical": ["YahooFinance", "DataBento"],
     "curve": ["YahooFinance"]
   },
   "fixedincome": {

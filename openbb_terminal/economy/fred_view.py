@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import logging
 import os
 import textwrap
-from typing import List, Optional, Tuple, Union
+from typing import List, Optional, Tuple
 
 import numpy as np
 import pandas as pd
@@ -158,65 +158,3 @@ def format_data_to_plot(data: pd.DataFrame, detail: dict) -> Tuple[pd.DataFrame,
     data_to_plot.index = pd.to_datetime(data_to_plot.index)
 
     return data_to_plot, title
-
-
-@log_start_end(log=logger)
-@check_api_key(["API_FRED_KEY"])
-def display_yield_curve(
-    date: str = "",
-    external_axes: bool = False,
-    raw: bool = False,
-    export: str = "",
-    sheet_name: Optional[str] = None,
-) -> Union[OpenBBFigure, None]:
-    """Display yield curve based on US Treasury rates for a specified date.
-
-    Parameters
-    ----------
-    date: str
-        Date to get curve for. If None, gets most recent date (format yyyy-mm-dd)
-    external_axes : bool, optional
-        Whether to return the figure object or not, by default False
-    raw : bool
-        Output only raw data
-    export : str
-        Export data to csv,json,xlsx or png,jpg,pdf,svg file
-    """
-    rates, date_of_yield = fred_model.get_yield_curve(date, True)
-    if rates.empty:
-        return console.print(f"[red]Yield data not found for {date_of_yield}.[/red]\n")
-
-    fig = OpenBBFigure()
-
-    fig.add_scatter(
-        x=rates["Maturity"].values,
-        y=rates["Rate"].values,
-        mode="lines+markers",
-        name="Rates",
-    )
-    fig.update_layout(
-        title=f"US Yield Curve for {date_of_yield}",
-        xaxis_title="Maturity (Years)",
-        yaxis_title="Rate (%)",
-    )
-
-    if raw:
-        print_rich_table(
-            rates,
-            headers=list(rates.columns),
-            show_index=False,
-            title=f"United States Yield Curve for {date_of_yield}",
-            floatfmt=".3f",
-            export=bool(export),
-        )
-
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "ycrv",
-        rates,
-        sheet_name,
-        fig,
-    )
-
-    return fig.show(external=external_axes)

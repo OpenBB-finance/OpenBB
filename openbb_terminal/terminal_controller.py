@@ -105,6 +105,7 @@ class TerminalController(BaseController):
         "sources",
         "forecast",
         "futures",
+        "fixedincome",
         "funds",
         "fixedincome",
     ]
@@ -477,6 +478,14 @@ class TerminalController(BaseController):
         from openbb_terminal.futures.futures_controller import FuturesController
 
         self.queue = self.load_class(FuturesController, self.queue)
+
+    def call_fixedincome(self, _):
+        """Process fixedincome command."""
+        from openbb_terminal.fixedincome.fixedincome_controller import (
+            FixedIncomeController,
+        )
+
+        self.queue = self.load_class(FixedIncomeController, self.queue)
 
     def call_funds(self, _):
         """Process etf command"""

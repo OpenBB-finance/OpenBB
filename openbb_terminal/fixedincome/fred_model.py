@@ -22,6 +22,10 @@ from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
+ice_bofa_path = (Path(__file__).parent / "ice_bofa_indices.csv").resolve()
+commercial_paper_path = (Path(__file__).parent / "commercial_paper.csv").resolve()
+spot_rates_path = (Path(__file__).parent / "corporate_spot_rates.csv").resolve()
+
 YIELD_CURVE_SERIES_NOMINAL = {
     "1Month": "DGS1MO",
     "3Month": "DGS3MO",
@@ -906,7 +910,7 @@ def get_cp(
     Parameters
     ----------
     maturity: str
-        The maturity you want to see (ranging from '1y' to '100y' in interval of 0.5, e.g. '50.5y')
+        The maturity you want to see, either "overnight", "7d", "15d", "30d", "60d" or "90d"
     category: str
         The category you want to see, either "asset_backed", "financial" or "non_financial"
     grade: str
@@ -958,7 +962,7 @@ def get_spot(
     Parameters
     ----------
     maturity: str
-        The maturity you want to see (ranging from '1y' to '100y')
+        The maturity you want to see (ranging from '1y' to '100y' in interval of 0.5, e.g. '50.5y')
     category: list
         The category you want to see ('par_yield' and/or 'spot_rate')
     description: bool
@@ -1040,7 +1044,7 @@ def get_tbffr(
     Parameters
     ----------
     parameter: str
-        FRED ID of TBFFR data to plot, options: ['3_month', '6_month']
+        FRED ID of TBFFR data to plot, options: ["3_month", "6_month"]
     start_date: Optional[str]
         Start date, formatted YYYY-MM-DD
     end_date: Optional[str]
@@ -1124,7 +1128,7 @@ def get_tmc(
     Parameters
     ----------
     parameter: str
-        FRED ID of TMC data to plot, options: ['T10Y3M', 'T10Y3M']
+        FRED ID of TMC data to plot, options: ["T10Y3M", "T10Y3M"]
     start_date: Optional[str]
         Start date, formatted YYYY-MM-DD
     end_date: Optional[str]

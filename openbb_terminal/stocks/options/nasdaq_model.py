@@ -176,6 +176,7 @@ def option_expirations(symbol: str) -> List[str]:
         List of expiration dates
     """
     df = get_full_option_chain(symbol)
+
     if df.empty:
         return []
 
