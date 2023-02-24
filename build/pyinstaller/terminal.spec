@@ -103,6 +103,7 @@ hidden_imports = [
     "prophet",
     "debugpy",
     "scipy.sparse.linalg._isolve._iterative",
+    "openai-whisper"
 ]
 
 
