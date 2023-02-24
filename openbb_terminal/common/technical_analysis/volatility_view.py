@@ -332,9 +332,12 @@ def display_cones(
             label="Lower " f"{lower_q_label}" "%",
         )
         plt.plot(df_ta.index, df_ta.Realized, "o-.", linewidth=1, label="Realized")
-        plt.ylabel(ylabel="Volatility", labelpad=-910, loc="top", rotation="horizontal")
         plt.xlabel(xlabel="Window of Time (in days)", labelpad=20, y=0)
-        plt.title(label="Realized Volatility Cones - " f"{symbol}", loc="center", y=1.0)
+        plt.title(
+            label=f"{symbol}" " - Realized Volatility Cones - " f"{model}" " Model",
+            loc="center",
+            y=1.0,
+        )
         plt.legend(loc="best", ncol=6, fontsize="x-small")
         plt.tick_params(axis="y", which="both", labelleft=False, labelright=True)
         plt.xticks(df_ta.index)
