@@ -28,8 +28,7 @@ except ModuleNotFoundError:
 
 try:
     import whisper
-    from transformers import pipeline
-    import yt_dlp
+    import transformers
     from whisper.tokenizer import LANGUAGES, TO_LANGUAGE_CODE
     from openbb_terminal.forecast.whisper_utils import str2bool
 
@@ -38,11 +37,23 @@ try:
 
 except ModuleNotFoundError:
     raise ModuleNotFoundError(
-        "Please install whisper model. Instructions can be found here: \n"
+        "Please use poetry to install latest whisper model and dependencies. \n"
+        "poetry install -E forecast \n"
+        "\n"
+        "If you are not using poetry, please install whisper model. Instructions can be found here: \n"
         "https://github.com/openai/whisper \n"
         "Please install the transformers library with the following command: \n"
         "pip install transformers \n"
-        "Please install the yt_dlp library with the following command: \n"
+    )
+
+try:
+    import yt_dlp
+except ModuleNotFoundError:
+    raise ModuleNotFoundError(
+        "Please use poetry to install latest yt-dlp library and dependencies. \n"
+        "poetry install -E forecast \n"
+        "\n"
+        "If you are not using poetry, please install the yt_dlp library with the following command: \n"
         "pip install yt_dlp \n"
     )
 
