@@ -1,12 +1,12 @@
 """Utilize OpenAI Whisper to transcribe and summarize text"""
 __docformat__ = "numpy"
 
-import logging
-import yt_dlp
 
-import tempfile
-import warnings
+import logging
 import os
+
+import warnings
+import yt_dlp
 import whisper
 from tqdm import tqdm
 
