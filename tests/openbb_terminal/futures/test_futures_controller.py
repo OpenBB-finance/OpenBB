@@ -39,9 +39,12 @@ def test_menu_without_queue_completion(mocker):
     path_controller = "openbb_terminal.futures.futures_controller"
 
     # ENABLE AUTO-COMPLETION : HELPER_FUNCS.MENU
+    current_user = get_current_user()
+    preference = PreferencesModel(USE_PROMPT_TOOLKIT=True)
+    user_model = dataclasses.replace(current_user, preference=preference)
     mocker.patch(
-        target="openbb_terminal.feature_flags.USE_PROMPT_TOOLKIT",
-        new=True,
+        target="openbb_terminal.core.session.current_user.get_current_user",
+        return_value=user_model,
     )
     mocker.patch(
         target="openbb_terminal.parent_classes.session",

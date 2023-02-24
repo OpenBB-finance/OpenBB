@@ -61,7 +61,8 @@ def test_login_and_launch():
         "openbb_terminal.core.session.session_controller.login",
         return_value=session_controller.LoginStatus.SUCCESS,
     ) as login_mock, patch(
-        "openbb_terminal.core.session.session_controller.launch_terminal", return_value=True
+        "openbb_terminal.core.session.session_controller.launch_terminal",
+        return_value=True,
     ) as launch_terminal_mock:
         session_controller.login_and_launch(session={})
         assert login_mock.call_count == 1
@@ -106,7 +107,8 @@ def test_main_local_session():
 
 def test_main_no_local_session():
     with patch(
-        "openbb_terminal.core.session.session_controller.login_and_launch", return_value=True
+        "openbb_terminal.core.session.session_controller.login_and_launch",
+        return_value=True,
     ) as login_and_launch_mock, patch(
         "openbb_terminal.core.session.session_controller.Local.get_session",
         return_value=True,

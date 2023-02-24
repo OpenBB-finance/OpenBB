@@ -31,7 +31,6 @@ def fixture_test_user():
     )
 
 
-
 def test_save_session():
     open_mock = mock_open()
     with patch("openbb_terminal.core.session.local_model.open", open_mock, create=True):
@@ -55,7 +54,9 @@ def test_save_session_exception():
 def test_get_session():
     open_mock = mock_open(read_data=json.dumps(TEST_SESSION))
     with patch("openbb_terminal.core.session.local_model.os.path") as path_mock:
-        with patch("openbb_terminal.core.session.local_model.open", open_mock, create=True):
+        with patch(
+            "openbb_terminal.core.session.local_model.open", open_mock, create=True
+        ):
             assert local_model.get_session() == TEST_SESSION
 
     path_mock.isfile.assert_called_with(local_model.SESSION_FILE_PATH)
@@ -67,7 +68,9 @@ def test_get_session_not_exist():
     open_mock = mock_open()
     with patch("openbb_terminal.core.session.local_model.os.path") as path_mock:
         path_mock.isfile.return_value = False
-        with patch("openbb_terminal.core.session.local_model.open", open_mock, create=True):
+        with patch(
+            "openbb_terminal.core.session.local_model.open", open_mock, create=True
+        ):
             assert local_model.get_session() == {}
 
     path_mock.isfile.assert_called_with(local_model.SESSION_FILE_PATH)
@@ -79,7 +82,9 @@ def test_get_session_not_exist():
 def test_get_session_exception():
     open_mock = mock_open()
     with patch("openbb_terminal.core.session.local_model.os.path") as path_mock:
-        with patch("openbb_terminal.core.session.local_model.open", open_mock, create=True):
+        with patch(
+            "openbb_terminal.core.session.local_model.open", open_mock, create=True
+        ):
             open_mock.side_effect = Exception
             assert local_model.get_session() == {}
 
@@ -243,7 +248,9 @@ def test_get_routine_exception(mocker, test_user):
         target="openbb_terminal.core.session.local_model.get_current_user",
         return_value=test_user,
     )
-    exists_mock = mocker.patch("openbb_terminal.core.session.local_model.os.path.exists")
+    exists_mock = mocker.patch(
+        "openbb_terminal.core.session.local_model.os.path.exists"
+    )
     open_mock = mocker.patch(
         "openbb_terminal.core.session.local_model.open",
         side_effect=Exception("test exception"),

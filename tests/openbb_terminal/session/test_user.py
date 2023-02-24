@@ -31,6 +31,7 @@ def fixture_test_user():
     test_user.profile.load_user_info(TEST_SESSION, "test@email.com")
     return test_user
 
+
 class obbff:
     """Mock obbff."""
 
