@@ -156,7 +156,12 @@ def search(
 
         if query:
             data = equities_database.search(**kwargs, long_name=query)
-            data.update(equities_database.search(**kwargs, short_name=query))
+            data = pd.concat(
+                [data, equities_database.search(**kwargs, short_name=query)]
+            )
+            data = pd.concat(
+                [data, equities_database.search(**kwargs, index=query.upper())]
+            )
         else:
             data = equities_database.search(**kwargs)
     except ReadTimeout:
