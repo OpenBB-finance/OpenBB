@@ -1,3 +1,7 @@
-Empty DataFrame
-Columns: []
-Index: []
+                                             Name % Of Etf   Shares
+Symbol                                                             
+TSLA                                  Tesla, Inc.   14.48%   674579
+PATH                                  UiPath Inc.    7.48%  4605486
+TRMB                                 Trimble Inc.    7.40%  1307742
+IRDM                  Iridium Communications Inc.    7.32%  1089806
+KTOS    Kratos Defense & Security Solutions, Inc.    7.20%  5921223

@@ -1,3 +1,7 @@
-Empty DataFrame
-Columns: []
-Index: []
+                                   Name % Of Etf   Shares
+Symbol                                                   
+ROKU                         Roku, Inc.    8.14%  1466535
+SQ                          Block, Inc.    7.20%  1224537
+TSLA                        Tesla, Inc.    6.92%   427124
+ZM      Zoom Video Communications, Inc.    6.90%  1166126
+COIN              Coinbase Global, Inc.    6.84%  1386677
