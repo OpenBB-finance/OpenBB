@@ -8,7 +8,6 @@ from typing import Optional
 import matplotlib.pyplot as plt
 import pandas as pd
 
-from openbb_terminal import feature_flags as obbff
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import log_start_end

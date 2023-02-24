@@ -17,7 +17,6 @@ from openbb_terminal.core.session.current_user import get_current_user
 import openbb_terminal.cryptocurrency.overview.pycoingecko_model as gecko
 from openbb_terminal import (
     config_terminal as cfg,
-    feature_flags as obbff,
 )
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.cryptocurrency.dataframe_helpers import (

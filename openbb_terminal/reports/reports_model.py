@@ -16,7 +16,6 @@ import pandas as pd
 import papermill as pm
 from ipykernel.kernelapp import IPKernelApp
 
-from openbb_terminal import feature_flags as obbff
 from openbb_terminal.core.config.paths import (
     MISCELLANEOUS_DIRECTORY,
     USER_CUSTOM_REPORTS_DIRECTORY,

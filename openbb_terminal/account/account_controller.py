@@ -8,7 +8,6 @@ from typing import Dict, List, Optional
 from prompt_toolkit.completion import NestedCompleter
 
 from openbb_terminal import (
-    feature_flags as obbff,
     keys_model,
 )
 from openbb_terminal.account.account_model import get_diff, get_routines_info

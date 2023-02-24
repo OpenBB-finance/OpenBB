@@ -15,7 +15,6 @@ from dotenv import set_key
 
 # IMPORTATION INTERNAL
 from openbb_terminal import (
-    config_plot as cfg_plot,
     featflags_controller as obbff_ctrl,
     feature_flags as obbff,
 )
@@ -148,8 +147,16 @@ class SettingsController(BaseController):
             mt.add_cmd("pheight")
             mt.add_cmd("pwidth")
             mt.add_raw("\n")
-            mt.add_param("_plot_height_pct", get_current_user().preferences.PLOT_HEIGHT_PERCENTAGE, 16)
-            mt.add_param("_plot_width_pct", get_current_user().preferences.PLOT_WIDTH_PERCENTAGE, 16)
+            mt.add_param(
+                "_plot_height_pct",
+                get_current_user().preferences.PLOT_HEIGHT_PERCENTAGE,
+                16,
+            )
+            mt.add_param(
+                "_plot_width_pct",
+                get_current_user().preferences.PLOT_WIDTH_PERCENTAGE,
+                16,
+            )
         else:
             mt.add_cmd("height")
             mt.add_cmd("width")

@@ -6,7 +6,6 @@ from typing import Optional, Union
 from openbb_terminal import (
     config_plot as cfg_plot,
     config_terminal as cfg,
-    feature_flags as obbff,
 )
 from openbb_terminal.base_helpers import strtobool
 from openbb_terminal.core.config import paths
@@ -129,8 +128,8 @@ def apply_configs(configs: dict):
         if sync:
             if settings:
                 for k, v in settings.items():
-                    if hasattr(obbff, k):
-                        cast_set_attr(obbff, k, v)
+                    if hasattr(current_user.preferences, k):
+                        cast_set_attr(current_user.preferences, k, v)
                     elif hasattr(cfg, k):
                         cast_set_attr(cfg, k, v)
                     elif hasattr(cfg_plot, k):

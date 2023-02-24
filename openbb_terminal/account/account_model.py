@@ -7,7 +7,6 @@ import pandas as pd
 from openbb_terminal import (
     config_plot as cfg_plot,
     config_terminal as cfg,
-    feature_flags as obbff,
 )
 from openbb_terminal.base_helpers import strtobool
 from openbb_terminal.core.config import paths
@@ -68,11 +67,12 @@ def get_diff_settings(settings: dict) -> dict:
     dict
         The diff.
     """
+    current_user = get_current_user()
     diff = {}
     if settings:
         for k, v in sorted(settings.items()):
-            if hasattr(obbff, k):
-                old, new = get_var_diff(obbff, k, v)
+            if hasattr(current_user.preferences, k):
+                old, new = get_var_diff(current_user.preferences, k, v)
                 if new is not None:
                     diff[k] = (old, new)
             elif hasattr(cfg, k):

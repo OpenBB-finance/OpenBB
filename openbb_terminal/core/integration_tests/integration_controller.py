@@ -24,7 +24,6 @@ from openbb_terminal.helper_funcs import check_non_negative
 from openbb_terminal.rich_config import console
 from openbb_terminal.terminal_controller import (
     insert_start_slash,
-    obbff,
     replace_dynamic,
     terminal,
 )
