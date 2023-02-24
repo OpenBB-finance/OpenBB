@@ -1663,7 +1663,7 @@ class TechnicalAnalysisController(StockBaseController):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="cones",
             description="""
-                Calculates the realized volatility quantiles over rolling windows of time. 
+            Calculates the realized volatility quantiles over rolling windows of time, with a selectable model for calculating the volatility.         
             """,
         )
         parser.add_argument(
@@ -1673,7 +1673,7 @@ class TechnicalAnalysisController(StockBaseController):
             dest="lower_q",
             type=float,
             default=0.25,
-            help="The lower % quantile for calculations.",
+            help="The lower quantile value for calculations.",
         )
         parser.add_argument(
             "-u",
@@ -1682,7 +1682,17 @@ class TechnicalAnalysisController(StockBaseController):
             dest="upper_q",
             type=float,
             default=0.75,
-            help="The upper % quantile for calculations.",
+            help="The upper quantile value for calculations.",
+        )
+        parser.add_argument(
+            "-m",
+            "--model",
+            action="store",
+            dest="model",
+            default="STD",
+            choices=volatility_model.VOLATILITY_MODELS,
+            type=str,
+            help="The model used to calculate realized volatility.",
         )
         parser.add_argument(
             "--is_crypto",
@@ -1704,6 +1714,7 @@ class TechnicalAnalysisController(StockBaseController):
                 symbol=self.ticker,
                 lower_q=ns_parser.lower_q,
                 upper_q=ns_parser.upper_q,
+                model=ns_parser.model,
                 is_crypto=ns_parser.is_crypto,
                 export=ns_parser.export,
                 sheet_name=" ".join(ns_parser.sheet_name)

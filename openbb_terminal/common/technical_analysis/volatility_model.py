@@ -13,6 +13,14 @@ from openbb_terminal.decorators import log_start_end
 logger = logging.getLogger(__name__)
 
 MAMODES = ["ema", "sma", "wma", "hma", "zlma"]
+VOLATILITY_MODELS = [
+    "STD",
+    "Parkinson",
+    "Garman-Klass",
+    "Hodges-Tompkins",
+    "Rogers-Satchell",
+    "Yang-Zhang",
+]
 
 
 @log_start_end(log=logger)
@@ -175,6 +183,7 @@ def cones(
     lower_q: float = 0.25,
     upper_q: float = 0.75,
     is_crypto: bool = False,
+    model: str = "STD",
 ) -> pd.DataFrame:
     """Returns a DataFrame of realized volatility quantiles.
 
@@ -188,6 +197,27 @@ def cones(
         The upper quantile to calculate the realized volatility over time for.
     is_crypto: bool (default = False)
         If true, volatility is calculated for 365 days instead of 252.
+    model: str (default = "STD")
+        The model to use for volatility calculation. Choices are:
+        ["STD", "Parkinson", "Garman-Klass", "Hodges-Tompkins", "Rogers-Satchell", "Yang-Zhang"]
+
+            Standard deviation measures how widely returns are dispersed from the average return.
+            It is the most common (and biased) estimator of volatility.
+
+            Parkinson volatility uses the high and low price of the day rather than just close to close prices.
+            It is useful for capturing large price movements during the day.
+
+            Garman-Klass volatility extends Parkinson volatility by taking into account the opening and closing price.
+            As markets are most active during the opening and closing of a trading session, it makes volatility estimation more accurate.
+
+            Hodges-Tompkins volatility is a bias correction for estimation using an overlapping data sample.
+            It produces unbiased estimates and a substantial gain in efficiency.
+
+            Rogers-Satchell is an estimator for measuring the volatility of securities with an average return not equal to zero.
+            Unlike Parkinson and Garman-Klass estimators, Rogers-Satchell incorporates a drift term (mean return not equal to zero).
+
+            Yang-Zhang volatility is the combination of the overnight (close-to-open volatility).
+            It is a weighted average of the Rogers-Satchell volatility and the open-to-close volatility.
 
     Returns
     -------
@@ -215,29 +245,158 @@ def cones(
         realized = []
         data = data.sort_index(ascending=False)
 
-        def realized_vol(data, window=30):
-            """Helper function for calculating realized volatility."""
-
+        def standard_deviation(data, window=30, trading_periods=n_days, clean=True):
+            """Standard deviation measures how widely returns are dispersed from the average return.
+            It is the most common (and biased) estimator of volatility."""
             log_return = (data["Close"] / data["Close"].shift(1)).apply(np.log)
 
-            return log_return.rolling(window=window, center=False).std() * np.sqrt(
-                n_days
+            result = log_return.rolling(window=window, center=False).std() * np.sqrt(
+                trading_periods
             )
+
+            if clean:
+                return result.dropna()
+
+            return result
+
+        def parkinson(data, window=30, trading_periods=n_days, clean=True):
+            """Parkinson volatility uses the high and low price of the day rather than just close to close prices.
+            It is useful for capturing large price movements during the day."""
+            rs = (1.0 / (4.0 * np.log(2.0))) * (
+                (data["High"] / data["Low"]).apply(np.log)
+            ) ** 2.0
+
+            def f(v):
+                return (trading_periods * v.mean()) ** 0.5
+
+            result = rs.rolling(window=window, center=False).apply(func=f)
+
+            if clean:
+                return result.dropna()
+
+            return result
+
+        def garman_klass(data, window=30, trading_periods=n_days, clean=True):
+            """Garman-Klass volatility extends Parkinson volatility by taking into account the opening and closing price.
+            As markets are most active during the opening and closing of a trading session, it makes volatility estimation more accurate.
+            """
+            log_hl = (data["High"] / data["Low"]).apply(np.log)
+            log_co = (data["Close"] / data["Open"]).apply(np.log)
+
+            rs = 0.5 * log_hl**2 - (2 * np.log(2) - 1) * log_co**2
+
+            def f(v):
+                return (trading_periods * v.mean()) ** 0.5
+
+            result = rs.rolling(window=window, center=False).apply(func=f)
+
+            if clean:
+                return result.dropna()
+
+            return result
+
+        def hodges_tompkins(data, window=30, trading_periods=n_days, clean=True):
+            """Hodges-Tompkins volatility is a bias correction for estimation using an overlapping data sample.
+            It produces unbiased estimates and a substantial gain in efficiency."""
+            log_return = (data["Close"] / data["Close"].shift(1)).apply(np.log)
+
+            vol = log_return.rolling(window=window, center=False).std() * np.sqrt(
+                trading_periods
+            )
+
+            h = window
+            n = (log_return.count() - h) + 1
+
+            adj_factor = 1.0 / (1.0 - (h / n) + ((h**2 - 1) / (3 * n**2)))
+
+            result = vol * adj_factor
+
+            if clean:
+                return result.dropna()
+
+            return result
+
+        def rogers_satchell(data, window=30, trading_periods=n_days, clean=True):
+            """Rogers-Satchell is an estimator for measuring the volatility of securities with an average return not equal to zero.
+            Unlike Parkinson and Garman-Klass estimators, Rogers-Satchell incorporates a drift term (mean return not equal to zero).
+            """
+
+            log_ho = (data["High"] / data["Open"]).apply(np.log)
+            log_lo = (data["Low"] / data["Open"]).apply(np.log)
+            log_co = (data["Close"] / data["Open"]).apply(np.log)
+
+            rs = log_ho * (log_ho - log_co) + log_lo * (log_lo - log_co)
+
+            def f(v):
+                return (trading_periods * v.mean()) ** 0.5
+
+            result = rs.rolling(window=window, center=False).apply(func=f)
+
+            if clean:
+                return result.dropna()
+
+            return result
+
+        def yang_zhang(data, window=30, trading_periods=n_days, clean=True):
+            """Yang-Zhang volatility is the combination of the overnight (close-to-open volatility).
+            It is a weighted average of the Rogers-Satchell volatility and the open-to-close volatility.
+            """
+            log_ho = (data["High"] / data["Open"]).apply(np.log)
+            log_lo = (data["Low"] / data["Open"]).apply(np.log)
+            log_co = (data["Close"] / data["Open"]).apply(np.log)
+
+            log_oc = (data["Open"] / data["Close"].shift(1)).apply(np.log)
+            log_oc_sq = log_oc**2
+
+            log_cc = (data["Close"] / data["Close"].shift(1)).apply(np.log)
+            log_cc_sq = log_cc**2
+
+            rs = log_ho * (log_ho - log_co) + log_lo * (log_lo - log_co)
+
+            close_vol = log_cc_sq.rolling(window=window, center=False).sum() * (
+                1.0 / (window - 1.0)
+            )
+            open_vol = log_oc_sq.rolling(window=window, center=False).sum() * (
+                1.0 / (window - 1.0)
+            )
+            window_rs = rs.rolling(window=window, center=False).sum() * (
+                1.0 / (window - 1.0)
+            )
+
+            k = 0.34 / (1.34 + (window + 1) / (window - 1))
+            result = (open_vol + k * close_vol + (1 - k) * window_rs).apply(
+                np.sqrt
+            ) * np.sqrt(trading_periods)
+
+            if clean:
+                return result.dropna()
+
+            return result
 
         for window in windows:
             # Looping to build a dataframe with realized volatility over each window.
-
-            estimator = realized_vol(window=window, data=data)
+            if model not in VOLATILITY_MODELS:
+                print("Model not available. Available models: ", VOLATILITY_MODELS)
+            elif model == "STD":
+                estimator = standard_deviation(window=window, data=data)
+            elif model == "Parkinson":
+                estimator = parkinson(window=window, data=data)
+            elif model == "Garman-Klass":
+                estimator = garman_klass(window=window, data=data)
+            elif model == "Hodges-Tompkins":
+                estimator = hodges_tompkins(window=window, data=data)
+            elif model == "Rogers-Satchell":
+                estimator = rogers_satchell(window=window, data=data)
+            elif model == "Yang-Zhang":
+                estimator = yang_zhang(window=window, data=data)
             min_.append(estimator.min())
             max_.append(estimator.max())
             median.append(estimator.median())
             top_q.append(estimator.quantile(quantiles[1]))
             bottom_q.append(estimator.quantile(quantiles[0]))
             realized.append(estimator[-1])
-
         df_ = [realized, min_, bottom_q, median, top_q, max_]
-        pd.DataFrame(df_).columns = windows
-        df_windows = list(windows)
+        df_windows = windows
         df = pd.DataFrame(df_, columns=df_windows)
         df = df.rename(
             index={
@@ -254,7 +413,8 @@ def cones(
 
     except Exception:
         cones_df = pd.DataFrame()
-        print(
-            "There was an error with the selected quantile value. Values must be between 0 and 1."
-        )
+        if lower_q or upper_q > 0:
+            print(
+                "Upper and lower quantiles should be expressed as a value between 0 and 1"
+            )
         return cones_df
