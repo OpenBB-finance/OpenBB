@@ -511,11 +511,19 @@ def load(
     start_date: Optional[Union[datetime, Union[str, None]]] = None,
     interval: Union[str, int] = "1440",
     exchange: str = "binance",
-    to_symbol: str = "usdt",
+    to_symbol: str = "usd",
     end_date: Optional[Union[datetime, Union[str, None]]] = None,
-    source: str = "CCXT",
+    source: str = "CoinGecko",
 ) -> pd.DataFrame:
-    """Load crypto currency to get data for
+    """
+    Load crypto currency to get data for
+    Note:
+        take into consideration that the data might not be found if the data provider
+        (example) uses `usd` instead of `usdt` as the quote currency, so you might need to adjust
+        the `to_symbol` parameter.
+        For `CCXT` a valid pair would be: "BTC/USDT"
+        For `CoinGecko` a valid pair would be: "BTC-USD"
+        For `YahooFinance` a valid pair would be: "BTC-USD"
 
     Parameters
     ----------
@@ -549,7 +557,7 @@ def load(
     if isinstance(interval, int):
         interval = str(interval)
     if start_date is None:
-        start_date = (datetime.now() - timedelta(days=1100)).strftime("%Y-%m-%d")
+        start_date = (datetime.now() - timedelta(days=365)).strftime("%Y-%m-%d")
 
     if end_date is None:
         end_date = datetime.now().strftime("%Y-%m-%d")
