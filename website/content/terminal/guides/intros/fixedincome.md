@@ -10,7 +10,7 @@ The Fixed Income menu is the high-level menu for the Fixed Income asset class. I
 
 The Fixed Income menu can be accessed directly from the `home` screen by typing `fixedincome`. This opens the menu as shown below. The menu heavily relies on FRED to obtain the data as seen below, please refer to the [API keys guide](https://docs.openbb.co/terminal/guides/advanced/api-keys) for information on how to obtain and set a key for FRED.
 
-<img width="800" alt="Fixed Income Menu" src="https://user-images.githubusercontent.com/46355364/220970904-d32a63b5-aa14-47b4-bfe6-b5efc1cf2cd4.png">
+![Fixed Income Menu](https://user-images.githubusercontent.com/46355364/220970904-d32a63b5-aa14-47b4-bfe6-b5efc1cf2cd4.png)
 
 ## Examples
 Starting off by calling some reference rates, these can be either `estr`, `sofr`, `sonia` or `ameribor`. For example the 1 year term structure of Ameribor is plotted with ` ameribor --parameter 1_year_term_structure` as shown below.
