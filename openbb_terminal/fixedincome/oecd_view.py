@@ -46,14 +46,18 @@ def plot_treasuries(
 
     Parameters
     ----------
-    countries: list
-        List of countries to get data for
+    short_term: list
+        Countries you wish to plot the 3-month interest rate for
+    long_term: list
+        Countries you wish to plot the 10-year interest rate for
     forecast: bool
         If True, plot forecasts for short term interest rates
     start_date: str
         Start date of data, in YYYY-MM-DD format
     end_date: str
         End date of data, in YYYY-MM-DD format
+    raw: bool
+        If True, print raw data
     export: str
         Export data to csv or excel file
     external_axes : bool, optional

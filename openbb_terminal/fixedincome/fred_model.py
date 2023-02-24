@@ -456,7 +456,12 @@ def get_sofr(
     Parameters
     ----------
     parameter: str
-        The parameter to get data for.
+        The parameter to get data for. Choose from:
+            "overnight"
+            "30_day_average"
+            "90_day_average"
+            "180_day_average"
+            "index"
     start_date: Optional[str]
         Start date, formatted YYYY-MM-DD
     end_date: Optional[str]
@@ -508,7 +513,18 @@ def get_ameribor(
     Parameters
     ----------
     parameter: str
-        The parameter to get data for.
+        The parameter to get data for. Choose from:
+            "overnight": "AMERIBOR",
+            "term_30": "AMBOR30T",
+            "term_90": "AMBOR90T",
+            "1_week_term_structure": "AMBOR1W",
+            "1_month_term_structure": "AMBOR1M",
+            "3_month_term_structure": "AMBOR3M",
+            "6_month_term_structure": "AMBOR6M",
+            "1_year_term_structure": "AMBOR1Y",
+            "2_year_term_structure": "AMBOR2Y",
+            "30_day_ma": "AMBOR30",
+            "90_day_ma": "AMBOR90",
     start_date: Optional[str]
         Start date, formatted YYYY-MM-DD
     end_date: Optional[str]
@@ -535,7 +551,14 @@ def get_fed(
     Parameters
     ----------
     parameter: str
-        The parameter to get data for.
+        The parameter to get data for. Choose from:
+            "monthly"
+            "daily"
+            "weekly"
+            "daily_excl_weekend"
+            "annual"
+            "biweekly"
+            "volume"
     start_date: Optional[str]
         Start date, formatted YYYY-MM-DD
     end_date: Optional[str]
@@ -637,7 +660,12 @@ def get_dwpcr(
     Parameters
     ----------
     parameter: str
-        The parameter to get data for.
+        The parameter to get data for. Choose from:
+            "daily_excl_weekend"
+            "monthly"
+            "weekly"
+            "daily"
+            "annual"
     start_date: Optional[str]
         Start date, formatted YYYY-MM-DD
     end_date: Optional[str]
@@ -660,14 +688,17 @@ def get_ecb(
     The Governing Council of the ECB sets the key interest rates for the euro area:
 
     - The interest rate on the main refinancing operations (MRO), which provide
-     the bulk of liquidity to the banking system.
+    the bulk of liquidity to the banking system.
     - The rate on the deposit facility, which banks may use to make overnight deposits with the Eurosystem.
     - The rate on the marginal lending facility, which offers overnight credit to banks from the Eurosystem.
 
     Parameters
     ----------
     interest_type: Optional[str]
-        The ability to decide what interest rate to plot
+        The ability to decide what interest rate to plot. Choose from:
+            "deposit"
+            "lending"
+            "refinancing"
     start_date: Optional[str]
         Start date, formatted YYYY-MM-DD
     end_date: Optional[str]
@@ -727,6 +758,18 @@ def get_usrates(
         Either "tbills", "cmn", or "tips".
     maturity: str
         Depending on the chosen parameter, a set of maturities is available.
+            "4_week": {"tbill": "DTB4WK"},
+            "1_month": {"cmn": "DGS1MO"},
+            "3_month": {"tbill": "TB3MS", "cmn": "DGS3MO"},
+            "6_month": {"tbill": "DTB6", "cmn": "DGS6MO"},
+            "1_year": {"tbill": "DTB1YR", "cmn": "DGS1"},
+            "2_year": {"cmn": "DGS2"},
+            "3_year": {"cmn": "DGS3"},
+            "5_year": {"tips": "DFII5", "cmn": "DGS5"},
+            "7_year": {"tips": "DFII7", "cmn": "DGS7"},
+            "10_year": {"tips": "DFII10", "cmn": "DGS10"},
+            "20_year": {"tips": "DFII20", "cmn": "DGS20"},
+            "30_year": {"tips": "DFII30", "cmn": "DGS30"},
     start_date: Optional[str]
         Start date, formatted YYYY-MM-DD
     end_date: Optional[str]
@@ -744,10 +787,13 @@ def get_icebofa(
     category: str = "all",
     area: str = "us",
     grade: str = "non_sovereign",
+    options: bool = False,
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
 ) -> pd.DataFrame:
     """Get data for ICE BofA US Corporate Bond Indices.
+
+    Find the available options by using the options parameter.
 
     Parameters
     ----------
@@ -760,15 +806,37 @@ def get_icebofa(
     grade: str
         The type of grade you want to see, either "a", "aa", "aaa", "b", "bb", "bbb", "ccc", "crossover",
         "high_grade", "high_yield", "non_financial", "non_sovereign", "private_sector", "public_sector"
+    options: bool
+        Set to True to obtain the available options.
     start_date: Optional[str]
         Start date, formatted YYYY-MM-DD
     end_date: Optional[str]
         End date, formatted YYYY-MM-DD
     """
+    series = pd.read_excel(ice_bofa_path)
+
+    if options:
+        return series.drop(
+            ["Frequency", "Units", "Asset Class", "FRED Series ID", "Description"],
+            axis=1,
+        )[
+            series["Type"].isin(
+                ["yield", "yield_to_worst", "total_return"]
+                if data_type != "spread"
+                else ["spread"]
+            )
+        ]
+
     if data_type == "total_return":
         units = "index"
     elif data_type in ["yield", "yield_to_worst", "spread"]:
         units = "percent"
+    else:
+        console.print(
+            "Please choose either 'yield', 'yield_to_worst', "
+            "'total_return' or 'spread'."
+        )
+        return pd.DataFrame()
 
     series = pd.read_excel(ice_bofa_path)
     series = series[
@@ -834,12 +902,12 @@ def get_cp(
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
 ):
-    """Plot Commercial Paper
+    """Obtain Commercial Paper data
 
     Parameters
     ----------
     maturity: str
-        The maturity you want to see, either "overnight", "7d", "15d", "30d", "60d" or "90d"
+        The maturity you want to see (ranging from '1y' to '100y' in interval of 0.5, e.g. '50.5y')
     category: str
         The category you want to see, either "asset_backed", "financial" or "non_financial"
     grade: str
@@ -929,7 +997,8 @@ def get_hqm(
     date: Optional[str] = None,
     par: bool = False,
 ) -> Tuple[pd.DataFrame, str]:
-    """
+    """Get the High Quality Market (HQM) yield curve
+
     The HQM yield curve represents the high quality corporate bond market, i.e.,
     corporate bonds rated AAA, AA, or A.  The HQM curve contains two regression terms. These
     terms are adjustment factors that blend AAA, AA, and A bonds into a single HQM yield curve
@@ -989,6 +1058,7 @@ def get_icespread(
     category: str = "all",
     area: str = "us",
     grade: str = "non_sovereign",
+    options: bool = False,
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
 ) -> pd.DataFrame:
@@ -1009,6 +1079,7 @@ def get_icespread(
         category=category,
         area=area,
         grade=grade,
+        options=options,
         start_date=start_date,
         end_date=end_date,
     )
