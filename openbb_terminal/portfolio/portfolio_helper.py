@@ -186,7 +186,7 @@ def make_equal_length(df1: pd.DataFrame, df2: pd.DataFrame):
 
     df2.columns = [i[:-1] for i in df2.columns]
 
-    return df1, df2
+    return df1.iloc[:, 0], df2.iloc[:, 0]
 
 
 def get_region_from_country(country: str) -> str:
