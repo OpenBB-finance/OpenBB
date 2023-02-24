@@ -297,7 +297,7 @@ class OpenBBSDK:
         Attributes:
             `curve`: Get curve futures [Source: Yahoo Finance]\n
             `curve_chart`: Display curve futures [Source: Yahoo Finance]\n
-            `historical`: Get historical futures [Source: Yahoo Finance]\n
+            `historical`: Get historical futures data\n
             `historical_chart`: Display historical futures [Source: Yahoo Finance]\n
             `search`: Get search futures [Source: Yahoo Finance]\n
         """
@@ -316,6 +316,7 @@ class OpenBBSDK:
             `coinbase`: Set Coinbase key\n
             `coinglass`: Set Coinglass key.\n
             `cpanic`: Set Cpanic key.\n
+            `databento`: Set DataBento key\n
             `degiro`: Set Degiro key\n
             `eodhd`: Set Eodhd key.\n
             `ethplorer`: Set Ethplorer key.\n
