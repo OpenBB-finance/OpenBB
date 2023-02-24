@@ -3,11 +3,7 @@ import os
 from pathlib import Path
 from typing import Optional, Union
 
-from openbb_terminal import (
-    config_terminal as cfg,
-)
 from openbb_terminal.base_helpers import strtobool
-from openbb_terminal.core.config import paths
 from openbb_terminal.core.config.paths import (
     HIST_FILE_PATH,
     SETTINGS_DIRECTORY,
@@ -128,10 +124,6 @@ def apply_configs(configs: dict):
                 for k, v in settings.items():
                     if hasattr(current_user.preferences, k):
                         cast_set_attr(current_user.preferences, k, v)
-                    elif hasattr(cfg, k):
-                        cast_set_attr(cfg, k, v)
-                    elif hasattr(paths, k):
-                        cast_set_attr(paths, k, v)
 
             keys = configs.get("features_keys", {})
             if keys:

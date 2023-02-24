@@ -4,11 +4,7 @@ from typing import Any, Dict, Tuple
 import numpy as np
 import pandas as pd
 
-from openbb_terminal import (
-    config_terminal as cfg,
-)
 from openbb_terminal.base_helpers import strtobool
-from openbb_terminal.core.config import paths
 from openbb_terminal.rich_config import console
 from openbb_terminal.core.session.current_user import get_current_user
 
@@ -72,14 +68,6 @@ def get_diff_settings(settings: dict) -> dict:
         for k, v in sorted(settings.items()):
             if hasattr(current_user.preferences, k):
                 old, new = get_var_diff(current_user.preferences, k, v)
-                if new is not None:
-                    diff[k] = (old, new)
-            elif hasattr(cfg, k):
-                old, new = get_var_diff(cfg, k, v)
-                if new is not None:
-                    diff[k] = (old, new)
-            elif hasattr(paths, k):
-                old, new = get_var_diff(paths, k, v)
                 if new is not None:
                     diff[k] = (old, new)
 
