@@ -9,8 +9,8 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 from openbb_terminal.common.quantitative_analysis import rolling_model
-from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
@@ -78,7 +78,7 @@ def display_mean_std(
             1,
             sharex=True,
             figsize=plot_autoscale(),
-            dpi=PLOT_DPI,
+            dpi=get_current_user().preferences.PLOT_DPI,
         )
         ax1, ax2 = axes
     elif is_valid_axes_count(external_axes, 2):
@@ -194,7 +194,7 @@ def display_spread(
             1,
             sharex=True,
             figsize=plot_autoscale(),
-            dpi=PLOT_DPI,
+            dpi=get_current_user().preferences.PLOT_DPI,
         )
         (ax1, ax2, ax3) = axes
     elif is_valid_axes_count(external_axes, 3):
@@ -306,7 +306,7 @@ def display_quantile(
     if external_axes is None:
         _, ax = plt.subplots(
             figsize=plot_autoscale(),
-            dpi=PLOT_DPI,
+            dpi=get_current_user().preferences.PLOT_DPI,
         )
     elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
@@ -397,7 +397,7 @@ def display_skew(
             1,
             sharex=True,
             figsize=plot_autoscale(),
-            dpi=PLOT_DPI,
+            dpi=get_current_user().preferences.PLOT_DPI,
         )
         (ax1, ax2) = axes
     elif is_valid_axes_count(external_axes, 2):
@@ -484,7 +484,7 @@ def display_kurtosis(
             1,
             sharex=True,
             figsize=plot_autoscale(),
-            dpi=PLOT_DPI,
+            dpi=get_current_user().preferences.PLOT_DPI,
         )
         (ax1, ax2) = axes
     elif is_valid_axes_count(external_axes, 2):

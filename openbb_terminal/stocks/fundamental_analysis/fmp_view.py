@@ -8,8 +8,9 @@ from typing import Optional
 import matplotlib.pyplot as plt
 import pandas as pd
 
-from openbb_terminal.config_plot import PLOT_DPI
+
 from openbb_terminal.config_terminal import theme
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import export_data, plot_autoscale, print_rich_table
 from openbb_terminal.rich_config import console
@@ -244,7 +245,10 @@ def display_income_statement(
             income_plot_data = income_plot_data.transpose()
 
             if rows_plot == 1:
-                fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+                fig, ax = plt.subplots(
+                    figsize=plot_autoscale(),
+                    dpi=get_current_user().preferences.PLOT_DPI,
+                )
                 income_plot_data[plot[0]].plot()
                 title = (
                     f"{plot[0].replace('_', ' ').title()} {'QoQ' if quarterly else 'YoY'} Growth of {symbol.upper()}"
@@ -338,7 +342,10 @@ def display_balance_sheet(
             balance_plot_data = balance_plot_data.transpose()
 
             if rows_plot == 1:
-                fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+                fig, ax = plt.subplots(
+                    figsize=plot_autoscale(),
+                    dpi=get_current_user().preferences.PLOT_DPI,
+                )
                 balance_plot_data[plot[0]].plot()
                 title = (
                     f"{plot[0].replace('_', ' ').title()} {'QoQ' if quarterly else 'YoY'} Growth of {symbol.upper()}"
@@ -430,7 +437,10 @@ def display_cash_flow(
             cash_plot_data = cash_plot_data.transpose()
 
             if rows_plot == 1:
-                fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+                fig, ax = plt.subplots(
+                    figsize=plot_autoscale(),
+                    dpi=get_current_user().preferences.PLOT_DPI,
+                )
                 cash_plot_data[plot[0]].plot()
                 title = (
                     f"{plot[0].replace('_', ' ').title()} {'QoQ' if quarterly else 'YoY'} Growth of {symbol.upper()}"

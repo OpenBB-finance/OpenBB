@@ -18,7 +18,6 @@ import openbb_terminal.cryptocurrency.overview.pycoingecko_model as gecko
 from openbb_terminal import (
     config_terminal as cfg,
 )
-from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.cryptocurrency.dataframe_helpers import (
     lambda_long_number_format_with_type_check,
 )
@@ -83,7 +82,9 @@ def display_crypto_heatmap(
 
         # This plot has 1 axis
         if external_axes is None:
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+            _, ax = plt.subplots(
+                figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
+            )
         elif is_valid_axes_count(external_axes, 1):
             (ax,) = external_axes
         else:
@@ -175,7 +176,9 @@ def display_holdings_overview(
         console.print("\nZero companies holding this crypto\n")
     else:
         if show_bar:
-            fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+            fig, ax = plt.subplots(
+                figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
+            )
 
             for _, row in df.iterrows():
                 ax.bar(x=row["Symbol"], height=row["Total Holdings"])
@@ -279,7 +282,9 @@ def display_global_market_info(
 
     if not df.empty:
         if pie:
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+            _, ax = plt.subplots(
+                figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
+            )
             ax.pie(
                 [
                     round(
@@ -402,7 +407,9 @@ def display_stablecoins(
             values_list.append(other_stables[f"Percentage [%] of top {limit}"].sum())
             labels_list = list(stables_to_display["Name"].values)
             labels_list.append("Others")
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+            _, ax = plt.subplots(
+                figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
+            )
             ax.pie(
                 values_list,
                 labels=labels_list,
@@ -480,7 +487,9 @@ def display_categories(
             values_list.append(other_stables[f"% relative to top {limit}"].sum())
             labels_list = list(stables_to_display["Name"].values)
             labels_list.append("Others")
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+            _, ax = plt.subplots(
+                figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
+            )
             ax.pie(
                 values_list,
                 labels=labels_list,

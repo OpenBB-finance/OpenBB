@@ -10,8 +10,8 @@ from typing import List, Optional
 from matplotlib import pyplot as plt
 
 from openbb_terminal import config_terminal as cfg
-from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.cryptocurrency.nft import nftpricefloor_model
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
@@ -59,7 +59,9 @@ def display_collections(
             ]
         ]
         if show_fp or show_sales:
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+            _, ax = plt.subplots(
+                figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
+            )
             for collection in df["slug"].head(limit).values:
                 df_collection = nftpricefloor_model.get_floor_price(collection)
                 if not df_collection.empty:
@@ -131,7 +133,9 @@ def display_floor_price(
             )
         # This plot has 1 axis
         if external_axes is None:
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+            _, ax = plt.subplots(
+                figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
+            )
         elif is_valid_axes_count(external_axes, 1):
             (ax,) = external_axes
         ax.bar(df.index, df["salesCount"], color=theme.down_color, label="Sales")

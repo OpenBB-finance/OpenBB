@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 from matplotlib import ticker
 
 from openbb_terminal import config_terminal as cfg
-from openbb_terminal.config_plot import PLOT_DPI
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.cryptocurrency.cryptocurrency_helpers import read_data_file
 from openbb_terminal.cryptocurrency.defi import llama_model
 from openbb_terminal.decorators import log_start_end
@@ -49,7 +49,9 @@ def display_grouped_defi_protocols(
 
     # This plot has 1 axis
     if not external_axes:
-        _, ax = plt.subplots(figsize=(14, 8), dpi=PLOT_DPI)
+        _, ax = plt.subplots(
+            figsize=(14, 8), dpi=get_current_user().preferences.PLOT_DPI
+        )
     elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
     else:
@@ -155,7 +157,9 @@ def display_historical_tvl(
 
     # This plot has 1 axis
     if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        _, ax = plt.subplots(
+            figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
+        )
     elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
     else:
@@ -214,7 +218,9 @@ def display_defi_tvl(
 
     # This plot has 1 axis
     if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        _, ax = plt.subplots(
+            figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
+        )
     elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
     else:

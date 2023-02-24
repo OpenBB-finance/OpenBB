@@ -8,8 +8,9 @@ from typing import List, Optional
 
 from matplotlib import pyplot as plt
 
-from openbb_terminal.config_plot import PLOT_DPI
+
 from openbb_terminal.config_terminal import theme
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.futures import yfinance_model
 from openbb_terminal.futures.futures_helper import make_white
@@ -134,7 +135,9 @@ def display_historical(
     else:
         # This plot has 1 axis
         if not external_axes:
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+            _, ax = plt.subplots(
+                figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
+            )
         elif is_valid_axes_count(external_axes, 1):
             (ax,) = external_axes
         else:
@@ -263,7 +266,9 @@ def display_curve(
     else:
         # This plot has 1 axis
         if not external_axes:
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+            _, ax = plt.subplots(
+                figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
+            )
         elif is_valid_axes_count(external_axes, 1):
             (ax,) = external_axes
         else:

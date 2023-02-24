@@ -3,10 +3,10 @@ import os
 
 # IMPORTATION INTERNAL
 from openbb_terminal.base_helpers import load_env_vars, strtobool
+from openbb_terminal.core.session.current_user import get_current_user
 from .helper_classes import TerminalStyle as _TerminalStyle
 
-
-SENSITIVE_KEYS = [
+LOCAL_KEYS = [
     "RH_USERNAME",
     "RH_PASSWORD",
     "DG_USERNAME",
@@ -15,26 +15,20 @@ SENSITIVE_KEYS = [
     "OANDA_ACCOUNT_TYPE",
     "OANDA_ACCOUNT",
     "OANDA_TOKEN",
+    "API_TRADIER_TOKEN",
+    "API_BINANCE_KEY",
+    "API_BINANCE_SECRET",
+    "API_COINBASE_KEY",
+    "API_COINBASE_SECRET",
+    "API_COINBASE_PASS_PHRASE",
 ]
 
-# Network requests
-# Set request timeout
-REQUEST_TIMEOUT = load_env_vars("OPENBB_REQUEST_TIMEOUT", int, 5)
-
-# Terminal UX section
-MPL_STYLE = os.getenv("OPENBB_MPLSTYLE") or "dark"
-PMF_STYLE = os.getenv("OPENBB_PMFSTYLE") or "dark"
-RICH_STYLE = os.getenv("OPENBB_RICHSTYLE") or "dark"
-
+# # Terminal UX section
+current_user = get_current_user()
 theme = _TerminalStyle(
-    MPL_STYLE,
-    PMF_STYLE,
-    RICH_STYLE,
-)
-
-# By default the jupyter notebook will be run on port 8888
-PAPERMILL_NOTEBOOK_REPORT_PORT = (
-    "8888"  # This setting is deprecated and seems to be unused
+    current_user.preferences.MPL_STYLE,
+    current_user.preferences.PMF_STYLE,
+    current_user.preferences.RICH_STYLE,
 )
 
 # Logging section
@@ -69,8 +63,3 @@ LOGGING_VERBOSITY = load_env_vars("OPENBB_LOGGING_VERBOSITY", int, 20)
 # LOGGING SUB APP
 LOGGING_SUB_APP = os.getenv("OPENBB_LOGGING_SUB_APP") or "terminal"
 LOGGING_SUPPRESS = False
-
-
-# Selenium Webbrowser drivers can be found at https://selenium-python.readthedocs.io/installation.html
-WEBDRIVER_TO_USE = "chrome"
-PATH_TO_SELENIUM_DRIVER = ""  # Replace with "PATH"

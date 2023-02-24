@@ -9,8 +9,8 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 from openbb_terminal.common.technical_analysis import ta_helpers, volume_model
-from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
@@ -79,7 +79,7 @@ def display_ad(
             1,
             sharex=True,
             figsize=plot_autoscale(),
-            dpi=PLOT_DPI,
+            dpi=get_current_user().preferences.PLOT_DPI,
         )
         ax1, ax2, ax3 = axes
     elif is_valid_axes_count(external_axes, 3):
@@ -193,7 +193,7 @@ def display_adosc(
             1,
             sharex=True,
             figsize=plot_autoscale(),
-            dpi=PLOT_DPI,
+            dpi=get_current_user().preferences.PLOT_DPI,
         )
         ax1, ax2, ax3 = axes
     elif is_valid_axes_count(external_axes, 3):
@@ -296,7 +296,7 @@ def display_obv(
             1,
             sharex=True,
             figsize=plot_autoscale(),
-            dpi=PLOT_DPI,
+            dpi=get_current_user().preferences.PLOT_DPI,
         )
         ax1, ax2, ax3 = axes
     elif is_valid_axes_count(external_axes, 3):

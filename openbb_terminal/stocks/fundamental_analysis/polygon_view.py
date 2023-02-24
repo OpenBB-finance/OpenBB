@@ -6,8 +6,9 @@ from typing import Optional
 
 import matplotlib.pyplot as plt
 
-from openbb_terminal.config_plot import PLOT_DPI
+
 from openbb_terminal.config_terminal import theme
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
@@ -89,7 +90,9 @@ def display_fundamentals(
         fundamentals_plot_data = fundamentals_plot_data.transpose()
 
         if rows_plot == 1:
-            fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+            fig, ax = plt.subplots(
+                figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
+            )
             fundamentals_plot_data[plot[0]].plot()
             title = (
                 f"{plot[0].replace('_', ' ').lower()} {'QoQ' if quarterly else 'YoY'} Growth of {symbol.upper()}"

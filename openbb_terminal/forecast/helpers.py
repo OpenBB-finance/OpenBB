@@ -14,13 +14,14 @@ from darts.explainability.shap_explainer import ShapExplainer
 from darts.metrics import mape, mse, rmse, smape
 from darts.models.forecasting.torch_forecasting_model import GlobalForecastingModel
 from darts.utils.statistics import plot_residuals_analysis
+from openbb_terminal.core.session.current_user import get_current_user
 from pytorch_lightning.callbacks.early_stopping import EarlyStopping
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MaxAbsScaler, MinMaxScaler, Normalizer, StandardScaler
 
 from openbb_terminal import rich_config
-from openbb_terminal.config_plot import PLOT_DPI
+
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.helper_funcs import (
     export_data,
@@ -79,7 +80,7 @@ def plot_data_predictions(
     if external_axes is None:
         _, ax = plt.subplots(
             figsize=plot_autoscale(),
-            dpi=PLOT_DPI,
+            dpi=get_current_user().preferences.PLOT_DPI,
         )
     elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
@@ -483,7 +484,9 @@ def plot_forecast(
     if high_quantile:
         quant_kwargs["high_quantile"] = high_quantile
     if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        _, ax = plt.subplots(
+            figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
+        )
     else:
         ax = external_axes[0]
 
@@ -597,7 +600,9 @@ def plot_explainability(
     None
     """
     if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        _, ax = plt.subplots(
+            figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
+        )
     else:
         ax = external_axes[0]
 

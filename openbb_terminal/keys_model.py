@@ -253,7 +253,7 @@ def set_key(name: str, value: str, persist: bool = False) -> None:
     if (
         not local_user
         and sync_enabled
-        and name not in cfg.SENSITIVE_KEYS
+        and name not in cfg.LOCAL_KEYS
         and (name.startswith("API_") or name.startswith("OPENBB_"))
     ):
         patch_user_configs(
