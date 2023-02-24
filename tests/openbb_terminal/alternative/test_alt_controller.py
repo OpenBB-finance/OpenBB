@@ -8,6 +8,7 @@ import pytest
 # IMPORTATION INTERNAL
 from openbb_terminal.alternative import alt_controller
 from openbb_terminal.core.models.user_model import PreferencesModel
+from openbb_terminal.core.session.current_user import get_current_user
 
 # pylint: disable=E1101
 # pylint: disable=W0603
@@ -37,12 +38,12 @@ def test_menu_with_queue(expected, mocker, queue):
 
 @pytest.mark.vcr(record_mode="none")
 def test_menu_without_queue_completion(mocker):
-    current_user = alt_controller.get_current_user()
+    current_user = get_current_user()
     preference = PreferencesModel(USE_PROMPT_TOOLKIT=True)
     user_model = dataclasses.replace(current_user, preference=preference)
     mocker.patch(
-        target="openbb_terminal.alternative.alt_controller.get_current_user",
-        return_value=user_model
+        target="openbb_terminal.core.session.current_user.get_current_user",
+        return_value=user_model,
     )
     mocker.patch(
         target="openbb_terminal.parent_classes.session",
@@ -73,10 +74,12 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
     path_controller = "openbb_terminal.alternative.alt_controller"
 
     # DISABLE AUTO-COMPLETION
-    mocker.patch.object(
-        target=alt_controller.obbff,
-        attribute="USE_PROMPT_TOOLKIT",
-        new=False,
+    current_user = alt_controller.get_current_user()
+    preference = PreferencesModel(USE_PROMPT_TOOLKIT=False)
+    user_model = dataclasses.replace(current_user, preference=preference)
+    mocker.patch(
+        target="openbb_terminal.core.session.current_user.get_current_user",
+        return_value=user_model,
     )
     mocker.patch(
         target=f"{path_controller}.session",

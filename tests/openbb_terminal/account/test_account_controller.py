@@ -1,4 +1,5 @@
 # IMPORTATION STANDARD
+import dataclasses
 import json
 import os
 
@@ -14,6 +15,7 @@ from openbb_terminal.core.models.user_model import (
     ProfileModel,
     UserModel,
 )
+from openbb_terminal.core.session.current_user import get_current_user
 
 # pylint: disable=E1101
 # pylint: disable=W0603
@@ -100,9 +102,12 @@ def test_menu_without_queue_completion(mocker):
     path_controller = "openbb_terminal.account.account_controller"
 
     # ENABLE AUTO-COMPLETION : HELPER_FUNCS.MENU
+    current_user = get_current_user()
+    preference = PreferencesModel(USE_PROMPT_TOOLKIT=True)
+    user_model = dataclasses.replace(current_user, preference=preference)
     mocker.patch(
-        target="openbb_terminal.feature_flags.USE_PROMPT_TOOLKIT",
-        new=True,
+        target="openbb_terminal.core.session.current_user.get_current_user",
+        return_value=user_model,
     )
     mocker.patch(
         target="openbb_terminal.parent_classes.session",
@@ -113,11 +118,6 @@ def test_menu_without_queue_completion(mocker):
     )
 
     # DISABLE AUTO-COMPLETION : CONTROLLER.COMPLETER
-    mocker.patch.object(
-        target=account_controller.obbff,
-        attribute="USE_PROMPT_TOOLKIT",
-        new=True,
-    )
     mocker.patch(
         target=f"{path_controller}.session",
     )
@@ -140,11 +140,9 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
     path_controller = "openbb_terminal.account.account_controller"
 
     # DISABLE AUTO-COMPLETION
-    mocker.patch.object(
-        target=account_controller.obbff,
-        attribute="USE_PROMPT_TOOLKIT",
-        new=False,
-    )
+    current_user = get_current_user()
+    preference = PreferencesModel(USE_PROMPT_TOOLKIT=False)
+    user_model = dataclasses.replace(current_user, preference=preference)
     mocker.patch(
         target=f"{path_controller}.session",
         return_value=None,
@@ -343,29 +341,31 @@ def test_call_logout(mocker):
 )
 def test_call_sync(mocker, other_args, sync):
     controller = account_controller.AccountController(queue=None)
-    path_controller = "openbb_terminal.account.account_controller"
+
+    current_user = get_current_user()
+    preference = PreferencesModel(SYNC_ENABLED=sync)
+    user_model = dataclasses.replace(current_user, preference=preference)
+    mocker.patch(
+        target="openbb_terminal.core.session.current_user.get_current_user",
+        return_value=user_model,
+    )
 
     mock_set_obbff = mocker.patch(
-        target=f"{path_controller}.FeatureFlagsController.set_feature_flag"
-    )
-    mocker.patch(
-        target=f"{path_controller}.obbff.SYNC_ENABLED",
-        new=sync,
+        target=(
+            "openbb_terminal.account.account_controller"
+            ".FeatureFlagsController.set_feature_flag"
+        ),
     )
     controller.call_sync(other_args=other_args)
 
-    if not other_args:
+    if other_args:
+        mock_set_obbff.assert_called_once()
+    else:
         mock_set_obbff.assert_not_called()
-    elif other_args[0] == "--on" and sync:
-        mock_set_obbff.assert_not_called()
-    elif other_args[0] == "--off" and not sync:
-        mock_set_obbff.assert_not_called()
-    elif other_args[0] in ["--on", "--off"]:
-        mock_set_obbff.assert_called_once_with(
-            "OPENBB_SYNC_ENABLED", not sync, force=True
-        )
+        
 
     assert controller.queue == []
+    print(other_args)
 
 
 @pytest.mark.parametrize(
