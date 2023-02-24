@@ -107,7 +107,6 @@ class TerminalController(BaseController):
         "futures",
         "fixedincome",
         "funds",
-        "fixedincome",
     ]
 
     if is_auth_enabled():
@@ -492,14 +491,6 @@ class TerminalController(BaseController):
         from openbb_terminal.mutual_funds.mutual_fund_controller import FundController
 
         self.queue = self.load_class(FundController, self.queue)
-
-    def call_fixedincome(self, _):
-        """Process fixedincome command."""
-        from openbb_terminal.fixedincome.fixedincome_controller import (
-            FixedIncomeController,
-        )
-
-        self.queue = self.load_class(FixedIncomeController, self.queue)
 
     def call_intro(self, _):
         """Process intro command."""
