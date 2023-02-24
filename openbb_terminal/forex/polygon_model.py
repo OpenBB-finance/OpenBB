@@ -3,11 +3,12 @@ __docformat__ = "numpy"
 
 from datetime import datetime
 from typing import Optional
-import requests
+
 import pandas as pd
+
 from openbb_terminal.config_terminal import API_POLYGON_KEY as api_key
-from openbb_terminal.helper_funcs import get_user_agent
 from openbb_terminal.decorators import check_api_key
+from openbb_terminal.helper_funcs import get_user_agent, request
 from openbb_terminal.rich_config import console
 
 # pylint: disable=unsupported-assignment-operation
@@ -49,7 +50,7 @@ def get_historical(
         f"https://api.polygon.io/v2/aggs/ticker/C:{fx_pair}/range"
         f"/{multiplier}/{timespan}/{start_date}/{end_date}?adjusted=true&sort=desc&limit=50000&apiKey={api_key}"
     )
-    json_response = requests.get(
+    json_response = request(
         request_url, headers={"User-Agent": get_user_agent()}
     ).json()
 

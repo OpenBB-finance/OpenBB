@@ -26,7 +26,10 @@ def test_get_defi_vaults_no_data(mocker):
         "json.return_value": {"data": []},
     }
     mock_response = mocker.Mock(**attrs)
-    mocker.patch(target="requests.get", new=mocker.Mock(return_value=mock_response))
+    mocker.patch(
+        target="openbb_terminal.helper_funcs.requests.get",
+        new=mocker.Mock(return_value=mock_response),
+    )
 
     df = coindix_model.get_defi_vaults(
         chain=None,

@@ -7,20 +7,21 @@ from typing import List, Optional
 
 from matplotlib import pyplot as plt
 
-from openbb_terminal import config_terminal as cfg
+from openbb_terminal import (
+    config_plot as cfgPlot,
+    config_terminal as cfg,
+)
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.cryptocurrency.onchain.shroom_model import (
     get_daily_transactions,
     get_dapp_stats,
     get_total_value_locked,
 )
-from openbb_terminal.decorators import check_api_key
-from openbb_terminal import config_plot as cfgPlot
-from openbb_terminal.decorators import log_start_end
+from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
-    plot_autoscale,
     is_valid_axes_count,
+    plot_autoscale,
     print_rich_table,
 )
 from openbb_terminal.rich_config import console
@@ -32,6 +33,7 @@ logger = logging.getLogger(__name__)
 @check_api_key(["API_SHROOM_KEY"])
 def display_daily_transactions(
     export: str = "",
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Get daily transactions for certain symbols in ethereum blockchain
@@ -46,6 +48,7 @@ def display_daily_transactions(
     symbols = ["DAI", "USDT", "BUSD", "USDC"]
     df = get_daily_transactions(symbols)
     if df.empty:
+        console.print("[red]No data found.[/red]")
         return
 
     # This plot has 1 axis
@@ -75,6 +78,7 @@ def display_daily_transactions(
         os.path.dirname(os.path.abspath(__file__)),
         "dt",
         df,
+        sheet_name,
     )
 
 
@@ -85,6 +89,7 @@ def display_dapp_stats(
     raw: bool = False,
     limit: int = 10,
     export: str = "",
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Get daily transactions for certain symbols in ethereum blockchain
@@ -103,7 +108,7 @@ def display_dapp_stats(
     """
     df = get_dapp_stats(platform=platform)
     if df.empty:
-        console.print("No data found.", "\n")
+        console.print("[red]No data found.[/red]")
     elif not df.empty:
         if raw:
             print_rich_table(df.head(limit), headers=list(df.columns), show_index=True)
@@ -143,6 +148,7 @@ def display_dapp_stats(
         os.path.dirname(os.path.abspath(__file__)),
         "ds",
         df,
+        sheet_name,
     )
 
 
@@ -154,9 +160,9 @@ def display_total_value_locked(
     symbol: str = "USDC",
     interval: int = 1,
     export: str = "",
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
-
     """
     Get total value locked for a certain address
     TVL measures the total amount of a token that is locked in a contract.
@@ -188,7 +194,7 @@ def display_total_value_locked(
     )
 
     if df.empty:
-        console.print("No data found.", "\n")
+        console.print("[red]No data found.[/red]")
         return
 
     # This plot has 1 axis
@@ -217,4 +223,5 @@ def display_total_value_locked(
         os.path.dirname(os.path.abspath(__file__)),
         "tvl",
         df,
+        sheet_name,
     )

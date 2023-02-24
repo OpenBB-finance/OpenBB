@@ -4,9 +4,9 @@ __docformat__ = "numpy"
 import logging
 
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.stocks.tradinghours import bursa_model
 from openbb_terminal.helper_funcs import print_rich_table
 from openbb_terminal.rich_config import console
+from openbb_terminal.stocks.tradinghours import bursa_model
 
 logger = logging.getLogger(__name__)
 

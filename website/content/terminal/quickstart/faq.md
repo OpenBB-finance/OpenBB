@@ -1,6 +1,7 @@
 ---
 title: FAQ
 sidebar_position: 3
+keywords: [faq, frequently asked questions, openbb terminal]
 ---
 
 ## General
@@ -18,11 +19,11 @@ almost a hundred different data providers and APIs to access the data.
 <p>
 
 The terminal is constantly being updated with new features and bug fixes. Updating will be different depending on the installation type:
-      
+
 - For installation packages, uninstall the previous version (uninstall.exe for Windows, delete the Application folder on MacOS); then, download the latest version and reinstall. User settings and data will remain.
 - For a `pip` installation, when a new version is published: `pip install openbb --upgrade`
 - Upgrade the `pip installation` to the source code installation with:
-  
+
 ```bash
 conda install -c conda-forge git
 git clone https://github.com/OpenBB-finance/OpenBBTerminal.git
@@ -151,7 +152,7 @@ Do note that it is also possible that the menu or command is removed. If this is
 <details><summary>Why does my Portfolio file fail to load?</summary>
 <p>
 
-This will typically be the result of a formatting error. 
+This will typically be the result of a formatting error.
 
 - Check that all the necessary column titles are present.
 - Inspect the file to see if cells left blank have been filled unintentionally with 0 or NaN values.
@@ -160,7 +161,7 @@ This will typically be the result of a formatting error.
 - All dates must be entered as YYYY-MM-DD.
 - Transactions dated for today will fail to load historical data.
 - MacOS users should attempt to avoid using the Numbers application as it has a habit of changing the formatting while saving.
-      
+
 </p>
 </details>
 
@@ -170,7 +171,7 @@ This will typically be the result of a formatting error.
 <p>
 
 A source code installation can utilize the `update` command from the main menu of the OpenBB Terminal, or, exit and enter:
-      
+
 ```bash
 git pull
 ```
@@ -297,7 +298,7 @@ If you run into issues installing or `Cannot convert a symbolic Tensor...` at ru
 
 ```bash
 poetry install
-poetry install -E prediction
+poetry install -E forecast
 ```
 
 _Commands that may help you in case of an error:_

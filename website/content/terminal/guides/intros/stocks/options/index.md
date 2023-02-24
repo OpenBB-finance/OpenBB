@@ -1,7 +1,7 @@
 ---
 title: Options
-keywords: ["Options", "stocks", "derivatives", "puts", "calls", "oi", "vol", "greeks", "voi", "volatility", "vsurf", "chains", "parity", "binom", "screen", "pricing", "hedge", "pcr", "info", "hist", "grhist", "plot", "parity"]
-excerpt: "This guide introduces the user to Options submenu, within the Stocks menu."
+keywords: [Options, stocks, derivatives, puts, calls, oi, vol, greeks, voi, volatility, vsurf, chains, parity, binom, screen, pricing, hedge, pcr, info, hist, grhist, plot, parity]
+excerpt: This guide introduces the user to Options submenu, within the Stocks menu.
 ---
 The Options menu provides the user with a comprehensive set of tools for analyzing equity options. This guide provides an overview of the menu and demonstrates commands in context. Using this menu correctly will require understanding terminology and math specific to the asset class. Wikipedia is a great resource for definitions and for learning about the mechanics of derivatives, read it <a href="https://en.wikipedia.org/wiki/Option_(finance)" target="_blank" rel="noreferrer noopener">here</a>. These are complex, leveraged, financial instruments requiring specialized knoweledge and a different frame-of-mind than the approach of an equities long-only investor. Always conduct thorough due diligence.<br />
 
@@ -9,35 +9,30 @@ The Options menu provides the user with a comprehensive set of tools for analyzi
 
 Navigate to the menu by typing `options`, from the `Stocks` menu, and then pressing enter. Alternatively, absolute path navigation can jump straight there, from anywhere. `/stocks/options`
 
-![The Options Menu](https://user-images.githubusercontent.com/85772166/172717122-a857dd69-6e79-4773-996a-74ea71f8ee86.png)
+<img width="800" alt="image" src="https://user-images.githubusercontent.com/46355364/218986539-fa5a214d-b9d3-48fe-9e60-2082aa79bf79.png"></img>
 
 By default, the Terminal loads a ticker using <a href="https://developer.tradier.com/" target="_blank" rel="noreferrer noopener">Tradier</a> as the source. Sign up for a free developer account and then enter that token using the <a href="/terminal/guides/advanced/api-keys" target="_blank" rel="noreferrer noopener">`Keys menu`</a>. Alternatively, there is a choice to use yFinance data sets by attaching the argument as shown below. Help dialogues are displayed for any command by adding `-h` to the string. It is worth noting that this load command is different than the load command elsewhere.
 
 ````
 (🦋) /stocks/options/ $ load -h
-usage: load [-t TICKER] [--source {tradier,yf}] [-h]
+usage: load [-t TICKER] [-h] [--source {YahooFinance,Tradier,Nasdaq,Intrinio}]
 
 Load a ticker into option menu
 
 optional arguments:
   -t TICKER, --ticker TICKER
                         Stock ticker (default: None)
-  --source  {tradier ,yf}    Tradier or Yahoo Finance (default: tr)
-                        Source to get option expirations from (default: None)
   -h, --help            show this help message (default: False)
+  --source {YahooFinance,Tradier,Nasdaq,Intrinio}
+                        Data source to select from (default: YahooFinance)
+
+For more information and examples, use 'about load' to access the related guide.
 ````
-
-### Submenus Available
-
-At the bottom of the menu, and near the top, there are items prefaced with `>`. Like everywhere else in the OpenBB Terminal, this indicates the presence of a submenu.
-
-  - `screen` is a dedicated options screener that uses `.ini` files from the local installation folder `/OpenBBUserData/stocks/presets/options/`. Refer to the Options Screener guide <a href="/terminal/guides/intros/stocks/options/screener" target="_blank" rel="noreferrer noopener">here</a>.
-  - `pricing` is another method for calculating options prices. See the guide for this submenu <a href="/terminal/guides/intros/stocks/options/pricing" target="_blank" rel="noreferrer noopener">here</a>.
-  - `hedge` is a group of features for calculating a delta-neutral position. The guide for this submenu is located <a href="/terminal/guides/intros/stocks/options/hedge" target="_blank" rel="noreferrer noopener">here</a>.
 
 ### Examples
 
 To begin, a ticker must be loaded with an expiration date selected. Enter these commands to display the list of expiration dates for AAPL options chains.
+
 ````
 (🦋) /stocks/options/ $ load aapl
 
@@ -93,10 +88,6 @@ Choose an expiration date with the corresponding Identifier value on the left, f
 (🦋) /stocks/options/ $ exp 16
 Expiration set to 2023-09-15
 ````
-
-Setting the chain for analysis will change the text colour at the bottom of the Options menu. These commands require loaded data.
-
-![The Options menu with a loaded ticker and expiration date](https://user-images.githubusercontent.com/85772166/172724623-dbb16566-5dfa-482c-a67e-948e01444ca8.png)
 
 The `info` command displays a table of statistics regarding the chosen option expiration date.
 ````

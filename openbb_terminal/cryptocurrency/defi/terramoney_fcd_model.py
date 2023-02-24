@@ -4,17 +4,17 @@ __docformat__ = "numpy"
 import logging
 import textwrap
 from datetime import datetime
-from typing import Any, Tuple, Dict
+from typing import Any, Dict, Tuple
 
 import pandas as pd
-import requests
 
 from openbb_terminal.cryptocurrency.dataframe_helpers import (
     denominate_number,
-    prettify_column_names,
     lambda_replace_unicode,
+    prettify_column_names,
 )
 from openbb_terminal.decorators import log_start_end
+from openbb_terminal.helper_funcs import request
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -56,9 +56,7 @@ def _make_request(endpoint: str) -> dict:
     """
 
     url = f"https://fcd.terra.dev/v1/{endpoint}"
-    response = requests.get(
-        url, headers={"Accept": "application/json", "User-Agent": "GST"}
-    )
+    response = request(url, headers={"Accept": "application/json", "User-Agent": "GST"})
     if not 200 <= response.status_code < 300:
         console.print(
             f"[red]fcd terra api exception: {response.json()['type']}[/red]\n"

@@ -1,2 +1,26 @@
-No data found from Alpha Vantage
-
+fiscalDateEnding                      2021-12-31 2022-03-31 2022-06-30 2022-09-30 2022-12-31
+Reported Currency                            USD        USD        USD        USD        USD
+Gross Profit                             4.847 B    5.460 B    4.234 B    5.382 B    5.777 B
+Total Revenue                           17.719 B   18.756 B   16.934 B   21.454 B   24.318 B
+Cost Of Revenue                         12.872 B   13.296 B   12.700 B   16.072 B   18.541 B
+Cost Of Goods And Services Sold            149 M      197 M       82 M       97 M      143 M
+Operating Income                         2.613 B    3.603 B    2.464 B    3.688 B    3.901 B
+Selling General And Administrative       1.494 B      992 M      961 M      961 M    1.032 B
+Research And Development Expenses          740 M      865 M      667 M      733 M      810 M
+Operating Expenses                       2.234 B    1.857 B    1.770 B    1.694 B    1.876 B
+Investment Income Net                       25 M       28 M       26 M       86 M      157 M
+Net Interest Income                        -71 M      -61 M      -44 M      -53 M      -33 M
+Interest Income                             25 M       28 M       26 M       33 M      124 M
+Interest Expense                            71 M       61 M       44 M       53 M       33 M
+Revenue                                    -47 M      -30 M       82 M      -53 M      -80 M
+Other Non Operating Income                  68 M       56 M       28 M      -85 M      -42 M
+Depreciation                               530 M      551 M      578 M      620 M      670 M
+Depreciation And Amortization              848 M      880 M      922 M      956 M      989 M
+Income Before Tax                        2.613 B    3.664 B    2.464 B    3.597 B    3.963 B
+Income Tax Expense                         292 M      346 M      205 M      305 M      276 M
+Interest And Debt Expense                   71 M       61 M       44 M       53 M       33 M
+Net Income From Continuing Operations    2.343 B    3.280 B    2.269 B    3.331 B    3.707 B
+Comprehensive Income Net Of Tax          2.255 B    3.214 B    1.832 B    2.827 B    4.268 B
+Ebit                                     2.684 B    3.725 B    2.508 B    3.650 B    3.996 B
+Ebitda                                   3.532 B    4.605 B    3.430 B    4.606 B    4.985 B
+Net Income                               2.321 B    3.318 B    2.259 B    3.292 B    3.687 B

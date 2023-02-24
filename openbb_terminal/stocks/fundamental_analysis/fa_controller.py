@@ -3,36 +3,41 @@ __docformat__ = "numpy"
 import argparse
 import logging
 from datetime import datetime, timedelta
-from typing import List
+from typing import List, Optional
 
-from openbb_terminal.custom_prompt_toolkit import NestedCompleter
+from pandas.core.frame import DataFrame
 
 from openbb_terminal import feature_flags as obbff
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_positive,
-    valid_date,
     list_from_str,
+    valid_date,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import StockBaseController
-from openbb_terminal.rich_config import console, MenuText, get_ordered_list_sources
+from openbb_terminal.rich_config import MenuText, console, get_ordered_list_sources
 from openbb_terminal.stocks import stocks_helper
 from openbb_terminal.stocks.fundamental_analysis import (
     av_view,
     business_insider_view,
+    csimarket_view,
     dcf_view,
     eclect_us_view,
-    finviz_view,
-    market_watch_view,
-    yahoo_finance_view,
-    polygon_view,
-    fmp_view,
     eodhd_view,
+    finnhub_view,
+    finviz_view,
+    fmp_view,
+    market_watch_view,
+    marketwatch_view,
+    polygon_view,
     seeking_alpha_view,
+    yahoo_finance_view,
 )
+from openbb_terminal.terminal_helper import suppress_stdout
 
 # pylint: disable=inconsistent-return-statements,C0302,R0904
 
@@ -47,8 +52,6 @@ class FundamentalAnalysisController(StockBaseController):
         "load",
         "analysis",
         "score",
-        "profile",
-        "quote",
         "enterprise",
         "metrics",
         "ratios",
@@ -56,20 +59,13 @@ class FundamentalAnalysisController(StockBaseController):
         "revfc",
         "epsfc",
         "warnings",
-        "data",
         "income",
         "balance",
         "cash",
         "mgmt",
         "splits",
-        "info",
         "shrs",
-        "sust",
-        "cal",
-        "web",
-        "hq",
         "overview",
-        "key",
         "income",
         "balance",
         "cash",
@@ -78,13 +74,20 @@ class FundamentalAnalysisController(StockBaseController):
         "fraud",
         "dcf",
         "dcfc",
-        "mktcap",
         "dupont",
+        "sec",
+        "rating",
+        "pt",
+        "rot",
+        "est",
+        "supplier",
+        "customer",
     ]
 
     PATH = "/stocks/fa/"
 
     SHRS_CHOICES = ["major", "institutional", "mutualfund"]
+    ESTIMATE_CHOICES = ["annualrevenue", "annualearnings", "quarterearnings"]
     CHOICES_GENERATION = True
 
     def __init__(
@@ -92,8 +95,9 @@ class FundamentalAnalysisController(StockBaseController):
         ticker: str,
         start: str,
         interval: str,
+        stock: DataFrame,
         suffix: str = "",
-        queue: List[str] = None,
+        queue: Optional[List[str]] = None,
     ):
         """Constructor"""
         super().__init__(queue)
@@ -102,6 +106,7 @@ class FundamentalAnalysisController(StockBaseController):
         self.start = start
         self.interval = interval
         self.suffix = suffix
+        self.stock = stock
 
         self.default_income = get_ordered_list_sources(f"{self.PATH}income")[0]
         self.default_balance = get_ordered_list_sources(f"{self.PATH}balance")[0]
@@ -118,38 +123,42 @@ class FundamentalAnalysisController(StockBaseController):
         mt.add_raw("\n")
         mt.add_param("_ticker", self.ticker.upper())
         mt.add_raw("\n")
+        mt.add_info("_company_overview")
+        mt.add_cmd("enterprise")
+        mt.add_cmd("overview")
+        mt.add_cmd("divs", not self.suffix)
+        mt.add_cmd("splits", not self.suffix)
+        mt.add_cmd("rating")
+        mt.add_cmd("rot")
+        mt.add_cmd("score")
+        mt.add_cmd("warnings")
+        mt.add_raw("\n")
+        mt.add_info("_management_shareholders")
+        mt.add_cmd("mgmt")
+        mt.add_cmd("shrs", not self.suffix)
+        mt.add_cmd("supplier")
+        mt.add_cmd("customer")
+        mt.add_raw("\n")
+        mt.add_info("_financial_statements")
         mt.add_cmd("income")
         mt.add_cmd("balance")
         mt.add_cmd("cash")
-        mt.add_cmd("data")
-        mt.add_cmd("mgmt")
-        mt.add_cmd("analysis")
-        mt.add_cmd("score")
-        mt.add_cmd("profile")
-        mt.add_cmd("quote")
-        mt.add_cmd("enterprise")
+        mt.add_cmd("growth")
         mt.add_cmd("metrics")
         mt.add_cmd("ratios")
-        mt.add_cmd("growth")
-        mt.add_cmd("revfc")
+        mt.add_cmd("dupont")
+        mt.add_cmd("fraud")
+        mt.add_cmd("sec")
+        mt.add_cmd("analysis")
+        mt.add_raw("\n")
+        mt.add_info("_future_estimations")
+        mt.add_cmd("earnings")
         mt.add_cmd("epsfc")
-        mt.add_cmd("warnings")
+        mt.add_cmd("revfc")
+        mt.add_cmd("est")
+        mt.add_cmd("pt")
         mt.add_cmd("dcf")
         mt.add_cmd("dcfc")
-        mt.add_cmd("info")
-        mt.add_cmd("mktcap")
-        mt.add_cmd("shrs", not self.suffix)
-        mt.add_cmd("sust", not self.suffix)
-        mt.add_cmd("cal", not self.suffix)
-        mt.add_cmd("divs", not self.suffix)
-        mt.add_cmd("splits", not self.suffix)
-        mt.add_cmd("web", not self.suffix)
-        mt.add_cmd("hq", not self.suffix)
-        mt.add_cmd("overview")
-        mt.add_cmd("key")
-        mt.add_cmd("earnings")
-        mt.add_cmd("fraud")
-        mt.add_cmd("dupont")
         console.print(text=mt.menu_text, menu="Stocks - Fundamental Analysis")
 
     def custom_reset(self):
@@ -160,6 +169,11 @@ class FundamentalAnalysisController(StockBaseController):
             return ["stocks", f"load {self.ticker}", "fa"]
         return []
 
+    def custom_load_wrapper(self, other_args: List[str]):
+        """Class specific component of load command"""
+        with suppress_stdout():
+            self.call_load(other_args)
+
     @log_start_end(log=logger)
     def call_analysis(self, other_args: List[str]):
         """Process analysis command."""
@@ -169,11 +183,29 @@ class FundamentalAnalysisController(StockBaseController):
             prog="analysis",
             description="""Display analysis of SEC filings based on NLP model. [Source: https://eclect.us]""",
         )
+        parser.add_argument(
+            "-t",
+            "--ticker",
+            dest="ticker",
+            help="Ticker to analyze",
+            type=str,
+            default=None,
+        )
+
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            eclect_us_view.display_analysis(symbol=self.ticker, export=ns_parser.export)
+            if ns_parser.ticker:
+                self.ticker = ns_parser.ticker
+                self.custom_load_wrapper([self.ticker])
+            eclect_us_view.display_analysis(
+                symbol=self.ticker,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )
 
     @log_start_end(log=logger)
     def call_mgmt(self, other_args: List[str]):
@@ -187,42 +219,89 @@ class FundamentalAnalysisController(StockBaseController):
                 (potentially) Insider Activity page. [Source: Business Insider]
             """,
         )
+        parser.add_argument(
+            "-t",
+            "--ticker",
+            dest="ticker",
+            help="Ticker to analyze",
+            type=str,
+            default=None,
+        )
 
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
+            if ns_parser.ticker:
+                self.ticker = ns_parser.ticker
+                self.custom_load_wrapper([self.ticker])
             business_insider_view.display_management(
-                symbol=self.ticker, export=ns_parser.export
+                symbol=self.ticker,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
-    def call_data(self, other_args: List[str]):
-        """Process data command."""
+    def call_overview(self, other_args: List[str]):
+        """Process overview command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="data",
+            prog="overview",
             description="""
-                Print several metrics about the company. The following fields are expected:
-                Company, Sector, Industry, Country, Index, P/E, EPS (ttm), Insider Own,
-                Shs Outstand, Perf Week, Market Cap, Forward P/E, EPS next Y, Insider Trans,
-                Shs Float, Perf Month, Income, EPS next Q, Inst Own, Short Float, Perf Quarter,
-                Sales, P/S, EPS this Y, Inst Trans, Short Ratio, Perf Half Y, Book/sh, P/B, ROA,
-                Target Price, Perf Year, Cash/sh, P/C, ROE, 52W Range, Perf YTD, P/FCF, EPS past 5Y,
-                ROI, 52W High, Beta, Quick Ratio, Sales past 5Y, Gross Margin, 52W Low, ATR,
-                Employees, Current Ratio, Sales Q/Q, Operating Margin, RSI (14), Volatility, Optionable,
-                Debt/Eq, EPS Q/Q, Profit Margin, Rel Volume, Prev Close, Shortable, LT Debt/Eq,
-                Earnings, Payout, Avg Volume, Price, Recommendation, SMA20, SMA50, SMA200, Volume, Change.
-                [Source: Finviz]
-            """,
+                Prints information about, among other things, the industry, sector exchange and company description.
+                """,
+        )
+        parser.add_argument(
+            "-t",
+            "--ticker",
+            dest="ticker",
+            help="Ticker to analyze",
+            type=str,
+            default=None,
         )
 
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            finviz_view.display_screen_data(symbol=self.ticker, export=ns_parser.export)
+            if ns_parser.ticker:
+                self.ticker = ns_parser.ticker
+                self.custom_load_wrapper([self.ticker])
+            if ns_parser.source == "Finviz":
+                finviz_view.display_screen_data(
+                    symbol=self.ticker,
+                    export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
+                )
+            elif ns_parser.source == "YahooFinance":
+                yahoo_finance_view.display_info(
+                    self.ticker,
+                    export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
+                )
+            elif ns_parser.source == "AlphaVantage":
+                av_view.display_overview(
+                    self.ticker,
+                    export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
+                )
+            elif ns_parser.source == "FinancialModelingPrep":
+                fmp_view.display_profile(
+                    self.ticker,
+                    export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
+                )
 
     @log_start_end(log=logger)
     def call_score(self, other_args: List[str]):
@@ -236,51 +315,38 @@ class FundamentalAnalysisController(StockBaseController):
                 and Benjamin Graham thoughts [Source: FMP]
                 """,
         )
+        parser.add_argument(
+            "-y",
+            "--years",
+            type=int,
+            default=10,
+            dest="years",
+            help="Define the amount of years required to calculate the score.",
+        )
+        parser.add_argument(
+            "-t",
+            "--ticker",
+            dest="ticker",
+            help="Ticker to analyze",
+            type=str,
+            default=None,
+        )
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            fmp_view.valinvest_score(self.ticker)
+            if ns_parser.ticker:
+                self.ticker = ns_parser.ticker
+                self.custom_load_wrapper([self.ticker])
 
-    @log_start_end(log=logger)
-    def call_profile(self, other_args: List[str]):
-        """Process profile command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="profile",
-            description="""
-                    Prints information about, among other things, the industry, sector exchange and company
-                    description. The following fields are expected: Address, Beta, Ceo, Changes, Cik, City
-                    Company name, Country, Currency, Cusip, Dcf, Dcf diff, Default image, Description,
-                    Exchange, Exchange short name, Full time employees, Image, Industry, Ipo date, Isin,
-                    Last div, Mkt cap, Phone, Price, Range, Sector, State, Symbol, Vol avg, Website, Zip.
-                    [Source: Financial Modeling Prep]
-                """,
-        )
-        ns_parser = self.parse_known_args_and_warn(parser, other_args)
-        if ns_parser:
-            fmp_view.display_profile(self.ticker)
-
-    @log_start_end(log=logger)
-    def call_quote(self, other_args: List[str]):
-        """Process quote command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="quote",
-            description="""
-                    Prints actual information about the company which is, among other things, the day high,
-                    market cap, open and close price and price-to-equity ratio. The following fields are
-                    expected: Avg volume, Change, Changes percentage, Day high, Day low, Earnings
-                    announcement, Eps, Exchange, Market cap, Name, Open, Pe, Previous close, Price, Price
-                    avg200, Price avg50, Shares outstanding, Symbol, Timestamp, Volume, Year high, and Year
-                    low. [Source: Financial Modeling Prep]
-                """,
-        )
-        ns_parser = self.parse_known_args_and_warn(parser, other_args)
-        if ns_parser:
-            fmp_view.display_quote(self.ticker)
+            fmp_view.valinvest_score(
+                self.ticker,
+                ns_parser.years,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )
 
     @log_start_end(log=logger)
     def call_enterprise(self, other_args: List[str]):
@@ -297,14 +363,33 @@ class FundamentalAnalysisController(StockBaseController):
                 """,
         )
         parser.add_argument(
+            "-t",
+            "--ticker",
+            dest="ticker",
+            help="Ticker to analyze",
+            type=str,
+            default=None,
+        )
+        parser.add_argument(
             "-l",
             "--limit",
             action="store",
             dest="limit",
             type=check_positive,
             default=5,
-            help="Limit of latest years/quarters.",
+            help="Limit of latest years/quarters, relevant for the source FinancialModelingPrep.",
         )
+
+        parser.add_argument(
+            "-s",
+            "--start",
+            type=valid_date,
+            default=(datetime.now() - timedelta(days=3 * 366)).strftime("%Y-%m-%d"),
+            dest="start",
+            help="The starting date (format YYYY-MM-DD) of the market cap display. "
+            "Relevant for the source Yahoo Finance.",
+        )
+
         parser.add_argument(
             "-q",
             "--quarter",
@@ -317,12 +402,29 @@ class FundamentalAnalysisController(StockBaseController):
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            fmp_view.display_enterprise(
-                symbol=self.ticker,
-                limit=ns_parser.limit,
-                quarterly=ns_parser.b_quarter,
-                export=ns_parser.export,
-            )
+            if ns_parser.ticker:
+                self.ticker = ns_parser.ticker
+                self.custom_load_wrapper([self.ticker])
+
+            if ns_parser.source == "FinancialModelingPrep":
+                fmp_view.display_enterprise(
+                    symbol=self.ticker,
+                    limit=ns_parser.limit,
+                    quarterly=ns_parser.b_quarter,
+                    export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
+                )
+            elif ns_parser.source == "YahooFinance":
+                yahoo_finance_view.display_mktcap(
+                    self.ticker,
+                    start_date=ns_parser.start,
+                    export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
+                )
 
     @log_start_end(log=logger)
     def call_metrics(self, other_args: List[str]):
@@ -352,6 +454,14 @@ class FundamentalAnalysisController(StockBaseController):
                 """,
         )
         parser.add_argument(
+            "-t",
+            "--ticker",
+            dest="ticker",
+            help="Ticker to analyze",
+            type=str,
+            default=None,
+        )
+        parser.add_argument(
             "-l",
             "--limit",
             action="store",
@@ -372,12 +482,28 @@ class FundamentalAnalysisController(StockBaseController):
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            fmp_view.display_key_metrics(
-                symbol=self.ticker,
-                limit=ns_parser.limit,
-                quarterly=ns_parser.b_quarter,
-                export=ns_parser.export,
-            )
+            if ns_parser.ticker:
+                self.ticker = ns_parser.ticker
+                self.custom_load_wrapper([self.ticker])
+
+            if ns_parser.source == "FinancialModelingPrep":
+                fmp_view.display_key_metrics(
+                    symbol=self.ticker,
+                    limit=ns_parser.limit,
+                    quarterly=ns_parser.b_quarter,
+                    export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
+                )
+            if ns_parser.source == "AlphaVantage":
+                av_view.display_key(
+                    symbol=self.ticker,
+                    export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
+                )
 
     @log_start_end(log=logger)
     def call_ratios(self, other_args: List[str]):
@@ -408,6 +534,14 @@ class FundamentalAnalysisController(StockBaseController):
                 """,
         )
         parser.add_argument(
+            "-t",
+            "--ticker",
+            dest="ticker",
+            help="Ticker to analyze",
+            type=str,
+            default=None,
+        )
+        parser.add_argument(
             "-l",
             "--limit",
             action="store",
@@ -428,11 +562,18 @@ class FundamentalAnalysisController(StockBaseController):
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
+            if ns_parser.ticker:
+                self.ticker = ns_parser.ticker
+                self.custom_load_wrapper([self.ticker])
+
             fmp_view.display_financial_ratios(
                 symbol=self.ticker,
                 limit=ns_parser.limit,
                 quarterly=ns_parser.b_quarter,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -460,6 +601,14 @@ class FundamentalAnalysisController(StockBaseController):
                 """,
         )
         parser.add_argument(
+            "-t",
+            "--ticker",
+            dest="ticker",
+            help="Ticker to analyze",
+            type=str,
+            default=None,
+        )
+        parser.add_argument(
             "-l",
             "--limit",
             action="store",
@@ -480,70 +629,18 @@ class FundamentalAnalysisController(StockBaseController):
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
+            if ns_parser.ticker:
+                self.ticker = ns_parser.ticker
+                self.custom_load_wrapper([self.ticker])
+
             fmp_view.display_financial_statement_growth(
                 symbol=self.ticker,
                 limit=ns_parser.limit,
                 quarterly=ns_parser.b_quarter,
                 export=ns_parser.export,
-            )
-
-    @log_start_end(log=logger)
-    def call_info(self, other_args: List[str]):
-        """Process info command."""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="info",
-            description="""
-                Print information about the company. The following fields are expected:
-                Zip, Sector, Full time employees, Long business summary, City, Phone, State, Country,
-                Website, Max age, Address, Industry, Previous close, Regular market open, Two hundred
-                day average, Payout ratio, Regular market day high, Average daily volume 10 day,
-                Regular market previous close, Fifty day average, Open, Average volume 10 days, Beta,
-                Regular market day low, Price hint, Currency, Trailing PE, Regular market volume,
-                Market cap, Average volume, Price to sales trailing 12 months, Day low, Ask, Ask size,
-                Volume, Fifty two week high, Forward PE, Fifty two week low, Bid, Tradeable, Bid size,
-                Day high, Exchange, Short name, Long name, Exchange timezone name, Exchange timezone
-                short name, Is esg populated, Gmt off set milliseconds, Quote type, Symbol, Message
-                board id, Market, Enterprise to revenue, Profit margins, Enterprise to ebitda, 52 week
-                change, Forward EPS, Shares outstanding, Book value, Shares short, Shares percent
-                shares out, Last fiscal year end, Held percent institutions, Net income to common,
-                Trailing EPS, Sand p52 week change, Price to book, Held percent insiders, Next fiscal
-                year end, Most recent quarter, Short ratio, Shares short previous month date, Float
-                shares, Enterprise value, Last split date, Last split factor, Earnings quarterly growth,
-                Date short interest, PEG ratio, Short percent of float, Shares short prior month,
-                Regular market price, Logo_url. [Source: Yahoo Finance]
-            """,
-        )
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
-            yahoo_finance_view.display_info(self.ticker, export=ns_parser.export)
-
-    @log_start_end(log=logger)
-    def call_mktcap(self, other_args: List[str]):
-        """Process mktcap command."""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="mktcap",
-            description="""Market Cap estimate over time. [Source: Yahoo Finance]""",
-        )
-        parser.add_argument(
-            "-s",
-            "--start",
-            type=valid_date,
-            default=(datetime.now() - timedelta(days=3 * 366)).strftime("%Y-%m-%d"),
-            dest="start",
-            help="The starting date (format YYYY-MM-DD) of the market cap display",
-        )
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
-        )
-        if ns_parser:
-            yahoo_finance_view.display_mktcap(
-                self.ticker, start_date=ns_parser.start, export=ns_parser.export
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -555,10 +652,30 @@ class FundamentalAnalysisController(StockBaseController):
             prog="epsfc",
             description="""Estimated EPS [Source: Seeking Alpha]""",
         )
-        ns_parser = self.parse_known_args_and_warn(parser, other_args)
+        parser.add_argument(
+            "-t",
+            "--ticker",
+            dest="ticker",
+            help="Ticker to analyze",
+            type=str,
+            default=None,
+        )
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
 
         if ns_parser:
-            seeking_alpha_view.display_eps_estimates(self.ticker)
+            if ns_parser.ticker:
+                self.ticker = ns_parser.ticker
+                self.custom_load_wrapper([self.ticker])
+
+            seeking_alpha_view.display_eps_estimates(
+                self.ticker,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )
 
     @log_start_end(log=logger)
     def call_revfc(self, other_args: List[str]):
@@ -569,10 +686,30 @@ class FundamentalAnalysisController(StockBaseController):
             prog="revfc",
             description="""Estimated revenue [Source: Seeking Alpha]""",
         )
-        ns_parser = self.parse_known_args_and_warn(parser, other_args)
+        parser.add_argument(
+            "-t",
+            "--ticker",
+            dest="ticker",
+            help="Ticker to analyze",
+            type=str,
+            default=None,
+        )
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
 
         if ns_parser:
-            seeking_alpha_view.display_rev_estimates(self.ticker)
+            if ns_parser.ticker:
+                self.ticker = ns_parser.ticker
+                self.custom_load_wrapper([self.ticker])
+
+            seeking_alpha_view.display_rev_estimates(
+                self.ticker,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )
 
     @log_start_end(log=logger)
     def call_splits(self, other_args: List[str]):
@@ -587,7 +724,17 @@ class FundamentalAnalysisController(StockBaseController):
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
-            yahoo_finance_view.display_splits(self.ticker, export=ns_parser.export)
+            if ns_parser.ticker:
+                self.ticker = ns_parser.ticker
+                self.custom_load_wrapper([self.ticker])
+
+            yahoo_finance_view.display_splits(
+                self.ticker,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )
 
     @log_start_end(log=logger)
     def call_shrs(self, other_args: List[str]):
@@ -598,6 +745,14 @@ class FundamentalAnalysisController(StockBaseController):
             prog="shrs",
             description="""Print Major, institutional and mutualfunds shareholders.
             [Source: Yahoo Finance]""",
+        )
+        parser.add_argument(
+            "-t",
+            "--ticker",
+            dest="ticker",
+            help="Ticker to analyze",
+            type=str,
+            default=None,
         )
         parser.add_argument(
             "--holder",
@@ -614,100 +769,19 @@ class FundamentalAnalysisController(StockBaseController):
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
+            if ns_parser.ticker:
+                self.ticker = ns_parser.ticker
+                self.custom_load_wrapper([self.ticker])
+
             if not self.suffix:
                 yahoo_finance_view.display_shareholders(
-                    self.ticker, holder=ns_parser.holder, export=ns_parser.export
+                    self.ticker,
+                    holder=ns_parser.holder,
+                    export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
-            else:
-                console.print("Only US tickers are recognized.", "\n")
-
-    @log_start_end(log=logger)
-    def call_sust(self, other_args: List[str]):
-        """Process sust command."""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="sust",
-            description="""
-                Print sustainability values of the company. The following fields are expected:
-                Palmoil, Controversialweapons, Gambling, Socialscore, Nuclear, Furleather, Alcoholic,
-                Gmo, Catholic, Socialpercentile, Peercount, Governancescore, Environmentpercentile,
-                Animaltesting, Tobacco, Total ESG, Highestcontroversy, ESG Performance, Coal, Pesticides,
-                Adult, Percentile, Peergroup, Smallarms, Environmentscore, Governancepercentile,
-                Militarycontract. [Source: Yahoo Finance]
-            """,
-        )
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
-            if not self.suffix:
-                yahoo_finance_view.display_sustainability(
-                    self.ticker, export=ns_parser.export
-                )
-            else:
-                console.print("Only US tickers are recognized.", "\n")
-
-    @log_start_end(log=logger)
-    def call_cal(self, other_args: List[str]):
-        """Process cal command."""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="cal",
-            description="""
-                Calendar earnings of the company. Including revenue and earnings estimates.
-                [Source: Yahoo Finance]
-            """,
-        )
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
-            if not self.suffix:
-                yahoo_finance_view.display_calendar_earnings(
-                    symbol=self.ticker, export=ns_parser.export
-                )
-            else:
-                console.print("Only US tickers are recognized.", "\n")
-
-    @log_start_end(log=logger)
-    def call_web(self, other_args: List[str]):
-        """Process web command."""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="web",
-            description="""
-                Opens company's website. [Source: Yahoo Finance]
-            """,
-        )
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
-            if not self.suffix:
-                yahoo_finance_view.open_web(self.ticker)
-            else:
-                console.print("Only US tickers are recognized.", "\n")
-
-    @log_start_end(log=logger)
-    def call_hq(self, other_args: List[str]):
-        """Process hq command."""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="hq",
-            description="""
-                Opens in Google Maps HQ location of the company. [Source: Yahoo Finance]
-            """,
-        )
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
-            if not self.suffix:
-                yahoo_finance_view.open_headquarters_map(self.ticker)
             else:
                 console.print("Only US tickers are recognized.", "\n")
 
@@ -719,6 +793,14 @@ class FundamentalAnalysisController(StockBaseController):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="divs",
             description="Historical dividends for a company",
+        )
+        parser.add_argument(
+            "-t",
+            "--ticker",
+            dest="ticker",
+            help="Ticker to analyze",
+            type=str,
+            default=None,
         )
         parser.add_argument(
             "-l",
@@ -740,67 +822,22 @@ class FundamentalAnalysisController(StockBaseController):
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
+            if ns_parser.ticker:
+                self.ticker = ns_parser.ticker
+                self.custom_load_wrapper([self.ticker])
+
             if not self.suffix:
                 yahoo_finance_view.display_dividends(
                     symbol=self.ticker,
                     limit=ns_parser.limit,
                     plot=ns_parser.plot,
                     export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
             else:
                 console.print("Only US tickers are recognized.", "\n")
-
-    @log_start_end(log=logger)
-    def call_overview(self, other_args: List[str]):
-        """Process overview command."""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="overview",
-            description="""
-                Prints an overview about the company. The following fields are expected:
-                Symbol, Asset type, Name, Description, Exchange, Currency, Country, Sector, Industry,
-                Address, Full time employees, Fiscal year end, Latest quarter, Market capitalization,
-                EBITDA, PE ratio, PEG ratio, Book value, Dividend per share, Dividend yield, EPS,
-                Revenue per share TTM, Profit margin, Operating margin TTM, Return on assets TTM,
-                Return on equity TTM, Revenue TTM, Gross profit TTM, Diluted EPS TTM, Quarterly
-                earnings growth YOY, Quarterly revenue growth YOY, Analyst target price, Trailing PE,
-                Forward PE, Price to sales ratio TTM, Price to book ratio, EV to revenue, EV to EBITDA,
-                Beta, 52 week high, 52 week low, 50 day moving average, 200 day moving average, Shares
-                outstanding, Shares float, Shares short, Shares short prior month, Short ratio, Short
-                percent outstanding, Short percent float, Percent insiders, Percent institutions,
-                Forward annual dividend rate, Forward annual dividend yield, Payout ratio, Dividend
-                date, Ex dividend date, Last split factor, and Last split date. Also, the C i k field
-                corresponds to Central Index Key, which can be used to search a company on
-                https://www.sec.gov/edgar/searchedgar/cik.htm [Source: Alpha Vantage]
-            """,
-        )
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
-            av_view.display_overview(self.ticker)
-
-    @log_start_end(log=logger)
-    def call_key(self, other_args: List[str]):
-        """Process key command."""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="key",
-            description="""
-                Gives main key metrics about the company (it's a subset of the Overview data from Alpha
-                Vantage API). The following fields are expected: Market capitalization, EBITDA, EPS, PE
-                ratio, PEG ratio, Price to book ratio, Return on equity TTM, Payout ratio, Price to
-                sales ratio TTM, Dividend yield, 50 day moving average, Analyst target price, Beta
-                [Source: Alpha Vantage API]
-            """,
-        )
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
-            av_view.display_key(symbol=self.ticker, export=ns_parser.export)
 
     @log_start_end(log=logger)
     def call_income(self, other_args: List[str]):
@@ -819,6 +856,14 @@ class FundamentalAnalysisController(StockBaseController):
                 ratio, Other expenses, Period, Research and development expenses, Revenue, Selling and
                 marketing expenses, Total other income expenses net, Weighted average shs out, Weighted
                 average shs out dil [Source: Alpha Vantage]""",
+        )
+        parser.add_argument(
+            "-t",
+            "--ticker",
+            dest="ticker",
+            help="Ticker to analyze",
+            type=str,
+            default=None,
         )
         parser.add_argument(
             "-q",
@@ -841,7 +886,7 @@ class FundamentalAnalysisController(StockBaseController):
             "--plot",
             action="store",
             metavar="column",
-            choices=stocks_helper.INCOME_PLOT[self.default_income],
+            choices=stocks_helper.INCOME_PLOT_CHOICES,
             type=str,
             default=None,
             dest="plot",
@@ -854,6 +899,10 @@ class FundamentalAnalysisController(StockBaseController):
             limit=5,
         )
         if ns_parser:
+            if ns_parser.ticker:
+                self.ticker = ns_parser.ticker
+                self.custom_load_wrapper([self.ticker])
+
             ns_parser.plot = list_from_str(ns_parser.plot)
             # TODO: Switch to actually getting data
             if ns_parser.source == "YahooFinance" and ns_parser.b_quarter:
@@ -861,6 +910,10 @@ class FundamentalAnalysisController(StockBaseController):
                     "[red]Quarterly data currently unavailable for yfinance"
                     ", showing yearly.[/red]\n"
                 )
+            if stocks_helper.verify_plot_options(
+                "income", ns_parser.source, ns_parser.plot
+            ):
+                return
             if ns_parser.source == "AlphaVantage":
                 av_view.display_income_statement(
                     symbol=self.ticker,
@@ -869,6 +922,9 @@ class FundamentalAnalysisController(StockBaseController):
                     ratios=ns_parser.ratios,
                     plot=ns_parser.plot,
                     export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
             elif ns_parser.source == "Polygon":
                 polygon_view.display_fundamentals(
@@ -879,6 +935,9 @@ class FundamentalAnalysisController(StockBaseController):
                     ratios=ns_parser.ratios,
                     plot=ns_parser.plot,
                     export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
             elif ns_parser.source == "FinancialModelingPrep":
                 fmp_view.display_income_statement(
@@ -888,6 +947,9 @@ class FundamentalAnalysisController(StockBaseController):
                     ratios=ns_parser.ratios,
                     plot=ns_parser.plot,
                     export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
             elif ns_parser.source == "YahooFinance":
                 yahoo_finance_view.display_fundamentals(
@@ -896,10 +958,12 @@ class FundamentalAnalysisController(StockBaseController):
                     ratios=ns_parser.ratios,
                     plot=ns_parser.plot,
                     export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                     limit=ns_parser.limit,
                 )
             elif ns_parser.source == "EODHD":
-                console.print("Source is EOD Historical Data!")
                 eodhd_view.display_fundamentals(
                     symbol=self.ticker,
                     statement="Income_Statement",
@@ -907,6 +971,9 @@ class FundamentalAnalysisController(StockBaseController):
                     ratios=ns_parser.ratios,
                     plot=ns_parser.plot,
                     export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
 
     @log_start_end(log=logger)
@@ -934,6 +1001,14 @@ class FundamentalAnalysisController(StockBaseController):
             """,
         )
         parser.add_argument(
+            "-t",
+            "--ticker",
+            dest="ticker",
+            help="Ticker to analyze",
+            type=str,
+            default=None,
+        )
+        parser.add_argument(
             "-q",
             "--quarter",
             action="store_true",
@@ -953,7 +1028,7 @@ class FundamentalAnalysisController(StockBaseController):
             "-p",
             "--plot",
             action="store",
-            choices=stocks_helper.BALANCE_PLOT[self.default_balance],
+            choices=stocks_helper.BALANCE_PLOT_CHOICES,
             type=str,
             metavar="column",
             default=None,
@@ -967,11 +1042,19 @@ class FundamentalAnalysisController(StockBaseController):
             limit=5,
         )
         if ns_parser:
+            if ns_parser.ticker:
+                self.ticker = ns_parser.ticker
+                self.custom_load_wrapper([self.ticker])
+
             ns_parser.plot = list_from_str(ns_parser.plot)
             # TODO: Switch to actually getting data
             if ns_parser.source == "YahooFinance" and ns_parser.b_quarter:
                 text = "Quarterly data currently unavailable for yfinance"
                 console.print(f"[red]{text}, showing yearly.[/red]\n")
+            if stocks_helper.verify_plot_options(
+                "balance", ns_parser.source, ns_parser.plot
+            ):
+                return
             if ns_parser.source == "AlphaVantage":
                 av_view.display_balance_sheet(
                     symbol=self.ticker,
@@ -980,6 +1063,9 @@ class FundamentalAnalysisController(StockBaseController):
                     ratios=ns_parser.ratios,
                     plot=ns_parser.plot,
                     export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
             elif ns_parser.source == "Polygon":
                 polygon_view.display_fundamentals(
@@ -990,6 +1076,9 @@ class FundamentalAnalysisController(StockBaseController):
                     ratios=ns_parser.ratios,
                     plot=ns_parser.plot,
                     export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
             elif ns_parser.source == "FinancialModelingPrep":
                 fmp_view.display_balance_sheet(
@@ -999,6 +1088,9 @@ class FundamentalAnalysisController(StockBaseController):
                     ratios=ns_parser.ratios,
                     plot=ns_parser.plot,
                     export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
             elif ns_parser.source == "YahooFinance":
                 yahoo_finance_view.display_fundamentals(
@@ -1007,10 +1099,12 @@ class FundamentalAnalysisController(StockBaseController):
                     ratios=ns_parser.ratios,
                     plot=ns_parser.plot,
                     export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                     limit=ns_parser.limit,
                 )
             elif ns_parser.source == "EODHD":
-                console.print("Source is EOD Historical Data!")
                 eodhd_view.display_fundamentals(
                     symbol=self.ticker,
                     statement="Balance_Sheet",
@@ -1018,6 +1112,9 @@ class FundamentalAnalysisController(StockBaseController):
                     ratios=ns_parser.ratios,
                     plot=ns_parser.plot,
                     export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
 
     @log_start_end(log=logger)
@@ -1041,6 +1138,14 @@ class FundamentalAnalysisController(StockBaseController):
                 capital, Period, Purchases of investments, Sales maturities of investments, Stock based
                 compensation. [Source: Alpha Vantage]
             """,
+        )
+        parser.add_argument(
+            "-t",
+            "--ticker",
+            dest="ticker",
+            help="Ticker to analyze",
+            type=str,
+            default=None,
         )
         parser.add_argument(
             "-l",
@@ -1072,7 +1177,7 @@ class FundamentalAnalysisController(StockBaseController):
             "--plot",
             action="store",
             type=str,
-            choices=stocks_helper.CASH_PLOT[self.default_cash],
+            choices=stocks_helper.CASH_PLOT_CHOICES,
             metavar="column",
             default=None,
             dest="plot",
@@ -1084,11 +1189,19 @@ class FundamentalAnalysisController(StockBaseController):
             export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
         )
         if ns_parser:
+            if ns_parser.ticker:
+                self.ticker = ns_parser.ticker
+                self.custom_load_wrapper([self.ticker])
+
             ns_parser.plot = list_from_str(ns_parser.plot)
             # TODO: Switch to actually getting data
             if ns_parser.source == "YahooFinance" and ns_parser.b_quarter:
                 text = "Quarterly data currently unavailable for yfinance"
                 console.print(f"[red]{text}, showing yearly.[/red]\n")
+            if stocks_helper.verify_plot_options(
+                "cash", ns_parser.source, ns_parser.plot
+            ):
+                return
             if ns_parser.source == "AlphaVantage":
                 av_view.display_cash_flow(
                     symbol=self.ticker,
@@ -1097,6 +1210,9 @@ class FundamentalAnalysisController(StockBaseController):
                     ratios=ns_parser.ratios,
                     plot=ns_parser.plot,
                     export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
             elif ns_parser.source == "FinancialModelingPrep":
                 fmp_view.display_cash_flow(
@@ -1106,6 +1222,9 @@ class FundamentalAnalysisController(StockBaseController):
                     ratios=ns_parser.ratios,
                     plot=ns_parser.plot,
                     export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
             elif ns_parser.source == "Polygon":
                 polygon_view.display_fundamentals(
@@ -1116,6 +1235,9 @@ class FundamentalAnalysisController(StockBaseController):
                     ratios=ns_parser.ratios,
                     plot=ns_parser.plot,
                     export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
             elif ns_parser.source == "YahooFinance":
                 yahoo_finance_view.display_fundamentals(
@@ -1124,10 +1246,12 @@ class FundamentalAnalysisController(StockBaseController):
                     ratios=ns_parser.ratios,
                     plot=ns_parser.plot,
                     export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                     limit=ns_parser.limit,
                 )
             elif ns_parser.source == "EODHD":
-                console.print("Source is EOD Historical Data!")
                 eodhd_view.display_fundamentals(
                     symbol=self.ticker,
                     statement="Cash_Flow",
@@ -1135,6 +1259,9 @@ class FundamentalAnalysisController(StockBaseController):
                     ratios=ns_parser.ratios,
                     plot=ns_parser.plot,
                     export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
 
     @log_start_end(log=logger)
@@ -1148,6 +1275,14 @@ class FundamentalAnalysisController(StockBaseController):
                 Print earnings dates and reported EPS of the company. The following fields are
                 expected: Fiscal Date Ending and Reported EPS. [Source: Alpha Vantage]
             """,
+        )
+        parser.add_argument(
+            "-t",
+            "--ticker",
+            dest="ticker",
+            help="Ticker to analyze",
+            type=str,
+            default=None,
         )
         parser.add_argument(
             "-q",
@@ -1172,19 +1307,24 @@ class FundamentalAnalysisController(StockBaseController):
             EXPORT_ONLY_RAW_DATA_ALLOWED,
         )
         if ns_parser:
+            if ns_parser.ticker:
+                self.ticker = ns_parser.ticker
+                self.custom_load_wrapper([self.ticker])
+
             if ns_parser.source == "AlphaVantage":
                 av_view.display_earnings(
                     symbol=self.ticker,
                     limit=ns_parser.limit,
                     quarterly=ns_parser.b_quarter,
                     export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
             elif ns_parser.source == "YahooFinance":
                 yahoo_finance_view.display_earnings(
                     symbol=self.ticker, limit=ns_parser.limit, export=ns_parser.export
                 )
-            else:
-                pass
 
     @log_start_end(log=logger)
     def call_fraud(self, other_args: List[str]):
@@ -1234,6 +1374,14 @@ class FundamentalAnalysisController(StockBaseController):
             ),
         )
         parser.add_argument(
+            "-t",
+            "--ticker",
+            dest="ticker",
+            help="Ticker to analyze",
+            type=str,
+            default=None,
+        )
+        parser.add_argument(
             "-e",
             "--explanation",
             action="store_true",
@@ -1253,9 +1401,16 @@ class FundamentalAnalysisController(StockBaseController):
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
+            if ns_parser.ticker:
+                self.ticker = ns_parser.ticker
+                self.custom_load_wrapper([self.ticker])
+
             av_view.display_fraud(
                 symbol=self.ticker,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
                 detail=ns_parser.detail,
             )
 
@@ -1269,6 +1424,14 @@ class FundamentalAnalysisController(StockBaseController):
             description="The extended dupont deconstructs return on equity to allow investors to understand it better",
         )
         parser.add_argument(
+            "-t",
+            "--ticker",
+            dest="ticker",
+            help="Ticker to analyze",
+            type=str,
+            default=None,
+        )
+        parser.add_argument(
             "--raw",
             action="store_true",
             default=False,
@@ -1279,6 +1442,10 @@ class FundamentalAnalysisController(StockBaseController):
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
+            if ns_parser.ticker:
+                self.ticker = ns_parser.ticker
+                self.custom_load_wrapper([self.ticker])
+
             av_view.display_dupont(
                 self.ticker, raw=ns_parser.raw, export=ns_parser.export
             )
@@ -1309,6 +1476,14 @@ class FundamentalAnalysisController(StockBaseController):
                 this value by the number of shares outstanding allows us to calculate the value of
                 each share in a company.\n\n
                 """,
+        )
+        parser.add_argument(
+            "-t",
+            "--ticker",
+            dest="ticker",
+            help="Ticker to analyze",
+            type=str,
+            default=None,
         )
         parser.add_argument(
             "-a",
@@ -1361,6 +1536,10 @@ class FundamentalAnalysisController(StockBaseController):
         )
 
         if ns_parser:
+            if ns_parser.ticker:
+                self.ticker = ns_parser.ticker
+                self.custom_load_wrapper([self.ticker])
+
             dcf = dcf_view.CreateExcelFA(
                 symbol=self.ticker,
                 audit=ns_parser.audit,
@@ -1385,6 +1564,14 @@ class FundamentalAnalysisController(StockBaseController):
                 """,
         )
         parser.add_argument(
+            "-t",
+            "--ticker",
+            dest="ticker",
+            help="Ticker to analyze",
+            type=str,
+            default=None,
+        )
+        parser.add_argument(
             "-l",
             "--limit",
             action="store",
@@ -1405,11 +1592,18 @@ class FundamentalAnalysisController(StockBaseController):
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
+            if ns_parser.ticker:
+                self.ticker = ns_parser.ticker
+                self.custom_load_wrapper([self.ticker])
+
             fmp_view.display_discounted_cash_flow(
                 symbol=self.ticker,
                 limit=ns_parser.limit,
                 quarterly=ns_parser.b_quarter,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -1427,6 +1621,14 @@ class FundamentalAnalysisController(StockBaseController):
             """,
         )
         parser.add_argument(
+            "-t",
+            "--ticker",
+            dest="ticker",
+            help="Ticker to analyze",
+            type=str,
+            default=None,
+        )
+        parser.add_argument(
             "-d",
             "--debug",
             action="store_true",
@@ -1438,6 +1640,10 @@ class FundamentalAnalysisController(StockBaseController):
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
+            if ns_parser.ticker:
+                self.ticker = ns_parser.ticker
+                self.custom_load_wrapper([self.ticker])
+
             market_watch_view.display_sean_seah_warnings(
                 symbol=self.ticker, debug=ns_parser.b_debug
             )
@@ -1464,3 +1670,348 @@ class FundamentalAnalysisController(StockBaseController):
                 while line:
                     console.print(f"{line.strip()}")
                     line = fp.readline()
+
+    @log_start_end(log=logger)
+    def call_pt(self, other_args: List[str]):
+        """Process pt command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            prog="pt",
+            description="""Prints price target from analysts. [Source: Business Insider]""",
+        )
+        parser.add_argument(
+            "-t",
+            "--ticker",
+            dest="ticker",
+            help="Ticker to analyze",
+            type=str,
+            default=None,
+        )
+        parser.add_argument(
+            "--raw",
+            action="store_true",
+            dest="raw",
+            help="Only output raw data",
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            action="store",
+            dest="limit",
+            type=check_positive,
+            default=10,
+            help="Limit of latest price targets from analysts to print.",
+        )
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+        if ns_parser:
+            if ns_parser.ticker:
+                self.ticker = ns_parser.ticker
+                self.custom_load_wrapper([self.ticker])
+
+            business_insider_view.price_target_from_analysts(
+                symbol=self.ticker,
+                data=self.stock,
+                start_date=self.start,
+                limit=ns_parser.limit,
+                raw=ns_parser.raw,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )
+
+    @log_start_end(log=logger)
+    def call_est(self, other_args: List[str]):
+        """Process est command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            prog="est",
+            description="""Yearly estimates and quarter earnings/revenues.
+            [Source: Business Insider]""",
+        )
+        parser.add_argument(
+            "-t",
+            "--ticker",
+            dest="ticker",
+            help="Ticker to analyze",
+            type=str,
+            default=None,
+        )
+        parser.add_argument(
+            "-e",
+            "--estimate",
+            help="Estimates to get",
+            dest="estimate",
+            choices=self.ESTIMATE_CHOICES,
+            default="annualearnings",
+        )
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            if ns_parser.ticker:
+                self.ticker = ns_parser.ticker
+                self.custom_load_wrapper([self.ticker])
+
+            business_insider_view.estimates(
+                symbol=self.ticker,
+                estimate=ns_parser.estimate,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )
+
+    @log_start_end(log=logger)
+    def call_rot(self, other_args: List[str]):
+        """Process rot command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            prog="rot",
+            description="""
+                Rating over time (monthly). [Source: Finnhub]
+            """,
+        )
+        parser.add_argument(
+            "-t",
+            "--ticker",
+            dest="ticker",
+            help="Ticker to analyze",
+            type=str,
+            default=None,
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            action="store",
+            dest="limit",
+            type=check_positive,
+            default=10,
+            help="Limit of last months",
+        )
+        parser.add_argument(
+            "--raw",
+            action="store_true",
+            dest="raw",
+            help="Only output raw data",
+        )
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+        if ns_parser:
+            if ns_parser.ticker:
+                self.ticker = ns_parser.ticker
+                self.custom_load_wrapper([self.ticker])
+
+            finnhub_view.rating_over_time(
+                symbol=self.ticker,
+                limit=ns_parser.limit,
+                raw=ns_parser.raw,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )
+
+    @log_start_end(log=logger)
+    def call_rating(self, other_args: List[str]):
+        """Process rating command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            prog="rating",
+            description="""
+                Based on specific ratios, prints information whether the company
+                is a (strong) buy, neutral or a (strong) sell. The following fields are expected:
+                P/B, ROA, DCF, P/E, ROE, and D/E. [Source: Financial Modeling Prep]
+            """,
+        )
+        parser.add_argument(
+            "-t",
+            "--ticker",
+            dest="ticker",
+            help="Ticker to analyze",
+            type=str,
+            default=None,
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            action="store",
+            dest="limit",
+            type=check_positive,
+            default=10,
+            help="limit of last days to display ratings",
+        )
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            if ns_parser.ticker:
+                self.ticker = ns_parser.ticker
+                self.custom_load_wrapper([self.ticker])
+
+            if ns_parser.source == "Finviz":
+                finviz_view.analyst(
+                    symbol=self.ticker,
+                    export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
+                )
+            elif ns_parser.source == "FinancialModelingPrep":
+                fmp_view.rating(
+                    symbol=self.ticker,
+                    limit=ns_parser.limit,
+                    export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
+                )
+
+    @log_start_end(log=logger)
+    def call_sec(self, other_args: List[str]):
+        """Process sec command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            prog="sec",
+            description="""
+                Prints SEC filings of the company. The following fields are expected: Filing Date,
+                Document Date, Type, Category, Amended, and Link. [Source: Market Watch and FinancialModelingPrep]
+            """,
+        )
+        parser.add_argument(
+            "-t",
+            "--ticker",
+            dest="ticker",
+            default=self.ticker,
+            help="The ticker to be used to get SEC filings.",
+        )
+
+        parser.add_argument(
+            "-l",
+            "--limit",
+            action="store",
+            dest="limit",
+            type=check_positive,
+            default=20,
+            help="number of latest SEC filings.",
+        )
+
+        parser.add_argument(
+            "-p",
+            "--pages",
+            dest="pages",
+            type=check_positive,
+            default=5,
+            help="number of pages of SEC filings to search through, only relevant for FinancialModellingPrep.",
+        )
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            if ns_parser.ticker:
+                self.ticker = ns_parser.ticker
+                self.custom_load_wrapper([self.ticker])
+
+            if ns_parser.source == "MarketWatch":
+                marketwatch_view.sec_filings(
+                    symbol=ns_parser.ticker,
+                    limit=ns_parser.limit,
+                    export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
+                )
+            if ns_parser.source == "FinancialModelingPrep":
+                fmp_view.display_filings(
+                    ns_parser.ticker,
+                    ns_parser.pages,
+                    ns_parser.limit,
+                    ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
+                )
+
+    @log_start_end(log=logger)
+    def call_supplier(self, other_args: List[str]):
+        """Process supplier command"""
+        parser = argparse.ArgumentParser(
+            prog="supplier",
+            add_help=False,
+            description="List of suppliers from ticker provided. [Source: CSIMarket]",
+        )
+        parser.add_argument(
+            "-t",
+            "--ticker",
+            dest="ticker",
+            help="Ticker to analyze",
+            type=str,
+            default=None,
+        )
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            if ns_parser.ticker:
+                self.ticker = ns_parser.ticker
+                self.custom_load_wrapper([self.ticker])
+
+            csimarket_view.suppliers(
+                symbol=self.ticker,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )
+
+    @log_start_end(log=logger)
+    def call_customer(self, other_args: List[str]):
+        """Process customer command"""
+        parser = argparse.ArgumentParser(
+            prog="customer",
+            add_help=False,
+            description="List of customers from ticker provided. [Source: CSIMarket]",
+        )
+        parser.add_argument(
+            "-t",
+            "--ticker",
+            dest="ticker",
+            help="Ticker to analyze",
+            type=str,
+            default=None,
+        )
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            if ns_parser.ticker:
+                self.ticker = ns_parser.ticker
+                self.custom_load_wrapper([self.ticker])
+
+            csimarket_view.customers(
+                symbol=self.ticker,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )

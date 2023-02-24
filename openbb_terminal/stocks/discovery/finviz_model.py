@@ -2,8 +2,8 @@
 __docformat__ = "numpy"
 
 import pandas as pd
-import requests
-from openbb_terminal.helper_funcs import get_user_agent
+
+from openbb_terminal.helper_funcs import get_user_agent, request
 from openbb_terminal.rich_config import console
 
 timeframe_map = {
@@ -33,11 +33,11 @@ def get_heatmap_data(timeframe: str) -> pd.DataFrame:
     if timeframe not in timeframe_map:
         console.print(f"[red]{timeframe} is an invalid timeframe[/red]")
         return pd.DataFrame()
-    r = requests.get(
+    r = request(
         f"https://finviz.com/api/map_perf.ashx?t=sec&st={timeframe_map[timeframe]}",
         headers={"User-Agent": get_user_agent()},
     )
-    r2_json = requests.get(
+    r2_json = request(
         "https://finviz.com/maps/sec.json?rev=316",
         headers={"User-Agent": get_user_agent()},
     ).json()

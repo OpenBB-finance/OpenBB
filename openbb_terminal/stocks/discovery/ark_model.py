@@ -7,13 +7,12 @@ from datetime import timedelta
 
 import numpy as np
 import pandas as pd
-import requests
 import yfinance as yf
 from bs4 import BeautifulSoup
 from pandas.core.frame import DataFrame
 
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import get_user_agent
+from openbb_terminal.helper_funcs import get_user_agent, request
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -25,7 +24,6 @@ def get_ark_orders(
     sells_only: bool = False,
     fund: str = "",
 ) -> DataFrame:
-
     """Returns ARK orders in a Dataframe
 
     Parameters
@@ -45,7 +43,7 @@ def get_ark_orders(
     """
     url_orders = "https://cathiesark.com/ark-funds-combined/trades"
 
-    raw_page = requests.get(url_orders, headers={"User-Agent": get_user_agent()}).text
+    raw_page = request(url_orders, headers={"User-Agent": get_user_agent()}).text
 
     parsed_script = BeautifulSoup(raw_page, "lxml").find(
         "script", {"id": "__NEXT_DATA__"}

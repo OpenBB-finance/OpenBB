@@ -1,12 +1,20 @@
 name: Intel MacOS Build
+
 env:
   OPENBB_ENABLE_QUICK_EXIT: true
   OPENBB_LOG_COLLECT: false
   OPENBB_USE_ION: false
   OPENBB_USE_PROMPT_TOOLKIT: false
+  OPENBB_FILE_OVERWRITE: true
   PIP_DEFAULT_TIMEOUT: 100
   PYTHONNOUSERSITE: 1
+
 on: workflow_dispatch
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   Build:
     name: Intel MacOS Build
@@ -14,7 +22,7 @@ jobs:
     steps:
       # Checkout repository main branch. this allows for the commit hashes to line up
       - name: Checkout
-        uses: actions/checkout@v2.4.2
+        uses: actions/checkout@v3
       - name: Git Log
         run: git log
       # Install create-dmg
@@ -28,7 +36,7 @@ jobs:
           echo $PATH
       # Set up caching for conda env so that the workflow runs quickly after the first time
       - name: Setup Conda Caching
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/conda_pkgs_dir
           key: conda-macos-3-9-${{ hashFiles('build/conda/conda-3-9-env-full.yaml') }}
@@ -45,19 +53,19 @@ jobs:
           activate-environment: build_env
           use-only-tar-bz2: true # Needed for caching some reason
       - name: Run Poetry
-        run: poetry install
-      - name: Install Pyinstaller
-        run: poetry install -E installer
-      - name: Install Portfolio Optimization and Forecasting Toolkits
-        run: poetry install -E all
+        run: |
+          pip list
+          python -m pip install -r requirements-full.txt
       - name: Install Specific Papermill
         run: |
+          pip list
           pip uninstall papermill -y
           pip install git+https://github.com/nteract/papermill.git@main
       # This is basically the same as build4mac.sh
       - name: Build Bundle
         run: |
-          pyinstaller build/pyinstaller/terminal.spec --clean
+          pip list
+          python -m PyInstaller build/pyinstaller/terminal.spec --clean
           osascript build/pyinstaller/setup_icons.applescript
           mkdir DMG
           cp -r build/pyinstaller/macOS_package_assets/* DMG/
@@ -104,6 +112,8 @@ jobs:
           /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/prophet/stan_model/cmdstan-2.26.1/stan/lib/stan_math/lib/tbb/*.dylib
           /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/torch/.dylibs/*.dylib
           /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/sklearn/.dylibs/*.dylib
+          /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/scipy/.dylibs/*.dylib
+          /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/xgboost/.dylibs/*.dylib
 
           echo "Code Signing Other Files"
           /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/prophet/stan_model/prophet_model.bin
@@ -139,7 +149,7 @@ jobs:
           rm -rf build/terminal
           rm -rf dist
           rm -rf DMG
-      - name: Notorize DMG
+      - name: Notarize DMG
         env:
           NOTARIZE_APPLE_ID: ${{ secrets.NOTARIZE_APPLE_ID }}
           NOTARIZE_APPLE_PWD: ${{ secrets.NOTARIZE_APPLE_PWD }}
@@ -167,8 +177,22 @@ jobs:
             cp -R OpenBB\ Terminal ~/Desktop
       - name: Unmount DMG
         run: hdiutil detach /dev/disk2
+
       - name: Run Integration Tests
-        run: /Users/openbb/Desktop/OpenBB\ Terminal/.OpenBB/OpenBBTerminal /Users/openbb/actions-runner/_work/OpenBBTerminal/OpenBBTerminal/openbb_terminal/miscellaneous/scripts -t
+        run: |
+            /Users/openbb/Desktop/OpenBB\ Terminal/.OpenBB/OpenBBTerminal -t -s forecast cryptocurrency reports alternative economy futures econometrics dashboards portfolio stocks/test_stocks_options_screen.openbb stocks/test_stocks_options.openbb forex etf stocks/test_stocks_fa.openbb > result.txt
+            cat result.txt
+            grep "================================ integration test summary ================================" result.txt -A100 | tail --bytes=2000 > failed_tests.txt
+
+      - name: Upload summary to Slack
+        uses: adrey/slack-file-upload-action@master
+        with:
+          token: ${{ secrets.SLACK_API_TOKEN }}
+          initial_comment: "Intel MacOs Build Integration test summary"
+          title: "Intel MacOs Build Integration test summary"
+          path: failed_tests.txt
+          channel: ${{ secrets.SLACK_CHANNEL_ID }}
+
       - name: Remove OpenBB Folder
         run: rm -rf /Users/openbb/Desktop/OpenBB\ Terminal
       - name: Remove OpenBB Exports Folder

@@ -5,21 +5,21 @@ import logging
 import os
 from io import BytesIO
 from pathlib import Path
-from typing import Any, Dict, List, Tuple, Union
+from typing import Any, Dict, List, Optional, Tuple, Union
 from urllib.request import urlopen
 from zipfile import ZipFile
 
 import financedatabase as fd
 import pandas as pd
-import requests
 import yfinance as yf
 from bs4 import BeautifulSoup
 from openpyxl import worksheet
 from sklearn.linear_model import LinearRegression
 
 from openbb_terminal.decorators import log_start_end
+from openbb_terminal.helper_funcs import compose_export_path, request
+from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.fundamental_analysis import dcf_static
-from openbb_terminal.helper_funcs import compose_export_path
 
 logger = logging.getLogger(__name__)
 
@@ -194,12 +194,12 @@ def insert_row(
 def set_cell(
     ws: worksheet,
     cell: str,
-    text: Union[int, str, float] = None,
-    font: str = None,
-    border: str = None,
-    fill: str = None,
-    alignment: str = None,
-    num_form: str = None,
+    text: Optional[Union[int, str, float]] = None,
+    font: Optional[str] = None,
+    border: Optional[str] = None,
+    fill: Optional[str] = None,
+    alignment: Optional[str] = None,
+    num_form: Optional[str] = None,
 ):
     """Set the value for a cell
 
@@ -245,10 +245,9 @@ def get_fama_raw() -> pd.DataFrame:
     df : pd.DataFrame
         Fama French data
     """
-    with urlopen(  # nosec
+    with urlopen(  # noqa: SIM117
         "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_Factors_CSV.zip"
     ) as url:
-
         # Download Zipfile and create pandas DataFrame
         with ZipFile(BytesIO(url.read())) as zipfile:
             with zipfile.open("F-F_Research_Data_Factors.CSV") as zip_open:
@@ -404,7 +403,11 @@ def create_dataframe(symbol: str, statement: str, period: str = "annual"):
     URL += dcf_static.statement_url[statement] + per_url
     ignores = dcf_static.statement_ignore[statement]
 
-    r = requests.get(URL, headers=dcf_static.headers)
+    r = request(URL, headers=dcf_static.headers)
+
+    if r.status_code == 429:
+        console.print("Too many requests, please try again later")
+        return pd.DataFrame(), None, None
 
     if "404 - Page Not Found" in r.text:
         return pd.DataFrame(), None, None

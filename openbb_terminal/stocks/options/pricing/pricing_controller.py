@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import argparse
 import logging
-from typing import List
+from typing import List, Optional
 
 import pandas as pd
 
@@ -36,7 +36,7 @@ class PricingController(BaseController):
         ticker: str,
         selected_date: str,
         prices: pd.DataFrame,
-        queue: List[str] = None,
+        queue: Optional[List[str]] = None,
     ):
         """Constructor"""
         super().__init__(queue)

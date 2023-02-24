@@ -1,5 +1,7 @@
 ---
 title: Stocks
+keywords: [stocks, fundamental analysis, analysis, Behavioural, strategy, comparison, due diligence, discovery, dark pool, short, data, forecasting, fundamental, quantitative, government, forecating, ml, ai, machine learning, artificial intelligence, insider, trading, research, sector, industry, technical, trading hours, quote, market data, close, adjusted close, download, export, tools, openbb sdk]
+description: The Stocks menu is the high-level menu for the Public Equity asset class. It contains functions for searching and loading company market data, showing candle charts, quotes and company specifics via a large selection of sub-menus. The sub-menus break the functions down into groups based on the type of data they return. They are listed below with a short description. Refer to each sub-menu's introductory guide for a more detailed explanation of the functions within.
 ---
 
 The capabilities of the Stocks menu from the OpenBB Terminal are wrapped into a powerful SDK, enabling users to work with the data in a flexible environment that can be fully customized to meet the needs of any user. Code completion and contextual help makes it easy to use. Navigating is very similar to operating the CLI Terminal Application.
@@ -13,10 +15,10 @@ The list below are the SDK functions within the Stocks module and a short descri
 | openbb.stocks.ba       | Sub-Module |                              Behavioural Analysis |
 | openbb.stocks.ca       | Sub-Module |                               Comparison Analysis |
 | openbb.stocks.candle   |  Function  |             OHLC + Volume + Moving Averages Chart |
-| openbb.stocks.dd       | Sub-Module |                                     Due Diligence |
 | openbb.stocks.disc     | Sub-Module |                                   Stock Discovery |
 | openbb.stocks.dps      | Sub-Module |                               Dark Pools & Shorts |
-| openbb.stocks.fa       | Sub-Module |                              Fundamental Analysis |
+| openbb.stocks.fa       | Sub-Module |         Fundamental Analysis & Future Estimations |
+| openbb.stocks.filings  |  Function  |                    Feed of new filings to the SEC |
 | openbb.stocks.gov      | Sub-Module | US Government, Lobbying & Representative Activity |
 | openbb.stocks.ins      | Sub-Module |           Corporate Insider Activity (SEC Form 4) |
 | openbb.stocks.load     |  Function  |                                         Load Data |
@@ -54,7 +56,6 @@ from openbb_terminal.sdk import openbb
 The first step in a workflow might be to collect historical price data. The `load` function has the ability to request data from multiple sources. The choices for `source` are currently:
 
 - YahooFinance (default)
-- IEXCloud
 - AlphaVantage
 - Polygon
 - EODHD
@@ -197,6 +198,21 @@ quote_tob
 |   3 |       100 |     394.68 |       200 |     395.25 |
 |   4 |       100 |     394.65 |       100 |     395.29 |
 
+### Filings
+
+Get the most-recent form submissions to the SEC.
+
+```python
+filings = openbb.stocks.filings()
+filings.head(3)
+```
+
+| Date                | Ticker   |     CIK | Form Type   | Title                                           | URL                                                                                               |
+|:--------------------|:---------|--------:|:------------|:------------------------------------------------|:--------------------------------------------------------------------------------------------------|
+| 2023-01-12 14:09:25 | CYBN     | 1833141 | 6-K         | 6-K - CYBIN INC. (0001833141) (Filer)           | https://www.sec.gov/Archives/edgar/data/1833141/000162828023000949/0001628280-23-000949-index.htm |
+| 2023-01-12 13:39:25 | RYAOF    | 1038683 | 6-K         | 6-K - RYANAIR HOLDINGS PLC (0001038683) (Filer) | https://www.sec.gov/Archives/edgar/data/1038683/000165495423000350/0001654954-23-000350-index.htm |
+| 2023-01-12 13:39:25 | RYAAY    | 1038683 | 6-K         | 6-K - RYANAIR HOLDINGS PLC (0001038683) (Filer) | https://www.sec.gov/Archives/edgar/data/1038683/000165495423000350/0001654954-23-000350-index.htm |
+
 ### Upcoming Earnings
 
 The upcoming earnings calendar is part of the `Discovery` sub-module. The results can be easily filtered to use as inputs for another function.
@@ -287,7 +303,7 @@ screener_results.head(5)
 Get the links for SEC filings belonging to a company:
 
 ```python
-openbb.stocks.dd.sec(symbol = 'WMT')
+openbb.stocks.fa.sec(symbol = 'WMT')
 ```
 
 | Filing Date | Document Date | Type     | Category          | Amended | Link                                                                                 |

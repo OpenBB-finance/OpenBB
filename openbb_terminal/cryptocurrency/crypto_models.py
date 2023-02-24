@@ -1,4 +1,5 @@
 import difflib
+
 import pandas as pd
 
 from openbb_terminal.rich_config import console
@@ -64,11 +65,8 @@ def find(
 
 
 def _find_CoinGecko(key: str, query: str, limit: int) -> pd.DataFrame:
-
     # pylint: disable=C0415
-    from openbb_terminal.cryptocurrency.discovery.pycoingecko_model import (
-        get_coin_list,
-    )
+    from openbb_terminal.cryptocurrency.discovery.pycoingecko_model import get_coin_list
 
     coins_df = get_coin_list()
     coins_list = coins_df[key].to_list()
@@ -85,7 +83,6 @@ def _find_CoinGecko(key: str, query: str, limit: int) -> pd.DataFrame:
 
 
 def _find_CoinPaprika(key: str, query: str, limit: int) -> pd.DataFrame:
-
     # pylint: disable=C0415
     from openbb_terminal.cryptocurrency.due_diligence.coinpaprika_model import (
         get_coin_list,
@@ -107,14 +104,9 @@ def _find_CoinPaprika(key: str, query: str, limit: int) -> pd.DataFrame:
 
 
 def _find_Binance(key: str, query: str, limit: int) -> pd.DataFrame:
-
     # pylint: disable=C0415
-    from openbb_terminal.cryptocurrency.discovery.pycoingecko_model import (
-        get_coin_list,
-    )
-    from openbb_terminal.cryptocurrency.cryptocurrency_helpers import (
-        load_binance_map,
-    )
+    from openbb_terminal.cryptocurrency.cryptocurrency_helpers import load_binance_map
+    from openbb_terminal.cryptocurrency.discovery.pycoingecko_model import get_coin_list
 
     # TODO: Fix it in future. Determine if user looks for symbol like ETH or ethereum
     if len(query) > 5:
@@ -134,14 +126,9 @@ def _find_Binance(key: str, query: str, limit: int) -> pd.DataFrame:
 
 
 def _find_Coinbase(key: str, query: str, limit: int) -> pd.DataFrame:
-
     # pylint: disable=C0415
-    from openbb_terminal.cryptocurrency.discovery.pycoingecko_model import (
-        get_coin_list,
-    )
-    from openbb_terminal.cryptocurrency.cryptocurrency_helpers import (
-        load_coinbase_map,
-    )
+    from openbb_terminal.cryptocurrency.cryptocurrency_helpers import load_coinbase_map
+    from openbb_terminal.cryptocurrency.discovery.pycoingecko_model import get_coin_list
 
     if len(query) > 5:
         key = "id"

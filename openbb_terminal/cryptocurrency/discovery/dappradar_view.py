@@ -3,6 +3,8 @@ __docformat__ = "numpy"
 
 import logging
 import os
+from typing import Optional
+
 import numpy as np
 
 from openbb_terminal.cryptocurrency.dataframe_helpers import (
@@ -17,7 +19,12 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def display_top_nfts(limit: int = 10, sortby: str = "", export: str = "") -> None:
+def display_top_nfts(
+    limit: int = 10,
+    sortby: str = "",
+    export: str = "",
+    sheet_name: Optional[str] = None,
+) -> None:
     """Prints table showing top nft collections [Source: https://dappradar.com/]
 
     Parameters
@@ -54,11 +61,17 @@ def display_top_nfts(limit: int = 10, sortby: str = "", export: str = "") -> Non
         os.path.dirname(os.path.abspath(__file__)),
         "drnft",
         df,
+        sheet_name,
     )
 
 
 @log_start_end(log=logger)
-def display_top_games(limit: int = 10, export: str = "", sortby: str = "") -> None:
+def display_top_games(
+    limit: int = 10,
+    export: str = "",
+    sheet_name: Optional[str] = None,
+    sortby: str = "",
+) -> None:
     """Prints table showing top blockchain games [Source: https://dappradar.com/]
 
     Parameters
@@ -90,11 +103,17 @@ def display_top_games(limit: int = 10, export: str = "", sortby: str = "") -> No
         os.path.dirname(os.path.abspath(__file__)),
         "drgames",
         df,
+        sheet_name,
     )
 
 
 @log_start_end(log=logger)
-def display_top_dexes(limit: int = 10, export: str = "", sortby: str = "") -> None:
+def display_top_dexes(
+    limit: int = 10,
+    export: str = "",
+    sheet_name: Optional[str] = None,
+    sortby: str = "",
+) -> None:
     """Prints table showing top decentralized exchanges [Source: https://dappradar.com/]
 
     Parameters
@@ -126,11 +145,17 @@ def display_top_dexes(limit: int = 10, export: str = "", sortby: str = "") -> No
         os.path.dirname(os.path.abspath(__file__)),
         "drdex",
         df,
+        sheet_name,
     )
 
 
 @log_start_end(log=logger)
-def display_top_dapps(limit: int = 10, export: str = "", sortby: str = "") -> None:
+def display_top_dapps(
+    limit: int = 10,
+    export: str = "",
+    sheet_name: Optional[str] = None,
+    sortby: str = "",
+) -> None:
     """Prints table showing top decentralized exchanges [Source: https://dappradar.com/]
 
     Parameters
@@ -162,4 +187,5 @@ def display_top_dapps(limit: int = 10, export: str = "", sortby: str = "") -> No
         os.path.dirname(os.path.abspath(__file__)),
         "drdapps",
         df,
+        sheet_name,
     )

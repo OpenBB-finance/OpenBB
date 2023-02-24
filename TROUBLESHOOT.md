@@ -106,7 +106,7 @@ If you run into issues installing or `Cannot convert a symbolic Tensor...` at ru
 
 ```bash
 poetry install
-poetry install -E prediction
+poetry install -E forecast
 ```
 
 _Commands that may help you in case of an error:_

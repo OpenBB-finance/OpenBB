@@ -3,10 +3,10 @@
 # IMPORTATION THIRDPARTY
 import pytest
 
-# IMPORTATION INTERNAL
-from openbb_terminal.stocks.options import fdscanner_view
 from openbb_terminal import helper_funcs
 
+# IMPORTATION INTERNAL
+from openbb_terminal.stocks.options import fdscanner_view
 
 # pylint: disable=E1101
 
@@ -42,6 +42,7 @@ def test_display_options(mocker, toggle):
         limit=5,
         sortby=["Vol"],
         export="csv",
+        sheet_name=None,
         ascend=True,
         calls_only=toggle,
         puts_only=not toggle,

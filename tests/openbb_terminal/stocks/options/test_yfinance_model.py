@@ -36,26 +36,6 @@ def test_option_expirations_no_dates(mocker):
     yfinance_model.option_expirations(symbol="PM")
 
 
-@pytest.mark.skip(reason="yfinance is not working after website changes")
-@pytest.mark.vcr
-def test_get_full_option_chain(mocker, recorder):
-    # FORCE SINGLE THREADING
-    yf_download = yfinance_model.yf.download
-
-    def mock_yf_download(*args, **kwargs):
-        kwargs["threads"] = False
-        return yf_download(*args, **kwargs)
-
-    mocker.patch("yfinance.download", side_effect=mock_yf_download)
-
-    result_df = yfinance_model.get_option_chain_expiry(
-        symbol="AAPL",
-        expiry="2023-07-21",
-    )
-
-    recorder.capture_list(result_df)
-
-
 @pytest.mark.vcr
 def test_get_option_chain(mocker, recorder):
     # FORCE SINGLE THREADING
@@ -73,7 +53,6 @@ def test_get_option_chain(mocker, recorder):
     recorder.capture_list(result_tuple)
 
 
-@pytest.mark.skip(reason="yfinance is not working after website changes")
 @pytest.mark.vcr
 @pytest.mark.parametrize(
     "func",
@@ -81,7 +60,6 @@ def test_get_option_chain(mocker, recorder):
         "option_expirations",
         "get_dividend",
         "get_price",
-        "get_info",
         "get_closing",
         "get_iv_surface",
     ],

@@ -3,10 +3,10 @@ import logging
 import re
 
 # IMPORTATION THIRDPARTY
-
 # IMPORTATION INTERNAL
 from openbb_terminal.core.config.paths import HOME_DIRECTORY
 from openbb_terminal.core.log.generation.settings import AppSettings
+from openbb_terminal.core.log.generation.user_logger import get_user_uuid
 
 
 class FormatterWithExceptions(logging.Formatter):
@@ -37,8 +37,6 @@ class FormatterWithExceptions(logging.Formatter):
             record.funcName = record.func_name_override  # type: ignore
             record.lineno = 0
 
-        log_extra["userId"] = getattr(record, "user_id", "NA")
-
         if hasattr(record, "session_id"):
             log_extra["sessionId"] = record.session_id  # type: ignore
 
@@ -61,6 +59,13 @@ class FormatterWithExceptions(logging.Formatter):
         return text_mocked
 
     @staticmethod
+    def mock_password(text: str) -> str:
+        pattern = r'("password": ")[^"]+'
+        replacement = r"\1 FILTERED_PASSWORD "
+        text_mocked = re.sub(pattern, replacement, text)
+        return text_mocked
+
+    @staticmethod
     def mock_home_directory(text: str) -> str:
         user_home_directory = str(HOME_DIRECTORY)
         text_mocked = text.replace(user_home_directory, "MOCKING_USER_PATH")
@@ -78,6 +83,7 @@ class FormatterWithExceptions(logging.Formatter):
     def filter_piis(cls, text: str) -> str:
         text_filtered = cls.mock_ipv4(text=text)
         text_filtered = cls.mock_email(text=text_filtered)
+        text_filtered = cls.mock_password(text=text_filtered)
         text_filtered = cls.mock_home_directory(text=text_filtered)
 
         return text_filtered
@@ -142,7 +148,9 @@ class FormatterWithExceptions(logging.Formatter):
             "appId": app_settings.identifier,
             "sessionId": app_settings.session_id,
             "commitHash": app_settings.commit_hash,
+            "userId": get_user_uuid(),
         }
+
         log_extra = self.extract_log_extra(record=record)
         log_prefix_content = {**log_prefix_content, **log_extra}
         log_prefix = self.LOGPREFIXFORMAT % log_prefix_content

@@ -6,23 +6,21 @@ __docformat__ = "numpy"
 import argparse
 import logging
 from datetime import datetime, timedelta
-from typing import List
-
-from openbb_terminal.custom_prompt_toolkit import NestedCompleter
+from typing import List, Optional
 
 from openbb_terminal import feature_flags as obbff
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
-
+from openbb_terminal.futures import yfinance_model, yfinance_view
 from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
-    valid_date,
     parse_and_split_input,
+    valid_date,
 )
-from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console, MenuText
 from openbb_terminal.menu import session
-from openbb_terminal.futures import yfinance_model, yfinance_view
+from openbb_terminal.parent_classes import BaseController
+from openbb_terminal.rich_config import MenuText, console
 
 logger = logging.getLogger(__name__)
 
@@ -52,7 +50,7 @@ class FuturesController(BaseController):
     PATH = "/futures/"
     CHOICES_GENERATION = True
 
-    def __init__(self, queue: List[str] = None):
+    def __init__(self, queue: Optional[List[str]] = None):
         """Constructor"""
         super().__init__(queue)
 
@@ -139,6 +137,9 @@ class FuturesController(BaseController):
                 exchange=ns_parser.exchange,
                 description=" ".join(ns_parser.description),
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -169,6 +170,13 @@ class FuturesController(BaseController):
         )
         parser.add_argument(
             "-e",
+            "--end",
+            dest="end",
+            type=valid_date,
+            help="Final date. Default: today",
+            default=datetime.now(),
+        )
+        parser.add_argument(
             "--expiry",
             dest="expiry",
             type=valid_expiry_date,
@@ -189,8 +197,12 @@ class FuturesController(BaseController):
                 symbols=ns_parser.ticker.upper().split(","),
                 expiry=ns_parser.expiry,
                 start_date=ns_parser.start.strftime("%Y-%m-%d"),
+                end_date=ns_parser.end.strftime("%Y-%m-%d"),
                 raw=ns_parser.raw,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -227,4 +239,7 @@ class FuturesController(BaseController):
                 symbol=ns_parser.ticker.upper(),
                 raw=ns_parser.raw,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )

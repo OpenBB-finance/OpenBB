@@ -6,20 +6,19 @@ from typing import List, Optional
 import matplotlib
 import numpy as np
 import pandas as pd
-from matplotlib import dates as mdates
-from matplotlib import pyplot as plt
-
-from openbb_terminal.config_terminal import theme
-from openbb_terminal.decorators import check_api_key
-from openbb_terminal import config_plot as cfgPlot
-from openbb_terminal.cryptocurrency.overview.glassnode_model import (
-    get_btc_rainbow,
+from matplotlib import (
+    dates as mdates,
+    pyplot as plt,
 )
-from openbb_terminal.decorators import log_start_end
+
+from openbb_terminal import config_plot as cfgPlot
+from openbb_terminal.config_terminal import theme
+from openbb_terminal.cryptocurrency.overview.glassnode_model import get_btc_rainbow
+from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
-    plot_autoscale,
     is_valid_axes_count,
+    plot_autoscale,
 )
 
 logger = logging.getLogger(__name__)
@@ -31,6 +30,7 @@ def display_btc_rainbow(
     start_date: str = "2010-01-01",
     end_date: Optional[str] = None,
     export: str = "",
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Displays bitcoin rainbow chart
@@ -147,4 +147,5 @@ def display_btc_rainbow(
         os.path.dirname(os.path.abspath(__file__)),
         "btcrb",
         df_data,
+        sheet_name,
     )

@@ -28,7 +28,7 @@ logger = logging.getLogger(__name__)
 
 register_matplotlib_converters()
 
-# pylint: disable=R0912
+# pylint: disable=R0912,too-many-arguments
 
 
 @log_start_end(log=logger)
@@ -40,6 +40,7 @@ def insider_activity(
     limit: int = 10,
     raw: bool = False,
     export: str = "",
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display insider activity. [Source: Business Insider]
@@ -58,6 +59,8 @@ def insider_activity(
         Number of latest days of inside activity
     raw: bool
         Print to console
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Export dataframe data to csv,json,xlsx file
     external_axes: Optional[List[plt.Axes]], optional
@@ -73,11 +76,7 @@ def insider_activity(
         logger.warning("The insider activity on the ticker does not exist")
         console.print("[red]The insider activity on the ticker does not exist.\n[/red]")
     else:
-
-        if start_date:
-            df_insider = df_ins[start_date:].copy()  # type: ignore
-        else:
-            df_insider = df_ins.copy()
+        df_insider = df_ins[start_date:].copy() if start_date else df_ins.copy()  # type: ignore
 
         if raw:
             df_insider.index = pd.to_datetime(df_insider.index).date
@@ -146,16 +145,16 @@ def insider_activity(
                 .sum(numeric_only=True)
                 .index
             ):
-                if ind in data.index:
-                    ind_dt = ind
-                else:
-                    ind_dt = get_next_stock_market_days(ind, 1)[0]
+                ind_dt = (
+                    ind if ind in data.index else get_next_stock_market_days(ind, 1)[0]
+                )
 
                 n_stock_price = 0
-                if interval == "1440min":
-                    n_stock_price = data["Adj Close"][ind_dt]
-                else:
-                    n_stock_price = data["Close"][ind_dt]
+                n_stock_price = (
+                    data["Adj Close"][ind_dt]
+                    if interval == "1440min"
+                    else data["Close"][ind_dt]
+                )
 
                 bar_1 = ax.vlines(
                     x=ind_dt,
@@ -179,16 +178,16 @@ def insider_activity(
                 .sum(numeric_only=True)
                 .index
             ):
-                if ind in data.index:
-                    ind_dt = ind
-                else:
-                    ind_dt = get_next_stock_market_days(ind, 1)[0]
+                ind_dt = (
+                    ind if ind in data.index else get_next_stock_market_days(ind, 1)[0]
+                )
 
                 n_stock_price = 0
-                if interval == "1440min":
-                    n_stock_price = data["Adj Close"][ind_dt]
-                else:
-                    n_stock_price = data["Close"][ind_dt]
+                n_stock_price = (
+                    data["Adj Close"][ind_dt]
+                    if interval == "1440min"
+                    else data["Close"][ind_dt]
+                )
 
                 bar_2 = ax.vlines(
                     x=ind_dt,
@@ -233,4 +232,5 @@ def insider_activity(
             os.path.dirname(os.path.abspath(__file__)),
             "act",
             df_insider,
+            sheet_name,
         )

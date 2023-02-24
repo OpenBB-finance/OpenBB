@@ -1,31 +1,31 @@
 """Forex helper."""
-from datetime import datetime, timedelta
-from typing import List, Optional, Dict, Iterable
-import os
 import argparse
 import logging
+import os
 import re
+from datetime import datetime, timedelta
+from typing import Dict, Iterable, List, Optional
 
-import pandas as pd
 import matplotlib.pyplot as plt
+import mplfinance as mpf
+import numpy as np
+import pandas as pd
+import plotly.graph_objects as go
+import yfinance as yf
 from matplotlib.lines import Line2D
 from matplotlib.ticker import LogLocator, ScalarFormatter
-import mplfinance as mpf
-import yfinance as yf
-import numpy as np
-import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
-from openbb_terminal.stocks import stocks_helper
-from openbb_terminal.forex import av_model, polygon_model
-from openbb_terminal.rich_config import console
-from openbb_terminal.decorators import log_start_end
 import openbb_terminal.config_terminal as cfg
+from openbb_terminal.decorators import log_start_end
+from openbb_terminal.forex import av_model, polygon_model
 from openbb_terminal.helper_funcs import (
     is_valid_axes_count,
-    plot_autoscale,
     lambda_long_number_format_y_axis,
+    plot_autoscale,
 )
+from openbb_terminal.rich_config import console
+from openbb_terminal.stocks import stocks_helper
 
 CANDLE_SORT = [
     "adjclose",
@@ -98,6 +98,7 @@ def load(
     resolution: str = "d",
     interval: str = "1day",
     start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
     source: str = "YahooFinance",
     verbose: bool = False,
 ) -> pd.DataFrame:
@@ -115,6 +116,8 @@ def load(
         What interval to get data for, by default "1day"
     start_date : Optional[str], optional
         When to begin loading in data, by default last_year.strftime("%Y-%m-%d")
+    end_date : Optional[str], optional
+        When to end loading in data, by default None
     source : str, optional
         Where to get data from, by default "YahooFinance"
     verbose : bool, optional
@@ -124,10 +127,17 @@ def load(
     -------
     pd.DataFrame
         The loaded data
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> openbb.forex.load(from_symbol="EUR", to_symbol="USD", start_date="2020-11-30", end_date="2022-12-01")
     """
 
     if start_date is None:
         start_date = (datetime.now() - timedelta(days=365)).strftime("%Y-%m-%d")
+    if end_date is None:
+        end_date = datetime.now().strftime("%Y-%m-%d")
 
     if source in ["YahooFinance", "AlphaVantage"]:
         interval_map = INTERVAL_MAPS[source]
@@ -159,6 +169,7 @@ def load(
                 resolution=resolution,
                 interval=clean_interval,
                 start_date=start_date,
+                end_date=end_date,
             )
             df.index.name = "date"
             return df
@@ -167,6 +178,7 @@ def load(
             df = yf.download(
                 f"{from_symbol}{to_symbol}=X",
                 start=datetime.strptime(start_date, "%Y-%m-%d"),
+                end=datetime.strptime(end_date, "%Y-%m-%d"),
                 interval=clean_interval,
                 progress=verbose,
             )
@@ -185,6 +197,7 @@ def load(
             multiplier=multiplier,
             timespan=timeframe,
             start_date=start_date,
+            end_date=end_date,
         )
         df.index.name = "date"
         return df
@@ -262,10 +275,9 @@ def display_candle(
     if "Volume" in data.columns:
         has_volume = bool(data["Volume"].sum() > 0)
 
-    if add_trend:
-        if (data.index[1] - data.index[0]).total_seconds() >= 86400:
-            data = stocks_helper.find_trendline(data, "OC_High", "high")
-            data = stocks_helper.find_trendline(data, "OC_Low", "low")
+    if add_trend and (data.index[1] - data.index[0]).total_seconds() >= 86400:
+        data = stocks_helper.find_trendline(data, "OC_High", "high")
+        data = stocks_helper.find_trendline(data, "OC_Low", "low")
 
     if use_matplotlib:
         ap0 = []

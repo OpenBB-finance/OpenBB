@@ -246,10 +246,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 "--limit=1",
                 "--export=csv",
             ],
-            dict(
-                limit=1,
-                export="csv",
-            ),
+            dict(limit=1, export="csv", sheet_name=None),
         ),
         (
             "call_hsi",
@@ -258,10 +255,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 "--limit=1",
                 "--export=csv",
             ],
-            dict(
-                limit=1,
-                export="csv",
-            ),
+            dict(limit=1, export="csv", sheet_name=None),
         ),
         (
             "call_prom",
@@ -272,12 +266,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 "--tier=T1",
                 "--export=csv",
             ],
-            dict(
-                num=1,
-                limit=2,
-                tier="T1",
-                export="csv",
-            ),
+            dict(num=1, limit=2, tier="T1", export="csv", sheet_name=None),
         ),
         (
             "call_pos",
@@ -288,12 +277,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 "--reverse",
                 "--export=csv",
             ],
-            dict(
-                limit=1,
-                sortby="sv",
-                ascend=True,
-                export="csv",
-            ),
+            dict(limit=1, sortby="sv", ascend=True, export="csv", sheet_name=None),
         ),
         (
             "call_sidtc",
@@ -303,11 +287,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 "--sort=si",
                 "--export=csv",
             ],
-            dict(
-                limit=1,
-                sortby="si",
-                export="csv",
-            ),
+            dict(limit=1, sortby="si", export="csv", sheet_name=None),
         ),
         (
             "call_psi",
@@ -326,6 +306,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 limit=1,
                 raw=True,
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -338,10 +319,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 "--export=csv",
             ],
             dict(
-                symbol="MOCK_TICKER",
-                limit=1,
-                raw=True,
-                export="csv",
+                symbol="MOCK_TICKER", limit=1, raw=True, export="csv", sheet_name=None
             ),
         ),
         (
@@ -350,10 +328,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             [
                 "--export=csv",
             ],
-            dict(
-                symbol="MOCK_TICKER",
-                export="csv",
-            ),
+            dict(symbol="MOCK_TICKER", export="csv", sheet_name=None),
         ),
         (
             "call_ftd",
@@ -377,6 +352,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 limit=1,
                 raw=True,
                 export="csv",
+                sheet_name=None,
             ),
         ),
         (
@@ -388,10 +364,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 "--export=csv",
             ],
             dict(
-                symbol="MOCK_TICKER",
-                limit=10,
-                raw=True,
-                export="csv",
+                symbol="MOCK_TICKER", limit=10, raw=True, export="csv", sheet_name=None
             ),
         ),
         # (
@@ -411,6 +384,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
         #         asc=True,
         #         mpl=True,
         #         export="csv",
+        #         sheet_name=None
         #     ),
         # ),
     ],

@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
+from typing import Optional
 
 from openbb_terminal.cryptocurrency.dataframe_helpers import (
     lambda_very_long_number_formatter,
@@ -13,6 +14,8 @@ from openbb_terminal.helper_funcs import export_data, print_rich_table
 
 logger = logging.getLogger(__name__)
 
+# pylint: disable=too-many-arguments
+
 
 @log_start_end(log=logger)
 def display_uni_tokens(
@@ -21,6 +24,7 @@ def display_uni_tokens(
     sortby: str = "index",
     ascend: bool = False,
     export: str = "",
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Prints table showing tokens trade-able on Uniswap DEX.
     [Source: https://thegraph.com/en/]
@@ -65,11 +69,12 @@ def display_uni_tokens(
         os.path.dirname(os.path.abspath(__file__)),
         "tokens",
         df_data,
+        sheet_name,
     )
 
 
 @log_start_end(log=logger)
-def display_uni_stats(export: str = "") -> None:
+def display_uni_stats(export: str = "", sheet_name: Optional[str] = None) -> None:
     """Prints table showing base statistics about Uniswap DEX. [Source: https://thegraph.com/en/]
     [Source: https://thegraph.com/en/]
 
@@ -95,6 +100,7 @@ def display_uni_stats(export: str = "") -> None:
         os.path.dirname(os.path.abspath(__file__)),
         "stats",
         df_data,
+        sheet_name,
     )
 
 
@@ -108,6 +114,7 @@ def display_recently_added(
     sortby: str = "created",
     ascend: bool = False,
     export: str = "",
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Prints table showing Lastly added pairs on Uniswap DEX.
     [Source: https://thegraph.com/en/]
@@ -163,12 +170,17 @@ def display_recently_added(
         os.path.dirname(os.path.abspath(__file__)),
         "pairs",
         df_data,
+        sheet_name,
     )
 
 
 @log_start_end(log=logger)
 def display_uni_pools(
-    limit: int = 20, sortby: str = "volumeUSD", ascend: bool = True, export: str = ""
+    limit: int = 20,
+    sortby: str = "volumeUSD",
+    ascend: bool = True,
+    export: str = "",
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Prints table showing uniswap pools by volume.
     [Source: https://thegraph.com/en/]
@@ -211,12 +223,17 @@ def display_uni_pools(
         os.path.dirname(os.path.abspath(__file__)),
         "pools",
         df_data,
+        sheet_name,
     )
 
 
 @log_start_end(log=logger)
 def display_last_uni_swaps(
-    limit: int = 10, sortby: str = "timestamp", ascend: bool = False, export: str = ""
+    limit: int = 10,
+    sortby: str = "timestamp",
+    ascend: bool = False,
+    export: str = "",
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Prints table showing last swaps done on Uniswap
     [Source: https://thegraph.com/en/]
@@ -245,4 +262,5 @@ def display_last_uni_swaps(
         os.path.dirname(os.path.abspath(__file__)),
         "swaps",
         df,
+        sheet_name,
     )

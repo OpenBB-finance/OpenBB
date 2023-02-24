@@ -3,16 +3,14 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import Tuple, Union, List, Optional
 import warnings
-
+from typing import List, Optional, Tuple, Union
 
 import pandas as pd
-
 from darts import TimeSeries
 from darts.models import LinearRegressionModel
-from openbb_terminal.decorators import log_start_end
 
+from openbb_terminal.decorators import log_start_end
 from openbb_terminal.forecast import helpers
 
 logger = logging.getLogger(__name__)
@@ -23,12 +21,13 @@ def get_linear_regression_data(
     data: Union[pd.Series, pd.DataFrame],
     target_column: str = "close",
     n_predict: int = 5,
-    past_covariates: str = None,
+    past_covariates: Optional[str] = None,
     train_split: float = 0.85,
     forecast_horizon: int = 5,
     output_chunk_length: int = 5,
     lags: Union[int, List[int]] = 14,
     random_state: Optional[int] = None,
+    metric: str = "mape",
 ) -> Tuple[
     List[TimeSeries],
     List[TimeSeries],
@@ -58,6 +57,8 @@ def get_linear_regression_data(
         lagged target values to predict the next time step
     random_state: Optional[int]
         The state for the model
+    metric: str
+        The metric to use for the model. Defaults to "mape".
 
     Returns
     -------
@@ -79,10 +80,7 @@ def get_linear_regression_data(
         past_covariates, data, train_split, use_scalers
     )
 
-    if past_covariates is not None:
-        lags_past_covariates = lags
-    else:
-        lags_past_covariates = None
+    lags_past_covariates = lags if past_covariates is not None else None
 
     lin_reg_model = LinearRegressionModel(
         output_chunk_length=output_chunk_length,
@@ -114,4 +112,5 @@ def get_linear_regression_data(
         train_split,
         forecast_horizon,
         n_predict,
+        metric,
     )

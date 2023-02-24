@@ -1,6 +1,23 @@
 ---
 sidebar_position: 1
 title: Installation
+description: The OpenBB Terminal can be directly installed on your computer via our installation programs. Within this section, you are guided through the installation process and how to launch the program. If you struggle with the installation process, please don’t hesitate to reach us on Discord or visit our contact page.
+keywords:
+  [
+    installation,
+    installer,
+    install,
+    guide,
+    mac,
+    windows,
+    linux,
+    python,
+    github,
+    macos,
+    how to,
+    explanation,
+    openbb terminal,
+  ]
 ---
 
 import Tabs from '@theme/Tabs';
@@ -16,11 +33,11 @@ OpenBB Terminal is available on all major platforms. With Windows and macOS you 
 <Tabs>
   <TabItem value="windows" label="Windows">
   <div class="gdoc-page">
-  <p>This section provides you with the installation file as well as the guide to install the OpenBB Terminal via Windows.</p>
+  <p>This section provides you with the installation file as well as the guide to install the OpenBB Terminal via Windows (10 or greater).</p>
 
 </div><p>Download the installer from the button below:</p>
 
-<InstallerButton type="windows" href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v2.1.0/Windows10.OpenBB.Terminal.v2.1.0.exe" label="Windows Installer" />
+<InstallerButton type="windows" href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v2.4.1/Windows.OpenBB.Terminal.v2.4.1.exe" label="Windows Installer" />
 
 <p>Follow along with the instructions of the video or use the steps below to run the OpenBB Terminal:</p>
 
@@ -39,8 +56,6 @@ OpenBB Terminal is available on all major platforms. With Windows and macOS you 
 
 </div>
 
-
-
 <div class="gdoc-columns__content gdoc-markdown--nested">
     <p><strong>Step 3: Double-click on the application that appeared on your Desktop, you are now able to run the OpenBB Terminal</strong></p>
     <p align="center"><a target="_blank" href="https://openbb-web-assets.s3.amazonaws.com/docs/installation/icon.png"><img width="100" alt="run_the_terminal" src="https://openbb-web-assets.s3.amazonaws.com/docs/installation/icon.png"></img></a></p>
@@ -56,14 +71,16 @@ OpenBB Terminal is available on all major platforms. With Windows and macOS you 
 
 For Mac there are two installers available, one for Intel and one for Apple Silicon (M1). Please download the correct one for your machine.
 
-<ul>
-<li>If you are using Mac Intel: <br />
-  <InstallerButton href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v2.1.0/x86.64.MacOS.OpenBB.Terminal.v2.1.0.dmg" label="Mac Intel Installer" />
-</li>
-<li>If you are using Mac Apple Silicon (M1): <br />
-  <InstallerButton href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v2.1.0/ARM64.MacOS.OpenBB.Terminal.v2.1.0.dmg" label="Mac M1 Installer" />
-</li>
-</ul>
+<div className="flex justify-between">
+<div className="flex items-center flex-col">If you are using Mac Intel:
+  <InstallerButton href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v2.4.1/x86.64.MacOS.OpenBB.Terminal.v2.4.1.dmg" label="Mac Intel Installer" />
+  </div>
+  <br/>
+<div className="flex items-center flex-col">
+If you are using Mac Apple Silicon (M1):
+  <InstallerButton href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v2.4.1/ARM64.MacOS.OpenBB.Terminal.v2.4.1.dmg" label="Mac M1 Installer" />
+  </div>
+</div>
 
 <p>Follow along with the instructions of the video or use the steps below to run the OpenBB Terminal:</p>
 
@@ -96,7 +113,6 @@ Right-Click the app and select <code>Open</code>. You will see a message saying 
 <p>Follow along with the instructions of the video or use the steps below to run the OpenBB Terminal:</p>
 
 <iframe width="100%" height="450" src="https://www.youtube.com/embed/NjXPIfDzQMk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-
 
 ## 1. Windows
 
@@ -178,7 +194,7 @@ Make sure both of these options are enabled:
 - `Allow connections from network clients`
 
 It should look like this:
-  ![Screen Shot 2021-09-08 at 12 21 48 PM](https://user-images.githubusercontent.com/18151143/132548605-235d774b-9aa6-4a45-afcf-58fb775d376a.png)
+![Screen Shot 2021-09-08 at 12 21 48 PM](https://user-images.githubusercontent.com/18151143/132548605-235d774b-9aa6-4a45-afcf-58fb775d376a.png)
 
 ### 2.3. Get Docker IP
 
@@ -263,14 +279,15 @@ Miniconda is a python environment and package manager. It is required if you wan
 have the dependencies working straight away.
 
 - Go [here](https://docs.conda.io/en/latest/miniconda.html#latest-miniconda-installer-links) to find the download for your operating system or use the links below:
+
   - If you are using macOS [Miniconda for MacOS](https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh)
   - If you are using WSL or Linux [Miniconda for Linux](https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh)
   - If you are using a Raspberry PI [Miniconda for Raspberry PI](https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-aarch64.sh)
   - If you are using Windows [Miniconda for Windows](https://repo.anaconda.com/miniconda/Miniconda3-latest-Windows-x86_64.exe).
 
-      **ONLY REQUIRED ON WINDOWS IF NOT USING WSL**, Install/update Microsoft C++ Build Tools from here: <https://visualstudio.microsoft.com/visual-cpp-build-tools/>
+    **ONLY REQUIRED ON WINDOWS IF NOT USING WSL**, Install/update Microsoft C++ Build Tools from here: <https://visualstudio.microsoft.com/visual-cpp-build-tools/>
 
-   **NOTE for macOS users:** The link above gets you the Intel version of miniconda meaning if you're on an Apple Silicon powered machine you will be using the terminal through Apple's rosetta2 layer. We recommend sticking to this distribution for better compatibility until the dependency developers fully catch up with Apple's transition to Apple Silicon.
+    **NOTE for macOS users:** The link above gets you the Intel version of miniconda meaning if you're on an Apple Silicon powered machine you will be using the terminal through Apple's rosetta2 layer. We recommend sticking to this distribution for better compatibility until the dependency developers fully catch up with Apple's transition to Apple Silicon.
 
 - After following the steps, confirm that you have it by opening a terminal and running: `conda -V`. The output should be something along the lines of: `conda 22.9.0`
 
@@ -368,7 +385,7 @@ poetry install -E optimization
 To install the Machine Learning Toolkit run:
 
 ```bash
-poetry install -E prediction
+poetry install -E forecast
 ```
 
 To install both the Portfolio Optimization and the Machine Learning Toolkit run:
@@ -410,9 +427,9 @@ Requirements files that you can find in the project root:
 
 You can install them with with pip
 
- ```bash
- pip install -r requirements.txt
- ```
+```bash
+pip install -r requirements.txt
+```
 
 The dependency tree is solved by poetry.
 

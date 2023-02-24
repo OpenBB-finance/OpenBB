@@ -1,7 +1,7 @@
 import itertools
 import logging
 import os
-from typing import List
+from typing import List, Optional
 
 import numpy as np
 import pandas as pd
@@ -105,7 +105,12 @@ def lambda_green_highlight(values):
 
 
 @log_start_end(log=logger)
-def print_insider_data(type_insider: str = "lcb", limit: int = 10, export: str = ""):
+def print_insider_data(
+    type_insider: str = "lcb",
+    limit: int = 10,
+    export: str = "",
+    sheet_name: Optional[str] = None,
+):
     """Print insider data
 
     Parameters
@@ -114,6 +119,8 @@ def print_insider_data(type_insider: str = "lcb", limit: int = 10, export: str =
         Insider type of data. Available types can be accessed through get_insider_types().
     limit: int
         Limit of data rows to display
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Export data format
     """
@@ -128,7 +135,11 @@ def print_insider_data(type_insider: str = "lcb", limit: int = 10, export: str =
         )
 
         export_data(
-            export, os.path.dirname(os.path.abspath(__file__)), type_insider, df
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            type_insider,
+            df,
+            sheet_name,
         )
 
         if df.shape[1] == 13:
@@ -146,6 +157,7 @@ def print_insider_filter(
     limit: int = 10,
     links: bool = False,
     export: str = "",
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Print insider filter based on loaded preset. [Source: OpenInsider]
 
@@ -162,10 +174,11 @@ def print_insider_filter(
     export : str
         Format to export data
     """
-    if symbol:
-        link = f"http://openinsider.com/screener?s={symbol}"
-    else:
-        link = get_open_insider_link(preset)
+    link = (
+        f"http://openinsider.com/screener?s={symbol}"
+        if symbol
+        else get_open_insider_link(preset)
+    )
 
     if not link:
         return
@@ -240,9 +253,12 @@ def print_insider_filter(
             console.print(d_trade_types[tradetype])
 
     if export:
-        if symbol:
-            cmd = "stats"
-        else:
-            cmd = "filter"
+        cmd = "stats" if symbol else "filter"
 
-        export_data(export, os.path.dirname(os.path.abspath(__file__)), cmd, df_insider)
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            cmd,
+            df_insider,
+            sheet_name,
+        )

@@ -1,9 +1,9 @@
 """Check reserved command arguments in Controllers"""
-import os
-import sys
 import glob
+import os
 import re
-from typing import Optional, Any
+import sys
+from typing import Any, Optional
 
 RESERVED_ARGS = {
     "f": "file",

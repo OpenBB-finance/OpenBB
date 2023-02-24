@@ -5,12 +5,11 @@ __docformat__ = "numpy"
 # flake8: noqa
 import argparse
 import logging
-from typing import Any, Optional, List, Dict
+from typing import Any, Dict, List, Optional
 
 try:
-    import torch
-
     import darts
+    import torch
 
     darts_latest = "0.23.0"
     # check darts version
@@ -50,16 +49,21 @@ except ModuleNotFoundError:
 import pandas as pd
 import psutil
 
+
 # ignore  pylint(ungrouped-imports)
 # pylint: disable=ungrouped-imports
+
+from openbb_terminal import feature_flags as obbff
+from openbb_terminal.common import common_model
+
 from openbb_terminal.core.config.paths import (
-    USER_EXPORTS_DIRECTORY,
     USER_CUSTOM_IMPORTS_DIRECTORY,
+    USER_EXPORTS_DIRECTORY,
     USER_FORECAST_WHISPER_DIRECTORY,
 )
-from openbb_terminal import feature_flags as obbff
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
+
 from openbb_terminal.helper_funcs import (
     check_positive,
     check_positive_float,
@@ -74,33 +78,45 @@ from openbb_terminal.helper_funcs import (
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import console, MenuText
+
 from openbb_terminal.forecast import (
-    forecast_model,
-    forecast_view,
-    autoselect_view,
+    anom_view,
     autoarima_view,
     autoces_view,
     autoets_view,
-    mstl_view,
-    rwd_view,
-    seasonalnaive_view,
+    autoselect_view,
+    brnn_view,
     expo_model,
     expo_view,
-    linregr_view,
-    nbeats_view,
-    regr_view,
-    tcn_view,
-    theta_view,
-    rnn_view,
-    brnn_view,
-    tft_view,
+    forecast_model,
+    forecast_view,
     helpers,
-    trans_view,
+    linregr_view,
+    mstl_view,
+    nbeats_view,
     nhits_view,
+    regr_view,
+    rnn_view,
+    rwd_view,
+    seasonalnaive_view,
+    tcn_view,
+    tft_view,
+    theta_view,
+    trans_view,
     whisper_model,
 )
-
-from openbb_terminal.common import common_model
+from openbb_terminal.helper_funcs import (
+    EXPORT_ONLY_FIGURES_ALLOWED,
+    EXPORT_ONLY_RAW_DATA_ALLOWED,
+    NO_EXPORT,
+    check_positive,
+    check_positive_float,
+    log_and_raise,
+    valid_date,
+)
+from openbb_terminal.menu import session
+from openbb_terminal.parent_classes import BaseController
+from openbb_terminal.rich_config import MenuText, console
 
 logger = logging.getLogger(__name__)
 empty_df = pd.DataFrame()
@@ -160,6 +176,7 @@ class ForecastController(BaseController):
         "season",
         "which",
         "nhits",
+        "anom",
         "whisper",
     ]
     pandas_plot_choices = [
@@ -188,7 +205,10 @@ class ForecastController(BaseController):
     list_dataset_cols: list = list()
 
     def __init__(
-        self, ticker: str = "", data: pd.DataFrame = empty_df, queue: List[str] = None
+        self,
+        ticker: str = "",
+        data: pd.DataFrame = empty_df,
+        queue: Optional[List[str]] = None,
     ):
         """Constructor"""
         super().__init__(queue)
@@ -273,7 +293,7 @@ class ForecastController(BaseController):
         # Load in any newly exported files
         self.DATA_FILES = forecast_model.get_default_files()
         if session and obbff.USE_PROMPT_TOOLKIT:
-            choices: dict = self.choices_default
+            choices: dict = self.choices_default  # type: ignore
 
             self.choices = choices
             self.completer = NestedCompleter.from_nested_dict(choices)
@@ -348,9 +368,11 @@ class ForecastController(BaseController):
         mt.add_cmd("trans", self.files)
         mt.add_cmd("tft", self.files)
         mt.add_raw("\n")
+        mt.add_info("_anomaly_")
+        mt.add_cmd("anom", self.files)
         mt.add_info("_misc_")
         mt.add_cmd("whisper", WHISPER_AVAILABLE)
-
+        
         console.print(text=mt.menu_text, menu="Forecast")
 
     def custom_reset(self):
@@ -400,6 +422,7 @@ class ForecastController(BaseController):
         naive: bool = False,
         explainability_raw: bool = False,
         export_pred_raw: bool = False,
+        metric: bool = False,
     ):
         if hidden_size:
             parser.add_argument(
@@ -575,7 +598,7 @@ class ForecastController(BaseController):
                 action="store",
                 dest="model_type",
                 default="LSTM",
-                help='Either a string specifying the RNN module type ("RNN", "LSTM" or "GRU")',
+                help='Enter a string specifying the RNN module type ("RNN", "LSTM" or "GRU")',
             )
         if dropout is not None:
             parser.add_argument(
@@ -673,6 +696,17 @@ class ForecastController(BaseController):
                 dest="export_pred_raw",
                 default=False,
                 help="Export predictions to a csv file.",
+            )
+
+        if metric:
+            parser.add_argument(
+                "--metric",
+                type=str,
+                action="store",
+                dest="metric",
+                default="mape",
+                choices=["rmse", "mse", "mape", "smape"],
+                help="Calculate precision based on a specific metric (rmse, mse, mape)",
             )
 
             # if user does not put in --dataset
@@ -791,7 +825,6 @@ class ForecastController(BaseController):
         )
 
         if ns_parser:
-
             console.print(
                 f"[green]Current Compute Device (CPU or GPU):[/green] {self.device.upper()}"
             )
@@ -973,7 +1006,14 @@ class ForecastController(BaseController):
                 return
 
             df = self.datasets[ns_parser.target_dataset]
-            forecast_view.describe_df(df, ns_parser.target_dataset, ns_parser.export)
+            forecast_view.describe_df(
+                df,
+                ns_parser.target_dataset,
+                ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )
 
     @log_start_end(log=logger)
     def call_plot(self, other_args: List[str]):
@@ -1700,6 +1740,7 @@ class ForecastController(BaseController):
             self.datasets[ns_parser.target_dataset],
             ns_parser.type,
             ns_parser.target_dataset,
+            ns_parser.sheet_name,
         )
 
     # Best Statistical Model
@@ -2151,6 +2192,7 @@ class ForecastController(BaseController):
             end=True,
             naive=True,
             export_pred_raw=True,
+            metric=True,
         )
         ns_parser = self.parse_known_args_and_warn(
             parser,
@@ -2180,6 +2222,7 @@ class ForecastController(BaseController):
                 end_date=ns_parser.s_end_date,
                 naive=ns_parser.naive,
                 export_pred_raw=ns_parser.export_pred_raw,
+                metric=ns_parser.metric,
             )
 
     @log_start_end(log=logger)
@@ -2212,6 +2255,7 @@ class ForecastController(BaseController):
             end=True,
             naive=True,
             export_pred_raw=True,
+            metric=True,
         )
         ns_parser = self.parse_known_args_and_warn(
             parser,
@@ -2239,6 +2283,7 @@ class ForecastController(BaseController):
                 end_date=ns_parser.s_end_date,
                 naive=ns_parser.naive,
                 export_pred_raw=ns_parser.export_pred_raw,
+                metric=ns_parser.metric,
             )
 
     @log_start_end(log=logger)
@@ -2298,6 +2343,7 @@ class ForecastController(BaseController):
             end=True,
             naive=True,
             export_pred_raw=True,
+            metric=True,
         )
         ns_parser = self.parse_known_args_and_warn(
             parser,
@@ -2334,6 +2380,7 @@ class ForecastController(BaseController):
                 end_date=ns_parser.s_end_date,
                 naive=ns_parser.naive,
                 export_pred_raw=ns_parser.export_pred_raw,
+                metric=ns_parser.metric,
             )
 
     @log_start_end(log=logger)
@@ -2410,6 +2457,7 @@ class ForecastController(BaseController):
             end=True,
             naive=True,
             export_pred_raw=True,
+            metric=True,
         )
         ns_parser = self.parse_known_args_and_warn(
             parser,
@@ -2452,6 +2500,7 @@ class ForecastController(BaseController):
                 end_date=ns_parser.s_end_date,
                 naive=ns_parser.naive,
                 export_pred_raw=ns_parser.export_pred_raw,
+                metric=ns_parser.metric,
             )
 
     @log_start_end(log=logger)
@@ -2519,6 +2568,7 @@ class ForecastController(BaseController):
             end=True,
             naive=True,
             export_pred_raw=True,
+            metric=True,
         )
         ns_parser = self.parse_known_args_and_warn(
             parser,
@@ -2562,6 +2612,7 @@ class ForecastController(BaseController):
                 end_date=ns_parser.s_end_date,
                 naive=ns_parser.naive,
                 export_pred_raw=ns_parser.export_pred_raw,
+                metric=ns_parser.metric,
             )
 
     @log_start_end(log=logger)
@@ -2598,6 +2649,7 @@ class ForecastController(BaseController):
             naive=True,
             explainability_raw=True,
             export_pred_raw=True,
+            metric=True,
         )
         ns_parser = self.parse_known_args_and_warn(
             parser,
@@ -2632,6 +2684,7 @@ class ForecastController(BaseController):
                 naive=ns_parser.naive,
                 explainability_raw=ns_parser.explainability_raw,
                 export_pred_raw=ns_parser.export_pred_raw,
+                metric=ns_parser.metric,
             )
 
     @log_start_end(log=logger)
@@ -2667,6 +2720,7 @@ class ForecastController(BaseController):
             naive=True,
             explainability_raw=True,
             export_pred_raw=True,
+            metric=True,
         )
         ns_parser = self.parse_known_args_and_warn(
             parser,
@@ -2700,6 +2754,7 @@ class ForecastController(BaseController):
                 naive=ns_parser.naive,
                 explainability_raw=ns_parser.explainability_raw,
                 export_pred_raw=ns_parser.export_pred_raw,
+                metric=ns_parser.metric,
             )
 
     @log_start_end(log=logger)
@@ -2751,6 +2806,7 @@ class ForecastController(BaseController):
             end=True,
             naive=True,
             export_pred_raw=True,
+            metric=True,
         )
         ns_parser = self.parse_known_args_and_warn(
             parser,
@@ -2792,6 +2848,7 @@ class ForecastController(BaseController):
                 end_date=ns_parser.s_end_date,
                 naive=ns_parser.naive,
                 export_pred_raw=ns_parser.export_pred_raw,
+                metric=ns_parser.metric,
             )
 
     @log_start_end(log=logger)
@@ -2879,6 +2936,7 @@ class ForecastController(BaseController):
             end=True,
             naive=True,
             export_pred_raw=True,
+            metric=True,
         )
         ns_parser = self.parse_known_args_and_warn(
             parser,
@@ -2922,6 +2980,7 @@ class ForecastController(BaseController):
                 end_date=ns_parser.s_end_date,
                 naive=ns_parser.naive,
                 export_pred_raw=ns_parser.export_pred_raw,
+                metric=ns_parser.metric,
             )
 
     @log_start_end(log=logger)
@@ -2995,6 +3054,7 @@ class ForecastController(BaseController):
             end=True,
             naive=True,
             export_pred_raw=True,
+            metric=True,
         )
         ns_parser = self.parse_known_args_and_warn(
             parser,
@@ -3038,6 +3098,7 @@ class ForecastController(BaseController):
                 end_date=ns_parser.s_end_date,
                 naive=ns_parser.naive,
                 export_pred_raw=ns_parser.export_pred_raw,
+                metric=ns_parser.metric,
             )
 
     @log_start_end(log=logger)
@@ -3129,6 +3190,7 @@ class ForecastController(BaseController):
             end=True,
             naive=True,
             export_pred_raw=True,
+            metric=True,
         )
         ns_parser = self.parse_known_args_and_warn(
             parser,
@@ -3173,6 +3235,52 @@ class ForecastController(BaseController):
                 end_date=ns_parser.s_end_date,
                 naive=ns_parser.naive,
                 export_pred_raw=ns_parser.export_pred_raw,
+                metric=ns_parser.metric,
+            )
+
+    @log_start_end(log=logger)
+    def call_anom(self, other_args: List[str]):
+        """Process ANOM command"""
+        parser = argparse.ArgumentParser(
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            add_help=False,
+            prog="anom",
+            description="""
+                Perform a Quantile Anomaly detection on a given dataset:
+                https://unit8co.github.io/darts/generated_api/darts.ad.detectors.quantile_detector.html
+            """,
+        )
+
+        # if user does not put in --dataset
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "--dataset")
+
+        parser = self.add_standard_args(
+            parser,
+            train_split=True,
+            target_column=True,
+            target_dataset=True,
+            forecast_only=True,
+            start=True,
+            end=True,
+        )
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            export_allowed=EXPORT_ONLY_FIGURES_ALLOWED,
+        )
+
+        if ns_parser:
+            if not helpers.check_parser_input(ns_parser, self.datasets):
+                return
+
+            anom_view.display_anomaly_detection(
+                data=self.datasets[ns_parser.target_dataset],
+                dataset_name=ns_parser.target_dataset,
+                target_column=ns_parser.target_column,
+                train_split=ns_parser.train_split,
+                start_date=ns_parser.s_start_date,
+                end_date=ns_parser.s_end_date,
             )
 
     @log_start_end(log=logger)
