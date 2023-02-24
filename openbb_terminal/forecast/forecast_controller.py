@@ -370,9 +370,10 @@ class ForecastController(BaseController):
         mt.add_raw("\n")
         mt.add_info("_anomaly_")
         mt.add_cmd("anom", self.files)
+        mt.add_raw("\n")
         mt.add_info("_misc_")
         mt.add_cmd("whisper", WHISPER_AVAILABLE)
-        
+
         console.print(text=mt.menu_text, menu="Forecast")
 
     def custom_reset(self):
