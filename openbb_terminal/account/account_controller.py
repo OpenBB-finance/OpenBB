@@ -135,37 +135,31 @@ class AccountController(BaseController):
         )
         parser.add_argument(
             "--on",
-            dest="on",
+            dest="sync",
             help="Turn on sync",
             action="store_true",
-            default=False,
         )
         parser.add_argument(
             "--off",
-            dest="off",
+            dest="sync",
             help="Turn on sync",
-            action="store_true",
-            default=False,
+            action="store_false",
         )
+        parser.set_defaults(sync=None)
+
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            current_user = get_current_user()
-            if ns_parser.on:
-                if not current_user.preferences.SYNC_ENABLED:
-                    FeatureFlagsController.set_feature_flag(
-                        "OPENBB_SYNC_ENABLED", True, force=True
-                    )
-            elif ns_parser.off and current_user.preferences.SYNC_ENABLED:
-                FeatureFlagsController.set_feature_flag(
-                    "OPENBB_SYNC_ENABLED", False, force=True
-                )
-
-            sync = "ON" if current_user.preferences.SYNC_ENABLED else "OFF"
-
-            if ns_parser.on or ns_parser.off:
-                console.print(f"[info]sync:[/info] {sync}")
-            else:
+            if ns_parser.sync is None:
+                sync = get_current_user().preferences.SYNC_ENABLED
                 console.print(f"sync is {sync}, use --on or --off to change.")
+            else:
+                FeatureFlagsController.set_feature_flag(
+                    name="OPENBB_SYNC_ENABLED",
+                    value=ns_parser.sync,
+                    force=True,
+                )
+                sync = get_current_user().preferences.SYNC_ENABLED
+                console.print(f"[info]sync:[/info] {sync}")
 
     @log_start_end(log=logger)
     def call_pull(self, other_args: List[str]):
