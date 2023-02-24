@@ -11,7 +11,7 @@ import numpy as np
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
 
-from openbb_terminal.config_plot import PLOT_DPI
+
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import check_api_key, log_start_end
@@ -117,7 +117,9 @@ def display_fred_series(
         # Try to get everything onto the same 0-10 scale.
         # To do so, think in scientific notation.  Divide the data by whatever the E would be
         if external_axes is None:
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI)
+            _, ax = plt.subplots(
+                figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
+            )
         elif is_valid_axes_count(external_axes, 1):
             (ax,) = external_axes
         else:
@@ -212,7 +214,9 @@ def display_yield_curve(
         console.print(f"[red]Yield data not found for {date_of_yield}.[/red]\n")
         return
     if external_axes is None:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI)
+        _, ax = plt.subplots(
+            figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
+        )
     elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
     else:

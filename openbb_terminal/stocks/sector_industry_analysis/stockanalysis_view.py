@@ -11,7 +11,7 @@ import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
 
-from openbb_terminal.config_plot import PLOT_DPI
+
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import log_start_end
@@ -177,7 +177,9 @@ def display_plots_financials(
     else:
         # This plot has 1 axis
         if external_axes is None:
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI)
+            _, ax = plt.subplots(
+                figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
+            )
         elif is_valid_axes_count(external_axes, 1):
             (ax,) = external_axes
         else:

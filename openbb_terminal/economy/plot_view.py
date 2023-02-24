@@ -6,7 +6,7 @@ from typing import Any, Dict, List, Optional
 import pandas as pd
 from matplotlib import pyplot as plt
 
-from openbb_terminal.config_plot import PLOT_DPI
+
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.helper_funcs import export_data, plot_autoscale, print_rich_table
@@ -36,7 +36,9 @@ def show_plot(
     Plots the data.
     """
     if external_axes is None:
-        _, ax1 = plt.subplots(figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI)
+        _, ax1 = plt.subplots(
+            figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
+        )
 
     else:
         ax1, ax2 = external_axes

@@ -9,7 +9,7 @@ import matplotlib.dates as mdates
 import pandas as pd
 from matplotlib import pyplot as plt
 
-from openbb_terminal.config_plot import PLOT_DPI
+
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import log_start_end
@@ -53,7 +53,11 @@ def darkpool_ats_otc(
     # This plot has 2 axes
     if not external_axes:
         _, axes = plt.subplots(
-            2, 1, sharex=True, figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
+            2,
+            1,
+            sharex=True,
+            figsize=plot_autoscale(),
+            dpi=get_current_user().preferences.PLOT_DPI,
         )
         (ax1, ax2) = axes
     elif is_valid_axes_count(external_axes, 2):
@@ -163,7 +167,9 @@ def plot_dark_pools_ats(
 
     # This plot has 1 axis
     if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI)
+        _, ax = plt.subplots(
+            figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
+        )
     elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
     else:

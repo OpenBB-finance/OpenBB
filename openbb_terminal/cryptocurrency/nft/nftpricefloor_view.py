@@ -10,7 +10,6 @@ from typing import List, Optional
 from matplotlib import pyplot as plt
 
 from openbb_terminal import config_terminal as cfg
-from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.cryptocurrency.nft import nftpricefloor_model

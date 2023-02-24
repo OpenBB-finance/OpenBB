@@ -21,7 +21,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MaxAbsScaler, MinMaxScaler, Normalizer, StandardScaler
 
 from openbb_terminal import rich_config
-from openbb_terminal.config_plot import PLOT_DPI
+
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.helper_funcs import (
     export_data,

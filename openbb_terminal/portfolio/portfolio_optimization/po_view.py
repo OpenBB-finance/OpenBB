@@ -18,7 +18,7 @@ import riskfolio as rp
 from matplotlib.gridspec import GridSpec
 from matplotlib.lines import Line2D
 
-from openbb_terminal.config_plot import PLOT_DPI
+
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import plot_autoscale
