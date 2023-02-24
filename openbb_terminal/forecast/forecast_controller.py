@@ -38,12 +38,12 @@ try:
 
 except ModuleNotFoundError:
     raise ModuleNotFoundError(
-        "Please install whisper model. Instructions can be found here: "
-        "https://github.com/openai/whisper"
-        "Please install the transformers library with the following command: "
-        "pip install transformers"
-        "Please install the yt_dlp library with the following command: "
-        "pip install yt_dlp"
+        "Please install whisper model. Instructions can be found here: \n"
+        "https://github.com/openai/whisper \n"
+        "Please install the transformers library with the following command: \n"
+        "pip install transformers \n"
+        "Please install the yt_dlp library with the following command: \n"
+        "pip install yt_dlp \n"
     )
 
 import pandas as pd

@@ -76,7 +76,19 @@ def transcribe_and_summarize(
         " models such as GPT will be added in future releases. [/yellow]"
     )
     console.print("")
-    console.print("Downloading and Loading NLP Pipelines...")
+    console.print("[yellow]Downloading and Loading NLP Pipelines...[/yellow]")
+    console.print(
+        "[yellow]The following models that will be downloaded will exceed 1GB in size.[/yellow]"
+    )
+    # allow users to hit y/n to continue
+    console.print(
+        "[yellow]Continue with >1GB model download if there is no cached models: (y/n)[/yellow]"
+    )
+    response = input()
+    if response.lower() != "y":
+        console.print("[red]Cancelling download and exiting command.[/red]")
+        return
+
     # Use the pipeline to summarize the text
     summarizer = BartForConditionalGeneration.from_pretrained("facebook/bart-large-cnn")
     summary_tokenizer = BartTokenizer.from_pretrained("facebook/bart-large-cnn")
