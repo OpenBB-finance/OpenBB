@@ -23,6 +23,7 @@ from prompt_toolkit.formatted_text import HTML
 from prompt_toolkit.styles import Style
 from rich import panel
 
+import openbb_terminal.config_terminal as cfg
 from openbb_terminal.common import feedparser_view
 from openbb_terminal.core.config.paths import (
     HOME_DIRECTORY,
@@ -38,7 +39,6 @@ from openbb_terminal.helper_funcs import (
     parse_and_split_input,
     update_news_from_tweet_to_be_displayed,
 )
-from openbb_terminal.keys_model import first_time_user
 from openbb_terminal.menu import is_papermill, session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.reports.reports_model import ipykernel_launcher
@@ -53,6 +53,7 @@ from openbb_terminal.core.session.constants import REGISTER_URL
 from openbb_terminal.terminal_helper import (
     bootup,
     check_for_updates,
+    first_time_user,
     is_auth_enabled,
     is_installer,
     is_reset,

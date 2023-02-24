@@ -351,6 +351,7 @@ from openbb_terminal.core.session.current_user import is_local
 from openbb_terminal.terminal_helper import is_auth_enabled
 
 load_env_files()
+init_userdata()
 
 logger = logging.getLogger(__name__)
 theme.applyMPLstyle()

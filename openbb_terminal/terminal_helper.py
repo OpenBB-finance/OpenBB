@@ -10,6 +10,7 @@ import sys
 import webbrowser
 from contextlib import contextmanager
 from typing import List, Optional
+import dotenv
 
 # IMPORTATION THIRDPARTY
 import matplotlib.pyplot as plt
@@ -22,6 +23,8 @@ from openbb_terminal import (
 
 # IMPORTATION INTERNAL
 from openbb_terminal.config_terminal import LOGGING_COMMIT_HASH
+from openbb_terminal.core.config.paths import SETTINGS_ENV_FILE
+from openbb_terminal.core.session.preferences_handler import set_preference
 from openbb_terminal.helper_funcs import request
 from openbb_terminal.rich_config import console
 from openbb_terminal.core.session.current_user import get_current_user, is_local
@@ -393,5 +396,20 @@ def is_reset(command: str) -> bool:
     if command == "r":
         return True
     if command == "r\n":
+        return True
+    return False
+
+
+def first_time_user() -> bool:
+    """Whether a user is a first time user. A first time user is someone with an empty .env file.
+    If this is true, it also adds an env variable to make sure this does not run again.
+
+    Returns
+    -------
+    bool
+        Whether or not the user is a first time user
+    """
+    if SETTINGS_ENV_FILE.stat().st_size == 0:
+        set_preference("OPENBB_PREVIOUS_USE", True)
         return True
     return False

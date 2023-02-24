@@ -1,10 +1,12 @@
 import os
 from typing import Literal, Optional
+import dotenv
 from pydantic import NonNegativeInt, PositiveFloat, PositiveInt
 from pydantic.dataclasses import dataclass
 
 from openbb_terminal.core.config.paths import (
     HOME_DIRECTORY,
+    SETTINGS_ENV_FILE,
     USER_DATA_SOURCES_DEFAULT_FILE,
 )
 
@@ -62,11 +64,11 @@ class PreferencesModel:
     TOOLBAR_TWEET_NEWS_NUM_LAST_TWEETS_TO_READ: PositiveInt = 3
 
     # GENERAL
+    PREVIOUS_USE: bool = False
     TIMEZONE: str = "America/New_York"
     FLAIR: str = ":openbb"
     USE_LANGUAGE: str = "en"
     REQUEST_TIMEOUT: PositiveInt = 5
-
     MONITOR: NonNegativeInt = 0
     # Color for `view` command data.  All pyplot colors listed at:
     # https://matplotlib.org/stable/gallery/color/named_colors.html

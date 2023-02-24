@@ -4,15 +4,12 @@ import os.path
 
 # IMPORTATION THIRDPARTY
 import i18n
-from openbb_terminal.core.config import paths_helper
 
 # IMPORTATION INTERNAL
 from openbb_terminal.core.config.paths import (
     MISCELLANEOUS_DIRECTORY,
 )
 from openbb_terminal.core.session.current_user import get_current_user
-
-paths_helper.init_userdata()
 
 # pylint: disable=no-member,c-extension-no-member
 

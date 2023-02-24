@@ -3,24 +3,19 @@ __docformat__ = "numpy"
 
 # IMPORTATION STANDARD
 import logging
-from typing import List, Optional, Union
+from typing import List, Optional
 
 # IMPORTATION THIRDPARTY
 from dotenv import set_key
 
 # IMPORTATION INTERNAL
-from openbb_terminal.core.config.paths import SETTINGS_ENV_FILE
+from openbb_terminal.core.session.preferences_handler import set_preference
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import MenuText, console
-from openbb_terminal.core.session.hub_model import patch_user_configs
-from openbb_terminal.core.session.current_user import (
-    get_current_user,
-    is_local,
-    set_current_user,
-)
+from openbb_terminal.core.session.current_user import get_current_user
 
 # pylint: disable=too-many-lines,no-member,too-many-public-methods,C0302
 # pylint:disable=import-outside-toplevel
@@ -85,67 +80,29 @@ class FeatureFlagsController(BaseController):
 
         console.print(text=mt.menu_text, menu="Feature Flags")
 
-    @staticmethod
-    def set_feature_flag(name: str, value: Union[bool, str], force: bool = False):
-        """Set feature flag
-
-        Parameters
-        ----------
-        name : str
-            Environment variable name
-        value : str
-            Environment variable value
-        force : bool, optional
-            Force remote storage of feature flag, by default False
-        """
-
-        current_user = get_current_user()
-        sync_enabled = current_user.preferences.SYNC_ENABLED
-        local_user = is_local()
-
-        if local_user:
-            set_key(str(SETTINGS_ENV_FILE), name, str(value))
-
-        # Remove "OPENBB_" prefix from env_var
-        if name.startswith("OPENBB_"):
-            name = name[7:]
-
-        # Set current_user.preferences.name = value
-        setattr(current_user.preferences, name, value)
-        set_current_user(current_user)
-
-        # Send feature flag to server
-        if not sync_enabled and sync_enabled or force:
-            patch_user_configs(
-                key=name,
-                value=str(value),
-                type_="settings",
-                auth_header=current_user.profile.get_auth_header(),
-            )
-
     def call_overwrite(self, _):
         """Process overwrite command"""
-        FeatureFlagsController.set_feature_flag(
+        set_preference(
             "OPENBB_FILE_OVERWITE", not get_current_user().preferences.FILE_OVERWRITE
         )
 
     def call_retryload(self, _):
         """Process retryload command"""
-        FeatureFlagsController.set_feature_flag(
+        set_preference(
             "OPENBB_RETRY_WITH_LOAD", not get_current_user().preferences.RETRY_WITH_LOAD
         )
 
     @log_start_end(log=logger)
     def call_tab(self, _):
         """Process tab command"""
-        FeatureFlagsController.set_feature_flag(
+        set_preference(
             "OPENBB_USE_TABULATE_DF", not get_current_user().preferences.USE_TABULATE_DF
         )
 
     @log_start_end(log=logger)
     def call_cls(self, _):
         """Process cls command"""
-        FeatureFlagsController.set_feature_flag(
+        set_preference(
             "OPENBB_USE_CLEAR_AFTER_CMD",
             not get_current_user().preferences.USE_CLEAR_AFTER_CMD,
         )
@@ -153,14 +110,12 @@ class FeatureFlagsController(BaseController):
     @log_start_end(log=logger)
     def call_color(self, _):
         """Process color command"""
-        FeatureFlagsController.set_feature_flag(
-            "OPENBB_USE_COLOR", not get_current_user().preferences.USE_COLOR
-        )
+        set_preference("OPENBB_USE_COLOR", not get_current_user().preferences.USE_COLOR)
 
     @log_start_end(log=logger)
     def call_promptkit(self, _):
         """Process promptkit command"""
-        FeatureFlagsController.set_feature_flag(
+        set_preference(
             "OPENBB_USE_PROMPT_TOOLKIT",
             not get_current_user().preferences.USE_PROMPT_TOOLKIT,
         )
@@ -168,7 +123,7 @@ class FeatureFlagsController(BaseController):
     @log_start_end(log=logger)
     def call_thoughts(self, _):
         """Process thoughts command"""
-        FeatureFlagsController.set_feature_flag(
+        set_preference(
             "OPENBB_ENABLE_THOUGHTS_DAY",
             not get_current_user().preferences.ENABLE_THOUGHTS_DAY,
         )
@@ -176,7 +131,7 @@ class FeatureFlagsController(BaseController):
     @log_start_end(log=logger)
     def call_reporthtml(self, _):
         """Process reporthtml command"""
-        FeatureFlagsController.set_feature_flag(
+        set_preference(
             "OPENBB_OPEN_REPORT_AS_HTML",
             not get_current_user().preferences.OPEN_REPORT_AS_HTML,
         )
@@ -184,7 +139,7 @@ class FeatureFlagsController(BaseController):
     @log_start_end(log=logger)
     def call_exithelp(self, _):
         """Process exithelp command"""
-        FeatureFlagsController.set_feature_flag(
+        set_preference(
             "OPENBB_ENABLE_EXIT_AUTO_HELP",
             not get_current_user().preferences.ENABLE_EXIT_AUTO_HELP,
         )
@@ -192,7 +147,7 @@ class FeatureFlagsController(BaseController):
     @log_start_end(log=logger)
     def call_rcontext(self, _):
         """Process rcontext command"""
-        FeatureFlagsController.set_feature_flag(
+        set_preference(
             "OPENBB_REMEMBER_CONTEXTS",
             not get_current_user().preferences.REMEMBER_CONTEXTS,
         )
@@ -200,21 +155,21 @@ class FeatureFlagsController(BaseController):
     @log_start_end(log=logger)
     def call_dt(self, _):
         """Process dt command"""
-        FeatureFlagsController.set_feature_flag(
+        set_preference(
             "OPENBB_USE_DATETIME", not get_current_user().preferences.USE_DATETIME
         )
 
     @log_start_end(log=logger)
     def call_rich(self, _):
         """Process rich command"""
-        FeatureFlagsController.set_feature_flag(
+        set_preference(
             "OPENBB_ENABLE_RICH", not get_current_user().preferences.ENABLE_RICH
         )
 
     @log_start_end(log=logger)
     def call_richpanel(self, _):
         """Process richpanel command"""
-        FeatureFlagsController.set_feature_flag(
+        set_preference(
             "OPENBB_ENABLE_RICH_PANEL",
             not get_current_user().preferences.ENABLE_RICH_PANEL,
         )
@@ -222,21 +177,19 @@ class FeatureFlagsController(BaseController):
     @log_start_end(log=logger)
     def call_ion(self, _):
         """Process ion command"""
-        FeatureFlagsController.set_feature_flag(
-            "OPENBB_USE_ION", not get_current_user().preferences.USE_ION
-        )
+        set_preference("OPENBB_USE_ION", not get_current_user().preferences.USE_ION)
 
     @log_start_end(log=logger)
     def call_watermark(self, _):
         """Process watermark command"""
-        FeatureFlagsController.set_feature_flag(
+        set_preference(
             "OPENBB_USE_WATERMARK", not get_current_user().preferences.USE_WATERMARK
         )
 
     @log_start_end(log=logger)
     def call_cmdloc(self, _):
         """Process cmdloc command"""
-        FeatureFlagsController.set_feature_flag(
+        set_preference(
             "OPENBB_USE_CMD_LOCATION_FIGURE",
             not get_current_user().preferences.USE_CMD_LOCATION_FIGURE,
         )
@@ -246,6 +199,6 @@ class FeatureFlagsController(BaseController):
         """Process tbhint command"""
         if get_current_user().preferences.TOOLBAR_HINT:
             console.print("Will take effect when running terminal next.")
-        FeatureFlagsController.set_feature_flag(
+        set_preference(
             "OPENBB_TOOLBAR_HINT", not get_current_user().preferences.TOOLBAR_HINT
         )
