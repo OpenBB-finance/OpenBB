@@ -18,9 +18,9 @@ logger = logging.getLogger(__name__)
 
 # pylint: disable=C0302,R0913,W0102
 
-ice_bofa_path = (Path(__file__).parent / "ice_bofa_indices.xlsx").resolve()
-commercial_paper_path = (Path(__file__).parent / "commercial_paper.xlsx").resolve()
-spot_rates_path = (Path(__file__).parent / "corporate_spot_rates.xlsx").resolve()
+ice_bofa_path = (Path(__file__).parent / "ice_bofa_indices.csv").resolve()
+commercial_paper_path = (Path(__file__).parent / "commercial_paper.csv").resolve()
+spot_rates_path = (Path(__file__).parent / "corporate_spot_rates.csv").resolve()
 
 ID_TO_NAME_ESTR = {
     "ECBESTRVOLWGTTRMDMNRT": "Euro Short-Term Rate: Volume-Weighted Trimmed Mean Rate",
@@ -1186,7 +1186,7 @@ def plot_icebofa(
     elif data_type in ["yield", "yield_to_worst", "spread"]:
         units = "percent"
 
-    series = pd.read_excel(ice_bofa_path)
+    series = pd.read_csv(ice_bofa_path)
 
     if options:
         return print_rich_table(
@@ -1359,7 +1359,7 @@ def plot_cp(
         )
         category = "non_financial"
 
-    series = pd.read_excel(commercial_paper_path)
+    series = pd.read_csv(commercial_paper_path)
 
     if options:
         return print_rich_table(
@@ -1449,7 +1449,7 @@ def plot_spot(
     external_axes : bool, optional
         Whether to return the figure object or not, by default False
     """
-    series = pd.read_excel(spot_rates_path)
+    series = pd.read_csv(spot_rates_path)
     df = fred_model.get_spot(
         maturity=maturity, category=category, start_date=start_date, end_date=end_date
     )

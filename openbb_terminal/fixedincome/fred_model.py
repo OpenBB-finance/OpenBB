@@ -69,9 +69,9 @@ YIELD_CURVE_SPOT_RATES = [0.5, 1, 2, 3, 5, 7, 10, 20, 30, 50, 75, 100]
 YIELD_CURVE_REAL_RATES = [5, 7, 10, 20, 30]
 YIELD_CURVE_PAR_RATES = [2, 5, 10, 30]
 
-ice_bofa_path = (Path(__file__).parent / "ice_bofa_indices.xlsx").resolve()
-commercial_paper_path = (Path(__file__).parent / "commercial_paper.xlsx").resolve()
-spot_rates_path = (Path(__file__).parent / "corporate_spot_rates.xlsx").resolve()
+ice_bofa_path = (Path(__file__).parent / "ice_bofa_indices.csv").resolve()
+commercial_paper_path = (Path(__file__).parent / "commercial_paper.csv").resolve()
+spot_rates_path = (Path(__file__).parent / "corporate_spot_rates.csv").resolve()
 
 
 NAME_TO_ID_PROJECTION = {
@@ -813,7 +813,7 @@ def get_icebofa(
     end_date: Optional[str]
         End date, formatted YYYY-MM-DD
     """
-    series = pd.read_excel(ice_bofa_path)
+    series = pd.read_csv(ice_bofa_path)
 
     if options:
         return series.drop(
@@ -838,7 +838,6 @@ def get_icebofa(
         )
         return pd.DataFrame()
 
-    series = pd.read_excel(ice_bofa_path)
     series = series[
         (series["Type"] == data_type)
         & (series["Units"] == units)
@@ -921,7 +920,7 @@ def get_cp(
     """
     if grade == "a2_p2" and category != "non_financial":
         category = "non_financial"
-    series = pd.read_excel(commercial_paper_path)
+    series = pd.read_csv(commercial_paper_path)
     series = series[
         (series["Maturity"] == maturity)
         & (series["Category"] == category)
@@ -969,7 +968,7 @@ def get_spot(
     end_date: Optional[str]
         End date, formatted YYYY-MM-DD
     """
-    series = pd.read_excel(spot_rates_path)
+    series = pd.read_csv(spot_rates_path)
 
     series = series[
         (series["Maturity"].isin(maturity)) & (series["Category"].isin(category))
