@@ -3484,7 +3484,6 @@ class ForecastController(BaseController):
         )
 
         if ns_parser:
-
             if ns_parser.save is None:
                 ns_parser.save = USER_FORECAST_WHISPER_DIRECTORY
 
