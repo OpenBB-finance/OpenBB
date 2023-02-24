@@ -84,4 +84,5 @@ def write_srt(transcript: Iterator[dict], file: TextIO, line_length: int = 0):
 
 
 def slugify(title):
+    # adding a slug (-) in each of the string where there is a space
     return "".join(c if c.isalnum() else "_" for c in title).rstrip("_")
