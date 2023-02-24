@@ -1897,14 +1897,14 @@ testing = ["covdefaults (>=2.2.2)", "coverage (>=7.0.1)", "pytest (>=7.2)", "pyt
 
 [[package]]
 name = "financedatabase"
-version = "2.0.3"
+version = "2.0.4"
 description = "This is a database of 300.000+ symbols containing Equities, ETFs, Funds, Indices, Currencies, Cryptocurrencies and Money Markets."
 category = "main"
 optional = false
 python-versions = "*"
 files = [
-    {file = "financedatabase-2.0.3-py3-none-any.whl", hash = "sha256:80e16c0548437d7f444e0fadf073bf9061019885e44926d5b1f3f73ff374b97c"},
-    {file = "financedatabase-2.0.3.tar.gz", hash = "sha256:1634d0fa69d34739cdf0cc5ade323b8d955aec58c4599edff057a37b52287e8a"},
+    {file = "financedatabase-2.0.4-py3-none-any.whl", hash = "sha256:4414189b8085a7b3e2be877c0af286c5317528a5104449b7dee411e50803fba9"},
+    {file = "financedatabase-2.0.4.tar.gz", hash = "sha256:2387a6b9193558b5b105a1660c16bd90261515cb03385c58dff534adac545747"},
 ]
 
 [[package]]
