@@ -198,7 +198,7 @@ def transcribe_and_summarize(
         console.print(f"Summary: [blue]Reduction: {percent_reduction}%[/blue]")
         if overall_sentiment_label == "NEUTRAL":
             console.print(
-                f"Sentiment: {overall_sentiment_label}:{round(overall_sentiment_score, 4)}"
+                f"Sentiment: {overall_sentiment_label}:{round(overall_sentiment_score, 2)}%"
             )
         else:
             sent_color = "green" if overall_sentiment_label == "POSITIVE" else "red"
