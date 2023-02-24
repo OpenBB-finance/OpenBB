@@ -2,21 +2,19 @@
 __docformat__ = "numpy"
 
 import logging
-from tqdm import tqdm
 import yt_dlp
 
-# from .utils import slugify, str2bool, write_srt, write_vtt
 import tempfile
 import warnings
 import os
 import whisper
+from tqdm import tqdm
 
 # from transformers import pipeline
 from transformers import BartTokenizer, BartForConditionalGeneration
 from transformers import pipeline
 
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.forecast import helpers
 from openbb_terminal.rich_config import console
 
 from openbb_terminal.forecast.whisper_utils import (

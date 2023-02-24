@@ -12,7 +12,9 @@ def str2bool(string):
 def format_timestamp(
     seconds: float, always_include_hours: bool = False, decimal_marker: str = "."
 ):
-    assert seconds >= 0, "non-negative timestamp expected"
+    if seconds < 0:
+        raise ValueError("non-negative timestamp expected")
+
     milliseconds = round(seconds * 1000.0)
 
     hours = milliseconds // 3_600_000
