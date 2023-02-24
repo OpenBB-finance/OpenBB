@@ -12,6 +12,7 @@ from openbb_terminal import (
 )
 from openbb_terminal.account.account_model import get_diff, get_routines_info
 from openbb_terminal.account.account_view import display_routines_list
+from openbb_terminal.core.session.preferences_handler import set_preference
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.featflags_controller import FeatureFlagsController
 from openbb_terminal.helper_funcs import check_positive
@@ -158,10 +159,9 @@ class AccountController(BaseController):
                 sync = get_current_user().preferences.SYNC_ENABLED
                 console.print(f"sync is {sync}, use --on or --off to change.")
             else:
-                FeatureFlagsController.set_feature_flag(
+                set_preference(
                     name="OPENBB_SYNC_ENABLED",
                     value=ns_parser.sync,
-                    force=True,
                 )
                 sync = get_current_user().preferences.SYNC_ENABLED
                 console.print(f"[info]sync:[/info] {sync}")

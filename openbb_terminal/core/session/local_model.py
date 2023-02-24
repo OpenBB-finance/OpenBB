@@ -3,12 +3,13 @@ import os
 from pathlib import Path
 from typing import Optional, Union
 
-from openbb_terminal.base_helpers import strtobool
 from openbb_terminal.core.config.paths import (
     HIST_FILE_PATH,
     SETTINGS_DIRECTORY,
 )
-from openbb_terminal.core.session.current_user import get_current_user, set_current_user
+from openbb_terminal.core.session.credentials_handler import set_credential
+from openbb_terminal.core.session.current_user import get_current_user
+from openbb_terminal.core.session.preferences_handler import set_preference
 from openbb_terminal.rich_config import console
 
 SESSION_FILE_PATH = SETTINGS_DIRECTORY / "session.json"
@@ -109,28 +110,18 @@ def apply_configs(configs: dict):
     configs : dict
         The configurations.
     """
-
-    # TODO: Here I'm assuming that obbff, cfg, cfg_plot and paths don't have variables
-    # with the same name. If they do, then this assignment will hit the first variable
-    # that matches the name.
-
-    current_user = get_current_user()
-
     if configs:
         settings = configs.get("features_settings", {})
         sync = update_sync_flag(settings)
         if sync:
             if settings:
                 for k, v in settings.items():
-                    if hasattr(current_user.preferences, k):
-                        cast_set_attr(current_user.preferences, k, v)
+                    set_preference(k, v, receiving=True)
 
             keys = configs.get("features_keys", {})
             if keys:
                 for k, v in keys.items():
-                    if hasattr(current_user.credentials, k):
-                        setattr(current_user.credentials, k, v)
-                set_current_user(current_user)
+                    set_credential(k, v, receiving=True)
 
 
 def update_sync_flag(settings: dict) -> bool:
@@ -146,37 +137,11 @@ def update_sync_flag(settings: dict) -> bool:
     bool
         The sync flag.
     """
-    current_user = get_current_user()
     if settings and settings.get("SYNC_ENABLED", "").lower() == "false":
-        current_user.preferences.SYNC_ENABLED = False
+        set_preference("SYNC_ENABLED", False, receiving=True)
         return False
-    current_user.preferences.SYNC_ENABLED = True
+    set_preference("SYNC_ENABLED", True, receiving=True)
     return True
-
-
-def cast_set_attr(obj, name, value):
-    """Set attribute in object.
-
-    Parameters
-    ----------
-    obj : object
-        The object.
-    name : str
-        The attribute name.
-    value : str
-        The attribute value.
-    """
-
-    if str(value).lower() in ["true", "false"]:
-        setattr(obj, name, strtobool(value))
-    elif isinstance(getattr(obj, name), int):
-        setattr(obj, name, int(value))
-    elif isinstance(getattr(obj, name), float):
-        setattr(obj, name, float(value))
-    elif isinstance(getattr(obj, name), Path):
-        setattr(obj, name, Path(value))
-    else:
-        setattr(obj, name, value)
 
 
 def get_routine(file_name: str, folder: Optional[Path] = None) -> Optional[str]:
@@ -196,7 +161,11 @@ def get_routine(file_name: str, folder: Optional[Path] = None) -> Optional[str]:
 
     try:
         user_folder = folder / current_user.profile.get_uuid()
-        file_path = user_folder / file_name if os.path.exists(user_folder / file_name) else folder / file_name
+        file_path = (
+            user_folder / file_name
+            if os.path.exists(user_folder / file_name)
+            else folder / file_name
+        )
 
         with open(file_path) as f:
             routine = "".join(f.readlines())

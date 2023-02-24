@@ -16,7 +16,11 @@ from openbb_terminal.core.session.current_user import (
 from openbb_terminal.core.session.hub_model import patch_user_configs
 
 
-def set_preference(name: str, value: Union[bool, Path, str], force: bool = False):
+def set_preference(
+    name: str,
+    value: Union[bool, Path, str],
+    receiving: bool = False,
+):
     """Set preference
 
     Parameters
@@ -25,8 +29,8 @@ def set_preference(name: str, value: Union[bool, Path, str], force: bool = False
         Preference name
     value : Union[bool, Path, str]
         Preference value
-    force : bool
-        Force sending to cloud
+    receiving : bool
+        If receiving from cloud
     """
 
     current_user = get_current_user()
@@ -45,10 +49,11 @@ def set_preference(name: str, value: Union[bool, Path, str], force: bool = False
     set_current_user(updated_user)
 
     # Send preference to cloud
-    if False or force:
-        patch_user_configs(
-            key=name,
-            value=str(value),
-            type_="settings",
-            auth_header=current_user.profile.get_auth_header(),
-        )
+    if not receiving:
+        if not local_user or name == "OPENBB_SYNC_ENABLED":
+            patch_user_configs(
+                key=name,
+                value=str(value),
+                type_="settings",
+                auth_header=current_user.profile.get_auth_header(),
+            )

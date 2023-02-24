@@ -31,7 +31,12 @@ LOCAL_KEYS = [
 ]
 
 
-def set_credential(name: str, value: str, persist: bool = False):
+def set_credential(
+    name: str,
+    value: str,
+    persist: bool = False,
+    receiving: bool = False,
+):
     """Set credential
 
     Parameters
@@ -42,6 +47,8 @@ def set_credential(name: str, value: str, persist: bool = False):
         Credential value
     persist : bool
         Force saving to .env file
+    receiving : bool
+        If receiving from cloud
     """
 
     current_user = get_current_user()
@@ -66,6 +73,7 @@ def set_credential(name: str, value: str, persist: bool = False):
         and sync_enabled
         and name not in LOCAL_KEYS
         and (name.startswith("API_") or name.startswith("OPENBB_"))
+        and not receiving
     ):
         patch_user_configs(
             key=name,
