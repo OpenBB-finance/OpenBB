@@ -8,8 +8,8 @@ from typing import List, Optional
 
 from matplotlib import pyplot as plt
 
-from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.economy import econdb_model
 from openbb_terminal.helper_funcs import export_data, plot_autoscale, print_rich_table
@@ -74,7 +74,7 @@ def show_macro_data(
     )
 
     if external_axes is None:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI)
     else:
         ax = external_axes[0]
 
@@ -193,7 +193,7 @@ def show_treasuries(
     )
 
     if external_axes is None:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI)
     else:
         ax = external_axes[0]
 

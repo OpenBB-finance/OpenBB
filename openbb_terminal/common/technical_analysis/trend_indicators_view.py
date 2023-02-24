@@ -10,8 +10,8 @@ import pandas as pd
 from pandas.plotting import register_matplotlib_converters
 
 from openbb_terminal.common.technical_analysis import ta_helpers, trend_indicators_model
-from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
@@ -67,7 +67,11 @@ def display_adx(
     # This plot has 2 axes
     if not external_axes:
         _, axes = plt.subplots(
-            2, 1, sharex=True, figsize=plot_autoscale(), dpi=PLOT_DPI
+            2,
+            1,
+            sharex=True,
+            figsize=plot_autoscale(),
+            dpi=get_current_user().preferences.PLOT_DPI,
         )
         ax1, ax2 = axes
     elif is_valid_axes_count(external_axes, 2):
@@ -158,7 +162,7 @@ def display_aroon(
     # This plot has 3 axes
     if not external_axes:
         _, axes = plt.subplots(
-            3, 1, sharex=True, figsize=plot_autoscale(), dpi=PLOT_DPI
+            3, 1, sharex=True, figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
         )
         ax1, ax2, ax3 = axes
     elif is_valid_axes_count(external_axes, 3):

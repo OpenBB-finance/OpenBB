@@ -10,6 +10,7 @@ from matplotlib import pyplot as plt
 
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.economy.yfinance_model import (
     INDICES,
@@ -70,7 +71,9 @@ def show_indices(
     indices_data = get_indices(indices, interval, start_date, end_date, column, returns)
 
     if external_axes is None:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        _, ax = plt.subplots(
+            figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
+        )
     else:
         ax = external_axes[0]
 

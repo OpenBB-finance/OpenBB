@@ -11,6 +11,7 @@ from matplotlib import pyplot as plt
 
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
@@ -45,7 +46,9 @@ def plot_cost_to_borrow(
 
     # This plot has 2 axes
     if not external_axes:
-        _, ax1 = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        _, ax1 = plt.subplots(
+            figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
+        )
         ax2 = ax1.twinx()
     elif is_valid_axes_count(external_axes, 2):
         (ax1, ax2) = external_axes

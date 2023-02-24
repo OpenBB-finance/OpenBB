@@ -13,6 +13,7 @@ from pandas.plotting import register_matplotlib_converters
 
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.forecast import forecast_model, helpers
 from openbb_terminal.helper_funcs import export_data, plot_autoscale, print_rich_table
@@ -92,7 +93,9 @@ def display_plot(
 
     # Check that there's at least a valid dataframe
     if external_axes is None:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        _, ax = plt.subplots(
+            figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
+        )
     else:
         ax = external_axes[0]
 
@@ -153,7 +156,9 @@ def display_seasonality(
     if not data.empty:
         _, series = helpers.get_series(data, column)
         if external_axes is None:
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+            _, ax = plt.subplots(
+                figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
+            )
         else:
             ax = external_axes[0]
 
@@ -197,7 +202,9 @@ def display_corr(
     """
 
     if external_axes is None:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        _, ax = plt.subplots(
+            figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
+        )
     else:
         ax = external_axes[0]
 

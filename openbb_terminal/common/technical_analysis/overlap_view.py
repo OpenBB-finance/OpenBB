@@ -11,8 +11,8 @@ import pandas as pd
 from pandas.plotting import register_matplotlib_converters
 
 from openbb_terminal.common.technical_analysis import overlap_model
-from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
@@ -103,7 +103,9 @@ def view_ma(
 
     # This plot has 1 axis
     if external_axes is None:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        _, ax = plt.subplots(
+            figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
+        )
     elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
     else:

@@ -13,6 +13,7 @@ from matplotlib import pyplot as plt
 
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
@@ -144,7 +145,10 @@ def display_bars_financials(
         else:
             # This plot has 1 axis
             if not external_axes:
-                _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+                _, ax = plt.subplots(
+                    figsize=plot_autoscale(),
+                    dpi=get_current_user().preferences.PLOT_DPI,
+                )
             elif is_valid_axes_count(external_axes, 1):
                 (ax,) = external_axes
             else:
@@ -342,7 +346,10 @@ def display_companies_per_sector_in_country(
 
             # This plot has 1 axis
             if not external_axes:
-                _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+                _, ax = plt.subplots(
+                    figsize=plot_autoscale(),
+                    dpi=get_current_user().preferences.PLOT_DPI,
+                )
             elif is_valid_axes_count(external_axes, 1):
                 (ax,) = external_axes
             else:
@@ -492,7 +499,10 @@ def display_companies_per_industry_in_country(
 
             # This plot has 1 axis
             if not external_axes:
-                _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+                _, ax = plt.subplots(
+                    figsize=plot_autoscale(),
+                    dpi=get_current_user().preferences.PLOT_DPI,
+                )
             elif is_valid_axes_count(external_axes, 1):
                 (ax,) = external_axes
             else:
@@ -645,7 +655,10 @@ def display_companies_per_industry_in_sector(
 
             # This plot has 1 axis
             if not external_axes:
-                _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+                _, ax = plt.subplots(
+                    figsize=plot_autoscale(),
+                    dpi=get_current_user().preferences.PLOT_DPI,
+                )
             elif is_valid_axes_count(external_axes, 1):
                 (ax,) = external_axes
             else:
@@ -790,7 +803,10 @@ def display_companies_per_country_in_sector(
 
             # This plot has 1 axis
             if not external_axes:
-                _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+                _, ax = plt.subplots(
+                    figsize=plot_autoscale(),
+                    dpi=get_current_user().preferences.PLOT_DPI,
+                )
             elif is_valid_axes_count(external_axes, 1):
                 (ax,) = external_axes
             else:
@@ -935,7 +951,10 @@ def display_companies_per_country_in_industry(
 
             # This plot has 1 axis
             if not external_axes:
-                _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+                _, ax = plt.subplots(
+                    figsize=plot_autoscale(),
+                    dpi=get_current_user().preferences.PLOT_DPI,
+                )
             elif is_valid_axes_count(external_axes, 1):
                 (ax,) = external_axes
             else:

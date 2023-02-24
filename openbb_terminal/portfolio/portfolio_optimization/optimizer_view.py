@@ -14,6 +14,7 @@ import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+from openbb_terminal.core.session.current_user import get_current_user
 import riskfolio as rp
 from dateutil.relativedelta import FR, relativedelta
 from matplotlib.gridspec import GridSpec
@@ -2172,7 +2173,9 @@ def display_ef(
         risk_free_rate = risk_free_rate / time_factor[freq.upper()]
 
         if external_axes is None:
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+            _, ax = plt.subplots(
+                figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
+            )
         else:
             ax = external_axes[0]
 
@@ -3639,7 +3642,9 @@ def pie_chart_weights(
     colors = theme.get_colors()
 
     if external_axes is None:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        _, ax = plt.subplots(
+            figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
+        )
     else:
         ax = external_axes[0]
 
@@ -3861,7 +3866,9 @@ def additional_plots(
 
     if hist:
         if external_axes is None:
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+            _, ax = plt.subplots(
+                figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
+            )
         else:
             ax = external_axes[0]
 
@@ -3889,7 +3896,9 @@ def additional_plots(
 
     if dd:
         if external_axes is None:
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+            _, ax = plt.subplots(
+                figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
+            )
         else:
             ax = external_axes[0]
 
@@ -3925,7 +3934,9 @@ def additional_plots(
 
     if rc_chart:
         if external_axes is None:
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+            _, ax = plt.subplots(
+                figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
+            )
         else:
             ax = external_axes[0]
 
@@ -3966,7 +3977,9 @@ def additional_plots(
             return
 
         if external_axes is None:
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+            _, ax = plt.subplots(
+                figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
+            )
         else:
             ax = external_axes[0]
 

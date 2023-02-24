@@ -24,8 +24,8 @@ from scipy import stats
 from statsmodels.graphics.gofplots import qqplot
 
 from openbb_terminal.common.quantitative_analysis import qa_model
-from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
@@ -116,7 +116,7 @@ def display_hist(
     if external_axes is None:
         _, ax = plt.subplots(
             figsize=plot_autoscale(),
-            dpi=PLOT_DPI,
+            dpi=get_current_user().preferences.PLOT_DPI,
         )
     elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
@@ -196,7 +196,7 @@ def display_cdf(
     if external_axes is None:
         _, ax = plt.subplots(
             figsize=plot_autoscale(),
-            dpi=PLOT_DPI,
+            dpi=get_current_user().preferences.PLOT_DPI,
         )
     elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
@@ -307,7 +307,7 @@ def display_bw(
     if external_axes is None:
         _, ax = plt.subplots(
             figsize=plot_autoscale(),
-            dpi=PLOT_DPI,
+            dpi=get_current_user().preferences.PLOT_DPI,
         )
     elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
@@ -408,7 +408,7 @@ def display_acf(
             nrows=2,
             ncols=2,
             figsize=plot_autoscale(),
-            dpi=PLOT_DPI,
+            dpi=get_current_user().preferences.PLOT_DPI,
         )
         (ax1, ax2), (ax3, ax4) = axes
     elif is_valid_axes_count(external_axes, 4):
@@ -494,7 +494,7 @@ def display_qqplot(
     if external_axes is None:
         _, ax = plt.subplots(
             figsize=plot_autoscale(),
-            dpi=PLOT_DPI,
+            dpi=get_current_user().preferences.PLOT_DPI,
         )
     elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
@@ -584,7 +584,7 @@ def display_cusum(
             1,
             sharex=True,
             figsize=plot_autoscale(),
-            dpi=PLOT_DPI,
+            dpi=get_current_user().preferences.PLOT_DPI,
         )
         (ax1, ax2) = axes
     elif is_valid_axes_count(external_axes, 2):
@@ -734,7 +734,7 @@ def display_seasonal(
             1,
             sharex=True,
             figsize=plot_autoscale(),
-            dpi=PLOT_DPI,
+            dpi=get_current_user().preferences.PLOT_DPI,
         )
         (ax1, ax2, ax3, ax4) = axes
     elif is_valid_axes_count(external_axes, 4):
@@ -984,7 +984,7 @@ def display_line(
     if external_axes is None:
         _, ax = plt.subplots(
             figsize=plot_autoscale(),
-            dpi=PLOT_DPI,
+            dpi=get_current_user().preferences.PLOT_DPI,
         )
     elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes

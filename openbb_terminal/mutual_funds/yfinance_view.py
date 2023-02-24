@@ -78,7 +78,7 @@ def display_sector(
     legend, values = zip(*main_holdings.items())
     leg = [f"{le}\n{round(v, 2)}%" for le, v in zip(legend, values)]
 
-    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI)
     ax.pie(
         values,
         labels=leg,
