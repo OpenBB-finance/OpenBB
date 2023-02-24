@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
+import tempfile
 
 import warnings
 import yt_dlp
