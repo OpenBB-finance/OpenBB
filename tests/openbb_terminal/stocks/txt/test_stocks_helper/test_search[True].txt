@@ -1,3 +1,4 @@
                          name        country                  sector       industry_group  industry exchange
 symbol                                                                                                      
 MSFT    Microsoft Corporation  United States  Information Technology  Software & Services  Software      NMS
+MSFT    Microsoft Corporation  United States  Information Technology  Software & Services  Software      NMS
