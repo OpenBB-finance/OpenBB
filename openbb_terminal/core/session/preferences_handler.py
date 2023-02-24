@@ -23,8 +23,10 @@ def set_preference(name: str, value: Union[bool, Path, str], force: bool = False
     ----------
     name : str
         Preference name
-    value : str
+    value : Union[bool, Path, str]
         Preference value
+    force : bool
+        Force sending to cloud
     """
 
     current_user = get_current_user()

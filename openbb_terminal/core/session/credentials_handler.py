@@ -37,9 +37,11 @@ def set_credential(name: str, value: str, persist: bool = False):
     Parameters
     ----------
     name : str
-        Preference name
+        Credential name
     value : str
-        Preference value
+        Credential value
+    persist : bool
+        Force saving to .env file
     """
 
     current_user = get_current_user()
@@ -53,7 +55,7 @@ def set_credential(name: str, value: str, persist: bool = False):
     if name.startswith("OPENBB_"):
         name = name[7:]
 
-    # Set preference in current user
+    # Set credential in current user
     updated_credentials = dataclasses.replace(current_user.credentials, **{name: value})
     updated_user = dataclasses.replace(current_user, credentials=updated_credentials)
     set_current_user(updated_user)
