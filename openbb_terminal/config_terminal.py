@@ -200,3 +200,6 @@ OPENBB_PERSONAL_ACCESS_TOKEN = (
 
 # https://intrinio.com/starter-plan
 API_INTRINIO_KEY = os.getenv("OPENBB_API_INTRINIO_KEY") or "REPLACE_ME"
+
+# https://databento.com/
+API_DATABENTO_KEY = os.getenv("OPENBB_API_DATABENTO_KEY") or "REPLACE_ME"
