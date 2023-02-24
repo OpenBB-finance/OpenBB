@@ -1663,7 +1663,8 @@ class TechnicalAnalysisController(StockBaseController):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="cones",
             description="""
-            Calculates the realized volatility quantiles over rolling windows of time, with a selectable model for calculating the volatility.         
+            Calculates the realized volatility quantiles over rolling windows of time. 
+            The model for calculating volatility is selectable.         
             """,
         )
         parser.add_argument(

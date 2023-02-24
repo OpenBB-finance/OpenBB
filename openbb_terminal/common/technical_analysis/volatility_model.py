@@ -208,13 +208,15 @@ def cones(
             It is useful for capturing large price movements during the day.
 
             Garman-Klass volatility extends Parkinson volatility by taking into account the opening and closing price.
-            As markets are most active during the opening and closing of a trading session, it makes volatility estimation more accurate.
+            As markets are most active during the opening and closing of a trading session,
+            it makes volatility estimation more accurate.
 
             Hodges-Tompkins volatility is a bias correction for estimation using an overlapping data sample.
             It produces unbiased estimates and a substantial gain in efficiency.
 
-            Rogers-Satchell is an estimator for measuring the volatility of securities with an average return not equal to zero.
-            Unlike Parkinson and Garman-Klass estimators, Rogers-Satchell incorporates a drift term (mean return not equal to zero).
+            Rogers-Satchell is an estimator for measuring the volatility with an average return not equal to zero.
+            Unlike Parkinson and Garman-Klass estimators, Rogers-Satchell incorporates a drift term,
+            mean return not equal to zero.
 
             Yang-Zhang volatility is the combination of the overnight (close-to-open volatility).
             It is a weighted average of the Rogers-Satchell volatility and the open-to-close volatility.
@@ -278,7 +280,8 @@ def cones(
 
         def garman_klass(data, window=30, trading_periods=n_days, clean=True):
             """Garman-Klass volatility extends Parkinson volatility by taking into account the opening and closing price.
-            As markets are most active during the opening and closing of a trading session, it makes volatility estimation more accurate.
+            As markets are most active during the opening and closing of a trading session.
+            It makes volatility estimation more accurate.
             """
             log_hl = (data["High"] / data["Low"]).apply(np.log)
             log_co = (data["Close"] / data["Open"]).apply(np.log)
@@ -317,8 +320,9 @@ def cones(
             return result
 
         def rogers_satchell(data, window=30, trading_periods=n_days, clean=True):
-            """Rogers-Satchell is an estimator for measuring the volatility of securities with an average return not equal to zero.
-            Unlike Parkinson and Garman-Klass estimators, Rogers-Satchell incorporates a drift term (mean return not equal to zero).
+            """Rogers-Satchell is an estimator for measuring the volatility with an average return not equal to zero.
+            Unlike Parkinson and Garman-Klass estimators, Rogers-Satchell incorporates a drift term,
+            mean return not equal to zero.
             """
 
             log_ho = (data["High"] / data["Open"]).apply(np.log)
