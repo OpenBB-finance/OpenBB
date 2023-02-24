@@ -61,9 +61,9 @@ interactions:
       Cache-Control:
       - private, max-age=0, no-store, no-cache, must-revalidate, post-check=0, pre-check=0
       Connection:
-      - close
-      Content-Type:
-      - text/html; charset=UTF-8
+      - keep-alive
+      Content-Length:
+      - '0'
       Date:
       - Fri, 24 Feb 2023 09:53:57 GMT
       Location:
@@ -80,8 +80,6 @@ interactions:
       - Accept-Encoding
       X-Content-Type-Options:
       - nosniff
-      X-Frame-Options:
-      - SAMEORIGIN
       alt-svc:
       - h3=":443"; ma=86400, h3-29=":443"; ma=86400
       x-vercel-cache:

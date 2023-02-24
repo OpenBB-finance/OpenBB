@@ -305,9 +305,9 @@ interactions:
       Cache-Control:
       - public, max-age=0, must-revalidate
       Connection:
-      - close
-      Content-Type:
-      - text/html; charset=UTF-8
+      - keep-alive
+      Content-Length:
+      - '0'
       Date:
       - Fri, 24 Feb 2023 09:53:59 GMT
       ETag:
@@ -371,6 +371,6 @@ interactions:
       x-vercel-id:
       - cdg1::iad1::rzxvh-1677232439410-91558f8b0f5b
     status:
-      code: 429
-      message: Too Many Requests
+      code: 200
+      message: OK
 version: 1
