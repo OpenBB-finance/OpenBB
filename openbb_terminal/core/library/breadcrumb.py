@@ -1,7 +1,6 @@
 from typing import Any, List, Optional
 
 import openbb_terminal.config_terminal as cfg
-from openbb_terminal import feature_flags as obbff
 from openbb_terminal.core.library.metadata import Metadata
 from openbb_terminal.core.library.operation import Operation
 from openbb_terminal.core.library.trail_map import TrailMap
@@ -69,7 +68,7 @@ class MetadataBuilder:
 
 
 class Breadcrumb:
-    __version__ = obbff.VERSION
+    __version__ = cfg.VERSION
 
     def __init__(
         self,
