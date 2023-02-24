@@ -30,6 +30,8 @@ class OnclusiveDataController(BaseController):
         "--ticker",
         "-l",
         "--limit",
+        "-o",
+        "--offset"
         "-sd",
         "--start_date",
         "-ed",
