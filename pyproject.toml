@@ -105,11 +105,6 @@ grpcio = "^1.51.1"
 jupyterlab-widgets = "^3.0.3"
 mstarpy = "^0.0.4"
 packaging = ">=22.0"
-
-openai-whisper = {version = "^20230124", optional = true}
-setuptools-rust = {version = "^1.5.2", optional = true}
-transformers = {version = "^4.26.1", optional = true}
-yt-dlp = {version = "^2023.2.17", optional = true}
 rapidfuzz = "^2.13.7"
 streamlit = "^1.17.0"
 sparqlwrapper = "^2.0.0"
@@ -155,17 +150,8 @@ pre-commit = "^2.16.0"
 pytest-cov = "^3.0.0"
 types-six = "^1.16.12"
 nbmake = ">0.5.0"
-
-[tool.poetry.extras]
-prediction = ["torch", "pytorch-lightning", "u8darts", "openai-whisper", "setuptools-rust", "transformers", "yt-dlp"]
-optimization = ["Riskfolio-Lib"]
-all = ["torch", "pytorch-lightning", "u8darts", "Riskfolio-Lib", "openai-whisper", "setuptools-rust", "transformers", "yt-dlp"]
-jupyterlab = ["jupyterlab-code-formatter", "jupyterlab-lsp", "jedi-language-server"]
-installer = ["pyinstaller"]
-doc = ["docstring-parser"]
 ruff = "^0.0.247"
 pytest-timeout = "^2.1.0"
-
 
 [build-system]
 requires = ["setuptools<65.5.0", "poetry-core>=1.0.0"]

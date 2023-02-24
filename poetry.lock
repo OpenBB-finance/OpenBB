@@ -737,25 +737,6 @@ files = [
 ]
 
 [[package]]
-name = "brotli"
-version = "1.0.9"
-description = "Python bindings for the Brotli compression library"
-category = "main"
-optional = true
-python-versions = "*"
-
-[[package]]
-name = "brotlicffi"
-version = "1.0.9.2"
-description = "Python CFFI bindings to the Brotli library"
-category = "main"
-optional = true
-python-versions = "*"
-
-[package.dependencies]
-cffi = ">=1.0.0"
-
-[[package]]
 name = "bs4"
 version = "0.0.1"
 description = "Dummy package for Beautiful Soup"
@@ -1873,20 +1854,6 @@ files = [
 sgmllib3k = "*"
 
 [[package]]
-name = "ffmpeg-python"
-version = "0.2.0"
-description = "Python bindings for FFmpeg - with complex filtering support"
-category = "main"
-optional = true
-python-versions = "*"
-
-[package.dependencies]
-future = "*"
-
-[package.extras]
-dev = ["future (==0.17.1)", "numpy (==1.16.4)", "pytest-mock (==1.10.4)", "pytest (==4.6.1)", "Sphinx (==2.1.0)", "tox (==3.12.1)"]
-
-[[package]]
 name = "ffn"
 version = "0.3.6"
 description = "Financial functions for Python"
@@ -1916,7 +1883,7 @@ dev = ["black (>=20.8b1)", "codecov", "coverage", "flake8", "flake8-black", "fut
 name = "filelock"
 version = "3.9.0"
 description = "A platform independent file lock."
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -2466,72 +2433,6 @@ genshi = ["genshi"]
 lxml = ["lxml"]
 
 [[package]]
-name = "httpcore"
-version = "0.15.0"
-description = "A minimal low-level HTTP client."
-category = "main"
-optional = false
-python-versions = ">=3.7"
-
-[package.dependencies]
-anyio = ">=3.0.0,<4.0.0"
-certifi = "*"
-h11 = ">=0.11,<0.13"
-sniffio = ">=1.0.0,<2.0.0"
-
-[package.extras]
-http2 = ["h2 (>=3,<5)"]
-socks = ["socksio (>=1.0.0,<2.0.0)"]
-
-[[package]]
-name = "httpx"
-version = "0.23.0"
-description = "The next generation HTTP client."
-category = "main"
-optional = false
-python-versions = ">=3.7"
-
-[package.dependencies]
-certifi = "*"
-httpcore = ">=0.15.0,<0.16.0"
-rfc3986 = {version = ">=1.3,<2", extras = ["idna2008"]}
-sniffio = "*"
-
-[package.extras]
-brotli = ["brotlicffi", "brotli"]
-cli = ["click (>=8.0.0,<9.0.0)", "rich (>=10,<13)", "pygments (>=2.0.0,<3.0.0)"]
-http2 = ["h2 (>=3,<5)"]
-socks = ["socksio (>=1.0.0,<2.0.0)"]
-
-[[package]]
-name = "huggingface-hub"
-version = "0.12.1"
-description = "Client library to download and publish models, datasets and other repos on the huggingface.co hub"
-category = "main"
-optional = true
-python-versions = ">=3.7.0"
-
-[package.dependencies]
-filelock = "*"
-packaging = ">=20.9"
-pyyaml = ">=5.1"
-requests = "*"
-tqdm = ">=4.42.1"
-typing-extensions = ">=3.7.4.3"
-
-[package.extras]
-all = ["InquirerPy (==0.3.4)", "isort (>=5.5.4)", "jedi", "jinja2", "pytest", "pytest-cov", "pytest-env", "pytest-xdist", "soundfile", "pillow", "black (==22.3)", "flake8 (>=3.8.3)", "flake8-bugbear", "mypy (==0.982)", "types-pyyaml", "types-requests", "types-simplejson", "types-toml", "types-tqdm", "types-urllib3"]
-cli = ["InquirerPy (==0.3.4)"]
-dev = ["InquirerPy (==0.3.4)", "isort (>=5.5.4)", "jedi", "jinja2", "pytest", "pytest-cov", "pytest-env", "pytest-xdist", "soundfile", "pillow", "black (==22.3)", "flake8 (>=3.8.3)", "flake8-bugbear", "mypy (==0.982)", "types-pyyaml", "types-requests", "types-simplejson", "types-toml", "types-tqdm", "types-urllib3"]
-fastai = ["toml", "fastai (>=2.4)", "fastcore (>=1.3.27)"]
-quality = ["black (==22.3)", "flake8 (>=3.8.3)", "flake8-bugbear", "isort (>=5.5.4)", "mypy (==0.982)"]
-tensorflow = ["tensorflow", "pydot", "graphviz"]
-testing = ["InquirerPy (==0.3.4)", "isort (>=5.5.4)", "jedi", "jinja2", "pytest", "pytest-cov", "pytest-env", "pytest-xdist", "soundfile", "pillow"]
-torch = ["torch"]
-typing = ["types-pyyaml", "types-requests", "types-simplejson", "types-toml", "types-tqdm", "types-urllib3"]
-
-[[package]]
-=======
 name = "identify"
 version = "2.5.18"
 description = "File identification library for Python"
@@ -3944,14 +3845,6 @@ files = [
 ]
 
 [[package]]
-name = "mutagen"
-version = "1.46.0"
-description = "read and write audio tags for many formats"
-category = "main"
-optional = true
-python-versions = ">=3.7"
-
-[[package]]
 name = "mypy"
 version = "1.0.1"
 description = "Optional static typing for Python"
@@ -4414,25 +4307,6 @@ files = [
 
 [package.dependencies]
 six = "*"
-
-[[package]]
-name = "openai-whisper"
-version = "20230124"
-description = "Robust Speech Recognition via Large-Scale Weak Supervision"
-category = "main"
-optional = true
-python-versions = ">=3.7"
-
-[package.dependencies]
-ffmpeg-python = "0.2.0"
-more-itertools = "*"
-numpy = "*"
-torch = "*"
-tqdm = "*"
-transformers = ">=4.19.0"
-
-[package.extras]
-dev = ["pytest"]
 
 [[package]]
 name = "openpyxl"
@@ -5391,14 +5265,6 @@ files = [
     {file = "pycparser-2.21-py2.py3-none-any.whl", hash = "sha256:8ee45429555515e1f6b185e78100aea234072576aa43ab53aefcae078162fca9"},
     {file = "pycparser-2.21.tar.gz", hash = "sha256:e644fdec12f7872f86c58ff790da456218b10f863970249516d60a5eaca77206"},
 ]
-
-[[package]]
-name = "pycryptodomex"
-version = "3.17"
-description = "Cryptographic library for Python"
-category = "main"
-optional = true
-python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 
 [[package]]
 name = "pydantic"
@@ -7017,18 +6883,6 @@ pandas = ">=0.23"
 scipy = ">=1.0"
 
 [[package]]
-name = "semantic-version"
-version = "2.10.0"
-description = "A library implementing the 'SemVer' scheme."
-category = "main"
-optional = true
-python-versions = ">=2.7"
-
-[package.extras]
-dev = ["Django (>=1.11)", "nose2", "tox", "check-manifest", "coverage", "flake8", "wheel", "zest.releaser", "readme-renderer (<25.0)", "colorama (<=0.4.1)"]
-doc = ["sphinx", "sphinx-rtd-theme"]
-
-[[package]]
 name = "semver"
 version = "2.13.0"
 description = "Python helper for Semantic Versioning (http://semver.org/)"
@@ -7073,18 +6927,6 @@ files = [
 docs = ["furo", "jaraco.packaging (>=9)", "jaraco.tidelift (>=1.4)", "pygments-github-lexers (==0.0.5)", "rst.linker (>=1.9)", "sphinx", "sphinx-favicon", "sphinx-hoverxref (<2)", "sphinx-inline-tabs", "sphinx-notfound-page (==0.8.3)", "sphinx-reredirects", "sphinxcontrib-towncrier"]
 testing = ["build[virtualenv]", "filelock (>=3.4.0)", "flake8 (<5)", "flake8-2020", "ini2toml[lite] (>=0.9)", "jaraco.envs (>=2.2)", "jaraco.path (>=3.2.0)", "mock", "pip (>=19.1)", "pip-run (>=8.8)", "pytest (>=6)", "pytest-black (>=0.3.7)", "pytest-checkdocs (>=2.4)", "pytest-cov", "pytest-enabler (>=1.3)", "pytest-flake8", "pytest-mypy (>=0.9.1)", "pytest-perf", "pytest-xdist", "tomli-w (>=1.0.0)", "virtualenv (>=13.0.0)", "wheel"]
 testing-integration = ["build[virtualenv]", "filelock (>=3.4.0)", "jaraco.envs (>=2.2)", "jaraco.path (>=3.2.0)", "pytest", "pytest-enabler", "pytest-xdist", "tomli", "virtualenv (>=13.0.0)", "wheel"]
-
-[[package]]
-name = "setuptools-rust"
-version = "1.5.2"
-description = "Setuptools Rust extension plugin"
-category = "main"
-optional = true
-python-versions = ">=3.7"
-
-[package.dependencies]
-semantic-version = ">=2.8.2,<3"
-typing-extensions = ">=3.7.4.3"
 
 [[package]]
 name = "setuptools-scm"
@@ -7897,19 +7739,6 @@ doc = ["sphinx", "sphinx_rtd_theme"]
 test = ["flake8", "isort", "pytest"]
 
 [[package]]
-name = "tokenizers"
-version = "0.13.2"
-description = "Fast and Customizable Tokenizers"
-category = "main"
-optional = true
-python-versions = "*"
-
-[package.extras]
-dev = ["pytest", "requests", "numpy", "datasets", "black (==22.3)"]
-docs = ["sphinx", "sphinx-rtd-theme", "setuptools-rust"]
-testing = ["pytest", "requests", "numpy", "datasets", "black (==22.3)"]
-
-[[package]]
 name = "tokenterminal"
 version = "1.0.1"
 description = "Unofficial Token Terminal API client."
@@ -8129,69 +7958,6 @@ dev = ["coverage (>=4.4.2)", "coveralls (>=2.1.0)", "tox (>=3.21.0)"]
 docs = ["myst-parser (==0.15.2)", "readthedocs-sphinx-search (==0.1.1)", "sphinx (==4.2.0)", "sphinx-hoverxref (==0.7b1)", "sphinx-rtd-theme (==1.0.0)", "sphinx-tabs (==3.2.0)"]
 socks = ["requests[socks] (>=2.27.0,<3)"]
 test = ["vcrpy (>=1.10.3)"]
-
-[[package]]
-name = "transformers"
-version = "4.26.1"
-description = "State-of-the-art Machine Learning for JAX, PyTorch and TensorFlow"
-category = "main"
-optional = true
-python-versions = ">=3.7.0"
-
-[package.dependencies]
-filelock = "*"
-huggingface-hub = ">=0.11.0,<1.0"
-numpy = ">=1.17"
-packaging = ">=20.0"
-pyyaml = ">=5.1"
-regex = "!=2019.12.17"
-requests = "*"
-tokenizers = ">=0.11.1,<0.11.3 || >0.11.3,<0.14"
-tqdm = ">=4.27"
-
-[package.extras]
-accelerate = ["accelerate (>=0.10.0)"]
-all = ["tensorflow (>=2.4,<2.12)", "onnxconverter-common", "tf2onnx", "tensorflow-text", "keras-nlp (>=0.3.1)", "torch (>=1.7,!=1.12.0)", "jax (>=0.2.8,!=0.3.2,<=0.3.6)", "jaxlib (>=0.1.65,<=0.3.6)", "flax (>=0.4.1)", "optax (>=0.0.8)", "sentencepiece (>=0.1.91,!=0.1.92)", "protobuf (<=3.20.2)", "tokenizers (>=0.11.1,!=0.11.3,<0.14)", "torchaudio", "librosa", "pyctcdecode (>=0.4.0)", "phonemizer", "kenlm", "pillow", "optuna", "ray", "sigopt", "timm", "codecarbon (==1.2.0)", "accelerate (>=0.10.0)", "decord (==0.6.0)"]
-audio = ["librosa", "pyctcdecode (>=0.4.0)", "phonemizer", "kenlm"]
-codecarbon = ["codecarbon (==1.2.0)"]
-deepspeed = ["deepspeed (>=0.6.5)", "accelerate (>=0.10.0)"]
-deepspeed-testing = ["deepspeed (>=0.6.5)", "accelerate (>=0.10.0)", "pytest", "pytest-xdist", "timeout-decorator", "parameterized", "psutil", "datasets (!=2.5.0)", "dill (<0.3.5)", "evaluate (>=0.2.0)", "pytest-timeout", "black (==22.3)", "sacrebleu (>=1.4.12,<2.0.0)", "rouge-score (!=0.0.7,!=0.0.8,!=0.1,!=0.1.1)", "nltk", "GitPython (<3.1.19)", "hf-doc-builder (>=0.3.0)", "protobuf (<=3.20.2)", "sacremoses", "rjieba", "safetensors (>=0.2.1)", "beautifulsoup4", "faiss-cpu", "cookiecutter (==1.7.3)", "optuna", "sentencepiece (>=0.1.91,!=0.1.92)"]
-dev = ["tensorflow (>=2.4,<2.12)", "onnxconverter-common", "tf2onnx", "tensorflow-text", "keras-nlp (>=0.3.1)", "torch (>=1.7,!=1.12.0)", "jax (>=0.2.8,!=0.3.2,<=0.3.6)", "jaxlib (>=0.1.65,<=0.3.6)", "flax (>=0.4.1)", "optax (>=0.0.8)", "sentencepiece (>=0.1.91,!=0.1.92)", "protobuf (<=3.20.2)", "tokenizers (>=0.11.1,!=0.11.3,<0.14)", "torchaudio", "librosa", "pyctcdecode (>=0.4.0)", "phonemizer", "kenlm", "pillow", "optuna", "ray", "sigopt", "timm", "codecarbon (==1.2.0)", "accelerate (>=0.10.0)", "decord (==0.6.0)", "pytest", "pytest-xdist", "timeout-decorator", "parameterized", "psutil", "datasets (!=2.5.0)", "dill (<0.3.5)", "evaluate (>=0.2.0)", "pytest-timeout", "black (==22.3)", "sacrebleu (>=1.4.12,<2.0.0)", "rouge-score (!=0.0.7,!=0.0.8,!=0.1,!=0.1.1)", "nltk", "GitPython (<3.1.19)", "hf-doc-builder (>=0.3.0)", "sacremoses", "rjieba", "safetensors (>=0.2.1)", "beautifulsoup4", "faiss-cpu", "cookiecutter (==1.7.3)", "isort (>=5.5.4)", "flake8 (>=3.8.3)", "fugashi (>=1.0)", "ipadic (>=1.0.0,<2.0)", "unidic-lite (>=1.0.7)", "unidic (>=1.0.2)", "sudachipy (>=0.6.6)", "sudachidict-core (>=20220729)", "rhoknp (>=1.1.0)", "hf-doc-builder", "scikit-learn"]
-dev-tensorflow = ["pytest", "pytest-xdist", "timeout-decorator", "parameterized", "psutil", "datasets (!=2.5.0)", "dill (<0.3.5)", "evaluate (>=0.2.0)", "pytest-timeout", "black (==22.3)", "sacrebleu (>=1.4.12,<2.0.0)", "rouge-score (!=0.0.7,!=0.0.8,!=0.1,!=0.1.1)", "nltk", "GitPython (<3.1.19)", "hf-doc-builder (>=0.3.0)", "protobuf (<=3.20.2)", "sacremoses", "rjieba", "safetensors (>=0.2.1)", "beautifulsoup4", "faiss-cpu", "cookiecutter (==1.7.3)", "tensorflow (>=2.4,<2.12)", "onnxconverter-common", "tf2onnx", "tensorflow-text", "keras-nlp (>=0.3.1)", "sentencepiece (>=0.1.91,!=0.1.92)", "tokenizers (>=0.11.1,!=0.11.3,<0.14)", "pillow", "isort (>=5.5.4)", "flake8 (>=3.8.3)", "hf-doc-builder", "scikit-learn", "onnxruntime (>=1.4.0)", "onnxruntime-tools (>=1.4.2)", "librosa", "pyctcdecode (>=0.4.0)", "phonemizer", "kenlm"]
-dev-torch = ["pytest", "pytest-xdist", "timeout-decorator", "parameterized", "psutil", "datasets (!=2.5.0)", "dill (<0.3.5)", "evaluate (>=0.2.0)", "pytest-timeout", "black (==22.3)", "sacrebleu (>=1.4.12,<2.0.0)", "rouge-score (!=0.0.7,!=0.0.8,!=0.1,!=0.1.1)", "nltk", "GitPython (<3.1.19)", "hf-doc-builder (>=0.3.0)", "protobuf (<=3.20.2)", "sacremoses", "rjieba", "safetensors (>=0.2.1)", "beautifulsoup4", "faiss-cpu", "cookiecutter (==1.7.3)", "torch (>=1.7,!=1.12.0)", "sentencepiece (>=0.1.91,!=0.1.92)", "tokenizers (>=0.11.1,!=0.11.3,<0.14)", "torchaudio", "librosa", "pyctcdecode (>=0.4.0)", "phonemizer", "kenlm", "pillow", "optuna", "ray", "sigopt", "timm", "codecarbon (==1.2.0)", "isort (>=5.5.4)", "flake8 (>=3.8.3)", "fugashi (>=1.0)", "ipadic (>=1.0.0,<2.0)", "unidic-lite (>=1.0.7)", "unidic (>=1.0.2)", "sudachipy (>=0.6.6)", "sudachidict-core (>=20220729)", "rhoknp (>=1.1.0)", "hf-doc-builder", "scikit-learn", "onnxruntime (>=1.4.0)", "onnxruntime-tools (>=1.4.2)"]
-docs = ["tensorflow (>=2.4,<2.12)", "onnxconverter-common", "tf2onnx", "tensorflow-text", "keras-nlp (>=0.3.1)", "torch (>=1.7,!=1.12.0)", "jax (>=0.2.8,!=0.3.2,<=0.3.6)", "jaxlib (>=0.1.65,<=0.3.6)", "flax (>=0.4.1)", "optax (>=0.0.8)", "sentencepiece (>=0.1.91,!=0.1.92)", "protobuf (<=3.20.2)", "tokenizers (>=0.11.1,!=0.11.3,<0.14)", "torchaudio", "librosa", "pyctcdecode (>=0.4.0)", "phonemizer", "kenlm", "pillow", "optuna", "ray", "sigopt", "timm", "codecarbon (==1.2.0)", "accelerate (>=0.10.0)", "decord (==0.6.0)", "hf-doc-builder"]
-docs_specific = ["hf-doc-builder"]
-fairscale = ["fairscale (>0.3)"]
-flax = ["jax (>=0.2.8,!=0.3.2,<=0.3.6)", "jaxlib (>=0.1.65,<=0.3.6)", "flax (>=0.4.1)", "optax (>=0.0.8)"]
-flax-speech = ["librosa", "pyctcdecode (>=0.4.0)", "phonemizer", "kenlm"]
-ftfy = ["ftfy"]
-integrations = ["optuna", "ray", "sigopt"]
-ja = ["fugashi (>=1.0)", "ipadic (>=1.0.0,<2.0)", "unidic-lite (>=1.0.7)", "unidic (>=1.0.2)", "sudachipy (>=0.6.6)", "sudachidict-core (>=20220729)", "rhoknp (>=1.1.0)"]
-modelcreation = ["cookiecutter (==1.7.3)"]
-natten = ["natten (>=0.14.4)"]
-onnx = ["onnxconverter-common", "tf2onnx", "onnxruntime (>=1.4.0)", "onnxruntime-tools (>=1.4.2)"]
-onnxruntime = ["onnxruntime (>=1.4.0)", "onnxruntime-tools (>=1.4.2)"]
-optuna = ["optuna"]
-quality = ["black (==22.3)", "datasets (!=2.5.0)", "isort (>=5.5.4)", "flake8 (>=3.8.3)", "GitPython (<3.1.19)", "hf-doc-builder (>=0.3.0)"]
-ray = ["ray"]
-retrieval = ["faiss-cpu", "datasets (!=2.5.0)"]
-sagemaker = ["sagemaker (>=2.31.0)"]
-sentencepiece = ["sentencepiece (>=0.1.91,!=0.1.92)", "protobuf (<=3.20.2)"]
-serving = ["pydantic", "uvicorn", "fastapi", "starlette"]
-sigopt = ["sigopt"]
-sklearn = ["scikit-learn"]
-speech = ["torchaudio", "librosa", "pyctcdecode (>=0.4.0)", "phonemizer", "kenlm"]
-testing = ["pytest", "pytest-xdist", "timeout-decorator", "parameterized", "psutil", "datasets (!=2.5.0)", "dill (<0.3.5)", "evaluate (>=0.2.0)", "pytest-timeout", "black (==22.3)", "sacrebleu (>=1.4.12,<2.0.0)", "rouge-score (!=0.0.7,!=0.0.8,!=0.1,!=0.1.1)", "nltk", "GitPython (<3.1.19)", "hf-doc-builder (>=0.3.0)", "protobuf (<=3.20.2)", "sacremoses", "rjieba", "safetensors (>=0.2.1)", "beautifulsoup4", "faiss-cpu", "cookiecutter (==1.7.3)"]
-tf = ["tensorflow (>=2.4,<2.12)", "onnxconverter-common", "tf2onnx", "tensorflow-text", "keras-nlp (>=0.3.1)"]
-tf-cpu = ["tensorflow-cpu (>=2.4,<2.12)", "onnxconverter-common", "tf2onnx", "tensorflow-text", "keras-nlp (>=0.3.1)"]
-tf-speech = ["librosa", "pyctcdecode (>=0.4.0)", "phonemizer", "kenlm"]
-timm = ["timm"]
-tokenizers = ["tokenizers (>=0.11.1,!=0.11.3,<0.14)"]
-torch = ["torch (>=1.7,!=1.12.0)"]
-torch-speech = ["torchaudio", "librosa", "pyctcdecode (>=0.4.0)", "phonemizer", "kenlm"]
-torchhub = ["filelock", "huggingface-hub (>=0.11.0,<1.0)", "importlib-metadata", "numpy (>=1.17)", "packaging (>=20.0)", "protobuf (<=3.20.2)", "regex (!=2019.12.17)", "requests", "sentencepiece (>=0.1.91,!=0.1.92)", "torch (>=1.7,!=1.12.0)", "tokenizers (>=0.11.1,!=0.11.3,<0.14)", "tqdm (>=4.27)"]
-video = ["decord (==0.6.0)"]
-vision = ["pillow"]
 
 [[package]]
 name = "typeguard"
@@ -9190,22 +8956,6 @@ pytz = ">=2022.5"
 requests = ">=2.26"
 
 [[package]]
-name = "yt-dlp"
-version = "2023.2.17"
-description = "A youtube-dl fork with additional features and patches"
-category = "main"
-optional = true
-python-versions = ">=3.7"
-
-[package.dependencies]
-brotli = {version = "*", markers = "platform_python_implementation == \"CPython\""}
-brotlicffi = {version = "*", markers = "platform_python_implementation != \"CPython\""}
-certifi = "*"
-mutagen = "*"
-pycryptodomex = "*"
-websockets = "*"
-
-[[package]]
 name = "zipp"
 version = "3.14.0"
 description = "Backport of pathlib-compatible object wrapper for zip files"
@@ -9276,404 +9026,14 @@ test = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 
 [extras]
-all = ["torch", "pytorch-lightning", "u8darts", "Riskfolio-Lib", "openai-whisper", "setuptools-rust", "transformers", "yt-dlp"]
+all = ["torch", "pytorch-lightning", "u8darts", "Riskfolio-Lib"]
 doc = ["docstring-parser"]
 forecast = ["torch", "pytorch-lightning", "u8darts", "lightgbm"]
 installer = ["pyinstaller"]
 jupyterlab = ["jupyterlab-code-formatter", "jupyterlab-lsp", "jedi-language-server"]
 optimization = ["Riskfolio-Lib"]
-prediction = ["torch", "pytorch-lightning", "u8darts", "openai-whisper", "setuptools-rust", "transformers", "yt-dlp"]
 
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8,<3.11, !=3.9.7"
-
-content-hash = "0265c5a70600ac99ce83f97ce0d9a2810fb0103c136a9d9854e0623bfa8c5d47"
-
-[metadata.files]
-absl-py = []
-aiodns = []
-aiohttp = []
-aiosignal = []
-alabaster = []
-alpha-vantage = []
-altair = []
-altgraph = []
-anyio = []
-appdirs = []
-appnope = []
-arch = []
-argon2-cffi = []
-argon2-cffi-bindings = []
-ascii-magic = []
-astor = []
-astroid = []
-astropy = []
-asttokens = []
-async-timeout = []
-atomicwrites = []
-attrs = []
-babel = []
-backcall = []
-backoff = []
-"backports.zoneinfo" = []
-bandit = []
-base58 = []
-beartype = []
-beautifulsoup4 = []
-black = []
-bleach = []
-blinker = []
-brotli = []
-brotlicffi = []
-bs4 = []
-bt = []
-cachetools = []
-catboost = []
-ccxt = []
-certifi = []
-cffi = []
-cfgv = []
-charset-normalizer = []
-click = []
-cloudpickle = []
-cmdstanpy = []
-codespell = []
-colorama = []
-commonmark = []
-convertdate = []
-coverage = []
-cryptography = []
-cssselect = []
-cvxpy = []
-cycler = []
-cython = []
-dateparser = []
-datetime = []
-debugpy = []
-decorator = []
-defusedxml = []
-degiro-connector = []
-deprecation = []
-detecta = []
-dill = []
-distlib = []
-dnspython = []
-docstring-parser = []
-docstring-to-markdown = []
-docutils = []
-ecos = []
-entrypoints = []
-ephem = []
-et-xmlfile = []
-exchange-calendars = []
-executing = []
-fastjsonschema = []
-feedparser = []
-ffmpeg-python = []
-ffn = []
-filelock = []
-financedatabase = []
-finnhub-python = []
-finviz = []
-finvizfinance = []
-flake8 = []
-fonttools = []
-formulaic = []
-fred = []
-fredapi = []
-frozendict = []
-frozenlist = []
-fsspec = []
-fundamentalanalysis = []
-future = []
-gitdb = []
-gitpython = []
-google-auth = []
-google-auth-oauthlib = []
-graphviz = []
-grpcio = []
-h11 = []
-hijri-converter = []
-holidays = []
-html5lib = []
-httpcore = []
-httpx = []
-huggingface-hub = []
-identify = []
-idna = []
-imagesize = []
-importlib-metadata = []
-inflection = []
-iniconfig = []
-interface-meta = []
-investiny = []
-investpy = []
-ipyflex = []
-ipykernel = []
-ipympl = []
-ipython = []
-ipython-genutils = []
-ipywidgets = []
-iso8601 = []
-isort = []
-jedi = []
-jedi-language-server = []
-jinja2 = []
-joblib = []
-json5 = []
-jsonschema = []
-jupyter-client = []
-jupyter-core = []
-jupyter-lsp = []
-jupyter-server = []
-jupyterlab = []
-jupyterlab-code-formatter = []
-jupyterlab-lsp = []
-jupyterlab-pygments = []
-jupyterlab-server = []
-jupyterlab-widgets = []
-kiwisolver = []
-korean-lunar-calendar = []
-lazy-object-proxy = []
-lightgbm = []
-linearmodels = []
-llvmlite = []
-loguru = []
-lunarcalendar = []
-lxml = []
-macholib = []
-markdown = []
-markdown-it-py = []
-markupsafe = []
-matplotlib = []
-matplotlib-inline = []
-mccabe = []
-mdit-py-plugins = []
-mistune = []
-mock = []
-more-itertools = []
-mplfinance = []
-multidict = []
-multitasking = []
-mutagen = []
-mypy = []
-mypy-extensions = []
-myst-parser = []
-nbclassic = []
-nbclient = []
-nbconvert = []
-nbformat = []
-nbmake = []
-nest-asyncio = []
-networkx = []
-nfoursid = []
-nodeenv = []
-notebook = []
-notebook-shim = []
-numba = []
-numpy = []
-oandapyv20 = []
-oauthlib = []
-onetimepass = []
-openai-whisper = []
-openpyxl = []
-osqp = []
-packaging = []
-pandas = []
-pandas-datareader = []
-pandas-market-calendars = []
-pandas-ta = []
-pandocfilters = []
-papermill = []
-parso = []
-pathspec = []
-patsy = []
-pbr = []
-pefile = []
-pexpect = []
-pickleshare = []
-pillow = []
-platformdirs = []
-plotly = []
-pluggy = []
-pmdarima = []
-praw = []
-prawcore = []
-pre-commit = []
-prometheus-client = []
-prompt-toolkit = []
-property-cached = []
-prophet = []
-protobuf = []
-psaw = []
-psutil = []
-ptyprocess = []
-pure-eval = []
-py = []
-pyally = []
-pyarrow = []
-pyasn1 = []
-pyasn1-modules = []
-pycares = []
-pycodestyle = []
-pycoingecko = []
-pycparser = []
-pycryptodomex = []
-pydantic = []
-pydeck = []
-pydeprecate = []
-pyerfa = []
-pyex = []
-pyflakes = []
-pygls = []
-pygments = []
-pyhdfe = []
-pyinstaller = []
-pyinstaller-hooks-contrib = []
-pylint = []
-pyluach = []
-pymeeus = []
-pympler = []
-pyobjc-core = []
-pyobjc-framework-cocoa = []
-pyod = []
-pyotp = []
-pyparsing = []
-pyprind = []
-pyrsistent = []
-pytest = []
-pytest-cov = []
-pytest-mock = []
-pytest-recording = []
-pythclient = []
-python-binance = []
-python-coinmarketcap = []
-python-dateutil = []
-python-dotenv = []
-python-i18n = []
-pytorch-lightning = []
-pytrends = []
-pytz = []
-pytz-deprecation-shim = []
-pyupgrade = []
-pywin32 = []
-pywin32-ctypes = []
-pywinpty = []
-pyyaml = []
-pyzmq = []
-qdldl = []
-quandl = []
-rapidfuzz = []
-regex = []
-requests = []
-requests-oauthlib = []
-rfc3986 = []
-rich = []
-riskfolio-lib = []
-robin-stocks = []
-rsa = []
-"ruamel.yaml" = []
-"ruamel.yaml.clib" = []
-ruff = []
-scikit-learn = []
-scipy = []
-screeninfo = []
-scs = []
-seaborn = []
-semantic-version = []
-semver = []
-send2trash = []
-sentiment-investor = []
-setuptools-git = []
-setuptools-rust = []
-setuptools-scm = []
-sgmllib3k = []
-shap = []
-six = []
-slicer = []
-smmap = []
-sniffio = []
-snowballstemmer = []
-socketio-client-nexus = []
-soupsieve = []
-sphinx = []
-sphinxcontrib-applehelp = []
-sphinxcontrib-devhelp = []
-sphinxcontrib-htmlhelp = []
-sphinxcontrib-jsmath = []
-sphinxcontrib-qthelp = []
-sphinxcontrib-serializinghtml = []
-squarify = []
-sseclient = []
-stack-data = []
-statsforecast = []
-statsmodels = []
-stevedore = []
-stocksera = []
-streamlit = []
-tabulate = []
-tbats = []
-temporal-cache = []
-tenacity = []
-tensorboard = []
-tensorboard-data-server = []
-tensorboard-plugin-wit = []
-terminado = []
-thepassiveinvestor = []
-threadpoolctl = []
-tinycss2 = []
-tokenize-rt = []
-tokenizers = []
-tokenterminal = []
-toml = []
-tomli = []
-tomlkit = []
-toolz = []
-torch = []
-torchmetrics = []
-tornado = []
-tqdm = []
-tradingview-ta = []
-traitlets = []
-transformers = []
-typeguard = []
-types-python-dateutil = []
-types-pytz = []
-types-pyyaml = []
-types-requests = []
-types-setuptools = []
-types-six = []
-types-urllib3 = []
-typing-extensions = []
-tzdata = []
-tzlocal = []
-u8darts = []
-ujson = []
-unidecode = []
-update-checker = []
-urllib3 = []
-user-agent = []
-vadersentiment = []
-validators = []
-valinvest = []
-vcrpy = []
-virtualenv = []
-voila = []
-watchdog = []
-wcwidth = []
-webencodings = []
-websocket-client = []
-websockets = []
-werkzeug = []
-widgetsnbextension = []
-win32-setctime = []
-wrapt = []
-xarray = []
-xgboost = []
-xlsxwriter = []
-yarl = []
-yfinance = []
-yt-dlp = []
-zipp = []
-"zope.interface" = []
+content-hash = "7cd8d3dbd44cbd51e198c39f54a44da7f1e0d0f4af674424aaa1cfc2beb95c14"
