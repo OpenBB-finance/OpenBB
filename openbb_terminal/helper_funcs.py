@@ -48,34 +48,32 @@ from openbb_terminal.core.config.paths import HOME_DIRECTORY
 from openbb_terminal.rich_config import console
 
 try:
-    current_user = get_current_user()
     twitter_api = tweepy.API(
         tweepy.OAuth2BearerHandler(
-            current_user.credentials.API_TWITTER_BEARER_TOKEN,
+            get_current_user().credentials.API_TWITTER_BEARER_TOKEN,
         ),
         timeout=5,
     )
     if (
-        current_user.preferences.TOOLBAR_TWEET_NEWS
-        and current_user.credentials.API_TWITTER_BEARER_TOKEN != "REPLACE_ME"
+        get_current_user().preferences.TOOLBAR_TWEET_NEWS
+        and get_current_user().credentials.API_TWITTER_BEARER_TOKEN != "REPLACE_ME"
     ):
         # A test to ensure that the Twitter API key is correct,
         # otherwise we disable the Toolbar with Tweet News
         twitter_api.get_user(screen_name="openbb_finance")
 except tweepy.errors.Unauthorized:
     # Set toolbar tweet news to False because the Twitter API is not set up correctly
-    current_user.preferences.TOOLBAR_TWEET_NEWS = False
+    get_current_user().preferences.TOOLBAR_TWEET_NEWS = False
 
 
 logger = logging.getLogger(__name__)
 
-current_user = get_current_user()
 register_matplotlib_converters()
 if (
-    current_user.preferences.PLOT_BACKEND is not None
-    and current_user.preferences.PLOT_BACKEND != "None"
+    get_current_user().preferences.PLOT_BACKEND is not None
+    and get_current_user().preferences.PLOT_BACKEND != "None"
 ):
-    matplotlib.use(current_user.preferences.PLOT_BACKEND)
+    matplotlib.use(get_current_user().preferences.PLOT_BACKEND)
 
 NO_EXPORT = 0
 EXPORT_ONLY_RAW_DATA_ALLOWED = 1
@@ -1131,7 +1129,7 @@ def get_user_timezone() -> str:
     str
         user timezone based on .env file
     """
-    return current_user.preferences.TIMEZONE
+    return get_current_user().preferences.TIMEZONE
 
 
 def get_user_timezone_or_invalid() -> str:
@@ -1178,25 +1176,20 @@ def get_screeninfo():
 
 def plot_autoscale():
     """Autoscale plot."""
+    current_user = get_current_user()
     if current_user.preferences.USE_PLOT_AUTOSCALING:
         x, y = get_screeninfo()  # Get screen size
-        x = ((x) * get_current_user().preferences.PLOT_WIDTH_PERCENTAGE * 10**-2) / (
-            get_current_user().preferences.PLOT_DPI
+        x = ((x) * current_user.preferences.PLOT_WIDTH_PERCENTAGE * 10**-2) / (
+            current_user.preferences.PLOT_DPI
         )  # Calculate width
-        if (
-            get_current_user().preferences.PLOT_HEIGHT_PERCENTAGE == 100
-        ):  # If full height
+        if current_user.preferences.PLOT_HEIGHT_PERCENTAGE == 100:  # If full height
             y = y - 60  # Remove the height of window toolbar
-        y = ((y) * get_current_user().preferences.PLOT_HEIGHT_PERCENTAGE * 10**-2) / (
-            get_current_user().preferences.PLOT_DPI
+        y = ((y) * current_user.preferences.PLOT_HEIGHT_PERCENTAGE * 10**-2) / (
+            current_user.preferences.PLOT_DPI
         )
     else:  # If not autoscale, use size defined in config_plot.py
-        x = get_current_user().preferences.PLOT_WIDTH / (
-            get_current_user().preferences.PLOT_DPI
-        )
-        y = get_current_user().preferences.PLOT_HEIGHT / (
-            get_current_user().preferences.PLOT_DPI
-        )
+        x = current_user.preferences.PLOT_WIDTH / (current_user.preferences.PLOT_DPI)
+        y = current_user.preferences.PLOT_HEIGHT / (current_user.preferences.PLOT_DPI)
     return x, y
 
 
@@ -1825,7 +1818,7 @@ def load_json(path: str) -> Dict[str, str]:
     except Exception as e:
         console.print(
             f"[red]Failed to load preferred source from file: "
-            f"{current_user.preferences.PREFERRED_DATA_SOURCE_FILE}[/red]"
+            f"{get_current_user().preferences.PREFERRED_DATA_SOURCE_FILE}[/red]"
         )
         console.print(f"[red]{e}[/red]")
         return {}
@@ -1882,6 +1875,7 @@ def update_news_from_tweet_to_be_displayed() -> str:
 
     news_tweet = ""
 
+    current_user = get_current_user()
     # Check whether it has passed a certain amount of time since the last news update
     if LAST_TWEET_NEWS_UPDATE_CHECK_TIME is None or (
         (datetime.now(pytz.utc) - LAST_TWEET_NEWS_UPDATE_CHECK_TIME).total_seconds()
