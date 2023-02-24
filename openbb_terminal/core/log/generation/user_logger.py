@@ -3,7 +3,7 @@ import logging
 
 # IMPORTATION THIRDPARTY
 # IMPORTATION INTERNAL
-from openbb_terminal.core.session.current_user import is_local, get_current_user
+from openbb_terminal.core.session.current_user import get_current_user, is_local
 
 logger = logging.getLogger(__name__)
 

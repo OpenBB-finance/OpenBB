@@ -4,8 +4,8 @@ from typing import List
 from openbb_terminal.core.config.paths import (
     REPOSITORY_ENV_FILE,
     SETTINGS_DIRECTORY,
-    USER_DATA_SOURCES_DEFAULT_FILE,
     SETTINGS_ENV_FILE,
+    USER_DATA_SOURCES_DEFAULT_FILE,
 )
 from openbb_terminal.core.session.current_user import get_current_user
 

@@ -5,13 +5,13 @@ from prompt_toolkit import PromptSession
 import openbb_terminal.core.session.local_model as Local
 from openbb_terminal import terminal_controller
 from openbb_terminal.core.config.paths import PACKAGE_DIRECTORY
-from openbb_terminal.rich_config import console
 from openbb_terminal.core.session.constants import REGISTER_URL
 from openbb_terminal.core.session.session_model import (
     LoginStatus,
     create_session,
     login,
 )
+from openbb_terminal.rich_config import console
 
 
 def display_welcome_message():

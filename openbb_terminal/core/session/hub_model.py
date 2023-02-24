@@ -3,13 +3,13 @@ from typing import Dict, Optional
 
 import requests
 
-from openbb_terminal.rich_config import console
 from openbb_terminal.core.session.constants import (
     BASE_URL,
-    TIMEOUT,
     CONNECTION_ERROR_MSG,
     CONNECTION_TIMEOUT_MSG,
+    TIMEOUT,
 )
+from openbb_terminal.rich_config import console
 
 
 def create_session(

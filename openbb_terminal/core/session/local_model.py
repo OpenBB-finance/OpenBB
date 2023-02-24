@@ -8,8 +8,8 @@ from openbb_terminal.core.config.paths import (
     HIST_FILE_PATH,
     SETTINGS_DIRECTORY,
 )
-from openbb_terminal.rich_config import console
 from openbb_terminal.core.session.current_user import get_current_user, set_current_user
+from openbb_terminal.rich_config import console
 
 SESSION_FILE_PATH = SETTINGS_DIRECTORY / "session.json"
 
@@ -196,10 +196,7 @@ def get_routine(file_name: str, folder: Optional[Path] = None) -> Optional[str]:
 
     try:
         user_folder = folder / current_user.profile.get_uuid()
-        if os.path.exists(user_folder / file_name):
-            file_path = user_folder / file_name
-        else:
-            file_path = folder / file_name
+        file_path = user_folder / file_name if os.path.exists(user_folder / file_name) else folder / file_name
 
         with open(file_path) as f:
             routine = "".join(f.readlines())

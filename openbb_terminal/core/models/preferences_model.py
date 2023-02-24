@@ -1,12 +1,11 @@
 import os
 from typing import Literal, Optional
-import dotenv
+
 from pydantic import NonNegativeInt, PositiveFloat, PositiveInt
 from pydantic.dataclasses import dataclass
 
 from openbb_terminal.core.config.paths import (
     HOME_DIRECTORY,
-    SETTINGS_ENV_FILE,
     USER_DATA_SOURCES_DEFAULT_FILE,
 )
 

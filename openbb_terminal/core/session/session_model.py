@@ -10,16 +10,16 @@ from openbb_terminal.base_helpers import (
     remove_log_handlers,
 )
 from openbb_terminal.core.models.user_model import (
-    UserModel,
     CredentialsModel,
     PreferencesModel,
     ProfileModel,
+    UserModel,
 )
-from openbb_terminal.helper_funcs import system_clear
-from openbb_terminal.rich_config import console
 from openbb_terminal.core.session.current_user import (
     set_current_user,
 )
+from openbb_terminal.helper_funcs import system_clear
+from openbb_terminal.rich_config import console
 
 # pylint: disable=consider-using-f-string
 

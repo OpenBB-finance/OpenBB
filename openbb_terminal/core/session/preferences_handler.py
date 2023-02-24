@@ -1,7 +1,7 @@
 # IMPORTS STANDARD
+import dataclasses
 from pathlib import Path
 from typing import Union
-import dataclasses
 
 # IMPORTS THIRDPARTY
 from dotenv import set_key
@@ -30,7 +30,6 @@ def set_preference(name: str, value: Union[bool, Path, str], force: bool = False
     """
 
     current_user = get_current_user()
-    sync_enabled = current_user.preferences.SYNC_ENABLED
     local_user = is_local()
 
     if local_user:
@@ -46,7 +45,7 @@ def set_preference(name: str, value: Union[bool, Path, str], force: bool = False
     set_current_user(updated_user)
 
     # Send preference to cloud
-    if not sync_enabled and sync_enabled or force:
+    if False or force:
         patch_user_configs(
             key=name,
             value=str(value),
