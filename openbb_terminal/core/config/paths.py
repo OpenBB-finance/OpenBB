@@ -21,7 +21,7 @@ USER_DATA_SOURCES_DEFAULT_FILE = MISCELLANEOUS_DIRECTORY / "data_sources_default
 REPOSITORY_ENV_FILE = REPOSITORY_DIRECTORY / ".env"
 PACKAGE_ENV_FILE = PACKAGE_DIRECTORY / ".env"
 SETTINGS_DIRECTORY = HOME_DIRECTORY / ".openbb_terminal"
-USER_ENV_FILE = SETTINGS_DIRECTORY / ".env"
+ENV_FILE = SETTINGS_DIRECTORY / ".env"
 HIST_FILE_PATH = SETTINGS_DIRECTORY / ".openbb_terminal.his"
 
 # User should be able to change these -> move to preferences

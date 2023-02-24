@@ -27,7 +27,7 @@ from prawcore.exceptions import ResponseException
 from tokenterminal import TokenTerminal
 
 from openbb_terminal import config_terminal as cfg
-from openbb_terminal.core.config.paths import USER_ENV_FILE
+from openbb_terminal.core.config.paths import ENV_FILE
 from openbb_terminal.cryptocurrency.coinbase_helpers import (
     CoinbaseApiException,
     CoinbaseProAuth,
@@ -214,7 +214,7 @@ def first_time_user() -> bool:
     bool
         Whether or not the user is a first time user
     """
-    if USER_ENV_FILE.stat().st_size == 0:
+    if ENV_FILE.stat().st_size == 0:
         set_key("OPENBB_PREVIOUS_USE", "True", True)
         return True
     return False
@@ -237,7 +237,7 @@ def set_key(name: str, value: str, persist: bool = False) -> None:
     current_user = get_current_user()
 
     if persist and is_local():
-        dotenv.set_key(str(USER_ENV_FILE), name, value)
+        dotenv.set_key(str(ENV_FILE), name, value)
 
     # Remove "OPENBB_" prefix from env_var
     if name.startswith("OPENBB_"):

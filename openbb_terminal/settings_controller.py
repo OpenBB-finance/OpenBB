@@ -21,7 +21,7 @@ from openbb_terminal import (
 from openbb_terminal.core.config import paths
 from openbb_terminal.core.config.paths import (
     USER_DATA_SOURCES_DEFAULT_FILE,
-    USER_ENV_FILE,
+    ENV_FILE,
 )
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
@@ -79,7 +79,7 @@ class SettingsController(BaseController):
     ]
 
     def __init__(
-        self, queue: Optional[List[str]] = None, env_file: str = str(USER_ENV_FILE)
+        self, queue: Optional[List[str]] = None, env_file: str = str(ENV_FILE)
     ):
         """Constructor"""
         super().__init__(queue)
@@ -218,7 +218,7 @@ class SettingsController(BaseController):
         local_user = is_local()
 
         if local_user:
-            set_key(str(USER_ENV_FILE), name, str(value))
+            set_key(str(ENV_FILE), name, str(value))
 
         # Remove "OPENBB_" prefix from env_var
         if name.startswith("OPENBB_"):
@@ -254,7 +254,7 @@ class SettingsController(BaseController):
         local_user = is_local()
 
         if local_user:
-            set_key(str(USER_ENV_FILE), name, str(value))
+            set_key(str(ENV_FILE), name, str(value))
 
         # Remove "OPENBB_" prefix from env_var
         if name.startswith("OPENBB_"):
@@ -707,7 +707,7 @@ class SettingsController(BaseController):
                 not current_user.preferences.TOOLBAR_TWEET_NEWS
             )
             set_key(
-                USER_ENV_FILE,
+                ENV_FILE,
                 "OPENBB_TOOLBAR_TWEET_NEWS",
                 str(current_user.preferences.TOOLBAR_TWEET_NEWS),
             )

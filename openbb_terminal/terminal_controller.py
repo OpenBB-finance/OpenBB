@@ -29,7 +29,7 @@ from openbb_terminal.core.config.paths import (
     MISCELLANEOUS_DIRECTORY,
     REPOSITORY_DIRECTORY,
     USER_DATA_DIRECTORY,
-    USER_ENV_FILE,
+    ENV_FILE,
     USER_ROUTINES_DIRECTORY,
 )
 from openbb_terminal.core.log.generation.custom_logger import log_terminal
@@ -71,7 +71,7 @@ from openbb_terminal.terminal_helper import (
 
 logger = logging.getLogger(__name__)
 
-env_file = str(USER_ENV_FILE)
+env_file = str(ENV_FILE)
 
 if is_installer():
     # Necessary for installer so that it can locate the correct certificates for

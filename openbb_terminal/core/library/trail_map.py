@@ -5,7 +5,7 @@ import dotenv
 import pandas as pd
 
 from openbb_terminal.base_helpers import load_env_vars, strtobool
-from openbb_terminal.core.config.paths import MISCELLANEOUS_DIRECTORY, USER_ENV_FILE
+from openbb_terminal.core.config.paths import MISCELLANEOUS_DIRECTORY, ENV_FILE
 from openbb_terminal.rich_config import console
 
 DISABLE_FORECASTING_WARNING = load_env_vars(
@@ -19,7 +19,7 @@ try:
 except ModuleNotFoundError:
     FORECASTING_TOOLKIT_ENABLED = False
     if not DISABLE_FORECASTING_WARNING:
-        dotenv.set_key(str(USER_ENV_FILE), "OPENBB_DISABLE_FORECASTING_WARNING", "True")
+        dotenv.set_key(str(ENV_FILE), "OPENBB_DISABLE_FORECASTING_WARNING", "True")
         console.print(
             "[yellow]"
             "Forecasting Toolkit is disabled. "
@@ -39,9 +39,7 @@ try:
 except ModuleNotFoundError:
     OPTIMIZATION_TOOLKIT_ENABLED = False
     if not DISABLE_OPTIMIZATION_WARNING:
-        dotenv.set_key(
-            str(USER_ENV_FILE), "OPENBB_DISABLE_OPTIMIZATION_WARNING", "True"
-        )
+        dotenv.set_key(str(ENV_FILE), "OPENBB_DISABLE_OPTIMIZATION_WARNING", "True")
         console.print(
             "[yellow]"
             "Portfolio Optimization Toolkit is disabled. "

@@ -8,7 +8,7 @@ import dotenv
 
 import openbb_terminal.config_terminal as cfg
 from openbb_terminal.base_helpers import load_env_vars, strtobool
-from openbb_terminal.core.config.paths import USER_ENV_FILE
+from openbb_terminal.core.config.paths import ENV_FILE
 from openbb_terminal.rich_config import console
 from openbb_terminal.sdk_core.sdk_init import (
     FORECASTING_TOOLKIT_ENABLED,
@@ -20,13 +20,13 @@ from openbb_terminal.sdk_core.sdk_init import (
 if not FORECASTING_TOOLKIT_ENABLED and not load_env_vars(
     "OPENBB_DISABLE_FORECASTING_WARNING", strtobool, False
 ):
-    dotenv.set_key(str(USER_ENV_FILE), "OPENBB_DISABLE_FORECASTING_WARNING", "True")
+    dotenv.set_key(str(ENV_FILE), "OPENBB_DISABLE_FORECASTING_WARNING", "True")
     console.print(FORECASTING_TOOLKIT_WARNING)
 
 if not OPTIMIZATION_TOOLKIT_ENABLED and not load_env_vars(
     "OPENBB_DISABLE_OPTIMIZATION_WARNING", strtobool, False
 ):
-    dotenv.set_key(str(USER_ENV_FILE), "OPENBB_DISABLE_OPTIMIZATION_WARNING", "True")
+    dotenv.set_key(str(ENV_FILE), "OPENBB_DISABLE_OPTIMIZATION_WARNING", "True")
     console.print(OPTIMIZATION_TOOLKIT_WARNING)
 
 

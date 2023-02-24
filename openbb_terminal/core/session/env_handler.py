@@ -8,7 +8,7 @@ from dotenv import dotenv_values
 from openbb_terminal.core.config.paths import (
     PACKAGE_ENV_FILE,
     REPOSITORY_ENV_FILE,
-    USER_ENV_FILE,
+    ENV_FILE,
 )
 
 
@@ -16,7 +16,7 @@ def reading_env() -> Dict[str, Any]:
     __env_dict = {
         **dotenv_values(REPOSITORY_ENV_FILE),
         **dotenv_values(PACKAGE_ENV_FILE),
-        **dotenv_values(USER_ENV_FILE),
+        **dotenv_values(ENV_FILE),
     }
     __env_dict_filtered = {
         k[len("OPENBBB_") - 1 :]: v
