@@ -9,8 +9,8 @@ from matplotlib import (
 )
 
 from openbb_terminal.alternative.oss import runa_model
-from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
@@ -61,6 +61,8 @@ def display_rossindex(
     """
     df = runa_model.get_startups()
 
+    current_user = get_current_user()
+
     if df.empty:
         console.print("\nError in runa request\n")
     else:
@@ -69,7 +71,9 @@ def display_rossindex(
         df = df.head(limit)
         if show_chart:
             if external_axes is None:
-                _, ax1 = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+                _, ax1 = plt.subplots(
+                    figsize=plot_autoscale(), dpi=current_user.preferences.PLOT_DPI
+                )
             elif is_valid_axes_count(external_axes, 2):
                 (ax1, _) = external_axes
             else:
@@ -94,7 +98,9 @@ def display_rossindex(
                 theme.visualize_output()
         if show_growth:
             if external_axes is None:
-                fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+                fig, ax = plt.subplots(
+                    figsize=plot_autoscale(), dpi=current_user.preferences.PLOT_DPI
+                )
             elif is_valid_axes_count(external_axes, 2):
                 (ax, _) = external_axes
             else:
