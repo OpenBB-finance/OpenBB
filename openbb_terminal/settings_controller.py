@@ -21,7 +21,7 @@ from openbb_terminal import (
 from openbb_terminal.core.config import paths
 from openbb_terminal.core.config.paths import (
     USER_DATA_SOURCES_DEFAULT_FILE,
-    ENV_FILE,
+    SETTINGS_ENV_FILE,
 )
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
@@ -79,7 +79,7 @@ class SettingsController(BaseController):
     ]
 
     def __init__(
-        self, queue: Optional[List[str]] = None, env_file: str = str(ENV_FILE)
+        self, queue: Optional[List[str]] = None, env_file: str = str(SETTINGS_ENV_FILE)
     ):
         """Constructor"""
         super().__init__(queue)
@@ -135,7 +135,7 @@ class SettingsController(BaseController):
         mt.add_raw("\n")
         mt.add_param(
             "_user_data_folder",
-            paths.USER_DATA_DIRECTORY,
+            current_user.preferences.USER_DATA_DIRECTORY,
         )
         mt.add_raw("\n")
         mt.add_cmd("tz")
@@ -218,7 +218,7 @@ class SettingsController(BaseController):
         local_user = is_local()
 
         if local_user:
-            set_key(str(ENV_FILE), name, str(value))
+            set_key(str(SETTINGS_ENV_FILE), name, str(value))
 
         # Remove "OPENBB_" prefix from env_var
         if name.startswith("OPENBB_"):
@@ -254,7 +254,7 @@ class SettingsController(BaseController):
         local_user = is_local()
 
         if local_user:
-            set_key(str(ENV_FILE), name, str(value))
+            set_key(str(SETTINGS_ENV_FILE), name, str(value))
 
         # Remove "OPENBB_" prefix from env_var
         if name.startswith("OPENBB_"):
@@ -683,7 +683,7 @@ class SettingsController(BaseController):
                             # Do not update userdata_folder path since we will keep the same as before
                             console.print(
                                 "[yellow]User data to keep being saved in "
-                                + f"the selected folder: {str(paths.USER_DATA_DIRECTORY)}[/yellow]"
+                                + f"the selected folder: {str(get_current_user().preferences.USER_DATA_DIRECTORY)}[/yellow]"
                             )
                         success_userdata = True
 
@@ -707,7 +707,7 @@ class SettingsController(BaseController):
                 not current_user.preferences.TOOLBAR_TWEET_NEWS
             )
             set_key(
-                ENV_FILE,
+                SETTINGS_ENV_FILE,
                 "OPENBB_TOOLBAR_TWEET_NEWS",
                 str(current_user.preferences.TOOLBAR_TWEET_NEWS),
             )

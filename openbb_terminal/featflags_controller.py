@@ -9,7 +9,7 @@ from typing import List, Optional, Union
 from dotenv import set_key
 
 # IMPORTATION INTERNAL
-from openbb_terminal.core.config.paths import ENV_FILE
+from openbb_terminal.core.config.paths import SETTINGS_ENV_FILE
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.menu import session
@@ -104,7 +104,7 @@ class FeatureFlagsController(BaseController):
         local_user = is_local()
 
         if local_user:
-            set_key(str(ENV_FILE), name, str(value))
+            set_key(str(SETTINGS_ENV_FILE), name, str(value))
 
         # Remove "OPENBB_" prefix from env_var
         if name.startswith("OPENBB_"):

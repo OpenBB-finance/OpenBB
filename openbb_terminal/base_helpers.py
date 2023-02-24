@@ -11,7 +11,7 @@ from rich.console import Console
 from openbb_terminal.core.config.paths import (
     PACKAGE_ENV_FILE,
     REPOSITORY_ENV_FILE,
-    ENV_FILE,
+    SETTINGS_ENV_FILE,
 )
 
 console = Console()
@@ -112,7 +112,7 @@ def load_env_files():
     """
     load_dotenv(REPOSITORY_ENV_FILE, override=True)
     load_dotenv(PACKAGE_ENV_FILE, override=True)
-    load_dotenv(ENV_FILE, override=True)
+    load_dotenv(SETTINGS_ENV_FILE, override=True)
 
     # reload_openbb_config_modules()
 

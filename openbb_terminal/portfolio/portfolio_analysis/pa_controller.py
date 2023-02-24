@@ -8,7 +8,6 @@ from typing import List, Optional
 
 import pandas as pd
 
-from openbb_terminal.core.config.paths import USER_PORTFOLIO_DATA_DIRECTORY
 from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
@@ -19,7 +18,9 @@ from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
-portfolios_path = USER_PORTFOLIO_DATA_DIRECTORY / "portfolios"
+portfolios_path = (
+    get_current_user().preferences.USER_PORTFOLIO_DATA_DIRECTORY / "portfolios"
+)
 port_types = [".csv", ".json", ".xlsx"]
 possible_paths = {
     portpath.name: portpath

@@ -5,7 +5,6 @@ import numpy as np
 import pandas as pd
 
 from openbb_terminal import (
-    config_plot as cfg_plot,
     config_terminal as cfg,
 )
 from openbb_terminal.base_helpers import strtobool
@@ -77,10 +76,6 @@ def get_diff_settings(settings: dict) -> dict:
                     diff[k] = (old, new)
             elif hasattr(cfg, k):
                 old, new = get_var_diff(cfg, k, v)
-                if new is not None:
-                    diff[k] = (old, new)
-            elif hasattr(cfg_plot, k):
-                old, new = get_var_diff(cfg_plot, k, v)
                 if new is not None:
                     diff[k] = (old, new)
             elif hasattr(paths, k):

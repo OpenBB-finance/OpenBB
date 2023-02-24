@@ -8,7 +8,7 @@ from typing import Dict
 
 import pandas as pd
 
-from openbb_terminal.core.config.paths import USER_PRESETS_DIRECTORY
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import log_start_end
 
 logger = logging.getLogger(__name__)
@@ -21,7 +21,9 @@ def get_preset_choices() -> Dict:
     filepath as value
     """
 
-    PRESETS_PATH = USER_PRESETS_DIRECTORY / "etf" / "screener"
+    PRESETS_PATH = (
+        get_current_user().preferences.USER_PRESETS_DIRECTORY / "etf" / "screener"
+    )
     PRESETS_PATH_DEFAULT = Path(__file__).parent / "presets"
     preset_choices = {
         filepath.name: filepath

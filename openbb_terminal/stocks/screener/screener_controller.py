@@ -8,7 +8,6 @@ from typing import List, Optional
 
 from openbb_terminal.core.config.paths import (
     MISCELLANEOUS_DIRECTORY,
-    USER_PRESETS_DIRECTORY,
 )
 from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
@@ -37,7 +36,7 @@ logger = logging.getLogger(__name__)
 
 # pylint: disable=E1121
 
-PRESETS_PATH = USER_PRESETS_DIRECTORY / "stocks" / "screener"
+PRESETS_PATH = get_current_user().preferences.USER_PRESETS_DIRECTORY / "stocks" / "screener"
 
 
 class ScreenerController(BaseController):

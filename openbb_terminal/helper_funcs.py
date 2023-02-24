@@ -44,13 +44,7 @@ from screeninfo import get_monitors
 
 # IMPORTS INTERNAL
 from openbb_terminal.core.session.current_user import get_current_user
-from openbb_terminal import (
-    config_terminal as cfg,
-)
-from openbb_terminal.core.config.paths import (
-    HOME_DIRECTORY,
-    USER_EXPORTS_DIRECTORY,
-)
+from openbb_terminal.core.config.paths import HOME_DIRECTORY
 from openbb_terminal.rich_config import console
 
 try:
@@ -1293,7 +1287,7 @@ def compose_export_path(func_name: str, dir_path: str) -> Path:
 
     default_filename = f"{now.strftime('%Y%m%d_%H%M%S')}_{path_cmd}_{func_name}"
 
-    full_path = USER_EXPORTS_DIRECTORY / default_filename
+    full_path = get_current_user().preferences.USER_EXPORTS_DIRECTORY / default_filename
 
     return full_path
 

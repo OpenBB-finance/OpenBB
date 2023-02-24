@@ -20,19 +20,19 @@ proc_id = os.getpid()
 )
 def test_set_key(var_name: str, var_value: str, persist: bool):
     # Route .env file location
-    keys_model.ENV_FILE = (TEST_PATH / f"{var_name}{proc_id}.tmp").resolve()
+    keys_model.SETTINGS_ENV_FILE = (TEST_PATH / f"{var_name}{proc_id}.tmp").resolve()
 
     # Test
     keys_model.set_key(var_name, var_value, persist)
 
     # Get key from temp .env
     dotenv_key = keys_model.dotenv.get_key(
-        str(keys_model.ENV_FILE), key_to_get=var_name
+        str(keys_model.SETTINGS_ENV_FILE), key_to_get=var_name
     )
 
     # Remove temp .env
-    if keys_model.ENV_FILE.is_file():
-        keys_model.ENV_FILE.unlink(missing_ok=True)
+    if keys_model.SETTINGS_ENV_FILE.is_file():
+        keys_model.SETTINGS_ENV_FILE.unlink(missing_ok=True)
 
     # Get key from config_terminal.py
     if var_name.startswith("OPENBB_"):
@@ -64,7 +64,7 @@ def set_naive_environment(var_name_list: List[str]) -> None:
         tmp_env.unlink(missing_ok=True)
 
     # Set new temporary .env
-    keys_model.ENV_FILE = tmp_env
+    keys_model.SETTINGS_ENV_FILE = tmp_env
 
 
 def assert_keys_and_status(
@@ -76,7 +76,7 @@ def assert_keys_and_status(
 ) -> None:
     for i, var_name in enumerate(var_name_list):
         dotenv_var = keys_model.dotenv.get_key(
-            str(keys_model.ENV_FILE), key_to_get=var_name
+            str(keys_model.SETTINGS_ENV_FILE), key_to_get=var_name
         )
 
         if var_name.startswith("OPENBB_"):

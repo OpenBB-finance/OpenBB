@@ -30,12 +30,7 @@ except ModuleNotFoundError:
 import pandas as pd
 import psutil
 
-from openbb_terminal import feature_flags as obbff
 from openbb_terminal.common import common_model
-from openbb_terminal.core.config.paths import (
-    USER_CUSTOM_IMPORTS_DIRECTORY,
-    USER_EXPORTS_DIRECTORY,
-)
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.forecast import (
@@ -256,12 +251,14 @@ class ForecastController(BaseController):
 
     def print_help(self):
         """Print help"""
+        current_user = get_current_user()
         mt = MenuText("forecast/")
         mt.add_param("_disclaimer_", self.disclaimer)
         mt.add_raw("\n")
         mt.add_param(
             "_data_loc",
-            f"\n\t{USER_EXPORTS_DIRECTORY}\n\t{USER_CUSTOM_IMPORTS_DIRECTORY}",
+            f"\n\t{current_user.preferences.USER_EXPORTS_DIRECTORY}\n"
+            f"\t{current_user.preferences.USER_CUSTOM_IMPORTS_DIRECTORY}",
         )
         mt.add_raw("\n")
         mt.add_cmd("load")

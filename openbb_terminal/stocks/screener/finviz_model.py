@@ -13,14 +13,16 @@ from finvizfinance.screener import (
 
 from openbb_terminal.core.config.paths import (
     MISCELLANEOUS_DIRECTORY,
-    USER_PRESETS_DIRECTORY,
 )
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
-PRESETS_PATH = USER_PRESETS_DIRECTORY / "stocks" / "screener"
+PRESETS_PATH = (
+    get_current_user().preferences.USER_PRESETS_DIRECTORY / "stocks" / "screener"
+)
 PRESETS_PATH_DEFAULT = MISCELLANEOUS_DIRECTORY / "stocks" / "screener"
 preset_choices = {
     filepath.name: filepath

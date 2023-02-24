@@ -3,7 +3,7 @@ import os
 import uuid
 from pathlib import Path
 
-from openbb_terminal.core.config.paths import USER_DATA_DIRECTORY
+from openbb_terminal.core.session.current_user import get_current_user
 
 # IMPORTATION THIRDPARTY
 
@@ -14,7 +14,7 @@ from openbb_terminal.core.config.paths import USER_DATA_DIRECTORY
 def get_log_dir() -> Path:
     """Retrieve application's log directory."""
 
-    log_dir = USER_DATA_DIRECTORY.joinpath("logs")
+    log_dir = get_current_user().preferences.USER_DATA_DIRECTORY.joinpath("logs")
 
     if not os.path.isdir(log_dir.absolute()):
         os.mkdir(log_dir.absolute())

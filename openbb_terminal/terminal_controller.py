@@ -28,9 +28,7 @@ from openbb_terminal.core.config.paths import (
     HOME_DIRECTORY,
     MISCELLANEOUS_DIRECTORY,
     REPOSITORY_DIRECTORY,
-    USER_DATA_DIRECTORY,
-    ENV_FILE,
-    USER_ROUTINES_DIRECTORY,
+    SETTINGS_ENV_FILE,
 )
 from openbb_terminal.core.log.generation.custom_logger import log_terminal
 from openbb_terminal.helper_funcs import (
@@ -71,7 +69,7 @@ from openbb_terminal.terminal_helper import (
 
 logger = logging.getLogger(__name__)
 
-env_file = str(ENV_FILE)
+env_file = str(SETTINGS_ENV_FILE)
 
 if is_installer():
     # Necessary for installer so that it can locate the correct certificates for
@@ -142,7 +140,9 @@ class TerminalController(BaseController):
         """Update runtime choices."""
         self.ROUTINE_FILES = {
             filepath.name: filepath
-            for filepath in USER_ROUTINES_DIRECTORY.rglob("*.openbb")
+            for filepath in get_current_user().preferences.USER_ROUTINES_DIRECTORY.rglob(
+                "*.openbb"
+            )
         }
 
         self.ROUTINE_CHOICES = {}
@@ -1190,7 +1190,9 @@ def replace_dynamic(match: re.Match, special_arguments: Dict[str, str]) -> str:
 
 def run_routine(file: str, routines_args=List[str]):
     """Execute command routine from .openbb file."""
-    user_routine_path = USER_DATA_DIRECTORY / "routines" / file
+    user_routine_path = (
+        get_current_user().preferences.USER_DATA_DIRECTORY / "routines" / file
+    )
     default_routine_path = MISCELLANEOUS_DIRECTORY / "routines" / file
 
     if user_routine_path.exists():

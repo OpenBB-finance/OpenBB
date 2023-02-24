@@ -18,9 +18,6 @@ from ipykernel.kernelapp import IPKernelApp
 
 from openbb_terminal.core.config.paths import (
     MISCELLANEOUS_DIRECTORY,
-    USER_CUSTOM_REPORTS_DIRECTORY,
-    USER_PORTFOLIO_DATA_DIRECTORY,
-    USER_REPORTS_DIRECTORY,
 )
 from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import log_start_end
@@ -35,7 +32,9 @@ REPORTS_FOLDER = CURRENT_LOCATION.parent / "templates"
 USER_REPORTS = {
     filepath.name: filepath
     for file_type in ["ipynb"]
-    for filepath in USER_CUSTOM_REPORTS_DIRECTORY.rglob(f"*.{file_type}")
+    for filepath in get_current_user().preferences.USER_CUSTOM_REPORTS_DIRECTORY.rglob(
+        f"*.{file_type}"
+    )
 }
 
 # TODO: Trim available choices to avoid errors in notebooks.
@@ -52,7 +51,9 @@ STOCKS_TICKERS = pd.read_csv(stocks_data_path).iloc[:, 0].to_list()
 PORTFOLIO_HOLDINGS_FILES = {
     filepath.name: filepath
     for file_type in ["xlsx", "csv"]
-    for filepath in (USER_PORTFOLIO_DATA_DIRECTORY / "holdings").rglob(f"*.{file_type}")
+    for filepath in (
+        get_current_user().preferences.USER_PORTFOLIO_DATA_DIRECTORY / "holdings"
+    ).rglob(f"*.{file_type}")
 }
 
 PORTFOLIO_HOLDINGS_FILES.update(
@@ -282,7 +283,9 @@ def create_output_path(input_path: str, parameters_dict: Dict[str, Any]) -> str:
         + f"{report_name}{args_to_output}"
     )
     report_output_name = report_output_name.replace(".", "_")
-    output_path = str(USER_REPORTS_DIRECTORY / report_output_name)
+    output_path = str(
+        get_current_user().preferences.USER_REPORTS_DIRECTORY / report_output_name
+    )
 
     return output_path
 

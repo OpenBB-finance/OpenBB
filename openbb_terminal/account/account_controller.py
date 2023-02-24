@@ -12,7 +12,6 @@ from openbb_terminal import (
 )
 from openbb_terminal.account.account_model import get_diff, get_routines_info
 from openbb_terminal.account.account_view import display_routines_list
-from openbb_terminal.core.config.paths import USER_ROUTINES_DIRECTORY
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.featflags_controller import FeatureFlagsController
 from openbb_terminal.helper_funcs import check_positive
@@ -70,11 +69,17 @@ class AccountController(BaseController):
 
     def get_routines(self):
         """Get routines"""
+        current_user = get_current_user()
         routines = {
             filepath.name: filepath
-            for filepath in USER_ROUTINES_DIRECTORY.glob("*.openbb")
+            for filepath in current_user.preferences.USER_ROUTINES_DIRECTORY.glob(
+                "*.openbb"
+            )
         }
-        user_folder = USER_ROUTINES_DIRECTORY / get_current_user().profile.get_uuid()
+        user_folder = (
+            current_user.preferences.USER_ROUTINES_DIRECTORY
+            / get_current_user().profile.get_uuid()
+        )
         if os.path.exists(user_folder):
             routines.update(
                 {filepath.name: filepath for filepath in user_folder.rglob("*.openbb")}

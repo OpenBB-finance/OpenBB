@@ -5,12 +5,12 @@ import configparser
 
 from openbb_terminal.core.config.paths import (
     MISCELLANEOUS_DIRECTORY,
-    USER_PRESETS_DIRECTORY,
 )
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.screener import finviz_model
 
-PRESETS_PATH = USER_PRESETS_DIRECTORY / "stocks" / "screener"
+PRESETS_PATH = get_current_user().preferences.USER_PRESETS_DIRECTORY / "stocks" / "screener"
 PRESETS_PATH_DEFAULT = MISCELLANEOUS_DIRECTORY / "stocks" / "screener"
 preset_choices = {
     filepath.name: filepath

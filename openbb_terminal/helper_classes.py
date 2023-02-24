@@ -10,10 +10,7 @@ from typing import Dict, List, Optional, Union
 import matplotlib.pyplot as plt
 from matplotlib import font_manager, ticker
 
-from openbb_terminal.core.config.paths import (
-    MISCELLANEOUS_DIRECTORY,
-    USER_DATA_DIRECTORY,
-)
+from openbb_terminal.core.config.paths import MISCELLANEOUS_DIRECTORY
 from openbb_terminal.core.session.current_user import get_current_user
 
 
@@ -68,7 +65,9 @@ class TerminalStyle:
     """
 
     DEFAULT_STYLES_LOCATION = MISCELLANEOUS_DIRECTORY / "styles" / "default"
-    USER_STYLES_LOCATION = USER_DATA_DIRECTORY / "styles" / "user"
+    USER_STYLES_LOCATION = (
+        get_current_user().preferences.USER_DATA_DIRECTORY / "styles" / "user"
+    )
 
     mpl_styles_available: Dict[str, str] = {}
     mpl_style: str = ""

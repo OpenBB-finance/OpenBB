@@ -12,8 +12,6 @@ from openbb_terminal import (
 )
 from openbb_terminal.core.config.paths import (
     MISCELLANEOUS_DIRECTORY,
-    USER_EXPORTS_DIRECTORY,
-    USER_PORTFOLIO_DATA_DIRECTORY,
 )
 from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
@@ -187,9 +185,10 @@ class PortfolioOptimizationController(BaseController):
         allocation_file_map = {
             filepath.name: filepath
             for file_type in cls.FILE_TYPE_LIST
-            for filepath in (USER_PORTFOLIO_DATA_DIRECTORY / "allocation").rglob(
-                f"*.{file_type}"
-            )
+            for filepath in (
+                get_current_user().preferences.USER_PORTFOLIO_DATA_DIRECTORY
+                / "allocation"
+            ).rglob(f"*.{file_type}")
         }
 
         return allocation_file_map
@@ -199,9 +198,10 @@ class PortfolioOptimizationController(BaseController):
         optimization_file_map = {
             filepath.name: filepath
             for file_type in cls.FILE_TYPE_LIST
-            for filepath in (USER_PORTFOLIO_DATA_DIRECTORY / "optimization").rglob(
-                f"*.{file_type}"
-            )
+            for filepath in (
+                get_current_user().preferences.USER_PORTFOLIO_DATA_DIRECTORY
+                / "optimization"
+            ).rglob(f"*.{file_type}")
         }
 
         return optimization_file_map
@@ -2195,16 +2195,24 @@ class PortfolioOptimizationController(BaseController):
                 )
                 return
 
+            current_user = get_current_user()
             if len(ns_parser.download) > 0:
                 file = (
-                    USER_EXPORTS_DIRECTORY / "portfolio" / "views" / ns_parser.download
+                    current_user.preferences.USER_EXPORTS_DIRECTORY
+                    / "portfolio"
+                    / "views"
+                    / ns_parser.download
                 )
 
                 excel_model.excel_bl_views(file=file, stocks=self.tickers, n=1)
                 return
 
             if ns_parser.file:
-                excel_file = USER_PORTFOLIO_DATA_DIRECTORY / "views" / ns_parser.file
+                excel_file = (
+                    current_user.preferences.USER_PORTFOLIO_DATA_DIRECTORY
+                    / "views"
+                    / ns_parser.file
+                )
                 p_views, q_views = excel_model.load_bl_views(excel_file=excel_file)
             else:
                 p_views = ns_parser.p_views
@@ -2255,7 +2263,9 @@ class PortfolioOptimizationController(BaseController):
             if table is False:
                 if ns_parser.file_sa:
                     excel_file = (
-                        USER_PORTFOLIO_DATA_DIRECTORY / "views" / ns_parser.file_sa
+                        get_current_user().preferences.USER_PORTFOLIO_DATA_DIRECTORY
+                        / "views"
+                        / ns_parser.file_sa
                     )
                     p_views_sa, q_views_sa = excel_model.load_bl_views(
                         excel_file=excel_file

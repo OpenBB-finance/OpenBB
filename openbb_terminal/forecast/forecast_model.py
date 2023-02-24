@@ -12,10 +12,7 @@ import numpy as np
 import pandas as pd
 
 from openbb_terminal.common import common_model
-from openbb_terminal.core.config.paths import (
-    USER_CUSTOM_IMPORTS_DIRECTORY,
-    USER_EXPORTS_DIRECTORY,
-)
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
 
@@ -30,12 +27,15 @@ def get_default_files() -> Dict[str, Path]:
     default_files : Dict[str, Path]
         A dictionary to map the default file names to their paths.
     """
+    current_user = get_current_user()
     default_files = {
         filepath.name: filepath
         for file_type in common_model.file_types
         for filepath in chain(
-            USER_EXPORTS_DIRECTORY.rglob(f"*.{file_type}"),
-            USER_CUSTOM_IMPORTS_DIRECTORY.rglob(f"*.{file_type}"),
+            current_user.preferences.USER_EXPORTS_DIRECTORY.rglob(f"*.{file_type}"),
+            current_user.preferences.USER_CUSTOM_IMPORTS_DIRECTORY.rglob(
+                f"*.{file_type}"
+            ),
         )
         if filepath.is_file()
     }

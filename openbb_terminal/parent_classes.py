@@ -24,10 +24,6 @@ from rich.markdown import Markdown
 # IMPORTS INTERNAL
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.core.completer.choices import build_controller_choice_map
-from openbb_terminal.core.config.paths import (
-    USER_CUSTOM_IMPORTS_DIRECTORY,
-    USER_ROUTINES_DIRECTORY,
-)
 from openbb_terminal.cryptocurrency import cryptocurrency_helpers
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
@@ -655,11 +651,14 @@ class BaseController(metaclass=ABCMeta):
                 "[red]There is no session to be saved. Run at least 1 command after starting 'record'[/red]\n"
             )
         else:
-            routine_file = os.path.join(USER_ROUTINES_DIRECTORY, SESSION_RECORDED_NAME)
+            current_user = get_current_user()
+            routine_file = os.path.join(
+                current_user.preferences.USER_ROUTINES_DIRECTORY, SESSION_RECORDED_NAME
+            )
 
             if os.path.isfile(routine_file):
                 routine_file = os.path.join(
-                    USER_ROUTINES_DIRECTORY,
+                    current_user.preferences.USER_ROUTINES_DIRECTORY,
                     datetime.now().strftime("%Y%m%d_%H%M%S_") + SESSION_RECORDED_NAME,
                 )
 
@@ -1207,7 +1206,10 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                 # This seems to block the .exe since the folder needs to be manually created
                 # This block makes sure that we only look for the file if the -f flag is used
                 # Adding files in the argparse choices, will fail for the .exe even without -f
-                STOCKS_CUSTOM_IMPORTS = USER_CUSTOM_IMPORTS_DIRECTORY / "stocks"
+                STOCKS_CUSTOM_IMPORTS = (
+                    get_current_user().preferences.USER_CUSTOM_IMPORTS_DIRECTORY
+                    / "stocks"
+                )
                 try:
                     file_list = [x.name for x in STOCKS_CUSTOM_IMPORTS.iterdir()]
                     if ns_parser.filepath not in file_list:
