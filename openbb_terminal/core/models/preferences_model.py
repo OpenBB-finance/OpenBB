@@ -1,5 +1,5 @@
 import os
-from typing import Optional
+from typing import Literal, Optional
 from pydantic import NonNegativeInt, PositiveFloat, PositiveInt
 from pydantic.dataclasses import dataclass
 
@@ -36,9 +36,9 @@ class PreferencesModel:
     USE_CLEAR_AFTER_CMD: bool = False
     USE_COLOR: bool = True
     USE_DATETIME: bool = True
-    USE_ION: bool = True  # Enable interactive matplotlib mode: change variable name to be more descriptive and delete comment above
+    USE_ION: bool = True  # Enable interactive matplotlib mode: change variable name to be more descriptive and delete comment
     USE_WATERMARK: bool = True
-    USE_CMD_LOCATION_FIGURE: bool = True  # Enable command and source in the figures: change variable name to be more descriptive and delete comment above
+    USE_CMD_LOCATION_FIGURE: bool = True  # Enable command and source in the figures: change variable name to be more descriptive and delete comment
     USE_PROMPT_TOOLKIT: bool = True
     USE_PLOT_AUTOSCALING: bool = False
     ENABLE_THOUGHTS_DAY: bool = False
@@ -70,10 +70,15 @@ class PreferencesModel:
     TIMEZONE: str = "America/New_York"
     FLAIR: str = ":openbb"
     USE_LANGUAGE: str = "en"
+    REQUEST_TIMEOUT: PositiveInt = 5
+
     MONITOR: NonNegativeInt = 0
     # Color for `view` command data.  All pyplot colors listed at:
     # https://matplotlib.org/stable/gallery/color/named_colors.html
     VIEW_COLOR: str = "tab:green"
+    MPL_STYLE: Literal["light", "dark"] = "dark"
+    PMF_STYLE: Literal["light", "dark"] = "dark"
+    RICH_STYLE: Literal["light", "dark"] = "dark"
 
     # @validator("VIEW_COLOR")
     # def validate_view_color(cls, v):  # pylint: disable=no-self-argument
