@@ -8,6 +8,7 @@ import warnings
 from typing import Optional
 
 import whisper
+from tqdm import tqdm
 
 try:
     import yt_dlp
