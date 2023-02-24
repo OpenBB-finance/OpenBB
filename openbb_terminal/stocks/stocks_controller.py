@@ -627,6 +627,7 @@ class StocksController(StockBaseController):
         # )
 
         # TODO: Make the call_sia command available again after improving the functionality
+        # TODO: Update test_stocks_controller.py to reflect the changes
 
         console.print(
             "The sia (Sector & Industry Analysis) menu is currently inactive as the functionality is "

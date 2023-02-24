@@ -12,7 +12,6 @@ Stock:
 >   th                 trading hours,                check open markets
 >   options            options menu,                 chains, open interest, greeks, parity
 >   disc               discover trending stocks,     map, sectors, high short interest
->   sia                sector and industry analysis, companies per sector, quick ratio per industry and country
 >   dps                dark pool and short data,     darkpool, short interest, ftd
 >   scr                screener stocks,              overview/performance, using preset filters
 >   ins                insider trading,              latest penny stock buys, top officer purchases
