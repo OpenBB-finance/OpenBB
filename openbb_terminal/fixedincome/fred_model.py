@@ -1017,7 +1017,7 @@ def get_spot(
 
     df = pd.DataFrame.from_dict(series_dictionary)
     df.index = pd.to_datetime(df.index).date
-    return df
+    return df[0]
 
 
 def get_hqm(

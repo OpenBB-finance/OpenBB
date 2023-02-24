@@ -336,6 +336,34 @@ def get_treasury(
     """
     df_short, df_long = pd.DataFrame(), pd.DataFrame()
 
+    Short-term interest rates are the rates at which short-term borrowings are effected between financial
+    institutions or the rate at which short-term government paper is issued or traded in the market. Short-term
+    interest rates are generally averages of daily rates, measured as a percentage. Short-term interest rates are
+    based on three-month money market rates where available. Typical standardised names are "money market rate" and
+    "treasury bill rate".
+
+    Long-term interest rates refer to government bonds maturing in ten years. Rates are mainly determined by the
+    price charged by the lender, the risk from the borrower and the fall in the capital value. Long-term interest
+    rates are generally averages of daily rates, measured as a percentage. These interest rates are implied by the
+    prices at which the government bonds are traded on financial markets, not the interest rates at which the loans
+    were issued. In all cases, they refer to bonds whose capital repayment is guaranteed by governments. Long-term
+    interest rates are one of the determinants of business investment. Low long-term interest rates encourage
+    investment in new equipment and high interest rates discourage it. Investment is, in turn, a major source of
+    economic growth.
+
+    Parameters
+    ----------
+    short_term: list
+        Countries you wish to plot the 3-month interest rate for
+    long_term: list
+        Countries you wish to plot the 10-year interest rate for
+    forecast: bool
+        If True, plot forecasts for short term interest rates
+    start_date: str
+        Start date of data, in YYYY-MM-DD format
+    end_date: str
+        End date of data, in YYYY-MM-DD format
+    """
     if short_term:
         df_short = get_interest_rate_data(
             f"short{'_forecast' if forecast else ''}",
