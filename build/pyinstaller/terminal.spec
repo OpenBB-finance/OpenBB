@@ -98,7 +98,6 @@ hidden_imports = [
     "statsmodels",
     "user_agent",
     "vaderSentiment",
-    "pyEX",
     "feedparser",
     "_sysconfigdata__darwin_darwin",
     "prophet",
