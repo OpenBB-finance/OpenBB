@@ -162,6 +162,8 @@ def search(
             data = pd.concat(
                 [data, equities_database.search(**kwargs, index=query.upper())]
             )
+
+            data = data.drop_duplicates()
         else:
             data = equities_database.search(**kwargs)
     except ReadTimeout:
