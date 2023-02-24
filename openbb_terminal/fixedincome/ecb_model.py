@@ -34,8 +34,8 @@ def get_series_data(
     end_date: Optional[str]
         End date, formatted YYYY-MM-DD
     """
-    start_date = start_date[0:4] + start_date[4:7] + start_date[8:9]
-    end_date = end_date[0:4] + end_date[4:7] + end_date[8:9]
+    start_date = start_date.replace("-", "")
+    end_date = end_date.replace("-", "")
     time.sleep(0.5)
 
     def _get_data(max_retries: int = 5):
