@@ -3472,7 +3472,7 @@ class ForecastController(BaseController):
             dest="save",
             type=str,
             default=USER_FORECAST_WHISPER_DIRECTORY,
-            help="Whether to break lines into a bottom-heavy pyramid shape if line length exceeds N characters. 0 disables line breaking.",
+            help="Directory to save the subtitles file",
         )
 
         parser = self.add_standard_args(
@@ -3481,10 +3481,13 @@ class ForecastController(BaseController):
         ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
-            export_allowed=EXPORT_ONLY_FIGURES_ALLOWED,
         )
 
         if ns_parser:
+
+            if ns_parser.save is None:
+                ns_parser.save = USER_FORECAST_WHISPER_DIRECTORY
+
             whisper_model.transcribe_and_summarize(
                 video=ns_parser.video,
                 model_name=ns_parser.model_name,
@@ -3493,5 +3496,5 @@ class ForecastController(BaseController):
                 task=ns_parser.task,
                 language=ns_parser.language,
                 breaklines=ns_parser.breaklines,
-                export=ns_parser.save,
+                output_dir=ns_parser.save,
             )

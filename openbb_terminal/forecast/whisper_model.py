@@ -335,7 +335,7 @@ def transcribe_and_summarize(
 
             print("Saved SRT to", os.path.abspath(srt_path))
 
-    # Save summary to file
-    summary_path = os.path.join(output_dir, f"{slugify(title)}_summary.txt")
-    with open(summary_path, "w") as f:
-        f.write(summary_text)
+        # Save summary to file
+        summary_path = os.path.join(output_dir, f"{slugify(title)}_summary.txt")
+        with open(summary_path, "w") as f:
+            f.write(summary_text)
