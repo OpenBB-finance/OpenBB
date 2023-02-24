@@ -1,16 +1,6 @@
 # IMPORTATION STANDARD
 from pathlib import Path
 
-
-# def get_user_data_directory():
-#     """Gets user data path from .env file or returns default path"""
-#     if os.getenv("OPENBB_USER_DATA_DIRECTORY"):
-#         user_data_directory = Path(os.getenv("OPENBB_USER_DATA_DIRECTORY"))
-#     else:
-#         user_data_directory = Path.home() / "OpenBBUserData"
-#     return user_data_directory
-
-
 # Installation related paths
 HOME_DIRECTORY = Path.home()
 REPOSITORY_DIRECTORY = Path(__file__).parent.parent.parent.parent
