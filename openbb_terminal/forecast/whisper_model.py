@@ -62,7 +62,7 @@ def get_audio(urls):
 @log_start_end(log=logger)
 def transcribe_and_summarize(
     video: str = "",
-    model_name: str = "small",
+    model_name: str = "base",
     subtitles_format: str = "vtt",
     verbose: bool = False,
     task: str = "transcribe",
