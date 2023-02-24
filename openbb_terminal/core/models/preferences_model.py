@@ -4,8 +4,8 @@ from pydantic import NonNegativeInt, PositiveFloat, PositiveInt
 from pydantic.dataclasses import dataclass
 
 from openbb_terminal.core.config.paths import (
+    HOME_DIRECTORY,
     USER_DATA_SOURCES_DEFAULT_FILE,
-    USER_EXPORTS_DIRECTORY,
 )
 
 
@@ -53,11 +53,6 @@ class PreferencesModel:
     TOOLBAR_HINT: bool = True
     TOOLBAR_TWEET_NEWS: bool = False
 
-    # PATHS
-    PREFERRED_DATA_SOURCE_FILE: str = str(USER_DATA_SOURCES_DEFAULT_FILE)
-    GUESS_EASTER_EGG_FILE: str = os.getcwd() + os.path.sep + "guess_game.json"
-    EXPORT_FOLDER_PATH: str = str(USER_EXPORTS_DIRECTORY)
-
     # TOOLBAR
     TOOLBAR_TWEET_NEWS_SECONDS_BETWEEN_UPDATES: PositiveInt = 300
     TOOLBAR_TWEET_NEWS_ACCOUNTS_TO_TRACK: str = (
@@ -79,6 +74,19 @@ class PreferencesModel:
     MPL_STYLE: Literal["light", "dark"] = "dark"
     PMF_STYLE: Literal["light", "dark"] = "dark"
     RICH_STYLE: Literal["light", "dark"] = "dark"
+
+    # PATHS
+    PREFERRED_DATA_SOURCE_FILE: str = str(USER_DATA_SOURCES_DEFAULT_FILE)
+    GUESS_EASTER_EGG_FILE: str = os.getcwd() + os.path.sep + "guess_game.json"
+    USER_DATA_DIRECTORY = HOME_DIRECTORY / "OpenBBUserData"
+    USER_EXPORTS_DIRECTORY = USER_DATA_DIRECTORY / "exports"
+    USER_CUSTOM_IMPORTS_DIRECTORY = USER_DATA_DIRECTORY / "custom_imports"
+    USER_PORTFOLIO_DATA_DIRECTORY = USER_DATA_DIRECTORY / "portfolio"
+    USER_ROUTINES_DIRECTORY = USER_DATA_DIRECTORY / "routines"
+    USER_PRESETS_DIRECTORY = USER_DATA_DIRECTORY / "presets"
+    USER_REPORTS_DIRECTORY = USER_DATA_DIRECTORY / "reports"
+    USER_CUSTOM_REPORTS_DIRECTORY = USER_DATA_DIRECTORY / "reports" / "custom reports"
+    USER_FORECAST_MODELS_DIRECTORY = USER_DATA_DIRECTORY / "exports" / "forecast_models"
 
     # @validator("VIEW_COLOR")
     # def validate_view_color(cls, v):  # pylint: disable=no-self-argument

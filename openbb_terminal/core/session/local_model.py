@@ -9,7 +9,7 @@ from openbb_terminal import (
 from openbb_terminal.base_helpers import strtobool
 from openbb_terminal.core.config import paths
 from openbb_terminal.core.config.paths import (
-    USER_HIST_FILE_PATH,
+    HIST_FILE_PATH,
     SETTINGS_DIRECTORY,
     USER_ROUTINES_DIRECTORY,
 )
@@ -82,7 +82,7 @@ def remove_session_file(file_path: Path = SESSION_FILE_PATH) -> bool:
         return False
 
 
-def remove_cli_history_file(file_path: Path = USER_HIST_FILE_PATH) -> bool:
+def remove_cli_history_file(file_path: Path = HIST_FILE_PATH) -> bool:
     """Remove the cli history file.
 
     Parameters

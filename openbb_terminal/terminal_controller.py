@@ -836,7 +836,7 @@ class TerminalController(BaseController):
                             f"[green]Folder '{export_path}' successfully created.[/green]"
                         )
                     current_user = get_current_user()
-                    current_user.preferences.EXPORT_FOLDER_PATH = export_path
+                    current_user.preferences.USER_EXPORTS_DIRECTORY = Path(export_path)
                     set_current_user(current_user)
                     self.queue = self.queue[1:]
 
@@ -882,7 +882,7 @@ def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
                 f"[green]Folder '{export_path}' successfully created.[/green]"
             )
         current_user = get_current_user()
-        current_user.preferences.EXPORT_FOLDER_PATH = export_path
+        current_user.preferences.USER_EXPORTS_DIRECTORY = Path(export_path)
         set_current_user(current_user)
 
     bootup()
