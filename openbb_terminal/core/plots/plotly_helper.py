@@ -1425,7 +1425,7 @@ class OpenBBFigure(go.Figure):
         series: pd.DataFrame,
         max_lag: int = 20,
         m: Optional[int] = None,
-        alpha=0.05,
+        alpha: Optional[float] = 0.05,
         marker: Optional[dict] = None,
         row: Optional[int] = None,
         col: Optional[int] = None,
@@ -1444,10 +1444,12 @@ class OpenBBFigure(go.Figure):
             Number of lags to look at, by default 15
         m: Optional[int]
             Optionally, a time lag to highlight on the plot. Default is none.
+        alpha: Optional[float]
+            Optionally, a significance level to highlight on the plot. Default is 0.05.
         row : int, optional
-            Row to add plot to, by default 1
+            Row to add plot to, by default None
         col : int, optional
-            Column to add plot to, by default 1
+            Column to add plot to, by default None
         pacf : bool, optional
             Flag to indicate whether to use partial autocorrelation or not, by default False
         """
