@@ -81,7 +81,7 @@ class FeatureFlagsController(BaseController):
         mt.add_setting("watermark", current_user.preferences.USE_WATERMARK)
         mt.add_setting("cmdloc", current_user.preferences.USE_CMD_LOCATION_FIGURE)
         mt.add_setting("tbhint", current_user.preferences.TOOLBAR_HINT)
-        mt.add_setting("overwrite", current_user.preferences.FILE_OVERWITE)
+        mt.add_setting("overwrite", current_user.preferences.FILE_OVERWRITE)
 
         console.print(text=mt.menu_text, menu="Feature Flags")
 
@@ -126,7 +126,7 @@ class FeatureFlagsController(BaseController):
     def call_overwrite(self, _):
         """Process overwrite command"""
         FeatureFlagsController.set_feature_flag(
-            "OPENBB_FILE_OVERWITE", not get_current_user().preferences.FILE_OVERWITE
+            "OPENBB_FILE_OVERWITE", not get_current_user().preferences.FILE_OVERWRITE
         )
 
     def call_retryload(self, _):

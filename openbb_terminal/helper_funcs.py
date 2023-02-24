@@ -1168,7 +1168,9 @@ def str_to_bool(value) -> bool:
 def get_screeninfo():
     """Get screeninfo."""
     screens = get_monitors()  # Get all available monitors
-    if len(screens) - 1 < get_current_user().preferences.MONITOR:  # Check to see if chosen monitor is detected
+    if (
+        len(screens) - 1 < get_current_user().preferences.MONITOR
+    ):  # Check to see if chosen monitor is detected
         monitor = 0
         console.print(
             f"Could not locate monitor {get_current_user().preferences.MONITOR}, using primary monitor."
@@ -1187,12 +1189,20 @@ def plot_autoscale():
         x = ((x) * get_current_user().preferences.PLOT_WIDTH_PERCENTAGE * 10**-2) / (
             get_current_user().preferences.PLOT_DPI
         )  # Calculate width
-        if get_current_user().preferences.PLOT_HEIGHT_PERCENTAGE == 100:  # If full height
+        if (
+            get_current_user().preferences.PLOT_HEIGHT_PERCENTAGE == 100
+        ):  # If full height
             y = y - 60  # Remove the height of window toolbar
-        y = ((y) * get_current_user().preferences.PLOT_HEIGHT_PERCENTAGE * 10**-2) / (get_current_user().preferences.PLOT_DPI)
+        y = ((y) * get_current_user().preferences.PLOT_HEIGHT_PERCENTAGE * 10**-2) / (
+            get_current_user().preferences.PLOT_DPI
+        )
     else:  # If not autoscale, use size defined in config_plot.py
-        x = get_current_user().preferences.PLOT_WIDTH / (get_current_user().preferences.PLOT_DPI)
-        y = get_current_user().preferences.PLOT_HEIGHT / (get_current_user().preferences.PLOT_DPI)
+        x = get_current_user().preferences.PLOT_WIDTH / (
+            get_current_user().preferences.PLOT_DPI
+        )
+        y = get_current_user().preferences.PLOT_HEIGHT / (
+            get_current_user().preferences.PLOT_DPI
+        )
     return x, y
 
 
@@ -1296,7 +1306,7 @@ def ask_file_overwrite(file_path: str) -> Tuple[bool, bool]:
     """
     # Jeroen asked for a flag to overwrite no matter what
     current_user = get_current_user()
-    if current_user.preferences.FILE_OVERWITE:
+    if current_user.preferences.FILE_OVERWRITE:
         return False, True
     if os.environ.get("TEST_MODE") == "True":
         return False, True

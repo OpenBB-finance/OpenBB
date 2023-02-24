@@ -1,4 +1,5 @@
 import os
+from typing import Optional
 from pydantic import PositiveInt
 from pydantic.dataclasses import dataclass
 
@@ -19,12 +20,12 @@ class PreferencesModel:
     # "MacOSX" - Mac default.  Does not work with backtesting
     # "Qt5Agg" - This requires the PyQt5 package is installed
     # See more: https://matplotlib.org/stable/tutorials/introductory/usage.html#the-builtin-backends
-    PLOT_BACKEND: str = None
+    PLOT_BACKEND: Optional[str] = None
     PLOT_DPI: PositiveInt = 100
 
     # FEATURE FLAGS
     SYNC_ENABLED: bool = True
-    FILE_OVERWITE: bool = False
+    FILE_OVERWRITE: bool = False
     RETRY_WITH_LOAD: bool = False
     USE_TABULATE_DF: bool = True
     USE_CLEAR_AFTER_CMD: bool = False
