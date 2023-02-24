@@ -1,7 +1,12 @@
 # IMPORTATION STANDARD
 import os
 
+# IMPORTATION THIRDPARTY
+import i18n
+from openbb_terminal.core.config import paths_helper
+
 # IMPORTATION INTERNAL
+from openbb_terminal.core.config.paths import MISCELLANEOUS_DIRECTORY
 from openbb_terminal.base_helpers import load_env_vars, strtobool
 from openbb_terminal.core.session.current_user import get_current_user
 from .helper_classes import TerminalStyle as _TerminalStyle
@@ -63,3 +68,33 @@ LOGGING_VERBOSITY = load_env_vars("OPENBB_LOGGING_VERBOSITY", int, 20)
 # LOGGING SUB APP
 LOGGING_SUB_APP = os.getenv("OPENBB_LOGGING_SUB_APP") or "terminal"
 LOGGING_SUPPRESS = False
+
+
+paths_helper.init_userdata()
+
+# pylint: disable=no-member,c-extension-no-member
+
+try:
+    __import__("git")
+except ImportError:
+    WITH_GIT = False
+else:
+    WITH_GIT = True
+
+
+try:
+    if not WITH_GIT:
+        import pkg_resources
+
+        version = pkg_resources.get_distribution("OpenBB").version
+    else:
+        raise Exception("Using git")
+except Exception:
+    version = "2.4.1"
+VERSION = str(os.getenv("OPENBB_VERSION", version))
+
+# # Select the terminal translation language
+i18n_dict_location = MISCELLANEOUS_DIRECTORY / "i18n"
+i18n.load_path.append(i18n_dict_location)
+i18n.set("locale", get_current_user().preferences.USE_LANGUAGE)
+i18n.set("filename_format", "{locale}.{format}")

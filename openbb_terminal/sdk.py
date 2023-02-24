@@ -5,7 +5,7 @@ import logging
 
 import openbb_terminal.config_terminal as cfg
 from openbb_terminal import helper_funcs as helper  # noqa: F401
-from openbb_terminal.base_helpers import load_dotenv_and_reload_configs
+from openbb_terminal.base_helpers import load_env_files
 from openbb_terminal.config_terminal import theme
 
 from openbb_terminal.cryptocurrency.due_diligence.pycoingecko_model import Coin
@@ -19,15 +19,10 @@ from openbb_terminal.sdk_core import (
     controllers as ctrl,
     models as model,
 )
-from openbb_terminal import feature_flags as obbff
-from openbb_terminal.core.session.current_user import get_current_user, is_local
+from openbb_terminal.core.session.current_user import is_local
 from openbb_terminal.terminal_helper import is_auth_enabled
 
-current_user = get_current_user()
-
-if is_local():
-    # After implementing the UserModel we will not need to load the dotenv here
-    load_dotenv_and_reload_configs()
+load_env_files()
 
 logger = logging.getLogger(__name__)
 theme.applyMPLstyle()
@@ -43,7 +38,7 @@ class OpenBBSDK:
         `whoami`: Display user info.\n
     """
 
-    __version__ = obbff.VERSION
+    __version__ = cfg.VERSION
 
     def __init__(self):
         SDKLogger()
@@ -54,7 +49,7 @@ class OpenBBSDK:
         self._try_to_login()
 
     def _try_to_login(self):
-        if User.is_local() and is_auth_enabled():
+        if is_local() and is_auth_enabled():
             try:
                 self.login()
             except Exception:

@@ -14,7 +14,6 @@ from rich.text import Text
 
 from openbb_terminal import (
     config_terminal as cfg,
-    feature_flags as obbff,
 )
 from openbb_terminal.core.config.paths import MISCELLANEOUS_DIRECTORY
 from openbb_terminal.core.session.current_user import get_current_user
@@ -298,7 +297,7 @@ class ConsoleAndPanel:
         if kwargs and "text" in list(kwargs) and "menu" in list(kwargs):
             if not os.getenv("TEST_MODE"):
                 if current_user.preferences.ENABLE_RICH_PANEL:
-                    version = f"[param]OpenBB Terminal v{obbff.VERSION}[/param] (https://openbb.co)"
+                    version = f"[param]OpenBB Terminal v{cfg.VERSION}[/param] (https://openbb.co)"
                     self.console.print(
                         panel.Panel(
                             "\n" + kwargs["text"],
