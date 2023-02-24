@@ -244,7 +244,7 @@ class FeatureFlagsController(BaseController):
     @log_start_end(log=logger)
     def call_tbhint(self, _):
         """Process tbhint command"""
-        if current_user.preferences.TOOLBAR_HINT:
+        if get_current_user().preferences.TOOLBAR_HINT:
             console.print("Will take effect when running terminal next.")
         FeatureFlagsController.set_feature_flag(
             "OPENBB_TOOLBAR_HINT", not get_current_user().preferences.TOOLBAR_HINT
