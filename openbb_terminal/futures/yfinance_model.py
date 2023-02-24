@@ -99,7 +99,7 @@ def get_historical_futures(
     Returns
     -------
     pd.DataFrame
-        Dictionary with sector weightings allocation
+        Historical futures data
     """
 
     if start_date is None:
