@@ -8,37 +8,7 @@ The Fixed Income menu is the high-level menu for the Fixed Income asset class. I
 
 ## How to Use
 
-The current screen can always be re-printed with any of: `?`, `h`, `help`. The help dialogue, containing all parameters for each function, is printed when `-h` is attached to any command. The help dialogue will also provide the list of sources available to each command, the `treasury` function is shown below.
-
-```console
-treasury -h
-```
-
-Which returns the following:
-
-```
-usage: treasury [--short SHORT] [--long LONG] [-s START_DATE] [-e END_DATE] [--forecast] [-h] [--export EXPORT] [--sheet-name SHEET_NAME [SHEET_NAME ...]] [--raw]
-
-Plot short (3 month) and long (10 year) term interest rates from selected countries including the possibility to plot forecasts for the next years.
-
-optional arguments:
-  --short SHORT         Countries to get short term (3 month) interest rates for. (default: None)
-  --long LONG           Countries to get long term (10 year) interest rates for. (default: None)
-  -s START_DATE, --start START_DATE
-                        Start date of data, in YYYY-MM-DD format (default: None)
-  -e END_DATE, --end END_DATE
-                        End date of data, in YYYY-MM-DD format (default: None)
-  --forecast            If True, plot forecasts for each interest rate (default: False)
-  -h, --help            show this help message (default: False)
-  --export EXPORT       Export raw data into csv, json, xlsx (default: )
-  --sheet-name SHEET_NAME [SHEET_NAME ...]
-                        Name of excel sheet to save data to. Only valid for .xlsx files. (default: None)
-  --raw                 Flag to display raw data (default: False)
-
-For more information and examples, use 'about treasury' to access the related guide.
-```
-
-The Fixed Income menu relies heavily on FRED to obtain the data as seen below, please refer to the [API keys guide](https://docs.openbb.co/terminal/guides/advanced/api-keys) for information on how to obtain and set a key for FRED.
+The Fixed Income menu can be accessed directly from the `home` screen by typing `fixedincome`. This opens the menu as shown below. The menu heavily relies on FRED to obtain the data as seen below, please refer to the [API keys guide](https://docs.openbb.co/terminal/guides/advanced/api-keys) for information on how to obtain and set a key for FRED.
 
 <img width="800" alt="Fixed Income Menu" src="https://user-images.githubusercontent.com/46355364/220970904-d32a63b5-aa14-47b4-bfe6-b5efc1cf2cd4.png">
 
@@ -51,11 +21,11 @@ The two most prominent central bank rates, those of the Federal Reserve and the 
 
 ![FED](https://user-images.githubusercontent.com/46355364/220971850-3ce5db4c-810a-49ba-a0bc-9043aa2a6090.png)
 
-This can be accompanied with the projections, officially published by the FOMC. Here the long run expectations are plotted which also backtrack several years wich `projection --long-run`:
+This can be accompanied with the projections, officially published by the FOMC. Here the long run expectations are plotted, which also backtracks several years, with `projection --long-run`:
 
 ![Projection](https://user-images.githubusercontent.com/46355364/220972251-688b12de-cf06-4907-9857-edda4aac64fb.png)
 
-The European Central Bank rates can be shown with `ecb`. The ECB publishes three different rates that can be shown seperately with ` ecb --type deposit` for example or plotted together with `ecb` as shown below.
+The European Central Bank rates can be shown with `ecb`. The ECB publishes three different rates that can be shown separately with ` ecb --type deposit` for example or plotted together with `ecb` as shown below.
 
 ![ECB](https://user-images.githubusercontent.com/46355364/220972670-0e5b11c6-7174-497a-ad18-36266e6a68c6.png)
 
@@ -94,11 +64,11 @@ With all of these functionalities, it is always possible to `--export` to Excel 
 └────────────┴──────────────────┴─────────────────────────┴──────────────────┴─────────────────────────┘
 ```
 
-For both the United States and the Eurozone, it is possible to see the current government bond yield curve. For the Eurozone, it is an aggregation of countries that match a specific credit rating, by default AAA.
+For both the United States and the Eurozone, it is possible to see the current government bond yield curve. For the Eurozone, it is an aggregation of countries that match a specific credit rating, by default AAA, as shown with `ecbycrv`.
 
 ![Euro Area Yield Curve](https://user-images.githubusercontent.com/46355364/220974746-bd0fcf31-1108-458f-8f0f-893d3704ad7b.png)
 
-When it comes to Corporate Bonds, the major indices are included. These are all the ICE BofA indices and the Moody's Aaa and Baa indices. Based on a query, specific benchmarks can be found. For example a collection of indices matching a variety of bond maturities.
+When it comes to Corporate Bonds, the major indices are included. These are the ICE BofA indices and the Moody's Aaa and Baa indices. Based on a query, specific benchmarks can be found. For example a collection of indices matching a variety of bond maturities with `icebofa --duration`.
 
 ![ICE BOFA](https://user-images.githubusercontent.com/46355364/220975450-c3940875-8f47-48ca-9e19-c736bbc3f733.png)
 
@@ -199,9 +169,3 @@ For both `icebofa` and `icespread` it is possible to see all the options with `-
 │ spread │ usd      │ us            │ ccc            │ ICE BofA CCC & Lower US High Yield Index Option-Adjusted Spread                                       │
 └────────┴──────────┴───────────────┴────────────────┴───────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
-
-
-
-
-
-
