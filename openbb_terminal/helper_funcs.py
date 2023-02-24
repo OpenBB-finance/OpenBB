@@ -1160,15 +1160,16 @@ def str_to_bool(value) -> bool:
 def get_screeninfo():
     """Get screeninfo."""
     screens = get_monitors()  # Get all available monitors
+    current_user = get_current_user()
     if (
-        len(screens) - 1 < get_current_user().preferences.MONITOR
+        len(screens) - 1 < current_user.preferences.MONITOR
     ):  # Check to see if chosen monitor is detected
         monitor = 0
         console.print(
-            f"Could not locate monitor {get_current_user().preferences.MONITOR}, using primary monitor."
+            f"Could not locate monitor {current_user.preferences.MONITOR}, using primary monitor."
         )
     else:
-        monitor = get_current_user().preferences.MONITOR
+        monitor = current_user.preferences.MONITOR
     main_screen = screens[monitor]  # Choose what monitor to get
 
     return (main_screen.width, main_screen.height)
