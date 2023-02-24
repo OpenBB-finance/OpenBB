@@ -63,6 +63,11 @@ def transcribe_and_summarize(
     if video == "":
         console.print("[red]Please provide a video URL. [/red]")
         return
+    else:
+        # check to make sure the video is a valid URL with a .com
+        if not ((video.startswith("https") or "youtube" in video) and ".com" in video):
+            console.print("[red]Please provide a valid video URL. [/red]")
+            return
 
     os.makedirs(output_dir, exist_ok=True)
 
