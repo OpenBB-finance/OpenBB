@@ -3427,7 +3427,7 @@ class ForecastController(BaseController):
             "--model_name",
             dest="model_name",
             choices=whisper.available_models(),
-            default="small",
+            default="base",
             help="name of the Whisper model to use",
         )
         parser.add_argument(
