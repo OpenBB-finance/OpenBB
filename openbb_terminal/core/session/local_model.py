@@ -116,12 +116,12 @@ def apply_configs(configs: dict):
         if sync:
             if settings:
                 for k, v in settings.items():
-                    set_preference(k, v, receiving=True)
+                    set_preference(k, v, login=True)
 
             keys = configs.get("features_keys", {})
             if keys:
                 for k, v in keys.items():
-                    set_credential(k, v, receiving=True)
+                    set_credential(k, v, login=True)
 
 
 def update_sync_flag(settings: dict) -> bool:
@@ -138,9 +138,9 @@ def update_sync_flag(settings: dict) -> bool:
         The sync flag.
     """
     if settings and settings.get("SYNC_ENABLED", "").lower() == "false":
-        set_preference("SYNC_ENABLED", False, receiving=True)
+        set_preference("SYNC_ENABLED", False, login=True)
         return False
-    set_preference("SYNC_ENABLED", True, receiving=True)
+    set_preference("SYNC_ENABLED", True, login=True)
     return True
 
 

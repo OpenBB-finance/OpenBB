@@ -35,7 +35,7 @@ def set_credential(
     name: str,
     value: str,
     persist: bool = False,
-    receiving: bool = False,
+    login: bool = False,
 ):
     """Set credential
 
@@ -47,8 +47,8 @@ def set_credential(
         Credential value
     persist : bool
         Force saving to .env file
-    receiving : bool
-        If receiving from cloud
+    login : bool
+        If preference set during login
     """
 
     current_user = get_current_user()
@@ -73,7 +73,7 @@ def set_credential(
         and sync_enabled
         and name not in LOCAL_KEYS
         and (name.startswith("API_") or name.startswith("OPENBB_"))
-        and not receiving
+        and not login
     ):
         patch_user_configs(
             key=name,

@@ -18,6 +18,7 @@ from openbb_terminal.core.models.user_model import (
 from openbb_terminal.core.session.current_user import (
     set_current_user,
 )
+from openbb_terminal.core.session.preferences_handler import set_preference
 from openbb_terminal.helper_funcs import system_clear
 from openbb_terminal.rich_config import console
 
@@ -77,7 +78,7 @@ def login(session: dict) -> LoginStatus:
     """
 
     # create a new user
-    hub_user = UserModel(
+    hub_user = UserModel(  # type: ignore
         credentials=CredentialsModel(),
         profile=ProfileModel(),
         preferences=PreferencesModel(),
@@ -94,7 +95,7 @@ def login(session: dict) -> LoginStatus:
             if feature_settings.get("FLAIR", None) is None:
                 MAX_FLAIR_LEN = 20
                 flair = "[" + hub_user.profile.username[:MAX_FLAIR_LEN] + "]" + " 🦋"
-                setattr(hub_user.preferences, "FLAIR", flair)
+                set_preference("FLAIR", flair, login=True)
             return LoginStatus.SUCCESS
         if response.status_code == 401:
             return LoginStatus.UNAUTHORIZED
