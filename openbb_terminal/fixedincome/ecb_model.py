@@ -7,9 +7,9 @@ from datetime import datetime, timedelta
 from functools import partial
 from multiprocessing import Pool, cpu_count
 from typing import Tuple
+from urllib.error import HTTPError
 
 import pandas as pd
-from requests import HTTPError
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console, optional_rich_track
@@ -51,7 +51,7 @@ def get_series_data(
             return df
         except KeyboardInterrupt as interrupt:
             raise interrupt
-        except HTTPError:
+        except (HTTPError, Exception):
             max_retries -= 1
             if max_retries == 0:
                 return pd.DataFrame()
@@ -171,7 +171,7 @@ def get_ecb_yield_curve(
 
     try:
         if detailed:
-            with Pool(cpu_count()) as pool:
+            with Pool(cpu_count() - 1) as pool:
                 # To be able to use optional_rich_track with multiprocessing,
                 # we need to use imap_unordered
 
