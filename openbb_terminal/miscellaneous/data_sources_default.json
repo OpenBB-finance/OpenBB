@@ -6,7 +6,7 @@
     "candle": [],
     "codes": ["Polygon"],
     "news": ["Feedparser", "NewsApi"],
-    "load": ["YahooFinance", "AlphaVantage", "Polygon", "EODHD", "Intrinio"],
+    "load": ["YahooFinance", "AlphaVantage", "Polygon", "EODHD", "Intrinio", "DataBento"],
     "th": {
       "symbol": ["FinanceDatabase"],
       "open": ["Bursa"],
@@ -489,7 +489,7 @@
   },
   "futures": {
     "search": ["YahooFinance"],
-    "historical": ["YahooFinance"],
+    "historical": ["YahooFinance", "DataBento"],
     "curve": ["YahooFinance"]
   },
   "portfolio": {
