@@ -252,6 +252,7 @@ from openbb_terminal.forex import (
 from openbb_terminal.futures import (
     yfinance_model as futures_yfinance_model,
     yfinance_view as futures_yfinance_view,
+    sdk_helper as futures_sdk_model,
 )
 
 # Stocks Helpers
