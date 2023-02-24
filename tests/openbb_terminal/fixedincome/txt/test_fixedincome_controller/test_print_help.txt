@@ -1,0 +1,32 @@
+Reference rates:
+    estr               euro short-term rate (estr)                                                         [FRED, ECB]
+    sofr               secured overnight financing rate (sofr)                                             [FRED]
+    sonia              sterling overnight index average (sonia)                                            [FRED]
+    ameribor           american interbank offered rate (ameribor)                                          [FRED]
+
+Central bank rates:
+    fed                effective federal funds rate                                                        [FRED]
+    projection         the Federal Reserve's projection of the federal funds rate.                         [FRED]
+    iorb               interest rate on reserve balances                                                   [FRED]
+    dwpcr              discount window primary credit rate                                                 [FRED]
+    ecb                key ECB interest rates                                                              [FRED]
+
+Government Bonds:
+    treasury           plot countries (including forecast) treasury rates                                  [OECD]
+    usrates            plot U.S. secondary market, constant maturity or inflation protected treasuries     [FRED]
+    ycrv               plot the yield curve based on constant maturity U.S. treasuries                     [FRED]
+    ecbycrv            plot the yield curve based on Euro Area treasuries                                  [ECB]
+
+Corporate Bonds:
+    icebofa            display ICE BofA Corporate Indices                                                  [FRED]
+    moody              display Moody's AAA and BAA Corporate indices                                       [FRED]
+    cp                 display short-term, promissory notes issued by corporations                         [FRED]
+    spot               display spot rates ranging from 1 year to a 100 years                               [FRED]
+    hqm                display the High Quality Market (HQM) corporate yield curve                         [FRED]
+
+Spreads:
+    icespread          display spread between ICE BofA Corporate Indices and spot treasury curve           [FRED]
+    tmc                10-year treasury constant maturity minus selected treasury constant maturity        [FRED]
+    ffrmc              selected treasury constant maturity minus federal funds rate                        [FRED]
+    tbffr              selected treasury bill minus federal funds rate                                     [FRED]
+

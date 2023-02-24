@@ -41,8 +41,6 @@ class EconomyRoot(Category):
         `treasury_maturities`: Get treasury maturity options [Source: EconDB]\n
         `usbonds`: Scrape data for us bonds\n
         `valuation`: Get group (sectors, industry or country) valuation data. [Source: Finviz]\n
-        `ycrv`: Gets yield curve data from FRED\n
-        `ycrv_chart`: Display yield curve based on US Treasury rates for a specified date.\n
     """
 
     _location_path = "economy"
@@ -82,5 +80,3 @@ class EconomyRoot(Category):
         self.treasury_maturities = lib.economy_econdb_model.get_treasury_maturities
         self.usbonds = lib.economy_wsj_model.us_bonds
         self.valuation = lib.economy_finviz_model.get_valuation_data
-        self.ycrv = lib.economy_fred_model.get_yield_curve
-        self.ycrv_chart = lib.economy_fred_view.display_yield_curve
