@@ -201,16 +201,14 @@ def transcribe_and_summarize(
                 f"Sentiment: {overall_sentiment_label}:{round(overall_sentiment_score, 4)}"
             )
         else:
-            sentiment_color = (
-                "green" if overall_sentiment_label == "POSITIVE" else "red"
-            )
+            sent_color = "green" if overall_sentiment_label == "POSITIVE" else "red"
             console.print(
-                "Sentiment: ",
-                f"[{sentiment_color}]{overall_sentiment_label}:{round(overall_sentiment_score, 4)}[/{sentiment_color}]",
+                "Sentiment:",
+                f"[{sent_color}]{overall_sentiment_label}: {round(overall_sentiment_score, 4)}[/{sent_color}]",
             )
 
         console.print("-------------------------")
-        console.print(f"[green]{summary_text} [/green]")
+        console.print(f"[green]{summary_text}[/green]")
 
         # Save subtitles to file
         if subtitles_format == "vtt":
