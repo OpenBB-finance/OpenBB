@@ -545,7 +545,7 @@ def display_candle(
     start_date = check_datetime(start_date)
     end_date = check_datetime(end_date, start=False)
 
-    if data is None:
+    if data is None or data.empty:
         data = load(
             symbol,
             start_date,
