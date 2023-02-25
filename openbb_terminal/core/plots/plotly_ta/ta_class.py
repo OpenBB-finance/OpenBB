@@ -83,7 +83,8 @@ class PlotlyTA(PltTA):
     plugins: List[Type[PltTA]] = []
     df_ta: pd.DataFrame = None
     close_column: Optional[str] = "Close"
-    show_volume = True
+    has_volume: bool = True
+    show_volume: bool = True
     prepost: bool = False
 
     def __new__(cls, *args, **kwargs):
@@ -153,7 +154,12 @@ class PlotlyTA(PltTA):
         self.df_stock = df_stock
         self.close_column = ta_helpers.check_columns(self.df_stock)
         self.params = self.indicators.get_params()
-        self.show_volume = volume
+
+        self.has_volume = "Volume" in self.df_stock.columns and bool(
+            self.df_stock["Volume"].sum() > 0
+        )
+        self.show_volume = volume and self.has_volume
+
         self.prepost = prepost
 
         return self.plot_fig(fig=fig, symbol=symbol, candles=candles)
@@ -254,6 +260,15 @@ class PlotlyTA(PltTA):
         if subplot == "volume":
             return self.show_volume
 
+        if subplot in ["ad", "adosc", "obv", "vwap"] and not self.has_volume:
+            self.indicators.remove_indicator(subplot)
+            console.print(
+                f"[bold red]Warning:[/] [yellow]{subplot.upper()}"
+                " requires volume data to be plotted but no volume data was found."
+                " Indicator will not be plotted.[/]"
+            )
+            return False
+
         output = False
 
         try:
@@ -353,13 +368,14 @@ class PlotlyTA(PltTA):
                 x=self.df_stock.index,
                 y=self.df_stock[self.close_column],
                 name=f"{symbol} Close",
+                connectgaps=True,
                 row=1,
                 col=1,
             )
             fig.update_layout(yaxis=dict(nticks=15))
             self.inchart_colors = theme.get_colors()[1:]
 
-        if self.show_volume and "Volume" in self.df_stock.columns:
+        if self.show_volume:
             fig.add_stock_volume(self.df_stock, self.close_column, row=2, col=1)  # type: ignore
 
         fig.update_layout(yaxis_title="Price ($)")

@@ -149,7 +149,10 @@ class ChartIndicators:
         """Calculate technical analysis indicators and return dataframe"""
         output = df_ta.copy()
         if not output.empty and self.indicators:
-            output = TA_Data(output, self, ma_mode).to_dataframe()
+            try:
+                output = TA_Data(output, self, ma_mode).to_dataframe()
+            except Exception as err:
+                logger.error(err)
 
         return output
 
@@ -157,9 +160,19 @@ class ChartIndicators:
         """Return dataframe with technical analysis indicators"""
         output = None
         if self.indicators:
-            output = TA_Data(df_ta, self).get_indicator_data(indicator, **kwargs)
+            try:
+                output = TA_Data(df_ta, self).get_indicator_data(indicator, **kwargs)
+            except Exception as err:
+                logger.error(err)
 
         return output
+
+    def remove_indicator(self, name: str) -> None:
+        """Remove indicator from active indicators"""
+        if self.indicators:
+            for indicator in self.indicators:
+                if indicator.name == name:
+                    self.indicators.remove(indicator)
 
 
 class TA_Data:
@@ -203,11 +216,14 @@ class TA_Data:
         if not isinstance(indicators, ChartIndicators):
             indicators = ChartIndicators.from_dict(indicators)
 
-        self.df_ta = df_ta
-        self.indicators = indicators
-        self.ma_mode = ma_mode or ["sma", "ema", "wma", "hma", "zlma", "rma"]
+        self.df_ta: pd.DataFrame = df_ta
+        self.indicators: ChartIndicators = indicators
+        self.ma_mode: List[str] = ma_mode or ["sma", "ema", "wma", "hma", "zlma", "rma"]
         self.close_col = ta_helpers.check_columns(df_ta)
-        self.columns = {
+        if self.close_col is None:
+            raise ValueError("No close column found in dataframe")
+
+        self.columns: Dict[str, List[str]] = {
             "ad": ["High", "Low", self.close_col, "Volume"],
             "adosc": ["High", "Low", self.close_col, "Volume"],
             "adx": ["High", "Low", self.close_col],
@@ -221,6 +237,8 @@ class TA_Data:
             "stoch": ["High", "Low", self.close_col],
             "vwap": ["High", "Low", self.close_col, "Volume"],
         }
+
+        self.has_volume = "Volume" in df_ta.columns and bool(df_ta["Volume"].sum() > 0)
 
     def get_indicator_data(self, indicator: TAIndicator, **args) -> pd.DataFrame:
         """Returns dataframe with indicator data
@@ -293,6 +311,12 @@ class TA_Data:
 
         output = self.df_ta
         for indicator in active_indicators:
+            if (
+                indicator.name in self.columns
+                and "Volume" in self.columns[indicator.name]
+                and not self.has_volume
+            ):
+                continue
             if indicator.name in ["fib", "srlines", "clenow", "demark"]:
                 continue
             try:

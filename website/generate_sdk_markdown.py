@@ -23,10 +23,7 @@ def get_function_meta(trailmap: Trailmap, trail_type: Literal["model", "view"]):
     path = func_attr.full_path
     func_def = func_attr.func_def
     source_code_url = (
-        "https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/"
-        + path
-        + "#L"
-        + str(line)
+        f"https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/{path}#L{line}"
     )
     function_name = trailmap.view if trail_type == "view" else trailmap.model
     params = []

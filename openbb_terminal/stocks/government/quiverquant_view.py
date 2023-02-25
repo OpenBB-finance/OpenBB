@@ -381,7 +381,7 @@ def display_government_trading(
         past_transactions_months=past_transactions_months,
     )
 
-    if df_gov.empty:
+    if df_gov is None or isinstance(df_gov, pd.DataFrame) and df_gov.empty:
         return console.print(f"No {gov_type} trading data found\n")
 
     fig = plot_government(df_gov, symbol, gov_type, True)

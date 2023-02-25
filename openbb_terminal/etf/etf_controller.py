@@ -462,6 +462,7 @@ class ETFController(BaseController):
             raw=True,
         )
         if ns_parser:
+            figure = None
             if not self.etf_name:
                 console.print("No ticker loaded. First use `load {ticker}`\n")
                 return
@@ -494,13 +495,15 @@ class ETFController(BaseController):
                                 "greater than 1.[/red]\n"
                             )
 
-                stocks_helper.display_candle(
+                figure = stocks_helper.display_candle(
                     symbol=self.etf_name,
                     data=data,
                     add_trend=ns_parser.trendlines,
                     ma=mov_avgs,
                     asset_type="ETF",
+                    external_axes=True,
                 )
+                figure.show()
 
             export_data(
                 ns_parser.export,
@@ -508,6 +511,7 @@ class ETFController(BaseController):
                 f"{self.etf_name}",
                 self.etf_data,
                 ns_parser.sheet_name,
+                figure=figure,
             )
 
     @log_start_end(log=logger)

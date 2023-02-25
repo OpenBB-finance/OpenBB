@@ -39,7 +39,7 @@ def display_cost_to_borrow(
         export=bool(export),
     )
 
-    export_data(
+    return export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "cost_to_borrow",

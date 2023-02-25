@@ -41,7 +41,7 @@ def display_most_shorted(
         export=bool(export),
     )
 
-    export_data(
+    return export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "shorted",

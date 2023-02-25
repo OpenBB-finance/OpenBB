@@ -22,6 +22,7 @@ from requests.exceptions import ReadTimeout
 from scipy import stats
 
 from openbb_terminal import config_terminal as cfg
+from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.core.plots.plotly_ta.ta_class import PlotlyTA
 from openbb_terminal.helper_funcs import print_rich_table, request
 from openbb_terminal.rich_config import console
@@ -496,7 +497,7 @@ def display_candle(
     external_axes: bool = False,
     raw: bool = False,
     yscale: str = "linear",
-):
+) -> Union[None, OpenBBFigure]:
     """Show candle plot of loaded ticker.
 
     [Source: Yahoo Finance, IEX Cloud or Alpha Vantage]
