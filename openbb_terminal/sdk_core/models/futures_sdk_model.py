@@ -10,7 +10,7 @@ class FuturesRoot(Category):
     Attributes:
         `curve`: Get curve futures [Source: Yahoo Finance]\n
         `curve_chart`: Display curve futures [Source: Yahoo Finance]\n
-        `historical`: Get historical futures [Source: Yahoo Finance]\n
+        `historical`: Get historical futures data\n
         `historical_chart`: Display historical futures [Source: Yahoo Finance]\n
         `search`: Get search futures [Source: Yahoo Finance]\n
     """
@@ -21,6 +21,6 @@ class FuturesRoot(Category):
         super().__init__()
         self.curve = lib.futures_yfinance_model.get_curve_futures
         self.curve_chart = lib.futures_yfinance_view.display_curve
-        self.historical = lib.futures_yfinance_model.get_historical_futures
+        self.historical = lib.futures_sdk_model.get_historical
         self.historical_chart = lib.futures_yfinance_view.display_historical
         self.search = lib.futures_yfinance_model.get_search_futures

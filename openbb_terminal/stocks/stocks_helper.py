@@ -56,6 +56,8 @@ from openbb_terminal.stocks.stocks_model import (
     load_stock_yf,
 )
 
+from . import databento_model
+
 logger = logging.getLogger(__name__)
 
 
@@ -335,6 +337,12 @@ def load(
 
         elif source == "Intrinio":
             df_stock_candidate = load_stock_intrinio(symbol, start_date, end_date)
+
+        elif source == "DataBento":
+            df_stock_candidate = databento_model.get_historical_stock(
+                symbol, start_date.strftime("%Y-%m-%d"), end_date.strftime("%Y-%m-%d")
+            )
+
         else:
             console.print("[red]Invalid source for stock[/red]\n")
             return
@@ -545,7 +553,7 @@ def display_candle(
     start_date = check_datetime(start_date)
     end_date = check_datetime(end_date, start=False)
 
-    if data is None:
+    if data is None or data.empty:
         data = load(
             symbol,
             start_date,
