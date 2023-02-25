@@ -155,10 +155,8 @@ def search(
         equities_database = fd.Equities()
 
         if query:
-            data = equities_database.search(**kwargs, long_name=query)
-            data = pd.concat(
-                [data, equities_database.search(**kwargs, short_name=query)]
-            )
+            data = equities_database.search(**kwargs, name=query)
+            data = pd.concat([data, equities_database.search(**kwargs, name=query)])
             data = pd.concat(
                 [data, equities_database.search(**kwargs, index=query.upper())]
             )
@@ -185,8 +183,7 @@ def search(
 
     df = data[
         [
-            "long_name",
-            "short_name",
+            "name",
             "country",
             "sector",
             "industry_group",
@@ -207,9 +204,6 @@ def search(
     for k, v in market_coverage_suffix.items():
         for x in v:
             exchange_suffix[x] = k
-
-    with pd.option_context("mode.chained_assignment", None):
-        df["name"] = df["long_name"].combine_first(df["short_name"])
 
     df = df[["name", "country", "sector", "industry_group", "industry", "exchange"]]
 

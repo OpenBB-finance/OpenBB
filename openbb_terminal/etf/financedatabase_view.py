@@ -39,7 +39,7 @@ def display_etf_by_name(
         console.print("No data was found with that name.")
         return
 
-    table_data = data[["long_name", "family", "category_group", "category"]]
+    table_data = data[["name", "family", "category_group", "category"]]
 
     print_rich_table(
         table_data.iloc[:limit],
@@ -83,7 +83,7 @@ def display_etf_by_description(
         console.print("No data was found with that description.")
         return
 
-    table_data = data[["long_name", "family", "category_group", "category"]]
+    table_data = data[["name", "family", "category_group", "category"]]
 
     print_rich_table(
         table_data.iloc[:limit],
@@ -127,7 +127,7 @@ def display_etf_by_category(
         console.print("No data was found on that category.")
         return
 
-    table_data = data[["long_name", "family", "category_group", "category"]]
+    table_data = data[["name", "family", "category_group", "category"]]
 
     print_rich_table(
         table_data.iloc[:limit],

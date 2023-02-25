@@ -7,7 +7,7 @@ import os
 from datetime import datetime, timedelta
 from typing import List, Optional
 
-import pandas as pd
+import financedatabase as fd
 import yfinance as yf
 
 from openbb_terminal import feature_flags as obbff
@@ -69,20 +69,11 @@ class StocksController(StockBaseController):
     FILE_PATH = os.path.join(os.path.dirname(__file__), "README.md")
 
     try:
-        # This is meant to speed up the loading of the stocks menu
-        database_url = "https://raw.githubusercontent.com/JerBouma/FinanceDatabase/main/Database/Categories"
-        country = pd.read_csv(f"{database_url}/equities_countries.csv", header=None)[
-            0
-        ].values.tolist()
-        sector = pd.read_csv(f"{database_url}/equities_sectors.csv", header=None)[
-            0
-        ].values.tolist()
-        industry_group = pd.read_csv(
-            f"{database_url}/equities_industry_groups.csv", header=None
-        )[0].values.tolist()
-        industry = pd.read_csv(f"{database_url}/equities_industries.csv", header=None)[
-            0
-        ].values.tolist()
+        stocks_options = fd.obtain_options("equities")
+        country = stocks_options["country"].tolist()
+        sector = stocks_options["sector"].tolist()
+        industry_group = stocks_options["industry_group"].tolist()
+        industry = stocks_options["industry"].tolist()
     except Exception:
         country, sector, industry_group, industry = {}, {}, {}, {}
         console.print(

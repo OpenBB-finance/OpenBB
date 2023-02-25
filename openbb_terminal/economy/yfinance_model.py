@@ -740,15 +740,14 @@ def get_search_indices(keyword: list, limit: int = 10) -> pd.DataFrame:
 
     indices = fd.Indices()
 
-    queried_indices = indices.search(
-        short_name=keyword_adjusted, exclude_exchanges=True
-    )
+    queried_indices = indices.search(name=keyword_adjusted, exclude_exchanges=True)
     queried_indices = pd.concat(
         [
             queried_indices,
             indices.search(index=keyword_adjusted),
         ]
     )
+    queried_indices = queried_indices.drop_duplicates()
 
     queried_indices = queried_indices.iloc[:limit]
 
