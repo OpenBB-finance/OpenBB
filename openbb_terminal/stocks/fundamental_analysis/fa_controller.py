@@ -1548,16 +1548,19 @@ class FundamentalAnalysisController(StockBaseController):
                 self.ticker = ns_parser.ticker
                 self.custom_load_wrapper([self.ticker])
 
-            dcf = dcf_view.CreateExcelFA(
-                symbol=self.ticker,
-                beta=ns_parser.beta,
-                audit=ns_parser.audit,
-                ratios=ns_parser.ratios,
-                len_pred=ns_parser.prediction,
-                max_similars=ns_parser.similar,
-                growth=ns_parser.growth,
-            )
-            dcf.create_workbook()
+            if self.ticker:
+                dcf = dcf_view.CreateExcelFA(
+                    symbol=self.ticker,
+                    beta=ns_parser.beta,
+                    audit=ns_parser.audit,
+                    ratios=ns_parser.ratios,
+                    len_pred=ns_parser.prediction,
+                    max_similars=ns_parser.similar,
+                    growth=ns_parser.growth,
+                )
+                dcf.create_workbook()
+            else:
+                console.print("Please use --ticker or load a ticker first.")
 
     @log_start_end(log=logger)
     def call_dcfc(self, other_args: List[str]):
