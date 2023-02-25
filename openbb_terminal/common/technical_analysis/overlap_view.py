@@ -83,6 +83,7 @@ def view_ma(
         f"{ma_type.lower()}{'_'.join([str(win) for win in window])}",  # type: ignore
         price_df,
         sheet_name,
+        fig,
     )
 
     return fig.show(external=external_axes)
@@ -156,6 +157,7 @@ def view_vwap(
         "VWAP",
         ta.df_ta,
         sheet_name,
+        fig,
     )
 
     return fig.show(external=external_axes)

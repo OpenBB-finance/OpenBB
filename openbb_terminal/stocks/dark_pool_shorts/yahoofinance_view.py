@@ -31,15 +31,15 @@ def display_most_shorted(
     df = df.replace(float("NaN"), "")
 
     if df.empty:
-        console.print("No data found.")
-    else:
-        print_rich_table(
-            df,
-            headers=list(df.columns),
-            show_index=False,
-            title="Most Shorted Stocks",
-            export=bool(export),
-        )
+        return console.print("No data found.")
+
+    print_rich_table(
+        df,
+        headers=list(df.columns),
+        show_index=False,
+        title="Most Shorted Stocks",
+        export=bool(export),
+    )
 
     export_data(
         export,

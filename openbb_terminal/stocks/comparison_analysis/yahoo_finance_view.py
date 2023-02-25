@@ -230,6 +230,9 @@ def display_correlation(
         xgap=1,
         ygap=1,
     )
+    fig.update_layout(
+        margin=dict(l=0, r=120, t=0, b=0), yaxis=dict(autorange="reversed")
+    )
 
     if raw:
         print_rich_table(
@@ -246,10 +249,6 @@ def display_correlation(
         df_similar,
         sheet_name,
         fig,
-    )
-
-    fig.update_layout(
-        margin=dict(l=0, r=120, t=0, b=0), yaxis=dict(autorange="reversed")
     )
 
     return fig.show(external=external_axes)

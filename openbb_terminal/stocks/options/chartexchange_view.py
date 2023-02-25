@@ -106,6 +106,7 @@ def display_raw(
     df = df.set_index("Date")
 
     option_type = "call" if call else "put"
+    fig = plot_chart(df, option_type, symbol)
 
     export_data(
         export,
@@ -113,6 +114,7 @@ def display_raw(
         "hist",
         df,
         sheet_name,
+        fig,
     )
     print_rich_table(
         df.head(limit),
@@ -121,7 +123,5 @@ def display_raw(
         title=f"{symbol.upper()} raw data",
         export=bool(export),
     )
-
-    fig = plot_chart(df, option_type, symbol)
 
     return fig.show(external=external_axes)

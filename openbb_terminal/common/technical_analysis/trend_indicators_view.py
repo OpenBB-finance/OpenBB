@@ -59,6 +59,7 @@ def display_adx(
         "adx",
         ta.df_ta,
         sheet_name,
+        fig,
     )
 
     return fig.show(external=external_axes)
@@ -108,6 +109,7 @@ def display_aroon(
         "aroon",
         ta.df_ta,
         sheet_name,
+        fig,
     )
 
     return fig.show(external=external_axes)

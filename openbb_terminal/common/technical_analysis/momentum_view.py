@@ -60,6 +60,7 @@ def display_cci(
         "cci",
         ta.df_ta,
         sheet_name,
+        fig,
     )
 
     return fig.show(external=external_axes)
@@ -110,6 +111,7 @@ def display_macd(
         "macd",
         ta.df_ta,
         sheet_name,
+        fig,
     )
 
     return fig.show(external=external_axes)
@@ -163,6 +165,7 @@ def display_rsi(
         "rsi",
         ta.df_ta,
         sheet_name,
+        fig,
     )
 
     return fig.show(external=external_axes)
@@ -217,6 +220,7 @@ def display_stoch(
         "stoch",
         ta.df_ta,
         sheet_name,
+        fig,
     )
 
     return fig.show(external=external_axes)
@@ -261,6 +265,7 @@ def display_fisher(
         "fisher",
         ta.df_ta,
         sheet_name,
+        fig,
     )
 
     return fig.show(external=external_axes)
@@ -305,6 +310,7 @@ def display_cg(
         "cg",
         ta.df_ta,
         sheet_name,
+        fig,
     )
 
     return fig.show(external=external_axes)
@@ -350,7 +356,7 @@ def display_clenow_momentum(
 
     r2, coef, _ = momentum_model.clenow_momentum(data, window)
 
-    df = pd.DataFrame.from_dict(
+    df_ta = pd.DataFrame.from_dict(
         {
             "R^2": f"{r2:.5f}",
             "Fit Coef": f"{coef:.5f}",
@@ -360,7 +366,7 @@ def display_clenow_momentum(
     )
 
     print_rich_table(
-        df,
+        df_ta,
         show_index=True,
         headers=[""],
         title=f"Clenow Exponential Regression Factor on {symbol}",
@@ -372,6 +378,7 @@ def display_clenow_momentum(
         export,
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
         "clenow",
+        df_ta,
         sheet_name,
         fig,
     )
@@ -432,6 +439,7 @@ def display_demark(
         "demark",
         stock_data,
         sheet_name,
+        fig,
     )
 
     return fig.show(external=external_axes)

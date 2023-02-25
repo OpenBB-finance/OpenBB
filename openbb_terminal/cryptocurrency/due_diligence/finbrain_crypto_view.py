@@ -100,6 +100,7 @@ def display_crypto_sentiment_analysis(
     fig.add_scatter(
         x=df_sentiment.index[positive_yloc],
         y=pd.to_numeric(df_sentiment.values)[positive_yloc],
+        marker=dict(color=theme.up_color, size=10),
         mode="lines+markers",
         line_width=0,
         name=symbol,
@@ -118,6 +119,7 @@ def display_crypto_sentiment_analysis(
         y=pd.to_numeric(df_sentiment.values)[negative_yloc],
         fill="tonexty",
         fillcolor=theme.down_color,
+        marker=dict(color=theme.down_color, size=10),
         line_width=0,
         mode="lines+markers",
         name=symbol,

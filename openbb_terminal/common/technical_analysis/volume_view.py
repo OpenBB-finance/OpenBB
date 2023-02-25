@@ -45,8 +45,7 @@ def display_ad(
     ta = PlotlyTA()
     fig = ta.plot(data, dict(ad=dict(use_open=use_open)), f"{symbol} AD", False)
 
-    close_col = ta_helpers.check_columns(data)
-    if close_col is None:
+    if ta_helpers.check_columns(data) is None:
         return None
 
     export_data(
@@ -55,6 +54,7 @@ def display_ad(
         "ad",
         ta.df_ta,
         sheet_name,
+        fig,
     )
 
     return fig.show(external=external_axes)
@@ -104,6 +104,7 @@ def display_adosc(
         "adosc",
         ta.df_ta,
         sheet_name,
+        fig,
     )
 
     return fig.show(external=external_axes)
@@ -145,6 +146,7 @@ def display_obv(
         "obv",
         ta.df_ta,
         sheet_name,
+        fig,
     )
 
     return fig.show(external=external_axes)

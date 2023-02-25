@@ -720,6 +720,14 @@ class FundamentalAnalysisController(StockBaseController):
             prog="splits",
             description="""Stock splits and reverse split events since IPO [Source: Yahoo Finance]""",
         )
+        parser.add_argument(
+            "-t",
+            "--ticker",
+            dest="ticker",
+            help="Ticker to analyze",
+            type=str,
+            default=None,
+        )
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )

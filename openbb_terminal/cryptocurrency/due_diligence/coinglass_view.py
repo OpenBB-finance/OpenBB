@@ -1,6 +1,6 @@
 import logging
 import os
-from typing import Optional
+from typing import Optional, Union
 
 import pandas as pd
 
@@ -20,7 +20,10 @@ logger = logging.getLogger(__name__)
 @log_start_end(log=logger)
 @check_api_key(["API_COINGLASS_KEY"])
 def display_funding_rate(
-    symbol: str, export: str = "", sheet_name: Optional[str] = None
+    symbol: str,
+    export: str = "",
+    sheet_name: Optional[str] = None,
+    external_axes: bool = False,
 ) -> None:
     """Plots funding rate by exchange for a certain cryptocurrency
     [Source: https://coinglass.github.io/API-Reference/]
@@ -30,12 +33,20 @@ def display_funding_rate(
     symbol : str
         Crypto symbol to search funding rate (e.g., BTC)
     export : str
-        Export dataframe data to csv,json,xlsx file"""
+        Export dataframe data to csv,json,xlsx file
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
+
+    """
     df = get_funding_rate(symbol)
     if df.empty:
-        return
+        return None
 
-    plot_data(df, symbol, f"Exchange {symbol} Funding Rate", "Funding Rate [%]")
+    fig = plot_data(
+        df, symbol, f"Exchange {symbol} Funding Rate", "Funding Rate [%]", True
+    )
 
     export_data(
         export,
@@ -43,13 +54,20 @@ def display_funding_rate(
         "fundrate",
         df,
         sheet_name,
+        fig,
     )
+
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
 @check_api_key(["API_COINGLASS_KEY"])
 def display_open_interest(
-    symbol: str, interval: int = 0, export: str = "", sheet_name: Optional[str] = None
+    symbol: str,
+    interval: int = 0,
+    export: str = "",
+    sheet_name: Optional[str] = None,
+    external_axes: bool = False,
 ) -> None:
     """Plots open interest by exchange for a certain cryptocurrency
     [Source: https://coinglass.github.io/API-Reference/]
@@ -61,16 +79,22 @@ def display_open_interest(
     interval : int
         Frequency (possible values are: 0 for ALL, 2 for 1H, 1 for 4H, 4 for 12H), by default 0
     export : str
-        Export dataframe data to csv,json,xlsx file"""
+        Export dataframe data to csv,json,xlsx file
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
+    """
     df = get_open_interest_per_exchange(symbol, interval)
     if df.empty:
-        return
+        return None
 
-    plot_data(
+    fig = plot_data(
         df,
         symbol,
         f"Exchange {symbol} Futures Open Interest",
         "Open futures value [$]",
+        True,
     )
 
     export_data(
@@ -79,14 +103,20 @@ def display_open_interest(
         "oi",
         df,
         sheet_name,
+        fig,
     )
+
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
 @check_api_key(["API_COINGLASS_KEY"])
 def display_liquidations(
-    symbol: str, export: str = "", sheet_name: Optional[str] = None
-) -> None:
+    symbol: str,
+    export: str = "",
+    sheet_name: Optional[str] = None,
+    external_axes: bool = False,
+) -> Union[None, OpenBBFigure]:
     """Plots liquidation per day data for a certain cryptocurrency
     [Source: https://coinglass.github.io/API-Reference/#liquidation-chart]
 
@@ -96,16 +126,21 @@ def display_liquidations(
         Crypto symbol to search open interest (e.g., BTC)
     export : str
         Export dataframe data to csv,json,xlsx file
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     df = get_liquidations(symbol)
     if df.empty:
-        return
+        return None
 
-    plot_data_bar(
+    fig = plot_data_bar(
         df,
         symbol,
         f"Total liquidations for {symbol}",
         "Liquidations value [$]",
+        True,
     )
 
     export_data(
@@ -114,7 +149,10 @@ def display_liquidations(
         "liquidations",
         df,
         sheet_name,
+        fig,
     )
+
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -124,7 +162,7 @@ def plot_data(
     title: str = "",
     ylabel: str = "",
     external_axes: bool = False,
-):
+) -> Union[None, OpenBBFigure]:
     fig = OpenBBFigure.create_subplots(2, 1)
 
     df_price = df[["price"]].copy()
@@ -176,7 +214,7 @@ def plot_data_bar(
     title: str = "",
     ylabel: str = "",
     external_axes: bool = False,
-):
+) -> Union[None, OpenBBFigure]:
     fig = OpenBBFigure.create_subplots(2, 1)
 
     df_price = df[["price"]].copy()

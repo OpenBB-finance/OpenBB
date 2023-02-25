@@ -73,7 +73,7 @@ def display_historical(
         rows=2,
         cols=1,
         shared_xaxes=True,
-        vertical_spacing=0.02,
+        vertical_spacing=0.03,
         row_heights=[0.3, 0.7],
         subplot_titles=[f"{symbol} {strike} {op_type}", "Volume"],
     )
@@ -89,11 +89,7 @@ def display_historical(
         row=1,
         col=1,
     )
-    fig.add_stock_volume(
-        df_hist,
-        row=2,
-        col=1,
-    )
+    fig.add_stock_volume(df_hist, row=2, col=1)
     fig.hide_holidays()
 
     if export:

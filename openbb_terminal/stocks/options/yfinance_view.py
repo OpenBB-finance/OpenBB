@@ -152,7 +152,11 @@ def plot_plot(
     fig.add_scatter(x=x_data, y=y_data, mode="lines+markers")
 
     export_data(
-        export, os.path.dirname(os.path.abspath(__file__)), "plot", sheet_name, fig
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "plot",
+        sheet_name=sheet_name,
+        figure=fig,
     )
 
     return fig.show(external=external_axes)

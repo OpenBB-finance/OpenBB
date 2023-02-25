@@ -845,7 +845,7 @@ class TechnicalAnalysisController(StockBaseController):
         ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
-            EXPORT_BOTH_RAW_DATA_AND_FIGURES,
+            EXPORT_ONLY_RAW_DATA_ALLOWED,
         )
 
         if ns_parser:

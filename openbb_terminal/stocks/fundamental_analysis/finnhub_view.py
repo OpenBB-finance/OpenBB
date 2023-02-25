@@ -83,15 +83,15 @@ def rating_over_time(
     if df_rot.empty:
         return None
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "rot",
-        df_rot,
-        sheet_name,
-    )
-
     if raw:
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "rot",
+            df_rot,
+            sheet_name,
+        )
+
         d_cols = {
             "strongSell": "Strong Sell",
             "sell": "Sell",
@@ -104,14 +104,23 @@ def rating_over_time(
             .rename(columns=d_cols)
             .head(limit)
         )
-        print_rich_table(
+        return print_rich_table(
             df_rot_raw,
             headers=list(df_rot_raw.columns),
             show_index=False,
             title="Monthly Rating",
             export=bool(export),
         )
-    else:
-        return plot_rating_over_time(df_rot.head(limit), symbol, external_axes)
 
-    return None
+    fig = plot_rating_over_time(df_rot.head(limit), symbol, True)
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "rot",
+        df_rot,
+        sheet_name,
+        fig,
+    )
+
+    return fig.show(external=external_axes)

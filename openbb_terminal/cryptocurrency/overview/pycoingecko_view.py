@@ -187,7 +187,12 @@ def display_crypto_heatmap(
     )
 
     export_data(
-        export, os.path.dirname(os.path.abspath(__file__)), "hm", df, sheet_name, fig
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "hm",
+        df,
+        sheet_name,
+        fig,
     )
 
     return fig.show(external=external_axes, margin=False)

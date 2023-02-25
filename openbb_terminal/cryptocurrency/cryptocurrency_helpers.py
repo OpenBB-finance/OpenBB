@@ -928,6 +928,7 @@ def plot_order_book(
     bids: np.ndarray,
     asks: np.ndarray,
     coin: str,
+    external_axes: bool = False,
 ) -> OpenBBFigure:
     """
     Plots Bid/Ask. Can be used for Coinbase and Binance
@@ -940,6 +941,8 @@ def plot_order_book(
         array of asks with columns: price, size, cumulative size
     coin : str
         Coin being plotted
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
 
     fig = OpenBBFigure(xaxis_title="Price", yaxis_title="Size (Coins)").set_title(
@@ -966,7 +969,7 @@ def plot_order_book(
     )
     fig.add_hline(y=0, line=dict(width=0, color="rgba(0, 0, 0, 0)"))
 
-    return fig
+    return fig.show(external=external_axes)
 
 
 def check_cg_id(symbol: str):

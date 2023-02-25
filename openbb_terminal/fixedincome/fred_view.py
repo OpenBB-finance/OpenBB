@@ -1219,7 +1219,9 @@ def plot_icebofa(
     fig.set_title(title)
 
     for column in df.columns:
-        fig.add_scatter(x=df.index, y=df[column].values, name=column, showlegend=True)
+        fig.add_scatter(
+            x=df.index, y=df[column].values, name=column, showlegend=len(df.columns) > 1
+        )
 
     if raw:
         print_rich_table(
@@ -1381,7 +1383,9 @@ def plot_cp(
     fig.set_title(title)
 
     for column in df.columns:
-        fig.add_scatter(x=df.index, y=df[column].values, name=column, showlegend=True)
+        fig.add_scatter(
+            x=df.index, y=df[column].values, name=column, showlegend=len(df.columns) > 1
+        )
 
     if raw:
         print_rich_table(
@@ -1465,7 +1469,9 @@ def plot_spot(
     fig.set_title(title)
 
     for column in df.columns:
-        fig.add_scatter(x=df.index, y=df[column].values, name=column)
+        fig.add_scatter(
+            x=df.index, y=df[column].values, name=column, showlegend=len(df.columns) > 1
+        )
 
     if raw:
         print_rich_table(

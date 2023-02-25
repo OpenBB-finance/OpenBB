@@ -148,17 +148,16 @@ def short_interest_volume(
     if df.empty:
         return console.print("[red]No data available[/red]\n")
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "shortint(stockgrid)",
-        df,
-        sheet_name,
-    )
-
     if raw:
-        df.date = df.date.dt.date
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "shortint(stockgrid)",
+            df,
+            sheet_name,
+        )
 
+        df.date = df.date.dt.date
         return print_rich_table(
             df.iloc[:limit],
             headers=list(df.columns),
@@ -256,6 +255,15 @@ def short_interest_volume(
 
     fig.hide_holidays()
 
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "shortint(stockgrid)",
+        df,
+        sheet_name,
+        fig,
+    )
+
     return fig.show(external=external_axes)
 
 
@@ -289,15 +297,15 @@ def net_short_position(
     if df.empty:
         return console.print("[red]No data available[/red]\n")
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "shortpos",
-        df,
-        sheet_name,
-    )
-
     if raw:
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "shortpos",
+            df,
+            sheet_name,
+        )
+
         df["dates"] = df["dates"].dt.date
 
         return print_rich_table(
@@ -365,5 +373,14 @@ def net_short_position(
     )
 
     fig.hide_holidays()
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "shortpos",
+        df,
+        sheet_name,
+        fig,
+    )
 
     return fig.show(external=external_axes)

@@ -169,6 +169,7 @@ def view_historical_greeks(
     fig = OpenBBFigure.create_subplots(
         shared_xaxes=True,
         specs=[[{"secondary_y": True}]],
+        vertical_spacing=0.03,
         horizontal_spacing=0.1,
     )
     fig.set_title(

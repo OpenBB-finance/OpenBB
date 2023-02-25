@@ -57,8 +57,7 @@ def display_bbands(
         volume=False,
     )
 
-    close_col = ta_helpers.check_columns(data, high=False, low=False)
-    if close_col is None:
+    if ta_helpers.check_columns(data, high=False, low=False) is None:
         return None
 
     export_data(
@@ -67,6 +66,7 @@ def display_bbands(
         "bbands",
         ta.df_ta,
         sheet_name,
+        fig,
     )
 
     return fig.show(external=external_axes)
@@ -108,8 +108,7 @@ def display_donchian(
         volume=False,
     )
 
-    close_col = ta_helpers.check_columns(data)
-    if close_col is None:
+    if ta_helpers.check_columns(data) is None:
         return None
 
     export_data(
@@ -118,6 +117,7 @@ def display_donchian(
         "donchian",
         ta.df_ta,
         sheet_name,
+        fig,
     )
 
     return fig.show(external=external_axes)
@@ -168,8 +168,7 @@ def view_kc(
         volume=False,
     )
 
-    close_col = ta_helpers.check_columns(data)
-    if close_col is None:
+    if ta_helpers.check_columns(data) is None:
         return None
 
     export_data(
@@ -178,6 +177,7 @@ def view_kc(
         "kc",
         ta.df_ta,
         sheet_name,
+        fig,
     )
 
     return fig.show(external=external_axes)
@@ -218,8 +218,7 @@ def display_atr(
         volume=False,
     )
 
-    close_col = ta_helpers.check_columns(data)
-    if close_col is None:
+    if ta_helpers.check_columns(data) is None:
         return None
 
     export_data(
@@ -228,6 +227,7 @@ def display_atr(
         "atr",
         ta.df_ta,
         sheet_name,
+        fig,
     )
 
     return fig.show(external=external_axes)
