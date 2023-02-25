@@ -8,7 +8,6 @@ from datetime import datetime, timedelta
 from typing import List, Optional
 
 import financedatabase
-import yfinance as yf
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.common import feedparser_view, newsapi_view
