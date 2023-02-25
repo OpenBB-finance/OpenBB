@@ -35,7 +35,7 @@ def display_order_book(
         Whether to return the figure object or not, by default False
     """
     bids, asks, pair, market_book = coinbase_model.get_order_book(symbol)
-    fig = plot_order_book(bids, asks, pair, True)
+    fig = plot_order_book(bids, asks, pair)
 
     export_data(
         export,

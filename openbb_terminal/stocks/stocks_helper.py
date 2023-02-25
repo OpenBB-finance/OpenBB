@@ -541,6 +541,17 @@ def display_candle(
     >>> from openbb_terminal.sdk import openbb
     >>> openbb.stocks.candle("AAPL")
     """
+    # We are not actually showing adj close in candle.  This hasn't been an issue so far, but adding
+    # in intrinio returns all adjusted columns,so some care here is needed or else we end up with
+    # mixing up close and adj close
+    if data is None:
+        # For mypy
+        data = pd.DataFrame()
+    data = deepcopy(data)
+
+    if "Adj Close" in data.columns:
+        data["Close"] = data["Adj Close"].copy()
+
     if start_date is None:
         start_date = (datetime.now() - timedelta(days=1100)).strftime("%Y-%m-%d")
 
@@ -550,9 +561,6 @@ def display_candle(
     start_date = check_datetime(start_date)
     end_date = check_datetime(end_date, start=False)
 
-    # We are not actually showing adj close in candle.  This hasn't been an issue so far, but adding
-    # in intrinio returns all adjusted columns,so some care here is needed or else we end up with
-    # mixing up close and adj close
     if data is None or data.empty:
         data = load(
             symbol,
@@ -565,11 +573,6 @@ def display_candle(
             monthly,
         )
         data = process_candle(data)
-
-    data = deepcopy(data)
-
-    if "Adj Close" in data.columns:
-        data["Close"] = data["Adj Close"].copy()
 
     if add_trend and (data.index[1] - data.index[0]).total_seconds() >= 86400:
         data = find_trendline(data, "OC_High", "high")

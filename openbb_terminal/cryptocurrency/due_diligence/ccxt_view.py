@@ -6,6 +6,7 @@ import os
 from typing import Optional, Union
 
 import numpy as np
+import pandas as pd
 
 from openbb_terminal import OpenBBFigure
 from openbb_terminal.cryptocurrency.cryptocurrency_helpers import plot_order_book
@@ -47,17 +48,16 @@ def display_order_book(
     bids = np.insert(bids, 2, bids[:, 1].cumsum(), axis=1)
     asks = np.insert(asks, 2, np.flipud(asks[:, 1]).cumsum(), axis=1)
     fig = plot_order_book(
-        bids,
-        asks,
-        f"{exchange.upper()}:{symbol.upper()}/{to_symbol.upper()}",
+        bids, asks, f"{exchange.upper()}:{symbol.upper()}/{to_symbol.upper()}"
     )
 
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "ob",
-        market_book,
+        pd.DataFrame(market_book),
         sheet_name,
+        fig,
     )
 
     return fig.show(external=external_axes)

@@ -61,6 +61,7 @@ def display_order_book(
         "book",
         market_book,
         sheet_name,
+        fig,
     )
 
     return fig.show(external=external_axes)

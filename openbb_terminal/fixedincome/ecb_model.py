@@ -36,16 +36,16 @@ def get_series_data(
     """
     start_date = start_date.replace("-", "")
     end_date = end_date.replace("-", "")
+    url = (
+        "https://sdw.ecb.europa.eu/quickviewexport.do?trans=N"
+        f"&start={start_date}&end={end_date}&SERIES_KEY={series_id}&type=csv"
+    )
     time.sleep(0.5)
 
     def _get_data(max_retries: int = 5):
         try:
             df = pd.read_csv(
-                f"https://sdw.ecb.europa.eu/quickviewexport.do?trans=N&start={start_date}&end={end_date}&SERIES_KEY={series_id}&type=csv",
-                header=5,
-                usecols=[0, 1],
-                index_col=0,
-                parse_dates=True,
+                url, header=5, usecols=[0, 1], index_col=0, parse_dates=True
             )
             df = df.iloc[::-1]
             return df
