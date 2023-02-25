@@ -49,9 +49,9 @@ interactions:
       vary:
       - Origin
       x-envoy-decorator-operation:
-      - finance-chart-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
+      - finance-chart-api--mtls-production-bf1.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
-      - '2'
+      - '3'
       x-request-id:
       - 05053be4-dbf2-41fb-b2e7-b17098cd18a6
       x-yahoo-request-id:

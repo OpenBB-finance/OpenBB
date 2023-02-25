@@ -18,7 +18,7 @@ interactions:
       string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"^IXIC","exchangeName":"NIM","instrumentType":"INDEX","firstTradeDate":34612200,"regularMarketTime":1677276959,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":11394.941,"chartPreviousClose":11590.401,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","start":1677229200,"end":1677249000,"gmtoffset":-18000},"regular":{"timezone":"EST","start":1677249000,"end":1677272400,"gmtoffset":-18000},"post":{"timezone":"EST","start":1677272400,"end":1677286800,"gmtoffset":-18000}},"dataGranularity":"1d","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1677249000],"indicators":{"quote":[{"high":[11434.3603515625],"volume":[4432650000],"open":[11404.1796875],"close":[11394.9404296875],"low":[11334.4697265625]}],"adjclose":[{"adjclose":[11394.9404296875]}]}}],"error":null}}'
     headers:
       Age:
-      - '0'
+      - '4'
       Connection:
       - keep-alive
       Expect-CT:
@@ -46,7 +46,7 @@ interactions:
       vary:
       - Origin,Accept-Encoding
       x-envoy-decorator-operation:
-      - finance-chart-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
+      - finance-chart-api--mtls-production-bf1.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
       - '3'
       x-request-id:

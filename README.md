@@ -27,7 +27,7 @@
 
 | OpenBB is committed to build the future of investment research by focusing on an open source infrastructure accessible to everyone, everywhere. |
 |:--:|
-| ![openbb.jpg](/images/openbb_gradient.png) |
+| [![openbb.jpg](/images/openbb_gradient.png)](https://openbb.co) |
 | Check our website at [openbb.co](https://openbb.co) |
 
 <br />

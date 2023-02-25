@@ -6,7 +6,7 @@
     "candle": [],
     "codes": ["Polygon"],
     "news": ["Feedparser", "NewsApi"],
-    "load": ["YahooFinance", "AlphaVantage", "Polygon", "EODHD", "Intrinio"],
+    "load": ["YahooFinance", "AlphaVantage", "Polygon", "EODHD", "Intrinio", "DataBento"],
     "th": {
       "symbol": ["FinanceDatabase"],
       "open": ["Bursa"],
@@ -457,7 +457,6 @@
     "futures": ["WallStreetJournal", "Finviz"],
     "map": ["Finviz"],
     "bigmac": ["Nasdaq"],
-    "ycrv": ["FRED"],
     "events": ["Nasdaq"],
     "edebt": ["Wikipedia"],
     "rtps": ["AlphaVantage"],
@@ -489,8 +488,32 @@
   },
   "futures": {
     "search": ["YahooFinance"],
-    "historical": ["YahooFinance"],
+    "historical": ["YahooFinance", "DataBento"],
     "curve": ["YahooFinance"]
+  },
+  "fixedincome": {
+    "estr": ["FRED", "ECB"],
+    "sofr": ["FRED"],
+    "sonia": ["FRED"],
+    "ameribor": ["FRED"],
+    "fed": ["FRED"],
+    "iorb": ["FRED"],
+    "projection": ["FRED"],
+    "dwpcr": ["FRED"],
+    "ecb": ["FRED"],
+    "treasury": ["OECD"],
+    "usrates": ["FRED"],
+    "ycrv": ["FRED"],
+    "ecbycrv": ["ECB"],
+    "icebofa": ["FRED"],
+    "moody": ["FRED"],
+    "spot": ["FRED"],
+    "cp": ["FRED"],
+    "hqm": ["FRED"],
+    "icespread": ["FRED"],
+    "tmc": ["FRED"],
+    "ffrmc": ["FRED"],
+    "tbffr": ["FRED"]
   },
   "portfolio": {
     "po": {
