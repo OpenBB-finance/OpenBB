@@ -929,7 +929,7 @@ def plot_order_book(
     asks: np.ndarray,
     coin: str,
     external_axes: bool = False,
-) -> OpenBBFigure:
+) -> Union[OpenBBFigure, None]:
     """
     Plots Bid/Ask. Can be used for Coinbase and Binance
 
