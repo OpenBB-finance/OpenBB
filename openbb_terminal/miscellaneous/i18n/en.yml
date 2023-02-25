@@ -783,6 +783,7 @@ en:
   economy/qa/raw: print raw data
   economy/qa/decompose: decomposition in cyclic-trend, season, and residuals of prices
   economy/qa/cusum: detects abrupt changes using cumulative sum algorithm of prices
+  fixedincome: Fixed Income
   fixedincome/_reference_rates_: Reference rates
   fixedincome/estr: euro short-term rate (estr)
   fixedincome/sofr: secured overnight financing rate (sofr)
@@ -807,7 +808,7 @@ en:
   fixedincome/spot: display spot rates ranging from 1 year to a 100 years
   fixedincome/hqm: display the High Quality Market (HQM) corporate yield curve
   fixedincome/_spreads_: Spreads
-  fixedincome/icespread: display spread between ICE BofA Corporate Indices and spot treasury curve 
+  fixedincome/icespread: display spread between ICE BofA Corporate Indices and spot treasury curve
   fixedincome/tmc: 10-year treasury constant maturity minus selected treasury constant maturity
   fixedincome/ffrmc: selected treasury constant maturity minus federal funds rate
   fixedincome/tbffr: selected treasury bill minus federal funds rate
