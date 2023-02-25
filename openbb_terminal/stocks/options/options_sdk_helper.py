@@ -325,11 +325,9 @@ def get_greeks(
         "Phi",
         "Charm",
         "Vanna",
-        "Vomma"
+        "Vomma",
     ]
-    columns = (
-        chain_columns + greek_columns
-    )
+    columns = chain_columns + greek_columns
 
     df = pd.DataFrame(strikes, columns=columns)
 
