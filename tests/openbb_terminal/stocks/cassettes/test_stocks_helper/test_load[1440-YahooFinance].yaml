@@ -18,7 +18,7 @@ interactions:
       string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"GME","exchangeName":"NYQ","instrumentType":"EQUITY","firstTradeDate":1013610600,"regularMarketTime":1678222802,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":18.06,"chartPreviousClose":18.65,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","start":1678266000,"end":1678285800,"gmtoffset":-18000},"regular":{"timezone":"EST","start":1678285800,"end":1678309200,"gmtoffset":-18000},"post":{"timezone":"EST","start":1678309200,"end":1678323600,"gmtoffset":-18000}},"dataGranularity":"1d","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1678199400],"indicators":{"quote":[{"volume":[2368700],"high":[18.84000015258789],"low":[18.059999465942383],"open":[18.540000915527344],"close":[18.059999465942383]}],"adjclose":[{"adjclose":[18.059999465942383]}]}}],"error":null}}'
     headers:
       Age:
-      - '1'
+      - '0'
       Connection:
       - keep-alive
       Expect-CT:
@@ -77,7 +77,7 @@ interactions:
       string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"GME","exchangeName":"NYQ","instrumentType":"EQUITY","firstTradeDate":1013610600,"regularMarketTime":1678222802,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":18.06,"chartPreviousClose":49.053,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","start":1678266000,"end":1678285800,"gmtoffset":-18000},"regular":{"timezone":"EST","start":1678285800,"end":1678309200,"gmtoffset":-18000},"post":{"timezone":"EST","start":1678309200,"end":1678323600,"gmtoffset":-18000}},"dataGranularity":"1d","range":"","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1638369000],"indicators":{"quote":[{"high":[50.02750015258789],"volume":[9406000],"close":[44.959999084472656],"open":[49.849998474121094],"low":[44.252498626708984]}],"adjclose":[{"adjclose":[44.959999084472656]}]}}],"error":null}}'
     headers:
       Age:
-      - '1'
+      - '0'
       Connection:
       - keep-alive
       Expect-CT:
