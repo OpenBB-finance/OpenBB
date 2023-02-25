@@ -11,7 +11,6 @@ from openbb_terminal.core.models.user_model import (
     UserModel,
 )
 
-
 # pylint: disable=protected-access, redefined-outer-name
 
 TEST_SESSION = {

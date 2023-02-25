@@ -10,9 +10,9 @@ import numpy as np
 import pandas as pd
 from dateutil import parser as dparse
 
-from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.common.behavioural_analysis import twitter_model
 from openbb_terminal.config_terminal import theme
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,

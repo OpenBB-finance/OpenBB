@@ -12,12 +12,12 @@ from matplotlib import (
     ticker,
 )
 from pandas.plotting import register_matplotlib_converters
-from openbb_terminal.core.session.current_user import get_current_user
 
 import openbb_terminal.cryptocurrency.overview.pycoingecko_model as gecko
 from openbb_terminal import (
     config_terminal as cfg,
 )
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.cryptocurrency.dataframe_helpers import (
     lambda_long_number_format_with_type_check,
 )

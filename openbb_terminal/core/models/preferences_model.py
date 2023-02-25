@@ -37,9 +37,11 @@ class PreferencesModel:
     USE_CLEAR_AFTER_CMD: bool = False
     USE_COLOR: bool = True
     USE_DATETIME: bool = True
-    USE_ION: bool = True  # Enable interactive matplotlib mode: change variable name to be more descriptive and delete comment
+    # Enable interactive matplotlib mode: change variable name to be more descriptive and delete comment
+    USE_ION: bool = True
     USE_WATERMARK: bool = True
-    USE_CMD_LOCATION_FIGURE: bool = True  # Enable command and source in the figures: change variable name to be more descriptive and delete comment
+    # Enable command and source in the figures: change variable name to be more descriptive and delete comment
+    USE_CMD_LOCATION_FIGURE: bool = True
     USE_PROMPT_TOOLKIT: bool = True
     USE_PLOT_AUTOSCALING: bool = False
     ENABLE_THOUGHTS_DAY: bool = False

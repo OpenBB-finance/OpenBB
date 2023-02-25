@@ -1,10 +1,9 @@
 import multiprocessing
 import sys
 
-
 import openbb_terminal.core.session.current_user as _  # noqa: F401
-from openbb_terminal.core.config.paths_helper import init_userdata
 from openbb_terminal.base_helpers import load_env_files
+from openbb_terminal.core.config.paths_helper import init_userdata
 from openbb_terminal.terminal_helper import is_auth_enabled
 
 # pylint: disable=import-outside-toplevel

@@ -5,8 +5,8 @@ from typing import Dict, List
 import pandas as pd
 from tokenterminal import TokenTerminal
 
-from openbb_terminal.decorators import log_start_end
 from openbb_terminal.core.session.current_user import get_current_user
+from openbb_terminal.decorators import log_start_end
 
 logger = logging.getLogger(__name__)
 

@@ -23,7 +23,6 @@ from prompt_toolkit.formatted_text import HTML
 from prompt_toolkit.styles import Style
 from rich import panel
 
-import openbb_terminal.config_terminal as cfg
 from openbb_terminal.common import feedparser_view
 from openbb_terminal.core.config.paths import (
     HOME_DIRECTORY,
@@ -32,6 +31,13 @@ from openbb_terminal.core.config.paths import (
     SETTINGS_ENV_FILE,
 )
 from openbb_terminal.core.log.generation.custom_logger import log_terminal
+from openbb_terminal.core.session import session_controller
+from openbb_terminal.core.session.constants import REGISTER_URL
+from openbb_terminal.core.session.current_user import (
+    get_current_user,
+    is_local,
+    set_current_user,
+)
 from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_positive,
@@ -43,13 +49,6 @@ from openbb_terminal.menu import is_papermill, session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.reports.reports_model import ipykernel_launcher
 from openbb_terminal.rich_config import MenuText, console
-from openbb_terminal.core.session import session_controller
-from openbb_terminal.core.session.current_user import (
-    get_current_user,
-    is_local,
-    set_current_user,
-)
-from openbb_terminal.core.session.constants import REGISTER_URL
 from openbb_terminal.terminal_helper import (
     bootup,
     check_for_updates,
@@ -378,14 +377,14 @@ class TerminalController(BaseController):
         """Process account command."""
         from openbb_terminal.account.account_controller import AccountController
 
-        current_user = get_current_user()
+        get_current_user()
 
         if is_local():
             console.print(
-                (
+                
                     "[info]You are currently logged as a guest.\n"
                     f"[info]Register: [/info][cmds]{REGISTER_URL}\n[/cmds]"
-                )
+                
             )
             return
         self.queue = self.load_class(AccountController, self.queue)

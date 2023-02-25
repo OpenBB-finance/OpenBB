@@ -26,6 +26,9 @@ from prawcore.exceptions import ResponseException
 from tokenterminal import TokenTerminal
 
 from openbb_terminal.core.session.credentials_handler import set_credential
+from openbb_terminal.core.session.current_user import get_current_user
+from openbb_terminal.core.session.hub_model import BASE_URL
+from openbb_terminal.core.session.local_model import SESSION_FILE_PATH
 from openbb_terminal.cryptocurrency.coinbase_helpers import (
     CoinbaseApiException,
     CoinbaseProAuth,
@@ -34,9 +37,6 @@ from openbb_terminal.cryptocurrency.coinbase_helpers import (
 from openbb_terminal.helper_funcs import request
 from openbb_terminal.portfolio.brokers.degiro.degiro_model import DegiroModel
 from openbb_terminal.rich_config import console
-from openbb_terminal.core.session.hub_model import BASE_URL
-from openbb_terminal.core.session.local_model import SESSION_FILE_PATH
-from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.terminal_helper import suppress_stdout
 
 logger = logging.getLogger(__name__)

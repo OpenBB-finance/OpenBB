@@ -5,6 +5,7 @@ import argparse
 import logging
 from typing import List, Optional, Union
 
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.forex import av_model, forex_helper
@@ -14,7 +15,6 @@ from openbb_terminal.helper_funcs import check_non_negative_float
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import MenuText, console
-from openbb_terminal.core.session.current_user import get_current_user
 
 logger = logging.getLogger(__name__)
 

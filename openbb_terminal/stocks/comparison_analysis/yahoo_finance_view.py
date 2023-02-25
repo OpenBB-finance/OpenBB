@@ -13,7 +13,6 @@ import seaborn as sns
 from pandas.plotting import register_matplotlib_converters
 from sklearn.preprocessing import MinMaxScaler
 
-
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import log_start_end

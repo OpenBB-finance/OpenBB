@@ -6,7 +6,7 @@ import logging
 from typing import List, Optional
 
 # IMPORTATION THIRDPARTY
-from dotenv import set_key
+from openbb_terminal.core.session.current_user import get_current_user
 
 # IMPORTATION INTERNAL
 from openbb_terminal.core.session.preferences_handler import set_preference
@@ -15,7 +15,6 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import MenuText, console
-from openbb_terminal.core.session.current_user import get_current_user
 
 # pylint: disable=too-many-lines,no-member,too-many-public-methods,C0302
 # pylint:disable=import-outside-toplevel

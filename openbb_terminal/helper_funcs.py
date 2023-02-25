@@ -42,9 +42,10 @@ from PIL import Image, ImageDraw
 from rich.table import Table
 from screeninfo import get_monitors
 
+from openbb_terminal.core.config.paths import HOME_DIRECTORY
+
 # IMPORTS INTERNAL
 from openbb_terminal.core.session.current_user import get_current_user
-from openbb_terminal.core.config.paths import HOME_DIRECTORY
 from openbb_terminal.rich_config import console
 
 try:

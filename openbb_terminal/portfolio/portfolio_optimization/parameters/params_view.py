@@ -4,7 +4,6 @@ from typing import Tuple
 
 import pandas as pd
 
-from openbb_terminal.core.config import paths
 from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.helper_funcs import print_rich_table
 from openbb_terminal.portfolio.portfolio_optimization import excel_model

@@ -10,7 +10,6 @@ import sys
 import webbrowser
 from contextlib import contextmanager
 from typing import List, Optional
-import dotenv
 
 # IMPORTATION THIRDPARTY
 import matplotlib.pyplot as plt
@@ -24,10 +23,10 @@ from openbb_terminal import (
 # IMPORTATION INTERNAL
 from openbb_terminal.config_terminal import LOGGING_COMMIT_HASH
 from openbb_terminal.core.config.paths import SETTINGS_ENV_FILE
+from openbb_terminal.core.session.current_user import get_current_user, is_local
 from openbb_terminal.core.session.preferences_handler import set_preference
 from openbb_terminal.helper_funcs import request
 from openbb_terminal.rich_config import console
-from openbb_terminal.core.session.current_user import get_current_user, is_local
 
 # pylint: disable=too-many-statements,no-member,too-many-branches,C0302
 

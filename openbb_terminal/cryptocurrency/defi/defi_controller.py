@@ -6,8 +6,8 @@ __docformat__ = "numpy"
 import argparse
 import logging
 from typing import List, Optional
-from openbb_terminal.core.session.current_user import get_current_user
 
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.cryptocurrency.defi import (
     coindix_model,
     coindix_view,

@@ -21,11 +21,12 @@ from degiro_connector.trading.models.trading_pb2 import (
     Update,
 )
 
+from openbb_terminal.core.session.current_user import get_current_user
+
 # IMPORTATION INTERNAL
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.portfolio import portfolio_helper
 from openbb_terminal.rich_config import console
-from openbb_terminal.core.session.current_user import get_current_user
 
 # pylint: disable=no-member,no-else-return
 

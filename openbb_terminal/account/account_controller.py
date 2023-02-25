@@ -12,19 +12,18 @@ from openbb_terminal import (
 )
 from openbb_terminal.account.account_model import get_diff, get_routines_info
 from openbb_terminal.account.account_view import display_routines_list
-from openbb_terminal.core.session.preferences_handler import set_preference
-from openbb_terminal.decorators import log_start_end
-from openbb_terminal.featflags_controller import FeatureFlagsController
-from openbb_terminal.helper_funcs import check_positive
-from openbb_terminal.menu import session
-from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import MenuText, console
 from openbb_terminal.core.session import (
     hub_model as Hub,
     local_model as Local,
 )
-from openbb_terminal.core.session.session_model import logout
 from openbb_terminal.core.session.current_user import get_current_user, is_local
+from openbb_terminal.core.session.preferences_handler import set_preference
+from openbb_terminal.core.session.session_model import logout
+from openbb_terminal.decorators import log_start_end
+from openbb_terminal.helper_funcs import check_positive
+from openbb_terminal.menu import session
+from openbb_terminal.parent_classes import BaseController
+from openbb_terminal.rich_config import MenuText, console
 
 logger = logging.getLogger(__name__)
 

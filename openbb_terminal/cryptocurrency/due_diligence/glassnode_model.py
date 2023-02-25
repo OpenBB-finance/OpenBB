@@ -5,10 +5,10 @@ from typing import Optional
 
 import pandas as pd
 
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import request, str_date_to_timestamp
 from openbb_terminal.rich_config import console
-from openbb_terminal.core.session.current_user import get_current_user
 
 # pylint: disable=unsupported-assignment-operation
 

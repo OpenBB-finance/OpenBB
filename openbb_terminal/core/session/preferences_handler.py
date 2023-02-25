@@ -49,11 +49,10 @@ def set_preference(
     set_current_user(updated_user)
 
     # Send preference to cloud
-    if not login:
-        if not local_user or name == "OPENBB_SYNC_ENABLED":
-            patch_user_configs(
-                key=name,
-                value=str(value),
-                type_="settings",
-                auth_header=current_user.profile.get_auth_header(),
-            )
+    if not login and (not local_user or name == "OPENBB_SYNC_ENABLED"):
+        patch_user_configs(
+            key=name,
+            value=str(value),
+            type_="settings",
+            auth_header=current_user.profile.get_auth_header(),
+        )

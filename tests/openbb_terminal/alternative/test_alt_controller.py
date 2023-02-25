@@ -10,6 +10,7 @@ from openbb_terminal.alternative import alt_controller
 from openbb_terminal.core.models.user_model import PreferencesModel
 from openbb_terminal.core.session.current_user import get_current_user
 
+
 # pylint: disable=E1101
 # pylint: disable=W0603
 # pylint: disable=E1111

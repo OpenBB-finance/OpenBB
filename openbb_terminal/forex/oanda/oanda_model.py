@@ -19,9 +19,9 @@ from oandapyV20.endpoints import (
 )
 from oandapyV20.exceptions import V20Error
 
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
-from openbb_terminal.core.session.current_user import get_current_user
 
 logger = logging.getLogger(__name__)
 

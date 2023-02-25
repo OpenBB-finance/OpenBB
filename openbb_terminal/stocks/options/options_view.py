@@ -8,9 +8,10 @@ from typing import List, Optional, Tuple
 import matplotlib.pyplot as plt
 import pandas as pd
 
+from openbb_terminal.config_terminal import theme
+
 # IMPORTATION INTERNAL
 from openbb_terminal.core.session.current_user import get_current_user
-from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
@@ -334,7 +335,7 @@ def plot_voi(
             expiry="2023-07-21",
         )
     """
-    current_user = get_current_user()
+    get_current_user()
     calls, puts = get_calls_and_puts(chain)
 
     min_strike, max_strike = get_strikes(min_sp, max_sp, current_price)

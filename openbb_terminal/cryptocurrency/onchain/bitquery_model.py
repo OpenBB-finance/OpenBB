@@ -13,10 +13,10 @@ import requests
 from requests.adapters import HTTPAdapter
 from requests.exceptions import HTTPError
 
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.cryptocurrency.dataframe_helpers import prettify_column_names
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.rich_config import console
-from openbb_terminal.core.session.current_user import get_current_user
 
 logger = logging.getLogger(__name__)
 

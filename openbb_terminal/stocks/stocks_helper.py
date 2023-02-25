@@ -27,6 +27,7 @@ from requests.exceptions import ReadTimeout
 from scipy import stats
 
 from openbb_terminal import config_terminal as cfg
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.helper_funcs import (
     lambda_long_number_format_y_axis,
     plot_autoscale,
@@ -34,7 +35,6 @@ from openbb_terminal.helper_funcs import (
     request,
 )
 from openbb_terminal.rich_config import console
-from openbb_terminal.core.session.current_user import get_current_user
 
 # pylint: disable=unused-import
 from openbb_terminal.stocks.stock_statics import (

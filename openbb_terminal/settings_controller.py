@@ -15,9 +15,10 @@ import pytz
 # IMPORTATION INTERNAL
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.core.config.paths import (
-    USER_DATA_SOURCES_DEFAULT_FILE,
     SETTINGS_ENV_FILE,
+    USER_DATA_SOURCES_DEFAULT_FILE,
 )
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.core.session.preferences_handler import set_preference
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
@@ -30,7 +31,6 @@ from openbb_terminal.helper_funcs import (
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import MenuText, console
-from openbb_terminal.core.session.current_user import get_current_user
 
 # pylint: disable=too-many-lines,no-member,too-many-public-methods,C0302
 # pylint: disable=import-outside-toplevel

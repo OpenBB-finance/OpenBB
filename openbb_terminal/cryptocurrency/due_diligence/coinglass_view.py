@@ -8,8 +8,8 @@ from matplotlib import (
     ticker,
 )
 
-from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.config_terminal import theme
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.cryptocurrency.due_diligence.coinglass_model import (
     get_funding_rate,
     get_liquidations,

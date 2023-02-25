@@ -10,7 +10,6 @@ import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
 
-
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import log_start_end

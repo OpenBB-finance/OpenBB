@@ -8,7 +8,6 @@ import numpy as np
 import pandas as pd
 
 from openbb_terminal import config_terminal as cfg
-
 from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.cryptocurrency.overview import loanscan_model
 from openbb_terminal.decorators import log_start_end
