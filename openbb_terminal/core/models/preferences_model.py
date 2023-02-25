@@ -71,6 +71,8 @@ class PreferencesModel:
     USE_LANGUAGE: str = "en"
     REQUEST_TIMEOUT: PositiveInt = 5
     MONITOR: NonNegativeInt = 0
+
+    # STYLE
     # Color for `view` command data.  All pyplot colors listed at:
     # https://matplotlib.org/stable/gallery/color/named_colors.html
     VIEW_COLOR: str = "tab:green"
