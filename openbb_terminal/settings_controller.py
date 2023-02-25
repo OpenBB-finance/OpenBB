@@ -587,7 +587,8 @@ class SettingsController(BaseController):
                             # Do not update userdata_folder path since we will keep the same as before
                             console.print(
                                 "[yellow]User data to keep being saved in "
-                                + f"the selected folder: {str(get_current_user().preferences.USER_DATA_DIRECTORY)}[/yellow]"
+                                + "the selected folder: "
+                                + f"{str(get_current_user().preferences.USER_DATA_DIRECTORY)}[/yellow]"
                             )
                         success_userdata = True
 
