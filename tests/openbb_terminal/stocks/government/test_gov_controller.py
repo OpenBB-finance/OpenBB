@@ -1,4 +1,5 @@
 # IMPORTATION STANDARD
+import dataclasses
 import os
 
 # IMPORTATION THIRDPARTY
@@ -7,6 +8,8 @@ import pytest
 from openbb_terminal import parent_classes
 
 # IMPORTATION INTERNAL
+from openbb_terminal.core.models.preferences_model import PreferencesModel
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.stocks.government import gov_controller
 
 # pylint: disable=E1101
@@ -67,10 +70,12 @@ def test_menu_without_queue_completion(mocker):
     )
 
     # DISABLE AUTO-COMPLETION : CONTROLLER.COMPLETER
-    mocker.patch.object(
-        target=gov_controller.obbff,
-        attribute="USE_PROMPT_TOOLKIT",
-        new=True,
+    current_user = get_current_user()
+    preference = PreferencesModel(USE_PROMPT_TOOLKIT=True)
+    user_model = dataclasses.replace(current_user, preference=preference)
+    mocker.patch(
+        target="openbb_terminal.core.session.current_user.get_current_user",
+        return_value=user_model,
     )
     mocker.patch(
         target="openbb_terminal.stocks.government.gov_controller.session",
@@ -95,10 +100,12 @@ def test_menu_without_queue_completion(mocker):
 )
 def test_menu_without_queue_sys_exit(mock_input, mocker):
     # DISABLE AUTO-COMPLETION
-    mocker.patch.object(
-        target=gov_controller.obbff,
-        attribute="USE_PROMPT_TOOLKIT",
-        new=False,
+    current_user = get_current_user()
+    preference = PreferencesModel(USE_PROMPT_TOOLKIT=False)
+    user_model = dataclasses.replace(current_user, preference=preference)
+    mocker.patch(
+        target="openbb_terminal.core.session.current_user.get_current_user",
+        return_value=user_model,
     )
     mocker.patch(
         target="openbb_terminal.stocks.government.gov_controller.session",

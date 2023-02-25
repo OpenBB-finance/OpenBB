@@ -1,12 +1,14 @@
 # IMPORTATION STANDARD
+import dataclasses
 
 # IMPORTATION THIRDPARTY
 import finviz.main_func
 import pytest
 
-from openbb_terminal import helper_funcs
 
 # IMPORTATION INTERNAL
+from openbb_terminal.core.models.preferences_model import PreferencesModel
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.stocks.fundamental_analysis import finviz_view
 
 
@@ -18,8 +20,12 @@ from openbb_terminal.stocks.fundamental_analysis import finviz_view
 def test_display_screen_data(mocker, use_tab):
     # REMOVE FINVIZ STOCK_PAGE CACHE
     mocker.patch.object(target=finviz.main_func, attribute="STOCK_PAGE", new={})
-    mocker.patch.object(
-        target=helper_funcs.obbff, attribute="USE_TABULATE_DF", new=use_tab
+    current_user = get_current_user()
+    preference = PreferencesModel(USE_TABULATE_DF=use_tab)
+    user_model = dataclasses.replace(current_user, preference=preference)
+    mocker.patch(
+        target="openbb_terminal.core.session.current_user.get_current_user",
+        return_value=user_model,
     )
     finviz_view.display_screen_data(symbol="AAPL", export="")
 

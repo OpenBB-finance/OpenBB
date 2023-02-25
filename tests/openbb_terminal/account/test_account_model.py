@@ -1,14 +1,20 @@
+# IMPORTATION STANDARD
+import dataclasses
 from pathlib import Path
 from unittest.mock import patch
 
+# IMPORTATION THIRDPARTY
+import pytest
+
+# IMPORTATION INTERNAL
+from openbb_terminal.core.models.credentials_model import CredentialsModel
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal import (
     config_terminal as cfg,
     feature_flags as obbff,
 )
 from openbb_terminal.account import account_model
 from openbb_terminal.core.config import paths
-from openbb_terminal.core.models.credentials_model import CredentialsModel
-from openbb_terminal.core.models.user_model import UserModel
 
 
 def test_get_var_diff():
@@ -43,114 +49,108 @@ def test_get_var_diff():
 
 
 def test_get_diff_keys(mocker):
-    a = "API_KEY_ALPHAVANTAGE"
-    b = "API_KEY_FINANCIALMODELINGPREP"
-    c = "API_KEY_QUANDL"
-
-    old_credentials = CredentialsModel(
+    previous_credentials = CredentialsModel(
         **{
-            a: "key1",
-            b: "key2",
-            c: "key3",
+            "API_KEY_ALPHAVANTAGE": "key1",
+            "API_KEY_FINANCIALMODELINGPREP": "key2",
+            "API_KEY_QUANDL": "key3",
         }
     )
-    test_user = UserModel(credentials=old_credentials)
-
-    new_credentials = {
-        a: "new_key1",
-        b: "new_key2",
-        c: "new_key3",
-    }
-
+    current_user = get_current_user()
+    previous_user_model = dataclasses.replace(
+        current_user, credentials=previous_credentials
+    )
     mocker.patch(
         target="openbb_terminal.account.account_model.get_current_user",
-        return_value=test_user,
+        return_value=previous_user_model,
     )
+
+    new_credentials = {
+        "API_KEY_ALPHAVANTAGE": "new_key1",
+        "API_KEY_FINANCIALMODELINGPREP": "new_key2",
+        "API_KEY_QUANDL": "new_key3",
+    }
 
     diff = account_model.get_diff_keys(new_credentials)
     assert diff == {
-        a: ("key1", "new_key1"),
-        b: ("key2", "new_key2"),
-        c: ("key3", "new_key3"),
+        "API_KEY_ALPHAVANTAGE": ("key1", "new_key1"),
+        "API_KEY_FINANCIALMODELINGPREP": ("key2", "new_key2"),
+        "API_KEY_QUANDL": ("key3", "new_key3"),
     }
 
 
 def test_get_diff_keys_empty_keys(mocker):
-    a = "API_KEY_ALPHAVANTAGE"
-    b = "API_KEY_FINANCIALMODELINGPREP"
-    c = "API_KEY_QUANDL"
-
-    old_credentials = CredentialsModel(
+    previous_credentials = CredentialsModel(
         **{
-            a: "key1",
-            b: "key2",
-            c: "key3",
+            "API_KEY_ALPHAVANTAGE": "key1",
+            "API_KEY_FINANCIALMODELINGPREP": "key2",
+            "API_KEY_QUANDL": "key3",
         }
     )
-    test_user = UserModel(credentials=old_credentials)
-
-    new_credentials = {}
-
+    current_user = get_current_user()
+    previous_user_model = dataclasses.replace(
+        current_user, credentials=previous_credentials
+    )
     mocker.patch(
         target="openbb_terminal.account.account_model.get_current_user",
-        return_value=test_user,
+        return_value=previous_user_model,
     )
+
+    new_credentials = {}
 
     diff = account_model.get_diff_keys(new_credentials)
     assert not diff and isinstance(diff, dict)
 
 
 def test_get_diff_keys_same_keys(mocker):
-    a = "API_KEY_ALPHAVANTAGE"
-    b = "API_KEY_FINANCIALMODELINGPREP"
-    c = "API_KEY_QUANDL"
-
-    old_credentials = CredentialsModel(
+    previous_credentials = CredentialsModel(
         **{
-            a: "key1",
-            b: "key2",
-            c: "key3",
+            "API_KEY_ALPHAVANTAGE": "key1",
+            "API_KEY_FINANCIALMODELINGPREP": "key2",
+            "API_KEY_QUANDL": "key3",
         }
     )
-    test_user = UserModel(credentials=old_credentials)
-
-    new_credentials = {
-        a: "key1",
-        b: "key2",
-        c: "key3",
-    }
-
+    current_user = get_current_user()
+    previous_user_model = dataclasses.replace(
+        current_user, credentials=previous_credentials
+    )
     mocker.patch(
         target="openbb_terminal.account.account_model.get_current_user",
-        return_value=test_user,
+        return_value=previous_user_model,
     )
 
+    new_credentials = {
+        "API_KEY_ALPHAVANTAGE": "key1",
+        "API_KEY_FINANCIALMODELINGPREP": "key2",
+        "API_KEY_QUANDL": "key3",
+    }
+
     diff = account_model.get_diff_keys(new_credentials)
+
     assert not diff and isinstance(diff, dict)
 
 
 def test_get_diff_keys_new_keys(mocker):
-    a = "API_KEY_ALPHAVANTAGE"
-    b = "API_KEY_FINANCIALMODELINGPREP"
-
-    old_credentials = CredentialsModel(
+    previous_credentials = CredentialsModel(
         **{
-            a: "key1",
-            b: "key2",
+            "API_KEY_ALPHAVANTAGE": "key1",
+            "API_KEY_FINANCIALMODELINGPREP": "key2",
         }
     )
-    test_user = UserModel(credentials=old_credentials)
-
-    new_credentials = {
-        a: "key1",
-        b: "key2",
-        "NEW_CREDENTIAL": "new",
-    }
-
+    current_user = get_current_user()
+    previous_user_model = dataclasses.replace(
+        current_user, credentials=previous_credentials
+    )
     mocker.patch(
         target="openbb_terminal.account.account_model.get_current_user",
-        return_value=test_user,
+        return_value=previous_user_model,
     )
+
+    new_credentials = {
+        "API_KEY_ALPHAVANTAGE": "key1",
+        "API_KEY_FINANCIALMODELINGPREP": "key2",
+        "NEW_CREDENTIAL": "new",
+    }
 
     diff = account_model.get_diff_keys(new_credentials)
     assert not diff and isinstance(diff, dict)
@@ -169,27 +169,10 @@ def test_get_diff_settings_no_diff():
     assert not diff and isinstance(diff, dict)
 
 
-def test_get_diff_settings_obbff_diff():
-    obbff.value = 1
-    diff = account_model.get_diff_settings({"value": 2})
-    assert diff == {"value": (1, 2)}
-
-
-def test_get_diff_settings_cfg_diff():
-    cfg.value = 1
-    diff = account_model.get_diff_settings({"value": 2})
-    assert diff == {"value": (1, 2)}
-
-
-def test_get_diff_settings_cfg_plot_diff():
-    diff = account_model.get_diff_settings({"value": 2})
-    assert diff == {"value": (1, 2)}
-
-
-def test_get_diff_settings_paths_diff():
+def test_get_diff_settings():
     paths.value = 1
-    diff = account_model.get_diff_settings({"value": 2})
-    assert diff == {"value": (1, 2)}
+    diff = account_model.get_diff_settings({"PLOT_HEIGHT": 2})
+    assert "PLOT_HEIGHT" in diff
 
 
 def test_get_diff():

@@ -1,4 +1,5 @@
 # IMPORTATION STANDARD
+import dataclasses
 
 # IMPORTATION THIRDPARTY
 import pytest
@@ -6,6 +7,8 @@ import pytest
 from openbb_terminal import helper_funcs
 
 # IMPORTATION INTERNAL
+from openbb_terminal.core.models.preferences_model import PreferencesModel
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.stocks.options import chartexchange_view
 
 
@@ -25,10 +28,12 @@ def vcr_config():
 )
 def test_display_raw(mocker, tab):
     # MOCK CHARTS
-    mocker.patch.object(
-        target=helper_funcs.obbff,
-        attribute="USE_TABULATE_DF",
-        new=tab,
+    current_user = get_current_user()
+    preference = PreferencesModel(USE_TABULATE_DF=tab)
+    user_model = dataclasses.replace(current_user, preference=preference)
+    mocker.patch(
+        target="openbb_terminal.core.session.current_user.get_current_user",
+        return_value=user_model,
     )
 
     # MOCK VISUALIZE_OUTPUT

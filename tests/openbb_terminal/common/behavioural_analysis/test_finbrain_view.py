@@ -1,4 +1,5 @@
 # IMPORTATION STANDARD
+import dataclasses
 
 # IMPORTATION THIRDPARTY
 import pandas as pd
@@ -7,6 +8,8 @@ import pytest
 from openbb_terminal import helper_funcs
 
 # IMPORTATION INTERNAL
+from openbb_terminal.core.models.preferences_model import PreferencesModel
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.common.behavioural_analysis import finbrain_view
 
 
@@ -21,7 +24,13 @@ def test_display_sentiment_analysis(color, mocker):
     )
 
     # MOCK OBBFF
-    mocker.patch.object(target=helper_funcs.obbff, attribute="USE_ION", new=True)
+    current_user = get_current_user()
+    preference = PreferencesModel(USE_ION=True)
+    user_model = dataclasses.replace(current_user, preference=preference)
+    mocker.patch(
+        target="openbb_terminal.core.session.current_user.get_current_user",
+        return_value=user_model,
+    )
     mocker.patch.object(
         target=finbrain_view.rich_config, attribute="USE_COLOR", new=color
     )
@@ -46,7 +55,13 @@ def test_display_sentiment_analysis_empty_df(mocker):
     )
 
     # MOCK OBBFF
-    mocker.patch.object(target=helper_funcs.obbff, attribute="USE_ION", new=True)
+    current_user = get_current_user()
+    preference = PreferencesModel(USE_ION=True)
+    user_model = dataclasses.replace(current_user, preference=preference)
+    mocker.patch(
+        target="openbb_terminal.core.session.current_user.get_current_user",
+        return_value=user_model,
+    )
 
     # MOCK GET_SENTIMENT
     mocker.patch(

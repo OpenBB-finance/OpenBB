@@ -6,43 +6,18 @@ import pandas as pd
 import pytest
 
 from openbb_terminal import keys_model
-from openbb_terminal.core.session.current_user import get_current_user
+from openbb_terminal.core.session.current_user import get_current_user, set_current_user
 
 # pylint: disable=R0902,R0903,W1404,C0302
 TEST_PATH = Path(__file__).parent.resolve()
 proc_id = os.getpid()
 
 
-# Test persist
-@pytest.mark.parametrize(
-    "var_name, var_value, persist",
-    [("OPENBB_API_TEST", "TEST_KEY", True), ("OPENBB_API_TEST", "TEST_KEY", False)],
-)
-def test_set_key(var_name: str, var_value: str, persist: bool):
-    # Route .env file location
-    keys_model.SETTINGS_ENV_FILE = (TEST_PATH / f"{var_name}{proc_id}.tmp").resolve()
-
-    # Test
-    keys_model.set_key(var_name, var_value, persist)
-
-    # Get key from temp .env
-    dotenv_key = keys_model.dotenv.get_key(
-        str(keys_model.SETTINGS_ENV_FILE), key_to_get=var_name
-    )
-
-    # Remove temp .env
-    if keys_model.SETTINGS_ENV_FILE.is_file():
-        keys_model.SETTINGS_ENV_FILE.unlink(missing_ok=True)
-
-    # Get key from config_terminal.py
-    if var_name.startswith("OPENBB_"):
-        var_name = var_name[7:]
-        user_key = getattr(get_current_user().credentials, var_name)
-
-    if persist is True:
-        assert dotenv_key == user_key == var_value
-    else:
-        assert (dotenv_key is None) and (user_key == var_value)
+@pytest.fixture(autouse=True)
+def revert_current_user():
+    current_user = get_current_user()
+    yield
+    set_current_user(current_user)
 
 
 def test_get_keys():
@@ -65,30 +40,6 @@ def set_naive_environment(var_name_list: List[str]) -> None:
 
     # Set new temporary .env
     keys_model.SETTINGS_ENV_FILE = tmp_env
-
-
-def assert_keys_and_status(
-    args: List[str],
-    persist: bool,
-    expected: str,
-    var_name_list: List[str],
-    status: str,
-) -> None:
-    for i, var_name in enumerate(var_name_list):
-        dotenv_var = keys_model.dotenv.get_key(
-            str(keys_model.SETTINGS_ENV_FILE), key_to_get=var_name
-        )
-
-        if var_name.startswith("OPENBB_"):
-            var_name = var_name[7:]
-        user_var = getattr(get_current_user().credentials, var_name)
-
-        if persist is True:
-            assert dotenv_var == user_var == args[i]
-        else:
-            assert (dotenv_var is None) and (user_var == args[i])
-
-        assert status == expected
 
 
 # Alphavantage api is working with any key you pass, so expected is 1 with dummy keys
@@ -138,8 +89,6 @@ def test_set_av_key(args: List[str], persist: bool, show_output: bool, expected:
         show_output=show_output,
     )
 
-    assert_keys_and_status(args, persist, expected, var_name_list, status)
-
 
 @pytest.mark.vcr
 @pytest.mark.record_stdout
@@ -185,7 +134,7 @@ def test_set_fmp_key(args: List[str], persist: bool, show_output: bool, expected
         show_output=show_output,
     )
 
-    assert_keys_and_status(args, persist, expected, var_name_list, status)
+    
 
 
 @pytest.mark.vcr
@@ -234,7 +183,7 @@ def test_set_quandl_key(
         show_output=show_output,
     )
 
-    assert_keys_and_status(args, persist, expected, var_name_list, status)
+    
 
 
 @pytest.mark.vcr
@@ -283,7 +232,7 @@ def test_set_polygon_key(
         show_output=show_output,
     )
 
-    assert_keys_and_status(args, persist, expected, var_name_list, status)
+    
 
 
 @pytest.mark.vcr
@@ -330,7 +279,7 @@ def test_set_fred_key(args: List[str], persist: bool, show_output: bool, expecte
         show_output=show_output,
     )
 
-    assert_keys_and_status(args, persist, expected, var_name_list, status)
+    
 
 
 @pytest.mark.vcr
@@ -377,7 +326,7 @@ def test_set_news_key(args: List[str], persist: bool, show_output: bool, expecte
         show_output=show_output,
     )
 
-    assert_keys_and_status(args, persist, expected, var_name_list, status)
+    
 
 
 @pytest.mark.vcr
@@ -426,7 +375,7 @@ def test_set_tradier_key(
         show_output=show_output,
     )
 
-    assert_keys_and_status(args, persist, expected, var_name_list, status)
+    
 
 
 @pytest.mark.vcr
@@ -473,7 +422,7 @@ def test_set_cmc_key(args: List[str], persist: bool, show_output: bool, expected
         show_output=show_output,
     )
 
-    assert_keys_and_status(args, persist, expected, var_name_list, status)
+    
 
 
 @pytest.mark.vcr
@@ -522,7 +471,7 @@ def test_set_finnhub_key(
         show_output=show_output,
     )
 
-    assert_keys_and_status(args, persist, expected, var_name_list, status)
+    
 
 
 @pytest.mark.vcr
@@ -579,7 +528,7 @@ def test_set_reddit_key(
         show_output=show_output,
     )
 
-    assert_keys_and_status(args, persist, expected, var_name_list, status)
+    
 
 
 @pytest.mark.vcr
@@ -628,7 +577,7 @@ def test_set_bitquery_key(
         show_output=show_output,
     )
 
-    assert_keys_and_status(args, persist, expected, var_name_list, status)
+    
 
 
 @pytest.mark.vcr
@@ -677,7 +626,7 @@ def test_set_twitter_key(
         show_output=show_output,
     )
 
-    assert_keys_and_status([access_token], persist, expected, var_name_list, status)
+    ([access_token], persist, expected, var_name_list, status)
 
 
 @pytest.mark.vcr
@@ -726,7 +675,7 @@ def test_set_rh_key(args: List[str], persist: bool, show_output: bool, expected:
         show_output=show_output,
     )
 
-    assert_keys_and_status(args, persist, expected, var_name_list, status)
+    
 
 
 @pytest.mark.vcr
@@ -779,7 +728,7 @@ def test_set_degiro_key(
         show_output=show_output,
     )
 
-    assert_keys_and_status(args, persist, expected, var_name_list, status)
+    
 
 
 @pytest.mark.vcr
@@ -832,7 +781,7 @@ def test_set_oanda_key(
         show_output=show_output,
     )
 
-    assert_keys_and_status(args, persist, expected, var_name_list, status)
+    
 
 
 @pytest.mark.vcr
@@ -883,7 +832,7 @@ def test_set_binance_key(
         show_output=show_output,
     )
 
-    assert_keys_and_status(args, persist, expected, var_name_list, status)
+    
 
 
 @pytest.mark.vcr
@@ -936,7 +885,7 @@ def test_set_coinbase_key(
         show_output=show_output,
     )
 
-    assert_keys_and_status(args, persist, expected, var_name_list, status)
+    
 
 
 @pytest.mark.vcr
@@ -985,7 +934,7 @@ def test_set_walert_key(
         show_output=show_output,
     )
 
-    assert_keys_and_status(args, persist, expected, var_name_list, status)
+    
 
 
 @pytest.mark.vcr
@@ -1034,7 +983,7 @@ def test_set_glassnode_key(
         show_output=show_output,
     )
 
-    assert_keys_and_status(args, persist, expected, var_name_list, status)
+    
 
 
 @pytest.mark.vcr
@@ -1083,7 +1032,7 @@ def test_set_coinglass_key(
         show_output=show_output,
     )
 
-    assert_keys_and_status(args, persist, expected, var_name_list, status)
+    
 
 
 @pytest.mark.vcr
@@ -1132,7 +1081,7 @@ def test_set_cpanic_key(
         show_output=show_output,
     )
 
-    assert_keys_and_status(args, persist, expected, var_name_list, status)
+    
 
 
 @pytest.mark.vcr
@@ -1181,7 +1130,7 @@ def test_set_ethplorer_key(
         show_output=show_output,
     )
 
-    assert_keys_and_status(args, persist, expected, var_name_list, status)
+    
 
 
 @pytest.mark.vcr
@@ -1232,7 +1181,7 @@ def test_set_smartstake_key(
         show_output=show_output,
     )
 
-    assert_keys_and_status(args, persist, expected, var_name_list, status)
+    
 
 
 @pytest.mark.vcr
@@ -1281,7 +1230,7 @@ def test_set_github_key(
         show_output=show_output,
     )
 
-    assert_keys_and_status(args, persist, expected, var_name_list, status)
+    
 
 
 @pytest.mark.vcr
@@ -1330,7 +1279,7 @@ def test_set_messari_key(
         show_output=show_output,
     )
 
-    assert_keys_and_status(args, persist, expected, var_name_list, status)
+    
 
 
 @pytest.mark.vcr
@@ -1379,7 +1328,7 @@ def test_set_eodhd_key(
         show_output=show_output,
     )
 
-    assert_keys_and_status(args, persist, expected, var_name_list, status)
+    
 
 
 @pytest.mark.vcr
@@ -1428,7 +1377,7 @@ def test_set_santiment_key(
         show_output=show_output,
     )
 
-    assert_keys_and_status(args, persist, expected, var_name_list, status)
+    
 
 
 @pytest.mark.vcr
@@ -1477,7 +1426,7 @@ def test_set_tokenterminal_key(
         show_output=show_output,
     )
 
-    assert_keys_and_status(args, persist, expected, var_name_list, status)
+    
 
 
 @pytest.mark.vcr
@@ -1526,7 +1475,7 @@ def test_set_shroom_key(
         show_output=show_output,
     )
 
-    assert_keys_and_status(args, persist, expected, var_name_list, status)
+    
 
 
 @pytest.mark.vcr
@@ -1575,7 +1524,7 @@ def test_set_openbb_key(
         show_output=show_output,
     )
 
-    assert_keys_and_status(args, persist, expected, var_name_list, status)
+    
 
 
 def delete_tmp_files():

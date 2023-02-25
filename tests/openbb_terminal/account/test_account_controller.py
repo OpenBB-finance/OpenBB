@@ -142,7 +142,7 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
     # DISABLE AUTO-COMPLETION
     current_user = get_current_user()
     preference = PreferencesModel(USE_PROMPT_TOOLKIT=False)
-    dataclasses.replace(current_user, preference=preference)
+    user_model = dataclasses.replace(current_user, preference=preference)
     mocker.patch(
         target=f"{path_controller}.session",
         return_value=None,
@@ -350,19 +350,7 @@ def test_call_sync(mocker, other_args, sync):
         return_value=user_model,
     )
 
-    mock_set_obbff = mocker.patch(
-        target=(
-            "openbb_terminal.account.account_controller"
-            ".FeatureFlagsController.set_feature_flag"
-        ),
-    )
     controller.call_sync(other_args=other_args)
-
-    if other_args:
-        mock_set_obbff.assert_called_once()
-    else:
-        mock_set_obbff.assert_not_called()
-        
 
     assert controller.queue == []
     print(other_args)

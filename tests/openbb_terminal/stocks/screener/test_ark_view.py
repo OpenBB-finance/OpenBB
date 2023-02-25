@@ -1,9 +1,12 @@
 # IMPORTATION STANDARD
+import dataclasses
 
 # IMPORTATION THIRDPARTY
 import pytest
 
 # IMPORTATION INTERNAL
+from openbb_terminal.core.models.preferences_model import PreferencesModel
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.stocks.screener import ark_view
 
 # pytest.skip("skipping tests, ark views seems broken", allow_module_level=True)
@@ -36,9 +39,12 @@ def test_display_ark_trades_default():
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 def test_display_ark_trades_no_tab(mocker):
+    current_user = get_current_user()
+    preference = PreferencesModel(USE_TABULATE_DF=False)
+    user_model = dataclasses.replace(current_user, preference=preference)
     mocker.patch(
-        target="openbb_terminal.feature_flags.USE_TABULATE_DF",
-        new=False,
+        target="openbb_terminal.core.session.current_user.get_current_user",
+        return_value=user_model,
     )
 
     ark_view.display_ark_trades(symbol="TSLA")

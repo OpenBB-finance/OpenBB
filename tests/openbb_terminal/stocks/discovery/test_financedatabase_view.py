@@ -1,11 +1,12 @@
 # IMPORTATION STANDARD
+import dataclasses
 
 # IMPORTATION THIRDPARTY
 import pytest
 
-from openbb_terminal import helper_funcs
-
 # IMPORTATION INTERNAL
+from openbb_terminal.core.models.preferences_model import PreferencesModel
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.stocks.discovery import financedatabase_view
 
 
@@ -34,8 +35,12 @@ from openbb_terminal.stocks.discovery import financedatabase_view
     ],
 )
 def test_show_equities(kwargs_dict, mocker, use_tab):
-    mocker.patch.object(
-        target=helper_funcs.obbff, attribute="USE_TABULATE_DF", new=use_tab
+    current_user = get_current_user()
+    preference = PreferencesModel(USE_TABULATE_DF=use_tab)
+    user_model = dataclasses.replace(current_user, preference=preference)
+    mocker.patch(
+        target="openbb_terminal.core.session.current_user.get_current_user",
+        return_value=user_model,
     )
 
     kwargs_dict_none = {

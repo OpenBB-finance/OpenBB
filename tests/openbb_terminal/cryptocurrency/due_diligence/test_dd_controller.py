@@ -1,4 +1,5 @@
 # IMPORTATION STANDARD
+import dataclasses
 import os
 from typing import List
 
@@ -7,6 +8,8 @@ import pandas as pd
 import pytest
 
 # IMPORTATION INTERNAL
+from openbb_terminal.core.models.preferences_model import PreferencesModel
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.cryptocurrency.due_diligence import dd_controller
 
 # pylint: disable=E1101
@@ -112,10 +115,12 @@ def test_menu_without_queue_completion(mocker):
     )
 
     # DISABLE AUTO-COMPLETION : CONTROLLER.COMPLETER
-    mocker.patch.object(
-        target=dd_controller.obbff,
-        attribute="USE_PROMPT_TOOLKIT",
-        new=True,
+    current_user = get_current_user()
+    preference = PreferencesModel(USE_PROMPT_TOOLKIT=True)
+    user_model = dataclasses.replace(current_user, preference=preference)
+    mocker.patch(
+        target="openbb_terminal.core.session.current_user.get_current_user",
+        return_value=user_model,
     )
     mocker.patch(
         target=f"{path_controller}.session",
@@ -159,10 +164,12 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
     path_controller = "openbb_terminal.cryptocurrency.due_diligence.dd_controller"
 
     # DISABLE AUTO-COMPLETION
-    mocker.patch.object(
-        target=dd_controller.obbff,
-        attribute="USE_PROMPT_TOOLKIT",
-        new=False,
+    current_user = get_current_user()
+    preference = PreferencesModel(USE_PROMPT_TOOLKIT=False)
+    user_model = dataclasses.replace(current_user, preference=preference)
+    mocker.patch(
+        target="openbb_terminal.core.session.current_user.get_current_user",
+        return_value=user_model,
     )
     mocker.patch(
         target=f"{path_controller}.session",

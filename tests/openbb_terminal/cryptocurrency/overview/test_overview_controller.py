@@ -1,4 +1,5 @@
 # IMPORTATION STANDARD
+import dataclasses
 import os
 
 # IMPORTATION THIRDPARTY
@@ -6,6 +7,8 @@ import pandas as pd
 import pytest
 
 # IMPORTATION INTERNAL
+from openbb_terminal.core.models.preferences_model import PreferencesModel
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.cryptocurrency.overview import overview_controller
 
 # pylint: disable=E1101
@@ -96,7 +99,6 @@ GET_ALL_CONTRACT_PLATFORMS_DF = pd.DataFrame(
 )
 
 
-@pytest.mark.vcr(record_mode="once")
 @pytest.mark.parametrize(
     "queue, expected",
     [
@@ -117,7 +119,7 @@ def test_menu_with_queue(expected, mocker, queue):
     assert result_menu == expected
 
 
-@pytest.mark.vcr(record_mode="none")
+@pytest.mark.vcr
 @pytest.mark.parametrize(
     "mock_input",
     ["help", "homee help", "home help", "mock"],
@@ -126,13 +128,15 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
     path_controller = "openbb_terminal.cryptocurrency.overview.overview_controller"
 
     # DISABLE AUTO-COMPLETION
-    mocker.patch.object(
-        target=overview_controller.obbff,
-        attribute="USE_PROMPT_TOOLKIT",
-        new=False,
+    current_user = get_current_user()
+    preference = PreferencesModel(USE_PROMPT_TOOLKIT=False)
+    user_model = dataclasses.replace(current_user, preference=preference)
+    mocker.patch(
+        target="openbb_terminal.core.session.current_user.get_current_user",
+        return_value=user_model,
     )
     mocker.patch(
-        target=f"{path_controller}.session",
+        target="openbb_terminal.cryptocurrency.overview.overview_controller.session",
         return_value=None,
     )
 

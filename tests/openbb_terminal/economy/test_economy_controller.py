@@ -1,4 +1,5 @@
 # IMPORTATION STANDARD
+import dataclasses
 import datetime
 import os
 
@@ -9,6 +10,8 @@ import pytest
 from pandas import Timestamp
 
 # IMPORTATION INTERNAL
+from openbb_terminal.core.models.preferences_model import PreferencesModel
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.economy import economy_controller
 
 # pylint: disable=E1101
@@ -148,8 +151,6 @@ def test_menu_with_queue(expected, mocker, queue):
 
 @pytest.mark.vcr(record_mode="none")
 def test_menu_without_queue_completion(mocker):
-    path_controller = "openbb_terminal.economy.economy_controller"
-
     # ENABLE AUTO-COMPLETION : HELPER_FUNCS.MENU
     current_user = get_current_user()
     preference = PreferencesModel(USE_PROMPT_TOOLKIT=True)
@@ -167,16 +168,18 @@ def test_menu_without_queue_completion(mocker):
     )
 
     # DISABLE AUTO-COMPLETION : CONTROLLER.COMPLETER
-    mocker.patch.object(
-        target=economy_controller.obbff,
-        attribute="USE_PROMPT_TOOLKIT",
-        new=True,
+    current_user = get_current_user()
+    preference = PreferencesModel(USE_PROMPT_TOOLKIT=False)
+    user_model = dataclasses.replace(current_user, preference=preference)
+    mocker.patch(
+        target="openbb_terminal.core.session.current_user.get_current_user",
+        return_value=user_model,
     )
     mocker.patch(
-        target=f"{path_controller}.session",
+        target="openbb_terminal.economy.economy_controller.session",
     )
     mocker.patch(
-        target=f"{path_controller}.session.prompt",
+        target="openbb_terminal.economy.economy_controller.session.prompt",
         return_value="quit",
     )
 
@@ -194,10 +197,12 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
     path_controller = "openbb_terminal.economy.economy_controller"
 
     # DISABLE AUTO-COMPLETION
-    mocker.patch.object(
-        target=economy_controller.obbff,
-        attribute="USE_PROMPT_TOOLKIT",
-        new=False,
+    current_user = get_current_user()
+    preference = PreferencesModel(USE_PROMPT_TOOLKIT=False)
+    user_model = dataclasses.replace(current_user, preference=preference)
+    mocker.patch(
+        target="openbb_terminal.core.session.current_user.get_current_user",
+        return_value=user_model,
     )
     mocker.patch(
         target=f"{path_controller}.session",
@@ -779,9 +784,13 @@ def test_call_macro(mocked_func, other_args, called_args, called_kwargs, mocker)
         target=f"{path_controller}.econdb_model.get_aggregated_macro_data",
         return_value=(MOCK_DF, MOCK_UNITS, "MOCK_NOTHINGS"),
     )
+
+    current_user = get_current_user()
+    preference = PreferencesModel(ENABLE_EXIT_AUTO_HELP=False)
+    user_model = dataclasses.replace(current_user, preference=preference)
     mocker.patch(
-        target="openbb_terminal.feature_flags.ENABLE_EXIT_AUTO_HELP",
-        new=False,
+        target="openbb_terminal.core.session.current_user.get_current_user",
+        return_value=user_model,
     )
 
     mock = mocker.Mock()
@@ -897,9 +906,12 @@ def test_call_fred_params(mocked_func, other_args, called_args, called_kwargs, m
         target=f"{path_controller}.fred_model.get_aggregated_series_data",
         return_value=(MOCK_FRED_AGG, MOCK_DETAIL),
     )
+    current_user = get_current_user()
+    preference = PreferencesModel(ENABLE_EXIT_AUTO_HELP=False)
+    user_model = dataclasses.replace(current_user, preference=preference)
     mocker.patch(
-        target="openbb_terminal.feature_flags.ENABLE_EXIT_AUTO_HELP",
-        new=False,
+        target="openbb_terminal.core.session.current_user.get_current_user",
+        return_value=user_model,
     )
 
     mock = mocker.Mock(return_value=(MOCK_FRED_AGG, MOCK_DETAIL))
@@ -959,9 +971,12 @@ def test_call_index(mocker):
         return_value=MOCK_INDEX,
     )
 
+    current_user = get_current_user()
+    preference = PreferencesModel(ENABLE_EXIT_AUTO_HELP=False)
+    user_model = dataclasses.replace(current_user, preference=preference)
     mocker.patch(
-        target="openbb_terminal.feature_flags.ENABLE_EXIT_AUTO_HELP",
-        new=False,
+        target="openbb_terminal.core.session.current_user.get_current_user",
+        return_value=user_model,
     )
 
     mock = mocker.Mock()
@@ -1033,9 +1048,12 @@ def test_call_treasury(mocked_func, other_args, called_args, called_kwargs, mock
         target=f"{path_controller}.econdb_model.get_treasuries",
         return_value=MOCK_TREASURY_DEFAULT,
     )
+    current_user = get_current_user()
+    preference = PreferencesModel(ENABLE_EXIT_AUTO_HELP=False)
+    user_model = dataclasses.replace(current_user, preference=preference)
     mocker.patch(
-        target="openbb_terminal.feature_flags.ENABLE_EXIT_AUTO_HELP",
-        new=False,
+        target="openbb_terminal.core.session.current_user.get_current_user",
+        return_value=user_model,
     )
 
     mock = mocker.Mock()
