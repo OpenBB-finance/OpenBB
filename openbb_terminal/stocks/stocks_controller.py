@@ -535,15 +535,9 @@ class StocksController(StockBaseController):
                 self.ticker = ns_parser.ticker
                 self.custom_load_wrapper([self.ticker])
             if self.ticker:
-                try:
-                    d_stock = yf.Ticker(self.ticker).info
-                except TypeError:
-                    d_stock = dict()
                 if ns_parser.source == "NewsApi":
                     newsapi_view.display_news(
-                        query=d_stock["shortName"].replace(" ", "+")
-                        if "shortName" in d_stock
-                        else self.ticker,
+                        query=self.ticker,
                         limit=ns_parser.limit,
                         start_date=ns_parser.n_start_date.strftime("%Y-%m-%d"),
                         show_newest=ns_parser.n_oldest,
@@ -551,9 +545,7 @@ class StocksController(StockBaseController):
                     )
                 elif ns_parser.source == "Feedparser":
                     feedparser_view.display_news(
-                        term=d_stock["shortName"].replace(" ", "+")
-                        if "shortName" in d_stock
-                        else self.ticker,
+                        term=self.ticker,
                         sources=ns_parser.sources,
                         limit=ns_parser.limit,
                         export=ns_parser.export,
