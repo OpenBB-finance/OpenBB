@@ -1,5 +1,5 @@
 import os
-from typing import Literal, Optional
+from typing import Optional
 
 from pydantic import NonNegativeInt, PositiveFloat, PositiveInt
 from pydantic.dataclasses import dataclass
@@ -74,9 +74,9 @@ class PreferencesModel:
     # Color for `view` command data.  All pyplot colors listed at:
     # https://matplotlib.org/stable/gallery/color/named_colors.html
     VIEW_COLOR: str = "tab:green"
-    MPL_STYLE: Literal["light", "dark"] = "dark"
-    PMF_STYLE: Literal["light", "dark"] = "dark"
-    RICH_STYLE: Literal["light", "dark"] = "dark"
+    MPL_STYLE: str = "dark"
+    PMF_STYLE: str = "dark"
+    RICH_STYLE: str = "dark"
 
     # PATHS
     PREFERRED_DATA_SOURCE_FILE: str = str(USER_DATA_SOURCES_DEFAULT_FILE)
