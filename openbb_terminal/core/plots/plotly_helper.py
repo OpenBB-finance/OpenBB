@@ -1328,6 +1328,13 @@ class OpenBBFigure(go.Figure):
             if self.layout.margin["l"] > 100:
                 xshift -= 50 if self._added_logscale else 40
 
+            if (
+                yaxis2
+                and (yaxis.title.text and yaxis2.title.text)
+                and (yaxis.side == "left" or yaxis2.side == "left")
+            ):
+                self.layout.margin["l"] += 20
+
             if (yaxis2 and yaxis2.side == "left") or yaxis.side == "left":
                 title = yaxis.title.text if not yaxis2 else yaxis2.title.text
                 xshift = -110 if not title else -150
