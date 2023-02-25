@@ -1,7 +1,7 @@
-                                                 long_name                       family category_group category
-symbol                                                                                                         
-ADFI                      Anfield Dynamic Fixed Income ETF                      Anfield   Fixed Income    Bonds
-AFIF                    Anfield Universal Fixed Income ETF                     Affinity   Fixed Income    Bonds
-AGG                   iShares Core U.S. Aggregate Bond ETF   BlackRock Asset Management   Fixed Income    Bonds
-AGGY    WisdomTree Yield Enhanced U.S. Aggregate Bond Fund  WisdomTree Asset Management   Fixed Income    Bonds
-AGZ                                iShares Agency Bond ETF   BlackRock Asset Management   Fixed Income    Bonds
+                                                 name   family category_group category
+symbol                                                                                
+ADFI                 Anfield Dynamic Fixed Income ETF  Anfield   Fixed Income    Bonds
+NFLT            Virtus Newfleet Multi-Sector Bond ETF   Virtus   Fixed Income    Bonds
+NUAG    Nuveen Enhanced Yield U.S. Aggregate Bond ETF   Nuveen   Fixed Income    Bonds
+NUBD               Nuveen ESG U.S. Aggregate Bond ETF   Nuveen   Fixed Income    Bonds
+NUHY         Nuveen ESG High Yield Corporate Bond ETF   Nuveen   Fixed Income    Bonds

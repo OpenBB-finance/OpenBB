@@ -1,7 +1,7 @@
-                                 long_name                         family category_group   category
-symbol                                                                                             
-AQWA              Global X Clean Water ETF                 Global X Funds      Materials  Materials
-CGW     Invesco S&P Global Water Index ETF  Invesco Investment Management      Materials  Materials
-COPX            Global X Copper Miners ETF                 Global X Funds      Materials  Materials
-CUT         Invesco MSCI Global Timber ETF  Invesco Investment Management      Materials  Materials
-EBLU          Ecofin Global Water ESG Fund                         Ecofin      Materials  Materials
+                                                 name                         family category_group   category
+symbol                                                                                                        
+AQWA                         Global X Clean Water ETF                 Global X Funds      Materials  Materials
+NANR    SPDR S&P North American Natural Resources ETF   State Street Global Advisors      Materials  Materials
+PHO                       Invesco Water Resources ETF  Invesco Investment Management      Materials  Materials
+PIO                          Invesco Global Water ETF  Invesco Investment Management      Materials  Materials
+PSCM               Invesco S&P SmallCap Materials ETF  Invesco Investment Management      Materials  Materials

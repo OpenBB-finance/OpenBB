@@ -43,7 +43,7 @@ interactions:
       content-type:
       - application/json;charset=utf-8
       date:
-      - Fri, 24 Feb 2023 09:52:10 GMT
+      - Sat, 25 Feb 2023 13:17:00 GMT
       server:
       - ATS
       vary:
@@ -53,11 +53,11 @@ interactions:
       x-envoy-upstream-service-time:
       - '2'
       x-request-id:
-      - a9bee84b-13cf-4f7b-9ada-0e5583099edd
+      - d6cd5423-d298-45f6-924d-a6c3d9112ea7
       x-yahoo-request-id:
-      - 1rvbu8lhvh26a
+      - 57q8sb9hvk2ic
       y-rid:
-      - 1rvbu8lhvh26a
+      - 57q8sb9hvk2ic
     status:
       code: 404
       message: Not Found
@@ -105,7 +105,7 @@ interactions:
       content-type:
       - application/json;charset=utf-8
       date:
-      - Fri, 24 Feb 2023 09:52:10 GMT
+      - Sat, 25 Feb 2023 13:17:00 GMT
       server:
       - ATS
       vary:
@@ -113,13 +113,13 @@ interactions:
       x-envoy-decorator-operation:
       - finance-chart-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
-      - '1'
+      - '2'
       x-request-id:
-      - cd0c6ccc-8fec-469f-8d02-af709ae4f5fc
+      - 706eee96-b6c1-477e-bd8b-6a6563f1ef97
       x-yahoo-request-id:
-      - c11ea2hhvh26a
+      - 7ogkmn5hvk2ic
       y-rid:
-      - c11ea2hhvh26a
+      - 7ogkmn5hvk2ic
     status:
       code: 404
       message: Not Found
@@ -139,7 +139,7 @@ interactions:
     uri: https://query2.finance.yahoo.com/v8/finance/chart/%5EIXIC?range=1d&interval=1d
   response:
     body:
-      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"^IXIC","exchangeName":"NIM","instrumentType":"INDEX","firstTradeDate":34612200,"regularMarketTime":1677190559,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":11590.401,"chartPreviousClose":11507.07,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","start":1677229200,"end":1677249000,"gmtoffset":-18000},"regular":{"timezone":"EST","start":1677249000,"end":1677272400,"gmtoffset":-18000},"post":{"timezone":"EST","start":1677272400,"end":1677286800,"gmtoffset":-18000}},"dataGranularity":"1d","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1677162600],"indicators":{"quote":[{"low":[11432.580078125],"close":[11590.400390625],"volume":[4714580000],"open":[11636.9296875],"high":[11638.98046875]}],"adjclose":[{"adjclose":[11590.400390625]}]}}],"error":null}}'
+      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"^IXIC","exchangeName":"NIM","instrumentType":"INDEX","firstTradeDate":34612200,"regularMarketTime":1677276959,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":11394.941,"chartPreviousClose":11590.401,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","start":1677229200,"end":1677249000,"gmtoffset":-18000},"regular":{"timezone":"EST","start":1677249000,"end":1677272400,"gmtoffset":-18000},"post":{"timezone":"EST","start":1677272400,"end":1677286800,"gmtoffset":-18000}},"dataGranularity":"1d","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1677249000],"indicators":{"quote":[{"high":[11434.3603515625],"volume":[4432650000],"open":[11404.1796875],"close":[11394.9404296875],"low":[11334.4697265625]}],"adjclose":[{"adjclose":[11394.9404296875]}]}}],"error":null}}'
     headers:
       Age:
       - '0'
@@ -160,11 +160,11 @@ interactions:
       cache-control:
       - public, max-age=10, stale-while-revalidate=20
       content-length:
-      - '934'
+      - '940'
       content-type:
       - application/json;charset=utf-8
       date:
-      - Fri, 24 Feb 2023 09:52:10 GMT
+      - Sat, 25 Feb 2023 13:17:00 GMT
       server:
       - ATS
       vary:
@@ -174,11 +174,11 @@ interactions:
       x-envoy-upstream-service-time:
       - '2'
       x-request-id:
-      - db51288a-f0a8-4263-af62-265420ad23a3
+      - c3a9c16c-b3b9-4913-9a9f-9f13d8ce8ce9
       x-yahoo-request-id:
-      - 132g9olhvh26a
+      - 48t053thvk2ic
       y-rid:
-      - 132g9olhvh26a
+      - 48t053thvk2ic
     status:
       code: 200
       message: OK
@@ -198,10 +198,10 @@ interactions:
     uri: https://query2.finance.yahoo.com/v8/finance/chart/%5EIXIC?period1=1591416000&period2=1594094400&interval=1wk&includePrePost=False&events=div%2Csplits%2CcapitalGains
   response:
     body:
-      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"^IXIC","exchangeName":"NIM","instrumentType":"INDEX","firstTradeDate":34612200,"regularMarketTime":1677190559,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":11590.401,"chartPreviousClose":9814.08,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","end":1677249000,"start":1677229200,"gmtoffset":-18000},"regular":{"timezone":"EST","end":1677272400,"start":1677249000,"gmtoffset":-18000},"post":{"timezone":"EST","end":1677286800,"start":1677272400,"gmtoffset":-18000}},"dataGranularity":"1wk","range":"","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1591588800,1592193600,1592798400,1593403200,1594008000],"indicators":{"quote":[{"open":[9823.4404296875,9426.900390625,9945.490234375,9771.7197265625,10360.3798828125],"high":[10086.8896484375,10053.91015625,10221.849609375,10310.3603515625,10518.98046875],"volume":[26377480000,23854180000,27940280000,17509830000,8907390000],"close":[9588.8095703125,9946.1201171875,9757.2197265625,10207.6298828125,10343.8896484375],"low":[9413.6201171875,9403.0,9749.0703125,9663.6103515625,10337.98046875]}],"adjclose":[{"adjclose":[9588.8095703125,9946.1201171875,9757.2197265625,10207.6298828125,10343.8896484375]}]}}],"error":null}}'
+      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"^IXIC","exchangeName":"NIM","instrumentType":"INDEX","firstTradeDate":34612200,"regularMarketTime":1677276959,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":11394.941,"chartPreviousClose":9814.08,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","end":1677249000,"start":1677229200,"gmtoffset":-18000},"regular":{"timezone":"EST","end":1677272400,"start":1677249000,"gmtoffset":-18000},"post":{"timezone":"EST","end":1677286800,"start":1677272400,"gmtoffset":-18000}},"dataGranularity":"1wk","range":"","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1591588800,1592193600,1592798400,1593403200,1594008000],"indicators":{"quote":[{"open":[9823.4404296875,9426.900390625,9945.490234375,9771.7197265625,10360.3798828125],"high":[10086.8896484375,10053.91015625,10221.849609375,10310.3603515625,10518.98046875],"volume":[26377480000,23854180000,27940280000,17509830000,8907390000],"close":[9588.8095703125,9946.1201171875,9757.2197265625,10207.6298828125,10343.8896484375],"low":[9413.6201171875,9403.0,9749.0703125,9663.6103515625,10337.98046875]}],"adjclose":[{"adjclose":[9588.8095703125,9946.1201171875,9757.2197265625,10207.6298828125,10343.8896484375]}]}}],"error":null}}'
     headers:
       Age:
-      - '1'
+      - '10'
       Connection:
       - keep-alive
       Expect-CT:
@@ -223,7 +223,7 @@ interactions:
       content-type:
       - application/json;charset=utf-8
       date:
-      - Fri, 24 Feb 2023 09:52:10 GMT
+      - Sat, 25 Feb 2023 13:16:51 GMT
       server:
       - ATS
       vary:
@@ -233,11 +233,11 @@ interactions:
       x-envoy-upstream-service-time:
       - '3'
       x-request-id:
-      - b0ddd962-0578-49ba-9c59-881970e3b1ee
+      - 2333d8c0-952c-405d-9b83-ff2ee953f632
       x-yahoo-request-id:
-      - 99gotk1hvh26b
+      - 6ruas65hvk2i3
       y-rid:
-      - 99gotk1hvh26b
+      - 6ruas65hvk2i3
     status:
       code: 200
       message: OK

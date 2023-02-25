@@ -1,7 +1,7 @@
-                                       long_name                         family category_group                  category
-symbol                                                                                                                  
-BNO             United States Brent Oil Fund, LP               USCF Investments            NaN                       NaN
-CRAK             VanEck Vectors Oil Refiners ETF        VanEck Asset Management       Equities                    Energy
-DBC     Invesco DB Commodity Index Tracking Fund  Invesco Investment Management    Commodities  Commodities Broad Basket
-DBE                       Invesco DB Energy Fund  Invesco Investment Management            NaN                       NaN
-DBO                          Invesco DB Oil Fund  Invesco Investment Management            NaN                       NaN
+                                               name                        family category_group category
+symbol                                                                                                   
+IYE                         iShares U.S. Energy ETF    BlackRock Asset Management       Equities   Energy
+XES     SPDR S&P Oil & Gas Equipment & Services ETF  State Street Global Advisors       Equities   Energy
+UMI               USCF Midstream Energy Income Fund              USCF Investments       Equities   Energy
+UCO             ProShares Ultra Bloomberg Crude Oil                     ProShares    Commodities  Trading
+SCO        ProShares UltraShort Bloomberg Crude Oil                     ProShares    Commodities  Trading
