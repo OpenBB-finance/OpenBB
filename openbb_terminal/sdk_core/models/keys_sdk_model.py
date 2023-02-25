@@ -15,6 +15,7 @@ class KeysRoot(Category):
         `coinbase`: Set Coinbase key\n
         `coinglass`: Set Coinglass key.\n
         `cpanic`: Set Cpanic key.\n
+        `databento`: Set DataBento key\n
         `degiro`: Set Degiro key\n
         `eodhd`: Set Eodhd key.\n
         `ethplorer`: Set Ethplorer key.\n
@@ -55,6 +56,7 @@ class KeysRoot(Category):
         self.coinbase = lib.keys_model.set_coinbase_key
         self.coinglass = lib.keys_model.set_coinglass_key
         self.cpanic = lib.keys_model.set_cpanic_key
+        self.databento = lib.keys_model.set_databento_key
         self.degiro = lib.keys_model.set_degiro_key
         self.eodhd = lib.keys_model.set_eodhd_key
         self.ethplorer = lib.keys_model.set_ethplorer_key

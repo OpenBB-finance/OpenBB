@@ -171,8 +171,6 @@ class OpenBBSDK:
             `treasury_maturities`: Get treasury maturity options [Source: EconDB]\n
             `usbonds`: Scrape data for us bonds\n
             `valuation`: Get group (sectors, industry or country) valuation data. [Source: Finviz]\n
-            `ycrv`: Gets yield curve data from FRED\n
-            `ycrv_chart`: Display yield curve based on US Treasury rates for a specified date.\n
         """
 
         return model.EconomyRoot()
@@ -202,6 +200,17 @@ class OpenBBSDK:
         """
 
         return ctrl.EtfController()
+
+    @property
+    def fixedincome(self):
+        """Fixedincome Submodule
+
+        Attributes:
+            `ecbycrv`: Gets euro area yield curve data from ECB.\n
+            `ycrv`: Gets yield curve data from FRED.\n
+        """
+
+        return model.FixedincomeRoot()
 
     @property
     def forecast(self):
@@ -296,7 +305,7 @@ class OpenBBSDK:
         Attributes:
             `curve`: Get curve futures [Source: Yahoo Finance]\n
             `curve_chart`: Display curve futures [Source: Yahoo Finance]\n
-            `historical`: Get historical futures [Source: Yahoo Finance]\n
+            `historical`: Get historical futures data\n
             `historical_chart`: Display historical futures [Source: Yahoo Finance]\n
             `search`: Get search futures [Source: Yahoo Finance]\n
         """
@@ -315,6 +324,7 @@ class OpenBBSDK:
             `coinbase`: Set Coinbase key\n
             `coinglass`: Set Coinglass key.\n
             `cpanic`: Set Cpanic key.\n
+            `databento`: Set DataBento key\n
             `degiro`: Set Degiro key\n
             `eodhd`: Set Eodhd key.\n
             `ethplorer`: Set Ethplorer key.\n

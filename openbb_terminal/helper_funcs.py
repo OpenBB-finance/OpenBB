@@ -42,10 +42,10 @@ from PIL import Image, ImageDraw
 from rich.table import Table
 from screeninfo import get_monitors
 
-from openbb_terminal.core.config.paths import HOME_DIRECTORY
-
 # IMPORTS INTERNAL
+from openbb_terminal.core.config.paths import HOME_DIRECTORY
 from openbb_terminal.core.session.current_user import get_current_user
+from openbb_terminal import cfg
 from openbb_terminal.rich_config import console
 
 try:
@@ -1991,7 +1991,9 @@ def check_start_less_than_end(start_date: str, end_date: str) -> bool:
 
 
 # Write an abstract helper to make requests from a url with potential headers and params
-def request(url: str, method="GET", **kwargs) -> requests.Response:
+def request(
+    url: str, method: str = "GET", timeout: int = 0, **kwargs
+) -> requests.Response:
     """Abstract helper to make requests from a url with potential headers and params.
 
     Parameters
@@ -2015,21 +2017,23 @@ def request(url: str, method="GET", **kwargs) -> requests.Response:
     # We want to add a user agent to the request, so check if there are any headers
     # If there are headers, check if there is a user agent, if not add one.
     # Some requests seem to work only with a specific user agent, so we want to be able to override it.
-    headers = kwargs.pop("headers") if "headers" in kwargs else {}
+    headers = kwargs.pop("headers", {})
+    timeout = timeout or current_user.preferences.REQUEST_TIMEOUT
+
     if "User-Agent" not in headers:
         headers["User-Agent"] = get_user_agent()
     if method.upper() == "GET":
         return requests.get(
             url,
             headers=headers,
-            timeout=current_user.preferences.REQUEST_TIMEOUT,
+            timeout=timeout,
             **kwargs,
         )
     if method.upper() == "POST":
         return requests.post(
             url,
             headers=headers,
-            timeout=current_user.preferences.REQUEST_TIMEOUT,
+            timeout=timeout,
             **kwargs,
         )
     raise ValueError("Method must be GET or POST")
