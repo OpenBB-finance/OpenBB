@@ -278,7 +278,7 @@ def display_exchange_balances(
     )
 
     fig.set_yaxis_title(
-        f"{symbol} units [{'%' if percentage else ''}]", secondary_y=True, side="left"
+        f"{symbol} units {'[%]' if percentage else ''}", secondary_y=True, side="left"
     )
     fig.set_yaxis_title(f"{symbol} price [$]", secondary_y=False, showgrid=False)
 
@@ -298,6 +298,8 @@ def display_exchange_balances(
         line_color="orange",
         secondary_y=False,
     )
+
+    fig.update_layout(margin=dict(t=30))
 
     export_data(
         export,
@@ -377,6 +379,7 @@ def display_hashrate(
         line_color=theme.up_color,
         secondary_y=False,
     )
+    fig.update_layout(margin=dict(t=30))
 
     export_data(
         export,

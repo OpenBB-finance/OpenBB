@@ -224,7 +224,7 @@ def short_interest_volume(
 
     fig.update_traces(hovertemplate="%{y:.2f}")
     fig.update_layout(
-        margin=dict(l=40),
+        margin=dict(t=30),
         yaxis2_title="Stock Price ($)",
         yaxis_title="FINRA Volume [M]",
         yaxis3_title="Short Vol. %",

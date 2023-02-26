@@ -36,13 +36,6 @@ def display_heatmap(
     if dfs.empty:
         return None
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "heatmap",
-        dfs,
-        sheet_name,
-    )
     color_bin = [-100, -2, -1, -0.001, 0.001, 1, 2, 100]
     dfs["colors"] = pd.cut(
         dfs["Change"],
@@ -92,29 +85,33 @@ def display_heatmap(
     ].texttemplate = (
         "<br> <br> <b>%{label}<br>    %{customdata[0]:.2f}% <br> <br> <br><br><b>"
     )
-    fig.data[0].insidetextfont = dict(family="Arial Black", size=30, color="white")
+    fig.data[0].insidetextfont = dict(family="Arial Black", size=20, color="white")
 
     fig.update_traces(
         textinfo="label+text+value",
         textposition="middle center",
         selector=dict(type="treemap"),
         marker_line_width=0.3,
-        marker_pad_b=20,
+        marker_pad_b=10,
         marker_pad_l=0,
         marker_pad_r=0,
-        marker_pad_t=50,
+        marker_pad_t=25,
         tiling_pad=2,
     )
     fig.update_layout(
         margin=dict(t=0, l=0, r=0, b=0),
-        paper_bgcolor="rgba(0,0,0,0)",
-        plot_bgcolor="rgba(0,0,0,0)",
         hovermode=False,
-        font=dict(
-            family="Arial Black",
-            size=20,
-            color="white",
-        ),
+        font=dict(family="Arial Black", size=20, color="white"),
+    )
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "heatmap",
+        dfs,
+        sheet_name,
+        fig,
+        margin=False,
     )
 
     return fig.show(margin=False, external=external_axes)

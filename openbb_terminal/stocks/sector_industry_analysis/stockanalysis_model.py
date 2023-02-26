@@ -8,10 +8,9 @@ from typing import Any, Dict, List, Optional
 import numpy as np
 import pandas as pd
 import yfinance as yf
-from tqdm import tqdm
 
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import console, optional_rich_track
 from openbb_terminal.stocks.fundamental_analysis.dcf_model import create_dataframe
 
 logger = logging.getLogger(__name__)
@@ -120,7 +119,7 @@ def get_stocks_data(
 
     no_data = []
 
-    for top_item in tqdm(symbols):
+    for top_item in optional_rich_track(symbols):
         for item, description in SA_KEYS.items():
             if finance_key in description:
                 if item not in stocks_data:

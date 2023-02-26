@@ -286,10 +286,13 @@ function OpenBBMain(plotly_figure) {
   });
 
   // send a relayout event to trigger the initial zoom/bars-resize
-  Plotly.relayout(CHART_DIV, {
-    "xaxis.range[0]": graphs.layout.xaxis.range[0],
-    "xaxis.range[1]": graphs.layout.xaxis.range[1],
-  });
+  // check if the xaxis.range is defined
+  if (graphs.layout.xaxis != undefined && graphs.layout.xaxis.range != undefined) {
+    Plotly.relayout(CHART_DIV, {
+      "xaxis.range[0]": graphs.layout.xaxis.range[0],
+      "xaxis.range[1]": graphs.layout.xaxis.range[1],
+    });
+  }
 
   // Just in case the CSV_DIV is undefined, we check for it every 100ms
   let check_csv = setInterval(function () {

@@ -19,7 +19,9 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def plot_chart(df: pd.DataFrame, option_type: str, symbol: str) -> OpenBBFigure:
+def plot_chart(
+    df: pd.DataFrame, option_type: str, symbol: str, price: float
+) -> OpenBBFigure:
     """Plot Candlestick chart
 
     Parameters
@@ -45,7 +47,7 @@ def plot_chart(df: pd.DataFrame, option_type: str, symbol: str) -> OpenBBFigure:
         row_width=[0.2, 0.7],
         subplot_titles=["", "Volume"],
     )
-    fig.set_title(f"Historical {symbol} {option_type}")
+    fig.set_title(f"Historical {symbol} {price} {option_type.title()}")
 
     fig.add_candlestick(
         open=df.Open,
@@ -106,7 +108,7 @@ def display_raw(
     df = df.set_index("Date")
 
     option_type = "call" if call else "put"
-    fig = plot_chart(df, option_type, symbol)
+    fig = plot_chart(df, option_type, symbol, price)
 
     export_data(
         export,

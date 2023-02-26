@@ -30,13 +30,12 @@ disable_check_api()
 plots_backend().start()
 plots_backend().isatty = True
 
-CRYPTO_DATA = openbb.crypto.load("BTC")
-CRYPTO_DATA.index.name = "date"
+CRYPTO_DATA = openbb.crypto.load("BTC", to_symbol="usd", source="YahooFinance")
 ETF_DATA = openbb.etf.load("SPY")
 ETF_DATA.index.name = "date"
 FOREX_DATA = openbb.forex.load(to_symbol="USD", from_symbol="EUR")
 FOREX_DATA.index.name = "date"
-STOCK_DATA = openbb.stocks.load("AAPL")
+STOCK_DATA = openbb.stocks.load("AAPL", start_date="2022-01-01")
 STOCK_DATA.index.name = "date"
 
 data_dict = {
@@ -259,14 +258,13 @@ class ControllerDoc:
 
         root_menu = self.controller.path[0]
         sub_menu = self.controller.path[1] if len(self.controller.path) > 1 else None
-        if sub_menu and sub_menu != self.name:
+        if sub_menu and sub_menu:
             console.print(
-                f"[bold green]Loading {root_menu}[/] [bold yellow]{sub_menu}[/] [bold green]{self.name}[/]"
+                f"[bold green]Loading {root_menu}[/] [bold yellow]{sub_menu}[/]"
             )
         else:
-            console.print(
-                f"[bold green]Loading {root_menu}[/] [bold yellow]{self.name}[/]"
-            )
+            console.print(f"[bold green]Loading {root_menu}[/]")
+
         self.cmd_parsers: Dict[str, argparse.ArgumentParser] = {}
         self.cmd_funcs: Dict[str, FunctionType] = {}
         self.cmd_fullspec: Dict[str, FullArgSpec] = {}
@@ -295,6 +293,8 @@ class ControllerDoc:
             )
         if hasattr(self.controller, "current_currency"):
             self.controller.current_currency = "usdt"
+        if hasattr(self.controller, "source") and trailmap.split(".")[0] == "crypto":
+            self.controller.source = "YahooFinance"
 
         for attr in ["ticker", "symbol", "coin", "etf_name"]:
             if hasattr(self.controller, attr):

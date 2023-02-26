@@ -1329,6 +1329,7 @@ def export_data(
     df: pd.DataFrame = pd.DataFrame(),
     sheet_name: Optional[str] = None,
     figure: Optional[OpenBBFigure] = None,
+    margin: bool = True,
 ) -> None:
     """Export data to a file.
 
@@ -1346,6 +1347,8 @@ def export_data(
         If provided.  The name of the sheet to save in excel file
     figure : Optional[OpenBBFigure]
         Figure object to save as image file
+    margin : bool
+        Automatically adjust subplot parameters to give specified padding.
     """
     if not figure:
         figure = OpenBBFigure()
@@ -1424,7 +1427,7 @@ def export_data(
                                 writer, sheet_name=sheet_name, index=True, header=True
                             )
             elif saved_path.suffix in [".jpg", ".pdf", ".png", ".svg"]:
-                figure.show(export_image=saved_path)
+                figure.show(export_image=saved_path, margin=margin)
             else:
                 console.print("Wrong export file specified.")
                 continue

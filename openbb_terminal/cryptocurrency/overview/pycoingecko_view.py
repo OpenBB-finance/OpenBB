@@ -181,8 +181,7 @@ def display_crypto_heatmap(
     )
     fig.update_layout(
         margin=dict(t=0, l=0, r=0, b=0),
-        paper_bgcolor="rgba(0,0,0,0)",
-        plot_bgcolor="rgba(0,0,0,0)",
+        title=dict(y=0.97, x=0.5, xanchor="center", yanchor="top"),
         hovermode=False,
     )
 
@@ -193,6 +192,7 @@ def display_crypto_heatmap(
         df,
         sheet_name,
         fig,
+        margin=False,
     )
 
     return fig.show(external=external_axes, margin=False)

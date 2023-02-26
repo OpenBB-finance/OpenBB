@@ -633,6 +633,7 @@ def display_vol_surface(
         data,
         sheet_name,
         fig,
+        margin=False,
     )
 
     return fig.show(external=external_axes, margin=False)

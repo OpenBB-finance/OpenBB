@@ -167,10 +167,8 @@ def view_historical_greeks(
         )
 
     fig = OpenBBFigure.create_subplots(
-        shared_xaxes=True,
         specs=[[{"secondary_y": True}]],
-        vertical_spacing=0.03,
-        horizontal_spacing=0.1,
+        vertical_spacing=0.06,
     )
     fig.set_title(
         f"{(greek).capitalize()} historical for {symbol.upper()} {strike} {['Call','Put'][put]}"
@@ -189,15 +187,14 @@ def view_historical_greeks(
         yaxis="y2",
     )
     fig.update_layout(
+        margin=dict(t=30),
         yaxis2=dict(
             side="left",
             title=greek,
-            anchor="x",
             overlaying="y",
         ),
         yaxis=dict(
             title=f"{symbol} Price",
-            side="right",
         ),
     )
     fig.hide_holidays()

@@ -46,7 +46,7 @@ def plot_pie_chart(labels: list, values: list, title: str = "") -> OpenBBFigure:
         3,
         specs=[[{"type": "domain"}, {"type": "pie", "colspan": 2}, None]],
         row_heights=[1],
-        column_widths=[0.1, 0.8, 0.1],
+        column_widths=[0.2, 0.8, 0.1],
     )
 
     fig.add_pie(
@@ -72,13 +72,14 @@ def plot_pie_chart(labels: list, values: list, title: str = "") -> OpenBBFigure:
     fig.update_layout(
         title=dict(
             text=title,
-            y=0.97,
+            y=0.98,
             x=0.5,
             xanchor="center",
             yanchor="top",
         ),
         colorway=colors,
         showlegend=False,
+        margin=dict(t=50),
     )
 
     return fig
@@ -725,7 +726,7 @@ def display_companies_per_industry_in_sector(
                 "cpis",
                 df,
                 sheet_name,
-                fig,
+                figure=fig,
             )
         return fig.show(external=external_axes)
 

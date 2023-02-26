@@ -503,7 +503,6 @@ class ETFController(BaseController):
                     asset_type="ETF",
                     external_axes=True,
                 )
-                figure.show()  # type: ignore
 
             export_data(
                 ns_parser.export,
@@ -513,6 +512,8 @@ class ETFController(BaseController):
                 ns_parser.sheet_name,
                 figure=figure,
             )
+            if figure:
+                figure.show()  # type: ignore
 
     @log_start_end(log=logger)
     def call_weights(self, other_args: List[str]):
