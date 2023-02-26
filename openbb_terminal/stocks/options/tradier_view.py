@@ -79,7 +79,7 @@ def display_historical(
     )
     fig.set_title(f"Historical {strike} {op_type.title()}")
 
-    df_hist.index = df_hist.index.astype("datetime64[ns]")
+    df_hist.index = df_hist.index.astype("datetime64[ms]")
 
     fig.add_candlestick(
         open=df_hist["Open"],

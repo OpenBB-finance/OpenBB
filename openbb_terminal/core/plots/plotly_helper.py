@@ -1013,6 +1013,12 @@ class OpenBBFigure(go.Figure):
                         "name": name,
                     }
 
+        # We convert the dateindex to a list of datetime objects if it's a numpy array
+        if output is not None and isinstance(output[0], np.datetime64):
+            output = (
+                pd.to_datetime(output).to_pydatetime().astype("datetime64[ms]").tolist()
+            )
+
         return output
 
     def hide_holidays(self, prepost: bool = False) -> None:
