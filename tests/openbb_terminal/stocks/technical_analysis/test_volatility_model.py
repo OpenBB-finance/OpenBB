@@ -22,6 +22,7 @@ upper_q = 0.95
 is_crypto: bool = False
 
 
+@pytest.mark.vcr(record_mode="none")
 @pytest.mark.parametrize(
     "model, lower_q, upper_q, is_crypto",
     [
@@ -34,7 +35,6 @@ is_crypto: bool = False
         (MODELS[2], 15, 85, True),
     ],
 )
-@pytest.mark.vcr()
 def test_cones(recorder, model, lower_q, upper_q, is_crypto):
     result = volatility_model.cones(data=MOCK_DATA, upper_q=0.95, lower_q=0.05)
     recorder.capture(result)
