@@ -25,7 +25,7 @@ address                             120 Park Avenue
 city                                       New York
 state                                            NY
 zip                                      10017-5592
-dcfDiff                                     3.97239
+dcfDiff                                      3.9724
 dcf                                         99.7876
 ipoDate                                  2008-03-17
 defaultImage                                  False
