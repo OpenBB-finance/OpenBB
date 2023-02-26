@@ -1,8 +1,10 @@
-import os
-import pytest
+# IMPORTATION STANDARD
+
+# IMPORTATION THIRDPARTY
 import pandas as pd
+import pytest
 
-
+# IMPORTATION INTERNAL
 from openbb_terminal.common.technical_analysis import volatility_model
 
 MODELS = volatility_model.VOLATILITY_MODELS
