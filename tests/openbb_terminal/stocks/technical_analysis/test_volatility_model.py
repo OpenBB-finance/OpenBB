@@ -7,6 +7,9 @@ import pytest
 # IMPORTATION INTERNAL
 from openbb_terminal.common.technical_analysis import volatility_model
 
+# pylint: disable=W0621
+# pylint: disable=W0613
+
 MODELS = volatility_model.VOLATILITY_MODELS
 MOCK_DATA = pd.read_csv(
     "tests/openbb_terminal/stocks/technical_analysis/csv/test_volatility_model/test_cones_df.csv",
