@@ -38,27 +38,27 @@ class obbff:
     SYNC_ENABLED = True
 
 
-def test_load_user_info(User):
+def test_load_user_info(test_user):
     """Test load user info."""
-    assert User.profile.token == "test_token"
-    assert User.profile.token_type == "bearer"
-    assert User.profile.uuid == "test_uuid"
-    assert User.profile.email == "test@email.com"
+    assert test_user.profile.token == "test_token"
+    assert test_user.profile.token_type == "bearer"
+    assert test_user.profile.uuid == "test_uuid"
+    assert test_user.profile.email == "test@email.com"
 
 
-def test_get_session(User):
+def test_get_session(test_user):
     """Test get session."""
-    assert User.profile.get_session() == TEST_SESSION
+    assert test_user.profile.get_session() == TEST_SESSION
 
 
-def test_get_uuid(User):
+def test_get_uuid(test_user):
     """Test get uuid."""
-    assert User.profile.get_uuid() == "test_uuid"
+    assert test_user.profile.get_uuid() == "test_uuid"
 
 
-def test_get_auth_header(User):
-    assert User.profile.get_auth_header() == "Bearer test_token"
+def test_get_auth_header(test_user):
+    assert test_user.profile.get_auth_header() == "Bearer test_token"
 
 
-def test_get_token(User):
-    assert User.profile.get_token() == "test_token"
+def test_get_token(test_user):
+    assert test_user.profile.get_token() == "test_token"
