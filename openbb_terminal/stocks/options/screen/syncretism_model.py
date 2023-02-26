@@ -14,10 +14,6 @@ from openbb_terminal.core.config.paths import (
 from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import request
-from openbb_terminal.core.config.paths import (
-    USER_PRESETS_DIRECTORY,
-    MISCELLANEOUS_DIRECTORY,
-)
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.options import yfinance_model
 
@@ -67,10 +63,7 @@ def get_historical_greeks(
     if not chain_id:
         options = yfinance_model.get_option_chain(symbol, expiry)
 
-        if put:
-            options = options.puts
-        else:
-            options = options.calls
+        options = options.puts if put else options.calls
 
         chain_id = options.loc[options.strike == strike, "contractSymbol"].values[0]
 
@@ -362,9 +355,8 @@ def check_presets(preset_dict: dict) -> str:
             except Exception:
                 error += f"{key} : {value} , should be integer\n"
 
-        elif key == "order-by":
-            if value.replace('"', "") not in accepted_orders:
-                error += f"{key} : {value} not accepted ordering\n"
+        elif key == "order-by" and value.replace('"', "") not in accepted_orders:
+            error += f"{key} : {value} not accepted ordering\n"
     if error:
         logging.exception(error)
     return error
