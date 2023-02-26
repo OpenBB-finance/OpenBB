@@ -3,7 +3,7 @@ from typing import Dict
 from pydantic.dataclasses import dataclass
 
 
-@dataclass(config=dict(validate_assignment=True))
+@dataclass(config=dict(validate_assignment=True, frozen=True))
 class ProfileModel:
     """Data model for profile."""
 

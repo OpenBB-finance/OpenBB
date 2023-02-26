@@ -10,7 +10,7 @@ from openbb_terminal.core.config.paths import (
 )
 
 
-@dataclass(config=dict(validate_assignment=True))
+@dataclass(config=dict(validate_assignment=True, frozen=True))
 class PreferencesModel:
     """Data model for preferences."""
 
