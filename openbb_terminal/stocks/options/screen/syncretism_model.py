@@ -139,12 +139,12 @@ def get_preset_choices() -> Dict:
 
 
 @log_start_end(log=logger)
-def get_screener_output(preset: str) -> Tuple[pd.DataFrame, str]:
+def get_screener_output(preset: str = "high_iv.ini") -> Tuple[pd.DataFrame, str]:
     """Screen options based on preset filters
 
     Parameters
     ----------
-    preset: str
+    preset: str [default: "high_iv.ini"]
         Chosen preset
     Returns
     -------
