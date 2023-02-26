@@ -63,3 +63,15 @@ def test_view_historical_greeks(mocker):
         limit=5,
         export="",
     )
+
+
+@pytest.mark.vcr(record_mode="none")
+@pytest.mark.record_stdout
+@pytest.mark.parametrize(
+    "preset",
+    ["template.ini", "spy_30_delta.ini"],
+)
+def test_view_available_presets(preset):
+    syncretism_view.view_available_presets(
+        preset=preset,
+    )

@@ -76,3 +76,11 @@ def test_get_screener_output_invalid_status(mocker):
     )
 
     assert result_tuple[0].empty
+
+
+@pytest.mark.vcr
+def test_get_screener_output_30_delta_spy(recorder):
+    result_tuple = syncretism_model.get_screener_output(
+        preset="30_delta_spy.ini",
+    )
+    recorder.capture(result_tuple[0])
