@@ -66,7 +66,7 @@ def test_view_historical_greeks(mocker):
 
     syncretism_view.view_historical_greeks(
         symbol="PM",
-        expiry="2022-01-07",
+        expiry="",
         chain_id="PM220107P00090000",
         strike=90,
         greek="theta",
