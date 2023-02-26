@@ -3,7 +3,6 @@ __docformat__ = "numpy"
 import functools
 import logging
 import os
-import traceback
 from ssl import SSLError
 
 import pandas as pd
@@ -70,7 +69,6 @@ def log_start_end(func=None, log=None):
                 logger_used.info("END", extra={"func_name_override": func.__name__})
                 return value
             except KeyboardInterrupt:
-                console.print("\n[red]Interrupted by user[/red]")
                 logger_used.info(
                     "Interrupted by user",
                     extra={"func_name_override": func.__name__},
@@ -99,7 +97,6 @@ def log_start_end(func=None, log=None):
                 )
                 return []
             except Exception as e:
-                traceback.print_exc()
                 console.print(f"[red]Error: {e}\n[/red]")
                 logger_used.exception(
                     "Exception: %s",

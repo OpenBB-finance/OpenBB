@@ -80,6 +80,7 @@ class Overlap(PltTA):
             xref="paper",
             yref="paper",
             text="<b>VWAP</b>",
+            x=0,
             xanchor="left",
             yshift=-inchart_index * 18,
             xshift=-60,

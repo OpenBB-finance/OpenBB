@@ -185,7 +185,7 @@ def get_ecb_yield_curve(
                 )
                 for i, result in enumerate(results):
                     if isinstance(result, pd.DataFrame) and result.empty:
-                        console.print(f"[red]No data for {series_id[i]}[/red]")
+                        console.print(f"\n[red]No data for {series_id[i]}[/red]")
                         # we remove the corresponding index from the list of years
                         years.pop(i)
                         continue
@@ -202,7 +202,7 @@ def get_ecb_yield_curve(
                 df = pd.concat([df, temp], axis=1)
 
     except (Exception, KeyboardInterrupt):
-        console.print("Data collection was canceled.")
+        console.print("\n[yellow]Data collection was canceled.[/yellow]")
         return pd.DataFrame(), date
 
     if df.empty:
