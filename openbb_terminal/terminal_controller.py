@@ -24,7 +24,7 @@ from prompt_toolkit.styles import Style
 from rich import panel
 
 from openbb_terminal import feature_flags as obbff
-from openbb_terminal.common import feedparser_view
+from openbb_terminal.common import feedparser_view, ultima_newsmonitor_view
 from openbb_terminal.core.config.paths import (
     HOME_DIRECTORY,
     MISCELLANEOUS_DIRECTORY,
@@ -236,9 +236,9 @@ class TerminalController(BaseController):
             parse, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED, limit=5
         )
         if news_parser:
-            feedparser_view.display_news(
+            ultima_newsmonitor_view.display_news(
                 term=" ".join(news_parser.term),
-                sources=news_parser.sources,
+                # sources=news_parser.sources,
                 limit=news_parser.limit,
                 export=news_parser.export,
                 sheet_name=news_parser.sheet_name,
