@@ -18,13 +18,12 @@ from _pytest.config.argparsing import Parser
 from _pytest.fixtures import SubRequest
 from _pytest.mark.structures import Mark
 
+# IMPORTS INTERNAL
 from openbb_terminal import (
     decorators,
     helper_funcs,
 )
 from openbb_terminal.core.models.user_model import PreferencesModel
-
-# IMPORTS INTERNAL
 from openbb_terminal.core.session.current_user import get_current_user
 
 # pylint: disable=redefined-outer-name

@@ -13,8 +13,13 @@ controller = KeysController(menu_usage=False)
 
 
 @pytest.fixture(autouse=True)
-def revert_current_user():
+def revert_current_user(mocker):
     current_user = get_current_user()
+
+    mocker.patch(
+        target="openbb_terminal.keys_controller.keys_model",
+    )
+
     yield
     set_current_user(current_user)
 

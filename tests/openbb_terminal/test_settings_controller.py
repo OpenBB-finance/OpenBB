@@ -21,6 +21,11 @@ def controller(mocker):
         target="openbb_terminal.core.session.current_user.get_current_user",
         return_value=user_model,
     )
+
+    mocker.patch(
+        target="openbb_terminal.settings_controller.set_preference",
+    )
+
     mocker.patch("openbb_terminal.settings_controller.session", True)
     return SettingsController()
 
