@@ -1,17 +1,17 @@
     Symbol                Name Volume [$] Market Cap  Market Cap Rank  7D Change [%]  24H Change [%]
-8   vision          APY.vision       3.6K     948.7K             1985      21.187294        2.583935
-4      vib            Viberate       9.4M      13.4M              797      20.361318        4.124686
-7      uwl           UniWhales      19.8K       2.3M             1502      25.415291        1.687210
-6     push       Push Protocol       588K       4.6M             1204       7.142269        5.384511
-2      prq              PARSIQ       3.3M      23.3M              633      24.716873       25.859638
-15   moons           MoonTools          1          0             <NA>            NaN       -0.127583
-14     krw               KROWN        292      78.2K             3262      13.692898        3.693596
-0      grt           The Graph      39.1M     620.7M               74       4.656318        0.433542
-9      glq  GraphLinq Protocol      72.4K     598.9K             2255       7.288661        0.703644
-5     dobo            DogeBonk        11K       6.2M             1076      48.808246       -0.200775
-3     dext            DexTools     259.5K      13.5M              791      11.264005       -2.309393
-11    data  Data Economy Index        101     460.8K             2402      -1.624063       -0.213695
-1      cqt            Covalent     948.5K      45.7M              436      25.850260       -0.753528
-13   chart             ChartEx          6      99.3K             3180      17.215459             NaN
-10     bdp   Big Data Protocol     150.9K     570.6K             2277       9.771324       -8.029610
-12   astro          AstroTools      18.5K     113.8K             3132      17.191254        0.807919
+8   vision          APY.vision       3.6K     948.7K             1985        21.1873          2.5839
+4      vib            Viberate       9.4M      13.4M              797        20.3613          4.1247
+7      uwl           UniWhales      19.8K       2.3M             1502        25.4153          1.6872
+6     push       Push Protocol       588K       4.6M             1204         7.1423          5.3845
+2      prq              PARSIQ       3.3M      23.3M              633        24.7169         25.8596
+15   moons           MoonTools          1          0             <NA>            NaN         -0.1276
+14     krw               KROWN        292      78.2K             3262        13.6929          3.6936
+0      grt           The Graph      39.1M     620.7M               74         4.6563          0.4335
+9      glq  GraphLinq Protocol      72.4K     598.9K             2255         7.2887          0.7036
+5     dobo            DogeBonk        11K       6.2M             1076        48.8082         -0.2008
+3     dext            DexTools     259.5K      13.5M              791        11.2640         -2.3094
+11    data  Data Economy Index        101     460.8K             2402        -1.6241         -0.2137
+1      cqt            Covalent     948.5K      45.7M              436        25.8503         -0.7535
+13   chart             ChartEx          6      99.3K             3180        17.2155             NaN
+10     bdp   Big Data Protocol     150.9K     570.6K             2277         9.7713         -8.0296
+12   astro          AstroTools      18.5K     113.8K             3132        17.1913          0.8079
