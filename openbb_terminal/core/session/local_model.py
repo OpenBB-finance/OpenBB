@@ -137,11 +137,14 @@ def update_sync_flag(settings: dict) -> bool:
     bool
         The sync flag.
     """
-    if settings and settings.get("SYNC_ENABLED", "").lower() == "false":
-        set_preference("SYNC_ENABLED", False, login=True)
-        return False
-    set_preference("SYNC_ENABLED", True, login=True)
-    return True
+    if settings and settings.get("SYNC_ENABLED", "true").lower() == "false":
+        sync = False
+    else:
+        sync = True
+
+    set_preference("SYNC_ENABLED", sync, login=True)
+
+    return sync
 
 
 def get_routine(file_name: str, folder: Optional[Path] = None) -> Optional[str]:

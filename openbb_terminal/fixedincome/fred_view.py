@@ -1,16 +1,19 @@
 """ FRED view """
 __docformat__ = "numpy"
 
+# IMPORTATION STANDARD
 import logging
 import os
 import pathlib
 from itertools import cycle
 from typing import Dict, List, Optional
 
+# IMPORTATION THIRDPARTY
 import pandas as pd
 from matplotlib import pyplot as plt
 
-from openbb_terminal.config_plot import PLOT_DPI
+# IMPORTATION INTERNAL
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.fixedincome import fred_model
@@ -213,7 +216,7 @@ def plot_estr(
     series_id = fred_model.ESTR_PARAMETER_TO_ECB_ID[parameter]
     # This plot has 1 axis
     if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI)
     elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
     else:
