@@ -1,4 +1,5 @@
 import json
+import typing
 from enum import Enum
 from typing import Any, Optional
 
@@ -25,7 +26,7 @@ class LoginStatus(Enum):
     UNAUTHORIZED = "unauthorized"
 
 
-def create_session(email: str, password: str, save: bool) -> dict[Any, Any]:
+def create_session(email: str, password: str, save: bool) -> typing.Dict[Any, Any]:
     """Create a session.
 
     Parameters
@@ -44,7 +45,7 @@ def create_session(email: str, password: str, save: bool) -> dict[Any, Any]:
     return session
 
 
-def create_session_from_token(token: str, save: bool) -> dict[Any, Any]:
+def create_session_from_token(token: str, save: bool) -> typing.Dict[Any, Any]:
     """Create a session from token.
 
     Parameters
