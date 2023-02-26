@@ -3,18 +3,21 @@ __docformat__ = "numpy"
 
 import configparser
 import logging
-from pathlib import Path
-from typing import Dict, Optional, Tuple, Union
+from typing import Dict, Tuple
 
 import pandas as pd
 import yfinance as yf
 
-from openbb_terminal.core.config.paths import USER_PRESETS_DIRECTORY
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import request
+from openbb_terminal.core.config.paths import (
+    USER_PRESETS_DIRECTORY,
+    MISCELLANEOUS_DIRECTORY,
+)
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.options import yfinance_model
 
+pd.set_option("display.precision", 4)
 logger = logging.getLogger(__name__)
 
 accepted_orders = [
@@ -35,13 +38,9 @@ accepted_orders = [
 
 @log_start_end(log=logger)
 def get_historical_greeks(
-    symbol: str = "",
-    expiry: Optional[str] = None,
-    strike: Optional[Union[str, float]] = None,
-    chain_id: Optional[str] = None,
-    put: bool = False,
+    symbol: str, expiry: str, strike: float, chain_id: str = "", put: bool = False
 ) -> pd.DataFrame:
-    """Get historical option greeks
+    """Get histoical option greeks
 
     Parameters
     ----------
@@ -49,7 +48,7 @@ def get_historical_greeks(
         Stock ticker symbol
     expiry: str
         Option expiration date
-    strike: Union[str, float]
+    strike: float
         Strike price to look for
     chain_id: str
         OCC option symbol.  Overwrites other inputs
@@ -61,25 +60,15 @@ def get_historical_greeks(
     df: pd.DataFrame
         Dataframe containing historical greeks
     """
-    if isinstance(strike, str):
-        try:
-            strike = float(strike)
-        except ValueError:
-            console.print(
-                f"[red]Strike of {strike} cannot be converted to a number.[/red]\n"
-            )
-            return pd.DataFrame()
     if not chain_id:
         options = yfinance_model.get_option_chain(symbol, expiry)
 
-        options = options.puts if put else options.calls
+        if put:
+            options = options.puts
+        else:
+            options = options.calls
 
-        selection = options.loc[options.strike == strike, "contractSymbol"]
-        try:
-            chain_id = selection.values[0]
-        except IndexError:
-            console.print(f"[red]Strike price of {strike} not found.[/red]\n")
-            return pd.DataFrame()
+        chain_id = options.loc[options.strike == strike, "contractSymbol"].values[0]
 
     r = request(f"https://api.syncretism.io/ops/historical/{chain_id}")
 
@@ -135,7 +124,7 @@ def get_preset_choices() -> Dict:
     """
 
     PRESETS_PATH = USER_PRESETS_DIRECTORY / "stocks" / "options"
-    PRESETS_PATH_DEFAULT = Path(__file__).parent.parent / "presets"
+    PRESETS_PATH_DEFAULT = MISCELLANEOUS_DIRECTORY / "stocks" / "options"
     preset_choices = {
         filepath.name: filepath
         for filepath in PRESETS_PATH.iterdir()
@@ -160,34 +149,40 @@ def get_screener_output(preset: str) -> Tuple[pd.DataFrame, str]:
     ----------
     preset: str
         Chosen preset
-
     Returns
     -------
-    Tuple[pd.DataFrame, str]
-        DataFrame with screener data or empty if errors, String containing error message if supplied
+    pd.DataFrame:
+        DataFrame with screener data, or empty if errors
+    str:
+        String containing error message if supplied
     """
     d_cols = {
-        "contractSymbol": "CS",
-        "symbol": "S",
-        "optType": "T",
-        "strike": "Str",
-        "expiration": "Exp ∨",
-        "impliedVolatility": "IV",
-        "lastPrice": "LP",
-        "bid": "B",
-        "ask": "A",
-        "volume": "V",
+        "contractSymbol": "Contract Symbol",
+        "expiration": "Expiration",
+        "symbol": "Ticker",
+        "optType": "Type",
+        "strike": "Strike",
+        "volume": "Vol",
         "openInterest": "OI",
-        "yield": "Y",
-        "monthlyyield": "MY",
-        "regularMarketPrice": "SMP",
-        "regularMarketDayLow": "SMDL",
-        "regularMarketDayHigh": "SMDH",
-        "lastTradeDate": "LU",
-        "lastCrawl": "LC",
-        "inTheMoney": "ITM",
-        "pChange": "PC",
-        "priceToBook": "PB",
+        "impliedVolatility": "IV",
+        "delta": "Delta",
+        "gamma": "Gamma",
+        "rho": "Rho",
+        "theta": "Theta",
+        "vega": "Vega",
+        #  "yield": "Y",
+        #  "monthlyyield": "MY",,
+        #  "regularMarketDayLow": "SMDL",
+        #  "regularMarketDayHigh": "SMDH",
+        "lastTradeDate": "Last Traded",
+        "bid": "Bid",
+        "ask": "Ask",
+        "lastPrice": "Last",
+        #  "lastCrawl": "LC",
+        #  "inTheMoney": "ITM",
+        "pChange": "% Change",
+        "regularMarketPrice": "Underlying",
+        "priceToBook": "P/B",
     }
 
     preset_filter = configparser.RawConfigParser()
@@ -224,15 +219,15 @@ def get_screener_output(preset: str) -> Tuple[pd.DataFrame, str]:
         if df_res.empty:
             return df_res, f"No options data found for preset: {preset}"
 
-        df_res = df_res.rename(columns=d_cols)[list(d_cols.values())[:17]]
-        df_res["Exp ∨"] = df_res["Exp ∨"].apply(
-            lambda x: pd.to_datetime(x, unit="s").strftime("%m-%d-%y")
+        df_res = df_res.rename(columns=d_cols)[list(d_cols.values())[:20]]
+        df_res["Expiration"] = df_res["Expiration"].apply(
+            lambda x: pd.to_datetime(x, unit="s").strftime("%y-%m-%d")
         )
-        df_res["LU"] = df_res["LU"].apply(
-            lambda x: pd.to_datetime(x, unit="s").strftime("%m-%d-%y")
+        df_res["Last Traded"] = df_res["Last Traded"].apply(
+            lambda x: pd.to_datetime(x, unit="s").strftime("%y-%m-%d")
         )
-        df_res["Y"] = df_res["Y"].round(3)
-        df_res["MY"] = df_res["MY"].round(3)
+        #        df_res["Y"] = df_res["Y"].round(3)
+        #        df_res["MY"] = df_res["MY"].round(3)
         return df_res, ""
 
     else:
@@ -250,7 +245,6 @@ def check_presets(preset_dict: dict) -> str:
     ----------
     preset_dict: dict
         Defined presets from configparser
-
     Returns
     -------
     error: str
@@ -342,7 +336,7 @@ def check_presets(preset_dict: dict) -> str:
         elif key == "tickers":
             for symbol in value.split(","):
                 try:
-                    if yf.Ticker(eval(symbol)).info["regularMarketPrice"] is None:
+                    if yf.Ticker(eval(symbol)).fast_info["lastPrice"] is None:
                         error += f"{key} : {symbol} not found on yfinance"
 
                 except NameError:
@@ -354,8 +348,9 @@ def check_presets(preset_dict: dict) -> str:
             except Exception:
                 error += f"{key} : {value} , should be integer\n"
 
-        elif key == "order-by" and value.replace('"', "") not in accepted_orders:
-            error += f"{key} : {value} not accepted ordering\n"
+        elif key == "order-by":
+            if value.replace('"', "") not in accepted_orders:
+                error += f"{key} : {value} not accepted ordering\n"
     if error:
         logging.exception(error)
     return error
