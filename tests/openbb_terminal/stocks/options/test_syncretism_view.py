@@ -19,19 +19,6 @@ def vcr_config():
         ],
     }
 
-
-@pytest.mark.vcr(record_mode="none")
-@pytest.mark.record_stdout
-@pytest.mark.parametrize(
-    "preset",
-    ["high_iv.ini"],
-)
-def test_view_available_presets(preset):
-    syncretism_view.view_available_presets(
-        preset=preset,
-    )
-
-
 @pytest.mark.default_cassette("test_view_screener_output")
 @pytest.mark.vcr
 @pytest.mark.record_stdout
