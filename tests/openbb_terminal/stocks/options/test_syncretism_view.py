@@ -19,6 +19,7 @@ def vcr_config():
         ],
     }
 
+
 @pytest.mark.default_cassette("test_view_screener_output")
 @pytest.mark.vcr
 @pytest.mark.record_stdout
