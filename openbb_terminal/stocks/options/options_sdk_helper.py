@@ -1,6 +1,7 @@
 """Options Functions For OpenBB SDK"""
 
 import logging
+from datetime import datetime, timedelta
 from typing import Optional, Union
 
 import numpy as np
@@ -8,6 +9,7 @@ import pandas as pd
 from scipy.optimize import minimize
 
 from openbb_terminal.decorators import log_start_end
+from openbb_terminal.helper_funcs import get_rf
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.options import (
     chartexchange_model,
@@ -17,6 +19,7 @@ from openbb_terminal.stocks.options import (
     tradier_model,
     yfinance_model,
 )
+from openbb_terminal.stocks.options.op_helpers import Option
 
 logger = logging.getLogger(__name__)
 
@@ -235,3 +238,97 @@ def get_delta_neutral(symbol: str, date: str, x0: Optional[float] = None) -> flo
             "Error getting delta neutral price for %s on %s: error:%s", symbol, date, e
         )
         return np.nan
+
+
+def get_greeks(
+    current_price: float,
+    chain: pd.DataFrame,
+    expire: str,
+    div_cont: float = 0,
+    rf: Optional[float] = None,
+) -> pd.DataFrame:
+    """
+    Gets the greeks for a given option
+
+    Parameters
+    ----------
+    current_price: float
+        The current price of the underlying
+    chain: pd.DataFrame
+        The dataframe with option chains
+    div_cont: float
+        The dividend continuous rate
+    expire: str
+        The date of expiration
+    rf: float
+        The risk-free rate
+
+    Returns
+    -------
+    pd.DataFrame
+        Dataframe with calculated option greeks
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> aapl_chain = openbb.stocks.options.chains("AAPL", source="Tradier")
+    >>> aapl_last_price = openbb.stocks.options.last_price("AAPL")
+    >>> greeks = openbb.stocks.options.greeks(aapl_last_price, aapl_chain, aapl_chain.iloc[0, 2])
+    """
+
+    chain = chain.rename(columns={"iv": "impliedVolatility"})
+    chain_columns = chain.columns.tolist()
+    if not all(
+        col in chain_columns for col in ["strike", "impliedVolatility", "optionType"]
+    ):
+        if "delta" not in chain_columns:
+            console.print(
+                "[red]It's not possible to calculate the greeks without the following "
+                "columns: `strike`, `impliedVolatility`, `optionType`.\n[/red]"
+            )
+        return pd.DataFrame()
+
+    risk_free = rf if rf is not None else get_rf()
+    expire_dt = datetime.strptime(expire, "%Y-%m-%d")
+    dif = (expire_dt - datetime.now() + timedelta(hours=16)).total_seconds() / (
+        60 * 60 * 24
+    )
+    strikes = []
+    for _, row in chain.iterrows():
+        vol = row["impliedVolatility"]
+        opt_type = 1 if row["optionType"] == "call" else -1
+        opt = Option(
+            current_price, row["strike"], risk_free, div_cont, dif, vol, opt_type
+        )
+        tmp = [
+            opt.Delta(),
+            opt.Gamma(),
+            opt.Vega(),
+            opt.Theta(),
+            opt.Rho(),
+            opt.Phi(),
+            opt.Charm(),
+            opt.Vanna(0.01),
+            opt.Vomma(0.01),
+        ]
+        result = [row[col] for col in row.index.tolist()]
+        result += tmp
+
+        strikes.append(result)
+
+    greek_columns = [
+        "Delta",
+        "Gamma",
+        "Vega",
+        "Theta",
+        "Rho",
+        "Phi",
+        "Charm",
+        "Vanna",
+        "Vomma",
+    ]
+    columns = chain_columns + greek_columns
+
+    df = pd.DataFrame(strikes, columns=columns)
+
+    return df
