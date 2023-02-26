@@ -38,7 +38,7 @@ forex_data_path = os.path.join(
     os.path.dirname(__file__), os.path.join("data", "polygon_tickers.csv")
 )
 tickers = pd.read_csv(forex_data_path).iloc[:, 0].to_list()
-FX_TICKERS = tickers + [t[-3:] + t[:3] for t in tickers]
+FX_TICKERS = tickers + list(set([t[-3:] + t[:3] for t in tickers if len(t) == 6]))
 
 
 class ForexController(BaseController):
