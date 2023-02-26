@@ -57,7 +57,7 @@ def test_get_historical_greeks_invalid_status(mocker):
 @pytest.mark.vcr
 def test_get_screener_output(recorder):
     result_tuple = syncretism_model.get_screener_output(
-        preset="high_IV.ini",
+        preset="high_iv.ini",
     )
     recorder.capture(result_tuple[0])
 
@@ -72,7 +72,7 @@ def test_get_screener_output_invalid_status(mocker):
     )
 
     result_tuple = syncretism_model.get_screener_output(
-        preset="high_IV.ini",
+        preset="high_iv.ini",
     )
 
     assert result_tuple[0].empty

@@ -24,7 +24,7 @@ def vcr_config():
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
     "preset",
-    ["high_IV.ini"],
+    ["high_iv.ini"],
 )
 def test_view_available_presets(preset):
     syncretism_view.view_available_presets(
@@ -39,7 +39,7 @@ def test_view_screener_output(mocker):
     # MOCK VISUALIZE_OUTPUT
     mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
     syncretism_view.view_screener_output(
-        preset="high_IV.ini",
+        preset="high_iv.ini",
         limit=5,
         export="",
     )
@@ -53,7 +53,7 @@ def test_view_screener_output_error(mocker):
         return_value=(pd.DataFrame(), "MOCK_ERROR_MESSAGE"),
     )
     syncretism_view.view_screener_output(
-        preset="high_IV.ini",
+        preset="high_iv.ini",
         limit=5,
         export="",
     )
