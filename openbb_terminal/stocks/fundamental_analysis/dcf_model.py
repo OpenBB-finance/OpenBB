@@ -367,13 +367,11 @@ def others_in_sector(
 
     # This filters similars to match market cap and removes ticker analyzed
     if symbol in similars.index:
-        print(symbol)
         market_cap = similars.loc[symbol]["market_cap"]
-        print(market_cap)
-        similars.pop(symbol, None)
+        similars.drop([symbol], inplace=True)
         if not no_filter:
             similars = {
-                k: v for (k, v) in similars.items() if v["market_cap"] == market_cap
+                k: v for k, v in similars.iterrows() if v["market_cap"] == market_cap
             }
     similars = list(similars)
     return similars
