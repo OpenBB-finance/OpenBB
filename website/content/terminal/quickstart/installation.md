@@ -1,7 +1,7 @@
 ---
 Sidebar_position: 2
 title: Installation
-description: The OpenBB Terminal can be directly installed on a Mac or Windows machine with the installer packages linked in the tabs below. While no installer package for Linux is currently available, it can be installed from the command line in a virtual Python environment. Having trouble? Reach us on [Discord](https://openbb.co/discord) or visit our [contact page](https://openbb.co/contact).
+description: The OpenBB Terminal can be directly installed on a Mac or Windows machine via the installer packages below. While not available for Linux is currently available, it can be installed from the command line in a virtual Python environment.
 keywords:
   [
     installation,
@@ -19,21 +19,14 @@ keywords:
     openbb terminal,
   ]
 ---
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+
 import InstallerButton from "@site/src/components/General/InstallerButton";
 
-The OpenBB Terminal can be directly installed on a Mac or Windows machine with the installer packages linked in the tabs below. While no installer package for Linux is currently available, it can be installed from the command line in a virtual Python environment. Having trouble? Reach us on [Discord](https://openbb.co/discord) or visit our [contact page](https://openbb.co/contact).
-
-:::info Installation Instructions
-
-<Tabs>
+The OpenBB Terminal can be directly installed on a Mac or Windows machine via the installer packages below. While not available for Linux is currently available, it can be installed from the command line in a virtual Python environment. Having trouble? Reach us on [Discord](https://openbb.co/discord) or visit our [contact page](https://openbb.co/contact).
 
 Follow along with the instructions for the preferred installation method:
 
 ## Installer Packages
-
-<TabItem value="windows" label="Windows">
 
 ### A. Windows Installer
 
@@ -59,10 +52,6 @@ Install the OpenBB Terminal on Windows (10 or greater):
 
 **Note:** The first launch may take up to a few minutes, subsequent launches will be quicker.
 
-</TabItem>
-
-<TabItem value="mac" label="MacOS">
-
 ### B. MacOS Installer
 
 Install the OpenBB Terminal on MacOS (Big Sur or later). There are two versions of the installers available for MacOS, Apple Silicon (M1) and Intel-based. Apple Silicon users will need to install Rosetta prior to installation. Install Rosetta from the command line:
@@ -71,15 +60,9 @@ Install the OpenBB Terminal on MacOS (Big Sur or later). There are two versions 
 softwareupdate --install-rosetta
 ```
 
-<div className="flex justify-between">
-  <div className="flex items-center flex-col">Intel-based Mac:
-  <InstallerButton href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v2.4.1/x86.64.MacOS.OpenBB.Terminal.v2.4.1.dmg" label="Mac Intel Installer" />
-  </div>
-
-<div className="flex items-center flex-col">Mac Apple Silicon (M1):
-  <InstallerButton href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v2.4.1/ARM64.MacOS.OpenBB.Terminal.v2.4.1.dmg" label="Mac M1 Installer" />
-  </div>
-</div>
+<p>
+<InstallerButton href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v2.4.1/x86.64.MacOS.OpenBB.Terminal.v2.4.1.dmg" label="Mac Intel Installer" />  <InstallerButton href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v2.4.1/ARM64.MacOS.OpenBB.Terminal.v2.4.1.dmg" label="Mac M1 Installer" />
+</p>
 
 #### 1.  Download
 
@@ -107,11 +90,7 @@ softwareupdate --install-rosetta
 
 ![MacOS Installation](https://user-images.githubusercontent.com/85772166/220201620-1c42bbd4-7509-41fc-8df8-389f34fde58a.png)
 
-</TabItem>
-
 ## Source Code
-
-<TabItem value="source_code" label="Source Code">
 
 The following instructions are for installing the OpenBB Terminal source code.
 
@@ -195,7 +174,7 @@ Alternatives to `VcXsrv` include:
 - [Xming](https://xming.en.softonic.com/)
 - [Wayland](https://wayland.freedesktop.org/docs/html/)
 
-### 2. Create Python Environment
+### 2. Create Environment
 
 The first step is to create the virtual Python environment.
 
@@ -278,11 +257,7 @@ python terminal.py
 
 **TROUBLESHOOTING:** Having difficulty getting through the installation, or encountering errors? Check out the [troubleshooting page](/terminal/quickstart/troubleshooting), or reach out to our [Discord](https://discord.gg/Up2QGbMKHY) community for help.
 
-</Tabitem>
-
 ## Docker
-
-<TabItem value="docker" label="Docker">
 
 Installing the OpenBB Terminal via Docker supports both Windows and Unix systems (Linux + MacOS). Installation differs a bit between operating system (Windows, macOS and Linux). Please select the section matching to your OS.
 
@@ -296,13 +271,13 @@ You can find `Docker Desktop` for Windows here: [Download Docker Desktop](https:
 
 Execute the following command:
 
-```bash
+```console
 docker info
 ```
 
 If you have something like this, it means you haven't started Docker:
 
-```bash
+```console
 docker info
 Server:
 ERROR: Cannot connect to the Docker daemon at unix:///var/run/docker.sock.
@@ -311,7 +286,7 @@ Is the docker daemon running?
 
 Start Docker, this is how the right output looks like:
 
-```bash
+```console
 docker info
 Client:
  Context:    default
@@ -336,7 +311,7 @@ When running VcXsrv program check the option: `Disable access control`
 
 Execute this commands:
 
-```bash
+```console
 curl -o docker-compose.yaml https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal/main/build/docker/docker-compose.yaml
 
 docker compose run openbb
@@ -380,7 +355,7 @@ IP=$(ifconfig | grep inet | grep -v "127.0.0.1" | awk '$1=="inet" {print $2}')
 
 Execute this commands:
 
-```bash
+```console
 curl -o docker-compose.yaml https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal/main/build/docker/docker-compose.yaml
 
 xhost +$IP
@@ -403,7 +378,7 @@ Install and run Docker Desktop as describe above in this document.
 
 Execute this commands:
 
-```bash
+```console
 curl -o docker-compose.yaml https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal/main/build/docker/docker-compose.yaml
 
 xhost +local:
@@ -418,16 +393,14 @@ Note: if you're using remote docker host, you can connect with `ssh -X <FQDN/IP>
 
 To run directly the docker image you can use the following command:
 
-```bash
+```console
 docker run --rm -it \
   -v ~/.openbb_terminal/:/home/python/.openbb_terminal \
   -v ~/OpenBBUserData:/home/python/OpenBBUserData \
   ghcr.io/openbb-finance/openbbterminal/openbb:latest
 ```
 
-</TabItem>
-
-## Advanced Installation Procedures
+## Advanced Installation
 
 By default we advise using `conda` and `poetry` for environment setup and dependency management. Conda ships binaries for packages like `numpy` so these dependencies are not built from source locally by `pip`. Poetry solves the dependency tree in a way that the dependencies of dependencies of dependencies use versions that are compatible with each other.
 
@@ -449,9 +422,3 @@ pip install -r requirements.txt
 The dependency tree is solved by poetry.
 
 Note: The libraries specified in the requirements files have been tested and work for the purpose of this project, however, these may be older versions. Hence, it is recommended for the user to set up a virtual python environment prior to installing these. This allows to keep dependencies required by different projects in separate places.
-
-</TabItem>
-
-</Tabs>
-
-:::
