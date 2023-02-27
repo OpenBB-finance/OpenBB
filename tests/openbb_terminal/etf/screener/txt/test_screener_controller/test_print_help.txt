@@ -1,9 +1,0 @@
-    view               view available presets
-    set                set one of the available presets
-
-Preset: etf_config
-
-    screen             screen ETF using preset selected
-
-    sbc                screen by category
-

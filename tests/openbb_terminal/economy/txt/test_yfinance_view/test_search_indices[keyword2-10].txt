@@ -1,4 +1,5 @@
-                             short_name currency     market exchange exchange timezone
+                                   name currency     market exchange exchange timezone
+symbol                                                                                
 ^A1BSC  Dow Jones Americas Basic Materi      USD  us_market      DJI               EDT
 ^A1CYC  Dow Jones Americas Consumer Ser      USD  us_market      DJI               EDT
 ^A1DOW         Dow Jones Americas Index      USD  us_market      DJI               EDT
