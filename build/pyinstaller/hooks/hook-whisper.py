@@ -11,7 +11,6 @@ datas += copy_metadata("requests")
 datas += copy_metadata("packaging")
 datas += copy_metadata("filelock")
 datas += copy_metadata("numpy")
-datas += copy_metadata("dataclasses")
 datas += copy_metadata("torch")
 
 candidates = [
