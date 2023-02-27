@@ -82,7 +82,7 @@ if is_win:
     added_files.extend(
         [
             (os.path.join(f"{os.path.dirname(scipy.__file__)}.libs"), "scipy.libs/"),
-            (os.path.join(pathex, "frozendict", "VERSION"), "frozendict"),
+            (os.path.join(pathex, "frozendict", "version.py"), "frozendict"),
         ]
     )
 
@@ -112,7 +112,7 @@ hidden_imports = [
     "whisper",
     "transformers",
     "yt_dlp",
-    "textwrap3"
+    "textwrap3",
 ]
 
 
