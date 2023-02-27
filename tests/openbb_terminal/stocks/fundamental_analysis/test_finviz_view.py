@@ -5,7 +5,6 @@ import dataclasses
 import finviz.main_func
 import pytest
 
-
 # IMPORTATION INTERNAL
 from openbb_terminal.core.models.preferences_model import PreferencesModel
 from openbb_terminal.core.session.current_user import get_current_user

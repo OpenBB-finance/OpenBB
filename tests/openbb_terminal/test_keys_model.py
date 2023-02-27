@@ -88,7 +88,7 @@ def test_set_av_key(args: List[str], persist: bool, show_output: bool, expected:
 
     set_naive_environment(var_name_list)
 
-    status = keys_model.set_av_key(
+    keys_model.set_av_key(
         key=args[0],
         persist=persist,
         show_output=show_output,
@@ -133,7 +133,7 @@ def test_set_fmp_key(args: List[str], persist: bool, show_output: bool, expected
 
     set_naive_environment(var_name_list)
 
-    status = keys_model.set_fmp_key(
+    keys_model.set_fmp_key(
         key=args[0],
         persist=persist,
         show_output=show_output,
@@ -180,7 +180,7 @@ def test_set_quandl_key(
 
     set_naive_environment(var_name_list)
 
-    status = keys_model.set_quandl_key(
+    keys_model.set_quandl_key(
         key=args[0],
         persist=persist,
         show_output=show_output,
@@ -227,7 +227,7 @@ def test_set_polygon_key(
 
     set_naive_environment(var_name_list)
 
-    status = keys_model.set_polygon_key(
+    keys_model.set_polygon_key(
         key=args[0],
         persist=persist,
         show_output=show_output,
@@ -272,7 +272,7 @@ def test_set_fred_key(args: List[str], persist: bool, show_output: bool, expecte
 
     set_naive_environment(var_name_list)
 
-    status = keys_model.set_fred_key(
+    keys_model.set_fred_key(
         key=args[0],
         persist=persist,
         show_output=show_output,
@@ -317,7 +317,7 @@ def test_set_news_key(args: List[str], persist: bool, show_output: bool, expecte
 
     set_naive_environment(var_name_list)
 
-    status = keys_model.set_news_key(
+    keys_model.set_news_key(
         key=args[0],
         persist=persist,
         show_output=show_output,
@@ -364,7 +364,7 @@ def test_set_tradier_key(
 
     set_naive_environment(var_name_list)
 
-    status = keys_model.set_tradier_key(
+    keys_model.set_tradier_key(
         key=args[0],
         persist=persist,
         show_output=show_output,
@@ -409,7 +409,7 @@ def test_set_cmc_key(args: List[str], persist: bool, show_output: bool, expected
 
     set_naive_environment(var_name_list)
 
-    status = keys_model.set_cmc_key(
+    keys_model.set_cmc_key(
         key=args[0],
         persist=persist,
         show_output=show_output,
@@ -456,7 +456,7 @@ def test_set_finnhub_key(
 
     set_naive_environment(var_name_list)
 
-    status = keys_model.set_finnhub_key(
+    keys_model.set_finnhub_key(
         key=args[0],
         persist=persist,
         show_output=show_output,
@@ -507,7 +507,7 @@ def test_set_reddit_key(
 
     set_naive_environment(var_name_list)
 
-    status = keys_model.set_reddit_key(
+    keys_model.set_reddit_key(
         client_id=args[0],
         client_secret=args[1],
         password=args[2],
@@ -558,7 +558,7 @@ def test_set_bitquery_key(
 
     set_naive_environment(var_name_list)
 
-    status = keys_model.set_bitquery_key(
+    keys_model.set_bitquery_key(
         key=args[0],
         persist=persist,
         show_output=show_output,
@@ -605,7 +605,7 @@ def test_set_twitter_key(
 
     set_naive_environment(var_name_list)
 
-    status = keys_model.set_twitter_key(
+    keys_model.set_twitter_key(
         access_token=access_token,
         persist=persist,
         show_output=show_output,
@@ -651,7 +651,7 @@ def test_set_rh_key(args: List[str], persist: bool, show_output: bool, expected:
 
     set_naive_environment(var_name_list)
 
-    status = keys_model.set_rh_key(
+    keys_model.set_rh_key(
         username=args[0],
         password=args[1],
         persist=persist,
@@ -701,7 +701,7 @@ def test_set_degiro_key(
 
     set_naive_environment(var_name_list)
 
-    status = keys_model.set_degiro_key(
+    keys_model.set_degiro_key(
         username=args[0],
         password=args[1],
         secret=args[2],
@@ -752,7 +752,7 @@ def test_set_oanda_key(
 
     set_naive_environment(var_name_list)
 
-    status = keys_model.set_oanda_key(
+    keys_model.set_oanda_key(
         account=args[0],
         access_token=args[1],
         account_type=args[2],
@@ -802,7 +802,7 @@ def test_set_binance_key(
 
     set_naive_environment(var_name_list)
 
-    status = keys_model.set_binance_key(
+    keys_model.set_binance_key(
         key=args[0],
         secret=args[1],
         persist=persist,
@@ -852,7 +852,7 @@ def test_set_coinbase_key(
 
     set_naive_environment(var_name_list)
 
-    status = keys_model.set_coinbase_key(
+    keys_model.set_coinbase_key(
         key=args[0],
         secret=args[1],
         passphrase=args[2],
@@ -901,7 +901,7 @@ def test_set_walert_key(
 
     set_naive_environment(var_name_list)
 
-    status = keys_model.set_walert_key(
+    keys_model.set_walert_key(
         key=args[0],
         persist=persist,
         show_output=show_output,
@@ -948,7 +948,7 @@ def test_set_glassnode_key(
 
     set_naive_environment(var_name_list)
 
-    status = keys_model.set_glassnode_key(
+    keys_model.set_glassnode_key(
         key=args[0],
         persist=persist,
         show_output=show_output,
@@ -995,7 +995,7 @@ def test_set_coinglass_key(
 
     set_naive_environment(var_name_list)
 
-    status = keys_model.set_coinglass_key(
+    keys_model.set_coinglass_key(
         key=args[0],
         persist=persist,
         show_output=show_output,
@@ -1042,7 +1042,7 @@ def test_set_cpanic_key(
 
     set_naive_environment(var_name_list)
 
-    status = keys_model.set_cpanic_key(
+    keys_model.set_cpanic_key(
         key=args[0],
         persist=persist,
         show_output=show_output,
@@ -1089,7 +1089,7 @@ def test_set_ethplorer_key(
 
     set_naive_environment(var_name_list)
 
-    status = keys_model.set_ethplorer_key(
+    keys_model.set_ethplorer_key(
         key=args[0],
         persist=persist,
         show_output=show_output,
@@ -1137,7 +1137,7 @@ def test_set_smartstake_key(
 
     set_naive_environment(var_name_list)
 
-    status = keys_model.set_smartstake_key(
+    keys_model.set_smartstake_key(
         key=args[0],
         access_token=args[1],
         persist=persist,
@@ -1185,7 +1185,7 @@ def test_set_github_key(
 
     set_naive_environment(var_name_list)
 
-    status = keys_model.set_github_key(
+    keys_model.set_github_key(
         key=args[0],
         persist=persist,
         show_output=show_output,
@@ -1232,7 +1232,7 @@ def test_set_messari_key(
 
     set_naive_environment(var_name_list)
 
-    status = keys_model.set_messari_key(
+    keys_model.set_messari_key(
         key=args[0],
         persist=persist,
         show_output=show_output,
@@ -1279,7 +1279,7 @@ def test_set_eodhd_key(
 
     set_naive_environment(var_name_list)
 
-    status = keys_model.set_eodhd_key(
+    keys_model.set_eodhd_key(
         key=args[0],
         persist=persist,
         show_output=show_output,
@@ -1326,7 +1326,7 @@ def test_set_santiment_key(
 
     set_naive_environment(var_name_list)
 
-    status = keys_model.set_santiment_key(
+    keys_model.set_santiment_key(
         key=args[0],
         persist=persist,
         show_output=show_output,
@@ -1373,7 +1373,7 @@ def test_set_tokenterminal_key(
 
     set_naive_environment(var_name_list)
 
-    status = keys_model.set_tokenterminal_key(
+    keys_model.set_tokenterminal_key(
         key=args[0],
         persist=persist,
         show_output=show_output,
@@ -1420,7 +1420,7 @@ def test_set_shroom_key(
 
     set_naive_environment(var_name_list)
 
-    status = keys_model.set_shroom_key(
+    keys_model.set_shroom_key(
         key=args[0],
         persist=persist,
         show_output=show_output,
@@ -1467,7 +1467,7 @@ def test_set_openbb_key(
 
     set_naive_environment(var_name_list)
 
-    status = keys_model.set_openbb_personal_access_token(
+    keys_model.set_openbb_personal_access_token(
         key=args[0],
         persist=persist,
         show_output=show_output,

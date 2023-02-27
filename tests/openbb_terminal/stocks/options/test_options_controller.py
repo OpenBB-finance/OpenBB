@@ -1,6 +1,6 @@
 # IMPORTATION STANDARD
-import dataclasses
 import argparse
+import dataclasses
 import os
 
 # IMPORTATION THIRDPARTY

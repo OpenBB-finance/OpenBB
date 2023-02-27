@@ -5,12 +5,11 @@ import dataclasses
 import pandas as pd
 import pytest
 
-from openbb_terminal import helper_funcs
+from openbb_terminal.common.behavioural_analysis import finbrain_view
 
 # IMPORTATION INTERNAL
 from openbb_terminal.core.models.preferences_model import PreferencesModel
 from openbb_terminal.core.session.current_user import get_current_user
-from openbb_terminal.common.behavioural_analysis import finbrain_view
 
 
 @pytest.mark.default_cassette("test_display_sentiment_analysis")

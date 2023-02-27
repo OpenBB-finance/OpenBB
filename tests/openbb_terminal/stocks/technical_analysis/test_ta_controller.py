@@ -7,11 +7,10 @@ from datetime import datetime
 import pandas as pd
 import pytest
 
-from openbb_terminal.stocks import stocks_helper
-
 # IMPORTATION INTERNAL
 from openbb_terminal.core.models.preferences_model import PreferencesModel
 from openbb_terminal.core.session.current_user import get_current_user
+from openbb_terminal.stocks import stocks_helper
 from openbb_terminal.stocks.technical_analysis import ta_controller
 
 # pylint: disable=E1101

@@ -142,7 +142,7 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
     # DISABLE AUTO-COMPLETION
     current_user = get_current_user()
     preference = PreferencesModel(USE_PROMPT_TOOLKIT=False)
-    user_model = dataclasses.replace(current_user, preference=preference)
+    dataclasses.replace(current_user, preference=preference)
     mocker.patch(
         target=f"{path_controller}.session",
         return_value=None,

@@ -7,7 +7,6 @@ from datetime import datetime
 import pandas as pd
 import pytest
 
-
 # IMPORTATION INTERNAL
 from openbb_terminal import parent_classes
 from openbb_terminal.core.models.preferences_model import PreferencesModel
