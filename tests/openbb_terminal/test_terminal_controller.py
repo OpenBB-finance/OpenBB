@@ -6,9 +6,9 @@ from contextlib import contextmanager
 import pytest
 
 # IMPORTATION INTERNAL
+from openbb_terminal import terminal_controller
 from openbb_terminal.core.models.preferences_model import PreferencesModel
 from openbb_terminal.core.session.current_user import get_current_user
-from openbb_terminal import terminal_controller
 
 
 @pytest.mark.skip
