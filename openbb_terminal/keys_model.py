@@ -2705,7 +2705,7 @@ def set_databento_key(
     >>> openbb.keys.databento(key="example_key")
     """
 
-    set_key("OPENBB_API_DATABENTO_KEY", key, persist)
+    set_credential("OPENBB_API_DATABENTO_KEY", key, persist)
     return check_databento_key(show_output)
 
 
@@ -2723,13 +2723,15 @@ def check_databento_key(show_output: bool = False) -> str:
         Status of key set
     """
 
-    if cfg.API_DATABENTO_KEY == "REPLACE_ME":
+    current_user = get_current_user()
+
+    if current_user.credentials.API_DATABENTO_KEY == "REPLACE_ME":
         logger.info("DataBento key not defined")
         status = KeyStatus.NOT_DEFINED
     else:
         r = request(
             "https://hist.databento.com/v0/metadata.list_datasets",
-            auth=(f"{cfg.API_DATABENTO_KEY}", ""),
+            auth=(f"{current_user.credentials.API_DATABENTO_KEY}", ""),
         )
         if r.status_code in [403, 401, 429]:
             logger.warning("DataBento key defined, test failed")

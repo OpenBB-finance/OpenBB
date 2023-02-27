@@ -12,9 +12,10 @@ from typing import Dict, List, Optional
 import pandas as pd
 from matplotlib import pyplot as plt
 
+from openbb_terminal.config_terminal import theme
+
 # IMPORTATION INTERNAL
 from openbb_terminal.core.session.current_user import get_current_user
-from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.fixedincome import fred_model
 from openbb_terminal.helper_funcs import (
@@ -217,7 +218,8 @@ def plot_estr(
     # This plot has 1 axis
     if not external_axes:
         _, ax = plt.subplots(
-            figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
+            figsize=plot_autoscale(),
+            dpi=get_current_user().preferences.get_current_user().preferences.PLOT_DPI,
         )
     elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
@@ -298,7 +300,10 @@ def plot_sofr(
 
     # This plot has 1 axis
     if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        _, ax = plt.subplots(
+            figsize=plot_autoscale(),
+            dpi=get_current_user().preferences.get_current_user().preferences.PLOT_DPI,
+        )
     elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
     else:
@@ -368,7 +373,10 @@ def plot_sonia(
 
     # This plot has 1 axis
     if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        _, ax = plt.subplots(
+            figsize=plot_autoscale(),
+            dpi=get_current_user().preferences.get_current_user().preferences.PLOT_DPI,
+        )
     elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
     else:
@@ -446,7 +454,10 @@ def plot_ameribor(
 
     # This plot has 1 axis
     if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        _, ax = plt.subplots(
+            figsize=plot_autoscale(),
+            dpi=get_current_user().preferences.get_current_user().preferences.PLOT_DPI,
+        )
     elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
     else:
@@ -520,7 +531,9 @@ def plot_fftr(
 
     # This plot has 1 axis
     if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        _, ax = plt.subplots(
+            figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
+        )
     elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
     else:
@@ -614,7 +627,9 @@ def plot_fed(
 
         # This plot has 1 axis
         if not external_axes:
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+            _, ax = plt.subplots(
+                figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
+            )
         elif is_valid_axes_count(external_axes, 1):
             (ax,) = external_axes
         else:
@@ -640,7 +655,9 @@ def plot_fed(
         )
         # This plot has 1 axis
         if not external_axes:
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+            _, ax = plt.subplots(
+                figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
+            )
         elif is_valid_axes_count(external_axes, 1):
             (ax,) = external_axes
         else:
@@ -718,7 +735,9 @@ def plot_iorb(
 
     # This plot has 1 axis
     if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        _, ax = plt.subplots(
+            figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
+        )
     elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
     else:
@@ -774,7 +793,9 @@ def plot_projection(
 
     # This plot has 1 axis
     if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        _, ax = plt.subplots(
+            figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
+        )
     elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
     else:
@@ -851,7 +872,9 @@ def plot_dwpcr(
 
     # This plot has 1 axis
     if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        _, ax = plt.subplots(
+            figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
+        )
     elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
     else:
@@ -921,7 +944,9 @@ def plot_ecb(
 
     # This plot has 1 axis
     if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        _, ax = plt.subplots(
+            figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
+        )
     elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
     else:
@@ -1005,7 +1030,9 @@ def plot_tmc(
 
     # This plot has 1 axis
     if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        _, ax = plt.subplots(
+            figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
+        )
     elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
     else:
@@ -1074,7 +1101,9 @@ def plot_ffrmc(
 
     # This plot has 1 axis
     if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        _, ax = plt.subplots(
+            figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
+        )
     elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
     else:
@@ -1149,7 +1178,9 @@ def display_yield_curve(
         console.print(f"[red]Yield data not found for {date_of_yield}.[/red]\n")
         return
     if external_axes is None:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        _, ax = plt.subplots(
+            figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
+        )
     elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
     else:
@@ -1237,7 +1268,9 @@ def plot_usrates(
 
     # This plot has 1 axis
     if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        _, ax = plt.subplots(
+            figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
+        )
     elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
     else:
@@ -1317,7 +1350,9 @@ def plot_tbffr(
 
     # This plot has 1 axis
     if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        _, ax = plt.subplots(
+            figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
+        )
     elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
     else:
@@ -1420,7 +1455,9 @@ def plot_icebofa(
     )
     # This plot has 1 axis
     if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        _, ax = plt.subplots(
+            figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
+        )
     elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
     else:
@@ -1515,7 +1552,9 @@ def plot_moody(
 
     # This plot has 1 axis
     if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        _, ax = plt.subplots(
+            figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
+        )
     elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
     else:
@@ -1615,7 +1654,9 @@ def plot_cp(
 
     # This plot has 1 axis
     if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        _, ax = plt.subplots(
+            figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
+        )
     elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
     else:
@@ -1714,7 +1755,9 @@ def plot_spot(
 
     # This plot has 1 axis
     if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        _, ax = plt.subplots(
+            figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
+        )
     elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
     else:
@@ -1802,7 +1845,9 @@ def plot_hqm(
     df, date_of_yield = fred_model.get_hqm(date=date, par=par)
     # This plot has 1 axis
     if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        _, ax = plt.subplots(
+            figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
+        )
     elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
     else:

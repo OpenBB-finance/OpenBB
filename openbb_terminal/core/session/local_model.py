@@ -137,10 +137,7 @@ def update_sync_flag(settings: dict) -> bool:
     bool
         The sync flag.
     """
-    if settings and settings.get("SYNC_ENABLED", "true").lower() == "false":
-        sync = False
-    else:
-        sync = True
+    sync = not (settings and settings.get("SYNC_ENABLED", "true").lower() == "false")
 
     set_preference("SYNC_ENABLED", sync, login=True)
 
