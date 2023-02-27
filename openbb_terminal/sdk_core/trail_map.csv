@@ -216,7 +216,6 @@ etf.ln,etf_financedatabase_model.get_etfs_by_name,
 etf.load,stocks_helper.load,
 etf.news,common_newsapi_model.get_news,common_newsapi_view.display_news
 etf.overview,etf_stockanalysis_model.get_etf_overview,
-etf.scr.screen,etf_scr_model.etf_screener,etf_scr_view.view_screener
 etf.symbols,etf_stockanalysis_model.get_all_names_symbols,
 etf.weights,etf_fmp_model.get_etf_sector_weightings,
 fixedincome.ameribor,fixedincome_fred_model.get_ameribor,
