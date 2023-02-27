@@ -23,7 +23,13 @@ def test_update_runtime_choices(mocker):
     mocker.patch(
         "openbb_terminal.portfolio.portfolio_optimization.po_controller.session", True
     )
-    mocker.patch("openbb_terminal.feature_flags.USE_PROMPT_TOOLKIT", True)
+    current_user = get_current_user()
+    preference = PreferencesModel(USE_PROMPT_TOOLKIT=True)
+    user_model = dataclasses.replace(current_user, preference=preference)
+    mocker.patch(
+        target="openbb_terminal.core.session.current_user.get_current_user",
+        return_value=user_model,
+    )
     cont = po_controller.PortfolioOptimizationController(
         tickers=["TSLA", "AAPL"], portfolios={"port": 1}, categories={"cat": 1}
     )

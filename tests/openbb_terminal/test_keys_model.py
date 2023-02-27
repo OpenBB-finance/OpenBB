@@ -53,7 +53,7 @@ def set_naive_environment(var_name_list: List[str]) -> None:
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
-    "args, persist, show_output, expected",
+    "args, persist, show_output, __expected",
     [
         (
             ["test_key"],
@@ -98,7 +98,7 @@ def test_set_av_key(args: List[str], persist: bool, show_output: bool, __expecte
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
-    "args, persist, show_output, expected",
+    "args, persist, show_output, __expected",
     [
         (
             ["test_key"],
@@ -145,7 +145,7 @@ def test_set_fmp_key(
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
-    "args, persist, show_output, expected",
+    "args, persist, show_output, __expected",
     [
         (
             ["test_key"],
@@ -192,7 +192,7 @@ def test_set_quandl_key(
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
-    "args, persist, show_output, expected",
+    "args, persist, show_output, __expected",
     [
         (
             ["test_key"],
@@ -239,7 +239,7 @@ def test_set_polygon_key(
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
-    "args, persist, show_output, expected",
+    "args, persist, show_output, __expected",
     [
         (
             ["test_key"],
@@ -286,7 +286,7 @@ def test_set_fred_key(
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
-    "args, persist, show_output, expected",
+    "args, persist, show_output, __expected",
     [
         (
             ["test_key"],
@@ -333,7 +333,7 @@ def test_set_news_key(
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
-    "args, persist, show_output, expected",
+    "args, persist, show_output, __expected",
     [
         (
             ["test_key"],
@@ -380,7 +380,7 @@ def test_set_tradier_key(
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
-    "args, persist, show_output, expected",
+    "args, persist, show_output, __expected",
     [
         (
             ["test_key"],
@@ -427,7 +427,7 @@ def test_set_cmc_key(
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
-    "args, persist, show_output, expected",
+    "args, persist, show_output, __expected",
     [
         (
             ["test_key"],
@@ -474,7 +474,7 @@ def test_set_finnhub_key(
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
-    "args, persist, show_output, expected",
+    "args, persist, show_output, __expected",
     [
         (
             ["test_id", "test_secret", "test_pass", "test_user", "test_agent"],
@@ -529,7 +529,7 @@ def test_set_reddit_key(
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
-    "args, persist, show_output, expected",
+    "args, persist, show_output, __expected",
     [
         (
             ["test_key"],
@@ -576,7 +576,7 @@ def test_set_bitquery_key(
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
-    "access_token, persist, show_output, expected",
+    "access_token, persist, show_output, __expected",
     [
         (
             "test_access_token",
@@ -623,7 +623,7 @@ def test_set_twitter_key(
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
-    "args, persist, show_output, expected",
+    "args, persist, show_output, __expected",
     [
         (
             ["test_username", "test_password"],
@@ -670,7 +670,7 @@ def test_set_rh_key(args: List[str], persist: bool, show_output: bool, __expecte
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
-    "args, persist, show_output, expected",
+    "args, persist, show_output, __expected",
     [
         (
             ["test_username", "test_password", "test_secret"],
@@ -721,7 +721,7 @@ def test_set_degiro_key(
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
-    "args, persist, show_output, expected",
+    "args, persist, show_output, __expected",
     [
         (
             ["test_account", "test_access_token", "account_type"],
@@ -772,7 +772,7 @@ def test_set_oanda_key(
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
-    "args, persist, show_output, expected",
+    "args, persist, show_output, __expected",
     [
         (
             ["test_key", "test_secret"],
@@ -821,7 +821,7 @@ def test_set_binance_key(
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
-    "args, persist, show_output, expected",
+    "args, persist, show_output, __expected",
     [
         (
             ["test_key", "test_secret", "test_passphrase"],
@@ -872,7 +872,7 @@ def test_set_coinbase_key(
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
-    "args, persist, show_output, expected",
+    "args, persist, show_output, __expected",
     [
         (
             ["test_key"],
@@ -919,7 +919,7 @@ def test_set_walert_key(
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
-    "args, persist, show_output, expected",
+    "args, persist, show_output, __expected",
     [
         (
             ["test_key"],
@@ -966,7 +966,7 @@ def test_set_glassnode_key(
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
-    "args, persist, show_output, expected",
+    "args, persist, show_output, __expected",
     [
         (
             ["test_key"],
@@ -1013,7 +1013,7 @@ def test_set_coinglass_key(
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
-    "args, persist, show_output, expected",
+    "args, persist, show_output, __expected",
     [
         (
             ["test_key"],
@@ -1060,7 +1060,7 @@ def test_set_cpanic_key(
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
-    "args, persist, show_output, expected",
+    "args, persist, show_output, __expected",
     [
         (
             ["test_key"],
@@ -1107,7 +1107,7 @@ def test_set_ethplorer_key(
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
-    "args, persist, show_output, expected",
+    "args, persist, show_output, __expected",
     [
         (
             ["test_key", "test_access_token"],
@@ -1156,7 +1156,7 @@ def test_set_smartstake_key(
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
-    "args, persist, show_output, expected",
+    "args, persist, show_output, __expected",
     [
         (
             ["test_key"],
@@ -1203,7 +1203,7 @@ def test_set_github_key(
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
-    "args, persist, show_output, expected",
+    "args, persist, show_output, __expected",
     [
         (
             ["test_key"],
@@ -1250,7 +1250,7 @@ def test_set_messari_key(
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
-    "args, persist, show_output, expected",
+    "args, persist, show_output, __expected",
     [
         (
             ["test_key"],
@@ -1297,7 +1297,7 @@ def test_set_eodhd_key(
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
-    "args, persist, show_output, expected",
+    "args, persist, show_output, __expected",
     [
         (
             ["test_key"],
@@ -1344,7 +1344,7 @@ def test_set_santiment_key(
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
-    "args, persist, show_output, expected",
+    "args, persist, show_output, __expected",
     [
         (
             ["test_key"],
@@ -1391,7 +1391,7 @@ def test_set_tokenterminal_key(
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
-    "args, persist, show_output, expected",
+    "args, persist, show_output, __expected",
     [
         (
             ["test_key"],
@@ -1438,7 +1438,7 @@ def test_set_shroom_key(
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
-    "args, persist, show_output, expected",
+    "args, persist, show_output, __expected",
     [
         (
             ["test_key"],
