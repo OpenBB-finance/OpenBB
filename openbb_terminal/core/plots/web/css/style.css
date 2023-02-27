@@ -31,6 +31,15 @@ body {
   visibility: visible;
 }
 
+.plotly-graph-div .annotation text {
+  font-size: calc(14px + (18 - 14) * ((100vw - 300px) / (1600 - 300))) !important;
+}
+
+.main-svg g text {
+  font-size: calc(12px + (18 - 12) * ((100vw - 300px) / (1600 - 300))) !important;
+}
+
+
 #changecolor {
   position: absolute;
   z-index: 9;

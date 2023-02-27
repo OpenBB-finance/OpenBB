@@ -43,7 +43,7 @@ def display_ad(
         Whether to return the figure object or not, by default False
     """
     ta = PlotlyTA()
-    fig = ta.plot(data, dict(ad=dict(use_open=use_open)), f"{symbol} AD", False)
+    fig = ta.plot(data, dict(ad=dict(use_open=use_open)), f"{symbol.upper()} AD", False)
 
     if ta_helpers.check_columns(data) is None:
         return None
@@ -94,7 +94,7 @@ def display_adosc(
     fig = ta.plot(
         data,
         dict(adosc=dict(fast=fast, slow=slow, use_open=use_open)),
-        f"{symbol} AD Oscillator",
+        f"{symbol.upper()} AD Oscillator",
         False,
     )
 
@@ -134,7 +134,7 @@ def display_obv(
         Whether to return the figure object or not, by default False
     """
     ta = PlotlyTA()
-    fig = ta.plot(data, dict(obv=dict()), f"{symbol} OBV", False)
+    fig = ta.plot(data, dict(obv=dict()), f"{symbol.upper()} OBV", False)
 
     close_col = ta_helpers.check_columns(data)
     if close_col is None:

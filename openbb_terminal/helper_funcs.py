@@ -1193,6 +1193,10 @@ def plot_autoscale():
     """Autoscale plot."""
     if obbff.USE_PLOT_AUTOSCALING:
         x, y = get_screeninfo()  # Get screen size
+        # account for ultrawide monitors
+        if x / y > 1.5:
+            x = x * 0.4
+
         x = ((x) * cfgPlot.PLOT_WIDTH_PERCENTAGE * 10**-2) / (
             cfgPlot.PLOT_DPI
         )  # Calculate width
@@ -1203,6 +1207,9 @@ def plot_autoscale():
         x = cfgPlot.PLOT_WIDTH / (cfgPlot.PLOT_DPI)
         y = cfgPlot.PLOT_HEIGHT / (cfgPlot.PLOT_DPI)
     return x, y
+
+
+plots_backend().set_window_dimensions(*plot_autoscale())
 
 
 def get_last_time_market_was_open(dt):

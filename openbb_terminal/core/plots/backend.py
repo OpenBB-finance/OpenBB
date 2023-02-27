@@ -35,7 +35,7 @@ else:
     JUPYTER_NOTEBOOK = True
 
 PLOTS_CORE_PATH = Path(__file__).parent.resolve()
-PLOTLYJS_PATH = PLOTS_CORE_PATH / "assets" / "plotly-2.18.0.min.js"
+PLOTLYJS_PATH = PLOTS_CORE_PATH / "assets" / "plotly-2.18.2.min.js"
 BACKEND = None
 
 
@@ -60,8 +60,13 @@ class Backend(PyWry):
             and not strtobool(os.environ.get("OPENBB_ENABLE_QUICK_EXIT", False))
             and current_process().name == "MainProcess"
         )
+        self.WIDTH, self.HEIGHT = 1400, 762
 
         atexit.register(self.close)
+
+    def set_window_dimensions(self, width: int, height: int):
+        """Set the window dimensions."""
+        self.WIDTH, self.HEIGHT = int(width) * 100, (int(height) * 100) + 62
 
     def inject_path_to_html(self):
         """Update the script tag in html with local path."""
@@ -118,8 +123,21 @@ class Backend(PyWry):
             Path to export image to, by default ""
         """
         self.loop.run_until_complete(self.check_backend())
+        title = "Plots"
+
+        # We check if figure is a subplot and has a title annotation
+        if not fig.layout.title.text and fig._has_subplots():
+            for annotation in fig.select_annotations(
+                selector=dict(xref="paper", yref="paper")
+            ):
+                # Subplots always set the first annotation as the title
+                # so we break after the first one
+                if annotation.text:
+                    title = annotation.text
+                break
+
         title = re.sub(
-            r"<[^>]*>", "", fig.layout.title.text if fig.layout.title.text else "Plots"
+            r"<[^>]*>", "", fig.layout.title.text if fig.layout.title.text else title
         )
 
         if export_image and isinstance(export_image, str):
@@ -183,8 +201,8 @@ class Backend(PyWry):
                 {
                     "html_path": self.get_table_html(),
                     "plotly": df_table.to_json(orient="split"),
-                    "width": 1200,
-                    "height": 800,
+                    "width": self.WIDTH,
+                    "height": self.HEIGHT,
                     **self.get_kwargs(title),
                 }
             )
@@ -208,7 +226,13 @@ class Backend(PyWry):
         )
         self.outgoing.append(message)
 
-    def send_url(self, url: str, title: str = "", width: int = 1200, height: int = 800):
+    def send_url(
+        self,
+        url: str,
+        title: str = "",
+        width: Optional[int] = None,
+        height: Optional[int] = None,
+    ):
         """Send a URL to the backend to be displayed in a window.
 
         Parameters
@@ -232,8 +256,8 @@ class Backend(PyWry):
             {
                 "html_str": script,
                 **self.get_kwargs(title),
-                "width": width,
-                "height": height,
+                "width": width or self.WIDTH,
+                "height": height or self.HEIGHT,
             }
         )
         self.outgoing.append(message)

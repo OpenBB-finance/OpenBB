@@ -76,6 +76,7 @@
                 "size": 14
             },
             "zeroline": false,
+            "tick0": 1,
             "title": {
                 "standoff": 20
             },

@@ -72,7 +72,7 @@ def view_ma(
     fig = ta.plot(
         data,
         {f"{ma_type.lower()}": dict(length=window, offset=offset)},
-        f"{symbol} {ma_type.upper()}",
+        f"{symbol.upper()} {ma_type.upper()}",
         False,
         volume=False,
     )
@@ -147,7 +147,7 @@ def view_vwap(
     fig = ta.plot(
         day_df,
         dict(vwap=dict(offset=offset)),
-        f"{symbol} {interval} VWAP",
+        f"{symbol.upper()} {interval} VWAP",
         volume=False,
     )
 

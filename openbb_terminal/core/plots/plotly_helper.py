@@ -19,7 +19,6 @@ import pandas as pd
 import plotly.graph_objects as go
 import plotly.io as pio
 import statsmodels.api as sm
-from pandas.tseries.holiday import USFederalHolidayCalendar
 from plotly.subplots import make_subplots
 from scipy import stats
 
@@ -277,8 +276,8 @@ class OpenBBFigure(go.Figure):
         if plots_backend().isatty:
             self.update_layout(
                 margin=dict(l=0, r=0, t=0, b=0, pad=0, autoexpand=True),
-                height=762,
-                width=1400,
+                height=plots_backend().HEIGHT,
+                width=plots_backend().WIDTH,
             )
 
     @property
@@ -1032,14 +1031,16 @@ class OpenBBFigure(go.Figure):
         if (dateindex := self.get_dateindex()) is None:
             return
 
-        mkt_holidays: List[datetime] = USFederalHolidayCalendar().holidays(
-            start=min(dateindex), end=max(dateindex)
+        dt_unique_days = pd.bdate_range(
+            start=min(dateindex), end=max(dateindex), normalize=True
         )
-
-        rangebreaks = [
-            dict(values=[date.strftime("%Y-%m-%d") for date in mkt_holidays]),
-            dict(bounds=["sat", "mon"]),
+        mkt_holidays = [
+            d
+            for d in dt_unique_days.strftime("%Y-%m-%d").tolist()
+            if d not in [unique.strftime("%Y-%m-%d") for unique in dateindex]
         ]
+
+        rangebreaks = [dict(values=mkt_holidays), dict(bounds=["sat", "mon"])]
 
         # We add a rangebreak if the first and second time are not the same
         # since daily data will have the same time (00:00)

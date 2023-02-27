@@ -3,10 +3,11 @@ let globals = { dark_mode: false, modebarHidden: false };
 TITLE_DIV = undefined;
 TEXT_DIV = undefined;
 CSV_DIV = undefined;
+CHART_DIV = undefined;
 
 let check_divs = setInterval(function () {
   // Wait for the popup divs to be loaded before assigning them to variables
-  let div_ids = ["popup_title", "popup_text", "popup_csv"];
+  let div_ids = ["popup_title", "popup_text", "popup_csv", "openbb_chart"];
   let divs = div_ids.map(function (id) {
     return document.getElementById(id);
   });
@@ -19,6 +20,7 @@ let check_divs = setInterval(function () {
     TITLE_DIV = document.getElementById("popup_title");
     TEXT_DIV = document.getElementById("popup_text");
     CSV_DIV = document.getElementById("popup_csv");
+    CHART_DIV = document.getElementById("openbb_chart");
     console.log("popup divs found");
     clearInterval(check_divs);
   }
@@ -26,7 +28,6 @@ let check_divs = setInterval(function () {
 
 function OpenBBMain(plotly_figure) {
   // Main function that plots the graphs and initializes the bar menus
-  let CHART_DIV = document.getElementById("openbb_chart");
   globals.chartDiv = CHART_DIV;
   console.log("main.js loaded");
   console.log("plotly_figure", plotly_figure);
@@ -217,7 +218,7 @@ function OpenBBMain(plotly_figure) {
   // to make sure that the legend is not cut off
   graphs.data.forEach(function (trace) {
     if (trace.name != undefined) {
-      trace.name = trace.name + "   ";
+      trace.name = trace.name + "     ";
     }
   });
 

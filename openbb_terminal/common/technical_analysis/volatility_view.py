@@ -52,7 +52,7 @@ def display_bbands(
     fig = ta.plot(
         data,
         dict(bbands=dict(length=window, scalar=n_std, mamode=mamode)),
-        f"{symbol} Bollinger Bands",
+        f"{symbol.upper()} Bollinger Bands",
         False,
         volume=False,
     )
@@ -103,7 +103,7 @@ def display_donchian(
     fig = ta.plot(
         data,
         dict(donchian=dict(upper_length=upper_length, lower_length=lower_length)),
-        f"{symbol} Donchian Channels",
+        f"{symbol.upper()} Donchian Channels",
         False,
         volume=False,
     )
@@ -163,7 +163,7 @@ def view_kc(
     fig = ta.plot(
         data,
         dict(kc=dict(length=window, scalar=scalar, mamode=mamode, offset=offset)),
-        f"{symbol} Keltner Channels",
+        f"{symbol.upper()} Keltner Channels",
         False,
         volume=False,
     )
@@ -213,7 +213,7 @@ def display_atr(
     fig = ta.plot(
         data,
         dict(atr=dict(length=window, mamode=mamode, offset=offset)),
-        f"{symbol} Average True Range",
+        f"{symbol.upper()} Average True Range",
         False,
         volume=False,
     )

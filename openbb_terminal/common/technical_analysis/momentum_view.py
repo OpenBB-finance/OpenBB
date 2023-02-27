@@ -49,7 +49,7 @@ def display_cci(
     fig = ta.plot(
         data,
         dict(cci=dict(length=window, scalar=scalar)),
-        f"{symbol} CCI",
+        f"{symbol.upper()} CCI",
         False,
         volume=False,
     )
@@ -100,7 +100,7 @@ def display_macd(
     fig = ta.plot(
         data,
         dict(macd=dict(fast=n_fast, slow=n_slow, signal=n_signal)),
-        f"{symbol} MACD",
+        f"{symbol.upper()} MACD",
         False,
         volume=False,
     )
@@ -154,7 +154,7 @@ def display_rsi(
     fig = ta.plot(
         data,
         dict(rsi=dict(length=window, scalar=scalar, drift=drift)),
-        f"{symbol} RSI {window}",
+        f"{symbol.upper()} RSI {window}",
         False,
         volume=False,
     )
@@ -254,7 +254,7 @@ def display_fisher(
     fig = ta.plot(
         data,
         dict(fisher=dict(length=window)),
-        f"{symbol} Fisher Transform",
+        f"{symbol.upper()} Fisher Transform",
         False,
         volume=False,
     )
@@ -299,7 +299,7 @@ def display_cg(
     fig = ta.plot(
         data,
         dict(cg=dict(length=window)),
-        f"{symbol} Centre of Gravity",
+        f"{symbol.upper()} Centre of Gravity",
         False,
         volume=False,
     )
@@ -422,7 +422,7 @@ def display_demark(
     fig = PlotlyTA.plot(
         data,
         dict(demark=dict(min_val=min_to_show)),
-        f"{symbol} Demark Sequential",
+        f"{symbol.upper()} Demark Sequential",
         volume=False,
     )
 
