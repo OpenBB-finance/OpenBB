@@ -26,7 +26,9 @@ def controller(mocker):
         target="openbb_terminal.featflags_controller.set_preference",
     )
 
-    mocker.patch(target="openbb_terminal.core.session.preferences_handler.set_preference")
+    mocker.patch(
+        target="openbb_terminal.core.session.preferences_handler.set_preference"
+    )
     return FeatureFlagsController()
 
 

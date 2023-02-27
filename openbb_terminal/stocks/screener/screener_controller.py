@@ -36,7 +36,9 @@ logger = logging.getLogger(__name__)
 
 # pylint: disable=E1121
 
-PRESETS_PATH = get_current_user().preferences.USER_PRESETS_DIRECTORY / "stocks" / "screener"
+PRESETS_PATH = (
+    get_current_user().preferences.USER_PRESETS_DIRECTORY / "stocks" / "screener"
+)
 
 
 class ScreenerController(BaseController):

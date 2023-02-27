@@ -53,7 +53,9 @@ class DataBento(BaseModel):
             "stype_in": "smart",
             "stype_out": "product_id",
         }
-        auth = requests.auth.HTTPBasicAuth(get_current_user().credentials.API_DATABENTO_KEY, "")
+        auth = requests.auth.HTTPBasicAuth(
+            get_current_user().credentials.API_DATABENTO_KEY, ""
+        )
         # This seems to only work for futures? Assume the user is entering correct stock ticker
         if self.exchange == "XNAS.ITCH":
             return True
@@ -91,7 +93,9 @@ class DataBento(BaseModel):
             "stype_in": self.stype,
             "encoding": "csv",
         }
-        auth = requests.auth.HTTPBasicAuth(get_current_user().credentials.API_DATABENTO_KEY, "")
+        auth = requests.auth.HTTPBasicAuth(
+            get_current_user().credentials.API_DATABENTO_KEY, ""
+        )
         data = self.process_request(base_url, params, auth)
         if data.empty:
             console.print(f"No data found for symbol `{self.symbol}`.")

@@ -59,6 +59,7 @@ def test_create_session(mocker, email, password, save):
     if save and session:
         mock_save_session.assert_called_once_with(session)
 
+
 @pytest.mark.skip("Not working?")
 def test_login_no_response(mocker):
     path = "openbb_terminal.core.session.session_model."
@@ -79,6 +80,7 @@ def test_login_no_response(mocker):
     mock_fetch_user_configs.assert_called_once_with(TEST_SESSION)
     mock_apply_configs.assert_not_called()
     mock_update_flair.assert_not_called()
+
 
 @pytest.mark.skip("Not working?")
 def test_login_fail_response(mocker):
@@ -102,6 +104,7 @@ def test_login_fail_response(mocker):
     mock_fetch_user_configs.assert_called_once_with(TEST_SESSION)
     mock_apply_configs.assert_not_called()
     mock_update_flair.assert_not_called()
+
 
 @pytest.mark.skip("Not working?")
 def test_login_success_response(mocker):
@@ -128,6 +131,7 @@ def test_login_success_response(mocker):
     mock_fetch_user_configs.assert_called_once_with(TEST_SESSION)
     mock_apply_configs.assert_called_once()
     mock_update_flair.assert_called_once()
+
 
 @pytest.mark.skip("Not working?")
 @pytest.mark.parametrize(

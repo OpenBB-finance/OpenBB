@@ -163,10 +163,14 @@ def get_trans_data(
             past_covariate_val,
         )
     best_model = TransformerModel.load_from_checkpoint(
-        model_name=model_save_name, best=True, work_dir=current_user.preferences.USER_FORECAST_MODELS_DIRECTORY
+        model_name=model_save_name,
+        best=True,
+        work_dir=current_user.preferences.USER_FORECAST_MODELS_DIRECTORY,
     )
 
-    helpers.print_tensorboard_logs(model_save_name, current_user.preferences.USER_FORECAST_MODELS_DIRECTORY)
+    helpers.print_tensorboard_logs(
+        model_save_name, current_user.preferences.USER_FORECAST_MODELS_DIRECTORY
+    )
 
     # Showing historical backtesting without retraining model (too slow)
     return helpers.get_prediction(

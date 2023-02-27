@@ -164,7 +164,11 @@ def display_macd(
     # This plot has 2 axes
     if external_axes is None:
         _, axes = plt.subplots(
-            2, 1, figsize=plot_autoscale(), sharex=True, dpi=get_current_user().preferences.PLOT_DPI
+            2,
+            1,
+            figsize=plot_autoscale(),
+            sharex=True,
+            dpi=get_current_user().preferences.PLOT_DPI,
         )
         (ax1, ax2) = axes
     elif is_valid_axes_count(external_axes, 2):
@@ -260,7 +264,11 @@ def display_rsi(
     # This plot has 2 axes
     if external_axes is None:
         _, axes = plt.subplots(
-            2, 1, figsize=plot_autoscale(), sharex=True, dpi=get_current_user().preferences.PLOT_DPI
+            2,
+            1,
+            figsize=plot_autoscale(),
+            sharex=True,
+            dpi=get_current_user().preferences.PLOT_DPI,
         )
         (ax1, ax2) = axes
     elif is_valid_axes_count(external_axes, 2):
@@ -354,7 +362,11 @@ def display_stoch(
     # This plot has 3 axes
     if not external_axes:
         _, axes = plt.subplots(
-            2, 1, sharex=True, figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
+            2,
+            1,
+            sharex=True,
+            figsize=plot_autoscale(),
+            dpi=get_current_user().preferences.PLOT_DPI,
         )
         ax1, ax2 = axes
         ax3 = ax2.twinx()
@@ -446,7 +458,11 @@ def display_fisher(
     # This plot has 3 axes
     if not external_axes:
         _, axes = plt.subplots(
-            2, 1, sharex=True, figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
+            2,
+            1,
+            sharex=True,
+            figsize=plot_autoscale(),
+            dpi=get_current_user().preferences.PLOT_DPI,
         )
         ax1, ax2 = axes
         ax3 = ax2.twinx()
@@ -539,7 +555,11 @@ def display_cg(
     # This plot has 2 axes
     if external_axes is None:
         _, axes = plt.subplots(
-            2, 1, figsize=plot_autoscale(), sharex=True, dpi=get_current_user().preferences.PLOT_DPI
+            2,
+            1,
+            figsize=plot_autoscale(),
+            sharex=True,
+            dpi=get_current_user().preferences.PLOT_DPI,
         )
         (ax1, ax2) = axes
     elif is_valid_axes_count(external_axes, 2):
@@ -631,7 +651,9 @@ def display_clenow_momentum(
 
     # This plot has 2 axes
     if external_axes is None:
-        _, ax1 = plt.subplots(figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI)
+        _, ax1 = plt.subplots(
+            figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
+        )
 
     elif is_valid_axes_count(external_axes, 1):
         ax1 = external_axes

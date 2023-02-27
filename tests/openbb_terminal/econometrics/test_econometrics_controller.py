@@ -22,9 +22,7 @@ def controller(mocker):
         target="openbb_terminal.core.session.current_user.get_current_user",
         return_value=user_model,
     )
-    mocker.patch(
-        "openbb_terminal.econometrics.econometrics_controller.session", True
-    )
+    mocker.patch("openbb_terminal.econometrics.econometrics_controller.session", True)
     return EconometricsController()
 
 

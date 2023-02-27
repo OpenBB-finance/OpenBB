@@ -16,7 +16,10 @@ from website.controller_doc_classes import (
 )
 
 website_path = Path(__file__).parent.absolute()
-USER_PATH = (f"{get_current_user().preferences.USER_DATA_DIRECTORY}", "`USER_DATA_DIRECTORY`")
+USER_PATH = (
+    f"{get_current_user().preferences.USER_DATA_DIRECTORY}",
+    "`USER_DATA_DIRECTORY`",
+)
 
 
 def existing_markdown_file_examples(

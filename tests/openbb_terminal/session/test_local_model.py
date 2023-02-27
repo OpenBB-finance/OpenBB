@@ -29,6 +29,7 @@ def revert_current_user():
     yield
     set_current_user(current_user)
 
+
 @pytest.fixture(name="test_user")
 def fixture_test_user():
     return UserModel(
@@ -169,6 +170,7 @@ CONFIGS = {
     },
 }
 
+
 @pytest.mark.skip("Not working?")
 @pytest.mark.parametrize(
     "sync",
@@ -236,7 +238,9 @@ def test_get_routine(mocker, exists: bool, test_user):
             current_user.preferences.USER_ROUTINES_DIRECTORY / uuid / file_name
         )
     else:
-        open_mock.assert_called_with(current_user.preferences.USER_ROUTINES_DIRECTORY / file_name)
+        open_mock.assert_called_with(
+            current_user.preferences.USER_ROUTINES_DIRECTORY / file_name
+        )
 
 
 def test_get_routine_exception(mocker, test_user):
@@ -262,7 +266,9 @@ def test_get_routine_exception(mocker, test_user):
     exists_mock.assert_called_with(
         current_user.preferences.USER_ROUTINES_DIRECTORY / uuid / file_name
     )
-    open_mock.assert_called_with(current_user.preferences.USER_ROUTINES_DIRECTORY / uuid / file_name)
+    open_mock.assert_called_with(
+        current_user.preferences.USER_ROUTINES_DIRECTORY / uuid / file_name
+    )
 
 
 @pytest.mark.parametrize(
@@ -298,7 +304,10 @@ def test_save_routine(mocker, exists: bool, test_user):
         assert result == "File already exists"
         makedirs_mock.assert_not_called()
     else:
-        assert result == current_user.preferences.USER_ROUTINES_DIRECTORY / uuid / file_name
+        assert (
+            result
+            == current_user.preferences.USER_ROUTINES_DIRECTORY / uuid / file_name
+        )
         makedirs_mock.assert_called_once()
         open_mock.assert_called_with(
             current_user.preferences.USER_ROUTINES_DIRECTORY / uuid / file_name, "w"

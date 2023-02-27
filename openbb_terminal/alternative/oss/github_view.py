@@ -48,7 +48,9 @@ def display_star_history(
     df = github_model.get_stars_history(repo)
     if not df.empty:
         if external_axes is None:
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI)
+            _, ax = plt.subplots(
+                figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
+            )
         elif is_valid_axes_count(external_axes, 1):
             (ax,) = external_axes
         else:
@@ -100,7 +102,9 @@ def display_top_repos(
     df = github_model.get_top_repos(categories=categories, sortby=sortby, limit=limit)
     if not df.empty:
         if external_axes is None:
-            _, ax = plt.subplots(figsize=(14, 8), dpi=get_current_user().preferences.PLOT_DPI)
+            _, ax = plt.subplots(
+                figsize=(14, 8), dpi=get_current_user().preferences.PLOT_DPI
+            )
         elif is_valid_axes_count(external_axes, 1):
             (ax,) = external_axes
         else:

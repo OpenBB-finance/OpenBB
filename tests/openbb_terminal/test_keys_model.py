@@ -139,8 +139,6 @@ def test_set_fmp_key(args: List[str], persist: bool, show_output: bool, expected
         show_output=show_output,
     )
 
-    
-
 
 @pytest.mark.vcr
 @pytest.mark.record_stdout
@@ -187,8 +185,6 @@ def test_set_quandl_key(
         persist=persist,
         show_output=show_output,
     )
-
-    
 
 
 @pytest.mark.vcr
@@ -237,8 +233,6 @@ def test_set_polygon_key(
         show_output=show_output,
     )
 
-    
-
 
 @pytest.mark.vcr
 @pytest.mark.record_stdout
@@ -284,8 +278,6 @@ def test_set_fred_key(args: List[str], persist: bool, show_output: bool, expecte
         show_output=show_output,
     )
 
-    
-
 
 @pytest.mark.vcr
 @pytest.mark.record_stdout
@@ -330,8 +322,6 @@ def test_set_news_key(args: List[str], persist: bool, show_output: bool, expecte
         persist=persist,
         show_output=show_output,
     )
-
-    
 
 
 @pytest.mark.vcr
@@ -380,8 +370,6 @@ def test_set_tradier_key(
         show_output=show_output,
     )
 
-    
-
 
 @pytest.mark.vcr
 @pytest.mark.record_stdout
@@ -426,8 +414,6 @@ def test_set_cmc_key(args: List[str], persist: bool, show_output: bool, expected
         persist=persist,
         show_output=show_output,
     )
-
-    
 
 
 @pytest.mark.vcr
@@ -475,8 +461,6 @@ def test_set_finnhub_key(
         persist=persist,
         show_output=show_output,
     )
-
-    
 
 
 @pytest.mark.vcr
@@ -533,8 +517,6 @@ def test_set_reddit_key(
         show_output=show_output,
     )
 
-    
-
 
 @pytest.mark.vcr
 @pytest.mark.record_stdout
@@ -581,8 +563,6 @@ def test_set_bitquery_key(
         persist=persist,
         show_output=show_output,
     )
-
-    
 
 
 @pytest.mark.vcr
@@ -678,8 +658,6 @@ def test_set_rh_key(args: List[str], persist: bool, show_output: bool, expected:
         show_output=show_output,
     )
 
-    
-
 
 @pytest.mark.vcr
 @pytest.mark.record_stdout
@@ -730,8 +708,6 @@ def test_set_degiro_key(
         persist=persist,
         show_output=show_output,
     )
-
-    
 
 
 @pytest.mark.vcr
@@ -784,8 +760,6 @@ def test_set_oanda_key(
         show_output=show_output,
     )
 
-    
-
 
 @pytest.mark.vcr
 @pytest.mark.record_stdout
@@ -834,8 +808,6 @@ def test_set_binance_key(
         persist=persist,
         show_output=show_output,
     )
-
-    
 
 
 @pytest.mark.vcr
@@ -888,8 +860,6 @@ def test_set_coinbase_key(
         show_output=show_output,
     )
 
-    
-
 
 @pytest.mark.vcr
 @pytest.mark.record_stdout
@@ -936,8 +906,6 @@ def test_set_walert_key(
         persist=persist,
         show_output=show_output,
     )
-
-    
 
 
 @pytest.mark.vcr
@@ -986,8 +954,6 @@ def test_set_glassnode_key(
         show_output=show_output,
     )
 
-    
-
 
 @pytest.mark.vcr
 @pytest.mark.record_stdout
@@ -1034,8 +1000,6 @@ def test_set_coinglass_key(
         persist=persist,
         show_output=show_output,
     )
-
-    
 
 
 @pytest.mark.vcr
@@ -1084,8 +1048,6 @@ def test_set_cpanic_key(
         show_output=show_output,
     )
 
-    
-
 
 @pytest.mark.vcr
 @pytest.mark.record_stdout
@@ -1132,8 +1094,6 @@ def test_set_ethplorer_key(
         persist=persist,
         show_output=show_output,
     )
-
-    
 
 
 @pytest.mark.vcr
@@ -1184,8 +1144,6 @@ def test_set_smartstake_key(
         show_output=show_output,
     )
 
-    
-
 
 @pytest.mark.vcr
 @pytest.mark.record_stdout
@@ -1232,8 +1190,6 @@ def test_set_github_key(
         persist=persist,
         show_output=show_output,
     )
-
-    
 
 
 @pytest.mark.vcr
@@ -1282,8 +1238,6 @@ def test_set_messari_key(
         show_output=show_output,
     )
 
-    
-
 
 @pytest.mark.vcr
 @pytest.mark.record_stdout
@@ -1330,8 +1284,6 @@ def test_set_eodhd_key(
         persist=persist,
         show_output=show_output,
     )
-
-    
 
 
 @pytest.mark.vcr
@@ -1380,8 +1332,6 @@ def test_set_santiment_key(
         show_output=show_output,
     )
 
-    
-
 
 @pytest.mark.vcr
 @pytest.mark.record_stdout
@@ -1428,8 +1378,6 @@ def test_set_tokenterminal_key(
         persist=persist,
         show_output=show_output,
     )
-
-    
 
 
 @pytest.mark.vcr
@@ -1478,8 +1426,6 @@ def test_set_shroom_key(
         show_output=show_output,
     )
 
-    
-
 
 @pytest.mark.vcr
 @pytest.mark.record_stdout
@@ -1526,8 +1472,6 @@ def test_set_openbb_key(
         persist=persist,
         show_output=show_output,
     )
-
-    
 
 
 def delete_tmp_files():

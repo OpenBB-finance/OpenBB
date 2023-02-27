@@ -126,7 +126,11 @@ def display_sentiment(
         # This plot has 3 axes
         if external_axes is None:
             _, axes = plt.subplots(
-                3, 1, sharex=False, figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
+                3,
+                1,
+                sharex=False,
+                figsize=plot_autoscale(),
+                dpi=get_current_user().preferences.PLOT_DPI,
             )
             ax1, ax2, ax3 = axes
         elif is_valid_axes_count(external_axes, 3):
@@ -137,7 +141,11 @@ def display_sentiment(
         # This plot has 2 axes
         if external_axes is None:
             _, axes = plt.subplots(
-                2, 1, sharex=True, figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
+                2,
+                1,
+                sharex=True,
+                figsize=plot_autoscale(),
+                dpi=get_current_user().preferences.PLOT_DPI,
             )
             ax1, ax2 = axes
         elif is_valid_axes_count(external_axes, 2):

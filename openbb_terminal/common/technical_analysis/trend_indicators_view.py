@@ -162,7 +162,11 @@ def display_aroon(
     # This plot has 3 axes
     if not external_axes:
         _, axes = plt.subplots(
-            3, 1, sharex=True, figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
+            3,
+            1,
+            sharex=True,
+            figsize=plot_autoscale(),
+            dpi=get_current_user().preferences.PLOT_DPI,
         )
         ax1, ax2, ax3 = axes
     elif is_valid_axes_count(external_axes, 3):

@@ -136,7 +136,11 @@ def plot_data(
     # This plot has 2 axes
     if not external_axes:
         _, axes = plt.subplots(
-            2, 1, sharex=True, figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
+            2,
+            1,
+            sharex=True,
+            figsize=plot_autoscale(),
+            dpi=get_current_user().preferences.PLOT_DPI,
         )
         (ax1, ax2) = axes
     elif is_valid_axes_count(external_axes, 2):
@@ -187,7 +191,11 @@ def plot_data_bar(
     # This plot has 2 axes
     if not external_axes:
         _, axes = plt.subplots(
-            2, 1, sharex=True, figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
+            2,
+            1,
+            sharex=True,
+            figsize=plot_autoscale(),
+            dpi=get_current_user().preferences.PLOT_DPI,
         )
         (ax1, ax2) = axes
     elif is_valid_axes_count(external_axes, 2):

@@ -383,10 +383,8 @@ class TerminalController(BaseController):
 
         if is_local():
             console.print(
-                
-                    "[info]You are currently logged as a guest.\n"
-                    f"[info]Register: [/info][cmds]{REGISTER_URL}\n[/cmds]"
-                
+                "[info]You are currently logged as a guest.\n"
+                f"[info]Register: [/info][cmds]{REGISTER_URL}\n[/cmds]"
             )
             return
         self.queue = self.load_class(AccountController, self.queue)

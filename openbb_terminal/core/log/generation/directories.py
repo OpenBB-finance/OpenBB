@@ -13,7 +13,9 @@ from openbb_terminal.core.session.current_user import get_current_user
 def get_log_dir() -> Path:
     """Retrieve application's log directory."""
 
-    log_dir = get_current_user().preferences.USER_DATA_DIRECTORY.joinpath("logs").absolute()
+    log_dir = (
+        get_current_user().preferences.USER_DATA_DIRECTORY.joinpath("logs").absolute()
+    )
 
     if not log_dir.is_dir():
         log_dir.mkdir(parents=True, exist_ok=True)

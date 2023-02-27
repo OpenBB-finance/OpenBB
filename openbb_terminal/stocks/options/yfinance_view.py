@@ -143,7 +143,9 @@ def plot_plot(
     values = chain.puts if put else chain.calls
 
     if external_axes is None:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI)
+        _, ax = plt.subplots(
+            figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
+        )
     elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
     else:
@@ -192,7 +194,9 @@ def plot_payoff(
     """Generate a graph showing the option payoff diagram"""
     x, yb, ya = generate_data(current_price, options, underlying)
     if external_axes is None:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI)
+        _, ax = plt.subplots(
+            figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
+        )
     elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
     else:
@@ -424,7 +428,9 @@ def plot_expected_prices(
     up_moves.reverse()
     probs = [100 * binom.pmf(r, len(up_moves), p) for r in up_moves]
     if external_axes is None:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI)
+        _, ax = plt.subplots(
+            figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
+        )
     elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
     else:
@@ -592,7 +598,9 @@ def display_vol_surface(
         Z = data.lastPrice
         label = "Last Price"
     if external_axes is None:
-        fig = plt.figure(figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI)
+        fig = plt.figure(
+            figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
+        )
         ax = plt.axes(projection="3d")
     else:
         ax = external_axes[0]
