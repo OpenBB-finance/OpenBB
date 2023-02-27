@@ -126,7 +126,7 @@ class Backend(PyWry):
         title = "Plots"
 
         # We check if figure is a subplot and has a title annotation
-        if not fig.layout.title.text and fig._has_subplots():
+        if not fig.layout.title.text and fig._has_subplots():  # pylint: disable=W0212
             for annotation in fig.select_annotations(
                 selector=dict(xref="paper", yref="paper")
             ):
