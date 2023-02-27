@@ -29,7 +29,9 @@ import pandas as pd
 import pandas.io.formats.format
 import pytz
 import requests
+import tweepy
 import yfinance as yf
+from dateutil.relativedelta import relativedelta
 from holidays import US as us_holidays
 from pandas._config.config import get_option
 from pandas.plotting import register_matplotlib_converters
@@ -42,11 +44,24 @@ from openbb_terminal import (
     config_terminal as cfg,
     feature_flags as obbff,
 )
-from openbb_terminal.core.config.paths import (
-    HOME_DIRECTORY,
-    USER_EXPORTS_DIRECTORY,
-)
+from openbb_terminal.core.config.paths import HOME_DIRECTORY, USER_EXPORTS_DIRECTORY
 from openbb_terminal.rich_config import console
+
+try:
+    twitter_api = tweepy.API(
+        tweepy.OAuth2BearerHandler(
+            cfg.API_TWITTER_BEARER_TOKEN,
+        ),
+        timeout=5,
+    )
+    if obbff.TOOLBAR_TWEET_NEWS and cfg.API_TWITTER_BEARER_TOKEN != "REPLACE_ME":
+        # A test to ensure that the Twitter API key is correct,
+        # otherwise we disable the Toolbar with Tweet News
+        twitter_api.get_user(screen_name="openbb_finance")
+except tweepy.errors.Unauthorized:
+    # Set toolbar tweet news to False because the Twitter API is not set up correctly
+    obbff.TOOLBAR_TWEET_NEWS = False
+
 
 logger = logging.getLogger(__name__)
 
@@ -63,11 +78,12 @@ MENU_GO_BACK = 0
 MENU_QUIT = 1
 MENU_RESET = 2
 
+LAST_TWEET_NEWS_UPDATE_CHECK_TIME = None
+
 # Command location path to be shown in the figures depending on watermark flag
 command_location = ""
 
-
-# pylint: disable=R0912
+# pylint: disable=R1702,R0912
 
 
 # pylint: disable=global-statement
@@ -1833,6 +1849,94 @@ def str_date_to_timestamp(date: str) -> int:
     return date_ts
 
 
+def update_news_from_tweet_to_be_displayed() -> str:
+    """Update news from tweet to be displayed.
+
+    Returns
+    -------
+    str
+        The news from tweet to be displayed
+    """
+    global LAST_TWEET_NEWS_UPDATE_CHECK_TIME
+
+    news_tweet = ""
+
+    # Check whether it has passed a certain amount of time since the last news update
+    if LAST_TWEET_NEWS_UPDATE_CHECK_TIME is None or (
+        (datetime.now(pytz.utc) - LAST_TWEET_NEWS_UPDATE_CHECK_TIME).total_seconds()
+        > obbff.TOOLBAR_TWEET_NEWS_SECONDS_BETWEEN_UPDATES
+    ):
+        # This doesn't depende on the time of the tweet but the time that the check was made
+        LAST_TWEET_NEWS_UPDATE_CHECK_TIME = datetime.now(pytz.utc)
+
+        dhours = 0
+        dminutes = 0
+        # Get timezone that corresponds to the user
+        if obbff.USE_DATETIME and get_user_timezone_or_invalid() != "INVALID":
+            utcnow = pytz.timezone("utc").localize(datetime.utcnow())  # generic time
+            here = utcnow.astimezone(pytz.timezone("Etc/UTC")).replace(tzinfo=None)
+            there = utcnow.astimezone(pytz.timezone(get_user_timezone())).replace(
+                tzinfo=None
+            )
+
+            offset = relativedelta(here, there)
+            dhours = offset.hours
+            dminutes = offset.minutes
+
+        if "," in obbff.TOOLBAR_TWEET_NEWS_ACCOUNTS_TO_TRACK:
+            news_sources_twitter_handles = (
+                obbff.TOOLBAR_TWEET_NEWS_ACCOUNTS_TO_TRACK.split(",")
+            )
+        else:
+            news_sources_twitter_handles = [obbff.TOOLBAR_TWEET_NEWS_ACCOUNTS_TO_TRACK]
+
+        news_tweet_to_use = ""
+        handle_to_use = ""
+        url = ""
+        last_tweet_dt: Optional[datetime] = None
+        for handle in news_sources_twitter_handles:
+            try:
+                # Get last N tweets from each handle
+                timeline = twitter_api.user_timeline(
+                    screen_name=handle,
+                    count=obbff.TOOLBAR_TWEET_NEWS_NUM_LAST_TWEETS_TO_READ,
+                )
+                timeline = timeline[: obbff.TOOLBAR_TWEET_NEWS_NUM_LAST_TWEETS_TO_READ]
+                for last_tweet in timeline:
+                    keywords = obbff.TOOLBAR_TWEET_NEWS_KEYWORDS.split(",")
+                    more_recent = (
+                        last_tweet_dt is None or last_tweet.created_at > last_tweet_dt
+                    )
+                    with_keyword = any(key in last_tweet.text for key in keywords)
+
+                    if more_recent and with_keyword:
+                        handle_to_use = handle
+                        last_tweet_dt = last_tweet.created_at
+
+                        news_tweet_to_use = last_tweet.text
+
+                        url = f"https://twitter.com/x/status/{last_tweet.id_str}"
+
+            # In case the handle provided doesn't exist, we skip it
+            except tweepy.errors.NotFound:
+                pass
+
+        if last_tweet_dt and news_tweet_to_use:
+            tweet_hr = f"{last_tweet_dt.hour}"
+            tweet_min = f"{last_tweet_dt.minute}"
+            # Update time based on timezone specified by user
+            if (
+                obbff.USE_DATETIME and get_user_timezone_or_invalid() != "INVALID"
+            ) and (dhours > 0 or dminutes > 0):
+                tweet_hr = f"{round((int(last_tweet_dt.hour) - dhours) % 60):02}"
+                tweet_min = f"{round((int(last_tweet_dt.minute) - dminutes) % 60):02}"
+
+            # Update NEWS_TWEET with the new news tweet found
+            news_tweet = f"{tweet_hr}:{tweet_min} - @{handle_to_use} - {url}\n\n{news_tweet_to_use}"
+
+    return news_tweet
+
+
 def check_start_less_than_end(start_date: str, end_date: str) -> bool:
     """Check if start_date is equal to end_date.
 
@@ -1860,7 +1964,9 @@ def check_start_less_than_end(start_date: str, end_date: str) -> bool:
 
 
 # Write an abstract helper to make requests from a url with potential headers and params
-def request(url: str, method="GET", **kwargs) -> requests.Response:
+def request(
+    url: str, method: str = "GET", timeout: int = 0, **kwargs
+) -> requests.Response:
     """Abstract helper to make requests from a url with potential headers and params.
 
     Parameters
@@ -1883,15 +1989,15 @@ def request(url: str, method="GET", **kwargs) -> requests.Response:
     # We want to add a user agent to the request, so check if there are any headers
     # If there are headers, check if there is a user agent, if not add one.
     # Some requests seem to work only with a specific user agent, so we want to be able to override it.
-    headers = kwargs.pop("headers") if "headers" in kwargs else {}
+    headers = kwargs.pop("headers", {})
+    timeout = timeout or cfg.REQUEST_TIMEOUT
+
     if "User-Agent" not in headers:
         headers["User-Agent"] = get_user_agent()
     if method.upper() == "GET":
-        return requests.get(url, headers=headers, timeout=cfg.REQUEST_TIMEOUT, **kwargs)
+        return requests.get(url, headers=headers, timeout=timeout, **kwargs)
     if method.upper() == "POST":
-        return requests.post(
-            url, headers=headers, timeout=cfg.REQUEST_TIMEOUT, **kwargs
-        )
+        return requests.post(url, headers=headers, timeout=timeout, **kwargs)
     raise ValueError("Method must be GET or POST")
 
 

@@ -1,0 +1,23 @@
+fixedincome
+estr -s 2022-01-01 -e 2023-01-01
+sofr -s 2022-01-01 -e 2023-01-01
+sonia -s 2022-01-01 -e 2023-01-01
+ameribor -s 2022-01-01 -e 2023-01-01
+fed -s 2022-01-01 -e 2023-01-01
+iorb -s 2022-01-01 -e 2023-01-01
+projection
+dwpcr -s 2022-01-01 -e 2023-01-01
+ecb -s 2022-01-01 -e 2023-01-01
+treasury --short australia --long united_kingdom,united_states -s 2022-01-01 -e 2023-01-01
+usrates -s 2022-01-01 -e 2023-01-01
+ycrv -d 2023-02-17
+ecbycrv -d 2023-02-17
+icebofa -s 2022-01-01 -e 2023-01-01
+moody -s 2022-01-01 -e 2023-01-01
+cp -s 2022-01-01 -e 2023-01-01
+spot -s 2022-01-01 -e 2023-01-01
+hqm -d 2023-02-17
+icespread -s 2022-01-01 -e 2023-01-01
+tmc -s 2022-01-01 -e 2023-01-01
+ffrmc -s 2022-01-01 -e 2023-01-01
+tbffr -s 2022-01-01 -e 2023-01-01
