@@ -111,6 +111,9 @@ def test_get_fama_coe():
 @pytest.mark.vcr
 def test_others_in_sector():
     data = dcf_model.others_in_sector(
-        symbol="PM", sector="Consumer Defensive", industry="Tobacco"
+        symbol="PM",
+        sector="Consumer Staples",
+        industry_group="Food, Beverage & Tobacco",
+        industry="Tobacco",
     )
     assert len(data) > 0

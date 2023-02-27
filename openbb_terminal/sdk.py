@@ -176,7 +176,6 @@ class OpenBBSDK:
 
         Submodules:
             `disc`: Discovery Module
-            `scr`: Scr Module
 
         Attributes:
             `candle`: Show candle plot of loaded ticker.\n
@@ -475,7 +474,6 @@ class OpenBBSDK:
             `options`: Options Module
             `qa`: Quantitative Analysis Module
             `screener`: Screener Module
-            `sia`: Sector Industry Analysis Module
             `ta`: Technical Analysis Module
             `th`: Trading Hours Module
 

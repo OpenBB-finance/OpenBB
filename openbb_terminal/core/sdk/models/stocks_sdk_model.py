@@ -493,7 +493,6 @@ class StocksOptions(Category):
         self.eodchain = lib.stocks_options_intrinio_model.get_full_chain_eod
         self.expirations = lib.stocks_options_sdk_helper.get_option_expirations
         self.generate_data = lib.stocks_options_yfinance_model.generate_data
-        self.greeks = lib.stocks_options_sdk_helper.get_greeks
         self.grhist = lib.stocks_options_screen_syncretism_model.get_historical_greeks
         self.grhist_chart = (
             lib.stocks_options_screen_syncretism_view.view_historical_greeks
@@ -556,72 +555,6 @@ class StocksScreener(Category):
         self.historical_chart = lib.stocks_screener_yahoofinance_view.historical
         self.screener_data = lib.stocks_screener_finviz_model.get_screener_data
         self.screener_data_chart = lib.stocks_screener_finviz_view.screener
-
-
-class StocksSectorIndustryAnalysis(Category):
-    """Sector Industry Analysis Module.
-
-    Attributes:
-        `countries`: Get all countries in Yahoo Finance data based on sector or industry. [Source: Finance Database]\n
-        `cpci`: Get number of companies per country in a specific industry (and specific market cap).\n
-        `cpci_chart`: Display number of companies per country in a specific industry. [Source: Finance Database]\n
-        `cpcs`: Get number of companies per country in a specific sector (and specific market cap).\n
-        `cpcs_chart`: Display number of companies per country in a specific sector. [Source: Finance Database]\n
-        `cpic`: Get number of companies per industry in a specific country (and specific market cap).\n
-        `cpic_chart`: Display number of companies per industry in a specific country. [Source: Finance Database]\n
-        `cpis`: Get number of companies per industry in a specific sector (and specific market cap).\n
-        `cpis_chart`: Display number of companies per industry in a specific sector. [Source: Finance Database]\n
-        `cps`: Get number of companies per sector in a specific country (and specific market cap). [Source: Finance Database]\n
-        `cps_chart`: Display number of companies per sector in a specific country (and market cap). [Source: Finance Database]\n
-        `filter_stocks`: Filter stocks based on country, sector, industry, market cap and exclude exchanges.\n
-        `industries`: Get all industries in Yahoo Finance data based on country or sector. [Source: Finance Database]\n
-        `maketcap`: Get all market cap division in Yahoo Finance data. [Source: Finance Database]\n
-        `marketcap`: Get all market cap division in Yahoo Finance data. [Source: Finance Database]\n
-        `sectors`: Get all sectors in Yahoo Finance data based on country or industry. [Source: Finance Database]\n
-        `stocks_data`: Get stocks data based on a list of stocks and the finance key. The function searches for the\n
-    """
-
-    _location_path = "stocks.sia"
-
-    def __init__(self):
-        super().__init__()
-        self.countries = lib.stocks_sia_financedatabase_model.get_countries
-        self.cpci = (
-            lib.stocks_sia_financedatabase_model.get_companies_per_country_in_industry
-        )
-        self.cpci_chart = (
-            lib.stocks_sia_financedatabase_view.display_companies_per_country_in_industry
-        )
-        self.cpcs = (
-            lib.stocks_sia_financedatabase_model.get_companies_per_country_in_sector
-        )
-        self.cpcs_chart = (
-            lib.stocks_sia_financedatabase_view.display_companies_per_country_in_sector
-        )
-        self.cpic = (
-            lib.stocks_sia_financedatabase_model.get_companies_per_industry_in_country
-        )
-        self.cpic_chart = (
-            lib.stocks_sia_financedatabase_view.display_companies_per_industry_in_country
-        )
-        self.cpis = (
-            lib.stocks_sia_financedatabase_model.get_companies_per_industry_in_sector
-        )
-        self.cpis_chart = (
-            lib.stocks_sia_financedatabase_view.display_companies_per_industry_in_sector
-        )
-        self.cps = (
-            lib.stocks_sia_financedatabase_model.get_companies_per_sector_in_country
-        )
-        self.cps_chart = (
-            lib.stocks_sia_financedatabase_view.display_companies_per_sector_in_country
-        )
-        self.filter_stocks = lib.stocks_sia_financedatabase_model.filter_stocks
-        self.industries = lib.stocks_sia_financedatabase_model.get_industries
-        self.maketcap = lib.stocks_sia_financedatabase_model.get_marketcap
-        self.marketcap = lib.stocks_sia_financedatabase_model.get_marketcap
-        self.sectors = lib.stocks_sia_financedatabase_model.get_sectors
-        self.stocks_data = lib.stocks_sia_stockanalysis_model.get_stocks_data
 
 
 class StocksTechnicalAnalysis(Category):
