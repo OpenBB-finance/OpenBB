@@ -4,21 +4,23 @@ __docformat__ = "numpy"
 # pylint: disable=R0913, R0914, C0302, too-many-branches, too-many-statements, line-too-long
 # flake8: noqa: E501
 
+# IMPORTS STANDARD
 import logging
 from typing import Optional
 import math
 import warnings
 
+# IMPORTATION THIRDPARTY
 import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from openbb_terminal.core.session.current_user import get_current_user
 import riskfolio as rp
 from matplotlib.gridspec import GridSpec
 from matplotlib.lines import Line2D
 
-
+# IMPORTATION INTERNAL
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import plot_autoscale

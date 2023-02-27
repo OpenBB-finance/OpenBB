@@ -32,7 +32,10 @@ def get_etf_sector_weightings(name: str) -> Dict:
     """
     try:
         response = urlopen(
-            f"https://financialmodelingprep.com/api/v3/etf-sector-weightings/{name}?apikey={get_current_user().credentials.API_KEY_FINANCIALMODELINGPREP}"
+            (
+                "https://financialmodelingprep.com/api/v3/etf-sector-weightings/"
+                f"{name}?apikey={get_current_user().credentials.API_KEY_FINANCIALMODELINGPREP}"
+            )
         )
         data = json.loads(response.read().decode("utf-8"))
     except HTTPError:

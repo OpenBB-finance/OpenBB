@@ -1,7 +1,13 @@
+# IMPORTATION STANDARD
+import dataclasses
 from contextlib import contextmanager
 
+# IMPORTATION THIRDPARTY
 import pytest
 
+# IMPORTATION INTERNAL
+from openbb_terminal.core.models.preferences_model import PreferencesModel
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal import terminal_controller
 
 
@@ -9,10 +15,18 @@ from openbb_terminal import terminal_controller
 @pytest.mark.block_network
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.record_stdout
-def test_terminal_quick_exit(mocker, monkeypatch):
-    monkeypatch.setattr(terminal_controller.obbff, "ENABLE_QUICK_EXIT", True)
-    monkeypatch.setattr(terminal_controller.obbff, "USE_ION", False)
-    monkeypatch.setattr(terminal_controller.obbff, "USE_PROMPT_TOOLKIT", True)
+def test_terminal_quick_exit(mocker):
+    current_user = get_current_user()
+    preference = PreferencesModel(
+        ENABLE_QUICK_EXIT=True,
+        USE_ION=False,
+        USE_PROMPT_TOOLKIT=True,
+    )
+    user_model = dataclasses.replace(current_user, preference=preference)
+    mocker.patch(
+        target="openbb_terminal.core.session.current_user.get_current_user",
+        return_value=user_model,
+    )
 
     mocker.patch("sys.stdin")
 
@@ -22,10 +36,18 @@ def test_terminal_quick_exit(mocker, monkeypatch):
 @pytest.mark.skip
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.record_stdout
-def test_terminal_quit(mocker, monkeypatch):
-    monkeypatch.setattr(terminal_controller.obbff, "ENABLE_QUICK_EXIT", False)
-    monkeypatch.setattr(terminal_controller.obbff, "USE_ION", False)
-    monkeypatch.setattr(terminal_controller.obbff, "USE_PROMPT_TOOLKIT", True)
+def test_terminal_quit(mocker):
+    current_user = get_current_user()
+    preference = PreferencesModel(
+        ENABLE_QUICK_EXIT=True,
+        USE_ION=False,
+        USE_PROMPT_TOOLKIT=True,
+    )
+    user_model = dataclasses.replace(current_user, preference=preference)
+    mocker.patch(
+        target="openbb_terminal.core.session.current_user.get_current_user",
+        return_value=user_model,
+    )
 
     mocker.patch("sys.stdin")
     mocker.patch("builtins.input", return_value="e")

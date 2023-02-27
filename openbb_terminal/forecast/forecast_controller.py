@@ -3,11 +3,15 @@ __docformat__ = "numpy"
 
 # pylint: disable=too-many-lines, too-many-branches, too-many-arguments, R0904,R0902,W0707
 # flake8: noqa
+
+# IMPORTATION STANDARD
 import argparse
 import logging
 from typing import Any, Dict, List, Optional
 
-from openbb_terminal.core.session.current_user import get_current_user
+# IMPORTATION THIRDPARTY
+import pandas as pd
+import psutil
 
 try:
     import darts
@@ -27,9 +31,9 @@ except ModuleNotFoundError:
         "Please install the forecast version of the terminal. Instructions can be found "
         "under the python tab: https://docs.openbb.co/terminal/quickstart/installation"
     )
-import pandas as pd
-import psutil
 
+# IMPORTATION INTERNAL
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.common import common_model
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end

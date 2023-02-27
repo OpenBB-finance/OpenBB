@@ -1,7 +1,7 @@
 # pylint: disable=import-outside-toplevel
 
 
-def test_openbb(mocker):
+def test_openbb():
     """Test the openbb function"""
     from openbb_terminal.sdk import openbb
 
