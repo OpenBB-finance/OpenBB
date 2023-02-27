@@ -92,10 +92,9 @@ jobs:
       - name: Create Signed Package
         env:
           APPLE_DEVELOPER_CERTIFICATE_ID: ${{ secrets.MACOS_CERTIFICATE }}
-          MACOS_CERTIFICATE: ${{ secrets.MACOS_CERTIFICATE }}
           MACOS_CERTIFICATE_PWD: ${{ secrets.MACOS_CERTIFICATE_PWD }}
           MACOS_KEYCHAIN_PWD: ${{ secrets.MACOS_KEYCHAIN_PWD }}
-          MACOS_CODESIGN_IDENTITY: ${{ secrets.MACOS_CODESIGN_IDENTITY }}
+          APPLE_SIGNING_IDENTITY: ${{ secrets.MACOS_CODESIGN_IDENTITY }}
         run: |
           chmod +x build/pyinstaller/macOS-x64/build-macos-x64.sh
           build/pyinstaller/macOS-x64/build-macos-x64.sh OpenBBTerminal 0.0.1
