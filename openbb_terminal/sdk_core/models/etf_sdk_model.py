@@ -54,19 +54,3 @@ class EtfDiscovery(Category):
     def __init__(self):
         super().__init__()
         self.mover = lib.etf_disc_wsj_model.etf_movers
-
-
-class EtfScr(Category):
-    """Scr Module.
-
-    Attributes:
-        `screen`: Screens the etfs pulled from my repo (https://github.com/jmaslek/etf_scraper),\n
-        `screen_chart`: Display screener output\n
-    """
-
-    _location_path = "etf.scr"
-
-    def __init__(self):
-        super().__init__()
-        self.screen = lib.etf_scr_model.etf_screener
-        self.screen_chart = lib.etf_scr_view.view_screener

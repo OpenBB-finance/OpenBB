@@ -1,6 +1,6 @@
-                                                            Price    Chg  %Chg     Vol
-0                Direxion Daily FTSE China Bull 3X Shares  59.640  4.450  8.06  276.6K
-1             Direxion Daily Semiconductor Bull 3X Shares  17.715  1.225  7.43   13.6M
-2  Direxion Daily CSI China Internet Index Bull 2X Shares  60.990  4.130  7.26   94.6K
-3                    Direxion Daily Retail Bull 3x Shares  11.220  0.490  4.57   66.0K
-4                    Direxion Daily TSLA Bull 1.5X Shares  13.200  0.570  4.51    3.5M
+                                                Price   Chg   %Chg     Vol
+0       GraniteShares 1.5x Long NVDA Daily ETF  37.49  6.46  20.82   55.8K
+1              Breakwave Dry Bulk Shipping ETF   7.98  0.69   9.47  345.6K
+2  Direxion Daily Semiconductor Bull 3X Shares  15.06  1.23   8.89   16.3M
+3        ProShares Ultra Bloomberg Natural Gas   5.24  0.38   7.82   16.5M
+4    Direxion Daily South Korea Bull 3X Shares   8.94  0.53   6.30   56.7K

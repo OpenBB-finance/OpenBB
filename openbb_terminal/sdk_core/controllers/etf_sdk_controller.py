@@ -8,7 +8,6 @@ class EtfController(model.EtfRoot):
 
     Submodules:
         `disc`: Discovery Module
-        `scr`: Scr Module
 
     Attributes:
         `candle`: Show candle plot of loaded ticker.\n
@@ -35,14 +34,3 @@ class EtfController(model.EtfRoot):
         """
 
         return model.EtfDiscovery()
-
-    @property
-    def scr(self):
-        """Etf Scr Submodule
-
-        Attributes:
-            `screen`: Screens the etfs pulled from my repo (https://github.com/jmaslek/etf_scraper),\n
-            `screen_chart`: Display screener output\n
-        """
-
-        return model.EtfScr()

@@ -17,7 +17,6 @@ class StocksController(model.StocksRoot):
         `options`: Options Module
         `qa`: Quantitative Analysis Module
         `screener`: Screener Module
-        `sia`: Sector Industry Analysis Module
         `ta`: Technical Analysis Module
         `th`: Trading Hours Module
 
@@ -271,7 +270,6 @@ class StocksController(model.StocksRoot):
             `eodchain`: Get full EOD option date across all expirations\n
             `expirations`: Get Option Chain Expirations\n
             `generate_data`: Gets x values, and y values before and after premiums\n
-            `greeks`: Gets the greeks for a given option\n
             `grhist`: Get historical option greeks\n
             `grhist_chart`: Plots historical greeks for a given option. [Source: Syncretism]\n
             `hist`: Get historical option pricing.\n
@@ -319,32 +317,6 @@ class StocksController(model.StocksRoot):
         """
 
         return model.StocksScreener()
-
-    @property
-    def sia(self):
-        """Stocks Sector Industry Analysis Submodule
-
-        Attributes:
-            `countries`: Get all countries in Yahoo Finance data based on sector or industry. [Source: Finance Database]\n
-            `cpci`: Get number of companies per country in a specific industry (and specific market cap).\n
-            `cpci_chart`: Display number of companies per country in a specific industry. [Source: Finance Database]\n
-            `cpcs`: Get number of companies per country in a specific sector (and specific market cap).\n
-            `cpcs_chart`: Display number of companies per country in a specific sector. [Source: Finance Database]\n
-            `cpic`: Get number of companies per industry in a specific country (and specific market cap).\n
-            `cpic_chart`: Display number of companies per industry in a specific country. [Source: Finance Database]\n
-            `cpis`: Get number of companies per industry in a specific sector (and specific market cap).\n
-            `cpis_chart`: Display number of companies per industry in a specific sector. [Source: Finance Database]\n
-            `cps`: Get number of companies per sector in a specific country (and specific market cap). [Source: Finance Database]\n
-            `cps_chart`: Display number of companies per sector in a specific country (and market cap). [Source: Finance Database]\n
-            `filter_stocks`: Filter stocks based on country, sector, industry, market cap and exclude exchanges.\n
-            `industries`: Get all industries in Yahoo Finance data based on country or sector. [Source: Finance Database]\n
-            `maketcap`: Get all market cap division in Yahoo Finance data. [Source: Finance Database]\n
-            `marketcap`: Get all market cap division in Yahoo Finance data. [Source: Finance Database]\n
-            `sectors`: Get all sectors in Yahoo Finance data based on country or industry. [Source: Finance Database]\n
-            `stocks_data`: Get stocks data based on a list of stocks and the finance key. The function searches for the\n
-        """
-
-        return model.StocksSectorIndustryAnalysis()
 
     @property
     def ta(self):
