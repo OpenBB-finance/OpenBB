@@ -163,7 +163,8 @@ def get_brnn_data(
     )
 
     helpers.print_tensorboard_logs(
-        model_save_name, get_current_user().preferences.USER_FORECAST_MODELS_DIRECTORY
+        model_save_name,
+        str(get_current_user().preferences.USER_FORECAST_MODELS_DIRECTORY),
     )
 
     # Showing historical backtesting without retraining model (too slow)

@@ -219,7 +219,7 @@ def plot_estr(
     if not external_axes:
         _, ax = plt.subplots(
             figsize=plot_autoscale(),
-            dpi=get_current_user().preferences.get_current_user().preferences.PLOT_DPI,
+            dpi=get_current_user().preferences.PLOT_DPI,
         )
     elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
@@ -302,7 +302,7 @@ def plot_sofr(
     if not external_axes:
         _, ax = plt.subplots(
             figsize=plot_autoscale(),
-            dpi=get_current_user().preferences.get_current_user().preferences.PLOT_DPI,
+            dpi=get_current_user().preferences.PLOT_DPI,
         )
     elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
@@ -375,7 +375,7 @@ def plot_sonia(
     if not external_axes:
         _, ax = plt.subplots(
             figsize=plot_autoscale(),
-            dpi=get_current_user().preferences.get_current_user().preferences.PLOT_DPI,
+            dpi=get_current_user().preferences.PLOT_DPI,
         )
     elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
@@ -456,7 +456,7 @@ def plot_ameribor(
     if not external_axes:
         _, ax = plt.subplots(
             figsize=plot_autoscale(),
-            dpi=get_current_user().preferences.get_current_user().preferences.PLOT_DPI,
+            dpi=get_current_user().preferences.PLOT_DPI,
         )
     elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes

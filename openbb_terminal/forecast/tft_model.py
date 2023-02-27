@@ -193,11 +193,11 @@ def get_tft_data(
     best_model = TFTModel.load_from_checkpoint(
         model_name=model_save_name,
         best=True,
-        work_dir=current_user.USER_FORECAST_MODELS_DIRECTORY,
+        work_dir=current_user.preferences.USER_FORECAST_MODELS_DIRECTORY,
     )
 
     helpers.print_tensorboard_logs(
-        model_save_name, current_user.preferences.USER_FORECAST_MODELS_DIRECTORY
+        model_save_name, str(current_user.preferences.USER_FORECAST_MODELS_DIRECTORY)
     )
 
     # Showing historical backtesting without retraining model (too slow)

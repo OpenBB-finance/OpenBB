@@ -428,9 +428,7 @@ class SettingsController(BaseController):
             other_args.insert(0, "-v")
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
-            set_preference(
-                "OPENBB_BACKEND", None if ns_parser.value == "None" else ns_parser.value
-            )
+            set_preference("OPENBB_BACKEND", ns_parser.value)
 
     @log_start_end(log=logger)
     def call_lang(self, other_args: List[str]):

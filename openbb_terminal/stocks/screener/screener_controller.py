@@ -61,13 +61,13 @@ class ScreenerController(BaseController):
 
     PRESETS_PATH_DEFAULT = MISCELLANEOUS_DIRECTORY / "stocks" / "screener"
     preset_choices = {
-        filepath.name.replace(".ini", ""): filepath
+        filepath.name.replace(".ini", ""): str(filepath)
         for filepath in PRESETS_PATH.iterdir()
         if filepath.suffix == ".ini"
     }
     preset_choices.update(
         {
-            filepath.name.replace(".ini", ""): filepath
+            filepath.name.replace(".ini", ""): str(filepath)
             for filepath in PRESETS_PATH_DEFAULT.iterdir()
             if filepath.suffix == ".ini"
         }

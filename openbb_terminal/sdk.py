@@ -530,6 +530,7 @@ class OpenBBSDK:
         return model.TaRoot()
 
 
+# pylint: disable=too-few-public-methods
 class SDKLogger:
     def __init__(self) -> None:
         self.__check_initialize_logging()
