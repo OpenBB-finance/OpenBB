@@ -78,7 +78,6 @@ def transcribe_and_summarize(
     )
     console.print("")
     console.print("[green]Downloading and Loading NLP Pipelines from cache...[/green]")
-    console.print("")
 
     hf_cache_info = scan_cache_dir()
 
@@ -92,14 +91,13 @@ def transcribe_and_summarize(
                 "facebook/bart-large-cnn"
             )
             summary_tokenizer = BartTokenizer.from_pretrained("facebook/bart-large-cnn")
-            console.print("[green]facebook/bart-large-cnn found in cache.[/green]")
             model_cached = True
             break
 
     # download bart-large-cnn model if not in cache
     if not model_cached:
         console.print(
-            "[yellow]facebook/bart-large-cnn not found in cache. Download model (1.64G)? (y/n)[/yellow]"
+            "[yellow]Summarization Model not found in cache. Download model (1.64G)? (y/n)[/yellow]"
         )
         response = input()
         if response.lower() != "y":
@@ -110,7 +108,7 @@ def transcribe_and_summarize(
         )
         summary_tokenizer = BartTokenizer.from_pretrained("facebook/bart-large-cnn")
         console.print(
-            "[green]facebook/bart-large-cnn downloaded and saved to cache for future use.[/green]"
+            "[green]Summarization Model downloaded and saved to cache for future use.[/green]"
         )
 
     # check for distilbert model
@@ -122,16 +120,13 @@ def transcribe_and_summarize(
                 "sentiment-analysis",
                 model="distilbert-base-uncased-finetuned-sst-2-english",
             )
-            console.print(
-                "[green]distilbert-base-uncased-finetuned-sst-2-english found in cache.[/green]"
-            )
             model_cached = True
             break
 
     # download distilbert model if not in cache
     if not model_cached:
         console.print(
-            "[yellow]distilbert-base-uncased-finetuned-sst-2-english not found"
+            "[yellow]Sentiment Analysis model not found"
             " in cache. Download model (275mb)? (y/n)[/yellow]"
         )
         response = input()
@@ -143,21 +138,47 @@ def transcribe_and_summarize(
             model="distilbert-base-uncased-finetuned-sst-2-english",
         )
         console.print(
-            "[green]distilbert-base-uncased-finetuned-sst-2-english downloaded and"
+            "[green]Sentiment Analysis model downloaded and"
             " saved to cache for future use.[/green]"
         )
 
-    console.print("All NLP Pipelines loaded.")
-    console.print("")
-
-    console.print("Transcribing and summarizing...")
-    print(f"video: {video}")
     if model_name.endswith(".en"):
         warnings.warn(
             f"{model_name} is an English-only model, forcing English detection."
         )
 
-    model = whisper.load_model(model_name)
+    # make user accept the download of the model if it's not in cache
+    # cache directory is ~/.cache/whisper
+    whisper_cache_dir = os.path.join(os.path.expanduser("~"), ".cache", "whisper")
+
+    if model_name in ["small", "small.en"]:
+        model_size = "483.6 MB"
+    elif model_name in ["tiny", "tiny.en"]:
+        model_size = "75.6 MB"
+    elif model_name in ["base", "base.en"]:
+        model_size = "145.3 MB"
+    elif model_name in ["medium", "medium.en"]:
+        model_size = "1.53 GB"
+    elif model_name in ["large", "large-v2", "large-v1"]:
+        model_size = "2.87 GB"
+
+    full_model_name = model_name + ".en.pt" if language == "en" else model_name + ".pt"
+    if full_model_name not in os.listdir(whisper_cache_dir):
+        console.print("")
+        console.print(
+            f"[yellow]Whisper model ({model_name}) not found in cache. Download model ({model_size})? (y/n)[/yellow]"
+        )
+        response = input()
+        if response.lower() != "y":
+            console.print("[red]Cancelling download and exiting command.[/red]")
+            return
+
+    whisper_model = whisper.load_model(model_name)
+
+    console.print("")
+    console.print("[green]All NLP Pipelines loaded.[/green]")
+    console.print("")
+    console.print("[green]Transcribing and summarizing...[/green]")
 
     try:
         audios = get_audio([video])
@@ -187,7 +208,7 @@ def transcribe_and_summarize(
 
         decode_options = {"task": task, "language": language}
         result = whisper.transcribe(
-            model=model,
+            model=whisper_model,
             audio=audio_path,
             verbose=verbose,
             **decode_options,
