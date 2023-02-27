@@ -1,5 +1,5 @@
 # IMPORTS STANDARD
-from typing import Any, Dict
+from typing import Any, Dict, Optional
 
 # IMPORTS THIRDPARTY
 from dotenv import dotenv_values
@@ -13,7 +13,7 @@ from openbb_terminal.core.config.paths import (
 
 
 def reading_env() -> Dict[str, Any]:
-    __env_dict = {}
+    __env_dict: Dict[str, Optional[str]] = {}
 
     if REPOSITORY_ENV_FILE.exists():
         __env_dict.update(**dotenv_values(REPOSITORY_ENV_FILE))
