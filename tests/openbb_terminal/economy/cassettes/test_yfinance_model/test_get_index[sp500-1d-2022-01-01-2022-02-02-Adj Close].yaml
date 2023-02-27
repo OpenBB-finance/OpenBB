@@ -15,10 +15,10 @@ interactions:
     uri: https://query2.finance.yahoo.com/v8/finance/chart/%5EGSPC?range=1d&interval=1d
   response:
     body:
-      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"^GSPC","exchangeName":"SNP","instrumentType":"INDEX","firstTradeDate":-1325583000,"regularMarketTime":1677254431,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":3948.55,"chartPreviousClose":4012.32,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","end":1677249000,"start":1677229200,"gmtoffset":-18000},"regular":{"timezone":"EST","end":1677272400,"start":1677249000,"gmtoffset":-18000},"post":{"timezone":"EST","end":1677286800,"start":1677272400,"gmtoffset":-18000}},"dataGranularity":"1d","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1677254431],"indicators":{"quote":[{"high":[3973.239990234375],"low":[3943.080078125],"close":[3948.550048828125],"volume":[579373084],"open":[3973.239990234375]}],"adjclose":[{"adjclose":[3948.550048828125]}]}}],"error":null}}'
+      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"^GSPC","exchangeName":"SNP","instrumentType":"INDEX","firstTradeDate":-1325583000,"regularMarketTime":1677276020,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":3970.04,"chartPreviousClose":4012.32,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","start":1677229200,"end":1677249000,"gmtoffset":-18000},"regular":{"timezone":"EST","start":1677249000,"end":1677272400,"gmtoffset":-18000},"post":{"timezone":"EST","start":1677272400,"end":1677286800,"gmtoffset":-18000}},"dataGranularity":"1d","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1677249000],"indicators":{"quote":[{"close":[3970.0400390625],"high":[3978.25],"low":[3943.080078125],"volume":[3877700000],"open":[3973.239990234375]}],"adjclose":[{"adjclose":[3970.0400390625]}]}}],"error":null}}'
     headers:
       Age:
-      - '1'
+      - '0'
       Connection:
       - keep-alive
       Expect-CT:
@@ -36,25 +36,25 @@ interactions:
       cache-control:
       - public, max-age=10, stale-while-revalidate=20
       content-length:
-      - '943'
+      - '930'
       content-type:
       - application/json;charset=utf-8
       date:
-      - Fri, 24 Feb 2023 16:00:32 GMT
+      - Sat, 25 Feb 2023 13:16:51 GMT
       server:
       - ATS
       vary:
       - Origin,Accept-Encoding
       x-envoy-decorator-operation:
-      - finance-chart-api--mtls-baseline-production-bf1.finance-k8s.svc.yahoo.local:4080/*
+      - finance-chart-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
-      - '3'
+      - '2'
       x-request-id:
-      - 1151c690-d755-4dcd-b01d-bce1dd80ca9c
+      - aff81486-78f1-498a-ac29-a5f2d73b32fe
       x-yahoo-request-id:
-      - 3athbr5hvhnp1
+      - 4kmkudphvk2i3
       y-rid:
-      - 3athbr5hvhnp1
+      - 4kmkudphvk2i3
     status:
       code: 200
       message: OK
@@ -75,26 +75,26 @@ interactions:
   response:
     body:
       string: !!binary |
-        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
+        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
     headers:
       Age:
       - '0'
@@ -117,11 +117,11 @@ interactions:
       content-encoding:
       - gzip
       content-length:
-      - '1118'
+      - '1120'
       content-type:
       - application/json;charset=utf-8
       date:
-      - Fri, 24 Feb 2023 16:00:33 GMT
+      - Sat, 25 Feb 2023 13:16:51 GMT
       server:
       - ATS
       vary:
@@ -131,11 +131,11 @@ interactions:
       x-envoy-upstream-service-time:
       - '4'
       x-request-id:
-      - 98131962-ad56-459c-a7a0-05a51e54f38c
+      - e6fb3c49-fdf1-4b73-879d-9157ef42f368
       x-yahoo-request-id:
-      - 47l9j5thvhnp1
+      - 8grmrplhvk2i3
       y-rid:
-      - 47l9j5thvhnp1
+      - 8grmrplhvk2i3
     status:
       code: 200
       message: OK

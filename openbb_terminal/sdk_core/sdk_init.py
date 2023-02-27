@@ -20,8 +20,6 @@ import openbb_terminal.cryptocurrency.cryptocurrency_helpers as crypto_helpers
 # ETF
 import openbb_terminal.etf.discovery.wsj_model as etf_disc_wsj_model
 import openbb_terminal.etf.discovery.wsj_view as etf_disc_wsj_view
-import openbb_terminal.etf.screener.screener_model as etf_scr_model
-import openbb_terminal.etf.screener.screener_view as etf_scr_view
 
 # Forex Helpers
 import openbb_terminal.forex.forex_helper as forex_helper
@@ -396,14 +394,6 @@ from openbb_terminal.stocks.screener import (
     yahoofinance_view as stocks_screener_yahoofinance_view,
     ark_model as stocks_screener_ark_model,
     ark_view as stocks_screener_ark_view,
-)
-
-# Stocks - Sector Industry Analysis
-from openbb_terminal.stocks.sector_industry_analysis import (
-    financedatabase_model as stocks_sia_financedatabase_model,
-    financedatabase_view as stocks_sia_financedatabase_view,
-    stockanalysis_model as stocks_sia_stockanalysis_model,
-    stockanalysis_view as stocks_sia_stockanalysis_view,
 )
 
 # Stocks - Technical Analysis

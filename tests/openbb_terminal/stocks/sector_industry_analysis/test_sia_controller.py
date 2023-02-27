@@ -41,8 +41,8 @@ DF_STOCK = pd.DataFrame.from_dict(
 )
 VALID_SUMMARY_PROFILE = {
     "country": "United States",
-    "industry": "Auto Manufacturers",
-    "sector": "Consumer Cyclical",
+    "industry": "Tobacco",
+    "sector": "Consumer Staples",
 }
 
 MOCK_TUPLE_SHORT = (["MOCK_COUN"], ["MOCK_SEC"], ["MOCK_INDUS"])
@@ -86,7 +86,7 @@ def vcr_config():
     }
 
 
-@pytest.mark.vcr(record_mode="none")
+@pytest.mark.vcr
 @pytest.mark.parametrize(
     "queue, expected",
     [
@@ -147,7 +147,7 @@ def test_menu_without_queue_completion(mocker):
     assert result_menu == ["help"]
 
 
-@pytest.mark.vcr(record_mode="none")
+@pytest.mark.vcr
 @pytest.mark.parametrize(
     "mock_input",
     ["help", "homee help", "home help", "mock"],
@@ -193,7 +193,7 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
     assert result_menu == ["help"]
 
 
-@pytest.mark.vcr(record_mode="none")
+@pytest.mark.vcr
 @pytest.mark.record_stdout
 def test_print_help():
     controller = sia_controller.SectorIndustryAnalysisController(
@@ -202,7 +202,7 @@ def test_print_help():
     controller.print_help()
 
 
-@pytest.mark.vcr(record_mode="none")
+@pytest.mark.vcr
 @pytest.mark.parametrize(
     "an_input, expected_queue",
     [
@@ -232,7 +232,7 @@ def test_switch(an_input, expected_queue):
     assert queue == expected_queue
 
 
-@pytest.mark.vcr(record_mode="none")
+@pytest.mark.vcr
 def test_call_cls(mocker):
     mocker.patch("os.system")
     controller = sia_controller.SectorIndustryAnalysisController(
@@ -244,7 +244,7 @@ def test_call_cls(mocker):
     os.system.assert_called_once_with("cls||clear")
 
 
-@pytest.mark.vcr(record_mode="none")
+@pytest.mark.vcr
 @pytest.mark.parametrize(
     "func, queue, expected_queue",
     [
@@ -293,7 +293,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
     assert controller.queue == expected_queue
 
 
-@pytest.mark.vcr(record_mode="none")
+@pytest.mark.vcr
 @pytest.mark.parametrize(
     "tested_func, other_args, mocked_func, called_args, called_kwargs",
     [
@@ -358,17 +358,17 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 "--export=csv",
             ],
             "financedatabase_view.display_companies_per_sector_in_country",
-            [
-                "MOCK_COUNTRY",
-                "",
-                True,
-                "csv",
-                None,
-                True,
-                1,
-                0.1,
-            ],
-            dict(),
+            [],
+            dict(
+                country="MOCK_COUNTRY",
+                mktcap="",
+                exclude_exchanges=True,
+                export="csv",
+                sheet_name=None,
+                raw=True,
+                max_sectors_to_display=1,
+                min_pct_to_display_sector=0.1,
+            ),
         ),
         (
             "call_cpic",
@@ -379,17 +379,16 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 "--export=csv",
             ],
             "financedatabase_view.display_companies_per_industry_in_country",
-            [
-                "MOCK_COUNTRY",
-                "",
-                True,
-                "csv",
-                None,
-                True,
-                1,
-                0.1,
-            ],
-            dict(),
+            [],
+            dict(
+                country="MOCK_COUNTRY",
+                mktcap="",
+                exclude_exchanges=True,
+                export="csv",
+                raw=True,
+                max_industries_to_display=1,
+                min_pct_to_display_industry=0.1,
+            ),
         ),
         (
             "call_cpis",
@@ -400,17 +399,16 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 "--export=csv",
             ],
             "financedatabase_view.display_companies_per_industry_in_sector",
-            [
-                "MOCK_SECTOR",
-                "",
-                True,
-                "csv",
-                None,
-                True,
-                1,
-                0.1,
-            ],
-            dict(),
+            [],
+            dict(
+                sector="MOCK_SECTOR",
+                mktcap="",
+                exclude_exchanges=True,
+                export="csv",
+                raw=True,
+                max_industries_to_display=1,
+                min_pct_to_display_industry=0.1,
+            ),
         ),
         (
             "call_cpcs",
@@ -421,17 +419,16 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 "--export=csv",
             ],
             "financedatabase_view.display_companies_per_country_in_sector",
-            [
-                "MOCK_SECTOR",
-                "",
-                True,
-                "csv",
-                None,
-                True,
-                1,
-                0.1,
-            ],
-            dict(),
+            [],
+            dict(
+                sector="MOCK_SECTOR",
+                mktcap="",
+                exclude_exchanges=True,
+                export="csv",
+                raw=True,
+                max_countries_to_display=1,
+                min_pct_to_display_country=0.1,
+            ),
         ),
         (
             "call_cpci",
@@ -442,17 +439,16 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 "--export=csv",
             ],
             "financedatabase_view.display_companies_per_country_in_industry",
-            [
-                "MOCK_INDUSTRY",
-                "",
-                True,
-                "csv",
-                None,
-                True,
-                1,
-                0.1,
-            ],
-            dict(),
+            [],
+            dict(
+                industry="MOCK_INDUSTRY",
+                mktcap="",
+                exclude_exchanges=True,
+                export="csv",
+                raw=True,
+                max_countries_to_display=1,
+                min_pct_to_display_country=0.1,
+            ),
         ),
         (
             "call_ca",
@@ -504,7 +500,7 @@ def test_call_func(
         getattr(controller, tested_func)(other_args)
 
 
-@pytest.mark.vcr(record_mode="none")
+@pytest.mark.vcr
 @pytest.mark.parametrize(
     "func",
     [
@@ -536,7 +532,7 @@ def test_call_func_no_parser(func, mocker):
     controller.parse_known_args_and_warn.assert_called_once()
 
 
-@pytest.mark.vcr(record_mode="none")
+@pytest.mark.vcr
 @pytest.mark.parametrize(
     "countries, sectors, industries, summaryProfile",
     [
@@ -588,16 +584,12 @@ def test_controller_init_summary_profile(
         or not summaryProfile["industry"]
     ):
         with pytest.raises(Exception):
-            sia_controller.SectorIndustryAnalysisController(
-                ticker="MOCK_TICKER", queue=None
-            )
+            sia_controller.SectorIndustryAnalysisController(ticker="TSLA", queue=None)
     else:
-        sia_controller.SectorIndustryAnalysisController(
-            ticker="MOCK_TICKER", queue=None
-        )
+        sia_controller.SectorIndustryAnalysisController(ticker="TSLA", queue=None)
 
 
-@pytest.mark.vcr(record_mode="none")
+@pytest.mark.vcr
 @pytest.mark.parametrize(
     "market_cap",
     [
@@ -630,10 +622,10 @@ def test_controller_init_market_cap(market_cap, mocker):
     target = f"{path_controller}.financedatabase_model.get_industries"
     mocker.patch(target=target, return_value=[VALID_SUMMARY_PROFILE["industry"]])
 
-    sia_controller.SectorIndustryAnalysisController(ticker="MOCK_TICKER", queue=None)
+    sia_controller.SectorIndustryAnalysisController(ticker="TSLA", queue=None)
 
 
-@pytest.mark.vcr(record_mode="none")
+@pytest.mark.vcr
 def test_update_runtime_choices(mocker):
     path_controller = "openbb_terminal.stocks.sector_industry_analysis.sia_controller"
 
@@ -689,7 +681,7 @@ def test_update_runtime_choices(mocker):
     )
 
 
-@pytest.mark.vcr(record_mode="none")
+@pytest.mark.vcr
 @pytest.mark.parametrize(
     "name",
     ["MOCK_INDUSTRY_1", "MOCK_INDUS"],
@@ -736,12 +728,12 @@ def test_call_industry(mocker, name):
     )
 
 
-@pytest.mark.vcr(record_mode="none")
+@pytest.mark.vcr
 @pytest.mark.parametrize(
     "ticker, expected",
     [
         (None, []),
-        ("MOCK_TICKER", ["stocks", "load MOCK_TICKER", "sia"]),
+        ("TSLA", ["stocks", "load TSLA", "sia"]),
     ],
 )
 def test_custom_reset(expected, ticker):
@@ -755,7 +747,7 @@ def test_custom_reset(expected, ticker):
     assert result == expected
 
 
-@pytest.mark.vcr(record_mode="none")
+@pytest.mark.vcr
 @pytest.mark.parametrize(
     "countries, sectors, industries, summaryProfile",
     [
@@ -818,7 +810,7 @@ def test_call_select(countries, industries, mocker, sectors, summaryProfile):
         controller.call_select(other_args=other_args)
 
 
-@pytest.mark.vcr(record_mode="none")
+@pytest.mark.vcr
 @pytest.mark.parametrize(
     "market_cap",
     [
@@ -869,7 +861,7 @@ def test_call_load_market_cap(market_cap, mocker):
     controller.call_select(other_args=other_args)
 
 
-@pytest.mark.vcr(record_mode="none")
+@pytest.mark.vcr
 def test_call_ca(mocker):
     path_controller = "openbb_terminal.stocks.sector_industry_analysis.sia_controller"
 
@@ -880,11 +872,11 @@ def test_call_ca(mocker):
     controller = sia_controller.SectorIndustryAnalysisController(
         ticker=None, queue=None
     )
-    controller.tickers = ["MOCK_TICKER_1"]
+    controller.tickers = ["TSLA"]
     controller.call_ca([])
 
 
-@pytest.mark.vcr(record_mode="none")
+@pytest.mark.vcr
 def test_call_metric(mocker):
     path_controller = "openbb_terminal.stocks.sector_industry_analysis.sia_controller"
 
@@ -905,7 +897,7 @@ def test_call_metric(mocker):
     controller.call_metric(other_args=other_args)
 
 
-@pytest.mark.vcr(record_mode="none")
+@pytest.mark.vcr
 @pytest.mark.parametrize(
     "name",
     ["MOCK_COUNTRY_1", "MOCK_COUNT"],
@@ -942,7 +934,7 @@ def test_call_country(mocker, name):
     )
 
 
-@pytest.mark.vcr(record_mode="none")
+@pytest.mark.vcr
 @pytest.mark.parametrize(
     "name",
     ["MOCK_SECTOR_1", "MOCK_SECT"],

@@ -123,7 +123,6 @@ en:
   stocks/th: trading hours,                check open markets
   stocks/options: options menu,                 chains, open interest, greeks, parity
   stocks/disc: discover trending stocks,     map, sectors, high short interest
-  stocks/sia: sector and industry analysis, companies per sector, quick ratio per industry and country
   stocks/dps: dark pool and short data,     darkpool, short interest, ftd
   stocks/scr: screener stocks,              overview/performance, using preset filters
   stocks/ins: insider trading,              latest penny stock buys, top officer purchases
@@ -785,6 +784,7 @@ en:
   economy/qa/raw: print raw data
   economy/qa/decompose: decomposition in cyclic-trend, season, and residuals of prices
   economy/qa/cusum: detects abrupt changes using cumulative sum algorithm of prices
+  fixedincome: Fixed Income
   fixedincome/_reference_rates_: Reference rates
   fixedincome/estr: euro short-term rate (estr)
   fixedincome/sofr: secured overnight financing rate (sofr)

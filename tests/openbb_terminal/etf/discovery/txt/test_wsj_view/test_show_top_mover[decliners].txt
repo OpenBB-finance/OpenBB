@@ -1,6 +1,6 @@
-                                                      Price     Chg  %Chg     Vol
-0       GraniteShares 1.5x Long Coinbase Daily ETF  10.5200 -1.1000 -9.47   97.0K
-1         Direxion Daily FTSE China Bear 3X Shares   8.3700 -0.6700 -7.41  802.4K
-2      Direxion Daily Semiconductor Bear 3X Shares  18.8085 -1.4115 -6.98    5.3M
-3  Direxion Daily S&P 500 High Beta Bear 3X Shares   4.0447 -0.2353 -5.50  118.6K
-4         Direxion Daily Technology Bear 3x Shares  25.6600 -1.1200 -4.18  172.7K
+                                                        Price    Chg   %Chg     Vol
+0                       AXS 1.25X NVDA Bear Daily ETF  19.940 -4.110 -17.09    1.2M
+1         Direxion Daily Semiconductor Bear 3X Shares  21.350 -2.300  -9.73    9.9M
+2          ProShares UltraShort Bloomberg Natural Gas  67.090 -5.760  -7.91  496.0K
+3  MicroSectors FANG+ Index -3X Inverse Leveraged ETN  27.255 -1.885  -6.47  312.4K
+4                             2x Long VIX Futures ETF  19.520 -1.110  -5.38  255.0K

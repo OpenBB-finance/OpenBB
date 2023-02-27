@@ -6,6 +6,7 @@ import difflib
 import logging
 from typing import List, Optional
 
+import financedatabase as fd
 import yfinance as yf
 
 from openbb_terminal import feature_flags as obbff
@@ -167,6 +168,9 @@ class SectorIndustryAnalysisController(BaseController):
         """Constructor"""
         super().__init__(queue)
 
+        # This obtains all equities
+        self.equities = fd.Equities()
+
         self.country = ""
         self.sector = ""
         self.industry = ""
@@ -314,7 +318,7 @@ class SectorIndustryAnalysisController(BaseController):
                     f"Failed to load {self.ticker} Industry from Yahoo Finance"
                 )
 
-            self.country = data["summaryProfile"]["country"]
+            self.country = self.equities.select().loc[self.ticker, "country"]
             if self.country not in financedatabase_model.get_countries():
                 similar_cmd = difflib.get_close_matches(
                     self.country,
@@ -324,7 +328,7 @@ class SectorIndustryAnalysisController(BaseController):
                 )
                 if similar_cmd:
                     self.country = similar_cmd[0]
-            self.sector = data["summaryProfile"]["sector"]
+            self.sector = self.equities.select().loc[self.ticker, "sector"]
             if self.sector not in financedatabase_model.get_sectors():
                 similar_cmd = difflib.get_close_matches(
                     self.sector,
@@ -334,7 +338,7 @@ class SectorIndustryAnalysisController(BaseController):
                 )
                 if similar_cmd:
                     self.sector = similar_cmd[0]
-            self.industry = data["summaryProfile"]["industry"]
+            self.industry = self.equities.select().loc[self.ticker, "industry"]
             if self.industry not in financedatabase_model.get_industries():
                 similar_cmd = difflib.get_close_matches(
                     self.industry,
@@ -359,6 +363,8 @@ class SectorIndustryAnalysisController(BaseController):
                     self.mktcap = "Large"
                 else:
                     self.mktcap = "Mid"
+            else:
+                self.mktcap = self.equities.select().loc[self.ticker, "market_cap"]
 
             self.stocks_data = {}
             self.update_runtime_choices()
@@ -387,8 +393,7 @@ class SectorIndustryAnalysisController(BaseController):
 
         if ns_parser:
             possible_industries = financedatabase_model.get_industries(
-                country=self.country,
-                sector=self.sector,
+                country=self.country, sector=self.sector
             )
             if ns_parser.name:
                 if " ".join(ns_parser.name) in possible_industries:
@@ -917,14 +922,16 @@ class SectorIndustryAnalysisController(BaseController):
                 console.print("The country parameter needs to be selected!\n")
             else:
                 financedatabase_view.display_companies_per_sector_in_country(
-                    self.country,
-                    self.mktcap,
-                    self.exclude_exchanges,
-                    ns_parser.export,
-                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None,
-                    ns_parser.raw,
-                    ns_parser.max_sectors_to_display,
-                    ns_parser.min_pct_to_display_sector,
+                    country=self.country,
+                    mktcap=self.mktcap,
+                    exclude_exchanges=self.exclude_exchanges,
+                    export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
+                    raw=ns_parser.raw,
+                    max_sectors_to_display=ns_parser.max_sectors_to_display,
+                    min_pct_to_display_sector=ns_parser.min_pct_to_display_sector,
                 )
 
     @log_start_end(log=logger)
@@ -969,14 +976,13 @@ class SectorIndustryAnalysisController(BaseController):
                 console.print("The country parameter needs to be selected!\n")
             else:
                 financedatabase_view.display_companies_per_industry_in_country(
-                    self.country,
-                    self.mktcap,
-                    self.exclude_exchanges,
-                    ns_parser.export,
-                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None,
-                    ns_parser.raw,
-                    ns_parser.max_industries_to_display,
-                    ns_parser.min_pct_to_display_industry,
+                    country=self.country,
+                    mktcap=self.mktcap,
+                    exclude_exchanges=self.exclude_exchanges,
+                    export=ns_parser.export,
+                    raw=ns_parser.raw,
+                    max_industries_to_display=ns_parser.max_industries_to_display,
+                    min_pct_to_display_industry=ns_parser.min_pct_to_display_industry,
                 )
 
     @log_start_end(log=logger)
@@ -1021,14 +1027,13 @@ class SectorIndustryAnalysisController(BaseController):
                 console.print("The sector parameter needs to be selected!\n")
             else:
                 financedatabase_view.display_companies_per_industry_in_sector(
-                    self.sector,
-                    self.mktcap,
-                    self.exclude_exchanges,
-                    ns_parser.export,
-                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None,
-                    ns_parser.raw,
-                    ns_parser.max_industries_to_display,
-                    ns_parser.min_pct_to_display_industry,
+                    sector=self.sector,
+                    mktcap=self.mktcap,
+                    exclude_exchanges=self.exclude_exchanges,
+                    export=ns_parser.export,
+                    raw=ns_parser.raw,
+                    max_industries_to_display=ns_parser.max_industries_to_display,
+                    min_pct_to_display_industry=ns_parser.min_pct_to_display_industry,
                 )
 
     @log_start_end(log=logger)
@@ -1073,14 +1078,13 @@ class SectorIndustryAnalysisController(BaseController):
                 console.print("The sector parameter needs to be selected!\n")
             else:
                 financedatabase_view.display_companies_per_country_in_sector(
-                    self.sector,
-                    self.mktcap,
-                    self.exclude_exchanges,
-                    ns_parser.export,
-                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None,
-                    ns_parser.raw,
-                    ns_parser.max_countries_to_display,
-                    ns_parser.min_pct_to_display_country,
+                    sector=self.sector,
+                    mktcap=self.mktcap,
+                    exclude_exchanges=self.exclude_exchanges,
+                    export=ns_parser.export,
+                    raw=ns_parser.raw,
+                    max_countries_to_display=ns_parser.max_countries_to_display,
+                    min_pct_to_display_country=ns_parser.min_pct_to_display_country,
                 )
 
     @log_start_end(log=logger)
@@ -1125,14 +1129,13 @@ class SectorIndustryAnalysisController(BaseController):
                 console.print("The industry parameter needs to be selected!\n")
             else:
                 financedatabase_view.display_companies_per_country_in_industry(
-                    self.industry,
-                    self.mktcap,
-                    self.exclude_exchanges,
-                    ns_parser.export,
-                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None,
-                    ns_parser.raw,
-                    ns_parser.max_countries_to_display,
-                    ns_parser.min_pct_to_display_country,
+                    industry=self.industry,
+                    mktcap=self.mktcap,
+                    exclude_exchanges=self.exclude_exchanges,
+                    export=ns_parser.export,
+                    raw=ns_parser.raw,
+                    max_countries_to_display=ns_parser.max_countries_to_display,
+                    min_pct_to_display_country=ns_parser.min_pct_to_display_country,
                 )
 
     @log_start_end(log=logger)

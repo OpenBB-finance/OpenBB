@@ -217,7 +217,6 @@ etf.ln,openbb_terminal.etf.financedatabase_model.get_etfs_by_name,
 etf.load,openbb_terminal.stocks.stocks_helper.load,
 etf.news,openbb_terminal.common.newsapi_model.get_news,openbb_terminal.common.newsapi_view.display_news
 etf.overview,openbb_terminal.etf.stockanalysis_model.get_etf_overview,
-etf.scr.screen,openbb_terminal.etf.screener.screener_model.etf_screener,openbb_terminal.etf.screener.screener_view.view_screener
 etf.symbols,openbb_terminal.etf.stockanalysis_model.get_all_names_symbols,
 etf.weights,openbb_terminal.etf.fmp_model.get_etf_sector_weightings,
 forex.candle,openbb_terminal.forex.forex_helper.display_candle,
