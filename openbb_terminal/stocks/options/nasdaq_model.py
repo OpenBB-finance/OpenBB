@@ -176,12 +176,12 @@ def option_expirations(symbol: str) -> List[str]:
         List of expiration dates
     """
     df = get_full_option_chain(symbol)
+
     if df.empty:
         return []
+
     # get everything that is not an empty string
-    exps = [exp for exp in list(df.expirygroup.unique()) if exp]
-    # Convert 'January 11, 1993' into '1993-01-11'
-    return [datetime.strptime(exp, "%B %d, %Y").strftime("%Y-%m-%d") for exp in exps]
+    return [exp for exp in list(df.expiration.unique()) if exp]
 
 
 @log_start_end(log=logger)

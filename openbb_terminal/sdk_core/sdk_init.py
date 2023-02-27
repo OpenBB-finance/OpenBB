@@ -211,6 +211,14 @@ from openbb_terminal.econometrics import (
     regression_view as econometrics_regression_view,
 )
 
+# Fixedincome
+from openbb_terminal.fixedincome import (
+    fred_model as fixedincome_fred_model,
+    ecb_model as fixedincome_ecb_model,
+    oecd_model as fixedincome_oecd_model,
+)
+
+
 # Economy
 from openbb_terminal.economy import (
     alphavantage_model as economy_alphavantage_model,
@@ -252,6 +260,7 @@ from openbb_terminal.forex import (
 from openbb_terminal.futures import (
     yfinance_model as futures_yfinance_model,
     yfinance_view as futures_yfinance_view,
+    sdk_helper as futures_sdk_model,
 )
 
 # Stocks Helpers
