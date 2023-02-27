@@ -84,11 +84,13 @@ def get_news(
                         newdata.append(entry)
 
         if newdata:
-            df = pd.DataFrame(newdata, columns=["articleHeadline", "articleURL", "articlePublishedDate", "relevancyScore"])
+            df = pd.DataFrame(newdata, columns=["articleHeadline", "articleURL", "articlePublishedDate",
+                                                "riskCategory", "riskDescription", "relevancyScore"])
         else:
             return pd.DataFrame()
     else:
-        df = pd.DataFrame(data.json(), columns=["articleHeadline", "articleURL", "articlePublishedDate", "relevancyScore"])
+        df = pd.DataFrame(data.json(), columns=["articleHeadline", "articleURL", "articlePublishedDate",
+                                                "riskCategory", "riskDescription", "relevancyScore"])
     df["articlePublishedDate"] = pd.to_datetime(df["articlePublishedDate"])
     df = df.sort_values(by=[sort], ascending=False)
 

@@ -230,19 +230,39 @@ class TerminalController(BaseController):
             type=str,
             help="sources from where to get news from (separated by comma)",
         )
+        parse.add_argument(
+            "-k",
+            "--kind",
+            dest="kind",
+            default="feedparser",
+            type=str,
+            help="use feedparser (default) or ultima"
+        )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-t")
         news_parser = self.parse_known_args_and_warn(
             parse, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED, limit=5
         )
         if news_parser:
-            ultima_newsmonitor_view.display_news(
-                term=" ".join(news_parser.term),
-                # sources=news_parser.sources,
-                limit=news_parser.limit,
-                export=news_parser.export,
-                sheet_name=news_parser.sheet_name,
-            )
+            if news_parser.kind == "feedparser":
+                feedparser_view.display_news(
+                    term=" ".join(news_parser.term),
+                    sources=news_parser.sources,
+                    limit=news_parser.limit,
+                    export=news_parser.export,
+                    sheet_name=news_parser.sheet_name,
+                )
+            elif news_parser.kind == "ultima":
+                ultima_newsmonitor_view.display_news(
+                    term=" ".join(news_parser.term),
+                    # sources=news_parser.sources,
+                    limit=news_parser.limit,
+                    export=news_parser.export,
+                    sheet_name=news_parser.sheet_name,
+                )
+            else:
+                print("Invalid news kind")
+                return
 
     def call_guess(self, other_args: List[str]) -> None:
         """Process guess command."""

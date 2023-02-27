@@ -41,7 +41,8 @@ def display_news(
 
     console.print()
     for _, row in articles.head(limit).iterrows():
-        console.print(f"> {row['articlePublishedDate']} - {row['articleHeadline']} -> {row['relevancyScore']}")
+        console.print(f"> {row['articlePublishedDate']} - {row['articleHeadline']} -> {row['riskCategory']} "
+                      f"({row['riskDescription']}) -> relevancy score: {round(row['relevancyScore'], 2)}")
         console.print(row["articleURL"] + "\n")
     console.print()
 
