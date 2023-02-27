@@ -106,7 +106,31 @@ def transcribe_and_summarize(
         )
 
     model = whisper.load_model(model_name)
-    audios = get_audio([video])
+
+    try:
+        audios = get_audio([video])
+    except Exception as e:
+        console.print(f"[red]Error downloading audio: {e}[/red]")
+        console.print(
+            "This command requires the command-line tool ffmpeg to be installed on your system,"
+            " which is available from most package managers using the following commands:\n"
+        )
+        console.print(
+            "[yellow]On Ubuntu or Debian: sudo apt update && sudo apt install ffmpeg[/yellow]\n"
+        )
+        console.print(
+            "[yellow]On Arch Linux: sudo pacman -S ffmpeg[/yellow]\n"
+        )
+        console.print(
+            "[yellow]On MacOS using Homebrew (https://brew.sh/): brew install ffmpeg[/yellow]\n"
+        )
+        console.print(
+            "[yellow]On Windows using Chocolatey (https://chocolatey.org/): choco install ffmpeg[/yellow]\n"
+        )
+        console.print(
+            "[yellow]On Windows using Scoop (https://scoop.sh/): scoop install ffmpeg[/yellow]\n"
+        )
+        return
 
     for title, audio_path in audios.items():
         warnings.filterwarnings("ignore")
