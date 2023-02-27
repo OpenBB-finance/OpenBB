@@ -435,14 +435,6 @@ def test_call_func(
     )
 
     # MOCK TICKER + INFO
-    mocker.patch(
-        target=f"{path_controller}.yf.Ticker",
-    )
-    mocker.patch(
-        target=f"{path_controller}.yf.Ticker.info",
-        return_value={"shortName": "MOCK_SHORT_NAME"},
-    )
-
     if mocked_func:
         mock = mocker.Mock()
         mocker.patch(
