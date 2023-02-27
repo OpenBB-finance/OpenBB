@@ -98,6 +98,7 @@ en:
   _toolkits_: OpenBB Toolkits
   stocks: access historical pricing data, options, sector and industry, and overall due diligence
   crypto: dive into onchain data, tokenomics, circulation supply, nfts and more
+  fixedincome: access central bank decisions, yield curves, government bonds and corporate bonds data
   etf: exchange traded funds. Historical pricing, compare holdings and screening
   economy: global macroeconomic data, e.g. futures, yield, treasury
   forex: foreign exchanges, quotes, forward rates for currency pairs and oanda integration
