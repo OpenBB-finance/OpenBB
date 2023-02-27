@@ -1,10 +1,14 @@
 # IMPORTATION STANDARD
+import dataclasses
 import os
 
 # IMPORTATION THIRDPARTY
 import pytest
 
 # IMPORTATION INTERNAL
+from openbb_terminal.core.models.preferences_model import PreferencesModel
+from openbb_terminal.core.session.current_user import get_current_user
+
 try:
     from openbb_terminal.portfolio.portfolio_optimization import po_controller
 except ImportError:
