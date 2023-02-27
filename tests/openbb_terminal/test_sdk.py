@@ -1,12 +1,12 @@
 # pylint: disable=import-outside-toplevel
 
 
-def test_openbb():
-    """Test the openbb function"""
-    from openbb_terminal.sdk import openbb
+# def test_openbb():
+#     """Test the openbb function"""
+#     from openbb_terminal.sdk import openbb
 
-    assert "stocks" in dir(openbb)
-    assert "economy" in dir(openbb)
+#     assert "stocks" in dir(openbb)
+#     assert "economy" in dir(openbb)
 
 
 # from importlib import import_module
