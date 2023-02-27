@@ -173,7 +173,6 @@ class OpenBBSDK:
 
         Submodules:
             `disc`: Discovery Module
-            `scr`: Scr Module
 
         Attributes:
             `candle`: Show candle plot of loaded ticker.\n
@@ -198,7 +197,27 @@ class OpenBBSDK:
         """Fixedincome Submodule
 
         Attributes:
+            `ameribor`: Obtain data for American Interbank Offered Rate (AMERIBOR)\n
+            `cp`: Obtain Commercial Paper data\n
+            `dwpcr`: Obtain data for the Discount Window Primary Credit Rate.\n
+            `ecb`: Obtain data for ECB interest rates.\n
             `ecbycrv`: Gets euro area yield curve data from ECB.\n
+            `estr`: Obtain data for Euro Short-Term Rate (ESTR)\n
+            `fed`: Obtain data for Effective Federal Funds Rate.\n
+            `ffrmc`: Get data for Selected Treasury Constant Maturity Minus Federal Funds Rate\n
+            `hqm`: The HQM yield curve represents the high quality corporate bond market, i.e.,\n
+            `icebofa`: Get data for ICE BofA US Corporate Bond Indices.\n
+            `icespread`: Get data for ICE BofA US Corporate Bond Spreads\n
+            `iorb`: Obtain data for Interest Rate on Reserve Balances.\n
+            `moody`: Get data for Moody Corporate Bond Index\n
+            `projection`: Obtain data for the Federal Reserve's projection of the federal funds rate.\n
+            `sofr`: Obtain data for Secured Overnight Financing Rate (SOFR)\n
+            `sonia`: Obtain data for Sterling Overnight Index Average (SONIA)\n
+            `spot`: The spot rate for any maturity is the yield on a bond that provides\n
+            `tbffr`: Get data for Selected Treasury Bill Minus Federal Funds Rate.\n
+            `tmc`: Get data for 10-Year Treasury Constant Maturity Minus Selected Treasury Constant Maturity.\n
+            `treasury`: Gets interest rates data from selected countries (3 month and 10 year)\n
+            `usrates`: Plot various treasury rates from the United States\n
             `ycrv`: Gets yield curve data from FRED.\n
         """
 
@@ -452,7 +471,6 @@ class OpenBBSDK:
             `options`: Options Module
             `qa`: Quantitative Analysis Module
             `screener`: Screener Module
-            `sia`: Sector Industry Analysis Module
             `ta`: Technical Analysis Module
             `th`: Trading Hours Module
 
