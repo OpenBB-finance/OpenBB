@@ -62,7 +62,7 @@ exchange_mappings = exchange_df.squeeze("columns").to_dict()
 def check_datetime(
     ck_date: Optional[Union[datetime, str]] = None, start: bool = True
 ) -> datetime:
-    """Checks if given argument is string and attempts to convert to datetime.
+    """Check if given argument is string and attempts to convert to datetime.
 
     Parameters
     ----------
@@ -315,7 +315,6 @@ def load(
     df_stock_candidate: pd.DataFrame
         Dataframe of data
     """
-
     if start_date is None:
         start_date = (datetime.now() - timedelta(days=1100)).strftime("%Y-%m-%d")
 
@@ -882,7 +881,7 @@ def show_codes_polygon(ticker: str):
 
 
 def format_parse_choices(choices: List[str]) -> List[str]:
-    """Formats a list of strings to be lowercase and replace spaces with underscores.
+    """Format a list of strings to be lowercase and replace spaces with underscores.
 
     Parameters
     ----------
@@ -899,7 +898,7 @@ def format_parse_choices(choices: List[str]) -> List[str]:
 
 
 def map_parse_choices(choices: List[str]) -> Dict[str, str]:
-    """Creates a mapping of clean arguments (keys) to original arguments (values)
+    """Create a mapping of clean arguments (keys) to original arguments (values).
 
     Parameters
     ----------
@@ -909,7 +908,7 @@ def map_parse_choices(choices: List[str]) -> Dict[str, str]:
     Returns
     -------
     clean_choices: Dict[str, str]
-        The mappung
+        The mapping
 
     """
     the_dict = {x.lower().replace(" ", "_"): x for x in choices}
@@ -918,6 +917,7 @@ def map_parse_choices(choices: List[str]) -> Dict[str, str]:
 
 
 def verify_plot_options(command: str, source: str, plot: list) -> bool:
+    """Verify that the plot options are valid for the chosen source."""
     if command == "cash":
         command_options = CASH_PLOT
     elif command == "balance":

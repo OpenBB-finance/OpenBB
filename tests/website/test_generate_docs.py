@@ -3,7 +3,7 @@ from typing import Optional
 import pytest
 
 try:
-    from openbb_terminal.sdk_core.trailmap import get_signature_parameters
+    from openbb_terminal.core.sdk.trailmap import get_signature_parameters
     from website import (
         generate_sdk_markdown as gen_sdk,
         generate_terminal_markdown as gen_term,
