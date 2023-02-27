@@ -84,7 +84,7 @@ jobs:
         env:
           MACOS_CERTIFICATE: ${{ secrets.MACOS_INSTALLER_CERTIFICATE }}
           MACOS_CERTIFICATE_PWD: ${{ secrets.MACOS_CERTIFICATE_PWD }}
-          MACOS_KEYCHAIN_PWD: ${{ secrets.MACOS_KEYCHAIN_PWD }}
+          MACOS_KEYCHAIN_PWD: ${{ secrets.MACOS_INSTALLER_KEYCHAIN_PWD }}
           MACOS_CODESIGN_IDENTITY: ${{ secrets.MACOS_INSTALLER_CODESIGN_IDENTITY }}
         run: | # when pushing to main, make to generate new cert, and utilize secrets to store new password, and identity
           echo "Ensuring Keychain with same name does not exist"
