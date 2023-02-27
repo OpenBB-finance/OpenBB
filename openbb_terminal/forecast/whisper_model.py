@@ -6,6 +6,7 @@ import os
 import tempfile
 import warnings
 
+from huggingface_hub import scan_cache_dir
 from tqdm import tqdm
 from transformers import BartTokenizer, BartForConditionalGeneration, pipeline
 import whisper
@@ -76,26 +77,77 @@ def transcribe_and_summarize(
         " models such as GPT will be added in future releases. [/yellow]"
     )
     console.print("")
-    console.print("[yellow]Downloading and Loading NLP Pipelines...[/yellow]")
-    console.print(
-        "[yellow]The following models that will be downloaded will exceed 1GB in size.[/yellow]"
-    )
-    # allow users to hit y/n to continue
-    console.print(
-        "[yellow]Continue with >1GB model download if there is no cached models: (y/n)[/yellow]"
-    )
-    response = input()
-    if response.lower() != "y":
-        console.print("[red]Cancelling download and exiting command.[/red]")
-        return
+    console.print("[green]Downloading and Loading NLP Pipelines from cache...[/green]")
+    console.print("")
 
-    # Use the pipeline to summarize the text
-    summarizer = BartForConditionalGeneration.from_pretrained("facebook/bart-large-cnn")
-    summary_tokenizer = BartTokenizer.from_pretrained("facebook/bart-large-cnn")
-    classifier = pipeline(
-        "sentiment-analysis", model="distilbert-base-uncased-finetuned-sst-2-english"
-    )
-    console.print("All NLP Pipelines loaded and saved to cache for future use.")
+    hf_cache_info = scan_cache_dir()
+
+    # Check if required models are already in cache
+    model_cached = False
+
+    # check for bart-large-cnn model
+    for cached_repo in hf_cache_info.repos:
+        if cached_repo.repo_id == "facebook/bart-large-cnn":
+            summarizer = BartForConditionalGeneration.from_pretrained(
+                "facebook/bart-large-cnn"
+            )
+            summary_tokenizer = BartTokenizer.from_pretrained("facebook/bart-large-cnn")
+            console.print("[green]facebook/bart-large-cnn found in cache.[/green]")
+            model_cached = True
+            break
+
+    # download bart-large-cnn model if not in cache
+    if not model_cached:
+        console.print(
+            "[yellow]facebook/bart-large-cnn not found in cache. Download model (1.64G)? (y/n)[/yellow]"
+        )
+        response = input()
+        if response.lower() != "y":
+            console.print("[red]Cancelling download and exiting command.[/red]")
+            return
+        summarizer = BartForConditionalGeneration.from_pretrained(
+            "facebook/bart-large-cnn"
+        )
+        summary_tokenizer = BartTokenizer.from_pretrained("facebook/bart-large-cnn")
+        console.print(
+            "[green]facebook/bart-large-cnn downloaded and saved to cache for future use.[/green]"
+        )
+
+    # check for distilbert model
+    model_cached = False
+
+    for cached_repo in hf_cache_info.repos:
+        if cached_repo.repo_id == "distilbert-base-uncased-finetuned-sst-2-english":
+            classifier = pipeline(
+                "sentiment-analysis",
+                model="distilbert-base-uncased-finetuned-sst-2-english",
+            )
+            console.print(
+                "[green]distilbert-base-uncased-finetuned-sst-2-english found in cache.[/green]"
+            )
+            model_cached = True
+            break
+
+    # download distilbert model if not in cache
+    if not model_cached:
+        console.print(
+            "[yellow]distilbert-base-uncased-finetuned-sst-2-english not found"
+            " in cache. Download model (275mb)? (y/n)[/yellow]"
+        )
+        response = input()
+        if response.lower() != "y":
+            console.print("[red]Cancelling download and exiting command.[/red]")
+            return
+        classifier = pipeline(
+            "sentiment-analysis",
+            model="distilbert-base-uncased-finetuned-sst-2-english",
+        )
+        console.print(
+            "[green]distilbert-base-uncased-finetuned-sst-2-english downloaded and"
+            " saved to cache for future use.[/green]"
+        )
+
+    console.print("All NLP Pipelines loaded.")
     console.print("")
 
     console.print("Transcribing and summarizing...")
@@ -118,9 +170,7 @@ def transcribe_and_summarize(
         console.print(
             "[yellow]On Ubuntu or Debian: sudo apt update && sudo apt install ffmpeg[/yellow]\n"
         )
-        console.print(
-            "[yellow]On Arch Linux: sudo pacman -S ffmpeg[/yellow]\n"
-        )
+        console.print("[yellow]On Arch Linux: sudo pacman -S ffmpeg[/yellow]\n")
         console.print(
             "[yellow]On MacOS using Homebrew (https://brew.sh/): brew install ffmpeg[/yellow]\n"
         )
@@ -176,10 +226,6 @@ def transcribe_and_summarize(
             # concatenate the summaries and add a new line character
             summary_text += summary + "\n"
 
-        # # sentiment analysis
-        # chunk_sentiment = classifier(summary_text)[0]
-        # chunk_sentiment_label = chunk_sentiment["label"]
-        # chunk_sentiment_score = round(chunk_sentiment["score"], 4)
         # initialize sentiment scores
         # sentiment analysis
         sentiment_size = 512
