@@ -25,9 +25,6 @@ jobs:
         uses: actions/checkout@v3
       - name: Git Log
         run: git log
-      # Install create-dmg
-      - name: Install create-dmg
-        run: brew install create-dmg
       # The following commands to clear previous PATHS and restore to defaults since we have to maintain the instance ourselves
       - name: Clean Previous Path
         run: |
@@ -54,16 +51,15 @@ jobs:
           auto-activate-base: false
           use-only-tar-bz2: true # Needed for caching some reason
 
-      - name: Run Poetry
+      - name: Install Dependencies
         run: |
           pip list
           python -m pip install -r requirements-full.txt
 
-      # This is basically the same as build4mac.sh
       - name: Build Bundle
         run: build/pyinstaller/build4mac.sh
         shell: bash
-      - name: Creating Keychain
+      - name: Creating Application Keychain
         env:
           MACOS_CERTIFICATE: ${{ secrets.MACOS_CERTIFICATE }}
           MACOS_CERTIFICATE_PWD: ${{ secrets.MACOS_CERTIFICATE_PWD }}
@@ -84,9 +80,30 @@ jobs:
           security import certificate.p12 -k build.keychain -P $MACOS_CERTIFICATE_PWD -T /usr/bin/codesign
           echo "Setting Partition List"
           security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k $MACOS_KEYCHAIN_PWD build.keychain
+      - name: Creating Installer Keychain
+        env:
+          MACOS_CERTIFICATE: ${{ secrets.MACOS_INSTALLER_CERTIFICATE }}
+          MACOS_CERTIFICATE_PWD: ${{ secrets.MACOS_CERTIFICATE_PWD }}
+          MACOS_KEYCHAIN_PWD: ${{ secrets.MACOS_KEYCHAIN_PWD }}
+          MACOS_CODESIGN_IDENTITY: ${{ secrets.MACOS_INSTALLER_CODESIGN_IDENTITY }}
+        run: | # when pushing to main, make to generate new cert, and utilize secrets to store new password, and identity
+          echo "Ensuring Keychain with same name does not exist"
+          rm -rf /Users/openbb/Library/Keychains/build.keychain-db
+          echo "Decoding certificate"
+          echo $MACOS_CERTIFICATE | base64 --decode > certificate.p12
+          echo "Creating Keychain"
+          security create-keychain -p $MACOS_KEYCHAIN_PWD build.keychain
+          echo "Setting Default Keychain"
+          security default-keychain -s build.keychain
+          echo "Unlocking Keychain"
+          security unlock-keychain -p $MACOS_KEYCHAIN_PWD build.keychain
+          echo "Importing Keychain"
+          security import certificate.p12 -k build.keychain -P $MACOS_CERTIFICATE_PWD -T /usr/bin/codesign
+          echo "Setting Partition List"
+          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k $MACOS_KEYCHAIN_PWD build.keychain
       - name: Create Signed Package
         env:
-          APPLE_DEVELOPER_CERTIFICATE_ID: ${{ secrets.APPLE_DEVELOPER_CERTIFICATE_ID }}
+          APPLE_DEVELOPER_CERTIFICATE_ID: ${{ secrets.MACOS_INSTALLER_CODESIGN_IDENTITY }}
           MACOS_CERTIFICATE_PWD: ${{ secrets.MACOS_CERTIFICATE_PWD }}
           MACOS_KEYCHAIN_PWD: ${{ secrets.MACOS_KEYCHAIN_PWD }}
           APPLE_SIGNING_IDENTITY: ${{ secrets.MACOS_CODESIGN_IDENTITY }}
