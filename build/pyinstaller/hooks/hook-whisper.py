@@ -26,7 +26,7 @@ candidates = [
     "tensorflow-macos",
     "tensorflow-aarch64",
 ]
-for candidate in datas:
+for candidate in candidates:
     try:
         if importlib.util.find_spec(candidate):
             datas += copy_metadata(candidate)
