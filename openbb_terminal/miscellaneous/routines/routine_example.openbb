@@ -7,11 +7,11 @@ load AAPL
 # Show a candle chart with a 20 day Moving Average
 candle --ma 20
 
-# Switch over to the Due Diligence menu
-dd
+# Switch over to the Fundamental Analysis menu
+fa
 
-# Show analyst ratings
-analyst
+# Show Management
+mgmt
 
 # Show price targets charts
 pt
