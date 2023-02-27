@@ -205,7 +205,7 @@ See the guide [here](https://docs.openbb.co/sdk/guides/intros/portfolio) for mor
 
 </details>
 
-<details><summary>How do I change the chart styles?<summary>
+<details><summary>How do I change the chart styles?</summary>
 
 Place style sheets in this folder: `OpenBBUserData/styles/user`
 
