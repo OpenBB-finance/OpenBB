@@ -1897,15 +1897,19 @@ testing = ["covdefaults (>=2.2.2)", "coverage (>=7.0.1)", "pytest (>=7.2)", "pyt
 
 [[package]]
 name = "financedatabase"
-version = "2.0.6"
+version = "2.0.7"
 description = "This is a database of 300.000+ symbols containing Equities, ETFs, Funds, Indices, Currencies, Cryptocurrencies and Money Markets."
 category = "main"
 optional = false
 python-versions = "*"
 files = [
-    {file = "financedatabase-2.0.6-py3-none-any.whl", hash = "sha256:4fa5d9681b6aa6cf87d0eb0404339fab62a9a8779212fabae2e578993511d9b5"},
-    {file = "financedatabase-2.0.6.tar.gz", hash = "sha256:2f75e728bf9ca409de8c47fe2d04bff03323ec1935eb486c0b4bafda325c274c"},
+    {file = "financedatabase-2.0.7-py3-none-any.whl", hash = "sha256:c18dd05707ff48ef788a4032a4da5b8c52127386ef0bf8c49d50b396412c989c"},
+    {file = "financedatabase-2.0.7.tar.gz", hash = "sha256:f0228fd9c0f357106713e1442057fc27ddc354bf45f6c27369ae45cf1aa830ee"},
 ]
+
+[package.dependencies]
+pandas = "*"
+pathlib = "*"
 
 [[package]]
 name = "finnhub-python"
@@ -4537,6 +4541,18 @@ files = [
 [package.extras]
 qa = ["flake8 (==3.8.3)", "mypy (==0.782)"]
 testing = ["docopt", "pytest (<6.0.0)"]
+
+[[package]]
+name = "pathlib"
+version = "1.0.1"
+description = "Object-oriented filesystem paths"
+category = "main"
+optional = false
+python-versions = "*"
+files = [
+    {file = "pathlib-1.0.1-py3-none-any.whl", hash = "sha256:f35f95ab8b0f59e6d354090350b44a80a80635d22efdedfa84c7ad1cf0a74147"},
+    {file = "pathlib-1.0.1.tar.gz", hash = "sha256:6940718dfc3eff4258203ad5021090933e5c04707d5ca8cc9e73c94a7894ea9f"},
+]
 
 [[package]]
 name = "pathspec"
@@ -9036,4 +9052,4 @@ optimization = ["Riskfolio-Lib"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8,<3.11, !=3.9.7"
-content-hash = "d868cbb66987d85965e8c007e945d5981b30746848d53825818c07d413c4a8cc"
+content-hash = "2d710d7d707c839de5376f28acfa2a1d27ee5ed7788f8cddff12ea25d7ace590"
