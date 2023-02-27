@@ -88,19 +88,19 @@ jobs:
           MACOS_CODESIGN_IDENTITY: ${{ secrets.MACOS_INSTALLER_CODESIGN_IDENTITY }}
         run: | # when pushing to main, make to generate new cert, and utilize secrets to store new password, and identity
           echo "Ensuring Keychain with same name does not exist"
-          rm -rf /Users/openbb/Library/Keychains/build.keychain-db
+          rm -rf /Users/openbb/Library/Keychains/installer.keychain-db
           echo "Decoding certificate"
           echo $MACOS_CERTIFICATE | base64 --decode > certificate.p12
           echo "Creating Keychain"
-          security create-keychain -p $MACOS_KEYCHAIN_PWD build.keychain
+          security create-keychain -p $MACOS_KEYCHAIN_PWD installer.keychain
           echo "Setting Default Keychain"
-          security default-keychain -s build.keychain
+          security default-keychain -s installer.keychain
           echo "Unlocking Keychain"
-          security unlock-keychain -p $MACOS_KEYCHAIN_PWD build.keychain
+          security unlock-keychain -p $MACOS_KEYCHAIN_PWD installer.keychain
           echo "Importing Keychain"
-          security import certificate.p12 -k build.keychain -P $MACOS_CERTIFICATE_PWD -T /usr/bin/codesign
+          security import certificate.p12 -k installer.keychain -P $MACOS_CERTIFICATE_PWD -T /usr/bin/codesign
           echo "Setting Partition List"
-          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k $MACOS_KEYCHAIN_PWD build.keychain
+          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k $MACOS_KEYCHAIN_PWD installer.keychain
       - name: Create Signed Package
         env:
           APPLE_DEVELOPER_CERTIFICATE_ID: ${{ secrets.MACOS_INSTALLER_CODESIGN_IDENTITY }}
