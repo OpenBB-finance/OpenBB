@@ -50,7 +50,7 @@ class OnclusiveDataController(BaseController):
     def print_help(self):
         """Print help"""
         mt = MenuText("newssentiment/")
-        mt.add_cmd("show", "InvisagePlotform")
+        mt.add_cmd("show", "Althub Platform")
         mt.add_raw("\n")
         console.print(text=mt.menu_text, menu="newssentiment")
 
@@ -93,7 +93,7 @@ class OnclusiveDataController(BaseController):
             dest="date",
             type=str,
             default=False,
-            help="Show that the article data on this day (format YYYY-MM-DD).",
+            help="Show that the articles data on this day (format YYYY-MM-DD).",
         )
         parser.add_argument(
             "-l",
@@ -101,7 +101,7 @@ class OnclusiveDataController(BaseController):
             default=100,
             dest="limit",
             type=check_non_negative,
-            help="Number of arctiles to be display",
+            help="Number of articles to be displayed.",
         )
         parser.add_argument(
             "-o",
@@ -109,7 +109,7 @@ class OnclusiveDataController(BaseController):
             default=0,
             dest="offset",
             type=check_non_negative,
-            help="offset indicates the starting position of article records",
+            help="offset indicates the starting position of articles.",
         )
 
         if other_args and "-" not in other_args[0][0]:
