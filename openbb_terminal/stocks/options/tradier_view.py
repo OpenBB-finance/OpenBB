@@ -73,11 +73,11 @@ def display_historical(
         rows=2,
         cols=1,
         shared_xaxes=True,
-        vertical_spacing=0.03,
-        row_heights=[0.3, 0.7],
-        subplot_titles=[f"{symbol} {strike} {op_type}", "Volume"],
+        vertical_spacing=0.06,
+        row_width=[0.3, 0.7],
+        subplot_titles=["", "Volume"],
     )
-    fig.set_title(f"Historical {strike} {op_type.title()}")
+    fig.set_title(f"Historical {symbol} {strike} {op_type.title()}")
 
     df_hist.index = df_hist.index.astype("datetime64[ms]")
 

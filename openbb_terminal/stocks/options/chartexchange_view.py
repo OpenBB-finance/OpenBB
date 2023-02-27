@@ -43,8 +43,8 @@ def plot_chart(
         rows=2,
         cols=1,
         shared_xaxes=True,
-        vertical_spacing=0.1,
-        row_width=[0.2, 0.7],
+        vertical_spacing=0.06,
+        row_width=[0.3, 0.7],
         subplot_titles=["", "Volume"],
     )
     fig.set_title(f"Historical {symbol} {price} {option_type.title()}")
