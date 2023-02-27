@@ -465,6 +465,7 @@ class StocksOptions(Category):
         `eodchain`: Get full EOD option date across all expirations\n
         `expirations`: Get Option Chain Expirations\n
         `generate_data`: Gets x values, and y values before and after premiums\n
+        `greeks`: Gets the greeks for a given option\n
         `grhist`: Get historical option greeks\n
         `grhist_chart`: Plots historical greeks for a given option. [Source: Syncretism]\n
         `hist`: Get historical option pricing.\n
@@ -492,6 +493,7 @@ class StocksOptions(Category):
         self.eodchain = lib.stocks_options_intrinio_model.get_full_chain_eod
         self.expirations = lib.stocks_options_sdk_helper.get_option_expirations
         self.generate_data = lib.stocks_options_yfinance_model.generate_data
+        self.greeks = lib.stocks_options_sdk_helper.get_greeks
         self.grhist = lib.stocks_options_screen_syncretism_model.get_historical_greeks
         self.grhist_chart = (
             lib.stocks_options_screen_syncretism_view.view_historical_greeks
