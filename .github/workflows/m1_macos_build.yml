@@ -98,9 +98,9 @@ jobs:
           echo "Unlocking Keychain"
           security unlock-keychain -p $MACOS_KEYCHAIN_PWD installer.keychain
           echo "Importing Keychain"
-          security import certificate.p12 -k installer.keychain -P $MACOS_INSTALLER_KEYCHAIN_PASSWORD -T /usr/bin/codesign
+          security import certificate.p12 -k installer.keychain -P $MACOS_KEYCHAIN_PWD -T /usr/bin/codesign
           echo "Setting Partition List"
-          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k $MACOS_CERTIFICATE_PASSWORD installer.keychain
+          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k $MACOS_CERTIFICATE_PWD installer.keychain
       - name: Create Signed Package
         env:
           APPLE_DEVELOPER_CERTIFICATE_ID: ${{ secrets.MACOS_INSTALLER_CODESIGN_IDENTITY }}
