@@ -91,25 +91,16 @@ jobs:
           security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k $MACOS_KEYCHAIN_PWD build.keychain
       - name: Create Signed Package
         env:
+          APPLE_DEVELOPER_CERTIFICATE_ID: ${{ secrets.MACOS_CERTIFICATE }}
           MACOS_CERTIFICATE: ${{ secrets.MACOS_CERTIFICATE }}
           MACOS_CERTIFICATE_PWD: ${{ secrets.MACOS_CERTIFICATE_PWD }}
           MACOS_KEYCHAIN_PWD: ${{ secrets.MACOS_KEYCHAIN_PWD }}
           MACOS_CODESIGN_IDENTITY: ${{ secrets.MACOS_CODESIGN_IDENTITY }}
         run: |
           chmod +x build/pyinstaller/macOS-x64/build-macos-x64.sh
-          build/pyinstaller/macOS-x64/build-macos-x64.sh
+          build/pyinstaller/macOS-x64/build-macos-x64.sh OpenBBTerminal 0.0.1
+          mv build/pyinstaller/macOS-x64/target/pkg/OpenBBTerminalM1.pkg OpenBBTerminalM1.pkg
         shell: bash
-      - name: Code Sign DMG Installer
-        env:
-          MACOS_CERTIFICATE: ${{ secrets.MACOS_CERTIFICATE }}
-          MACOS_CERTIFICATE_PWD: ${{ secrets.MACOS_CERTIFICATE_PWD }}
-          MACOS_KEYCHAIN_PWD: ${{ secrets.MACOS_KEYCHAIN_PWD }}
-          MACOS_CODESIGN_IDENTITY: ${{ secrets.MACOS_CODESIGN_IDENTITY }}
-        run: |
-          echo "Code Signing DMG Installer"
-          /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY OpenBB\ Terminal.dmg
-          echo "Verify Signing"
-          codesign --verify --deep --strict --verbose=2 OpenBB\ Terminal.dmg
       - name: Deleting Previous Keychain
         run: |
           echo "Deleting Previous Keychain to Clean Instance"
@@ -125,10 +116,10 @@ jobs:
           NOTARIZE_APPLE_PWD: ${{ secrets.NOTARIZE_APPLE_PWD }}
           NOTARIZE_APPLE_TEAM_ID: ${{ secrets.NOTARIZE_APPLE_TEAM_ID }}
         run: |
-          xcrun notarytool submit OpenBB\ Terminal.dmg --apple-id "$NOTARIZE_APPLE_ID" --password "$NOTARIZE_APPLE_PWD" --team-id "$NOTARIZE_APPLE_TEAM_ID" --wait
+          xcrun notarytool submit OpenBBTerminalM1.pkg --apple-id "$NOTARIZE_APPLE_ID" --password "$NOTARIZE_APPLE_PWD" --team-id "$NOTARIZE_APPLE_TEAM_ID" --wait
       - name: Staple
         run: |
-          xcrun stapler staple "OpenBB Terminal.dmg"
+          xcrun stapler staple OpenBBTerminalM1.pkg
       - name: Clean up Build Artifacts
         run: |
           rm -rf build/terminal
@@ -138,7 +129,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: M1 MacOS DMG Artifact
-          path: OpenBB\ Terminal.dmg
+          path: OpenBBTerminalM1.pkg
       - name: Convert & Mount DMG
         run: |
           hdiutil convert OpenBB\ Terminal.dmg -format UDTO -o openbbterminal.cdr

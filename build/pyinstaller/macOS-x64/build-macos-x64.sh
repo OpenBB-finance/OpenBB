@@ -194,7 +194,7 @@ function buildProduct() {
 function createInstaller() {
     log_info "Application installer generation process started.(3 Steps)"
     buildPackage
-    buildProduct ${PRODUCT}-macos-installer-x64-${VERSION}.pkg
+    buildProduct OpenBBTerminalM1.pkg
     log_info "Application installer generation steps finished."
 }
 
