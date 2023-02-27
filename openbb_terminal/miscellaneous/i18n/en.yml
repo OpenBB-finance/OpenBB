@@ -98,6 +98,7 @@ en:
   _toolkits_: OpenBB Toolkits
   stocks: access historical pricing data, options, sector and industry, and overall due diligence
   crypto: dive into onchain data, tokenomics, circulation supply, nfts and more
+  fixedincome: access central bank decisions, yield curves, government bonds and corporate bonds data
   etf: exchange traded funds. Historical pricing, compare holdings and screening
   economy: global macroeconomic data, e.g. futures, yield, treasury
   forex: foreign exchanges, quotes, forward rates for currency pairs and oanda integration
@@ -123,7 +124,6 @@ en:
   stocks/th: trading hours,                check open markets
   stocks/options: options menu,                 chains, open interest, greeks, parity
   stocks/disc: discover trending stocks,     map, sectors, high short interest
-  stocks/sia: sector and industry analysis, companies per sector, quick ratio per industry and country
   stocks/dps: dark pool and short data,     darkpool, short interest, ftd
   stocks/scr: screener stocks,              overview/performance, using preset filters
   stocks/ins: insider trading,              latest penny stock buys, top officer purchases
@@ -784,6 +784,7 @@ en:
   economy/qa/raw: print raw data
   economy/qa/decompose: decomposition in cyclic-trend, season, and residuals of prices
   economy/qa/cusum: detects abrupt changes using cumulative sum algorithm of prices
+  fixedincome: Fixed Income
   fixedincome/_reference_rates_: Reference rates
   fixedincome/estr: euro short-term rate (estr)
   fixedincome/sofr: secured overnight financing rate (sofr)
@@ -808,7 +809,7 @@ en:
   fixedincome/spot: display spot rates ranging from 1 year to a 100 years
   fixedincome/hqm: display the High Quality Market (HQM) corporate yield curve
   fixedincome/_spreads_: Spreads
-  fixedincome/icespread: display spread between ICE BofA Corporate Indices and spot treasury curve 
+  fixedincome/icespread: display spread between ICE BofA Corporate Indices and spot treasury curve
   fixedincome/tmc: 10-year treasury constant maturity minus selected treasury constant maturity
   fixedincome/ffrmc: selected treasury constant maturity minus federal funds rate
   fixedincome/tbffr: selected treasury bill minus federal funds rate

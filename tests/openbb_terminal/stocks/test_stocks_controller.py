@@ -260,6 +260,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 limit=1,
                 country="",
                 sector="",
+                industry_group="",
                 industry="",
                 all_exchanges=False,
                 exchange_country="",
@@ -342,13 +343,13 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             [],
             dict(),
         ),
-        (
-            "call_sia",
-            [],
-            "StocksController.load_class",
-            [],
-            dict(),
-        ),
+        # (
+        #     "call_sia",
+        #     [],
+        #     "StocksController.load_class",
+        #     [],
+        #     dict(),
+        # ),
         (
             "call_ins",
             [],
