@@ -187,8 +187,8 @@ function buildProduct() {
     productbuild --distribution "${TARGET_DIRECTORY}/darwin/Distribution" \
     --resources "${TARGET_DIRECTORY}/darwin/Resources" \
     --package-path "${TARGET_DIRECTORY}/package" \
-    # --sign "${APPLE_DEVELOPER_CERTIFICATE_ID}" \
     "${TARGET_DIRECTORY}/pkg/$1"
+    # --sign "${APPLE_DEVELOPER_CERTIFICATE_ID}" \
 }
 
 function createInstaller() {
