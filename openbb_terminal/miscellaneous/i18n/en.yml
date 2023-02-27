@@ -784,6 +784,34 @@ en:
   economy/qa/raw: print raw data
   economy/qa/decompose: decomposition in cyclic-trend, season, and residuals of prices
   economy/qa/cusum: detects abrupt changes using cumulative sum algorithm of prices
+  fixedincome/_reference_rates_: Reference rates
+  fixedincome/estr: euro short-term rate (estr)
+  fixedincome/sofr: secured overnight financing rate (sofr)
+  fixedincome/sonia: sterling overnight index average (sonia)
+  fixedincome/ameribor: american interbank offered rate (ameribor)
+  fixedincome/_central_bank_rates_: Central bank rates
+  fixedincome/fed: effective federal funds rate
+  fixedincome/obfr: overnight bank funding rate (obfr)
+  fixedincome/iorb: interest rate on reserve balances
+  fixedincome/projection: the Federal Reserve's projection of the federal funds rate.
+  fixedincome/dwpcr: discount window primary credit rate
+  fixedincome/ecb: key ECB interest rates
+  fixedincome/_government_bonds_: Government Bonds
+  fixedincome/treasury: plot countries (including forecast) treasury rates
+  fixedincome/usrates: plot U.S. secondary market, constant maturity or inflation protected treasuries
+  fixedincome/ycrv: plot the yield curve based on constant maturity U.S. treasuries
+  fixedincome/ecbycrv: plot the yield curve based on Euro Area treasuries
+  fixedincome/_corporate_bonds_: Corporate Bonds
+  fixedincome/icebofa: display ICE BofA Corporate Indices
+  fixedincome/moody: display Moody's AAA and BAA Corporate indices
+  fixedincome/cp: display short-term, promissory notes issued by corporations
+  fixedincome/spot: display spot rates ranging from 1 year to a 100 years
+  fixedincome/hqm: display the High Quality Market (HQM) corporate yield curve
+  fixedincome/_spreads_: Spreads
+  fixedincome/icespread: display spread between ICE BofA Corporate Indices and spot treasury curve 
+  fixedincome/tmc: 10-year treasury constant maturity minus selected treasury constant maturity
+  fixedincome/ffrmc: selected treasury constant maturity minus federal funds rate
+  fixedincome/tbffr: selected treasury bill minus federal funds rate
   forex/_ticker: Ticker
   forex/_from: From
   forex/_to: To

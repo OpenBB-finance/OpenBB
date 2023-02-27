@@ -235,6 +235,14 @@ forex.oanda.order,openbb_terminal.forex.oanda.oanda_model.create_order_request,o
 forex.oanda.orderbook,openbb_terminal.forex.oanda.oanda_model.orderbook_plot_data_request,openbb_terminal.forex.oanda.oanda_view.get_order_book
 forex.oanda.pending,openbb_terminal.forex.oanda.oanda_model.pending_orders_request,openbb_terminal.forex.oanda.oanda_view.get_pending_orders
 forex.oanda.positionbook,openbb_terminal.forex.oanda.oanda_model.positionbook_plot_data_request,openbb_terminal.forex.oanda.oanda_view.get_position_book
+fixedincome.estr,openbb_terminal.fixedincome.ecb_model.get_series_data,openbb_terminal.fixedincome.ecb_view.plot_estr
+fixedincome.sonia,openbb_terminal.fixedincome.fred_model.get_series_data,openbb_terminal.fixedincome.fred_view.plot_sonia
+fixedincome.ameribor,openbb_terminal.fixedincome.fred_model.get_series_data,openbb_terminal.fixedincome.fred_view.plot_ameribor
+fixedincome.ffer,openbb_terminal.fixedincome.fred_model.get_series_data,openbb_terminal.fixedincome.fred_view.plot_ffer
+fixedincome.iorb,openbb_terminal.fixedincome.fred_model.get_series_data,openbb_terminal.fixedincome.fred_view.plot_iobr
+fixedincome.projection,openbb_terminal.fixedincome.fred_model.get_series_data,openbb_terminal.fixedincome.fred_view.plot_projection
+fixedincome.oldprojection,openbb_terminal.fixedincome.fred_model.get_series_data,openbb_terminal.fixedincome.fred_view.plot_oldprojection
+fixedincome.ycrv,openbb_terminal.fixedincome.fred_model.get_yield_curve,openbb_terminal.economy.fixedincome.display_yield_curve
 forex.oanda.price,openbb_terminal.forex.oanda.oanda_model.fx_price_request,openbb_terminal.forex.oanda.oanda_view.get_fx_price
 forex.oanda.summary,openbb_terminal.forex.oanda.oanda_model.account_summary_request,openbb_terminal.forex.oanda.oanda_view.get_account_summary
 forex.quote,openbb_terminal.forex.sdk_helpers.quote,
@@ -470,6 +478,7 @@ stocks.options.dte,openbb_terminal.stocks.options.yfinance_model.get_dte,
 stocks.options.eodchain,openbb_terminal.stocks.options.intrinio_model.get_full_chain_eod,
 stocks.options.expirations,openbb_terminal.stocks.options.options_sdk_helper.get_option_expirations,
 stocks.options.generate_data,openbb_terminal.stocks.options.yfinance_model.generate_data,
+stocks.options.greeks,openbb_terminal.stocks.options.options_sdk_helper.get_greeks,
 stocks.options.grhist,openbb_terminal.stocks.options.screen.syncretism_model.get_historical_greeks,openbb_terminal.stocks.options.screen.syncretism_view.view_historical_greeks
 stocks.options.hist,openbb_terminal.stocks.options.options_sdk_helper.hist,
 stocks.options.info,openbb_terminal.stocks.options.barchart_model.get_options_info,openbb_terminal.stocks.options.barchart_view.print_options_data
