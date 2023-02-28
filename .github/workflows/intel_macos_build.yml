@@ -55,7 +55,6 @@ jobs:
       - name: Install requirements
         run: |
           pip list
-          pip uninstall pathlib -y
           python -m pip install -r requirements-full.txt
       - name: Install Specific Papermill
         run: |
