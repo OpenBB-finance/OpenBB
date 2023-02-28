@@ -36,5 +36,7 @@ is_crypto: bool = False
     ],
 )
 def test_cones(recorder, model, lower_q, upper_q, is_crypto):
-    result = volatility_model.cones(data=MOCK_DATA, upper_q=upper_q, lower_q=lower_q, is_crypto=is_crypto)
+    result = volatility_model.cones(
+        data=MOCK_DATA, upper_q=upper_q, lower_q=lower_q, is_crypto=is_crypto
+    )
     recorder.capture(result)
