@@ -1,6 +1,6 @@
 ---
-Sidebar_position: 2
 title: Installation
+sidebar_position: 2
 description: The OpenBB Terminal can be directly installed on a Mac or Windows machine via the installer packages below. While not available for Linux is currently available, it can be installed from the command line in a virtual Python environment.
 keywords:
   [
