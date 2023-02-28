@@ -223,6 +223,8 @@ def get_treasury(
     end_date: str
         End date of data, in YYYY-MM-DD format
     """
+    df_short, df_long = pd.DataFrame(), pd.DataFrame()
+
     if short_term:
         df_short = get_interest_rate_data(
             f"short{'_forecast' if forecast else ''}",
@@ -239,4 +241,5 @@ def get_treasury(
         )
 
     df = pd.concat([df_short, df_long], axis=1)
+
     return df
