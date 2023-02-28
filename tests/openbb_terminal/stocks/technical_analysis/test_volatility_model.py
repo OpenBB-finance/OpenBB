@@ -15,6 +15,8 @@ MOCK_DATA = pd.read_csv(
     "tests/openbb_terminal/stocks/technical_analysis/csv/test_volatility_model/test_cones_df.csv",
     index_col=0,
 )
+
+
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.parametrize(
     "model, lower_q, upper_q, is_crypto",
@@ -30,6 +32,10 @@ MOCK_DATA = pd.read_csv(
 )
 def test_cones(recorder, model, lower_q, upper_q, is_crypto):
     result = volatility_model.cones(
-        data=MOCK_DATA, model = model, upper_q=upper_q, lower_q=lower_q, is_crypto=is_crypto
+        data=MOCK_DATA,
+        model=model,
+        upper_q=upper_q,
+        lower_q=lower_q,
+        is_crypto=is_crypto,
     )
     recorder.capture(result)
