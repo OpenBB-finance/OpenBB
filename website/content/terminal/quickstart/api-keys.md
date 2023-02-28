@@ -63,6 +63,7 @@ mykeys --show
 | coinbase      | Coinbase                                 | https://help.coinbase.com/en/exchange/managing-my-account/how-to-create-an-api-key |
 | coinglass     | Coinglass                                | https://coinglass.github.io/API-Reference/#api-key                                 |
 | cpanic        | Crypto Panic                             | https://cryptopanic.com/developers/api/                                            |
+| databento     | Databento                                | https://docs.databento.com/getting-started                                         |
 | degiro        | DeGiro                                   | https://www.degiro.com/                                                            |
 | eodhd         | EODHD                                    | https://eodhistoricaldata.com/r/?ref=869U7F4J                                      |
 | ethplorer     | Ethplorer                                | https://github.com/EverexIO/Ethplorer/wiki/Ethplorer-API                           |
@@ -245,9 +246,11 @@ Enter that value in the OpenBB Terminal by typing:
 
 [Databento](https://docs.databento.com/getting-started)
 
-![Databento](databento.png)
+![Databento](https://user-images.githubusercontent.com/85772166/221943074-7a5e55c1-6193-42d8-a04c-431603a69a05.png)
 
-Click on, [Sign up](databento2.png), and after creating an account, the API key is found in the [account portal](https://databento.com/portal/keys). Enter this into the terminal with:
+Click on, [Sign up](https://databento.com/signup), and after creating an account, the API key is found in the [account portal](https://databento.com/portal/keys). Enter this into the terminal with:
+
+![Databento](https://user-images.githubusercontent.com/85772166/221943270-e0ada7bf-c7fb-46f2-bd7a-49afb3bc7bd8.png)
 
 ```console
 /keys/databento REPLACE_WITH_KEY
