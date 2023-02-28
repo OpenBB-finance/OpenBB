@@ -52,9 +52,10 @@ jobs:
           environment-file: build/conda/conda-3-9-env-full.yaml
           activate-environment: build_env
           use-only-tar-bz2: true # Needed for caching some reason
-      - name: Run Poetry
+      - name: Install requirements
         run: |
           pip list
+          pip uninstall pathlib -y
           python -m pip install -r requirements-full.txt
       - name: Install Specific Papermill
         run: |
