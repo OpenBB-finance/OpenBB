@@ -5,8 +5,7 @@ def str2bool(string):
     str2val = {"True": True, "False": False}
     if string in str2val:
         return str2val[string]
-    else:
-        raise ValueError(f"Expected one of {set(str2val.keys())}, got {string}")
+    raise ValueError(f"Expected one of {set(str2val.keys())}, got {string}")
 
 
 def format_timestamp(
@@ -40,13 +39,11 @@ def break_line(line: str, length: int):
     while break_index > 1:
         if line[break_index - 1] == " ":
             break  # break at space
-        else:
-            break_index -= 1
+        break_index -= 1
     if break_index > 1:
         # split the line, not including the space at break_index
         return line[: break_index - 1] + "\n" + line[break_index:]
-    else:
-        return line
+    return line
 
 
 def process_segment(segment: dict, line_length: int = 0):
