@@ -1,1001 +1,1001 @@
 id,title
 GDP,Gross Domestic Product
 GDPC1,Real Gross Domestic Product
-GFDEGDQ188S,Federal Debt: Total Public Debt as Percent of Gross Domestic Product
 PAYEMS,"All Employees, Total Nonfarm"
 M2V,Velocity of M2 Money Stock
+GFDEGDQ188S,Federal Debt: Total Public Debt as Percent of Gross Domestic Product
 A939RX0Q048SBEA,Real gross domestic product per capita
 A191RL1Q225SBEA,Real Gross Domestic Product
 GDPDEF,Gross Domestic Product: Implicit Price Deflator
+GDPPOT,Real Potential Gross Domestic Product
+A091RC1Q027SBEA,Federal government current expenditures: Interest payments
+HDTGPDUSQ163N,Household Debt to GDP for United States
 JHDUSRGDPBR,Dates of U.S. recessions as inferred by GDP-based recession indicator
 CP,Corporate Profits After Tax (without IVA and CCAdj)
 GDPNOW,GDPNow
-HDTGPDUSQ163N,Household Debt to GDP for United States
 FYFSGDA188S,Federal Surplus or Deficit [-] as Percent of Gross Domestic Product
-GDPPOT,Real Potential Gross Domestic Product
-PSAVE,Personal Saving
 PAKDGDPGDPPT,Total External Debt for Pakistan
-A091RC1Q027SBEA,Federal government current expenditures: Interest payments
-GPDI,Gross Private Domestic Investment
 FGEXPND,Federal Government: Current Expenditures
-W006RC1Q027SBEA,Federal government current tax receipts
-GFDGDPA188S,Gross Federal Debt as Percent of Gross Domestic Product
-GDPA,Gross Domestic Product
+PSAVE,Personal Saving
+GPDI,Gross Private Domestic Investment
 GNP,Gross National Product
-DDDM01USA156NWDB,Stock Market Capitalization to GDP for United States
-FYONGDA188S,Federal Net Outlays as Percent of Gross Domestic Product
-JPNRGDPEXP,Real Gross Domestic Product for Japan
-GPDIC1,Real Gross Private Domestic Investment
-FYOIGDA188S,Federal Outlays: Interest as Percent of Gross Domestic Product
-CLVMNACSCAB1GQUK,Real Gross Domestic Product for United Kingdom
 MKTGDPCNA646NWDB,Gross Domestic Product for China
-FYFRGDA188S,Federal Receipts as Percent of Gross Domestic Product
-A191RI1Q225SBEA,Gross Domestic Product: Implicit Price Deflator
-PCECC96,Real Personal Consumption Expenditures
-NETEXP,Net Exports of Goods and Services
-W068RCQ027SBEA,Government total expenditures
-JHGDPBRINDX,GDP-Based Recession Indicator Index
-GDPC1CTM,"FOMC Summary of Economic Projections for the Growth Rate of Real Gross Domestic Product, Central Tendency, Midpoint"
-LABSHPUSA156NRUG,Share of Labour Compensation in GDP at Current National Prices for United States
-NGDPPOT,Nominal Potential Gross Domestic Product
+JPNRGDPEXP,Real Gross Domestic Product for Japan
+W006RC1Q027SBEA,Federal government current tax receipts
+CLVMNACSCAB1GQUK,Real Gross Domestic Product for United Kingdom
 PCEC,Personal Consumption Expenditures
-GDPCA,Real Gross Domestic Product
-DPCCRV1Q225SBEA,Personal Consumption Expenditures (PCE) Excluding Food and Energy (chain-type price index)
+GPDIC1,Real Gross Private Domestic Investment
+PCECC96,Real Personal Consumption Expenditures
+FYONGDA188S,Federal Net Outlays as Percent of Gross Domestic Product
 CLVMNACSCAB1GQDE,Real Gross Domestic Product for Germany
+NETEXP,Net Exports of Goods and Services
+GFDGDPA188S,Gross Federal Debt as Percent of Gross Domestic Product
+FYOIGDA188S,Federal Outlays: Interest as Percent of Gross Domestic Product
+DDDM01USA156NWDB,Stock Market Capitalization to GDP for United States
+GDPA,Gross Domestic Product
+GDPC1CTM,"FOMC Summary of Economic Projections for the Growth Rate of Real Gross Domestic Product, Central Tendency, Midpoint"
+DPCCRV1Q225SBEA,Personal Consumption Expenditures (PCE) Excluding Food and Energy (chain-type price index)
+JHGDPBRINDX,GDP-Based Recession Indicator Index
+A191RI1Q225SBEA,Gross Domestic Product: Implicit Price Deflator
+W068RCQ027SBEA,Government total expenditures
+FYFRGDA188S,Federal Receipts as Percent of Gross Domestic Product
 DPCERE1Q156NBEA,Shares of gross domestic product: Personal consumption expenditures
-NGDPRSAXDCCAQ,Real Gross Domestic Product for Canada
-A191RP1Q027SBEA,Gross Domestic Product
+NGDPPOT,Nominal Potential Gross Domestic Product
+LABSHPUSA156NRUG,Share of Labour Compensation in GDP at Current National Prices for United States
+JPNNGDP,Gross Domestic Product for Japan
+GDPCA,Real Gross Domestic Product
 STLENI,St. Louis Fed Economic News Index: Real GDP Nowcast
 GPSAVE,Gross Private Saving
-A072RC1Q156SBEA,Personal saving as a percentage of disposable personal income
-NA000334Q,Gross Domestic Product
-GCEC1,Real Government Consumption Expenditures and Gross Investment
-PRFI,Private Residential Fixed Investment
-A053RC1Q027SBEA,National income: Corporate profits before tax (without IVA and CCAdj)
+A191RP1Q027SBEA,Gross Domestic Product
 RGDPNACNA666NRUG,Real GDP at Constant National Prices for China
-A792RC0Q052SBEA,Personal income per capita
-JPNNGDP,Gross Domestic Product for Japan
 DPCERD3Q086SBEA,Personal consumption expenditures (implicit price deflator)
+A072RC1Q156SBEA,Personal saving as a percentage of disposable personal income
+CHNGDPNQDSMEI,National Accounts: GDP by Expenditure: Current Prices: Gross Domestic Product - Total for China (People's Republic Of)
+NGDPRSAXDCCAQ,Real Gross Domestic Product for Canada
+UKNGDP,Gross Domestic Product for United Kingdom
+A053RC1Q027SBEA,National income: Corporate profits before tax (without IVA and CCAdj)
+CLVMNACSCAB1GQFR,Real Gross Domestic Product for France
 A191RO1Q156NBEA,Real Gross Domestic Product
-A939RC0Q052SBEA,Gross domestic product per capita
-USALORSGPNOSTSAM,Leading Indicators OECD: Reference series: Gross Domestic Product (GDP): Normalised for the United States
 W398RC1A027NBEA,Household saving
-FYGFGDQ188S,Federal Debt Held by the Public as Percent of Gross Domestic Product
+NYGDPPCAPKDUSA,Constant GDP per capita for the United States
 GEPUCURRENT,Global Economic Policy Uncertainty Index: Current Price Adjusted GDP
+USALORSGPNOSTSAM,Leading Indicators OECD: Reference series: Gross Domestic Product (GDP): Normalised for the United States
 BA06RC1A027NBEA,"Total wages and salaries, BLS"
-M318501Q027NBEA,Federal government budget surplus or deficit (-)
-CLVMEURSCAB1GQEA19,Real Gross Domestic Product (Euro/ECU series) for Euro area (19 countries)
+A792RC0Q052SBEA,Personal income per capita
+IMPGS,Imports of Goods and Services
 CLVMNACSCAB1GQIT,Real Gross Domestic Product for Italy
 PCECTPI,Personal Consumption Expenditures: Chain-type Price Index
-IMPGS,Imports of Goods and Services
-GDI,Gross Domestic Income
+PRFI,Private Residential Fixed Investment
+GCEC1,Real Government Consumption Expenditures and Gross Investment
+A939RC0Q052SBEA,Gross domestic product per capita
+CLVMEURSCAB1GQEA19,Real Gross Domestic Product (Euro/ECU series) for Euro area (19 countries)
 EXPGS,Exports of Goods and Services
+M318501Q027NBEA,Federal government budget surplus or deficit (-)
 BPCCRO1Q156NBEA,Personal Consumption Expenditures Excluding Food and Energy (Chain-Type Price Index)
-CLVMNACSCAB1GQFR,Real Gross Domestic Product for France
+B4701C0A222NBEA,Hours worked by full-time and part-time employees
 PNFI,Private Nonresidential Fixed Investment
-CHNGDPNQDSMEI,National Accounts: GDP by Expenditure: Current Prices: Gross Domestic Product - Total for China (People's Republic Of)
-USAGDPDEFQISMEI,GDP Implicit Price Deflator in United States
-PRFIC1,Real Private Residential Fixed Investment
-QUSPAM770A,"Total Credit to Private Non-Financial Sector, Adjusted for Breaks, for United States"
-UKNGDP,Gross Domestic Product for United Kingdom
+NA000334Q,Gross Domestic Product
+DPCERY2Q224SBEA,Contributions to percent change in real gross domestic product: Personal consumption expenditures
 A191RL1A225NBEA,Real Gross Domestic Product
+PAYNSA,"All Employees, Total Nonfarm"
+CPGDPAI,Contributions to Percent Change in Real GDP by Industry: Gross Domestic Product
+FYGFGDQ188S,Federal Debt Held by the Public as Percent of Gross Domestic Product
+PRFIC1,Real Private Residential Fixed Investment
+USAGDPDEFQISMEI,GDP Implicit Price Deflator in United States
 A794RX0Q048SBEA,Real personal consumption expenditures per capita
 FYGDP,Gross Domestic Product
-CPATAX,Corporate Profits After Tax with Inventory Valuation Adjustment (IVA) and Capital Consumption Adjustment (CCAdj)
-ND000334Q,Real Gross Domestic Product
-A191RP1A027NBEA,Gross Domestic Product
-GCE,Government Consumption Expenditures and Gross Investment
-CLVMNACSCAB1GQES,Real Gross Domestic Product for Spain
-CPGDPAI,Contributions to Percent Change in Real GDP by Industry: Gross Domestic Product
 NYGDPPCAPKDCHN,Constant GDP per capita for China
-GSAVE,Gross Saving
-BOEBSTAUKA,Bank of England Balance Sheet - Total Assets in the United Kingdom
-PNFIC1,Real Private Nonresidential Fixed Investment
-NYGDPPCAPKDUSA,Constant GDP per capita for the United States
 PCESV,Personal Consumption Expenditures: Services
-NGDPRSAXDCMXQ,Real Gross Domestic Product for Mexico
-PAYNSA,"All Employees, Total Nonfarm"
-B4701C0A222NBEA,Hours worked by full-time and part-time employees
-B087RC1Q027SBEA,Federal government current transfer payments: Government social benefits: to persons
-NETEXC,Real Net Exports of Goods and Services
-NYGDPMKTPCDWLD,Gross Domestic Product for World
-NAEXKP01INQ652S,Gross Domestic Product by Expenditure in Constant Prices: Total Gross Domestic Product for India
-A466RD3Q052SBEA,Profit per unit of real gross value added of nonfinancial corporate business: Corporate profits after tax with IVA and CCAdj (unit profits from current production)
-FDEFX,Federal Government: National Defense Consumption Expenditures and Gross Investment
-CLVMNACSCAB1GQEU28,Real Gross Domestic Product for European Union (28 countries)
-A071RC1A027NBEA,Personal saving
-IMPGSC1,Real imports of goods and services
-A006RE1Q156NBEA,Shares of gross domestic product: Gross private domestic investment
-DPCERL1Q225SBEA,Real Personal Consumption Expenditures
-NGDPRSAXDCAUQ,Real Gross Domestic Product for Australia
-NAEXKP01CAQ189S,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for Canada
-EXPGSC1,Real Exports of Goods and Services
-NYGDPPCAPKDCAN,Constant GDP per capita for Canada
-TXNGSP,Gross Domestic Product: All Industry Total in Texas
-PCECA,Personal Consumption Expenditures
-RGDPNAINA666NRUG,Real GDP at Constant National Prices for India
-EXPGSCA,Real Exports of Goods and Services
-IMPGSCA,Real Imports of Goods and Services
-VAPGDPMA,Value Added by Industry: Manufacturing as a Percentage of GDP
-NYGDPPCAPKDJPN,Constant GDP per capita for Japan
-A939RC0A052NBEA,Gross domestic product per capita
-FCTAX,Federal Government: Tax Receipts on Corporate Income
-W986RC1Q027SBEA,Net private saving: Households and institutions
-PCDG,Personal Consumption Expenditures: Durable Goods
-NGDPRSAXDCKRQ,Real Gross Domestic Product for Republic of Korea
-DPI,Disposable Personal Income
-NGDPRSAXDCBRQ,Real Gross Domestic Product for Brazil
+PNFIC1,Real Private Nonresidential Fixed Investment
+QUSPAM770A,"Total Credit to Private Non-Financial Sector, Adjusted for Breaks, for United States"
 NGDPRXDCCNA,Real Gross Domestic Product for China
-CLVMNACSCAB1GQEL,Real Gross Domestic Product for Greece
-B230RC0A052NBEA,Population
-CARGSP,Real Gross Domestic Product: All Industry Total in California
-GDPC1MD,"FOMC Summary of Economic Projections for the Growth Rate of Real Gross Domestic Product, Median"
-USAGDPDEFAISMEI,GDP Implicit Price Deflator in United States
-NETFI,"Balance on Current Account, NIPA's"
-FLNGSP,Gross Domestic Product: All Industry Total in Florida
-W790RC1Q027SBEA,Net domestic investment: Private: Domestic business
-B096RC1Q027SBEA,Federal government current expenditures: Subsidies
-CPMNACSCAB1GQEU272020,Gross Domestic Product for European Union (27 countries from 2020)
-CANGSP,Gross Domestic Product: All Industry Total in California
-MKTGDPINA646NWDB,Gross Domestic Product for India
-NYGDPPCAPKDGBR,Constant GDP per capita for the United Kingdom
+GDI,Gross Domestic Income
+IMPGSC1,Real imports of goods and services
+BOEBSTAUKA,Bank of England Balance Sheet - Total Assets in the United Kingdom
+PCDG,Personal Consumption Expenditures: Durable Goods
+A939RC0A052NBEA,Gross domestic product per capita
+NGDPRSAXDCAUQ,Real Gross Domestic Product for Australia
 CPMNACSCAB1GQDE,Gross Domestic Product for Germany
-NGMP16980,"Total Gross Domestic Product for Chicago-Naperville-Elgin, IL-IN-WI (MSA)"
-NGMP29820,"Total Gross Domestic Product for Las Vegas-Henderson-Paradise, NV (MSA)"
-GDPCTPI,Gross Domestic Product: Chain-type Price Index
-HDTGPDCAQ163N,Household Debt to GDP for Canada
-DDDI06USA156NWDB,Central Bank Assets to GDP for United States
-A792RC0A052NBEA,Personal income per capita
-NYNGSP,Gross Domestic Product: All Industry Total in New York
-DPCERY2Q224SBEA,Contributions to percent change in real gross domestic product: Personal consumption expenditures
-EUNNGDP,Gross Domestic Product (Euro/ECU series) for Euro Area (19 Countries)
-NGMP33100,"Total Gross Domestic Product for Miami-Fort Lauderdale-West Palm Beach, FL (MSA)"
-A261RX1Q020SBEA,Real gross domestic income
-DEBTTLJPA188A,"Central government debt, total (% of GDP) for Japan"
-A229RX0A048NBEA,Real Disposable Personal Income: Per Capita
+DPCERL1Q225SBEA,Real Personal Consumption Expenditures
+B087RC1Q027SBEA,Federal government current transfer payments: Government social benefits: to persons
+CPATAX,Corporate Profits After Tax with Inventory Valuation Adjustment (IVA) and Capital Consumption Adjustment (CCAdj)
+USAGDPDEFAISMEI,GDP Implicit Price Deflator in United States
+CLVMNACSCAB1GQES,Real Gross Domestic Product for Spain
+A071RC1A027NBEA,Personal saving
+DPI,Disposable Personal Income
+ND000334Q,Real Gross Domestic Product
+PCECA,Personal Consumption Expenditures
+NGDPRSAXDCKRQ,Real Gross Domestic Product for Republic of Korea
+GCE,Government Consumption Expenditures and Gross Investment
+NETEXC,Real Net Exports of Goods and Services
+CARGSP,Real Gross Domestic Product: All Industry Total in California
+NYGDPMKTPCDWLD,Gross Domestic Product for World
+NGDPRSAXDCMXQ,Real Gross Domestic Product for Mexico
+A466RD3Q052SBEA,Profit per unit of real gross value added of nonfinancial corporate business: Corporate profits after tax with IVA and CCAdj (unit profits from current production)
 PINCOME,Personal Income
-NC000334Q,Gross Domestic Product
-RGDPNACAA666NRUG,Real GDP at Constant National Prices for Canada
-VAPGDPFI,"Value Added by Industry: Finance, Insurance, Real Estate, Rental, and Leasing: Finance and Insurance as a Percentage of GDP"
-CPROFIT,Corporate Profits with Inventory Valuation Adjustment (IVA) and Capital Consumption Adjustment (CCAdj)
+FLNGSP,Gross Domestic Product: All Industry Total in Florida
+FDEFX,Federal Government: National Defense Consumption Expenditures and Gross Investment
+NYGDPPCAPKDJPN,Constant GDP per capita for Japan
+NGMP29820,"Total Gross Domestic Product for Las Vegas-Henderson-Paradise, NV (MSA)"
+W986RC1Q027SBEA,Net private saving: Households and institutions
+EXPGSC1,Real Exports of Goods and Services
+A006RE1Q156NBEA,Shares of gross domestic product: Gross private domestic investment
+CLVMNACSCAB1GQEU28,Real Gross Domestic Product for European Union (28 countries)
+A191RP1A027NBEA,Gross Domestic Product
+B096RC1Q027SBEA,Federal government current expenditures: Subsidies
+FCTAX,Federal Government: Tax Receipts on Corporate Income
 FGRECPT,Federal Government Current Receipts
-A191RD3A086NBEA,Gross domestic product (implicit price deflator)
-FPI,Fixed Private Investment
+GDPC1MD,"FOMC Summary of Economic Projections for the Growth Rate of Real Gross Domestic Product, Median"
+NETFI,"Balance on Current Account, NIPA's"
 RGDPNARUA666NRUG,Real GDP at Constant National Prices for Russian Federation
-NGDPRNSAXDCINQ,Real Gross Domestic Product for India
-A822RE1Q156NBEA,Shares of gross domestic product: Government consumption expenditures and gross investment
-B230RC0Q173SBEA,Population
-NGMP19100,"Total Gross Domestic Product for Dallas-Fort Worth-Arlington, TX (MSA)"
-NGMP12420,"Total Gross Domestic Product for Austin-Round Rock, TX (MSA)"
-MKTGDPCAA646NWDB,Gross Domestic Product for Canada
-NGDPSAXDCUSQ,Nominal Gross Domestic Product for United States
-VAPGDPC,Value Added by Industry: Construction as a Percentage of GDP
+NAEXKP01INQ652S,Gross Domestic Product by Expenditure in Constant Prices: Total Gross Domestic Product for India
+DDDI06USA156NWDB,Central Bank Assets to GDP for United States
 GGSAVE,Gross Government Saving
-CLVMNACSAB1GQCH,Real Gross Domestic Product for Switzerland
-CBI,Change in Private Inventories
-CLVMNACSCAB1GQSE,Real Gross Domestic Product for Sweden
+B230RC0A052NBEA,Population
+LB0000031Q020SBEA,Real Final Sales to Private Domestic Purchasers
+DEBTTLJPA188A,"Central government debt, total (% of GDP) for Japan"
+PCND,Personal Consumption Expenditures: Nondurable Goods
+TXNGSP,Gross Domestic Product: All Industry Total in Texas
+NGDPRSAXDCBRQ,Real Gross Domestic Product for Brazil
+GDPCTPI,Gross Domestic Product: Chain-type Price Index
 DDDM03USA156NWDB,Outstanding Domestic Private Debt Securities to GDP for United States
+NGMP16980,"Total Gross Domestic Product for Chicago-Naperville-Elgin, IL-IN-WI (MSA)"
+W790RC1Q027SBEA,Net domestic investment: Private: Domestic business
+A792RC0A052NBEA,Personal income per capita
+NGMP33100,"Total Gross Domestic Product for Miami-Fort Lauderdale-West Palm Beach, FL (MSA)"
+A014RY2Q224SBEA,Contributions to percent change in real gross domestic product: Gross private domestic investment: Change in private inventories
+RGDPNAINA666NRUG,Real GDP at Constant National Prices for India
+VAPGDPMA,Value Added by Industry: Manufacturing as a Percentage of GDP
+IMPGSCA,Real Imports of Goods and Services
+RGDPNACAA666NRUG,Real GDP at Constant National Prices for Canada
+GSAVE,Gross Saving
+CPROFIT,Corporate Profits with Inventory Valuation Adjustment (IVA) and Capital Consumption Adjustment (CCAdj)
+FPI,Fixed Private Investment
+NAEXKP01CAQ189S,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for Canada
+MKTGDPGBA646NWDB,Gross Domestic Product for United Kingdom
 BBKMGDP,Brave-Butters-Kelley Real Gross Domestic Product
+NYNGSP,Gross Domestic Product: All Industry Total in New York
+HDTGPDCAQ163N,Household Debt to GDP for Canada
+MKTGDPINA646NWDB,Gross Domestic Product for India
+DHLCRC1Q027SBEA,Personal consumption expenditures: Services: Health care
+DPIC96,Real Disposable Personal Income
+A822RE1Q156NBEA,Shares of gross domestic product: Government consumption expenditures and gross investment
+MKTGDPJPA646NWDB,Gross Domestic Product for Japan
+CLVMNACSCAB1GQEL,Real Gross Domestic Product for Greece
+CANGSP,Gross Domestic Product: All Industry Total in California
 NGMP31080,"Total Gross Domestic Product for Los Angeles-Long Beach-Anaheim, CA (MSA)"
 DTENRG3A086NBEA,Personal consumption expenditures: Services: Housing: Rental of tenant-occupied nonfarm housing (chain-type price index)
-NGMP41860,"Total Gross Domestic Product for San Francisco-Oakland-Hayward, CA (MSA)"
-JCXFE,Personal Consumption Expenditures: Chain-type Price Index Less Food and Energy
-NGMP26420,"Total Gross Domestic Product for Houston-The Woodlands-Sugar Land, TX (MSA)"
-GGGDTAGRC188N,General government gross debt for Greece
-DPIC96,Real Disposable Personal Income
-CLVMNACSCAB1GQEA19,Real Gross Domestic Product for Euro area (19 countries)
-NYGDPPCAPKDDEU,Constant GDP per capita for Germany
-RGDPNAUSA666NRUG,Real GDP at Constant National Prices for United States
+A191RD3A086NBEA,Gross domestic product (implicit price deflator)
+CPMNACSCAB1GQFR,Gross Domestic Product for France
+VAPGDPFI,"Value Added by Industry: Finance, Insurance, Real Estate, Rental, and Leasing: Finance and Insurance as a Percentage of GDP"
+A229RX0A048NBEA,Real Disposable Personal Income: Per Capita
+NGMP12420,"Total Gross Domestic Product for Austin-Round Rock, TX (MSA)"
+EXPGSCA,Real Exports of Goods and Services
+NYGDPPCAPKDGBR,Constant GDP per capita for the United Kingdom
+GNPDEF,Gross National Product: Implicit Price Deflator
+NGDPRSAXDCIDQ,Real Gross Domestic Product for Indonesia
+CHNLORSGPNOSTSAM,Leading Indicators OECD: Reference Series: Gross Domestic Product (GDP): Normalised for China (People's Republic Of)
+NYGDPPCAPKDARG,Constant GDP per capita for Argentina
+NGMP19100,"Total Gross Domestic Product for Dallas-Fort Worth-Arlington, TX (MSA)"
 NGDPNSAXDCUSQ,Nominal Gross Domestic Product for United States
-A014RY2Q224SBEA,Contributions to percent change in real gross domestic product: Gross private domestic investment: Change in private inventories
-NGDPRSAXDCTRQ,Real Gross Domestic Product for Turkey
-NYGDPPCAPKDWLD,Constant GDP per capita for the World
-A011RE1Q156NBEA,Shares of gross domestic product: Gross private domestic investment: Fixed investment: Residential
-DFDHRC1Q027SBEA,Personal consumption expenditures: Durable goods: Furnishings and durable household equipment
-NYGDPPCAPKDIND,Constant GDP per capita for India
-FINSLC1,Real Final Sales of Domestic Product
+USABCAGDPBP6,Balance of Payments for United States
+CLVMNACSCAB1GQSE,Real Gross Domestic Product for Sweden
+NGDPRNSAXDCINQ,Real Gross Domestic Product for India
+EUNNGDP,Gross Domestic Product (Euro/ECU series) for Euro Area (19 Countries)
+MKTGDPKRA646NWDB,Gross Domestic Product for Republic of Korea
+MKTGDPCAA646NWDB,Gross Domestic Product for Canada
+A019RY2Q224SBEA,Contributions to percent change in real gross domestic product: Net exports of goods and services
 DPCCRG3A086NBEA,Personal consumption expenditures excluding food and energy (chain-type price index)
 NGMP35620,"Total Gross Domestic Product for New York-Newark-Jersey City, NY-NJ-PA (MSA)"
-BBKMLEIX,Brave-Butters-Kelley Leading Index
-LB0000031Q020SBEA,Real Final Sales to Private Domestic Purchasers
-W207RC1Q156SBEA,Net saving as a percentage of gross national income
-NA000349Q,Personal Consumption Expenditures
-CHNLORSGPNOSTSAM,Leading Indicators OECD: Reference Series: Gross Domestic Product (GDP): Normalised for China (People's Republic Of)
-GNPDEF,Gross National Product: Implicit Price Deflator
-OB000334Q,Real Gross Domestic Product
-PCND,Personal Consumption Expenditures: Nondurable Goods
-DHLCRC1Q027SBEA,Personal consumption expenditures: Services: Health care
-AREDGDPGDPPT,Total External Debt for United Arab Emirates
-B056RC1A027NBEA,Net corporate dividend payments
-CPMNACSCAB1GQIT,Gross Domestic Product for Italy
-NGMP12060,"Total Gross Domestic Product for Atlanta-Sandy Springs-Roswell, GA (MSA)"
-NGMP34980,"Total Gross Domestic Product for Nashville-Davidson--Murfreesboro--Franklin, TN (MSA)"
-NGDPRSAXDCIDQ,Real Gross Domestic Product for Indonesia
-MKTGDPGBA646NWDB,Gross Domestic Product for United Kingdom
-SLEXPND,State and Local Government Current Expenditures
-RGDPNAJPA666NRUG,Real GDP at Constant National Prices for Japan
-A446RC1Q027SBEA,Corporate business: Profits before tax (without IVA and CCAdj)
-INDGDPNQDSMEI,Current Price Gross Domestic Product in India
-GNPC96,Real Gross National Product
-NFCPATAX,Nonfinancial Corporate Business: Profits After Tax (without IVA and CCAdj)
-NGMP19820,"Total Gross Domestic Product for Detroit-Warren-Dearborn, MI (MSA)"
-TRP6001A027NBEA,Government social benefits: to persons: Federal: Supplemental Nutrition Assistance Program (SNAP)
-LABSHPCNA156NRUG,Share of Labour Compensation in GDP at Current National Prices for China
-CLVMNACSCAB1GQNO,Real Gross Domestic Product for Norway
+A067RO1Q156NBEA,Real Disposable Personal Income
+NGDPSAXDCUSQ,Nominal Gross Domestic Product for United States
+NGDPRSAXDCTRQ,Real Gross Domestic Product for Turkey
 RGDPNAARA666NRUG,Real GDP at Constant National Prices for Argentina
-B020RE1Q156NBEA,Shares of gross domestic product: Exports of goods and services
-EA19LORSGPORGYSAM,Leading Indicators OECD: Reference Series: Gross Domestic Product (GDP): Original Series for the Euro Area (19 Countries)
-NYGDPPCAPKDITA,Constant GDP per capita for Italy
-DDDM01CNA156NWDB,Stock Market Capitalization to GDP for China
-HDTGPDKRQ163N,Household Debt to GDP for Republic of Korea
-NYGDPPCAPKDFRA,Constant GDP per capita for France
-A229RC0A052NBEA,Disposable personal income: Per capita
+CANQGSP,Gross Domestic Product: All Industry Total in California
+GGGDTACNA188N,General government gross debt for China
+CLVMNACSAB1GQCH,Real Gross Domestic Product for Switzerland
+NYGDPPCAPKDDEU,Constant GDP per capita for Germany
+CLVMNACSCAB1GQNO,Real Gross Domestic Product for Norway
+CARQGSP,Real Gross Domestic Product: All Industry Total in California
+PCESVC96,Real Personal Consumption Expenditures: Services
+CPMNACSCAB1GQEU272020,Gross Domestic Product for European Union (27 countries from 2020)
+RGDPNAJPA666NRUG,Real GDP at Constant National Prices for Japan
+NYGDPPCAPKDIND,Constant GDP per capita for India
+NFCPATAX,Nonfinancial Corporate Business: Profits After Tax (without IVA and CCAdj)
+FLNQGSP,Gross Domestic Product: All Industry Total in Florida
+PCDGCC96,Real Personal Consumption Expenditures: Durable Goods
+NGDPRSAXDCZAQ,Real Gross Domestic Product for South Africa
+CBI,Change in Private Inventories
+B056RC1A027NBEA,Net corporate dividend payments
+JCXFE,Personal Consumption Expenditures: Chain-type Price Index Less Food and Energy
+AREDGDPGDPPT,Total External Debt for United Arab Emirates
+GGGDTAGRC188N,General government gross debt for Greece
+FINSLC1,Real Final Sales of Domestic Product
+CLVMNACSCAB1GQEA19,Real Gross Domestic Product for Euro area (19 countries)
+NYGDPPCAPKDCAN,Constant GDP per capita for Canada
+A011RE1Q156NBEA,Shares of gross domestic product: Gross private domestic investment: Fixed investment: Residential
 A067RX1A020NBEA,Real disposable personal income
+NYGDPPCAPKDFRA,Constant GDP per capita for France
+NC000349Q,Personal Consumption Expenditures
+A822RY2Q224SBEA,Contributions to percent change in real gross domestic product: Government consumption expenditures and gross investment
+NGMP35380,"Total Gross Domestic Product for New Orleans-Metairie, LA (MSA)"
+BBKMLEIX,Brave-Butters-Kelley Leading Index
+NA000349Q,Personal Consumption Expenditures
+NGMP41860,"Total Gross Domestic Product for San Francisco-Oakland-Hayward, CA (MSA)"
+W207RC1Q156SBEA,Net saving as a percentage of gross national income
+OB000334Q,Real Gross Domestic Product
+WANGSP,Gross Domestic Product: All Industry Total in Washington
+DFDHRC1Q027SBEA,Personal consumption expenditures: Durable goods: Furnishings and durable household equipment
+GDPC1CTMLR,"Longer Run FOMC Summary of Economic Projections for the Growth Rate of Real Gross Domestic Product, Central Tendency, Midpoint"
+RGDPNAUSA666NRUG,Real GDP at Constant National Prices for United States
+MINGSP,Gross Domestic Product: All Industry Total in Michigan
+NYGDPPCAPKDWLD,Constant GDP per capita for the World
+A794RC0Q052SBEA,Personal consumption expenditures per capita
+BBKMCOIX,Brave-Butters-Kelley Coincident Index
+A261RX1Q020SBEA,Real gross domestic income
+MKTGDPFRA646NWDB,Gross Domestic Product for France
+A067RL1A156NBEA,Real Disposable Personal Income
+VAPGDPC,Value Added by Industry: Construction as a Percentage of GDP
+DDDM01CNA156NWDB,Stock Market Capitalization to GDP for China
+NYGDPPCAPKDKOR,Constant GDP per capita for the Republic of Korea
 PPPTTLUSA618NUPN,Purchasing Power Parity over GDP for United States
 RGDPNATRA666NRUG,Real GDP at Constant National Prices for Turkey
-MINGSP,Gross Domestic Product: All Industry Total in Michigan
-NAEXKP01USQ657S,Gross Domestic Product by Expenditure in Constant Prices: Total Gross Domestic Product for the United States
-NYGDPPCAPKDKOR,Constant GDP per capita for the Republic of Korea
-PCDGCC96,Real Personal Consumption Expenditures: Durable Goods
-GDPC1CTMLR,"Longer Run FOMC Summary of Economic Projections for the Growth Rate of Real Gross Domestic Product, Central Tendency, Midpoint"
-NGDPRSAXDCGBQ,Real Gross Domestic Product for Great Britain
-W987RC1Q027SBEA,Gross private domestic investment: Domestic business
-Y033RX1Q020SBEA,Real Gross Private Domestic Investment: Fixed Investment: Nonresidential: Equipment
-MKTGDPJPA646NWDB,Gross Domestic Product for Japan
-DMOTRC1Q027SBEA,Personal consumption expenditures: Durable goods: Motor vehicles and parts
-A084RC1Q027SBEA,Government current transfer payments
-G160371A027NBEA,Government current expenditures: Income security: Welfare and social services
-NGDPRSAXDCZAQ,Real Gross Domestic Product for South Africa
-W202RC1Q027SBEA,Net private saving
-NGANGDPRPCPPPT,Real Gross Domestic Product for Nigeria
 PCECCA,Real Personal Consumption Expenditures
-FLNQGSP,Gross Domestic Product: All Industry Total in Florida
-NGMP14460,"Total Gross Domestic Product for Boston-Cambridge-Newton, MA-NH (MSA)"
-NB000334Q,Real Gross Domestic Product
-USAB6BLTT02STSAQ,Balance of payments BPM6: Current account Balance: Total: Total Balance as % of GDP for the United States
-NGMP42660,"Total Gross Domestic Product for Seattle-Tacoma-Bellevue, WA (MSA)"
-A229RX0Q048SBEA,Real Disposable Personal Income: Per Capita
-A019RE1Q156NBEA,Shares of gross domestic product: Net exports of goods and services
-QCNPAM770A,"Total Credit to Private Non-Financial Sector, Adjusted for Breaks, for China"
-A001RG3A086NBEA,Gross national product (chain-type price index)
-MKTGDPMYA646NWDB,Gross Domestic Product for Malaysia
-W019RCQ027SBEA,Federal government total expenditures
-PCESVC96,Real Personal Consumption Expenditures: Services
-NYNQGSP,Gross Domestic Product: All Industry Total in New York
-NCNGSP,Gross Domestic Product: All Industry Total in North Carolina
-MKTGDPKRA646NWDB,Gross Domestic Product for Republic of Korea
-CPMNACSCAB1GQFR,Gross Domestic Product for France
-WANGSP,Gross Domestic Product: All Industry Total in Washington
-HBFRGDQ188S,Federal Debt Held by Federal Reserve Banks as Percent of Gross Domestic Product
-NGMP38300,"Total Gross Domestic Product for Pittsburgh, PA (MSA)"
-G160291A027NBEA,Government current expenditures: Education
-SAUNGDPXORPCHPT,Non-Oil Real GDP Growth in Constant Prices for Saudi Arabia
-DCAFRC1A027NBEA,"Personal consumption expenditures: Clothing, footwear, and related services"
-A464RC1Q027SBEA,Nonfinancial corporate business: Profits before tax (without IVA and CCAdj)
-RGDPNABRA666NRUG,Real GDP at Constant National Prices for Brazil
-ALNGSP,Gross Domestic Product: All Industry Total in Alabama
-NGMP45300,"Total Gross Domestic Product for Tampa-St. Petersburg-Clearwater, FL (MSA)"
-NGMP41700,"Total Gross Domestic Product for San Antonio-New Braunfels, TX (MSA)"
-NGMP35380,"Total Gross Domestic Product for New Orleans-Metairie, LA (MSA)"
+NC000334Q,Gross Domestic Product
 NGMP16740,"Total Gross Domestic Product for Charlotte-Concord-Gastonia, NC-SC (MSA)"
-A067RO1Q156NBEA,Real Disposable Personal Income
-CANQGSP,Gross Domestic Product: All Industry Total in California
-A067RL1Q156SBEA,Real Disposable Personal Income
-WUIGLOBALWEIGHTAVG,World Uncertainty Index: Global: GDP Weighted Average
-FYFSDFYGDP,Federal Surplus or Deficit [-] as Percent of Gross Domestic Product
-MKTGDPSGA646NWDB,Gross Domestic Product for Singapore
-OHNGSP,Gross Domestic Product: All Industry Total in Ohio
-ETHNGDPRPCPCPPPT,Real GDP Per Capita for Ethiopia
-M318191Q027NBEA,Federal government expenditures: Budget outlays
-AUSGDPRQDSMEI,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for Australia
-DHLCRG3Q086SBEA,Personal consumption expenditures: Services: Health care (chain-type price index)
-B075RC1Q027SBEA,Federal government current tax receipts: Taxes on corporate income
-A033RC1A027NBEA,National income: Compensation of employees
-NGMP37980,"Total Gross Domestic Product for Philadelphia-Camden-Wilmington, PA-NJ-DE-MD (MSA)"
-NGMP38060,"Total Gross Domestic Product for Phoenix-Mesa-Scottsdale, AZ (MSA)"
-NGMP41180,"Total Gross Domestic Product for St. Louis, MO-IL (MSA)"
-GANGSP,Gross Domestic Product: All Industry Total in Georgia
-A019RY2Q224SBEA,Contributions to percent change in real gross domestic product: Net exports of goods and services
-A191RI1A225NBEA,Gross Domestic Product: Implicit Price Deflator
-NICUR,National Income
-RGDPNATWA666NRUG,Real GDP at Constant National Prices for Taiwan Province of China
-PB0000031Q225SBEA,Real final sales to private domestic purchasers
-CBIC1,Change in Real Private Inventories
-NAEXKP01RUQ652S,Gross Domestic Product by Expenditure in Constant Prices: Total Gross Domestic Product for the Russian Federation
-CNCF,Corporate Net Cash Flow with IVA
-RGMPUSMP,Total Real Gross Domestic Product for United States Metropolitan Portion
-NGDPSAXDCCAQ,Nominal Gross Domestic Product for Canada
-CLVMNACSCAB1GQPL,Real Gross Domestic Product for Poland
-DPETRC1A027NBEA,"Personal consumption expenditures: Pets, pet products, and related services"
-RGDPNAPHA666NRUG,Real GDP at Constant National Prices for Philippines
-VAPGDPR,Value Added by Industry: Retail Trade as a Percentage of GDP
-GEPUPPP,Global Economic Policy Uncertainty Index: PPP-Adjusted GDP
-DDDM01INA156NWDB,Stock Market Capitalization to GDP for India
-NYGDPPCAPKDARG,Constant GDP per capita for Argentina
-HBFIGDQ188S,Federal Debt Held by Foreign and International Investors as Percent of Gross Domestic Product
-AFEXPND,Federal Government Current Expenditures
-NGMP32820,"Total Gross Domestic Product for Memphis, TN-MS-AR (MSA)"
-NGMP17140,"Total Gross Domestic Product for Cincinnati, OH-KY-IN (MSA)"
-A794RC0Q052SBEA,Personal consumption expenditures per capita
-NGMP38900,"Total Gross Domestic Product for Portland-Vancouver-Hillsboro, OR-WA (MSA)"
-NGMP19740,"Total Gross Domestic Product for Denver-Aurora-Lakewood, CO (MSA)"
-NC000349Q,Personal Consumption Expenditures
-MKTGDPRUA646NWDB,Gross Domestic Product for Russian Federation
-DPCERO1Q156NBEA,Real Personal Consumption Expenditures
-NYGDPPCAPKDESP,Constant GDP per capita for Spain
-MKTGDPARA646NWDB,Gross Domestic Product for Argentina
-CLVMNACSCAB1GQNL,Real Gross Domestic Product for Netherlands
-RGDPNAVEA666NRUG,Real GDP at Constant National Prices for Bolivarian Republic of Venezuela
-MKTGDPMXA646NWDB,Gross Domestic Product for Mexico
-CONGSP,Gross Domestic Product: All Industry Total in Colorado
-DPCERG3A086NBEA,Personal Consumption Expenditures: Chain-type Price Index
-MKTGDPVNA646NWDB,Gross Domestic Product for Viet Nam
-Y694RC1Q027SBEA,Gross Domestic Product: Research and Development
-PCNDGC96,Real Personal Consumption Expenditures: Nondurable Goods
-DDDI06JPA156NWDB,Central Bank Assets to GDP for Japan
-A713RX1Q020SBEA,Real final sales to domestic purchasers
-TXNQGSP,Gross Domestic Product: All Industry Total in Texas
-NYGDPPCAPKDRUS,Constant GDP per capita for the Russian Federation
-MKTGDPTHA646NWDB,Gross Domestic Product for Thailand
-EXPGSA,Exports of Goods and Services
-GNPGDPUSA156NUPN,Ratio of GNP to GDP for United States
-A065RC1A027NBEA,Personal income
-PANGSP,Gross Domestic Product: All Industry Total in Pennsylvania
-CLVMEURSCAB1GQEU272020,Real Gross Domestic Product (Euro/ECU series) for European Union (27 countries from 2020)
-HDTGPDGBQ163N,Household Debt to GDP for United Kingdom
-DDDM02USA156NWDB,Stock Market Total Value Traded to GDP for United States
-NGDPSAXDCJPQ,Nominal Gross Domestic Product for Japan
-NGMP18140,"Total Gross Domestic Product for Columbus, OH (MSA)"
-A019RE1A156NBEA,Shares of gross domestic product: Net exports of goods and services
-AZNGSP,Gross Domestic Product: All Industry Total in Arizona
-A782RC1Q027SBEA,Gross government investment
-ILNGSP,Gross Domestic Product: All Industry Total in Illinois
-CPMNACSCAB1GQES,Gross Domestic Product for Spain
-A679RC1Q027SBEA,Private fixed investment in information processing equipment and software
-DGOERC1Q027SBEA,Personal consumption expenditures: Nondurable goods: Gasoline and other energy goods
-PCAGDPCNA646NWDB,Gross Domestic Product Per Capita for China
-COE,"National Income: Compensation of Employees, Paid"
-CANGDPDEFQISMEI,National Accounts: National Accounts Deflators: Gross Domestic Product: GDP Deflator for Canada
-B009RX1Q020SBEA,Real gross private domestic investment: Fixed investment: Nonresidential: Structures
-NGMP28140,"Total Gross Domestic Product for Kansas City, MO-KS (MSA)"
-NGMP47900,"Total Gross Domestic Product for Washington-Arlington-Alexandria, DC-VA-MD-WV (MSA)"
-NAEXKP01NZQ189S,Gross Domestic Product by Expenditure in Constant Prices: Total Gross Domestic Product for New Zealand
-CARQGSP,Real Gross Domestic Product: All Industry Total in California
-A229RC0Q052SBEA,Disposable personal income: Per capita
-HINGSP,Gross Domestic Product: All Industry Total in Hawaii
-NGMP36740,"Total Gross Domestic Product for Orlando-Kissimmee-Sanford, FL (MSA)"
-DDDI03USA156NWDB,Non-Bank Financial Institutions' Assets to GDP for United States
-NYGDPPCAPKDMEX,Constant GDP per capita for Mexico
-USMANRQGSP,Real Gross Domestic Product: Manufacturing (NAICS 31-33) in the United States
-L312041A027NBEA,Government subsidies: Federal: Agricultural
-HDTGPDAUQ163N,Household Debt to GDP for Australia
-FPIC1,Real Private Fixed Investment
-BBKMCOIX,Brave-Butters-Kelley Coincident Index
-FYPUGDA188S,Gross Federal Debt Held by the Public as Percent of Gross Domestic Product
-NGMP39580,"Total Gross Domestic Product for Raleigh, NC (MSA)"
-A455RC1Q027SBEA,Gross value added of nonfinancial corporate business
-NGMP41940,"Total Gross Domestic Product for San Jose-Sunnyvale-Santa Clara, CA (MSA)"
-DEULORSGPNOSTSAM,Leading Indicators OECD: Reference series: Gross Domestic Product (GDP): Normalised for Germany
-NAEXKP01BRQ652S,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for Brazil
-RGDPNAUAA666NRUG,Real GDP at Constant National Prices for Ukraine
-NGMP41740,"Total Gross Domestic Product for San Diego-Carlsbad, CA (MSA)"
-W070RC1Q027SBEA,State and local government current tax receipts
-A074RC1Q027SBEA,Federal government current tax receipts: Personal current taxes
-B021RE1Q156NBEA,Shares of gross domestic product: Imports of goods and services
-RGDPNADEA666NRUG,Real GDP at Constant National Prices for Germany
-GDB,Gross Domestic Purchases
-A067RC1A027NBEA,Disposable personal income
-KYNGSP,Gross Domestic Product: All Industry Total in Kentucky
-DHUTRC1Q027SBEA,Personal consumption expenditures: Services: Housing and utilities
-CLVMNACSCAB1GQDK,Real Gross Domestic Product for Denmark
-HPGDPUKA,Hodrick-Prescott (HP) Filtered Log of Real Gross Domestic Product at Factor Cost in the United Kingdom
-MKTGDPPKA646NWDB,Gross Domestic Product for Pakistan
-A011RY2Q224SBEA,Contributions to percent change in real gross domestic product: Gross private domestic investment: Fixed investment: Residential
-DCNGSP,Gross Domestic Product: All Industry Total in the District of Columbia
-DGDSRX1Q020SBEA,Real personal consumption expenditures: Goods
-MKTGDPAEA646NWDB,Gross Domestic Product for United Arab Emirates
-GPDIA,Gross Private Domestic Investment
-MANGSP,Gross Domestic Product: All Industry Total in Massachusetts
-DPCCRV1A225NBEA,Personal Consumption Expenditures (PCE) Excluding Food and Energy (chain-type price index)
-GBRGDPDEFQISMEI,GDP Implicit Price Deflator in United Kingdom
-MINQGSP,Gross Domestic Product: All Industry Total in Michigan
-A067RL1A156NBEA,Real Disposable Personal Income
-DPCERL1A225NBEA,Real Personal Consumption Expenditures
-NYGDPPCAPKDAUS,Constant GDP per capita for Australia
-GDPC96,Real Gross Domestic Product (DISCONTINUED)
-NCNQGSP,Gross Domestic Product: All Industry Total in North Carolina
-MNNGSP,Gross Domestic Product: All Industry Total in Minnesota
-RGDPCHUSA625NUPN,Purchasing Power Parity Converted GDP Per Capita (Chain Series) for United States
-NAGIGP01EZQ661S,National Accounts: National Accounts Deflators: Gross Domestic Product: GDP Deflator for the Euro Area (19 Countries)
-IMPGSA,Imports of Goods and Services
-UTNGSP,Gross Domestic Product: All Industry Total in Utah
-DEBTTLCNA188A,"Central government debt, total (% of GDP) for China"
-NGDPNSAXDCINQ,Nominal Gross Domestic Product for India
+HDTGPDKRQ163N,Household Debt to GDP for Republic of Korea
 MKTGDPDEA646NWDB,Gross Domestic Product for Germany
-A006RL1Q225SBEA,Real Gross Private Domestic Investment
-LANGSP,Gross Domestic Product: All Industry Total in Louisiana
-A019RC1A027NBEA,Net exports of goods and services
-DEBTTLUSA188A,"Central government debt, total (% of GDP) for the United States"
-BBKMCY,Brave-Butters-Kelley Cycle Component of GDP
-DDOI02USA156NWDB,Bank Deposits to GDP for United States
-NYGDPPCAPKDBRA,Constant GDP per capita for Brazil
-OHNQGSP,Gross Domestic Product: All Industry Total in Ohio
-VAPGDPM,Value Added by Industry: Mining as a Percentage of GDP
-A126RC1A027NBEA,Gross private saving
-ND000342Q,Real Imports of Goods and Services
-NAEXKP01USQ652S,Gross Domestic Product by Expenditure in Constant Prices: Total Gross Domestic Product for the United States
-AKNGSP,Gross Domestic Product: All Industry Total in Alaska
-CLVMNACNSAB1GQIE,Real Gross Domestic Product for Ireland
-CLVMNACNSAB1GQPL,Real Gross Domestic Product for Poland
-TXRQGSP,Real Gross Domestic Product: All Industry Total in Texas
-NGDPRSAXDCJPQ,Real Gross Domestic Product for Japan
-DDDI02USA156NWDB,Deposit Money Bank Assets to GDP for United States
-RGDPNAEGA666NRUG,Real GDP at Constant National Prices for Egypt
-VAPGDPPBS,Value Added by Industry: Professional and Business Services as a Percentage of GDP
-RGDPNAMXA666NRUG,Real GDP at Constant National Prices for Mexico
-RGDPNAAUA666NRUG,Real GDP at Constant National Prices for Australia
-NAEXKP01CLQ652S,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for Chile
-DDDM01JPA156NWDB,Stock Market Capitalization to GDP for Japan
-NGDPRSAXDCDEQ,Real Gross Domestic Product for Germany
-NYGDPPCAPKDIRL,Constant GDP per capita for Ireland
-NAEXKP02EZQ189S,National Accounts: GDP by Expenditure: Constant Prices: Private Final Consumption Expenditure for the Euro Area (19 Countries)
-NAEXKP01CAQ657S,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for Canada
-NGANGDPRPCPCPPPT,Real GDP Per Capita for Nigeria
-MKTGDPFRA646NWDB,Gross Domestic Product for France
-BBKQLEIX,Brave-Butters-Kelley Leading Index
-W068RC1A027NBEA,Government total expenditures
-PIECTR,Real personal income excluding current transfer receipts
-NJNGSP,Gross Domestic Product: All Industry Total in New Jersey
-NYGDPPCAPKDIRN,Constant GDP per capita for the Islamic Republic of Iran
-RGDPMRPUKM,Real Gross Domestic Product at Market Prices in the United Kingdom
-HDTGPDDEQ163N,Household Debt to GDP for Germany
-DDDI06CNA156NWDB,Central Bank Assets to GDP for China
-DEBTTLITA188A,"Central government debt, total (% of GDP) for Italy"
-NAEXKP01INQ657S,Gross Domestic Product by Expenditure in Constant Prices: Total Gross Domestic Product for India
-CLVMNACNSAB1GQNL,Real Gross Domestic Product for Netherlands
-DDDM01GBA156NWDB,Stock Market Capitalization to GDP for United Kingdom
-M318501A027NBEA,Federal government budget surplus or deficit (-)
-WINQGSP,Gross Domestic Product: All Industry Total in Wisconsin
-TNNGSP,Gross Domestic Product: All Industry Total in Tennessee
-A824RL1Q225SBEA,Real Government Consumption Expenditures and Gross Investment: Federal: National Defense
-NAEXKP01JPQ657S,Gross Domestic Product by Expenditure in Constant Prices: Total Gross Domestic Product for Japan
-A032RC1A027NBEA,National income
-LABSHPCAA156NRUG,Share of Labour Compensation in GDP at Current National Prices for Canada
-DGDSRC1Q027SBEA,Personal consumption expenditures: Goods
-LPRGDPUKA,Labor Productivity: Real GDP Per Person in the United Kingdom
-NENGSP,Gross Domestic Product: All Industry Total in Nebraska
-LABSHPDEA156NRUG,Share of Labour Compensation in GDP at Current National Prices for Germany
-ZAFNGDPRPCPCPPPT,Real GDP Per Capita for South Africa
-LABSHPJPA156NRUG,Share of Labour Compensation in GDP at Current National Prices for Japan
-A466RC1A027NBEA,Nonfinancial corporate business: Profits after tax (without IVA and CCAdj)
-RGDPNAITA666NRUG,Real GDP at Constant National Prices for Italy
-VAPGDPAFH,"Value Added by Industry: Agriculture, Forestry, Fishing, and Hunting as a Percentage of GDP"
-NYGDPPCAPKDGRC,Constant GDP per capita for Greece
-GNPCA,Real Gross National Product
-RGDPNACLA666NRUG,Real GDP at Constant National Prices for Chile
-CONQGSP,Gross Domestic Product: All Industry Total in Colorado
-USARGDPE,Real GDP per Employed Person in the United States (DISCONTINUED)
-KORRGDPC,Real GDP per Capita in the Republic of Korea (South Korea) (DISCONTINUED)
-W006RC1A027NBEA,Federal government current tax receipts
-A824RX1Q020SBEA,Real government consumption expenditures and gross investment: Federal: National defense
-PB0000091Q225SBEA,Real Average of GDP and GDI
-RGDPNASGA666NRUG,Real GDP at Constant National Prices for Singapore
-RGDPNAMYA666NRUG,Real GDP at Constant National Prices for Malaysia
-VAPGDPT,Value Added by Industry: Transportation and Warehousing as a Percentage of GDP
+G160371A027NBEA,Government current expenditures: Income security: Welfare and social services
+TRP6001A027NBEA,Government social benefits: to persons: Federal: Supplemental Nutrition Assistance Program (SNAP)
+SLEXPND,State and Local Government Current Expenditures
+A006RY2Q224SBEA,Contributions to percent change in real gross domestic product: Gross private domestic investment
+PCNDGC96,Real Personal Consumption Expenditures: Nondurable Goods
+NAEXKP01USQ657S,Gross Domestic Product by Expenditure in Constant Prices: Total Gross Domestic Product for the United States
+DMOTRC1Q027SBEA,Personal consumption expenditures: Durable goods: Motor vehicles and parts
+B230RC0Q173SBEA,Population
+DPCERG3A086NBEA,Personal Consumption Expenditures: Chain-type Price Index
+CLVMNACSCAB1GQPT,Real Gross Domestic Product for Portugal
+A067RL1Q156SBEA,Real Disposable Personal Income
+NAEXKP01RUQ652S,Gross Domestic Product by Expenditure in Constant Prices: Total Gross Domestic Product for the Russian Federation
+NGMP26420,"Total Gross Domestic Product for Houston-The Woodlands-Sugar Land, TX (MSA)"
+MKTGDPVNA646NWDB,Gross Domestic Product for Viet Nam
+A019RE1Q156NBEA,Shares of gross domestic product: Net exports of goods and services
+NGMP14460,"Total Gross Domestic Product for Boston-Cambridge-Newton, MA-NH (MSA)"
+W019RCQ027SBEA,Federal government total expenditures
+DHUTRC1Q027SBEA,Personal consumption expenditures: Services: Housing and utilities
+MKTGDPSGA646NWDB,Gross Domestic Product for Singapore
+A446RC1Q027SBEA,Corporate business: Profits before tax (without IVA and CCAdj)
 ND000349Q,Real Personal Consumption Expenditures
-A001RP1Q027SBEA,Gross National Product
-BBKMCLA,Brave-Butters-Kelley Cycle: Lagging Subcomponent of GDP
-ILNQGSP,Gross Domestic Product: All Industry Total in Illinois
-DDDI07USA156NWDB,Mutual Fund Assets to GDP for United States
-A072RC1A156NBEA,Personal saving as a percentage of disposable personal income
-TNNQGSP,Gross Domestic Product: All Industry Total in Tennessee
-PPPTTLTWA618NUPN,Purchasing Power Parity over GDP for Taiwan
-DEBTTLCAA188A,"Central government debt, total (% of GDP) for Canada"
-NJNQGSP,Gross Domestic Product: All Industry Total in New Jersey
-JPNGDPDEFQISMEI,GDP Implicit Price Deflator in Japan
-A001RO1Q156NBEA,Real Gross National Product
-NAEXKP01CNA657S,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for China (People's Republic Of)
-RGDPNANZA666NRUG,Real GDP at Constant National Prices for New Zealand
-GBRLORSGPNOSTSAM,Leading Indicators OECD: Reference series: Gross Domestic Product (GDP): Normalised for the United Kingdom
-HBPIGDQ188S,Federal Debt Held by Private Investors as Percent of Gross Domestic Product
+A229RC0A052NBEA,Disposable personal income: Per capita
+USAB6BLTT02STSAQ,Balance of payments BPM6: Current account Balance: Total: Total Balance as % of GDP for the United States
+RGDPNASGA666NRUG,Real GDP at Constant National Prices for Singapore
+A084RC1Q027SBEA,Government current transfer payments
+NYGDPPCAPKDITA,Constant GDP per capita for Italy
+A067RC1A027NBEA,Disposable personal income
+NB000334Q,Real Gross Domestic Product
+HBFIGDQ188S,Federal Debt Held by Foreign and International Investors as Percent of Gross Domestic Product
+DHUTRG3Q086SBEA,Personal consumption expenditures: Services: Housing and utilities (chain-type price index)
+NGMP12060,"Total Gross Domestic Product for Atlanta-Sandy Springs-Roswell, GA (MSA)"
+Y033RX1Q020SBEA,Real Gross Private Domestic Investment: Fixed Investment: Nonresidential: Equipment
+NYNQGSP,Gross Domestic Product: All Industry Total in New York
+NGMP34980,"Total Gross Domestic Product for Nashville-Davidson--Murfreesboro--Franklin, TN (MSA)"
+B075RC1Q027SBEA,Federal government current tax receipts: Taxes on corporate income
 INDLORSGPNOSTSAM,Leading Indicators OECD: Reference series: Gross Domestic Product (GDP): Normalised for India
-RGDPNAILA666NRUG,Real GDP at Constant National Prices for Israel
-A824RE1Q156NBEA,Shares of gross domestic product: Government consumption expenditures and gross investment: Federal: National defense
-VAPGDPSPI,Value Added by Industry: Private Services-Producing Industries as a Percentage of GDP
-EA19LORSGPNOSTSAM,Leading Indicators OECD: Reference Series: Gross Domestic Product (GDP): Normalised for the Euro Area (19 Countries)
-COLNAEXKP01STSAQ,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for Colombia
-B021RE1A156NBEA,Shares of gross domestic product: Imports of goods and services
-A822RL1Q225SBEA,Real Government Consumption Expenditures and Gross Investment
-NYGDPPCAPKDSGP,Constant GDP per capita for Singapore
-NYGDPPCAPKDEGY,Constant GDP per capita for Egypt
-DDDI03ETA156NWDB,Non-Bank Financial Institutions' Assets to GDP for Ethiopia
-ND000346Q,Real Personal Consumption Expenditures: Durable Goods
-DDDM03CNA156NWDB,Outstanding Domestic Private Debt Securities to GDP for China
-GCDODTOTLGDZSOED,"Central government debt, total (% of GDP) for OECD Members"
-NYGDPPCAPKDZAF,Constant GDP per capita for South Africa
-DDDM01NGA156NWDB,Stock Market Capitalization to GDP for Nigeria
-DPCERD3A086NBEA,Personal consumption expenditures (implicit price deflator)
-EA19B6BLTT02STSAQ,Balance of Payments BPM6: Current Account Balance: Total: Total Balance as % of GDP for the Euro Area (19 Countries)
-RGDPNAVNA666NRUG,Real GDP at Constant National Prices for Viet Nam
-GNPA,Gross National Product
-NGDPRXDCJPA,Real Gross Domestic Product for Japan
-NAEXKP01DEQ657S,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for Germany
-OKNGSP,Gross Domestic Product: All Industry Total in Oklahoma
-OKNQGSP,Gross Domestic Product: All Industry Total in Oklahoma
-RGDPNABDA666NRUG,Real GDP at Constant National Prices for Bangladesh
-VAPGDPU,Value Added by Industry: Utilities as a Percentage of GDP
-DDOI11PKA156NWDB,Remittance Inflows to GDP for Pakistan
-AUSGDPNQDSMEI,National Accounts: GDP by Expenditure: Current Prices: Gross Domestic Product - Total for Australia
-RGDPNASAA666NRUG,Real GDP at Constant National Prices for Saudi Arabia
-B087RC1A027NBEA,Federal government current transfer payments: Government social benefits: to persons
-KENNGDPRPCPCPPPT,Real GDP Per Capita for Kenya
-NAEXKP01AUQ657S,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for Australia
-OECDLORSGPORGYSAM,Leading Indicators OECD: Reference series: Gross Domestic Product (GDP): Original series for OECD - Total
-LABSHPINA156NRUG,Share of Labour Compensation in GDP at Current National Prices for India
-NYGDPPCAPKDSWE,Constant GDP per capita for Sweden
-NENQGSP,Gross Domestic Product: All Industry Total in Nebraska
-ZAFNGDPRPCPPPT,Real Gross Domestic Product for South Africa
-DDDI05USA156NWDB,Liquid Liabilities to GDP for United States
+NCNGSP,Gross Domestic Product: All Industry Total in North Carolina
+GANGSP,Gross Domestic Product: All Industry Total in Georgia
+NGMP36740,"Total Gross Domestic Product for Orlando-Kissimmee-Sanford, FL (MSA)"
+B020RE1Q156NBEA,Shares of gross domestic product: Exports of goods and services
+GNPC96,Real Gross National Product
+DDDI06CNA156NWDB,Central Bank Assets to GDP for China
+NGDPRSAXDCGBQ,Real Gross Domestic Product for Great Britain
+NGDPSAXDCJPQ,Nominal Gross Domestic Product for Japan
+PB0000031Q225SBEA,Real final sales to private domestic purchasers
+L312041A027NBEA,Government subsidies: Federal: Agricultural
+W202RC1Q027SBEA,Net private saving
+A033RC1A027NBEA,National income: Compensation of employees
+GDPALL42101,"Gross Domestic Product: All Industries in Philadelphia County, PA"
+W987RC1Q027SBEA,Gross private domestic investment: Domestic business
+A455RC1Q027SBEA,Gross value added of nonfinancial corporate business
+A065RC1A027NBEA,Personal income
+NGMP19820,"Total Gross Domestic Product for Detroit-Warren-Dearborn, MI (MSA)"
+A229RX0Q048SBEA,Real Disposable Personal Income: Per Capita
+NGMP38300,"Total Gross Domestic Product for Pittsburgh, PA (MSA)"
 NA000308Q,Federal government current expenditures: Interest payments
-PCDGA,Personal Consumption Expenditures: Durable Goods
-NYGDPPCAPKDTUR,Constant GDP per capita for Turkey
-DDDI09USA156NWDB,Life Insurance Premium Volume to GDP for United States
-NYGDPPCAPKDCHE,Constant GDP per capita for Switzerland
-NYGDPPCAPKDVEN,Constant GDP per capita for the Bolivarian Republic of Venezuela
-CHNLORSGPRTSTSAM,Leading Indicators OECD: Reference Series: Gross Domestic Product (GDP): Ratio to Trend for China (People's Republic Of)
-USALORSGPTDSTSAM,Leading Indicators OECD: Reference series: Gross Domestic Product (GDP): Trend for the United States
-RGDPNAPKA666NRUG,Real GDP at Constant National Prices for Pakistan
-JPNRGDPC,Real GDP per Capita in Japan (DISCONTINUED)
-DDOI11SVA156NWDB,Remittance Inflows to GDP for El Salvador
-PANQGSP,Gross Domestic Product: All Industry Total in Pennsylvania
-GCDODTOTLGDZSEUU,"Central government debt, total (% of GDP) for the European Union"
-A001RI1Q225SBEA,Gross National Product: Implicit Price Deflator
-CANRGDPC,Real GDP per Capita in Canada (DISCONTINUED)
-A001RP1A027NBEA,Gross National Product
-GPDICA,Real Gross Private Domestic Investment
-DPCCRC1Q027SBEA,Personal consumption expenditures excluding food and energy
-DEBTTLGBA188A,"Central government debt, total (% of GDP) for the United Kingdom"
-OB000349Q,Real Personal Consumption Expenditures
-DPCERE1A156NBEA,Shares of gross domestic product: Personal consumption expenditures
-AUSGDPDEFQISMEI,National Accounts: National Accounts Deflators: Gross Domestic Product: GDP Deflator for Australia
-NYGDPPCAPKDPOL,Constant GDP per capita for Poland
-NYGDPPCAPKDARE,Constant GDP per capita for the United Arab Emirates
-DEBTTLINA188A,"Central government debt, total (% of GDP) for India"
-NA000283Q,Federal Government: Current Expenditures
-NYGDPPCAPKDUKR,Constant GDP per capita for Ukraine
-A794RC0A052NBEA,Personal consumption expenditures per capita
-B006RO1Q156NBEA,Real Gross Private Domestic Investment
-BBKMCLE,Brave-Butters-Kelley Cycle: Leading Subcomponent of GDP
-GANQGSP,Gross Domestic Product: All Industry Total in Georgia
-ALNQGSP,Gross Domestic Product: All Industry Total in Alabama
-KORRGDPR,Real GDP in the Republic of Korea (South Korea) (DISCONTINUED)
-LB0000091Q020SBEA,Real Average of GDP and GDI
-HDTGPDITQ163N,Household Debt to GDP for Italy
-ND000338Q,Real Private Residential Fixed Investment
-CLVMNACSAB1GQIE,Real Gross Domestic Product for Ireland
-DDDM011WA156NWDB,Stock Market Capitalization to GDP for World (DISCONTINUED)
-AUSLORSGPNOSTSAM,Leading Indicators OECD: Reference series: Gross Domestic Product (GDP): Normalised for Australia
-B359RC1Q027SBEA,Gross value added: GDP: Business: Farm
-RGDPNANGA666NRUG,Real GDP at Constant National Prices for Nigeria
-ITAGDPDEFQISMEI,GDP Implicit Price Deflator in Italy
+GEPUPPP,Global Economic Policy Uncertainty Index: PPP-Adjusted GDP
+INDGDPNQDSMEI,Current Price Gross Domestic Product in India
+RGDPNATWA666NRUG,Real GDP at Constant National Prices for Taiwan Province of China
+GDPC96,Real Gross Domestic Product (DISCONTINUED)
+RGDPNAPHA666NRUG,Real GDP at Constant National Prices for Philippines
+NYGDPPCAPKDAUS,Constant GDP per capita for Australia
+EA19LORSGPORGYSAM,Leading Indicators OECD: Reference Series: Gross Domestic Product (GDP): Original Series for the Euro Area (19 Countries)
+COE,"National Income: Compensation of Employees, Paid"
+G160291A027NBEA,Government current expenditures: Education
+CBIC1,Change in Real Private Inventories
+MKTGDPMXA646NWDB,Gross Domestic Product for Mexico
+RGDPNAVEA666NRUG,Real GDP at Constant National Prices for Bolivarian Republic of Venezuela
+NGMP41180,"Total Gross Domestic Product for St. Louis, MO-IL (MSA)"
+DHLCRG3Q086SBEA,Personal consumption expenditures: Services: Health care (chain-type price index)
+MKTGDPRUA646NWDB,Gross Domestic Product for Russian Federation
+NGMP28140,"Total Gross Domestic Product for Kansas City, MO-KS (MSA)"
+NGMP19740,"Total Gross Domestic Product for Denver-Aurora-Lakewood, CO (MSA)"
+NGMP45300,"Total Gross Domestic Product for Tampa-St. Petersburg-Clearwater, FL (MSA)"
+NGDPRNSAXDCRUQ,Real Gross Domestic Product for Russia
+A074RC1Q027SBEA,Federal government current tax receipts: Personal current taxes
+NGMP41940,"Total Gross Domestic Product for San Jose-Sunnyvale-Santa Clara, CA (MSA)"
+DDOI02USA156NWDB,Bank Deposits to GDP for United States
+DPCCRV1A225NBEA,Personal Consumption Expenditures (PCE) Excluding Food and Energy (chain-type price index)
+CONGSP,Gross Domestic Product: All Industry Total in Colorado
+CPMNACSCAB1GQIT,Gross Domestic Product for Italy
+CLVMNACSCAB1GQFI,Real Gross Domestic Product for Finland
+RGDPNADEA666NRUG,Real GDP at Constant National Prices for Germany
+UTNGSP,Gross Domestic Product: All Industry Total in Utah
+OHNGSP,Gross Domestic Product: All Industry Total in Ohio
+USMANRQGSP,Real Gross Domestic Product: Manufacturing (NAICS 31-33) in the United States
+DPCERO1Q156NBEA,Real Personal Consumption Expenditures
+ND000346Q,Real Personal Consumption Expenditures: Durable Goods
+HBFRGDQ188S,Federal Debt Held by Federal Reserve Banks as Percent of Gross Domestic Product
+LABSHPCNA156NRUG,Share of Labour Compensation in GDP at Current National Prices for China
+A713RX1Q020SBEA,Real final sales to domestic purchasers
+PANGSP,Gross Domestic Product: All Industry Total in Pennsylvania
+NGMP18140,"Total Gross Domestic Product for Columbus, OH (MSA)"
+DDDM02USA156NWDB,Stock Market Total Value Traded to GDP for United States
+HDTGPDGBQ163N,Household Debt to GDP for United Kingdom
+NAEXKP01GBQ652S,Gross Domestic Product by Expenditure in Constant Prices: Total Gross Domestic Product for the United Kingdom
+NGMP38060,"Total Gross Domestic Product for Phoenix-Mesa-Scottsdale, AZ (MSA)"
+MKTGDPARA646NWDB,Gross Domestic Product for Argentina
+DGOERC1Q027SBEA,Personal consumption expenditures: Nondurable goods: Gasoline and other energy goods
+A464RC1Q027SBEA,Nonfinancial corporate business: Profits before tax (without IVA and CCAdj)
+AZNGSP,Gross Domestic Product: All Industry Total in Arizona
+DPETRC1A027NBEA,"Personal consumption expenditures: Pets, pet products, and related services"
+FYPUGDA188S,Gross Federal Debt Held by the Public as Percent of Gross Domestic Product
+VAPGDPR,Value Added by Industry: Retail Trade as a Percentage of GDP
+RGDPNABRA666NRUG,Real GDP at Constant National Prices for Brazil
+A019RE1A156NBEA,Shares of gross domestic product: Net exports of goods and services
+NGANGDPRPCPPPT,Real Gross Domestic Product for Nigeria
+A191RI1A225NBEA,Gross Domestic Product: Implicit Price Deflator
+CLVMNACSCAB1GQDK,Real Gross Domestic Product for Denmark
+NYGDPPCAPKDBRA,Constant GDP per capita for Brazil
+W998RC1Q027SBEA,Gross private saving: Households and institutions
+NGMP42660,"Total Gross Domestic Product for Seattle-Tacoma-Bellevue, WA (MSA)"
+HINGSP,Gross Domestic Product: All Industry Total in Hawaii
+Y694RC1Q027SBEA,Gross Domestic Product: Research and Development
+MKTGDPPKA646NWDB,Gross Domestic Product for Pakistan
+CLVMNACNSAB1GQIE,Real Gross Domestic Product for Ireland
+CANGDPDEFQISMEI,National Accounts: National Accounts Deflators: Gross Domestic Product: GDP Deflator for Canada
+NGDPRXDCJPA,Real Gross Domestic Product for Japan
+NYGDPPCAPKDRUS,Constant GDP per capita for the Russian Federation
+CLVMNACSCAB1GQPL,Real Gross Domestic Product for Poland
+NAEXKP01CLQ652S,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for Chile
+PCAGDPCNA646NWDB,Gross Domestic Product Per Capita for China
+RGDPNAUAA666NRUG,Real GDP at Constant National Prices for Ukraine
+NAEXKP01KRQ189S,Gross Domestic Product by Expenditure in Constant Prices: Total Gross Domestic Product for the Republic of Korea
+W171RC1Q027SBEA,Net domestic investment
+NGMP41700,"Total Gross Domestic Product for San Antonio-New Braunfels, TX (MSA)"
+NGMP38900,"Total Gross Domestic Product for Portland-Vancouver-Hillsboro, OR-WA (MSA)"
+NGMP27260,"Total Gross Domestic Product for Jacksonville, FL (MSA)"
+RGDPNAMXA666NRUG,Real GDP at Constant National Prices for Mexico
+Y033RC1Q027SBEA,Gross Private Domestic Investment: Fixed Investment: Nonresidential: Equipment
+DPCERL1A225NBEA,Real Personal Consumption Expenditures
+NGMP17140,"Total Gross Domestic Product for Cincinnati, OH-KY-IN (MSA)"
+GDB,Gross Domestic Purchases
+M318191Q027NBEA,Federal government expenditures: Budget outlays
+NAEXKP01CNA657S,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for China (People's Republic Of)
+HDTGPDAUQ163N,Household Debt to GDP for Australia
+SAUNGDPXORPCHPT,Non-Oil Real GDP Growth in Constant Prices for Saudi Arabia
+DDDI06JPA156NWDB,Central Bank Assets to GDP for Japan
+AUSGDPRQDSMEI,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for Australia
+KYNGSP,Gross Domestic Product: All Industry Total in Kentucky
+DEULORSGPNOSTSAM,Leading Indicators OECD: Reference series: Gross Domestic Product (GDP): Normalised for Germany
+FPIC1,Real Private Fixed Investment
+TURGDPNQDSMEI,Current Price Gross Domestic Product in Turkey
+B009RX1Q020SBEA,Real gross private domestic investment: Fixed investment: Nonresidential: Structures
+LANGSP,Gross Domestic Product: All Industry Total in Louisiana
+FYFSDFYGDP,Federal Surplus or Deficit [-] as Percent of Gross Domestic Product
+DEBTTLCNA188A,"Central government debt, total (% of GDP) for China"
+ILNGSP,Gross Domestic Product: All Industry Total in Illinois
+NGDPRSAXDCARQ,Real Gross Domestic Product for Argentina
+WUIGLOBALWEIGHTAVG,World Uncertainty Index: Global: GDP Weighted Average
 RGDPNATHA666NRUG,Real GDP at Constant National Prices for Thailand
-ARENGDPXORPCHPT,Non-Oil Real GDP Growth in Constant Prices for United Arab Emirates
-RGDPNAESA666NRUG,Real GDP at Constant National Prices for Spain
-DDURRG3Q086SBEA,Personal consumption expenditures: Durable goods (chain-type price index)
-GCDODTOTLGDZSEMU,"Central government debt, total (% of GDP) for the Euro Area"
-A358RC1Q027SBEA,Gross value added: GDP: Business: Nonfarm
-NYGDPPCAPKDIDN,Constant GDP per capita for Indonesia
-LABSHPITA156NRUG,Share of Labour Compensation in GDP at Current National Prices for Italy
-RGDPNAFRA666NRUG,Real GDP at Constant National Prices for France
-PCRGMPUSMP,Total Per Capita Real GDP United States Metropolitan Portion (DISCONTINUED)
-MANQGSP,Gross Domestic Product: All Industry Total in Massachusetts
-NYGDPPCAPKDNLD,Constant GDP per capita for the Netherlands
-NYGDPPCAPKDCHL,Constant GDP per capita for Chile
-INDGDPDEFQISMEI,GDP Implicit Price Deflator in India
-PPPTTLJPA618NUPN,Purchasing Power Parity over GDP for Japan
-JPNGDPDEFAISMEI,GDP Implicit Price Deflator in Japan
-NA000327Q,Federal government current tax receipts
+NGDPRSAXDCDEQ,Real Gross Domestic Product for Germany
+HDTGPDDEQ163N,Household Debt to GDP for Germany
+NYGDPPCAPKDMEX,Constant GDP per capita for Mexico
+NICUR,National Income
+TXNQGSP,Gross Domestic Product: All Industry Total in Texas
+VAPGDPAFH,"Value Added by Industry: Agriculture, Forestry, Fishing, and Hunting as a Percentage of GDP"
+DEBTTLGBA188A,"Central government debt, total (% of GDP) for the United Kingdom"
+DDDM01INA156NWDB,Stock Market Capitalization to GDP for India
+NGDPSAXDCCAQ,Nominal Gross Domestic Product for Canada
+CLVMNACSCAB1GQNL,Real Gross Domestic Product for Netherlands
+RGDPMRPUKM,Real Gross Domestic Product at Market Prices in the United Kingdom
+AKNGSP,Gross Domestic Product: All Industry Total in Alaska
+ALNGSP,Gross Domestic Product: All Industry Total in Alabama
+PIECTR,Real personal income excluding current transfer receipts
+TXRQGSP,Real Gross Domestic Product: All Industry Total in Texas
+A255RX1Q020SBEA,Real imports of goods
+RGDPCHUSA625NUPN,Purchasing Power Parity Converted GDP Per Capita (Chain Series) for United States
+RGDPNAAUA666NRUG,Real GDP at Constant National Prices for Australia
+COLNAEXKP01STSAQ,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for Colombia
+A126RC1A027NBEA,Gross private saving
 ND000350Q,Real Personal Consumption Expenditures: Services
-NGDPRXDCCAA,Real Gross Domestic Product for Canada
+CPMNACSCAB1GQES,Gross Domestic Product for Spain
+NAEXKP01BRQ652S,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for Brazil
 ND000348Q,Real Personal Consumption Expenditures: Nondurable Goods
-NAEXKP01JPQ189S,Gross Domestic Product by Expenditure in Constant Prices: Total Gross Domestic Product for Japan
-PRFIA,Private Residential Fixed Investment
-NGDPXDCUSA,Nominal Gross Domestic Product for United States
+RGDPNAEGA666NRUG,Real GDP at Constant National Prices for Egypt
+INNGSP,Gross Domestic Product: All Industry Total in Indiana
+NYGDPPCAPKDIRL,Constant GDP per capita for Ireland
+NYGDPPCAPKDGRC,Constant GDP per capita for Greece
+A006RL1Q225SBEA,Real Gross Private Domestic Investment
+CLVMNACNSAB1GQPL,Real Gross Domestic Product for Poland
+CLVMNACSAB1GQIE,Real Gross Domestic Product for Ireland
+B021RE1Q156NBEA,Shares of gross domestic product: Imports of goods and services
+ETHNGDPRPCPCPPPT,Real GDP Per Capita for Ethiopia
+NAGIGP01EZQ661S,National Accounts: National Accounts Deflators: Gross Domestic Product: GDP Deflator for the Euro Area (19 Countries)
+DDDI03USA156NWDB,Non-Bank Financial Institutions' Assets to GDP for United States
+OHNQGSP,Gross Domestic Product: All Industry Total in Ohio
 NGDPRXDCAUA,Real Gross Domestic Product for Australia
-CANGDPRQPSMEI,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for Canada
-NA000374Q,Net exports of goods and services
-DDDI02GBA156NWDB,Deposit Money Bank Assets to GDP for United Kingdom
-CLVMNACNSAB1GQDE,Real Gross Domestic Product for Germany
-DDDM01FRA156NWDB,Stock Market Capitalization to GDP for France
-PPPTT2CNA618NUPN,Purchasing Power Parity over GDP for China
-CANGDPNADSMEI,National Accounts: GDP by Expenditure: Current Prices: Gross Domestic Product - Total for Canada
-TURGDPDEFQISMEI,GDP Implicit Price Deflator in Turkey
-A008RE1Q156NBEA,Shares of gross domestic product: Gross private domestic investment: Fixed investment: Nonresidential
-NYGDPPCAPKDMYS,Constant GDP per capita for Malaysia
-DDDM01DEA156NWDB,Stock Market Capitalization to GDP for Germany
-NYGDPPCAPKDTHA,Constant GDP per capita for Thailand
-DEBTTLGRA188A,"Central government debt, total (% of GDP) for Greece"
-A195RC1Q027SBEA,Gross value added: GDP: Business
+NAEXKP01CNA652S,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for China (People's Republic Of)
+DGDSRX1Q020SBEA,Real personal consumption expenditures: Goods
+NGDPRXDCDEA,Real Gross Domestic Product for Germany
+NYGDPPCAPKDPHL,Constant GDP per capita for the Philippines
+NYGDPPCAPKDCHL,Constant GDP per capita for Chile
+NYGDPPCAPKDIRN,Constant GDP per capita for the Islamic Republic of Iran
+EXPGSA,Exports of Goods and Services
+EA19LORSGPNOSTSAM,Leading Indicators OECD: Reference Series: Gross Domestic Product (GDP): Normalised for the Euro Area (19 Countries)
+GCDODTOTLGDZSEUU,"Central government debt, total (% of GDP) for the European Union"
+GNPGDPUSA156NUPN,Ratio of GNP to GDP for United States
+ND000342Q,Real Imports of Goods and Services
+LPRGDPUKA,Labor Productivity: Real GDP Per Person in the United Kingdom
+GNPCA,Real Gross National Product
+NCNQGSP,Gross Domestic Product: All Industry Total in North Carolina
+RGDPNAILA666NRUG,Real GDP at Constant National Prices for Israel
+NAEXKP02EZQ189S,National Accounts: GDP by Expenditure: Constant Prices: Private Final Consumption Expenditure for the Euro Area (19 Countries)
+OB000349Q,Real Personal Consumption Expenditures
+GCDODTOTLGDZSOED,"Central government debt, total (% of GDP) for OECD Members"
+GBRGDPDEFQISMEI,GDP Implicit Price Deflator in United Kingdom
+NYGDPPCAPKDVEN,Constant GDP per capita for the Bolivarian Republic of Venezuela
+NYGDPPCAPKDSGP,Constant GDP per capita for Singapore
+NYGDPPCAPKDESP,Constant GDP per capita for Spain
+NYGDPPCAPKDTUR,Constant GDP per capita for Turkey
+RGDPNAVNA666NRUG,Real GDP at Constant National Prices for Viet Nam
+ARENGDPXORPCHPT,Non-Oil Real GDP Growth in Constant Prices for United Arab Emirates
+RGDPNAGBA666NRUG,Real GDP at Constant National Prices for United Kingdom
+RGDPNAITA666NRUG,Real GDP at Constant National Prices for Italy
+RGDPNAIDA666NRUG,Real GDP at Constant National Prices for Indonesia
 RGDPNACOA666NRUG,Real GDP at Constant National Prices for Colombia
-NYGDPPCAPKDDNK,Constant GDP per capita for Denmark
-DDDI03PHA156NWDB,Non-Bank Financial Institutions' Assets to GDP for Philippines
-A021RL1Q158SBEA,Real Imports of Goods and Services
-OB000346Q,Real Personal Consumption Expenditures: Durable Goods
-NGDPRSAXDCFRQ,Real Gross Domestic Product for France
+AUSGDPNQDSMEI,National Accounts: GDP by Expenditure: Current Prices: Gross Domestic Product - Total for Australia
+DEBTTLGRA188A,"Central government debt, total (% of GDP) for Greece"
+VAPGDPM,Value Added by Industry: Mining as a Percentage of GDP
+BBKQLEIX,Brave-Butters-Kelley Leading Index
+RGDPNACLA666NRUG,Real GDP at Constant National Prices for Chile
+LABSHPCAA156NRUG,Share of Labour Compensation in GDP at Current National Prices for Canada
+ZAFNGDPRPCPCPPPT,Real GDP Per Capita for South Africa
+KORRGDPR,Real GDP in the Republic of Korea (South Korea) (DISCONTINUED)
+DDDM011WA156NWDB,Stock Market Capitalization to GDP for World (DISCONTINUED)
 TXRGSP,Real Gross Domestic Product: All Industry Total in Texas
-UTNQGSP,Gross Domestic Product: All Industry Total in Utah
+BBKMCY,Brave-Butters-Kelley Cycle Component of GDP
+A824RX1Q020SBEA,Real government consumption expenditures and gross investment: Federal: National defense
+NB000349Q,Real Personal Consumption Expenditures
+NGDPRSAXDCFRQ,Real Gross Domestic Product for France
+LB0000091Q020SBEA,Real Average of GDP and GDI
+CLVMNACNSAB1GQNL,Real Gross Domestic Product for Netherlands
+JPNRGDPC,Real GDP per Capita in Japan (DISCONTINUED)
+USARGDPE,Real GDP per Employed Person in the United States (DISCONTINUED)
+DDDI02USA156NWDB,Deposit Money Bank Assets to GDP for United States
+KORRGDPC,Real GDP per Capita in the Republic of Korea (South Korea) (DISCONTINUED)
+DDDM01GBA156NWDB,Stock Market Capitalization to GDP for United Kingdom
+NAEXKP01INQ657S,Gross Domestic Product by Expenditure in Constant Prices: Total Gross Domestic Product for India
+A229RC0Q052SBEA,Disposable personal income: Per capita
+DDDI02GBA156NWDB,Deposit Money Bank Assets to GDP for United Kingdom
+NAEXKP01GBQ657S,Gross Domestic Product by Expenditure in Constant Prices: Total Gross Domestic Product for the United Kingdom
+NYGDPPCAPKDCHE,Constant GDP per capita for Switzerland
+RGDPNABDA666NRUG,Real GDP at Constant National Prices for Bangladesh
+RGDPESDEA666NRUG,Expenditure-side Real GDP at Chained Purchasing Power Parities for Germany
+LABSHPDEA156NRUG,Share of Labour Compensation in GDP at Current National Prices for Germany
+DDDI09USA156NWDB,Life Insurance Premium Volume to GDP for United States
+NGANGDPRPCPCPPPT,Real GDP Per Capita for Nigeria
+NGDPRXDCCAA,Real Gross Domestic Product for Canada
+DEBTTLITA188A,"Central government debt, total (% of GDP) for Italy"
+A001RO1Q156NBEA,Real Gross National Product
+MINQGSP,Gross Domestic Product: All Industry Total in Michigan
+A824RE1Q156NBEA,Shares of gross domestic product: Government consumption expenditures and gross investment: Federal: National defense
+W068RC1A027NBEA,Government total expenditures
+GNPA,Gross National Product
+NYGDPPCAPKDIDN,Constant GDP per capita for Indonesia
+NYGDPPCAPKDEGY,Constant GDP per capita for Egypt
+RGDPNAMYA666NRUG,Real GDP at Constant National Prices for Malaysia
+A008RE1Q156NBEA,Shares of gross domestic product: Gross private domestic investment: Fixed investment: Nonresidential
+OB000346Q,Real Personal Consumption Expenditures: Durable Goods
+NGDPRSAXDCJPQ,Real Gross Domestic Product for Japan
+GPDIA,Gross Private Domestic Investment
+DEBTTLCAA188A,"Central government debt, total (% of GDP) for Canada"
+DEBTTLINA188A,"Central government debt, total (% of GDP) for India"
+DEBTTLUSA188A,"Central government debt, total (% of GDP) for the United States"
+A824RL1Q225SBEA,Real Government Consumption Expenditures and Gross Investment: Federal: National Defense
+M318501A027NBEA,Federal government budget surplus or deficit (-)
+RGDPNANZA666NRUG,Real GDP at Constant National Prices for New Zealand
+NGDPRXDCITA,Real Gross Domestic Product for Italy
+HBPIGDQ188S,Federal Debt Held by Private Investors as Percent of Gross Domestic Product
+W055RC1Q027SBEA,Personal current taxes
+AUSGDPNADSMEI,National Accounts: GDP by Expenditure: Current Prices: Gross Domestic Product - Total for Australia
+ZAFNGDPRPCPPPT,Real Gross Domestic Product for South Africa
+Y001RE1Q156NBEA,Shares of Gross Domestic Product: Gross Private Domestic Investment: Fixed Investment: Nonresidential: Intellectual Property Products
+BBKMCLA,Brave-Butters-Kelley Cycle: Lagging Subcomponent of GDP
+DGDSRC1Q027SBEA,Personal consumption expenditures: Goods
+A001RP1Q027SBEA,Gross National Product
+NAEXKP01DEQ657S,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for Germany
+RGDPLPUSA625NUPN,"Purchasing Power Parity Converted GDP Per Capita (Laspeyres), derived from growth rates of Consumption, Government Consumption, Investment for United States"
+A794RC0A052NBEA,Personal consumption expenditures per capita
+NYGDPPCAPKDZAF,Constant GDP per capita for South Africa
+JPNGDPDEFAISMEI,GDP Implicit Price Deflator in Japan
+B087RC1A027NBEA,Federal government current transfer payments: Government social benefits: to persons
+GPDICA,Real Gross Private Domestic Investment
+A067RP1Q027SBEA,Disposable Personal Income
+CANRGDPC,Real GDP per Capita in Canada (DISCONTINUED)
+DDOI11SVA156NWDB,Remittance Inflows to GDP for El Salvador
+DDDI07USA156NWDB,Mutual Fund Assets to GDP for United States
+A032RC1A027NBEA,National income
+INDGDPDEFQISMEI,GDP Implicit Price Deflator in India
+HDTGPDFRA163N,Household Debt to GDP for France
+DDDI01USA156NWDB,Private Credit by Deposit Money Banks to GDP for United States
+NAEXKP01AUQ657S,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for Australia
+DDDI05USA156NWDB,Liquid Liabilities to GDP for United States
+DDDM03CNA156NWDB,Outstanding Domestic Private Debt Securities to GDP for China
+NYGDPPCAPKDPOL,Constant GDP per capita for Poland
+A072RC1A156NBEA,Personal saving as a percentage of disposable personal income
+IMPGSA,Imports of Goods and Services
+CHNLORSGPRTSTSAM,Leading Indicators OECD: Reference Series: Gross Domestic Product (GDP): Ratio to Trend for China (People's Republic Of)
+LABSHPINA156NRUG,Share of Labour Compensation in GDP at Current National Prices for India
+RGDPNALBA666NRUG,Real GDP at Constant National Prices for Lebanon
+LABSHPJPA156NRUG,Share of Labour Compensation in GDP at Current National Prices for Japan
+NYGDPPCAPKDSWE,Constant GDP per capita for Sweden
+NGDPRXDCMXA,Real Gross Domestic Product for Mexico
+NYGDPPCAPKDARE,Constant GDP per capita for the United Arab Emirates
+RGDPOSUSA666NRUG,Output-side Real GDP at chained Purchasing Power Parities for United States
+VAPGDPPBS,Value Added by Industry: Professional and Business Services as a Percentage of GDP
+RUSGDPDEFQISMEI,GDP Implicit Price Deflator in Russian Federation
+MKTGDPESA646NWDB,Gross Domestic Product for Spain
+TURGDPDEFQISMEI,GDP Implicit Price Deflator in Turkey
+DPCERD3A086NBEA,Personal consumption expenditures (implicit price deflator)
+KENNGDPRPCPCPPPT,Real GDP Per Capita for Kenya
+NAEXKP01CAQ657S,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for Canada
+RGDPNAIQA666NRUG,Real GDP at Constant National Prices for Iraq
+AUSLORSGPNOSTSAM,Leading Indicators OECD: Reference series: Gross Domestic Product (GDP): Normalised for Australia
+A001RP1A027NBEA,Gross National Product
+CONQGSP,Gross Domestic Product: All Industry Total in Colorado
+USALORSGPTDSTSAM,Leading Indicators OECD: Reference series: Gross Domestic Product (GDP): Trend for the United States
+NAEXKP01USQ652S,Gross Domestic Product by Expenditure in Constant Prices: Total Gross Domestic Product for the United States
+GCECA,Real Government Consumption Expenditures and Gross Investment
+VAPGDPT,Value Added by Industry: Transportation and Warehousing as a Percentage of GDP
+B359RC1Q027SBEA,Gross value added: GDP: Business: Farm
+WANQGSP,Gross Domestic Product: All Industry Total in Washington
+USARGDPH,Real GDP per Hour Worked in the United States (DISCONTINUED)
+A466RC1A027NBEA,Nonfinancial corporate business: Profits after tax (without IVA and CCAdj)
+DDDI03ETA156NWDB,Non-Bank Financial Institutions' Assets to GDP for Ethiopia
+NGDPRXDCFRA,Real Gross Domestic Product for France
+W825RC1Q027SBEA,Personal current transfer receipts: Government social benefits to persons: Unemployment insurance
+CHNGDPNADSMEI,National Accounts: GDP by Expenditure: Current Prices: Gross Domestic Product - Total for China (People's Republic Of)
+KYNQGSP,Gross Domestic Product: All Industry Total in Kentucky
+B021RE1A156NBEA,Shares of gross domestic product: Imports of goods and services
+NGDPRNSAXDCTRQ,Real Gross Domestic Product for Turkey
+RGDPNAPEA666NRUG,Real GDP at Constant National Prices for Peru
+DDDM01JPA156NWDB,Stock Market Capitalization to GDP for Japan
+DEULORSGPTDSTSAM,Leading Indicators OECD: Reference series: Gross Domestic Product (GDP): Trend for Germany
+PCDGA,Personal Consumption Expenditures: Durable Goods
+RUSLORSGPNOSTSAM,Leading Indicators OECD: Reference series: Gross Domestic Product (GDP): Normalised for the Russian Federation
+A195RC1Q027SBEA,Gross value added: GDP: Business
+PB0000091Q225SBEA,Real Average of GDP and GDI
+RGDPNAFRA666NRUG,Real GDP at Constant National Prices for France
+RGDPESAUA666NRUG,Expenditure-side Real GDP at Chained Purchasing Power Parities for Australia
+NORGDPDEFQISMEI,GDP Implicit Price Deflator in Norway
+RGDPNAKRA666NRUG,Real GDP at Constant National Prices for Republic of Korea
+BBKMCLE,Brave-Butters-Kelley Cycle: Leading Subcomponent of GDP
+A019RC1A027NBEA,Net exports of goods and services
+PE0000031Q156NBEA,Real Final sales to private domestic purchasers
 CLVMNACNSAB1GQUK,Real Gross Domestic Product for United Kingdom
+JPNGDPDEFQISMEI,GDP Implicit Price Deflator in Japan
+RGDPNASAA666NRUG,Real GDP at Constant National Prices for Saudi Arabia
 GHANGDPRPCPCPPPT,Real GDP Per Capita for Ghana
-GNPGDPJPA156NUPN,Ratio of GNP to GDP for Japan
-M318191A027NBEA,Federal government expenditures: Budget outlays
-A006RE1A156NBEA,Shares of gross domestic product: Gross private domestic investment
-PPPTTLPHA618NUPN,Purchasing Power Parity over GDP for Philippines
-PPPTTLBRA618NUPN,Purchasing Power Parity over GDP for Brazil
-PPPTTLMXA618NUPN,Purchasing Power Parity over GDP for Mexico
-CHNGDPRAPSMEI,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for China (People's Republic Of)
-CLVMNACNSAB1GQEA19,Real Gross Domestic Product for Euro area (19 countries)
+RGDPNAPKA666NRUG,Real GDP at Constant National Prices for Pakistan
+RGDPCHTWA625NUPN,Purchasing Power Parity Converted GDP Per Capita (Chain Series) for Taiwan
+VAPGDPSPI,Value Added by Industry: Private Services-Producing Industries as a Percentage of GDP
+RGDPNAZAA666NRUG,Real GDP at Constant National Prices for South Africa
+NAEXKP01DEQ189S,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for Germany
+NYGDPPCAPKDTHA,Constant GDP per capita for Thailand
+A822RE1A156NBEA,Shares of gross domestic product: Government consumption expenditures and gross investment
+NYGDPPCAPKDISR,Constant GDP per capita for Israel
+CANGDPNADSMEI,National Accounts: GDP by Expenditure: Current Prices: Gross Domestic Product - Total for Canada
+PNFICA,Real Private Nonresidential Fixed Investment
 MKTGDPITA646NWDB,Gross Domestic Product for Italy
+NYGDPPCAPKDDZA,Constant GDP per capita for Algeria
+DDOI02JPA156NWDB,Bank Deposits to GDP for Japan
+DDDM01QAA156NWDB,Stock Market Capitalization to GDP for Qatar
+DDDM01DEA156NWDB,Stock Market Capitalization to GDP for Germany
+DDDI06CAA156NWDB,Central Bank Assets to GDP for Canada
+NYGDPPCAPKDNOR,Constant GDP per capita for Norway
+NYGDPPCAPKDUKR,Constant GDP per capita for Ukraine
+NGDPRNSAXDCBRQ,Real Gross Domestic Product for Brazil
+W006RC1A027NBEA,Federal government current tax receipts
+DDDI03PHA156NWDB,Non-Bank Financial Institutions' Assets to GDP for Philippines
+DDOI02PKA156NWDB,Bank Deposits to GDP for Pakistan
+ILNQGSP,Gross Domestic Product: All Industry Total in Illinois
+NGDPRXDCKRA,Real Gross Domestic Product for Republic of Korea
+HDTGPDITQ163N,Household Debt to GDP for Italy
+DEUGDPDEFQISMEI,National Accounts: National Accounts Deflators: Gross Domestic Product: GDP Deflator for Germany
+PPPTTLPHA618NUPN,Purchasing Power Parity over GDP for Philippines
+ND000335Q,Real Gross Private Domestic Investment
+NGDPXDCUSA,Nominal Gross Domestic Product for United States
+NA000283Q,Federal Government: Current Expenditures
+NAEXKP01GBQ661S,Gross Domestic Product by Expenditure in Constant Prices: Total Gross Domestic Product for the United Kingdom
+UTNQGSP,Gross Domestic Product: All Industry Total in Utah
+DDURRE1Q156NBEA,Shares of gross domestic product: Personal consumption expenditures: Durable goods
+NGDPRXDCBRA,Real Gross Domestic Product for Brazil
+DPCERE1A156NBEA,Shares of gross domestic product: Personal consumption expenditures
+A067RP1A027NBEA,Disposable Personal Income
+NA000374Q,Net exports of goods and services
+GANQGSP,Gross Domestic Product: All Industry Total in Georgia
+NAEXKP01DEQ661S,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for Germany
+DEUGDPNADSMEI,National Accounts: GDP by Expenditure: Current Prices: Gross Domestic Product - Total for Germany
+W986RC1A027NBEA,Net private saving: Households and institutions
+LANQGSP,Gross Domestic Product: All Industry Total in Louisiana
+PANQGSP,Gross Domestic Product: All Industry Total in Pennsylvania
+PPPTT2CNA618NUPN,Purchasing Power Parity over GDP for China
+PCESVA,Personal Consumption Expenditures: Services
+A001RI1Q225SBEA,Gross National Product: Implicit Price Deflator
+GCDODTOTLGDZSEMU,"Central government debt, total (% of GDP) for the Euro Area"
+W823RC1Q027SBEA,Personal current transfer receipts: Government social benefits to persons: Social security
+NGDPRNSAXDCJPQ,Real Gross Domestic Product for Japan
+A191RE1Q156NBEA,Shares of gross domestic product
+B006RO1Q156NBEA,Real Gross Private Domestic Investment
+A358RX1Q020SBEA,Real gross value added: GDP: Business: Nonfarm
+NGDPRXDCTRA,Real Gross Domestic Product for Turkey
+NA000346Q,Personal Consumption Expenditures: Durable Goods
+AKNQGSP,Gross Domestic Product: All Industry Total in Alaska
+ALNQGSP,Gross Domestic Product: All Industry Total in Alabama
+NA000335Q,Gross Private Domestic Investment
+DEBTTLESA188A,"Central government debt, total (% of GDP) for Spain"
+GNPGDPCNA156NUPN,Ratio of GNP to GDP for China
+B069RC1Q027SBEA,Personal interest payments
+INNQGSP,Gross Domestic Product: All Industry Total in Indiana
+A822RL1Q225SBEA,Real Government Consumption Expenditures and Gross Investment
+NC000346Q,Personal Consumption Expenditures: Durable Goods
+NGDPRSAXDCITQ,Real Gross Domestic Product for Italy
+CASHBLCDA188A,Cash surplus/deficit (% of GDP) for the Democratic Republic of the Congo
+RGDPMRPUKQ,Real Gross Domestic Product at Market Prices in the United Kingdom
+RGDPMPUKA,Real Gross Domestic Product at Market Prices in the United Kingdom
+CANGDPRQPSMEI,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for Canada
+NGDPRNSAXDCDEQ,Real Gross Domestic Product for Germany
+DSERRO1Q156NBEA,Real Personal Consumption Expenditures: Services
+NGDPXDCJPA,Nominal Gross Domestic Product for Japan
+A713RO1Q156NBEA,Real Final Sales to Domestic Purchasers
+CPMNACNSAB1GQDE,Gross Domestic Product for Germany
+NC000350Q,Personal Consumption Expenditures: Services
+DEBTTLKRA188A,"Central government debt, total (% of GDP) for the Republic of Korea"
+Y694RC1A027NBEA,Gross Domestic Product: Research and Development
+DEBTTLCHA188A,"Central government debt, total (% of GDP) for Switzerland"
+NGDPNSAXDCCAQ,Nominal Gross Domestic Product for Canada
+B703RC1Q027SBEA,Personal income receipts on assets: Personal dividend income
+AZNQGSP,Gross Domestic Product: All Industry Total in Arizona
+HINQGSP,Gross Domestic Product: All Industry Total in Hawaii
+ND000373Q,Change in Real Private Inventories
+W824RC1Q027SBEA,Personal current transfer receipts: Government social benefits to persons: Medicare
+DEUGDPDEFAISMEI,National Accounts: National Accounts Deflators: Gross Domestic Product: GDP Deflator for Germany
+NAEXKP01BRQ657S,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for Brazil
+DEBTTLMYA188A,"Central government debt, total (% of GDP) for Malaysia"
+NGDPRNSAXDCKRQ,Real Gross Domestic Product for Republic of Korea
+NA000373Q,Change in private inventories
+CANNGDPRPCH,Gross Domestic Product for Canada
+A190RL1A225NBEA,Real Final Sales of Domestic Product
+HBATGDQ188S,Federal Debt Held by Agencies and Trusts as Percent of Gross Domestic Product
+PNFIA,Private Nonresidential Fixed Investment
+DSERRV1Q225SBEA,Personal Consumption Expenditures: Services (chain-type price index)
+NGDPRNSAXDCAUQ,Real Gross Domestic Product for Australia
+CLVMEURNSAB1GQEA19,Real Gross Domestic Product (Euro/ECU series) for Euro area (19 countries)
+A019RX1A020NBEA,Real net exports of goods and services
+NGDPRNSAXDCMXQ,Real Gross Domestic Product for Mexico
+DPCCRC1A027NBEA,Personal consumption expenditures excluding food and energy
+NA000327Q,Federal government current tax receipts
+NC000335Q,Gross Private Domestic Investment
+PRFIA,Private Residential Fixed Investment
+NAEXKP01GBA657S,Gross Domestic Product by Expenditure in Constant Prices: Total Gross Domestic Product for the United Kingdom
+CPMNACNSAB1GQEU272020,Gross Domestic Product for European Union (27 countries from 2020)
+CBIA,Change in Private Inventories
+GCEA,Government Consumption Expenditures and Gross Investment
 A822RO1Q156NBEA,Real Government Consumption Expenditures and Gross Investment
+A577RC1Q027SBEA,Personal current transfer receipts
+CPMEURNSAB1GQEA19,Gross Domestic Product (Euro/ECU series) for Euro area (19 countries)
+NGDPRXDCINA,Real Gross Domestic Product for India
+FINSLCA,Real Final Sales of Domestic Product
+A190RL1Q225SBEA,Real Final Sales of Domestic Product
+EA19LORSGPORIXOBSAM,Leading Indicators OECD: Reference Series: Gross Domestic Product (GDP): Original Series for the Euro Area (19 Countries)
+CLVMNACNSAB1GQSE,Real Gross Domestic Product for Sweden
+CHNGDPRAPSMEI,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for China (People's Republic Of)
+A713RL1Q225SBEA,Real Final Sales to Domestic Purchasers
+A006RE1A156NBEA,Shares of gross domestic product: Gross private domestic investment
+CPMNACNSAB1GQFR,Gross Domestic Product for France
+ND000338Q,Real Private Residential Fixed Investment
 OB000336Q,Real Private Nonresidential Fixed Investment
 CANGDPNQDSMEI,National Accounts: GDP by Expenditure: Current Prices: Gross Domestic Product - Total for Canada
-NGDPRNSAXDCJPQ,Real Gross Domestic Product for Japan
-WANQGSP,Gross Domestic Product: All Industry Total in Washington
-BRAGDPNQDSMEI,National Accounts: GDP by Expenditure: Current Prices: Gross Domestic Product - Total for Brazil
-W825RC1Q027SBEA,Personal current transfer receipts: Government social benefits to persons: Unemployment insurance
-DSERRL1Q225SBEA,Real Personal Consumption Expenditures: Services
-AZNQGSP,Gross Domestic Product: All Industry Total in Arizona
-PCNDA,Personal Consumption Expenditures: Nondurable Goods
-NC000346Q,Personal Consumption Expenditures: Durable Goods
-CASHBLCDA188A,Cash surplus/deficit (% of GDP) for the Democratic Republic of the Congo
-DEBTTLKRA188A,"Central government debt, total (% of GDP) for the Republic of Korea"
-A929RC1A027NBEA,Gross saving
-PPPTTLVEA618NUPN,Purchasing Power Parity over GDP for Venezuela
-NGDPRNSAXDCAUQ,Real Gross Domestic Product for Australia
-DDEI08USA156NWDB,Credit to Government and State-Owned Enterprises to GDP for United States
-PPPTTLVNA618NUPN,Purchasing Power Parity over GDP for Vietnam
-DEBTTLDEA188A,"Central government debt, total (% of GDP) for Germany"
-NAEXKP01EZQ657S,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for the Euro Area (19 Countries)
-W986RC1A027NBEA,Net private saving: Households and institutions
-DEBTTLMXA188A,"Central government debt, total (% of GDP) for Mexico"
-A822RE1A156NBEA,Shares of gross domestic product: Government consumption expenditures and gross investment
-CLVMEURNSAB1GQEA19,Real Gross Domestic Product (Euro/ECU series) for Euro area (19 countries)
-NGDPRXDCITA,Real Gross Domestic Product for Italy
-NGDPRXDCDEA,Real Gross Domestic Product for Germany
-AUSGDPNADSMEI,National Accounts: GDP by Expenditure: Current Prices: Gross Domestic Product - Total for Australia
-PCESVA,Personal Consumption Expenditures: Services
-A020RL1Q158SBEA,Real Exports of Goods and Services
-A067RP1Q027SBEA,Disposable Personal Income
-DEUGDPDEFQISMEI,National Accounts: National Accounts Deflators: Gross Domestic Product: GDP Deflator for Germany
-PRFICA,Real Private Residential Fixed Investment
-CPMNACNSAB1GQDE,Gross Domestic Product for Germany
-NGDPRSAXDCPLQ,Real Gross Domestic Product for Poland
-DEBTTLRUA188A,"Central government debt, total (% of GDP) for the Russian Federation"
-CPMNACNSAB1GQEU272020,Gross Domestic Product for European Union (27 countries from 2020)
-DPCCRC1A027NBEA,Personal consumption expenditures excluding food and energy
-NB000349Q,Real Personal Consumption Expenditures
-NGDPRNSAXDCKRQ,Real Gross Domestic Product for Republic of Korea
-W790RC1A027NBEA,Net domestic investment: Private: Domestic business
-NGDPRXDCZAA,Real Gross Domestic Product for South Africa
-NAEXKP01DEQ189S,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for Germany
-A019RX1A020NBEA,Real net exports of goods and services
-NGDPRXDCMXA,Real Gross Domestic Product for Mexico
-NAEXKP03EZQ652S,National Accounts: GDP by Expenditure: Constant Prices: Government Final Consumption Expenditure for the Euro Area (19 Countries)
-GNPGDPCNA156NUPN,Ratio of GNP to GDP for China
-A190RL1Q225SBEA,Real Final Sales of Domestic Product
-DFDHRC1A027NBEA,Personal consumption expenditures: Durable goods: Furnishings and durable household equipment
-PNFICA,Real Private Nonresidential Fixed Investment
-FPICA,Real Private Fixed Investment
-A020RO1Q156NBEA,Real Exports of Goods and Services
-DPCERA3Q086SBEA,Real personal consumption expenditures (chain-type quantity index)
-W055RC1Q027SBEA,Personal current taxes
-CHEGDPNQDSMEI,National Accounts: GDP by Expenditure: Current Prices: Gross Domestic Product - Total for Switzerland
-DEBTTLSEA188A,"Central government debt, total (% of GDP) for Sweden"
-A927RC1A027NBEA,Gross government saving
-NAEXKP01CAA657S,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for Canada
-NA000346Q,Personal Consumption Expenditures: Durable Goods
-NGDPRXDCKRA,Real Gross Domestic Product for Republic of Korea
-NAEXKP01EZQ652S,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for the Euro Area (19 Countries)
-CANGDPRAPSMEI,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for Canada
-A067RP1A027NBEA,Disposable Personal Income
-NGDPRNSAXDCBRQ,Real Gross Domestic Product for Brazil
-NA000335Q,Gross Private Domestic Investment
-NGDPRXDCBRA,Real Gross Domestic Product for Brazil
-MKTGDPESA646NWDB,Gross Domestic Product for Spain
-NGDPRNSAXDCTRQ,Real Gross Domestic Product for Turkey
-KYNQGSP,Gross Domestic Product: All Industry Total in Kentucky
-NC000350Q,Personal Consumption Expenditures: Services
-CANNGDPRPCH,Gross Domestic Product for Canada
-FRAGDPDEFQISMEI,GDP Implicit Price Deflator in France
-A001RL1Q225SBEA,Real Gross National Product
-CPMNACNSAB1GQUK,Gross Domestic Product for United Kingdom
-DGDSRL1Q225SBEA,Real Personal Consumption Expenditures: Goods
-DGDSRO1Q156NBEA,Real Personal Consumption Expenditures: Goods
-NGDPXDCCAA,Nominal Gross Domestic Product for Canada
-NGDPRSAXDCITQ,Real Gross Domestic Product for Italy
-NC000352Q,Exports of Goods and Services
-B069RC1Q027SBEA,Personal interest payments
-FINSLCA,Real Final Sales of Domestic Product
-A713RL1Q225SBEA,Real Final Sales to Domestic Purchasers
-DGDSRC1A027NBEA,Personal consumption expenditures: Goods
-NA000347Q,Personal Consumption Expenditures: Goods
-GCEA,Government Consumption Expenditures and Gross Investment
-NGDPRXDCFRA,Real Gross Domestic Product for France
-NGDPRNSAXDCDEQ,Real Gross Domestic Product for Germany
-FRAGDPDEFAISMEI,GDP Implicit Price Deflator in France
-A021RO1Q156NBEA,Real Imports of Goods and Services
-PPPTTLCNA618NUPN,Purchasing Power Parity over GDP for China
-GCECA,Real Government Consumption Expenditures and Gross Investment
-EA19LORSGPORIXOBSAM,Leading Indicators OECD: Reference Series: Gross Domestic Product (GDP): Original Series for the Euro Area (19 Countries)
-AUSGDPRQPSMEI,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for Australia
-USMANRGSP,Real Gross Domestic Product: Manufacturing (NAICS 31-33) in the United States
-NAEXKP01INA652S,Gross Domestic Product by Expenditure in Constant Prices: Total Gross Domestic Product for India
-NAEXKP01CNA652S,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for China (People's Republic Of)
-NGDPRXDCINA,Real Gross Domestic Product for India
-PNFIA,Private Nonresidential Fixed Investment
-CLVMNACSAB1GQUK,Real Gross Domestic Product for United Kingdom
-A001RI1A225NBEA,Gross National Product: Implicit Price Deflator
-PE0000031Q156NBEA,Real Final sales to private domestic purchasers
-DEUGDPRQPSMEI,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for Germany
-NAEXKP01DEQ661S,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for Germany
-DPCERY2A224NBEA,Contributions to percent change in real gross domestic product: Personal consumption expenditures
-DCNQGSP,Gross Domestic Product: All Industry Total in the District of Columbia
-ND000347Q,Real Personal Consumption Expenditures: Goods
-NGDPRNSAXDCITQ,Real Gross Domestic Product for Italy
-NA000348Q,Personal Consumption Expenditures: Nondurable Goods
-A713RO1Q156NBEA,Real Final Sales to Domestic Purchasers
-NAEXKP02AUQ657S,National Accounts: GDP by Expenditure: Constant Prices: Private Final Consumption Expenditure for Australia
-NGDPNSAXDCCAQ,Nominal Gross Domestic Product for Canada
-NAEXKP01CAA189S,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for Canada
-NAEXKP01INQ661S,Gross Domestic Product by Expenditure in Constant Prices: Total Gross Domestic Product for India
-NA000300Q,Federal government current transfer payments: Government social benefits: to persons
-NAEXKP01INA657S,Gross Domestic Product by Expenditure in Constant Prices: Total Gross Domestic Product for India
-W823RC1Q027SBEA,Personal current transfer receipts: Government social benefits to persons: Social security
-NB000350Q,Real Personal Consumption Expenditures: Services
-NAEXKP02AUQ189S,National Accounts: GDP by Expenditure: Constant Prices: Private Final Consumption Expenditure for Australia
 A195RC1A027NBEA,Gross value added: GDP: Business
-NGDPXDCJPA,Nominal Gross Domestic Product for Japan
-A466RD3A052NBEA,Profit per unit of real gross value added of nonfinancial corporate business: Corporate profits after tax with IVA and CCAdj (unit profits from current production)
-NAEXKP01RUQ661S,Gross Domestic Product by Expenditure in Constant Prices: Total Gross Domestic Product for the Russian Federation
-NC000335Q,Gross Private Domestic Investment
-NA000318Q,Federal government current expenditures: Subsidies
-B096RC1A027NBEA,Federal government current expenditures: Subsidies
-CPMEURNSAB1GQEA19,Gross Domestic Product (Euro/ECU series) for Euro area (19 countries)
-A190RO1Q156NBEA,Real Final Sales of Domestic Product
-GNPGD2CNA156NUPN,Ratio of GNP to GDP for China
-NAEXKP01BRQ657S,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for Brazil
-CLVMNACSCAB1GQCH,Real Gross Domestic Product for Switzerland
-Y033RO1Q156NBEA,Real Gross Private Domestic Investment: Fixed Investment: Nonresidential: Equipment
-Y033RL1Q225SBEA,Real Gross Private Domestic Investment: Fixed Investment: Nonresidential: Equipment
-CLVMNACNSAB1GQEL,Real Gross Domestic Product for Greece
-B069RC1A027NBEA,Personal interest payments
-HINQGSP,Gross Domestic Product: All Industry Total in Hawaii
-DSERRG3Q086SBEA,Personal consumption expenditures: Services (chain-type price index)
-GDPMC1,Real Gross Domestic Product (DISCONTINUED)
-ND000339Q,Real Gross Private Domestic Investment: Fixed Investment: Nonresidential: Structures
-NGDPRNSAXDCIDQ,Real Gross Domestic Product for Indonesia
-DSERRV1Q225SBEA,Personal Consumption Expenditures: Services (chain-type price index)
-NGDPRXDCIDA,Real Gross Domestic Product for Indonesia
-CHNGDPNADSMEI,National Accounts: GDP by Expenditure: Current Prices: Gross Domestic Product - Total for China (People's Republic Of)
-NGDPRXDCTRA,Real Gross Domestic Product for Turkey
-NA000350Q,Personal Consumption Expenditures: Services
-A014RY2A224NBEA,Contributions to percent change in real gross domestic product: Gross private domestic investment: Change in private inventories
-BBKQGDP,Brave-Butters-Kelley Real Gross Domestic Product
-DMOTRC1A027NBEA,Personal consumption expenditures: Durable goods: Motor vehicles and parts
-DSERRO1Q156NBEA,Real Personal Consumption Expenditures: Services
-W202RC1A027NBEA,Net private saving
-NGDPNSAXDCJPQ,Nominal Gross Domestic Product for Japan
-ND000373Q,Change in Real Private Inventories
-GBRGDPDEFAISMEI,GDP Implicit Price Deflator in United Kingdom
-DHLCRG3A086NBEA,Personal consumption expenditures: Services: Health care (chain-type price index)
-NGDPRNSAXDCMXQ,Real Gross Domestic Product for Mexico
-BBKQCY,Brave-Butters-Kelley Cycle Component of GDP
-NGDPRNSAXDCGBQ,Real Gross Domestic Product for Great Britain
-NGDPRXDCGBA,Real Gross Domestic Product for Great Britain
-W207RC1A156NBEA,Net saving as a percentage of gross national income
-ND000352Q,Real Exports of Goods and Services
-NA000342Q,Imports of Goods and Services
-NAEXKP02EZQ661S,National Accounts: GDP by Expenditure: Constant Prices: Private Final Consumption Expenditure for the Euro Area (19 Countries)
-NAEXKP02EZQ659S,National Accounts: GDP by Expenditure: Constant Prices: Private Final Consumption Expenditure for the Euro Area (19 Countries)
-W875RX1A020NBEA,Real personal income excluding current transfer receipts
-NAEXKP02AUA189S,National Accounts: GDP by Expenditure: Constant Prices: Private Final Consumption Expenditure for Australia
-DEUGDPDEFAISMEI,National Accounts: National Accounts Deflators: Gross Domestic Product: GDP Deflator for Germany
-CHEGDPNADSMEI,National Accounts: GDP by Expenditure: Current Prices: Gross Domestic Product - Total for Switzerland
-ND000331Q,Real Government Consumption Expenditures and Gross Investment: Federal: National defense
-NGDPRNSAXDCZAQ,Real Gross Domestic Product for South Africa
-DNRGRC1Q027SBEA,Personal consumption expenditures: Energy goods and services
-NAEXCP02BRQ189N,National Accounts: GDP by Expenditure: Current Prices: Private Final Consumption Expenditure for Brazil
-NAEXKP01RUQ659S,Gross Domestic Product by Expenditure in Constant Prices: Total Gross Domestic Product for the Russian Federation
-ND000336Q,Real Private Nonresidential Fixed Investment
-W019RC1A027NBEA,Federal government total expenditures
-NAEXKP01CAQ661S,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for Canada
-PB0000031A225NBEA,Real final sales to private domestic purchasers
-A455RC1A027NBEA,Gross value added of nonfinancial corporate business
-ND000335Q,Real Gross Private Domestic Investment
-Y694RC1A027NBEA,Gross Domestic Product: Research and Development
-A006RL1A225NBEA,Real Gross Private Domestic Investment
-NAEXKP01RUQ657S,Gross Domestic Product by Expenditure in Constant Prices: Total Gross Domestic Product for the Russian Federation
-ND000374Q,Real Net Exports of Goods and Services
-BRAGDPRQPSMEI,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for Brazil
-W987RC1A027NBEA,Gross private domestic investment: Domestic business
-CLVMNACNSAB1GQES,Real Gross Domestic Product for Spain
-NAGIGP01EZA661S,National Accounts: National Accounts Deflators: Gross Domestic Product: GDP Deflator for the Euro Area (19 Countries)
-A822RL1A225NBEA,Real Government Consumption Expenditures and Gross Investment
-NAEXKP01CLQ661S,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for Chile
-MEXNGDPRPCH,Gross Domestic Product for Mexico
-CLVMEURNSAB1GQEU272020,Real Gross Domestic Product (Euro/ECU series) for European Union (27 countries from 2020)
-NC000347Q,Personal Consumption Expenditures: Goods
-CLVMNACNSAB1GQEU28,Real Gross Domestic Product for European Union (28 countries)
-INDGDPNADSMEI,Current Price Gross Domestic Product in India
-NAEXKP01EZQ661S,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for the Euro Area (19 Countries)
-NC000348Q,Personal Consumption Expenditures: Nondurable Goods
-NA000352Q,Exports of Goods and Services
-NAEXKP03EZQ661S,National Accounts: GDP by Expenditure: Constant Prices: Government Final Consumption Expenditure for the Euro Area (19 Countries)
-CPMNACNSAB1GQIT,Gross Domestic Product for Italy
-NB000340Q,Real Gross Private Domestic Investment: Fixed Investment: Nonresidential: Equipment
-NAEXKP03EZQ657S,National Accounts: GDP by Expenditure: Constant Prices: Government Final Consumption Expenditure for the Euro Area (19 Countries)
-NGDPRNSAXDCPLQ,Real Gross Domestic Product for Poland
-B020RE1A156NBEA,Shares of gross domestic product: Exports of goods and services
-PCDGCCA,Real Personal Consumption Expenditures: Durable Goods
-CPMNACNSAB1GQFR,Gross Domestic Product for France
-CANGDPDEFAISMEI,National Accounts: National Accounts Deflators: Gross Domestic Product: GDP Deflator for Canada
-NA000373Q,Change in private inventories
-CLVMNACNSAB1GQIT,Real Gross Domestic Product for Italy
-CPMNACSCAB1GQUK,Gross Domestic Product for United Kingdom
-LB0000091A020NBEA,Real average of GDP and GDI
-NC000336Q,Private Nonresidential Fixed Investment
-GDPMCA1,Real Gross Domestic Product (DISCONTINUED)
-CLVMNACNSAB1GQSE,Real Gross Domestic Product for Sweden
-NAEXKP01USA657S,Gross Domestic Product by Expenditure in Constant Prices: Total Gross Domestic Product for the United States
-NGDPRNSAXDCFRQ,Real Gross Domestic Product for France
-NA000304Q,Federal Government Current Receipts
+HDTGPDKRA163N,Household Debt to GDP for Republic of Korea
 CLVMNACNSAB1GQFR,Real Gross Domestic Product for France
-CPMNACNSAB1GQES,Gross Domestic Product for Spain
-HBATGDQ188S,Federal Debt Held by Agencies and Trusts as Percent of Gross Domestic Product
-A446RC1A027NBEA,Corporate business: Profits before tax (without IVA and CCAdj)
-NAEXKP01NZQ657S,Gross Domestic Product by Expenditure in Constant Prices: Total Gross Domestic Product for New Zealand
-NAEXKP01BRQ661S,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for Brazil
-BBKQCLA,Brave-Butters-Kelley Cycle: Lagging Subcomponent of GDP
-NA000336Q,Private Nonresidential Fixed Investment
-CLVMNACNSAB1GQNO,Real Gross Domestic Product for Norway
-A009RL1A225NBEA,Real Gross Private Domestic Investment: Fixed Investment: Nonresidential: Structures
-DGOERC1A027NBEA,Personal consumption expenditures: Nondurable goods: Gasoline and other energy goods
-NAEXKP01JPA657S,Gross Domestic Product by Expenditure in Constant Prices: Total Gross Domestic Product for Japan
-INDGDPDEFAISMEI,GDP Implicit Price Deflator in India
-ARGNGDPRPCH,Gross Domestic Product for Argentina
-NB000339Q,Real Gross Private Domestic Investment: Fixed Investment: Nonresidential: Structures
-NAEXKP01NZQ661S,Gross Domestic Product by Expenditure in Constant Prices: Total Gross Domestic Product for New Zealand
-A009RL1Q225SBEA,Real Gross Private Domestic Investment: Fixed Investment: Nonresidential: Structures
-NAEXKP03EZA661S,National Accounts: GDP by Expenditure: Constant Prices: Government Final Consumption Expenditure for the Euro Area (19 Countries)
-BBKQCOIX,Brave-Butters-Kelley Coincident Index
-CLVMNACNSAB1GQCH,Real Gross Domestic Product for Switzerland
-HDTGPDDEA163N,Household Debt to GDP for Germany
+DPCCRC1Q027SBEA,Personal consumption expenditures excluding food and energy
+Y033RX1A020NBEA,Real Gross Private Domestic Investment: Fixed Investment: Nonresidential: Equipment
+CLVMNACNSAB1GQDE,Real Gross Domestic Product for Germany
+NAEXKP02DEQ189S,National Accounts: GDP by Expenditure: Constant Prices: Private Final Consumption Expenditure for Germany
+PCNDA,Personal Consumption Expenditures: Nondurable Goods
+CANGDPRAPSMEI,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for Canada
+CPMNACSCAB1GQUK,Gross Domestic Product for United Kingdom
+NA000348Q,Personal Consumption Expenditures: Nondurable Goods
+CPMNACNSAB1GQUK,Gross Domestic Product for United Kingdom
+NAEXKP01RUQ659S,Gross Domestic Product by Expenditure in Constant Prices: Total Gross Domestic Product for the Russian Federation
+NGDPRSAXDCPLQ,Real Gross Domestic Product for Poland
+NC000336Q,Private Nonresidential Fixed Investment
+A190RO1Q156NBEA,Real Final Sales of Domestic Product
+NB000346Q,Real Personal Consumption Expenditures: Durable Goods
+DDURRG3Q086SBEA,Personal consumption expenditures: Durable goods (chain-type price index)
+NAEXKP01USA657S,Gross Domestic Product by Expenditure in Constant Prices: Total Gross Domestic Product for the United States
+NGDPRXDCGBA,Real Gross Domestic Product for Great Britain
+DEUGDPRQPSMEI,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for Germany
+PB0000031A225NBEA,Real final sales to private domestic purchasers
+A712RC1A027NBEA,Gross domestic purchases
+NAEXKP01INQ661S,Gross Domestic Product by Expenditure in Constant Prices: Total Gross Domestic Product for India
 PCESVCA,Real Personal Consumption Expenditures: Services
+A712RP1Q027SBEA,Gross Domestic Purchases
+DPCERA3Q086SBEA,Real personal consumption expenditures (chain-type quantity index)
+NB000350Q,Real Personal Consumption Expenditures: Services
+A006RY2A224NBEA,Contributions to percent change in real gross domestic product: Gross private domestic investment
+PE0000091Q156NBEA,Real Average of GDP and GDI
+NA000350Q,Personal Consumption Expenditures: Services
 A824RE1A156NBEA,Shares of gross domestic product: Government consumption expenditures and gross investment: Federal: National defense
-A084RC1A027NBEA,Government current transfer payments
-DNRGRC1A027NBEA,Personal consumption expenditures: Energy goods and services
-NAEXKP01INA661S,Gross Domestic Product by Expenditure in Constant Prices: Total Gross Domestic Product for India
+NA000342Q,Imports of Goods and Services
+NGDPRNSAXDCIDQ,Real Gross Domestic Product for Indonesia
+NGDPRNSAXDCZAQ,Real Gross Domestic Product for South Africa
+A929RC1A027NBEA,Gross saving
+DDURRE1A156NBEA,Shares of gross domestic product: Personal consumption expenditures: Durable goods
+A020RL1Q158SBEA,Real Exports of Goods and Services
+A001RI1A225NBEA,Gross National Product: Implicit Price Deflator
+A713RX1A020NBEA,Real final sales to domestic purchasers
+A455RC1A027NBEA,Gross value added of nonfinancial corporate business
+NGDPRXDCZAA,Real Gross Domestic Product for South Africa
+NAEXKP01CAA189S,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for Canada
+CPMNACNSAB1GQES,Gross Domestic Product for Spain
+W875RX1A020NBEA,Real personal income excluding current transfer receipts
+PRFICA,Real Private Residential Fixed Investment
+ND000336Q,Real Private Nonresidential Fixed Investment
+CPMNACNSAB1GQIT,Gross Domestic Product for Italy
+NAEXKP01CLQ661S,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for Chile
 NB000336Q,Real Private Nonresidential Fixed Investment
-NA000333Q,Government Consumption Expenditures and Gross Investment
+A464RC1A027NBEA,Nonfinancial corporate business: Profits before tax (without IVA and CCAdj)
+CLVMNACSAB1GQUK,Real Gross Domestic Product for United Kingdom
+A466RD3A052NBEA,Profit per unit of real gross value added of nonfinancial corporate business: Corporate profits after tax with IVA and CCAdj (unit profits from current production)
+NB000335Q,Real Gross Private Domestic Investment
+B020RE1A156NBEA,Shares of gross domestic product: Exports of goods and services
+DEUGDPNQDSMEI,National Accounts: GDP by Expenditure: Current Prices: Gross Domestic Product - Total for Germany
+MEXNGDPRPCH,Gross Domestic Product for Mexico
+NAEXKP01INA652S,Gross Domestic Product by Expenditure in Constant Prices: Total Gross Domestic Product for India
+DGDSRL1Q225SBEA,Real Personal Consumption Expenditures: Goods
+CLVMNACNSAB1GQIT,Real Gross Domestic Product for Italy
+NAEXKP01CAA657S,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for Canada
+A021RL1Q158SBEA,Real Imports of Goods and Services
+NAEXKP01GBA652S,Gross Domestic Product by Expenditure in Constant Prices: Total Gross Domestic Product for the United Kingdom
+A008RE1A156NBEA,Shares of gross domestic product: Gross private domestic investment: Fixed investment: Nonresidential
+CLVMNACNSAB1GQNO,Real Gross Domestic Product for Norway
+NGDPRNSAXDCITQ,Real Gross Domestic Product for Italy
+NGDPXDCCAA,Nominal Gross Domestic Product for Canada
+DNRGRC1Q027SBEA,Personal consumption expenditures: Energy goods and services
+Y033RC1A027NBEA,Gross Private Domestic Investment: Fixed Investment: Nonresidential: Equipment
+NA000352Q,Exports of Goods and Services
+Y033RL1Q225SBEA,Real Gross Private Domestic Investment: Fixed Investment: Nonresidential: Equipment
+NAEXKP01CAQ661S,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for Canada
+NC000352Q,Exports of Goods and Services
+A712RP1A027NBEA,Gross Domestic Purchases
+NAEXKP01RUQ661S,Gross Domestic Product by Expenditure in Constant Prices: Total Gross Domestic Product for the Russian Federation
+NC000348Q,Personal Consumption Expenditures: Nondurable Goods
+CLVMNACNSAB1GQEA19,Real Gross Domestic Product for Euro area (19 countries)
+DSERRL1Q225SBEA,Real Personal Consumption Expenditures: Services
+GDPMCA1,Real Gross Domestic Product (DISCONTINUED)
+W055RC1A027NBEA,Personal current taxes
+CHLGDPRQPSMEI,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for Chile
+A021RO1Q156NBEA,Real Imports of Goods and Services
+NGDPRXDCRUA,Real Gross Domestic Product for Russia
+DPCERY2A224NBEA,Contributions to percent change in real gross domestic product: Personal consumption expenditures
+DFDHRC1A027NBEA,Personal consumption expenditures: Durable goods: Furnishings and durable household equipment
+A822RY2A224NBEA,Contributions to percent change in real gross domestic product: Government consumption expenditures and gross investment
+A191RE1A156NBEA,Shares of gross domestic product
+B096RC1A027NBEA,Federal government current expenditures: Subsidies
+OB000348Q,Real Personal Consumption Expenditures: Nondurable Goods
+NA000347Q,Personal Consumption Expenditures: Goods
+GNPGD2CNA156NUPN,Ratio of GNP to GDP for China
+DMOTRC1A027NBEA,Personal consumption expenditures: Durable goods: Motor vehicles and parts
+A011RE1A156NBEA,Shares of gross domestic product: Gross private domestic investment: Fixed investment: Residential
+GDPMC1,Real Gross Domestic Product (DISCONTINUED)
+NAEXKP01DEA657S,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for Germany
+AUSGDPRQPSMEI,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for Australia
+CLVMNACNSAB1GQES,Real Gross Domestic Product for Spain
+NAEXKP01CLA652S,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for Chile
+ND000331Q,Real Government Consumption Expenditures and Gross Investment: Federal: National defense
+PPPTTLCNA618NUPN,Purchasing Power Parity over GDP for China
+A019RY2A224NBEA,Contributions to percent change in real gross domestic product: Net exports of goods and services
+A020RO1Q156NBEA,Real Exports of Goods and Services
+PCDGCCA,Real Personal Consumption Expenditures: Durable Goods
+W790RC1A027NBEA,Net domestic investment: Private: Domestic business
+A001RL1Q225SBEA,Real Gross National Product
+DSERRG3Q086SBEA,Personal consumption expenditures: Services (chain-type price index)
+A927RC1A027NBEA,Gross government saving
+RGDPMPUKQ,Real Gross Domestic Product at Market Prices in the United Kingdom
+NA000336Q,Private Nonresidential Fixed Investment
+DHLCRC1A027NBEA,Personal consumption expenditures: Services: Health care
+NGDPRXDCIDA,Real Gross Domestic Product for Indonesia
+NAEXKP02DEQ661S,National Accounts: GDP by Expenditure: Constant Prices: Private Final Consumption Expenditure for Germany
+W019RC1A027NBEA,Federal government total expenditures
+CANGDPDEFAISMEI,National Accounts: National Accounts Deflators: Gross Domestic Product: GDP Deflator for Canada
+A020RL1A158NBEA,Real Exports of Goods and Services
+NAEXKP01KRQ657S,Gross Domestic Product by Expenditure in Constant Prices: Total Gross Domestic Product for the Republic of Korea
+ND000352Q,Real Exports of Goods and Services
+NGDPRNSAXDCFRQ,Real Gross Domestic Product for France
+HDTGPDITA163N,Household Debt to GDP for Italy
+ND000347Q,Real Personal Consumption Expenditures: Goods
+DGDSRO1Q156NBEA,Real Personal Consumption Expenditures: Goods
+A824RL1A225NBEA,Real Government Consumption Expenditures and Gross Investment: Federal: National Defense
+TURGDPDEFAISMEI,GDP Implicit Price Deflator in Turkey
+ND000333Q,Real Government Consumption Expenditures and Gross Investment
+ND000339Q,Real Gross Private Domestic Investment: Fixed Investment: Nonresidential: Structures
+DGDSRC1A027NBEA,Personal consumption expenditures: Goods
+NC000342Q,Imports of Goods and Services
+A021RL1A158NBEA,Real Imports of Goods and Services
+A006RL1A225NBEA,Real Gross Private Domestic Investment
+A822RL1A225NBEA,Real Government Consumption Expenditures and Gross Investment
+NA000320Q,Federal government current tax receipts: Personal current taxes
+NAEXKP01CAA661S,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for Canada
+A358RX1A020NBEA,Real gross value added: GDP: Business: Nonfarm
+NA000300Q,Federal government current transfer payments: Government social benefits: to persons
+DGOERC1A027NBEA,Personal consumption expenditures: Nondurable goods: Gasoline and other energy goods
+USMANRGSP,Real Gross Domestic Product: Manufacturing (NAICS 31-33) in the United States
+A009RL1A225NBEA,Real Gross Private Domestic Investment: Fixed Investment: Nonresidential: Structures
+NAEXKP01AUA661S,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for Australia
+A074RC1A027NBEA,Federal government current tax receipts: Personal current taxes
+BBKQGDP,Brave-Butters-Kelley Real Gross Domestic Product
+W824RC1A027NBEA,Personal current transfer receipts: Government social benefits to persons: Medicare
+A014RY2A224NBEA,Contributions to percent change in real gross domestic product: Gross private domestic investment: Change in private inventories
+A001RL1A225NBEA,Real Gross National Product
+BBKQCLA,Brave-Butters-Kelley Cycle: Lagging Subcomponent of GDP
+LB0000091A020NBEA,Real average of GDP and GDI
+INDGDPNADSMEI,Current Price Gross Domestic Product in India
+W823RC1A027NBEA,Personal current transfer receipts: Government social benefits to persons: Social security
+A446RC1A027NBEA,Corporate business: Profits before tax (without IVA and CCAdj)
+CLVMNACNSAB1GQPT,Real Gross Domestic Product for Portugal
+W207RC1A156NBEA,Net saving as a percentage of gross national income
+NAEXKP02EZQ659S,National Accounts: GDP by Expenditure: Constant Prices: Private Final Consumption Expenditure for the Euro Area (19 Countries)
+BBKQCOIX,Brave-Butters-Kelley Coincident Index
+Y033RL1A225NBEA,Real Gross Private Domestic Investment: Fixed Investment: Nonresidential: Equipment
+NAEXKP01RUQ657S,Gross Domestic Product by Expenditure in Constant Prices: Total Gross Domestic Product for the Russian Federation
+NGDPNSAXDCJPQ,Nominal Gross Domestic Product for Japan
+NGDPRNSAXDCGBQ,Real Gross Domestic Product for Great Britain
+W825RC1A027NBEA,Personal current transfer receipts: Government social benefits to persons: Unemployment insurance
+NGDPRXDCIRA,Real Gross Domestic Product for Ireland
+BBKQCY,Brave-Butters-Kelley Cycle Component of GDP
+NA000304Q,Federal Government Current Receipts
+CLVMNACNSAB1GQCH,Real Gross Domestic Product for Switzerland
+CLVMNACNSAB1GQEU28,Real Gross Domestic Product for European Union (28 countries)
+NAEXKP01INA657S,Gross Domestic Product by Expenditure in Constant Prices: Total Gross Domestic Product for India
+ND000374Q,Real Net Exports of Goods and Services
+OB000350Q,Real Personal Consumption Expenditures: Services
+PCNDGCA,Real Personal Consumption Expenditures: Nondurable Goods
+NAEXKP02EZA661S,National Accounts: GDP by Expenditure: Constant Prices: Private Final Consumption Expenditure for the Euro Area (19 Countries)
+NAEXKP02EZQ661S,National Accounts: GDP by Expenditure: Constant Prices: Private Final Consumption Expenditure for the Euro Area (19 Countries)
+NAEXKP02EZQ657S,National Accounts: GDP by Expenditure: Constant Prices: Private Final Consumption Expenditure for the Euro Area (19 Countries)
 NAEXKP01AUQ661S,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for Australia
 NAEXKP01AUA189S,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for Australia
-DDURRG3A086NBEA,Personal consumption expenditures: Durable goods (chain-type price index)
-ND000340Q,Real Gross Private Domestic Investment: Fixed Investment: Nonresidential: Equipment
-Y033RX1A020NBEA,Real Gross Private Domestic Investment: Fixed Investment: Nonresidential: Equipment
-ASLEXPND,State and Local Government Current Expenditures
-DSERRG3A086NBEA,Personal consumption expenditures: Services (chain-type price index)
-DHLCRC1A027NBEA,Personal consumption expenditures: Services: Health care
-HDTGPDKRA163N,Household Debt to GDP for Republic of Korea
-OB000348Q,Real Personal Consumption Expenditures: Nondurable Goods
-A001RL1A225NBEA,Real Gross National Product
-NAEXKP01DEA657S,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for Germany
-NAEXKP01DEA189S,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for Germany
-NAEXKP01CLQ657S,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for Chile
-NAEXKP02EZA661S,National Accounts: GDP by Expenditure: Constant Prices: Private Final Consumption Expenditure for the Euro Area (19 Countries)
-NAEXKP02EZQ657S,National Accounts: GDP by Expenditure: Constant Prices: Private Final Consumption Expenditure for the Euro Area (19 Countries)
-NAEXKP01USQ661S,Gross Domestic Product by Expenditure in Constant Prices: Total Gross Domestic Product for the United States
-CBIA,Change in Private Inventories
-PE0000091Q156NBEA,Real Average of GDP and GDI
-DGDSRL1A225NBEA,Real Personal Consumption Expenditures: Goods
-NAEXKP01CNA661S,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for China (People's Republic Of)
-OB000350Q,Real Personal Consumption Expenditures: Services
-A464RC1A027NBEA,Nonfinancial corporate business: Profits before tax (without IVA and CCAdj)
-NB000335Q,Real Gross Private Domestic Investment
-OB000335Q,Real Gross Private Domestic Investment
-NAEXKP01CAA661S,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for Canada
-OB000333Q,Real Government Consumption Expenditures and Gross Investment
-NGDPRXDCIRA,Real Gross Domestic Product for Ireland
-NB000346Q,Real Personal Consumption Expenditures: Durable Goods
-HDTGPDITA163N,Household Debt to GDP for Italy
-BBKQCLE,Brave-Butters-Kelley Cycle: Leading Subcomponent of GDP
-A019RY2A224NBEA,Contributions to percent change in real gross domestic product: Net exports of goods and services
-COLNAEXKP01GPSAQ,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for Colombia
-COLNAEXKP01IXOBSAQ,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for Colombia
-OB000347Q,Real Personal Consumption Expenditures: Goods
-NAEXKP03EZQ659S,National Accounts: GDP by Expenditure: Constant Prices: Government Final Consumption Expenditure for the Euro Area (19 Countries)
-NAEXKP01JPA661S,Gross Domestic Product by Expenditure in Constant Prices: Total Gross Domestic Product for Japan
-NAEXKP01JPQ661S,Gross Domestic Product by Expenditure in Constant Prices: Total Gross Domestic Product for Japan
-NAEXKP01JPA189S,Gross Domestic Product by Expenditure in Constant Prices: Total Gross Domestic Product for Japan
-NAEXKP01BRA652S,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for Brazil
-NAEXKP01BRA657S,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for Brazil
-NAEXKP03EZA652S,National Accounts: GDP by Expenditure: Constant Prices: Government Final Consumption Expenditure for the Euro Area (19 Countries)
-PCNDGCA,Real Personal Consumption Expenditures: Nondurable Goods
-BRAGDPRAPSMEI,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for Brazil
-NAEXKP01BRA661S,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for Brazil
-DEUGDPRAPSMEI,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for Germany
-NAEXKP03EZA657S,National Accounts: GDP by Expenditure: Constant Prices: Government Final Consumption Expenditure for the Euro Area (19 Countries)
-NAEXKP01DEA661S,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for Germany
-NAEXKP03EZA659S,National Accounts: GDP by Expenditure: Constant Prices: Government Final Consumption Expenditure for the Euro Area (19 Countries)
-TURGDPDEFAISMEI,GDP Implicit Price Deflator in Turkey
-NB000348Q,Real Personal Consumption Expenditures: Nondurable Goods
-NB000333Q,Real Government Consumption Expenditures and Gross Investment
-A011RE1A156NBEA,Shares of gross domestic product: Gross private domestic investment: Fixed investment: Residential
-NAEXKP01AUA657S,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for Australia
-OB000352Q,Real Exports of Goods and Services
-NC000342Q,Imports of Goods and Services
-OB000342Q,Real Imports of Goods and Services
-NC000333Q,Government Consumption Expenditures and Gross Investment
-NB000342Q,Real Imports of Goods and Services
-DGDSRX1A020NBEA,Real personal consumption expenditures: Goods
-NAEXKP01AUA661S,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for Australia
-NAEXKP01AUA659S,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for Australia
-A021RL1A158NBEA,Real Imports of Goods and Services
-A020RL1A158NBEA,Real Exports of Goods and Services
-NB000347Q,Real Personal Consumption Expenditures: Goods
+NC000347Q,Personal Consumption Expenditures: Goods
 DSERRL1A225NBEA,Real Personal Consumption Expenditures: Services
-NB000352Q,Real Exports of Goods and Services
-ND000333Q,Real Government Consumption Expenditures and Gross Investment
-OB000337Q,Real Private Fixed Investment
-NAEXKP02EZA189S,National Accounts: GDP by Expenditure: Constant Prices: Private Final Consumption Expenditure for the Euro Area (19 Countries)
+HDTGPDDEA163N,Household Debt to GDP for Germany
+A068RC1Q027SBEA,Personal outlays
+NAEXKP01USQ661S,Gross Domestic Product by Expenditure in Constant Prices: Total Gross Domestic Product for the United States
+CLVMNACSCAB1GQCH,Real Gross Domestic Product for Switzerland
+BBKQCLE,Brave-Butters-Kelley Cycle: Leading Subcomponent of GDP
 PB0000091A225NBEA,Real average of GDP and GDI
+NA000318Q,Federal government current expenditures: Subsidies
+NAEXKP01CNA661S,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for China (People's Republic Of)
+NA000340Q,Gross Private Domestic Investment: Fixed Investment: Nonresidential: Equipment
+A009RL1Q225SBEA,Real Gross Private Domestic Investment: Fixed Investment: Nonresidential: Structures
+NAEXKP01KRA189S,Gross Domestic Product by Expenditure in Constant Prices: Total Gross Domestic Product for the Republic of Korea
+DHLCRG3A086NBEA,Personal consumption expenditures: Services: Health care (chain-type price index)
+OB000335Q,Real Gross Private Domestic Investment
 NAEXKP01RUA657S,Gross Domestic Product by Expenditure in Constant Prices: Total Gross Domestic Product for the Russian Federation
-NAEXKP01RUA661S,Gross Domestic Product by Expenditure in Constant Prices: Total Gross Domestic Product for the Russian Federation
-W825RC1A027NBEA,Personal current transfer receipts: Government social benefits to persons: Unemployment insurance
-A001RV1Q225SBEA,Gross National Product (chain-type price index)
-A001RV1A225NBEA,Gross National Product (chain-type price index)
-COLNAEXKP01GYSAQ,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for Colombia
-NAEXKP01EZQ659S,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for the Euro Area (19 Countries)
-NAEXKP01EZA657S,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for the Euro Area (19 Countries)
-NAEXKP01EZA652S,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for the Euro Area (19 Countries)
-NAEXKP01EZA659S,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for the Euro Area (19 Countries)
-NAEXKP01EZA661S,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for the Euro Area (19 Countries)
-OECDLORSGPORIXOBSAM,Leading Indicators OECD: Reference series: Gross Domestic Product (GDP): Original series for OECD - Total
-W823RC1A027NBEA,Personal current transfer receipts: Government social benefits to persons: Social security
-NAGIGP01AUA661S,National Accounts: National Accounts Deflators: Gross Domestic Product: GDP Deflator for Australia
-NA000322Q,Federal government current tax receipts: Taxes on corporate income
-A824RX1A020NBEA,Real government consumption expenditures and gross investment: Federal: National defense
-A824RL1A225NBEA,Real Government Consumption Expenditures and Gross Investment: Federal: National Defense
-A824RO1Q156NBEA,Real Government Consumption Expenditures and Gross Investment: Federal: National Defense
-OB000331Q,Real Government Consumption Expenditures and Gross Investment: Federal: National defense
-ITAGDPDEFAISMEI,GDP Implicit Price Deflator in Italy
-NB000331Q,Real Government Consumption Expenditures and Gross Investment: Federal: National defense
-A713RX1A020NBEA,Real final sales to domestic purchasers
-A713RL1A225NBEA,Real Final Sales to Domestic Purchasers
-NB000337Q,Real Private Fixed Investment
-NAEXKP01RUA652S,Gross Domestic Product by Expenditure in Constant Prices: Total Gross Domestic Product for the Russian Federation
-NAEXKP01RUA659S,Gross Domestic Product by Expenditure in Constant Prices: Total Gross Domestic Product for the Russian Federation
-A190RL1A225NBEA,Real Final Sales of Domestic Product
-NAEXCP02BRA189N,National Accounts: GDP by Expenditure: Current Prices: Private Final Consumption Expenditure for Brazil
-NAEXKP01USA652S,Gross Domestic Product by Expenditure in Constant Prices: Total Gross Domestic Product for the United States
-NAEXKP01USA661S,Gross Domestic Product by Expenditure in Constant Prices: Total Gross Domestic Product for the United States
-ND000337Q,Real Private Fixed Investment
-A358RC1A027NBEA,Gross value added: GDP: Business: Nonfarm
-NAEXKP02EZA659S,National Accounts: GDP by Expenditure: Constant Prices: Private Final Consumption Expenditure for the Euro Area (19 Countries)
-NAEXKP02EZA657S,National Accounts: GDP by Expenditure: Constant Prices: Private Final Consumption Expenditure for the Euro Area (19 Countries)
-CHLGDPRQPSMEI,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for Chile
-NAEXKP01CLA657S,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for Chile
-NAEXKP01CLA652S,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for Chile
-CHLGDPRAPSMEI,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for Chile
-NAEXKP01CLA661S,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for Chile
+NAEXKP02DEQ659S,National Accounts: GDP by Expenditure: Constant Prices: Private Final Consumption Expenditure for Germany
+NAEXKP02DEQ657S,National Accounts: GDP by Expenditure: Constant Prices: Private Final Consumption Expenditure for Germany
+NGDPRNSAXDCPLQ,Real Gross Domestic Product for Poland
 NGDPRXDCPLA,Real Gross Domestic Product for Poland
+W987RC1A027NBEA,Gross private domestic investment: Domestic business
+NAEXKP01INA661S,Gross Domestic Product by Expenditure in Constant Prices: Total Gross Domestic Product for India
+DGDSRG3Q086SBEA,Personal consumption expenditures: Goods (chain-type price index)
+ND000340Q,Real Gross Private Domestic Investment: Fixed Investment: Nonresidential: Equipment
+ASLEXPND,State and Local Government Current Expenditures
+DHUTRC1A027NBEA,Personal consumption expenditures: Services: Housing and utilities
+Y033RO1Q156NBEA,Real Gross Private Domestic Investment: Fixed Investment: Nonresidential: Equipment
+NA000333Q,Government Consumption Expenditures and Gross Investment
+NC000333Q,Government Consumption Expenditures and Gross Investment
+DPCERA3A086NBEA,Real personal consumption expenditures (chain-type quantity index)
+A084RC1A027NBEA,Government current transfer payments
+GBRGDPDEFAISMEI,GDP Implicit Price Deflator in United Kingdom
+DGDSRV1Q225SBEA,Personal Consumption Expenditures: Goods (chain-type price index)
+NAEXKP01BRQ661S,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for Brazil
+W202RC1A027NBEA,Net private saving
+NB000347Q,Real Personal Consumption Expenditures: Goods
+NAEXKP01BRA652S,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for Brazil
+A713RL1A225NBEA,Real Final Sales to Domestic Purchasers
+OB000347Q,Real Personal Consumption Expenditures: Goods
+DGDSRL1A225NBEA,Real Personal Consumption Expenditures: Goods
+B069RC1A027NBEA,Personal interest payments
+NAEXKP01CLQ657S,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for Chile
+CLVMNACNSAB1GQEL,Real Gross Domestic Product for Greece
+NAEXCP02BRQ189N,National Accounts: GDP by Expenditure: Current Prices: Private Final Consumption Expenditure for Brazil
+BRAGDPRQPSMEI,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for Brazil
+Y001RE1A156NBEA,Shares of Gross Domestic Product: Gross Private Domestic Investment: Fixed Investment: Nonresidential: Intellectual Property Products
+NB000333Q,Real Government Consumption Expenditures and Gross Investment
+OB000352Q,Real Exports of Goods and Services
+OB000333Q,Real Government Consumption Expenditures and Gross Investment
 DSERRV1A225NBEA,Personal Consumption Expenditures: Services (chain-type price index)
-NAEXKP01NZA189S,Gross Domestic Product by Expenditure in Constant Prices: Total Gross Domestic Product for New Zealand
-NAEXKP01NZA661S,Gross Domestic Product by Expenditure in Constant Prices: Total Gross Domestic Product for New Zealand
-NAEXKP01NZA657S,Gross Domestic Product by Expenditure in Constant Prices: Total Gross Domestic Product for New Zealand
-W055RC1A027NBEA,Personal current taxes
+NA000284Q,State and local government current expenditures
+INDGDPDEFAISMEI,GDP Implicit Price Deflator in India
+NAEXKP01DEA189S,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for Germany
+NB000352Q,Real Exports of Goods and Services
+DEUGDPRAPSMEI,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for Germany
+NAEXKP01CLA657S,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for Chile
+B703RC1A027NBEA,Personal income receipts on assets: Personal dividend income
 OB000339Q,Real Gross Private Domestic Investment: Fixed Investment: Nonresidential: Structures
 A009RO1Q156NBEA,Real Gross Private Domestic Investment: Fixed Investment: Nonresidential: Structures
-NA000284Q,State and local government current expenditures
+DSERRG3A086NBEA,Personal consumption expenditures: Services (chain-type price index)
+NA000322Q,Federal government current tax receipts: Taxes on corporate income
+CHLGDPRAPSMEI,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for Chile
+ARGNGDPRPCH,Gross Domestic Product for Argentina
+NAEXKP01CLA661S,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for Chile
+NAEXCP02BRA189N,National Accounts: GDP by Expenditure: Current Prices: Private Final Consumption Expenditure for Brazil
+NAEXKP02DEA657S,National Accounts: GDP by Expenditure: Constant Prices: Private Final Consumption Expenditure for Germany
+NAEXKP02DEA661S,National Accounts: GDP by Expenditure: Constant Prices: Private Final Consumption Expenditure for Germany
+NAEXKP02DEA189S,National Accounts: GDP by Expenditure: Constant Prices: Private Final Consumption Expenditure for Germany
+NAEXKP02DEA659S,National Accounts: GDP by Expenditure: Constant Prices: Private Final Consumption Expenditure for Germany
+NAEXKP01DEA661S,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for Germany
+NB000340Q,Real Gross Private Domestic Investment: Fixed Investment: Nonresidential: Equipment
 OB000340Q,Real Gross Private Domestic Investment: Fixed Investment: Nonresidential: Equipment
-Y033RL1A225NBEA,Real Gross Private Domestic Investment: Fixed Investment: Nonresidential: Equipment
-DPCERA3A086NBEA,Real personal consumption expenditures (chain-type quantity index)
-NAEXKP02AUQ659S,National Accounts: GDP by Expenditure: Constant Prices: Private Final Consumption Expenditure for Australia
+NAEXKP01RUA659S,Gross Domestic Product by Expenditure in Constant Prices: Total Gross Domestic Product for the Russian Federation
+NAEXKP01RUA652S,Gross Domestic Product by Expenditure in Constant Prices: Total Gross Domestic Product for the Russian Federation
+NAEXKP01RUA661S,Gross Domestic Product by Expenditure in Constant Prices: Total Gross Domestic Product for the Russian Federation
+NAGIGP01EZA661S,National Accounts: National Accounts Deflators: Gross Domestic Product: GDP Deflator for the Euro Area (19 Countries)
+NB000339Q,Real Gross Private Domestic Investment: Fixed Investment: Nonresidential: Structures
+NC000340Q,Gross Private Domestic Investment: Fixed Investment: Nonresidential: Equipment
+NAEXKP01KRA661S,Gross Domestic Product by Expenditure in Constant Prices: Total Gross Domestic Product for the Republic of Korea
+NAEXKP01BRA661S,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for Brazil
+COLNAEXKP01GPSAQ,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for Colombia
+BRAGDPRAPSMEI,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for Brazil
+NAEXKP01USA661S,Gross Domestic Product by Expenditure in Constant Prices: Total Gross Domestic Product for the United States
+NAEXKP01USA652S,Gross Domestic Product by Expenditure in Constant Prices: Total Gross Domestic Product for the United States
+NAEXKP01GBA661S,Gross Domestic Product by Expenditure in Constant Prices: Total Gross Domestic Product for the United Kingdom
+DDURRG3A086NBEA,Personal consumption expenditures: Durable goods (chain-type price index)
+DGDSRV1A225NBEA,Personal Consumption Expenditures: Goods (chain-type price index)
+NAEXKP01BRA657S,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for Brazil
+NAEXKP01AUA659S,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for Australia
+DGDSRG3A086NBEA,Personal consumption expenditures: Goods (chain-type price index)
+NB000342Q,Real Imports of Goods and Services
+OB000342Q,Real Imports of Goods and Services
+DHUTRG3A086NBEA,Personal consumption expenditures: Services: Housing and utilities (chain-type price index)
+DNRGRC1A027NBEA,Personal consumption expenditures: Energy goods and services
+NAEXKP01AUA657S,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for Australia
+COLNAEXKP01IXOBSAQ,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for Colombia
+NAEXKP01KRA657S,Gross Domestic Product by Expenditure in Constant Prices: Total Gross Domestic Product for the Republic of Korea
+A824RX1A020NBEA,Real government consumption expenditures and gross investment: Federal: National defense
+NAEXKP01KRQ661S,Gross Domestic Product by Expenditure in Constant Prices: Total Gross Domestic Product for the Republic of Korea
+CLVMNACNSAB1GQFI,Real Gross Domestic Product for Finland
+A068RC1A027NBEA,Personal outlays
+A577RC1A027NBEA,Personal current transfer receipts
+NB000331Q,Real Government Consumption Expenditures and Gross Investment: Federal: National defense
+OB000331Q,Real Government Consumption Expenditures and Gross Investment: Federal: National defense
+A824RO1Q156NBEA,Real Government Consumption Expenditures and Gross Investment: Federal: National Defense
+COLNAEXKP01GYSAQ,National Accounts: GDP by Expenditure: Constant Prices: Gross Domestic Product - Total for Colombia
+NAEXKP02EZA657S,National Accounts: GDP by Expenditure: Constant Prices: Private Final Consumption Expenditure for the Euro Area (19 Countries)
+NAEXKP02EZA659S,National Accounts: GDP by Expenditure: Constant Prices: Private Final Consumption Expenditure for the Euro Area (19 Countries)
+NAEXKP02EZA189S,National Accounts: GDP by Expenditure: Constant Prices: Private Final Consumption Expenditure for the Euro Area (19 Countries)
+RUSGDPDEFAISMEI,GDP Implicit Price Deflator in Russian Federation
+NORGDPDEFAISMEI,GDP Implicit Price Deflator in Norway
+DGDSRX1A020NBEA,Real personal consumption expenditures: Goods
+NB000348Q,Real Personal Consumption Expenditures: Nondurable Goods
