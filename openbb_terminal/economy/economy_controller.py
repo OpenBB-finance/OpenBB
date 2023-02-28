@@ -1096,7 +1096,7 @@ class EconomyController(BaseController):
 
         parser.add_argument(
             "--no-smart-select",
-            action="store_true",
+            action="store_false",
             dest="smart_select",
             help="Whether to assist with selection",
             default=True,

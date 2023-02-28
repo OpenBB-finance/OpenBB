@@ -28,7 +28,6 @@ CPI_COUNTRIES = [
     "austria",
     "belgium",
     "brazil",
-    "bulgaria",
     "canada",
     "chile",
     "china",
@@ -316,6 +315,7 @@ def get_cpi(
     frequency: str = "",
     harmonized: bool = False,
     smart_select: bool = True,
+    options: bool = False,
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
 ) -> Tuple[pd.DataFrame, dict]:
@@ -333,13 +333,17 @@ def get_cpi(
         Whether you wish to obtain harmonized data.
     smart_select: bool
         Whether to assist with the selection.
+    options: bool
+        Whether to return the options.
     start_date: Optional[str]
         Start date, formatted YYYY-MM-DD
     end_date: Optional[str]
         End date, formatted YYYY-MM-DD
     """
-
     series = pd.read_csv(harmonized_cpi_path) if harmonized else pd.read_csv(cpi_path)
+
+    if options:
+        return series.drop(["series_id"], axis=1)
 
     step_1 = series[series["country"].str.contains("|".join(countries))]
     step_2 = step_1[step_1["units"] == units]
@@ -363,7 +367,11 @@ def get_cpi(
         series = step_3
 
     if series.empty:
-        console.print("The combination of parameters does not result in any data.")
+        console.print(
+            "The combination of parameters does not result in any data. Please consider "
+            "using the `options` parameter to see the available options. Note that there "
+            "are two options list, one with `harmonized` and one without."
+        )
         return pd.DataFrame()
 
     series_dictionary = {}
