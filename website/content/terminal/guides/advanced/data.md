@@ -102,7 +102,21 @@ Loading Daily data for MSFT with starting period 2020-02-13.
 Saved file: /Users/danglewood/OpenBBUserData/exports/watchlist.xlsx
 ```
 
-![Exporting Data](exports1.png)
+![Exporting Data](https://user-images.githubusercontent.com/85772166/221929090-5477a635-fccc-42a1-9ee3-7e7485988452.png)
+
 
 ## Importing Data
 
+Menus, such as Econometrics, Forecast, or Portfolio, allow the user to import their own dataset. Files available to import will be included with the choices presented by auto-complete. In the Econometrics menu, this is activated after pressing the space bar, `load -f`.
+
+![Loading data in the Econometrics menu](https://user-images.githubusercontent.com/85772166/221930794-d754e63f-262f-410b-b698-e03823c5d30b.png)
+
+The Econometrics menu looks at the `exports` and `custom_imports/econometrics` folder. The `portfolio` menu looks in the `portfolio/holdings` folder whereas the `portfolio/po` menu looks at the `portfolio/allocation` and `portfolio/optimization` folder for the load and file command respectively. Please make sure to read the relevant guides to understand how this works.
+
+## Custom Path for OpenBBUserData folder
+
+The location of this folder can be set by the user from the /settings menu. There should be no need to update paths in this menu unless the folders have been moved manually. If the location of the OpenBBUserData folder must be changed, it is best to move the entire existing folder to the new path. The path is then changed under the settings menu with:
+
+```console
+userdata --folder "/complete_path_to/OpenBBUserData"
+```
