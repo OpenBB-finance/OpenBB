@@ -4,8 +4,8 @@ __docformat__ = "numpy"
 import logging
 import os
 import tempfile
-from typing import Optional
 import warnings
+from typing import Optional
 
 import whisper
 import yt_dlp
