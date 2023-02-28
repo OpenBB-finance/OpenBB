@@ -56,12 +56,6 @@ jobs:
         run: |
           pip list
           python -m pip install -r requirements-full.txt
-      - name: Install Specific Papermill
-        run: |
-          pip list
-          pip uninstall papermill -y
-          pip install git+https://github.com/nteract/papermill.git@main
-      # This is basically the same as build4mac.sh
       - name: Build Bundle
         run: |
           pip list
