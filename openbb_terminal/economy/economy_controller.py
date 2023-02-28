@@ -61,6 +61,7 @@ class EconomyController(BaseController):
         "fred",
         "index",
         "treasury",
+        "cpi",
         "plot",
         "valuation",
         "performance",
@@ -199,6 +200,9 @@ class EconomyController(BaseController):
             }
             choices["events"]["-c"] = "--countries"
 
+            choices["cpi"]["--countries"] = {c: None for c in fred_model.CPI_COUNTRIES}
+            choices["cpi"]["-c"] = "--countries"
+
             self.choices = choices
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -263,6 +267,7 @@ class EconomyController(BaseController):
         mt.add_info("_database_")
         mt.add_cmd("macro")
         mt.add_cmd("treasury")
+        mt.add_cmd("cpi")
         mt.add_cmd("fred")
         mt.add_cmd("index")
         mt.add_raw("\n")
@@ -1041,6 +1046,108 @@ class EconomyController(BaseController):
                     self.update_runtime_choices()
                     if obbff.ENABLE_EXIT_AUTO_HELP:
                         self.print_help()
+
+    @log_start_end(log=logger)
+    def call_cpi(self, other_args: List[str]):
+        """Process cpi command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="cpi",
+            description="Plot (harmonized) consumer price indices for a "
+            "variety of countries and regions.",
+        )
+
+        parser.add_argument(
+            "-c",
+            "--countries",
+            dest="countries",
+            type=str,
+            help="What countries you'd like to collect data for",
+            default="united_states",
+        )
+
+        parser.add_argument(
+            "-u",
+            "--units",
+            dest="units",
+            type=str,
+            help="What units you'd like to collect data for",
+            default="growth_same",
+            choices=fred_model.CPI_UNITS,
+        )
+
+        parser.add_argument(
+            "--frequency",
+            dest="frequency",
+            type=str,
+            help="What frequency you'd like to collect data for",
+            default="monthly",
+            choices=fred_model.CPI_FREQUENCY,
+        )
+
+        parser.add_argument(
+            "--harmonized",
+            action="store_true",
+            dest="harmonized",
+            help="Whether to use harmonized cpi data",
+            default=False,
+        )
+
+        parser.add_argument(
+            "--no-smart-select",
+            action="store_false",
+            dest="smart_select",
+            help="Whether to assist with selection",
+            default=True,
+        )
+
+        parser.add_argument(
+            "-o",
+            "--options",
+            dest="options",
+            action="store_true",
+            help="See the available options",
+            default=False,
+        )
+
+        parser.add_argument(
+            "-s",
+            "--start",
+            dest="start_date",
+            type=valid_date,
+            help="Starting date (YYYY-MM-DD) of data",
+            default="1980-01-01",
+        )
+        parser.add_argument(
+            "-e",
+            "--end",
+            dest="end_date",
+            type=valid_date,
+            help="Ending date (YYYY-MM-DD) of data",
+            default=None,
+        )
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES, raw=True
+        )
+        if ns_parser:
+            countries = list_from_str(ns_parser.countries)
+
+            fred_view.plot_cpi(
+                countries=countries,
+                units=ns_parser.units,
+                frequency=ns_parser.frequency,
+                harmonized=ns_parser.harmonized,
+                smart_select=ns_parser.smart_select,
+                options=ns_parser.options,
+                start_date=ns_parser.start_date,
+                end_date=ns_parser.end_date,
+                raw=ns_parser.raw,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )
 
     @log_start_end(log=logger)
     def call_events(self, other_args: List[str]):

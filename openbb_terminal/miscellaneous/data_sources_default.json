@@ -465,6 +465,7 @@
     "spectrum": ["Finviz"],
     "macro": ["EconDB"],
     "treasury": ["EconDB"],
+    "cpi": ["FRED"],
     "fred": ["FRED"],
     "index": ["YahooFinance"]
   },

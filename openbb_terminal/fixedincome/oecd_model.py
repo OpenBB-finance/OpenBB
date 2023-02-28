@@ -223,7 +223,6 @@ def get_treasury(
     end_date: str
         End date of data, in YYYY-MM-DD format
     """
-
     df_short, df_long = pd.DataFrame(), pd.DataFrame()
 
     if short_term:
@@ -242,4 +241,5 @@ def get_treasury(
         )
 
     df = pd.concat([df_short, df_long], axis=1)
+
     return df
