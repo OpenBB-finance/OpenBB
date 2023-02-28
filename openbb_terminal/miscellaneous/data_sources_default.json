@@ -457,6 +457,7 @@
     "spending": ["OECD"],
     "trust": ["OECD"],
     "treasury": ["EconDB"],
+    "cpi": ["FRED"],
     "fred": ["FRED"],
     "index": ["YahooFinance"]
   },

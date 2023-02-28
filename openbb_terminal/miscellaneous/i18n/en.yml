@@ -762,6 +762,7 @@ en:
   economy/fred: collect macro data from FRED based on a series ID
   economy/index: find and plot any (major) index on the market
   economy/treasury: obtain U.S. treasury rates
+  economy/cpi: obtain (harmonized) Consumer Price Indices for any country
   economy/ycrv: show sovereign yield curves
   economy/spread: show bond spread matrix
   economy/events: show economic calendar
@@ -797,7 +798,6 @@ en:
   economy/qa/raw: print raw data
   economy/qa/decompose: decomposition in cyclic-trend, season, and residuals of prices
   economy/qa/cusum: detects abrupt changes using cumulative sum algorithm of prices
-  fixedincome: Fixed Income
   fixedincome/_reference_rates_: Reference rates
   fixedincome/estr: euro short-term rate (estr)
   fixedincome/sofr: secured overnight financing rate (sofr)

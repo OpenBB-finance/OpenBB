@@ -9,7 +9,7 @@ interactions:
       Connection:
       - keep-alive
     method: GET
-    uri: https://api.stlouisfed.org/fred/series/search?api_key=MOCK_API_KEY&file_type=json&search_text=unemployment+rate
+    uri: https://api.stlouisfed.org/fred/series/search?api_key=6fa40707f1690bbcf91356c2ba07dab5&file_type=json&search_text=unemployment+rate
   response:
     body:
       string: !!binary |
@@ -765,12 +765,8 @@ interactions:
         K8vcRNF8kOAE5qzzAbyysqToplbi9uwmPiA+ID4gPiA+ID5Inw/+z//7/wEAAP//AQAA//9qdP+w
         3VwOAA==
     headers:
-      Accept-Ranges:
-      - bytes
       Connection:
       - keep-alive
-      Content-Encoding:
-      - gzip
       Content-Length:
       - '42754'
       Content-Type:
@@ -788,6 +784,6 @@ interactions:
       x-rate-limit-remaining:
       - '116'
     status:
-      code: 200
-      message: OK
+      code: 400
+      message: Bad Request
 version: 1

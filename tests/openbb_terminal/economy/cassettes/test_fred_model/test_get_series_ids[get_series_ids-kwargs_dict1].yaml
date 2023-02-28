@@ -9,7 +9,7 @@ interactions:
       Connection:
       - keep-alive
     method: GET
-    uri: https://api.stlouisfed.org/fred/series/search?api_key=MOCK_API_KEY&file_type=json&search_text=gdp
+    uri: https://api.stlouisfed.org/fred/series/search?api_key=6fa40707f1690bbcf91356c2ba07dab5&file_type=json&search_text=gdp
   response:
     body:
       string: !!binary |
@@ -1472,12 +1472,8 @@ interactions:
         oQbqkrqP57hT6l50S1cXV6el427pz8GyEjr7/lZK6MyYGk9eTFLm42qgaq6Bcg3062qgf/zv/wcA
         AP//AQAA//9n31fOAA8MAA==
     headers:
-      Accept-Ranges:
-      - bytes
       Connection:
       - keep-alive
-      Content-Encoding:
-      - gzip
       Content-Length:
       - '83065'
       Content-Type:
@@ -1495,6 +1491,6 @@ interactions:
       x-rate-limit-remaining:
       - '115'
     status:
-      code: 200
-      message: OK
+      code: 400
+      message: Bad Request
 version: 1

@@ -118,3 +118,23 @@ def test_get_cpi(func, kwargs_dict, recorder):
 
     assert isinstance(result_df, pd.DataFrame)
     recorder.capture(result_df)
+
+
+@pytest.mark.vcr
+@pytest.mark.parametrize(
+    "func, kwargs_dict",
+    [
+        ("get_cpi", {"countries": ["united kingdom"]}),
+        ("get_cpi", {"countries": ["united kingdom", "united_states"]}),
+        ("get_cpi", {"countries": ["united kingdom", "united_states", "belgium"]}),
+        ("get_cpi", {"frequency": "monthly"}),
+        ("get_cpi", {"units": "growth_previous"}),
+        ("get_cpi", {"harmonized": True}),
+        ("get_cpi", {"units": "growth_previous"}),
+    ],
+)
+def test_get_cpi(func, kwargs_dict, recorder):
+    result_df = getattr(fred_model, func)(**kwargs_dict)
+
+    assert isinstance(result_df, pd.DataFrame)
+    recorder.capture(result_df)
