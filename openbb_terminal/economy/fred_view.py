@@ -240,7 +240,7 @@ def plot_cpi(
 
     # This plot has 1 axis
     if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI)
     elif is_valid_axes_count(external_axes, 1):
         (ax,) = external_axes
     else:
