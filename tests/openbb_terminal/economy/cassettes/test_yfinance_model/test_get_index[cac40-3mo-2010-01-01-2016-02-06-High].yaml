@@ -43,7 +43,7 @@ interactions:
       content-type:
       - application/json;charset=utf-8
       date:
-      - Fri, 24 Feb 2023 16:00:33 GMT
+      - Sat, 25 Feb 2023 13:16:52 GMT
       server:
       - ATS
       vary:
@@ -51,13 +51,13 @@ interactions:
       x-envoy-decorator-operation:
       - finance-chart-api--mtls-canary-production-bf1.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
-      - '3'
+      - '1'
       x-request-id:
-      - 7e200c20-47ba-491e-95e7-2a20fed8e68a
+      - a8d68c54-a532-4f38-b85f-5c2110b4d5cd
       x-yahoo-request-id:
-      - bi2i331hvhnp1
+      - 4m5lgophvk2i4
       y-rid:
-      - bi2i331hvhnp1
+      - 4m5lgophvk2i4
     status:
       code: 404
       message: Not Found

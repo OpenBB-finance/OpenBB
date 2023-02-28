@@ -47,8 +47,8 @@ def test_display_etf_by_description(description, mocker):
 @pytest.mark.parametrize(
     "category",
     [
-        "Bank Loan",
-        "Bear Market",
+        "Bonds",
+        "Materials",
     ],
 )
 def test_display_etf_by_category(category, mocker):
