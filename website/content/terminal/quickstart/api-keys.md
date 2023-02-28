@@ -100,6 +100,8 @@ This section covers all API keys listed above and include detailed instructions 
 <details>
 <summary>Go to: https://www.alphavantage.co/support/#api-key</summary>
 
+[AlphaVantage](https://www.alphavantage.co/support/#api-key)
+
 ![AlphaVantage](https://user-images.githubusercontent.com/46355364/207820936-46c2ba00-81ff-4cd3-98a4-4fa44412996f.png)
 
 Fill out the form, pass Captcha, and click on, "GET FREE API KEY". The issued key can be entered into the OpenBB Terminal with:
@@ -115,6 +117,8 @@ Fill out the form, pass Captcha, and click on, "GET FREE API KEY". The issued ke
 <details>
 <summary>Go to: https://www.binance.com/en/support/faq/how-to-create-api-360002502072</summary>
 
+[Binance](https://www.binance.com/en/support/faq/how-to-create-api-360002502072)
+
 ![Binance](https://user-images.githubusercontent.com/46355364/207839805-f71cf12a-62d2-41cb-ba19-0c35917abc40.png)
 
 These instructions should provide clear guidance for obtaining an API Key. Enter the issued credentials into the OpenBB Terminal with:
@@ -129,6 +133,8 @@ These instructions should provide clear guidance for obtaining an API Key. Enter
 
 <details>
 <summary>Go to: https://bitquery.io/</summary>
+
+[Bitquery](https://bitquery.io/)
 
 ![Bitquery](https://user-images.githubusercontent.com/46355364/207840322-5532a3f9-739f-4e28-9839-a58db932882e.png)
 
@@ -153,6 +159,8 @@ Enter this API key into the OpenBB Terminal by typing:
 <details>
 <summary>Go to: https://coinmarketcap.com/api</summary>
 
+[CoinMarketCap](https://coinmarketcap.com/api)
+
 ![CoinMarketCap](https://user-images.githubusercontent.com/46355364/207831111-3f09ed75-740e-4121-a67e-6e1f36e8ab9a.png)
 
 Click on, "Get Your Free API Key Now", which opens to the page:
@@ -176,6 +184,8 @@ Enter the API key into the OpenBB Terminal by typing:
 <details>
 <summary>Go to: https://help.coinbase.com/en/exchange/managing-my-account/how-to-create-an-api-key</summary>
 
+[Coinbase](https://help.coinbase.com/en/exchange/managing-my-account/how-to-create-an-api-key)
+
 ![Coinbase](https://user-images.githubusercontent.com/46355364/207841901-647f0aef-0c74-454d-b99e-367d784259f0.png)
 
 Follow the instructions to obtain the credentials for the specific account. Enter the three values into the OpenBB Terminal by typing:
@@ -190,6 +200,8 @@ Follow the instructions to obtain the credentials for the specific account. Ente
 
 <details>
 <summary>Go to: https://www.coinglass.com/</summary>
+
+[Coinglass](https://www.coinglass.com/)
 
 ![Coinglass](https://user-images.githubusercontent.com/46355364/207844601-8510687a-e54f-49b9-961f-5ef6718f58ab.png)
 
@@ -210,9 +222,11 @@ With the account created, find the assigned API key within the account profile p
 <details>
 <summary>Go to: https://cryptopanic.com/developers/api/</summary>
 
+[Crypto Panic](https://cryptopanic.com/developers/api/)
+
 ![Crypto Panic](https://user-images.githubusercontent.com/46355364/207848733-27e5a804-7ae7-4ca2-88b2-848b32929b6f.png)
 
-Click on, [&#34;Sign up&#34;](https://cryptopanic.com/accounts/signup/?next=/developers/api/), and after creating, the API Key will be displayed on the documentation page, "Your free API auth token".
+Click on, [Sign up](https://cryptopanic.com/accounts/signup/?next=/developers/api/), and after creating, the API key will be displayed on the documentation page, "Your free API auth token".
 
 ![Crypto Panic](https://user-images.githubusercontent.com/46355364/207848971-3e4771b7-1faa-45fe-955f-81bd736b16b7.png)
 
@@ -224,10 +238,29 @@ Enter that value in the OpenBB Terminal by typing:
 
 </details>
 
+### Databento
+
+<details>
+<summary>Go to: https://docs.databento.com/getting-started</summary>
+
+[Databento](https://docs.databento.com/getting-started)
+
+![Databento](databento.png)
+
+Click on, [Sign up](databento2.png), and after creating an account, the API key is found in the [account portal](https://databento.com/portal/keys). Enter this into the terminal with:
+
+```console
+/keys/databento REPLACE_WITH_KEY
+```
+
+</details>
+
 ### Degiro
 
 <details>
 <summary>Go to: https://www.degiro.com/</summary>
+
+[Degiro](https://www.degiro.com/)
 
 ![Degiro](https://user-images.githubusercontent.com/46355364/207838353-001d350c-872c-4770-a586-fb21318122eb.png)
 
@@ -245,6 +278,8 @@ Instructions for setting up 2FA authorization are [here](https://github.com/Chav
 
 <details>
 <summary>Go to: https://eodhistoricaldata.com/r/?ref=869U7F4J</summary>
+
+[EODHD](https://eodhistoricaldata.com/r/?ref=869U7F4J)
 
 ![EODHD](https://user-images.githubusercontent.com/46355364/207849214-23763c95-7314-42ae-b97d-cb5810686498.png)
 
@@ -269,6 +304,8 @@ Enter this string into the OpenBB Terminal by typing:
 <details>
 <summary>Go to: https://finnhub.io/</summary>
 
+[Finnhub](https://finnhub.io/)
+
 ![Finnhub](https://user-images.githubusercontent.com/46355364/207832028-283c3321-8c05-4ee8-b4d2-41cdc940f408.png)
 
 Click on, "Get free api key", to open the page:
@@ -292,6 +329,8 @@ Add this key to the OpenBB Terminal by entering:
 <details>
 <summary>Go to: https://site.financialmodelingprep.com/developer/docs</summary>
 
+[FinancialModelingPrep](https://site.financialmodelingprep.com/developer/docs)
+
 ![FinancialModelingPrep](https://user-images.githubusercontent.com/46355364/207821920-64553d05-d461-4984-b0fe-be0368c71186.png)
 
 Click on, "Get my API KEY here", and sign up for a free account.
@@ -314,6 +353,8 @@ Enter the key into the OpenBB Terminal with:
 
 <details>
 <summary>Go to: https://fred.stlouisfed.org</summary>
+
+[FRED](https://fred.stlouisfed.org)
 
 ![FRED](https://user-images.githubusercontent.com/46355364/207827137-d143ba4c-72cb-467d-a7f4-5cc27c597aec.png)
 
@@ -342,6 +383,8 @@ Enter the API key into the OpenBB Terminal with:
 <details>
 <summary>Go to: https://github.com</summary>
 
+[GitHub](https://github.com)
+
 ![GitHub](https://user-images.githubusercontent.com/46355364/207846953-7feae777-3c3b-4f21-9dcf-84817c732618.png)
 
 Sign up for, or sign in to, GitHub. Once logged in, navigate to the [apps](https://github.com/settings/apps) page, under account settings.
@@ -365,6 +408,8 @@ After creating the app, the key will be issued. Enter this token into the OpenBB
 <details>
 <summary>Go to: https://studio.glassnode.com</summary>
 
+[Glassnode](https://studio.glassnode.com)
+
 ![Glassnode](https://user-images.githubusercontent.com/46355364/207843761-799078ff-fa64-4d39-a6eb-ba01d250be69.png)
 
 Click on, "Sign up", and create an account:
@@ -387,6 +432,8 @@ Enter this key in the OpenBB terminal with:
 
 <details>
 <summary>Go to: https://iexcloud.io</summary>
+
+[IEX Cloud](https://iexcloud.io)
 
 ![IEX Cloud](https://user-images.githubusercontent.com/46355364/207833088-e879e9f2-3180-4e50-ba9e-f40ee958f98a.png)
 
@@ -415,6 +462,8 @@ Add this API key to the OpenBB Terminal by entering:
 <details>
 <summary>Go to: https://intrinio.com/starter-plan</summary>
 
+[Intrinio](https://intrinio.com/starter-plan)
+
 ![Intrinio](https://user-images.githubusercontent.com/85772166/219207556-fcfee614-59f1-46ae-bff4-c63dd2f6991d.png)
 
 An API key will be issued with a subscription. Find the token value within the account dashboard, and enter it into the OpenBB Terminal with:
@@ -429,6 +478,8 @@ An API key will be issued with a subscription. Find the token value within the a
 
 <details>
 <summary>Go to: https://messari.io</summary>
+
+[Messari](https://messari.io)
 
 ![Messari](https://user-images.githubusercontent.com/46355364/207848122-ec6a41e4-76b7-4620-adc3-1f1c19f4bca6.png)
 
@@ -453,6 +504,8 @@ Copy the API key and add it to the OpenBB Terminal by entering:
 <details>
 <summary>Go to: https://newsapi.org</summary>
 
+[News API](https://newsapi.org)
+
 ![News API](https://user-images.githubusercontent.com/46355364/207828250-0c5bc38c-90b4-427d-a611-b43c98c8e7ab.png)
 
 Click on, "Get API Key", and fill out the form.
@@ -476,6 +529,8 @@ Add this API key into the OpenBB Terminal by entering:
 <details>
 <summary>Go to: https://developer.oanda.com</summary>
 
+[Oanda](https://developer.oanda.com)
+
 ![Oanda](https://user-images.githubusercontent.com/46355364/207839324-d30aa2b6-be83-41ff-9b1b-146cac566789.png)
 
 After creating an account, follow the steps below.
@@ -494,6 +549,8 @@ Upon completion of the account setup, enter the credentials into the OpenBB Term
 
 <details>
 <summary>Go to: https://polygon.io</summary>
+
+[Polygon](https://polygon.io)
 
 ![Polygon](https://user-images.githubusercontent.com/46355364/207825623-fcd7f0a3-131a-4294-808c-754c13e38e2a.png)
 
@@ -518,6 +575,8 @@ Enter the key into the OpenBB Terminal by typing:
 <details>
 <summary>Go to: https://www.quandl.com</summary>
 
+[Quandl](https://www.quandl.com)
+
 ![Quandl](https://user-images.githubusercontent.com/46355364/207823899-208a3952-f557-4b73-aee6-64ac00faedb7.png)
 
 Click on, "Sign Up", and register a new account.
@@ -540,6 +599,8 @@ Enter the key into the OpenBB Terminal with:
 
 <details>
 <summary>Sign in to Reddit, and then go to: https://old.reddit.com/prefs/apps/</summary>
+
+[Reddit](https://old.reddit.com/prefs/apps/)
 
 ![Reddit](https://preview.redd.it/540vrn3k0cn91.png?width=986&format=png&auto=webp&v=enabled&s=88228cd0cf4415b3487b8d35e1097f0caa804e15)
 
@@ -567,6 +628,8 @@ After submitting the form, check for a confirmation email. The credentials will 
 
 <details>
 <summary>Go to: https://robinhood.com/us/en</summary>
+
+[Robinhood](https://robinhood.com/us/en)
 
 ![Robinhood](https://user-images.githubusercontent.com/46355364/207838058-a2311632-6459-4cfd-bc0a-639ee3931574.png)
 
@@ -608,6 +671,8 @@ Add it to the OpenBB Terminal by entering:
 <details>
 <summary>Go to: https://sdk.flipsidecrypto.xyz/shroomdk</summary>
 
+[ShroomDK](https://sdk.flipsidecrypto.xyz/shroomdk)
+
 ![ShroomDK](https://user-images.githubusercontent.com/46355364/207850122-b8cd225e-0a65-4ea8-8069-0b40fff1600e.png)
 
 Click "Mint Your ShroomDK API Key", and sign up for an account.
@@ -630,6 +695,8 @@ Enter it into the OpenBB Terminal by typing:
 
 <details>
 <summary>Go to: https://stocksera.pythonanywhere.com</summary>
+
+[Stocksera](https://stocksera.pythonanywhere.com)
 
 ![Stocksera](https://user-images.githubusercontent.com/46355364/207853896-ee233569-26bb-4244-b115-43ac8885757a.png)
 
@@ -654,6 +721,8 @@ Add the key to the OpenBB Terminal by entering:
 <details>
 <summary>Go to: https://tokenterminal.com</summary>
 
+[Token Terminal](https://tokenterminal.com)
+
 ![Token Terminal](https://user-images.githubusercontent.com/46355364/207850735-69368b4f-6a3e-46b8-ba69-3b79d9231f15.png)
 
 Click on, "Log in" and sign up for an account.
@@ -676,6 +745,8 @@ Add the key to the OpenBB Terminal by typing:
 
 <details>
 <summary>Go to: https://documentation.tradier.com</summary>
+
+[Tradier](https://documentation.tradier.com)
 
 ![Tradier](https://user-images.githubusercontent.com/46355364/207829178-a8bba770-f2ea-4480-b28e-efd81cf30980.png)
 
@@ -700,6 +771,8 @@ Click on, "Open Account", to start the sign-up process. After the account has be
 
 <details>
 <summary>Go to: https://docs.whale-alert.io</summary>
+
+[Whale Alert](https://docs.whale-alert.io)
 
 ![Whale Alert](https://user-images.githubusercontent.com/46355364/207842892-3f71ee7a-6cd3-48a2-82e4-fa5ec5b13807.png)
 
