@@ -452,6 +452,9 @@ class StocksInsiders(Category):
 class StocksOptions(Category):
     """Options Module.
 
+        Submodules:
+        `screen`: Screen Module
+
     Attributes:
         `chains`: Get Option Chain For A Stock.  No greek data is returned\n
         `dte`: Gets days to expiration from yfinance option date\n
@@ -469,7 +472,6 @@ class StocksOptions(Category):
         `pcr`: Gets put call ratio over last time window [Source: AlphaQuery.com]\n
         `pcr_chart`: Display put call ratio [Source: AlphaQuery.com]\n
         `price`: Get Option current price for a stock.\n
-        `screen`: Equity options screener [Source: Syncretism]\n
         `unu`: Get unusual option activity from fdscanner.com\n
         `unu_chart`: Displays the unusual options table\n
         `voi`: Plot volume and open interest\n
@@ -500,7 +502,6 @@ class StocksOptions(Category):
         self.pcr = lib.stocks_options_alphaquery_model.get_put_call_ratio
         self.pcr_chart = lib.stocks_options_alphaquery_view.display_put_call_ratio
         self.price = lib.stocks_options_sdk_helper.get_option_current_price
-        self.screen = lib.stocks_options_screen_syncretism_model.get_screener_output
         self.unu = lib.stocks_options_fdscanner_model.unusual_options
         self.unu_chart = lib.stocks_options_fdscanner_view.display_options
         self.voi = lib.stocks_options_view.plot_voi
