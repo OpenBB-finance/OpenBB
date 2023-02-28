@@ -330,18 +330,19 @@ def plot_cpi(
         else pd.read_csv(fred_model.cpi_path)
     )
 
-    if options:
-        return print_rich_table(series.drop(["series_id"], axis=1))
-
     df = fred_model.get_cpi(
         countries=countries,
         units=units,
         frequency=frequency,
         harmonized=harmonized,
         smart_select=smart_select,
+        options=options,
         start_date=start_date,
         end_date=end_date,
     )
+
+    if options:
+        return print_rich_table(series.drop(["series_id"], axis=1))
 
     # This plot has 1 axis
     if not external_axes:
@@ -369,11 +370,15 @@ def plot_cpi(
         ax.set_title(title, fontsize=15)
         ax.legend(prop={"size": 8})
     else:
-        country = countries[0].replace("_", " ").title()
-        title = (
-            f"{'Harmonized ' if harmonized else ''}Consumer Price Index for {country}"
-        )
-        ax.set_title(title)
+        country = [
+            country.replace("_", " ").title()
+            for country in countries
+            if df.columns.str.contains(country)
+        ]
+
+        if country:
+            title = f"{'Harmonized ' if harmonized else ''}Consumer Price Index for {country[0]}"
+            ax.set_title(title)
 
     if units == "growth_same":
         ax.set_ylabel("Growth Same Period (%)")
