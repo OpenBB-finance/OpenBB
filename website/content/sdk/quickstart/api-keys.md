@@ -1,6 +1,6 @@
 ---
-title: Obtain and Set API Keys for Data Providers
-sidebar_position: 4
+title: Setting API Keys
+sidebar_position: 3
 description: API (Application Programming Interface) keys are access credentials for accessing data from a particular source. They are a string of random characters assigned, by the data provider, to an individual account. Most vendors offer a free tier requiring only a valid email address. Each key is entered into the OpenBB SDk from the `openbb.keys` module, using the syntax described below. The docstrings for each source will also display the expected inputs.
 keywords: [api, keys, api keys, data provider, data, free, alpha vantage, fred, iex, twitter, degiro, binance, coinglass, polygon, intrinio, sdk]
 ---
@@ -275,7 +275,7 @@ openbb.keys.cpanic(key = 'REPLACE_WITH_KEY', persist = True)
 
 ![Databento](https://user-images.githubusercontent.com/85772166/221944000-394e7123-5bb3-4218-b949-f0958b6353da.png)
 
-Click on, [Sign up](https://databento.com/signup), and after creating an account, the API key is found in the [account portal](https://databento.com/portal/keys). 
+Click on, [Sign up](https://databento.com/signup), and after creating an account, the API key is found in the [account portal](https://databento.com/portal/keys).
 
 ![Databento](https://user-images.githubusercontent.com/85772166/221944057-c2314909-7b7d-4f65-8e9e-287a957f54f8.png)
 

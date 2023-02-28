@@ -34,23 +34,33 @@ Within many of the functionalities, we offer the capability to export to Excel (
 For example, if you wish to download market data you can do so from the stocks menu with the following:
 
 ```console
-/economy/ycrv --help
+/economy/fred --help
 ```
 
 ```console
-usage: ycrv [-d DATE] [-h] [--export EXPORT] [--sheet-name SHEET_NAME [SHEET_NAME ...]] [--raw]
+usage: fred [-p PARAMETER] [-s START_DATE] [-e END_DATE] [-q QUERY [QUERY ...]] [-h] [--export EXPORT] [--sheet-name SHEET_NAME [SHEET_NAME ...]] [--raw] [-l LIMIT]
 
-Generate country yield curve. The yield curve shows the bond rates at different maturities.
+Query the FRED database and plot data based on the Series ID. [Source: FRED]
 
 options:
-  -d DATE, --date DATE  Date to get data from FRED. If not supplied, the most recent entry will be used. (default: None)
+  -p PARAMETER, --parameter PARAMETER
+                        Series ID of the Macro Economic data from FRED (default: )
+  -s START_DATE, --start START_DATE
+                        Starting date (YYYY-MM-DD) of data (default: None)
+  -e END_DATE, --end END_DATE
+                        Ending date (YYYY-MM-DD) of data (default: None)
+  -q QUERY [QUERY ...], --query QUERY [QUERY ...]
+                        Query the FRED database to obtain Series IDs given the query search term. (default: None)
   -h, --help            show this help message (default: False)
-  --export EXPORT       Export raw data into csv, json, xlsx (default: )
+  --export EXPORT       Export raw data into csv, json, xlsx and figure into png, jpg, pdf, svg (default: )
   --sheet-name SHEET_NAME [SHEET_NAME ...]
                         Name of excel sheet to save data to. Only valid for .xlsx files. (default: None)
   --raw                 Flag to display raw data (default: False)
+  -l LIMIT, --limit LIMIT
+                        Number of entries to show in data. (default: 100)
 
-For more information and examples, use 'about ycrv' to access the related guide.
+For more information and examples, use 'about fred' to access the related guide.
+
 
 ```
 
