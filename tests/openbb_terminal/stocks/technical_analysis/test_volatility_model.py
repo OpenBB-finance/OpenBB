@@ -1,4 +1,5 @@
 # IMPORTATION STANDARD
+import pathlib
 
 # IMPORTATION THIRDPARTY
 import pandas as pd
@@ -11,13 +12,13 @@ from openbb_terminal.common.technical_analysis import volatility_model
 # pylint: disable=W0613
 
 MODELS = volatility_model.VOLATILITY_MODELS
+path = pathlib.Path(__file__).parent.absolute()
 MOCK_DATA = pd.read_csv(
-    "tests/openbb_terminal/stocks/technical_analysis/csv/test_volatility_model/test_cones_df.csv",
+    path / "csv" / "test_volatility_model" / "test_cones_df.csv",
     index_col=0,
 )
 
 
-@pytest.mark.vcr(record_mode="none")
 @pytest.mark.parametrize(
     "model, lower_q, upper_q, is_crypto",
     [
@@ -30,7 +31,7 @@ MOCK_DATA = pd.read_csv(
         (MODELS[2], 15, 85, True),
     ],
 )
-def test_cones(recorder, model, lower_q, upper_q, is_crypto):
+def test_cones(model, lower_q, upper_q, is_crypto):
     result = volatility_model.cones(
         data=MOCK_DATA,
         model=model,
@@ -38,4 +39,13 @@ def test_cones(recorder, model, lower_q, upper_q, is_crypto):
         lower_q=lower_q,
         is_crypto=is_crypto,
     )
-    recorder.capture(result)
+    pd.testing.assert_frame_equal(
+        result,
+        pd.read_csv(
+            path
+            / "csv"
+            / "test_volatility_model"
+            / f"test_cones[{model}-{lower_q}-{upper_q}-{str(is_crypto)}].csv",
+            index_col=0,
+        ),
+    )
