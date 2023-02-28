@@ -78,7 +78,6 @@ class ForecastRoot(Category):
 
         if not lib.FORECASTING_TOOLKIT_ENABLED:
             # pylint: disable=C0415
-
             from openbb_terminal.rich_config import console
 
             console.print(lib.FORECASTING_TOOLKIT_WARNING)

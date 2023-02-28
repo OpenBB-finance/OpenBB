@@ -264,7 +264,7 @@ def parkinson(
     Example
     -------
     >>> data = openbb.stocks.load('BTC-USD')
-    >>> df = openbb.ta.parkinson(data, is_crypto = True)
+    >>> df = openbb.ta.rvol_parkinson(data, is_crypto = True)
     """
 
     if window < 1:
@@ -321,7 +321,7 @@ def garman_klass(
     Example
     -------
     >>> data = openbb.stocks.load('BTC-USD')
-    >>> df = openbb.ta.garman_klass(data, is_crypto = True)
+    >>> df = openbb.ta.rvol_garman_klass(data, is_crypto = True)
     """
 
     if window < 1:
@@ -378,7 +378,7 @@ def hodges_tompkins(
     Example
     -------
     >>> data = openbb.stocks.load('BTC-USD')
-    >>> df = openbb.ta.hodges_tompkins(data, is_crypto = True)
+    >>> df = openbb.ta.rvol_hodges_tompkins(data, is_crypto = True)
     """
 
     if window < 2:
@@ -439,7 +439,7 @@ def rogers_satchell(
     Example
     -------
     >>> data = openbb.stocks.load('BTC-USD')
-    >>> df = openbb.ta.rogers_satchell(data, is_crypto = True)
+    >>> df = openbb.ta.rvol_rogers_satchell(data, is_crypto = True)
     """
 
     if window < 1:
@@ -496,7 +496,7 @@ def yang_zhang(
     Example
     -------
     >>> data = openbb.stocks.load('BTC-USD')
-    >>> df = openbb.ta.yang_zhang(data, is_crypto = True)
+    >>> df = openbb.ta.rvol_yang_zhang(data, is_crypto = True)
     """
 
     if window < 2:
