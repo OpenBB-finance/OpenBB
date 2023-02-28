@@ -14,6 +14,8 @@ from openbb_terminal.decorators import log_start_end
 logger = logging.getLogger(__name__)
 
 MAMODES = ["ema", "sma", "wma", "hma", "zlma"]
+
+# These are parameters for the volatility models
 VOLATILITY_MODELS = [
     "STD",
     "Parkinson",
