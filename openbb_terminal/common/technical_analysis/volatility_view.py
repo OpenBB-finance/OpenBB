@@ -433,6 +433,9 @@ def display_cones(
     openbb.ta.cones_chart(data = df_ta, symbol = "XLE", model = "Garman-Klass")
     """
 
+    if lower_q > upper_q:
+        lower_q, upper_q = upper_q, lower_q
+
     df_ta = volatility_model.cones(
         data, lower_q=lower_q, upper_q=upper_q, is_crypto=is_crypto, model=model
     )
