@@ -48,7 +48,7 @@ def break_line(line: str, length: int):
 
 def process_segment(segment: dict, line_length: int = 0):
     segment["text"] = segment["text"].strip()
-    if line_length > 0 and len(segment["text"]) > line_length:
+    if line_length and len(segment["text"]) > line_length:
         # break at N characters as per Netflix guidelines
         segment["text"] = break_line(segment["text"], line_length)
 

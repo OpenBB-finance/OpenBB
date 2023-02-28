@@ -1,6 +1,6 @@
 """Utilize OpenAI Whisper to transcribe and summarize text"""
 __docformat__ = "numpy"
-# pylint: disable=I0011,C0413
+# pylint: disable=I0011,C0413,R0915,R0912,R0914
 import logging
 import os
 import tempfile
@@ -76,11 +76,11 @@ def transcribe_and_summarize(
     if video == "":
         console.print("[red]Please provide a video URL. [/red]")
         return
-    else:
-        # check to make sure the video is a valid URL with a .com
-        if not ((video.startswith("https") or "youtube" in video) and ".com" in video):
-            console.print("[red]Please provide a valid video URL. [/red]")
-            return
+
+    # check to make sure the video is a valid URL with a .com
+    if not ((video.startswith("https") or "youtube" in video) and ".com" in video):
+        console.print("[red]Please provide a valid video URL. [/red]")
+        return
 
     os.makedirs(output_dir, exist_ok=True)
 
@@ -300,8 +300,7 @@ def transcribe_and_summarize(
             (1 - (summary_text_length / original_text_length)) * 100, 2
         )
         # if there is negative reduction, set to 0
-        if percent_reduction < 0:
-            percent_reduction = 0
+        percent_reduction = max(percent_reduction, 0)
 
         console.print("")
         console.print("-------------------------")
