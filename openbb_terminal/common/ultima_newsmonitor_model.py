@@ -91,6 +91,7 @@ def get_news(
     else:
         df = pd.DataFrame(data.json(), columns=["articleHeadline", "articleURL", "articlePublishedDate",
                                                 "riskCategory", "riskExtDescription", "relevancyScore"])
+    df = df[df['relevancyScore'] < 5]
     df["articlePublishedDate"] = pd.to_datetime(df["articlePublishedDate"])
     df = df.sort_values(by=[sort], ascending=False)
 
