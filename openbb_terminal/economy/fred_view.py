@@ -234,7 +234,7 @@ def plot_cpi(
 
     for column in df.columns:
         country, frequency, units = column.split("-")
-        label = f"{country.replace('_', ' ').title()} ({frequency}, {units})"
+        label = f"{str(country).replace('_', ' ').title()} ({frequency}, {units})"
 
         fig.add_scatter(x=df.index, y=df[column].values, name=label)
 
