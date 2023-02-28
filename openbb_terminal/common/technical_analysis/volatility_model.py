@@ -214,6 +214,10 @@ def standard_deviation(
     >>> df = openbb.ta.standard_deviation(data)
     """
 
+    if window < 2:
+        print("Error: Window must be at least 2, defaulting to 30.")
+        window = 30
+
     trading_periods = 365 if is_crypto else 252
 
     log_return = (data["Close"] / data["Close"].shift(1)).apply(np.log)
@@ -262,6 +266,10 @@ def parkinson(
     >>> data = openbb.stocks.load('BTC-USD')
     >>> df = openbb.ta.parkinson(data, is_crypto = True)
     """
+
+    if window < 1:
+        print("Error: Window must be at least 1, defaulting to 30.")
+        window = 30
 
     trading_periods = 365 if is_crypto else 252
 
@@ -316,6 +324,10 @@ def garman_klass(
     >>> df = openbb.ta.garman_klass(data, is_crypto = True)
     """
 
+    if window < 1:
+        print("Error: Window must be at least 1, defaulting to 30.")
+        window = 30
+
     trading_periods = 365 if is_crypto else 252
 
     log_hl = (data["High"] / data["Low"]).apply(np.log)
@@ -368,6 +380,10 @@ def hodges_tompkins(
     >>> data = openbb.stocks.load('BTC-USD')
     >>> df = openbb.ta.hodges_tompkins(data, is_crypto = True)
     """
+
+    if window < 2:
+        print("Error: Window must be at least 2, defaulting to 30.")
+        window = 30
 
     trading_periods = 365 if is_crypto else 252
 
@@ -426,6 +442,10 @@ def rogers_satchell(
     >>> df = openbb.ta.rogers_satchell(data, is_crypto = True)
     """
 
+    if window < 1:
+        print("Error: Window must be at least 1, defaulting to 30.")
+        window = 30
+
     trading_periods = 365 if is_crypto else 252
 
     log_ho = (data["High"] / data["Open"]).apply(np.log)
@@ -479,6 +499,9 @@ def yang_zhang(
     >>> df = openbb.ta.yang_zhang(data, is_crypto = True)
     """
 
+    if window < 2:
+        print("Error: Window must be at least 2, defaulting to 30.")
+        window = 30
     trading_periods = 365 if is_crypto else 252
 
     log_ho = (data["High"] / data["Open"]).apply(np.log)
