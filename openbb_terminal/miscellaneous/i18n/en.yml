@@ -1120,4 +1120,6 @@ en:
   forecast/nhits: Neural Hierarchical Interpolation (feat. Past covariates)
   forecast/_anomaly_: Anomaly Detection
   forecast/anom: Quantile Anomaly Detector
+  forecast/_misc_: Miscellaneous AI Tools
+  forecast/whisper: Transcribe, translate and summarize videos
   forecast/_comingsoon_: Coming Soon
