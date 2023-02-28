@@ -107,7 +107,8 @@ Loading Daily data for MSFT with starting period 2020-02-13.
 Saved file: /Users/danglewood/OpenBBUserData/exports/watchlist.xlsx
 ```
 
-![Exporting Data](exports1.png)
+![Exporting Data](https://user-images.githubusercontent.com/85772166/221929090-5477a635-fccc-42a1-9ee3-7e7485988452.png)
+
 
 ## Importing Data
 
