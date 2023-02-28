@@ -6,15 +6,15 @@ import os
 import tempfile
 import warnings
 
-from huggingface_hub import scan_cache_dir
-from tqdm import tqdm
-from transformers import BartTokenizer, BartForConditionalGeneration, pipeline
 import whisper
 import yt_dlp
+from huggingface_hub import scan_cache_dir
+from tqdm import tqdm
+from transformers import BartForConditionalGeneration, BartTokenizer, pipeline
 
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.rich_config import console
 from openbb_terminal.forecast.whisper_utils import slugify, write_srt, write_vtt
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 # pylint: disable=too-many-arguments
