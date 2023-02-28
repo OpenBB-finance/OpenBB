@@ -37,7 +37,7 @@ record/stocks/load qqq/forecast/expo QQQ/autoselect QQQ/stop
 
 The routine has been successfully captured, and the next time the Terminal is opened, this routine will be visible when calling the `exe` function.
 
-![Routines](https://user-images.githubusercontent.com/85772166/219550745-06d9a8d5-a85d-45c9-aa58-b5adaad16a08.png)
+![Routines](routines6.png)
 
 ## Editing & Inserting Arguments
 

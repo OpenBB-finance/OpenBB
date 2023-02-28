@@ -19,7 +19,6 @@ keywords:
     openbb terminal,
   ]
 ---
-
 import InstallerButton from "@site/src/components/General/InstallerButton";
 
 The OpenBB Terminal can be directly installed on a Mac or Windows machine via the installer packages below. While not available for Linux is currently available, it can be installed from the command line in a virtual Python environment. Having trouble? Reach us on [Discord](https://openbb.co/discord) or visit our [contact page](https://openbb.co/contact).
