@@ -47,6 +47,12 @@ class TaRoot(Category):
         `obv_chart`: Plots OBV technical indicator\n
         `rsi`: Relative strength index\n
         `rsi_chart`: Plots RSI Indicator\n
+        `rvol_std`: Standard deviation model for realized volatility.\n
+        `rvol_parkinson`: Parkinson's model for realized volatility.\n
+        `rvol_garman_klass`: Garman-Klass model for realized volatility.\n
+        `rvol_hodges_tompkins`: Hodges-Tompkins model for realized volatility.\n
+        `rvol_rogers-satchell`: Rogers-Satterthwaite model for realized volatility.\n
+        `rvol_yang_zhang`: Yang-Zhang model for realized volatility.\n
         `cones`: Realized Volatility Cones\n
         `cones_chart`: Plots Realized Volatility Cones\n
         `sma`: Gets simple moving average (SMA) for stock\n
@@ -100,6 +106,12 @@ class TaRoot(Category):
         self.obv_chart = lib.common_ta_volume_view.display_obv
         self.rsi = lib.common_ta_momentum_model.rsi
         self.rsi_chart = lib.common_ta_momentum_view.display_rsi
+        self.rvol_std = lib.common_ta_volatility_model.standard_deviation
+        self.rvol_parkinson = lib.common_ta_volatility_model.parkinson
+        self.rvol_garman_klass = lib.common_ta_volatility_model.garman_klass
+        self.rvol_hodges_tompkins = lib.common_ta_volatility_model.hodges_tompkins
+        self.rvol_rogers_satchell = lib.common_ta_volatility_model.rogers_satchell
+        self.rvol_yang_zhang = lib.common_ta_volatility_model.yang_zhang
         self.cones = lib.common_ta_volatility_model.cones
         self.cones_chart = lib.common_ta_volatility_view.display_cones
         self.sma = lib.common_ta_overlap_model.sma

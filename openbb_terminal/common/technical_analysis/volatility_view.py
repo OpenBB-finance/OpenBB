@@ -378,7 +378,6 @@ def display_cones(
     is_crypto: bool = False,
     export: str = "",
     sheet_name: Optional[str] = None,
-    external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plots the realized volatility quantiles for the loaded ticker.
     The model used to calculate the volatility is selectable.
@@ -422,8 +421,6 @@ def display_cones(
         Format of export file
     sheet_name: str
         Optionally specify the name of the sheet the data is exported to.
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
 
     Examples
     --------
@@ -473,8 +470,7 @@ def display_cones(
         plt.xticks(df_ta.index)
         plt.tight_layout(pad=2.0)
 
-        if external_axes is None:
-            theme.visualize_output()
+        theme.visualize_output()
 
         export_data(
             export,
