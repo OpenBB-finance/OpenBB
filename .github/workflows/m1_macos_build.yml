@@ -54,7 +54,6 @@ jobs:
       - name: Install Dependencies
         run: |
           pip list
-          pip uninstall pathlib -y
           python -m pip install -r requirements-full.txt
 
       - name: Build Bundle
