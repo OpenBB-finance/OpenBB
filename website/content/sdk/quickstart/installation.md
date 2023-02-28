@@ -1,101 +1,211 @@
 ---
 title: Installation
 sidebar_position: 2
-description: The OpenBB SDK can be directly installed on your computer via our installation instructions. Within this section, you are guided through the installation process and how to launch the program. If you struggle with the installation process, please don’t hesitate to reach us on Discord or visit our contact page.
-keywords: [installation, installer, install, guide, mac, windows, linux, python, github, macos, how to, explanation, openbb sdk]
+description: The OpenBB SDK provides programmatic access to all Terminal functions. This layer of code allows users to build their own tools and applications on top of the existing architecture. Follow these steps to install on a local machine.
+keywords: [installation, installer, install, guide, mac, windows, linux, python, github, macos, how to, explanation, openbb, sdk, api, pip, pypi,]
 ---
-
-# Installation
-
-We provide a simple installation method in order to utilize the OpenBB SDK. You must first create an environment, which allows you to isolate the SDK from the rest of your system. It is our recommendation that you utilize a `conda` environment because there are optional features, such as `forecast`, that utilize libraries that are specifically sourced from `conda-forge`. Due to this, if you do not use a conda environment, you will not be able to use some of these features. As such, the installation steps will be written under the assumption that you are using conda.
-
-## Steps
+The OpenBB SDK provides programmatic access to all Terminal functions. This layer of code allows users to build their own tools and applications on top of the existing architecture. Follow these steps to install on a local machine.
 
 :::note NOTE
-Make sure you meet all [requirements](requirements.md) before proceeding.
+
+- Make sure you meet all [requirements](requirements.md) before proceeding.
+- If the OpenBB Terminal has already been installed in a virtual Python environment, no additional installations are required.
+
 :::
 
-<p>Follow along with the instructions of the video or use the steps below to use the OpenBB SDK:</p>
+## 1. System Preparation
 
-<iframe width="100%" height="450" src="https://www.youtube.com/embed/gQu6Paz5xN4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+Prepare the system by installing the following items:
 
-### 1. **Install [Miniconda](https://docs.conda.io/en/latest/miniconda.html)**
+### 1.1 Install Miniconda
 
-   Download the `x86_64` Miniconda for your respective system and follow along
-   with it's installation instructions. The Miniconda architecture MUST be
-   `x86_64` in order to use certain features.
+[Install Miniconda](https://docs.conda.io/en/latest/miniconda.html)
 
-### 2. **Create the virtual environment**
+Miniconda is a Python environment and package manager. It is required for installing certain dependencies.
+
+- Go [here](https://docs.conda.io/en/latest/miniconda.html#latest-miniconda-installer-links) to find the download for your operating system or use the links below:
+
+  - Apple-Silicon Systems: [Miniconda for MacOS](https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-arm64.pkg)
+  - Intel-based Mac Systems: [Miniconda for MacOS](https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh)
+  - Linux and WSL Systems: [Miniconda for Linux](https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh)
+  - Raspberry PI Systems: [Miniconda for Raspberry PI](https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-aarch64.sh)
+  - Windows Systems: [Miniconda for Windows](https://repo.anaconda.com/miniconda/Miniconda3-latest-Windows-x86_64.exe)
+
+    **NOTE for Apple Silicon Users:** Install Rosetta from the command line: `softwareupdate --install-rosetta`
+
+    **NOTE for Windows users:** Install/update Microsoft C++ Build Tools from [here](https://visualstudio.microsoft.com/visual-cpp-build-tools/).
+
+### 1.2 Install CMake
+
+**CMake is required by several Python modules.**
+
+**For Windows:**
+
+CMake is installed as a part of Microsoft C++ Build Tools. Skip ahead to the next step.
+
+**For MacOS:**
+
+Check if homebrew is installed by running `brew --version`
+
+If Homebrew is not installed, run:
 
 ```bash
-conda create -n obb python=3.9.6 -y
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+brew install cmake
+brew install gcc
 ```
 
-### 3. **Activate the virtual environment**
+If Homebrew is already installed:
 
 ```bash
+brew install cmake
+brew install gcc
+```
+
+**For Linux:**
+
+```bash
+sudo apt update && sudo apt upgrade
+sudo apt install -y gcc cmake
+```
+
+## 2. Create Python Environment
+
+The first step is to create the virtual Python environment.
+
+### 2.1 Confirm Conda Base
+
+When a terminal window is opened, if the base Conda environment - look for `(base)` to the left of the cursor on the command line - is not activated automatically, find the path for it by entering:
+
+```console
+conda env list
+```
+
+Copy the path which corresponds with `base`, and activate it with:
+
+```console
+conda activate REPLACE_WITH_PATH
+```
+
+Check which `conda` version is installed by entering:
+
+```console
+conda -V
+```
+
+As of writing, the most recent version of `Conda` is, `23.1.0`. If required, update from a lower version with:
+
+```console
+conda install -c conda-forge -n base conda=23.1.0
+```
+
+### 2.2 Create the Environment
+
+Create the environment by copying the code below into the command line:
+
+```console
+conda create -n obb -c conda-forge python=3.10.9 pip pybind11 cmake git cvxpy lightgbm poetry
+```
+
+### 2.3 Activate the Environment
+
+After the packages from Step 2 install, activate the newly created environment by entering:
+
+```console
 conda activate obb
 ```
 
-### 4. **Install OpenBB SDK Core package**
+## 3. Install the OpenBB SDK
+
+### 3A. Install From PyPi
 
 ```bash
-pip install openbb
+pip install openbb[all]
 ```
 
-### 5. **(Optional) Install the Toolkits**
+Done! The OpenBB SDK can now be imported to any Python session with the line of code below.
 
-#### 5.1 **If you would like to use the Portfolio Optimization features**
-
-:::note NOTE
-If on Apple Silicon Macs (M1/M2) you will need to install dependency from conda-forge first
-```bash
-conda install -c conda-forge cvxpy=1.2.2 -y
-```
-:::
-
-
-Install the Portfolio Optimization Toolkit
-
-```bash
-pip install "openbb[optimization]"
+```console
+from openbb_terminal.sdk import openbb
 ```
 
-#### 5.2 **If you would like ML Forecasting features**
+The [OpenBB Terminal](https://docs.openbb.co/terminal) is part of the installation, and the application can be launched from the command line by entering:
 
-:::note NOTE
-If on Apple Silicon Macs (M1/M2) you will need to install the dependency from conda-forge first
-```bash
-conda install -c conda-forge lightgbm=3.3.3 -y
-```
-:::
-
-Install the Forecasting Toolkit
-
-```bash
-pip install "openbb[forecast]"
+```console
+openbb
 ```
 
-#### 5.3 **If you would like to use both Portfolio Optimization and ML forecast features**
+### 3B. Install via Git Clone
 
-:::note NOTE
-If on Apple Silicon Macs (M1/M2) you will need to install the dependencies from conda-forge first
-```bash
-conda install -c conda-forge lightgbm=3.3.3 cvxpy=1.2.2 -y
+#### 3B.1 Clone the Project
+
+Cloning the GitHub repo will download the source code to the current working directory.
+
+```console
+git clone https://github.com/OpenBB-finance/OpenBBTerminal.git
 ```
-:::
 
-Install all Toolkits
+#### 3B.2 CD into OpenBBTerminal
+
+```console
+cd OpenBBTerminal
+```
+
+#### 3B.3 Install Remaining Packages
 
 ```bash
-pip install "openbb[all]"
+pip install qdldl==0.1.5.post3
+poetry install -E all
 ```
 
-Congratulations! You have successfully installed `openbb` on an environment and are now able to begin using it. However, it is important to note that if you close out of your CLI you must re-activate your environment in order begin using it again. This can be done with the following:
+Done! The OpenBB SDK can now be imported to any Python session with the line of code below.
 
-```bash
-conda activate obb
+```console
+from openbb_terminal.sdk import openbb
 ```
 
-The OpenBB SDK can be imported to a Jupyter Notebook or any code editor with, `from openbb_terminal.sdk import openbb` as explained in the [How to use the SDK](https://docs.openbb.co/sdk/guides/basics) guides. By following the above process, the [OpenBB Terminal](https://docs.openbb.co/terminal) is automatically included as well which can be ran by typing `openbb`.
+The Terminal application is also installed, and it can be launched from the command line at the root `OpenBBTerminal` folder with:
 
+```console
+python terminal.py
+```
+
+## Updating the OpenBB SDK Version
+
+Use the code below to check the version number of the OpenBB SDK.
+
+```python
+from openbb_terminal.sdk import openbb
+openbb.__version__
+```
+
+Which prints a string similar to: `'2.4.1'`
+
+### A. Updating a PyPi Installation
+
+To upgrade the OpenBB SDK to the latest version, with the `obb` Python environment active, enter:
+
+```console
+pip install -U openbb[all]
+```
+
+### B. Updating a Git Clone Installation
+
+#### B.1 Fetch changes to the code
+
+With the `obb` Python environment activated, navigate into the root folder of the cloned project. Then, pull the changes from GitHub:
+
+```console
+git fetch
+git pull
+```
+
+**Note:** If working from a forked repo, the `git pull` command will need to be adjusted to pull from the desired branch, like `origin` or `upstream`. For example, `git pull origin main`; `git pull origin develop`
+
+#### B.2 Run Poetry Install
+
+Update any changes to the dependencies by running:
+
+```console
+poetry install -E all
+```
