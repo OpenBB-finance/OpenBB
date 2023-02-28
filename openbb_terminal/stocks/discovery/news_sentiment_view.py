@@ -4,12 +4,15 @@ __docformat__ = "numpy"
 
 import logging
 import os
+from typing import Optional
 
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
-from openbb_terminal.NewsSentiment import Onclusivedata_model
+
+# from openbb_terminal.NewsSentiment import Onclusivedata_model
+from openbb_terminal.stocks.discovery import news_sentiment_model
 from bs4 import BeautifulSoup
 
 
@@ -25,7 +28,9 @@ def display_articles_data(
     limit: int = 100,
     offset: int = 0,
     export: str = "",
+    sheet_name: Optional[str] = None,
 ) -> None:
+
     """Display Onclusive Data. [Source: Invisage Plotform]
 
     Parameters
@@ -46,13 +51,14 @@ def display_articles_data(
         Export dataframe data to csv,json,xlsx file
     """
 
-    df = Onclusivedata_model.get_data(
+    df = news_sentiment_model.get_data(
         ticker=ticker,
         start_date=start_date,
         end_date=end_date,
         date=date,
         limit=limit,
         offset=offset,
+        
     )
     df.dropna(how="all", axis=1, inplace=True)
     df = df.replace(float("NaN"), "")
@@ -73,5 +79,6 @@ def display_articles_data(
         os.path.dirname(os.path.abspath(__file__)),
         "News Sentiment",
         df,
+        sheet_name
     )
     return

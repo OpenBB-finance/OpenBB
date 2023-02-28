@@ -96,8 +96,6 @@ en:
   settings/_nttli: Number of tweets to look into from each account
   settings/_tk: Keywords to look for in tweets
   _toolkits_: OpenBB Toolkits
-  newssentiment : access historical News Sentiment articles data
-  newssentiment/show: Top news articles and associated sentiment for stock tickers provided by Onclusive
   stocks: access historical pricing data, options, sector and industry, and overall due diligence
   crypto: dive into onchain data, tokenomics, circulation supply, nfts and more
   etf: exchange traded funds. Historical pricing, compare holdings and screening
@@ -210,6 +208,7 @@ en:
   stocks/disc/rtat: top 10 retail traded stocks per day
   stocks/disc/divcal: dividend calendar for selected date
   stocks/disc/heatmap: heatmap of SP500 tickers
+  stocks/disc/ns: Top news articles and associated sentiment for stock tickers provided by Onclusive
   stocks/sia/select: select a specific ticker and all it's corresponding parameters
   stocks/sia/clear: clear all or one of industry, sector, country and market cap parameters
   stocks/sia/industry: see existing industries, or set industry if arg specified

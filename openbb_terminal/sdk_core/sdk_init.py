@@ -309,6 +309,8 @@ from openbb_terminal.stocks.discovery import (
     seeking_alpha_model as stocks_disc_seeking_alpha_model,
     shortinterest_model as stocks_disc_shortinterest_model,
     yahoofinance_model as stocks_disc_yahoofinance_model,
+    news_sentiment_model as stocks_disc_news_sentiment_model,
+    news_sentiment_view as stocks_disc_news_sentiment_view,
 )
 
 # Stocks - Fundamental Analysis
@@ -415,12 +417,6 @@ from openbb_terminal.stocks.tradinghours import (
     bursa_view as stocks_th_bursa_view,
 )
 
-# News Sentiment
-
-from openbb_terminal.NewsSentiment import (
-    Onclusivedata_model as news_onclusivedata_model,
-    Onclusivedata_view as news_onclusivedata_view,
-)
 
 # Forecast Extras
 

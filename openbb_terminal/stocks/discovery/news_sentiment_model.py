@@ -9,13 +9,16 @@ import numpy as np
 import datetime
 import os
 
-from openbb_terminal.decorators import log_start_end
+from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.rich_config import console
+from openbb_terminal import config_terminal as cfg
+
 
 logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
+@check_api_key(["OPENBB_ALTHUB_API_TOKEN"])
 def get_data(
     ticker: str = "",
     start_date: str = "",
@@ -24,9 +27,10 @@ def get_data(
     limit: int = 100,
     offset: int = 0,
 ) -> pd.DataFrame:
-    API_TOKEN = os.getenv("ALTHUB_API_TOKEN")
-
-    headers = {"accept": "application/json", "Authorization": f"token {API_TOKEN}"}
+    headers = {
+        "accept": "application/json",
+        "Authorization": f"token {cfg.OPENBB_ALTHUB_API_TOKEN}",
+    }
 
     df = pd.DataFrame(data=None)
 

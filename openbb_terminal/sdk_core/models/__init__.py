@@ -10,7 +10,6 @@ from .forecast_sdk_model import ForecastRoot
 from .forex_sdk_model import ForexRoot
 from .futures_sdk_model import FuturesRoot
 from .keys_sdk_model import KeysRoot
-from .newssentiment_sdk_model import NewssentimentRoot
 from .portfolio_sdk_model import PortfolioRoot
 from .qa_sdk_model import QaRoot
 from .stocks_sdk_model import StocksRoot

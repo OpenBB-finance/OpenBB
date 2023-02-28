@@ -270,16 +270,6 @@ class OpenBBSDK:
         return model.KeysRoot()
 
     @property
-    def newssentiment(self):
-        """Newssentiment Submodule
-
-        Attributes:
-            `show_chart`: Display Onclusive Data. [Source: Invisage Plotform] \n
-        """
-
-        return model.NewssentimentRoot()
-
-    @property
     def portfolio(self):
         """Portfolio Submodule
 

@@ -30,6 +30,7 @@ from openbb_terminal.stocks.discovery import (
     seeking_alpha_view,
     shortinterest_view,
     yahoofinance_view,
+    news_sentiment_view,
 )
 
 # pylint:disable=C0302
@@ -61,6 +62,8 @@ class DiscoveryController(BaseController):
         "divcal",
         "heatmap",
         "filings",
+        "ns"
+        # "news_sentiment"
     ]
 
     arkord_sortby_choices = [
@@ -146,6 +149,7 @@ class DiscoveryController(BaseController):
         mt.add_cmd("rtat", "NASDAQ Data Link")
         mt.add_cmd("divcal", "NASDAQ Data Link")
         mt.add_cmd("heatmap", "Finviz")
+        mt.add_cmd("ns", "Althub Platform")
         console.print(text=mt.menu_text, menu="Stocks - Discovery")
 
     # TODO Add flag for adding last price to the following table
@@ -953,3 +957,84 @@ class DiscoveryController(BaseController):
             fmp_view.display_filings(
                 ns_parser.pages, ns_parser.limit, ns_parser.today, ns_parser.export
             )
+
+    @log_start_end(log=logger)
+    def call_ns(self, other_args: List[str]):
+        """Process show command."""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="show",
+            description="Shows the News Sentiment articles data",
+        )
+        parser.add_argument(
+            "-t",
+            "--ticker",
+            dest="ticker",
+            help="Ticker to analyze",
+            type=str,
+            default=None,
+        )
+        parser.add_argument(
+            "-s",
+            "--start_date",
+            dest="start_date",
+            type=str,
+            default=False,
+            help="The starting date (format YYYY-MM-DD) to search news articles from",
+        )
+        parser.add_argument(
+            "-e",
+            "--end_date",
+            dest="end_date",
+            type=str,
+            default=False,
+            help="The end date (format YYYY-MM-DD) to search news articles upto",
+        )
+        parser.add_argument(
+            "-d",
+            "--date",
+            dest="date",
+            type=str,
+            default=False,
+            help="""Shows news articles data on this day (format YYYY-MM-DD).
+                    If you use this Argument start date and end date will be ignored 
+                """,
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            default=100,
+            dest="limit",
+            type=check_non_negative,
+            help="Number of news articles to be displayed.",
+        )
+        parser.add_argument(
+            "-o",
+            "--offset",
+            default=0,
+            dest="offset",
+            type=check_non_negative,
+            help="offset indicates the starting position of news articles.",
+        )
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-t")
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            news_sentiment_view.display_articles_data(
+                ticker=ns_parser.ticker,
+                start_date=ns_parser.start_date,
+                end_date=ns_parser.end_date,
+                date=ns_parser.date,
+                limit=ns_parser.limit,
+                offset=ns_parser.offset,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )
+
+        return

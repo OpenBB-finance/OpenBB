@@ -278,7 +278,6 @@ keys.walert,keys_model.set_walert_key,
 login,sdk_session.login,
 logout,sdk_session.logout,
 news,common_feedparser_model.get_news,
-newssentiment.show,news_onclusivedata_model.get_data,news_onclusivedata_view.display_articles_data
 portfolio.alloc.assets,portfolio_model.get_assets_allocation,
 portfolio.alloc.countries,portfolio_model.get_countries_allocation,
 portfolio.alloc.regions,portfolio_model.get_regions_allocation,
@@ -392,6 +391,7 @@ stocks.disc.trending,stocks_disc_seeking_alpha_model.get_trending_list,
 stocks.disc.ugs,stocks_disc_yahoofinance_model.get_ugs,
 stocks.disc.ulc,stocks_disc_yahoofinance_model.get_ulc,
 stocks.disc.upcoming,stocks_disc_seeking_alpha_model.get_next_earnings,
+stocks.disc.ns,stocks_disc_news_sentiment_model.get_data,stocks_disc_news_sentiment_view.display_articles_data
 stocks.dps.ctb,stocks_dps_ibkr_model.get_cost_to_borrow,
 stocks.dps.dpotc,stocks_dps_finra_model.getTickerFINRAdata,stocks_dps_finra_view.darkpool_ats_otc
 stocks.dps.ftd,stocks_dps_sec_model.get_fails_to_deliver,stocks_dps_sec_view.fails_to_deliver

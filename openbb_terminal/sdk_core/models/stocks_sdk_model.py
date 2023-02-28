@@ -158,6 +158,7 @@ class StocksDiscovery(Category):
         `losers`: Get top losers. [Source: Yahoo Finance]\n
         `lowfloat`: Returns low float DataFrame\n
         `news`: Gets news. [Source: SeekingAlpha]\n
+        `ns_chart`: Display Onclusive Data. [Source: Invisage Plotform]\n
         `pipo`: Past IPOs dates. [Source: Finnhub]\n
         `rtat`: Gets the top 10 retail stocks per day\n
         `trending`: Returns a list of trending articles\n
@@ -184,6 +185,8 @@ class StocksDiscovery(Category):
         self.losers = lib.stocks_disc_yahoofinance_model.get_losers
         self.lowfloat = lib.stocks_disc_shortinterest_model.get_low_float
         self.news = lib.stocks_disc_seeking_alpha_model.get_news
+        self.ns = lib.stocks_disc_news_sentiment_model.get_data
+        self.ns_chart = lib.stocks_disc_news_sentiment_view.display_articles_data
         self.pipo = lib.stocks_disc_finnhub_model.get_past_ipo
         self.rtat = lib.stocks_disc_nasdaq_model.get_retail_tickers
         self.trending = lib.stocks_disc_seeking_alpha_model.get_trending_list
