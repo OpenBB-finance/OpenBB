@@ -19,7 +19,6 @@ MOCK_DATA = pd.read_csv(
 )
 
 
-@pytest.mark.vcr(record_mode="none")
 @pytest.mark.parametrize(
     "model, lower_q, upper_q, is_crypto",
     [
