@@ -20,7 +20,6 @@ from openbb_terminal.etf import (
     stockanalysis_view,
 )
 from openbb_terminal.etf.discovery import disc_controller
-from openbb_terminal.etf.screener import screener_controller
 from openbb_terminal.etf.technical_analysis import ta_controller
 from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
@@ -566,11 +565,6 @@ class ETFController(BaseController):
             console.print(
                 "Load a ticker with major holdings to compare them on this menu\n"
             )
-
-    @log_start_end(log=logger)
-    def call_scr(self, _):
-        """Process scr command"""
-        self.queue = self.load_class(screener_controller.ScreenerController, self.queue)
 
     @log_start_end(log=logger)
     def call_disc(self, _):

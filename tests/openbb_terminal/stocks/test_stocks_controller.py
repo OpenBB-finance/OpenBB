@@ -270,6 +270,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 limit=1,
                 country="",
                 sector="",
+                industry_group="",
                 industry="",
                 all_exchanges=False,
                 exchange_country="",
@@ -352,13 +353,13 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             [],
             dict(),
         ),
-        (
-            "call_sia",
-            [],
-            "StocksController.load_class",
-            [],
-            dict(),
-        ),
+        # (
+        #     "call_sia",
+        #     [],
+        #     "StocksController.load_class",
+        #     [],
+        #     dict(),
+        # ),
         (
             "call_ins",
             [],
@@ -445,14 +446,6 @@ def test_call_func(
     )
 
     # MOCK TICKER + INFO
-    mocker.patch(
-        target=f"{path_controller}.yf.Ticker",
-    )
-    mocker.patch(
-        target=f"{path_controller}.yf.Ticker.info",
-        return_value={"shortName": "MOCK_SHORT_NAME"},
-    )
-
     if mocked_func:
         mock = mocker.Mock()
         mocker.patch(

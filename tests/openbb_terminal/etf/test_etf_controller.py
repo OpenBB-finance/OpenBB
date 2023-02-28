@@ -358,13 +358,6 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             [etf_controller.disc_controller.DiscoveryController, []],
             dict(),
         ),
-        (
-            "call_scr",
-            [],
-            "ETFController.load_class",
-            [etf_controller.screener_controller.ScreenerController, []],
-            dict(),
-        ),
     ],
 )
 def test_call_func_test(
