@@ -31,9 +31,9 @@ def display_bars_financials(
     finance_key: str = "financialData",
     finance_metric: str = "ebitda",
     country: str = "United States",
-    sector: str = "Communication Services",
-    industry: str = "Internet Content & Information",
-    marketcap: str = "Mega Cap",
+    sector: str = "Materials",
+    industry: str = "Metals & Mining",
+    marketcap: str = "Large Cap",
     exclude_exchanges: bool = True,
     limit: int = 10,
     export: str = "",
@@ -530,7 +530,7 @@ def display_companies_per_industry_in_country(
 
 @log_start_end(log=logger)
 def display_companies_per_industry_in_sector(
-    sector: str = "Technology",
+    sector: str = "Materials",
     mktcap: str = "Large",
     exclude_exchanges: bool = True,
     export: str = "",
@@ -682,7 +682,7 @@ def display_companies_per_industry_in_sector(
 
 @log_start_end(log=logger)
 def display_companies_per_country_in_sector(
-    sector: str = "Technology",
+    sector: str = "Materials",
     mktcap: str = "Large",
     exclude_exchanges: bool = True,
     export: str = "",
@@ -827,7 +827,7 @@ def display_companies_per_country_in_sector(
 
 @log_start_end(log=logger)
 def display_companies_per_country_in_industry(
-    industry: str = "Internet Content & Information",
+    industry: str = "Metals & Mining",
     mktcap: str = "Large",
     exclude_exchanges: bool = True,
     export: str = "",

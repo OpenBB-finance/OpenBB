@@ -56,6 +56,8 @@ from openbb_terminal.stocks.stocks_model import (
     load_stock_yf,
 )
 
+from . import databento_model
+
 logger = logging.getLogger(__name__)
 
 
@@ -69,7 +71,7 @@ exchange_mappings = exchange_df.squeeze("columns").to_dict()
 def check_datetime(
     ck_date: Optional[Union[datetime, str]] = None, start: bool = True
 ) -> datetime:
-    """Checks if given argument is string and attempts to convert to datetime.
+    """Check if given argument is string and attempts to convert to datetime.
 
     Parameters
     ----------
@@ -104,6 +106,7 @@ def search(
     query: str = "",
     country: str = "",
     sector: str = "",
+    industry_group: str = "",
     industry: str = "",
     exchange_country: str = "",
     all_exchanges: bool = False,
@@ -146,10 +149,23 @@ def search(
         kwargs["sector"] = sector
     if industry:
         kwargs["industry"] = industry
+    if industry_group:
+        kwargs["industry_group"] = industry_group
     kwargs["exclude_exchanges"] = False if exchange_country else not all_exchanges
 
     try:
-        data = fd.select_equities(**kwargs)
+        equities_database = fd.Equities()
+
+        if query:
+            data = equities_database.search(**kwargs, name=query)
+            data = pd.concat([data, equities_database.search(**kwargs, name=query)])
+            data = pd.concat(
+                [data, equities_database.search(**kwargs, index=query.upper())]
+            )
+
+            data = data.drop_duplicates()
+        else:
+            data = equities_database.search(**kwargs)
     except ReadTimeout:
         console.print(
             "[red]Unable to retrieve company data from GitHub which limits the search"
@@ -162,33 +178,22 @@ def search(
             "[red]No companies were found that match the given criteria.[/red]\n"
         )
         return pd.DataFrame()
-    if not data:
+
+    if data.empty:
         console.print("No companies found.\n")
         return pd.DataFrame()
 
-    if query:
-        d = fd.search_products(
-            data, query, search="long_name", case_sensitive=False, new_database=None
-        )
-        d.update(
-            fd.search_products(
-                data,
-                query,
-                search="short_name",
-                case_sensitive=False,
-                new_database=None,
-            )
-        )
-    else:
-        d = data
-
-    if not d:
-        console.print("No companies found.\n")
-        return pd.DataFrame()
-
-    df = pd.DataFrame.from_dict(d).T[
-        ["long_name", "short_name", "country", "sector", "industry", "exchange"]
+    df = data[
+        [
+            "name",
+            "country",
+            "sector",
+            "industry_group",
+            "industry",
+            "exchange",
+        ]
     ]
+
     if exchange_country and exchange_country in market_coverage_suffix:
         suffix_tickers = [
             ticker.split(".")[1] if "." in ticker else "" for ticker in list(df.index)
@@ -202,8 +207,7 @@ def search(
         for x in v:
             exchange_suffix[x] = k
 
-    df["name"] = df["long_name"].combine_first(df["short_name"])
-    df = df[["name", "country", "sector", "industry", "exchange"]]
+    df = df[["name", "country", "sector", "industry_group", "industry", "exchange"]]
 
     title = "Companies found"
     if query:
@@ -214,8 +218,12 @@ def search(
         title += f" in {country.replace('_', ' ').title()}"
     if sector:
         title += f" within {sector}"
+        if industry_group:
+            title += f" and {industry_group}"
         if industry:
             title += f" and {industry}"
+    if not sector and industry_group:
+        title += f" within {industry_group}"
     if not sector and industry:
         title += f" within {industry}"
 
@@ -225,7 +233,7 @@ def search(
     print_rich_table(
         df.iloc[:limit] if limit else df,
         show_index=True,
-        headers=["Name", "Country", "Sector", "Industry", "Exchange"],
+        headers=["Name", "Country", "Sector", "Industry Group", "Industry", "Exchange"],
         title=title,
     )
 
@@ -298,7 +306,6 @@ def load(
     df_stock_candidate: pd.DataFrame
         Dataframe of data
     """
-
     if start_date is None:
         start_date = (datetime.now() - timedelta(days=1100)).strftime("%Y-%m-%d")
 
@@ -335,6 +342,12 @@ def load(
 
         elif source == "Intrinio":
             df_stock_candidate = load_stock_intrinio(symbol, start_date, end_date)
+
+        elif source == "DataBento":
+            df_stock_candidate = databento_model.get_historical_stock(
+                symbol, start_date.strftime("%Y-%m-%d"), end_date.strftime("%Y-%m-%d")
+            )
+
         else:
             console.print("[red]Invalid source for stock[/red]\n")
             return
@@ -545,7 +558,7 @@ def display_candle(
     start_date = check_datetime(start_date)
     end_date = check_datetime(end_date, start=False)
 
-    if data is None:
+    if data is None or data.empty:
         data = load(
             symbol,
             start_date,
@@ -1086,7 +1099,7 @@ def show_codes_polygon(ticker: str):
 
 
 def format_parse_choices(choices: List[str]) -> List[str]:
-    """Formats a list of strings to be lowercase and replace spaces with underscores.
+    """Format a list of strings to be lowercase and replace spaces with underscores.
 
     Parameters
     ----------
@@ -1103,7 +1116,7 @@ def format_parse_choices(choices: List[str]) -> List[str]:
 
 
 def map_parse_choices(choices: List[str]) -> Dict[str, str]:
-    """Creates a mapping of clean arguments (keys) to original arguments (values)
+    """Create a mapping of clean arguments (keys) to original arguments (values).
 
     Parameters
     ----------
@@ -1113,7 +1126,7 @@ def map_parse_choices(choices: List[str]) -> Dict[str, str]:
     Returns
     -------
     clean_choices: Dict[str, str]
-        The mappung
+        The mapping
 
     """
     the_dict = {x.lower().replace(" ", "_"): x for x in choices}
@@ -1122,6 +1135,7 @@ def map_parse_choices(choices: List[str]) -> Dict[str, str]:
 
 
 def verify_plot_options(command: str, source: str, plot: list) -> bool:
+    """Verify that the plot options are valid for the chosen source."""
     if command == "cash":
         command_options = CASH_PLOT
     elif command == "balance":

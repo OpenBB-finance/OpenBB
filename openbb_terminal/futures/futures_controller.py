@@ -11,7 +11,7 @@ from typing import List, Optional
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.futures import yfinance_model, yfinance_view
+from openbb_terminal.futures import databento_view, yfinance_model, yfinance_view
 from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
@@ -165,8 +165,8 @@ class FuturesController(BaseController):
             "--start",
             dest="start",
             type=valid_date,
-            help="Initial date. Default: 3 years ago",
-            default=(datetime.now() - timedelta(days=3 * 365)),
+            help="Initial date. Default: 2 years ago",
+            default=(datetime.now() - timedelta(days=2 * 365)),
         )
         parser.add_argument(
             "-e",
@@ -193,17 +193,29 @@ class FuturesController(BaseController):
             raw=True,
         )
         if ns_parser:
-            yfinance_view.display_historical(
-                symbols=ns_parser.ticker.upper().split(","),
-                expiry=ns_parser.expiry,
-                start_date=ns_parser.start.strftime("%Y-%m-%d"),
-                end_date=ns_parser.end.strftime("%Y-%m-%d"),
-                raw=ns_parser.raw,
-                export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
-            )
+            if ns_parser.source == "YahooFinance":
+                yfinance_view.display_historical(
+                    symbols=ns_parser.ticker.upper().split(","),
+                    expiry=ns_parser.expiry,
+                    start_date=ns_parser.start.strftime("%Y-%m-%d"),
+                    end_date=ns_parser.end.strftime("%Y-%m-%d"),
+                    raw=ns_parser.raw,
+                    export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
+                )
+            if ns_parser.source == "DataBento":
+                databento_view.display_historical(
+                    symbol=ns_parser.ticker,
+                    start_date=ns_parser.start.strftime("%Y-%m-%d"),
+                    end_date=ns_parser.end.strftime("%Y-%m-%d"),
+                    raw=ns_parser.raw,
+                    export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
+                )
 
     @log_start_end(log=logger)
     def call_curve(self, other_args: List[str]):

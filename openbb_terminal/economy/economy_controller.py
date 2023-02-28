@@ -61,6 +61,7 @@ class EconomyController(BaseController):
         "fred",
         "index",
         "treasury",
+        "cpi",
         "plot",
         "valuation",
         "performance",
@@ -68,8 +69,6 @@ class EconomyController(BaseController):
         "map",
         "rtps",
         "bigmac",
-        "ycrv",
-        # "spread",
         "events",
         "edebt",
     ]
@@ -201,6 +200,9 @@ class EconomyController(BaseController):
             }
             choices["events"]["-c"] = "--countries"
 
+            choices["cpi"]["--countries"] = {c: None for c in fred_model.CPI_COUNTRIES}
+            choices["cpi"]["-c"] = "--countries"
+
             self.choices = choices
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -254,7 +256,6 @@ class EconomyController(BaseController):
         mt.add_cmd("futures")
         mt.add_cmd("map")
         mt.add_cmd("bigmac")
-        mt.add_cmd("ycrv")
         mt.add_cmd("events")
         mt.add_cmd("edebt")
         mt.add_raw("\n")
@@ -266,6 +267,7 @@ class EconomyController(BaseController):
         mt.add_info("_database_")
         mt.add_cmd("macro")
         mt.add_cmd("treasury")
+        mt.add_cmd("cpi")
         mt.add_cmd("fred")
         mt.add_cmd("index")
         mt.add_raw("\n")
@@ -842,6 +844,7 @@ class EconomyController(BaseController):
             "-q",
             "--query",
             type=str,
+            nargs="+",
             dest="query",
             help="Search for indices with given keyword",
         )
@@ -865,7 +868,8 @@ class EconomyController(BaseController):
         if ns_parser:
             indices = list_from_str(ns_parser.indices)
             if ns_parser.query and ns_parser.limit:
-                yfinance_view.search_indices(ns_parser.query, ns_parser.limit)
+                query = " ".join(ns_parser.query)
+                yfinance_view.search_indices(query, ns_parser.limit)
                 return self.queue
 
             if ns_parser.show_indices:
@@ -1044,40 +1048,106 @@ class EconomyController(BaseController):
                         self.print_help()
 
     @log_start_end(log=logger)
-    def call_ycrv(self, other_args: List[str]):
-        """Process ycrv command"""
+    def call_cpi(self, other_args: List[str]):
+        """Process cpi command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="ycrv",
-            description="Generate country yield curve. The yield curve shows the bond rates"
-            " at different maturities.",
+            prog="cpi",
+            description="Plot (harmonized) consumer price indices for a "
+            "variety of countries and regions.",
+        )
+
+        parser.add_argument(
+            "-c",
+            "--countries",
+            dest="countries",
+            type=str,
+            help="What countries you'd like to collect data for",
+            default="united_states",
+        )
+
+        parser.add_argument(
+            "-u",
+            "--units",
+            dest="units",
+            type=str,
+            help="What units you'd like to collect data for",
+            default="growth_same",
+            choices=fred_model.CPI_UNITS,
+        )
+
+        parser.add_argument(
+            "--frequency",
+            dest="frequency",
+            type=str,
+            help="What frequency you'd like to collect data for",
+            default="monthly",
+            choices=fred_model.CPI_FREQUENCY,
+        )
+
+        parser.add_argument(
+            "--harmonized",
+            action="store_true",
+            dest="harmonized",
+            help="Whether to use harmonized cpi data",
+            default=False,
+        )
+
+        parser.add_argument(
+            "--no-smart-select",
+            action="store_false",
+            dest="smart_select",
+            help="Whether to assist with selection",
+            default=True,
+        )
+
+        parser.add_argument(
+            "-o",
+            "--options",
+            dest="options",
+            action="store_true",
+            help="See the available options",
+            default=False,
+        )
+
+        parser.add_argument(
+            "-s",
+            "--start",
+            dest="start_date",
+            type=valid_date,
+            help="Starting date (YYYY-MM-DD) of data",
+            default="1980-01-01",
         )
         parser.add_argument(
-            "-d",
-            "--date",
+            "-e",
+            "--end",
+            dest="end_date",
             type=valid_date,
-            help="Date to get data from FRED. If not supplied, the most recent entry will be used.",
-            dest="date",
+            help="Ending date (YYYY-MM-DD) of data",
             default=None,
         )
         ns_parser = self.parse_known_args_and_warn(
-            parser,
-            other_args,
-            export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
-            raw=True,
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES, raw=True
         )
         if ns_parser:
-            fred_view.display_yield_curve(
-                date=ns_parser.date.strftime("%Y-%m-%d") if ns_parser.date else "",
+            countries = list_from_str(ns_parser.countries)
+
+            fred_view.plot_cpi(
+                countries=countries,
+                units=ns_parser.units,
+                frequency=ns_parser.frequency,
+                harmonized=ns_parser.harmonized,
+                smart_select=ns_parser.smart_select,
+                options=ns_parser.options,
+                start_date=ns_parser.start_date,
+                end_date=ns_parser.end_date,
                 raw=ns_parser.raw,
                 export=ns_parser.export,
                 sheet_name=" ".join(ns_parser.sheet_name)
                 if ns_parser.sheet_name
                 else None,
             )
-
-            # TODO: Add `Investing` to sources again when `investpy` is fixed
 
     @log_start_end(log=logger)
     def call_events(self, other_args: List[str]):
