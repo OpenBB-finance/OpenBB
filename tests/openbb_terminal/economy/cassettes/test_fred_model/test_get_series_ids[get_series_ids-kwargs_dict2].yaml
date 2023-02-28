@@ -9,7 +9,7 @@ interactions:
       Connection:
       - keep-alive
     method: GET
-    uri: https://api.stlouisfed.org/fred/series/search?api_key=6fa40707f1690bbcf91356c2ba07dab5&file_type=json&search_text=xyz
+    uri: https://api.stlouisfed.org/fred/series/search?api_key=MOCK_API_KEY&file_type=json&search_text=xyz
   response:
     body:
       string: !!binary |
@@ -17,10 +17,14 @@ interactions:
         WSkVpyYWJWfEFyXmZSvpKBXnF5XEg2WVrJRSUouTlXSUkvNL80qUrAx0lPLT0opTIUzAcjJzM0uU
         rAwNDAx0lIpTizJTi4uVrKJjawGA/aRylwAAAA==
     headers:
+      Accept-Ranges:
+      - bytes
       Connection:
       - keep-alive
+      Content-Encoding:
+      - gzip
       Content-Length:
-      - '219'
+      - '142'
       Content-Type:
       - application/json; charset=UTF-8
       Date:
@@ -36,6 +40,6 @@ interactions:
       x-rate-limit-remaining:
       - '116'
     status:
-      code: 400
-      message: Bad Request
+      code: 200
+      message: OK
 version: 1

@@ -7,7 +7,7 @@ interactions:
       Host:
       - api.stlouisfed.org
     method: GET
-    uri: https://api.stlouisfed.org/fred/series/observations?api_key=6fa40707f1690bbcf91356c2ba07dab5&observation_start=2020-01-01&series_id=DGS10
+    uri: https://api.stlouisfed.org/fred/series/observations?api_key=MOCK_API_KEY&observation_start=2020-01-01&series_id=DGS10
   response:
     body:
       string: "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<observations realtime_start=\"2023-03-20\"
@@ -1133,8 +1133,7 @@ interactions:
     headers:
       Connection:
       - close
-      Content-Length:
-      - '252'
+      - Transfer-Encoding
       Content-Type:
       - text/xml; charset=UTF-8
       Date:
@@ -1152,6 +1151,6 @@ interactions:
       x-rate-limit-remaining:
       - '118'
     status:
-      code: 400
-      message: Bad Request
+      code: 200
+      message: OK
 version: 1

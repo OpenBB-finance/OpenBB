@@ -127,10 +127,10 @@ def test_get_cpi(func, kwargs_dict, recorder):
         ("get_cpi", {"countries": ["united kingdom"]}),
         ("get_cpi", {"countries": ["united kingdom", "united_states"]}),
         ("get_cpi", {"countries": ["united kingdom", "united_states", "belgium"]}),
-        ("get_cpi", {"frequency": "monthly"}),
-        ("get_cpi", {"units": "growth_previous"}),
-        ("get_cpi", {"harmonized": True}),
-        ("get_cpi", {"units": "growth_previous"}),
+        ("get_cpi", {"countries": ["united kingdom", "united_states"],"frequency": "monthly"}),
+        ("get_cpi", {"countries": ["united kingdom", "united_states"],"units": "growth_previous"}),
+        ("get_cpi", {"countries": ["united kingdom", "united_states"],"harmonized": True}),
+        ("get_cpi", {"countries": ["united kingdom", "united_states"],"units": "growth_previous"}),
     ],
 )
 def test_get_cpi(func, kwargs_dict, recorder):

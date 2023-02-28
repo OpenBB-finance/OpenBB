@@ -9,7 +9,7 @@ interactions:
       Connection:
       - keep-alive
     method: GET
-    uri: https://api.stlouisfed.org/fred/series?api_key=6fa40707f1690bbcf91356c2ba07dab5&file_type=json&series_id=DGS5
+    uri: https://api.stlouisfed.org/fred/series?api_key=MOCK_API_KEY&file_type=json&series_id=DGS5
   response:
     body:
       string: !!binary |
@@ -26,8 +26,12 @@ interactions:
         89J1SzJSddPzy1KL8kBpKUY/M68ktSi1uES3KLEkVbcY5q3iGH2YgbqVoGSsmwxygW4uwgWAaeop
         1cbWAgA8286ZgQMAAA==
     headers:
+      Accept-Ranges:
+      - bytes
       Connection:
       - keep-alive
+      Content-Encoding:
+      - gzip
       Content-Length:
       - '640'
       Content-Type:
@@ -49,6 +53,6 @@ interactions:
       x-rate-limit-remaining:
       - '120'
     status:
-      code: 400
-      message: Bad Request
+      code: 200
+      message: OK
 version: 1
