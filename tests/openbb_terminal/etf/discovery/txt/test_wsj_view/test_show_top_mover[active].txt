@@ -1,6 +1,6 @@
-                                                  Price     Chg  %Chg    Vol
-0                       ProShares UltraPro QQQ  25.7750  0.7850  3.14  19.7M
-1  Direxion Daily Semiconductor Bull 3X Shares  17.6700  1.1800  7.16  13.4M
-2                 ProShares UltraPro Short QQQ  34.0623 -1.0977 -3.12  12.8M
-3        ProShares Ultra Bloomberg Natural Gas   5.9450  0.0850  1.45   8.4M
-4  Direxion Daily Semiconductor Bear 3X Shares  18.7600 -1.4600 -7.22   6.1M
+                                                  Price     Chg   %Chg    Vol
+0                       ProShares UltraPro QQQ  23.1700  0.8000   3.58  22.5M
+1                 ProShares UltraPro Short QQQ  37.4300 -1.4100  -3.63  19.1M
+2  Direxion Daily Semiconductor Bull 3X Shares  15.1804  1.3504   9.76  18.1M
+3        ProShares Ultra Bloomberg Natural Gas   5.2400  0.3800   7.82  17.5M
+4  Direxion Daily Semiconductor Bear 3X Shares  21.2350 -2.4150 -10.21  11.2M
