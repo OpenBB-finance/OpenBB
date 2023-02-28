@@ -17,7 +17,6 @@ from openbb_terminal.helper_funcs import request
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.options import yfinance_model
 
-pd.set_option("display.precision", 4)
 logger = logging.getLogger(__name__)
 
 accepted_orders = [

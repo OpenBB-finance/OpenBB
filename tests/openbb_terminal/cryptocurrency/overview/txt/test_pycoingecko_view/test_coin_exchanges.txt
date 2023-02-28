@@ -1,16 +1,16 @@
      Rank Trust_Score                  Id                  Name Country Year_Established Trade_Volume_24h_BTC
-249   250         5.0  yoshi_exchange_bsc  Yoshi.exchange (BSC)    None             None                0.923
-248   249         5.0        sphynx_brise        Sphynx (Brise)    None             None               1.0802
-247   248         5.0          solarflare            Solarflare    None             None               1.0954
-246   247         5.0            wigoswap              Wigoswap    None           2022.0               1.1428
-245   246         5.0       glide_finance         Glide Finance    None             None               1.2119
-244   245         5.0   milkyswap-milkada             MilkySwap    None           2022.0               1.2339
-243   244         5.0     elk_finance_bsc     Elk Finance (BSC)    None             None               1.2513
-242   243         5.0         sphynx_swap     Sphynx Swap (BSC)    None             None               1.2789
-241   242         5.0              crodex                Crodex    None             None                1.342
-240   241         5.0           diffusion     Diffusion Finance    None           2022.0               1.3854
-239   240         5.0    zenlink_moonbeam    Zenlink (Moonbeam)    None             None               1.4319
-238   239         5.0              kuswap                Kuswap    None           2021.0               1.6102
-237   238         6.0      radioshack_bsc      RadioShack (BSC)    None             None               1.6391
-236   237         5.0   sushiswap_harmony   Sushiswap (Harmony)    None             None               1.7615
-235   236         5.0             pegasys               Pegasys    None             None               1.7869
+249   250         5.0  yoshi_exchange_bsc  Yoshi.exchange (BSC)    None             None             0.923042
+248   249         5.0        sphynx_brise        Sphynx (Brise)    None             None             1.080215
+247   248         5.0          solarflare            Solarflare    None             None             1.095427
+246   247         5.0            wigoswap              Wigoswap    None           2022.0             1.142818
+245   246         5.0       glide_finance         Glide Finance    None             None             1.211922
+244   245         5.0   milkyswap-milkada             MilkySwap    None           2022.0             1.233885
+243   244         5.0     elk_finance_bsc     Elk Finance (BSC)    None             None             1.251304
+242   243         5.0         sphynx_swap     Sphynx Swap (BSC)    None             None             1.278942
+241   242         5.0              crodex                Crodex    None             None             1.342047
+240   241         5.0           diffusion     Diffusion Finance    None           2022.0             1.385367
+239   240         5.0    zenlink_moonbeam    Zenlink (Moonbeam)    None             None             1.431943
+238   239         5.0              kuswap                Kuswap    None           2021.0             1.610176
+237   238         6.0      radioshack_bsc      RadioShack (BSC)    None             None             1.639109
+236   237         5.0   sushiswap_harmony   Sushiswap (Harmony)    None             None             1.761501
+235   236         5.0             pegasys               Pegasys    None             None             1.786929

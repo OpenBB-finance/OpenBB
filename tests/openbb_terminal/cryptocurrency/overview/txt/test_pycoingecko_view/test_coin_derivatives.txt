@@ -1,16 +1,16 @@
-    Rank                 Market         Symbol     Price  Pct_Change_24h Contract_Type   Basis  Spread  Funding_Rate  Volume_24h
-0      1         Bitget Futures  BTCUSDT_UMCBL  18893.62         -0.0238     perpetual  0.0482    0.01       -0.0150  6.2499e+09
-1      2      Binance (Futures)        BTCUSDT  18883.18          0.0090     perpetual  0.0686    0.01       -0.0069  2.3552e+10
-2      3        BingX (Futures)       BTC-USDT  18885.74          0.2006     perpetual  0.0000    0.02       -0.0100  1.0734e+10
-3      4                C-Trade        BTCUSDT  18885.64          0.0026     perpetual  0.0421    0.02        0.0100  1.1672e+08
-4      5  MEXC Global (Futures)       BTC_USDT  18883.08          0.0085     perpetual  0.0433    0.01       -0.0119  5.0031e+09
-5      6      FTX (Derivatives)       ETH-PERP   1277.70         -4.0478     perpetual  0.0375    0.02       -0.0528  4.4590e+09
-6      7      Binance (Futures)        ETHUSDT   1274.61         -4.0672     perpetual  0.1297    0.01       -0.0234  1.4924e+10
-7      8      FTX (Derivatives)       BTC-PERP  18936.00          0.0053     perpetual  0.0124    0.02       -0.0264  4.9027e+09
-8      9        BingX (Futures)       ETH-USDT   1274.90         -3.9619     perpetual  0.0000    0.02       -0.0233  1.6286e+09
-9     10            AAX Futures      BTCUSDTFP  18886.14         -0.0950     perpetual  0.0291    0.02       -0.0202  1.3288e+09
-10    11        Bybit (Futures)        BTCUSDT  18882.58          0.0079     perpetual  0.0487    0.01        0.0100  8.6299e+09
-11    12         BTSE (Futures)         BTCPFC  18924.50          0.0159     perpetual  0.0772    0.01        0.0000  3.6271e+08
-12    13  MEXC Global (Futures)       ETH_USDT   1274.61         -4.0852     perpetual  0.0954    0.01       -0.0183  2.5356e+09
-13    14      Gate.io (Futures)       BTC_USDT  18880.18          0.1339     perpetual  0.1180    0.01       -0.0076  1.0402e+09
-14    15              Prime XBT        BTC/USD  18945.40          0.1062     perpetual  0.0000    0.05        0.0000  1.8567e+08
+    Rank                 Market         Symbol     Price  Pct_Change_24h Contract_Type     Basis  Spread  Funding_Rate    Volume_24h
+0      1         Bitget Futures  BTCUSDT_UMCBL  18893.62       -0.023763     perpetual  0.048221    0.01     -0.015000  6.249914e+09
+1      2      Binance (Futures)        BTCUSDT  18883.18        0.008985     perpetual  0.068612    0.01     -0.006911  2.355200e+10
+2      3        BingX (Futures)       BTC-USDT  18885.74        0.200615     perpetual  0.000000    0.02     -0.010000  1.073389e+10
+3      4                C-Trade        BTCUSDT  18885.64        0.002642     perpetual  0.042115    0.02      0.010000  1.167180e+08
+4      5  MEXC Global (Futures)       BTC_USDT  18883.08        0.008456     perpetual  0.043336    0.01     -0.011900  5.003099e+09
+5      6      FTX (Derivatives)       ETH-PERP   1277.70       -4.047762     perpetual  0.037456    0.02     -0.052800  4.459014e+09
+6      7      Binance (Futures)        ETHUSDT   1274.61       -4.067178     perpetual  0.129660    0.01     -0.023437  1.492373e+10
+7      8      FTX (Derivatives)       BTC-PERP  18936.00        0.005281     perpetual  0.012433    0.02     -0.026400  4.902704e+09
+8      9        BingX (Futures)       ETH-USDT   1274.90       -3.961862     perpetual  0.000000    0.02     -0.023295  1.628647e+09
+9     10            AAX Futures      BTCUSDTFP  18886.14       -0.095022     perpetual  0.029062    0.02     -0.020163  1.328836e+09
+10    11        Bybit (Futures)        BTCUSDT  18882.58        0.007928     perpetual  0.048728    0.01      0.010000  8.629936e+09
+11    12         BTSE (Futures)         BTCPFC  18924.50        0.015855     perpetual  0.077234    0.01      0.000000  3.627093e+08
+12    13  MEXC Global (Futures)       ETH_USDT   1274.61       -4.085188     perpetual  0.095354    0.01     -0.018300  2.535611e+09
+13    14      Gate.io (Futures)       BTC_USDT  18880.18        0.133906     perpetual  0.118029    0.01     -0.007600  1.040204e+09
+14    15              Prime XBT        BTC/USD  18945.40        0.106207     perpetual  0.000000    0.05      0.000000  1.856732e+08
