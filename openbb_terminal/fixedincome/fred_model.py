@@ -1000,8 +1000,7 @@ def get_hqm(
     date: Optional[str] = None,
     par: bool = False,
 ) -> Tuple[pd.DataFrame, str]:
-    """Get the High Quality Market (HQM) yield curve
-
+    """
     The HQM yield curve represents the high quality corporate bond market, i.e.,
     corporate bonds rated AAA, AA, or A.  The HQM curve contains two regression terms. These
     terms are adjustment factors that blend AAA, AA, and A bonds into a single HQM yield curve

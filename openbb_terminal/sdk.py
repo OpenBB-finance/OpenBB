@@ -137,6 +137,8 @@ class OpenBBSDK:
             `bigmac`: Display Big Mac Index for given countries\n
             `bigmac_chart`: Display Big Mac Index for given countries\n
             `country_codes`: Get available country codes for Bigmac index\n
+            `cpi`: Obtain CPI data from FRED. [Source: FRED]\n
+            `cpi_chart`: Plot CPI data. [Source: FRED]\n
             `currencies`: Scrape data for global currencies\n
             `events`: Get economic calendar for countries between specified dates\n
             `fred`: Get Series data. [Source: FRED]\n

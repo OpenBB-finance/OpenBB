@@ -13,6 +13,8 @@ class EconomyRoot(Category):
         `bigmac`: Display Big Mac Index for given countries\n
         `bigmac_chart`: Display Big Mac Index for given countries\n
         `country_codes`: Get available country codes for Bigmac index\n
+        `cpi`: Obtain CPI data from FRED. [Source: FRED]\n
+        `cpi_chart`: Plot CPI data. [Source: FRED]\n
         `currencies`: Scrape data for global currencies\n
         `events`: Get economic calendar for countries between specified dates\n
         `fred`: Get Series data. [Source: FRED]\n
@@ -52,6 +54,8 @@ class EconomyRoot(Category):
         self.bigmac = lib.economy_nasdaq_model.get_big_mac_indices
         self.bigmac_chart = lib.economy_nasdaq_view.display_big_mac_index
         self.country_codes = lib.economy_nasdaq_model.get_country_codes
+        self.cpi = lib.economy_fred_model.get_cpi
+        self.cpi_chart = lib.economy_fred_view.plot_cpi
         self.currencies = lib.economy_wsj_model.global_currencies
         self.events = lib.economy_nasdaq_model.get_economic_calendar
         self.fred = lib.economy_fred_model.get_aggregated_series_data
