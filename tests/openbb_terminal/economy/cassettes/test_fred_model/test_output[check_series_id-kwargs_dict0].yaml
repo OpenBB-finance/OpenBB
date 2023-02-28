@@ -9,26 +9,50 @@ interactions:
       Connection:
       - keep-alive
     method: GET
-    uri: https://api.stlouisfed.org/fred/series?api_key=6fa40707f1690bbcf91356c2ba07dab5&file_type=json&series_id=DGS5
+    uri: https://api.stlouisfed.org/fred/series?api_key=MOCK_API_KEY&file_type=json&series_id=DGS5
   response:
     body:
-      string: '{"error_code":400,"error_message":"Bad Request.  The value for variable
-        api_key is not a 32 character alpha-numeric lower-case string.  Read https:\/\/fred.stlouisfed.org\/docs\/api\/api_key.html
-        for more information."}'
+      string: !!binary |
+        H4sIAAAAAAAEA6pWKkpNzCnJzE2NLy5JLCpRslIyMjAy1jUw0jUyV9JByKbmpaDLFacWZaYWFytZ
+        RVcrZYJkXdyDTZH1kGxiSWZJTqqSlZJvYlF2aolCZGZqTopCfp5CqF6wnkJIUWpicWlRpUJwanJp
+        UWZJZmqxQmKJgqluZGpikYJzfl5xSWJeiYJvYglItlJHIbA0vyQVrD8xT8Ezryy1uCQ3Na9EwSmx
+        OLNYSUcpP6k4tagssSQzPw/ueUNLMyNdA0NdAyM0BWj+N1HSUUorSi0sTc1LrlSyUnJJzMypRBaL
+        L87ILwIFp4uSjlJpXmZJsZKVUkBqUXJqXglMBK5GVUlHqTg1sTg/LzEnPjElqxTiUiUrJb/8EoVg
+        qExOpYIjWC41Bbt6uHl+wY5KOko5icUl8aUFKYklqaDYQcSrgqGplZGRlYGlroGZko5SQX5BaU5i
+        UWZJpZKVubmOUl5+SSrItW75RQpppUUlGalFCpl5aflFueCwUihKTU8sSsnMS1cogUVJMiz0c6Gh
+        r5CSWJKoo1CQk5pYnKpQlJqWWqRQkq9QkpGq4KFnaKoQXJJYkllckpmcmKMQlApRBbZXQSOjpKSg
+        2CpGP0a/vLxcLy01JbUoMacoFRRXqXrp+WUx+kUQDcUx+hmGpjH6KalpiaU5JXoZJbmaCol5KWBb
+        4KkFkoicS4vKUhV8U0sy8lPyc/LTK5HtycjPTdWD+QViRUF+TmZypW5mcXFpanGMflpmXmJecmZe
+        um5JRqpuen5ZalEeKC3F6GfmlaQWpRaX6BYllqTqFsO8VRyjDzNQtxKUjHWTQS7QzUW4ADBNPaXa
+        2FoAqNDsT4EDAAA=
     headers:
+      Accept-Ranges:
+      - bytes
       Connection:
       - keep-alive
+      Content-Encoding:
+      - gzip
       Content-Length:
-      - '219'
+      - '638'
       Content-Type:
       - application/json; charset=UTF-8
       Date:
-      - Tue, 28 Feb 2023 01:15:27 GMT
+      - Tue, 28 Feb 2023 02:37:33 GMT
+      Expires:
+      - Tue, 28 Feb 2023 02:38:33 GMT
+      Last-Modified:
+      - Mon, 27 Feb 2023 21:22:09 GMT
       Set-Cookie:
-      - ak_bmsc=39C2A0C53784F58C10F94D5862D70542~000000000000000000000000000000~YAAQkVozuAtbooeGAQAAdrSWlRLUl2GaTxW9NZMRnYxJKEVjdAduFgIKkMEZCGXGoJzm7uJkB10nUsH7Slc1mIQBPSSyvIbdJqoW3DmfFI+cBEwKU80I2Rw4t/AzVj9KUC/PeYIkN2hm0b32y+22N0NuYZ17i9Q9mfvQYX8E1a07CNr/L/RApJW39VzU/2Cn8vQFk8y2n6y9p4JPrTAd7d+3ys6w2O9HYFqTksllowZk5fF+nQnSkRNrDvaXarfXYuxlfCnjxHAa+4HzItkdPVXH0lLNajuPTebjE5V7EyjliyWcB3CMLlajiFre8850FKiBFlKb2CXsM91XL0FAZA1F6b/jnHaLdlitQ4fYV3kcHD35jvlz6MbGwIYY3u9duQ==;
-        Domain=.stlouisfed.org; Path=/; Expires=Tue, 28 Feb 2023 03:15:27 GMT; Max-Age=7200;
+      - ak_bmsc=63F09FE47B7A2C92ACF06066D02941F7~000000000000000000000000000000~YAAQJOw4F4RETouGAQAAIN7hlRLIT19OGncz5rrfo2+dqoW2EoQo9S5LCkLaD2iJ1c/9b+uEIoX6WATHuuqP0HfTAqAEtq36ezchAofhHKYF7GuckHLvSeGKHgdG+k4ETfhl1YHh+JbqTQio2D4kgZ9GpIbZYsyxMi6nIOnxLM0XVBYeZwrIoT3nwYxWzUJINznMNsRpIF4iGNoK1t/TxiYMhMLxRZ3LKLoCYsN7KVwGMTCX0I1yQjdTpYtkRFYnk+YWOvExH3qsqwzHz2y9Tdy2sHTrP4/EERcmz3ANxVpqi6O6vdMS3UmvnAG35uSmw/fohIWiGIQ4ChVa+mTU1+V0pgh0nZU6/uts36vfKW2j2NReOnTZaMaUdMUyvs2E;
+        Domain=.stlouisfed.org; Path=/; Expires=Tue, 28 Feb 2023 04:37:33 GMT; Max-Age=7200;
         HttpOnly
+      Vary:
+      - Accept-Encoding
+      x-rate-limit-limit:
+      - '120'
+      x-rate-limit-remaining:
+      - '120'
     status:
-      code: 400
-      message: Bad Request
+      code: 200
+      message: OK
 version: 1
