@@ -3478,6 +3478,8 @@ class ForecastController(BaseController):
         parser = self.add_standard_args(
             parser,
         )
+        if other_args and "--video" not in other_args:
+            other_args.insert(0, "--video")
         ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
