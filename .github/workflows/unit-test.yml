@@ -29,8 +29,8 @@ jobs:
   check-files-changed:
     name: Check for changes
     runs-on: ubuntu-latest
-    # Run this job only if the PR is not merged and the event is not a push
-    if: github.event.pull_request.merged == false && github.event_name != 'push'
+    # Run this job only if the PR is not merged, PR != draft and the event is not a push
+    if: github.event.pull_request.merged == false && github.event_name != 'push' && github.event.pull_request.draft == false
     outputs:
       check-changes: ${{ steps.check-changes.outputs.check-changes }}
     steps:

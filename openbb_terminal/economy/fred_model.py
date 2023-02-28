@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
+import pathlib
 import textwrap
 from typing import List, Optional, Tuple
 
@@ -18,6 +19,65 @@ from openbb_terminal.helper_funcs import get_user_agent, request
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
+
+harmonized_cpi_path = pathlib.Path(__file__).parent / "datasets" / "harmonized_cpi.csv"
+cpi_path = pathlib.Path(__file__).parent / "datasets" / "cpi.csv"
+
+CPI_COUNTRIES = [
+    "australia",
+    "austria",
+    "belgium",
+    "brazil",
+    "bulgaria",
+    "canada",
+    "chile",
+    "china",
+    "croatia",
+    "cyprus",
+    "czech_republic",
+    "denmark",
+    "estonia",
+    "euro_area",
+    "finland",
+    "france",
+    "germany",
+    "greece",
+    "hungary",
+    "iceland",
+    "india",
+    "indonesia",
+    "ireland",
+    "israel",
+    "italy",
+    "japan",
+    "korea",
+    "latvia",
+    "lithuania",
+    "luxembourg",
+    "malta",
+    "mexico",
+    "netherlands",
+    "new_zealand",
+    "norway",
+    "poland",
+    "portugal",
+    "romania",
+    "russian_federation",
+    "slovak_republic",
+    "slovakia",
+    "slovenia",
+    "south_africa",
+    "spain",
+    "sweden",
+    "switzerland",
+    "turkey",
+    "united_kingdom",
+    "united_states",
+]
+
+CPI_UNITS = ["growth_previous", "growth_same", "index_2015"]
+
+CPI_FREQUENCY = ["monthly", "quarterly", "annual"]
 
 
 @log_start_end(log=logger)
@@ -246,3 +306,87 @@ def get_aggregated_series_data(
         data[s_id] = series[s_id]
 
     return data, detail
+
+
+@log_start_end(log=logger)
+@check_api_key(["API_FRED_KEY"])
+def get_cpi(
+    countries: list,
+    units: str = "",
+    frequency: str = "",
+    harmonized: bool = False,
+    smart_select: bool = True,
+    options: bool = False,
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
+) -> Tuple[pd.DataFrame, dict]:
+    """Obtain CPI data from FRED. [Source: FRED]
+
+    Parameters
+    ----------
+    countries: list
+        The country or countries you want to see.
+    units: str
+        The units you want to see, can be "growth_previous", "growth_same" or "index_2015".
+    frequency: str
+        The frequency you want to see, either "annual", monthly" or "quarterly".
+    harmonized: bool
+        Whether you wish to obtain harmonized data.
+    smart_select: bool
+        Whether to assist with the selection.
+    options: bool
+        Whether to return the options.
+    start_date: Optional[str]
+        Start date, formatted YYYY-MM-DD
+    end_date: Optional[str]
+        End date, formatted YYYY-MM-DD
+    """
+    series = pd.read_csv(harmonized_cpi_path) if harmonized else pd.read_csv(cpi_path)
+
+    if options:
+        return series.drop(["series_id"], axis=1)
+
+    step_1 = series[series["country"].str.contains("|".join(countries))]
+    step_2 = step_1[step_1["units"] == units]
+    step_3 = step_2[step_2["frequency"] == frequency]
+
+    if smart_select:
+        if not step_3.empty and step_3["country"].nunique() == len(countries):
+            series = step_3
+        elif not step_2.empty and step_2["country"].nunique() == len(countries):
+            console.print(
+                f"No {frequency} data available for all countries. Using common frequency."
+            )
+            frequency_new = step_1["frequency"].mode()[0]
+            series = step_2[step_2["frequency"] == frequency_new]
+        else:
+            console.print(
+                f"No {frequency} and {units} data available for all countries. Using remaining options."
+            )
+            series = step_3 if not step_3.empty else step_2
+    else:
+        series = step_3
+
+    if series.empty:
+        console.print(
+            "The combination of parameters does not result in any data. Please consider "
+            "using the `options` parameter to see the available options. Note that there "
+            "are two options list, one with `harmonized` and one without."
+        )
+        return pd.DataFrame()
+
+    series_dictionary = {}
+
+    for series_id, country_value, frequency_value, unit_value in series[
+        ["series_id", "country", "frequency", "units"]
+    ].values:
+        series_dictionary[
+            f"{country_value}-{frequency_value}-{unit_value}"
+        ] = get_series_data(
+            series_id=series_id, start_date=start_date, end_date=end_date
+        )
+
+    df = pd.DataFrame.from_dict(series_dictionary)
+    df.index = pd.to_datetime(df.index).date
+
+    return df
