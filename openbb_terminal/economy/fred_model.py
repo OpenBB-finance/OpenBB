@@ -28,6 +28,7 @@ CPI_COUNTRIES = [
     "austria",
     "belgium",
     "brazil",
+    "bulgaria",
     "canada",
     "chile",
     "china",
