@@ -6,7 +6,6 @@ from pathlib import Path
 
 import scipy
 from dotenv import set_key
-import matplotlib
 from PyInstaller.building.api import COLLECT, EXE, PYZ
 from PyInstaller.building.build_main import Analysis
 from PyInstaller.building.splash import Splash
@@ -55,7 +54,6 @@ default_env_file = os.path.join(build_assets_folder, ".env")
 set_key(default_env_file, "OPENBB_LOGGING_COMMIT_HASH", str(commit_hash))
 
 # Files that are explicitly pulled into the bundle
-mpl_data_dir = matplotlib.get_data_path()
 added_files = [
     (os.path.join(os.getcwd(), "openbb_terminal"), "openbb_terminal"),
     (os.path.join(pathex, "property_cached"), "property_cached"),
@@ -77,7 +75,6 @@ added_files = [
     (".env", "."),
     (os.path.join(pathex, "blib2to3", "Grammar.txt"), "blib2to3"),
     (os.path.join(pathex, "blib2to3", "PatternGrammar.txt"), "blib2to3"),
-    (mpl_data_dir, "matplotlib/mpl-data"),
 ]
 if is_win:
     added_files.append(
@@ -107,6 +104,7 @@ hidden_imports = [
     "prophet",
     "debugpy",
     "scipy.sparse.linalg._isolve._iterative",
+    "matplotlib"
 ]
 
 
