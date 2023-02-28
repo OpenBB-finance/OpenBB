@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb"
-version = "2.4.1"
+version = "2.5.0"
 description = "Investment Research for Everyone, Anywhere."
 license = "MIT"
 authors = ["Didier Rodrigues Lopes"]
