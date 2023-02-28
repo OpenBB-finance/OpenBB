@@ -12,7 +12,8 @@
 
 Databases:
     macro              collect macro data for a country or countries                   [EconDB]
-    treasury           obtain U.S. treasury rates                                      [EconDB]
+    treasury           obtain (harmonized) Consumer Price Indices for any country      [EconDB]
+    cpi                economy/cpi                                                     [FRED]
     fred               collect macro data from FRED based on a series ID               [FRED]
     index              find and plot any (major) index on the market                   [YahooFinance]
 
