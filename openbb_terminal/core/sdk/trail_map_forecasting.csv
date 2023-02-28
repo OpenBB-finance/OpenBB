@@ -37,3 +37,4 @@ forecast.tcn,forecast_tcn_model.get_tcn_data,forecast_tcn_view.display_tcn_forec
 forecast.tft,forecast_tft_model.get_tft_data,forecast_tft_view.display_tft_forecast
 forecast.theta,forecast_theta_model.get_theta_data,forecast_theta_view.display_theta_forecast
 forecast.trans,forecast_trans_model.get_trans_data,forecast_trans_view.display_trans_forecast
+forecast.whisper,forecast_whisper_model.transcribe_and_summarize,
