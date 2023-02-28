@@ -28,6 +28,7 @@ from transformers import BartForConditionalGeneration, BartTokenizer, pipeline
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.forecast.whisper_utils import slugify, write_srt, write_vtt
 from openbb_terminal.rich_config import console
+from typing import Optional
 
 logger = logging.getLogger(__name__)
 # pylint: disable=too-many-arguments
