@@ -1,6 +1,6 @@
 """Utilize OpenAI Whisper to transcribe and summarize text"""
 __docformat__ = "numpy"
-
+# pylint: disable=I0011,C0413
 import logging
 import os
 import tempfile
