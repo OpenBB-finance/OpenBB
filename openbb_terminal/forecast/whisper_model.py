@@ -8,7 +8,18 @@ import warnings
 from typing import Optional
 
 import whisper
-import yt_dlp
+
+try:
+    import yt_dlp
+except ModuleNotFoundError as exc:
+    raise ModuleNotFoundError(
+        "Please use poetry to install latest yt-dlp library and dependencies. \n"
+        "poetry install -E forecast \n"
+        "\n"
+        "If you are not using poetry, please install the yt_dlp library with the following command: \n"
+        "pip install yt_dlp \n"
+    ) from exc
+
 from huggingface_hub import scan_cache_dir
 from tqdm import tqdm
 from transformers import BartForConditionalGeneration, BartTokenizer, pipeline

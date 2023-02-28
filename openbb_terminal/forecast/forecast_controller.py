@@ -32,6 +32,7 @@ try:
     from whisper.tokenizer import LANGUAGES, TO_LANGUAGE_CODE
     from openbb_terminal.forecast.whisper_utils import str2bool
 
+    transformers_ver = transformers.__version__
     # if imports are successful, set flag to True
     WHISPER_AVAILABLE = True
 
@@ -44,17 +45,6 @@ except ModuleNotFoundError:
         "https://github.com/openai/whisper \n"
         "Please install the transformers library with the following command: \n"
         "pip install transformers \n"
-    )
-
-try:
-    import yt_dlp
-except ModuleNotFoundError:
-    raise ModuleNotFoundError(
-        "Please use poetry to install latest yt-dlp library and dependencies. \n"
-        "poetry install -E forecast \n"
-        "\n"
-        "If you are not using poetry, please install the yt_dlp library with the following command: \n"
-        "pip install yt_dlp \n"
     )
 
 import pandas as pd
@@ -116,18 +106,6 @@ from openbb_terminal.forecast import (
     trans_view,
     whisper_model,
 )
-from openbb_terminal.helper_funcs import (
-    EXPORT_ONLY_FIGURES_ALLOWED,
-    EXPORT_ONLY_RAW_DATA_ALLOWED,
-    NO_EXPORT,
-    check_positive,
-    check_positive_float,
-    log_and_raise,
-    valid_date,
-)
-from openbb_terminal.menu import session
-from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import MenuText, console
 
 logger = logging.getLogger(__name__)
 empty_df = pd.DataFrame()
