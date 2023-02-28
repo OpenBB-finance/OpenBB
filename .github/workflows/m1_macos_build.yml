@@ -53,6 +53,7 @@ jobs:
 
       - name: Install Dependencies
         run: |
+          pip uninstall pathlib -y
           pip list
           python -m pip install -r requirements-full.txt
 
