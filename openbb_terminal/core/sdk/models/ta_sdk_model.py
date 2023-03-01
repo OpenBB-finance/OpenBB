@@ -27,6 +27,8 @@ class TaRoot(Category):
         `cg_chart`: Plots center of gravity Indicator\n
         `clenow`: Gets the Clenow Volatility Adjusted Momentum.  this is defined as the regression coefficient on log prices\n
         `clenow_chart`: Prints table and plots clenow momentum\n
+        `cones`: Returns a DataFrame of realized volatility quantiles.\n
+        `cones_chart`: Plots the realized volatility quantiles for the loaded ticker.\n
         `demark`: Get the integer value for demark sequential indicator\n
         `demark_chart`: Plot demark sequential indicator\n
         `donchian`: Calculate Donchian Channels\n
@@ -47,7 +49,14 @@ class TaRoot(Category):
         `obv_chart`: Plots OBV technical indicator\n
         `rsi`: Relative strength index\n
         `rsi_chart`: Plots RSI Indicator\n
+        `rvol_garman_klass`: Garman-Klass volatility extends Parkinson volatility by taking into account the opening and closing price.\n
+        `rvol_hodges_tompkins`: Hodges-Tompkins volatility is a bias correction for estimation using an overlapping data sample.\n
+        `rvol_parkinson`: Parkinson volatility uses the high and low price of the day rather than just close to close prices.\n
+        `rvol_rogers_satchell`: Rogers-Satchell is an estimator for measuring the volatility with an average return not equal to zero.\n
+        `rvol_std`: Standard deviation measures how widely returns are dispersed from the average return.\n
+        `rvol_yang_zhang`: Yang-Zhang volatility is the combination of the overnight (close-to-open volatility).\n
         `sma`: Gets simple moving average (SMA) for stock\n
+        `standard_deviation`: Standard deviation measures how widely returns are dispersed from the average return.\n
         `stoch`: Stochastic oscillator\n
         `stoch_chart`: Plots stochastic oscillator signal\n
         `vwap`: Gets volume weighted average price (VWAP)\n
@@ -78,6 +87,8 @@ class TaRoot(Category):
         self.cg_chart = lib.common_ta_momentum_view.display_cg
         self.clenow = lib.common_ta_momentum_model.clenow_momentum
         self.clenow_chart = lib.common_ta_momentum_view.display_clenow_momentum
+        self.cones = lib.common_ta_volatility_model.cones
+        self.cones_chart = lib.common_ta_volatility_view.display_cones
         self.demark = lib.common_ta_momentum_model.demark_seq
         self.demark_chart = lib.common_ta_momentum_view.display_demark
         self.donchian = lib.common_ta_volatility_model.donchian
@@ -98,7 +109,14 @@ class TaRoot(Category):
         self.obv_chart = lib.common_ta_volume_view.display_obv
         self.rsi = lib.common_ta_momentum_model.rsi
         self.rsi_chart = lib.common_ta_momentum_view.display_rsi
+        self.rvol_garman_klass = lib.common_ta_volatility_model.garman_klass
+        self.rvol_hodges_tompkins = lib.common_ta_volatility_model.hodges_tompkins
+        self.rvol_parkinson = lib.common_ta_volatility_model.parkinson
+        self.rvol_rogers_satchell = lib.common_ta_volatility_model.rogers_satchell
+        self.rvol_std = lib.common_ta_volatility_model.standard_deviation
+        self.rvol_yang_zhang = lib.common_ta_volatility_model.yang_zhang
         self.sma = lib.common_ta_overlap_model.sma
+        self.standard_deviation = lib.common_ta_volatility_model.standard_deviation
         self.stoch = lib.common_ta_momentum_model.stoch
         self.stoch_chart = lib.common_ta_momentum_view.display_stoch
         self.vwap = lib.common_ta_overlap_model.vwap
