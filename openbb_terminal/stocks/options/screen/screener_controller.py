@@ -38,7 +38,7 @@ class ScreenerController(BaseController):
         """Constructor"""
         super().__init__(queue)
 
-        self.preset = "high_IV"
+        self.preset = "high_iv.ini"
         self.screen_tickers: List = list()
 
         if session and obbff.USE_PROMPT_TOOLKIT:
@@ -76,7 +76,7 @@ class ScreenerController(BaseController):
             dest="preset",
             type=str,
             help="View specific custom preset",
-            default="",
+            default="high_iv",
             choices=self.preset_choices,
         )
         if other_args and "-" not in other_args[0][0]:
@@ -104,7 +104,7 @@ class ScreenerController(BaseController):
             action="store",
             dest="preset",
             type=str,
-            default="template",
+            default="high_iv",
             help="Filter presets",
             choices=self.preset_choices,
         )
@@ -121,12 +121,9 @@ class ScreenerController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="scr",
-            description="""Screener filter output from https://ops.syncretism.io/index.html.
-        Where: CS: Contract Symbol; S: Symbol, T: Option Type; Str: Strike; Exp v: Expiration;
-        IV: Implied Volatility; LP: Last Price; B: Bid; A: Ask; V: Volume; OI: Open Interest;
-        Y: Yield; MY: Monthly Yield; SMP: Regular Market Price; SMDL: Regular Market Day Low;
-        SMDH: Regular Market Day High; LU: Last Trade Date; LC: Last Crawl; ITM: In The Money;
-        PC: Price Change; PB: Price-to-book. """,
+            description="""
+            Screener filter output from https://ops.syncretism.io/index.html.
+        """,
         )
         parser.add_argument(
             "-p",
@@ -142,8 +139,8 @@ class ScreenerController(BaseController):
             "-l",
             "--limit",
             type=check_positive,
-            default=10,
-            help="Limit of random entries to display. Default shows all",
+            default=25,
+            help="Limit of entries to display, default of 25.",
             dest="limit",
         )
 
