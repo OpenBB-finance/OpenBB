@@ -32,11 +32,56 @@ except ModuleNotFoundError:
         "under the python tab: https://docs.openbb.co/terminal/quickstart/installation"
     )
 
-# IMPORTATION INTERNAL
+try:
+    import whisper
+    import transformers
+    from whisper.tokenizer import LANGUAGES, TO_LANGUAGE_CODE
+    from openbb_terminal.forecast.whisper_utils import str2bool
+
+    transformers_ver = transformers.__version__
+    # if imports are successful, set flag to True
+    WHISPER_AVAILABLE = True
+
+except ModuleNotFoundError:
+    raise ModuleNotFoundError(
+        "Please use poetry to install latest whisper model and dependencies. \n"
+        "poetry install -E forecast \n"
+        "\n"
+        "If you are not using poetry, please install whisper model. Instructions can be found here: \n"
+        "https://github.com/openai/whisper \n"
+        "Please install the transformers library with the following command: \n"
+        "pip install transformers \n"
+    )
+
+import pandas as pd
+import psutil
+
+
+# ignore  pylint(ungrouped-imports)
+# pylint: disable=ungrouped-imports
+
 from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.common import common_model
+
+from openbb_terminal.core.config.paths import USER_FORECAST_WHISPER_DIRECTORY
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
+
+from openbb_terminal.helper_funcs import (
+    check_positive,
+    check_positive_float,
+    NO_EXPORT,
+    EXPORT_ONLY_FIGURES_ALLOWED,
+    EXPORT_ONLY_RAW_DATA_ALLOWED,
+    log_and_raise,
+    valid_date,
+    parse_and_split_input,
+)
+
+from openbb_terminal.menu import session
+from openbb_terminal.parent_classes import BaseController
+from openbb_terminal.rich_config import console, MenuText
+
 from openbb_terminal.forecast import (
     anom_view,
     autoarima_view,
@@ -61,19 +106,8 @@ from openbb_terminal.forecast import (
     tft_view,
     theta_view,
     trans_view,
+    whisper_model,
 )
-from openbb_terminal.helper_funcs import (
-    EXPORT_ONLY_FIGURES_ALLOWED,
-    EXPORT_ONLY_RAW_DATA_ALLOWED,
-    NO_EXPORT,
-    check_positive,
-    check_positive_float,
-    log_and_raise,
-    valid_date,
-)
-from openbb_terminal.menu import session
-from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import MenuText, console
 
 logger = logging.getLogger(__name__)
 empty_df = pd.DataFrame()
@@ -134,6 +168,7 @@ class ForecastController(BaseController):
         "which",
         "nhits",
         "anom",
+        "whisper",
     ]
     pandas_plot_choices = [
         "line",
@@ -229,6 +264,22 @@ class ForecastController(BaseController):
             for column in dataframe.columns
         }
 
+    def parse_input(self, an_input: str) -> List:
+        """Parse controller input
+
+        Overrides the parent class function to handle YouTube video URL conventions.
+        See `BaseController.parse_input()` for details.
+        """
+        # Filtering out YouTube video parameters like "v=" and removing the domain name
+        youtube_filter = r"(youtube\.com/watch\?v=)"
+
+        custom_filters = [youtube_filter]
+
+        commands = parse_and_split_input(
+            an_input=an_input.replace("https://", ""), custom_filters=custom_filters
+        )
+        return commands
+
     def update_runtime_choices(self):
         # Load in any newly exported files
         self.DATA_FILES = forecast_model.get_default_files()
@@ -312,6 +363,9 @@ class ForecastController(BaseController):
         mt.add_raw("\n")
         mt.add_info("_anomaly_")
         mt.add_cmd("anom", self.files)
+        mt.add_raw("\n")
+        mt.add_info("_misc_")
+        mt.add_cmd("whisper", WHISPER_AVAILABLE)
 
         console.print(text=mt.menu_text, menu="Forecast")
 
@@ -3221,4 +3275,100 @@ class ForecastController(BaseController):
                 train_split=ns_parser.train_split,
                 start_date=ns_parser.s_start_date,
                 end_date=ns_parser.s_end_date,
+            )
+
+    @log_start_end(log=logger)
+    def call_whisper(self, other_args: List[str]):
+        """Utilize Whisper Model to transcribe a video. Currently only supports Youtube URLS"""
+        parser = argparse.ArgumentParser(
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            add_help=False,
+            prog="whisper",
+            description="""
+                Utilize Whisper Model to transcribe a video. Currently only supports Youtube URLS:
+                https://github.com/openai/whisper
+            """,
+        )
+        parser.add_argument(
+            "--video",
+            dest="video",
+            type=str,
+            default="",
+            help="video URLs to transcribe",
+        )
+        parser.add_argument(
+            "--model_name",
+            dest="model_name",
+            choices=whisper.available_models(),
+            default="base",
+            help="name of the Whisper model to use",
+        )
+        parser.add_argument(
+            "--subtitles_format",
+            dest="subtitles_format",
+            type=str,
+            choices=["vtt", "srt"],
+            help="the subtitle format to output",
+        )
+        parser.add_argument(
+            "--verbose",
+            dest="verbose",
+            type=str2bool,
+            default=False,
+            help="Whether to print out the progress and debug messages",
+        )
+        parser.add_argument(
+            "--task",
+            dest="task",
+            type=str,
+            choices=["transcribe", "translate"],
+            help="whether to perform X->X speech recognition ('transcribe') or X->English translation ('translate')",
+        )
+        parser.add_argument(
+            "--language",
+            dest="language",
+            type=str,
+            default=None,
+            choices=sorted(LANGUAGES.keys())
+            + sorted([k.title() for k in TO_LANGUAGE_CODE.keys()]),
+            help="language spoken in the audio, skip to perform language detection",
+        )
+        parser.add_argument(
+            "--breaklines",
+            dest="breaklines",
+            type=int,
+            default=0,
+            help="Whether to break lines into a bottom-heavy pyramid shape if line length exceeds N characters. 0 disables line breaking.",
+        )
+        parser.add_argument(
+            "--save",
+            dest="save",
+            type=str,
+            default=USER_FORECAST_WHISPER_DIRECTORY,
+            help="Directory to save the subtitles file",
+        )
+
+        parser = self.add_standard_args(
+            parser,
+        )
+        if other_args and "--video" not in other_args:
+            other_args.insert(0, "--video")
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+        )
+
+        if ns_parser:
+            if ns_parser.save is None:
+                ns_parser.save = USER_FORECAST_WHISPER_DIRECTORY
+
+            whisper_model.transcribe_and_summarize(
+                video=ns_parser.video,
+                model_name=ns_parser.model_name,
+                subtitles_format=ns_parser.subtitles_format,
+                verbose=ns_parser.verbose,
+                task=ns_parser.task,
+                language=ns_parser.language,
+                breaklines=ns_parser.breaklines,
+                output_dir=ns_parser.save,
             )
