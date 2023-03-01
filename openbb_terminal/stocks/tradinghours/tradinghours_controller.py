@@ -64,7 +64,7 @@ class TradingHoursController(BaseController):
         if ticker:
             if ticker in self.equities.index:
                 self.symbol = ticker
-                self.symbol_name = self.equities.loc[ticker]["short_name"]
+                self.symbol_name = self.equities.loc[ticker]["name"]
                 self.exchange = self.equities.loc[ticker]["exchange"]
                 open_ex = get_open()
                 if self.exchange in open_ex.index:
@@ -133,7 +133,7 @@ class TradingHoursController(BaseController):
         if ns_parser:
             self.symbol = ns_parser.symbol
             if ns_parser.symbol in self.equities.index:
-                self.symbol_name = self.equities.loc[self.symbol]["short_name"]
+                self.symbol_name = self.equities.loc[self.symbol]["name"]
                 self.exchange = self.equities.loc[self.symbol]["exchange"]
                 open_ex = get_open()
                 if self.exchange in open_ex.index:
