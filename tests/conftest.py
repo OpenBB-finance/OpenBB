@@ -29,6 +29,8 @@ from openbb_terminal import (
 
 config_terminal.setup_i18n()
 
+load_dotenv_and_reload_configs()
+
 DISPLAY_LIMIT: int = 500
 EXTENSIONS_ALLOWED: List[str] = ["csv", "json", "txt"]
 EXTENSIONS_MATCHING: Dict[str, List[Type]] = {
