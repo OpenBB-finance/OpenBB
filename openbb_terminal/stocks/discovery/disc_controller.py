@@ -960,11 +960,11 @@ class DiscoveryController(BaseController):
 
     @log_start_end(log=logger)
     def call_ns(self, other_args: List[str]):
-        """Process show command."""
+        """Process ns command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="show",
+            prog="ns",
             description="Shows the News Sentiment articles data",
         )
         parser.add_argument(
@@ -980,7 +980,7 @@ class DiscoveryController(BaseController):
             "--start_date",
             dest="start_date",
             type=str,
-            default=False,
+            default=None,
             help="The starting date (format YYYY-MM-DD) to search news articles from",
         )
         parser.add_argument(
@@ -988,7 +988,7 @@ class DiscoveryController(BaseController):
             "--end_date",
             dest="end_date",
             type=str,
-            default=False,
+            default=None,
             help="The end date (format YYYY-MM-DD) to search news articles upto",
         )
         parser.add_argument(
@@ -996,8 +996,8 @@ class DiscoveryController(BaseController):
             "--date",
             dest="date",
             type=str,
-            default=False,
-            help="""Shows news articles data on this day (format YYYY-MM-DD).
+            default=None,
+            help="""Shows the news articles data on this day (format YYYY-MM-DD).
                     If you use this Argument start date and end date will be ignored 
                 """,
         )

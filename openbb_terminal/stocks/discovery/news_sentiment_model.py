@@ -1,13 +1,8 @@
 """Onclusive Data Model"""
 
 import logging
-
-import json
 import requests
 import pandas as pd
-import numpy as np
-import datetime
-import os
 
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.rich_config import console
@@ -34,7 +29,10 @@ def get_data(
 
     df = pd.DataFrame(data=None)
 
-    query_params = {}
+    query_params = {
+        "all_feilds": 'Flase',
+        "ordering":"-published_on,-share_of_article,-pagerank"
+    }
     if ticker:
         query_params["ticker"] = ticker
     if start_date:
@@ -60,7 +58,7 @@ def get_data(
         query_params["offset"] = offset
 
     response = requests.get(
-        f"https://althub-backend.invisagealpha.com/api/OnclusiveSentiment/?all_feilds=flase&ordering=-published_on,-share_of_article,-pagerank",
+        "https://althub-backend.invisagealpha.com/api/OnclusiveSentiment/",
         headers=headers,
         params=query_params,
     ).json()
