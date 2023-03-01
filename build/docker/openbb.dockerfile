@@ -25,6 +25,7 @@ RUN apt-get -y install --no-install-recommends \
     libxt6 \
     libgl1-mesa-glx \
     libpng16-16 \
+    ffmpeg \
     python3-tk
 
 RUN apt-get clean
