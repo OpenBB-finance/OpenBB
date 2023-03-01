@@ -534,14 +534,14 @@ interactions:
         nqHVNJP6et/EDjEsl/m2zMXsEaxRqzYyrNqv7tEY436v0ZZ7Mia43mq2e4qiiQ2RNNt90q43ZKnR
         aChSU2m0221FQIblkQHcHusI7hCrklwV8fD8F7PVaHy9GP7J/0X7s9hsXWkX2Pz5b97bPw4Go+b1
         yPzq2eJX87xOvnwXP9z2rZF69/3nP43f/fHT218/XlDqeLpLrvvu5XWLnvUH7046nXADUutXA447
-        h/8QHHz3QReOhSaWpKbalvVeuycqpCFUBI9+J5ZwLBBV6YutfkNrE7He6+vtZkNsipLYUonWVnp1
-        oSKMiQMDVzgWYB1Qk2uiUBFcQziWRPGfh0hzqOtSxxgYVkfAFrXuRtR3Uy74wesj2AiAf4feyOwe
-        /H8AAAD//wMAv4yUyafZAwA=
+        h/8QHHz3QReOhSaWpKbebCk9vV9vtVtCRfDod2IJxwJRlb7Y6je0NhHrvb7ebjbEpiiJLZVobaVX
+        FyrCmDgwcIVjAdYBNbkmChXBNYRjSRT/eYg0h7oudYyBYXUEbFHrbkR9N+WCH7w+go0A+Hfojczu
+        wf8HAAD//wMAOVdERKfZAwA=
     headers:
       CF-Cache-Status:
       - DYNAMIC
       CF-RAY:
-      - 7a117592db9b03e6-LIS
+      - 7a117d783bdf4898-LIS
       Cache-Control:
       - no-cache
       Connection:
@@ -551,11 +551,11 @@ interactions:
       Content-Type:
       - text/html; charset=utf-8
       Date:
-      - Wed, 01 Mar 2023 12:38:50 GMT
+      - Wed, 01 Mar 2023 12:44:13 GMT
       Server:
       - cloudflare
       Server-Timing:
-      - cf-q-config;dur=6.0000002122251e-06
+      - cf-q-config;dur=6.0000020312145e-06
       Transfer-Encoding:
       - chunked
       alt-svc:
@@ -563,10 +563,10 @@ interactions:
       request-context:
       - appId=cid-v1:bdd405ef-7a83-4f9a-9228-0107d7f4bc90
       set-cookie:
-      - preventRedirectLoop=false; expires=Tue, 28 Feb 2023 12:38:50 GMT; domain=.finviz.com;
+      - preventRedirectLoop=false; expires=Tue, 28 Feb 2023 12:44:13 GMT; domain=.finviz.com;
         path=/
       - screenerUrl=screener.ashx%3Fv%3D111%26f%3Dcap_microover%2Cfa_pc_u5%2Csh_curvol_o300%2Csh_price_u3%2Cta_rsi_os40%26ft%3D4%26o%3Dticker;
-        expires=Fri, 01 Mar 2024 12:38:50 GMT; domain=.finviz.com; path=/
+        expires=Fri, 01 Mar 2024 12:44:13 GMT; domain=.finviz.com; path=/
       vary:
       - Accept-Encoding
       x-frame-options:
@@ -1113,14 +1113,14 @@ interactions:
         3jexQwzLZb4tczG7BPeoVR0ZVvU39/AG43633lK6Cia41my0uqrak+oSabT6pFWrK3K9Xlflhlpv
         tVpqCRmWRwaO4d21S+4Qa7JSkfDwzVezWa9/Ph/+2f/a+0VqNC9759j869+9n34eDEaNq5H52bOl
         z+abGvnLN+n0tm+NtLtvf/3zzbufP/z029k5pY6nu+Sq715cNelJf/DuuN0OtkR7/QrnuH3wj5KD
-        70710lGpgWW5obVwnaiqpJJ6qVzy6DdilY5KRFP7UrNf77WIVOv29VajLjUkWWpqpNdSu7VSuXRD
-        HBi4paMSrAOqSlUqlUuuUTqSJemfB6jnUNeljjEwrHYJW9S6G1HfTbjge68OYVMC/jv0RmZn7/8D
-        AAD//wMA2c7IM8faAwA=
+        70710lGpgWW5oTf6eqvVrTVbzVK55NFvxCodlYim9qVmv95rEanW7eutRl1qSLLU1EivpXZrpXLp
+        hjgwcEtHJVgHVJWqVCqXXKN0JEvSPw9Qz6GuSx1jYFjtEraodTeivptwwfdeHcKmBPx36I3Mzt7/
+        BwAA//8DAHlCgkXH2gMA
     headers:
       CF-Cache-Status:
       - DYNAMIC
       CF-RAY:
-      - 7a11759a6e3303e6-LIS
+      - 7a117d7fd99b4898-LIS
       Cache-Control:
       - no-cache
       Connection:
@@ -1130,11 +1130,11 @@ interactions:
       Content-Type:
       - text/html; charset=utf-8
       Date:
-      - Wed, 01 Mar 2023 12:38:51 GMT
+      - Wed, 01 Mar 2023 12:44:14 GMT
       Server:
       - cloudflare
       Server-Timing:
-      - cf-q-config;dur=6.0000002122251e-06
+      - cf-q-config;dur=8.000002708286e-06
       Transfer-Encoding:
       - chunked
       alt-svc:
@@ -1142,10 +1142,10 @@ interactions:
       request-context:
       - appId=cid-v1:bdd405ef-7a83-4f9a-9228-0107d7f4bc90
       set-cookie:
-      - preventRedirectLoop=false; expires=Tue, 28 Feb 2023 12:38:51 GMT; domain=.finviz.com;
+      - preventRedirectLoop=false; expires=Tue, 28 Feb 2023 12:44:14 GMT; domain=.finviz.com;
         path=/
       - screenerUrl=screener.ashx%3Fv%3D111%26f%3Dcap_microover%2Cfa_pc_u5%2Csh_curvol_o300%2Csh_price_u3%2Cta_rsi_os40%26ft%3D4%26o%3Dticker%26r%3D21;
-        expires=Fri, 01 Mar 2024 12:38:51 GMT; domain=.finviz.com; path=/
+        expires=Fri, 01 Mar 2024 12:44:14 GMT; domain=.finviz.com; path=/
       vary:
       - Accept-Encoding
       x-frame-options:
@@ -1691,14 +1691,14 @@ interactions:
         6LBl1wmdAIdaOnWu+F+4z0B0qr94+SqmOpggm/Qu4VEwQ6tqJvP1nkkcalgu9225i9mlRGNWdWhY
         1d/coxEhvW69hbuYUFJrNlpdRdGkukQbrR5t1epYrtfritxQ6q1WSykhw/Jo3zG8u3bJHRBVxhWJ
         DM5+NZv1+pfzwc/+r9qfpEbzSjsn5p//5v30x35/2Lgeml88W/pintXo52/Sh9ueNVTvvv3559G7
-        P3766beP54w5nu7S6557ed1kp73+u5N2O9wc1XqVgOP24T9KDrn7oJeOSw0iyw2VyL0W7kkKrZfK
-        JY99o1bpuERVpSc1e3WtRaVat6e3GnWpIclSU6VaS+nWSuXSiDowcEvHJVgHVHFVKpVLrlE6liXp
-        n4dIc5jrMsfoG1a7RCxm3Q2Z76Zc8IPXR7A3Af8deEOzc/D/AQAA//8DAHosVCfC2gMA
+        P3766beP54w5nu7S6557ed1kp73+u5N2O9wc1XqVgOP24T9KDrn7oJeOSw0iyw292VB7RK01W81S
+        ueSxb9QqHZeoqvSkZq+utahU6/b0VqMuNSRZaqpUayndWqlcGlEHBm7puATrgCquSqVyyTVKx7Ik
+        /fMQaQ5zXeYYfcNql4jFrLsh892UC37w+gj2JuC/A29odg7+PwAAAP//AwBza8zNwtoDAA==
     headers:
       CF-Cache-Status:
       - DYNAMIC
       CF-RAY:
-      - 7a1175a1f92f03e6-LIS
+      - 7a117d875fa54898-LIS
       Cache-Control:
       - no-cache
       Connection:
@@ -1708,11 +1708,11 @@ interactions:
       Content-Type:
       - text/html; charset=utf-8
       Date:
-      - Wed, 01 Mar 2023 12:38:52 GMT
+      - Wed, 01 Mar 2023 12:44:16 GMT
       Server:
       - cloudflare
       Server-Timing:
-      - cf-q-config;dur=4.9999998736894e-06
+      - cf-q-config;dur=8.000002708286e-06
       Transfer-Encoding:
       - chunked
       alt-svc:
@@ -1720,10 +1720,10 @@ interactions:
       request-context:
       - appId=cid-v1:bdd405ef-7a83-4f9a-9228-0107d7f4bc90
       set-cookie:
-      - preventRedirectLoop=false; expires=Tue, 28 Feb 2023 12:38:52 GMT; domain=.finviz.com;
+      - preventRedirectLoop=false; expires=Tue, 28 Feb 2023 12:44:15 GMT; domain=.finviz.com;
         path=/
       - screenerUrl=screener.ashx%3Fv%3D111%26f%3Dcap_microover%2Cfa_pc_u5%2Csh_curvol_o300%2Csh_price_u3%2Cta_rsi_os40%26ft%3D4%26o%3Dticker%26r%3D41;
-        expires=Fri, 01 Mar 2024 12:38:52 GMT; domain=.finviz.com; path=/
+        expires=Fri, 01 Mar 2024 12:44:15 GMT; domain=.finviz.com; path=/
       vary:
       - Accept-Encoding
       x-frame-options:
@@ -2271,14 +2271,14 @@ interactions:
         rtlfmM+ADWK8fPU6oTqYIJv0LmGjzNRrukUDo2dhl5i2x3xb5mJ2CdapXRuadu0373iEca9bb8ld
         GROsNhutrqLoYl0kjVaPtNS6LNXrdUVqKPVWq6UIyLR90ndN/74teAOsSXJVxIOzX6xmvf75cvBD
         8Iv+k9hoXuuX2Pr5b/73f+73h42bofXZd8TP1plK/vJV/HDXs4fa/deffxi9+/PH73+7uKTU9Q2P
-        3PS8q5smPe31371tt6PdTr1XDTluH/1DcPH9B0M4ERpYkhoabjX0Vl1USF2oCD79SmzhRCCa0hOb
+        3PS8q5smPe31371tt6PdTr1XDTluH/1DcPH9B0M4ERpYkhpGkxBD66nNVlOoCD79SmzhRCCa0hOb
         vbreIqLa7RmtRl1siJLY1IjeUrqqUBFGxIWBK5wIsA6oyTVRqAieKZxIovjPI6S71POoa/ZNuy1g
-        m9r3Qxp4GRf84M0x7EvAfwf+0Ooc/H8AAAD//wMAb7QefNPbAwA=
+        m9r3Qxp4GRf84M0x7EvAfwf+0Ooc/H8AAAD//wMAC35aedPbAwA=
     headers:
       CF-Cache-Status:
       - DYNAMIC
       CF-RAY:
-      - 7a1175a97c9603e6-LIS
+      - 7a117d8eed5f4898-LIS
       Cache-Control:
       - no-cache
       Connection:
@@ -2288,11 +2288,11 @@ interactions:
       Content-Type:
       - text/html; charset=utf-8
       Date:
-      - Wed, 01 Mar 2023 12:38:53 GMT
+      - Wed, 01 Mar 2023 12:44:17 GMT
       Server:
       - cloudflare
       Server-Timing:
-      - cf-q-config;dur=6.0000002122251e-06
+      - cf-q-config;dur=8.000002708286e-06
       Transfer-Encoding:
       - chunked
       alt-svc:
@@ -2300,10 +2300,10 @@ interactions:
       request-context:
       - appId=cid-v1:bdd405ef-7a83-4f9a-9228-0107d7f4bc90
       set-cookie:
-      - preventRedirectLoop=false; expires=Tue, 28 Feb 2023 12:38:53 GMT; domain=.finviz.com;
+      - preventRedirectLoop=false; expires=Tue, 28 Feb 2023 12:44:17 GMT; domain=.finviz.com;
         path=/
       - screenerUrl=screener.ashx%3Fv%3D111%26f%3Dcap_microover%2Cfa_pc_u5%2Csh_curvol_o300%2Csh_price_u3%2Cta_rsi_os40%26ft%3D4%26o%3Dticker%26r%3D61;
-        expires=Fri, 01 Mar 2024 12:38:53 GMT; domain=.finviz.com; path=/
+        expires=Fri, 01 Mar 2024 12:44:17 GMT; domain=.finviz.com; path=/
       vary:
       - Accept-Encoding
       x-frame-options:
@@ -2808,14 +2808,14 @@ interactions:
         lrg+mCh0EYkBm0GdUAlwCSR+u2K/MJ0BG8Q4PHoeUx1kyLLaJVxbMnu1nkUDo29hl0CGRNBtmYrZ
         JbhH7drItGufvZMxxv1uo612VUxwvdVsdzWtJzdk0mz3SbveUJVGo6EpTa3Rbrc1CUH0lYFr+lPI
         S4h1Ra3KePj6d6vVaHy8GP45+L33q9xsXfUusPXb3/wf/zQYjJrXI+uj78gfrdd18ssX+fy2b4/0
-        6Zff/jz+6U/vf/z87oJS1zc8ct33Lq9b9FV/8NPLs7Nw263Xr3KOzyr/kFw8PTekU6mJFaWpd+V+
-        X+nKGmlIx5JPvxBbOpWIrvXlVr/RaxO53u0b7WZDbsqK3NJJr61169KxNCYuvLjSqQR2QE2tydKx
-        5JkSZBL6ZwX1XOp51DUHpn0mYZva0xENvJQKfvDiBLzg8Hfoj6zOwf8HAAD//wMAfX955glRAwA=
+        6Zff/jz+6U/vf/z87oJS1zc8ct33Lq9b9FV/8NPLs7Nw263Xr3KOzyr/kFw8PTekU6mJFaVptBvN
+        rtyst9ot6Vjy6RdiS6cS0bW+3Oo3em0i17t9o91syE1ZkVs66bW1bl06lsbEhRdXOpXADqipNVk6
+        ljxTgkxC/6ygnks9j7rmwLTPJGxTezqigZdSwQ9enIAXHP4O/ZHVOfj/AAAA//8DAJXZX1EJUQMA
     headers:
       CF-Cache-Status:
       - DYNAMIC
       CF-RAY:
-      - 7a1175b0ff1b03e6-LIS
+      - 7a117d967b074898-LIS
       Cache-Control:
       - no-cache
       Connection:
@@ -2825,11 +2825,11 @@ interactions:
       Content-Type:
       - text/html; charset=utf-8
       Date:
-      - Wed, 01 Mar 2023 12:38:55 GMT
+      - Wed, 01 Mar 2023 12:44:18 GMT
       Server:
       - cloudflare
       Server-Timing:
-      - cf-q-config;dur=8.0000008892966e-06
+      - cf-q-config;dur=8.000002708286e-06
       Transfer-Encoding:
       - chunked
       alt-svc:
@@ -2837,10 +2837,10 @@ interactions:
       request-context:
       - appId=cid-v1:bdd405ef-7a83-4f9a-9228-0107d7f4bc90
       set-cookie:
-      - preventRedirectLoop=false; expires=Tue, 28 Feb 2023 12:38:54 GMT; domain=.finviz.com;
+      - preventRedirectLoop=false; expires=Tue, 28 Feb 2023 12:44:18 GMT; domain=.finviz.com;
         path=/
       - screenerUrl=screener.ashx%3Fv%3D111%26f%3Dcap_microover%2Cfa_pc_u5%2Csh_curvol_o300%2Csh_price_u3%2Cta_rsi_os40%26ft%3D4%26o%3Dticker%26r%3D81;
-        expires=Fri, 01 Mar 2024 12:38:54 GMT; domain=.finviz.com; path=/
+        expires=Fri, 01 Mar 2024 12:44:18 GMT; domain=.finviz.com; path=/
       vary:
       - Accept-Encoding
       x-frame-options:
