@@ -35,7 +35,7 @@ Install the OpenBB Terminal on Windows (10 or greater):
 
 **Step 1:** Download the file by clicking on the button.
 
-<InstallerButton type="windows" href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v2.4.1/Windows.OpenBB.Terminal.v2.4.1.exe" label="Windows Installer" />
+<InstallerButton type="windows" href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v2.5.0/Windows.OpenBB.Terminal.v2.5.0.exe" label="Windows Installer" />
 
 #### 2. Run Installer
 
@@ -60,7 +60,7 @@ softwareupdate --install-rosetta
 ```
 
 <p>
-<InstallerButton href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v2.4.1/x86.64.MacOS.OpenBB.Terminal.v2.4.1.dmg" label="Mac Intel Installer" />  <InstallerButton href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v2.4.1/ARM64.MacOS.OpenBB.Terminal.v2.4.1.dmg" label="Mac M1 Installer" />
+<InstallerButton href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v2.5.0/x86.64.MacOS.OpenBB.Terminal.v2.5.0.dmg" label="Mac Intel Installer" />  <InstallerButton href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v2.5.0/ARM64.MacOS.OpenBB.Terminal.v2.5.0.dmg" label="Mac M1 Installer" />
 </p>
 
 #### 1.  Download
