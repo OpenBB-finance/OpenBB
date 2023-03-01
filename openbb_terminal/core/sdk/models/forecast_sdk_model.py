@@ -78,7 +78,6 @@ class ForecastRoot(Category):
 
         if not lib.FORECASTING_TOOLKIT_ENABLED:
             # pylint: disable=C0415
-
             from openbb_terminal.rich_config import console
 
             console.print(lib.FORECASTING_TOOLKIT_WARNING)
@@ -150,3 +149,4 @@ class ForecastRoot(Category):
             self.theta_chart = lib.forecast_theta_view.display_theta_forecast
             self.trans = lib.forecast_trans_model.get_trans_data
             self.trans_chart = lib.forecast_trans_view.display_trans_forecast
+            self.whisper = lib.forecast_whisper_model.transcribe_and_summarize
