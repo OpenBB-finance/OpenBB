@@ -52,7 +52,7 @@ def view_available_presets(preset: str):
 @log_start_end(log=logger)
 def view_screener_output(
     preset: str,
-    limit: int = 20,
+    limit: int = 25,
     export: str = "",
     sheet_name: Optional[str] = None,
 ) -> List:
@@ -92,13 +92,14 @@ def view_screener_output(
 
     print_rich_table(
         df_res,
-        headers=list(df_res.columns),
+        headers=df_res.columns.tolist(),
         show_index=False,
         title="Screener Output",
+        floatfmt=".4f",
         export=bool(export),
     )
 
-    return list(set(df_res["S"].values.tolist()))
+    return list(set(df_res["Ticker"].values))
 
 
 # pylint:disable=too-many-arguments
@@ -160,9 +161,10 @@ def view_historical_greeks(
     if raw:
         print_rich_table(
             df.tail(limit),
-            headers=list(df.columns),
+            headers=df.columns.tolist(),
             title="Historical Greeks",
             show_index=True,
+            floatfmt=".4f",
             export=bool(export),
         )
 

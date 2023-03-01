@@ -8,10 +8,12 @@ from typing import Optional, Union
 import pandas as pd
 
 from openbb_terminal import OpenBBFigure
-from openbb_terminal.common.technical_analysis import ta_helpers
+from openbb_terminal.common.technical_analysis import ta_helpers, volatility_model
 from openbb_terminal.core.plots.plotly_ta.ta_class import PlotlyTA
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import export_data
+from openbb_terminal.helper_funcs import (
+    export_data,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -231,3 +233,113 @@ def display_atr(
     )
 
     return fig.show(external=external_axes)
+
+
+@log_start_end(log=logger)
+def display_cones(
+    data: pd.DataFrame,
+    symbol: str = "",
+    lower_q: float = 0.25,
+    upper_q: float = 0.75,
+    model: str = "STD",
+    is_crypto: bool = False,
+    export: str = "",
+    sheet_name: Optional[str] = None,
+    external_axes: bool = False,
+):
+    """Plots the realized volatility quantiles for the loaded ticker.
+    The model used to calculate the volatility is selectable.
+
+    Parameters
+    ----------
+    data: pd.DataFrame
+        DataFrame of OHLC prices.
+    symbol: str (default = "")
+        The ticker symbol.
+    lower_q: float (default = 0.25)
+        The lower quantile to calculate for.
+    upper_q: float (default = 0.75)
+        The upper quantile to for.
+    is_crypto: bool (default = False)
+        If true, volatility is calculated for 365 days instead of 252.
+    model: str (default = "STD")
+        The model to use for volatility calculation. Choices are:
+        ["STD", "Parkinson", "Garman-Klass", "Hodges-Tompkins", "Rogers-Satchell", "Yang-Zhang"]
+
+            Standard deviation measures how widely returns are dispersed from the average return.
+            It is the most common (and biased) estimator of volatility.
+
+            Parkinson volatility uses the high and low price of the day rather than just close to close prices.
+            It is useful for capturing large price movements during the day.
+
+            Garman-Klass volatility extends Parkinson volatility by taking into account the opening and closing price.
+            As markets are most active during the opening and closing of a trading session;
+            it makes volatility estimation more accurate.
+
+            Hodges-Tompkins volatility is a bias correction for estimation using an overlapping data sample.
+            It produces unbiased estimates and a substantial gain in efficiency.
+
+            Rogers-Satchell is an estimator for measuring the volatility with an average return not equal to zero.
+            Unlike Parkinson and Garman-Klass estimators, Rogers-Satchell incorporates a drift term,
+            mean return not equal to zero.
+
+            Yang-Zhang volatility is the combination of the overnight (close-to-open volatility).
+            It is a weighted average of the Rogers-Satchell volatility and the open-to-close volatility.
+    export : str
+        Format of export file
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
+
+    Examples
+    --------
+    df_ta = openbb.stocks.load('XLY')
+    openbb.ta.cones_chart(data = df_ta, symbol = 'XLY')
+
+    df_ta = openbb.stocks.load('XLE')
+    openbb.ta.cones_chart(data = df_ta, symbol = "XLE", lower_q = 0.10, upper_q = 0.90)
+
+    openbb.ta.cones_chart(data = df_ta, symbol = "XLE", model = "Garman-Klass")
+    """
+
+    if lower_q > upper_q:
+        lower_q, upper_q = upper_q, lower_q
+
+    df_ta = volatility_model.cones(
+        data, lower_q=lower_q, upper_q=upper_q, is_crypto=is_crypto, model=model
+    )
+    lower_q_label = str(int(lower_q * 100))
+    upper_q_label = str(int(upper_q * 100))
+    if not df_ta.empty:
+        fig = OpenBBFigure(xaxis_title="Window of Time (in days)")
+        fig.set_title(f"{symbol} - Realized Volatility Cones - {model} Model", x=0.5)
+
+        fig.add_scatter(x=df_ta.index, y=df_ta.Min, name="Min")
+        fig.add_scatter(x=df_ta.index, y=df_ta.Max, name="Max")
+        fig.add_scatter(x=df_ta.index, y=df_ta.Median, name="Median")
+        fig.add_scatter(
+            x=df_ta.index,
+            y=df_ta["Upper " f"{upper_q_label}" "%"],
+            name="Upper " f"{upper_q_label}" "%",
+        )
+        fig.add_scatter(
+            x=df_ta.index,
+            y=df_ta["Lower " f"{lower_q_label}" "%"],
+            name="Lower " f"{lower_q_label}" "%",
+        )
+        fig.add_scatter(x=df_ta.index, y=df_ta.Realized, name="Realized")
+
+        fig.update_xaxes(tickmode="array", tickvals=df_ta.index, ticktext=df_ta.index)
+        fig.horizontal_legend(x=1, y=1, yanchor="top")
+
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
+            "cones",
+            df_ta,
+            sheet_name,
+            fig,
+        )
+
+        return fig.show(external=external_axes)

@@ -84,6 +84,7 @@ class TechnicalAnalysisController(StockBaseController):
         "demark",
         "atr",
         "multi",
+        "cones",
     ]
     PATH = "/stocks/ta/"
     CHOICES_GENERATION = True
@@ -132,32 +133,35 @@ class TechnicalAnalysisController(StockBaseController):
         mt.add_raw("\n")
         mt.add_cmd("recom")
         mt.add_cmd("summary")
+        mt.add_cmd("tv")
+        mt.add_cmd("view")
         mt.add_raw("\n")
         mt.add_info("_overlap_")
         mt.add_cmd("ema")
+        mt.add_cmd("hma")
         mt.add_cmd("sma")
         mt.add_cmd("wma")
-        mt.add_cmd("hma")
-        mt.add_cmd("zlma")
         mt.add_cmd("vwap")
+        mt.add_cmd("zlma")
         mt.add_info("_momentum_")
         mt.add_cmd("cci")
-        mt.add_cmd("macd")
-        mt.add_cmd("rsi")
-        mt.add_cmd("rsp")
-        mt.add_cmd("stoch")
-        mt.add_cmd("fisher")
         mt.add_cmd("cg")
         mt.add_cmd("clenow")
         mt.add_cmd("demark")
+        mt.add_cmd("macd")
+        mt.add_cmd("fisher")
+        mt.add_cmd("rsi")
+        mt.add_cmd("rsp")
+        mt.add_cmd("stoch")
         mt.add_info("_trend_")
         mt.add_cmd("adx")
         mt.add_cmd("aroon")
         mt.add_info("_volatility_")
+        mt.add_cmd("atr")
         mt.add_cmd("bbands")
+        mt.add_cmd("cones")
         mt.add_cmd("donchian")
         mt.add_cmd("kc")
-        mt.add_cmd("atr")
         mt.add_info("_volume_")
         mt.add_cmd("ad")
         mt.add_cmd("adosc")
@@ -1709,4 +1713,72 @@ class TechnicalAnalysisController(StockBaseController):
                 self.ticker,
                 ns_parser.period,
                 ns_parser.export,
+            )
+
+    @log_start_end(log=logger)
+    def call_cones(self, other_args: List[str]):
+        """Process cones command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="cones",
+            description="""
+            Calculates the realized volatility quantiles over rolling windows of time.
+            The model for calculating volatility is selectable.
+            """,
+        )
+        parser.add_argument(
+            "-l",
+            "--lower_q",
+            action="store",
+            dest="lower_q",
+            type=float,
+            default=0.25,
+            help="The lower quantile value for calculations.",
+        )
+        parser.add_argument(
+            "-u",
+            "--upper_q",
+            action="store",
+            dest="upper_q",
+            type=float,
+            default=0.75,
+            help="The upper quantile value for calculations.",
+        )
+        parser.add_argument(
+            "-m",
+            "--model",
+            action="store",
+            dest="model",
+            default="STD",
+            choices=volatility_model.VOLATILITY_MODELS,
+            type=str,
+            help="The model used to calculate realized volatility.",
+        )
+        parser.add_argument(
+            "--is_crypto",
+            dest="is_crypto",
+            action="store_true",
+            default=False,
+            help="If True, volatility is calculated for 365 days instead of 252.",
+        )
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+        if ns_parser:
+            if not self.ticker:
+                no_ticker_message()
+                return
+
+            volatility_view.display_cones(
+                data=self.stock,
+                symbol=self.ticker,
+                lower_q=ns_parser.lower_q,
+                upper_q=ns_parser.upper_q,
+                model=ns_parser.model,
+                is_crypto=ns_parser.is_crypto,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )

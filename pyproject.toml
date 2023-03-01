@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb"
-version = "2.4.1"
+version = "2.5.0"
 description = "Investment Research for Everyone, Anywhere."
 license = "MIT"
 authors = ["Didier Rodrigues Lopes"]
@@ -52,7 +52,7 @@ bt = "^0.2.9"
 vaderSentiment = "3.3.2"
 GitPython = "^3.1.17"
 fred = "^3.1"
-financedatabase = "^2.0.7"
+financedatabase = "^2.0.8"
 holidays = "^0.14.2"
 degiro-connector = "^2.0.3"
 python-binance = "^1.0.15"
@@ -92,7 +92,7 @@ ipyflex = "^0.2.4"
 "ruamel.yaml" = "^0.17.21"
 setuptools = "<65.5.0"
 numpy = "1.23.4"
-papermill = { git = "https://github.com/nteract/papermill.git", branch = "main" }
+papermill = "2.4"
 stocksera = "^0.1.21"
 ipython = "8.5.0"
 protobuf = "3.20.1"
@@ -115,13 +115,17 @@ tenacity = "<8.0.0"  # Finviz, papermill and plotly dep. Pinned to avoid pip res
 intrinio-sdk = "^6.22.2"
 yahooquery = "^2.3.0"
 tweepy = "^4.12.1"
+openai-whisper = {version = "^20230124", optional = true}
+setuptools-rust = {version = "^1.5.2", optional = true}
+transformers = {version = "^4.26.1", optional = true}
+yt-dlp = {version = "^2023.2.17", optional = true}
 
 
 
 [tool.poetry.extras]
-forecast = ["torch", "pytorch-lightning", "u8darts", "lightgbm"]
+forecast = ["torch", "pytorch-lightning", "u8darts", "lightgbm", "openai-whisper", "setuptools-rust", "transformers", "yt-dlp"]
 optimization = ["Riskfolio-Lib"]
-all = ["torch", "pytorch-lightning", "u8darts", "Riskfolio-Lib","lightgbm"]
+all = ["torch", "pytorch-lightning", "u8darts", "Riskfolio-Lib", "lightgbm", "openai-whisper", "setuptools-rust", "transformers", "yt-dlp"]
 jupyterlab = ["jupyterlab-code-formatter", "jupyterlab-lsp", "jedi-language-server"]
 installer = ["pyinstaller"]
 doc = ["docstring-parser"]

@@ -65,5 +65,9 @@ darts_logs/
 custom_imports/*.csv
 custom_imports/*/*.csv
 
+# cache
+cache/
+
 # lightning logs
 lightning_logs/
+

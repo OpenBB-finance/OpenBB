@@ -1,4 +1,4 @@
-# -*- mode: python ; coding: utf-8 -*-
+# -*- mode: python ; coding: utf-8 -*-  # noqa
 import os
 import shutil
 import subprocess
@@ -65,6 +65,8 @@ added_files = [
     (os.path.join(pathex, "user_agent"), "user_agent"),
     (os.path.join(pathex, "vaderSentiment"), "vaderSentiment"),
     (os.path.join(pathex, "prophet"), "prophet"),
+    (os.path.join(pathex, "whisper"), "whisper"),
+    (os.path.join(pathex, "transformers"), "transformers"),
     (
         os.path.join(pathex, "linearmodels", "datasets"),
         os.path.join("linearmodels", "datasets"),
@@ -86,9 +88,11 @@ added_files = [
 ]
 
 if is_win:
-    print("Adding scipy.libs to bundle")
-    added_files.append(
-        (os.path.join(f"{os.path.dirname(scipy.__file__)}.libs"), "scipy.libs/"),
+    added_files.extend(
+        [
+            (os.path.join(f"{os.path.dirname(scipy.__file__)}.libs"), "scipy.libs/"),
+            (os.path.join(pathex, "frozendict", "version.py"), "frozendict"),
+        ]
     )
 
 
@@ -115,8 +119,15 @@ hidden_imports = [
     "debugpy",
     "pywry.pywry",
     "scipy.sparse.linalg._isolve._iterative",
+    "whisper",
+    "transformers",
+    "yt_dlp",
+    "textwrap3",
 ]
 
+
+if is_win:
+    hidden_imports.append("frozendict")
 
 analysis_kwargs = dict(
     scripts=[os.path.join(os.getcwd(), "terminal.py")],

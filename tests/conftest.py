@@ -23,10 +23,15 @@ from openbb_terminal import (
     feature_flags as obbff,
     helper_funcs,
 )
-from openbb_terminal.base_helpers import strtobool
+from openbb_terminal.base_helpers import (
+    load_dotenv_and_reload_configs,
+    strtobool,
+)
 
 # pylint: disable=redefined-outer-name
 
+
+load_dotenv_and_reload_configs()
 
 DISPLAY_LIMIT: int = 500
 EXTENSIONS_ALLOWED: List[str] = ["csv", "json", "txt"]

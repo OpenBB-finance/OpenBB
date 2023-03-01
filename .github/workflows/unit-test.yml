@@ -344,6 +344,7 @@ jobs:
         shell: bash -l {0}
         run: |
           pip install --requirement requirements-full.txt
+          pip uninstall Brotli -y
 
       - name: List installed packages (Bash)
         shell: bash -l {0}

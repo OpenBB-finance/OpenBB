@@ -440,6 +440,7 @@ en:
   stocks/ta/donchian: donchian channels
   stocks/ta/kc: keltner channels
   stocks/ta/atr: average true range
+  stocks/ta/cones: realized volatility cones
   stocks/ta/_volume_: Volume
   stocks/ta/ad: accumulation/distribution line
   stocks/ta/adosc: chaikin oscillator
@@ -647,6 +648,7 @@ en:
   crypto/ta/vwap: volume weighted average price
   crypto/ta/_momentum_: Momentum
   crypto/ta/cci: commodity channel index
+  crypto/ta/demark: Tom Demark's sequential indicator
   crypto/ta/macd: moving average convergence/divergence
   crypto/ta/rsi: relative strength index
   crypto/ta/stoch: stochastic oscillator
@@ -656,7 +658,9 @@ en:
   crypto/ta/adx: average directional movement index
   crypto/ta/aroon: aroon indicator
   crypto/ta/_volatility_: Volatility
+  crypto/ta/atr: average true range
   crypto/ta/bbands: bollinger bands
+  crypto/ta/cones: realized volatility cones
   crypto/ta/donchian: donchian channels
   crypto/ta/kc: keltner channels
   crypto/ta/_volume_: Volume
@@ -1122,4 +1126,6 @@ en:
   forecast/nhits: Neural Hierarchical Interpolation (feat. Past covariates)
   forecast/_anomaly_: Anomaly Detection
   forecast/anom: Quantile Anomaly Detector
+  forecast/_misc_: Miscellaneous AI Tools
+  forecast/whisper: Transcribe, translate and summarize videos
   forecast/_comingsoon_: Coming Soon

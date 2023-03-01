@@ -181,7 +181,6 @@ econometrics.root,econometrics_model.get_root,econometrics_view.display_root
 economy.available_indices,economy_yfinance_model.get_available_indices,
 economy.bigmac,economy_nasdaq_model.get_big_mac_indices,economy_nasdaq_view.display_big_mac_index
 economy.country_codes,economy_nasdaq_model.get_country_codes,
-economy.cpi,economy_fred_model.get_cpi,economy_fred_view.plot_cpi
 economy.currencies,economy_wsj_model.global_currencies,
 economy.events,economy_nasdaq_model.get_economic_calendar,
 economy.fred,economy_fred_model.get_aggregated_series_data,economy_fred_view.display_fred_series
@@ -204,6 +203,7 @@ economy.search_index,economy_yfinance_model.get_search_indices,
 economy.spectrum,economy_finviz_view.display_spectrum,
 economy.treasury,economy_econdb_model.get_treasuries,economy_econdb_view.show_treasuries
 economy.treasury_maturities,economy_econdb_model.get_treasury_maturities,
+economy.cpi,economy_fred_model.get_cpi,economy_fred_view.plot_cpi
 economy.usbonds,economy_wsj_model.us_bonds,
 economy.valuation,economy_finviz_model.get_valuation_data,
 etf.candle,stocks_helper.display_candle,
@@ -541,6 +541,7 @@ ta.bbands,common_ta_volatility_model.bbands,common_ta_volatility_view.display_bb
 ta.cci,common_ta_momentum_model.cci,common_ta_momentum_view.display_cci
 ta.cg,common_ta_momentum_model.cg,common_ta_momentum_view.display_cg
 ta.clenow,common_ta_momentum_model.clenow_momentum,common_ta_momentum_view.display_clenow_momentum
+ta.cones,common_ta_volatility_model.cones,common_ta_volatility_view.display_cones
 ta.demark,common_ta_momentum_model.demark_seq,common_ta_momentum_view.display_demark
 ta.donchian,common_ta_volatility_model.donchian,common_ta_volatility_view.display_donchian
 ta.ema,common_ta_overlap_model.ema,
@@ -552,6 +553,13 @@ ta.ma,common_ta_overlap_view.view_ma,common_ta_overlap_view.view_ma
 ta.macd,common_ta_momentum_model.macd,common_ta_momentum_view.display_macd
 ta.obv,common_ta_volume_model.obv,common_ta_volume_view.display_obv
 ta.rsi,common_ta_momentum_model.rsi,common_ta_momentum_view.display_rsi
+ta.rvol_garman_klass,common_ta_volatility_model.garman_klass,
+ta.rvol_hodges_tompkins,common_ta_volatility_model.hodges_tompkins,
+ta.rvol_parkinson,common_ta_volatility_model.parkinson,
+ta.rvol_rogers_satchell,common_ta_volatility_model.rogers_satchell,
+ta.rvol_std,common_ta_volatility_model.standard_deviation,
+ta.rvol_yang_zhang,common_ta_volatility_model.yang_zhang,
+ta.standard_deviation,common_ta_volatility_model.standard_deviation,
 ta.sma,common_ta_overlap_model.sma,
 ta.stoch,common_ta_momentum_model.stoch,common_ta_momentum_view.display_stoch
 ta.vwap,common_ta_overlap_model.vwap,common_ta_overlap_view.view_vwap
