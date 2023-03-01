@@ -64,7 +64,6 @@ def get_spy_sector_contributions(
     """
 
     # Sector Map
-
     sectors_ticker = "SPY"
 
     # Load in info
@@ -73,6 +72,7 @@ def get_spy_sector_contributions(
 
     # reformat Data
     weights: Dict[str, dict] = {"SPY": {}}
+
     for sector in weight_data:
         weight_formatted = float(sector["weightPercentage"].strip("%")) / 100
         weights[sectors_ticker][sector["sector"]] = weight_formatted

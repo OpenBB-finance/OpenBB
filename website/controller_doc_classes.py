@@ -325,7 +325,9 @@ class LoadControllersDoc:
         """Gets all controllers"""
         for trailmap, module in self._get_modules().items():
             for name, obj in getmembers(module):
-                if name != "TerminalController" and "BaseController" not in name:
+                if (  # noqa: SIM102
+                    name != "TerminalController" and "BaseController" not in name
+                ):  # noqa: SIM102
                     if isclass(obj) and issubclass(obj, BaseController):
                         if trailmap not in self.controller_docs:
                             ctrl = ControllerDoc(obj, trailmap)

@@ -7,7 +7,7 @@ from typing import Any, Dict, Literal, Optional, Union
 
 from docstring_parser import parse
 
-from openbb_terminal.sdk_core.trailmap import Trailmap, get_trailmaps
+from openbb_terminal.core.sdk.trailmap import Trailmap, get_trailmaps
 from website.controller_doc_classes import sub_names_full as subnames
 
 website_path = Path(__file__).parent.absolute()
@@ -286,9 +286,8 @@ def generate_index_markdown(
         path = Path()
     for key in d:
         if isinstance(d[key], dict):
-            if path and path.name != key:
-                if key != "":
-                    markdown += f"\n{'#' * level} {key}\n"
+            if path and path.name != key and key != "":
+                markdown += f"\n{'#' * level} {key}\n"
             markdown = generate_index_markdown(markdown, d[key], level + 1, path)
         else:
             markdown += f"- [{key}]({d[key]})\n"

@@ -102,9 +102,8 @@ def get_arg_choices(report_name: str, arg_name: str) -> Union[List[str], None]:
     """
 
     choices = None
-    if report_name in ("forex", "portfolio"):
-        if "--" + arg_name in REPORT_CHOICES[report_name]:  # type: ignore
-            choices = list(REPORT_CHOICES[report_name]["--" + arg_name].keys())  # type: ignore
+    if report_name in ("forex", "portfolio") and "--" + arg_name in REPORT_CHOICES[report_name]:  # type: ignore
+        choices = list(REPORT_CHOICES[report_name]["--" + arg_name].keys())  # type: ignore
     return choices
 
 
@@ -282,7 +281,7 @@ def create_output_path(input_path: str, parameters_dict: Dict[str, Any]) -> str:
         + "_"
         + f"{report_name}{args_to_output}"
     )
-    output_path = report_output_name.replace(".", "_")
+    report_output_name = report_output_name.replace(".", "_")
     output_path = str(USER_REPORTS_DIRECTORY / report_output_name)
 
     return output_path

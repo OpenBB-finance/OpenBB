@@ -174,10 +174,11 @@ def print_insider_filter(
     export : str
         Format to export data
     """
-    if symbol:
-        link = f"http://openinsider.com/screener?s={symbol}"
-    else:
-        link = get_open_insider_link(preset)
+    link = (
+        f"http://openinsider.com/screener?s={symbol}"
+        if symbol
+        else get_open_insider_link(preset)
+    )
 
     if not link:
         return
@@ -252,10 +253,7 @@ def print_insider_filter(
             console.print(d_trade_types[tradetype])
 
     if export:
-        if symbol:
-            cmd = "stats"
-        else:
-            cmd = "filter"
+        cmd = "stats" if symbol else "filter"
 
         export_data(
             export,

@@ -9,9 +9,8 @@ import os.path
 from pathlib import Path
 from typing import List, Optional, Union
 
-import pytz
-
 # IMPORTATION THIRDPARTY
+import pytz
 from dotenv import set_key
 
 # IMPORTATION INTERNAL
@@ -28,6 +27,7 @@ from openbb_terminal.core.config.paths import (
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
+    check_positive,
     get_flair,
     get_user_timezone_or_invalid,
     parse_and_split_input,
@@ -63,6 +63,8 @@ class SettingsController(BaseController):
         "source",
         "flair",
         "colors",
+        "tbnews",
+        "tweetnews",
     ]
     PATH = "/settings/"
     CHOICES_GENERATION = True
@@ -165,6 +167,15 @@ class SettingsController(BaseController):
         mt.add_raw("\n")
         mt.add_param("_data_source", obbff.PREFERRED_DATA_SOURCE_FILE)
         mt.add_raw("\n")
+        mt.add_setting("tbnews", obbff.TOOLBAR_TWEET_NEWS)
+        if obbff.TOOLBAR_TWEET_NEWS:
+            mt.add_raw("\n")
+            mt.add_cmd("tweetnews")
+            mt.add_raw("\n")
+            mt.add_param("_tbnu", obbff.TOOLBAR_TWEET_NEWS_SECONDS_BETWEEN_UPDATES)
+            mt.add_param("_nttli", obbff.TOOLBAR_TWEET_NEWS_NUM_LAST_TWEETS_TO_READ)
+            mt.add_param("_tatt", obbff.TOOLBAR_TWEET_NEWS_ACCOUNTS_TO_TRACK)
+            mt.add_param("_tk", obbff.TOOLBAR_TWEET_NEWS_KEYWORDS)
         console.print(text=mt.menu_text, menu="Settings")
 
     @staticmethod
@@ -583,69 +594,162 @@ class SettingsController(BaseController):
             other_args.insert(0, "--folder")
         ns_parser = self.parse_simple_args(parser, other_args)
 
-        if ns_parser:
-            if other_args or self.queue:
-                if other_args:
-                    userdata_path = ""
+        if ns_parser and (other_args or self.queue):
+            userdata_path = "" if other_args else "/"
+
+            userdata_path += "/".join([ns_parser.folder] + self.queue)
+            self.queue = []
+
+            userdata_path = userdata_path.replace("'", "").replace('"', "")
+
+            default_path = Path.home() / "OpenBBUserData"
+
+            success_userdata = False
+            while not success_userdata:
+                if userdata_path.upper() == "DEFAULT":
+                    console.print(
+                        f"User data to be saved in the default folder: '{default_path}'"
+                    )
+                    self.set_path_config("OPENBB_USER_DATA_DIRECTORY", default_path)
+                    success_userdata = True
                 else:
-                    # Re-add the initial slash for an absolute directory provided
-                    userdata_path = "/"
-
-                userdata_path += "/".join([ns_parser.folder] + self.queue)
-                self.queue = []
-
-                userdata_path = userdata_path.replace("'", "").replace('"', "")
-
-                default_path = Path.home() / "OpenBBUserData"
-
-                success_userdata = False
-                while not success_userdata:
-                    if userdata_path.upper() == "DEFAULT":
-                        console.print(
-                            f"User data to be saved in the default folder: '{default_path}'"
+                    # If the path selected does not start from the user root, give relative location from root
+                    if userdata_path[0] == "~":
+                        userdata_path = userdata_path.replace(
+                            "~", os.path.expanduser("~")
                         )
-                        self.set_path_config("OPENBB_USER_DATA_DIRECTORY", default_path)
+
+                    # Check if the directory exists
+                    if os.path.isdir(userdata_path):
+                        console.print(
+                            f"User data to be saved in the selected folder: '{userdata_path}'"
+                        )
+                        self.set_path_config(
+                            "OPENBB_USER_DATA_DIRECTORY", userdata_path
+                        )
                         success_userdata = True
                     else:
-                        # If the path selected does not start from the user root, give relative location from root
-                        if userdata_path[0] == "~":
-                            userdata_path = userdata_path.replace(
-                                "~", os.path.expanduser("~")
-                            )
+                        console.print(
+                            "[red]The path selected to user data does not exist![/red]\n"
+                        )
+                        user_opt = "None"
+                        while user_opt not in ("Y", "N"):
+                            user_opt = input(
+                                f"Do you wish to create folder: `{userdata_path}` ? [Y/N]\n"
+                            ).upper()
 
-                        # Check if the directory exists
-                        if os.path.isdir(userdata_path):
+                        if user_opt == "Y":
+                            os.makedirs(userdata_path)
                             console.print(
-                                f"User data to be saved in the selected folder: '{userdata_path}'"
+                                f"[green]Folder '{userdata_path}' successfully created.[/green]"
                             )
                             self.set_path_config(
                                 "OPENBB_USER_DATA_DIRECTORY", userdata_path
                             )
-                            success_userdata = True
                         else:
+                            # Do not update userdata_folder path since we will keep the same as before
                             console.print(
-                                "[red]The path selected to user data does not exist![/red]\n"
+                                "[yellow]User data to keep being saved in "
+                                + f"the selected folder: {str(paths.USER_DATA_DIRECTORY)}[/yellow]"
                             )
-                            user_opt = "None"
-                            while user_opt not in ("Y", "N"):
-                                user_opt = input(
-                                    f"Do you wish to create folder: `{userdata_path}` ? [Y/N]\n"
-                                ).upper()
-
-                            if user_opt == "Y":
-                                os.makedirs(userdata_path)
-                                console.print(
-                                    f"[green]Folder '{userdata_path}' successfully created.[/green]"
-                                )
-                                self.set_path_config(
-                                    "OPENBB_USER_DATA_DIRECTORY", userdata_path
-                                )
-                            else:
-                                # Do not update userdata_folder path since we will keep the same as before
-                                console.print(
-                                    "[yellow]User data to keep being saved in "
-                                    + f"the selected folder: {str(paths.USER_DATA_DIRECTORY)}[/yellow]"
-                                )
-                            success_userdata = True
+                        success_userdata = True
 
         console.print()
+
+    @log_start_end(log=logger)
+    def call_tbnews(self, other_args):
+        """Process tbnews command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="tweetnews",
+            description="Tweak tweet news toolbal parameters",
+        )
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            if obbff.TOOLBAR_TWEET_NEWS:
+                console.print("Will take effect when running terminal next.")
+            obbff.TOOLBAR_TWEET_NEWS = not obbff.TOOLBAR_TWEET_NEWS
+            set_key(
+                USER_ENV_FILE,
+                "OPENBB_TOOLBAR_TWEET_NEWS",
+                str(obbff.TOOLBAR_TWEET_NEWS),
+            )
+
+    @log_start_end(log=logger)
+    def call_tweetnews(self, other_args: List[str]):
+        """Process tweetnews command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="tweetnews",
+            description="Tweak tweet news parameters",
+        )
+        parser.add_argument(
+            "-t",
+            "--time",
+            type=check_positive,
+            required=False,
+            dest="time",
+            help="Time (in seconds) between tweet news updates, e.g. 300",
+        )
+        parser.add_argument(
+            "-a",
+            "--accounts",
+            type=str,
+            required=False,
+            dest="accounts",
+            help="Twitter accounts to track news separated by commmas."
+            "For instance: 'WatcherGuru,unusual_whales,gurgavin'",
+        )
+        parser.add_argument(
+            "-k",
+            "--keywords",
+            type=str,
+            required=False,
+            dest="keywords",
+            nargs="+",
+            help="Keywords to look for, separated by commmas."
+            "For instance: 'Just In, Breaking'",
+        )
+        parser.add_argument(
+            "-n",
+            "--number",
+            type=check_positive,
+            required=False,
+            dest="number",
+            help="Number of tweets to look into from each account, e.g. 3",
+        )
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
+        if ns_parser:
+            if ns_parser.time:
+                obbff.TOOLBAR_TWEET_NEWS_SECONDS_BETWEEN_UPDATES = ns_parser.time
+                set_key(
+                    USER_ENV_FILE,
+                    "OPENBB_TOOLBAR_TWEET_NEWS_SECONDS_BETWEEN_UPDATES",
+                    str(ns_parser.time),
+                )
+
+            if ns_parser.number:
+                obbff.TOOLBAR_TWEET_NEWS_NUM_LAST_TWEETS_TO_READ = ns_parser.number
+                set_key(
+                    USER_ENV_FILE,
+                    "OPENBB_TOOLBAR_TWEET_NEWS_NUM_LAST_TWEETS_TO_READ",
+                    str(ns_parser.number),
+                )
+
+            if ns_parser.accounts:
+                obbff.TOOLBAR_TWEET_NEWS_ACCOUNTS_TO_TRACK = ns_parser.accounts
+                set_key(
+                    USER_ENV_FILE,
+                    "OPENBB_TOOLBAR_TWEET_NEWS_ACCOUNTS_TO_TRACK",
+                    str(ns_parser.accounts),
+                )
+
+            if ns_parser.keywords:
+                obbff.TOOLBAR_TWEET_NEWS_KEYWORDS = " ".join(ns_parser.keywords)
+                set_key(
+                    USER_ENV_FILE,
+                    "OPENBB_TOOLBAR_TWEET_NEWS_KEYWORDS",
+                    str(" ".join(ns_parser.keywords)),
+                )

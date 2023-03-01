@@ -258,10 +258,11 @@ def show_parity(
     if div_dts:
         last_div = pd.to_datetime(div_dts[-1])
 
-        if len(div_dts) > 3:
-            avg_div = np.mean(div_info.to_list()[-4:])
-        else:
-            avg_div = np.mean(div_info.to_list())
+        avg_div = (
+            np.mean(div_info.to_list()[-4:])
+            if len(div_dts) > 3
+            else np.mean(div_info.to_list())
+        )
 
         next_div = last_div + timedelta(days=91)
         dividends = []
@@ -360,10 +361,11 @@ def risk_neutral_vals(
     risk: float
         The risk-free rate for the asset
     """
-    if put:
-        chain = get_option_chain(symbol, expiry).puts
-    else:
-        chain = get_option_chain(symbol, expiry).calls
+    chain = (
+        get_option_chain(symbol, expiry).puts
+        if put
+        else get_option_chain(symbol, expiry).calls
+    )
 
     r_date = datetime.strptime(expiry, "%Y-%m-%d").date()
     delta = (r_date - date.today()).days

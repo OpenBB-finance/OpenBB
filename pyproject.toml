@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb"
-version = "2.4.1"
+version = "2.5.0"
 description = "Investment Research for Everyone, Anywhere."
 license = "MIT"
 authors = ["Didier Rodrigues Lopes"]
@@ -52,7 +52,7 @@ bt = "^0.2.9"
 vaderSentiment = "3.3.2"
 GitPython = "^3.1.17"
 fred = "^3.1"
-financedatabase = "1.0.2"
+financedatabase = "^2.0.8"
 holidays = "^0.14.2"
 degiro-connector = "^2.0.3"
 python-binance = "^1.0.15"
@@ -93,7 +93,7 @@ ipyflex = "^0.2.4"
 "ruamel.yaml" = "^0.17.21"
 setuptools = "<65.5.0"
 numpy = "1.23.4"
-papermill = "^2.4.0"
+papermill = "2.4"
 stocksera = "^0.1.21"
 ipython = "8.5.0"
 protobuf = "3.20.1"
@@ -113,8 +113,24 @@ psutil = "!=5.9.4"  # Forecasting menu and IPyKernel dependency broken on MacOs
 tenacity = "<8.0.0"  # Finviz, papermill and plotly dep. Pinned to avoid pip resolution conflict due to finviz 1.4.5 release bug
 intrinio-sdk = "^6.22.2"
 yahooquery = "^2.3.0"
+tweepy = "^4.12.1"
+openai-whisper = {version = "^20230124", optional = true}
+setuptools-rust = {version = "^1.5.2", optional = true}
+transformers = {version = "^4.26.1", optional = true}
+yt-dlp = {version = "^2023.2.17", optional = true}
 
-[tool.poetry.dev-dependencies]
+
+
+[tool.poetry.extras]
+forecast = ["torch", "pytorch-lightning", "u8darts", "lightgbm", "openai-whisper", "setuptools-rust", "transformers", "yt-dlp"]
+optimization = ["Riskfolio-Lib"]
+all = ["torch", "pytorch-lightning", "u8darts", "Riskfolio-Lib", "lightgbm", "openai-whisper", "setuptools-rust", "transformers", "yt-dlp"]
+jupyterlab = ["jupyterlab-code-formatter", "jupyterlab-lsp", "jedi-language-server"]
+installer = ["pyinstaller"]
+doc = ["docstring-parser"]
+
+[tool.poetry.group.dev.dependencies]
+pytest-xdist = "^3.2.0"
 pytest = "^6.2.2"
 pylint = "2.15.2"
 mypy = "^1.0.0"
@@ -139,14 +155,7 @@ pytest-cov = "^3.0.0"
 types-six = "^1.16.12"
 nbmake = ">0.5.0"
 ruff = "^0.0.247"
-
-[tool.poetry.extras]
-forecast = ["torch", "pytorch-lightning", "u8darts", "lightgbm"]
-optimization = ["Riskfolio-Lib"]
-all = ["torch", "pytorch-lightning", "u8darts", "Riskfolio-Lib"]
-jupyterlab = ["jupyterlab-code-formatter", "jupyterlab-lsp", "jedi-language-server"]
-installer = ["pyinstaller"]
-doc = ["docstring-parser"]
+pytest-timeout = "^2.1.0"
 
 [build-system]
 requires = ["setuptools<65.5.0", "poetry-core>=1.0.0"]
@@ -163,9 +172,9 @@ target-version = "py38"
 # This is an introductory addition of ruff. We should look to adding:
 # D: pydocstyle, PD: pandas-vet
 # All options here: https://github.com/charliermarsh/ruff#supported-rules
-select = ["E", "W", "F", "Q", "S", "UP", "I", "PLC", "PLE", "PLR", "PLW"]
+select = ["E", "W", "F", "Q", "S", "UP", "I", "PLC", "PLE", "PLR", "PLW", "SIM"]
 # These ignores should be seen as temporary solutions to problems that will NEED fixed
-ignore = ["S105", "S106", "S107", "S110", "PLR2004", "PLR0911", "PLR0913", "PLR0912", "PLR0915"]
+ignore = ["S105", "S106", "S107", "S110", "PLR2004", "PLR0911", "PLR0913", "PLR0912", "PLR0915", "SIM114", "SIM105", "SIM117"]
 
 [tool.ruff.per-file-ignores]
 "tests/*" = ["S101"]

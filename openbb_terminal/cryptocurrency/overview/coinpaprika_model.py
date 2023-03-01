@@ -91,10 +91,7 @@ def get_global_info() -> pd.DataFrame:
     for key, date in global_markets.items():
         if "date" in key:
             try:
-                if isinstance(date, datetime):
-                    new_date = date
-                else:
-                    new_date = parser.parse(date)
+                new_date = date if isinstance(date, datetime) else parser.parse(date)
                 global_markets[key] = new_date.strftime("%Y-%m-%d %H:%M:%S")
             except (KeyError, ValueError, TypeError) as e:
                 logger.exception(str(e))
