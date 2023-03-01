@@ -9519,4 +9519,4 @@ optimization = ["Riskfolio-Lib"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8,<3.11, !=3.9.7"
-content-hash = "04d50be4a71df97bfdc14e27b6116cdffd3d8e3d40cf412375bb5311731ff4cd"
+content-hash = "0fd63e4aa95936b0feb8d7700a04dcebf48b979e4d8d85e752f440b673cb8f59"
