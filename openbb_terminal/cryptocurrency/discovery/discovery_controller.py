@@ -25,9 +25,8 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console, MenuText, get_ordered_list_sources
+from openbb_terminal.rich_config import MenuText, console, get_ordered_list_sources
 from openbb_terminal.stocks import stocks_helper
-
 
 logger = logging.getLogger(__name__)
 
@@ -60,10 +59,18 @@ class DiscoveryController(BaseController):
             ordered_list_sources_top = get_ordered_list_sources(f"{self.PATH}top")
             if ordered_list_sources_top and ordered_list_sources_top[0] == "CoinGecko":
                 choices["top"]["--sort"] = {
-                    c: {} for c in pycoingecko_view.COINS_COLUMNS
+                    c: {}
+                    for c in stocks_helper.format_parse_choices(
+                        pycoingecko_view.COINS_COLUMNS
+                    )
                 }
             else:
-                choices["top"]["--sort"] = {c: {} for c in coinmarketcap_model.FILTERS}
+                choices["top"]["--sort"] = {
+                    c: {}
+                    for c in stocks_helper.format_parse_choices(
+                        coinmarketcap_model.FILTERS
+                    )
+                }
 
             choices["top"]["-s"] = choices["top"]["--sort"]
 
@@ -130,8 +137,7 @@ class DiscoveryController(BaseController):
             dest="sortby",
             nargs="+",
             help="Sort by given column. Default: Market Cap Rank",
-            default=argument_sort_default,
-            choices=stocks_helper.format_parse_choices(argument_sort_choices),
+            default=stocks_helper.format_parse_choices([argument_sort_default]),
             metavar="SORTBY",
         )
         parser.add_argument(
