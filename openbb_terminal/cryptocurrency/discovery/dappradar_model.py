@@ -39,7 +39,7 @@ DEX_COLUMNS = [
 
 
 @log_start_end(log=logger)
-def _make_request(url: str, verbose: bool = True) -> Optional[dict]:
+def _make_request(url: str, verbose: bool = False) -> Optional[dict]:
     """Helper method handles dappradar api requests. [Source: https://dappradar.com/]
 
     Parameters
@@ -115,7 +115,7 @@ def get_top_nfts(sortby: str = "", limit: int = 10) -> pd.DataFrame:
             copy=False,
         )
         df["Protocols"] = df["Protocols"].apply(lambda x: ",".join(x))
-    if sortby in NFT_COLUMNS:
+    if response and sortby in NFT_COLUMNS:
         df = df.sort_values(by=sortby, ascending=False)
         return df.head(limit)
     return pd.DataFrame()

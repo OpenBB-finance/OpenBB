@@ -329,7 +329,6 @@ class DiscoveryController(BaseController):
             to sort by column
             """,
         )
-
         parser.add_argument(
             "-l",
             "--limit",
@@ -348,7 +347,6 @@ class DiscoveryController(BaseController):
             choices=stocks_helper.format_parse_choices(dappradar_model.NFT_COLUMNS),
             metavar="SORTBY",
         )
-
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
