@@ -29,8 +29,6 @@ from openbb_terminal.core.session.current_user import get_current_user
 # pylint: disable=redefined-outer-name
 
 
-load_dotenv_and_reload_configs()
-
 DISPLAY_LIMIT: int = 500
 EXTENSIONS_ALLOWED: List[str] = ["csv", "json", "txt"]
 EXTENSIONS_MATCHING: Dict[str, List[Type]] = {
