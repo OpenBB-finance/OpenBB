@@ -460,7 +460,6 @@ class DiscoveryController(BaseController):
             default="1h",
             choices=pycoingecko_model.API_PERIODS,
         )
-
         parser.add_argument(
             "-l",
             "--limit",
@@ -469,7 +468,6 @@ class DiscoveryController(BaseController):
             help="Number of records to display",
             default=15,
         )
-
         parser.add_argument(
             "-s",
             "--sort",
@@ -482,11 +480,21 @@ class DiscoveryController(BaseController):
             ),
             metavar="SORTBY",
         )
-
+        parser.add_argument(
+            "-r",
+            "--reverse",
+            action="store_true",
+            dest="reverse",
+            default=False,
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
+        )
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-
         if ns_parser:
             pycoingecko_view.display_losers(
                 interval=ns_parser.interval,
@@ -496,6 +504,7 @@ class DiscoveryController(BaseController):
                 if ns_parser.sheet_name
                 else None,
                 sortby=" ".join(ns_parser.sortby),
+                ascend=ns_parser.reverse,
             )
 
     @log_start_end(log=logger)

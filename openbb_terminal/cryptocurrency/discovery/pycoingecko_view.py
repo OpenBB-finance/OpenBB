@@ -158,6 +158,7 @@ def display_losers(
     export: str = "",
     sheet_name: Optional[str] = None,
     sortby: str = "Market Cap Rank",
+    ascend: bool = False,
 ) -> None:
     """Prints table showing Largest Losers - coins which lost the most in given period of time. [Source: CoinGecko]
 
@@ -170,11 +171,15 @@ def display_losers(
     sortby: str
         Key to sort data. The table can be sorted by every of its columns. Refer to
         API documentation (see /coins/markets in https://www.coingecko.com/en/api/documentation)
+    ascend: bool
+        Sort data in ascending order
     export : str
         Export dataframe data to csv,json,xlsx file
     """
 
-    df = pycoingecko_model.get_losers(limit=limit, interval=interval, sortby=sortby)
+    df = pycoingecko_model.get_losers(
+        limit=limit, interval=interval, sortby=sortby, ascend=ascend
+    )
 
     if not df.empty:
         for col in ["Volume [$]", "Market Cap"]:

@@ -304,6 +304,7 @@ def get_losers(
     interval: str = "1h",
     limit: int = 50,
     sortby: str = "market_cap_rank",
+    ascend: bool = True,
 ) -> pd.DataFrame:
     """Shows Largest Losers - coins which lose the most in given period. [Source: CoinGecko]
 
@@ -316,6 +317,8 @@ def get_losers(
     sortby: str
         Key to sort data. The table can be sorted by every of its columns. Refer to
         API documentation (see /coins/markets in https://www.coingecko.com/en/api/documentation)
+    ascend: bool
+        Sort data in ascending order
 
     Returns
     -------
@@ -324,7 +327,7 @@ def get_losers(
         Columns: Symbol, Name, Volume, Price, %Change_{interval}, Url
     """
     return get_gainers_or_losers(
-        limit=limit, interval=interval, typ="losers", sortby=sortby
+        limit=limit, interval=interval, typ="losers", sortby=sortby, ascend=ascend
     )
 
 
