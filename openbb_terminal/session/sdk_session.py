@@ -55,6 +55,7 @@ def login(
     >>> from openbb_terminal.sdk import openbb
     >>> openbb.login(email="your_email", password="your_password")
     """
+    session = {}
     if not (email or token):
         session = Local.get_session()
 
