@@ -408,6 +408,18 @@ class DiscoveryController(BaseController):
             ),
             metavar="SORTBY",
         )
+        parser.add_argument(
+            "-r",
+            "--reverse",
+            action="store_true",
+            dest="reverse",
+            default=False,
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
+        )
 
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
@@ -421,6 +433,7 @@ class DiscoveryController(BaseController):
                 if ns_parser.sheet_name
                 else None,
                 sortby=" ".join(ns_parser.sortby),
+                ascend=ns_parser.reverse,
             )
 
     @log_start_end(log=logger)
