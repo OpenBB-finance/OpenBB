@@ -219,14 +219,6 @@ class ForexController(BaseController):
             description="Show candle for loaded fx data",
         )
         parser.add_argument(
-            "-p",
-            "--plotly",
-            dest="plotly",
-            action="store_false",
-            default=True,
-            help="Flag to show interactive plotly chart",
-        )
-        parser.add_argument(
             "--sort",
             choices=forex_helper.CANDLE_SORT,
             default="",
@@ -330,7 +322,6 @@ class ForexController(BaseController):
                     to_symbol=self.to_symbol,
                     from_symbol=self.from_symbol,
                     data=data,
-                    use_matplotlib=ns_parser.plotly,
                     add_trend=ns_parser.trendlines,
                     ma=mov_avgs,
                     yscale="log" if ns_parser.logy else "linear",

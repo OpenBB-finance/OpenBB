@@ -44,6 +44,7 @@ def show_top_mover(
         show_index=False,
         headers=list(data.columns),
         title="ETF Movers",
+        export=bool(export),
     )
 
     export_data(

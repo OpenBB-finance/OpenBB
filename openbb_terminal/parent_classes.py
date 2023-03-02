@@ -526,7 +526,6 @@ class BaseController(metaclass=ABCMeta):
             "--command",
             action="store",
             dest="command",
-            required="-h" not in other_args,
             choices=["generic"] + self.support_commands,
             help="Command that needs support",
         )
@@ -842,6 +841,14 @@ class BaseController(metaclass=ABCMeta):
 
         try:
             (ns_parser, l_unknown_args) = parser.parse_known_args(other_args)
+
+            if export_allowed in [
+                EXPORT_ONLY_RAW_DATA_ALLOWED,
+                EXPORT_BOTH_RAW_DATA_AND_FIGURES,
+            ]:
+                ns_parser.is_image = any(
+                    ext in ns_parser.export for ext in ["png", "svg", "jpg", "pdf"]
+                )
         except SystemExit:
             # In case the command has required argument that isn't specified
 

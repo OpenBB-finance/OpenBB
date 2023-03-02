@@ -45,6 +45,7 @@ def screener(
             headers=list(df_screen.columns),
             show_index=False,
             title="Stock Screener",
+            export=bool(export),
         )
 
     export_data(

@@ -23,9 +23,7 @@ def vcr_config():
 @pytest.mark.default_cassette("test_view_screener_output")
 @pytest.mark.vcr
 @pytest.mark.record_stdout
-def test_view_screener_output(mocker):
-    # MOCK VISUALIZE_OUTPUT
-    mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
+def test_view_screener_output():
     syncretism_view.view_screener_output(
         preset="high_iv.ini",
         limit=5,
@@ -48,10 +46,7 @@ def test_view_screener_output_error(mocker):
 
 
 @pytest.mark.vcr
-def test_view_historical_greeks(mocker):
-    # MOCK VISUALIZE_OUTPUT
-    mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
-
+def test_view_historical_greeks():
     syncretism_view.view_historical_greeks(
         symbol="PM",
         expiry="",

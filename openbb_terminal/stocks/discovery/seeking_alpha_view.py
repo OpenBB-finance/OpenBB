@@ -74,6 +74,7 @@ def upcoming_earning_release_dates(
             show_index=True,
             headers=[f"Earnings on {earning_date.date()}"],
             title="Upcoming Earnings Releases",
+            export=bool(export),
         )
 
     if export:

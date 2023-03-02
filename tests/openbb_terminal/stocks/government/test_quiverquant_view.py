@@ -66,9 +66,7 @@ def vcr_config():
         ),
     ],
 )
-def test_call_func(func, kwargs_dict, mocker):
-    # MOCK VISUALIZE_OUTPUT
-    mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
+def test_call_func(func, kwargs_dict):
     getattr(quiverquant_view, func)(**kwargs_dict)
 
 

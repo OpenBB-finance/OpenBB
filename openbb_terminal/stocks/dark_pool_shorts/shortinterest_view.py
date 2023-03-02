@@ -39,6 +39,7 @@ def high_short_interest(
         headers=list(df_high_short_interest.columns),
         show_index=False,
         title="Top Interest Stocks",
+        export=bool(export),
     )
 
     export_data(

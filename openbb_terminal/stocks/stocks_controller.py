@@ -376,17 +376,17 @@ class StocksController(StockBaseController):
             dest="ticker",
             help="Ticker to analyze",
             type=str,
-            default=None,
+            default=self.ticker,
             required=not any(x in other_args for x in ["-h", "--help"])
             and not self.ticker,
         )
         parser.add_argument(
             "-p",
-            "--plotly",
-            dest="plotly",
-            action="store_false",
-            default=True,
-            help="Flag to show interactive plotly chart",
+            "--prepost",
+            action="store_true",
+            default=False,
+            dest="prepost",
+            help="Pre/After market hours. Only works for 'yf' source, and intraday data",
         )
         parser.add_argument(
             "--sort",
@@ -446,6 +446,7 @@ class StocksController(StockBaseController):
             limit=20,
         )
         if ns_parser:
+            figure_export = None
             if ns_parser.ticker:
                 self.ticker = ns_parser.ticker
                 self.custom_load_wrapper([self.ticker])
@@ -477,14 +478,15 @@ class StocksController(StockBaseController):
                                     f"[red]{num} is not a valid moving average, must be an integer greater than 1."
                                 )
 
-                    stocks_helper.display_candle(
+                    figure_export = stocks_helper.display_candle(
                         symbol=self.ticker,
                         data=data,
-                        use_matplotlib=ns_parser.plotly,
-                        intraday=self.interval != "1440min",
                         add_trend=ns_parser.trendlines,
                         ma=mov_avgs,
+                        prepost=ns_parser.prepost,
+                        asset_type="Stock",
                         yscale="log" if ns_parser.logy else "linear",
+                        external_axes=ns_parser.is_image,
                     )
 
                 export_data(
@@ -493,6 +495,7 @@ class StocksController(StockBaseController):
                     f"{self.ticker}",
                     self.stock,
                     " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None,
+                    figure=figure_export,
                 )
             else:
                 console.print("No ticker loaded. First use 'load <ticker>'")
