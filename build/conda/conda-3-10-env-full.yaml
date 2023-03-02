@@ -1,7 +1,7 @@
 channels:
   - conda-forge
 dependencies:
-  - python=3.10.8
+  - python=3.10.9
   - pip
   - pybind11
   - cmake

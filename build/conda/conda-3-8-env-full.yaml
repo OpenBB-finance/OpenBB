@@ -1,9 +1,13 @@
 channels:
   - conda-forge
-  - defaults
 dependencies:
-  - python=3.8
+  - python=3.8.16
   - pip
-  - conda-forge::lightgbm=3.3.3
+  - pybind11
+  - cmake
+  - git
+  - cvxpy
+  - lightgbm
+  - poetry
   - pip:
-    - poetry==1.3.2
+    - qdldl==0.1.5.post3
