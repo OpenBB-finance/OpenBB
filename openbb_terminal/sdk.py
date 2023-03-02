@@ -229,6 +229,45 @@ class OpenBBSDK:
         return model.FixedincomeRoot()
 
     @property
+    def fmp(self):
+        """Fmp Submodule
+
+        Attributes:
+            `balance`: Get historical balance sheet data\n
+            `balance_growth`: Get historical balance sheet growth\n
+            `cash`: Get historical cash flow data\n
+            `cash_growth`: Get historical cash flow growth\n
+            `divcal`: Get company dividend calendar\n
+            `earnings`: Get upgrades and downgrades for a company\n
+            `esg`: Get ESG data from symbol\n
+            `exec_comp`: Get executive compensation\n
+            `ftd`: Get company ftds\n
+            `income`: Get historical income statement data\n
+            `income_growth`: Get historical income statement growth\n
+            `insider`: Get insider trading data\n
+            `institutional`: Get institutional ownership data\n
+            `key`: Get historical key metrics\n
+            `key_execs`: Get key executives from company\n
+            `market_risk_premium`: Get market risk premium\n
+            `marketcap`: Get historical marketcap\n
+            `news`: Get news for a company\n
+            `notes`: Get company notes\n
+            `peers`: Get company peers\n
+            `price_targets`: Get price targets for a company\n
+            `prices`: Get end of day prices for company\n
+            `pt_summary`: Get price target summary for a company\n
+            `ratios`: Get historical ratios\n
+            `revgeo`: Get sales revenue by geography\n
+            `revseg`: Get sales revenue by segment\n
+            `senate`: Get company senate trading\n
+            `splits`: Get company splits\n
+            `statements`: Get historical full financial statement as reported\n
+            `upgradedowngrade`: Get upgrades and downgrades for a company\n
+        """
+
+        return model.FmpRoot()
+
+    @property
     def forecast(self):
         """Forecasting Submodule
 

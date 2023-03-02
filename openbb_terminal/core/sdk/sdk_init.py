@@ -414,6 +414,9 @@ from openbb_terminal.stocks.tradinghours import (
     bursa_view as stocks_th_bursa_view,
 )
 
+# FMP endpoints
+from openbb_terminal.core.models.fmp import FMP as fmp_core
+
 # Forecast Extras
 
 try:

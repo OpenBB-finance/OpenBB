@@ -120,7 +120,7 @@ class FMP(BaseModel):
             url = f"{cls._BASE_URL()}balance-sheet-statement-as-reported/{symbol}?period=quarter"
         else:
             url = f"{cls._BASE_URL()}balance-sheet-statement-as-reported/{symbol}?"
-        r = request(url + "&limit=" + str(limit) + "apikey=" + cls._KEY())
+        r = request(url + "&limit=" + str(limit) + f"&apikey={cls._KEY()}")
         return pd.DataFrame(cls.validate_request(r)).T
 
     @classmethod
@@ -203,7 +203,7 @@ class FMP(BaseModel):
         Returns
         -------
         pd.DataFrame
-            Historical ker ratios
+            Historical key ratios
 
         Examples
         --------
@@ -349,7 +349,7 @@ class FMP(BaseModel):
             url = f"{cls._V4_URL()}revenue-product-segmentation/?symbol={symbol}&period=quarter"
         else:
             url = f"{cls._V4_URL()}revenue-product-segmentation/?symbol={symbol}"
-        r = request(url + "&structure=flat&apikey={cls._KEY()}")
+        r = request(url + f"&structure=flat&apikey={cls._KEY()}")
         return cls.validate_request(r)
 
     @classmethod
@@ -378,7 +378,7 @@ class FMP(BaseModel):
             url = f"{cls._V4_URL()}revenue-geographic-segmentation/?symbol={symbol}&period=quarter"
         else:
             url = f"{cls._V4_URL()}revenue-geographic-segmentation/?symbol={symbol}"
-        r = request(url + "&structure=flat&apikey={cls._KEY()}")
+        r = request(url + f"&structure=flat&apikey={cls._KEY()}")
         return cls.validate_request(r)
 
     @classmethod
@@ -444,8 +444,8 @@ class FMP(BaseModel):
         Examples
         --------
         >>> from openbb_terminal.sdk import openbb
-        >>> esg = openbb.stocks.fa.esg("AAPL")
-        >>> esg_scores = esg[["date", "environmentScore", "socialScore", "governanceScore"]]
+        >>> esg = openbb.fmp.esg("AAPL")
+        >>> esg_scores = esg[["date", "environmentalScore", "socialScore", "governanceScore","ESGScore"]]
         """
         url = (
             f"{cls._V4_URL()}esg-environmental-social-governance-data/?symbol={symbol}"
@@ -480,7 +480,7 @@ class FMP(BaseModel):
         return pd.DataFrame(cls.validate_request(r))
 
     @classmethod
-    def price_target(cls, symbol: str) -> pd.DataFrame:
+    def price_targets(cls, symbol: str) -> pd.DataFrame:
         """Get price targets for a company
 
         Parameters
@@ -542,7 +542,7 @@ class FMP(BaseModel):
         Examples
         --------
         >>> from openbb_terminal.sdk import openbb
-        >>> up_down = openbb.fmp.updowngrade("AAPL")
+        >>> up_down = openbb.fmp.upgradedowngrade("AAPL")
         """
         url = f"{cls._V4_URL()}upgrades-downgrades/?symbol={symbol}"
         r = request(url + "&apikey=" + cls._KEY())
@@ -741,7 +741,7 @@ class FMP(BaseModel):
         Examples
         --------
         >>> from openbb_terminal.sdk import openbb
-        >>> mktcap = openbb.fmp.marketcap("AAPL", start_date="2022-01-01", end="2023-01-31")
+        >>> mktcap = openbb.fmp.marketcap("AAPL", start_date="2022-01-01", end_date="2023-01-31")
         """
         url = f"{cls._BASE_URL()}historical-market-capitalization/{symbol}"
         r = request(url + f"?apikey={cls._KEY()}")
