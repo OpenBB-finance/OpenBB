@@ -5,6 +5,7 @@ import logging
 from datetime import datetime
 from typing import Any, Dict, List, Optional, Union
 
+import financedatabase as fd
 import numpy as np
 import pandas as pd
 import yfinance as yf
@@ -18,7 +19,7 @@ from openbb_terminal.helper_funcs import get_rf
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.fundamental_analysis import dcf_model, dcf_static
 
-# pylint: disable=C0302
+# pylint: disable=C0302,too-many-arguments
 
 
 logger = logging.getLogger(__name__)
@@ -29,6 +30,7 @@ class CreateExcelFA:
     def __init__(
         self,
         symbol: str,
+        beta: float,
         audit: bool = False,
         ratios: bool = True,
         len_pred: int = 10,
@@ -80,9 +82,19 @@ class CreateExcelFA:
             "IS": self.get_data("IS", self.starts["IS"], True),
             "CF": self.get_data("CF", self.starts["CF"], False),
         }
+
+        equities_database = fd.Equities()
         self.data: Dict[str, Any] = {
             "now": datetime.now().strftime("%Y-%m-%d"),
-            "info": yf.Ticker(symbol).info,
+            "info": {
+                "country": equities_database.data.loc[self.info["symbol"]]["country"],
+                "sector": equities_database.data.loc[self.info["symbol"]]["sector"],
+                "industry_group": equities_database.data.loc[self.info["symbol"]][
+                    "industry_group"
+                ],
+                "industry": equities_database.data.loc[self.info["symbol"]]["industry"],
+                "beta": beta,
+            },
             "t_bill": get_rf(),
             "r_ff": dcf_model.get_fama_coe(self.info["symbol"]),
             "f_info": yf.Ticker(symbol).fast_info,
@@ -119,7 +131,9 @@ class CreateExcelFA:
 
             if not path.is_file():
                 self.wb.save(path)
-                console.print(f"Analysis for {self.info['symbol']} At:\n{path}.\n")
+                console.print(
+                    f"Find the Discounted Cash Flow (DCF) Analysis of {self.info['symbol']} here: {path}"
+                )
                 break
             i += 1
 

@@ -553,6 +553,13 @@ def get_macro_data(
 
             df = pd.DataFrame(data["dataarray"])
 
+            if code not in df.columns:
+                console.print(
+                    f"No data available for {parameter} of {country} "
+                    f"{f'with transform method {transform}' if transform else ''}"
+                )
+                return pd.DataFrame(), "NA/NA"
+
             df = df.set_index(pd.to_datetime(df["date"]))[code] * SCALES[scale]
             df = df.sort_index().dropna()
 

@@ -32,6 +32,7 @@ def low_float(limit: int = 5, export: str = "", sheet_name: Optional[str] = None
         headers=list(df_low_float.columns),
         show_index=False,
         title="Top Float Stocks",
+        export=bool(export),
     )
 
     export_data(
@@ -78,6 +79,7 @@ def hot_penny_stocks(
         headers=list(df_penny_stocks.columns) if source != "Shortinterest" else None,
         show_index=False,
         title="Top Penny Stocks",
+        export=bool(export),
     )
 
     export_data(

@@ -40,10 +40,11 @@ PAPERMILL_NOTEBOOK_REPORT_PORT = (
 # Logging section
 
 # USE IN LOG LINES + FOR FOLDER NAME INSIDE S3 BUCKET
-if "site-packages" in __file__:
-    LOGGING_APP_NAME = "gst_packaged_pypi"
-else:
-    LOGGING_APP_NAME = os.getenv("OPENBB_LOGGING_APP_NAME") or "gst"
+LOGGING_APP_NAME = (
+    "gst_packaged_pypi"
+    if "site-packages" in __file__
+    else os.getenv("OPENBB_LOGGING_APP_NAME") or "gst"
+)
 # AWS KEYS
 LOGGING_AWS_ACCESS_KEY_ID = (
     os.getenv("OPENBB_LOGGING_AWS_ACCESS_KEY_ID") or "REPLACE_ME"
@@ -94,8 +95,6 @@ API_REDDIT_PASSWORD = os.getenv("OPENBB_API_REDDIT_PASSWORD") or "REPLACE_ME"
 API_POLYGON_KEY = os.getenv("OPENBB_API_POLYGON_KEY") or "REPLACE_ME"
 
 # https://developer.twitter.com
-API_TWITTER_KEY = os.getenv("OPENBB_API_TWITTER_KEY") or "REPLACE_ME"
-API_TWITTER_SECRET_KEY = os.getenv("OPENBB_API_TWITTER_SECRET_KEY") or "REPLACE_ME"
 API_TWITTER_BEARER_TOKEN = os.getenv("OPENBB_API_TWITTER_BEARER_TOKEN") or "REPLACE_ME"
 
 # https://fred.stlouisfed.org/docs/api/api_key.html
@@ -202,3 +201,6 @@ OPENBB_PERSONAL_ACCESS_TOKEN = (
 
 # https://intrinio.com/starter-plan
 API_INTRINIO_KEY = os.getenv("OPENBB_API_INTRINIO_KEY") or "REPLACE_ME"
+
+# https://databento.com/
+API_DATABENTO_KEY = os.getenv("OPENBB_API_DATABENTO_KEY") or "REPLACE_ME"

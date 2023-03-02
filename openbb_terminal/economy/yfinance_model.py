@@ -617,10 +617,7 @@ def get_index(
     pd.Series
         A series with the requested index
     """
-    if index.lower() in INDICES:
-        ticker = INDICES[index.lower()]["ticker"]
-    else:
-        ticker = index
+    ticker = INDICES[index.lower()]["ticker"] if index.lower() in INDICES else index
 
     try:
         if start_date:
@@ -737,16 +734,20 @@ def get_search_indices(keyword: list, limit: int = 10) -> pd.DataFrame:
     pd.Dataframe
         Dataframe with the available options.
     """
-    if isinstance(keyword, str):
-        keyword_adjusted = keyword.replace(",", " ")
-    else:
-        keyword_adjusted = " ".join(keyword)
-
-    indices = fd.select_indices()
-
-    queried_indices = pd.DataFrame.from_dict(
-        fd.search_products(indices, keyword_adjusted, "short_name"), orient="index"
+    keyword_adjusted = (
+        keyword.replace(",", " ") if isinstance(keyword, str) else " ".join(keyword)  # type: ignore
     )
+
+    indices = fd.Indices()
+
+    queried_indices = indices.search(name=keyword_adjusted, exclude_exchanges=True)
+    queried_indices = pd.concat(
+        [
+            queried_indices,
+            indices.search(index=keyword_adjusted),
+        ]
+    )
+    queried_indices = queried_indices.drop_duplicates()
 
     queried_indices = queried_indices.iloc[:limit]
 

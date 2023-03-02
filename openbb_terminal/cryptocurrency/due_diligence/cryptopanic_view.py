@@ -68,6 +68,7 @@ def display_news(
             headers=list(df.columns),
             show_index=False,
             title="Most Recent News",
+            export=bool(export),
         )
 
         export_data(

@@ -13,7 +13,7 @@ from multiprocessing import cpu_count
 from multiprocessing.pool import Pool
 from pathlib import Path
 from traceback import FrameSummary, extract_tb, format_list
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Callable, Dict, List, Optional, Tuple
 
 from openbb_terminal.core.config.paths import (
     MISCELLANEOUS_DIRECTORY,
@@ -259,10 +259,11 @@ def run_scripts(
         simulate_argv = f"/{'/'.join([line.rstrip() for line in lines])}"
         file_cmds = simulate_argv.replace("//", "/home/").split()
         file_cmds = insert_start_slash(file_cmds) if file_cmds else file_cmds
-        if export_folder:
-            file_cmds = [f"export {export_folder}{' '.join(file_cmds)}"]
-        else:
-            file_cmds = [" ".join(file_cmds)]
+        file_cmds = (
+            [f"export {export_folder}{' '.join(file_cmds)}"]
+            if export_folder
+            else [" ".join(file_cmds)]
+        )
 
         obbff.REMEMBER_CONTEXTS = 0
         if verbose:
@@ -352,6 +353,7 @@ def run_test_files(
     verbose: bool = False,
     special_arguments: Optional[Dict[str, str]] = None,
     subprocesses: Optional[int] = None,
+    ordered: bool = False,
 ) -> Tuple[int, int, Dict[str, Dict[str, Any]], float]:
     """Runs the test scripts and returns the fails dictionary
 
@@ -365,6 +367,8 @@ def run_test_files(
         The special arguments to use in the scripts
     subprocesses: Optional[int]
         The number of subprocesses to use to run the tests
+    ordered: bool
+        Multiprocessing is not ordered by default. Use this flag to run the tests in order
 
     Returns
     -------
@@ -409,8 +413,10 @@ def run_test_files(
                 if extra:
                     chunksize += 1
 
+                runner: Callable = pool.imap if ordered else pool.imap_unordered
+
                 for i, result in enumerate(
-                    pool.imap(
+                    runner(
                         partial(
                             run_test,
                             verbose=verbose,
@@ -530,6 +536,7 @@ def run_test_session(
     special_arguments: Optional[Dict[str, str]] = None,
     verbose: bool = False,
     subprocesses: Optional[int] = None,
+    ordered: bool = False,
 ):
     """Run the integration test session
 
@@ -551,11 +558,13 @@ def run_test_session(
         Whether or not to print the output of the scripts
     subprocesses
         The number of subprocesses to use to run the tests
+    ordered: bool
+        Multiprocessing is not ordered by default. Use this flag to run the tests in order.
     """
     console.print(to_section_title("integration test session starts"), style="bold")
     test_files = collect_test_files(path_list, skip_list)
     n_successes, n_failures, fails, seconds = run_test_files(
-        test_files, verbose, special_arguments, subprocesses
+        test_files, verbose, special_arguments, subprocesses, ordered
     )
     display_failures(fails)
     display_summary(fails, n_successes, n_failures, seconds)
@@ -644,6 +653,14 @@ def parse_args_and_run():
         action="store_true",
         default=False,
     )
+    parser.add_argument(
+        "-o",
+        "--ordered",
+        help="Multiprocessing is not ordered by default. Use this flag to run the tests in order.",
+        dest="ordered",
+        action="store_true",
+        default=False,
+    )
     for arg in special_arguments_values:
         parser.add_argument(
             f"--{arg}",
@@ -661,13 +678,14 @@ def parse_args_and_run():
 
     special_args_dict = {x: getattr(ns_parser, x) for x in special_arguments_values}
 
-    if ns_parser.verbose:
-        if ns_parser.subprocesses is None or ns_parser.subprocesses > 0:
-            console.print(
-                "WARNING: verbose mode and multiprocessing are not compatible. "
-                "The output of the scripts is mixed up. Consider running with --subproc 0.\n",
-                style="yellow",
-            )
+    if ns_parser.verbose and (
+        ns_parser.subprocesses is None or ns_parser.subprocesses > 0
+    ):
+        console.print(
+            "WARNING: verbose mode and multiprocessing are not compatible. "
+            "The output of the scripts is mixed up. Consider running with --subproc 0.\n",
+            style="yellow",
+        )
 
     if ns_parser.list_:
         return display_available_scripts(ns_parser.path, ns_parser.skip)
@@ -678,6 +696,7 @@ def parse_args_and_run():
         special_arguments=special_args_dict,
         verbose=ns_parser.verbose,
         subprocesses=ns_parser.subprocesses,
+        ordered=ns_parser.ordered,
     )
 
 

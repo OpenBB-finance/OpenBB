@@ -10,7 +10,6 @@ import random
 import re
 import sys
 import urllib.parse
-import webbrowser
 from datetime import (
     date as d,
     datetime,
@@ -29,7 +28,9 @@ import pandas as pd
 import pandas.io.formats.format
 import pytz
 import requests
+import tweepy
 import yfinance as yf
+from dateutil.relativedelta import relativedelta
 from holidays import US as us_holidays
 from pandas._config.config import get_option
 from pandas.plotting import register_matplotlib_converters
@@ -38,15 +39,31 @@ from rich.table import Table
 from screeninfo import get_monitors
 
 from openbb_terminal import (
+    OpenBBFigure,
     config_plot as cfgPlot,
     config_terminal as cfg,
     feature_flags as obbff,
+    plots_backend,
 )
-from openbb_terminal.core.config.paths import (
-    HOME_DIRECTORY,
-    USER_EXPORTS_DIRECTORY,
-)
+from openbb_terminal.core.config.paths import HOME_DIRECTORY, USER_EXPORTS_DIRECTORY
+from openbb_terminal.core.plots.plotly_ta.ta_class import PlotlyTA
 from openbb_terminal.rich_config import console
+
+try:
+    twitter_api = tweepy.API(
+        tweepy.OAuth2BearerHandler(
+            cfg.API_TWITTER_BEARER_TOKEN,
+        ),
+        timeout=5,
+    )
+    if obbff.TOOLBAR_TWEET_NEWS and cfg.API_TWITTER_BEARER_TOKEN != "REPLACE_ME":
+        # A test to ensure that the Twitter API key is correct,
+        # otherwise we disable the Toolbar with Tweet News
+        twitter_api.get_user(screen_name="openbb_finance")
+except tweepy.errors.Unauthorized:
+    # Set toolbar tweet news to False because the Twitter API is not set up correctly
+    obbff.TOOLBAR_TWEET_NEWS = False
+
 
 logger = logging.getLogger(__name__)
 
@@ -63,11 +80,12 @@ MENU_GO_BACK = 0
 MENU_QUIT = 1
 MENU_RESET = 2
 
+LAST_TWEET_NEWS_UPDATE_CHECK_TIME = None
+
 # Command location path to be shown in the figures depending on watermark flag
 command_location = ""
 
-
-# pylint: disable=R0912
+# pylint: disable=R1702,R0912
 
 
 # pylint: disable=global-statement
@@ -132,9 +150,8 @@ def parse_and_split_input(an_input: str, custom_filters: List) -> List[str]:
         Command queue as list
     """
     # Make sure that the user can go back to the root when doing "/"
-    if an_input:
-        if an_input == "/":
-            an_input = "home"
+    if an_input and an_input == "/":
+        an_input = "home"
 
     # everything from ` -f ` to the next known extension
     file_flag = r"(\ -f |\ --file )"
@@ -246,6 +263,7 @@ def print_rich_table(
     automatic_coloring: bool = False,
     columns_to_auto_color: Optional[List[str]] = None,
     rows_to_auto_color: Optional[List[str]] = None,
+    export: bool = False,
 ):
     """Prepare a table from df in rich.
 
@@ -271,7 +289,12 @@ def print_rich_table(
         Columns to automatically color
     rows_to_auto_color: List[str]
         Rows to automatically color
+    export: bool
+        Whether we are exporting the table to a file. If so, we don't want to print it.
     """
+    if export:
+        return
+
     if obbff.USE_TABULATE_DF:
         table = Table(title=title, show_lines=True, show_header=show_header)
 
@@ -308,13 +331,12 @@ def print_rich_table(
             for column in df.columns:
                 table.add_column(str(column))
 
-        if isinstance(floatfmt, list):
-            if len(floatfmt) != len(df.columns):
-                log_and_raise(
-                    ValueError(
-                        "Length of floatfmt list does not match length of DataFrame columns."
-                    )
+        if isinstance(floatfmt, list) and len(floatfmt) != len(df.columns):
+            log_and_raise(
+                ValueError(
+                    "Length of floatfmt list does not match length of DataFrame columns."
                 )
+            )
         if isinstance(floatfmt, str):
             floatfmt = [floatfmt for _ in range(len(df.columns))]
 
@@ -464,6 +486,23 @@ def check_positive(value) -> int:
             argparse.ArgumentTypeError(f"{value} is an invalid positive int value")
         )
     return new_value
+
+
+def check_indicators(string: str) -> List[str]:
+    """Check if indicators are valid."""
+    ta_cls = PlotlyTA()
+    choices = sorted(
+        [c.name.replace("plot_", "") for c in ta_cls if c.name != "plot_ma"]
+        + ta_cls.ma_mode
+    )
+
+    strings = string.split(",")
+    for s in strings:
+        if s not in choices:
+            raise argparse.ArgumentTypeError(
+                f"\nInvalid choice: {s}, choose from \n    (`{'`, `'.join(choices)}`)",
+            )
+    return strings
 
 
 def check_positive_float(value) -> float:
@@ -865,10 +904,7 @@ def is_intraday(df: pd.DataFrame) -> bool:
         True if data is intraday
     """
     granularity = df.index[1] - df.index[0]
-    if granularity >= timedelta(days=1):
-        intraday = False
-    else:
-        intraday = True
+    intraday = not granularity >= timedelta(days=1)
     return intraday
 
 
@@ -888,10 +924,7 @@ def reindex_dates(df: pd.DataFrame) -> pd.DataFrame:
     pd.DataFrame
         Reindexed dataframe
     """
-    if is_intraday(df):
-        date_format = "%b %d %H:%M"
-    else:
-        date_format = "%Y-%m-%d"
+    date_format = "%b %d %H:%M" if is_intraday(df) else "%Y-%m-%d"
     reindexed_df = df.reset_index()
     reindexed_df["date"] = reindexed_df["date"].dt.strftime(date_format)
     return reindexed_df
@@ -906,7 +939,7 @@ def get_data(tweet):
             "%Y-%m-%d %H:%M:%S"
         )
 
-    s_text = tweet["full_text"] if "full_text" in tweet.keys() else tweet["text"]
+    s_text = tweet["full_text"] if "full_text" in tweet else tweet["text"]
     return {"created_at": s_datetime, "text": s_text}
 
 
@@ -1160,6 +1193,10 @@ def plot_autoscale():
     """Autoscale plot."""
     if obbff.USE_PLOT_AUTOSCALING:
         x, y = get_screeninfo()  # Get screen size
+        # account for ultrawide monitors
+        if x / y > 1.5:
+            x = x * 0.4
+
         x = ((x) * cfgPlot.PLOT_WIDTH_PERCENTAGE * 10**-2) / (
             cfgPlot.PLOT_DPI
         )  # Calculate width
@@ -1170,6 +1207,9 @@ def plot_autoscale():
         x = cfgPlot.PLOT_WIDTH / (cfgPlot.PLOT_DPI)
         y = cfgPlot.PLOT_HEIGHT / (cfgPlot.PLOT_DPI)
     return x, y
+
+
+plots_backend().set_window_dimensions(*plot_autoscale())
 
 
 def get_last_time_market_was_open(dt):
@@ -1264,7 +1304,7 @@ def compose_export_path(func_name: str, dir_path: str) -> Path:
     return full_path
 
 
-def ask_file_overwrite(file_path: str) -> Tuple[bool, bool]:
+def ask_file_overwrite(file_path: Path) -> Tuple[bool, bool]:
     """Helper to provide a prompt for overwriting existing files.
 
     Returns two values, the first is a boolean indicating if the file exists and the
@@ -1275,9 +1315,10 @@ def ask_file_overwrite(file_path: str) -> Tuple[bool, bool]:
         return False, True
     if os.environ.get("TEST_MODE") == "True":
         return False, True
-    if os.path.exists(file_path):
+    if file_path.exists():
         overwrite = input("\nFile already exists. Overwrite? [y/n]: ").lower()
         if overwrite == "y":
+            file_path.unlink(missing_ok=True)
             # File exists and user wants to overwrite
             return True, True
         # File exists and user does not want to overwrite
@@ -1294,6 +1335,8 @@ def export_data(
     func_name: str,
     df: pd.DataFrame = pd.DataFrame(),
     sheet_name: Optional[str] = None,
+    figure: Optional[OpenBBFigure] = None,
+    margin: bool = True,
 ) -> None:
     """Export data to a file.
 
@@ -1309,25 +1352,39 @@ def export_data(
         Dataframe of data to save
     sheet_name : str
         If provided.  The name of the sheet to save in excel file
+    figure : Optional[OpenBBFigure]
+        Figure object to save as image file
+    margin : bool
+        Automatically adjust subplot parameters to give specified padding.
     """
+    if not figure:
+        figure = OpenBBFigure()
+
     if export_type:
-        export_path = compose_export_path(func_name, dir_path)
-        export_folder = str(export_path.parent)
-        export_filename = export_path.name
-        export_path.parent.mkdir(parents=True, exist_ok=True)
+        saved_path = compose_export_path(func_name, dir_path).resolve()
+        saved_path.parent.mkdir(parents=True, exist_ok=True)
         for exp_type in export_type.split(","):
             # In this scenario the path was provided, e.g. --export pt.csv, pt.jpg
             if "." in exp_type:
-                saved_path = os.path.join(export_folder, exp_type)
+                saved_path = saved_path.with_name(exp_type)
             # In this scenario we use the default filename
             else:
-                if ".OpenBB_openbb_terminal" in export_filename:
-                    export_filename = export_filename.replace(
-                        ".OpenBB_openbb_terminal", "OpenBBTerminal"
+                if ".OpenBB_openbb_terminal" in saved_path.name:
+                    saved_path = saved_path.with_name(
+                        saved_path.name.replace(
+                            ".OpenBB_openbb_terminal", "OpenBBTerminal"
+                        )
                     )
-                saved_path = os.path.join(
-                    export_folder, f"{export_filename}.{exp_type}"
-                )
+                saved_path = saved_path.with_suffix(f".{exp_type}")
+
+            exists, overwrite = False, False
+            is_xlsx = exp_type.endswith("xlsx")
+            if sheet_name is None and is_xlsx or not is_xlsx:
+                exists, overwrite = ask_file_overwrite(saved_path)
+
+            if exists and not overwrite:
+                existing = len(list(saved_path.parent.glob(saved_path.stem + "*")))
+                saved_path = saved_path.with_stem(f"{saved_path.stem}_{existing + 1}")
 
             df = df.replace(
                 {
@@ -1346,14 +1403,8 @@ def export_data(
             df = df.applymap(revert_lambda_long_number_format)
 
             if exp_type.endswith("csv"):
-                exists, overwrite = ask_file_overwrite(saved_path)
-                if exists and not overwrite:
-                    return
                 df.to_csv(saved_path)
             elif exp_type.endswith("json"):
-                exists, overwrite = ask_file_overwrite(saved_path)
-                if exists and not overwrite:
-                    return
                 df.reset_index(drop=True, inplace=True)
                 df.to_json(saved_path)
             elif exp_type.endswith("xlsx"):
@@ -1361,13 +1412,10 @@ def export_data(
                 df = remove_timezone_from_dataframe(df)
 
                 if sheet_name is None:
-                    exists, overwrite = ask_file_overwrite(saved_path)
-                    if exists and not overwrite:
-                        return
                     df.to_excel(saved_path, index=True, header=True)
 
                 else:
-                    if os.path.exists(saved_path):
+                    if saved_path.exists():
                         with pd.ExcelWriter(
                             saved_path,
                             mode="a",
@@ -1385,28 +1433,11 @@ def export_data(
                             df.to_excel(
                                 writer, sheet_name=sheet_name, index=True, header=True
                             )
-            elif exp_type.endswith("png"):
-                exists, overwrite = ask_file_overwrite(saved_path)
-                if exists and not overwrite:
-                    return
-                plt.savefig(saved_path)
-            elif exp_type.endswith("jpg"):
-                exists, overwrite = ask_file_overwrite(saved_path)
-                if exists and not overwrite:
-                    return
-                plt.savefig(saved_path)
-            elif exp_type.endswith("pdf"):
-                exists, overwrite = ask_file_overwrite(saved_path)
-                if exists and not overwrite:
-                    return
-                plt.savefig(saved_path)
-            elif exp_type.endswith("svg"):
-                exists, overwrite = ask_file_overwrite(saved_path)
-                if exists and not overwrite:
-                    return
-                plt.savefig(saved_path)
+            elif saved_path.suffix in [".jpg", ".pdf", ".png", ".svg"]:
+                figure.show(export_image=saved_path, margin=margin)
             else:
                 console.print("Wrong export file specified.")
+                continue
 
             console.print(f"Saved file: {saved_path}")
 
@@ -1484,7 +1515,7 @@ def prefill_form(ticket_type, menu, path, command, message):
 
     url_params = urllib.parse.urlencode(params)
 
-    webbrowser.open(form_url + url_params)
+    plots_backend().send_url(form_url + url_params)
 
 
 def get_closing_price(ticker, days):
@@ -1563,10 +1594,11 @@ def is_valid_axes_count(
     if len(axes) == n:
         return True
 
-    if custom_text:
-        print_text = custom_text
-    else:
-        print_text = f"Expected list of {n} axis item{'s' if n>1 else ''}."
+    print_text = (
+        custom_text
+        if custom_text
+        else f"Expected list of {n} axis item{'s' if n > 1 else ''}."
+    )
 
     if prefix_text:
         print_text = f"{prefix_text} {print_text}"
@@ -1615,10 +1647,11 @@ def check_list_values(valid_values: List[str]):
         """
         success_values = list()
 
-        if "," in given_values:
-            values_found = [val.strip() for val in given_values.split(",")]
-        else:
-            values_found = [given_values]
+        values_found = (
+            [val.strip() for val in given_values.split(",")]
+            if "," in given_values
+            else [given_values]
+        )
 
         for value in values_found:
             # check if the value is valid
@@ -1839,6 +1872,94 @@ def str_date_to_timestamp(date: str) -> int:
     return date_ts
 
 
+def update_news_from_tweet_to_be_displayed() -> str:
+    """Update news from tweet to be displayed.
+
+    Returns
+    -------
+    str
+        The news from tweet to be displayed
+    """
+    global LAST_TWEET_NEWS_UPDATE_CHECK_TIME
+
+    news_tweet = ""
+
+    # Check whether it has passed a certain amount of time since the last news update
+    if LAST_TWEET_NEWS_UPDATE_CHECK_TIME is None or (
+        (datetime.now(pytz.utc) - LAST_TWEET_NEWS_UPDATE_CHECK_TIME).total_seconds()
+        > obbff.TOOLBAR_TWEET_NEWS_SECONDS_BETWEEN_UPDATES
+    ):
+        # This doesn't depende on the time of the tweet but the time that the check was made
+        LAST_TWEET_NEWS_UPDATE_CHECK_TIME = datetime.now(pytz.utc)
+
+        dhours = 0
+        dminutes = 0
+        # Get timezone that corresponds to the user
+        if obbff.USE_DATETIME and get_user_timezone_or_invalid() != "INVALID":
+            utcnow = pytz.timezone("utc").localize(datetime.utcnow())  # generic time
+            here = utcnow.astimezone(pytz.timezone("Etc/UTC")).replace(tzinfo=None)
+            there = utcnow.astimezone(pytz.timezone(get_user_timezone())).replace(
+                tzinfo=None
+            )
+
+            offset = relativedelta(here, there)
+            dhours = offset.hours
+            dminutes = offset.minutes
+
+        if "," in obbff.TOOLBAR_TWEET_NEWS_ACCOUNTS_TO_TRACK:
+            news_sources_twitter_handles = (
+                obbff.TOOLBAR_TWEET_NEWS_ACCOUNTS_TO_TRACK.split(",")
+            )
+        else:
+            news_sources_twitter_handles = [obbff.TOOLBAR_TWEET_NEWS_ACCOUNTS_TO_TRACK]
+
+        news_tweet_to_use = ""
+        handle_to_use = ""
+        url = ""
+        last_tweet_dt: Optional[datetime] = None
+        for handle in news_sources_twitter_handles:
+            try:
+                # Get last N tweets from each handle
+                timeline = twitter_api.user_timeline(
+                    screen_name=handle,
+                    count=obbff.TOOLBAR_TWEET_NEWS_NUM_LAST_TWEETS_TO_READ,
+                )
+                timeline = timeline[: obbff.TOOLBAR_TWEET_NEWS_NUM_LAST_TWEETS_TO_READ]
+                for last_tweet in timeline:
+                    keywords = obbff.TOOLBAR_TWEET_NEWS_KEYWORDS.split(",")
+                    more_recent = (
+                        last_tweet_dt is None or last_tweet.created_at > last_tweet_dt
+                    )
+                    with_keyword = any(key in last_tweet.text for key in keywords)
+
+                    if more_recent and with_keyword:
+                        handle_to_use = handle
+                        last_tweet_dt = last_tweet.created_at
+
+                        news_tweet_to_use = last_tweet.text
+
+                        url = f"https://twitter.com/x/status/{last_tweet.id_str}"
+
+            # In case the handle provided doesn't exist, we skip it
+            except tweepy.errors.NotFound:
+                pass
+
+        if last_tweet_dt and news_tweet_to_use:
+            tweet_hr = f"{last_tweet_dt.hour}"
+            tweet_min = f"{last_tweet_dt.minute}"
+            # Update time based on timezone specified by user
+            if (
+                obbff.USE_DATETIME and get_user_timezone_or_invalid() != "INVALID"
+            ) and (dhours > 0 or dminutes > 0):
+                tweet_hr = f"{round((int(last_tweet_dt.hour) - dhours) % 60):02}"
+                tweet_min = f"{round((int(last_tweet_dt.minute) - dminutes) % 60):02}"
+
+            # Update NEWS_TWEET with the new news tweet found
+            news_tweet = f"{tweet_hr}:{tweet_min} - @{handle_to_use} - {url}\n\n{news_tweet_to_use}"
+
+    return news_tweet
+
+
 def check_start_less_than_end(start_date: str, end_date: str) -> bool:
     """Check if start_date is equal to end_date.
 
@@ -1866,15 +1987,17 @@ def check_start_less_than_end(start_date: str, end_date: str) -> bool:
 
 
 # Write an abstract helper to make requests from a url with potential headers and params
-def request(url: str, method="GET", **kwargs) -> requests.Response:
+def request(
+    url: str, method: str = "GET", timeout: int = 0, **kwargs
+) -> requests.Response:
     """Abstract helper to make requests from a url with potential headers and params.
 
     Parameters
     ----------
     url : str
-       Url to make the request to
+        Url to make the request to
     method : str, optional
-       HTTP method to use.  Can be "GET" or "POST", by default "GET"
+        HTTP method to use.  Can be "GET" or "POST", by default "GET"
 
     Returns
     -------
@@ -1889,15 +2012,15 @@ def request(url: str, method="GET", **kwargs) -> requests.Response:
     # We want to add a user agent to the request, so check if there are any headers
     # If there are headers, check if there is a user agent, if not add one.
     # Some requests seem to work only with a specific user agent, so we want to be able to override it.
-    headers = kwargs.pop("headers") if "headers" in kwargs else {}
+    headers = kwargs.pop("headers", {})
+    timeout = timeout or cfg.REQUEST_TIMEOUT
+
     if "User-Agent" not in headers:
         headers["User-Agent"] = get_user_agent()
     if method.upper() == "GET":
-        return requests.get(url, headers=headers, timeout=cfg.REQUEST_TIMEOUT, **kwargs)
+        return requests.get(url, headers=headers, timeout=timeout, **kwargs)
     if method.upper() == "POST":
-        return requests.post(
-            url, headers=headers, timeout=cfg.REQUEST_TIMEOUT, **kwargs
-        )
+        return requests.post(url, headers=headers, timeout=timeout, **kwargs)
     raise ValueError("Method must be GET or POST")
 
 

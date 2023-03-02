@@ -69,6 +69,7 @@ def display_crypto_hacks(
                 floatfmt=".1f",
                 show_index=False,
                 title="Major Crypto Hacks",
+                export=bool(export),
             )
 
             export_data(

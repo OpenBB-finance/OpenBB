@@ -5,21 +5,14 @@ __docformat__ = "numpy"
 import copy
 import logging
 import os
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List, Optional, Tuple, Union
 
 import numpy as np
 import pandas as pd
-from matplotlib import pyplot as plt
 
-from openbb_terminal.config_plot import PLOT_DPI
-from openbb_terminal.config_terminal import theme
+from openbb_terminal import OpenBBFigure
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import (
-    export_data,
-    is_valid_axes_count,
-    plot_autoscale,
-    print_rich_table,
-)
+from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.helpers_denomination import transform as transform_by_denomination
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.sector_industry_analysis import stockanalysis_model
@@ -44,10 +37,10 @@ def display_plots_financials(
     limit: int = 10,
     export: str = "",
     sheet_name: Optional[str] = None,
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
     raw: bool = False,
     already_loaded_stocks_data=None,
-) -> Tuple[Dict, List]:
+) -> Union[Tuple[Dict, List], Tuple[Dict, List, OpenBBFigure]]:
     """Display financials bars comparing sectors, industry, analysis, countries, market cap and excluding exchanges.
 
     Parameters
@@ -80,8 +73,8 @@ def display_plots_financials(
         Output all raw data
     already_loaded_stocks_data: Dict
         Dictionary of filtered stocks data that has been loaded before
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
 
     Returns
     -------
@@ -90,6 +83,7 @@ def display_plots_financials(
     list
         List of tickers filtered
     """
+
     if already_loaded_stocks_data is None:
         already_loaded_stocks_data = {}
 
@@ -156,10 +150,7 @@ def display_plots_financials(
 
     (df, foundDenomination) = transform_by_denomination(df)
 
-    if currency:
-        denomination = f"[{currency} "
-    else:
-        denomination = "["
+    denomination = f"[{currency} " if currency else "["
 
     if denomination != "Units":
         denomination += f"{foundDenomination}]"
@@ -169,37 +160,46 @@ def display_plots_financials(
         else:
             denomination = ""
 
-    if raw:
-        print_rich_table(
-            df.fillna("-"),
-            headers=list(df.columns),
-            show_index=True,
-            title=f"{item_name} {denomination}",
+    if not OpenBBFigure().is_image_export(export):
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            item_name,
+            df,
+            sheet_name,
         )
-    else:
-        # This plot has 1 axis
-        if external_axes is None:
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        elif is_valid_axes_count(external_axes, 1):
-            (ax,) = external_axes
-        else:
-            return stocks_data, company_tickers
+        if raw:
+            return print_rich_table(
+                df.fillna("-"),
+                headers=list(df.columns),
+                show_index=True,
+                title=f"{item_name} {denomination}",
+                export=bool(export),
+            )
 
-        for company in df.columns:
-            ax.plot(df[company], ls="-", marker="o", label=company)
+    fig = OpenBBFigure().set_title(f"{item_name} {denomination}")
+    for company in df.columns:
+        fig.add_scatter(
+            x=df.index,
+            y=df[company],
+            mode="lines+markers",
+            name=company,
+            marker=dict(size=16, line=dict(width=1)),
+        )
 
-        ax.set_title(f"{item_name} {denomination}")
-        ax.legend()
-        theme.style_primary_axis(ax)
+    if fig.is_image_export(export):
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            item_name,
+            df,
+            sheet_name,
+            fig,
+        )
 
-        if external_axes is None:
-            theme.visualize_output()
+    fig.show(external=external_axes)
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        item_name,
-        df,
-        sheet_name,
-    )
+    if external_axes:
+        return (stocks_data, company_tickers, fig)
+
     return stocks_data, company_tickers

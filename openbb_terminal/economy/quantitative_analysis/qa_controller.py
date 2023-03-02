@@ -267,10 +267,7 @@ class QaController(StockBaseController):
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        if isinstance(self.data, pd.Series):
-            data = self.data.to_frame()
-        else:
-            data = self.data
+        data = self.data.to_frame() if isinstance(self.data, pd.Series) else self.data
         if ns_parser:
             qa_view.display_raw(
                 data=data,
@@ -347,6 +344,7 @@ class QaController(StockBaseController):
                 log_y=ns_parser.log,
                 markers_lines=ns_parser.ml,
                 markers_scatter=ns_parser.ms,
+                export=ns_parser.export,
             )
 
     @log_start_end(log=logger)

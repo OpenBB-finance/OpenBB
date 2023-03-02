@@ -833,9 +833,6 @@ GET_STOCKS_DATA_DICT = {
     [True, False],
 )
 def test_display_bars_financials(mocker, raw):
-    # MOCK VISUALIZE_OUTPUT
-    mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
-
     # MOCK EXPORT_DATA
     mocker.patch(target="openbb_terminal.stocks.options.yfinance_view.export_data")
 
@@ -860,9 +857,6 @@ def test_display_bars_financials(mocker, raw):
 
 @pytest.mark.vcr
 def test_display_bars_financials_load_data(mocker):
-    # MOCK VISUALIZE_OUTPUT
-    mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
-
     # MOCK EXPORT_DATA
     mocker.patch(target="openbb_terminal.stocks.options.yfinance_view.export_data")
 
@@ -895,9 +889,6 @@ def test_display_bars_financials_load_data(mocker):
     ],
 )
 def test_display_companies_per_sector_in_country(mktcap, mocker, raw):
-    # MOCK VISUALIZE_OUTPUT
-    mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
-
     # MOCK EXPORT_DATA
     mocker.patch(target="openbb_terminal.stocks.options.yfinance_view.export_data")
 
@@ -922,9 +913,6 @@ def test_display_companies_per_sector_in_country(mktcap, mocker, raw):
     ],
 )
 def test_display_companies_per_industry_in_sector(exclude_exchanges, mocker, raw):
-    # MOCK VISUALIZE_OUTPUT
-    mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
-
     # MOCK EXPORT_DATA
     mocker.patch(target="openbb_terminal.stocks.options.yfinance_view.export_data")
 
@@ -950,9 +938,6 @@ def test_display_companies_per_industry_in_sector(exclude_exchanges, mocker, raw
     ],
 )
 def test_display_companies_per_country_in_sector(exclude_exchanges, mocker, raw):
-    # MOCK VISUALIZE_OUTPUT
-    mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
-
     # MOCK EXPORT_DATA
     mocker.patch(target="openbb_terminal.stocks.options.yfinance_view.export_data")
 
@@ -978,9 +963,6 @@ def test_display_companies_per_country_in_sector(exclude_exchanges, mocker, raw)
     ],
 )
 def test_display_companies_per_country_in_industry(exclude_exchanges, mocker, raw):
-    # MOCK VISUALIZE_OUTPUT
-    mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
-
     # MOCK EXPORT_DATA
     mocker.patch(target="openbb_terminal.stocks.options.yfinance_view.export_data")
 

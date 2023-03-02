@@ -43,6 +43,7 @@ jobs:
 
       - run: |
           source $VENV
+          pip uninstall Brotli -y
           pytest tests/website --autodoc
           python website/generate_sdk_markdown.py && python website/generate_terminal_markdown.py
 

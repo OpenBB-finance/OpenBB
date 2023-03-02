@@ -120,7 +120,7 @@ class DefiController(BaseController):
             default=False,
         )
 
-        if other_args and not other_args[0][0] == "-":
+        if other_args and other_args[0][0] != "-":
             other_args.insert(0, "--address")
 
         ns_parser = self.parse_known_args_and_warn(
@@ -165,7 +165,7 @@ class DefiController(BaseController):
             default=10,
         )
 
-        if other_args and not other_args[0][0] == "-":
+        if other_args and other_args[0][0] != "-":
             other_args.insert(0, "-a")
 
         ns_parser = self.parse_known_args_and_warn(
@@ -327,9 +327,9 @@ class DefiController(BaseController):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="sreturn",
             description="""
-                 Displays terra blockchain staking returns history.
-                 [Source: https://fcd.terra.dev/swagger]
-             """,
+                Displays terra blockchain staking returns history.
+                [Source: https://fcd.terra.dev/swagger]
+            """,
         )
         parser.add_argument(
             "-l",
@@ -401,7 +401,7 @@ class DefiController(BaseController):
             required="-h" not in other_args,
             help="dApps to search historical TVL. Should be split by , e.g.: anchor,sushiswap,pancakeswap",
         )
-        if other_args and not other_args[0][0] == "-":
+        if other_args and other_args[0][0] != "-":
             other_args.insert(0, "-d")
 
         ns_parser = self.parse_known_args_and_warn(
@@ -452,6 +452,16 @@ class DefiController(BaseController):
                 "Only works when raw data is displayed."
             ),
         )
+
+        parser.add_argument(
+            "-i",
+            "--interactive",
+            action="store_true",
+            dest="interactive",
+            default=False,
+            help=("Show interactive table"),
+        )
+
         parser.add_argument(
             "--desc",
             action="store_true",
@@ -464,6 +474,7 @@ class DefiController(BaseController):
         )
         if ns_parser:
             llama_view.display_defi_protocols(
+                interactive=ns_parser.interactive,
                 limit=ns_parser.limit,
                 sortby=ns_parser.sortby,
                 ascend=ns_parser.reverse,
@@ -617,9 +628,9 @@ class DefiController(BaseController):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="stats",
             description="""
-                 Display base statistics about Uniswap DEX.
-                 [Source: https://thegraph.com/en/]
-             """,
+                Display base statistics about Uniswap DEX.
+                [Source: https://thegraph.com/en/]
+            """,
         )
 
         ns_parser = self.parse_known_args_and_warn(

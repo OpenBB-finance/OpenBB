@@ -107,9 +107,8 @@ def get_ordered_list_sources(command_path: str):
                     context = command_path.split("/")[1]
 
                     # Grab the load source from that context if it exists, otherwise throws an error
-                    if context in json_doc:
-                        if "load" in json_doc[context]:
-                            return json_doc[context]["load"]
+                    if context in json_doc and "load" in json_doc[context]:
+                        return json_doc[context]["load"]
 
                 # We didn't find the next level, so flag that that command default source is missing
                 # Which means that there aren't more than 1 source and therefore no selection is necessary
@@ -190,10 +189,11 @@ class MenuText:
             column alignment for the value. This allows for a better UX experience.
         """
         parameter_translated = i18n.t(self.menu_path + key_param)
-        if col_align > len(parameter_translated):
-            space = (col_align - len(parameter_translated)) * " "
-        else:
-            space = ""
+        space = (
+            (col_align - len(parameter_translated)) * " "
+            if col_align > len(parameter_translated)
+            else ""
+        )
         self.menu_text += f"[param]{parameter_translated}{space}:[/param] {value}\n"
 
     def add_cmd(self, key_command: str, condition: bool = True):
@@ -216,10 +216,7 @@ class MenuText:
         sources = get_ordered_list_sources(f"/{self.menu_path}{key_command}")
 
         if sources:
-            if self.col_src > len(cmd):
-                space = (self.col_src - len(cmd)) * " "
-            else:
-                space = " "
+            space = (self.col_src - len(cmd)) * " " if self.col_src > len(cmd) else " "
             cmd += f"{space}[src][{', '.join(sources)}][/src]"
 
         self.menu_text += cmd + "\n"
@@ -327,7 +324,10 @@ console = ConsoleAndPanel()
 
 
 def optional_rich_track(
-    inputs: Iterable, suppress_output: bool = False, desc: str = ""
+    inputs: Iterable,
+    suppress_output: bool = False,
+    desc: str = "",
+    total: Optional[int] = None,
 ):
     """Generate a rich track progress bar if desired
 
@@ -339,7 +339,9 @@ def optional_rich_track(
         Flag to suppress the output, by default False
     desc : str, optional
         String to describe the progress bar, by default ""
+    total : Optional[int], optional
+        Total number of items to be looped through, by default None
     """
     if suppress_output:
         return inputs
-    return track(inputs, description=desc)
+    return track(inputs, description=desc, total=total)

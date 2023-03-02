@@ -5,8 +5,7 @@ import logging
 import os
 from typing import Optional
 
-from pandas.plotting import register_matplotlib_converters
-
+from openbb_terminal.core.plots.backend import plots_backend
 from openbb_terminal.cryptocurrency.dataframe_helpers import (
     lambda_very_long_number_formatter,
 )
@@ -17,7 +16,6 @@ from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
-register_matplotlib_converters()
 
 # pylint: disable=R0904, C0302
 
@@ -35,6 +33,7 @@ COINS_COLUMNS = [
 @log_start_end(log=logger)
 def display_coins(
     category: str,
+    interactive: bool = False,
     limit: int = 250,
     sortby: str = "Symbol",
     export: str = "",
@@ -79,6 +78,8 @@ def display_coins(
             axis=1,
             copy=True,
         )
+        if interactive:
+            plots_backend().send_table(df, title="Top Coins")
         for col in ["Volume [$]", "Market Cap"]:
             if col in df.columns:
                 df[col] = df[col].apply(lambda x: lambda_very_long_number_formatter(x))
@@ -86,6 +87,7 @@ def display_coins(
             df.head(limit),
             headers=list(df.columns),
             show_index=False,
+            export=bool(export),
         )
 
         export_data(
@@ -104,6 +106,7 @@ def display_gainers(
     interval: str = "1h",
     limit: int = 20,
     sortby: str = "market_cap_rank",
+    ascend: bool = True,
     export: str = "",
     sheet_name: Optional[str] = None,
 ) -> None:
@@ -118,11 +121,15 @@ def display_gainers(
     sortby: str
         Key to sort data. The table can be sorted by every of its columns. Refer to
         API documentation (see /coins/markets in https://www.coingecko.com/en/api/documentation)
+    ascend: bool
+        Sort data in ascending order
     export : str
         Export dataframe data to csv,json,xlsx file
     """
 
-    df = pycoingecko_model.get_gainers(limit=limit, interval=interval, sortby=sortby)
+    df = pycoingecko_model.get_gainers(
+        limit=limit, interval=interval, sortby=sortby, ascend=ascend
+    )
 
     if not df.empty:
         for col in ["Volume [$]", "Market Cap"]:
@@ -133,6 +140,7 @@ def display_gainers(
             df.head(limit),
             headers=list(df.columns),
             show_index=False,
+            export=bool(export),
         )
 
         export_data(
@@ -153,6 +161,7 @@ def display_losers(
     export: str = "",
     sheet_name: Optional[str] = None,
     sortby: str = "Market Cap Rank",
+    ascend: bool = False,
 ) -> None:
     """Prints table showing Largest Losers - coins which lost the most in given period of time. [Source: CoinGecko]
 
@@ -165,11 +174,15 @@ def display_losers(
     sortby: str
         Key to sort data. The table can be sorted by every of its columns. Refer to
         API documentation (see /coins/markets in https://www.coingecko.com/en/api/documentation)
+    ascend: bool
+        Sort data in ascending order
     export : str
         Export dataframe data to csv,json,xlsx file
     """
 
-    df = pycoingecko_model.get_losers(limit=limit, interval=interval, sortby=sortby)
+    df = pycoingecko_model.get_losers(
+        limit=limit, interval=interval, sortby=sortby, ascend=ascend
+    )
 
     if not df.empty:
         for col in ["Volume [$]", "Market Cap"]:
@@ -180,6 +193,7 @@ def display_losers(
             df.head(limit),
             headers=list(df.columns),
             show_index=False,
+            export=bool(export),
         )
 
         export_data(
@@ -211,6 +225,7 @@ def display_trending(export: str = "", sheet_name: Optional[str] = None) -> None
             floatfmt=".4f",
             show_index=False,
             title="Trending coins on CoinGecko",
+            export=bool(export),
         )
 
         export_data(

@@ -62,10 +62,10 @@ class TradingHoursController(BaseController):
         self.exchange = None
 
         if ticker:
-            if ticker in self.equities:
+            if ticker in self.equities.index:
                 self.symbol = ticker
-                self.symbol_name = self.equities[ticker]["short_name"]
-                self.exchange = self.equities[ticker]["exchange"]
+                self.symbol_name = self.equities.loc[ticker]["name"]
+                self.exchange = self.equities.loc[ticker]["exchange"]
                 open_ex = get_open()
                 if self.exchange in open_ex.index:
                     self.symbol_market_open = True
@@ -83,13 +83,11 @@ class TradingHoursController(BaseController):
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
-        if self.symbol is not None:
-            if self.symbol_market_open:
-                exchange_opened = "OPENED"
-            else:
-                exchange_opened = "CLOSED"
-        else:
-            exchange_opened = ""
+        exchange_opened = (
+            ("OPENED" if self.symbol_market_open else "CLOSED")
+            if self.symbol is not None
+            else ""
+        )
 
         mt = MenuText("stocks/th/")
         mt.add_cmd("open")
@@ -134,9 +132,9 @@ class TradingHoursController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             self.symbol = ns_parser.symbol
-            if ns_parser.symbol in self.equities:
-                self.symbol_name = self.equities[self.symbol]["short_name"]
-                self.exchange = self.equities[self.symbol]["exchange"]
+            if ns_parser.symbol in self.equities.index:
+                self.symbol_name = self.equities.loc[self.symbol]["name"]
+                self.exchange = self.equities.loc[self.symbol]["exchange"]
                 open_ex = get_open()
                 if self.exchange in open_ex.index:
                     self.symbol_market_open = True

@@ -254,18 +254,17 @@ class PortfolioOptimizationController(BaseController):
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def update_runtime_choices(self):
-        if session and obbff.USE_PROMPT_TOOLKIT:
-            if self.portfolios:
-                self.choices["show"]["--portfolios"] = {
-                    c: {} for c in list(self.portfolios.keys())
-                }
-                self.choices["rpf"]["--portfolios"] = {
-                    c: {} for c in list(self.portfolios.keys())
-                }
-                self.choices["plot"]["--portfolios"] = {
-                    c: {} for c in list(self.portfolios.keys())
-                }
-                self.completer = NestedCompleter.from_nested_dict(self.choices)
+        if session and obbff.USE_PROMPT_TOOLKIT and self.portfolios:
+            self.choices["show"]["--portfolios"] = {
+                c: {} for c in list(self.portfolios.keys())
+            }
+            self.choices["rpf"]["--portfolios"] = {
+                c: {} for c in list(self.portfolios.keys())
+            }
+            self.choices["plot"]["--portfolios"] = {
+                c: {} for c in list(self.portfolios.keys())
+            }
+            self.completer = NestedCompleter.from_nested_dict(self.choices)
 
     def print_help(self):
         """Print help"""
@@ -570,11 +569,9 @@ class PortfolioOptimizationController(BaseController):
             else:
                 self.current_file = " ".join(ns_parser.file)
 
-                if self.current_file in self.optimization_file_map:
-                    file_location = self.optimization_file_map[self.current_file]
-                else:
-                    file_location = self.current_file  # type: ignore
-
+                file_location = self.optimization_file_map.get(
+                    self.current_file, self.current_file
+                )
                 self.params, self.current_model = params_view.load_file(file_location)  # type: ignore
 
     @log_start_end(log=logger)
@@ -612,9 +609,8 @@ class PortfolioOptimizationController(BaseController):
             default=[],
             help="Show selected saved portfolios",
         )
-        if other_args:
-            if "-" not in other_args[0]:
-                other_args.insert(0, "-pf")
+        if other_args and "-" not in other_args[0]:
+            other_args.insert(0, "-pf")
 
         parser = self.po_parser(parser, ct=True)
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
@@ -651,9 +647,8 @@ class PortfolioOptimizationController(BaseController):
             default=[],
             help="portfolios to be removed from the saved portfolios",
         )
-        if other_args:
-            if "-" not in other_args[0]:
-                other_args.insert(0, "-pf")
+        if other_args and "-" not in other_args[0]:
+            other_args.insert(0, "-pf")
 
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
@@ -819,9 +814,8 @@ class PortfolioOptimizationController(BaseController):
             r=True,
             a=True,
         )
-        if other_args:
-            if "-" not in other_args[0]:
-                other_args.insert(0, "-pf")
+        if other_args and "-" not in other_args[0]:
+            other_args.insert(0, "-pf")
 
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
@@ -2212,10 +2206,11 @@ class PortfolioOptimizationController(BaseController):
                 p_views = ns_parser.p_views
                 q_views = ns_parser.q_views
 
-            if ns_parser.benchmark is None:
-                benchmark = None
-            else:
-                benchmark = self.portfolios[ns_parser.benchmark.upper()]
+            benchmark = (
+                None
+                if ns_parser.benchmark is None
+                else self.portfolios[ns_parser.benchmark.upper()]
+            )
 
             table = True
             if "historic_period_sa" in vars(ns_parser):

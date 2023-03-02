@@ -256,7 +256,7 @@ class CryptoController(CryptoBaseController):
             upper_symbol = ns_parser.symbol.upper()
             if "-USD" not in ns_parser.symbol:
                 upper_symbol += "-USD"
-            if upper_symbol in pyth_model.ASSETS.keys():
+            if upper_symbol in pyth_model.ASSETS:
                 console.print(
                     "[param]If it takes too long, you can use 'Ctrl + C' to cancel.\n[/param]"
                 )
@@ -290,15 +290,7 @@ class CryptoController(CryptoBaseController):
             if not self.symbol:
                 console.print("No coin loaded. First use `load {symbol}`\n")
                 return
-            export_data(
-                ns_parser.export,
-                os.path.join(os.path.dirname(os.path.abspath(__file__))),
-                f"{self.symbol}",
-                self.current_df,
-                " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None,
-            )
-
-            plot_chart(
+            figure = plot_chart(
                 exchange=self.exchange,
                 source=self.source,
                 to_symbol=self.symbol,
@@ -306,6 +298,15 @@ class CryptoController(CryptoBaseController):
                 prices_df=self.current_df,
                 interval=self.current_interval,
                 yscale="log" if ns_parser.logy else "linear",
+                external_axes=ns_parser.is_image,
+            )
+            export_data(
+                ns_parser.export,
+                os.path.join(os.path.dirname(os.path.abspath(__file__))),
+                f"{self.symbol}",
+                self.current_df,
+                " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None,
+                figure=figure,
             )
 
     @log_start_end(log=logger)
@@ -503,7 +504,7 @@ class CryptoController(CryptoBaseController):
             choices=range(1, 300),
             metavar="SKIP",
         )
-        if other_args and not other_args[0][0] == "-":
+        if other_args and other_args[0][0] != "-":
             other_args.insert(0, "-c")
 
         ns_parser = self.parse_known_args_and_warn(

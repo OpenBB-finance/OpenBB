@@ -1,5 +1,5 @@
     search             search for a future based on category or exchange               [YahooFinance]
 
-    historical         get historical timeseries                                       [YahooFinance]
+    historical         get historical timeseries                                       [YahooFinance, DataBento]
     curve              get futures curves                                              [YahooFinance]
 

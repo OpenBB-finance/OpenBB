@@ -34,6 +34,7 @@ def display_gwei_fees(export: str = "", sheet_name: Optional[str] = None) -> Non
             headers=list(df_fees.columns),
             show_index=False,
             title="Current GWEI Fees",
+            export=bool(export),
         )
 
         export_data(

@@ -6,6 +6,7 @@ import re
 # IMPORTATION INTERNAL
 from openbb_terminal.core.config.paths import HOME_DIRECTORY
 from openbb_terminal.core.log.generation.settings import AppSettings
+from openbb_terminal.core.log.generation.user_logger import get_user_uuid
 
 
 class FormatterWithExceptions(logging.Formatter):
@@ -35,8 +36,6 @@ class FormatterWithExceptions(logging.Formatter):
         if hasattr(record, "func_name_override"):
             record.funcName = record.func_name_override  # type: ignore
             record.lineno = 0
-
-        log_extra["userId"] = getattr(record, "user_id", "NA")
 
         if hasattr(record, "session_id"):
             log_extra["sessionId"] = record.session_id  # type: ignore
@@ -149,7 +148,9 @@ class FormatterWithExceptions(logging.Formatter):
             "appId": app_settings.identifier,
             "sessionId": app_settings.session_id,
             "commitHash": app_settings.commit_hash,
+            "userId": get_user_uuid(),
         }
+
         log_extra = self.extract_log_extra(record=record)
         log_prefix_content = {**log_prefix_content, **log_extra}
         log_prefix = self.LOGPREFIXFORMAT % log_prefix_content

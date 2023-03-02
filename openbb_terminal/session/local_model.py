@@ -156,10 +156,9 @@ def update_sync_flag(settings: dict) -> bool:
     bool
         The sync flag.
     """
-    if settings:
-        if settings.get("SYNC_ENABLED", "").lower() == "false":
-            obbff.SYNC_ENABLED = False
-            return False
+    if settings and settings.get("SYNC_ENABLED", "").lower() == "false":
+        obbff.SYNC_ENABLED = False
+        return False
     obbff.SYNC_ENABLED = True
     return True
 
@@ -203,10 +202,11 @@ def get_routine(
     """
     try:
         user_folder = USER_ROUTINES_DIRECTORY / User.get_uuid()
-        if os.path.exists(user_folder / file_name):
-            file_path = user_folder / file_name
-        else:
-            file_path = folder / file_name
+        file_path = (
+            user_folder / file_name
+            if os.path.exists(user_folder / file_name)
+            else folder / file_name
+        )
 
         with open(file_path) as f:
             routine = "".join(f.readlines())

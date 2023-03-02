@@ -5,27 +5,26 @@ import logging
 import os
 import re
 from datetime import date, datetime, timedelta
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Union
 
-import matplotlib.dates as mdates
-import matplotlib.pyplot as plt
-import matplotlib.ticker as mtick
 import numpy as np
 import pandas as pd
 from openpyxl import Workbook
+from scipy.spatial import Delaunay
 from scipy.stats import binom
 
-import openbb_terminal.config_plot as cfp
-from openbb_terminal.config_plot import PLOT_DPI
-from openbb_terminal.config_terminal import theme
+from openbb_terminal import OpenBBFigure
 from openbb_terminal.core.config.paths import MISCELLANEOUS_DIRECTORY
+from openbb_terminal.core.plots.config.openbb_styles import (
+    PLT_3DMESH_COLORSCALE,
+    PLT_3DMESH_HOVERLABEL,
+    PLT_3DMESH_SCENE,
+)
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     excel_columns,
     export_data,
     get_rf,
-    is_valid_axes_count,
-    plot_autoscale,
     print_rich_table,
 )
 from openbb_terminal.rich_config import console
@@ -75,8 +74,8 @@ def plot_plot(
     custom: str = "",
     export: str = "",
     sheet_name: Optional[str] = None,
-    external_axes: Optional[List[plt.Axes]] = None,
-) -> None:
+    external_axes: bool = False,
+) -> Union[OpenBBFigure, None]:
     """Generate a graph custom graph based on user input
 
     Parameters
@@ -99,8 +98,8 @@ def plot_plot(
         Optionally specify the name of the sheet the data is exported to.
     export: str
         type of data to export
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     convert = {
         "ltd": "lastTradeDate",
@@ -119,11 +118,9 @@ def plot_plot(
         y = "impliedVolatility"
     else:
         if x is None:
-            console.print("[red]Invalid option sent for x-axis[/red]\n")
-            return
+            return console.print("[red]Invalid option sent for x-axis[/red]\n")
         if y is None:
-            console.print("[red]Invalid option sent for y-axis[/red]\n")
-            return
+            return console.print("[red]Invalid option sent for y-axis[/red]\n")
         if x in convert:
             x = convert[x]
         else:
@@ -143,42 +140,26 @@ def plot_plot(
     chain = yfinance_model.get_option_chain(symbol, expiry)
     values = chain.puts if put else chain.calls
 
-    if external_axes is None:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
-
     x_data = values[x]
     y_data = values[y]
-    ax.plot(x_data, y_data, "--bo")
-    option = "puts" if put else "calls"
-    ax.set_title(
-        f"{varis[y]['label']} vs. {varis[x]['label']} for {symbol} {option} on {expiry}"
-    )
-    ax.set_ylabel(varis[y]["label"])
-    ax.set_xlabel(varis[x]["label"])
-    if varis[x]["format"] == "date":
-        ax.get_xaxis().set_major_formatter(mdates.DateFormatter("%Y/%m/%d"))
-        ax.get_xaxis().set_major_locator(mdates.DayLocator(interval=1))
-    elif varis[x]["format"]:
-        ax.get_xaxis().set_major_formatter(varis[x]["format"])
-    if varis[y]["format"] == "date":
-        ax.get_yaxis().set_major_formatter(mdates.DateFormatter("%Y/%m/%d"))
-        ax.get_yaxis().set_major_locator(mdates.DayLocator(interval=1))
-    elif varis[y]["format"]:
-        ax.get_yaxis().set_major_formatter(varis[y]["format"])
-    theme.style_primary_axis(ax)
 
-    if external_axes is None:
-        theme.visualize_output()
+    option = "puts" if put else "calls"
+    fig = OpenBBFigure(
+        title=f"{varis[y]['label']} vs. {varis[x]['label']} for {symbol} {option} on {expiry}",
+        xaxis_title=varis[x]["label"],
+        yaxis_title=varis[y]["label"],
+    )
+    fig.add_scatter(x=x_data, y=y_data, mode="lines+markers")
+
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "plot",
-        sheet_name,
+        sheet_name=sheet_name,
+        figure=fig,
     )
+
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -188,33 +169,23 @@ def plot_payoff(
     underlying: float,
     symbol: str,
     expiry: str,
-    external_axes: Optional[List[plt.Axes]] = None,
-) -> None:
+    external_axes: bool = False,
+) -> Union[OpenBBFigure, None]:
     """Generate a graph showing the option payoff diagram"""
     x, yb, ya = generate_data(current_price, options, underlying)
 
-    if external_axes is None:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
-
+    plot = OpenBBFigure(
+        title=f"Option Payoff Diagram for {symbol} on {expiry}",
+        xaxis=dict(tickformat="${x:.2f}", title="Underlying Asset Price at Expiration"),
+        yaxis=dict(tickformat="${x:.2f}", title="Profit"),
+    )
+    plot.add_scatter(x=x, y=yb, name="Payoff Before Premium")
     if ya:
-        ax.plot(x, yb, label="Payoff Before Premium")
-        ax.plot(x, ya, label="Payoff After Premium")
+        plot.add_scatter(x=x, y=ya, name="Payoff After Premium")
     else:
-        ax.plot(x, yb, label="Payoff")
-    ax.set_title(f"Option Payoff Diagram for {symbol} on {expiry}")
-    ax.set_ylabel("Profit")
-    ax.set_xlabel("Underlying Asset Price at Expiration")
-    ax.legend()
-    ax.xaxis.set_major_formatter("${x:.2f}")
-    ax.yaxis.set_major_formatter("${x:.2f}")
-    theme.style_primary_axis(ax)
+        plot.data[0].name = "Payoff"
 
-    if external_axes is None:
-        theme.visualize_output()
+    return plot.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -258,10 +229,11 @@ def show_parity(
     if div_dts:
         last_div = pd.to_datetime(div_dts[-1])
 
-        if len(div_dts) > 3:
-            avg_div = np.mean(div_info.to_list()[-4:])
-        else:
-            avg_div = np.mean(div_info.to_list())
+        avg_div = (
+            np.mean(div_info.to_list()[-4:])
+            if len(div_dts) > 3
+            else np.mean(div_info.to_list())
+        )
 
         next_div = last_div + timedelta(days=91)
         dividends = []
@@ -317,6 +289,7 @@ def show_parity(
         headers=[x.title() for x in show.columns],
         show_index=False,
         title=f"{symbol} Parity",
+        export=bool(export),
     )
     console.print(
         "[yellow]Warning: Low volume options may be difficult to trade.[/yellow]"
@@ -360,10 +333,11 @@ def risk_neutral_vals(
     risk: float
         The risk-free rate for the asset
     """
-    if put:
-        chain = get_option_chain(symbol, expiry).puts
-    else:
-        chain = get_option_chain(symbol, expiry).calls
+    chain = (
+        get_option_chain(symbol, expiry).puts
+        if put
+        else get_option_chain(symbol, expiry).calls
+    )
 
     r_date = datetime.strptime(expiry, "%Y-%m-%d").date()
     delta = (r_date - date.today()).days
@@ -403,8 +377,8 @@ def plot_expected_prices(
     p: float,
     symbol: str,
     expiry: str,
-    external_axes: Optional[List[plt.Axes]] = None,
-) -> None:
+    external_axes: bool = False,
+) -> Union[OpenBBFigure, None]:
     """Plot expected prices of the underlying asset at expiration
 
     Parameters
@@ -417,27 +391,31 @@ def plot_expected_prices(
         The ticker symbol of the option's underlying asset
     expiry : str
         The expiration for the option
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     up_moves = list(range(len(und_vals[-1])))
     up_moves.reverse()
     probs = [100 * binom.pmf(r, len(up_moves), p) for r in up_moves]
-    if external_axes is None:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
 
-    ax.set_title(f"Probabilities for ending prices of {symbol} on {expiry}")
-    ax.xaxis.set_major_formatter("${x:1.2f}")
-    ax.yaxis.set_major_formatter(mtick.PercentFormatter())
-    ax.plot(und_vals[-1], probs)
-    theme.style_primary_axis(ax)
+    fig = OpenBBFigure()
 
-    if external_axes is None:
-        theme.visualize_output()
+    fig.add_scatter(
+        x=und_vals[-1],
+        y=probs,
+        mode="lines",
+        name="Probabilities",
+    )
+
+    fig.update_layout(
+        title=f"Probabilities for ending prices of {symbol} on {expiry}",
+        xaxis_title="Price",
+        yaxis_title="Probability",
+        xaxis_tickformat="$,.2f",
+        yaxis_tickformat=".0%",
+    )
+
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -539,15 +517,23 @@ def show_binom(
     vol : float
         The annualized volatility for the underlying asset
     """
+    fig = OpenBBFigure()
+
     up, prob_up, discount, und_vals, opt_vals, days = yfinance_model.get_binom(
         symbol, expiry, strike, put, europe, vol
     )
 
+    if plot or fig.is_image_export(export):
+        fig = plot_expected_prices(und_vals, prob_up, symbol, expiry, True)
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "binomial",
+            figure=fig,
+        )
+
     if export:
         export_binomial_calcs(up, prob_up, discount, und_vals, opt_vals, days, symbol)
-
-    if plot:
-        plot_expected_prices(und_vals, prob_up, symbol, expiry)
 
     option = "put" if put else "call"
     console.print(
@@ -561,8 +547,8 @@ def display_vol_surface(
     export: str = "",
     sheet_name: Optional[str] = None,
     z: str = "IV",
-    external_axes: Optional[List[plt.Axes]] = None,
-):
+    external_axes: bool = False,
+) -> Union[OpenBBFigure, None]:
     """Display vol surface
 
     Parameters
@@ -573,37 +559,72 @@ def display_vol_surface(
         Format to export data
     z : str
         The variable for the Z axis
-    external_axes: Optional[List[plt.Axes]]
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     data = yfinance_model.get_iv_surface(symbol)
+    z = z.upper()
+
     if data.empty:
-        console.print(f"No options data found for {symbol}.\n")
-        return
+        return console.print(f"No options data found for {symbol}.\n")
+
+    z_dict = {
+        "IV": (data.impliedVolatility, "Volatility"),
+        "OI": (data.openInterest, "Open Interest"),
+        "LP": (data.lastPrice, "Last Price"),
+    }
+    label = z_dict[z][1]
+
+    if z not in z_dict:
+        return console.print(
+            f"Invalid z value: {z}.\n Valid values are: IV, OI, LP. (case insensitive)\n"
+        )
+
     X = data.dte
     Y = data.strike
-    if z == "IV":
-        Z = data.impliedVolatility
-        label = "Volatility"
-    elif z == "OI":
-        Z = data.openInterest
-        label = "Open Interest"
-    elif z == "LP":
-        Z = data.lastPrice
-        label = "Last Price"
-    if external_axes is None:
-        fig = plt.figure(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        ax = plt.axes(projection="3d")
-    else:
-        ax = external_axes[0]
-    ax.plot_trisurf(X, Y, Z, cmap="jet", linewidth=0.2)
-    ax.set_xlabel("DTE")
-    ax.set_ylabel("Strike")
-    ax.set_zlabel(z)
+    Z = z_dict[z][0]
 
-    if external_axes is None:
-        fig.suptitle(f"{label} Surface for {symbol.upper()}")
-        theme.visualize_output(force_tight_layout=False)
+    points3D = np.vstack((X, Y, Z)).T
+    points2D = points3D[:, :2]
+    tri = Delaunay(points2D)
+    II, J, K = tri.simplices.T
+
+    fig = OpenBBFigure()
+    fig.set_title(f"{label} Surface for {symbol.upper()}")
+
+    fig_kwargs = dict(z=Z, x=X, y=Y, i=II, j=J, k=K, intensity=Z)
+    fig.add_mesh3d(
+        **fig_kwargs,
+        colorscale=PLT_3DMESH_COLORSCALE,
+        hovertemplate="<b>DTE</b>: %{y} <br><b>Strike</b>: %{x} <br><b>"
+        + z_dict[z][1]
+        + "</b>: %{z}<extra></extra>",
+        showscale=False,
+        flatshading=True,
+        lighting=dict(
+            ambient=0.5, diffuse=0.5, roughness=0.5, specular=0.4, fresnel=0.4
+        ),
+    )
+
+    tick_kwargs = dict(tickfont=dict(size=13), titlefont=dict(size=16))
+    fig.update_layout(
+        scene=dict(
+            xaxis=dict(title="Strike", **tick_kwargs),
+            yaxis=dict(title="DTE", **tick_kwargs),
+            zaxis=dict(title=z, **tick_kwargs),
+        )
+    )
+    fig.update_layout(
+        margin=dict(l=5, r=10, t=40, b=20),
+        title_x=0.5,
+        hoverlabel=PLT_3DMESH_HOVERLABEL,
+        scene_camera=dict(
+            up=dict(x=0, y=0, z=2),
+            center=dict(x=0, y=0, z=-0.3),
+            eye=dict(x=1.25, y=1.25, z=0.69),
+        ),
+        scene=PLT_3DMESH_SCENE,
+    )
 
     export_data(
         export,
@@ -611,7 +632,11 @@ def display_vol_surface(
         "vsurf",
         data,
         sheet_name,
+        fig,
+        margin=False,
     )
+
+    return fig.show(external=external_axes, margin=False)
 
 
 @log_start_end(log=logger)
@@ -674,14 +699,7 @@ def show_greeks(
         show_extra_greeks=show_all,
     )
 
-    column_formatting = [
-        ".1f",
-        ".4f",
-        ".6f",
-        ".6f",
-        ".6f",
-        ".6f",
-    ]
+    column_formatting = [".1f", ".4f"] + [".6f"] * 4
 
     if show_all:
         additional_columns = ["Rho", "Phi", "Charm", "Vanna", "Vomma"]
