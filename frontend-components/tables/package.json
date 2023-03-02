@@ -6,9 +6,11 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
+    "deploy": "npm run build && mv dist/index.html ../../openbb_terminal/core/plots/table.html",
     "preview": "vite preview"
   },
   "dependencies": {
+    "@tanstack/match-sorter-utils": "^8.7.6",
     "@tanstack/react-table": "^8.7.9",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

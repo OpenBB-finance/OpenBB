@@ -295,6 +295,9 @@ def print_rich_table(
     if export:
         return
 
+    if obbff.USE_INTERACTIVE:
+        plots_backend().send_table(df_table=df, title=title)
+
     if obbff.USE_TABULATE_DF:
         table = Table(title=title, show_lines=True, show_header=show_header)
 
