@@ -5,7 +5,6 @@ import logging
 import os
 from typing import Optional
 
-from openbb_terminal.core.plots.backend import plots_backend
 from openbb_terminal.cryptocurrency.dataframe_helpers import (
     lambda_very_long_number_formatter,
 )
@@ -78,8 +77,7 @@ def display_coins(
             axis=1,
             copy=True,
         )
-        if interactive:
-            plots_backend().send_table(df, title="Top Coins")
+
         for col in ["Volume [$]", "Market Cap"]:
             if col in df.columns:
                 df[col] = df[col].apply(lambda x: lambda_very_long_number_formatter(x))

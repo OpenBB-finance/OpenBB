@@ -78,7 +78,7 @@ function processData(data) {
                 {
                     title: "Age",
                     field: "age",
-                    sorter: "number",  
+                    sorter: "number",
                 }
             ],
             data: {
@@ -92,17 +92,29 @@ function processData(data) {
       title: column,
       field: column,
       sorter: column.includes("Change"),
-      /*formatter: (cell) => {
-        if (column.startsWith("Change")) {
-          if (cell.getValue() > 0) {
-            return `<span style="color: green">${cell.getValue()}</span>`;
-          } else {
-            return `<span style="color: red">${cell.getValue()}</span>`;
+      formatter: (cell) => {
+        if (!cell.getValue().includes) return cell.getValue();
+        let colors = ["green", "red", "yellow"];
+
+        return colors.reduce((acc, color) => {
+          if (acc.includes(color)) {
+            // We parse to a number if it is a number
+            if (
+              !isNaN(acc.replace(`[${color}]`, "").replace(`[/${color}]`, ""))
+            ) {
+              return `<span style="color: ${color}">${parseFloat(
+                acc.replace(`[${color}]`, "").replace(`[/${color}]`, "")
+              )}</span>`;
+            } else if (acc.includes(`[${color}]`)) {
+              // otherwise we check if color is in the text
+              return `<span style="color: ${color}">${acc
+                .replace(`[${color}]`, "")
+                .replace(`[/${color}]`, "")}</span>`;
+            }
           }
-        } else {
-          return cell.getValue();
-        }
-      },*/
+          return acc;
+        }, cell.getValue());
+      },
     };
   });
   const finalData = data.data.map((row) => {

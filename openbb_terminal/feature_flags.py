@@ -37,6 +37,9 @@ RETRY_WITH_LOAD = load_env_vars("OPENBB_RETRY_WITH_LOAD", strtobool, False, "fea
 # Use tabulate to print dataframes
 USE_TABULATE_DF = load_env_vars("OPENBB_USE_TABULATE_DF", strtobool, True, "featflags")
 
+# Use interactive window to display dataframes with options to sort, filter, etc.
+USE_INTERACTIVE = load_env_vars("OPENBB_USE_INTERACTIVE", strtobool, True, "featflags")
+
 # Use clear console after each command
 USE_CLEAR_AFTER_CMD = load_env_vars(
     "OPENBB_USE_CLEAR_AFTER_CMD", strtobool, False, "featflags"

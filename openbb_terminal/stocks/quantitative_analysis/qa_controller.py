@@ -13,6 +13,7 @@ from openbb_terminal.common.quantitative_analysis import qa_view, rolling_view
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
+    EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_FIGURES_ALLOWED,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_list_dates,
@@ -355,7 +356,7 @@ class QaController(StockBaseController):
             """,
         )
         ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
             if self.stock.empty:
@@ -424,7 +425,7 @@ class QaController(StockBaseController):
             help="decompose using multiplicative model instead of additive",
         )
         ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
             if self.stock.empty:
@@ -549,7 +550,7 @@ class QaController(StockBaseController):
             help="Window length",
         )
         ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
             if self.stock.empty:
@@ -586,7 +587,7 @@ class QaController(StockBaseController):
             help="Window length",
         )
         ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
             if self.stock.empty:
@@ -640,7 +641,7 @@ class QaController(StockBaseController):
             help="quantile",
         )
         ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
             if self.stock.empty:
@@ -684,7 +685,7 @@ class QaController(StockBaseController):
             help="window length",
         )
         ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
             if self.stock.empty:
@@ -733,7 +734,7 @@ class QaController(StockBaseController):
             if self.stock.empty:
                 no_data_message()
                 return
-            rolling_view.display_kurtosis(
+            rolling_view.EXPORT_BOTH_RAW_DATA_AND_FIGURES(
                 symbol=self.ticker,
                 data=self.stock,
                 target=self.target,
@@ -874,7 +875,7 @@ class QaController(StockBaseController):
             """,
         )
         ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         # This assumes all intervals convert from string to int well
         # This should handle weekly and monthly because the merge would only
