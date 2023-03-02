@@ -196,6 +196,13 @@ class Backend(PyWry):
         """
         self.loop.run_until_complete(self.check_backend())
 
+        return self.send_url(
+            f"/{self.table_html.as_uri()}",
+            title="Interactive table",
+            width=1200,
+            height=800,
+            df=df_table,
+        )
         self.outgoing.append(
             json.dumps(
                 {
@@ -232,6 +239,7 @@ class Backend(PyWry):
         title: str = "",
         width: Optional[int] = None,
         height: Optional[int] = None,
+        df: Optional[pd.DataFrame] = None,
     ):
         """Send a URL to the backend to be displayed in a window.
 
@@ -258,6 +266,7 @@ class Backend(PyWry):
                 **self.get_kwargs(title),
                 "width": width or self.WIDTH,
                 "height": height or self.HEIGHT,
+                "df": df.to_json(orient="split") if df is not None else "",
             }
         )
         self.outgoing.append(message)
