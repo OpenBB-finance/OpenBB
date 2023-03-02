@@ -235,6 +235,9 @@ def return_colored_value(value: str):
     value: str
         string with color based on value of number if it exists
     """
+    if re.search(r"[a-zA-Z]{2,}", value):
+        return f"{value}"
+
     values = re.findall(r"[-+]?(?:\d*\.\d+|\d+)", value)
 
     # Finds exactly 1 number in the string
@@ -295,6 +298,9 @@ def print_rich_table(
     if export:
         return
 
+    if obbff.USE_INTERACTIVE:
+        plots_backend().send_table(df_table=df, title=title)
+
     if obbff.USE_COLOR and automatic_coloring:
         if columns_to_auto_color:
             for col in columns_to_auto_color:
@@ -311,9 +317,6 @@ def print_rich_table(
 
         if columns_to_auto_color is None and rows_to_auto_color is None:
             df = df.applymap(lambda x: return_colored_value(str(x)))
-
-    if obbff.USE_INTERACTIVE:
-        plots_backend().send_table(df_table=df, title=title)
 
     elif obbff.USE_TABULATE_DF and not obbff.USE_INTERACTIVE:
         table = Table(title=title, show_lines=True, show_header=show_header)

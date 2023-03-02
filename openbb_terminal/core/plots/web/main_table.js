@@ -60,6 +60,39 @@ function TableProcessor(data) {
   });
 }
 
+function get_magnitude(value) {
+  if (!value.match(/\d/)) {
+    return value;
+  }
+  let magnitude_dict = {
+    K: 1000,
+    M: 1000000,
+    B: 1000000000,
+    T: 1000000000000,
+    P: 1000000000000000,
+  };
+
+  try {
+    let magnitude = 1;
+    let magnitude_char = value.slice(-1);
+    if (magnitude_char in magnitude_dict) {
+      magnitude = magnitude_dict[magnitude_char];
+      value = value.slice(0, -1);
+    }
+    try {
+      value = parseFloat(value);
+    } catch (e) {
+      console.log(e);
+    }
+    return value * magnitude;
+  } catch (e) {
+    console.log(e);
+  } finally {
+    value = value.toFixed(2);
+  }
+  return value;
+}
+
 function processData(data) {
   /*
     data is coming as {
@@ -93,27 +126,27 @@ function processData(data) {
       field: column,
       sorter: column.includes("Change"),
       formatter: (cell) => {
-        if (!cell.getValue().includes) return cell.getValue();
-        let colors = ["green", "red", "yellow"];
+        let value = cell.getValue();
+        if (typeof value === "string") {
+          value = get_magnitude(value);
+        }
 
-        return colors.reduce((acc, color) => {
-          if (acc.includes(color)) {
-            // We parse to a number if it is a number
-            if (
-              !isNaN(acc.replace(`[${color}]`, "").replace(`[/${color}]`, ""))
-            ) {
-              return `<span style="color: ${color}">${parseFloat(
-                acc.replace(`[${color}]`, "").replace(`[/${color}]`, "")
-              )}</span>`;
-            } else if (acc.includes(`[${color}]`)) {
-              // otherwise we check if color is in the text
-              return `<span style="color: ${color}">${acc
-                .replace(`[${color}]`, "")
-                .replace(`[/${color}]`, "")}</span>`;
-            }
-          }
-          return acc;
-        }, cell.getValue());
+        if (
+          typeof value === "float" ||
+          (typeof value === "string" && value.includes("."))
+        ) {
+          value = parseFloat(value);
+          value = value.toFixed(2);
+        }
+
+        if (value > 0) {
+          return `<span style="color:#ff2929">${value}</span>`;
+        } else if (value < 0) {
+          return `<span style="color:#4CFF00">${value}</span>`;
+        } else if (cell.getValue() === 0) {
+          return `<span style="color:yellow">${value}</span>`;
+        }
+        return value;
       },
     };
   });
