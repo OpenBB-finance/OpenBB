@@ -31,6 +31,7 @@ RUN apt-get -y install --no-install-recommends \
     libgtk-3-dev \
     libayatana-appindicator3-dev \
     librsvg2-dev \
+    ffmpeg \
     python3-tk
 
 RUN apt-get clean
