@@ -89,7 +89,7 @@ class FMP(BaseModel):
         else:
             url = f"{cls._BASE_URL()}income-statement-as-reported/{symbol}?"
         r = request(url + "&limit=" + str(limit) + "&apikey=" + cls._KEY())
-        return pd.DataFrame(r.json()).T
+        return pd.DataFrame(cls.validate_request(r)).T
 
     @classmethod
     def balance(
@@ -121,7 +121,7 @@ class FMP(BaseModel):
         else:
             url = f"{cls._BASE_URL()}balance-sheet-statement-as-reported/{symbol}?"
         r = request(url + "&limit=" + str(limit) + "apikey=" + cls._KEY())
-        return pd.DataFrame(r.json()).T
+        return pd.DataFrame(cls.validate_request(r)).T
 
     @classmethod
     def cash_flow(cls, symbol: str, quarter: bool = False, limit=200) -> pd.DataFrame:
@@ -151,7 +151,7 @@ class FMP(BaseModel):
         else:
             url = f"{cls._BASE_URL()}cash-flow-statement-as-reported/{symbol}?"
         r = request(url + "&limit=" + str(limit) + "&apikey=" + cls._KEY())
-        return pd.DataFrame(r.json()).T
+        return pd.DataFrame(cls.validate_request(r)).T
 
     @classmethod
     def full_statement(
@@ -183,7 +183,7 @@ class FMP(BaseModel):
         else:
             url = f"{cls._BASE_URL()}financial-statement-full-as-reported/{symbol}?"
         r = request(url + "&limit=" + str(limit) + "&apikey=" + cls._KEY())
-        return pd.DataFrame(r.json()).T
+        return pd.DataFrame(cls.validate_request(r)).T
 
     @classmethod
     def key_metrics(
@@ -215,7 +215,7 @@ class FMP(BaseModel):
         else:
             url = f"{cls._BASE_URL()}key-metrics/{symbol}?"
         r = request(url + f"apikey={cls._KEY()}&limit={limit}")
-        return pd.DataFrame(r.json()).T
+        return pd.DataFrame(cls.validate_request(r)).T
 
     @classmethod
     def ratios(cls, symbol: str, quarter=True, limit: int = 200) -> pd.DataFrame:
@@ -246,7 +246,7 @@ class FMP(BaseModel):
             else f"{cls._BASE_URL()}ratios/{symbol}?"
         )
         r = request(url + f"apikey={cls._KEY()}&limit={limit}")
-        return pd.DataFrame(r.json()).T
+        return pd.DataFrame(cls.validate_request(r)).T
 
     @classmethod
     def income_growth(cls, symbol: str, limit: int = 200) -> pd.DataFrame:
@@ -271,7 +271,7 @@ class FMP(BaseModel):
         """
         url = f"{cls._BASE_URL()}income-statement-growth/{symbol}?"
         r = request(url + f"apikey={cls._KEY()}&limit={limit}")
-        return pd.DataFrame(r.json()).T
+        return pd.DataFrame(cls.validate_request(r)).T
 
     @classmethod
     def balance_growth(cls, symbol: str, limit: int = 200) -> pd.DataFrame:
@@ -296,7 +296,7 @@ class FMP(BaseModel):
         """
         url = f"{cls._BASE_URL()}balance-sheet-statement-growth/{symbol}?"
         r = request(url + f"apikey={cls._KEY()}&limit={limit}")
-        return pd.DataFrame(r.json()).T
+        return pd.DataFrame(cls.validate_request(r)).T
 
     @classmethod
     def cash_flow_growth(cls, symbol: str, limit: int = 00) -> pd.DataFrame:
@@ -321,7 +321,7 @@ class FMP(BaseModel):
         """
         url = f"{cls._BASE_URL()}cash-flow-statement-growth/{symbol}?"
         r = request(url + f"apikey={cls._KEY()}&limit={limit}")
-        return pd.DataFrame(r.json()).T
+        return pd.DataFrame(cls.validate_request(r)).T
 
     @classmethod
     def revseg(cls, symbol: str, quarter=False) -> dict:
@@ -350,7 +350,7 @@ class FMP(BaseModel):
         else:
             url = f"{cls._V4_URL()}revenue-product-segmentation/?symbol={symbol}"
         r = request(url + "&structure=flat&apikey={cls._KEY()}")
-        return r.json()
+        return cls.validate_request(r)
 
     @classmethod
     def revgeo(cls, symbol: str, quarter=False) -> dict:
@@ -379,7 +379,7 @@ class FMP(BaseModel):
         else:
             url = f"{cls._V4_URL()}revenue-geographic-segmentation/?symbol={symbol}"
         r = request(url + "&structure=flat&apikey={cls._KEY()}")
-        return r.json()
+        return cls.validate_request(r)
 
     @classmethod
     def key_execs(cls, symbol: str) -> pd.DataFrame:
@@ -402,7 +402,7 @@ class FMP(BaseModel):
         """
         url = f"{cls._BASE_URL()}key-executives/{symbol}"
         r = request(url + "?apikey=" + cls._KEY())
-        return pd.DataFrame(r.json())
+        return pd.DataFrame(cls.validate_request(r))
 
     @classmethod
     def insider(cls, symbol: str) -> pd.DataFrame:
@@ -425,7 +425,7 @@ class FMP(BaseModel):
         """
         url = f"{cls._V4_URL()}insider-trading/?symbol={symbol}"
         r = request(url + "&apikey=" + cls._KEY())
-        return pd.DataFrame(r.json())
+        return pd.DataFrame(cls.validate_request(r))
 
     @classmethod
     def esg(cls, symbol: str) -> pd.DataFrame:
@@ -451,7 +451,7 @@ class FMP(BaseModel):
             f"{cls._V4_URL()}esg-environmental-social-governance-data/?symbol={symbol}"
         )
         r = request(url + "&apikey=" + cls._KEY())
-        return pd.DataFrame(r.json())
+        return pd.DataFrame(cls.validate_request(r))
 
     @classmethod
     def institutional(cls, symbol: str) -> pd.DataFrame:
@@ -477,7 +477,7 @@ class FMP(BaseModel):
             f"{cls._V4_URL()}institutional-ownership/symbol-ownership/?symbol={symbol}"
         )
         r = request(url + "&apikey=" + cls._KEY())
-        return pd.DataFrame(r.json())
+        return pd.DataFrame(cls.validate_request(r))
 
     @classmethod
     def price_target(cls, symbol: str) -> pd.DataFrame:
@@ -500,7 +500,7 @@ class FMP(BaseModel):
         """
         url = f"{cls._V4_URL()}price-target/?symbol={symbol}"
         r = request(url + "&apikey=" + cls._KEY())
-        return pd.DataFrame(r.json())
+        return pd.DataFrame(cls.validate_request(r))
 
     @classmethod
     def price_target_summary(cls, symbol: str) -> pd.DataFrame:
@@ -523,7 +523,7 @@ class FMP(BaseModel):
         """
         url = f"{cls._V4_URL()}price-target-summary/?symbol={symbol}"
         r = request(url + "&apikey=" + cls._KEY())
-        return pd.DataFrame(r.json()).T
+        return pd.DataFrame(cls.validate_request(r)).T
 
     @classmethod
     def upgrade_downgrade(cls, symbol: str) -> pd.DataFrame:
@@ -546,7 +546,7 @@ class FMP(BaseModel):
         """
         url = f"{cls._V4_URL()}upgrades-downgrades/?symbol={symbol}"
         r = request(url + "&apikey=" + cls._KEY())
-        return pd.DataFrame(r.json())
+        return pd.DataFrame(cls.validate_request(r))
 
     @classmethod
     def news(cls, symbol: str, limit: int = 100) -> pd.DataFrame:
@@ -571,7 +571,7 @@ class FMP(BaseModel):
         """
         url = f"{cls._BASE_URL()}stock_news/?tickers={symbol}&limit={limit}"
         r = request(url + "&apikey=" + cls._KEY())
-        return pd.DataFrame(r.json())
+        return pd.DataFrame(cls.validate_request(r))
 
     @classmethod
     def divcal(cls, symbol: str) -> pd.DataFrame:
@@ -594,7 +594,7 @@ class FMP(BaseModel):
         """
         url = f"{cls._BASE_URL()}historical-price-full/stock_dividend/{symbol}"
         r = request(url + "?apikey=" + cls._KEY())
-        return pd.DataFrame(r.json()["historical"])
+        return pd.DataFrame(cls.validate_request(r)["historical"])
 
     @classmethod
     def earnings(cls, symbol: str, limit: int = 100) -> pd.DataFrame:
@@ -619,7 +619,7 @@ class FMP(BaseModel):
         """
         url = f"{cls._BASE_URL()}historical/earning_calendar/{symbol}?limit={limit}"
         r = request(url + "&apikey=" + cls._KEY())
-        return pd.DataFrame(r.json())
+        return pd.DataFrame(cls.validate_request(r))
 
     @classmethod
     def ftd(cls, symbol: str) -> pd.DataFrame:
@@ -642,7 +642,7 @@ class FMP(BaseModel):
         """
         url = f"{cls._V4_URL()}/fail_to_deliver/?symbol={symbol}"
         r = request(url + "&apikey=" + cls._KEY())
-        return pd.DataFrame(r.json())
+        return pd.DataFrame(cls.validate_request(r))
 
     @classmethod
     def senate_trading(cls, symbol: str) -> pd.DataFrame:
@@ -665,7 +665,7 @@ class FMP(BaseModel):
         """
         url = f"{cls._V4_URL()}/senate-trading/?symbol={symbol}"
         r = request(url + "&apikey=" + cls._KEY())
-        return pd.DataFrame(r.json())
+        return pd.DataFrame(cls.validate_request(r))
 
     @classmethod
     def splits(cls, symbol: str) -> pd.DataFrame:
@@ -688,7 +688,7 @@ class FMP(BaseModel):
         """
         url = f"{cls._BASE_URL()}historical-price-full/stock_split/{symbol}"
         r = request(url + "?apikey=" + cls._KEY())
-        return pd.DataFrame(r.json()["historical"])
+        return pd.DataFrame(cls.validate_request(r)["historical"])
 
     @classmethod
     def eod_prices(cls, symbol: str, start_date: str, end_date: str) -> pd.DataFrame:
@@ -715,7 +715,10 @@ class FMP(BaseModel):
         """
         url = f"{cls._BASE_URL()}historical-price-full/{symbol}?from={start_date}&to={end_date}"
         r = request(url + f"&apikey={cls._KEY()}")
-        return pd.DataFrame(r.json()["historical"])
+        response = cls.validate_request(r)
+        if response:
+            return pd.DataFrame(response.get("historical", {}))
+        return pd.DataFrame()
 
     @classmethod
     def marketcap(cls, symbol: str, start_date: str, end_date: str) -> pd.DataFrame:
@@ -784,7 +787,7 @@ class FMP(BaseModel):
         Examples
         --------
         >>> from openbb_terminal.sdk import openbb
-        >>> ftpremiumsds = openbb.fmp.market_risk_premium("AAPL")
+        >>> premiums = openbb.fmp.market_risk_premium()
         """
         url = f"{cls._V4_URL()}/market_risk_premium"
         r = request(url + "?apikey=" + cls._KEY())
