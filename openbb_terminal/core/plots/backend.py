@@ -210,9 +210,11 @@ class Backend(PyWry):
                 {
                     "html_path": self.get_table_html(),
                     "json_data": df_table.to_json(orient="split"),
-                    "width": max(sum(columnwidth) * 9.5, self.WIDTH + 100),
-                    "height": min(len(df_table.index) * 25 + 25, self.HEIGHT + 100)
-                    ** self.get_kwargs(title),
+                    "width": int(max(sum(columnwidth) * 9.5, self.WIDTH + 100)),
+                    "height": int(
+                        min(len(df_table.index) * 25 + 25, self.HEIGHT + 100)
+                    ),
+                    **self.get_kwargs(title),
                 }
             )
         )
