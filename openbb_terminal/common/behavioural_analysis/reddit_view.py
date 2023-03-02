@@ -5,7 +5,7 @@ import logging
 import os
 import warnings
 from datetime import datetime
-from typing import Dict, List, Optional
+from typing import Dict, Optional, Union
 
 import finviz
 import matplotlib.pyplot as plt
@@ -13,20 +13,19 @@ import pandas as pd
 import praw
 import seaborn as sns
 
+from openbb_terminal import OpenBBFigure
 from openbb_terminal.common.behavioural_analysis import reddit_model
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import check_api_key, log_start_end
-from openbb_terminal.helper_funcs import (
-    export_data,
-    is_valid_axes_count,
-    plot_autoscale,
-    print_rich_table,
-)
+from openbb_terminal.helper_funcs import export_data, plot_autoscale, print_rich_table
 from openbb_terminal.rich_config import console
 
-# pylint: disable=R0913
+# pylint: disable=R0913,C0302
 logger = logging.getLogger(__name__)
+
+
+# TODO: Test OpenBBFigure conversion
 
 
 @log_start_end(log=logger)
@@ -173,7 +172,7 @@ def display_watchlist(limit: int = 5):
                     n_tickers += 1
                 except Exception:
                     # console.print(e, "\n")
-                    pass
+                    pass  # noqa
             if n_tickers:
                 console.print(
                     "The following stock tickers have been mentioned more than once across the previous watchlists:"
@@ -218,6 +217,7 @@ def display_popular_tickers(
             headers=list(popular_tickers_df.columns),
             show_index=False,
             title=f"The following TOP {limit} tickers have been mentioned",
+            export=bool(export),
         )
     else:
         console.print("No tickers found")
@@ -273,7 +273,7 @@ def display_spac_community(limit: int = 10, popular: bool = False):
                     n_tickers += 1
                 except Exception:
                     # console.print(e, "\n")
-                    pass
+                    pass  # noqa
 
             if n_tickers:
                 console.print(
@@ -322,7 +322,7 @@ def display_spac(limit: int = 5):
                         s_watchlist_tickers += f"{t_ticker[1]} {t_ticker[0]}, "
                     n_tickers += 1
                 except Exception:
-                    pass
+                    pass  # noqa
             if n_tickers:
                 console.print(
                     "The following stock tickers have been mentioned more than once across the previous SPACs:"
@@ -413,8 +413,8 @@ def display_redditsent(
     display: bool = False,
     export: str = "",
     sheet_name: Optional[str] = None,
-    external_axes: Optional[List[plt.Axes]] = None,
-):
+    external_axes: bool = False,
+) -> Union[OpenBBFigure, None]:
     """Plots Reddit sentiment about a search term. Prints table showing if display is True.
 
     Parameters
@@ -442,25 +442,31 @@ def display_redditsent(
     external_axes: Optional[List[plt.Axes]]
         If supplied, expect 1 external axis
     """
+    fig = OpenBBFigure()
 
     df, polarity_scores, avg_polarity = reddit_model.get_posts_about(
         symbol, limit, sortby, time_frame, full_search, subreddits
     )
 
     if df.empty:
-        console.print(f"No posts for {symbol} found")
-        return
+        return console.print(f"No posts for {symbol} found")
 
     if display:
-        print_rich_table(df=df)
+        print_rich_table(df=df, export=bool(export))
+
+    if not fig.is_image_export(export):
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "polarity_scores",
+            df,
+            sheet_name,
+        )
+
+    console.print(f"Sentiment Analysis for {symbol} is {avg_polarity}\n")
 
     if graphic:
-        if not external_axes:
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        elif is_valid_axes_count(external_axes, 1):
-            (ax,) = external_axes
-        else:
-            return
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
 
         sns.boxplot(x=polarity_scores, ax=ax)
         ax.set_title(f"Sentiment Score of {symbol}")
@@ -469,12 +475,21 @@ def display_redditsent(
         if not external_axes:
             theme.visualize_output()
 
-    console.print(f"Sentiment Analysis for {symbol} is {avg_polarity}\n")
+        fig = OpenBBFigure(
+            title=f"Sentiment Score of {symbol}", xaxis_title="Sentiment Score"
+        )
+        fig.add_bar(x=polarity_scores)
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "polarity_scores",
-        df,
-        sheet_name,
-    )
+        if fig.is_image_export(export):
+            export_data(
+                export,
+                os.path.dirname(os.path.abspath(__file__)),
+                "polarity_scores",
+                df,
+                sheet_name,
+                fig,
+            )
+
+        return fig.show(external=external_axes)
+
+    return None

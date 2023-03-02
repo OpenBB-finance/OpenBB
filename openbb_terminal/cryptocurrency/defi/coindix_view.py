@@ -78,6 +78,7 @@ def display_defi_vaults(
         headers=list(df.columns),
         show_index=False,
         title="Top DeFi Vaults",
+        export=bool(export),
     )
 
     export_data(

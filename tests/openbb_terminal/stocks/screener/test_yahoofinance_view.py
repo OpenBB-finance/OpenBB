@@ -33,9 +33,6 @@ def test_historical(mocker):
         side_effect=mock_yf_download,
     )
 
-    # MOCK VISUALIZE_OUTPUT
-    mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
-
     # MOCK EXPORT_DATA
     mocker.patch(
         target="openbb_terminal.stocks.screener.finviz_view.export_data",
@@ -75,9 +72,6 @@ def test_historical_no_d_signals(mocker):
         "openbb_terminal.stocks.screener.yahoofinance_model.yf.download",
         side_effect=mock_yf_download,
     )
-
-    # MOCK VISUALIZE_OUTPUT
-    mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
 
     # MOCK EXPORT_DATA
     mocker.patch(

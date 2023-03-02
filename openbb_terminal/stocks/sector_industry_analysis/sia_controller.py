@@ -853,6 +853,7 @@ class SectorIndustryAnalysisController(BaseController):
                     (
                         self.stocks_data,
                         self.tickers,
+                        _,
                     ) = stockanalysis_view.display_plots_financials(
                         finance_key=ns_parser.metric,
                         country=self.country,

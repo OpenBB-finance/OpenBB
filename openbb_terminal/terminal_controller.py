@@ -434,17 +434,11 @@ class TerminalController(BaseController):
 
     def call_dashboards(self, _):
         """Process dashboards command."""
-        if not is_installer():
-            from openbb_terminal.dashboards.dashboards_controller import (
-                DashboardsController,
-            )
+        from openbb_terminal.dashboards.dashboards_controller import (
+            DashboardsController,
+        )
 
-            self.queue = self.load_class(DashboardsController, self.queue)
-        else:
-            console.print("This feature is coming soon.")
-            console.print(
-                "Use the source code and an Anaconda environment if you are familiar with Python."
-            )
+        self.queue = self.load_class(DashboardsController, self.queue)
 
     def call_alternative(self, _):
         """Process alternative command."""
@@ -1012,10 +1006,8 @@ def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
 
             # Check if the user wants to reset application
             if an_input in ("r", "reset") or t_controller.update_success:
-                ret_code = reset(t_controller.queue if t_controller.queue else [])
-                if ret_code != 0:
-                    print_goodbye()
-                    break
+                reset(t_controller.queue if t_controller.queue else [])
+                break
 
         except SystemExit:
             logger.exception(
@@ -1219,6 +1211,7 @@ def main(
         E.g. GME,AMC,BTC-USD
     """
     if kwargs["module"] == "ipykernel_launcher":
+        bootup()
         ipykernel_launcher(kwargs["module_file"], kwargs["module_hist_file"])
 
     if debug:

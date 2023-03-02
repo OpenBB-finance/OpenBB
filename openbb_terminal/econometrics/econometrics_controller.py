@@ -589,6 +589,7 @@ class EconometricsController(BaseController):
                     headers=list(df.columns),
                     show_index=True,
                     title=f"Dataset {name} | Showing {ns_parser.limit} of {len(df)} rows",
+                    export=bool(ns_parser.export),
                 )
 
                 export_data(
@@ -633,6 +634,7 @@ class EconometricsController(BaseController):
                     headers=[col],
                     show_index=True,
                     title=f"Statistics for dataset: '{dataset}'",
+                    export=bool(ns_parser.export),
                 )
 
                 export_data(
@@ -651,6 +653,7 @@ class EconometricsController(BaseController):
                         headers=self.datasets[ns_parser.name].columns,
                         show_index=True,
                         title=f"Statistics for dataset: '{ns_parser.name}'",
+                        export=bool(ns_parser.export),
                     )
 
                     export_data(

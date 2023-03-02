@@ -10,8 +10,5 @@ from openbb_terminal.stocks.technical_analysis import finviz_view
 
 
 @pytest.mark.vcr
-def test_view(mocker):
-    # MOCK VISUALIZE_OUTPUT
-    mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
-
+def test_view():
     finviz_view.view(symbol="PM")

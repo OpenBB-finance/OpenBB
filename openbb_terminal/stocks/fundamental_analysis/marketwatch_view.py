@@ -35,6 +35,7 @@ def sec_filings(
         headers=list(df_financials.columns),
         show_index=True,
         title="SEC Filings",
+        export=bool(export),
     )
 
     export_data(

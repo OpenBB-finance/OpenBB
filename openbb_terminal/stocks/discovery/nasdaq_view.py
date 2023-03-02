@@ -44,6 +44,7 @@ def display_top_retail(
             headers=[x.title() for x in df.columns],
             show_index=False,
             title=f"[bold]{date} Top Retail:[/bold]",
+            export=bool(export),
         )
         console.print("")
 
@@ -110,6 +111,7 @@ def display_dividend_calendar(
         calendar.head(limit),
         headers=[x.title() for x in calendar.columns],
         title=f"[bold]Dividend Calendar for {date}[/bold]",
+        export=bool(export),
     )
     export_data(
         export,

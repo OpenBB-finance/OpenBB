@@ -94,6 +94,7 @@ def orders_view(limit: int = 5, export: str = "", sheet_name: Optional[str] = No
         headers=[x.title() for x in df_orders.columns],
         show_index=False,
         title=f"{order_header}:",
+        export=bool(export),
     )
 
     export_data(
