@@ -33,6 +33,7 @@ def display_collection_stats(slug: str, export: str, sheet_name: str):
             headers=list(collection_stats_df.columns),
             show_index=False,
             title="Collection Stats",
+            export=bool(export),
         )
 
     export_data(

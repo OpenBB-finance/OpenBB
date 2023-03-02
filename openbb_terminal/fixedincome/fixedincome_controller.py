@@ -1,7 +1,7 @@
 """ Futures Controller """
 __docformat__ = "numpy"
 
-# pylint:disable=too-many-lines
+# pylint:disable=C0302
 
 import argparse
 import logging

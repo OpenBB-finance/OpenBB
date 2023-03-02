@@ -34,10 +34,7 @@ def test_short_interest_days_to_cover():
     "raw",
     [True, False],
 )
-def test_short_interest_volume(mocker, raw):
-    # MOCK VISUALIZE_OUTPUT
-    mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
-
+def test_short_interest_volume(raw):
     stockgrid_view.short_interest_volume(
         symbol="PM",
         limit=2,
@@ -52,10 +49,7 @@ def test_short_interest_volume(mocker, raw):
     "raw",
     [True, False],
 )
-def test_net_short_position(mocker, raw):
-    # MOCK VISUALIZE_OUTPUT
-    mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
-
+def test_net_short_position(raw):
     stockgrid_view.net_short_position(
         symbol="PM",
         limit=2,

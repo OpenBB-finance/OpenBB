@@ -15,7 +15,5 @@ def vcr_config():
 
 @pytest.mark.vcr
 @pytest.mark.record_stdout
-def test_display_news(mocker):
-    # MOCK VISUALIZE_OUTPUT
-    mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
+def test_display_news():
     cryptopanic_view.display_news(symbol="btc-bitcoin", source="cp")

@@ -34,6 +34,7 @@ def display_gainers(
             headers=list(df_gainers.columns),
             show_index=False,
             title="Gainers",
+            export=bool(export),
         )
 
     export_data(
@@ -67,6 +68,7 @@ def display_losers(
             headers=list(df_losers.columns),
             show_index=False,
             title="Display Losers",
+            export=bool(export),
         )
 
     export_data(
@@ -99,6 +101,7 @@ def display_ugs(
             headers=list(df.columns),
             show_index=False,
             title="Undervalued Growth Stocks",
+            export=bool(export),
         )
 
     export_data(
@@ -132,6 +135,7 @@ def display_gtech(
             headers=list(df.columns),
             show_index=False,
             title="Growth Tech Stocks",
+            export=bool(export),
         )
 
     export_data(
@@ -165,6 +169,7 @@ def display_active(
             headers=list(df.columns),
             show_index=False,
             title="Most Active Stocks",
+            export=bool(export),
         )
 
     export_data(
@@ -198,6 +203,7 @@ def display_ulc(
             headers=list(df.columns),
             show_index=False,
             title="Undervalued Large Cap Stocks",
+            export=bool(export),
         )
 
     export_data(
@@ -231,6 +237,7 @@ def display_asc(
             headers=list(df.columns),
             show_index=False,
             title="High Growth Small Caps",
+            export=bool(export),
         )
 
     export_data(

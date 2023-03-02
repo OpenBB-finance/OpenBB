@@ -126,13 +126,14 @@ class OptionsController(BaseController):
         self,
         ticker: str,
         queue: Optional[List[str]] = None,
+        expiration: Optional[str] = None,
     ):
         """Constructor"""
         super().__init__(queue)
 
         self.ticker = ticker
         self.prices = pd.DataFrame(columns=["Price", "Chance"])
-        self.selected_date = ""
+        self.selected_date = expiration if expiration else ""
         self.chain: pd.DataFrame = pd.DataFrame()
         self.full_chain: pd.DataFrame = pd.DataFrame()
 

@@ -23,6 +23,7 @@ def display_history(
         headers=list(show_history.columns),
         show_index=False,
         title="Ally History",
+        export=bool(export),
     )
 
     export_data(
@@ -46,7 +47,11 @@ def display_holdings(export: str = "", sheet_name: Optional[str] = None) -> None
     holdings = ally_model.get_holdings()
     holdings = holdings.set_index("Symbol")
     print_rich_table(
-        holdings, headers=list(holdings.columns), show_index=True, title="Ally Holdings"
+        holdings,
+        headers=list(holdings.columns),
+        show_index=True,
+        title="Ally Holdings",
+        export=bool(export),
     )
 
     export_data(
@@ -91,6 +96,7 @@ def display_balances(export: str = "", sheet_name: Optional[str] = None) -> None
         headers=list(balances.columns),
         show_index=False,
         title="Ally Balances",
+        export=bool(export),
     )
 
 
@@ -138,6 +144,7 @@ def display_top_lists(
         headers=list(movers.columns),
         show_index=True,
         title="Ally Top Lists",
+        export=bool(export),
     )
 
     export_data(

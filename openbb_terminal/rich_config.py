@@ -324,7 +324,10 @@ console = ConsoleAndPanel()
 
 
 def optional_rich_track(
-    inputs: Iterable, suppress_output: bool = False, desc: str = ""
+    inputs: Iterable,
+    suppress_output: bool = False,
+    desc: str = "",
+    total: Optional[int] = None,
 ):
     """Generate a rich track progress bar if desired
 
@@ -336,7 +339,9 @@ def optional_rich_track(
         Flag to suppress the output, by default False
     desc : str, optional
         String to describe the progress bar, by default ""
+    total : Optional[int], optional
+        Total number of items to be looped through, by default None
     """
     if suppress_output:
         return inputs
-    return track(inputs, description=desc)
+    return track(inputs, description=desc, total=total)
