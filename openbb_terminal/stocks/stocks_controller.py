@@ -76,9 +76,9 @@ class StocksController(StockBaseController):
     except Exception:
         country, sector, industry_group, industry = {}, {}, {}, {}
         console.print(
-            "[red]Note: Some datasets from GitHub failed to load. This means that the `search` command and "
-            "the /stocks/sia menu will not work. If other commands are failing please check your internet connection or "
-            "communicate with your IT department that certain websites are blocked.[/red] \n"
+            "[red]Note: Some datasets from GitHub failed to load. This means that the `search` command will not work. "
+            "If other commands are failing please check your internet connection or communicate with your "
+            "IT department that certain websites are blocked.[/red] \n"
         )
 
     TOB_EXCHANGES = ["BZX", "EDGX", "BYX", "EDGA"]
