@@ -220,7 +220,7 @@ def standard_deviation(
         window = 30
 
     if trading_periods and is_crypto:
-        print("is_crypto is overriden by trading_periods.")
+        print("is_crypto is overridden by trading_periods.")
 
     if not trading_periods:
         trading_periods = 365 if is_crypto else 252
@@ -338,7 +338,7 @@ def garman_klass(
         window = 30
 
     if trading_periods and is_crypto:
-        print("is_crypto is overriden by trading_periods.")
+        print("is_crypto is overridden by trading_periods.")
 
     if not trading_periods:
         trading_periods = 365 if is_crypto else 252
@@ -399,7 +399,7 @@ def hodges_tompkins(
         window = 30
 
     if trading_periods and is_crypto:
-        print("is_crypto is overriden by trading_periods.")
+        print("is_crypto is overridden by trading_periods.")
 
     if not trading_periods:
         trading_periods = 365 if is_crypto else 252
@@ -464,7 +464,7 @@ def rogers_satchell(
         window = 30
 
     if trading_periods and is_crypto:
-        print("is_crypto is overriden by trading_periods.")
+        print("is_crypto is overridden by trading_periods.")
 
     if not trading_periods:
         trading_periods = 365 if is_crypto else 252
@@ -525,7 +525,7 @@ def yang_zhang(
         window = 30
 
     if trading_periods and is_crypto:
-        print("is_crypto is overriden by trading_periods.")
+        print("is_crypto is overridden by trading_periods.")
 
     if not trading_periods:
         trading_periods = 365 if is_crypto else 252
