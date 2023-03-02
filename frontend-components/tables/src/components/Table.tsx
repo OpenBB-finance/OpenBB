@@ -25,7 +25,24 @@ export default function Table({ data, columns }: any) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const rtColumns = useMemo<ColumnDef<Data>[]>(
     () =>
-      columns.map((column: any) => ({ accessorKey: column, header: column })),
+      columns.map((column: any) => ({
+        accessorKey: column,
+        header: column,
+        cell: ({ row }) => {
+          const value = row.original[column];
+          return (
+            <p
+              className={clsx("text-xs whitespace-nowrap", {
+                "text-[#16A34A]": value > 0,
+                "text-[#F87171]": value < 0,
+                "text-[#404040]": value === 0,
+              })}
+            >
+              {value !== 0 ? (value > 0 ? `${value}` : `${value}`) : value}
+            </p>
+          );
+        },
+      })),
     /* {
           accessorKey: "symbol",
           header: "Symbol",
@@ -167,13 +184,18 @@ export default function Table({ data, columns }: any) {
               <td style={{ height: `${paddingTop}px` }} />
             </tr>
           )}
-          {virtualRows.map((virtualRow) => {
+          {virtualRows.map((virtualRow, idx) => {
             const row = rows[virtualRow.index] as Row<Data>;
             return (
               <tr key={row.id} className="!h-10">
                 {row.getVisibleCells().map((cell) => {
                   return (
-                    <td key={cell.id} className="bg-grey-800">
+                    <td
+                      key={cell.id}
+                      className={clsx("bg-grey-800", {
+                        "bg-white/5": idx % 2 === 0,
+                      })}
+                    >
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()
