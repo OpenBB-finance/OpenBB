@@ -75,7 +75,6 @@ sub_folders_abbr = {
     "dark_pool_shorts": "dps",
     "portfolio_optimization": "po",
     "quantitative_analysis": "qa",
-    "sector_industry_analysis": "sia",
     "technical_analysis": "ta",
     "tradinghours": "th",
     "fundamental_analysis": "fa",
@@ -106,7 +105,6 @@ sub_names_full = {
     "po": "Portfolio Optimization",
     "qa": "Quantitative Analysis",
     "screener": "Screener",
-    "sia": "Sector Industry Analysis",
     "ta": "Technical Analysis",
     "th": "Trading Hours",
 }
@@ -118,10 +116,6 @@ required_flags = {
     "econometrics": {
         "coint": ["-t"],  # TODO: add choice
         "norm": ["-v"],  # TODO: add choice
-    },
-    "sia": {
-        "vis": ["-m", "tcl"],
-        "metric": ["-m", "roa"],
     },
 }
 
