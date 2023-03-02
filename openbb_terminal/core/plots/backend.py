@@ -266,7 +266,7 @@ class Backend(PyWry):
                 **self.get_kwargs(title),
                 "width": width or self.WIDTH,
                 "height": height or self.HEIGHT,
-                "df": df.to_json(orient="split") if df is not None else "",
+                "plotly": df.to_json(orient="split") if df is not None else "",
             }
         )
         self.outgoing.append(message)
