@@ -254,36 +254,45 @@ function OpenBBMain(plotly_figure) {
     globals.barButtons[button.getAttribute("data-title")] = button;
   }
 
+  // We check if the chart is a 3D mesh to make sure to adjust the
+  // window close interval if exporting plot to image
+  let is_3dmesh = false;
+
   // We add a listener to the chart div to listen for relayout events
   // we only care about the yaxis.type event
   CHART_DIV.on("plotly_relayout", function (eventdata) {
-    if (
-      eventdata["yaxis.type"] == "log" ||
-      (CHART_DIV.layout.yaxis.type == "log" && !globals.logYaxis)
-    ) {
-      console.log("yaxis.type changed to log");
-      globals.logYaxis = true;
+    if (CHART_DIV.layout.yaxis.type != undefined) {
+      if (
+        eventdata["yaxis.type"] == "log" ||
+        (CHART_DIV.layout.yaxis.type == "log" && !globals.logYaxis)
+      ) {
+        console.log("yaxis.type changed to log");
+        globals.logYaxis = true;
 
-      // We update the yaxis exponent format to SI,
-      // set the tickformat to '.0s' and the exponentbase to 100
-      Plotly.relayout(CHART_DIV, {
-        "yaxis.exponentformat": "SI",
-        "yaxis.tickformat": ".0s",
-        "yaxis.exponentbase": 100,
-      });
-    }
-    if (eventdata["yaxis.type"] == "linear" && globals.logYaxis) {
-      console.log("yaxis.type changed to linear");
-      globals.logYaxis = false;
+        // We update the yaxis exponent format to SI,
+        // set the tickformat to '.0s' and the exponentbase to 100
+        Plotly.relayout(CHART_DIV, {
+          "yaxis.exponentformat": "SI",
+          "yaxis.tickformat": ".0s",
+          "yaxis.exponentbase": 100,
+        });
+      }
+      if (eventdata["yaxis.type"] == "linear" && globals.logYaxis) {
+        console.log("yaxis.type changed to linear");
+        globals.logYaxis = false;
 
-      // We update the yaxis exponent format to none,
-      // set the tickformat to null and the exponentbase to 10
-      Plotly.relayout(CHART_DIV, {
-        "yaxis.exponentformat": "none",
-        "yaxis.tickformat": null,
-        "yaxis.exponentbase": 10,
-      });
+        // We update the yaxis exponent format to none,
+        // set the tickformat to null and the exponentbase to 10
+        Plotly.relayout(CHART_DIV, {
+          "yaxis.exponentformat": "none",
+          "yaxis.tickformat": null,
+          "yaxis.exponentbase": 10,
+        });
+      }
+    } else {
+      is_3dmesh = true;
     }
+
   });
 
   // send a relayout event to trigger the initial zoom/bars-resize
@@ -319,6 +328,8 @@ function OpenBBMain(plotly_figure) {
 
   // We check to see if window.save_png is defined and true
   if (window.save_image != undefined && window.export_image) {
+    // if is_3dmesh is true, we set the close_interval to 1000
+    let close_interval = is_3dmesh ? 1000 : 500;
 
     // We get the extension of the file and check if it is valid
     const extension = window.export_image.split(".").pop().replace("jpg", "jpeg");
@@ -335,7 +346,7 @@ function OpenBBMain(plotly_figure) {
     }
     setTimeout(function () {
       window.close();
-    }, 500);
+    }, close_interval);
   }
 }
 

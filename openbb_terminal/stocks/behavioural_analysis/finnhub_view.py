@@ -52,9 +52,7 @@ def display_stock_price_headlines_sentiment(
         )
 
         if not df_stock.empty:
-            fig = OpenBBFigure.create_subplots(
-                2, 1, shared_xaxes=True, row_heights=[1, 0.5]
-            )
+            fig = OpenBBFigure.create_subplots(2, 1, row_heights=[1, 0.5])
 
             fig.add_scatter(
                 x=df_stock.index,
@@ -74,7 +72,6 @@ def display_stock_price_headlines_sentiment(
                 .mean()
                 .values,
                 name="Sentiment",
-                line_color="#FCED00",
                 connectgaps=True,
                 row=2,
                 col=1,
@@ -88,7 +85,7 @@ def display_stock_price_headlines_sentiment(
                     for item in sublist
                 ],
                 name="Positive",
-                marker_color=theme.up_color,
+                marker=dict(color=theme.up_color, line=dict(color=theme.up_color)),
                 row=2,
                 col=1,
             )
@@ -101,7 +98,7 @@ def display_stock_price_headlines_sentiment(
                     for item in sublist
                 ],
                 name="Negative",
-                marker_color=theme.down_color,
+                marker=dict(color=theme.down_color, line=dict(color=theme.down_color)),
                 row=2,
                 col=1,
             )
@@ -112,7 +109,8 @@ def display_stock_price_headlines_sentiment(
                 yaxis_title="Stock Price",
                 yaxis2_title="Headline Sentiment",
             )
-            fig.hide_holidays()
+            fig.bar_width = 5
+            fig.hide_date_gaps(df_stock, 1, 1, prepost=True)
 
             export_data(
                 export,

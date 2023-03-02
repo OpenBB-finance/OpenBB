@@ -3301,6 +3301,7 @@ class ForecastController(BaseController):
                 dataset_name=ns_parser.target_dataset,
                 target_column=ns_parser.target_column,
                 train_split=ns_parser.train_split,
+                export=ns_parser.export,
                 start_date=ns_parser.s_start_date,
                 end_date=ns_parser.s_end_date,
             )

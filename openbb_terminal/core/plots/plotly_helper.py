@@ -264,7 +264,11 @@ class OpenBBFigure(go.Figure):
         self._added_logscale = False
         self._date_xaxs: dict = {}
         self._margin_adjusted = False
+        self._feature_flags_applied = False
         self._exported = False
+        self._cmd_xshift = 0
+        self._bar_width = 0.0001
+        self._subplot_xdates: Dict[int, Dict[int, List[Any]]] = {}
 
         if xaxis := kwargs.pop("xaxis", None):
             self.update_xaxes(xaxis)
@@ -284,6 +288,26 @@ class OpenBBFigure(go.Figure):
     def has_subplots(self):
         """Has subplots property."""
         return self._has_subplots()
+
+    @property
+    def bar_width(self):
+        """Bar width property."""
+        return self._bar_width
+
+    @bar_width.setter
+    def bar_width(self, value):
+        """Bar width setter."""
+        self._bar_width = value
+
+    @property
+    def cmd_xshift(self):
+        """Command line x shift property."""
+        return self._cmd_xshift
+
+    @cmd_xshift.setter
+    def cmd_xshift(self, value):
+        """Command line x shift setter."""
+        self._cmd_xshift = value
 
     @classmethod
     def create_subplots(
@@ -882,7 +906,14 @@ class OpenBBFigure(go.Figure):
             Whether to return the figure object instead of showing it, by default False
         export_image : `Union[Path, str]`, optional
             The path to export the figure image to, by default ""
+        cmd_xshift : `int`, optional
+            The x shift of the command source annotation, by default 0
+        bar_width : `float`, optional
+            The width of the bars, by default 0.0001
         """
+        self.cmd_xshift = kwargs.pop("cmd_xshift", self.cmd_xshift)
+        self.bar_width = kwargs.pop("bar_width", self.bar_width)
+
         if export_image and not plots_backend().isatty:
             if isinstance(export_image, str):
                 export_image = Path(export_image).resolve()
@@ -894,7 +925,7 @@ class OpenBBFigure(go.Figure):
         self._apply_feature_flags()
         self._xaxis_tickformatstops()
 
-        self.update_traces(marker_line_width=0.0001, selector=dict(type="bar"))
+        self.update_traces(marker_line_width=self.bar_width, selector=dict(type="bar"))
 
         # Set modebar style
         if self.layout.template.layout.mapbox.style == "dark":  # type: ignore
@@ -985,6 +1016,37 @@ class OpenBBFigure(go.Figure):
                 xhoverformat=xhoverformat, selector=dict(name=entry["name"])
             )
 
+    def get_subplots_dict(self) -> Dict[str, Dict[str, List[Any]]]:
+        """Return the subplots dict.
+
+        Returns
+        -------
+        `dict`
+            The subplots dict
+        """
+        subplots: Dict[str, Dict[str, List[Any]]] = {}
+
+        if not self.has_subplots:
+            return subplots
+
+        grid_ref = self._validate_get_grid_ref()  # pylint: disable=protected-access
+        for r, plot_row in enumerate(grid_ref):
+            for c, plot_refs in enumerate(plot_row):
+                if not plot_refs:
+                    continue
+                for subplot_ref in plot_refs:
+                    if subplot_ref.subplot_type == "xy":
+                        xaxis, yaxis = subplot_ref.layout_keys
+                        xref = xaxis.replace("axis", "")
+                        yref = yaxis.replace("axis", "")
+                        row = r + 1
+                        col = c + 1
+                        subplots.setdefault(xref, {}).setdefault(yref, []).append(
+                            (row, col)
+                        )
+
+        return subplots
+
     def get_dateindex(self) -> Optional[List[datetime]]:
         """Return the dateindex of the figure.
 
@@ -994,23 +1056,26 @@ class OpenBBFigure(go.Figure):
             The dateindex
         """
         output: Optional[List[datetime]] = None
+        subplots = self.get_subplots_dict()
 
-        for trace in self.select_traces(
-            lambda trace: hasattr(trace, "x") and trace.x is not None
-        ):
-            for x in trace.x[:2]:
-                if (
-                    isinstance(x, (datetime, np.datetime64, pd.DatetimeIndex))
-                    and len(trace.x) > 5
-                ):
-                    output = trace.x
-                    name = trace.name if hasattr(trace, "name") else f"{trace}"
-                    self._date_xaxs[trace.xaxis] = {
-                        "x": trace.x,
-                        "xaxis": trace.xaxis,
-                        "yaxis": trace.yaxis,
-                        "name": name,
-                    }
+        for trace in self.select_traces():
+            if not hasattr(trace, "xaxis"):
+                continue
+            xref, yref = trace.xaxis, trace.yaxis
+            row, col = subplots.get(xref, {}).get(yref, [(None, None)])[0]
+
+            if trace.x is not None and len(trace.x) > 5:
+                for x in trace.x[:2]:
+                    if isinstance(x, (datetime, np.datetime64, pd.DatetimeIndex)):
+                        output = trace.x
+                        name = trace.name if hasattr(trace, "name") else f"{trace}"
+                        self._date_xaxs[trace.xaxis] = {
+                            "yaxis": trace.yaxis,
+                            "name": name,
+                        }
+                        self._subplot_xdates.setdefault(row, {}).setdefault(
+                            col, []
+                        ).append(trace.x)
 
         # We convert the dateindex to a list of datetime objects if it's a numpy array
         if output is not None and isinstance(output[0], np.datetime64):
@@ -1020,6 +1085,73 @@ class OpenBBFigure(go.Figure):
 
         return output
 
+    def hide_date_gaps(
+        self,
+        df_data: pd.DataFrame,
+        row: Optional[int] = None,
+        col: Optional[int] = None,
+        prepost: bool = False,
+    ) -> None:
+        """Add rangebreaks to hide gaps on the xaxis.
+
+        Parameters
+        ----------
+        df_data : `pandas.DataFrame`
+            The dataframe with the data.
+        row : `int`, optional
+            The row of the subplot to hide the gaps, by default None
+        col : `int`, optional
+            The column of the subplot to hide the gaps, by default None
+        prepost : `bool`, optional
+            Whether to add rangebreaks for pre and post market hours, by default False
+        """
+        # We get the min and max dates
+        dt_start, dt_end = df_data.index.min(), df_data.index.max()
+        has_weekends = df_data.index.dayofweek.isin([5, 6]).any()
+        rangebreaks: List[Dict[str, Any]] = []
+
+        # We check if weekends are in the df_data
+        if has_weekends:
+            # We get the days including weekends
+            dt_days = pd.date_range(start=dt_start, end=dt_end, normalize=True)
+
+            # We get the dates that are missing
+            dt_missing_days = list(
+                set(dt_days.strftime("%Y-%m-%d").tolist())
+                - set(df_data.index.strftime("%Y-%m-%d"))
+            )
+
+            rangebreaks = [dict(values=dt_missing_days)]
+        else:
+            # We get the missing days excluding weekends
+            dt_bdays = pd.bdate_range(start=dt_start, end=dt_end, normalize=True)
+
+            # We get the dates that are missing
+            dt_missing_days = list(
+                set(dt_bdays.strftime("%Y-%m-%d"))
+                - set(df_data.index.strftime("%Y-%m-%d"))
+            )
+
+            rangebreaks = [dict(values=dt_missing_days), dict(bounds=["sat", "mon"])]
+
+            # We add a rangebreak if the first and second time are not the same
+            # since daily data will have the same time (00:00)
+            if df_data.index[-1].time() != df_data.index[-2].time():
+                if prepost:
+                    rangebreaks.append(dict(bounds=[20.00, 4.00], pattern="hour"))
+                else:
+                    rangebreaks.append(dict(bounds=[15.99, 9.50], pattern="hour"))
+
+        if not self._has_secondary_y:
+            self.update_xaxes(rangebreaks=rangebreaks, row=row, col=col)
+        else:
+            for entry in self._date_xaxs.values():
+                self.update_xaxes(
+                    rangebreaks=rangebreaks,
+                    type="date",
+                    selector=dict(anchor=entry["yaxis"]),
+                )
+
     def hide_holidays(self, prepost: bool = False) -> None:
         """Add rangebreaks to hide holidays on the xaxis.
 
@@ -1028,35 +1160,22 @@ class OpenBBFigure(go.Figure):
         prepost : `bool`, optional
             Whether to add rangebreaks for pre and post market hours, by default False
         """
-        if (dateindex := self.get_dateindex()) is None:
+        if self.get_dateindex() is None:
             return
 
-        dt_unique_days = pd.bdate_range(
-            start=min(dateindex), end=max(dateindex), normalize=True
-        )
-        mkt_holidays = [
-            d
-            for d in dt_unique_days.strftime("%Y-%m-%d").tolist()
-            if d not in [unique.strftime("%Y-%m-%d") for unique in dateindex]
-        ]
-
-        rangebreaks = [dict(values=mkt_holidays), dict(bounds=["sat", "mon"])]
-
-        # We add a rangebreak if the first and second time are not the same
-        # since daily data will have the same time (00:00)
-        for entry in self._date_xaxs.values():
-            breaks: List[Any] = rangebreaks.copy()
-            if entry["x"][-1].time() != entry["x"][-2].time():
-                if prepost:
-                    breaks.append(dict(bounds=[20.00, 4.00], pattern="hour"))
-                else:
-                    breaks.append(dict(bounds=[15.99, 9.50], pattern="hour"))
-
-            self.update_xaxes(
-                rangebreaks=breaks,
-                type="date",
-                selector=dict(anchor=entry["yaxis"]),
-            )
+        for row, row_dict in self._subplot_xdates.items():
+            for col, values in row_dict.items():
+                x_values = (
+                    pd.to_datetime(np.concatenate(values))
+                    .to_pydatetime()
+                    .astype("datetime64[ms]")
+                )
+                self.hide_date_gaps(
+                    pd.DataFrame(index=x_values.tolist()),
+                    row=row,
+                    col=col,
+                    prepost=prepost,
+                )
 
     def to_subplot(
         self,
@@ -1359,17 +1478,23 @@ class OpenBBFigure(go.Figure):
                 opacity=0.5,
                 yanchor="middle",
                 xanchor="left",
-                xshift=xshift,
+                xshift=xshift + self.cmd_xshift,
             )
 
     # pylint: disable=import-outside-toplevel
     def _apply_feature_flags(self) -> None:
+        """Apply watermark and command source annotations."""
+        if self._feature_flags_applied:
+            return
+
         import openbb_terminal.feature_flags as obbff
 
         if obbff.USE_CMD_LOCATION_FIGURE:
             self._add_cmd_source()
         if obbff.USE_WATERMARK:
             self._set_watermark()
+
+        self._feature_flags_applied = True
 
     def add_logscale_menus(self) -> None:
         """Set the menus for the figure."""

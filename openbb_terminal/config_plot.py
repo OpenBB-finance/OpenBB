@@ -24,8 +24,8 @@ if BACKEND == "None":
 # See more: https://matplotlib.org/stable/tutorials/introductory/usage.html#the-builtin-backends
 
 # Used when USE_PLOT_AUTOSCALING is set to False
-PLOT_HEIGHT = load_env_vars("OPENBB_PLOT_HEIGHT", int, 500, "settings")
-PLOT_WIDTH = load_env_vars("OPENBB_PLOT_WIDTH", int, 800, "settings")
+PLOT_HEIGHT = load_env_vars("OPENBB_PLOT_HEIGHT", int, 762, "settings")
+PLOT_WIDTH = load_env_vars("OPENBB_PLOT_WIDTH", int, 1400, "settings")
 
 # Whether to open plot image exports after they are created
 PLOT_OPEN_EXPORT = load_env_vars(

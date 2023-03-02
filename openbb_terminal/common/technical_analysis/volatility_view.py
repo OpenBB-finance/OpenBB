@@ -246,7 +246,7 @@ def display_cones(
     export: str = "",
     sheet_name: Optional[str] = None,
     external_axes: bool = False,
-):
+) -> Union[OpenBBFigure, None]:
     """Plots the realized volatility quantiles for the loaded ticker.
     The model used to calculate the volatility is selectable.
 
@@ -311,35 +311,38 @@ def display_cones(
     )
     lower_q_label = str(int(lower_q * 100))
     upper_q_label = str(int(upper_q * 100))
-    if not df_ta.empty:
-        fig = OpenBBFigure(xaxis_title="Window of Time (in days)")
-        fig.set_title(f"{symbol} - Realized Volatility Cones - {model} Model", x=0.5)
 
-        fig.add_scatter(x=df_ta.index, y=df_ta.Min, name="Min")
-        fig.add_scatter(x=df_ta.index, y=df_ta.Max, name="Max")
-        fig.add_scatter(x=df_ta.index, y=df_ta.Median, name="Median")
-        fig.add_scatter(
-            x=df_ta.index,
-            y=df_ta["Upper " f"{upper_q_label}" "%"],
-            name="Upper " f"{upper_q_label}" "%",
-        )
-        fig.add_scatter(
-            x=df_ta.index,
-            y=df_ta["Lower " f"{lower_q_label}" "%"],
-            name="Lower " f"{lower_q_label}" "%",
-        )
-        fig.add_scatter(x=df_ta.index, y=df_ta.Realized, name="Realized")
+    if df_ta.empty:
+        return None
 
-        fig.update_xaxes(tickmode="array", tickvals=df_ta.index, ticktext=df_ta.index)
-        fig.horizontal_legend(x=1, y=1, yanchor="top")
+    fig = OpenBBFigure(xaxis_title="Window of Time (in days)")
+    fig.set_title(f"{symbol} - Realized Volatility Cones - {model} Model", x=0.5)
 
-        export_data(
-            export,
-            os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
-            "cones",
-            df_ta,
-            sheet_name,
-            fig,
-        )
+    fig.add_scatter(x=df_ta.index, y=df_ta.Min, name="Min")
+    fig.add_scatter(x=df_ta.index, y=df_ta.Max, name="Max")
+    fig.add_scatter(x=df_ta.index, y=df_ta.Median, name="Median")
+    fig.add_scatter(
+        x=df_ta.index,
+        y=df_ta["Upper " f"{upper_q_label}" "%"],
+        name="Upper " f"{upper_q_label}" "%",
+    )
+    fig.add_scatter(
+        x=df_ta.index,
+        y=df_ta["Lower " f"{lower_q_label}" "%"],
+        name="Lower " f"{lower_q_label}" "%",
+    )
+    fig.add_scatter(x=df_ta.index, y=df_ta.Realized, name="Realized")
 
-        return fig.show(external=external_axes)
+    fig.update_xaxes(tickmode="array", tickvals=df_ta.index, ticktext=df_ta.index)
+    fig.horizontal_legend(x=1, y=1, yanchor="top")
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
+        "cones",
+        df_ta,
+        sheet_name,
+        fig,
+    )
+
+    return fig.show(external=external_axes)

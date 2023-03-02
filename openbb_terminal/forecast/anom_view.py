@@ -2,6 +2,7 @@
 __docformat__ = "numpy"
 
 import logging
+import os
 from datetime import datetime
 from typing import Optional, Union
 
@@ -11,6 +12,7 @@ import pandas as pd
 from openbb_terminal import OpenBBFigure
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.forecast import anom_model, helpers
+from openbb_terminal.helper_funcs import export_data
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -23,6 +25,7 @@ def display_anomaly_detection(
     dataset_name="",
     target_column: str = "close",
     train_split: float = 0.6,
+    export: str = "",
     start_date: Optional[datetime] = None,
     end_date: Optional[datetime] = None,
     external_axes: bool = False,
@@ -39,10 +42,8 @@ def display_anomaly_detection(
         Target column to forecast. Defaults to "close".
     train_split: (float, optional)
         Train/val split. Defaults to 0.85.
-    forecast_horizon: (int, optional)
-        Forecast horizon. Defaults to 5.
     export: (str, optional)
-        Export data to csv. Defaults to "".
+        Export data to csv, jpg, png, or pdf. Defaults to "".
     start_date: (Optional[datetime], optional)
         Start date. Defaults to None.
     end_date: (Optional[datetime], optional)
@@ -85,6 +86,14 @@ def display_anomaly_detection(
 
     console.print(
         f" [green]Quantile Anomaly Detection for {dataset_name} calculated.[/green]"
+    )
+
+    # user wants to export plot
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        f"{dataset_name}_Anomaly_Detection",
+        figure=fig,
     )
 
     return fig.show(external=external_axes)

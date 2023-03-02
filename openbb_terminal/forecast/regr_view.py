@@ -132,6 +132,6 @@ def display_regression(
         )
 
     # SHAP
-    helpers.plot_explainability(_model, explainability_raw)
+    helpers.plot_explainability(_model, explainability_raw, export=export)
 
     return fig

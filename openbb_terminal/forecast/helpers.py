@@ -906,7 +906,7 @@ def plotly_shap_scatter_plot(
         range=[1.5, len(display_columns) + 1.5],
     )
     fig.update_layout(
-        margin=dict(r=190),
+        margin=dict(r=190, l=20),
         height=100 + len(display_columns) * 50,
     )
 
@@ -918,6 +918,7 @@ def plot_explainability(
     model: type[GlobalForecastingModel],
     explainability_raw: bool = False,
     sheet_name: Optional[str] = None,
+    export: str = "",
     external_axes: bool = False,
 ) -> Union[None, OpenBBFigure]:
     """
@@ -931,6 +932,8 @@ def plot_explainability(
         Whether to plot raw explainability or not
     sheet_name: Optional[str]
         Optionally specify the name of the sheet the data is exported to.
+    export: (str, optional)
+        Export data to csv, jpg, png, or pdf. Defaults to "".
     external_axes : bool, optional
         Whether to return the figure object or not, by default False
     """
@@ -961,6 +964,18 @@ def plot_explainability(
             "explainability_raw",
             raw_df,
             sheet_name,
+        )
+
+    fig.cmd_xshift = -20
+    if fig.is_image_export(export):
+        name, ext = export.split(".") if "." in export else (None, None)
+        if name and ext:
+            export = f"{name}_explainability.{ext}"
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "explainability",
+            figure=fig,
         )
 
     return fig.show(external=external_axes)

@@ -39,7 +39,7 @@ def plot_covid_ov(
     ov.columns = ["Cases", "Deaths"]
 
     fig = OpenBBFigure.create_subplots(
-        specs=[[{"secondary_y": True}]],
+        specs=[[{"secondary_y": True}]], horizontal_spacing=0.0
     )
 
     fig.add_scatter(
@@ -79,7 +79,7 @@ def plot_covid_ov(
         secondary_y=True,
     )
     fig.update_layout(
-        margin=dict(l=70, t=40, b=0),
+        margin=dict(t=20),
         title=f"Overview for {country.upper()}",
         xaxis_title="Date",
         yaxis=dict(
@@ -95,7 +95,7 @@ def plot_covid_ov(
         hovermode="x unified",
     )
 
-    return fig.show(external=external_axes)
+    return fig.show(external=external_axes, cmd_xshift=-10)
 
 
 def plot_covid_stat(

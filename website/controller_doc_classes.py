@@ -14,11 +14,13 @@ import pandas as pd
 from pandas.tseries.holiday import USFederalHolidayCalendar
 
 import openbb_terminal
+from openbb_terminal.base_helpers import load_dotenv_and_reload_configs
 from openbb_terminal.core.plots.backend import plots_backend
 from openbb_terminal.decorators import disable_check_api
 from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_FIGURES_ALLOWED,
+    NO_EXPORT,
     set_command_location,
 )
 from openbb_terminal.parent_classes import BaseController
@@ -26,6 +28,7 @@ from openbb_terminal.rich_config import console
 from openbb_terminal.sdk import openbb
 from openbb_terminal.stocks.comparison_analysis import finviz_compare_model
 
+load_dotenv_and_reload_configs()
 disable_check_api()
 plots_backend().start()
 plots_backend().isatty = True
@@ -50,6 +53,10 @@ data_dict = {
     "forex": {
         "data": FOREX_DATA,
         "symbol": "EURUSD",
+    },
+    "futures": {
+        "data": STOCK_DATA,
+        "symbol": "ES",
     },
     "etf": {
         "data": ETF_DATA,
@@ -341,13 +348,17 @@ class ControllerDoc:
         self.image_exportable[command] = False
 
         def mock_func(fparser: argparse.ArgumentParser, *args, **kwargs):
-            for arg in args:
-                if arg in [
-                    EXPORT_BOTH_RAW_DATA_AND_FIGURES,
-                    EXPORT_ONLY_FIGURES_ALLOWED,
-                ]:
-                    self.image_exportable[command] = True
-                    break
+            """Mock function to get the parser"""
+            allowed = [EXPORT_BOTH_RAW_DATA_AND_FIGURES, EXPORT_ONLY_FIGURES_ALLOWED]
+            export = kwargs.get("export_allowed", NO_EXPORT)
+
+            if export in allowed:
+                self.image_exportable[command] = True
+            else:
+                for arg in args:
+                    if arg in allowed:
+                        self.image_exportable[command] = True
+                        break
 
             self.cmd_parsers[command] = fparser
             return
@@ -402,6 +413,10 @@ class ControllerDoc:
                     other_args.extend(["--strike", "100"])
                 if action.dest == "target_dataset":
                     other_args.extend(["--dataset", "AAPL"])
+                if action.dest == "ticker":
+                    other_args.extend(["--ticker", self.symbol])
+                if self.name == "forecast" and action.dest == "values":
+                    other_args.extend(["--values", "AAPL.close"])
 
             set_command_location(f"{'/'.join(self.controller.path)}/{cmd_name}")
 

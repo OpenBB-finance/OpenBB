@@ -969,8 +969,8 @@ def display_line(
         export,
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
         "line",
-        sheet_name,
-        fig,
+        sheet_name=sheet_name,
+        figure=fig,
     )
 
     return fig.show(external=external_axes)
