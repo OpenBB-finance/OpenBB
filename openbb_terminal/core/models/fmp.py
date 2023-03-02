@@ -1,9 +1,14 @@
+from typing import List
+
 import pandas as pd
+import requests
 from pydantic import BaseModel
 
+from openbb_terminal import config_terminal as cfg
 from openbb_terminal.helper_funcs import request
 
-#pylint: disable=too-many-lines
+# pylint: disable=too-many-public-methods
+
 
 class FMP(BaseModel):
     """OpenBB Integration for Financial Modeling Prep"""
@@ -24,10 +29,33 @@ class FMP(BaseModel):
     @classmethod
     def _KEY(cls) -> str:
         """Returns the api key"""
-        # return cfg.API_KEY_FINANCIALMODELINGPREP
-        return "THIS_ISNT_OUR_KEY"
+        return cfg.API_KEY_FINANCIALMODELINGPREP
 
-    # TODO: add request validation method
+    @classmethod
+    def validate_request(cls, response: requests.models.Response) -> dict:
+        """Validate request
+
+        Parameters
+        ----------
+        request : requests.models.Response
+            Request to validate
+
+        Returns
+        -------
+        dict
+            JSON response of request
+        """
+        if response.status_code != 200:
+            print("Error: ", response.status_code)
+            return {}
+        response_json = response.json()
+        if "Error Message" in response_json:
+            print("Error: ", response_json["Error Message"])
+            return {}
+        if not response_json:
+            print("Error: No data returned")
+            return {}
+        return response_json
 
     @classmethod
     def income(
@@ -92,7 +120,7 @@ class FMP(BaseModel):
             url = f"{cls._BASE_URL()}balance-sheet-statement-as-reported/{symbol}?period=quarter"
         else:
             url = f"{cls._BASE_URL()}balance-sheet-statement-as-reported/{symbol}?"
-        r = request(url + "&limit=" + str(limit) + "&apikey=" + cls._KEY())
+        r = request(url + "&limit=" + str(limit) + "apikey=" + cls._KEY())
         return pd.DataFrame(r.json()).T
 
     @classmethod
@@ -596,6 +624,7 @@ class FMP(BaseModel):
     @classmethod
     def ftd(cls, symbol: str) -> pd.DataFrame:
         """Get company ftds
+
         Parameters
         ----------
         symbol : str
@@ -662,16 +691,16 @@ class FMP(BaseModel):
         return pd.DataFrame(r.json()["historical"])
 
     @classmethod
-    def eod_prices(cls, symbol: str, start: str, end: str) -> pd.DataFrame:
+    def eod_prices(cls, symbol: str, start_date: str, end_date: str) -> pd.DataFrame:
         """Get end of day prices for company
 
         Parameters
         ----------
         symbol : str
             Symbol to get data for
-        start : str
+        start_date : str
             Start date in YYYY-MM-DD format
-        end : str
+        end_date : str
             End date in YYYY-MM-DD format
 
         Returns
@@ -682,8 +711,127 @@ class FMP(BaseModel):
         Examples
         --------
         >>> from openbb_terminal.sdk import openbb
-        >>> price_df = openbb.fmp.prices("AAPL")
+        >>> price_df = openbb.fmp.prices("AAPL", start_date="2022-01-01", end_date="2023-01-31")
         """
-        url = f"{cls._BASE_URL()}historical-price-full/{symbol}?from={start}&to={end}"
+        url = f"{cls._BASE_URL()}historical-price-full/{symbol}?from={start_date}&to={end_date}"
         r = request(url + f"&apikey={cls._KEY()}")
         return pd.DataFrame(r.json()["historical"])
+
+    @classmethod
+    def marketcap(cls, symbol: str, start_date: str, end_date: str) -> pd.DataFrame:
+        """Get historical marketcap
+
+        Parameters
+        ----------
+        symbol : str
+            Symbol to get data for
+        start_date : str
+            Start date in YYYY-MM-DD format
+        end_date : str
+            End date in YYYY-MM-DD format
+
+        Returns
+        -------
+        pd.DataFrame
+            DataFrame of historical marketcap
+
+        Examples
+        --------
+        >>> from openbb_terminal.sdk import openbb
+        >>> mktcap = openbb.fmp.marketcap("AAPL", start_date="2022-01-01", end="2023-01-31")
+        """
+        url = f"{cls._BASE_URL()}historical-market-capitalization/{symbol}"
+        r = request(url + f"?apikey={cls._KEY()}")
+        df = pd.DataFrame(cls.validate_request(r))
+        df = df[(df.date >= start_date) & (df.date <= end_date)].reset_index(drop=True)
+        return df
+
+    @classmethod
+    def peers(cls, symbol: str) -> List[str]:
+        """Get company peers
+
+        Parameters
+        ----------
+        symbol : str
+            Symbol to get data for
+
+        Returns
+        -------
+        List[str]
+            List of company peers
+
+        Examples
+        --------
+        >>> from openbb_terminal.sdk import openbb
+        >>> peers_list = openbb.fmp.peers("AAPL")
+        """
+        url = f"{cls._V4_URL()}stock_peers?symbol={symbol}"
+        r = request(url + f"&apikey={cls._KEY()}")
+        peers = cls.validate_request(r)
+        if peers:
+            return peers[0].get("peersList", [])
+        return []
+
+    @classmethod
+    def market_risk_premium(cls) -> pd.DataFrame:
+        """Get market risk premium
+
+        Returns
+        -------
+        pd.DataFrame
+            DataFrame of market risk premium
+
+        Examples
+        --------
+        >>> from openbb_terminal.sdk import openbb
+        >>> ftpremiumsds = openbb.fmp.market_risk_premium("AAPL")
+        """
+        url = f"{cls._V4_URL()}/market_risk_premium"
+        r = request(url + "?apikey=" + cls._KEY())
+        return pd.DataFrame(cls.validate_request(r))
+
+    @classmethod
+    def executive_compensation(cls, symbol: str) -> pd.DataFrame:
+        """Get executive compensation
+
+        Parameters
+        ----------
+        symbol : str
+            Symbol to get data for
+
+        Returns
+        -------
+        pd.DataFrame
+            DataFrame of executive compensation
+
+        Examples
+        --------
+        >>> from openbb_terminal.sdk import openbb
+        >>> executive_compensation = openbb.fmp.exec_comp("AAPL")
+        """
+        url = f"{cls._V4_URL()}governance/executive_compensation?symbol={symbol}"
+        r = request(url + "&apikey=" + cls._KEY())
+        return pd.DataFrame(cls.validate_request(r))
+
+    @classmethod
+    def company_notes(cls, symbol: str) -> pd.DataFrame:
+        """Get company notes
+
+        Parameters
+        ----------
+        symbol : str
+            Symbol to get data for
+
+        Returns
+        -------
+        pd.DataFrame
+            DataFrame of company notes
+
+        Examples
+        --------
+        >>> from openbb_terminal.sdk import openbb
+        >>> notes = openbb.fmp.notes("AAPL")
+        """
+        url = f"{cls._V4_URL()}company-notes?symbol={symbol}"
+        r = request(url + "&apikey=" + cls._KEY())
+        return pd.DataFrame(cls.validate_request(r))
