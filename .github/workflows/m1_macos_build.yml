@@ -68,7 +68,7 @@ jobs:
           MACOS_CODESIGN_IDENTITY: ${{ secrets.MACOS_CODESIGN_IDENTITY }}
         run: | # when pushing to main, make to generate new cert, and utilize secrets to store new password, and identity
           echo "Ensuring Keychain with same name does not exist"
-          rm -rf /Users/openbb/Library/Keychains/build.keychain-db
+          # rm -rf /Users/openbb/Library/Keychains/build.keychain-db
           echo "Decoding certificate"
           echo $MACOS_CERTIFICATE | base64 --decode > certificate.p12
           echo "Creating Keychain"
@@ -89,7 +89,7 @@ jobs:
           MACOS_CODESIGN_IDENTITY: ${{ secrets.MACOS_INSTALLER_CODESIGN_IDENTITY }}
         run: | # when pushing to main, make to generate new cert, and utilize secrets to store new password, and identity
           echo "Ensuring Keychain with same name does not exist"
-          rm -rf /Users/openbb/Library/Keychains/installer.keychain-db
+          # rm -rf /Users/openbb/Library/Keychains/installer.keychain-db
           echo "Decoding certificate"
           echo $MACOS_CERTIFICATE | base64 --decode > certificate.p12
           echo "Creating Keychain"
@@ -115,7 +115,7 @@ jobs:
       - name: Deleting Previous Keychain
         run: |
           echo "Deleting Previous Keychain to Clean Instance"
-          rm -rf /Users/openbb/Library/Keychains/build.keychain-db
+          # rm -rf /Users/openbb/Library/Keychains/build.keychain-db
       - name: Clean up Build Artifacts
         run: |
           rm -rf build/terminal
