@@ -194,18 +194,9 @@ function OpenBBMain(plotly_figure) {
       if (!("font" in annotation) || !("size" in annotation.font)) {
         annotation["font"] = {
           family: "Fira Code, monospace, Arial Black",
-          size: 18,
+          size: 16,
         };
       }
-
-      // CMD Source path for the docs link
-      // if (annotation.text != undefined) {
-      //   if (annotation.text[0] == "/") {
-      //     document.getElementById("docs_link").href =
-      //       "https://docs.openbb.co/terminal/reference/" +
-      //       annotation.text.substring(1);
-      //   }
-      // }
 
       annotation.font.size = Math.min(
         CHART_DIV.clientWidth / 50,
