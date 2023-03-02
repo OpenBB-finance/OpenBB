@@ -8,8 +8,8 @@ from typing import List, Optional
 
 import pandas as pd
 
+import openbb_terminal.config_terminal as cfg
 from openbb_terminal import feature_flags as obbff
-from openbb_terminal.config_terminal import API_TRADIER_TOKEN
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
@@ -126,13 +126,14 @@ class OptionsController(BaseController):
         self,
         ticker: str,
         queue: Optional[List[str]] = None,
+        expiration: Optional[str] = None,
     ):
         """Constructor"""
         super().__init__(queue)
 
         self.ticker = ticker
         self.prices = pd.DataFrame(columns=["Price", "Chance"])
-        self.selected_date = ""
+        self.selected_date = expiration if expiration else ""
         self.chain: pd.DataFrame = pd.DataFrame()
         self.full_chain: pd.DataFrame = pd.DataFrame()
 
@@ -141,7 +142,7 @@ class OptionsController(BaseController):
         self.source = ""
 
         if ticker:
-            if API_TRADIER_TOKEN == "REPLACE_ME":  # nosec
+            if cfg.API_TRADIER_TOKEN == "REPLACE_ME":  # nosec
                 console.print("Loaded expiry dates from Yahoo Finance")
                 self.expiry_dates = yfinance_model.option_expirations(self.ticker)
             else:
@@ -844,7 +845,7 @@ class OptionsController(BaseController):
                 )
 
             if (
-                ns_parser.source == "Tradier" and API_TRADIER_TOKEN != "REPLACE_ME"
+                ns_parser.source == "Tradier" and cfg.API_TRADIER_TOKEN != "REPLACE_ME"
             ):  # nosec
                 tradier_view.display_historical(
                     symbol=self.ticker,

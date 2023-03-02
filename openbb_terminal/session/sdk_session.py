@@ -11,8 +11,8 @@ from openbb_terminal.session.user import User
 logger = logging.getLogger(__name__)
 
 
-def get_session(email: str, password: str, token: str, save: bool):
-    session = ""
+def get_session(email: str, password: str, token: str, save: bool) -> dict:
+    session = dict()
 
     if token:
         console.print("Creating session from token.")
@@ -55,6 +55,7 @@ def login(
     >>> from openbb_terminal.sdk import openbb
     >>> openbb.login(email="your_email", password="your_password")
     """
+    session = {}
     if not (email or token):
         session = Local.get_session()
 

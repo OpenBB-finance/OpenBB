@@ -40,6 +40,7 @@ def suppliers(
             headers=list(tickers.columns),
             show_index=True,
             title=f"Suppliers for {symbol.upper()}",
+            export=bool(export),
         )
 
     export_data(
@@ -71,6 +72,7 @@ def customers(symbol: str, export: str = "", sheet_name: Optional[str] = None):
             headers=list(tickers.columns),
             show_index=True,
             title=f"Customers for {symbol.upper()}",
+            export=bool(export),
         )
 
     export_data(

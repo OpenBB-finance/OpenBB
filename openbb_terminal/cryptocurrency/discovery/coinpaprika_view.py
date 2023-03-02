@@ -60,6 +60,7 @@ def display_search_results(
         headers=list(df.columns),
         show_index=False,
         title="CoinPaprika Results",
+        export=bool(export),
     )
 
     export_data(

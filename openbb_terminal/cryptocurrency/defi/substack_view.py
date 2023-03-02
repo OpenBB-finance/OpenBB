@@ -35,6 +35,7 @@ def display_newsletters(
         headers=list(df.columns),
         show_index=False,
         title="Substack Newsletters",
+        export=bool(export),
     )
 
     export_data(

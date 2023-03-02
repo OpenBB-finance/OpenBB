@@ -1,6 +1,6 @@
+# type: ignore
 """ Parameters Controller Module """
 __docformat__ = "numpy"
-
 # pylint: disable=C0302, no-else-return
 
 import argparse

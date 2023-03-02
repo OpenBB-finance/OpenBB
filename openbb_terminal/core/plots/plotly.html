@@ -1,0 +1,99 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="color-scheme" content="dark" />
+    <link rel="stylesheet" href="/{{MAIN_PATH}}/web/css/style.css" />
+
+    <script src="/{{MAIN_PATH}}/web/helpers.js" type="text/javascript"></script>
+    <script
+      src="/{{MAIN_PATH}}/web/bar_menus.js"
+      type="text/javascript"
+    ></script>
+    <script src="/{{MAIN_PATH}}/web/popups.js" type="text/javascript"></script>
+    <script src="/{{MAIN_PATH}}/web/main.js" type="text/javascript"></script>
+    <script
+      src="/{{MAIN_PATH}}/assets/plotly-2.18.2.min.js"
+      type="text/javascript"
+    ></script>
+  </head>
+
+  <body>
+    <!-- Plotly -->
+    <div id="openbb_chart" class="plotly-graph-div"></div>
+    <div id="loader" class="loader"></div>
+
+    <!-- Popups Overlay -->
+    <div id="popup_overlay" class="popup_overlay">
+      <div id="popup_content" class="popup_content">
+        <!-- CSV Popup -->
+        <div id="popup_csv" class="popup_content">
+          <div>
+            <label for="csv_file">CSV file</label>
+            <input type="file" id="csv_file" accept=".csv, .txt" />
+          </div>
+
+          <div style="margin-top: 10px">
+            <label for="csv_trace_type">Display data type</label>
+            <select id="csv_trace_type" value="scatter">
+              <option value="scatter">Scatter</option>
+              <option value="candlestick">Candlestick</option>
+            </select>
+          </div>
+
+          <div style="margin-top: 10px">
+            <label for="csv_name">Name of the trace</label>
+            <input type="text" id="csv_name" value="" />
+          </div>
+
+          <div style="margin-top: 10px" id="csv_columns"><!-- Empty --></div>
+          <div style="margin-top: 10px" id="csv_colors"><!-- Empty --></div>
+
+          <div style="float: right; margin-top: 20px">
+            <button
+              class="_btn-tertiary"
+              id="csv_cancel"
+              onclick="closePopup()"
+            >
+              Cancel
+            </button>
+            <button class="_btn" id="csv_submit" onclick="on_submit('csv')">
+              Submit
+            </button>
+          </div>
+        </div>
+
+        <!-- Text Popup -->
+        <div class="popup_content" id="popup_text"></div>
+
+        <!-- Title Popup -->
+        <div class="popup_content" id="popup_title"></div>
+      </div>
+    </div>
+
+    <!-- Change Color Popup -->
+    <div id="changecolor">
+      <div id="changecolor_header">
+        <input
+          type="color"
+          id="picked_color"
+          value="#00ACFF"
+          onchange="update_color()"
+        />
+      </div>
+    </div>
+
+    <!-- Plotly Chart -->
+    <script type="text/javascript">
+      window.PlotlyConfig = { MathJaxConfig: "local" };
+
+      var interval = setInterval(function () {
+        // Waits for OpenBBMain and plotly_figure to be defined before
+        // calling OpenBBMain to avoid errors
+        if (typeof OpenBBMain != "undefined" && window.plotly_figure) {
+          clearInterval(interval);
+          OpenBBMain(window.plotly_figure);
+        }
+      }, 20);
+    </script>
+  </body>
+</html>

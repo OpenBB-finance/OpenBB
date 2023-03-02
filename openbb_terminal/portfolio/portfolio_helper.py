@@ -61,7 +61,7 @@ def is_ticker(ticker: str) -> bool:
         Whether the string is a ticker
     """
     item = yf.Ticker(ticker)
-    return "previous_close" in item.fast_info
+    return "previousClose" in item.fast_info
 
 
 # TODO: Is this being used anywhere?

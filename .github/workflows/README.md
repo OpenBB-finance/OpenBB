@@ -17,6 +17,7 @@ This directory contains the workflows for the OpenBB 🦋 Project. The workflows
 | mac.yml               | Builds the project on Mac OS X Full Clean Build with ML.
 | nightly-build.yml     | Builds the project and runs the integration tests every night on the `develop` branch.
 | pypi.yml              | Publishes the package to PyPI.
+| nightly-pypi.yml      | Publishes the package to PyPI every night on the `develop` branch.
 | unit-test.yml         | Runs the unit tests.
 | windows.yml           | Builds the project on Windows 10 Full Clean Build with ML.
 | windows10_build.yml   | Builds the project on Windows 10.
@@ -181,7 +182,16 @@ The job includes the following steps:
 
 This workflow also uses a concurrency setting that groups the jobs by the workflow and ref, and cancels any in-progress jobs.
 
-## pypi-publish Workflow
+## Nightly PyPI Publish Workflow
+This workflow is used to publish the latest version of the OpenBB Terminal to PyPI. The workflow is triggered at UTC+0 daily by the GitHub Action schedule event.
+
+It does this by first updating the `pyproject.toml` file with a pre-determined version string of the form `<currentVersion>.dev<date>`, where `<date>` represents the current day's date as a 8 digit number.
+
+Then, the code installs `pypa/build` and uses `python -m build` to create a binary wheel and a source tarball in the `dist/` directory.
+
+Finally, it uses the PyPA specific action `gh-action-pypi-publish` to publish the created files to PyPI. 
+
+## PYPI publish Workflow
 The Github Action code `Deploy to PyPI` is used to deploy a Python project to PyPI (Python Package Index) and TestPyPI, which is a separate package index for testing purposes. The code is triggered on two events:
 
 1.  Push event: The code is triggered whenever there is a push to the `release/*` and `main` branches.

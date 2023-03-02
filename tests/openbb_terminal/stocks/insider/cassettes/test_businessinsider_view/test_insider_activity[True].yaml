@@ -444,8 +444,6 @@ interactions:
       - no-referrer-when-downgrade
       Strict-Transport-Security:
       - max-age=15552000
-      Transfer-Encoding:
-      - chunked
       X-Content-Type-Options:
       - nosniff
       X-Frame-Options:
@@ -1561,6 +1559,62 @@ interactions:
       - cache-iad-kcgs7200110-IAD, cache-lis1490054-LIS
       X-Timer:
       - S1673434159.180944,VS0,VE93
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://query2.finance.yahoo.com/v8/finance/chart/AAPL?interval=1d&range=1d
+  response:
+    body:
+      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"AAPL","exchangeName":"NMS","instrumentType":"EQUITY","firstTradeDate":345479400,"regularMarketTime":1675975379,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":150.9,"chartPreviousClose":151.92,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","start":1675933200,"end":1675953000,"gmtoffset":-18000},"regular":{"timezone":"EST","start":1675953000,"end":1675976400,"gmtoffset":-18000},"post":{"timezone":"EST","start":1675976400,"end":1675990800,"gmtoffset":-18000}},"dataGranularity":"1d","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1675975379],"indicators":{"quote":[{"low":[150.4199981689453],"high":[154.3300018310547],"open":[153.77499389648438],"volume":[41224115],"close":[150.89999389648438]}],"adjclose":[{"adjclose":[150.89999389648438]}]}}],"error":null}}'
+    headers:
+      Age:
+      - '3'
+      Connection:
+      - keep-alive
+      Expect-CT:
+      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Strict-Transport-Security:
+      - max-age=15552000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      cache-control:
+      - public, max-age=10, stale-while-revalidate=20
+      content-length:
+      - '943'
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Thu, 09 Feb 2023 20:42:59 GMT
+      server:
+      - ATS
+      vary:
+      - Origin,Accept-Encoding
+      x-envoy-decorator-operation:
+      - finance-chart-api--mtls-baseline-production-bf1.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '66'
+      x-request-id:
+      - 29397919-aad2-4a8d-8587-4acefba44331
+      x-yahoo-request-id:
+      - 84ibe21huammj
+      y-rid:
+      - 84ibe21huammj
     status:
       code: 200
       message: OK

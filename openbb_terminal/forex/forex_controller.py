@@ -37,7 +37,8 @@ logger = logging.getLogger(__name__)
 forex_data_path = os.path.join(
     os.path.dirname(__file__), os.path.join("data", "polygon_tickers.csv")
 )
-FX_TICKERS = pd.read_csv(forex_data_path).iloc[:, 0].to_list()
+tickers = pd.read_csv(forex_data_path).iloc[:, 0].to_list()
+FX_TICKERS = list(set(tickers + [t[-3:] + t[:3] for t in tickers if len(t) == 6]))
 
 
 class ForexController(BaseController):
@@ -73,7 +74,6 @@ class ForexController(BaseController):
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices_default
-
             choices["load"].update({c: {} for c in FX_TICKERS})
 
             self.completer = NestedCompleter.from_nested_dict(choices)
@@ -219,14 +219,6 @@ class ForexController(BaseController):
             description="Show candle for loaded fx data",
         )
         parser.add_argument(
-            "-p",
-            "--plotly",
-            dest="plotly",
-            action="store_false",
-            default=True,
-            help="Flag to show interactive plotly chart",
-        )
-        parser.add_argument(
             "--sort",
             choices=forex_helper.CANDLE_SORT,
             default="",
@@ -330,7 +322,6 @@ class ForexController(BaseController):
                     to_symbol=self.to_symbol,
                     from_symbol=self.from_symbol,
                     data=data,
-                    use_matplotlib=ns_parser.plotly,
                     add_trend=ns_parser.trendlines,
                     ma=mov_avgs,
                     yscale="log" if ns_parser.logy else "linear",

@@ -2,7 +2,6 @@
     futures            display a futures and commodities overview                      [WallStreetJournal, Finviz]
     map                S&P500 index stocks map                                         [Finviz]
     bigmac             The Economist Big Mac index                                     [Nasdaq]
-    ycrv               show sovereign yield curves                                     [FRED]
     events             show economic calendar                                          [Nasdaq]
     edebt              show external debt statistics for various countries             [Wikipedia]
 
@@ -14,6 +13,7 @@
 Databases:
     macro              collect macro data for a country or countries                   [EconDB]
     treasury           obtain U.S. treasury rates                                      [EconDB]
+    cpi                obtain (harmonized) Consumer Price Indices for any country      [FRED]
     fred               collect macro data from FRED based on a series ID               [FRED]
     index              find and plot any (major) index on the market                   [YahooFinance]
 

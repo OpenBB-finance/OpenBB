@@ -14,10 +14,7 @@ from openbb_terminal.stocks.comparison_analysis import finbrain_view
     "raw",
     [True, False],
 )
-def test_display_sentiment_compare(raw, mocker):
-    # MOCK VISUALIZE_OUTPUT
-    mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
-
+def test_display_sentiment_compare(raw):
     finbrain_view.display_sentiment_compare(
         similar=["TSLA", "GM"],
         raw=raw,
@@ -33,10 +30,7 @@ def test_display_sentiment_compare(raw, mocker):
     "raw",
     [True, False],
 )
-def test_display_sentiment_correlation(raw, mocker):
-    # MOCK VISUALIZE_OUTPUT
-    mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
-
+def test_display_sentiment_correlation(raw):
     finbrain_view.display_sentiment_correlation(
         similar=["TSLA", "GM"],
         raw=raw,

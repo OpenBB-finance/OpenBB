@@ -71,6 +71,7 @@ def display_whales_transactions(
         headers=list(df.columns),
         show_index=False,
         title="Large Value Transactions",
+        export=bool(export),
     )
 
     export_data(

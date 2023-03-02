@@ -26,9 +26,6 @@ def test_display_sentiment_analysis(color, mocker):
         target=finbrain_view.rich_config, attribute="USE_COLOR", new=color
     )
 
-    # MOCK VISUALIZE_OUTPUT
-    mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
-
     finbrain_view.display_sentiment_analysis(
         symbol="AAPL",
         export="",

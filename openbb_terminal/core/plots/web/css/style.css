@@ -1,0 +1,617 @@
+/* local Fira Code font */
+@font-face {
+  font-family: "Fira Code";
+  src: url("fonts/FiraCode-Regular.ttf") format("truetype");
+  /* fix Fire Code font width issue that makes Text get cut off in Plotly.js */
+  font-weight: 400 700;
+  font-stretch: 50%;
+}
+
+html {
+  font-size: 62.5%;
+  font-family: "Fira Code", monospace, "Arial Black";
+}
+
+body {
+  font-family: "Fira Code", monospace, "Arial Black";
+  font-size: 12px;
+  font-size: 1.2rem;
+  color: #ffffff;
+  background-color: #000000;
+  font-stretch: 50%;
+  overflow: hidden;
+}
+
+.plotly-graph-div {
+  width: 100%;
+  height: 97%;
+  font-size: 12px;
+  font-size: 1.2rem;
+  font-family: "Fira Code", monospace, "Arial Black";
+  visibility: visible;
+}
+
+
+#changecolor {
+  position: absolute;
+  z-index: 9;
+  text-align: center;
+  top: 0;
+  right: 50;
+  width: 100px;
+  height: 60px;
+  background-color: transparent;
+  padding: 10px;
+  box-sizing: border-box;
+  display: none;
+}
+
+#changecolor_header:hover {
+  margin-top: 0px !important;
+  margin-bottom: 0px !important;
+  border: 1px solid gold;
+  box-shadow: 0 0 5px gold;
+}
+
+#changecolor_header {
+  padding: 10px;
+  cursor: move;
+  z-index: 10;
+  color: #fff;
+}
+
+#changecolor_header input[type="color"] {
+  width: 100%;
+  height: 40px;
+  border: none;
+  border-radius: 5px;
+  margin-bottom: 20px !important;
+  cursor: pointer;
+  border: 1px solid #7d7d7d;
+  padding: 5px;
+  background-color: #131313;
+  color: #ffffff;
+  margin-right: 50px !important;
+}
+
+@keyframes popup {
+  0% {
+    -webkit-transition: all 0.3s ease-in-out;
+    transform: translate(-50%, -50%) scale(0.2);
+  }
+
+  40% {
+    transform: translate(-50%, -50%) scale(1.1);
+  }
+
+  80% {
+    transform: translate(-50%, -50%) scale(1.05);
+  }
+
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+.popup_overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 420px;
+  background: #070707;
+  border: 1px solid #dcdcdc;
+  box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.06);
+  border-radius: 4px;
+  padding: 40px;
+  box-sizing: border-box;
+  display: none;
+  font-family: "Fira Code", monospace, "Arial Black";
+  animation: popup 0.3s ease-in-out;
+  box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+  z-index: 2;
+}
+
+.popup_content {
+  position: relative;
+  background-color: transparent;
+  padding: 0px;
+  width: 100%;
+  height: 100%;
+  z-index: 3;
+}
+
+.popup_warning {
+  color: #ff0000;
+  font-size: 12px;
+  font-size: 1.2rem;
+  font-family: "Fira Code", monospace, "Arial Black";
+  display: none;
+  font-weight: bold;
+  margin-top: -15px;
+  margin-left: 135px;
+}
+
+.plotly-graph-div .modebar--hover .modebar-group {
+  border: 2px solid #5a5a5a !important;
+  border-radius: 4px;
+  padding: 2px 2px 2px !important;
+}
+
+.modebar-group {
+  display: flex !important;
+  background-color: transparent !important;
+}
+
+.modebar {
+  z-index: 5000 !important;
+  position: absolute !important;
+  bottom: 0px !important;
+  top: auto !important;
+  left: 50% !important;
+  right: auto !important;
+  align-items: center;
+  transform: translateX(-50%) translateY(80%) !important;
+}
+
+@media screen and (max-width: 600px) {
+  .modebar-group {
+    display: block !important;
+    background-color: transparent !important;
+  }
+  .modebar {
+    bottom: 60px !important;
+  }
+}
+
+.modebar-group {
+  margin-left: 10px;
+  margin-right: 10px;
+  background: #0f0f0f !important;
+  border: 1px solid #404040;
+  box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.06);
+  border-radius: 8px;
+}
+
+.modebar-group:nth-of-type(1):after {
+  content: "Drawing Tools";
+  height: fit-content;
+  width: fit-content;
+  position: absolute;
+  display: none;
+}
+
+.modebar-group:nth-of-type(1):hover:after {
+  padding: 10px;
+  display: block;
+  font-size: 10px;
+  color: white;
+  cursor: pointer;
+  background: #0f0f0f !important;
+  border: 1px solid #404040;
+  box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.06);
+  border-radius: 8px;
+  top: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.modebar-group:nth-of-type(2):after {
+  content: "Panning Tools";
+  height: fit-content;
+  width: fit-content;
+  position: absolute;
+  display: none;
+}
+
+.modebar-group:nth-of-type(2):hover:after {
+  padding: 10px;
+  display: block;
+  font-size: 10px;
+  color: white;
+  cursor: pointer;
+  background: #0f0f0f !important;
+  border: 1px solid #404040;
+  box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.06);
+  border-radius: 8px;
+  top: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.modebar-group:nth-of-type(3):after {
+  content: "Drawing Tools";
+  height: fit-content;
+  width: fit-content;
+  position: absolute;
+  display: none;
+}
+
+.modebar-group:nth-of-type(3):hover:after {
+  padding: 10px;
+  display: block;
+  font-size: 10px;
+  color: white;
+  cursor: pointer;
+  background: #0f0f0f !important;
+  border: 1px solid #404040;
+  box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.06);
+  border-radius: 8px;
+  top: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.modebar-group:nth-of-type(4):after {
+  content: "Export Tools";
+  height: fit-content;
+  width: fit-content;
+  position: absolute;
+  display: none;
+}
+
+.modebar-group:nth-of-type(4):hover:after {
+  padding: 10px;
+  display: block;
+  font-size: 10px;
+  color: white;
+  cursor: pointer;
+  background: #0f0f0f !important;
+  border: 1px solid #404040;
+  box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.06);
+  border-radius: 8px;
+  top: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.modebar.vertical {
+  flex-direction: row !important;
+  flex-flow: initial !important;
+  gap: 6px !important;
+}
+
+.js-plotly-plot .plotly .modebar.vertical .modebar-group {
+  padding-bottom: 0px !important;
+}
+
+.modebar-container {
+  position: initial !important;
+}
+
+.modebar-btn:hover .icon path {
+  fill: #00acff !important;
+}
+
+.modebar-btn.active .icon path {
+  fill: #00acff !important;
+}
+
+.menulayer {
+  background: #0f0f0f;
+  padding-right: 10px !important;
+  padding-left: 10px !important;
+  padding-top: 5px !important;
+  padding-bottom: 5px !important;
+  border: 1px solid #404040;
+  box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.06);
+  border-radius: 8px;
+}
+
+.modebar-btn {
+  padding: 4px !important;
+  margin-left: 4px !important;
+  margin-right: 4px !important;
+  margin-top: 4px !important;
+  margin-bottom: 4px !important;
+}
+
+.rangeselector {
+  background: #0f0f0f;
+  padding: 10px !important;
+  border: 1px solid #404040;
+  box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.06);
+  border-radius: 8px;
+  height: 33px !important;
+}
+
+.modebar-btn:hover {
+  background-color: #1f1f1f !important;
+  border-radius: 8px;
+}
+
+.updatemenu-item-rect {
+  fill-opacity: 0.5 !important;
+}
+.updatemenu-item-rect:hover {
+  background-color: #1f1f1f !important;
+}
+
+.selector-text {
+  text-transform: uppercase;
+}
+
+button {
+  all: unset;
+  cursor: pointer;
+}
+
+._btn {
+  display: inline-flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 4px;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  text-align: center;
+  -webkit-text-decoration-line: none !important;
+  text-decoration-line: none !important;
+  transition-property: color, background-color, border-color, fill, stroke,
+    opacity, box-shadow, transform, filter, -webkit-text-decoration-color,
+    -webkit-backdrop-filter;
+  transition-property: color, background-color, border-color,
+    text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter,
+    backdrop-filter;
+  transition-property: color, background-color, border-color,
+    text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter,
+    backdrop-filter, -webkit-text-decoration-color, -webkit-backdrop-filter;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+  transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+}
+
+@media (min-width: 768px) {
+  ._btn {
+    width: -webkit-fit-content;
+    width: -moz-fit-content;
+    width: fit-content;
+  }
+}
+
+._btn {
+  background-color: #eaeaeaff;
+  color: #2a2a2aff;
+}
+
+._btn:hover {
+  background-color: #ffffffff;
+}
+
+._btn:focus {
+  outline-style: solid;
+  outline-width: 2px;
+  outline-color: #808080ff;
+}
+
+._btn:active {
+  background-color: #dcdcdcff;
+}
+
+._btn:active:hover {
+  color: #070707ff;
+}
+
+._btn:disabled {
+  background-color: #c8c8c8ff;
+  color: #808080ff;
+}
+
+._btn:disabled:active {
+  background-color: #c8c8c8ff;
+  color: #808080ff;
+}
+
+._btn-secondary {
+  display: inline-flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 4px;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  text-align: center;
+  -webkit-text-decoration-line: none !important;
+  text-decoration-line: none !important;
+  transition-property: color, background-color, border-color, fill, stroke,
+    opacity, box-shadow, transform, filter, -webkit-text-decoration-color,
+    -webkit-backdrop-filter;
+  transition-property: color, background-color, border-color,
+    text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter,
+    backdrop-filter;
+  transition-property: color, background-color, border-color,
+    text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter,
+    backdrop-filter, -webkit-text-decoration-color, -webkit-backdrop-filter;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+  transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+}
+
+@media (min-width: 768px) {
+  ._btn-secondary {
+    width: -webkit-fit-content;
+    width: -moz-fit-content;
+    width: fit-content;
+  }
+}
+
+._btn-secondary {
+  border-width: 1px;
+  border-color: #c8c8c8ff;
+  color: #c8c8c8ff;
+  outline-offset: 0px;
+}
+
+._btn-secondary:hover {
+  border-color: #ffffffff;
+  color: #ffffffff;
+}
+
+._btn-secondary:focus {
+  outline-style: solid;
+  outline-width: 2px;
+  outline-color: #808080ff;
+}
+
+._btn-secondary:active {
+  border-color: #ffffffff;
+  background-color: #2a2a2aff;
+  color: #ffffffff;
+}
+
+._btn-secondary:disabled {
+  border-color: #808080ff;
+  background-color: transparent;
+  color: #808080ff;
+}
+
+._btn-tertiary {
+  display: inline-flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 4px;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  text-align: center;
+  -webkit-text-decoration-line: none !important;
+  text-decoration-line: none !important;
+  transition-property: color, background-color, border-color, fill, stroke,
+    opacity, box-shadow, transform, filter, -webkit-text-decoration-color,
+    -webkit-backdrop-filter;
+  transition-property: color, background-color, border-color,
+    text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter,
+    backdrop-filter;
+  transition-property: color, background-color, border-color,
+    text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter,
+    backdrop-filter, -webkit-text-decoration-color, -webkit-backdrop-filter;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+  transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+}
+
+@media (min-width: 768px) {
+  ._btn-tertiary {
+    width: -webkit-fit-content;
+    width: -moz-fit-content;
+    width: fit-content;
+  }
+}
+
+._btn-tertiary {
+  background-color: #070707ff;
+  color: #f6f6f6ff;
+}
+
+._btn-tertiary:hover {
+  background-color: #2a2a2aff;
+  color: #ffffffff;
+}
+
+._btn-tertiary:focus {
+  background-color: #070707ff;
+  outline-style: solid;
+  outline-width: 2px;
+  outline-color: #808080ff;
+}
+
+._btn-tertiary:active {
+  background-color: #474747ff;
+  color: #ffffffff;
+}
+
+._btn-tertiary:disabled {
+  background-color: #808080ff;
+  color: #474747ff;
+}
+
+.loader {
+  position: absolute;
+  bottom: 6px;
+  right: 6px;
+  border: 4px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 4px solid #00acff;
+  width: 20px;
+  height: 20px;
+  animation: spin 1s linear infinite;
+  opacity: 0;
+}
+
+.loader.show {
+  opacity: 1;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  width: 150px;
+  border-bottom: 1px solid #404040;
+  background: #0f0f0f;
+  box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.06);
+  display: flex;
+  flex-direction: row;
+}
+
+
+ul li {
+  position: relative;
+}
+
+li ul {
+  position: relative;
+  left: 0px;
+  top: 0;
+  display: none;
+}
+
+ul li a {
+  display: block;
+  text-decoration: none;
+  color: #777;
+  background: #0f0f0f;
+  padding: 5px;
+  box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.06);
+  border: 1px solid #404040;
+  border-bottom: 0;
+}
+
+/* Fix IE. Hide from IE Mac */
+* html ul li { float: none; }
+* html ul li a { height: 1%; }
+/* End */
+
+li:hover ul {
+  display: block;
+}
+
+li:hover {
+  max-height: 1%;
+}
+
+#openbb_menu{
+  position: relative;
+  top: 0;
+  left: 0;
+  height: 3%;
+  z-index: 1 !important;
+}

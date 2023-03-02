@@ -1,4 +1,5 @@
 """OpenBB Terminal SDK."""
+# ######### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ######### #
 # flake8: noqa
 # pylint: disable=unused-import,wrong-import-order
 # pylint: disable=C0302,W0611,R0902,R0903,C0412,C0301,not-callable
@@ -15,8 +16,8 @@ from openbb_terminal.helper_classes import TerminalStyle  # noqa: F401
 from openbb_terminal.reports import widget_helpers as widgets  # noqa: F401
 from openbb_terminal.reports.reports_controller import ReportController
 
-import openbb_terminal.sdk_core.sdk_init as lib
-from openbb_terminal.sdk_core import (
+import openbb_terminal.core.sdk.sdk_init as lib
+from openbb_terminal.core.sdk import (
     controllers as ctrl,
     models as model,
 )
@@ -49,14 +50,7 @@ class OpenBBSDK:
         self.logout = lib.sdk_session.logout
         self.news = lib.common_feedparser_model.get_news
         self.whoami = lib.sdk_session.whoami
-        self._try_to_login()
-
-    def _try_to_login(self):
-        if User.is_guest() and is_auth_enabled():
-            try:
-                self.login()
-            except Exception:
-                pass
+        SDKLogger._try_to_login(self)
 
     @property
     def alt(self):
@@ -143,6 +137,8 @@ class OpenBBSDK:
             `bigmac`: Display Big Mac Index for given countries\n
             `bigmac_chart`: Display Big Mac Index for given countries\n
             `country_codes`: Get available country codes for Bigmac index\n
+            `cpi`: Obtain CPI data from FRED. [Source: FRED]\n
+            `cpi_chart`: Plot CPI data. [Source: FRED]\n
             `currencies`: Scrape data for global currencies\n
             `events`: Get economic calendar for countries between specified dates\n
             `fred`: Get Series data. [Source: FRED]\n
@@ -172,8 +168,6 @@ class OpenBBSDK:
             `treasury_maturities`: Get treasury maturity options [Source: EconDB]\n
             `usbonds`: Scrape data for us bonds\n
             `valuation`: Get group (sectors, industry or country) valuation data. [Source: Finviz]\n
-            `ycrv`: Gets yield curve data from FRED\n
-            `ycrv_chart`: Display yield curve based on US Treasury rates for a specified date.\n
         """
 
         return model.EconomyRoot()
@@ -184,7 +178,6 @@ class OpenBBSDK:
 
         Submodules:
             `disc`: Discovery Module
-            `scr`: Scr Module
 
         Attributes:
             `candle`: Show candle plot of loaded ticker.\n
@@ -203,6 +196,37 @@ class OpenBBSDK:
         """
 
         return ctrl.EtfController()
+
+    @property
+    def fixedincome(self):
+        """Fixedincome Submodule
+
+        Attributes:
+            `ameribor`: Obtain data for American Interbank Offered Rate (AMERIBOR)\n
+            `cp`: Obtain Commercial Paper data\n
+            `dwpcr`: Obtain data for the Discount Window Primary Credit Rate.\n
+            `ecb`: Obtain data for ECB interest rates.\n
+            `ecbycrv`: Gets euro area yield curve data from ECB.\n
+            `estr`: Obtain data for Euro Short-Term Rate (ESTR)\n
+            `fed`: Obtain data for Effective Federal Funds Rate.\n
+            `ffrmc`: Get data for Selected Treasury Constant Maturity Minus Federal Funds Rate\n
+            `hqm`: The HQM yield curve represents the high quality corporate bond market, i.e.,\n
+            `icebofa`: Get data for ICE BofA US Corporate Bond Indices.\n
+            `icespread`: Get data for ICE BofA US Corporate Bond Spreads\n
+            `iorb`: Obtain data for Interest Rate on Reserve Balances.\n
+            `moody`: Get data for Moody Corporate Bond Index\n
+            `projection`: Obtain data for the Federal Reserve's projection of the federal funds rate.\n
+            `sofr`: Obtain data for Secured Overnight Financing Rate (SOFR)\n
+            `sonia`: Obtain data for Sterling Overnight Index Average (SONIA)\n
+            `spot`: The spot rate for any maturity is the yield on a bond that provides\n
+            `tbffr`: Get data for Selected Treasury Bill Minus Federal Funds Rate.\n
+            `tmc`: Get data for 10-Year Treasury Constant Maturity Minus Selected Treasury Constant Maturity.\n
+            `treasury`: Gets interest rates data from selected countries (3 month and 10 year)\n
+            `usrates`: Plot various treasury rates from the United States\n
+            `ycrv`: Gets yield curve data from FRED.\n
+        """
+
+        return model.FixedincomeRoot()
 
     @property
     def forecast(self):
@@ -297,7 +321,7 @@ class OpenBBSDK:
         Attributes:
             `curve`: Get curve futures [Source: Yahoo Finance]\n
             `curve_chart`: Display curve futures [Source: Yahoo Finance]\n
-            `historical`: Get historical futures [Source: Yahoo Finance]\n
+            `historical`: Get historical futures data\n
             `historical_chart`: Display historical futures [Source: Yahoo Finance]\n
             `search`: Get search futures [Source: Yahoo Finance]\n
         """
@@ -316,6 +340,7 @@ class OpenBBSDK:
             `coinbase`: Set Coinbase key\n
             `coinglass`: Set Coinglass key.\n
             `cpanic`: Set Cpanic key.\n
+            `databento`: Set DataBento key\n
             `degiro`: Set Degiro key\n
             `eodhd`: Set Eodhd key.\n
             `ethplorer`: Set Ethplorer key.\n
@@ -451,7 +476,6 @@ class OpenBBSDK:
             `options`: Options Module
             `qa`: Quantitative Analysis Module
             `screener`: Screener Module
-            `sia`: Sector Industry Analysis Module
             `ta`: Technical Analysis Module
             `th`: Trading Hours Module
 
@@ -489,6 +513,8 @@ class OpenBBSDK:
             `cg_chart`: Plots center of gravity Indicator\n
             `clenow`: Gets the Clenow Volatility Adjusted Momentum.  this is defined as the regression coefficient on log prices\n
             `clenow_chart`: Prints table and plots clenow momentum\n
+            `cones`: Returns a DataFrame of realized volatility quantiles.\n
+            `cones_chart`: Plots the realized volatility quantiles for the loaded ticker.\n
             `demark`: Get the integer value for demark sequential indicator\n
             `demark_chart`: Plot demark sequential indicator\n
             `donchian`: Calculate Donchian Channels\n
@@ -509,7 +535,14 @@ class OpenBBSDK:
             `obv_chart`: Plots OBV technical indicator\n
             `rsi`: Relative strength index\n
             `rsi_chart`: Plots RSI Indicator\n
+            `rvol_garman_klass`: Garman-Klass volatility extends Parkinson volatility by taking into account the opening and closing price.\n
+            `rvol_hodges_tompkins`: Hodges-Tompkins volatility is a bias correction for estimation using an overlapping data sample.\n
+            `rvol_parkinson`: Parkinson volatility uses the high and low price of the day rather than just close to close prices.\n
+            `rvol_rogers_satchell`: Rogers-Satchell is an estimator for measuring the volatility with an average return not equal to zero.\n
+            `rvol_std`: Standard deviation measures how widely returns are dispersed from the average return.\n
+            `rvol_yang_zhang`: Yang-Zhang volatility is the combination of the overnight (close-to-open volatility).\n
             `sma`: Gets simple moving average (SMA) for stock\n
+            `standard_deviation`: Standard deviation measures how widely returns are dispersed from the average return.\n
             `stoch`: Stochastic oscillator\n
             `stoch_chart`: Plots stochastic oscillator signal\n
             `vwap`: Gets volume weighted average price (VWAP)\n
@@ -538,6 +571,14 @@ class SDKLogger:
         cfg.LOGGING_SUB_APP = "sdk"
         setup_logging()
         log_all_settings()
+
+    @staticmethod
+    def _try_to_login(sdk: "OpenBBSDK"):
+        if User.is_guest() and is_auth_enabled():
+            try:
+                sdk.login()
+            except Exception:
+                pass
 
 
 openbb = OpenBBSDK()
