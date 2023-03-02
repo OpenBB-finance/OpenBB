@@ -42,8 +42,12 @@ WORKDIR /home/python
 # SETUP POETRY IMAGE
 FROM debian as poetry
 
+RUN curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain nightly
+
+ENV PATH="/home/python/.cargo/bin:${PATH}"
 ENV PATH="/home/python/.local/bin:${PATH}"
 
+RUN /bin/bash -c "source $HOME/.cargo/env"
 RUN pip install --upgrade pip wheel
 RUN pip install poetry==1.3.2
 

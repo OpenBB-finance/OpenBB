@@ -376,7 +376,7 @@ class StocksController(StockBaseController):
             dest="ticker",
             help="Ticker to analyze",
             type=str,
-            default=None,
+            default=self.ticker,
             required=not any(x in other_args for x in ["-h", "--help"])
             and not self.ticker,
         )

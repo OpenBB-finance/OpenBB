@@ -293,8 +293,8 @@ def plot_cpi(
     raw: bool = False,
     export: str = "",
     sheet_name: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
-):
+    external_axes: bool = False,
+) -> Union[None, OpenBBFigure]:
     """Plot CPI data. [Source: FRED]
 
     Parameters
@@ -321,8 +321,8 @@ def plot_cpi(
         Export data to csv or excel file
     sheet_name: str
         Name of the sheet to export to
-    external_axes: Optional[List[plt.Axes]]
-        External axes (1 axis is expected in the list)
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     series = (
         pd.read_csv(fred_model.harmonized_cpi_path)
@@ -344,53 +344,34 @@ def plot_cpi(
     if options:
         return print_rich_table(series.drop(["series_id"], axis=1))
 
-    # This plot has 1 axis
-    if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return pd.DataFrame()
+    ylabel_dict = {
+        "growth_same": "Growth Same Period (%)",
+        "growth_previous": "Growth Previous Period (%)",
+    }
 
-    colors = cycle(theme.get_colors())
+    country = [
+        country.replace("_", " ").title()
+        for country in countries
+        if df.columns.str.contains(country)
+    ]
+
+    title = f"{'Harmonized ' if harmonized else ''} Consumer Price"
+    title += (
+        f" Index for {', '.join(country)}"
+        if country
+        else " Indices"
+        if len(df.columns) > 1
+        else ""
+    )
+
+    fig = OpenBBFigure(yaxis_title=ylabel_dict.get(units, "Index (2015=100)"))
+    fig.set_title(title)
 
     for column in df.columns:
         country, frequency, units = column.split("-")
-        label = f"{country.replace('_', ' ').title()} ({frequency}, {units})"
+        label = f"{str(country).replace('_', ' ').title()} ({frequency}, {units})"
 
-        ax.plot(
-            df.index,
-            df[column].values,
-            color=next(colors, "#FCED00"),
-            label=label,
-        )
-
-    if len(df.columns) > 1:
-        title = f"{'Harmonized ' if harmonized else ''}Consumer Price Indices"
-        ax.set_title(title, fontsize=15)
-        ax.legend(prop={"size": 8})
-    else:
-        country = [
-            country.replace("_", " ").title()
-            for country in countries
-            if df.columns.str.contains(country)
-        ]
-
-        if country:
-            title = f"{'Harmonized ' if harmonized else ''}Consumer Price Index for {country[0]}"
-            ax.set_title(title)
-
-    if units == "growth_same":
-        ax.set_ylabel("Growth Same Period (%)")
-    elif units == "growth_previous":
-        ax.set_ylabel("Growth Previous Period (%)")
-    else:
-        ax.set_ylabel("Index (2015=100)")
-
-    theme.style_primary_axis(ax)
-
-    if external_axes is None:
-        theme.visualize_output()
+        fig.add_scatter(x=df.index, y=df[column].values, name=label)
 
     if raw:
         print_rich_table(
@@ -398,6 +379,7 @@ def plot_cpi(
             title=title,
             show_index=True,
             floatfmt=".3f",
+            export=bool(export),
         )
 
     export_data(
@@ -406,7 +388,10 @@ def plot_cpi(
         "CP",
         df / 100,
         sheet_name,
+        fig,
     )
+
+    return fig.show(external=external_axes)
 
 
 def format_data_to_plot(data: pd.DataFrame, detail: dict) -> Tuple[pd.DataFrame, str]:

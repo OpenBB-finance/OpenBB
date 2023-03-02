@@ -363,7 +363,10 @@ def display_redditsent(
             sheet_name,
         )
 
-    console.print(f"Sentiment Analysis for {symbol} is {avg_polarity}\n")
+        fig = OpenBBFigure(
+            title=f"Sentiment Score of {symbol}", xaxis_title="Sentiment Score"
+        )
+        fig.add_bar(x=polarity_scores)
 
     if graphic:
         fig = OpenBBFigure(

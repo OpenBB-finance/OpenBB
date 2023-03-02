@@ -77,6 +77,7 @@ def display_grouped_defi_protocols(
 @log_start_end(log=logger)
 def display_defi_protocols(
     sortby: str,
+    interactive: bool = False,
     limit: int = 20,
     ascend: bool = False,
     description: bool = False,

@@ -32,6 +32,7 @@ COINS_COLUMNS = [
 @log_start_end(log=logger)
 def display_coins(
     category: str,
+    interactive: bool = False,
     limit: int = 250,
     sortby: str = "Symbol",
     export: str = "",
