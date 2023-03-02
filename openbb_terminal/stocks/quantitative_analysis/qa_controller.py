@@ -734,7 +734,7 @@ class QaController(StockBaseController):
             if self.stock.empty:
                 no_data_message()
                 return
-            rolling_view.EXPORT_BOTH_RAW_DATA_AND_FIGURES(
+            rolling_view.display_kurtosis(
                 symbol=self.ticker,
                 data=self.stock,
                 target=self.target,
