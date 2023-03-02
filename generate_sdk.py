@@ -28,7 +28,6 @@ sub_names = {
     "po": "Portfolio Optimization",
     "qa": "Quantitative Analysis",
     "screener": "Screener",
-    "sia": "Sector Industry Analysis",
     "ta": "Technical Analysis",
     "th": "Trading Hours",
     "fa": "Fundamental Analysis",
