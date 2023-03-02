@@ -29,11 +29,11 @@
     <div id="example-table"></div>
     <script type="text/javascript">
       var interval = setInterval(function () {
-        // Waits for OpenBBMain and plotly_figure to be defined before
+        // Waits for OpenBBMain and json_data to be defined before
         // calling OpenBBMain to avoid errors
-        if (typeof TableProcessor != "undefined" && window.plotly_figure) {
+        if (typeof TableProcessor != "undefined" && window.json_data) {
           clearInterval(interval);
-          TableProcessor(window.plotly_figure);
+          TableProcessor(window.json_data);
         }
       }, 20);
     </script>

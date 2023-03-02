@@ -248,7 +248,7 @@ function downloadData(gd) {
     });
 
     if (traces == 1) {
-      csv = `${xaxis},${yaxis}\r`;
+      csv = `${data[0].name},${xaxis},${yaxis}\r`;
       data.forEach(function (trace) {
         if (trace.type == "scatter") {
           let x = trace.x;
@@ -260,20 +260,20 @@ function downloadData(gd) {
         }
       });
     } else if (traces > 1) {
-      csv = `${xaxis},`;
+      csv = `${xaxis}`;
       data.forEach(function (trace) {
         if (trace.type == "scatter") {
-          csv += `${trace.name},`;
+          csv += `,${trace.name}`;
         }
       });
       csv += "\r";
 
       let x = data[0].x;
       for (let i = 0; i < x.length; i++) {
-        csv += `${x[i]},`;
+        csv += `${x[i]}`;
         data.forEach(function (trace) {
           if (trace.type == "scatter") {
-            csv += `${trace.y[i]},`;
+            csv += `,${trace.y[i]}`;
           }
         });
         csv += "\r";

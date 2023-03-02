@@ -18,6 +18,7 @@ from reportlab.graphics import renderPDF
 from svglib.svglib import svg2rlg
 
 from openbb_terminal.base_helpers import strtobool
+from openbb_terminal.core.config.paths import USER_EXPORTS_DIRECTORY
 
 try:
     from IPython import get_ipython
@@ -147,7 +148,7 @@ class Backend(PyWry):
             json.dumps(
                 {
                     "html_path": self.get_plotly_html(),
-                    "plotly": json.loads(fig.to_json()),
+                    "json_data": json.loads(fig.to_json()),
                     "export_image": str(export_image).replace(".pdf", ".svg"),
                     **self.get_kwargs(title),
                 }
@@ -195,15 +196,23 @@ class Backend(PyWry):
             Title to display in the window, by default ""
         """
         self.loop.run_until_complete(self.check_backend())
+        columnwidth = [
+            max(len(str(df_table[col].name)), df_table[col].astype(str).str.len().max())
+            for col in df_table.columns
+        ]
+        # we add a percentage of max to the min column width
+        columnwidth = [
+            int(x + (max(columnwidth) - min(columnwidth)) * 0.2) for x in columnwidth
+        ]
 
         self.outgoing.append(
             json.dumps(
                 {
                     "html_path": self.get_table_html(),
-                    "plotly": df_table.to_json(orient="split"),
-                    "width": self.WIDTH,
-                    "height": self.HEIGHT,
-                    **self.get_kwargs(title),
+                    "json_data": df_table.to_json(orient="split"),
+                    "width": max(sum(columnwidth) * 9.5, self.WIDTH + 100),
+                    "height": min(len(df_table.index) * 25 + 25, self.HEIGHT + 100)
+                    ** self.get_kwargs(title),
                 }
             )
         )
@@ -267,6 +276,7 @@ class Backend(PyWry):
         return {
             "title": f"OpenBB - {title}",
             "icon": self.get_window_icon(),
+            "download_path": str(USER_EXPORTS_DIRECTORY),
         }
 
     def del_temp(self):
