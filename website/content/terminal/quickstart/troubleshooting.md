@@ -86,6 +86,8 @@ This error is usually the result of a Mac M1/M2 machine which does not have Rose
 softwareupdate --install-rosetta
 ```
 
+</details>
+
 <details><summary>Terminal app does not launch: Failed to execute script 'terminal' due to unhandled exception!</summary>
 
 When an installer-packaged version of the OpenBB Terminal fails to launch, because of this message, the machine may have an obsolete CPU-type or operating system. Please try installing via the source code, and if problems persist, reach out to us on [Discord](https://discord.gg/xPHTuHCmuV) or fill out a support request form on our [website](https://openbb.co/support).
@@ -154,7 +156,7 @@ pip install pip-system-certs
 Find the `.env` file (located at the root of the user account folder: (`~/.openbb_terminal/.env`), and add a line at the bottom of the file with:
 
 ```console
-HTTP_PROXY="<ADDRESS>" or HTTPS_PROXY="<ADDRESS>” 
+HTTP_PROXY="<ADDRESS>" or HTTPS_PROXY="<ADDRESS>”
 ```
 
 </details>
@@ -284,8 +286,6 @@ From the Windows Security menu, click on the Firewall & Network Protection tab, 
 - Hyper-V
 - VcXsrv
 - Windows Terminal
-
-</details>
 
 <details><summary>Why does a specific menu or command not exist?</summary>
 
