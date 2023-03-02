@@ -8,6 +8,6 @@ dependencies:
   - git
   - cvxpy
   - lightgbm
-  - poetry
+  - poetry=1.3.2
   - pip:
     - qdldl==0.1.5.post3
