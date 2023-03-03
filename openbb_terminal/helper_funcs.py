@@ -295,39 +295,57 @@ def print_rich_table(
     if export:
         return
 
+    def _get_headers() -> list:
+        """Check if headers are valid and return them."""
+        output = headers or []
+        if isinstance(headers, pd.Index):
+            output = list(headers)
+        if len(output) != len(df.columns):
+            log_and_raise(
+                ValueError("Length of headers does not match length of DataFrame")
+            )
+        return output
+
     if obbff.USE_INTERACTIVE:
-        plots_backend().send_table(df_table=df, title=title)
+        df_outgoing = df.copy()
+        # If headers are provided, use them
+        if headers is not None:
+            # We check if headers are valid
+            df_outgoing.columns = _get_headers()
+
+        if show_index:
+            # If index name is provided, we use it
+            df_outgoing.index.name = index_name
+            df_outgoing = df_outgoing.reset_index()
+
+        plots_backend().send_table(df_table=df_outgoing, title=title)
+        return
+
+    if obbff.USE_COLOR and automatic_coloring:
+        if columns_to_auto_color:
+            for col in columns_to_auto_color:
+                # checks whether column exists
+                if col in df.columns:
+                    df[col] = df[col].apply(lambda x: return_colored_value(str(x)))
+        if rows_to_auto_color:
+            for row in rows_to_auto_color:
+                # checks whether row exists
+                if row in df.index:
+                    df.loc[row] = df.loc[row].apply(
+                        lambda x: return_colored_value(str(x))
+                    )
+
+        if columns_to_auto_color is None and rows_to_auto_color is None:
+            df = df.applymap(lambda x: return_colored_value(str(x)))
 
     if obbff.USE_TABULATE_DF:
         table = Table(title=title, show_lines=True, show_header=show_header)
-
-        if obbff.USE_COLOR and automatic_coloring:
-            if columns_to_auto_color:
-                for col in columns_to_auto_color:
-                    # checks whether column exists
-                    if col in df.columns:
-                        df[col] = df[col].apply(lambda x: return_colored_value(str(x)))
-            if rows_to_auto_color:
-                for row in rows_to_auto_color:
-                    # checks whether row exists
-                    if row in df.index:
-                        df.loc[row] = df.loc[row].apply(
-                            lambda x: return_colored_value(str(x))
-                        )
-
-            if columns_to_auto_color is None and rows_to_auto_color is None:
-                df = df.applymap(lambda x: return_colored_value(str(x)))
 
         if show_index:
             table.add_column(index_name)
 
         if headers is not None:
-            if isinstance(headers, pd.Index):
-                headers = list(headers)
-            if len(headers) != len(df.columns):
-                log_and_raise(
-                    ValueError("Length of headers does not match length of DataFrame")
-                )
+            headers = _get_headers()
             for header in headers:
                 table.add_column(str(header))
         else:
@@ -361,23 +379,6 @@ def print_rich_table(
             table.add_row(*row_idx)
         console.print(table)
     else:
-        if obbff.USE_COLOR and automatic_coloring:
-            if columns_to_auto_color:
-                for col in columns_to_auto_color:
-                    # checks whether column exists
-                    if col in df.columns:
-                        df[col] = df[col].apply(lambda x: return_colored_value(str(x)))
-            if rows_to_auto_color:
-                for row in rows_to_auto_color:
-                    # checks whether row exists
-                    if row in df.index:
-                        df.loc[row] = df.loc[row].apply(
-                            lambda x: return_colored_value(str(x))
-                        )
-
-            if columns_to_auto_color is None and rows_to_auto_color is None:
-                df = df.applymap(lambda x: return_colored_value(str(x)))
-
         console.print(df.to_string(col_space=0))
 
 
