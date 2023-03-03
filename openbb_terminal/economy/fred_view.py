@@ -215,10 +215,9 @@ def plot_cpi(
     }
 
     country = str(countries[0]).replace("_", " ").title()
-
     title = f"{'Harmonized ' if harmonized else ''} Consumer Price"
     title += (
-        f" Index for {', '.join(country)}"
+        f" Index for {country}"
         if country
         else " Indices"
         if len(df.columns) > 1
