@@ -303,7 +303,7 @@ class Backend(pywry.PyWry):
                     "OpenBB Plots backend.[/bold red]\n"
                     "[yellow]Please update pywry with 'pip install pywry --upgrade'[/yellow]"
                 )
-                self.max_retries = 0
+                self.max_retries = 0  # pylint: disable=W0201
                 return
             await super().check_backend()
 
