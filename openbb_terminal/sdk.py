@@ -541,7 +541,7 @@ class OpenBBSDK:
             `obv_chart`: Plots OBV technical indicator\n
             `rsi`: Relative strength index\n
             `rsi_chart`: Plots RSI Indicator\n
-            `rvol_garman_klass`: Garman-Klass volatility extends Parkinson volatility by taking into account the opening and closing price.\n
+            `rvol_garman_klass`: Garman-Klass volatility extends Parkinson volatility by taking into account the open and close price.\n
             `rvol_hodges_tompkins`: Hodges-Tompkins volatility is a bias correction for estimation using an overlapping data sample.\n
             `rvol_parkinson`: Parkinson volatility uses the high and low price of the day rather than just close to close prices.\n
             `rvol_rogers_satchell`: Rogers-Satchell is an estimator for measuring the volatility with an average return not equal to zero.\n
