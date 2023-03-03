@@ -316,7 +316,8 @@ Now that we have the model and views, it is time to add to the controller.
    - Parse known args from list of arguments and values provided by the user.
    - Call the function contained in a `_view.py` file with the arguments parsed by argparse.
 
-Note that the function self.parse_known_args_and_warn() has some additional options we can add.  If the function is showing a chart, but we want the option to show raw data, we can add the `raw=True` keyword and the resulting namespace will have the `raw` attribute.  Same with limit, we can pass limit=10 to add the `-l` flag with default=10.  Here we also specify the export, and whether it is data only, plots only or anything.  This function also adds the `source` attribute to the namespace.  In our example, this is important because we added an additional source.
+Note that the function self.parse_known_args_and_warn() has some additional options we can add.  If the function is showing a chart, but we want the option to show raw data, we can add the `raw=True` keyword and the resulting namespace will have the `raw` attribute.
+Same with limit, we can pass limit=10 to add the `-l` flag with default=10.  Here we also specify the export, and whether it is data only, plots only or anything.  This function also adds the `source` attribute to the namespace.  In our example, this is important because we added an additional source.
 
 Our new function will be:
 
@@ -988,7 +989,7 @@ Dictionary of input datasets : `datasets` *(Dict[str, pd.DataFrame])*
 
 Note: Most occurrences are on the econometrics menu and might be refactored in near future
 
-Input dataset : `data` *(pd.DataFrame)*
+Input dataset : `data` _(pd.DataFrame)_
 
 ```python
 def process_data(..., data: pd.DataFrame, ...):
