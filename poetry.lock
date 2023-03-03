@@ -6888,21 +6888,21 @@ files = [
 
 [[package]]
 name = "pywry"
-version = "0.3.4"
+version = "0.3.5"
 description = ""
 category = "main"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "pywry-0.3.4-cp310-cp310-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:70aa158eb3adf62fcec5606914eeb5278fbf0e871a039ed8af2834b4e65e6b80"},
-    {file = "pywry-0.3.4-cp310-none-win_amd64.whl", hash = "sha256:748ddb066198cde6c2592d5697b4cf1265f2a024cb9bbda693b210092955ac47"},
-    {file = "pywry-0.3.4-cp311-cp311-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:3120d249602a066e9e2a52e96f6503a636c0a69851e5e905babd47cd80fba56c"},
-    {file = "pywry-0.3.4-cp311-none-win_amd64.whl", hash = "sha256:2bdc669fea0b1f8a8f546bf06e028c6586751b776eff936393e22bbf25e23995"},
-    {file = "pywry-0.3.4-cp38-cp38-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:fe07222aba6930201ab67e83544c1331f83cdef2b030797cec2269c034ef0f03"},
-    {file = "pywry-0.3.4-cp38-none-win_amd64.whl", hash = "sha256:02984df05a783c0fd5a30e774a64c33d5e989f7990b3cc9fa836d5ab6aec7bc9"},
-    {file = "pywry-0.3.4-cp39-cp39-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:4c83e0f10fea3a5a8b9d458f21ca409391ed866b117f6addcd5117125bcf48fb"},
-    {file = "pywry-0.3.4-cp39-none-win_amd64.whl", hash = "sha256:a19be78f726d41a6760ffb946e2f895d968030b598775e7fe81775b116f8d41e"},
-    {file = "pywry-0.3.4.tar.gz", hash = "sha256:f27b1ed73474db6e5f9538b3fab6b89ac0383f3a87f534f4c68152b1d17de2af"},
+    {file = "pywry-0.3.5-cp310-cp310-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:24141f8a4205df84f2347dac968661b6324b32c0d198de609708094dbc0e2b5d"},
+    {file = "pywry-0.3.5-cp310-none-win_amd64.whl", hash = "sha256:c6dede5390f6480d99f8b81f081e526ac8fb17c72032e8b4fed97c8d6c00b712"},
+    {file = "pywry-0.3.5-cp311-cp311-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:307f29806d864526681aed8cefccbc7a8e81193348fe09599a57bf29611e0a40"},
+    {file = "pywry-0.3.5-cp311-none-win_amd64.whl", hash = "sha256:07f4ed6808a9ec3de87d5cf15a0c4f5d954958020280fdb42af8072ea1c8e947"},
+    {file = "pywry-0.3.5-cp38-cp38-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:ddaebc7356c029e4a8279315548df77e0127eb474061be6e69589352d301b6d7"},
+    {file = "pywry-0.3.5-cp38-none-win_amd64.whl", hash = "sha256:9a99eab511bb2595007e681952a1f0c3577a30f79827da9a3621ccbb04a2acf5"},
+    {file = "pywry-0.3.5-cp39-cp39-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:fade2dda18edb6f62090f4e1cee1db05ab99b53a5b6b95a07c67019f38c8c281"},
+    {file = "pywry-0.3.5-cp39-none-win_amd64.whl", hash = "sha256:6abedc4d61bd13011c5b8b1753bd8495b85980f394e36d929c5fcfa8e41f6855"},
+    {file = "pywry-0.3.5.tar.gz", hash = "sha256:b8a9b3083f2f708b25ace01806acdf5e1cc4c8e393c03ca1803f89d512910150"},
 ]
 
 [package.dependencies]
@@ -7601,6 +7601,8 @@ files = [
     {file = "ruamel.yaml.clib-0.2.7-cp311-cp311-macosx_10_9_universal2.whl", hash = "sha256:045e0626baf1c52e5527bd5db361bc83180faaba2ff586e763d3d5982a876a9e"},
     {file = "ruamel.yaml.clib-0.2.7-cp311-cp311-macosx_12_6_arm64.whl", hash = "sha256:721bc4ba4525f53f6a611ec0967bdcee61b31df5a56801281027a3a6d1c2daf5"},
     {file = "ruamel.yaml.clib-0.2.7-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.manylinux_2_24_x86_64.whl", hash = "sha256:41d0f1fa4c6830176eef5b276af04c89320ea616655d01327d5ce65e50575c94"},
+    {file = "ruamel.yaml.clib-0.2.7-cp311-cp311-win32.whl", hash = "sha256:f6d3d39611ac2e4f62c3128a9eed45f19a6608670c5a2f4f07f24e8de3441d38"},
+    {file = "ruamel.yaml.clib-0.2.7-cp311-cp311-win_amd64.whl", hash = "sha256:da538167284de58a52109a9b89b8f6a53ff8437dd6dc26d33b57bf6699153122"},
     {file = "ruamel.yaml.clib-0.2.7-cp36-cp36m-macosx_10_9_x86_64.whl", hash = "sha256:4b3a93bb9bc662fc1f99c5c3ea8e623d8b23ad22f861eb6fce9377ac07ad6072"},
     {file = "ruamel.yaml.clib-0.2.7-cp36-cp36m-macosx_12_0_arm64.whl", hash = "sha256:a234a20ae07e8469da311e182e70ef6b199d0fbeb6c6cc2901204dd87fb867e8"},
     {file = "ruamel.yaml.clib-0.2.7-cp36-cp36m-manylinux2014_aarch64.whl", hash = "sha256:15910ef4f3e537eea7fe45f8a5d19997479940d9196f357152a09031c5be59f3"},
@@ -10286,4 +10288,4 @@ optimization = ["Riskfolio-Lib"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8,<3.11, !=3.9.7"
-content-hash = "bc5f08b256e716a9aca1c17f822c180672d1cf3c240c8f09199bf47435b95647"
+content-hash = "72feed322bdc8fd04d8d66bc73218725755bae569ff74397784b8e2fbd8eb781"

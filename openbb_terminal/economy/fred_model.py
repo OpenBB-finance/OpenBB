@@ -392,5 +392,6 @@ def get_cpi(
 
     df = pd.DataFrame.from_dict(series_dictionary)
     df.index = pd.to_datetime(df.index).date
+    df = df.dropna()
 
     return df
