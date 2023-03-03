@@ -349,18 +349,13 @@ def plot_cpi(
         "growth_previous": "Growth Previous Period (%)",
     }
 
-    country = [
-        country.replace("_", " ").title()
-        for country in countries
-        if df.columns.str.contains(country)
-    ]
-
+    country = str(countries[0]).replace("_", " ").title()
     title = f"{'Harmonized ' if harmonized else ''} Consumer Price"
     title += (
-        f" Index for {', '.join(country)}"
-        if country
-        else " Indices"
+        " Indices"
         if len(df.columns) > 1
+        else f" Index for {country}"
+        if country
         else ""
     )
 

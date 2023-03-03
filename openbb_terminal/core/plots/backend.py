@@ -51,7 +51,7 @@ PLOTLYJS_PATH = PLOTS_CORE_PATH / "assets" / "plotly-2.18.2.min.js"
 BACKEND = None
 
 
-class Backend(PyWry):
+class Backend(pywry.PyWry):
     """Custom backend for Plotly."""
 
     def __new__(cls, *args, **kwargs):  # pylint: disable=W0613
@@ -230,6 +230,14 @@ class Backend(PyWry):
             Source of the data, by default ""
         """
         self.loop.run_until_complete(self.check_backend())
+        columnwidth = [
+            max(len(str(df_table[col].name)), df_table[col].astype(str).str.len().max())
+            for col in df_table.columns
+        ]
+        # we add a percentage of max to the min column width
+        columnwidth = [
+            int(x + (max(columnwidth) - min(columnwidth)) * 0.2) for x in columnwidth
+        ]
 
         if title:
             # We remove any html tags and markdown from the title
