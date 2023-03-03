@@ -15,6 +15,7 @@ import pandas as pd
 import papermill as pm
 from ipykernel.kernelapp import IPKernelApp
 
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.core.config.paths import (
     MISCELLANEOUS_DIRECTORY,
 )

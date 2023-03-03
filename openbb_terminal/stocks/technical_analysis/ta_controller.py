@@ -9,6 +9,7 @@ from typing import List, Optional
 
 import pandas as pd
 
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.common.technical_analysis import (
     custom_indicators_view,
     momentum_view,

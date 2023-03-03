@@ -41,14 +41,14 @@ from PIL import Image, ImageDraw
 from rich.table import Table
 from screeninfo import get_monitors
 
+# IMPORTS INTERNAL
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal import (
     OpenBBFigure,
-    config_plot as cfgPlot,
-    config_terminal as cfg,
     feature_flags as obbff,
     plots_backend,
 )
-from openbb_terminal.core.config.paths import HOME_DIRECTORY, USER_EXPORTS_DIRECTORY
+from openbb_terminal.core.config.paths import HOME_DIRECTORY
 from openbb_terminal.core.plots.plotly_ta.ta_class import PlotlyTA
 from openbb_terminal.rich_config import console
 
@@ -1211,8 +1211,8 @@ def plot_autoscale():
         if x / y > 1.5:
             x = x * 0.4
 
-        x = ((x) * cfgPlot.PLOT_WIDTH_PERCENTAGE * 10**-2) / (
-            cfgPlot.PLOT_DPI
+        x = ((x) * current_user.preferences.PLOT_WIDTH_PERCENTAGE * 10**-2) / (
+            current_user.preferences.PLOT_DPI
         )  # Calculate width
         if current_user.preferences.PLOT_HEIGHT_PERCENTAGE == 100:  # If full height
             y = y - 60  # Remove the height of window toolbar

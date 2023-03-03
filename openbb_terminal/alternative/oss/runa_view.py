@@ -53,8 +53,6 @@ def display_rossindex(
     """
     df = runa_model.get_startups()
 
-    current_user = get_current_user()
-
     if df.empty:
         console.print("\nError in runa request\n")
     else:
