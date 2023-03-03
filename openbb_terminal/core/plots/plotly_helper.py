@@ -927,7 +927,8 @@ class OpenBBFigure(go.Figure):
 
         self.update_traces(marker_line_width=self.bar_width, selector=dict(type="bar"))
         self.update_traces(
-            selector=dict(type="scatter"), hovertemplate="y: %{y}<br>x: %{x}"
+            selector=dict(type="scatter", hovertemplate=None),
+            hovertemplate="%{y}<extra></extra>",
         )
 
         # Set modebar style
