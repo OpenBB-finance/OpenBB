@@ -10,6 +10,7 @@ Use your best judgment, and feel free to propose changes to this document in a p
   - [Adding a new command](#adding-a-new-command)
     - [Select Feature](#select-feature)
     - [Model](#model)
+    - [Data source](#data-source)
     - [View](#view)
     - [Controller](#controller)
     - [Add SDK endpoint](#add-sdk-endpoint)
@@ -59,9 +60,8 @@ Use your best judgment, and feel free to propose changes to this document in a p
 
 Before implementing a new command we highly recommend that you go through [Understand Code Structure](#understand-code-structure) and [Follow Coding Guidelines](#follow-coding-guidelines). This will allow you to get your PR merged faster and keep consistency of our code base.
 
-In the next sections we describe the process to add a new command. `shorted` command from category `dark_pool_shorts` and context `stocks` will be used as
-example. Since this command uses data from Yahoo Finance, a `yahoofinance_view.py` and a `yahoofinance_model.py` files
-will be implemented.
+In the next sections we describe the process to add a new command.
+We will be adding a function to get price targets from the Financial Modeling Prep api.  Note that there already exists a function to get price targets from the Business Insider website, `stocks/fa/pt`, so we will be adding a new function to get price targets from the Financial Modeling Prep api, and go through adding sources.
 
 ### Select Feature
 
@@ -69,9 +69,29 @@ will be implemented.
 - Feel free to discuss what you'll be working on either directly on [the issue](https://github.com/OpenBB-finance/OpenBBTerminal/issues) or on [our Discord](www.openbb.co/discord).
   - This ensures someone from the team can help you and there isn't duplicated work.
 
+Before writing any code, it is good to understand what the data will look like.  In this case, we will be getting the price targets from the Financial Modeling Prep api, and the data will look like this:
+
+```json
+[
+  {
+    "symbol": "AAPL",
+    "publishedDate": "2023-02-03T16:19:00.000Z",
+    "newsURL": "https://pulse2.com/apple-stock-receives-a-195-price-target-aapl/",
+    "newsTitle": "Apple Stock Receives A $195 Price Target (AAPL)",
+    "analystName": "Cowen Cowen",
+    "priceTarget": 195,
+    "adjPriceTarget": 195,
+    "priceWhenPosted": 154.5,
+    "newsPublisher": "Pulse 2.0",
+    "newsBaseURL": "pulse2.com",
+    "analystCompany": "Cowen & Co."
+  }
+```
+
+
 ### Model
 
-1. Create a file with the source of data as the name followed by `_model` if it doesn't exist, e.g. `yahoofinance_model`
+1. Create a file with the source of data as the name followed by `_model` if it doesn't exist.  In this case, the file `openbb_terminal/stocs/fundamental_analysis/fmp_model.py` already exists, so we will add the function to that file.
 2. Add the documentation header
 3. Do the necessary imports to get the data
 4. Define a function starting with `get_`
@@ -81,41 +101,62 @@ will be implemented.
    3. Utilizing a third party API, get and return the data.
 
 ```python
-""" Yahoo Finance Model """
+""" Financial Modeling Prep Model """
 __docformat__ = "numpy"
 
 import logging
 
 import pandas as pd
-import requests
 
-from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import get_user_agent
+from openbb_terminal import config_terminal as cfg
+from openbb_terminal.decorators import check_api_key, log_start_end
+from openbb_terminal.helpers import request
 
 logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
-def get_most_shorted() -> pd.DataFrame:
-    """Get most shorted stock screener [Source: Yahoo Finance]
+@check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
+def get_price_targets(cls, symbol: str) -> pd.DataFrame:
+    """Get price targets for a company [Source: Financial Modeling Prep]
+
+    Parameters
+    ----------
+    symbol : str
+        Symbol to get data for
 
     Returns
     -------
     pd.DataFrame
-        Most Shorted Stocks
+        DataFrame of price targets
     """
-    url = "https://finance.yahoo.com/screener/predefined/most_shorted_stocks"
+    url = f"https://financialmodelingprep.com/api/v4/price-target?symbol={symbol}&apikey={cfg.API_KEY_FINANCIALMODELINGPREP}"
+    response = request(url)
+    # Check if response is valid
+    if response.status_code != 200:
+        console.print(f"[red]Error, Status Code: {response.status_code}[/red]\n")
+        return pd.DataFrame()
+    if "Error Message" in response.json():
+        console.print(
+            f"[red]Error, Message: {response.json()['Error Message']}[/red]\n"
+        )
+        return pd.DataFrame()
+    return pd.DataFrame(response.json())
 
-    data = pd.read_html(
-        request(url, headers={"User-Agent": get_user_agent()}).text
-    )[0]
-    data = data.iloc[:, :-1]
-    return data
 ```
+In this function:
+- We use the `@log_start_end` decorator to add the function to our logs for debugging purposes.
+- We add the `check_api_key` decorator to confirm the api key is valid.
+- We have type hinting and a doctring describing the function.
+- We use the openbb_terminal helper function `request`, which is an abstracted version of the requests, which allows us to add user agents, timeouts, caches, etc to any request in the terminal.
+- We check for different error messages.  This will depend on the API provider and usually requires some trial and error.  With the FMP api, if there is an invalid symbol, we get a response code of 200, but the json response has an error message field.  Same with an invalid api key.
+- When an error is caught, we still return an empty dataframe.
+- We return the json response as a pandas dataframe.  Most functions in the terminal should return a datatframe, but if not, make sure that the return type is specified.
+- The API key is imported from the config_terminal file.  This is important so that runtime import issues are not encountered.
+
 
 Note:
 
-1. As explained before, it is possible that this file needs to be created under `common/` directory rather than
-   `stocks/`, which means that when that happens this function should be done in a generic way, i.e. not mentioning stocks
+1. As explained before, it is possible that this file needs to be created under `common/` directory rather than `stocks/`, which means that when that happens this function should be done in a generic way, i.e. not mentioning stocks
    or a specific context.
 2. If the model require an API key, make sure to handle the error and output relevant message.
 
@@ -159,9 +200,18 @@ def get_economy_calendar_events() -> pd.DataFrame:
     return df
 ```
 
+### Data source
+
+Now that we have added the model function getting, we need to specify that this is an available data source.  To do so, we edit the `openbb_terminal/miscellaneous/data_sources_default.json` file.  This file, described below, uses a dictionary structure to identify available sources.  Since we are adding FMP to `stocks/fa/pt`, we find that entry and append it:
+```json
+    "fa": {
+      "pt": ["BusinessInsider", "FinancialModelingPrep"],
+```
+If you are adding a new function with a new data source, make a new value in the file.
+
 ### View
 
-1. Create a file with the source of data as the name followed by `_view` if it doesn't exist, e.g. `yahoofinance_view`
+1. Create a file with the source of data as the name followed by `_view` if it doesn't exist, e.g. `fmp_view`
 2. Add the documentation header
 3. Do the necessary imports to display the data. One of these is the `_model` associated with this `_view`. I.e. from same data source.
 4. Define a function starting with `display_`
@@ -169,67 +219,72 @@ def get_economy_calendar_events() -> pd.DataFrame:
    - Use typing hints
    - Write a descriptive description where at the end the source is specified
    - Get the data from the `_model` and parse it to be output in a more meaningful way.
-   - Ensure that the data that comes through is reasonable, i.e. at least that we aren't displaying an empty dataframe.
-   - Do not degrade the main data dataframe coming from model if there's an export flag. This is so that the export can
-     have all the data rather than the short amount of information we may show to the user. Thus, in order to do so
-     `df_data = df.copy()` can be useful as if you change `df_data`, `df` remains intact.
+   - Do not degrade the main data dataframe coming from model if there's an export flag. This is so that the export can have all the data rather than the short amount of information we may show to the user. Thus, in order to do so `df_data = df.copy()` can be useful as if you change `df_data`, `df` remains intact.
 6. If the source requires an API Key or some sort of tokens, add `check_api_key` decorator on that specific view. This will throw a warning if users forget to set their API Keys
 7. Finally, call `export_data` where the variables are export variable, current filename, command name, and dataframe.
 
 ```python
-""" Yahoo Finance View """
-__docformat__ = "numpy"
-
-import logging
-import os
-
-from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import export_data, print_rich_table
-from openbb_terminal.rich_config import console
-from openbb_terminal.stocks.dark_pool_shorts import yahoofinance_model
-
-logger = logging.getLogger(__name__)
-
 @log_start_end(log=logger)
-def display_most_shorted(limit: int = 10, export: str = ""):
-    """Display most shorted stocks screener. [Source: Yahoo Finance]
+@check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
+def display_price_targets(
+    symbol: str, limit: int = 10, export: str = "", sheet_name: Optional[str] = None
+):
+    """Display price targets for a given ticker. [Source: Financial Modeling Prep]
 
     Parameters
     ----------
+    symbol : str
+        Symbol
     limit: int
-        Number of stocks to display
-    export : str
+        Number of last days ratings to display
+    export: str
         Export dataframe data to csv,json,xlsx file
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     """
-    df = yahoofinance_model.get_most_shorted().head(limit)
-    df.dropna(how="all", axis=1, inplace=True)
-    df = df.replace(float("NaN"), "")
-
-    if df.empty:
-        console.print("No data found.")
-    else:
-        print_rich_table(
-            df, headers=list(df.columns), show_index=False, title="Most Shorted Stocks"
-        )
-
+    columns_to_show = [
+        "publishedDate",
+        "analystCompany",
+        "adjPriceTarget",
+        "priceWhenPosted",
+    ]
+    price_targets = fmp_model.get_price_targets(symbol)
+    if price_targets.empty:
+        console.print(f"[red]No price targets found for {symbol}[/red]\n")
+        return
+    price_targets["publishedDate"] = price_targets["publishedDate"].apply(
+        lambda x: datetime.strptime(x, "%Y-%m-%dT%H:%M:%S.%fZ").strftime("%Y-%m-%d %H:%M")
+    )
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
-        "shorted",
-        df,
+        "pt",
+        price_targets,
+        sheet_name,
     )
 
+    print_rich_table(
+        price_targets[columns_to_show].head(limit),
+        headers=["Date", "Company", "Target", "Posted Price"],
+        show_index=False,
+        title=f"{symbol.upper()} Price Targets",
+    )
 ```
-
-Note: As explained before, it is possible that this file needs to be created under `common/` directory rather than
-`stocks/`, which means that when that happens this function should be done in a generic way, i.e. not mentioning stocks
-or a specific context. The arguments will need to be parsed by `stocks_controller,py` and the other controller this
-function shares the data output with.
+In this function:
+- We use the same log and api decorators as in the model.
+- We define the columns we want to show to the user.
+- We get the data from the fmp_model function
+- We check if there is data.  If something went wrong, we don't want to show it, so we print a message and return.  Note that because we have error messages in both the model and view, there will be two print outs.  If you wish to just show one, it is better to handle in the model.
+- We do some parsing of the data to make it more readable.  In this case, the output from FMP is not very clear at quick glance, we we put it into something more readable.
+- We export the data.  In this function, I decided to export after doing the manipulation.  If we do any removing of columns, we should copy the dataframe before exporting.
+- We print the data in table form using our `print_rich_table`.  This provides a nice console print using the rich library.  Note that here I show the top `limit` rows of the dataframe.  Care should be taken to make sure that things are sorted.  If a sort is required, there is a `reverse` argument that can be added to sort in reverse order.
 
 ### Controller
 
-1. Import `_view` associated with command we want to allow user to select.
-2. Add command name to variable `CHOICES` from `DarkPoolShortsController` class.
+Now that we have the model and views, it is time to add to the controller.
+
+1. Import the associated `_view` function to the controller.
+2. Add command name to variable `CHOICES_COMMANDS` from `FundamentalAnalysisController` class.
 3. Add command and source to `print_help()`.
 
    ```python
@@ -243,15 +298,13 @@ function shares the data output with.
 
 4. If there is a condition to display or not the command, this is something that can be leveraged through this `add_cmd` method, e.g. `mt.add_cmd("shorted", self.ticker_is_loaded)`.
 
-5. Add command description to file `i18n/en.yml`. Use the path and command name as key, e.g. `stocks/dps/shorted` and the value as description. Please fill in other languages if this is something that you know.
+5. Add command description to file `i18n/en.yml`. Use the path and command name as key, e.g. `stocks/fa/pt` and the value as description. Please fill in other languages if this is something that you know.
 
-6. Add a method to `DarkPoolShortsController` class with name: `call_` followed by command name.
+6. Add a method to `FundamentalAnalysisController` class with name: `call_` followed by command name.
    - This method must start defining a parser with arguments `add_help=False` and
-     `formatter_class=argparse.ArgumentDefaultsHelpFormatter`. In addition `prog` must have the same name as the command,
-     and `description` should be self-explanatory ending with a mention of the data source.
+     `formatter_class=argparse.ArgumentDefaultsHelpFormatter`. In addition `prog` must have the same name as the command, and `description` should be self-explanatory ending with a mention of the data source.
    - Add parser arguments after defining parser. One important argument to add is the export capability. All commands should be able to export data.
-   - If there is a single or even a main argument, a block of code must be used to insert a fake argument on the list of
-     args provided by the user. This makes the terminal usage being faster.
+   - If there is a single or even a main argument, a block of code must be used to insert a fake argument on the list of args provided by the user. This makes the terminal usage being faster.
 
       ```python
       if other_args and "-" not in other_args[0][0]:
@@ -261,48 +314,109 @@ function shares the data output with.
    - Parse known args from list of arguments and values provided by the user.
    - Call the function contained in a `_view.py` file with the arguments parsed by argparse.
 
+Note that the function self.parse_known_args_and_warn() has some additional options we can add.  If the function is showing a chart, but we want the option to show raw data, we can add the `raw=True` keyword and the resulting namespace will have the `raw` attribute.  Same with limit, we can pass limit=10 to add the `-l` flag with default=10.  Here we also specify the export, and whether it is data only, plots only or anything.  This function also adds the `source` attribute to the namespace.  In our example, this is important because we added an additional source.
+
+Our new function will be:
+
 ```python
-def call_shorted(self, other_args: List[str]):
-        """Process shorted command"""
+   @log_start_end(log=logger)
+    def call_pt(self, other_args: List[str]):
+        """Process pt command"""
         parser = argparse.ArgumentParser(
             add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="shorted",
-            description="Print up to 25 top ticker most shorted. [Source: Yahoo Finance]",
+            prog="pt",
+            description="""Prints price target from analysts. [Source: Business Insider]""",
         )
-        if other_args and "-" not in other_args[0]:
-            other_args.insert(0, "-l")
-
-        ns_parser = parse_known_args_and_warn(
-            parser,
-            other_args,
-            limit=10,
-            export=EXPORT_ONLY_RAW_DATA_ALLOWED
+        parser.add_argument(
+            "-t",
+            "--ticker",
+            dest="ticker",
+            help="Ticker to analyze",
+            type=str,
+            default=None,
         )
-
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-t")
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES, raw=True, limit=10
+        )
         if ns_parser:
-          yahoofinance_view.display_most_shorted(
-              num_stocks=ns_parser.num,
-              export=ns_parser.export,
-          )
+            if ns_parser.ticker:
+                self.ticker = ns_parser.ticker
+                self.custom_load_wrapper([self.ticker])
+
+            if ns_parser.source == "BusinessInsider":
+                business_insider_view.price_target_from_analysts(
+                    symbol=self.ticker,
+                    data=self.stock,
+                    start_date=self.start,
+                    limit=ns_parser.limit,
+                    raw=ns_parser.raw,
+                    export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
+                )
+            elif ns_parser.source == "FinancialModelingPrep":
+                fmp_view.display_price_targets(
+                    symbol=self.ticker,
+                    limit=ns_parser.limit,
+                    export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
+                )
 ```
+
+Here, we make the parser, add the arguments, and then parse the arguments.  In order to use the fact that we had a new source, we add the logic to access the correct view function.  In this specific menu, we also allow the user to specify the symbol with -t, which is what the first block is doing.
+
+Now from the terminal, this function can be run as desired:
+```bash
+2023 Mar 03, 11:37 (🦋) /stocks/fa/ $ pt -t aapl --source FinancialModelingPrep
+
+                         AAPL Price Targets
+┏━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━┓
+┃ Date             ┃ Company               ┃ Target ┃ Posted Price ┃
+┡━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━┩
+│ 2023-02-03 16:19 │ Cowen & Co.           │ 195.00 │ 154.50       │
+├──────────────────┼───────────────────────┼────────┼──────────────┤
+│ 2023-02-03 09:31 │ D.A. Davidson         │ 173.00 │ 157.09       │
+├──────────────────┼───────────────────────┼────────┼──────────────┤
+│ 2023-02-03 08:30 │ Rosenblatt Securities │ 173.00 │ 150.82       │
+├──────────────────┼───────────────────────┼────────┼──────────────┤
+│ 2023-02-03 08:29 │ Wedbush               │ 180.00 │ 150.82       │
+├──────────────────┼───────────────────────┼────────┼──────────────┤
+│ 2023-02-03 07:21 │ Raymond James         │ 170.00 │ 150.82       │
+├──────────────────┼───────────────────────┼────────┼──────────────┤
+│ 2023-02-03 07:05 │ Barclays              │ 145.00 │ 150.82       │
+├──────────────────┼───────────────────────┼────────┼──────────────┤
+│ 2023-02-03 03:08 │ KeyBanc               │ 177.00 │ 150.82       │
+├──────────────────┼───────────────────────┼────────┼──────────────┤
+│ 2023-02-02 02:08 │ Rosenblatt Securities │ 165.00 │ 145.43       │
+├──────────────────┼───────────────────────┼────────┼──────────────┤
+│ 2023-02-02 02:08 │ Deutsche Bank         │ 160.00 │ 145.43       │
+├──────────────────┼───────────────────────┼────────┼──────────────┤
+│ 2023-02-02 02:08 │ J.P. Morgan           │ 180.00 │ 145.43       │
+└──────────────────┴───────────────────────┴────────┴──────────────┘
+```
+
 
 If a new menu is being added the code looks like this:
 
 ```python
 @log_start_end(log=logger)
-def call_dps(self, _):
-    """Process dps command"""
-    from openbb_terminal.stocks.dark_pool_shorts.dps_controller import (
-        DarkPoolShortsController,
+def call_fa(self, _):
+    """Process fa command"""
+    from openbb_terminal.stocks.fundamental_analysis.fa_controller import (
+        FundamentalAnalysisController,
     )
 
     self.queue = self.load_class(
-        DarkPoolShortsController, self.ticker, self.start, self.stock, self.queue
+        FundamentalAnalysisController, self.ticker, self.start, self.stock, self.queue
     )
 ```
 
-The **import only occurs inside this menu call**, this is so that the loading time only happens here and not at the terminal startup. This is to avoid slow loading times for users that are not interested in `stocks/dps` menu.
+The **import only occurs inside this menu call**, this is so that the loading time only happens here and not at the terminal startup. This is to avoid slow loading times for users that are not interested in `stocks/fa` menu.
 
 In addition, note the `self.load_class` which allows to not create a new DarkPoolShortsController instance but re-load the previous created one. Unless the arguments `self.ticker, self.start, self.stock` have changed since. The `self.queue` list of commands is passed around as it contains the commands that the terminal must perform.
 

@@ -255,7 +255,7 @@
       "dupont": ["AlphaVantage"],
       "rating": ["Finviz", "FinancialModelingPrep"],
       "rot": ["Finnhub"],
-      "pt": ["BusinessInsider"],
+      "pt": ["BusinessInsider", "FinancialModelingPrep"],
       "est": ["BusinessInsider"],
       "sec": ["MarketWatch", "FinancialModelingPrep"],
       "supplier": ["CSIMarket"],

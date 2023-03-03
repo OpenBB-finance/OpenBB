@@ -1707,43 +1707,37 @@ class FundamentalAnalysisController(StockBaseController):
             type=str,
             default=None,
         )
-        parser.add_argument(
-            "--raw",
-            action="store_true",
-            dest="raw",
-            help="Only output raw data",
-        )
-        parser.add_argument(
-            "-l",
-            "--limit",
-            action="store",
-            dest="limit",
-            type=check_positive,
-            default=10,
-            help="Limit of latest price targets from analysts to print.",
-        )
-
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
         ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES, raw=True, limit=10
         )
         if ns_parser:
             if ns_parser.ticker:
                 self.ticker = ns_parser.ticker
                 self.custom_load_wrapper([self.ticker])
 
-            business_insider_view.price_target_from_analysts(
-                symbol=self.ticker,
-                data=self.stock,
-                start_date=self.start,
-                limit=ns_parser.limit,
-                raw=ns_parser.raw,
-                export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
-            )
+            if ns_parser.source == "BusinessInsider":
+                business_insider_view.price_target_from_analysts(
+                    symbol=self.ticker,
+                    data=self.stock,
+                    start_date=self.start,
+                    limit=ns_parser.limit,
+                    raw=ns_parser.raw,
+                    export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
+                )
+            elif ns_parser.source == "FinancialModelingPrep":
+                fmp_view.display_price_targets(
+                    symbol=self.ticker,
+                    limit=ns_parser.limit,
+                    export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
+                )
 
     @log_start_end(log=logger)
     def call_est(self, other_args: List[str]):
