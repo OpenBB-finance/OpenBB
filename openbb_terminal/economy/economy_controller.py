@@ -573,7 +573,10 @@ class EconomyController(BaseController):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-p")
         ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED, raw=True
+            parser,
+            other_args,
+            export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,
+            raw=True,
         )
         if ns_parser:
             parameters = list_from_str(ns_parser.parameters.upper())
@@ -1289,7 +1292,7 @@ class EconomyController(BaseController):
         ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
-            export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
+            export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,
             limit=10,
         )
 
