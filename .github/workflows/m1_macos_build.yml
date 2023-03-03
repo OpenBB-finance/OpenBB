@@ -112,6 +112,13 @@ jobs:
           build/pyinstaller/macOS-x64/build-macos-x64.sh OpenBBTerminal 0.0.1
           mv build/pyinstaller/macOS-x64/target/pkg/OpenBBTerminalM1.pkg OpenBBTerminalM1.pkg
         shell: bash
+      - name: Sign binary
+        uses: lando/code-sign-action@v2
+        with:
+          file: OpenBBTerminalM1.pkg
+          certificate-data: ${{ secrets.MACOS_INSTALLER_CERTIFICATE }}
+          certificate-password: ${{ secrets.MACOS_KEYCHAIN_PWD }}
+          apple-team-id: ${{ secrets.APPLE_TEAM_ID }}
       - name: Deleting Previous Keychain
         run: |
           echo "Deleting Previous Keychain to Clean Instance"
