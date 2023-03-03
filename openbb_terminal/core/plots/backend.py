@@ -214,7 +214,7 @@ class Backend(pywry.PyWry):
         ]
 
         # incase of a very small table we set a min width
-        width = max(int(min(sum(columnwidth) * 9.7, self.WIDTH + 100)), 650)
+        width = max(int(min(sum(columnwidth) * 9.7, self.WIDTH + 100)), 800)
 
         self.outgoing.append(
             json.dumps(
