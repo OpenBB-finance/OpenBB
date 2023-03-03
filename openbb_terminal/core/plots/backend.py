@@ -53,7 +53,7 @@ class Backend(pywry.PyWry):
     def __init__(self, daemon: bool = True, max_retries: int = 30):
         super().__init__(daemon=daemon, max_retries=max_retries)
         self.plotly_html: Path = (PLOTS_CORE_PATH / "plotly_temp.html").resolve()
-        self.table_html: Path = (PLOTS_CORE_PATH / "table_temp.html").resolve()
+        self.table_html: Path = (PLOTS_CORE_PATH / "table.html").resolve()
         self.inject_path_to_html()
         self.isatty = (
             not JUPYTER_NOTEBOOK
@@ -72,18 +72,16 @@ class Backend(pywry.PyWry):
 
     def inject_path_to_html(self):
         """Update the script tag in html with local path."""
-        for html_file, temp_file in zip(
-            ["plotly.html", "table.html"], [self.plotly_html, self.table_html]
-        ):
-            with open(PLOTS_CORE_PATH / html_file, encoding="utf-8") as file:  # type: ignore
-                html = file.read()
-                html = html.replace("{{MAIN_PATH}}", str(PLOTS_CORE_PATH.as_uri()))
 
-            # We create a temporary file to inject the path to the script tag
-            # This is so we don't have to modify the original file
-            # The file is deleted at program exit.
-            with open(temp_file, "w", encoding="utf-8") as file:  # type: ignore
-                file.write(html)
+        with open(PLOTS_CORE_PATH / "plotly.html", encoding="utf-8") as file:  # type: ignore
+            html = file.read()
+            html = html.replace("{{MAIN_PATH}}", str(PLOTS_CORE_PATH.as_uri()))
+
+        # We create a temporary file to inject the path to the script tag
+        # This is so we don't have to modify the original file
+        # The file is deleted at program exit.
+        with open(self.plotly_html, "w", encoding="utf-8") as file:  # type: ignore
+            file.write(html)
 
     def get_plotly_html(self) -> str:
         """Get the plotly html file."""
@@ -206,22 +204,13 @@ class Backend(pywry.PyWry):
             int(x + (max(columnwidth) - min(columnwidth)) * 0.2) for x in columnwidth
         ]
 
-        return self.send_url(
-            f"/{self.table_html.as_uri()}",
-            title="Interactive table",
-            width=1200,
-            height=800,
-            df=df_table,
-        )
         self.outgoing.append(
             json.dumps(
                 {
                     "html_path": self.get_table_html(),
                     "json_data": df_table.to_json(orient="split"),
-                    "width": int(max(sum(columnwidth) * 9.5, self.WIDTH + 100)),
-                    "height": int(
-                        min(len(df_table.index) * 25 + 25, self.HEIGHT + 100)
-                    ),
+                    "width": int(min(sum(columnwidth) * 9.7, self.WIDTH + 100)),
+                    "height": self.HEIGHT - 100,
                     **self.get_kwargs(title),
                 }
             )
@@ -251,7 +240,6 @@ class Backend(pywry.PyWry):
         title: str = "",
         width: Optional[int] = None,
         height: Optional[int] = None,
-        df: Optional[pd.DataFrame] = None,
     ):
         """Send a URL to the backend to be displayed in a window.
 
@@ -278,7 +266,6 @@ class Backend(pywry.PyWry):
                 **self.get_kwargs(title),
                 "width": width or self.WIDTH,
                 "height": height or self.HEIGHT,
-                "json_data": df.to_json(orient="split") if df is not None else "",
             }
         )
         self.outgoing.append(message)
