@@ -213,7 +213,7 @@ class Backend(pywry.PyWry):
             int(x + (max(columnwidth) - min(columnwidth)) * 0.2) for x in columnwidth
         ]
 
-        # incase of a very small table we set a min width
+        # in case of a very small table we set a min width
         width = max(int(min(sum(columnwidth) * 9.7, self.WIDTH + 100)), 800)
 
         self.outgoing.append(
