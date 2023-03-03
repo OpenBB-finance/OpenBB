@@ -1,4 +1,6 @@
 # IMPORTATION THIRDPARTY
+from pathlib import Path
+
 import pytest
 import requests
 
@@ -53,8 +55,6 @@ def test_get_historical_greeks_invalid_status(mocker):
 
     assert result_df.empty
 
-from pathlib import Path
-
 
 @pytest.mark.vcr
 def test_get_screener_output(mocker, recorder):
@@ -65,8 +65,8 @@ def test_get_screener_output(mocker, recorder):
         if filepath.suffix == ".ini"
     }
     mocker.patch(
-        target = "openbb_terminal.stocks.options.screen.syncretism_model.get_preset_choices",
-        return_value=preset_choices
+        target="openbb_terminal.stocks.options.screen.syncretism_model.get_preset_choices",
+        return_value=preset_choices,
     )
     result_tuple = syncretism_model.get_screener_output(
         preset="high_iv.ini",
