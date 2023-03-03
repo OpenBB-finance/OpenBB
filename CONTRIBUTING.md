@@ -88,7 +88,6 @@ Before writing any code, it is good to understand what the data will look like. 
   }
 ```
 
-
 ### Model
 
 1. Create a file with the source of data as the name followed by `_model` if it doesn't exist.  In this case, the file `openbb_terminal/stocs/fundamental_analysis/fmp_model.py` already exists, so we will add the function to that file.
@@ -141,9 +140,10 @@ def get_price_targets(cls, symbol: str) -> pd.DataFrame:
         )
         return pd.DataFrame()
     return pd.DataFrame(response.json())
-
 ```
+
 In this function:
+
 - We use the `@log_start_end` decorator to add the function to our logs for debugging purposes.
 - We add the `check_api_key` decorator to confirm the api key is valid.
 - We have type hinting and a doctring describing the function.
@@ -153,11 +153,9 @@ In this function:
 - We return the json response as a pandas dataframe.  Most functions in the terminal should return a datatframe, but if not, make sure that the return type is specified.
 - The API key is imported from the config_terminal file.  This is important so that runtime import issues are not encountered.
 
-
 Note:
 
-1. As explained before, it is possible that this file needs to be created under `common/` directory rather than `stocks/`, which means that when that happens this function should be done in a generic way, i.e. not mentioning stocks
-   or a specific context.
+1. As explained before, it is possible that this file needs to be created under `common/` directory rather than `stocks/`, which means that when that happens this function should be done in a generic way, i.e. not mentioning stocks or a specific context.
 2. If the model require an API key, make sure to handle the error and output relevant message.
 
 In the example below, you can see that we explicitly handle 4 important error types:
@@ -270,6 +268,7 @@ def display_price_targets(
         title=f"{symbol.upper()} Price Targets",
     )
 ```
+
 In this function:
 - We use the same log and api decorators as in the model.
 - We define the columns we want to show to the user.
@@ -399,7 +398,6 @@ Now from the terminal, this function can be run as desired:
 │ 2023-02-02 02:08 │ J.P. Morgan           │ 180.00 │ 145.43       │
 └──────────────────┴───────────────────────┴────────┴──────────────┘
 ```
-
 
 If a new menu is being added the code looks like this:
 
