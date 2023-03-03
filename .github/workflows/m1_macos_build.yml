@@ -88,6 +88,16 @@ jobs:
           MACOS_KEYCHAIN_PWD: ${{ secrets.MACOS_KEYCHAIN_PWD }}
           APPLE_SIGNING_IDENTITY: ${{ secrets.MACOS_CODESIGN_IDENTITY }}
         run: |
+          echo "1"
+          ls build
+          echo "2"
+          ls build/pyinstaller
+          echo "3"
+          ls build/pyinstaller/macOS-x64
+          echo "4"
+          ls build/pyinstaller/macOS-x64/target
+          echo "5"
+          ls build/pyinstaller/macOS-x64/target/pkg
           build/pyinstaller/macOS-x64/build-macos-x64.sh OpenBBTerminal 0.0.1
           mv build/pyinstaller/macOS-x64/target/pkg/OpenBBTerminalM1.pkg OpenBBTerminalM1.pkg
         shell: bash
