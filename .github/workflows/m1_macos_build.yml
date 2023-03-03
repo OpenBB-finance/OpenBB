@@ -83,7 +83,7 @@ jobs:
           security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k $MACOS_KEYCHAIN_PWD build.keychain
       - name: Create Signed Package
         env:
-          APPLE_DEVELOPER_CERTIFICATE_ID: ${{ secrets.MACOS_INSTALLER_CODESIGN_IDENTITY_FULL }}
+          APPLE_DEVELOPER_CERTIFICATE_ID: ${{ secrets.MACOS_INSTALLER_CODESIGN_IDENTITY }}
           MACOS_CERTIFICATE_PWD: ${{ secrets.MACOS_CERTIFICATE_PWD }}
           MACOS_KEYCHAIN_PWD: ${{ secrets.MACOS_KEYCHAIN_PWD }}
           APPLE_SIGNING_IDENTITY: ${{ secrets.MACOS_CODESIGN_IDENTITY }}
