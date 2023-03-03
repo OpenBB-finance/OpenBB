@@ -466,7 +466,9 @@ def display_redditsent(
     console.print(f"Sentiment Analysis for {symbol} is {avg_polarity}\n")
 
     if graphic:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI)
+        _, ax = plt.subplots(
+            figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
+        )
 
         sns.boxplot(x=polarity_scores, ax=ax)
         ax.set_title(f"Sentiment Score of {symbol}")
