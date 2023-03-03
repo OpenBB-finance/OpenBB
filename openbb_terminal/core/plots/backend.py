@@ -280,8 +280,7 @@ class Backend(pywry.PyWry):
 
     def del_temp(self):
         """Delete the temporary html file."""
-        for file in (self.plotly_html, self.table_html):
-            file.unlink(missing_ok=True)
+        self.plotly_html.unlink(missing_ok=True)
 
     def start(self, debug: bool = False):
         """Start the backend WindowManager process."""
