@@ -13,6 +13,15 @@ TEST_PATH = Path(__file__).parent.resolve()
 proc_id = os.getpid()
 
 
+@pytest.fixture(scope="module")
+def vcr_config():
+    return {
+        "filter_query_parameters": [
+            ("api_key", "test_key"),
+        ],
+    }
+
+
 @pytest.fixture(autouse=True)
 def revert_current_user(mocker):
     current_user = get_current_user()

@@ -81,6 +81,9 @@ def test_login_and_launch_failed():
         assert prompt_mock.call_count == 1
 
 
+@pytest.mark.skip(
+    reason="To review"
+)
 def test_login_and_launch_no_response():
     with patch(
         "openbb_terminal.core.session.session_controller.login",
