@@ -91,7 +91,7 @@ def login_and_launch(session: dict):
         The session info.
     """
     status = login(session)
-    if status == LoginStatus.SUCCESS:
+    if status in [LoginStatus.SUCCESS, LoginStatus.NO_RESPONSE]:
         launch_terminal()
     elif status == LoginStatus.FAILED:
         prompt(welcome=False)

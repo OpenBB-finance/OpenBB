@@ -39,7 +39,7 @@ def display_top_nfts(
 
     df = dappradar_model.get_top_nfts(sortby, limit)
     if df.empty:
-        console.print("[red]Failed to fetch data from DappRadar[/red]\n")
+        console.print("[red]Failed to fetch data from DappRadar[/red]")
         return
     for col in ["Floor Price [$]", "Avg Price [$]", "Market Cap [$]", "Volume [$]"]:
         if col in df.columns:
@@ -54,6 +54,7 @@ def display_top_nfts(
         headers=list(df.columns),
         show_index=False,
         title="Top NFT collections",
+        export=bool(export),
     )
 
     export_data(
@@ -86,7 +87,7 @@ def display_top_games(
 
     df = dappradar_model.get_top_games(sortby, limit)
     if df.empty:
-        console.print("[red]Failed to fetch data from DappRadar[/red]\n")
+        console.print("[red]Failed to fetch data from DappRadar[/red]")
         return
     for col in ["Daily Users", "Daily Volume [$]"]:
         if col in df.columns:
@@ -96,6 +97,7 @@ def display_top_games(
         headers=list(df.columns),
         show_index=False,
         title="Top Blockchain Games",
+        export=bool(export),
     )
 
     export_data(
@@ -128,7 +130,7 @@ def display_top_dexes(
 
     df = dappradar_model.get_top_dexes(sortby, limit)
     if df.empty:
-        console.print("[red]Failed to fetch data from DappRadar[/red]\n")
+        console.print("[red]Failed to fetch data from DappRadar[/red]")
         return
     for col in ["Daily Users", "Daily Volume [$]"]:
         if col in df.columns:
@@ -138,6 +140,7 @@ def display_top_dexes(
         headers=list(df.columns),
         show_index=False,
         title="Top Decentralized Exchanges",
+        export=bool(export),
     )
 
     export_data(
@@ -170,7 +173,7 @@ def display_top_dapps(
 
     df = dappradar_model.get_top_dapps(sortby, limit)
     if df.empty:
-        console.print("[red]Failed to fetch data from DappRadar[/red]\n")
+        console.print("[red]Failed to fetch data from DappRadar[/red]")
         return
     for col in ["Daily Users", "Daily Volume [$]"]:
         if col in df.columns:
@@ -180,6 +183,7 @@ def display_top_dapps(
         headers=list(df.columns),
         show_index=False,
         title="Top Decentralized Applications",
+        export=bool(export),
     )
 
     export_data(

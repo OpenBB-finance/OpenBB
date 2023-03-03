@@ -132,6 +132,7 @@ def print_insider_data(
             headers=[x.title() for x in df.columns],
             show_index=False,
             title="Insider Data",
+            export=bool(export),
         )
 
         export_data(
@@ -237,6 +238,7 @@ def print_insider_filter(
         new_df_insider,
         headers=[x.title() for x in new_df_insider.columns],
         title="Insider filtered",
+        export=bool(export),
     )
 
     if not links:

@@ -4,21 +4,13 @@ __docformat__ = "numpy"
 import logging
 import os
 from datetime import datetime
-from typing import List, Optional
+from typing import Optional, Union
 
-import matplotlib.pyplot as plt
 import yfinance
-from matplotlib.dates import DateFormatter
 
-from openbb_terminal.config_terminal import theme
-from openbb_terminal.core.session.current_user import get_current_user
+from openbb_terminal import OpenBBFigure, theme
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import (
-    export_data,
-    is_valid_axes_count,
-    plot_autoscale,
-    print_rich_table,
-)
+from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.behavioural_analysis import cramer_model
 
@@ -58,7 +50,9 @@ and we're investigating on finding a replacement.
         """,
         )
 
-    print_rich_table(recs, title=f"Jim Cramer Recommendations for {date}")
+    print_rich_table(
+        recs, title=f"Jim Cramer Recommendations for {date}", export=bool(export)
+    )
 
     export_data(
         export,
@@ -75,8 +69,8 @@ def display_cramer_ticker(
     raw: bool = False,
     export: str = "",
     sheet_name: Optional[str] = None,
-    external_axes: Optional[List[plt.Axes]] = None,
-):
+    external_axes: bool = False,
+) -> Union[None, OpenBBFigure]:
     """Display ticker close with Cramer recommendations
 
     Parameters
@@ -89,52 +83,54 @@ def display_cramer_ticker(
         Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
-    external_axes: Optional[List[plt.Axes]] = None,
-        External axes to plot on
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
 
     df = cramer_model.get_cramer_ticker(symbol)
     if df.empty:
-        console.print(f"No recommendations found for {symbol}.\n")
-        return
+        return console.print(f"No recommendations found for {symbol}.\n")
 
-    if external_axes is None:
-        _, ax = plt.subplots(
-            figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
-        )
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
+    fig = OpenBBFigure(xaxis_title="Date", yaxis_title="Price")
+    fig.set_title(f"{symbol.upper()} Close With Cramer Recommendations")
 
     close_prices = yfinance.download(symbol, start="2022-01-01", progress=False)[
         "Adj Close"
     ]
 
-    ax.plot(close_prices)
+    fig.add_scatter(
+        x=close_prices.index,
+        y=close_prices,
+        mode="lines",
+        name="Close",
+        showlegend=False,
+        line=dict(color=theme.line_color),
+    )
     color_map = {"Buy": theme.up_color, "Sell": theme.down_color}
     for name, group in df.groupby("Recommendation"):
-        ax.scatter(group.Date, group.Price, color=color_map[name], s=150, label=name)
-
-    ax.set_title(f"{symbol.upper()} Close With Cramer Recommendations")
-    theme.style_primary_axis(ax)
-    ax.legend(loc="best", scatterpoints=1)
-
-    # Overwrite default dote formatting
-    ax.xaxis.set_major_formatter(DateFormatter("%m/%d"))
-    ax.set_xlabel("Date")
-
-    if external_axes is None:
-        theme.visualize_output()
+        fig.add_scatter(
+            x=group.Date,
+            y=group.Price,
+            mode="markers",
+            name=name,
+            marker=dict(color=color_map[name], size=10),
+        )
 
     if raw:
         df["Date"] = df["Date"].apply(lambda x: x.strftime("%Y-%m-%d"))
-        print_rich_table(df, title=f"Jim Cramer Recommendations for {symbol}")
+        print_rich_table(
+            df, title=f"Jim Cramer Recommendations for {symbol}", export=bool(export)
+        )
 
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
-        df,
         "jctr",
+        df,
         sheet_name,
+        fig,
     )
+
+    fig.update_layout(legend=dict(yanchor="top", y=1, xanchor="right", x=1))
+
+    return fig.show(external=external_axes)

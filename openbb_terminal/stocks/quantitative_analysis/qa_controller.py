@@ -314,6 +314,7 @@ class QaController(StockBaseController):
                 log_y=ns_parser.log,
                 markers_lines=ns_parser.ml,
                 markers_scatter=ns_parser.ms,
+                export=ns_parser.export,
             )
 
     @log_start_end(log=logger)

@@ -1,5 +1,5 @@
-import multiprocessing
 import sys
+from multiprocessing import freeze_support
 
 import openbb_terminal.core.session.current_user as _  # noqa: F401
 from openbb_terminal.base_helpers import load_env_files
@@ -10,7 +10,6 @@ from openbb_terminal.terminal_helper import is_auth_enabled
 
 
 def main():
-    multiprocessing.freeze_support()
     sent_args = sys.argv[1:]
 
     load_env_files()
@@ -30,4 +29,5 @@ def main():
 
 
 if __name__ == "__main__":
+    freeze_support()
     main()

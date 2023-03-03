@@ -12,7 +12,6 @@ import random
 import re
 import sys
 import urllib.parse
-import webbrowser
 from datetime import (
     date as d,
     datetime,
@@ -42,9 +41,15 @@ from PIL import Image, ImageDraw
 from rich.table import Table
 from screeninfo import get_monitors
 
-# IMPORTS INTERNAL
-from openbb_terminal.core.config.paths import HOME_DIRECTORY
-from openbb_terminal.core.session.current_user import get_current_user
+from openbb_terminal import (
+    OpenBBFigure,
+    config_plot as cfgPlot,
+    config_terminal as cfg,
+    feature_flags as obbff,
+    plots_backend,
+)
+from openbb_terminal.core.config.paths import HOME_DIRECTORY, USER_EXPORTS_DIRECTORY
+from openbb_terminal.core.plots.plotly_ta.ta_class import PlotlyTA
 from openbb_terminal.rich_config import console
 
 try:
@@ -267,6 +272,7 @@ def print_rich_table(
     automatic_coloring: bool = False,
     columns_to_auto_color: Optional[List[str]] = None,
     rows_to_auto_color: Optional[List[str]] = None,
+    export: bool = False,
 ):
     """Prepare a table from df in rich.
 
@@ -292,9 +298,13 @@ def print_rich_table(
         Columns to automatically color
     rows_to_auto_color: List[str]
         Rows to automatically color
+    export: bool
+        Whether we are exporting the table to a file. If so, we don't want to print it.
     """
-    current_user = get_current_user()
-    if current_user.preferences.USE_TABULATE_DF:
+    if export:
+        return
+
+    if obbff.USE_TABULATE_DF:
         table = Table(title=title, show_lines=True, show_header=show_header)
 
         if current_user.preferences.USE_COLOR and automatic_coloring:
@@ -485,6 +495,23 @@ def check_positive(value) -> int:
             argparse.ArgumentTypeError(f"{value} is an invalid positive int value")
         )
     return new_value
+
+
+def check_indicators(string: str) -> List[str]:
+    """Check if indicators are valid."""
+    ta_cls = PlotlyTA()
+    choices = sorted(
+        [c.name.replace("plot_", "") for c in ta_cls if c.name != "plot_ma"]
+        + ta_cls.ma_mode
+    )
+
+    strings = string.split(",")
+    for s in strings:
+        if s not in choices:
+            raise argparse.ArgumentTypeError(
+                f"\nInvalid choice: {s}, choose from \n    (`{'`, `'.join(choices)}`)",
+            )
+    return strings
 
 
 def check_positive_float(value) -> float:
@@ -1180,8 +1207,12 @@ def plot_autoscale():
     current_user = get_current_user()
     if current_user.preferences.USE_PLOT_AUTOSCALING:
         x, y = get_screeninfo()  # Get screen size
-        x = ((x) * current_user.preferences.PLOT_WIDTH_PERCENTAGE * 10**-2) / (
-            current_user.preferences.PLOT_DPI
+        # account for ultrawide monitors
+        if x / y > 1.5:
+            x = x * 0.4
+
+        x = ((x) * cfgPlot.PLOT_WIDTH_PERCENTAGE * 10**-2) / (
+            cfgPlot.PLOT_DPI
         )  # Calculate width
         if current_user.preferences.PLOT_HEIGHT_PERCENTAGE == 100:  # If full height
             y = y - 60  # Remove the height of window toolbar
@@ -1192,6 +1223,9 @@ def plot_autoscale():
         x = current_user.preferences.PLOT_WIDTH / (current_user.preferences.PLOT_DPI)
         y = current_user.preferences.PLOT_HEIGHT / (current_user.preferences.PLOT_DPI)
     return x, y
+
+
+plots_backend().set_window_dimensions(*plot_autoscale())
 
 
 def get_last_time_market_was_open(dt):
@@ -1286,7 +1320,7 @@ def compose_export_path(func_name: str, dir_path: str) -> Path:
     return full_path
 
 
-def ask_file_overwrite(file_path: str) -> Tuple[bool, bool]:
+def ask_file_overwrite(file_path: Path) -> Tuple[bool, bool]:
     """Helper to provide a prompt for overwriting existing files.
 
     Returns two values, the first is a boolean indicating if the file exists and the
@@ -1298,9 +1332,10 @@ def ask_file_overwrite(file_path: str) -> Tuple[bool, bool]:
         return False, True
     if os.environ.get("TEST_MODE") == "True":
         return False, True
-    if os.path.exists(file_path):
+    if file_path.exists():
         overwrite = input("\nFile already exists. Overwrite? [y/n]: ").lower()
         if overwrite == "y":
+            file_path.unlink(missing_ok=True)
             # File exists and user wants to overwrite
             return True, True
         # File exists and user does not want to overwrite
@@ -1317,6 +1352,8 @@ def export_data(
     func_name: str,
     df: pd.DataFrame = pd.DataFrame(),
     sheet_name: Optional[str] = None,
+    figure: Optional[OpenBBFigure] = None,
+    margin: bool = True,
 ) -> None:
     """Export data to a file.
 
@@ -1332,25 +1369,39 @@ def export_data(
         Dataframe of data to save
     sheet_name : str
         If provided.  The name of the sheet to save in excel file
+    figure : Optional[OpenBBFigure]
+        Figure object to save as image file
+    margin : bool
+        Automatically adjust subplot parameters to give specified padding.
     """
+    if not figure:
+        figure = OpenBBFigure()
+
     if export_type:
-        export_path = compose_export_path(func_name, dir_path)
-        export_folder = str(export_path.parent)
-        export_filename = export_path.name
-        export_path.parent.mkdir(parents=True, exist_ok=True)
+        saved_path = compose_export_path(func_name, dir_path).resolve()
+        saved_path.parent.mkdir(parents=True, exist_ok=True)
         for exp_type in export_type.split(","):
             # In this scenario the path was provided, e.g. --export pt.csv, pt.jpg
             if "." in exp_type:
-                saved_path = os.path.join(export_folder, exp_type)
+                saved_path = saved_path.with_name(exp_type)
             # In this scenario we use the default filename
             else:
-                if ".OpenBB_openbb_terminal" in export_filename:
-                    export_filename = export_filename.replace(
-                        ".OpenBB_openbb_terminal", "OpenBBTerminal"
+                if ".OpenBB_openbb_terminal" in saved_path.name:
+                    saved_path = saved_path.with_name(
+                        saved_path.name.replace(
+                            ".OpenBB_openbb_terminal", "OpenBBTerminal"
+                        )
                     )
-                saved_path = os.path.join(
-                    export_folder, f"{export_filename}.{exp_type}"
-                )
+                saved_path = saved_path.with_suffix(f".{exp_type}")
+
+            exists, overwrite = False, False
+            is_xlsx = exp_type.endswith("xlsx")
+            if sheet_name is None and is_xlsx or not is_xlsx:
+                exists, overwrite = ask_file_overwrite(saved_path)
+
+            if exists and not overwrite:
+                existing = len(list(saved_path.parent.glob(saved_path.stem + "*")))
+                saved_path = saved_path.with_stem(f"{saved_path.stem}_{existing + 1}")
 
             df = df.replace(
                 {
@@ -1369,14 +1420,8 @@ def export_data(
             df = df.applymap(revert_lambda_long_number_format)
 
             if exp_type.endswith("csv"):
-                exists, overwrite = ask_file_overwrite(saved_path)
-                if exists and not overwrite:
-                    return
                 df.to_csv(saved_path)
             elif exp_type.endswith("json"):
-                exists, overwrite = ask_file_overwrite(saved_path)
-                if exists and not overwrite:
-                    return
                 df.reset_index(drop=True, inplace=True)
                 df.to_json(saved_path)
             elif exp_type.endswith("xlsx"):
@@ -1384,13 +1429,10 @@ def export_data(
                 df = remove_timezone_from_dataframe(df)
 
                 if sheet_name is None:
-                    exists, overwrite = ask_file_overwrite(saved_path)
-                    if exists and not overwrite:
-                        return
                     df.to_excel(saved_path, index=True, header=True)
 
                 else:
-                    if os.path.exists(saved_path):
+                    if saved_path.exists():
                         with pd.ExcelWriter(
                             saved_path,
                             mode="a",
@@ -1408,28 +1450,11 @@ def export_data(
                             df.to_excel(
                                 writer, sheet_name=sheet_name, index=True, header=True
                             )
-            elif exp_type.endswith("png"):
-                exists, overwrite = ask_file_overwrite(saved_path)
-                if exists and not overwrite:
-                    return
-                plt.savefig(saved_path)
-            elif exp_type.endswith("jpg"):
-                exists, overwrite = ask_file_overwrite(saved_path)
-                if exists and not overwrite:
-                    return
-                plt.savefig(saved_path)
-            elif exp_type.endswith("pdf"):
-                exists, overwrite = ask_file_overwrite(saved_path)
-                if exists and not overwrite:
-                    return
-                plt.savefig(saved_path)
-            elif exp_type.endswith("svg"):
-                exists, overwrite = ask_file_overwrite(saved_path)
-                if exists and not overwrite:
-                    return
-                plt.savefig(saved_path)
+            elif saved_path.suffix in [".jpg", ".pdf", ".png", ".svg"]:
+                figure.show(export_image=saved_path, margin=margin)
             else:
                 console.print("Wrong export file specified.")
+                continue
 
             console.print(f"Saved file: {saved_path}")
 
@@ -1507,7 +1532,7 @@ def prefill_form(ticket_type, menu, path, command, message):
 
     url_params = urllib.parse.urlencode(params)
 
-    webbrowser.open(form_url + url_params)
+    plots_backend().send_url(form_url + url_params)
 
 
 def get_closing_price(ticker, days):
@@ -1998,9 +2023,9 @@ def request(
     Parameters
     ----------
     url : str
-       Url to make the request to
+        Url to make the request to
     method : str, optional
-       HTTP method to use.  Can be "GET" or "POST", by default "GET"
+        HTTP method to use.  Can be "GET" or "POST", by default "GET"
 
     Returns
     -------

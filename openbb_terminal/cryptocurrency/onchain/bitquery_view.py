@@ -72,6 +72,7 @@ def display_dex_trades(
             headers=list(df.columns),
             show_index=False,
             title="Trades on Decentralized Exchanges",
+            export=bool(export),
         )
 
         export_data(
@@ -147,6 +148,7 @@ def display_daily_volume_for_given_pair(
         headers=list(df.columns),
         show_index=False,
         title="Daily Volume for Pair",
+        export=bool(export),
     )
 
     export_data(
@@ -214,6 +216,7 @@ def display_dex_volume_for_token(
             headers=list(df.columns),
             show_index=False,
             title="Token Volume on Exchanges",
+            export=bool(export),
         )
 
         export_data(
@@ -276,6 +279,7 @@ def display_ethereum_unique_senders(
             headers=list(df.columns),
             show_index=False,
             title="Unique Ethereum Addresses",
+            export=bool(export),
         )
 
         export_data(
@@ -338,6 +342,7 @@ def display_most_traded_pairs(
             headers=list(df.columns),
             show_index=False,
             title="Most Traded Crypto Pairs",
+            export=bool(export),
         )
 
         export_data(
@@ -393,6 +398,7 @@ def display_spread_for_crypto_pair(
             headers=list(df.columns),
             show_index=False,
             title="Average Spread for Given Crypto",
+            export=bool(export),
         )
 
         export_data(

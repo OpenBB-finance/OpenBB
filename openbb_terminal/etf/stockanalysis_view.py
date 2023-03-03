@@ -36,6 +36,7 @@ def view_overview(symbol: str, export: str = "", sheet_name: Optional[str] = Non
         headers=list(data.columns),
         title="ETF Overview Information",
         show_index=True,
+        export=bool(export),
     )
 
     export_data(
@@ -71,6 +72,7 @@ def view_holdings(
         headers=list(data.columns),
         title="ETF Holdings",
         show_index=True,
+        export=bool(export),
     )
 
     export_data(
@@ -109,7 +111,11 @@ def view_comparisons(
         console.print("No data found for given ETFs\n")
         return
     print_rich_table(
-        data, headers=list(data.columns), title="ETF Comparisons", show_index=True
+        data,
+        headers=list(data.columns),
+        title="ETF Comparisons",
+        show_index=True,
+        export=bool(export),
     )
 
     export_data(
@@ -145,6 +151,7 @@ def display_etf_by_name(
         matching_etfs.head(limit),
         show_index=False,
         title="ETF Search Result",
+        export=bool(export),
     )
 
     export_data(

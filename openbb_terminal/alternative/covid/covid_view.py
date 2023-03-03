@@ -3,21 +3,16 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import List, Optional
+from typing import Optional, Union
 
-import matplotlib.pyplot as plt
 import pandas as pd
 
+from openbb_terminal import OpenBBFigure
 from openbb_terminal.alternative.covid import covid_model
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import (
-    export_data,
-    is_valid_axes_count,
-    plot_autoscale,
-    print_rich_table,
-)
+from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -26,108 +21,137 @@ logger = logging.getLogger(__name__)
 @log_start_end(log=logger)
 def plot_covid_ov(
     country: str,
-    external_axes: Optional[List[plt.Axes]] = None,
-) -> None:
+    external_axes: bool = False,
+) -> Union[OpenBBFigure, None]:
     """Plots historical cases and deaths by country.
 
     Parameters
     ----------
     country: str
         Country to plot
-    external_axis: Optional[List[plt.Axes]]
-        List of external axes to include in plot
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     cases = covid_model.get_global_cases(country) / 1_000
     deaths = covid_model.get_global_deaths(country)
     if cases.empty or deaths.empty:
-        return
+        return None
     ov = pd.concat([cases, deaths], axis=1)
     ov.columns = ["Cases", "Deaths"]
 
-    # This plot has 2 axes
-    if external_axes is None:
-        _, ax1 = plt.subplots(
-            figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
-        )
-        ax2 = ax1.twinx()
-    elif is_valid_axes_count(external_axes, 2):
-        ax1, ax2 = external_axes
-    else:
-        return
+    fig = OpenBBFigure.create_subplots(
+        specs=[[{"secondary_y": True}]], horizontal_spacing=0.0
+    )
 
-    ax1.plot(cases.index, cases, color=theme.up_color, alpha=0.2)
-    ax1.plot(cases.index, cases.rolling(7).mean(), color=theme.up_color)
-    ax1.set_ylabel("Cases [1k]")
-    theme.style_primary_axis(ax1)
-    ax1.yaxis.set_label_position("left")
+    fig.add_scatter(
+        x=cases.index,
+        y=cases[country].values,
+        name="Cases",
+        opacity=0.2,
+        line_color=theme.up_color,
+        showlegend=False,
+        secondary_y=False,
+    )
+    fig.add_scatter(
+        x=cases.index,
+        y=cases[country].rolling(7).mean().values,
+        name="Cases (7d avg)",
+        line_color=theme.up_color,
+        hovertemplate="%{y:.2f}",
+        secondary_y=False,
+    )
+    fig.add_scatter(
+        x=deaths.index,
+        y=deaths[country].values,
+        name="Deaths",
+        opacity=0.2,
+        yaxis="y2",
+        line_color=theme.down_color,
+        showlegend=False,
+        secondary_y=True,
+    )
+    fig.add_scatter(
+        x=deaths.index,
+        y=deaths[country].rolling(7).mean().values,
+        name="Deaths (7d avg)",
+        yaxis="y2",
+        line_color=theme.down_color,
+        hovertemplate="%{y:.2f}",
+        secondary_y=True,
+    )
+    fig.update_layout(
+        margin=dict(t=20),
+        title=f"Overview for {country.upper()}",
+        xaxis_title="Date",
+        yaxis=dict(
+            title="Cases [1k]",
+            side="left",
+        ),
+        yaxis2=dict(
+            title="Deaths",
+            side="right",
+            overlaying="y",
+            showgrid=False,
+        ),
+        hovermode="x unified",
+    )
 
-    ax2.plot(deaths.index, deaths, color=theme.down_color, alpha=0.2)
-    ax2.plot(deaths.index, deaths.rolling(7).mean(), color=theme.down_color)
-    ax2.set_title(f"Overview for {country.upper()}")
-    ax2.set_xlabel("Date")
-    ax2.set_ylabel("Deaths")
-    theme.style_twin_axis(ax2)
-    ax2.yaxis.set_label_position("right")
-
-    ax1.set_xlim(ov.index[0], ov.index[-1])
-    legend = ax2.legend(ov.columns)
-    legend.legendHandles[1].set_color(theme.down_color)
-    legend.legendHandles[0].set_color(theme.up_color)
-
-    if external_axes is None:
-        theme.visualize_output()
+    return fig.show(external=external_axes, cmd_xshift=-10)
 
 
 def plot_covid_stat(
     country: str,
     stat: str = "cases",
-    external_axes: Optional[List[plt.Axes]] = None,
-) -> None:
+    external_axes: bool = False,
+) -> Union[OpenBBFigure, None]:
     """Plots historical stat by country.
 
     Parameters
     ----------
     country: str
         Country to plot
-    external_axis: Optional[List[plt.Axes]]
-        List of external axes to include in plot
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
-    # This plot has 1 axis
-    if external_axes is None:
-        _, ax = plt.subplots(
-            figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
-        )
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
+
+    fig = OpenBBFigure(title=f"{country} COVID {stat}", xaxis_title="Date")
 
     if stat == "cases":
         data = covid_model.get_global_cases(country) / 1_000
-        ax.set_ylabel(stat.title() + " [1k]")
+        fig.set_yaxis_title(f"{stat.title()} [1k]")
         color = theme.up_color
     elif stat == "deaths":
         data = covid_model.get_global_deaths(country)
-        ax.set_ylabel(stat.title())
+        fig.set_yaxis_title(stat.title())
         color = theme.down_color
     elif stat == "rates":
         cases = covid_model.get_global_cases(country)
         deaths = covid_model.get_global_deaths(country)
         data = (deaths / cases).fillna(0) * 100
-        ax.set_ylabel(stat.title() + " (Deaths/Cases)")
         color = theme.get_colors(reverse=True)[0]
+        fig.set_yaxis_title(f"{stat.title()} (Deaths/Cases)")
     else:
-        console.print("Invalid stat selected.\n")
-        return
+        return console.print("Invalid stat selected.\n")
 
-    ax.plot(data.index, data, color=color, alpha=0.2)
-    ax.plot(data.index, data.rolling(7).mean(), color=color)
-    ax.set_title(f"{country} COVID {stat}")
-    ax.set_xlim(data.index[0], data.index[-1])
-    theme.style_primary_axis(ax)
+    fig.add_scatter(
+        x=data.index,
+        y=data[country].values,
+        name=stat.title(),
+        opacity=0.2,
+        line_color=color,
+        showlegend=False,
+    )
+    fig.add_scatter(
+        x=data.index,
+        y=data[country].rolling(7).mean().values,
+        name=f"{stat.title()} (7d avg)",
+        line_color=color,
+        hovertemplate="%{y:.2f}",
+    )
 
-    if external_axes is None:
-        theme.visualize_output()
+    fig.update_layout(hovermode="x unified")
+
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)
@@ -138,7 +162,7 @@ def display_covid_ov(
     export: str = "",
     sheet_name: Optional[str] = None,
     plot: bool = True,
-) -> None:
+) -> Union[OpenBBFigure, None]:
     """Prints table showing historical cases and deaths by country.
 
     Parameters
@@ -156,10 +180,12 @@ def display_covid_ov(
     plot: bool
         Flag to display historical plot
     """
+    fig = OpenBBFigure()
+
     if country.lower() == "us":
         country = "US"
-    if plot:
-        plot_covid_ov(country)
+    if plot or fig.is_image_export(export):
+        fig = plot_covid_ov(country, external_axes=True)
     if raw:
         data = covid_model.get_covid_ov(country, limit)
         print_rich_table(
@@ -168,6 +194,7 @@ def display_covid_ov(
             show_index=True,
             index_name="Date",
             title=f"[bold]{country} COVID Numbers[/bold]",
+            export=bool(export),
         )
 
     if export:
@@ -178,7 +205,10 @@ def display_covid_ov(
             "ov",
             data,
             sheet_name,
+            fig,
         )
+
+    return fig.show(external=raw)
 
 
 @log_start_end(log=logger)
@@ -190,7 +220,7 @@ def display_covid_stat(
     export: str = "",
     sheet_name: Optional[str] = None,
     plot: bool = True,
-) -> None:
+) -> Union[OpenBBFigure, None]:
     """Prints table showing historical cases and deaths by country.
 
     Parameters
@@ -210,9 +240,11 @@ def display_covid_stat(
     plot : bool
         Flag to plot data
     """
+    fig = OpenBBFigure()
     data = covid_model.get_covid_stat(country, stat, limit)
-    if plot:
-        plot_covid_stat(country, stat)
+
+    if plot or fig.is_image_export(export):
+        fig = plot_covid_stat(country, stat, external_axes=True)  # type: ignore
 
     if raw:
         print_rich_table(
@@ -221,6 +253,7 @@ def display_covid_stat(
             show_index=True,
             index_name="Date",
             title=f"[bold]{country} COVID {stat}[/bold]",
+            export=bool(export),
         )
     if export:
         data["date"] = data.index
@@ -235,7 +268,10 @@ def display_covid_stat(
             stat,
             data,
             sheet_name,
+            fig,
         )
+
+    return fig.show(external=raw)
 
 
 @log_start_end(log=logger)
@@ -269,6 +305,7 @@ def display_case_slopes(
         show_index=True,
         index_name="Country",
         title=f"[bold]{('Highest','Lowest')[ascend]} Sloping Cases[/bold] (Cases/Day)",
+        export=bool(export),
     )
 
     export_data(

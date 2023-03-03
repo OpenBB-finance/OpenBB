@@ -37,4 +37,4 @@ Volume:
     obv                on balance volume
 Custom:
     fib                fibonacci retracement
-
+    multi              plot multiple indicators on the same chart

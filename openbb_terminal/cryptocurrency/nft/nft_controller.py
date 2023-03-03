@@ -1,7 +1,6 @@
 import argparse
 import logging
-from typing import Optional, List
-from openbb_terminal.core.session.current_user import get_current_user
+from typing import List, Optional
 
 from openbb_terminal.cryptocurrency.nft import (
     nftpricefloor_model,

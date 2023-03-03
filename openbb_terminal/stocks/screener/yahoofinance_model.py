@@ -10,7 +10,6 @@ import numpy as np
 import pandas as pd
 import yfinance as yf
 from finvizfinance.screener import ticker
-from pandas.plotting import register_matplotlib_converters
 from sklearn.preprocessing import MinMaxScaler
 
 from openbb_terminal.core.config.paths import MISCELLANEOUS_DIRECTORY
@@ -21,7 +20,6 @@ from openbb_terminal.stocks.screener import finviz_model
 
 logger = logging.getLogger(__name__)
 
-register_matplotlib_converters()
 
 PRESETS_PATH = (
     get_current_user().preferences.USER_PRESETS_DIRECTORY / "stocks" / "screener"

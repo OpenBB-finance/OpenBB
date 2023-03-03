@@ -6,7 +6,7 @@ __docformat__ = "numpy"
 import logging
 from itertools import chain
 from pathlib import Path
-from typing import Any, Dict, Optional, Union
+from typing import Any, Dict, Optional, Tuple, Union
 
 import numpy as np
 import pandas as pd
@@ -102,7 +102,7 @@ def clean(
     fill: Optional[str] = None,
     drop: Optional[str] = None,
     limit: Optional[int] = None,
-) -> pd.DataFrame:
+) -> Tuple[pd.DataFrame, np.bool_]:
     """Clean up NaNs from the dataset
 
     Parameters
@@ -118,8 +118,8 @@ def clean(
 
     Returns
     -------
-    pd.DataFrame
-        Dataframe with cleaned up data
+    Tuple[pd.DataFrame, np.bool_]
+        The cleaned dataset and a boolean indicating if there are any NaNs left
     """
     kwargs = {}
     if limit:

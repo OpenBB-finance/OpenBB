@@ -35,7 +35,7 @@ Install the OpenBB Terminal on Windows (10 or greater):
 
 **Step 1:** Download the file by clicking on the button.
 
-<InstallerButton type="windows" href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v2.5.0/Windows.OpenBB.Terminal.v2.5.0.exe" label="Windows Installer" />
+<InstallerButton type="windows" href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v2.5.1/Windows.OpenBB.Terminal.v2.5.1.exe" label="Windows Installer" />
 
 #### 2. Run Installer
 
@@ -60,7 +60,7 @@ softwareupdate --install-rosetta
 ```
 
 <p>
-<InstallerButton href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v2.5.0/x86.64.MacOS.OpenBB.Terminal.v2.5.0.dmg" label="Mac Intel Installer" />  <InstallerButton href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v2.5.0/ARM64.MacOS.OpenBB.Terminal.v2.5.0.dmg" label="Mac M1 Installer" />
+<InstallerButton href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v2.5.1/x86.64.MacOS.OpenBB.Terminal.v2.5.1.dmg" label="Mac Intel Installer" />  <InstallerButton href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v2.5.1/ARM64.MacOS.OpenBB.Terminal.v2.5.1.dmg" label="Mac M1 Installer" />
 </p>
 
 #### 1.  Download
@@ -88,6 +88,8 @@ softwareupdate --install-rosetta
 **Note:** During the first launch, a warning message may appear. Click, "Open".
 
 ![MacOS Installation](https://user-images.githubusercontent.com/85772166/220201620-1c42bbd4-7509-41fc-8df8-389f34fde58a.png)
+
+---
 
 ## Source Code
 
@@ -256,6 +258,8 @@ python terminal.py
 
 **TROUBLESHOOTING:** Having difficulty getting through the installation, or encountering errors? Check out the [troubleshooting page](/terminal/quickstart/troubleshooting), or reach out to our [Discord](https://discord.gg/Up2QGbMKHY) community for help.
 
+---
+
 ## Docker
 
 Installing the OpenBB Terminal via Docker supports both Windows and Unix systems (Linux + MacOS). Installation differs a bit between operating system (Windows, macOS and Linux). Please select the section matching to your OS.
@@ -398,6 +402,8 @@ docker run --rm -it \
   -v ~/OpenBBUserData:/home/python/OpenBBUserData \
   ghcr.io/openbb-finance/openbbterminal/openbb:latest
 ```
+
+---
 
 ## Advanced Installation
 

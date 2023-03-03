@@ -6,17 +6,11 @@ import logging
 import os
 from typing import List, Optional, Union
 
-import matplotlib.pyplot as plt
-
+from openbb_terminal import OpenBBFigure
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import (
-    export_data,
-    is_valid_axes_count,
-    plot_autoscale,
-    print_rich_table,
-)
+from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.options.screen import syncretism_model
 
@@ -103,6 +97,7 @@ def view_screener_output(
         show_index=False,
         title="Screener Output",
         floatfmt=".4f",
+        export=bool(export),
     )
 
     return list(set(df_res["Ticker"].values))
@@ -123,7 +118,7 @@ def view_historical_greeks(
     limit: Union[int, str] = 20,
     export: str = "",
     sheet_name: Optional[str] = None,
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Plots historical greeks for a given option. [Source: Syncretism]
 
@@ -149,23 +144,21 @@ def view_historical_greeks(
         Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     df = syncretism_model.get_historical_greeks(symbol, expiry, strike, chain_id, put)
-    if df is None:
-        return
-    if df.empty:
-        return
+    if df is None or df.empty:
+        return None
 
     if isinstance(limit, str):
         try:
             limit = int(limit)
         except ValueError:
-            console.print(
+            return console.print(
                 f"[red]Could not convert limit of {limit} to a number.[/red]\n"
             )
-            return
+
     if raw:
         print_rich_table(
             df.tail(limit),
@@ -173,42 +166,41 @@ def view_historical_greeks(
             title="Historical Greeks",
             show_index=True,
             floatfmt=".4f",
+            export=bool(export),
         )
 
-    if not external_axes:
-        _, ax = plt.subplots(
-            figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
-        )
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
-
-    try:
-        greek_df = df[greek.lower()]
-    except KeyError:
-        console.print(f"[red]Could not find greek {greek} in data.[/red]\n")
-        return
-    im1 = ax.plot(df.index, greek_df, label=greek.title(), color=theme.up_color)
-    ax.set_ylabel(greek)
-    ax1 = ax.twinx()
-    im2 = ax1.plot(df.index, df.price, label="Stock Price", color=theme.down_color)
-    ax1.set_ylabel(f"{symbol} Price")
-    ax.set_title(
+    fig = OpenBBFigure.create_subplots(
+        specs=[[{"secondary_y": True}]],
+        vertical_spacing=0.06,
+    )
+    fig.set_title(
         f"{(greek).capitalize()} historical for {symbol.upper()} {strike} {['Call','Put'][put]}"
     )
-    if df.empty:
-        console.print("[red]Data from API is not valid.[/red]\n")
-        return
-    ax.set_xlim(df.index[0], df.index[-1])
-    ims = im1 + im2
-    labels = [lab.get_label() for lab in ims]
-
-    ax.legend(ims, labels, loc=0)
-    theme.style_twin_axes(ax, ax1)
-
-    if not external_axes:
-        theme.visualize_output()
+    fig.add_scatter(
+        x=df.index,
+        y=df.price,
+        name="Stock Price",
+        line=dict(color=theme.down_color),
+    )
+    fig.add_scatter(
+        x=df.index,
+        y=df[greek.lower()],
+        name=greek.title(),
+        line=dict(color=theme.up_color),
+        yaxis="y2",
+    )
+    fig.update_layout(
+        margin=dict(t=30),
+        yaxis2=dict(
+            side="left",
+            title=greek,
+            overlaying="y",
+        ),
+        yaxis=dict(
+            title=f"{symbol} Price",
+        ),
+    )
+    fig.hide_holidays()
 
     export_data(
         export,
@@ -216,4 +208,7 @@ def view_historical_greeks(
         "grhist",
         df,
         sheet_name,
+        fig,
     )
+
+    return fig.show(external=external_axes)

@@ -5,7 +5,6 @@ import logging
 
 # pylint: disable=R1732, R0912
 import os
-import webbrowser
 from ast import literal_eval
 from datetime import datetime
 from pathlib import Path
@@ -19,7 +18,7 @@ from ipykernel.kernelapp import IPKernelApp
 from openbb_terminal.core.config.paths import (
     MISCELLANEOUS_DIRECTORY,
 )
-from openbb_terminal.core.session.current_user import get_current_user
+from openbb_terminal.core.plots.backend import plots_backend
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.forex.forex_controller import FX_TICKERS
 from openbb_terminal.rich_config import console
@@ -320,7 +319,11 @@ def execute_notebook(input_path, parameters, output_path):
                 report_output_path = os.path.join(
                     os.path.abspath(os.path.join(".")), output_path + ".html"
                 )
-                webbrowser.open(f"file://{report_output_path}")
+                report_output_path = Path(report_output_path)
+
+                plots_backend().send_url(
+                    url=f"/{report_output_path.as_uri()}", title="Reports"
+                )
                 console.print(f"\n[green]Report:[/green] {report_output_path}\n")
             else:
                 console.print("\n")

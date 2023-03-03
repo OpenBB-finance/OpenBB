@@ -323,7 +323,7 @@ def get_cpi(
     options: bool = False,
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
-) -> Tuple[pd.DataFrame, dict]:
+) -> pd.DataFrame:
     """Obtain CPI data from FRED. [Source: FRED]
 
     Parameters

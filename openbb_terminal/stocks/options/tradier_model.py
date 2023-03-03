@@ -156,7 +156,7 @@ def get_full_option_chain(symbol: str, quiet: bool = False) -> pd.DataFrame:
     Returns
     -------
     pd.DataFrame
-       Dataframe of all option chains
+        Dataframe of all option chains
     """
 
     expirations = option_expirations(symbol)

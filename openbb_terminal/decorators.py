@@ -63,7 +63,7 @@ def log_start_end(func=None, log=None):
                 extra={"func_name_override": func.__name__},
             )
 
-            if str(os.environ.get("DEBUG_MODE")).lower() == "true":
+            if str(os.environ.get("DEBUG_MODE", "false")).lower() == "true":
                 value = func(*args, **kwargs)
                 log.info("END", extra={"func_name_override": func.__name__})
                 return value
@@ -71,6 +71,12 @@ def log_start_end(func=None, log=None):
                 value = func(*args, **kwargs)
                 logger_used.info("END", extra={"func_name_override": func.__name__})
                 return value
+            except KeyboardInterrupt:
+                logger_used.info(
+                    "Interrupted by user",
+                    extra={"func_name_override": func.__name__},
+                )
+                return []
             except RequestException as e:
                 console.print(
                     "[red]There was an error connecting to the API."

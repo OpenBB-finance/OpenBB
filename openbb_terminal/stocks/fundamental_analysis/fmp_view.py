@@ -5,13 +5,11 @@ import logging
 import os
 from typing import Optional
 
-import matplotlib.pyplot as plt
 import pandas as pd
 
-from openbb_terminal.config_terminal import theme
-from openbb_terminal.core.session.current_user import get_current_user
+from openbb_terminal import OpenBBFigure
 from openbb_terminal.decorators import check_api_key, log_start_end
-from openbb_terminal.helper_funcs import export_data, plot_autoscale, print_rich_table
+from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks import stocks_helper
 from openbb_terminal.stocks.fundamental_analysis import fmp_model
@@ -47,7 +45,10 @@ def valinvest_score(
         scores["Score"] = updated_scores
 
         print_rich_table(
-            scores, title=f"Value Investing Scores [{years} Years]", show_index=True
+            scores,
+            title=f"Value Investing Scores [{years} Years]",
+            show_index=True,
+            export=bool(export),
         )
 
         export_data(
@@ -81,6 +82,7 @@ def display_profile(symbol: str, export: str = "", sheet_name: Optional[str] = N
             headers=[""],
             title=f"{symbol.upper()} Profile",
             show_index=True,
+            export=bool(export),
         )
 
         console.print(f"\nImage: {profile.loc['image'][0]}")
@@ -147,6 +149,7 @@ def display_enterprise(
             headers=list(df_fa.columns),
             title=f"{symbol} Enterprise",
             show_index=True,
+            export=bool(export),
         )
 
         export_data(
@@ -189,7 +192,9 @@ def display_discounted_cash_flow(
     if dcf.empty:
         console.print("[red]No data available[/red]\n")
     else:
-        print_rich_table(dcf, title="Discounted Cash Flow", show_index=True)
+        print_rich_table(
+            dcf, title="Discounted Cash Flow", show_index=True, export=bool(export)
+        )
 
         export_data(
             export,
@@ -233,6 +238,8 @@ def display_income_statement(
     income = fmp_model.get_income(symbol, limit, quarterly, ratios, bool(plot))
 
     if not income.empty:
+        fig = OpenBBFigure()
+
         income.index = [
             stocks_helper.INCOME_PLOT["FinancialModelingPrep"][i]
             for i in [i.replace(" ", "_") for i in income.index.str.lower()]
@@ -244,26 +251,33 @@ def display_income_statement(
             income_plot_data = income_plot_data.transpose()
 
             if rows_plot == 1:
-                fig, ax = plt.subplots(
-                    figsize=plot_autoscale(),
-                    dpi=get_current_user().preferences.PLOT_DPI,
-                )
-                income_plot_data[plot[0]].plot()
                 title = (
                     f"{plot[0].replace('_', ' ').title()} {'QoQ' if quarterly else 'YoY'} Growth of {symbol.upper()}"
                     if ratios
                     else f"{plot[0].replace('_', ' ').title()} of {symbol.upper()}"
                 )
-                plt.title(title)
-                theme.style_primary_axis(ax)
-                theme.visualize_output()
+                fig.add_scatter(
+                    x=income_plot_data.index,
+                    y=income_plot_data[plot[0]],
+                    mode="lines",
+                    name=plot[0].replace("_", ""),
+                )
+                fig.set_title(title)
+
             else:
-                fig, axes = plt.subplots(rows_plot)
+                fig = OpenBBFigure.create_subplots(rows=rows_plot, cols=1)
                 for i in range(rows_plot):
-                    axes[i].plot(income_plot_data[plot[i]])
-                    axes[i].set_title(f"{plot[i].replace('_', ' ').title()}")
-                theme.style_primary_axis(axes[0])
-                fig.autofmt_xdate()
+                    fig.add_scatter(
+                        x=income_plot_data.index,
+                        y=income_plot_data[plot[i]],
+                        mode="lines",
+                        name=plot[i].replace("_", ""),
+                        row=i + 1,
+                        col=1,
+                    )
+                    fig.set_title(f"{plot[i].replace('_', ' ')}", row=i + 1, col=1)
+
+            fig.show(external=fig.is_image_export(export))
         else:
             income = income[income.columns[::-1]]
             # Snake case to english
@@ -277,6 +291,7 @@ def display_income_statement(
                 if not ratios
                 else f"{'QoQ' if quarterly else 'YoY'} Change of {symbol.upper()} Income Statement",
                 show_index=True,
+                export=bool(export),
             )
 
             pd.set_option("display.max_colwidth", None)
@@ -291,6 +306,7 @@ def display_income_statement(
             "income",
             income,
             sheet_name,
+            fig,
         )
     else:
         logger.error("Could not get data")
@@ -330,6 +346,8 @@ def display_balance_sheet(
     balance = fmp_model.get_balance(symbol, limit, quarterly, ratios, bool(plot))
 
     if not balance.empty:
+        fig = OpenBBFigure()
+
         balance.index = [
             stocks_helper.BALANCE_PLOT["FinancialModelingPrep"][i]
             for i in [i.replace(" ", "_") for i in balance.index.str.lower()]
@@ -341,26 +359,31 @@ def display_balance_sheet(
             balance_plot_data = balance_plot_data.transpose()
 
             if rows_plot == 1:
-                fig, ax = plt.subplots(
-                    figsize=plot_autoscale(),
-                    dpi=get_current_user().preferences.PLOT_DPI,
+                fig.add_scatter(
+                    x=balance_plot_data.index,
+                    y=balance_plot_data[plot[0]],
+                    mode="lines",
+                    name=plot[0].replace("_", " "),
                 )
-                balance_plot_data[plot[0]].plot()
-                title = (
-                    f"{plot[0].replace('_', ' ').title()} {'QoQ' if quarterly else 'YoY'} Growth of {symbol.upper()}"
+                fig.set_title(
+                    f"{plot[0].replace('_', ' ').lower()} {'QoQ' if quarterly else 'YoY'} Growth of {symbol.upper()}"
                     if ratios
                     else f"{plot[0].replace('_', ' ').title()} of {symbol.upper()}"
                 )
-                plt.title(title)
-                theme.style_primary_axis(ax)
-                theme.visualize_output()
             else:
-                fig, axes = plt.subplots(rows_plot)
+                fig = OpenBBFigure.create_subplots(rows=rows_plot, cols=1)
                 for i in range(rows_plot):
-                    axes[i].plot(balance_plot_data[plot[i]])
-                    axes[i].set_title(f"{plot[i].replace('_', ' ').title()}")
-                theme.style_primary_axis(axes[0])
-                fig.autofmt_xdate()
+                    fig.add_scatter(
+                        x=balance_plot_data.index,
+                        y=balance_plot_data[plot[i]],
+                        mode="lines",
+                        name=plot[i].replace("_", " "),
+                        row=i + 1,
+                        col=1,
+                    )
+                    fig.set_title(f"{plot[i].replace('_', ' ')}", row=i + 1, col=1)
+
+            fig.show(external=fig.is_image_export(export))
         else:
             balance = balance[balance.columns[::-1]]
             # Snake case to english
@@ -372,6 +395,7 @@ def display_balance_sheet(
                 headers=list(balance.columns),
                 title=f"{symbol.upper()} Balance Sheet",
                 show_index=True,
+                export=bool(export),
             )
 
             pd.set_option("display.max_colwidth", None)
@@ -386,6 +410,7 @@ def display_balance_sheet(
             "balance",
             balance,
             sheet_name,
+            fig,
         )
     else:
         logger.error("Could not get data")
@@ -425,6 +450,8 @@ def display_cash_flow(
     cash = fmp_model.get_cash(symbol, limit, quarterly, ratios, bool(plot))
 
     if not cash.empty:
+        fig = OpenBBFigure()
+
         cash.index = [
             stocks_helper.CASH_PLOT["FinancialModelingPrep"][i]
             for i in [i.replace(" ", "_") for i in cash.index.str.lower()]
@@ -436,26 +463,30 @@ def display_cash_flow(
             cash_plot_data = cash_plot_data.transpose()
 
             if rows_plot == 1:
-                fig, ax = plt.subplots(
-                    figsize=plot_autoscale(),
-                    dpi=get_current_user().preferences.PLOT_DPI,
+                fig.add_scatter(
+                    x=cash_plot_data.index,
+                    y=cash_plot_data[plot[0]],
+                    mode="lines",
+                    name=plot[0].replace("_", " "),
                 )
-                cash_plot_data[plot[0]].plot()
-                title = (
-                    f"{plot[0].replace('_', ' ').title()} {'QoQ' if quarterly else 'YoY'} Growth of {symbol.upper()}"
+                fig.set_title(
+                    f"{plot[0].replace('_', ' ').lower()} {'QoQ' if quarterly else 'YoY'} Growth of {symbol.upper()}"
                     if ratios
                     else f"{plot[0].replace('_', ' ').title()} of {symbol.upper()}"
                 )
-                plt.title(title)
-                theme.style_primary_axis(ax)
-                theme.visualize_output()
             else:
-                fig, axes = plt.subplots(rows_plot)
+                fig = OpenBBFigure.create_subplots(rows=rows_plot, cols=1)
                 for i in range(rows_plot):
-                    axes[i].plot(cash_plot_data[plot[i]])
-                    axes[i].set_title(f"{plot[i].replace('_', ' ').title()}")
-                theme.style_primary_axis(axes[0])
-                fig.autofmt_xdate()
+                    fig.add_scatter(
+                        x=cash_plot_data.index,
+                        y=cash_plot_data[plot[i]],
+                        mode="lines",
+                        name=plot[i].replace("_", " "),
+                        row=i + 1,
+                        col=1,
+                    )
+                    fig.set_title(f"{plot[i].replace('_', ' ')}", row=i + 1, col=1)
+            fig.show(external=fig.is_image_export(export))
         else:
             cash = cash[cash.columns[::-1]]
             # Snake case to english
@@ -468,6 +499,7 @@ def display_cash_flow(
                 headers=list(cash.columns),
                 title=f"{symbol.upper()} Cash Flow",
                 show_index=True,
+                export=bool(export),
             )
 
             pd.set_option("display.max_colwidth", None)
@@ -482,6 +514,7 @@ def display_cash_flow(
             "cash",
             cash,
             sheet_name,
+            fig,
         )
     else:
         logger.error("Could not get data")
@@ -521,6 +554,7 @@ def display_key_metrics(
             headers=list(key_metrics.columns),
             title=f"{symbol.upper()} Key Metrics",
             show_index=True,
+            export=bool(export),
         )
 
         export_data(
@@ -568,6 +602,7 @@ def display_financial_ratios(
             headers=list(ratios.columns),
             title=f"{symbol.upper()} Ratios",
             show_index=True,
+            export=bool(export),
         )
 
         export_data(
@@ -614,6 +649,7 @@ def display_financial_statement_growth(
             headers=list(growth.columns),
             title=f"{symbol.upper()} Growth",
             show_index=True,
+            export=bool(export),
         )
 
         export_data(
@@ -667,12 +703,14 @@ def display_filings(
             filings[:limit],
             title=f"Recent SEC Filings [Limit: {limit}]",
             show_index=True,
+            export=bool(export),
         )
     elif not ticker_filings.empty:
         print_rich_table(
             ticker_filings[:limit],
             title=f"SEC Filings for {ticker} [Limit: {limit}]]",
             show_index=True,
+            export=bool(export),
         )
 
         export_data(
@@ -728,6 +766,7 @@ def rating(
         headers=df.columns,
         show_index=True,
         title="Rating",
+        export=bool(export),
     )
 
     export_data(

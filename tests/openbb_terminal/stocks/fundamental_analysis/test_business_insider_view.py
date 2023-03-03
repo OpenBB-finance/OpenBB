@@ -48,10 +48,7 @@ def test_display_management_nodata():
 
 @pytest.mark.vcr
 @pytest.mark.record_stdout
-def test_price_target_from_analysts_raw(mocker):
-    # MOCK VISUALIZE_OUTPUT
-    mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
-
+def test_price_target_from_analysts_raw():
     business_insider_view.price_target_from_analysts(
         symbol="TSLA",
         start_date=None,
@@ -64,10 +61,7 @@ def test_price_target_from_analysts_raw(mocker):
 
 @pytest.mark.vcr
 @pytest.mark.record_stdout
-def test_price_target_from_analysts_plt(mocker):
-    # MOCK VISUALIZE_OUTPUT
-    mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
-
+def test_price_target_from_analysts_plt():
     ticker = "TSLA"
     interval = 1440
     start = datetime.strptime("2021-12-05", "%Y-%m-%d")

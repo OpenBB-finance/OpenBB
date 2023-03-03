@@ -23,11 +23,6 @@ def vcr_config():
 @pytest.mark.default_cassette("test_plot_plot")
 @pytest.mark.vcr
 def test_plot_plot(mocker):
-    # MOCK CHARTS
-    mocker.patch(
-        target="openbb_terminal.stocks.options.yfinance_view.theme.visualize_output"
-    )
-
     # MOCK EXPORT_DATA
     mocker.patch(target="openbb_terminal.stocks.options.yfinance_view.export_data")
 
@@ -45,11 +40,6 @@ def test_plot_plot(mocker):
 @pytest.mark.default_cassette("test_plot_payoff")
 @pytest.mark.vcr
 def test_plot_payoff(mocker):
-    # MOCK CHARTS
-    mocker.patch(
-        target="openbb_terminal.stocks.options.yfinance_view.theme.visualize_output"
-    )
-
     # MOCK EXPORT_DATA
     mocker.patch(target="openbb_terminal.stocks.options.yfinance_view.export_data")
 
@@ -61,11 +51,6 @@ def test_plot_payoff(mocker):
 @pytest.mark.default_cassette("test_show_parity")
 @pytest.mark.vcr
 def test_show_parity(mocker):
-    # MOCK CHARTS
-    mocker.patch(
-        target="openbb_terminal.stocks.options.yfinance_view.theme.visualize_output"
-    )
-
     # MOCK EXPORT_DATA
     mocker.patch(target="openbb_terminal.stocks.options.yfinance_view.export_data")
 
@@ -84,11 +69,6 @@ def test_show_parity(mocker):
 @pytest.mark.default_cassette("test_risk_neutral_vals")
 @pytest.mark.vcr
 def test_risk_neutral_vals(mocker):
-    # MOCK CHARTS
-    mocker.patch(
-        target="openbb_terminal.stocks.options.yfinance_view.theme.visualize_output"
-    )
-
     # MOCK EXPORT_DATA
     mocker.patch(target="openbb_terminal.stocks.options.yfinance_view.export_data")
 
@@ -106,11 +86,6 @@ def test_risk_neutral_vals(mocker):
 @pytest.mark.default_cassette("test_show_binom")
 @pytest.mark.vcr
 def test_show_binom(mocker):
-    # MOCK CHARTS
-    mocker.patch(
-        target="openbb_terminal.stocks.options.yfinance_view.theme.visualize_output"
-    )
-
     # MOCK EXPORT_DATA
     mocker.patch(target="openbb_terminal.stocks.options.yfinance_view.export_data")
 
