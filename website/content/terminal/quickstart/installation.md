@@ -53,11 +53,19 @@ Install the OpenBB Terminal on Windows (10 or greater):
 
 ### B. MacOS Installer
 
-Install the OpenBB Terminal on MacOS (Big Sur or later). There are two versions of the installers available for MacOS, Apple Silicon (M1) and Intel-based. Apple Silicon users will need to install Rosetta prior to installation. Install Rosetta from the command line:
+Install the OpenBB Terminal on MacOS (Big Sur or later). There are two versions of the installers available for MacOS, Intel-based and Apple Silicon (M1) . **Apple Silicon users will need to install Rosetta prior to installation**. 
 
-```console
-softwareupdate --install-rosetta
-```
+Installing Rosetta can be done with the following steps:
+
+1. Press ⌘ (Command) + SPACE to open spotlight search, and type `Terminal` and hit Return (⏎).
+2. Copy and paste the following code in the Terminal and hit ENTER (⏎):
+   ```console
+   softwareupdate --install-rosetta
+   ```
+3. This will start up the Rosetta installation process and you will receive a message regarding the Licence Agreement. Type `A` and hit Return (⏎).
+4. After the installation process has finished, you can proceed t the "Mac M1 Installer" button.
+
+To understand whether you are using an Apple Sillicon (M1) device or an Intel-based device click on the Apple Icon at the top left of your MacBook and select "About This Mac". Then under "Chip" if it says something like "Apple M1 Pro" or "Apple M1 Max", you know you have an Apple Silicon MacBook. If it says for example "2,3 GHz Quad-Core Intel Core i7" you know that you have an Intel-based MacBook and you can continue by clicking on the "Mac Intel Installer" button.
 
 <p>
 <InstallerButton href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v2.5.1/x86.64.MacOS.OpenBB.Terminal.v2.5.1.dmg" label="Mac Intel Installer" />  <InstallerButton href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v2.5.1/ARM64.MacOS.OpenBB.Terminal.v2.5.1.dmg" label="Mac M1 Installer" />
