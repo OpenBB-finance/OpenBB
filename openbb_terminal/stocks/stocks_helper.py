@@ -21,7 +21,6 @@ from pandas.tseries.holiday import USFederalHolidayCalendar
 from requests.exceptions import ReadTimeout
 from scipy import stats
 
-from openbb_terminal import config_terminal as cfg
 from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.core.plots.plotly_ta.ta_class import PlotlyTA
 from openbb_terminal.helper_funcs import print_rich_table, request

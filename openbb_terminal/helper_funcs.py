@@ -41,8 +41,6 @@ from PIL import Image, ImageDraw
 from rich.table import Table
 from screeninfo import get_monitors
 
-# IMPORTS INTERNAL
-from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal import (
     OpenBBFigure,
     feature_flags as obbff,
@@ -50,6 +48,9 @@ from openbb_terminal import (
 )
 from openbb_terminal.core.config.paths import HOME_DIRECTORY
 from openbb_terminal.core.plots.plotly_ta.ta_class import PlotlyTA
+
+# IMPORTS INTERNAL
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.rich_config import console
 
 try:

@@ -22,7 +22,6 @@ import statsmodels.api as sm
 from plotly.subplots import make_subplots
 from scipy import stats
 
-from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.base_helpers import console, strtobool
 from openbb_terminal.core.config.paths import MISCELLANEOUS_DIRECTORY
 from openbb_terminal.core.plots.backend import PLOTLYJS_PATH, plots_backend
@@ -32,6 +31,7 @@ from openbb_terminal.core.plots.config.openbb_styles import (
     PLT_INCREASING_COLORWAY,
     PLT_TBL_ROW_COLORS,
 )
+from openbb_terminal.core.session.current_user import get_current_user
 
 TimeSeriesT = TypeVar("TimeSeriesT", bound="TimeSeries")
 
@@ -1491,7 +1491,6 @@ class OpenBBFigure(go.Figure):
         if self._feature_flags_applied:
             return
 
-        import openbb_terminal.feature_flags as obbff
 
         if get_current_user().preferences.USE_CMD_LOCATION_FIGURE:
             self._add_cmd_source()

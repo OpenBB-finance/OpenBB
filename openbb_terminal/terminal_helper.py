@@ -20,12 +20,12 @@ from openbb_terminal import (
     feature_flags as obbff,
     thought_of_the_day as thought,
 )
+from openbb_terminal.config_terminal import LOGGING_COMMIT_HASH
 
 # IMPORTATION INTERNAL
 from openbb_terminal.core.config.paths import SETTINGS_ENV_FILE
-from openbb_terminal.core.session.current_user import get_current_user
-from openbb_terminal.config_terminal import LOGGING_COMMIT_HASH
 from openbb_terminal.core.plots.backend import plots_backend
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.helper_funcs import request
 from openbb_terminal.rich_config import console
 
