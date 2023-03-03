@@ -201,10 +201,12 @@ def get_economy_calendar_events() -> pd.DataFrame:
 ### Data source
 
 Now that we have added the model function getting, we need to specify that this is an available data source.  To do so, we edit the `openbb_terminal/miscellaneous/data_sources_default.json` file.  This file, described below, uses a dictionary structure to identify available sources.  Since we are adding FMP to `stocks/fa/pt`, we find that entry and append it:
+
 ```json
     "fa": {
       "pt": ["BusinessInsider", "FinancialModelingPrep"],
 ```
+
 If you are adding a new function with a new data source, make a new value in the file.
 
 ### View
@@ -270,6 +272,7 @@ def display_price_targets(
 ```
 
 In this function:
+
 - We use the same log and api decorators as in the model.
 - We define the columns we want to show to the user.
 - We get the data from the fmp_model function
@@ -370,6 +373,7 @@ Our new function will be:
 Here, we make the parser, add the arguments, and then parse the arguments.  In order to use the fact that we had a new source, we add the logic to access the correct view function.  In this specific menu, we also allow the user to specify the symbol with -t, which is what the first block is doing.
 
 Now from the terminal, this function can be run as desired:
+
 ```bash
 2023 Mar 03, 11:37 (🦋) /stocks/fa/ $ pt -t aapl --source FinancialModelingPrep
 
