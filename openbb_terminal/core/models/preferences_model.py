@@ -92,6 +92,7 @@ class PreferencesModel:
     USER_REPORTS_DIRECTORY = USER_DATA_DIRECTORY / "reports"
     USER_CUSTOM_REPORTS_DIRECTORY = USER_DATA_DIRECTORY / "reports" / "custom reports"
     USER_FORECAST_MODELS_DIRECTORY = USER_DATA_DIRECTORY / "exports" / "forecast_models"
+    USER_FORECAST_WHISPER_DIRECTORY = USER_DATA_DIRECTORY / "exports" / "whisper"
 
     # @validator("VIEW_COLOR")
     # def validate_view_color(cls, v):  # pylint: disable=no-self-argument

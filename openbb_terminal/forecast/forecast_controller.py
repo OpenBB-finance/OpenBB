@@ -4,12 +4,12 @@ __docformat__ = "numpy"
 # pylint: disable=C0302,too-many-branches,too-many-arguments,R0904,R0902,W0707
 # flake8: noqa
 
-# IMPORTATION STANDARD
+# IMPORT STANDARD
 import argparse
 import logging
 from typing import Any, Dict, List, Optional
 
-# IMPORTATION THIRDPARTY
+# IMPORT THIRDPARTY
 import pandas as pd
 import psutil
 
@@ -53,17 +53,13 @@ except ModuleNotFoundError:
         "pip install transformers \n"
     )
 
-import pandas as pd
-import psutil
-
 
 # ignore  pylint(ungrouped-imports)
 # pylint: disable=ungrouped-imports
 
+# IMPORT INTERNAL
 from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.common import common_model
-
-from openbb_terminal.core.config.paths import USER_FORECAST_WHISPER_DIRECTORY
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 
@@ -3377,7 +3373,7 @@ class ForecastController(BaseController):
             "--save",
             dest="save",
             type=str,
-            default=USER_FORECAST_WHISPER_DIRECTORY,
+            default=get_current_user().preferences.USER_FORECAST_WHISPER_DIRECTORY,
             help="Directory to save the subtitles file",
         )
 
@@ -3393,7 +3389,9 @@ class ForecastController(BaseController):
 
         if ns_parser:
             if ns_parser.save is None:
-                ns_parser.save = USER_FORECAST_WHISPER_DIRECTORY
+                ns_parser.save = (
+                    get_current_user().preferences.USER_FORECAST_WHISPER_DIRECTORY
+                )
 
             whisper_model.transcribe_and_summarize(
                 video=ns_parser.video,
