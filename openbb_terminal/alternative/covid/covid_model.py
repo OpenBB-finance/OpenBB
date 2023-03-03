@@ -199,6 +199,7 @@ def get_case_slopes(
         lambda x: np.polyfit(np.arange(days_back), x, 1)[0], axis=1
     )
     hist_slope = pd.DataFrame(hist["Slope"])
+
     if ascend:
         hist_slope.sort_values(by="Slope", ascending=ascend, inplace=True)
     else:

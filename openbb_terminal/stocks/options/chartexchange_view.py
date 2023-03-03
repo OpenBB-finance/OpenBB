@@ -122,6 +122,7 @@ def display_raw(
         df.head(limit),
         headers=list(df.columns),
         show_index=True,
+        index_name="Date",
         title=f"{symbol.upper()} raw data",
         export=bool(export),
     )

@@ -313,10 +313,14 @@ def print_rich_table(
             # We check if headers are valid
             df_outgoing.columns = _get_headers()
 
-        if show_index:
+        if show_index and index_name not in df_outgoing.columns:
             # If index name is provided, we use it
-            df_outgoing.index.name = index_name
+            df_outgoing.index.name = index_name or "Index"
             df_outgoing = df_outgoing.reset_index()
+
+        for col in df_outgoing.columns:
+            if col == "":
+                df_outgoing= df_outgoing.rename(columns={col: "  "})
 
         plots_backend().send_table(df_table=df_outgoing, title=title)
         return
