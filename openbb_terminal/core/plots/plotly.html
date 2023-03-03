@@ -91,7 +91,7 @@
         // calling OpenBBMain to avoid errors
         if (typeof OpenBBMain != "undefined" && window.plotly_figure) {
           clearInterval(interval);
-          OpenBBMain(window.plotly_figure);
+          OpenBBMain(window.plotly_figure, document.getElementById("openbb_chart"));
         }
       }, 20);
     </script>
