@@ -13,11 +13,12 @@ from typing import Optional, Union
 import aiohttp
 import pandas as pd
 import plotly.graph_objects as go
-from pywry import PyWry
+import pywry
+from packaging import version
 from reportlab.graphics import renderPDF
 from svglib.svglib import svg2rlg
 
-from openbb_terminal.base_helpers import strtobool
+from openbb_terminal.base_helpers import console, strtobool
 from openbb_terminal.core.config.paths import USER_EXPORTS_DIRECTORY
 
 try:
@@ -40,7 +41,7 @@ PLOTLYJS_PATH = PLOTS_CORE_PATH / "assets" / "plotly-2.18.2.min.js"
 BACKEND = None
 
 
-class Backend(PyWry):
+class Backend(pywry.PyWry):
     """Custom backend for Plotly."""
 
     def __new__(cls, *args, **kwargs):  # pylint: disable=W0613
@@ -294,6 +295,16 @@ class Backend(PyWry):
     async def check_backend(self):
         """Override to check if isatty."""
         if self.isatty:
+            if not hasattr(pywry, "__version__") or version.parse(
+                pywry.__version__
+            ) < version.parse("0.3.5"):
+                console.print(
+                    "[bold red]Pywry version 0.3.5 or higher is required to use the "
+                    "OpenBB Plots backend.[/bold red]\n"
+                    "[yellow]Please update pywry with 'pip install pywry --upgrade'[/yellow]"
+                )
+                self.max_retries = 0
+                return
             await super().check_backend()
 
     def close(self, reset: bool = False):
