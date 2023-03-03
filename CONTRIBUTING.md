@@ -838,7 +838,7 @@ def func(..., argument_name: argument_type = default, ...):
 
 #### Flags
 
-Show raw data : `raw` *(bool)*
+Show raw data : `raw` _(bool)_
 
 ```python
 def display_data(..., raw: bool = False, ...):
@@ -847,7 +847,7 @@ def display_data(..., raw: bool = False, ...):
         print_rich_table(...)
 ```
 
-Sort in ascending order : `ascend` *(bool)*
+Sort in ascending order : `ascend` _(bool)_
 
 ```python
 def display_data(..., sortby: str = "", ascend: bool = False, ...):
@@ -856,7 +856,7 @@ def display_data(..., sortby: str = "", ascend: bool = False, ...):
         data = data.sort_values(by=sortby, ascend=ascend)
 ```
 
-Show plot : `plot` *(bool)*
+Show plot : `plot` _(bool)_
 
 ```python
 def display_data(..., plot: bool = False, ...):
@@ -870,7 +870,7 @@ def display_data(..., plot: bool = False, ...):
 
 #### Output format
 
-Format to export data : `export` *(str), e.g. csv, json, xlsx*
+Format to export data : `export` _(str), e.g. csv, json, xlsx_
 
 ```python
 def display_data(..., export: str = "", ...):
@@ -878,7 +878,7 @@ def display_data(..., export: str = "", ...):
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "func", data)
 ```
 
-Whether to display plot or return figure *(False: display, True: return)* : `external_axes` *(bool)*
+Whether to display plot or return figure _(False: display, True: return)_ : `external_axes` _(bool)_
 
 ```python
 def display_data(..., external_axes: bool = False, ...):
@@ -888,7 +888,7 @@ def display_data(..., external_axes: bool = False, ...):
     return fig.show(external=external_axes)
 ```
 
-Field by which to sort : `sortby` *(str), e.g. "Volume"*
+Field by which to sort : `sortby` _(str), e.g. "Volume"_
 
 ```python
 def display_data(..., sortby: str = "col", ...):
@@ -897,7 +897,7 @@ def display_data(..., sortby: str = "col", ...):
         data = data.sort_values(by=sortby)
 ```
 
-Maximum limit number of output items : `limit` *(int)*
+Maximum limit number of output items : `limit` _(int)_
 
 ```python
 def display_data(..., limit = 10, ...):
@@ -912,9 +912,9 @@ def display_data(..., limit = 10, ...):
 
 #### Time-related
 
-Date from which data is fetched (YYYY-MM-DD) : `start_date` *(str), e.g. 2022-01-01*
+Date from which data is fetched (YYYY-MM-DD) : `start_date` _(str), e.g. 2022-01-01_
 
-Date up to which data is fetched (YYYY-MM-DD) : `end_date` *(str), e.g. 2022-12-31*
+Date up to which data is fetched (YYYY-MM-DD) : `end_date` _(str), e.g. 2022-12-31_
 
 Note: We want to accept dates in string because it is easier to deal from user standpoint. Inside the function you can convert it to datetime and check its validity. Please specify date format in docstring.
 
@@ -933,9 +933,9 @@ def get_historical_data(..., start_date: str = "2022-01-01", end_date: str = "20
     data = source_model.get_data(data_name, start_date, end_date, ...)
 ```
 
-Year from which data is fetched (YYYY) : `start_year` *(str), e.g. 2022*
+Year from which data is fetched (YYYY) : `start_year` _(str), e.g. 2022_
 
-Year up to which data is fetched (YYYY) : `end_year` *(str), e.g. 2023*
+Year up to which data is fetched (YYYY) : `end_year` _(str), e.g. 2023_
 
 ```python
 def get_historical_data(..., start_year: str = "2022", end_year str = "2023", ...):
@@ -943,7 +943,7 @@ def get_historical_data(..., start_year: str = "2022", end_year str = "2023", ..
     data = source_model.get_data(data_name, start_year, end_year, ...)
 ```
 
-Interval for data observations : `interval` *(str), e.g. 60m, 90m, 1h*
+Interval for data observations : `interval` _(str), e.g. 60m, 90m, 1h_
 
 ```python
 def get_prices(interval: str = "60m", ...):
@@ -955,7 +955,7 @@ def get_prices(interval: str = "60m", ...):
     )
 ```
 
-Rolling window length : `window` *(int/str), e.g. 252, 252d*
+Rolling window length : `window` _(int/str), e.g. 252, 252d_
 
 ```python
 def get_rolling_sum(returns: pd.Series, window: str = "252d"):
@@ -968,7 +968,7 @@ def get_rolling_sum(returns: pd.Series, window: str = "252d"):
 
 Search term used to query : `query` (str)
 
-Maximum limit of search items/periods in data source: `limit` *(int)*
+Maximum limit of search items/periods in data source: `limit` _(int)_
 
 Note: please specify limit application in docstring
 
@@ -985,7 +985,7 @@ def get_data_from_source(..., limit: int = 10, ...):
     data = source.get_data(data_name, n_results=limit, ...)
 ```
 
-Dictionary of input datasets : `datasets` *(Dict[str, pd.DataFrame])*
+Dictionary of input datasets : `datasets` _(Dict[str, pd.DataFrame])_
 
 Note: Most occurrences are on the econometrics menu and might be refactored in near future
 
@@ -1005,13 +1005,13 @@ def process_data(..., data: pd.DataFrame, ...):
     col_data = pd.DataFrame(data["Col"])
 ```
 
-Dataset name : `dataset_name` *(str)*
+Dataset name : `dataset_name` _(str)_
 
-Input series : `data` *(pd.Series)*
+Input series : `data` _(pd.Series)_
 
-Dependent variable series : `dependent_series` *(pd.Series)*
+Dependent variable series : `dependent_series` _(pd.Series)_
 
-Independent variable series : `independent_series` *(pd.Series)*
+Independent variable series : `independent_series` _(pd.Series)_
 
 ```python
 def get_econometric_test(dependent_series, independent_series, ...):
@@ -1020,17 +1020,17 @@ def get_econometric_test(dependent_series, independent_series, ...):
     result = econometric_test(dataset, ...)
 ```
 
-Country name : `country` *(str), e.g. United States, Portugal*
+Country name : `country` _(str), e.g. United States, Portugal_
 
-Country initials or abbreviation : `country_code` *(str) e.g. US, PT, USA, POR*
+Country initials or abbreviation : `country_code` _(str) e.g. US, PT, USA, POR_
 
-Currency to convert data : `currency` *(str) e.g. EUR, USD*
+Currency to convert data : `currency` _(str) e.g. EUR, USD_
 
 <br>
 
 #### Financial instrument characteristics
 
-Instrument ticker, name or currency pair : `symbol` *(str), e.g. AAPL, ethereum, ETH, ETH-USD*
+Instrument ticker, name or currency pair : `symbol` _(str), e.g. AAPL, ethereum, ETH, ETH-USD_
 
 ```python
 def get_prices(symbol: str = "AAPL", ...):
@@ -1041,15 +1041,15 @@ def get_prices(symbol: str = "AAPL", ...):
     )
 ```
 
-Instrument name: `name` *(str)*
+Instrument name: `name` _(str)_
 
 Note: If a function has both name and symbol as parameter, we should distinguish them and call it name
 
-List of instrument tickers, names or currency pairs : `symbols` *(List/List[str]), e.g. ["AAPL", "MSFT"]*
+List of instrument tickers, names or currency pairs : `symbols` _(List/List[str]), e.g. ["AAPL", "MSFT"]_
 
-Base currency under ***BASE***-QUOTE → ***XXX***-YYY convention : `from_symbol` *(str), e.g. ETH in ETH-USD*
+Base currency under ***BASE***-QUOTE → ***XXX***-YYY convention : `from_symbol` _(str), e.g. ETH in ETH-USD_
 
-Quote currency under BASE-***QUOTE*** → XXX-***YYY*** convention : `to_symbol` *(str), e.g. USD in ETH-USD*
+Quote currency under BASE-***QUOTE*** → XXX-***YYY*** convention : `to_symbol` _(str), e.g. USD in ETH-USD_
 
 ```python
 def get_exchange_rate(from_symbol: str = "", to_symbol: str = "", ...):
@@ -1057,17 +1057,17 @@ def get_exchange_rate(from_symbol: str = "", to_symbol: str = "", ...):
     df = source.get_quotes(from_symbol, to_symbol, ...)
 ```
 
-Instrument price : `price` *(float)*
+Instrument price : `price` _(float)_
 
-Instrument implied volatility : `implied_volatility` *(float)*
+Instrument implied volatility : `implied_volatility` _(float)_
 
-Option strike price : `strike_price` *(float)*
+Option strike price : `strike_price` _(float)_
 
-Option days until expiration : `time_to_expiration` *(float/str)*
+Option days until expiration : `time_to_expiration` _(float/str)_
 
-Risk free rate : `risk_free_rate` *(float)*
+Risk free rate : `risk_free_rate` _(float)_
 
-Options expiry date : `expiry` *(str)*
+Options expiry date : `expiry` _(str)_
 
 <br>
 
