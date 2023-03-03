@@ -6,7 +6,7 @@ const initialData = `{"columns":["Symbol","Name","Volume [$]","Market Cap","Mark
 
 declare global {
   interface Window {
-    plotly_figure: any;
+    json_data: any;
   }
 }
 
@@ -15,8 +15,9 @@ function App() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      if (window.plotly_figure) {
-        setData(JSON.parse(window.plotly_figure));
+      if (window.json_data) {
+        console.log("data", window.json_data);
+        setData(JSON.parse(window.json_data));
         clearInterval(interval);
       }
     }, 100);

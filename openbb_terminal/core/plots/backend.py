@@ -147,7 +147,7 @@ class Backend(PyWry):
             json.dumps(
                 {
                     "html_path": self.get_plotly_html(),
-                    "plotly": json.loads(fig.to_json()),
+                    "json_data": json.loads(fig.to_json()),
                     "export_image": str(export_image).replace(".pdf", ".svg"),
                     **self.get_kwargs(title),
                 }
@@ -266,7 +266,7 @@ class Backend(PyWry):
                 **self.get_kwargs(title),
                 "width": width or self.WIDTH,
                 "height": height or self.HEIGHT,
-                "plotly": df.to_json(orient="split") if df is not None else "",
+                "json_data": df.to_json(orient="split") if df is not None else "",
             }
         )
         self.outgoing.append(message)
