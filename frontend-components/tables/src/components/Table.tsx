@@ -1,4 +1,4 @@
-//@ts-nocheckdd
+//@ts-nocheck
 import {
   ColumnDef,
   flexRender,
