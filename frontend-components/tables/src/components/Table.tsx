@@ -177,8 +177,29 @@ export default function Table({ data, columns }: any) {
         footer: column,
         cell: ({ row }: any) => {
           const value = row.original[column];
+          const valueType = typeof value;
+          const probablyDate = column.toLowerCase().includes("date");
+          const probablyLink = valueType === "string" && value.includes("http");
+          if (probablyLink) {
+            return (
+              <a
+                className="_hyper-link"
+                href={value}
+                target="_blank"
+                rel="noreferrer"
+              >
+                {value}
+              </a>
+            );
+          }
+          if (probablyDate) {
+            if (typeof value === "string") {
+              return <p>{value}</p>;
+            }
+            return <p>{new Date(value).toISOString().split("T")[0]}</p>;
+          }
           const valueFormatted =
-            typeof value === "number" ? formatNumberMagnitude(value) : value;
+            valueType === "number" ? formatNumberMagnitude(value) : value;
           return (
             <p
               className={clsx("whitespace-nowrap", {
@@ -512,6 +533,39 @@ function Filter({ column, table }: { column: any; table: any }) {
     .flatRows[0]?.getValue(column.id);
 
   const columnFilterValue = column.getFilterValue();
+
+  const isProbablyDate = column.id.toLowerCase().includes("date");
+
+  if (isProbablyDate) {
+    return (
+      <div className="flex space-x-2">
+        <input
+          type="date"
+          value={(columnFilterValue as [string, string])?.[0] ?? ""}
+          onChange={(e) =>
+            column.setFilterValue((old: [string, string]) => [
+              e.target.value,
+              old?.[1],
+            ])
+          }
+          placeholder={`Start date`}
+          className="_input"
+        />
+        <input
+          type="date"
+          value={(columnFilterValue as [string, string])?.[1] ?? ""}
+          onChange={(e) =>
+            column.setFilterValue((old: [string, string]) => [
+              old?.[0],
+              e.target.value,
+            ])
+          }
+          placeholder={`End date`}
+          className="_input"
+        />
+      </div>
+    );
+  }
 
   return typeof firstValue === "number" ? (
     <div className="flex space-x-2">

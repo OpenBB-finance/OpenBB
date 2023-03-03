@@ -21,4 +21,7 @@
   ._icon-btn {
     @apply _btn-common bg-grey-900 text-grey-50 hover:bg-grey-800 hover:text-white focus:bg-grey-900 focus:outline focus:outline-2 focus:outline-grey-500 active:bg-grey-700 active:text-white disabled:bg-grey-500 disabled:text-grey-700;
   }
+  ._hyper-link {
+    @apply underline text-burgundy-300 hover:text-burgundy-400 active:text-burgundy-500 disabled:text-grey-600;
+  }
 }
