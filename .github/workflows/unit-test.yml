@@ -119,6 +119,12 @@ jobs:
           source $VENV
           pytest tests/ --optimization --cov --cov-fail-under=50 --autodoc -n auto --durations=10 --timeout=30
 
+      - name: Upload coverage reports to Codecov
+        run: |
+          curl -Os https://uploader.codecov.io/latest/linux/codecov
+          chmod +x codecov
+          ./codecov -t ${CODECOV_TOKEN} -f coverage.xml
+
       - name: Start Terminal and exit
         run: |
           source $VENV
