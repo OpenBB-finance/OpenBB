@@ -32,6 +32,12 @@ def test_menu_with_queue(expected, mocker, queue):
         target=f"{path_controller}.PortfolioController.switch",
         return_value=["quit"],
     )
+
+    # MOCK portlist
+    mocker.patch(
+        target="os.listdir",
+        return_value=[],
+    )
     result_menu = portfolio_controller.PortfolioController(queue=queue).menu()
 
     assert result_menu == expected
@@ -56,7 +62,11 @@ def test_menu_without_queue_completion(mocker):
         target="openbb_terminal.parent_classes.session.prompt",
         return_value="quit",
     )
-
+    # MOCK portlist
+    mocker.patch(
+        target="os.listdir",
+        return_value=[],
+    )
     # DISABLE AUTO-COMPLETION : CONTROLLER.COMPLETER
     current_user = get_current_user()
     preference = PreferencesModel(USE_PROMPT_TOOLKIT=True)
@@ -98,7 +108,11 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
         target=f"{path_controller}.session",
         return_value=None,
     )
-
+    # MOCK portlist
+    mocker.patch(
+        target="os.listdir",
+        return_value=[],
+    )
     # MOCK USER INPUT
     mocker.patch("builtins.input", return_value=mock_input)
 
@@ -118,7 +132,11 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
         target=f"{path_controller}.PortfolioController.switch",
         new=mock_switch,
     )
-
+    # MOCK portlist
+    mocker.patch(
+        target="os.listdir",
+        return_value=[],
+    )
     result_menu = portfolio_controller.PortfolioController(queue=None).menu()
 
     assert result_menu == ["help"]
@@ -126,7 +144,12 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
 
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.record_stdout
-def test_print_help():
+def test_print_help(mocker):
+    # MOCK portlist
+    mocker.patch(
+        target="os.listdir",
+        return_value=[],
+    )
     controller = portfolio_controller.PortfolioController(queue=None)
     controller.print_help()
 
@@ -146,7 +169,12 @@ def test_print_help():
         ),
     ],
 )
-def test_switch(an_input, expected_queue):
+def test_switch(mocker, an_input, expected_queue):
+    # MOCK portlist
+    mocker.patch(
+        target="os.listdir",
+        return_value=[],
+    )
     controller = portfolio_controller.PortfolioController(queue=None)
     queue = controller.switch(an_input=an_input)
 
@@ -156,7 +184,11 @@ def test_switch(an_input, expected_queue):
 @pytest.mark.vcr(record_mode="none")
 def test_call_cls(mocker):
     mocker.patch("os.system")
-
+    # MOCK portlist
+    mocker.patch(
+        target="os.listdir",
+        return_value=[],
+    )
     controller = portfolio_controller.PortfolioController(queue=None)
     controller.call_cls([])
 
@@ -190,7 +222,12 @@ def test_call_cls(mocker):
         ),
     ],
 )
-def test_call_func_expect_queue(expected_queue, func, queue):
+def test_call_func_expect_queue(mocker, expected_queue, func, queue):
+    # MOCK portlist
+    mocker.patch(
+        target="os.listdir",
+        return_value=[],
+    )
     controller = portfolio_controller.PortfolioController(queue=queue)
     result = getattr(controller, func)([])
 
@@ -222,7 +259,11 @@ def test_call_func(
     tested_func, mocked_func, other_args, called_args, called_kwargs, mocker
 ):
     path_controller = "openbb_terminal.portfolio.portfolio_controller"
-
+    # MOCK portlist
+    mocker.patch(
+        target="os.listdir",
+        return_value=[],
+    )
     if mocked_func:
         mock = mocker.Mock()
         mocker.patch(
