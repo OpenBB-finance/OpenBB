@@ -23,6 +23,7 @@ from scipy import stats
 
 from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.core.plots.plotly_ta.ta_class import PlotlyTA
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.helper_funcs import print_rich_table, request
 from openbb_terminal.rich_config import console
 

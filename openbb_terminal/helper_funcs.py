@@ -43,7 +43,6 @@ from screeninfo import get_monitors
 
 from openbb_terminal import (
     OpenBBFigure,
-    feature_flags as obbff,
     plots_backend,
 )
 from openbb_terminal.core.config.paths import HOME_DIRECTORY
@@ -305,7 +304,9 @@ def print_rich_table(
     if export:
         return
 
-    if obbff.USE_TABULATE_DF:
+    current_user = get_current_user()
+
+    if current_user.preferences.USE_TABULATE_DF:
         table = Table(title=title, show_lines=True, show_header=show_header)
 
         if current_user.preferences.USE_COLOR and automatic_coloring:
