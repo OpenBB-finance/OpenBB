@@ -297,7 +297,7 @@ def print_rich_table(
 
     def _get_headers() -> list:
         """Check if headers are valid and return them."""
-        output = headers
+        output = headers or []
         if isinstance(headers, pd.Index):
             output = list(headers)
         if len(output) != len(df.columns):

@@ -80,7 +80,6 @@ def display_grouped_defi_protocols(
 @log_start_end(log=logger)
 def display_defi_protocols(
     sortby: str,
-    interactive: bool = False,
     limit: int = 20,
     ascend: bool = False,
     description: bool = False,
@@ -92,12 +91,10 @@ def display_defi_protocols(
 
     Parameters
     ----------
-    interactive: bool
-        Flag to display interactive table
-    limit: int
-        Number of records to display
     sortby: str
         Key by which to sort data
+    limit: int
+        Number of records to display
     ascend: bool
         Flag to sort data descending
     description: bool
