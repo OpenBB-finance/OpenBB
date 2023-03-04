@@ -26,8 +26,10 @@ let check_divs = setInterval(function () {
   }
 }, 100);
 
-function OpenBBMain(plotly_figure) {
+
+function OpenBBMain(plotly_figure, chartdiv) {
   // Main function that plots the graphs and initializes the bar menus
+  CHART_DIV = chartdiv;
   globals.chartDiv = CHART_DIV;
   console.log("main.js loaded");
   console.log("plotly_figure", plotly_figure);
@@ -283,12 +285,14 @@ function OpenBBMain(plotly_figure) {
     } else {
       is_3dmesh = true;
     }
-
   });
 
   // send a relayout event to trigger the initial zoom/bars-resize
   // check if the xaxis.range is defined
-  if (graphs.layout.xaxis != undefined && graphs.layout.xaxis.range != undefined) {
+  if (
+    graphs.layout.xaxis != undefined &&
+    graphs.layout.xaxis.range != undefined
+  ) {
     Plotly.relayout(CHART_DIV, {
       "xaxis.range[0]": graphs.layout.xaxis.range[0],
       "xaxis.range[1]": graphs.layout.xaxis.range[1],
@@ -323,7 +327,10 @@ function OpenBBMain(plotly_figure) {
     let close_interval = is_3dmesh ? 1000 : 500;
 
     // We get the extension of the file and check if it is valid
-    const extension = window.export_image.split(".").pop().replace("jpg", "jpeg");
+    const extension = window.export_image
+      .split(".")
+      .pop()
+      .replace("jpg", "jpeg");
 
     if (["jpeg", "png", "svg"].includes(extension)) {
       // We run Plotly.downloadImage to save the chart as an image
@@ -333,7 +340,6 @@ function OpenBBMain(plotly_figure) {
         height: CHART_DIV.clientHeight,
         filename: window.export_image.split("/").pop(),
       });
-
     }
     setTimeout(function () {
       window.close();
