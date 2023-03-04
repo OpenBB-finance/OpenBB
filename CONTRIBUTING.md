@@ -746,7 +746,7 @@ def display_data(..., plot: bool = False, ...):
     ...
     if plot:
         ...
-        ax.plot(...)
+        fig.add_scatter(...)
 ```
 
 <br>

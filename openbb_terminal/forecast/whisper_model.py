@@ -163,6 +163,8 @@ def transcribe_and_summarize(
     # cache directory is ~/.cache/whisper
     whisper_cache_dir = os.path.join(os.path.expanduser("~"), ".cache", "whisper")
 
+    os.makedirs(whisper_cache_dir, exist_ok=True)
+
     if model_name in ["small", "small.en"]:
         model_size = "483.6 MB"
     elif model_name in ["tiny", "tiny.en"]:
