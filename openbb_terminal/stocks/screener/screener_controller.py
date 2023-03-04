@@ -36,9 +36,7 @@ logger = logging.getLogger(__name__)
 
 # pylint: disable=E1121
 
-PRESETS_PATH = (
-    get_current_user().preferences.USER_PRESETS_DIRECTORY / "stocks" / "screener"
-)
+
 
 
 class ScreenerController(BaseController):
@@ -58,20 +56,27 @@ class ScreenerController(BaseController):
         "technical",
         "arktrades",
     ]
-
+    PRESETS_PATH = (
+        get_current_user().preferences.USER_PRESETS_DIRECTORY / "stocks" / "screener"
+    )
     PRESETS_PATH_DEFAULT = MISCELLANEOUS_DIRECTORY / "stocks" / "screener"
-    preset_choices = {
-        filepath.name.replace(".ini", ""): str(filepath)
-        for filepath in PRESETS_PATH.iterdir()
-        if filepath.suffix == ".ini"
-    }
-    preset_choices.update(
-        {
-            filepath.name.replace(".ini", ""): str(filepath)
+
+    preset_choices = {}
+
+    if PRESETS_PATH.exists():
+        preset_choices.update({
+            filepath.name.strip(".ini"): filepath
+            for filepath in PRESETS_PATH.iterdir()
+            if filepath.suffix == ".ini"
+        })
+
+    if PRESETS_PATH_DEFAULT.exists():
+        preset_choices.update({
+            filepath.name.strip(".ini"): filepath
             for filepath in PRESETS_PATH_DEFAULT.iterdir()
             if filepath.suffix == ".ini"
-        }
-    )
+        })
+
     preset_choices.update(finviz_model.d_signals)
 
     historical_candle_choices = ["o", "h", "l", "c", "a"]
