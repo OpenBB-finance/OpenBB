@@ -3487,7 +3487,9 @@ class ForecastController(BaseController):
 
         if ns_parser:
             if ns_parser.save is None:
-                ns_parser.save = USER_FORECAST_WHISPER_DIRECTORY
+                ns_parser.save = (
+                    get_current_user().preferences.USER_FORECAST_WHISPER_DIRECTORY
+                )
 
             whisper_model.transcribe_and_summarize(
                 video=ns_parser.video,

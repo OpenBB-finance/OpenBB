@@ -7,7 +7,7 @@ import logging
 import os
 import os.path
 from pathlib import Path
-from typing import List, Optional, Union
+from typing import List, Optional
 
 # IMPORTATION THIRDPARTY
 import pytz

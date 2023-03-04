@@ -2,7 +2,6 @@
 # ######### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ######### #
 # flake8: noqa
 # pylint: disable=unused-import,wrong-import-order
-# pylint: disable=C0302,W0611,R0902,R0903,C0412,C0301,not-callable
 import logging
 
 import openbb_terminal.config_terminal as cfg
@@ -48,7 +47,14 @@ class OpenBBSDK:
         self.logout = lib.sdk_session.logout
         self.news = lib.common_feedparser_model.get_news
         self.whoami = lib.sdk_session.whoami
-        SDKLogger._try_to_login(self)
+        self._try_to_login()
+
+    def _try_to_login(self):
+        if is_local() and is_auth_enabled():
+            try:
+                self.login()
+            except Exception:
+                pass
 
     @property
     def alt(self):
@@ -550,7 +556,7 @@ class OpenBBSDK:
             `obv_chart`: Plots OBV technical indicator\n
             `rsi`: Relative strength index\n
             `rsi_chart`: Plots RSI Indicator\n
-            `rvol_garman_klass`: Garman-Klass volatility extends Parkinson volatility by taking into account the opening and closing price.\n
+            `rvol_garman_klass`: Garman-Klass volatility extends Parkinson volatility by taking into account the open and close price.\n
             `rvol_hodges_tompkins`: Hodges-Tompkins volatility is a bias correction for estimation using an overlapping data sample.\n
             `rvol_parkinson`: Parkinson volatility uses the high and low price of the day rather than just close to close prices.\n
             `rvol_rogers_satchell`: Rogers-Satchell is an estimator for measuring the volatility with an average return not equal to zero.\n
@@ -569,6 +575,7 @@ class OpenBBSDK:
         return model.TaRoot()
 
 
+# pylint: disable=too-few-public-methods
 class SDKLogger:
     def __init__(self) -> None:
         self.__check_initialize_logging()
