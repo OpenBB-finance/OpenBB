@@ -1,11 +1,13 @@
 """ FRED view """
 __docformat__ = "numpy"
 
+# IMPORTATION STANDARD
 import logging
 import os
 from pathlib import Path
 from typing import Dict, List, Optional
 
+# IMPORTATION THIRDPARTY
 import pandas as pd
 
 from openbb_terminal import OpenBBFigure

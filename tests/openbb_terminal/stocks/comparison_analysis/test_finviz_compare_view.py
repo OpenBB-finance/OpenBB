@@ -1,12 +1,15 @@
 # IMPORTATION STANDARD
 
+
 # IMPORTATION THIRDPARTY
 import pandas as pd
 import pytest
 
-from openbb_terminal import helper_funcs
-
 # IMPORTATION INTERNAL
+from openbb_terminal.core.session.current_user import (
+    PreferencesModel,
+    copy_user,
+)
 from openbb_terminal.stocks.comparison_analysis import finviz_compare_view
 
 
@@ -21,7 +24,13 @@ from openbb_terminal.stocks.comparison_analysis import finviz_compare_view
     [True, False],
 )
 def test_screener(mocker, tab):
-    mocker.patch.object(target=helper_funcs.obbff, attribute="USE_TABULATE_DF", new=tab)
+    preferences = PreferencesModel(USE_TABULATE_DF=tab)
+    mock_current_user = copy_user(preferences=preferences)
+    mocker.patch(
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
+    )
+
     finviz_compare_view.screener(
         similar=["TSLA", "GM"],
         data_type="overview",

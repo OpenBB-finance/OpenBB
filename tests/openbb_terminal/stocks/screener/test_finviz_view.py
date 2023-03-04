@@ -1,12 +1,15 @@
 # IMPORTATION STANDARD
 
+
 # IMPORTATION THIRDPARTY
 import pandas as pd
 import pytest
 
-from openbb_terminal import helper_funcs
-
 # IMPORTATION INTERNAL
+from openbb_terminal.core.session.current_user import (
+    PreferencesModel,
+    copy_user,
+)
 from openbb_terminal.stocks.screener import finviz_view
 
 
@@ -21,10 +24,11 @@ from openbb_terminal.stocks.screener import finviz_view
 @pytest.mark.record_stdout
 def test_screener(mocker, toggle):
     # MOCK CHARTS
-    mocker.patch.object(
-        target=helper_funcs.obbff,
-        attribute="USE_TABULATE_DF",
-        new=toggle,
+    preferences = PreferencesModel(USE_TABULATE_DF=toggle)
+    mock_current_user = copy_user(preferences=preferences)
+    mocker.patch(
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
     )
 
     # MOCK EXPORT_DATA
@@ -85,10 +89,11 @@ def test_screener_no_data(data, mocker):
 @pytest.mark.record_stdout
 def test_screener_sort_matches(sort, mocker):
     # MOCK CHARTS
-    mocker.patch.object(
-        target=helper_funcs.obbff,
-        attribute="USE_TABULATE_DF",
-        new=True,
+    preferences = PreferencesModel(USE_TABULATE_DF=True)
+    mock_current_user = copy_user(preferences=preferences)
+    mocker.patch(
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
     )
 
     # MOCK EXPORT_DATA

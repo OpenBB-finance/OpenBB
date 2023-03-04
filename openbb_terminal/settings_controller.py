@@ -7,23 +7,19 @@ import logging
 import os
 import os.path
 from pathlib import Path
-from typing import List, Optional, Union
+from typing import List, Optional
 
 # IMPORTATION THIRDPARTY
 import pytz
-from dotenv import set_key
 
 # IMPORTATION INTERNAL
-from openbb_terminal import (
-    config_plot as cfg_plot,
-    featflags_controller as obbff_ctrl,
-    feature_flags as obbff,
-)
-from openbb_terminal.core.config import paths
+from openbb_terminal import feature_flags as obbff
 from openbb_terminal.core.config.paths import (
+    SETTINGS_ENV_FILE,
     USER_DATA_SOURCES_DEFAULT_FILE,
-    USER_ENV_FILE,
 )
+from openbb_terminal.core.session.current_user import get_current_user
+from openbb_terminal.core.session.preferences_handler import set_preference
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
@@ -35,8 +31,6 @@ from openbb_terminal.helper_funcs import (
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import MenuText, console
-from openbb_terminal.session.hub_model import patch_user_configs
-from openbb_terminal.session.user import User
 
 # pylint: disable=too-many-lines,no-member,too-many-public-methods,C0302
 # pylint: disable=import-outside-toplevel
@@ -76,13 +70,13 @@ class SettingsController(BaseController):
     ]
 
     def __init__(
-        self, queue: Optional[List[str]] = None, env_file: str = str(USER_ENV_FILE)
+        self, queue: Optional[List[str]] = None, env_file: str = str(SETTINGS_ENV_FILE)
     ):
         """Constructor"""
         super().__init__(queue)
         self.env_file = env_file
 
-        if session and obbff.USE_PROMPT_TOOLKIT:
+        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices_default
             choices["tz"] = {c: None for c in pytz.all_timezones}
             choices["lang"] = {c: None for c in self.languages_available}
@@ -113,132 +107,90 @@ class SettingsController(BaseController):
 
     def print_help(self):
         """Print help"""
+        current_user = get_current_user()
+
         mt = MenuText("settings/")
         mt.add_info("_info_")
         mt.add_raw("\n")
         mt.add_cmd("colors")
-        mt.add_setting("dt", obbff.USE_DATETIME)
+        mt.add_setting("dt", current_user.preferences.USE_DATETIME)
         mt.add_cmd("flair")
         mt.add_raw("\n")
         mt.add_param("_flair", get_flair())
         mt.add_raw("\n")
         mt.add_cmd("lang")
         mt.add_raw("\n")
-        mt.add_param("_language", obbff.USE_LANGUAGE)
+        mt.add_param("_language", current_user.preferences.USE_LANGUAGE)
         mt.add_raw("\n")
         mt.add_cmd("userdata")
         mt.add_raw("\n")
         mt.add_param(
             "_user_data_folder",
-            paths.USER_DATA_DIRECTORY,
+            current_user.preferences.USER_DATA_DIRECTORY,
         )
         mt.add_raw("\n")
         mt.add_cmd("tz")
         mt.add_raw("\n")
         mt.add_param("_timezone", get_user_timezone_or_invalid())
         mt.add_raw("\n")
-        mt.add_setting("autoscaling", obbff.USE_PLOT_AUTOSCALING)
-        if obbff.USE_PLOT_AUTOSCALING:
+        mt.add_setting("autoscaling", current_user.preferences.USE_PLOT_AUTOSCALING)
+        if current_user.preferences.USE_PLOT_AUTOSCALING:
             mt.add_cmd("pheight")
             mt.add_cmd("pwidth")
             mt.add_raw("\n")
-            mt.add_param("_plot_height_pct", cfg_plot.PLOT_HEIGHT_PERCENTAGE, 16)
-            mt.add_param("_plot_width_pct", cfg_plot.PLOT_WIDTH_PERCENTAGE, 16)
+            mt.add_param(
+                "_plot_height_pct",
+                current_user.preferences.PLOT_HEIGHT_PERCENTAGE,
+                16,
+            )
+            mt.add_param(
+                "_plot_width_pct",
+                current_user.preferences.PLOT_WIDTH_PERCENTAGE,
+                16,
+            )
         else:
             mt.add_cmd("height")
             mt.add_cmd("width")
             mt.add_raw("\n")
-            mt.add_param("_plot_height", cfg_plot.PLOT_HEIGHT, 12)
-            mt.add_param("_plot_width", cfg_plot.PLOT_WIDTH, 12)
+            mt.add_param("_plot_height", current_user.preferences.PLOT_HEIGHT, 12)
+            mt.add_param("_plot_width", current_user.preferences.PLOT_WIDTH, 12)
         mt.add_raw("\n")
         mt.add_cmd("dpi")
         mt.add_raw("\n")
-        mt.add_param("_dpi", cfg_plot.PLOT_DPI)
+        mt.add_param("_dpi", current_user.preferences.PLOT_DPI)
         mt.add_raw("\n")
         mt.add_cmd("backend")
         mt.add_raw("\n")
-        mt.add_param("_backend", cfg_plot.BACKEND)
+        mt.add_param("_backend", current_user.preferences.PLOT_BACKEND)
         mt.add_raw("\n")
         mt.add_cmd("monitor")
         mt.add_raw("\n")
-        mt.add_param("_monitor", cfg_plot.MONITOR)
+        mt.add_param("_monitor", current_user.preferences.MONITOR)
         mt.add_raw("\n")
         mt.add_cmd("source")
         mt.add_raw("\n")
-        mt.add_param("_data_source", obbff.PREFERRED_DATA_SOURCE_FILE)
+        mt.add_param(
+            "_data_source", current_user.preferences.PREFERRED_DATA_SOURCE_FILE
+        )
         mt.add_raw("\n")
-        mt.add_setting("tbnews", obbff.TOOLBAR_TWEET_NEWS)
-        if obbff.TOOLBAR_TWEET_NEWS:
+        mt.add_setting("tbnews", current_user.preferences.TOOLBAR_TWEET_NEWS)
+        if current_user.preferences.TOOLBAR_TWEET_NEWS:
             mt.add_raw("\n")
             mt.add_cmd("tweetnews")
             mt.add_raw("\n")
-            mt.add_param("_tbnu", obbff.TOOLBAR_TWEET_NEWS_SECONDS_BETWEEN_UPDATES)
-            mt.add_param("_nttli", obbff.TOOLBAR_TWEET_NEWS_NUM_LAST_TWEETS_TO_READ)
-            mt.add_param("_tatt", obbff.TOOLBAR_TWEET_NEWS_ACCOUNTS_TO_TRACK)
-            mt.add_param("_tk", obbff.TOOLBAR_TWEET_NEWS_KEYWORDS)
+            mt.add_param(
+                "_tbnu",
+                current_user.preferences.TOOLBAR_TWEET_NEWS_SECONDS_BETWEEN_UPDATES,
+            )
+            mt.add_param(
+                "_nttli",
+                current_user.preferences.TOOLBAR_TWEET_NEWS_NUM_LAST_TWEETS_TO_READ,
+            )
+            mt.add_param(
+                "_tatt", current_user.preferences.TOOLBAR_TWEET_NEWS_ACCOUNTS_TO_TRACK
+            )
+            mt.add_param("_tk", current_user.preferences.TOOLBAR_TWEET_NEWS_KEYWORDS)
         console.print(text=mt.menu_text, menu="Settings")
-
-    @staticmethod
-    def set_cfg_plot(name: str, value: Optional[Union[bool, str]]):
-        """Set plot config attribute
-
-        Parameters
-        ----------
-        name : str
-            Environment variable name
-        value : str
-            Environment variable value
-        """
-
-        if User.is_guest():
-            set_key(str(USER_ENV_FILE), name, str(value))
-
-        # Remove "OPENBB_" prefix from env_var
-        if name.startswith("OPENBB_"):
-            name = name[7:]
-
-        # Set obbff.env_var_name = not env_var_value
-        setattr(cfg_plot, name, value)
-
-        # Send feature flag to server
-        if not User.is_guest() and User.is_sync_enabled():
-            patch_user_configs(
-                key=name,
-                value=str(value),
-                type_="settings",
-                auth_header=User.get_auth_header(),
-            )
-
-    @staticmethod
-    def set_path_config(name: str, value: Optional[Union[Path, str]]):
-        """Set path config attribute
-
-        Parameters
-        ----------
-        name : str
-            Environment variable name
-        value : str
-            Environment variable value
-        """
-
-        if User.is_guest():
-            set_key(str(USER_ENV_FILE), name, str(value))
-
-        # Remove "OPENBB_" prefix from env_var
-        if name.startswith("OPENBB_"):
-            name = name[7:]
-
-        # Set obbff.env_var_name = not env_var_value
-        setattr(paths, name, value)
-
-        # Send feature flag to server
-        if not User.is_guest() and User.is_sync_enabled():
-            patch_user_configs(
-                key=name,
-                value=str(value),
-                type_="settings",
-                auth_header=User.get_auth_header(),
-            )
 
     @log_start_end(log=logger)
     def call_colors(self, other_args: List[str]):
@@ -274,8 +226,8 @@ class SettingsController(BaseController):
         )
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
-            obbff_ctrl.FeatureFlagsController.set_feature_flag(
-                "OPENBB_USE_DATETIME", not obbff.USE_DATETIME
+            set_preference(
+                "OPENBB_USE_DATETIME", not get_current_user().preferences.USE_DATETIME
             )
 
     @log_start_end(log=logger)
@@ -300,9 +252,7 @@ class SettingsController(BaseController):
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
             if os.path.exists(ns_parser.file):
-                obbff_ctrl.FeatureFlagsController.set_feature_flag(
-                    "OPENBB_PREFERRED_DATA_SOURCE_FILE", ns_parser.file
-                )
+                set_preference("OPENBB_PREFERRED_DATA_SOURCE_FILE", ns_parser.file)
                 console.print("[green]Sources file changed successfully![/green]")
             else:
                 console.print("[red]Couldn't find the sources file![/red]")
@@ -318,8 +268,9 @@ class SettingsController(BaseController):
         )
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
-            obbff_ctrl.FeatureFlagsController.set_feature_flag(
-                "OPENBB_USE_PLOT_AUTOSCALING", not obbff.USE_PLOT_AUTOSCALING
+            set_preference(
+                "OPENBB_USE_PLOT_AUTOSCALING",
+                not get_current_user().preferences.USE_PLOT_AUTOSCALING,
             )
 
     @log_start_end(log=logger)
@@ -343,7 +294,7 @@ class SettingsController(BaseController):
             other_args.insert(0, "-v")
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser and ns_parser.value:
-            SettingsController.set_cfg_plot("OPENBB_PLOT_DPI", ns_parser.value)
+            set_preference("OPENBB_PLOT_DPI", ns_parser.value)
 
     @log_start_end(log=logger)
     def call_height(self, other_args: List[str]):
@@ -366,7 +317,7 @@ class SettingsController(BaseController):
             other_args.insert(0, "-v")
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
-            SettingsController.set_cfg_plot("OPENBB_PLOT_HEIGHT", ns_parser.value)
+            set_preference("OPENBB_PLOT_HEIGHT", ns_parser.value)
 
     @log_start_end(log=logger)
     def call_width(self, other_args: List[str]):
@@ -389,7 +340,7 @@ class SettingsController(BaseController):
             other_args.insert(0, "-v")
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
-            SettingsController.set_cfg_plot("OPENBB_PLOT_WIDTH", ns_parser.value)
+            set_preference("OPENBB_PLOT_WIDTH", ns_parser.value)
 
     @log_start_end(log=logger)
     def call_pheight(self, other_args: List[str]):
@@ -411,9 +362,7 @@ class SettingsController(BaseController):
             other_args.insert(0, "-v")
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
-            SettingsController.set_cfg_plot(
-                "OPENBB_PLOT_HEIGHT_PERCENTAGE", ns_parser.value
-            )
+            set_preference("OPENBB_PLOT_HEIGHT_PERCENTAGE", ns_parser.value)
 
     @log_start_end(log=logger)
     def call_pwidth(self, other_args: List[str]):
@@ -435,9 +384,7 @@ class SettingsController(BaseController):
             other_args.insert(0, "-v")
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
-            SettingsController.set_cfg_plot(
-                "OPENBB_PLOT_WIDTH_PERCENTAGE", ns_parser.value
-            )
+            set_preference("OPENBB_PLOT_WIDTH_PERCENTAGE", ns_parser.value)
 
     @log_start_end(log=logger)
     def call_monitor(self, other_args: List[str]):
@@ -459,7 +406,7 @@ class SettingsController(BaseController):
             other_args.insert(0, "-v")
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
-            SettingsController.set_cfg_plot("OPENBB_MONITOR", ns_parser.value)
+            set_preference("OPENBB_MONITOR", ns_parser.value)
 
     @log_start_end(log=logger)
     def call_backend(self, other_args: List[str]):
@@ -481,9 +428,7 @@ class SettingsController(BaseController):
             other_args.insert(0, "-v")
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
-            SettingsController.set_cfg_plot(
-                "OPENBB_BACKEND", None if ns_parser.value == "None" else ns_parser.value
-            )
+            set_preference("OPENBB_BACKEND", ns_parser.value)
 
     @log_start_end(log=logger)
     def call_lang(self, other_args: List[str]):
@@ -508,9 +453,7 @@ class SettingsController(BaseController):
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
             if ns_parser.value:
-                obbff_ctrl.FeatureFlagsController.set_feature_flag(
-                    "OPENBB_USE_LANGUAGE", ns_parser.value
-                )
+                set_preference("OPENBB_USE_LANGUAGE", ns_parser.value)
             else:
                 console.print(
                     f"Languages available: {', '.join(self.languages_available)}"
@@ -540,9 +483,7 @@ class SettingsController(BaseController):
 
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser and ns_parser.timezone:
-            obbff_ctrl.FeatureFlagsController.set_feature_flag(
-                "OPENBB_TIMEZONE", ns_parser.timezone
-            )
+            set_preference("OPENBB_TIMEZONE", ns_parser.timezone)
 
     @log_start_end(log=logger)
     def call_flair(self, other_args: List[str]):
@@ -570,9 +511,7 @@ class SettingsController(BaseController):
             else:
                 ns_parser.emoji = " ".join(ns_parser.emoji)
 
-            obbff_ctrl.FeatureFlagsController.set_feature_flag(
-                "OPENBB_USE_FLAIR", ns_parser.emoji
-            )
+            set_preference("OPENBB_USE_FLAIR", ns_parser.emoji)
 
     @log_start_end(log=logger)
     def call_userdata(self, other_args: List[str]):
@@ -610,7 +549,7 @@ class SettingsController(BaseController):
                     console.print(
                         f"User data to be saved in the default folder: '{default_path}'"
                     )
-                    self.set_path_config("OPENBB_USER_DATA_DIRECTORY", default_path)
+                    set_preference("OPENBB_USER_DATA_DIRECTORY", default_path)
                     success_userdata = True
                 else:
                     # If the path selected does not start from the user root, give relative location from root
@@ -624,9 +563,7 @@ class SettingsController(BaseController):
                         console.print(
                             f"User data to be saved in the selected folder: '{userdata_path}'"
                         )
-                        self.set_path_config(
-                            "OPENBB_USER_DATA_DIRECTORY", userdata_path
-                        )
+                        set_preference("OPENBB_USER_DATA_DIRECTORY", userdata_path)
                         success_userdata = True
                     else:
                         console.print(
@@ -643,14 +580,13 @@ class SettingsController(BaseController):
                             console.print(
                                 f"[green]Folder '{userdata_path}' successfully created.[/green]"
                             )
-                            self.set_path_config(
-                                "OPENBB_USER_DATA_DIRECTORY", userdata_path
-                            )
+                            set_preference("OPENBB_USER_DATA_DIRECTORY", userdata_path)
                         else:
                             # Do not update userdata_folder path since we will keep the same as before
                             console.print(
                                 "[yellow]User data to keep being saved in "
-                                + f"the selected folder: {str(paths.USER_DATA_DIRECTORY)}[/yellow]"
+                                + "the selected folder: "
+                                + f"{str(get_current_user().preferences.USER_DATA_DIRECTORY)}[/yellow]"
                             )
                         success_userdata = True
 
@@ -667,13 +603,12 @@ class SettingsController(BaseController):
         )
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            if obbff.TOOLBAR_TWEET_NEWS:
+            current_user = get_current_user()
+            if current_user.preferences.TOOLBAR_TWEET_NEWS:
                 console.print("Will take effect when running terminal next.")
-            obbff.TOOLBAR_TWEET_NEWS = not obbff.TOOLBAR_TWEET_NEWS
-            set_key(
-                USER_ENV_FILE,
+            set_preference(
                 "OPENBB_TOOLBAR_TWEET_NEWS",
-                str(obbff.TOOLBAR_TWEET_NEWS),
+                not get_current_user().preferences.TOOLBAR_TWEET_NEWS,
             )
 
     @log_start_end(log=logger)
@@ -723,33 +658,25 @@ class SettingsController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if ns_parser.time:
-                obbff.TOOLBAR_TWEET_NEWS_SECONDS_BETWEEN_UPDATES = ns_parser.time
-                set_key(
-                    USER_ENV_FILE,
+                set_preference(
                     "OPENBB_TOOLBAR_TWEET_NEWS_SECONDS_BETWEEN_UPDATES",
                     str(ns_parser.time),
                 )
 
             if ns_parser.number:
-                obbff.TOOLBAR_TWEET_NEWS_NUM_LAST_TWEETS_TO_READ = ns_parser.number
-                set_key(
-                    USER_ENV_FILE,
+                set_preference(
                     "OPENBB_TOOLBAR_TWEET_NEWS_NUM_LAST_TWEETS_TO_READ",
                     str(ns_parser.number),
                 )
 
             if ns_parser.accounts:
-                obbff.TOOLBAR_TWEET_NEWS_ACCOUNTS_TO_TRACK = ns_parser.accounts
-                set_key(
-                    USER_ENV_FILE,
+                set_preference(
                     "OPENBB_TOOLBAR_TWEET_NEWS_ACCOUNTS_TO_TRACK",
                     str(ns_parser.accounts),
                 )
 
             if ns_parser.keywords:
-                obbff.TOOLBAR_TWEET_NEWS_KEYWORDS = " ".join(ns_parser.keywords)
-                set_key(
-                    USER_ENV_FILE,
+                set_preference(
                     "OPENBB_TOOLBAR_TWEET_NEWS_KEYWORDS",
                     str(" ".join(ns_parser.keywords)),
                 )

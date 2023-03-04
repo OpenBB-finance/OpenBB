@@ -8,7 +8,7 @@ from typing import Tuple
 import numpy as np
 import pandas as pd
 
-from openbb_terminal.core.config.paths import USER_PORTFOLIO_DATA_DIRECTORY
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.portfolio.portfolio_helper import filter_df_by_period
 from openbb_terminal.portfolio.statics import PERIODS
@@ -42,7 +42,9 @@ PERIODS_DAYS = {
     "10y": 10 * 12 * 21,
 }
 
-DEFAULT_HOLDINGS_PATH = USER_PORTFOLIO_DATA_DIRECTORY / "holdings"
+DEFAULT_HOLDINGS_PATH = (
+    get_current_user().preferences.USER_PORTFOLIO_DATA_DIRECTORY / "holdings"
+)
 
 
 @log_start_end(log=logger)
