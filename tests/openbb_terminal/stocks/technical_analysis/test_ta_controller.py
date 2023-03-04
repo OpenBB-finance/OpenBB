@@ -165,7 +165,7 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
 
 
 @pytest.mark.vcr(record_mode="none")
-@pytest.mark.record_stdout
+# @pytest.mark.record_stdout
 @pytest.mark.parametrize(
     "start",
     [
