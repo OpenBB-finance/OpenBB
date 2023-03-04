@@ -11,13 +11,12 @@ from requests import Response
 from openbb_terminal.account import account_controller
 from openbb_terminal.core.models.user_model import (
     CredentialsModel,
-    PreferencesModel,
     ProfileModel,
     UserModel,
 )
 from openbb_terminal.core.session.current_user import (
-    copy_user,
     PreferencesModel,
+    copy_user,
 )
 
 # pylint: disable=E1101

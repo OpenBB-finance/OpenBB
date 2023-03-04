@@ -7,8 +7,8 @@ import pytest
 
 from openbb_terminal import keys_model
 from openbb_terminal.core.session.current_user import (
-    copy_user,
     PreferencesModel,
+    copy_user,
 )
 
 # pylint: disable=R0902,R0903,W1404,C0302

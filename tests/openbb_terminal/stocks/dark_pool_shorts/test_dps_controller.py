@@ -9,8 +9,8 @@ import pytest
 
 # IMPORTATION INTERNAL
 from openbb_terminal.core.session.current_user import (
-    copy_user,
     PreferencesModel,
+    copy_user,
 )
 from openbb_terminal.stocks import stocks_helper
 from openbb_terminal.stocks.dark_pool_shorts import dps_controller

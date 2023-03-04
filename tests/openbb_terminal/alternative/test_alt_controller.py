@@ -8,8 +8,8 @@ import pytest
 # IMPORTATION INTERNAL
 from openbb_terminal.alternative import alt_controller
 from openbb_terminal.core.session.current_user import (
-    copy_user,
     PreferencesModel,
+    copy_user,
 )
 
 

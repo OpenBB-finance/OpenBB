@@ -6,8 +6,8 @@ import pytest
 
 # IMPORTATION INTERNAL
 from openbb_terminal.core.session.current_user import (
-    copy_user,
     PreferencesModel,
+    copy_user,
 )
 from openbb_terminal.stocks.discovery import nasdaq_view
 

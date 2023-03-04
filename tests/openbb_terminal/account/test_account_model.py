@@ -15,7 +15,6 @@ from openbb_terminal.core.config import paths
 from openbb_terminal.core.models.credentials_model import CredentialsModel
 from openbb_terminal.core.session.current_user import (
     copy_user,
-    PreferencesModel,
 )
 
 

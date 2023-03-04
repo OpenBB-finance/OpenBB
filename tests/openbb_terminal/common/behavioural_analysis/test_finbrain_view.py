@@ -9,8 +9,8 @@ from openbb_terminal.common.behavioural_analysis import finbrain_view
 
 # IMPORTATION INTERNAL
 from openbb_terminal.core.session.current_user import (
-    copy_user,
     PreferencesModel,
+    copy_user,
 )
 
 
