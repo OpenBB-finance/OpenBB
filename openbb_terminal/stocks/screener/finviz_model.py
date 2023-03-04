@@ -27,18 +27,22 @@ PRESETS_PATH_DEFAULT = MISCELLANEOUS_DIRECTORY / "stocks" / "screener"
 preset_choices = {}
 
 if PRESETS_PATH.exists():
-    preset_choices.update({
-        filepath.name.strip(".ini"): filepath
-        for filepath in PRESETS_PATH.iterdir()
-        if filepath.suffix == ".ini"
-    })
+    preset_choices.update(
+        {
+            filepath.name.strip(".ini"): filepath
+            for filepath in PRESETS_PATH.iterdir()
+            if filepath.suffix == ".ini"
+        }
+    )
 
 if PRESETS_PATH_DEFAULT.exists():
-    preset_choices.update({
-        filepath.name.strip(".ini"): filepath
-        for filepath in PRESETS_PATH_DEFAULT.iterdir()
-        if filepath.suffix == ".ini"
-    })
+    preset_choices.update(
+        {
+            filepath.name.strip(".ini"): filepath
+            for filepath in PRESETS_PATH_DEFAULT.iterdir()
+            if filepath.suffix == ".ini"
+        }
+    )
 
 # pylint: disable=C0302
 

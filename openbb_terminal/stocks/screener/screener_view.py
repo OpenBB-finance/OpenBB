@@ -17,18 +17,22 @@ PRESETS_PATH_DEFAULT = MISCELLANEOUS_DIRECTORY / "stocks" / "screener"
 preset_choices = {}
 
 if PRESETS_PATH.exists():
-    preset_choices.update({
-        filepath.name.strip(".ini"): filepath
-        for filepath in PRESETS_PATH.iterdir()
-        if filepath.suffix == ".ini"
-    })
+    preset_choices.update(
+        {
+            filepath.name.strip(".ini"): filepath
+            for filepath in PRESETS_PATH.iterdir()
+            if filepath.suffix == ".ini"
+        }
+    )
 
 if PRESETS_PATH_DEFAULT.exists():
-    preset_choices.update({
-        filepath.name.strip(".ini"): filepath
-        for filepath in PRESETS_PATH_DEFAULT.iterdir()
-        if filepath.suffix == ".ini"
-    })
+    preset_choices.update(
+        {
+            filepath.name.strip(".ini"): filepath
+            for filepath in PRESETS_PATH_DEFAULT.iterdir()
+            if filepath.suffix == ".ini"
+        }
+    )
 
 
 def display_presets(preset: str):
@@ -54,9 +58,9 @@ def display_presets(preset: str):
 
     else:
         console.print("\nCustom Presets:")
-        for item in preset_choices:
+        for item, path in preset_choices.items():
             with open(
-                preset_choices[item],
+                path,
                 encoding="utf8",
             ) as f:
                 description = ""

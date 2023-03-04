@@ -189,9 +189,9 @@ class InsiderController(StockBaseController):
                     console.print("")
 
             else:
-                for preset in self.preset_choices:
+                for preset, path in self.preset_choices.items():
                     with open(
-                        self.preset_choices[preset],
+                        path,
                         encoding="utf8",
                     ) as f:
                         description = ""

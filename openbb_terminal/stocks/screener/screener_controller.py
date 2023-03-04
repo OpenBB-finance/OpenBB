@@ -4,7 +4,8 @@ __docformat__ = "numpy"
 import argparse
 import datetime
 import logging
-from typing import List, Optional
+from pathlib import Path
+from typing import Dict, List, Optional, Union
 
 from openbb_terminal.core.config.paths import (
     MISCELLANEOUS_DIRECTORY,
@@ -37,8 +38,6 @@ logger = logging.getLogger(__name__)
 # pylint: disable=E1121
 
 
-
-
 class ScreenerController(BaseController):
     """Screener Controller class"""
 
@@ -61,21 +60,25 @@ class ScreenerController(BaseController):
     )
     PRESETS_PATH_DEFAULT = MISCELLANEOUS_DIRECTORY / "stocks" / "screener"
 
-    preset_choices = {}
+    preset_choices: Dict[str, Union[str, Path]] = {}
 
     if PRESETS_PATH.exists():
-        preset_choices.update({
-            filepath.name.strip(".ini"): filepath
-            for filepath in PRESETS_PATH.iterdir()
-            if filepath.suffix == ".ini"
-        })
+        preset_choices.update(
+            {
+                filepath.name.strip(".ini"): filepath
+                for filepath in PRESETS_PATH.iterdir()
+                if filepath.suffix == ".ini"
+            }
+        )
 
     if PRESETS_PATH_DEFAULT.exists():
-        preset_choices.update({
-            filepath.name.strip(".ini"): filepath
-            for filepath in PRESETS_PATH_DEFAULT.iterdir()
-            if filepath.suffix == ".ini"
-        })
+        preset_choices.update(
+            {
+                filepath.name.strip(".ini"): filepath
+                for filepath in PRESETS_PATH_DEFAULT.iterdir()
+                if filepath.suffix == ".ini"
+            }
+        )
 
     preset_choices.update(finviz_model.d_signals)
 

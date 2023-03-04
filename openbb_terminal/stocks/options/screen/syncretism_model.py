@@ -127,18 +127,22 @@ def get_preset_choices() -> Dict:
     preset_choices = {}
 
     if PRESETS_PATH.exists():
-        preset_choices.update({
-            filepath.name.strip(".ini"): filepath
-            for filepath in PRESETS_PATH.iterdir()
-            if filepath.suffix == ".ini"
-        })
+        preset_choices.update(
+            {
+                filepath.name.strip(".ini"): filepath
+                for filepath in PRESETS_PATH.iterdir()
+                if filepath.suffix == ".ini"
+            }
+        )
 
     if PRESETS_PATH_DEFAULT.exists():
-        preset_choices.update({
-            filepath.name.strip(".ini"): filepath
-            for filepath in PRESETS_PATH_DEFAULT.iterdir()
-            if filepath.suffix == ".ini"
-        })
+        preset_choices.update(
+            {
+                filepath.name.strip(".ini"): filepath
+                for filepath in PRESETS_PATH_DEFAULT.iterdir()
+                if filepath.suffix == ".ini"
+            }
+        )
 
     return preset_choices
 
