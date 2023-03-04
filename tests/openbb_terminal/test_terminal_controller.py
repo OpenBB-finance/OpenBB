@@ -1,5 +1,5 @@
 # IMPORTATION STANDARD
-import dataclasses
+
 from contextlib import contextmanager
 
 # IMPORTATION THIRDPARTY
@@ -7,8 +7,10 @@ import pytest
 
 # IMPORTATION INTERNAL
 from openbb_terminal import terminal_controller
-from openbb_terminal.core.models.preferences_model import PreferencesModel
-from openbb_terminal.core.session.current_user import get_current_user
+from openbb_terminal.core.session.current_user import (
+    copy_user,
+    PreferencesModel,
+)
 
 
 @pytest.mark.skip
@@ -17,12 +19,12 @@ from openbb_terminal.core.session.current_user import get_current_user
 @pytest.mark.record_stdout
 def test_terminal_quick_exit(mocker):
     current_user = get_current_user()
-    preference = PreferencesModel(
+    preferences = PreferencesModel(
         ENABLE_QUICK_EXIT=True,
         USE_ION=False,
         USE_PROMPT_TOOLKIT=True,
     )
-    user_model = dataclasses.replace(current_user, preference=preference)
+    user_model = dataclasses.replace(current_user, preferences=preferences)
     mocker.patch(
         target="openbb_terminal.core.session.current_user.get_current_user",
         return_value=user_model,
@@ -38,12 +40,12 @@ def test_terminal_quick_exit(mocker):
 @pytest.mark.record_stdout
 def test_terminal_quit(mocker):
     current_user = get_current_user()
-    preference = PreferencesModel(
+    preferences = PreferencesModel(
         ENABLE_QUICK_EXIT=True,
         USE_ION=False,
         USE_PROMPT_TOOLKIT=True,
     )
-    user_model = dataclasses.replace(current_user, preference=preference)
+    user_model = dataclasses.replace(current_user, preferences=preferences)
     mocker.patch(
         target="openbb_terminal.core.session.current_user.get_current_user",
         return_value=user_model,

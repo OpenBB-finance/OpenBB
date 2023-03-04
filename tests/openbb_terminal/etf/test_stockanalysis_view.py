@@ -1,12 +1,14 @@
 # IMPORTATION STANDARD
-import dataclasses
+
 
 # IMPORTATION THIRDPARTY
 import pytest
 
 # IMPORTATION INTERNAL
-from openbb_terminal.core.models.preferences_model import PreferencesModel
-from openbb_terminal.core.session.current_user import get_current_user
+from openbb_terminal.core.session.current_user import (
+    copy_user,
+    PreferencesModel,
+)
 from openbb_terminal.etf import stockanalysis_view
 
 
@@ -29,12 +31,11 @@ def vcr_config():
     ],
 )
 def test_view_overview(symbol, use_tab, mocker):
-    current_user = get_current_user()
-    preference = PreferencesModel(USE_TABULATE_DF=use_tab)
-    user_model = dataclasses.replace(current_user, preference=preference)
+    preferences = PreferencesModel(USE_TABULATE_DF=use_tab)
+    mock_current_user = copy_user(preferences=preferences)
     mocker.patch(
-        target="openbb_terminal.core.session.current_user.get_current_user",
-        return_value=user_model,
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
     )
     stockanalysis_view.view_overview(symbol)
 
@@ -49,12 +50,11 @@ def test_view_overview(symbol, use_tab, mocker):
     ],
 )
 def test_view_holdings(symbol, mocker):
-    current_user = get_current_user()
-    preference = PreferencesModel(USE_TABULATE_DF=False)
-    user_model = dataclasses.replace(current_user, preference=preference)
+    preferences = PreferencesModel(USE_TABULATE_DF=False)
+    mock_current_user = copy_user(preferences=preferences)
     mocker.patch(
-        target="openbb_terminal.core.session.current_user.get_current_user",
-        return_value=user_model,
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
     )
     stockanalysis_view.view_holdings(symbol, limit=5, export="")
 
@@ -69,12 +69,11 @@ def test_view_holdings(symbol, mocker):
     ],
 )
 def test_view_comparisons(symbols, mocker):
-    current_user = get_current_user()
-    preference = PreferencesModel(USE_TABULATE_DF=False)
-    user_model = dataclasses.replace(current_user, preference=preference)
+    preferences = PreferencesModel(USE_TABULATE_DF=False)
+    mock_current_user = copy_user(preferences=preferences)
     mocker.patch(
-        target="openbb_terminal.core.session.current_user.get_current_user",
-        return_value=user_model,
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
     )
     stockanalysis_view.view_comparisons(symbols, export="")
 
@@ -89,11 +88,10 @@ def test_view_comparisons(symbols, mocker):
     ],
 )
 def test_display_etf_by_name(name, mocker):
-    current_user = get_current_user()
-    preference = PreferencesModel(USE_TABULATE_DF=False)
-    user_model = dataclasses.replace(current_user, preference=preference)
+    preferences = PreferencesModel(USE_TABULATE_DF=False)
+    mock_current_user = copy_user(preferences=preferences)
     mocker.patch(
-        target="openbb_terminal.core.session.current_user.get_current_user",
-        return_value=user_model,
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
     )
     stockanalysis_view.display_etf_by_name(name, limit=5, export="")

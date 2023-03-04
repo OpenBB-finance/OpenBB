@@ -1,12 +1,14 @@
 # IMPORTATION STANDARD
-import dataclasses
+from inspect import unwrap
 
 # IMPORTATION THIRDPARTY
 import pytest
 
 # IMPORTATION INTERNAL
-from openbb_terminal.core.models.preferences_model import PreferencesModel
-from openbb_terminal.core.session.current_user import get_current_user
+from openbb_terminal.core.session.current_user import (
+    copy_user,
+    PreferencesModel,
+)
 from openbb_terminal.stocks.fundamental_analysis import fmp_view
 
 
@@ -80,13 +82,16 @@ def test_display_filings():
     [True, False],
 )
 def test_check_output(func, kwargs_dict, mocker, use_tab):
-    current_user = get_current_user()
-    preference = PreferencesModel(USE_TABULATE_DF=use_tab)
-    user_model = dataclasses.replace(current_user, preference=preference)
-    mocker.patch(
-        target="openbb_terminal.core.session.current_user.get_current_user",
-        return_value=user_model,
+    preferences = PreferencesModel(
+        USE_TABULATE_DF=use_tab,
+        ENABLE_CHECK_API=False,
     )
+    mock_current_user = copy_user(preferences=preferences)
+    mocker.patch(
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
+    )
+
     getattr(fmp_view, func)(**kwargs_dict)
 
 

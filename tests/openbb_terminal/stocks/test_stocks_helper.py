@@ -1,5 +1,5 @@
 # IMPORTATION STANDARD
-import dataclasses
+
 import os
 from datetime import datetime
 
@@ -7,8 +7,10 @@ from datetime import datetime
 import pytest
 
 # IMPORTATION INTERNAL
-from openbb_terminal.core.models.preferences_model import PreferencesModel
-from openbb_terminal.core.session.current_user import get_current_user
+from openbb_terminal.core.session.current_user import (
+    copy_user,
+    PreferencesModel,
+)
 
 # IMPORTATION INTERNAL
 from openbb_terminal.stocks import stocks_helper, stocks_view
@@ -42,12 +44,11 @@ def test_quote():
     [True, False],
 )
 def test_search(mocker, use_tab):
-    current_user = get_current_user()
-    preference = PreferencesModel(USE_TABULATE_DF=use_tab)
-    user_model = dataclasses.replace(current_user, preference=preference)
+    preferences = PreferencesModel(USE_TABULATE_DF=use_tab)
+    mock_current_user = copy_user(preferences=preferences)
     mocker.patch(
-        target="openbb_terminal.core.session.current_user.get_current_user",
-        return_value=user_model,
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
     )
     stocks_helper.search(
         query="microsoft",

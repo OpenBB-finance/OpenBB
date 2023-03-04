@@ -1,12 +1,14 @@
 # IMPORTATION STANDARD
-import dataclasses
+
 
 # IMPORTATION THIRDPARTY
 import pytest
 
 # IMPORTATION INTERNAL
-from openbb_terminal.core.models.preferences_model import PreferencesModel
-from openbb_terminal.core.session.current_user import get_current_user
+from openbb_terminal.core.session.current_user import (
+    copy_user,
+    PreferencesModel,
+)
 from openbb_terminal.economy import finviz_view
 
 
@@ -29,15 +31,14 @@ def vcr_config():
 )
 def test_display_valuation(mocker, tab):
     # MOCK OBBFF
-    current_user = get_current_user()
-    preference = PreferencesModel(
+    preferences = PreferencesModel(
         USE_TABULATE_DF=tab,
         USE_ION=True,
     )
-    user_model = dataclasses.replace(current_user, preference=preference)
+    mock_current_user = copy_user(preferences=preferences)
     mocker.patch(
-        target="openbb_terminal.core.session.current_user.get_current_user",
-        return_value=user_model,
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
     )
 
     # MOCK EXPORT_DATA
@@ -63,15 +64,14 @@ def test_display_valuation(mocker, tab):
 )
 def test_display_performance(mocker, tab):
     # MOCK OBBFF
-    current_user = get_current_user()
-    preference = PreferencesModel(
+    preferences = PreferencesModel(
         USE_TABULATE_DF=tab,
         USE_ION=True,
     )
-    user_model = dataclasses.replace(current_user, preference=preference)
+    mock_current_user = copy_user(preferences=preferences)
     mocker.patch(
-        target="openbb_terminal.core.session.current_user.get_current_user",
-        return_value=user_model,
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
     )
 
     # MOCK EXPORT_DATA
@@ -122,15 +122,14 @@ def test_display_spectrum(mocker):
 )
 def test_display_future(mocker, tab):
     # MOCK OBBFF
-    current_user = get_current_user()
-    preference = PreferencesModel(
+    preferences = PreferencesModel(
         USE_TABULATE_DF=tab,
         USE_ION=True,
     )
-    user_model = dataclasses.replace(current_user, preference=preference)
+    mock_current_user = copy_user(preferences=preferences)
     mocker.patch(
-        target="openbb_terminal.core.session.current_user.get_current_user",
-        return_value=user_model,
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
     )
 
     # MOCK EXPORT_DATA

@@ -1,13 +1,15 @@
 # IMPORTATION STANDARD
-import dataclasses
+
 import os
 
 # IMPORTATION THIRDPARTY
 import pytest
 
 # IMPORTATION INTERNAL
-from openbb_terminal.core.models.preferences_model import PreferencesModel
-from openbb_terminal.core.session.current_user import get_current_user
+from openbb_terminal.core.session.current_user import (
+    copy_user,
+    PreferencesModel,
+)
 from openbb_terminal.portfolio import portfolio_controller
 
 
@@ -48,12 +50,11 @@ def test_menu_without_queue_completion(mocker):
     path_controller = "openbb_terminal.portfolio.portfolio_controller"
 
     # ENABLE AUTO-COMPLETION : HELPER_FUNCS.MENU
-    current_user = get_current_user()
-    preference = PreferencesModel(USE_PROMPT_TOOLKIT=True)
-    user_model = dataclasses.replace(current_user, preference=preference)
+    preferences = PreferencesModel(USE_PROMPT_TOOLKIT=True)
+    mock_current_user = copy_user(preferences=preferences)
     mocker.patch(
-        target="openbb_terminal.core.session.current_user.get_current_user",
-        return_value=user_model,
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
     )
     mocker.patch(
         target="openbb_terminal.parent_classes.session",
@@ -68,12 +69,14 @@ def test_menu_without_queue_completion(mocker):
         return_value=[],
     )
     # DISABLE AUTO-COMPLETION : CONTROLLER.COMPLETER
-    current_user = get_current_user()
-    preference = PreferencesModel(USE_PROMPT_TOOLKIT=True)
-    user_model = dataclasses.replace(current_user, preference=preference)
+    preferences = PreferencesModel(
+        USE_PROMPT_TOOLKIT=True,
+        ENABLE_CHECK_API=False,
+    )
+    mock_current_user = copy_user(preferences=preferences)
     mocker.patch(
-        target="openbb_terminal.core.session.current_user.get_current_user",
-        return_value=user_model,
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
     )
     mocker.patch(
         target=f"{path_controller}.session",
@@ -97,12 +100,11 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
     path_controller = "openbb_terminal.portfolio.portfolio_controller"
 
     # DISABLE AUTO-COMPLETION
-    current_user = get_current_user()
-    preference = PreferencesModel(USE_PROMPT_TOOLKIT=False)
-    user_model = dataclasses.replace(current_user, preference=preference)
+    preferences = PreferencesModel(USE_PROMPT_TOOLKIT=True)
+    mock_current_user = copy_user(preferences=preferences)
     mocker.patch(
-        target="openbb_terminal.core.session.current_user.get_current_user",
-        return_value=user_model,
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
     )
     mocker.patch(
         target=f"{path_controller}.session",

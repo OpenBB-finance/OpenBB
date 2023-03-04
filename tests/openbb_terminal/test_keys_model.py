@@ -6,7 +6,10 @@ import pandas as pd
 import pytest
 
 from openbb_terminal import keys_model
-from openbb_terminal.core.session.current_user import get_current_user, set_current_user
+from openbb_terminal.core.session.current_user import (
+    copy_user,
+    PreferencesModel,
+)
 
 # pylint: disable=R0902,R0903,W1404,C0302
 TEST_PATH = Path(__file__).parent.resolve()
@@ -24,14 +27,10 @@ def vcr_config():
 
 @pytest.fixture(autouse=True)
 def revert_current_user(mocker):
-    current_user = get_current_user()
-
     mocker.patch(
         target="openbb_terminal.keys_model.set_credential",
     )
-
     yield
-    set_current_user(current_user)
 
 
 def test_get_keys():
@@ -183,8 +182,17 @@ def test_set_fmp_key(
     ],
 )
 def test_set_quandl_key(
-    args: List[str], persist: bool, show_output: bool, __expected: str
+    args: List[str], persist: bool, show_output: bool, __expected: str, mocker,
 ):
+    preferences = PreferencesModel(
+        ENABLE_EXIT_AUTO_HELP=False,
+        ENABLE_CHECK_API=False,
+    )
+    mock_current_user = copy_user(preferences=preferences)
+    mocker.patch(
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
+    )
     var_name_list = [
         "OPENBB_API_KEY_QUANDL",
     ]

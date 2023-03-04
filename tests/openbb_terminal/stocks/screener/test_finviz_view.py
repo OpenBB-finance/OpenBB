@@ -1,13 +1,15 @@
 # IMPORTATION STANDARD
-import dataclasses
+
 
 # IMPORTATION THIRDPARTY
 import pandas as pd
 import pytest
 
 # IMPORTATION INTERNAL
-from openbb_terminal.core.models.preferences_model import PreferencesModel
-from openbb_terminal.core.session.current_user import get_current_user
+from openbb_terminal.core.session.current_user import (
+    copy_user,
+    PreferencesModel,
+)
 from openbb_terminal.stocks.screener import finviz_view
 
 
@@ -22,12 +24,11 @@ from openbb_terminal.stocks.screener import finviz_view
 @pytest.mark.record_stdout
 def test_screener(mocker, toggle):
     # MOCK CHARTS
-    current_user = get_current_user()
-    preference = PreferencesModel(USE_TABULATE_DF=toggle)
-    user_model = dataclasses.replace(current_user, preference=preference)
+    preferences = PreferencesModel(USE_TABULATE_DF=toggle)
+    mock_current_user = copy_user(preferences=preferences)
     mocker.patch(
-        target="openbb_terminal.core.session.current_user.get_current_user",
-        return_value=user_model,
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
     )
 
     # MOCK EXPORT_DATA
@@ -88,12 +89,11 @@ def test_screener_no_data(data, mocker):
 @pytest.mark.record_stdout
 def test_screener_sort_matches(sort, mocker):
     # MOCK CHARTS
-    current_user = get_current_user()
-    preference = PreferencesModel(USE_TABULATE_DF=True)
-    user_model = dataclasses.replace(current_user, preference=preference)
+    preferences = PreferencesModel(USE_TABULATE_DF=True)
+    mock_current_user = copy_user(preferences=preferences)
     mocker.patch(
-        target="openbb_terminal.core.session.current_user.get_current_user",
-        return_value=user_model,
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
     )
 
     # MOCK EXPORT_DATA

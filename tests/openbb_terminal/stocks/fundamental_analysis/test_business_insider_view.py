@@ -1,13 +1,15 @@
 # IMPORTATION STANDARD
-import dataclasses
+
 from datetime import datetime
 
 # IMPORTATION THIRDPARTY
 import pytest
 
 # IMPORTATION INTERNAL
-from openbb_terminal.core.models.preferences_model import PreferencesModel
-from openbb_terminal.core.session.current_user import get_current_user
+from openbb_terminal.core.session.current_user import (
+    copy_user,
+    PreferencesModel,
+)
 from openbb_terminal.stocks.fundamental_analysis import business_insider_view
 from openbb_terminal.stocks.stocks_helper import load
 
@@ -30,12 +32,11 @@ def vcr_config():
     [True, False],
 )
 def test_display_management(mocker, use_tab):
-    current_user = get_current_user()
-    preference = PreferencesModel(USE_TABULATE_DF=use_tab)
-    user_model = dataclasses.replace(current_user, preference=preference)
+    preferences = PreferencesModel(USE_TABULATE_DF=use_tab)
+    mock_current_user = copy_user(preferences=preferences)
     mocker.patch(
-        target="openbb_terminal.core.session.current_user.get_current_user",
-        return_value=user_model,
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
     )
     business_insider_view.display_management(symbol="TSLA", export="")
 

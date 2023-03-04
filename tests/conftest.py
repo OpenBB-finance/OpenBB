@@ -1,5 +1,5 @@
 # IMPORTS STANDARD
-import dataclasses
+
 import json
 import os
 import pathlib
@@ -23,8 +23,6 @@ from openbb_terminal import (
     decorators,
     helper_funcs,
 )
-from openbb_terminal.core.models.user_model import PreferencesModel
-from openbb_terminal.core.session.current_user import get_current_user
 
 # pylint: disable=redefined-outer-name
 
@@ -38,11 +36,6 @@ EXTENSIONS_MATCHING: Dict[str, List[Type]] = {
 }
 
 os.environ["TEST_MODE"] = "True"
-preference = PreferencesModel(
-    ENABLE_EXIT_AUTO_HELP=True,
-)
-current_user = dataclasses.replace(get_current_user(), preference=preference)
-current_user.preferences.ENABLE_EXIT_AUTO_HELP = True
 
 
 class Record:

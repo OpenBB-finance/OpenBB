@@ -1,5 +1,5 @@
 # IMPORTATION STANDARD
-import dataclasses
+
 from pathlib import Path
 from unittest.mock import patch
 
@@ -13,7 +13,10 @@ from openbb_terminal.core.config import paths
 
 # IMPORTATION INTERNAL
 from openbb_terminal.core.models.credentials_model import CredentialsModel
-from openbb_terminal.core.session.current_user import get_current_user
+from openbb_terminal.core.session.current_user import (
+    copy_user,
+    PreferencesModel,
+)
 
 
 def test_get_var_diff():
@@ -48,20 +51,17 @@ def test_get_var_diff():
 
 
 def test_get_diff_keys(mocker):
-    previous_credentials = CredentialsModel(
+    credentials = CredentialsModel(
         **{
             "API_KEY_ALPHAVANTAGE": "key1",
             "API_KEY_FINANCIALMODELINGPREP": "key2",
             "API_KEY_QUANDL": "key3",
         }
     )
-    current_user = get_current_user()
-    previous_user_model = dataclasses.replace(
-        current_user, credentials=previous_credentials
-    )
+    mock_current_user = copy_user(credentials=credentials)
     mocker.patch(
-        target="openbb_terminal.account.account_model.get_current_user",
-        return_value=previous_user_model,
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
     )
 
     new_credentials = {
@@ -79,20 +79,17 @@ def test_get_diff_keys(mocker):
 
 
 def test_get_diff_keys_empty_keys(mocker):
-    previous_credentials = CredentialsModel(
+    credentials = CredentialsModel(
         **{
             "API_KEY_ALPHAVANTAGE": "key1",
             "API_KEY_FINANCIALMODELINGPREP": "key2",
             "API_KEY_QUANDL": "key3",
         }
     )
-    current_user = get_current_user()
-    previous_user_model = dataclasses.replace(
-        current_user, credentials=previous_credentials
-    )
+    mock_current_user = copy_user(credentials=credentials)
     mocker.patch(
-        target="openbb_terminal.account.account_model.get_current_user",
-        return_value=previous_user_model,
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
     )
 
     new_credentials = {}
@@ -102,20 +99,17 @@ def test_get_diff_keys_empty_keys(mocker):
 
 
 def test_get_diff_keys_same_keys(mocker):
-    previous_credentials = CredentialsModel(
+    credentials = CredentialsModel(
         **{
             "API_KEY_ALPHAVANTAGE": "key1",
             "API_KEY_FINANCIALMODELINGPREP": "key2",
             "API_KEY_QUANDL": "key3",
         }
     )
-    current_user = get_current_user()
-    previous_user_model = dataclasses.replace(
-        current_user, credentials=previous_credentials
-    )
+    mock_current_user = copy_user(credentials=credentials)
     mocker.patch(
-        target="openbb_terminal.account.account_model.get_current_user",
-        return_value=previous_user_model,
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
     )
 
     new_credentials = {
@@ -130,19 +124,16 @@ def test_get_diff_keys_same_keys(mocker):
 
 
 def test_get_diff_keys_new_keys(mocker):
-    previous_credentials = CredentialsModel(
+    credentials = CredentialsModel(
         **{
             "API_KEY_ALPHAVANTAGE": "key1",
             "API_KEY_FINANCIALMODELINGPREP": "key2",
         }
     )
-    current_user = get_current_user()
-    previous_user_model = dataclasses.replace(
-        current_user, credentials=previous_credentials
-    )
+    mock_current_user = copy_user(credentials=credentials)
     mocker.patch(
-        target="openbb_terminal.account.account_model.get_current_user",
-        return_value=previous_user_model,
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
     )
 
     new_credentials = {

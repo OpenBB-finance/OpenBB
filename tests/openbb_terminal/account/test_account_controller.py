@@ -1,5 +1,5 @@
 # IMPORTATION STANDARD
-import dataclasses
+
 import json
 import os
 
@@ -15,7 +15,10 @@ from openbb_terminal.core.models.user_model import (
     ProfileModel,
     UserModel,
 )
-from openbb_terminal.core.session.current_user import get_current_user
+from openbb_terminal.core.session.current_user import (
+    copy_user,
+    PreferencesModel,
+)
 
 # pylint: disable=E1101
 # pylint: disable=W0603
@@ -102,12 +105,11 @@ def test_menu_without_queue_completion(mocker):
     path_controller = "openbb_terminal.account.account_controller"
 
     # ENABLE AUTO-COMPLETION : HELPER_FUNCS.MENU
-    current_user = get_current_user()
-    preference = PreferencesModel(USE_PROMPT_TOOLKIT=True)
-    user_model = dataclasses.replace(current_user, preference=preference)
+    preferences = PreferencesModel(USE_PROMPT_TOOLKIT=True)
+    mock_current_user = copy_user(preferences=preferences)
     mocker.patch(
-        target="openbb_terminal.core.session.current_user.get_current_user",
-        return_value=user_model,
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
     )
     mocker.patch(
         target="openbb_terminal.parent_classes.session",
@@ -140,9 +142,12 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
     path_controller = "openbb_terminal.account.account_controller"
 
     # DISABLE AUTO-COMPLETION
-    current_user = get_current_user()
-    preference = PreferencesModel(USE_PROMPT_TOOLKIT=False)
-    dataclasses.replace(current_user, preference=preference)
+    preferences = PreferencesModel(USE_PROMPT_TOOLKIT=False)
+    mock_current_user = copy_user(preferences=preferences)
+    mocker.patch(
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
+    )
     mocker.patch(
         target=f"{path_controller}.session",
         return_value=None,
@@ -342,12 +347,11 @@ def test_call_logout(mocker):
 def test_call_sync(mocker, other_args, sync):
     controller = account_controller.AccountController(queue=None)
 
-    current_user = get_current_user()
-    preference = PreferencesModel(SYNC_ENABLED=sync)
-    user_model = dataclasses.replace(current_user, preference=preference)
+    preferences = PreferencesModel(SYNC_ENABLED=sync)
+    mock_current_user = copy_user(preferences=preferences)
     mocker.patch(
-        target="openbb_terminal.core.session.current_user.get_current_user",
-        return_value=user_model,
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
     )
 
     controller.call_sync(other_args=other_args)
@@ -560,11 +564,14 @@ def test_call_delete(mocker, monkeypatch, test_user):
     controller = account_controller.AccountController(queue=None)
     path_controller = "openbb_terminal.account.account_controller"
 
-    test_user.profile.token_type = "Bearer"
-    test_user.profile.token = "123"
+    profile = ProfileModel(
+        token_type="Bearer",
+        token="123",
+    )
+    mock_current_user = copy_user(user=test_user, profile=profile)
     mocker.patch(
-        target="openbb_terminal.account.account_controller.get_current_user",
-        return_value=test_user,
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
     )
 
     mock_delete_routine = mocker.patch(
