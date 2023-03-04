@@ -1,5 +1,4 @@
 # IMPORTATION STANDARD
-from inspect import unwrap
 
 # IMPORTATION THIRDPARTY
 import pytest

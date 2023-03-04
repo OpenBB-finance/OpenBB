@@ -182,7 +182,11 @@ def test_set_fmp_key(
     ],
 )
 def test_set_quandl_key(
-    args: List[str], persist: bool, show_output: bool, __expected: str, mocker,
+    args: List[str],
+    persist: bool,
+    show_output: bool,
+    __expected: str,
+    mocker,
 ):
     preferences = PreferencesModel(
         ENABLE_EXIT_AUTO_HELP=False,

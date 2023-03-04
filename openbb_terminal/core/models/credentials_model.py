@@ -2,6 +2,8 @@ from typing import Optional
 
 from pydantic.dataclasses import dataclass
 
+# pylint: disable=too-many-instance-attributes
+
 
 @dataclass(config=dict(validate_assignment=True))
 class CredentialsModel:

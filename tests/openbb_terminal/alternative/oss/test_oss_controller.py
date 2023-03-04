@@ -7,7 +7,6 @@ import pytest
 
 # IMPORTATION INTERNAL
 from openbb_terminal.alternative.oss import oss_controller
-from openbb_terminal.core.models.user_model import PreferencesModel
 from openbb_terminal.core.session.current_user import (
     copy_user,
     PreferencesModel,

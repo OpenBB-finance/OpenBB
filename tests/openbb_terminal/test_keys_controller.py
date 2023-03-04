@@ -4,7 +4,10 @@
 import pytest
 
 # IMPORTATION INTERNAL
-from openbb_terminal.core.session.current_user import get_current_user, set_current_user
+from openbb_terminal.core.session.current_user import (
+    copy_user,
+    PreferencesModel,
+)
 from openbb_terminal.keys_controller import KeysController
 
 controller = KeysController(menu_usage=False)
@@ -14,14 +17,19 @@ controller = KeysController(menu_usage=False)
 
 @pytest.fixture(autouse=True)
 def revert_current_user(mocker):
-    current_user = get_current_user()
-
     mocker.patch(
-        target="openbb_terminal.keys_controller.keys_model",
+        target="openbb_terminal.keys_model.set_credential",
+    )
+    preferences = PreferencesModel(
+        ENABLE_CHECK_API=False,
+    )
+    mock_current_user = copy_user(preferences=preferences)
+    mocker.patch(
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
     )
 
     yield
-    set_current_user(current_user)
 
 
 class MockCFG:

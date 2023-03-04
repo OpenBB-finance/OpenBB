@@ -18,16 +18,15 @@ from openbb_terminal.core.session.current_user import (
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.record_stdout
 def test_terminal_quick_exit(mocker):
-    current_user = get_current_user()
     preferences = PreferencesModel(
         ENABLE_QUICK_EXIT=True,
         USE_ION=False,
         USE_PROMPT_TOOLKIT=True,
     )
-    user_model = dataclasses.replace(current_user, preferences=preferences)
+    mock_current_user = copy_user(preferences=preferences)
     mocker.patch(
-        target="openbb_terminal.core.session.current_user.get_current_user",
-        return_value=user_model,
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
     )
 
     mocker.patch("sys.stdin")
@@ -39,16 +38,15 @@ def test_terminal_quick_exit(mocker):
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.record_stdout
 def test_terminal_quit(mocker):
-    current_user = get_current_user()
     preferences = PreferencesModel(
         ENABLE_QUICK_EXIT=True,
         USE_ION=False,
         USE_PROMPT_TOOLKIT=True,
     )
-    user_model = dataclasses.replace(current_user, preferences=preferences)
+    mock_current_user = copy_user(preferences=preferences)
     mocker.patch(
-        target="openbb_terminal.core.session.current_user.get_current_user",
-        return_value=user_model,
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
     )
 
     mocker.patch("sys.stdin")

@@ -9,6 +9,8 @@ from openbb_terminal.core.config.paths import (
     USER_DATA_SOURCES_DEFAULT_FILE,
 )
 
+# pylint: disable=too-many-instance-attributes
+
 
 @dataclass(config=dict(validate_assignment=True, frozen=True))
 class PreferencesModel:

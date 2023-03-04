@@ -145,9 +145,17 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
 
 
 @pytest.mark.vcr(record_mode="none")
-@pytest.mark.record_stdout
+# @pytest.mark.record_stdout
 def test_print_help(mocker):
     # MOCK portlist
+    preferences = PreferencesModel(
+        ENABLE_CHECK_API=False,
+    )
+    mock_current_user = copy_user(preferences=preferences)
+    mocker.patch(
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
+    )
     mocker.patch(
         target="os.listdir",
         return_value=[],

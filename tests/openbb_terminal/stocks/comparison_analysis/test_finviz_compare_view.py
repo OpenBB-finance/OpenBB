@@ -24,14 +24,11 @@ from openbb_terminal.stocks.comparison_analysis import finviz_compare_view
     [True, False],
 )
 def test_screener(mocker, tab):
-    current_user = get_current_user()
-    preferences = PreferencesModel(
-        USE_TABULATE_DF=tab,
-    )
-    user_model = dataclasses.replace(current_user, preferences=preferences)
+    preferences = PreferencesModel(USE_TABULATE_DF=tab)
+    mock_current_user = copy_user(preferences=preferences)
     mocker.patch(
-        target="openbb_terminal.core.session.current_user.get_current_user",
-        return_value=user_model,
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
     )
 
     finviz_compare_view.screener(

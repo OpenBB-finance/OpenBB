@@ -15,7 +15,7 @@ from openbb_terminal.core.models.user_model import (
 from openbb_terminal.core.session import local_model
 
 # IMPORTATION INTERNAL
-from openbb_terminal.core.session.current_user import get_current_user, set_current_user
+from openbb_terminal.core.session.current_user import get_current_user
 
 TEST_SESSION = {
     "access_token": "test_token",
@@ -26,14 +26,11 @@ TEST_SESSION = {
 
 @pytest.fixture(autouse=True)
 def revert_current_user(mocker):
-    current_user = get_current_user()
-
     mocker.patch(
         target="openbb_terminal.keys_model.set_credential",
     )
 
     yield
-    set_current_user(current_user)
 
 
 @pytest.fixture(name="test_user")
