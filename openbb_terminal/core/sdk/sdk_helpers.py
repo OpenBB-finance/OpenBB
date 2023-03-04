@@ -17,6 +17,8 @@ from openbb_terminal.core.sdk.sdk_init import (
 )
 from openbb_terminal.rich_config import console
 
+SETTINGS_ENV_FILE.parent.mkdir(parents=True, exist_ok=True)
+
 if not FORECASTING_TOOLKIT_ENABLED and not load_env_vars(
     "OPENBB_DISABLE_FORECASTING_WARNING", strtobool, False
 ):
