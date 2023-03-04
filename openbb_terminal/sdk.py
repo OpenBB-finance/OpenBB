@@ -233,21 +233,27 @@ class OpenBBSDK:
         """Fmp Submodule
 
         Attributes:
+            `active`: Get most active stocks\n
+            `all_symbols`: Get all symbols\n
             `balance`: Get historical balance sheet data\n
             `balance_growth`: Get historical balance sheet growth\n
             `cash`: Get historical cash flow data\n
             `cash_growth`: Get historical cash flow growth\n
             `divcal`: Get company dividend calendar\n
+            `dow_companies`: Get Dow Jones companies\n
             `earnings`: Get upgrades and downgrades for a company\n
             `esg`: Get ESG data from symbol\n
             `exec_comp`: Get executive compensation\n
             `ftd`: Get company ftds\n
+            `gainers`: Get top gainers\n
             `income`: Get historical income statement data\n
             `income_growth`: Get historical income statement growth\n
+            `industry_pe`: Get industry PE ratios\n
             `insider`: Get insider trading data\n
             `institutional`: Get institutional ownership data\n
             `key`: Get historical key metrics\n
             `key_execs`: Get key executives from company\n
+            `losers`: Get top losers\n
             `market_risk_premium`: Get market risk premium\n
             `marketcap`: Get historical marketcap\n
             `news`: Get news for a company\n
@@ -259,7 +265,11 @@ class OpenBBSDK:
             `ratios`: Get historical ratios\n
             `revgeo`: Get sales revenue by geography\n
             `revseg`: Get sales revenue by segment\n
+            `scores`: Get stock financial scores\n
+            `sector_performance`: Get sector performance\n
+            `sectors_pe`: Get sectors PE ratios\n
             `senate`: Get company senate trading\n
+            `sp500_companies`: Get S&P 500 companies\n
             `splits`: Get company splits\n
             `statements`: Get historical full financial statement as reported\n
             `upgradedowngrade`: Get upgrades and downgrades for a company\n

@@ -843,3 +843,198 @@ class FMP(BaseModel):
         url = f"{cls._V4_URL()}company-notes?symbol={symbol}"
         r = request(url + "&apikey=" + cls._KEY())
         return pd.DataFrame(cls.validate_request(r))
+
+    @classmethod
+    def sp500_companies(cls) -> pd.DataFrame:
+        """Get S&P 500 companies
+
+        Returns
+        -------
+        pd.DataFrame
+            DataFrame of S&P 500 companies
+
+        Examples
+        --------
+        >>> from openbb_terminal.sdk import openbb
+        >>> sp500 = openbb.fmp.sp500_companies()
+        """
+        url = f"{cls._BASE_URL()}sp500_constituent"
+        r = request(url + "?apikey=" + cls._KEY())
+        return pd.DataFrame(cls.validate_request(r))
+
+    @classmethod
+    def dow_companies(cls) -> pd.DataFrame:
+        """Get Dow Jones companies
+
+        Returns
+        -------
+        pd.DataFrame
+            DataFrame of Dow Jones companies
+
+        Examples
+        --------
+        >>> from openbb_terminal.sdk import openbb
+        >>> dow = openbb.fmp.dow_companies()
+        """
+        url = f"{cls._BASE_URL()}dowjones_constituent"
+        r = request(url + "?apikey=" + cls._KEY())
+        return pd.DataFrame(cls.validate_request(r))
+
+    @classmethod
+    def all_symbols(cls) -> pd.DataFrame:
+        """Get all symbols
+
+        Returns
+        -------
+        pd.DataFrame
+            DataFrame of all symbols
+
+        Examples
+        --------
+        >>> from openbb_terminal.sdk import openbb
+        >>> symbols = openbb.fmp.all_symbols()
+        """
+        url = f"{cls._BASE_URL()}stock/list"
+        r = request(url + "?apikey=" + cls._KEY())
+        return pd.DataFrame(cls.validate_request(r))
+
+    @classmethod
+    def sectors_pe_ratios(cls, date: str) -> pd.DataFrame:
+        """Get sectors PE ratios
+
+        Parameters
+        ----------
+        date: str
+            Date to get data for
+
+        Returns
+        -------
+        pd.DataFrame
+            DataFrame of sectors PE ratios
+
+        Examples
+        --------
+        >>> from openbb_terminal.sdk import openbb
+        >>> sectors = openbb.fmp.sectors_pe(date="2023-03-03")
+        """
+        url = f"{cls._V4_URL()}sector_price_earning_ratio?date={date}"
+        r = request(url + "&apikey=" + cls._KEY())
+        return pd.DataFrame(cls.validate_request(r))
+
+    @classmethod
+    def industry_pe_ratios(cls, date: str) -> pd.DataFrame:
+        """Get industry PE ratios
+
+        Parameters
+        ----------
+        date: str
+            Date to get data for
+
+        Returns
+        -------
+        pd.DataFrame
+            DataFrame of sectors PE ratios
+
+        Examples
+        --------
+        >>> from openbb_terminal.sdk import openbb
+        >>> sectors = openbb.fmp.industry_pe(date="2023-03-03")
+        """
+        url = f"{cls._V4_URL()}industry_price_earning_ratio?date={date}"
+        r = request(url + "&apikey=" + cls._KEY())
+        return pd.DataFrame(cls.validate_request(r))
+
+    @classmethod
+    def sector_performance(cls) -> pd.DataFrame:
+        """Get sector performance
+
+        Returns
+        -------
+        pd.DataFrame
+            DataFrame of sector performance
+
+        Examples
+        --------
+        >>> from openbb_terminal.sdk import openbb
+        >>> sectors = openbb.fmp.sector_performance()
+        """
+        url = f"{cls._BASE_URL()}sector-performance"
+        r = request(url + "?apikey=" + cls._KEY())
+        return pd.DataFrame(cls.validate_request(r))
+
+    @classmethod
+    def most_active(cls) -> pd.DataFrame:
+        """Get most active stocks
+
+        Returns
+        -------
+        pd.DataFrame
+            DataFrame of most active stocks
+
+        Examples
+        --------
+        >>> from openbb_terminal.sdk import openbb
+        >>> most_active = openbb.fmp.active()
+        """
+        url = f"{cls._BASE_URL()}stock_market/actives"
+        r = request(url + "?apikey=" + cls._KEY())
+        return pd.DataFrame(cls.validate_request(r))
+
+    @classmethod
+    def gainers(cls) -> pd.DataFrame:
+        """Get top gainers
+
+        Returns
+        -------
+        pd.DataFrame
+            DataFrame of top gainers
+
+        Examples
+        --------
+        >>> from openbb_terminal.sdk import openbb
+        >>> top_gainers = openbb.fmp.gainers()
+        """
+        url = f"{cls._BASE_URL()}gainers"
+        r = request(url + "?apikey=" + cls._KEY())
+        return pd.DataFrame(cls.validate_request(r))
+
+    @classmethod
+    def losers(cls) -> pd.DataFrame:
+        """Get top losers
+
+        Returns
+        -------
+        pd.DataFrame
+            DataFrame of top losers
+
+        Examples
+        --------
+        >>> from openbb_terminal.sdk import openbb
+        >>> top_losers = openbb.fmp.losers()
+        """
+        url = f"{cls._BASE_URL()}losers"
+        r = request(url + "?apikey=" + cls._KEY())
+        return pd.DataFrame(cls.validate_request(r))
+
+    @classmethod
+    def scores(cls, symbol: str) -> pd.DataFrame:
+        """Get stock financial scores
+
+        Parameters
+        ----------
+        symbol : str
+            Symbol to get data for
+
+        Returns
+        -------
+        pd.DataFrame
+            Dataframe of financial scores
+
+        Examples
+        --------
+        >>> from openbb_terminal.sdk import openbb
+        >>> top_losers = openbb.fmp.scores("AAPL")
+        """
+        url = f"{cls._V4_URL()}score?symbol={symbol}"
+        r = request(url + "&apikey=" + cls._KEY())
+        return pd.DataFrame(cls.validate_request(r))
