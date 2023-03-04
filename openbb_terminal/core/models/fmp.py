@@ -271,7 +271,12 @@ class FMP(BaseModel):
         """
         url = f"{cls._BASE_URL()}income-statement-growth/{symbol}?"
         r = request(url + f"apikey={cls._KEY()}&limit={limit}")
-        return pd.DataFrame(cls.validate_request(r)).T
+        df = (
+            pd.DataFrame(cls.validate_request(r))
+            .drop(columns=["symbol", "period"])
+            .set_index("date")
+        )
+        return df.T
 
     @classmethod
     def balance_growth(cls, symbol: str, limit: int = 200) -> pd.DataFrame:
