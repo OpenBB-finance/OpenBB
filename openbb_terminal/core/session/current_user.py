@@ -1,11 +1,14 @@
 # IMPORTS STANDARD
 from copy import deepcopy
+from typing import Optional
 
 # IMPORTS INTERNAL
-from openbb_terminal.core.models.credentials_model import CredentialsModel
-from openbb_terminal.core.models.preferences_model import PreferencesModel
-from openbb_terminal.core.models.profile_model import ProfileModel
-from openbb_terminal.core.models.user_model import UserModel
+from openbb_terminal.core.models import (
+    CredentialsModel,
+    PreferencesModel,
+    ProfileModel,
+    UserModel,
+)
 from openbb_terminal.core.session.env_handler import reading_env
 
 __env_dict = reading_env()
@@ -40,3 +43,23 @@ def is_local() -> bool:
         True if user is guest, False otherwise.
     """
     return not bool(__current_user.profile.token)
+
+
+def copy_user(
+    credentials: Optional[CredentialsModel] = None,
+    preferences: Optional[PreferencesModel] = None,
+    profile: Optional[ProfileModel] = None,
+    user: Optional[UserModel] = None,
+):
+    current_user = user or get_current_user()
+    credentials = credentials or current_user.credentials
+    preferences = preferences or current_user.preferences
+    profile = profile or current_user.profile
+
+    user_copy = UserModel(  # type: ignore
+        credentials=credentials,
+        preferences=preferences,
+        profile=profile,
+    )
+
+    return user_copy
