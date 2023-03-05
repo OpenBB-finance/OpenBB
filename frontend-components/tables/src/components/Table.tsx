@@ -308,19 +308,19 @@ export default function Table({ data, columns }: any) {
     if (type === "csv") {
       const csvContent = csvData.map((e) => e.join(",")).join("\n");
       const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-      saveToFile(blob, "data.csv");
+      saveToFile(blob,  `${window.title}.csv`);
     } else {
       const wb = utils.book_new();
       const ws = utils.aoa_to_sheet(csvData);
       utils.book_append_sheet(wb, ws, "Sheet1");
-      writeFile(wb, "data.xlsx");
+      writeFile(wb,  `${window.title}.xlsx`);
     }
   };
 
   const downloadImage = () => {
     const table = document.getElementById("table");
     domtoimage.toBlob(table).then(function (blob) {
-      saveToFile(blob, "data.png");
+      saveToFile(blob, `${window.title}.png`);
     });
   };
 

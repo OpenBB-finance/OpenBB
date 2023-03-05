@@ -320,8 +320,11 @@ def print_rich_table(
 
         for col in df_outgoing.columns:
             if col == "":
-                df_outgoing= df_outgoing.rename(columns={col: "  "})
+                df_outgoing = df_outgoing.rename(columns={col: "  "})
 
+        df_outgoing = df_outgoing.applymap(
+            lambda x: type(x)(re.sub(r"\[\/?[a-z]+\]", "", str(x)))
+        )
         plots_backend().send_table(df_table=df_outgoing, title=title)
         return
 

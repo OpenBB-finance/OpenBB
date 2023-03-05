@@ -13,14 +13,8 @@ const COLORS = [
 ];
 
 const plot_layout = {
-  margin: {
-    l: 20,
-    r: 30,
-    b: 20,
-    pad: 0,
-  },
-  height: 762,
-  width: 1400,
+  height: window.innerHeight * 0.7,
+  width: window.innerWidth * 0.8,
   font: {
     color: "#F5EFF3",
     size: 16,

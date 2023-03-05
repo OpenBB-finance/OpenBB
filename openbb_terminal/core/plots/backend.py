@@ -216,11 +216,14 @@ class Backend(pywry.PyWry):
         # in case of a very small table we set a min width
         width = max(int(min(sum(columnwidth) * 9.7, self.WIDTH + 100)), 800)
 
+        json_data = json.loads(df_table.to_json(orient="split"))
+        json_data.update(dict(title=title))
+
         self.outgoing.append(
             json.dumps(
                 {
                     "html_path": self.get_table_html(),
-                    "json_data": df_table.to_json(orient="split"),
+                    "json_data": json.dumps(json_data),
                     "width": width,
                     "height": self.HEIGHT - 100,
                     **self.get_kwargs(title),
