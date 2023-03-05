@@ -1,11 +1,16 @@
 # IMPORTATION STANDARD
+
 import os
 from datetime import datetime
 
 # IMPORTATION THIRDPARTY
 import pytest
 
-from openbb_terminal import helper_funcs
+# IMPORTATION INTERNAL
+from openbb_terminal.core.session.current_user import (
+    PreferencesModel,
+    copy_user,
+)
 
 # IMPORTATION INTERNAL
 from openbb_terminal.stocks import stocks_helper, stocks_view
@@ -39,8 +44,11 @@ def test_quote():
     [True, False],
 )
 def test_search(mocker, use_tab):
-    mocker.patch.object(
-        target=helper_funcs.obbff, attribute="USE_TABULATE_DF", new=use_tab
+    preferences = PreferencesModel(USE_TABULATE_DF=use_tab)
+    mock_current_user = copy_user(preferences=preferences)
+    mocker.patch(
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
     )
     stocks_helper.search(
         query="microsoft",

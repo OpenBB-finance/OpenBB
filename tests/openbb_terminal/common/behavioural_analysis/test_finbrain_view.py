@@ -1,13 +1,17 @@
 # IMPORTATION STANDARD
 
+
 # IMPORTATION THIRDPARTY
 import pandas as pd
 import pytest
 
-from openbb_terminal import helper_funcs
+from openbb_terminal.common.behavioural_analysis import finbrain_view
 
 # IMPORTATION INTERNAL
-from openbb_terminal.common.behavioural_analysis import finbrain_view
+from openbb_terminal.core.session.current_user import (
+    PreferencesModel,
+    copy_user,
+)
 
 
 @pytest.mark.default_cassette("test_display_sentiment_analysis")
@@ -21,7 +25,12 @@ def test_display_sentiment_analysis(color, mocker):
     )
 
     # MOCK OBBFF
-    mocker.patch.object(target=helper_funcs.obbff, attribute="USE_ION", new=True)
+    preferences = PreferencesModel(USE_ION=True)
+    mock_current_user = copy_user(preferences=preferences)
+    mocker.patch(
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
+    )
     mocker.patch.object(
         target=finbrain_view.rich_config, attribute="USE_COLOR", new=color
     )
@@ -43,7 +52,12 @@ def test_display_sentiment_analysis_empty_df(mocker):
     )
 
     # MOCK OBBFF
-    mocker.patch.object(target=helper_funcs.obbff, attribute="USE_ION", new=True)
+    preferences = PreferencesModel(USE_ION=True)
+    mock_current_user = copy_user(preferences=preferences)
+    mocker.patch(
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
+    )
 
     # MOCK GET_SENTIMENT
     mocker.patch(

@@ -1,18 +1,33 @@
+# IMPORTATION STANDARD
+
 from contextlib import contextmanager
 
+# IMPORTATION THIRDPARTY
 import pytest
 
+# IMPORTATION INTERNAL
 from openbb_terminal import terminal_controller
+from openbb_terminal.core.session.current_user import (
+    PreferencesModel,
+    copy_user,
+)
 
 
 @pytest.mark.skip
 @pytest.mark.block_network
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.record_stdout
-def test_terminal_quick_exit(mocker, monkeypatch):
-    monkeypatch.setattr(terminal_controller.obbff, "ENABLE_QUICK_EXIT", True)
-    monkeypatch.setattr(terminal_controller.obbff, "USE_ION", False)
-    monkeypatch.setattr(terminal_controller.obbff, "USE_PROMPT_TOOLKIT", True)
+def test_terminal_quick_exit(mocker):
+    preferences = PreferencesModel(
+        ENABLE_QUICK_EXIT=True,
+        USE_ION=False,
+        USE_PROMPT_TOOLKIT=True,
+    )
+    mock_current_user = copy_user(preferences=preferences)
+    mocker.patch(
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
+    )
 
     mocker.patch("sys.stdin")
 
@@ -22,10 +37,17 @@ def test_terminal_quick_exit(mocker, monkeypatch):
 @pytest.mark.skip
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.record_stdout
-def test_terminal_quit(mocker, monkeypatch):
-    monkeypatch.setattr(terminal_controller.obbff, "ENABLE_QUICK_EXIT", False)
-    monkeypatch.setattr(terminal_controller.obbff, "USE_ION", False)
-    monkeypatch.setattr(terminal_controller.obbff, "USE_PROMPT_TOOLKIT", True)
+def test_terminal_quit(mocker):
+    preferences = PreferencesModel(
+        ENABLE_QUICK_EXIT=True,
+        USE_ION=False,
+        USE_PROMPT_TOOLKIT=True,
+    )
+    mock_current_user = copy_user(preferences=preferences)
+    mocker.patch(
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
+    )
 
     mocker.patch("sys.stdin")
     mocker.patch("builtins.input", return_value="e")

@@ -12,7 +12,7 @@ import pandas as pd
 import yfinance as yf
 from dateutil.relativedelta import relativedelta
 
-from openbb_terminal.core.config.paths import USER_PORTFOLIO_DATA_DIRECTORY
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.portfolio.statics import REGIONS
 from openbb_terminal.rich_config import console
 
@@ -44,7 +44,9 @@ PERIODS_DAYS = {
     "10y": 10 * 12 * 21,
 }
 
-DEFAULT_HOLDINGS_PATH = USER_PORTFOLIO_DATA_DIRECTORY / "holdings"
+DEFAULT_HOLDINGS_PATH = (
+    get_current_user().preferences.USER_PORTFOLIO_DATA_DIRECTORY / "holdings"
+)
 
 
 def is_ticker(ticker: str) -> bool:
@@ -261,7 +263,9 @@ def get_info_from_ticker(ticker: str) -> list:
 
     filename = "tickers_info.csv"
 
-    file_path = Path(str(USER_PORTFOLIO_DATA_DIRECTORY), filename)
+    file_path = Path(
+        str(get_current_user().preferences.USER_PORTFOLIO_DATA_DIRECTORY), filename
+    )
 
     if file_path.is_file() and os.stat(file_path).st_size > 0:
         # file exists and is not empty, so append if necessary
