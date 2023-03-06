@@ -1088,6 +1088,13 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
         self.suffix = ""  # To hold suffix for Yahoo Finance
         self.add_info = stocks_helper.additional_info_about_ticker("")
         self.TRY_RELOAD = True
+        self.USER_IMPORT_FILES = {
+            filepath.name: filepath
+            for file_type in ["csv"]
+            for filepath in (
+                get_current_user().preferences.USER_CUSTOM_IMPORTS_DIRECTORY / "stocks"
+            ).rglob(f"*.{file_type}")
+        }
 
     def call_load(self, other_args: List[str]):
         """Process load command."""
@@ -1208,25 +1215,10 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                 # This seems to block the .exe since the folder needs to be manually created
                 # This block makes sure that we only look for the file if the -f flag is used
                 # Adding files in the argparse choices, will fail for the .exe even without -f
-                STOCKS_CUSTOM_IMPORTS = (
-                    get_current_user().preferences.USER_CUSTOM_IMPORTS_DIRECTORY
-                    / "stocks"
+                file_location = self.USER_IMPORT_FILES.get(
+                    ns_parser.filepath, ns_parser.filepath
                 )
-                try:
-                    file_list = [x.name for x in STOCKS_CUSTOM_IMPORTS.iterdir()]
-                    if ns_parser.filepath not in file_list:
-                        console.print(
-                            f"[red]{ns_parser.filepath} not found in custom_imports/stocks/ "
-                            "folder[/red]."
-                        )
-                        return
-                except Exception as e:
-                    console.print(e)
-                    return
-
-                df_stock_candidate = stocks_helper.load_custom(
-                    str(STOCKS_CUSTOM_IMPORTS / ns_parser.filepath)
-                )
+                df_stock_candidate = stocks_helper.load_custom(str(file_location))
                 if df_stock_candidate.empty:
                     return
             is_df = isinstance(df_stock_candidate, pd.DataFrame)
