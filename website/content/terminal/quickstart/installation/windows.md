@@ -23,6 +23,14 @@ import InstallerButton from "@site/src/components/General/InstallerButton";
 
 This section provides you with the installation file as well as the guide to install the OpenBB Terminal via Windows (10 or greater).
 
+Note that the minimal requirements are:
+
+- Windows 10 or newer
+- Modern CPU (Intel or AMD processor made in the last 5 years)
+- At least 4GB of RAM
+- At least 5GB of free storage
+- Internet connection (cable or 4G mobile)
+
 **Step 1:** Download the file by clicking on the button.
 
 <p>

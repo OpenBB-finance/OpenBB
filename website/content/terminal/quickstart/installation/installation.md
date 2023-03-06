@@ -23,4 +23,8 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import InstallerButton from "@site/src/components/General/InstallerButton";
 
-The OpenBB Terminal can be installed via a variety of ways. The most user-friendly approach is using the installer versions, you are able to find the installer version of Windows [here](installation/windows) and that of MacOS [here](installation/macos). Furthermore, for those that are used to Docker environments, there is support for Docker for Windows, MacOS and Linux as found [here](/terminal/quickstart/installation/docker). The source code resides on GitHub and is written in Python. For those familiar with the usage of Python and Git and want access to development versions of the OpenBB Terminal, have a look [here](installation/source).
+The OpenBB Terminal can be installed via a variety of ways. The most user-friendly approach is using the installer versions, you are able to find the installer version of Windows [here](installation/windows) and that of MacOS [here](installation/macos).
+
+Furthermore, for those that are used to Docker environments, there is support for Docker for Windows, MacOS and Linux as found [here](/terminal/quickstart/installation/docker).
+
+The source code resides on GitHub and is written in Python. For those familiar with the usage of Python and Git and want access to development versions of the OpenBB Terminal, have a look [here](installation/source).

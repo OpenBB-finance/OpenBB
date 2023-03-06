@@ -23,6 +23,14 @@ import InstallerButton from "@site/src/components/General/InstallerButton";
 
 Install the OpenBB Terminal on MacOS (Big Sur or later). There are two versions of the installers available for MacOS, Intel-based and Apple Silicon (M1). 
 
+Note that the minimal requirements are:
+
+- MacOS Monterey or newer
+- Modern CPU (Intel processor made in the last 5 years or Apple Silicon chip)
+- At least 4GB of RAM
+- At least 5GB of free storage
+- Internet connection (cable or 4G mobile)
+
 :::info Apple Silicon users will need to install Rosetta prior to installation
 To understand whether you are using an Apple Sillicon (M1) device or an Intel-based device click on the Apple Icon at the top left of your MacBook and select "About This Mac". Then under "Chip" if it says something like "Apple M1 Pro" or "Apple M1 Max", you know you have an Apple Silicon MacBook. If it says for example "2,3 GHz Quad-Core Intel Core i7" you know that you have an Intel-based MacBook and you can continue by clicking on the "Mac Intel Installer" button.
 
