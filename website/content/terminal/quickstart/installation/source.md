@@ -20,7 +20,7 @@ keywords:
   ]
 ---
 
-This section guides you a long to install the OpenBB Terminal via Python. This installation type supports both Windows and Unix systems (Linux + MacOS). Before starting the installation process, make sure the following pieces of software are installed.
+This section guides you a long to install the OpenBB Terminal via Python. This installation type supports both Windows and Unix systems (Linux + MacOS). **Before starting the installation process, make sure the following pieces of software are installed.**
 
 <details><summary>Miniconda</summary>
 Miniconda is a Python environment and package manager. It is required for installing certain dependencies.
@@ -40,6 +40,7 @@ Go [here](https://docs.conda.io/en/latest/miniconda.html#latest-miniconda-instal
 </details>
 
 <details><summary>CMake (Mac and Linux only)</summary>
+
 If you have a **MacBook**, check if homebrew is installed by running `brew --version`
 
 If Homebrew is not installed, run:
@@ -66,6 +67,7 @@ sudo apt install -y gcc cmake
 </details>
 
 <details><summary>VcXsrv (Windows and Linux only)</summary>
+
 Since a WSL installation is headless by default (i.e., there is only access to a terminal running a Linux distribution) there are additional steps required to display visualizations. A more detailed tutorial is found, [here](https://medium.com/@shaoyenyu/make-matplotlib-works-correctly-with-x-server-in-wsl2-9d9928b4e36a).
 
 - Dynamically export the DISPLAY environment variable in WSL2:
@@ -94,7 +96,7 @@ Alternatives to `VcXsrv` include:
 Once you have met all of these requirements, you are ready to install the OpenBB Terminal.
 
 
-**Creating a virtual environment**
+## Creating a virtual environment
 
 When a terminal window is opened, if the base Conda environment - look for `(base)` to the left of the cursor on the command line - is not activated automatically, find the path for it by entering:
 
@@ -120,7 +122,7 @@ Create the environment by copying the code below into the command line:
 conda create -n obb -c conda-forge python=3.10.9 pip pybind11 cmake git cvxpy lightgbm poetry
 ```
 
-**Activate the obb environment**
+## Activate the obb environment
 
 After the packages from the previous step are installled, activate the newly created environment by entering:
 
@@ -128,7 +130,7 @@ After the packages from the previous step are installled, activate the newly cre
 conda activate obb
 ```
 
-**Install OpenBB Terminal**
+## Install the OpenBB Terminal
 
 From your code editor or command line, browse to the location the OpenBB Terminal source code should live. Make sure you have completed the previous steps.
 
@@ -161,7 +163,7 @@ python terminal.py
 
 **TROUBLESHOOTING:** Having difficulty getting through the installation, or encountering errors? Check out the [troubleshooting page](/terminal/quickstart/troubleshooting), or reach out to our [Discord](https://discord.gg/Up2QGbMKHY) community for help.
 
-**Advanced: About Poetry**
+:::info About Poetry
 
 By default we advise using `conda` and `poetry` for environment setup and dependency management. Conda ships binaries for packages like `numpy` so these dependencies are not built from source locally by `pip`. Poetry solves the dependency tree in a way that the dependencies of dependencies of dependencies use versions that are compatible with each other.
 
@@ -183,3 +185,5 @@ pip install -r requirements.txt
 The dependency tree is solved by poetry.
 
 Note: The libraries specified in the requirements files have been tested and work for the purpose of this project, however, these may be older versions. Hence, it is recommended for the user to set up a virtual python environment prior to installing these. This allows to keep dependencies required by different projects in separate places.
+
+:::

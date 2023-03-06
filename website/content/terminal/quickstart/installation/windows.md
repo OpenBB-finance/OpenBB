@@ -39,4 +39,4 @@ This section provides you with the installation file as well as the guide to ins
 
 The first time this takes a bit longer to load, this can take up to a few minutes. If everything was successful you should see a screen like the one below:
 
-<p align="center"><a target="_blank" href="https://user-images.githubusercontent.com/46355364/223144493-6d2333fd-914d-4b4d-aaa6-da986b64f1fe.png"><img alt="run_the_terminal" src="https://user-images.githubusercontent.com/46355364/223144493-6d2333fd-914d-4b4d-aaa6-da986b64f1fe.png"></img></a></p>
+<p align="center"><a target="_blank" href="https://user-images.githubusercontent.com/46355364/223194653-a21966e2-cd55-44da-95eb-7c66811f629b.png"><img alt="run_the_terminal" src="https://user-images.githubusercontent.com/46355364/223194653-a21966e2-cd55-44da-95eb-7c66811f629b.png"></img></a></p>
