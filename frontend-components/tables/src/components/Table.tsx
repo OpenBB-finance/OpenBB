@@ -226,7 +226,10 @@ export default function Table({ data, columns }: any) {
             if (typeof value === "string") {
               return <p>{value}</p>;
             }
-            return <p>{new Date(value).toISOString()}</p>;
+            // convert .toISOString date to YYYY-MM-DD - HH:MM:SS
+            var dateFormatted = new Date(value).toISOString()
+            dateFormatted = dateFormatted.split('T')[0] + ' ' + dateFormatted.split('T')[1].split('.')[0]
+            return <p>{dateFormatted}</p>;
           }
           const valueFormatted =
             valueType === "number" ? formatNumberMagnitude(value) : value;
