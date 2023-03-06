@@ -97,6 +97,8 @@ jobs:
               file \
               librsvg2-dev \
               libwebkit2gtk-4.1-dev \
+              javascriptcoregtk-4.0 \
+              libwebkit2gtk-4.0-dev \
               libayatana-appindicator3-dev
 
       - name: Load cached venv
