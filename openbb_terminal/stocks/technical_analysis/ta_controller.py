@@ -133,6 +133,8 @@ class TechnicalAnalysisController(StockBaseController):
             "_ticker", stock_str if not self.stock.empty else "No ticker loaded"
         )
         mt.add_raw("\n")
+        mt.add_cmd("load")
+        mt.add_raw("\n")
         mt.add_cmd("recom")
         mt.add_cmd("summary")
         mt.add_cmd("tv")
