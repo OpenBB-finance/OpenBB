@@ -107,7 +107,7 @@ import logging
 
 import pandas as pd
 
-from openbb_terminal import config_terminal as cfg
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helpers import request
 
@@ -128,7 +128,9 @@ def get_price_targets(cls, symbol: str) -> pd.DataFrame:
     pd.DataFrame
         DataFrame of price targets
     """
-    url = f"https://financialmodelingprep.com/api/v4/price-target?symbol={symbol}&apikey={cfg.API_KEY_FINANCIALMODELINGPREP}"
+    current_user = get_current_user()
+
+    url = f"https://financialmodelingprep.com/api/v4/price-target?symbol={symbol}&apikey={current_user.credentials.API_KEY_FINANCIALMODELINGPREP}"
     response = request(url)
     # Check if response is valid
     if response.status_code != 200:
@@ -144,6 +146,7 @@ def get_price_targets(cls, symbol: str) -> pd.DataFrame:
 
 In this function:
 
+- We import the current user object and preferences using the `get_current_user` function.  API keys are stored in `current_user.credentials`
 - We use the `@log_start_end` decorator to add the function to our logs for debugging purposes.
 - We add the `check_api_key` decorator to confirm the api key is valid.
 - We have type hinting and a doctring describing the function.
@@ -176,8 +179,9 @@ def get_economy_calendar_events() -> pd.DataFrame:
     pd.DataFrame
         Get dataframe with economic calendar events
     """
+    current_user = get_current_user()
     response = request(
-        f"https://finnhub.io/api/v1/calendar/economic?token={cfg.API_FINNHUB_KEY}"
+        f"https://finnhub.io/api/v1/calendar/economic?token={current_user.credentials.API_FINNHUB_KEY}"
     )
 
     df = pd.DataFrame()
@@ -1175,14 +1179,14 @@ def check_polygon_key(show_output: bool = False) -> str:
     str
         Status of key set
     """
-
-    if cfg.API_POLYGON_KEY == "REPLACE_ME":
+    current_user = get_current_user()
+    if current_user.credentials.API_POLYGON_KEY == "REPLACE_ME":
         logger.info("Polygon key not defined")
         status = KeyStatus.NOT_DEFINED
     else:
         r = request(
             "https://api.polygon.io/v2/aggs/ticker/AAPL/range/1/day/2020-06-01/2020-06-17"
-            f"?apiKey={cfg.API_POLYGON_KEY}"
+            f"?apiKey={current_user.credentials.API_POLYGON_KEY}"
         )
         if r.status_code in [403, 401]:
             logger.warning("Polygon key defined, test failed")
