@@ -60,7 +60,7 @@ jobs:
   base-test:
     name: Base Tests - Ubuntu-latest - Python 3.9
     needs: [check-files-changed]
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     if: needs.check-files-changed.outputs.check-changes == 'true' && github.event.pull_request.base.ref == 'develop'
     steps:
       - name: Checkout Code
@@ -85,7 +85,7 @@ jobs:
           sudo apt-get install -y \
               build-essential \
               libgtk-3-dev \
-              libsoup2.4-dev \
+              libsoup-3.0-dev \
               libssl-dev \
               curl \
               wget \
@@ -95,7 +95,7 @@ jobs:
               make \
               file \
               librsvg2-dev \
-              libwebkit2gtk-4.0-dev \
+              libwebkit2gtk-4.1-dev \
               libayatana-appindicator3-dev
 
       - name: Load cached venv
