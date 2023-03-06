@@ -20,6 +20,7 @@ from openbb_terminal import (
     feature_flags as obbff,
     thought_of_the_day as thought,
 )
+from openbb_terminal.base_helpers import load_env_files
 from openbb_terminal.config_terminal import LOGGING_COMMIT_HASH
 
 # IMPORTATION INTERNAL
@@ -354,6 +355,8 @@ def reset(queue: Optional[List[str]] = None):
             if parts[0] == "openbb_terminal":
                 del sys.modules[module]
 
+        # we reload the env files
+        load_env_files()
         # pylint: disable=import-outside-toplevel
         from openbb_terminal.terminal_controller import main
 

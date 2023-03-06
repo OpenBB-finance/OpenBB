@@ -60,7 +60,7 @@ jobs:
   base-test:
     name: Base Tests - Ubuntu-latest - Python 3.9
     needs: [check-files-changed]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     if: needs.check-files-changed.outputs.check-changes == 'true' && github.event.pull_request.base.ref == 'develop'
     steps:
       - name: Checkout Code
@@ -79,9 +79,6 @@ jobs:
           virtualenvs-create: true
           virtualenvs-in-project: true
 
-      - name: Install nightly rust
-        run: curl --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain nightly
-
       - name: Setup sudo apt installs for ubuntu-latest
         run: |
           sudo apt-get update
@@ -98,7 +95,7 @@ jobs:
               make \
               file \
               librsvg2-dev \
-              libwebkit2gtk-4.1-dev \
+              libwebkit2gtk-4.0-dev \
               libayatana-appindicator3-dev
 
       - name: Load cached venv
