@@ -208,8 +208,11 @@ export default function Table({ data, columns }: any) {
         cell: ({ row }: any) => {
           const value = row.original[column];
           const valueType = typeof value;
-          const probablyDate = column.toLowerCase().includes("date") || column.toLowerCase() === "index";
-          const probablyLink = valueType === "string" && value.startsWith("http");
+          const probablyDate =
+            column.toLowerCase().includes("date") ||
+            column.toLowerCase() === "index";
+          const probablyLink =
+            valueType === "string" && value.startsWith("http");
 
           //TODO - Parse as HTML to make links work if string doesn't start with http
           //TODO - Max Column Size
@@ -230,18 +233,19 @@ export default function Table({ data, columns }: any) {
               return <p>{value}</p>;
             }
 
-            try{
-              var dateFormatted = new Date(value).toISOString()
+            try {
+              var dateFormatted = new Date(value).toISOString();
 
               // TODO - Remove 00:00:00 from date
 
-
-              dateFormatted = dateFormatted.split('T')[0] + ' ' + dateFormatted.split('T')[1].split('.')[0]
+              dateFormatted =
+                dateFormatted.split("T")[0] +
+                " " +
+                dateFormatted.split("T")[1].split(".")[0];
               return <p>{dateFormatted}</p>;
             } catch (e) {
               return <p>{value}</p>;
             }
-
           }
           const valueFormatted =
             valueType === "number" ? formatNumberMagnitude(value) : value;
@@ -323,12 +327,12 @@ export default function Table({ data, columns }: any) {
     if (type === "csv") {
       const csvContent = csvData.map((e) => e.join(",")).join("\n");
       const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-      saveToFile(blob,  `${window.title}.csv`);
+      saveToFile(blob, `${window.title}.csv`);
     } else {
       const wb = utils.book_new();
       const ws = utils.aoa_to_sheet(csvData);
       utils.book_append_sheet(wb, ws, "Sheet1");
-      writeFile(wb,  `${window.title}.xlsx`);
+      writeFile(wb, `${window.title}.xlsx`);
     }
   };
 
@@ -686,32 +690,42 @@ function Filter({
 
   const columnFilterValue = column.getFilterValue();
 
-  const isProbablyDate = column.id.toLowerCase().includes("date") || column.id.toLowerCase() === "index";
+  const isProbablyDate =
+    column.id.toLowerCase().includes("date") ||
+    column.id.toLowerCase() === "index";
 
   if (isProbablyDate) {
+    function getTime(value) {
+      if (!value) return null;
+      const date = new Date(value);
+      const year = date.getFullYear();
+      const month =
+        date.getMonth() + 1 > 9
+          ? date.getMonth() + 1
+          : `0${date.getMonth() + 1}`;
+      const day = date.getDate() > 9 ? date.getDate() : `0${date.getDate()}`;
+      return `${year}-${month}-${day}`;
+    }
+
     return (
       <div className="flex space-x-2">
         <input
           type="date"
-          value={(columnFilterValue as [string, string])?.[0] ?? ""}
-          onChange={(e) =>
-            column.setFilterValue((old: [string, string]) => [
-              e.target.value,
-              old?.[1],
-            ])
-          }
+          value={getTime((columnFilterValue as [string, string])?.[0]) ?? ""}
+          onChange={(e) => {
+            const value = new Date(e.target.value).getTime();
+            column.setFilterValue((old: [string, string]) => [value, old?.[1]]);
+          }}
           placeholder={`Start date`}
           className="_input"
         />
         <input
           type="date"
-          value={(columnFilterValue as [string, string])?.[1] ?? ""}
-          onChange={(e) =>
-            column.setFilterValue((old: [string, string]) => [
-              old?.[0],
-              e.target.value,
-            ])
-          }
+          value={getTime((columnFilterValue as [string, string])?.[1]) ?? ""}
+          onChange={(e) => {
+            const value = new Date(e.target.value).getTime();
+            column.setFilterValue((old: [string, string]) => [old?.[0], value]);
+          }}
           placeholder={`End date`}
           className="_input"
         />

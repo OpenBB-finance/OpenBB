@@ -32,10 +32,10 @@ function App() {
   const transformData = (data: any) => {
     if (!data) return null;
 
-    let filename = data.title.replace(/<b>|<\/b>/g, "").replace(/ /g, "_");
+    let filename = data.title?.replace(/<b>|<\/b>/g, "").replace(/ /g, "_");
     let date = new Date().toISOString().slice(0, 10).replace(/-/g, "");
     let time = new Date().toISOString().slice(11, 19).replace(/:/g, "");
-    window.title = `openbb_${filename}_${date}_${time}`
+    window.title = `openbb_${filename}_${date}_${time}`;
 
     const columns = data.columns;
     const index = data.index;
