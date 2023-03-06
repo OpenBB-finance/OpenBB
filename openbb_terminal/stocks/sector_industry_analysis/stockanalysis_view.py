@@ -5,28 +5,26 @@ __docformat__ = "numpy"
 import copy
 import logging
 import os
-from typing import Dict, Optional, List, Tuple
+from typing import Dict, List, Optional, Tuple
 
 import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
 
-from openbb_terminal.config_terminal import theme
 from openbb_terminal.config_plot import PLOT_DPI
+from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
+    is_valid_axes_count,
     plot_autoscale,
     print_rich_table,
-    is_valid_axes_count,
 )
+from openbb_terminal.helpers_denomination import transform as transform_by_denomination
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.sector_industry_analysis import stockanalysis_model
 from openbb_terminal.stocks.sector_industry_analysis.financedatabase_model import (
     filter_stocks,
-)
-from openbb_terminal.helpers_denomination import (
-    transform as transform_by_denomination,
 )
 
 logger = logging.getLogger(__name__)
@@ -45,6 +43,7 @@ def display_plots_financials(
     currency: str = "USD",
     limit: int = 10,
     export: str = "",
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
     raw: bool = False,
     already_loaded_stocks_data=None,
@@ -73,6 +72,8 @@ def display_plots_financials(
         Choose in what currency you wish to convert each company's financial statement. Default is USD (US Dollars).
     limit: int
         Limit amount of companies displayed (default is 10)
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data as
     raw: bool
@@ -155,10 +156,7 @@ def display_plots_financials(
 
     (df, foundDenomination) = transform_by_denomination(df)
 
-    if currency:
-        denomination = f"[{currency} "
-    else:
-        denomination = "["
+    denomination = f"[{currency} " if currency else "["
 
     if denomination != "Units":
         denomination += f"{foundDenomination}]"
@@ -199,5 +197,6 @@ def display_plots_financials(
         os.path.dirname(os.path.abspath(__file__)),
         item_name,
         df,
+        sheet_name,
     )
     return stocks_data, company_tickers

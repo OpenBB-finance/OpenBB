@@ -1,6 +1,8 @@
 ---
 title: Changing Sources
 sidebar_position: 2
+description: Many commands have multiple datasources attached to it. A great example is /stocka/fa/income that allows you to select YahooFinance, Polygon, AlphaVantage, FinancialModelingPrep or EODHD. Many have a default source but you can change the default sources of each command via the sources menu.
+keywords: [source, sources, default source, datasources, api keys, api, keys, openbb sdk]
 ---
 
 Some functions have the built-in capability of requesting data from multiple sources. `obb.stocks.load` is one example of this type feature:
@@ -29,7 +31,6 @@ obb.stocks.load(
 The choices for `source` within this functionality are:
 
 - YahooFinance (default)
-- IEXCloud
 - AlphaVantage
 - Polygon
 - EODHD

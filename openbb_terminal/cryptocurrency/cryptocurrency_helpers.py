@@ -4,9 +4,9 @@
 import difflib
 import json
 import logging
-from typing import Union, Optional, List
 import os
 from datetime import datetime, timedelta
+from typing import List, Optional, Union
 
 import ccxt
 import matplotlib.pyplot as plt
@@ -114,7 +114,7 @@ YF_CURRENCY = [
 
 
 def check_datetime(
-    ck_date: Union[datetime, Union[str, None]] = None, start: bool = True
+    ck_date: Optional[Union[datetime, Union[str, None]]] = None, start: bool = True
 ) -> datetime:
     """Checks if given argument is string and attempts to convert to datetime.
 
@@ -325,6 +325,7 @@ def load_from_ccxt(
     interval: str = "1440",
     exchange: str = "binance",
     to_symbol: str = "usdt",
+    end_date: datetime = datetime.now(),
 ) -> pd.DataFrame:
     """Load crypto currency data [Source: https://github.com/ccxt/ccxt]
 
@@ -341,6 +342,8 @@ def load_from_ccxt(
         The exchange to get data from.
     to_symbol: str
         Quote Currency (Defaults to usdt)
+    end_date: datetime
+        The datetime to stop at
 
     Returns
     -------
@@ -351,6 +354,11 @@ def load_from_ccxt(
     pair = f"{symbol.upper()}/{to_symbol.upper()}"
 
     try:
+        if interval not in list(CCXT_INTERVAL_MAP):
+            console.print(
+                f"\nInvalid interval chosen for source, "
+                f"available intervals: {', '.join(list(CCXT_INTERVAL_MAP))}\n"
+            )
         df = fetch_ccxt_ohlc(
             exchange,
             3,
@@ -361,6 +369,19 @@ def load_from_ccxt(
         )
         if df.empty:
             console.print(f"\nPair {pair} not found in {exchange}\n")
+            return pd.DataFrame()
+        i = 0
+        for date in df.index:
+            if date > end_date:
+                break
+            i += 1
+        first_date = pd.to_datetime(str(df.index.values[0]))
+        df = df.iloc[0:i]
+        if df.empty:
+            console.print(
+                f"\nThe first data point retrieved was {first_date.strftime('%Y-%m-%d')}, "
+                f"thus the end date ({end_date.strftime('%Y-%m-%d')}) filtered out all of the data.\n"
+            )
             return pd.DataFrame()
     except Exception:
         console.print(f"\nPair {pair} not found on {exchange}\n")
@@ -487,14 +508,22 @@ def load_from_yahoofinance(
 
 def load(
     symbol: str,
-    start_date: Union[datetime, Union[str, None]] = None,
+    start_date: Optional[Union[datetime, Union[str, None]]] = None,
     interval: Union[str, int] = "1440",
     exchange: str = "binance",
-    to_symbol: str = "usdt",
-    end_date: Union[datetime, Union[str, None]] = None,
-    source: str = "CCXT",
+    to_symbol: str = "usd",
+    end_date: Optional[Union[datetime, Union[str, None]]] = None,
+    source: str = "CoinGecko",
 ) -> pd.DataFrame:
-    """Load crypto currency to get data for
+    """
+    Load crypto currency to get data for
+    Note:
+        take into consideration that the data might not be found if the data provider
+        (example) uses `usd` instead of `usdt` as the quote currency, so you might need to adjust
+        the `to_symbol` parameter.
+        For `CCXT` a valid pair would be: "BTC/USDT"
+        For `CoinGecko` a valid pair would be: "BTC-USD"
+        For `YahooFinance` a valid pair would be: "BTC-USD"
 
     Parameters
     ----------
@@ -528,7 +557,7 @@ def load(
     if isinstance(interval, int):
         interval = str(interval)
     if start_date is None:
-        start_date = (datetime.now() - timedelta(days=1100)).strftime("%Y-%m-%d")
+        start_date = (datetime.now() - timedelta(days=365)).strftime("%Y-%m-%d")
 
     if end_date is None:
         end_date = datetime.now().strftime("%Y-%m-%d")
@@ -537,7 +566,9 @@ def load(
     end_date = check_datetime(end_date, start=False)
 
     if source == "CCXT":
-        return load_from_ccxt(symbol, start_date, interval, exchange, to_symbol)
+        return load_from_ccxt(
+            symbol, start_date, interval, exchange, to_symbol, end_date
+        )
     if source == "CoinGecko":
         return load_from_coingecko(symbol, start_date, to_symbol)
     if source == "YahooFinance":
@@ -625,6 +656,7 @@ def load_yf_data(symbol: str, currency: str, interval: str, days: int):
         start=datetime.now() - timedelta(days=days),
         progress=False,
         interval=interval,
+        ignore_tz=True,
     ).sort_index(ascending=False)
 
     df_coin.index.names = ["date"]
@@ -638,7 +670,13 @@ def load_yf_data(symbol: str, currency: str, interval: str, days: int):
 
 
 def display_all_coins(
-    source: str, symbol: str, limit: int, skip: int, show_all: bool, export: str
+    source: str,
+    symbol: str,
+    limit: int,
+    skip: int,
+    show_all: bool,
+    export: str,
+    sheet_name: str,
 ) -> None:
     """Find similar coin by coin name,symbol or id.
     If you don't remember exact name or id of the Coin at CoinGecko, CoinPaprika, Coinbase, Binance
@@ -674,10 +712,7 @@ def display_all_coins(
 
     if show_all:
         coins_func = coins_func_map.get(source)
-        if coins_func:
-            df = coins_func()
-        else:
-            df = prepare_all_coins_df()
+        df = coins_func() if coins_func else prepare_all_coins_df()
 
     elif not source or source not in sources:
         df = prepare_all_coins_df()
@@ -689,7 +724,6 @@ def display_all_coins(
         df.drop("index", axis=1, inplace=True)
 
     else:
-
         if source == "CoinGecko":
             coins_df = pycoingecko_model.get_coin_list().drop("index", axis=1)
             df = _create_closest_match_df(symbol.lower(), coins_df, limit, cutoff)
@@ -744,6 +778,7 @@ def display_all_coins(
         os.path.dirname(os.path.abspath(__file__)),
         "coins",
         df,
+        sheet_name,
     )
 
 
@@ -808,9 +843,9 @@ def plot_chart(
 
 def plot_candles(  # pylint: disable=too-many-arguments
     symbol: str,
-    data: pd.DataFrame = None,
-    start_date: Union[datetime, Union[str, None]] = None,
-    end_date: Union[datetime, Union[str, None]] = None,
+    data: Optional[pd.DataFrame] = None,
+    start_date: Optional[Union[datetime, Union[str, None]]] = None,
+    end_date: Optional[Union[datetime, Union[str, None]]] = None,
     interval: Union[str, int] = "1440",
     exchange: str = "binance",
     to_symbol: str = "usdt",

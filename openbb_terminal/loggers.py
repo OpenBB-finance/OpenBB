@@ -21,11 +21,18 @@ from openbb_terminal.config_terminal import (
     LOGGING_APP_NAME,
     LOGGING_AWS_ACCESS_KEY_ID,
     LOGGING_AWS_SECRET_ACCESS_KEY,
+    LOGGING_COMMIT_HASH,
     LOGGING_FREQUENCY,
     LOGGING_HANDLERS,
     LOGGING_ROLLING_CLOCK,
     LOGGING_VERBOSITY,
-    LOGGING_COMMIT_HASH,
+)
+from openbb_terminal.core.log.generation.directories import get_log_dir
+from openbb_terminal.core.log.generation.formatter_with_exceptions import (
+    FormatterWithExceptions,
+)
+from openbb_terminal.core.log.generation.path_tracking_file_handler import (
+    PathTrackingFileHandler,
 )
 from openbb_terminal.core.log.generation.settings import (
     AppSettings,
@@ -33,13 +40,7 @@ from openbb_terminal.core.log.generation.settings import (
     LogSettings,
     Settings,
 )
-from openbb_terminal.core.log.generation.path_tracking_file_handler import (
-    PathTrackingFileHandler,
-)
-from openbb_terminal.core.log.generation.formatter_with_exceptions import (
-    FormatterWithExceptions,
-)
-from openbb_terminal.core.log.generation.directories import get_log_dir
+from openbb_terminal.core.log.generation.user_logger import get_user_uuid
 
 logging.getLogger("requests").setLevel(LOGGING_VERBOSITY)
 logging.getLogger("urllib3").setLevel(LOGGING_VERBOSITY)
@@ -166,6 +167,7 @@ def setup_logging(
     name = app_name or LOGGING_APP_NAME
     identifier = get_app_id()
     session_id = session_id or str(START_TIMESTAMP)
+    user_id = get_user_uuid()
 
     # AWSSettings
     aws_access_key_id = LOGGING_AWS_ACCESS_KEY_ID
@@ -184,6 +186,7 @@ def setup_logging(
             name=name,
             identifier=identifier,
             session_id=session_id,
+            user_id=user_id,
         ),
         aws_settings=AWSSettings(
             aws_access_key_id=aws_access_key_id,

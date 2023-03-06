@@ -1,0 +1,120 @@
+portfolio
+load --example
+show
+bench QQQ
+bench FAKE_BENCH
+bench TSLA
+alloc assets -t -l 4
+alloc sectors -t -l 4
+alloc countries -t -l 4
+alloc regions -t -l 4
+bench SPY
+alloc assets -t -l 4
+alloc sectors -t -l 4
+alloc countries -t -l 4
+alloc regions -t -l 4
+attrib
+attrib --raw
+attrib --type absolute
+summary -p mtd -r 0.5
+summary -p qtd -r 0.5
+summary -p ytd -r 0.5
+summary -p 3m -r 0.5
+summary -p 6m -r 0.5
+summary -p 1y -r 0.5
+summary -p 5y -r 0.5
+summary -p 10y -r 0.5
+summary -p all -r 0.5
+metric volatility
+metric sharpe -r 0.5
+metric sortino -r 0.5
+metric maxdrawdown
+metric rsquare
+metric skew
+metric kurtosis
+metric gaintopain
+metric trackerr
+metric information
+metric tail
+metric commonsense
+metric jensens
+metric calmar
+metric kelly
+metric payoff
+metric profitfactor
+perf
+perf -t
+holdv
+holdv --unstack --raw -l 4
+holdp
+holdp --unstack --raw -l 4
+yret
+yret -p 3y
+yret -p 5y
+yret -p 10y
+yret -p all --raw
+mret
+mret -p 3y -s
+mret -p 5y -s
+mret -p 10y -s
+mret -p all -s
+mret -p all -s --raw
+dret
+dret -p 3y
+dret -p 5y
+dret -p 10y
+dret -p all --raw -l 5
+distr -p mtd
+distr -p qtd
+distr -p ytd
+distr -p 3m
+distr -p 6m
+distr -p 1y
+distr -p 5y
+distr -p 10y
+distr -p all
+maxdd
+rvol -p mtd
+rvol -p qtd
+rvol -p ytd
+rvol -p 3m
+rvol -p 6m
+rvol -p 1y
+rvol -p 5y
+rvol -p 10y
+rvol -p all
+rsharpe -p mtd -r 0.5
+rsharpe -p qtd -r 0.5
+rsharpe -p ytd -r 0.5
+rsharpe -p 3m -r 0.5
+rsharpe -p 6m -r 0.5
+rsharpe -p 1y -r 0.5
+rsharpe -p 5y -r 0.5
+rsharpe -p 10y -r 0.5
+rsharpe -p all -r 0.5
+rsort -p mtd -r 0.5
+rsort -p qtd -r 0.5
+rsort -p ytd -r 0.5
+rsort -p 3m -r 0.5
+rsort -p 6m -r 0.5
+rsort -p 1y -r 0.5
+rsort -p 5y -r 0.5
+rsort -p 10y -r 0.5
+rsort -p all -r 0.5
+rbeta -p mtd
+rbeta -p qtd
+rbeta -p ytd
+rbeta -p 3m
+rbeta -p 6m
+rbeta -p 1y
+rbeta -p 5y
+rbeta -p 10y
+rbeta -p all
+var
+var -p 80
+es
+es -p 50
+om
+om --start 0.05 --end 0.2
+q
+exit

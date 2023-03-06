@@ -3,9 +3,9 @@ __docformat__ = "numpy"
 
 import logging
 import os
+from typing import Optional
 
-from openbb_terminal.decorators import log_start_end
-from openbb_terminal.decorators import check_api_key
+from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.portfolio.brokers.coinbase import coinbase_model
 
@@ -14,7 +14,9 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 @check_api_key(["API_COINBASE_KEY", "API_COINBASE_SECRET", "API_COINBASE_PASS_PHRASE"])
-def display_account(currency: str = "USD", export: str = "") -> None:
+def display_account(
+    currency: str = "USD", export: str = "", sheet_name: Optional[str] = None
+) -> None:
     """Display list of all your trading accounts. [Source: Coinbase]
 
     Parameters
@@ -43,12 +45,15 @@ def display_account(currency: str = "USD", export: str = "") -> None:
         os.path.dirname(os.path.abspath(__file__)),
         "account",
         df_data,
+        sheet_name,
     )
 
 
 @log_start_end(log=logger)
 @check_api_key(["API_COINBASE_KEY", "API_COINBASE_SECRET", "API_COINBASE_PASS_PHRASE"])
-def display_history(account: str, export: str = "", limit: int = 20) -> None:
+def display_history(
+    account: str, export: str = "", sheet_name: Optional[str] = None, limit: int = 20
+) -> None:
     """Display account history. [Source: Coinbase]
 
     Parameters
@@ -78,13 +83,18 @@ def display_history(account: str, export: str = "", limit: int = 20) -> None:
         os.path.dirname(os.path.abspath(__file__)),
         "history",
         df_data,
+        sheet_name,
     )
 
 
 @log_start_end(log=logger)
 @check_api_key(["API_COINBASE_KEY", "API_COINBASE_SECRET", "API_COINBASE_PASS_PHRASE"])
 def display_orders(
-    limit: int = 20, sortby: str = "price", descend: bool = False, export: str = ""
+    limit: int = 20,
+    sortby: str = "price",
+    descend: bool = False,
+    export: str = "",
+    sheet_name: Optional[str] = None,
 ) -> None:
     """List your current open orders [Source: Coinbase]
 
@@ -113,6 +123,7 @@ def display_orders(
         os.path.dirname(os.path.abspath(__file__)),
         "orders",
         df_data,
+        sheet_name,
     )
 
 
@@ -124,6 +135,7 @@ def display_deposits(
     deposit_type: str = "deposit",
     descend: bool = False,
     export: str = "",
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Display deposits into account [Source: Coinbase]
 
@@ -157,4 +169,5 @@ def display_deposits(
         os.path.dirname(os.path.abspath(__file__)),
         "deposits",
         df_data,
+        sheet_name,
     )

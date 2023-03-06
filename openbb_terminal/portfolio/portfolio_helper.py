@@ -1,25 +1,25 @@
 """Portfolio Helper"""
 __docformat__ = "numpy"
 
-import logging
-from datetime import datetime, date
-import os
-from pathlib import Path
 import csv
+import logging
+import os
+from datetime import date, datetime
+from pathlib import Path
 from typing import List
+
+import pandas as pd
+import yfinance as yf
 from dateutil.relativedelta import relativedelta
 
-import yfinance as yf
-import pandas as pd
-
 from openbb_terminal.core.config.paths import USER_PORTFOLIO_DATA_DIRECTORY
-from openbb_terminal.rich_config import console
 from openbb_terminal.portfolio.statics import REGIONS
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
 
-# pylint: disable=too-many-return-statements, too-many-lines, too-many-statements
+# pylint: disable=too-many-return-statements, too-many-lines, too-many-statements, consider-iterating-dictionary
 # pylint: disable=C0302
 
 
@@ -61,7 +61,7 @@ def is_ticker(ticker: str) -> bool:
         Whether the string is a ticker
     """
     item = yf.Ticker(ticker)
-    return "previousClose" in item.info
+    return "previous_close" in item.fast_info
 
 
 # TODO: Is this being used anywhere?
@@ -218,7 +218,7 @@ def get_info_update_file(ticker: str, file_path: Path, writemode: str) -> List[s
     # Pull ticker info from yf
     yf_ticker_info = yf.Ticker(ticker).info
 
-    if "sector" in yf_ticker_info.keys():
+    if "sector" in yf_ticker_info:
         # Ticker has valid sector
         # Replace the dash to UTF-8 readable
         ticker_info_list = [

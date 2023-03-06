@@ -1,8 +1,8 @@
 # IMPORTATION STANDARD
 
 # IMPORTATION THIRDPARTY
-import pytest
 import pandas as pd
+import pytest
 
 # IMPORTATION INTERNAL
 from openbb_terminal.stocks.options.screen import syncretism_view
@@ -20,18 +20,6 @@ def vcr_config():
     }
 
 
-@pytest.mark.vcr(record_mode="none")
-@pytest.mark.record_stdout
-@pytest.mark.parametrize(
-    "preset",
-    ["high_IV.ini"],
-)
-def test_view_available_presets(preset):
-    syncretism_view.view_available_presets(
-        preset=preset,
-    )
-
-
 @pytest.mark.default_cassette("test_view_screener_output")
 @pytest.mark.vcr
 @pytest.mark.record_stdout
@@ -39,7 +27,7 @@ def test_view_screener_output(mocker):
     # MOCK VISUALIZE_OUTPUT
     mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
     syncretism_view.view_screener_output(
-        preset="high_IV.ini",
+        preset="high_iv.ini",
         limit=5,
         export="",
     )
@@ -53,7 +41,7 @@ def test_view_screener_output_error(mocker):
         return_value=(pd.DataFrame(), "MOCK_ERROR_MESSAGE"),
     )
     syncretism_view.view_screener_output(
-        preset="high_IV.ini",
+        preset="high_iv.ini",
         limit=5,
         export="",
     )
@@ -66,7 +54,7 @@ def test_view_historical_greeks(mocker):
 
     syncretism_view.view_historical_greeks(
         symbol="PM",
-        expiry="2022-01-07",
+        expiry="",
         chain_id="PM220107P00090000",
         strike=90,
         greek="theta",
@@ -74,4 +62,16 @@ def test_view_historical_greeks(mocker):
         raw=True,
         limit=5,
         export="",
+    )
+
+
+@pytest.mark.vcr(record_mode="none")
+@pytest.mark.record_stdout
+@pytest.mark.parametrize(
+    "preset",
+    ["template.ini", "spy_30_delta.ini"],
+)
+def test_view_available_presets(preset):
+    syncretism_view.view_available_presets(
+        preset=preset,
     )

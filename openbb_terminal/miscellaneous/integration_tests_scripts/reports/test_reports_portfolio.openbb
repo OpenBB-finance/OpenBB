@@ -1,0 +1,8 @@
+reports
+
+portfolio --transactions holdings_example.xlsx
+
+# Test with invalid path
+portfolio --transactions holdings_test.xlsx
+
+exit

@@ -15,10 +15,10 @@ from openbb_terminal.cryptocurrency.defi import llama_model
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
+    is_valid_axes_count,
     lambda_long_number_format,
     plot_autoscale,
     print_rich_table,
-    is_valid_axes_count,
 )
 
 logger = logging.getLogger(__name__)
@@ -26,7 +26,10 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def display_grouped_defi_protocols(
-    limit: int = 50, export: str = "", external_axes: Optional[List[plt.Axes]] = None
+    limit: int = 50,
+    export: str = "",
+    sheet_name: Optional[str] = None,
+    external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Plots top dApps (in terms of TVL) grouped by chain.
     [Source: https://docs.llama.fi/api]
@@ -87,6 +90,7 @@ def display_grouped_defi_protocols(
         os.path.dirname(os.path.abspath(__file__)),
         "gdapps",
         chains,
+        sheet_name,
     )
 
 
@@ -97,6 +101,7 @@ def display_defi_protocols(
     ascend: bool = False,
     description: bool = False,
     export: str = "",
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Prints table showing information about listed DeFi protocols, their current TVL and changes to it in
     the last hour/day/week. [Source: https://docs.llama.fi/api]
@@ -124,6 +129,7 @@ def display_defi_protocols(
         os.path.dirname(os.path.abspath(__file__)),
         "ldapps",
         df,
+        sheet_name,
     )
 
 
@@ -131,6 +137,7 @@ def display_defi_protocols(
 def display_historical_tvl(
     dapps: str = "",
     export: str = "",
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plots historical TVL of different dApps
@@ -158,7 +165,7 @@ def display_historical_tvl(
 
     if isinstance(available_protocols, dict):
         for dapp in dapps.split(","):
-            if dapp in available_protocols.keys():
+            if dapp in available_protocols:
                 df = llama_model.get_defi_protocol(dapp)
                 if not df.empty:
                     ax.plot(df, label=available_protocols[dapp])
@@ -181,6 +188,7 @@ def display_historical_tvl(
             os.path.dirname(os.path.abspath(__file__)),
             "dtvl",
             None,
+            sheet_name,
         )
 
 
@@ -188,6 +196,7 @@ def display_historical_tvl(
 def display_defi_tvl(
     limit: int = 5,
     export: str = "",
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Plots historical values of the total sum of TVLs from all listed protocols.
@@ -233,4 +242,5 @@ def display_defi_tvl(
         os.path.dirname(os.path.abspath(__file__)),
         "stvl",
         df_data,
+        sheet_name,
     )

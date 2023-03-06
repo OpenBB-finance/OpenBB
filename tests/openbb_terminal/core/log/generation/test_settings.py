@@ -24,12 +24,14 @@ def test_app_settings():
     commit_hash = "MOCK_COMMIT_HASH"
     session_id = "MOCK_SESSION_ID"
     identifier = "MOCK_IDENTIFIER"
+    user_id = "MOCK_USER_ID"
 
     app_settings = AppSettings(
         name=name,
         commit_hash=commit_hash,
         session_id=session_id,
         identifier=identifier,
+        user_id=user_id,
     )
 
     assert app_settings.name == name
@@ -78,11 +80,13 @@ def test_settings(tmp_path):
     commit_hash = "MOCK_COMMIT_HASH"
     session_id = "MOCK_SESSION_ID"
     identifier = "MOCK_IDENTIFIER"
+    user_id = "MOCK_USER_ID"
     app_settings = AppSettings(
         name=name,
         commit_hash=commit_hash,
         session_id=session_id,
         identifier=identifier,
+        user_id=user_id,
     )
 
     aws_access_key_id = "MOCK_AWS_ACCESS_KEY_ID"

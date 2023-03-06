@@ -1,8 +1,10 @@
 from typing import Tuple
+
 import pandas as pd
 import pytest
-from openbb_terminal.forecast import forecast_model as fm
+
 from openbb_terminal.common import common_model
+from openbb_terminal.forecast import forecast_model as fm
 from tests.openbb_terminal.forecast import conftest
 
 
@@ -38,7 +40,7 @@ def test_clean(tsla_csv, fill, drop):
 def test_add_feature_engineering(tsla_csv, command):
     val = getattr(fm, f"add_{command}")(tsla_csv)
     if command == "atr":
-        assert isinstance(val, Tuple)
+        assert isinstance(val, (pd.DataFrame, Tuple))
     else:
         assert isinstance(val, pd.DataFrame)
 

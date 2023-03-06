@@ -3,19 +3,19 @@ __docformat__ = "numpy"
 
 import logging
 
-import pandas as pd
 import numpy as np
-import requests
+import pandas as pd
 
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.decorators import check_api_key, log_start_end
+from openbb_terminal.helper_funcs import request
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-@check_api_key(["API_EODHD_TOKEN"])
+@check_api_key(["API_EODHD_KEY"])
 def get_financials(
     symbol: str, statement: str, quarterly: bool = False, ratios: bool = False
 ) -> pd.DataFrame:
@@ -47,11 +47,12 @@ def get_financials(
         f"::{['yearly', 'quarterly'][quarterly]}"
     )
 
-    r = requests.get(request_url)
+    r = request(request_url)
     if r.status_code != 200:
-        console.print("[red]Invalid API Key for eodhistoricaldata [/red]")
         console.print(
-            "Get your Key here: https://eodhistoricaldata.com/r/?ref=869U7F4J\n"
+            "[red]Invalid API Key for EODHD. Please note that for Fundamental Data, a paid plan is required.\n[/red]"
+            "Get your API key here: https://eodhistoricaldata.com/r/?ref=869U7F4J and select either the "
+            "'Fundamentals Data Feed' or 'ALL-IN-ONE Package'.\n"
         )
         return pd.DataFrame()
 

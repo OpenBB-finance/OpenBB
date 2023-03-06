@@ -2,6 +2,8 @@
 import gzip
 import json
 
+import pandas as pd
+
 # IMPORTATION THIRDPARTY
 import pytest
 
@@ -287,7 +289,7 @@ def filter_json_data(response):
 )
 def test_get_countries(industry, recorder, sector):
     result = financedatabase_model.get_countries(industry=industry, sector=sector)
-    recorder.capture(result)
+    recorder.capture(result.tolist())
 
 
 @pytest.mark.vcr
@@ -301,7 +303,7 @@ def test_get_countries(industry, recorder, sector):
 )
 def test_get_sectors(country, industry, recorder):
     result = financedatabase_model.get_sectors(industry=industry, country=country)
-    recorder.capture(result)
+    recorder.capture(result.tolist())
 
 
 @pytest.mark.vcr
@@ -309,14 +311,14 @@ def test_get_sectors(country, industry, recorder):
     "country, sector",
     [
         ("France", ""),
-        ("", "Conglomerates"),
+        ("", "Materials"),
         ("France", "Energy"),
         ("", ""),
     ],
 )
 def test_get_industries(country, recorder, sector):
     result = financedatabase_model.get_industries(country=country, sector=sector)
-    recorder.capture(result)
+    recorder.capture(result.tolist())
 
 
 @pytest.mark.vcr
@@ -325,22 +327,22 @@ def test_get_marketcap(recorder):
     recorder.capture(result)
 
 
-@pytest.mark.vcr(record_mode="none")
+@pytest.mark.vcr
 @pytest.mark.parametrize(
     "country, sector, industry",
     [
-        ("Georgia", "Industrials", "Conglomerates"),
-        ("Georgia", "Industrials", None),
-        ("Georgia", None, "Conglomerates"),
-        ("Georgia", None, None),
-        (None, "Industrials", "Conglomerates"),
-        (None, "Industrials", None),
-        (None, None, "Conglomerates"),
+        ("United States", "Consumer Staples", "Tobacco"),
+        ("United States", "Consumer Staples", None),
+        ("United States", None, "Tobacco"),
+        ("United States", None, None),
+        (None, "Consumer Staples", "Tobacco"),
+        (None, "Consumer Staples", None),
+        (None, None, "Tobacco"),
     ],
 )
 def test_filter_stocks(country, sector, industry, mocker):
-    target = "openbb_terminal.stocks.sector_industry_analysis.financedatabase_model.fd.select_equities"
-    mock_select_equities = mocker.Mock(return_value={})
+    target = "openbb_terminal.stocks.sector_industry_analysis.financedatabase_model.fd.Equities.search"
+    mock_select_equities = mocker.Mock(return_value=pd.DataFrame())
     mocker.patch(target=target, new=mock_select_equities)
     financedatabase_model.filter_stocks(
         country=country,
@@ -352,9 +354,9 @@ def test_filter_stocks(country, sector, industry, mocker):
     mock_select_equities.assert_called_once()
 
 
-@pytest.mark.vcr(record_mode="none")
+@pytest.mark.vcr
 def test_filter_stocks_value_error(mocker):
-    target = "openbb_terminal.stocks.sector_industry_analysis.financedatabase_model.fd.select_equities"
+    target = "openbb_terminal.stocks.sector_industry_analysis.financedatabase_model.fd.Equities.search"
     mocker.patch(target=target, side_effect=ValueError)
     data = financedatabase_model.filter_stocks(
         country="Georgia",
@@ -380,10 +382,10 @@ def test_filter_stocks_no_param(recorder):
     recorder.capture(data)
 
 
-@pytest.mark.vcr(record_mode="none")
+@pytest.mark.vcr
 def test_filter_stocks_marketcap(mocker):
-    target = "openbb_terminal.stocks.sector_industry_analysis.financedatabase_model.fd.search_products"
-    mock_search_products = mocker.Mock(return_value={})
+    target = "openbb_terminal.stocks.sector_industry_analysis.financedatabase_model.fd.Equities.search"
+    mock_search_products = mocker.Mock(return_value=pd.DataFrame())
     mocker.patch(target=target, new=mock_search_products)
     financedatabase_model.filter_stocks(
         country=None,
@@ -397,12 +399,14 @@ def test_filter_stocks_marketcap(mocker):
 
 @pytest.mark.vcr
 def test_get_stocks_data(mocker, recorder):
-    target = "openbb_terminal.stocks.sector_industry_analysis.financedatabase_model.yf.utils.get_json"
+    target = (
+        "openbb_terminal.stocks.sector_industry_analysis.financedatabase_model.get_json"
+    )
     mocker.patch(target=target, return_value=YF_UTILS_GET_DICT)
     result = financedatabase_model.get_stocks_data(
         country="Georgia",
-        sector="Industrials",
-        industry="Conglomerates",
+        sector="Consumer Staples",
+        industry="Tobacco",
         marketcap="",
         exclude_exchanges=True,
     )
@@ -432,18 +436,18 @@ def test_get_companies_per_industry_in_country(recorder):
 @pytest.mark.vcr
 def test_get_companies_per_industry_in_sector(recorder):
     result = financedatabase_model.get_companies_per_industry_in_sector(
-        sector="Conglomerates",
+        sector="Consumer Staples",
         mktcap="Mid",
         exclude_exchanges=True,
     )
     recorder.capture(result)
 
 
-@pytest.mark.vcr(record_mode="none")
+@pytest.mark.vcr
 def test_get_companies_per_industry_in_sector_value_error(mocker):
     target = "openbb_terminal.stocks.sector_industry_analysis.financedatabase_model.get_industries"
     mocker.patch(target=target, return_value=["MOCK_INDUSTRY"])
-    target = "openbb_terminal.stocks.sector_industry_analysis.financedatabase_model.fd.select_equities"
+    target = "openbb_terminal.stocks.sector_industry_analysis.financedatabase_model.fd.Equities.search"
     mocker.patch(target=target, side_effect=ValueError)
     result = financedatabase_model.get_companies_per_industry_in_sector(
         sector="Conglomerates",
@@ -457,7 +461,7 @@ def test_get_companies_per_industry_in_sector_value_error(mocker):
 @pytest.mark.vcr
 def test_get_companies_per_country_in_sector(recorder):
     result = financedatabase_model.get_companies_per_country_in_sector(
-        sector="Conglomerates",
+        sector="Consumer Staples",
         mktcap="Mid",
         exclude_exchanges=True,
     )
@@ -467,7 +471,7 @@ def test_get_companies_per_country_in_sector(recorder):
 @pytest.mark.vcr
 def test_get_companies_per_country_in_industry(recorder):
     result = financedatabase_model.get_companies_per_country_in_industry(
-        industry="Uranium",
+        industry="Tobacco",
         mktcap="Mid",
         exclude_exchanges=True,
     )

@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
+from typing import Optional
 
 from pandas.plotting import register_matplotlib_converters
 
@@ -89,6 +90,7 @@ def display_twitter(
     sortby: str = "date",
     ascend: bool = True,
     export: str = "",
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Prints table showing twitter timeline for given coin id. Not more than last 50 tweets [Source: CoinPaprika]
 
@@ -125,6 +127,7 @@ def display_twitter(
         os.path.dirname(os.path.abspath(__file__)),
         "twitter",
         df,
+        sheet_name,
     )
 
 
@@ -136,6 +139,7 @@ def display_events(
     ascend: bool = False,
     links: bool = False,
     export: str = "",
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Prints table showing all events for given coin id. [Source: CoinPaprika]
 
@@ -178,6 +182,7 @@ def display_events(
         os.path.dirname(os.path.abspath(__file__)),
         "events",
         df_data,
+        sheet_name,
     )
 
 
@@ -188,6 +193,7 @@ def display_exchanges(
     sortby: str = "adjusted_volume_24h_share",
     ascend: bool = True,
     export: str = "",
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Prints table showing all exchanges for given coin id. [Source: CoinPaprika]
 
@@ -223,6 +229,7 @@ def display_exchanges(
         os.path.dirname(os.path.abspath(__file__)),
         "ex",
         df,
+        sheet_name,
     )
 
 
@@ -235,6 +242,7 @@ def display_markets(
     ascend: bool = True,
     links: bool = False,
     export: str = "",
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Prints table showing all markets for given coin id. [Source: CoinPaprika]
 
@@ -280,6 +288,7 @@ def display_markets(
         os.path.dirname(os.path.abspath(__file__)),
         "mkt",
         df_data,
+        sheet_name,
     )
 
 
@@ -288,6 +297,7 @@ def display_price_supply(
     from_symbol: str = "BTC",
     to_symbol: str = "USD",
     export: str = "",
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Prints table showing ticker information for single coin [Source: CoinPaprika]
 
@@ -297,6 +307,8 @@ def display_price_supply(
         Cryptocurrency symbol (e.g. BTC)
     to_symbol: str
         Quoted currency
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Export dataframe data to csv,json,xlsx
 
@@ -318,6 +330,7 @@ def display_price_supply(
         os.path.dirname(os.path.abspath(__file__)),
         "ps",
         df,
+        sheet_name,
     )
 
 
@@ -325,6 +338,7 @@ def display_price_supply(
 def display_basic(
     symbol: str = "BTC",
     export: str = "",
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Prints table showing basic information for coin. Like:
         name, symbol, rank, type, description, platform, proof_type, contract, tags, parent.
@@ -334,6 +348,8 @@ def display_basic(
     ----------
     symbol: str
         Cryptocurrency symbol (e.g. BTC)
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Export dataframe data to csv,json,xlsx
     """
@@ -352,4 +368,5 @@ def display_basic(
         os.path.dirname(os.path.abspath(__file__)),
         "basic",
         df,
+        sheet_name,
     )

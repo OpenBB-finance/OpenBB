@@ -2,13 +2,14 @@
 __docformat__ = "numpy"
 
 import logging
-
 from datetime import datetime, timedelta
 from typing import Any, List, Optional, Tuple
-import requests
+
 import pandas as pd
+
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.decorators import check_api_key, log_start_end
+from openbb_terminal.helper_funcs import request
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -58,7 +59,7 @@ def get_news(
 
     link += f"&apiKey={cfg.API_NEWS_TOKEN}"
 
-    response = requests.get(link)
+    response = request(link)
 
     articles = {}
 
@@ -70,11 +71,11 @@ def get_news(
             f" {query} were found since {start_date}\n",
         )
 
-        if show_newest:
-            articles = response_json["articles"]
-
-        else:
-            articles = response_json["articles"][::-1]
+        articles = (
+            response_json["articles"]
+            if show_newest
+            else response_json["articles"][::-1]
+        )
 
     elif response.status_code == 426:
         console.print(f"Error in request: {response.json()['message']}", "\n")

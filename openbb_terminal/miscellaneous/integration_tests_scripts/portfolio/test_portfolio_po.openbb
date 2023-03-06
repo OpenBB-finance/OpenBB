@@ -1,0 +1,41 @@
+portfolio
+po
+load --example
+file
+maxsharpe -s 2022-10-20
+minrisk -r 0.05
+maxutil -a 0.1 -ra 2 -tk 0.4 -tr 8
+maxret -e 2022-11-20
+maxdiv -mn 0.1
+maxdecorr -lr
+ef -t -se 69 -n 10
+equal -th 0.1
+riskparity -p 1y
+relriskparity -de 0.9
+hrp -cd spearman
+herc -at 0.1
+nco -rm MAD
+show RP_1
+plot -pf MAXSHARPE_0 -pi
+plot -pf MAXSHARPE_0 -hi
+plot -pf MAXSHARPE_0 -dd
+plot -pf MAXSHARPE_0 -rc
+plot -pf MAXSHARPE_0 -he
+rpf NAME_6
+..
+load --example
+po
+equal
+maxsharpe -s 1995-05-07
+minrisk -r 0.08
+maxutil -a 0.1 -ra 2 -tk 0.4 -tr 8
+maxret -e 2022-11-20
+maxdiv -mn 0.1
+maxdecorr -lr -p max
+ef -t -se 420 -n 0
+equal -th 0.1
+riskparity -p 1y
+relriskparity -de 0.9
+hrp -cd pearson
+herc -at 0.1
+exit

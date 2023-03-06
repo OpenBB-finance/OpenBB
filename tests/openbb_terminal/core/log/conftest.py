@@ -1,9 +1,10 @@
 import pytest
+
 from openbb_terminal.core.log.generation.settings import (
-    Settings,
     AppSettings,
     AWSSettings,
     LogSettings,
+    Settings,
 )
 
 
@@ -15,6 +16,7 @@ def settings(tmp_path):
             name="MOCK_NAME",
             identifier="MOCK_IDENTIFIER",
             session_id="MOCK_SESSION_ID",
+            user_id="MOCK_USER_ID",
         ),
         aws_settings=AWSSettings(
             aws_access_key_id="MOCK_AWS_ACCESS_KEY_ID",

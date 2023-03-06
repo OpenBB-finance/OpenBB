@@ -1,37 +1,12 @@
 ---
 title: Government
-keywords:
-  [
-    "Government",
-    "house",
-    "senate",
-    "politician",
-    "lobby",
-    "lobbyist",
-    "contract",
-    "contractor",
-    "spending",
-    "budget",
-    "treasury",
-    "trading",
-    "buys",
-    "sells",
-    "ticker",
-    "tickers",
-    "companies",
-    "listing",
-    "exchange",
-  ]
-date: "2022-06-02"
-type: guides
-status: publish
-excerpt: "This guide introduces the Government submenu, within the Stocks menu, by briefly explaining the features and how to use them, showing examples in context."
-geekdocCollapseSection: true
+keywords: [government, house, senate, politician, lobby, lobbyist, contract, contractor, spending, budget, treasury, trading, buys, sells, ticker, tickers, companies, listing, exchange]
+description: This guide introduces the Government submenu, within the Stocks menu, by briefly explaining the features and how to use them, showing examples in context.
 ---
 
 The features in this menu are intended to show the reported trades of elected officials, lobbyist activity, awarded contracts, and general spending of the United States Treasury Department. This menu only covers the USA, or companies that trade on US exchanges. The information in this menu is compiled by <a href="https://www.quiverquant.com/" target="_blank" rel="noreferrer noopener">QuiverQuant</a>. A ticker is not required to enter the menu; navigate there from anywhere in the terminal with absolute path jumping: `/stocks/gov`
 
-![The Government Menu](https://user-images.githubusercontent.com/85772166/173205843-1d9d5679-df73-4ec3-8b98-937f38ccac35.png)
+<img width="800" alt="image" src="https://user-images.githubusercontent.com/46355364/218980419-0535a83d-76c9-4079-a973-7bcd267038bb.png"></img>
 
 ### How to use
 
@@ -263,5 +238,3 @@ The consistency of quarterly contract awards over time is reflected in a chart r
 The ten most purchased and sold stocks amongst Senate Representatives, `topsells senate` & `topbuys senate`:
 
 ![Senate's Most Bought and Sold Stocks](https://user-images.githubusercontent.com/85772166/173206214-964bfe40-a72c-4833-8cc1-a803bba97c6e.png)
-
-To play a demonstration in the OpenBB Terminal of the features presented in this guide, execute the routine file, `gov_demo.openbb`, from the home menu.

@@ -4,14 +4,14 @@ __docformat__ = "numpy"
 import argparse
 import logging
 import os
+from datetime import datetime as dt
 from typing import List, Optional, Union
 
-from datetime import datetime as dt
 import pandas as pd
-import requests
 
-from openbb_terminal.config_terminal import API_KEY_QUANDL
+import openbb_terminal.config_terminal as cfg
 from openbb_terminal.decorators import check_api_key, log_start_end
+from openbb_terminal.helper_funcs import request
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -43,11 +43,11 @@ def get_economic_calendar(
     --------
     Get todays economic calendar for the United States
     >>> from openbb_terminal.sdk import openbb
-    >>> calendar = openbb.economy.events("United States")
+    >>> calendar = openbb.economy.events("united_states")
 
     To get multiple countries for a given date, pass the same start and end date as well as
     a list of countries
-    >>> calendars = openbb.economy.events(["United States","Canada"], start_date="2022-11-18", end_date="2022-11-18")
+    >>> calendars = openbb.economy.events(["united_states", "canada"], start_date="2022-11-18", end_date="2022-11-18")
     """
 
     if start_date is None:
@@ -60,6 +60,9 @@ def get_economic_calendar(
         countries = []
     if isinstance(countries, str):
         countries = [countries]
+
+    countries = [country.replace("_", " ").title() for country in countries]
+
     if start_date == end_date:
         dates = [start_date]
     else:
@@ -70,7 +73,7 @@ def get_economic_calendar(
     for date in dates:
         try:
             df = pd.DataFrame(
-                requests.get(
+                request(
                     f"https://api.nasdaq.com/api/calendar/economicevents?date={date}",
                     headers={
                         "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
@@ -88,7 +91,14 @@ def get_economic_calendar(
         return pd.DataFrame()
 
     calendar = calendar.rename(
-        columns={"gmt": "Time (GMT)", "country": "Country", "eventName": "Event"}
+        columns={
+            "gmt": "Time (ET)",
+            "country": "Country",
+            "eventName": "Event",
+            "actual": "Actual",
+            "consensus": "Consensus",
+            "previous": "Previous",
+        }
     )
 
     calendar = calendar.drop(columns=["description"])
@@ -97,7 +107,7 @@ def get_economic_calendar(
 
     calendar = calendar[calendar["Country"].isin(countries)].reset_index(drop=True)
     if calendar.empty:
-        console.print(f"[red]No data found for {','.join(countries)}[/red]")
+        console.print(f"[red]No data found for {', '.join(countries)}[/red]")
         return pd.DataFrame()
     return calendar
 
@@ -136,6 +146,22 @@ def get_country_codes() -> List[str]:
 
 
 @log_start_end(log=logger)
+def get_country_names() -> List[str]:
+    """Get available country names in Nasdaq API
+
+    Returns
+    -------
+    List[str]
+        List of country names.
+    """
+    file = os.path.join(os.path.dirname(__file__), "NASDAQ_CountryCodes.csv")
+    df = pd.read_csv(file, index_col=0)
+    countries = df["Country"]
+    countries_list = [x.lower().replace(" ", "_") for x in countries]
+    return countries_list
+
+
+@log_start_end(log=logger)
 @check_api_key(["API_KEY_QUANDL"])
 def get_big_mac_index(country_code: str = "USA") -> pd.DataFrame:
     """Get the Big Mac index calculated by the Economist
@@ -151,9 +177,9 @@ def get_big_mac_index(country_code: str = "USA") -> pd.DataFrame:
         Dataframe with Big Mac index converted to USD equivalent.
     """
     URL = f"https://data.nasdaq.com/api/v3/datasets/ECONOMIST/BIGMAC_{country_code}"
-    URL += f"?column_index=3&api_key={API_KEY_QUANDL}"
+    URL += f"?column_index=3&api_key={cfg.API_KEY_QUANDL}"
     try:
-        r = requests.get(URL)
+        r = request(URL)
     except Exception:
         console.print("[red]Error connecting to NASDAQ API[/red]\n")
         return pd.DataFrame()
@@ -181,7 +207,7 @@ def get_big_mac_index(country_code: str = "USA") -> pd.DataFrame:
 
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_QUANDL"])
-def get_big_mac_indices(country_codes: List[str] = None) -> pd.DataFrame:
+def get_big_mac_indices(country_codes: Optional[List[str]] = None) -> pd.DataFrame:
     """Display Big Mac Index for given countries
 
     Parameters

@@ -5,6 +5,7 @@ import pandas as pd
 import requests
 
 from openbb_terminal.decorators import log_start_end
+from openbb_terminal.helper_funcs import request
 
 logger = logging.getLogger(__name__)
 
@@ -26,7 +27,7 @@ def get_gwei_fees() -> pd.DataFrame:
             its average durations in seconds)
     """
 
-    r = requests.get("https://ethgasstation.info/json/ethgasAPI.json")
+    r = request("https://ethgasstation.info/json/ethgasAPI.json")
 
     try:
         if r.status_code == 200:

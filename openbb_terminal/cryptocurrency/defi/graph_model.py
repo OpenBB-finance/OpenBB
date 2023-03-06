@@ -5,12 +5,12 @@ import datetime
 import logging
 
 import pandas as pd
-import requests
 
 from openbb_terminal.cryptocurrency.dataframe_helpers import (
     lambda_very_long_number_formatter,
 )
 from openbb_terminal.decorators import log_start_end
+from openbb_terminal.helper_funcs import request
 from openbb_terminal.rich_config import console
 
 # pylint: disable=unsupported-assignment-operation
@@ -71,7 +71,7 @@ def query_graph(url: str, query: str) -> dict:
         Dictionary with response data
     """
 
-    response = requests.post(url, json={"query": query})
+    response = request(url, method="POST", json={"query": query})
     if response.status_code == 200:
         return response.json()["data"]
     return {}

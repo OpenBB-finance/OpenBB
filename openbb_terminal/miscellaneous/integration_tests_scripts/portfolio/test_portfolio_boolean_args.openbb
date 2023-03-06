@@ -1,0 +1,10 @@
+portfolio
+load --example
+po
+params
+load
+set ef
+arg tangency False
+arg log_returns True
+clear
+exit

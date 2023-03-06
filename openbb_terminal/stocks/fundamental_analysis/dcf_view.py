@@ -3,8 +3,9 @@ __docformat__ = "numpy"
 
 import logging
 from datetime import datetime
-from typing import Any, Dict, List, Union
+from typing import Any, Dict, List, Optional, Union
 
+import financedatabase as fd
 import numpy as np
 import pandas as pd
 import yfinance as yf
@@ -18,7 +19,7 @@ from openbb_terminal.helper_funcs import get_rf
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.fundamental_analysis import dcf_model, dcf_static
 
-# pylint: disable=C0302
+# pylint: disable=C0302,too-many-arguments
 
 
 logger = logging.getLogger(__name__)
@@ -29,6 +30,7 @@ class CreateExcelFA:
     def __init__(
         self,
         symbol: str,
+        beta: float,
         audit: bool = False,
         ratios: bool = True,
         len_pred: int = 10,
@@ -80,11 +82,22 @@ class CreateExcelFA:
             "IS": self.get_data("IS", self.starts["IS"], True),
             "CF": self.get_data("CF", self.starts["CF"], False),
         }
+
+        equities_database = fd.Equities()
         self.data: Dict[str, Any] = {
             "now": datetime.now().strftime("%Y-%m-%d"),
-            "info": yf.Ticker(symbol).info,
+            "info": {
+                "country": equities_database.data.loc[self.info["symbol"]]["country"],
+                "sector": equities_database.data.loc[self.info["symbol"]]["sector"],
+                "industry_group": equities_database.data.loc[self.info["symbol"]][
+                    "industry_group"
+                ],
+                "industry": equities_database.data.loc[self.info["symbol"]]["industry"],
+                "beta": beta,
+            },
             "t_bill": get_rf(),
             "r_ff": dcf_model.get_fama_coe(self.info["symbol"]),
+            "f_info": yf.Ticker(symbol).fast_info,
         }
 
     @log_start_end(log=logger)
@@ -118,7 +131,9 @@ class CreateExcelFA:
 
             if not path.is_file():
                 self.wb.save(path)
-                console.print(f"Analysis for {self.info['symbol']} At:\n{path}.\n")
+                console.print(
+                    f"Find the Discounted Cash Flow (DCF) Analysis of {self.info['symbol']} here: {path}"
+                )
                 break
             i += 1
 
@@ -592,9 +607,7 @@ class CreateExcelFA:
             font=dcf_static.red,
         )
         dcf_model.set_cell(self.ws[2], "A16", "Shares Outstanding")
-        dcf_model.set_cell(
-            self.ws[2], "B16", int(self.data["info"]["sharesOutstanding"])
-        )
+        dcf_model.set_cell(self.ws[2], "B16", int(self.data["f_info"]["shares"]))
         dcf_model.set_cell(self.ws[2], "A17", "Shares Price")
         dcf_model.set_cell(
             self.ws[2],
@@ -603,9 +616,7 @@ class CreateExcelFA:
             num_form="[$$-409]#,##0.00;[RED]-[$$-409]#,##0.00",
         )
         dcf_model.set_cell(self.ws[2], "A18", "Actual Price")
-        dcf_model.set_cell(
-            self.ws[2], "B18", float(self.data["info"]["regularMarketPrice"])
-        )
+        dcf_model.set_cell(self.ws[2], "B18", float(self.data["f_info"]["last_price"]))
 
     @log_start_end(log=logger)
     def create_header(self, ws: Workbook):
@@ -930,7 +941,7 @@ class CreateExcelFA:
         adds: List[str],
         subtracts: List[str],
         audit: bool = False,
-        text: str = None,
+        text: Optional[str] = None,
     ):
         col = 1 if audit else self.info["len_data"] + 1
         for i in range(self.info["len_data"] if audit else self.info["len_pred"]):
@@ -973,7 +984,7 @@ class CreateExcelFA:
 
     @log_start_end(log=logger)
     def custom_exp(
-        self, row: Union[int, str], text: str, ws: int = 1, column: str = None
+        self, row: Union[int, str], text: str, ws: int = 1, column: Optional[str] = None
     ):
         if ws == 1:
             rowT = row if isinstance(row, int) else self.title_to_row(row)
@@ -1090,8 +1101,8 @@ class CreateExcelFA:
                 pdiv1 = dcf_model.get_value(val[1][1], "Preferred Dividends", j)[1]
                 opcf1 = dcf_model.get_value(val[1][2], "Operating Cash Flow", j)[1]
 
-                info, outstand = self.data["info"], float(
-                    self.data["info"]["sharesOutstanding"]
+                info, outstand = self.data["f_info"], float(
+                    self.data["f_info"]["shares"]
                 )
 
                 # Enter row offset, number to display, and format number
@@ -1133,7 +1144,7 @@ class CreateExcelFA:
                     [
                         31,
                         dcf_model.frac(
-                            float(info["previousClose"]) * outstand,
+                            float(info["regular_market_previous_close"]) * outstand,
                             (ni1 - pdiv1) * self.info["rounding"],
                         ),
                         0,

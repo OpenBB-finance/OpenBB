@@ -1,9 +1,7 @@
 ---
 title: Due Diligence
-keywords: ["cryptocurrency", "dd", "due diligence", "tokenomics", "overview", "bitcoin"]
-excerpt: "An Introduction to Cryptocurrency Due Diligence, within the Cryptocurrency Menu,
-with a brief overview of the features."
-geekdocCollapseSection: true
+keywords: [cryptocurrency, dd, due diligence, tokenomics, overview, bitcoin]
+description: An Introduction to Cryptocurrency Due Diligence, within the Cryptocurrency Menu, with a brief overview of the features.
 ---
 
 The Cryptocurrency Due Diligence menu gives the user the ability to delve deeper into the coin of choice. To be able to do this, the menu offers basic information about the loaded coin (<a href="/terminal/reference/crypto/dd/info" target="_blank" rel="noreferrer noopener">info</a> and <a href="/terminal/reference/crypto/dd/basic" target="_blank" rel="noreferrer noopener">basic</a>), information about the project, technology details, audits etcetera (<a href="/terminal/reference/crypto/dd/pi" target="_blank" rel="noreferrer noopener">pi</a>), insights into the coin balance (<a href="/terminal/reference/crypto/dd/balance" target="_blank" rel="noreferrer noopener">balance</a>), the tokenomics and fundraising details
@@ -13,12 +11,12 @@ The Cryptocurrency Due Diligence menu gives the user the ability to delve deeper
 
 The Cryptocurrency Due Diligence menu is called upon by typing `dd` (after loading a coin), while inside the `crypto` menu, which opens the following menu:
 
-![Cryptocurrency Due Diligence menu](https://user-images.githubusercontent.com/46355364/178734389-dcee7a96-bb57-42fb-ad8e-13f27662e03b.png)
+<img width="1512" alt="image" src="https://user-images.githubusercontent.com/46355364/218993627-272a15ef-bcb2-481b-bf38-c6faec709235.png"></img>
 
 This menu requires you to load a coin with the `load` command. Thus, alternatively, you can also type `/crypto/load BTC/dd`. Within the Cryptocurrency Due Diligence menu you can find features examining an extensive amount of metrics about the loaded coin. As an example, you can see the latest trades done on the loaded coin with `trades`:
 
 ```
-2022 Jul 13, 07:42 (🦋) /crypto/dd/ $ trades
+(🦋) /crypto/dd/ $ trades
 
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━┓
 ┃ time                        ┃ price          ┃ size       ┃ side ┃
@@ -60,7 +58,7 @@ This menu requires you to load a coin with the `load` command. Thus, alternative
 To get an understanding of the coin we are looking at, it is possible to look into some basic information with `basic`:
 
 ```
-2022 Jul 13, 07:45 (🦋) /crypto/dd/ $ basic
+(🦋) /crypto/dd/ $ basic
 
                                     Basic Coin Information
 ┏━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
@@ -90,7 +88,7 @@ To get an understanding of the coin we are looking at, it is possible to look in
 Then, we have the option to look into the project information with `pi`. Note that this requires an API Key from Messari which you can find more information about <a href="/terminal/quickstart/keys" target="_blank" rel="noreferrer noopener">here</a>. This command returns the following:
 
 ```
-2022 Jul 13, 07:51 (🦋) /crypto/dd/ $ pi
+(🦋) /crypto/dd/ $ pi
 
                                                                                                                                 BTC General Info
 ┏━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
@@ -153,7 +151,7 @@ Then, we have the option to look into the project information with `pi`. Note th
 Looking ahead, we can use the command (coming from the same source) `rm` which discusses plans for the future. E.g. if we load in `ETH` with `load ETH` and use `rm` we receive the following:
 
 ```
-2022 Jul 13, 07:57 (🦋) /crypto/dd/ $ rm
+(🦋) /crypto/dd/ $ rm
 
                                                                                                                                   ETH Roadmap
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
@@ -222,7 +220,7 @@ As well as a graph that depicts price movements after these announcements.
 Lastly, keeping the ETH coin loaded, we can also look at some sentiment analysis by acquiring the different sentiment scores with `score` as follows:
 
 ```
-2022 Jul 13, 08:00 (🦋) /crypto/dd/ $ score
+(🦋) /crypto/dd/ $ score
 
         Different Scores for Loaded Coin
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┓

@@ -4,9 +4,9 @@ __docformat__ = "numpy"
 import logging
 
 import pandas as pd
-import requests
 
 from openbb_terminal.decorators import log_start_end
+from openbb_terminal.helper_funcs import request
 
 logger = logging.getLogger(__name__)
 
@@ -25,7 +25,7 @@ def get_sentiment(symbol: str) -> pd.DataFrame:
     pd.DataFrame
         Empty if there was an issue with data retrieval
     """
-    result = requests.get(f"https://api.finbrain.tech/v0/sentiments/{symbol}")
+    result = request(f"https://api.finbrain.tech/v0/sentiments/{symbol}")
     sentiment = pd.DataFrame()
     if result.status_code == 200:
         result_json = result.json()

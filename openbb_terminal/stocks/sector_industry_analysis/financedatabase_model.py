@@ -3,14 +3,14 @@ __docformat__ = "numpy"
 # pylint:disable=too-many-arguments,unexpected-keyword-arg
 
 import logging
+from typing import Optional
 
 import financedatabase as fd
-import yfinance as yf
-from tqdm import tqdm
+import yahooquery as yq
 from requests.exceptions import ReadTimeout
 
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import console, optional_rich_track
 
 logger = logging.getLogger(__name__)
 
@@ -32,12 +32,14 @@ def get_countries(industry: str = "", sector: str = "") -> list:
         List of possible countries
     """
     # industry takes priority since there's 1 sector per industry, but multiple industries per sector
-    if industry:
-        return fd.show_options("equities", industry=True)[industry]["Countries"]
-    if sector:
-        return fd.show_options("equities", sector=sector)["Countries"]
+    equities = fd.Equities()
 
-    return [count for count in fd.show_options("equities", "countries") if count]
+    if industry:
+        return equities.search(industry=industry)["country"].dropna().unique()
+    if sector:
+        return equities.search(sector=sector)["country"].dropna().unique()
+
+    return equities.select()["country"].dropna().unique()
 
 
 @log_start_end(log=logger)
@@ -57,12 +59,14 @@ def get_sectors(industry: str = "", country: str = "") -> list:
         List of possible sectors
     """
     # industry takes priority since there's 1 sector per industry, but multiple industries per country
-    if industry:
-        return [fd.show_options("equities", industry=True)[industry]["Sector"]]
-    if country:
-        return fd.show_options("equities", country=country)["Sectors"]
+    equities = fd.Equities()
 
-    return [sect for sect in fd.show_options("equities", "sectors") if sect]
+    if industry:
+        return equities.search(industry=industry)["sector"].dropna().unique()
+    if country:
+        return equities.search(country=country)["sector"].dropna().unique()
+
+    return equities.select()["sector"].dropna().unique()
 
 
 @log_start_end(log=logger)
@@ -72,7 +76,7 @@ def get_industries(country: str = "", sector: str = "") -> list:
     Parameters
     ----------
     country : str
-        Filter retrieved industries by country
+        Filter retrieved industries by countrys
     sector : str
         Filter retrieved industries by sector
 
@@ -81,16 +85,22 @@ def get_industries(country: str = "", sector: str = "") -> list:
     list
         List of possible industries
     """
+    equities = fd.Equities()
+
     if country and sector:
-        return fd.show_options("equities", country=country, sector=sector)
+        return (
+            equities.select(country=country, sector=sector)["industry"]
+            .dropna()
+            .unique()
+        )
 
     if country:
-        return fd.show_options("equities", country=country)["Industries"]
+        return equities.select(country=country)["industry"].dropna().unique()
 
     if sector:
-        return fd.show_options("equities", sector=sector)["Industries"]
+        return equities.select(sector=sector)["industry"].dropna().unique()
 
-    return [ind for ind in fd.show_options("equities", "industries") if ind]
+    return equities.select()["industry"].dropna().unique()
 
 
 @log_start_end(log=logger)
@@ -107,9 +117,9 @@ def get_marketcap() -> list:
 
 @log_start_end(log=logger)
 def filter_stocks(
-    country: str = None,
-    sector: str = None,
-    industry: str = None,
+    country: Optional[str] = None,
+    sector: Optional[str] = None,
+    industry: Optional[str] = None,
     marketcap: str = "",
     exclude_exchanges: bool = True,
 ) -> list:
@@ -134,6 +144,7 @@ def filter_stocks(
     list
         List of filtered stocks
     """
+    equities = fd.Equities()
     kwargs = {}
     if country:
         kwargs["country"] = country
@@ -141,13 +152,12 @@ def filter_stocks(
         kwargs["sector"] = sector
     if industry:
         kwargs["industry"] = industry
+    if marketcap:
+        kwargs["market_cap"] = marketcap
     try:
-        data = fd.select_equities(exclude_exchanges=exclude_exchanges, **kwargs)
+        data = equities.search(exclude_exchanges=exclude_exchanges, **kwargs)
 
-        if marketcap:
-            data = fd.search_products(data, query=marketcap, search="market_cap")
-
-        return list(data.keys())
+        return list(data.index)
 
     except ValueError as e:
         logger.exception(str(e))
@@ -162,12 +172,36 @@ def filter_stocks(
         return []
 
 
+def get_json(symbol: str) -> dict:
+    """Get json data from Yahoo Finance for a given symbol.
+    Code adapted from deprecated function `yfinance.utils.get_json`
+    in version 0.1.96 of the yfinance package.
+
+    Parameters
+    ----------
+    symbol : str
+        Symbol to get data for
+
+    Returns
+    -------
+    dict
+        Dictionary of json data
+    """
+
+    data = dict()
+    try:
+        data["summaryProfile"] = yq.Ticker(symbol).summary_profile[symbol]
+        return data
+    except Exception:
+        return data
+
+
 @log_start_end(log=logger)
 def get_stocks_data(
     country: str = "United States",
-    sector: str = "Communication Services",
-    industry: str = "Internet Content & Information",
-    marketcap: str = "Mega Cap",
+    sector: str = "Materials",
+    industry: str = "Metals & Mining",
+    marketcap: str = "Large Cap",
     exclude_exchanges: bool = True,
 ) -> dict:
     """Get stocks data based on country, sector, industry, market cap and exclude exchanges.
@@ -194,8 +228,7 @@ def get_stocks_data(
     stocks = filter_stocks(country, sector, industry, marketcap, exclude_exchanges)
 
     stocks_data = {
-        symbol: yf.utils.get_json(f"https://finance.yahoo.com/quote/{symbol}")
-        for symbol in tqdm(stocks)
+        symbol: get_json(symbol=symbol) for symbol in optional_rich_track(stocks)
     }
 
     return stocks_data
@@ -223,18 +256,18 @@ def get_companies_per_sector_in_country(
     dict
         Dictionary of sectors and number of companies in a specific country
     """
+    equities = fd.Equities()
     companies_per_sector = {}
 
-    for sector in tqdm(get_sectors(country=country)):
+    for sector in optional_rich_track(get_sectors(country=country)):
         if sector:
             try:
-                companies = fd.select_equities(
-                    country=country, sector=sector, exclude_exchanges=exclude_exchanges
+                companies = equities.search(
+                    country=country,
+                    sector=sector,
+                    exclude_exchanges=exclude_exchanges,
+                    market_cap=f"{mktcap} Cap",
                 )
-                if mktcap:
-                    companies = fd.search_products(
-                        companies, query=mktcap + " Cap", search="market_cap"
-                    )
 
                 companies_per_sector[sector] = len(companies)
             except ValueError as e:
@@ -274,20 +307,18 @@ def get_companies_per_industry_in_country(
     dict
         Dictionary of industries and number of companies in a specific country
     """
+    equities = fd.Equities()
     companies_per_industry = {}
 
-    for industry in tqdm(get_industries(country=country)):
+    for industry in optional_rich_track(get_industries(country=country)):
         if industry:
             try:
-                companies = fd.select_equities(
+                companies = equities.search(
                     country=country,
                     industry=industry,
                     exclude_exchanges=exclude_exchanges,
+                    market_cap=f"{mktcap} Cap",
                 )
-                if mktcap:
-                    companies = fd.search_products(
-                        companies, query=mktcap + " Cap", search="market_cap"
-                    )
 
                 companies_per_industry[industry] = len(companies)
 
@@ -307,7 +338,9 @@ def get_companies_per_industry_in_country(
 
 @log_start_end(log=logger)
 def get_companies_per_industry_in_sector(
-    sector: str = "Technology", mktcap: str = "Large", exclude_exchanges: bool = True
+    sector: str = "Technology",
+    mktcap: str = "Large",
+    exclude_exchanges: bool = True,
 ) -> dict:
     """Get number of companies per industry in a specific sector (and specific market cap).
     [Source: Finance Database]
@@ -326,19 +359,17 @@ def get_companies_per_industry_in_sector(
     dict
         Dictionary of industries and number of companies in a specific sector
     """
+    equities = fd.Equities()
     companies_per_industry = {}
-    for industry in tqdm(get_industries(sector=sector)):
+    for industry in optional_rich_track(get_industries(sector=sector)):
         if industry:
             try:
-                companies = fd.select_equities(
+                companies = equities.search(
                     sector=sector,
                     industry=industry,
                     exclude_exchanges=exclude_exchanges,
+                    market_cap=f"{mktcap} Cap",
                 )
-                if mktcap:
-                    companies = fd.search_products(
-                        companies, query=mktcap + " Cap", search="market_cap"
-                    )
 
                 companies_per_industry[industry] = len(companies)
 
@@ -358,7 +389,9 @@ def get_companies_per_industry_in_sector(
 
 @log_start_end(log=logger)
 def get_companies_per_country_in_sector(
-    sector: str = "Technology", mktcap: str = "Large", exclude_exchanges: bool = True
+    sector: str = "Technology",
+    mktcap: str = "Large",
+    exclude_exchanges: bool = True,
 ) -> dict:
     """Get number of companies per country in a specific sector (and specific market cap).
     [Source: Finance Database]
@@ -377,19 +410,17 @@ def get_companies_per_country_in_sector(
     dict
         Dictionary of countries and number of companies in a specific sector
     """
+    equities = fd.Equities()
     companies_per_country = {}
-    for country in tqdm(get_countries(sector=sector)):
+    for country in optional_rich_track(get_countries(sector=sector)):
         if country:
             try:
-                companies = fd.select_equities(
+                companies = equities.search(
                     sector=sector,
                     country=country,
                     exclude_exchanges=exclude_exchanges,
+                    market_cap=f"{mktcap} Cap",
                 )
-                if mktcap:
-                    companies = fd.search_products(
-                        companies, query=mktcap + " Cap", search="market_cap"
-                    )
 
                 companies_per_country[country] = len(companies)
 
@@ -409,7 +440,7 @@ def get_companies_per_country_in_sector(
 
 @log_start_end(log=logger)
 def get_companies_per_country_in_industry(
-    industry: str = "Internet Content & Information",
+    industry: str = "Metals & Mining",
     mktcap: str = "Large",
     exclude_exchanges: bool = True,
 ) -> dict:
@@ -430,19 +461,17 @@ def get_companies_per_country_in_industry(
     dict
         Dictionary of countries and number of companies in a specific sector
     """
+    equities = fd.Equities()
     companies_per_country = {}
-    for country in tqdm(get_countries(industry=industry)):
+    for country in optional_rich_track(get_countries(industry=industry)):
         if country:
             try:
-                companies = fd.select_equities(
+                companies = equities.search(
                     industry=industry,
                     country=country,
                     exclude_exchanges=exclude_exchanges,
+                    market_cap=f"{mktcap} Cap",
                 )
-                if mktcap:
-                    companies = fd.search_products(
-                        companies, query=mktcap + " Cap", search="market_cap"
-                    )
 
                 companies_per_country[country] = len(companies)
 

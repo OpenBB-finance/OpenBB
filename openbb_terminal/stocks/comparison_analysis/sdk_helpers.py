@@ -3,11 +3,10 @@ __docformat__ = "numpy"
 
 from typing import List
 
-
 from openbb_terminal.stocks.comparison_analysis import (
+    finnhub_model,
     finviz_compare_model,
     polygon_model,
-    finnhub_model,
     yahoo_finance_model,
 )
 
@@ -31,7 +30,7 @@ def get_similar(symbol: str, source="Finviz") -> List[str]:
     --------
     To get similar tickers to AAPL from Finviz:
     >>> from openbb_terminal.sdk import openbb
-    >>> similar_tickers = openbb.stocks.ca.similar("AAPL)
+    >>> similar_tickers = openbb.stocks.ca.similar("AAPL")
 
     To use our custom TSNE model for similar tickers in the SP500:
     >>> similar_tickers = openbb.stocks.ca.similar("AAPL", source="TSNE")

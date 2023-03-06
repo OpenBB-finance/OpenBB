@@ -3,20 +3,20 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import Optional, List
-import pandas as pd
+from typing import List, Optional
 
 import matplotlib.pyplot as plt
+import pandas as pd
 
-from openbb_terminal.config_terminal import theme
-from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.common.behavioural_analysis import google_model
+from openbb_terminal.config_plot import PLOT_DPI
+from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
+    is_valid_axes_count,
     plot_autoscale,
     print_rich_table,
-    is_valid_axes_count,
 )
 
 logger = logging.getLogger(__name__)
@@ -27,6 +27,7 @@ def display_mentions(
     symbol: str,
     start_date: str = "",
     export: str = "",
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plots weekly bars of stock's interest over time. other users watchlist. [Source: Google].
@@ -37,6 +38,8 @@ def display_mentions(
         Ticker symbol
     start_date : str
         Start date as YYYY-MM-DD string
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
@@ -80,7 +83,11 @@ def display_mentions(
         theme.visualize_output()
 
     export_data(
-        export, os.path.dirname(os.path.abspath(__file__)), "mentions", df_interest
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "mentions",
+        df_interest,
+        sheet_name,
     )
 
 
@@ -90,6 +97,7 @@ def display_correlation_interest(
     data: pd.DataFrame,
     words: List[str],
     export: str = "",
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plots interest over time of words/sentences versus stock price. [Source: Google].
@@ -102,6 +110,8 @@ def display_correlation_interest(
         Data dataframe
     words : List[str]
         Words to check for interest for
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
@@ -136,6 +146,8 @@ def display_correlation_interest(
     colors = theme.get_colors()[1:]
     for idx, word in enumerate(words):
         df_interest = google_model.get_mentions(word)
+        if df_interest.empty:
+            continue
         ax[1].plot(df_interest.index, df_interest[word], "-", color=colors[idx])
 
     ax[1].set_ylabel("Interest [%]")
@@ -148,7 +160,11 @@ def display_correlation_interest(
         theme.visualize_output()
 
     export_data(
-        export, os.path.dirname(os.path.abspath(__file__)), "interest", df_interest
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "interest",
+        df_interest,
+        sheet_name,
     )
 
 
@@ -157,6 +173,7 @@ def display_regions(
     symbol: str,
     limit: int = 5,
     export: str = "",
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plots bars of regions based on stock's interest. [Source: Google].
@@ -167,6 +184,8 @@ def display_regions(
         Ticker symbol
     limit: int
         Number of regions to show
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
@@ -199,11 +218,19 @@ def display_regions(
     if external_axes is None:
         theme.visualize_output()
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "regions", df)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "regions",
+        df,
+        sheet_name,
+    )
 
 
 @log_start_end(log=logger)
-def display_queries(symbol: str, limit: int = 5, export: str = ""):
+def display_queries(
+    symbol: str, limit: int = 5, export: str = "", sheet_name: Optional[str] = None
+):
     """Prints table showing top related queries with this stock's query. [Source: Google].
 
     Parameters
@@ -212,6 +239,8 @@ def display_queries(symbol: str, limit: int = 5, export: str = ""):
         Ticker symbol
     limit: int
         Number of regions to show
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
         {"csv","json","xlsx","png","jpg","pdf","svg"}
@@ -233,11 +262,14 @@ def display_queries(symbol: str, limit: int = 5, export: str = ""):
         os.path.dirname(os.path.abspath(__file__)),
         "queries",
         df,
+        sheet_name,
     )
 
 
 @log_start_end(log=logger)
-def display_rise(symbol: str, limit: int = 10, export: str = ""):
+def display_rise(
+    symbol: str, limit: int = 10, export: str = "", sheet_name: Optional[str] = None
+):
     """Prints top rising related queries with this stock's query. [Source: Google].
 
     Parameters
@@ -246,6 +278,8 @@ def display_rise(symbol: str, limit: int = 10, export: str = ""):
         Ticker symbol
     limit: int
         Number of queries to show
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     """
@@ -261,5 +295,9 @@ def display_rise(symbol: str, limit: int = 10, export: str = ""):
     )
 
     export_data(
-        export, os.path.dirname(os.path.abspath(__file__)), "rise", df_related_queries
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "rise",
+        df_related_queries,
+        sheet_name,
     )

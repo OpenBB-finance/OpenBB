@@ -4,52 +4,59 @@ __docformat__ = "numpy"
 # pylint: disable=unsupported-assignment-operation,too-many-lines
 # pylint: disable=no-member,too-many-branches,too-many-arguments
 # pylint: disable=inconsistent-return-statements
+# pylint: disable=consider-using-dict-items
 
 import logging
 import os
+from copy import deepcopy
 from datetime import datetime, timedelta
-from typing import Any, Union, Optional, Iterable, List, Dict
+from typing import Any, Dict, Iterable, List, Optional, Union
 
 import financedatabase as fd
 import matplotlib.pyplot as plt
-from matplotlib.lines import Line2D
-from matplotlib.ticker import LogLocator, ScalarFormatter
 import mplfinance as mpf
 import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
 import pytz
-import requests
-from requests.exceptions import ReadTimeout
-
 import yfinance as yf
+from matplotlib.lines import Line2D
+from matplotlib.ticker import LogLocator, ScalarFormatter
 from plotly.subplots import make_subplots
+from requests.exceptions import ReadTimeout
 from scipy import stats
 
 from openbb_terminal import config_terminal as cfg
-
-# pylint: disable=unused-import
-from openbb_terminal.stocks.stock_statics import market_coverage_suffix
-from openbb_terminal.stocks.stock_statics import INTERVALS  # noqa: F401
-from openbb_terminal.stocks.stock_statics import SOURCES  # noqa: F401
-from openbb_terminal.stocks.stock_statics import INCOME_PLOT  # noqa: F401
-from openbb_terminal.stocks.stock_statics import BALANCE_PLOT  # noqa: F401
-from openbb_terminal.stocks.stock_statics import CASH_PLOT  # noqa: F401
-from openbb_terminal.stocks.stock_statics import CANDLE_SORT  # noqa: F401
-from openbb_terminal.stocks.stocks_model import (
-    load_stock_av,
-    load_stock_yf,
-    load_stock_eodhd,
-    load_stock_iex_cloud,
-    load_stock_polygon,
-)
 from openbb_terminal.helper_funcs import (
-    export_data,
+    lambda_long_number_format_y_axis,
     plot_autoscale,
     print_rich_table,
-    lambda_long_number_format_y_axis,
+    request,
 )
 from openbb_terminal.rich_config import console
+
+# pylint: disable=unused-import
+from openbb_terminal.stocks.stock_statics import (
+    BALANCE_PLOT,  # noqa: F401
+    BALANCE_PLOT_CHOICES,  # noqa: F401
+    CANDLE_SORT,  # noqa: F401
+    CASH_PLOT,  # noqa: F401
+    CASH_PLOT_CHOICES,  # noqa: F401
+    INCOME_PLOT,  # noqa: F401
+    INCOME_PLOT_CHOICES,  # noqa: F401
+    INTERVALS,  # noqa: F401
+    SOURCES,  # noqa: F401
+    market_coverage_suffix,
+)
+from openbb_terminal.stocks.stocks_model import (
+    load_stock_av,
+    load_stock_eodhd,
+    load_stock_intrinio,
+    load_stock_polygon,
+    load_stock_yf,
+)
+
+from . import databento_model
 
 logger = logging.getLogger(__name__)
 
@@ -64,7 +71,7 @@ exchange_mappings = exchange_df.squeeze("columns").to_dict()
 def check_datetime(
     ck_date: Optional[Union[datetime, str]] = None, start: bool = True
 ) -> datetime:
-    """Checks if given argument is string and attempts to convert to datetime.
+    """Check if given argument is string and attempts to convert to datetime.
 
     Parameters
     ----------
@@ -99,11 +106,12 @@ def search(
     query: str = "",
     country: str = "",
     sector: str = "",
+    industry_group: str = "",
     industry: str = "",
     exchange_country: str = "",
+    all_exchanges: bool = False,
     limit: int = 0,
-    export: str = "",
-) -> None:
+) -> pd.DataFrame:
     """Search selected query for tickers.
 
     Parameters
@@ -118,10 +126,16 @@ def search(
         Search by industry to find stocks matching the criteria
     exchange_country: str
         Search by exchange country to find stock matching
+    all_exchanges: bool
+       Whether to search all exchanges, without this option only the United States market is searched
     limit : int
         The limit of companies shown.
-    export : str
-        Export data
+
+    Returns
+    -------
+    df: pd.DataFrame
+        Dataframe of search results.
+        Empty Dataframe if none are found.
 
     Examples
     --------
@@ -135,9 +149,23 @@ def search(
         kwargs["sector"] = sector
     if industry:
         kwargs["industry"] = industry
+    if industry_group:
+        kwargs["industry_group"] = industry_group
+    kwargs["exclude_exchanges"] = False if exchange_country else not all_exchanges
 
     try:
-        data = fd.select_equities(**kwargs)
+        equities_database = fd.Equities()
+
+        if query:
+            data = equities_database.search(**kwargs, name=query)
+            data = pd.concat([data, equities_database.search(**kwargs, name=query)])
+            data = pd.concat(
+                [data, equities_database.search(**kwargs, index=query.upper())]
+            )
+
+            data = data.drop_duplicates()
+        else:
+            data = equities_database.search(**kwargs)
     except ReadTimeout:
         console.print(
             "[red]Unable to retrieve company data from GitHub which limits the search"
@@ -149,45 +177,37 @@ def search(
         console.print(
             "[red]No companies were found that match the given criteria.[/red]\n"
         )
-        return
-    if not data:
+        return pd.DataFrame()
+
+    if data.empty:
         console.print("No companies found.\n")
-        return
+        return pd.DataFrame()
 
-    if query:
-        d = fd.search_products(
-            data, query, search="long_name", case_sensitive=False, new_database=None
-        )
-    else:
-        d = data
+    df = data[
+        [
+            "name",
+            "country",
+            "sector",
+            "industry_group",
+            "industry",
+            "exchange",
+        ]
+    ]
 
-    if not d:
-        console.print("No companies found.\n")
-        return
-
-    df = pd.DataFrame.from_dict(d).T[["long_name", "country", "sector", "industry"]]
-    if exchange_country:
-        if exchange_country in market_coverage_suffix:
-            suffix_tickers = [
-                ticker.split(".")[1] if "." in ticker else ""
-                for ticker in list(df.index)
-            ]
-            df = df[
-                [
-                    val in market_coverage_suffix[exchange_country]
-                    for val in suffix_tickers
-                ]
-            ]
+    if exchange_country and exchange_country in market_coverage_suffix:
+        suffix_tickers = [
+            ticker.split(".")[1] if "." in ticker else "" for ticker in list(df.index)
+        ]
+        df = df[
+            [val in market_coverage_suffix[exchange_country] for val in suffix_tickers]
+        ]
 
     exchange_suffix = {}
     for k, v in market_coverage_suffix.items():
         for x in v:
             exchange_suffix[x] = k
 
-    df["exchange"] = [
-        exchange_suffix.get(ticker.split(".")[1]) if "." in ticker else "USA"
-        for ticker in list(df.index)
-    ]
+    df = df[["name", "country", "sector", "industry_group", "industry", "exchange"]]
 
     title = "Companies found"
     if query:
@@ -198,26 +218,26 @@ def search(
         title += f" in {country.replace('_', ' ').title()}"
     if sector:
         title += f" within {sector}"
+        if industry_group:
+            title += f" and {industry_group}"
         if industry:
             title += f" and {industry}"
+    if not sector and industry_group:
+        title += f" within {industry_group}"
     if not sector and industry:
         title += f" within {industry}"
 
-    df["exchange"] = df["exchange"].apply(
-        lambda x: x.replace("_", " ").title() if x else None
-    )
-    df["exchange"] = df["exchange"].apply(
-        lambda x: "United States" if x == "Usa" else None
-    )
+    df = df.fillna(value=np.nan)
+    df = df.iloc[df.isnull().sum(axis=1).mul(1).argsort()]
 
     print_rich_table(
         df.iloc[:limit] if limit else df,
         show_index=True,
-        headers=["Name", "Country", "Sector", "Industry", "Exchange"],
+        headers=["Name", "Country", "Sector", "Industry Group", "Industry", "Exchange"],
         title=title,
     )
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "search", df)
+    return df
 
 
 def load(
@@ -227,7 +247,6 @@ def load(
     end_date: Optional[Union[datetime, str]] = None,
     prepost: bool = False,
     source: str = "YahooFinance",
-    iexrange: str = "ytd",
     weekly: bool = False,
     monthly: bool = False,
     verbose: bool = True,
@@ -239,7 +258,6 @@ def load(
     The default source is, yFinance (https://pypi.org/project/yfinance/).
     Other sources:
             -   AlphaVantage (https://www.alphavantage.co/documentation/)
-            -   IEX Cloud (https://iexcloud.io/docs/api/)
             -   Eod Historical Data (https://eodhistoricaldata.com/financial-apis/)
 
     Please note that certain analytical features are exclusive to the specific source.
@@ -276,8 +294,6 @@ def load(
         Pre and After hours data
     source: str
         Source of data extracted
-    iexrange: str
-        Timeframe to get IEX data.
     weekly: bool
         Flag to get weekly data
     monthly: bool
@@ -290,7 +306,6 @@ def load(
     df_stock_candidate: pd.DataFrame
         Dataframe of data
     """
-
     if start_date is None:
         start_date = (datetime.now() - timedelta(days=1100)).strftime("%Y-%m-%d")
 
@@ -299,18 +314,16 @@ def load(
 
     start_date = check_datetime(start_date)
     end_date = check_datetime(end_date, start=False)
+    int_string = "Daily"
+    if weekly:
+        int_string = "Weekly"
+    if monthly:
+        int_string = "Monthly"
 
     # Daily
     if int(interval) == 1440:
-
-        int_string = "Daily"
-        if weekly:
-            int_string = "Weekly"
-        if monthly:
-            int_string = "Monthly"
-
         if source == "AlphaVantage":
-            df_stock_candidate = load_stock_av(symbol, start_date, end_date)
+            df_stock_candidate = load_stock_av(symbol, int_string, start_date, end_date)
 
         elif source == "YahooFinance":
             df_stock_candidate = load_stock_yf(
@@ -322,27 +335,42 @@ def load(
                 symbol, start_date, end_date, weekly, monthly
             )
 
-        elif source == "IEXCloud":
-            df_stock_candidate = load_stock_iex_cloud(symbol, iexrange)
-
         elif source == "Polygon":
             df_stock_candidate = load_stock_polygon(
                 symbol, start_date, end_date, weekly, monthly
             )
+
+        elif source == "Intrinio":
+            df_stock_candidate = load_stock_intrinio(symbol, start_date, end_date)
+
+        elif source == "DataBento":
+            df_stock_candidate = databento_model.get_historical_stock(
+                symbol, start_date.strftime("%Y-%m-%d"), end_date.strftime("%Y-%m-%d")
+            )
+
         else:
             console.print("[red]Invalid source for stock[/red]\n")
             return
-        if df_stock_candidate.empty:
-            return df_stock_candidate
+        is_df = isinstance(df_stock_candidate, pd.DataFrame)
+        if (is_df and df_stock_candidate.empty) or (
+            not is_df and not df_stock_candidate
+        ):
+            return pd.DataFrame()
 
         df_stock_candidate.index.name = "date"
         s_start = df_stock_candidate.index[0]
         s_interval = f"{interval}min"
-        int_string = "Daily" if interval == 1440 else "Intraday"
 
     else:
+        if source == "AlphaVantage":
+            s_start = start_date
+            int_string = "Minute"
+            s_interval = f"{interval}min"
+            df_stock_candidate = load_stock_av(
+                symbol, int_string, start_date, end_date, s_interval
+            )
 
-        if source == "YahooFinance":
+        elif source == "YahooFinance":
             s_int = str(interval) + "m"
             s_interval = s_int + "in"
             d_granularity = {"1m": 6, "5m": 59, "15m": 59, "30m": 59, "60m": 729}
@@ -366,12 +394,16 @@ def load(
 
             df_stock_candidate.index = df_stock_candidate.index.tz_localize(None)
 
-            if s_start_dt > start_date:
-                s_start = pytz.utc.localize(s_start_dt)
-            else:
-                s_start = start_date
+            s_start = (
+                pytz.utc.localize(s_start_dt) if s_start_dt > start_date else start_date
+            )
 
             df_stock_candidate.index.name = "date"
+
+        elif source == "Intrinio":
+            console.print(
+                "[red]We currently do not support intraday data with Intrinio.[/red]\n"
+            )
 
         elif source == "Polygon":
             request_url = (
@@ -380,7 +412,7 @@ def load(
                 f"/{end_date.strftime('%Y-%m-%d')}"
                 f"?adjusted=true&sort=desc&limit=49999&apiKey={cfg.API_POLYGON_KEY}"
             )
-            r = requests.get(request_url)
+            r = request(request_url)
             if r.status_code != 200:
                 console.print("[red]Error in polygon request[/red]")
                 return pd.DataFrame()
@@ -422,14 +454,13 @@ def load(
             )
             s_start_dt = df_stock_candidate.index[0]
 
-            if s_start_dt > start_date:
-                s_start = pytz.utc.localize(s_start_dt)
-            else:
-                s_start = start_date
+            s_start = (
+                pytz.utc.localize(s_start_dt) if s_start_dt > start_date else start_date
+            )
             s_interval = f"{interval}min"
         int_string = "Intraday"
 
-    s_intraday = (f"Intraday {s_interval}", int_string)[interval == 1440]
+    s_intraday = (f"Intraday {interval}min", int_string)[interval == 1440]
 
     if verbose:
         console.print(
@@ -442,7 +473,7 @@ def load(
 
 def display_candle(
     symbol: str,
-    data: pd.DataFrame = None,
+    data: Optional[pd.DataFrame] = None,
     use_matplotlib: bool = True,
     intraday: bool = False,
     add_trend: bool = False,
@@ -453,7 +484,6 @@ def display_candle(
     end_date: Optional[Union[datetime, str]] = None,
     prepost: bool = False,
     source: str = "YahooFinance",
-    iexrange: str = "ytd",
     weekly: bool = False,
     monthly: bool = False,
     external_axes: Optional[List[plt.Axes]] = None,
@@ -494,8 +524,6 @@ def display_candle(
         Pre and After hours data
     source: str
         Source of data extracted
-    iexrange: str
-        Timeframe to get IEX data.
     weekly: bool
         Flag to get weekly data
     monthly: bool
@@ -510,6 +538,16 @@ def display_candle(
     >>> from openbb_terminal.sdk import openbb
     >>> openbb.stocks.candle("AAPL")
     """
+    # We are not actually showing adj close in candle.  This hasn't been an issue so far, but adding
+    # in intrinio returns all adjusted columns,so some care here is needed or else we end up with
+    # mixing up close and adj close
+    if data is None:
+        # For mypy
+        data = pd.DataFrame()
+    data = deepcopy(data)
+
+    if "Adj Close" in data.columns:
+        data["Close"] = data["Adj Close"].copy()
 
     if start_date is None:
         start_date = (datetime.now() - timedelta(days=1100)).strftime("%Y-%m-%d")
@@ -520,7 +558,7 @@ def display_candle(
     start_date = check_datetime(start_date)
     end_date = check_datetime(end_date, start=False)
 
-    if data is None:
+    if data is None or data.empty:
         data = load(
             symbol,
             start_date,
@@ -528,16 +566,14 @@ def display_candle(
             end_date,
             prepost,
             source,
-            iexrange,
             weekly,
             monthly,
         )
         data = process_candle(data)
 
-    if add_trend:
-        if (data.index[1] - data.index[0]).total_seconds() >= 86400:
-            data = find_trendline(data, "OC_High", "high")
-            data = find_trendline(data, "OC_Low", "low")
+    if add_trend and (data.index[1] - data.index[0]).total_seconds() >= 86400:
+        data = find_trendline(data, "OC_High", "high")
+        data = find_trendline(data, "OC_Low", "low")
 
     if not raw:
         if use_matplotlib:
@@ -777,49 +813,6 @@ def display_candle(
             fig.show(config=dict({"scrollZoom": True}))
     else:
         return data
-
-
-def load_ticker(
-    ticker: str,
-    start_date: Union[str, datetime],
-    end_date: Optional[Union[str, datetime]] = None,
-) -> pd.DataFrame:
-    """Load a ticker data from Yahoo Finance.
-
-    Adds a data index column data_id and Open-Close High/Low columns after loading.
-
-    Parameters
-    ----------
-    ticker : str
-        The stock ticker.
-    start_date : Union[str,datetime]
-        Start date to load stock ticker data formatted YYYY-MM-DD.
-    end_date : Union[str,datetime]
-        End date to load stock ticker data formatted YYYY-MM-DD.
-
-    Returns
-    -------
-    DataFrame
-        A Panda's data frame with columns Open, High, Low, Close, Adj Close, Volume,
-        date_id, OC-High, OC-Low.
-
-    Examples
-    --------
-    >>> from openbb_terminal.sdk import openbb
-    >>> msft_df = openbb.stocks.load("MSFT")
-    """
-    df_data = yf.download(ticker, start=start_date, end=end_date, progress=False)
-
-    df_data.index = pd.to_datetime(df_data.index)
-    df_data["date_id"] = (df_data.index.date - df_data.index.date.min()).astype(
-        "timedelta64[D]"
-    )
-    df_data["date_id"] = df_data["date_id"].dt.days + 1
-
-    df_data["OC_High"] = df_data[["Open", "Close"]].max(axis=1)
-    df_data["OC_Low"] = df_data[["Open", "Close"]].min(axis=1)
-
-    return df_data
 
 
 def process_candle(data: pd.DataFrame) -> pd.DataFrame:
@@ -1066,7 +1059,7 @@ def show_quick_performance(stock_df: pd.DataFrame, ticker: str):
             str(round(np.mean(volumes[-12:-2]) / 1_000_000, 2)) + " M"
         )
 
-    perf_df["Last Price"] = str(round(closes[-1], 2))
+    perf_df["Previous Close"] = str(round(closes[-1], 2))
     print_rich_table(
         perf_df,
         show_index=False,
@@ -1087,7 +1080,7 @@ def show_codes_polygon(ticker: str):
     if cfg.API_POLYGON_KEY == "REPLACE_ME":
         console.print("[red]Polygon API key missing[/red]\n")
         return
-    r = requests.get(link)
+    r = request(link)
     if r.status_code != 200:
         console.print("[red]Error in polygon request[/red]\n")
         return
@@ -1106,7 +1099,7 @@ def show_codes_polygon(ticker: str):
 
 
 def format_parse_choices(choices: List[str]) -> List[str]:
-    """Formats a list of strings to be lowercase and replace spaces with underscores.
+    """Format a list of strings to be lowercase and replace spaces with underscores.
 
     Parameters
     ----------
@@ -1123,7 +1116,7 @@ def format_parse_choices(choices: List[str]) -> List[str]:
 
 
 def map_parse_choices(choices: List[str]) -> Dict[str, str]:
-    """Creates a mapping of clean arguments (keys) to original arguments (values)
+    """Create a mapping of clean arguments (keys) to original arguments (values).
 
     Parameters
     ----------
@@ -1133,9 +1126,44 @@ def map_parse_choices(choices: List[str]) -> Dict[str, str]:
     Returns
     -------
     clean_choices: Dict[str, str]
-        The mappung
+        The mapping
 
     """
     the_dict = {x.lower().replace(" ", "_"): x for x in choices}
     the_dict[""] = ""
     return the_dict
+
+
+def verify_plot_options(command: str, source: str, plot: list) -> bool:
+    """Verify that the plot options are valid for the chosen source."""
+    if command == "cash":
+        command_options = CASH_PLOT
+    elif command == "balance":
+        command_options = BALANCE_PLOT
+    else:
+        command_options = INCOME_PLOT
+    options = list(command_options[source].values())
+
+    incorrect_columns = []
+    for column in plot:
+        if column not in options:
+            incorrect_columns.append(column)
+    if incorrect_columns:
+        console.print(
+            f"[red]The chosen columns to plot is not available for {source}.[/red]\n"
+        )
+        for column in incorrect_columns:
+            possible_sources = []
+            for i in command_options:
+                if column in list(command_options[i].values()):
+                    possible_sources.append(i)
+            if possible_sources:
+                console.print(
+                    f"[red]{column} can be plotted with the following sources: {', '.join(possible_sources)}[/red]"
+                )
+            else:
+                console.print(
+                    f"[red]{column} does not exist in a existing data source.[/red]"
+                )
+        return True
+    return False

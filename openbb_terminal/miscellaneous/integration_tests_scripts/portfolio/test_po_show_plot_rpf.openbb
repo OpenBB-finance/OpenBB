@@ -1,0 +1,55 @@
+portfolio
+po
+show
+rpf
+show -pf a,b
+show -ct a,b
+show -pf a,b -ct c,d
+plot
+plot -pf a,b
+plot -ct a,b
+plot -pf a,b -ct c,d
+load --example
+show -pf a,b -ct c,d
+show -pf a
+show -ct c
+plot -pf a,b -ct c,d
+plot -pf a
+plot -ct c
+equal
+show
+show -pf name_0
+show -ct sector
+show -pf name_0 -ct sector
+plot
+plot -pf name_0
+plot -ct sector
+plot -pf name_0 -ct sector
+plot -pf name_0 -ct sector -pi
+plot -pf name_0 -ct sector -hi
+plot -pf name_0 -ct sector -dd
+plot -pf name_0 -ct sector -rc
+plot -pf name_0 -ct sector -he
+maxsharpe
+show -pf name_0,maxsharpe_1 -ct sector,country
+show -pf name_0,maxsharpe_1,a -ct c,sector,currency,current_invested_amount
+plot -pf name_0,maxsharpe_1 -ct c,sector,country,current_invested_amount -pi
+plot -pf name_0,maxsharpe_1 -ct c,sector,current_invested_amount -hi
+plot -pf name_0,maxsharpe_1 -ct c,sector,current_invested_amount -dd
+plot -pf name_0,maxsharpe_1 -ct c,sector,current_invested_amount -rc
+plot -pf name_0,maxsharpe_1 -ct c,sector,current_invested_amount -he
+..
+load --example
+po
+equal
+show -pf name_0
+show -pf name_0 -ct a,b
+plot -pf name_0 -ct sector -pi
+plot -pf name_0 -ct sector -hi
+plot -pf name_0 -ct sector -dd
+plot -pf name_0 -ct sector -rc
+plot -pf name_0 -ct sector -he
+maxsharpe
+rpf -pf a,b,c
+rpf -pf name_0,maxsharpe_1
+exit

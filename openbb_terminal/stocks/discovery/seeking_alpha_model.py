@@ -5,12 +5,11 @@ import logging
 from typing import Dict, List
 
 import pandas as pd
-import requests
 from bs4 import BeautifulSoup
 from pandas.core.frame import DataFrame
 
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import get_user_agent
+from openbb_terminal.helper_funcs import get_user_agent, request
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -18,7 +17,7 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def get_earnings_html(url_next_earnings: str) -> str:
-    """Wraps HTTP requests.get for testibility
+    """Wraps HTTP request for testibility
 
     Parameters
     ----------
@@ -30,7 +29,7 @@ def get_earnings_html(url_next_earnings: str) -> str:
     str
         HTML page of next earnings
     """
-    earnings_html = requests.get(
+    earnings_html = request(
         url_next_earnings, headers={"User-Agent": get_user_agent()}
     ).text
 
@@ -77,7 +76,7 @@ def get_next_earnings(limit: int = 10) -> DataFrame:
 
 @log_start_end(log=logger)
 def get_articles_html(url_articles: str) -> str:
-    """Wraps HTTP requests.get for testability
+    """Wraps HTTP request for testability
 
     Parameters
     ----------
@@ -89,9 +88,7 @@ def get_articles_html(url_articles: str) -> str:
     str
         HTML page of articles
     """
-    articles_html = requests.get(
-        url_articles, headers={"User-Agent": get_user_agent()}
-    ).text
+    articles_html = request(url_articles, headers={"User-Agent": get_user_agent()}).text
 
     return articles_html
 
@@ -113,7 +110,7 @@ def get_trending_list(limit: int = 5) -> list:
 
     articles = []
     url_articles = "https://seekingalpha.com/news/trending_news"
-    response = requests.get(url_articles, headers={"User-Agent": get_user_agent()})
+    response = request(url_articles, headers={"User-Agent": get_user_agent()})
 
     # Check that the API response was successful
     if response.status_code != 200:
@@ -152,7 +149,7 @@ def get_article_data(article_id: int) -> dict:
     """
 
     article_url = f"https://seekingalpha.com/api/v3/news/{article_id}"
-    response = requests.get(article_url, headers={"User-Agent": get_user_agent()})
+    response = request(article_url, headers={"User-Agent": get_user_agent()})
     jdata = response.json()
     content = jdata["data"]["attributes"]["content"].replace("</li>", "</li>\n")
     content = BeautifulSoup(content, features="html.parser").get_text()
@@ -188,9 +185,7 @@ def get_news_html(news_type: str = "Top-News") -> dict:
         "&isMounting=true&page%5Bsize%5D=25&page%5Bnumber%5D=1"
     )
 
-    articles_html = requests.get(
-        sa_url, headers={"User-Agent": get_user_agent()}
-    ).json()
+    articles_html = request(sa_url, headers={"User-Agent": get_user_agent()}).json()
 
     return articles_html
 

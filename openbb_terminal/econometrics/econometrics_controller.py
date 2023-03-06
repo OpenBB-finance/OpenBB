@@ -8,7 +8,7 @@ import logging
 import os
 from itertools import chain
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 
 import numpy as np
 import pandas as pd
@@ -108,7 +108,7 @@ class EconometricsController(BaseController):
     loaded_dataset_cols = "\n"
     list_dataset_cols: List = list()
 
-    def __init__(self, queue: List[str] = None):
+    def __init__(self, queue: Optional[List[str]] = None):
         """Constructor"""
         super().__init__(queue)
         self.files: List[str] = list()
@@ -158,7 +158,7 @@ class EconometricsController(BaseController):
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
             choices["load"] = {
-                "--file": {c: {} for c in self.DATA_FILES.keys()},
+                "--file": {c: {} for c in self.DATA_FILES},
                 "-f": "--file",
                 "-alias": None,
                 "-a": "-alias",
@@ -564,10 +564,9 @@ class EconometricsController(BaseController):
         )
 
         if ns_parser:
-            if not ns_parser.name:
-                dataset_names = list(self.datasets.keys())
-            else:
-                dataset_names = [ns_parser.name]
+            dataset_names = (
+                list(self.datasets.keys()) if not ns_parser.name else [ns_parser.name]
+            )
 
             for name in dataset_names:
                 df = self.datasets[name]
@@ -597,6 +596,7 @@ class EconometricsController(BaseController):
                     os.path.dirname(os.path.abspath(__file__)),
                     f"{ns_parser.name}_show",
                     df.head(ns_parser.limit),
+                    ns_parser.sheet_name,
                 )
 
     @log_start_end(log=logger)
@@ -640,6 +640,7 @@ class EconometricsController(BaseController):
                     os.path.dirname(os.path.abspath(__file__)),
                     f"{dataset}_{col}_desc",
                     df,
+                    ns_parser.sheet_name,
                 )
             else:
                 df = self.datasets[ns_parser.name]
@@ -657,6 +658,7 @@ class EconometricsController(BaseController):
                         os.path.dirname(os.path.abspath(__file__)),
                         f"{ns_parser.name}_desc",
                         df,
+                        ns_parser.sheet_name,
                     )
                 else:
                     console.print("Empty dataset")
@@ -787,10 +789,11 @@ class EconometricsController(BaseController):
             index = ns_parser.index
 
             if index:
-                if "," in index:
-                    values_found = [val.strip() for val in index.split(",")]
-                else:
-                    values_found = [index]
+                values_found = (
+                    [val.strip() for val in index.split(",")]
+                    if "," in index
+                    else [index]
+                )
 
                 columns = list()
                 for value in values_found:
@@ -1524,7 +1527,13 @@ class EconometricsController(BaseController):
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            regression_model.get_comparison(self.regression, ns_parser.export)
+            regression_model.get_comparison(
+                self.regression,
+                ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )
             console.print()
 
     @log_start_end(log=logger)
@@ -1673,7 +1682,6 @@ class EconometricsController(BaseController):
         )
 
         if ns_parser and ns_parser.ts:
-
             datasetcol_y, datasetcol_x = ns_parser.ts.split(",")
 
             dataset_y, column_y = datasetcol_y.split(".")
@@ -1727,30 +1735,31 @@ class EconometricsController(BaseController):
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
 
-        if ns_parser:
+        if ns_parser and ns_parser.ts:
+            # We are going to pass through a variable number of series, so datasets will be a list of series
+            if len(ns_parser.ts) > 1:
+                datasets = []
+                for series in ns_parser.ts:
+                    if "." not in series:
+                        console.print(
+                            "[red]Invalid time series format. Should be dataset.column, "
+                            "e.g. historical.open[/red]\n"
+                        )
+                    else:
+                        dataset, column = series.split(".")
+                        datasets.append(self.datasets[dataset][column])
 
-            if ns_parser.ts:
-                # We are going to pass through a variable number of series, so datasets will be a list of series
-                if len(ns_parser.ts) > 1:
-                    datasets = []
-                    for series in ns_parser.ts:
-                        if "." not in series:
-                            console.print(
-                                "[red]Invalid time series format. Should be dataset.column, "
-                                "e.g. historical.open[/red]\n"
-                            )
-                        else:
-                            dataset, column = series.split(".")
-                            datasets.append(self.datasets[dataset][column])
+                econometrics_view.display_cointegration_test(
+                    *datasets,
+                    significant=ns_parser.significant,
+                    plot=ns_parser.plot,
+                    export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
+                )
 
-                    econometrics_view.display_cointegration_test(
-                        *datasets,
-                        significant=ns_parser.significant,
-                        plot=ns_parser.plot,
-                        export=ns_parser.export,
-                    )
-
-                else:
-                    console.print(
-                        "[red]More than one dataset.column must be provided.\n[/red]"
-                    )
+            else:
+                console.print(
+                    "[red]More than one dataset.column must be provided.\n[/red]"
+                )

@@ -110,7 +110,7 @@ conda install -c conda-forge lightgbm=3.3.3 -y
 And install the Forecasting Toolkit
 
 ```bash
-pip install "openbbterminal[prediction]"
+pip install "openbbterminal[forecast]"
 ```
 
 ##### 5.2 **If you would like to use both Portfolio Optimization and ML forecast features**
@@ -278,9 +278,6 @@ df_yf = openbb.stocks.load("AAPL", source='YahooFinance')
 
 ## From AlphaVantage
 df_av = openbb.stocks.load("AAPL", source='AlphaVantage')
-
-## From IEXCloud
-df_iex = openbb.stocks.load("AAPL", source='IEXCloud')
 
 ## From Polygon
 df_pol = openbb.stocks.load("AAPL", source='Polygon')
