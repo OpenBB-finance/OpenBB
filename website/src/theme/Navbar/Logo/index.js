@@ -8,7 +8,7 @@ export default function NavbarLogo() {
   const { pathname } = useLocation();
   return (
     <div className="flex items-center gap-x-[56px]">
-      <Link to="/" className="ml-5 mb-1 md:mb-0 md:ml-0">
+      <Link to="/" className="mb-1 md:mb-0 md:ml-0">
         <LetteringLogo className="text-white" />
       </Link>
       <div
