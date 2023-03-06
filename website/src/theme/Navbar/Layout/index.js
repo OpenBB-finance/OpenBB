@@ -36,6 +36,11 @@ export default function NavbarLayout({ children }) {
         "--ifm-color-primary",
         "#F5B166"
       );
+    } else if (pathname.startsWith("/bot")) {
+      document.documentElement.style.setProperty(
+        "--ifm-color-primary",
+        "#7e368e"
+      );
     } else {
     }
   }, [pathname]);
@@ -47,7 +52,9 @@ export default function NavbarLayout({ children }) {
         {
           header_docs_terminal: pathname.startsWith("/terminal"),
           header_docs_sdk: pathname.startsWith("/sdk"),
-          header_docs: !pathname.startsWith("/terminal") && !pathname.startsWith("/sdk"),
+          header_docs_bot: pathname.startsWith("/bot"),
+          header_docs:
+            !pathname.startsWith("/terminal") && !pathname.startsWith("/sdk"),
         },
         "navbar",
         "navbar--fixed-top",

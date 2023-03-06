@@ -69,6 +69,29 @@ export default function Home(): JSX.Element {
                 <ChevronRightIcon className="group-hover:translate-x-2 tw-transition w-3" />
               </p>
             </Link>
+            <Link
+              style={{
+                backgroundSize: "100% 130%",
+              }}
+              to="/bot"
+              className="bg-[url('/img/sdk_bg_light.png')] dark:bg-[url('/img/sdk_bg.png')] bg-no-repeat shadow-sm group !no-underline text-grey-900 dark:text-white hover:text-grey-900 dark:hover:border-white hover:border-grey-900 dark:hover:!text-white relative w-full h-[238px] max-w-full p-8 rounded flex flex-col items-start justify-start border border-grey-400 bg-white dark:bg-grey-900"
+            >
+              <h3 className="uppercase tracking-widest font-bold text-2xl mb-3">
+                OpenBB Bot
+              </h3>
+              <p className="text-sm lg:text-base dark:text-grey-300">
+                Python library that allows you to build your own investment
+                research platform.
+              </p>
+              <p
+                className={clsx(
+                  "mt-auto inline-flex items-center gap-2 font-normal",
+                )}
+              >
+                See more
+                <ChevronRightIcon className="group-hover:translate-x-2 tw-transition w-3" />
+              </p>
+            </Link>
           </div>
         </div>
       </main>

@@ -225,6 +225,38 @@
   );
 }
 
+.header_docs_bot {
+  background: rgb(23, 8, 6) !important;
+  background: -moz-linear-gradient(
+    90deg,
+    rgba(59, 15, 49, 1) 0%,
+    rgba(54, 25, 68, 1) 15%,
+    rgba(55, 29, 76, 1) 45%,
+    rgba(30, 17, 39, 1) 64%,
+    rgba(15, 11, 21, 1) 82%,
+    rgba(16, 9, 0, 1) 100%
+  ) !important;
+  background: -webkit-linear-gradient(
+    90deg,
+    rgba(59, 15, 49, 1) 0%,
+    rgba(54, 25, 68, 1) 15%,
+    rgba(55, 29, 76, 1) 45%,
+    rgba(30, 17, 39, 1) 64%,
+    rgba(15, 11, 21, 1) 82%,
+    rgba(16, 9, 0, 1) 100%
+  ) !important;
+  background: linear-gradient(
+    90deg,
+    rgba(59, 15, 49, 1) 0%,
+    rgba(54, 25, 68, 1) 15%,
+    rgba(55, 29, 76, 1) 45%,
+    rgba(30, 17, 39, 1) 64%,
+    rgba(15, 11, 21, 1) 82%,
+    rgba(16, 9, 0, 1) 100%
+  );
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#170806",endColorstr="#100900",GradientType=1) !important;
+}
+
 .header_docs_sdk {
   background: rgb(23, 8, 6);
   background: -moz-linear-gradient(

@@ -62,6 +62,17 @@ const config = {
         sidebarPath: require.resolve("./sidebars.js"),
       },
     ],
+    [
+      "@docusaurus/plugin-content-docs",
+      {
+        id: "bot",
+        path: "content/bot",
+        routeBasePath: "bot",
+        editUrl:
+          "https://github.com/OpenBB-finance/OpenBBTerminal/edit/main/website/",
+        sidebarPath: require.resolve("./sidebars.js"),
+      },
+    ],
   ],
   presets: [
     [
