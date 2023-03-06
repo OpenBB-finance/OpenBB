@@ -30,6 +30,8 @@ class PreferencesModel:
     PLOT_WIDTH: PositiveInt = 800
     PLOT_HEIGHT_PERCENTAGE: PositiveFloat = 50.0
     PLOT_WIDTH_PERCENTAGE: PositiveFloat = 70.0
+    # Whether to open plot image exports after they are created
+    PLOT_OPEN_EXPORT: bool = False
 
     # FEATURE FLAGS
     SYNC_ENABLED: bool = True
