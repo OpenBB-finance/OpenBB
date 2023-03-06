@@ -226,7 +226,7 @@ export default function Table({ data, columns }: any) {
             if (typeof value === "string") {
               return <p>{value}</p>;
             }
-            return <p>{new Date(value).toISOString().split("T")[0]}</p>;
+            return <p>{new Date(value).toISOString()}</p>;
           }
           const valueFormatted =
             valueType === "number" ? formatNumberMagnitude(value) : value;
