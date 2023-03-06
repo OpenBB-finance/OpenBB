@@ -123,8 +123,10 @@ jobs:
           name: M1 MacOS PKG Artifact
           path: OpenBBTerminalM1.pkg
       - name: Convert & Mount DMG
+        env:
+          SUDO_PASSWORD: ${{ secrets.SUDO_PASSWORD }}
         run: |
-          installer -pkg /Users/openbb/actions-runner/_work/OpenBBTerminal/OpenBBTerminal/OpenBBTerminalM1.pkg -verbose -target /
+          $echo <$SUDO_PASSWORD> | sudo -S installer -pkg /Users/openbb/actions-runner/_work/OpenBBTerminal/OpenBBTerminal/OpenBBTerminalM1.pkg -verbose -target /
           rm -rf OpenBBTerminalM1.pkg
 
       - name: Run Integration Tests
