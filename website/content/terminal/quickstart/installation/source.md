@@ -20,7 +20,7 @@ keywords:
   ]
 ---
 
-This section guides you a long to install the OpenBB Terminal via Python. This installation type supports both Windows and Unix systems (Linux + MacOS). Before starting the installation process, make sure you the following pieces of software are installed.
+This section guides you a long to install the OpenBB Terminal via Python. This installation type supports both Windows and Unix systems (Linux + MacOS). Before starting the installation process, make sure the following pieces of software are installed.
 
 <details><summary>Miniconda</summary>
 Miniconda is a Python environment and package manager. It is required for installing certain dependencies.

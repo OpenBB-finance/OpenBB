@@ -55,7 +55,9 @@ Step by step instructions:
 
 **Step 4:** Unmount the installer, by "Ejecting OpenBB Terminal" from, locations, in Finder.
 
-**Step 5:** Launch the application by double-clicking on the `OpenBB Terminal` application.
+**Step 5:** Launch the application by double-clicking on the `OpenBB Terminal` application. If everything was successful you should see a screen like the one below:
+
+<p align="center"><a target="_blank" href="https://user-images.githubusercontent.com/46355364/223144493-6d2333fd-914d-4b4d-aaa6-da986b64f1fe.png"><img alt="run_the_terminal" src="https://user-images.githubusercontent.com/46355364/223144493-6d2333fd-914d-4b4d-aaa6-da986b64f1fe.png"></img></a></p>
 
 **Note:** During the first launch, a warning message may appear. Click, "Open".
 

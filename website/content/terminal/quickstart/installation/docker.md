@@ -26,7 +26,7 @@ Installing the OpenBB Terminal via Docker supports both Windows and Unix systems
 
 **Install Docker Desktop**
 
-You can find `Docker Desktop` for MacOS here: [Download Docker Desktop](https://www.docker.com/products/docker-desktop)
+You can find `Docker Desktop` for Windows here: [Download Docker Desktop](https://www.docker.com/products/docker-desktop)
 
 **Start Docker**
 
@@ -87,7 +87,7 @@ This file contents the settings to pull and run OpenBB Terminal Docker image.
 
 **Install Docker Desktop**
 
-You can find `Docker Desktop` for Linux here: [Download Docker Desktop](https://www.docker.com/products/docker-desktop)
+You can find `Docker Desktop` for MacOS here: [Download Docker Desktop](https://www.docker.com/products/docker-desktop)
 
 **Start Docker**
 
@@ -169,7 +169,7 @@ The `xhost +$IP` and `DISPLAY=$IP:0` parts are there to allow charts display.
 
 **Install Docker Desktop**
 
-You can find `Docker Desktop` for Windows here: [Download Docker Desktop](https://www.docker.com/products/docker-desktop)
+You can find `Docker Desktop` for Linux here: [Download Docker Desktop](https://www.docker.com/products/docker-desktop)
 
 **Start Docker**
 
