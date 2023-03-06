@@ -77,10 +77,10 @@ class FixedIncomeController(BaseController):
             # These values need to work with multi options which
             # is why they are defined here
             self.choices["treasury"]["--short"] = {
-                c: None for c in oecd_model.COUNTRY_TO_CODE
+                c: None for c in oecd_model.COUNTRY_TO_CODE_SHORT
             }
             self.choices["treasury"]["--long"] = {
-                c: None for c in oecd_model.COUNTRY_TO_CODE
+                c: None for c in oecd_model.COUNTRY_TO_CODE_LONG
             }
 
             self.choices["spot"]["--maturity"] = {
