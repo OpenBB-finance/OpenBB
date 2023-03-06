@@ -157,7 +157,7 @@ def insider_activity(
     )
 
     if raw:
-        df_insider.index = pd.to_datetime(df_insider.index).date
+        df_insider.index = pd.to_datetime(df_insider.index)
 
         return print_rich_table(
             df_insider.sort_index(ascending=False)

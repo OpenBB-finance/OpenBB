@@ -208,8 +208,11 @@ export default function Table({ data, columns }: any) {
         cell: ({ row }: any) => {
           const value = row.original[column];
           const valueType = typeof value;
-          const probablyDate = column.toLowerCase().includes("date");
-          const probablyLink = valueType === "string" && value.includes("http");
+          const probablyDate = column.toLowerCase().includes("date") || column.toLowerCase() === "index";
+          const probablyLink = valueType === "string" && value.startsWith("http");
+
+          //TODO - Parse as HTML to make links work if string doesn't start with http
+          //TODO - Max Column Size
           if (probablyLink) {
             return (
               <a
@@ -226,10 +229,19 @@ export default function Table({ data, columns }: any) {
             if (typeof value === "string") {
               return <p>{value}</p>;
             }
-            // convert .toISOString date to YYYY-MM-DD - HH:MM:SS
-            var dateFormatted = new Date(value).toISOString()
-            dateFormatted = dateFormatted.split('T')[0] + ' ' + dateFormatted.split('T')[1].split('.')[0]
-            return <p>{dateFormatted}</p>;
+
+            try{
+              var dateFormatted = new Date(value).toISOString()
+
+              // TODO - Remove 00:00:00 from date
+
+
+              dateFormatted = dateFormatted.split('T')[0] + ' ' + dateFormatted.split('T')[1].split('.')[0]
+              return <p>{dateFormatted}</p>;
+            } catch (e) {
+              return <p>{value}</p>;
+            }
+
           }
           const valueFormatted =
             valueType === "number" ? formatNumberMagnitude(value) : value;

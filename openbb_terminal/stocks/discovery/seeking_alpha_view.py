@@ -116,7 +116,6 @@ def news(
 
         df_articles = pd.DataFrame(articles)
 
-        print(df_articles.head(limit))
         df_articles["publishedAt"] = pd.to_datetime(df_articles["publishedAt"])
 
         df_news = pd.DataFrame(
