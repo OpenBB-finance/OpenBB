@@ -11,7 +11,7 @@ Navigate to the menu by typing `options`, from the `Stocks` menu, and then press
 
 <img width="800" alt="image" src="https://user-images.githubusercontent.com/46355364/218986539-fa5a214d-b9d3-48fe-9e60-2082aa79bf79.png"></img>
 
-By default, the Terminal loads a ticker using <a href="https://developer.tradier.com/" target="_blank" rel="noreferrer noopener">Tradier</a> as the source. Sign up for a free developer account and then enter that token using the <a href="/terminal/guides/basics/api-keys" target="_blank" rel="noreferrer noopener">`Keys menu`</a>. Alternatively, there is a choice to use yFinance data sets by attaching the argument as shown below. Help dialogues are displayed for any command by adding `-h` to the string. It is worth noting that this load command is different than the load command elsewhere.
+By default, the Terminal loads a ticker using <a href="https://developer.tradier.com/" target="_blank" rel="noreferrer noopener">Tradier</a> as the source. Sign up for a free developer account and then enter that token using the <a href="/terminal/guides/advanced/api-keys" target="_blank" rel="noreferrer noopener">`Keys menu`</a>. Alternatively, there is a choice to use yFinance data sets by attaching the argument as shown below. Help dialogues are displayed for any command by adding `-h` to the string. It is worth noting that this load command is different than the load command elsewhere.
 
 ````
 (🦋) /stocks/options/ $ load -h

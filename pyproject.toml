@@ -8,7 +8,7 @@ packages = [
     { include = "openbb_terminal" },
 ]
 include = ["terminal.py"]
-readme = "website/content/sdk/quickstart/pypi.md"
+readme = "website/pypi.md"
 homepage = "https://openbb.co"
 repository = "https://github.com/OpenBB-finance/OpenBBTerminal"
 documentation = "https://docs.openbb.co/sdk"

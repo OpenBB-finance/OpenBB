@@ -35,7 +35,7 @@ This section provides you with the installation file as well as the guide to ins
 
 </details>
 
-Find a step by step guide below:
+Step by step instructions:
 
 1. Download the file by clicking on the button.
 2.  Open the downloaded `exe` file by double-clicking on it.

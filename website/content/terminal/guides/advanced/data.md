@@ -1,6 +1,6 @@
 ---
 title: Importing and Exporting Data
-sidebar_position: 3
+sidebar_position: 2
 description: The `OpenBBUserData` folder is where files are saved when they are created from within the OpenBB Terminal, like exports and generated reports. It is also where user-generated files are stored.
 keywords: [export, import, data, excel, xlsx, csv, json, png, pdf, jpg, openbbuserdata, terminal, user, data, presets, screener, portfolio, styles, themes]
 ---

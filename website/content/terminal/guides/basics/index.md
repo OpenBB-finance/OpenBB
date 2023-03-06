@@ -116,7 +116,7 @@ As mentioned in the <a href="#explanation-of-menus">Explanation of Menus</a>, so
 The OpenBB Terminal is built on a lot of different data sources. The example above collects data from Yahoo Finance. This could be undesirable and therefore we allow for a variety of different data sources. Think of Polygon, IEX Cloud, Alpha Vantage and Binance to name a few. Some of these sources require you to set an API Key to connect with their data.
 
 :::note Setting API Keys
-For an elaborate explanation of defining API keys to greatly extend the capabilities of the OpenBB Terminal, please have a look [**here**](/terminal/guides/basics/api-keys).
+For an elaborate explanation of defining API keys to greatly extend the capabilities of the OpenBB Terminal, please have a look [**here**](/terminal/basics/advanced/api-keys).
 :::
 
 This becomes apparent when you receive a message like the following:
@@ -129,7 +129,7 @@ API_FINNHUB_KEY not defined. Set API Keys in ~/.openbb_terminal/.env or under ke
 
 We ensure that any source has a (usually extensive) free tier before we include the source. For example, you will be able to obtain 30+ years of fundamental data and query extensive economic databases by collecting just a few of the API keys.
 
-The [keys menu](/terminal/guides/basics/api-keys) serves the purpose of providing you to set API keys so that this type of functionality becomes available. For example, in the case of `rot` you will see that the source is "FinnHub".
+The [keys menu](/terminal/guides/advanced/api-keys) serves the purpose of providing you to set API keys so that this type of functionality becomes available. For example, in the case of `rot` you will see that the source is "FinnHub".
 
 ```
 (🦋) /stocks/fa/ $ ?
@@ -152,7 +152,7 @@ The [keys menu](/terminal/guides/basics/api-keys) serves the purpose of providin
 │     sust               sustainability values (environment, social and governance)      [YahooFinance]
 ```
 
-Therefore, you need to acquire an API key from FinnHub through the website and enter the key within the [keys menu](/terminal/basics/api-keys).
+Therefore, you need to acquire an API key from FinnHub through the website and enter the key within the [keys menu](/terminal/advanced/api-keys).
 
 ### Importing and exporting data
 
