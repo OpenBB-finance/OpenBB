@@ -346,7 +346,8 @@ class ComparisonAnalysisController(BaseController):
                     )
             else:
                 console.print(
-                    "You need to 'set' a ticker to get similar companies from first!"
+                    "You need to 'set' a ticker to get similar companies from first! This is "
+                    "for example done by running 'ticker aapl'"
                 )
 
     @log_start_end(log=logger)
