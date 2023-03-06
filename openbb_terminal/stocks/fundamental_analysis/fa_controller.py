@@ -7,7 +7,7 @@ from typing import List, Optional
 
 from pandas.core.frame import DataFrame
 
-from openbb_terminal import feature_flags as obbff
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
@@ -112,7 +112,7 @@ class FundamentalAnalysisController(StockBaseController):
         self.default_balance = get_ordered_list_sources(f"{self.PATH}balance")[0]
         self.default_cash = get_ordered_list_sources(f"{self.PATH}cash")[0]
 
-        if session and obbff.USE_PROMPT_TOOLKIT:
+        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices_default
             self.completer = NestedCompleter.from_nested_dict(choices)
 

@@ -7,7 +7,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Dict, List, Union
 
-from openbb_terminal.core.config.paths import USER_DATA_DIRECTORY
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.rich_config import console
 from website.controller_doc_classes import (
     ControllerDoc,
@@ -16,7 +16,10 @@ from website.controller_doc_classes import (
 )
 
 website_path = Path(__file__).parent.absolute()
-USER_PATH = (f"{USER_DATA_DIRECTORY}", "`USER_DATA_DIRECTORY`")
+USER_PATH = (
+    f"{get_current_user().preferences.USER_DATA_DIRECTORY}",
+    "`USER_DATA_DIRECTORY`",
+)
 
 
 def existing_markdown_file_examples(

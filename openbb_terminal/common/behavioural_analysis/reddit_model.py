@@ -17,8 +17,8 @@ from sklearn.feature_extraction import _stop_words
 from tqdm import tqdm
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
-from openbb_terminal import config_terminal as cfg
 from openbb_terminal.common.behavioural_analysis.reddit_helpers import find_tickers
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.rich_config import console
 
@@ -63,16 +63,19 @@ def get_watchlists(
         Dictionary of tickers and their count,
         Count of how many posts were analyzed.
     """
+
+    current_user = get_current_user()
+
     d_watchlist_tickers: dict = {}
     l_watchlist_author = []
     subs = []
 
     praw_api = praw.Reddit(
-        client_id=cfg.API_REDDIT_CLIENT_ID,
-        client_secret=cfg.API_REDDIT_CLIENT_SECRET,
-        username=cfg.API_REDDIT_USERNAME,
-        user_agent=cfg.API_REDDIT_USER_AGENT,
-        password=cfg.API_REDDIT_PASSWORD,
+        client_id=current_user.credentials.API_REDDIT_CLIENT_ID,
+        client_secret=current_user.credentials.API_REDDIT_CLIENT_SECRET,
+        username=current_user.credentials.API_REDDIT_USERNAME,
+        user_agent=current_user.credentials.API_REDDIT_USER_AGENT,
+        password=current_user.credentials.API_REDDIT_PASSWORD,
         check_for_updates=False,
         comment_kind="t1",
         message_kind="t4",
@@ -170,6 +173,7 @@ def get_popular_tickers(
     pd.DataFrame
         DataFrame of top tickers from supplied subreddits
     """
+    current_user = get_current_user()
     sub_reddit_list = (
         (subreddits.split(",") if "," in subreddits else [subreddits])
         if subreddits
@@ -179,11 +183,11 @@ def get_popular_tickers(
     l_watchlist_author = []
 
     praw_api = praw.Reddit(
-        client_id=cfg.API_REDDIT_CLIENT_ID,
-        client_secret=cfg.API_REDDIT_CLIENT_SECRET,
-        username=cfg.API_REDDIT_USERNAME,
-        user_agent=cfg.API_REDDIT_USER_AGENT,
-        password=cfg.API_REDDIT_PASSWORD,
+        client_id=current_user.credentials.API_REDDIT_CLIENT_ID,
+        client_secret=current_user.credentials.API_REDDIT_CLIENT_SECRET,
+        username=current_user.credentials.API_REDDIT_USERNAME,
+        user_agent=current_user.credentials.API_REDDIT_USER_AGENT,
+        password=current_user.credentials.API_REDDIT_PASSWORD,
         check_for_updates=False,
         comment_kind="t1",
         message_kind="t4",
@@ -342,12 +346,15 @@ def get_spac_community(
         Dataframe of reddit submission,
         Dictionary of tickers and number of mentions.
     """
+
+    current_user = get_current_user()
+
     praw_api = praw.Reddit(
-        client_id=cfg.API_REDDIT_CLIENT_ID,
-        client_secret=cfg.API_REDDIT_CLIENT_SECRET,
-        username=cfg.API_REDDIT_USERNAME,
-        user_agent=cfg.API_REDDIT_USER_AGENT,
-        password=cfg.API_REDDIT_PASSWORD,
+        client_id=current_user.credentials.API_REDDIT_CLIENT_ID,
+        client_secret=current_user.credentials.API_REDDIT_CLIENT_SECRET,
+        username=current_user.credentials.API_REDDIT_USERNAME,
+        user_agent=current_user.credentials.API_REDDIT_USER_AGENT,
+        password=current_user.credentials.API_REDDIT_PASSWORD,
         check_for_updates=False,
         comment_kind="t1",
         message_kind="t4",
@@ -480,12 +487,15 @@ def get_spac(
         Dictionary of tickers and counts,
         Number of posts found.
     """
+
+    current_user = get_current_user()
+
     praw_api = praw.Reddit(
-        client_id=cfg.API_REDDIT_CLIENT_ID,
-        client_secret=cfg.API_REDDIT_CLIENT_SECRET,
-        username=cfg.API_REDDIT_USERNAME,
-        user_agent=cfg.API_REDDIT_USER_AGENT,
-        password=cfg.API_REDDIT_PASSWORD,
+        client_id=current_user.credentials.API_REDDIT_CLIENT_ID,
+        client_secret=current_user.credentials.API_REDDIT_CLIENT_SECRET,
+        username=current_user.credentials.API_REDDIT_USERNAME,
+        user_agent=current_user.credentials.API_REDDIT_USER_AGENT,
+        password=current_user.credentials.API_REDDIT_PASSWORD,
         check_for_updates=False,
         comment_kind="t1",
         message_kind="t4",
@@ -623,13 +633,16 @@ def get_wsb_community(limit: int = 10, new: bool = False) -> pd.DataFrame:
     pd.DataFrame
         Dataframe of reddit submissions
     """
+
+    current_user = get_current_user()
+
     # See https://github.com/praw-dev/praw/issues/1016 regarding praw arguments
     praw_api = praw.Reddit(
-        client_id=cfg.API_REDDIT_CLIENT_ID,
-        client_secret=cfg.API_REDDIT_CLIENT_SECRET,
-        username=cfg.API_REDDIT_USERNAME,
-        user_agent=cfg.API_REDDIT_USER_AGENT,
-        password=cfg.API_REDDIT_PASSWORD,
+        client_id=current_user.credentials.API_REDDIT_CLIENT_ID,
+        client_secret=current_user.credentials.API_REDDIT_CLIENT_SECRET,
+        username=current_user.credentials.API_REDDIT_USERNAME,
+        user_agent=current_user.credentials.API_REDDIT_USER_AGENT,
+        password=current_user.credentials.API_REDDIT_PASSWORD,
         check_for_updates=False,
         comment_kind="t1",
         message_kind="t4",
@@ -738,12 +751,15 @@ def get_due_dilligence(
     pd.DataFrame
         Dataframe of submissions
     """
+
+    current_user = get_current_user()
+
     praw_api = praw.Reddit(
-        client_id=cfg.API_REDDIT_CLIENT_ID,
-        client_secret=cfg.API_REDDIT_CLIENT_SECRET,
-        username=cfg.API_REDDIT_USERNAME,
-        user_agent=cfg.API_REDDIT_USER_AGENT,
-        password=cfg.API_REDDIT_PASSWORD,
+        client_id=current_user.credentials.API_REDDIT_CLIENT_ID,
+        client_secret=current_user.credentials.API_REDDIT_CLIENT_SECRET,
+        username=current_user.credentials.API_REDDIT_USERNAME,
+        user_agent=current_user.credentials.API_REDDIT_USER_AGENT,
+        password=current_user.credentials.API_REDDIT_PASSWORD,
         check_for_updates=False,
         comment_kind="t1",
         message_kind="t4",
@@ -900,12 +916,15 @@ def get_posts_about(
         List of polarity scores,
         Average polarity score.
     """
+
+    current_user = get_current_user()
+
     praw_api = praw.Reddit(
-        client_id=cfg.API_REDDIT_CLIENT_ID,
-        client_secret=cfg.API_REDDIT_CLIENT_SECRET,
-        username=cfg.API_REDDIT_USERNAME,
-        user_agent=cfg.API_REDDIT_USER_AGENT,
-        password=cfg.API_REDDIT_PASSWORD,
+        client_id=current_user.credentials.API_REDDIT_CLIENT_ID,
+        client_secret=current_user.credentials.API_REDDIT_CLIENT_SECRET,
+        username=current_user.credentials.API_REDDIT_USERNAME,
+        user_agent=current_user.credentials.API_REDDIT_USER_AGENT,
+        password=current_user.credentials.API_REDDIT_PASSWORD,
         check_for_updates=False,
         comment_kind="t1",
         message_kind="t4",

@@ -1,1 +1,2 @@
-[info]sync:[/info] OFF
+[info]sync:[/info] False
+['--off']

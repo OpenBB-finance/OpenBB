@@ -11,7 +11,7 @@ from darts import TimeSeries
 from darts.models.forecasting.nhits import NHiTSModel
 from darts.utils.likelihood_models import GaussianLikelihood
 
-from openbb_terminal.core.config.paths import USER_FORECAST_MODELS_DIRECTORY
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.forecast import helpers
 
@@ -146,6 +146,8 @@ def get_nhits_data(
 
     # Early Stopping
 
+    current_user = get_current_user()
+
     nhits_model = NHiTSModel(
         input_chunk_length=input_chunk_length,
         output_chunk_length=output_chunk_length,
@@ -168,7 +170,7 @@ def get_nhits_data(
         save_checkpoints=save_checkpoints,
         likelihood=GaussianLikelihood(),
         log_tensorboard=True,
-        work_dir=USER_FORECAST_MODELS_DIRECTORY,
+        work_dir=current_user.preferences.USER_FORECAST_MODELS_DIRECTORY,
     )
 
     # fit model on train series for historical forecasting
@@ -182,10 +184,14 @@ def get_nhits_data(
             past_covariate_val,
         )
     best_model = NHiTSModel.load_from_checkpoint(
-        model_name=model_save_name, best=True, work_dir=USER_FORECAST_MODELS_DIRECTORY
+        model_name=model_save_name,
+        best=True,
+        work_dir=current_user.preferences.USER_FORECAST_MODELS_DIRECTORY,
     )
 
-    helpers.print_tensorboard_logs(model_save_name, USER_FORECAST_MODELS_DIRECTORY)
+    helpers.print_tensorboard_logs(
+        model_save_name, str(current_user.preferences.USER_FORECAST_MODELS_DIRECTORY)
+    )
 
     # Showing historical backtesting without retraining model (too slow)
     return helpers.get_prediction(

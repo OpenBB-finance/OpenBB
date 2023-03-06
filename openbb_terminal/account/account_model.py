@@ -4,13 +4,8 @@ from typing import Any, Dict, Tuple
 import numpy as np
 import pandas as pd
 
-from openbb_terminal import (
-    config_plot as cfg_plot,
-    config_terminal as cfg,
-    feature_flags as obbff,
-)
 from openbb_terminal.base_helpers import strtobool
-from openbb_terminal.core.config import paths
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.rich_config import console
 
 
@@ -67,23 +62,12 @@ def get_diff_settings(settings: dict) -> dict:
     dict
         The diff.
     """
+    current_user = get_current_user()
     diff = {}
     if settings:
         for k, v in sorted(settings.items()):
-            if hasattr(obbff, k):
-                old, new = get_var_diff(obbff, k, v)
-                if new is not None:
-                    diff[k] = (old, new)
-            elif hasattr(cfg, k):
-                old, new = get_var_diff(cfg, k, v)
-                if new is not None:
-                    diff[k] = (old, new)
-            elif hasattr(cfg_plot, k):
-                old, new = get_var_diff(cfg_plot, k, v)
-                if new is not None:
-                    diff[k] = (old, new)
-            elif hasattr(paths, k):
-                old, new = get_var_diff(paths, k, v)
+            if hasattr(current_user.preferences, k):
+                old, new = get_var_diff(current_user.preferences, k, v)
                 if new is not None:
                     diff[k] = (old, new)
 
@@ -103,11 +87,12 @@ def get_diff_keys(keys: dict) -> dict:
     dict
         The diff.
     """
+    current_user = get_current_user()
     diff = {}
     if keys:
         for k, v in sorted(keys.items()):
-            if hasattr(cfg, k):
-                old, new = get_var_diff(cfg, k, v)
+            if hasattr(current_user.credentials, k):
+                old, new = get_var_diff(current_user.credentials, k, v)
                 if new is not None:
                     diff[k] = (old, new)
 

@@ -19,7 +19,7 @@ from reportlab.graphics import renderPDF
 from svglib.svglib import svg2rlg
 
 from openbb_terminal.base_helpers import console, strtobool
-from openbb_terminal.core.config.paths import USER_EXPORTS_DIRECTORY
+from openbb_terminal.core.session.current_user import get_current_user
 
 try:
     from IPython import get_ipython
@@ -179,7 +179,7 @@ class Backend(pywry.PyWry):
                 img_path.unlink(missing_ok=True)
                 renderPDF.drawToFile(drawing, str(export_image))
 
-            if strtobool(os.environ.get("OPENBB_PLOT_OPEN_EXPORT", False)):
+            if get_current_user().preferences.PLOT_OPEN_EXPORT:
                 if sys.platform == "win32":
                     os.startfile(export_image)  # nosec: B606
                 else:
@@ -279,7 +279,7 @@ class Backend(pywry.PyWry):
         return {
             "title": f"OpenBB - {title}",
             "icon": self.get_window_icon(),
-            "download_path": str(USER_EXPORTS_DIRECTORY),
+            "download_path": str(get_current_user().preferences.USER_EXPORTS_DIRECTORY),
         }
 
     def del_temp(self):
