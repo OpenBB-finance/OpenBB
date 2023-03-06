@@ -1,4 +1,5 @@
 # IMPORTATION STANDARD
+
 import os
 
 # IMPORTATION THIRDPARTY
@@ -6,6 +7,10 @@ import pytest
 
 # IMPORTATION INTERNAL
 from openbb_terminal.alternative.covid import covid_controller
+from openbb_terminal.core.session.current_user import (
+    PreferencesModel,
+    copy_user,
+)
 
 
 # pylint: disable=E1101
@@ -36,12 +41,11 @@ def test_menu_with_queue(expected, mocker, queue):
 
 @pytest.mark.vcr(record_mode="none")
 def test_menu_without_queue_completion(mocker):
-    path_controller = "openbb_terminal.alternative.covid.covid_controller"
-
-    # ENABLE AUTO-COMPLETION : HELPER_FUNCS.MENU
+    preferences = PreferencesModel(USE_PROMPT_TOOLKIT=True)
+    mock_current_user = copy_user(preferences=preferences)
     mocker.patch(
-        target="openbb_terminal.feature_flags.USE_PROMPT_TOOLKIT",
-        new=True,
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
     )
     mocker.patch(
         target="openbb_terminal.parent_classes.session",
@@ -50,18 +54,11 @@ def test_menu_without_queue_completion(mocker):
         target="openbb_terminal.parent_classes.session.prompt",
         return_value="quit",
     )
-
-    # DISABLE AUTO-COMPLETION : CONTROLLER.COMPLETER
-    mocker.patch.object(
-        target=covid_controller.obbff,
-        attribute="USE_PROMPT_TOOLKIT",
-        new=True,
+    mocker.patch(
+        target="openbb_terminal.alternative.covid.covid_controller.session",
     )
     mocker.patch(
-        target=f"{path_controller}.session",
-    )
-    mocker.patch(
-        target=f"{path_controller}.session.prompt",
+        target="openbb_terminal.alternative.covid.covid_controller.session.prompt",
         return_value="quit",
     )
 
@@ -76,16 +73,15 @@ def test_menu_without_queue_completion(mocker):
     ["help", "homee help", "home help", "mock"],
 )
 def test_menu_without_queue_sys_exit(mock_input, mocker):
-    path_controller = "openbb_terminal.alternative.covid.covid_controller"
-
     # DISABLE AUTO-COMPLETION
-    mocker.patch.object(
-        target=covid_controller.obbff,
-        attribute="USE_PROMPT_TOOLKIT",
-        new=False,
+    preferences = PreferencesModel(USE_PROMPT_TOOLKIT=True)
+    mock_current_user = copy_user(preferences=preferences)
+    mocker.patch(
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
     )
     mocker.patch(
-        target=f"{path_controller}.session",
+        target="openbb_terminal.alternative.covid.covid_controller.session",
         return_value=None,
     )
 
@@ -105,7 +101,7 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
 
     mock_switch = mocker.Mock(side_effect=SystemExitSideEffect())
     mocker.patch(
-        target=f"{path_controller}.CovidController.switch",
+        target="openbb_terminal.alternative.covid.covid_controller.CovidController.switch",
         new=mock_switch,
     )
 

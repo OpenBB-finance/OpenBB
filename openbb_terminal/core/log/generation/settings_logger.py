@@ -6,9 +6,9 @@ from types import FunctionType, ModuleType
 
 # IMPORTATION THIRDPARTY
 # IMPORTATION INTERNAL
-import openbb_terminal.feature_flags as obbff
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.core.log.generation.common import do_rollover
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.terminal_helper import is_installer
 
 SENSITIVE_WORDS = [
@@ -39,21 +39,42 @@ def log_all_settings(with_rollover: bool = True) -> None:
 
 def log_settings() -> None:
     """Log settings"""
+    current_user = get_current_user()
     settings_dict = {}
-    settings_dict["tab"] = "True" if obbff.USE_TABULATE_DF else "False"
-    settings_dict["cls"] = "True" if obbff.USE_CLEAR_AFTER_CMD else "False"
-    settings_dict["color"] = "True" if obbff.USE_COLOR else "False"
-    settings_dict["promptkit"] = "True" if obbff.USE_PROMPT_TOOLKIT else "False"
-    settings_dict["thoughts"] = "True" if obbff.ENABLE_THOUGHTS_DAY else "False"
-    settings_dict["reporthtml"] = "True" if obbff.OPEN_REPORT_AS_HTML else "False"
-    settings_dict["exithelp"] = "True" if obbff.ENABLE_EXIT_AUTO_HELP else "False"
-    settings_dict["rcontext"] = "True" if obbff.REMEMBER_CONTEXTS else "False"
-    settings_dict["rich"] = "True" if obbff.ENABLE_RICH else "False"
-    settings_dict["richpanel"] = "True" if obbff.ENABLE_RICH_PANEL else "False"
-    settings_dict["ion"] = "True" if obbff.USE_ION else "False"
-    settings_dict["watermark"] = "True" if obbff.USE_WATERMARK else "False"
-    settings_dict["autoscaling"] = "True" if obbff.USE_PLOT_AUTOSCALING else "False"
-    settings_dict["dt"] = "True" if obbff.USE_DATETIME else "False"
+    settings_dict["tab"] = (
+        "True" if current_user.preferences.USE_TABULATE_DF else "False"
+    )
+    settings_dict["cls"] = (
+        "True" if current_user.preferences.USE_CLEAR_AFTER_CMD else "False"
+    )
+    settings_dict["color"] = "True" if current_user.preferences.USE_COLOR else "False"
+    settings_dict["promptkit"] = (
+        "True" if current_user.preferences.USE_PROMPT_TOOLKIT else "False"
+    )
+    settings_dict["thoughts"] = (
+        "True" if current_user.preferences.ENABLE_THOUGHTS_DAY else "False"
+    )
+    settings_dict["reporthtml"] = (
+        "True" if current_user.preferences.OPEN_REPORT_AS_HTML else "False"
+    )
+    settings_dict["exithelp"] = (
+        "True" if current_user.preferences.ENABLE_EXIT_AUTO_HELP else "False"
+    )
+    settings_dict["rcontext"] = (
+        "True" if current_user.preferences.REMEMBER_CONTEXTS else "False"
+    )
+    settings_dict["rich"] = "True" if current_user.preferences.ENABLE_RICH else "False"
+    settings_dict["richpanel"] = (
+        "True" if current_user.preferences.ENABLE_RICH_PANEL else "False"
+    )
+    settings_dict["ion"] = "True" if current_user.preferences.USE_ION else "False"
+    settings_dict["watermark"] = (
+        "True" if current_user.preferences.USE_WATERMARK else "False"
+    )
+    settings_dict["autoscaling"] = (
+        "True" if current_user.preferences.USE_PLOT_AUTOSCALING else "False"
+    )
+    settings_dict["dt"] = "True" if current_user.preferences.USE_DATETIME else "False"
     settings_dict["packaged"] = "True" if is_installer() else "False"
     settings_dict["python"] = str(platform.python_version())
     settings_dict["os"] = str(platform.system())
@@ -82,10 +103,11 @@ def log_config_terminal() -> None:
 def log_feature_flags() -> None:
     """Log feature flags"""
 
+    current_user = get_current_user()
     feature_flags_dict = {}
 
-    for item in dir(obbff):
-        prop = getattr(obbff, item)
+    for item in dir(current_user.preferences):
+        prop = getattr(current_user.preferences, item)
         if (
             not item.startswith("__")
             and not isinstance(prop, FunctionType)
@@ -99,12 +121,14 @@ def log_feature_flags() -> None:
 def log_keys() -> None:
     """Log keys"""
 
-    var_list = [v for v in dir(cfg) if v.startswith("API_")]
+    current_user = get_current_user()
+
+    var_list = [v for v in dir(current_user.credentials) if v.startswith("API_")]
 
     current_keys = {}
 
     for cfg_var_name in var_list:
-        cfg_var_value = getattr(cfg, cfg_var_name)
+        cfg_var_value = getattr(current_user.credentials, cfg_var_name)
 
         if cfg_var_value != "REPLACE_ME":
             current_keys[cfg_var_name] = "defined"

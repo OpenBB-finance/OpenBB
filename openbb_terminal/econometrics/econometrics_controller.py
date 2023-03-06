@@ -13,12 +13,8 @@ from typing import Any, Dict, List, Optional
 import numpy as np
 import pandas as pd
 
-from openbb_terminal import feature_flags as obbff
 from openbb_terminal.common import common_model
-from openbb_terminal.core.config.paths import (
-    USER_CUSTOM_IMPORTS_DIRECTORY,
-    USER_EXPORTS_DIRECTORY,
-)
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.econometrics import (
@@ -117,6 +113,8 @@ class EconometricsController(BaseController):
 
         self.DATA_TYPES: List[str] = ["int", "float", "str", "bool", "category", "date"]
 
+        current_user = get_current_user()
+
         for regression in [
             "OLS",
             "POLS",
@@ -147,15 +145,18 @@ class EconometricsController(BaseController):
             filepath.name: filepath
             for file_type in common_model.file_types
             for filepath in chain(
-                Path(USER_EXPORTS_DIRECTORY).rglob(f"*.{file_type}"),
-                Path(USER_CUSTOM_IMPORTS_DIRECTORY / "econometrics").rglob(
+                Path(current_user.preferences.USER_EXPORTS_DIRECTORY).rglob(
                     f"*.{file_type}"
                 ),
+                Path(
+                    current_user.preferences.USER_CUSTOM_IMPORTS_DIRECTORY
+                    / "econometrics"
+                ).rglob(f"*.{file_type}"),
             )
             if filepath.is_file()
         }
 
-        if session and obbff.USE_PROMPT_TOOLKIT:
+        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
             choices["load"] = {
                 "--file": {c: {} for c in self.DATA_FILES},
@@ -189,7 +190,7 @@ class EconometricsController(BaseController):
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def update_runtime_choices(self):
-        if session and obbff.USE_PROMPT_TOOLKIT:
+        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             dataset_columns = {
                 f"{dataset}.{column}": {}
                 for dataset, dataframe in self.datasets.items()
@@ -239,10 +240,12 @@ class EconometricsController(BaseController):
 
     def print_help(self):
         """Print help"""
+        current_user = get_current_user()
         mt = MenuText("econometrics/")
         mt.add_param(
             "_data_loc",
-            f"\n\t{str(USER_EXPORTS_DIRECTORY)}\n\t{str(USER_CUSTOM_IMPORTS_DIRECTORY/'econometrics')}",
+            f"\n\t{str(current_user.preferences.USER_EXPORTS_DIRECTORY)}\n"
+            f"\t{str(current_user.preferences.USER_CUSTOM_IMPORTS_DIRECTORY/'econometrics')}",
         )
         mt.add_raw("\n")
         mt.add_cmd("load")

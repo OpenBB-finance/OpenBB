@@ -97,6 +97,8 @@ To understand whether you are using an Apple Sillicon (M1) device or an Intel-ba
 
 ![MacOS Installation](https://user-images.githubusercontent.com/85772166/220201620-1c42bbd4-7509-41fc-8df8-389f34fde58a.png)
 
+---
+
 ## Source Code
 
 The following instructions are for installing the OpenBB Terminal source code.
@@ -264,6 +266,8 @@ python terminal.py
 
 **TROUBLESHOOTING:** Having difficulty getting through the installation, or encountering errors? Check out the [troubleshooting page](/terminal/quickstart/troubleshooting), or reach out to our [Discord](https://discord.gg/Up2QGbMKHY) community for help.
 
+---
+
 ## Docker
 
 Installing the OpenBB Terminal via Docker supports both Windows and Unix systems (Linux + MacOS). Installation differs a bit between operating system (Windows, macOS and Linux). Please select the section matching to your OS.
@@ -406,6 +410,8 @@ docker run --rm -it \
   -v ~/OpenBBUserData:/home/python/OpenBBUserData \
   ghcr.io/openbb-finance/openbbterminal/openbb:latest
 ```
+
+---
 
 ## Advanced Installation
 

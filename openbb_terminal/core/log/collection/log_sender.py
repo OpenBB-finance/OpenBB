@@ -14,7 +14,7 @@ from openbb_terminal.core.log.generation.settings import Settings
 
 # IMPORTATION THIRDPARTY
 # IMPORTATION INTERNAL
-from openbb_terminal.feature_flags import LOG_COLLECTION
+from openbb_terminal.core.session.current_user import get_current_user
 
 # DO NOT USE THE FILE LOGGER IN THIS MODULE
 
@@ -43,7 +43,7 @@ class LogSender(Thread):
     def start_required() -> bool:
         """Check if it makes sense to start a LogsSender instance ."""
 
-        return LOG_COLLECTION
+        return get_current_user().preferences.LOG_COLLECTION
 
     @property
     def settings(self) -> Settings:

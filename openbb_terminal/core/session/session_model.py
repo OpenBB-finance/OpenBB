@@ -4,16 +4,23 @@ from typing import Any, Optional
 
 import matplotlib.pyplot as plt
 
-import openbb_terminal.session.hub_model as Hub
-import openbb_terminal.session.local_model as Local
+import openbb_terminal.core.session.hub_model as Hub
+import openbb_terminal.core.session.local_model as Local
 from openbb_terminal.base_helpers import (
-    clear_openbb_env_vars,
-    reload_openbb_config_modules,
     remove_log_handlers,
 )
+from openbb_terminal.core.models.user_model import (
+    CredentialsModel,
+    PreferencesModel,
+    ProfileModel,
+    UserModel,
+)
+from openbb_terminal.core.session.current_user import (
+    set_current_user,
+)
+from openbb_terminal.core.session.preferences_handler import set_preference
 from openbb_terminal.helper_funcs import system_clear
 from openbb_terminal.rich_config import console
-from openbb_terminal.session.user import User
 
 # pylint: disable=consider-using-f-string
 
@@ -69,21 +76,26 @@ def login(session: dict) -> LoginStatus:
     session : dict
         The session info.
     """
-    clear_openbb_env_vars(exceptions=["OPENBB_ENABLE_AUTHENTICATION"])
-    reload_openbb_config_modules()
+
+    # create a new user
+    hub_user = UserModel(  # type: ignore
+        credentials=CredentialsModel(),
+        profile=ProfileModel(),
+        preferences=PreferencesModel(),
+    )
     response = Hub.fetch_user_configs(session)
     if response is not None:
         if response.status_code == 200:
             configs = json.loads(response.content)
             email = configs.get("email", "")
             feature_settings = configs.get("features_settings", {})
-            User.load_user_info(session, email)
+            hub_user.profile.load_user_info(session, email)
+            set_current_user(hub_user)
             Local.apply_configs(configs=configs)
-            User.update_flair(
-                flair=feature_settings.get("USE_FLAIR", None)
-                if feature_settings
-                else None
-            )
+            if feature_settings.get("FLAIR", None) is None:
+                MAX_FLAIR_LEN = 20
+                flair = "[" + hub_user.profile.username[:MAX_FLAIR_LEN] + "]" + " 🦋"
+                set_preference("FLAIR", flair, login=True)
             return LoginStatus.SUCCESS
         if response.status_code == 401:
             return LoginStatus.UNAUTHORIZED
@@ -122,7 +134,6 @@ def logout(
         r = Hub.delete_session(auth_header, token)
         if not r or r.status_code != 200:
             success = False
-        User.clear()
 
         if not Local.remove_session_file():
             success = False
@@ -130,9 +141,7 @@ def logout(
     if not Local.remove_cli_history_file():
         success = False
 
-    clear_openbb_env_vars(exceptions=["OPENBB_ENABLE_AUTHENTICATION"])
     remove_log_handlers()
-    reload_openbb_config_modules()
 
     plt.close("all")
 

@@ -3,9 +3,15 @@ __docformat__ = "numpy"
 
 # pylint: disable=C0302,too-many-branches,too-many-arguments,R0904,R0902,W0707
 # flake8: noqa
+
+# IMPORT STANDARD
 import argparse
 import logging
 from typing import Any, Dict, List, Optional
+
+# IMPORT THIRDPARTY
+import pandas as pd
+import psutil
 
 try:
     import darts
@@ -47,21 +53,13 @@ except ModuleNotFoundError:
         "pip install transformers \n"
     )
 
-import pandas as pd
-import psutil
-
 
 # ignore  pylint(ungrouped-imports)
 # pylint: disable=ungrouped-imports
 
-from openbb_terminal import feature_flags as obbff
+# IMPORT INTERNAL
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.common import common_model
-
-from openbb_terminal.core.config.paths import (
-    USER_CUSTOM_IMPORTS_DIRECTORY,
-    USER_EXPORTS_DIRECTORY,
-    USER_FORECAST_WHISPER_DIRECTORY,
-)
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 
@@ -245,7 +243,7 @@ class ForecastController(BaseController):
         self.torch_version = torch.__version__
         self.darts_version = darts.__version__
 
-        if session and obbff.USE_PROMPT_TOOLKIT:
+        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices_default
 
             self.choices = choices
@@ -283,7 +281,7 @@ class ForecastController(BaseController):
     def update_runtime_choices(self):
         # Load in any newly exported files
         self.DATA_FILES = forecast_model.get_default_files()
-        if session and obbff.USE_PROMPT_TOOLKIT:
+        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices_default  # type: ignore
 
             self.choices = choices
@@ -306,12 +304,14 @@ class ForecastController(BaseController):
 
     def print_help(self):
         """Print help"""
+        current_user = get_current_user()
         mt = MenuText("forecast/")
         mt.add_param("_disclaimer_", self.disclaimer)
         mt.add_raw("\n")
         mt.add_param(
             "_data_loc",
-            f"\n\t{USER_EXPORTS_DIRECTORY}\n\t{USER_CUSTOM_IMPORTS_DIRECTORY}",
+            f"\n\t{current_user.preferences.USER_EXPORTS_DIRECTORY}\n"
+            f"\t{current_user.preferences.USER_CUSTOM_IMPORTS_DIRECTORY}",
         )
         mt.add_raw("\n")
         mt.add_cmd("load")
@@ -3373,7 +3373,7 @@ class ForecastController(BaseController):
             "--save",
             dest="save",
             type=str,
-            default=USER_FORECAST_WHISPER_DIRECTORY,
+            default=get_current_user().preferences.USER_FORECAST_WHISPER_DIRECTORY,
             help="Directory to save the subtitles file",
         )
 
@@ -3389,7 +3389,9 @@ class ForecastController(BaseController):
 
         if ns_parser:
             if ns_parser.save is None:
-                ns_parser.save = USER_FORECAST_WHISPER_DIRECTORY
+                ns_parser.save = (
+                    get_current_user().preferences.USER_FORECAST_WHISPER_DIRECTORY
+                )
 
             whisper_model.transcribe_and_summarize(
                 video=ns_parser.video,
