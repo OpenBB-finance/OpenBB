@@ -28,9 +28,7 @@ Install the OpenBB Terminal on MacOS (Big Sur or later). There are two versions 
 </p>
 
 
-<details><summary>Minimal Requirements</summary>
-
-Note that the minimal requirements are:
+<details><summary>Minimum Requirements</summary>
 
 - MacOS Monterey or newer
 - Modern CPU (Intel processor made in the last 5 years or Apple Silicon chip)
