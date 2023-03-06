@@ -30,12 +30,16 @@ class PreferencesModel:
     PLOT_WIDTH: PositiveInt = 800
     PLOT_HEIGHT_PERCENTAGE: PositiveFloat = 50.0
     PLOT_WIDTH_PERCENTAGE: PositiveFloat = 70.0
+    # Whether to open plot image exports after they are created
+    PLOT_OPEN_EXPORT: bool = False
 
     # FEATURE FLAGS
     SYNC_ENABLED: bool = True
     FILE_OVERWRITE: bool = False
     RETRY_WITH_LOAD: bool = False
     USE_TABULATE_DF: bool = True
+    # Use interactive window to display dataframes with options to sort, filter, etc.
+    USE_INTERACTIVE_DF = True
     USE_CLEAR_AFTER_CMD: bool = False
     USE_COLOR: bool = True
     USE_DATETIME: bool = True
