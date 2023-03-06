@@ -179,7 +179,7 @@ class Backend(pywry.PyWry):
                 img_path.unlink(missing_ok=True)
                 renderPDF.drawToFile(drawing, str(export_image))
 
-            if strtobool(os.environ.get("OPENBB_PLOT_OPEN_EXPORT", False)):
+            if get_current_user().preferences.PLOT_OPEN_EXPORT:
                 if sys.platform == "win32":
                     os.startfile(export_image)  # nosec: B606
                 else:
