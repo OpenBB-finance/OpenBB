@@ -273,6 +273,7 @@ def print_rich_table(
     columns_to_auto_color: Optional[List[str]] = None,
     rows_to_auto_color: Optional[List[str]] = None,
     export: bool = False,
+    limit: Optional[int] = 1000,
 ):
     """Prepare a table from df in rich.
 
@@ -300,6 +301,8 @@ def print_rich_table(
         Rows to automatically color
     export: bool
         Whether we are exporting the table to a file. If so, we don't want to print it.
+    limit: Optional[int]
+        Limit the number of rows to show.
     """
     if export:
         return
@@ -335,6 +338,7 @@ def print_rich_table(
         plots_backend().send_table(df_table=df_outgoing, title=title)
         return
 
+    df = df.copy() if not limit else df.copy().iloc[:limit]
     if current_user.preferences.USE_COLOR and automatic_coloring:
         if columns_to_auto_color:
             for col in columns_to_auto_color:

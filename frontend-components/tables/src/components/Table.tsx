@@ -686,7 +686,7 @@ function Filter({
 
   const columnFilterValue = column.getFilterValue();
 
-  const isProbablyDate = column.id.toLowerCase().includes("date");
+  const isProbablyDate = column.id.toLowerCase().includes("date") || column.id.toLowerCase() === "index";
 
   if (isProbablyDate) {
     return (
