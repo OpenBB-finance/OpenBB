@@ -657,6 +657,11 @@ def valid_hour(hr: str) -> int:
     return new_hr
 
 
+def lower_str(string: str) -> str:
+    """Convert string to lowercase."""
+    return string.lower()
+
+
 def us_market_holidays(years) -> list:
     """Get US market holidays."""
     if isinstance(years, int):
