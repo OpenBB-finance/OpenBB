@@ -124,7 +124,7 @@ jobs:
           path: OpenBBTerminalM1.pkg
       - name: Convert & Mount DMG
         run: |
-          sudo installer -pkg /Users/openbb/actions-runner/_work/OpenBBTerminal/OpenBBTerminal/OpenBBTerminalM1.pkg -verbose -target /
+          installer -pkg /Users/openbb/actions-runner/_work/OpenBBTerminal/OpenBBTerminal/OpenBBTerminalM1.pkg -verbose -target /
           rm -rf OpenBBTerminalM1.pkg
 
       - name: Run Integration Tests
