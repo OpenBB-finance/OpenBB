@@ -1,12 +1,15 @@
 # IMPORTATION STANDARD
+
 from datetime import datetime
 
 # IMPORTATION THIRDPARTY
 import pytest
 
-from openbb_terminal import helper_funcs
-
 # IMPORTATION INTERNAL
+from openbb_terminal.core.session.current_user import (
+    PreferencesModel,
+    copy_user,
+)
 from openbb_terminal.stocks.fundamental_analysis import business_insider_view
 from openbb_terminal.stocks.stocks_helper import load
 
@@ -28,8 +31,13 @@ def vcr_config():
     "use_tab",
     [True, False],
 )
-def test_display_management(monkeypatch, use_tab):
-    monkeypatch.setattr(helper_funcs.obbff, "USE_TABULATE_DF", use_tab)
+def test_display_management(mocker, use_tab):
+    preferences = PreferencesModel(USE_TABULATE_DF=use_tab)
+    mock_current_user = copy_user(preferences=preferences)
+    mocker.patch(
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
+    )
     business_insider_view.display_management(symbol="TSLA", export="")
 
 
@@ -41,10 +49,7 @@ def test_display_management_nodata():
 
 @pytest.mark.vcr
 @pytest.mark.record_stdout
-def test_price_target_from_analysts_raw(mocker):
-    # MOCK VISUALIZE_OUTPUT
-    mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
-
+def test_price_target_from_analysts_raw():
     business_insider_view.price_target_from_analysts(
         symbol="TSLA",
         start_date=None,
@@ -57,10 +62,7 @@ def test_price_target_from_analysts_raw(mocker):
 
 @pytest.mark.vcr
 @pytest.mark.record_stdout
-def test_price_target_from_analysts_plt(mocker):
-    # MOCK VISUALIZE_OUTPUT
-    mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
-
+def test_price_target_from_analysts_plt():
     ticker = "TSLA"
     interval = 1440
     start = datetime.strptime("2021-12-05", "%Y-%m-%d")

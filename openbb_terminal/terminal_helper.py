@@ -1,30 +1,34 @@
 """Terminal helper"""
 __docformat__ = "numpy"
 
-# IMPORTATION STANDARD
 import hashlib
 import logging
 import os
 import subprocess  # nosec
 import sys
-import webbrowser
+
+# IMPORTATION STANDARD
 from contextlib import contextmanager
 from typing import List, Optional
 
-# IMPORTATION THIRDPARTY
 import matplotlib.pyplot as plt
+
+# IMPORTATION THIRDPARTY
 from packaging import version
 
 from openbb_terminal import (
     feature_flags as obbff,
     thought_of_the_day as thought,
 )
+from openbb_terminal.config_terminal import LOGGING_COMMIT_HASH
 
 # IMPORTATION INTERNAL
-from openbb_terminal.config_terminal import LOGGING_COMMIT_HASH
+from openbb_terminal.core.config.paths import SETTINGS_ENV_FILE
+from openbb_terminal.core.plots.backend import plots_backend
+from openbb_terminal.core.session.current_user import get_current_user
+from openbb_terminal.core.session.preferences_handler import set_preference
 from openbb_terminal.helper_funcs import request
 from openbb_terminal.rich_config import console
-from openbb_terminal.session.user import User
 
 # pylint: disable=too-many-statements,no-member,too-many-branches,C0302
 
@@ -194,12 +198,12 @@ def open_openbb_documentation(
 
         path += command
 
-    full_url = f"{url}{path}".replace("//", "/")
+    full_url = f"{url}{path.replace('//', '/')}"
 
     if full_url[-1] == "/":
         full_url = full_url[:-1]
 
-    webbrowser.open(full_url)
+    plots_backend().send_url(full_url)
 
 
 def hide_splashscreen():
@@ -326,7 +330,7 @@ def welcome_message():
     """
     console.print(f"\nWelcome to OpenBB Terminal v{obbff.VERSION}")
 
-    if obbff.ENABLE_THOUGHTS_DAY:
+    if get_current_user().preferences.ENABLE_THOUGHTS_DAY:
         console.print("---------------------------------")
         try:
             thought.get_thought_of_the_day()
@@ -340,25 +344,26 @@ def reset(queue: Optional[List[str]] = None):
     console.print("resetting...")
     logger.info("resetting")
     plt.close("all")
+    plots_backend().close(reset=True)
+    debug = os.environ.get("DEBUG_MODE", "False").lower() == "true"
 
-    flag = ""
-    if not User.is_guest():
-        flag = " --login"
+    # we clear all openbb_terminal modules from sys.modules
+    try:
+        for module in list(sys.modules.keys()):
+            parts = module.split(".")
+            if parts[0] == "openbb_terminal":
+                del sys.modules[module]
 
-    if queue and len(queue) > 0:
-        completed_process = subprocess.run(  # nosec
-            f"{sys.executable} terminal.py {'/'.join(queue) if len(queue) > 0 else ''}{flag}",
-            shell=True,
-            check=False,
-        )
-    else:
-        completed_process = subprocess.run(  # nosec
-            f"{sys.executable} terminal.py{flag}", shell=True, check=False
-        )
-    if completed_process.returncode != 0:
+        # pylint: disable=import-outside-toplevel
+        from openbb_terminal.terminal_controller import main
+
+        # we run the terminal again
+        main(debug, ["/".join(queue) if len(queue) > 0 else ""], module="")  # type: ignore
+
+    except Exception as e:
+        logger.exception("Exception: %s", str(e))
         console.print("Unfortunately, resetting wasn't possible!\n")
-
-    return completed_process.returncode
+        print_goodbye()
 
 
 @contextmanager
@@ -393,5 +398,20 @@ def is_reset(command: str) -> bool:
     if command == "r":
         return True
     if command == "r\n":
+        return True
+    return False
+
+
+def first_time_user() -> bool:
+    """Whether a user is a first time user. A first time user is someone with an empty .env file.
+    If this is true, it also adds an env variable to make sure this does not run again.
+
+    Returns
+    -------
+    bool
+        Whether or not the user is a first time user
+    """
+    if SETTINGS_ENV_FILE.stat().st_size == 0:
+        set_preference("OPENBB_PREVIOUS_USE", True)
         return True
     return False

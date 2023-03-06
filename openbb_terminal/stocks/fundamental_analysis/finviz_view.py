@@ -28,7 +28,9 @@ def display_screen_data(
     """
     fund_data = finviz_model.get_data(symbol)
 
-    print_rich_table(fund_data, title="Ticker Screener", show_index=True)
+    print_rich_table(
+        fund_data, title="Ticker Screener", show_index=True, export=bool(export)
+    )
 
     export_data(
         export,
@@ -79,7 +81,11 @@ def analyst(symbol: str, export: str = "", sheet_name: Optional[str] = None):
         df["category"] = df["category"].apply(lambda_category_color_red_green)
 
     print_rich_table(
-        df, headers=list(df.columns), show_index=True, title="Display Analyst Ratings"
+        df,
+        headers=list(df.columns),
+        show_index=True,
+        title="Display Analyst Ratings",
+        export=bool(export),
     )
 
     export_data(

@@ -52,6 +52,7 @@ def display_options(
         headers=list(data.columns),
         show_index=False,
         title=f"Last Updated: {last_update} (EST)",
+        export=bool(export),
     )
 
     if export:

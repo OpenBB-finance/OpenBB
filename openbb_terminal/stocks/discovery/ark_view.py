@@ -79,6 +79,7 @@ def ark_orders_view(
             headers=[x.title() for x in df_orders.columns],
             show_index=False,
             title="Orders by ARK Investment Management LLC",
+            export=bool(export),
         )
 
     export_data(

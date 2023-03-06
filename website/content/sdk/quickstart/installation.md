@@ -120,7 +120,7 @@ conda activate obb
 ### 3A. Install From PyPi
 
 ```bash
-pip install openbb[all]
+pip install "openbb[all]"
 ```
 
 Done! The OpenBB SDK can now be imported to any Python session with the line of code below.

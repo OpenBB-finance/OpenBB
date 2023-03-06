@@ -73,6 +73,7 @@ def display_income_comparison(
         headers=list(df_financials_compared.columns),
         show_index=True,
         title="Income Data",
+        export=bool(export),
     )
 
 
@@ -130,6 +131,7 @@ def display_balance_comparison(
         headers=list(df_financials_compared.columns),
         show_index=True,
         title="Company Comparison",
+        export=bool(export),
     )
 
 
@@ -187,4 +189,5 @@ def display_cashflow_comparison(
         headers=list(df_financials_compared.columns),
         show_index=True,
         title="Cashflow Comparison",
+        export=bool(export),
     )

@@ -9,7 +9,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:86.0) Gecko/20100101 Firefox/86.0
+      - Mozilla/5.0 (Windows NT 6.1; WOW64; rv:86.1) Gecko/20100101 Firefox/86.1
       authorization:
       - Bearer test_access_token
     method: GET
@@ -26,17 +26,17 @@ interactions:
       content-type:
       - application/problem+json
       date:
-      - Wed, 22 Feb 2023 19:02:42 GMT
+      - Sun, 26 Feb 2023 22:39:42 GMT
       perf:
       - '7626143928'
       server:
       - tsa_f
       x-connection-hash:
-      - 3f3750f962a0710d9b7b049d65511b18352660e6b7ac534dd9681c87f9c1ea2f
+      - 0fe6ae058240b3f4a6485292de30cbdf18382f4af06e14c5449fdff27883e306
       x-response-time:
       - '99'
       x-transaction-id:
-      - ffeb1d211ef5b410
+      - 3fa192a1dba610ef
     status:
       code: 401
       message: Unauthorized

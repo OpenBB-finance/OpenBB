@@ -19,17 +19,22 @@ from oandapyV20.endpoints import (
 )
 from oandapyV20.exceptions import V20Error
 
-from openbb_terminal import config_terminal as cfg
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
-if cfg.OANDA_ACCOUNT_TYPE != "REPLACE_ME":
-    client = API(access_token=cfg.OANDA_TOKEN, environment=cfg.OANDA_ACCOUNT_TYPE)
+current_user = get_current_user()
+
+if current_user.credentials.OANDA_ACCOUNT_TYPE != "REPLACE_ME":
+    client = API(
+        access_token=current_user.credentials.OANDA_TOKEN,
+        environment=current_user.credentials.OANDA_ACCOUNT_TYPE,
+    )
 else:
     client = None
-account = cfg.OANDA_ACCOUNT
+account = current_user.credentials.OANDA_ACCOUNT
 
 
 @log_start_end(log=logger)

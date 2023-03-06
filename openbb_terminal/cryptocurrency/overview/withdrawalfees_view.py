@@ -42,6 +42,7 @@ def display_overall_withdrawal_fees(
             headers=list(df_fees.columns),
             show_index=False,
             title="Top Withdrawal Fees",
+            export=bool(export),
         )
 
         export_data(
@@ -78,6 +79,7 @@ def display_overall_exchange_withdrawal_fees(
             headers=list(df_fees.columns),
             show_index=False,
             title="Withdrawal Fees",
+            export=bool(export),
         )
 
         export_data(
@@ -119,6 +121,7 @@ def display_crypto_withdrawal_fees(
             headers=list(df_fees.columns),
             show_index=False,
             title="Withdrawal Fees per Exchange",
+            export=bool(export),
         )
 
         export_data(

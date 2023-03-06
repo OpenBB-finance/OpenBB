@@ -7,7 +7,7 @@ from typing import List, Optional
 
 from pandas.core.frame import DataFrame
 
-from openbb_terminal import feature_flags as obbff
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
@@ -112,7 +112,7 @@ class FundamentalAnalysisController(StockBaseController):
         self.default_balance = get_ordered_list_sources(f"{self.PATH}balance")[0]
         self.default_cash = get_ordered_list_sources(f"{self.PATH}cash")[0]
 
-        if session and obbff.USE_PROMPT_TOOLKIT:
+        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices_default
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -720,6 +720,14 @@ class FundamentalAnalysisController(StockBaseController):
             prog="splits",
             description="""Stock splits and reverse split events since IPO [Source: Yahoo Finance]""",
         )
+        parser.add_argument(
+            "-t",
+            "--ticker",
+            dest="ticker",
+            help="Ticker to analyze",
+            type=str,
+            default=None,
+        )
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
@@ -895,7 +903,7 @@ class FundamentalAnalysisController(StockBaseController):
         ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
-            export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
+            export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,
             limit=5,
         )
         if ns_parser:

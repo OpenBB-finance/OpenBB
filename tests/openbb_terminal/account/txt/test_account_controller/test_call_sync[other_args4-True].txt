@@ -1,1 +1,2 @@
-sync is ON, use --on or --off to change.
+sync is True, use --on or --off to change.
+[]

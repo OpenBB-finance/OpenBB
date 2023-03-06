@@ -37,7 +37,11 @@ def display_account(
     df_data = df.copy()
     df = df.drop(columns=["id"])
     print_rich_table(
-        df, headers=list(df.columns), show_index=False, title="All Trading Accounts"
+        df,
+        headers=list(df.columns),
+        show_index=False,
+        title="All Trading Accounts",
+        export=bool(export),
     )
 
     export_data(
@@ -76,6 +80,7 @@ def display_history(
         headers=list(df.columns),
         show_index=False,
         title="Account History",
+        export=bool(export),
     )
 
     export_data(
@@ -116,6 +121,7 @@ def display_orders(
         headers=list(df.columns),
         show_index=False,
         title="Current Open Doors",
+        export=bool(export),
     )
 
     export_data(
@@ -161,7 +167,11 @@ def display_deposits(
     df_data = df.copy()
 
     print_rich_table(
-        df, headers=list(df.columns), show_index=False, title="Account Deposits"
+        df,
+        headers=list(df.columns),
+        show_index=False,
+        title="Account Deposits",
+        export=bool(export),
     )
 
     export_data(
