@@ -37,4 +37,6 @@ This section provides you with the installation file as well as the guide to ins
 
 <p align="center"><a target="_blank" href="https://openbb-web-assets.s3.amazonaws.com/docs/installation/icon.png"><img width="100" alt="run_the_terminal" src="https://openbb-web-assets.s3.amazonaws.com/docs/installation/icon.png"></img></a></p>
 
-The first time this takes a bit longer to load, this can take up to a few minutes.
+The first time this takes a bit longer to load, this can take up to a few minutes. If everything was successful you should see a screen like the one below:
+
+<img width="1511" alt="image" src="https://user-images.githubusercontent.com/46355364/223144493-6d2333fd-914d-4b4d-aaa6-da986b64f1fe.png">
