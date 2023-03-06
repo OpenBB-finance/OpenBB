@@ -4,7 +4,7 @@ from typing import Optional
 
 import pandas as pd
 
-from openbb_terminal import config_terminal as cfg
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.cryptocurrency.discovery.pycoingecko_model import read_file_data
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import request
@@ -70,7 +70,7 @@ def get_github_activity(
 
     headers = {
         "Content-Type": "application/graphql",
-        "Authorization": f"Apikey {cfg.API_SANTIMENT_KEY}",
+        "Authorization": f"Apikey {get_current_user().credentials.API_SANTIMENT_KEY}",
     }
 
     data = (

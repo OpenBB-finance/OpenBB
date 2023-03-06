@@ -8,10 +8,10 @@ import logging
 from typing import Dict, List, Optional
 
 from openbb_terminal import (
-    feature_flags as obbff,
     keys_model,
     keys_view,
 )
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import EXPORT_ONLY_RAW_DATA_ALLOWED
@@ -43,7 +43,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
     ):
         """Constructor"""
         super().__init__(queue)
-        if menu_usage and session and obbff.USE_PROMPT_TOOLKIT:
+        if menu_usage and session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
 
             choices["support"] = self.SUPPORT_CHOICES

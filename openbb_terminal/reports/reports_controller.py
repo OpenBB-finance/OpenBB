@@ -9,8 +9,7 @@ import os
 from typing import Any, Dict, List, Optional
 
 import openbb_terminal.config_terminal as cfg
-from openbb_terminal import feature_flags as obbff
-from openbb_terminal.core.config.paths import USER_CUSTOM_REPORTS_DIRECTORY
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.menu import session
@@ -58,7 +57,7 @@ class ReportController(BaseController):
                 str(reports_model.REPORTS_FOLDER / report_name)
             )
 
-        if session and obbff.USE_PROMPT_TOOLKIT:
+        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             self.choices: dict = {c: {} for c in self.controller_choices}  # type: ignore
             self.choices["run"] = {
                 "--file": {c: None for c in reports_model.USER_REPORTS},
@@ -214,7 +213,8 @@ class ReportController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="run",
-            description=f"Run a notebook from this folder: '{str(USER_CUSTOM_REPORTS_DIRECTORY)}'.",
+            description="Run a notebook from this folder: '"
+            f"{str(get_current_user().preferences.USER_CUSTOM_REPORTS_DIRECTORY)}'.",
         )
         parser.add_argument(
             "-f",
@@ -253,7 +253,10 @@ class ReportController(BaseController):
                         )
 
             if ns_parser.file:
-                complete_file_path = str(USER_CUSTOM_REPORTS_DIRECTORY / ns_parser.file)
+                complete_file_path = str(
+                    get_current_user().preferences.USER_CUSTOM_REPORTS_DIRECTORY
+                    / ns_parser.file
+                )
                 if os.path.exists(complete_file_path):
                     reports_model.render_report(
                         input_path=complete_file_path, args_dict=parameters_dict

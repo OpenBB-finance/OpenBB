@@ -14,9 +14,9 @@ from rich.text import Text
 
 from openbb_terminal import (
     config_terminal as cfg,
-    feature_flags as obbff,
 )
 from openbb_terminal.core.config.paths import MISCELLANEOUS_DIRECTORY
+from openbb_terminal.core.session.current_user import get_current_user
 
 # pylint: disable=no-member,c-extension-no-member
 
@@ -68,10 +68,11 @@ def get_ordered_list_sources(command_path: str):
     list:
         list of sources
     """
+    current_user = get_current_user()
     try:
         # Loading in both source files: default sources and user sources
         default_data_source = MISCELLANEOUS_DIRECTORY / "data_sources_default.json"
-        user_data_source = Path(obbff.PREFERRED_DATA_SOURCE_FILE)
+        user_data_source = Path(current_user.preferences.PREFERRED_DATA_SOURCE_FILE)
 
         # Opening default sources file from the repository root
         with open(str(default_data_source)) as json_file:
@@ -123,7 +124,7 @@ def get_ordered_list_sources(command_path: str):
     except Exception as e:
         console.print(
             f"[red]Failed to load preferred source from file: "
-            f"{obbff.PREFERRED_DATA_SOURCE_FILE}[/red]"
+            f"{current_user.preferences.PREFERRED_DATA_SOURCE_FILE}[/red]"
         )
         console.print(f"[red]{e}[/red]")
         return None
@@ -292,10 +293,11 @@ class ConsoleAndPanel:
         return text
 
     def print(self, *args, **kwargs):
+        current_user = get_current_user()
         if kwargs and "text" in list(kwargs) and "menu" in list(kwargs):
             if not os.getenv("TEST_MODE"):
-                if obbff.ENABLE_RICH_PANEL:
-                    version = f"[param]OpenBB Terminal v{obbff.VERSION}[/param] (https://openbb.co)"
+                if current_user.preferences.ENABLE_RICH_PANEL:
+                    version = f"[param]OpenBB Terminal v{cfg.VERSION}[/param] (https://openbb.co)"
                     self.console.print(
                         panel.Panel(
                             "\n" + kwargs["text"],

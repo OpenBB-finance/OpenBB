@@ -8,7 +8,7 @@ import dotenv
 
 import openbb_terminal.config_terminal as cfg
 from openbb_terminal.base_helpers import load_env_vars, strtobool
-from openbb_terminal.core.config.paths import USER_ENV_FILE
+from openbb_terminal.core.config.paths import SETTINGS_ENV_FILE
 from openbb_terminal.core.sdk.sdk_init import (
     FORECASTING_TOOLKIT_ENABLED,
     FORECASTING_TOOLKIT_WARNING,
@@ -17,16 +17,20 @@ from openbb_terminal.core.sdk.sdk_init import (
 )
 from openbb_terminal.rich_config import console
 
+SETTINGS_ENV_FILE.parent.mkdir(parents=True, exist_ok=True)
+
 if not FORECASTING_TOOLKIT_ENABLED and not load_env_vars(
     "OPENBB_DISABLE_FORECASTING_WARNING", strtobool, False
 ):
-    dotenv.set_key(str(USER_ENV_FILE), "OPENBB_DISABLE_FORECASTING_WARNING", "True")
+    dotenv.set_key(str(SETTINGS_ENV_FILE), "OPENBB_DISABLE_FORECASTING_WARNING", "True")
     console.print(FORECASTING_TOOLKIT_WARNING)
 
 if not OPTIMIZATION_TOOLKIT_ENABLED and not load_env_vars(
     "OPENBB_DISABLE_OPTIMIZATION_WARNING", strtobool, False
 ):
-    dotenv.set_key(str(USER_ENV_FILE), "OPENBB_DISABLE_OPTIMIZATION_WARNING", "True")
+    dotenv.set_key(
+        str(SETTINGS_ENV_FILE), "OPENBB_DISABLE_OPTIMIZATION_WARNING", "True"
+    )
     console.print(OPTIMIZATION_TOOLKIT_WARNING)
 
 
@@ -332,7 +336,7 @@ import logging
 
 import openbb_terminal.config_terminal as cfg
 from openbb_terminal import helper_funcs as helper  # noqa: F401
-from openbb_terminal.base_helpers import load_dotenv_and_reload_configs
+from openbb_terminal.base_helpers import load_env_files
 from openbb_terminal.config_terminal import theme
 
 from openbb_terminal.cryptocurrency.due_diligence.pycoingecko_model import Coin
@@ -346,12 +350,11 @@ from openbb_terminal.core.sdk import (
     controllers as ctrl,
     models as model,
 )
-from openbb_terminal import feature_flags as obbff
-from openbb_terminal.session.user import User
+from openbb_terminal.core.session.current_user import is_local
 from openbb_terminal.terminal_helper import is_auth_enabled
 
-if User.is_guest():
-    load_dotenv_and_reload_configs()
+load_env_files()
+init_userdata()
 
 logger = logging.getLogger(__name__)
 theme.applyMPLstyle()

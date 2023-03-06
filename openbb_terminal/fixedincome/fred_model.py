@@ -1,19 +1,22 @@
 """ FRED model """
 __docformat__ = "numpy"
 
+# IMPORTATION STANDARD
 import logging
 import os
 from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
+# IMPORTATION THIRDPARTY
 import certifi
 import numpy as np
 import pandas as pd
 from fredapi import Fred
 from requests import HTTPError
 
-from openbb_terminal import config_terminal as cfg
+# IMPORTATION INTERNAL
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.rich_config import console
 
@@ -279,7 +282,7 @@ def get_series_data(
         # https://stackoverflow.com/questions/27835619/urllib-and-ssl-certificate-verify-failed-error/73270162#73270162
         os.environ["REQUESTS_CA_BUNDLE"] = certifi.where()
         os.environ["SSL_CERT_FILE"] = certifi.where()
-        fredapi_client = Fred(cfg.API_FRED_KEY)
+        fredapi_client = Fred(get_current_user().credentials.API_FRED_KEY)
         df = fredapi_client.get_series(series_id, start_date, end_date)
     # Series does not exist & invalid api keys
     except HTTPError as e:
@@ -342,7 +345,7 @@ def get_yield_curve(
     # os.environ["REQUESTS_CA_BUNDLE"] = certifi.where()
     # os.environ["SSL_CERT_FILE"] = certifi.where()
 
-    fredapi_client = Fred(cfg.API_FRED_KEY)
+    fredapi_client = Fred(get_current_user().credentials.API_FRED_KEY)
 
     df = pd.DataFrame()
 

@@ -3,8 +3,6 @@ __docformat__ = "numpy"
 # pylint:disable=too-many-arguments,unused-argument
 import logging
 import os
-
-# from textwrap import fill
 from typing import Optional, Union
 
 from openbb_terminal import OpenBBFigure
@@ -88,7 +86,7 @@ def show_macro_data(
                 x=df_rounded.index,
                 y=df_rounded[column],
                 mode="lines",
-                name=country_label + " " + parameter_label,
+                name=f"{country_label} [{parameter_label}, {parameter_units}]",
             )
             fig.set_title(f"Macro data{denomination}")
         elif len(parameters) > 1:
@@ -96,7 +94,7 @@ def show_macro_data(
                 x=df_rounded.index,
                 y=df_rounded[column],
                 mode="lines",
-                name=country_label + " " + parameter_label,
+                name=f"{parameter_label} [{parameter_units}]",
             )
             fig.set_title(f"{country_label}{denomination}")
         elif len(countries) > 1:
@@ -104,7 +102,7 @@ def show_macro_data(
                 x=df_rounded.index,
                 y=df_rounded[column],
                 mode="lines",
-                name=country_label + " " + parameter_label,
+                name=f"{country_label} [{parameter_units}]",
             )
             fig.set_title(f"{parameter_label}{denomination}")
         else:
@@ -112,7 +110,7 @@ def show_macro_data(
                 x=df_rounded.index,
                 y=df_rounded[column],
                 mode="lines",
-                name=country_label + " " + parameter_label,
+                name=f"{country_label} [{parameter_label}, {parameter_units}]",
             )
             fig.set_title(
                 f"{parameter_label} of {country_label}{denomination} [{parameter_units}]"

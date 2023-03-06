@@ -1,10 +1,12 @@
 """ ECB view """
 __docformat__ = "numpy"
 
+# IMPORTATION STANDARD
 import logging
 import os
 from typing import Optional
 
+# IMPORTATION THIRDPARTY
 import pandas as pd
 
 from openbb_terminal import OpenBBFigure
