@@ -1,4 +1,5 @@
 # IMPORTATION STANDARD
+
 import os
 
 # IMPORTATION THIRDPARTY
@@ -6,6 +7,10 @@ import pytest
 
 # IMPORTATION INTERNAL
 from openbb_terminal.alternative.oss import oss_controller
+from openbb_terminal.core.session.current_user import (
+    PreferencesModel,
+    copy_user,
+)
 
 
 # pylint: disable=E1101
@@ -39,9 +44,11 @@ def test_menu_without_queue_completion(mocker):
     path_controller = "openbb_terminal.alternative.oss.oss_controller"
 
     # ENABLE AUTO-COMPLETION : HELPER_FUNCS.MENU
+    preferences = PreferencesModel(USE_PROMPT_TOOLKIT=True)
+    mock_current_user = copy_user(preferences=preferences)
     mocker.patch(
-        target="openbb_terminal.feature_flags.USE_PROMPT_TOOLKIT",
-        new=True,
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
     )
     mocker.patch(
         target="openbb_terminal.parent_classes.session",
@@ -52,11 +59,6 @@ def test_menu_without_queue_completion(mocker):
     )
 
     # DISABLE AUTO-COMPLETION : CONTROLLER.COMPLETER
-    mocker.patch.object(
-        target=oss_controller.obbff,
-        attribute="USE_PROMPT_TOOLKIT",
-        new=True,
-    )
     mocker.patch(
         target=f"{path_controller}.session",
     )
@@ -79,10 +81,11 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
     path_controller = "openbb_terminal.alternative.oss.oss_controller"
 
     # DISABLE AUTO-COMPLETION
-    mocker.patch.object(
-        target=oss_controller.obbff,
-        attribute="USE_PROMPT_TOOLKIT",
-        new=False,
+    preferences = PreferencesModel(USE_PROMPT_TOOLKIT=True)
+    mock_current_user = copy_user(preferences=preferences)
+    mocker.patch(
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
     )
     mocker.patch(
         target=f"{path_controller}.session",

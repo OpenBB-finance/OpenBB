@@ -14,7 +14,7 @@ from typing import Any, Dict, List, Optional
 
 import pandas as pd
 
-from openbb_terminal import feature_flags as obbff
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.economy import (
@@ -174,7 +174,7 @@ class EconomyController(BaseController):
         self.DATASETS["fred"] = pd.DataFrame()
         self.DATASETS["index"] = pd.DataFrame()
 
-        if session and obbff.USE_PROMPT_TOOLKIT:
+        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices_default
             # This is still needed because we can't use choices and nargs separated by comma
             choices["treasury"]["--type"] = {
@@ -223,7 +223,7 @@ class EconomyController(BaseController):
         return commands
 
     def update_runtime_choices(self):
-        if session and obbff.USE_PROMPT_TOOLKIT:
+        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             if not self.fred_query.empty:
                 self.choices["fred"]["--parameter"] = {c: None for c in self.fred_query}
 
@@ -660,7 +660,7 @@ class EconomyController(BaseController):
                     )
 
                     self.update_runtime_choices()
-                    if obbff.ENABLE_EXIT_AUTO_HELP:
+                    if get_current_user().preferences.ENABLE_EXIT_AUTO_HELP:
                         self.print_help()
 
     @check_api_key(["API_FRED_KEY"])
@@ -776,7 +776,7 @@ class EconomyController(BaseController):
                     )
 
                     self.update_runtime_choices()
-                    if obbff.ENABLE_EXIT_AUTO_HELP:
+                    if get_current_user().preferences.ENABLE_EXIT_AUTO_HELP:
                         self.print_help()
 
                 else:
@@ -919,7 +919,7 @@ class EconomyController(BaseController):
                             )
 
                             self.update_runtime_choices()
-                            if obbff.ENABLE_EXIT_AUTO_HELP:
+                            if get_current_user().preferences.ENABLE_EXIT_AUTO_HELP:
                                 self.print_help()
 
     @log_start_end(log=logger)
@@ -1047,7 +1047,7 @@ class EconomyController(BaseController):
                     )
 
                     self.update_runtime_choices()
-                    if obbff.ENABLE_EXIT_AUTO_HELP:
+                    if get_current_user().preferences.ENABLE_EXIT_AUTO_HELP:
                         self.print_help()
 
     @log_start_end(log=logger)

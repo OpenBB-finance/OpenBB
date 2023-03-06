@@ -2,7 +2,7 @@ import argparse
 import logging
 from typing import List, Optional
 
-from openbb_terminal import feature_flags as obbff
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.cryptocurrency.nft import (
     nftpricefloor_model,
     nftpricefloor_view,
@@ -38,7 +38,7 @@ class NFTController(BaseController):
 
         self.nft_price_floor_collections = nftpricefloor_model.get_collection_slugs()
 
-        if session and obbff.USE_PROMPT_TOOLKIT:
+        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices_default
 
             choices["fp"].update({c: {} for c in self.nft_price_floor_collections})

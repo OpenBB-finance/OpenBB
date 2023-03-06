@@ -7,7 +7,7 @@ import argparse
 import logging
 from typing import List, Optional
 
-from openbb_terminal import feature_flags as obbff
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.menu import session
@@ -77,7 +77,7 @@ class ParametersController(BaseController):
         self.description: Optional[str] = None
         self.DATA_FILES = params_helpers.load_data_files()
 
-        if session and obbff.USE_PROMPT_TOOLKIT:
+        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
             choices["set"] = {c: None for c in self.models}
             choices["set"]["--model"] = {c: None for c in self.models}
@@ -98,7 +98,7 @@ class ParametersController(BaseController):
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def update_runtime_choices(self):
-        if session and obbff.USE_PROMPT_TOOLKIT:
+        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             self.DATA_FILES = params_helpers.load_data_files()
             self.choices["load"]["--file"] = {c: {} for c in self.DATA_FILES}
             self.completer = NestedCompleter.from_nested_dict(self.choices)

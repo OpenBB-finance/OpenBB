@@ -9,7 +9,7 @@ import pandas as pd
 import valinvest
 from requests.exceptions import HTTPError
 
-from openbb_terminal import config_terminal as cfg
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import lambda_long_number_format
 from openbb_terminal.rich_config import console
@@ -37,8 +37,13 @@ def get_score(symbol: str, years: int) -> Dict[str, Any]:
     np.number
         Value score
     """
+
+    current_user = get_current_user()
+
     try:
-        valstock = valinvest.Fundamental(symbol, cfg.API_KEY_FINANCIALMODELINGPREP)
+        valstock = valinvest.Fundamental(
+            symbol, current_user.credentials.API_KEY_FINANCIALMODELINGPREP
+        )
         warnings.filterwarnings("ignore", category=FutureWarning)
         scores = {
             "Beta Score": 100 * (valstock.beta_score() / 9),
@@ -85,10 +90,13 @@ def get_profile(symbol: str) -> pd.DataFrame:
     pd.DataFrame
         Dataframe of ticker profile
     """
+
+    current_user = get_current_user()
+
     df = pd.DataFrame()
 
     try:
-        df = fa.profile(symbol, cfg.API_KEY_FINANCIALMODELINGPREP)
+        df = fa.profile(symbol, current_user.credentials.API_KEY_FINANCIALMODELINGPREP)
     # Invalid API Keys
     except ValueError:
         console.print("[red]Invalid API Key[/red]\n")
@@ -119,15 +127,22 @@ def get_enterprise(
     pd.DataFrame
         Dataframe of enterprise information
     """
+
+    current_user = get_current_user()
+
     df_fa = pd.DataFrame()
 
     try:
         if quarterly:
             df_fa = fa.enterprise(
-                symbol, cfg.API_KEY_FINANCIALMODELINGPREP, period="quarter"
+                symbol,
+                current_user.credentials.API_KEY_FINANCIALMODELINGPREP,
+                period="quarter",
             )
         else:
-            df_fa = fa.enterprise(symbol, cfg.API_KEY_FINANCIALMODELINGPREP)
+            df_fa = fa.enterprise(
+                symbol, current_user.credentials.API_KEY_FINANCIALMODELINGPREP
+            )
     # Invalid API Keys
     except ValueError as e:
         console.print(e)
@@ -160,15 +175,21 @@ def get_dcf(symbol: str, limit: int = 5, quarterly: bool = False) -> pd.DataFram
         Dataframe of dcf data
     """
 
+    current_user = get_current_user()
+
     df_fa = pd.DataFrame()
 
     try:
         if quarterly:
             df_fa = fa.discounted_cash_flow(
-                symbol, cfg.API_KEY_FINANCIALMODELINGPREP, period="quarter"
+                symbol,
+                current_user.credentials.API_KEY_FINANCIALMODELINGPREP,
+                period="quarter",
             )
         else:
-            df_fa = fa.discounted_cash_flow(symbol, cfg.API_KEY_FINANCIALMODELINGPREP)
+            df_fa = fa.discounted_cash_flow(
+                symbol, current_user.credentials.API_KEY_FINANCIALMODELINGPREP
+            )
         df_fa = clean_metrics_df(df_fa, num=limit, mask=False)
     # Invalid API Keys
     except ValueError as e:
@@ -210,15 +231,21 @@ def get_income(
         Dataframe of the income statements
     """
 
+    current_user = get_current_user()
+
     df_fa = pd.DataFrame()
 
     try:
         if quarterly:
             df_fa = fa.income_statement(
-                symbol, cfg.API_KEY_FINANCIALMODELINGPREP, period="quarter"
+                symbol,
+                current_user.credentials.API_KEY_FINANCIALMODELINGPREP,
+                period="quarter",
             )
         else:
-            df_fa = fa.income_statement(symbol, cfg.API_KEY_FINANCIALMODELINGPREP)
+            df_fa = fa.income_statement(
+                symbol, current_user.credentials.API_KEY_FINANCIALMODELINGPREP
+            )
 
     # Invalid API Keys
     except ValueError as e:
@@ -280,16 +307,20 @@ def get_balance(
         Dataframe of balance sheet
     """
 
+    current_user = get_current_user()
+
     df_fa = pd.DataFrame()
 
     try:
         if quarterly:
             df_fa = fa.balance_sheet_statement(
-                symbol, cfg.API_KEY_FINANCIALMODELINGPREP, period="quarter"
+                symbol,
+                current_user.credentials.API_KEY_FINANCIALMODELINGPREP,
+                period="quarter",
             )
         else:
             df_fa = fa.balance_sheet_statement(
-                symbol, cfg.API_KEY_FINANCIALMODELINGPREP
+                symbol, current_user.credentials.API_KEY_FINANCIALMODELINGPREP
             )
 
     # Invalid API Keys
@@ -351,15 +382,22 @@ def get_cash(
     pd.DataFrame
         Dataframe of company cash flow
     """
+
+    current_user = get_current_user()
+
     df_fa = pd.DataFrame()
 
     try:
         if quarterly:
             df_fa = fa.cash_flow_statement(
-                symbol, cfg.API_KEY_FINANCIALMODELINGPREP, period="quarter"
+                symbol,
+                current_user.credentials.API_KEY_FINANCIALMODELINGPREP,
+                period="quarter",
             )
         else:
-            df_fa = fa.cash_flow_statement(symbol, cfg.API_KEY_FINANCIALMODELINGPREP)
+            df_fa = fa.cash_flow_statement(
+                symbol, current_user.credentials.API_KEY_FINANCIALMODELINGPREP
+            )
 
     # Invalid API Keys
     except ValueError as e:
@@ -412,15 +450,22 @@ def get_key_metrics(
     pd.DataFrame
         Dataframe of key metrics
     """
+
+    current_user = get_current_user()
+
     df_fa = pd.DataFrame()
 
     try:
         if quarterly:
             df_fa = fa.key_metrics(
-                symbol, cfg.API_KEY_FINANCIALMODELINGPREP, period="quarter"
+                symbol,
+                current_user.credentials.API_KEY_FINANCIALMODELINGPREP,
+                period="quarter",
             )
         else:
-            df_fa = fa.key_metrics(symbol, cfg.API_KEY_FINANCIALMODELINGPREP)
+            df_fa = fa.key_metrics(
+                symbol, current_user.credentials.API_KEY_FINANCIALMODELINGPREP
+            )
 
         df_fa = clean_metrics_df(df_fa, num=limit)
     # Invalid API Keys
@@ -454,15 +499,22 @@ def get_key_ratios(
     pd.DataFrame
         Dataframe of key ratios
     """
+
+    current_user = get_current_user()
+
     df_fa = pd.DataFrame()
 
     try:
         if quarterly:
             df_fa = fa.financial_ratios(
-                symbol, cfg.API_KEY_FINANCIALMODELINGPREP, period="quarter"
+                symbol,
+                current_user.credentials.API_KEY_FINANCIALMODELINGPREP,
+                period="quarter",
             )
         else:
-            df_fa = fa.financial_ratios(symbol, cfg.API_KEY_FINANCIALMODELINGPREP)
+            df_fa = fa.financial_ratios(
+                symbol, current_user.credentials.API_KEY_FINANCIALMODELINGPREP
+            )
 
         df_fa = clean_metrics_df(df_fa, num=limit)
     # Invalid API Keys
@@ -496,16 +548,21 @@ def get_financial_growth(
     pd.DataFrame
         Dataframe of financial statement growth
     """
+
+    current_user = get_current_user()
+
     df_fa = pd.DataFrame()
 
     try:
         if quarterly:
             df_fa = fa.financial_statement_growth(
-                symbol, cfg.API_KEY_FINANCIALMODELINGPREP, period="quarter"
+                symbol,
+                current_user.credentials.API_KEY_FINANCIALMODELINGPREP,
+                period="quarter",
             )
         else:
             df_fa = fa.financial_statement_growth(
-                symbol, cfg.API_KEY_FINANCIALMODELINGPREP
+                symbol, current_user.credentials.API_KEY_FINANCIALMODELINGPREP
             )
 
         df_fa = clean_metrics_df(df_fa, num=limit)
@@ -595,7 +652,7 @@ def get_filings(
 
     df = openbb.stocks.filings(pages=30)
     """
-
+    current_user = get_current_user()
     temp = []
     try:
         for i in range(pages):
@@ -604,7 +661,7 @@ def get_filings(
                     "https://financialmodelingprep.com/api/v3/rss_feed?&page="
                     f"{i}"
                     "&apikey="
-                    f"{cfg.API_KEY_FINANCIALMODELINGPREP}"
+                    f"{current_user.credentials.API_KEY_FINANCIALMODELINGPREP}"
                 )
             )
         df = pd.concat(temp)
@@ -653,9 +710,12 @@ def get_rating(symbol: str) -> pd.DataFrame:
     pd.DataFrame
         Rating data
     """
-    if cfg.API_KEY_FINANCIALMODELINGPREP:
+    current_user = get_current_user()
+    if current_user.credentials.API_KEY_FINANCIALMODELINGPREP:
         try:
-            df = fa.rating(symbol, cfg.API_KEY_FINANCIALMODELINGPREP)
+            df = fa.rating(
+                symbol, current_user.credentials.API_KEY_FINANCIALMODELINGPREP
+            )
             l_recoms = [col for col in df.columns if "Recommendation" in col]
             l_recoms_show = [
                 recom.replace("rating", "")

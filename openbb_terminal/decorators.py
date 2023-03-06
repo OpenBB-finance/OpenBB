@@ -8,8 +8,11 @@ from ssl import SSLError
 import pandas as pd
 from requests.exceptions import RequestException
 
-from openbb_terminal import feature_flags as obbff
-from openbb_terminal.rich_config import console  # pragma: allowlist secret
+from openbb_terminal.core.session.current_user import (
+    get_current_user,
+    set_current_user,
+)
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -120,15 +123,14 @@ def check_api_key(api_keys):
     def decorator(func):
         @functools.wraps(func)
         def wrapper_decorator(*args, **kwargs):
-            if obbff.ENABLE_CHECK_API:
-                import openbb_terminal.config_terminal as cfg
-
+            if get_current_user().preferences.ENABLE_CHECK_API:
+                current_user = get_current_user()
                 undefined_apis = []
                 for key in api_keys:
                     # Get value of the API Keys
-                    if getattr(cfg, key) == "REPLACE_ME" and key not in [
-                        "API_KEY_ALPHAVANTAGE"
-                    ]:
+                    if (
+                        getattr(current_user.credentials, key) == "REPLACE_ME"
+                    ) and key not in ["API_KEY_ALPHAVANTAGE"]:
                         undefined_apis.append(key)
 
                 if undefined_apis:
@@ -146,4 +148,6 @@ def check_api_key(api_keys):
 
 
 def disable_check_api():
-    obbff.ENABLE_CHECK_API = False
+    current_user = get_current_user()
+    current_user.preferences.ENABLE_CHECK_API = False
+    set_current_user(current_user)

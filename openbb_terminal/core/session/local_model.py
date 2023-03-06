@@ -3,20 +3,14 @@ import os
 from pathlib import Path
 from typing import Optional, Union
 
-from openbb_terminal import (
-    config_plot as cfg_plot,
-    config_terminal as cfg,
-    feature_flags as obbff,
-)
-from openbb_terminal.base_helpers import strtobool
-from openbb_terminal.core.config import paths
 from openbb_terminal.core.config.paths import (
     HIST_FILE_PATH,
     SETTINGS_DIRECTORY,
-    USER_ROUTINES_DIRECTORY,
 )
+from openbb_terminal.core.session.credentials_handler import set_credential
+from openbb_terminal.core.session.current_user import get_current_user
+from openbb_terminal.core.session.preferences_handler import set_preference
 from openbb_terminal.rich_config import console
-from openbb_terminal.session.user import User
 
 SESSION_FILE_PATH = SETTINGS_DIRECTORY / "session.json"
 
@@ -116,31 +110,18 @@ def apply_configs(configs: dict):
     configs : dict
         The configurations.
     """
-
-    # TODO: Here I'm assuming that obbff, cfg, cfg_plot and paths don't have variables
-    # with the same name. If they do, then this assignment will hit the first variable
-    # that matches the name.
-
     if configs:
         settings = configs.get("features_settings", {})
         sync = update_sync_flag(settings)
         if sync:
             if settings:
                 for k, v in settings.items():
-                    if hasattr(obbff, k):
-                        cast_set_attr(obbff, k, v)
-                    elif hasattr(cfg, k):
-                        cast_set_attr(cfg, k, v)
-                    elif hasattr(cfg_plot, k):
-                        cast_set_attr(cfg_plot, k, v)
-                    elif hasattr(paths, k):
-                        cast_set_attr(paths, k, v)
+                    set_preference(k, v, login=True)
 
             keys = configs.get("features_keys", {})
             if keys:
                 for k, v in keys.items():
-                    if hasattr(cfg, k):
-                        setattr(cfg, k, v)
+                    set_credential(k, v, login=True)
 
 
 def update_sync_flag(settings: dict) -> bool:
@@ -156,52 +137,30 @@ def update_sync_flag(settings: dict) -> bool:
     bool
         The sync flag.
     """
-    if settings and settings.get("SYNC_ENABLED", "").lower() == "false":
-        obbff.SYNC_ENABLED = False
-        return False
-    obbff.SYNC_ENABLED = True
-    return True
+    sync = not (settings and settings.get("SYNC_ENABLED", "true").lower() == "false")
+
+    set_preference("SYNC_ENABLED", sync, login=True)
+
+    return sync
 
 
-def cast_set_attr(obj, name, value):
-    """Set attribute in object.
-
-    Parameters
-    ----------
-    obj : object
-        The object.
-    name : str
-        The attribute name.
-    value : str
-        The attribute value.
-    """
-
-    if str(value).lower() in ["true", "false"]:
-        setattr(obj, name, strtobool(value))
-    elif isinstance(getattr(obj, name), int):
-        setattr(obj, name, int(value))
-    elif isinstance(getattr(obj, name), float):
-        setattr(obj, name, float(value))
-    elif isinstance(getattr(obj, name), Path):
-        setattr(obj, name, Path(value))
-    else:
-        setattr(obj, name, value)
-
-
-def get_routine(
-    file_name: str, folder: Path = USER_ROUTINES_DIRECTORY
-) -> Optional[str]:
+def get_routine(file_name: str, folder: Optional[Path] = None) -> Optional[str]:
     """Get the routine.
 
     Returns
     -------
     file_name : str
         The routine.
-    folder : Path
+    folder : Optional[Path]
         The routines folder.
     """
+
+    current_user = get_current_user()
+    if folder is None:
+        folder = current_user.preferences.USER_ROUTINES_DIRECTORY
+
     try:
-        user_folder = USER_ROUTINES_DIRECTORY / User.get_uuid()
+        user_folder = folder / current_user.profile.get_uuid()
         file_path = (
             user_folder / file_name
             if os.path.exists(user_folder / file_name)
@@ -219,7 +178,7 @@ def get_routine(
 def save_routine(
     file_name: str,
     routine: str,
-    folder: Path = USER_ROUTINES_DIRECTORY,
+    folder: Optional[Path] = None,
     force: bool = False,
 ) -> Union[Optional[Path], str]:
     """Save the routine.
@@ -240,8 +199,13 @@ def save_routine(
     Optional[Path, str]
         The path to the routine or None.
     """
+
+    current_user = get_current_user()
+    if folder is None:
+        folder = current_user.preferences.USER_ROUTINES_DIRECTORY
+
     try:
-        uuid = User.get_uuid()
+        uuid = current_user.profile.get_uuid()
         user_folder = folder / uuid
         if not os.path.exists(user_folder):
             os.makedirs(user_folder)

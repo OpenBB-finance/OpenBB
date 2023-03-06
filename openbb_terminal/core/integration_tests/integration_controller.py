@@ -19,11 +19,11 @@ from openbb_terminal.core.config.paths import (
     MISCELLANEOUS_DIRECTORY,
     REPOSITORY_DIRECTORY,
 )
+from openbb_terminal.core.session.current_user import get_current_user, set_current_user
 from openbb_terminal.helper_funcs import check_non_negative
 from openbb_terminal.rich_config import console
 from openbb_terminal.terminal_controller import (
     insert_start_slash,
-    obbff,
     replace_dynamic,
     terminal,
 )
@@ -265,7 +265,6 @@ def run_scripts(
             else [" ".join(file_cmds)]
         )
 
-        obbff.REMEMBER_CONTEXTS = 0
         if verbose:
             terminal(file_cmds, test_mode=True)
         else:
@@ -708,12 +707,14 @@ def main():
     if "--test" in sys.argv:
         sys.argv.remove("--test")
 
-    os.environ["OPENBB_ENABLE_QUICK_EXIT"] = "False"
-    os.environ["OPENBB_LOG_COLLECT"] = "False"
-    os.environ["OPENBB_USE_ION"] = "True"
-    os.environ["OPENBB_USE_PROMPT_TOOLKIT"] = "False"
+    current_user = get_current_user()
+    current_user.preferences.ENABLE_EXIT_AUTO_HELP = False
+    current_user.preferences.LOG_COLLECTION = False
+    current_user.preferences.USE_ION = True
+    current_user.preferences.USE_PROMPT_TOOLKIT = False
+    current_user.preferences.REMEMBER_CONTEXTS = False
+    set_current_user(current_user)
     os.environ["DEBUG_MODE"] = "True"
-
     parse_args_and_run()
 
 
