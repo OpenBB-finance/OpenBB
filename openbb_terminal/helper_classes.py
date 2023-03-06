@@ -123,7 +123,7 @@ class TerminalStyle:
         if mpl_style in self.mpl_styles_available:
             self.mpl_style = self.mpl_styles_available[mpl_style]
         else:
-            self.mpl_style = self.mpl_styles_available["dark"]
+            self.mpl_style = self.mpl_styles_available.get("dark", "")
 
         if mpl_style in self.mpl_rcparams_available:
             with open(self.mpl_rcparams_available[mpl_style]) as stylesheet:
