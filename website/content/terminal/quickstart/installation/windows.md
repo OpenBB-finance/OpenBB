@@ -23,7 +23,9 @@ import InstallerButton from "@site/src/components/General/InstallerButton";
 
 This section provides you with the installation file as well as the guide to install the OpenBB Terminal via Windows (10 or greater).
 
-Note that the minimal requirements are:
+<InstallerButton type="windows" href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v2.5.1/Windows.OpenBB.Terminal.v2.5.1.exe" label="Windows Installer" />
+
+<details><summary>Minimal Requirements</summary>
 
 - Windows 10 or newer
 - Modern CPU (Intel or AMD processor made in the last 5 years)
@@ -31,17 +33,14 @@ Note that the minimal requirements are:
 - At least 5GB of free storage
 - Internet connection (cable or 4G mobile)
 
-**Step 1:** Download the file by clicking on the button.
+</details>
 
-<p>
-<InstallerButton type="windows" href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v2.5.1/Windows.OpenBB.Terminal.v2.5.1.exe" label="Windows Installer" />
-</p>
+Find a step by step guide below:
 
-**Step 2:** Open the downloaded `exe` file by double-clicking on it.
-
-**Step 3:** Follow the prompts to complete the installation process
-
-**Step 4:** Double-click on the application that appeared on your Desktop, you are now able to run the OpenBB Terminal
+1. Download the file by clicking on the button.
+2.  Open the downloaded `exe` file by double-clicking on it.
+3. Follow the prompts to complete the installation process
+4. Double-click on the application that appeared on your Desktop, you are now able to run the OpenBB Terminal
 
 <p align="center"><a target="_blank" href="https://openbb-web-assets.s3.amazonaws.com/docs/installation/icon.png"><img width="100" alt="run_the_terminal" src="https://openbb-web-assets.s3.amazonaws.com/docs/installation/icon.png"></img></a></p>
 

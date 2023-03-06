@@ -23,6 +23,13 @@ import InstallerButton from "@site/src/components/General/InstallerButton";
 
 Install the OpenBB Terminal on MacOS (Big Sur or later). There are two versions of the installers available for MacOS, Intel-based and Apple Silicon (M1). 
 
+<p>
+<InstallerButton href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v2.5.1/x86.64.MacOS.OpenBB.Terminal.v2.5.1.dmg" label="Mac Intel Installer" />  <InstallerButton href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v2.5.1/ARM64.MacOS.OpenBB.Terminal.v2.5.1.dmg" label="Mac M1 Installer" />
+</p>
+
+
+<details><summary>Minimal Requirements</summary>
+
 Note that the minimal requirements are:
 
 - MacOS Monterey or newer
@@ -30,6 +37,8 @@ Note that the minimal requirements are:
 - At least 4GB of RAM
 - At least 5GB of free storage
 - Internet connection (cable or 4G mobile)
+
+</details>
 
 :::info Apple Silicon users will need to install Rosetta prior to installation
 To understand whether you are using an Apple Sillicon (M1) device or an Intel-based device click on the Apple Icon at the top left of your MacBook and select "About This Mac". Then under "Chip" if it says something like "Apple M1 Pro" or "Apple M1 Max", you know you have an Apple Silicon MacBook. If it says for example "2,3 GHz Quad-Core Intel Core i7" you know that you have an Intel-based MacBook and you can continue by clicking on the "Mac Intel Installer" button.
@@ -47,26 +56,17 @@ softwareupdate --install-rosetta
 </details>
 :::
 
-
-Once all of this is confirmed, you can use the following installation buttons.
-
-<p>
-<InstallerButton href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v2.5.1/x86.64.MacOS.OpenBB.Terminal.v2.5.1.dmg" label="Mac Intel Installer" />  <InstallerButton href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v2.5.1/ARM64.MacOS.OpenBB.Terminal.v2.5.1.dmg" label="Mac M1 Installer" />
-</p>
-
 Step by step instructions:
 
-**Step 1:** Download the DMG file from the links above.
-
-**Step 2:** Mount the downloaded DMG file by double-clicking on it.
-
-**Step 3:** Click and drag the OpenBB Terminal folder and hold it over the Applications shortcut. This opens a new Finder window, then drag the OpenBB Terminal folder into the Applications folder.
+1. Download the DMG file from the links above.
+2.  Mount the downloaded DMG file by double-clicking on it.
+3. Click and drag the OpenBB Terminal folder and hold it over the Applications shortcut. This opens a new Finder window, then drag the OpenBB Terminal folder into the Applications folder.
 
 ![MacOS Installation](https://user-images.githubusercontent.com/11668535/173027899-9b25ae4f-1eef-462c-9dc9-86086e9cf197.png)
 
-**Step 4:** Unmount the installer, by "Ejecting OpenBB Terminal" from, locations, in Finder.
+4. Unmount the installer, by "Ejecting OpenBB Terminal" from, locations, in Finder.
 
-**Step 5:** Launch the application by double-clicking on the `OpenBB Terminal` application. If everything was successful you should see a screen like the one below:
+5. Launch the application by double-clicking on the `OpenBB Terminal` application. If everything was successful you should see a screen like the one below:
 
 <p align="center"><a target="_blank" href="https://user-images.githubusercontent.com/46355364/223194653-a21966e2-cd55-44da-95eb-7c66811f629b.png"><img alt="run_the_terminal" src="https://user-images.githubusercontent.com/46355364/223194653-a21966e2-cd55-44da-95eb-7c66811f629b.png"></img></a></p>
 
