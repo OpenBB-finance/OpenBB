@@ -750,9 +750,11 @@ def get_price_targets(symbol: str) -> pd.DataFrame:
     pd.DataFrame
         DataFrame of price targets
     """
+    current_user = get_current_user()
+
     url = (
         "https://financialmodelingprep.com/api/v4/price-target?"
-        f"symbol={symbol}&apikey={cfg.API_KEY_FINANCIALMODELINGPREP}"
+        f"symbol={symbol}&apikey={current_user.credentials.API_KEY_FINANCIALMODELINGPREP}"
     )
     response = request(url)
     # Check if response is valid
