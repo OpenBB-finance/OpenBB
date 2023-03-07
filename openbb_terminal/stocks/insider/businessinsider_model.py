@@ -68,5 +68,5 @@ def get_insider_activity(symbol: str) -> pd.DataFrame:
         l_names.append(s_name.text.strip())
     df_insider["Insider"] = l_names
     df_insider = df_insider.set_index("Date")
-    df_insider = df_insider.sort_index(ascending=False)
+    df_insider = df_insider.sort_index(ascending=True)
     return df_insider
