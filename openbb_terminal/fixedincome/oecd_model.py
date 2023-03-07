@@ -112,7 +112,8 @@ COUNTRY_TO_CODE_LONG = {
 }
 
 
-COUNTRY_TO_CODE = {
+
+COUNTRY_TO_CODE_LONG = {
     "australia": "AUS",
     "austria": "AUT",
     "belgium": "BEL",
@@ -127,6 +128,7 @@ COUNTRY_TO_CODE = {
     "czech_republic": "CZE",
     "germany": "DEU",
     "denmark": "DNK",
+    "euro_area": "EA19",
     "spain": "ESP",
     "estonia": "EST",
     "finland": "FIN",
