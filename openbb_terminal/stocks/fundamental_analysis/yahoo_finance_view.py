@@ -269,7 +269,6 @@ def display_mktcap(
     symbol: str,
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
-    plot: bool = True,
     raw: bool = False,
     export: str = "",
     sheet_name: Optional[str] = None,
@@ -285,8 +284,6 @@ def display_mktcap(
         Initial date (e.g., 2021-10-01). If not provided, the earliest date available is used.
     end_date: Optional[str]
         End date (e.g., 2021-10-01). If not provided, the latest date available is used.
-    plot: bool
-        Whether to plot the data or not
     raw: bool
         Whether to return the raw data or not
     sheet_name: str
@@ -296,23 +293,20 @@ def display_mktcap(
     external_axes : bool, optional
         Whether to return the figure object or not, by default False
     """
-    fig = OpenBBFigure()
-
     df_mktcap, currency = yahoo_finance_model.get_mktcap(symbol, start_date, end_date)
     if df_mktcap.empty:
         return console.print("No Market Cap data available.\n")
 
-    if plot and not raw:
-        fig = OpenBBFigure(yaxis_title=f"Market Cap in Billion ({currency})")
-        fig.set_title(f"{symbol} Market Cap")
-        fig.add_scatter(
-            x=df_mktcap.index,
-            y=df_mktcap.values / 1e9,
-            mode="lines",
-            name="Market Cap",
-            line_color=theme.up_color,
-            stackgroup="one",
-        )
+    fig = OpenBBFigure(yaxis_title=f"Market Cap in Billion ({currency})")
+    fig.set_title(f"{symbol} Market Cap")
+    fig.add_scatter(
+        x=df_mktcap.index,
+        y=df_mktcap.values / 1e9,
+        mode="lines",
+        name="Market Cap",
+        line_color=theme.up_color,
+        stackgroup="one",
+    )
 
     if raw:
         print_rich_table(
@@ -332,7 +326,7 @@ def display_mktcap(
         fig,
     )
 
-    return fig.show(external=external_axes) if plot else None
+    return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)

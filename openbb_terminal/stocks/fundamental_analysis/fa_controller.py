@@ -414,15 +414,6 @@ class FundamentalAnalysisController(StockBaseController):
         )
 
         parser.add_argument(
-            "-p",
-            "--plot",
-            action="store_true",
-            default=True,
-            dest="plot",
-            help="Show plot",
-        )
-
-        parser.add_argument(
             "-m",
             "--method",
             default="market_cap",
@@ -449,8 +440,7 @@ class FundamentalAnalysisController(StockBaseController):
                     start_date=ns_parser.start,
                     end_date=ns_parser.end,
                     quarterly=ns_parser.b_quarter,
-                    plot=ns_parser.plot,
-                    type=ns_parser.method,
+                    method=ns_parser.method,
                     raw=ns_parser.raw,
                     export=ns_parser.export,
                     sheet_name=" ".join(ns_parser.sheet_name)
@@ -465,7 +455,6 @@ class FundamentalAnalysisController(StockBaseController):
                     self.ticker,
                     start_date=ns_parser.start,
                     end_date=ns_parser.end,
-                    plot=ns_parser.plot,
                     raw=ns_parser.raw,
                     export=ns_parser.export,
                     sheet_name=" ".join(ns_parser.sheet_name)

@@ -116,7 +116,6 @@ def display_enterprise(
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
     quarterly: bool = False,
-    plot: bool = True,
     method: str = "market_cap",
     raw: bool = False,
     export: str = "",
@@ -148,9 +147,7 @@ def display_enterprise(
     export: str
         Format to export data
     """
-    fig = OpenBBFigure()
     df_fa = fmp_model.get_enterprise(symbol, start_date, end_date, quarterly)
-    df_fa = df_fa.sort_index(ascending=True)
 
     # Re-order the returned columns so they are in a more logical ordering
     df_fa = df_fa.reindex(
@@ -168,25 +165,22 @@ def display_enterprise(
     if df_fa.empty:
         console.print("[red]No data available[/red]\n")
     else:
-        if plot and not raw:
-            df_fa_plot = df_fa.applymap(revert_lambda_long_number_format)
+        df_fa_plot = df_fa.applymap(revert_lambda_long_number_format)
 
-            type_str = (
-                "Market capitalization"
-                if method == "market_cap"
-                else "Enterprise value"
-            )
+        type_str = (
+            "Market capitalization" if method == "market_cap" else "Enterprise value"
+        )
 
-            fig = OpenBBFigure(yaxis_title=f"{type_str} in Billions")
-            fig.set_title(f"{type_str} of {symbol}")
-            fig.add_scatter(
-                x=df_fa_plot.index,
-                y=df_fa_plot[type_str].values / 1e9,
-                mode="lines",
-                name=type_str,
-                line_color=theme.up_color,
-                stackgroup="one",
-            )
+        fig = OpenBBFigure(yaxis_title=f"{type_str} in Billions")
+        fig.set_title(f"{type_str} of {symbol}")
+        fig.add_scatter(
+            x=df_fa_plot.index,
+            y=df_fa_plot[type_str].values / 1e9,
+            mode="lines",
+            name=type_str,
+            line_color=theme.up_color,
+            stackgroup="one",
+        )
 
         if raw:
             print_rich_table(
@@ -205,7 +199,7 @@ def display_enterprise(
             sheet_name,
         )
 
-        return fig.show(external=external_axes) if plot else None
+        return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)

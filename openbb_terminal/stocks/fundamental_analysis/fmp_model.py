@@ -143,7 +143,7 @@ def get_enterprise(
 
     if end_date is None:
         end_date_year = datetime.now().year
-    elif isinstance(start_date, str):
+    elif isinstance(end_date, str):
         end_date_year = datetime.strptime(end_date, "%Y-%m-%d").year
     else:
         end_date_year = end_date.year  # type: ignore
@@ -179,7 +179,11 @@ def get_enterprise(
             )
 
             # Select the right portion of the data
-            df_fa = df_fa.iloc[:, end_date_position : start_date_position + 1]
+            if start_date_position:
+                df_fa = df_fa.iloc[:, end_date_position : start_date_position + 1]
+            elif end_date_position:
+                df_fa = df_fa.iloc[:, end_date_position:]
+
     # Invalid API Keys
     except ValueError as e:
         console.print(e)
@@ -192,6 +196,7 @@ def get_enterprise(
 
     # Transpose the dataframe to make it easier to read
     df_fa = df_fa.T
+    df_fa = df_fa.sort_index(ascending=True)
 
     return df_fa
 
