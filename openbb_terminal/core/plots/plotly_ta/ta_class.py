@@ -11,9 +11,9 @@ import pandas as pd
 from openbb_terminal import OpenBBFigure
 from openbb_terminal.base_helpers import console
 from openbb_terminal.common.technical_analysis import ta_helpers
-from openbb_terminal.config_terminal import theme
 from openbb_terminal.core.plots.plotly_ta.base import PltTA
 from openbb_terminal.core.plots.plotly_ta.data_classes import ChartIndicators
+from openbb_terminal.core.session.current_user import theme
 
 PLUGINS_PATH = Path(__file__).parent / "plugins"
 PLOTLY_TA: Optional["PlotlyTA"] = None

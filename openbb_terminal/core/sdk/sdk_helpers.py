@@ -337,7 +337,7 @@ import logging
 import openbb_terminal.config_terminal as cfg
 from openbb_terminal import helper_funcs as helper  # noqa: F401
 from openbb_terminal.base_helpers import load_env_files
-from openbb_terminal.config_terminal import theme
+from openbb_terminal.core.session.current_user import theme
 
 from openbb_terminal.cryptocurrency.due_diligence.pycoingecko_model import Coin
 from openbb_terminal.dashboards.dashboards_controller import DashboardsController

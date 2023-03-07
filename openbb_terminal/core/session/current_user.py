@@ -10,6 +10,7 @@ from openbb_terminal.core.models import (
     UserModel,
 )
 from openbb_terminal.core.session.env_handler import reading_env
+from openbb_terminal.core.terminal_style import TerminalStyle
 
 __env_dict = reading_env()
 __credentials = CredentialsModel(**__env_dict)
@@ -63,3 +64,14 @@ def copy_user(
     )
 
     return user_copy
+
+
+theme = TerminalStyle(
+    __current_user.preferences.MPL_STYLE,
+    __current_user.preferences.PMF_STYLE,
+    __current_user.preferences.RICH_STYLE,
+    __current_user.preferences.USER_DATA_DIRECTORY / "styles" / "user",
+    __current_user.preferences.USE_CMD_LOCATION_FIGURE,
+    __current_user.preferences.USE_WATERMARK,
+    __current_user.preferences.USE_ION,
+)

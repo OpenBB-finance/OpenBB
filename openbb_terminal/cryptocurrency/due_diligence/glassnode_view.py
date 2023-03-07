@@ -6,7 +6,7 @@ from typing import Optional, Union
 import numpy as np
 
 from openbb_terminal import OpenBBFigure
-from openbb_terminal.config_terminal import theme
+from openbb_terminal.core.session.current_user import theme
 from openbb_terminal.cryptocurrency.due_diligence.glassnode_model import (
     get_active_addresses,
     get_exchange_balances,

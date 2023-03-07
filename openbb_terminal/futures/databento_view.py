@@ -7,7 +7,7 @@ from typing import List, Optional
 import mplfinance as mpf
 from matplotlib import pyplot as plt
 
-from openbb_terminal.config_terminal import theme
+from openbb_terminal.core.session.current_user import theme
 from openbb_terminal.helper_funcs import (
     export_data,
     is_valid_axes_count,
