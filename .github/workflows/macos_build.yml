@@ -93,8 +93,8 @@ jobs:
           APPLE_SIGNING_IDENTITY: ${{ secrets.MACOS_CODESIGN_IDENTITY }}
         run: |
           security unlock-keychain -p $MACOS_INSTALLER_KEYCHAIN_PWD install.keychain
-          build/pyinstaller/macOS-x64/build-macos-x64.sh OpenBBTerminal 0.0.1
-          mv build/pyinstaller/macOS-x64/target/pkg/OpenBBTerminalM1.pkg OpenBBTerminalM1.pkg
+          build/pyinstaller/macOS/build-macos.sh OpenBBTerminal 0.0.1
+          mv build/pyinstaller/macOS/target/pkg/OpenBBTerminalM1.pkg OpenBBTerminalM1.pkg
         shell: bash
       - name: Deleting Previous Keychain
         run: |
