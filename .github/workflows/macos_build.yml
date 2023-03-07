@@ -18,10 +18,10 @@ concurrency:
 jobs:
   Build:
     name: MacOS Build
-    runs-on: ${{ matrix.os }}
+    runs-on: ${{ matrix.items.os }}
     strategy:
       matrix:
-        os: [[self-hosted, macos, ARM64], [self-hosted, macos, x64]]
+        items: [{os: [self-hosted, macos, ARM64], name: "OpenBBM1.pkg"},{os: [self-hosted, macos, x64], name: "OpenBBIntel.pkg"}]
     steps:
       # Checkout repository main branch. this allows for the commit hashes to line up
       - name: Checkout
@@ -123,7 +123,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: M1 MacOS PKG Artifact
-          path: OpenBBTerminalM1.pkg
+          path: ${{ matrix.items.name }}
       - name: Get contents from PkgUtil
         run: |
           pkgutil --expand-full OpenBBTerminalM1.pkg extract/
