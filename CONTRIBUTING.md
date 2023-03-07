@@ -149,12 +149,11 @@ In this function:
 - We import the current user object and preferences using the `get_current_user` function.  API keys are stored in `current_user.credentials`
 - We use the `@log_start_end` decorator to add the function to our logs for debugging purposes.
 - We add the `check_api_key` decorator to confirm the api key is valid.
-- We have type hinting and a doctring describing the function.
-- We use the openbb_terminal helper function `request`, which is an abstracted version of the requests, which allows us to add user agents, timeouts, caches, etc to any request in the terminal.
+- We have type hinting and a docstring describing the function.
+- We use the openbb_terminal helper function `request`, which is an abstracted version of the requests library, which allows us to add user agents, timeouts, caches, etc to any request in the terminal.
 - We check for different error messages.  This will depend on the API provider and usually requires some trial and error.  With the FMP api, if there is an invalid symbol, we get a response code of 200, but the json response has an error message field.  Same with an invalid api key.
 - When an error is caught, we still return an empty dataframe.
 - We return the json response as a pandas dataframe.  Most functions in the terminal should return a datatframe, but if not, make sure that the return type is specified.
-- The API key is imported from the config_terminal file.  This is important so that runtime import issues are not encountered.
 
 Note:
 
@@ -377,6 +376,8 @@ Our new function will be:
 
 Here, we make the parser, add the arguments, and then parse the arguments.  In order to use the fact that we had a new source, we add the logic to access the correct view function.  In this specific menu, we also allow the user to specify the symbol with -t, which is what the first block is doing.
 
+Note that in the `fa` submenu, we allow the function to be run by specifying a ticker, ie `pt -t AAPL`.  In this submenu we do a `load` behind the scenes with the ticker selected so that other functions can be run without specifying the ticker.
+
 Now from the terminal, this function can be run as desired:
 
 ```bash
@@ -408,7 +409,7 @@ Now from the terminal, this function can be run as desired:
 └──────────────────┴───────────────────────┴────────┴──────────────┘
 ```
 
-If a new menu is being added the code looks like this:
+When adding a new menu, the code looks like this:
 
 ```python
 @log_start_end(log=logger)
