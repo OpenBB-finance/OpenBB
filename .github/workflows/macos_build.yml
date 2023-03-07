@@ -56,7 +56,6 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          pip uninstall pathlib -y
           pip list
           python -m pip install -r requirements-full.txt
 
@@ -120,14 +119,12 @@ jobs:
           rm -rf build/terminal
           rm -rf dist
           rm -rf DMG
-      - name: Save Build Artifact DMG
+      - name: Save Build Artifact PKG
         uses: actions/upload-artifact@v3
         with:
           name: M1 MacOS PKG Artifact
           path: OpenBBTerminalM1.pkg
       - name: Get contents from PkgUtil
-        env:
-          SUDO_PASSWORD: ${{ secrets.SUDO_PASSWORD }}
         run: |
           pkgutil --expand-full OpenBBTerminalM1.pkg extract/
           rm -rf OpenBBTerminalM1.pkg
