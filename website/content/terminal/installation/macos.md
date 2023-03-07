@@ -19,14 +19,16 @@ keywords:
     openbb terminal,
   ]
 ---
+
 import InstallerButton from "@site/src/components/General/InstallerButton";
 
-Install the OpenBB Terminal on MacOS (Big Sur or later). There are two versions of the installers available for MacOS, Intel-based and Apple Silicon (M1). 
+Install the OpenBB Terminal on MacOS (Big Sur or later). There are two versions of the installers available for MacOS, Intel-based and Apple Silicon (M1).
 
-<p>
+<div style={{
+  height: 80
+}}>
 <InstallerButton href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v2.5.1/x86.64.MacOS.OpenBB.Terminal.v2.5.1.dmg" label="Mac Intel Installer" />  <InstallerButton href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v2.5.1/ARM64.MacOS.OpenBB.Terminal.v2.5.1.dmg" label="Mac M1 Installer" />
-</p>
-
+</div>
 
 <details><summary>Minimum Requirements</summary>
 
@@ -45,9 +47,11 @@ To understand whether you are using an Apple Sillicon (M1) device or an Intel-ba
 
 1. Press ⌘ (Command) + SPACE to open spotlight search, and type `Terminal` and hit Return (⏎).
 2. Copy and paste the following code in the Terminal and hit ENTER (⏎):
+
 ```console
 softwareupdate --install-rosetta
 ```
+
 3. This will start up the Rosetta installation process and you will receive a message regarding the Licence Agreement. Type `A` and hit Return (⏎).
 4. After the installation process has finished, you can proceed to the "Mac M1 Installer" button.
 
@@ -57,7 +61,7 @@ softwareupdate --install-rosetta
 Step by step instructions:
 
 1. Download the DMG file from the links above.
-2.  Mount the downloaded DMG file by double-clicking on it.
+2. Mount the downloaded DMG file by double-clicking on it.
 3. Click and drag the OpenBB Terminal folder and hold it over the Applications shortcut. This opens a new Finder window, then drag the OpenBB Terminal folder into the Applications folder.
 
 ![MacOS Installation](https://user-images.githubusercontent.com/11668535/173027899-9b25ae4f-1eef-462c-9dc9-86086e9cf197.png)

@@ -19,9 +19,10 @@ keywords:
     openbb terminal,
   ]
 ---
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-import InstallerButton from "@site/src/components/General/InstallerButton";
+
+import TerminalInstallerRedirect from "@site/src/components/General/TerminalInstallerRedirect";
+
+<TerminalInstallerRedirect />
 
 The OpenBB Terminal can be installed via a variety of ways. The most user-friendly approach is using the installer versions, you are able to find the installer version of Windows [here](installation/windows) and that of MacOS [here](installation/macos).
 
