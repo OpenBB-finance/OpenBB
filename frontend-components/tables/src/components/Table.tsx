@@ -170,7 +170,7 @@ export default function Table({ data, columns }: any) {
     }
   };
 
-  const [advanced, setAdvanced] = useState(true);
+  const [advanced, setAdvanced] = useState(false);
   const rerender = useReducer(() => ({}), {})[1];
   const [sorting, setSorting] = useState<SortingState>([]);
   const [globalFilter, setGlobalFilter] = useState("");
