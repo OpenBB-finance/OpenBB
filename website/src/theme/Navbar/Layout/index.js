@@ -8,6 +8,7 @@ import {
 import NavbarMobileSidebar from "@theme/Navbar/MobileSidebar";
 import styles from "./styles.module.css";
 import { useLocation } from "@docusaurus/router";
+import { useIFrameContext } from "../../Root";
 function NavbarBackdrop(props) {
   return (
     <div
@@ -18,6 +19,7 @@ function NavbarBackdrop(props) {
   );
 }
 export default function NavbarLayout({ children }) {
+  const { isIFrame } = useIFrameContext();
   const {
     navbar: { hideOnScroll, style },
   } = useThemeConfig();
@@ -66,6 +68,9 @@ export default function NavbarLayout({ children }) {
           "navbar--dark": style === "dark",
           "navbar--primary": style === "primary",
           "navbar-sidebar--show": mobileSidebar.shown,
+        },
+        {
+          hidden: isIFrame,
         }
       )}
     >

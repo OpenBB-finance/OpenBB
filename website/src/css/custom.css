@@ -59,6 +59,9 @@
 }
 
 @layer components {
+  .card {
+    @apply w-full rounded-[4px] border border-grey-400 p-6 shadow bg-grey-900;
+  }
   .tw-transition {
     @apply transition duration-150 ease-out;
   }
@@ -77,6 +80,21 @@
 
   ._group-tab {
     @apply w-full flex mb-12;
+  }
+  ._modal {
+    @apply card fixed top-1/2 left-1/2 z-50 max-h-[608px] w-[90%] max-w-[568px] -translate-x-1/2 -translate-y-1/2 animate-fade-in overflow-auto bg-grey-900 p-2 duration-300 focus:outline-none md:p-10;
+  }
+  ._modal-overlay {
+    @apply bg-grey-900 opacity-60 z-40 inset-0 fixed;
+  }
+  ._modal-title {
+    @apply text-white uppercase tracking-widest text-lg font-bold;
+  }
+  .input {
+    @apply text-sm h-12 pl-4 pr-2 w-full border border-grey-600 text-white focus:text-white rounded-md focus:border-white active:border-white focus:ring-0 hover:border-white disabled:border-grey-700 py-3 bg-transparent;
+  }
+  ._floating-label {
+    @apply absolute text-sm text-grey-500 duration-300 transform -translate-y-8 scale-75 top-2 z-0 origin-[0] px-1 peer-focus:px-1 peer-focus:text-white peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:-top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-4;
   }
 }
 
