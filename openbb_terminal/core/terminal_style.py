@@ -138,7 +138,7 @@ class TerminalStyle:
                 font_path = os.path.abspath(os.path.join(folder, font_file))
                 font_manager.fontManager.addfont(font_path)
 
-    def load_available_styles_from_folder(self, folder: Path) -> None:
+    def load_available_styles_from_folder(self, folder: Optional[Path]) -> None:
         """Load custom styles from folder.
 
         Parses the styles/default and styles/user folders and loads style files.
