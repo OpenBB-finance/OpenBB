@@ -178,6 +178,7 @@ export default function Table({ data, columns }: any) {
     () => [
       {
         id: "select",
+        size: 0,
         header: ({ table }) => (
           <IndeterminateCheckbox
             {...{
@@ -279,6 +280,10 @@ export default function Table({ data, columns }: any) {
 
   const table = useReactTable({
     data,
+    defaultColumn: {
+      minSize: 0,
+      size: 0,
+    },
     columns: rtColumns,
     state: {
       sorting,
@@ -575,7 +580,7 @@ export default function Table({ data, columns }: any) {
                 />
               </span>
               <select
-                className="_input"
+                className="_input bg-gray-600"
                 value={table.getState().pagination.pageSize}
                 onChange={(e) => {
                   table.setPageSize(Number(e.target.value));
