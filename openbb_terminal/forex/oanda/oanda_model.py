@@ -46,7 +46,7 @@ def fx_price_request(
     Parameters
     ----------
     accountID : str, optional
-        Oanda account ID, by default cfg.OANDA_ACCOUNT
+        Oanda account ID
     instrument : Union[str, None]
         The loaded currency pair, by default None
 
@@ -82,7 +82,7 @@ def account_summary_request(accountID: str = account) -> Union[pd.DataFrame, boo
     Parameters
     ----------
     accountID : str, optional
-        Oanda account ID, by default cfg.OANDA_ACCOUNT
+        Oanda account ID
 
     Returns
     -------
@@ -149,7 +149,7 @@ def orderbook_plot_data_request(
     instrument : Union[str, None]
         The loaded currency pair, by default None
     accountID : str, optional
-        Oanda account ID, by default cfg.OANDA_ACCOUNT
+        Oanda account ID
 
     Returns
     -------
@@ -194,7 +194,7 @@ def positionbook_plot_data_request(
     instrument : Union[str, None]
         The loaded currency pair, by default None
     accountID : str, optional
-        Oanda account ID, by default cfg.OANDA_ACCOUNT
+        Oanda account ID
 
     Returns
     -------
@@ -239,7 +239,7 @@ def order_history_request(
     order_count : int
         Limit the number of orders to retrieve
     accountID : str, optional
-        Oanda account ID, by default cfg.OANDA_ACCOUNT
+        Oanda account ID
     """
     if accountID == "REPLACE_ME":
         console.print("Error: Oanda account credentials are required.")
@@ -289,7 +289,7 @@ def create_order_request(
     units : int
         The number of units to place in the order request.
     accountID : str, optional
-        Oanda account ID, by default cfg.OANDA_ACCOUNT
+        Oanda account ID
 
     Returns
     -------
@@ -359,7 +359,7 @@ def cancel_pending_order_request(
     orderID : str
         The pending order ID to cancel.
     accountID : str, optional
-        Oanda account ID, by default cfg.OANDA_ACCOUNT
+        Oanda account ID
     """
     if accountID == "REPLACE_ME":
         console.print("Error: Oanda account credentials are required.")
@@ -387,7 +387,7 @@ def open_positions_request(accountID: str = account) -> Union[pd.DataFrame, bool
     Parameters
     ----------
     accountID : str, optional
-        Oanda account ID, by default cfg.OANDA_ACCOUNT
+        Oanda account ID
     """
     if accountID == "REPLACE_ME":
         console.print("Error: Oanda account credentials are required.")
@@ -430,7 +430,7 @@ def pending_orders_request(accountID: str = account) -> Union[pd.DataFrame, bool
     Parameters
     ----------
     accountID : str, optional
-        Oanda account ID, by default cfg.OANDA_ACCOUNT
+        Oanda account ID
 
     Returns
     -------
@@ -479,7 +479,7 @@ def open_trades_request(accountID: str = account) -> Union[pd.DataFrame, bool]:
     Parameters
     ----------
     accountID : str, optional
-        Oanda account ID, by default cfg.OANDA_ACCOUNT
+        Oanda account ID
 
     Returns
     -------
@@ -541,7 +541,7 @@ def close_trades_request(
     units : Union[int, None]
         Number of units to close. If empty default to all.
     accountID : str, optional
-        Oanda account ID, by default cfg.OANDA_ACCOUNT
+        Oanda account ID
 
     Returns
     -------

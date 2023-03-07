@@ -6,7 +6,6 @@ from typing import Any, Callable, Dict, Optional
 
 import dotenv
 
-import openbb_terminal.config_terminal as cfg
 from openbb_terminal.base_helpers import load_env_vars, strtobool
 from openbb_terminal.core.config.paths import SETTINGS_ENV_FILE
 from openbb_terminal.core.sdk.sdk_init import (
@@ -15,6 +14,7 @@ from openbb_terminal.core.sdk.sdk_init import (
     OPTIMIZATION_TOOLKIT_ENABLED,
     OPTIMIZATION_TOOLKIT_WARNING,
 )
+from openbb_terminal.core.system_constants import LOGGING_SUPPRESS
 from openbb_terminal.rich_config import console
 
 SETTINGS_ENV_FILE.parent.mkdir(parents=True, exist_ok=True)
@@ -313,7 +313,7 @@ class OperationLogger:
         )
 
     def __check_logging_conditions(self) -> bool:
-        return not cfg.LOGGING_SUPPRESS and not self.__check_last_method()
+        return not LOGGING_SUPPRESS and not self.__check_last_method()
 
     def __check_last_method(self) -> bool:
         current_method = {
@@ -334,14 +334,18 @@ def get_sdk_imports_text() -> str:
 # pylint: disable=C0302,W0611,R0902,R0903,C0412,C0301,not-callable
 import logging
 
-import openbb_terminal.config_terminal as cfg
 from openbb_terminal import helper_funcs as helper  # noqa: F401
 from openbb_terminal.base_helpers import load_env_files
 from openbb_terminal.core.session.current_user import theme
+from openbb_terminal.core.config.paths_helper import init_userdata
+from openbb_terminal.core.system_constants import (
+    LOGGING_SUPPRESS,
+    VERSION,
+)
 
 from openbb_terminal.cryptocurrency.due_diligence.pycoingecko_model import Coin
 from openbb_terminal.dashboards.dashboards_controller import DashboardsController
-from openbb_terminal.helper_classes import TerminalStyle  # noqa: F401
+from openbb_terminal.core.terminal_style import TerminalStyle  # noqa: F401
 from openbb_terminal.reports import widget_helpers as widgets  # noqa: F401
 from openbb_terminal.reports.reports_controller import ReportController
 

@@ -12,11 +12,9 @@ from rich.console import Console, Theme
 from rich.progress import track
 from rich.text import Text
 
-from openbb_terminal import (
-    config_terminal as cfg,
-)
 from openbb_terminal.core.config.paths import MISCELLANEOUS_DIRECTORY
 from openbb_terminal.core.session.current_user import get_current_user, theme
+from openbb_terminal.core.system_constants import VERSION
 
 # pylint: disable=no-member,c-extension-no-member
 
@@ -297,7 +295,9 @@ class ConsoleAndPanel:
         if kwargs and "text" in list(kwargs) and "menu" in list(kwargs):
             if not os.getenv("TEST_MODE"):
                 if current_user.preferences.ENABLE_RICH_PANEL:
-                    version = f"[param]OpenBB Terminal v{cfg.VERSION}[/param] (https://openbb.co)"
+                    version = (
+                        f"[param]OpenBB Terminal v{VERSION}[/param] (https://openbb.co)"
+                    )
                     self.console.print(
                         panel.Panel(
                             "\n" + kwargs["text"],

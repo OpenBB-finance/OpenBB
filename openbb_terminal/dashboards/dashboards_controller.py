@@ -17,7 +17,7 @@ from typing import List, Optional
 import numpy as np
 import psutil
 
-import openbb_terminal.config_terminal as cfg
+from openbb_terminal.core import system_constants
 from openbb_terminal.core.plots.backend import plots_backend
 from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
@@ -187,7 +187,7 @@ class DashboardsController(BaseController):
                 cmd += " --theme=dark"
 
             if ns_parser.input or response.lower() == "y" and not process_check:
-                cfg.LOGGING_SUPPRESS = True
+                system_constants.LOGGING_SUPPRESS = True
                 self.processes.append(
                     psutil.Popen(
                         f"{cmd} --no-browser --port {port}"
@@ -199,7 +199,7 @@ class DashboardsController(BaseController):
                         env=os.environ,
                     )
                 )
-                cfg.LOGGING_SUPPRESS = False
+                system_constants.LOGGING_SUPPRESS = False
                 atexit.register(self.kill_processes)
 
                 console.print(

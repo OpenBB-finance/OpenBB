@@ -4,9 +4,9 @@ from inspect import signature
 from logging import Logger, getLogger
 from typing import Any, Callable, Dict, List, Optional
 
-import openbb_terminal.config_terminal as cfg
 from openbb_terminal.core.library.metadata import Metadata
 from openbb_terminal.core.library.trail_map import TrailMap
+from openbb_terminal.core.system_constants import LOGGING_SUPPRESS
 
 # pylint: disable=import-outside-toplevel
 
@@ -279,7 +279,7 @@ class OperationLogger:
         )
 
     def __check_logging_conditions(self) -> bool:
-        return not cfg.LOGGING_SUPPRESS and not self.__check_last_method()
+        return not LOGGING_SUPPRESS and not self.__check_last_method()
 
     def __check_last_method(self) -> bool:
         current_method = {

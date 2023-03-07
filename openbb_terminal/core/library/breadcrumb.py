@@ -1,6 +1,6 @@
 from typing import Any, List, Optional
 
-import openbb_terminal.config_terminal as cfg
+from openbb_terminal.core import system_constants
 from openbb_terminal.core.library.metadata import Metadata
 from openbb_terminal.core.library.operation import Operation
 from openbb_terminal.core.library.trail_map import TrailMap
@@ -68,7 +68,7 @@ class MetadataBuilder:
 
 
 class Breadcrumb:
-    __version__ = cfg.VERSION
+    __version__ = system_constants.VERSION
 
     def __init__(
         self,
@@ -149,7 +149,7 @@ class BreadcrumbLogger:
         self.__check_initialize_logging()
 
     def __check_initialize_logging(self):
-        if not cfg.LOGGING_SUPPRESS:
+        if not system_constants.LOGGING_SUPPRESS:
             self.__initialize_logging()
 
     @staticmethod
@@ -159,6 +159,6 @@ class BreadcrumbLogger:
         )
         from openbb_terminal.loggers import setup_logging  # pylint: disable=C0415
 
-        cfg.LOGGING_SUB_APP = "sdk"
+        system_constants.LOGGING_SUB_APP = "sdk"
         setup_logging()
         log_all_settings()

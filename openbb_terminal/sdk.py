@@ -4,11 +4,14 @@
 # pylint: disable=unused-import,wrong-import-order
 import logging
 
-import openbb_terminal.config_terminal as cfg
 from openbb_terminal import helper_funcs as helper  # noqa: F401
 from openbb_terminal.base_helpers import load_env_files
 from openbb_terminal.core.session.current_user import theme
 from openbb_terminal.core.config.paths_helper import init_userdata
+from openbb_terminal.core.system_constants import (
+    LOGGING_SUPPRESS,
+    VERSION,
+)
 
 from openbb_terminal.cryptocurrency.due_diligence.pycoingecko_model import Coin
 from openbb_terminal.dashboards.dashboards_controller import DashboardsController
@@ -41,7 +44,7 @@ class OpenBBSDK:
         `whoami`: Display user info.\n
     """
 
-    __version__ = cfg.VERSION
+    __version__ = VERSION
 
     def __init__(self):
         SDKLogger()
@@ -566,7 +569,7 @@ class SDKLogger:
         self.__check_initialize_logging()
 
     def __check_initialize_logging(self):
-        if not cfg.LOGGING_SUPPRESS:
+        if not LOGGING_SUPPRESS:
             self.__initialize_logging()
 
     @staticmethod
@@ -575,7 +578,7 @@ class SDKLogger:
         from openbb_terminal.core.log.generation.settings_logger import log_all_settings
         from openbb_terminal.loggers import setup_logging
 
-        cfg.LOGGING_SUB_APP = "sdk"
+        LOGGING_SUB_APP = "sdk"
         setup_logging()
         log_all_settings()
 

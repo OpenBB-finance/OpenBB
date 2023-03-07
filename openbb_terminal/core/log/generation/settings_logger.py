@@ -6,7 +6,6 @@ from types import FunctionType, ModuleType
 
 # IMPORTATION THIRDPARTY
 # IMPORTATION INTERNAL
-from openbb_terminal import config_terminal as cfg
 from openbb_terminal.core.log.generation.common import do_rollover
 from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.terminal_helper import is_installer
@@ -29,9 +28,8 @@ logger = logging.getLogger(__name__)
 def log_all_settings(with_rollover: bool = True) -> None:
     """Log all settings"""
     log_settings()
-    log_config_terminal()
-    log_feature_flags()
-    log_keys()
+    log_preferences()
+    log_credentials()
 
     if with_rollover:
         do_rollover()
@@ -82,26 +80,8 @@ def log_settings() -> None:
     logger.info("SETTINGS: %s ", json.dumps(settings_dict))
 
 
-def log_config_terminal() -> None:
-    """Log config_terminal"""
-
-    config_terminal_dict = {}
-
-    for item in dir(cfg):
-        prop = getattr(cfg, item)
-        if (
-            not item.startswith("__")
-            and not isinstance(prop, FunctionType)
-            and not isinstance(prop, ModuleType)
-            and not any(substring in item for substring in SENSITIVE_WORDS)
-        ):
-            config_terminal_dict[item] = str(prop)
-
-    logger.info("CONFIG_TERMINAL: %s ", json.dumps(config_terminal_dict))
-
-
-def log_feature_flags() -> None:
-    """Log feature flags"""
+def log_preferences() -> None:
+    """Log preferences"""
 
     current_user = get_current_user()
     feature_flags_dict = {}
@@ -118,8 +98,8 @@ def log_feature_flags() -> None:
     logger.info("FEATURE_FLAGS: %s ", json.dumps(feature_flags_dict))
 
 
-def log_keys() -> None:
-    """Log keys"""
+def log_credentials() -> None:
+    """Log credentials"""
 
     current_user = get_current_user()
 

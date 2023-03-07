@@ -17,16 +17,6 @@ else:
     WITH_GIT = True
 
 # IMPORTATION INTERNAL
-from openbb_terminal.config_terminal import (
-    LOGGING_APP_NAME,
-    LOGGING_AWS_ACCESS_KEY_ID,
-    LOGGING_AWS_SECRET_ACCESS_KEY,
-    LOGGING_COMMIT_HASH,
-    LOGGING_FREQUENCY,
-    LOGGING_HANDLERS,
-    LOGGING_ROLLING_CLOCK,
-    LOGGING_VERBOSITY,
-)
 from openbb_terminal.core.log.generation.directories import get_log_dir
 from openbb_terminal.core.log.generation.formatter_with_exceptions import (
     FormatterWithExceptions,
@@ -41,6 +31,16 @@ from openbb_terminal.core.log.generation.settings import (
     Settings,
 )
 from openbb_terminal.core.log.generation.user_logger import get_user_uuid
+from openbb_terminal.core.system_constants import (
+    LOGGING_APP_NAME,
+    LOGGING_AWS_ACCESS_KEY_ID,
+    LOGGING_AWS_SECRET_ACCESS_KEY,
+    LOGGING_COMMIT_HASH,
+    LOGGING_FREQUENCY,
+    LOGGING_HANDLERS,
+    LOGGING_ROLLING_CLOCK,
+    LOGGING_VERBOSITY,
+)
 
 logging.getLogger("requests").setLevel(LOGGING_VERBOSITY)
 logging.getLogger("urllib3").setLevel(LOGGING_VERBOSITY)

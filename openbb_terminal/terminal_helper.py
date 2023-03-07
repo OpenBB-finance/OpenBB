@@ -17,16 +17,16 @@ import matplotlib.pyplot as plt
 from packaging import version
 
 from openbb_terminal import (
-    feature_flags as obbff,
     thought_of_the_day as thought,
 )
-from openbb_terminal.config_terminal import LOGGING_COMMIT_HASH
+from openbb_terminal.core import system_constants
 
 # IMPORTATION INTERNAL
 from openbb_terminal.core.config.paths import SETTINGS_ENV_FILE
 from openbb_terminal.core.plots.backend import plots_backend
 from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.core.session.preferences_handler import set_preference
+from openbb_terminal.core.system_constants import LOGGING_COMMIT_HASH
 from openbb_terminal.helper_funcs import request
 from openbb_terminal.rich_config import console
 
@@ -280,7 +280,7 @@ def check_for_updates() -> None:
     if r is not None and r.status_code == 200:
         latest_tag_name = r.json()["tag_name"]
         latest_version = version.parse(latest_tag_name)
-        current_version = version.parse(obbff.VERSION)
+        current_version = version.parse(system_constants.VERSION)
 
         if check_valid_versions(latest_version, current_version):
             if current_version == latest_version:
@@ -328,7 +328,7 @@ def welcome_message():
 
     Prints first welcome message, help and a notification if updates are available.
     """
-    console.print(f"\nWelcome to OpenBB Terminal v{obbff.VERSION}")
+    console.print(f"\nWelcome to OpenBB Terminal v{system_constants.VERSION}")
 
     if get_current_user().preferences.ENABLE_THOUGHTS_DAY:
         console.print("---------------------------------")

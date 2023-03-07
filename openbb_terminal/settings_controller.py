@@ -13,7 +13,7 @@ from typing import List, Optional
 import pytz
 
 # IMPORTATION INTERNAL
-from openbb_terminal import feature_flags as obbff
+from openbb_terminal.core import system_constants
 from openbb_terminal.core.config.paths import (
     SETTINGS_ENV_FILE,
     USER_DATA_SOURCES_DEFAULT_FILE,
@@ -65,7 +65,7 @@ class SettingsController(BaseController):
 
     languages_available = [
         lang.strip(".yml")
-        for lang in os.listdir(obbff.i18n_dict_location)
+        for lang in os.listdir(system_constants.i18n_dict_location)
         if lang.endswith(".yml")
     ]
 
