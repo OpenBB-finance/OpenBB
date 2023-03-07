@@ -17,7 +17,7 @@ concurrency:
 
 jobs:
   Build:
-    name: MacOS Build
+    name: M1 MacOS Build
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -130,7 +130,6 @@ jobs:
           SUDO_PASSWORD: ${{ secrets.SUDO_PASSWORD }}
         run: |
           pkgutil --expand-full OpenBBTerminalM1.pkg extract/
-          # extract/OpenBBTerminal.pkg/Payload/Applications/OpenBB\ Terminal/OpenBB\ Terminal
           rm -rf OpenBBTerminalM1.pkg
 
       - name: Run Integration Tests
