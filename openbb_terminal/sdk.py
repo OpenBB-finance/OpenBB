@@ -2,13 +2,13 @@
 # ######### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ######### #
 # flake8: noqa
 # pylint: disable=unused-import,wrong-import-order
-# pylint: disable=C0302,W0611,R0902,R0903,C0412,C0301,not-callable
 import logging
 
 import openbb_terminal.config_terminal as cfg
 from openbb_terminal import helper_funcs as helper  # noqa: F401
-from openbb_terminal.base_helpers import load_dotenv_and_reload_configs
+from openbb_terminal.base_helpers import load_env_files
 from openbb_terminal.config_terminal import theme
+from openbb_terminal.core.config.paths_helper import init_userdata
 
 from openbb_terminal.cryptocurrency.due_diligence.pycoingecko_model import Coin
 from openbb_terminal.dashboards.dashboards_controller import DashboardsController
@@ -21,12 +21,11 @@ from openbb_terminal.core.sdk import (
     controllers as ctrl,
     models as model,
 )
-from openbb_terminal import feature_flags as obbff
-from openbb_terminal.session.user import User
+from openbb_terminal.core.session.current_user import is_local
 from openbb_terminal.terminal_helper import is_auth_enabled
 
-if User.is_guest():
-    load_dotenv_and_reload_configs()
+load_env_files()
+init_userdata()
 
 logger = logging.getLogger(__name__)
 theme.applyMPLstyle()
@@ -42,7 +41,7 @@ class OpenBBSDK:
         `whoami`: Display user info.\n
     """
 
-    __version__ = obbff.VERSION
+    __version__ = cfg.VERSION
 
     def __init__(self):
         SDKLogger()
@@ -50,7 +49,14 @@ class OpenBBSDK:
         self.logout = lib.sdk_session.logout
         self.news = lib.common_feedparser_model.get_news
         self.whoami = lib.sdk_session.whoami
-        SDKLogger._try_to_login(self)
+        self._try_to_login()
+
+    def _try_to_login(self):
+        if is_local() and is_auth_enabled():
+            try:
+                self.login()
+            except Exception:
+                pass
 
     @property
     def alt(self):
@@ -137,6 +143,8 @@ class OpenBBSDK:
             `bigmac`: Display Big Mac Index for given countries\n
             `bigmac_chart`: Display Big Mac Index for given countries\n
             `country_codes`: Get available country codes for Bigmac index\n
+            `cpi`: Obtain CPI data from FRED. [Source: FRED]\n
+            `cpi_chart`: Plot CPI data. [Source: FRED]\n
             `currencies`: Scrape data for global currencies\n
             `events`: Get economic calendar for countries between specified dates\n
             `fred`: Get Series data. [Source: FRED]\n
@@ -511,6 +519,8 @@ class OpenBBSDK:
             `cg_chart`: Plots center of gravity Indicator\n
             `clenow`: Gets the Clenow Volatility Adjusted Momentum.  this is defined as the regression coefficient on log prices\n
             `clenow_chart`: Prints table and plots clenow momentum\n
+            `cones`: Returns a DataFrame of realized volatility quantiles.\n
+            `cones_chart`: Plots the realized volatility quantiles for the loaded ticker.\n
             `demark`: Get the integer value for demark sequential indicator\n
             `demark_chart`: Plot demark sequential indicator\n
             `donchian`: Calculate Donchian Channels\n
@@ -531,7 +541,14 @@ class OpenBBSDK:
             `obv_chart`: Plots OBV technical indicator\n
             `rsi`: Relative strength index\n
             `rsi_chart`: Plots RSI Indicator\n
+            `rvol_garman_klass`: Garman-Klass volatility extends Parkinson volatility by taking into account the open and close price.\n
+            `rvol_hodges_tompkins`: Hodges-Tompkins volatility is a bias correction for estimation using an overlapping data sample.\n
+            `rvol_parkinson`: Parkinson volatility uses the high and low price of the day rather than just close to close prices.\n
+            `rvol_rogers_satchell`: Rogers-Satchell is an estimator for measuring the volatility with an average return not equal to zero.\n
+            `rvol_std`: Standard deviation measures how widely returns are dispersed from the average return.\n
+            `rvol_yang_zhang`: Yang-Zhang volatility is the combination of the overnight (close-to-open volatility).\n
             `sma`: Gets simple moving average (SMA) for stock\n
+            `standard_deviation`: Standard deviation measures how widely returns are dispersed from the average return.\n
             `stoch`: Stochastic oscillator\n
             `stoch_chart`: Plots stochastic oscillator signal\n
             `vwap`: Gets volume weighted average price (VWAP)\n
@@ -543,6 +560,7 @@ class OpenBBSDK:
         return model.TaRoot()
 
 
+# pylint: disable=too-few-public-methods
 class SDKLogger:
     def __init__(self) -> None:
         self.__check_initialize_logging()
@@ -563,7 +581,7 @@ class SDKLogger:
 
     @staticmethod
     def _try_to_login(sdk: "OpenBBSDK"):
-        if User.is_guest() and is_auth_enabled():
+        if is_local() and is_auth_enabled():
             try:
                 sdk.login()
             except Exception:

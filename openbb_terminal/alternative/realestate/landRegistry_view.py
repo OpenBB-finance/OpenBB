@@ -40,6 +40,7 @@ def display_estate_sales(postcode: str, limit: int, export: str = "") -> None:
         sales,
         show_index=False,
         title=f"[bold]{postcode}[/bold]",
+        export=bool(export),
     )
 
     export_data(
@@ -92,6 +93,7 @@ def display_towns_sold_prices(
         sales,
         show_index=False,
         title=f"[bold]{town} : {start_date} - {end_date}[/bold]",
+        export=bool(export),
     )
 
     export_data(
@@ -139,6 +141,7 @@ def display_region_stats(region: str, start_date: str, end_date: str, export: st
         stats,
         show_index=False,
         title=f"[bold]{region} : {start_date} - {end_date}[/bold]",
+        export=bool(export),
     )
 
     export_data(

@@ -132,14 +132,7 @@ def get_holdings_overview(endpoint: str = "bitcoin") -> List[Union[str, pd.DataF
     return [stats_str, df]
 
 
-SORT_VALUES = [
-    "market_cap_desc",
-    "market_cap_asc",
-    "name_desc",
-    "name_asc",
-    "market_cap_change_24h_desc",
-    "market_cap_change_24h_asc",
-]
+SORT_VALUES = ["market_cap", "name", "market_cap_change_24h"]
 
 
 def lambda_coin_formatter(n):
@@ -168,7 +161,7 @@ def get_top_crypto_categories(sort_filter: str = SORT_VALUES[0]) -> pd.DataFrame
     pd.DataFrame
         Rank, Name, Change_1h, Change_7d, Market_Cap, Volume_24h,Coins, Url
     """
-    if sort_filter in SORT_VALUES:
+    if sort_filter.lower() in SORT_VALUES:
         client = CoinGeckoAPI()
         data = client.get_coins_categories()
         df = pd.DataFrame(data)

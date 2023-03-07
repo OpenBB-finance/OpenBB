@@ -4,12 +4,14 @@ __docformat__ = "numpy"
 # pylint: disable=R0913, R0914, C0302, too-many-branches, too-many-statements, line-too-long
 # flake8: noqa: E501
 
+# IMPORTS STANDARD
 import logging
 import math
 import warnings
 from datetime import date
 from typing import Any, Dict, List, Optional
 
+# IMPORTS THIRD-PARTY
 import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
@@ -19,7 +21,9 @@ from dateutil.relativedelta import FR, relativedelta
 from matplotlib.gridspec import GridSpec
 from matplotlib.lines import Line2D
 
-from openbb_terminal.config_plot import PLOT_DPI
+
+# IMPORTS INTERNAL
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import plot_autoscale, print_rich_table
@@ -2172,7 +2176,9 @@ def display_ef(
         risk_free_rate = risk_free_rate / time_factor[freq.upper()]
 
         if external_axes is None:
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+            _, ax = plt.subplots(
+                figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
+            )
         else:
             ax = external_axes[0]
 
@@ -3639,7 +3645,9 @@ def pie_chart_weights(
     colors = theme.get_colors()
 
     if external_axes is None:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        _, ax = plt.subplots(
+            figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
+        )
     else:
         ax = external_axes[0]
 
@@ -3861,7 +3869,9 @@ def additional_plots(
 
     if hist:
         if external_axes is None:
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+            _, ax = plt.subplots(
+                figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
+            )
         else:
             ax = external_axes[0]
 
@@ -3889,7 +3899,9 @@ def additional_plots(
 
     if dd:
         if external_axes is None:
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+            _, ax = plt.subplots(
+                figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
+            )
         else:
             ax = external_axes[0]
 
@@ -3925,7 +3937,9 @@ def additional_plots(
 
     if rc_chart:
         if external_axes is None:
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+            _, ax = plt.subplots(
+                figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
+            )
         else:
             ax = external_axes[0]
 
@@ -3966,7 +3980,9 @@ def additional_plots(
             return
 
         if external_axes is None:
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+            _, ax = plt.subplots(
+                figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
+            )
         else:
             ax = external_axes[0]
 

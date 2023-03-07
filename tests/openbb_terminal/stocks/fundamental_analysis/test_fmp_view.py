@@ -3,9 +3,11 @@
 # IMPORTATION THIRDPARTY
 import pytest
 
-from openbb_terminal import helper_funcs
-
 # IMPORTATION INTERNAL
+from openbb_terminal.core.session.current_user import (
+    PreferencesModel,
+    copy_user,
+)
 from openbb_terminal.stocks.fundamental_analysis import fmp_view
 
 
@@ -78,8 +80,17 @@ def test_display_filings():
     "use_tab",
     [True, False],
 )
-def test_check_output(func, kwargs_dict, monkeypatch, use_tab):
-    monkeypatch.setattr(helper_funcs.obbff, "USE_TABULATE_DF", use_tab)
+def test_check_output(func, kwargs_dict, mocker, use_tab):
+    preferences = PreferencesModel(
+        USE_TABULATE_DF=use_tab,
+        ENABLE_CHECK_API=False,
+    )
+    mock_current_user = copy_user(preferences=preferences)
+    mocker.patch(
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
+    )
+
     getattr(fmp_view, func)(**kwargs_dict)
 
 

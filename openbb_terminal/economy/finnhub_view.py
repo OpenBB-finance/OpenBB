@@ -81,6 +81,7 @@ def economy_calendar_events(
         headers=list(df_econ_calendar.columns),
         show_index=False,
         title="Economy Calendar",
+        export=bool(export),
     )
 
     export_data(

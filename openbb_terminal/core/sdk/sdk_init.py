@@ -3,7 +3,7 @@
 
 
 # Session
-from openbb_terminal.session import sdk_session
+from openbb_terminal.core.session import sdk_session
 
 # Alternative
 import openbb_terminal.alternative.hackernews_model as alt_hackernews_model
@@ -465,6 +465,7 @@ try:
         theta_view as forecast_theta_view,
         trans_model as forecast_trans_model,
         trans_view as forecast_trans_view,
+        whisper_model as forecast_whisper_model,
     )
 except ImportError:
     FORECASTING_TOOLKIT_ENABLED = False

@@ -8,7 +8,7 @@ from typing import Optional
 import pandas as pd
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
-from openbb_terminal import config_terminal as cfg
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import clean_tweet, get_data, request
 from openbb_terminal.rich_config import console
@@ -60,7 +60,10 @@ def load_analyze_tweets(
     response = request(
         "https://api.twitter.com/2/tweets/search/recent",
         params=params,  # type: ignore
-        headers={"authorization": "Bearer " + cfg.API_TWITTER_BEARER_TOKEN},
+        headers={
+            "authorization": "Bearer "
+            + get_current_user().credentials.API_TWITTER_BEARER_TOKEN
+        },
     )
 
     # Create dataframe

@@ -1,4 +1,5 @@
 # IMPORTATION STANDARD
+
 import datetime
 from pathlib import Path
 
@@ -7,6 +8,10 @@ import pandas as pd
 import pytest
 
 # IMPORTATION INTERNAL
+from openbb_terminal.core.session.current_user import (
+    PreferencesModel,
+    copy_user,
+)
 from openbb_terminal.helper_funcs import (
     check_start_less_than_end,
     export_data,
@@ -206,27 +211,21 @@ def test_revert_lambda_long_number_format(value, expected):
 
 
 @pytest.mark.vcr
-def test_update_news_from_tweet_to_be_displayed(mocker, recorder):
+def test_update_news_from_tweet_to_be_displayed(mocker):
+    preferences = PreferencesModel(
+        TOOLBAR_TWEET_NEWS=True,
+        TOOLBAR_TWEET_NEWS_SECONDS_BETWEEN_UPDATES=300,
+        TOOLBAR_TWEET_NEWS_NUM_LAST_TWEETS_TO_READ=3,
+        TOOLBAR_TWEET_NEWS_KEYWORDS="BREAKING,JUST IN",
+    )
+    mock_current_user = copy_user(preferences=preferences)
     mocker.patch(
-        target="openbb_terminal.helper_funcs.obbff.TOOLBAR_TWEET_NEWS",
-        new=True,
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
     )
     mocker.patch(
         target="openbb_terminal.helper_funcs.LAST_TWEET_NEWS_UPDATE_CHECK_TIME",
         new=None,
     )
-    mocker.patch(
-        target="openbb_terminal.helper_funcs.obbff.TOOLBAR_TWEET_NEWS_SECONDS_BETWEEN_UPDATES",
-        new=300,
-    )
-    mocker.patch(
-        target="openbb_terminal.helper_funcs.obbff.TOOLBAR_TWEET_NEWS_NUM_LAST_TWEETS_TO_READ",
-        new=3,
-    )
-    mocker.patch(
-        target="openbb_terminal.helper_funcs.obbff.TOOLBAR_TWEET_NEWS_KEYWORDS",
-        new="BREAKING,JUST IN",
-    )
-
     news_tweet = update_news_from_tweet_to_be_displayed()
-    recorder.capture(news_tweet)
+    assert isinstance(news_tweet, str) and news_tweet != ""

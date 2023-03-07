@@ -4,15 +4,10 @@ from typing import List
 from openbb_terminal.core.config.paths import (
     REPOSITORY_ENV_FILE,
     SETTINGS_DIRECTORY,
-    USER_CUSTOM_IMPORTS_DIRECTORY,
-    USER_DATA_DIRECTORY,
+    SETTINGS_ENV_FILE,
     USER_DATA_SOURCES_DEFAULT_FILE,
-    USER_ENV_FILE,
-    USER_EXPORTS_DIRECTORY,
-    USER_PORTFOLIO_DATA_DIRECTORY,
-    USER_PRESETS_DIRECTORY,
-    USER_ROUTINES_DIRECTORY,
 )
+from openbb_terminal.core.session.current_user import get_current_user
 
 # pylint: disable=W0603
 
@@ -39,30 +34,32 @@ def create_files(list_files: List):
                 pass
 
 
+current_user = get_current_user()
+
 dirs_list = [
     SETTINGS_DIRECTORY,
-    USER_DATA_DIRECTORY,
-    USER_DATA_DIRECTORY / "styles",
-    USER_DATA_DIRECTORY / "reports",
-    USER_DATA_DIRECTORY / "reports" / "custom reports",
-    USER_CUSTOM_IMPORTS_DIRECTORY,
-    USER_CUSTOM_IMPORTS_DIRECTORY / "econometrics",
-    USER_CUSTOM_IMPORTS_DIRECTORY / "stocks",
-    USER_CUSTOM_IMPORTS_DIRECTORY / "dashboards",
-    USER_EXPORTS_DIRECTORY,
-    USER_PORTFOLIO_DATA_DIRECTORY,
-    USER_PORTFOLIO_DATA_DIRECTORY / "views",
-    USER_PORTFOLIO_DATA_DIRECTORY / "holdings",
-    USER_PORTFOLIO_DATA_DIRECTORY / "allocation",
-    USER_PORTFOLIO_DATA_DIRECTORY / "optimization",
-    USER_PRESETS_DIRECTORY,
-    USER_PRESETS_DIRECTORY / "stocks" / "options",
-    USER_PRESETS_DIRECTORY / "stocks" / "screener",
-    USER_PRESETS_DIRECTORY / "stocks" / "insider",
-    USER_PRESETS_DIRECTORY / "etf" / "screener",
-    USER_ROUTINES_DIRECTORY,
+    current_user.preferences.USER_DATA_DIRECTORY,
+    current_user.preferences.USER_DATA_DIRECTORY / "styles",
+    current_user.preferences.USER_DATA_DIRECTORY / "reports",
+    current_user.preferences.USER_DATA_DIRECTORY / "reports" / "custom reports",
+    current_user.preferences.USER_CUSTOM_IMPORTS_DIRECTORY,
+    current_user.preferences.USER_CUSTOM_IMPORTS_DIRECTORY / "econometrics",
+    current_user.preferences.USER_CUSTOM_IMPORTS_DIRECTORY / "stocks",
+    current_user.preferences.USER_CUSTOM_IMPORTS_DIRECTORY / "dashboards",
+    current_user.preferences.USER_EXPORTS_DIRECTORY,
+    current_user.preferences.USER_PORTFOLIO_DATA_DIRECTORY,
+    current_user.preferences.USER_PORTFOLIO_DATA_DIRECTORY / "views",
+    current_user.preferences.USER_PORTFOLIO_DATA_DIRECTORY / "holdings",
+    current_user.preferences.USER_PORTFOLIO_DATA_DIRECTORY / "allocation",
+    current_user.preferences.USER_PORTFOLIO_DATA_DIRECTORY / "optimization",
+    current_user.preferences.USER_PRESETS_DIRECTORY,
+    current_user.preferences.USER_PRESETS_DIRECTORY / "stocks" / "options",
+    current_user.preferences.USER_PRESETS_DIRECTORY / "stocks" / "screener",
+    current_user.preferences.USER_PRESETS_DIRECTORY / "stocks" / "insider",
+    current_user.preferences.USER_PRESETS_DIRECTORY / "etf" / "screener",
+    current_user.preferences.USER_ROUTINES_DIRECTORY,
 ]
-dirs_files = [USER_ENV_FILE, REPOSITORY_ENV_FILE, USER_DATA_SOURCES_DEFAULT_FILE]
+dirs_files = [SETTINGS_ENV_FILE, REPOSITORY_ENV_FILE, USER_DATA_SOURCES_DEFAULT_FILE]
 initialized = False
 
 

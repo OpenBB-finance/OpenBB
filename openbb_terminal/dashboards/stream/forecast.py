@@ -153,15 +153,21 @@ class Handler:
     ):
         del naive, forecast_only
         if tickers and target_column:
-            start_n = datetime(start.year, start.month, start.day)
-            end_n = datetime(end.year, end.month, end.day)
+            start_n = datetime(start.year, start.month, start.day).date()
+            end_n = datetime(end.year, end.month, end.day).date()
+
             if interval in ["1d", "5d", "1wk", "1mo", "3mo"]:
                 result = st.session_state["df"].loc[
-                    (st.session_state["df"]["date"] >= start_n)
-                    & (st.session_state["df"]["date"] <= end_n)
+                    (st.session_state["df"]["date"].dt.date >= start_n)
+                    & (st.session_state["df"]["date"].dt.date <= end_n)
                 ]
             else:
                 result = st.session_state["df"]
+
+            # we format the datatime column to be a string
+            # otherwise the model will throw an error
+            result["date"] = result["date"].dt.date.astype(str)
+
             if not target_column:
                 target_column = st.session_state["df"].columns[0]
             with patch.object(console, "print", special_st):

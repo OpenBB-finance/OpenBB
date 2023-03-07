@@ -6,7 +6,7 @@ import argparse
 import logging
 from typing import List, Optional
 
-from openbb_terminal import feature_flags as obbff
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.cryptocurrency.discovery import (
     coinmarketcap_model,
     coinmarketcap_view,
@@ -26,6 +26,7 @@ from openbb_terminal.helper_funcs import (
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import MenuText, console, get_ordered_list_sources
+from openbb_terminal.stocks import stocks_helper
 
 logger = logging.getLogger(__name__)
 
@@ -52,16 +53,24 @@ class DiscoveryController(BaseController):
         """Constructor"""
         super().__init__(queue)
 
-        if session and obbff.USE_PROMPT_TOOLKIT:
+        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices_default
 
             ordered_list_sources_top = get_ordered_list_sources(f"{self.PATH}top")
             if ordered_list_sources_top and ordered_list_sources_top[0] == "CoinGecko":
                 choices["top"]["--sort"] = {
-                    c: {} for c in pycoingecko_view.COINS_COLUMNS
+                    c: {}
+                    for c in stocks_helper.format_parse_choices(
+                        pycoingecko_view.COINS_COLUMNS
+                    )
                 }
             else:
-                choices["top"]["--sort"] = {c: {} for c in coinmarketcap_model.FILTERS}
+                choices["top"]["--sort"] = {
+                    c: {}
+                    for c in stocks_helper.format_parse_choices(
+                        coinmarketcap_model.FILTERS
+                    )
+                }
 
             choices["top"]["-s"] = choices["top"]["--sort"]
 
@@ -128,9 +137,19 @@ class DiscoveryController(BaseController):
             dest="sortby",
             nargs="+",
             help="Sort by given column. Default: Market Cap Rank",
-            default=argument_sort_default,
+            default=stocks_helper.format_parse_choices([argument_sort_default]),
             metavar="SORTBY",
         )
+
+        parser.add_argument(
+            "-i",
+            "--interactive",
+            action="store_true",
+            dest="interactive",
+            default=False,
+            help=("Show interactive table"),
+        )
+
         parser.add_argument(
             "-r",
             "--reverse",
@@ -152,6 +171,7 @@ class DiscoveryController(BaseController):
         if ns_parser:
             if ns_parser.source == "CoinGecko":
                 pycoingecko_view.display_coins(
+                    interactive=ns_parser.interactive,
                     sortby=" ".join(ns_parser.sortby),
                     category=ns_parser.category,
                     limit=ns_parser.limit,
@@ -201,7 +221,7 @@ class DiscoveryController(BaseController):
             nargs="+",
             help="Sort by given column. Default: Daily Volume [$]",
             default="Daily Volume [$]",
-            choices=dappradar_model.DAPPS_COLUMNS,
+            choices=stocks_helper.format_parse_choices(dappradar_model.DAPPS_COLUMNS),
             metavar="SORTBY",
         )
         ns_parser = self.parse_known_args_and_warn(
@@ -246,7 +266,7 @@ class DiscoveryController(BaseController):
             nargs="+",
             help="Sort by given column. Default: Daily Volume [$]",
             default="Daily Volume [$]",
-            choices=dappradar_model.DEX_COLUMNS,
+            choices=stocks_helper.format_parse_choices(dappradar_model.DEX_COLUMNS),
             metavar="SORTBY",
         )
         ns_parser = self.parse_known_args_and_warn(
@@ -291,7 +311,7 @@ class DiscoveryController(BaseController):
             nargs="+",
             help="Sort by given column. Default: Daily Volume [$]",
             default="Daily Volume [$]",
-            choices=dappradar_model.DEX_COLUMNS,
+            choices=stocks_helper.format_parse_choices(dappradar_model.DEX_COLUMNS),
             metavar="SORTBY",
         )
         ns_parser = self.parse_known_args_and_warn(
@@ -320,7 +340,6 @@ class DiscoveryController(BaseController):
             to sort by column
             """,
         )
-
         parser.add_argument(
             "-l",
             "--limit",
@@ -336,10 +355,9 @@ class DiscoveryController(BaseController):
             nargs="+",
             help="Sort by given column. Default: Market Cap",
             default="Market Cap",
-            choices=dappradar_model.NFT_COLUMNS,
+            choices=stocks_helper.format_parse_choices(dappradar_model.NFT_COLUMNS),
             metavar="SORTBY",
         )
-
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
@@ -394,8 +412,22 @@ class DiscoveryController(BaseController):
             nargs="+",
             help="Sort by given column. Default: Market Cap Rank",
             default=["market_cap"],
-            choices=pycoingecko_model.GAINERS_LOSERS_COLUMNS,
+            choices=stocks_helper.format_parse_choices(
+                pycoingecko_model.GAINERS_LOSERS_COLUMNS
+            ),
             metavar="SORTBY",
+        )
+        parser.add_argument(
+            "-r",
+            "--reverse",
+            action="store_true",
+            dest="reverse",
+            default=False,
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
         )
 
         ns_parser = self.parse_known_args_and_warn(
@@ -410,6 +442,7 @@ class DiscoveryController(BaseController):
                 if ns_parser.sheet_name
                 else None,
                 sortby=" ".join(ns_parser.sortby),
+                ascend=ns_parser.reverse,
             )
 
     @log_start_end(log=logger)
@@ -436,7 +469,6 @@ class DiscoveryController(BaseController):
             default="1h",
             choices=pycoingecko_model.API_PERIODS,
         )
-
         parser.add_argument(
             "-l",
             "--limit",
@@ -445,7 +477,6 @@ class DiscoveryController(BaseController):
             help="Number of records to display",
             default=15,
         )
-
         parser.add_argument(
             "-s",
             "--sort",
@@ -453,14 +484,26 @@ class DiscoveryController(BaseController):
             nargs="+",
             help="Sort by given column. Default: Market Cap Rank",
             default=["Market Cap"],
-            choices=pycoingecko_model.GAINERS_LOSERS_COLUMNS,
+            choices=stocks_helper.format_parse_choices(
+                pycoingecko_model.GAINERS_LOSERS_COLUMNS
+            ),
             metavar="SORTBY",
         )
-
+        parser.add_argument(
+            "-r",
+            "--reverse",
+            action="store_true",
+            dest="reverse",
+            default=False,
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
+        )
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-
         if ns_parser:
             pycoingecko_view.display_losers(
                 interval=ns_parser.interval,
@@ -470,6 +513,7 @@ class DiscoveryController(BaseController):
                 if ns_parser.sheet_name
                 else None,
                 sortby=" ".join(ns_parser.sortby),
+                ascend=ns_parser.reverse,
             )
 
     @log_start_end(log=logger)

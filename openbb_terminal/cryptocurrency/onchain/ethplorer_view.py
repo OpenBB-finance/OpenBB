@@ -57,6 +57,7 @@ def display_address_info(
         headers=list(df.columns),
         show_index=False,
         title="Blockchain Token Information",
+        export=bool(export),
     )
 
     export_data(
@@ -103,6 +104,7 @@ def display_top_tokens(
         headers=list(df.columns),
         show_index=False,
         title="Top ERC20 Tokens",
+        export=bool(export),
     )
 
     export_data(
@@ -149,6 +151,7 @@ def display_top_token_holders(
         headers=list(df.columns),
         show_index=False,
         title="ERC20 Token Holder Info",
+        export=bool(export),
     )
 
     export_data(
@@ -199,6 +202,7 @@ def display_address_history(
         headers=list(df.columns),
         show_index=False,
         title="Historical Transactions Information",
+        export=bool(export),
     )
 
     export_data(
@@ -244,7 +248,11 @@ def display_token_info(
     )
 
     print_rich_table(
-        df, headers=list(df.columns), show_index=False, title="ERC20 Token Information"
+        df,
+        headers=list(df.columns),
+        show_index=False,
+        title="ERC20 Token Information",
+        export=bool(export),
     )
 
     export_data(
@@ -279,6 +287,7 @@ def display_tx_info(
         headers=list(df.columns),
         show_index=False,
         title="Information About Transactions",
+        export=bool(export),
     )
 
     export_data(
@@ -339,6 +348,7 @@ def display_token_history(
         headers=list(df.columns),
         show_index=False,
         title="Token History Information",
+        export=bool(export),
     )
 
     export_data(
@@ -394,6 +404,7 @@ def display_token_historical_prices(
         headers=list(df.columns),
         show_index=False,
         title="Historical Token Prices",
+        export=bool(export),
     )
 
     export_data(

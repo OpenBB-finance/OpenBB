@@ -50,6 +50,7 @@ def display_cmc_top_coins(
         headers=list(df.columns),
         show_index=False,
         title="Top Coins",
+        export=bool(export),
     )
 
     export_data(

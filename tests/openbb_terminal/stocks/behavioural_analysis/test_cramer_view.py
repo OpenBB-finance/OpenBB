@@ -83,9 +83,6 @@ def test_get_orders(inverse):
 @pytest.mark.record_stdout
 @pytest.mark.parametrize("raw", [True, False])
 def test_cramer_ticker(mocker, raw):
-    mocker.patch(
-        target="openbb_terminal.stocks.behavioural_analysis.cramer_view.theme.visualize_output"
-    )
     # MOCK EXPORT_DATA
     mocker.patch(
         target="openbb_terminal.stocks.behavioural_analysis.cramer_view.export_data"

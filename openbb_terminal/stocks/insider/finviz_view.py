@@ -37,6 +37,7 @@ def last_insider_activity(
         headers=list(df.columns),
         show_index=True,
         title="Insider Activity",
+        export=bool(export),
     )
 
     export_data(

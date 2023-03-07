@@ -94,4 +94,78 @@ interactions:
     status:
       code: 200
       message: OK
+- request:
+    body: null
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.28.2
+      accept:
+      - application/json
+      request-source:
+      - python
+      request-source-version:
+      - 3.7.0
+      x-api-token:
+      - '1234'
+    method: GET
+    uri: https://data.nasdaq.com/api/v3/datasets/EIA/PET_RWTC_D/data?order=asc
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAA/1WNsQrCMBBAf+W4WYJVp24dHNzqJE4SkjOG1ju8JGAt/XcjTp0ePB68GV/Fsh9v
+        pCqK7YxOPGGL52P33ja4wSelZMNPXQiclNEDSwYlJ4Hjh2CSotD1JxhoaqHZ7Q8G+pFsqvmD3LAK
+        oM4ga2WwkQ1cpYCzDPdY/Sos7En/yrr65QyJco4cksFl+QI8U/RNuQAAAA==
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - '*'
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Expose-Headers:
+      - X-RateLimit-Limit, X-RateLimit-Remaining
+      Access-Control-Max-Age:
+      - '1728000'
+      Allow:
+      - GET, HEAD, POST, PUT, DELETE, OPTIONS, PATCH
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 09 Feb 2023 18:15:55 GMT
+      Server:
+      - openresty
+      Set-Cookie:
+      - visid_incap_2170999=8AoKTreLRsGvQVdoqN1Ew1s45WMAAAAAQUIPAAAAAAAviVTMJhQOAM9RKlkAz7qn;
+        expires=Fri, 09 Feb 2024 06:51:22 GMT; HttpOnly; path=/; Domain=.nasdaq.com
+      - nlbi_2170999=7aYWfQNAP2jcE2cWKj7S7QAAAAAAi+SrwRFJNJZfA7QusuHd; path=/; Domain=.nasdaq.com
+      - incap_ses_617_2170999=iefcTOAvUB9gg52AywaQCFs45WMAAAAA4bZef24ttbI/fjU6zw2EAA==;
+        path=/; Domain=.nasdaq.com
+      Transfer-Encoding:
+      - chunked
+      X-CDN:
+      - Imperva
+      X-Iinfo:
+      - 13-35768452-35768469 NNYN CT(40 64 0) RT(1675966555342 54) q(0 0 2 2) r(2
+        2) U11
+      X-RateLimit-Limit:
+      - '50'
+      X-RateLimit-Remaining:
+      - '46'
+      X-Request-Id:
+      - f000d806-aa0c-4d8b-b010-6a3d498b5ff6
+      X-Runtime:
+      - '0.006882'
+    status:
+      code: 400
+      message: Bad Request
 version: 1

@@ -10,10 +10,8 @@ from typing import Dict, List, Optional, Union
 import matplotlib.pyplot as plt
 from matplotlib import font_manager, ticker
 
-from openbb_terminal.core.config.paths import (
-    MISCELLANEOUS_DIRECTORY,
-    USER_DATA_DIRECTORY,
-)
+from openbb_terminal.core.config.paths import MISCELLANEOUS_DIRECTORY
+from openbb_terminal.core.session.current_user import get_current_user
 
 
 # pylint: disable=too-few-public-methods
@@ -67,7 +65,9 @@ class TerminalStyle:
     """
 
     DEFAULT_STYLES_LOCATION = MISCELLANEOUS_DIRECTORY / "styles" / "default"
-    USER_STYLES_LOCATION = USER_DATA_DIRECTORY / "styles" / "user"
+    USER_STYLES_LOCATION = (
+        get_current_user().preferences.USER_DATA_DIRECTORY / "styles" / "user"
+    )
 
     mpl_styles_available: Dict[str, str] = {}
     mpl_style: str = ""
@@ -123,7 +123,7 @@ class TerminalStyle:
         if mpl_style in self.mpl_styles_available:
             self.mpl_style = self.mpl_styles_available[mpl_style]
         else:
-            self.mpl_style = self.mpl_styles_available["dark"]
+            self.mpl_style = self.mpl_styles_available.get("dark", "")
 
         if mpl_style in self.mpl_rcparams_available:
             with open(self.mpl_rcparams_available[mpl_style]) as stylesheet:
@@ -348,15 +348,15 @@ class TerminalStyle:
     # pylint: disable=import-outside-toplevel
     def visualize_output(self, force_tight_layout: bool = True):
         """Show chart in an interactive widget."""
-        import openbb_terminal.feature_flags as obbff
+        current_user = get_current_user()
 
-        if obbff.USE_CMD_LOCATION_FIGURE:
+        if current_user.preferences.USE_CMD_LOCATION_FIGURE:
             self.add_cmd_source(plt.gcf())
-        if obbff.USE_WATERMARK:
+        if current_user.preferences.USE_WATERMARK:
             self.add_label(plt.gcf())
         if force_tight_layout:
             plt.tight_layout(pad=self.tight_layout_padding)
-        if obbff.USE_ION:
+        if current_user.preferences.USE_ION:
             plt.ion()
         plt.show()
 

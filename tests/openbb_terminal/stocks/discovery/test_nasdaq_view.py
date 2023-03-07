@@ -1,11 +1,14 @@
 # IMPORTATION STANDARD
 
+
 # IMPORTATION THIRDPARTY
 import pytest
 
-from openbb_terminal import helper_funcs
-
 # IMPORTATION INTERNAL
+from openbb_terminal.core.session.current_user import (
+    PreferencesModel,
+    copy_user,
+)
 from openbb_terminal.stocks.discovery import nasdaq_view
 
 
@@ -22,8 +25,14 @@ def vcr_config():
 @pytest.mark.record_stdout
 @pytest.mark.parametrize("use_tab", [True, False])
 def test_display_top_retail(mocker, use_tab):
-    mocker.patch.object(
-        target=helper_funcs.obbff, attribute="USE_TABULATE_DF", new=use_tab
+    preferences = PreferencesModel(
+        USE_TABULATE_DF=use_tab,
+        ENABLE_CHECK_API=False,
+    )
+    mock_current_user = copy_user(preferences=preferences)
+    mocker.patch(
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
     )
 
     nasdaq_view.display_top_retail(limit=3, export="")
@@ -33,8 +42,11 @@ def test_display_top_retail(mocker, use_tab):
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 def test_display_dividend_calendar(mocker):
-    mocker.patch.object(
-        target=helper_funcs.obbff, attribute="USE_TABULATE_DF", new=False
+    preferences = PreferencesModel(USE_TABULATE_DF=False)
+    mock_current_user = copy_user(preferences=preferences)
+    mocker.patch(
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
     )
 
     nasdaq_view.display_dividend_calendar(date="2022-01-11", limit=2)

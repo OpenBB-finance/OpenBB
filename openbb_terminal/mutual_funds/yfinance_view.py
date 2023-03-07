@@ -8,8 +8,7 @@ from typing import Optional
 import matplotlib.pyplot as plt
 import pandas as pd
 
-from openbb_terminal import feature_flags as obbff
-from openbb_terminal.config_plot import PLOT_DPI
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, plot_autoscale, print_rich_table
 from openbb_terminal.mutual_funds import yfinance_model
@@ -78,7 +77,9 @@ def display_sector(
     legend, values = zip(*main_holdings.items())
     leg = [f"{le}\n{round(v, 2)}%" for le, v in zip(legend, values)]
 
-    fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    fig, ax = plt.subplots(
+        figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
+    )
     ax.pie(
         values,
         labels=leg,
@@ -88,7 +89,7 @@ def display_sector(
     )
     ax.set_title(f"Sector holdings of {name.upper()}")
     fig.tight_layout()
-    if obbff.USE_ION:
+    if get_current_user().preferences.USE_ION:
         plt.ion()
     plt.show()
     export_data(
