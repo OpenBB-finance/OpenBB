@@ -160,13 +160,14 @@ def insider_activity(
         df_insider.index = pd.to_datetime(df_insider.index)
 
         return print_rich_table(
-            df_insider.sort_index(ascending=False)
-            .head(n=limit)
-            .applymap(lambda x: x.replace(".00", "").replace(",", "")),
+            df_insider.sort_index(ascending=False).applymap(
+                lambda x: x.replace(".00", "").replace(",", "")
+            ),
             headers=list(df_insider.columns),
             show_index=True,
             title="Insider Activity",
             export=bool(export),
+            limit=limit,
         )
 
     return fig.show(external=external_axes)

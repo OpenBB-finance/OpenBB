@@ -32,6 +32,7 @@ def show_indices(
     external_axes: bool = False,
     export: str = "",
     sheet_name: Optional[str] = None,
+    limit: int = 10,
 ) -> Union[pd.DataFrame, Tuple[pd.DataFrame, OpenBBFigure]]:
     """Load (and show) the selected indices over time [Source: Yahoo Finance]
     Parameters
@@ -94,12 +95,15 @@ def show_indices(
             fig.show(external=external_axes)
 
     if raw:
+        # was a -iloc so we need to flip the index as we use head
+        indices_data = indices_data.sort_index(ascending=False)
         print_rich_table(
-            indices_data.fillna("-").iloc[-10:],
+            indices_data.fillna("-"),
             headers=list(indices_data.columns),
             show_index=True,
             title=f"Indices [column: {column}]",
             export=bool(export),
+            limit=limit,
         )
 
     if export:

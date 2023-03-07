@@ -119,12 +119,13 @@ def display_raw(
         fig,
     )
     print_rich_table(
-        df.head(limit),
+        df,
         headers=list(df.columns),
         show_index=True,
         index_name="Date",
         title=f"{symbol.upper()} raw data",
         export=bool(export),
+        limit=limit,
     )
 
     return fig.show(external=external_axes)

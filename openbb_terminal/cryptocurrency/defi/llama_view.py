@@ -106,10 +106,11 @@ def display_defi_protocols(
     df = llama_model.get_defi_protocols(limit, sortby, ascend, description)
 
     print_rich_table(
-        df.head(limit),
+        df,
         headers=list(df.columns),
         show_index=False,
         export=bool(export),
+        limit=limit,
     )
 
     export_data(

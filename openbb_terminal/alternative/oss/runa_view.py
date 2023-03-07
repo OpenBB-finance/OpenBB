@@ -109,12 +109,13 @@ def display_rossindex(
         show_df = show_df.fillna("")
         show_df["GitHub"] = show_df["GitHub"].str.wrap(10)
         print_rich_table(
-            show_df.head(limit),
+            show_df,
             headers=list(show_df.columns),
             floatfmt=".1f",
             show_index=False,
             title="ROSS Index - the fastest-growing open-source startups",
             export=bool(export),
+            limit=limit,
         )
 
         export_data(

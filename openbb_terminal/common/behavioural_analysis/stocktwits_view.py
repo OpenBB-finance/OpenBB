@@ -93,6 +93,7 @@ def display_stalker(user: str, limit: int = 10):
     df_messages = df_messages.drop(["id", "url"], axis=1)
 
     print_rich_table(
-        df_messages.head(limit),
+        df_messages,
         show_index=False,
+        limit=limit,
     )

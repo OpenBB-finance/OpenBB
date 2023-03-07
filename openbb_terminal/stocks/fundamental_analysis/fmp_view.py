@@ -700,17 +700,19 @@ def display_filings(
             "for --pages. Showing recent filings instead.[/red]\n"
         )
         print_rich_table(
-            filings[:limit],
+            filings,
             title=f"Recent SEC Filings [Limit: {limit}]",
             show_index=True,
             export=bool(export),
+            limit=limit,
         )
     elif not ticker_filings.empty:
         print_rich_table(
-            ticker_filings[:limit],
+            ticker_filings,
             title=f"SEC Filings for {ticker} [Limit: {limit}]]",
             show_index=True,
             export=bool(export),
+            limit=limit,
         )
 
         export_data(
@@ -762,11 +764,12 @@ def rating(
     df = df.astype(str).applymap(lambda x: add_color(x))
 
     print_rich_table(
-        df.head(limit),
+        df,
         headers=df.columns,
         show_index=True,
         title="Rating",
         export=bool(export),
+        limit=limit,
     )
 
     export_data(

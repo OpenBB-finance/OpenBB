@@ -129,11 +129,12 @@ def print_insider_data(
 
     if not df.empty:
         print_rich_table(
-            df.head(limit),
+            df,
             headers=[x.title() for x in df.columns],
             show_index=False,
             title="Insider Data",
             export=bool(export),
+            limit=limit,
         )
 
         export_data(

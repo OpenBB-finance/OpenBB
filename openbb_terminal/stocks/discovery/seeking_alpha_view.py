@@ -127,9 +127,10 @@ def news(
 
         df_news = df_news.drop("id", axis=1)
         print_rich_table(
-            df_news.head(limit),
+            df_news,
             show_index=False,
             export=bool(export),
+            limit=limit,
         )
 
     # User wants to access specific article
@@ -190,10 +191,11 @@ def display_news(
         )
         df_news = df_news.drop("id", axis=1)
         print_rich_table(
-            df_news.head(limit),
+            df_news
             show_index=False,
             title=f"{news_type}",
             export=bool(export),
+            limit=limit,
         )
 
         export_data(

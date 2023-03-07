@@ -120,12 +120,14 @@ def display_fred_series(
     data.index = [x.strftime("%Y-%m-%d") for x in data.index]
 
     if raw:
+        data = data.sort_index(ascending=False)
         print_rich_table(
-            data.tail(limit),
+            data,
             headers=list(data.columns),
             show_index=True,
             index_name="Date",
             export=bool(export),
+            limit=limit,
         )
 
     export_data(
@@ -159,6 +161,7 @@ def plot_cpi(
     export: str = "",
     sheet_name: str = "",
     external_axes: bool = False,
+    limit: int = 10,
 ) -> Union[None, OpenBBFigure]:
     """Plot CPI data. [Source: FRED]
 
@@ -234,12 +237,15 @@ def plot_cpi(
         fig.add_scatter(x=df.index, y=df[column].values, name=label)
 
     if raw:
+        # was a -iloc so we need to flip the index as we use head
+        df = df.sort_index(ascending=False)
         print_rich_table(
-            df.iloc[-10:],
+            df,
             title=title,
             show_index=True,
             floatfmt=".3f",
             export=bool(export),
+            limit=limit,
         )
 
     export_data(

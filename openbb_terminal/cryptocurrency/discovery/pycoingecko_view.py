@@ -78,10 +78,11 @@ def display_coins(
         )
 
         print_rich_table(
-            df.head(limit),
+            df,
             headers=list(df.columns),
             show_index=False,
             export=bool(export),
+            limit=limit,
         )
 
         export_data(
@@ -131,10 +132,11 @@ def display_gainers(
                 df[col] = df[col].apply(lambda x: lambda_very_long_number_formatter(x))
 
         print_rich_table(
-            df.head(limit),
+            df,
             headers=list(df.columns),
             show_index=False,
             export=bool(export),
+            limit=limit,
         )
 
         export_data(
@@ -184,10 +186,11 @@ def display_losers(
                 df[col] = df[col].apply(lambda x: lambda_very_long_number_formatter(x))
 
         print_rich_table(
-            df.head(limit),
+            df,
             headers=list(df.columns),
             show_index=False,
             export=bool(export),
+            limit=limit,
         )
 
         export_data(

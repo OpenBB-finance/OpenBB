@@ -90,10 +90,11 @@ def display_dapp_stats(
 
     if raw:
         print_rich_table(
-            df.head(limit),
+            df,
             headers=list(df.columns),
             show_index=True,
             export=bool(export),
+            limit=limit,
         )
 
     fig = OpenBBFigure.create_subplots(specs=[[{"secondary_y": True}]])
