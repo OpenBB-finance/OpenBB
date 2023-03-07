@@ -395,7 +395,6 @@ class StocksController(StockBaseController):
             type=str.lower,
             dest="sort",
             help="Choose a column to sort by. Only works when raw data is displayed.",
-            nargs="+",
         )
         parser.add_argument(
             "-r",
@@ -455,7 +454,7 @@ class StocksController(StockBaseController):
                 if ns_parser.raw:
                     qa_view.display_raw(
                         data=self.stock,
-                        sortby=" ".join(ns_parser.sort),
+                        sortby=ns_parser.sort,
                         ascend=ns_parser.reverse,
                         limit=ns_parser.limit,
                     )
