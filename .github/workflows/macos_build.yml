@@ -1,4 +1,4 @@
-name: M1 MacOS Build
+name: MacOS Build
 
 env:
   OPENBB_ENABLE_QUICK_EXIT: true
@@ -17,7 +17,7 @@ concurrency:
 
 jobs:
   Build:
-    name: M1 MacOS Build
+    name: MacOS Build
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
