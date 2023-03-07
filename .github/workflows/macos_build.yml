@@ -122,8 +122,8 @@ jobs:
       - name: Save Build Artifact PKG
         uses: actions/upload-artifact@v3
         with:
-          name: M1 MacOS PKG Artifact
-          path: ${{ matrix.items.name }}
+          name: ${{ matrix.items.name }}
+          path: OpenBBTerminalM1.pkg
       - name: Get contents from PkgUtil
         run: |
           pkgutil --expand-full OpenBBTerminalM1.pkg extract/
