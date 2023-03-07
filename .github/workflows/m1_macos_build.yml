@@ -18,7 +18,10 @@ concurrency:
 jobs:
   Build:
     name: M1 MacOS Build
-    runs-on: [self-hosted, macos, ARM64]
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [[self-hosted, macos, ARM64], [self-hosted, macos, x64]]
     steps:
       # Checkout repository main branch. this allows for the commit hashes to line up
       - name: Checkout
