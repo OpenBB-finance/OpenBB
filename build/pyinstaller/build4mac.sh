@@ -2,7 +2,7 @@
 
 DISK_IMAGE_NAME="OpenBB Terminal"
 SCRIPTPATH="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
-BUNDLER_PATH="$SCRIPTPATH/macOS-x64/build-macos-x64.sh"
+BUNDLER_PATH="$SCRIPTPATH/macOS/build-macos.sh"
 
 # exit when any command fails
 set -e
