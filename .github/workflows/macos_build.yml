@@ -1,4 +1,4 @@
-name: MacOS Build
+name: M1 MacOS Build
 
 env:
   OPENBB_ENABLE_QUICK_EXIT: true
