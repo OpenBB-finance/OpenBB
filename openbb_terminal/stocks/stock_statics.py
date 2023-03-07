@@ -1,14 +1,14 @@
 INTERVALS = [1, 5, 15, 30, 60]
 SOURCES = ["YahooFinance", "AlphaVantage", "EODHD"]
 CANDLE_SORT = [
-    "adjclose",
     "open",
-    "close",
     "high",
     "low",
+    "close",
+    "adjclose",
     "volume",
-    "returns",
-    "logret",
+    "dividends",
+    "stock_splits",
 ]
 
 market_coverage_suffix = {
