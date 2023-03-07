@@ -122,18 +122,17 @@ jobs:
         with:
           name: M1 MacOS PKG Artifact
           path: OpenBBTerminalM1.pkg
-      - name: Convert & Mount DMG
+      - name: Get contents from PkgUtil
         env:
           SUDO_PASSWORD: ${{ secrets.SUDO_PASSWORD }}
         run: |
-          ls
           pkgutil --expand-full OpenBBTerminalM1.pkg extract/
-          extract/OpenBBTerminal.pkg/Payload/Applications/OpenBB\ Terminal/OpenBB\ Terminal
+          # extract/OpenBBTerminal.pkg/Payload/Applications/OpenBB\ Terminal/OpenBB\ Terminal
           rm -rf OpenBBTerminalM1.pkg
 
       - name: Run Integration Tests
         run: |
-            extract/OpenBBTerminal.pkg/Payload/Applications/OpenBB\ Terminal/OpenBB\ Terminal -t -s forecast cryptocurrency reports alternative economy futures econometrics dashboards portfolio stocks/test_stocks_options_screen.openbb stocks/test_stocks_options.openbb forex etf stocks/test_stocks_fa.openbb > result.txt
+            extract/OpenBBTerminal.pkg/Payload/Applications/OpenBB\ Terminal/.OpenBB/OpenBBTerminal -t -s forecast cryptocurrency reports alternative economy futures econometrics dashboards portfolio stocks/test_stocks_options_screen.openbb stocks/test_stocks_options.openbb forex etf stocks/test_stocks_fa.openbb > result.txt
             cat result.txt
             grep "================================ integration test summary ================================" result.txt -A100 | tail --bytes=2000 > failed_tests.txt
 
@@ -147,6 +146,7 @@ jobs:
           channel: ${{ secrets.SLACK_CHANNEL_ID }}
 
       - name: Remove OpenBB Folder
-        run: rm -rf /Users/openbb/Desktop/OpenBB\ Terminal
-      - name: Remove OpenBB Exports Folder
-        run: rm -rf ~/Desktop/OPENBB-exports
+        run: |
+          rm -rf /Users/openbb/Desktop/OpenBB\ Terminal
+          rm -rf ~/Desktop/OPENBB-exports
+          rm -rf extract/
