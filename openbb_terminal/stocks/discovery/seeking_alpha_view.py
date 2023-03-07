@@ -191,7 +191,7 @@ def display_news(
         )
         df_news = df_news.drop("id", axis=1)
         print_rich_table(
-            df_news
+            df_news,
             show_index=False,
             title=f"{news_type}",
             export=bool(export),
