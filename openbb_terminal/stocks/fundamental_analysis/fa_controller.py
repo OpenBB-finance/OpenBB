@@ -1647,7 +1647,8 @@ class FundamentalAnalysisController(StockBaseController):
                     max_similars=ns_parser.similar,
                     growth=ns_parser.growth,
                 )
-                dcf.create_workbook()
+                if dcf and dcf.data:
+                    dcf.create_workbook()
             else:
                 console.print("Please use --ticker or load a ticker first.")
 
