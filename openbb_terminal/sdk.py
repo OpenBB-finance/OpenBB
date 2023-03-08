@@ -4,7 +4,6 @@
 # pylint: disable=unused-import,wrong-import-order
 import logging
 
-# config_terminal is used to setup the terminal (env, folders, plot backend, ...)
 import openbb_terminal.config_terminal as cfg
 from openbb_terminal import helper_funcs as helper  # noqa: F401
 from openbb_terminal.config_terminal import theme
@@ -22,6 +21,8 @@ from openbb_terminal.core.sdk import (
 )
 from openbb_terminal.core.session.current_user import is_local
 from openbb_terminal.terminal_helper import is_auth_enabled
+
+cfg.start_required_configurations()
 
 logger = logging.getLogger(__name__)
 theme.applyMPLstyle()
