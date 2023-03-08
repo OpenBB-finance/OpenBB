@@ -38,11 +38,6 @@ export default function DocSidebarDesktopContent({ path, sidebar, className }) {
         className
       )}
     >
-      {isIFrame && (
-        <div className="flex justify-center mb-4">
-          <SearchBar />
-        </div>
-      )}
       <ul className={clsx(ThemeClassNames.docs.docSidebarMenu, "menu__list")}>
         <DocSidebarItems items={sidebar} activePath={path} level={1} />
       </ul>
