@@ -1,11 +1,11 @@
 import sys
 from multiprocessing import freeze_support
 
-import openbb_terminal.config_terminal as cfg  # disable=unused-import
+# pylint:disable=unused-import,import-outside-toplevel
+# config_terminal is used to setup the terminal (env, folders, plot backend, ...)
+import openbb_terminal.config_terminal as cfg  # noqa: F401
 import openbb_terminal.core.session.current_user as _  # noqa: F401
 from openbb_terminal.terminal_helper import is_auth_enabled
-
-# pylint: disable=import-outside-toplevel
 
 
 def main():

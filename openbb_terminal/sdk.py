@@ -4,6 +4,7 @@
 # pylint: disable=unused-import,wrong-import-order
 import logging
 
+# config_terminal is used to setup the terminal (env, folders, plot backend, ...)
 import openbb_terminal.config_terminal as cfg
 from openbb_terminal import helper_funcs as helper  # noqa: F401
 from openbb_terminal.config_terminal import theme
