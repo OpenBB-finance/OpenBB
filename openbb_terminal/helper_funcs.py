@@ -1975,7 +1975,7 @@ def update_news_from_tweet_to_be_displayed() -> str:
                         url = f"https://twitter.com/x/status/{last_tweet.id_str}"
 
             # In case the handle provided doesn't exist, we skip it
-            except tweepy.errors.NotFound:
+            except (tweepy.errors.NotFound, tweepy.errors.Unauthorized):
                 pass
 
         if last_tweet_dt and news_tweet_to_use:
