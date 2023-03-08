@@ -580,7 +580,7 @@ def get_financial_growth(
 
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
-def clean_metrics_df(data: pd.DataFrame, num: int, mask: bool = True) -> pd.DataFrame:
+def clean_metrics_df(data: pd.DataFrame, num: int, mask: bool = False) -> pd.DataFrame:
     """Clean metrics data frame
 
     Parameters
