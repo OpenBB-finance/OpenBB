@@ -348,7 +348,7 @@ class PortfolioEngine:
                         ] = ""
                         removed_tickers.append(item)
 
-            # Merge reformated tickers into Ticker
+            # Merge reformatted tickers into Ticker
             self.__transactions["Ticker"] = self.__transactions["yf_Ticker"].fillna(
                 self.__transactions["Ticker"]
             )

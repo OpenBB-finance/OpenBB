@@ -46,7 +46,7 @@ Below is a brief description of each function within the Portfolio module:
 | openbb.econometrics.ols                 | Function | Perform an Ordinary Least Squares (ols) regression on time-series data |
 | openbb.econometrics.comparison          | Function |                       Compare different regression models in one table |
 
-Alteratively you can print the contents of the Econometrics SDK with:
+Alternatively you can print the contents of the Econometrics SDK with:
 
 ```python
 help(openbb.econometrics)
