@@ -134,7 +134,7 @@ def open_openbb_documentation(
         path = "/"
         command = ""
     elif "keys" in path:
-        path = "/guides/advanced/api-keys"
+        path = "/quickstart/api-keys"
         command = ""
     elif "settings" in path:
         path = "/guides/advanced/customizing-the-terminal"
@@ -170,7 +170,7 @@ def open_openbb_documentation(
 
     if command:
         if command == "keys":
-            path = "/guides/advanced/api-keys"
+            path = "/quickstart/api-keys"
             command = ""
         elif "settings" in path or "featflags" in path:
             path = "/guides/advanced/customizing-the-terminal"

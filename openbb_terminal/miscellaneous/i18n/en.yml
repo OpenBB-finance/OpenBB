@@ -412,6 +412,7 @@ en:
   stocks/bt/rsi: buy when RSI < low and sell when RSI > high
   stocks/bt/load: load a specific stock ticker for analysis
   stocks/ta/_ticker: Ticker
+  stocks/ta/load: load a specific stock ticker for analysis
   stocks/ta/view: view historical data and trendlines
   stocks/ta/summary: technical summary report
   stocks/ta/recom: recommendation based on technical indicators
