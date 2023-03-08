@@ -23,14 +23,9 @@ theme = _TerminalStyle(
 
 
 def start_required_configurations():
-    """Start configs"""
-    # Load .env files
+    """Starts the required configurations for the terminal to work"""
     load_env_files()
-
-    # Init userdata folder
     init_userdata()
-
-    # Start Backend for plotting
     plots_backend().start(load_env_vars("DEBUG_MODE", strtobool, False))
 
 
