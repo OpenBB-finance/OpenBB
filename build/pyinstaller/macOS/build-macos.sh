@@ -206,6 +206,7 @@ copyDarwinDirectory
 copyBuildDirectory
 signFiles
 chmod 777 build/pyinstaller/macOS/target/darwinpkg/Applications/OpenBB\ Terminal/.OpenBB/.env
+chmod -R 757 build/pyinstaller/macOS/target/darwinpkg/Applications/OpenBB\ Terminal/.OpenBB/
 createInstaller
 
 log_info "Installer generating process finished"
