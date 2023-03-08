@@ -12,6 +12,8 @@ from typing import List, Optional
 # IMPORTATION THIRDPARTY
 import pytz
 
+from openbb_terminal.config_terminal import i18n_dict_location
+
 # IMPORTATION INTERNAL
 from openbb_terminal.core.config.paths import (
     SETTINGS_ENV_FILE,
@@ -30,7 +32,6 @@ from openbb_terminal.helper_funcs import (
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import MenuText, console
-from openbb_terminal.config_terminal import i18n_dict_location
 
 # pylint: disable=too-many-lines,no-member,too-many-public-methods,C0302
 # pylint: disable=import-outside-toplevel

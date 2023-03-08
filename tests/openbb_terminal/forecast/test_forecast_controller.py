@@ -3,9 +3,9 @@ from typing import List
 
 import pandas as pd
 import pytest
+
 from openbb_terminal.core.models.preferences_model import PreferencesModel
 from openbb_terminal.core.session.current_user import copy_user
-
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 
 try:
