@@ -136,12 +136,13 @@ def search_indices(query: list, limit: int = 10):
     Shows a rich table with the available options.
     """
 
-    keyword_adjusted, queried_indices = get_search_indices(query, limit)
+    keyword_adjusted, queried_indices = get_search_indices(query)
 
     print_rich_table(
         queried_indices,
         show_index=True,
         index_name="ticker",
-        headers=queried_indices.columns,
+        headers=list(queried_indices.columns),
         title=f"Queried Indices with keyword {keyword_adjusted}",
+        limit=limit,
     )

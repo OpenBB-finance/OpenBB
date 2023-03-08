@@ -184,7 +184,6 @@ economy.country_codes,economy_nasdaq_model.get_country_codes,
 economy.currencies,economy_wsj_model.global_currencies,
 economy.events,economy_nasdaq_model.get_economic_calendar,
 economy.fred,economy_fred_model.get_aggregated_series_data,economy_fred_view.display_fred_series
-economy.fred_ids,economy_fred_model.get_series_ids,
 economy.fred_notes,economy_fred_model.get_series_notes,
 economy.future,economy_finviz_model.get_futures,
 economy.futures,economy_sdk_helpers.futures,

@@ -27,7 +27,7 @@ def upcoming_earning_release_dates(
     Parameters
     ----------
     num_pages: int
-        Number of pages to scrap
+        Number of pages to scrape
     limit: int
         Number of upcoming earnings release dates
     export : str
@@ -42,7 +42,6 @@ def upcoming_earning_release_dates(
     if df_earnings.empty:
         console.print("No upcoming earnings release dates found")
 
-    pd.set_option("display.max_colwidth", None)
     if export:
         l_earnings = []
         l_earnings_dates = []

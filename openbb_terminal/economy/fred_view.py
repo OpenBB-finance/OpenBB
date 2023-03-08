@@ -50,7 +50,7 @@ def notes(search_query: str, limit: int = 10):
     limit : int
         Maximum number of series notes to display
     """
-    df_search = fred_model.get_series_notes(search_query, limit)
+    df_search = fred_model.get_series_notes(search_query)
 
     if df_search.empty:
         return
@@ -60,6 +60,7 @@ def notes(search_query: str, limit: int = 10):
         title=f"[bold]Search results for {search_query}[/bold]",
         show_index=False,
         headers=["Series ID", "Title", "Description"],
+        limit=limit,
     )
 
 

@@ -2,13 +2,13 @@
 # ######### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ######### #
 # flake8: noqa
 # pylint: disable=unused-import,wrong-import-order
+# pylint: disable=C0302,W0611,R0902,R0903,C0412,C0301,not-callable
 import logging
 
 import openbb_terminal.config_terminal as cfg
 from openbb_terminal import helper_funcs as helper  # noqa: F401
 from openbb_terminal.base_helpers import load_env_files
 from openbb_terminal.config_terminal import theme
-from openbb_terminal.core.config.paths_helper import init_userdata
 
 from openbb_terminal.cryptocurrency.due_diligence.pycoingecko_model import Coin
 from openbb_terminal.dashboards.dashboards_controller import DashboardsController
@@ -41,7 +41,7 @@ class OpenBBSDK:
         `whoami`: Display user info.\n
     """
 
-    __version__ = cfg.VERSION
+    __version__ = obbff.VERSION
 
     def __init__(self):
         SDKLogger()
@@ -49,14 +49,7 @@ class OpenBBSDK:
         self.logout = lib.sdk_session.logout
         self.news = lib.common_feedparser_model.get_news
         self.whoami = lib.sdk_session.whoami
-        self._try_to_login()
-
-    def _try_to_login(self):
-        if is_local() and is_auth_enabled():
-            try:
-                self.login()
-            except Exception:
-                pass
+        SDKLogger._try_to_login(self)
 
     @property
     def alt(self):
@@ -149,7 +142,6 @@ class OpenBBSDK:
             `events`: Get economic calendar for countries between specified dates\n
             `fred`: Get Series data. [Source: FRED]\n
             `fred_chart`: Display (multiple) series from https://fred.stlouisfed.org. [Source: FRED]\n
-            `fred_ids`: Get Series IDs. [Source: FRED]\n
             `fred_notes`: Get series notes. [Source: FRED]\n
             `future`: Get futures data. [Source: Finviz]\n
             `futures`: Get futures data.\n
@@ -541,7 +533,7 @@ class OpenBBSDK:
             `obv_chart`: Plots OBV technical indicator\n
             `rsi`: Relative strength index\n
             `rsi_chart`: Plots RSI Indicator\n
-            `rvol_garman_klass`: Garman-Klass volatility extends Parkinson volatility by taking into account the open and close price.\n
+            `rvol_garman_klass`: Garman-Klass volatility extends Parkinson volatility by taking into account the opening and closing price.\n
             `rvol_hodges_tompkins`: Hodges-Tompkins volatility is a bias correction for estimation using an overlapping data sample.\n
             `rvol_parkinson`: Parkinson volatility uses the high and low price of the day rather than just close to close prices.\n
             `rvol_rogers_satchell`: Rogers-Satchell is an estimator for measuring the volatility with an average return not equal to zero.\n
@@ -560,7 +552,6 @@ class OpenBBSDK:
         return model.TaRoot()
 
 
-# pylint: disable=too-few-public-methods
 class SDKLogger:
     def __init__(self) -> None:
         self.__check_initialize_logging()
@@ -581,7 +572,7 @@ class SDKLogger:
 
     @staticmethod
     def _try_to_login(sdk: "OpenBBSDK"):
-        if is_local() and is_auth_enabled():
+        if User.is_guest() and is_auth_enabled():
             try:
                 sdk.login()
             except Exception:
