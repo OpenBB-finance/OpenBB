@@ -35,6 +35,8 @@ mgmt
 analysis
 score
 enterprise
+enterprise --source FinancialModelingPrep
+enterprise --source YahooFinance
 metrics
 ratios
 growth
