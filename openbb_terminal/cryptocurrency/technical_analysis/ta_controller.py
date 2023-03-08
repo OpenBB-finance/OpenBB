@@ -1,6 +1,6 @@
 """Crypto Technical Analysis Controller Module"""
 __docformat__ = "numpy"
-# pylint: disable=R0904,C0201,C0302
+# pylint:disable=too-many-lines,R0904,C0201,too-many-lines
 
 import argparse
 import logging
