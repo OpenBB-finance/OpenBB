@@ -286,7 +286,7 @@ def get_balance_sheet(
     current_user = get_current_user()
     url = (
         f"https://www.alphavantage.co/query?function=BALANCE_SHEET&symbol={symbol}&"
-        f"apikey={current_user.credentials}"
+        f"apikey={current_user.credentials.API_KEY_ALPHAVANTAGE}"
     )
     r = request(url)
     response_json = r.json()
