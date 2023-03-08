@@ -103,6 +103,7 @@ class KeyStatus(str, Enum):
         return self.value
 
     def colorize(self):
+        c = ""
         if self.name == self.DEFINED_TEST_FAILED.name:
             c = "red"
         elif self.name == self.NOT_DEFINED.name:
