@@ -14,7 +14,7 @@ from openbb_terminal.helper_classes import TerminalStyle  # noqa: F401
 from openbb_terminal.reports import widget_helpers as widgets  # noqa: F401
 from openbb_terminal.reports.reports_controller import ReportController
 
-# import openbb_terminal.core.sdk.sdk_init as lib
+import openbb_terminal.core.sdk.sdk_init as lib
 from openbb_terminal.core.sdk import (
     controllers as ctrl,
     models as model,
