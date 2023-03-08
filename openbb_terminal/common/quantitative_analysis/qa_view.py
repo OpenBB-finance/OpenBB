@@ -830,6 +830,7 @@ def display_raw(
     df1 = pd.DataFrame(data) if isinstance(data, pd.Series) else data.copy()
 
     if sortby:
+        sortby = sortby.replace("_", " ")
         try:
             sort_col = [x.lower().replace(" ", "") for x in df1.columns].index(
                 sortby.lower().replace(" ", "")

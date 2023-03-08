@@ -1486,8 +1486,8 @@ class TechnicalAnalysisController(CryptoBaseController):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="cones",
             description="""
-            Calculates the realized volatility quantiles over rolling windows of time. 
-            The model for calculating volatility is selectable.         
+            Calculates the realized volatility quantiles over rolling windows of time.
+            The model for calculating volatility is selectable.
             """,
         )
         parser.add_argument(
