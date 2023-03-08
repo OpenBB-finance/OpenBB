@@ -39,14 +39,12 @@ def test_check_greater_than_one_invalid():
 
 def test_forecast_controller(mocker):
     mocker.patch(base + "session", True)
-    mocker.patch(base + "obbff.USE_PROMPT_TOOLKIT", True)
     cont = fc.ForecastController(data=df, ticker="TSLA")
     assert isinstance(cont.files, List)
 
 
 def test_fc_update_runtime_choices(mocker):
     mocker.patch(base + "session", True)
-    mocker.patch(base + "obbff.USE_PROMPT_TOOLKIT", True)
     cont = fc.ForecastController()
     cont.datasets = {"stonks": df}
     cont.update_runtime_choices()
