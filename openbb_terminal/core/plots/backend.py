@@ -13,11 +13,13 @@ from typing import Optional, Union
 import aiohttp
 import pandas as pd
 import plotly.graph_objects as go
-from pywry import PyWry
+import pywry
+from packaging import version
 from reportlab.graphics import renderPDF
 from svglib.svglib import svg2rlg
 
-from openbb_terminal.base_helpers import strtobool
+from openbb_terminal.base_helpers import console, strtobool
+from openbb_terminal.core.session.current_user import get_current_user
 
 try:
     from IPython import get_ipython
@@ -39,7 +41,7 @@ PLOTLYJS_PATH = PLOTS_CORE_PATH / "assets" / "plotly-2.18.2.min.js"
 BACKEND = None
 
 
-class Backend(PyWry):
+class Backend(pywry.PyWry):
     """Custom backend for Plotly."""
 
     def __new__(cls, *args, **kwargs):  # pylint: disable=W0613
@@ -147,7 +149,7 @@ class Backend(PyWry):
             json.dumps(
                 {
                     "html_path": self.get_plotly_html(),
-                    "plotly": json.loads(fig.to_json()),
+                    "json_data": json.loads(fig.to_json()),
                     "export_image": str(export_image).replace(".pdf", ".svg"),
                     **self.get_kwargs(title),
                 }
@@ -177,7 +179,7 @@ class Backend(PyWry):
                 img_path.unlink(missing_ok=True)
                 renderPDF.drawToFile(drawing, str(export_image))
 
-            if strtobool(os.environ.get("OPENBB_PLOT_OPEN_EXPORT", False)):
+            if get_current_user().preferences.PLOT_OPEN_EXPORT:
                 if sys.platform == "win32":
                     os.startfile(export_image)  # nosec: B606
                 else:
@@ -195,14 +197,24 @@ class Backend(PyWry):
             Title to display in the window, by default ""
         """
         self.loop.run_until_complete(self.check_backend())
+        columnwidth = [
+            max(len(str(df_table[col].name)), df_table[col].astype(str).str.len().max())
+            for col in df_table.columns
+        ]
+        # we add a percentage of max to the min column width
+        columnwidth = [
+            int(x + (max(columnwidth) - min(columnwidth)) * 0.2) for x in columnwidth
+        ]
 
         self.outgoing.append(
             json.dumps(
                 {
                     "html_path": self.get_table_html(),
-                    "plotly": df_table.to_json(orient="split"),
-                    "width": self.WIDTH,
-                    "height": self.HEIGHT,
+                    "json_data": df_table.to_json(orient="split"),
+                    "width": int(max(sum(columnwidth) * 9.5, self.WIDTH + 100)),
+                    "height": int(
+                        min(len(df_table.index) * 25 + 25, self.HEIGHT + 100)
+                    ),
                     **self.get_kwargs(title),
                 }
             )
@@ -267,6 +279,7 @@ class Backend(PyWry):
         return {
             "title": f"OpenBB - {title}",
             "icon": self.get_window_icon(),
+            "download_path": str(get_current_user().preferences.USER_EXPORTS_DIRECTORY),
         }
 
     def del_temp(self):
@@ -282,6 +295,16 @@ class Backend(PyWry):
     async def check_backend(self):
         """Override to check if isatty."""
         if self.isatty:
+            if not hasattr(pywry, "__version__") or version.parse(
+                pywry.__version__
+            ) < version.parse("0.3.5"):
+                console.print(
+                    "[bold red]Pywry version 0.3.5 or higher is required to use the "
+                    "OpenBB Plots backend.[/bold red]\n"
+                    "[yellow]Please update pywry with 'pip install pywry --upgrade'[/yellow]"
+                )
+                self.max_retries = 0  # pylint: disable=W0201
+                return
             await super().check_backend()
 
     def close(self, reset: bool = False):

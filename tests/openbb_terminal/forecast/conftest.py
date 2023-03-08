@@ -34,7 +34,7 @@ def test_model(model, data, *args, **kwargs):
     return predict_list, MAPE
 
 
-# make same fuction but for anomaly detection model
+# make same function but for anomaly detection model
 def test_anom_model(model, data, *args, **kwargs):
     ticker_series, anom_score, binary_anom = model(data, *args, **kwargs)
     return ticker_series, anom_score, binary_anom

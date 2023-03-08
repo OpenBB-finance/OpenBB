@@ -1,6 +1,8 @@
 # IMPORTATION STANDARD
 
 # IMPORTATION THIRDPARTY
+from pathlib import Path
+
 import pandas as pd
 import pytest
 
@@ -66,7 +68,17 @@ def test_view_historical_greeks():
     "preset",
     ["template.ini", "spy_30_delta.ini"],
 )
-def test_view_available_presets(preset):
+def test_view_available_presets(mocker, preset):
+    mock_preset_path = Path(__file__).resolve().parent / "ini"
+    preset_choices = {
+        filepath.name: filepath
+        for filepath in mock_preset_path.iterdir()
+        if filepath.suffix == ".ini"
+    }
+    mocker.patch(
+        target="openbb_terminal.stocks.options.screen.syncretism_model.get_preset_choices",
+        return_value=preset_choices,
+    )
     syncretism_view.view_available_presets(
         preset=preset,
     )
