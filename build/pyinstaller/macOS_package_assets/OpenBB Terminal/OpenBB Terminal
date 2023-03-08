@@ -3,7 +3,7 @@ clear
 
 SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
-sudo chmod -R 757 "$SCRIPTDIR"/.OpenBB/OpenBBTerminal
+chmod -R 757 "$SCRIPTDIR"/.OpenBB
 
 echo "  _                     _ _                   "
 echo " | |                   | (_)                  "
