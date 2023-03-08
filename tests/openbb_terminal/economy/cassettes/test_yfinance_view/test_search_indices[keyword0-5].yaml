@@ -8393,7 +8393,7 @@ interactions:
       Expires:
       - Wed, 08 Mar 2023 15:37:50 GMT
       Source-Age:
-      - '265'
+      - '0'
       Strict-Transport-Security:
       - max-age=31536000
       Vary:
@@ -8401,9 +8401,9 @@ interactions:
       Via:
       - 1.1 varnish
       X-Cache:
-      - HIT
+      - MISS
       X-Cache-Hits:
-      - '1'
+      - '0'
       X-Content-Type-Options:
       - nosniff
       X-Fastly-Request-ID:

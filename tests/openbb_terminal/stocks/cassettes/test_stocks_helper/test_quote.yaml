@@ -45,11 +45,13 @@ interactions:
       - W/"252-3YV8k360rN54CWWpVAM/bjKtIxg"
       Server:
       - nginx/1.14.0 (Ubuntu)
+      Vary:
+      - Accept-Encoding
       X-Frame-Options:
       - SAMEORIGIN
       X-Powered-By:
       - Express
     status:
-      code: 401
-      message: Unauthorized
+      code: 200
+      message: OK
 version: 1
