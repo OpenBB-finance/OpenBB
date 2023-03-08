@@ -240,7 +240,7 @@ fixedincome.tbffr,fixedincome_fred_model.get_tbffr,
 fixedincome.tmc,fixedincome_fred_model.get_tmc,
 fixedincome.treasury,fixedincome_oecd_model.get_treasury,
 fixedincome.usrates,fixedincome_fred_model.get_usrates,
-fixedincome.ycrv,fixedincome_fred_model.get_yield_curve,
+fixedincome.ycrv,fixedincome_fred_model.get_yield_curve,fixedincome_fred_view.display_yield_curve
 forex.candle,forex_helper.display_candle,
 forex.fwd,forex_fxempire_model.get_forward_rates,
 forex.get_currency_list,forex_av_model.get_currency_list,
