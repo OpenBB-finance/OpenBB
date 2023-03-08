@@ -353,7 +353,7 @@ en:
   stocks/fa/load: load a specific stock ticker for analysis
   stocks/fa/_ticker: Ticker
   stocks/fa/_company_overview: Company Overview
-  stocks/fa/enterprise: company enterprise value
+  stocks/fa/mktcap: obtain the market capitalization or enterprise value
   stocks/fa/overview: financial overview of the company
   stocks/fa/divs: show historical dividends for company
   stocks/fa/splits: stock split and reverse split events since IPO
