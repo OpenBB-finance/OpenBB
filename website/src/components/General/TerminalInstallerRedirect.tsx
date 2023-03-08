@@ -34,14 +34,14 @@ export default function TerminalInstallerRedirect() {
             }
           } else if (osName === "Mac") {
             const macLink = document.querySelector(
-              'a[href="/terminal/installation/mac"]'
+              'a[href="/terminal/installation/macos"]'
             );
             if (macLink && macLink instanceof HTMLElement) {
               macLink.click();
             }
           } else {
             const linuxLink = document.querySelector(
-              'a[href="/terminal/installation/source"]'
+              'a[href="/terminal/installation/docker"]'
             );
             if (linuxLink && linuxLink instanceof HTMLElement) {
               linuxLink.click();
