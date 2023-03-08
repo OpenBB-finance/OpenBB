@@ -1,3 +1,5 @@
 #!/bin/bash
 
+sudo chmod -R 757 .OpenBB
+
 exit 0
