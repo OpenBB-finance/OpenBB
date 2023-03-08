@@ -5,14 +5,17 @@ income -l 2 --source YahooFinance
 income -l 2 --source Polygon
 income -l 2 --source AlphaVantage
 income -l 2 --source FinancialModelingPrep
+income -l 2 --source EODHD
 balance -l 2 --source YahooFinance
 balance -l 2 --source Polygon
 balance -l 2 --source AlphaVantage
 balance -l 2 --source FinancialModelingPrep
+balance -l 2 --source EODHD
 cash -l 2 --source YahooFinance
 cash -l 2 --source Polygon
 cash -l 2 --source AlphaVantage
 cash -l 2 --source FinancialModelingPrep
+cash -l 2 --source EODHD
 mgmt
 analysis
 score
