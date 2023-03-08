@@ -39,7 +39,7 @@ class OpenBBSDK:
         `whoami`: Display user info.\n
     """
 
-    __version__ = obbff.VERSION
+    __version__ = cfg.VERSION
 
     def __init__(self):
         SDKLogger()
@@ -570,7 +570,7 @@ class SDKLogger:
 
     @staticmethod
     def _try_to_login(sdk: "OpenBBSDK"):
-        if User.is_guest() and is_auth_enabled():
+        if is_local() and is_auth_enabled():
             try:
                 sdk.login()
             except Exception:
