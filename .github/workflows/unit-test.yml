@@ -82,7 +82,7 @@ jobs:
 
   base-test:
     name: Base Tests - Ubuntu-latest - Python 3.9
-    needs: [check-files-changed]
+    needs: [check-files-changed, count-files-changed]
     runs-on: ubuntu-latest
     if: needs.check-files-changed.outputs.check-changes == 'true' && github.event.pull_request.base.ref == 'develop' && needs.count-files-changed.outputs.count < 20
     steps:
