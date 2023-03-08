@@ -104,7 +104,7 @@ conda activate obb
 
 ## Install the OpenBB SDK
 
-There are two methods to install the OpenBB SDK. The easiest way is to use PyPi as it requires a single command to be ran. If you would also be looking to make code edits, it can be benefifical to clone the repository.
+There are two methods to install the OpenBB SDK. The easiest way is to use PyPi as it requires a single command to be ran. If you would also be looking to make code edits, it can be beneficial to clone the repository.
 
 ### Install From PyPi
 
