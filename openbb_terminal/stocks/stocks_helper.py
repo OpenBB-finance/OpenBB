@@ -930,7 +930,7 @@ def verify_plot_options(command: str, source: str, plot: list) -> bool:
         command_options = BALANCE_PLOT
     else:
         command_options = INCOME_PLOT
-    options = list(command_options[source].values())
+    options = list(command_options.get(source, {}).values())
 
     incorrect_columns = []
     for column in plot:
