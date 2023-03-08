@@ -5,11 +5,14 @@ import CloseIcon from "../Icons/Close";
 
 export default function PlayButton({ text, pathname }) {
 
-    //TODO : Add image changing base don name - after we host
     const pathvalue = pathname.split("/")[3];
     const platform = pathname.split("/")[2];
     const imgname = text.split(" ")[0].toLowerCase().replace("/", "");
+
+    //TODO - Point this to s3 bucket - need to talk to Luqman
     const img5 = `/img/${platform}/${pathvalue}/${imgname}.png`;
+
+    //`https://openbb-web-assets.s3.amazonaws.com/docs/${platform}/${pathvalue}/${imgname}.png`
 
     console.log("TEXT")
     console.log(imgname);
