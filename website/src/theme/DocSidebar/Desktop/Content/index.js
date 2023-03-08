@@ -8,6 +8,7 @@ import {
 import DocSidebarItems from "@theme/DocSidebarItems";
 import styles from "./styles.module.css";
 import { useIFrameContext } from "@site/src/theme/Root";
+import SearchBar from "@site/src/theme/SearchBar";
 function useShowAnnouncementBar() {
   const { isActive } = useAnnouncementBar();
   const [showAnnouncementBar, setShowAnnouncementBar] = useState(isActive);
@@ -37,6 +38,11 @@ export default function DocSidebarDesktopContent({ path, sidebar, className }) {
         className
       )}
     >
+      {isIFrame && (
+        <div className="flex justify-center mb-4">
+          <SearchBar />
+        </div>
+      )}
       <ul className={clsx(ThemeClassNames.docs.docSidebarMenu, "menu__list")}>
         <DocSidebarItems items={sidebar} activePath={path} level={1} />
       </ul>

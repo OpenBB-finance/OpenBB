@@ -1,16 +1,30 @@
-import React from "react";
+import React, { useState } from "react";
 import DocSidebarItemCategory from "@theme/DocSidebarItem/Category";
 import DocSidebarItemLink from "@theme/DocSidebarItem/Link";
 import DocSidebarItemHtml from "@theme/DocSidebarItem/Html";
 import { useIFrameContext } from "../Root";
 import { useLocation } from "@docusaurus/router";
+import clsx from "clsx";
 
 function shouldHideItem(item, productPath) {
-  const { href, items } = item;
-  if (!href) {
-    return items.some((item) => shouldHideItem(item, productPath));
+  if (item.items) {
+    return item.items.every((childItem) =>
+      shouldHideItem(childItem, productPath)
+    );
   }
-  return !href.startsWith(productPath);
+
+  if (item.type === "link") {
+    const itemPath = item.href.replace(/\/$/, "");
+    return !itemPath.startsWith(productPath);
+  }
+
+  if (item.type === "category") {
+    return item.items.every((childItem) =>
+      shouldHideItem(childItem, productPath)
+    );
+  }
+
+  return false;
 }
 
 export default function DocSidebarItem({ item, ...props }) {

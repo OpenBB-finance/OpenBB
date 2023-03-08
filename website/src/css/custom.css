@@ -160,11 +160,16 @@
   --aa-background-color-rgb: 0, 0, 0 !important;
 }
 
+.cls-1,
+.cls-2 {
+  fill: rgb(160, 160, 160) !important;
+}
+
 .DocSearch-Button {
   border-radius: 4px !important;
-  border: 1px solid #2e2e2e !important;
+  /*border: 1px solid #2e2e2e !important;
   background-color: #070707ff !important;
-  border-color: #a2a2a2ff !important;
+  border-color: #a2a2a2ff !important;*/
 }
 
 @media (max-width: 440px) {
@@ -174,11 +179,12 @@
   }
 }
 
+/*
 .DocSearch-Button:hover {
   outline: none !important;
   border-color: white !important;
   color: white !important;
-}
+}*/
 
 [data-theme="dark"] {
   /*

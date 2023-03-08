@@ -51,7 +51,7 @@ const config = {
         },
       };
     },
-    [
+    /*[
       "@docusaurus/plugin-content-docs",
       {
         id: "sdk",
@@ -72,7 +72,7 @@ const config = {
           "https://github.com/OpenBB-finance/OpenBBTerminal/edit/main/website/",
         sidebarPath: require.resolve("./sidebars.js"),
       },
-    ],
+    ],*/
   ],
   presets: [
     [
@@ -83,8 +83,8 @@ const config = {
           sidebarPath: require.resolve("./sidebars.js"),
           editUrl:
             "https://github.com/OpenBB-finance/OpenBBTerminal/edit/main/website/",
-          routeBasePath: "terminal",
-          path: "content/terminal",
+          routeBasePath: "/",
+          path: "content",
         },
         theme: {
           customCss: require.resolve("./src/css/custom.css"),
