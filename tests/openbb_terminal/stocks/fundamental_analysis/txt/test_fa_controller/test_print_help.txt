@@ -3,7 +3,7 @@
 Ticker: TSLA
 
 Company Overview:
-    enterprise         company enterprise value                                        [FinancialModelingPrep, YahooFinance]
+    mktcap             obtain the market capitalization or enterprise value            [FinancialModelingPrep, YahooFinance]
     overview           financial overview of the company                               [Finviz, FinancialModelingPrep, AlphaVantage, YahooFinance]
     divs               show historical dividends for company                           [YahooFinance]
     splits             stock split and reverse split events since IPO                  [YahooFinance]

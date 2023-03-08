@@ -16,14 +16,14 @@ cash -l 2 --source FinancialModelingPrep
 mgmt
 analysis
 score
-enterprise
+mktcap
 metrics
 ratios
 growth
 warnings
 warnings -d
 dcfc
-enterprise
+mktcap --source YahooFinance
 shrs
 shrs major
 shrs mutualfund

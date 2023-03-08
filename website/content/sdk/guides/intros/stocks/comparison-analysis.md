@@ -23,13 +23,13 @@ A brief description below highlights the functions available within the module:
 | openbb.stocks.ca.hcorr            |  Function  |                 Historical Price Correlation |
 | openbb.stocks.ca.hist             |  Function  |             Historical Price Data Comparison |
 | openbb.stocks.ca.income           |  Function  |                 Income Financials Comparison |
-| openbb.stocks.ca.scorr            |  Function  |                        Sentiment Correlation | 
+| openbb.stocks.ca.scorr            |  Function  |                        Sentiment Correlation |
 | openbb.stocks.ca.screener         |  Function  |                            Screener Overview |
 | openbb.stocks.ca.sentiment        |  Function  |                Sentiment Analysis Comparison |
 | openbb.stocks.ca.similar          |  Function  |              Get a List of Similar Companies |
 | openbb.stocks.ca.volume           |  Function  |            Historical Volume Data Comparison |
 
-Alteratively, the contents of the menu is printed with:
+Alternatively, the contents of the menu is printed with:
 
 ```python
 help(openbb.stocks.ca)

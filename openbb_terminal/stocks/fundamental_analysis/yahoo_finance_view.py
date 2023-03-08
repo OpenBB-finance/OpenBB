@@ -268,6 +268,8 @@ def display_splits(
 def display_mktcap(
     symbol: str,
     start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
+    raw: bool = False,
     export: str = "",
     sheet_name: Optional[str] = None,
     external_axes: bool = False,
@@ -279,7 +281,11 @@ def display_mktcap(
     symbol: str
         Stock ticker symbol
     start_date: Optional[str]
-        Initial date (e.g., 2021-10-01). Defaults to 3 years back
+        Initial date (e.g., 2021-10-01). If not provided, the earliest date available is used.
+    end_date: Optional[str]
+        End date (e.g., 2021-10-01). If not provided, the latest date available is used.
+    raw: bool
+        Whether to return the raw data or not
     sheet_name: str
         Optionally specify the name of the sheet the data is exported to.
     export: str
@@ -287,8 +293,7 @@ def display_mktcap(
     external_axes : bool, optional
         Whether to return the figure object or not, by default False
     """
-
-    df_mktcap, currency = yahoo_finance_model.get_mktcap(symbol, start_date)
+    df_mktcap, currency = yahoo_finance_model.get_mktcap(symbol, start_date, end_date)
     if df_mktcap.empty:
         return console.print("No Market Cap data available.\n")
 
@@ -302,6 +307,15 @@ def display_mktcap(
         line_color=theme.up_color,
         stackgroup="one",
     )
+
+    if raw:
+        print_rich_table(
+            pd.DataFrame(df_mktcap).tail(10),
+            headers=["Market Cap"],
+            title=f"{symbol} Market Cap",
+            show_index=True,
+            export=bool(export),
+        )
 
     export_data(
         export,
