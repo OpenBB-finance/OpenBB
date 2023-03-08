@@ -27,7 +27,7 @@ concurrency:
 
 jobs:
   check-files-changed:
-    name: Check for changes
+    name: Check to see if any files have changed that would trigger a unit test
     runs-on: ubuntu-latest
     # Run this job only if the PR is not merged, PR != draft and the event is not a push
     if: github.event.pull_request.merged == false && github.event_name != 'push' && github.event.pull_request.draft == false
@@ -57,11 +57,34 @@ jobs:
       - name: Show output of previous step
         run:  echo "check-changes=${{ steps.check-changes.outputs.check-changes }}"
 
+  # Check to see if the PR is too large
+  count-files-changed:
+    name: Count Python files changed
+    runs-on: ubuntu-latest
+    outputs:
+      count: ${{ steps.count-changes.outputs.count }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+        with:
+          fetch-depth: 100
+          persist-credentials: false
+
+      - name: Count Python files changed
+        id: count-changes
+        run: |
+          current_branch=$(jq -r .pull_request.base.ref "$GITHUB_EVENT_PATH")
+          count=$(git diff --name-only origin/$current_branch HEAD | grep -E ".py$" | wc -l)
+          echo "count=$count" >> $GITHUB_OUTPUT
+
+      - name: Show output of previous step
+        run: echo "count=${{ steps.count-changes.outputs.count }}"
+
   base-test:
     name: Base Tests - Ubuntu-latest - Python 3.9
     needs: [check-files-changed]
     runs-on: ubuntu-latest
-    if: needs.check-files-changed.outputs.check-changes == 'true' && github.event.pull_request.base.ref == 'develop'
+    if: needs.check-files-changed.outputs.check-changes == 'true' && github.event.pull_request.base.ref == 'develop' && needs.count-files-changed.outputs.count < 20
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
