@@ -88,7 +88,7 @@ def login(session: dict) -> LoginStatus:
         if response.status_code == 200:
             configs = json.loads(response.content)
             email = configs.get("email", "")
-            feature_settings = configs.get("features_settings", {})
+            feature_settings = configs.get("features_settings", {}) or {}
             hub_user.profile.load_user_info(session, email)
             set_current_user(hub_user)
             Local.apply_configs(configs=configs)

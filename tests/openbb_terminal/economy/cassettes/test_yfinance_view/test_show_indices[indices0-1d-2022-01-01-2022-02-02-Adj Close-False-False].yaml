@@ -15,7 +15,7 @@ interactions:
     uri: https://query2.finance.yahoo.com/v8/finance/chart/%5EGSPC?range=1d&interval=1d
   response:
     body:
-      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"^GSPC","exchangeName":"SNP","instrumentType":"INDEX","firstTradeDate":-1325583000,"regularMarketTime":1677276020,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":3970.04,"chartPreviousClose":4012.32,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","end":1677249000,"start":1677229200,"gmtoffset":-18000},"regular":{"timezone":"EST","end":1677272400,"start":1677249000,"gmtoffset":-18000},"post":{"timezone":"EST","end":1677286800,"start":1677272400,"gmtoffset":-18000}},"dataGranularity":"1d","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1677249000],"indicators":{"quote":[{"open":[3973.239990234375],"volume":[3877700000],"low":[3943.080078125],"close":[3970.0400390625],"high":[3978.25]}],"adjclose":[{"adjclose":[3970.0400390625]}]}}],"error":null}}'
+      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"^GSPC","exchangeName":"SNP","instrumentType":"INDEX","firstTradeDate":-1325583000,"regularMarketTime":1678289564,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":3994.29,"chartPreviousClose":3986.37,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","end":1678285800,"start":1678266000,"gmtoffset":-18000},"regular":{"timezone":"EST","end":1678309200,"start":1678285800,"gmtoffset":-18000},"post":{"timezone":"EST","end":1678323600,"start":1678309200,"gmtoffset":-18000}},"dataGranularity":"1d","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1678289564],"indicators":{"quote":[{"high":[3995.85009765625],"low":[3973.280029296875],"volume":[419206593],"close":[3994.2900390625],"open":[3987.550048828125]}],"adjclose":[{"adjclose":[3994.2900390625]}]}}],"error":null}}'
     headers:
       Age:
       - '1'
@@ -36,25 +36,25 @@ interactions:
       cache-control:
       - public, max-age=10, stale-while-revalidate=20
       content-length:
-      - '930'
+      - '941'
       content-type:
       - application/json;charset=utf-8
       date:
-      - Sat, 25 Feb 2023 13:16:59 GMT
+      - Wed, 08 Mar 2023 15:32:46 GMT
       server:
       - ATS
       vary:
       - Origin,Accept-Encoding
       x-envoy-decorator-operation:
-      - finance-chart-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
+      - finance-chart-api--mtls-canary-production-ir2.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
-      - '1'
+      - '2'
       x-request-id:
-      - 45204f9a-96d6-4021-b4bf-884bf376ad2c
+      - a2247905-776e-4124-b355-26253440ba35
       x-yahoo-request-id:
-      - bdvfchdhvk2ic
+      - cehlks1i0hakv
       y-rid:
-      - bdvfchdhvk2ic
+      - cehlks1i0hakv
     status:
       code: 200
       message: OK
@@ -75,166 +75,26 @@ interactions:
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAAO1WTW/jNhD9Lz67LIfD4cfeis1i20ODoEmBFkFaqLGSuGtbqSxnNw383/dRoiLK
-        22JPvfVCD8nhfLx5M/LL4vaharvFm5dFW+8PG0jXL4tt3VXp6PbQtvXu9nnxZvHz5dliudg/b/9o
-        Ntj+9v7y4i0O6k94v7uvz6ttjePL8wscrnf7rj1s61139fyYjn84P3v3Cy7u1u2+u2qrVX1Wdbj4
-        htiIBNZaL+H//rCp2h+r9kPdXa2TPXLeG++0wfX9tmvu7vZ1l56F/kUHpb+bXfLw7vKqiOYqX+So
-        vtvW7fq2+va8/vj7r037YXHi7AK30OPotdJ2OUBy0dZP6+awf7tp9ri03jlFYbl4TMrfr3eIwywz
-        Qn1O6939Bfw0q4TcY1unny8i3Hc92n1iJpqURb1b5QMb+7S+yPT4Gu9XbWYTk00c/ZvNx2bffdVg
-        fj8ZDC78s0FYXFVd9b6tdinUdZdoQ6sEdqoJNhCfqs169VPa78G04VrSQtsGK/er61d6xmLSImkh
-        ndbnLilvq0+Lm+NAAAS7fYQtcpaM0QnSJLJ2bhRjT7AkWh9tFsVJyGIwMipEolEhRp8VjA422zXk
-        dbZrhNx4CoqOpy7EbMx4L9kYa7ZZgclQVmCj/ahgImdvDCHbZcdjvOxNivcmddcKZO6adp+K99eh
-        SZ2Epr0diHqNHJ0SeJMgkb0sccAqRcJRO5P2WqtkzAdKWwd9bWPQ1oWkjiorbZC9AKReAX1hYvGe
-        WGkXgwEc/QtvnGJgGL3LLySemHBGhVJD4IR0DI7NEIWwUV5e723A1sQpKnSnihwjijhEYUkrMjGE
-        bIDFKSuaovCwtxEPNHnJeTKilCkCVOIkJBLANHkU6wrYgPzD+v5hBNhZTez8kH+goMAForz3iBUg
-        v4aC2qnCkddIpYjUeeBpSn2ys9S8DSpNST9u59fOyXwPKNG2hm1ffkc0ywtknUNvo1VS+rfk5/W0
-        MFFuhZUpi2NNUH7yaFMt0Ytkw3CAVlHoiwkxEa0wq4YHgHbTfOyRlaDIxTjyyltlSiBxpWxJAthT
-        ZmJNolkRh4Q5EBzm5tDLqFOMTg+N4mROdIc69HZcmNVTGHolXn5eUI6imGNO3hgzY4cJJ9RnDTcl
-        1XVUSS8aEHqKDknPaWID+nrqMsD41GwO6ZN3zYEp6WJ4wChjavViCODuIJooJgwiBRIaRCFs8qkm
-        iYOo0Y3ZGKae50HEoLJZAQTtPUAEiGmo9Y6tHo6X+MhHGhRcRNaDCyH0q2QF1GJ4JqCNGXRFI4uY
-        RQCWIwvk+v8MaRo2j/WuZ44Hc2Y9CVCLbvcAPcaJChiJXBLSoWXxxRjHlZQFdC7ObeMriAE6Xnvm
-        +bx1PPc1b0cJYT4bxZ52G0jNfj7ZmIp5y+5kAAFo9EU568JsxDOnPy/l8MTw8wXThUC5aaTfHAFt
-        tfpz/Ka8lJv/PzD/zQfmeHNMsNdt2+CPHv5EbY7Hz30apGagCwAA
-    headers:
-      Age:
-      - '1'
-      Connection:
-      - keep-alive
-      Expect-CT:
-      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
-      Referrer-Policy:
-      - no-referrer-when-downgrade
-      Strict-Transport-Security:
-      - max-age=31536000
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-XSS-Protection:
-      - 1; mode=block
-      cache-control:
-      - public, max-age=10, stale-while-revalidate=20
-      content-encoding:
-      - gzip
-      content-length:
-      - '1122'
-      content-type:
-      - application/json;charset=utf-8
-      date:
-      - Sat, 25 Feb 2023 13:16:59 GMT
-      server:
-      - ATS
-      vary:
-      - Origin,Accept-Encoding
-      x-envoy-decorator-operation:
-      - finance-chart-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
-      x-envoy-upstream-service-time:
-      - '3'
-      x-request-id:
-      - 4cac56b0-3762-402c-aca3-871e9ec749a4
-      x-yahoo-request-id:
-      - 4vsas3lhvk2ic
-      y-rid:
-      - 4vsas3lhvk2ic
-    status:
-      code: 200
-      message: OK
-- request:
-    body: null
-    headers:
-      Accept:
-      - '*/*'
-      Accept-Encoding:
-      - gzip, deflate
-      Connection:
-      - keep-alive
-      User-Agent:
-      - Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML,
-        like Gecko) Chrome/39.0.2171.95 Safari/537.36
-    method: GET
-    uri: https://query2.finance.yahoo.com/v8/finance/chart/%5EIXIC?range=1d&interval=1d
-  response:
-    body:
-      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"^IXIC","exchangeName":"NIM","instrumentType":"INDEX","firstTradeDate":34612200,"regularMarketTime":1677276959,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":11394.941,"chartPreviousClose":11590.401,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","start":1677229200,"end":1677249000,"gmtoffset":-18000},"regular":{"timezone":"EST","start":1677249000,"end":1677272400,"gmtoffset":-18000},"post":{"timezone":"EST","start":1677272400,"end":1677286800,"gmtoffset":-18000}},"dataGranularity":"1d","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1677249000],"indicators":{"quote":[{"high":[11434.3603515625],"volume":[4432650000],"open":[11404.1796875],"close":[11394.9404296875],"low":[11334.4697265625]}],"adjclose":[{"adjclose":[11394.9404296875]}]}}],"error":null}}'
-    headers:
-      Age:
-      - '9'
-      Connection:
-      - keep-alive
-      Expect-CT:
-      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
-      Referrer-Policy:
-      - no-referrer-when-downgrade
-      Strict-Transport-Security:
-      - max-age=31536000
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-XSS-Protection:
-      - 1; mode=block
-      cache-control:
-      - public, max-age=10, stale-while-revalidate=20
-      content-length:
-      - '940'
-      content-type:
-      - application/json;charset=utf-8
-      date:
-      - Sat, 25 Feb 2023 13:16:51 GMT
-      server:
-      - ATS
-      vary:
-      - Origin,Accept-Encoding
-      x-envoy-decorator-operation:
-      - finance-chart-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
-      x-envoy-upstream-service-time:
-      - '3'
-      x-request-id:
-      - 6c7f259e-c167-4b41-a3d3-dbfd8646aae0
-      x-yahoo-request-id:
-      - 9r82dnphvk2i3
-      y-rid:
-      - 9r82dnphvk2i3
-    status:
-      code: 200
-      message: OK
-- request:
-    body: null
-    headers:
-      Accept:
-      - '*/*'
-      Accept-Encoding:
-      - gzip, deflate
-      Connection:
-      - keep-alive
-      User-Agent:
-      - Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML,
-        like Gecko) Chrome/39.0.2171.95 Safari/537.36
-    method: GET
-    uri: https://query2.finance.yahoo.com/v8/finance/chart/%5EIXIC?period1=1641013200&period2=1643778000&interval=1d&includePrePost=False&events=div%2Csplits%2CcapitalGains
-  response:
-    body:
-      string: !!binary |
-        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
+        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
     headers:
       Age:
       - '0'
@@ -257,11 +117,11 @@ interactions:
       content-encoding:
       - gzip
       content-length:
-      - '1140'
+      - '1123'
       content-type:
       - application/json;charset=utf-8
       date:
-      - Sat, 25 Feb 2023 13:17:00 GMT
+      - Wed, 08 Mar 2023 15:32:47 GMT
       server:
       - ATS
       vary:
@@ -271,11 +131,152 @@ interactions:
       x-envoy-upstream-service-time:
       - '4'
       x-request-id:
-      - 0133f8d2-8089-4061-b9bc-50173fc27536
+      - a5823d06-ae1e-4684-85ca-7df87c8a86c9
       x-yahoo-request-id:
-      - aejne0phvk2ic
+      - 30m78dpi0hakv
       y-rid:
-      - aejne0phvk2ic
+      - 30m78dpi0hakv
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML,
+        like Gecko) Chrome/39.0.2171.95 Safari/537.36
+    method: GET
+    uri: https://query2.finance.yahoo.com/v8/finance/chart/%5EIXIC?range=1d&interval=1d
+  response:
+    body:
+      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"^IXIC","exchangeName":"NIM","instrumentType":"INDEX","firstTradeDate":34612200,"regularMarketTime":1678289564,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":11561.564,"chartPreviousClose":11530.332,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","start":1678266000,"end":1678285800,"gmtoffset":-18000},"regular":{"timezone":"EST","start":1678285800,"end":1678309200,"gmtoffset":-18000},"post":{"timezone":"EST","start":1678309200,"end":1678323600,"gmtoffset":-18000}},"dataGranularity":"1d","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1678289564],"indicators":{"quote":[{"close":[11561.564453125],"open":[11553.099609375],"high":[11568.8095703125],"low":[11487.751953125],"volume":[1297794000]}],"adjclose":[{"adjclose":[11561.564453125]}]}}],"error":null}}'
+    headers:
+      Age:
+      - '0'
+      Connection:
+      - keep-alive
+      Expect-CT:
+      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      cache-control:
+      - public, max-age=10, stale-while-revalidate=20
+      content-length:
+      - '939'
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Wed, 08 Mar 2023 15:32:47 GMT
+      server:
+      - ATS
+      vary:
+      - Origin,Accept-Encoding
+      x-envoy-decorator-operation:
+      - finance-chart-api--mtls-baseline-production-ir2.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '4'
+      x-request-id:
+      - 5bb2031f-c526-4ce6-be9f-e41e3dcea2ca
+      x-yahoo-request-id:
+      - 87reavti0hakv
+      y-rid:
+      - 87reavti0hakv
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML,
+        like Gecko) Chrome/39.0.2171.95 Safari/537.36
+    method: GET
+    uri: https://query2.finance.yahoo.com/v8/finance/chart/%5EIXIC?period1=1641013200&period2=1643778000&interval=1d&includePrePost=False&events=div%2Csplits%2CcapitalGains
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAO1WTXMbNwz9LzqrLEkQ/MitE2daH+LxNO5MOh63s7XWthpJq65WTlyP/nsedrla
+        ys60lx57obAgCDw8AKSeZ7cPVdvN3jzP2nq3X0G6fp6t664S1e2+bevN7dPszeyXD2ez+Wz3tP6j
+        WeHzt/OP52+hqL/g/Oa+vqjWNdQX5++hXG52Xbtf15vu6mkr6vOLs3cfsXG3bHfdVVst6rOqwwY5
+        b6zVeo7g9/tV1b6v2k91d7UUZ8aHaGNi7+az+3XX3N3tasD7zkQtJzoY/d1sxP27D1cFlKu8kSH9
+        sK7b5W31/UX9+fdfm/bT7EWwS+xKNMPeqD5Yz8hlWz8um/3u7arZyTZ2nEphPtuK/U/LDaDYeWao
+        z2m5ub9EqGYhzG3bWn5eg9wsxsw4Shq7rqe/V3nfZ/Yq2cMR8j/7JJ3sS585zLd8bptd9y8OLfkX
+        DscYrx3C46Lqqh/baiNQl520jVkI31IWfEB8rFbLxc/yvUOnDdssi1k3WKlffb+aJyxWFpbFaFmf
+        OjFeV19mN4ehB4BtvYUv4530koATkbSwOYiJdBZdSC6L7HtmRIyWR4NkzGiQUsgGVkeX/VoTdPZr
+        2fhR67UdtT6m7MyGwNkZabR6Fo012YCsDqOBTZSjEYTslzyNeClYwXsj07VAP3dNu5Pi/bVvZJIw
+        tLdDp14bRt1USClq52PgOVK1UJgUrIcoCiBQxqdkzWCgo1bRa2IzGLhErJAHJZ2/nVWovQ7RDA6Y
+        lGNtElNWxKgoJu8ioMqJqL2KOnHQg4WLiVS/w9gpfZPTynIKGRxK49TkmYKPKpkjVorMytgU0duD
+        AVNStnBIDLDGamNCPkKM/MFqoAEchaDVhMzCQQyTRyDySqheNZ97QmX2dUw5NWZjlTM6c8VIUpmQ
+        Bq5dMg7OpuAuhqB8gdcxIV8ai+Mine4zjp7k4zDGyjptM3ocTMrZMaDDLrpkUhAZ5Xk6jo5+kb13
+        pT+MtCsPEE4oTM2xlkQJhKYpBBEaCvOVGZBrQjFPtUaEoIJOyes0QNYgPPihpiC22dabntmAVpWc
+        IypUhmR2AR06cWwBaYLYc152tAtsTpJEHVLZVWw9qQIRW8dKu5JlHYu2A8mm7HjHUoQyovMYCVek
+        iKYpDcjBg/x6o086gmIwRzKELOynNJUDY39CHgHBCf1ys4wNADIflvcP357716xGYCwtTIov5hjY
+        ChYglEli7uMJNtglpWnincH5aeljQn8fxwMXnuKSdlzDKpYXBy7OE49OIJW1Bn9egdTjbUWoEUao
+        mDmt7UlHowtwhxz7NcDj9OksIp5cSIDkj3yD4cdmtZc/E9cOuiSvtJ6zIWPMIKLtI/ciHhgd7SBa
+        XORhMCBBNmgRJZgs4i6jLOr+6epFUGSzX69DGrTeM+7JITC2h2iMtoqDB1zmuGjyMdM/JiIiUzMe
+        CyFrXQKdlLXWJZdDhJzFzQE5V4s/xxflufz4/3n5j56Xw81BeK7btsH/OvxnWh0OXwFa1uT6jwsA
+        AA==
+    headers:
+      Age:
+      - '0'
+      Connection:
+      - keep-alive
+      Expect-CT:
+      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      cache-control:
+      - public, max-age=10, stale-while-revalidate=20
+      content-encoding:
+      - gzip
+      content-length:
+      - '1141'
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Wed, 08 Mar 2023 15:32:47 GMT
+      server:
+      - ATS
+      vary:
+      - Origin,Accept-Encoding
+      x-envoy-decorator-operation:
+      - finance-chart-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '39'
+      x-request-id:
+      - 63b68bdf-d6ed-4cb5-bc63-bfeba4e59ba5
+      x-yahoo-request-id:
+      - 1a8qm5pi0hakv
+      y-rid:
+      - 1a8qm5pi0hakv
     status:
       code: 200
       message: OK
