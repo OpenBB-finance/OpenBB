@@ -309,8 +309,8 @@ class StocksFundamentalAnalysis(Category):
         self.divs_chart = lib.stocks_fa_yahoo_finance_view.display_dividends
         self.dupont = lib.stocks_fa_av_model.get_dupont
         self.earnings = lib.stocks_fa_sdk_helpers.earnings
-        self.mktcap_fmp = lib.stocks_fa_fmp_model.get_enterprise
-        self.mktcap_fmp_chart = lib.stocks_fa_fmp_view.display_enterprise
+        self.enterprise = lib.stocks_fa_fmp_model.get_enterprise
+        self.enterprise_chart = lib.stocks_fa_fmp_view.display_enterprise
         self.epsfc = lib.stocks_fa_seeking_alpha_model.get_estimates_eps
         self.est = lib.stocks_fa_business_insider_model.get_estimates
         self.fama_coe = lib.stocks_fa_dcf_model.get_fama_coe
@@ -323,8 +323,8 @@ class StocksFundamentalAnalysis(Category):
         self.key = lib.stocks_fa_av_model.get_key_metrics
         self.metrics = lib.stocks_fa_fmp_model.get_key_metrics
         self.mgmt = lib.stocks_fa_business_insider_model.get_management
-        self.mktcap_yf = lib.stocks_fa_yahoo_finance_model.get_mktcap
-        self.mktcap_yf_chart = lib.stocks_fa_yahoo_finance_view.display_mktcap
+        self.mktcap = lib.stocks_fa_yahoo_finance_model.get_mktcap
+        self.mktcap_chart = lib.stocks_fa_yahoo_finance_view.display_mktcap
         self.news = lib.stocks_fa_finviz_model.get_news
         self.overview = lib.stocks_fa_av_model.get_overview
         self.profile = lib.stocks_fa_fmp_model.get_profile
