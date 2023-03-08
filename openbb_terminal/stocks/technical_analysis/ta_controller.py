@@ -43,8 +43,6 @@ from openbb_terminal.stocks.technical_analysis import (
     tradingview_view,
 )
 
-# pylint disable=too-many-lines
-
 logger = logging.getLogger(__name__)
 
 
