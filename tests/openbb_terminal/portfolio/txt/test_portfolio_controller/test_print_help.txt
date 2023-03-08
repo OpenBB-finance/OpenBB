@@ -1,34 +1,34 @@
->   bro                brokers holdings,   supports robinhood, ally, degiro, coinbase
->   po                 portfolio optimization,  optimize your portfolio weights efficiently
+>   bro                portfolio/bro
+>   po                 portfolio/po
 
-    load               load transactions into the portfolio (use load --example for an example)
-    show               show existing transactions
-    bench              define the benchmark
+    load               portfolio/load
+    show               portfolio/show
+    bench              portfolio/bench
 
-Loaded transactions: 
-Risk Free Rate: 0%
-Benchmark: 
+portfolio/_loaded: 
+portfolio/_riskfreerate: 0%
+portfolio/_benchmark: 
 
-Graphs:
-[unvl]    holdv              holdings of assets (absolute value)[/unvl]
-[unvl]    holdp              portfolio holdings of assets (in percentage)[/unvl]
-[unvl]    yret               yearly returns[/unvl]
-[unvl]    mret               monthly returns[/unvl]
-[unvl]    dret               daily returns[/unvl]
-[unvl]    distr              distribution of daily returns[/unvl]
-[unvl]    maxdd              maximum drawdown[/unvl]
-[unvl]    rvol               rolling volatility[/unvl]
-[unvl]    rsharpe            rolling sharpe[/unvl]
-[unvl]    rsort              rolling sortino[/unvl]
-[unvl]    rbeta              rolling beta[/unvl]
-Metrics:
-[unvl]    summary            all portfolio vs benchmark metrics for a certain period of choice[/unvl]
-[unvl]    alloc              allocation on an asset, sector, countries or regions basis[/unvl]
-[unvl]    attrib             display sector attribution of the portfolio compared to the S&P 500[/unvl]
-[unvl]    metric             portfolio vs benchmark metric for all different periods[/unvl]
-[unvl]    perf               performance of the portfolio versus benchmark[/unvl]
-Risk Metrics:
-[unvl]    var                display value at risk[/unvl]
-[unvl]    es                 display expected shortfall[/unvl]
-[unvl]    om                 display omega ratio[/unvl]
+portfolio/_graphs_:
+[unvl]    holdv              portfolio/holdv[/unvl]
+[unvl]    holdp              portfolio/holdp[/unvl]
+[unvl]    yret               portfolio/yret[/unvl]
+[unvl]    mret               portfolio/mret[/unvl]
+[unvl]    dret               portfolio/dret[/unvl]
+[unvl]    distr              portfolio/distr[/unvl]
+[unvl]    maxdd              portfolio/maxdd[/unvl]
+[unvl]    rvol               portfolio/rvol[/unvl]
+[unvl]    rsharpe            portfolio/rsharpe[/unvl]
+[unvl]    rsort              portfolio/rsort[/unvl]
+[unvl]    rbeta              portfolio/rbeta[/unvl]
+portfolio/_metrics_:
+[unvl]    summary            portfolio/summary[/unvl]
+[unvl]    alloc              portfolio/alloc[/unvl]
+[unvl]    attrib             portfolio/attrib[/unvl]
+[unvl]    metric             portfolio/metric[/unvl]
+[unvl]    perf               portfolio/perf[/unvl]
+portfolio/_risk_:
+[unvl]    var                portfolio/var[/unvl]
+[unvl]    es                 portfolio/es[/unvl]
+[unvl]    om                 portfolio/om[/unvl]
 

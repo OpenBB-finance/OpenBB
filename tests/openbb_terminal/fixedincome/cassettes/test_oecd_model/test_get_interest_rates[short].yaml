@@ -1,0 +1,39 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Connection:
+      - close
+      Host:
+      - stats.oecd.org
+      User-Agent:
+      - Python-urllib/3.9
+    method: GET
+    uri: https://stats.oecd.org/sdmx-json/data/DP_LIVE/.STINT.TOT.PC_PA.M/OECD?contentType=csv&detail=code&separator=comma&csv-lang=en&startPeriod=2022-01&endPeriod=2022-01
+  response:
+    body:
+      string: "\uFEFF\"LOCATION\",\"INDICATOR\",\"SUBJECT\",\"MEASURE\",\"FREQUENCY\",\"TIME\",\"Value\",\"Flag
+        Codes\"\r\n\"CHL\",\"STINT\",\"TOT\",\"PC_PA\",\"M\",\"2022-01\",5.56,\r\n\"USA\",\"STINT\",\"TOT\",\"PC_PA\",\"M\",\"2022-01\",0.22,\r\n\"NZL\",\"STINT\",\"TOT\",\"PC_PA\",\"M\",\"2022-01\",1.03,\r\n\"DNK\",\"STINT\",\"TOT\",\"PC_PA\",\"M\",\"2022-01\",-0.29,\r\n\"ISR\",\"STINT\",\"TOT\",\"PC_PA\",\"M\",\"2022-01\",0.02,\r\n\"GBR\",\"STINT\",\"TOT\",\"PC_PA\",\"M\",\"2022-01\",0.53,\r\n\"BEL\",\"STINT\",\"TOT\",\"PC_PA\",\"M\",\"2022-01\",-0.5601,\r\n\"RUS\",\"STINT\",\"TOT\",\"PC_PA\",\"M\",\"2022-01\",8.96,\r\n\"IDN\",\"STINT\",\"TOT\",\"PC_PA\",\"M\",\"2022-01\",3.75,\r\n\"HUN\",\"STINT\",\"TOT\",\"PC_PA\",\"M\",\"2022-01\",4.0645,\r\n\"FIN\",\"STINT\",\"TOT\",\"PC_PA\",\"M\",\"2022-01\",-0.5601,\r\n\"LUX\",\"STINT\",\"TOT\",\"PC_PA\",\"M\",\"2022-01\",-0.5601,\r\n\"ESP\",\"STINT\",\"TOT\",\"PC_PA\",\"M\",\"2022-01\",-0.5601,\r\n\"NOR\",\"STINT\",\"TOT\",\"PC_PA\",\"M\",\"2022-01\",1.1,\r\n\"JPN\",\"STINT\",\"TOT\",\"PC_PA\",\"M\",\"2022-01\",-0.049,\r\n\"GRC\",\"STINT\",\"TOT\",\"PC_PA\",\"M\",\"2022-01\",-0.5601,\r\n\"KOR\",\"STINT\",\"TOT\",\"PC_PA\",\"M\",\"2022-01\",1.39,\r\n\"AUT\",\"STINT\",\"TOT\",\"PC_PA\",\"M\",\"2022-01\",-0.5601,\r\n\"SVK\",\"STINT\",\"TOT\",\"PC_PA\",\"M\",\"2022-01\",-0.5601,\r\n\"EST\",\"STINT\",\"TOT\",\"PC_PA\",\"M\",\"2022-01\",-0.5601,\r\n\"SVN\",\"STINT\",\"TOT\",\"PC_PA\",\"M\",\"2022-01\",-0.5601,\r\n\"CAN\",\"STINT\",\"TOT\",\"PC_PA\",\"M\",\"2022-01\",0.4571955,\r\n\"DEU\",\"STINT\",\"TOT\",\"PC_PA\",\"M\",\"2022-01\",-0.5601,\r\n\"PRT\",\"STINT\",\"TOT\",\"PC_PA\",\"M\",\"2022-01\",-0.5601,\r\n\"ISL\",\"STINT\",\"TOT\",\"PC_PA\",\"M\",\"2022-01\",2.71,\r\n\"AUS\",\"STINT\",\"TOT\",\"PC_PA\",\"M\",\"2022-01\",0.07,\r\n\"IRL\",\"STINT\",\"TOT\",\"PC_PA\",\"M\",\"2022-01\",-0.5601,\r\n\"NLD\",\"STINT\",\"TOT\",\"PC_PA\",\"M\",\"2022-01\",-0.5601,\r\n\"CHE\",\"STINT\",\"TOT\",\"PC_PA\",\"M\",\"2022-01\",-0.72,\r\n\"ZAF\",\"STINT\",\"TOT\",\"PC_PA\",\"M\",\"2022-01\",3.87,\r\n\"CZE\",\"STINT\",\"TOT\",\"PC_PA\",\"M\",\"2022-01\",4.21,\r\n\"POL\",\"STINT\",\"TOT\",\"PC_PA\",\"M\",\"2022-01\",3.02,\r\n\"CHN\",\"STINT\",\"TOT\",\"PC_PA\",\"M\",\"2022-01\",3.32,\r\n\"SWE\",\"STINT\",\"TOT\",\"PC_PA\",\"M\",\"2022-01\",-0.16,\r\n\"MEX\",\"STINT\",\"TOT\",\"PC_PA\",\"M\",\"2022-01\",5.87,\r\n\"FRA\",\"STINT\",\"TOT\",\"PC_PA\",\"M\",\"2022-01\",-0.5601,\r\n\"ITA\",\"STINT\",\"TOT\",\"PC_PA\",\"M\",\"2022-01\",-0.5601,\r\n\"COL\",\"STINT\",\"TOT\",\"PC_PA\",\"M\",\"2022-01\",3.47,\r\n\"LVA\",\"STINT\",\"TOT\",\"PC_PA\",\"M\",\"2022-01\",-0.5601,\r\n\"EA19\",\"STINT\",\"TOT\",\"PC_PA\",\"M\",\"2022-01\",-0.5601,\r\n\"LTU\",\"STINT\",\"TOT\",\"PC_PA\",\"M\",\"2022-01\",-0.5601,\r\n\"CRI\",\"STINT\",\"TOT\",\"PC_PA\",\"M\",\"2022-01\",1.83,\r\n\"IND\",\"STINT\",\"TOT\",\"PC_PA\",\"M\",\"2022-01\",3.63,\r\n\"BGR\",\"STINT\",\"TOT\",\"PC_PA\",\"M\",\"2022-01\",0.0049,\r\n\"HRV\",\"STINT\",\"TOT\",\"PC_PA\",\"M\",\"2022-01\",-0.5601,\r\n\"ROU\",\"STINT\",\"TOT\",\"PC_PA\",\"M\",\"2022-01\",3.0465,\r\n"
+    headers:
+      Access-Control-Allow-Headers:
+      - Content-Type
+      Access-Control-Allow-Methods:
+      - POST,GET,OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - private
+      Connection:
+      - close
+      Content-Disposition:
+      - attachment;filename=DP_LIVE_06032023232907547.csv
+      Content-Type:
+      - text/csv
+      Date:
+      - Mon, 06 Mar 2023 22:29:07 GMT
+      Transfer-Encoding:
+      - chunked
+    status:
+      code: 200
+      message: OK
+version: 1

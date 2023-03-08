@@ -7,7 +7,7 @@ from typing import List, Optional
 
 from pandas.core.frame import DataFrame
 
-from openbb_terminal import feature_flags as obbff
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
@@ -43,6 +43,10 @@ from openbb_terminal.terminal_helper import suppress_stdout
 
 
 logger = logging.getLogger(__name__)
+
+no_ticker_message = (
+    "No ticker loaded. Use 'load' command to load a ticker or use the -t flag."
+)
 
 
 class FundamentalAnalysisController(StockBaseController):
@@ -112,7 +116,7 @@ class FundamentalAnalysisController(StockBaseController):
         self.default_balance = get_ordered_list_sources(f"{self.PATH}balance")[0]
         self.default_cash = get_ordered_list_sources(f"{self.PATH}cash")[0]
 
-        if session and obbff.USE_PROMPT_TOOLKIT:
+        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices_default
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -199,6 +203,9 @@ class FundamentalAnalysisController(StockBaseController):
             if ns_parser.ticker:
                 self.ticker = ns_parser.ticker
                 self.custom_load_wrapper([self.ticker])
+            if not self.ticker:
+                console.print(no_ticker_message)
+                return
             eclect_us_view.display_analysis(
                 symbol=self.ticker,
                 export=ns_parser.export,
@@ -235,6 +242,9 @@ class FundamentalAnalysisController(StockBaseController):
             if ns_parser.ticker:
                 self.ticker = ns_parser.ticker
                 self.custom_load_wrapper([self.ticker])
+            if not self.ticker:
+                console.print(no_ticker_message)
+                return
             business_insider_view.display_management(
                 symbol=self.ticker,
                 export=ns_parser.export,
@@ -270,6 +280,9 @@ class FundamentalAnalysisController(StockBaseController):
             if ns_parser.ticker:
                 self.ticker = ns_parser.ticker
                 self.custom_load_wrapper([self.ticker])
+            if not self.ticker:
+                console.print(no_ticker_message)
+                return
             if ns_parser.source == "Finviz":
                 finviz_view.display_screen_data(
                     symbol=self.ticker,
@@ -338,7 +351,9 @@ class FundamentalAnalysisController(StockBaseController):
             if ns_parser.ticker:
                 self.ticker = ns_parser.ticker
                 self.custom_load_wrapper([self.ticker])
-
+            if not self.ticker:
+                console.print(no_ticker_message)
+                return
             fmp_view.valinvest_score(
                 self.ticker,
                 ns_parser.years,
@@ -405,6 +420,9 @@ class FundamentalAnalysisController(StockBaseController):
             if ns_parser.ticker:
                 self.ticker = ns_parser.ticker
                 self.custom_load_wrapper([self.ticker])
+            if not self.ticker:
+                console.print(no_ticker_message)
+                return
 
             if ns_parser.source == "FinancialModelingPrep":
                 fmp_view.display_enterprise(
@@ -485,6 +503,9 @@ class FundamentalAnalysisController(StockBaseController):
             if ns_parser.ticker:
                 self.ticker = ns_parser.ticker
                 self.custom_load_wrapper([self.ticker])
+            if not self.ticker:
+                console.print(no_ticker_message)
+                return
 
             if ns_parser.source == "FinancialModelingPrep":
                 fmp_view.display_key_metrics(
@@ -565,6 +586,9 @@ class FundamentalAnalysisController(StockBaseController):
             if ns_parser.ticker:
                 self.ticker = ns_parser.ticker
                 self.custom_load_wrapper([self.ticker])
+            if not self.ticker:
+                console.print(no_ticker_message)
+                return
 
             fmp_view.display_financial_ratios(
                 symbol=self.ticker,
@@ -632,6 +656,9 @@ class FundamentalAnalysisController(StockBaseController):
             if ns_parser.ticker:
                 self.ticker = ns_parser.ticker
                 self.custom_load_wrapper([self.ticker])
+            if not self.ticker:
+                console.print(no_ticker_message)
+                return
 
             fmp_view.display_financial_statement_growth(
                 symbol=self.ticker,
@@ -668,6 +695,9 @@ class FundamentalAnalysisController(StockBaseController):
             if ns_parser.ticker:
                 self.ticker = ns_parser.ticker
                 self.custom_load_wrapper([self.ticker])
+            if not self.ticker:
+                console.print(no_ticker_message)
+                return
 
             seeking_alpha_view.display_eps_estimates(
                 self.ticker,
@@ -702,6 +732,9 @@ class FundamentalAnalysisController(StockBaseController):
             if ns_parser.ticker:
                 self.ticker = ns_parser.ticker
                 self.custom_load_wrapper([self.ticker])
+            if not self.ticker:
+                console.print(no_ticker_message)
+                return
 
             seeking_alpha_view.display_rev_estimates(
                 self.ticker,
@@ -720,6 +753,14 @@ class FundamentalAnalysisController(StockBaseController):
             prog="splits",
             description="""Stock splits and reverse split events since IPO [Source: Yahoo Finance]""",
         )
+        parser.add_argument(
+            "-t",
+            "--ticker",
+            dest="ticker",
+            help="Ticker to analyze",
+            type=str,
+            default=None,
+        )
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
@@ -727,6 +768,9 @@ class FundamentalAnalysisController(StockBaseController):
             if ns_parser.ticker:
                 self.ticker = ns_parser.ticker
                 self.custom_load_wrapper([self.ticker])
+            if not self.ticker:
+                console.print(no_ticker_message)
+                return
 
             yahoo_finance_view.display_splits(
                 self.ticker,
@@ -772,6 +816,9 @@ class FundamentalAnalysisController(StockBaseController):
             if ns_parser.ticker:
                 self.ticker = ns_parser.ticker
                 self.custom_load_wrapper([self.ticker])
+            if not self.ticker:
+                console.print(no_ticker_message)
+                return
 
             if not self.suffix:
                 yahoo_finance_view.display_shareholders(
@@ -825,6 +872,9 @@ class FundamentalAnalysisController(StockBaseController):
             if ns_parser.ticker:
                 self.ticker = ns_parser.ticker
                 self.custom_load_wrapper([self.ticker])
+            if not self.ticker:
+                console.print(no_ticker_message)
+                return
 
             if not self.suffix:
                 yahoo_finance_view.display_dividends(
@@ -895,13 +945,16 @@ class FundamentalAnalysisController(StockBaseController):
         ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
-            export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
+            export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,
             limit=5,
         )
         if ns_parser:
             if ns_parser.ticker:
                 self.ticker = ns_parser.ticker
                 self.custom_load_wrapper([self.ticker])
+            if not self.ticker:
+                console.print(no_ticker_message)
+                return
 
             ns_parser.plot = list_from_str(ns_parser.plot)
             # TODO: Switch to actually getting data
@@ -1045,6 +1098,9 @@ class FundamentalAnalysisController(StockBaseController):
             if ns_parser.ticker:
                 self.ticker = ns_parser.ticker
                 self.custom_load_wrapper([self.ticker])
+            if not self.ticker:
+                console.print(no_ticker_message)
+                return
 
             ns_parser.plot = list_from_str(ns_parser.plot)
             # TODO: Switch to actually getting data
@@ -1192,6 +1248,9 @@ class FundamentalAnalysisController(StockBaseController):
             if ns_parser.ticker:
                 self.ticker = ns_parser.ticker
                 self.custom_load_wrapper([self.ticker])
+            if not self.ticker:
+                console.print(no_ticker_message)
+                return
 
             ns_parser.plot = list_from_str(ns_parser.plot)
             # TODO: Switch to actually getting data
@@ -1310,6 +1369,9 @@ class FundamentalAnalysisController(StockBaseController):
             if ns_parser.ticker:
                 self.ticker = ns_parser.ticker
                 self.custom_load_wrapper([self.ticker])
+            if not self.ticker:
+                console.print(no_ticker_message)
+                return
 
             if ns_parser.source == "AlphaVantage":
                 av_view.display_earnings(
@@ -1404,6 +1466,9 @@ class FundamentalAnalysisController(StockBaseController):
             if ns_parser.ticker:
                 self.ticker = ns_parser.ticker
                 self.custom_load_wrapper([self.ticker])
+            if not self.ticker:
+                console.print(no_ticker_message)
+                return
 
             av_view.display_fraud(
                 symbol=self.ticker,
@@ -1445,6 +1510,9 @@ class FundamentalAnalysisController(StockBaseController):
             if ns_parser.ticker:
                 self.ticker = ns_parser.ticker
                 self.custom_load_wrapper([self.ticker])
+            if not self.ticker:
+                console.print(no_ticker_message)
+                return
 
             av_view.display_dupont(
                 self.ticker, raw=ns_parser.raw, export=ns_parser.export
@@ -1520,8 +1588,16 @@ class FundamentalAnalysisController(StockBaseController):
             "--similar",
             type=int,
             dest="similar",
-            default=6,
+            default=0,
             help="Number of similar companies to generate ratios for.",
+        )
+        parser.add_argument(
+            "-b",
+            "--beta",
+            type=float,
+            dest="beta",
+            default=1,
+            help="The beta you'd like to use for the calculation.",
         )
         parser.add_argument(
             "-g",
@@ -1539,16 +1615,23 @@ class FundamentalAnalysisController(StockBaseController):
             if ns_parser.ticker:
                 self.ticker = ns_parser.ticker
                 self.custom_load_wrapper([self.ticker])
+            if not self.ticker:
+                console.print(no_ticker_message)
+                return
 
-            dcf = dcf_view.CreateExcelFA(
-                symbol=self.ticker,
-                audit=ns_parser.audit,
-                ratios=ns_parser.ratios,
-                len_pred=ns_parser.prediction,
-                max_similars=ns_parser.similar,
-                growth=ns_parser.growth,
-            )
-            dcf.create_workbook()
+            if self.ticker:
+                dcf = dcf_view.CreateExcelFA(
+                    symbol=self.ticker,
+                    beta=ns_parser.beta,
+                    audit=ns_parser.audit,
+                    ratios=ns_parser.ratios,
+                    len_pred=ns_parser.prediction,
+                    max_similars=ns_parser.similar,
+                    growth=ns_parser.growth,
+                )
+                dcf.create_workbook()
+            else:
+                console.print("Please use --ticker or load a ticker first.")
 
     @log_start_end(log=logger)
     def call_dcfc(self, other_args: List[str]):
@@ -1595,6 +1678,9 @@ class FundamentalAnalysisController(StockBaseController):
             if ns_parser.ticker:
                 self.ticker = ns_parser.ticker
                 self.custom_load_wrapper([self.ticker])
+            if not self.ticker:
+                console.print(no_ticker_message)
+                return
 
             fmp_view.display_discounted_cash_flow(
                 symbol=self.ticker,
@@ -1712,6 +1798,9 @@ class FundamentalAnalysisController(StockBaseController):
             if ns_parser.ticker:
                 self.ticker = ns_parser.ticker
                 self.custom_load_wrapper([self.ticker])
+            if not self.ticker:
+                console.print(no_ticker_message)
+                return
 
             business_insider_view.price_target_from_analysts(
                 symbol=self.ticker,
@@ -1757,6 +1846,9 @@ class FundamentalAnalysisController(StockBaseController):
             if ns_parser.ticker:
                 self.ticker = ns_parser.ticker
                 self.custom_load_wrapper([self.ticker])
+            if not self.ticker:
+                console.print(no_ticker_message)
+                return
 
             business_insider_view.estimates(
                 symbol=self.ticker,
@@ -1811,6 +1903,9 @@ class FundamentalAnalysisController(StockBaseController):
             if ns_parser.ticker:
                 self.ticker = ns_parser.ticker
                 self.custom_load_wrapper([self.ticker])
+            if not self.ticker:
+                console.print(no_ticker_message)
+                return
 
             finnhub_view.rating_over_time(
                 symbol=self.ticker,
@@ -1862,6 +1957,9 @@ class FundamentalAnalysisController(StockBaseController):
             if ns_parser.ticker:
                 self.ticker = ns_parser.ticker
                 self.custom_load_wrapper([self.ticker])
+            if not self.ticker:
+                console.print(no_ticker_message)
+                return
 
             if ns_parser.source == "Finviz":
                 finviz_view.analyst(
@@ -1929,6 +2027,9 @@ class FundamentalAnalysisController(StockBaseController):
             if ns_parser.ticker:
                 self.ticker = ns_parser.ticker
                 self.custom_load_wrapper([self.ticker])
+            if not self.ticker:
+                console.print(no_ticker_message)
+                return
 
             if ns_parser.source == "MarketWatch":
                 marketwatch_view.sec_filings(
@@ -1974,6 +2075,9 @@ class FundamentalAnalysisController(StockBaseController):
             if ns_parser.ticker:
                 self.ticker = ns_parser.ticker
                 self.custom_load_wrapper([self.ticker])
+            if not self.ticker:
+                console.print(no_ticker_message)
+                return
 
             csimarket_view.suppliers(
                 symbol=self.ticker,
@@ -2007,6 +2111,9 @@ class FundamentalAnalysisController(StockBaseController):
             if ns_parser.ticker:
                 self.ticker = ns_parser.ticker
                 self.custom_load_wrapper([self.ticker])
+            if not self.ticker:
+                console.print(no_ticker_message)
+                return
 
             csimarket_view.customers(
                 symbol=self.ticker,

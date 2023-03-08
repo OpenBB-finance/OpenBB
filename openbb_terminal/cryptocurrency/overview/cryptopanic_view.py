@@ -70,6 +70,7 @@ def display_news(
             headers=list(df.columns),
             show_index=False,
             title="Recent CryptoPanic Posts",
+            export=bool(export),
         )
 
         export_data(

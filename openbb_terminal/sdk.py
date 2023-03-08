@@ -1,13 +1,14 @@
 """OpenBB Terminal SDK."""
+# ######### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ######### #
 # flake8: noqa
 # pylint: disable=unused-import,wrong-import-order
-# pylint: disable=C0302,W0611,R0902,R0903,C0412,C0301,not-callable
 import logging
 
 import openbb_terminal.config_terminal as cfg
 from openbb_terminal import helper_funcs as helper  # noqa: F401
-from openbb_terminal.base_helpers import load_dotenv_and_reload_configs
+from openbb_terminal.base_helpers import load_env_files
 from openbb_terminal.config_terminal import theme
+from openbb_terminal.core.config.paths_helper import init_userdata
 
 from openbb_terminal.cryptocurrency.due_diligence.pycoingecko_model import Coin
 from openbb_terminal.dashboards.dashboards_controller import DashboardsController
@@ -15,16 +16,18 @@ from openbb_terminal.helper_classes import TerminalStyle  # noqa: F401
 from openbb_terminal.reports import widget_helpers as widgets  # noqa: F401
 from openbb_terminal.reports.reports_controller import ReportController
 
-import openbb_terminal.sdk_core.sdk_init as lib
-from openbb_terminal.sdk_core import (
+import openbb_terminal.core.sdk.sdk_init as lib
+from openbb_terminal.core.sdk import (
     controllers as ctrl,
     models as model,
 )
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.session.user import User
+from openbb_terminal.core.session.current_user import is_local
+from openbb_terminal.terminal_helper import is_auth_enabled
 
-if User.is_guest():
-    load_dotenv_and_reload_configs()
+load_env_files()
+init_userdata()
 
 logger = logging.getLogger(__name__)
 theme.applyMPLstyle()
@@ -40,7 +43,7 @@ class OpenBBSDK:
         `whoami`: Display user info.\n
     """
 
-    __version__ = obbff.VERSION
+    __version__ = cfg.VERSION
 
     def __init__(self):
         SDKLogger()
@@ -48,6 +51,14 @@ class OpenBBSDK:
         self.logout = lib.sdk_session.logout
         self.news = lib.common_feedparser_model.get_news
         self.whoami = lib.sdk_session.whoami
+        self._try_to_login()
+
+    def _try_to_login(self):
+        if is_local() and is_auth_enabled():
+            try:
+                self.login()
+            except Exception:
+                pass
 
     @property
     def alt(self):
@@ -134,6 +145,8 @@ class OpenBBSDK:
             `bigmac`: Display Big Mac Index for given countries\n
             `bigmac_chart`: Display Big Mac Index for given countries\n
             `country_codes`: Get available country codes for Bigmac index\n
+            `cpi`: Obtain CPI data from FRED. [Source: FRED]\n
+            `cpi_chart`: Plot CPI data. [Source: FRED]\n
             `currencies`: Scrape data for global currencies\n
             `events`: Get economic calendar for countries between specified dates\n
             `fred`: Get Series data. [Source: FRED]\n
@@ -163,8 +176,6 @@ class OpenBBSDK:
             `treasury_maturities`: Get treasury maturity options [Source: EconDB]\n
             `usbonds`: Scrape data for us bonds\n
             `valuation`: Get group (sectors, industry or country) valuation data. [Source: Finviz]\n
-            `ycrv`: Gets yield curve data from FRED\n
-            `ycrv_chart`: Display yield curve based on US Treasury rates for a specified date.\n
         """
 
         return model.EconomyRoot()
@@ -175,7 +186,6 @@ class OpenBBSDK:
 
         Submodules:
             `disc`: Discovery Module
-            `scr`: Scr Module
 
         Attributes:
             `candle`: Show candle plot of loaded ticker.\n
@@ -194,6 +204,106 @@ class OpenBBSDK:
         """
 
         return ctrl.EtfController()
+
+    @property
+    def fixedincome(self):
+        """Fixedincome Submodule
+
+        Attributes:
+            `ameribor`: Obtain data for American Interbank Offered Rate (AMERIBOR)\n
+            `cp`: Obtain Commercial Paper data\n
+            `dwpcr`: Obtain data for the Discount Window Primary Credit Rate.\n
+            `ecb`: Obtain data for ECB interest rates.\n
+            `ecbycrv`: Gets euro area yield curve data from ECB.\n
+            `estr`: Obtain data for Euro Short-Term Rate (ESTR)\n
+            `fed`: Obtain data for Effective Federal Funds Rate.\n
+            `ffrmc`: Get data for Selected Treasury Constant Maturity Minus Federal Funds Rate\n
+            `hqm`: The HQM yield curve represents the high quality corporate bond market, i.e.,\n
+            `icebofa`: Get data for ICE BofA US Corporate Bond Indices.\n
+            `icespread`: Get data for ICE BofA US Corporate Bond Spreads\n
+            `iorb`: Obtain data for Interest Rate on Reserve Balances.\n
+            `moody`: Get data for Moody Corporate Bond Index\n
+            `projection`: Obtain data for the Federal Reserve's projection of the federal funds rate.\n
+            `sofr`: Obtain data for Secured Overnight Financing Rate (SOFR)\n
+            `sonia`: Obtain data for Sterling Overnight Index Average (SONIA)\n
+            `spot`: The spot rate for any maturity is the yield on a bond that provides\n
+            `tbffr`: Get data for Selected Treasury Bill Minus Federal Funds Rate.\n
+            `tmc`: Get data for 10-Year Treasury Constant Maturity Minus Selected Treasury Constant Maturity.\n
+            `treasury`: Gets interest rates data from selected countries (3 month and 10 year)\n
+            `usrates`: Plot various treasury rates from the United States\n
+            `ycrv`: Gets yield curve data from FRED.\n
+        """
+
+        return model.FixedincomeRoot()
+
+    @property
+    def forecast(self):
+        """Forecasting Submodule
+
+        Attributes:
+            `anom`: Get Quantile Anomaly Detection Data\n
+            `anom_chart`: Display Quantile Anomaly Detection\n
+            `atr`: Calculate the Average True Range of a variable based on a a specific stock ticker.\n
+            `autoarima`: Performs Automatic ARIMA forecasting\n
+            `autoarima_chart`: Display Automatic ARIMA model.\n
+            `autoces`: Performs Automatic Complex Exponential Smoothing forecasting\n
+            `autoces_chart`: Display Automatic Complex Exponential Smoothing Model\n
+            `autoets`: Performs Automatic ETS forecasting\n
+            `autoets_chart`: Display Automatic ETS (Error, Trend, Sesonality) Model\n
+            `autoselect`: Performs Automatic Statistical forecasting\n
+            `autoselect_chart`: Display Automatic Statistical Forecasting Model\n
+            `brnn`: Performs Block RNN forecasting\n
+            `brnn_chart`: Display BRNN forecast\n
+            `clean`: Clean up NaNs from the dataset\n
+            `combine`: Adds the given column of df2 to df1\n
+            `corr`: Returns correlation for a given df\n
+            `corr_chart`: Plot correlation coefficients for dataset features\n
+            `delete`: Delete a column from a dataframe\n
+            `delta`: Calculate the %change of a variable based on a specific column\n
+            `desc`: Returns statistics for a given df\n
+            `desc_chart`: Show descriptive statistics for a dataframe\n
+            `ema`: A moving average provides an indication of the trend of the price movement\n
+            `expo`: Performs Probabilistic Exponential Smoothing forecasting\n
+            `expo_chart`: Display Probabilistic Exponential Smoothing forecast\n
+            `export`: Export a dataframe to a file\n
+            `linregr`: Perform Linear Regression Forecasting\n
+            `linregr_chart`: Display Linear Regression Forecasting\n
+            `load`: Load custom file into dataframe.\n
+            `mom`: A momentum oscillator, which measures the percentage change between the current\n
+            `mstl`: Performs MSTL forecasting\n
+            `mstl_chart`: Display MSTL Model\n
+            `nbeats`: Perform NBEATS Forecasting\n
+            `nbeats_chart`: Display NBEATS forecast\n
+            `nhits`: Performs Nhits forecasting\n
+            `nhits_chart`: Display Nhits forecast\n
+            `plot`: Plot data from a dataset\n
+            `plot_chart`: Plot data from a dataset\n
+            `regr`: Perform Regression Forecasting\n
+            `regr_chart`: Display Regression Forecasting\n
+            `rename`: Rename a column in a dataframe\n
+            `rnn`: Perform RNN forecasting\n
+            `rnn_chart`: Display RNN forecast\n
+            `roc`: A momentum oscillator, which measures the percentage change between the current\n
+            `rsi`: A momentum indicator that measures the magnitude of recent price changes to evaluate\n
+            `rwd`: Performs Random Walk with Drift forecasting\n
+            `rwd_chart`: Display Random Walk with Drift Model\n
+            `season_chart`: Plot seasonality from a dataset\n
+            `seasonalnaive`: Performs Seasonal Naive forecasting\n
+            `seasonalnaive_chart`: Display SeasonalNaive Model\n
+            `show`: Show a dataframe in a table\n
+            `signal`: A price signal based on short/long term price.\n
+            `sto`: Stochastic Oscillator %K and %D : A stochastic oscillator is a momentum indicator comparing a particular closing\n
+            `tcn`: Perform TCN forecasting\n
+            `tcn_chart`: Display TCN forecast\n
+            `tft`: Performs Temporal Fusion Transformer forecasting\n
+            `tft_chart`: Display Temporal Fusion Transformer forecast\n
+            `theta`: Performs Theta forecasting\n
+            `theta_chart`: Display Theta forecast\n
+            `trans`: Performs Transformer forecasting\n
+            `trans_chart`: Display Transformer forecast\n
+        """
+
+        return model.ForecastRoot()
 
     @property
     def forex(self):
@@ -219,7 +329,7 @@ class OpenBBSDK:
         Attributes:
             `curve`: Get curve futures [Source: Yahoo Finance]\n
             `curve_chart`: Display curve futures [Source: Yahoo Finance]\n
-            `historical`: Get historical futures [Source: Yahoo Finance]\n
+            `historical`: Get historical futures data\n
             `historical_chart`: Display historical futures [Source: Yahoo Finance]\n
             `search`: Get search futures [Source: Yahoo Finance]\n
         """
@@ -238,6 +348,7 @@ class OpenBBSDK:
             `coinbase`: Set Coinbase key\n
             `coinglass`: Set Coinglass key.\n
             `cpanic`: Set Cpanic key.\n
+            `databento`: Set DataBento key\n
             `degiro`: Set Degiro key\n
             `eodhd`: Set Eodhd key.\n
             `ethplorer`: Set Ethplorer key.\n
@@ -373,7 +484,6 @@ class OpenBBSDK:
             `options`: Options Module
             `qa`: Quantitative Analysis Module
             `screener`: Screener Module
-            `sia`: Sector Industry Analysis Module
             `ta`: Technical Analysis Module
             `th`: Trading Hours Module
 
@@ -411,6 +521,8 @@ class OpenBBSDK:
             `cg_chart`: Plots center of gravity Indicator\n
             `clenow`: Gets the Clenow Volatility Adjusted Momentum.  this is defined as the regression coefficient on log prices\n
             `clenow_chart`: Prints table and plots clenow momentum\n
+            `cones`: Returns a DataFrame of realized volatility quantiles.\n
+            `cones_chart`: Plots the realized volatility quantiles for the loaded ticker.\n
             `demark`: Get the integer value for demark sequential indicator\n
             `demark_chart`: Plot demark sequential indicator\n
             `donchian`: Calculate Donchian Channels\n
@@ -431,7 +543,14 @@ class OpenBBSDK:
             `obv_chart`: Plots OBV technical indicator\n
             `rsi`: Relative strength index\n
             `rsi_chart`: Plots RSI Indicator\n
+            `rvol_garman_klass`: Garman-Klass volatility extends Parkinson volatility by taking into account the open and close price.\n
+            `rvol_hodges_tompkins`: Hodges-Tompkins volatility is a bias correction for estimation using an overlapping data sample.\n
+            `rvol_parkinson`: Parkinson volatility uses the high and low price of the day rather than just close to close prices.\n
+            `rvol_rogers_satchell`: Rogers-Satchell is an estimator for measuring the volatility with an average return not equal to zero.\n
+            `rvol_std`: Standard deviation measures how widely returns are dispersed from the average return.\n
+            `rvol_yang_zhang`: Yang-Zhang volatility is the combination of the overnight (close-to-open volatility).\n
             `sma`: Gets simple moving average (SMA) for stock\n
+            `standard_deviation`: Standard deviation measures how widely returns are dispersed from the average return.\n
             `stoch`: Stochastic oscillator\n
             `stoch_chart`: Plots stochastic oscillator signal\n
             `vwap`: Gets volume weighted average price (VWAP)\n
@@ -443,6 +562,7 @@ class OpenBBSDK:
         return model.TaRoot()
 
 
+# pylint: disable=too-few-public-methods
 class SDKLogger:
     def __init__(self) -> None:
         self.__check_initialize_logging()
@@ -460,6 +580,14 @@ class SDKLogger:
         cfg.LOGGING_SUB_APP = "sdk"
         setup_logging()
         log_all_settings()
+
+    @staticmethod
+    def _try_to_login(sdk: "OpenBBSDK"):
+        if is_local() and is_auth_enabled():
+            try:
+                sdk.login()
+            except Exception:
+                pass
 
 
 openbb = OpenBBSDK()

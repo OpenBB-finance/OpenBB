@@ -49,6 +49,7 @@ Use your best judgment, and feel free to propose changes to this document in a p
     - [Pre Commit Hooks](#pre-commit-hooks)
     - [Coding](#coding)
     - [Git Process](#git-process)
+    - [Branch Naming Conventions](#branch-naming-conventions)
   - [Add a Test](#add-a-test)
   - [Installers](#installers)
 
@@ -309,7 +310,7 @@ In addition, note the `self.load_class` which allows to not create a new DarkPoo
 
 In order to add a command to the SDK, follow these steps:
 
-1. If you've created a new model or view file, add the import with an alias to `openbb_terminal/sdk_core/sdk_init.py` following this structure:
+1. If you've created a new model or view file, add the import with an alias to `openbb_terminal/core/sdk/sdk_init.py` following this structure:
 
     ```python
     # Stocks - Fundamental Analysis
@@ -320,7 +321,7 @@ In order to add a command to the SDK, follow these steps:
     )
     ```
 
-2. Go to the `trail_map.csv` file located in `openbb_terminal/sdk_core`, which should look like this:
+2. Go to the `trail_map.csv` file located in `openbb_terminal/core/sdk`, which should look like this:
 
     ```csv
     trail,model,view
@@ -339,7 +340,7 @@ The added line of the file should look like this:
     stocks.dps.shorted,stocks_dps_yahoofinance_model.get_most_shorted,stocks_dps_yahoofinance_view.display_most_shorted
     ```
 
-4. Generate the SDK files by running `python generate_sdk.py` from the root of the project. This will automatically generate the SDK `openbb_terminal/sdk.py`, corresponding `openbb_terminal/sdk_core/controllers/` and `openbb_terminal/sdk_core/models/` class files.
+4. Generate the SDK files by running `python generate_sdk.py` from the root of the project. This will automatically generate the SDK `openbb_terminal/sdk.py`, corresponding `openbb_terminal/core/sdk/controllers/` and `openbb_terminal/core/sdk/models/` class files.
 
     To sort the `trail_map.csv` file and generate the SDK files, run the following command
 
@@ -745,7 +746,7 @@ def display_data(..., plot: bool = False, ...):
     ...
     if plot:
         ...
-        ax.plot(...)
+        fig.add_scatter(...)
 ```
 
 <br>
@@ -760,16 +761,14 @@ def display_data(..., export: str = "", ...):
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "func", data)
 ```
 
-List of external axes to include in a plot : `external_axes` *(Optional[List[plt.Axes]])*
+Whether to display plot or return figure *(False: display, True: return)* : `external_axes` *(bool)*
 
 ```python
-def display_data(..., external_axes: Optional[List[plt.Axes]] = None, ...):
+def display_data(..., external_axes: bool = False, ...):
     ...
-    if external_axes is None:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    else:
-        ax = external_axes[0]
-    ax.plot(...)
+    fig = OpenBBFigure()
+    fig.add_scatter(...)
+    return fig.show(external=external_axes)
 ```
 
 Field by which to sort : `sortby` *(str), e.g. "Volume"*
@@ -1217,7 +1216,8 @@ In the `_view.py` files it is common having at the end of each function `export_
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "contracts",
-        df_contracts
+        df_contracts,
+        figure=fig_contracts,
     )
 ```
 
@@ -1226,12 +1226,13 @@ Let's go into each of these arguments:
 - `export` corresponds to the type of file we are exporting.
   - If the user doesn't has anything selected, then this function doesn't do anything.
   - The user can export multiple files and even name the files.
-  - The allowed type of files `json,csv,xlsx` for raw data and `jpg,png,svg` for figures depends on the `export_allowed` variable defined in `parse_known_args_and_warn`.
+  - The allowed type of files `json,csv,xlsx` for raw data and `jpg,pdf,png,svg` for figures depends on the `export_allowed` variable defined in `parse_known_args_and_warn`.
 - `os.path.dirname(os.path.abspath(__file__))` corresponds to the directory path
   - This is important when `export folder` selected is the default because the data gets stored based on where it is called.
   - If this is called from a `common` folder, we can use `os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks")` insteaad
 - `"contracts"` corresponds to the name of the exported file (+ unique datetime) if the user doesn't provide one
-- `df_contracts` corresponds to the dataframe with data. Although we don't call this function with the figure reference, because it is open, we can use `plt.savefig` to achieve that.
+- `df_contracts` corresponds to the dataframe with data.
+- `figure=fig_contracts` corresponds to the figure to be exported as an image or pdf.
 
 If `export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES` in `parse_known_args_and_warn`, valid examples are:
 

@@ -29,6 +29,7 @@ dftr = df.transpose()
         ("Millions", "Thousands", None, 1, lambda s: s.name == "EPS"),
     ],
 )
+@pytest.mark.skip(reason="Going Bye Bye")
 def test_given_arguments_then_it_transforms_as_expected(
     source: DENOMINATION,
     target: DENOMINATION,

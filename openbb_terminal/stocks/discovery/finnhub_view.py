@@ -40,6 +40,7 @@ def past_ipo(
             headers=list(df_past_ipo.columns),
             show_index=False,
             title="IPO Dates",
+            export=bool(export),
         )
 
     export_data(
@@ -82,6 +83,7 @@ def future_ipo(
             headers=list(df_future_ipo.columns),
             show_index=False,
             title="Future IPO Dates",
+            export=bool(export),
         )
 
     export_data(

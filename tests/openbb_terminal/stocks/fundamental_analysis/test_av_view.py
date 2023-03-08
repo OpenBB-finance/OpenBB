@@ -1,12 +1,15 @@
 # IMPORTATION STANDARD
 
+
 # IMPORTATION THIRDPARTY
 import pandas as pd
 import pytest
 
-from openbb_terminal import helper_funcs
-
 # IMPORTATION INTERNAL
+from openbb_terminal.core.session.current_user import (
+    PreferencesModel,
+    copy_user,
+)
 from openbb_terminal.stocks.fundamental_analysis import av_view
 
 
@@ -71,8 +74,13 @@ def vcr_config():
     "use_tab",
     [True, False],
 )
-def test_check_output(func, kwargs_dict, monkeypatch, use_tab):
-    monkeypatch.setattr(helper_funcs.obbff, "USE_TABULATE_DF", use_tab)
+def test_check_output(func, kwargs_dict, mocker, use_tab):
+    preferences = PreferencesModel(USE_TABULATE_DF=use_tab)
+    mock_current_user = copy_user(preferences=preferences)
+    mocker.patch(
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
+    )
     getattr(av_view, func)(**kwargs_dict)
 
 

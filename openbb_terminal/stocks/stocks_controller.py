@@ -7,12 +7,11 @@ import os
 from datetime import datetime, timedelta
 from typing import List, Optional
 
-import financedatabase
-import yfinance as yf
+import financedatabase as fd
 
-from openbb_terminal import feature_flags as obbff
 from openbb_terminal.common import feedparser_view, newsapi_view
 from openbb_terminal.common.quantitative_analysis import qa_view
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
@@ -69,15 +68,17 @@ class StocksController(StockBaseController):
     FILE_PATH = os.path.join(os.path.dirname(__file__), "README.md")
 
     try:
-        country = financedatabase.show_options("equities", "countries")
-        sector = financedatabase.show_options("equities", "sectors")
-        industry = financedatabase.show_options("equities", "industries")
+        stocks_options = fd.obtain_options("equities")
+        country = stocks_options["country"].tolist()
+        sector = stocks_options["sector"].tolist()
+        industry_group = stocks_options["industry_group"].tolist()
+        industry = stocks_options["industry"].tolist()
     except Exception:
-        country, sector, industry = {}, {}, {}
+        country, sector, industry_group, industry = {}, {}, {}, {}
         console.print(
-            "[red]Note: Some datasets from GitHub failed to load. This means that the `search` command and "
-            "the /stocks/sia menu will not work. If other commands are failing please check your internet connection or "
-            "communicate with your IT department that certain websites are blocked.[/red] \n"
+            "[red]Note: Some datasets from GitHub failed to load. This means that the `search` command will not work. "
+            "If other commands are failing please check your internet connection or communicate with your "
+            "IT department that certain websites are blocked.[/red] \n"
         )
 
     TOB_EXCHANGES = ["BZX", "EDGX", "BYX", "EDGA"]
@@ -87,8 +88,12 @@ class StocksController(StockBaseController):
         """Construct stocks controller."""
         super().__init__(queue)
 
-        if session and obbff.USE_PROMPT_TOOLKIT:
+        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices_default
+            choices["load"] = {
+                "--file": {c: None for c in self.USER_IMPORT_FILES},
+                "-f": "--file",
+            }
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
@@ -117,7 +122,6 @@ class StocksController(StockBaseController):
         mt.add_menu("th")
         mt.add_menu("options")
         mt.add_menu("disc")
-        mt.add_menu("sia")
         mt.add_menu("dps")
         mt.add_menu("scr")
         mt.add_menu("ins")
@@ -192,6 +196,16 @@ class StocksController(StockBaseController):
             help="Search by sector to find stocks matching the criteria",
         )
         parser.add_argument(
+            "-g",
+            "--industrygroup",
+            default="",
+            choices=stocks_helper.format_parse_choices(self.industry_group),
+            type=str.lower,
+            metavar="industry_group",
+            dest="industry_group",
+            help="Search by industry group to find stocks matching the criteria",
+        )
+        parser.add_argument(
             "-i",
             "--industry",
             default="",
@@ -236,6 +250,9 @@ class StocksController(StockBaseController):
             industry = stocks_helper.map_parse_choices(self.industry)[
                 ns_parser.industry
             ]
+            industry_group = stocks_helper.map_parse_choices(self.industry_group)[
+                ns_parser.industry_group
+            ]
             exchange = stocks_helper.map_parse_choices(
                 list(stocks_helper.market_coverage_suffix.keys())
             )[ns_parser.exchange_country]
@@ -244,6 +261,7 @@ class StocksController(StockBaseController):
                 query=" ".join(ns_parser.query),
                 country=ns_parser.country,
                 sector=sector,
+                industry_group=industry_group,
                 industry=industry,
                 exchange_country=exchange,
                 all_exchanges=ns_parser.all_exchanges,
@@ -362,17 +380,17 @@ class StocksController(StockBaseController):
             dest="ticker",
             help="Ticker to analyze",
             type=str,
-            default=None,
+            default=self.ticker,
             required=not any(x in other_args for x in ["-h", "--help"])
             and not self.ticker,
         )
         parser.add_argument(
             "-p",
-            "--plotly",
-            dest="plotly",
-            action="store_false",
-            default=True,
-            help="Flag to show interactive plotly chart",
+            "--prepost",
+            action="store_true",
+            default=False,
+            dest="prepost",
+            help="Pre/After market hours. Only works for 'yf' source, and intraday data",
         )
         parser.add_argument(
             "--sort",
@@ -432,6 +450,7 @@ class StocksController(StockBaseController):
             limit=20,
         )
         if ns_parser:
+            figure_export = None
             if ns_parser.ticker:
                 self.ticker = ns_parser.ticker
                 self.custom_load_wrapper([self.ticker])
@@ -463,14 +482,15 @@ class StocksController(StockBaseController):
                                     f"[red]{num} is not a valid moving average, must be an integer greater than 1."
                                 )
 
-                    stocks_helper.display_candle(
+                    figure_export = stocks_helper.display_candle(
                         symbol=self.ticker,
                         data=data,
-                        use_matplotlib=ns_parser.plotly,
-                        intraday=self.interval != "1440min",
                         add_trend=ns_parser.trendlines,
                         ma=mov_avgs,
+                        prepost=ns_parser.prepost,
+                        asset_type="Stock",
                         yscale="log" if ns_parser.logy else "linear",
+                        external_axes=ns_parser.is_image,
                     )
 
                 export_data(
@@ -479,6 +499,7 @@ class StocksController(StockBaseController):
                     f"{self.ticker}",
                     self.stock,
                     " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None,
+                    figure=figure_export,
                 )
             else:
                 console.print("No ticker loaded. First use 'load <ticker>'")
@@ -535,15 +556,9 @@ class StocksController(StockBaseController):
                 self.ticker = ns_parser.ticker
                 self.custom_load_wrapper([self.ticker])
             if self.ticker:
-                try:
-                    d_stock = yf.Ticker(self.ticker).info
-                except TypeError:
-                    d_stock = dict()
                 if ns_parser.source == "NewsApi":
                     newsapi_view.display_news(
-                        query=d_stock["shortName"].replace(" ", "+")
-                        if "shortName" in d_stock
-                        else self.ticker,
+                        query=self.ticker,
                         limit=ns_parser.limit,
                         start_date=ns_parser.n_start_date.strftime("%Y-%m-%d"),
                         show_newest=ns_parser.n_oldest,
@@ -551,9 +566,7 @@ class StocksController(StockBaseController):
                     )
                 elif ns_parser.source == "Feedparser":
                     feedparser_view.display_news(
-                        term=d_stock["shortName"].replace(" ", "+")
-                        if "shortName" in d_stock
-                        else self.ticker,
+                        term=self.ticker,
                         sources=ns_parser.sources,
                         limit=ns_parser.limit,
                         export=ns_parser.export,
@@ -593,13 +606,22 @@ class StocksController(StockBaseController):
 
     @log_start_end(log=logger)
     def call_sia(self, _):
-        """Process ins command."""
-        from openbb_terminal.stocks.sector_industry_analysis.sia_controller import (
-            SectorIndustryAnalysisController,
-        )
+        """Process sia command."""
+        # from openbb_terminal.stocks.sector_industry_analysis.sia_controller import (
+        #     SectorIndustryAnalysisController,
+        # )
 
-        self.queue = self.load_class(
-            SectorIndustryAnalysisController, self.ticker, self.queue
+        # self.queue = self.load_class(
+        #     SectorIndustryAnalysisController, self.ticker, self.queue
+        # )
+
+        # TODO: Make the call_sia command available again after improving the functionality
+        # TODO: Update test_stocks_controller.py to reflect the changes
+
+        console.print(
+            "The sia (Sector & Industry Analysis) menu is currently inactive as the functionality is "
+            "better represented through the stocks/ca, stocks/fa and routines functionalities. "
+            "Improvements to this menu is on the projects list."
         )
 
     @log_start_end(log=logger)

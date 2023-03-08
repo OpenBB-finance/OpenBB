@@ -1,3 +1,16 @@
-
-Unable to retrieve data from CoinGecko.
-
+                       Name Market Cap Market Cap Change 24H                        Top 3 Coins Volume 24H
+0        Ethereum Ecosystem  511.529 B                -2.581       ethereum,Tether,bnb-icon2_2x   94.826 B
+1   Smart Contract Platform  332.413 B                -2.941      ethereum,bnb-icon2_2x,cardano   17.721 B
+2       BNB Chain Ecosystem  259.555 B                -2.267  Tether,bnb-icon2_2x,USD_Coin_icon   81.592 B
+3         Polygon Ecosystem  234.504 B                -1.942  Tether,bnb-icon2_2x,USD_Coin_icon   78.682 B
+4       Avalanche Ecosystem  214.098 B                -1.892  Tether,bnb-icon2_2x,USD_Coin_icon   74.549 B
+5       Moonriver Ecosystem  201.169 B                -1.288  Tether,bnb-icon2_2x,USD_Coin_icon   73.137 B
+6         Harmony Ecosystem  169.634 B                -0.616          Tether,USD_Coin_icon,BUSD   75.196 B
+7          Fantom Ecosystem  151.259 B                -0.455          Tether,USD_Coin_icon,BUSD   73.771 B
+8    Gnosis Chain Ecosystem  148.811 B                -0.357          Tether,USD_Coin_icon,BUSD   72.936 B
+9        Arbitrum Ecosystem  142.372 B                -0.900          Tether,USD_Coin_icon,4943   62.212 B
+10         Cronos Ecosystem  138.210 B                -0.128          Tether,USD_Coin_icon,BUSD   70.709 B
+11              Stablecoins  137.939 B                 0.039          Tether,USD_Coin_icon,BUSD   69.320 B
+12       Optimism Ecosystem  136.257 B                -0.411          Tether,USD_Coin_icon,4943   61.437 B
+13          Velas Ecosystem  135.395 B                -0.032          Tether,USD_Coin_icon,BUSD   70.925 B
+14  Near Protocol Ecosystem  129.690 B                -0.694          Tether,USD_Coin_icon,4943   59.614 B

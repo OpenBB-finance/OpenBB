@@ -31,7 +31,4 @@ def test_call_func(func, kwargs, mocker):
         target="openbb_terminal.cryptocurrency.defi.terramoney_fcd_view.export_data"
     )
 
-    # MOCK VISUALIZE_OUTPUT
-    mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
-
     getattr(terramoney_fcd_view, func)(**kwargs)

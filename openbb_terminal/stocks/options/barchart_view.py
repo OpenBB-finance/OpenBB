@@ -33,6 +33,7 @@ def print_options_data(symbol: str, export: str = "", sheet_name: Optional[str] 
         show_index=False,
         headers=["Info", "Value"],
         title=f"{symbol} Options Information",
+        export=bool(export),
     )
 
     export_data(

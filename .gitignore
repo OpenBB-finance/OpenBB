@@ -39,6 +39,9 @@ website/functions
 *_sdk_audit.csv
 website/terminaltest
 !build/docker/compose.env
+openbb_terminal/core/plots/assets/plotly*.js
+openbb_terminal/core/plots/plotly_temp.html
+openbb_terminal/core/plots/table_temp.html
 .dccache
 
 # pyinstaller artifacts
@@ -62,5 +65,9 @@ darts_logs/
 custom_imports/*.csv
 custom_imports/*/*.csv
 
+# cache
+cache/
+
 # lightning logs
 lightning_logs/
+
