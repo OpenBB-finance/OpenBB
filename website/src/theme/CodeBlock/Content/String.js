@@ -11,9 +11,12 @@ import {
 import Highlight, { defaultProps } from "prism-react-renderer";
 import Line from "@theme/CodeBlock/Line";
 import CopyButton from "@theme/CodeBlock/CopyButton";
+import PlayButton from "@site/src/components/General/PlayButton";
 import WordWrapButton from "@theme/CodeBlock/WordWrapButton";
 import Container from "@theme/CodeBlock/Container";
 import styles from "./styles.module.css";
+import { useLocation } from "react-router-dom";
+
 export default function CodeBlockString({
   children,
   className: blockClassName = "",
@@ -47,6 +50,7 @@ export default function CodeBlockString({
   const newDate = getThirdFriday();
 
   const newCode = code.replace("2022-07-29", newDate);
+  const {pathname} = useLocation();
 
   return (
     <Container
@@ -109,6 +113,7 @@ export default function CodeBlockString({
               isEnabled={wordWrap.isEnabled}
             />
           )}
+          <PlayButton text={newCode} pathname={pathname} />
           <CopyButton className={styles.codeButton} code={newCode} />
         </div>
       </div>
