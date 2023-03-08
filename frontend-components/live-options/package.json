@@ -1,0 +1,20 @@
+{
+  "name": "live-options",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "deploy": "npm run build && mv dist/index.html ../../openbb_terminal/core/plots/liveoptions.html"
+  },
+  "dependencies": {
+    "vue": "^3.2.45"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^4.0.0",
+    "vite": "^4.1.0",
+    "vite-plugin-singlefile": "^0.13.3"
+  }
+}
