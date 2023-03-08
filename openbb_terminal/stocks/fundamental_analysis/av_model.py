@@ -115,7 +115,10 @@ def get_key_metrics(symbol: str) -> pd.DataFrame:
         Dataframe of key metrics
     """
     # Request OVERVIEW data
-    s_req = f"https://www.alphavantage.co/query?function=OVERVIEW&symbol={symbol}&apikey={get_current_user().credentials.API_KEY_ALPHAVANTAGE}"
+    s_req = (
+        f"https://www.alphavantage.co/query?function=OVERVIEW&symbol={symbol}"
+        f"&apikey={get_current_user().credentials.API_KEY_ALPHAVANTAGE}"
+    )
     result = request(s_req, stream=True)
     result_json = result.json()
 
@@ -371,7 +374,10 @@ def get_cash_flow(
     pd.DataFrame
         Dataframe of cash flow statements
     """
-    url = f"https://www.alphavantage.co/query?function=CASH_FLOW&symbol={symbol}&apikey={get_current_user().credentials.API_KEY_ALPHAVANTAGE}"
+    url = (
+        f"https://www.alphavantage.co/query?function=CASH_FLOW&symbol={symbol}"
+        f"&apikey={get_current_user().credentials.API_KEY_ALPHAVANTAGE}"
+    )
     r = request(url)
     response_json = r.json()
     if check_premium_key(response_json):
