@@ -104,13 +104,17 @@ conda activate obb
 
 ## Install the OpenBB SDK
 
+There are two methods to install the OpenBB SDK. The easiest way is to use PyPi as it requires a single command to be ran. If you would also be looking to make code edits, it can be benefifical to clone the repository.
+
 ### Install From PyPi
+
+Inside any terminal run the following:
 
 ```bash
 pip install "openbb[all]"
 ```
 
-Done! The OpenBB SDK can now be imported to any Python session with the line of code below.
+That's it! The OpenBB SDK can now be imported to any Python session with the line of code below.
 
 ```console
 from openbb_terminal.sdk import openbb
