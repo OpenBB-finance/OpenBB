@@ -5,17 +5,38 @@ income -l 2 --source YahooFinance
 income -l 2 --source Polygon
 income -l 2 --source AlphaVantage
 income -l 2 --source FinancialModelingPrep
+income -l 2 --source EODHD
 balance -l 2 --source YahooFinance
 balance -l 2 --source Polygon
 balance -l 2 --source AlphaVantage
 balance -l 2 --source FinancialModelingPrep
+balance -l 2 --source EODHD
 cash -l 2 --source YahooFinance
 cash -l 2 --source Polygon
 cash -l 2 --source AlphaVantage
 cash -l 2 --source FinancialModelingPrep
+cash -l 2 --source EODHD
+income -l 2 --source YahooFinance --plot gross_profit
+income -l 2 --source Polygon --plot gross_profit
+income -l 2 --source AlphaVantage --plot gross_profit
+income -l 2 --source FinancialModelingPrep --plot gross_profit
+income -l 2 --source EODHD --plot gross_profit
+balance -l 2 --source YahooFinance --plot total_assets
+balance -l 2 --source Polygon --plot total_assets
+balance -l 2 --source AlphaVantage --plot total_assets
+balance -l 2 --source FinancialModelingPrep --plot total_assets
+balance -l 2 --source EODHD --plot total_assets
+cash -l 2 --source YahooFinance --plot operating_cash_flow
+cash -l 2 --source Polygon --plot operating_cash_flow
+cash -l 2 --source AlphaVantage --plot operating_cash_flow
+cash -l 2 --source FinancialModelingPrep --plot operating_cash_flow
+cash -l 2 --source EODHD --plot operating_cash_flow
 mgmt
 analysis
 score
+enterprise
+enterprise --source FinancialModelingPrep
+enterprise --source YahooFinance
 mktcap
 metrics
 ratios
