@@ -85,7 +85,7 @@ def test_check_for_updates(mocker, last_release, current_release):
 
     # MOCK FF VERSION
     mocker.patch(
-        target="openbb_terminal.feature_flags.VERSION",
+        target="openbb_terminal.config_terminal.VERSION",
         new=current_release,
     )
 
