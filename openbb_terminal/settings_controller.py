@@ -13,7 +13,6 @@ from typing import List, Optional
 import pytz
 
 # IMPORTATION INTERNAL
-from openbb_terminal import feature_flags as obbff
 from openbb_terminal.core.config.paths import (
     SETTINGS_ENV_FILE,
     USER_DATA_SOURCES_DEFAULT_FILE,
@@ -31,6 +30,7 @@ from openbb_terminal.helper_funcs import (
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import MenuText, console
+from openbb_terminal.config_terminal import i18n_dict_location
 
 # pylint: disable=too-many-lines,no-member,too-many-public-methods,C0302
 # pylint: disable=import-outside-toplevel
@@ -65,7 +65,7 @@ class SettingsController(BaseController):
 
     languages_available = [
         lang.strip(".yml")
-        for lang in os.listdir(obbff.i18n_dict_location)
+        for lang in os.listdir(i18n_dict_location)
         if lang.endswith(".yml")
     ]
 
