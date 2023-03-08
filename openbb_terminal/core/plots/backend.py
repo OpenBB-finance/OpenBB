@@ -54,6 +54,7 @@ class Backend(pywry.PyWry):
         super().__init__(daemon=daemon, max_retries=max_retries)
         self.plotly_html: Path = (PLOTS_CORE_PATH / "plotly_temp.html").resolve()
         self.table_html: Path = (PLOTS_CORE_PATH / "table.html").resolve()
+        self.liveoptions_html: Path = (PLOTS_CORE_PATH / "liveoptions.html").resolve()
         self.inject_path_to_html()
         self.isatty = (
             not JUPYTER_NOTEBOOK
@@ -101,6 +102,12 @@ class Backend(pywry.PyWry):
         """Get the table html file."""
         if self.table_html and self.table_html.exists():
             return str(self.table_html)
+        return ""
+
+    def get_liveoptions_html(self) -> str:
+        """Get the table html file."""
+        if self.liveoptions_html and self.liveoptions_html.exists():
+            return str(self.liveoptions_html)
         return ""
 
     def get_window_icon(self) -> str:
@@ -223,6 +230,53 @@ class Backend(pywry.PyWry):
             json.dumps(
                 {
                     "html_path": self.get_table_html(),
+                    "json_data": json.dumps(json_data),
+                    "width": width,
+                    "height": self.HEIGHT - 100,
+                    **self.get_kwargs(title),
+                }
+            )
+        )
+
+    def send_liveoptions(self, df_table: pd.DataFrame, title: str = ""):
+        """Send table data to the backend to be displayed in a table.
+
+        Parameters
+        ----------
+        df_table : pd.DataFrame
+            Dataframe to send to backend.
+        title : str, optional
+            Title to display in the window, by default ""
+        """
+        self.loop.run_until_complete(self.check_backend())
+
+        if title:
+            # We remove any html tags and markdown from the title
+            title = re.sub(r"<[^>]*>", "", title)
+            title = re.sub(r"\[\/?[a-z]+\]", "", title)
+
+        # we get the length of each column using the max length of the column
+        # name and the max length of the column values as the column width
+        columnwidth = [
+            max(len(str(df_table[col].name)), df_table[col].astype(str).str.len().max())
+            for col in df_table.columns
+        ]
+
+        # we add a percentage of max to the min column width
+        columnwidth = [
+            int(x + (max(columnwidth) - min(columnwidth)) * 0.2) for x in columnwidth
+        ]
+
+        # in case of a very small table we set a min width
+        width = max(int(min(sum(columnwidth) * 9.7, self.WIDTH + 100)), 800)
+
+        json_data = json.loads(df_table.to_json(orient="split"))
+        json_data.update(dict(title=title))
+
+        self.outgoing.append(
+            json.dumps(
+                {
+                    "html_path": self.get_liveoptions_html(),
                     "json_data": json.dumps(json_data),
                     "width": width,
                     "height": self.HEIGHT - 100,
