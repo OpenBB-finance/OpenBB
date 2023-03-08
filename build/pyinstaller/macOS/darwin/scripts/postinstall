@@ -1,9 +1,3 @@
 #!/bin/bash
 
-SCRIPTPATH="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
-
-BUNDLER_PATH="$SCRIPTPATH/.OpenBB"
-
-chmod -R 755 "$BUNDLER_PATH"
-
 exit 0
