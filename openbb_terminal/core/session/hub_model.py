@@ -10,6 +10,7 @@ from openbb_terminal.core.session.constants import (
     TIMEOUT,
 )
 from openbb_terminal.rich_config import console
+import openbb_terminal.config_terminal as cfg
 
 
 def create_session(
@@ -370,6 +371,8 @@ def upload_routine(
         "description": description,
         "script": routine,
         "override": override,
+        "version": cfg.VERSION,
+        "public": False,
     }
 
     try:
