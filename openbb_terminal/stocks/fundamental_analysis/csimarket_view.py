@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 import logging
 import os
 from typing import Optional
+import numpy as np
 
 import pandas as pd
 
@@ -68,6 +69,9 @@ def customers(symbol: str, export: str = "", sheet_name: Optional[str] = None):
     if tickers.empty:
         console.print("No customers found.\n")
     else:
+        # Table is a bit weird so need to change the columns header
+        tickers.columns = tickers.iloc[1]
+        tickers = tickers.iloc[2:]
         print_rich_table(
             tickers,
             headers=list(tickers.columns),
