@@ -40,6 +40,7 @@ def display_news(
     articles = ultima_newsmonitor_model.get_news(term, sources, sort)
 
     console.print()
+    console.print("News Powered by [purple]ULTIMA INSIGHTS[/purple].\nFor more info: https://www.ultimainsights.ai\n") 
     for _, row in articles.head(limit).iterrows():
         console.print(f"> {row['articlePublishedDate']} - {row['articleHeadline']} -> {row['riskCategory']} "
                       f"(\x1B[3m{row['riskExtDescription']}\x1B[0m) -> relevancy score: {round(row['relevancyScore'], 2) if row['relevancyScore'] < 5 else 5}/5 Stars")
