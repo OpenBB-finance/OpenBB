@@ -310,6 +310,7 @@ class StocksFundamentalAnalysis(Category):
         self.dupont = lib.stocks_fa_av_model.get_dupont
         self.earnings = lib.stocks_fa_sdk_helpers.earnings
         self.enterprise = lib.stocks_fa_fmp_model.get_enterprise
+        self.enterprise_chart = lib.stocks_fa_fmp_view.display_enterprise
         self.epsfc = lib.stocks_fa_seeking_alpha_model.get_estimates_eps
         self.est = lib.stocks_fa_business_insider_model.get_estimates
         self.fama_coe = lib.stocks_fa_dcf_model.get_fama_coe

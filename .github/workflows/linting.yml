@@ -49,7 +49,7 @@ jobs:
           pip install types-pytz types-requests types-termcolor types-tabulate types-PyYAML types-python-dateutil types-setuptools types-six
       - run: bandit -x ./tests -r . || true
       - run: black --diff --check .
-      - run: codespell --ignore-words-list=commun,statics,ro,zar,zlot,jewl,ba,buil,coo,ether,hist,hsi,mape,navagation,operatio,pres,ser,yeld,shold,ist,varian,datas,ake,creat,vie,hel,ket,toke,certi,buidl,ot,te --quiet-level=2 --skip=./tests,.git,*.css,*.csv,*.html,*.ini,*.ipynb,*.js,*.json,*.lock,*.scss,*.txt,*.yaml,./build/pyinstaller,./website/config.toml
+      - run: codespell --ignore-words-list=commun,statics,ro,zar,zlot,jewl,ba,buil,coo,ether,hist,hsi,mape,navagation,operatio,pres,ser,yeld,shold,ist,varian,datas,ake,creat,vie,hel,ket,toke,certi,buidl,ot,te,buda,shs,welp --quiet-level=2 --skip=./tests,.git,*.css,*.csv,*.html,*.ini,*.ipynb,*.js,*.json,*.lock,*.scss,*.txt,*.yaml,./build/pyinstaller,./website/config.toml
       - run: ruff .
       - run: mypy --ignore-missing-imports openbb_terminal
       - run: pylint terminal.py openbb_terminal tests
