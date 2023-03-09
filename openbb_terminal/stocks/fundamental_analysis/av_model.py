@@ -115,7 +115,10 @@ def get_key_metrics(symbol: str) -> pd.DataFrame:
         Dataframe of key metrics
     """
     # Request OVERVIEW data
-    s_req = f"https://www.alphavantage.co/query?function=OVERVIEW&symbol={symbol}&apikey={get_current_user().credentials}"
+    s_req = (
+        f"https://www.alphavantage.co/query?function=OVERVIEW&symbol={symbol}"
+        f"&apikey={get_current_user().credentials.API_KEY_ALPHAVANTAGE}"
+    )
     result = request(s_req, stream=True)
     result_json = result.json()
 
@@ -191,7 +194,7 @@ def get_income_statements(
     """
     url = (
         f"https://www.alphavantage.co/query?function=INCOME_STATEMENT&symbol={symbol}"
-        f"&apikey={get_current_user().credentials}"
+        f"&apikey={get_current_user().credentials.API_KEY_ALPHAVANTAGE}"
     )
     r = request(url)
     response_json = r.json()
@@ -283,7 +286,7 @@ def get_balance_sheet(
     current_user = get_current_user()
     url = (
         f"https://www.alphavantage.co/query?function=BALANCE_SHEET&symbol={symbol}&"
-        f"apikey={current_user.credentials}"
+        f"apikey={current_user.credentials.API_KEY_ALPHAVANTAGE}"
     )
     r = request(url)
     response_json = r.json()
@@ -371,7 +374,10 @@ def get_cash_flow(
     pd.DataFrame
         Dataframe of cash flow statements
     """
-    url = f"https://www.alphavantage.co/query?function=CASH_FLOW&symbol={symbol}&apikey={get_current_user().credentials}"
+    url = (
+        f"https://www.alphavantage.co/query?function=CASH_FLOW&symbol={symbol}"
+        f"&apikey={get_current_user().credentials.API_KEY_ALPHAVANTAGE}"
+    )
     r = request(url)
     response_json = r.json()
     if check_premium_key(response_json):
@@ -452,7 +458,7 @@ def get_earnings(symbol: str, quarterly: bool = False) -> pd.DataFrame:
     # Request EARNINGS data from Alpha Vantage API
     s_req = (
         "https://www.alphavantage.co/query?function=EARNINGS&"
-        f"symbol={symbol}&apikey={get_current_user().credentials}"
+        f"symbol={symbol}&apikey={get_current_user().credentials.API_KEY_ALPHAVANTAGE}"
     )
     result = request(s_req, stream=True)
     result_json = result.json()
@@ -733,7 +739,10 @@ def get_dupont(symbol: str) -> pd.DataFrame:
     """
 
     try:
-        fd = FundamentalData(key=get_current_user().credentials, output_format="pandas")
+        fd = FundamentalData(
+            key=get_current_user().credentials.API_KEY_ALPHAVANTAGE,
+            output_format="pandas",
+        )
         # pylint: disable=unbalanced-tuple-unpacking
         df_bs, _ = fd.get_balance_sheet_annual(symbol=symbol)
         df_is, _ = fd.get_income_statement_annual(symbol=symbol)

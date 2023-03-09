@@ -60,7 +60,7 @@ class SDKLogger:
 
     @staticmethod
     def _try_to_login(sdk: "OpenBBSDK"):
-        if User.is_guest() and is_auth_enabled():
+        if is_local() and is_auth_enabled():
             try:
                 sdk.login()
             except Exception:
@@ -240,7 +240,7 @@ class BuildCategoryModelClasses:
         if module:
             f.write("    def __init__(self):\r        super().__init__()\r")
         elif sdk_root:
-            f.write("    __version__ = obbff.VERSION\r\r")
+            f.write("    __version__ = cfg.VERSION\r\r")
             f.write("    def __init__(self):\r        SDKLogger()\r")
 
     def write_class_attributes(

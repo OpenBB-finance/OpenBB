@@ -43,7 +43,7 @@ A brief description below highlights the main Functions and Modules available in
 | openbb.stocks.ba.stalker          |  Function  |                    Stocktwit's last messages |
 | openbb.stocks.ba.rise             |  Function  |                   Top Rising Related Queries |
 
-Alteratively you can print the contents of the BA SDK with:
+Alternatively you can print the contents of the BA SDK with:
 
 ```python
 help(openbb.stocks.ba)
