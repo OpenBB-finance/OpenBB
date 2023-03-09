@@ -1,7 +1,7 @@
                                Rating                        DCF      ROE      ROA                  DE                         PE                         PB
 date                                                                                                                                                        
-2023-02-02  [green]Strong Buy[/green]  [green]Strong Buy[/green]  Neutral  Neutral  [green]Buy[/green]  [green]Strong Buy[/green]  [green]Strong Buy[/green]
-2023-02-01  [green]Strong Buy[/green]  [green]Strong Buy[/green]  Neutral  Neutral  [green]Buy[/green]  [green]Strong Buy[/green]  [green]Strong Buy[/green]
-2023-01-31  [green]Strong Buy[/green]  [green]Strong Buy[/green]  Neutral  Neutral  [green]Buy[/green]  [green]Strong Buy[/green]  [green]Strong Buy[/green]
-2023-01-30  [green]Strong Buy[/green]  [green]Strong Buy[/green]  Neutral  Neutral  [green]Buy[/green]  [green]Strong Buy[/green]  [green]Strong Buy[/green]
-2023-01-27  [green]Strong Buy[/green]  [green]Strong Buy[/green]  Neutral  Neutral  [green]Buy[/green]  [green]Strong Buy[/green]  [green]Strong Buy[/green]
+2023-03-03  [green]Strong Buy[/green]  [green]Strong Buy[/green]  Neutral  Neutral  [green]Buy[/green]  [green]Strong Buy[/green]  [green]Strong Buy[/green]
+2023-02-28  [green]Strong Buy[/green]  [green]Strong Buy[/green]  Neutral  Neutral  [green]Buy[/green]  [green]Strong Buy[/green]  [green]Strong Buy[/green]
+2023-02-27  [green]Strong Buy[/green]  [green]Strong Buy[/green]  Neutral  Neutral  [green]Buy[/green]  [green]Strong Buy[/green]  [green]Strong Buy[/green]
+2023-02-24  [green]Strong Buy[/green]  [green]Strong Buy[/green]  Neutral  Neutral  [green]Buy[/green]  [green]Strong Buy[/green]  [green]Strong Buy[/green]
+2023-02-14  [green]Strong Buy[/green]  [green]Strong Buy[/green]  Neutral  Neutral  [green]Buy[/green]  [green]Strong Buy[/green]  [green]Strong Buy[/green]

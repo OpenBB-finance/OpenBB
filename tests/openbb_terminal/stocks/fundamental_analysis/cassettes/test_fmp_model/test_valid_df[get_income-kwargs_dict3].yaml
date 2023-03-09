@@ -10,24 +10,43 @@ interactions:
     uri: https://financialmodelingprep.com/api/v3/income-statement/PM?apikey=MOCK_API_KEY&limit=0&period=annual
   response:
     body:
-      string: "[\n  {\n    \"date\": \"2021-12-31\",\n    \"symbol\": \"PM\",\n    \"reportedCurrency\":
+      string: "[\n  {\n    \"date\": \"2022-12-31\",\n    \"symbol\": \"PM\",\n    \"reportedCurrency\":
+        \"USD\",\n    \"cik\": \"0001413329\",\n    \"fillingDate\": \"2023-02-10\",\n
+        \   \"acceptedDate\": \"2023-02-10 08:20:35\",\n    \"calendarYear\": \"2022\",\n
+        \   \"period\": \"FY\",\n    \"revenue\": 31762000000,\n    \"costOfRevenue\":
+        11402000000,\n    \"grossProfit\": 20360000000,\n    \"grossProfitRatio\":
+        0.6410175681632139,\n    \"researchAndDevelopmentExpenses\": 0,\n    \"generalAndAdministrativeExpenses\":
+        8138000000,\n    \"sellingAndMarketingExpenses\": 0,\n    \"sellingGeneralAndAdministrativeExpenses\":
+        8138000000,\n    \"otherExpenses\": 0,\n    \"operatingExpenses\": 8138000000,\n
+        \   \"costAndExpenses\": 19540000000,\n    \"interestIncome\": 180000000,\n
+        \   \"interestExpense\": 768000000,\n    \"depreciationAndAmortization\":
+        1189000000,\n    \"ebitda\": 13591000000,\n    \"ebitdaratio\": 0.42790126566337133,\n
+        \   \"operatingIncome\": 12222000000,\n    \"operatingIncomeRatio\": 0.3662867577608463,\n
+        \   \"totalOtherIncomeExpensesNet\": 0,\n    \"incomeBeforeTax\": 11634000000,\n
+        \   \"incomeBeforeTaxRatio\": 0.3662867577608463,\n    \"incomeTaxExpense\":
+        2244000000,\n    \"netIncome\": 9048000000,\n    \"netIncomeRatio\": 0.2848687110383477,\n
+        \   \"eps\": 5.81,\n    \"epsdiluted\": 5.81,\n    \"weightedAverageShsOut\":
+        1557000000,\n    \"weightedAverageShsOutDil\": 1557000000,\n    \"link\":
+        \"https://www.sec.gov/Archives/edgar/data/1413329/000141332923000025/0001413329-23-000025-index.htm\",\n
+        \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/1413329/000141332923000025/pm-20221231.htm\"\n
+        \ },\n  {\n    \"date\": \"2021-12-31\",\n    \"symbol\": \"PM\",\n    \"reportedCurrency\":
         \"USD\",\n    \"cik\": \"0001413329\",\n    \"fillingDate\": \"2022-02-11\",\n
         \   \"acceptedDate\": \"2022-02-11 08:29:22\",\n    \"calendarYear\": \"2021\",\n
         \   \"period\": \"FY\",\n    \"revenue\": 31405000000,\n    \"costOfRevenue\":
         10030000000,\n    \"grossProfit\": 21375000000,\n    \"grossProfitRatio\":
         0.6806241044419679,\n    \"researchAndDevelopmentExpenses\": 0,\n    \"generalAndAdministrativeExpenses\":
-        115000000,\n    \"sellingAndMarketingExpenses\": 8304000000,\n    \"sellingGeneralAndAdministrativeExpenses\":
-        8419000000,\n    \"otherExpenses\": 96000000,\n    \"operatingExpenses\":
-        8515000000,\n    \"costAndExpenses\": 18545000000,\n    \"interestIncome\":
-        109000000,\n    \"interestExpense\": 737000000,\n    \"depreciationAndAmortization\":
-        998000000,\n    \"ebitda\": 13515000000,\n    \"ebitdaratio\": 0.4303454863875179,\n
-        \   \"operatingIncome\": 12975000000,\n    \"operatingIncomeRatio\": 0.4131507721700366,\n
-        \   \"totalOtherIncomeExpensesNet\": -743000000,\n    \"incomeBeforeTax\":
-        12232000000,\n    \"incomeBeforeTaxRatio\": 0.38949211908931697,\n    \"incomeTaxExpense\":
+        8419000000,\n    \"sellingAndMarketingExpenses\": 8304000000,\n    \"sellingGeneralAndAdministrativeExpenses\":
+        8419000000,\n    \"otherExpenses\": 0,\n    \"operatingExpenses\": 8515000000,\n
+        \   \"costAndExpenses\": 18545000000,\n    \"interestIncome\": 109000000,\n
+        \   \"interestExpense\": 737000000,\n    \"depreciationAndAmortization\":
+        998000000,\n    \"ebitda\": 13967000000,\n    \"ebitdaratio\": 0.44473809902881706,\n
+        \   \"operatingIncome\": 12860000000,\n    \"operatingIncomeRatio\": 0.38949211908931697,\n
+        \   \"totalOtherIncomeExpensesNet\": 0,\n    \"incomeBeforeTax\": 12232000000,\n
+        \   \"incomeBeforeTaxRatio\": 0.38949211908931697,\n    \"incomeTaxExpense\":
         2671000000,\n    \"netIncome\": 9109000000,\n    \"netIncomeRatio\": 0.29004935519821684,\n
-        \   \"eps\": 5.850353243416827,\n    \"epsdiluted\": 5.850353243416827,\n
-        \   \"weightedAverageShsOut\": 1557000000,\n    \"weightedAverageShsOutDil\":
-        1557000000,\n    \"link\": \"https://www.sec.gov/Archives/edgar/data/1413329/000141332922000011/0001413329-22-000011-index.htm\",\n
+        \   \"eps\": 5.83,\n    \"epsdiluted\": 5.83,\n    \"weightedAverageShsOut\":
+        1558000000,\n    \"weightedAverageShsOutDil\": 1559000000,\n    \"link\":
+        \"https://www.sec.gov/Archives/edgar/data/1413329/000141332922000011/0001413329-22-000011-index.htm\",\n
         \   \"finalLink\": \"https://www.sec.gov/Archives/edgar/data/1413329/000141332922000011/pm-20211231.htm\"\n
         \ },\n  {\n    \"date\": \"2020-12-31\",\n    \"symbol\": \"PM\",\n    \"reportedCurrency\":
         \"USD\",\n    \"cik\": \"0001413329\",\n    \"fillingDate\": \"2021-02-09\",\n
@@ -359,13 +378,13 @@ interactions:
       Connection:
       - close
       Content-Length:
-      - '26445'
+      - '27901'
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Fri, 03 Feb 2023 13:54:23 GMT
+      - Tue, 07 Mar 2023 17:09:13 GMT
       ETag:
-      - W/"674d-DOrpHAL2+di1JjvkG6W4w2eVfUQ"
+      - W/"6cfd-4PEYPFcfGFtjPUhmx+H6jpfUIm0"
       Server:
       - nginx/1.14.0 (Ubuntu)
       Vary:
