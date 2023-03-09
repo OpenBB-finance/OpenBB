@@ -204,8 +204,12 @@ class Backend(pywry.PyWry):
         # we get the length of each column using the max length of the column
         # name and the max length of the column values as the column width
         columnwidth = [
-            max(len(str(df_table[col].name)), df_table[col].astype(str).str.len().max())
+            max(
+                len(str(df_table[col].name)),
+                df_table[col].astype(str).str.len().max(),
+            )
             for col in df_table.columns
+            if hasattr(df_table[col], "name") and hasattr(df_table[col], "dtype")
         ]
 
         # we add a percentage of max to the min column width
