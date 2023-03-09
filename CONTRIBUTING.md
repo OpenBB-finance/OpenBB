@@ -593,7 +593,6 @@ With:
 
     - Why? It increases code readability and acts as an input example for the functions arguments. This increases the ease of use of the functions through the SDK, but also just generally.
 
-
     > Watch out, add default values whenever possible, but take care for not adding mutable default arguments! [More info](https://docs.python-guide.org/writing/gotchas/#mutable-default-arguments)
 
     <br>
@@ -1556,8 +1555,7 @@ def your_function() -> pd.DataFrame:
     pass
 ```
 
-> Note: if for some reason you don't want your logs to be collected, you can set the `LOG_COLLECTION` user preference to `False`.
-
+> Note: if you don't want your logs to be collected, you can set the `LOG_COLLECTION` user preference to `False`.
 > Disclaimer: all the user paths, names, IPs, credentials and other sensitive information are anonymized, [take a look at how we do it](/openbb_terminal/core/log/generation/formatter_with_exceptions.py).
 
 ### Internationalization
@@ -1631,7 +1629,6 @@ The accepted branch naming conventions are:
 - `release/2.1.0` or `release/2.1.0rc0`.
 
 All `feature/feature-name` related branches can only have PRs pointing to `develop` branch. `hotfix/hotfix-name` and `release/2.1.0` or `release/2.1.0rc0` branches can only have PRs pointing to `main` branch.
-
 
 ## Installers
 
