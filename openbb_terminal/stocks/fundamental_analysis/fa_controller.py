@@ -1782,7 +1782,7 @@ class FundamentalAnalysisController(StockBaseController):
         parser = argparse.ArgumentParser(
             add_help=False,
             prog="pt",
-            description="""Prints price target from analysts. [Source: Business Insider]""",
+            description="""Prints price target from analysts. [Source: Business Insider and Financial Modeling Prep]""",
         )
         parser.add_argument(
             "-t",

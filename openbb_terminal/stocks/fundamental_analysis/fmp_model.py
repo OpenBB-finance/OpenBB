@@ -804,12 +804,14 @@ def get_price_targets(symbol: str) -> pd.DataFrame:
     )
     response = request(url)
     # Check if response is valid
-    if response.status_code != 200:
-        console.print(f"[red]Error, Status Code: {response.status_code}[/red]\n")
-        return pd.DataFrame()
-    if "Error Message" in response.json():
-        console.print(
-            f"[red]Error, Message: {response.json()['Error Message']}[/red]\n"
+    if response.status_code != 200 or "Error Message" in response.json():
+        message = f"Error, Status Code: {response.status_code}."
+        message = (
+            message
+            if "Error Message" not in response.json()
+            else message + "\n" + response.json()["Error Message"] + ".\n"
         )
+        console.print(message)
         return pd.DataFrame()
+
     return pd.DataFrame(response.json())
