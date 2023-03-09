@@ -12,7 +12,7 @@ from requests.exceptions import HTTPError
 
 from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import check_api_key, log_start_end
-from openbb_terminal.helper_funcs import lambda_long_number_format
+from openbb_terminal.helper_funcs import lambda_long_number_format, request
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.fundamental_analysis.fa_helper import clean_df_index
 
@@ -779,3 +779,40 @@ def get_rating(symbol: str) -> pd.DataFrame:
     else:
         df = pd.DataFrame()
     return df
+
+
+@log_start_end(log=logger)
+@check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
+def get_price_targets(symbol: str) -> pd.DataFrame:
+    """Get price targets for a company [Source: Financial Modeling Prep]
+
+    Parameters
+    ----------
+    symbol : str
+        Symbol to get data for
+
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of price targets
+    """
+    current_user = get_current_user()
+
+    url = (
+        "https://financialmodelingprep.com/api/v4/price-target?"
+        f"symbol={symbol}&apikey={current_user.credentials.API_KEY_FINANCIALMODELINGPREP}"
+    )
+    response = request(url)
+
+    # Check if response is valid
+    if response.status_code != 200 or "Error Message" in response.json():
+        message = f"Error, Status Code: {response.status_code}."
+        message = (
+            message
+            if "Error Message" not in response.json()
+            else message + "\n" + response.json()["Error Message"] + ".\n"
+        )
+        console.print(message)
+        return pd.DataFrame()
+
+    return pd.DataFrame(response.json())
