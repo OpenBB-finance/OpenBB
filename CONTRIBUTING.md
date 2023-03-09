@@ -476,7 +476,7 @@ The added line of the file should look like this:
 
 ### Add Unit Tests
 
-This is a vital part of teh contribution process. We have a set of unit tests that are run on every Pull Request. These tests are located in the `tests` folder.
+This is a vital part of the contribution process. We have a set of unit tests that are run on every Pull Request. These tests are located in the `tests` folder.
 
 Unit tests minimize errors in code and quickly find errors when they do arise. Integration tests are standard usage examples, which are also used to identify errors.
 
@@ -486,7 +486,7 @@ A thorough introduction on the usage of unit tests and integration tests in Open
 
 [Integration Test README](scripts/README.md)
 
-Any new features that do not contain unit tests will not be accepted.  
+Any new features that do not contain unit tests will not be accepted.
 
 ### Open a Pull Request
 
