@@ -412,7 +412,11 @@ def get_earnings_history(symbol: str) -> pd.DataFrame:
 @log_start_end(log=logger)
 def get_currency(symbol) -> str:
     """Quick helper to get currency for financial statements"""
-    ticker_info = yf.Ticker(symbol).info
+    try:
+        ticker_info = yf.Ticker(symbol).info
+    except Exception:
+        return "Not Specified"
+
     if "financialCurrency" in ticker_info:
         return ticker_info["financialCurrency"]
     return "Not Specified"
