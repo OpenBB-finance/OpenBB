@@ -251,7 +251,7 @@
       "epsfc": ["SeekingAlpha"],
       "revfc": ["SeekingAlpha"],
       "est": ["BusinessInsider"],
-      "pt": ["BusinessInsider"],
+      "pt": ["BusinessInsider", "FinancialModelingPrep"],
       "dcf": ["StockAnalysis"],
       "dcfc": ["FinancialModelingPrep"]
     },
