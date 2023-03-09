@@ -6,6 +6,7 @@ import logging
 import os
 import subprocess  # nosec
 import sys
+import webbrowser
 
 # IMPORTATION STANDARD
 from contextlib import contextmanager
@@ -126,60 +127,60 @@ def update_terminal():
 
 
 def open_openbb_documentation(
-    path, url="https://docs.openbb.co/terminal", command=None, arg_type=""
+    path, url="http://localhost/app/terminal", command=None, arg_type=""
 ):
     """Opens the documentation page based on your current location within the terminal. Make exceptions for menus
     that are considered 'common' by adjusting the path accordingly."""
     if path == "/" and command is None:
-        path = "/"
+        path = "/how-to"
         command = ""
     elif "keys" in path:
-        path = "/guides/advanced/api-keys"
+        path = "/guides?full=1&path=/quickstart/api-keys"
         command = ""
     elif "settings" in path:
-        path = "/guides/advanced/customizing-the-terminal"
+        path = "/guides?path=/advanced/customizing-the-terminal"
         command = ""
     elif "featflags" in path:
-        path = "/guides/advanced/customizing-the-terminal"
+        path = "/guides?path=/advanced/customizing-the-terminal"
         command = ""
     elif "sources" in path:
-        path = "/guides/advanced/changing-sources"
+        path = "/guides?path=/advanced/changing-sources"
         command = ""
     elif "params" in path:
-        path = "/guides/intros/portfolio/po"
+        path = "/guides?path=/intros/portfolio/po"
         command = ""
     else:
         if arg_type == "command":  # user passed a command name
-            path = f"/reference/{path}"
+            path = f"/reference?path={path}"
         elif arg_type == "menu":  # user passed a menu name
             if command in ["ta", "ba", "qa"]:
                 menu = path.split("/")[-2]
-                path = f"/guides/intros/common/{menu}"
+                path = f"/guides?path=/intros/common/{menu}"
             elif command == "forecast":
                 command = ""
-                path = "/guides/intros/forecast"
+                path = "/guides?path=/intros/forecast"
             else:
-                path = f"/guides/intros/{path}"
+                path = f"/guides?path=/intros/{path}"
         else:  # user didn't pass argument and is in a menu
             menu = path.split("/")[-2]
             path = (
-                f"/guides/intros/common/{menu}"
+                f"/guides?path=/intros/common/{menu}"
                 if menu in ["ta", "ba", "qa"]
-                else f"/guides/intros/{path}"
+                else f"/guides?path=/intros/{path}"
             )
 
     if command:
         if command == "keys":
-            path = "/guides/advanced/api-keys"
+            path = "/guides?full=1&path=/quickstart/api-keys"
             command = ""
         elif "settings" in path or "featflags" in path:
-            path = "/guides/advanced/customizing-the-terminal"
+            path = "/guides?path=/advanced/customizing-the-terminal"
             command = ""
         elif "sources" in path:
-            path = "/guides/advanced/changing-sources"
+            path = "/guides?path=/advanced/changing-sources"
             command = ""
         elif command in ["record", "stop", "exe"]:
-            path = "/guides/advanced/scripts-and-routines"
+            path = "/guides?path=/advanced/scripts-and-routines"
             command = ""
         elif command in [
             "intro",
@@ -193,7 +194,7 @@ def open_openbb_documentation(
             path = ""
             command = ""
         elif command in ["ta", "ba", "qa"]:
-            path = f"/guides/intros/common/{command}"
+            path = f"/guides?path=/intros/common/{command}"
             command = ""
 
         path += command
@@ -203,7 +204,7 @@ def open_openbb_documentation(
     if full_url[-1] == "/":
         full_url = full_url[:-1]
 
-    plots_backend().send_url(full_url)
+    webbrowser.open(full_url)
 
 
 def hide_splashscreen():
