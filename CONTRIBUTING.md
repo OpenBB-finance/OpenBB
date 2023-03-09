@@ -61,7 +61,7 @@ Use your best judgment, and feel free to propose changes to this document in a p
 Before implementing a new command we highly recommend that you go through [Understand Code Structure](#understand-code-structure) and [Follow Coding Guidelines](#follow-coding-guidelines). This will allow you to get your PR merged faster and keep consistency of our code base.
 
 In the next sections we describe the process to add a new command.
-We will be adding a function to get price targets from the Financial Modeling Prep api.  Note that there already exists a function to get price targets from the Business Insider website, `stocks/fa/pt`, so we will be adding a new function to get price targets from the Financial Modeling Prep api, and go through adding sources.
+We will be adding a function to get price targets from the Financial Modeling Prep API.  Note that there already exists a function to get price targets from the Business Insider website, `stocks/fa/pt`, so we will be adding a new function to get price targets from the Financial Modeling Prep API, and go through adding sources.
 
 ### Select Feature
 
@@ -69,7 +69,7 @@ We will be adding a function to get price targets from the Financial Modeling Pr
 - Feel free to discuss what you'll be working on either directly on [the issue](https://github.com/OpenBB-finance/OpenBBTerminal/issues) or on [our Discord](www.openbb.co/discord).
   - This ensures someone from the team can help you and there isn't duplicated work.
 
-Before writing any code, it is good to understand what the data will look like.  In this case, we will be getting the price targets from the Financial Modeling Prep api, and the data will look like this:
+Before writing any code, it is good to understand what the data will look like.  In this case, we will be getting the price targets from the Financial Modeling Prep API, and the data will look like this:
 
 ```json
 [
@@ -132,26 +132,29 @@ def get_price_targets(cls, symbol: str) -> pd.DataFrame:
 
     url = f"https://financialmodelingprep.com/api/v4/price-target?symbol={symbol}&apikey={current_user.credentials.API_KEY_FINANCIALMODELINGPREP}"
     response = request(url)
+
     # Check if response is valid
-    if response.status_code != 200:
-        console.print(f"[red]Error, Status Code: {response.status_code}[/red]\n")
-        return pd.DataFrame()
-    if "Error Message" in response.json():
-        console.print(
-            f"[red]Error, Message: {response.json()['Error Message']}[/red]\n"
+    if response.status_code != 200 or "Error Message" in response.json():
+        message = f"Error, Status Code: {response.status_code}."
+        message = (
+            message
+            if "Error Message" not in response.json()
+            else message + "\n" + response.json()["Error Message"] + ".\n"
         )
+        console.print(message)
         return pd.DataFrame()
+
     return pd.DataFrame(response.json())
 ```
 
 In this function:
 
-- We import the current user object and preferences using the `get_current_user` function.  API keys are stored in `current_user.credentials`
+- We import the current user object and, consequently, preferences using the `get_current_user` function.  API keys are stored in `current_user.credentials`
 - We use the `@log_start_end` decorator to add the function to our logs for debugging purposes.
-- We add the `check_api_key` decorator to confirm the api key is valid.
+- We add the `check_api_key` decorator to confirm the API key is valid.
 - We have type hinting and a docstring describing the function.
-- We use the openbb_terminal helper function `request`, which is an abstracted version of the requests library, which allows us to add user agents, timeouts, caches, etc to any request in the terminal.
-- We check for different error messages.  This will depend on the API provider and usually requires some trial and error.  With the FMP api, if there is an invalid symbol, we get a response code of 200, but the json response has an error message field.  Same with an invalid api key.
+- We use the openbb_terminal helper function `request`, which is an abstracted version of the requests library, which allows us to add user agents, timeouts, caches, etc. to any HTTP request in the terminal.
+- We check for different error messages.  This will depend on the API provider and usually requires some trial and error.  With the FMP API, if there is an invalid symbol, we get a response code of 200, but the json response has an error message field.  Same with an invalid API key.
 - When an error is caught, we still return an empty dataframe.
 - We return the json response as a pandas dataframe.  Most functions in the terminal should return a datatframe, but if not, make sure that the return type is specified.
 
@@ -159,6 +162,7 @@ Note:
 
 1. As explained before, it is possible that this file needs to be created under `common/` directory rather than `stocks/`, which means that when that happens this function should be done in a generic way, i.e. not mentioning stocks or a specific context.
 2. If the model require an API key, make sure to handle the error and output relevant message.
+3. If the data provider is not yet supported, you'll most likely need to do some extra steps in order to add it to the `keys` menu.  See [this section](#external-api-keys) for more details.
 
 In the example below, you can see that we explicitly handle 4 important error types:
 
@@ -276,7 +280,7 @@ def display_price_targets(
 
 In this function:
 
-- We use the same log and api decorators as in the model.
+- We use the same log and API decorators as in the model.
 - We define the columns we want to show to the user.
 - We get the data from the fmp_model function
 - We check if there is data.  If something went wrong, we don't want to show it, so we print a message and return.  Note that because we have error messages in both the model and view, there will be two print outs.  If you wish to just show one, it is better to handle in the model.
@@ -331,7 +335,7 @@ Our new function will be:
         parser = argparse.ArgumentParser(
             add_help=False,
             prog="pt",
-            description="""Prints price target from analysts. [Source: Business Insider]""",
+            description="""Prints price target from analysts. [Source: Business Insider and Financial Modeling Prep]""",
         )
         parser.add_argument(
             "-t",
@@ -472,18 +476,20 @@ The added line of the file should look like this:
 
 ### Open a Pull Request
 
-Once you're happy with what you have, push your branch to remote. E.g. `git push origin feature/AmazingFeature`.  Note that we follow gitflow naming convention, so your branch name should be prefixed with `feature/` or `hotfix/` depending on the type of work you are doing.
+Once you're happy with what you have, push your branch to remote. E.g. `git push origin feature/AmazingFeature`.
 
-A user may create a **Draft Pull Request** when he/she wants to discuss implementation with the team.
+> Note that we follow gitflow naming convention, so your branch name should be prefixed with `feature/` or `hotfix/` depending on the type of work you are doing.
+
+A user may create a **Draft Pull Request** when there is the intention to discuss implementation with the team.
 
 ### Review Process
 
 As soon as the Pull Request is opened, our repository has a specific set of github actions that will not only run
-linters on the branch just pushed, but also run pytest on it. This allows for another layer of safety on the code developed.
+linters on the branch just pushed, but also run `pytest` on it. This allows for another layer of safety on the code developed.
 
 In addition, our team is known for performing `diligent` code reviews. This not only allows us to reduce the amount of iterations on that code and have it to be more future proof, but also allows the developer to learn/improve his coding skills.
 
-Often in the past the reviewers have suggested better coding practices, e.g. using `1_000_000` instead of `1000000` forbetter visibility, or suggesting a speed optimization improvement.
+Often in the past the reviewers have suggested better coding practices, e.g. using `1_000_000` instead of `1000000` for better visibility, or suggesting a speed optimization improvement.
 
 ## Understand Code Structure
 
@@ -572,6 +578,9 @@ With:
 1. Each function should have default values for non critical kwargs
 
     - Why? It increases code readability and acts as an input example for the functions arguments. This increases the ease of use of the functions through the SDK, but also just generally.
+
+
+    > Watch out, add default values whenever possible, but take care for not adding mutable default arguments! [More info](https://docs.python-guide.org/writing/gotchas/#mutable-default-arguments)
 
     <br>
 
@@ -1150,14 +1159,33 @@ It is important to keep a coherent UI/UX throughout the terminal. These are the 
 
 OpenBB Terminal currently has over 100 different data sources. Most of these require an API key that allows access to some free tier features from the data provider, but also paid ones.
 
-When a new API data source is added to the platform, it must be added through [config_terminal.py](/openbb_terminal/config_terminal.py). E.g.
+When a new API data source is added to the platform, it must be added through [credentials_model.py](/openbb_terminal/credentials_model.py) under the section that resonates the most with its functionality, from: `Data providers`, `Socials` or `Brokers`.
+
+Example (a section from [credentials_model.py](/openbb_terminal/credentials_model.py)):
 
 ```python
-# https://messari.io/
-API_MESSARI_KEY = os.getenv("OPENBB_API_MESSARI_KEY") or "REPLACE_ME"
-```
+# Data providers
+API_DATABENTO_KEY = "REPLACE_ME"
+API_KEY_ALPHAVANTAGE: str = "REPLACE_ME"
+API_KEY_FINANCIALMODELINGPREP: str = "REPLACE_ME"
 
-Note that a `OPENBB_` is added so that the user knows that that environment variable is used by our terminal.
+...
+
+# Socials
+API_GITHUB_KEY: str = "REPLACE_ME"
+API_REDDIT_CLIENT_ID: str = "REPLACE_ME"
+API_REDDIT_CLIENT_SECRET: str = "REPLACE_ME"
+
+...
+
+# Brokers or data providers with brokerage services
+RH_USERNAME: str = "REPLACE_ME"
+RH_PASSWORD: str = "REPLACE_ME"
+DG_USERNAME: str = "REPLACE_ME"
+
+...
+
+```
 
 ### Setting and checking API key
 
@@ -1180,7 +1208,9 @@ def check_polygon_key(show_output: bool = False) -> str:
     str
         Status of key set
     """
+
     current_user = get_current_user()
+
     if current_user.credentials.API_POLYGON_KEY == "REPLACE_ME":
         logger.info("Polygon key not defined")
         status = KeyStatus.NOT_DEFINED
@@ -1216,7 +1246,6 @@ Note: Sometimes the user may have the correct API key but still not have access 
 A function can then be created with the following format to allow the user to change its environment key directly from the terminal.
 
 ```python
-@log_start_end(log=logger)
 def call_polygon(self, other_args: List[str]):
     """Process polygon command"""
     parser = argparse.ArgumentParser(
@@ -1233,7 +1262,7 @@ def call_polygon(self, other_args: List[str]):
         help="key",
     )
     if not other_args:
-        console.print("For your API Key, visit: https://polygon.io\n")
+        console.print("For your API Key, visit: https://polygon.io")
         return
 
     if other_args and "-" not in other_args[0][0]:
@@ -1397,54 +1426,75 @@ At that point the user goes into the `dps` menu and runs the command `psi` with 
 
 In order to help users with a powerful autocomplete, we have implemented our own (which can be found [here](/openbb_terminal/custom_prompt_toolkit.py)).
 
-This **STATIC** list of options is meant to be defined on the `__init__` method of a class as follows.
+The list of options for each command is automatically generated, if you're interested take a look at its implementation [here](/openbb_terminal/core/completer/choices.py).
+
+To leverage this functionality, you need to add the following line to the top of the desired controller:
 
 ```python
-if session and obbff.USE_PROMPT_TOOLKIT:
-  self.choices: dict = {c: {} for c in self.controller_choices}
-  self.choices["overview"] = {
-     "--type": {c: None for c in self.overview_options},
-     "-t": "--type",
-  }
-  self.choices["futures"] = {
-     "--commodity": {c: None for c in self.futures_commodities},
-     "-c": "--commodity",
-     "--sortby": {c: None for c in self.wsj_sortby_cols_dict.keys()},
-     "-s": "--sortby",
-     "--reverse": {},
-     "-r": "--reverse",
-  }
-  self.choices["map"] = {
-     "--period": {c: None for c in self.map_period_list},
-     "-p": "--period",
-     "--type": {c: None for c in self.map_filter_list},
-     "-t": "--type",
-  }
-  self.completer = NestedCompleter.from_nested_dict(self.choices)
+CHOICES_GENERATION = True
 ```
 
-Important things to note:
+Here's an example of how to use it, on the [`forex` controller](/openbb_terminal/forex/forex_controller.py):
 
-- `self.choices: dict = {c: {} for c in self.controller_choices}`: this allows users to have autocomplete on the command that they are allowed to select in each menu
-- `self.choices["overview"]`: this corresponds to the list of choices that the user is allowed to select after specifying `$ overview`
-- `"--commodity": {c: None for c in self.futures_commodities}`: this allows the user to select several commodity values after `--commodity` flag
-- `"-c": "--commodity"`: this is interpreted as `-c` having the same effect as `--commodity`
-- `"--reverse": {}`: corresponds to a boolean flag (does not expect any value after)
-- `"--start": None`: corresponds to a flag where the values allowed are not easily discrete due to vast range
-- `self.completer = NestedCompleter.from_nested_dict(self.choices)`: from the choices create our custom completer
+```python
+class ForexController(BaseController):
+    """Forex Controller class."""
+
+    CHOICES_COMMANDS = [
+        "fwd",
+        "candle",
+        "load",
+        "quote",
+    ]
+    CHOICES_MENUS = [
+        "forecast",
+        "qa",
+        "oanda",
+        "ta",
+    ]
+    RESOLUTION = ["i", "d", "w", "m"]
+
+    PATH = "/forex/"
+    FILE_PATH = os.path.join(os.path.dirname(__file__), "README.md")
+    CHOICES_GENERATION = True
+
+    def __init__(self, queue: Optional[List[str]] = None):
+        """Construct Data."""
+        super().__init__(queue)
+
+        self.fx_pair = ""
+        self.from_symbol = ""
+        self.to_symbol = ""
+        self.source = get_ordered_list_sources(f"{self.PATH}load")[0]
+        self.data = pd.DataFrame()
+
+        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
+            choices: dict = self.choices_default
+            choices["load"].update({c: {} for c in FX_TICKERS})
+
+            self.completer = NestedCompleter.from_nested_dict(choices)
+
+
+    ...
+```
 
 In case the user is interested in a **DYNAMIC** list of options which changes based on user's state, then a class method must be defined.
 
-The example below shows the `update_runtime_choices` method being defined in the options controller.
+The example below shows the an excerpt from `update_runtime_choices` method in the [`options` controller](/openbb_terminal/stocks/options/options_controller.py).
 
 ```python
 def update_runtime_choices(self):
-    """Update runtime choices"""
-    if self.expiry_dates and session and obbff.USE_PROMPT_TOOLKIT:
-        self.choices["exp"] = {str(c): {} for c in range(len(self.expiry_dates))}
-        self.choices["exp"]["-d"] = {c: {} for c in self.expiry_dates + [""]}
+        """Update runtime choices"""
+        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
+            if not self.chain.empty:
+                strike = set(self.chain["strike"])
 
-        self.completer = NestedCompleter.from_nested_dict(self.choices)
+                self.choices["hist"]["--strike"] = {str(c): {} for c in strike}
+                self.choices["grhist"]["-s"] = "--strike"
+                self.choices["grhist"]["--strike"] = {str(c): {} for c in strike}
+                self.choices["grhist"]["-s"] = "--strike"
+                self.choices["binom"]["--strike"] = {str(c): {} for c in strike}
+                self.choices["binom"]["-s"] = "--strike"
 ```
 
 This method should only be called when the user's state changes leads to the auto-complete not being accurate.
@@ -1492,6 +1542,10 @@ logger = logging.getLogger(__name__)
 def your_function() -> pd.DataFrame:
     pass
 ```
+
+> Note: if for some reason you don't want your logs to be collected, you can set the `LOG_COLLECTION` user preference to `False`.
+
+> Disclaimer: all the user paths, names, IPs, credentials and other sensitive information are anonymized, [take a look at how we do it](/openbb_terminal/core/log/generation/formatter_with_exceptions.py).
 
 ### Internationalization
 

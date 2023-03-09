@@ -803,6 +803,7 @@ def get_price_targets(symbol: str) -> pd.DataFrame:
         f"symbol={symbol}&apikey={current_user.credentials.API_KEY_FINANCIALMODELINGPREP}"
     )
     response = request(url)
+
     # Check if response is valid
     if response.status_code != 200 or "Error Message" in response.json():
         message = f"Error, Status Code: {response.status_code}."
