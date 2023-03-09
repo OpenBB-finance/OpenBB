@@ -1,35 +1,22 @@
 ---
-title: Troubleshooting
-sidebar_position: 4
+title: FAQ
+sidebar_position: 6
 keywords: [faq, questions, openbb, terminal, troubleshooting, errors, bugs, issues, problems, installation, contributors, developers, github, pip]
 ---
 Still experiencing trouble after consulting this page? Reach us on [Discord](https://openbb.co/discord) or visit our [contact page](https://openbb.co/contact).
 
 ## Installation and Updates
 
-<details><summary>How much hard drive space is required?</summary>
+<details><summary>Do I have to use Miniconda?</summary>
 
-An installation will use approximately 4GB of space.
-
-</details>
-
-<details><summary>What is the minimum version of Windows or MacOS required to install the OpenBB Terminal?</summary>
-
-The OpenBB Terminal installation packages are compatible with:
-
-- Windows 10 or later.
-- MacOS Monterey or later.
-
-**Note:** Machines which are not compatible with the installer packages may be able to install from the source code.
+There are certain dependencies which are sourced exclusively from the `conda-forge` directory. Other virtual environment managers, such a `venv`, may not solve the environment properly, resulting in failed package installations or incorrect builds. We highly recommend using Miniconda as the Python virtual environment manager for installing the OpenBB SDK.
 
 </details>
 
 <details><summary>How do I update my installation to the latest version?</summary>
 
-The terminal is constantly being updated with new features and bug fixes. The process for updating will vary by the installation type:
+The code is constantly being updated with new features and bug fixes. The process for updating will vary by the installation type:
 
-- As of version 2.4.1, the Windows installer has an option for uninstalling the existing prior to updating.
-- For other installer versions, uninstall the previous version (uninstall.exe for Windows, delete the Application folder on MacOS); then, download the latest version and reinstall. User settings and data will remain.
 - For a `pip` installation, when a new version is published: `pip install -U openbb[all]`
 - Upgrade a cloned version of the GitHub repo with:
 
@@ -39,9 +26,19 @@ git pull
 poetry install -E all
 ```
 
-**Notes:** If the cloned repository is a fork, pull from: `git pull origin main` or `git pull origin develop`. If there are changes locally to the files that conflict with the incoming changes from GitHub, stash them before pulling from main with `git stash`.
+**Notes:** If the cloned repository is a fork, pull from: `git pull origin main`, or, `git pull origin develop`. If there are changes locally to the files that conflict with the incoming changes from GitHub, stash them before pulling from main with `git stash`.
 
 </details>
+
+### PyPi Nightly
+
+The nightly build can be installed with:
+
+```console
+pip install openbb-nightly[all]
+```
+
+**Note**: This version may not be stable and should not be used in a production setting.
 
 <details><summary>"Microsoft Visual C++ 14.0 or greater is required"</summary>
 
@@ -68,6 +65,12 @@ brew install gcc
 brew install cmake
 ```
 
+Additionally, Mac users should install Rosetta:
+
+```console
+softwareupdate --install-rosetta
+```
+
 </details>
 
 <details><summary>Miniconda3 will not install on ARM/Linux Raspberry Pi machines.</summary>
@@ -76,23 +79,7 @@ Refer to this issue on the Conda [GitHub](https://github.com/conda/conda/issues/
 
 </details>
 
-## Launching
-
-<details><summary>Mac: Invalid CPU Type - Terminal fails to launch.</summary>
-
-This error is usually the result of a Mac M1/M2 machine which does not have Rosetta installed. Install from the system Terminal command line:
-
-```console
-softwareupdate --install-rosetta
-```
-
-</details>
-
-<details><summary>Terminal app does not launch: Failed to execute script 'terminal' due to unhandled exception!</summary>
-
-When an installer-packaged version of the OpenBB Terminal fails to launch, because of this message, the machine may have an obsolete CPU-type or operating system. Please try installing via the source code, and if problems persist, reach out to us on [Discord](https://discord.gg/xPHTuHCmuV) or fill out a support request form on our [website](https://openbb.co/support).
-
-</details>
+## Import Errors
 
 <details><summary>ModuleNotFoundError: No module named '______'</summary>
 
@@ -129,12 +116,6 @@ poetry install -E all
 
 </details>
 
-<details><summary>Fontconfig warning: ignoring UTF-8: not a valid region tag</summary>
-
-In the OS default terminal shell profile, check for a variable similar to, “set locale environment variables at startup”, then also, set text encoding to UTF-8.
-
-</details>
-
 <details><summary>SSL certificates fail to authorize</summary>
 
 ```console
@@ -156,28 +137,14 @@ pip install pip-system-certs
 Find the `.env` file (located at the root of the user account folder: (`~/.openbb_terminal/.env`), and add a line at the bottom of the file with:
 
 ```console
-HTTP_PROXY="<ADDRESS>" or HTTPS_PROXY="<ADDRESS>”
+HTTP_PROXY="<ADDRESS>" or HTTPS_PROXY="<ADDRESS>” 
 ```
-
-</details>
-
-<details><summary> Linux Ubuntu installation was successful but now hangs on launch.</summary>
-
-Check that VcXsvr - or an equivalent X-host - is running and configured prior to launch.
-
-</details>
 
 ## General Operation
 
-<details><summary>Charts do not display on Linux/WSL or Docker installation.</summary>
+<details><summary>What is the correct format for entering dates to function variables?</summary>
 
-Check that X-11, or similar, is installed, open, and configured. Follow the instructions pertaining to the system here: [https://docs.openbb.co/terminal/quickstart/installation#3-configuring-your-x-server-to-show-plots](https://docs.openbb.co/terminal/quickstart/installation#3-configuring-your-x-server-to-show-plots)
-
-</details>
-
-<details><summary>How do I retrieve more results than is returned by default?</summary>
-
-Most functions will have either, `--start` and `--end` flags, or a `--limit` argument. Print the help dialogue for any command by attaching, `--help` or `-h`.
+Dates should be entered as a string variable, inside of quotation marks, formatted as `%Y-%m-%d` - YYYY-MM-DD.
 
 </details>
 
@@ -211,36 +178,29 @@ See the guide [here](https://docs.openbb.co/sdk/guides/intros/portfolio) for mor
 
 Place style sheets in this folder: `OpenBBUserData/styles/user`
 
-SDK users can refer to the documentation [here](https://docs.openbb.co/sdk/guides/advanced/chart-styling) for syntax. A sample Matplotlib configuration file can be copied from [here](https://matplotlib.org/stable/tutorials/introductory/customizing.html#the-default-matplotlibrc-file).
+To select the light themes:
 
-</details>
-
-<details><summary>Can I change the colors of the text in the Terminal?</summary>
-
-Yes, follow the directions on this page: [https://openbb.co/products/terminal?customizeMenu=true#terminal](https://openbb.co/products/terminal?customizeMenu=true#terminal)
-
-</details>
-
-<details><summary>After setting the preset in the stocks screener, nothing happens.</summary>
-
-Print the current screen again with by entering, `?`. Does the name of the selected preset display? With a preset loaded, run the screener by entering one of the commands below:
-
-- Financial
-- Ownership
-- Overview
-- Performance
-- Technical
-- Valuation
-
-</details>
-
-<details><summary>Forecast functions say to enter a valid data set</summary>
-
-Because an unlimited number of data sets can be loaded into the Forecast menu, each function requires defining the specific data set to be used. Add the `-d` or `--dataset` argument to the command, along with the name of the desired data set.
-
-```console
-rnn -d SPY
+```python
+from openbb_terminal.sdk import TerminalStyle
+theme = TerminalStyle("light", "light", "light")
 ```
+
+To select the dark themes:
+
+```python
+from openbb_terminal.sdk import TerminalStyle
+theme = TerminalStyle("dark", "dark", "dark")
+```
+
+</details>
+
+<details><summary>Where are the included stock screener presets located?</summary>
+
+The files are located in the folder with the code, under:
+
+`~/openbb_terminal/miscellaneous/stocks/screener`
+
+Alternatively, the source code on GitHub is [here](https://github.com/OpenBB-finance/OpenBBTerminal/tree/develop/openbb_terminal/miscellaneous/stocks/screener)
 
 </details>
 
@@ -253,14 +213,14 @@ Please note that OpenBB does not provide any data, it is an aggregator which pro
 By default, the load function requests end-of-day daily data and is not included until the EOD summary has been published. The current day's data is considered intraday and is loaded when the `interval` argument is present.
 
 ```console
-load SPY -i 60
+df = openbb.stocks.load(SPY, interval = 60)
 ```
 
 </details>
 
 <details><summary>Can I stream live prices and news feeds?</summary>
 
-The OpenBB Terminal is not currently capable of streaming live feeds through websocket connections.
+It is not currently possible to stream live feeds with the OpenBB SDK.
 
 </details>
 
@@ -286,6 +246,8 @@ From the Windows Security menu, click on the Firewall & Network Protection tab, 
 - Hyper-V
 - VcXsrv
 - Windows Terminal
+
+</details>
 
 <details><summary>Why does a specific menu or command not exist?</summary>
 
