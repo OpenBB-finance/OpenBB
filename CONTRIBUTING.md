@@ -14,6 +14,7 @@ Use your best judgment, and feel free to propose changes to this document in a p
     - [View](#view)
     - [Controller](#controller)
     - [Add SDK endpoint](#add-sdk-endpoint)
+    - [Add Unit Tests](#add-unit-tests)
     - [Open a Pull Request](#open-a-pull-request)
     - [Review Process](#review-process)
   - [Understand Code Structure](#understand-code-structure)
@@ -51,7 +52,6 @@ Use your best judgment, and feel free to propose changes to this document in a p
     - [Coding](#coding)
     - [Git Process](#git-process)
     - [Branch Naming Conventions](#branch-naming-conventions)
-  - [Add a Test](#add-a-test)
   - [Installers](#installers)
 
 # BASIC
@@ -90,14 +90,14 @@ Before writing any code, it is good to understand what the data will look like. 
 
 ### Model
 
-1. Create a file with the source of data as the name followed by `_model` if it doesn't exist.  In this case, the file `openbb_terminal/stocs/fundamental_analysis/fmp_model.py` already exists, so we will add the function to that file.
+1. Create a file with the source of data as the name followed by `_model` if it doesn't exist.  In this case, the file `openbb_terminal/stocks/fundamental_analysis/fmp_model.py` already exists, so we will add the function to that file.
 2. Add the documentation header
 3. Do the necessary imports to get the data
 4. Define a function starting with `get_`
-5. In that function:
-   1. Use typing hints
-   2. Write a descriptive description where at the end the source is specified
-   3. Utilizing a third party API, get and return the data.
+5. In this function:
+   1. Use type hinting
+   2. Write a descriptive description where at the end the source is specified.
+   3. Utilize an official API, get and return the data.
 
 ```python
 """ Financial Modeling Prep Model """
@@ -151,7 +151,7 @@ In this function:
 
 - We import the current user object and, consequently, preferences using the `get_current_user` function.  API keys are stored in `current_user.credentials`
 - We use the `@log_start_end` decorator to add the function to our logs for debugging purposes.
-- We add the `check_api_key` decorator to confirm the API key is valid.
+- We add the `@check_api_key` decorator to confirm the API key is valid.
 - We have type hinting and a docstring describing the function.
 - We use the openbb_terminal helper function `request`, which is an abstracted version of the requests library, which allows us to add user agents, timeouts, caches, etc. to any HTTP request in the terminal.
 - We check for different error messages.  This will depend on the API provider and usually requires some trial and error.  With the FMP API, if there is an invalid symbol, we get a response code of 200, but the json response has an error message field.  Same with an invalid API key.
@@ -160,8 +160,8 @@ In this function:
 
 Note:
 
-1. As explained before, it is possible that this file needs to be created under `common/` directory rather than `stocks/`, which means that when that happens this function should be done in a generic way, i.e. not mentioning stocks or a specific context.
-2. If the model require an API key, make sure to handle the error and output relevant message.
+1. If the function is applicable to many asset classes, it is possible that this file needs to be created under `common/` directory rather than `stocks/`, which means the function should be written in a generic way, i.e. not mentioning stocks or a specific context.
+2. If the model requires an API key, make sure to handle the error and output relevant message.
 3. If the data provider is not yet supported, you'll most likely need to do some extra steps in order to add it to the `keys` menu.  See [this section](#external-api-keys) for more details.
 
 In the example below, you can see that we explicitly handle 4 important error types:
@@ -473,6 +473,20 @@ The added line of the file should look like this:
     ```bash
     python generate_sdk.py sort
     ```
+
+### Add Unit Tests
+
+This is a vital part of teh contribution process. We have a set of unit tests that are run on every Pull Request. These tests are located in the `tests` folder.
+
+Unit tests minimize errors in code and quickly find errors when they do arise. Integration tests are standard usage examples, which are also used to identify errors.
+
+A thorough introduction on the usage of unit tests and integration tests in OpenBBTerminal can be found on the following page respectively:
+
+[Unit Test README](tests/README.md)
+
+[Integration Test README](scripts/README.md)
+
+Any new features that do not contain unit tests will not be accepted.  
 
 ### Open a Pull Request
 
@@ -1129,8 +1143,7 @@ The following linters are used by our codebase:
 | codespell    | spelling checker                  |
 | ruff         | a fast python linter              |
 | mypy         | static typing checker             |
-| safety       | checks security vulnerabilities   |
-| pylint       | bug and quality checker           |
+| pylint       | static code analysis              |
 | markdownlint | markdown linter                   |
 
 #### Command names
@@ -1619,20 +1632,6 @@ The accepted branch naming conventions are:
 
 All `feature/feature-name` related branches can only have PRs pointing to `develop` branch. `hotfix/hotfix-name` and `release/2.1.0` or `release/2.1.0rc0` branches can only have PRs pointing to `main` branch.
 
-## Add a Test
-
-Unit tests minimize errors in code and quickly find errors when they do arise. Integration tests are standard usage examples, which are also used to identify errors.
-
-A thorough introduction on the usage of unit tests and integration tests in OpenBBTerminal can be found on the following page respectively:
-
-[Unit Test README](tests/README.md)
-
-[Integration Test README](scripts/README.md)
-
-In short:
-
-- Pytest: is the tool we are using to run our tests, with the command: `pytest tests/`
-- Coverage: can be checked like running `coverage run -m pytest` or `coverage html`
 
 ## Installers
 
