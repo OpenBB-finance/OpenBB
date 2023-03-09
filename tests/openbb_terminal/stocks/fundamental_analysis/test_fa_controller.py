@@ -660,7 +660,7 @@ def test_call_func(tested_func, mocked_func, other_args, called_with, mocker):
         "call_analysis",
         "call_mgmt",
         "call_overview",
-        "call_enterprise",
+        "call_mktcap",
         "call_score",
         "call_shrs",
         "call_growth",

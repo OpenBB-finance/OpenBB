@@ -11,7 +11,7 @@ The FA module provides programmatic access to the commands from within the OpenB
 - Financial Modeling Prep
 - Polygon
 
-View [this page](https://docs.openbb.co/terminal/quickstart/api-keys) for a list of all API sources used across the platform. 
+View [this page](https://docs.openbb.co/terminal/quickstart/api-keys) for a list of all API sources used across the platform.
 
 ## How to Use
 
@@ -56,7 +56,7 @@ The contextual help will be activated upon entering ., after, openbb.stocks.fa. 
 |openbb.stocks.fa.sec |List of SEC Filings |
 |openbb.stocks.fa.supplier |List of Suppliers |
 
-Alteratively the contents of the module can be printed with:
+Alternatively the contents of the module can be printed with:
 
 ```python
 help(openbb.stocks.fa)
@@ -313,9 +313,9 @@ openbb.stocks.fa.cash(symbol = 'COST')
 | Free cash flow                                            |  3501000000 |   3501000000 |   5370000000 |   6051000000 | 3358000000   |
 
 ### Income
-  
+
 Get the company's income statements.
-  
+
 ```python
 openbb.stocks.fa.income('COST')
 ```

@@ -2,7 +2,7 @@
 __docformat__ = "numpy"
 import argparse
 import logging
-from datetime import datetime, timedelta
+from datetime import datetime
 from typing import List, Optional
 
 from pandas.core.frame import DataFrame
@@ -56,7 +56,7 @@ class FundamentalAnalysisController(StockBaseController):
         "load",
         "analysis",
         "score",
-        "enterprise",
+        "mktcap",
         "metrics",
         "ratios",
         "growth",
@@ -128,7 +128,7 @@ class FundamentalAnalysisController(StockBaseController):
         mt.add_param("_ticker", self.ticker.upper())
         mt.add_raw("\n")
         mt.add_info("_company_overview")
-        mt.add_cmd("enterprise")
+        mt.add_cmd("mktcap")
         mt.add_cmd("overview")
         mt.add_cmd("divs", not self.suffix)
         mt.add_cmd("splits", not self.suffix)
@@ -364,12 +364,12 @@ class FundamentalAnalysisController(StockBaseController):
             )
 
     @log_start_end(log=logger)
-    def call_enterprise(self, other_args: List[str]):
+    def call_mktcap(self, other_args: List[str]):
         """Process enterprise command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="enterprise",
+            prog="mktcap",
             description="""
                     Prints stock price, number of shares, market capitalization and
                     enterprise value over time. The following fields are expected: Add total debt,
@@ -385,24 +385,23 @@ class FundamentalAnalysisController(StockBaseController):
             type=str,
             default=None,
         )
-        parser.add_argument(
-            "-l",
-            "--limit",
-            action="store",
-            dest="limit",
-            type=check_positive,
-            default=5,
-            help="Limit of latest years/quarters, relevant for the source FinancialModelingPrep.",
-        )
 
         parser.add_argument(
             "-s",
             "--start",
             type=valid_date,
-            default=(datetime.now() - timedelta(days=3 * 366)).strftime("%Y-%m-%d"),
+            default="1900-01-01",
             dest="start",
-            help="The starting date (format YYYY-MM-DD) of the market cap display. "
-            "Relevant for the source Yahoo Finance.",
+            help="The starting date (format YYYY-MM-DD) of the enterprise value to display. ",
+        )
+
+        parser.add_argument(
+            "-e",
+            "--end",
+            type=valid_date,
+            default=datetime.now(),
+            dest="end",
+            help="The ending date (format YYYY-MM-DD) of the enterprise value to display. ",
         )
 
         parser.add_argument(
@@ -413,8 +412,19 @@ class FundamentalAnalysisController(StockBaseController):
             dest="b_quarter",
             help="Quarter fundamental data flag.",
         )
+
+        parser.add_argument(
+            "-m",
+            "--method",
+            default="market_cap",
+            type=str,
+            dest="method",
+            choices=["enterprise_value", "market_cap"],
+            help="Define the data to display.",
+        )
+
         ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED, raw=True
         )
         if ns_parser:
             if ns_parser.ticker:
@@ -427,17 +437,25 @@ class FundamentalAnalysisController(StockBaseController):
             if ns_parser.source == "FinancialModelingPrep":
                 fmp_view.display_enterprise(
                     symbol=self.ticker,
-                    limit=ns_parser.limit,
+                    start_date=ns_parser.start,
+                    end_date=ns_parser.end,
                     quarterly=ns_parser.b_quarter,
+                    method=ns_parser.method,
+                    raw=ns_parser.raw,
                     export=ns_parser.export,
                     sheet_name=" ".join(ns_parser.sheet_name)
                     if ns_parser.sheet_name
                     else None,
                 )
             elif ns_parser.source == "YahooFinance":
+                if ns_parser.method == "enterprise_value":
+                    console.print("YahooFinance only has market cap data.")
+
                 yahoo_finance_view.display_mktcap(
                     self.ticker,
                     start_date=ns_parser.start,
+                    end_date=ns_parser.end,
+                    raw=ns_parser.raw,
                     export=ns_parser.export,
                     sheet_name=" ".join(ns_parser.sheet_name)
                     if ns_parser.sheet_name
@@ -1629,7 +1647,8 @@ class FundamentalAnalysisController(StockBaseController):
                     max_similars=ns_parser.similar,
                     growth=ns_parser.growth,
                 )
-                dcf.create_workbook()
+                if dcf and dcf.data:
+                    dcf.create_workbook()
             else:
                 console.print("Please use --ticker or load a ticker first.")
 

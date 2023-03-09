@@ -8,13 +8,20 @@ from typing import Optional
 import pandas as pd
 
 from openbb_terminal import OpenBBFigure
+from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import check_api_key, log_start_end
-from openbb_terminal.helper_funcs import export_data, print_rich_table
+from openbb_terminal.helper_funcs import (
+    export_data,
+    print_rich_table,
+    revert_lambda_long_number_format,
+)
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks import stocks_helper
 from openbb_terminal.stocks.fundamental_analysis import fmp_model
 
 logger = logging.getLogger(__name__)
+
+# pylint: disable=too-many-arguments, R1710
 
 
 @log_start_end(log=logger)
@@ -106,10 +113,14 @@ def display_profile(symbol: str, export: str = "", sheet_name: Optional[str] = N
 @check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
 def display_enterprise(
     symbol: str,
-    limit: int = 5,
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
     quarterly: bool = False,
+    method: str = "market_cap",
+    raw: bool = False,
     export: str = "",
     sheet_name: Optional[str] = None,
+    external_axes: bool = False,
 ):
     """Financial Modeling Prep ticker enterprise
 
@@ -117,21 +128,30 @@ def display_enterprise(
     ----------
     symbol : str
         Fundamental analysis ticker symbol
-    limit: int
-        Number to get
+    start_date: str
+        Start date of the data
+    end_date: str
+        End date of the data
     quarterly: bool
         Flag to get quarterly data
+    plot: bool
+        Flag to plot the data
+    method: str
+        Type of data to plot, market_cap or enterprise_value
+    raw: bool
+        Flag to print raw data
+    export: str
+        Format to export data
     sheet_name: str
         Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     """
-    df_fa = fmp_model.get_enterprise(symbol, limit, quarterly)
-    df_fa = df_fa[df_fa.columns[::-1]]
+    df_fa = fmp_model.get_enterprise(symbol, start_date, end_date, quarterly)
 
     # Re-order the returned columns so they are in a more logical ordering
     df_fa = df_fa.reindex(
-        [
+        columns=[
             "Symbol",
             "Stock price",
             "Number of shares",
@@ -141,24 +161,45 @@ def display_enterprise(
             "Enterprise value",
         ]
     )
+
     if df_fa.empty:
         console.print("[red]No data available[/red]\n")
     else:
-        print_rich_table(
-            df_fa,
-            headers=list(df_fa.columns),
-            title=f"{symbol} Enterprise",
-            show_index=True,
-            export=bool(export),
+        df_fa_plot = df_fa.applymap(revert_lambda_long_number_format)
+
+        type_str = (
+            "Market capitalization" if method == "market_cap" else "Enterprise value"
         )
+
+        fig = OpenBBFigure(yaxis_title=f"{type_str} in Billions")
+        fig.set_title(f"{type_str} of {symbol}")
+        fig.add_scatter(
+            x=df_fa_plot.index,
+            y=df_fa_plot[type_str].values / 1e9,
+            mode="lines",
+            name=type_str,
+            line_color=theme.up_color,
+            stackgroup="one",
+        )
+
+        if raw:
+            print_rich_table(
+                df_fa,
+                headers=list(df_fa.columns),
+                title=f"{symbol} Enterprise Value",
+                show_index=True,
+                export=bool(export),
+            )
 
         export_data(
             export,
             os.path.dirname(os.path.abspath(__file__)),
-            "enterprise",
+            method,
             df_fa,
             sheet_name,
         )
+
+        return fig.show(external=external_axes)
 
 
 @log_start_end(log=logger)

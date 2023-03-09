@@ -43,7 +43,7 @@ import pandas as pd
 |openbb.fixedincome.usrates |Function | Plot various treasury rates from the United States |
 |openbb.fixedincome.ycrv |Function | Gets yield curve data from FRED |
 
-Alteratively you can print the contents of the Fixed Income SDK with:
+Alternatively you can print the contents of the Fixed Income SDK with:
 ​
 ```python
 help(openbb.fixedincome)

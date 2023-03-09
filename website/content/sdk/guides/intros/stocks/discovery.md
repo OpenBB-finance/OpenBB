@@ -40,7 +40,7 @@ A brief description below highlights the main Functions and Modules available in
 | openbb.stocks.disc.rtat           |  Function  |                  Top 10 Retail Traded Stocks |
 | openbb.stocks.disc.dividends      |  Function  |                            Screener Overview |
 
-Alteratively you can print the contents of the Disc SDK with:
+Alternatively you can print the contents of the Disc SDK with:
 
 ```python
 help(openbb.stocks.disc)
