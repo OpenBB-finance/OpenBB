@@ -43,7 +43,7 @@ class LogSender(Thread):
     def start_required() -> bool:
         """Check if it makes sense to start a LogsSender instance ."""
 
-        return get_current_user().preferences.LOG_COLLECTION
+        return get_current_user().preferences.LOG_COLLECT
 
     @property
     def settings(self) -> Settings:
