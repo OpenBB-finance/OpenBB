@@ -4040,6 +4040,8 @@ def additional_plots(
             force_tight_layout=False, external_axes=external_axes
         )
 
+    return None
+
 
 def display_show(weights: Dict, tables: List[str], categories_dict: Dict[Any, Any]):
     """Display the results of the optimization.
