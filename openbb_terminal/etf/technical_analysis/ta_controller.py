@@ -30,6 +30,7 @@ from openbb_terminal.helper_funcs import (
     check_non_negative,
     check_positive,
     check_positive_list,
+    check_positive_float,
     valid_date,
 )
 from openbb_terminal.menu import session
@@ -980,7 +981,7 @@ class TechnicalAnalysisController(BaseController):
             "--std",
             action="store",
             dest="n_std",
-            type=check_positive,
+            type=check_positive_float,
             default=2,
             help="std",
             choices=np.arange(0.0, 10, 0.25).tolist(),
