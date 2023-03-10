@@ -259,7 +259,6 @@ class ETFController(BaseController):
 
             console.print(
                 f"Loading Daily data for {self.etf_name} with starting period {ns_parser.start.strftime('%Y-%m-%d')}.",
-                "\n",
             )
 
     @log_start_end(log=logger)
