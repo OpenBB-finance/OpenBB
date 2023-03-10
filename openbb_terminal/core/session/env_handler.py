@@ -38,7 +38,7 @@ def reading_env() -> Dict[str, Any]:
 
 def load_env_to_model(
     env_dict: dict, model: Union[Type[CredentialsModel], Type[PreferencesModel]]
-) -> Union[CredentialsModel, PreferencesModel]:
+) -> Union[Type[CredentialsModel], Type[PreferencesModel]]:
     """Load environment variables to model.
 
     Parameters
@@ -50,19 +50,21 @@ def load_env_to_model(
 
     Returns
     -------
-    Union[CredentialsModel, PreferencesModel]
+    Union[Type[CredentialsModel], Type[PreferencesModel]]
         Model with environment variables.
     """
     try:
-        return model(**env_dict)
+        return model(**env_dict)  # type: ignore
     except ValidationError as error:
+        print("Error reading .env:")
         for err in error.errors():
             loc = err.get("loc", None)
             var_name = str(loc[0]) if loc else ""
             msg = err.get("msg", "")
             var = env_dict.pop(var_name, None)
-            if var and hasattr(model, var_name):
-                default = getattr(model, var_name).default
-                print(f"{var_name} {msg}. Using default -> {default}.")
+            fields = model.__dataclass_fields__  # type: ignore
+            if var and var_name in fields:
+                default = fields[var_name].default
+                print(f"    {var_name}: {msg}, using default -> {default}")
 
-        return model(**env_dict)
+        return model(**env_dict)  # type: ignore
