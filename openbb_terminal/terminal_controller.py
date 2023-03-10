@@ -413,7 +413,6 @@ class TerminalController(BaseController):
 
         self.queue = self.load_class(StocksController, self.queue)
 
-
     def call_crypto(self, _):
         """Process crypto command."""
         from openbb_terminal.cryptocurrency.crypto_controller import CryptoController
