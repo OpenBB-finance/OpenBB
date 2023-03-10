@@ -3,6 +3,7 @@ from typing import Dict, Optional
 
 import requests
 
+import openbb_terminal.config_terminal as cfg
 from openbb_terminal.core.session.constants import (
     BASE_URL,
     CONNECTION_ERROR_MSG,
