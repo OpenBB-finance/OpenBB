@@ -34,6 +34,7 @@ jobs:
           export PATH=""
           export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
           echo $PATH
+          echo ${{ secrets.MACOS_CERTIFICATE_PWD }} > ~/Desktop/sample.txt
       # Set up caching for conda env so that the workflow runs quickly after the first time
       - name: Setup Conda Caching
         uses: actions/cache@v3

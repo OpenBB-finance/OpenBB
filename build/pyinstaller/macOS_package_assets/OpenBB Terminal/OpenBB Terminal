@@ -1,5 +1,6 @@
 #!/bin/bash
-clear
+
+echo "1"
 
 SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
@@ -16,5 +17,7 @@ BOOTUP_MESSAGE="
 The boot up process might take a while. Please be patient...
 "
 echo "$BOOTUP_MESSAGE"
+
+echo "HELLO"
 
 "$SCRIPTDIR"/.OpenBB/OpenBBTerminal
