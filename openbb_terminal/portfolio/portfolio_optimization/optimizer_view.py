@@ -2080,7 +2080,7 @@ def display_ef(
     seed: int = 123,
     tangency: bool = False,
     plot_tickers: bool = True,
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = None,
 ):
     """
     Display efficient frontier
@@ -3732,7 +3732,7 @@ def additional_plots(
     dd: bool = False,
     rc_chart: bool = False,
     heat: bool = False,
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = None,
 ):
     """
     Plot additional charts
