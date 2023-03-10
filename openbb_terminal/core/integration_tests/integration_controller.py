@@ -709,7 +709,7 @@ def main():
 
     current_user = get_current_user()
     current_user.preferences.ENABLE_EXIT_AUTO_HELP = False
-    current_user.preferences.LOG_COLLECTION = False
+    current_user.preferences.LOG_COLLECT = False
     current_user.preferences.USE_ION = True
     current_user.preferences.USE_PROMPT_TOOLKIT = False
     current_user.preferences.REMEMBER_CONTEXTS = False
