@@ -367,6 +367,14 @@ class TerminalStyle:
             plt.savefig(img_buf, format="jpg")
             im = Image.open(img_buf)
             fig = px.imshow(im)
+            fig.update_layout(
+                xaxis=dict(visible=False, showticklabels=False),
+                yaxis=dict(visible=False, showticklabels=False),
+                margin=dict(l=0, r=0, t=0, b=0),
+                autosize=False,
+                width=im.width,
+                height=im.height,
+            )
         else:
             if current_user.preferences.USE_ION:
                 plt.ion()
