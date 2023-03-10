@@ -56,7 +56,8 @@ def load_env_to_model(
     try:
         return model(**env_dict)  # type: ignore
     except ValidationError as error:
-        print("Error reading .env:")
+        model_name = model.__name__.strip("Model").lower()
+        print(f"Error loading {model_name}:")
         for err in error.errors():
             loc = err.get("loc", None)
             var_name = str(loc[0]) if loc else ""
