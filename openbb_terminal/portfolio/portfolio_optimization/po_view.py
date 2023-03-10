@@ -135,7 +135,7 @@ def display_ef(portfolio_engine: Optional[PoEngine] = None, **kwargs):
     # Pop chart args
     tangency = kwargs.pop("tangency", False)
     plot_tickers = kwargs.pop("plot_tickers", False)
-    external_axes = kwargs.pop("external_axes", None)
+    external_axes = kwargs.pop("external_axes", False)
 
     frontier, mu, cov, stock_returns, weights, X1, Y1, port = get_ef(
         portfolio_engine,
@@ -405,7 +405,7 @@ def display_heat(**kwargs):
     data = kwargs.get("data", None)
     category = kwargs.get("category", None)
     title = kwargs.get("title", "")
-    external_axes = kwargs.get("external_axes", None)
+    external_axes = kwargs.get("external_axes", False)
 
     if len(weights) == 1:
         single_key = list(weights.keys())[0].upper()
@@ -488,7 +488,7 @@ def display_rc(**kwargs):
     data = kwargs.get("data", None)
     colors = kwargs.get("colors", None)
     title = kwargs.get("title", "")
-    external_axes = kwargs.get("external_axes", None)
+    external_axes = kwargs.get("external_axes", False)
 
     risk_measure = get_kwarg("risk_measure", kwargs)
     risk_free_rate = get_kwarg("risk_free_rate", kwargs)
@@ -536,7 +536,7 @@ def display_hist(**kwargs):
     data = kwargs.get("data", None)
     colors = kwargs.get("colors", None)
     title = kwargs.get("title", "")
-    external_axes = kwargs.get("external_axes", None)
+    external_axes = kwargs.get("external_axes", False)
 
     alpha = kwargs.get("alpha", 0.05)
 
@@ -572,7 +572,7 @@ def display_dd(**kwargs):
     data = kwargs.get("data", None)
     colors = kwargs.get("colors", None)
     title = kwargs.get("title", "")
-    external_axes = kwargs.get("external_axes", None)
+    external_axes = kwargs.get("external_axes", False)
 
     alpha = get_kwarg("alpha", kwargs)
 
@@ -625,7 +625,7 @@ def display_pie(**kwargs):
     weights = kwargs.get("weights", None)
     colors = kwargs.get("colors", None)
     title = kwargs.get("title", "")
-    external_axes = kwargs.get("external_axes", None)
+    external_axes = kwargs.get("external_axes", False)
 
     if not weights:
         return
