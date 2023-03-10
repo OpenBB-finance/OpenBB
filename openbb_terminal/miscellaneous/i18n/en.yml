@@ -153,8 +153,6 @@ en:
   stocks/options/vsurf: show 3D volatility surface
   stocks/options/grhist: plot option greek history
   stocks/options/plot: plot variables provided by the user
-  stocks/options/parity: shows whether options are above or below expected price
-  stocks/options/binom: shows the value of an option using binomial options pricing
   stocks/options/greeks: shows the greeks for a given option
   stocks/options/eodchain: gets option chain at a specific date
   stocks/options/pricing: shows options pricing and risk neutral valuation
@@ -165,12 +163,6 @@ en:
   stocks/options/screen/scr: screen data from this preset
   stocks/options/screen/_screened_tickers: Last screened tickers
   stocks/options/screen/ca: take these to comparison analysis menu
-  stocks/options/pricing/_ticker: Ticker
-  stocks/options/pricing/_expiry: Expiry
-  stocks/options/pricing/add: add an expected price to the list
-  stocks/options/pricing/rmv: remove an expected price from the list
-  stocks/options/pricing/show: show the listed of expected prices
-  stocks/options/pricing/rnval: risk neutral valuation for an option
   stocks/options/hedge/_ticker: Ticker
   stocks/options/hedge/_expiry: Expiry
   stocks/options/hedge/pick: pick the underlying asset position
@@ -998,7 +990,6 @@ en:
   portfolio/var: display value at risk
   portfolio/es: display expected shortfall
   portfolio/om: display omega ratio
-  portfolio/bro/ally: Ally Invest Menu
   portfolio/bro/degiro: Degiro Menu
   portfolio/bro/rh: Robinhood Menu
   portfolio/bro/cb: Coinbase Pro Menu
