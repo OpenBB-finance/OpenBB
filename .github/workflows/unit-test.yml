@@ -74,11 +74,9 @@ jobs:
         id: count-changes
         run: |
           current_branch=$(jq -r .pull_request.base.ref "$GITHUB_EVENT_PATH")
-          count=$(git diff --name-only origin/$current_branch HEAD | grep -E ".py$" | wc -l)
+          count=$(git diff --name-status --diff-filter=AM origin/$current_branch HEAD | awk '$1 != "R"' | grep -E "^M.*.py$" | wc -l)
           echo "count=$count" >> $GITHUB_OUTPUT
-
-      - name: Show output of previous step
-        run: echo "count=${{ steps.count-changes.outputs.count }}"
+          echo "count=${{ steps.count-changes.outputs.count }}"
 
   base-test:
     name: Base Tests - Ubuntu-latest - Python 3.9
