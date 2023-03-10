@@ -17,10 +17,9 @@ import matplotlib.pyplot as plt
 from packaging import version
 
 from openbb_terminal import (
-    feature_flags as obbff,
     thought_of_the_day as thought,
 )
-from openbb_terminal.config_terminal import LOGGING_COMMIT_HASH
+from openbb_terminal.config_terminal import LOGGING_COMMIT_HASH, VERSION
 
 # IMPORTATION INTERNAL
 from openbb_terminal.core.config.paths import SETTINGS_ENV_FILE
@@ -266,7 +265,7 @@ def bootup():
 def check_for_updates() -> None:
     """Check if the latest version is running.
 
-    Checks github for the latest release version and compares it to obbff.VERSION.
+    Checks github for the latest release version and compares it to cfg.VERSION.
     """
     # The commit has was commented out because the terminal was crashing due to git import for multiple users
     # ({str(git.Repo('.').head.commit)[:7]})
@@ -280,7 +279,7 @@ def check_for_updates() -> None:
     if r is not None and r.status_code == 200:
         latest_tag_name = r.json()["tag_name"]
         latest_version = version.parse(latest_tag_name)
-        current_version = version.parse(obbff.VERSION)
+        current_version = version.parse(VERSION)
 
         if check_valid_versions(latest_version, current_version):
             if current_version == latest_version:
@@ -328,7 +327,7 @@ def welcome_message():
 
     Prints first welcome message, help and a notification if updates are available.
     """
-    console.print(f"\nWelcome to OpenBB Terminal v{obbff.VERSION}")
+    console.print(f"\nWelcome to OpenBB Terminal v{VERSION}")
 
     if get_current_user().preferences.ENABLE_THOUGHTS_DAY:
         console.print("---------------------------------")

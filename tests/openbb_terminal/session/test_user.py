@@ -31,13 +31,6 @@ def fixture_test_user():
     return test_user
 
 
-class obbff:
-    """Mock obbff."""
-
-    USE_FLAIR = ":openbb"
-    SYNC_ENABLED = True
-
-
 def test_load_user_info(test_user):
     """Test load user info."""
     assert test_user.profile.token == "test_token"
