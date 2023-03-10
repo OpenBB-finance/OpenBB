@@ -2280,6 +2280,7 @@ def display_ef(
         )
     except Exception as _:
         console.print("[red]Error plotting efficient frontier.[/red]")
+        return None
 
 
 @log_start_end(log=logger)
@@ -3631,7 +3632,7 @@ def pie_chart_weights(
         Optional external axes to plot data on
     """
     if not weights:
-        return
+        return None
 
     init_stocks = list(weights.keys())
     init_sizes = list(weights.values())
@@ -3968,7 +3969,7 @@ def additional_plots(
             console.print(
                 f"[yellow]Heatmap needs at least two values for '{category}', only found '{single_key}'.[/yellow]"
             )
-            return
+            return None
 
         _, ax = plt.subplots(
             figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI

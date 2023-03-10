@@ -412,7 +412,7 @@ def display_heat(**kwargs):
         console.print(
             f"[yellow]Heatmap needs at least two values for '{category}', only found '{single_key}'.[/yellow]"
         )
-        return
+        return None
 
     _, ax = plt.subplots(
         figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
@@ -628,7 +628,7 @@ def display_pie(**kwargs):
     external_axes = kwargs.get("external_axes", False)
 
     if not weights:
-        return
+        return None
 
     init_stocks = list(weights.keys())
     init_sizes = list(weights.values())
