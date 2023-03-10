@@ -29,8 +29,8 @@ from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_FIGURES_ALLOWED,
     check_non_negative,
     check_positive,
-    check_positive_list,
     check_positive_float,
+    check_positive_list,
     valid_date,
 )
 from openbb_terminal.menu import session
