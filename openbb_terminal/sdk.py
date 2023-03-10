@@ -24,6 +24,7 @@ from openbb_terminal.core.session.current_user import is_local
 from openbb_terminal.terminal_helper import is_auth_enabled
 
 cfg.start_required_configurations()
+cfg.start_plot_backend()
 
 logger = logging.getLogger(__name__)
 theme.applyMPLstyle()

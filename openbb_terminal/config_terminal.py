@@ -21,8 +21,11 @@ theme = _TerminalStyle(
     current_user.preferences.RICH_STYLE,
 )
 
+
 # Start the plots backend
-plots_backend().start(load_env_vars("DEBUG_MODE", strtobool, False))
+def start_plot_backend():
+    """Starts the plot backend"""
+    plots_backend().start(load_env_vars("DEBUG_MODE", strtobool, False))
 
 
 def start_required_configurations():
