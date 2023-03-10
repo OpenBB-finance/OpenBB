@@ -1,6 +1,7 @@
 """Helper classes."""
 __docformat__ = "numpy"
 import argparse
+import io
 import json
 import os
 from importlib import machinery, util
@@ -8,7 +9,9 @@ from pathlib import Path
 from typing import Dict, List, Optional, Union
 
 import matplotlib.pyplot as plt
+import plotly.express as px
 from matplotlib import font_manager, ticker
+from PIL import Image
 
 from openbb_terminal.core.config.paths import MISCELLANEOUS_DIRECTORY
 from openbb_terminal.core.session.current_user import get_current_user
@@ -346,7 +349,9 @@ class TerminalStyle:
             )
 
     # pylint: disable=import-outside-toplevel
-    def visualize_output(self, force_tight_layout: bool = True):
+    def visualize_output(
+        self, force_tight_layout: bool = True, external_axes: bool = False
+    ):
         """Show chart in an interactive widget."""
         current_user = get_current_user()
 
@@ -356,9 +361,28 @@ class TerminalStyle:
             self.add_label(plt.gcf())
         if force_tight_layout:
             plt.tight_layout(pad=self.tight_layout_padding)
-        if current_user.preferences.USE_ION:
-            plt.ion()
-        plt.show()
+
+        if external_axes:
+            img_buf = io.BytesIO()
+            plt.savefig(img_buf, format="jpg")
+            im = Image.open(img_buf)
+            fig = px.imshow(im)
+            fig.update_layout(
+                xaxis=dict(visible=False, showticklabels=False),
+                yaxis=dict(visible=False, showticklabels=False),
+                margin=dict(l=0, r=0, t=0, b=0),
+                autosize=False,
+                width=im.width,
+                height=im.height,
+            )
+        else:
+            if current_user.preferences.USE_ION:
+                plt.ion()
+
+            fig = None
+            plt.show()
+
+        return fig
 
 
 class AllowArgsWithWhiteSpace(argparse.Action):
