@@ -22,9 +22,9 @@ from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.core.config.paths import MISCELLANEOUS_DIRECTORY
 from openbb_terminal.base_helpers import load_env_vars, strtobool
 from openbb_terminal.core.config.paths import MISCELLANEOUS_DIRECTORY
+from openbb_terminal.core.config.paths_helper import init_userdata
 from openbb_terminal.core.plots.backend import plots_backend
 from openbb_terminal.core.session.current_user import get_current_user
-from openbb_terminal.core.config.paths_helper import init_userdata
 
 from .helper_classes import TerminalStyle as _TerminalStyle
 
