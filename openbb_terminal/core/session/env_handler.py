@@ -1,8 +1,9 @@
 # IMPORTS STANDARD
-from typing import Any, Dict, Optional
+from typing import Any, Dict, Optional, Type, Union
 
 # IMPORTS THIRDPARTY
 from dotenv import dotenv_values
+from pydantic import ValidationError
 
 # IMPORTS INTERNAL
 from openbb_terminal.core.config.paths import (
@@ -10,6 +11,8 @@ from openbb_terminal.core.config.paths import (
     REPOSITORY_ENV_FILE,
     SETTINGS_ENV_FILE,
 )
+from openbb_terminal.core.models.credentials_model import CredentialsModel
+from openbb_terminal.core.models.preferences_model import PreferencesModel
 
 
 def reading_env() -> Dict[str, Any]:
@@ -31,3 +34,35 @@ def reading_env() -> Dict[str, Any]:
     }
 
     return __env_dict_filtered
+
+
+def load_env_to_model(
+    env_dict: dict, model: Union[Type[CredentialsModel], Type[PreferencesModel]]
+) -> Union[CredentialsModel, PreferencesModel]:
+    """Load environment variables to model.
+
+    Parameters
+    ----------
+    env_dict : dict
+        Environment variables dictionary.
+    model : Union[Type[CredentialsModel], Type[PreferencesModel]]
+        Model to validate.
+
+    Returns
+    -------
+    Union[CredentialsModel, PreferencesModel]
+        Model with environment variables.
+    """
+    try:
+        return model(**env_dict)
+    except ValidationError as error:
+        for err in error.errors():
+            loc = err.get("loc", None)
+            var_name = str(loc[0]) if loc else ""
+            msg = err.get("msg", "")
+            var = env_dict.pop(var_name, None)
+            if var and hasattr(model, var_name):
+                default = getattr(model, var_name).default
+                print(f"{var_name} {msg}. Using default -> {default}.")
+
+        return model(**env_dict)
