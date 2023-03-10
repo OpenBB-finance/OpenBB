@@ -144,12 +144,9 @@ def display_ef(portfolio_engine: Optional[PoEngine] = None, **kwargs):
 
     risk_free_rate = risk_free_rate / TIME_FACTOR[freq.upper()]
 
-    if external_axes is None:
-        _, ax = plt.subplots(
-            figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
-        )
-    else:
-        ax = external_axes[0]
+    _, ax = plt.subplots(
+        figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
+    )
 
     ax = rp.plot_frontier(
         w_frontier=frontier,
@@ -246,8 +243,8 @@ def display_ef(portfolio_engine: Optional[PoEngine] = None, **kwargs):
     ax1 = ax.get_figure().axes
     ll, bb, ww, hh = ax1[-1].get_position().bounds
     ax1[-1].set_position([ll * 1.02, bb, ww, hh])
-    if external_axes is None:
-        theme.visualize_output(force_tight_layout=False)
+
+    return theme.visualize_output(force_tight_layout=False, external_axes=external_axes)
 
 
 @log_start_end(log=logger)
@@ -417,12 +414,9 @@ def display_heat(**kwargs):
         )
         return
 
-    if external_axes is None:
-        _, ax = plt.subplots(
-            figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
-        )
-    else:
-        ax = external_axes[0]
+    _, ax = plt.subplots(
+        figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
+    )
 
     if len(weights) <= 3:
         number_of_clusters = len(weights)
@@ -485,8 +479,7 @@ def display_heat(**kwargs):
     title += ax[3].get_title(loc="left")
     ax[3].set_title(title)
 
-    if external_axes is None:
-        theme.visualize_output(force_tight_layout=True)
+    return theme.visualize_output(force_tight_layout=True, external_axes=external_axes)
 
 
 @log_start_end(log=logger)
@@ -505,12 +498,9 @@ def display_rc(**kwargs):
     b_sim = get_kwarg("b_sim", kwargs)
     freq = get_kwarg("freq", kwargs)
 
-    if external_axes is None:
-        _, ax = plt.subplots(
-            figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
-        )
-    else:
-        ax = external_axes[0]
+    _, ax = plt.subplots(
+        figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
+    )
 
     ax = rp.plot_risk_con(
         w=pd.Series(weights).to_frame(),
@@ -537,8 +527,7 @@ def display_rc(**kwargs):
     title += ax.get_title(loc="left")
     ax.set_title(title)
 
-    if external_axes is None:
-        theme.visualize_output()
+    return theme.visualize_output(force_tight_layout=True, external_axes=external_axes)
 
 
 @log_start_end(log=logger)
@@ -551,12 +540,9 @@ def display_hist(**kwargs):
 
     alpha = kwargs.get("alpha", 0.05)
 
-    if external_axes is None:
-        _, ax = plt.subplots(
-            figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
-        )
-    else:
-        ax = external_axes[0]
+    _, ax = plt.subplots(
+        figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
+    )
 
     ax = rp.plot_hist(data, w=pd.Series(weights).to_frame(), alpha=alpha, ax=ax)
     ax.legend(fontsize="x-small", loc="best")
@@ -577,8 +563,7 @@ def display_hist(**kwargs):
     title += ax.get_title(loc="left")
     ax.set_title(title)
 
-    if external_axes is None:
-        theme.visualize_output()
+    return theme.visualize_output(force_tight_layout=True, external_axes=external_axes)
 
 
 @log_start_end(log=logger)
@@ -591,12 +576,9 @@ def display_dd(**kwargs):
 
     alpha = get_kwarg("alpha", kwargs)
 
-    if external_axes is None:
-        _, ax = plt.subplots(
-            figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
-        )
-    else:
-        ax = external_axes[0]
+    _, ax = plt.subplots(
+        figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
+    )
 
     nav = data.cumsum()
     ax = rp.plot_drawdown(nav=nav, w=pd.Series(weights).to_frame(), alpha=alpha, ax=ax)
@@ -623,8 +605,7 @@ def display_dd(**kwargs):
     title += ax.get_title(loc="left")
     ax.set_title(title)
 
-    if external_axes is None:
-        theme.visualize_output()
+    return theme.visualize_output(force_tight_layout=True, external_axes=external_axes)
 
 
 @log_start_end(log=logger)
@@ -661,12 +642,9 @@ def display_pie(**kwargs):
     total_size = np.sum(sizes)
     colors = theme.get_colors()
 
-    if external_axes is None:
-        _, ax = plt.subplots(
-            figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
-        )
-    else:
-        ax = external_axes[0]
+    _, ax = plt.subplots(
+        figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
+    )
 
     if math.isclose(sum(sizes), 1, rel_tol=0.1):
         _, _, autotexts = ax.pie(
@@ -731,8 +709,7 @@ def display_pie(**kwargs):
     title += "Portfolio Composition"
     ax.set_title(title)
 
-    if external_axes is None:
-        theme.visualize_output()
+    return theme.visualize_output(force_tight_layout=True, external_axes=external_axes)
 
 
 @log_start_end(log=logger)

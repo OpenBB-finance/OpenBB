@@ -2175,12 +2175,9 @@ def display_ef(
     try:
         risk_free_rate = risk_free_rate / time_factor[freq.upper()]
 
-        if external_axes is None:
-            _, ax = plt.subplots(
-                figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
-            )
-        else:
-            ax = external_axes[0]
+        _, ax = plt.subplots(
+            figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
+        )
 
         ax = rp.plot_frontier(
             w_frontier=frontier,
@@ -2277,8 +2274,10 @@ def display_ef(
         ax1 = ax.get_figure().axes
         ll, bb, ww, hh = ax1[-1].get_position().bounds
         ax1[-1].set_position([ll * 1.02, bb, ww, hh])
-        if external_axes is None:
-            theme.visualize_output(force_tight_layout=False)
+
+        return theme.visualize_output(
+            force_tight_layout=False, external_axes=external_axes
+        )
     except Exception as _:
         console.print("[red]Error plotting efficient frontier.[/red]")
 
@@ -3644,12 +3643,9 @@ def pie_chart_weights(
     total_size = np.sum(sizes)
     colors = theme.get_colors()
 
-    if external_axes is None:
-        _, ax = plt.subplots(
-            figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
-        )
-    else:
-        ax = external_axes[0]
+    _, ax = plt.subplots(
+        figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
+    )
 
     if math.isclose(sum(sizes), 1, rel_tol=0.1):
         _, _, autotexts = ax.pie(
@@ -3714,8 +3710,7 @@ def pie_chart_weights(
     title += "Portfolio Composition"
     ax.set_title(title)
 
-    if external_axes is None:
-        theme.visualize_output()
+    return theme.visualize_output(force_tight_layout=True, external_axes=external_axes)
 
 
 @log_start_end(log=logger)
@@ -3868,12 +3863,9 @@ def additional_plots(
         pie_chart_weights(weights, title_opt, external_axes)
 
     if hist:
-        if external_axes is None:
-            _, ax = plt.subplots(
-                figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
-            )
-        else:
-            ax = external_axes[0]
+        _, ax = plt.subplots(
+            figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
+        )
 
         ax = rp.plot_hist(data, w=pd.Series(weights).to_frame(), alpha=alpha, ax=ax)
         ax.legend(fontsize="x-small", loc="best")
@@ -3894,16 +3886,14 @@ def additional_plots(
         title += ax.get_title(loc="left")
         ax.set_title(title)
 
-        if external_axes is None:
-            theme.visualize_output()
+        return theme.visualize_output(
+            force_tight_layout=False, external_axes=external_axes
+        )
 
     if dd:
-        if external_axes is None:
-            _, ax = plt.subplots(
-                figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
-            )
-        else:
-            ax = external_axes[0]
+        _, ax = plt.subplots(
+            figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
+        )
 
         nav = data.cumsum()
         ax = rp.plot_drawdown(
@@ -3932,16 +3922,14 @@ def additional_plots(
         title += ax.get_title(loc="left")
         ax.set_title(title)
 
-        if external_axes is None:
-            theme.visualize_output()
+        return theme.visualize_output(
+            force_tight_layout=False, external_axes=external_axes
+        )
 
     if rc_chart:
-        if external_axes is None:
-            _, ax = plt.subplots(
-                figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
-            )
-        else:
-            ax = external_axes[0]
+        _, ax = plt.subplots(
+            figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
+        )
 
         ax = rp.plot_risk_con(
             w=pd.Series(weights).to_frame(),
@@ -3968,8 +3956,9 @@ def additional_plots(
         title += ax.get_title(loc="left")
         ax.set_title(title)
 
-        if external_axes is None:
-            theme.visualize_output()
+        return theme.visualize_output(
+            force_tight_layout=False, external_axes=external_axes
+        )
 
     if heat:
         if len(weights) == 1:
@@ -3979,12 +3968,9 @@ def additional_plots(
             )
             return
 
-        if external_axes is None:
-            _, ax = plt.subplots(
-                figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
-            )
-        else:
-            ax = external_axes[0]
+        _, ax = plt.subplots(
+            figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
+        )
 
         if len(weights) <= 3:
             number_of_clusters = len(weights)
@@ -4047,8 +4033,9 @@ def additional_plots(
         title += ax[3].get_title(loc="left")
         ax[3].set_title(title)
 
-        if external_axes is None:
-            theme.visualize_output(force_tight_layout=True)
+        return theme.visualize_output(
+            force_tight_layout=False, external_axes=external_axes
+        )
 
 
 def display_show(weights: Dict, tables: List[str], categories_dict: Dict[Any, Any]):
