@@ -21,7 +21,10 @@ jobs:
     runs-on: ${{ matrix.items.os }}
     strategy:
       matrix:
-        items: [{os: [self-hosted, macos, ARM64], name: "OpenBBM1.pkg"},{os: [self-hosted, macos, x64], name: "OpenBBIntel.pkg"}]
+        items: [
+          {os: [self-hosted, macos, ARM64], name: "OpenBBM1.pkg"}
+          # {os: [self-hosted, macos, x64], name: "OpenBBIntel.pkg"}
+        ]
     steps:
       # Checkout repository main branch. this allows for the commit hashes to line up
       - name: Checkout
