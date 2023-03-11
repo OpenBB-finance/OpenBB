@@ -95,9 +95,7 @@ def show_indices(
                 )
 
     if len(indices) < 2:
-        fig.update_layout(
-            title=f"Indices - {' - '.join(new_title)}", yaxis=dict(side="right")
-        )
+        fig.update_layout(title=f"{' - '.join(new_title)}", yaxis=dict(side="right"))
     fig.show(external=external_axes)
 
     if raw:
