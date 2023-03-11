@@ -64,11 +64,13 @@ def show_indices(
 
     indices_data = get_indices(indices, interval, start_date, end_date, column, returns)
 
-    fig = OpenBBFigure(title="Indices", yaxis=dict(side="right"))
+    fig = OpenBBFigure(title="Indices")
+
+    new_title = []
 
     for index in indices:
         label = INDICES[index.lower()]["name"] if index.lower() in INDICES else index
-
+        new_title.append(label)
         if not indices_data[index].empty:
             if returns:
                 indices_data.index.name = "date"
@@ -92,7 +94,11 @@ def show_indices(
                     name=label,
                 )
 
-            fig.show(external=external_axes)
+    if len(indices) < 2:
+        fig.update_layout(
+            title=f"Indices - {' - '.join(new_title)}", yaxis=dict(side="right")
+        )
+    fig.show(external=external_axes)
 
     if raw:
         # was a -iloc so we need to flip the index as we use head
