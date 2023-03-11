@@ -5,19 +5,27 @@ import CloseIcon from "../Icons/Close";
 
 export default function PlayButton({ text, pathname }) {
 
-  const pathvalue = pathname.split("/")[3];
-  const platform = pathname.split("/")[2];
-  const imgname = text.split(" ")[0].toLowerCase().replace("/", "");
+  const pathvalue = pathname.split("/")[4];
+  const platform = pathname.split("/")[3];
+  var imgname = "c3m"
 
-  //TODO - Point this to s3 bucket - need to talk to Luqman
-  const img5 = `/img/${platform}/${pathvalue}/${imgname}.png`;
+  // TODO - Check these - make sure they all work - So far need to do a special case for these 2
+  // menus as we don't do the same thing for them as we do for the other pages
+  if (pathvalue === "chart" || "general") {
+    imgname = text.split(" ")[0].toLowerCase().replace("/", "");
+  } else {
+    try{
+      imgname = text.split(" ")[1].toLowerCase().replace("/", "");
+    } catch (e) {
+      imgname = text.split(" ")[0].toLowerCase().replace("/", "");
+    }
+  }
 
-  //`https://openbb-web-assets.s3.amazonaws.com/docs/${platform}/${pathvalue}/${imgname}.png`
+  //console.log(platform)
+  //console.log(pathvalue)
+  //console.log(imgname)
 
-  /*console.log("TEXT")
-  console.log(imgname);
-  console.log("pathvalue");
-  console.log(pathvalue);*/
+  const img5 = `https://openbb-assets.s3.amazonaws.com/${platform}/${pathvalue}/${imgname}.png`;
 
   return (
     <DialogPrimitive.Root>
