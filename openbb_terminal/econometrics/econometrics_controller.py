@@ -117,6 +117,7 @@ class EconometricsController(BaseController):
         self.files: List[str] = list()
         self.datasets: Dict[str, pd.DataFrame] = dict()
         self.regression: Dict[Any[Dict, Any], Any] = dict()
+        self.ndays = 5
 
         self.DATA_TYPES: List[str] = ["int", "float", "str", "bool", "category", "date"]
 
