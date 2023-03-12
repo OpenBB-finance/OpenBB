@@ -18,11 +18,11 @@ from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.econometrics import (
+    econometrics_helpers,
     econometrics_model,
     econometrics_view,
     regression_model,
     regression_view,
-    econometrics_helpers,
 )
 from openbb_terminal.forecast.forecast_controller import check_greater_than_one
 from openbb_terminal.helper_funcs import (
