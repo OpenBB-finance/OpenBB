@@ -22,7 +22,9 @@ from openbb_terminal.econometrics import (
     econometrics_view,
     regression_model,
     regression_view,
+    econometrics_helpers,
 )
+from openbb_terminal.forecast.forecast_controller import check_greater_than_one
 from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_FIGURES_ALLOWED,
@@ -33,6 +35,7 @@ from openbb_terminal.helper_funcs import (
     check_positive_float,
     export_data,
     print_rich_table,
+    valid_date,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
@@ -54,12 +57,16 @@ class EconometricsController(BaseController):
         "show",
         "type",
         "desc",
+        "corr",
+        "season",
         "index",
         "clean",
         "add",
+        "eval",
         "delete",
         "combine",
         "rename",
+        "lag",
         "ols",
         "norm",
         "root",
@@ -258,12 +265,16 @@ class EconometricsController(BaseController):
         mt.add_cmd("plot", self.files)
         mt.add_cmd("type", self.files)
         mt.add_cmd("desc", self.files)
+        mt.add_cmd("corr", self.files)
+        mt.add_cmd("season", self.files)
         mt.add_cmd("index", self.files)
         mt.add_cmd("clean", self.files)
         mt.add_cmd("add", self.files)
+        mt.add_cmd("eval", self.files)
         mt.add_cmd("delete", self.files)
         mt.add_cmd("combine", self.files)
         mt.add_cmd("rename", self.files)
+        mt.add_cmd("lag", self.files)
         mt.add_cmd("export", self.files)
         mt.add_info("_tests_")
         mt.add_cmd("norm", self.files)
@@ -281,6 +292,329 @@ class EconometricsController(BaseController):
 
         console.print(text=mt.menu_text, menu="Econometrics")
         console.print()
+
+    def add_standard_args(
+        self,
+        parser: argparse.ArgumentParser,
+        target_dataset: bool = False,
+        target_column: bool = False,
+        period: Optional[int] = None,
+        n_days: bool = False,
+        seasonal: Optional[str] = None,
+        periods: bool = False,
+        window: bool = False,
+        train_split: bool = False,
+        input_chunk_length: bool = False,
+        output_chunk_length: bool = False,
+        force_reset: bool = False,
+        save_checkpoints: bool = False,
+        model_save_name: Optional[str] = None,
+        n_epochs: bool = False,
+        model_type: bool = False,
+        dropout: Optional[float] = None,
+        batch_size: Optional[int] = None,
+        learning_rate: bool = False,
+        past_covariates: bool = False,
+        all_past_covariates: bool = False,
+        lags: bool = False,
+        hidden_size: int = 0,
+        n_jumps: bool = False,
+        end: bool = False,
+        start: bool = False,
+        residuals: bool = False,
+        forecast_only: bool = False,
+        naive: bool = False,
+        explainability_raw: bool = False,
+        export_pred_raw: bool = False,
+        metric: bool = False,
+    ):
+        if hidden_size:
+            parser.add_argument(
+                "--hidden-size",
+                action="store",
+                dest="hidden_size",
+                default=hidden_size,
+                type=check_positive,
+                help="Size for feature maps for each hidden RNN layer (h_n)",
+            )
+        if past_covariates:
+            parser.add_argument(
+                "--past-covariates",
+                action="store",
+                dest="past_covariates",
+                default=None,
+                type=str,
+                help="Past covariates(columns/features) in same dataset. Comma separated.",
+            )
+        if all_past_covariates:
+            parser.add_argument(
+                "--all-past-covariates",
+                action="store_true",
+                dest="all_past_covariates",
+                default=False,
+                help="Adds all rows as past covariates except for date and the target column.",
+            )
+        if naive:
+            parser.add_argument(
+                "--naive",
+                action="store_true",
+                dest="naive",
+                default=False,
+                help="Show the naive baseline for a model.",
+            )
+        if target_dataset:
+            parser.add_argument(
+                "-d",
+                "--dataset",
+                help="The name of the dataset you want to select",
+                dest="target_dataset",
+                type=str,
+                choices=list(self.datasets.keys()),
+            )
+        if target_column:
+            parser.add_argument(
+                "-c",
+                "--target-column",
+                help="The name of the specific column you want to use",
+                dest="target_column",
+                type=str,
+                default="close",
+            )
+        if period is not None:
+            parser.add_argument(
+                "--period",
+                help="The period to use",
+                dest="period",
+                type=check_greater_than_one,
+                default=period,
+            )
+        if n_days:
+            parser.add_argument(
+                "-n",
+                "--n-days",
+                action="store",
+                dest="n_days",
+                type=check_positive,
+                default=self.ndays,
+                help="prediction days.",
+            )
+        if seasonal is not None:
+            parser.add_argument(
+                "-s",
+                "--seasonal",
+                action="store",
+                dest="seasonal",
+                choices=["N", "A", "M"],
+                default=seasonal,
+                help="Seasonality: N: None, A: Additive, M: Multiplicative.",
+            )
+        if periods:
+            parser.add_argument(
+                "-p",
+                "--periods",
+                action="store",
+                dest="seasonal_periods",
+                type=check_positive,
+                default=7,
+                help="Seasonal periods: 4: Quarterly, 7: Daily",
+            )
+        if window:
+            parser.add_argument(
+                "-w",
+                "--window",
+                action="store",
+                dest="start_window",
+                default=0.85,
+                type=check_positive_float,
+                help="Start point for rolling training and forecast window. 0.0-1.0",
+            )
+        if train_split:
+            parser.add_argument(
+                "-t",
+                "--train-split",
+                action="store",
+                dest="train_split",
+                default=0.85,
+                type=check_positive_float,
+                help="Start point for rolling training and forecast window. 0.0-1.0",
+            )
+        if input_chunk_length:
+            parser.add_argument(
+                "-i",
+                "--input-chunk-length",
+                action="store",
+                dest="input_chunk_length",
+                default=14,
+                type=check_positive,
+                help="Number of past time steps for forecasting module at prediction time.",
+            )
+        if output_chunk_length:
+            parser.add_argument(
+                "-o",
+                "--output-chunk-length",
+                action="store",
+                dest="output_chunk_length",
+                default=5,
+                type=check_positive,
+                help="The length of the forecast of the model.",
+            )
+        if force_reset:
+            parser.add_argument(
+                "--force-reset",
+                action="store",
+                dest="force_reset",
+                default=True,
+                type=bool,
+                help="""If set to True, any previously-existing model with the same name will be reset
+                        (all checkpoints will be discarded).""",
+            )
+        if save_checkpoints:
+            parser.add_argument(
+                "--save-checkpoints",
+                action="store",
+                dest="save_checkpoints",
+                default=True,
+                type=bool,
+                help="Whether to automatically save the untrained model and checkpoints.",
+            )
+        if model_save_name is not None:
+            parser.add_argument(
+                "--model-save-name",
+                type=str,
+                action="store",
+                dest="model_save_name",
+                default=model_save_name,
+                help="Name of the model to save.",
+            )
+        if n_epochs:
+            parser.add_argument(
+                "--n-epochs",
+                action="store",
+                dest="n_epochs",
+                default=300,
+                type=check_positive,
+                help="Number of epochs over which to train the model.",
+            )
+        if model_type:
+            parser.add_argument(
+                "--model-type",
+                type=str,
+                action="store",
+                dest="model_type",
+                default="LSTM",
+                help='Enter a string specifying the RNN module type ("RNN", "LSTM" or "GRU")',
+            )
+        if dropout is not None:
+            parser.add_argument(
+                "--dropout",
+                action="store",
+                dest="dropout",
+                default=dropout,
+                type=check_positive_float,
+                help="Fraction of neurons affected by Dropout, from 0 to 1.",
+            )
+        if batch_size is not None:
+            parser.add_argument(
+                "--batch-size",
+                action="store",
+                dest="batch_size",
+                default=batch_size,
+                type=check_positive,
+                help="Number of time series (input and output) used in each training pass",
+            )
+        if end:
+            parser.add_argument(
+                "--end",
+                action="store",
+                type=valid_date,
+                dest="s_end_date",
+                default=None,
+                help="The end date (format YYYY-MM-DD) to select for testing",
+            )
+        if start:
+            parser.add_argument(
+                "--start",
+                action="store",
+                type=valid_date,
+                dest="s_start_date",
+                default=None,
+                help="The start date (format YYYY-MM-DD) to select for testing",
+            )
+        if learning_rate:
+            parser.add_argument(
+                "--learning-rate",
+                action="store",
+                dest="learning_rate",
+                default=1e-3,
+                type=check_positive_float,
+                help="Learning rate during training.",
+            )
+        if n_jumps:
+            parser.add_argument(
+                "-j",
+                "--jumps",
+                action="store",
+                dest="n_jumps",
+                type=check_positive,
+                default=1,
+                help="number of jumps in training data.",
+            )
+        if lags:
+            parser.add_argument(
+                "--lags",
+                action="store",
+                dest="lags",
+                type=check_greater_than_one,
+                default=14,
+                help="Lagged target values used to predict the next time step.",
+            )
+        if residuals:
+            parser.add_argument(
+                "--residuals",
+                help="Show the residuals for the model.",
+                action="store_true",
+                default=False,
+                dest="residuals",
+            )
+        if forecast_only:
+            parser.add_argument(
+                "--forecast-only",
+                help="Do not plot the historical data without forecasts.",
+                action="store_true",
+                default=False,
+                dest="forecast_only",
+            )
+        if explainability_raw:
+            parser.add_argument(
+                "--explainability-raw",
+                action="store_true",
+                dest="explainability_raw",
+                default=False,
+                help="Prints out a raw dataframe showing explainability results.",
+            )
+
+        if export_pred_raw:
+            parser.add_argument(
+                "--export-pred-raw",
+                action="store_true",
+                dest="export_pred_raw",
+                default=False,
+                help="Export predictions to a csv file.",
+            )
+
+        if metric:
+            parser.add_argument(
+                "--metric",
+                type=str,
+                action="store",
+                dest="metric",
+                default="mape",
+                choices=["rmse", "mse", "mape", "smape"],
+                help="Calculate precision based on a specific metric (rmse, mse, mape)",
+            )
+
+            # if user does not put in --dataset
+        return parser
 
     def custom_reset(self):
         """Class specific component of reset command"""
@@ -670,8 +1004,114 @@ class EconometricsController(BaseController):
                     console.print("Empty dataset")
 
     @log_start_end(log=logger)
+    def call_corr(self, other_args: List[str]):
+        """Process correlation command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="corr",
+            description="Plot correlation coefficients.",
+        )
+
+        # if user does not put in --dataset
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "--dataset")
+
+        parser = self.add_standard_args(parser, target_dataset=True)
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            EXPORT_ONLY_FIGURES_ALLOWED,
+        )
+
+        if ns_parser:
+            # check proper file name is provided
+            if not ns_parser.target_dataset:
+                console.print("[red]Please enter valid dataset.\n[/red]")
+                return
+
+            data = self.datasets[ns_parser.target_dataset]
+
+            econometrics_view.display_corr(
+                data,
+                ns_parser.export,
+            )
+
+    @log_start_end(log=logger)
+    def call_season(self, other_args: List[str]):
+        """Process season command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="season",
+            description="The seasonality for a given column",
+        )
+        parser.add_argument(
+            "-v",
+            "--values",
+            help="Dataset.column values to be displayed in a plot",
+            dest="values",
+            choices={
+                f"{dataset}.{column}": {column: None, dataset: None}
+                for dataset, dataframe in self.datasets.items()
+                for column in dataframe.columns
+            },
+            type=str,
+        )
+        parser.add_argument(
+            "-m",
+            help="A time lag to highlight on the plot",
+            dest="m",
+            type=int,
+            default=None,
+        )
+        parser.add_argument(
+            "--max_lag",
+            help="The maximal lag order to consider",
+            dest="max_lag",
+            type=int,
+            default=24,
+        )
+        parser.add_argument(
+            "-a",
+            "--alpha",
+            help="The confidence interval to display",
+            dest="alpha",
+            type=float,
+            default=0.05,
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-v")
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
+        )
+
+        if not ns_parser:
+            return
+
+        if not ns_parser.values:
+            console.print("[red]Please enter valid dataset.\n[/red]")
+            return
+
+        try:
+            dataset, col = ns_parser.values.split(".")
+            data = self.datasets[dataset]
+        except ValueError:
+            console.print("[red]Please enter 'dataset'.'column'.[/red]\n")
+            return
+
+        econometrics_view.display_seasonality(
+            data=data,
+            column=col,
+            export=ns_parser.export,
+            m=ns_parser.m,
+            max_lag=ns_parser.max_lag,
+            alpha=ns_parser.alpha,
+        )
+
+    @log_start_end(log=logger)
     def call_type(self, other_args: List[str]):
-        """Process type"""
+        """Process type command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -745,7 +1185,7 @@ class EconometricsController(BaseController):
 
     @log_start_end(log=logger)
     def call_index(self, other_args: List[str]):
-        """Process index"""
+        """Process index command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -863,7 +1303,7 @@ class EconometricsController(BaseController):
 
     @log_start_end(log=logger)
     def call_clean(self, other_args: List[str]):
-        """Process clean"""
+        """Process clean command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -913,7 +1353,7 @@ class EconometricsController(BaseController):
 
     @log_start_end(log=logger)
     def call_add(self, other_args: List[str]):
-        """Process add"""
+        """Process add command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -1017,8 +1457,103 @@ class EconometricsController(BaseController):
         console.print()
 
     @log_start_end(log=logger)
+    def call_lag(self, other_args: List[str]):
+        """Process lag command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="lag",
+            description="Add lag to a variable by shifting a column.",
+        )
+        parser.add_argument(
+            "-v",
+            "--values",
+            help="Dataset.column values to add lag to.",
+            dest="values",
+            choices={
+                f"{dataset}.{column}": {column: None, dataset: None}
+                for dataset, dataframe in self.datasets.items()
+                for column in dataframe.columns
+            },
+            type=str,
+            required="-h" not in other_args,
+        )
+        parser.add_argument(
+            "-l",
+            "--lags",
+            action="store",
+            dest="lags",
+            type=check_positive,
+            help="How many periods to lag the selected column.",
+            required="-h" not in other_args,
+        )
+        parser.add_argument(
+            "-f",
+            "--fill-value",
+            action="store",
+            dest="fill_value",
+            help="The value used for filling the newly introduced missing values.",
+        )
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-v")
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, export_allowed=NO_EXPORT
+        )
+
+        if not ns_parser:
+            return
+
+        try:
+            dataset, col = ns_parser.values.split(".")
+            data = self.datasets[dataset]
+        except ValueError:
+            console.print("[red]Please enter 'dataset'.'column'.[/red]\n")
+            return
+
+        data[col] = data[col].shift(ns_parser.lags, fill_value=ns_parser.fill_value)
+        self.datasets[dataset] = data
+
+    @log_start_end(log=logger)
+    def call_eval(self, other_args):
+        """Process eval command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="eval",
+            description="""Create custom data column from loaded datasets.  Can be mathematical expressions supported
+                by pandas.eval() function.
+
+                Example.  If I have loaded `fred DGS2,DGS5` and I want to create a new column that is the difference
+                between these two, I can create a new column by doing `eval spread = DGS2 - DGS5`.
+                Notice that the command is case sensitive, i.e., `DGS2` is not the same as `dgs2`.
+                """,
+        )
+        parser.add_argument(
+            "-q",
+            "--query",
+            type=str,
+            nargs="+",
+            dest="query",
+            required="-h" not in other_args,
+            help="Query to evaluate on loaded datasets",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-q")
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            self.datasets = econometrics_helpers.create_new_entry(
+                self.datasets, " ".join(ns_parser.query)
+            )
+            self.update_runtime_choices()
+            self.update_loaded()
+
+    @log_start_end(log=logger)
     def call_delete(self, other_args: List[str]):
-        """Process add"""
+        """Process delete command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -1059,7 +1594,7 @@ class EconometricsController(BaseController):
 
     @log_start_end(log=logger)
     def call_combine(self, other_args: List[str]):
-        """Process combine"""
+        """Process combine command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -1117,7 +1652,7 @@ class EconometricsController(BaseController):
 
     @log_start_end(log=logger)
     def call_rename(self, other_args: List[str]):
-        """Process rename"""
+        """Process rename command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
