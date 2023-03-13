@@ -1,12 +1,15 @@
+import re
 from datetime import date, datetime, timedelta
 from inspect import signature
-from typing import Any, Callable
+from typing import Any, Callable, Optional, Union
 from unittest.mock import patch
 
 import pandas as pd
 import streamlit as st
 import yfinance as yf
+from rich.table import Table
 
+from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.forecast import helpers
 from openbb_terminal.rich_config import console
 from openbb_terminal.sdk import openbb
@@ -46,8 +49,18 @@ feat_engs = {
 # pylint: enable=E1101
 
 # Add these: "1m", "2m", "5m", "15m", "30m", "60m", "90m", "1h",
-
 interval_opts = ["1d", "5d", "1wk", "1mo", "3mo"]
+REGEX_RICH = re.compile(r"\[\/{0,1}[a-zA-Z0-9#]+\]|\[\/\]")
+EXPLAINABILITY_FIGURE: Union[OpenBBFigure, None] = None
+
+# Rows and columns for the dashboard layout
+st.title("OpenBB Forecasting")  # Title does not like being in a column
+r1c1, r1c2, r1c3, r1c4, r1c5 = st.columns([2, 1, 1, 1, 1])
+r2c1, r2c2, r2c3 = st.columns([1, 1, 1])
+st.markdown("""---""")
+forecast_button = st.button("Get forecast")
+plotly_chart, table_container = st.columns([4, 1])
+explainability = st.container()
 
 
 def format_df(df: pd.DataFrame) -> pd.DataFrame:
@@ -69,65 +82,40 @@ def load_state(name: str, default: Any):
         st.session_state[name] = default
 
 
-def special_st(text: str):
-    if "[green]" not in text:
-        st.write(text)
+def rich_to_dataframe(table: Table) -> pd.DataFrame:
+    columns = [column.header for column in table.columns]
+    rows: dict = {column: [] for column in columns}
+    for column in table.columns:
+        for cell in column.cells:
+            text: str = re.sub(REGEX_RICH, "", cell)  # type: ignore
+            rows[column.header].append(text)
+
+    df = pd.DataFrame(rows, columns=columns)
+    if "Datetime" in df.columns:
+        df.index = pd.to_datetime(df["Datetime"]).dt.date
+        df.drop("Datetime", axis=1, inplace=True)
+
+    return df
 
 
-def run_forecast(
-    data: pd.DataFrame,
-    model: str,
-    target_column: str,
-    past_covariates: list[str],
-    n_predict: int,
-):
-    if helpers.check_data(data, target_column):
-        # TODO: let the user choose their own n_predict
-        kwargs: dict[str, Any] = {}
-        forecast_model = model_opts[model]
-        contains_covariates = has_parameter(forecast_model, "past_covariates")
-        if contains_covariates and past_covariates != []:
-            kwargs["past_covariates"] = ",".join(past_covariates)
-        if has_parameter(forecast_model, "output_chunk_length"):
-            kwargs["output_chunk_length"] = n_predict
+def special_st(text: Optional[str] = None) -> Optional[str]:
+    if isinstance(text, Table):
+        with table_container:
+            st.table(rich_to_dataframe(text))
+    elif isinstance(text, str) and "[green]" in text:
+        st.success(re.sub(REGEX_RICH, "", text))
 
-        # n_predict and output_chunk_length must be the same if there are past covariates
-        # run a spinner while we wait for the model to run
-        with st.spinner("Running model..."):
-            response = forecast_model(
-                data=data,
-                target_column=target_column,
-                n_predict=n_predict,
-                **kwargs,
-            )
-        if model == "theta":
-            (
-                ticker_series,
-                historical_fcast,
-                predicted_values,
-                precision,
-                _,
-                _model,
-            ) = response
-        else:
-            (
-                ticker_series,
-                historical_fcast,
-                predicted_values,
-                precision,
-                _model,
-            ) = response
-        del precision
-        if model in ["expo", "linregr", "rnn", "tft"]:
-            predicted_values = predicted_values.quantile_df()[f"{target_column}_0.5"]
-        else:
-            predicted_values = predicted_values.pd_dataframe()[target_column]
-        return (
-            historical_fcast.pd_dataframe(),
-            ticker_series.pd_dataframe(),
-            pd.DataFrame(predicted_values),
-        )
-    return pd.DataFrame(), pd.DataFrame(), pd.DataFrame()
+    return text
+
+
+def mock_show(self: OpenBBFigure, *args, **kwargs):  # pylint: disable=W0613
+    if "Target" not in self.layout.title.text:
+        return self
+
+    # pylint: disable=W0603
+    global EXPLAINABILITY_FIGURE
+    EXPLAINABILITY_FIGURE = self
+    return self
 
 
 class Handler:
@@ -147,61 +135,125 @@ class Handler:
     def handle_changes(
         self,
         past_covariates: list[str],
-        start,
-        end,
-        interval,
-        tickers,
-        target_column,
-        model,
-        n_predict,
-        naive,
-        forecast_only,
+        start: date,
+        end: date,
+        interval: str,
+        tickers: str,
+        target_column: str,
+        model: str,
+        n_predict: int,
+        naive: bool,
+        forecast_only: bool,
     ):
         del naive, forecast_only
-        if tickers and target_column:
-            start_n = datetime(start.year, start.month, start.day).date()
-            end_n = datetime(end.year, end.month, end.day).date()
+        if not tickers and not target_column:
+            return
 
-            if interval in ["1d", "5d", "1wk", "1mo", "3mo"]:
-                result = st.session_state["df"].loc[
-                    (st.session_state["df"]["date"].dt.date >= start_n)
-                    & (st.session_state["df"]["date"].dt.date <= end_n)
-                ]
-            else:
-                result = st.session_state["df"]
+        start_n = datetime(start.year, start.month, start.day).date()
+        end_n = datetime(end.year, end.month, end.day).date()
 
-            # we format the datatime column to be a string
-            # otherwise the model will throw an error
-            result["date"] = result["date"].dt.date.astype(str)
+        if interval in ["1d", "5d", "1wk", "1mo", "3mo"]:
+            result = st.session_state["df"].loc[
+                (st.session_state["df"]["date"].dt.date >= start_n)
+                & (st.session_state["df"]["date"].dt.date <= end_n)
+            ]
+        else:
+            result = st.session_state["df"]
 
-            if not target_column:
-                target_column = st.session_state["df"].columns[0]
-            with patch.object(console, "print", special_st):
-                if helpers.check_data(result, target_column):
-                    final_df = helpers.clean_data(result)
-                    hist_fcast, tick_series, pred_vals = run_forecast(
-                        final_df, model, target_column, past_covariates, n_predict
+        # we format the datatime column to be a string
+        # otherwise the model will throw an error
+        result["date"] = result["date"].dt.date.astype(str)
+
+        if not target_column:
+            target_column = st.session_state["df"].columns[0]
+
+        with patch.object(console, "print", special_st):
+            if helpers.check_data(result, target_column):
+                final_df = helpers.clean_data(result)
+                kwargs: dict[str, Any] = {}
+
+                forecast_model = model_opts[model]
+                contains_covariates = has_parameter(forecast_model, "past_covariates")
+                if contains_covariates and past_covariates != []:
+                    kwargs["past_covariates"] = ",".join(past_covariates)
+                if has_parameter(forecast_model, "output_chunk_length"):
+                    kwargs["output_chunk_length"] = n_predict
+
+                if final_df.empty:
+                    st.warning("There was an error with the data")
+                    return
+
+                # n_predict and output_chunk_length must be the same if there are past covariates
+                # run a spinner while we wait for the model to run
+                kwargs = dict(
+                    data=final_df,
+                    target_column=target_column,
+                    n_predict=n_predict,
+                    dataset_name=tickers.upper(),
+                    **kwargs,
+                    external_axes=True,
+                )
+
+                with st.spinner("Running model..."):
+                    with patch.object(OpenBBFigure, "show", mock_show):
+                        fig: OpenBBFigure = getattr(openbb.forecast, f"{model}_chart")(
+                            **kwargs
+                        )
+
+                with plotly_chart:
+                    dt_now = datetime.now().strftime("%Y%m%d_%H%M%S")
+                    filename = (
+                        f"{dt_now}_{tickers}_{model}_{target_column.replace(' ', '_')}"
                     )
-                    hist_fcast.columns = ["Historical Forecast"]
-                    tick_series.columns = ["Past Prices"]
-                    pred_vals.columns = ["Prediction Values"]
-                    final = pd.concat(
-                        [hist_fcast, tick_series, pred_vals], axis=1, join="outer"
-                    )
-                    if not final.empty:
-                        if helpers.check_dates(pred_vals.index.to_series()):
-                            pred_vals.index = pred_vals.index.date
-                        rowc1, rowc2 = st.columns([4, 1])
-                        # Styled write() with sig figs
-                        with rowc2:
-                            st.write(
-                                pred_vals.style.format({"Prediction Values": "{:.2f}"})
-                            )
-                        with rowc1:
-                            st.line_chart(final)
 
-                    else:
-                        st.write("There was an error with the data")
+                    fig.update_layout(
+                        title=dict(x=0.5, xanchor="center", yanchor="top", y=0.99),
+                        showlegend=True,
+                        margin=dict(t=40),
+                        height=500,
+                        legend=dict(
+                            bgcolor="rgba(0,0,0,0.5)",
+                            bordercolor="#F5EFF3",
+                            borderwidth=1,
+                            x=0.99,
+                            xanchor="right",
+                        ),
+                    )
+                    fig.show(external=True)
+                    st.plotly_chart(
+                        fig,
+                        use_container_width=True,
+                        config=dict(
+                            scrollZoom=True,
+                            displaylogo=False,
+                            toImageButtonOptions=dict(
+                                format="png",
+                                filename=filename,
+                            ),
+                        ),
+                    )
+                with explainability:
+                    if EXPLAINABILITY_FIGURE:
+                        fig2 = EXPLAINABILITY_FIGURE
+
+                        fig2.show(external=True)
+                        fig2.update_layout(
+                            margin=dict(r=190, l=30),
+                            showlegend=True,
+                            height=600,
+                            width=1000,
+                        )
+                        st.plotly_chart(
+                            EXPLAINABILITY_FIGURE,
+                            config=dict(
+                                scrollZoom=True,
+                                displaylogo=False,
+                                toImageButtonOptions=dict(
+                                    format="png",
+                                    filename=filename,
+                                ),
+                            ),
+                        )
 
     def handle_eng(self, target, feature):
         self.feature_target = target
@@ -234,22 +286,17 @@ class Handler:
                 st.session_state["df"] = format_df(df)
                 st.session_state["last_tickers"] = tickers
                 st.session_state["last_interval"] = interval
-        st.session_state["widget_options"]["target_widget"] = [
-            x for x in st.session_state["df"] if x != "date"
-        ]
-        st.session_state["widget_options"]["past_covs_widget"] = [
-            x for x in st.session_state["df"] if x != "date"
-        ]
-        st.session_state["widget_options"]["column_widget"] = [
-            x for x in st.session_state["df"] if x != "date"
-        ]
+        st.session_state["widget_options"]["target_widget"] = sorted(
+            [x for x in st.session_state["df"] if x != "date"]
+        )
+        st.session_state["widget_options"]["past_covs_widget"] = sorted(
+            [x for x in st.session_state["df"] if x != "date"]
+        )
+        st.session_state["widget_options"]["column_widget"] = sorted(
+            [x for x in st.session_state["df"] if x != "date"]
+        )
 
     def run(self):
-        st.title("OpenBB Forecasting")  # Title does not like being in a column
-
-        r1c1, r1c2, r1c3, r1c4, r1c5 = st.columns([2, 1, 1, 1, 1])
-        r2c1, r2c2, r2c3 = st.columns([1, 1, 1])
-
         with r1c1:
             ticker = st.text_input(
                 "Ticker", "", key="ticker", on_change=self.on_ticker_change
@@ -268,21 +315,45 @@ class Handler:
             n_predict = st.selectbox(
                 "Prediction Days", index=3, key="n_predict", options=list(range(2, 31))
             )
-        with r2c1:
-            # TODO: disable this if the current model does not allow for it
-            past_covs_widget = st.multiselect(
-                "Past Covariates",
-                options=st.session_state["widget_options"]["past_covs_widget"],
-            )
-        with r2c2:
-            target_widget = st.selectbox(
-                "Target", options=st.session_state["widget_options"]["target_widget"]
-            )
-        with r2c3:
-            model_widget = st.selectbox("Model", options=list(model_opts))
 
-        st.markdown("""---""")
-        if st.button("Get forecast"):
+        model = (
+            "expo"
+            if not hasattr(st.session_state, "model")
+            else st.session_state["model"]
+        )
+        enable_past_covs = has_parameter(model_opts[model], "past_covariates")
+
+        col_order = [r2c3, r2c1, r2c2]
+        if enable_past_covs:
+            col_order = [r2c1, r2c2, r2c3]
+
+        with col_order[1]:
+            target_widget = st.selectbox(
+                "Target",
+                options=st.session_state["widget_options"]["target_widget"],
+            )
+
+        with col_order[2]:
+            model_widget = st.selectbox(
+                "Model",
+                options=list(model_opts),
+                key="model",
+            )
+
+        past_covs_widget = None
+        if enable_past_covs:
+            with col_order[0]:
+                past_covs_widget = st.multiselect(
+                    "Past Covariates",
+                    options=st.session_state["widget_options"]["past_covs_widget"],
+                    disabled=not enable_past_covs,
+                    label_visibility="hidden" if not enable_past_covs else "visible",
+                )
+
+        if forecast_button:
+            # pylint: disable=W0603
+            global EXPLAINABILITY_FIGURE
+            EXPLAINABILITY_FIGURE = None
             if ticker:
                 self.handle_changes(
                     past_covariates=past_covs_widget,
