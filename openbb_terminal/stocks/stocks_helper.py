@@ -240,10 +240,11 @@ def search(
     df = df.iloc[df.isnull().sum(axis=1).mul(1).argsort()]
 
     print_rich_table(
-        df.iloc[:limit] if limit else df,
+        df,
         show_index=True,
         headers=["Name", "Country", "Sector", "Industry Group", "Industry", "Exchange"],
         title=title,
+        limit=limit,
     )
 
     return df

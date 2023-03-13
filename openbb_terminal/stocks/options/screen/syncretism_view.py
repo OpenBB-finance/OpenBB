@@ -159,13 +159,15 @@ def view_historical_greeks(
             )
 
     if raw:
+        df = df.sort_index(ascending=False)
         print_rich_table(
-            df.tail(limit),
+            df,
             headers=df.columns.tolist(),
             title="Historical Greeks",
             show_index=True,
             floatfmt=".4f",
             export=bool(export),
+            limit=limit,
         )
 
     fig = OpenBBFigure.create_subplots(

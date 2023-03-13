@@ -1,3 +1,26 @@
-  Symbol                              Name  Price (Intraday)  Change % Change   Volume Avg Vol (3 month) Market Cap PE Ratio (TTM)
-0   EVBG                  Everbridge, Inc.             62.79  -52.58  -45.58%  11.552M            434143     2.421B               
-1  GCPEF  GCL-Poly Energy Holdings Limited              0.31   -0.09  -22.50%   302071            148762     7.769B               
+   Symbol                                 Name  Price (Intraday)   Change % Change   Volume Avg Vol (3 month) Market Cap PE Ratio (TTM)
+0    EVBG                     Everbridge, Inc.            62.790 -52.5800  -45.58%  11.552M            434143     2.421B               
+1   GCPEF     GCL-Poly Energy Holdings Limited             0.310  -0.0900  -22.50%   302071            148762     7.769B               
+2    FIGS                           FIGS, Inc.            24.780  -6.4300  -20.61%  10.331M            1.981M     4.051B               
+3   DDAIF                           Daimler AG            84.140 -13.4600  -13.79%    29596             20222     90.17B           5.73
+4    GRAB                Grab Holdings Limited             7.060  -1.0200  -12.63%  29.123M            6.092M     26.41B               
+5    UPST               Upstart Holdings, Inc.           160.730 -18.8700  -10.51%   4.758M            4.951M    13.173B         162.52
+6     AMC     AMC Entertainment Holdings, Inc.            26.510  -2.9500  -10.01%  44.772M           43.357M     13.61B               
+7    CHWY                          Chewy, Inc.            51.610  -4.6900   -8.33%   14.06M            3.385M    21.561B        2243.91
+8    BYND                    Beyond Meat, Inc.            64.220  -5.8700   -8.37%   2.898M            3.206M     4.067B               
+9   IUGNF                      Imugene Limited             0.344  -0.0311   -8.29%   143226             98747     2.021B               
+10    GXO                  GXO Logistics, Inc.            85.100  -7.7500   -8.35%   1.595M            712680     9.756B          78.07
+11      W                         Wayfair Inc.           201.190 -17.9400   -8.19%   2.049M             1.39M    21.033B         228.62
+12   ENVX                   Enovix Corporation            28.570  -2.5300   -8.14%   638026            1.183M      4.15B               
+13   BNTX                          BioNTech SE           261.860 -22.3500   -7.86%   3.988M            3.508M    63.507B           8.27
+14   ASAN                          Asana, Inc.            67.760  -6.0400   -8.18%   3.483M             3.42M    12.632B               
+15   HOOD              Robinhood Markets, Inc.            20.240  -1.6700   -7.64%  12.716M            8.582M     16.91B               
+16   TRUP                      Trupanion, Inc.           141.840 -11.0500   -7.23%   676220            374750     5.726B               
+17   OSTK                  Overstock.com, Inc.            72.390  -5.4900   -7.04%   1.035M            1.212M     3.114B           9.42
+18   AMEH        Apollo Medical Holdings, Inc.            73.380  -5.3900   -6.84%   348765            651025     4.076B          45.49
+19   ITCI       Intra-Cellular Therapies, Inc.            35.150  -2.5600   -6.78%   231094            456425     2.864B               
+20   CTRE                 CareTrust REIT, Inc.            20.910  -1.5500   -6.90%   1.065M            724983     2.029B          26.91
+21   SITM                   SiTime Corporation           291.660 -20.4100   -6.54%   172308            346630     5.995B         401.18
+22   PTON            Peloton Interactive, Inc.            38.090  -2.6100   -6.41%  17.354M           12.892M    12.577B               
+23     SE                          Sea Limited           238.700 -16.1000   -6.32%   4.247M            3.932M   132.389B               
+24   MRVI  Maravai LifeSciences Holdings, Inc.            40.010  -2.7000   -6.33%   578302            1.883M     5.259B           8.49

@@ -140,8 +140,8 @@ class ReportController(BaseController):
     @log_start_end(log=logger)
     def call_forecast(self, other_args: List[str]):
         try:
-            # pylint: disable=C0415, W0611
-            import darts  # noqa: F401, E501 # pyright: reportMissingImports=false
+            # noqa: F401, E501 # pylint: disable=C0415,W0611
+            import darts  # noqa # pyright: reportMissingImports=false
 
             FORECASTING_TOOLKIT_ENABLED = True
         except ImportError:

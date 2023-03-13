@@ -56,6 +56,7 @@ def display_open():
     print_rich_table(
         exchanges,
         show_index=True,
+        index_name="Symbol",
         title="[bold]Open markets[/bold]",
     )
 
@@ -76,6 +77,7 @@ def display_closed():
     print_rich_table(
         exchanges,
         show_index=True,
+        index_name="Symbol",
         title="[bold]Closed markets[/bold]",
     )
 
@@ -96,5 +98,6 @@ def display_all():
     print_rich_table(
         exchanges,
         show_index=True,
+        index_name="Symbol",
         title="[bold]World markets[/bold]",
     )

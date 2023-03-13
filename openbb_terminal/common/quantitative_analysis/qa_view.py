@@ -848,12 +848,13 @@ def display_raw(
     df1.index = [x.strftime("%Y-%m-%d") for x in df1.index]
 
     print_rich_table(
-        df1.head(limit),
+        df1,
         headers=[x.title() if x != "" else "Date" for x in df1.columns],
         title="[bold]Raw Data[/bold]",
         show_index=True,
         floatfmt=".3f",
         export=bool(export),
+        limit=limit,
     )
 
     export_data(
