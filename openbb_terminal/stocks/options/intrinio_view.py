@@ -170,12 +170,14 @@ def view_historical_greeks(
             )
 
     if raw:
+        df = df.sort_index(ascending=False)
         print_rich_table(
-            df.tail(limit),
+            df,
             headers=list(df.columns),
             title="Historical Greeks",
             show_index=True,
             export=bool(export),
+            limit=limit,
         )
 
     try:

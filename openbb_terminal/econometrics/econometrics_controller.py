@@ -922,11 +922,12 @@ class EconometricsController(BaseController):
                         df = df.sort_values(by=sort_column, ascending=ns_parser.reverse)
 
                 print_rich_table(
-                    df.head(ns_parser.limit),
+                    df,
                     headers=list(df.columns),
                     show_index=True,
                     title=f"Dataset {name} | Showing {ns_parser.limit} of {len(df)} rows",
                     export=bool(ns_parser.export),
+                    limit=ns_parser.limit,
                 )
 
                 export_data(

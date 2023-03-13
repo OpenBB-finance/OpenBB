@@ -94,12 +94,13 @@ def display_crypto_rates(
     df = df.applymap(lambda x: str(round(100 * x, 2)) + "%" if x != "-" else x)
 
     print_rich_table(
-        df.head(limit),
+        df,
         headers=list(df.columns),
         index_name="Platform",
         show_index=True,
         title=f"Crypto {rate_type.capitalize()} Interest Rates",
         export=bool(export),
+        limit=limit,
     )
 
     export_data(

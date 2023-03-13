@@ -30,11 +30,12 @@ def display_gainers(
 
     if not df_gainers.empty:
         print_rich_table(
-            df_gainers.head(limit),
+            df_gainers,
             headers=list(df_gainers.columns),
             show_index=False,
             title="Gainers",
             export=bool(export),
+            limit=limit,
         )
 
     export_data(
@@ -64,11 +65,12 @@ def display_losers(
 
     if not df_losers.empty:
         print_rich_table(
-            df_losers.head(limit),
+            df_losers,
             headers=list(df_losers.columns),
             show_index=False,
             title="Display Losers",
             export=bool(export),
+            limit=limit,
         )
 
     export_data(
@@ -97,11 +99,12 @@ def display_ugs(
     df = yahoofinance_model.get_ugs()
     if not df.empty:
         print_rich_table(
-            df.head(limit),
+            df,
             headers=list(df.columns),
             show_index=False,
             title="Undervalued Growth Stocks",
             export=bool(export),
+            limit=limit,
         )
 
     export_data(
@@ -131,11 +134,12 @@ def display_gtech(
 
     if not df.empty:
         print_rich_table(
-            df.head(limit),
+            df,
             headers=list(df.columns),
             show_index=False,
             title="Growth Tech Stocks",
             export=bool(export),
+            limit=limit,
         )
 
     export_data(
@@ -165,11 +169,12 @@ def display_active(
 
     if not df.empty:
         print_rich_table(
-            df.head(limit),
+            df,
             headers=list(df.columns),
             show_index=False,
             title="Most Active Stocks",
             export=bool(export),
+            limit=limit,
         )
 
     export_data(
@@ -199,11 +204,12 @@ def display_ulc(
 
     if not df.empty:
         print_rich_table(
-            df.head(limit).dropna(),
+            df.dropna(),
             headers=list(df.columns),
             show_index=False,
             title="Undervalued Large Cap Stocks",
             export=bool(export),
+            limit=limit,
         )
 
     export_data(
@@ -233,11 +239,12 @@ def display_asc(
 
     if not df.empty:
         print_rich_table(
-            df.head(limit).dropna(),
+            df.dropna(),
             headers=list(df.columns),
             show_index=False,
             title="High Growth Small Caps",
             export=bool(export),
+            limit=limit,
         )
 
     export_data(
