@@ -1,7 +1,7 @@
 import asyncio
 import re
 from datetime import date, datetime, timedelta
-from typing import Any, List, Optional, Union
+from typing import Any, List
 from unittest.mock import patch
 
 import pandas as pd
