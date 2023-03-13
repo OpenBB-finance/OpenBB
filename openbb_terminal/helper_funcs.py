@@ -309,11 +309,11 @@ def print_rich_table(
 
     current_user = get_current_user()
 
-    def _get_headers() -> list:
+    def _get_headers(_headers: Union[List[str], pd.Index]) -> List[str]:
         """Check if headers are valid and return them."""
-        output = headers
-        if isinstance(headers, pd.Index):
-            output = list(headers)
+        output = _headers
+        if isinstance(_headers, pd.Index):
+            output = list(_headers)
         if len(output) != len(df.columns):
             log_and_raise(
                 ValueError("Length of headers does not match length of DataFrame")
@@ -325,7 +325,7 @@ def print_rich_table(
         # If headers are provided, use them
         if headers is not None:
             # We check if headers are valid
-            df_outgoing.columns = _get_headers()
+            df_outgoing.columns = _get_headers(headers)
 
         if show_index and index_name not in df_outgoing.columns:
             # If index name is provided, we use it
@@ -364,7 +364,7 @@ def print_rich_table(
             table.add_column(index_name)
 
         if headers is not None:
-            headers = _get_headers()
+            headers = _get_headers(headers)
             for header in headers:
                 table.add_column(str(header))
         else:
