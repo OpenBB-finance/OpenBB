@@ -162,7 +162,7 @@ class AccountController(BaseController):
                     name="OPENBB_SYNC_ENABLED",
                     value=ns_parser.sync,
                 )
-                sync = get_current_user().preferences.SYNC_ENABLED
+                sync = "ON" if get_current_user().preferences.SYNC_ENABLED is True else "OFF"
                 console.print(f"[info]sync:[/info] {sync}")
 
     @log_start_end(log=logger)
