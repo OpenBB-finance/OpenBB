@@ -443,9 +443,13 @@ class PlotlyTA(PltTA):
 
                 fig_new.update(figure.to_plotly_json())
 
-                remaining_subplots = list(
-                    set(plot_indicators[plot_indicators.index(indicator) + 1 :])
-                    - set(self.inchart)
+                remaining_subplots = (
+                    list(
+                        set(plot_indicators[plot_indicators.index(indicator) + 1 :])
+                        - set(self.inchart)
+                    )
+                    if indicator != "ma"
+                    else []
                 )
                 if subplot_row > 5 and remaining_subplots:
                     console.print(

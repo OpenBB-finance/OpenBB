@@ -114,6 +114,7 @@ async def plot_indicators(
             name=f"{ticker} % Change",
             customdata=df_ticker["Close"],
             secondary_y=True,
+            connectgaps=True,
             hovertemplate="Close: %{customdata:.2f}<br>%{y:.2%}",
             yaxis=f"y{rows}",
             showlegend=True,
@@ -187,7 +188,9 @@ class Handler:
             "indicators": [],
             "source": st.session_state["indicators_last_source"],
         }
-        load_state("widget_options", default_opts)
+        for key, value in default_opts.items():
+            load_state(key, value)
+
         self.loop = loop
 
         global MAIN_LOOP
