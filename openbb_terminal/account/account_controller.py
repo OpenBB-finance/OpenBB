@@ -51,7 +51,6 @@ class AccountController(BaseController):
         super().__init__(queue)
         self.ROUTINE_FILES: Dict[str, Path] = {}
         self.REMOTE_CHOICES: List[str] = []
-        self.update_runtime_choices()
 
     def update_runtime_choices(self):
         """Update runtime choices"""
@@ -88,7 +87,6 @@ class AccountController(BaseController):
 
     def print_help(self):
         """Print help"""
-
         mt = MenuText("account/", 100)
         mt.add_info("_info_")
         mt.add_cmd("sync")
@@ -109,6 +107,7 @@ class AccountController(BaseController):
         mt.add_info("_authentication_")
         mt.add_cmd("logout")
         console.print(text=mt.menu_text, menu="Account")
+        self.update_runtime_choices()
 
     @log_start_end(log=logger)
     def call_logout(self, other_args: List[str]) -> None:
@@ -162,7 +161,11 @@ class AccountController(BaseController):
                     name="OPENBB_SYNC_ENABLED",
                     value=ns_parser.sync,
                 )
-                sync = "ON" if get_current_user().preferences.SYNC_ENABLED is True else "OFF"
+                sync = (
+                    "ON"
+                    if get_current_user().preferences.SYNC_ENABLED is True
+                    else "OFF"
+                )
                 console.print(f"[info]sync:[/info] {sync}")
 
     @log_start_end(log=logger)
