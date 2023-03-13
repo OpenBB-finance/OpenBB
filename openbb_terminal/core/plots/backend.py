@@ -109,9 +109,13 @@ class Backend(pywry.PyWry):
     def get_table_html(self) -> str:
         """Get the table html file."""
         if self.table_html.exists():
-            return self.get_table_html()
-
-        return str(self.table_html)
+            return str(self.table_html)
+        console.print(
+            "[bold red]table.html file not found, check the path:[/]"
+            f"[green]{PLOTS_CORE_PATH / 'table.html'}[/]"
+        )
+        self.max_retries = 0  # pylint: disable=W0201
+        raise FileNotFoundError
 
     def get_window_icon(self) -> str:
         """Get the window icon."""
