@@ -66,3 +66,13 @@ class CredentialsModel:
 
     # Others
     OPENBB_PERSONAL_ACCESS_TOKEN: str = "REPLACE_ME"
+
+    def __repr__(self) -> str:
+        """Return string representation of model."""
+        dataclass_repr = ""
+        for key, value in self.__dict__.items():
+            if key.startswith("_"):
+                continue
+            dataclass_repr += f"    {key}='{value}', \n"
+
+        return f"{self.__class__.__name__}(\n{dataclass_repr[:-2]}\n)"
