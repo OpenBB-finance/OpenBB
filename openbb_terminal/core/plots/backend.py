@@ -75,21 +75,23 @@ class Backend(pywry.PyWry):
         for html_file, temp_file in zip(
             ["plotly.html", "table.html"], [self.plotly_html, self.table_html]
         ):
-            with open(PLOTS_CORE_PATH / html_file, encoding="utf-8") as file:  # type: ignore
-                html = file.read()
-                html = html.replace("{{MAIN_PATH}}", str(PLOTS_CORE_PATH.as_uri()))
+            try:
+                with open(PLOTS_CORE_PATH / html_file, encoding="utf-8") as file:  # type: ignore
+                    html = file.read()
+                    html = html.replace("{{MAIN_PATH}}", str(PLOTS_CORE_PATH.as_uri()))
 
-            # We create a temporary file to inject the path to the script tag
-            # This is so we don't have to modify the original file
-            # The file is deleted at program exit.
-            with open(temp_file, "w", encoding="utf-8") as file:  # type: ignore
-                file.write(html)
-
-    def get_plotly_html(self) -> str:
-        """Get the plotly html file."""
-        if self.plotly_html and self.plotly_html.exists():
-            return str(self.plotly_html)
-        return ""
+                # We create a temporary file to inject the path to the script tag
+                # This is so we don't have to modify the original file
+                # The file is deleted at program exit.
+                with open(temp_file, "w", encoding="utf-8") as file:  # type: ignore
+                    file.write(html)
+            except FileNotFoundError as error:
+                console.print(
+                    f"[bold red]{html_file} file not found, check the path:[/]"
+                    f"[green]{PLOTS_CORE_PATH / html_file}[/]"
+                )
+                self.max_retries = 0  # pylint: disable=W0201
+                raise error
 
     def get_pending(self) -> list:
         """Get the pending data that has not been sent to the backend."""
@@ -99,11 +101,21 @@ class Backend(pywry.PyWry):
         self.init_engine: list = []
         return pending
 
+    def get_plotly_html(self) -> str:
+        """Get the plotly html file."""
+        if not self.plotly_html.exists():
+            self.inject_path_to_html()
+            return self.get_plotly_html()
+
+        return str(self.plotly_html)
+
     def get_table_html(self) -> str:
         """Get the table html file."""
-        if self.table_html and self.table_html.exists():
-            return str(self.table_html)
-        return ""
+        if not self.table_html.exists():
+            self.inject_path_to_html()
+            return self.get_table_html()
+
+        return str(self.table_html)
 
     def get_window_icon(self) -> str:
         """Get the window icon."""

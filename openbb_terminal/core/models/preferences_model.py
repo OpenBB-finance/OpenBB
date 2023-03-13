@@ -97,12 +97,12 @@ class PreferencesModel:
     USER_FORECAST_MODELS_DIRECTORY = USER_DATA_DIRECTORY / "exports" / "forecast_models"
     USER_FORECAST_WHISPER_DIRECTORY = USER_DATA_DIRECTORY / "exports" / "whisper"
 
-    # @validator("VIEW_COLOR")
-    # def validate_view_color(cls, v):  # pylint: disable=no-self-argument
-    #     if v not in {
-    #         *mcolors.BASE_COLORS,
-    #         *mcolors.TABLEAU_COLORS,
-    #         *mcolors.CSS4_COLORS,
-    #         *mcolors.XKCD_COLORS,
-    #     }:
-    #         raise ValueError("Color not supported")
+    def __repr__(self) -> str:
+        """Return string representation of model."""
+        dataclass_repr = ""
+        for key, value in self.__dict__.items():
+            if key.startswith("_"):
+                continue
+            dataclass_repr += f"    {key}='{value}', \n"
+
+        return f"{self.__class__.__name__}(\n{dataclass_repr[:-2]}\n)"
