@@ -1555,8 +1555,9 @@ def your_function() -> pd.DataFrame:
     pass
 ```
 
-> Note: if you don't want your logs to be collected, you can set the `LOG_COLLECT` user preference to `False`.
-> Disclaimer: all the user paths, names, IPs, credentials and other sensitive information are anonymized, [take a look at how we do it](/openbb_terminal/core/log/generation/formatter_with_exceptions.py).
+> **Note**: if you don't want your logs to be collected, you can set the `OPENBB_LOG_COLLECT` environment variable on your `.env` file to `False`.
+>
+> **Disclaimer**: all the user paths, names, IPs, credentials and other sensitive information are anonymized, [take a look at how we do it](/openbb_terminal/core/log/generation/formatter_with_exceptions.py).
 
 ### Internationalization
 
