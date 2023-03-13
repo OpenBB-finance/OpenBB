@@ -2,6 +2,7 @@
 __docformat__ = "numpy"
 
 import logging
+import sys
 import time
 from datetime import datetime, timedelta
 from functools import partial
@@ -170,7 +171,7 @@ def get_ecb_yield_curve(
         date = (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d")
 
     try:
-        if detailed:
+        if detailed and not hasattr(sys, "frozen"):
             with Pool(cpu_count() - 1) as pool:
                 # To be able to use optional_rich_track with multiprocessing,
                 # we need to use imap_unordered

@@ -42,11 +42,12 @@ def display_debt(export: str = "", sheet_name: Optional[str] = None, limit: int 
         debt_df[col] = debt_df[col].apply(lambda x: format_large_numbers(x))
 
     print_rich_table(
-        debt_df[:limit],
+        debt_df,
         show_index=False,
         headers=debt_df.columns,
         title="External Debt (USD)",
         export=bool(export),
+        limit=limit,
     )
     if export:
         export_data(

@@ -483,6 +483,7 @@ def plot_fed(
     export: str = "",
     sheet_name: str = "",
     external_axes: bool = False,
+    limit: int = 10,
 ):
     """Plot Effective Federal Funds Rate.
 
@@ -574,13 +575,16 @@ def plot_fed(
             df_transformed = df / 100
 
     if raw:
+        # was a -iloc so we need to flip the index as we use head
+        df_transformed = df_transformed.sort_index(ascending=False)
         print_rich_table(
-            df_transformed.iloc[-10:],
+            df_transformed,
             headers=list(df_transformed.columns),
             show_index=True,
             title=ID_TO_NAME_FED[series_id],
             floatfmt=".3f",
             export=bool(export),
+            limit=limit,
         )
 
     if export:
@@ -764,6 +768,7 @@ def plot_ecb(
     export: str = "",
     sheet_name: str = "",
     external_axes: bool = False,
+    limit: int = 10,
 ):
     """Plot the key ECB interest rates.
 
@@ -807,13 +812,16 @@ def plot_ecb(
     fig.update_layout(legend=dict(x=0.01, y=0.01, xanchor="left", yanchor="bottom"))
 
     if raw:
+        # was a -iloc so we need to flip the index as we use head
+        df = df.sort_index(ascending=False)
         print_rich_table(
-            df.iloc[-10:],
+            df,
             headers=list(df.columns),
             show_index=True,
             title=title,
             floatfmt=".3f",
             export=bool(export),
+            limit=limit,
         )
 
     export_data(
@@ -1018,6 +1026,7 @@ def plot_usrates(
     export: str = "",
     sheet_name: str = "",
     external_axes: bool = False,
+    limit: int = 10,
 ):
     """Plot various treasury rates from the United States
 
@@ -1073,12 +1082,16 @@ def plot_usrates(
     fig.add_scatter(x=df.index, y=df[series_id], name="Yield")
 
     if raw:
+        # was a -iloc so we need to flip the index as we use head
+        df = pd.DataFrame(df, columns=[parameter])
+        df = df.sort_index(ascending=False)
         print_rich_table(
-            pd.DataFrame(df, columns=[parameter]).iloc[-10:],
+            df,
             title=title,
             show_index=True,
             floatfmt=".3f",
             export=bool(export),
+            limit=limit,
         )
 
     export_data(
@@ -1158,6 +1171,7 @@ def plot_icebofa(
     export: str = "",
     sheet_name: str = "",
     external_axes: bool = False,
+    limit: int = 10,
 ):
     """Plot ICE BofA US Corporate Bond Index data.
 
@@ -1226,12 +1240,15 @@ def plot_icebofa(
         )
 
     if raw:
+        # was a -iloc so we need to flip the index as we use head
+        df = df.sort_index(ascending=False)
         print_rich_table(
-            df.iloc[-10:],
+            df,
             title=title,
             show_index=True,
             floatfmt=".3f",
             export=bool(export),
+            limit=limit,
         )
 
     if description:
@@ -1262,6 +1279,7 @@ def plot_moody(
     export: str = "",
     sheet_name: str = "",
     external_axes: bool = False,
+    limit: int = 10,
 ):
     """Plot Moody Corporate Bond Index data
     Parameters
@@ -1298,12 +1316,15 @@ def plot_moody(
         fig.add_scatter(x=df.index, y=df[series], name=series)
 
     if raw:
+        # was a -iloc so we need to flip the index as we use head
+        df = df.sort_index(ascending=False)
         print_rich_table(
-            df.iloc[-10:],
+            df,
             title=name,
             show_index=True,
             floatfmt=".3f",
             export=bool(export),
+            limit=limit,
         )
 
     export_data(
@@ -1332,6 +1353,7 @@ def plot_cp(
     export: str = "",
     sheet_name: str = "",
     external_axes: bool = False,
+    limit: int = 10,
 ):
     """Plot Commercial Paper
 
@@ -1390,12 +1412,15 @@ def plot_cp(
         )
 
     if raw:
+        # was a -iloc so we need to flip the index as we use head
+        df = df.sort_index(ascending=False)
         print_rich_table(
-            df.iloc[-10:],
+            df,
             title=title,
             show_index=True,
             floatfmt=".3f",
             export=bool(export),
+            limit=limit,
         )
 
     if description:
@@ -1427,6 +1452,7 @@ def plot_spot(
     export: str = "",
     sheet_name: str = "",
     external_axes: bool = False,
+    limit: int = 10,
 ):
     """Plot Spot Rates for a given maturity
 
@@ -1476,12 +1502,15 @@ def plot_spot(
         )
 
     if raw:
+        # was a -iloc so we need to flip the index as we use head
+        df = df.sort_index(ascending=False)
         print_rich_table(
-            df.iloc[-10:],
+            df,
             title=title,
             show_index=True,
             floatfmt=".3f",
             export=bool(export),
+            limit=limit,
         )
 
     if description:
