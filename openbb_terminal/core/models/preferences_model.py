@@ -56,7 +56,6 @@ class PreferencesModel:
     ENABLE_RICH: bool = True
     ENABLE_RICH_PANEL: bool = True
     ENABLE_CHECK_API: bool = True
-    LOG_COLLECT: bool = True
     TOOLBAR_HINT: bool = True
     TOOLBAR_TWEET_NEWS: bool = False
 
