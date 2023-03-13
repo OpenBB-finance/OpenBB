@@ -306,11 +306,12 @@ def print_rich_table(
     """
     if export:
         return
+
     current_user = get_current_user()
 
     def _get_headers() -> list:
         """Check if headers are valid and return them."""
-        output = headers or []
+        output = headers
         if isinstance(headers, pd.Index):
             output = list(headers)
         if len(output) != len(df.columns):
@@ -319,7 +320,7 @@ def print_rich_table(
             )
         return output
 
-    if current_user.preferences.USE_INTERACTIVE_DF:
+    if current_user.preferences.USE_INTERACTIVE_DF and plots_backend().isatty:
         df_outgoing = df.copy()
         # If headers are provided, use them
         if headers is not None:
