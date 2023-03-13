@@ -36,6 +36,7 @@ class CredentialsModel:
     API_TOKEN_TERMINAL_KEY: str = "REPLACE_ME"
     API_STOCKSERA_KEY: str = "REPLACE_ME"
     API_INTRINIO_KEY: str = "REPLACE_ME"
+    API_TRADIER_TOKEN: str = "REPLACE_ME"
 
     # Socials
     API_GITHUB_KEY: str = "REPLACE_ME"
@@ -57,7 +58,6 @@ class CredentialsModel:
     OANDA_ACCOUNT_TYPE: str = "REPLACE_ME"
     OANDA_ACCOUNT: str = "REPLACE_ME"
     OANDA_TOKEN: str = "REPLACE_ME"
-    API_TRADIER_TOKEN: str = "REPLACE_ME"
     API_BINANCE_KEY: str = "REPLACE_ME"
     API_BINANCE_SECRET: str = "REPLACE_ME"
     API_COINBASE_KEY: str = "REPLACE_ME"

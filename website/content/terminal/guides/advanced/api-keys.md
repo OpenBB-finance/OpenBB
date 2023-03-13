@@ -1,6 +1,6 @@
 ---
 title: Settings API Keys
-sidebar_position: 3
+sidebar_position: 1
 description: API (Application Programming Interface) keys are access credentials for accessing data from a particular source. They are a string of random characters assigned, by the data provider, to an individual account. Most vendors offer a free tier requiring only a valid email address. Each key is entered into the Terminal from the `/keys` menu, using the syntax described below. The `--help` dialogue for each source will also display the expected inputs.
 keywords: [api, keys, api keys, data provider, data, free, alpha vantage, fred, iex, twitter, degiro, binance, coinglass, polygon, intrinio, openbb terminal]
 ---
@@ -49,59 +49,18 @@ mykeys --show
 
 **We recommend gradually obtaining keys, when the use of a specific function requires it.**
 
-## Summary List
-
-<details>
-<summary>Click to expand the list of data providers</summary>
-
-| Command       | Name                                     | URL                                                                                |
-| :------------ | :--------------------------------------- | :--------------------------------------------------------------------------------- |
-| av            | AlphaVantage                             | https://www.alphavantage.co/support/#api-key                                       |
-| binance       | Binance                                  | https://binance.com                                                                |
-| bitquery      | Bitquery                                 | https://bitquery.io/                                                               |
-| cmc           | CoinMarketCap                            | https://coinmarketcap.com/api/                                                     |
-| coinbase      | Coinbase                                 | https://help.coinbase.com/en/exchange/managing-my-account/how-to-create-an-api-key |
-| coinglass     | Coinglass                                | https://coinglass.github.io/API-Reference/#api-key                                 |
-| cpanic        | Crypto Panic                             | https://cryptopanic.com/developers/api/                                            |
-| databento     | Databento                                | https://docs.databento.com/getting-started                                         |
-| degiro        | DeGiro                                   | https://www.degiro.com/                                                            |
-| eodhd         | EODHD                                    | https://eodhistoricaldata.com/r/?ref=869U7F4J                                      |
-| ethplorer     | Ethplorer                                | https://github.com/EverexIO/Ethplorer/wiki/Ethplorer-API                           |
-| finnhub       | Finnhub                                  | https://finnhub.io/                                                                |
-| fmp           | Financial Modelling Prep                 | https://site.financialmodelingprep.com/developer/docs/                             |
-| fred          | Federal Reserve Economic Database (FRED) | https://fred.stlouisfed.org                                                        |
-| github        | GitHub                                   | https://docs.github.com/en/rest/guides/getting-started-with-the-rest-api           |
-| glassnode     | Glassnode                                | https://docs.glassnode.com/basic-api/api-key#how-to-get-an-api-key/                |
-| iex           | IEX Cloud                                | https://iexcloud.io/                                                               |
-| intrinio      | Intrinio                                 | https://intrinio.com/                                                              |
-| messari       | Messari                                  | https://messari.io/api/docs                                                        |
-| news          | News API                                 | https://newsapi.org/                                                               |
-| oanda         | Oanda                                    | https://developer.oanda.com                                                        |
-| polygon       | Polygon                                  | https://polygon.io                                                                 |
-| quandl        | Quandl                                   | https://www.quandl.com                                                             |
-| reddit        | Reddit                                   | https://www.reddit.com/wiki/api                                                    |
-| rh            | Robinhood                                | https://robinhood.com/us/en/                                                       |
-| santiment     | Santiment                                | https://app.santiment.net/                                                         |
-| shroom        | ShroomDK                                 | https://sdk.flipsidecrypto.xyz/shroomdk                                            |
-| smartstake    | Smartstake                               | https://www.smartstake.io                                                          |
-| stocksera     | Stocksera                                | https://stocksera.pythonanywhere.com/                                              |
-| tokenterminal | Token Terminal                           | https://tokenterminal.com/                                                         |
-| tradier       | Tradier                                  | https://documentation.tradier.com/                                                 |
-| twitter       | Twitter                                  | https://developer.twitter.com                                                      |
-| walert        | Whale Alert                              | https://docs.whale-alert.io/                                                       |
-
-</details>
-
 ## Instructions by Source
 
 This section covers all API keys listed above and include detailed instructions how to obtain each API key. By clicking on each name, the section will expand and instructions are provided.
 
 ### AlphaVantage
 
-<details>
-<summary>Go to: https://www.alphavantage.co/support/#api-key</summary>
+> Alpha Vantage provides enterprise-grade financial market data through a set of powerful and developer-friendly data APIs and spreadsheets. From traditional asset classes (e.g., stocks, ETFs, mutual funds) to economic indicators, from foreign exchange rates to commodities, from fundamental data to technical indicators, Alpha Vantage is your one-stop-shop for real-time and historical global market data delivered through cloud-based APIs, Excel, and Google Sheets.
 
-[AlphaVantage](https://www.alphavantage.co/support/#api-key)
+<details>
+<summary>Instructions</summary>
+
+Go to: https://www.alphavantage.co/support/#api-key
 
 ![AlphaVantage](https://user-images.githubusercontent.com/46355364/207820936-46c2ba00-81ff-4cd3-98a4-4fa44412996f.png)
 
@@ -115,10 +74,12 @@ Fill out the form, pass Captcha, and click on, "GET FREE API KEY". The issued ke
 
 ### Binance
 
-<details>
-<summary>Go to: https://www.binance.com/en/support/faq/how-to-create-api-360002502072</summary>
+> Binance cryptocurrency exchange - We operate the worlds biggest bitcoin exchange and altcoin crypto exchange in the world by volume
 
-[Binance](https://www.binance.com/en/support/faq/how-to-create-api-360002502072)
+<details>
+<summary>Instructions</summary>
+
+Go to: https://www.binance.com/en/support/faq/how-to-create-api-360002502072
 
 ![Binance](https://user-images.githubusercontent.com/46355364/207839805-f71cf12a-62d2-41cb-ba19-0c35917abc40.png)
 
@@ -132,10 +93,12 @@ These instructions should provide clear guidance for obtaining an API Key. Enter
 
 ### Bitquery
 
-<details>
-<summary>Go to: https://bitquery.io/</summary>
+> Bitquery is an API-first product company dedicated to power and solve blockchain data problems using the ground truth of on-chain data.
 
-[Bitquery](https://bitquery.io/)
+<details>
+<summary>Instructions</summary>
+
+Go to: https://bitquery.io/<
 
 ![Bitquery](https://user-images.githubusercontent.com/46355364/207840322-5532a3f9-739f-4e28-9839-a58db932882e.png)
 
@@ -157,10 +120,12 @@ Enter this API key into the OpenBB Terminal by typing:
 
 ### CoinMarketCap
 
-<details>
-<summary>Go to: https://coinmarketcap.com/api</summary>
+> CoinMarketCap is the world's most-referenced price-tracking website for cryptoassets in the rapidly growing cryptocurrency space. Its mission is to make crypto discoverable and efficient globally by empowering retail users with unbiased, high quality and accurate information for drawing their own informed conclusions.
 
-[CoinMarketCap](https://coinmarketcap.com/api)
+<details>
+<summary>Instructions</summary>
+
+Go to: https://coinmarketcap.com/api
 
 ![CoinMarketCap](https://user-images.githubusercontent.com/46355364/207831111-3f09ed75-740e-4121-a67e-6e1f36e8ab9a.png)
 
@@ -182,10 +147,12 @@ Enter the API key into the OpenBB Terminal by typing:
 
 ### Coinbase
 
-<details>
-<summary>Go to: https://help.coinbase.com/en/exchange/managing-my-account/how-to-create-an-api-key</summary>
+> Coinbase is a secure online platform for buying, selling, transferring, and storing cryptocurrency.
 
-[Coinbase](https://help.coinbase.com/en/exchange/managing-my-account/how-to-create-an-api-key)
+<details>
+<summary>Instructions</summary>
+
+Go to: https://help.coinbase.com/en/exchange/managing-my-account/how-to-create-an-api-key
 
 ![Coinbase](https://user-images.githubusercontent.com/46355364/207841901-647f0aef-0c74-454d-b99e-367d784259f0.png)
 
@@ -199,10 +166,12 @@ Follow the instructions to obtain the credentials for the specific account. Ente
 
 ### Coinglass
 
-<details>
-<summary>Go to: https://www.coinglass.com/</summary>
+> Coinglass is a cryptocurrency futures trading & information platform,where you can find the Bitcoin Liquidations ,Bitcoin open interest, Grayscale Bitcoin Trust，Bitcoin longs vs shorts ratio and actively compare funding rates for crypto futures.Above all the quantities are shown as per their respective contract value.
 
-[Coinglass](https://www.coinglass.com/)
+<details>
+<summary>Instructions</summary>
+
+Go to: https://www.coinglass.com/
 
 ![Coinglass](https://user-images.githubusercontent.com/46355364/207844601-8510687a-e54f-49b9-961f-5ef6718f58ab.png)
 
@@ -220,10 +189,12 @@ With the account created, find the assigned API key within the account profile p
 
 ### Crypto Panic
 
-<details>
-<summary>Go to: https://cryptopanic.com/developers/api/</summary>
+> CryptoPanic is a news aggregator platform indicating impact on price and market for traders and cryptocurrency enthusiasts.
 
-[Crypto Panic](https://cryptopanic.com/developers/api/)
+<details>
+<summary>Instructions</summary>
+
+Go to: https://cryptopanic.com/developers/api/
 
 ![Crypto Panic](https://user-images.githubusercontent.com/46355364/207848733-27e5a804-7ae7-4ca2-88b2-848b32929b6f.png)
 
@@ -241,10 +212,12 @@ Enter that value in the OpenBB Terminal by typing:
 
 ### Databento
 
-<details>
-<summary>Go to: https://docs.databento.com/getting-started</summary>
+> Databento eliminates tens of thousands of dollars in upfront expenses per dataset without sacrificing data integrity. We give you the flexibility to pick up real-time full exchange feeds and terabytes of historical data, whenever you need it.
 
-[Databento](https://docs.databento.com/getting-started)
+<details>
+<summary>Instructions</summary>
+
+Go to: https://docs.databento.com/getting-started
 
 ![Databento](https://user-images.githubusercontent.com/85772166/221943074-7a5e55c1-6193-42d8-a04c-431603a69a05.png)
 
@@ -260,12 +233,14 @@ Enter this into the terminal with:
 
 </details>
 
-### Degiro
+### DEGIRO
+
+> DEGIRO is Europe's fastest growing online stock broker. DEGIRO distinguishes itself from its competitors by offering extremely low trading commissions.
 
 <details>
-<summary>Go to: https://www.degiro.com/</summary>
+<summary>Instructions</summary>
 
-[Degiro](https://www.degiro.com/)
+Go to: https://www.degiro.com/
 
 ![Degiro](https://user-images.githubusercontent.com/46355364/207838353-001d350c-872c-4770-a586-fb21318122eb.png)
 
@@ -281,10 +256,12 @@ Instructions for setting up 2FA authorization are [here](https://github.com/Chav
 
 ### EODHD
 
-<details>
-<summary>Go to: https://eodhistoricaldata.com/r/?ref=869U7F4J</summary>
+> Historical End of Day, Intraday, and Live prices API, with Fundamental Financial data API for more than 120000 stocks, ETFs and funds all over the world.
 
-[EODHD](https://eodhistoricaldata.com/r/?ref=869U7F4J)
+<details>
+<summary>Instructions</summary>
+
+Go to: https://eodhistoricaldata.com/r/?ref=869U7F4J
 
 ![EODHD](https://user-images.githubusercontent.com/46355364/207849214-23763c95-7314-42ae-b97d-cb5810686498.png)
 
@@ -306,10 +283,12 @@ Enter this string into the OpenBB Terminal by typing:
 
 ### Finnhub
 
-<details>
-<summary>Go to: https://finnhub.io/</summary>
+> With the sole mission of democratizing financial data, we are proud to offer a FREE realtime API for stocks, forex and cryptocurrency.
 
-[Finnhub](https://finnhub.io/)
+<details>
+<summary>Instructions</summary>
+
+Go to: https://finnhub.io/
 
 ![Finnhub](https://user-images.githubusercontent.com/46355364/207832028-283c3321-8c05-4ee8-b4d2-41cdc940f408.png)
 
@@ -331,10 +310,12 @@ Add this key to the OpenBB Terminal by entering:
 
 ### Financial Modeling Prep
 
-<details>
-<summary>Go to: https://site.financialmodelingprep.com/developer/docs</summary>
+> Enchance your application with our data that goes up to 30 years back in history. Earnings calendar, financial statements, multiple exchanges and more!
 
-[FinancialModelingPrep](https://site.financialmodelingprep.com/developer/docs)
+<details>
+<summary>Instructions</summary>
+
+Go to: https://site.financialmodelingprep.com/developer/docs
 
 ![FinancialModelingPrep](https://user-images.githubusercontent.com/46355364/207821920-64553d05-d461-4984-b0fe-be0368c71186.png)
 
@@ -356,10 +337,12 @@ Enter the key into the OpenBB Terminal with:
 
 ### FRED
 
-<details>
-<summary>Go to: https://fred.stlouisfed.org</summary>
+> FRED is the trusted source for economic data since 1991. Download, graph, and track 819,000 US and international time series from 110 sources.
 
-[FRED](https://fred.stlouisfed.org)
+<details>
+<summary>Instructions</summary>
+
+Go to: https://fred.stlouisfed.org
 
 ![FRED](https://user-images.githubusercontent.com/46355364/207827137-d143ba4c-72cb-467d-a7f4-5cc27c597aec.png)
 
@@ -385,10 +368,12 @@ Enter the API key into the OpenBB Terminal with:
 
 ### GitHub
 
-<details>
-<summary>Go to: https://github.com</summary>
+> GitHub is where over 100 million developers shape the future of software.
 
-[GitHub](https://github.com)
+<details>
+<summary>Instructions</summary>
+
+Go to: https://github.com
 
 ![GitHub](https://user-images.githubusercontent.com/46355364/207846953-7feae777-3c3b-4f21-9dcf-84817c732618.png)
 
@@ -410,10 +395,12 @@ After creating the app, the key will be issued. Enter this token into the OpenBB
 
 ### Glassnode
 
-<details>
-<summary>Go to: https://studio.glassnode.com</summary>
+> Glassnode makes blockchain data accessible for everyone. We source and carefully dissect on-chain data, to deliver contextualized and actionable insights.
 
-[Glassnode](https://studio.glassnode.com)
+<details>
+<summary>Instructions</summary>
+
+Go to: https://studio.glassnode.com
 
 ![Glassnode](https://user-images.githubusercontent.com/46355364/207843761-799078ff-fa64-4d39-a6eb-ba01d250be69.png)
 
@@ -433,12 +420,14 @@ Enter this key in the OpenBB terminal with:
 
 </details>
 
-### IEX Cloud
+### IEX Cloud (Apperate)
+
+> Apperate is a streaming data platform for finance with integrated IEX Cloud Data Bundles. We help developers skip the headaches of building with real-time data.
 
 <details>
-<summary>Go to: https://iexcloud.io</summary>
+<summary>Instructions</summary>
 
-[IEX Cloud](https://iexcloud.io)
+Go to: https://iexcloud.io
 
 ![IEX Cloud](https://user-images.githubusercontent.com/46355364/207833088-e879e9f2-3180-4e50-ba9e-f40ee958f98a.png)
 
@@ -464,10 +453,12 @@ Add this API key to the OpenBB Terminal by entering:
 
 ### Intrinio
 
-<details>
-<summary>Go to: https://intrinio.com/starter-plan</summary>
+> Intrinio is more than a financial data API provider – we're a real time data partner. That means we're your guide to every step of the financial data.
 
-[Intrinio](https://intrinio.com/starter-plan)
+<details>
+<summary>Instructions</summary>
+
+Go to: https://intrinio.com/starter-plan
 
 ![Intrinio](https://user-images.githubusercontent.com/85772166/219207556-fcfee614-59f1-46ae-bff4-c63dd2f6991d.png)
 
@@ -481,10 +472,12 @@ An API key will be issued with a subscription. Find the token value within the a
 
 ### Messari
 
-<details>
-<summary>Go to: https://messari.io</summary>
+> Gain an edge over the crypto market with professional grade data, tools, and research.
 
-[Messari](https://messari.io)
+<details>
+<summary>Instructions</summary>
+
+Go to: https://messari.io
 
 ![Messari](https://user-images.githubusercontent.com/46355364/207848122-ec6a41e4-76b7-4620-adc3-1f1c19f4bca6.png)
 
@@ -506,10 +499,12 @@ Copy the API key and add it to the OpenBB Terminal by entering:
 
 ### News API
 
-<details>
-<summary>Go to: https://newsapi.org</summary>
+> News API is a simple, easy-to-use REST API that returns JSON search results for current and historic news articles published by over 80,000 worldwide sources.
 
-[News API](https://newsapi.org)
+<details>
+<summary>Instructions</summary>
+
+Go to: https://newsapi.org
 
 ![News API](https://user-images.githubusercontent.com/46355364/207828250-0c5bc38c-90b4-427d-a611-b43c98c8e7ab.png)
 
@@ -531,10 +526,12 @@ Add this API key into the OpenBB Terminal by entering:
 
 ### Oanda
 
-<details>
-<summary>Go to: https://developer.oanda.com</summary>
+> OANDA's Currency Converter allows you to check the latest foreign exchange average bid/ask rates and convert all major world currencies.
 
-[Oanda](https://developer.oanda.com)
+<details>
+<summary>Instructions</summary>
+
+Go to: https://developer.oanda.com
 
 ![Oanda](https://user-images.githubusercontent.com/46355364/207839324-d30aa2b6-be83-41ff-9b1b-146cac566789.png)
 
@@ -552,10 +549,12 @@ Upon completion of the account setup, enter the credentials into the OpenBB Term
 
 ### Polygon
 
-<details>
-<summary>Go to: https://polygon.io</summary>
+> Live & historical data for US stocks for all 19 exchanges. Instant access to real-time and historical stock market data.
 
-[Polygon](https://polygon.io)
+<details>
+<summary>Instructions</summary>
+
+Go to: https://polygon.io
 
 ![Polygon](https://user-images.githubusercontent.com/46355364/207825623-fcd7f0a3-131a-4294-808c-754c13e38e2a.png)
 
@@ -577,10 +576,12 @@ Enter the key into the OpenBB Terminal by typing:
 
 ### Quandl
 
-<details>
-<summary>Go to: https://www.quandl.com</summary>
+> The premier source for financial, economic, and alternative datasets, serving investment professionals. Quandl’s platform is used by over 400,000 people, including analysts from the world’s top hedge funds, asset managers and investment banks.
 
-[Quandl](https://www.quandl.com)
+<details>
+<summary>Instructions</summary>
+
+Go to: https://www.quandl.com
 
 ![Quandl](https://user-images.githubusercontent.com/46355364/207823899-208a3952-f557-4b73-aee6-64ac00faedb7.png)
 
@@ -602,10 +603,12 @@ Enter the key into the OpenBB Terminal with:
 
 ### Reddit
 
-<details>
-<summary>Sign in to Reddit, and then go to: https://old.reddit.com/prefs/apps/</summary>
+> Reddit is a network of communities where people can dive into their interests, hobbies and passions.
 
-[Reddit](https://old.reddit.com/prefs/apps/)
+<details>
+<summary>Instructions</summary>
+
+Sign in to Reddit, and then go to: https://old.reddit.com/prefs/apps/
 
 ![Reddit](https://preview.redd.it/540vrn3k0cn91.png?width=986&format=png&auto=webp&v=enabled&s=88228cd0cf4415b3487b8d35e1097f0caa804e15)
 
@@ -631,10 +634,12 @@ After submitting the form, check for a confirmation email. The credentials will 
 
 ### Robinhood
 
-<details>
-<summary>Go to: https://robinhood.com/us/en</summary>
+> Robinhood has commission-free investing, and tools to help shape your financial future.
 
-[Robinhood](https://robinhood.com/us/en)
+<details>
+<summary>Instructions</summary>
+
+Go to: https://robinhood.com/us/en
 
 ![Robinhood](https://user-images.githubusercontent.com/46355364/207838058-a2311632-6459-4cfd-bc0a-639ee3931574.png)
 
@@ -650,10 +655,12 @@ The first login will request 2FA authorization from the device connected to the 
 
 ### Santiment
 
-<details>
-<summary>Go to: https://app.santiment.net</summary>
+> We provide tools to help you analyze crypto markets and find data-driven opportunities to optimize your investing.
 
-![Santiment](https://user-images.githubusercontent.com/46355364/207849709-a5f10b03-138c-4e09-89f6-8a18cfbaf008.png)
+<details>
+<summary>Instructions</summary>
+
+Go to: https://app.santiment.net
 
 Click on, "Sign up", and register for an account.
 
@@ -673,10 +680,12 @@ Add it to the OpenBB Terminal by entering:
 
 ### ShroomDK
 
-<details>
-<summary>Go to: https://sdk.flipsidecrypto.xyz/shroomdk</summary>
+> ShroomDK (SDK), by Flipside Crypto gives you programmatic query access to the most comprehensive blockchain data sets in Web3, for free.
 
-[ShroomDK](https://sdk.flipsidecrypto.xyz/shroomdk)
+<details>
+<summary>Instructions</summary>
+
+Go to: https://sdk.flipsidecrypto.xyz/shroomdk
 
 ![ShroomDK](https://user-images.githubusercontent.com/46355364/207850122-b8cd225e-0a65-4ea8-8069-0b40fff1600e.png)
 
@@ -698,10 +707,12 @@ Enter it into the OpenBB Terminal by typing:
 
 ### Stocksera
 
-<details>
-<summary>Go to: https://stocksera.pythonanywhere.com</summary>
+> Empowering investors to take advantage of alternative data. We track trending tickers on social media and provide alternative data for easy due-diligence & analysis.
 
-[Stocksera](https://stocksera.pythonanywhere.com)
+<details>
+<summary>Instructions</summary>
+
+Go to: https://stocksera.pythonanywhere.com
 
 ![Stocksera](https://user-images.githubusercontent.com/46355364/207853896-ee233569-26bb-4244-b115-43ac8885757a.png)
 
@@ -723,10 +734,12 @@ Add the key to the OpenBB Terminal by entering:
 
 ### Token Terminal
 
-<details>
-<summary>Go to: https://tokenterminal.com</summary>
+> Token Terminal is a platform that aggregates financial data on the leading blockchains and decentralized applications.
 
-[Token Terminal](https://tokenterminal.com)
+<details>
+<summary>Instructions</summary>
+
+Go to: https://tokenterminal.com
 
 ![Token Terminal](https://user-images.githubusercontent.com/46355364/207850735-69368b4f-6a3e-46b8-ba69-3b79d9231f15.png)
 
@@ -748,10 +761,12 @@ Add the key to the OpenBB Terminal by typing:
 
 ### Tradier
 
-<details>
-<summary>Go to: https://documentation.tradier.com</summary>
+> Tradier, the home of active traders. Our open collaboration platform allows investors to truly customize their trading experience like never before.
 
-[Tradier](https://documentation.tradier.com)
+<details>
+<summary>Instructions</summary>
+
+Go to: https://documentation.tradier.com
 
 ![Tradier](https://user-images.githubusercontent.com/46355364/207829178-a8bba770-f2ea-4480-b28e-efd81cf30980.png)
 
@@ -765,6 +780,8 @@ Click on, "Open Account", to start the sign-up process. After the account has be
 
 ### Twitter
 
+> From breaking news and entertainment to sports and politics, get the full story with all the live commentary.
+
 <details>
 <summary>Upcoming changes to the Twitter API will deprecate the current functionality, it is uncertain if the current features will continue to work. </summary>
 
@@ -774,10 +791,12 @@ Click on, "Open Account", to start the sign-up process. After the account has be
 
 ### Whale Alert
 
-<details>
-<summary>Go to: https://docs.whale-alert.io</summary>
+> Whale Alert continuously collects and analyzes billions of blockchain transactions and related-off chain data from hundreds of reliable sources and converts it into an easy to use standardized format. Our world-class analytics and custom high speed database solutions process transactions the moment they are made, resulting in the largest and most up-to-date blockchain dataset in the world.
 
-[Whale Alert](https://docs.whale-alert.io)
+<details>
+<summary>Instructions</summary>
+
+Go to: https://docs.whale-alert.io
 
 ![Whale Alert](https://user-images.githubusercontent.com/46355364/207842892-3f71ee7a-6cd3-48a2-82e4-fa5ec5b13807.png)
 

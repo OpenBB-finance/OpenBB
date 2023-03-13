@@ -38,7 +38,7 @@ A brief description below highlights the main Functions and Modules available in
 |openbb.alt.covid.ov |Function | overview historical cases and deaths by country |
 
 
-Alteratively you can print the contents of the Alternative SDK with:
+Alternatively you can print the contents of the Alternative SDK with:
 ​
 ```python
 help(openbb.alt.covid)

@@ -23,6 +23,7 @@ from prompt_toolkit.formatted_text import HTML
 from prompt_toolkit.styles import Style
 from rich import panel
 
+import openbb_terminal.config_terminal as cfg
 from openbb_terminal.common import feedparser_view
 from openbb_terminal.core.config.paths import (
     HOME_DIRECTORY,
@@ -1235,6 +1236,8 @@ def main(
 
     if debug:
         os.environ["DEBUG_MODE"] = "true"
+
+    cfg.start_plot_backend()
 
     if isinstance(path_list, list) and path_list[0].endswith(".openbb"):
         run_routine(file=path_list[0], routines_args=routines_args)

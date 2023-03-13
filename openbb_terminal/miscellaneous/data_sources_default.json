@@ -234,6 +234,12 @@
         "EODHD",
         "YahooFinance"
       ],
+      "overview": ["Finviz", "FinancialModelingPrep", "AlphaVantage", "YahooFinance"],
+      "mgmt": ["BusinessInsider"],
+      "analysis": ["Elect"],
+      "score": ["FinancialModelingPrep"],
+      "quote": ["FinancialModelingPrep"],
+      "mktcap": ["FinancialModelingPrep", "YahooFinance"],
       "growth": ["FinancialModelingPrep"],
       "metrics": ["FinancialModelingPrep", "AlphaVantage"],
       "ratios": ["FinancialModelingPrep"],
@@ -245,7 +251,7 @@
       "epsfc": ["SeekingAlpha"],
       "revfc": ["SeekingAlpha"],
       "est": ["BusinessInsider"],
-      "pt": ["BusinessInsider"],
+      "pt": ["BusinessInsider", "FinancialModelingPrep"],
       "dcf": ["StockAnalysis"],
       "dcfc": ["FinancialModelingPrep"]
     },

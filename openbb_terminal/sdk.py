@@ -24,6 +24,7 @@ from openbb_terminal.core.session.current_user import is_local
 from openbb_terminal.terminal_helper import is_auth_enabled
 
 cfg.start_required_configurations()
+cfg.start_plot_backend()
 
 logger = logging.getLogger(__name__)
 theme.applyMPLstyle()
@@ -220,6 +221,7 @@ class OpenBBSDK:
             `treasury`: Gets interest rates data from selected countries (3 month and 10 year)\n
             `usrates`: Plot various treasury rates from the United States\n
             `ycrv`: Gets yield curve data from FRED.\n
+            `ycrv_chart`: Display yield curve based on US Treasury rates for a specified date.\n
         """
 
         return model.FixedincomeRoot()

@@ -78,6 +78,9 @@
   ._group-tab {
     @apply w-full flex mb-12;
   }
+  .card {
+    @apply w-full rounded-md border border-white p-9 shadow;
+  }
 }
 
 @import url("https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap");
