@@ -104,7 +104,7 @@ def delete_session(
         The response from the logout request.
     """
     try:
-        response = requests.post(
+        response = requests.get(
             url=base_url + "logout",
             headers={"Authorization": auth_header},
             json={"token": token},
