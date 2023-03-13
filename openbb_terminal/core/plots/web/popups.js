@@ -1,5 +1,3 @@
-// import Plotly from "plotly.js-dist";
-
 function get_popup(data = null, popup_id = null) {
   let popup = null;
   popup_id = popup_id.replace("popup_", "");
@@ -305,12 +303,14 @@ function on_submit(popup_id, on_annotation = null) {
     let main_trace = gd.data[0];
     let yaxis = "yaxis" + main_trace.yaxis.replace("y", "");
     let xaxis = "xaxis" + main_trace.xaxis.replace("x", "");
+
     let to_update = { title: popup_data.title };
-    to_update[yaxis + ".title"] = popup_data.yaxis;
     to_update[xaxis + ".title"] = popup_data.xaxis;
+    to_update[yaxis + ".title"] = popup_data.yaxis;
     to_update[yaxis + ".type"] = "linear";
 
     Plotly.update(gd, {}, to_update);
+
   } else if (popup_id == "csv") {
     console.log("got popup file");
     let popup_file = popup_data.file;

@@ -917,7 +917,7 @@ def plot_candles(  # pylint: disable=too-many-arguments
         secondary_y=volume,
     )
     if volume:
-        fig.add_stock_volume(data)
+        fig.add_inchart_volume(data)
 
     fig.set_yaxis_title("Price", row=1, col=1, secondary_y=volume, type=yscale)
     fig.update_layout(showlegend=False)

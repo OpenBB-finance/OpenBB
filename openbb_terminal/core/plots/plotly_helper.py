@@ -395,9 +395,9 @@ class OpenBBFigure(go.Figure):
         data : `pd.DataFrame`
             Data to plot
         row : `int`, optional
-            Row number, by default None
+            Row number, by default 1
         col : `int`, optional
-            Column number, by default None
+            Column number, by default 1
         secondary_y : `bool`, optional
             Whether to plot on secondary y axis, by default None
         """
@@ -841,7 +841,7 @@ class OpenBBFigure(go.Figure):
 
         return {"range": volume_range, "ticks": tickvals}
 
-    def add_stock_volume(
+    def add_inchart_volume(
         self,
         df_stock: pd.DataFrame,
         close_col: Optional[str] = "Close",
@@ -849,7 +849,7 @@ class OpenBBFigure(go.Figure):
         row: Optional[int] = 1,
         col: Optional[int] = 1,
     ) -> None:
-        """Add the volume of a stock to the figure.
+        """Add in-chart volume to a subplot.
 
         Parameters
         ----------

@@ -16,6 +16,22 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
   console.log("plotly_figure", plotly_figure);
   let graphs = plotly_figure;
 
+  // We add the event listeners for csv file/type changes
+  globals.CSV_DIV.querySelector("#csv_file").addEventListener(
+    "change",
+    function () {
+      console.log("file changed");
+      checkFile(globals.CSV_DIV);
+    }
+  );
+  globals.CSV_DIV.querySelector("#csv_trace_type").addEventListener(
+    "change",
+    function () {
+      console.log("type changed");
+      checkFile(globals.CSV_DIV, true);
+    }
+  );
+
   // Sets the config with the custom buttons
   CONFIG = {
     scrollZoom: true,
@@ -297,27 +313,6 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
     });
   }
 
-  // Just in case the globals.CSV_DIV is undefined, we check for it every 100ms
-  let check_csv = setInterval(function () {
-    if (globals.CSV_DIV != undefined) {
-      console.log("globals.CSV_DIV is defined");
-      // We add the event listeners for csv file/type changes
-      globals.CSV_DIV.querySelector("#csv_file").addEventListener(
-        "change",
-        function () {
-          checkFile(globals.CSV_DIV);
-        }
-      );
-      globals.CSV_DIV.querySelector("#csv_trace_type").addEventListener(
-        "change",
-        function () {
-          console.log("type changed");
-          checkFile(globals.CSV_DIV, true);
-        }
-      );
-      clearInterval(check_csv);
-    }
-  }, 100);
 
   // We check to see if window.save_png is defined and true
   if (window.save_image != undefined && window.export_image) {
@@ -342,7 +337,6 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
     setTimeout(function () {
       window.close();
     }, close_interval);
-    // send to console all Plotly functions
   }
 }
 

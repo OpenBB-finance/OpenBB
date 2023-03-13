@@ -1,5 +1,4 @@
 // Custom Menu functions for Plotly charts
-// import Plotly from 'plotly.js-dist'
 
 function autoScaling(eventdata, graphs) {
   try {

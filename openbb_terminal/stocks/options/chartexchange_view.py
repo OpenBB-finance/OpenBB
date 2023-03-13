@@ -58,7 +58,7 @@ def plot_chart(
         col=1,
         secondary_y=True,
     )
-    fig.add_stock_volume(df)
+    fig.add_inchart_volume(df)
     fig.hide_holidays()
 
     return fig

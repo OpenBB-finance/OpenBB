@@ -541,6 +541,6 @@ class PlotlyTA(PltTA):
             new_subplot.layout.update({layout: fig.layout[layout]})
 
         if self.show_volume:
-            new_subplot.add_stock_volume(self.df_stock, self.close_column)
+            new_subplot.add_inchart_volume(self.df_stock, self.close_column)
 
         return new_subplot

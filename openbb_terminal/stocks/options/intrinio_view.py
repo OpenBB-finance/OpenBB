@@ -90,7 +90,7 @@ def display_historical(
         col=1,
         secondary_y=True,
     )
-    fig.add_stock_volume(df_hist)
+    fig.add_inchart_volume(df_hist)
     fig.hide_holidays()
 
     if export:
