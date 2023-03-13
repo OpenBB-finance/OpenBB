@@ -77,12 +77,13 @@ def display_messari_timeseries_list(
             console.print(f"\nNo timeseries found with query {query}\n")
         else:
             print_rich_table(
-                df.head(limit),
+                df,
                 index_name="ID",
                 headers=list(df.columns),
                 show_index=True,
                 title="Messari Timeseries",
                 export=bool(export),
+                limit=limit,
             )
 
         export_data(
@@ -304,11 +305,12 @@ def display_roadmap(
 
     if not df.empty:
         print_rich_table(
-            df.head(limit),
+            df,
             headers=list(df.columns),
             show_index=False,
             title=f"{symbol} Roadmap",
             export=bool(export),
+            limit=limit,
         )
         if not fig.is_image_export(export):
             export_data(

@@ -113,11 +113,12 @@ def display_twitter(
         return
 
     print_rich_table(
-        df.head(limit),
+        df,
         headers=list(df.columns),
         show_index=False,
         title="Twitter Timeline",
         export=bool(export),
+        limit=limit,
     )
 
     export_data(
@@ -172,11 +173,12 @@ def display_events(
         df.drop("link", axis=1, inplace=True)
 
     print_rich_table(
-        df.head(limit),
+        df,
         headers=list(df.columns),
         show_index=False,
         title="All Events",
         export=bool(export),
+        limit=limit,
     )
 
     export_data(
@@ -220,11 +222,12 @@ def display_exchanges(
         return
 
     print_rich_table(
-        df.head(limit),
+        df,
         headers=list(df.columns),
         show_index=False,
         title="All Exchanges",
         export=bool(export),
+        limit=limit,
     )
 
     export_data(
@@ -283,11 +286,12 @@ def display_markets(
         df.drop("market_url", axis=1, inplace=True)
 
     print_rich_table(
-        df.head(limit),
+        df,
         headers=list(df.columns),
         show_index=False,
         title="All Markets",
         export=bool(export),
+        limit=limit,
     )
 
     export_data(

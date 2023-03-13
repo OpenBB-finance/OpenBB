@@ -141,7 +141,6 @@ class OpenBBSDK:
             `events`: Get economic calendar for countries between specified dates\n
             `fred`: Get Series data. [Source: FRED]\n
             `fred_chart`: Display (multiple) series from https://fred.stlouisfed.org. [Source: FRED]\n
-            `fred_ids`: Get Series IDs. [Source: FRED]\n
             `fred_notes`: Get series notes. [Source: FRED]\n
             `future`: Get futures data. [Source: Finviz]\n
             `futures`: Get futures data.\n
