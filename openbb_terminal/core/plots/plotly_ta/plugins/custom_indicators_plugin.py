@@ -39,7 +39,10 @@ class Custom(PltTA):
             cond4 = df["High"][i - 1] > df["High"][i - 2]
             return cond1 and cond2 and cond3 and cond4
 
-        df_ta2 = df_ta.copy()
+        df_ta2 = df_ta.copy().loc[
+            (df_ta.index >= datetime.now() - timedelta(days=200))
+            & (df_ta.index < datetime.now())
+        ]
         if df_ta2.index[-2].date() != df_ta2.index[-1].date():
             interval = 1440
         else:
@@ -82,6 +85,7 @@ class Custom(PltTA):
                         showlegend=False,
                         row=1,
                         col=1,
+                        secondary_y=self.show_volume,
                     )
                     fig.add_hline(
                         y=lv,
@@ -90,6 +94,7 @@ class Custom(PltTA):
                         line_color="rgba(120, 70, 200, 0.70)",
                         row=1,
                         col=1,
+                        secondary_y=self.show_volume,
                     )
             elif is_resistance(df_ta2, i):
                 lv = df_ta2["High"][i]
@@ -108,6 +113,7 @@ class Custom(PltTA):
                         showlegend=False,
                         row=1,
                         col=1,
+                        secondary_y=self.show_volume,
                     )
                     fig.add_hline(
                         y=lv,
@@ -116,6 +122,7 @@ class Custom(PltTA):
                         line_color="rgba(120, 70, 200, 0.70)",
                         row=1,
                         col=1,
+                        secondary_y=self.show_volume,
                     )
 
         return fig
@@ -158,6 +165,7 @@ class Custom(PltTA):
             showlegend=False,
             row=1,
             col=1,
+            secondary_y=self.show_volume,
         )
         df_ta2 = df_ta.copy()
         interval = 1440
@@ -198,6 +206,7 @@ class Custom(PltTA):
                 showlegend=False,
                 row=1,
                 col=1,
+                secondary_y=self.show_volume,
             )
 
         return fig

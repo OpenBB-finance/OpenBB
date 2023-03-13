@@ -14,10 +14,13 @@ from pathlib import Path
 from subprocess import PIPE, STDOUT
 from typing import List, Optional
 
+import dotenv
 import numpy as np
 import psutil
 
 import openbb_terminal.config_terminal as cfg
+from openbb_terminal.base_helpers import load_env_vars, strtobool
+from openbb_terminal.core.config.paths import SETTINGS_ENV_FILE
 from openbb_terminal.core.plots.backend import plots_backend
 from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
@@ -46,13 +49,15 @@ class DashboardsController(BaseController):
         "futures",
         "forecast",
         "forecasting",
+        "indicators",
     ]
     PATH = "/dashboards/"
 
     def __init__(self, queue: Optional[List[str]] = None):
         """Constructor"""
         super().__init__(queue)
-        self.jupyter_token = None
+        self.jupyter_token: Optional[str] = None
+        self.streamlit_url: Optional[str] = None
         self.processes: List[psutil.Process] = []
         self.parent_path = (
             Path(sys.executable).parent if hasattr(sys, "frozen") else Path(os.getcwd())
@@ -80,6 +85,7 @@ class DashboardsController(BaseController):
         mt.add_cmd("forecast")
         mt.add_raw("\nStreamlit Apps:\n")
         mt.add_cmd("forecasting")
+        mt.add_cmd("indicators")
         console.print(text=mt.menu_text, menu="Dashboards")
 
     @log_start_end(log=logger)
@@ -125,7 +131,12 @@ class DashboardsController(BaseController):
     @log_start_end(log=logger)
     def call_forecasting(self, other_args: List[str]):
         """Process forecasting command"""
-        self.create_call_streamlit(other_args, "forecast")
+        self.create_call_streamlit(other_args, "Forecasting")
+
+    @log_start_end(log=logger)
+    def call_indicators(self, other_args: List[str]):
+        """Process indicators command"""
+        self.create_call_streamlit(other_args, "Indicators")
 
     def create_call_voila(
         self, other_args: List[str], name: str, filename: Optional[str] = None
@@ -234,7 +245,8 @@ class DashboardsController(BaseController):
         """Kills all processes started by this class."""
         for process in [p for p in self.processes if p.is_running()]:
             for child in process.children(recursive=True):
-                child.kill()
+                if child.is_running():
+                    child.kill()
 
             process.kill()
 
@@ -299,31 +311,38 @@ class DashboardsController(BaseController):
         if ns_parser:
             cmd = "streamlit run"
 
-            filepath = Path(__file__).parent / "stream" / f"{filename}.py"
+            filepath = Path(__file__).parent / "stream" / "Forecasting.py"
             file = filepath.relative_to(self.parent_path).as_posix()
 
-            if not ns_parser.input:
-                console.print(
-                    f"Warning: opens a port on your computer to run a {cmd} server."
-                )
-                response = input("Would you like us to run the server for you [yn]? ")
+            streamlit_warning = is_streamlit_activated()
+            if not streamlit_warning:
+                return
 
-            if ns_parser.input or response.lower() == "y":
+            response = ""
+            if not ns_parser.input and not self.streamlit_url:
+                response = console.input(
+                    f"\nWarning: opens a port on your computer to run a {cmd} server.\n"
+                    "[green]Would you like us to run the server for you Y/n? [/]"
+                )
+
+            if not self.streamlit_url and ns_parser.input or response.lower() == "y":
                 port = self.get_free_port()
+                self.streamlit_url = f"http://localhost:{port}"
                 os.environ["PYTHONPATH"] = str(self.parent_path)
                 self.processes.append(
                     psutil.Popen(
-                        f"{cmd} --server.port {port} {file}",
+                        f"{cmd} --server.headless true --server.port {port} {file}",
                         stdout=PIPE,
                         stderr=STDOUT,
                         stdin=PIPE,
-                        shell=True,  # nosec
                         env=os.environ,
                         cwd=os.getcwd(),
                     )
                 )
-                url = f"http://localhost:{port}"
+                url = f"http://localhost:{port}/{name}"
                 plots_backend().send_url(url=url, title=f"{filename.title()} Dashboard")
+
+                atexit.register(self.kill_processes)
 
                 thread = threading.Thread(
                     target=non_blocking_streamlit,
@@ -331,8 +350,67 @@ class DashboardsController(BaseController):
                     daemon=True,
                 )
                 thread.start()
+
+                if not self.processes[-1].is_running():
+                    self.processes.remove(self.processes[-1])
+                    self.streamlit_url = ""
+                    console.print(
+                        "[red]Error: streamlit server failed to start.[/]\n"
+                        "It might need to be activated or updated. Try running:\n"
+                        "[green] streamlit activate[/] or [green]pip install streamlit --upgrade[/]"
+                    )
+                    return
+            elif self.streamlit_url:
+                url = f"{self.streamlit_url}/{name}"
+                plots_backend().send_url(url=url, title=f"{filename.title()} Dashboard")
             else:
-                console.print(f"Type: {cmd} '{file}'\ninto a terminal to run.")
+                console.print(f"\n\nType: {cmd} '{file}'\ninto a terminal to run.")
+
+
+def is_streamlit_activated() -> bool:
+    def _declined():
+        console.print(
+            "\n[green]You will need to activate streamlit before running this command.[/]\n"
+            "[yellow]Type: streamlit activate into a terminal to activate it.[/]"
+        )
+        return False
+
+    def _set_key():
+        dotenv.set_key(
+            SETTINGS_ENV_FILE,
+            "OPENBB_DISABLE_STREAMLIT_WARNING",
+            "1",
+        )
+        os.environ["OPENBB_DISABLE_STREAMLIT_WARNING"] = "1"
+
+    if load_env_vars("OPENBB_DISABLE_STREAMLIT_WARNING", strtobool, False):
+        return True
+
+    run_activate = console.input(
+        "\n[yellow]If you have not ran streamlit before, you will need to "
+        "activate it first.\n[/]"
+        "[green]If you have already activated streamlit, you can press enter to continue.\n"
+        "Otherwise, would like us to activate streamlit for you. Y/n?[/]"
+    ).lower()
+    if run_activate not in ["y", ""]:
+        return _declined()
+
+    if run_activate == "":
+        _set_key()
+        return True
+
+    try:
+        console.print("\n[green]Activating streamlit. This may take a few seconds.[/]")
+        activate = os.system("streamlit activate")
+        if activate == 0:
+            _set_key()
+            return True
+        return _declined()
+
+    except Exception as err:
+        console.print(f"Error: {err}")
+
+    return _declined()
 
 
 def non_blocking_streamlit(process: psutil.Popen) -> None:

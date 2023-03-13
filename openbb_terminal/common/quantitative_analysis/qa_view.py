@@ -266,6 +266,7 @@ def display_bw(
     >>> df = openbb.stocks.load("AAPL")
     >>> openbb.qa.bw(data=df, target="Adj Close")
     """
+    data = data.copy()
     start = data[target].index[0]
 
     color = theme.get_colors()[0]
@@ -287,7 +288,10 @@ def display_bw(
     ]
 
     fig = OpenBBFigure(
-        title=f"{['Monthly','Yearly'][yearly]} box plot of {symbol} {target} from {start.strftime('%Y-%m-%d')}",
+        title=(
+            f"{['Monthly','Yearly'][yearly]} box plot of {symbol.upper()} "
+            f"{target} from {start.strftime('%Y-%m-%d')}"
+        ),
         yaxis_title=target,
         xaxis_title=["Monthly", "Yearly"][yearly],
     )

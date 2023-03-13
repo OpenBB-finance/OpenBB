@@ -42,6 +42,7 @@ class Overlap(PltTA):
                             connectgaps=True,
                             row=1,
                             col=1,
+                            secondary_y=self.show_volume,
                         )
                         fig.add_annotation(
                             xref="paper",
@@ -75,6 +76,7 @@ class Overlap(PltTA):
             opacity=0.8,
             row=1,
             col=1,
+            secondary_y=self.show_volume,
         )
         fig.add_annotation(
             xref="paper",

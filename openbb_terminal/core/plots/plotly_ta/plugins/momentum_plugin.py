@@ -32,6 +32,7 @@ class Momentum(PltTA):
             opacity=0.9,
             row=subplot_row,
             col=1,
+            secondary_y=False,
         )
 
         fig.add_hrect(
@@ -43,6 +44,7 @@ class Momentum(PltTA):
             line_width=0,
             row=subplot_row,
             col=1,
+            secondary_y=False,
         )
         fig.add_hrect(
             y0=-100,
@@ -53,6 +55,7 @@ class Momentum(PltTA):
             line_width=0,
             row=subplot_row,
             col=1,
+            secondary_y=False,
         )
         fig.add_hline(
             y=100,
@@ -61,6 +64,7 @@ class Momentum(PltTA):
             line=dict(width=2, color=theme.down_color, dash="dash"),
             row=subplot_row,
             col=1,
+            secondary_y=False,
         )
         fig.add_hline(
             y=-100,
@@ -69,11 +73,12 @@ class Momentum(PltTA):
             line=dict(width=2, color=theme.up_color, dash="dash"),
             row=subplot_row,
             col=1,
+            secondary_y=False,
         )
 
         fig.add_annotation(
             xref=f"x{subplot_row} domain",
-            yref=f"y{subplot_row} domain",
+            yref=f"y{subplot_row + 1} domain",
             text="<b>CCI</b>",
             x=0,
             xanchor="right",
@@ -82,7 +87,7 @@ class Momentum(PltTA):
             font_size=14,
             font_color="#e0b700",
         )
-        fig["layout"][f"yaxis{subplot_row}"].update(nticks=5, autorange=True)
+        fig["layout"][f"yaxis{subplot_row + 1}"].update(nticks=5, autorange=True)
 
         return fig, subplot_row + 1
 
@@ -99,6 +104,7 @@ class Momentum(PltTA):
             opacity=0.9,
             row=subplot_row,
             col=1,
+            secondary_y=False,
         )
         fig.add_scatter(
             name="Signal",
@@ -109,10 +115,11 @@ class Momentum(PltTA):
             opacity=0.9,
             row=subplot_row,
             col=1,
+            secondary_y=False,
         )
         fig.add_annotation(
             xref=f"x{subplot_row} domain",
-            yref=f"y{subplot_row} domain",
+            yref=f"y{subplot_row + 1} domain",
             text="<b>CG</b>",
             x=0,
             xanchor="right",
@@ -123,7 +130,7 @@ class Momentum(PltTA):
         )
         fig.add_annotation(
             xref=f"x{subplot_row} domain",
-            yref=f"y{subplot_row} domain",
+            yref=f"y{subplot_row + 1} domain",
             text="Signal",
             x=0,
             xanchor="right",
@@ -133,7 +140,7 @@ class Momentum(PltTA):
             font_size=14,
             font_color="#ef7d00",
         )
-        fig["layout"][f"yaxis{subplot_row}"].update(nticks=5, autorange=True)
+        fig["layout"][f"yaxis{subplot_row + 1}"].update(nticks=5, autorange=True)
 
         return fig, subplot_row + 1
 
@@ -151,6 +158,7 @@ class Momentum(PltTA):
             line=dict(color=self.inchart_colors[inchart_index], width=2),
             row=1,
             col=1,
+            secondary_y=self.show_volume,
         )
         fig.add_annotation(
             xref="paper",
@@ -196,6 +204,7 @@ class Momentum(PltTA):
             textfont=dict(color=theme.down_color),
             row=1,
             col=1,
+            secondary_y=self.show_volume,
         )
         fig.add_scatter(
             x=high.index,
@@ -207,6 +216,7 @@ class Momentum(PltTA):
             textfont=dict(color=theme.up_color),
             row=1,
             col=1,
+            secondary_y=self.show_volume,
         )
 
         fig.add_annotation(
@@ -239,6 +249,7 @@ class Momentum(PltTA):
             opacity=0.9,
             row=subplot_row,
             col=1,
+            secondary_y=False,
         )
         fig.add_scatter(
             name="Fisher Signal",
@@ -249,13 +260,14 @@ class Momentum(PltTA):
             opacity=0.9,
             row=subplot_row,
             col=1,
+            secondary_y=False,
         )
         dmax = df_ta[fishers_col].max()
         dmin = df_ta[fishers_col].min()
 
         fig.add_annotation(
             xref=f"x{subplot_row} domain",
-            yref=f"y{subplot_row} domain",
+            yref=f"y{subplot_row + 1} domain",
             text="<b>FISHER</b>",
             x=0,
             xanchor="right",
@@ -266,7 +278,7 @@ class Momentum(PltTA):
         )
         fig.add_annotation(
             xref=f"x{subplot_row} domain",
-            yref=f"y{subplot_row} domain",
+            yref=f"y{subplot_row + 1} domain",
             text="<b>SIGNAL</b>",
             x=0,
             xanchor="right",
@@ -284,6 +296,7 @@ class Momentum(PltTA):
             line_width=0,
             row=subplot_row,
             col=1,
+            secondary_y=False,
         )
         fig.add_hrect(
             y0=-2,
@@ -294,6 +307,7 @@ class Momentum(PltTA):
             line_width=0,
             row=subplot_row,
             col=1,
+            secondary_y=False,
         )
         fig.add_hline(
             y=2,
@@ -303,6 +317,7 @@ class Momentum(PltTA):
             line=dict(width=2, color=theme.down_color, dash="dash"),
             row=subplot_row,
             col=1,
+            secondary_y=False,
         )
         fig.add_hline(
             y=-2,
@@ -312,8 +327,9 @@ class Momentum(PltTA):
             line=dict(width=2, color=theme.up_color, dash="dash"),
             row=subplot_row,
             col=1,
+            secondary_y=False,
         )
-        fig["layout"][f"yaxis{subplot_row}"].update(nticks=5, autorange=True)
+        fig["layout"][f"yaxis{subplot_row + 1}"].update(nticks=5, autorange=True)
 
         return fig, subplot_row + 1
 
@@ -329,6 +345,7 @@ class Momentum(PltTA):
             marker_color="#1a97ea",
             row=subplot_row,
             col=1,
+            secondary_y=False,
         )
         fig.add_scatter(
             name="MACD",
@@ -339,6 +356,7 @@ class Momentum(PltTA):
             opacity=0.9,
             row=subplot_row,
             col=1,
+            secondary_y=False,
         )
         fig.add_scatter(
             name="MACD Signal",
@@ -349,11 +367,12 @@ class Momentum(PltTA):
             opacity=0.9,
             row=subplot_row,
             col=1,
+            secondary_y=False,
         )
 
         fig.add_annotation(
             xref=f"x{subplot_row} domain",
-            yref=f"y{subplot_row} domain",
+            yref=f"y{subplot_row + 1} domain",
             text="<b>MACD</b>",
             x=0,
             xanchor="right",
@@ -364,7 +383,7 @@ class Momentum(PltTA):
         )
         fig.add_annotation(
             xref=f"x{subplot_row} domain",
-            yref=f"y{subplot_row} domain",
+            yref=f"y{subplot_row + 1} domain",
             text="<b>SIGNAL</b>",
             x=0,
             xanchor="right",
@@ -373,7 +392,7 @@ class Momentum(PltTA):
             xshift=-3,
             font_color="rgb(7, 166, 52)",
         )
-        fig["layout"][f"yaxis{subplot_row}"].update(autorange=True, nticks=5)
+        fig["layout"][f"yaxis{subplot_row + 1}"].update(autorange=True, nticks=5)
 
         return fig, subplot_row + 1
 
@@ -390,11 +409,12 @@ class Momentum(PltTA):
             opacity=1,
             row=subplot_row,
             col=1,
+            secondary_y=False,
         )
 
         fig.add_annotation(
             xref=f"x{subplot_row} domain",
-            yref=f"y{subplot_row} domain",
+            yref=f"y{subplot_row + 1} domain",
             text="<b>RSI</b>",
             x=0,
             xanchor="right",
@@ -412,6 +432,7 @@ class Momentum(PltTA):
             line_width=0,
             row=subplot_row,
             col=1,
+            secondary_y=False,
         )
         fig.add_hrect(
             y0=0,
@@ -422,6 +443,7 @@ class Momentum(PltTA):
             line_width=0,
             row=subplot_row,
             col=1,
+            secondary_y=False,
         )
         fig.add_hline(
             y=70,
@@ -431,6 +453,7 @@ class Momentum(PltTA):
             line=dict(width=2, color=theme.down_color, dash="dash"),
             row=subplot_row,
             col=1,
+            secondary_y=False,
         )
         fig.add_hline(
             y=30,
@@ -440,8 +463,9 @@ class Momentum(PltTA):
             line=dict(width=2, color=theme.up_color, dash="dash"),
             row=subplot_row,
             col=1,
+            secondary_y=False,
         )
-        fig["layout"][f"yaxis{subplot_row}"].update(tickvals=[0, 30, 70, 100])
+        fig["layout"][f"yaxis{subplot_row + 1}"].update(tickvals=[0, 30, 70, 100])
 
         return fig, subplot_row + 1
 
@@ -457,6 +481,7 @@ class Momentum(PltTA):
             opacity=0.9,
             row=subplot_row,
             col=1,
+            secondary_y=False,
         )
         fig.add_scatter(
             name="STOCH %D",
@@ -467,11 +492,12 @@ class Momentum(PltTA):
             opacity=0.9,
             row=subplot_row,
             col=1,
+            secondary_y=False,
         )
 
         fig.add_annotation(
             xref=f"x{subplot_row} domain",
-            yref=f"y{subplot_row} domain",
+            yref=f"y{subplot_row + 1} domain",
             text="<b>STOCH</b>",
             x=0,
             xanchor="right",
@@ -480,6 +506,6 @@ class Momentum(PltTA):
             font_size=14,
             font_color="#e0b700",
         )
-        fig["layout"][f"yaxis{subplot_row}"].update(nticks=5, autorange=True)
+        fig["layout"][f"yaxis{subplot_row + 1}"].update(nticks=5, autorange=True)
 
         return fig, subplot_row + 1

@@ -268,10 +268,10 @@ def display_candle(
     data.name = f"{from_symbol}/{to_symbol}"
     fig = PlotlyTA.plot(data, dict(rma=dict(length=ma)), volume=has_volume)
     if add_trend:
-        fig.add_trend(data)
+        fig.add_trend(data, secondary_y=has_volume)
 
-    fig.add_logscale_menus()
-    fig.update_yaxes(type=yscale, row=1, col=1, nticks=20)
+    fig.add_logscale_menus("yaxis2" if has_volume else "yaxis")
+    fig.update_yaxes(type=yscale, row=1, col=1, nticks=20, secondary_y=has_volume)
 
     return fig.show(external=external_axes)
 

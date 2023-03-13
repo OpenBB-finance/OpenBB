@@ -11,7 +11,13 @@ from openbb_terminal.forecast import helpers
 from openbb_terminal.rich_config import console
 from openbb_terminal.sdk import openbb
 
-st.set_page_config(layout="wide")
+st.set_page_config(
+    layout="wide",
+    page_title="Forecasting",
+    page_icon="📈",
+    initial_sidebar_state="collapsed",
+)
+
 
 # pylint: disable=E1101
 model_opts = {

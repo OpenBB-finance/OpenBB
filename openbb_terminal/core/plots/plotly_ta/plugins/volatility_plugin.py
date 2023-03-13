@@ -26,11 +26,12 @@ class Volatility(PltTA):
             line=dict(width=1, color=theme.get_colors()[1]),
             row=subplot_row,
             col=1,
+            secondary_y=False,
         )
 
         fig.add_annotation(
             xref=f"x{subplot_row} domain",
-            yref=f"y{subplot_row} domain",
+            yref=f"y{subplot_row + 1} domain",
             text="<b>ATR</b>",
             x=0,
             xanchor="right",
@@ -58,6 +59,7 @@ class Volatility(PltTA):
             line=dict(width=1, color=theme.up_color),
             row=1,
             col=1,
+            secondary_y=self.show_volume,
         )
         fig.add_scatter(
             name=f"{columns_regex(df_ta, 'BBL')[0]}",
@@ -68,6 +70,7 @@ class Volatility(PltTA):
             line=dict(width=1, color=theme.down_color),
             row=1,
             col=1,
+            secondary_y=self.show_volume,
         )
         fig.add_scatter(
             name=f"{columns_regex(df_ta, 'BBM')[0]}",
@@ -78,6 +81,7 @@ class Volatility(PltTA):
             line=dict(width=1, color=theme.get_colors()[1], dash="dash"),
             row=1,
             col=1,
+            secondary_y=self.show_volume,
         )
         bbands_text = (
             columns_regex(df_ta, "BBL")[0]
@@ -121,6 +125,7 @@ class Volatility(PltTA):
             line=dict(width=0.3, color="#EF6689"),
             row=1,
             col=1,
+            secondary_y=self.show_volume,
         )
         fig.add_scatter(
             name=f"{columns_regex(df_ta, 'DCL')[0]}",
@@ -133,14 +138,20 @@ class Volatility(PltTA):
             fillcolor=fillcolor,
             row=1,
             col=1,
+            secondary_y=self.show_volume,
         )
+
+        donchian_text = (
+            columns_regex(df_ta, "DCL")[0]
+            .replace("DCL_", "DC")
+            .replace("_", ",")
+            .split(".")[0]
+        )
+
         fig.add_annotation(
             xref="paper",
             yref="paper",
-            text=(
-                f"<b>DC{self.params['donchian'].get_argument_values('upper_length') or ''},"
-                f"{self.params['donchian'].get_argument_values('lower_length') or ''}</b>"
-            ),
+            text=f"<b>{donchian_text}</b>",
             x=0,
             xanchor="left",
             yshift=-inchart_index * 18,
@@ -173,6 +184,7 @@ class Volatility(PltTA):
             line=dict(width=0.3, color="#EF6689"),
             row=1,
             col=1,
+            secondary_y=self.show_volume,
         )
         fig.add_scatter(
             name=f"{columns_regex(df_ta, 'KCL')[0]}",
@@ -185,14 +197,18 @@ class Volatility(PltTA):
             fillcolor=fillcolor,
             row=1,
             col=1,
+            secondary_y=self.show_volume,
+        )
+        kctext = (
+            columns_regex(df_ta, "KCL")[0]
+            .replace("KCL_", "KC")
+            .replace("_", ",")
+            .split(".")[0]
         )
         fig.add_annotation(
             xref="paper",
             yref="paper",
-            text=(
-                f"<b>KC{self.params['kc'].get_argument_values('length') or ''},"
-                f"{self.params['kc'].get_argument_values('scalar') or ''}</b>"
-            ),
+            text=f"<b>{kctext}</b>",
             x=0,
             xanchor="left",
             yshift=-inchart_index * 18,

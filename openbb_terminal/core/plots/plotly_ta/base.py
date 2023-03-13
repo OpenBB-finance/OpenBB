@@ -94,6 +94,7 @@ class PltTA(metaclass=PluginMeta):
     close_column: Optional[str] = "Close"
     params: Dict[str, TAIndicator] = {}
     inchart_colors: List[str] = []
+    show_volume: bool = True
 
     __static_methods__: list = []
     __indicators__: List[Indicator] = []
