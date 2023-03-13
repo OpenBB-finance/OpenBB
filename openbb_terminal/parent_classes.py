@@ -871,6 +871,7 @@ class BaseController(metaclass=ABCMeta):
                 ns_parser.is_image = any(
                     ext in ns_parser.export for ext in ["png", "svg", "jpg", "pdf"]
                 )
+
         except SystemExit:
             # In case the command has required argument that isn't specified
 
