@@ -55,8 +55,6 @@ def display_rossindex(
     if df.empty:
         console.print("\nError in runa request\n")
     else:
-        plots_backend().send_table(df, title="Runa ROSS Index")
-
         if sortby in runa_model.SORT_COLUMNS:
             df = df.sort_values(by=sortby, ascending=ascend)
         df = df.head(limit)

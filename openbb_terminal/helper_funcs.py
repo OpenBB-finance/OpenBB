@@ -372,6 +372,54 @@ def print_rich_table(
         if columns_to_auto_color is None and rows_to_auto_color is None:
             df = df.applymap(lambda x: return_colored_value(str(x)))
 
+    def _get_headers(_headers: Union[List[str], pd.Index]) -> List[str]:
+        """Check if headers are valid and return them."""
+        output = _headers
+        if isinstance(_headers, pd.Index):
+            output = list(_headers)
+        if len(output) != len(df.columns):
+            log_and_raise(
+                ValueError("Length of headers does not match length of DataFrame")
+            )
+        return output
+
+    if current_user.preferences.USE_INTERACTIVE_DF and plots_backend().isatty:
+        df_outgoing = df.copy()
+        # If headers are provided, use them
+        if headers is not None:
+            # We check if headers are valid
+            df_outgoing.columns = _get_headers(headers)
+
+        if show_index and index_name not in df_outgoing.columns:
+            # If index name is provided, we use it
+            df_outgoing.index.name = index_name or "Index"
+            df_outgoing = df_outgoing.reset_index()
+
+        for col in df_outgoing.columns:
+            if col == "":
+                df_outgoing = df_outgoing.rename(columns={col: "  "})
+
+        plots_backend().send_table(df_table=df_outgoing, title=title)
+        return
+
+    df = df.copy() if not limit else df.copy().iloc[:limit]
+    if current_user.preferences.USE_COLOR and automatic_coloring:
+        if columns_to_auto_color:
+            for col in columns_to_auto_color:
+                # checks whether column exists
+                if col in df.columns:
+                    df[col] = df[col].apply(lambda x: return_colored_value(str(x)))
+        if rows_to_auto_color:
+            for row in rows_to_auto_color:
+                # checks whether row exists
+                if row in df.index:
+                    df.loc[row] = df.loc[row].apply(
+                        lambda x: return_colored_value(str(x))
+                    )
+
+        if columns_to_auto_color is None and rows_to_auto_color is None:
+            df = df.applymap(lambda x: return_colored_value(str(x)))
+
     if current_user.preferences.USE_TABULATE_DF:
         table = Table(title=title, show_lines=True, show_header=show_header)
 

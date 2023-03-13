@@ -162,7 +162,6 @@ class DiscoveryController(BaseController):
         if ns_parser:
             if ns_parser.source == "CoinGecko":
                 pycoingecko_view.display_coins(
-                    interactive=ns_parser.interactive,
                     sortby=" ".join(ns_parser.sortby),
                     category=ns_parser.category,
                     limit=ns_parser.limit,

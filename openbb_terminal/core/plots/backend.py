@@ -230,10 +230,23 @@ class Backend(pywry.PyWry):
             Source of the data, by default ""
         """
         self.loop.run_until_complete(self.check_backend())
+
+        if title:
+            # We remove any html tags and markdown from the title
+            title = re.sub(r"<[^>]*>", "", title)
+            title = re.sub(r"\[\/?[a-z]+\]", "", title)
+
+        # we get the length of each column using the max length of the column
+        # name and the max length of the column values as the column width
         columnwidth = [
-            max(len(str(df_table[col].name)), df_table[col].astype(str).str.len().max())
+            max(
+                len(str(df_table[col].name)),
+                df_table[col].astype(str).str.len().max(),
+            )
             for col in df_table.columns
+            if hasattr(df_table[col], "name") and hasattr(df_table[col], "dtype")
         ]
+
         # we add a percentage of max to the min column width
         columnwidth = [
             int(x + (max(columnwidth) - min(columnwidth)) * 0.2) for x in columnwidth

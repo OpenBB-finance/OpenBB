@@ -465,7 +465,6 @@ class DefiController(BaseController):
         )
         if ns_parser:
             llama_view.display_defi_protocols(
-                interactive=ns_parser.interactive,
                 limit=ns_parser.limit,
                 sortby=ns_parser.sortby,
                 ascend=ns_parser.reverse,

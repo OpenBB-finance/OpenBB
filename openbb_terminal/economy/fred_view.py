@@ -369,12 +369,15 @@ def plot_cpi(
         fig.add_scatter(x=df.index, y=df[column].values, name=label)
 
     if raw:
+        # was a -iloc so we need to flip the index as we use head
+        df = df.sort_index(ascending=False)
         print_rich_table(
-            df.iloc[-10:],
+            df,
             title=title,
             show_index=True,
             floatfmt=".3f",
             export=bool(export),
+            limit=limit,
         )
 
     export_data(
