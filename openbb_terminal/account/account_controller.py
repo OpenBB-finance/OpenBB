@@ -253,7 +253,7 @@ class AccountController(BaseController):
             )
             df, page, pages = get_routines_info(response)
             if not df.empty:
-                self.REMOTE_CHOICES = list(df["name"])
+                self.REMOTE_CHOICES += list(df["name"])
                 self.update_runtime_choices()
                 display_routines_list(df, page, pages)
             else:
