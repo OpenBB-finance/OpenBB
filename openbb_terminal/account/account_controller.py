@@ -61,8 +61,12 @@ class AccountController(BaseController):
         self.ROUTINE_FILES = self.get_routines()
         if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             self.choices["upload"]["--file"].update({c: {} for c in self.ROUTINE_FILES})
-            self.choices["download"]["--name"].update({c: {} for c in self.REMOTE_CHOICES})
-            self.choices["delete"]["--name"].update({c: {} for c in self.REMOTE_CHOICES})
+            self.choices["download"]["--name"].update(
+                {c: {} for c in self.REMOTE_CHOICES}
+            )
+            self.choices["delete"]["--name"].update(
+                {c: {} for c in self.REMOTE_CHOICES}
+            )
             self.completer = NestedCompleter.from_nested_dict(self.choices)
 
     def get_routines(self):
