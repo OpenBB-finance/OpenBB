@@ -364,7 +364,8 @@ def display_redditsent(
         )
 
         fig = OpenBBFigure(
-            title=f"Sentiment Score of {symbol}", xaxis_title="Sentiment Score"
+            title=f"Sentiment Score of {symbol}",
+            xaxis_title="Sentiment Score",
         )
         fig.add_bar(x=polarity_scores)
 
