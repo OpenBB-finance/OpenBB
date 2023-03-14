@@ -57,7 +57,7 @@ def display_historical(
     figure = stocks_helper.display_candle(
         symbol=symbol,
         data=data,
-        external_axes=external_axes,
+        external_axes=True,
         raw=raw,
     )
 
@@ -78,4 +78,6 @@ def display_historical(
         sheet_name,
     )
 
-    return figure
+    if figure:
+        return figure.show(external=external_axes)
+    return None
