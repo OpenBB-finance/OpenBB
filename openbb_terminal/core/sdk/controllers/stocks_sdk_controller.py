@@ -60,7 +60,6 @@ class StocksController(model.StocksRoot):
             `stalker`: Gets messages from given user [Source: stocktwits].\n
             `text_sent`: Find the sentiment of a post and related comments.\n
             `trending`: Get trending tickers from stocktwits [Source: stocktwits].\n
-            `watchlist`: Get reddit users watchlists [Source: reddit].\n
             `wsb`: Get wsb posts [Source: reddit].\n
         """
 

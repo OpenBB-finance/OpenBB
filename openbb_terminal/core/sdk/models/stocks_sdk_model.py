@@ -58,7 +58,6 @@ class StocksBehavioralAnalysis(Category):
         `stalker`: Gets messages from given user [Source: stocktwits].\n
         `text_sent`: Find the sentiment of a post and related comments.\n
         `trending`: Get trending tickers from stocktwits [Source: stocktwits].\n
-        `watchlist`: Get reddit users watchlists [Source: reddit].\n
         `wsb`: Get wsb posts [Source: reddit].\n
     """
 
@@ -93,7 +92,6 @@ class StocksBehavioralAnalysis(Category):
         self.stalker = lib.stocks_ba_stocktwits_model.get_stalker
         self.text_sent = lib.stocks_ba_reddit_model.get_sentiment
         self.trending = lib.stocks_ba_stocktwits_model.get_trending
-        self.watchlist = lib.stocks_ba_reddit_model.get_watchlists
         self.wsb = lib.stocks_ba_reddit_model.get_wsb_community
 
 

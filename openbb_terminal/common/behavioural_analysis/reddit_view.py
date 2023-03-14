@@ -141,54 +141,6 @@ def print_reddit_post(sub: tuple):
         "API_REDDIT_PASSWORD",
     ]
 )
-def display_watchlist(limit: int = 5):
-    """Prints other users watchlist. [Source: Reddit].
-
-    Parameters
-    ----------
-    limit: int
-        Maximum number of submissions to look at
-    """
-    subs, d_watchlist_tickers, n_flair_posts_found = reddit_model.get_watchlists(limit)
-    if subs:
-        for sub in subs:
-            print_and_record_reddit_post({}, sub)
-            console.print("")
-
-        if n_flair_posts_found > 0:
-            lt_watchlist_sorted = sorted(
-                d_watchlist_tickers.items(), key=lambda item: item[1], reverse=True
-            )
-            s_watchlist_tickers = ""
-            n_tickers = 0
-            for t_ticker in lt_watchlist_sorted:
-                try:
-                    # If try doesn't trigger exception, it means that this stock exists on finviz
-                    # thus we can print it.
-                    finviz.get_stock(t_ticker[0])
-                    if int(t_ticker[1]) > 1:
-                        s_watchlist_tickers += f"{t_ticker[1]} {t_ticker[0]}, "
-                    n_tickers += 1
-                except Exception:
-                    # console.print(e, "\n")
-                    pass  # noqa
-            if n_tickers:
-                console.print(
-                    "The following stock tickers have been mentioned more than once across the previous watchlists:"
-                )
-                console.print(s_watchlist_tickers[:-2] + "\n")
-
-
-@log_start_end(log=logger)
-@check_api_key(
-    [
-        "API_REDDIT_CLIENT_ID",
-        "API_REDDIT_CLIENT_SECRET",
-        "API_REDDIT_USERNAME",
-        "API_REDDIT_USER_AGENT",
-        "API_REDDIT_PASSWORD",
-    ]
-)
 def display_popular_tickers(
     limit: int = 10,
     post_limit: int = 50,

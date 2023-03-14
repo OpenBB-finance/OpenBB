@@ -41,7 +41,6 @@ class BehaviouralAnalysisController(StockBaseController):
 
     CHOICES_COMMANDS = [
         "load",
-        # "watchlist",
         # "spac",
         "spacc",
         "wsb",
@@ -94,7 +93,6 @@ class BehaviouralAnalysisController(StockBaseController):
         mt.add_cmd("headlines", self.ticker)
         mt.add_cmd("snews", self.ticker)
         mt.add_cmd("wsb")
-        # mt.add_cmd("watchlist")
         # mt.add_cmd("popular")
         mt.add_cmd("spacc")
         # mt.add_cmd("spac")
@@ -118,30 +116,6 @@ class BehaviouralAnalysisController(StockBaseController):
         if self.ticker:
             return ["stocks", "ba", f"load {self.ticker}"]
         return []
-
-    @log_start_end(log=logger)
-    def call_watchlist(self, other_args: List[str]):
-        """Process watchlist command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="watchlist",
-            description="""Print other users watchlist. [Source: Reddit]""",
-        )
-        parser.add_argument(
-            "-l",
-            "--limit",
-            action="store",
-            dest="limit",
-            type=check_positive,
-            default=5,
-            help="limit of posts with watch lists retrieved.",
-        )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-l")
-        ns_parser = self.parse_known_args_and_warn(parser, other_args)
-        if ns_parser:
-            reddit_view.display_watchlist(limit=ns_parser.limit)
 
     @log_start_end(log=logger)
     def call_snews(self, other_args: List[str]):
