@@ -78,11 +78,6 @@ class PreferencesModel:
     MONITOR: NonNegativeInt = 0
 
     # STYLE
-    # Color for `view` command data.  All pyplot colors listed at:
-    # https://matplotlib.org/stable/gallery/color/named_colors.html
-    VIEW_COLOR: str = "tab:green"
-    MPL_STYLE: str = "dark"
-    PMF_STYLE: str = "dark"
     RICH_STYLE: str = "dark"
     PLOT_STYLE: str = "dark"
 
