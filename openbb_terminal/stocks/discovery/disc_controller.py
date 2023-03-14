@@ -794,7 +794,7 @@ class DiscoveryController(BaseController):
             action="store",
             dest="s_type",
             choices=self.cnews_type_choices,
-            default="Top-News",
+            default="top-news",
             help="number of news to display",
         )
         parser.add_argument(

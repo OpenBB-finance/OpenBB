@@ -160,11 +160,12 @@ def price_target_from_analysts(
     if raw:
         df_analyst_data.index = df_analyst_data.index.strftime("%Y-%m-%d")
         return print_rich_table(
-            df_analyst_data.sort_index(ascending=False).head(limit),
+            df_analyst_data.sort_index(ascending=False),
             headers=list(df_analyst_data.columns),
             show_index=True,
             title="Analyst Price Targets",
             export=bool(export),
+            limit=limit,
         )
 
     return fig.show(external=external_axes)

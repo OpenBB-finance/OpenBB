@@ -5,7 +5,6 @@ from typing import Optional, Union
 
 from openbb_terminal import OpenBBFigure
 from openbb_terminal.alternative.oss import runa_model
-from openbb_terminal.core.plots.backend import plots_backend
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
@@ -56,8 +55,6 @@ def display_rossindex(
     if df.empty:
         console.print("\nError in runa request\n")
     else:
-        plots_backend().send_table(df, title="Runa ROSS Index")
-
         if sortby in runa_model.SORT_COLUMNS:
             df = df.sort_values(by=sortby, ascending=ascend)
         df = df.head(limit)
@@ -112,12 +109,13 @@ def display_rossindex(
         show_df = show_df.fillna("")
         show_df["GitHub"] = show_df["GitHub"].str.wrap(10)
         print_rich_table(
-            show_df.head(limit),
+            show_df,
             headers=list(show_df.columns),
             floatfmt=".1f",
             show_index=False,
             title="ROSS Index - the fastest-growing open-source startups",
             export=bool(export),
+            limit=limit,
         )
 
         export_data(
