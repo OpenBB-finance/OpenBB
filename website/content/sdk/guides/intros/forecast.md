@@ -55,7 +55,7 @@ Each command is listed below with a short description. A majority of functions w
 |openbb.forecast.theta |Model |Theta Method |
 |openbb.forecast.trans |Model |Transformer Network (feat. Past covariates) |
 
-Alteratively, the contents of the menu is printed with:
+Alternatively, the contents of the menu is printed with:
 
 ```python
 help(openbb.forecast)

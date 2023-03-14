@@ -33,11 +33,12 @@ def last_insider_activity(
         return
 
     print_rich_table(
-        df.head(limit),
+        df,
         headers=list(df.columns),
         show_index=True,
         title="Insider Activity",
         export=bool(export),
+        limit=limit,
     )
 
     export_data(

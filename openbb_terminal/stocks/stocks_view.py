@@ -31,8 +31,9 @@ def display_quote(symbol: str, export: str = "", sheet_name: Optional[str] = Non
     else:
         print_rich_table(
             quote,
-            headers=[""],
+            headers=["Value"],
             title=f"{symbol.upper()} Quote",
+            index_name="Info",
             show_index=True,
             export=bool(export),
         )

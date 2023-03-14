@@ -1,6 +1,6 @@
 """Crypto Technical Analysis Controller Module"""
 __docformat__ = "numpy"
-# pylint:disable=too-many-lines,R0904,C0201
+# pylint: disable=C0302,R0904,C0201
 
 import argparse
 import logging
@@ -1486,8 +1486,8 @@ class TechnicalAnalysisController(CryptoBaseController):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="cones",
             description="""
-            Calculates the realized volatility quantiles over rolling windows of time. 
-            The model for calculating volatility is selectable.         
+            Calculates the realized volatility quantiles over rolling windows of time.
+            The model for calculating volatility is selectable.
             """,
         )
         parser.add_argument(

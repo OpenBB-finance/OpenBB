@@ -719,15 +719,13 @@ def get_indices(
 
 
 @log_start_end(log=logger)
-def get_search_indices(keyword: list, limit: int = 10) -> pd.DataFrame:
+def get_search_indices(keyword: list) -> pd.DataFrame:
     """Search indices by keyword. [Source: FinanceDatabase]
 
     Parameters
     ----------
     keyword: list
         The keyword you wish to search for. This can include spaces.
-    limit: int
-        The amount of views you want to show, by default this is set to 10.
 
     Returns
     -------
@@ -748,7 +746,5 @@ def get_search_indices(keyword: list, limit: int = 10) -> pd.DataFrame:
         ]
     )
     queried_indices = queried_indices.drop_duplicates()
-
-    queried_indices = queried_indices.iloc[:limit]
 
     return keyword_adjusted, queried_indices

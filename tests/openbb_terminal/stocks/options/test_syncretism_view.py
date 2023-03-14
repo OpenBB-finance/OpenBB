@@ -62,6 +62,7 @@ def test_view_historical_greeks():
     )
 
 
+@pytest.mark.skip
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(

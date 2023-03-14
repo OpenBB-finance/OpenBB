@@ -240,10 +240,11 @@ def search(
     df = df.iloc[df.isnull().sum(axis=1).mul(1).argsort()]
 
     print_rich_table(
-        df.iloc[:limit] if limit else df,
+        df,
         show_index=True,
         headers=["Name", "Country", "Sector", "Industry Group", "Industry", "Exchange"],
         title=title,
+        limit=limit,
     )
 
     return df
@@ -930,7 +931,7 @@ def verify_plot_options(command: str, source: str, plot: list) -> bool:
         command_options = BALANCE_PLOT
     else:
         command_options = INCOME_PLOT
-    options = list(command_options[source].values())
+    options = list(command_options.get(source, {}).values())
 
     incorrect_columns = []
     for column in plot:

@@ -19,7 +19,6 @@ class EconomyRoot(Category):
         `events`: Get economic calendar for countries between specified dates\n
         `fred`: Get Series data. [Source: FRED]\n
         `fred_chart`: Display (multiple) series from https://fred.stlouisfed.org. [Source: FRED]\n
-        `fred_ids`: Get Series IDs. [Source: FRED]\n
         `fred_notes`: Get series notes. [Source: FRED]\n
         `future`: Get futures data. [Source: Finviz]\n
         `futures`: Get futures data.\n
@@ -60,7 +59,6 @@ class EconomyRoot(Category):
         self.events = lib.economy_nasdaq_model.get_economic_calendar
         self.fred = lib.economy_fred_model.get_aggregated_series_data
         self.fred_chart = lib.economy_fred_view.display_fred_series
-        self.fred_ids = lib.economy_fred_model.get_series_ids
         self.fred_notes = lib.economy_fred_model.get_series_notes
         self.future = lib.economy_finviz_model.get_futures
         self.futures = lib.economy_sdk_helpers.futures
