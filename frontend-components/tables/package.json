@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@radix-ui/react-select": "^1.2.1",
     "@tanstack/match-sorter-utils": "^8.7.6",
     "@tanstack/react-table": "^8.7.9",
     "dom-to-image": "^2.6.0",

@@ -101,7 +101,7 @@ const DraggableColumnHeader: FC<{
 
   return (
     <th
-      className="bg-grey-800 pb-4"
+      className="h-[70px]"
       colSpan={header.colSpan}
       style={{ width: header.getSize(), opacity: isDragging ? 0.5 : 1 }}
       ref={dropRef}
@@ -112,7 +112,7 @@ const DraggableColumnHeader: FC<{
             <div
               {...{
                 className: clsx(
-                  "font-bold uppercase text-white my-2 tracking-normal flex gap-2",
+                  "font-bold uppercase text-white tracking-normal flex gap-2 whitespace-nowrap",
                   {
                     "cursor-pointer select-none": header.column.getCanSort(),
                   }
@@ -120,14 +120,55 @@ const DraggableColumnHeader: FC<{
                 onClick: header.column.getToggleSortingHandler(),
               }}
             >
+              {advanced && (
+                <button ref={dragRef}>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="17"
+                    height="16"
+                    fill="none"
+                    viewBox="0 0 17 16"
+                  >
+                    <path
+                      stroke="#fff"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M3.667 6l-2 2 2 2M6.333 3.333l2-2 2 2M10.333 12.667l-2 2-2-2M13 6l2 2-2 2M1.667 8H15M8.333 1.333v13.334"
+                    ></path>
+                  </svg>
+                </button>
+              )}
               {flexRender(header.column.columnDef.header, header.getContext())}
+              <div className="flex flex-col gap-1 items-center justify-center">
+                <button className={clsx("text-grey-600", {})}>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="11"
+                    height="5"
+                    fill="none"
+                    viewBox="0 0 11 5"
+                  >
+                    <path fill="currentColor" d="M10.333 5l-5-5-5 5"></path>
+                  </svg>
+                </button>
+                <button className={clsx("text-grey-600", {})}>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="11"
+                    height="5"
+                    fill="none"
+                    viewBox="0 0 11 5"
+                  >
+                    <path fill="currentColor" d="M.333 0l5 5 5-5"></path>
+                  </svg>
+                </button>
+              </div>
               <span className="w-4">
                 {{
                   asc: "🔼",
                   desc: "🔽",
                 }[header.column.getIsSorted() as string] ?? null}
               </span>
-              {advanced && <button ref={dragRef}>🟰</button>}
             </div>
             {advanced && header.column.getCanFilter() ? (
               <div>
@@ -363,34 +404,16 @@ export default function Table({ data, columns }: any) {
           </div>
         </>
       )}
-      <div
-        ref={tableContainerRef}
-        className={clsx("overflow-auto max-w-full max-h-full")}
-      >
-        <div className="flex gap-2 items-center justify-between h-20">
-          <div className="flex gap-10">
-            <svg
-              viewBox="0 0 126 34"
-              width="126"
-              height="34"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              aria-labelledby="OpenBB"
-            >
-              <title id="OpenBB">OpenBB</title>
-              <g fill="currentColor">
-                <path d="M60.707 1.416h-9.285v4.25h9.285v1.42h-7.854v4.25h9.283V1.423h-1.428l-.001-.007Zm0 7.793v.707H54.28V8.5h6.427v.709Zm0-5.668v.71h-7.854V2.831h7.855l-.001.71ZM69.99 11.333h2.852V7.087H64.99V5.671h9.285V1.42H63.562v9.913h6.428Zm-5-7.791v-.709h7.852V4.25H64.99v-.709Zm2.858 6.375H64.99V8.5h6.438v1.417h-3.58ZM63.563 0h-1.428v1.416h1.428V0ZM78.519 22.72v8.459l-.712-.704-.71-.706-.71-.704-.71-.706-.712-.704-.712-.705-.71-.704-.71-.706-.71-.706-.712-.704-.71-.704-.711-.705h-1.422V33.998h1.422V24.834l.711.706.71.706.711.704.71.705.712.704.71.706.71.704.712.706.71.704.712.705.71.706.71.704.71.704h.712V22.721H78.52ZM101.402 26.95h-1.421v-4.23h-8.528V34h11.374v-7.057h-1.422l-.003.007Zm-8.528-.71v-2.11h5.685v2.82h-5.685v-.71Zm8.528 2.82v3.528h-8.528v-4.227h8.528v.699ZM124.986 26.95h-2.131v-4.23h-8.529V34h11.37v-7.057l-.71.007Zm-9.239-.71v-2.11h5.687v2.82h-5.687v-.71Zm8.53 2.82v3.528h-8.53v-4.227h8.53v.699ZM55.732 22.72H45.78v11.278H57.15V32.59H47.204v-2.821H55.728v-1.41h-8.524V24.13H57.15V22.721h-1.418ZM9.95 22.72H.003V34h11.372V22.72H9.95Zm0 2.116v7.754H1.423v-8.46H9.95v.706ZM32.855 22.721h-9.949v11.28h1.422V29.77h9.948v-7.057h-1.421v.008Zm0 2.116v3.528h-8.527v-4.234h8.527v.706Z"></path>
-              </g>
-            </svg>
-            <div>
-              <label htmlFor="advanced">Advanced</label>
-              <input
-                id="advanced"
-                type="checkbox"
-                checked={advanced}
-                onChange={() => setAdvanced(!advanced)}
-              />
-            </div>
+      <div ref={tableContainerRef} className={clsx("overflow-auto")}>
+        <div className="flex gap-2 px-6 items-center justify-between h-[70px] border-grey-400 border-b">
+          <div className="flex gap-[14px]">
+            <input
+              id="advanced"
+              type="checkbox"
+              checked={advanced}
+              onChange={() => setAdvanced(!advanced)}
+            />
+            <label htmlFor="advanced">Advanced</label>
           </div>
           {advanced && (
             <>
@@ -400,7 +423,7 @@ export default function Table({ data, columns }: any) {
                   id="search"
                   value={globalFilter ?? ""}
                   onChange={(value) => setGlobalFilter(String(value))}
-                  className="_input"
+                  className="bg-grey-900 border border-grey-700 rounded py-3 pl-4"
                   placeholder="Search all columns..."
                 />
               </div>
@@ -448,7 +471,7 @@ export default function Table({ data, columns }: any) {
         </div>
         <table
           id="table"
-          className={clsx("w-full my-4", FONT_SIZES_CLASSES[fontSize].overall)}
+          className={clsx("w-full", FONT_SIZES_CLASSES[fontSize].overall)}
         >
           <thead>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -481,13 +504,14 @@ export default function Table({ data, columns }: any) {
             {virtualRows.map((virtualRow, idx) => {
               const row = rows[virtualRow.index];
               return (
-                <tr key={row.id} className="!h-10">
+                <tr key={row.id} className="!h-[64px] border-b border-grey-400">
                   {row.getVisibleCells().map((cell) => {
                     return (
                       <td
                         key={cell.id}
-                        className={clsx("bg-grey-800", {
-                          "bg-white/5": idx % 2 === 0,
+                        className={clsx("whitespace-nowrap", {
+                          "bg-grey-850": idx % 2 === 0,
+                          "bg-[#202020]": idx % 2 === 1,
                         })}
                       >
                         {flexRender(
@@ -513,7 +537,7 @@ export default function Table({ data, columns }: any) {
                   <th
                     key={header.id}
                     colSpan={header.colSpan}
-                    className="text-white font-normal text-left opacity-50"
+                    className="text-grey-500 bg-grey-850 font-normal text-left h-[64px]"
                   >
                     {header.isPlaceholder
                       ? null
@@ -527,7 +551,7 @@ export default function Table({ data, columns }: any) {
             ))}
           </tfoot>
         </table>
-        <div className="flex gap-10 items-center py-2">
+        <div className="flex gap-10 items-center py-2 h-[120px] px-6">
           {advanced && (
             <div className="flex items-center gap-2">
               <button

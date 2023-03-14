@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -24,4 +26,21 @@
   ._hyper-link {
     @apply underline text-burgundy-300 hover:text-burgundy-400 active:text-burgundy-500 disabled:text-grey-600;
   }
+}
+
+._header {
+  background: #062d48;
+  background: linear-gradient(
+    90deg,
+    #062d48,
+    #0b3054 15%,
+    #0e386c 45%,
+    #0b203d 64%,
+    #06101a 82%,
+    #060709
+  );
+}
+
+body {
+  font-family: "Fira Code", monospace;
 }
