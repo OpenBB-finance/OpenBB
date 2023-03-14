@@ -8,6 +8,8 @@ from types import FunctionType, ModuleType
 # IMPORTATION INTERNAL
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.core.log.generation.common import do_rollover
+from openbb_terminal.core.models.credentials_model import CredentialsModel
+from openbb_terminal.core.models.user_model import UserModel
 from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.terminal_helper import is_installer
 
@@ -89,10 +91,13 @@ def log_config_terminal() -> None:
 
     for item in dir(cfg):
         prop = getattr(cfg, item)
+        # pylint: disable=too-many-boolean-expressions
         if (
             not item.startswith("__")
             and not isinstance(prop, FunctionType)
             and not isinstance(prop, ModuleType)
+            and not isinstance(prop, UserModel)
+            and not isinstance(prop, CredentialsModel)
             and not any(substring in item for substring in SENSITIVE_WORDS)
         ):
             config_terminal_dict[item] = str(prop)
@@ -112,6 +117,8 @@ def log_feature_flags() -> None:
             not item.startswith("__")
             and not isinstance(prop, FunctionType)
             and not isinstance(prop, ModuleType)
+            and not isinstance(prop, UserModel)
+            and not isinstance(prop, CredentialsModel)
         ):
             feature_flags_dict[item] = str(prop)
 
