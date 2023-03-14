@@ -61,8 +61,8 @@ COPY --chown=python:python pyproject.toml poetry.lock terminal.py ./
 RUN mkdir openbb_terminal
 COPY --chown=python:python openbb_terminal openbb_terminal
 
-RUN mkdir -p website/content/sdk/quickstart
-COPY --chown=python:python ./website/content/sdk/quickstart/installation.md ./website/content/sdk/quickstart
+RUN mkdir -p website/content/sdk
+COPY --chown=python:python ./website/content/sdk/installation.md ./website/content/sdk
 
 RUN mkdir OpenBBUserData
 RUN chown python:python OpenBBUserData

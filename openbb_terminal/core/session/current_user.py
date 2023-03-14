@@ -9,11 +9,13 @@ from openbb_terminal.core.models import (
     ProfileModel,
     UserModel,
 )
-from openbb_terminal.core.session.env_handler import reading_env
+from openbb_terminal.core.session.env_handler import load_env_to_model, reading_env
 
 __env_dict = reading_env()
-__credentials = CredentialsModel(**__env_dict)
-__preferences = PreferencesModel(**__env_dict)
+__credentials = load_env_to_model(__env_dict, CredentialsModel)
+__preferences = load_env_to_model(__env_dict, PreferencesModel)
+
+
 __profile = ProfileModel()
 __local_user = UserModel(  # type: ignore
     credentials=__credentials,

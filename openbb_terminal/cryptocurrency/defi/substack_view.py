@@ -31,11 +31,12 @@ def display_newsletters(
     df = substack_model.get_newsletters()
 
     print_rich_table(
-        df.head(limit),
+        df,
         headers=list(df.columns),
         show_index=False,
         title="Substack Newsletters",
         export=bool(export),
+        limit=limit,
     )
 
     export_data(

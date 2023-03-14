@@ -22,7 +22,6 @@ LOCAL_KEYS = [
     "OANDA_ACCOUNT_TYPE",
     "OANDA_ACCOUNT",
     "OANDA_TOKEN",
-    "API_TRADIER_TOKEN",
     "API_BINANCE_KEY",
     "API_BINANCE_SECRET",
     "API_COINBASE_KEY",
@@ -55,26 +54,17 @@ def set_credential(
     sync_enabled = current_user.preferences.SYNC_ENABLED
     local_user = is_local()
 
-    if persist and local_user:
-        set_key(str(SETTINGS_ENV_FILE), name, str(value))
-
-    # Remove "OPENBB_" prefix from env_var
-    if name.startswith("OPENBB_"):
-        name = name[7:]
-
     # Set credential in current user
     updated_credentials = dataclasses.replace(current_user.credentials, **{name: value})
     updated_user = dataclasses.replace(current_user, credentials=updated_credentials)
     set_current_user(updated_user)
 
+    # Set credential in local env file
+    if persist and local_user:
+        set_key(str(SETTINGS_ENV_FILE), "OPENBB_" + name, str(value))
+
     # Send credential to cloud
-    if (
-        not local_user
-        and sync_enabled
-        and name not in LOCAL_KEYS
-        and (name.startswith("API_") or name.startswith("OPENBB_"))
-        and not login
-    ):
+    if not local_user and sync_enabled and name not in LOCAL_KEYS and not login:
         patch_user_configs(
             key=name,
             value=str(value),

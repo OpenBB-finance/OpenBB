@@ -68,11 +68,12 @@ def display_dex_trades(
         )
 
         print_rich_table(
-            df.head(limit),
+            df,
             headers=list(df.columns),
             show_index=False,
             title="Trades on Decentralized Exchanges",
             export=bool(export),
+            limit=limit,
         )
 
         export_data(
@@ -142,13 +143,14 @@ def display_daily_volume_for_given_pair(
     # be printed out, not -d amount of days which is what we want. So we set
     # this to an arbitrary amount to cover the potential for more than
     # one row per day
-    limit = 10
+
     print_rich_table(
-        df.head(limit),
+        df,
         headers=list(df.columns),
         show_index=False,
         title="Daily Volume for Pair",
         export=bool(export),
+        limit=limit,
     )
 
     export_data(
@@ -212,11 +214,12 @@ def display_dex_volume_for_token(
         )
 
         print_rich_table(
-            df.head(limit),
+            df,
             headers=list(df.columns),
             show_index=False,
             title="Token Volume on Exchanges",
             export=bool(export),
+            limit=limit,
         )
 
         export_data(
@@ -338,11 +341,12 @@ def display_most_traded_pairs(
         )
 
         print_rich_table(
-            df.head(limit),
+            df,
             headers=list(df.columns),
             show_index=False,
             title="Most Traded Crypto Pairs",
             export=bool(export),
+            limit=limit,
         )
 
         export_data(

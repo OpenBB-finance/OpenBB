@@ -16,7 +16,7 @@ Alternatively, you can also type `/crypto/defi`. Within the Cryptocurrency Decen
 
 ### Examples
 
-Delving deeper in Uniswap, we can start bij looking at the tokens trade-able with `tokens`:
+Delving deeper in Uniswap, we can start by looking at the tokens trade-able with `tokens`:
 
 ```txt
 (🦋) /crypto/defi/ $ tokens

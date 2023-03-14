@@ -1,3 +1,11 @@
-                         Name Symbol Ex-Dividend Date Payment Date Record Date  Dividend  Annual Dividend
-8          InterDigital, Inc.   IDCC       01/11/2022   01/26/2022  01/12/2022      0.35             1.40
-9  Winnebago Industries, Inc.    WGO       01/11/2022   01/26/2022  01/12/2022      0.18             0.72
+                                                              Name Symbol Ex-Dividend Date Payment Date Record Date  Dividend  Annual Dividend
+8                                               InterDigital, Inc.   IDCC       01/11/2022   01/26/2022  01/12/2022     0.350            1.400
+9                                       Winnebago Industries, Inc.    WGO       01/11/2022   01/26/2022  01/12/2022     0.180            0.720
+5                          Cohen & Steers Infrastructure Fund, Inc    UTF       01/11/2022   01/31/2022  01/12/2022     0.155            2.015
+4               Cohen & Steers REIT and Preferred and Income Fund,    RNP       01/11/2022   01/31/2022  01/12/2022     0.136            1.624
+1  Cohen & Steers Limited Duration Preferred and Income Fund, Inc.    LDP       01/11/2022   01/31/2022  01/12/2022     0.135            2.251
+2            Cohen & Steers Select Preferred and Income Fund, Inc.    PSF       01/11/2022   01/31/2022  01/12/2022     0.135            2.569
+3               Cohen & Steers Tax-Advantaged Preferred Securities    PTA       01/11/2022   01/31/2022  01/12/2022     0.130            1.837
+7                             First Trust Income Opportunities ETF   FCEF       01/11/2022   01/31/2022  01/12/2022     0.115            1.240
+0                 Cohen & Steers Closed-End Opportunity Fund, Inc.    FOF       01/11/2022   01/31/2022  01/12/2022     0.087            1.131
+6                   Cohen & Steers Quality Income Realty Fund Inc.    RQI       01/11/2022   01/31/2022  01/12/2022     0.080            1.040

@@ -32,6 +32,7 @@ def show_indices(
     external_axes: bool = False,
     export: str = "",
     sheet_name: Optional[str] = None,
+    limit: int = 10,
 ) -> Union[pd.DataFrame, Tuple[pd.DataFrame, OpenBBFigure]]:
     """Load (and show) the selected indices over time [Source: Yahoo Finance]
     Parameters
@@ -63,11 +64,13 @@ def show_indices(
 
     indices_data = get_indices(indices, interval, start_date, end_date, column, returns)
 
-    fig = OpenBBFigure(title="Indices", yaxis=dict(side="right"))
+    fig = OpenBBFigure(title="Indices")
+
+    new_title = []
 
     for index in indices:
         label = INDICES[index.lower()]["name"] if index.lower() in INDICES else index
-
+        new_title.append(label)
         if not indices_data[index].empty:
             if returns:
                 indices_data.index.name = "date"
@@ -91,15 +94,20 @@ def show_indices(
                     name=label,
                 )
 
-            fig.show(external=external_axes)
+    if len(indices) < 2:
+        fig.update_layout(title=f"{' - '.join(new_title)}", yaxis=dict(side="right"))
+    fig.show(external=external_axes)
 
     if raw:
+        # was a -iloc so we need to flip the index as we use head
+        indices_data = indices_data.sort_index(ascending=False)
         print_rich_table(
-            indices_data.fillna("-").iloc[-10:],
+            indices_data.fillna("-"),
             headers=list(indices_data.columns),
             show_index=True,
             title=f"Indices [column: {column}]",
             export=bool(export),
+            limit=limit,
         )
 
     if export:
@@ -132,12 +140,13 @@ def search_indices(query: list, limit: int = 10):
     Shows a rich table with the available options.
     """
 
-    keyword_adjusted, queried_indices = get_search_indices(query, limit)
+    keyword_adjusted, queried_indices = get_search_indices(query)
 
     print_rich_table(
         queried_indices,
         show_index=True,
         index_name="ticker",
-        headers=queried_indices.columns,
+        headers=list(queried_indices.columns),
         title=f"Queried Indices with keyword {keyword_adjusted}",
+        limit=limit,
     )

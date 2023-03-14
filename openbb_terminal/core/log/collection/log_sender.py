@@ -1,4 +1,5 @@
 # IMPORTATION STANDARD
+import os
 from copy import deepcopy
 from pathlib import Path
 from queue import SimpleQueue
@@ -14,7 +15,6 @@ from openbb_terminal.core.log.generation.settings import Settings
 
 # IMPORTATION THIRDPARTY
 # IMPORTATION INTERNAL
-from openbb_terminal.core.session.current_user import get_current_user
 
 # DO NOT USE THE FILE LOGGER IN THIS MODULE
 
@@ -42,8 +42,8 @@ class LogSender(Thread):
     @staticmethod
     def start_required() -> bool:
         """Check if it makes sense to start a LogsSender instance ."""
-
-        return get_current_user().preferences.LOG_COLLECT
+        value = os.getenv("OPENBB_LOG_COLLECT") or "True"
+        return value.lower() == "true"
 
     @property
     def settings(self) -> Settings:

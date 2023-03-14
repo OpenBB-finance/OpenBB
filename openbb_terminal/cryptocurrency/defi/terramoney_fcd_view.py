@@ -45,11 +45,12 @@ def display_account_staking_info(
     df, report = terramoney_fcd_model.get_staking_account_info(address)
     if not df.empty:
         print_rich_table(
-            df.head(limit),
+            df,
             headers=list(df.columns),
             show_index=False,
             title=report,
             export=bool(export),
+            limit=limit,
         )
     else:
         console.print(f"[red]No data found for address {address}\n[/red]")
@@ -97,11 +98,12 @@ def display_validators(
     ]
 
     print_rich_table(
-        df.head(limit),
+        df,
         headers=list(df.columns),
         floatfmt=".2f",
         show_index=False,
         export=bool(export),
+        limit=limit,
     )
 
     export_data(

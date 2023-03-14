@@ -1,3 +1,26 @@
-  Symbol                                  Name  Price (Intraday)  Change % Change  Volume Avg Vol (3 month) Market Cap  PE Ratio (TTM)
-0    FCX                 Freeport-McMoRan Inc.             38.15   -0.32   -0.83%  6.574M           20.704M    56.022B           14.45
-1    PBR  Petróleo Brasileiro S.A. - Petrobras             11.22    0.02   +0.13%  8.534M           29.268M    73.145B            3.00
+   Symbol                                  Name  Price (Intraday)  Change % Change   Volume Avg Vol (3 month) Market Cap  PE Ratio (TTM)
+0     FCX                 Freeport-McMoRan Inc.            38.150  -0.320   -0.83%   6.574M           20.704M    56.022B           14.45
+1     PBR  Petróleo Brasileiro S.A. - Petrobras            11.220   0.020   +0.13%   8.534M           29.268M    73.145B            3.00
+2    VALE                             Vale S.A.            13.440  -0.060   -0.48%   10.22M           38.861M    67.498B            3.95
+3    GOLD              Barrick Gold Corporation            18.050  -0.120   -0.69%  10.479M           18.031M    32.116B           16.20
+4     NLY       Annaly Capital Management, Inc.             8.390  -0.090   -1.00%   7.291M           15.959M    12.159B            4.35
+5     CLF                 Cleveland-Cliffs Inc.            20.100  -0.920   -4.37%  11.379M           22.104M    10.052B            4.94
+6      GM                General Motors Company            62.130   2.510   +4.21%  12.887M           18.586M    90.204B            8.32
+7      MU               Micron Technology, Inc.            84.810  -0.120   -0.14%   6.783M            18.48M    95.002B           16.50
+8    HBAN    Huntington Bancshares Incorporated            15.290  -0.140   -0.91%   4.083M           11.176M    22.546B           17.14
+9     UMC   United Microelectronics Corporation            11.260  -0.070   -0.66%   3.263M            7.609M    28.336B           16.92
+10     ET                    Energy Transfer LP             8.440  -0.130   -1.58%   12.83M            19.36M    25.993B            4.70
+11   VIAC                        ViacomCBS Inc.            30.930  -0.140   -0.45%   4.812M            11.21M     20.16B            6.05
+12     BP                             BP p.l.c.            27.170   0.010   +0.04%   5.436M           10.882M    90.079B           13.98
+13    HPE    Hewlett Packard Enterprise Company            15.180  -0.200   -1.30%   5.284M           11.203M    19.658B            5.88
+14  PBR-A  Petróleo Brasileiro S.A. - Petrobras            10.490   0.020   +0.24%    3.35M           11.884M     70.01B            2.80
+15    LYG              Lloyds Banking Group plc             2.415   0.005   +0.21%   2.715M            7.255M    43.735B         7453.70
+16    SUZ                           Suzano S.A.            10.440   0.020   +0.19%   467243            969819    14.121B            6.37
+17    HPQ                               HP Inc.            36.030  -0.120   -0.32%   5.259M           10.015M    41.531B            6.76
+18     RF         Regions Financial Corporation            22.150  -0.150   -0.65%   4.168M            7.698M     21.11B            8.30
+19    DOW                              Dow Inc.            54.590   0.200   +0.36%   2.081M            6.077M    40.372B            7.08
+20   BNTX                           BioNTech SE           261.860 -22.350   -7.86%   3.988M            3.508M    63.507B            8.27
+21     MT                         ArcelorMittal            29.070  -0.100   -0.34%   1.511M            4.209M    27.211B            2.79
+22     LU                     Lufax Holding Ltd             6.200  -0.050   -0.88%   4.962M            7.698M    15.254B            5.90
+23    BTI       British American Tobacco p.l.c.            36.650   1.010   +2.82%   8.776M            3.886M    84.088B           10.28
+24    KEY                               KeyCorp            23.000   0.010   +0.02%   2.993M            7.848M     21.41B            8.96
