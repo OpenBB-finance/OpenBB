@@ -156,19 +156,16 @@ class AccountController(BaseController):
 
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
+            current_user = get_current_user()
             if ns_parser.sync is None:
-                sync = get_current_user().preferences.SYNC_ENABLED
+                sync = "ON" if current_user.preferences.SYNC_ENABLED is True else "OFF"
                 console.print(f"sync is {sync}, use --on or --off to change.")
             else:
                 set_preference(
                     name="OPENBB_SYNC_ENABLED",
                     value=ns_parser.sync,
                 )
-                sync = (
-                    "ON"
-                    if get_current_user().preferences.SYNC_ENABLED is True
-                    else "OFF"
-                )
+                sync = "ON" if current_user.preferences.SYNC_ENABLED is True else "OFF"
                 console.print(f"[info]sync:[/info] {sync}")
 
     @log_start_end(log=logger)
