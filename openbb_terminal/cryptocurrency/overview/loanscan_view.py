@@ -5,14 +5,12 @@ from typing import Optional, Union
 
 import pandas as pd
 
-from openbb_terminal import (
-    OpenBBFigure,
-    config_terminal as cfg,
-)
+from openbb_terminal import OpenBBFigure
 from openbb_terminal.cryptocurrency.overview import loanscan_model
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
+from openbb_terminal.core.plots.plotly_helper import theme
 
 logger = logging.getLogger(__name__)
 
@@ -63,7 +61,7 @@ def display_crypto_rates(
     df_non_null = pd.melt(df.reset_index(), id_vars=["index"]).dropna()
 
     assets = df_non_null.variable.unique().tolist()
-    colors = iter(cfg.theme.get_colors(reverse=True))
+    colors = iter(theme.get_colors(reverse=True))
 
     for asset in assets:
         width = df_non_null.loc[(df_non_null.variable == asset)]

@@ -2,10 +2,7 @@
 import logging
 import os
 
-from openbb_terminal import (
-    OpenBBFigure,
-    config_terminal as cfg,
-)
+from openbb_terminal import OpenBBFigure
 from openbb_terminal.cryptocurrency.overview.tokenterminal_model import (
     CATEGORIES,
     METRICS,
@@ -15,6 +12,7 @@ from openbb_terminal.cryptocurrency.overview.tokenterminal_model import (
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import export_data
 from openbb_terminal.rich_config import console
+from openbb_terminal.core.plots.plotly_helper import theme
 
 logger = logging.getLogger(__name__)
 
@@ -77,7 +75,7 @@ def display_fundamental_metrics(
     fig.add_bar(
         x=metric_series[:limit].index,
         y=metric_series[:limit].values,
-        marker_color=cfg.theme.get_colors(reverse=True)[:limit],
+        marker_color=theme.get_colors(reverse=True)[:limit],
     )
 
     if category:

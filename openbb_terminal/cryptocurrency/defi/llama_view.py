@@ -5,14 +5,12 @@ import logging
 import os
 from typing import Optional, Union
 
-from openbb_terminal import (
-    OpenBBFigure,
-    config_terminal as cfg,
-)
+from openbb_terminal import OpenBBFigure
 from openbb_terminal.cryptocurrency.cryptocurrency_helpers import read_data_file
 from openbb_terminal.cryptocurrency.defi import llama_model
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
+from openbb_terminal.core.plots.plotly_helper import theme
 
 logger = logging.getLogger(__name__)
 
@@ -46,7 +44,7 @@ def display_grouped_defi_protocols(
     )
     fig.set_title(f"Top {limit} dApp TVL grouped by chain")
 
-    colors = iter(cfg.theme.get_colors(reverse=True))
+    colors = iter(theme.get_colors(reverse=True))
 
     for chain in chains:
         chain_filter = df.loc[df.Chain == chain]
