@@ -8,7 +8,7 @@ keywords: [source, sources, default source, datasources, api keys, api, keys, op
 
 Many commands have multiple datasources attached to it. A great example is `/stocka/fa/income` that allows you to select FinancialModelingPrep, Polygon, AlphaVantage, EODHD or YahooFinance. Many have a default source but you can change the default sources of each command via two methods.
 
-## Changing the source
+## Changing the Source
 
 Returning to the example of the `income` command instead the `stocks/fa` menu. This source has multiple sources to choose from. You are able to specify this source with the `--source` argument. This also becomes clear from the help menu.
 
@@ -40,7 +40,7 @@ For more information and examples, use 'about income' to access the related guid
 
 Within the source arguments it shows the exact sources as previously mentioned. Therefore, with this information in hand it is possible to switch to a different source e.g. with `income --source Polygon`. Do keep in mind that you might need to have an API key to use this source, see [here](/terminal/basics/advanced/api-keys).
 
-## Working with the sources menu
+## Working with the Sources Menu
 
 In case you are looking to change the default source al together, you can do so via the sources menu as found on the homepage of the OpenBB Terminal.
 

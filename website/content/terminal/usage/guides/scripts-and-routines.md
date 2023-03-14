@@ -40,7 +40,7 @@ After the script is finished, you are able to access the routine file when using
 
 ![Routines](https://user-images.githubusercontent.com/46355364/223205394-77e7a33d-e9fa-4686-b32f-e8d183b265e6.png)
 
-## Create your own script
+## Create your own Script
 
 As mentioned earlier, the scripts and routines reside in the `routines` folder within the `OpenBBUserData` folder (as found [here](https://docs.openbb.co/terminal/usage/guides/data)) and are automatically shown when you type `exe` from the home screen (`home`).
 
@@ -56,7 +56,7 @@ As long as the file remains in the `routines` folder, you will be able to find y
 
 ![Script Showcase](https://user-images.githubusercontent.com/46355364/223206633-abebdee3-9221-49b1-a55e-5221572e9781.png)
 
-## Explanation of scripts
+## Explanation of Scripts
 
 The script file follows the following logic:
 
@@ -91,7 +91,7 @@ est
 home
 ```
 
-## Executing a script
+## Executing a Script
 
 By going to the main menu as depicted below (accessible with `home`), the `exe` command can be used. With this command you can run any `.openbb` script. These scripts are located where the application is located inside the `routines` folder as found in the `OpenBBUserData` folder.
 
@@ -99,7 +99,7 @@ Thus, using the earlier mentioned script, we can enter `exe --file routines_temp
 
 ![OpenBB Routine Script Execution](https://user-images.githubusercontent.com/46355364/223207167-dfab3a74-d34d-47d4-bf6e-44944e8fbfa2.png)
 
-## Custom arguments
+## Custom Arguments
 
 Next to that, it is also possible to add in custom arguments to your script making the script more interactive and allow you to do the same analysis for multiple companies. This is done in the following script (and can be downloaded [here](https://www.dropbox.com/s/usooz6y29r1xldb/routines_template_with_inputs.openbb?dl=1)):
 

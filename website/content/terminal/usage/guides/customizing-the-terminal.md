@@ -7,7 +7,7 @@ keywords: [settings, featflags, feature flags, lay-out, advanced, customizing, o
 
 Since the code is open source you are able to adjust anything you like. However, to make it easy for you we have created a settings and featflags menu that include the most requested features that users like to have control over. 
 
-## Using the Settings menu
+## Using the Settings Menu
 
 To adjust the lay-out and settings of the OpenBB Terminal you can access the `settings` menu. This menu allows you to tweak how the terminal behaves. 
 
@@ -34,7 +34,7 @@ This menu includes the following:
 - `source` allows you to select a different source file in which the default data sources are written down
 - `tbnews` whether to include the Twitter news toolbar.
 
-## Using the Feature Flags menu
+## Using the Feature Flags Menu
 
 To enable or disable certain functionalities of the terminal you can use the `featflags` menu.
 

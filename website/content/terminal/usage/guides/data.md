@@ -83,7 +83,7 @@ Menus, such as [Econometrics](https://docs.openbb.co/terminal/usage/intros/econo
 
 The Econometrics menu looks into the `exports` and `custom_imports/econometrics` folder. For the Portfolio functionalities the `portfolio` menu looks into the `portfolio/holdings` folder whereas the `portfolio/po` menu looks into the `portfolio/allocation` and `portfolio/optimization` folder for the `load` and `file` command respectively. Please make sure to read the relevant guides to understand how this works.
 
-## Custom Path for OpenBBUserData folder
+## Custom Path for OpenBBUserData Folder
 
 The location of this folder can be set by the user from the /settings menu. There should be no need to update paths in this menu unless the folders have been moved manually. If the location of the OpenBBUserData folder must be changed, it is best to move the entire existing folder to the new path. The path is then changed under the settings menu with:
 
