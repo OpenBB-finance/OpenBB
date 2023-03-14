@@ -58,11 +58,12 @@ def display_uni_tokens(
     ].applymap(lambda x: lambda_very_long_number_formatter(x))
 
     print_rich_table(
-        df.head(limit),
+        df,
         headers=list(df.columns),
         show_index=False,
         title="UniSwarp DEX Trade-able Tokens",
         export=bool(export),
+        limit=limit,
     )
 
     export_data(
@@ -161,11 +162,12 @@ def display_recently_added(
     )
 
     print_rich_table(
-        df.head(limit),
+        df,
         headers=list(df.columns),
         show_index=False,
         title="Latest Added Pairs on Uniswap DEX",
         export=bool(export),
+        limit=limit,
     )
 
     export_data(
@@ -215,11 +217,12 @@ def display_uni_pools(
     df_data = df.copy()
 
     print_rich_table(
-        df.head(limit),
+        df,
         headers=list(df.columns),
         show_index=False,
         title="Uniswap Pools",
         export=bool(export),
+        limit=limit,
     )
 
     export_data(

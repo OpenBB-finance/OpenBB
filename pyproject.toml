@@ -93,7 +93,7 @@ setuptools = "<65.5.0"
 numpy = "1.23.4"
 papermill = "2.4"
 stocksera = "^0.1.21"
-ipython = "8.5.0"
+ipython = "8.11.0"
 protobuf = "3.20.1"
 pytorch-lightning = {version = "1.6.5", optional = true}
 u8darts = {extras = ["torch"], version = "0.23.0", optional = true}
@@ -105,7 +105,7 @@ mstarpy = "^0.0.4"
 packaging = ">=22.0"
 rapidfuzz = "^2.13.7"
 streamlit = "^1.17.0"
-pywry = "^0.3.5"
+pywry = "^0.3.6"
 svglib = "^1.5.0"
 sparqlwrapper = "^2.0.0"
 y-py = "!=0.5.5"  # Untraceable third level dependency that requires cargo to be built
