@@ -401,11 +401,12 @@ def display_earnings(
         return
 
     print_rich_table(
-        df_fa.head(limit),
+        df_fa,
         headers=list(df_fa.columns),
         show_index=False,
         title=f"{symbol} Earnings",
         export=bool(export),
+        limit=limit,
     )
 
     export_data(

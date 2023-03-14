@@ -33,6 +33,7 @@ decompose
 decompose --multiplicative
 cusum
 cusum -t 0.01 -d 0.01
+..
 load ${currency=EUR}${currency_vsUSD} --source YahooFinance
 qa
 summary

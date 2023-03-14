@@ -90,6 +90,10 @@ class StocksController(StockBaseController):
 
         if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices_default
+            choices["load"] = {
+                "--file": {c: None for c in self.USER_IMPORT_FILES},
+                "-f": "--file",
+            }
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
@@ -376,7 +380,7 @@ class StocksController(StockBaseController):
             dest="ticker",
             help="Ticker to analyze",
             type=str,
-            default=self.ticker,
+            default=None,
             required=not any(x in other_args for x in ["-h", "--help"])
             and not self.ticker,
         )

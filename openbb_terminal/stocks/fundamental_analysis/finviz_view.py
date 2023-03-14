@@ -6,6 +6,7 @@ import os
 from typing import Optional
 
 from openbb_terminal import rich_config
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.stocks.fundamental_analysis import finviz_model
@@ -77,7 +78,7 @@ def analyst(symbol: str, export: str = "", sheet_name: Optional[str] = None):
     """
     df = finviz_model.get_analyst_data(symbol)
 
-    if rich_config.USE_COLOR:
+    if rich_config.USE_COLOR and not get_current_user().preferences.USE_INTERACTIVE_DF:
         df["category"] = df["category"].apply(lambda_category_color_red_green)
 
     print_rich_table(

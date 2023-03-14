@@ -42,11 +42,12 @@ def display_economic_calendar(
     if df.empty:
         return
     print_rich_table(
-        df.head(limit),
+        df,
         title="Economic Calendar",
         show_index=False,
         headers=df.columns,
         export=bool(export),
+        limit=limit,
     )
     console.print()
     export_data(

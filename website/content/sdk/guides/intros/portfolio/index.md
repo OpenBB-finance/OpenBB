@@ -35,7 +35,7 @@ Below is a brief description of each function within the Portfolio module:
 | openbb.portfolio.var         |  Function  |      Portfolio VaR |
 | openbb.portfolio.yret        |  Function  |            Yearly Returns |
 
-Alteratively, the contents of the Porfolio module is printed with:
+Alternatively, the contents of the Porfolio module is printed with:
 
 ```python
 help(openbb.portfolio)

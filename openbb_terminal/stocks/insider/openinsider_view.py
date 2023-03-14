@@ -7,6 +7,7 @@ import numpy as np
 import pandas as pd
 
 from openbb_terminal import rich_config
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
@@ -128,11 +129,12 @@ def print_insider_data(
 
     if not df.empty:
         print_rich_table(
-            df.head(limit),
+            df,
             headers=[x.title() for x in df.columns],
             show_index=False,
             title="Insider Data",
             export=bool(export),
+            limit=limit,
         )
 
         export_data(
@@ -200,7 +202,11 @@ def print_insider_filter(
             columns=["Filing Link", "Ticker Link", "Insider Link"]
         ).head(limit)
 
-    if rich_config.USE_COLOR and not links:
+    if (
+        rich_config.USE_COLOR
+        and not links
+        and not get_current_user().preferences.USE_INTERACTIVE_DF
+    ):
         new_df_insider = df_insider.copy()
         if not new_df_insider[new_df_insider["Trade Type"] == "S - Sale"].empty:
             new_df_insider[new_df_insider["Trade Type"] == "S - Sale"] = new_df_insider[

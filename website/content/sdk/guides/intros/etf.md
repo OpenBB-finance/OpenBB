@@ -36,7 +36,7 @@ import pandas as pd
 |openbb.etf.symbols |Dictionary |Dictionary of {Ticker:Name} |
 |openbb.etf.weights |Function |Table or Pie Graph of Sector Weightings |
 
-Alteratively you can print the contents of the ETF SDK with:
+Alternatively you can print the contents of the ETF SDK with:
 ​
 
 ```python

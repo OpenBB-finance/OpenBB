@@ -44,7 +44,7 @@ def test_display_filings():
         ),
         (
             "display_enterprise",
-            {"symbol": "PM", "limit": 5, "quarterly": False},
+            {"symbol": "PM", "quarterly": False},
         ),
         (
             "display_discounted_cash_flow",
