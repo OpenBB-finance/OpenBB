@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 import logging
 import os
 from typing import Optional
+from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
@@ -25,7 +26,7 @@ def display_historical(
     export: str = "",
     sheet_name: Optional[str] = None,
     external_axes: bool = False,
-):
+) -> Optional[OpenBBFigure]:
     """Display historical futures [Source: DataBento]
 
     Parameters
@@ -50,7 +51,7 @@ def display_historical(
     )
     if data.empty:
         console.print(f"No data found for {symbol}.")
-        return
+        return None
 
     data = stocks_helper.process_candle(data)
     figure = stocks_helper.display_candle(
