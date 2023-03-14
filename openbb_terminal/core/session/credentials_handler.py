@@ -54,18 +54,17 @@ def set_credential(
     sync_enabled = current_user.preferences.SYNC_ENABLED
     local_user = is_local()
 
-    # Remove "OPENBB_" prefix from env_var
-    if name.startswith("OPENBB_"):
-        name = name[7:]
-
     # Set credential in current user
-    updated_credentials = dataclasses.replace(current_user.credentials, **{name: value})
+    var_name = name[7:] if name.startswith("OPENBB_") else name
+    updated_credentials = dataclasses.replace(
+        current_user.credentials, **{var_name: value}
+    )
     updated_user = dataclasses.replace(current_user, credentials=updated_credentials)
     set_current_user(updated_user)
 
     # Set credential in local env file
     if persist and local_user:
-        set_key(str(SETTINGS_ENV_FILE), "OPENBB_" + name, str(value))
+        set_key(str(SETTINGS_ENV_FILE), name, str(value))
 
     # Send credential to cloud
     if (

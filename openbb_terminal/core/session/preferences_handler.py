@@ -36,18 +36,17 @@ def set_preference(
     current_user = get_current_user()
     local_user = is_local()
 
-    # Remove "OPENBB_" prefix from env_var
-    if name.startswith("OPENBB_"):
-        name = name[7:]
-
     # Set preference in current user
-    updated_preferences = dataclasses.replace(current_user.preferences, **{name: value})
+    var_name = name[7:] if name.startswith("OPENBB_") else name
+    updated_preferences = dataclasses.replace(
+        current_user.preferences, **{var_name: value}
+    )
     updated_user = dataclasses.replace(current_user, preferences=updated_preferences)
     set_current_user(updated_user)
 
     # Set preference in local env file
     if local_user:
-        set_key(str(SETTINGS_ENV_FILE), "OPENBB_" + name, str(value))
+        set_key(str(SETTINGS_ENV_FILE), name, str(value))
 
     # Send preference to cloud
     if not login and (not local_user or name == "OPENBB_SYNC_ENABLED"):
