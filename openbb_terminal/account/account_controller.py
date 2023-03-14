@@ -118,6 +118,7 @@ class AccountController(BaseController):
         mt.add_cmd("logout")
         self.update_runtime_choices()
         console.print(text=mt.menu_text, menu="Account")
+        self.update_runtime_choices()
 
     @log_start_end(log=logger)
     def call_login(self, other_args: List[str]) -> None:
