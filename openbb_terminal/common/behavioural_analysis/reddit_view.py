@@ -7,17 +7,13 @@ from datetime import datetime
 from typing import Dict, Optional, Union
 
 import finviz
-import matplotlib.pyplot as plt
 import pandas as pd
 import praw
-import seaborn as sns
 
 from openbb_terminal import OpenBBFigure
 from openbb_terminal.common.behavioural_analysis import reddit_model
-from openbb_terminal.config_terminal import theme
-from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import check_api_key, log_start_end
-from openbb_terminal.helper_funcs import export_data, plot_autoscale, print_rich_table
+from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
 
 # pylint: disable=R0913,C0302
@@ -368,21 +364,14 @@ def display_redditsent(
     console.print(f"Sentiment Analysis for {symbol} is {avg_polarity}\n")
 
     if graphic:
-        _, ax = plt.subplots(
-            figsize=plot_autoscale(), dpi=get_current_user().preferences.PLOT_DPI
-        )
-
-        sns.boxplot(x=polarity_scores, ax=ax)
-        ax.set_title(f"Sentiment Score of {symbol}")
-        ax.set_xlabel("Sentiment Score")
-
-        if not external_axes:
-            theme.visualize_output()
-
         fig = OpenBBFigure(
-            title=f"Sentiment Score of {symbol}", xaxis_title="Sentiment Score"
+            title=f"Sentiment Score of {symbol}",
+            xaxis_title="Sentiment Score",
         )
         fig.add_bar(x=polarity_scores)
+
+        # remove y ticks of graph object because number based index doesn't make sense here
+        fig.layout.yaxis.tickvals = []
 
         if fig.is_image_export(export):
             export_data(

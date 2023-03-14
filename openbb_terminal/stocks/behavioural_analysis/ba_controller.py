@@ -44,13 +44,13 @@ class BehaviouralAnalysisController(StockBaseController):
         "spacc",
         "wsb",
         "popular",
+        "redditsent",
         "bullbear",
         "messages",
         "trending",
         "stalker",
         "infer",
         "sentiment",
-        "redditsent",
         "mentions",
         "regions",
         "queries",
@@ -378,7 +378,7 @@ class BehaviouralAnalysisController(StockBaseController):
             "--display",
             action="store_true",
             dest="display",
-            default=False,
+            default=True,
             help="Print table of sentiment values",
         )
         if other_args and "-" not in other_args[0][0]:
