@@ -3,7 +3,6 @@ __docformat__ = "numpy"
 
 import logging
 import os
-import warnings
 from datetime import datetime
 from typing import Dict, Optional, Union
 
@@ -226,54 +225,6 @@ def display_spac_community(limit: int = 10, popular: bool = False):
                     # console.print(e, "\n")
                     pass  # noqa
 
-            if n_tickers:
-                console.print(
-                    "The following stock tickers have been mentioned more than once across the previous SPACs:"
-                )
-                console.print(s_watchlist_tickers[:-2])
-
-
-@log_start_end(log=logger)
-@check_api_key(
-    [
-        "API_REDDIT_CLIENT_ID",
-        "API_REDDIT_CLIENT_SECRET",
-        "API_REDDIT_USERNAME",
-        "API_REDDIT_USER_AGENT",
-        "API_REDDIT_PASSWORD",
-    ]
-)
-def display_spac(limit: int = 5):
-    """Print posts containing 'spac' in top communities.
-
-    Parameters
-    ----------
-    limit: int
-        Number of posts to get from each subreddit
-    """
-    warnings.filterwarnings("ignore")  # To avoid printing the warning
-    subs, d_watchlist_tickers, n_flair_posts_found = reddit_model.get_spac(limit)
-    if not subs.empty:
-        for sub in subs.iterrows():
-            print_reddit_post(sub)
-            console.print("")
-
-        if n_flair_posts_found > 0:
-            lt_watchlist_sorted = sorted(
-                d_watchlist_tickers.items(), key=lambda item: item[1], reverse=True
-            )
-            s_watchlist_tickers = ""
-            n_tickers = 0
-            for t_ticker in lt_watchlist_sorted:
-                try:
-                    # If try doesn't trigger exception, it means that this stock exists on finviz
-                    # thus we can print it.
-                    finviz.get_stock(t_ticker[0])
-                    if int(t_ticker[1]) > 1:
-                        s_watchlist_tickers += f"{t_ticker[1]} {t_ticker[0]}, "
-                    n_tickers += 1
-                except Exception:  # nosec
-                    pass  # noqa
             if n_tickers:
                 console.print(
                     "The following stock tickers have been mentioned more than once across the previous SPACs:"

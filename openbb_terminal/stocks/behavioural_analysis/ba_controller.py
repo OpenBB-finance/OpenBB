@@ -41,7 +41,6 @@ class BehaviouralAnalysisController(StockBaseController):
 
     CHOICES_COMMANDS = [
         "load",
-        # "spac",
         "spacc",
         "wsb",
         "popular",
@@ -95,7 +94,6 @@ class BehaviouralAnalysisController(StockBaseController):
         mt.add_cmd("wsb")
         # mt.add_cmd("popular")
         mt.add_cmd("spacc")
-        # mt.add_cmd("spac")
         # mt.add_cmd("getdd", self.ticker)
         mt.add_cmd("redditsent", self.ticker)
         mt.add_cmd("trending")
@@ -133,30 +131,6 @@ class BehaviouralAnalysisController(StockBaseController):
             finnhub_view.display_stock_price_headlines_sentiment(
                 symbol=self.ticker, export=ns_parser.export
             )
-
-    @log_start_end(log=logger)
-    def call_spac(self, other_args: List[str]):
-        """Process spac command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="spac",
-            description="""Show other users SPACs announcement. [Source: Reddit]""",
-        )
-        parser.add_argument(
-            "-l",
-            "--limit",
-            action="store",
-            dest="n_limit",
-            type=check_positive,
-            default=5,
-            help="limit of posts with SPACs retrieved.",
-        )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-l")
-        ns_parser = self.parse_known_args_and_warn(parser, other_args)
-        if ns_parser:
-            reddit_view.display_spac(limit=ns_parser.n_limit)
 
     @log_start_end(log=logger)
     def call_spacc(self, other_args: List[str]):

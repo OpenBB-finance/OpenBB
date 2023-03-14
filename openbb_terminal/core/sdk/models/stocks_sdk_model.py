@@ -53,7 +53,6 @@ class StocksBehavioralAnalysis(Category):
         `sentiment_chart`: Plots sentiments from symbol\n
         `snews`: Get headlines sentiment using VADER model over time. [Source: Finnhub]\n
         `snews_chart`: Display stock price and headlines sentiment using VADER model over time. [Source: Finnhub]\n
-        `spac`: Get posts containing SPAC from top subreddits [Source: reddit].\n
         `spacc`: Get top tickers from r/SPACs [Source: reddit].\n
         `stalker`: Gets messages from given user [Source: stocktwits].\n
         `text_sent`: Find the sentiment of a post and related comments.\n
@@ -87,7 +86,6 @@ class StocksBehavioralAnalysis(Category):
         self.snews_chart = (
             lib.stocks_ba_finnhub_view.display_stock_price_headlines_sentiment
         )
-        self.spac = lib.stocks_ba_reddit_model.get_spac
         self.spacc = lib.stocks_ba_reddit_model.get_spac_community
         self.stalker = lib.stocks_ba_stocktwits_model.get_stalker
         self.text_sent = lib.stocks_ba_reddit_model.get_sentiment
