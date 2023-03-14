@@ -221,6 +221,8 @@ def get_popular_tickers(
                 "URL",
             ],
         )
+    else:
+        popular_tickers_df = pd.DataFrame()
     return popular_tickers_df
 
 
