@@ -13,7 +13,7 @@ from openbb_terminal.common.behavioural_analysis.finbrain_model import get_senti
 from openbb_terminal.common.behavioural_analysis.finbrain_view import (
     lambda_sentiment_coloring,
 )
-from openbb_terminal.config_terminal import theme
+from openbb_terminal.core.plots.plotly_helper import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data
 from openbb_terminal.rich_config import console

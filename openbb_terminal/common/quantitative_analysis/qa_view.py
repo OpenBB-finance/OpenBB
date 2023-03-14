@@ -20,7 +20,7 @@ from statsmodels.graphics.gofplots import qqplot
 
 from openbb_terminal import OpenBBFigure
 from openbb_terminal.common.quantitative_analysis import qa_model
-from openbb_terminal.config_terminal import theme
+from openbb_terminal.core.plots.plotly_helper import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console

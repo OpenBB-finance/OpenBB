@@ -21,7 +21,7 @@ from matplotlib.lines import Line2D
 
 # IMPORTATION INTERNAL
 from openbb_terminal.core.session.current_user import get_current_user
-from openbb_terminal.config_terminal import theme
+from openbb_terminal.core.plots.plotly_helper import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import plot_autoscale
 from openbb_terminal.portfolio.portfolio_optimization.optimizer_helper import get_kwarg
