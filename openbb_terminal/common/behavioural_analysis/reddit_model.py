@@ -238,7 +238,6 @@ def get_spac_community(
         Dataframe of reddit submission,
         Dictionary of tickers and number of mentions.
     """
-
     current_user = get_current_user()
 
     praw_api = praw.Reddit(

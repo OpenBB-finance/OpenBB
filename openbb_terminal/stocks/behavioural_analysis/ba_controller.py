@@ -41,9 +41,9 @@ class BehaviouralAnalysisController(StockBaseController):
 
     CHOICES_COMMANDS = [
         "load",
-        "spacc",
         "wsb",
         "popular",
+        "spacc",
         "redditsent",
         "bullbear",
         "messages",
