@@ -203,7 +203,7 @@ Files can be formatted as either `.csv` or `.xlsx` files, and the required colum
 
 `[Date,Type,Ticker,Side,Price,Quantity,Fees,Investment,Currency,Sector,Industry,Country,Region]`
 
-See the guide [here](https://docs.openbb.co/sdk/guides/intros/portfolio) for more information.
+See the guide [here](https://docs.openbb.co/sdk/usage/intros/portfolio) for more information.
 
 </details>
 
@@ -211,7 +211,7 @@ See the guide [here](https://docs.openbb.co/sdk/guides/intros/portfolio) for mor
 
 Place style sheets in this folder: `OpenBBUserData/styles/user`
 
-SDK users can refer to the documentation [here](https://docs.openbb.co/sdk/guides/advanced/chart-styling) for syntax. A sample Matplotlib configuration file can be copied from [here](https://matplotlib.org/stable/tutorials/introductory/customizing.html#the-default-matplotlibrc-file).
+SDK users can refer to the documentation [here](https://docs.openbb.co/sdk/usage/guides/chart-styling) for syntax. A sample Matplotlib configuration file can be copied from [here](https://matplotlib.org/stable/tutorials/introductory/customizing.html#the-default-matplotlibrc-file).
 
 </details>
 

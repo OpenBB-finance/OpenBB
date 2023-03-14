@@ -170,7 +170,7 @@ Files can be formatted as either `.csv` or `.xlsx` files, and the required colum
 
 `[Date,Type,Ticker,Side,Price,Quantity,Fees,Investment,Currency,Sector,Industry,Country,Region]`
 
-See the guide [here](https://docs.openbb.co/sdk/guides/intros/portfolio) for more information.
+See the guide [here](https://docs.openbb.co/sdk/usage/intros/portfolio) for more information.
 
 </details>
 
