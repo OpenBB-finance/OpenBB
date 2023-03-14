@@ -159,7 +159,7 @@ class AccountController(BaseController):
                 console.print(f"sync is {sync}, use --on or --off to change.")
             else:
                 set_preference(
-                    name="OPENBB_SYNC_ENABLED",
+                    name="SYNC_ENABLED",
                     value=ns_parser.sync,
                 )
                 sync = get_current_user().preferences.SYNC_ENABLED
