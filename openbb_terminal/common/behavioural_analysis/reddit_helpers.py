@@ -1,4 +1,4 @@
-"""Reddit Helpers"""
+"""Reddit Helpers."""
 __docformat__ = "numpy"
 
 import re
@@ -8,7 +8,7 @@ import praw
 
 
 def find_tickers(submission: praw.models.reddit.submission.Submission) -> List[str]:
-    """Extracts potential tickers from reddit submission.
+    """Extract potential tickers from reddit submission.
 
     Parameters
     ----------

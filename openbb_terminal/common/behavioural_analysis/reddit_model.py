@@ -1,4 +1,4 @@
-"""Reddit Model"""
+"""Reddit Model."""
 __docformat__ = "numpy"
 # pylint:disable=C0302
 

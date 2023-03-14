@@ -1,4 +1,4 @@
-"""Reddit View"""
+"""Reddit View."""
 __docformat__ = "numpy"
 
 import logging
@@ -41,7 +41,7 @@ logger = logging.getLogger(__name__)
 def print_and_record_reddit_post(
     submissions_dict: Dict, submission: praw.models.reddit.submission.Submission
 ):
-    """Prints reddit submission.
+    """Print reddit submission.
 
     Parameters
     ----------
@@ -101,14 +101,13 @@ def print_and_record_reddit_post(
     ]
 )
 def print_reddit_post(sub: tuple):
-    """Prints reddit submission.
+    """Print reddit submission.
 
     Parameters
     ----------
     sub : tuple
         Row from submissions dataframe
     """
-
     sub_list = list(sub[1])
     date = sub_list[0]
     title = sub_list[3]
@@ -197,7 +196,7 @@ def display_popular_tickers(
     export: str = "",
     sheet_name: Optional[str] = None,
 ):
-    """Prints table showing latest popular tickers. [Source: Reddit].
+    """Print table showing latest popular tickers. [Source: Reddit].
 
     Parameters
     ----------
@@ -242,7 +241,7 @@ def display_popular_tickers(
     ]
 )
 def display_spac_community(limit: int = 10, popular: bool = False):
-    """Prints tickers mentioned in r/SPACs [Source: Reddit].
+    """Print tickers mentioned in r/SPACs [Source: Reddit].
 
     Parameters
     ----------
@@ -271,7 +270,7 @@ def display_spac_community(limit: int = 10, popular: bool = False):
                     if int(t_ticker[1]) > 1:
                         s_watchlist_tickers += f"{t_ticker[1]} {t_ticker[0]}, "
                     n_tickers += 1
-                except Exception:
+                except Exception:  # nosec
                     # console.print(e, "\n")
                     pass  # noqa
 
@@ -293,7 +292,7 @@ def display_spac_community(limit: int = 10, popular: bool = False):
     ]
 )
 def display_spac(limit: int = 5):
-    """Prints posts containing 'spac' in top communities.
+    """Print posts containing 'spac' in top communities.
 
     Parameters
     ----------
@@ -321,7 +320,7 @@ def display_spac(limit: int = 5):
                     if int(t_ticker[1]) > 1:
                         s_watchlist_tickers += f"{t_ticker[1]} {t_ticker[0]}, "
                     n_tickers += 1
-                except Exception:
+                except Exception:  # nosec
                     pass  # noqa
             if n_tickers:
                 console.print(
@@ -341,7 +340,7 @@ def display_spac(limit: int = 5):
     ]
 )
 def display_wsb_community(limit: int = 10, new: bool = False):
-    """Prints WSB posts.
+    """Print WSB posts.
 
     Parameters
     ----------
@@ -370,7 +369,7 @@ def display_wsb_community(limit: int = 10, new: bool = False):
 def display_due_diligence(
     symbol: str, limit: int = 10, n_days: int = 3, show_all_flairs: bool = False
 ):
-    """Prints Reddit due diligence data for a given ticker.
+    """Print Reddit due diligence data for a given ticker.
 
     Parameters
     ----------
@@ -415,7 +414,7 @@ def display_redditsent(
     sheet_name: Optional[str] = None,
     external_axes: bool = False,
 ) -> Union[OpenBBFigure, None]:
-    """Plots Reddit sentiment about a search term. Prints table showing if display is True.
+    """Plot Reddit sentiment about a search term. Prints table showing if display is True.
 
     Parameters
     ----------

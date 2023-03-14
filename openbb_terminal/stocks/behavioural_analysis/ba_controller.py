@@ -1,4 +1,4 @@
-"""Behavioural Analysis Controller Module"""
+"""Behavioural Analysis Controller Module."""
 __docformat__ = "numpy"
 
 import argparse
@@ -37,7 +37,7 @@ logger = logging.getLogger(__name__)
 
 
 class BehaviouralAnalysisController(StockBaseController):
-    """Behavioural Analysis Controller class"""
+    """Behavioural Analysis Controller class."""
 
     CHOICES_COMMANDS = [
         "load",
@@ -73,7 +73,7 @@ class BehaviouralAnalysisController(StockBaseController):
     CHOICES_GENERATION = True
 
     def __init__(self, ticker: str, start: datetime, queue: Optional[List[str]] = None):
-        """Constructor"""
+        """Construct a new instance."""
         super().__init__(queue)
 
         self.ticker = ticker
@@ -85,7 +85,7 @@ class BehaviouralAnalysisController(StockBaseController):
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
-        """Print help"""
+        """Print help."""
         mt = MenuText("stocks/ba/")
         mt.add_cmd("load")
         mt.add_raw("\n")
@@ -114,7 +114,7 @@ class BehaviouralAnalysisController(StockBaseController):
         console.print(text=mt.menu_text, menu="Stocks - Behavioural Analysis")
 
     def custom_reset(self):
-        """Class specific component of reset command"""
+        """Class specific component of reset command."""
         if self.ticker:
             return ["stocks", "ba", f"load {self.ticker}"]
         return []
@@ -145,7 +145,7 @@ class BehaviouralAnalysisController(StockBaseController):
 
     @log_start_end(log=logger)
     def call_snews(self, other_args: List[str]):
-        """Process snews command"""
+        """Process snews command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -186,7 +186,7 @@ class BehaviouralAnalysisController(StockBaseController):
 
     @log_start_end(log=logger)
     def call_spacc(self, other_args: List[str]):
-        """Process spacc command"""
+        """Process spacc command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -220,7 +220,7 @@ class BehaviouralAnalysisController(StockBaseController):
 
     @log_start_end(log=logger)
     def call_wsb(self, other_args: List[str]):
-        """Process wsb command"""
+        """Process wsb command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -253,7 +253,7 @@ class BehaviouralAnalysisController(StockBaseController):
 
     @log_start_end(log=logger)
     def call_popular(self, other_args: List[str]):
-        """Process popular command"""
+        """Process popular command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -308,7 +308,7 @@ class BehaviouralAnalysisController(StockBaseController):
 
     @log_start_end(log=logger)
     def call_getdd(self, other_args: List[str]):
-        """Process getdd command"""
+        """Process getdd command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             prog="getdd",
@@ -360,7 +360,7 @@ class BehaviouralAnalysisController(StockBaseController):
 
     @log_start_end(log=logger)
     def call_redditsent(self, other_args: List[str]):
-        """Process redditsent command"""
+        """Process redditsent command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             prog="redditsent",
@@ -460,7 +460,7 @@ class BehaviouralAnalysisController(StockBaseController):
 
     @log_start_end(log=logger)
     def call_bullbear(self, other_args: List[str]):
-        """Process bullbear command"""
+        """Process bullbear command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -479,7 +479,7 @@ class BehaviouralAnalysisController(StockBaseController):
 
     @log_start_end(log=logger)
     def call_messages(self, other_args: List[str]):
-        """Process messages command"""
+        """Process messages command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -508,7 +508,7 @@ class BehaviouralAnalysisController(StockBaseController):
 
     @log_start_end(log=logger)
     def call_trending(self, other_args: List[str]):
-        """Process trending command"""
+        """Process trending command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -521,7 +521,7 @@ class BehaviouralAnalysisController(StockBaseController):
 
     @log_start_end(log=logger)
     def call_stalker(self, other_args: List[str]):
-        """Process stalker command"""
+        """Process stalker command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -558,7 +558,7 @@ class BehaviouralAnalysisController(StockBaseController):
 
     @log_start_end(log=logger)
     def call_mentions(self, other_args: List[str]):
-        """Process mentions command"""
+        """Process mentions command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -595,7 +595,7 @@ class BehaviouralAnalysisController(StockBaseController):
 
     @log_start_end(log=logger)
     def call_regions(self, other_args: List[str]):
-        """Process regions command"""
+        """Process regions command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -626,7 +626,7 @@ class BehaviouralAnalysisController(StockBaseController):
 
     @log_start_end(log=logger)
     def call_interest(self, other_args: List[str]):
-        """Process interest command"""
+        """Process interest command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -690,7 +690,7 @@ class BehaviouralAnalysisController(StockBaseController):
 
     @log_start_end(log=logger)
     def call_queries(self, other_args: List[str]):
-        """Process queries command"""
+        """Process queries command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -726,7 +726,7 @@ class BehaviouralAnalysisController(StockBaseController):
 
     @log_start_end(log=logger)
     def call_rise(self, other_args: List[str]):
-        """Process rise command"""
+        """Process rise command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -762,7 +762,7 @@ class BehaviouralAnalysisController(StockBaseController):
 
     @log_start_end(log=logger)
     def call_infer(self, other_args: List[str]):
-        """Process infer command"""
+        """Process infer command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -802,7 +802,7 @@ class BehaviouralAnalysisController(StockBaseController):
 
     @log_start_end(log=logger)
     def call_sentiment(self, other_args: List[str]):
-        """Process sentiment command"""
+        """Process sentiment command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -862,7 +862,7 @@ class BehaviouralAnalysisController(StockBaseController):
 
     @log_start_end(log=logger)
     def call_headlines(self, other_args: List[str]):
-        """Process finbrain command"""
+        """Process finbrain command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -886,7 +886,7 @@ class BehaviouralAnalysisController(StockBaseController):
                 console.print("No ticker loaded. Please load using 'load <ticker>'\n")
 
     def call_jcdr(self, other_args: List[str]):
-        """Process jcdr command"""
+        """Process jcdr command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -913,7 +913,7 @@ class BehaviouralAnalysisController(StockBaseController):
 
     @log_start_end(log=logger)
     def call_jctr(self, other_args: List[str]):
-        """Process jctr command"""
+        """Process jctr command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
