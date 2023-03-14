@@ -34,6 +34,7 @@ def set_preference(
     """
 
     current_user = get_current_user()
+    sync_enabled = current_user.preferences.SYNC_ENABLED
     local_user = is_local()
 
     # Set preference in current user
@@ -46,7 +47,7 @@ def set_preference(
         set_key(str(SETTINGS_ENV_FILE), "OPENBB_" + name, str(value))
 
     # Send preference to cloud
-    if not login and (not local_user or name == "SYNC_ENABLED"):
+    if not login and (not local_user or name == "SYNC_ENABLED") and sync_enabled:
         patch_user_configs(
             key=name,
             value=str(value),
