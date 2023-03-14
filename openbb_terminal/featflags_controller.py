@@ -89,9 +89,7 @@ class FeatureFlagsController(BaseController):
 
     def call_version(self, _):
         """Process version command"""
-        set_preference(
-            "OPENBB_SHOW_VERSION", not get_current_user().preferences.SHOW_VERSION
-        )
+        set_preference("SHOW_VERSION", not get_current_user().preferences.SHOW_VERSION)
 
     def call_retryload(self, _):
         """Process retryload command"""
