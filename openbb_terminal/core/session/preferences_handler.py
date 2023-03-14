@@ -47,7 +47,7 @@ def set_preference(
 
     # Set preference in local env file
     if local_user:
-        set_key(str(SETTINGS_ENV_FILE), name, str(value))
+        set_key(str(SETTINGS_ENV_FILE), "OPENBB_" + name, str(value))
 
     # Send preference to cloud
     if not login and (not local_user or name == "OPENBB_SYNC_ENABLED"):
