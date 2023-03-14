@@ -5,8 +5,6 @@ import os
 from pathlib import Path
 from typing import Dict, List, Optional
 
-from prompt_toolkit.completion import NestedCompleter
-
 from openbb_terminal import (
     keys_model,
 )
@@ -19,6 +17,7 @@ from openbb_terminal.core.session import (
 from openbb_terminal.core.session.current_user import get_current_user, is_local
 from openbb_terminal.core.session.preferences_handler import set_preference
 from openbb_terminal.core.session.session_model import logout
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import check_positive
 from openbb_terminal.menu import session
@@ -46,25 +45,25 @@ class AccountController(BaseController):
     ]
 
     PATH = "/account/"
+    CHOICES_GENERATION = True
 
     def __init__(self, queue: Optional[List[str]] = None):
+        """Constructor"""
         super().__init__(queue)
         self.ROUTINE_FILES: Dict[str, Path] = {}
         self.REMOTE_CHOICES: List[str] = []
+        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
+            self.choices: dict = self.choices_default
+            self.completer = NestedCompleter.from_nested_dict(self.choices)
 
     def update_runtime_choices(self):
         """Update runtime choices"""
         self.ROUTINE_FILES = self.get_routines()
         if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.controller_choices}  # type: ignore
-            choices["sync"] = {"--on": {}, "--off": {}}
-            choices["upload"]["--file"] = {c: {} for c in self.ROUTINE_FILES}
-            choices["upload"]["-f"] = choices["upload"]["--file"]
-            choices["download"]["--name"] = {c: {} for c in self.REMOTE_CHOICES}
-            choices["download"]["-n"] = choices["download"]["--name"]
-            choices["delete"]["--name"] = {c: {} for c in self.REMOTE_CHOICES}
-            choices["delete"]["-n"] = choices["delete"]["--name"]
-            self.completer = NestedCompleter.from_nested_dict(choices)
+            self.choices["upload"]["--file"].update({c: {} for c in self.ROUTINE_FILES})
+            self.choices["download"]["--name"].update({c: {} for c in self.REMOTE_CHOICES})
+            self.choices["delete"]["--name"].update({c: {} for c in self.REMOTE_CHOICES})
+            self.completer = NestedCompleter.from_nested_dict(self.choices)
 
     def get_routines(self):
         """Get routines"""
