@@ -5476,6 +5476,22 @@ dev = ["pre-commit", "tox"]
 testing = ["pytest", "pytest-benchmark"]
 
 [[package]]
+name = "pmaw"
+version = "3.0.0"
+description = "A multithread Pushshift.io API Wrapper for reddit.com comment and submission searches."
+category = "main"
+optional = false
+python-versions = ">=3.5"
+files = [
+    {file = "pmaw-3.0.0-py3-none-any.whl", hash = "sha256:78b381cc2aec81ddb2615387b483bafa9729ee926a3edf0f2a55453ba17a048d"},
+    {file = "pmaw-3.0.0.tar.gz", hash = "sha256:5b9d0fe7b44ea03e675240abc2d62b76e12c07f09c2e2d61bb9d307bc8375442"},
+]
+
+[package.dependencies]
+praw = "*"
+requests = "*"
+
+[[package]]
 name = "pmdarima"
 version = "2.0.2"
 description = "Python's forecast::auto.arima equivalent"
@@ -5690,21 +5706,6 @@ files = [
     {file = "protobuf-3.20.1-py2.py3-none-any.whl", hash = "sha256:adfc6cf69c7f8c50fd24c793964eef18f0ac321315439d94945820612849c388"},
     {file = "protobuf-3.20.1.tar.gz", hash = "sha256:adc31566d027f45efe3f44eeb5b1f329da43891634d61c75a5944e9be6dd42c9"},
 ]
-
-[[package]]
-name = "psaw"
-version = "0.0.12"
-description = "Pushshift.io API Wrapper for reddit.com public comment/submission search"
-category = "main"
-optional = false
-python-versions = ">=3"
-files = [
-    {file = "psaw-0.0.12-py3-none-any.whl", hash = "sha256:cfbfdf1953ee5f31ca9d4ec6d471873ace960da9fbc7234b9d19a059d5cfa2d6"},
-]
-
-[package.dependencies]
-Click = "*"
-requests = "*"
 
 [[package]]
 name = "psutil"
@@ -10241,4 +10242,4 @@ optimization = ["Riskfolio-Lib"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8,<3.11, !=3.9.7"
-content-hash = "6f2e1d185f16ebb3672b221e9192d4c65eaf301b8f9b5b9b448ac3f3d1853c9c"
+content-hash = "9c3abf5dc3861d0a1c5364efab55c49b7c1de8202c1ff222cadc17a5c1403d32"
