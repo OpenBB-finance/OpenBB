@@ -15,8 +15,8 @@ from rich.text import Text
 from openbb_terminal import (
     config_terminal as cfg,
 )
-from openbb_terminal.core.plots.plotly_helper import theme
 from openbb_terminal.core.config.paths import MISCELLANEOUS_DIRECTORY
+from openbb_terminal.core.plots.plotly_helper import theme
 from openbb_terminal.core.session.current_user import get_current_user
 
 # pylint: disable=no-member,c-extension-no-member

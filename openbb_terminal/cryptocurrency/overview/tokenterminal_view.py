@@ -3,6 +3,7 @@ import logging
 import os
 
 from openbb_terminal import OpenBBFigure
+from openbb_terminal.core.plots.plotly_helper import theme
 from openbb_terminal.cryptocurrency.overview.tokenterminal_model import (
     CATEGORIES,
     METRICS,
@@ -12,7 +13,6 @@ from openbb_terminal.cryptocurrency.overview.tokenterminal_model import (
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import export_data
 from openbb_terminal.rich_config import console
-from openbb_terminal.core.plots.plotly_helper import theme
 
 logger = logging.getLogger(__name__)
 
