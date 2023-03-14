@@ -225,23 +225,13 @@ def get_keys(show: bool = False) -> pd.DataFrame:
     COINGLASS_KEY  *******
     """
 
-    # TODO: Refactor api variables without prefix API_ and extend API_SOURCE_KEY format
-
-    var_list = [
-        v
-        for v in dir(get_current_user().credentials)
-        if v.startswith("API_") or v.startswith("OPENBB_")
-    ]
-
+    current_user = get_current_user()
     current_keys = {}
 
-    for cfg_var_name in var_list:
-        cfg_var_value = getattr(get_current_user().credentials, cfg_var_name)
-        if cfg_var_value != "REPLACE_ME":
-            if cfg_var_name.startswith("OPENBB_"):
-                current_keys[cfg_var_name] = cfg_var_value
-            else:
-                current_keys[cfg_var_name[4:]] = cfg_var_value
+    for k, _ in current_user.credentials.get_fields().items():
+        field_value = current_user.credentials.get_field_value(field=k)
+        if field_value != "REPLACE_ME":
+            current_keys[k] = field_value
 
     if current_keys:
         df = pd.DataFrame.from_dict(current_keys, orient="index")

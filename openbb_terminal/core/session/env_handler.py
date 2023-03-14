@@ -63,7 +63,7 @@ def load_env_to_model(
             var_name = str(loc[0]) if loc else ""
             msg = err.get("msg", "")
             var = env_dict.pop(var_name, None)
-            fields = model.__dataclass_fields__  # type: ignore
+            fields: dict[str, Any] = model.get_fields()
             if var and var_name in fields:
                 default = fields[var_name].default
                 print(f"    {var_name}: {msg}, using default -> {default}")
