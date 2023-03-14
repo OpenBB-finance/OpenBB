@@ -24,7 +24,7 @@ Throughout the entire terminal, the same set of colors are used which all share 
 
 Menus, depicted in <b><span style={{color:"#005CA9"}}>Dark Blue</span></b>, take you to a new section of the terminal referred to as a menu. For example, if you wish to view information about stocks, you can do so by typing `stocks` and pressing `ENTER` (⏎). This opens a new menu as depicted below.
 
-<img width="800" alt="image" src="https://user-images.githubusercontent.com/46355364/218974442-563cb216-623f-4f98-b2e1-9f1bb0e1a199.png"></img>
+<img width="800" alt="Explanation of Menus" src="https://user-images.githubusercontent.com/46355364/225117373-93787a40-cb26-4599-86b7-7bd023b31e4b.png"></img>
 
 Depending on the menu you are in, you are presented with a new set of commands and menus you can select. There are interactions in place between each menu. For example, when selecting a company within the `stocks` menu, the terminal will remember your selection when you visit the `fa` or `options` menu. See [Introduction to Stocks](/terminal/usage/intros/stocks).
 
