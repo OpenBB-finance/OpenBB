@@ -18,7 +18,7 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
-permissions: 
+permissions:
   actions: write
 
 jobs:
@@ -31,7 +31,7 @@ jobs:
           workflow: windows10_build.yml
           token: ${{ secrets.GITHUB_TOKEN }}
           wait-for-completion-timeout: 2h
-  
+
   trigger-macos-build:
     runs-on: ubuntu-latest
     steps:
@@ -41,7 +41,7 @@ jobs:
           workflow: m1_macos_build.yml
           token: ${{ secrets.GITHUB_TOKEN }}
           wait-for-completion-timeout: 2h
-  
+
   trigger-intel-build:
     runs-on: ubuntu-latest
     steps:
@@ -51,7 +51,7 @@ jobs:
           workflow: intel_macos_build.yml
           token: ${{ secrets.GITHUB_TOKEN }}
           wait-for-completion-timeout: 2h
-  
+
   trigger-docker-build:
     runs-on: ubuntu-latest
     steps:

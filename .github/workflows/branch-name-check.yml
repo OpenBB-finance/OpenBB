@@ -26,12 +26,12 @@ jobs:
 
         echo "Source-branch=$source_branch" >> $GITHUB_OUTPUT
         echo "target-branch=$target_branch" >> $GITHUB_OUTPUT
-    
+
     - name: Show Output result for source-branch and target-branch
       run: |
         echo "source-branch=${{ steps.branch-name-check.outputs.source-branch }}"
         echo "target-branch=${{ steps.branch-name-check.outputs.target-branch }}"
-    
+
     - name: Check branch name for develop PRs
       if: ${{ steps.branch-name-check.outputs.target-branch == 'develop' }}
       run: |

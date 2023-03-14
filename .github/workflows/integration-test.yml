@@ -72,7 +72,7 @@ jobs:
         title: "Integration test summary"
         path: failed_tests.txt
         channel: ${{ secrets.SLACK_CHANNEL_ID }}
-    
+
     - name: Slack Notification - Success/Failure
       uses: act10ns/slack@v1
       with:
