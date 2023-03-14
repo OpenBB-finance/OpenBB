@@ -10,8 +10,8 @@ from typing import List, Tuple
 import finviz
 import pandas as pd
 import praw
+from pmaw import PushshiftAPI
 from prawcore.exceptions import ResponseException
-from psaw import PushshiftAPI
 from requests import HTTPError
 from sklearn.feature_extraction import _stop_words
 from tqdm import tqdm
@@ -99,43 +99,57 @@ def get_popular_tickers(
         console.print("[red]Wrong Reddit API keys[/red]\n")
         return pd.DataFrame()
 
-    psaw_api = PushshiftAPI()
+    pmaw_api = PushshiftAPI()
 
     for s_sub_reddit in sub_reddit_list:
         console.print(
-            f"Searching for latest tickers for {post_limit} '{s_sub_reddit}' posts"
+            f"Searching for tickers in latest {post_limit} '{s_sub_reddit}' posts"
         )
         warnings.filterwarnings(
             "ignore", message=".*Not all PushShift shards are active.*"
         )
-        submissions = psaw_api.search_submissions(
+        submissions = pmaw_api.search_submissions(
             subreddit=s_sub_reddit,
             limit=post_limit,
             filter=["id"],
         )
 
         n_tickers = 0
-        for submission in submissions:
+        for submission in submissions.responses:
             try:
                 # Get more information about post using PRAW api
-                submission = praw_api.submission(id=submission.id)
+                submission_ = praw_api.submission(id=submission["id"])
 
                 # Ensure that the post hasn't been removed by moderator in the meanwhile,
                 # that there is a description and it's not just an image, that the flair is
                 # meaningful, and that we aren't re-considering same author's content
+                def has_author(submission_) -> bool:
+                    """Check if submission has author."""
+                    return (
+                        hasattr(submission_, "author")
+                        and hasattr(submission_.author, "name")
+                        and submission_.author.name not in l_watchlist_author
+                    )
+
+                def has_content(submission_) -> bool:
+                    """Check if submission has text or title."""
+                    return hasattr(submission_, "selftext") or hasattr(
+                        submission_, "title"
+                    )
+
                 if (
-                    submission is not None
-                    and not submission.removed_by_category
-                    and (submission.selftext or submission.title)
-                    and submission.author.name not in l_watchlist_author
+                    submission_ is not None
+                    and not submission_.removed_by_category
+                    and has_content(submission_)
+                    and has_author(submission_)
                 ):
-                    l_tickers_found = find_tickers(submission)
+                    l_tickers_found = find_tickers(submission_)
 
                     if l_tickers_found:
                         n_tickers += len(l_tickers_found)
 
                         # Add another author's name to the parsed watchlists
-                        l_watchlist_author.append(submission.author.name)
+                        l_watchlist_author.append(submission_.author.name)
 
                         # Lookup stock tickers within a watchlist
                         for key in l_tickers_found:
@@ -376,7 +390,6 @@ def get_wsb_community(limit: int = 10, new: bool = False) -> pd.DataFrame:
     pd.DataFrame
         Dataframe of reddit submissions
     """
-
     current_user = get_current_user()
 
     # See https://github.com/praw-dev/praw/issues/1016 regarding praw arguments
@@ -425,30 +438,30 @@ def get_wsb_community(limit: int = 10, new: bool = False) -> pd.DataFrame:
 
     try:
         for submission in submissions:
-            submission = praw_api.submission(id=submission.id)
+            submission_ = praw_api.submission(submission.id)
             # Ensure that the post hasn't been removed  by moderator in the meanwhile,
             # that there is a description and it's not just an image, that the flair is
             # meaningful, and that we aren't re-considering same author's watchlist
-            if not submission.removed_by_category:
-                s_datetime = datetime.utcfromtimestamp(submission.created_utc).strftime(
-                    "%Y-%m-%d %H:%M:%S"
-                )
-                s_link = f"https://old.reddit.com{submission.permalink}"
+            if not submission_.removed_by_category:
+                s_datetime = datetime.utcfromtimestamp(
+                    submission_.created_utc
+                ).strftime("%Y-%m-%d %H:%M:%S")
+                s_link = f"https://old.reddit.com{submission_.permalink}"
                 s_all_awards = "".join(
                     f"{award['count']} {award['name']}\n"
-                    for award in submission.all_awardings
+                    for award in submission_.all_awardings
                 )
 
                 s_all_awards = s_all_awards[:-2]
 
                 data = [
                     s_datetime,
-                    submission.subreddit,
-                    submission.link_flair_text,
-                    submission.title,
-                    submission.score,
-                    submission.num_comments,
-                    f"{round(100 * submission.upvote_ratio)}%",
+                    submission_.subreddit,
+                    submission_.link_flair_text,
+                    submission_.title,
+                    submission_.score,
+                    submission_.num_comments,
+                    f"{round(100 * submission_.upvote_ratio)}%",
                     s_all_awards,
                     s_link,
                 ]
@@ -474,14 +487,12 @@ def get_wsb_community(limit: int = 10, new: bool = False) -> pd.DataFrame:
     ]
 )
 def get_due_dilligence(
-    symbol: str, limit: int = 5, n_days: int = 3, show_all_flairs: bool = False
+    limit: int = 5, n_days: int = 3, show_all_flairs: bool = False
 ) -> pd.DataFrame:
-    """Gets due diligence posts from list of subreddits [Source: reddit].
+    """Get due diligence posts from list of subreddits [Source: reddit].
 
     Parameters
     ----------
-    symbol: str
-        Stock ticker
     limit: int
         Number of posts to get
     n_days: int
@@ -494,7 +505,6 @@ def get_due_dilligence(
     pd.DataFrame
         Dataframe of submissions
     """
-
     current_user = get_current_user()
 
     praw_api = praw.Reddit(
@@ -522,7 +532,7 @@ def get_due_dilligence(
         console.print("[red]Wrong Reddit API keys[/red]\n")
         return pd.DataFrame()
 
-    psaw_api = PushshiftAPI()
+    pmaw_api = PushshiftAPI()
 
     n_ts_after = int((datetime.today() - timedelta(days=n_days)).timestamp())
     l_flair_text = [
@@ -549,8 +559,10 @@ def get_due_dilligence(
         "Forexstrategy",
     ]
 
-    submissions = psaw_api.search_submissions(
-        after=int(n_ts_after), subreddit=l_sub_reddits_dd, q=symbol, filter=["id"]
+    submissions = pmaw_api.search_submissions(
+        after=int(n_ts_after),
+        subreddit=l_sub_reddits_dd,
+        filter=["id"],
     )
     n_flair_posts_found = 0
     columns = [
@@ -567,36 +579,36 @@ def get_due_dilligence(
     subs = pd.DataFrame(columns=columns)
 
     try:
-        for submission in submissions:
+        for submission in submissions.responses:
             # Get more information about post using PRAW api
-            submission = praw_api.submission(id=submission.id)
+            submission_ = praw_api.submission(id=submission["id"])
 
             # Ensure that the post hasn't been removed in the meanwhile
             # Either just filter out Yolo, and Meme flairs, or focus on DD, based on b_DD flag
             if (
-                not submission.removed_by_category
-                and submission.link_flair_text in l_flair_text,
-                submission.link_flair_text not in ["Yolo", "Meme"],
+                not submission_.removed_by_category
+                and submission_.link_flair_text in l_flair_text,
+                submission_.link_flair_text not in ["Yolo", "Meme"],
             )[show_all_flairs]:
-                s_datetime = datetime.utcfromtimestamp(submission.created_utc).strftime(
-                    "%Y-%m-%d %H:%M:%S"
-                )
-                s_link = f"https://old.reddit.com{submission.permalink}"
+                s_datetime = datetime.utcfromtimestamp(
+                    submission_.created_utc
+                ).strftime("%Y-%m-%d %H:%M:%S")
+                s_link = f"https://old.reddit.com{submission_.permalink}"
                 s_all_awards = "".join(
                     f"{award['count']} {award['name']}\n"
-                    for award in submission.all_awardings
+                    for award in submission_.all_awardings
                 )
 
                 s_all_awards = s_all_awards[:-2]
 
                 data = [
                     s_datetime,
-                    submission.subreddit,
-                    submission.link_flair_text,
-                    submission.title,
-                    submission.score,
-                    submission.num_comments,
-                    f"{round(100 * submission.upvote_ratio)}%",
+                    submission_.subreddit,
+                    submission_.link_flair_text,
+                    submission_.title,
+                    submission_.score,
+                    submission_.num_comments,
+                    f"{round(100 * submission_.upvote_ratio)}%",
                     s_all_awards,
                     s_link,
                 ]
@@ -635,7 +647,7 @@ def get_posts_about(
     full_search: bool = True,
     subreddits: str = "all",
 ) -> Tuple[pd.DataFrame, list, float]:
-    """Finds posts related to a specific search term in Reddit.
+    """Find posts related to a specific search term in Reddit.
 
     Parameters
     ----------
@@ -659,7 +671,6 @@ def get_posts_about(
         List of polarity scores,
         Average polarity score.
     """
-
     current_user = get_current_user()
 
     praw_api = praw.Reddit(
@@ -719,8 +730,8 @@ def get_posts_about(
     for p in tqdm(posts):
         texts = [p.title, p.selftext]
         if full_search:
-            tlcs = get_comments(p)
-            texts.extend(tlcs)
+            top_level_comments = get_comments(p)
+            texts.extend(top_level_comments)
         preprocessed_text = clean_reddit_text(texts)
         sentiment = get_sentiment(preprocessed_text)
         polarity_scores.append(sentiment)
@@ -761,14 +772,14 @@ def get_comments(
     """
 
     def get_more_comments(comments):
-        sub_tlcs = []
+        sub_top_level_comments = []
         for comment in comments:
             if isinstance(comment, praw.models.reddit.comment.Comment):
-                sub_tlcs.append(comment.body)
+                sub_top_level_comments.append(comment.body)
             else:
                 sub_comments = get_more_comments(comment.comments())
-                sub_tlcs.extend(sub_comments)
-        return sub_tlcs
+                sub_top_level_comments.extend(sub_comments)
+        return sub_top_level_comments
 
     if post.comments:
         return get_more_comments(post.comments)
@@ -777,7 +788,7 @@ def get_comments(
 
 @log_start_end(log=logger)
 def clean_reddit_text(docs: List[str]) -> List[str]:
-    """Tokenizes and cleans a list of documents for sentiment analysis.
+    """Tokenize and clean a list of documents for sentiment analysis.
 
     Parameters
     ----------
@@ -789,7 +800,7 @@ def clean_reddit_text(docs: List[str]) -> List[str]:
     list[str]
         List of cleaned and prepared docs
     """
-    stopwords = _stop_words.ENGLISH_STOP_WORDS
+    stop_words = _stop_words.ENGLISH_STOP_WORDS
     clean_docs = []
     docs = [doc.lower().strip() for doc in docs]
 
@@ -798,9 +809,9 @@ def clean_reddit_text(docs: List[str]) -> List[str]:
         tokens = doc.split()
         for tok in tokens:
             clean_tok = [c for c in tok if c.isalpha()]
-            tok = "".join(clean_tok)
-            if tok not in stopwords:
-                clean_doc.append(tok)
+            tok_ = "".join(clean_tok)
+            if tok_ not in stop_words:
+                clean_doc.append(tok_)
         clean_docs.append(" ".join(clean_doc))
     return clean_docs
 

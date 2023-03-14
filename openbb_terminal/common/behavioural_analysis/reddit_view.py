@@ -266,14 +266,12 @@ def display_wsb_community(limit: int = 10, new: bool = False):
     ]
 )
 def display_due_diligence(
-    symbol: str, limit: int = 10, n_days: int = 3, show_all_flairs: bool = False
+    limit: int = 10, n_days: int = 3, show_all_flairs: bool = False
 ):
     """Print Reddit due diligence data for a given ticker.
 
     Parameters
     ----------
-    symbol: str
-        Stock ticker symbol
     limit: int
         Number of posts to get
     n_days: int
@@ -281,13 +279,13 @@ def display_due_diligence(
     show_all_flairs: bool
         Search through all flairs (apart from Yolo and Meme)
     """
-    subs = reddit_model.get_due_dilligence(symbol, limit, n_days, show_all_flairs)
+    subs = reddit_model.get_due_dilligence(limit, n_days, show_all_flairs)
     if not subs.empty:
         for sub in subs.iterrows():
             print_reddit_post(sub)
             console.print("")
     else:
-        console.print(f"No DD posts found for {symbol}\n")
+        console.print("No DD posts found\n")
 
 
 @log_start_end(log=logger)

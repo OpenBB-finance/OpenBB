@@ -44,6 +44,7 @@ class BehaviouralAnalysisController(StockBaseController):
         "wsb",
         "popular",
         "spacc",
+        "getdd",
         "redditsent",
         "bullbear",
         "messages",
@@ -56,8 +57,6 @@ class BehaviouralAnalysisController(StockBaseController):
         "queries",
         "rise",
         "headlines",
-        # "popular",
-        # "getdd",
         "snews",
         "interest",
     ]
@@ -92,9 +91,9 @@ class BehaviouralAnalysisController(StockBaseController):
         mt.add_cmd("headlines", self.ticker)
         mt.add_cmd("snews", self.ticker)
         mt.add_cmd("wsb")
-        # mt.add_cmd("popular")
+        mt.add_cmd("popular")
         mt.add_cmd("spacc")
-        # mt.add_cmd("getdd", self.ticker)
+        mt.add_cmd("getdd")
         mt.add_cmd("redditsent", self.ticker)
         mt.add_cmd("trending")
         mt.add_cmd("stalker")
@@ -223,7 +222,7 @@ class BehaviouralAnalysisController(StockBaseController):
             action="store",
             dest="num",
             type=check_positive,
-            default=50,
+            default=10,
             help="number of posts retrieved per sub reddit.",
         )
         parser.add_argument(
@@ -296,15 +295,11 @@ class BehaviouralAnalysisController(StockBaseController):
             other_args.insert(0, "-l")
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            if self.ticker:
-                reddit_view.display_due_diligence(
-                    symbol=self.ticker,
-                    limit=ns_parser.limit,
-                    n_days=ns_parser.days,
-                    show_all_flairs=ns_parser.all,
-                )
-            else:
-                console.print("No ticker loaded. Please load using 'load <ticker>'\n")
+            reddit_view.display_due_diligence(
+                limit=ns_parser.limit,
+                n_days=ns_parser.days,
+                show_all_flairs=ns_parser.all,
+            )
 
     @log_start_end(log=logger)
     def call_redditsent(self, other_args: List[str]):
