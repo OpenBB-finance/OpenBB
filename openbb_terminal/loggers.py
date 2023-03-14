@@ -5,6 +5,7 @@ __docformat__ = "numpy"
 import logging
 import sys
 import time
+import uuid
 from pathlib import Path
 from typing import Optional
 
@@ -47,8 +48,6 @@ logging.getLogger("urllib3").setLevel(LOGGING_VERBOSITY)
 
 logger = logging.getLogger(__name__)
 
-START_TIMESTAMP = int(time.time())
-
 
 def get_app_id() -> str:
     """UUID of the current installation."""
@@ -67,6 +66,12 @@ def get_app_id() -> str:
         raise e
 
     return app_id
+
+
+def get_session_id() -> str:
+    """UUID of the current session."""
+    session_id = str(uuid.uuid4()) + "-" + str(int(time.time()))
+    return session_id
 
 
 def get_commit_hash(use_env=True) -> str:
@@ -157,7 +162,6 @@ def setup_handlers(settings: Settings):
 def setup_logging(
     app_name: Optional[str] = None,
     frequency: Optional[str] = None,
-    session_id: Optional[str] = None,
     verbosity: Optional[int] = None,
 ) -> None:
     """Setup Logging"""
@@ -166,7 +170,7 @@ def setup_logging(
     commit_hash = get_commit_hash()
     name = app_name or LOGGING_APP_NAME
     identifier = get_app_id()
-    session_id = session_id or str(START_TIMESTAMP)
+    session_id = get_session_id()
     user_id = get_user_uuid()
 
     # AWSSettings
