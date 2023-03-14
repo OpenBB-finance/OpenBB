@@ -65,7 +65,7 @@ def set_credential(
 
     # Set credential in local env file
     if persist and local_user:
-        set_key(str(SETTINGS_ENV_FILE), "OPENBB_"+name, str(value))
+        set_key(str(SETTINGS_ENV_FILE), "OPENBB_" + name, str(value))
 
     # Send credential to cloud
     if (
