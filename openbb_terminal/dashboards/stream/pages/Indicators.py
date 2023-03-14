@@ -148,6 +148,11 @@ async def plot_indicators(
             overlaying="y",
         )
 
+    for annotation in fig.select_annotations(
+        selector=dict(xanchor="left", x=0, xref="paper")
+    ):
+        annotation.xshift += -5
+
     fig.hide_holidays()
 
     y_min, y_max = data["Low"].min().min(), data["High"].max().max()

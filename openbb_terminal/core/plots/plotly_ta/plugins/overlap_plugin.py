@@ -47,7 +47,7 @@ class Overlap(PltTA):
                         fig.add_annotation(
                             xref="paper",
                             yref="paper",
-                            text=f"{column.replace('_', '').replace('RMA', 'MA')}",
+                            text=f"<b>{column.replace('_', '').replace('RMA', 'MA')}</b>",
                             x=0,
                             xanchor="left",
                             yshift=-inchart_index * 18,

@@ -20,7 +20,29 @@ st.set_page_config(
     page_icon="📈",
     initial_sidebar_state="collapsed",
 )
-
+css_container_style = """
+<style>
+    .table_container {
+        position: relative;
+        text-align: center;
+        align-items: center;
+        margin-right: 20px;
+        top: 20px;
+        font-size: 14px;
+        color: white;
+    }
+    .cov-legend {
+        position: relative;
+        text-align: center;
+        align-items: center;
+        top: 20px;
+        left: 40px;
+        font-size: 16px;
+        color: green;
+    }
+</style>
+"""
+st.markdown(css_container_style, unsafe_allow_html=True)
 
 # pylint: disable=E1101
 model_opts = {
@@ -52,6 +74,7 @@ feat_engs = {
 interval_opts = ["1d", "5d", "1wk", "1mo", "3mo"]
 REGEX_RICH = re.compile(r"\[\/{0,1}[a-zA-Z0-9#]+\]|\[\/\]")
 EXPLAINABILITY_FIGURE: Union[OpenBBFigure, None] = None
+PAST_COVERAGE_PRINT: str = "<br>"
 
 # Rows and columns for the dashboard layout
 st.title("OpenBB Forecasting")  # Title does not like being in a column
@@ -60,7 +83,7 @@ r2c1, r2c2, r2c3 = st.columns([1, 1, 1])
 st.markdown("""---""")
 forecast_button = st.button("Get forecast")
 plotly_chart, table_container = st.columns([4, 1])
-explainability = st.container()
+explainability, past_cov_legend = st.columns([4, 1])
 
 
 def format_df(df: pd.DataFrame) -> pd.DataFrame:
@@ -101,9 +124,19 @@ def rich_to_dataframe(table: Table) -> pd.DataFrame:
 def special_st(text: Optional[str] = None) -> Optional[str]:
     if isinstance(text, Table):
         with table_container:
+            text.title = re.sub(REGEX_RICH, "", text.title).replace(
+                "Actual price:",
+                "<h3 class='table_container'>Actual price:"
+                "<text style='color: yellow'>",
+            )
+            st.write(
+                f"{text.title}</text></h3>",
+                unsafe_allow_html=True,
+            )
             st.table(rich_to_dataframe(text))
     elif isinstance(text, str) and "[green]" in text:
-        st.success(re.sub(REGEX_RICH, "", text))
+        global PAST_COVERAGE_PRINT  # pylint: disable=W0603
+        PAST_COVERAGE_PRINT += re.sub(REGEX_RICH, "", text) + "<br>"
 
     return text
 
@@ -254,6 +287,15 @@ class Handler:
                                 ),
                             ),
                         )
+                with past_cov_legend:
+                    global PAST_COVERAGE_PRINT  # pylint: disable=W0603
+                    text = PAST_COVERAGE_PRINT
+                    if text != "<br>":
+                        st.write(
+                            f"<text class='cov-legend'>{text}</text>",
+                            unsafe_allow_html=True,
+                        )
+                        PAST_COVERAGE_PRINT = "<br>"
 
     def handle_eng(self, target, feature):
         self.feature_target = target
