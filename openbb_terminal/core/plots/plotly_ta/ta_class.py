@@ -8,10 +8,9 @@ from typing import Any, Dict, List, Optional, Type, Union
 
 import pandas as pd
 
-from openbb_terminal import OpenBBFigure
+from openbb_terminal import OpenBBFigure, theme
 from openbb_terminal.base_helpers import console
 from openbb_terminal.common.technical_analysis import ta_helpers
-from openbb_terminal.core.plots.plotly_helper import theme
 from openbb_terminal.core.plots.plotly_ta.base import PltTA
 from openbb_terminal.core.plots.plotly_ta.data_classes import ChartIndicators
 

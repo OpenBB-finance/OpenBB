@@ -2,8 +2,7 @@
 import logging
 import os
 
-from openbb_terminal import OpenBBFigure
-from openbb_terminal.core.plots.plotly_helper import theme
+from openbb_terminal import OpenBBFigure, theme
 from openbb_terminal.cryptocurrency.overview.tokenterminal_model import (
     CATEGORIES,
     METRICS,

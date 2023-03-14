@@ -5,8 +5,7 @@ import logging
 import os
 from typing import Optional, Union
 
-from openbb_terminal import OpenBBFigure
-from openbb_terminal.core.plots.plotly_helper import theme
+from openbb_terminal import OpenBBFigure, theme
 from openbb_terminal.cryptocurrency.onchain.shroom_model import (
     get_daily_transactions,
     get_dapp_stats,
