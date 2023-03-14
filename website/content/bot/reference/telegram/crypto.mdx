@@ -1,13 +1,14 @@
 ---
 title: Crypto
-description: prints, bigprints, bio, defi, fees, ir...
+description: c, prints, bigprints, bio, defi, fees, ir...
 premium: false
 commands:
+  - "/c"
   - "/prints"
   - "/bigprints"
   - "/tvl"
   - "/defi chart"
-  - "/defi table"
+  - "/defi"
   - "/bio"
   - "/fees"
   - "/compfees"
@@ -15,6 +16,39 @@ commands:
 ---
 
 # Crypto
+
+## chart
+
+```format
+/c <symbol>
+```
+
+> Shows the candlestick chart for the ticker/interval provided
+
+**symbol**
+  - The Crypto Symbol want to chart
+
+**currency** - _optional_
+  - Crypto Currency. Default: USDT
+
+**exchange** - _optional_
+  - Crypto Exchange. Default: binanceus
+
+**interval** - _optional_
+  - Chart Interval. Default: 15m
+
+**srlines** - _optional_
+  - Show Support/Resistance Lines. Default: False
+
+**fibs** - _optional_
+  - Show Fibonacci Retracement Levels. Default: False
+
+
+```format
+/c doge
+```
+
+---
 
 ## prints
 
@@ -81,7 +115,7 @@ commands:
 > Get top DeFi protocols
 
 ```format
-/defi table [sortby] [chain] [reverse]
+/defi [sortby] [chain] [reverse]
 ```
 
 **[sortby]** - _optional_
@@ -99,11 +133,11 @@ commands:
 **Examples**
 
 ```
-/defi table
+/defi
 ```
 
 ```
-/defi table 1hr Bitcoin
+/defi 1hr Bitcoin
 ```
 
 ---
@@ -135,7 +169,7 @@ commands:
 
 **[sortby]** - _optional_
 
-- Column to sort data by (default="MCap") (e.g., Market Cap)
+- Column to sort data by (default="mc") (e.g., Market Cap)
 
 **[category]** - _optional_
 
@@ -152,7 +186,7 @@ commands:
 ```
 
 ```
-/top Market Cap manufacturing
+/top mc marketing
 ```
 
 ---
@@ -190,7 +224,7 @@ commands:
 **Examples**
 
 ```
-/fees date: 2022-09-19
+/fees date: 2023-04-19
 ```
 
 ---
@@ -213,7 +247,7 @@ commands:
 ```
 
 ```
-/crypto compfees projects: btc,eth
+/compfees projects: btc,eth
 ```
 
 

@@ -1,14 +1,11 @@
 ---
 title: Flow
-description: opening, flow, bigflow, prem, weekly, summary...
+description: flow, unusual, bigflow, summary...
 premium: true
 commands:
-  - "/unu"
-  - "/opening"
   - "/flow"
+  - "/unu"
   - "/bigflow"
-  - "/prem"
-  - "/weekly"
   - "/summary"
   - "/sectors"
   - "/sumexp"
@@ -18,35 +15,6 @@ commands:
 ---
 
 # Flow
-
-## unu
-
-> Unusual Options Trades over 100k Prem. - Vol > OI
-
-```format
-/unu
-```
-
----
-
-## opening
-
-> Top 20 by Premium for a stock with opening condition - Vol > OI
-
-```format
-/opening <ticker>
-```
-
-**ticker**
-- Ticker symbol you want to lookup
-
-Examples
-
-```
-/opening AMD
-```
-
----
 
 ## flow
 
@@ -86,11 +54,21 @@ Examples
 ```
 
 ```
-/flow AMD 2022-10-28 60 Puts
+/flow wk AMD
 ```
 
 ```
-/flow AMD 2022-10-28 60
+/flow prem AMD
+```
+
+---
+
+## unu
+
+> Unusual Options Trades over 100k Prem. - Vol > OI
+
+```format
+/unu
 ```
 
 ---
@@ -110,44 +88,6 @@ Examples
 
 ```
 /bigflow AMD
-```
-
----
-
-## weekly
-
-> Top 20 by Premium for a stock with weekly expiration
-
-```format
-/weekly <ticker>
-```
-
-**ticker**
-- Ticker symbol you want to lookup
-
-Examples
-
-```
-/weekly AMD
-```
-
----
-
-## prem
-
-> Returns a chart with sum of premium per day by call/put
-
-```format
-/prem <ticker>
-```
-
-**ticker**
-- Ticker symbol you want to lookup
-
-Examples
-
-```
-/prem AMD
 ```
 
 ---
@@ -209,11 +149,21 @@ Examples
 > Graph Today's Total Premium of a stock.
 
 ```format
-/flowsum <ticker>
+/flowsum [subcmd] <ticker>
 ```
+
+**[subcmd]** - _optional_
+
+- Possible subcommands, if not provided, defaults to daily sum
+    wk: Weekly flow by Premium for a stock with weekly expiration
+    exp: Flow summary by expiration date
+    top: Top flow for the day Calls vs Puts by stock
 
 **ticker**
 - The ticker/symbol to look up
+
+**expiry**
+- Expiration date - Only available/required for exp
 
 Examples
 
@@ -221,53 +171,14 @@ Examples
 /flowsum AMD
 ```
 
----
-
-## sumweek
-
-> Graph Total Premium weekly summary of a stock.
-
-```format
-/sumweek <ticker>
+```
+/flowsum wk AMD
 ```
 
-**ticker**
-- The ticker/symbol to look up
-
-Examples
-
 ```
-/sumweek ticker:AMD
+/flowsum top AMD
 ```
 
----
-
-## sumexp
-
-> summary by expiration date
-
-```format
-/sumexp <ticker> <expiry>
 ```
-
-**ticker**
-- The ticker/symbol to look up
-
-**expiry**
-- The expiration date to lookup
-
-Examples
-
-```
-/sumexp ticker:AMD expiry:2022-07-08
-```
-
----
-
-## sumtop
-
-> Top for the day Calls vs Puts by ticker
-
-```format
-/sumtop
+/flowsum exp AMD 2022-07-29
 ```

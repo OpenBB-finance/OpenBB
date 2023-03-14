@@ -214,7 +214,7 @@ Examples
 
 **interval**
 
-- Chart Minute Interval | 1440 for Daily 5 | 15 | 30
+- Chart Minute Interval | 1440 for Daily 15 | 30
 
 **[past_days]** - _optional_
 
@@ -223,11 +223,11 @@ Examples
 Examples
 
 ```
-/op hist ticker:AMD expiry:2022-07-29 strike:18 opt_type:Calls interval:5 past_days:5
+/op hist ticker:AMD expiry:2022-07-29 strike:80 opt_type:Calls interval:15 past_days:5
 ```
 
 ```
-/op hist ticker:AMD expiry:2022-07-29 strike:18 opt_type:Calls interval:5
+/op hist ticker:AMD expiry:2022-07-29 strike:80 opt_type:Calls interval:15
 ```
 
 ---
@@ -399,11 +399,11 @@ Examples
 Examples
 
 ```
-/op chains ticker:AMD expiry:2022-08-05 opt_type:Calls
+/op chains ticker:AMD expiry:2022-07-29 opt_type:Calls
 ```
 
 ```
-/op chains ticker:AMD expiry:2022-08-05 opt_type:Calls min_sp:10 max_sp:100
+/op chains ticker:AMD expiry:2022-07-29 opt_type:Calls min_sp:10 max_sp:100
 ```
 
 ---
@@ -463,9 +463,9 @@ Examples
 Examples
 
 ```
-/op smile ticker:AMD expiry:2022-08-19
+/op smile ticker:AMD expiry:2022-07-29
 ```
 
 ```
-/op smile ticker:AMD expiry:2022-08-19 min_sp:10 max_sp:100
+/op smile ticker:AMD expiry:2022-07-29 min_sp:10 max_sp:100
 ```

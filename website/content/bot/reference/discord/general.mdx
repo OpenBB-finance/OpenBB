@@ -12,8 +12,7 @@ commands:
   - "/ta"
   - "/heatmap"
   - "/heatchart"
-  - "/pop 1d"
-  - "/pop 1hr"
+  - "/pop"
 ---
 
 # General
@@ -39,7 +38,11 @@ commands:
 
 ```
 /autopost add
+```
+```
 /autopost list
+```
+```
 /autopost remove
 ```
 
@@ -62,8 +65,14 @@ commands:
 
 ```
 /watchlist
+```
+```
 /watchlist add:AMD
+```
+```
 /watchlist add:AMD,GOOG,TSLA
+```
+```
 /watchlist edit:Remove
 ```
 
@@ -185,12 +194,12 @@ commands:
 ```
 /heatchart
 ```
-## pop 1hr
+## pop
 
-> Display the most popular tickers over the last hour run on the bot
+> Display the most popular tickers over the last hour or day run on the bot
 
 ```format
-/pop 1hr
+/pop <timeframe>
 ```
 
 **Examples**
@@ -198,16 +207,6 @@ commands:
 ```
 /pop 1hr
 ```
-
-## pop 1d
-
-> Display the most popular tickers over the last day run on the bot
-
-```format
-/pop 1d
-```
-
-**Examples**
 
 ```
 /pop 1d
