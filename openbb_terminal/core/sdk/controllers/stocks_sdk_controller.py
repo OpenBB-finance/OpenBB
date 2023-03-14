@@ -37,7 +37,7 @@ class StocksController(model.StocksRoot):
         Attributes:
             `bullbear`: Gets bullbear sentiment for ticker [Source: stocktwits].\n
             `cnews`: Get news from a company. [Source: Finnhub]\n
-            `getdd`: Gets due diligence posts from list of subreddits [Source: reddit].\n
+            `getdd`: Get due diligence posts from list of subreddits [Source: reddit].\n
             `headlines`: Gets Sentiment analysis provided by FinBrain's API [Source: finbrain].\n
             `headlines_chart`: Plots Sentiment analysis from FinBrain. Prints table if raw is True. [Source: FinBrain]\n
             `infer`: Load tweets from twitter API and analyzes using VADER.\n
@@ -47,7 +47,7 @@ class StocksController(model.StocksRoot):
             `messages`: Get last messages for a given ticker [Source: stocktwits].\n
             `popular`: Get popular tickers from list of subreddits [Source: reddit].\n
             `queries`: Get related queries from google api [Source: google].\n
-            `redditsent`: Finds posts related to a specific search term in Reddit.\n
+            `redditsent`: Find posts related to a specific search term in Reddit.\n
             `regions`: Get interest by region from google api [Source: google].\n
             `regions_chart`: Plots bars of regions based on stock's interest. [Source: Google].\n
             `rise`: Get top rising related queries with this stock's query [Source: google].\n
