@@ -16,8 +16,8 @@ from .helper_classes import TerminalStyle as _TerminalStyle
 # Terminal UX section
 current_user = get_current_user()
 theme = _TerminalStyle(
-    "dark",
-    "dark",
+    current_user.preferences.MPL_STYLE,
+    current_user.preferences.PMF_STYLE,
     current_user.preferences.RICH_STYLE,
 )
 

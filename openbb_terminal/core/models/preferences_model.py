@@ -78,6 +78,8 @@ class PreferencesModel:
     MONITOR: NonNegativeInt = 0
 
     # STYLE
+    MPL_STYLE: str = "dark"
+    PMF_STYLE: str = "dark"
     RICH_STYLE: str = "dark"
     PLOT_STYLE: str = "dark"
 
