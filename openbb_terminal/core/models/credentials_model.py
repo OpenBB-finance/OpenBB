@@ -1,8 +1,8 @@
-from typing import Optional
+from typing import Any, Optional
 
 from pydantic.dataclasses import dataclass
 
-# pylint: disable=too-many-instance-attributes
+# pylint: disable=too-many-instance-attributes, disable=no-member
 
 
 @dataclass(config=dict(validate_assignment=True))
@@ -10,7 +10,7 @@ class CredentialsModel:
     """Model for credentials."""
 
     # Data providers
-    API_DATABENTO_KEY = "REPLACE_ME"
+    API_DATABENTO_KEY: str = "REPLACE_ME"
     API_KEY_ALPHAVANTAGE: str = "REPLACE_ME"
     API_KEY_FINANCIALMODELINGPREP: str = "REPLACE_ME"
     API_KEY_QUANDL: str = "REPLACE_ME"
@@ -36,6 +36,7 @@ class CredentialsModel:
     API_TOKEN_TERMINAL_KEY: str = "REPLACE_ME"
     API_STOCKSERA_KEY: str = "REPLACE_ME"
     API_INTRINIO_KEY: str = "REPLACE_ME"
+    API_TRADIER_TOKEN: str = "REPLACE_ME"
 
     # Socials
     API_GITHUB_KEY: str = "REPLACE_ME"
@@ -57,7 +58,6 @@ class CredentialsModel:
     OANDA_ACCOUNT_TYPE: str = "REPLACE_ME"
     OANDA_ACCOUNT: str = "REPLACE_ME"
     OANDA_TOKEN: str = "REPLACE_ME"
-    API_TRADIER_TOKEN: str = "REPLACE_ME"
     API_BINANCE_KEY: str = "REPLACE_ME"
     API_BINANCE_SECRET: str = "REPLACE_ME"
     API_COINBASE_KEY: str = "REPLACE_ME"
@@ -66,3 +66,24 @@ class CredentialsModel:
 
     # Others
     OPENBB_PERSONAL_ACCESS_TOKEN: str = "REPLACE_ME"
+
+    def __repr__(self) -> str:
+        """Return string representation of model."""
+        dataclass_repr = ""
+        for key, value in self.__dict__.items():
+            if key.startswith("_"):
+                continue
+            dataclass_repr += f"    {key}='{value}', \n"
+
+        return f"{self.__class__.__name__}(\n{dataclass_repr[:-2]}\n)"
+
+    @classmethod
+    def get_fields(cls) -> dict[str, Any]:
+        """Get dict of fields."""
+        return cls.__dataclass_fields__  # type: ignore
+
+    def get_field_value(self, field: str) -> Optional[str]:
+        """Get field value."""
+        if hasattr(self, field):
+            return getattr(self, field)
+        return None

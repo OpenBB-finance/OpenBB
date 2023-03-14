@@ -273,6 +273,7 @@ def print_rich_table(
     columns_to_auto_color: Optional[List[str]] = None,
     rows_to_auto_color: Optional[List[str]] = None,
     export: bool = False,
+    limit: Optional[int] = 1000,
 ):
     """Prepare a table from df in rich.
 
@@ -300,42 +301,70 @@ def print_rich_table(
         Rows to automatically color
     export: bool
         Whether we are exporting the table to a file. If so, we don't want to print it.
+    limit: Optional[int]
+        Limit the number of rows to show.
     """
     if export:
         return
 
     current_user = get_current_user()
 
+    def _get_headers(_headers: Union[List[str], pd.Index]) -> List[str]:
+        """Check if headers are valid and return them."""
+        output = _headers
+        if isinstance(_headers, pd.Index):
+            output = list(_headers)
+        if len(output) != len(df.columns):
+            log_and_raise(
+                ValueError("Length of headers does not match length of DataFrame")
+            )
+        return output
+
+    if current_user.preferences.USE_INTERACTIVE_DF and plots_backend().isatty:
+        df_outgoing = df.copy()
+        # If headers are provided, use them
+        if headers is not None:
+            # We check if headers are valid
+            df_outgoing.columns = _get_headers(headers)
+
+        if show_index and index_name not in df_outgoing.columns:
+            # If index name is provided, we use it
+            df_outgoing.index.name = index_name or "Index"
+            df_outgoing = df_outgoing.reset_index()
+
+        for col in df_outgoing.columns:
+            if col == "":
+                df_outgoing = df_outgoing.rename(columns={col: "  "})
+
+        plots_backend().send_table(df_table=df_outgoing, title=title)
+        return
+
+    df = df.copy() if not limit else df.copy().iloc[:limit]
+    if current_user.preferences.USE_COLOR and automatic_coloring:
+        if columns_to_auto_color:
+            for col in columns_to_auto_color:
+                # checks whether column exists
+                if col in df.columns:
+                    df[col] = df[col].apply(lambda x: return_colored_value(str(x)))
+        if rows_to_auto_color:
+            for row in rows_to_auto_color:
+                # checks whether row exists
+                if row in df.index:
+                    df.loc[row] = df.loc[row].apply(
+                        lambda x: return_colored_value(str(x))
+                    )
+
+        if columns_to_auto_color is None and rows_to_auto_color is None:
+            df = df.applymap(lambda x: return_colored_value(str(x)))
+
     if current_user.preferences.USE_TABULATE_DF:
         table = Table(title=title, show_lines=True, show_header=show_header)
-
-        if current_user.preferences.USE_COLOR and automatic_coloring:
-            if columns_to_auto_color:
-                for col in columns_to_auto_color:
-                    # checks whether column exists
-                    if col in df.columns:
-                        df[col] = df[col].apply(lambda x: return_colored_value(str(x)))
-            if rows_to_auto_color:
-                for row in rows_to_auto_color:
-                    # checks whether row exists
-                    if row in df.index:
-                        df.loc[row] = df.loc[row].apply(
-                            lambda x: return_colored_value(str(x))
-                        )
-
-            if columns_to_auto_color is None and rows_to_auto_color is None:
-                df = df.applymap(lambda x: return_colored_value(str(x)))
 
         if show_index:
             table.add_column(index_name)
 
         if headers is not None:
-            if isinstance(headers, pd.Index):
-                headers = list(headers)
-            if len(headers) != len(df.columns):
-                log_and_raise(
-                    ValueError("Length of headers does not match length of DataFrame")
-                )
+            headers = _get_headers(headers)
             for header in headers:
                 table.add_column(str(header))
         else:
@@ -369,23 +398,6 @@ def print_rich_table(
             table.add_row(*row_idx)
         console.print(table)
     else:
-        if current_user.preferences.USE_COLOR and automatic_coloring:
-            if columns_to_auto_color:
-                for col in columns_to_auto_color:
-                    # checks whether column exists
-                    if col in df.columns:
-                        df[col] = df[col].apply(lambda x: return_colored_value(str(x)))
-            if rows_to_auto_color:
-                for row in rows_to_auto_color:
-                    # checks whether row exists
-                    if row in df.index:
-                        df.loc[row] = df.loc[row].apply(
-                            lambda x: return_colored_value(str(x))
-                        )
-
-            if columns_to_auto_color is None and rows_to_auto_color is None:
-                df = df.applymap(lambda x: return_colored_value(str(x)))
-
         console.print(df.to_string(col_space=0))
 
 
@@ -1975,7 +1987,7 @@ def update_news_from_tweet_to_be_displayed() -> str:
                         url = f"https://twitter.com/x/status/{last_tweet.id_str}"
 
             # In case the handle provided doesn't exist, we skip it
-            except tweepy.errors.NotFound:
+            except (tweepy.errors.NotFound, tweepy.errors.Unauthorized):
                 pass
 
         if last_tweet_dt and news_tweet_to_use:

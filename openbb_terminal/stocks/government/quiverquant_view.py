@@ -273,11 +273,12 @@ def display_last_contracts(
         return
 
     print_rich_table(
-        df[:limit],
+        df,
         headers=list(df.columns),
         show_index=False,
         title="Last Government Contracts",
         export=bool(export),
+        limit=limit,
     )
 
     df["Date"] = pd.to_datetime(df["Date"], format="%Y-%m-%d").dt.date
@@ -732,11 +733,12 @@ def display_top_lobbying(
 
     if raw:
         return print_rich_table(
-            lobbying_by_ticker.head(limit),
+            lobbying_by_ticker,
             headers=["Amount ($100k)"],
             show_index=True,
             title="Top Lobbying Tickers",
             export=bool(export),
+            limit=limit,
         )
 
     return fig.show(external=external_axes)

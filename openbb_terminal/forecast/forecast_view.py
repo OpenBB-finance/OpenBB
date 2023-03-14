@@ -259,11 +259,12 @@ def show_df(
         )
         data = data.iloc[:, :limit_col]
     print_rich_table(
-        data.head(limit),
+        data,
         headers=list(data.columns),
         show_index=True,
         title=f"Dataset {name} | Showing {limit} of {len(data)} rows",
         export=bool(export),
+        limit=limit,
     )
 
     export_data(

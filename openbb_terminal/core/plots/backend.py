@@ -53,7 +53,7 @@ class Backend(pywry.PyWry):
     def __init__(self, daemon: bool = True, max_retries: int = 30):
         super().__init__(daemon=daemon, max_retries=max_retries)
         self.plotly_html: Path = (PLOTS_CORE_PATH / "plotly_temp.html").resolve()
-        self.table_html: Path = (PLOTS_CORE_PATH / "table_temp.html").resolve()
+        self.table_html: Path = (PLOTS_CORE_PATH / "table.html").resolve()
         self.inject_path_to_html()
         self.isatty = (
             not JUPYTER_NOTEBOOK
@@ -72,24 +72,23 @@ class Backend(pywry.PyWry):
 
     def inject_path_to_html(self):
         """Update the script tag in html with local path."""
-        for html_file, temp_file in zip(
-            ["plotly.html", "table.html"], [self.plotly_html, self.table_html]
-        ):
-            with open(PLOTS_CORE_PATH / html_file, encoding="utf-8") as file:  # type: ignore
+        try:
+            with open(PLOTS_CORE_PATH / "plotly.html", encoding="utf-8") as file:  # type: ignore
                 html = file.read()
                 html = html.replace("{{MAIN_PATH}}", str(PLOTS_CORE_PATH.as_uri()))
 
             # We create a temporary file to inject the path to the script tag
             # This is so we don't have to modify the original file
             # The file is deleted at program exit.
-            with open(temp_file, "w", encoding="utf-8") as file:  # type: ignore
+            with open(self.plotly_html, "w", encoding="utf-8") as file:  # type: ignore
                 file.write(html)
-
-    def get_plotly_html(self) -> str:
-        """Get the plotly html file."""
-        if self.plotly_html and self.plotly_html.exists():
-            return str(self.plotly_html)
-        return ""
+        except FileNotFoundError as error:
+            console.print(
+                "[bold red]plotly.html file not found, check the path:[/]"
+                f"[green]{PLOTS_CORE_PATH / 'plotly.html'}[/]"
+            )
+            self.max_retries = 0  # pylint: disable=W0201
+            raise error
 
     def get_pending(self) -> list:
         """Get the pending data that has not been sent to the backend."""
@@ -99,11 +98,24 @@ class Backend(pywry.PyWry):
         self.init_engine: list = []
         return pending
 
+    def get_plotly_html(self) -> str:
+        """Get the plotly html file."""
+        if not self.plotly_html.exists():
+            self.inject_path_to_html()
+            return self.get_plotly_html()
+
+        return str(self.plotly_html)
+
     def get_table_html(self) -> str:
         """Get the table html file."""
-        if self.table_html and self.table_html.exists():
+        if self.table_html.exists():
             return str(self.table_html)
-        return ""
+        console.print(
+            "[bold red]table.html file not found, check the path:[/]"
+            f"[green]{PLOTS_CORE_PATH / 'table.html'}[/]"
+        )
+        self.max_retries = 0  # pylint: disable=W0201
+        raise FileNotFoundError
 
     def get_window_icon(self) -> str:
         """Get the window icon."""
@@ -197,24 +209,41 @@ class Backend(pywry.PyWry):
             Title to display in the window, by default ""
         """
         self.loop.run_until_complete(self.check_backend())
+
+        if title:
+            # We remove any html tags and markdown from the title
+            title = re.sub(r"<[^>]*>", "", title)
+            title = re.sub(r"\[\/?[a-z]+\]", "", title)
+
+        # we get the length of each column using the max length of the column
+        # name and the max length of the column values as the column width
         columnwidth = [
-            max(len(str(df_table[col].name)), df_table[col].astype(str).str.len().max())
+            max(
+                len(str(df_table[col].name)),
+                df_table[col].astype(str).str.len().max(),
+            )
             for col in df_table.columns
+            if hasattr(df_table[col], "name") and hasattr(df_table[col], "dtype")
         ]
+
         # we add a percentage of max to the min column width
         columnwidth = [
             int(x + (max(columnwidth) - min(columnwidth)) * 0.2) for x in columnwidth
         ]
 
+        # in case of a very small table we set a min width
+        width = max(int(min(sum(columnwidth) * 9.7, self.WIDTH + 100)), 800)
+
+        json_data = json.loads(df_table.to_json(orient="split"))
+        json_data.update(dict(title=title))
+
         self.outgoing.append(
             json.dumps(
                 {
                     "html_path": self.get_table_html(),
-                    "json_data": df_table.to_json(orient="split"),
-                    "width": int(max(sum(columnwidth) * 9.5, self.WIDTH + 100)),
-                    "height": int(
-                        min(len(df_table.index) * 25 + 25, self.HEIGHT + 100)
-                    ),
+                    "json_data": json.dumps(json_data),
+                    "width": width,
+                    "height": self.HEIGHT - 100,
                     **self.get_kwargs(title),
                 }
             )
@@ -284,8 +313,7 @@ class Backend(pywry.PyWry):
 
     def del_temp(self):
         """Delete the temporary html file."""
-        for file in (self.plotly_html, self.table_html):
-            file.unlink(missing_ok=True)
+        self.plotly_html.unlink(missing_ok=True)
 
     def start(self, debug: bool = False):
         """Start the backend WindowManager process."""

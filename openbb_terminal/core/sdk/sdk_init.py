@@ -214,6 +214,7 @@ from openbb_terminal.fixedincome import (
     fred_model as fixedincome_fred_model,
     ecb_model as fixedincome_ecb_model,
     oecd_model as fixedincome_oecd_model,
+    fred_view as fixedincome_fred_view,
 )
 
 

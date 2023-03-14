@@ -71,11 +71,12 @@ def display_collections(
             fig.show()
 
     print_rich_table(
-        df.head(limit),
+        df,
         headers=list(df.columns),
         show_index=False,
         title="NFT Collections",
         export=bool(export),
+        limit=limit,
     )
 
     return export_data(
@@ -120,12 +121,13 @@ def display_floor_price(
 
     if raw:
         print_rich_table(
-            df.head(limit),
+            df,
             index_name="date",
             headers=list(df.columns),
             show_index=True,
             title=f"{slug} Floor Price",
             export=bool(export),
+            limit=limit,
         )
 
     fig = OpenBBFigure.create_subplots(

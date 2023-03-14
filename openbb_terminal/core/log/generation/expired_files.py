@@ -25,4 +25,7 @@ def get_expired_file_list(directory: Path, before_timestamp: float) -> List[Path
 
 def remove_file_list(file_list: List[Path]):
     for file in file_list:
-        file.unlink(missing_ok=True)
+        try:
+            file.unlink(missing_ok=True)
+        except PermissionError:
+            pass
