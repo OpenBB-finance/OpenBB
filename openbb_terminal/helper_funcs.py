@@ -383,7 +383,7 @@ def print_rich_table(
             )
         return output
 
-    if current_user.preferences.USE_INTERACTIVE_DF and plots_backend().isatty:
+    if enable_interactive and not print_to_console:
         df_outgoing = df.copy()
         # If headers are provided, use them
         if headers is not None:
