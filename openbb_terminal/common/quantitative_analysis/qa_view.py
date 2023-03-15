@@ -268,7 +268,9 @@ def display_bw(
     start = data[target].index[0]
 
     color = theme.get_colors()[0]
-    x_data = data[target].index.year if yearly else data[target].index.month
+    pd.options.mode.chained_assignment = None
+    data["x_data"] = data[target].index.year if yearly else data[target].index.month
+    pd.options.mode.chained_assignment = "warn"
 
     l_months = [
         "Jan",
@@ -290,8 +292,6 @@ def display_bw(
         yaxis_title=target,
         xaxis_title=["Monthly", "Yearly"][yearly],
     )
-
-    data["x_data"] = x_data
 
     for i, group in enumerate(data["x_data"].unique()):
         x = group if yearly else l_months[group - 1]
