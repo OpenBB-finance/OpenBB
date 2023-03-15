@@ -7,7 +7,7 @@ import logging
 
 import openbb_terminal.config_terminal as cfg
 from openbb_terminal import helper_funcs as helper  # noqa: F401
-from openbb_terminal.config_terminal import theme
+from openbb_terminal.core.plots.plotly_helper import theme  # noqa: F401
 
 from openbb_terminal.cryptocurrency.due_diligence.pycoingecko_model import Coin
 from openbb_terminal.dashboards.dashboards_controller import DashboardsController
@@ -27,7 +27,6 @@ cfg.start_required_configurations()
 cfg.start_plot_backend()
 
 logger = logging.getLogger(__name__)
-theme.applyMPLstyle()
 
 
 class OpenBBSDK:
@@ -141,7 +140,6 @@ class OpenBBSDK:
             `events`: Get economic calendar for countries between specified dates\n
             `fred`: Get Series data. [Source: FRED]\n
             `fred_chart`: Display (multiple) series from https://fred.stlouisfed.org. [Source: FRED]\n
-            `fred_ids`: Get Series IDs. [Source: FRED]\n
             `fred_notes`: Get series notes. [Source: FRED]\n
             `future`: Get futures data. [Source: Finviz]\n
             `futures`: Get futures data.\n

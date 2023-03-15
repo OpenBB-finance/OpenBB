@@ -8,8 +8,7 @@ from typing import Optional
 
 import pandas as pd
 
-from openbb_terminal import OpenBBFigure
-from openbb_terminal.config_terminal import theme
+from openbb_terminal import OpenBBFigure, theme
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
@@ -742,17 +741,19 @@ def display_filings(
             "for --pages. Showing recent filings instead.[/red]\n"
         )
         print_rich_table(
-            filings[:limit],
+            filings,
             title=f"Recent SEC Filings [Limit: {limit}]",
             show_index=True,
             export=bool(export),
+            limit=limit,
         )
     elif not ticker_filings.empty:
         print_rich_table(
-            ticker_filings[:limit],
+            ticker_filings,
             title=f"SEC Filings for {ticker} [Limit: {limit}]]",
             show_index=True,
             export=bool(export),
+            limit=limit,
         )
 
         export_data(
@@ -804,11 +805,12 @@ def rating(
     df = df.astype(str).applymap(lambda x: add_color(x))
 
     print_rich_table(
-        df.head(limit),
+        df,
         headers=df.columns,
         show_index=True,
         title="Rating",
         export=bool(export),
+        limit=limit,
     )
 
     export_data(

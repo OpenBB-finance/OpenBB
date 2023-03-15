@@ -102,7 +102,7 @@ def test_create_session_from_token_exception(token):
 
 @pytest.mark.parametrize("auth_header, token", TEST_HEADER_TOKEN)
 def test_delete_session_success(auth_header, token):
-    with patch("requests.post") as mock_post:
+    with patch("requests.get") as mock_post:
         mock_post.return_value.status_code = 200
         response = hub_model.delete_session(auth_header, token)
         assert response.status_code == 200
@@ -117,7 +117,7 @@ def test_delete_session_success(auth_header, token):
 
 @pytest.mark.parametrize("auth_header, token", TEST_HEADER_TOKEN)
 def test_delete_session_connection_error(auth_header, token):
-    with patch("requests.post") as mock_post:
+    with patch("requests.get") as mock_post:
         mock_post.side_effect = requests.exceptions.ConnectionError
         response = hub_model.delete_session(auth_header, token)
         assert response is None
@@ -125,7 +125,7 @@ def test_delete_session_connection_error(auth_header, token):
 
 @pytest.mark.parametrize("auth_header, token", TEST_HEADER_TOKEN)
 def test_delete_session_timeout(auth_header, token):
-    with patch("requests.post") as mock_post:
+    with patch("requests.get") as mock_post:
         mock_post.side_effect = requests.exceptions.Timeout
         response = hub_model.delete_session(auth_header, token)
         assert response is None
@@ -133,7 +133,7 @@ def test_delete_session_timeout(auth_header, token):
 
 @pytest.mark.parametrize("auth_header, token", TEST_HEADER_TOKEN)
 def test_delete_session_exception(auth_header, token):
-    with patch("requests.post") as mock_post:
+    with patch("requests.get") as mock_post:
         mock_post.side_effect = Exception
         response = hub_model.delete_session(auth_header, token)
         assert response is None

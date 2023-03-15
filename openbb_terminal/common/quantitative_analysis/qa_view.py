@@ -18,9 +18,8 @@ from pandas.plotting import register_matplotlib_converters
 from scipy import stats
 from statsmodels.graphics.gofplots import qqplot
 
-from openbb_terminal import OpenBBFigure
+from openbb_terminal import OpenBBFigure, theme
 from openbb_terminal.common.quantitative_analysis import qa_model
-from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
@@ -269,7 +268,9 @@ def display_bw(
     start = data[target].index[0]
 
     color = theme.get_colors()[0]
-    x_data = data[target].index.year if yearly else data[target].index.month
+    pd.options.mode.chained_assignment = None
+    data["x_data"] = data[target].index.year if yearly else data[target].index.month
+    pd.options.mode.chained_assignment = "warn"
 
     l_months = [
         "Jan",
@@ -291,8 +292,6 @@ def display_bw(
         yaxis_title=target,
         xaxis_title=["Monthly", "Yearly"][yearly],
     )
-
-    data["x_data"] = x_data
 
     for i, group in enumerate(data["x_data"].unique()):
         x = group if yearly else l_months[group - 1]
@@ -844,12 +843,13 @@ def display_raw(
     df1.index = [x.strftime("%Y-%m-%d") for x in df1.index]
 
     print_rich_table(
-        df1.head(limit),
+        df1,
         headers=[x.title() if x != "" else "Date" for x in df1.columns],
         title="[bold]Raw Data[/bold]",
         show_index=True,
         floatfmt=".3f",
         export=bool(export),
+        limit=limit,
     )
 
     export_data(

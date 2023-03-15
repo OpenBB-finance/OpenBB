@@ -9,8 +9,7 @@ from typing import Optional, Union
 import pandas as pd
 import yfinance as yf
 
-from openbb_terminal import OpenBBFigure
-from openbb_terminal.config_terminal import theme
+from openbb_terminal import OpenBBFigure, theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
@@ -173,11 +172,12 @@ def display_dividends(
             "%Y-%m-%d"
         )
         return print_rich_table(
-            div_history.head(limit),
+            div_history,
             headers=["Amount Paid ($)", "Change"],
             title=f"{symbol.upper()} Historical Dividends",
             show_index=True,
             export=bool(export),
+            limit=limit,
         )
 
     return fig.show(external=external_axes)
@@ -446,10 +446,11 @@ def display_fundamentals(
         # Readable numbers
         formatted_df = fundamentals.applymap(lambda_long_number_format).fillna("-")
         print_rich_table(
-            formatted_df.iloc[:, :limit].applymap(lambda x: "-" if x == "nan" else x),
+            formatted_df.applymap(lambda x: "-" if x == "nan" else x),
             show_index=True,
             title=f"{symbol} {title_str} Currency: {symbol_currency}",
             export=bool(export),
+            limit=limit,
         )
     export_data(
         export,
@@ -485,10 +486,11 @@ def display_earnings(
     if earnings.empty:
         return
     print_rich_table(
-        earnings.head(limit),
+        earnings,
         headers=earnings.columns,
         title=f"Historical Earnings for {symbol}",
         export=bool(export),
+        limit=limit,
     )
     export_data(
         export,

@@ -136,16 +136,16 @@ def open_openbb_documentation(
         path = "/quickstart/api-keys"
         command = ""
     elif "settings" in path:
-        path = "/guides/advanced/customizing-the-terminal"
+        path = "/usage/guides/customizing-the-terminal"
         command = ""
     elif "featflags" in path:
-        path = "/guides/advanced/customizing-the-terminal"
+        path = "/usage/guides/customizing-the-terminal"
         command = ""
     elif "sources" in path:
-        path = "/guides/advanced/changing-sources"
+        path = "/usage/guides/changing-sources"
         command = ""
     elif "params" in path:
-        path = "/guides/intros/portfolio/po"
+        path = "/usage/intros/portfolio/po"
         command = ""
     else:
         if arg_type == "command":  # user passed a command name
@@ -153,18 +153,18 @@ def open_openbb_documentation(
         elif arg_type == "menu":  # user passed a menu name
             if command in ["ta", "ba", "qa"]:
                 menu = path.split("/")[-2]
-                path = f"/guides/intros/common/{menu}"
+                path = f"/usage/intros/common/{menu}"
             elif command == "forecast":
                 command = ""
-                path = "/guides/intros/forecast"
+                path = "/usage/intros/forecast"
             else:
-                path = f"/guides/intros/{path}"
+                path = f"/usage/intros/{path}"
         else:  # user didn't pass argument and is in a menu
             menu = path.split("/")[-2]
             path = (
-                f"/guides/intros/common/{menu}"
+                f"/usage/intros/common/{menu}"
                 if menu in ["ta", "ba", "qa"]
-                else f"/guides/intros/{path}"
+                else f"/usage/intros/{path}"
             )
 
     if command:
@@ -172,13 +172,13 @@ def open_openbb_documentation(
             path = "/quickstart/api-keys"
             command = ""
         elif "settings" in path or "featflags" in path:
-            path = "/guides/advanced/customizing-the-terminal"
+            path = "/usage/guides/customizing-the-terminal"
             command = ""
         elif "sources" in path:
-            path = "/guides/advanced/changing-sources"
+            path = "/usage/guides/changing-sources"
             command = ""
         elif command in ["record", "stop", "exe"]:
-            path = "/guides/advanced/scripts-and-routines"
+            path = "/usage/guides/scripts-and-routines"
             command = ""
         elif command in [
             "intro",
@@ -192,7 +192,7 @@ def open_openbb_documentation(
             path = ""
             command = ""
         elif command in ["ta", "ba", "qa"]:
-            path = f"/guides/intros/common/{command}"
+            path = f"/usage/intros/common/{command}"
             command = ""
 
         path += command
@@ -411,6 +411,6 @@ def first_time_user() -> bool:
         Whether or not the user is a first time user
     """
     if SETTINGS_ENV_FILE.stat().st_size == 0:
-        set_preference("OPENBB_PREVIOUS_USE", True)
+        set_preference("PREVIOUS_USE", True)
         return True
     return False

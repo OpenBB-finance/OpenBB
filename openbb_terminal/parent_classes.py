@@ -22,7 +22,6 @@ from prompt_toolkit.styles import Style
 from rich.markdown import Markdown
 
 # IMPORTS INTERNAL
-from openbb_terminal.config_terminal import theme
 from openbb_terminal.core.completer.choices import build_controller_choice_map
 from openbb_terminal.core.session.constants import REGISTER_URL
 from openbb_terminal.core.session.current_user import get_current_user, is_local
@@ -155,8 +154,6 @@ class BaseController(metaclass=ABCMeta):
         )
         self.parser.exit_on_error = False  # type: ignore
         self.parser.add_argument("cmd", choices=self.controller_choices)
-
-        theme.applyMPLstyle()
 
         # Add in about options
         self.ABOUT_CHOICES = {
@@ -871,6 +868,7 @@ class BaseController(metaclass=ABCMeta):
                 ns_parser.is_image = any(
                     ext in ns_parser.export for ext in ["png", "svg", "jpg", "pdf"]
                 )
+
         except SystemExit:
             # In case the command has required argument that isn't specified
 
