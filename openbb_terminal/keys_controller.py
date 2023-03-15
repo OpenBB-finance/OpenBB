@@ -53,14 +53,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
     def check_keys_status(self) -> None:
         """Check keys status"""
         for api in optional_rich_track(self.API_LIST, desc="Checking keys status"):
-            if api == "openbb":
-                self.status_dict[api] = getattr(
-                    keys_model, "check_" + str(api) + "_personal_access_token"
-                )()
-            else:
-                self.status_dict[api] = getattr(
-                    keys_model, "check_" + str(api) + "_key"
-                )()
+            self.status_dict[api] = getattr(keys_model, "check_" + str(api) + "_key")()
 
     def print_help(self):
         """Print help"""

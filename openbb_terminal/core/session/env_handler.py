@@ -53,10 +53,10 @@ def load_env_to_model(
     Union[Type[CredentialsModel], Type[PreferencesModel]]
         Model with environment variables.
     """
+    model_name = model.__name__.strip("Model").lower()
     try:
         return model(**env_dict)  # type: ignore
     except ValidationError as error:
-        model_name = model.__name__.strip("Model").lower()
         print(f"Error loading {model_name}:")
         for err in error.errors():
             loc = err.get("loc", None)
@@ -69,6 +69,9 @@ def load_env_to_model(
                 print(f"    {var_name}: {msg}, using default -> {default}")
 
         return model(**env_dict)  # type: ignore
+    except Exception:
+        print(f"Error loading {model_name}, using defaults.")
+        return model()  # type: ignore
 
 
 def write_to_dotenv(name: str, value: str) -> None:

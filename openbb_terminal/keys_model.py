@@ -68,7 +68,6 @@ API_DICT: Dict = {
     "rh": "ROBINHOOD",
     "degiro": "DEGIRO",
     "oanda": "OANDA",
-    "openbb": "OPENBB",
     "binance": "BINANCE",
     "bitquery": "BITQUERY",
     "coinbase": "COINBASE",
