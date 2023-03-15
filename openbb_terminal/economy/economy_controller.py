@@ -680,6 +680,7 @@ class EconomyController(BaseController):
             default="",
             help="Series ID of the Macro Economic data from FRED",
             required="-h" not in other_args
+            and "--help" not in other_args
             and "-q" not in other_args
             and "--query" not in other_args,
         )
@@ -708,6 +709,7 @@ class EconomyController(BaseController):
             dest="query",
             help="Query the FRED database to obtain Series IDs given the query search term.",
             required="-h" not in other_args
+            and "--help" not in other_args
             and "-p" not in other_args
             and "--parameter" not in other_args,
         )
