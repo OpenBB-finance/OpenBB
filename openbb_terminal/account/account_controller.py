@@ -167,14 +167,14 @@ class AccountController(BaseController):
                 )
                 console.print(f"sync is {sync}, use --on or --off to change.")
             else:
+                set_preference(
+                    name="SYNC_ENABLED",
+                    value=ns_parser.sync,
+                )
                 sync = (
                     "ON"
                     if get_current_user().preferences.SYNC_ENABLED is True
                     else "OFF"
-                )
-                set_preference(
-                    name="SYNC_ENABLED",
-                    value=sync,
                 )
                 console.print(f"[info]sync:[/info] {sync}")
 
