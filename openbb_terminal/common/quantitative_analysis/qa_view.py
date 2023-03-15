@@ -270,9 +270,7 @@ def display_bw(
 
     color = theme.get_colors()[0]
     pd.options.mode.chained_assignment = None
-    data.loc[:, "x_data"] = (
-        data[target].index.year if yearly else data[target].index.month
-    )
+    data["x_data"] = data[target].index.year if yearly else data[target].index.month
     pd.options.mode.chained_assignment = "warn"
 
     l_months = [
