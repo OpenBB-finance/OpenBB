@@ -7,8 +7,7 @@ from openbb_terminal.core.config.paths import (
     HIST_FILE_PATH,
     SETTINGS_DIRECTORY,
 )
-from openbb_terminal.core.session.credentials_handler import set_credential
-from openbb_terminal.core.session.current_user import get_current_user, set_preference
+from openbb_terminal.core.session.current_user import get_current_user, set_credential, set_preference
 from openbb_terminal.rich_config import console
 
 SESSION_FILE_PATH = SETTINGS_DIRECTORY / "session.json"
@@ -116,7 +115,7 @@ def apply_configs(configs: dict):
             keys = configs.get("features_keys", {})
             if keys:
                 for k, v in keys.items():
-                    set_credential(k, v, login=True)
+                    set_credential(k, v)
 
 
 def update_sync_flag(settings: dict) -> bool:

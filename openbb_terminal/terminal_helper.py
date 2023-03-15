@@ -26,8 +26,9 @@ from openbb_terminal.core.config.paths import SETTINGS_ENV_FILE
 from openbb_terminal.core.plots.backend import plots_backend
 from openbb_terminal.core.session.current_user import (
     get_current_user,
-    set_and_save_preference,
+    set_preference,
 )
+from openbb_terminal.core.session.env_handler import write_to_dotenv
 from openbb_terminal.helper_funcs import request
 from openbb_terminal.rich_config import console
 
@@ -413,6 +414,7 @@ def first_time_user() -> bool:
         Whether or not the user is a first time user
     """
     if SETTINGS_ENV_FILE.stat().st_size == 0:
-        set_and_save_preference("PREVIOUS_USE", True)
+        set_preference("PREVIOUS_USE", True)
+        write_to_dotenv("OPENBB_PREVIOUS_USE", "True")
         return True
     return False

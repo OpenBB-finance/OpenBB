@@ -81,4 +81,4 @@ def write_to_dotenv(name: str, value: str) -> None:
     value : str
         Value of the variable.
     """
-    set_key(str(SETTINGS_ENV_FILE), "OPENBB_" + name, str(value))
+    set_key(str(SETTINGS_ENV_FILE), name, str(value))

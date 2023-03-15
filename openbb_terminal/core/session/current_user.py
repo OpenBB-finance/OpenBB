@@ -14,7 +14,6 @@ from openbb_terminal.core.models import (
 from openbb_terminal.core.session.env_handler import (
     load_env_to_model,
     reading_env,
-    write_to_dotenv,
 )
 
 __env_dict = reading_env()
@@ -97,19 +96,17 @@ def set_preference(
     set_current_user(updated_user)
 
 
-def set_and_save_preference(name: str, value: Union[bool, Path, str]):
-    """Set preference and write to .env
+def set_credential(name: str, value: str):
+    """Set credential
 
     Parameters
     ----------
     name : str
-        Preference name
-    value : Union[bool, Path, str]
-        Preference value
+        Credential name
+    value : str
+        Credential value
     """
-    set_preference(name, value)
-    write_to_dotenv(name, str(value))
-
-
-def set_credential():
-    pass
+    current_user = get_current_user()
+    updated_credentials = dataclasses.replace(current_user.credentials, **{name: value})
+    updated_user = dataclasses.replace(current_user, credentials=updated_credentials)
+    set_current_user(updated_user)
