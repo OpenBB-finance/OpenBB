@@ -16,6 +16,7 @@ from openbb_terminal.core.models.user_model import (
 )
 from openbb_terminal.core.session.current_user import (
     get_local_preferences,
+    get_local_user,
     set_current_user,
     set_preference,
 )
@@ -76,7 +77,6 @@ def login(session: dict) -> LoginStatus:
     session : dict
         The session info.
     """
-
     # create a new user
     hub_user = UserModel(  # type: ignore
         credentials=CredentialsModel(),
@@ -88,11 +88,10 @@ def login(session: dict) -> LoginStatus:
         if response.status_code == 200:
             configs = json.loads(response.content)
             email = configs.get("email", "")
-            feature_settings = configs.get("features_settings", {}) or {}
             hub_user.profile.load_user_info(session, email)
             set_current_user(hub_user)
             Local.apply_configs(configs=configs)
-            if feature_settings.get("FLAIR", None) is None:
+            if get_local_user().preferences.FLAIR is None:
                 MAX_FLAIR_LEN = 20
                 flair = "[" + hub_user.profile.username[:MAX_FLAIR_LEN] + "]" + " 🦋"
                 set_preference("FLAIR", flair)

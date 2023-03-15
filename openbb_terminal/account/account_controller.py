@@ -11,14 +11,17 @@ from openbb_terminal import (
 from openbb_terminal.account.account_model import (
     get_diff,
     get_routines_info,
-    toggle_sync,
 )
 from openbb_terminal.account.account_view import display_routines_list
 from openbb_terminal.core.session import (
     hub_model as Hub,
     local_model as Local,
 )
-from openbb_terminal.core.session.current_user import get_current_user, is_local
+from openbb_terminal.core.session.current_user import (
+    get_current_user,
+    is_local,
+    set_preference,
+)
 from openbb_terminal.core.session.session_model import logout
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
@@ -167,7 +170,10 @@ class AccountController(BaseController):
                 )
                 console.print(f"sync is {sync}, use --on or --off to change.")
             else:
-                toggle_sync(ns_parser.sync)
+                set_preference(
+                    name="SYNC_ENABLED",
+                    value=sync,
+                )
                 sync = (
                     "ON"
                     if get_current_user().preferences.SYNC_ENABLED is True

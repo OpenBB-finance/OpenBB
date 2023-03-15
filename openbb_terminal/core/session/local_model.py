@@ -7,7 +7,12 @@ from openbb_terminal.core.config.paths import (
     HIST_FILE_PATH,
     SETTINGS_DIRECTORY,
 )
-from openbb_terminal.core.session.current_user import get_current_user, set_credential, set_preference
+from openbb_terminal.core.session.current_user import (
+    get_current_user,
+    get_local_user,
+    set_credential,
+    set_preference,
+)
 from openbb_terminal.rich_config import console
 
 SESSION_FILE_PATH = SETTINGS_DIRECTORY / "session.json"
@@ -109,8 +114,7 @@ def apply_configs(configs: dict):
         The configurations.
     """
     if configs:
-        settings = configs.get("features_settings", {})
-        sync = update_sync_flag(settings)
+        sync = get_local_user().preferences.SYNC_ENABLED
         if sync:
             keys = configs.get("features_keys", {})
             if keys:

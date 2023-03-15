@@ -5,8 +5,7 @@ import numpy as np
 import pandas as pd
 
 from openbb_terminal.base_helpers import strtobool
-from openbb_terminal.core.session.current_user import get_current_user, set_preference
-from openbb_terminal.core.session.hub_model import upload_config
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.rich_config import console
 
 
@@ -162,23 +161,3 @@ def get_routines_info(response) -> Tuple[pd.DataFrame, int, int]:
             df.index = np.arange(1, len(df) + 1)
 
     return df, page, pages
-
-
-def toggle_sync(sync: bool) -> None:
-    """Toggle sync.
-
-    Parameters
-    ----------
-    sync : bool
-        The sync value.
-    """
-    set_preference(
-        name="SYNC_ENABLED",
-        value=sync,
-    )
-    upload_config(
-        key="SYNC_ENABLED",
-        value=str(sync),
-        type_="settings",
-        auth_header=get_current_user().profile.get_auth_header(),
-    )

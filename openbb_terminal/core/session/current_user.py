@@ -40,6 +40,9 @@ def set_current_user(user: UserModel):
     global __current_user  # pylint: disable=global-statement
     __current_user = user
 
+def get_local_user() -> UserModel:
+    """Get local user."""
+    return deepcopy(__local_user)
 
 def get_local_preferences() -> PreferencesModel:
     """Get preferences."""

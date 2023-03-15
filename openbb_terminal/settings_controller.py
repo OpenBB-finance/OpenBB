@@ -24,7 +24,6 @@ from openbb_terminal.core.session.current_user import (
     set_preference,
 )
 from openbb_terminal.core.session.env_handler import write_to_dotenv
-from openbb_terminal.core.session.hub_model import upload_config
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
@@ -533,12 +532,6 @@ class SettingsController(BaseController):
                 ns_parser.emoji = " ".join(ns_parser.emoji)
 
             self.set_and_save_preference("FLAIR", ns_parser.emoji)
-            upload_config(
-                key="FLAIR",
-                value=ns_parser.emoji,
-                type_="settings",
-                auth_header=get_current_user().profile.get_auth_header(),
-            )
 
     @log_start_end(log=logger)
     def call_userdata(self, other_args: List[str]):
