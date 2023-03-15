@@ -50,15 +50,13 @@ def display_historical(
         symbol.upper(), start_date=start_date, end_date=end_date
     )
     if data.empty:
-        console.print(f"No data found for {symbol}.")
-        return None
+        return console.print(f"No data found for {symbol}.")
 
     data = stocks_helper.process_candle(data)
     figure = stocks_helper.display_candle(
         symbol=symbol,
         data=data,
         external_axes=True,
-        raw=raw,
     )
 
     if raw:
@@ -67,6 +65,7 @@ def display_historical(
             headers=list(data.columns),
             show_index=True,
             title="Futures timeseries",
+            export=bool(export),
         )
         console.print()
 
@@ -76,8 +75,7 @@ def display_historical(
         "historical_db",
         data,
         sheet_name,
+        figure,
     )
 
-    if figure:
-        return figure.show(external=external_axes)
-    return None
+    return figure.show(external=external_axes)  # type: ignore
