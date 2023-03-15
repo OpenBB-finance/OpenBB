@@ -11,14 +11,14 @@ from openbb_terminal.base_helpers import (
 )
 from openbb_terminal.core.models.user_model import (
     CredentialsModel,
-    PreferencesModel,
     ProfileModel,
     UserModel,
 )
 from openbb_terminal.core.session.current_user import (
+    get_local_preferences,
     set_current_user,
+    set_preference,
 )
-from openbb_terminal.core.session.preferences_handler import set_preference
 from openbb_terminal.helper_funcs import system_clear
 from openbb_terminal.rich_config import console
 
@@ -81,7 +81,7 @@ def login(session: dict) -> LoginStatus:
     hub_user = UserModel(  # type: ignore
         credentials=CredentialsModel(),
         profile=ProfileModel(),
-        preferences=PreferencesModel(),
+        preferences=get_local_preferences(),
     )
     response = Hub.fetch_user_configs(session)
     if response is not None:

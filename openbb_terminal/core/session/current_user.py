@@ -1,6 +1,8 @@
 # IMPORTS STANDARD
+import dataclasses
 from copy import deepcopy
-from typing import Optional
+from pathlib import Path
+from typing import Optional, Union
 
 # IMPORTS INTERNAL
 from openbb_terminal.core.models import (
@@ -9,7 +11,11 @@ from openbb_terminal.core.models import (
     ProfileModel,
     UserModel,
 )
-from openbb_terminal.core.session.env_handler import load_env_to_model, reading_env
+from openbb_terminal.core.session.env_handler import (
+    load_env_to_model,
+    reading_env,
+    write_to_dotenv,
+)
 
 __env_dict = reading_env()
 __credentials = load_env_to_model(__env_dict, CredentialsModel)
@@ -34,6 +40,11 @@ def set_current_user(user: UserModel):
     """Set current user."""
     global __current_user  # pylint: disable=global-statement
     __current_user = user
+
+
+def get_local_preferences() -> PreferencesModel:
+    """Get preferences."""
+    return deepcopy(__preferences)  # type: ignore
 
 
 def is_local() -> bool:
@@ -65,3 +76,40 @@ def copy_user(
     )
 
     return user_copy
+
+
+def set_preference(
+    name: str,
+    value: Union[bool, Path, str],
+):
+    """Set preference
+
+    Parameters
+    ----------
+    name : str
+        Preference name
+    value : Union[bool, Path, str]
+        Preference value
+    """
+    current_user = get_current_user()
+    updated_preferences = dataclasses.replace(current_user.preferences, **{name: value})
+    updated_user = dataclasses.replace(current_user, preferences=updated_preferences)
+    set_current_user(updated_user)
+
+
+def set_and_save_preference(name: str, value: Union[bool, Path, str]):
+    """Set preference and write to .env
+
+    Parameters
+    ----------
+    name : str
+        Preference name
+    value : Union[bool, Path, str]
+        Preference value
+    """
+    set_preference(name, value)
+    write_to_dotenv(name, str(value))
+
+
+def set_credential():
+    pass

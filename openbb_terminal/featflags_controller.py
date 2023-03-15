@@ -6,10 +6,12 @@ import logging
 from typing import List, Optional
 
 # IMPORTATION THIRDPARTY
-from openbb_terminal.core.session.current_user import get_current_user
+from openbb_terminal.core.session.current_user import (
+    get_current_user,
+    set_and_save_preference,
+)
 
 # IMPORTATION INTERNAL
-from openbb_terminal.core.session.preferences_handler import set_preference
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.menu import session
@@ -81,27 +83,27 @@ class FeatureFlagsController(BaseController):
 
     def call_overwrite(self, _):
         """Process overwrite command"""
-        set_preference(
+        set_and_save_preference(
             "FILE_OVERWITE", not get_current_user().preferences.FILE_OVERWRITE
         )
 
     def call_retryload(self, _):
         """Process retryload command"""
-        set_preference(
+        set_and_save_preference(
             "RETRY_WITH_LOAD", not get_current_user().preferences.RETRY_WITH_LOAD
         )
 
     @log_start_end(log=logger)
     def call_tab(self, _):
         """Process tab command"""
-        set_preference(
+        set_and_save_preference(
             "USE_TABULATE_DF", not get_current_user().preferences.USE_TABULATE_DF
         )
 
     @log_start_end(log=logger)
     def call_cls(self, _):
         """Process cls command"""
-        set_preference(
+        set_and_save_preference(
             "USE_CLEAR_AFTER_CMD",
             not get_current_user().preferences.USE_CLEAR_AFTER_CMD,
         )
@@ -109,12 +111,14 @@ class FeatureFlagsController(BaseController):
     @log_start_end(log=logger)
     def call_color(self, _):
         """Process color command"""
-        set_preference("USE_COLOR", not get_current_user().preferences.USE_COLOR)
+        set_and_save_preference(
+            "USE_COLOR", not get_current_user().preferences.USE_COLOR
+        )
 
     @log_start_end(log=logger)
     def call_promptkit(self, _):
         """Process promptkit command"""
-        set_preference(
+        set_and_save_preference(
             "USE_PROMPT_TOOLKIT",
             not get_current_user().preferences.USE_PROMPT_TOOLKIT,
         )
@@ -122,7 +126,7 @@ class FeatureFlagsController(BaseController):
     @log_start_end(log=logger)
     def call_thoughts(self, _):
         """Process thoughts command"""
-        set_preference(
+        set_and_save_preference(
             "ENABLE_THOUGHTS_DAY",
             not get_current_user().preferences.ENABLE_THOUGHTS_DAY,
         )
@@ -130,7 +134,7 @@ class FeatureFlagsController(BaseController):
     @log_start_end(log=logger)
     def call_reporthtml(self, _):
         """Process reporthtml command"""
-        set_preference(
+        set_and_save_preference(
             "OPEN_REPORT_AS_HTML",
             not get_current_user().preferences.OPEN_REPORT_AS_HTML,
         )
@@ -138,7 +142,7 @@ class FeatureFlagsController(BaseController):
     @log_start_end(log=logger)
     def call_exithelp(self, _):
         """Process exithelp command"""
-        set_preference(
+        set_and_save_preference(
             "ENABLE_EXIT_AUTO_HELP",
             not get_current_user().preferences.ENABLE_EXIT_AUTO_HELP,
         )
@@ -146,7 +150,7 @@ class FeatureFlagsController(BaseController):
     @log_start_end(log=logger)
     def call_rcontext(self, _):
         """Process rcontext command"""
-        set_preference(
+        set_and_save_preference(
             "REMEMBER_CONTEXTS",
             not get_current_user().preferences.REMEMBER_CONTEXTS,
         )
@@ -154,17 +158,21 @@ class FeatureFlagsController(BaseController):
     @log_start_end(log=logger)
     def call_dt(self, _):
         """Process dt command"""
-        set_preference("USE_DATETIME", not get_current_user().preferences.USE_DATETIME)
+        set_and_save_preference(
+            "USE_DATETIME", not get_current_user().preferences.USE_DATETIME
+        )
 
     @log_start_end(log=logger)
     def call_rich(self, _):
         """Process rich command"""
-        set_preference("ENABLE_RICH", not get_current_user().preferences.ENABLE_RICH)
+        set_and_save_preference(
+            "ENABLE_RICH", not get_current_user().preferences.ENABLE_RICH
+        )
 
     @log_start_end(log=logger)
     def call_richpanel(self, _):
         """Process richpanel command"""
-        set_preference(
+        set_and_save_preference(
             "ENABLE_RICH_PANEL",
             not get_current_user().preferences.ENABLE_RICH_PANEL,
         )
@@ -172,19 +180,19 @@ class FeatureFlagsController(BaseController):
     @log_start_end(log=logger)
     def call_ion(self, _):
         """Process ion command"""
-        set_preference("USE_ION", not get_current_user().preferences.USE_ION)
+        set_and_save_preference("USE_ION", not get_current_user().preferences.USE_ION)
 
     @log_start_end(log=logger)
     def call_watermark(self, _):
         """Process watermark command"""
-        set_preference(
+        set_and_save_preference(
             "USE_WATERMARK", not get_current_user().preferences.USE_WATERMARK
         )
 
     @log_start_end(log=logger)
     def call_cmdloc(self, _):
         """Process cmdloc command"""
-        set_preference(
+        set_and_save_preference(
             "USE_CMD_LOCATION_FIGURE",
             not get_current_user().preferences.USE_CMD_LOCATION_FIGURE,
         )
@@ -194,4 +202,6 @@ class FeatureFlagsController(BaseController):
         """Process tbhint command"""
         if get_current_user().preferences.TOOLBAR_HINT:
             console.print("Will take effect when running terminal next.")
-        set_preference("TOOLBAR_HINT", not get_current_user().preferences.TOOLBAR_HINT)
+        set_and_save_preference(
+            "TOOLBAR_HINT", not get_current_user().preferences.TOOLBAR_HINT
+        )
