@@ -1,6 +1,9 @@
 # IMPORTATION STANDARD
 import os
 
+# IMPORTATION THIRDPARTY
+import i18n
+
 # IMPORTATION INTERNAL
 from openbb_terminal.base_helpers import load_env_files, load_env_vars, strtobool
 from openbb_terminal.core.config.paths import MISCELLANEOUS_DIRECTORY

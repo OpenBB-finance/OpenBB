@@ -6,14 +6,12 @@ import pandas as pd
 
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.rich_config import console
-from openbb_terminal import config_terminal as cfg
-
+from openbb_terminal.core.session.current_user import get_current_user
 
 logger = logging.getLogger(__name__)
 
-
 @log_start_end(log=logger)
-@check_api_key(["OPENBB_ALTHUB_API_TOKEN"])
+@check_api_key(["API_ALTHUB_TOKEN"])
 def get_data(
     ticker: str = "",
     start_date: str = "",
@@ -24,7 +22,7 @@ def get_data(
 ) -> pd.DataFrame:
     headers = {
         "accept": "application/json",
-        "Authorization": f"token {cfg.OPENBB_ALTHUB_API_TOKEN}",
+        "Authorization": f"token {get_current_user().credentials.API_ALTHUB_TOKEN}",
     }
 
     df = pd.DataFrame(data=None)

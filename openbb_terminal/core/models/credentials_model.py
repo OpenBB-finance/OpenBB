@@ -37,6 +37,7 @@ class CredentialsModel:
     API_STOCKSERA_KEY: str = "REPLACE_ME"
     API_INTRINIO_KEY: str = "REPLACE_ME"
     API_TRADIER_TOKEN: str = "REPLACE_ME"
+    API_ALTHUB_TOKEN: str = "REPLACE_ME"
 
     # Socials
     API_GITHUB_KEY: str = "REPLACE_ME"

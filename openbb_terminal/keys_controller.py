@@ -1223,7 +1223,6 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         ns_parser = self.parse_simple_args(parser, other_args)
 
         if ns_parser:
-            self.status_dict["stocksera"] = keys_model.set_althub_key(
+            self.status_dict["althub"] = keys_model.set_althub_key(
                 key=ns_parser.key, persist=True, show_output=True
             )
-        
