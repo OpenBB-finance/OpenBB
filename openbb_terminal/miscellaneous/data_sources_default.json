@@ -165,6 +165,8 @@
       "wsb": ["Reddit"],
       "spacc": ["Reddit"],
       "redditsent": ["Reddit"],
+      "popular": ["Reddit"],
+      "getdd": ["Reddit"],
       "trending": ["Stocktwits"],
       "stalker": ["Stocktwits"],
       "bullbear": ["Stocktwits"],

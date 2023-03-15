@@ -1,5 +1,5 @@
 import os
-from typing import Optional
+from typing import Any, Optional
 
 from pydantic import NonNegativeInt, PositiveFloat, PositiveInt
 from pydantic.dataclasses import dataclass
@@ -9,7 +9,7 @@ from openbb_terminal.core.config.paths import (
     USER_DATA_SOURCES_DEFAULT_FILE,
 )
 
-# pylint: disable=too-many-instance-attributes
+# pylint: disable=too-many-instance-attributes, disable=no-member
 
 
 @dataclass(config=dict(validate_assignment=True, frozen=True))
@@ -36,6 +36,7 @@ class PreferencesModel:
     # FEATURE FLAGS
     SYNC_ENABLED: bool = True
     FILE_OVERWRITE: bool = False
+    SHOW_VERSION: bool = True
     RETRY_WITH_LOAD: bool = False
     USE_TABULATE_DF: bool = True
     # Use interactive window to display dataframes with options to sort, filter, etc.
@@ -78,12 +79,10 @@ class PreferencesModel:
     MONITOR: NonNegativeInt = 0
 
     # STYLE
-    # Color for `view` command data.  All pyplot colors listed at:
-    # https://matplotlib.org/stable/gallery/color/named_colors.html
-    VIEW_COLOR: str = "tab:green"
     MPL_STYLE: str = "dark"
     PMF_STYLE: str = "dark"
     RICH_STYLE: str = "dark"
+    PLOT_STYLE: str = "dark"
 
     # PATHS
     PREFERRED_DATA_SOURCE_FILE: str = str(USER_DATA_SOURCES_DEFAULT_FILE)
@@ -108,3 +107,14 @@ class PreferencesModel:
             dataclass_repr += f"    {key}='{value}', \n"
 
         return f"{self.__class__.__name__}(\n{dataclass_repr[:-2]}\n)"
+
+    @classmethod
+    def get_fields(cls) -> dict[str, Any]:
+        """Get dict of fields."""
+        return cls.__dataclass_fields__  # type: ignore
+
+    def get_field_value(self, field: str) -> Optional[str]:
+        """Get field value."""
+        if hasattr(self, field):
+            return getattr(self, field)
+        return None

@@ -59,6 +59,8 @@ en:
   featflags/ion: interactive matplotlib mode
   featflags/watermark: watermark in figures
   featflags/cmdloc: command location displayed in figures
+  featflags/overwrite: whether to overwrite Excel files if they already exists
+  featflags/version: whether to show the version in the bottom right corner
   featflags/tbhint: displays usage hints in the bottom toolbar
   settings/_info_: Settings through environment variables
   settings/colors: set your own terminal colors
