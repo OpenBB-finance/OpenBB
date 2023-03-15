@@ -278,12 +278,11 @@ def handle_credential(name: str, value: str, persist: bool = False):
     sync_enabled = current_user.preferences.SYNC_ENABLED
     local_user = is_local()
 
-    if local_user:
-        set_credential(name, value)
-        if persist:
-            write_to_dotenv("OPENBB_" + name, value)
+    set_credential(name, value)
+
+    if local_user and persist:
+        write_to_dotenv("OPENBB_" + name, value)
     else:
-        set_credential(name, value)
         if sync_enabled and name not in LOCAL_KEYS:
             upload_config(
                 key=name,
