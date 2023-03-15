@@ -18,8 +18,17 @@ st.set_page_config(
     layout="wide",
     page_title="Forecasting",
     page_icon="📈",
-    initial_sidebar_state="collapsed",
+    initial_sidebar_state="expanded",
 )
+st.markdown(
+    """
+    <style>
+        section[data-testid="stSidebar"] .css-ng1t4o {{width: 14rem;}}
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
 css_container_style = """
 <style>
     .table_container {
@@ -77,11 +86,23 @@ EXPLAINABILITY_FIGURE: Union[OpenBBFigure, None] = None
 PAST_COVERAGE_PRINT: str = "<br>"
 
 # Rows and columns for the dashboard layout
-st.title("OpenBB Forecasting")  # Title does not like being in a column
-r1c1, r1c2, r1c3, r1c4, r1c5 = st.columns([2, 1, 1, 1, 1])
-r2c1, r2c2, r2c3 = st.columns([1, 1, 1])
-st.markdown("""---""")
-forecast_button = st.button("Get forecast")
+st.sidebar.markdown(
+    "<h2 style='text-align: center;'>OpenBB Forecasting</h2>",
+    unsafe_allow_html=True,
+)
+r1c1 = st.sidebar.container()
+(
+    r1c2,
+    r1c3,
+) = st.sidebar.columns([1, 1])
+
+r1c4, r1c5 = st.sidebar.columns([1, 1])
+r2c1, r2c2 = st.sidebar.columns([1, 1])
+r2c3 = st.sidebar.container()
+
+st.sidebar.markdown("""---""")
+forecast_button = st.sidebar.button("Get forecast")
+
 plotly_chart, table_container = st.columns([4, 1])
 explainability, past_cov_legend = st.columns([4, 1])
 

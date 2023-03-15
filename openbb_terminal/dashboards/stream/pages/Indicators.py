@@ -161,11 +161,11 @@ async def plot_indicators(
     y_max += y_range * 0.4
 
     yaxis = "yaxis" if tickers else "yaxis2"
+
     fig.update_layout(
         {yaxis: dict(range=[y_min, y_max], autorange=False)},
         title=dict(x=0.5, xanchor="center", yanchor="top", y=0.99, text=title),
         showlegend=True,
-        margin=dict(t=40),
         height=650,
     )
 
@@ -279,6 +279,15 @@ class Handler:
                     dt_now = datetime.now().strftime("%Y%m%d_%H%M%S")
                     filename = f"{dt_now}_{main_ticker}_technical_analysis"
                     fig.show(external=True)
+
+                    if list(
+                        set(indicators).intersection(
+                            set(TA_CLASS.ma_mode + TA_CLASS.inchart)
+                        )
+                    ):
+                        margin = fig.layout.margin
+                        margin.l += 30
+                        fig.update_layout(margin=margin)
 
                     st.plotly_chart(
                         fig,
@@ -409,12 +418,12 @@ class Handler:
     async def run(self):
         """Run the app"""
 
-        page_title.markdown(
+        st.sidebar.markdown(
             "<h2 style='text-align: center;'>OpenBB Technical Analysis</h2>",
             unsafe_allow_html=True,
         )
         ticker = st.sidebar.text_input(
-            "Ticker (multiple possible, separated by comma)",
+            "Ticker(s) (comma separated)",
             "",
             key="indicators_ticker",
             on_change=self.on_ticker_change,

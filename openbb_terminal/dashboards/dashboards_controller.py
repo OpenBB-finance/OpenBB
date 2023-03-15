@@ -405,6 +405,13 @@ def is_streamlit_activated() -> bool:
         if activate == 0:
             _set_key()
             return True
+
+        already_activated = console.input(
+            "\n[yellow]Was streamlit already activated? Y/n?[/]"
+        ).lower()
+        if already_activated == "y":
+            _set_key()
+            return True
         return _declined()
 
     except Exception as err:
