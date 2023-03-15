@@ -4,8 +4,7 @@ import os
 from datetime import datetime
 from typing import Optional, Union
 
-from openbb_terminal import OpenBBFigure
-from openbb_terminal.config_terminal import theme
+from openbb_terminal import OpenBBFigure, theme
 from openbb_terminal.cryptocurrency.overview.blockchaincenter_model import (
     DAYS,
     get_altcoin_index,
