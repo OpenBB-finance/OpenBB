@@ -679,6 +679,9 @@ class EconomyController(BaseController):
             dest="parameter",
             default="",
             help="Series ID of the Macro Economic data from FRED",
+            required="-h" not in other_args
+            and "-q" not in other_args
+            and "--query" not in other_args,
         )
         parser.add_argument(
             "-s",
@@ -704,6 +707,9 @@ class EconomyController(BaseController):
             nargs="+",
             dest="query",
             help="Query the FRED database to obtain Series IDs given the query search term.",
+            required="-h" not in other_args
+            and "-p" not in other_args
+            and "--parameter" not in other_args,
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-p")
