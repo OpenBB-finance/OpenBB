@@ -735,8 +735,9 @@ def us_market_holidays(years) -> list:
     return valid_holidays
 
 
-def lambda_long_number_format(num, round_decimal=3) -> str:
+def lambda_long_number_format(num, round_decimal=3) -> Union[str, int, float]:
     """Format a long number."""
+
     if isinstance(num, float):
         magnitude = 0
         while abs(num) >= 1000:
@@ -1077,14 +1078,19 @@ def patch_pandas_text_adjustment():
 
 def lambda_financials_colored_values(val: str) -> str:
     """Add a color to a value."""
-    if val == "N/A" or str(val) == "nan":
-        val = "[yellow]N/A[/yellow]"
-    elif sum(c.isalpha() for c in val) < 2:
-        if "%" in val and "-" in val or "%" not in val and "(" in val:
-            val = f"[red]{val}[/red]"
-        elif "%" in val:
-            val = f"[green]{val}[/green]"
-    return val
+
+    # We don't want to do the color stuff in interactive mode
+    if get_current_user().preferences.USE_INTERACTIVE_DF:
+        return val
+    else:
+        if val == "N/A" or str(val) == "nan":
+            val = "[yellow]N/A[/yellow]"
+        elif sum(c.isalpha() for c in val) < 2:
+            if "%" in val and "-" in val or "%" not in val and "(" in val:
+                val = f"[red]{val}[/red]"
+            elif "%" in val:
+                val = f"[green]{val}[/green]"
+        return val
 
 
 def check_ohlc(type_ohlc: str) -> str:

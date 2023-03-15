@@ -74,29 +74,8 @@ def get_overview(symbol: str) -> pd.DataFrame:
             df_fa.iloc[5:] = df_fa.iloc[5:].applymap(
                 lambda x: lambda_long_number_format(x)
             )
-            clean_df_index(df_fa)
-            df_fa = df_fa.rename(
-                index={
-                    "E b i t d a": "EBITDA",
-                    "P e ratio": "PE ratio",
-                    "P e g ratio": "PEG ratio",
-                    "E p s": "EPS",
-                    "Revenue per share t t m": "Revenue per share TTM",
-                    "Operating margin t t m": "Operating margin TTM",
-                    "Return on assets t t m": "Return on assets TTM",
-                    "Return on equity t t m": "Return on equity TTM",
-                    "Revenue t t m": "Revenue TTM",
-                    "Gross profit t t m": "Gross profit TTM",
-                    "Diluted e p s t t m": "Diluted EPS TTM",
-                    "Quarterly earnings growth y o y": "Quarterly earnings growth YOY",
-                    "Quarterly revenue growth y o y": "Quarterly revenue growth YOY",
-                    "Trailing p e": "Trailing PE",
-                    "Forward p e": "Forward PE",
-                    "Price to sales ratio t t m": "Price to sales ratio TTM",
-                    "E v to revenue": "EV to revenue",
-                    "E v to e b i t d a": "EV to EBITDA",
-                }
-            )
+            df_fa.columns = [" "]
+
     return df_fa
 
 

@@ -31,8 +31,7 @@ def display_overview(symbol: str, export: str = "", sheet_name: Optional[str] = 
         return
 
     print_rich_table(
-        df_fa.drop(index=["Description"]),
-        headers=[""],
+        df_fa,
         title=f"{symbol} Overview",
         show_index=True,
         export=bool(export),
