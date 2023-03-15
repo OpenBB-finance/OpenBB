@@ -114,10 +114,6 @@ def apply_configs(configs: dict):
         settings = configs.get("features_settings", {})
         sync = update_sync_flag(settings)
         if sync:
-            if settings:
-                for k, v in settings.items():
-                    set_preference(k, v, login=True)
-
             keys = configs.get("features_keys", {})
             if keys:
                 for k, v in keys.items():
@@ -139,7 +135,7 @@ def update_sync_flag(settings: dict) -> bool:
     """
     sync = not (settings and settings.get("SYNC_ENABLED", "true").lower() == "false")
 
-    set_preference("SYNC_ENABLED", sync, login=True)
+    set_preference("SYNC_ENABLED", sync)
 
     return sync
 

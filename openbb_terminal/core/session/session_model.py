@@ -95,7 +95,7 @@ def login(session: dict) -> LoginStatus:
             if feature_settings.get("FLAIR", None) is None:
                 MAX_FLAIR_LEN = 20
                 flair = "[" + hub_user.profile.username[:MAX_FLAIR_LEN] + "]" + " 🦋"
-                set_preference("FLAIR", flair, login=True)
+                set_preference("FLAIR", flair)
             return LoginStatus.SUCCESS
         if response.status_code == 401:
             return LoginStatus.UNAUTHORIZED

@@ -2,7 +2,7 @@
 from typing import Any, Dict, Optional, Type, Union
 
 # IMPORTS THIRDPARTY
-from dotenv import dotenv_values
+from dotenv import dotenv_values, set_key
 from pydantic import ValidationError
 
 # IMPORTS INTERNAL
@@ -69,3 +69,16 @@ def load_env_to_model(
                 print(f"    {var_name}: {msg}, using default -> {default}")
 
         return model(**env_dict)  # type: ignore
+
+
+def write_to_dotenv(name: str, value: str) -> None:
+    """Write to .env file.
+
+    Parameters
+    ----------
+    name : str
+        Name of the variable.
+    value : str
+        Value of the variable.
+    """
+    set_key(str(SETTINGS_ENV_FILE), "OPENBB_" + name, str(value))
