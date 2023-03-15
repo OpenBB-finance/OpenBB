@@ -36,6 +36,7 @@ class PreferencesModel:
     # FEATURE FLAGS
     SYNC_ENABLED: bool = True
     FILE_OVERWRITE: bool = False
+    SHOW_VERSION: bool = True
     RETRY_WITH_LOAD: bool = False
     USE_TABULATE_DF: bool = True
     # Use interactive window to display dataframes with options to sort, filter, etc.

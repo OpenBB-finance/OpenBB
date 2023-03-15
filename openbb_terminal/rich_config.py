@@ -298,7 +298,10 @@ class ConsoleAndPanel:
         if kwargs and "text" in list(kwargs) and "menu" in list(kwargs):
             if not os.getenv("TEST_MODE"):
                 if current_user.preferences.ENABLE_RICH_PANEL:
-                    version = f"[param]OpenBB Terminal v{cfg.VERSION}[/param] (https://openbb.co)"
+                    if current_user.preferences.SHOW_VERSION:
+                        version = f"[param]OpenBB Terminal v{cfg.VERSION}[/param] (https://openbb.co)"
+                    else:
+                        version = "[param]OpenBB Terminal[/param] (https://openbb.co)"
                     self.console.print(
                         panel.Panel(
                             "\n" + kwargs["text"],
