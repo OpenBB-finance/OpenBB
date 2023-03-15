@@ -11,7 +11,7 @@ from openbb_terminal.core.session.current_user import (
     is_local,
     set_current_user,
 )
-from openbb_terminal.core.session.hub_model import patch_user_configs
+from openbb_terminal.core.session.hub_model import upload_config
 
 LOCAL_KEYS = [
     "RH_USERNAME",
@@ -65,7 +65,7 @@ def set_credential(
 
     # Send credential to cloud
     if not local_user and sync_enabled and name not in LOCAL_KEYS and not login:
-        patch_user_configs(
+        upload_config(
             key=name,
             value=str(value),
             type_="keys",

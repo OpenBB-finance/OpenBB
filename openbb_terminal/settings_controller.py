@@ -23,7 +23,7 @@ from openbb_terminal.core.session.current_user import (
     get_current_user,
     set_and_save_preference,
 )
-from openbb_terminal.core.session.hub_model import patch_user_configs
+from openbb_terminal.core.session.hub_model import upload_config
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
@@ -516,7 +516,7 @@ class SettingsController(BaseController):
                 ns_parser.emoji = " ".join(ns_parser.emoji)
 
             set_and_save_preference("FLAIR", ns_parser.emoji)
-            patch_user_configs(
+            upload_config(
                 key="FLAIR",
                 value=ns_parser.emoji,
                 type_="settings",

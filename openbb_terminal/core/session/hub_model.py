@@ -232,7 +232,7 @@ def fetch_user_configs(
         return None
 
 
-def patch_user_configs(
+def upload_config(
     key: str,
     value: str,
     type_: str,
