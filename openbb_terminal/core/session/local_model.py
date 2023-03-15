@@ -11,7 +11,6 @@ from openbb_terminal.core.session.current_user import (
     get_current_user,
     get_local_user,
     set_credential,
-    set_preference,
 )
 from openbb_terminal.rich_config import console
 
@@ -113,11 +112,10 @@ def apply_configs(configs: dict):
     configs : dict
         The configurations.
     """
-    if configs:
-        if get_local_user().preferences.SYNC_ENABLED:
-            credentials = configs.get("features_keys", {})
-            for k, v in credentials.items():
-                set_credential(k, v)
+    if configs and get_local_user().preferences.SYNC_ENABLED:
+        credentials = configs.get("features_keys", {})
+        for k, v in credentials.items():
+            set_credential(k, v)
 
 
 def get_routine(file_name: str, folder: Optional[Path] = None) -> Optional[str]:
