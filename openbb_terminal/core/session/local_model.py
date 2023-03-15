@@ -114,12 +114,10 @@ def apply_configs(configs: dict):
         The configurations.
     """
     if configs:
-        sync = get_local_user().preferences.SYNC_ENABLED
-        if sync:
-            keys = configs.get("features_keys", {})
-            if keys:
-                for k, v in keys.items():
-                    set_credential(k, v)
+        if get_local_user().preferences.SYNC_ENABLED:
+            credentials = configs.get("features_keys", {})
+            for k, v in credentials.items():
+                set_credential(k, v)
 
 
 def get_routine(file_name: str, folder: Optional[Path] = None) -> Optional[str]:
