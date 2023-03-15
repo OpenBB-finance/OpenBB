@@ -42,6 +42,7 @@ class FeatureFlagsController(BaseController):
         "richpanel",
         "tbhint",
         "overwrite",
+        "version",
     ]
     PATH = "/featflags/"
 
@@ -76,6 +77,7 @@ class FeatureFlagsController(BaseController):
         mt.add_setting("cmdloc", current_user.preferences.USE_CMD_LOCATION_FIGURE)
         mt.add_setting("tbhint", current_user.preferences.TOOLBAR_HINT)
         mt.add_setting("overwrite", current_user.preferences.FILE_OVERWRITE)
+        mt.add_setting("version", current_user.preferences.SHOW_VERSION)
 
         console.print(text=mt.menu_text, menu="Feature Flags")
 
@@ -84,6 +86,10 @@ class FeatureFlagsController(BaseController):
         set_preference(
             "FILE_OVERWITE", not get_current_user().preferences.FILE_OVERWRITE
         )
+
+    def call_version(self, _):
+        """Process version command"""
+        set_preference("SHOW_VERSION", not get_current_user().preferences.SHOW_VERSION)
 
     def call_retryload(self, _):
         """Process retryload command"""

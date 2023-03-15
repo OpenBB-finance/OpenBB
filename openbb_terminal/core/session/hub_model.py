@@ -104,7 +104,7 @@ def delete_session(
         The response from the logout request.
     """
     try:
-        response = requests.post(
+        response = requests.get(
             url=base_url + "logout",
             headers={"Authorization": auth_header},
             json={"token": token},
@@ -320,9 +320,9 @@ def clear_user_configs(
             timeout=timeout,
         )
         if response.status_code == 200:
-            console.print("[green]Cleared configurations.[/green]")
+            console.print("[green]Cleared data.[/green]")
         else:
-            console.print("[red]Failed to clear configurations.[/red]")
+            console.print("[red]Failed to clear data.[/red]")
         return response
     except requests.exceptions.ConnectionError:
         console.print(f"\n{CONNECTION_ERROR_MSG}")
@@ -331,7 +331,7 @@ def clear_user_configs(
         console.print(f"\n{CONNECTION_TIMEOUT_MSG}")
         return None
     except Exception:
-        console.print("[red]Failed to clear configurations.[/red]")
+        console.print("[red]Failed to clear data.[/red]")
         return None
 
 
