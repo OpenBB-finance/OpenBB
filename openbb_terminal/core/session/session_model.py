@@ -15,8 +15,8 @@ from openbb_terminal.core.models.user_model import (
     UserModel,
 )
 from openbb_terminal.core.session.current_user import (
+    get_env_dict,
     get_local_preferences,
-    get_local_user,
     set_current_user,
     set_preference,
 )
@@ -91,7 +91,7 @@ def login(session: dict) -> LoginStatus:
             hub_user.profile.load_user_info(session, email)
             set_current_user(hub_user)
             Local.apply_configs(configs=configs)
-            if get_local_user().preferences.FLAIR is None:
+            if "FLAIR" not in get_env_dict():
                 MAX_FLAIR_LEN = 20
                 flair = "[" + hub_user.profile.username[:MAX_FLAIR_LEN] + "]" + " 🦋"
                 set_preference("FLAIR", flair)
