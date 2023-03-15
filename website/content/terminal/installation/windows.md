@@ -38,7 +38,7 @@ This section provides you with the installation file as well as the guide to ins
 Step by step instructions:
 
 1. Download the file by clicking on the button.
-2.  Open the downloaded `exe` file by double-clicking on it.
+2. Open the downloaded `exe` file by double-clicking on it.
 3. Follow the prompts to complete the installation process
 4. Double-click on the application that appeared on your Desktop, you are now able to run the OpenBB Terminal
 

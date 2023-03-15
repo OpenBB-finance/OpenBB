@@ -16,6 +16,7 @@ from openbb_terminal import (
     config_terminal as cfg,
 )
 from openbb_terminal.core.config.paths import MISCELLANEOUS_DIRECTORY
+from openbb_terminal.core.plots.plotly_helper import theme
 from openbb_terminal.core.session.current_user import get_current_user
 
 # pylint: disable=no-member,c-extension-no-member
@@ -24,7 +25,7 @@ from openbb_terminal.core.session.current_user import get_current_user
 # https://rich.readthedocs.io/en/stable/appendix/colors.html#appendix-colors
 # https://rich.readthedocs.io/en/latest/highlighting.html#custom-highlighters
 
-CUSTOM_THEME = Theme(cfg.theme.console_style)
+CUSTOM_THEME = Theme(theme.console_style)
 
 RICH_TAGS = [
     "[menu]",
@@ -297,7 +298,10 @@ class ConsoleAndPanel:
         if kwargs and "text" in list(kwargs) and "menu" in list(kwargs):
             if not os.getenv("TEST_MODE"):
                 if current_user.preferences.ENABLE_RICH_PANEL:
-                    version = f"[param]OpenBB Terminal v{cfg.VERSION}[/param] (https://openbb.co)"
+                    if current_user.preferences.SHOW_VERSION:
+                        version = f"[param]OpenBB Terminal v{cfg.VERSION}[/param] (https://openbb.co)"
+                    else:
+                        version = "[param]OpenBB Terminal[/param] (https://openbb.co)"
                     self.console.print(
                         panel.Panel(
                             "\n" + kwargs["text"],
