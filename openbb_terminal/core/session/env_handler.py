@@ -1,5 +1,5 @@
 # IMPORTS STANDARD
-from typing import Any, Dict, Optional, Type, Union
+from typing import Any, Dict, Optional, Type, TypeVar
 
 # IMPORTS THIRDPARTY
 from dotenv import dotenv_values
@@ -11,8 +11,9 @@ from openbb_terminal.core.config.paths import (
     REPOSITORY_ENV_FILE,
     SETTINGS_ENV_FILE,
 )
-from openbb_terminal.core.models.credentials_model import CredentialsModel
-from openbb_terminal.core.models.preferences_model import PreferencesModel
+from openbb_terminal.core.models import BaseModel
+
+T = TypeVar("T", bound=BaseModel)
 
 
 def reading_env() -> Dict[str, Any]:
@@ -36,21 +37,19 @@ def reading_env() -> Dict[str, Any]:
     return __env_dict_filtered
 
 
-def load_env_to_model(
-    env_dict: dict, model: Union[Type[CredentialsModel], Type[PreferencesModel]]
-) -> Union[Type[CredentialsModel], Type[PreferencesModel]]:
+def load_env_to_model(env_dict: dict, model: Type[T]) -> T:
     """Load environment variables to model.
 
     Parameters
     ----------
     env_dict : dict
         Environment variables dictionary.
-    model : Union[Type[CredentialsModel], Type[PreferencesModel]]
-        Model to validate.
+    model : Type[T]
+        Type of the model to validate (can be any type that is a subclass of `BaseModel`).
 
     Returns
     -------
-    Union[Type[CredentialsModel], Type[PreferencesModel]]
+    T
         Model with environment variables.
     """
     try:
