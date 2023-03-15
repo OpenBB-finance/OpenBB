@@ -5,9 +5,7 @@ __docformat__ = "numpy"
 
 import contextlib
 import io
-import json
 import logging
-import os
 import sys
 from enum import Enum
 from typing import Dict, List, Union
@@ -31,8 +29,7 @@ from openbb_terminal.core.session.current_user import (
     set_credential,
 )
 from openbb_terminal.core.session.env_handler import write_to_dotenv
-from openbb_terminal.core.session.hub_model import BASE_URL, upload_config
-from openbb_terminal.core.session.local_model import SESSION_FILE_PATH
+from openbb_terminal.core.session.hub_model import upload_config
 from openbb_terminal.cryptocurrency.coinbase_helpers import (
     CoinbaseApiException,
     CoinbaseProAuth,
@@ -2561,89 +2558,6 @@ def check_stocksera_key(show_output: bool = False):
             status = KeyStatus.DEFINED_TEST_PASSED
         except Exception as _:  # noqa: F841
             logger.warning("Stocksera key defined, test failed")
-            status = KeyStatus.DEFINED_TEST_FAILED
-
-    if show_output:
-        console.print(status.colorize())
-    return str(status)
-
-
-def set_openbb_personal_access_token(
-    key: str, persist: bool = False, show_output: bool = False
-):
-    """Set OpenBB Personal Access Token.
-
-    Parameters
-    ----------
-    key: str
-        Personal Access Token
-    persist: bool, optional
-        If False, api key change will be contained to where it was changed. For example, a Jupyter notebook session.
-        If True, api key change will be global, i.e. it will affect terminal environment variables.
-        By default, False.
-    show_output: bool, optional
-        Display status string or not. By default, False.
-
-    Returns
-    -------
-    str
-        Status of key set
-
-    Examples
-    --------
-    >>> from openbb_terminal.sdk import openbb
-    >>> openbb.keys.openbb(key="example_key")
-    """
-    handle_credential("OPENBB_PERSONAL_ACCESS_TOKEN", key, persist)
-    return check_openbb_personal_access_token(show_output)
-
-
-def check_openbb_personal_access_token(show_output: bool = False):
-    """Check OpenBB Personal Access Token
-
-    Returns
-    -------
-    str
-        Status of key set
-    """
-
-    current_user = get_current_user()
-
-    if current_user.credentials.OPENBB_PERSONAL_ACCESS_TOKEN == "REPLACE_ME":
-        logger.info("OpenBB Personal Access Token not defined")
-        status = KeyStatus.NOT_DEFINED
-    else:
-        try:
-            access_token = ""
-
-            # TODO: is there a better way to test the key?
-            # This requires a valid session file
-
-            if os.path.isfile(SESSION_FILE_PATH):
-                with open(SESSION_FILE_PATH) as f:
-                    access_token = json.load(f).get("access_token")
-
-            headers = {
-                "Authorization": f"Bearer {access_token}",
-                "Content-Type": "application/json",
-            }
-            response = request(
-                url=f"{BASE_URL}sdk/token", method="GET", headers=headers
-            )
-
-            token = response.json().get("token")
-
-            if (
-                response.status_code == 200
-                and token == current_user.credentials.OPENBB_PERSONAL_ACCESS_TOKEN
-            ):
-                logger.info("OpenBB Personal Access Token defined, test passed")
-                status = KeyStatus.DEFINED_TEST_PASSED
-            else:
-                logger.warning("OpenBB Personal Access Token. defined, test failed")
-                status = KeyStatus.DEFINED_TEST_FAILED
-        except requests.exceptions.RequestException:
-            logger.warning("OpenBB Personal Access Token. defined, test failed")
             status = KeyStatus.DEFINED_TEST_FAILED
 
     if show_output:
