@@ -1,4 +1,3 @@
-//@ts-nocheck
 import {
   ColumnDef,
   flexRender,
@@ -101,9 +100,9 @@ const DraggableColumnHeader: FC<{
 
   return (
     <th
-      className="h-[70px]"
+      className="h-[70px] relative"
       colSpan={header.colSpan}
-      style={{ width: header.getSize(), opacity: isDragging ? 0.5 : 1 }}
+      style={{/* width: header.getSize(),*/ opacity: isDragging ? 0.5 : 1 }}
       ref={dropRef}
     >
       <div ref={previewRef}>
@@ -182,6 +181,11 @@ const DraggableColumnHeader: FC<{
           </>
         )}
       </div>
+      {/* <div
+        className="absolute right-0 top-0 h-full w-1 bg-blue-300 select-none touch-none hover:bg-blue-500 cursor-col-resize"
+        onMouseDown={header.getResizeHandler()}
+        onTouchStart={header.getResizeHandler()}
+            />*/}
     </th>
   );
 };
@@ -315,29 +319,36 @@ export default function Table({ data, columns }: any) {
   const [columnOrder, setColumnOrder] = useState(
     rtColumns.map((column) => column.id as string)
   );
+  const [columnVisibility, setColumnVisibility] = useState({})
+
 
   const resetOrder = () =>
     setColumnOrder(columns.map((column) => column.id as string));
 
   const table = useReactTable({
     data,
+    columns: rtColumns,
     defaultColumn: {
       minSize: 0,
       size: 0,
     },
-    columns: rtColumns,
-    state: {
-      sorting,
-      globalFilter,
-      columnOrder,
-    },
-    onColumnOrderChange: setColumnOrder,
-    onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+    enableColumnResizing: true,
+    columnResizeMode: 'onChange',
+    onColumnVisibilityChange: setColumnVisibility,
+    onColumnOrderChange: setColumnOrder,
+    onSortingChange: setSorting,
     onGlobalFilterChange: setGlobalFilter,
+    globalFilterFn: fuzzyFilter,
+    state: {
+      sorting,
+      globalFilter,
+      columnOrder,
+      columnVisibility
+    },
   });
 
   const tableContainerRef = useRef<HTMLDivElement>(null);
@@ -471,7 +482,10 @@ export default function Table({ data, columns }: any) {
         </div>
         <table
           id="table"
-          className={clsx("w-full", FONT_SIZES_CLASSES[fontSize].overall)}
+          className={clsx("", FONT_SIZES_CLASSES[fontSize].overall)}
+        /*style={{
+          width: table.getCenterTotalSize(),
+        }}*/
         >
           <thead>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -509,10 +523,13 @@ export default function Table({ data, columns }: any) {
                     return (
                       <td
                         key={cell.id}
-                        className={clsx("whitespace-nowrap", {
+                        className={clsx("whitespace-nowrap truncate", {
                           "bg-grey-850": idx % 2 === 0,
                           "bg-[#202020]": idx % 2 === 1,
                         })}
+                        style={{
+                          width: cell.column.getSize(),
+                        }}
                       >
                         {flexRender(
                           cell.column.columnDef.cell,
@@ -535,6 +552,7 @@ export default function Table({ data, columns }: any) {
               <tr key={footerGroup.id}>
                 {footerGroup.headers.map((header) => (
                   <th
+                    style={{ width: header.getSize() }}
                     key={header.id}
                     colSpan={header.colSpan}
                     className="text-grey-500 bg-grey-850 font-normal text-left h-[64px]"
@@ -542,9 +560,9 @@ export default function Table({ data, columns }: any) {
                     {header.isPlaceholder
                       ? null
                       : flexRender(
-                          header.column.columnDef.footer,
-                          header.getContext()
-                        )}
+                        header.column.columnDef.footer,
+                        header.getContext()
+                      )}
                   </th>
                 ))}
               </tr>
