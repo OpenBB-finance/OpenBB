@@ -122,26 +122,6 @@ def apply_configs(configs: dict):
                     set_credential(k, v)
 
 
-def update_sync_flag(settings: dict) -> bool:
-    """Update the sync flag.
-
-    Parameters
-    ----------
-    settings : dict
-        The settings.
-
-    Returns
-    -------
-    bool
-        The sync flag.
-    """
-    sync = not (settings and settings.get("SYNC_ENABLED", "true").lower() == "false")
-
-    set_preference("SYNC_ENABLED", sync)
-
-    return sync
-
-
 def get_routine(file_name: str, folder: Optional[Path] = None) -> Optional[str]:
     """Get the routine.
 
