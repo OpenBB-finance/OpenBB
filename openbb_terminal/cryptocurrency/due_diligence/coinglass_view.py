@@ -4,8 +4,7 @@ from typing import Optional, Union
 
 import pandas as pd
 
-from openbb_terminal import OpenBBFigure
-from openbb_terminal.config_terminal import theme
+from openbb_terminal import OpenBBFigure, theme
 from openbb_terminal.cryptocurrency.due_diligence.coinglass_model import (
     get_funding_rate,
     get_liquidations,

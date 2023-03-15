@@ -27,7 +27,10 @@ function formatNumberMagnitude(number: number) {
     return number.toFixed(2);
   }
   const abs = Math.abs(number);
-  if (abs >= 1000000000) {
+  if(abs >= 1000000000000) {
+    return `${(number / 1000000000).toFixed(2)}T`;
+  }
+  else if (abs >= 1000000000) {
     return `${(number / 1000000000).toFixed(2)}B`;
   } else if (abs >= 1000000) {
     return `${(number / 1000000).toFixed(2)}M`;
