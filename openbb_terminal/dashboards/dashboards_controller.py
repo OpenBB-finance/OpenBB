@@ -42,7 +42,6 @@ class DashboardsController(BaseController):
     CHOICES_COMMANDS = [
         "stocks",
         "correlation",
-        "vsurf",
         "chains",
         "shortdata",
         "futures",
@@ -76,7 +75,6 @@ class DashboardsController(BaseController):
         mt.add_raw("\nVoila Apps:\n")
         mt.add_cmd("stocks")
         mt.add_cmd("correlation")
-        mt.add_cmd("vsurf")
         mt.add_cmd("chains")
         mt.add_cmd("shortdata")
         mt.add_cmd("futures")
@@ -95,11 +93,6 @@ class DashboardsController(BaseController):
     def call_correlation(self, other_args: List[str]):
         """Process correlation command."""
         self.create_call_voila(other_args, "correlation", "correlation")
-
-    @log_start_end(log=logger)
-    def call_vsurf(self, other_args: List[str]):
-        """Process vsurf command."""
-        self.create_call_voila(other_args, "vsurf", "")
 
     @log_start_end(log=logger)
     def call_chains(self, other_args: List[str]):
