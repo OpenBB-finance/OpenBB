@@ -10,8 +10,8 @@ from typing import List, Tuple
 import finviz
 import pandas as pd
 import praw
+from pmaw import PushshiftAPI
 from prawcore.exceptions import ResponseException
-from psaw import PushshiftAPI
 from requests import HTTPError
 from sklearn.feature_extraction import _stop_words
 from tqdm import tqdm
