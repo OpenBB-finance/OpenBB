@@ -21,7 +21,7 @@ keywords:
 ---
 <details><summary>What branch on GitHub should pull requests be submitted to?</summary>
 
-Pull requests submitted to the Main branch will not be merged, please create branchs from the `develop` branch.
+Pull requests submitted to the Main branch will not be merged, please create branches from the `develop` branch.
 
 To switch to the develop branch:
 
@@ -29,7 +29,7 @@ To switch to the develop branch:
 git checkout develop
 ```
 
-Branchs must also follow the naming convention:
+Branches must also follow the naming convention:
 
 - /feature/name_your_branch
   - For developing functionality.
