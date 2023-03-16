@@ -8,7 +8,10 @@ The Fundamental Analysis menu is a set of tools for measuring a company's intrin
 
 ### How to use
 
-Enter the submenu from the <a href="/terminal/usage/intros/stocks/" target="_blank" rel="noreferrer noopener">Stocks menu</a>, with a ticker loaded.
+Enter the submenu from the <a href="/terminal/usage/intros/stocks/" target="_blank" rel="noreferrer noopener">Stocks menu</a>.  Note all functions in this submenu can add a ticker argument with the `-t` flag.
+
+````
+(🦋) /stocks/ $ fa
 
 <img width="800" alt="image" src="https://user-images.githubusercontent.com/46355364/218980249-5d98c0e0-6fba-4f62-acb2-2984f5fd517b.png"></img>
 
@@ -108,7 +111,7 @@ Historical enterprise value(`enterprise`) is a different way to look at a compan
 ```
 (🦋) /stocks/fa/ $ enterprise -l 10
 
-                                                                   TSLA Enterprise                                                                    
+                                                                   TSLA Enterprise
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┓
 ┃                                 ┃ 2012      ┃ 2013      ┃ 2014     ┃ 2015     ┃ 2016     ┃ 2017     ┃ 2018     ┃ 2019      ┃ 2020      ┃ 2021      ┃
 ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━┩
@@ -265,7 +268,7 @@ The `revfc` command will show revenue estimations:
 ````
 (🦋) /stocks/fa/ $ revfc
 
-                              TSLA Revenue History and Estimations                               
+                              TSLA Revenue History and Estimations
 ┏━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┓
 ┃ fiscalyear ┃ consensus_mean ┃ change % ┃ analysts ┃ actual   ┃ consensus_low ┃ consensus_high ┃
 ┡━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━┩
