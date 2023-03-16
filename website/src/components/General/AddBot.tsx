@@ -10,7 +10,7 @@ export default function AddBotDialog() {
           <a
             href="https://openbb.co/bot-telegram"
             target="_blank"
-            className="_btn h-[38px] gap-3 text-xs bg-[#20A0E1] hover:bg-[#1D90CB] active:bg-[#1A80B4] text-white hover:text-white"
+            className="_btn h-[38px] gap-3 text-xs !bg-[#20A0E1] !hover:bg-[#1D90CB] active:bg-[#1A80B4] text-white hover:text-white"
             rel="noopener noreferrer"
           >
             <TelegramIcon /> Add bot to Telegram
@@ -18,7 +18,7 @@ export default function AddBotDialog() {
           <div className="relative w-full md:w-auto">
             <a
               href="https://openbb.co/bot-discord"
-              className="_btn relative md:w-[217px] h-[38px] gap-3 text-xs bg-[#5865F2] hover:bg-[#4651C2] active:bg-[#353D91] text-white hover:text-white"
+              className="_btn relative md:w-[217px] h-[38px] gap-3 text-xs !bg-[#5865F2] !hover:bg-[#4651C2] active:bg-[#353D91] text-white hover:text-white"
               target="_blank"
               rel="noopener noreferrer"
             >
