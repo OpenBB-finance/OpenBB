@@ -5,27 +5,24 @@ import os
 from pathlib import Path
 from typing import Dict, List, Optional
 
-from prompt_toolkit.completion import NestedCompleter
-
 from openbb_terminal import (
-    feature_flags as obbff,
     keys_model,
 )
 from openbb_terminal.account.account_model import get_diff, get_routines_info
 from openbb_terminal.account.account_view import display_routines_list
-from openbb_terminal.core.config.paths import USER_ROUTINES_DIRECTORY
+from openbb_terminal.core.session import (
+    hub_model as Hub,
+    local_model as Local,
+)
+from openbb_terminal.core.session.current_user import get_current_user, is_local
+from openbb_terminal.core.session.preferences_handler import set_preference
+from openbb_terminal.core.session.session_model import logout
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.featflags_controller import FeatureFlagsController
 from openbb_terminal.helper_funcs import check_positive
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import MenuText, console
-from openbb_terminal.session import (
-    hub_model as Hub,
-    local_model as Local,
-)
-from openbb_terminal.session.session_model import logout
-from openbb_terminal.session.user import User
 
 logger = logging.getLogger(__name__)
 
@@ -48,34 +45,43 @@ class AccountController(BaseController):
     ]
 
     PATH = "/account/"
+    CHOICES_GENERATION = True
 
     def __init__(self, queue: Optional[List[str]] = None):
+        """Constructor"""
         super().__init__(queue)
         self.ROUTINE_FILES: Dict[str, Path] = {}
         self.REMOTE_CHOICES: List[str] = []
-        self.update_runtime_choices()
+        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
+            self.choices: dict = self.choices_default
+            self.completer = NestedCompleter.from_nested_dict(self.choices)
 
     def update_runtime_choices(self):
         """Update runtime choices"""
         self.ROUTINE_FILES = self.get_routines()
-        if session and obbff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.controller_choices}  # type: ignore
-            choices["sync"] = {"--on": {}, "--off": {}}
-            choices["upload"]["--file"] = {c: {} for c in self.ROUTINE_FILES}
-            choices["upload"]["-f"] = choices["upload"]["--file"]
-            choices["download"]["--name"] = {c: {} for c in self.REMOTE_CHOICES}
-            choices["download"]["-n"] = choices["download"]["--name"]
-            choices["delete"]["--name"] = {c: {} for c in self.REMOTE_CHOICES}
-            choices["delete"]["-n"] = choices["delete"]["--name"]
-            self.completer = NestedCompleter.from_nested_dict(choices)
+        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
+            self.choices["upload"]["--file"].update({c: {} for c in self.ROUTINE_FILES})
+            self.choices["download"]["--name"].update(
+                {c: {} for c in self.REMOTE_CHOICES}
+            )
+            self.choices["delete"]["--name"].update(
+                {c: {} for c in self.REMOTE_CHOICES}
+            )
+            self.completer = NestedCompleter.from_nested_dict(self.choices)
 
     def get_routines(self):
         """Get routines"""
+        current_user = get_current_user()
         routines = {
             filepath.name: filepath
-            for filepath in USER_ROUTINES_DIRECTORY.glob("*.openbb")
+            for filepath in current_user.preferences.USER_ROUTINES_DIRECTORY.glob(
+                "*.openbb"
+            )
         }
-        user_folder = USER_ROUTINES_DIRECTORY / User.get_uuid()
+        user_folder = (
+            current_user.preferences.USER_ROUTINES_DIRECTORY
+            / get_current_user().profile.get_uuid()
+        )
         if os.path.exists(user_folder):
             routines.update(
                 {filepath.name: filepath for filepath in user_folder.rglob("*.openbb")}
@@ -84,7 +90,6 @@ class AccountController(BaseController):
 
     def print_help(self):
         """Print help"""
-
         mt = MenuText("account/", 100)
         mt.add_info("_info_")
         mt.add_cmd("sync")
@@ -105,6 +110,7 @@ class AccountController(BaseController):
         mt.add_info("_authentication_")
         mt.add_cmd("logout")
         console.print(text=mt.menu_text, menu="Account")
+        self.update_runtime_choices()
 
     @log_start_end(log=logger)
     def call_logout(self, other_args: List[str]) -> None:
@@ -117,10 +123,11 @@ class AccountController(BaseController):
         )
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
+            current_user = get_current_user()
             logout(
-                auth_header=User.get_auth_header(),
-                token=User.get_token(),
-                guest=User.is_guest(),
+                auth_header=current_user.profile.get_auth_header(),
+                token=current_user.profile.get_token(),
+                guest=is_local(),
                 cls=True,
             )
 
@@ -135,36 +142,31 @@ class AccountController(BaseController):
         )
         parser.add_argument(
             "--on",
-            dest="on",
+            dest="sync",
             help="Turn on sync",
             action="store_true",
-            default=False,
         )
         parser.add_argument(
             "--off",
-            dest="off",
+            dest="sync",
             help="Turn on sync",
-            action="store_true",
-            default=False,
+            action="store_false",
         )
+        parser.set_defaults(sync=None)
+
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            if ns_parser.on:
-                if not obbff.SYNC_ENABLED:
-                    FeatureFlagsController.set_feature_flag(
-                        "OPENBB_SYNC_ENABLED", True, force=True
-                    )
-            elif ns_parser.off and obbff.SYNC_ENABLED:
-                FeatureFlagsController.set_feature_flag(
-                    "OPENBB_SYNC_ENABLED", False, force=True
-                )
-
-            sync = "ON" if obbff.SYNC_ENABLED else "OFF"
-
-            if ns_parser.on or ns_parser.off:
-                console.print(f"[info]sync:[/info] {sync}")
-            else:
+            current_user = get_current_user()
+            if ns_parser.sync is None:
+                sync = "ON" if current_user.preferences.SYNC_ENABLED is True else "OFF"
                 console.print(f"sync is {sync}, use --on or --off to change.")
+            else:
+                set_preference(
+                    name="SYNC_ENABLED",
+                    value=ns_parser.sync,
+                )
+                sync = "ON" if current_user.preferences.SYNC_ENABLED is True else "OFF"
+                console.print(f"[info]sync:[/info] {sync}")
 
     @log_start_end(log=logger)
     def call_pull(self, other_args: List[str]):
@@ -177,7 +179,8 @@ class AccountController(BaseController):
         )
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            response = Hub.fetch_user_configs(User.get_session())
+            current_user = get_current_user()
+            response = Hub.fetch_user_configs(current_user.profile.get_session())
             if response:
                 configs_diff = get_diff(configs=json.loads(response.content))
                 if configs_diff:
@@ -210,7 +213,9 @@ class AccountController(BaseController):
             )
             console.print("")
             if i.lower() in ["y", "yes"]:
-                Hub.clear_user_configs(auth_header=User.get_auth_header())
+                Hub.clear_user_configs(
+                    auth_header=get_current_user().profile.get_auth_header()
+                )
             else:
                 console.print("[info]Aborted.[/info]")
 
@@ -242,13 +247,13 @@ class AccountController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             response = Hub.list_routines(
-                auth_header=User.get_auth_header(),
+                auth_header=get_current_user().profile.get_auth_header(),
                 page=ns_parser.page,
                 size=ns_parser.size,
             )
             df, page, pages = get_routines_info(response)
             if not df.empty:
-                self.REMOTE_CHOICES = list(df["name"])
+                self.REMOTE_CHOICES += list(df["name"])
                 self.update_runtime_choices()
                 display_routines_list(df, page, pages)
             else:
@@ -302,8 +307,10 @@ class AccountController(BaseController):
                     else " ".join(ns_parser.file).split(sep=".openbb", maxsplit=-1)[0]
                 )
 
+                current_user = get_current_user()
+
                 response = Hub.upload_routine(
-                    auth_header=User.get_auth_header(),
+                    auth_header=current_user.profile.get_auth_header(),
                     name=name,
                     description=description,
                     routine=routine,
@@ -316,7 +323,7 @@ class AccountController(BaseController):
                     console.print("")
                     if i.lower() in ["y", "yes"]:
                         response = Hub.upload_routine(
-                            auth_header=User.get_auth_header(),
+                            auth_header=current_user.profile.get_auth_header(),
                             name=name,
                             description=description,
                             routine=routine,
@@ -352,7 +359,7 @@ class AccountController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             response = Hub.download_routine(
-                auth_header=User.get_auth_header(),
+                auth_header=get_current_user().profile.get_auth_header(),
                 name=" ".join(ns_parser.name),
             )
 
@@ -424,7 +431,7 @@ class AccountController(BaseController):
             console.print("")
             if i.lower() in ["y", "yes"]:
                 response = Hub.delete_routine(
-                    auth_header=User.get_auth_header(),
+                    auth_header=get_current_user().profile.get_auth_header(),
                     name=name,
                 )
                 if (
@@ -474,7 +481,8 @@ class AccountController(BaseController):
                 return
 
             response = Hub.generate_personal_access_token(
-                auth_header=User.get_auth_header(), days=ns_parser.days
+                auth_header=get_current_user().profile.get_auth_header(),
+                days=ns_parser.days,
             )
             if response and response.status_code == 200:
                 token = response.json().get("token", "")
@@ -503,7 +511,9 @@ class AccountController(BaseController):
         )
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            response = Hub.get_personal_access_token(auth_header=User.get_auth_header())
+            response = Hub.get_personal_access_token(
+                auth_header=get_current_user().profile.get_auth_header()
+            )
             if response and response.status_code == 200:
                 token = response.json().get("token", "")
                 if token:
@@ -526,7 +536,7 @@ class AccountController(BaseController):
             )
             if i.lower() in ["y", "yes"]:
                 response = Hub.revoke_personal_access_token(
-                    auth_header=User.get_auth_header()
+                    auth_header=get_current_user().profile.get_auth_header()
                 )
                 if response and response.status_code in [200, 202]:
                     console.print("[info]Token revoked.[/info]")

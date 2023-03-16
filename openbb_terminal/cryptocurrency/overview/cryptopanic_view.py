@@ -66,11 +66,12 @@ def display_news(
             df = df[["title", "link"]]
 
         print_rich_table(
-            df.head(limit),
+            df,
             headers=list(df.columns),
             show_index=False,
             title="Recent CryptoPanic Posts",
             export=bool(export),
+            limit=limit,
         )
 
         export_data(

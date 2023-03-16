@@ -1,16 +1,99 @@
-                       Name Market Cap Market Cap Change 24H                        Top 3 Coins Volume 24H
-0        Ethereum Ecosystem  511.529 B                -2.581       ethereum,Tether,bnb-icon2_2x   94.826 B
-1   Smart Contract Platform  332.413 B                -2.941      ethereum,bnb-icon2_2x,cardano   17.721 B
-2       BNB Chain Ecosystem  259.555 B                -2.267  Tether,bnb-icon2_2x,USD_Coin_icon   81.592 B
-3         Polygon Ecosystem  234.504 B                -1.942  Tether,bnb-icon2_2x,USD_Coin_icon   78.682 B
-4       Avalanche Ecosystem  214.098 B                -1.892  Tether,bnb-icon2_2x,USD_Coin_icon   74.549 B
-5       Moonriver Ecosystem  201.169 B                -1.288  Tether,bnb-icon2_2x,USD_Coin_icon   73.137 B
-6         Harmony Ecosystem  169.634 B                -0.616          Tether,USD_Coin_icon,BUSD   75.196 B
-7          Fantom Ecosystem  151.259 B                -0.455          Tether,USD_Coin_icon,BUSD   73.771 B
-8    Gnosis Chain Ecosystem  148.811 B                -0.357          Tether,USD_Coin_icon,BUSD   72.936 B
-9        Arbitrum Ecosystem  142.372 B                -0.900          Tether,USD_Coin_icon,4943   62.212 B
-10         Cronos Ecosystem  138.210 B                -0.128          Tether,USD_Coin_icon,BUSD   70.709 B
-11              Stablecoins  137.939 B                 0.039          Tether,USD_Coin_icon,BUSD   69.320 B
-12       Optimism Ecosystem  136.257 B                -0.411          Tether,USD_Coin_icon,4943   61.437 B
-13          Velas Ecosystem  135.395 B                -0.032          Tether,USD_Coin_icon,BUSD   70.925 B
-14  Near Protocol Ecosystem  129.690 B                -0.694          Tether,USD_Coin_icon,4943   59.614 B
+                                Name Market Cap Market Cap Change 24H                                                                                                           Top 3 Coins Volume 24H
+0                 Ethereum Ecosystem  511.529 B                -2.581                                                                                          ethereum,Tether,bnb-icon2_2x   94.826 B
+1            Smart Contract Platform  332.413 B                -2.941                                                                                         ethereum,bnb-icon2_2x,cardano   17.721 B
+2                BNB Chain Ecosystem  259.555 B                -2.267                                                                                     Tether,bnb-icon2_2x,USD_Coin_icon   81.592 B
+3                  Polygon Ecosystem  234.504 B                -1.942                                                                                     Tether,bnb-icon2_2x,USD_Coin_icon   78.682 B
+4                Avalanche Ecosystem  214.098 B                -1.892                                                                                     Tether,bnb-icon2_2x,USD_Coin_icon   74.549 B
+5                Moonriver Ecosystem  201.169 B                -1.288                                                                                     Tether,bnb-icon2_2x,USD_Coin_icon   73.137 B
+6                  Harmony Ecosystem  169.634 B                -0.616                                                                                             Tether,USD_Coin_icon,BUSD   75.196 B
+7                   Fantom Ecosystem  151.259 B                -0.455                                                                                             Tether,USD_Coin_icon,BUSD   73.771 B
+8             Gnosis Chain Ecosystem  148.811 B                -0.357                                                                                             Tether,USD_Coin_icon,BUSD   72.936 B
+9                 Arbitrum Ecosystem  142.372 B                -0.900                                                                                             Tether,USD_Coin_icon,4943   62.212 B
+10                  Cronos Ecosystem  138.210 B                -0.128                                                                                             Tether,USD_Coin_icon,BUSD   70.709 B
+11                       Stablecoins  137.939 B                 0.039                                                                                             Tether,USD_Coin_icon,BUSD   69.320 B
+12                Optimism Ecosystem  136.257 B                -0.411                                                                                             Tether,USD_Coin_icon,4943   61.437 B
+13                   Velas Ecosystem  135.395 B                -0.032                                                                                             Tether,USD_Coin_icon,BUSD   70.925 B
+14           Near Protocol Ecosystem  129.690 B                -0.694                                                                                             Tether,USD_Coin_icon,4943   59.614 B
+15                   Metis Ecosystem  119.431 B                -0.109                                                                                             Tether,USD_Coin_icon,4943   58.447 B
+16             Exchange-based Tokens   81.640 B                -4.941                                                                  bnb-icon2_2x,WeChat_Image_20220118095654,uniswap-uni    2.076 B
+17        Centralized Exchange (CEX)   69.568 B                -4.965                                                                    bnb-icon2_2x,WeChat_Image_20220118095654,leo-token  540.656 M
+18                   Tezos Ecosystem   69.460 B                 0.190                                                                                          Tether,Tezos-logo,YOU_Youves   53.331 B
+19      Decentralized Finance (DeFi)   49.408 B                -3.912                                                                                           steth_logo,4943,uniswap-uni    5.591 B
+20           Arbitrum Nova Ecosystem   46.746 B                -0.312                                                                                              USD_Coin_icon,4943,Moons    4.939 B
+21                   Canto Ecosystem   46.070 B                 9.440                                                                                USD_Coin_icon,cosmos_hub,canto-network    5.131 B
+22                              Meme   20.955 B                -7.648                                                                                              dogecoin,shiba,Baby_Doge    1.179 B
+23                               NFT   18.999 B                -8.648                                                                           apecoin,Internet_Computer_logo,sandbox_logo    3.158 B
+24                 Cardano Ecosystem   17.563 B                -1.913                                                                                       cardano,chainlink-new-logo,api3    1.389 B
+25                        Governance   16.955 B                -5.120                                                                               uniswap-uni,Internet_Computer_logo,AAVE    1.701 B
+26                  Solana Ecosystem   16.048 B                -5.303                                                                                 solana,chainlink-new-logo,Graph_Token    2.574 B
+27                Polkadot Ecosystem   15.456 B                 0.982                                                                          polkadot,chainlink-new-logo,m4zRhP5e_400x400    2.443 B
+28                           Layer 2   13.931 B                     0                                                                   matic-token-icon,immutableX-symbol-BLK-RGB,Optimism    1.862 B
+29                  Cosmos Ecosystem   12.660 B                -4.866                                                                        cosmos_hub,cro_token_logo,01_LunaClassic_color    1.211 B
+30      Decentralized Exchange (DEX)   12.336 B                -5.418                                                                                                 uniswap-uni,SNX,Curve    1.484 B
+31                   Gaming (GameFi)   11.897 B                -7.459                                                                           apecoin,Internet_Computer_logo,sandbox_logo    2.006 B
+32                     Yield Farming   11.439 B                -4.990                                                                                                  uniswap-uni,AAVE,SNX    1.365 B
+33             Liquid Staking Tokens    9.287 B                -2.272                                                                                                       steth_logo,reth   74.007 M
+34                         Metaverse    9.248 B               -10.066                                                                 Internet_Computer_logo,sandbox_logo,decentraland-mana    1.711 B
+35      Automated Market Maker (AMM)    8.758 B                -4.465                                                                       uniswap-uni,Curve,pancakeswap-cake-logo_%281%29  909.492 M
+36                   Eth 2.0 Staking    8.613 B                -2.161                                                                                              steth_logo,U85xTl2,aETHc  286.366 M
+37                      Play To Earn    7.917 B                -8.360                                                                     sandbox_logo,decentraland-mana,axie_infinity_logo    1.563 B
+38                     Privacy Coins    6.454 B                -3.409                                                                              monero_logo,dash-logo,circle-zcash-color  510.562 M
+39                           Storage    5.290 B                -6.458                                                                      filecoin,Internet_Computer_logo,oRt6SiEN_400x400  744.253 M
+40                            Oracle    4.934 B                 2.434                                                               chainlink-new-logo,Band_token_blue_violet_token,pL1VuXm    1.159 B
+41  Liquid Staking Governance Tokens    4.316 B                -4.455                                                                        Lido_DAO,ethCanonicalFXS,rocket_pool_%28RPL%29    1.174 B
+42                   Aptos Ecosystem    4.149 B                -8.566                                                                       aptos_round,pancakeswap-cake-logo_%281%29,Trust  783.859 M
+43                    Wrapped-Tokens    4.040 B                -2.907                                                                                     wrapped_bitcoin_wbtc,wNXM,Bitcoin    1.762 B
+44                 Finance / Banking    3.833 B                -3.086                                                                                              Compound_USDC,ceth2,nexo  121.015 M
+45               Asset-backed Tokens    3.751 B                -1.447                                                                                               Compound_USDC,cDAI,paxg  191.310 M
+46                 Lending/Borrowing    3.681 B                -1.583                                                                                                  AAVE,Mark_Maker,kava  353.578 M
+47          Internet of Things (IOT)    3.659 B                -3.504                                                                            VeChain-Logo-768x725,IOTA_Swirl,Helium_HNT  309.987 M
+48                       Derivatives    2.879 B                -8.863                                                                                                    SNX,arbit,hjnIm9bV  441.668 M
+49                            Sports    2.253 B                -6.644                                             5f6294c0c7a8cda55cb1c936_Flow_Wordmark,CHZ_Token_updated,fhD9Xs16_400x400  573.969 M
+50                       Seigniorage    2.170 B                -5.168                                                                                  ethCanonicalFRAX,ethCanonicalFXS,UST  279.075 M
+51                Algorand Ecosystem    2.023 B                -1.564                                                                                       download,opulous,buying_200x200  195.256 M
+52      Artificial Intelligence (AI)    1.819 B               -21.133                                                                 singularitynet,Fetch,alethea-logo-transparent-colored  811.375 M
+53                       Olympus Pro    1.646 B                -6.494                                                                          ethCanonicalFXS,synapse_social_icon,YAIS3fUh  327.806 M
+54                         Analytics    1.624 B               -20.486                                                                                      Graph_Token,covalent-cqt,DsNgK0O  561.114 M
+55                        Perpetuals    1.564 B               -10.689                                                                                               arbit,hjnIm9bV,gfarm_v2  318.379 M
+56       Internet Computer Ecosystem    1.547 B                -6.997                                                                               Internet_Computer_logo,4xBAWRCo_400x400   51.516 M
+57                       Masternodes    1.519 B                -6.883                                                                               dash-logo,Flux_symbol_blue-white,Beldex  180.786 M
+58                   Terra Ecosystem    1.349 B                -8.730                                                                      01_LunaClassic_color,UST,mirror_logo_transparent  120.116 M
+59              MultiversX Ecosystem    1.305 B                -4.394                                                                                 egld-token-logo,MEX-icon,300x300_logo   42.505 M
+60                  Yield Aggregator    1.187 B                -6.395                                                                                 convex,yfi-192x192,AlphaToken_256x256  107.951 M
+61                     OEC Ecosystem    1.106 B                -5.498                                             WeChat_Image_20220118095654,512x512_Logo_no_chop,1_Wyot-SDGZuxbjdkaOeT2-A  118.344 M
+62                  Synthetic Issuer    1.101 B               -10.065                                                                                                           SNX,UMA,STP  115.441 M
+63                           Wallets    1.030 B                -3.235                                                                                                        Trust,sfp,logo   79.892 M
+64                    Tokenized Gold  964.460 M                 0.045                                                                                    paxg,Tether_Gold,pmgt_logo_256x256   12.122 M
+65                     XDC Ecosystem  906.401 M                13.511                                                                                        xdc-icon,IMG_4307,EURS_300x300    6.465 M
+66                    Celo Ecosystem  839.262 M                -2.146                                                                                         InjXBNx9_400x400,U85xTl2,logo    1.636 B
+67                DaoMaker Ecosystem  744.387 M                -7.432                                                                                               4,alice_logo,logoWhiteX  104.871 M
+68                   Yearn Ecosystem  685.459 M                -6.459                                                                               512x512_Logo_no_chop,yfi-192x192,xsushi  121.596 M
+69                 Zilliqa Ecosystem  583.544 M                -4.782                                               Zilliqa-logo,logoWhiteX,StraitsX_Singapore_Dollar_%28XSGD%29_Token_Logo   79.703 M
+70                    Metagovernance  566.428 M                -8.904                                                                                               convex,logo,redacted_v2   12.471 M
+71                           Options  498.917 M                -2.843                                                                          RBN_64x64,DPX_%281%29,rDPX_200x200_Coingecko    9.042 M
+72                    MEV Protection  483.445 M                -5.589                                                                                 logo_square_simple_300px,ATA,Manifold   16.099 M
+73                         Insurance  474.884 M                 4.781                                                                                         NXMmain,logo-grey-circle,wNXM    8.418 M
+74                     Rebase Tokens  468.531 M                -1.226                                                                         token_OHM_%281%29,LPK15ZOW_400x400,Ampleforth    1.513 M
+75                Prediction Markets  460.174 M                -2.936                                                                                       logo_square_simple_300px,REP,sx   98.479 M
+76                      Move To Earn  434.033 M                -9.016                                                           gmt,fhD9Xs16_400x400,801485424e1f49bc8d0facff9287eb9b_photo  128.536 M
+77                             Music  353.050 M                -5.838                                                                                    AudiusCoinLogo_2x,opulous,Viberate   67.626 M
+78                   IoTeX Ecosystem  299.677 M                -9.142                                                        iotex-logo,244800308_116216454152265_6257676145772128053_n,gft   15.677 M
+79                         Fan Token  290.006 M                 3.749                                                                                                   Barca-10,santos,psg  247.084 M
+80             Guild and Scholarship  232.540 M                -6.718                                                                             Db4XqML,le1nzlO6_400x400,guildfi-logo-200   28.647 M
+81              HECO Chain Ecosystem  169.947 M                -5.700                                                                                      mdex,token,autofarm_icon_200x200   38.394 M
+82                          Gambling  130.978 M                -3.462                                                                                   funfair,Decentral_Games_Logo-1,logo    2.120 M
+83                            Synths  106.347 M                -4.217                                                                                                        sUSD,sETH,sBTC   22.026 M
+84                      Social Money   91.793 M                 6.170                                                                                                           image,WHALE    3.440 M
+85                           Tourism   91.172 M                -2.903                                                                        qX7fh69Q_400x400-1,Travala,LOC_Transparent_New    1.933 M
+86                        DeFi Index   72.045 M                -3.429                                                               defi_pulse_index_set,icETH-token-logo,ETH2x-FLI_%281%29  474.861 K
+87                          Ohm Fork   67.810 M                -0.455                                                                                                    sb,klima-logo,time  201.465 K
+88            Step Network Ecosystem   39.910 M                -5.138                                                                    801485424e1f49bc8d0facff9287eb9b_photo,kcal,StepEx   19.025 M
+89             KardiaChain Ecosystem   39.016 M                -5.436                                                                                               kai,mydefi,icon_%287%29    2.839 M
+90              Kommunitas Launchpad   30.562 M                 2.247                                                                                                    logo_gg,fyn,chicks    4.459 M
+91       Farming-as-a-Service (FaaS)   16.275 M                -1.081                                                                      Logo-Digits-DAO-Icon-01,2022-07-13_18.49.44,expo  209.171 K
+92                    IDR Stablecoin   13.945 M                 0.110                                                   57421944_1371636006308255_3647136573922738176_n,XIDR_Logo_256_X_256  388.339 K
+93                    TRY Stablecoin    2.993 M                 3.450                                                                                                      JBs9jiXO_400x400   17.260 K
+94                Yearn Vault Tokens          0                     0  st-yCRV-128-0x27B5739e22ad9033bcBf192059122d163b60349D,yvUSDC-128-0xe2F6b9773BF3A015E2aA70741Bde1498bdB9425b,yvBOOST    8.591 K
+95                    JPY Stablecoin          0                     0                                                                                                              2023jpyc  103.849 K
+96                       Aave Tokens          0                     0                                                                                                    aETH_2x,aUSDC,aDAI    4.216 M
+97                           Layer 1          0                     0                                                                                                                                0

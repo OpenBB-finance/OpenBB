@@ -6,7 +6,7 @@ import argparse
 import logging
 from typing import List, Optional
 
-from openbb_terminal import feature_flags as obbff
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.cryptocurrency.discovery import (
     coinmarketcap_model,
     coinmarketcap_view,
@@ -53,7 +53,7 @@ class DiscoveryController(BaseController):
         """Constructor"""
         super().__init__(queue)
 
-        if session and obbff.USE_PROMPT_TOOLKIT:
+        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices_default
 
             ordered_list_sources_top = get_ordered_list_sources(f"{self.PATH}top")
@@ -142,15 +142,6 @@ class DiscoveryController(BaseController):
         )
 
         parser.add_argument(
-            "-i",
-            "--interactive",
-            action="store_true",
-            dest="interactive",
-            default=False,
-            help=("Show interactive table"),
-        )
-
-        parser.add_argument(
             "-r",
             "--reverse",
             action="store_true",
@@ -171,7 +162,6 @@ class DiscoveryController(BaseController):
         if ns_parser:
             if ns_parser.source == "CoinGecko":
                 pycoingecko_view.display_coins(
-                    interactive=ns_parser.interactive,
                     sortby=" ".join(ns_parser.sortby),
                     category=ns_parser.category,
                     limit=ns_parser.limit,

@@ -8,8 +8,7 @@ from typing import List, Optional
 
 import pandas as pd
 
-import openbb_terminal.config_terminal as cfg
-from openbb_terminal import feature_flags as obbff
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
@@ -142,7 +141,9 @@ class OptionsController(BaseController):
         self.source = ""
 
         if ticker:
-            if cfg.API_TRADIER_TOKEN == "REPLACE_ME":  # nosec
+            if (
+                get_current_user().credentials.API_TRADIER_TOKEN == "REPLACE_ME"
+            ):  # nosec
                 console.print("Loaded expiry dates from Yahoo Finance")
                 self.expiry_dates = yfinance_model.option_expirations(self.ticker)
             else:
@@ -157,7 +158,7 @@ class OptionsController(BaseController):
 
         self.default_chain = get_ordered_list_sources(f"{self.PATH}chains")[0]
 
-        if session and obbff.USE_PROMPT_TOOLKIT:
+        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices_default
 
             # This menu contains dynamic choices that may change during runtime
@@ -223,7 +224,7 @@ class OptionsController(BaseController):
 
     def update_runtime_choices(self):
         """Update runtime choices"""
-        if session and obbff.USE_PROMPT_TOOLKIT:
+        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             if not self.chain.empty:
                 strike = set(self.chain["strike"])
 
@@ -845,7 +846,8 @@ class OptionsController(BaseController):
                 )
 
             if (
-                ns_parser.source == "Tradier" and cfg.API_TRADIER_TOKEN != "REPLACE_ME"
+                ns_parser.source == "Tradier"
+                and get_current_user().credentials.API_TRADIER_TOKEN != "REPLACE_ME"
             ):  # nosec
                 tradier_view.display_historical(
                     symbol=self.ticker,

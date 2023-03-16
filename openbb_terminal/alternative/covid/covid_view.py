@@ -7,9 +7,8 @@ from typing import Optional, Union
 
 import pandas as pd
 
-from openbb_terminal import OpenBBFigure
+from openbb_terminal import OpenBBFigure, theme
 from openbb_terminal.alternative.covid import covid_model
-from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
@@ -186,7 +185,7 @@ def display_covid_ov(
     if plot or fig.is_image_export(export):
         fig = plot_covid_ov(country, external_axes=True)
     if raw:
-        data = covid_model.get_covid_ov(country, limit)
+        data = covid_model.get_covid_ov(country)
         print_rich_table(
             data,
             headers=[x.title() for x in data.columns],
@@ -194,10 +193,11 @@ def display_covid_ov(
             index_name="Date",
             title=f"[bold]{country} COVID Numbers[/bold]",
             export=bool(export),
+            limit=limit,
         )
 
     if export:
-        data = covid_model.get_covid_ov(country, limit)
+        data = covid_model.get_covid_ov(country)
         export_data(
             export,
             os.path.dirname(os.path.abspath(__file__)),
@@ -240,7 +240,7 @@ def display_covid_stat(
         Flag to plot data
     """
     fig = OpenBBFigure()
-    data = covid_model.get_covid_stat(country, stat, limit)
+    data = covid_model.get_covid_stat(country, stat)
 
     if plot or fig.is_image_export(export):
         fig = plot_covid_stat(country, stat, external_axes=True)  # type: ignore
@@ -253,6 +253,7 @@ def display_covid_stat(
             index_name="Date",
             title=f"[bold]{country} COVID {stat}[/bold]",
             export=bool(export),
+            limit=limit,
         )
     if export:
         data["date"] = data.index
@@ -297,7 +298,7 @@ def display_case_slopes(
     export : str
         Format to export data
     """
-    data = covid_model.get_case_slopes(days_back, limit, threshold, ascend)
+    data = covid_model.get_case_slopes(days_back, threshold, ascend)
 
     print_rich_table(
         data,
@@ -305,6 +306,7 @@ def display_case_slopes(
         index_name="Country",
         title=f"[bold]{('Highest','Lowest')[ascend]} Sloping Cases[/bold] (Cases/Day)",
         export=bool(export),
+        limit=limit,
     )
 
     export_data(

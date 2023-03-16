@@ -1,5 +1,13 @@
+# IMPORTATION STANDARD
+
+# IMPORTATION THIRDPARTY
 import pytest
 
+# IMPORTATION INTERNAL
+from openbb_terminal.core.session.current_user import (
+    PreferencesModel,
+    copy_user,
+)
 from openbb_terminal.keys_controller import KeysController
 
 controller = KeysController(menu_usage=False)
@@ -8,8 +16,20 @@ controller = KeysController(menu_usage=False)
 
 
 @pytest.fixture(autouse=True)
-def no_change_env(mocker):
-    mocker.patch("openbb_terminal.keys_model.dotenv.set_key")
+def revert_current_user(mocker):
+    mocker.patch(
+        target="openbb_terminal.keys_model.set_credential",
+    )
+    preferences = PreferencesModel(
+        ENABLE_CHECK_API=False,
+    )
+    mock_current_user = copy_user(preferences=preferences)
+    mocker.patch(
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
+    )
+
+    yield
 
 
 class MockCFG:

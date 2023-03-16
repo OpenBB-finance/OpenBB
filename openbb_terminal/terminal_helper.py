@@ -17,13 +17,15 @@ import matplotlib.pyplot as plt
 from packaging import version
 
 from openbb_terminal import (
-    feature_flags as obbff,
     thought_of_the_day as thought,
 )
+from openbb_terminal.config_terminal import LOGGING_COMMIT_HASH, VERSION
 
 # IMPORTATION INTERNAL
-from openbb_terminal.config_terminal import LOGGING_COMMIT_HASH
+from openbb_terminal.core.config.paths import SETTINGS_ENV_FILE
 from openbb_terminal.core.plots.backend import plots_backend
+from openbb_terminal.core.session.current_user import get_current_user
+from openbb_terminal.core.session.preferences_handler import set_preference
 from openbb_terminal.helper_funcs import request
 from openbb_terminal.rich_config import console
 
@@ -131,19 +133,19 @@ def open_openbb_documentation(
         path = "/"
         command = ""
     elif "keys" in path:
-        path = "/guides/advanced/api-keys"
+        path = "/quickstart/api-keys"
         command = ""
     elif "settings" in path:
-        path = "/guides/advanced/customizing-the-terminal"
+        path = "/usage/guides/customizing-the-terminal"
         command = ""
     elif "featflags" in path:
-        path = "/guides/advanced/customizing-the-terminal"
+        path = "/usage/guides/customizing-the-terminal"
         command = ""
     elif "sources" in path:
-        path = "/guides/advanced/changing-sources"
+        path = "/usage/guides/changing-sources"
         command = ""
     elif "params" in path:
-        path = "/guides/intros/portfolio/po"
+        path = "/usage/intros/portfolio/po"
         command = ""
     else:
         if arg_type == "command":  # user passed a command name
@@ -151,32 +153,32 @@ def open_openbb_documentation(
         elif arg_type == "menu":  # user passed a menu name
             if command in ["ta", "ba", "qa"]:
                 menu = path.split("/")[-2]
-                path = f"/guides/intros/common/{menu}"
+                path = f"/usage/intros/common/{menu}"
             elif command == "forecast":
                 command = ""
-                path = "/guides/intros/forecast"
+                path = "/usage/intros/forecast"
             else:
-                path = f"/guides/intros/{path}"
+                path = f"/usage/intros/{path}"
         else:  # user didn't pass argument and is in a menu
             menu = path.split("/")[-2]
             path = (
-                f"/guides/intros/common/{menu}"
+                f"/usage/intros/common/{menu}"
                 if menu in ["ta", "ba", "qa"]
-                else f"/guides/intros/{path}"
+                else f"/usage/intros/{path}"
             )
 
     if command:
         if command == "keys":
-            path = "/guides/advanced/api-keys"
+            path = "/quickstart/api-keys"
             command = ""
         elif "settings" in path or "featflags" in path:
-            path = "/guides/advanced/customizing-the-terminal"
+            path = "/usage/guides/customizing-the-terminal"
             command = ""
         elif "sources" in path:
-            path = "/guides/advanced/changing-sources"
+            path = "/usage/guides/changing-sources"
             command = ""
         elif command in ["record", "stop", "exe"]:
-            path = "/guides/advanced/scripts-and-routines"
+            path = "/usage/guides/scripts-and-routines"
             command = ""
         elif command in [
             "intro",
@@ -190,7 +192,7 @@ def open_openbb_documentation(
             path = ""
             command = ""
         elif command in ["ta", "ba", "qa"]:
-            path = f"/guides/intros/common/{command}"
+            path = f"/usage/intros/common/{command}"
             command = ""
 
         path += command
@@ -263,7 +265,7 @@ def bootup():
 def check_for_updates() -> None:
     """Check if the latest version is running.
 
-    Checks github for the latest release version and compares it to obbff.VERSION.
+    Checks github for the latest release version and compares it to cfg.VERSION.
     """
     # The commit has was commented out because the terminal was crashing due to git import for multiple users
     # ({str(git.Repo('.').head.commit)[:7]})
@@ -277,7 +279,7 @@ def check_for_updates() -> None:
     if r is not None and r.status_code == 200:
         latest_tag_name = r.json()["tag_name"]
         latest_version = version.parse(latest_tag_name)
-        current_version = version.parse(obbff.VERSION)
+        current_version = version.parse(VERSION)
 
         if check_valid_versions(latest_version, current_version):
             if current_version == latest_version:
@@ -325,9 +327,9 @@ def welcome_message():
 
     Prints first welcome message, help and a notification if updates are available.
     """
-    console.print(f"\nWelcome to OpenBB Terminal v{obbff.VERSION}")
+    console.print(f"\nWelcome to OpenBB Terminal v{VERSION}")
 
-    if obbff.ENABLE_THOUGHTS_DAY:
+    if get_current_user().preferences.ENABLE_THOUGHTS_DAY:
         console.print("---------------------------------")
         try:
             thought.get_thought_of_the_day()
@@ -395,5 +397,20 @@ def is_reset(command: str) -> bool:
     if command == "r":
         return True
     if command == "r\n":
+        return True
+    return False
+
+
+def first_time_user() -> bool:
+    """Whether a user is a first time user. A first time user is someone with an empty .env file.
+    If this is true, it also adds an env variable to make sure this does not run again.
+
+    Returns
+    -------
+    bool
+        Whether or not the user is a first time user
+    """
+    if SETTINGS_ENV_FILE.stat().st_size == 0:
+        set_preference("PREVIOUS_USE", True)
         return True
     return False

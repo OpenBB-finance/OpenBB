@@ -96,7 +96,7 @@ conda install -c conda-forge cvxpy=1.2.2 -y
 And install the Portfolio Optimization Toolkit
 
 ```bash
-pip install "openbbterminal[optimization]"
+pip install "openbb[optimization]"
 ```
 
 ##### 5.2 **If you would like ML Forecasting features**
@@ -110,7 +110,7 @@ conda install -c conda-forge lightgbm=3.3.3 -y
 And install the Forecasting Toolkit
 
 ```bash
-pip install "openbbterminal[forecast]"
+pip install "openbb[forecast]"
 ```
 
 ##### 5.2 **If you would like to use both Portfolio Optimization and ML forecast features**

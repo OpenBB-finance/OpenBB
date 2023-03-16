@@ -7,8 +7,7 @@ import logging
 
 import openbb_terminal.config_terminal as cfg
 from openbb_terminal import helper_funcs as helper  # noqa: F401
-from openbb_terminal.base_helpers import load_dotenv_and_reload_configs
-from openbb_terminal.config_terminal import theme
+from openbb_terminal.core.plots.plotly_helper import theme  # noqa: F401
 
 from openbb_terminal.cryptocurrency.due_diligence.pycoingecko_model import Coin
 from openbb_terminal.dashboards.dashboards_controller import DashboardsController
@@ -21,15 +20,13 @@ from openbb_terminal.core.sdk import (
     controllers as ctrl,
     models as model,
 )
-from openbb_terminal import feature_flags as obbff
-from openbb_terminal.session.user import User
+from openbb_terminal.core.session.current_user import is_local
 from openbb_terminal.terminal_helper import is_auth_enabled
 
-if User.is_guest():
-    load_dotenv_and_reload_configs()
+cfg.start_required_configurations()
+cfg.start_plot_backend()
 
 logger = logging.getLogger(__name__)
-theme.applyMPLstyle()
 
 
 class OpenBBSDK:
@@ -42,7 +39,7 @@ class OpenBBSDK:
         `whoami`: Display user info.\n
     """
 
-    __version__ = obbff.VERSION
+    __version__ = cfg.VERSION
 
     def __init__(self):
         SDKLogger()
@@ -143,7 +140,6 @@ class OpenBBSDK:
             `events`: Get economic calendar for countries between specified dates\n
             `fred`: Get Series data. [Source: FRED]\n
             `fred_chart`: Display (multiple) series from https://fred.stlouisfed.org. [Source: FRED]\n
-            `fred_ids`: Get Series IDs. [Source: FRED]\n
             `fred_notes`: Get series notes. [Source: FRED]\n
             `future`: Get futures data. [Source: Finviz]\n
             `futures`: Get futures data.\n
@@ -224,6 +220,7 @@ class OpenBBSDK:
             `treasury`: Gets interest rates data from selected countries (3 month and 10 year)\n
             `usrates`: Plot various treasury rates from the United States\n
             `ycrv`: Gets yield curve data from FRED.\n
+            `ycrv_chart`: Display yield curve based on US Treasury rates for a specified date.\n
         """
 
         return model.FixedincomeRoot()
@@ -624,7 +621,7 @@ class SDKLogger:
 
     @staticmethod
     def _try_to_login(sdk: "OpenBBSDK"):
-        if User.is_guest() and is_auth_enabled():
+        if is_local() and is_auth_enabled():
             try:
                 sdk.login()
             except Exception:

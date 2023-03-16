@@ -21,9 +21,9 @@ from pandas.tseries.holiday import USFederalHolidayCalendar
 from requests.exceptions import ReadTimeout
 from scipy import stats
 
-from openbb_terminal import config_terminal as cfg
 from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.core.plots.plotly_ta.ta_class import PlotlyTA
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.helper_funcs import print_rich_table, request
 from openbb_terminal.rich_config import console
 
@@ -240,10 +240,11 @@ def search(
     df = df.iloc[df.isnull().sum(axis=1).mul(1).argsort()]
 
     print_rich_table(
-        df.iloc[:limit] if limit else df,
+        df,
         show_index=True,
         headers=["Name", "Country", "Sector", "Industry Group", "Industry", "Exchange"],
         title=title,
+        limit=limit,
     )
 
     return df
@@ -423,7 +424,7 @@ def load(
                 f"https://api.polygon.io/v2/aggs/ticker/"
                 f"{symbol.upper()}/range/{interval}/minute/{start_date.strftime('%Y-%m-%d')}"
                 f"/{end_date.strftime('%Y-%m-%d')}"
-                f"?adjusted=true&sort=desc&limit=49999&apiKey={cfg.API_POLYGON_KEY}"
+                f"?adjusted=true&sort=desc&limit=49999&apiKey={get_current_user().credentials.API_POLYGON_KEY}"
             )
             r = request(request_url)
             if r.status_code != 200:
@@ -858,8 +859,14 @@ def show_codes_polygon(ticker: str):
     ticker: str
         Stock ticker
     """
-    link = f"https://api.polygon.io/v3/reference/tickers/{ticker.upper()}?apiKey={cfg.API_POLYGON_KEY}"
-    if cfg.API_POLYGON_KEY == "REPLACE_ME":
+
+    current_user = get_current_user()
+
+    link = (
+        f"https://api.polygon.io/v3/reference/tickers/{ticker.upper()}?apiKey="
+        f"{current_user.credentials.API_POLYGON_KEY}"
+    )
+    if current_user.credentials.API_POLYGON_KEY == "REPLACE_ME":
         console.print("[red]Polygon API key missing[/red]\n")
         return
     r = request(link)
@@ -924,7 +931,7 @@ def verify_plot_options(command: str, source: str, plot: list) -> bool:
         command_options = BALANCE_PLOT
     else:
         command_options = INCOME_PLOT
-    options = list(command_options[source].values())
+    options = list(command_options.get(source, {}).values())
 
     incorrect_columns = []
     for column in plot:
