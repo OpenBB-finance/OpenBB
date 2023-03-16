@@ -20,14 +20,6 @@ from openbb_terminal.core.session.current_user import get_current_user
 
 from .helper_classes import TerminalStyle as _TerminalStyle
 
-# Terminal UX section
-current_user = get_current_user()
-theme = _TerminalStyle(
-    current_user.preferences.MPL_STYLE,
-    current_user.preferences.PMF_STYLE,
-    current_user.preferences.RICH_STYLE,
-)
-
 
 # Start the plots backend
 def start_plot_backend():
@@ -114,3 +106,11 @@ def setup_logging_sub_app(sub_app: str):
 setup_i18n()
 setup_version()
 setup_logging_app_name()
+
+# Terminal UX section
+current_user = get_current_user()
+theme = _TerminalStyle(
+    current_user.preferences.MPL_STYLE,
+    current_user.preferences.PMF_STYLE,
+    current_user.preferences.RICH_STYLE,
+)
