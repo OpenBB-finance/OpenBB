@@ -113,7 +113,7 @@ def apply_configs(configs: dict):
         The configurations.
     """
     if configs and get_local_user().preferences.SYNC_ENABLED:
-        credentials = configs.get("features_keys", {})
+        credentials = configs.get("features_keys", {}) or {}
         for k, v in credentials.items():
             set_credential(k, v)
 
