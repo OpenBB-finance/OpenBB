@@ -47,7 +47,6 @@ class PreferencesModel:
     # Enable interactive matplotlib mode: change variable name to be more descriptive and delete comment
     USE_ION: bool = True
     USE_WATERMARK: bool = True
-    # Enable command and source in the figures: change variable name to be more descriptive and delete comment
     USE_CMD_LOCATION_FIGURE: bool = True
     USE_PROMPT_TOOLKIT: bool = True
     USE_PLOT_AUTOSCALING: bool = False
