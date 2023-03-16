@@ -1073,10 +1073,8 @@ en:
   dashboards/forecasting: forecasting for timeseries datasets
   dashboards/indicators: technical analysis indicators
   dashboards/correlation: stock correlations
-  dashboards/vsurf: options volatility surface
   dashboards/chains: options chain analysis
   dashboards/shortdata: finra shortdata analysis
-  dashboards/crypto: cryptocurrency exchange rates against USD
   dashboards/futures: historical futures performance
   reports: customizable research reports through jupyter notebooks
   reports/_reports_: Build and run your custom reports or try one of our templates
