@@ -1,7 +1,7 @@
 ---
 title: Data and Sources
 sidebar_position: 4
-description: TBD
+description: Data Sources and Providers.
 keywords:
   [
     installation,
@@ -19,10 +19,27 @@ keywords:
     openbb terminal,
   ]
 ---
-
 ## Data and Sources
 
 Please note that OpenBB does not provide any data, it is an aggregator which provides users access to data from a variety of sources. OpenBB does not maintain or have any control over the raw data supplied. If there is a specific problem with the output from a data provider, please consider contacting them first.
+
+<details><summary>Is there a list of all data providers?</summary>
+
+The complete list is found [here](https://docs.openbb.co/terminal/usage/guides/api-keys)
+
+</details>
+
+<details><summary>How do I load a ticker symbol from India?</summary>
+
+Ticker symbols listed on exchanges outside of the US will have a suffix attached, for example, Rico Auto Industries Limited:
+
+```console
+load ricoauto.ns
+```
+
+The precise naming convention will differ by source, reference each source's own documentation for specific details.
+
+</details>
 
 <details><summary>Data from today is missing.</summary>
 
@@ -48,25 +65,8 @@ US-based users are currently unable to access the Binance API. Please try loadin
 
 </details>
 
-## General Troubleshooting
+<details><summary>How can I request functionality for a specific data source?</summary>
 
-Both Windows and MacOS provide a "developer mode", and enabling it may help.
-
-**MacOS**: Go to the System Settings, and under the "Privacy and Security" tab, scroll to the bottom and select the option to "Allow applications downloaded from App Store and identified developers". Then, scroll up to click on, "Developer Tools", and add `Terminal.app` and `Visual Studio Code` (or the preferred code editor) to the list of applications allowed to run software locally that does not meet the system's security policy.
-
-**Windows**: Go to the Control Panel, and under the "Privacy & Security" tab, click on, "For developers". Under this menu, turn "Developer Mode" on.
-
-From the Windows Security menu, click on the Firewall & Network Protection tab, then click on "Allow an app through firewall". If the applications below are not allowed to communicate through Windows Defender Firewall, change the settings to allow.
-
-- BranchCache
-- Hyper-V
-- VcXsrv
-- Windows Terminal
-
-<details><summary>Why does a specific menu or command not exist?</summary>
-
-It could be that you are running an outdated version in which the menu or command is not yet available. Please check the [installation guide](https://docs.openbb.co/terminal/quickstart/installation) to download the most recent release.
-
-Do note that it is also possible that the menu or command has been deprecated. If this is oversight, please reach out to us [here](https://openbb.co/support).
+Please [request a feature](https://openbb.co/request-a-feature) by submitting a new request.
 
 </details>
