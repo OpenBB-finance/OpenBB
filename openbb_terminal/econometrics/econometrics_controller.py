@@ -1167,6 +1167,7 @@ class EconometricsController(BaseController):
             action="store",
             dest="lags",
             type=check_positive,
+            default=5,
             help="How many periods to lag the selected column.",
             required="-h" not in other_args,
         )
