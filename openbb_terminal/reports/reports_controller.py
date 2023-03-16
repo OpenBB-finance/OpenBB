@@ -195,14 +195,14 @@ class ReportController(BaseController):
             ns_parser = self.parse_simple_args(parser, other_args)
 
             if ns_parser:
-                cfg.LOGGING_SUPPRESS = True
+                cfg.change_logging_suppress(new_value=True)
                 parameters = vars(ns_parser)
                 parameters.pop("help")
                 reports_model.render_report(
                     input_path=str(reports_model.REPORTS_FOLDER / report_name),
                     args_dict=parameters,
                 )
-                cfg.LOGGING_SUPPRESS = False
+                cfg.change_logging_suppress(new_value=False)
 
         else:
             console.print("[red]Notebook not found![/red]\n")

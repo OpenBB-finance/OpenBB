@@ -1,6 +1,5 @@
 from typing import Any, List, Optional
 
-import openbb_terminal.config_terminal as cfg
 from openbb_terminal.core.library.metadata import Metadata
 from openbb_terminal.core.library.operation import Operation
 from openbb_terminal.core.library.trail_map import TrailMap
@@ -149,8 +148,7 @@ class BreadcrumbLogger:
         self.__check_initialize_logging()
 
     def __check_initialize_logging(self):
-        if not cfg.LOGGING_SUPPRESS:
-            self.__initialize_logging()
+        self.__initialize_logging()  # this is deprecated and will be removed in the future
 
     @staticmethod
     def __initialize_logging() -> None:

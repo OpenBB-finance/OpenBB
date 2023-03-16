@@ -45,7 +45,7 @@ class SDKLogger:
         self.__check_initialize_logging()
 
     def __check_initialize_logging(self):
-        if not cfg.LOGGING_SUPPRESS:
+        if not get_current_system().LOGGING_SUPPRESS:
             self.__initialize_logging()
 
     @staticmethod

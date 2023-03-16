@@ -41,8 +41,11 @@ def start_required_configurations():
     init_userdata()
 
 
-# Logging section
-LOGGING_SUPPRESS = False
+def change_logging_suppress(new_value: bool):
+    """Change the logging suppress value"""
+    current_system = get_current_system()
+    updated_system = dataclasses.replace(current_system, LOGGING_SUPPRESS=new_value)
+    set_current_system(updated_system)
 
 
 def setup_i18n(i18n_path: Path = I18N_DICT_LOCATION):
@@ -79,9 +82,7 @@ def setup_version():
 
     if version:
         current_system = get_current_system()
-        updated_system = dataclasses.replace(
-            current_system, **{current_system.VERSION: version}
-        )
+        updated_system = dataclasses.replace(current_system, VERSION=version)
         set_current_system(updated_system)
 
 
@@ -97,7 +98,7 @@ def setup_logging_app_name():
     if "site-packages" in __file__:
         current_system = get_current_system()
         updated_system = dataclasses.replace(
-            current_system, **{current_system.LOGGING_APP_NAME: "gst_packaged_pypi"}
+            current_system, LOGGING_APP_NAME="gst_packaged_pypi"
         )
         set_current_system(updated_system)
 
@@ -106,9 +107,7 @@ def setup_logging_sub_app(sub_app: str):
     """Setup the logging sub app"""
 
     current_system = get_current_system()
-    updated_system = dataclasses.replace(
-        current_system, **{current_system.LOGGING_SUB_APP: sub_app}
-    )
+    updated_system = dataclasses.replace(current_system, LOGGING_SUB_APP=sub_app)
     set_current_system(updated_system)
 
 

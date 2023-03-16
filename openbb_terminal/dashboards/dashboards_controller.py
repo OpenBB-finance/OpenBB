@@ -187,7 +187,7 @@ class DashboardsController(BaseController):
                 cmd += " --theme=dark"
 
             if ns_parser.input or response.lower() == "y" and not process_check:
-                cfg.LOGGING_SUPPRESS = True
+                cfg.change_logging_suppress(new_value=True)
                 self.processes.append(
                     psutil.Popen(
                         f"{cmd} --no-browser --port {port}"
@@ -199,7 +199,7 @@ class DashboardsController(BaseController):
                         env=os.environ,
                     )
                 )
-                cfg.LOGGING_SUPPRESS = False
+                cfg.change_logging_suppress(new_value=False)
                 atexit.register(self.kill_processes)
 
                 console.print(
