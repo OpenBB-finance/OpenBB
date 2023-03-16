@@ -167,9 +167,9 @@
 
 .DocSearch-Button {
   border-radius: 4px !important;
-  /*border: 1px solid #2e2e2e !important;
+  border-radius: 4px !important;
+  border: 1px solid #a2a2a2ff !important;
   background-color: #070707ff !important;
-  border-color: #a2a2a2ff !important;*/
 }
 
 @media (max-width: 440px) {
@@ -250,32 +250,31 @@
 }
 
 .header_docs_bot {
-  background: rgb(23, 8, 6) !important;
   background: -moz-linear-gradient(
     90deg,
-    rgba(59, 15, 49, 1) 0%,
-    rgba(54, 25, 68, 1) 15%,
+    rgb(78, 23, 65) 0%,
+    rgb(62, 29, 78) 15%,
     rgba(55, 29, 76, 1) 45%,
-    rgba(30, 17, 39, 1) 64%,
-    rgba(15, 11, 21, 1) 82%,
+    rgb(68, 39, 87) 64%,
+    rgb(46, 34, 65) 82%,
     rgba(16, 9, 0, 1) 100%
   ) !important;
   background: -webkit-linear-gradient(
     90deg,
-    rgba(59, 15, 49, 1) 0%,
-    rgba(54, 25, 68, 1) 15%,
+    rgb(78, 23, 65) 0%,
+    rgb(62, 29, 78) 15%,
     rgba(55, 29, 76, 1) 45%,
-    rgba(30, 17, 39, 1) 64%,
-    rgba(15, 11, 21, 1) 82%,
+    rgb(68, 39, 87) 64%,
+    rgb(46, 34, 65) 82%,
     rgba(16, 9, 0, 1) 100%
   ) !important;
   background: linear-gradient(
     90deg,
-    rgba(59, 15, 49, 1) 0%,
-    rgba(54, 25, 68, 1) 15%,
+    rgb(78, 23, 65) 0%,
+    rgb(62, 29, 78) 15%,
     rgba(55, 29, 76, 1) 45%,
-    rgba(30, 17, 39, 1) 64%,
-    rgba(15, 11, 21, 1) 82%,
+    rgb(68, 39, 87) 64%,
+    rgb(46, 34, 65) 82%,
     rgba(16, 9, 0, 1) 100%
   );
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#170806",endColorstr="#100900",GradientType=1) !important;

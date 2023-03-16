@@ -28,7 +28,9 @@ function NavbarContentLayout({ left, right }) {
   return (
     <div className="navbar__inner">
       <div className="navbar__items">{left}</div>
-      <div className="navbar__items navbar__items--right">{right}</div>
+      <div className="navbar__items navbar__items--right hidden sm:block">
+        {right}
+      </div>
     </div>
   );
 }
@@ -52,11 +54,14 @@ export default function NavbarContent() {
         // Ask the user to add the respective navbar items => more flexible
         <>
           <NavbarItems items={rightItems} />
-          {!searchBarItem && (
-            <NavbarSearch>
-              <SearchBar />
-            </NavbarSearch>
-          )}
+          <div className="flex items-center">
+            <NavbarColorModeToggle />
+            {!searchBarItem && (
+              <NavbarSearch>
+                <SearchBar />
+              </NavbarSearch>
+            )}
+          </div>
         </>
       }
     />

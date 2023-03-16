@@ -3,10 +3,7 @@ import { useNavbarMobileSidebar } from "@docusaurus/theme-common/internal";
 import { translate } from "@docusaurus/Translate";
 import NavbarColorModeToggle from "@theme/Navbar/ColorModeToggle";
 import IconClose from "@theme/Icon/Close";
-import NavbarLogo from "@theme/Navbar/Logo";
-import Link from "@docusaurus/Link";
-import clsx from "clsx";
-import { useLocation } from "@docusaurus/router";
+import SearchBar from "@site/src/theme/SearchBar";
 function CloseButton() {
   const mobileSidebar = useNavbarMobileSidebar();
   return (
@@ -25,54 +22,14 @@ function CloseButton() {
   );
 }
 export default function NavbarMobileSidebarHeader() {
-  const { pathname } = useLocation();
-
   return (
     <div className="navbar-sidebar__brand">
-      <div
-        className={clsx(
-          "flex p-2 border border-grey-400 rounded h-[34px] items-center bg-grey-900 gap-3"
-        )}
-      >
-        <Link
-          to="/terminal"
-          className={clsx(
-            "text-xs rounded px-2 py-1 hover:text-white hover:no-underline",
-            {
-              "text-grey-100 bg-grey-800 ": pathname.startsWith("/terminal"),
-              "text-grey-500 hover:bg-grey-800 ":
-                !pathname.startsWith("/terminal"),
-            }
-          )}
-        >
-          Terminal
-        </Link>
-        <Link
-          to="/sdk"
-          className={clsx(
-            "text-xs px-2 py-1 rounded hover:text-white hover:no-underline",
-            {
-              "text-grey-100 bg-grey-800 ": pathname.startsWith("/sdk"),
-              "text-grey-500 hover:bg-grey-800 ": !pathname.startsWith("/sdk"),
-            }
-          )}
-        >
-          SDK
-        </Link>
-        <Link
-          to="/sdk"
-          className={clsx(
-            "text-xs px-2 py-1 rounded hover:text-white hover:no-underline",
-            {
-              "text-grey-100 bg-grey-800 ": pathname.startsWith("/bot"),
-              "text-grey-500 hover:bg-grey-800 ": !pathname.startsWith("/bot"),
-            }
-          )}
-        >
-          BOT
-        </Link>
+      <div className="flex gap-2">
+        <NavbarColorModeToggle />
+        <div className="-ml-12">
+          <SearchBar />
+        </div>
       </div>
-      <NavbarColorModeToggle />
       <CloseButton />
     </div>
   );
