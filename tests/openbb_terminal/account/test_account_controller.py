@@ -352,7 +352,9 @@ def test_call_sync(mocker, other_args, sync):
         target="openbb_terminal.core.session.current_user.__current_user",
         new=mock_current_user,
     )
-
+    mocker.patch(
+        target="openbb_terminal.account.account_controller.set_preference",
+    )
     controller.call_sync(other_args=other_args)
 
     assert controller.queue == []
@@ -618,12 +620,6 @@ def test_call_generate(mocker, monkeypatch, test_user):
     # mock user input
     mock_input = "y"
     monkeypatch.setattr(f"{path_controller}.console.input", lambda _: mock_input)
-
-    # mock save to keys
-    mocker.patch(
-        target=f"{path_controller}.keys_model.set_openbb_personal_access_token",
-        return_value=True,
-    )
 
     controller.call_generate(other_args=["--save", "--days", "30"])
 
