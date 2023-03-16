@@ -619,12 +619,6 @@ def test_call_generate(mocker, monkeypatch, test_user):
     mock_input = "y"
     monkeypatch.setattr(f"{path_controller}.console.input", lambda _: mock_input)
 
-    # mock save to keys
-    mocker.patch(
-        target=f"{path_controller}.keys_model.set_openbb_personal_access_token",
-        return_value=True,
-    )
-
     controller.call_generate(other_args=["--save", "--days", "30"])
 
     mock_generate.assert_called_once_with(
