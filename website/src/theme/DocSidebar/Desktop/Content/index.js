@@ -7,6 +7,8 @@ import {
 } from "@docusaurus/theme-common/internal";
 import DocSidebarItems from "@theme/DocSidebarItems";
 import styles from "./styles.module.css";
+import { useIFrameContext } from "@site/src/theme/Root";
+import SearchBar from "@site/src/theme/SearchBar";
 function useShowAnnouncementBar() {
   const { isActive } = useAnnouncementBar();
   const [showAnnouncementBar, setShowAnnouncementBar] = useState(isActive);
@@ -22,10 +24,15 @@ function useShowAnnouncementBar() {
 }
 export default function DocSidebarDesktopContent({ path, sidebar, className }) {
   const showAnnouncementBar = useShowAnnouncementBar();
+  const { isIFrame } = useIFrameContext();
+
   return (
     <nav
       className={clsx(
-        "menu thin-scrollbar mt-[40px] !px-10 text-sm !pb-10",
+        "menu thin-scrollbar !px-10 text-sm !pb-10",
+        {
+          "mt-[40px]": !isIFrame,
+        },
         styles.menu,
         showAnnouncementBar && styles.menuWithAnnouncementBar,
         className

@@ -36,17 +36,17 @@ class PreferencesModel:
     # FEATURE FLAGS
     SYNC_ENABLED: bool = True
     FILE_OVERWRITE: bool = False
+    SHOW_VERSION: bool = True
     RETRY_WITH_LOAD: bool = False
     USE_TABULATE_DF: bool = True
     # Use interactive window to display dataframes with options to sort, filter, etc.
-    USE_INTERACTIVE_DF = True
+    USE_INTERACTIVE_DF: bool = True
     USE_CLEAR_AFTER_CMD: bool = False
     USE_COLOR: bool = True
     USE_DATETIME: bool = True
     # Enable interactive matplotlib mode: change variable name to be more descriptive and delete comment
     USE_ION: bool = True
     USE_WATERMARK: bool = True
-    # Enable command and source in the figures: change variable name to be more descriptive and delete comment
     USE_CMD_LOCATION_FIGURE: bool = True
     USE_PROMPT_TOOLKIT: bool = True
     USE_PLOT_AUTOSCALING: bool = False
@@ -78,12 +78,10 @@ class PreferencesModel:
     MONITOR: NonNegativeInt = 0
 
     # STYLE
-    # Color for `view` command data.  All pyplot colors listed at:
-    # https://matplotlib.org/stable/gallery/color/named_colors.html
-    VIEW_COLOR: str = "tab:green"
     MPL_STYLE: str = "dark"
     PMF_STYLE: str = "dark"
     RICH_STYLE: str = "dark"
+    PLOT_STYLE: str = "dark"
 
     # PATHS
     PREFERRED_DATA_SOURCE_FILE: str = str(USER_DATA_SOURCES_DEFAULT_FILE)
