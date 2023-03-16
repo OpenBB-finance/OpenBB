@@ -1,2 +1,2 @@
-[info]sync:[/info] True
+[info]sync:[/info] ON
 ['--on']

@@ -5,20 +5,22 @@ import os
 from pathlib import Path
 from typing import Dict, List, Optional
 
-from prompt_toolkit.completion import NestedCompleter
-
-from openbb_terminal import (
-    keys_model,
+from openbb_terminal.account.account_model import (
+    get_diff,
+    get_routines_info,
 )
-from openbb_terminal.account.account_model import get_diff, get_routines_info
 from openbb_terminal.account.account_view import display_routines_list
 from openbb_terminal.core.session import (
     hub_model as Hub,
     local_model as Local,
 )
-from openbb_terminal.core.session.current_user import get_current_user, is_local
-from openbb_terminal.core.session.preferences_handler import set_preference
+from openbb_terminal.core.session.current_user import (
+    get_current_user,
+    is_local,
+    set_preference,
+)
 from openbb_terminal.core.session.session_model import logout
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import check_positive
 from openbb_terminal.menu import session
@@ -46,26 +48,29 @@ class AccountController(BaseController):
     ]
 
     PATH = "/account/"
+    CHOICES_GENERATION = True
 
     def __init__(self, queue: Optional[List[str]] = None):
+        """Constructor"""
         super().__init__(queue)
         self.ROUTINE_FILES: Dict[str, Path] = {}
         self.REMOTE_CHOICES: List[str] = []
-        self.update_runtime_choices()
+        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
+            self.choices: dict = self.choices_default
+            self.completer = NestedCompleter.from_nested_dict(self.choices)
 
     def update_runtime_choices(self):
         """Update runtime choices"""
         self.ROUTINE_FILES = self.get_routines()
         if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.controller_choices}  # type: ignore
-            choices["sync"] = {"--on": {}, "--off": {}}
-            choices["upload"]["--file"] = {c: {} for c in self.ROUTINE_FILES}
-            choices["upload"]["-f"] = choices["upload"]["--file"]
-            choices["download"]["--name"] = {c: {} for c in self.REMOTE_CHOICES}
-            choices["download"]["-n"] = choices["download"]["--name"]
-            choices["delete"]["--name"] = {c: {} for c in self.REMOTE_CHOICES}
-            choices["delete"]["-n"] = choices["delete"]["--name"]
-            self.completer = NestedCompleter.from_nested_dict(choices)
+            self.choices["upload"]["--file"].update({c: {} for c in self.ROUTINE_FILES})
+            self.choices["download"]["--name"].update(
+                {c: {} for c in self.REMOTE_CHOICES}
+            )
+            self.choices["delete"]["--name"].update(
+                {c: {} for c in self.REMOTE_CHOICES}
+            )
+            self.completer = NestedCompleter.from_nested_dict(self.choices)
 
     def get_routines(self):
         """Get routines"""
@@ -88,7 +93,6 @@ class AccountController(BaseController):
 
     def print_help(self):
         """Print help"""
-
         mt = MenuText("account/", 100)
         mt.add_info("_info_")
         mt.add_cmd("sync")
@@ -109,6 +113,7 @@ class AccountController(BaseController):
         mt.add_info("_authentication_")
         mt.add_cmd("logout")
         console.print(text=mt.menu_text, menu="Account")
+        self.update_runtime_choices()
 
     @log_start_end(log=logger)
     def call_logout(self, other_args: List[str]) -> None:
@@ -155,14 +160,22 @@ class AccountController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if ns_parser.sync is None:
-                sync = get_current_user().preferences.SYNC_ENABLED
+                sync = (
+                    "ON"
+                    if get_current_user().preferences.SYNC_ENABLED is True
+                    else "OFF"
+                )
                 console.print(f"sync is {sync}, use --on or --off to change.")
             else:
                 set_preference(
-                    name="OPENBB_SYNC_ENABLED",
+                    name="SYNC_ENABLED",
                     value=ns_parser.sync,
                 )
-                sync = get_current_user().preferences.SYNC_ENABLED
+                sync = (
+                    "ON"
+                    if get_current_user().preferences.SYNC_ENABLED is True
+                    else "OFF"
+                )
                 console.print(f"[info]sync:[/info] {sync}")
 
     @log_start_end(log=logger)
@@ -250,7 +263,7 @@ class AccountController(BaseController):
             )
             df, page, pages = get_routines_info(response)
             if not df.empty:
-                self.REMOTE_CHOICES = list(df["name"])
+                self.REMOTE_CHOICES += list(df["name"])
                 self.update_runtime_choices()
                 display_routines_list(df, page, pages)
             else:
@@ -485,17 +498,6 @@ class AccountController(BaseController):
                 token = response.json().get("token", "")
                 if token:
                     console.print(f"\n[info]Token:[/info] {token}\n")
-
-                    save_to_keys = False
-                    if not ns_parser.save:
-                        save_to_keys = console.input(
-                            "Would you like to save the token to the keys? (y/n): "
-                        ).lower() in ["y", "yes"]
-
-                    if save_to_keys or ns_parser.save:
-                        keys_model.set_openbb_personal_access_token(
-                            key=token, persist=True, show_output=True
-                        )
 
     @log_start_end(log=logger)
     def call_show(self, other_args: List[str]) -> None:

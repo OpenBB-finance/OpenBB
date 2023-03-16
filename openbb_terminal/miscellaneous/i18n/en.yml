@@ -47,6 +47,7 @@ en:
   featflags/_info_: Feature flags through environment variables
   featflags/retryload: retry misspelled commands with load first
   featflags/tab: use tabulate to print dataframes
+  featflags/interactive: open dataframes in interactive window
   featflags/cls: clear console after each command
   featflags/color: use coloring features
   featflags/promptkit: enable prompt toolkit (autocomplete and history)
@@ -59,6 +60,8 @@ en:
   featflags/ion: interactive matplotlib mode
   featflags/watermark: watermark in figures
   featflags/cmdloc: command location displayed in figures
+  featflags/overwrite: whether to overwrite Excel files if they already exists
+  featflags/version: whether to show the version in the bottom right corner
   featflags/tbhint: displays usage hints in the bottom toolbar
   settings/_info_: Settings through environment variables
   settings/colors: set your own terminal colors
