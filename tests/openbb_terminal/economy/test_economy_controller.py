@@ -835,7 +835,7 @@ def test_call_fred_query(mocker):
     "other_args, mocked_func, called_args, called_kwargs",
     [
         (
-            ["--parameter=dgs2,dgs5"],
+            ["--parameter", "dgs2,dgs5"],
             "fred_view.display_fred_series",
             [],
             dict(
@@ -850,7 +850,7 @@ def test_call_fred_query(mocker):
             ),
         ),
         (
-            ["--parameter=DgS2,dgs5", "--export=csv", "--raw"],
+            ["--parameter", "DgS2,dgs5", "--export=csv", "--raw"],
             "fred_view.display_fred_series",
             [],
             dict(
@@ -865,7 +865,7 @@ def test_call_fred_query(mocker):
             ),
         ),
         (
-            ["--parameter=DgS2,dgs5", "--export=csv", "--start=2022-10-10"],
+            ["--parameter", "DgS2,dgs5", "--export=csv", "--start=2022-10-10"],
             "fred_view.display_fred_series",
             [],
             dict(
