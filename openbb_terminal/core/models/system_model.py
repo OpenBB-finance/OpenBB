@@ -11,7 +11,7 @@ class SystemModel(BaseModel):
     VERSION = "2.5.1"
 
     # Logging section
-    LOGGIG_APP_NAME: str = "gst"
+    LOGGING_APP_NAME: str = "gst"
     LOGGING_AWS_ACCESS_KEY_ID: str = "REPLACE_ME"
     LOGGING_AWS_SECRET_ACCESS_KEY: str = "REPLACE_ME"
     LOGGING_COMMIT_HASH: str = "REPLACE_ME"

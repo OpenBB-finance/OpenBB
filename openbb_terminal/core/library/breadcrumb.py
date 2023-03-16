@@ -68,7 +68,7 @@ class MetadataBuilder:
 
 
 class Breadcrumb:
-    __version__ = cfg.VERSION
+    __version__ = "2.5.1"  # this is deprecated and will be removed in the future
 
     def __init__(
         self,
@@ -159,6 +159,6 @@ class BreadcrumbLogger:
         )
         from openbb_terminal.loggers import setup_logging  # pylint: disable=C0415
 
-        cfg.LOGGING_SUB_APP = "sdk"
+        # cfg.LOGGING_SUB_APP = "sdk" - this is deprecated and will be removed in the future
         setup_logging()
         log_all_settings()

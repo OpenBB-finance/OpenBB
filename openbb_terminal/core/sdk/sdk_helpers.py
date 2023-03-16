@@ -349,6 +349,7 @@ from openbb_terminal.core.sdk import (
     controllers as ctrl,
     models as model,
 )
+from openbb_terminal.core.session.current_system import get_current_system
 from openbb_terminal.core.session.current_user import is_local
 from openbb_terminal.terminal_helper import is_auth_enabled
 

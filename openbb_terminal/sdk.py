@@ -20,6 +20,7 @@ from openbb_terminal.core.sdk import (
     controllers as ctrl,
     models as model,
 )
+from openbb_terminal.core.session.current_system import get_current_system
 from openbb_terminal.core.session.current_user import is_local
 from openbb_terminal.terminal_helper import is_auth_enabled
 
@@ -39,7 +40,7 @@ class OpenBBSDK:
         `whoami`: Display user info.\n
     """
 
-    __version__ = cfg.VERSION
+    __version__ = get_current_system().VERSION
 
     def __init__(self):
         SDKLogger()
@@ -562,10 +563,11 @@ class SDKLogger:
     @staticmethod
     def __initialize_logging() -> None:
         # pylint: disable=C0415
+        from openbb_terminal.config_terminal import setup_logging_sub_app
         from openbb_terminal.core.log.generation.settings_logger import log_all_settings
         from openbb_terminal.loggers import setup_logging
 
-        cfg.LOGGING_SUB_APP = "sdk"
+        setup_logging_sub_app(sub_app="sdk")
         setup_logging()
         log_all_settings()
 
