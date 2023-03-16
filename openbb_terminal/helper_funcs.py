@@ -1457,8 +1457,6 @@ def export_data(
             elif exp_type.endswith("xlsx"):
                 # since xlsx does not support datetimes with timezones we need to remove it
                 df = remove_timezone_from_dataframe(df)
-                print(df)
-                print(df.index)
 
                 if sheet_name is None:  # noqa: SIM223
                     df.to_excel(
