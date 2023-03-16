@@ -3,13 +3,30 @@ import LetteringLogo from "@site/src/components/Icons/LetteringLogo";
 import clsx from "clsx";
 import { useLocation } from "@docusaurus/router";
 import Link from "@docusaurus/Link";
+import TerminalLetteringLogo from "@site/src/components/Icons/TerminalLetteringLogo";
+import SDKLetteringLogo from "@site/src/components/Icons/SDKLetteringLogo";
+import BotLetteringLogo from "@site/src/components/Icons/BotLetteringLogo";
+
+function getLogo(type) {
+  switch (type) {
+    case "terminal":
+      return <TerminalLetteringLogo />;
+    case "sdk":
+      return <SDKLetteringLogo />;
+    case "bot":
+      return <BotLetteringLogo />;
+    default:
+      return <LetteringLogo />;
+  }
+}
+
 
 export default function NavbarLogo() {
   const { pathname } = useLocation();
   return (
     <div className="flex items-center gap-x-[56px]">
       <Link to="/" className="mb-1 md:mb-0 md:ml-0">
-        <LetteringLogo className="text-white" />
+        <LetteringLogo />
       </Link>
       <div
         className={clsx(
