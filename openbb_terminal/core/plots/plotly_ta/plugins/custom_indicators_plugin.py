@@ -20,6 +20,7 @@ class Custom(PltTA):
     @indicator()
     def plot_srlines(self, fig: OpenBBFigure, df_ta: pd.DataFrame):
         """Adds support and resistance lines to plotly figure"""
+        window = self.params["srlines"].get_argument_values("window") or 200
 
         def is_far_from_level(value, levels, df_stock):
             ave = np.mean(df_stock["High"] - df_stock["Low"])
@@ -40,7 +41,7 @@ class Custom(PltTA):
             return cond1 and cond2 and cond3 and cond4
 
         df_ta2 = df_ta.copy().loc[
-            (df_ta.index >= datetime.now() - timedelta(days=200))
+            (df_ta.index >= datetime.now() - timedelta(days=window))
             & (df_ta.index < datetime.now())
         ]
         if df_ta2.index[-2].date() != df_ta2.index[-1].date():

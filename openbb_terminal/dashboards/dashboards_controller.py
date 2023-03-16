@@ -321,7 +321,9 @@ class DashboardsController(BaseController):
         ns_parser = self.parse_simple_args(parser, other_args)
 
         if ns_parser:
-            cmd = "streamlit run"
+            cmd = ["streamlit", "run", "--server.headless", "true"]
+            if not hasattr(sys, "frozen"):
+                cmd = [sys.executable, "-m"] + cmd
 
             filepath = Path(__file__).parent / "stream" / "Forecasting.py"
             file = filepath.relative_to(self.parent_path).as_posix()
@@ -333,7 +335,7 @@ class DashboardsController(BaseController):
             response = ""
             if not ns_parser.input and not self.streamlit_url:
                 response = console.input(
-                    f"\nWarning: opens a port on your computer to run a {cmd} server.\n"
+                    "\nWarning: opens a port on your computer to run a streamlit server.\n"
                     "[green]Would you like us to run the server for you Y/n? [/]"
                 )
 
@@ -341,9 +343,10 @@ class DashboardsController(BaseController):
                 port = self.get_free_port()
                 self.streamlit_url = f"http://localhost:{port}"
                 os.environ["PYTHONPATH"] = str(self.parent_path)
+                cmd += ["--server.port", f"{port}", file]
                 self.processes.append(
                     psutil.Popen(
-                        f"{cmd} --server.headless true --server.port {port} {file}",
+                        cmd,
                         stdout=PIPE,
                         stderr=STDOUT,
                         stdin=PIPE,
@@ -376,7 +379,9 @@ class DashboardsController(BaseController):
                 url = f"{self.streamlit_url}/{name}"
                 plots_backend().send_url(url=url, title=f"{filename.title()} Dashboard")
             else:
-                console.print(f"\n\nType: {cmd} '{file}'\ninto a terminal to run.")
+                console.print(
+                    f"\n\nType: streamlit run '{file}'\ninto a terminal to run."
+                )
 
 
 def is_streamlit_activated() -> bool:
