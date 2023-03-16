@@ -127,7 +127,7 @@ class FeatureFlagsController(BaseController):
     @log_start_end(log=logger)
     def call_interactive(self, _):
         """Process interactive command"""
-        set_preference(
+        set_and_save_preference(
             "USE_INTERACTIVE_DF", not get_current_user().preferences.USE_INTERACTIVE_DF
         )
 
