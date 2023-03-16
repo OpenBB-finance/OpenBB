@@ -1688,7 +1688,7 @@ class TechnicalAnalysisController(StockBaseController):
             dest="indicators",
             type=check_indicators,
             help="Indicators to plot",
-            required="--indicators" not in other_args,
+            required="-h" not in other_args,
         )
         parser.add_argument(
             "-p",
