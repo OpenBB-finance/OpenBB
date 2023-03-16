@@ -28,6 +28,7 @@ class FeatureFlagsController(BaseController):
     CHOICES_COMMANDS: List[str] = [
         "retryload",
         "tab",
+        "interactive",
         "cls",
         "color",
         "ion",
@@ -63,6 +64,7 @@ class FeatureFlagsController(BaseController):
         mt.add_raw("\n")
         mt.add_setting("retryload", current_user.preferences.RETRY_WITH_LOAD)
         mt.add_setting("tab", current_user.preferences.USE_TABULATE_DF)
+        mt.add_setting("interactive", current_user.preferences.USE_INTERACTIVE_DF)
         mt.add_setting("cls", current_user.preferences.USE_CLEAR_AFTER_CMD)
         mt.add_setting("color", current_user.preferences.USE_COLOR)
         mt.add_setting("promptkit", current_user.preferences.USE_PROMPT_TOOLKIT)
@@ -102,6 +104,13 @@ class FeatureFlagsController(BaseController):
         """Process tab command"""
         set_preference(
             "USE_TABULATE_DF", not get_current_user().preferences.USE_TABULATE_DF
+        )
+
+    @log_start_end(log=logger)
+    def call_interactive(self, _):
+        """Process interactive command"""
+        set_preference(
+            "USE_INTERACTIVE_DF", not get_current_user().preferences.USE_INTERACTIVE_DF
         )
 
     @log_start_end(log=logger)
