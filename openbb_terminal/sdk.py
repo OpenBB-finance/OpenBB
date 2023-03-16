@@ -251,6 +251,7 @@ class OpenBBSDK:
             `industry_pe`: Get industry PE ratios\n
             `insider`: Get insider trading data\n
             `institutional`: Get institutional ownership data\n
+            `institutional_holders`: Get institutional ownership data at a given quarter\n
             `key`: Get historical key metrics\n
             `key_execs`: Get key executives from company\n
             `losers`: Get top losers\n

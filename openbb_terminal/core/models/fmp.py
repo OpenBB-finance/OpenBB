@@ -1,10 +1,10 @@
-from typing import List
+from typing import Dict, List
 
 import pandas as pd
 import requests
 from pydantic import BaseModel
 
-from openbb_terminal import config_terminal as cfg
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.helper_funcs import request
 
 # pylint: disable=too-many-public-methods
@@ -29,7 +29,12 @@ class FMP(BaseModel):
     @classmethod
     def _KEY(cls) -> str:
         """Returns the api key"""
-        return cfg.API_KEY_FINANCIALMODELINGPREP
+        return get_current_user().credentials.API_KEY_FINANCIALMODELINGPREP
+
+    @classmethod
+    def _QUARTERS(cls) -> Dict[str, str]:
+        quarters = {"Q1": "03-31", "Q2": "06-30", "Q3": "09-30", "Q4": "12-31"}
+        return quarters
 
     @classmethod
     def validate_request(cls, response: requests.models.Response) -> dict:
@@ -481,6 +486,33 @@ class FMP(BaseModel):
         url = (
             f"{cls._V4_URL()}institutional-ownership/symbol-ownership/?symbol={symbol}"
         )
+        r = request(url + "&apikey=" + cls._KEY())
+        return pd.DataFrame(cls.validate_request(r))
+
+    @classmethod
+    def institutional_holders(
+        cls, symbol: str, quarter: str = "Q4", year: int = 2022
+    ) -> pd.DataFrame:
+        """Get institutional ownership data at a given quarter
+
+        Parameters
+        ----------
+        symbol : str
+            Symbol to get data for
+
+
+        Returns
+        -------
+        pd.DataFrame
+            DataFrame of institutional ownership data
+
+        Examples
+        --------
+        >>> from openbb_terminal.sdk import openbb
+        >>> holders = openbb.fmp.institutional_holders("AAPL")
+        """
+        date = f"{year}-{cls._QUARTERS()[quarter]}"
+        url = f"{cls._V4_URL()}institutional-ownership/institutional-holders/symbol-ownership-percent?date={date}&symbol={symbol}"
         r = request(url + "&apikey=" + cls._KEY())
         return pd.DataFrame(cls.validate_request(r))
 

@@ -27,6 +27,7 @@ class FmpRoot(Category):
         `industry_pe`: Get industry PE ratios\n
         `insider`: Get insider trading data\n
         `institutional`: Get institutional ownership data\n
+        `institutional_holders`: Get institutional ownership data at a given quarter\n
         `key`: Get historical key metrics\n
         `key_execs`: Get key executives from company\n
         `losers`: Get top losers\n
@@ -73,6 +74,7 @@ class FmpRoot(Category):
         self.industry_pe = lib.fmp_core.industry_pe_ratios
         self.insider = lib.fmp_core.insider
         self.institutional = lib.fmp_core.institutional
+        self.institutional_holders = lib.fmp_core.institutional_holders
         self.key = lib.fmp_core.key_metrics
         self.key_execs = lib.fmp_core.key_execs
         self.losers = lib.fmp_core.losers
