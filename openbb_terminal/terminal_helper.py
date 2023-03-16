@@ -214,7 +214,7 @@ def open_openbb_documentation(
     if full_url[-1] == "/":
         full_url = full_url[:-1]
 
-    plots_backend().send_url(full_url)
+    webbrowser.open(full_url)
 
 
 def hide_splashscreen():

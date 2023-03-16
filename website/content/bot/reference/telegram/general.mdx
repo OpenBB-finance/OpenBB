@@ -1,0 +1,182 @@
+---
+title: General
+description: watchlist, markets, news, quote, futures, ta, pop
+premium: false
+commands:
+  - "/watchlist"
+  - "/news"
+  - "/markets"
+  - "/quote"
+  - "/futures"
+  - "/ta"
+  - "/heatmap"
+  - "/heatchart"
+  - "/pop"
+---
+
+# General
+
+## watchlist
+
+> Display the tickers in your watchlist - Registered users get 3 for free!
+
+```format
+/watchlist
+```
+
+**_add** - _optional_
+- How to add more tickers to your watchlist
+
+**_remove** - _optional_
+- If you want to remove symbols
+
+**Examples**
+
+```
+/watchlist
+```
+```
+/watchlist_add AMD,GOOG,TSLA
+```
+```
+/watchlist_remove
+```
+
+## news
+
+> Display the most recent news for ticker
+
+```format
+/news <ticker>
+```
+
+**ticker**
+- The symbol/ticker/coin of the stock/coin you want to query
+
+**Examples**
+
+```
+/news AMD
+```
+
+---
+
+## markets
+
+> Displays an overview of the market with adv / decliners relative to change and 50d/200d MA
+
+```format
+/markets
+```
+
+**Examples**
+
+```
+/markets
+```
+
+---
+
+## quote
+
+> Displays ticker quote info.
+
+```format
+/quote <ticker>
+```
+
+**ticker**
+- The symbol/ticker/coin of the stock/coin you want to query
+
+**Examples**
+
+```
+/quote AMD
+```
+
+---
+
+## futures
+
+> Displays Futures.
+
+```format
+/futures
+```
+
+---
+
+## ta
+
+> Displays a given stocks Technical Analysis summary.
+
+```format
+/ta <ticker>
+```
+
+**ticker**
+- The symbol/ticker/coin of the stock/coin you want to query
+
+**Examples**
+
+```
+/ta AMD
+```
+
+---
+
+## heatmap
+
+> Daily Heat Maps by Market. Sector is optional.
+
+```format
+/heatmap <market> <sector>
+```
+
+**market**
+- Market to filter by. (sp500, dow30, nasdaq, crypto, russel)
+**sector**
+- Sector to filter by. If not specified, all sectors are returned. (TODO : list sectors here)
+
+**Examples**
+
+```
+/heatmap sp500
+/heatmap sp500 services
+```
+
+---
+
+## heatchart
+
+> Daily Market Heat Chart - 15m Delayed
+
+```format
+/heatchart
+```
+
+**Examples**
+
+```
+/heatchart
+```
+## pop
+
+> Display the most popular tickers over the last hour or day run on the bot
+
+```format
+/pop <interval>
+```
+
+**interval** -
+The interval you want to see the most popular commands for - 1d, 1h
+
+**Examples**
+
+```
+/pop 1d
+```
+
+```
+/pop 1h
+```

@@ -1,0 +1,101 @@
+---
+title: Shorts
+description: shotvol, shortint, topshortvol, hsi...
+premium: false
+commands:
+  - "/sh shortvol"
+  - "/sh shortint"
+  - "/sh topshortvol"
+  - "/sh hsi"
+  - "/sh shortrate"
+  - "/sh borrowed"
+---
+
+# Shorts
+
+## sh
+
+> Graph of 30 day history of short volume vs vol.
+
+```format
+/sh shortvol <ticker>
+```
+
+**ticker**
+- The symbol/ticker of the stock you want the short interest for
+
+**Examples**
+
+```
+/sh shortvol ticker:AMD
+```
+
+---
+
+## borrowed
+
+> Displays history of borrowed shares available and fee.
+
+```format
+/sh borrowed <ticker>
+```
+
+**ticker**
+- The symbol/ticker of the stock you want the short interest for
+
+**Examples**
+
+```
+/sh borrowed ticker:AMD
+```
+
+---
+
+## shortrate
+
+> Display Short shares spot borrow rate sourced from Interactive Brokers.
+
+```format
+/sh shortrate <ticker>
+```
+
+**ticker**
+- The symbol/ticker of the stock you want the short interest for
+
+**Examples**
+
+```
+/sh shortrate ticker:AMD
+```
+
+---
+
+## topshortvol
+
+> Top 15 Short Interest Stocks per Finra
+
+```format
+/sh topshortvol
+```
+
+---
+
+## hsi
+
+> Show top high short interest stocks of over 20% ratio
+
+```
+/sh hsi [<num>]
+```
+
+**[num]** - _optional_
+- The number of stocks to print
+
+Examples
+
+```
+/sh hsi
+```
+```
+/sh hsi num:4
+```

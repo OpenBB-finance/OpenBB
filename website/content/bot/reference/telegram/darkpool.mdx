@@ -1,0 +1,170 @@
+---
+title: Darkpool
+description: topsum, sectors, summary, allprints...
+premium: true
+commands:
+  - "/topsum"
+  - "/sectors"
+  - "/summary"
+  - "/allprints"
+  - "/allblocks"
+  - "/alldp"
+  - "/bigprintsdp"
+  - "/levels"
+---
+
+# darkpool
+
+## topsum
+
+> Top Total Block & Dark Pool data.
+
+```format
+/topsum
+```
+
+**Examples**
+
+```
+/topsum
+```
+
+---
+
+## levels
+
+> Biggest Levels for All Prints over last X days.
+
+```format
+/levels <ticker> <days>
+```
+
+**ticker**
+  - The ticker to query for
+
+**days**
+  - The number of days to return
+
+**Examples**
+
+```
+/levels TSLA 10
+```
+
+---
+
+## sectors
+
+> Summary of all prints by % of MarketCap by Sector
+
+```format
+/sectors <days> <sector>
+```
+
+**days**
+  - The number of days to return
+
+**sector**
+  - The sector to select for the query
+
+```format
+/sectors 5 bm
+```
+
+---
+
+## summary
+
+> Summary of all prints by % of MarketCap
+
+```format
+/summary <days> <sort>
+```
+
+**days**
+  - The number of days to return
+
+**sort**
+  - Sort by market cap, float, total or short percentage
+
+**Examples**
+
+```
+/summary 10 mc
+```
+
+---
+
+## allprints
+
+> Last 10 Combination of Dark Pool and Blocks.
+
+```format
+/allprints <ticker>
+```
+
+**ticker**
+  - The symbol/ticker of the stock you want to lookup
+
+**Examples**
+
+```
+/allprints AMD
+```
+
+---
+
+## alldp
+
+> Last 15 Dark Pool Trades.
+
+```format
+/alldp <ticker>
+```
+
+**ticker**
+  - The symbol/ticker of the stock you want to lookup
+
+**Examples**
+
+```
+/alldp AMD
+```
+
+---
+
+## allblocks
+
+> Last 15 Combination of Block Trades only
+
+```format
+/allblocks <ticker>
+```
+
+**ticker**
+  - The symbol/ticker of the stock you want to lookup
+
+**Examples**
+
+```
+/allblocks AMD
+```
+
+---
+
+## bigprints
+
+> Combination of Dark Pool and Blocks - Largest over x amount of days
+
+```format
+/bigprintsdp <days>
+```
+
+**days**
+  - The number of days to return
+
+**Examples**
+
+```
+/bigprintsdp 6
+```

@@ -1,0 +1,437 @@
+---
+title: Options
+description: gamma, iv, topoi, unu, vol, hist, oi, mp...
+premium: true
+commands:
+  - "/gamma"
+  - "/iv"
+  - "/topoi"
+  - "/unu"
+  - "/vol"
+  - "/hist"
+  - "/uoastock"
+  - "/highiv"
+  - "/topvol"
+  - "/topvoletf"
+  - "/topoichange"
+  - "/oi"
+  - "/stats"
+  - "/mp"
+  - "/smile"
+  - "/vsurf"
+  - "/chains"
+---
+
+# Options
+
+## itm
+
+> Displays In-The-Money (ITM) options by expiry for a stock.
+
+```format
+/itm <ticker>
+```
+
+**ticker**
+- The ticker/symbol to look up
+
+Examples
+
+```
+/itm AMD
+```
+
+---
+
+## equitypc
+
+> Displays the Equity Put/Call Volume Ratio - from market-harmonics.com
+
+```format
+/equitypc
+```
+
+---
+
+## indexpc
+
+> Displays the Index Put/Call Ratio for the market - from market-harmonics.com
+
+```format
+/indexpc
+```
+
+---
+
+## oichart
+
+> Charts Total Open Interest by Strike Price.
+
+```format
+/oichart <ticker> [<expiry>]
+```
+
+**ticker**
+- The ticker/symbol to look up
+
+**[expiry]** - _optional_
+- The ticker/symbol to look up
+
+Examples
+
+```
+/oichart AMD
+```
+
+```
+/oichart AMD 2022-07-29
+```
+
+---
+
+## gamma
+
+> Displays Options Gamma Levels for a Stock.
+
+```format
+/gamma <ticker> [<expiry>]
+```
+
+**ticker**
+- The ticker/symbol to look up
+
+**[expiry]** - _optional_
+- Gamma from now to expiration
+
+Examples
+
+```
+/gamma AMD
+```
+
+```
+/gamma AMD 2022-07-29
+```
+
+---
+
+## iv
+
+> Displays option information (volatility, IV rank etc).
+
+```format
+/iv <ticker>
+```
+
+**ticker**
+- The ticker/symbol to look up
+
+Examples
+
+```
+/iv AMD
+```
+
+---
+
+## topoi
+
+> Displays TOpen Interest
+
+```format
+/topoi
+```
+
+---
+
+## unu
+
+> Shows Unusual Options
+
+```format
+/unu
+```
+
+---
+
+## vol
+
+> Displays Options Strike Volume can add EXP date for bigger breakdown
+
+```format
+/vol <ticker> [<expiry>]
+```
+
+**ticker**
+- The ticker/symbol to look up
+
+**expiry** - _optional_
+- Expiration to query
+
+Examples
+
+```
+/vol AMD
+```
+
+```
+/vol AMD 2022-07-29
+```
+
+---
+
+## hist
+
+> Displays Options Price History in a chart.
+
+```
+/hist <ticker> <expiry> <strike> <opt_type> <interval> [<past_days>]
+```
+
+**ticker**
+- The ticker/symbol to look up
+
+**expiry**
+- Expiration to query
+
+**strike**
+- Option Strike Price
+
+**opt_type**
+- Calls or Puts Calls | Puts
+
+**interval**
+- Chart Minute Interval | 1440 for Daily 5 | 15 | 30
+
+**[past_days]** - _optional_
+- Past Days to Display. Default: 5
+
+Examples
+
+```
+/hist AMD 2022-07-29 18 Calls 5 5
+```
+
+```
+/hist AMD 2022-07-29 18 Calls 5
+```
+
+---
+
+## uoastock
+
+> Display T20day Average Options Volume by ticker.
+
+```format
+/uoastock [<price>]
+```
+
+**[price]** - _optional_
+- Filter by stocks over a certain price
+
+Examples
+
+```
+/uoastock
+```
+
+```
+/uoastock 50
+```
+
+---
+
+## highiv
+
+> T15 Highest IV30 Equity stocks.
+
+```format
+/highiv
+```
+
+---
+
+## topvol
+
+> T15 Highest options volume.
+
+```format
+/topvol
+```
+
+---
+
+## topvoletf
+
+> T15 Highest options volume ETF.
+
+```
+/topvoletf
+```
+
+---
+
+## topoichange
+
+> Displays T15 stocks with highest OI Change.
+
+```format
+/topoichange
+```
+
+---
+
+## oi
+
+> Displays OI and call/put ratio for given stock - can add EXP date too for bigger breakdown
+
+```format
+/oi <ticker> [<expiry>]
+```
+
+**ticker**
+- The ticker/symbol to look up
+
+**[expiry]** - _optional_
+- Expiration to query
+
+Examples
+
+```
+/oi AMC
+```
+
+```
+/oi AMC 2022-07-29
+```
+
+---
+
+## stats
+
+> Displays Options Statistics for a stock.
+
+```format
+/stats <ticker>
+```
+
+**ticker**
+- The ticker/symbol to look up
+
+Examples
+
+```
+/stats AMC
+```
+
+---
+
+## maxpain
+
+> Displays the Max Pain on expiration date for a given stock.
+
+```format
+/maxpain <ticker> <expiry>
+```
+
+**ticker**
+- The ticker/symbol to look up
+
+**expiry**
+- Expiration to query
+
+Examples
+
+```
+/maxpain AMC 2022-07-29
+```
+
+---
+
+## chains
+
+> Displays Options Chain by Expiry
+
+```format
+/chains <ticker> <expiry> <opt_type> [<min_sp>] [<max_sp>]
+```
+
+**ticker**
+- The ticker/symbol to look up
+
+**expiry**
+- Expiration to query
+
+**opt_type**
+- Calls or Puts
+
+**[min_sp]** - _optional_
+- Minimum Strike Price
+
+**[max_sp]** - _optional_
+- Maximum Strike Price
+
+Examples
+
+```
+/chains AMD 2022-08-05 Calls
+```
+```
+/chains AMD 2022-08-05 Calls 10 100
+```
+
+---
+
+## vsurf
+
+> Displays Options Volatility Surface
+
+```format
+/vsurf <ticker> <z>
+```
+
+**ticker**
+- The ticker/symbol to look up
+
+**z**
+- Variable for the Z axis (Volatility (v), Open Interest (oi), Last Price (lp))
+
+Examples
+
+```
+/vsurf AMD v
+```
+```
+/vsurf AMD oi
+```
+
+---
+
+## smile
+
+> Displays Options Volatility Smile
+
+```format
+/smile <ticker> <expiry> [<min_sp>] [<max_sp>]
+```
+
+**ticker**
+- The ticker/symbol to look up
+
+**expiry**
+- Expiration to query
+
+**[min_sp]** - _optional_
+- Minimum Strike price
+
+**[max_sp]** - _optional_
+- Maximum Strike Price
+
+Examples
+
+```
+/smile AMD 2022-08-19
+```
+```
+/smile AMD 2022-08-19 10 100
+```
