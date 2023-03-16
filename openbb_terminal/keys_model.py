@@ -281,14 +281,13 @@ def handle_credential(name: str, value: str, persist: bool = False):
 
     if local_user and persist:
         write_to_dotenv("OPENBB_" + name, value)
-    else:
-        if sync_enabled and name not in LOCAL_KEYS:
-            upload_config(
-                key=name,
-                value=str(value),
-                type_="keys",
-                auth_header=current_user.profile.get_auth_header(),
-            )
+    elif not local_user and sync_enabled and name not in LOCAL_KEYS:
+        upload_config(
+            key=name,
+            value=str(value),
+            type_="keys",
+            auth_header=current_user.profile.get_auth_header(),
+        )
 
 
 def set_av_key(key: str, persist: bool = False, show_output: bool = False) -> str:

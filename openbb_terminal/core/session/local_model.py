@@ -117,6 +117,8 @@ def apply_configs(configs: dict):
         for k, v in credentials.items():
             set_credential(k, v)
 
+    # TODO: apply other configs here
+
 
 def get_routine(file_name: str, folder: Optional[Path] = None) -> Optional[str]:
     """Get the routine.
