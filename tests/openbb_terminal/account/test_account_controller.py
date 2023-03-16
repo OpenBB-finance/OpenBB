@@ -352,7 +352,9 @@ def test_call_sync(mocker, other_args, sync):
         target="openbb_terminal.core.session.current_user.__current_user",
         new=mock_current_user,
     )
-
+    mocker.patch(
+        target="openbb_terminal.account.account_controller.set_preference",
+    )
     controller.call_sync(other_args=other_args)
 
     assert controller.queue == []
