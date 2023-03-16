@@ -638,6 +638,7 @@ def show_quick_performance(
         show_index=False,
         headers=df.columns,
         title=f"{symbol.upper()}/{current_currency.upper()} Performance {exchange_str}",
+        print_to_console=True,
     )
     console.print()
 
