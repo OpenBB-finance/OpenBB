@@ -499,7 +499,10 @@ class FMP(BaseModel):
         ----------
         symbol : str
             Symbol to get data for
-
+        quarter: str
+            Quarter to get data for.  In the form of "Q1", etc.
+        year: int
+            Year to get data for
 
         Returns
         -------
@@ -511,9 +514,11 @@ class FMP(BaseModel):
         >>> from openbb_terminal.sdk import openbb
         >>> holders = openbb.fmp.institutional_holders("AAPL")
         """
+        # TODO: check the date against available dates
         date = f"{year}-{cls._QUARTERS()[quarter]}"
-        url = f"{cls._V4_URL()}institutional-ownership/institutional-holders/symbol-ownership-percent?date={date}&symbol={symbol}"
-        r = request(url + "&apikey=" + cls._KEY())
+        url = f"{cls._V4_URL()}institutional-ownership/institutional-holders/symbol-ownership-percent?date={date}"
+        # TODO: allow for more pages to be obtained
+        r = request(url + f"&symbol={symbol}&page=0&apikey=" + cls._KEY())
         return pd.DataFrame(cls.validate_request(r))
 
     @classmethod
