@@ -14,7 +14,7 @@ import pandas as pd
 from pandas.tseries.holiday import USFederalHolidayCalendar
 
 import openbb_terminal
-from openbb_terminal.base_helpers import load_dotenv_and_reload_configs
+import openbb_terminal.config_terminal as cfg  # noqa: F401
 from openbb_terminal.core.plots.backend import plots_backend
 from openbb_terminal.decorators import disable_check_api
 from openbb_terminal.helper_funcs import (
@@ -28,7 +28,7 @@ from openbb_terminal.rich_config import console
 from openbb_terminal.sdk import openbb
 from openbb_terminal.stocks.comparison_analysis import finviz_compare_model
 
-load_dotenv_and_reload_configs()
+cfg.start_required_configurations()
 disable_check_api()
 plots_backend().start()
 plots_backend().isatty = True
