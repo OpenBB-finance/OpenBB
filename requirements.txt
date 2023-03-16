@@ -80,7 +80,6 @@ importlib-resources==5.12.0 ; python_version >= "3.8" and python_full_version !=
 inflection==0.5.1 ; python_version >= "3.8" and python_full_version != "3.9.7" and python_version < "3.11"
 interface-meta==1.3.0 ; python_version >= "3.8" and python_version < "3.11" and python_full_version != "3.9.7"
 intrinio-sdk==6.22.2 ; python_version >= "3.8" and python_full_version != "3.9.7" and python_version < "3.11"
-ipyflex==0.2.6 ; python_version >= "3.8" and python_full_version != "3.9.7" and python_version < "3.11"
 ipykernel==6.21.2 ; python_version >= "3.8" and python_full_version != "3.9.7" and python_version < "3.11"
 ipympl==0.8.4 ; python_version >= "3.8" and python_full_version != "3.9.7" and python_version < "3.11"
 ipython-genutils==0.2.0 ; python_version >= "3.8" and python_full_version != "3.9.7" and python_version < "3.11"

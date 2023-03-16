@@ -87,7 +87,6 @@ tokenterminal = "^1.0.1"
 torch = {version = "~1.11.0", optional = true}
 watchdog = "^2.1.9"
 pythclient = "^0.1.2"
-ipyflex = "^0.2.4"
 "ruamel.yaml" = "^0.17.21"
 setuptools = "<65.5.0"
 numpy = "1.23.4"

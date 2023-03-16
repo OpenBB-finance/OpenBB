@@ -3125,25 +3125,6 @@ six = ">=1.10"
 urllib3 = ">=1.15"
 
 [[package]]
-name = "ipyflex"
-version = "0.2.6"
-description = "Jupyter Widget Flex Layout"
-category = "main"
-optional = false
-python-versions = ">=3.6"
-files = [
-    {file = "ipyflex-0.2.6-py2.py3-none-any.whl", hash = "sha256:3e6fa36842f101eea89dbec0317091eb6cdbbd1b75fb056f61ed574fa6c2788e"},
-    {file = "ipyflex-0.2.6.tar.gz", hash = "sha256:312ffc1fd5e19a4222055ff2761c9896c415b3c91e9c5046b637b218c72e857b"},
-]
-
-[package.dependencies]
-ipywidgets = ">=7.0.0,<9"
-
-[package.extras]
-docs = ["jupyter-sphinx", "nbsphinx", "nbsphinx-link", "pypandoc", "pytest-check-links", "recommonmark", "sphinx (>=1.5)", "sphinx-rtd-theme"]
-test = ["nbval", "pytest (>=4.6)", "pytest-cov"]
-
-[[package]]
 name = "ipykernel"
 version = "6.21.2"
 description = "IPython Kernel for Jupyter"
@@ -10242,4 +10223,4 @@ optimization = ["Riskfolio-Lib"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8,<3.11, !=3.9.7"
-content-hash = "9c3abf5dc3861d0a1c5364efab55c49b7c1de8202c1ff222cadc17a5c1403d32"
+content-hash = "5673985d2547944f488da556023fe0e75961cb0bc6286c2ea9035326558df04b"
