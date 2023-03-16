@@ -1,5 +1,5 @@
 ---
-sidebar_position: 5
+sidebar_position: 6
 ---
 
 import ShowcaseItem from "@site/src/components/General/ShowcaseItem"
@@ -49,5 +49,3 @@ Your browser does not support the video tag.
 :::tip
 
 Find more open source projects on GitHub [here](https://github.com/search?q=topic:openbb&type=Repositories&l=&l=)
-
-
