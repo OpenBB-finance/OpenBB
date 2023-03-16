@@ -7,7 +7,7 @@ import os
 from typing import Optional
 
 
-from openbb_terminal.decorators import log_start_end
+from openbb_terminal.decorators import log_start_end,check_api_key
 from openbb_terminal.helper_funcs import export_data
 from openbb_terminal.rich_config import console
 
@@ -18,6 +18,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_ALTHUB_TOKEN"])
 def display_articles_data(
     ticker: str = "",
     start_date: str = "",
@@ -55,22 +56,21 @@ def display_articles_data(
         end_date=end_date,
         date=date,
         limit=limit,
-        offset=offset,
-        
+        offset=offset
     )
     df.dropna(how="all", axis=1, inplace=True)
     df = df.replace(float("NaN"), "")
     if df.empty:
         console.print("No data found.")
     else:
-        for index, row in df.iterrows():
+        for row in df.itertuples():
             console.print()
-            console.print("Date : ", row["published_on"])
-            console.print("Date : ", row["ticker"])
-            console.print("Aritcle name : ", row["article_title"])
-            console.print("Aritcle URL : ", row["article_url"])
-            console.print("Aritcle Sentiment : ", row["raw_sentiment"])
-            console.print("Aritcle Adjusted Sentiment : ", row["adjusted_sentiment"])
+            console.print("Date : ", row.published_on)
+            console.print("Ticker : ", row.ticker)
+            console.print("Article Name : ", row.article_title)
+            console.print("Article URL : ", row.article_url)
+            console.print("Article Sentiment : ", row.raw_sentiment)
+            console.print("Article Adjusted Sentiment : ", row.adjusted_sentiment)
             console.print()
     export_data(
         export,
@@ -79,4 +79,3 @@ def display_articles_data(
         df,
         sheet_name
     )
-    return

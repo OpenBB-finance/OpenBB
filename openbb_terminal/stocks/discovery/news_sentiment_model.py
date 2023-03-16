@@ -20,6 +20,25 @@ def get_data(
     limit: int = 100,
     offset: int = 0,
 ) -> pd.DataFrame:
+
+    """Getting Onclusive Data. [Source: Invisage Plotform]
+
+    Parameters
+    ----------
+    ticker : str
+        Stock ticker
+    start_date : str
+        Records are coming from this day (Start date in YYYY-MM-DD format)
+    end_date : str
+        Records will get upto this day (End date in YYYY-MM-DD format)
+    date : str
+        Show that the records on this day (date in YYYY-MM-DD format)
+    limit: int
+        The number of records to get
+    offset : int
+        The number of records to offset
+    """
+
     headers = {
         "accept": "application/json",
         "Authorization": f"token {get_current_user().credentials.API_ALTHUB_TOKEN}",
@@ -28,7 +47,7 @@ def get_data(
     df = pd.DataFrame(data=None)
 
     query_params = {
-        "all_feilds": 'Flase',
+        "all_feilds": 'False',
         "ordering":"-published_on,-share_of_article,-pagerank"
     }
     if ticker:
@@ -40,7 +59,7 @@ def get_data(
 
     if start_date and end_date and not date:
         if start_date > end_date:
-            console.print("start_date must be lessthan end_date")
+            console.print("start_date must be less than end_date")
             return df
 
     if date:
