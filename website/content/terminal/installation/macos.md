@@ -45,15 +45,15 @@ To understand whether you are using an Apple Sillicon (M1) device or an Intel-ba
 
 <details><summary>Rosetta Installation Instructions (Apple Sillicon users only)</summary>
 
-1. Press ⌘ (Command) + SPACE to open spotlight search, and type `Terminal` and hit Return (⏎).
+1. Press ⌘ (Command) + SPACE to open spotlight search, and type "Terminal" and hit Return (⏎).
 2. Copy and paste the following code in the Terminal and hit ENTER (⏎):
 
-```console
-softwareupdate --install-rosetta
-```
+  ```console
+  softwareupdate --install-rosetta
+  ```
 
 3. This will start up the Rosetta installation process and you will receive a message regarding the Licence Agreement. Type `A` and hit Return (⏎).
-4. After the installation process has finished, you can proceed to the "Mac M1 Installer" button.
+4. After the installation process has finished, you can proceed by clicking on the "Mac M1 Installer" button.
 
 </details>
 :::

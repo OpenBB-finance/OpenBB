@@ -412,6 +412,6 @@ def first_time_user() -> bool:
         Whether or not the user is a first time user
     """
     if SETTINGS_ENV_FILE.stat().st_size == 0:
-        set_preference("OPENBB_PREVIOUS_USE", True)
+        set_preference("PREVIOUS_USE", True)
         return True
     return False
