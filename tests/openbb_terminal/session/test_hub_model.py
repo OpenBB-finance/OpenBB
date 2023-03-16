@@ -750,7 +750,7 @@ def test_generate_personal_access_token(
         assert result.status_code == mock_response.status_code
         requests_put_mock.assert_called_once()
         _, kwargs = requests_put_mock.call_args
-        assert kwargs["url"] == base_url + "/sdk/token"
+        assert kwargs["url"] == base_url + "sdk/token"
         assert kwargs["headers"] == {
             "Authorization": auth_header,
             "Content-Type": "application/json",
@@ -798,7 +798,7 @@ def test_get_personal_access_token(auth_header, base_url, timeout, status_code):
         assert result.status_code == mock_response.status_code
         requests_get_mock.assert_called_once()
         _, kwargs = requests_get_mock.call_args
-        assert kwargs["url"] == base_url + "/sdk/token"
+        assert kwargs["url"] == base_url + "sdk/token"
         assert kwargs["headers"] == {"Authorization": auth_header}
         assert kwargs["timeout"] == timeout
 
@@ -842,7 +842,7 @@ def test_revoke_personal_access_token(auth_header, base_url, timeout, status_cod
         assert result.status_code == mock_response.status_code
         requests_get_mock.assert_called_once()
         _, kwargs = requests_get_mock.call_args
-        assert kwargs["url"] == base_url + "/sdk/token"
+        assert kwargs["url"] == base_url + "sdk/token"
         assert kwargs["headers"] == {"Authorization": auth_header}
         assert kwargs["timeout"] == timeout
 
