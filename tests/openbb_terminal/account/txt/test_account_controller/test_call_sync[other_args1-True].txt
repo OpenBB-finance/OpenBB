@@ -1,3 +1,2 @@
-SYNC_ENABLED has been set to False
 [info]sync:[/info] ON
 ['--off']
