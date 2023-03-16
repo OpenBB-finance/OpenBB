@@ -7,6 +7,7 @@ from typing import Union
 from dotenv import set_key
 
 # IMPORTS INTERNAL
+from openbb_terminal.base_helpers import console
 from openbb_terminal.core.config.paths import SETTINGS_ENV_FILE
 from openbb_terminal.core.session.current_user import (
     get_current_user,
@@ -54,3 +55,5 @@ def set_preference(
             type_="settings",
             auth_header=current_user.profile.get_auth_header(),
         )
+
+    console.print(f"[yellow]{name}[/] [green]has been set to[/] {value}")
