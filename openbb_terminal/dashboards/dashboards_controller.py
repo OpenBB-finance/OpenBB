@@ -45,7 +45,6 @@ class DashboardsController(BaseController):
         "vsurf",
         "chains",
         "shortdata",
-        "crypto",
         "futures",
         "forecast",
         "forecasting",
@@ -80,7 +79,6 @@ class DashboardsController(BaseController):
         mt.add_cmd("vsurf")
         mt.add_cmd("chains")
         mt.add_cmd("shortdata")
-        mt.add_cmd("crypto")
         mt.add_cmd("futures")
         mt.add_cmd("forecast")
         mt.add_raw("\nStreamlit Apps:\n")
@@ -112,11 +110,6 @@ class DashboardsController(BaseController):
     def call_shortdata(self, other_args: List[str]):
         """Process shortdata command."""
         self.create_call_voila(other_args, "shortdata", "")
-
-    @log_start_end(log=logger)
-    def call_crypto(self, other_args: List[str]):
-        """Process crypto command."""
-        self.create_call_voila(other_args, "crypto", "")
 
     @log_start_end(log=logger)
     def call_futures(self, other_args: List[str]):
