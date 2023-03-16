@@ -40,7 +40,7 @@ class PreferencesModel:
     RETRY_WITH_LOAD: bool = False
     USE_TABULATE_DF: bool = True
     # Use interactive window to display dataframes with options to sort, filter, etc.
-    USE_INTERACTIVE_DF = True
+    USE_INTERACTIVE_DF: bool = True
     USE_CLEAR_AFTER_CMD: bool = False
     USE_COLOR: bool = True
     USE_DATETIME: bool = True
