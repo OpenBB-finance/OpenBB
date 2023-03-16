@@ -24,7 +24,6 @@ from openbb_terminal.econometrics import (
     regression_model,
     regression_view,
 )
-from openbb_terminal.forecast.forecast_controller import check_greater_than_one
 from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_FIGURES_ALLOWED,
@@ -35,7 +34,6 @@ from openbb_terminal.helper_funcs import (
     check_positive_float,
     export_data,
     print_rich_table,
-    valid_date,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
@@ -292,7 +290,6 @@ class EconometricsController(BaseController):
 
         console.print(text=mt.menu_text, menu="Econometrics")
         console.print()
-
 
     def custom_reset(self):
         """Class specific component of reset command"""
@@ -704,9 +701,6 @@ class EconometricsController(BaseController):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "--dataset")
 
-        parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
         ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
