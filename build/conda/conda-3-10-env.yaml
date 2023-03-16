@@ -1,5 +1,6 @@
 channels:
   - conda-forge
+  - defaults
 dependencies:
   - python =3.10.8
   - git
@@ -13,10 +14,3 @@ dependencies:
   - libtiff
   # Main dependencies
   - numpy ==1.23.4
-  # Forecasting dependencies
-  - ffmpeg
-  # Optimization dependencies
-  - cvxpy ==1.2.2
-  - lightgbm ==3.3.3
-  - pip:
-    - qdldl ==0.1.5.post3

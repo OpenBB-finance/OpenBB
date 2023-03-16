@@ -2,7 +2,15 @@ channels:
   - conda-forge
   - defaults
 dependencies:
-  - python=3.8
+  - python =3.8.16
+  - git
+  # Build dependencies
   - pip
-  - pip:
-    - poetry==1.3.2
+  - poetry =1.3.2
+  - pybind11
+  - cmake
+  # System dependencies
+  - openssl =1.1.1
+  - libtiff
+  # Main dependencies
+  - numpy ==1.23.4
