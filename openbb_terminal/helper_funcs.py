@@ -1214,26 +1214,29 @@ def str_to_bool(value) -> bool:
 def get_screeninfo():
     """Get screeninfo."""
     screens = get_monitors()  # Get all available monitors
-    current_user = get_current_user()
-    if (
-        len(screens) - 1 < current_user.preferences.MONITOR
-    ):  # Check to see if chosen monitor is detected
-        monitor = 0
-        console.print(
-            f"Could not locate monitor {current_user.preferences.MONITOR}, using primary monitor."
-        )
-    else:
-        monitor = current_user.preferences.MONITOR
-    main_screen = screens[monitor]  # Choose what monitor to get
+    if screens:
+        current_user = get_current_user()
+        if (
+            len(screens) - 1 < current_user.preferences.MONITOR
+        ):  # Check to see if chosen monitor is detected
+            monitor = 0
+            console.print(
+                f"Could not locate monitor {current_user.preferences.MONITOR}, using primary monitor."
+            )
+        else:
+            monitor = current_user.preferences.MONITOR
+        main_screen = screens[monitor]  # Choose what monitor to get
 
-    return (main_screen.width, main_screen.height)
+        return (main_screen.width, main_screen.height)
+    return None
 
 
 def plot_autoscale():
     """Autoscale plot."""
     current_user = get_current_user()
-    if current_user.preferences.USE_PLOT_AUTOSCALING:
-        x, y = get_screeninfo()  # Get screen size
+    screen_info = get_screeninfo()
+    if current_user.preferences.USE_PLOT_AUTOSCALING and screen_info:
+        x, y = screen_info  # Get screen size
         # account for ultrawide monitors
         if x / y > 1.5:
             x = x * 0.4
