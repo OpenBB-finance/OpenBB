@@ -66,6 +66,7 @@ def display_management(symbol: str, export: str = "", sheet_name: Optional[str] 
         logger.error("Data not available")
 
 
+# pylint: disable=R0913
 @log_start_end(log=logger)
 def price_target_from_analysts(
     symbol: str,
