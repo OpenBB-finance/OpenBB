@@ -23,8 +23,8 @@ __preferences = load_env_to_model(__env_dict, PreferencesModel)
 
 __profile = ProfileModel()
 __local_user = UserModel(  # type: ignore
-    credentials=__credentials,
-    preferences=__preferences,
+    credentials=__credentials,  # type: ignore
+    preferences=__preferences,  # type: ignore
     profile=__profile,
 )
 __current_user = __local_user
@@ -115,8 +115,8 @@ def set_preference(
         Preference value
     """
     current_user = get_current_user()
-    updated_preferences = dataclasses.replace(current_user.preferences, **{name: value})
-    updated_user = dataclasses.replace(current_user, preferences=updated_preferences)
+    updated_preferences = dataclasses.replace(current_user.preferences, **{name: value})  # type: ignore
+    updated_user = dataclasses.replace(current_user, preferences=updated_preferences)  # type: ignore
     set_current_user(updated_user)
 
 
@@ -131,6 +131,6 @@ def set_credential(name: str, value: str):
         Credential value
     """
     current_user = get_current_user()
-    updated_credentials = dataclasses.replace(current_user.credentials, **{name: value})
-    updated_user = dataclasses.replace(current_user, credentials=updated_credentials)
+    updated_credentials = dataclasses.replace(current_user.credentials, **{name: value})  # type: ignore
+    updated_user = dataclasses.replace(current_user, credentials=updated_credentials)  # type: ignore
     set_current_user(updated_user)
