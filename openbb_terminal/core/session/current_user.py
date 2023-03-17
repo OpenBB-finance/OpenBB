@@ -101,8 +101,8 @@ def set_preference(
         Preference value
     """
     current_user = get_current_user()
-    updated_preferences = dataclasses.replace(current_user.preferences, **{name: value}) # type: ignore
-    updated_user = dataclasses.replace(current_user, preferences=updated_preferences) # type: ignore
+    updated_preferences = dataclasses.replace(current_user.preferences, **{name: value})  # type: ignore
+    updated_user = dataclasses.replace(current_user, preferences=updated_preferences)  # type: ignore
     set_current_user(updated_user)
 
 
@@ -117,6 +117,6 @@ def set_credential(name: str, value: str):
         Credential value
     """
     current_user = get_current_user()
-    updated_credentials = dataclasses.replace(current_user.credentials, **{name: value}) # type: ignore
-    updated_user = dataclasses.replace(current_user, credentials=updated_credentials) # type: ignore
+    updated_credentials = dataclasses.replace(current_user.credentials, **{name: value})  # type: ignore
+    updated_user = dataclasses.replace(current_user, credentials=updated_credentials)  # type: ignore
     set_current_user(updated_user)
