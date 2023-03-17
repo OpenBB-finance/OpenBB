@@ -1029,10 +1029,8 @@ class BaseController(metaclass=ABCMeta):
 
                 if is_local() and an_input == "login":
                     return ["login"]
-                elif not is_local() and an_input == "logout":
+                if not is_local() and an_input == "logout":
                     return ["logout"]
-                else:
-                    continue
 
             except SystemExit:
                 if not self.contains_keys(an_input):
