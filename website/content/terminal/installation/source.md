@@ -20,7 +20,9 @@ keywords:
   ]
 ---
 
-This section guides you a long to install the OpenBB Terminal via Python. This installation type supports both Windows and Unix systems (Linux + MacOS). **Before starting the installation process, make sure the following pieces of software are installed.**
+<!-- markdownlint-disable MD012 MD031 MD033 -->
+
+This section guides you how to install the OpenBB Terminal from source code. This installation type supports both Windows, macOS and Linux systems. **Before starting the installation process, make sure the following pieces of software are installed.**
 
 <details><summary>Miniconda</summary>
 Miniconda is a Python environment and package manager. It is required for installing certain dependencies.
@@ -33,40 +35,49 @@ Go [here](https://docs.conda.io/en/latest/miniconda.html#latest-miniconda-instal
 - Raspberry PI Systems: [Miniconda for Raspberry PI](https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-aarch64.sh)
 - Windows Systems: [Miniconda for Windows](https://repo.anaconda.com/miniconda/Miniconda3-latest-Windows-x86_64.exe)
 
+To verify if Miniconda is installed on your system, open the command line and run the following command:
+
+```console
+conda --version
+```
+
+If Miniconda is installed, you should see the version number displayed, for example:
+
+```console
+conda 4.10.3
+```
 
 **NOTE for Apple Silicon Users:** Install Rosetta from the command line: `softwareupdate --install-rosetta`
 
 **NOTE for Windows users:** Install/update Microsoft C++ Build Tools from [here](https://visualstudio.microsoft.com/visual-cpp-build-tools/).
+
 </details>
 
-<details><summary>CMake (Mac and Linux only)</summary>
+<details><summary>Git</summary>
 
-If you have a **MacBook**, check if homebrew is installed by running `brew --version`
+To check if you have Git installed, open the command line and run the following command:
 
-If Homebrew is not installed, run:
-
-```bash
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-brew install cmake
-brew install gcc
+```console
+git --version
 ```
 
-If Homebrew is already installed:
+You should see something like this:
 
-```bash
-brew install cmake
-brew install gcc
+```console
+git version 2.31.1
 ```
 
-If you have a **Linux** computer, use the following script:
+If you do not have git installed, install it from `conda` by running:
 
-```bash
-sudo apt update && sudo apt upgrade
-sudo apt install -y gcc cmake
+```console
+conda install -c anaconda git
 ```
+
+Or follow the instructions [here](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) to install it.
+
 </details>
 
-<details><summary>VcXsrv (Windows and Linux only)</summary>
+<details><summary>VcXsrv (Windows Subsystem for Linux only)</summary>
 
 Since a WSL installation is headless by default (i.e., there is only access to a terminal running a Linux distribution) there are additional steps required to display visualizations. A more detailed tutorial is found, [here](https://medium.com/@shaoyenyu/make-matplotlib-works-correctly-with-x-server-in-wsl2-9d9928b4e36a).
 
@@ -90,100 +101,102 @@ Alternatives to `VcXsrv` include:
 - [Xming](https://xming.en.softonic.com/)
 - [Wayland](https://wayland.freedesktop.org/docs/html/)
 
-
 </details>
 
-Once you have met all of these requirements, you are ready to install the OpenBB Terminal.
+Once you have met all of these requirements, you are ready to install the OpenBB Terminal from source.
 
+## Clone the source code
 
-## Creating a virtual environment
-
-When a terminal window is opened, if the base Conda environment - look for `(base)` to the left of the cursor on the command line - is not activated automatically, find the path for it by entering:
-
-```console
-conda env list
-```
-
-Copy the path which corresponds with `base`, and activate it with:
-
-```console
-conda activate REPLACE_WITH_PATH
-```
-
-Check which `conda` version is installed by entering:
-
-```console
-conda -V
-```
-
-Create the environment by copying the code below into the command line:
-
-```console
-conda create -n obb -c conda-forge python=3.10.9 pip pybind11 cmake git cvxpy lightgbm poetry
-```
-
-## Activate the obb environment
-
-After the packages from the previous step are installled, activate the newly created environment by entering:
-
-```console
-conda activate obb
-```
-
-## Install the OpenBB Terminal
-
-From your code editor or command line, browse to the location the OpenBB Terminal source code should live. Make sure you have completed the previous steps.
-
-This starts by cloning the GitHub repository. This will download the source code to the current working directory.
+Clone the OpenBB Terminal source code from GitHub. This will download the source code to the current working directory.
 
 ```console
 git clone https://github.com/OpenBB-finance/OpenBBTerminal.git
 ```
 
-Then, navigate to this folder. This can be done in command line or through the code editor by opening the folder.
+Enter the directory:
 
 ```console
 cd OpenBBTerminal
 ```
 
-There are a few packages that required to be installed. This is done through Poetry, a package manager.
+## Create and activate the virtual environment
 
-```bash
-pip install qdldl==0.1.5.post3
+Create the environment by copying the code below into the command line and agreeing to the prompts.
+
+```shell
+conda env create -n obb --file build/conda/conda-3-10-env.yaml
+```
+
+After the obb environment is created, activate it by entering:
+
+```shell
+conda activate obb
+```
+
+:::note
+Apple Silicon users should clean up some artifacts in order for the environment to work nicely with all dependencies. Do this by running:
+
+```shell
+find $(dirname $(dirname $(which python)))/lib/python*/site-packages \
+     -maxdepth 2 -name direct_url.json \
+     -exec rm -f {} +
+```
+
+:::
+
+## Install the OpenBB Terminal
+
+Make sure you have completed all the previous steps. If you followed the instructions you should be in the location where the OpenBB Terminal source code lives.
+
+Install the remaining dependencies and the terminal through Poetry, a package manager.
+
+```shell
 poetry install -E all
 ```
+:::info
+<details><summary>Read about Conda, Poetry and Python package management</summary>
 
-Once this installation process is completed, you can start the terminal by running:
-
-```bash
-python terminal.py
-```
-
-**NOTE:** When you are opening the OpenBB Terminal from a Terminal application, the Python environment will need to be activated again - `conda activate obb` - and the current working directory should be the `OpenBBTerminal` folder where the source code was cloned. When using a code editor, make sure that you have the correct environment selected. This should be easy to figure out if you get an error that you are missing packages.
-
-**TROUBLESHOOTING:** Having difficulty getting through the installation, or encountering errors? Check out the [troubleshooting page](/terminal/quickstart/troubleshooting), or reach out to our [Discord](https://discord.gg/Up2QGbMKHY) community for help.
-
-:::info About Poetry
-
-By default we advise using `conda` and `poetry` for environment setup and dependency management. Conda ships binaries for packages like `numpy` so these dependencies are not built from source locally by `pip`. Poetry solves the dependency tree in a way that the dependencies of dependencies of dependencies use versions that are compatible with each other.
+For the best user experience we advise using `conda` and `poetry` for environment setup and dependency management. Conda ships binaries for packages like `numpy` so these dependencies are not built from source locally by `pip`. Poetry solves the dependency tree in a way that the dependencies of dependencies of dependencies use versions that are compatible with each other.
 
 For `Conda` environments, the `build/conda` folder contains multiple `.yaml` configuration files to choose from.
 
 When using other python distributions we highly recommend a virtual environment like `virtualenv` or `pyenv` for installing the terminal dependency libraries.
 
-Requirements files that are found in the project root:
+For people who prefer using "vanilla" `pip` the requirements files are found in the project root:
 
-- `requirements.txt` list all the dependencies without Machine Learning libraries
-- `requirements-full.txt` list all the dependencies with Machine Learning libraries
+- `requirements.txt` list main dependencies
+- `requirements-full.txt` list all the dependencies including Machine Learning and Portfolio Optimization libraries and dependencies for developers
 
 They can be installed with `pip`:
 
-```bash
+```shell
 pip install -r requirements.txt
 ```
 
 The dependency tree is solved by poetry.
 
-Note: The libraries specified in the requirements files have been tested and work for the purpose of this project, however, these may be older versions. Hence, it is recommended for the user to set up a virtual python environment prior to installing these. This allows to keep dependencies required by different projects in separate places.
+Note: The libraries specified in the requirements files have been tested and work for the purpose of this project, however, these may be older versions. Hence, it is recommended for the user to set up a python virtual environment prior to installing these. This allows to keep dependencies required by different projects in separate places.
 
+After installing the requirements you can install the terminal with:
+
+```shell
+pip install .
+```
+
+</details>
 :::
+
+Once this installation process is completed, you can start the terminal by running:
+
+```shell
+openbb
+```
+
+**NOTE:** When you are opening the OpenBB Terminal anew, the Python environment will need to be activated again. When using a code editor, make sure that you have the correct environment selected. This should be easy to figure out if you get an error that you are missing packages. To launch the OpenBB Tterminal application in s new terminal window use the following two commands:
+
+```shell
+conda activate obb
+openbb
+```
+
+**TROUBLESHOOTING:** Having difficulty getting through the installation, or encountering errors? Reach out to our [Discord](https://discord.gg/Up2QGbMKHY) community for help.
