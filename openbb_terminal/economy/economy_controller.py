@@ -957,7 +957,7 @@ class EconomyController(BaseController):
             dest="units",
             help="Use either THND_USD_CAP (thousands of USD per capity) "
             "or PC_GDP (percentage of GDP)",
-            choices=["PC_GDP", "THOUSAND_USD_PER_CAPITA"],
+            choices=["PC_GDP", "THND_USD_CAP"],
             default="PC_GDP",
         )
 
@@ -1057,7 +1057,7 @@ class EconomyController(BaseController):
             dest="units",
             help="Use either THND_USD_CAP (thousands of USD per capity) "
             "or PC_GDP (percentage of GDP)",
-            choices=["PC_GDP", "THOUSAND_USD_PER_CAPITA"],
+            choices=["PC_GDP", "THND_USD_CAP"],
             default="PC_GDP",
         )
 
