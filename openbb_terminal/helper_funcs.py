@@ -1463,28 +1463,31 @@ def export_data(
                 # since xlsx does not support datetimes with timezones we need to remove it
                 df = remove_timezone_from_dataframe(df)
 
-                if sheet_name is None:
-                    df.to_excel(saved_path, index=True, header=True)
+                if sheet_name is None:  # noqa: SIM223
+                    df.to_excel(
+                        saved_path,
+                        index=True,
+                        header=True,
+                    )
 
+                elif saved_path.exists():
+                    with pd.ExcelWriter(
+                        saved_path,
+                        mode="a",
+                        if_sheet_exists="new",
+                        engine="openpyxl",
+                    ) as writer:
+                        df.to_excel(
+                            writer, sheet_name=sheet_name, index=True, header=True
+                        )
                 else:
-                    if saved_path.exists():
-                        with pd.ExcelWriter(
-                            saved_path,
-                            mode="a",
-                            if_sheet_exists="new",
-                            engine="openpyxl",
-                        ) as writer:
-                            df.to_excel(
-                                writer, sheet_name=sheet_name, index=True, header=True
-                            )
-                    else:
-                        with pd.ExcelWriter(
-                            saved_path,
-                            engine="openpyxl",
-                        ) as writer:
-                            df.to_excel(
-                                writer, sheet_name=sheet_name, index=True, header=True
-                            )
+                    with pd.ExcelWriter(
+                        saved_path,
+                        engine="openpyxl",
+                    ) as writer:
+                        df.to_excel(
+                            writer, sheet_name=sheet_name, index=True, header=True
+                        )
             elif saved_path.suffix in [".jpg", ".pdf", ".png", ".svg"]:
                 figure.show(export_image=saved_path, margin=margin)
             else:
