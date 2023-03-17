@@ -41,7 +41,7 @@ cssselect==1.2.0 ; python_version >= "3.8" and python_full_version != "3.9.7" an
 cycler==0.11.0 ; python_version >= "3.8" and python_full_version != "3.9.7" and python_version < "3.11"
 cython==0.29.33 ; python_version >= "3.8" and python_full_version != "3.9.7" and python_version < "3.11"
 dateparser==1.1.7 ; python_version >= "3.8" and python_full_version != "3.9.7" and python_version < "3.11"
-datetime==5.0 ; python_version >= "3.8" and python_full_version != "3.9.7" and python_version < "3.11"
+datetime==5.1 ; python_version >= "3.8" and python_full_version != "3.9.7" and python_version < "3.11"
 debugpy==1.6.6 ; python_version >= "3.8" and python_full_version != "3.9.7" and python_version < "3.11"
 decorator==5.1.1 ; python_version >= "3.8" and python_full_version != "3.9.7" and python_version < "3.11"
 defusedxml==0.7.1 ; python_version >= "3.8" and python_full_version != "3.9.7" and python_version < "3.11"
