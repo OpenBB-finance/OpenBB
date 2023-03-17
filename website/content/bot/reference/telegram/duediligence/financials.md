@@ -27,5 +27,8 @@ Gives Total Assets, Cash, Debt, Liabilities, Rev for Company.
 
 ## Examples
 
+```
+/financials AMD
+```
 
 ---

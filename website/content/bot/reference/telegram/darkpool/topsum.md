@@ -21,10 +21,12 @@ Top Total Block & Dark Pool data.
 This command has no parameters
 
 
-
 ---
 
 ## Examples
 
+```
+/topsum
+```
 
 ---

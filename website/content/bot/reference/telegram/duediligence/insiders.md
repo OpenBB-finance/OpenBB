@@ -27,5 +27,8 @@ Displays 60 latest insider transactions for given stock
 
 ## Examples
 
+```
+/insiders AMD
+```
 
 ---

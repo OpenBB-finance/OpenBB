@@ -27,5 +27,8 @@ Displays analyst recommendations.
 
 ## Examples
 
+```
+/analyst AMD
+```
 
 ---

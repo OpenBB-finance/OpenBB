@@ -28,5 +28,10 @@ Display Options Volatility Surface.
 
 ## Examples
 
-
+```
+/vsurf AMD v
+```
+```
+/vsurf AMD oi
+```
 ---

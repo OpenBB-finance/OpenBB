@@ -1,4 +1,4 @@
-# screeners
+# Screeners
 
 - [ah](/bot/reference/discord/screeners/ah)
 - [ah_all](/bot/reference/discord/screeners/ah_all)

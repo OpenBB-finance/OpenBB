@@ -27,5 +27,7 @@ Adds a ticker to your watchlist.
 
 ## Examples
 
-
+```
+/watchlist_add AMD,GOOG,TSLA
+```
 ---

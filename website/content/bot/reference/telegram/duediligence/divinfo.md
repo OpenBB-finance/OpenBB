@@ -27,5 +27,8 @@ Displays Dividend information for a stock.
 
 ## Examples
 
+```
+/divinfo AAPL
+```
 
 ---

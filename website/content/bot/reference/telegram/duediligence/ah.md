@@ -27,5 +27,8 @@ Afterhours data for a given stock ticker
 
 ## Examples
 
+```
+/ah AMD
+```
 
 ---

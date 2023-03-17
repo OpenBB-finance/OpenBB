@@ -27,5 +27,8 @@ Displays a Stock's Company Info.
 
 ## Examples
 
+```
+/bio_stocks AMD
+```
 
 ---

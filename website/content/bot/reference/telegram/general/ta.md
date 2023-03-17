@@ -27,5 +27,7 @@ Displays a given stocks Technical Analysis summary.
 
 ## Examples
 
-
+```
+/ta AMD
+```
 ---

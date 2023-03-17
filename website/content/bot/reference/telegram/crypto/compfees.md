@@ -27,5 +27,12 @@ Get protocol fees over time
 
 ## Examples
 
+```
+/compfees doge
+```
+
+```
+/compfees projects: btc,eth
+```
 
 ---

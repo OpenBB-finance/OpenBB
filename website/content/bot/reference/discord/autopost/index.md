@@ -1,4 +1,4 @@
-# autopost
+# Autopost
 
 - [add](/bot/reference/discord/autopost/add)
 - [list](/bot/reference/discord/autopost/list)

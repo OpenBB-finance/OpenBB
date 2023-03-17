@@ -28,5 +28,12 @@ Intraday 3m chart for the ticker provided.
 
 ## Examples
 
+```
+/c3m AMD
+```
+
+```
+/c3m AMD true
+```
 
 ---

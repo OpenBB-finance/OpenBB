@@ -28,5 +28,11 @@ Daily Heat Maps by Market. Sector is optional.
 
 ## Examples
 
+```
+/heatmap sp500
+```
 
+```
+/heatmap sp500 services
+```
 ---

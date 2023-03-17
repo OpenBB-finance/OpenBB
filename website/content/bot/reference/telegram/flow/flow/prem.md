@@ -6,7 +6,7 @@ description: OpenBB Telegram Command
 
 # flow prem
 
-Returns the flow for a stock. /flow, /flow wk, /flow open, /flow unu, /flow prem
+Returns a chart of premium for the day
 
 ### Usage
 
@@ -27,5 +27,8 @@ Returns the flow for a stock. /flow, /flow wk, /flow open, /flow unu, /flow prem
 
 ## Examples
 
+```
+/flow prem AMD
+```
 
 ---

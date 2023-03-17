@@ -27,5 +27,8 @@ Earnings that are expected to occur in the next business days. (Sorted by market
 
 ## Examples
 
+```
+/earnings 2022-07-29
+```
 
 ---

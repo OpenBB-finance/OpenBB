@@ -1,4 +1,4 @@
-# economy
+# Economy
 
 - [calendar](/bot/reference/discord/economy/calendar)
 - [commodities](/bot/reference/discord/economy/commodities)

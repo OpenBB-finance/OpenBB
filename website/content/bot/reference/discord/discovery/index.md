@@ -1,4 +1,4 @@
-# discovery
+# Discovery
 
 - [arktrades](/bot/reference/discord/discovery/arktrades)
 - [contracts](/bot/reference/discord/discovery/contracts)

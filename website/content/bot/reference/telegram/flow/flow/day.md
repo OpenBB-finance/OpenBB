@@ -30,5 +30,12 @@ Returns the flow for a stock. /flow, /flow wk, /flow open, /flow unu, /flow prem
 
 ## Examples
 
+```
+/flow AMD
+```
+
+```
+/flow AMD 2022-07-29
+```
 
 ---

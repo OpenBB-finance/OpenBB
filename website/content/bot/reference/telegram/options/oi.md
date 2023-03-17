@@ -28,5 +28,11 @@ Displays OI and call/put ratio for given stock - can add EXP date too for bigger
 
 ## Examples
 
+```
+/oi AMC
+```
 
+```
+/oi AMC 2022-07-29
+```
 ---

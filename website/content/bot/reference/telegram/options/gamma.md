@@ -28,5 +28,12 @@ Displays Options Gamma Levels for a Stock.
 
 ## Examples
 
+```
+/gamma AMD
+```
+
+```
+/gamma AMD 2022-07-29
+```
 
 ---

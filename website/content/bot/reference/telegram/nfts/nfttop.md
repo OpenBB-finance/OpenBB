@@ -29,5 +29,12 @@ Get Top NFT Collections from Ethereum
 
 ## Examples
 
+```
+/nfttop
+```
+
+```
+/nfttop mc y
+```
 
 ---

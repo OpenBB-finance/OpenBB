@@ -27,5 +27,8 @@ Period Performance for a stock.
 
 ## Examples
 
+```
+/ytd AMD
+```
 
 ---

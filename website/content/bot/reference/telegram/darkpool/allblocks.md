@@ -27,5 +27,8 @@ Last 15 Block Trades.
 
 ## Examples
 
+```
+/allblocks AMD
+```
 
 ---

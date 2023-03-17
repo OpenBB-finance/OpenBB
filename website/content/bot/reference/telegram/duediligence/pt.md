@@ -27,5 +27,7 @@ Displays chart with price targets.
 
 ## Examples
 
-
+```
+/pt AMD
+```
 ---

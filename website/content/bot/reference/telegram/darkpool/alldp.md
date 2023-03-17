@@ -27,5 +27,8 @@ Last 15 Darkpool Trades
 
 ## Examples
 
+```
+/alldp AMD
+```
 
 ---

@@ -1,4 +1,4 @@
-# general
+# General
 
 - [futures](/bot/reference/discord/general/futures)
 - [heatchart](/bot/reference/discord/general/heatchart)

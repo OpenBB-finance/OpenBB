@@ -1,4 +1,4 @@
-# short_data
+# Short Data
 
 - [borrowed](/bot/reference/discord/short_data/borrowed)
 - [hsi](/bot/reference/discord/short_data/hsi)

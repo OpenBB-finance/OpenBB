@@ -27,5 +27,7 @@ Display quote stats for a stock, 52 week high/low, market cap/float, and 200/50 
 
 ## Examples
 
-
+```
+/quote AMD
+```
 ---

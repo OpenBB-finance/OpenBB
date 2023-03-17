@@ -1,4 +1,4 @@
-# duedilligence
+# Duedilligence
 
 - [ah](/bot/reference/discord/duedilligence/ah)
 - [analyst](/bot/reference/discord/duedilligence/analyst)

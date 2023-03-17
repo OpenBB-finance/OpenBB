@@ -20,11 +20,12 @@ Displays trades made by ARK.
 
 This command has no parameters
 
-
-
 ---
 
 ## Examples
 
+```python
+/arktrades
+```
 
 ---

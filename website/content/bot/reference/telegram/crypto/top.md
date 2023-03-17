@@ -29,5 +29,12 @@ Get top cryptos
 
 ## Examples
 
+```
+/top
+```
+
+```
+/top mc marketing
+```
 
 ---

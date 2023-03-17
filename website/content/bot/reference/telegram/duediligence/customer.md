@@ -28,4 +28,8 @@ Displays customers of the company.
 ## Examples
 
 
+```
+/customer AMD
+```
+
 ---

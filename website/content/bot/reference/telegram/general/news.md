@@ -27,5 +27,7 @@ Display the most recent news for ticker
 
 ## Examples
 
-
+```
+/news AMD
+```
 ---

@@ -28,5 +28,8 @@ Biggest Levels for All Prints over last X days.
 
 ## Examples
 
+```
+/levels TSLA 10
+```
 
 ---

@@ -27,5 +27,8 @@ Bonds overview. Market can be US or Global.
 
 ## Examples
 
+```
+/bonds
+```
 
 ---

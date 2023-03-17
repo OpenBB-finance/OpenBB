@@ -27,5 +27,7 @@ Displays recent SEC filings.
 
 ## Examples
 
-
+```
+/sec AMD
+```
 ---

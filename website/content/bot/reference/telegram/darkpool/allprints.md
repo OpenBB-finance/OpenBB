@@ -27,5 +27,8 @@ Last 15 Combination of Dark Pool and Blocks.
 
 ## Examples
 
+```
+/allprints AMD
+```
 
 ---

@@ -28,5 +28,8 @@ Summary of all prints by % of MarketCap
 
 ## Examples
 
+```
+/summary 10 mc
+```
 
 ---

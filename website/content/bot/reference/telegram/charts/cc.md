@@ -28,5 +28,8 @@ Intraday 5m chart for the ticker provided
 
 ## Examples
 
+```
+/cc amd
+```
 
 ---

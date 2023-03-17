@@ -21,10 +21,11 @@ Displays all available screeners. /scr all, /scr pm, /scr ah
 This command has no parameters
 
 
-
 ---
 
 ## Examples
 
-
+```
+/scr pm
+```
 ---

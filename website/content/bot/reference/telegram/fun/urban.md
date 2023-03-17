@@ -27,5 +27,7 @@ Searches on the Urban Dictionary.
 
 ## Examples
 
-
+```
+/urban Shill
+```
 ---

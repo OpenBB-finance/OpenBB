@@ -27,5 +27,8 @@ Premarket data for a given stock ticker
 
 ## Examples
 
+```
+/pm AMD
+```
 
 ---

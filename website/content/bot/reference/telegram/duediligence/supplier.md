@@ -27,5 +27,8 @@ Displays suppliers of the company.
 
 ## Examples
 
+```
+/supplier AMD
+```
 
 ---

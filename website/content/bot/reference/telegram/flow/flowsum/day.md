@@ -27,5 +27,8 @@ Graph Total Premium of a stock. /flowsum, /flowsum wk, /flowsum exp, /flowsum to
 
 ## Examples
 
+```
+/flowsum AMD
+```
 
 ---

@@ -27,5 +27,7 @@ Displays Options Statistics for a stock.
 
 ## Examples
 
-
+```
+/opstats AMD
+```
 ---

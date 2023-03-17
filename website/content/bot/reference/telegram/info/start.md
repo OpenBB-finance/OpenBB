@@ -1,17 +1,17 @@
 ---
 ########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
-title: start
+title: help
 description: OpenBB Telegram Command
 ---
 
-# start
+# help
 
-Start the bot.
+List of commands for OpenBB Bot.
 
 ### Usage
 
 ```python wordwrap
-/start
+/help
 ```
 
 ---
@@ -20,11 +20,12 @@ Start the bot.
 
 This command has no parameters
 
-
-
 ---
 
 ## Examples
 
-
+```
+/help
+```
 ---
+

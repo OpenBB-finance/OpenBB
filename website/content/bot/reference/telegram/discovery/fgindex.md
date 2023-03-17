@@ -20,11 +20,11 @@ Displays Fear & Greed Index - Investor Sentiment - CNNMoney
 
 This command has no parameters
 
-
-
 ---
 
 ## Examples
 
-
+```
+/fgindex
+``
 ---

@@ -27,5 +27,8 @@ Implied move for a stock based on option prices.
 
 ## Examples
 
+```
+/ermove AMD
+```
 
 ---

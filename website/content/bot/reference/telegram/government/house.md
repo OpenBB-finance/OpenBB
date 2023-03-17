@@ -27,5 +27,7 @@ Displays recent house trades for all tickers or a specific ticker.
 
 ## Examples
 
-
+```
+/house GE
+```
 ---

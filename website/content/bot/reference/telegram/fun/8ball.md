@@ -27,5 +27,8 @@ Ask 8 ball a question.
 
 ## Examples
 
+```
+/8ball Will I make money today?
+```
 
 ---

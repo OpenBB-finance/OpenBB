@@ -6,7 +6,7 @@ description: OpenBB Telegram Command
 
 # flow open
 
-Returns the flow for a stock. /flow, /flow wk, /flow open, /flow unu, /flow prem
+Returns the opening flow for a stock. (volume > open interest on the order) /flow open
 
 ### Usage
 
@@ -27,5 +27,7 @@ Returns the flow for a stock. /flow, /flow wk, /flow open, /flow unu, /flow prem
 
 ## Examples
 
-
+```
+/flow open AMD
+```
 ---

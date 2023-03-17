@@ -6,7 +6,7 @@ description: OpenBB Telegram Command
 
 # flow wk
 
-Returns the flow for a stock. /flow, /flow wk, /flow open, /flow unu, /flow prem
+Returns the weekly flow for a stock (options expiring that Friday). /flow wk
 
 ### Usage
 
@@ -27,5 +27,8 @@ Returns the flow for a stock. /flow, /flow wk, /flow open, /flow unu, /flow prem
 
 ## Examples
 
+```python
+/flow wk AMD
+```
 
 ---

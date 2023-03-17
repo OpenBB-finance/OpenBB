@@ -6,7 +6,7 @@ description: OpenBB Telegram Command
 
 # flow unu
 
-Returns the flow for a stock. /flow, /flow wk, /flow open, /flow unu, /flow prem
+Returns the unusual flow for a stock (high ratio of volume to oi). /flow unu
 
 ### Usage
 
@@ -26,5 +26,8 @@ This command has no parameters
 
 ## Examples
 
+```
+/flow unu
+```
 
 ---

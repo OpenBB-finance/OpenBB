@@ -27,5 +27,7 @@ ETF Commands `/etf tops`, `/etf holdings`
 
 ## Examples
 
-
+```
+/etf holdings SPY
+```
 ---

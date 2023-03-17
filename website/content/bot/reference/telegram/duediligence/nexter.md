@@ -27,5 +27,8 @@ Returns next Earnings Date for a stock.
 
 ## Examples
 
+```
+/nexter AMD
+```
 
 ---

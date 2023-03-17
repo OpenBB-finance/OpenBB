@@ -27,5 +27,12 @@ Displays Reverse Repo.
 
 ## Examples
 
+```
+/revrepo days:35
+```
+
+```
+/revrepo
+```
 
 ---

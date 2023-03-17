@@ -29,5 +29,12 @@ Shows the candlestick chart for the ticker/interval provided
 
 ## Examples
 
+```
+/chart AMD 1d 10
+```
+
+```
+/chart AMD 1d
+```
 
 ---

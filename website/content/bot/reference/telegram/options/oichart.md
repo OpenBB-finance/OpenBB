@@ -28,5 +28,11 @@ Charts Total Open Interest by Strike Price.
 
 ## Examples
 
+```
+/oichart AMD
+```
 
+```
+/oichart AMD 2022-07-29
+```
 ---

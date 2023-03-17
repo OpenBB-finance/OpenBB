@@ -32,5 +32,11 @@ Chart for the crypto pair provided Default: 15m
 
 ## Examples
 
+```
+/c doge
+```
 
+```
+/c doge interval:3m
+```
 ---

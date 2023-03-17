@@ -27,5 +27,8 @@ Displays Top 15 Tickers in the last hour or today. /pop 1hr or /pop 1d
 
 ## Examples
 
+```
+/pop 1hr
+```
 
 ---

@@ -27,5 +27,11 @@ Get protocols historical TVL
 
 ## Examples
 
+```
+/tvl
+```
+```
+/tvl curve
+```
 
 ---

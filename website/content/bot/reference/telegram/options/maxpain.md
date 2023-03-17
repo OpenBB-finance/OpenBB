@@ -28,5 +28,7 @@ Displays the Max Pain on expiration date for a given stock.
 
 ## Examples
 
-
+```
+/maxpain AMC 2022-07-29
+```
 ---

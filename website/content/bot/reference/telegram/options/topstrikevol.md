@@ -28,5 +28,7 @@ Displays Options Strike Volume can add EXP date for bigger breakdown
 
 ## Examples
 
-
+```
+/topstrikevol AMD
+```
 ---

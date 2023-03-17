@@ -30,5 +30,8 @@ Get top DeFi protocols
 
 ## Examples
 
+```
+/defi chart
+```
 
 ---

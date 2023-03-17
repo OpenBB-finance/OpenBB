@@ -27,5 +27,8 @@ Weekly candlestick chart for the ticker/coin provided.
 
 ## Examples
 
+```
+/cw AMD
+```
 
 ---

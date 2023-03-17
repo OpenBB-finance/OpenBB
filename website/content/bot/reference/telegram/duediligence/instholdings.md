@@ -27,5 +27,8 @@ Displays top 15 Institutional Holdings for given stock
 
 ## Examples
 
+```
+/instholdings AMD
+```
 
 ---

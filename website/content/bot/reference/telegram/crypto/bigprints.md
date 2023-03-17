@@ -28,5 +28,8 @@ Last 15 Large Crypto Prints.
 
 ## Examples
 
+```
+/bigprints ada
+```
 
 ---

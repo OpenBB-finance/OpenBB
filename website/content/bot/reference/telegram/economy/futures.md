@@ -27,5 +27,8 @@ Displays Futures.
 
 ## Examples
 
+```python
+/futures
+```
 
 ---

@@ -1,4 +1,4 @@
-# flow
+# Flow
 
 - [bigflow](/bot/reference/discord/flow/bigflow)
 - [day](/bot/reference/discord/flow/day)

@@ -1,4 +1,4 @@
-# alerts
+# Alerts
 
 - [create](/bot/reference/discord/alerts/create)
 - [delete](/bot/reference/discord/alerts/delete)

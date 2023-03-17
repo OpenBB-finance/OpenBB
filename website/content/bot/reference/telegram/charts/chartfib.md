@@ -27,5 +27,8 @@ Fibonacci levels for the ticker provided
 
 ## Examples
 
+```
+/chartfib AMD
+```
 
 ---

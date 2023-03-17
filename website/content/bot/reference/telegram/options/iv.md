@@ -27,5 +27,7 @@ Displays option information (volatility, IV rank etc).
 
 ## Examples
 
-
+```
+/iv AMD
+```
 ---

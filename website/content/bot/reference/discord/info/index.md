@@ -1,4 +1,4 @@
-# info
+# Info
 
 - [about](/bot/reference/discord/info/about)
 - [serverid](/bot/reference/discord/info/serverid)

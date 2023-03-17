@@ -28,5 +28,16 @@ Get NFT Collection Data
 
 ## Examples
 
+```
+/nftcollection bent
+```
+
+```
+/nftcollection bent chart
+```
+
+```
+/nftcollection bent y
+```
 
 ---

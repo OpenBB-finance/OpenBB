@@ -6,7 +6,7 @@ description: OpenBB Telegram Command
 
 # flowsum top
 
-Graph Total Premium of a stock. /flowsum, /flowsum wk, /flowsum exp, /flowsum top
+Graph Total Premium of a top 10 stocks by calls and puts.
 
 ### Usage
 
@@ -26,5 +26,8 @@ This command has no parameters
 
 ## Examples
 
+```
+/flowsum top
+```
 
 ---

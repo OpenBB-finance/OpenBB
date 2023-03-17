@@ -28,5 +28,8 @@ Summary of all prints by % of MarketCap by Sector
 
 ## Examples
 
+```
+/sectors 5 bm
+```
 
 ---

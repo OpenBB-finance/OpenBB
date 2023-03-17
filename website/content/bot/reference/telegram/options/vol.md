@@ -28,5 +28,11 @@ Displays Options Strike Volume can add EXP date for bigger breakdown
 
 ## Examples
 
+```
+/vol AMD
+```
 
+```
+/vol AMD 2022-07-29
+```
 ---

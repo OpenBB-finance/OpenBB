@@ -28,5 +28,11 @@ Summary of all flow by % of MarketCap by Sector
 
 ## Examples
 
+```
+/sectorsflow 5 cs
+```
 
+```
+/sectorsflow 5 bm
+```
 ---

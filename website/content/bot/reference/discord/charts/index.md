@@ -1,4 +1,4 @@
-# charts
+# Charts
 
 - [c15m](/bot/reference/discord/charts/c15m)
 - [c3m](/bot/reference/discord/charts/c3m)

@@ -1,4 +1,4 @@
-# nft
+# NFT
 
 - [chart](/bot/reference/discord/nft/chart)
 - [collection](/bot/reference/discord/nft/collection)

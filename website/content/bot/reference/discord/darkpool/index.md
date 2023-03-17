@@ -1,4 +1,4 @@
-# darkpool
+# Darkpool
 
 - [allblocks](/bot/reference/discord/darkpool/allblocks)
 - [alldp](/bot/reference/discord/darkpool/alldp)

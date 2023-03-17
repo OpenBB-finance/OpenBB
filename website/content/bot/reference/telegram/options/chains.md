@@ -31,5 +31,11 @@ Displays Options Chain by Expiry.
 
 ## Examples
 
+```
+/chains AMD 2022-07-29 Calls
+```
+```
+/chains AMD 2022-07-29 Calls 10 100
+```
 
 ---

@@ -27,5 +27,8 @@ Monthly candlestick chart for the ticker/coin provided.
 
 ## Examples
 
+```
+/cm AMD
+```
 
 ---

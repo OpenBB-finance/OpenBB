@@ -28,5 +28,11 @@ Summary of all flow by % of MarketCap
 
 ## Examples
 
+```
+/summaryflow 1 float
+```
 
+```
+/summaryflow 1 sum
+```
 ---

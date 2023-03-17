@@ -27,5 +27,8 @@ Combination of Dark Pool and Blocks - Largest over x amount of days.
 
 ## Examples
 
+```
+/bigprintsdp 6
+```
 
 ---

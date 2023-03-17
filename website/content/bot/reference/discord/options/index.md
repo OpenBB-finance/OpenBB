@@ -1,4 +1,4 @@
-# options
+# Options
 
 - [chains](/bot/reference/discord/options/chains)
 - [equitypc](/bot/reference/discord/options/equitypc)

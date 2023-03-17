@@ -28,5 +28,12 @@ Support and Resistance Levels for the ticker provided
 
 ## Examples
 
+```
+/chartsr AMC
+```
+
+```
+/chartsr AMC 1d
+```
 
 ---

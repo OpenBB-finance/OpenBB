@@ -27,5 +27,8 @@ Displays In-the-Money options by expiry for a stock.
 
 ## Examples
 
+```
+/itm AMD
+```
 
 ---
