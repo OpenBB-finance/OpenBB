@@ -1110,7 +1110,7 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
             "--ticker",
             action="store",
             dest="ticker",
-            required="-h" not in other_args,
+            required="-h" not in other_args and "--help" not in other_args,
             help="Stock ticker",
         )
         parser.add_argument(
