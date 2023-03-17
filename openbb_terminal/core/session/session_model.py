@@ -140,9 +140,6 @@ def logout(
     if not Local.remove_cli_history_file():
         success = False
 
-    # local_user = get_local_user()
-    # set_current_user(local_user)
-
     remove_log_handlers()
 
     plt.close("all")

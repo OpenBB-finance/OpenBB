@@ -129,7 +129,7 @@ class AccountController(BaseController):
             description="Login into new session.",
         )
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
-        if not is_local():
+        if is_local() and "-h" not in other_args and "--help" not in other_args:
             console.print("[info]You are already logged in.[/info]")
             return
         else:
@@ -146,7 +146,7 @@ class AccountController(BaseController):
             description="Logout from current session.",
         )
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
-        if is_local():
+        if is_local() and "-h" not in other_args and "--help" not in other_args:
             print_guest_block_msg()
             return
         else:
@@ -184,7 +184,7 @@ class AccountController(BaseController):
         parser.set_defaults(sync=None)
 
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
-        if is_local():
+        if is_local() and "-h" not in other_args and "--help" not in other_args:
             print_guest_block_msg()
             return
         if ns_parser:
@@ -217,7 +217,7 @@ class AccountController(BaseController):
             description="Pull and apply stored configurations from the cloud.",
         )
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
-        if is_local():
+        if is_local() and "-h" not in other_args and "--help" not in other_args:
             print_guest_block_msg()
             return
         if ns_parser:
@@ -248,7 +248,7 @@ class AccountController(BaseController):
             description="Clear stored configurations from the cloud.",
         )
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
-        if is_local():
+        if is_local() and "-h" not in other_args and "--help" not in other_args:
             print_guest_block_msg()
             return
         if ns_parser:
@@ -290,7 +290,7 @@ class AccountController(BaseController):
             help="The number of results per page.",
         )
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
-        if is_local():
+        if is_local() and "-h" not in other_args and "--help" not in other_args:
             print_guest_block_msg()
             return
         if ns_parser:
@@ -321,7 +321,9 @@ class AccountController(BaseController):
             "--file",
             type=str,
             dest="file",
-            required="-h" not in other_args,
+            required="-h" not in other_args
+            and "--help" not in other_args
+            and not is_local(),
             help="The file to be loaded",
             metavar="FILE",
             nargs="+",
@@ -344,7 +346,7 @@ class AccountController(BaseController):
             nargs="+",
         )
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
-        if is_local():
+        if is_local() and "-h" not in other_args and "--help" not in other_args:
             print_guest_block_msg()
             return
         if ns_parser:
@@ -402,13 +404,15 @@ class AccountController(BaseController):
             type=str,
             dest="name",
             help="The name of the routine.",
-            required="-h" not in other_args,
+            required="-h" not in other_args
+            and "--help" not in other_args
+            and not is_local(),
             nargs="+",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-n")
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
-        if is_local():
+        if is_local() and "-h" not in other_args and "--help" not in other_args:
             print_guest_block_msg()
             return
         if ns_parser:
@@ -469,13 +473,15 @@ class AccountController(BaseController):
             type=str,
             dest="name",
             help="The name of the routine",
-            required="-h" not in other_args,
+            required="-h" not in other_args
+            and "--help" not in other_args
+            and not is_local(),
             nargs="+",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-n")
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
-        if is_local():
+        if is_local() and "-h" not in other_args and "--help" not in other_args:
             print_guest_block_msg()
             return
         if ns_parser:
@@ -527,7 +533,7 @@ class AccountController(BaseController):
             action="store_true",
         )
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
-        if is_local():
+        if is_local() and "-h" not in other_args and "--help" not in other_args:
             print_guest_block_msg()
             return
         if ns_parser:
@@ -559,7 +565,7 @@ class AccountController(BaseController):
             description="Show your current OpenBB Personal Access Token.",
         )
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
-        if is_local():
+        if is_local() and "-h" not in other_args and "--help" not in other_args:
             print_guest_block_msg()
             return
         if ns_parser:
@@ -581,7 +587,7 @@ class AccountController(BaseController):
             description="Revoke your current OpenBB Personal Access Token.",
         )
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
-        if is_local():
+        if is_local() and "-h" not in other_args and "--help" not in other_args:
             print_guest_block_msg()
             return
         if ns_parser:
