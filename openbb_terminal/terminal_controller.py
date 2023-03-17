@@ -25,8 +25,8 @@ from rich import panel
 
 import openbb_terminal.config_terminal as cfg
 from openbb_terminal.account.account_model import (
-    get_login_logout_called,
-    set_login_logout_called,
+    get_login_called,
+    set_login_called,
 )
 from openbb_terminal.common import feedparser_view
 from openbb_terminal.core.config.paths import (
@@ -39,7 +39,6 @@ from openbb_terminal.core.log.generation.custom_logger import log_terminal
 from openbb_terminal.core.session import session_controller
 from openbb_terminal.core.session.current_user import (
     get_current_user,
-    set_default_user,
     set_preference,
 )
 from openbb_terminal.helper_funcs import (
@@ -1003,11 +1002,7 @@ def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
                 break
 
         try:
-            if (
-                an_input in ("login", "logout")
-                and get_login_logout_called()
-                and is_auth_enabled()
-            ):
+            if an_input in "login" and get_login_called() and is_auth_enabled():
                 break
 
             # Process the input command
@@ -1053,13 +1048,8 @@ def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
                 console.print(f"[green]Replacing by '{an_input}'.[/green]")
                 t_controller.queue.insert(0, an_input)
 
-    if (
-        an_input in ("login", "logout")
-        and get_login_logout_called()
-        and is_auth_enabled()
-    ):
-        set_login_logout_called(False)
-        set_default_user()
+    if an_input in "login" and get_login_called() and is_auth_enabled():
+        set_login_called(False)
         return session_controller.main()
 
 

@@ -8,7 +8,7 @@ from typing import Dict, List, Optional
 from openbb_terminal.account.account_model import (
     get_diff,
     get_routines_info,
-    set_login_logout_called,
+    set_login_called,
 )
 from openbb_terminal.account.account_view import display_routines_list
 from openbb_terminal.core.session import (
@@ -133,7 +133,7 @@ class AccountController(BaseController):
             console.print("[info]You are already logged in.[/info]")
         else:
             if ns_parser:
-                set_login_logout_called(True)
+                set_login_called(True)
 
     @log_start_end(log=logger)
     def call_logout(self, other_args: List[str]) -> None:
@@ -156,7 +156,7 @@ class AccountController(BaseController):
                     guest=is_local(),
                     cls=True,
                 )
-                set_login_logout_called(True)
+                self.print_help()
 
     @log_start_end(log=logger)
     def call_sync(self, other_args: List[str]):

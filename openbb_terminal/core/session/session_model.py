@@ -18,6 +18,7 @@ from openbb_terminal.core.session.current_user import (
     get_env_dict,
     get_local_preferences,
     set_current_user,
+    set_default_user,
     set_preference,
 )
 from openbb_terminal.helper_funcs import system_clear
@@ -143,6 +144,8 @@ def logout(
     remove_log_handlers()
 
     plt.close("all")
+
+    set_default_user()
 
     if success:
         console.print("[green]\nLogout successful.[/green]")
