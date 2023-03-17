@@ -62,13 +62,18 @@ class Backend(pywry.PyWry):
             and not strtobool(os.environ.get("OPENBB_ENABLE_QUICK_EXIT", False))
             and current_process().name == "MainProcess"
         )
+
         self.WIDTH, self.HEIGHT = 1400, 762
 
         atexit.register(self.close)
 
-    def set_window_dimensions(self, width: int, height: int):
+    def set_window_dimensions(self):
         """Set the window dimensions."""
-        self.WIDTH, self.HEIGHT = int(width) * 100, (int(height) * 100) + 62
+        current_user = get_current_user()
+        width = current_user.preferences.PLOT_WIDTH or 1400
+        height = current_user.preferences.PLOT_HEIGHT or 762
+
+        self.WIDTH, self.HEIGHT = int(width), int(height)
 
     def inject_path_to_html(self):
         """Update the script tag in html with local path."""
@@ -100,6 +105,7 @@ class Backend(pywry.PyWry):
 
     def get_plotly_html(self) -> str:
         """Get the plotly html file."""
+        self.set_window_dimensions()
         if not self.plotly_html.exists():
             self.inject_path_to_html()
             return self.get_plotly_html()
@@ -108,6 +114,7 @@ class Backend(pywry.PyWry):
 
     def get_table_html(self) -> str:
         """Get the table html file."""
+        self.set_window_dimensions()
         if self.table_html.exists():
             return str(self.table_html)
         console.print(
