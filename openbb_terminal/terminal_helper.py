@@ -6,6 +6,7 @@ import logging
 import os
 import subprocess  # nosec
 import sys
+import webbrowser
 
 # IMPORTATION STANDARD
 from contextlib import contextmanager
@@ -24,8 +25,11 @@ from openbb_terminal.config_terminal import LOGGING_COMMIT_HASH, VERSION
 # IMPORTATION INTERNAL
 from openbb_terminal.core.config.paths import SETTINGS_ENV_FILE
 from openbb_terminal.core.plots.backend import plots_backend
-from openbb_terminal.core.session.current_user import get_current_user
-from openbb_terminal.core.session.preferences_handler import set_preference
+from openbb_terminal.core.session.current_user import (
+    get_current_user,
+    set_preference,
+)
+from openbb_terminal.core.session.env_handler import write_to_dotenv
 from openbb_terminal.helper_funcs import request
 from openbb_terminal.rich_config import console
 
@@ -125,60 +129,60 @@ def update_terminal():
 
 
 def open_openbb_documentation(
-    path, url="https://docs.openbb.co/terminal", command=None, arg_type=""
+    path, url="http://localhost/app/terminal", command=None, arg_type=""
 ):
     """Opens the documentation page based on your current location within the terminal. Make exceptions for menus
     that are considered 'common' by adjusting the path accordingly."""
     if path == "/" and command is None:
-        path = "/"
+        path = "/how-to"
         command = ""
     elif "keys" in path:
-        path = "/quickstart/api-keys"
+        path = "/guides?full=1&path=/quickstart/api-keys"
         command = ""
     elif "settings" in path:
-        path = "/guides/advanced/customizing-the-terminal"
+        path = "/guides?path=/advanced/customizing-the-terminal"
         command = ""
     elif "featflags" in path:
-        path = "/guides/advanced/customizing-the-terminal"
+        path = "/guides?path=/advanced/customizing-the-terminal"
         command = ""
     elif "sources" in path:
-        path = "/guides/advanced/changing-sources"
+        path = "/guides?path=/advanced/changing-sources"
         command = ""
     elif "params" in path:
-        path = "/guides/intros/portfolio/po"
+        path = "/guides?path=/intros/portfolio/po"
         command = ""
     else:
         if arg_type == "command":  # user passed a command name
-            path = f"/reference/{path}"
+            path = f"/reference?path={path}"
         elif arg_type == "menu":  # user passed a menu name
             if command in ["ta", "ba", "qa"]:
                 menu = path.split("/")[-2]
-                path = f"/guides/intros/common/{menu}"
+                path = f"/guides?path=/intros/common/{menu}"
             elif command == "forecast":
                 command = ""
-                path = "/guides/intros/forecast"
+                path = "/guides?path=/intros/forecast"
             else:
-                path = f"/guides/intros/{path}"
+                path = f"/guides?path=/intros/{path}"
         else:  # user didn't pass argument and is in a menu
             menu = path.split("/")[-2]
             path = (
-                f"/guides/intros/common/{menu}"
+                f"/guides?path=/intros/common/{menu}"
                 if menu in ["ta", "ba", "qa"]
-                else f"/guides/intros/{path}"
+                else f"/guides?path=/intros/{path}"
             )
 
     if command:
         if command == "keys":
-            path = "/quickstart/api-keys"
+            path = "/guides?full=1&path=/quickstart/api-keys"
             command = ""
         elif "settings" in path or "featflags" in path:
-            path = "/guides/advanced/customizing-the-terminal"
+            path = "/guides?path=/advanced/customizing-the-terminal"
             command = ""
         elif "sources" in path:
-            path = "/guides/advanced/changing-sources"
+            path = "/guides?path=/advanced/changing-sources"
             command = ""
         elif command in ["record", "stop", "exe"]:
-            path = "/guides/advanced/scripts-and-routines"
+            path = "/guides?path=/advanced/scripts-and-routines"
             command = ""
         elif command in [
             "intro",
@@ -192,7 +196,7 @@ def open_openbb_documentation(
             path = ""
             command = ""
         elif command in ["ta", "ba", "qa"]:
-            path = f"/guides/intros/common/{command}"
+            path = f"/guides?path=/intros/common/{command}"
             command = ""
 
         path += command
@@ -202,7 +206,7 @@ def open_openbb_documentation(
     if full_url[-1] == "/":
         full_url = full_url[:-1]
 
-    plots_backend().send_url(full_url)
+    webbrowser.open(full_url)
 
 
 def hide_splashscreen():
@@ -411,6 +415,7 @@ def first_time_user() -> bool:
         Whether or not the user is a first time user
     """
     if SETTINGS_ENV_FILE.stat().st_size == 0:
-        set_preference("OPENBB_PREVIOUS_USE", True)
+        set_preference("PREVIOUS_USE", True)
+        write_to_dotenv("OPENBB_PREVIOUS_USE", "True")
         return True
     return False

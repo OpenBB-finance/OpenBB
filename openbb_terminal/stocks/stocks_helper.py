@@ -240,10 +240,11 @@ def search(
     df = df.iloc[df.isnull().sum(axis=1).mul(1).argsort()]
 
     print_rich_table(
-        df.iloc[:limit] if limit else df,
+        df,
         show_index=True,
         headers=["Name", "Country", "Sector", "Industry Group", "Industry", "Exchange"],
         title=title,
+        limit=limit,
     )
 
     return df
@@ -762,7 +763,14 @@ def load_custom(file_path: str) -> pd.DataFrame:
         console.print("[red]File path does not exist.[/red]\n")
         return pd.DataFrame()
 
-    df = pd.read_csv(file_path)
+    if file_path.endswith(".csv"):
+        df = pd.read_csv(file_path)
+    elif file_path.endswith(".xlsx"):
+        df = pd.read_excel(file_path)
+    else:
+        console.print("[red]File type not supported.[/red]\n")
+        return pd.DataFrame()
+
     console.print(f"Loaded data has columns: {', '.join(df.columns.to_list())}\n")
 
     # Nasdaq specific

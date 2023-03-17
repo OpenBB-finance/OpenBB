@@ -1,6 +1,6 @@
 """Technical Analysis Controller Module"""
 __docformat__ = "numpy"
-# pylint:disable=too-many-lines,R0904,C0201
+# pylint:disable=too-many-lines,R0904,C0201,C0302
 
 import argparse
 import logging
@@ -137,7 +137,6 @@ class TechnicalAnalysisController(StockBaseController):
         mt.add_raw("\n")
         mt.add_cmd("recom")
         mt.add_cmd("summary")
-        mt.add_cmd("tv")
         mt.add_cmd("view")
         mt.add_raw("\n")
         mt.add_info("_overlap_")
@@ -1688,7 +1687,7 @@ class TechnicalAnalysisController(StockBaseController):
             dest="indicators",
             type=check_indicators,
             help="Indicators to plot",
-            required="--indicators" not in other_args,
+            required="-h" not in other_args,
         )
         parser.add_argument(
             "-p",

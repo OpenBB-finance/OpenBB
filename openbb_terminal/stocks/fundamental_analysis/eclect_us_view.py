@@ -29,7 +29,10 @@ def display_analysis(
 
     if not analysis.empty:
         print_rich_table(
-            analysis, title="SEC filings analysis", show_index=True, export=bool(export)
+            analysis,
+            title="SEC filings analysis",
+            show_index=False,
+            export=bool(export),
         )
         export_data(
             export,

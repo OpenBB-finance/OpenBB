@@ -7,7 +7,7 @@ import logging
 import os
 import os.path
 from pathlib import Path
-from typing import List, Optional
+from typing import List, Optional, Union
 
 # IMPORTATION THIRDPARTY
 import pytz
@@ -19,8 +19,11 @@ from openbb_terminal.core.config.paths import (
     SETTINGS_ENV_FILE,
     USER_DATA_SOURCES_DEFAULT_FILE,
 )
-from openbb_terminal.core.session.current_user import get_current_user
-from openbb_terminal.core.session.preferences_handler import set_preference
+from openbb_terminal.core.session.current_user import (
+    get_current_user,
+    set_preference,
+)
+from openbb_terminal.core.session.env_handler import write_to_dotenv
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
@@ -193,6 +196,20 @@ class SettingsController(BaseController):
             mt.add_param("_tk", current_user.preferences.TOOLBAR_TWEET_NEWS_KEYWORDS)
         console.print(text=mt.menu_text, menu="Settings")
 
+    @staticmethod
+    def set_and_save_preference(name: str, value: Union[bool, Path, str]):
+        """Set preference and write to .env
+
+        Parameters
+        ----------
+        name : str
+            Preference name
+        value : Union[bool, Path, str]
+            Preference value
+        """
+        set_preference(name, value)
+        write_to_dotenv("OPENBB_" + name, str(value))
+
     @log_start_end(log=logger)
     def call_colors(self, other_args: List[str]):
         """Process colors command"""
@@ -227,8 +244,8 @@ class SettingsController(BaseController):
         )
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
-            set_preference(
-                "OPENBB_USE_DATETIME", not get_current_user().preferences.USE_DATETIME
+            self.set_and_save_preference(
+                "USE_DATETIME", not get_current_user().preferences.USE_DATETIME
             )
 
     @log_start_end(log=logger)
@@ -253,7 +270,9 @@ class SettingsController(BaseController):
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
             if os.path.exists(ns_parser.file):
-                set_preference("OPENBB_PREFERRED_DATA_SOURCE_FILE", ns_parser.file)
+                self.set_and_save_preference(
+                    "PREFERRED_DATA_SOURCE_FILE", ns_parser.file
+                )
                 console.print("[green]Sources file changed successfully![/green]")
             else:
                 console.print("[red]Couldn't find the sources file![/red]")
@@ -269,8 +288,8 @@ class SettingsController(BaseController):
         )
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
-            set_preference(
-                "OPENBB_USE_PLOT_AUTOSCALING",
+            self.set_and_save_preference(
+                "USE_PLOT_AUTOSCALING",
                 not get_current_user().preferences.USE_PLOT_AUTOSCALING,
             )
 
@@ -295,7 +314,7 @@ class SettingsController(BaseController):
             other_args.insert(0, "-v")
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser and ns_parser.value:
-            set_preference("OPENBB_PLOT_DPI", ns_parser.value)
+            self.set_and_save_preference("PLOT_DPI", ns_parser.value)
 
     @log_start_end(log=logger)
     def call_height(self, other_args: List[str]):
@@ -318,7 +337,7 @@ class SettingsController(BaseController):
             other_args.insert(0, "-v")
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
-            set_preference("OPENBB_PLOT_HEIGHT", ns_parser.value)
+            self.set_and_save_preference("PLOT_HEIGHT", ns_parser.value)
 
     @log_start_end(log=logger)
     def call_width(self, other_args: List[str]):
@@ -341,7 +360,7 @@ class SettingsController(BaseController):
             other_args.insert(0, "-v")
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
-            set_preference("OPENBB_PLOT_WIDTH", ns_parser.value)
+            self.set_and_save_preference("PLOT_WIDTH", ns_parser.value)
 
     @log_start_end(log=logger)
     def call_pheight(self, other_args: List[str]):
@@ -363,7 +382,7 @@ class SettingsController(BaseController):
             other_args.insert(0, "-v")
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
-            set_preference("OPENBB_PLOT_HEIGHT_PERCENTAGE", ns_parser.value)
+            self.set_and_save_preference("PLOT_HEIGHT_PERCENTAGE", ns_parser.value)
 
     @log_start_end(log=logger)
     def call_pwidth(self, other_args: List[str]):
@@ -385,7 +404,7 @@ class SettingsController(BaseController):
             other_args.insert(0, "-v")
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
-            set_preference("OPENBB_PLOT_WIDTH_PERCENTAGE", ns_parser.value)
+            self.set_and_save_preference("PLOT_WIDTH_PERCENTAGE", ns_parser.value)
 
     @log_start_end(log=logger)
     def call_monitor(self, other_args: List[str]):
@@ -407,7 +426,7 @@ class SettingsController(BaseController):
             other_args.insert(0, "-v")
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
-            set_preference("OPENBB_MONITOR", ns_parser.value)
+            self.set_and_save_preference("MONITOR", ns_parser.value)
 
     @log_start_end(log=logger)
     def call_backend(self, other_args: List[str]):
@@ -429,7 +448,7 @@ class SettingsController(BaseController):
             other_args.insert(0, "-v")
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
-            set_preference("OPENBB_BACKEND", ns_parser.value)
+            self.set_and_save_preference("BACKEND", ns_parser.value)
 
     @log_start_end(log=logger)
     def call_lang(self, other_args: List[str]):
@@ -454,7 +473,7 @@ class SettingsController(BaseController):
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
             if ns_parser.value:
-                set_preference("OPENBB_USE_LANGUAGE", ns_parser.value)
+                self.set_and_save_preference("USE_LANGUAGE", ns_parser.value)
             else:
                 console.print(
                     f"Languages available: {', '.join(self.languages_available)}"
@@ -484,7 +503,7 @@ class SettingsController(BaseController):
 
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser and ns_parser.timezone:
-            set_preference("OPENBB_TIMEZONE", ns_parser.timezone)
+            self.set_and_save_preference("TIMEZONE", ns_parser.timezone)
 
     @log_start_end(log=logger)
     def call_flair(self, other_args: List[str]):
@@ -512,7 +531,7 @@ class SettingsController(BaseController):
             else:
                 ns_parser.emoji = " ".join(ns_parser.emoji)
 
-            set_preference("OPENBB_USE_FLAIR", ns_parser.emoji)
+            self.set_and_save_preference("FLAIR", ns_parser.emoji)
 
     @log_start_end(log=logger)
     def call_userdata(self, other_args: List[str]):
@@ -550,7 +569,7 @@ class SettingsController(BaseController):
                     console.print(
                         f"User data to be saved in the default folder: '{default_path}'"
                     )
-                    set_preference("OPENBB_USER_DATA_DIRECTORY", default_path)
+                    self.set_and_save_preference("USER_DATA_DIRECTORY", default_path)
                     success_userdata = True
                 else:
                     # If the path selected does not start from the user root, give relative location from root
@@ -564,7 +583,9 @@ class SettingsController(BaseController):
                         console.print(
                             f"User data to be saved in the selected folder: '{userdata_path}'"
                         )
-                        set_preference("OPENBB_USER_DATA_DIRECTORY", userdata_path)
+                        self.set_and_save_preference(
+                            "USER_DATA_DIRECTORY", userdata_path
+                        )
                         success_userdata = True
                     else:
                         console.print(
@@ -581,7 +602,9 @@ class SettingsController(BaseController):
                             console.print(
                                 f"[green]Folder '{userdata_path}' successfully created.[/green]"
                             )
-                            set_preference("OPENBB_USER_DATA_DIRECTORY", userdata_path)
+                            self.set_and_save_preference(
+                                "USER_DATA_DIRECTORY", userdata_path
+                            )
                         else:
                             # Do not update userdata_folder path since we will keep the same as before
                             console.print(
@@ -607,8 +630,8 @@ class SettingsController(BaseController):
             current_user = get_current_user()
             if current_user.preferences.TOOLBAR_TWEET_NEWS:
                 console.print("Will take effect when running terminal next.")
-            set_preference(
-                "OPENBB_TOOLBAR_TWEET_NEWS",
+            self.set_and_save_preference(
+                "TOOLBAR_TWEET_NEWS",
                 not get_current_user().preferences.TOOLBAR_TWEET_NEWS,
             )
 
@@ -659,25 +682,25 @@ class SettingsController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if ns_parser.time:
-                set_preference(
-                    "OPENBB_TOOLBAR_TWEET_NEWS_SECONDS_BETWEEN_UPDATES",
+                self.set_and_save_preference(
+                    "TOOLBAR_TWEET_NEWS_SECONDS_BETWEEN_UPDATES",
                     str(ns_parser.time),
                 )
 
             if ns_parser.number:
-                set_preference(
-                    "OPENBB_TOOLBAR_TWEET_NEWS_NUM_LAST_TWEETS_TO_READ",
+                self.set_and_save_preference(
+                    "TOOLBAR_TWEET_NEWS_NUM_LAST_TWEETS_TO_READ",
                     str(ns_parser.number),
                 )
 
             if ns_parser.accounts:
-                set_preference(
-                    "OPENBB_TOOLBAR_TWEET_NEWS_ACCOUNTS_TO_TRACK",
+                self.set_and_save_preference(
+                    "TOOLBAR_TWEET_NEWS_ACCOUNTS_TO_TRACK",
                     str(ns_parser.accounts),
                 )
 
             if ns_parser.keywords:
-                set_preference(
-                    "OPENBB_TOOLBAR_TWEET_NEWS_KEYWORDS",
+                self.set_and_save_preference(
+                    "TOOLBAR_TWEET_NEWS_KEYWORDS",
                     str(" ".join(ns_parser.keywords)),
                 )

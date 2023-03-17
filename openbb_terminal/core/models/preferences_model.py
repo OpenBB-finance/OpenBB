@@ -1,5 +1,5 @@
 import os
-from typing import Optional
+from typing import Any, Optional
 
 from pydantic import NonNegativeInt, PositiveFloat, PositiveInt
 from pydantic.dataclasses import dataclass
@@ -9,7 +9,7 @@ from openbb_terminal.core.config.paths import (
     USER_DATA_SOURCES_DEFAULT_FILE,
 )
 
-# pylint: disable=too-many-instance-attributes
+# pylint: disable=too-many-instance-attributes, disable=no-member
 
 
 @dataclass(config=dict(validate_assignment=True, frozen=True))
@@ -36,15 +36,17 @@ class PreferencesModel:
     # FEATURE FLAGS
     SYNC_ENABLED: bool = True
     FILE_OVERWRITE: bool = False
+    SHOW_VERSION: bool = True
     RETRY_WITH_LOAD: bool = False
     USE_TABULATE_DF: bool = True
+    # Use interactive window to display dataframes with options to sort, filter, etc.
+    USE_INTERACTIVE_DF: bool = True
     USE_CLEAR_AFTER_CMD: bool = False
     USE_COLOR: bool = True
     USE_DATETIME: bool = True
     # Enable interactive matplotlib mode: change variable name to be more descriptive and delete comment
     USE_ION: bool = True
     USE_WATERMARK: bool = True
-    # Enable command and source in the figures: change variable name to be more descriptive and delete comment
     USE_CMD_LOCATION_FIGURE: bool = True
     USE_PROMPT_TOOLKIT: bool = True
     USE_PLOT_AUTOSCALING: bool = False
@@ -56,7 +58,6 @@ class PreferencesModel:
     ENABLE_RICH: bool = True
     ENABLE_RICH_PANEL: bool = True
     ENABLE_CHECK_API: bool = True
-    LOG_COLLECTION: bool = True
     TOOLBAR_HINT: bool = True
     TOOLBAR_TWEET_NEWS: bool = False
 
@@ -77,12 +78,10 @@ class PreferencesModel:
     MONITOR: NonNegativeInt = 0
 
     # STYLE
-    # Color for `view` command data.  All pyplot colors listed at:
-    # https://matplotlib.org/stable/gallery/color/named_colors.html
-    VIEW_COLOR: str = "tab:green"
     MPL_STYLE: str = "dark"
     PMF_STYLE: str = "dark"
     RICH_STYLE: str = "dark"
+    PLOT_STYLE: str = "dark"
 
     # PATHS
     PREFERRED_DATA_SOURCE_FILE: str = str(USER_DATA_SOURCES_DEFAULT_FILE)
@@ -98,12 +97,23 @@ class PreferencesModel:
     USER_FORECAST_MODELS_DIRECTORY = USER_DATA_DIRECTORY / "exports" / "forecast_models"
     USER_FORECAST_WHISPER_DIRECTORY = USER_DATA_DIRECTORY / "exports" / "whisper"
 
-    # @validator("VIEW_COLOR")
-    # def validate_view_color(cls, v):  # pylint: disable=no-self-argument
-    #     if v not in {
-    #         *mcolors.BASE_COLORS,
-    #         *mcolors.TABLEAU_COLORS,
-    #         *mcolors.CSS4_COLORS,
-    #         *mcolors.XKCD_COLORS,
-    #     }:
-    #         raise ValueError("Color not supported")
+    def __repr__(self) -> str:
+        """Return string representation of model."""
+        dataclass_repr = ""
+        for key, value in self.__dict__.items():
+            if key.startswith("_"):
+                continue
+            dataclass_repr += f"    {key}='{value}', \n"
+
+        return f"{self.__class__.__name__}(\n{dataclass_repr[:-2]}\n)"
+
+    @classmethod
+    def get_fields(cls) -> dict[str, Any]:
+        """Get dict of fields."""
+        return cls.__dataclass_fields__  # type: ignore
+
+    def get_field_value(self, field: str) -> Optional[str]:
+        """Get field value."""
+        if hasattr(self, field):
+            return getattr(self, field)
+        return None

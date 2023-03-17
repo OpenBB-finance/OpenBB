@@ -35,7 +35,7 @@ Future Expectations:
     epsfc              Earning Estimate by Analysts - EPS                              [SeekingAlpha]
     revfc              Earning Estimate by Analysts - Revenue                          [SeekingAlpha]
     est                quarter and year analysts earnings estimates                    [BusinessInsider]
-    pt                 price targets over time                                         [BusinessInsider]
+    pt                 price targets over time                                         [BusinessInsider, FinancialModelingPrep]
     dcf                advanced Excel customizable discounted cash flow                [StockAnalysis]
     dcfc               determine the (historical) discounted cash flow                 [FinancialModelingPrep]
 

@@ -9,9 +9,8 @@ from typing import Optional, Union
 
 from pandas.core.frame import DataFrame
 
-from openbb_terminal import OpenBBFigure
+from openbb_terminal import OpenBBFigure, theme
 from openbb_terminal.common.technical_analysis import ta_helpers
-from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
@@ -160,11 +159,12 @@ def price_target_from_analysts(
     if raw:
         df_analyst_data.index = df_analyst_data.index.strftime("%Y-%m-%d")
         return print_rich_table(
-            df_analyst_data.sort_index(ascending=False).head(limit),
+            df_analyst_data.sort_index(ascending=False),
             headers=list(df_analyst_data.columns),
             show_index=True,
             title="Analyst Price Targets",
             export=bool(export),
+            limit=limit,
         )
 
     return fig.show(external=external_axes)

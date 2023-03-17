@@ -5,11 +5,11 @@ import os
 import i18n
 
 # IMPORTATION INTERNAL
-from openbb_terminal.base_helpers import load_env_vars, strtobool, load_env_files
+from openbb_terminal.base_helpers import load_env_files, load_env_vars, strtobool
 from openbb_terminal.core.config.paths import MISCELLANEOUS_DIRECTORY
+from openbb_terminal.core.config.paths_helper import init_userdata
 from openbb_terminal.core.plots.backend import plots_backend
 from openbb_terminal.core.session.current_user import get_current_user
-from openbb_terminal.core.config.paths_helper import init_userdata
 
 from .helper_classes import TerminalStyle as _TerminalStyle
 
@@ -22,11 +22,16 @@ theme = _TerminalStyle(
 )
 
 
+# Start the plots backend
+def start_plot_backend():
+    """Starts the plot backend"""
+    plots_backend().start(load_env_vars("DEBUG_MODE", strtobool, False))
+
+
 def start_required_configurations():
     """Starts the required configurations for the terminal to work"""
     load_env_files()
     init_userdata()
-    plots_backend().start(load_env_vars("DEBUG_MODE", strtobool, False))
 
 
 # Logging section

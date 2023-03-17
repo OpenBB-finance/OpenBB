@@ -212,7 +212,9 @@ class TerminalStyle:
         return colors
 
 
-theme = TerminalStyle("dark", "dark")
+theme = TerminalStyle(
+    get_current_user().preferences.PLOT_STYLE, get_current_user().preferences.RICH_STYLE
+)
 theme.apply_style()
 
 

@@ -3,12 +3,12 @@ __docformat__ = "numpy"
 
 import logging
 import os
+from datetime import datetime
 from typing import Optional
 
 import pandas as pd
 
-from openbb_terminal import OpenBBFigure
-from openbb_terminal.config_terminal import theme
+from openbb_terminal import OpenBBFigure, theme
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
@@ -741,17 +741,19 @@ def display_filings(
             "for --pages. Showing recent filings instead.[/red]\n"
         )
         print_rich_table(
-            filings[:limit],
+            filings,
             title=f"Recent SEC Filings [Limit: {limit}]",
             show_index=True,
             export=bool(export),
+            limit=limit,
         )
     elif not ticker_filings.empty:
         print_rich_table(
-            ticker_filings[:limit],
+            ticker_filings,
             title=f"SEC Filings for {ticker} [Limit: {limit}]]",
             show_index=True,
             export=bool(export),
+            limit=limit,
         )
 
         export_data(
@@ -803,11 +805,12 @@ def rating(
     df = df.astype(str).applymap(lambda x: add_color(x))
 
     print_rich_table(
-        df.head(limit),
+        df,
         headers=df.columns,
         show_index=True,
         title="Rating",
         export=bool(export),
+        limit=limit,
     )
 
     export_data(
@@ -816,4 +819,53 @@ def rating(
         "rot",
         df,
         sheet_name,
+    )
+
+
+@log_start_end(log=logger)
+@check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
+def display_price_targets(
+    symbol: str, limit: int = 10, export: str = "", sheet_name: Optional[str] = None
+):
+    """Display price targets for a given ticker. [Source: Financial Modeling Prep]
+
+    Parameters
+    ----------
+    symbol : str
+        Symbol
+    limit: int
+        Number of last days ratings to display
+    export: str
+        Export dataframe data to csv,json,xlsx file
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
+    """
+    columns_to_show = [
+        "publishedDate",
+        "analystCompany",
+        "adjPriceTarget",
+        "priceWhenPosted",
+    ]
+    price_targets = fmp_model.get_price_targets(symbol)
+    if price_targets.empty:
+        console.print(f"[red]No price targets found for {symbol}[/red]\n")
+        return
+    price_targets["publishedDate"] = price_targets["publishedDate"].apply(
+        lambda x: datetime.strptime(x, "%Y-%m-%dT%H:%M:%S.%fZ").strftime(
+            "%Y-%m-%d %H:%M"
+        )
+    )
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "pt",
+        price_targets,
+        sheet_name,
+    )
+
+    print_rich_table(
+        price_targets[columns_to_show].head(limit),
+        headers=["Date", "Company", "Target", "Posted Price"],
+        show_index=False,
+        title=f"{symbol.upper()} Price Targets",
     )

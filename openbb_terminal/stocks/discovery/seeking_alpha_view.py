@@ -27,7 +27,7 @@ def upcoming_earning_release_dates(
     Parameters
     ----------
     num_pages: int
-        Number of pages to scrap
+        Number of pages to scrape
     limit: int
         Number of upcoming earnings release dates
     export : str
@@ -42,7 +42,6 @@ def upcoming_earning_release_dates(
     if df_earnings.empty:
         console.print("No upcoming earnings release dates found")
 
-    pd.set_option("display.max_colwidth", None)
     if export:
         l_earnings = []
         l_earnings_dates = []
@@ -114,22 +113,24 @@ def news(
     if article_id == -1:
         articles = seeking_alpha_model.get_trending_list(limit)
 
-        if export:
-            df_articles = pd.DataFrame(articles)
+        df_articles = pd.DataFrame(articles)
 
-        for idx, article in enumerate(articles):
-            console.print(
-                article["publishedAt"].replace("T", " ").replace("Z", ""),
-                "-",
-                article["id"],
-                "-",
-                article["title"],
-            )
-            console.print(article["url"])
-            console.print("\n")
+        df_articles["publishedAt"] = pd.to_datetime(df_articles["publishedAt"])
 
-            if idx >= limit - 1:
-                break
+        df_news = pd.DataFrame(
+            df_articles, columns=["publishedAt", "id", "title", "url"]
+        )
+
+        # We look for a date name in the column to assume its a date on frontend side for filtering etc
+        df_news.rename(columns={"publishedAt": "publishedAtDate"}, inplace=True)
+
+        df_news = df_news.drop("id", axis=1)
+        print_rich_table(
+            df_news,
+            show_index=False,
+            export=bool(export),
+            limit=limit,
+        )
 
     # User wants to access specific article
     else:
@@ -161,7 +162,7 @@ def news(
 
 @log_start_end(log=logger)
 def display_news(
-    news_type: str = "Top-News",
+    news_type: str = "top-news",
     limit: int = 5,
     export: str = "",
     sheet_name: Optional[str] = None,
@@ -184,16 +185,17 @@ def display_news(
         console.print("No news found.", "\n")
 
     else:
-        for news_element in news_to_display:
-            console.print(
-                news_element["publishOn"]
-                + " - "
-                + news_element["id"]
-                + " - "
-                + news_element["title"]
-            )
-            console.print(news_element["url"])
-            console.print("\n")
+        df_news = pd.DataFrame(
+            news_to_display, columns=["publishOn", "id", "title", "url"]
+        )
+        df_news = df_news.drop("id", axis=1)
+        print_rich_table(
+            df_news,
+            show_index=False,
+            title=f"{news_type}",
+            export=bool(export),
+            limit=limit,
+        )
 
         export_data(
             export,

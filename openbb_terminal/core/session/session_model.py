@@ -11,14 +11,15 @@ from openbb_terminal.base_helpers import (
 )
 from openbb_terminal.core.models.user_model import (
     CredentialsModel,
-    PreferencesModel,
     ProfileModel,
     UserModel,
 )
 from openbb_terminal.core.session.current_user import (
+    get_env_dict,
+    get_local_preferences,
     set_current_user,
+    set_preference,
 )
-from openbb_terminal.core.session.preferences_handler import set_preference
 from openbb_terminal.helper_funcs import system_clear
 from openbb_terminal.rich_config import console
 
@@ -76,26 +77,24 @@ def login(session: dict) -> LoginStatus:
     session : dict
         The session info.
     """
-
     # create a new user
     hub_user = UserModel(  # type: ignore
         credentials=CredentialsModel(),
         profile=ProfileModel(),
-        preferences=PreferencesModel(),
+        preferences=get_local_preferences(),
     )
     response = Hub.fetch_user_configs(session)
     if response is not None:
         if response.status_code == 200:
             configs = json.loads(response.content)
             email = configs.get("email", "")
-            feature_settings = configs.get("features_settings", {}) or {}
             hub_user.profile.load_user_info(session, email)
             set_current_user(hub_user)
             Local.apply_configs(configs=configs)
-            if feature_settings.get("FLAIR", None) is None:
+            if "FLAIR" not in get_env_dict():
                 MAX_FLAIR_LEN = 20
                 flair = "[" + hub_user.profile.username[:MAX_FLAIR_LEN] + "]" + " 🦋"
-                set_preference("FLAIR", flair, login=True)
+                set_preference("FLAIR", flair)
             return LoginStatus.SUCCESS
         if response.status_code == 401:
             return LoginStatus.UNAUTHORIZED

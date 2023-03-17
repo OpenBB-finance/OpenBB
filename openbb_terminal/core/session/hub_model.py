@@ -3,6 +3,7 @@ from typing import Dict, Optional
 
 import requests
 
+import openbb_terminal.config_terminal as cfg
 from openbb_terminal.core.session.constants import (
     BASE_URL,
     CONNECTION_ERROR_MSG,
@@ -103,7 +104,7 @@ def delete_session(
         The response from the logout request.
     """
     try:
-        response = requests.post(
+        response = requests.get(
             url=base_url + "logout",
             headers={"Authorization": auth_header},
             json={"token": token},
@@ -231,7 +232,7 @@ def fetch_user_configs(
         return None
 
 
-def patch_user_configs(
+def upload_config(
     key: str,
     value: str,
     type_: str,
@@ -319,9 +320,9 @@ def clear_user_configs(
             timeout=timeout,
         )
         if response.status_code == 200:
-            console.print("[green]Cleared configurations.[/green]")
+            console.print("[green]Cleared data.[/green]")
         else:
-            console.print("[red]Failed to clear configurations.[/red]")
+            console.print("[red]Failed to clear data.[/red]")
         return response
     except requests.exceptions.ConnectionError:
         console.print(f"\n{CONNECTION_ERROR_MSG}")
@@ -330,7 +331,7 @@ def clear_user_configs(
         console.print(f"\n{CONNECTION_TIMEOUT_MSG}")
         return None
     except Exception:
-        console.print("[red]Failed to clear configurations.[/red]")
+        console.print("[red]Failed to clear data.[/red]")
         return None
 
 
@@ -370,6 +371,8 @@ def upload_routine(
         "description": description,
         "script": routine,
         "override": override,
+        "version": cfg.VERSION,
+        "public": False,
     }
 
     try:
@@ -562,7 +565,7 @@ def generate_personal_access_token(
     Optional[requests.Response]
     """
 
-    url = f"{base_url}/sdk/token"
+    url = f"{base_url}sdk/token"
 
     payload = json.dumps({"days": days})
     headers = {
@@ -609,7 +612,7 @@ def get_personal_access_token(
     Optional[requests.Response]
     """
 
-    url = f"{base_url}/sdk/token"
+    url = f"{base_url}sdk/token"
 
     headers = {"Authorization": auth_header}
 
@@ -652,7 +655,7 @@ def revoke_personal_access_token(
     Optional[requests.Response]
     """
 
-    url = f"{base_url}/sdk/token"
+    url = f"{base_url}sdk/token"
 
     headers = {"Authorization": auth_header}
 
