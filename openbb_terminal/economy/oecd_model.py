@@ -6,12 +6,13 @@ from datetime import datetime
 from typing import List, Optional
 
 import pandas as pd
+from dateutil.relativedelta import relativedelta
 
 from openbb_terminal.decorators import console, log_start_end
 
 logger = logging.getLogger(__name__)
 
-# pylint: disable=too-many-lines
+# pylint: disable=C0302
 
 COUNTRY_TO_CODE_GDP = {
     "australia": "AUS",
@@ -467,10 +468,10 @@ COUNTRY_TO_CODE_TRUST = {
 
 @log_start_end(log=logger)
 def get_gdp(
-    countries: Optional[List[str]] = None,
+    countries: Optional[List[str]],
     units: str = "USD_CAP",
-    start_date: str = "",
-    end_date: str = "",
+    start_date="",
+    end_date="",
 ) -> pd.DataFrame:
     """
     Gross domestic product (GDP) is the standard measure of the value added created
@@ -500,8 +501,13 @@ def get_gdp(
     Returns
     -------
     pd.DataFrame
-        Dataframe with the interest rate data
+        Dataframe with gdp data
     """
+    if not start_date:
+        start_date = datetime.now() - relativedelta(years=30)
+    if not end_date:
+        end_date = datetime.now()
+
     if isinstance(start_date, datetime):
         start_date = start_date.date()
     if isinstance(end_date, datetime):
@@ -537,10 +543,10 @@ def get_gdp(
 
 @log_start_end(log=logger)
 def get_quarterly_gdp(
-    countries: Optional[List[str]] = None,
+    countries: Optional[List[str]],
     units: str = "PC_CHGPY",
-    start_date: str = "",
-    end_date: str = "",
+    start_date="",
+    end_date="",
 ) -> pd.DataFrame:
     """
     Gross domestic product (GDP) is the standard measure of the value added
@@ -572,11 +578,15 @@ def get_quarterly_gdp(
     Returns
     -------
     pd.DataFrame
-        Dataframe with the interest rate data
+        Dataframe with the gdp data
     """
-    if isinstance(start_date, datetime):
+    if not start_date:
+        start_date = (datetime.now() - relativedelta(years=10)).date()
+    elif isinstance(start_date, datetime):
         start_date = start_date.date()
-    if isinstance(end_date, datetime):
+    if not end_date:
+        end_date = datetime.now().date()
+    elif isinstance(end_date, datetime):
         end_date = end_date.date()
 
     if units not in ["PC_CHGPP", "PC_CHGPY", "IDX"]:
@@ -615,11 +625,11 @@ def get_quarterly_gdp(
 
 @log_start_end(log=logger)
 def get_gdp_forecast(
-    countries: Optional[List[str]] = None,
+    countries: Optional[List[str]],
     types: str = "real",
     units: str = "Q",
-    start_date: str = "",
-    end_date: str = "",
+    start_date="",
+    end_date="",
 ) -> pd.DataFrame:
     """
     Real gross domestic product (GDP) is GDP given in constant prices and
@@ -648,11 +658,15 @@ def get_gdp_forecast(
     Returns
     -------
     pd.DataFrame
-        Dataframe with the interest rate data
+        Dataframe with the gdp data
     """
-    if isinstance(start_date, datetime):
+    if not start_date:
+        start_date = (datetime.now() - relativedelta(years=10)).date()
+    elif isinstance(start_date, datetime):
         start_date = start_date.date()
-    if isinstance(end_date, datetime):
+    if not end_date:
+        end_date = datetime.now().date()
+    elif isinstance(end_date, datetime):
         end_date = end_date.date()
 
     if units not in ["Q", "A"]:
@@ -703,9 +717,9 @@ def get_gdp_forecast(
 
 @log_start_end(log=logger)
 def get_debt(
-    countries: Optional[List[str]] = None,
-    start_date: str = "",
-    end_date: str = "",
+    countries: Optional[List[str]],
+    start_date="",
+    end_date="",
 ) -> pd.DataFrame:
     """
     General government debt-to-GDP ratio measures the gross debt of the general
@@ -727,11 +741,15 @@ def get_debt(
     Returns
     -------
     pd.DataFrame
-        Dataframe with the interest rate data
+        Dataframe with the debt data
     """
-    if isinstance(start_date, datetime):
+    if not start_date:
+        start_date = (datetime.now() - relativedelta(years=30)).date()
+    elif isinstance(start_date, datetime):
         start_date = start_date.date()
-    if isinstance(end_date, datetime):
+    if not end_date:
+        end_date = datetime.now().date()
+    elif isinstance(end_date, datetime):
         end_date = end_date.date()
 
     df = pd.read_csv(
@@ -759,12 +777,12 @@ def get_debt(
 
 @log_start_end(log=logger)
 def get_cpi(
-    countries: Optional[List[str]] = None,
+    countries: Optional[List[str]],
     perspective: str = "TOT",
     frequency: str = "Q",
     units: str = "AGRWTH",
-    start_date: str = "",
-    end_date: str = "",
+    start_date="",
+    end_date="",
 ) -> pd.DataFrame:
     """
     Inflation measured by consumer price index (CPI) is defined as the change in the prices
@@ -802,11 +820,15 @@ def get_cpi(
     Returns
     -------
     pd.DataFrame
-        Dataframe with the interest rate data
+        Dataframe with cpi data
     """
-    if isinstance(start_date, datetime):
+    if not start_date:
+        start_date = (datetime.now() - relativedelta(years=30)).date()
+    elif isinstance(start_date, datetime):
         start_date = start_date.date()
-    if isinstance(end_date, datetime):
+    if not end_date:
+        end_date = datetime.now().date()
+    elif isinstance(end_date, datetime):
         end_date = end_date.date()
 
     if perspective not in ["ENRG", "FOOD", "TOT", "TOT_FOODENRG"]:
@@ -858,9 +880,9 @@ def get_cpi(
 
 @log_start_end(log=logger)
 def get_balance(
-    countries: Optional[List[str]] = None,
-    start_date: str = "",
-    end_date: str = "",
+    countries: Optional[List[str]],
+    start_date="",
+    end_date="",
 ) -> pd.DataFrame:
     """
     General government deficit is defined as the balance of income and expenditure of government,
@@ -883,11 +905,15 @@ def get_balance(
     Returns
     -------
     pd.DataFrame
-        Dataframe with the interest rate data
+        Dataframe with the balance data
     """
-    if isinstance(start_date, datetime):
+    if not start_date:
+        start_date = (datetime.now() - relativedelta(years=30)).date()
+    elif isinstance(start_date, datetime):
         start_date = start_date.date()
-    if isinstance(end_date, datetime):
+    if not end_date:
+        end_date = datetime.now().date()
+    elif isinstance(end_date, datetime):
         end_date = end_date.date()
 
     df = pd.read_csv(
@@ -915,10 +941,10 @@ def get_balance(
 
 @log_start_end(log=logger)
 def get_revenue(
-    countries: Optional[List[str]] = None,
+    countries: Optional[List[str]],
     units: str = "PERCENTAGE_GDP",
-    start_date: str = "",
-    end_date: str = "",
+    start_date="",
+    end_date="",
 ) -> pd.DataFrame:
     """
     Governments collect revenues mainly for two purposes: to finance the goods
@@ -947,11 +973,15 @@ def get_revenue(
     Returns
     -------
     pd.DataFrame
-        Dataframe with the interest rate data
+        Dataframe with revenue data
     """
-    if isinstance(start_date, datetime):
+    if not start_date:
+        start_date = (datetime.now() - relativedelta(years=30)).date()
+    elif isinstance(start_date, datetime):
         start_date = start_date.date()
-    if isinstance(end_date, datetime):
+    if not end_date:
+        end_date = datetime.now().date()
+    elif isinstance(end_date, datetime):
         end_date = end_date.date()
 
     if units not in ["THND_USD_CAP", "PERCENTAGE_GDP"]:
@@ -986,10 +1016,10 @@ def get_revenue(
 
 @log_start_end(log=logger)
 def get_spending(
-    countries: Optional[List[str]] = None,
+    countries: Optional[List[str]],
     units: str = "PERCENTAGE_GDP",
-    start_date: str = "",
-    end_date: str = "",
+    start_date="",
+    end_date="",
 ) -> pd.DataFrame:
     """
     General government spending provides an indication of the size
@@ -1016,11 +1046,15 @@ def get_spending(
     Returns
     -------
     pd.DataFrame
-        Dataframe with the interest rate data
+        Dataframe with the spending data
     """
-    if isinstance(start_date, datetime):
+    if not start_date:
+        start_date = (datetime.now() - relativedelta(years=30)).date()
+    elif isinstance(start_date, datetime):
         start_date = start_date.date()
-    if isinstance(end_date, datetime):
+    if not end_date:
+        end_date = datetime.now().date()
+    elif isinstance(end_date, datetime):
         end_date = end_date.date()
 
     if units not in ["THND_USD_CAP", "PERCENTAGE_GDP"]:
@@ -1054,9 +1088,9 @@ def get_spending(
 
 @log_start_end(log=logger)
 def get_trust(
-    countries: Optional[List[str]] = None,
-    start_date: str = "",
-    end_date: str = "",
+    countries: Optional[List[str]],
+    start_date="",
+    end_date="",
 ) -> pd.DataFrame:
     """
     Trust in government refers to the share of people who report having confidence in
@@ -1081,11 +1115,15 @@ def get_trust(
     Returns
     -------
     pd.DataFrame
-        Dataframe with the interest rate data
+        Dataframe with the trust data
     """
-    if isinstance(start_date, datetime):
+    if not start_date:
+        start_date = (datetime.now() - relativedelta(years=30)).date()
+    elif isinstance(start_date, datetime):
         start_date = start_date.date()
-    if isinstance(end_date, datetime):
+    if not end_date:
+        end_date = datetime.now().date()
+    elif isinstance(end_date, datetime):
         end_date = end_date.date()
 
     df = pd.read_csv(

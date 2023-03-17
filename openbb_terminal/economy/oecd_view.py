@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def plot_gdp(
-    countries: Optional[List[str]] = None,
+    countries: Optional[List[str]],
     units: str = "USD_CAP",
     start_date: str = "",
     end_date: str = "",
@@ -91,14 +91,13 @@ def plot_gdp(
             headers=list(df.columns),
             show_index=True,
             title=title,
-            floatfmt=".3f",
             export=bool(export),
         )
 
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
-        "nominal_gdp",
+        f"nominal_gdp_{units}",
         df,
         sheet_name,
         fig,
@@ -109,7 +108,7 @@ def plot_gdp(
 
 @log_start_end(log=logger)
 def plot_quarterly_gdp(
-    countries: Optional[List[str]] = None,
+    countries: Optional[List[str]],
     units: str = "PC_CHGPY",
     start_date: str = "",
     end_date: str = "",
@@ -189,15 +188,14 @@ def plot_quarterly_gdp(
             headers=list(df.columns),
             show_index=True,
             title=title,
-            floatfmt=".3f",
             export=bool(export),
         )
 
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
-        "real_gdp",
-        df,
+        f"real_gdp_{units}",
+        df if units == "IDX" else df / 100,
         sheet_name,
         fig,
     )
@@ -207,7 +205,7 @@ def plot_quarterly_gdp(
 
 @log_start_end(log=logger)
 def plot_gdp_forecast(
-    countries: Optional[List[str]] = None,
+    countries: Optional[List[str]],
     types: str = "real",
     units: str = "Q",
     start_date: str = "",
@@ -277,7 +275,6 @@ def plot_gdp_forecast(
             headers=list(df.columns),
             show_index=True,
             title=title,
-            floatfmt=".3f",
             export=bool(export),
         )
 
@@ -285,7 +282,7 @@ def plot_gdp_forecast(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "forecast_gdp",
-        df,
+        df / 100,
         sheet_name,
         fig,
     )
@@ -295,7 +292,7 @@ def plot_gdp_forecast(
 
 @log_start_end(log=logger)
 def plot_cpi(
-    countries: Optional[List[str]] = None,
+    countries: Optional[List[str]],
     perspective: str = "TOT",
     frequency: str = "Q",
     units: str = "AGRWTH",
@@ -380,7 +377,6 @@ def plot_cpi(
             headers=list(df.columns),
             show_index=True,
             title=title,
-            floatfmt=".3f",
             export=bool(export),
         )
 
@@ -388,7 +384,7 @@ def plot_cpi(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "cpi",
-        df,
+        df / 100 if units == "AGRWTH" else df,
         sheet_name,
         fig,
     )
@@ -398,7 +394,7 @@ def plot_cpi(
 
 @log_start_end(log=logger)
 def plot_balance(
-    countries: Optional[List[str]] = None,
+    countries: Optional[List[str]],
     start_date: str = "",
     end_date: str = "",
     raw: bool = False,
@@ -452,15 +448,14 @@ def plot_balance(
             headers=list(df.columns),
             show_index=True,
             title=title,
-            floatfmt=".3f",
             export=bool(export),
         )
 
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
-        "government_balance",
-        df,
+        "balance_percentage_gdp",
+        df / 100,
         sheet_name,
         fig,
     )
@@ -470,7 +465,7 @@ def plot_balance(
 
 @log_start_end(log=logger)
 def plot_revenue(
-    countries: Optional[List[str]] = None,
+    countries: Optional[List[str]],
     units: str = "PERCENTAGE_GDP",
     start_date: str = "",
     end_date: str = "",
@@ -546,8 +541,8 @@ def plot_revenue(
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
-        "government_revenue",
-        df,
+        f"revenue_{units}",
+        df / 100 if units == "PERCENTAGE_GDP" else df,
         sheet_name,
         fig,
     )
@@ -557,7 +552,7 @@ def plot_revenue(
 
 @log_start_end(log=logger)
 def plot_spending(
-    countries: Optional[List[str]] = None,
+    countries: Optional[List[str]],
     units: str = "PERCENTAGE_GDP",
     start_date: str = "",
     end_date: str = "",
@@ -631,8 +626,8 @@ def plot_spending(
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
-        "government_spending",
-        df,
+        f"spending_{units}",
+        df / 100 if units == "PERCENTAGE_GDP" else df,
         sheet_name,
         fig,
     )
@@ -642,7 +637,7 @@ def plot_spending(
 
 @log_start_end(log=logger)
 def plot_debt(
-    countries: Optional[List[str]] = None,
+    countries: Optional[List[str]],
     start_date: str = "",
     end_date: str = "",
     raw: bool = False,
@@ -702,7 +697,7 @@ def plot_debt(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "debt_to_gdp",
-        df,
+        df / 100,
         sheet_name,
         fig,
     )
@@ -712,7 +707,7 @@ def plot_debt(
 
 @log_start_end(log=logger)
 def plot_trust(
-    countries: Optional[List[str]] = None,
+    countries: Optional[List[str]],
     start_date: str = "",
     end_date: str = "",
     raw: bool = False,
@@ -775,7 +770,7 @@ def plot_trust(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "trust",
-        df,
+        df / 100,
         sheet_name,
         fig,
     )
