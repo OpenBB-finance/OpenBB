@@ -279,8 +279,7 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
         "yaxis.exponentformat": "SI",
         "yaxis.tickformat": ".0s",
         "yaxis.exponentbase": 100,
-
-      }
+      };
       Plotly.update(globals.CHART_DIV, layout_update);
     }
     if (globals.CHART_DIV.layout.yaxis.type == "linear" && globals.logYaxis) {
@@ -293,8 +292,7 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
         "yaxis.exponentformat": "none",
         "yaxis.tickformat": null,
         "yaxis.exponentbase": 10,
-
-      }
+      };
       Plotly.update(globals.CHART_DIV, layout_update);
     }
   } else {
@@ -313,17 +311,14 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
     });
   }
 
-
   // We check to see if window.save_png is defined and true
   if (window.save_image != undefined && window.export_image) {
     // if is_3dmesh is true, we set the close_interval to 1000
     let close_interval = is_3dmesh ? 1000 : 500;
 
     // We get the extension of the file and check if it is valid
-    const extension = window.export_image
-      .split(".")
-      .pop()
-      .replace("jpg", "jpeg");
+    let filename = window.export_image.split("/").pop();
+    const extension = filename.split(".").pop().replace("jpg", "jpeg");
 
     if (["jpeg", "png", "svg"].includes(extension)) {
       // We run Plotly.downloadImage to save the chart as an image
@@ -331,7 +326,7 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
         format: extension,
         width: globals.CHART_DIV.clientWidth,
         height: globals.CHART_DIV.clientHeight,
-        filename: window.export_image.split("/").pop(),
+        filename: filename.split(".")[0],
       });
     }
     setTimeout(function () {
