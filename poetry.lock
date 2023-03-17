@@ -1774,14 +1774,14 @@ langdetect = ["langdetect"]
 
 [[package]]
 name = "datetime"
-version = "5.0"
+version = "5.1"
 description = "This package provides a DateTime data type, as known from Zope. Unless you need to communicate with Zope APIs, you're probably better off using Python's built-in datetime module."
 category = "main"
 optional = false
-python-versions = "*"
+python-versions = ">=3.7"
 files = [
-    {file = "DateTime-5.0-py3-none-any.whl", hash = "sha256:22d3622eec9cfe73b16e5c5ff5f05d8c1154e32f01e56560f3d20b834ceea2d7"},
-    {file = "DateTime-5.0.tar.gz", hash = "sha256:20e4e0ff01e07d2e8de863e7e2b63b1bde6ec049098e244ab89a2c4bc4342ac1"},
+    {file = "DateTime-5.1-py3-none-any.whl", hash = "sha256:97f5ec489e75e26c2e7b4e4b37dc001389814dca1f14ec046c7f9270cf3cee9e"},
+    {file = "DateTime-5.1.tar.gz", hash = "sha256:a4191a3193c1ca4dbbaad5c958f940b9256864ba2613a53038d1613d3f63262d"},
 ]
 
 [package.dependencies]
