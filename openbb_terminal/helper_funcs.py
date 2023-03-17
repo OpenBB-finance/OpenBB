@@ -1390,9 +1390,6 @@ def plot_autoscale():
     return x, y
 
 
-plots_backend().set_window_dimensions(*plot_autoscale())
-
-
 def get_last_time_market_was_open(dt):
     """Get last time the US market was open."""
     # Check if it is a weekend
