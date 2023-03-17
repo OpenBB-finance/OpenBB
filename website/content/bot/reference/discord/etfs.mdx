@@ -1,0 +1,53 @@
+---
+title: ETFs
+description: tops, holdings
+premium: false
+commands:
+  - "/etf tops"
+  - "/etf holdings"
+---
+
+# ETFs
+
+## tops
+
+> Displays ETF's Top Gainers/Decliners, Most Active.
+
+```format
+/etf tops <sort>
+```
+
+**sort**
+- Sort by Top Gainers, Top Decliners, or Most Active
+
+**Examples**
+
+```
+/etf tops sort:Top Gainers
+```
+
+---
+
+## holdings
+
+> Displays ETF's Holdings.
+
+```format
+/etf holdings <etf> [<num>]
+```
+
+**etf**
+- ETF Symbol
+
+**[num]** - _optional_
+- Amount of holdings to display. Default 15
+
+**Examples**
+
+```
+/etf holdings etf:SPY
+```
+
+```
+/etf holdings etf:SPY num:25
+```

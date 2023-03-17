@@ -5,17 +5,20 @@ import os
 from pathlib import Path
 from typing import Dict, List, Optional
 
-from openbb_terminal import (
-    keys_model,
+from openbb_terminal.account.account_model import (
+    get_diff,
+    get_routines_info,
 )
-from openbb_terminal.account.account_model import get_diff, get_routines_info
 from openbb_terminal.account.account_view import display_routines_list
 from openbb_terminal.core.session import (
     hub_model as Hub,
     local_model as Local,
 )
-from openbb_terminal.core.session.current_user import get_current_user, is_local
-from openbb_terminal.core.session.preferences_handler import set_preference
+from openbb_terminal.core.session.current_user import (
+    get_current_user,
+    is_local,
+    set_preference,
+)
 from openbb_terminal.core.session.session_model import logout
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
@@ -156,16 +159,23 @@ class AccountController(BaseController):
 
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            current_user = get_current_user()
             if ns_parser.sync is None:
-                sync = "ON" if current_user.preferences.SYNC_ENABLED is True else "OFF"
+                sync = (
+                    "ON"
+                    if get_current_user().preferences.SYNC_ENABLED is True
+                    else "OFF"
+                )
                 console.print(f"sync is {sync}, use --on or --off to change.")
             else:
                 set_preference(
                     name="SYNC_ENABLED",
                     value=ns_parser.sync,
                 )
-                sync = "ON" if current_user.preferences.SYNC_ENABLED is True else "OFF"
+                sync = (
+                    "ON"
+                    if get_current_user().preferences.SYNC_ENABLED is True
+                    else "OFF"
+                )
                 console.print(f"[info]sync:[/info] {sync}")
 
     @log_start_end(log=logger)
@@ -488,17 +498,6 @@ class AccountController(BaseController):
                 token = response.json().get("token", "")
                 if token:
                     console.print(f"\n[info]Token:[/info] {token}\n")
-
-                    save_to_keys = False
-                    if not ns_parser.save:
-                        save_to_keys = console.input(
-                            "Would you like to save the token to the keys? (y/n): "
-                        ).lower() in ["y", "yes"]
-
-                    if save_to_keys or ns_parser.save:
-                        keys_model.set_openbb_personal_access_token(
-                            key=token, persist=True, show_output=True
-                        )
 
     @log_start_end(log=logger)
     def call_show(self, other_args: List[str]) -> None:
