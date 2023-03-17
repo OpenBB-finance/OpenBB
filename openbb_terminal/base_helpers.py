@@ -114,29 +114,6 @@ def load_env_files():
     load_dotenv(PACKAGE_ENV_FILE, override=True)
     load_dotenv(SETTINGS_ENV_FILE, override=True)
 
-    # reload_openbb_config_modules()
-
-
-def reload_openbb_config_modules():
-    """Reloads openbb config modules"""
-
-    reload_modules(
-        to_reload=[
-            "openbb_terminal.config_plot",
-            "openbb_terminal.config_terminal",
-            "openbb_terminal.feature_flags",
-            "openbb_terminal.core.config",
-        ]
-    )
-
-
-def reload_modules(to_reload: List[str]):
-    """Reloads modules"""
-    modules = sys.modules.copy()
-    for module in modules:
-        if module in to_reload:
-            importlib.reload(sys.modules[module])
-
 
 def remove_log_handlers():
     """Remove the log handlers - needs to be done before reloading modules."""
