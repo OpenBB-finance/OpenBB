@@ -120,7 +120,7 @@ def show_indices(
         )
 
     if (output := indices_data) is not None and external_axes:
-        output = (indices_data, fig.show(external_axes=external_axes))
+        output = (indices_data, fig.show(external=external_axes))
 
     return output
 
