@@ -38,6 +38,7 @@ from openbb_terminal.core.session.current_user import (
     get_current_user,
     is_local,
     set_current_user,
+    set_preference,
 )
 from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
@@ -884,9 +885,7 @@ def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
             console.print(
                 f"[green]Folder '{export_path}' successfully created.[/green]"
             )
-        current_user = get_current_user()
-        current_user.preferences.USER_EXPORTS_DIRECTORY = Path(export_path)
-        set_current_user(current_user)
+        set_preference("USER_EXPORTS_DIRECTORY", Path(export_path))
 
     bootup()
     if not jobs_cmds:
