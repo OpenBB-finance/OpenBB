@@ -1,6 +1,6 @@
 ---
 title: Installation
-sidebar_position: 2
+sidebar_position: 1
 description: The OpenBB SDK provides programmatic access to all Terminal functions. This layer of code allows users to build their own tools and applications on top of the existing architecture. Follow these steps to install on a local machine.
 keywords: [installation, installer, install, guide, mac, windows, linux, python, github, macos, how to, explanation, openbb, sdk, api, pip, pypi,]
 ---
@@ -8,7 +8,7 @@ The OpenBB SDK provides programmatic access to all Terminal functions. This laye
 
 <details><summary>Minimum Requirements</summary>
 
-- Windows 10, 
+- Windows 10,
 - Modern CPU (made in the last 5 years)
 - At least 4GB of RAM
 - At least 5GB of free storage

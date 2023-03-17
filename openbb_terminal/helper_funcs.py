@@ -273,6 +273,7 @@ def print_rich_table(
     columns_to_auto_color: Optional[List[str]] = None,
     rows_to_auto_color: Optional[List[str]] = None,
     export: bool = False,
+    print_to_console: bool = False,
     limit: Optional[int] = 1000,
 ):
     """Prepare a table from df in rich.
@@ -303,11 +304,18 @@ def print_rich_table(
         Whether we are exporting the table to a file. If so, we don't want to print it.
     limit: Optional[int]
         Limit the number of rows to show.
+    print_to_console: bool
+        Whether to print the table to the console. If False and interactive mode is
+        enabled, the table will be displayed in a new window. Otherwise, it will print to the
+        console.
     """
     if export:
         return
 
     current_user = get_current_user()
+    enable_interactive = (
+        current_user.preferences.USE_INTERACTIVE_DF and plots_backend().isatty
+    )
 
     def _get_headers(_headers: Union[List[str], pd.Index]) -> List[str]:
         """Check if headers are valid and return them."""
@@ -320,7 +328,7 @@ def print_rich_table(
             )
         return output
 
-    if current_user.preferences.USE_INTERACTIVE_DF and plots_backend().isatty:
+    if enable_interactive and not print_to_console:
         df_outgoing = df.copy()
         # If headers are provided, use them
         if headers is not None:
@@ -1205,27 +1213,35 @@ def str_to_bool(value) -> bool:
 
 def get_screeninfo():
     """Get screeninfo."""
-    screens = get_monitors()  # Get all available monitors
-    current_user = get_current_user()
-    if (
-        len(screens) - 1 < current_user.preferences.MONITOR
-    ):  # Check to see if chosen monitor is detected
-        monitor = 0
-        console.print(
-            f"Could not locate monitor {current_user.preferences.MONITOR}, using primary monitor."
-        )
-    else:
-        monitor = current_user.preferences.MONITOR
-    main_screen = screens[monitor]  # Choose what monitor to get
+    try:
+        screens = get_monitors()  # Get all available monitors
+    except Exception:
+        return None
 
-    return (main_screen.width, main_screen.height)
+    if screens:
+        current_user = get_current_user()
+        if (
+            len(screens) - 1 < current_user.preferences.MONITOR
+        ):  # Check to see if chosen monitor is detected
+            monitor = 0
+            console.print(
+                f"Could not locate monitor {current_user.preferences.MONITOR}, using primary monitor."
+            )
+        else:
+            monitor = current_user.preferences.MONITOR
+        main_screen = screens[monitor]  # Choose what monitor to get
+
+        return (main_screen.width, main_screen.height)
+
+    return None
 
 
 def plot_autoscale():
     """Autoscale plot."""
     current_user = get_current_user()
-    if current_user.preferences.USE_PLOT_AUTOSCALING:
-        x, y = get_screeninfo()  # Get screen size
+    screen_info = get_screeninfo()
+    if current_user.preferences.USE_PLOT_AUTOSCALING and screen_info:
+        x, y = screen_info  # Get screen size
         # account for ultrawide monitors
         if x / y > 1.5:
             x = x * 0.4
@@ -1447,28 +1463,31 @@ def export_data(
                 # since xlsx does not support datetimes with timezones we need to remove it
                 df = remove_timezone_from_dataframe(df)
 
-                if sheet_name is None:
-                    df.to_excel(saved_path, index=True, header=True)
+                if sheet_name is None:  # noqa: SIM223
+                    df.to_excel(
+                        saved_path,
+                        index=True,
+                        header=True,
+                    )
 
+                elif saved_path.exists():
+                    with pd.ExcelWriter(
+                        saved_path,
+                        mode="a",
+                        if_sheet_exists="new",
+                        engine="openpyxl",
+                    ) as writer:
+                        df.to_excel(
+                            writer, sheet_name=sheet_name, index=True, header=True
+                        )
                 else:
-                    if saved_path.exists():
-                        with pd.ExcelWriter(
-                            saved_path,
-                            mode="a",
-                            if_sheet_exists="new",
-                            engine="openpyxl",
-                        ) as writer:
-                            df.to_excel(
-                                writer, sheet_name=sheet_name, index=True, header=True
-                            )
-                    else:
-                        with pd.ExcelWriter(
-                            saved_path,
-                            engine="openpyxl",
-                        ) as writer:
-                            df.to_excel(
-                                writer, sheet_name=sheet_name, index=True, header=True
-                            )
+                    with pd.ExcelWriter(
+                        saved_path,
+                        engine="openpyxl",
+                    ) as writer:
+                        df.to_excel(
+                            writer, sheet_name=sheet_name, index=True, header=True
+                        )
             elif saved_path.suffix in [".jpg", ".pdf", ".png", ".svg"]:
                 figure.show(export_image=saved_path, margin=margin)
             else:
