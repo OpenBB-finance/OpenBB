@@ -129,9 +129,8 @@ class AccountController(BaseController):
             description="Login into new session.",
         )
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
-        if is_local() and "-h" not in other_args and "--help" not in other_args:
+        if not is_local() and "-h" not in other_args and "--help" not in other_args:
             console.print("[info]You are already logged in.[/info]")
-            return
         else:
             if ns_parser:
                 set_login_logout_called(True)
@@ -148,7 +147,6 @@ class AccountController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if is_local() and "-h" not in other_args and "--help" not in other_args:
             print_guest_block_msg()
-            return
         else:
             if ns_parser:
                 current_user = get_current_user()
@@ -186,7 +184,6 @@ class AccountController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if is_local() and "-h" not in other_args and "--help" not in other_args:
             print_guest_block_msg()
-            return
         if ns_parser:
             if ns_parser.sync is None:
                 sync = (
@@ -219,7 +216,6 @@ class AccountController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if is_local() and "-h" not in other_args and "--help" not in other_args:
             print_guest_block_msg()
-            return
         if ns_parser:
             current_user = get_current_user()
             response = Hub.fetch_user_configs(current_user.profile.get_session())
@@ -250,7 +246,6 @@ class AccountController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if is_local() and "-h" not in other_args and "--help" not in other_args:
             print_guest_block_msg()
-            return
         if ns_parser:
             i = console.input(
                 "[bold red]This action is irreversible![/bold red]\n"
@@ -292,7 +287,6 @@ class AccountController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if is_local() and "-h" not in other_args and "--help" not in other_args:
             print_guest_block_msg()
-            return
         if ns_parser:
             response = Hub.list_routines(
                 auth_header=get_current_user().profile.get_auth_header(),
@@ -348,7 +342,6 @@ class AccountController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if is_local() and "-h" not in other_args and "--help" not in other_args:
             print_guest_block_msg()
-            return
         if ns_parser:
             routine = Local.get_routine(file_name=" ".join(ns_parser.file))
             if routine:
@@ -414,7 +407,6 @@ class AccountController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if is_local() and "-h" not in other_args and "--help" not in other_args:
             print_guest_block_msg()
-            return
         if ns_parser:
             response = Hub.download_routine(
                 auth_header=get_current_user().profile.get_auth_header(),
@@ -483,7 +475,6 @@ class AccountController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if is_local() and "-h" not in other_args and "--help" not in other_args:
             print_guest_block_msg()
-            return
         if ns_parser:
             name = " ".join(ns_parser.name)
 
@@ -535,7 +526,6 @@ class AccountController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if is_local() and "-h" not in other_args and "--help" not in other_args:
             print_guest_block_msg()
-            return
         if ns_parser:
             i = console.input(
                 "[bold yellow]This will revoke any token that was previously generated."
@@ -567,7 +557,6 @@ class AccountController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if is_local() and "-h" not in other_args and "--help" not in other_args:
             print_guest_block_msg()
-            return
         if ns_parser:
             response = Hub.get_personal_access_token(
                 auth_header=get_current_user().profile.get_auth_header()
@@ -589,7 +578,6 @@ class AccountController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if is_local() and "-h" not in other_args and "--help" not in other_args:
             print_guest_block_msg()
-            return
         if ns_parser:
             i = console.input(
                 "[bold red]This action is irreversible![/bold red]\n"
