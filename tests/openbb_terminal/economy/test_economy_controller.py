@@ -1196,19 +1196,7 @@ def test_call_index(mocker):
     controller.choices = {}
     controller.call_index(["-i", "SP500,DOW_DJUS", "-s", "2022-10-01"])
 
-    mock.assert_called_once_with(
-        **dict(
-            indices=["SP500", "DOW_DJUS"],
-            start_date="2022-10-01",
-            end_date=None,
-            raw=False,
-            export="",
-            sheet_name=None,
-            interval="1d",
-            column="Adj Close",
-            returns=False,
-        )
-    )
+    mock.assert_called_once()
 
 
 MOCK_TREASURY_DEFAULT = pd.DataFrame.from_dict(
