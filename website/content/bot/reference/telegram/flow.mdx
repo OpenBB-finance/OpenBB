@@ -1,0 +1,184 @@
+---
+title: Flow
+description: flow, unusual, bigflow, summary...
+premium: true
+commands:
+  - "/flow"
+  - "/unu"
+  - "/bigflow"
+  - "/summary"
+  - "/sectors"
+  - "/sumexp"
+  - "/sumweek"
+  - "/sumday"
+  - "/sumtop"
+---
+
+# Flow
+
+## flow
+
+> Returns the most recent for a stock
+
+```format
+/flow [subcmd] <ticker> [expiry] [strike] [opt_type]
+```
+
+**[subcmd]** - _optional_
+
+- Possible subcommands to run. If not provided, defaults to daily flow
+        - wk: Weekly flow by Premium for a stock with weekly expiration
+        - open: Flow by Premium for a stock with opening condition - Vol > OI
+        - unu: Unusual Options Trades over 100k Prem. - Vol > OI
+        - prem: Chart with sum of premium per day by call/put
+
+**ticker**
+- Ticker symbol you want to lookup
+
+**[expiry]** - _optional_
+
+- Filter last flow for the provided expiration date that happened today - YYYY-MM-DD format
+
+**[strike]** - _optional_
+
+- Filter on the strike for flow -
+
+**[opt_type]** - _optional_
+
+- Filter on option type - Can be "C" - Calls or "P" - Puts
+
+Examples
+
+```
+/flow AMD
+```
+
+```
+/flow wk AMD
+```
+
+```
+/flow prem AMD
+```
+
+---
+
+## unu
+
+> Unusual Options Trades over 100k Prem. - Vol > OI
+
+```format
+/unu
+```
+
+---
+
+## bigflow
+
+> Returns the top 20 largest by premium for a stock
+
+```format
+/bigflow <ticker>
+```
+
+**ticker**
+- Ticker symbol you want to lookup
+
+Examples
+
+```
+/bigflow AMD
+```
+
+---
+
+## summary
+
+> Summary of all by % of MarketCap
+
+```format
+/summaryflow <days> <sort>
+```
+
+**days**
+- The number of days to look back
+
+**sort**
+- Field to sort by - Can be : MarketCap, Float, Total, Short Percentage
+
+Examples
+
+```
+/summaryflow 1 float
+```
+
+```
+/summaryflow 1 sum
+```
+
+---
+
+## sectorsflow
+
+> Summary of all by % of MarketCap by Sector
+
+```
+/sectorsflow <days> <sector>
+```
+
+**days**
+- The number of days to look back
+
+**sector**
+- Sector to filter by - Basic Materials (bm) | Energy (e) | Communication Services (cs) | Consumer Cyclical (cs) | Consumer Defensive (cd) | Financial (f) | Healthcare (h) | Industrials (i) | Real Estate (re) | Technology (t) | Utilities (u)
+
+Examples
+
+```
+/sectorsflow 5 cs
+```
+
+```
+/sectorsflow 5 bm
+```
+
+---
+
+## flowsum
+
+> Graph Today's Total Premium of a stock.
+
+```format
+/flowsum [subcmd] <ticker>
+```
+
+**[subcmd]** - _optional_
+
+- Possible subcommands, if not provided, defaults to daily sum
+    wk: Weekly flow by Premium for a stock with weekly expiration
+    exp: Flow summary by expiration date
+    top: Top flow for the day Calls vs Puts by stock
+
+**ticker**
+- The ticker/symbol to look up
+
+**expiry**
+- Expiration date - Only available/required for exp
+
+Examples
+
+```
+/flowsum AMD
+```
+
+```
+/flowsum wk AMD
+```
+
+```
+/flowsum top AMD
+```
+
+```
+/flowsum exp AMD 2022-07-29
+```
