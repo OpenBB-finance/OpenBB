@@ -137,7 +137,6 @@ class TechnicalAnalysisController(StockBaseController):
         mt.add_raw("\n")
         mt.add_cmd("recom")
         mt.add_cmd("summary")
-        mt.add_cmd("tv")
         mt.add_cmd("view")
         mt.add_raw("\n")
         mt.add_info("_overlap_")

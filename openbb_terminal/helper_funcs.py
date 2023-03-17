@@ -1213,7 +1213,11 @@ def str_to_bool(value) -> bool:
 
 def get_screeninfo():
     """Get screeninfo."""
-    screens = get_monitors()  # Get all available monitors
+    try:
+        screens = get_monitors()  # Get all available monitors
+    except Exception:
+        return None
+
     if screens:
         current_user = get_current_user()
         if (
@@ -1228,6 +1232,7 @@ def get_screeninfo():
         main_screen = screens[monitor]  # Choose what monitor to get
 
         return (main_screen.width, main_screen.height)
+
     return None
 
 
