@@ -39,7 +39,7 @@ from openbb_terminal.core.log.generation.custom_logger import log_terminal
 from openbb_terminal.core.session import session_controller
 from openbb_terminal.core.session.current_user import (
     get_current_user,
-    reset_to_local_user,
+    set_default_user,
     set_preference,
 )
 from openbb_terminal.helper_funcs import (
@@ -1059,7 +1059,7 @@ def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
         and is_auth_enabled()
     ):
         set_login_logout_called(False)
-        reset_to_local_user()
+        set_default_user()
         return session_controller.main()
 
 
