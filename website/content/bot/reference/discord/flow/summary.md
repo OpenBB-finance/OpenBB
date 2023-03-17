@@ -28,5 +28,12 @@ Summary of all flow by % of MarketCap
 
 ## Examples
 
+```
+/flow summary days:5 sort:Float
+```
+
+```
+/flow summary days:5 sort:Short Percentage
+```
 
 ---

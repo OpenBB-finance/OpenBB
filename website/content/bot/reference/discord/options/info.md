@@ -27,5 +27,8 @@ Displays option information (volatility, IV rank etc).
 
 ## Examples
 
+```
+/op info ticker:AMD
+```
 
 ---

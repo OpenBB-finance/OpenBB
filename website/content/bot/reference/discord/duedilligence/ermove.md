@@ -27,5 +27,7 @@ Display implied move for a stock based on option prices.
 
 ## Examples
 
-
+```
+/dd ermove ticker:AMD
+```
 ---

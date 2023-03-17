@@ -28,5 +28,12 @@ Displays OI and call/put ratio for given stock - can add EXP date too for bigger
 
 ## Examples
 
+```
+/op oi ticker:AMC
+```
+
+```
+/op oi ticker:AMC expiry:2022-07-29
+```
 
 ---

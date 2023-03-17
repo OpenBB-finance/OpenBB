@@ -28,5 +28,12 @@ Displays Options Gamma Levels for a Stock.
 
 ## Examples
 
+```
+/op gamma ticker:AMD
+```
+
+```
+/op gamma ticker:AMD expiry:2022-07-29
+```
 
 ---

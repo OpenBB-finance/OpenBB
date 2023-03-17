@@ -28,5 +28,8 @@ Biggest Levels for All Prints over last X days.
 
 ## Examples
 
+```
+/dp levels ticker:TSLA days:10
+```
 
 ---

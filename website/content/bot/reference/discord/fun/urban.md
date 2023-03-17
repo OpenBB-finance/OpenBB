@@ -27,5 +27,8 @@ Searches on the Urban Dictionary.
 
 ## Examples
 
+```
+/fun urban word:Shill
+```
 
 ---

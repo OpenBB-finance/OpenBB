@@ -27,5 +27,8 @@ List of recent Stock splits for all tickers or for a given ticker.
 
 ## Examples
 
+```
+/dd splits ticker:AMD
+```
 
 ---

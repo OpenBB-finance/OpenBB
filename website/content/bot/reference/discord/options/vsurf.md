@@ -28,5 +28,12 @@ Display Options Volatility Surface.
 
 ## Examples
 
+```
+/op vsurf ticker:AMD z:Volatility
+```
+
+```
+/op vsurf ticker:AMD z:Open Interest
+```
 
 ---

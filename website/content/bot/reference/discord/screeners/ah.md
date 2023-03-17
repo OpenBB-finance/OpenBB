@@ -27,5 +27,8 @@ Displays After-Hours stocks according to chosen screener.
 
 ## Examples
 
+```
+/scr ah signal:After-Hours Top Gainers
+```
 
 ---

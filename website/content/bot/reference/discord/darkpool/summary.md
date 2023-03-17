@@ -28,5 +28,8 @@ Summary of all prints by % of MarketCap
 
 ## Examples
 
+```
+/dp summary days:10 sort:MarketCap
+```
 
 ---

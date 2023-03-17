@@ -27,5 +27,7 @@ Displays ETF's Top Gainers/Decliners, Most Active.
 
 ## Examples
 
-
+```
+/etf tops sort:Top Gainers
+```
 ---

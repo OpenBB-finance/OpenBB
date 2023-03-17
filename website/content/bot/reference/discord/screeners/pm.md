@@ -27,5 +27,8 @@ Displays Pre-Market stocks according to chosen screener.
 
 ## Examples
 
+```
+/scr pm signal:Pre-Market Top Gainers
+```
 
 ---

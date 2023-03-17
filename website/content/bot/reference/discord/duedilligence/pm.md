@@ -27,5 +27,7 @@ Displays premarket data for a given stock ticker
 
 ## Examples
 
-
+```
+/dd pm ticker:AMD
+```
 ---

@@ -30,5 +30,12 @@ Displays Options Volatility Smile.
 
 ## Examples
 
+```
+/op smile ticker:AMD expiry:2022-07-29
+```
+
+```
+/op smile ticker:AMD expiry:2022-07-29 min_sp:10 max_sp:100
+```
 
 ---

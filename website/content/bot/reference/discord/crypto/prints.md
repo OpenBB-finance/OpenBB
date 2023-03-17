@@ -27,5 +27,8 @@ Last 15 Crypto Prints over last 24hrs.
 
 ## Examples
 
+```
+/crypto prints coin:BTC-USD
+```
 
 ---

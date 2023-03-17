@@ -27,5 +27,8 @@ Get NFT Collection Data
 
 ## Examples
 
+```
+/nft collection slug: bent
+```
 
 ---

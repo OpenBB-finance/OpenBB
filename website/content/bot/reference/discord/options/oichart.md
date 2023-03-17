@@ -28,5 +28,12 @@ Charts Total Open Interest by Strike Price.
 
 ## Examples
 
+```
+/op oichart ticker:AMD
+```
+
+```
+/op oichart ticker:AMD expiry:2022-07-29
+```
 
 ---

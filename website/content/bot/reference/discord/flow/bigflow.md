@@ -27,5 +27,8 @@ Returns the top 20 largest flow by premium for a stock
 
 ## Examples
 
+```
+/flow bigflow ticker:AMD
+```
 
 ---

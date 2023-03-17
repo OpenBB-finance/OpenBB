@@ -28,5 +28,8 @@ Summary of all prints by % of MarketCap by Sector
 
 ## Examples
 
+```
+/dp sectors days:5 sector:Basic Materials
+```
 
 ---

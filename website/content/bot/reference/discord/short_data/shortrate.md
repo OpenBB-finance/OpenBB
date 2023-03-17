@@ -27,5 +27,8 @@ Display Short shares spot borrow rate sourced from Interactive Brokers
 
 ## Examples
 
+```
+/sh shortrate ticker:AMD
+```
 
 ---

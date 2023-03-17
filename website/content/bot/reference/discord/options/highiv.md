@@ -26,5 +26,8 @@ This command has no parameters
 
 ## Examples
 
+```
+/op highiv
+```
 
 ---

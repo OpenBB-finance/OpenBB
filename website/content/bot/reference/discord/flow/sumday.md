@@ -27,5 +27,8 @@ Graph Today's Total Premium of a stock.
 
 ## Examples
 
+```
+/flow sumday ticker:AMD
+```
 
 ---

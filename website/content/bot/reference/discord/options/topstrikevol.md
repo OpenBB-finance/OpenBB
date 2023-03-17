@@ -28,5 +28,8 @@ Displays Options Strike Volume can add EXP date for bigger breakdown
 
 ## Examples
 
+```python wordwrap
+/op topstrikevol ticker:AMD
+```
 
 ---

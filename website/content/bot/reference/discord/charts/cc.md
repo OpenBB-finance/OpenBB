@@ -28,5 +28,8 @@ Shows an intraday 5m chart for the ticker provided  - /c5m also works
 
 ## Examples
 
+```
+/cc ticker:AMD
+```
 
 ---

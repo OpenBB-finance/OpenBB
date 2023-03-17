@@ -27,5 +27,12 @@ Charts NFT Collection Data
 
 ## Examples
 
+```
+/nft chart slug: bent
+```
+
+```
+/nft chart slug: bored-ape-yacht-club
+```
 
 ---

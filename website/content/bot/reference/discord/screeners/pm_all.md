@@ -26,5 +26,7 @@ This command has no parameters
 
 ## Examples
 
-
+```
+/scr pm_all
+```
 ---

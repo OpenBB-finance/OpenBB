@@ -27,5 +27,7 @@ Top 20 flow by Premium for a stock with opening condition - Vol  OI
 
 ## Examples
 
-
+```
+/flow opening ticker:AMD
+```
 ---

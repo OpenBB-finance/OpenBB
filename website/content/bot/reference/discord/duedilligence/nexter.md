@@ -27,5 +27,7 @@ Returns next Earnings Date for a stock.
 
 ## Examples
 
-
+```
+/dd nexter ticker:AMD
+```
 ---

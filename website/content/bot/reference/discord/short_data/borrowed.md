@@ -27,5 +27,8 @@ Displays history of borrowed shares available and fee.
 
 ## Examples
 
+```
+/sh borrowed ticker:AMD
+```
 
 ---

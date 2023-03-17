@@ -27,5 +27,8 @@ Get fundamental information about a crypto
 
 ## Examples
 
+```
+/crypto bio symbol: btc
+```
 
 ---

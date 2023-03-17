@@ -27,5 +27,8 @@ Graph Total Premium weekly summary of a stock.
 
 ## Examples
 
+```
+/flow sumweek ticker:AMD
+```
 
 ---

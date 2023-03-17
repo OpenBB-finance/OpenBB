@@ -27,5 +27,8 @@ Displays Top 15 Government contracts by amount for all tickers or for a specific
 
 ## Examples
 
+```
+/gov contracts ticker:GE
+```
 
 ---

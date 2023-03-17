@@ -27,5 +27,8 @@ Displays Options Statistics for a stock.
 
 ## Examples
 
+```
+/op stats ticker:AMC
+```
 
 ---

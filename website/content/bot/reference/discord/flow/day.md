@@ -30,5 +30,16 @@ Returns the most recent flow for a stock.
 
 ## Examples
 
+```
+/flow day ticker:AMD
+```
+
+```
+/flow day ticker:AMD expiry:2022-07-29 strike:60 opt_type:Puts
+```
+
+```
+/flow day ticker:AMD expiry:2022-07-29 strike:60
+```
 
 ---

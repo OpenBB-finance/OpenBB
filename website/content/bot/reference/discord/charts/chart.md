@@ -30,5 +30,12 @@ Shows the candlestick chart for the ticker/interval provided
 
 ## Examples
 
+```
+/chart ticker:AMD interval:5 minute past_days:0
+```
+
+```
+/chart ticker:AMD interval:Daily
+```
 
 ---

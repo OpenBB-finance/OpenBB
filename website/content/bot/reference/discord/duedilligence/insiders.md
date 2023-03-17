@@ -27,5 +27,7 @@ Displays 15 latest insider transactions for given stock
 
 ## Examples
 
-
+```
+/dd insiders ticker:AMD
+```
 ---

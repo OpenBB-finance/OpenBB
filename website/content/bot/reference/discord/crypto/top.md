@@ -29,5 +29,11 @@ Get top cryptos
 
 ## Examples
 
+```
+/crypto top
+```
 
+```
+/crypto top sortby: Market Cap category: manufacturing
+```
 ---

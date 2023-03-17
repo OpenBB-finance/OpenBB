@@ -27,5 +27,7 @@ Display Earnings that are expected to occur in the next business days. (Sorted b
 
 ## Examples
 
-
+```
+/dd earnings day:2022-07-29
+```
 ---

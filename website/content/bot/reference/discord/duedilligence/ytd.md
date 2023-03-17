@@ -27,5 +27,7 @@ Displays Period Performance for a stock.
 
 ## Examples
 
-
+```
+/dd ytd ticker:AAPL
+```
 ---

@@ -20,11 +20,12 @@ Send support ticket!
 
 This command has no parameters
 
-
-
 ---
 
 ## Examples
 
+```
+/info support
+```
 
 ---

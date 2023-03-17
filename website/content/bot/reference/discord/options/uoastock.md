@@ -27,5 +27,12 @@ Display Top 20day Average Options Volume by ticker.
 
 ## Examples
 
+```
+/op uoastock
+```
+
+```
+/op uoastock price:50
+```
 
 ---

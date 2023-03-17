@@ -28,5 +28,11 @@ Displays Support and Resistance Levels for the ticker provided
 
 ## Examples
 
+```
+/chartsr ticker:AMC
+```
+```
+/chartsr ticker:AMC interval:5 minute
+```
 
 ---

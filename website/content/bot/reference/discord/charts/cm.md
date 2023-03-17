@@ -27,5 +27,8 @@ Shows a monthly candlestick chart for the ticker/coin provided.
 
 ## Examples
 
+```
+/cm ticker:AMD
+```
 
 ---

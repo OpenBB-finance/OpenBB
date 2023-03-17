@@ -29,5 +29,12 @@ Create an alert with conditions for a symbol
 
 ## Examples
 
+```
+/alerts create ticker:BTCUSD condition:Equal or Above price:1000
+```
+
+```
+/alerts create ticker:SPY condition:Equal or Below price:400
+```
 
 ---

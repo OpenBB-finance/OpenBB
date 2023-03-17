@@ -27,5 +27,7 @@ Displays dividend information for a stock.
 
 ## Examples
 
-
+```
+/dd divinfo ticker:AAPL
+```
 ---

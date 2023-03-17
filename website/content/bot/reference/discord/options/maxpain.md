@@ -28,5 +28,8 @@ Displays the Max Pain on expiration date for a given stock.
 
 ## Examples
 
+```
+/op maxpain ticker:AMC expiry:2022-07-29
+```
 
 ---

@@ -28,5 +28,12 @@ Displays Options Strike Volume can add EXP date for bigger breakdown
 
 ## Examples
 
+```
+/op vol ticker:AMD
+```
+
+```
+/op vol ticker:AMD expiry:2022-07-29
+```
 
 ---

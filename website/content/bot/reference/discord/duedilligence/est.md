@@ -27,5 +27,7 @@ Displays earning estimates.
 
 ## Examples
 
-
+```
+/dd est ticker:MMM
+```
 ---

@@ -28,5 +28,8 @@ Shows an intraday 3m chart for the ticker provided.
 
 ## Examples
 
+```
+/c3m ticker:AMD
+```
 
 ---

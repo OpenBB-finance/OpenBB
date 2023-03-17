@@ -27,5 +27,7 @@ Displays analyst recommendations.
 
 ## Examples
 
-
+```
+/dd analyst ticker:AMD
+```
 ---

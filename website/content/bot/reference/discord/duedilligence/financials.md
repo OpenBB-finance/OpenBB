@@ -27,5 +27,7 @@ Gives Total Assets, Cash, Debt, Liabilities, Rev for Company.
 
 ## Examples
 
-
+```
+/dd financials ticker:AMD
+```
 ---

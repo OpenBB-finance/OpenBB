@@ -31,5 +31,12 @@ Displays Options Chain by Expiry.
 
 ## Examples
 
+```
+/op chains ticker:AMD expiry:2022-07-29 opt_type:Calls
+```
+
+```
+/op chains ticker:AMD expiry:2022-07-29 opt_type:Calls min_sp:10 max_sp:100
+```
 
 ---

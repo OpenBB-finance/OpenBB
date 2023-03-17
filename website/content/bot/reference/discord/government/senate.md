@@ -27,5 +27,8 @@ Displays recent senate trades for all tickers or for a specific ticker
 
 ## Examples
 
+```
+/gov senate ticker:GE
+```
 
 ---

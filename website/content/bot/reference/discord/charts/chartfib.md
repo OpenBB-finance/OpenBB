@@ -27,5 +27,8 @@ Displays the Fibonacci levels for the ticker provided
 
 ## Examples
 
+```
+/chartfib ticker:AMD
+```
 
 ---

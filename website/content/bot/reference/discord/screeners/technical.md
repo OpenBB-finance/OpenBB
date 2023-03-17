@@ -27,5 +27,11 @@ Displays stock screener results according to chosen signal.
 
 ## Examples
 
+```
+/scr technical signal:Top Gainers
+```
+```
+/scr technical signal:Death Cross
+```
 
 ---

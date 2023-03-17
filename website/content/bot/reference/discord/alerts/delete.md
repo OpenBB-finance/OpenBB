@@ -27,5 +27,8 @@ Delete an active alert you have set
 
 ## Examples
 
+```
+/alerts delete alert:
+```
 
 ---

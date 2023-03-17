@@ -29,5 +29,8 @@ Update a condition on an active alert
 
 ## Examples
 
+```
+/alerts update alerts: condition: price:
+```
 
 ---

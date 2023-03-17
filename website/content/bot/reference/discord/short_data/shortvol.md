@@ -27,5 +27,8 @@ Graph of 30 day history of short volume vs vol.
 
 ## Examples
 
+```
+/sh shortvol ticker:AMD
+```
 
 ---

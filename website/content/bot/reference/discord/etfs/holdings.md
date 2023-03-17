@@ -28,5 +28,12 @@ Displays ETF's Holdings.
 
 ## Examples
 
+```
+/etf holdings etf:SPY
+```
+
+```
+/etf holdings etf:SPY num:25
+```
 
 ---

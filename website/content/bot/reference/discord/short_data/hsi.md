@@ -27,5 +27,11 @@ Show top high short interest stocks of over 20% ratio.
 
 ## Examples
 
+```
+/sh hsi
+```
+```
+/sh hsi num:4
+```
 
 ---

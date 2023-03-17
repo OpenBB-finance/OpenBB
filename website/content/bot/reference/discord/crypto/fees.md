@@ -27,5 +27,8 @@ Fees on a certain date of top crypto protocols
 
 ## Examples
 
+```
+/crypto fees date: 2022-09-19
+```
 
 ---

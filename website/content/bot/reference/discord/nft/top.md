@@ -29,5 +29,12 @@ Get Top NFT Collections from Ethereum
 
 ## Examples
 
+```
+/nft top
+```
+
+```
+/nft top sortby: Market Cap reverse: Yes
+```
 
 ---

@@ -27,5 +27,7 @@ Displays afterhours data for a given stock ticker
 
 ## Examples
 
-
+```
+/dd ah ticker:AMD
+```
 ---

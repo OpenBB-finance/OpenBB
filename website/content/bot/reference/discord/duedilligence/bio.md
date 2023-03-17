@@ -27,5 +27,7 @@ Displays a Stock's Company Info.
 
 ## Examples
 
-
+```
+/dd bio ticker:AMD
+```
 ---

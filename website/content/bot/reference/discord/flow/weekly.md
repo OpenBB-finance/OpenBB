@@ -27,5 +27,8 @@ Top 20 flow by Premium for a stock with weekly expiration.
 
 ## Examples
 
+```
+/flow weekly ticker:AMD
+```
 
 ---

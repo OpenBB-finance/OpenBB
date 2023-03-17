@@ -28,5 +28,12 @@ Summary of all flow by % of MarketCap by Sector
 
 ## Examples
 
+```
+/flow sectors days:5 sector:Energy
+```
+
+```
+/flow sectors days:2 sector:Communication Services
+```
 
 ---

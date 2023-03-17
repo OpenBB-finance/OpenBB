@@ -20,11 +20,11 @@ Displays US Bonds yield curve
 
 This command has no parameters
 
-
-
 ---
 
 ## Examples
 
-
+```
+/econ yieldcurve
+```
 ---

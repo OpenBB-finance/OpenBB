@@ -27,5 +27,8 @@ Returns a chart with sum of premium per day by call/put
 
 ## Examples
 
+```
+/flow prem ticker:AMD
+```
 
 ---

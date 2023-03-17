@@ -27,5 +27,7 @@ Displays customers of the company.
 
 ## Examples
 
-
+```
+/dd customer ticker:AMD
+```
 ---

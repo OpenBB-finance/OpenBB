@@ -27,5 +27,7 @@ Displays chart with price targets.
 
 ## Examples
 
-
+```
+/dd pt ticker:AMD
+```
 ---

@@ -27,5 +27,7 @@ Displays suppliers of the company.
 
 ## Examples
 
-
+```
+/dd supplier ticker:AMD
+```
 ---

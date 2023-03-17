@@ -26,5 +26,7 @@ This command has no parameters
 
 ## Examples
 
-
+```
+/pop 1hr
+```
 ---

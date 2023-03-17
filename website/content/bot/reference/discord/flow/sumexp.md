@@ -28,5 +28,8 @@ Flow summary by expiration date.
 
 ## Examples
 
+```
+/flow sumexp ticker:AMD expiry:2022-07-29
+```
 
 ---

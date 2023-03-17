@@ -32,5 +32,12 @@ Displays Options Price History in a chart.
 
 ## Examples
 
+```
+/op hist ticker:AMD expiry:2022-07-29 strike:80 opt_type:Calls interval:15 past_days:5
+```
+
+```
+/op hist ticker:AMD expiry:2022-07-29 strike:80 opt_type:Calls interval:15
+```
 
 ---

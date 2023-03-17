@@ -20,11 +20,12 @@ Bot Stats
 
 This command has no parameters
 
-
-
 ---
 
 ## Examples
 
+```
+/info stats
+```
 
 ---

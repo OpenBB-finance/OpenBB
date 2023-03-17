@@ -27,5 +27,8 @@ Shows a daily candlestick chart for the ticker/coin provided.
 
 ## Examples
 
+```
+/cd ticker:AMD
+```
 
 ---
