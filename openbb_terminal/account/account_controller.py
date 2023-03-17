@@ -26,6 +26,7 @@ from openbb_terminal.helper_funcs import check_positive
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import MenuText, console
+from openbb_terminal.terminal_helper import print_guest_block_msg
 
 logger = logging.getLogger(__name__)
 
@@ -34,6 +35,7 @@ class AccountController(BaseController):
     """Account Controller Class"""
 
     CHOICES_COMMANDS = [
+        "login",
         "logout",
         "sync",
         "pull",
@@ -111,9 +113,24 @@ class AccountController(BaseController):
         mt.add_cmd("revoke")
         mt.add_raw("\n")
         mt.add_info("_authentication_")
+        mt.add_cmd("login")
         mt.add_cmd("logout")
-        console.print(text=mt.menu_text, menu="Account")
         self.update_runtime_choices()
+        console.print(text=mt.menu_text, menu="Account")
+
+    @log_start_end(log=logger)
+    def call_login(self, other_args: List[str]) -> None:
+        """Process login command."""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="login",
+            description="Login into new session.",
+        )
+        if not is_local():
+            console.print("[info]You are already logged in.[/info]")
+            return
+        self.parse_known_args_and_warn(parser, other_args)
 
     @log_start_end(log=logger)
     def call_logout(self, other_args: List[str]) -> None:
@@ -125,6 +142,9 @@ class AccountController(BaseController):
             description="Logout from current session.",
         )
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
+        if is_local():
+            print_guest_block_msg()
+            return
         if ns_parser:
             current_user = get_current_user()
             logout(
@@ -158,6 +178,9 @@ class AccountController(BaseController):
         parser.set_defaults(sync=None)
 
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
+        if is_local():
+            print_guest_block_msg()
+            return
         if ns_parser:
             if ns_parser.sync is None:
                 sync = (
@@ -188,6 +211,9 @@ class AccountController(BaseController):
             description="Pull and apply stored configurations from the cloud.",
         )
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
+        if is_local():
+            print_guest_block_msg()
+            return
         if ns_parser:
             current_user = get_current_user()
             response = Hub.fetch_user_configs(current_user.profile.get_session())
@@ -216,6 +242,9 @@ class AccountController(BaseController):
             description="Clear stored configurations from the cloud.",
         )
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
+        if is_local():
+            print_guest_block_msg()
+            return
         if ns_parser:
             i = console.input(
                 "[bold red]This action is irreversible![/bold red]\n"
@@ -255,6 +284,9 @@ class AccountController(BaseController):
             help="The number of results per page.",
         )
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
+        if is_local():
+            print_guest_block_msg()
+            return
         if ns_parser:
             response = Hub.list_routines(
                 auth_header=get_current_user().profile.get_auth_header(),
@@ -306,6 +338,9 @@ class AccountController(BaseController):
             nargs="+",
         )
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
+        if is_local():
+            print_guest_block_msg()
+            return
         if ns_parser:
             routine = Local.get_routine(file_name=" ".join(ns_parser.file))
             if routine:
@@ -367,6 +402,9 @@ class AccountController(BaseController):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-n")
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
+        if is_local():
+            print_guest_block_msg()
+            return
         if ns_parser:
             response = Hub.download_routine(
                 auth_header=get_current_user().profile.get_auth_header(),
@@ -431,6 +469,9 @@ class AccountController(BaseController):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-n")
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
+        if is_local():
+            print_guest_block_msg()
+            return
         if ns_parser:
             name = " ".join(ns_parser.name)
 
@@ -480,6 +521,9 @@ class AccountController(BaseController):
             action="store_true",
         )
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
+        if is_local():
+            print_guest_block_msg()
+            return
         if ns_parser:
             i = console.input(
                 "[bold yellow]This will revoke any token that was previously generated."
@@ -509,6 +553,9 @@ class AccountController(BaseController):
             description="Show your current OpenBB Personal Access Token.",
         )
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
+        if is_local():
+            print_guest_block_msg()
+            return
         if ns_parser:
             response = Hub.get_personal_access_token(
                 auth_header=get_current_user().profile.get_auth_header()
@@ -528,6 +575,9 @@ class AccountController(BaseController):
             description="Revoke your current OpenBB Personal Access Token.",
         )
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
+        if is_local():
+            print_guest_block_msg()
+            return
         if ns_parser:
             i = console.input(
                 "[bold red]This action is irreversible![/bold red]\n"

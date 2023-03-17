@@ -67,6 +67,11 @@ def is_local() -> bool:
     return not bool(__current_user.profile.token)
 
 
+def reset_to_local_user():
+    """Reset current user to local user."""
+    set_current_user(get_local_user())
+
+
 def copy_user(
     credentials: Optional[CredentialsModel] = None,
     preferences: Optional[PreferencesModel] = None,

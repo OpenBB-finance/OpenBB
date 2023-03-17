@@ -19,7 +19,7 @@ def main():
     else:
         from openbb_terminal.core.session import session_controller
 
-        if is_auth_enabled():
+        if is_auth_enabled() and "--login" in sys.argv[1:]:
             session_controller.main()
         else:
             session_controller.launch_terminal()
