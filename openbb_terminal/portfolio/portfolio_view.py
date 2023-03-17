@@ -753,17 +753,17 @@ def display_distribution_returns(
 
     Parameters
     ----------
-    portfolio_returns : pd.Series
-        Returns of the portfolio
-    benchmark_returns : pd.Series
-        Returns of the benchmark
-    interval : str
-        interval to compare cumulative returns and benchmark
-    raw : False
+    portfolio_engine : PortfolioEngine
+        The engine for the portfolio
+    window: str
+        The window
+    raw : bool
         Display raw data from cumulative return
     export : str
         Export certain type of data
-    external_axes : bool, optional
+    sheet_name: Optional[str]
+        The name for the sheet
+    external_axes : bool
         Whether to return the figure object or not, by default False
     """
 
