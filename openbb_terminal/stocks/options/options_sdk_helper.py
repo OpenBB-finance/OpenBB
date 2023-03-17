@@ -297,20 +297,23 @@ def get_greeks(
     for _, row in chain.iterrows():
         vol = row["impliedVolatility"]
         is_call = row["optionType"] == "call"
-        opt = Option(
-            current_price, row["strike"], risk_free, div_cont, dif, vol, is_call
-        )
-        tmp = [
-            opt.Delta(),
-            opt.Gamma(),
-            opt.Vega(),
-            opt.Theta(),
-            opt.Rho(),
-            opt.Phi(),
-            opt.Charm(),
-            opt.Vanna(0.01),
-            opt.Vomma(0.01),
-        ]
+        try:
+            opt = Option(
+                current_price, row["strike"], risk_free, div_cont, dif, vol, is_call
+            )
+            tmp = [
+                opt.Delta(),
+                opt.Gamma(),
+                opt.Vega(),
+                opt.Theta(),
+                opt.Rho(),
+                opt.Phi(),
+                opt.Charm(),
+                opt.Vanna(0.01),
+                opt.Vomma(0.01),
+            ]
+        except ValueError:
+            tmp = [np.nan] * 9
         result = [row[col] for col in row.index.tolist()]
         result += tmp
 
