@@ -262,6 +262,8 @@ def display_candle(
         has_volume = bool(data["Volume"].sum() > 0)
 
     if add_trend and (data.index[1] - data.index[0]).total_seconds() >= 86400:
+        if "date_id" not in data.columns:
+            data = stocks_helper.process_candle(data)
         data = stocks_helper.find_trendline(data, "OC_High", "high")
         data = stocks_helper.find_trendline(data, "OC_Low", "low")
 
