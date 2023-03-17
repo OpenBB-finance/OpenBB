@@ -96,7 +96,6 @@ def show_indices(
 
     if len(indices) < 2:
         fig.update_layout(title=f"{' - '.join(new_title)}", yaxis=dict(side="right"))
-    fig.show(external=external_axes)
 
     if raw:
         # was a -iloc so we need to flip the index as we use head
