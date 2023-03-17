@@ -23,8 +23,8 @@ __preferences = load_env_to_model(__env_dict, PreferencesModel)
 
 __profile = ProfileModel()
 __local_user = UserModel(  # type: ignore
-    credentials=__credentials,
-    preferences=__preferences,
+    credentials=__credentials,  # type: ignore
+    preferences=__preferences,  # type: ignore
     profile=__profile,
 )
 __current_user = __local_user
