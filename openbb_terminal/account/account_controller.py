@@ -127,10 +127,10 @@ class AccountController(BaseController):
             prog="login",
             description="Login into new session.",
         )
+        self.parse_known_args_and_warn(parser, other_args)
         if not is_local():
             console.print("[info]You are already logged in.[/info]")
             return
-        self.parse_known_args_and_warn(parser, other_args)
 
     @log_start_end(log=logger)
     def call_logout(self, other_args: List[str]) -> None:

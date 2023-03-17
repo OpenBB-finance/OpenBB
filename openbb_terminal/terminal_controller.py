@@ -37,6 +37,7 @@ from openbb_terminal.core.session.constants import REGISTER_URL
 from openbb_terminal.core.session.current_user import (
     get_current_user,
     is_local,
+    reset_to_local_user,
     set_current_user,
     set_preference,
 )
@@ -381,14 +382,6 @@ class TerminalController(BaseController):
         """Process account command."""
         from openbb_terminal.account.account_controller import AccountController
 
-        get_current_user()
-
-        if is_local():
-            console.print(
-                "[info]You are currently logged as a guest.\n"
-                f"[info]Register: [/info][cmds]{REGISTER_URL}\n[/cmds]"
-            )
-            return
         self.queue = self.load_class(AccountController, self.queue)
 
     def call_keys(self, _):
@@ -839,9 +832,7 @@ class TerminalController(BaseController):
                         console.print(
                             f"[green]Folder '{export_path}' successfully created.[/green]"
                         )
-                    current_user = get_current_user()
-                    current_user.preferences.USER_EXPORTS_DIRECTORY = Path(export_path)
-                    set_current_user(current_user)
+                    set_preference("USER_EXPORTS_DIRECTORY", Path(export_path))
                     self.queue = self.queue[1:]
 
 
@@ -1011,7 +1002,7 @@ def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
                 break
 
         try:
-            if an_input == "logout" and is_auth_enabled():
+            if an_input in ("login", "logout") and is_auth_enabled():
                 break
 
             # Process the input command
@@ -1057,7 +1048,8 @@ def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
                 console.print(f"[green]Replacing by '{an_input}'.[/green]")
                 t_controller.queue.insert(0, an_input)
 
-    if an_input == "logout" and is_auth_enabled():
+    if an_input in ("login", "logout") and is_auth_enabled():
+        reset_to_local_user()
         return session_controller.main()
 
 
