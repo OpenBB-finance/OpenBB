@@ -270,9 +270,9 @@ def get_greeks(
     strikes = []
     for _, row in chain.iterrows():
         vol = row["impliedVolatility"]
-        opt_type = 1 if row["optionType"] == "call" else -1
+        is_call = row["optionType"] == "call"
         opt = Option(
-            current_price, row["strike"], risk_free, div_cont, dif, vol, opt_type
+            current_price, row["strike"], risk_free, div_cont, dif, vol, is_call
         )
         tmp = [
             opt.Delta(),
@@ -393,7 +393,7 @@ class Option:
         div_cont: float,
         expiry: float,
         vol: float,
-        opt_type: int = 1,
+        is_call: bool = True,
     ):
         """
         Class for getting the greeks of options. Inspiration from:
@@ -413,10 +413,18 @@ class Option:
             The number of days until expiration
         vol : float
             The underlying volatility for an option
-        opt_type : int
-            put == -1; call == +1
+        is_call : bool
+            True if call, False if put
         """
-        self.Type = int(opt_type)
+        if expiry <= 0:
+            raise ValueError("Expiry must be greater than 0")
+        if vol <= 0:
+            raise ValueError("Volatility must be greater than 0")
+        if s <= 0:
+            raise ValueError("Price must be greater than 0")
+        if k <= 0:
+            raise ValueError("Strike must be greater than 0")
+        self.Type = 1 if is_call else -1
         self.price = float(s)
         self.strike = float(k)
         self.risk_free = float(rf)

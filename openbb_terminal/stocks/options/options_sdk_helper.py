@@ -296,9 +296,9 @@ def get_greeks(
     strikes = []
     for _, row in chain.iterrows():
         vol = row["impliedVolatility"]
-        opt_type = 1 if row["optionType"] == "call" else -1
+        is_call = row["optionType"] == "call"
         opt = Option(
-            current_price, row["strike"], risk_free, div_cont, dif, vol, opt_type
+            current_price, row["strike"], risk_free, div_cont, dif, vol, is_call
         )
         tmp = [
             opt.Delta(),
