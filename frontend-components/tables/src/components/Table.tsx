@@ -17,6 +17,7 @@ import { FC, useEffect, useMemo, useReducer, useRef, useState } from "react";
 import { useVirtual } from "react-virtual";
 import domtoimage from "dom-to-image";
 import Chart from "./Chart";
+import Select from "./Select";
 
 function formatNumberMagnitude(number: number) {
   if (number < 10) {
@@ -27,10 +28,9 @@ function formatNumberMagnitude(number: number) {
     return number.toFixed(2);
   }
   const abs = Math.abs(number);
-  if(abs >= 1000000000000) {
+  if (abs >= 1000000000000) {
     return `${(number / 1000000000).toFixed(2)}T`;
-  }
-  else if (abs >= 1000000000) {
+  } else if (abs >= 1000000000) {
     return `${(number / 1000000000).toFixed(2)}B`;
   } else if (abs >= 1000000) {
     return `${(number / 1000000).toFixed(2)}M`;
@@ -105,16 +105,16 @@ const DraggableColumnHeader: FC<{
     <th
       className="h-[70px] relative"
       colSpan={header.colSpan}
-      style={{/* width: header.getSize(),*/ opacity: isDragging ? 0.5 : 1 }}
+      style={{ /* width: header.getSize(),*/ opacity: isDragging ? 0.5 : 1 }}
       ref={dropRef}
     >
-      <div ref={previewRef}>
+      <div ref={previewRef} className="space-y-2">
         {header.isPlaceholder ? null : (
           <>
             <div
               {...{
                 className: clsx(
-                  "font-bold uppercase text-white tracking-normal flex gap-2 whitespace-nowrap",
+                  "font-bold uppercase text-white tracking-widest tracking-normal flex gap-2 whitespace-nowrap justify-between",
                   {
                     "cursor-pointer select-none": header.column.getCanSort(),
                   }
@@ -122,7 +122,50 @@ const DraggableColumnHeader: FC<{
                 onClick: header.column.getToggleSortingHandler(),
               }}
             >
-              {advanced && (
+              <div className="flex gap-2">
+                {flexRender(
+                  header.column.columnDef.header,
+                  header.getContext()
+                )}
+                {header.column.getCanSort() && (
+                  <div className="flex flex-col gap-1 items-center justify-center">
+                    <button
+                      className={clsx({
+                        "text-[#669DCB]": header.column.getIsSorted() === "asc",
+                        "text-grey-600": header.column.getIsSorted() !== "asc",
+                      })}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="11"
+                        height="5"
+                        fill="none"
+                        viewBox="0 0 11 5"
+                      >
+                        <path fill="currentColor" d="M10.333 5l-5-5-5 5"></path>
+                      </svg>
+                    </button>
+                    <button
+                      className={clsx({
+                        "text-[#669DCB]":
+                          header.column.getIsSorted() === "desc",
+                        "text-grey-600": header.column.getIsSorted() !== "desc",
+                      })}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="11"
+                        height="5"
+                        fill="none"
+                        viewBox="0 0 11 5"
+                      >
+                        <path fill="currentColor" d="M.333 0l5 5 5-5"></path>
+                      </svg>
+                    </button>
+                  </div>
+                )}
+              </div>
+              {advanced && column.id !== "select" && (
                 <button ref={dragRef}>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -140,37 +183,6 @@ const DraggableColumnHeader: FC<{
                   </svg>
                 </button>
               )}
-              {flexRender(header.column.columnDef.header, header.getContext())}
-              <div className="flex flex-col gap-1 items-center justify-center">
-                <button className={clsx("text-grey-600", {})}>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="11"
-                    height="5"
-                    fill="none"
-                    viewBox="0 0 11 5"
-                  >
-                    <path fill="currentColor" d="M10.333 5l-5-5-5 5"></path>
-                  </svg>
-                </button>
-                <button className={clsx("text-grey-600", {})}>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="11"
-                    height="5"
-                    fill="none"
-                    viewBox="0 0 11 5"
-                  >
-                    <path fill="currentColor" d="M.333 0l5 5 5-5"></path>
-                  </svg>
-                </button>
-              </div>
-              <span className="w-4">
-                {{
-                  asc: "🔼",
-                  desc: "🔽",
-                }[header.column.getIsSorted() as string] ?? null}
-              </span>
             </div>
             {advanced && header.column.getCanFilter() ? (
               <div>
@@ -192,6 +204,17 @@ const DraggableColumnHeader: FC<{
     </th>
   );
 };
+
+function isEqual(a: any, b: any) {
+  if (a === b) return true;
+  if (a == null || b == null) return false;
+  if (a.length !== b.length) return false;
+
+  for (var i = 0; i < a.length; ++i) {
+    if (a[i] !== b[i]) return false;
+  }
+  return true;
+}
 
 export const fuzzyFilter = (row, columnId, value, addMeta) => {
   const itemRank = rankItem(row.getValue(columnId), value);
@@ -226,7 +249,8 @@ export default function Table({ data, columns }: any) {
     () => [
       {
         id: "select",
-        size: 0,
+        size: 1,
+        disableSortBy: true,
         header: ({ table }) => (
           <IndeterminateCheckbox
             {...{
@@ -322,11 +346,16 @@ export default function Table({ data, columns }: any) {
   const [columnOrder, setColumnOrder] = useState(
     rtColumns.map((column) => column.id as string)
   );
-  const [columnVisibility, setColumnVisibility] = useState({})
-
+  const [columnVisibility, setColumnVisibility] = useState({});
 
   const resetOrder = () =>
     setColumnOrder(columns.map((column) => column.id as string));
+
+  const needsReorder = useMemo(() => {
+    const currentOrder = columnOrder.map((columnId) => columnId);
+    const defaultOrder = rtColumns.map((column) => column.id as string);
+    return !isEqual(currentOrder, defaultOrder);
+  }, [columnOrder, rtColumns]);
 
   const table = useReactTable({
     data,
@@ -334,14 +363,15 @@ export default function Table({ data, columns }: any) {
     defaultColumn: {
       minSize: 0,
       size: 0,
+      maxSize: 20,
     },
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    enableColumnResizing: true,
-    columnResizeMode: 'onChange',
-    onColumnVisibilityChange: setColumnVisibility,
+    /*enableColumnResizing: true,
+    columnResizeMode: "onChange",
+    onColumnVisibilityChange: setColumnVisibility,*/
     onColumnOrderChange: setColumnOrder,
     onSortingChange: setSorting,
     onGlobalFilterChange: setGlobalFilter,
@@ -350,7 +380,7 @@ export default function Table({ data, columns }: any) {
       sorting,
       globalFilter,
       columnOrder,
-      columnVisibility
+      //columnVisibility,
     },
   });
 
@@ -429,76 +459,115 @@ export default function Table({ data, columns }: any) {
             />
             <label htmlFor="advanced">Advanced</label>
           </div>
+
           {advanced && (
             <>
-              <div className="p-2 flex gap-2">
-                <label htmlFor="search">Search:</label>
-                <DebouncedInput
-                  id="search"
-                  value={globalFilter ?? ""}
-                  onChange={(value) => setGlobalFilter(String(value))}
-                  className="bg-grey-900 border border-grey-700 rounded py-3 pl-4"
-                  placeholder="Search all columns..."
-                />
-              </div>
-              <button onClick={() => resetOrder()} className="_btn">
-                Reset Order
-              </button>
-              <div className="flex gap-2">
-                <button onClick={decreaseFontSize} className="_btn">
-                  Decrease font
+              <DebouncedInput
+                id="search"
+                value={globalFilter ?? ""}
+                onChange={(value) => setGlobalFilter(String(value))}
+                placeholder="Search..."
+              />
+              {needsReorder && (
+                <button onClick={() => resetOrder()} className="_btn">
+                  Reset Order
                 </button>
-                <button onClick={increaseFontSize} className="_btn">
-                  Increase font
-                </button>
-              </div>
+              )}
+              <Select
+                label="Font size"
+                placeholder="Select font size"
+                groups={[
+                  {
+                    label: "Font size",
+                    items: [
+                      {
+                        label: "100%",
+                        value: 1,
+                      },
+                      {
+                        label: "125%",
+                        value: 1.25,
+                      },
+                      {
+                        label: "150%",
+                        value: 1.5,
+                      },
+                      {
+                        label: "175%",
+                        value: 1.75,
+                      },
+                      {
+                        label: "200%",
+                        value: 2,
+                      },
+                    ],
+                  },
+                ]}
+              />
+              <Select
+                label="Filter"
+                placeholder="Select filter"
+                groups={[
+                  {
+                    label: "Filter",
+                    items: [
+                      {
+                        label: "Toggle All",
+                        value: "toggleAll",
+                      },
+                      ...table.getAllLeafColumns().map((column) => {
+                        return {
+                          label: column.id,
+                          value: column.id,
+                        };
+                      }),
+                    ],
+                  },
+                ]}
+              />
+              {/*
               <div className="p-2 border border-black shadow rounded grid grid-cols-4">
-                <div className="px-1 border-b border-black">
-                  <label>
-                    <input
-                      type="checkbox"
-                      checked={table.getIsAllColumnsVisible()}
-                      onChange={table.getToggleAllColumnsVisibilityHandler()}
-                      className="mr-1"
-                    />
-                    Toggle All
-                  </label>
-                </div>
+              <div className="px-1 border-b border-black">
+              <label>
+              <input
+              type="checkbox"
+              checked={table.getIsAllColumnsVisible()}
+              onChange={table.getToggleAllColumnsVisibilityHandler()}
+              className="mr-1"
+              />
+              Toggle All
+              </label>
+              </div>
                 {table.getAllLeafColumns().map((column) => {
                   return (
                     <div key={column.id} className="px-1">
-                      <label>
-                        <input
-                          type="checkbox"
-                          checked={column.getIsVisible()}
-                          onChange={column.getToggleVisibilityHandler()}
-                          className="mr-1"
-                        />
-                        {column.id}
+                    <label>
+                    <input
+                    type="checkbox"
+                    checked={column.getIsVisible()}
+                    onChange={column.getToggleVisibilityHandler()}
+                    className="mr-1"
+                    />
+                    {column.id}
                       </label>
                     </div>
                   );
                 })}
               </div>
+              */}
             </>
           )}
         </div>
         <table
           id="table"
-          className={clsx("", FONT_SIZES_CLASSES[fontSize].overall)}
-        /*style={{
+          className={clsx("text-sm")}
+          /*style={{
           width: table.getCenterTotalSize(),
         }}*/
         >
           <thead>
             {table.getHeaderGroups().map((headerGroup) => (
-              <tr
-                key={headerGroup.id}
-                className={clsx(
-                  "!h-10 text-left",
-                  FONT_SIZES_CLASSES[fontSize].header
-                )}
-              >
+              <tr key={headerGroup.id} className={clsx("!h-10 text-left")}>
                 {headerGroup.headers.map((header) => {
                   return (
                     <DraggableColumnHeader
@@ -530,9 +599,9 @@ export default function Table({ data, columns }: any) {
                           "bg-grey-850": idx % 2 === 0,
                           "bg-[#202020]": idx % 2 === 1,
                         })}
-                        style={{
+                        /*style={{
                           width: cell.column.getSize(),
-                        }}
+                        }}*/
                       >
                         {flexRender(
                           cell.column.columnDef.cell,
@@ -563,9 +632,9 @@ export default function Table({ data, columns }: any) {
                     {header.isPlaceholder
                       ? null
                       : flexRender(
-                        header.column.columnDef.footer,
-                        header.getContext()
-                      )}
+                          header.column.columnDef.footer,
+                          header.getContext()
+                        )}
                   </th>
                 ))}
               </tr>
@@ -576,28 +645,40 @@ export default function Table({ data, columns }: any) {
           {advanced && (
             <div className="flex items-center gap-2">
               <button
-                className="_icon-btn"
+                className={clsx("px-2", {
+                  "text-grey-700": !table.getCanPreviousPage(),
+                  "text-white": table.getCanPreviousPage(),
+                })}
                 onClick={() => table.setPageIndex(0)}
                 disabled={!table.getCanPreviousPage()}
               >
                 {"<<"}
               </button>
               <button
-                className="_icon-btn"
+                className={clsx("px-2", {
+                  "text-grey-700": !table.getCanPreviousPage(),
+                  "text-white": table.getCanPreviousPage(),
+                })}
                 onClick={() => table.previousPage()}
                 disabled={!table.getCanPreviousPage()}
               >
                 {"<"}
               </button>
               <button
-                className="_icon-btn"
+                className={clsx("px-2", {
+                  "text-grey-700": !table.getCanNextPage(),
+                  "text-white": table.getCanNextPage(),
+                })}
                 onClick={() => table.nextPage()}
                 disabled={!table.getCanNextPage()}
               >
                 {">"}
               </button>
               <button
-                className="_icon-btn"
+                className={clsx("px-2", {
+                  "text-grey-700": !table.getCanNextPage(),
+                  "text-white": table.getCanNextPage(),
+                })}
                 onClick={() => table.setPageIndex(table.getPageCount() - 1)}
                 disabled={!table.getCanNextPage()}
               >
@@ -621,22 +702,37 @@ export default function Table({ data, columns }: any) {
                       : 0;
                     table.setPageIndex(page);
                   }}
-                  className="border p-1 rounded w-16"
+                  className="_input"
                 />
               </span>
+              <Select
+                label="Rows per page:"
+                placeholder="Select rows per page"
+                groups={[
+                  {
+                    label: "Rows per page", // TODO: generate number automatically
+                    items: [10, 20, 30, 40, 50].map((pageSize) => ({
+                      label: `Show ${pageSize}`,
+                      value: pageSize,
+                    })),
+                  },
+                ]}
+              />
+              {/*
               <select
-                className="_input bg-gray-600"
-                value={table.getState().pagination.pageSize}
-                onChange={(e) => {
-                  table.setPageSize(Number(e.target.value));
-                }}
+              className="_input bg-gray-600"
+              value={table.getState().pagination.pageSize}
+              onChange={(e) => {
+                table.setPageSize(Number(e.target.value));
+              }}
               >
-                {[10, 20, 30, 40, 50].map((pageSize) => (
-                  <option key={pageSize} value={pageSize}>
-                    Show {pageSize}
-                  </option>
+              {[10, 20, 30, 40, 50].map((pageSize) => (
+                <option key={pageSize} value={pageSize}>
+                Show {pageSize}
+                </option>
                 ))}
-              </select>
+                </select>
+              */}
             </div>
           )}
           <button className="_btn" onClick={() => downloadImage()}>
@@ -855,7 +951,33 @@ const DebouncedInput: FC<Props> = ({
     return () => clearTimeout(timeout);
   }, [value]);
 
-  return <input {...props} value={value} onChange={handleInputChange} />;
+  return (
+    <div className="relative group">
+      <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+        <svg
+          aria-hidden="true"
+          className="w-5 h-5 text-grey-600"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+          ></path>
+        </svg>
+      </div>
+      <input
+        {...props}
+        className="bg-grey-900 h-[36px] border-[1.5px] border-grey-700 rounded p-3 pl-10 max-w-[216px]"
+        value={value}
+        onChange={handleInputChange}
+      />
+    </div>
+  );
 };
 
 function IndeterminateCheckbox({

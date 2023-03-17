@@ -1,0 +1,105 @@
+import * as SelectPrimitive from "@radix-ui/react-select";
+import {
+  CheckIcon,
+  ChevronDownIcon,
+  ChevronUpIcon,
+} from "@radix-ui/react-icons";
+import { forwardRef } from "react";
+import clsx from "clsx";
+
+const Select = ({
+  label = "Select",
+  placeholder = "Select a fruit…",
+  groups,
+}: {
+  label?: string;
+  placeholder?: string;
+  groups: {
+    label: string;
+    items: {
+      label: string;
+      value: string | number;
+      disabled?: boolean;
+    }[];
+  }[];
+}) => {
+  const onlyOneGroup = groups.length === 1;
+  return (
+    <SelectPrimitive.Root>
+      <SelectPrimitive.Group className="flex flex-col gap-1 text-sm">
+        <SelectPrimitive.Label className="whitespace-nowrap">
+          {label}
+        </SelectPrimitive.Label>
+        <SelectPrimitive.Trigger
+          className="bg-grey-900 whitespace-nowrap h-[36px] border-[1.5px] border-grey-700 rounded p-3 inline-flex items-center justify-center leading-none gap-[5px] shadow-[0_2px_10px] shadow-black/10 focus:shadow-[0_0_0_2px] focus:shadow-black data-[placeholder]:text-white outline-none"
+          aria-label={label}
+        >
+          <SelectPrimitive.Value placeholder={placeholder} />
+          <SelectPrimitive.Icon>
+            <ChevronDownIcon />
+          </SelectPrimitive.Icon>
+        </SelectPrimitive.Trigger>
+      </SelectPrimitive.Group>
+      <SelectPrimitive.Portal>
+        <SelectPrimitive.Content className="overflow-hidden bg-grey-900 border-[1.5px] border-grey-700 rounded p-3 shadow-[0px_10px_38px_-10px_rgba(22,_23,_24,_0.35),0px_10px_20px_-15px_rgba(22,_23,_24,_0.2)]">
+          <SelectPrimitive.ScrollUpButton className="flex items-center justify-center h-[25px] cursor-default">
+            <ChevronUpIcon />
+          </SelectPrimitive.ScrollUpButton>
+          <SelectPrimitive.Viewport className="p-[5px]">
+            {onlyOneGroup ? (
+              <SelectPrimitive.Group>
+                {groups[0].items.map((item) => (
+                  <SelectItem value={item.value} disabled={item.disabled}>
+                    {item.label}
+                  </SelectItem>
+                ))}
+              </SelectPrimitive.Group>
+            ) : (
+              groups.map((group, idx) => (
+                <SelectPrimitive.Group key={group.label}>
+                  <SelectPrimitive.Label className="text-xs leading-[25px]">
+                    {group.label}
+                  </SelectPrimitive.Label>
+                  {group.items.map((item) => (
+                    <SelectItem
+                      key={item.value}
+                      value={item.value}
+                      disabled={item.disabled}
+                    >
+                      {item.label}
+                    </SelectItem>
+                  ))}
+                </SelectPrimitive.Group>
+              ))
+            )}
+          </SelectPrimitive.Viewport>
+          <SelectPrimitive.ScrollDownButton className="flex items-center justify-center h-[25px] cursor-default">
+            <ChevronDownIcon />
+          </SelectPrimitive.ScrollDownButton>
+        </SelectPrimitive.Content>
+      </SelectPrimitive.Portal>
+    </SelectPrimitive.Root>
+  );
+};
+
+const SelectItem = forwardRef(
+  ({ children, className, ...props }, forwardedRef) => {
+    return (
+      <SelectPrimitive.Item
+        className={clsx(
+          "text-[13px] leading-none rounded-[3px] flex items-center h-[25px] pr-[35px] pl-[25px] relative select-none data-[disabled]:text-grey-400 data-[disabled]:pointer-events-none data-[highlighted]:outline-none data-[highlighted]:bg-grey-600 data-[highlighted]:text-white",
+          className
+        )}
+        {...props}
+        ref={forwardedRef}
+      >
+        <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
+        <SelectPrimitive.ItemIndicator className="absolute left-0 w-[25px] inline-flex items-center justify-center">
+          <CheckIcon />
+        </SelectPrimitive.ItemIndicator>
+      </SelectPrimitive.Item>
+    );
+  }
+);
+
+export default Select;
