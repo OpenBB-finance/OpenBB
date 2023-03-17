@@ -17,7 +17,7 @@ You now have the ability to look up any ETF. With the example below, the `load` 
 ```
 (🦋) /etf/ $ load voo
 
-Loading Daily data for VOO with starting period 2022-02-08. 
+Loading Daily data for VOO with starting period 2022-02-08.
 ```
 
 Now we can use `holdings` to see the makeup of VOO
@@ -114,13 +114,13 @@ It seems Vanguard Total Stock Market Index Fund ETF Shares (VTI) is by far the l
 ```
 (🦋) /etf/ $ load VTI -s 2010-01-01
 
-Loading Daily data for VTI with starting period 2010-01-01. 
+Loading Daily data for VTI with starting period 2010-01-01.
 ```
 
-We can now plot the corresponding ETF chart with <a href="/terminal/reference/etf/candle" target="_blank" rel="noreferrer noopener">candle</a> which shows the company's historical data from `2010-01-01` until the current date. We are also adding in trendlines with `-t`.
+We can now plot the corresponding ETF chart with <a href="/terminal/reference/etf/candle" target="_blank" rel="noreferrer noopener">candle</a> which shows the company's historical data from `2010-01-01` until the current date.
 
 ```
-(🦋) /etf/ $ candle -t
+(🦋) /etf/ $ candle
 ```
 
 ![Candle Chart with Trendlines](https://user-images.githubusercontent.com/46355364/174823785-ec11cb1a-dbf0-45a7-b086-31542ece39a3.png)
@@ -130,7 +130,7 @@ Now we can go ahead and explore more about the ETF by running <a href="/terminal
 ```
 (🦋) /etf/ $ holdings
 
-                           ETF Holdings                           
+                           ETF Holdings
 ┏━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━┓
 ┃       ┃ Name                            ┃ % Of Etf ┃ Shares    ┃
 ┡━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━┩
@@ -160,7 +160,7 @@ And <a href="/terminal/reference/etf/weights" target="_blank" rel="noreferrer no
 ```
 (🦋) /etf/ $ weights --raw
 
-   Sector Weightings Allocation    
+   Sector Weightings Allocation
 ┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┓
 ┃ Sector                 ┃ Weight ┃
 ┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━┩

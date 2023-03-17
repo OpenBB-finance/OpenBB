@@ -19,7 +19,6 @@ import pytz
 import yfinance as yf
 from pandas.tseries.holiday import USFederalHolidayCalendar
 from requests.exceptions import ReadTimeout
-from scipy import stats
 
 from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.core.plots.plotly_ta.ta_class import PlotlyTA
@@ -490,7 +489,6 @@ def load(
 def display_candle(
     symbol: str,
     data: Optional[pd.DataFrame] = None,
-    add_trend: bool = False,
     ma: Optional[Iterable[int]] = None,
     asset_type: str = "",
     start_date: Optional[Union[datetime, str]] = None,
@@ -514,8 +512,6 @@ def display_candle(
         Ticker name
     data: pd.DataFrame
         Stock dataframe
-    add_trend: bool
-        Flag to add high and low trends to chart
     ma: Tuple[int]
         Moving averages to add to the candle
     asset_type_: str
@@ -581,10 +577,6 @@ def display_candle(
         )
         data = process_candle(data)
 
-    if add_trend and (data.index[1] - data.index[0]).total_seconds() >= 86400:
-        data = find_trendline(data, "OC_High", "high")
-        data = find_trendline(data, "OC_Low", "low")
-
     if raw:
         return data
 
@@ -594,9 +586,6 @@ def display_candle(
 
     data.name = f"{asset_type} {symbol}"
     fig = PlotlyTA.plot(data, dict(**kwargs), prepost=prepost)
-
-    if add_trend:
-        fig.add_trend(data)
 
     fig.update_layout(yaxis=dict(title="Stock Price ($)", type=yscale))
     fig.add_logscale_menus()
@@ -629,55 +618,6 @@ def process_candle(data: pd.DataFrame) -> pd.DataFrame:
 
     df_data["ma20"] = df_data["Close"].rolling(20).mean().fillna(method="bfill")
     df_data["ma50"] = df_data["Close"].rolling(50).mean().fillna(method="bfill")
-
-    return df_data
-
-
-def find_trendline(
-    df_data: pd.DataFrame, y_key: str, high_low: str = "high"
-) -> pd.DataFrame:
-    """Attempt to find a trend line based on y_key column from a given stock ticker data frame.
-
-    Parameters
-    ----------
-    df_data : DataFrame
-        The stock ticker data frame with at least date_id, y_key columns.
-    y_key : str
-        Column name to base the trend line on.
-    high_low: str, optional
-        Either "high" or "low". High is the default.
-
-    Returns
-    -------
-    DataFrame
-        If a trend is successfully found,
-            An updated Panda's data frame with a trend data {y_key}_trend column.
-        If no trend was found,
-            An original Panda's data frame
-    """
-    for iteration in [3, 4, 5, 6, 7]:
-        df_temp = df_data.copy()
-        while len(df_temp) > iteration:
-            reg = stats.linregress(x=df_temp["date_id"], y=df_temp[y_key])
-
-            if high_low == "high":
-                df_temp = df_temp.loc[
-                    df_temp[y_key] > reg[0] * df_temp["date_id"] + reg[1]
-                ]
-            else:
-                df_temp = df_temp.loc[
-                    df_temp[y_key] < reg[0] * df_temp["date_id"] + reg[1]
-                ]
-
-        if len(df_temp) > 1:
-            break
-
-    if len(df_temp) == 1:
-        return df_data
-
-    reg = stats.linregress(x=df_temp["date_id"], y=df_temp[y_key])
-
-    df_data[f"{y_key}_trend"] = reg[0] * df_data["date_id"] + reg[1]
 
     return df_data
 

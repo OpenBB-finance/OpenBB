@@ -13,7 +13,6 @@ from openbb_terminal.core.plots.plotly_ta.ta_class import PlotlyTA
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.forex import av_model, polygon_model
 from openbb_terminal.rich_config import console
-from openbb_terminal.stocks import stocks_helper
 
 CANDLE_SORT = [
     "adjclose",
@@ -239,7 +238,6 @@ def display_candle(
     from_symbol: str = "",
     ma: Optional[Iterable[int]] = None,
     external_axes: bool = False,
-    add_trend: bool = False,
     yscale: str = "linear",
 ):
     """Show candle plot for fx data.
@@ -261,15 +259,8 @@ def display_candle(
     if not (has_volume := False) and "Volume" in data.columns:
         has_volume = bool(data["Volume"].sum() > 0)
 
-    if add_trend and (data.index[1] - data.index[0]).total_seconds() >= 86400:
-        data = stocks_helper.find_trendline(data, "OC_High", "high")
-        data = stocks_helper.find_trendline(data, "OC_Low", "low")
-
     data.name = f"{from_symbol}/{to_symbol}"
     fig = PlotlyTA.plot(data, dict(rma=dict(length=ma)), volume=has_volume)
-    if add_trend:
-        fig.add_trend(data)
-
     fig.add_logscale_menus()
     fig.update_yaxes(type=yscale, row=1, col=1, nticks=20)
 

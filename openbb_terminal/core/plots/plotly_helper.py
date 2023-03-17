@@ -364,54 +364,6 @@ class OpenBBFigure(go.Figure):
 
         return cls(fig, **kwargs)
 
-    def add_trend(self, data: pd.DataFrame) -> None:
-        """Add a trend line to the figure.
-
-        Parameters
-        ----------
-        data : `pd.DataFrame`
-            Data to plot
-        name : `str`
-            Name of the plot
-        """
-        try:
-            if "OC_High_trend" in data.columns:
-                high_trend = data.loc[
-                    data["OC_High_trend"]
-                    .idxmin() : data["OC_High_trend"]  # noqa: E203
-                    .idxmax()
-                ]
-                self.add_shape(
-                    type="line",
-                    name="High Trend",
-                    x0=high_trend.index[0],
-                    y0=high_trend["OC_High_trend"].iloc[0],
-                    x1=high_trend.index[-1],
-                    y1=high_trend["OC_High_trend"].iloc[-1],
-                    line=dict(color=theme.up_color, width=2),
-                    row=1,
-                    col=1,
-                )
-            if "OC_Low_trend" in data.columns:
-                low_trend = data.loc[
-                    data["OC_Low_trend"]
-                    .idxmin() : data["OC_Low_trend"]  # noqa: E203
-                    .idxmax()
-                ]
-                self.add_shape(
-                    type="line",
-                    name="Low Trend",
-                    x0=low_trend.index[0],
-                    y0=low_trend["OC_Low_trend"].iloc[0],
-                    x1=low_trend.index[-1],
-                    y1=low_trend["OC_Low_trend"].iloc[-1],
-                    line=dict(color=theme.down_color, width=2),
-                    row=1,
-                    col=1,
-                )
-        except Exception:
-            console.print("[red]Error adding trend line[/red]")
-
     def add_histplot(
         self,
         dataset: Union[np.ndarray, pd.Series, TimeSeriesT],

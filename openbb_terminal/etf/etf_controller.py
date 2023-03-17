@@ -435,14 +435,6 @@ class ETFController(BaseController):
             metavar="NUM",
         )
         parser.add_argument(
-            "-t",
-            "--trend",
-            action="store_true",
-            default=False,
-            help="Flag to add high and low trends to candle.",
-            dest="trendlines",
-        )
-        parser.add_argument(
             "--ma",
             dest="mov_avg",
             type=str,
@@ -496,7 +488,6 @@ class ETFController(BaseController):
                 figure = stocks_helper.display_candle(
                     symbol=self.etf_name,
                     data=data,
-                    add_trend=ns_parser.trendlines,
                     ma=mov_avgs,
                     asset_type="ETF",
                     external_axes=True,

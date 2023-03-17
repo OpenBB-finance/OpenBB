@@ -10,7 +10,7 @@ Show candle plot of loaded ticker.
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/stocks_helper.py#L443)]
 
 ```python
-openbb.etf.candle(symbol: str, data: pd.DataFrame = None, use_matplotlib: bool = True, intraday: bool = False, add_trend: bool = False, ma: Optional[Iterable[int]] = None, asset_type: str = "", start_date: Union[datetime.datetime, str, NoneType] = None, interval: int = 1440, end_date: Union[datetime.datetime, str, NoneType] = None, prepost: bool = False, source: str = "YahooFinance", weekly: bool = False, monthly: bool = False, external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, raw: bool = False, yscale: str = "linear")
+openbb.etf.candle(symbol: str, data: pd.DataFrame = None, use_matplotlib: bool = True, intraday: bool = False, ma: Optional[Iterable[int]] = None, asset_type: str = "", start_date: Union[datetime.datetime, str, NoneType] = None, interval: int = 1440, end_date: Union[datetime.datetime, str, NoneType] = None, prepost: bool = False, source: str = "YahooFinance", weekly: bool = False, monthly: bool = False, external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, raw: bool = False, yscale: str = "linear")
 ```
 
 ---
@@ -23,7 +23,6 @@ openbb.etf.candle(symbol: str, data: pd.DataFrame = None, use_matplotlib: bool =
 | data | pd.DataFrame | Stock dataframe | None | True |
 | use_matplotlib | bool | Flag to use matplotlib instead of interactive plotly chart | True | True |
 | intraday | bool | Flag for intraday data for plotly range breaks | False | True |
-| add_trend | bool | Flag to add high and low trends to chart | False | True |
 | ma | Tuple[int] | Moving averages to add to the candle | None | True |
 | asset_type_ | str | String to include in title | None | True |
 | external_axes | Optional[List[plt.Axes]] | External axes (2 axes are expected in the list), by default None | None | True |

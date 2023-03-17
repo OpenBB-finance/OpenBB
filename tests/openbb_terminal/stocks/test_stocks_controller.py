@@ -326,7 +326,6 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 data=EMPTY_DF,
                 use_matplotlib=False,
                 intraday=False,
-                add_trend=True,
                 ma=[20, 30],
                 yscale="linear",
             ),

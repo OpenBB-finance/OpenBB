@@ -416,13 +416,6 @@ class StocksController(StockBaseController):
             help="Shows raw data instead of chart.",
         )
         parser.add_argument(
-            "--trend",
-            action="store_true",
-            default=False,
-            help="Flag to add high and low trends to candle",
-            dest="trendlines",
-        )
-        parser.add_argument(
             "--ma",
             dest="mov_avg",
             type=str,
@@ -481,7 +474,6 @@ class StocksController(StockBaseController):
                     figure_export = stocks_helper.display_candle(
                         symbol=self.ticker,
                         data=data,
-                        add_trend=ns_parser.trendlines,
                         ma=mov_avgs,
                         prepost=ns_parser.prepost,
                         asset_type="Stock",

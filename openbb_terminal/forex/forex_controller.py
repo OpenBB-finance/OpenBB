@@ -246,14 +246,6 @@ class ForexController(BaseController):
             help="Shows raw data instead of chart.",
         )
         parser.add_argument(
-            "-t",
-            "--trend",
-            action="store_true",
-            default=False,
-            help="Flag to add high and low trends to candle",
-            dest="trendlines",
-        )
-        parser.add_argument(
             "--ma",
             dest="mov_avg",
             type=str,
@@ -285,13 +277,6 @@ class ForexController(BaseController):
 
             data = stocks_helper.process_candle(self.data)
             if ns_parser.raw:
-                if (
-                    ns_parser.trendlines
-                    and (data.index[1] - data.index[0]).total_seconds() >= 86400
-                ):
-                    data = stocks_helper.find_trendline(data, "OC_High", "high")
-                    data = stocks_helper.find_trendline(data, "OC_Low", "low")
-
                 qa_view.display_raw(
                     data=data,
                     sortby=ns_parser.sort,
@@ -322,7 +307,6 @@ class ForexController(BaseController):
                     to_symbol=self.to_symbol,
                     from_symbol=self.from_symbol,
                     data=data,
-                    add_trend=ns_parser.trendlines,
                     ma=mov_avgs,
                     yscale="log" if ns_parser.logy else "linear",
                 )
