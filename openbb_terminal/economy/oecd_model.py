@@ -942,7 +942,7 @@ def get_balance(
 @log_start_end(log=logger)
 def get_revenue(
     countries: Optional[List[str]],
-    units: str = "PERCENTAGE_GDP",
+    units: str = "PC_GDP",
     start_date="",
     end_date="",
 ) -> pd.DataFrame:
@@ -963,7 +963,7 @@ def get_revenue(
     countries: list
         List of countries to get data for
     units: str
-        Units to get data in. Either 'PERCENTAGE_GDP' or 'THOUSAND_USD_PER_CAPITA'.
+        Units to get data in. Either 'PC_GDP' or 'THOUSAND_USD_PER_CAPITA'.
         Default is Percentage of GDP.
     start_date: str
         Start date of data, in YYYY-MM-DD format
@@ -984,10 +984,10 @@ def get_revenue(
     elif isinstance(end_date, datetime):
         end_date = end_date.date()
 
-    if units not in ["THND_USD_CAP", "PERCENTAGE_GDP"]:
+    if units not in ["THND_USD_CAP", "PC_GDP"]:
         return console.print(
             "Use either THND_USD_CAP (thousands of USD per capity) "
-            "or PERCENTAGE_GDP (percentage of GDP) for units"
+            "or PC_GDP (percentage of GDP) for units"
         )
 
     df = pd.read_csv(
@@ -1017,7 +1017,8 @@ def get_revenue(
 @log_start_end(log=logger)
 def get_spending(
     countries: Optional[List[str]],
-    units: str = "PERCENTAGE_GDP",
+    perspective: str = "TOT",
+    units: str = "PC_GDP",
     start_date="",
     end_date="",
 ) -> pd.DataFrame:
@@ -1035,8 +1036,21 @@ def get_spending(
     ----------
     countries: list
         List of countries to get data for
+    perspective: str
+        The type of spending. Choose form the following:
+            TOT (Total)
+            RECULTREL (Recreation, culture and religion)
+            HOUCOMM (Housing and community amenities)
+            PUBORD (Public order and safety)
+            EDU (Education)
+            ENVPROT (Environmental protection)
+            GRALPUBSER (General public services)
+            SOCPROT (Social protection)
+            ECOAFF (Economic affairs)
+            DEF (Defence)
+            HEALTH (Health)
     units: str
-        Units to get data in. Either 'PERCENTAGE_GDP' or 'THOUSAND_USD_PER_CAPITA'.
+        Units to get data in. Either 'PC_GDP' or 'THOUSAND_USD_PER_CAPITA'.
         Default is Percentage of GDP.
     start_date: str
         Start date of data, in YYYY-MM-DD format
@@ -1057,10 +1071,30 @@ def get_spending(
     elif isinstance(end_date, datetime):
         end_date = end_date.date()
 
-    if units not in ["THND_USD_CAP", "PERCENTAGE_GDP"]:
-        return console.print(
+    if units not in ["THND_USD_CAP", "PC_GDP"]:
+        console.print(
             "Use either THND_USD_CAP (thousands of USD per capity) "
-            "or PERCENTAGE_GDP (percentage of GDP) for units"
+            "or PC_GDP (percentage of GDP) for units"
+        )
+        return pd.DataFrame()
+    if perspective not in [
+        "TOT",
+        "RECULTREL",
+        "HOUCOMM",
+        "PUBORD",
+        "EDU",
+        "ENVPROT",
+        "GRALPUBSER",
+        "SOCPROT",
+        "ECOAFF",
+        "DEF",
+        "HEALTH",
+    ]:
+        console.print(
+            "Use either TOT (Total),  RECULTREL (Recreation, culture and religion), "
+            "HOUCOMM (Housing and community amenities), PUBORD (Public order and safety), "
+            "EDU (Education), ENVPROT (Environmental protection), GRALPUBSER (General public services), "
+            "SOCPROT (Social protection), ECOAFF (Economic affairs), DEF (Defence), HEALTH (Health)"
         )
     df = pd.read_csv(
         f"https://stats.oecd.org/sdmx-json/data/DP_LIVE/.GGEXP.../OECD?contentType=csv&detail=code"
@@ -1068,6 +1102,7 @@ def get_spending(
         index_col=5,
     )
 
+    df = df[df["SUBJECT"] == perspective]
     df = df[df["MEASURE"] == units]
     df = df.iloc[:, [0, 5]]
 

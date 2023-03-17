@@ -466,7 +466,7 @@ def plot_balance(
 @log_start_end(log=logger)
 def plot_revenue(
     countries: Optional[List[str]],
-    units: str = "PERCENTAGE_GDP",
+    units: str = "PC_GDP",
     start_date: str = "",
     end_date: str = "",
     raw: bool = False,
@@ -491,7 +491,7 @@ def plot_revenue(
     countries: list
         List of countries to get data for
     units: str
-        Units to get data in. Either 'PERCENTAGE_GDP' or 'THOUSAND_USD_PER_CAPITA'.
+        Units to get data in. Either 'PC_GDP' or 'THOUSAND_USD_PER_CAPITA'.
         Default is Percentage of GDP.
     start_date: str
         Start date of data, in YYYY-MM-DD format
@@ -503,10 +503,10 @@ def plot_revenue(
     pd.DataFrame
         Dataframe with the interest rate data
     """
-    if units not in ["THND_USD_CAP", "PERCENTAGE_GDP"]:
+    if units not in ["THND_USD_CAP", "PC_GDP"]:
         return console.print(
             "Use either THND_USD_CAP (thousands of USD per capity) "
-            "or PERCENTAGE_GDP (percentage of GDP) for units"
+            "or PC_GDP (percentage of GDP) for units"
         )
 
     df = oecd_model.get_revenue(countries, units, start_date, end_date)
@@ -542,7 +542,7 @@ def plot_revenue(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         f"revenue_{units}",
-        df / 100 if units == "PERCENTAGE_GDP" else df,
+        df / 100 if units == "PC_GDP" else df,
         sheet_name,
         fig,
     )
@@ -553,7 +553,8 @@ def plot_revenue(
 @log_start_end(log=logger)
 def plot_spending(
     countries: Optional[List[str]],
-    units: str = "PERCENTAGE_GDP",
+    perspective: str = "TOT",
+    units: str = "PC_GDP",
     start_date: str = "",
     end_date: str = "",
     raw: bool = False,
@@ -569,14 +570,14 @@ def plot_spending(
     differences in resources spent. This indicator is measured in terms of
     thousand USD per capita, and as percentage of GDP. All OECD countries
     compile their data according to the 2008 System of
-    National Accounts (SNA).[ Source: OECD]
+    National Accounts (SNA). [Source: OECD]
 
     Parameters
     ----------
     countries: list
         List of countries to get data for
     units: str
-        Units to get data in. Either 'PERCENTAGE_GDP' or 'THOUSAND_USD_PER_CAPITA'.
+        Units to get data in. Either 'PC_GDP' or 'THOUSAND_USD_PER_CAPITA'.
         Default is Percentage of GDP.
     start_date: str
         Start date of data, in YYYY-MM-DD format
@@ -588,13 +589,7 @@ def plot_spending(
     pd.DataFrame
         Dataframe with the interest rate data
     """
-    if units not in ["THND_USD_CAP", "PERCENTAGE_GDP"]:
-        return console.print(
-            "Use either THND_USD_CAP (thousands of USD per capity) "
-            "or PERCENTAGE_GDP (percentage of GDP) for units"
-        )
-
-    df = oecd_model.get_spending(countries, units, start_date, end_date)
+    df = oecd_model.get_spending(countries, perspective, units, start_date, end_date)
 
     if units == "THND_USD_CAP":
         fig = OpenBBFigure(yaxis_title="Thousands of USD per Capita")
@@ -611,7 +606,21 @@ def plot_spending(
             showlegend=True,
         )
 
-    title = "Government Spending"
+    perspective_naming = {
+        "TOT": "Total",
+        "RECULTREL": "Recreation, culture and religion)",
+        "HOUCOMM": "Housing and community amenities",
+        "PUBORD": "Public order and safety)",
+        "EDU": "Education",
+        "ENVPROT": "Environmental protection",
+        "GRALPUBSER": "General public services)",
+        "SOCPROT": "Social protection",
+        "ECOAFF": "Economic affairs",
+        "DEF": "Defence",
+        "HEALTH": "Health",
+    }
+
+    title = f"Government Spending ({perspective_naming[perspective]})"
     fig.set_title(title)
 
     if raw:
@@ -626,8 +635,8 @@ def plot_spending(
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
-        f"spending_{units}",
-        df / 100 if units == "PERCENTAGE_GDP" else df,
+        f"spending_{units}_{perspective}",
+        df / 100 if units == "PC_GDP" else df,
         sheet_name,
         fig,
     )

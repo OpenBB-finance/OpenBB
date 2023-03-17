@@ -956,9 +956,9 @@ class EconomyController(BaseController):
             type=str,
             dest="units",
             help="Use either THND_USD_CAP (thousands of USD per capity) "
-            "or PERCENTAGE_GDP (percentage of GDP)",
-            choices=["PERCENTAGE_GDP", "THOUSAND_USD_PER_CAPITA"],
-            default="PERCENTAGE_GDP",
+            "or PC_GDP (percentage of GDP)",
+            choices=["PC_GDP", "THOUSAND_USD_PER_CAPITA"],
+            default="PC_GDP",
         )
 
         parser.add_argument(
@@ -1026,14 +1026,39 @@ class EconomyController(BaseController):
         )
 
         parser.add_argument(
+            "-p",
+            "--perspective",
+            type=str,
+            dest="perspective",
+            help="Use either TOT (Total),  RECULTREL (Recreation, culture and religion), "
+            "HOUCOMM (Housing and community amenities), PUBORD (Public order and safety), "
+            "EDU (Education), ENVPROT (Environmental protection), GRALPUBSER (General public services), "
+            "SOCPROT (Social protection), ECOAFF (Economic affairs), DEF (Defence), HEALTH (Health)",
+            choices=[
+                "TOT",
+                "RECULTREL",
+                "HOUCOMM",
+                "PUBORD",
+                "EDU",
+                "ENVPROT",
+                "GRALPUBSER",
+                "SOCPROT",
+                "ECOAFF",
+                "DEF",
+                "HEALTH",
+            ],
+            default="TOT",
+        )
+
+        parser.add_argument(
             "-u",
             "--units",
             type=str,
             dest="units",
             help="Use either THND_USD_CAP (thousands of USD per capity) "
-            "or PERCENTAGE_GDP (percentage of GDP)",
-            choices=["PERCENTAGE_GDP", "THOUSAND_USD_PER_CAPITA"],
-            default="PERCENTAGE_GDP",
+            "or PC_GDP (percentage of GDP)",
+            choices=["PC_GDP", "THOUSAND_USD_PER_CAPITA"],
+            default="PC_GDP",
         )
 
         parser.add_argument(
@@ -1068,6 +1093,7 @@ class EconomyController(BaseController):
 
             oecd_view.plot_spending(
                 countries=countries,
+                perspective=ns_parser.perspective,
                 units=ns_parser.units,
                 start_date=ns_parser.start_date,
                 end_date=ns_parser.end_date,
