@@ -182,10 +182,13 @@ class EconometricsController(BaseController):
                 "root",
                 "granger",
                 "coint",
+                "corr",
+                "season",
+                "lag",
             ]:
                 choices[feature] = dict()
 
-            # Inititialzie this for regressions to be able to use -h flag
+            # Initialize this for regressions to be able to use -h flag
             choices["regressions"] = {}
             self.choices = choices
 
@@ -207,6 +210,8 @@ class EconometricsController(BaseController):
                 "norm",
                 "root",
                 "coint",
+                "season",
+                "lag",
                 "regressions",
                 "ols",
                 "panel",
@@ -221,6 +226,7 @@ class EconometricsController(BaseController):
                 "remove",
                 "combine",
                 "rename",
+                "corr",
             ]:
                 self.choices[feature] = {c: {} for c in self.files}
 
@@ -1195,8 +1201,12 @@ class EconometricsController(BaseController):
             console.print("[red]Please enter 'dataset'.'column'.[/red]\n")
             return
 
-        data[col] = data[col].shift(ns_parser.lags, fill_value=ns_parser.fill_value)
+        data[col + "_with_" + str(ns_parser.lags) + "_lags"] = data[col].shift(
+            ns_parser.lags, fill_value=ns_parser.fill_value
+        )
         self.datasets[dataset] = data
+
+        self.update_runtime_choices()
 
     @log_start_end(log=logger)
     def call_eval(self, other_args):

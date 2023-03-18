@@ -234,7 +234,10 @@ def display_seasonality(
 
     series = data[column]
 
+    ending = get_ending("", column)
+
     fig = OpenBBFigure()
+    fig.set_title(f"Seasonality{ending}", wrap=True, wrap_width=55)
     fig.add_corr_plot(series, m=m, max_lag=max_lag, alpha=alpha)
     fig.update_xaxes(autorange=False, range=[-1, max_lag + 1])
 
