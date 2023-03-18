@@ -91,11 +91,15 @@ def load(
 
     try:
         if file_type == ".xlsx":
-            data = (
-                pd.read_excel(full_file)
-                if sheet_name is None
-                else pd.read_excel(full_file, sheet_name=sheet_name)
-            )
+            try:
+                data = (
+                    pd.read_excel(full_file)
+                    if sheet_name is None
+                    else pd.read_excel(full_file, sheet_name=sheet_name)
+                )
+            except ValueError as err:
+                console.print(f"[red]{err}[/red]\n")
+                return pd.DataFrame()
         elif file_type == ".csv":
             data = pd.read_csv(full_file)
         else:
