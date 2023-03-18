@@ -1,17 +1,15 @@
 """Crypto Technical Analysis Controller Module"""
 __docformat__ = "numpy"
-# pylint:disable=too-many-lines
+# pylint:disable=too-many-lines,R0904,C0201
 
 import argparse
 import logging
 import webbrowser
 from datetime import datetime
-from typing import List
+from typing import List, Optional
 
 import numpy as np
 import pandas as pd
-
-from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.common.technical_analysis import (
@@ -24,20 +22,26 @@ from openbb_terminal.common.technical_analysis import (
     volatility_view,
     volume_view,
 )
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     check_non_negative,
     check_positive,
-    check_positive_list,
     check_positive_float,
+    check_positive_list,
     valid_date,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import CryptoBaseController
-from openbb_terminal.rich_config import console, MenuText
+from openbb_terminal.rich_config import MenuText, console
 
 logger = logging.getLogger(__name__)
+
+
+def no_ticker_message():
+    """Print message when no ticker is loaded"""
+    console.print("[red]No data loaded. Use 'load' command to load a symbol[/red]")
 
 
 class TechnicalAnalysisController(CryptoBaseController):
@@ -67,6 +71,9 @@ class TechnicalAnalysisController(CryptoBaseController):
         "obv",
         "fib",
         "tv",
+        "atr",
+        "demark",
+        "cones",
     ]
 
     PATH = "/crypto/ta/"
@@ -78,7 +85,7 @@ class TechnicalAnalysisController(CryptoBaseController):
         start: datetime,
         interval: str,
         stock: pd.DataFrame,
-        queue: List[str] = None,
+        queue: Optional[List[str]] = None,
     ):
         """Constructor"""
         super().__init__(queue)
@@ -129,23 +136,26 @@ class TechnicalAnalysisController(CryptoBaseController):
         mt.add_raw("\n")
         mt.add_info("_overlap_")
         mt.add_cmd("ema")
-        mt.add_cmd("sma")
-        mt.add_cmd("wma")
         mt.add_cmd("hma")
-        mt.add_cmd("zlma")
+        mt.add_cmd("sma")
         mt.add_cmd("vwap")
+        mt.add_cmd("wma")
+        mt.add_cmd("zlma")
         mt.add_info("_momentum_")
         mt.add_cmd("cci")
+        mt.add_cmd("cg")
+        mt.add_cmd("demark")
+        mt.add_cmd("fisher")
         mt.add_cmd("macd")
         mt.add_cmd("rsi")
         mt.add_cmd("stoch")
-        mt.add_cmd("fisher")
-        mt.add_cmd("cg")
         mt.add_info("_trend_")
         mt.add_cmd("adx")
         mt.add_cmd("aroon")
         mt.add_info("_volatility_")
+        mt.add_cmd("atr")
         mt.add_cmd("bbands")
+        mt.add_cmd("cones")
         mt.add_cmd("donchian")
         mt.add_cmd("kc")
         mt.add_info("_volume_")
@@ -234,6 +244,9 @@ class TechnicalAnalysisController(CryptoBaseController):
                 window=ns_parser.n_length,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -288,6 +301,9 @@ class TechnicalAnalysisController(CryptoBaseController):
                 window=ns_parser.n_length,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -339,6 +355,9 @@ class TechnicalAnalysisController(CryptoBaseController):
                 window=ns_parser.n_length,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -390,6 +409,9 @@ class TechnicalAnalysisController(CryptoBaseController):
                 window=ns_parser.n_length,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -444,6 +466,9 @@ class TechnicalAnalysisController(CryptoBaseController):
                 window=ns_parser.n_length,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -507,6 +532,9 @@ class TechnicalAnalysisController(CryptoBaseController):
                 end_date=ns_parser.end,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -557,6 +585,9 @@ class TechnicalAnalysisController(CryptoBaseController):
                 window=ns_parser.n_length,
                 scalar=ns_parser.n_scalar,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -616,6 +647,9 @@ class TechnicalAnalysisController(CryptoBaseController):
                 n_slow=ns_parser.n_slow,
                 n_signal=ns_parser.n_signal,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -680,6 +714,9 @@ class TechnicalAnalysisController(CryptoBaseController):
                 scalar=ns_parser.n_scalar,
                 drift=ns_parser.n_drift,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -742,6 +779,9 @@ class TechnicalAnalysisController(CryptoBaseController):
                 slowdperiod=ns_parser.n_slowdperiod,
                 slowkperiod=ns_parser.n_slowkperiod,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -783,6 +823,9 @@ class TechnicalAnalysisController(CryptoBaseController):
                 data=self.stock,
                 window=ns_parser.n_length,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -824,6 +867,9 @@ class TechnicalAnalysisController(CryptoBaseController):
                 data=self.stock["Adj Close"],
                 window=ns_parser.n_length,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -885,6 +931,9 @@ class TechnicalAnalysisController(CryptoBaseController):
                 scalar=ns_parser.n_scalar,
                 drift=ns_parser.n_drift,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -942,6 +991,9 @@ class TechnicalAnalysisController(CryptoBaseController):
                 window=ns_parser.n_length,
                 scalar=ns_parser.n_scalar,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -1011,6 +1063,9 @@ class TechnicalAnalysisController(CryptoBaseController):
                 n_std=ns_parser.n_std,
                 mamode=ns_parser.s_mamode,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -1062,6 +1117,9 @@ class TechnicalAnalysisController(CryptoBaseController):
                 upper_length=ns_parser.n_length_upper,
                 lower_length=ns_parser.n_length_lower,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -1135,6 +1193,9 @@ class TechnicalAnalysisController(CryptoBaseController):
                 mamode=ns_parser.s_mamode,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -1174,6 +1235,9 @@ class TechnicalAnalysisController(CryptoBaseController):
                 data=self.stock,
                 use_open=ns_parser.b_use_open,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -1230,6 +1294,9 @@ class TechnicalAnalysisController(CryptoBaseController):
                 fast=ns_parser.n_length_fast,
                 slow=ns_parser.n_length_slow,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -1258,6 +1325,9 @@ class TechnicalAnalysisController(CryptoBaseController):
                 symbol=self.coin,
                 data=self.stock,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -1308,4 +1378,170 @@ class TechnicalAnalysisController(CryptoBaseController):
                 start_date=ns_parser.start,
                 end_date=ns_parser.end,
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )
+
+    @log_start_end(log=logger)
+    def call_demark(self, other_args: List[str]):
+        """Process demark command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="demark",
+            description="Calculates the Demark sequential indicator.",
+        )
+        parser.add_argument(
+            "-m",
+            "--min",
+            help="Minimum value of indicator to show (declutters plot).",
+            dest="min_to_show",
+            type=check_positive,
+            default=5,
+        )
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+        if ns_parser:
+            if not self.coin:
+                no_ticker_message()
+                return
+            momentum_view.display_demark(
+                self.stock,
+                self.coin.upper(),
+                min_to_show=ns_parser.min_to_show,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )
+
+    @log_start_end(log=logger)
+    def call_atr(self, other_args: List[str]):
+        """Process atr command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="atr",
+            description="""
+                Averge True Range is used to measure volatility, especially volatility caused by
+                gaps or limit moves.
+            """,
+        )
+        parser.add_argument(
+            "-l",
+            "--length",
+            action="store",
+            dest="n_length",
+            type=check_positive,
+            default=14,
+            help="Window length",
+        )
+        parser.add_argument(
+            "-m",
+            "--mamode",
+            action="store",
+            dest="s_mamode",
+            default="ema",
+            choices=volatility_model.MAMODES,
+            help="mamode",
+        )
+        parser.add_argument(
+            "-o",
+            "--offset",
+            action="store",
+            dest="n_offset",
+            type=int,
+            default=0,
+            help="offset",
+        )
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+
+        if ns_parser:
+            if not self.coin:
+                no_ticker_message()
+                return
+            volatility_view.display_atr(
+                data=self.stock,
+                symbol=self.coin.upper(),
+                window=ns_parser.n_length,
+                mamode=ns_parser.s_mamode,
+                offset=ns_parser.n_offset,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )
+
+    @log_start_end(log=logger)
+    def call_cones(self, other_args: List[str]):
+        """Process cones command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="cones",
+            description="""
+            Calculates the realized volatility quantiles over rolling windows of time. 
+            The model for calculating volatility is selectable.         
+            """,
+        )
+        parser.add_argument(
+            "-l",
+            "--lower_q",
+            action="store",
+            dest="lower_q",
+            type=float,
+            default=0.25,
+            help="The lower quantile value for calculations.",
+        )
+        parser.add_argument(
+            "-u",
+            "--upper_q",
+            action="store",
+            dest="upper_q",
+            type=float,
+            default=0.75,
+            help="The upper quantile value for calculations.",
+        )
+        parser.add_argument(
+            "-m",
+            "--model",
+            action="store",
+            dest="model",
+            default="STD",
+            choices=volatility_model.VOLATILITY_MODELS,
+            type=str,
+            help="The model used to calculate realized volatility.",
+        )
+        parser.add_argument(
+            "--is_crypto",
+            dest="is_crypto",
+            action="store_false",
+            default=True,
+            help="If True, volatility is calculated for 365 days instead of 252.",
+        )
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+        if ns_parser:
+            if not self.coin:
+                no_ticker_message()
+                return
+
+            volatility_view.display_cones(
+                data=self.stock,
+                symbol=self.coin.upper(),
+                lower_q=ns_parser.lower_q,
+                upper_q=ns_parser.upper_q,
+                model=ns_parser.model,
+                is_crypto=ns_parser.is_crypto,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )

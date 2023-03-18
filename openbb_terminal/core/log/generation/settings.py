@@ -42,12 +42,21 @@ class AppSettings:
     def session_id(self) -> str:
         return self.__session_id
 
+    @property
+    def user_id(self) -> str:
+        return self.__user_id
+
+    @user_id.setter
+    def user_id(self, value: str):
+        self.__user_id = value
+
     def __init__(
         self,
         name: str,
         commit_hash: str,
         session_id: str,
         identifier: str,
+        user_id: str,
     ):
         """
         Args:
@@ -55,12 +64,14 @@ class AppSettings:
             commit_hash (str): Commit hash of the current running code.
             identifier (str): Unique key identifying a particular installation.
             session_id (str): Key identifying a particular running session.
+            user_id (str): Hash identifying a particular user.
         """
 
         self.__name = name
         self.__commit_hash = commit_hash
         self.__identifier = identifier
         self.__session_id = session_id
+        self.__user_id = user_id
 
 
 class LogSettings:

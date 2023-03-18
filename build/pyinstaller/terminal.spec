@@ -1,18 +1,15 @@
 # -*- mode: python ; coding: utf-8 -*-
 import os
-import pathlib
 import subprocess
+import sys
+from pathlib import Path
+
 import scipy
-
 from dotenv import set_key
-
-from PyInstaller.compat import is_darwin, is_win
-from PyInstaller.building.api import PYZ, EXE, COLLECT
-from PyInstaller.building.splash import Splash
+from PyInstaller.building.api import COLLECT, EXE, PYZ
 from PyInstaller.building.build_main import Analysis
-
-
-# import subprocess
+from PyInstaller.building.splash import Splash
+from PyInstaller.compat import is_darwin, is_win
 
 from openbb_terminal.loggers import get_commit_hash
 
@@ -23,21 +20,30 @@ build_type = (
 )
 
 # Local python environment packages folder
-pathex = os.path.join(os.path.dirname(os.__file__), "site-packages")
+venv_path = Path(sys.executable).parent.parent.resolve()
+
+# Check if we are running in a conda environment
+if is_darwin:
+    pathex = os.path.join(os.path.dirname(os.__file__), "site-packages")
+else:
+    if "site-packages" in list(venv_path.iterdir()):
+        pathex = str(venv_path / "site-packages")
+    else:
+        pathex = str(venv_path / "lib" / "site-packages")
+
 
 # Removing unused ARM64 binary
-binary_to_remove = pathlib.Path(
-    os.path.join(pathex, "_scs_direct.cpython-39-darwin.so")
-)
+binary_to_remove = Path(os.path.join(pathex, "_scs_direct.cpython-39-darwin.so"))
 print("Removing ARM64 Binary: _scs_direct.cpython-39-darwin.so")
 binary_to_remove.unlink(missing_ok=True)
+build_assets_folder = os.path.join(os.getcwd(), "build", "pyinstaller")
 
 # Removing inspect hook
-destination = pathlib.Path(
+destination = Path(
     os.path.join(pathex, "pyinstaller/hooks/rthooks", "pyi_rth_inspect.py")
 )
 print("Replacing Pyinstaller Hook: pyi_rth_inspect.py")
-source = "build/pyinstaller/hooks/pyi_rth_inspect.py"
+source = os.path.join(build_assets_folder, "hooks", "pyi_rth_inspect.py")
 subprocess.run(["cp", source, str(destination)], check=True)
 
 
@@ -54,7 +60,8 @@ added_files = [
     (os.path.join(pathex, "user_agent"), "user_agent"),
     (os.path.join(pathex, "vaderSentiment"), "vaderSentiment"),
     (os.path.join(pathex, "prophet"), "prophet"),
-    (os.path.join(pathex, "frozendict", "VERSION"), "frozendict"),
+    (os.path.join(pathex, "whisper"), "whisper"),
+    (os.path.join(pathex, "transformers"), "transformers"),
     (
         os.path.join(pathex, "linearmodels", "datasets"),
         os.path.join("linearmodels", "datasets"),
@@ -62,10 +69,6 @@ added_files = [
     (
         os.path.join(pathex, "statsmodels", "datasets"),
         os.path.join("statsmodels", "datasets"),
-    ),
-    (
-        os.path.join(pathex, "investpy", "resources"),
-        os.path.join("investpy", "resources"),
     ),
     (
         os.path.join(pathex, "debugpy", "_vendored"),
@@ -76,9 +79,14 @@ added_files = [
     (os.path.join(pathex, "blib2to3", "PatternGrammar.txt"), "blib2to3"),
 ]
 if is_win:
-    added_files.append(
+    added_files.extend(
+        [
             (os.path.join(f"{os.path.dirname(scipy.__file__)}.libs"), "scipy.libs/"),
-        )
+            (os.path.join(pathex, "frozendict", "version.py"), "frozendict"),
+        ]
+    )
+
+
 # Python libraries that are explicitly pulled into the bundle
 hidden_imports = [
     "sklearn.utils._cython_blas",
@@ -96,16 +104,20 @@ hidden_imports = [
     "statsmodels",
     "user_agent",
     "vaderSentiment",
-    "frozendict",
-    "textwrap3",
-    "pyEX",
     "feedparser",
     "_sysconfigdata__darwin_darwin",
     "prophet",
     "debugpy",
-    "scipy.sparse.linalg._isolve._iterative"
+    "scipy.sparse.linalg._isolve._iterative",
+    "whisper",
+    "transformers",
+    "yt_dlp",
+    "textwrap3",
 ]
 
+
+if is_win:
+    hidden_imports.append("frozendict")
 
 analysis_kwargs = dict(
     scripts=[os.path.join(os.getcwd(), "terminal.py")],

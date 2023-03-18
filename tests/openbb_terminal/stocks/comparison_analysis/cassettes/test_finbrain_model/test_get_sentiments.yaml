@@ -9,37 +9,37 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - python-requests/2.26.0
+      - python-requests/2.28.1
     method: GET
     uri: https://api.finbrain.tech/v0/sentiments/TSLA
   response:
     body:
-      string: '{"ticker":"TSLA","name":"Tesla Inc.","sentimentAnalysis":{"2021-12-20":"0.169","2021-12-17":"-0.14","2021-12-16":"0.049","2021-12-15":"-0.073","2021-12-14":"0.03","2021-12-13":"0.135","2021-12-10":"0.05","2021-12-09":"0.15","2021-12-08":"0.333","2021-12-07":"0.068"}}'
+      string: '{"ticker":"TSLA","name":"Tesla Inc.","sentimentAnalysis":{"2023-01-23":"-0.115","2023-01-20":"-0.087","2023-01-19":"-0.261","2023-01-18":"-0.105","2023-01-17":"0.088","2023-01-16":"0.039","2023-01-13":"-0.131","2023-01-12":"0.06","2023-01-11":"-0.166","2023-01-10":"-0.021"}}'
     headers:
       Connection:
       - keep-alive
       Content-Length:
-      - '267'
+      - '275'
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Mon, 20 Dec 2021 17:15:22 GMT
+      - Mon, 23 Jan 2023 14:40:05 GMT
       X-Amzn-Trace-Id:
-      - Root=1-61c0ba2a-622c00de3606396b5bb5f061;Sampled=0
+      - Root=1-63ce9c45-71dc4a555df5b8e55a25e507;Sampled=0
       access-control-allow-origin:
       - '*'
       etag:
-      - W/"10b-1o2byEDRNuryxKM+Mm/8tWR1vqE"
+      - W/"113-2PSDM9iL+VGIMpGQPcTfsnBZ1ro"
       x-amz-apigw-id:
-      - KqIGtGJCoAMFn9w=
+      - fM1a5E5LIAMFQfw=
       x-amzn-Remapped-connection:
       - close
       x-amzn-Remapped-content-length:
-      - '267'
+      - '275'
       x-amzn-Remapped-date:
-      - Mon, 20 Dec 2021 17:15:22 GMT
+      - Mon, 23 Jan 2023 14:40:05 GMT
       x-amzn-RequestId:
-      - a813c43d-8574-48fa-827b-672c833eeb4e
+      - 770f2eda-2ba6-44f5-a26d-9ac980787b68
       x-powered-by:
       - Express
     status:

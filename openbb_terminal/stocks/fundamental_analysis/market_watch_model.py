@@ -7,14 +7,14 @@ from typing import List, Tuple
 
 import numpy as np
 import pandas as pd
-import requests
 from bs4 import BeautifulSoup
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
-    lambda_clean_data_values_to_float,
     get_user_agent,
+    lambda_clean_data_values_to_float,
     lambda_int_or_round_float,
+    request,
 )
 
 logger = logging.getLogger(__name__)
@@ -63,13 +63,10 @@ def prepare_df_financials(
     if statement not in financial_urls:
         raise ValueError(f"type {statement} is not in {financial_urls.keys()}")
 
-    if quarter:
-        period = "quarter"
-    else:
-        period = "annual"
+    period = "quarter" if quarter else "annual"
 
     text_soup_financials = BeautifulSoup(
-        requests.get(
+        request(
             financial_urls[statement][period].format(symbol),
             headers={"User-Agent": get_user_agent()},
         ).text,
@@ -161,7 +158,7 @@ def get_sean_seah_warnings(
         f"https://www.marketwatch.com/investing/stock/{symbol}/financials/income"
     )
     text_soup_financials = BeautifulSoup(
-        requests.get(url_financials, headers={"User-Agent": get_user_agent()}).text,
+        request(url_financials, headers={"User-Agent": get_user_agent()}).text,
         "lxml",
     )
 
@@ -209,7 +206,7 @@ def get_sean_seah_warnings(
         f"https://www.marketwatch.com/investing/stock/{symbol}/financials/balance-sheet"
     )
     text_soup_financials = BeautifulSoup(
-        requests.get(url_financials, headers={"User-Agent": get_user_agent()}).text,
+        request(url_financials, headers={"User-Agent": get_user_agent()}).text,
         "lxml",
     )
 

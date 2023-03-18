@@ -5,19 +5,24 @@ __docformat__ = "numpy"
 
 import argparse
 import logging
-from typing import Dict, List
+from typing import Dict, List, Optional
 
-from tqdm import tqdm
-
-from openbb_terminal import feature_flags as obbff, keys_view
-from openbb_terminal import keys_model
-from openbb_terminal.core.config.paths import USER_ENV_FILE
+from openbb_terminal import (
+    feature_flags as obbff,
+    keys_model,
+    keys_view,
+)
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import EXPORT_ONLY_RAW_DATA_ALLOWED
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console, MenuText, translate
+from openbb_terminal.rich_config import (
+    MenuText,
+    console,
+    optional_rich_track,
+    translate,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -33,25 +38,29 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
 
     def __init__(
         self,
-        queue: List[str] = None,
+        queue: Optional[List[str]] = None,
         menu_usage: bool = True,
-        env_file: str = str(USER_ENV_FILE),
     ):
         """Constructor"""
         super().__init__(queue)
-        self.env_file = env_file
-        if menu_usage:
-            if session and obbff.USE_PROMPT_TOOLKIT:
-                choices: dict = {c: {} for c in self.controller_choices}
+        if menu_usage and session and obbff.USE_PROMPT_TOOLKIT:
+            choices: dict = {c: {} for c in self.controller_choices}
 
-                choices["support"] = self.SUPPORT_CHOICES
+            choices["support"] = self.SUPPORT_CHOICES
 
-                self.completer = NestedCompleter.from_nested_dict(choices)
+            self.completer = NestedCompleter.from_nested_dict(choices)
 
     def check_keys_status(self) -> None:
         """Check keys status"""
-        for api in tqdm(self.API_LIST, desc="Checking keys status"):
-            self.status_dict[api] = getattr(keys_model, "check_" + str(api) + "_key")()
+        for api in optional_rich_track(self.API_LIST, desc="Checking keys status"):
+            if api == "openbb":
+                self.status_dict[api] = getattr(
+                    keys_model, "check_" + str(api) + "_personal_access_token"
+                )()
+            else:
+                self.status_dict[api] = getattr(
+                    keys_model, "check_" + str(api) + "_key"
+                )()
 
     def print_help(self):
         """Print help"""
@@ -107,7 +116,13 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         )
 
         if ns_parser:
-            keys_view.display_keys(show=ns_parser.show, export=ns_parser.export)
+            keys_view.display_keys(
+                show=ns_parser.show,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )
 
     @log_start_end(log=logger)
     def call_av(self, other_args: List[str]):
@@ -127,7 +142,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         )
         if not other_args:
             console.print(
-                "For your API Key, visit: https://www.alphavantage.co/support/#api-key\n"
+                "For your API Key, visit: https://www.alphavantage.co/support/#api-key"
             )
             return
 
@@ -156,9 +171,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             help="key",
         )
         if not other_args:
-            console.print(
-                "For your API Key, visit: https://financialmodelingprep.com\n"
-            )
+            console.print("For your API Key, visit: https://financialmodelingprep.com")
             return
 
         if other_args and "-" not in other_args[0][0]:
@@ -186,7 +199,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             help="key",
         )
         if not other_args:
-            console.print("For your API Key, visit: https://www.quandl.com\n")
+            console.print("For your API Key, visit: https://www.quandl.com")
             return
 
         if other_args and "-" not in other_args[0][0]:
@@ -214,7 +227,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             help="key",
         )
         if not other_args:
-            console.print("For your API Key, visit: https://polygon.io\n")
+            console.print("For your API Key, visit: https://polygon.io")
             return
 
         if other_args and "-" not in other_args[0][0]:
@@ -222,6 +235,36 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
             self.status_dict["polygon"] = keys_model.set_polygon_key(
+                key=ns_parser.key, persist=True, show_output=True
+            )
+
+    @log_start_end(log=logger)
+    def call_intrinio(self, other_args: List[str]):
+        """Process polygon command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="intrinio",
+            description="Set Intrinio API key.",
+        )
+        parser.add_argument(
+            "-k",
+            "--key",
+            type=str,
+            dest="key",
+            help="key",
+        )
+        if not other_args:
+            console.print(
+                "For your API Key, sign up for a subscription: https://intrinio.com/starter-plan\n"
+            )
+            return
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-k")
+        ns_parser = self.parse_simple_args(parser, other_args)
+        if ns_parser:
+            self.status_dict["intrinio"] = keys_model.set_intrinio_key(
                 key=ns_parser.key, persist=True, show_output=True
             )
 
@@ -242,7 +285,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             help="key",
         )
         if not other_args:
-            console.print("For your API Key, visit: https://fred.stlouisfed.org\n")
+            console.print("For your API Key, visit: https://fred.stlouisfed.org")
             return
 
         if other_args and "-" not in other_args[0][0]:
@@ -270,7 +313,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             help="key",
         )
         if not other_args:
-            console.print("For your API Key, visit: https://newsapi.org\n")
+            console.print("For your API Key, visit: https://newsapi.org")
             return
 
         if other_args and "-" not in other_args[0][0]:
@@ -298,7 +341,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             help="key",
         )
         if not other_args:
-            console.print("For your API Key, visit: https://developer.tradier.com\n")
+            console.print("For your API Key, visit: https://developer.tradier.com")
             return
 
         if other_args and "-" not in other_args[0][0]:
@@ -326,7 +369,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             help="key",
         )
         if not other_args:
-            console.print("For your API Key, visit: https://coinmarketcap.com\n")
+            console.print("For your API Key, visit: https://coinmarketcap.com")
             return
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-k")
@@ -353,40 +396,13 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             help="key",
         )
         if not other_args:
-            console.print("For your API Key, visit: https://finnhub.io\n")
+            console.print("For your API Key, visit: https://finnhub.io")
             return
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-k")
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
             self.status_dict["finnhub"] = keys_model.set_finnhub_key(
-                key=ns_parser.key, persist=True, show_output=True
-            )
-
-    @log_start_end(log=logger)
-    def call_iex(self, other_args: List[str]):
-        """Process iex command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="iex",
-            description="Set IEX Cloud API key.",
-        )
-        parser.add_argument(
-            "-k",
-            "--key",
-            type=str,
-            dest="key",
-            help="key",
-        )
-        if not other_args:
-            console.print("For your API Key, visit: https://iexcloud.io\n")
-            return
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-k")
-        ns_parser = self.parse_simple_args(parser, other_args)
-        if ns_parser:
-            self.status_dict["iex"] = keys_model.set_iex_key(
                 key=ns_parser.key, persist=True, show_output=True
             )
 
@@ -441,11 +457,10 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             nargs="+",
         )
         if not other_args:
-            console.print("For your API Key, visit: https://www.reddit.com\n")
+            console.print("For your API Key, visit: https://www.reddit.com")
             return
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
-
             slash_components = "".join([f"/{val}" for val in self.queue])
             useragent = " ".join(ns_parser.user_agent) + " " + slash_components
             useragent = useragent.replace('"', "")
@@ -495,13 +510,11 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             required="-h" not in other_args,
         )
         if not other_args:
-            console.print("For your API Key, visit: https://developer.twitter.com\n")
+            console.print("For your API Key, visit: https://developer.twitter.com")
             return
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
             self.status_dict["twitter"] = keys_model.set_twitter_key(
-                key=ns_parser.key,
-                secret=ns_parser.secret,
                 access_token=ns_parser.token,
                 persist=True,
                 show_output=True,
@@ -531,7 +544,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             help="password",
         )
         if not other_args:
-            console.print("For your API Key, visit: https://robinhood.com/us/en/\n")
+            console.print("For your API Key, visit: https://robinhood.com/us/en/")
             return
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
@@ -576,7 +589,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             default="",
         )
         if not other_args:
-            console.print("For your API Key, visit: https://www.degiro.fr\n")
+            console.print("For your API Key, visit: https://www.degiro.fr")
             return
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
@@ -619,7 +632,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             help="account type ('live' or 'practice')",
         )
         if not other_args:
-            console.print("For your API Key, visit: https://developer.oanda.com\n")
+            console.print("For your API Key, visit: https://developer.oanda.com")
             return
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
@@ -657,7 +670,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             required="-h" not in other_args,
         )
         if not other_args:
-            console.print("For your API Key, visit: https://binance.com\n")
+            console.print("For your API Key, visit: https://binance.com")
             return
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
@@ -685,40 +698,13 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             help="key",
         )
         if not other_args:
-            console.print("For your API Key, visit: https://bitquery.io/\n")
+            console.print("For your API Key, visit: https://bitquery.io/")
             return
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-k")
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
             self.status_dict["bitquery"] = keys_model.set_bitquery_key(
-                key=ns_parser.key, persist=True, show_output=True
-            )
-
-    @log_start_end(log=logger)
-    def call_si(self, other_args: List[str]):
-        """Process si command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="si",
-            description="Set Sentiment Investor API key.",
-        )
-        parser.add_argument(
-            "-k",
-            "--key",
-            type=str,
-            dest="key",
-            help="key",
-        )
-        if not other_args:
-            console.print("For your API Key, visit: https://sentimentinvestor.com\n")
-            return
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-k")
-        ns_parser = self.parse_simple_args(parser, other_args)
-        if ns_parser:
-            self.status_dict["si"] = keys_model.set_si_key(
                 key=ns_parser.key, persist=True, show_output=True
             )
 
@@ -756,7 +742,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             required="-h" not in other_args,
         )
         if not other_args:
-            console.print("For your API Key, visit: https://docs.pro.coinbase.com/\n")
+            console.print("For your API Key, visit: https://docs.pro.coinbase.com/")
             return
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
@@ -785,7 +771,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             help="key",
         )
         if not other_args:
-            console.print("For your API Key, visit: https://docs.whale-alert.io/\n")
+            console.print("For your API Key, visit: https://docs.whale-alert.io/")
             return
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-k")
@@ -813,7 +799,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         )
         if not other_args:
             console.print(
-                "For your API Key, visit: https://docs.glassnode.com/basic-api/api-key#how-to-get-an-api-key/\n"
+                "For your API Key, visit: https://docs.glassnode.com/basic-api/api-key#how-to-get-an-api-key/"
             )
             return
         if other_args and "-" not in other_args[0][0]:
@@ -842,7 +828,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         )
         if not other_args:
             console.print(
-                "For your API Key, visit: https://coinglass.github.io/API-Reference/#api-key\n"
+                "For your API Key, visit: https://coinglass.github.io/API-Reference/#api-key"
             )
             return
         if other_args and "-" not in other_args[0][0]:
@@ -871,7 +857,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         )
         if not other_args:
             console.print(
-                "For your API Key, visit: https://cryptopanic.com/developers/api/\n"
+                "For your API Key, visit: https://cryptopanic.com/developers/api/"
             )
             return
         if other_args and "-" not in other_args[0][0]:
@@ -900,7 +886,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         )
         if not other_args:
             console.print(
-                "For your API Key, visit: https://github.com/EverexIO/Ethplorer/wiki/Ethplorer-API\n"
+                "For your API Key, visit: https://github.com/EverexIO/Ethplorer/wiki/Ethplorer-API"
             )
             return
         if other_args and "-" not in other_args[0][0]:
@@ -937,7 +923,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             required="-h" not in other_args,
         )
         if not other_args:
-            console.print("For your API Key, visit: https://www.smartstake.io\n")
+            console.print("For your API Key, visit: https://www.smartstake.io")
             return
         ns_parser = self.parse_simple_args(parser, other_args)
 
@@ -967,7 +953,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         )
         if not other_args:
             console.print(
-                "For your API Key, visit: https://docs.github.com/en/rest/guides/getting-started-with-the-rest-api\n"
+                "For your API Key, visit: https://docs.github.com/en/rest/guides/getting-started-with-the-rest-api"
             )
             return
 
@@ -996,7 +982,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             help="key",
         )
         if not other_args:
-            console.print("For your API Key, visit: https://messari.io/api/docs\n")
+            console.print("For your API Key, visit: https://messari.io/api/docs")
             return
 
         if other_args and "-" not in other_args[0][0]:
@@ -1025,7 +1011,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         )
         if not other_args:
             console.print(
-                "For your API Key, visit: https://eodhistoricaldata.com/r/?ref=869U7F4J\n"
+                "For your API Key, visit: https://eodhistoricaldata.com/r/?ref=869U7F4J"
             )
             return
         if other_args and "-" not in other_args[0][0]:
@@ -1055,7 +1041,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         if not other_args:
             console.print(
                 "For your API Key, visit: "
-                "https://academy.santiment.net/products-and-plans/create-an-api-key\n"
+                "https://academy.santiment.net/products-and-plans/create-an-api-key"
             )
             return
         if other_args and "-" not in other_args[0][0]:
@@ -1084,7 +1070,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         )
         if not other_args:
             console.print(
-                "For your API Key, visit: https://sdk.flipsidecrypto.xyz/shroomdk\n"
+                "For your API Key, visit: https://sdk.flipsidecrypto.xyz/shroomdk"
             )
             return
 
@@ -1113,7 +1099,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             help="key",
         )
         if not other_args:
-            console.print("For your API Key, visit: https://tokenterminal.com/\n")
+            console.print("For your API Key, visit: https://tokenterminal.com/")
             return
 
         if other_args and "-" not in other_args[0][0]:
@@ -1142,7 +1128,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         )
         if not other_args:
             console.print(
-                "For your API Key, https://stocksera.pythonanywhere.com/accounts/developers\n"
+                "For your API Key, https://stocksera.pythonanywhere.com/accounts/developers"
             )
             return
 
@@ -1151,5 +1137,61 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
             self.status_dict["stocksera"] = keys_model.set_stocksera_key(
+                key=ns_parser.key, persist=True, show_output=True
+            )
+
+    @log_start_end(log=logger)
+    def call_databento(self, other_args: List[str]):
+        """Process databento command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="databento",
+            description="Set DataBento API key.",
+        )
+        parser.add_argument(
+            "-k",
+            "--key",
+            type=str,
+            dest="key",
+            help="key",
+        )
+        if not other_args:
+            console.print("For your API Key, https://databento.com")
+            return
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-k")
+        ns_parser = self.parse_simple_args(parser, other_args)
+        if ns_parser:
+            self.status_dict["databento"] = keys_model.set_databento_key(
+                key=ns_parser.key, persist=True, show_output=True
+            )
+
+    @log_start_end(log=logger)
+    def call_openbb(self, other_args: List[str]):
+        """Process openbb command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="openbb",
+            description="Set OpenBB Personal Access Token. ",
+        )
+        parser.add_argument(
+            "-k",
+            "--key",
+            type=str,
+            dest="key",
+            help="key",
+        )
+        if not other_args:
+            console.print("For your Personal Access Token, visit: https://openbb.co/")
+            return
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-k")
+        ns_parser = self.parse_simple_args(parser, other_args)
+        if ns_parser:
+            self.status_dict["openbb"] = keys_model.set_openbb_personal_access_token(
                 key=ns_parser.key, persist=True, show_output=True
             )

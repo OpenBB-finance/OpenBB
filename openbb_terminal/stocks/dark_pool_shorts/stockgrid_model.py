@@ -2,13 +2,13 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import List, Tuple
 from json import JSONDecodeError
+from typing import List, Tuple
 
 import pandas as pd
-import requests
 
 from openbb_terminal.decorators import log_start_end
+from openbb_terminal.helper_funcs import request
 
 logger = logging.getLogger(__name__)
 # pylint: disable=unsupported-assignment-operation
@@ -46,14 +46,11 @@ def get_dark_pool_short_positions(
 
     field = d_fields_endpoints[sortby]
 
-    if ascend:
-        order = "asc"
-    else:
-        order = "desc"
+    order = "asc" if ascend else "desc"
 
     link = f"https://stockgridapp.herokuapp.com/get_dark_pool_data?top={field}&minmax={order}"
 
-    response = requests.get(link)
+    response = request(link)
     df = pd.DataFrame(response.json()["data"])
 
     df = df[
@@ -88,7 +85,7 @@ def get_short_interest_days_to_cover(sortby: str = "float") -> pd.DataFrame:
         Short interest and days to cover data
     """
     link = "https://stockgridapp.herokuapp.com/get_short_interest?top=days"
-    r = requests.get(link)
+    r = request(link)
     df = pd.DataFrame(r.json()["data"])
 
     d_fields = {
@@ -132,7 +129,7 @@ def get_short_interest_volume(symbol: str) -> Tuple[pd.DataFrame, List]:
         Short interest volume data, Price data
     """
     link = f"https://stockgridapp.herokuapp.com/get_dark_pool_individual_data?ticker={symbol}"
-    response = requests.get(link)
+    response = request(link)
     try:
         response_json = response.json()
     except JSONDecodeError:
@@ -176,7 +173,7 @@ def get_net_short_position(symbol: str) -> pd.DataFrame:
         Net short position
     """
     link = f"https://stockgridapp.herokuapp.com/get_dark_pool_individual_data?ticker={symbol}"
-    response = requests.get(link)
+    response = request(link)
 
     try:
         df = pd.DataFrame(response.json()["individual_dark_pool_position_data"])

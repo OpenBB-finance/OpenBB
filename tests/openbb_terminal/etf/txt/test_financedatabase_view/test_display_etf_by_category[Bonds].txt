@@ -1,0 +1,7 @@
+                                                 name   family category_group category
+symbol                                                                                
+ADFI                 Anfield Dynamic Fixed Income ETF  Anfield   Fixed Income    Bonds
+NFLT            Virtus Newfleet Multi-Sector Bond ETF   Virtus   Fixed Income    Bonds
+NUAG    Nuveen Enhanced Yield U.S. Aggregate Bond ETF   Nuveen   Fixed Income    Bonds
+NUBD               Nuveen ESG U.S. Aggregate Bond ETF   Nuveen   Fixed Income    Bonds
+NUHY         Nuveen ESG High Yield Corporate Bond ETF   Nuveen   Fixed Income    Bonds

@@ -62,7 +62,6 @@ const config = {
         sidebarPath: require.resolve("./sidebars.js"),
       },
     ],
-    require.resolve("@cmfcmf/docusaurus-search-local"),
   ],
   presets: [
     [
@@ -78,10 +77,6 @@ const config = {
         },
         theme: {
           customCss: require.resolve("./src/css/custom.css"),
-        },
-        gtag: {
-          trackingID: "G-YN9SL785J6",
-          anonymizeIP: true,
         },
       }),
     ],
@@ -99,6 +94,12 @@ const config = {
         defaultMode: "dark",
         disableSwitch: false,
         respectPrefersColorScheme: false,
+      },
+      algolia: {
+        appId: "7D1HQ0IXAS",
+        apiKey: "a2e289977b4b663ed9cf3d4635a438fd",
+        indexName: "openbbterminal",
+        contextualSearch: false,
       },
     }),
 };

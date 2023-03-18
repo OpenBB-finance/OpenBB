@@ -1,5 +1,7 @@
-                                                         long_name          family                   category total_assets
-IAT                                iShares U.S. Regional Banks ETF         iShares                  Financial   443.543616
-DPST                  Direxion Daily Regional Banks Bull 3X Shares  Direxion Funds  Trading--Leveraged Equity   363.291776
-BNKU           MicroSectors U.S. Big Banks Index 3X Leveraged ETNs    Microsectors  Trading--Leveraged Equity    86.868064
-BNKD  MicroSectors U.S. Big Banks Index -3X Inverse Leveraged ETNs    Microsectors    Trading--Inverse Equity     8.537872
+                                                                name                      family category_group    category
+symbol                                                                                                                     
+BNKD    MicroSectors U.S. Big Banks Index -3X Inverse Leveraged ETNs                Microsectors       Equities     Trading
+BNKU             MicroSectors U.S. Big Banks Index 3X Leveraged ETNs                Microsectors       Equities     Trading
+DPST                    Direxion Daily Regional Banks Bull 3X Shares              Direxion Funds       Equities     Trading
+IAT                                  iShares U.S. Regional Banks ETF  BlackRock Asset Management       Equities  Financials
+BNKSF                                ISHARES V PLC S&P US BANKS UCIT                         NaN            NaN         NaN

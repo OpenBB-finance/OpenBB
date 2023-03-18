@@ -1,7 +1,6 @@
-                                                Price   Chg  %Chg     Vol
-0                      SPDR S&P 500 ETF Trust  451.75 -4.74 -1.04  109.1M
-1                      ProShares UltraPro QQQ   64.37 -2.32 -3.48   91.2M
-2            Financial Select Sector SPDR ETF   39.25 -0.67 -1.68   85.9M
-3                  Invesco QQQ Trust Series I  366.48 -4.07 -1.10   81.4M
-4  ProShares Ultra VIX Short-Term Futures ETF   14.20  0.52  3.80   80.2M
-
+                                                  Price     Chg   %Chg    Vol
+0                       ProShares UltraPro QQQ  23.1700  0.8000   3.58  22.5M
+1                 ProShares UltraPro Short QQQ  37.4300 -1.4100  -3.63  19.1M
+2  Direxion Daily Semiconductor Bull 3X Shares  15.1804  1.3504   9.76  18.1M
+3        ProShares Ultra Bloomberg Natural Gas   5.2400  0.3800   7.82  17.5M
+4  Direxion Daily Semiconductor Bear 3X Shares  21.2350 -2.4150 -10.21  11.2M

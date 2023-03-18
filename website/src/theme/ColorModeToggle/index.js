@@ -17,19 +17,19 @@ function ColorModeToggle({ className, value, onChange }) {
       mode:
         value === "dark"
           ? translate({
-            message: "dark mode",
-            id: "theme.colorToggle.ariaLabel.mode.dark",
-            description: "The name for the dark color mode",
-          })
+              message: "dark mode",
+              id: "theme.colorToggle.ariaLabel.mode.dark",
+              description: "The name for the dark color mode",
+            })
           : translate({
-            message: "light mode",
-            id: "theme.colorToggle.ariaLabel.mode.light",
-            description: "The name for the light color mode",
-          }),
+              message: "light mode",
+              id: "theme.colorToggle.ariaLabel.mode.light",
+              description: "The name for the light color mode",
+            }),
     }
   );
   return (
-    <div className="flex gap-4 ml-4 md:ml-0">
+    <div className="flex gap-4 mr-12 md:mr-0">
       <PopoverPrimitive.Root>
         <PopoverPrimitive.Trigger className="bg-grey-900 radix-state-open:text-white hover:border-grey-200 hover:text-grey-200 radix-state-open:border-white border -mt-[0.6px] h-[34px] w-[34px] text-grey-400 border-grey-400 rounded flex items-center justify-center">
           {value !== "dark" ? (

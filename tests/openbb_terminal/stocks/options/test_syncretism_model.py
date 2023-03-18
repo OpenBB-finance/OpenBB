@@ -38,7 +38,10 @@ def test_get_historical_greeks(put, recorder):
 def test_get_historical_greeks_invalid_status(mocker):
     mock_response = requests.Response()
     mock_response.status_code = 400
-    mocker.patch(target="requests.get", new=mocker.Mock(return_value=mock_response))
+    mocker.patch(
+        target="openbb_terminal.helper_funcs.requests.get",
+        new=mocker.Mock(return_value=mock_response),
+    )
 
     result_df = syncretism_model.get_historical_greeks(
         symbol="PM",
@@ -53,9 +56,8 @@ def test_get_historical_greeks_invalid_status(mocker):
 
 @pytest.mark.vcr
 def test_get_screener_output(recorder):
-
     result_tuple = syncretism_model.get_screener_output(
-        preset="high_IV.ini",
+        preset="high_iv.ini",
     )
     recorder.capture(result_tuple[0])
 
@@ -64,10 +66,21 @@ def test_get_screener_output(recorder):
 def test_get_screener_output_invalid_status(mocker):
     mock_response = requests.Response()
     mock_response.status_code = 400
-    mocker.patch(target="requests.get", new=mocker.Mock(return_value=mock_response))
+    mocker.patch(
+        target="openbb_terminal.helper_funcs.requests.get",
+        new=mocker.Mock(return_value=mock_response),
+    )
 
     result_tuple = syncretism_model.get_screener_output(
-        preset="high_IV.ini",
+        preset="high_iv.ini",
     )
 
     assert result_tuple[0].empty
+
+
+@pytest.mark.vcr
+def test_get_screener_output_30_delta_spy(recorder):
+    result_tuple = syncretism_model.get_screener_output(
+        preset="30_delta_spy.ini",
+    )
+    recorder.capture(result_tuple[0])

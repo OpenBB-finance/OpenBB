@@ -3,9 +3,10 @@
 # IMPORTATION THIRDPARTY
 import pytest
 
+from openbb_terminal import helper_funcs
+
 # IMPORTATION INTERNAL
 from openbb_terminal.etf import financedatabase_view
-from openbb_terminal import helper_funcs
 
 
 @pytest.fixture(scope="module")
@@ -46,8 +47,8 @@ def test_display_etf_by_description(description, mocker):
 @pytest.mark.parametrize(
     "category",
     [
-        "Bank Loan",
-        "Bear Market",
+        "Bonds",
+        "Materials",
     ],
 )
 def test_display_etf_by_category(category, mocker):

@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 # pylint: disable=C0301,C0302,R0902,global-statement,too-many-boolean-expressions
 
+# IMPORTS STANDARD
 import argparse
 import difflib
 import json
@@ -11,23 +12,26 @@ import os
 import re
 from abc import ABCMeta, abstractmethod
 from datetime import datetime, timedelta
-from typing import Any, Dict, List, Union
+from typing import Any, Dict, List, Optional, Union
 
+# IMPORTS THIRDPARTY
 import numpy as np
 import pandas as pd
 from prompt_toolkit.formatted_text import HTML
 from prompt_toolkit.styles import Style
 from rich.markdown import Markdown
 
+# IMPORTS INTERNAL
+from openbb_terminal import feature_flags as obbff
+from openbb_terminal.config_terminal import theme
+from openbb_terminal.core.completer.choices import build_controller_choice_map
 from openbb_terminal.core.config.paths import (
     USER_CUSTOM_IMPORTS_DIRECTORY,
     USER_ROUTINES_DIRECTORY,
 )
-from openbb_terminal.decorators import log_start_end
+from openbb_terminal.cryptocurrency import cryptocurrency_helpers
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
-from openbb_terminal.menu import session
-from openbb_terminal import feature_flags as obbff
-from openbb_terminal.config_terminal import theme
+from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     check_file_type_saved,
     check_positive,
@@ -40,15 +44,18 @@ from openbb_terminal.helper_funcs import (
     set_command_location,
     support_message,
     system_clear,
+    update_news_from_tweet_to_be_displayed,
     valid_date,
 )
+from openbb_terminal.menu import session
 from openbb_terminal.rich_config import console, get_ordered_list_sources
+from openbb_terminal.session.user import User
 from openbb_terminal.stocks import stocks_helper
-from openbb_terminal.terminal_helper import open_openbb_documentation
-from openbb_terminal.cryptocurrency import cryptocurrency_helpers
-from openbb_terminal.core.completer.choices import build_controller_choice_map
+from openbb_terminal.terminal_helper import is_auth_enabled, open_openbb_documentation
 
 logger = logging.getLogger(__name__)
+
+# pylint: disable=R0912
 
 NO_EXPORT = 0
 EXPORT_ONLY_RAW_DATA_ALLOWED = 1
@@ -96,10 +103,14 @@ class BaseController(metaclass=ABCMeta):
         "screenshot",
     ]
 
+    if is_auth_enabled():
+        CHOICES_COMMON += ["whoami"]
+
     CHOICES_COMMANDS: List[str] = []
     CHOICES_MENUS: List[str] = []
     SUPPORT_CHOICES: dict = {}
     ABOUT_CHOICES: dict = {}
+    NEWS_CHOICES: dict = {}
     COMMAND_SEPARATOR = "/"
     KEYS_MENU = "keys" + COMMAND_SEPARATOR
     TRY_RELOAD = False
@@ -109,14 +120,15 @@ class BaseController(metaclass=ABCMeta):
 
     @property
     def choices_default(self):
-        if self.CHOICES_GENERATION:
-            choices = build_controller_choice_map(controller=self)
-        else:
-            choices = {}
+        choices = (
+            build_controller_choice_map(controller=self)
+            if self.CHOICES_GENERATION
+            else {}
+        )
 
         return choices
 
-    def __init__(self, queue: List[str] = None) -> None:
+    def __init__(self, queue: Optional[List[str]] = None) -> None:
         """Create the base class for any controller in the codebase.
 
         Used to simplify the creation of menus.
@@ -160,6 +172,7 @@ class BaseController(metaclass=ABCMeta):
             c for c in self.controller_choices if c not in self.CHOICES_COMMON
         ]
 
+        # Add in support options
         support_choices: dict = {c: {} for c in self.controller_choices}
 
         support_choices = {c: None for c in (["generic"] + self.support_commands)}
@@ -173,6 +186,10 @@ class BaseController(metaclass=ABCMeta):
         support_choices["--type"] = {c: None for c in (SUPPORT_TYPE)}
 
         self.SUPPORT_CHOICES = support_choices
+
+        # Add in news options
+        news_choices = ["--term", "-t", "--sources", "-s", "--help", "-h"]
+        self.NEWS_CHOICES = {c: None for c in news_choices}
 
     def check_path(self) -> None:
         """Check if command path is valid."""
@@ -211,6 +228,15 @@ class BaseController(metaclass=ABCMeta):
             old_class.load(*args[:-1], **kwargs)
             return old_class.menu()
         if class_ins.PATH in controllers and arguments == 1 and obbff.REMEMBER_CONTEXTS:
+            old_class = controllers[class_ins.PATH]
+            old_class.queue = self.queue
+            return old_class.menu()
+        # Add another case so options data is saved
+        if (
+            class_ins.PATH == "/stocks/options/"
+            and obbff.REMEMBER_CONTEXTS
+            and "/stocks/options/" in controllers
+        ):
             old_class = controllers[class_ins.PATH]
             old_class.queue = self.queue
             return old_class.menu()
@@ -269,13 +295,14 @@ class BaseController(metaclass=ABCMeta):
 
     def log_queue(self) -> None:
         """Log command queue."""
-        joined_queue = self.COMMAND_SEPARATOR.join(self.queue)
-        if self.queue and not self.contains_keys(joined_queue):
-            logger.info(
-                "QUEUE: {'path': '%s', 'queue': '%s'}",
-                self.PATH,
-                joined_queue,
-            )
+        if self.queue:
+            joined_queue = self.COMMAND_SEPARATOR.join(self.queue)
+            if not self.contains_keys(joined_queue):
+                logger.info(
+                    "QUEUE: {'path': '%s', 'queue': '%s'}",
+                    self.PATH,
+                    joined_queue,
+                )
 
     def log_cmd_and_queue(
         self, known_cmd: str, other_args_str: str, the_input: str
@@ -322,7 +349,6 @@ class BaseController(metaclass=ABCMeta):
 
         # Navigation slash is being used first split commands
         elif len(actions) > 1:
-
             # Absolute path is specified
             if not actions[0]:
                 actions[0] = "home"
@@ -366,6 +392,9 @@ class BaseController(metaclass=ABCMeta):
 
         self.log_queue()
 
+        if not self.queue or (self.queue and self.queue[0] not in ("quit", "help")):
+            console.print()
+
         return self.queue
 
     @log_start_end(log=logger)
@@ -408,7 +437,7 @@ class BaseController(metaclass=ABCMeta):
             dest="command",
             default=None,
             help="Obtain documentation on the given command or menu",
-            choices=self.CHOICES_COMMANDS + self.CHOICES_MENUS,
+            choices=self.CHOICES_COMMANDS + self.CHOICES_MENUS + self.CHOICES_COMMON,
         )
 
         if other_args and "-" not in other_args[0][0]:
@@ -563,10 +592,9 @@ class BaseController(metaclass=ABCMeta):
 
         ns_parser = self.parse_simple_args(parser, other_args)
 
-        if ns_parser:
-            if ns_parser.expression:
-                expression = " ".join(ns_parser.expression)
-                search_wikipedia(expression)
+        if ns_parser and ns_parser.expression:
+            expression = " ".join(ns_parser.expression)
+            search_wikipedia(expression)
 
     @log_start_end(log=logger)
     def call_record(self, other_args) -> None:
@@ -655,6 +683,20 @@ class BaseController(metaclass=ABCMeta):
 
         if ns_parser:
             screenshot()
+
+    @log_start_end(log=logger)
+    def call_whoami(self, other_args: List[str]) -> None:
+        """Process whoami command."""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="whoami",
+            description="Show current user",
+        )
+        ns_parser = self.parse_simple_args(parser, other_args)
+
+        if ns_parser:
+            User.whoami()
 
     @staticmethod
     def parse_simple_args(parser: argparse.ArgumentParser, other_args: List[str]):
@@ -752,6 +794,19 @@ class BaseController(metaclass=ABCMeta):
                 dest="export",
                 help=help_export,
             )
+
+            # If excel is an option, add the sheet name
+            if export_allowed in [
+                EXPORT_ONLY_RAW_DATA_ALLOWED,
+                EXPORT_BOTH_RAW_DATA_AND_FIGURES,
+            ]:
+                parser.add_argument(
+                    "--sheet-name",
+                    dest="sheet_name",
+                    default=None,
+                    nargs="+",
+                    help="Name of excel sheet to save data to. Only valid for .xlsx files.",
+                )
 
         if raw:
             parser.add_argument(
@@ -853,7 +908,55 @@ class BaseController(metaclass=ABCMeta):
                 try:
                     # Get input from user using auto-completion
                     if session and obbff.USE_PROMPT_TOOLKIT:
-                        if bool(obbff.TOOLBAR_HINT):
+                        # Check if tweet news is enabled
+                        if obbff.TOOLBAR_TWEET_NEWS:
+                            news_tweet = update_news_from_tweet_to_be_displayed()
+
+                            # Check if there is a valid tweet news to be displayed
+                            if news_tweet:
+                                an_input = session.prompt(
+                                    f"{get_flair()} {self.PATH} $ ",
+                                    completer=self.completer,
+                                    search_ignore_case=True,
+                                    bottom_toolbar=HTML(news_tweet),
+                                    style=Style.from_dict(
+                                        {
+                                            "bottom-toolbar": "#ffffff bg:#333333",
+                                        }
+                                    ),
+                                )
+
+                            else:
+                                # Check if toolbar hint was enabled
+                                if obbff.TOOLBAR_HINT:
+                                    an_input = session.prompt(
+                                        f"{get_flair()} {self.PATH} $ ",
+                                        completer=self.completer,
+                                        search_ignore_case=True,
+                                        bottom_toolbar=HTML(
+                                            '<style bg="ansiblack" fg="ansiwhite">[h]</style> help menu    '
+                                            '<style bg="ansiblack" fg="ansiwhite">[q]</style> return to previous menu'
+                                            '    <style bg="ansiblack" fg="ansiwhite">[e]</style> exit terminal    '
+                                            '<style bg="ansiblack" fg="ansiwhite">[cmd -h]</style> '
+                                            "see usage and available options    "
+                                            f'<style bg="ansiblack" fg="ansiwhite">[about (cmd/menu)]</style> '
+                                            f"{self.path[-1].capitalize()} (cmd/menu) Documentation"
+                                        ),
+                                        style=Style.from_dict(
+                                            {
+                                                "bottom-toolbar": "#ffffff bg:#333333",
+                                            }
+                                        ),
+                                    )
+                                else:
+                                    an_input = session.prompt(
+                                        f"{get_flair()} {self.PATH} $ ",
+                                        completer=self.completer,
+                                        search_ignore_case=True,
+                                    )
+
+                        # Check if toolbar hint was enabled
+                        elif obbff.TOOLBAR_HINT:
                             an_input = session.prompt(
                                 f"{get_flair()} {self.PATH} $ ",
                                 completer=self.completer,
@@ -894,10 +997,9 @@ class BaseController(metaclass=ABCMeta):
 
                 # Process the input command
                 self.queue = self.switch(an_input)
-                if not self.queue or (
-                    self.queue and self.queue[0] not in ("quit", "help")
-                ):
-                    console.print()
+
+                if an_input == "logout":
+                    return ["logout"]
 
             except SystemExit:
                 if not self.contains_keys(an_input):
@@ -1031,15 +1133,6 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
             dest="weekly",
         )
         parser.add_argument(
-            "-r",
-            "--iexrange",
-            dest="iexrange",
-            help="Range for using the iexcloud api.  Longer range requires more tokens in account",
-            choices=["ytd", "1y", "2y", "5y", "6m"],
-            type=str,
-            default="ytd",
-        )
-        parser.add_argument(
             "--exchange",
             dest="exchange",
             action="store_true",
@@ -1099,7 +1192,11 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                 )
                 if df_stock_candidate.empty:
                     return
-            if not df_stock_candidate.empty:
+            is_df = isinstance(df_stock_candidate, pd.DataFrame)
+            if not (
+                (is_df and df_stock_candidate.empty)
+                or (not is_df and not df_stock_candidate)
+            ):
                 self.stock = df_stock_candidate
                 if ns_parser.exchange:
                     self.add_info = stocks_helper.additional_info_about_ticker(
@@ -1122,9 +1219,7 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                     self.ticker = ns_parser.ticker.upper()
                     self.suffix = ""
 
-                if ns_parser.source == "IEXCloud":
-                    self.start = self.stock.index[0].to_pydatetime()
-                elif ns_parser.source == "EODHD":
+                if ns_parser.source == "EODHD":
                     self.start = self.stock.index[0].to_pydatetime()
                 elif ns_parser.source == "eodhd":
                     self.start = self.stock.index[0].to_pydatetime()
@@ -1147,6 +1242,9 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                     os.path.dirname(os.path.abspath(__file__)),
                     f"load_{self.ticker}",
                     self.stock.copy(),
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
 
 
@@ -1244,9 +1342,11 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
         )
 
         if ns_parser:
-            if ns_parser.source in ("YahooFinance", "CoinGecko"):
-                if ns_parser.vs == "usdt":
-                    ns_parser.vs = "usd"
+            if (
+                ns_parser.source in ("YahooFinance", "CoinGecko")
+                and ns_parser.vs == "usdt"
+            ):
+                ns_parser.vs = "usd"
             (self.current_df) = cryptocurrency_helpers.load(
                 symbol=ns_parser.coin.lower(),
                 to_symbol=ns_parser.vs,
@@ -1276,4 +1376,7 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
                     os.path.dirname(os.path.abspath(__file__)),
                     "load",
                     self.current_df.copy(),
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )

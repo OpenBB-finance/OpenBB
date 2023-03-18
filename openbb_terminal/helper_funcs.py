@@ -3,51 +3,65 @@ __docformat__ = "numpy"
 # pylint: disable=too-many-lines
 import argparse
 import io
-import logging
-from pathlib import Path
-from typing import List, Union, Optional, Dict
-from functools import lru_cache
-from datetime import datetime, timedelta
-from datetime import date as d
-import types
-from collections.abc import Iterable
-import os
-import re
-import random
-import sys
-from difflib import SequenceMatcher
-import webbrowser
-import urllib.parse
 import json
+import logging
+import os
+import random
+import re
+import sys
+import urllib.parse
+import webbrowser
+from datetime import (
+    date as d,
+    datetime,
+    timedelta,
+)
+from difflib import SequenceMatcher
+from functools import lru_cache
+from pathlib import Path
+from typing import Dict, List, Optional, Tuple, Union
 
-import pytz
-import pandas as pd
-from rich.table import Table
 import iso8601
-import dotenv
 import matplotlib
 import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+import pandas.io.formats.format
+import pytz
+import requests
+import tweepy
+import yfinance as yf
+from dateutil.relativedelta import relativedelta
 from holidays import US as us_holidays
 from pandas._config.config import get_option
 from pandas.plotting import register_matplotlib_converters
-import pandas.io.formats.format
-import requests
-from screeninfo import get_monitors
-import yfinance as yf
-import numpy as np
-
 from PIL import Image, ImageDraw
+from rich.table import Table
+from screeninfo import get_monitors
 
-from openbb_terminal.rich_config import console
-from openbb_terminal import feature_flags as obbff
-from openbb_terminal import config_plot as cfgPlot
-from openbb_terminal.core.config.paths import (
-    HOME_DIRECTORY,
-    USER_ENV_FILE,
-    USER_EXPORTS_DIRECTORY,
-    load_dotenv_with_priority,
+from openbb_terminal import (
+    config_plot as cfgPlot,
+    config_terminal as cfg,
+    feature_flags as obbff,
 )
-from openbb_terminal.core.config import paths
+from openbb_terminal.core.config.paths import HOME_DIRECTORY, USER_EXPORTS_DIRECTORY
+from openbb_terminal.rich_config import console
+
+try:
+    twitter_api = tweepy.API(
+        tweepy.OAuth2BearerHandler(
+            cfg.API_TWITTER_BEARER_TOKEN,
+        ),
+        timeout=5,
+    )
+    if obbff.TOOLBAR_TWEET_NEWS and cfg.API_TWITTER_BEARER_TOKEN != "REPLACE_ME":
+        # A test to ensure that the Twitter API key is correct,
+        # otherwise we disable the Toolbar with Tweet News
+        twitter_api.get_user(screen_name="openbb_finance")
+except tweepy.errors.Unauthorized:
+    # Set toolbar tweet news to False because the Twitter API is not set up correctly
+    obbff.TOOLBAR_TWEET_NEWS = False
+
 
 logger = logging.getLogger(__name__)
 
@@ -64,11 +78,13 @@ MENU_GO_BACK = 0
 MENU_QUIT = 1
 MENU_RESET = 2
 
+LAST_TWEET_NEWS_UPDATE_CHECK_TIME = None
+
 # Command location path to be shown in the figures depending on watermark flag
 command_location = ""
 
+# pylint: disable=R1702,R0912
 
-# pylint: disable=R0912
 
 # pylint: disable=global-statement
 def set_command_location(cmd_loc: str):
@@ -81,21 +97,6 @@ def set_command_location(cmd_loc: str):
     """
     global command_location
     command_location = cmd_loc
-
-
-# pylint: disable=global-statement
-def set_user_data_folder(env_file: str = ".env", path_folder: str = ""):
-    """Set user data folder location.
-
-    Parameters
-    ----------
-    env_file : str
-        Env file to be updated
-    path_folder: str
-        Path folder location
-    """
-    dotenv.set_key(env_file, "OPENBB_USER_DATA_DIRECTORY", path_folder)
-    paths.USER_DATA_DIRECTORY = Path(path_folder)
 
 
 def check_path(path: str) -> str:
@@ -147,11 +148,8 @@ def parse_and_split_input(an_input: str, custom_filters: List) -> List[str]:
         Command queue as list
     """
     # Make sure that the user can go back to the root when doing "/"
-    if an_input:
-        if an_input == "/":
-            an_input = "home"
-        elif an_input[0] == "/":
-            an_input = "home" + an_input
+    if an_input and an_input == "/":
+        an_input = "home"
 
     # everything from ` -f ` to the next known extension
     file_flag = r"(\ -f |\ --file )"
@@ -257,12 +255,12 @@ def print_rich_table(
     show_index: bool = False,
     title: str = "",
     index_name: str = "",
-    headers: Union[List[str], pd.Index] = None,
+    headers: Optional[Union[List[str], pd.Index]] = None,
     floatfmt: Union[str, List[str]] = ".2f",
     show_header: bool = True,
     automatic_coloring: bool = False,
-    columns_to_auto_color: List[str] = None,
-    rows_to_auto_color: List[str] = None,
+    columns_to_auto_color: Optional[List[str]] = None,
+    rows_to_auto_color: Optional[List[str]] = None,
 ):
     """Prepare a table from df in rich.
 
@@ -325,13 +323,12 @@ def print_rich_table(
             for column in df.columns:
                 table.add_column(str(column))
 
-        if isinstance(floatfmt, list):
-            if len(floatfmt) != len(df.columns):
-                log_and_raise(
-                    ValueError(
-                        "Length of floatfmt list does not match length of DataFrame columns."
-                    )
+        if isinstance(floatfmt, list) and len(floatfmt) != len(df.columns):
+            log_and_raise(
+                ValueError(
+                    "Length of floatfmt list does not match length of DataFrame columns."
                 )
+            )
         if isinstance(floatfmt, str):
             floatfmt = [floatfmt for _ in range(len(df.columns))]
 
@@ -353,7 +350,6 @@ def print_rich_table(
             table.add_row(*row_idx)
         console.print(table)
     else:
-
         if obbff.USE_COLOR and automatic_coloring:
             if columns_to_auto_color:
                 for col in columns_to_auto_color:
@@ -389,6 +385,7 @@ def check_int_range(mini: int, maxi: int):
     int_range_checker:
         Function that compares the three integers
     """
+
     # Define the function with default arguments
     def int_range_checker(num: int) -> int:
         """Check if int is between a high and low value.
@@ -592,6 +589,15 @@ def valid_date(s: str) -> datetime:
         raise argparse.ArgumentTypeError(f"Not a valid date: {s}") from value_error
 
 
+def is_valid_date(s: str) -> bool:
+    """Check if date is in valid format."""
+    try:
+        datetime.strptime(s, "%Y-%m-%d")
+        return True
+    except ValueError:
+        return False
+
+
 def valid_repo(repo: str) -> str:
     """Argparse type to check github repo is in valid format."""
     result = re.search(r"^[a-zA-Z0-9-_.]+\/[a-zA-Z0-9-_.]+$", repo)  # noqa: W605
@@ -613,85 +619,6 @@ def valid_hour(hr: str) -> int:
             argparse.ArgumentTypeError(f"{hr} doesn't follow 24-hour notion.")
         )
     return new_hr
-
-
-def plot_view_stock(df: pd.DataFrame, symbol: str, interval: str):
-    """Plot the loaded stock dataframe.
-
-    Parameters
-    ----------
-    df: Dataframe
-        Dataframe of prices and volumes
-    symbol: str
-        Symbol of ticker
-    interval: str
-        Stock data resolution for plotting purposes
-    """
-    df.sort_index(ascending=True, inplace=True)
-    bar_colors = ["r" if x[1].Open < x[1].Close else "g" for x in df.iterrows()]
-
-    try:
-        fig, ax = plt.subplots(
-            2,
-            1,
-            gridspec_kw={"height_ratios": [3, 1]},
-            figsize=plot_autoscale(),
-            dpi=cfgPlot.PLOT_DPI,
-        )
-    except Exception as e:
-        console.print(e)
-        console.print(
-            "Encountered an error trying to open a chart window. Check your X server configuration."
-        )
-        logging.exception("%s", type(e).__name__)
-        return
-
-    # In order to make nice Volume plot, make the bar width = interval
-    if interval == "1440min":
-        bar_width = timedelta(days=1)
-        title_string = "Daily"
-    else:
-        bar_width = timedelta(minutes=int(interval.split("m")[0]))
-        title_string = f"{int(interval.split('m')[0])} min"
-
-    ax[0].yaxis.tick_right()
-    if "Adj Close" in df.columns:
-        ax[0].plot(df.index, df["Adj Close"], c=cfgPlot.VIEW_COLOR)
-    else:
-        ax[0].plot(df.index, df["Close"], c=cfgPlot.VIEW_COLOR)
-    ax[0].set_xlim(df.index[0], df.index[-1])
-    ax[0].set_xticks([])
-    ax[0].yaxis.set_label_position("right")
-    ax[0].set_ylabel("Share Price ($)")
-    ax[0].grid(axis="y", color="gainsboro", linestyle="-", linewidth=0.5)
-
-    ax[0].spines["top"].set_visible(False)
-    ax[0].spines["left"].set_visible(False)
-    ax[1].bar(
-        df.index, df.Volume / 1_000_000, color=bar_colors, alpha=0.8, width=bar_width
-    )
-    ax[1].set_xlim(df.index[0], df.index[-1])
-    ax[1].yaxis.tick_right()
-    ax[1].yaxis.set_label_position("right")
-    ax[1].set_ylabel("Volume [1M]")
-    ax[1].grid(axis="y", color="gainsboro", linestyle="-", linewidth=0.5)
-    ax[1].spines["top"].set_visible(False)
-    ax[1].spines["left"].set_visible(False)
-    ax[1].set_xlabel("Time")
-    fig.suptitle(
-        symbol + " " + title_string,
-        size=20,
-        x=0.15,
-        y=0.95,
-        fontfamily="serif",
-        fontstyle="italic",
-    )
-    if obbff.USE_ION:
-        plt.ion()
-    fig.tight_layout(pad=2)
-    plt.setp(ax[1].get_xticklabels(), rotation=20, horizontalalignment="right")
-
-    plt.show()
 
 
 def us_market_holidays(years) -> list:
@@ -770,7 +697,12 @@ def lambda_long_number_format(num, round_decimal=3) -> str:
         return f"{num_str} {' KMBTP'[magnitude]}".strip()
     if isinstance(num, int):
         num = str(num)
-    if isinstance(num, str) and num.lstrip("-").isdigit():
+    if (
+        isinstance(num, str)
+        and num.lstrip("-").isdigit()
+        and not num.lstrip("-").startswith("0")
+        and not is_valid_date(num)
+    ):
         num = int(num)
         num /= 1.0
         magnitude = 0
@@ -783,6 +715,58 @@ def lambda_long_number_format(num, round_decimal=3) -> str:
 
         return f"{num_str} {' KMBTP'[magnitude]}".strip()
     return num
+
+
+def revert_lambda_long_number_format(num_str: str) -> Union[float, str]:
+    """
+    Revert the formatting of a long number if the input is a formatted number, otherwise return the input as is.
+
+    Parameters
+    ----------
+    num_str : str
+        The number to remove the formatting.
+
+    Returns
+    -------
+    Union[float, str]
+        The number as float (with no formatting) or the input as is.
+
+    """
+    magnitude_dict = {
+        "K": 1000,
+        "M": 1000000,
+        "B": 1000000000,
+        "T": 1000000000000,
+        "P": 1000000000000000,
+    }
+
+    # Ensure the input is a string and not empty
+    if not num_str or not isinstance(num_str, str):
+        return num_str
+
+    num_as_list = num_str.strip().split()
+
+    # If the input string is a number parse it as float
+    if (
+        len(num_as_list) == 1
+        and num_as_list[0].replace(".", "").replace("-", "").isdigit()
+        and not is_valid_date(num_str)
+    ):
+        return float(num_str)
+
+    # If the input string is a formatted number with magnitude
+    if (
+        len(num_as_list) == 2
+        and num_as_list[1] in magnitude_dict
+        and num_as_list[0].replace(".", "").replace("-", "").isdigit()
+    ):
+        num, unit = num_as_list
+        magnitude = magnitude_dict.get(unit)
+        if magnitude:
+            return float(num) * magnitude
+
+    # Return the input string as is if it's not a formatted number
+    return num_str
 
 
 def lambda_long_number_format_y_axis(df, y_column, ax):
@@ -895,10 +879,7 @@ def is_intraday(df: pd.DataFrame) -> bool:
         True if data is intraday
     """
     granularity = df.index[1] - df.index[0]
-    if granularity >= timedelta(days=1):
-        intraday = False
-    else:
-        intraday = True
+    intraday = not granularity >= timedelta(days=1)
     return intraday
 
 
@@ -918,10 +899,7 @@ def reindex_dates(df: pd.DataFrame) -> pd.DataFrame:
     pd.DataFrame
         Reindexed dataframe
     """
-    if is_intraday(df):
-        date_format = "%b %d %H:%M"
-    else:
-        date_format = "%Y-%m-%d"
+    date_format = "%b %d %H:%M" if is_intraday(df) else "%Y-%m-%d"
     reindexed_df = df.reset_index()
     reindexed_df["date"] = reindexed_df["date"].dt.strftime(date_format)
     return reindexed_df
@@ -936,7 +914,7 @@ def get_data(tweet):
             "%Y-%m-%d %H:%M:%S"
         )
 
-    s_text = tweet["full_text"] if "full_text" in tweet.keys() else tweet["text"]
+    s_text = tweet["full_text"] if "full_text" in tweet else tweet["text"]
     return {"created_at": s_datetime, "text": s_text}
 
 
@@ -1066,7 +1044,7 @@ def check_ohlc(type_ohlc: str) -> str:
 def lett_to_num(word: str) -> str:
     """Match ohlca to integers."""
     replacements = [("o", "1"), ("h", "2"), ("l", "3"), ("c", "4"), ("a", "5")]
-    for (a, b) in replacements:
+    for a, b in replacements:
         word = word.replace(a, b)
     return word
 
@@ -1105,7 +1083,6 @@ def get_flair() -> str:
         else str(obbff.USE_FLAIR)
     )
 
-    set_default_timezone()
     if obbff.USE_DATETIME and get_user_timezone_or_invalid() != "INVALID":
         dtime = datetime.now(pytz.timezone(get_user_timezone())).strftime(
             "%Y %b %d, %H:%M"
@@ -1118,14 +1095,6 @@ def get_flair() -> str:
         return f"{dtime} {flair}"
 
     return flair
-
-
-def set_default_timezone() -> None:
-    """Set a default (America/New_York) timezone if one doesn't exist."""
-    load_dotenv_with_priority()
-    user_tz = os.getenv("OPENBB_TIMEZONE")
-    if not user_tz:
-        dotenv.set_key(USER_ENV_FILE, "OPENBB_TIMEZONE", "America/New_York")
 
 
 def is_timezone_valid(user_tz: str) -> bool:
@@ -1152,11 +1121,7 @@ def get_user_timezone() -> str:
     str
         user timezone based on .env file
     """
-    load_dotenv_with_priority()
-    user_tz = os.getenv("OPENBB_TIMEZONE")
-    if user_tz:
-        return user_tz
-    return ""
+    return obbff.TIMEZONE
 
 
 def get_user_timezone_or_invalid() -> str:
@@ -1171,21 +1136,6 @@ def get_user_timezone_or_invalid() -> str:
     if is_timezone_valid(user_tz):
         return f"{user_tz}"
     return "INVALID"
-
-
-def replace_user_timezone(user_tz: str) -> None:
-    """Replace user timezone.
-
-    Parameters
-    ----------
-    user_tz: str
-        User timezone to set
-    """
-    if is_timezone_valid(user_tz):
-        dotenv.set_key(USER_ENV_FILE, "OPENBB_TIMEZONE", user_tz)
-        console.print("Timezone successfully updated", "\n")
-    else:
-        console.print("Timezone selected is not valid", "\n")
 
 
 def str_to_bool(value) -> bool:
@@ -1245,7 +1195,7 @@ def get_last_time_market_was_open(dt):
     return dt
 
 
-def check_file_type_saved(valid_types: List[str] = None):
+def check_file_type_saved(valid_types: Optional[List[str]] = None):
     """Provide valid types for the user to be able to select.
 
     Parameters
@@ -1322,8 +1272,36 @@ def compose_export_path(func_name: str, dir_path: str) -> Path:
     return full_path
 
 
+def ask_file_overwrite(file_path: str) -> Tuple[bool, bool]:
+    """Helper to provide a prompt for overwriting existing files.
+
+    Returns two values, the first is a boolean indicating if the file exists and the
+    second is a boolean indicating if the user wants to overwrite the file.
+    """
+    # Jeroen asked for a flag to overwrite no matter what
+    if obbff.FILE_OVERWITE:
+        return False, True
+    if os.environ.get("TEST_MODE") == "True":
+        return False, True
+    if os.path.exists(file_path):
+        overwrite = input("\nFile already exists. Overwrite? [y/n]: ").lower()
+        if overwrite == "y":
+            # File exists and user wants to overwrite
+            return True, True
+        # File exists and user does not want to overwrite
+        return True, False
+    # File does not exist
+    return False, True
+
+
+# This is a false positive on pylint and being tracked in pylint #3060
+# pylint: disable=abstract-class-instantiated
 def export_data(
-    export_type: str, dir_path: str, func_name: str, df: pd.DataFrame = pd.DataFrame()
+    export_type: str,
+    dir_path: str,
+    func_name: str,
+    df: pd.DataFrame = pd.DataFrame(),
+    sheet_name: Optional[str] = None,
 ) -> None:
     """Export data to a file.
 
@@ -1337,6 +1315,8 @@ def export_data(
         Name of the command that invokes this function
     df : pd.Dataframe
         Dataframe of data to save
+    sheet_name : str
+        If provided.  The name of the sheet to save in excel file
     """
     if export_type:
         export_path = compose_export_path(func_name, dir_path)
@@ -1371,25 +1351,72 @@ def export_data(
                 regex=True,
             )
 
+            df = df.applymap(revert_lambda_long_number_format)
+
             if exp_type.endswith("csv"):
+                exists, overwrite = ask_file_overwrite(saved_path)
+                if exists and not overwrite:
+                    return
                 df.to_csv(saved_path)
             elif exp_type.endswith("json"):
+                exists, overwrite = ask_file_overwrite(saved_path)
+                if exists and not overwrite:
+                    return
                 df.reset_index(drop=True, inplace=True)
                 df.to_json(saved_path)
             elif exp_type.endswith("xlsx"):
-                df.to_excel(saved_path, index=True, header=True)
+                # since xlsx does not support datetimes with timezones we need to remove it
+                df = remove_timezone_from_dataframe(df)
+
+                if sheet_name is None:
+                    exists, overwrite = ask_file_overwrite(saved_path)
+                    if exists and not overwrite:
+                        return
+                    df.to_excel(saved_path, index=True, header=True)
+
+                else:
+                    if os.path.exists(saved_path):
+                        with pd.ExcelWriter(
+                            saved_path,
+                            mode="a",
+                            if_sheet_exists="new",
+                            engine="openpyxl",
+                        ) as writer:
+                            df.to_excel(
+                                writer, sheet_name=sheet_name, index=True, header=True
+                            )
+                    else:
+                        with pd.ExcelWriter(
+                            saved_path,
+                            engine="openpyxl",
+                        ) as writer:
+                            df.to_excel(
+                                writer, sheet_name=sheet_name, index=True, header=True
+                            )
             elif exp_type.endswith("png"):
+                exists, overwrite = ask_file_overwrite(saved_path)
+                if exists and not overwrite:
+                    return
                 plt.savefig(saved_path)
             elif exp_type.endswith("jpg"):
+                exists, overwrite = ask_file_overwrite(saved_path)
+                if exists and not overwrite:
+                    return
                 plt.savefig(saved_path)
             elif exp_type.endswith("pdf"):
+                exists, overwrite = ask_file_overwrite(saved_path)
+                if exists and not overwrite:
+                    return
                 plt.savefig(saved_path)
             elif exp_type.endswith("svg"):
+                exists, overwrite = ask_file_overwrite(saved_path)
+                if exists and not overwrite:
+                    return
                 plt.savefig(saved_path)
             else:
-                console.print("\nWrong export file specified.")
+                console.print("Wrong export file specified.")
 
-            console.print(f"\nSaved file: {saved_path}")
+            console.print(f"Saved file: {saved_path}")
 
 
 def get_rf() -> float:
@@ -1404,7 +1431,7 @@ def get_rf() -> float:
         base = "https://api.fiscaldata.treasury.gov/services/api/fiscal_service"
         end = "/v2/accounting/od/avg_interest_rates"
         filters = "?filter=security_desc:eq:Treasury Bills&sort=-record_date"
-        response = requests.get(base + end + filters)
+        response = request(base + end + filters)
         latest = response.json()["data"][0]
         return round(float(latest["avg_interest_rate_amt"]) / 100, 8)
     except Exception:
@@ -1519,69 +1546,6 @@ def camel_case_split(string: str) -> str:
     return " ".join(results).title()
 
 
-def choice_check_after_action(action=None, choices=None):
-    """Return an action class that checks choice after action call.
-
-    Does that for argument of argparse.ArgumentParser.add_argument function.
-
-    Parameters
-    ----------
-    action : Union[class, function]
-        Action for set args before check choices.
-        If action is class, it must implement argparse.Action methods
-        If action is function, it takes 4 args(parser, namespace, values, option_string)
-        and needs to return value to set dest
-
-    choices : Union[Iterable, function]
-        A container of values that should be allowed.
-        If choices is function, it takes 1 args(value) to check and
-        return bool that value is allowed or not
-
-    Returns
-    -------
-    Class
-        Class extended argparse.Action
-    """
-    if isinstance(choices, Iterable):
-
-        def choice_checker(value):
-            return value in choices
-
-    elif isinstance(choices, types.FunctionType):
-        choice_checker = choices
-    else:
-        raise NotImplementedError("choices argument must be iterable or function")
-
-    if isinstance(action, type):
-
-        class ActionClass(action):
-            def __call__(self, parser, namespace, values, option_string=None):
-                super().__call__(parser, namespace, values, option_string)
-                if not choice_checker(getattr(namespace, self.dest)):
-                    raise ValueError(
-                        f"{getattr(namespace, self.dest)} is not in {choices}"
-                    )
-
-    elif isinstance(action, types.FunctionType):
-
-        class ActionClass(argparse.Action):
-            def __call__(self, parser, namespace, values, option_string=None):
-                setattr(
-                    namespace,
-                    self.dest,
-                    action(parser, namespace, values, option_string),
-                )
-                if not choice_checker(getattr(namespace, self.dest)):
-                    raise ValueError(
-                        f"{getattr(namespace, self.dest)} is not in {choices}"
-                    )
-
-    else:
-        raise NotImplementedError("action argument must be class or function")
-
-    return ActionClass
-
-
 def is_valid_axes_count(
     axes: List[plt.Axes],
     n: int,
@@ -1607,10 +1571,11 @@ def is_valid_axes_count(
     if len(axes) == n:
         return True
 
-    if custom_text:
-        print_text = custom_text
-    else:
-        print_text = f"Expected list of {n} axis item{'s' if n>1 else ''}."
+    print_text = (
+        custom_text
+        if custom_text
+        else f"Expected list of {n} axis item{'s' if n > 1 else ''}."
+    )
 
     if prefix_text:
         print_text = f"{prefix_text} {print_text}"
@@ -1640,6 +1605,7 @@ def check_list_values(valid_values: List[str]):
     check_list_values_from_valid_values_list:
         Function that ensures that the valid values go through and notifies user when value is not valid.
     """
+
     # Define the function with default arguments
     def check_list_values_from_valid_values_list(given_values: str) -> List[str]:
         """Check if argparse argument is an str format.
@@ -1658,10 +1624,11 @@ def check_list_values(valid_values: List[str]):
         """
         success_values = list()
 
-        if "," in given_values:
-            values_found = [val.strip() for val in given_values.split(",")]
-        else:
-            values_found = [given_values]
+        values_found = (
+            [val.strip() for val in given_values.split(",")]
+            if "," in given_values
+            else [given_values]
+        )
 
         for value in values_found:
             # check if the value is valid
@@ -1882,6 +1849,94 @@ def str_date_to_timestamp(date: str) -> int:
     return date_ts
 
 
+def update_news_from_tweet_to_be_displayed() -> str:
+    """Update news from tweet to be displayed.
+
+    Returns
+    -------
+    str
+        The news from tweet to be displayed
+    """
+    global LAST_TWEET_NEWS_UPDATE_CHECK_TIME
+
+    news_tweet = ""
+
+    # Check whether it has passed a certain amount of time since the last news update
+    if LAST_TWEET_NEWS_UPDATE_CHECK_TIME is None or (
+        (datetime.now(pytz.utc) - LAST_TWEET_NEWS_UPDATE_CHECK_TIME).total_seconds()
+        > obbff.TOOLBAR_TWEET_NEWS_SECONDS_BETWEEN_UPDATES
+    ):
+        # This doesn't depende on the time of the tweet but the time that the check was made
+        LAST_TWEET_NEWS_UPDATE_CHECK_TIME = datetime.now(pytz.utc)
+
+        dhours = 0
+        dminutes = 0
+        # Get timezone that corresponds to the user
+        if obbff.USE_DATETIME and get_user_timezone_or_invalid() != "INVALID":
+            utcnow = pytz.timezone("utc").localize(datetime.utcnow())  # generic time
+            here = utcnow.astimezone(pytz.timezone("Etc/UTC")).replace(tzinfo=None)
+            there = utcnow.astimezone(pytz.timezone(get_user_timezone())).replace(
+                tzinfo=None
+            )
+
+            offset = relativedelta(here, there)
+            dhours = offset.hours
+            dminutes = offset.minutes
+
+        if "," in obbff.TOOLBAR_TWEET_NEWS_ACCOUNTS_TO_TRACK:
+            news_sources_twitter_handles = (
+                obbff.TOOLBAR_TWEET_NEWS_ACCOUNTS_TO_TRACK.split(",")
+            )
+        else:
+            news_sources_twitter_handles = [obbff.TOOLBAR_TWEET_NEWS_ACCOUNTS_TO_TRACK]
+
+        news_tweet_to_use = ""
+        handle_to_use = ""
+        url = ""
+        last_tweet_dt: Optional[datetime] = None
+        for handle in news_sources_twitter_handles:
+            try:
+                # Get last N tweets from each handle
+                timeline = twitter_api.user_timeline(
+                    screen_name=handle,
+                    count=obbff.TOOLBAR_TWEET_NEWS_NUM_LAST_TWEETS_TO_READ,
+                )
+                timeline = timeline[: obbff.TOOLBAR_TWEET_NEWS_NUM_LAST_TWEETS_TO_READ]
+                for last_tweet in timeline:
+                    keywords = obbff.TOOLBAR_TWEET_NEWS_KEYWORDS.split(",")
+                    more_recent = (
+                        last_tweet_dt is None or last_tweet.created_at > last_tweet_dt
+                    )
+                    with_keyword = any(key in last_tweet.text for key in keywords)
+
+                    if more_recent and with_keyword:
+                        handle_to_use = handle
+                        last_tweet_dt = last_tweet.created_at
+
+                        news_tweet_to_use = last_tweet.text
+
+                        url = f"https://twitter.com/x/status/{last_tweet.id_str}"
+
+            # In case the handle provided doesn't exist, we skip it
+            except tweepy.errors.NotFound:
+                pass
+
+        if last_tweet_dt and news_tweet_to_use:
+            tweet_hr = f"{last_tweet_dt.hour}"
+            tweet_min = f"{last_tweet_dt.minute}"
+            # Update time based on timezone specified by user
+            if (
+                obbff.USE_DATETIME and get_user_timezone_or_invalid() != "INVALID"
+            ) and (dhours > 0 or dminutes > 0):
+                tweet_hr = f"{round((int(last_tweet_dt.hour) - dhours) % 60):02}"
+                tweet_min = f"{round((int(last_tweet_dt.minute) - dminutes) % 60):02}"
+
+            # Update NEWS_TWEET with the new news tweet found
+            news_tweet = f"{tweet_hr}:{tweet_min} - @{handle_to_use} - {url}\n\n{news_tweet_to_use}"
+
+    return news_tweet
+
+
 def check_start_less_than_end(start_date: str, end_date: str) -> bool:
     """Check if start_date is equal to end_date.
 
@@ -1906,3 +1961,83 @@ def check_start_less_than_end(start_date: str, end_date: str) -> bool:
         console.print("[red]Start date cannot be greater than end date.[/red]")
         return True
     return False
+
+
+# Write an abstract helper to make requests from a url with potential headers and params
+def request(
+    url: str, method: str = "GET", timeout: int = 0, **kwargs
+) -> requests.Response:
+    """Abstract helper to make requests from a url with potential headers and params.
+
+    Parameters
+    ----------
+    url : str
+       Url to make the request to
+    method : str, optional
+       HTTP method to use.  Can be "GET" or "POST", by default "GET"
+
+    Returns
+    -------
+    requests.Response
+        Request response object
+
+    Raises
+    ------
+    ValueError
+        If invalid method is passed
+    """
+    # We want to add a user agent to the request, so check if there are any headers
+    # If there are headers, check if there is a user agent, if not add one.
+    # Some requests seem to work only with a specific user agent, so we want to be able to override it.
+    headers = kwargs.pop("headers", {})
+    timeout = timeout or cfg.REQUEST_TIMEOUT
+
+    if "User-Agent" not in headers:
+        headers["User-Agent"] = get_user_agent()
+    if method.upper() == "GET":
+        return requests.get(url, headers=headers, timeout=timeout, **kwargs)
+    if method.upper() == "POST":
+        return requests.post(url, headers=headers, timeout=timeout, **kwargs)
+    raise ValueError("Method must be GET or POST")
+
+
+def remove_timezone_from_dataframe(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Remove timezone information from a dataframe.
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+        The dataframe to remove timezone information from
+
+    Returns
+    -------
+    pd.DataFrame
+        The dataframe with timezone information removed
+    """
+
+    date_cols = []
+    index_is_date = False
+
+    # Find columns and index containing date data
+    if (
+        df.index.dtype.kind == "M"
+        and hasattr(df.index.dtype, "tz")
+        and df.index.dtype.tz is not None
+    ):
+        index_is_date = True
+
+    for col, dtype in df.dtypes.items():
+        if dtype.kind == "M" and hasattr(df.index.dtype, "tz") and dtype.tz is not None:
+            date_cols.append(col)
+
+    # Remove the timezone information
+    for col in date_cols:
+        df[col] = df[col].dt.date
+
+    if index_is_date:
+        index_name = df.index.name
+        df.index = df.index.date
+        df.index.name = index_name
+
+    return df

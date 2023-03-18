@@ -2,20 +2,20 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import Optional, Tuple, Union, List
-
 import warnings
-from statsmodels.tools.sm_exceptions import ConvergenceWarning
+from typing import List, Optional, Tuple, Union
+
 import numpy as np
 import pandas as pd
 from darts import TimeSeries
+from darts.metrics import mape, mse, rmse, smape
 from darts.models import Theta
 from darts.utils.utils import SeasonalityMode
-from darts.metrics import mape
+from statsmodels.tools.sm_exceptions import ConvergenceWarning
 
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.rich_config import console
 from openbb_terminal.forecast import helpers
+from openbb_terminal.rich_config import console
 
 warnings.simplefilter("ignore", ConvergenceWarning)
 
@@ -34,6 +34,7 @@ def get_theta_data(
     n_predict: int = 5,
     start_window: float = 0.85,
     forecast_horizon: int = 5,
+    metric: str = "mape",
 ) -> Tuple[
     Optional[List[TimeSeries]],
     Optional[List[TimeSeries]],
@@ -42,7 +43,6 @@ def get_theta_data(
     Optional[float],
     Optional[type[Theta]],
 ]:
-
     """Performs Theta forecasting
     An implementation of the 4Theta method with configurable theta parameter.
 
@@ -65,7 +65,9 @@ def get_theta_data(
     start_window: float
         Size of sliding window from start of timeseries and onwards
     forecast_horizon: int
-        Number of days to forecast when backtesting and retraining historical
+        Number of days to forecast when backtesting and retraining historical data
+    metric: str
+        Metric to use when backtesting and retraining historical data. Defaults to "mape".
 
     Returns
     -------
@@ -136,10 +138,23 @@ def get_theta_data(
     # fit model on entire series for final prediction
     best_theta_model_final.fit(ticker_series)
     prediction = best_theta_model_final.predict(int(n_predict))
-    precision = mape(
-        actual_series=ticker_series, pred_series=historical_fcast_theta
-    )  # mape = mean average precision error
-    console.print(f"Theta Model obtains MAPE: {precision:.2f}% \n")
+
+    if metric == "rmse":
+        precision = rmse(
+            actual_series=ticker_series, pred_series=historical_fcast_theta
+        )
+    elif metric == "mse":
+        precision = mse(actual_series=ticker_series, pred_series=historical_fcast_theta)
+    elif metric == "mape":
+        precision = mape(
+            actual_series=ticker_series, pred_series=historical_fcast_theta
+        )
+    elif metric == "smape":
+        precision = smape(
+            actual_series=ticker_series, pred_series=historical_fcast_theta
+        )
+
+    console.print(f"Theta Model obtains {metric.upper()}: {precision:.2f}% \n")
 
     return (
         ticker_series,

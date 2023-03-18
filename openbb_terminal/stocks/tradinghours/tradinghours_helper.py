@@ -1,5 +1,5 @@
-from typing import List
 import logging
+from typing import List
 
 import financedatabase as fd
 
@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 @log_start_end(log=logger)
 def get_fd_equities_list() -> List:
     """Load FD list of equity symbols."""
-    equities = fd.select_equities(exclude_exchanges=False)
+    equities = fd.Equities().select(exclude_exchanges=False)
 
     return equities
 

@@ -1,17 +1,22 @@
 """Rich Module"""
 __docformat__ = "numpy"
 
-import os
 import json
+import os
 from pathlib import Path
-from typing import Tuple
+from typing import Iterable, Optional, Tuple, Union
+
+import i18n
 from rich import panel
 from rich.console import Console, Theme
+from rich.progress import track
 from rich.text import Text
-import i18n
+
+from openbb_terminal import (
+    config_terminal as cfg,
+    feature_flags as obbff,
+)
 from openbb_terminal.core.config.paths import MISCELLANEOUS_DIRECTORY
-from openbb_terminal import config_terminal as cfg
-from openbb_terminal import feature_flags as obbff
 
 # pylint: disable=no-member,c-extension-no-member
 
@@ -98,14 +103,12 @@ def get_ordered_list_sources(command_path: str):
                 # If we have not find the `load` on the deepest level it means we may be in a sub-menu
                 # and we can use the load from the Base class
                 if path_objects[0] == "load":
-
                     # Get the context associated with the sub-menu (e.g. stocks, crypto, ...)
                     context = command_path.split("/")[1]
 
                     # Grab the load source from that context if it exists, otherwise throws an error
-                    if context in json_doc:
-                        if "load" in json_doc[context]:
-                            return json_doc[context]["load"]
+                    if context in json_doc and "load" in json_doc[context]:
+                        return json_doc[context]["load"]
 
                 # We didn't find the next level, so flag that that command default source is missing
                 # Which means that there aren't more than 1 source and therefore no selection is necessary
@@ -186,10 +189,11 @@ class MenuText:
             column alignment for the value. This allows for a better UX experience.
         """
         parameter_translated = i18n.t(self.menu_path + key_param)
-        if col_align > len(parameter_translated):
-            space = (col_align - len(parameter_translated)) * " "
-        else:
-            space = ""
+        space = (
+            (col_align - len(parameter_translated)) * " "
+            if col_align > len(parameter_translated)
+            else ""
+        )
         self.menu_text += f"[param]{parameter_translated}{space}:[/param] {value}\n"
 
     def add_cmd(self, key_command: str, condition: bool = True):
@@ -212,15 +216,12 @@ class MenuText:
         sources = get_ordered_list_sources(f"/{self.menu_path}{key_command}")
 
         if sources:
-            if self.col_src > len(cmd):
-                space = (self.col_src - len(cmd)) * " "
-            else:
-                space = " "
+            space = (self.col_src - len(cmd)) * " " if self.col_src > len(cmd) else " "
             cmd += f"{space}[src][{', '.join(sources)}][/src]"
 
         self.menu_text += cmd + "\n"
 
-    def add_menu(self, key_menu: str, condition: bool = True):
+    def add_menu(self, key_menu: str, condition: Optional[Union[bool, str]] = True):
         """Append menu text (after translation from key) to a menu
 
         Parameters
@@ -314,5 +315,28 @@ class ConsoleAndPanel:
             else:
                 print(*args, **kwargs)
 
+    def input(self, *args, **kwargs):
+        self.print(*args, **kwargs, end="")
+        return input()
+
 
 console = ConsoleAndPanel()
+
+
+def optional_rich_track(
+    inputs: Iterable, suppress_output: bool = False, desc: str = ""
+):
+    """Generate a rich track progress bar if desired
+
+    Parameters
+    ----------
+    inputs : Iterable
+        The items to be looped through
+    suppress_output : bool, optional
+        Flag to suppress the output, by default False
+    desc : str, optional
+        String to describe the progress bar, by default ""
+    """
+    if suppress_output:
+        return inputs
+    return track(inputs, description=desc)

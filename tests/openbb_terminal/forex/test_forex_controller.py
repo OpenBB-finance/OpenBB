@@ -362,21 +362,32 @@ def test_custom_reset(fx_pair, expected):
     assert result == expected
 
 
-# @pytest.mark.vcr
-# def test_call_load(mocker):
-#     # FORCE SINGLE THREADING
-#     yf_download = forex_controller.forex_helper.yf.download
+@pytest.mark.vcr
+@pytest.mark.parametrize(
+    "other_args",
+    [
+        (
+            [
+                "--ticker=EURUSD",
+                "--start=2022-01-01",
+                "--end=2023-01-01",
+            ]
+        ),
+        (
+            [
+                "--ticker=EURUSD",
+                "--start=2023-01-01",
+                "--end=2022-01-01",
+            ]
+        ),
+    ],
+)
+def test_call_load(other_args, recorder):
+    controller = forex_controller.ForexController(queue=None)
+    controller.call_load(other_args=other_args)
 
-#     def mock_yf_download(*args, **kwargs):
-#         kwargs["threads"] = False
-#         return yf_download(*args, **kwargs)
-
-#     mocker.patch("yfinance.download", side_effect=mock_yf_download)
-
-#     controller = forex_controller.ForexController(queue=None)
-#     other_args = [
-#         "TSLA",
-#         "--start=2021-12-17",
-#         "--end=2021-12-18",
-#     ]
-#     controller.call_load(other_args=other_args)
+    recorder.capture(controller.data)
+    assert isinstance(controller.data, pd.DataFrame)
+    assert {"Open", "High", "Low", "Close", "Adj Close", "Volume"}.issubset(
+        set(controller.data.columns)
+    )

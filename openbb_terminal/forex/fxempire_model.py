@@ -1,11 +1,11 @@
 """FXEmpire Model"""
 
 import logging
-import requests
+
 import pandas as pd
 
-from openbb_terminal.helper_funcs import get_user_agent
 from openbb_terminal.decorators import log_start_end
+from openbb_terminal.helper_funcs import get_user_agent, request
 
 logger = logging.getLogger(__name__)
 
@@ -27,7 +27,7 @@ def get_forward_rates(to_symbol: str = "USD", from_symbol: str = "EUR") -> pd.Da
         Dataframe containing forward rates
 
     """
-    r = requests.get(
+    r = request(
         f"https://www.fxempire.com/currencies/{from_symbol}-{to_symbol}/forward-rates",
         headers={"User-Agent": get_user_agent()},
     )

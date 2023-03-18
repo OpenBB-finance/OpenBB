@@ -14,15 +14,14 @@ import praw
 import seaborn as sns
 
 from openbb_terminal.common.behavioural_analysis import reddit_model
-from openbb_terminal.config_terminal import theme
 from openbb_terminal.config_plot import PLOT_DPI
-from openbb_terminal.decorators import check_api_key
-from openbb_terminal.decorators import log_start_end
+from openbb_terminal.config_terminal import theme
+from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
+    is_valid_axes_count,
     plot_autoscale,
     print_rich_table,
-    is_valid_axes_count,
 )
 from openbb_terminal.rich_config import console
 
@@ -193,7 +192,11 @@ def display_watchlist(limit: int = 5):
     ]
 )
 def display_popular_tickers(
-    limit: int = 10, post_limit: int = 50, subreddits: str = "", export: str = ""
+    limit: int = 10,
+    post_limit: int = 50,
+    subreddits: str = "",
+    export: str = "",
+    sheet_name: Optional[str] = None,
 ):
     """Prints table showing latest popular tickers. [Source: Reddit].
 
@@ -224,6 +227,7 @@ def display_popular_tickers(
         os.path.dirname(os.path.abspath(__file__)),
         "popular",
         popular_tickers_df,
+        sheet_name,
     )
 
 
@@ -408,6 +412,7 @@ def display_redditsent(
     subreddits: str = "all",
     display: bool = False,
     export: str = "",
+    sheet_name: Optional[str] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plots Reddit sentiment about a search term. Prints table showing if display is True.
@@ -430,6 +435,8 @@ def display_redditsent(
         Comma-separated list of subreddits
     display: bool
         Enable printing of raw sentiment values for each post
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     external_axes: Optional[List[plt.Axes]]
@@ -469,4 +476,5 @@ def display_redditsent(
         os.path.dirname(os.path.abspath(__file__)),
         "polarity_scores",
         df,
+        sheet_name,
     )

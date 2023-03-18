@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - release/*
 
 jobs:
   generate:
@@ -22,7 +23,7 @@ jobs:
       - name: Install Poetry
         uses: snok/install-poetry@v1
         with:
-          version: 1.1.13
+          version: 1.3.2
           virtualenvs-create: true
           virtualenvs-in-project: true
 
@@ -38,10 +39,11 @@ jobs:
         run: poetry install --no-interaction --no-root -E doc
 
       - name: Install packages
-        run: poetry install --no-interaction -E prediction -E doc -E optimization
+        run: poetry install --no-interaction -E forecast -E doc -E optimization
 
       - run: |
           source $VENV
+          pip uninstall Brotli -y
           pytest tests/website --autodoc
           python website/generate_sdk_markdown.py && python website/generate_terminal_markdown.py
 
@@ -64,6 +66,7 @@ jobs:
       # Docs: https://github.com/peaceiris/actions-gh-pages#%EF%B8%8F-docusaurus
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
+        if: startsWith(github.ref, 'refs/heads/main')
         with:
           github_token: ${{ secrets.DEPLOY_TOKEN }}
           publish_dir: ./website/build
@@ -74,4 +77,3 @@ jobs:
           # You can swap them out with your own user credentials.
           user_name: github-actions[bot]
           user_email: 41898282+github-actions[bot]@users.noreply.github.com
-  

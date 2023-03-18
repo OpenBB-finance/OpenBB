@@ -6,9 +6,9 @@ import logging
 import pandas as pd
 
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.rich_config import console
 from openbb_terminal.helper_funcs import print_rich_table
 from openbb_terminal.mutual_funds import avanza_model
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -28,18 +28,20 @@ sector_dict = {
 
 
 @log_start_end(log=logger)
-def display_allocation(name: str, focus: str):
+def display_allocation(name: str, isin: str, focus: str):
     """Displays the allocation of the selected swedish fund
 
     Parameters
     ----------
     name: str
         Full name of the fund
+    isin: str
+        ISIN of the fund
     focus: str
         The focus of the displayed allocation/exposure of the fund
     """
     # Taken from: https://github.com/northern-64bit/Portfolio-Report-Generator/tree/main
-    fund_data = avanza_model.get_data(name.upper())
+    fund_data = avanza_model.get_data(isin)
     if focus in ["holding", "all"]:
         table_row = []
         console.print("")
@@ -81,15 +83,15 @@ def display_allocation(name: str, focus: str):
 
 
 @log_start_end(log=logger)
-def display_info(name: str):
+def display_info(isin: str):
     """Displays info of swedish funds
 
     Parameters
     ----------
-    name: str
-        Full name of the fund
+    isin: str
+        ISIN of the fund
     """
-    fund_data = avanza_model.get_data(name.upper())
+    fund_data = avanza_model.get_data(isin)
     text = f"\nSwedish Description:\n\n{fund_data['description']}\n\nThe fund is managed by:\n"
     for manager in fund_data["fundManagers"]:
         text = text + f"\t- {manager['name']} since {manager['startDate']}\n"
@@ -98,10 +100,11 @@ def display_info(name: str):
         + f"from {fund_data['adminCompany']['name']}.\nFund currency is {fund_data['currency']}"
         f" and it the fund started {fund_data['startDate']}."
     )
-    if fund_data["indexFund"]:
-        text = text + " It is a index fund."
-    else:
-        text = text + " It is not a index fund."
+    text = (
+        text + " It is a index fund."
+        if fund_data["indexFund"]
+        else text + " It is not a index fund."
+    )
     text = (
         text
         + f" The fund manages {str(fund_data['capital'])} {fund_data['currency']}. The "

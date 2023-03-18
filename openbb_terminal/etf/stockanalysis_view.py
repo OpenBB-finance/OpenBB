@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import List
+from typing import List, Optional
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.etf import stockanalysis_model
@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def view_overview(symbol: str, export: str = ""):
+def view_overview(symbol: str, export: str = "", sheet_name: Optional[str] = None):
     """Print etf overview information
 
     Parameters
@@ -38,11 +38,19 @@ def view_overview(symbol: str, export: str = ""):
         show_index=True,
     )
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "overview", data)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "overview",
+        data,
+        sheet_name,
+    )
 
 
 @log_start_end(log=logger)
-def view_holdings(symbol: str, limit: int = 10, export: str = ""):
+def view_holdings(
+    symbol: str, limit: int = 10, export: str = "", sheet_name: Optional[str] = None
+):
     """
 
     Parameters
@@ -51,6 +59,8 @@ def view_holdings(symbol: str, limit: int = 10, export: str = ""):
         ETF symbol to show holdings for
     limit: int
         Number of holdings to show
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     """
@@ -63,17 +73,27 @@ def view_holdings(symbol: str, limit: int = 10, export: str = ""):
         show_index=True,
     )
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "holdings", data)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "holdings",
+        data,
+        sheet_name,
+    )
 
 
 @log_start_end(log=logger)
-def view_comparisons(symbols: List[str], export: str = ""):
+def view_comparisons(
+    symbols: List[str], export: str = "", sheet_name: Optional[str] = None
+):
     """Show ETF comparisons
 
     Parameters
     ----------
     symbols: List[str]
         List of ETF symbols
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
     """
@@ -92,11 +112,19 @@ def view_comparisons(symbols: List[str], export: str = ""):
         data, headers=list(data.columns), title="ETF Comparisons", show_index=True
     )
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "overview", data)
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "overview",
+        data,
+        sheet_name,
+    )
 
 
 @log_start_end(log=logger)
-def display_etf_by_name(name: str, limit: int = 10, export: str = ""):
+def display_etf_by_name(
+    name: str, limit: int = 10, export: str = "", sheet_name: Optional[str] = None
+):
     """Display ETFs matching search string. [Source: StockAnalysis]
 
     Parameters
@@ -105,6 +133,8 @@ def display_etf_by_name(name: str, limit: int = 10, export: str = ""):
         String being matched
     limit: int
         Limit of ETFs to display
+    sheet_name: str
+        Optionally specify the name of the sheet the data is exported to.
     export: str
         Export to given file type
 
@@ -122,4 +152,5 @@ def display_etf_by_name(name: str, limit: int = 10, export: str = ""):
         os.path.dirname(os.path.abspath(__file__)),
         "ln_sa",
         matching_etfs,
+        sheet_name,
     )

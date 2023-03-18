@@ -4,13 +4,14 @@ __docformat__ = "numpy"
 import logging
 import warnings
 from typing import Tuple, Union
+
+import numpy as np
 import pandas as pd
 import statsmodels.api as sm
+from scipy import stats
 from statsmodels.tools.sm_exceptions import MissingDataError
 from statsmodels.tsa.seasonal import DecomposeResult, seasonal_decompose
 from statsmodels.tsa.stattools import adfuller, kpss
-from scipy import stats
-import numpy as np
 
 from openbb_terminal.decorators import log_start_end
 
@@ -268,16 +269,12 @@ def get_var(
     percentile_custom = stats.norm.ppf(1 - percentile)
 
     # Mean
-    if use_mean:
-        mean = data_return.mean()
-    else:
-        mean = 0
+    mean = data_return.mean() if use_mean else 0
 
     # Standard Deviation
     std = data_return.std(axis=0)
 
     if adjusted_var:
-
         # Kurtosis
         # Measures height and sharpness of the central peak relative to that of a standard bell curve
         k = data_return.kurtosis(axis=0)
@@ -396,10 +393,7 @@ def get_es(
     percentile_custom = stats.norm.ppf(1 - percentile)
 
     # Mean
-    if use_mean:
-        mean = data_return.mean()
-    else:
-        mean = 0
+    mean = data_return.mean() if use_mean else 0
 
     # Standard Deviation
     std = data_return.std(axis=0)
@@ -418,10 +412,11 @@ def get_es(
         es_95 = -b * (1 - np.log(2 * 0.05)) + mean
         es_99 = -b * (1 - np.log(2 * 0.01)) + mean
 
-        if (1 - percentile) < 0.5:
-            es_custom = -b * (1 - np.log(2 * (1 - percentile))) + mean
-        else:
-            es_custom = 0
+        es_custom = (
+            -b * (1 - np.log(2 * (1 - percentile))) + mean
+            if 1 - percentile < 0.5
+            else 0
+        )
 
     elif distribution == "student_t":
         # Calculating ES based on the Student-t distribution

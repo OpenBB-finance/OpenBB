@@ -4,31 +4,33 @@ __docformat__ = "numpy"
 import argparse
 import datetime
 import logging
-from pathlib import Path
-from typing import List
-
-from openbb_terminal.custom_prompt_toolkit import NestedCompleter
+from typing import List, Optional
 
 from openbb_terminal import feature_flags as obbff
-from openbb_terminal.core.config.paths import USER_PRESETS_DIRECTORY
+from openbb_terminal.core.config.paths import (
+    MISCELLANEOUS_DIRECTORY,
+    USER_PRESETS_DIRECTORY,
+)
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_positive,
-    valid_date,
     parse_and_split_input,
+    valid_date,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console, MenuText
+from openbb_terminal.rich_config import MenuText, console
 from openbb_terminal.stocks.comparison_analysis import ca_controller
 from openbb_terminal.stocks.screener import (
+    ark_view,
     finviz_model,
     finviz_view,
-    yahoofinance_view,
-    screener_view,
     screener_helper,
+    screener_view,
+    yahoofinance_view,
 )
 
 logger = logging.getLogger(__name__)
@@ -53,9 +55,10 @@ class ScreenerController(BaseController):
         "ownership",
         "performance",
         "technical",
+        "arktrades",
     ]
 
-    PRESETS_PATH_DEFAULT = Path(__file__).parent / "presets"
+    PRESETS_PATH_DEFAULT = MISCELLANEOUS_DIRECTORY / "stocks" / "screener"
     preset_choices = {
         filepath.name.replace(".ini", ""): filepath
         for filepath in PRESETS_PATH.iterdir()
@@ -74,7 +77,7 @@ class ScreenerController(BaseController):
     PATH = "/stocks/scr/"
     CHOICES_GENERATION = True
 
-    def __init__(self, queue: List[str] = None):
+    def __init__(self, queue: Optional[List[str]] = None):
         """Constructor"""
         super().__init__(queue)
 
@@ -92,7 +95,10 @@ class ScreenerController(BaseController):
         See `BaseController.parse_input()` for details.
         """
         # Filtering out sorting parameters with forward slashes like P/E
-        sort_filter = r"((\ -s |\ --sort ).*?(P\/E|Fwd P\/E|P\/S|P\/B|P\/C|P\/FCF)*)"
+        f0 = r"(p\/e|fwd p\/e|p\/s|p\/b|p\/c|p\/fcf)"
+        f1 = r"(P\/E|Fwd P\/E|P\/S|P\/B|P\/C|P\/FCF)"
+
+        sort_filter = r"((\ -s |\ --sort ).*?" + r"(" + f0 + r"|" + f1 + r")" + r"*)"
 
         custom_filters = [sort_filter]
 
@@ -116,6 +122,7 @@ class ScreenerController(BaseController):
         mt.add_cmd("ownership")
         mt.add_cmd("performance")
         mt.add_cmd("technical")
+        mt.add_cmd("arktrades")
         mt.add_raw("\n")
         mt.add_param("_screened_tickers", ", ".join(self.screen_tickers))
         mt.add_raw("\n")
@@ -228,10 +235,11 @@ class ScreenerController(BaseController):
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
-            if self.preset.strip(".ini") in finviz_model.d_signals:
-                preset = self.preset.strip(".ini")
-            else:
-                preset = self.preset
+            preset = (
+                self.preset.strip(".ini")
+                if self.preset.strip(".ini") in finviz_model.d_signals
+                else self.preset
+            )
             self.screen_tickers = yahoofinance_view.historical(
                 preset,
                 ns_parser.limit,
@@ -300,10 +308,11 @@ class ScreenerController(BaseController):
         )
 
         if ns_parser:
-            if self.preset.strip(".ini") in finviz_model.d_signals:
-                preset = self.preset.strip(".ini")
-            else:
-                preset = self.preset
+            preset = (
+                self.preset.strip(".ini")
+                if self.preset.strip(".ini") in finviz_model.d_signals
+                else self.preset
+            )
 
             sort_map = screener_helper.finviz_map("overview")
             self.screen_tickers = finviz_view.screener(
@@ -313,6 +322,9 @@ class ScreenerController(BaseController):
                 ascend=ns_parser.reverse,
                 sortby=sort_map[ns_parser.sort],
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -374,10 +386,11 @@ class ScreenerController(BaseController):
         )
 
         if ns_parser:
-            if self.preset.strip(".ini") in finviz_model.d_signals:
-                preset = self.preset.strip(".ini")
-            else:
-                preset = self.preset
+            preset = (
+                self.preset.strip(".ini")
+                if self.preset.strip(".ini") in finviz_model.d_signals
+                else self.preset
+            )
             sort_map = screener_helper.finviz_map("valuation")
             self.screen_tickers = finviz_view.screener(
                 loaded_preset=preset,
@@ -386,6 +399,9 @@ class ScreenerController(BaseController):
                 ascend=ns_parser.reverse,
                 sortby=sort_map[ns_parser.sort],
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -447,10 +463,11 @@ class ScreenerController(BaseController):
         )
 
         if ns_parser:
-            if self.preset.strip(".ini") in finviz_model.d_signals:
-                preset = self.preset.strip(".ini")
-            else:
-                preset = self.preset
+            preset = (
+                self.preset.strip(".ini")
+                if self.preset.strip(".ini") in finviz_model.d_signals
+                else self.preset
+            )
             sort_map = screener_helper.finviz_map("financial")
             self.screen_tickers = finviz_view.screener(
                 loaded_preset=preset,
@@ -459,6 +476,9 @@ class ScreenerController(BaseController):
                 ascend=ns_parser.reverse,
                 sortby=sort_map[ns_parser.sort],
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -520,10 +540,11 @@ class ScreenerController(BaseController):
         )
 
         if ns_parser:
-            if self.preset.strip(".ini") in finviz_model.d_signals:
-                preset = self.preset.strip(".ini")
-            else:
-                preset = self.preset
+            preset = (
+                self.preset.strip(".ini")
+                if self.preset.strip(".ini") in finviz_model.d_signals
+                else self.preset
+            )
             sort_map = screener_helper.finviz_map("ownership")
             self.screen_tickers = finviz_view.screener(
                 loaded_preset=preset,
@@ -532,6 +553,9 @@ class ScreenerController(BaseController):
                 ascend=ns_parser.reverse,
                 sortby=sort_map[ns_parser.sort],
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -594,10 +618,11 @@ class ScreenerController(BaseController):
 
         sort_map = screener_helper.finviz_map("performance")
         if ns_parser:
-            if self.preset.strip(".ini") in finviz_model.d_signals:
-                preset = self.preset.strip(".ini")
-            else:
-                preset = self.preset
+            preset = (
+                self.preset.strip(".ini")
+                if self.preset.strip(".ini") in finviz_model.d_signals
+                else self.preset
+            )
             self.screen_tickers = finviz_view.screener(
                 loaded_preset=preset,
                 data_type="performance",
@@ -605,6 +630,9 @@ class ScreenerController(BaseController):
                 ascend=ns_parser.reverse,
                 sortby=sort_map[ns_parser.sort],
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -665,10 +693,11 @@ class ScreenerController(BaseController):
         )
 
         if ns_parser:
-            if self.preset.strip(".ini") in finviz_model.d_signals:
-                preset = self.preset.strip(".ini")
-            else:
-                preset = self.preset
+            preset = (
+                self.preset.strip(".ini")
+                if self.preset.strip(".ini") in finviz_model.d_signals
+                else self.preset
+            )
             sort_map = screener_helper.finviz_map("technical")
             self.screen_tickers = finviz_view.screener(
                 loaded_preset=preset,
@@ -677,6 +706,9 @@ class ScreenerController(BaseController):
                 ascend=ns_parser.reverse,
                 sortby=sort_map[ns_parser.sort],
                 export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )
 
     @log_start_end(log=logger)
@@ -692,4 +724,53 @@ class ScreenerController(BaseController):
             console.print(
                 "Please select a screener using 'set' and then run 'historical' "
                 "before going to the CA menu.\n"
+            )
+
+    @log_start_end(log=logger)
+    def call_arktrades(self, other_args):
+        """Process arktrades command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            prog="arktrades",
+            description="""
+                Get trades for ticker across all ARK funds.
+            """,
+        )
+        parser.add_argument(
+            "-t",
+            "--ticker",
+            help="The ticker to use for searching.",
+            dest="ticker",
+            required=True,
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            help="Limit of rows to show",
+            dest="limit",
+            default=10,
+            type=check_positive,
+        )
+        parser.add_argument(
+            "-s",
+            "--show_symbol",
+            action="store_true",
+            default=False,
+            help="Flag to show ticker in table",
+            dest="show_symbol",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-t")
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            ark_view.display_ark_trades(
+                symbol=ns_parser.ticker,
+                limit=ns_parser.limit,
+                show_symbol=ns_parser.show_symbol,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
             )

@@ -1,3 +1,3 @@
-    Ticker                             Company       Sector                 Industry  Country Market Cap  P/E  Price  Change   Volume
-37     ADN  Advent Technologies Holdings, Inc.    Utilities    Utilities - Renewable      USA    168.7 M        2.90  0.1647  965.1 K
-113    AER                AerCap Holdings N.V.  Industrials  Airports & Air Services  Ireland     12.9 B  6.7  48.63  0.1080    4.2 M
+   Ticker                        Company       Sector                       Industry Country Market Cap    P/E  Price  Change   Volume
+79   AAOI  Applied Optoelectronics, Inc.   Technology                 Semiconductors     USA     93.3 M          2.81  0.0849  177.3 K
+34   AAON                     AAON, Inc.  Industrials  Building Products & Equipment     USA      4.8 B  72.42  90.96  0.1162    1.3 M

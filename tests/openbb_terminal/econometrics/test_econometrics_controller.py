@@ -1,5 +1,6 @@
-import pytest
 import pandas as pd
+import pytest
+
 from openbb_terminal.econometrics.econometrics_controller import EconometricsController
 
 # pylint: disable=W0621

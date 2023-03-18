@@ -6,9 +6,9 @@ from datetime import datetime, timedelta
 from typing import Optional
 
 import pandas as pd
-import requests
 
 from openbb_terminal.decorators import log_start_end
+from openbb_terminal.helper_funcs import request
 
 logger = logging.getLogger(__name__)
 
@@ -51,7 +51,7 @@ def get_put_call_ratio(
             Chrome/70.0.3538.77 Safari/537.36"
     }
 
-    r = requests.get(url, headers=headers)
+    r = request(url, headers=headers)
     if r.status_code != 200:
         return pd.DataFrame()
 

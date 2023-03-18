@@ -206,7 +206,6 @@ class ControllerDoc:
     """
 
     def __init__(self, controller: BaseController, trailmap: str):
-
         self.controller = controller(**get_parameters(controller))
         self.trailmap = trailmap
         self.name = trailmap.split(".")[-1]
@@ -234,7 +233,6 @@ class ControllerDoc:
         """Get commands"""
         commands = []
         for name, _ in getmembers(self.controller, predicate=inspect.ismethod):
-
             if name.startswith("call_") and name not in self.ignore:
                 func = getattr(self.controller, name)
 
@@ -327,7 +325,9 @@ class LoadControllersDoc:
         """Gets all controllers"""
         for trailmap, module in self._get_modules().items():
             for name, obj in getmembers(module):
-                if name != "TerminalController" and "BaseController" not in name:
+                if (  # noqa: SIM102
+                    name != "TerminalController" and "BaseController" not in name
+                ):  # noqa: SIM102
                     if isclass(obj) and issubclass(obj, BaseController):
                         if trailmap not in self.controller_docs:
                             ctrl = ControllerDoc(obj, trailmap)

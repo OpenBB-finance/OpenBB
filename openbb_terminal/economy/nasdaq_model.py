@@ -4,14 +4,14 @@ __docformat__ = "numpy"
 import argparse
 import logging
 import os
+from datetime import datetime as dt
 from typing import List, Optional, Union
 
-from datetime import datetime as dt
 import pandas as pd
-import requests
 
-from openbb_terminal.config_terminal import API_KEY_QUANDL
+import openbb_terminal.config_terminal as cfg
 from openbb_terminal.decorators import check_api_key, log_start_end
+from openbb_terminal.helper_funcs import request
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -73,7 +73,7 @@ def get_economic_calendar(
     for date in dates:
         try:
             df = pd.DataFrame(
-                requests.get(
+                request(
                     f"https://api.nasdaq.com/api/calendar/economicevents?date={date}",
                     headers={
                         "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
@@ -92,7 +92,7 @@ def get_economic_calendar(
 
     calendar = calendar.rename(
         columns={
-            "gmt": "Time (GMT)",
+            "gmt": "Time (ET)",
             "country": "Country",
             "eventName": "Event",
             "actual": "Actual",
@@ -177,9 +177,9 @@ def get_big_mac_index(country_code: str = "USA") -> pd.DataFrame:
         Dataframe with Big Mac index converted to USD equivalent.
     """
     URL = f"https://data.nasdaq.com/api/v3/datasets/ECONOMIST/BIGMAC_{country_code}"
-    URL += f"?column_index=3&api_key={API_KEY_QUANDL}"
+    URL += f"?column_index=3&api_key={cfg.API_KEY_QUANDL}"
     try:
-        r = requests.get(URL)
+        r = request(URL)
     except Exception:
         console.print("[red]Error connecting to NASDAQ API[/red]\n")
         return pd.DataFrame()
@@ -207,7 +207,7 @@ def get_big_mac_index(country_code: str = "USA") -> pd.DataFrame:
 
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_QUANDL"])
-def get_big_mac_indices(country_codes: List[str] = None) -> pd.DataFrame:
+def get_big_mac_indices(country_codes: Optional[List[str]] = None) -> pd.DataFrame:
     """Display Big Mac Index for given countries
 
     Parameters

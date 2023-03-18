@@ -14,6 +14,7 @@ app_settings = AppSettings(
     name="MOCK_COMMIT_HASH",
     identifier="MOCK_COMMIT_HASH",
     session_id="MOCK_SESSION_ID",
+    user_id="MOCK_USER_ID",
 )
 formatter = FormatterWithExceptions(app_settings)
 

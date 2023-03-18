@@ -5,23 +5,18 @@ import os.path
 # IMPORTATION THIRDPARTY
 import i18n
 
+from openbb_terminal.base_helpers import load_env_vars, strtobool
+from openbb_terminal.core.config import paths_helper
+
 # IMPORTATION INTERNAL
 from openbb_terminal.core.config.paths import (
     MISCELLANEOUS_DIRECTORY,
     USER_DATA_SOURCES_DEFAULT_FILE,
-    load_dotenv_with_priority,
-)
-from openbb_terminal.core.config import paths_helper
-from openbb_terminal.base_helpers import (
-    load_env_vars,
-    strtobool,
 )
 
 paths_helper.init_userdata()
 
 # pylint: disable=no-member,c-extension-no-member
-
-load_dotenv_with_priority()
 
 try:
     __import__("git")
@@ -30,6 +25,11 @@ except ImportError:
 else:
     WITH_GIT = True
 
+# Sync with OpenBB server
+SYNC_ENABLED = load_env_vars("OPENBB_SYNC_ENABLED", strtobool, True, "featflags")
+
+# Always overwrite exported files
+FILE_OVERWITE = load_env_vars("OPENBB_FILE_OVERWRITE", strtobool, False, "featflags")
 
 # Retry unknown commands with `load`
 RETRY_WITH_LOAD = load_env_vars("OPENBB_RETRY_WITH_LOAD", strtobool, False, "featflags")
@@ -44,9 +44,6 @@ USE_CLEAR_AFTER_CMD = load_env_vars(
 
 # Use coloring features
 USE_COLOR = load_env_vars("OPENBB_USE_COLOR", strtobool, True, "featflags")
-
-# Select console flair (choose from config_terminal.py list)
-USE_FLAIR = str(os.getenv("OPENBB_USE_FLAIR", ":openbb"))
 
 # Add date and time to command line
 USE_DATETIME = load_env_vars("OPENBB_USE_DATETIME", strtobool, True, "featflags")
@@ -119,6 +116,38 @@ EXPORT_FOLDER_PATH = str(os.getenv("OPENBB_EXPORT_FOLDER_PATH", ""))
 # Toolbar hint
 TOOLBAR_HINT = load_env_vars("OPENBB_TOOLBAR_HINT", strtobool, True, "featflags")
 
+# Toolbar Twitter news
+TOOLBAR_TWEET_NEWS = load_env_vars(
+    "OPENBB_TOOLBAR_TWEET_NEWS", strtobool, False, "featflags"
+)
+
+# Toolbar Twitter news seconds between updates being checked
+TOOLBAR_TWEET_NEWS_SECONDS_BETWEEN_UPDATES = load_env_vars(
+    "OPENBB_TOOLBAR_TWEET_NEWS_SECONDS_BETWEEN_UPDATES", int, 300, "settings"
+)
+
+# Toolbar Twitter news accounts to track
+TOOLBAR_TWEET_NEWS_ACCOUNTS_TO_TRACK = load_env_vars(
+    "OPENBB_TOOLBAR_TWEET_NEWS_ACCOUNTS_TO_TRACK",
+    str,
+    "WatcherGuru,unusual_whales,gurgavin,CBSNews",
+    "settings",
+)
+
+# Toolbar Twitter news keywords to look for
+TOOLBAR_TWEET_NEWS_KEYWORDS = load_env_vars(
+    "OPENBB_TOOLBAR_TWEET_NEWS_KEYWORDS",
+    str,
+    "BREAKING,JUST IN",
+    "settings",
+)
+
+
+# Toolbar Twitter news number of last tweets to read
+TOOLBAR_TWEET_NEWS_NUM_LAST_TWEETS_TO_READ = load_env_vars(
+    "OPENBB_TOOLBAR_TWEET_NEWS_NUM_LAST_TWEETS_TO_READ", int, 3, "settings"
+)
+
 # Select language to be used
 USE_LANGUAGE = str(os.getenv("OPENBB_USE_LANGUAGE", "en"))
 
@@ -129,6 +158,12 @@ PREFERRED_DATA_SOURCE_FILE = str(
         USER_DATA_SOURCES_DEFAULT_FILE,
     )
 )
+
+# Timezone
+TIMEZONE = str(os.getenv("OPENBB_TIMEZONE", "America/New_York"))
+
+# Select console flair (choose from config_terminal.py list)
+USE_FLAIR = str(os.getenv("OPENBB_USE_FLAIR", ":openbb"))
 
 # Guess file
 GUESS_EASTER_EGG_FILE = str(
@@ -146,7 +181,7 @@ try:
     else:
         raise Exception("Using git")
 except Exception:
-    version = "2.2.0"
+    version = "2.5.1"
 VERSION = str(os.getenv("OPENBB_VERSION", version))
 
 # Select the terminal translation language
