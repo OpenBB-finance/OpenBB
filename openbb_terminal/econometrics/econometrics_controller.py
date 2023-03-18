@@ -785,6 +785,7 @@ class EconometricsController(BaseController):
         try:
             dataset, col = ns_parser.values.split(".")
             data = self.datasets[dataset]
+            data.name = dataset
         except ValueError:
             console.print("[red]Please enter 'dataset'.'column'.[/red]\n")
             return
