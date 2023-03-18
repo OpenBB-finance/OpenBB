@@ -228,7 +228,7 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
   // to make sure that the legend is not cut off
   graphs.data.forEach(function (trace) {
     if (trace.name != undefined) {
-      trace.name = trace.name + "     ";
+      trace.name = trace.name + "         ";
     }
   });
 

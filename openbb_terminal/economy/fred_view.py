@@ -108,16 +108,28 @@ def display_fred_series(
     # Try to get everything onto the same 0-10 scale.
     # To do so, think in scientific notation.  Divide the data by whatever the E would be
 
-    fig = OpenBBFigure()
+    fig = OpenBBFigure(title="FRED Series")
     for s_id, sub_dict in detail.items():
         data_to_plot, title = format_data_to_plot(data[s_id], sub_dict)
+        title = title.replace(
+            "Assets: Total Assets: Total Assets", "Assets: Total Assets"
+        )
 
         fig.add_scatter(
             x=data_to_plot.index,
             y=data_to_plot,
-            name="\n".join(textwrap.wrap(title, 80)) if len(series_ids) < 5 else title,
+            showlegend=len(series_ids) > 1,
+            name="<br>".join(textwrap.wrap(title, 80))
+            if len(series_ids) < 5
+            else title,
         )
+        if len(series_ids) == 1:
+            fig.set_title(title)
 
+    fig.update_layout(
+        margin=dict(b=20),
+        legend=dict(yanchor="top", y=-0.06, xanchor="left", x=0),
+    )
     data.index = [x.strftime("%Y-%m-%d") for x in data.index]
 
     if raw:
