@@ -27,7 +27,6 @@ cfg.start_required_configurations()
 cfg.start_plot_backend()
 
 logger = logging.getLogger(__name__)
-cfg.theme.applyMPLstyle()
 
 
 class OpenBBSDK:
