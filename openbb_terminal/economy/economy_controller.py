@@ -894,7 +894,11 @@ class EconomyController(BaseController):
                 return self.queue
 
             if indices:
-                for i, index in enumerate(indices):
+                # We create a list of dataframes and a list of columns
+                # We then concatenate the dataframes and set the columns
+                dfs_indices, columns = [], []
+
+                for index in indices:
                     df = yfinance_model.get_index(
                         index,
                         interval=ns_parser.interval,
@@ -902,6 +906,7 @@ class EconomyController(BaseController):
                         end_date=ns_parser.end_date,
                         column=ns_parser.column,
                     )
+                    dfs_indices.append(df)
 
                     if not df.empty:
                         self.DATASETS["index"][index] = df
@@ -909,26 +914,42 @@ class EconomyController(BaseController):
                         self.stored_datasets = (
                             economy_helpers.update_stored_datasets_string(self.DATASETS)
                         )
+                        columns.append(index)
 
-                        # display only once in the last iteration
-                        if i == len(indices) - 1:
-                            yfinance_view.show_indices(
-                                indices=indices,
-                                interval=ns_parser.interval,
-                                start_date=ns_parser.start_date,
-                                end_date=ns_parser.end_date,
-                                column=ns_parser.column,
-                                raw=ns_parser.raw,
-                                export=ns_parser.export,
-                                sheet_name=" ".join(ns_parser.sheet_name)
-                                if ns_parser.sheet_name
-                                else None,
-                                returns=ns_parser.returns,
-                            )
+                # If no data is found, we print a message and return
+                if not dfs_indices:
+                    text = "Indices" if len(indices) > 1 else "Index"
+                    console.print(f"[red]No data found for the given {text}[/red]")
+                    return self.queue
 
-                            self.update_runtime_choices()
-                            if get_current_user().preferences.ENABLE_EXIT_AUTO_HELP:
-                                self.print_help()
+                # We concatenate the dataframes here to avoid having
+                # to regrab the data in the view
+                indices_data = pd.concat(dfs_indices, axis=1)
+                indices_data.columns = columns
+
+                # If returns are requested, we calculate them here as well
+                if ns_parser.returns:
+                    indices_data = indices_data.pct_change().dropna()
+                    indices_data = indices_data + 1
+                    indices_data = indices_data.cumprod()
+
+                yfinance_view.show_indices(
+                    indices=indices_data,
+                    interval=ns_parser.interval,
+                    start_date=ns_parser.start_date,
+                    end_date=ns_parser.end_date,
+                    column=ns_parser.column,
+                    raw=ns_parser.raw,
+                    export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
+                    returns=ns_parser.returns,
+                )
+
+                self.update_runtime_choices()
+                if get_current_user().preferences.ENABLE_EXIT_AUTO_HELP:
+                    self.print_help()
 
     @log_start_end(log=logger)
     def call_treasury(self, other_args: List[str]):
