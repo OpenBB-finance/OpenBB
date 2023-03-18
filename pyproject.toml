@@ -131,10 +131,10 @@ doc = ["docstring-parser"]
 [tool.poetry.group.dev.dependencies]
 pytest-xdist = "^3.2.0"
 pytest = "^6.2.2"
-pylint = "2.15.2"
-mypy = "^1.0.0"
+pylint = "2.17.0"
+mypy = "^1.1.1"
 mock = "^4.0.3"
-codespell = "^2.0.0"
+codespell = "^2.2.4"
 pydocstyle = "^6.3.0"
 sphinx = "^4.5.0"
 myst-parser = "^0.15.2"
@@ -153,7 +153,7 @@ pre-commit = "^2.16.0"
 pytest-cov = "^3.0.0"
 types-six = "^1.16.12"
 nbmake = ">0.5.0"
-ruff = "^0.0.247"
+ruff = "^0.0.256"
 pytest-timeout = "^2.1.0"
 
 [build-system]
@@ -173,7 +173,7 @@ target-version = "py38"
 # All options here: https://github.com/charliermarsh/ruff#supported-rules
 select = ["E", "W", "F", "Q", "S", "UP", "I", "PLC", "PLE", "PLR", "PLW", "SIM"]
 # These ignores should be seen as temporary solutions to problems that will NEED fixed
-ignore = ["S105", "S106", "S107", "S110", "PLR2004", "PLR0911", "PLR0913", "PLR0912", "PLR0915", "SIM114", "SIM105", "SIM117"]
+ignore = ["S105", "S106", "S107", "S110", "PLR2004", "PLR0911", "PLR0913", "PLR0912", "PLR0915", "SIM114", "SIM105", "SIM117", "PLC1901", "PLR5501","PLW2901","PLW0603"]
 
 [tool.ruff.per-file-ignores]
 "tests/*" = ["S101"]

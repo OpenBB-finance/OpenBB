@@ -217,7 +217,11 @@ class OptionsController(BaseController):
                 self.current_price = yfinance_model.get_last_price(self.ticker)
 
     def set_expiry_dates(self):
-        self.expiry_dates = self.full_chain.expiration.unique().tolist() or []
+        if self.full_chain.empty:
+            self.expiry_dates = []
+            console.print("[red]The ticker provided could not be found[/red]\n")
+        else:
+            self.expiry_dates = self.full_chain.expiration.unique().tolist() or []
 
     def update_runtime_choices(self):
         """Update runtime choices"""
