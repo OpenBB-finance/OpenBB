@@ -538,7 +538,7 @@ def check_indicators(string: str) -> List[str]:
     return strings
 
 
-def check_indicator_parameters(args: str, help: bool = False) -> str:
+def check_indicator_parameters(args: str, _help: bool = False) -> str:
     """Check if indicators parameters are valid."""
     ta_cls = PlotlyTA()
     indicators_dict: dict = {}
@@ -551,7 +551,7 @@ def check_indicator_parameters(args: str, help: bool = False) -> str:
         args = "[],".join(indicators) + "[]"
         matches = regex.findall(args)
 
-    if help:
+    if _help:
         console.print(
             """[yellow]To pass custom parameters to indicators:[/]
 
@@ -574,7 +574,7 @@ def check_indicator_parameters(args: str, help: bool = False) -> str:
 
             indicators_dict.setdefault(indicator, {})
             if indicator in ["fib", "srlines", "demark", "clenow"]:
-                if help:
+                if _help:
                     console.print(
                         f"[yellow]{indicator}:[/]\n{'':^4}[green]Parameters: None[/]"
                     )
@@ -584,7 +584,7 @@ def check_indicator_parameters(args: str, help: bool = False) -> str:
             kwargs = list(set(fullspec.args) - set(pop_keys))
             kwargs.sort(key=fullspec.args.index)
 
-            if help:
+            if _help:
                 console.print(
                     f"[yellow]{indicator}:[/]\n{'':^4}[green]Parameters: {', '.join(kwargs)}[/]"
                 )
