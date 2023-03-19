@@ -547,8 +547,8 @@ def check_indicator_parameters(args: str, help: bool = False) -> str:
     matches = regex.findall(args)
 
     if not matches:
-        args = check_indicators(args)
-        args = "[],".join(args) + "[]"
+        indicators = check_indicators(args)
+        args = "[],".join(indicators) + "[]"
         matches = regex.findall(args)
 
     if help:
