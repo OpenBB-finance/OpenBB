@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 # IMPORTATION STANDARD
 import logging
 import os
+from datetime import datetime
 from typing import List, Optional
 
 import pandas as pd
@@ -107,7 +108,7 @@ def plot_gdp(
 
 
 @log_start_end(log=logger)
-def plot_quarterly_gdp(
+def plot_real_gdp(
     countries: Optional[List[str]],
     units: str = "PC_CHGPY",
     start_date: str = "",
@@ -157,7 +158,7 @@ def plot_quarterly_gdp(
             "for units"
         )
 
-    df = oecd_model.get_quarterly_gdp(countries, units, start_date, end_date)
+    df = oecd_model.get_real_gdp(countries, units, start_date, end_date)
 
     if units == "PC_CHGPP":
         fig = OpenBBFigure(yaxis_title="Previous Quarter (% Change)")
@@ -179,7 +180,7 @@ def plot_quarterly_gdp(
             showlegend=True,
         )
 
-    title = "Quarterly Real Gross Domestic Product (GDP)"
+    title = "Real Gross Domestic Product (GDP)"
     fig.set_title(title)
 
     if raw:
@@ -253,6 +254,7 @@ def plot_gdp_forecast(
 
     fig = OpenBBFigure(yaxis_title="Growth rates Compared to Previous Year (%)")
 
+    future_dates = df[df.index > str(datetime.now())]
     for country in df.columns:
         fig.add_scatter(
             x=df.index,
@@ -261,6 +263,16 @@ def plot_gdp_forecast(
             mode="lines",
             line_width=2.5,
             showlegend=True,
+        )
+
+    if not future_dates.empty:
+        fig.add_vrect(
+            x0=future_dates.index[0],
+            x1=future_dates.index[-1],
+            annotation_text="Forecast",
+            fillcolor="yellow",
+            opacity=0.20,
+            line_width=0,
         )
 
     title = (

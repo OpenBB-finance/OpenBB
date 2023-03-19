@@ -61,7 +61,7 @@ COUNTRY_TO_CODE_GDP = {
     "united_states": "USA",
 }
 
-COUNTRY_TO_CODE_QGDP = {
+COUNTRY_TO_CODE_RGDP = {
     "G20": "G-20",
     "G7": "G-7",
     "argentina": "ARG",
@@ -530,10 +530,15 @@ def get_gdp(
 
     result = pd.DataFrame()
     for country in countries:  # type: ignore
-        temp = pd.DataFrame(df[df["LOCATION"] == COUNTRY_TO_CODE_GDP[country]]["Value"])
-        temp.index = temp.index.map(str)
-        temp.columns = [country]
-        result = pd.concat([result, temp], axis=1)
+        try:
+            temp = pd.DataFrame(
+                df[df["LOCATION"] == COUNTRY_TO_CODE_GDP[country]]["Value"]
+            )
+            temp.index = temp.index.map(str)
+            temp.columns = [country]
+            result = pd.concat([result, temp], axis=1)
+        except KeyError:
+            console.print(f"No data available for {country}.")
 
     result.index = pd.to_datetime(result.index).year
     result.sort_index(inplace=True)
@@ -542,7 +547,7 @@ def get_gdp(
 
 
 @log_start_end(log=logger)
-def get_quarterly_gdp(
+def get_real_gdp(
     countries: Optional[List[str]],
     units: str = "PC_CHGPY",
     start_date="",
@@ -608,12 +613,15 @@ def get_quarterly_gdp(
 
     result = pd.DataFrame()
     for country in countries:  # type: ignore
-        temp = pd.DataFrame(
-            df[df["LOCATION"] == COUNTRY_TO_CODE_QGDP[country]]["Value"]
-        )
-        temp.index = temp.index.map(str)
-        temp.columns = [country]
-        result = pd.concat([result, temp], axis=1)
+        try:
+            temp = pd.DataFrame(
+                df[df["LOCATION"] == COUNTRY_TO_CODE_RGDP[country]]["Value"]
+            )
+            temp.index = temp.index.map(str)
+            temp.columns = [country]
+            result = pd.concat([result, temp], axis=1)
+        except KeyError:
+            console.print(f"No data available for {country}.")
 
     result.index = (
         pd.PeriodIndex(result.index, freq="Q").to_timestamp().strftime("%Y-%m")
@@ -665,7 +673,7 @@ def get_gdp_forecast(
     elif isinstance(start_date, datetime):
         start_date = start_date.date()
     if not end_date:
-        end_date = datetime.now().date()
+        end_date = (datetime.now() + relativedelta(years=10)).date()
     elif isinstance(end_date, datetime):
         end_date = end_date.date()
 
@@ -692,16 +700,20 @@ def get_gdp_forecast(
 
     result = pd.DataFrame()
     for country in countries:  # type: ignore
-        temp = pd.DataFrame(
-            df[df["LOCATION"] == COUNTRY_TO_CODE_GDP_FORECAST[country]]["Value"]
-        )
-        temp.index = temp.index.map(str)
-        temp.columns = [country]
+        try:
+            temp = pd.DataFrame(
+                df[df["LOCATION"] == COUNTRY_TO_CODE_GDP_FORECAST[country]]["Value"]
+            )
+            temp.index = temp.index.map(str)
+            temp.columns = [country]
 
-        if temp.empty:
-            console.print(f"No {types} GDP data for {country} with {units}.")
-        else:
-            result = pd.concat([result, temp], axis=1)
+            if temp.empty:
+                console.print(f"No {types} GDP data for {country} with {units}.")
+            else:
+                result = pd.concat([result, temp], axis=1)
+
+        except KeyError:
+            console.print(f"No data available for {country}.")
 
     if units == "Q":
         result.index = (
@@ -762,12 +774,15 @@ def get_debt(
 
     result = pd.DataFrame()
     for country in countries:  # type: ignore
-        temp = pd.DataFrame(
-            df[df["LOCATION"] == COUNTRY_TO_CODE_DEBT[country]]["Value"]
-        )
-        temp.index = temp.index.map(str)
-        temp.columns = [country]
-        result = pd.concat([result, temp], axis=1)
+        try:
+            temp = pd.DataFrame(
+                df[df["LOCATION"] == COUNTRY_TO_CODE_DEBT[country]]["Value"]
+            )
+            temp.index = temp.index.map(str)
+            temp.columns = [country]
+            result = pd.concat([result, temp], axis=1)
+        except KeyError:
+            console.print(f"No data available for {country}.")
 
     result.index = pd.to_datetime(result.index).year
     result.sort_index(inplace=True)
@@ -823,7 +838,7 @@ def get_cpi(
         Dataframe with cpi data
     """
     if not start_date:
-        start_date = (datetime.now() - relativedelta(years=30)).date()
+        start_date = (datetime.now() - relativedelta(years=5)).date()
     elif isinstance(start_date, datetime):
         start_date = start_date.date()
     if not end_date:
@@ -856,17 +871,22 @@ def get_cpi(
 
     result = pd.DataFrame()
     for country in countries:  # type: ignore
-        temp = pd.DataFrame(df[df["LOCATION"] == COUNTRY_TO_CODE_CPI[country]]["Value"])
-        temp.index = temp.index.map(str)
-        temp.columns = [country]
-
-        if temp.empty:
-            console.print(
-                f"No {perspective} CPI data available for "
-                f"{country.title()} with set parameters."
+        try:
+            temp = pd.DataFrame(
+                df[df["LOCATION"] == COUNTRY_TO_CODE_CPI[country]]["Value"]
             )
-        else:
-            result = pd.concat([result, temp], axis=1)
+            temp.index = temp.index.map(str)
+            temp.columns = [country]
+
+            if temp.empty:
+                console.print(
+                    f"No {perspective} CPI data available for "
+                    f"{country.title()} with set parameters."
+                )
+            else:
+                result = pd.concat([result, temp], axis=1)
+        except KeyError:
+            console.print(f"No data available for {country}.")
 
     if frequency in ["M", "Q"]:
         result.index = pd.to_datetime(result.index).strftime("%Y-%m")
@@ -926,12 +946,15 @@ def get_balance(
 
     result = pd.DataFrame()
     for country in countries:  # type: ignore
-        temp = pd.DataFrame(
-            df[df["LOCATION"] == COUNTRY_TO_CODE_BALANCE[country]]["Value"]
-        )
-        temp.index = temp.index.map(str)
-        temp.columns = [country]
-        result = pd.concat([result, temp], axis=1)
+        try:
+            temp = pd.DataFrame(
+                df[df["LOCATION"] == COUNTRY_TO_CODE_BALANCE[country]]["Value"]
+            )
+            temp.index = temp.index.map(str)
+            temp.columns = [country]
+            result = pd.concat([result, temp], axis=1)
+        except KeyError:
+            console.print(f"No data available for {country}.")
 
     result.index = pd.to_datetime(result.index).year
     result.sort_index(inplace=True)
@@ -1001,12 +1024,16 @@ def get_revenue(
 
     result = pd.DataFrame()
     for country in countries:  # type: ignore
-        temp = pd.DataFrame(
-            df[df["LOCATION"] == COUNTRY_TO_CODE_REVENUE[country]]["Value"]
-        )
-        temp.index = temp.index.map(str)
-        temp.columns = [country]
-        result = pd.concat([result, temp], axis=1)
+        try:
+            temp = pd.DataFrame(
+                df[df["LOCATION"] == COUNTRY_TO_CODE_REVENUE[country]]["Value"]
+            )
+
+            temp.index = temp.index.map(str)
+            temp.columns = [country]
+            result = pd.concat([result, temp], axis=1)
+        except KeyError:
+            console.print(f"No data available for {country}.")
 
     result.index = pd.to_datetime(result.index).year
     result.sort_index(inplace=True)
@@ -1108,12 +1135,16 @@ def get_spending(
 
     result = pd.DataFrame()
     for country in countries:  # type: ignore
-        temp = pd.DataFrame(
-            df[df["LOCATION"] == COUNTRY_TO_CODE_SPENDING[country]]["Value"]
-        )
-        temp.index = temp.index.map(str)
-        temp.columns = [country]
-        result = pd.concat([result, temp], axis=1)
+        try:
+            temp = pd.DataFrame(
+                df[df["LOCATION"] == COUNTRY_TO_CODE_SPENDING[country]]["Value"]
+            )
+
+            temp.index = temp.index.map(str)
+            temp.columns = [country]
+            result = pd.concat([result, temp], axis=1)
+        except KeyError:
+            console.print(f"No data available for {country}.")
 
     result.index = pd.to_datetime(result.index).year
     result.sort_index(inplace=True)
@@ -1171,12 +1202,16 @@ def get_trust(
 
     result = pd.DataFrame()
     for country in countries:  # type: ignore
-        temp = pd.DataFrame(
-            df[df["LOCATION"] == COUNTRY_TO_CODE_TRUST[country]]["Value"]
-        )
-        temp.index = temp.index.map(str)
-        temp.columns = [country]
-        result = pd.concat([result, temp], axis=1)
+        try:
+            temp = pd.DataFrame(
+                df[df["LOCATION"] == COUNTRY_TO_CODE_TRUST[country]]["Value"]
+            )
+
+            temp.index = temp.index.map(str)
+            temp.columns = [country]
+            result = pd.concat([result, temp], axis=1)
+        except KeyError:
+            console.print(f"No data available for {country}.")
 
     result.index = pd.to_datetime(result.index).year
     result.sort_index(inplace=True)

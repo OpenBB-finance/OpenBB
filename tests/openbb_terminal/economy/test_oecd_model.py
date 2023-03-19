@@ -19,9 +19,9 @@ def test_get_gdp(recorder):
 
 
 @pytest.mark.vcr
-def test_get_qgdp(recorder):
-    """Test get_quarterly_gdp"""
-    data = oecd_model.get_quarterly_gdp(
+def test_get_rgdp(recorder):
+    """Test get_real_gdp"""
+    data = oecd_model.get_real_gdp(
         countries=["united_states", "canada"],
         start_date=datetime.strptime("2020-01-01", "%Y-%m-%d"),
         end_date=datetime.strptime("2022-01-31", "%Y-%m-%d"),

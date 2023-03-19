@@ -11,8 +11,8 @@
     spectrum           spectrum of sectors, industry, country                                         [Finviz]
 
 Country Performance:
-    gdp                Show annual nominal Gross Domestic Product (GDP)                               [OECD]
-    qgdp               Show quarterly real Gross Domestic Product (GDP)                               [OECD]
+    gdp                Show nominal Gross Domestic Product (GDP)                                      [OECD]
+    rgdp               Show real Gross Domestic Product (GDP)                                         [OECD]
     fgdp               Show forecasts of nominal and real Gross Domestic Product (GDP)                [OECD]
     debt               Show government debt-to-GDP ratio                                              [OECD]
     cpi                obtain the (harmonized) Consumer Price Index (CPI)                             [FRED]

@@ -57,8 +57,8 @@ class EconomyRoot(Category):
         self.cpi_chart = lib.economy_fred_view.plot_cpi
         self.gdp = lib.economy_oecd_model.get_gdp
         self.gdp_chart = lib.economy_oecd_view.plot_gdp
-        self.qgdp = lib.economy_oecd_model.get_quarterly_gdp
-        self.qgdp_chart = lib.economy_oecd_view.plot_quarterly_gdp
+        self.rgdp = lib.economy_oecd_model.get_real_gdp
+        self.rgdp_chart = lib.economy_oecd_view.plot_real_gdp
         self.fgdp = lib.economy_oecd_model.get_gdp_forecast
         self.fgdp_chart = lib.economy_oecd_view.plot_gdp_forecast
         self.debt = lib.economy_oecd_model.get_debt

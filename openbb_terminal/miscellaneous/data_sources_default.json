@@ -447,7 +447,7 @@
     "performance": ["Finviz"],
     "spectrum": ["Finviz"],
     "gdp": ["OECD"],
-    "qgdp": ["OECD"],
+    "rgdp": ["OECD"],
     "fgdp": ["OECD"],
     "debt": ["OECD"],
     "cpi": ["FRED"],

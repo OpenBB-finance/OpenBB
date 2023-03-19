@@ -61,7 +61,7 @@ class EconomyController(BaseController):
         "overview",
         "futures",
         "gdp",
-        "qgdp",
+        "rgdp",
         "fgdp",
         "debt",
         "cpi",
@@ -194,10 +194,10 @@ class EconomyController(BaseController):
             }
             choices["gdp"]["-c"] = "--countries"
 
-            choices["qgdp"]["--countries"] = {
-                c: {} for c in oecd_model.COUNTRY_TO_CODE_QGDP
+            choices["rgdp"]["--countries"] = {
+                c: {} for c in oecd_model.COUNTRY_TO_CODE_RGDP
             }
-            choices["qgdp"]["-c"] = "--countries"
+            choices["rgdp"]["-c"] = "--countries"
 
             choices["fgdp"]["--countries"] = {
                 c: {} for c in oecd_model.COUNTRY_TO_CODE_GDP_FORECAST
@@ -323,7 +323,7 @@ class EconomyController(BaseController):
         mt.add_raw("\n")
         mt.add_info("_country_")
         mt.add_cmd("gdp")
-        mt.add_cmd("qgdp")
+        mt.add_cmd("rgdp")
         mt.add_cmd("fgdp")
         mt.add_cmd("debt")
         mt.add_cmd("cpi")
@@ -608,7 +608,7 @@ class EconomyController(BaseController):
             type=valid_date,
             help="Start date of data, in YYYY-MM-DD format",
             dest="start_date",
-            default=dt.now() - relativedelta(years=30),
+            default=(dt.now() - relativedelta(years=30)).date(),
         )
         parser.add_argument(
             "-e",
@@ -616,7 +616,7 @@ class EconomyController(BaseController):
             type=valid_date,
             help="End date of data, in YYYY-MM-DD format",
             dest="end_date",
-            default=dt.now(),
+            default=dt.now().date(),
         )
 
         ns_parser = self.parse_known_args_and_warn(
@@ -645,12 +645,12 @@ class EconomyController(BaseController):
             )
 
     @log_start_end(log=logger)
-    def call_qgdp(self, other_args: List[str]):
-        """Process qgdp command"""
+    def call_rgdp(self, other_args: List[str]):
+        """Process rgdp command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="qgdp",
+            prog="rgdp",
             description="This indicator is based on real GDP (also called GDP at constant prices or GDP in volume), "
             "i.e. the developments over time are adjusted for price changes.",
         )
@@ -682,7 +682,7 @@ class EconomyController(BaseController):
             type=valid_date,
             help="Start date of data, in YYYY-MM-DD format",
             dest="start_date",
-            default=dt.now() - relativedelta(years=10),
+            default=(dt.now() - relativedelta(years=10)).date(),
         )
         parser.add_argument(
             "-e",
@@ -690,7 +690,7 @@ class EconomyController(BaseController):
             type=valid_date,
             help="End date of data, in YYYY-MM-DD format",
             dest="end_date",
-            default=dt.now(),
+            default=dt.now().date(),
         )
 
         ns_parser = self.parse_known_args_and_warn(
@@ -706,7 +706,7 @@ class EconomyController(BaseController):
                 else None
             )
 
-            oecd_view.plot_quarterly_gdp(
+            oecd_view.plot_real_gdp(
                 countries=countries,
                 units=ns_parser.units,
                 start_date=ns_parser.start_date,
@@ -765,7 +765,7 @@ class EconomyController(BaseController):
             type=valid_date,
             help="Start date of data, in YYYY-MM-DD format",
             dest="start_date",
-            default=dt.now() - relativedelta(years=10),
+            default=(dt.now() - relativedelta(years=10)).date(),
         )
         parser.add_argument(
             "-e",
@@ -773,7 +773,7 @@ class EconomyController(BaseController):
             type=valid_date,
             help="End date of data, in YYYY-MM-DD format",
             dest="end_date",
-            default=dt.now() + relativedelta(years=10),
+            default=(dt.now() + relativedelta(years=10)).date(),
         )
 
         ns_parser = self.parse_known_args_and_warn(
@@ -828,7 +828,7 @@ class EconomyController(BaseController):
             type=valid_date,
             help="Start date of data, in YYYY-MM-DD format",
             dest="start_date",
-            default=dt.now() - relativedelta(years=30),
+            default=(dt.now() - relativedelta(years=30)).date(),
         )
         parser.add_argument(
             "-e",
@@ -836,7 +836,7 @@ class EconomyController(BaseController):
             type=valid_date,
             help="End date of data, in YYYY-MM-DD format",
             dest="end_date",
-            default=dt.now(),
+            default=dt.now().date(),
         )
 
         ns_parser = self.parse_known_args_and_warn(
@@ -892,7 +892,7 @@ class EconomyController(BaseController):
             type=valid_date,
             help="Start date of data, in YYYY-MM-DD format",
             dest="start_date",
-            default=dt.now() - relativedelta(years=30),
+            default=(dt.now() - relativedelta(years=30)).date(),
         )
         parser.add_argument(
             "-e",
@@ -900,7 +900,7 @@ class EconomyController(BaseController):
             type=valid_date,
             help="End date of data, in YYYY-MM-DD format",
             dest="end_date",
-            default=dt.now(),
+            default=dt.now().date(),
         )
 
         ns_parser = self.parse_known_args_and_warn(
@@ -967,7 +967,7 @@ class EconomyController(BaseController):
             type=valid_date,
             help="Start date of data, in YYYY-MM-DD format",
             dest="start_date",
-            default=dt.now() - relativedelta(years=30),
+            default=(dt.now() - relativedelta(years=30)).date(),
         )
         parser.add_argument(
             "-e",
@@ -975,7 +975,7 @@ class EconomyController(BaseController):
             type=valid_date,
             help="End date of data, in YYYY-MM-DD format",
             dest="end_date",
-            default=dt.now(),
+            default=dt.now().date(),
         )
 
         ns_parser = self.parse_known_args_and_warn(
@@ -1067,7 +1067,7 @@ class EconomyController(BaseController):
             type=valid_date,
             help="Start date of data, in YYYY-MM-DD format",
             dest="start_date",
-            default=dt.now() - relativedelta(years=30),
+            default=(dt.now() - relativedelta(years=30)).date(),
         )
         parser.add_argument(
             "-e",
@@ -1075,7 +1075,7 @@ class EconomyController(BaseController):
             type=valid_date,
             help="End date of data, in YYYY-MM-DD format",
             dest="end_date",
-            default=dt.now(),
+            default=dt.now().date(),
         )
 
         ns_parser = self.parse_known_args_and_warn(
@@ -1130,7 +1130,7 @@ class EconomyController(BaseController):
             type=valid_date,
             help="Start date of data, in YYYY-MM-DD format",
             dest="start_date",
-            default=dt.now() - relativedelta(years=30),
+            default=(dt.now() - relativedelta(years=30)).date(),
         )
         parser.add_argument(
             "-e",
@@ -1138,7 +1138,7 @@ class EconomyController(BaseController):
             type=valid_date,
             help="End date of data, in YYYY-MM-DD format",
             dest="end_date",
-            default=dt.now(),
+            default=dt.now().date(),
         )
 
         ns_parser = self.parse_known_args_and_warn(
@@ -1810,7 +1810,7 @@ class EconomyController(BaseController):
             dest="start_date",
             type=valid_date,
             help="Starting date (YYYY-MM-DD) of data",
-            default="1980-01-01",
+            default=(dt.now() - relativedelta(years=30)).date(),
         )
         parser.add_argument(
             "-e",
@@ -1818,7 +1818,7 @@ class EconomyController(BaseController):
             dest="end_date",
             type=valid_date,
             help="Ending date (YYYY-MM-DD) of data",
-            default=None,
+            default=dt.now().date(),
         )
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES, raw=True
@@ -1900,7 +1900,7 @@ class EconomyController(BaseController):
             dest="start_date",
             type=valid_date,
             help="Starting date (YYYY-MM-DD) of data",
-            default=dt.now() - relativedelta(years=30),
+            default=(dt.now() - relativedelta(years=5)).date(),
         )
         parser.add_argument(
             "-e",
@@ -1908,7 +1908,7 @@ class EconomyController(BaseController):
             dest="end_date",
             type=valid_date,
             help="Ending date (YYYY-MM-DD) of data",
-            default=dt.now(),
+            default=dt.now().date(),
         )
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES, raw=True

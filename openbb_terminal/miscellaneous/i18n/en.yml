@@ -741,8 +741,8 @@ en:
   etf/ta/_custom_: Custom
   etf/ta/fib: fibonacci retracement
   economy/_country_: Country Performance
-  economy/gdp: Show annual nominal Gross Domestic Product (GDP)
-  economy/qgdp: Show quarterly real Gross Domestic Product (GDP)
+  economy/gdp: Show nominal Gross Domestic Product (GDP)
+  economy/rgdp: Show real Gross Domestic Product (GDP)
   economy/fgdp: Show forecasts of nominal and real Gross Domestic Product (GDP)
   economy/debt: Show government debt-to-GDP ratio
   economy/cpi: obtain the (harmonized) Consumer Price Index (CPI)

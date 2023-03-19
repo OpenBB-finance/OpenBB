@@ -634,14 +634,14 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             ),
         ),
         (
-            "call_qgdp",
+            "call_rgdp",
             [
                 "--countries=united states",
                 "--start=2021-01-01",
                 "--end=2023-01-01",
                 "--export=csv",
             ],
-            "oecd_view.plot_quarterly_gdp",
+            "oecd_view.plot_real_gdp",
             [],
             dict(
                 countries=["united states"],
