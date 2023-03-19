@@ -520,12 +520,11 @@ def get_gdp(
         )
 
     df = pd.read_csv(
-        f"https://stats.oecd.org/sdmx-json/data/DP_LIVE/.GDP.../OECD?contentType=csv&detail=code"
+        f"https://stats.oecd.org/sdmx-json/data/DP_LIVE/.GDP.TOT.{units}.A/OECD?contentType=csv&detail=code"
         f"&separator=comma&csv-lang=en&startPeriod={start_date}&endPeriod={end_date}",
         index_col=5,
     )
 
-    df = df[df["MEASURE"] == units]
     df = df.iloc[:, [0, 5]]
 
     result = pd.DataFrame()
@@ -603,12 +602,11 @@ def get_real_gdp(
         )
 
     df = pd.read_csv(
-        f"https://stats.oecd.org/sdmx-json/data/DP_LIVE/.QGDP.../OECD?contentType=csv&detail=code"
+        f"https://stats.oecd.org/sdmx-json/data/DP_LIVE/.QGDP.TOT.{units}.Q/OECD?contentType=csv&detail=code"
         f"&separator=comma&csv-lang=en&startPeriod={start_date}&endPeriod={end_date}",
         index_col=5,
     )
 
-    df = df[df["MEASURE"] == units]
     df = df.iloc[:, [0, 5]]
 
     result = pd.DataFrame()
@@ -684,18 +682,17 @@ def get_gdp_forecast(
 
     if types == "real":
         df = pd.read_csv(
-            f"https://stats.oecd.org/sdmx-json/data/DP_LIVE/.REALGDPFORECAST.../OECD?contentType=csv&detail=code"
+            f"https://stats.oecd.org/sdmx-json/data/DP_LIVE/.REALGDPFORECAST.TOT.AGRWTH.{units}/OECD?contentType=csv&detail=code"
             f"&separator=comma&csv-lang=en&startPeriod={start_date}&endPeriod={end_date}",
             index_col=5,
         )
     else:
         df = pd.read_csv(
-            f"https://stats.oecd.org/sdmx-json/data/DP_LIVE/.NOMGDPFORECAST.../OECD?contentType=csv&detail=code"
+            f"https://stats.oecd.org/sdmx-json/data/DP_LIVE/.NOMGDPFORECAST.TOT.AGRWTH.{units}/OECD?contentType=csv&detail=code"
             f"&separator=comma&csv-lang=en&startPeriod={start_date}&endPeriod={end_date}",
             index_col=5,
         )
 
-    df = df[df["FREQUENCY"] == units]
     df = df.iloc[:, [0, 5]]
 
     result = pd.DataFrame()
@@ -765,7 +762,7 @@ def get_debt(
         end_date = end_date.date()
 
     df = pd.read_csv(
-        f"https://stats.oecd.org/sdmx-json/data/DP_LIVE/.GGDEBT.../OECD?contentType=csv&detail=code"
+        f"https://stats.oecd.org/sdmx-json/data/DP_LIVE/.GGDEBT.TOT.PC_GDP.A/OECD?contentType=csv&detail=code"
         f"&separator=comma&csv-lang=en&startPeriod={start_date}&endPeriod={end_date}",
         index_col=5,
     )
@@ -859,14 +856,11 @@ def get_cpi(
         return console.print("Use either 'AGRWTH' or 'IDX2015' for type")
 
     df = pd.read_csv(
-        f"https://stats.oecd.org/sdmx-json/data/DP_LIVE/.CPI.../OECD?contentType=csv&detail=code"
+        f"https://stats.oecd.org/sdmx-json/data/DP_LIVE/.CPI.{perspective}.{units}.{frequency}/OECD?contentType=csv&detail=code"
         f"&separator=comma&csv-lang=en&startPeriod={start_date}&endPeriod={end_date}",
         index_col=5,
     )
 
-    df = df[df["SUBJECT"] == perspective]
-    df = df[df["MEASURE"] == units]
-    df = df[df["FREQUENCY"] == frequency]
     df = df.iloc[:, [0, 5]]
 
     result = pd.DataFrame()
@@ -937,7 +931,7 @@ def get_balance(
         end_date = end_date.date()
 
     df = pd.read_csv(
-        f"https://stats.oecd.org/sdmx-json/data/DP_LIVE/.GGNLEND.../OECD?contentType=csv&detail=code"
+        f"https://stats.oecd.org/sdmx-json/data/DP_LIVE/.GGNLEND.TOT.PC_GDP.A/OECD?contentType=csv&detail=code"
         f"&separator=comma&csv-lang=en&startPeriod={start_date}&endPeriod={end_date}",
         index_col=5,
     )
@@ -1014,12 +1008,11 @@ def get_revenue(
         )
 
     df = pd.read_csv(
-        f"https://stats.oecd.org/sdmx-json/data/DP_LIVE/.GGREV.../OECD?contentType=csv&detail=code"
+        f"https://stats.oecd.org/sdmx-json/data/DP_LIVE/.GGREV.TOT.{units}.A/OECD?contentType=csv&detail=code"
         f"&separator=comma&csv-lang=en&startPeriod={start_date}&endPeriod={end_date}",
         index_col=5,
     )
 
-    df = df[df["MEASURE"] == units]
     df = df.iloc[:, [0, 5]]
 
     result = pd.DataFrame()
@@ -1124,13 +1117,11 @@ def get_spending(
             "SOCPROT (Social protection), ECOAFF (Economic affairs), DEF (Defence), HEALTH (Health)"
         )
     df = pd.read_csv(
-        f"https://stats.oecd.org/sdmx-json/data/DP_LIVE/.GGEXP.../OECD?contentType=csv&detail=code"
+        f"https://stats.oecd.org/sdmx-json/data/DP_LIVE/.GGEXP.{perspective}.{units}.A/OECD?contentType=csv&detail=code"
         f"&separator=comma&csv-lang=en&startPeriod={start_date}&endPeriod={end_date}",
         index_col=5,
     )
 
-    df = df[df["SUBJECT"] == perspective]
-    df = df[df["MEASURE"] == units]
     df = df.iloc[:, [0, 5]]
 
     result = pd.DataFrame()
@@ -1193,7 +1184,7 @@ def get_trust(
         end_date = end_date.date()
 
     df = pd.read_csv(
-        f"https://stats.oecd.org/sdmx-json/data/DP_LIVE/.TRUSTGOV.../OECD?contentType=csv&detail=code"
+        f"https://stats.oecd.org/sdmx-json/data/DP_LIVE/.TRUSTGOV.TOT.PC.A/OECD?contentType=csv&detail=code"
         f"&separator=comma&csv-lang=en&startPeriod={start_date}&endPeriod={end_date}",
         index_col=5,
     )
