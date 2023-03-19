@@ -355,7 +355,6 @@ class ControllerDoc:
                         break
 
             self.cmd_parsers[command] = fparser
-            return
 
         try:
             with patch.object(

@@ -401,4 +401,3 @@ def show_greeks(
         floatfmt=column_formatting,
     )
 
-    return None

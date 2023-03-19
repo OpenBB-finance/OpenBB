@@ -29,8 +29,8 @@ import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import pandas_ta as ta
 import pandas.io.formats.format
+import pandas_ta as ta
 import pytz
 import requests
 import tweepy
