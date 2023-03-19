@@ -55,6 +55,8 @@ class EconomyRoot(Category):
         self.country_codes = lib.economy_nasdaq_model.get_country_codes
         self.cpi = lib.economy_fred_model.get_cpi
         self.cpi_chart = lib.economy_fred_view.plot_cpi
+        self.ccpi = lib.economy_oecd_model.get_cpi
+        self.ccpi_chart = lib.economy_oecd_view.plot_cpi
         self.gdp = lib.economy_oecd_model.get_gdp
         self.gdp_chart = lib.economy_oecd_view.plot_gdp
         self.rgdp = lib.economy_oecd_model.get_real_gdp
