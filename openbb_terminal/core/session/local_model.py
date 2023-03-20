@@ -3,6 +3,9 @@ import os
 from pathlib import Path
 from typing import Optional, Union
 
+from rich.console import Theme
+
+from openbb_terminal import rich_config
 from openbb_terminal.core.config.paths import (
     HIST_FILE_PATH,
     SETTINGS_DIRECTORY,
@@ -12,7 +15,7 @@ from openbb_terminal.core.session.current_user import (
     get_local_user,
     set_credential,
 )
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import ConsoleAndPanel, console
 
 SESSION_FILE_PATH = SETTINGS_DIRECTORY / "session.json"
 
@@ -116,6 +119,12 @@ def apply_configs(configs: dict):
         credentials = configs.get("features_keys", {}) or {}
         for k, v in credentials.items():
             set_credential(k, v)
+
+        terminal_style = configs.get("features_terminal_style", {}) or {}
+        if terminal_style:
+            user_style = terminal_style.get("theme", None)
+            user_style = {k: v.replace(" ", "") for k, v in user_style.items()}
+            setattr(rich_config, "console", ConsoleAndPanel(theme=Theme(user_style)))
 
     # TODO: apply other configs here
 

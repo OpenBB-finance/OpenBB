@@ -22,7 +22,11 @@ from openbb_terminal.core.config.paths import (
 from openbb_terminal.core.console_styles.utils import (
     get_console_style,
 )
-from openbb_terminal.core.session.current_user import get_current_user, set_preference
+from openbb_terminal.core.session.current_user import (
+    get_current_user,
+    is_local,
+    set_preference,
+)
 
 # pylint: disable=no-member,c-extension-no-member
 
@@ -51,13 +55,18 @@ USE_COLOR = True
 
 def get_theme() -> Theme:
     """Get rich theme."""
-    rich_style = get_current_user().preferences.RICH_STYLE
+    current_user = get_current_user()
+    rich_style = current_user.preferences.RICH_STYLE
     builtin_styles = PACKAGE_DIRECTORY / "core" / "console_styles"
     theme = Theme()
     try:
-        user_style = get_console_style(
-            style_name=rich_style, folder=get_current_user().preferences.USER_STYLES
-        )
+        if is_local():
+            user_style = get_console_style(
+                style_name=rich_style, folder=current_user.preferences.USER_STYLES
+            )
+        else:
+            user_style = None
+
         if user_style:
             theme = Theme(user_style)
         else:
@@ -293,8 +302,10 @@ class MenuText:
 class ConsoleAndPanel:
     """Create a rich console to wrap the console print with a Panel"""
 
-    def __init__(self):
-        self.console = Console(theme=get_theme(), highlight=False, soft_wrap=True)
+    def __init__(self, theme: Optional[Theme] = None):
+        self.console = Console(
+            theme=theme if theme else get_theme(), highlight=False, soft_wrap=True
+        )
         self.menu_text = ""
         self.menu_path = ""
 
