@@ -115,10 +115,12 @@ def apply_configs(configs: dict):
         The configurations.
     """
     if configs and get_local_user().preferences.SYNC_ENABLED:
+        # Credentials
         credentials = configs.get("features_keys", {}) or {}
         for k, v in credentials.items():
             set_credential(k, v)
 
+        # Console theme
         if get_current_user().preferences.RICH_STYLE == "custom":
             terminal_style = configs.get("features_terminal_style", {}) or {}
             if terminal_style:
