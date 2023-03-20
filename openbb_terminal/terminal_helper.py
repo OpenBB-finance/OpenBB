@@ -22,6 +22,7 @@ from openbb_terminal import thought_of_the_day as thought
 # IMPORTATION INTERNAL
 from openbb_terminal.core.config.paths import SETTINGS_ENV_FILE
 from openbb_terminal.core.plots.backend import plots_backend
+from openbb_terminal.core.session.current_system import get_current_system
 from openbb_terminal.core.session.current_user import (
     get_current_user,
     set_preference,
