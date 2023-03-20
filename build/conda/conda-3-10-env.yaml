@@ -1,5 +1,6 @@
 channels:
   - conda-forge
+  - defaults
 dependencies:
   - python =3.10.8
   - git
@@ -20,3 +21,4 @@ dependencies:
   - cvxpy ==1.2.2
   - pip:
     - qdldl ==0.1.5.post3
+    - catboost ==1.1.1
