@@ -72,8 +72,7 @@
       "lowfloat": ["Fidelity"],
       "hotpenny": ["YahooFinance", "Shortinterest"],
       "rtat": ["Nasdaq"],
-      "divcal": ["Nasdaq"],
-      "ns": ["Althub Platform"]
+      "divcal": ["Nasdaq"]
     },
     "sia": {
       "select": ["YahooFinance"],
@@ -178,7 +177,8 @@
       "regions": ["Google"],
       "interest": ["Google"],
       "queries": ["Google"],
-      "rise": ["Google"]
+      "rise": ["Google"],
+      "ns": ["Althub Platform"]
     },
     "ca": {
       "load": ["YahooFinance", "AlphaVantage", "Polygon", "EODHD"],

@@ -275,6 +275,8 @@ from openbb_terminal.stocks import (
 from openbb_terminal.stocks.behavioural_analysis import (
     finnhub_model as stocks_ba_finnhub_model,
     finnhub_view as stocks_ba_finnhub_view,
+    news_sentiment_model as stocks_ba_news_sentiment_model,
+    news_sentiment_view as stocks_ba_news_sentiment_view,
 )
 
 # Stocks - Comparison Analysis
@@ -317,8 +319,6 @@ from openbb_terminal.stocks.discovery import (
     seeking_alpha_model as stocks_disc_seeking_alpha_model,
     shortinterest_model as stocks_disc_shortinterest_model,
     yahoofinance_model as stocks_disc_yahoofinance_model,
-    news_sentiment_model as stocks_disc_news_sentiment_model,
-    news_sentiment_view as stocks_disc_news_sentiment_view,
 )
 
 # Stocks - Fundamental Analysis

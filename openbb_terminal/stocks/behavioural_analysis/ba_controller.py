@@ -24,11 +24,12 @@ from openbb_terminal.helper_funcs import (
     check_int_range,
     check_positive,
     valid_date,
+    check_non_negative,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import StockBaseController
 from openbb_terminal.rich_config import MenuText, console
-from openbb_terminal.stocks.behavioural_analysis import cramer_view, finnhub_view
+from openbb_terminal.stocks.behavioural_analysis import finnhub_view,news_sentiment_view
 
 # pylint:disable=R0904,C0302
 
@@ -59,6 +60,7 @@ class BehaviouralAnalysisController(StockBaseController):
         "headlines",
         "snews",
         "interest",
+        "ns",
     ]
 
     historical_sort = ["date", "value"]
@@ -106,6 +108,7 @@ class BehaviouralAnalysisController(StockBaseController):
         mt.add_cmd("interest", self.ticker)
         mt.add_cmd("queries", self.ticker)
         mt.add_cmd("rise", self.ticker)
+        mt.add_cmd("ns", "Althub Platform")
         console.print(text=mt.menu_text, menu="Stocks - Behavioural Analysis")
 
     def custom_reset(self):
@@ -828,56 +831,80 @@ class BehaviouralAnalysisController(StockBaseController):
             else:
                 console.print("No ticker loaded. Please load using 'load <ticker>'\n")
 
-    def call_jcdr(self, other_args: List[str]):
-        """Process jcdr command."""
+
+    def call_ns(self, other_args: List[str]):
+        """Process ns command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="jcdr",
-            description="""
-                Show daily cramer recommendation
-            """,
+            prog="ns",
+            description="Shows the News Sentiment articles data",
         )
         parser.add_argument(
-            "-i",
-            "--inverse",
-            default=False,
-            action="store_true",
-            help="Show inverse recommendation",
-            dest="inverse",
+            "-t",
+            "--ticker",
+            dest="ticker",
+            help="Ticker to analyze",
+            type=str,
+            default=None,
         )
-
+        parser.add_argument(
+            "-s",
+            "--start_date",
+            dest="start_date",
+            type=str,
+            default=None,
+            help="The starting date (format YYYY-MM-DD) to search news articles from",
+        )
+        parser.add_argument(
+            "-e",
+            "--end_date",
+            dest="end_date",
+            type=str,
+            default=None,
+            help="The end date (format YYYY-MM-DD) to search news articles upto",
+        )
+        parser.add_argument(
+            "-d",
+            "--date",
+            dest="date",
+            type=str,
+            default=None,
+            help="""Shows the news articles data on this day (format YYYY-MM-DD).
+                    If you use this Argument start date and end date will be ignored 
+                """,
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            default=100,
+            dest="limit",
+            type=check_non_negative,
+            help="Number of news articles to be displayed.",
+        )
+        parser.add_argument(
+            "-o",
+            "--offset",
+            default=0,
+            dest="offset",
+            type=check_non_negative,
+            help="offset indicates the starting position of news articles.",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-t")
         ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-
         if ns_parser:
-            cramer_view.display_cramer_daily(inverse=ns_parser.inverse)
-
-    @log_start_end(log=logger)
-    def call_jctr(self, other_args: List[str]):
-        """Process jctr command."""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="jctr",
-            description="""
-                Show cramer recommendation for loaded ticker
-            """,
-        )
-        ns_parser = self.parse_known_args_and_warn(
-            parser,
-            other_args,
-            export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,
-            raw=True,
-        )
-
-        if ns_parser:
-            if self.ticker:
-                cramer_view.display_cramer_ticker(
-                    symbol=self.ticker, raw=ns_parser.raw, export=ns_parser.export
-                )
-            else:
-                console.print(
-                    "[red]No ticker loaded.  Please use load <ticker> first.\n[/red]"
+            news_sentiment_view.display_articles_data(
+                ticker=ns_parser.ticker,
+                start_date=ns_parser.start_date,
+                end_date=ns_parser.end_date,
+                date=ns_parser.date,
+                limit=ns_parser.limit,
+                offset=ns_parser.offset,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
                 )

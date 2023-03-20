@@ -380,6 +380,7 @@ stocks.ba.snews,stocks_ba_finnhub_model.get_headlines_sentiment,stocks_ba_finnhu
 stocks.ba.stalker,stocks_ba_stocktwits_model.get_stalker,
 stocks.ba.text_sent,stocks_ba_reddit_model.get_sentiment,
 stocks.ba.trending,stocks_ba_stocktwits_model.get_trending,
+stocks.ba.ns,stocks_ba_news_sentiment_model.get_data,stocks_ba_news_sentiment_view.display_articles_data
 stocks.ca.balance,stocks_ca_marketwatch_model.get_balance_comparison,
 stocks.ca.cashflow,stocks_ca_marketwatch_model.get_cashflow_comparison,
 stocks.ca.hcorr,stocks_ca_yahoo_finance_model.get_correlation,stocks_ca_yahoo_finance_view.display_correlation
@@ -404,7 +405,6 @@ stocks.disc.ipo,stocks_disc_finnhub_model.get_ipo_calendar,
 stocks.disc.losers,stocks_disc_yahoofinance_model.get_losers,
 stocks.disc.lowfloat,stocks_disc_shortinterest_model.get_low_float,
 stocks.disc.news,stocks_disc_seeking_alpha_model.get_news,
-stocks.disc.ns,stocks_disc_news_sentiment_model.get_data,stocks_disc_news_sentiment_view.display_articles_data
 stocks.disc.pipo,stocks_disc_finnhub_model.get_past_ipo,
 stocks.disc.rtat,stocks_disc_nasdaq_model.get_retail_tickers,
 stocks.disc.trending,stocks_disc_seeking_alpha_model.get_trending_list,

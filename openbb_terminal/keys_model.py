@@ -5,9 +5,7 @@ __docformat__ = "numpy"
 
 import contextlib
 import io
-import json
 import logging
-import os
 import sys
 from enum import Enum
 from typing import Dict, List, Union
@@ -25,10 +23,13 @@ from oandapyV20 import API as oanda_API
 from prawcore.exceptions import ResponseException
 from tokenterminal import TokenTerminal
 
-from openbb_terminal.core.session.credentials_handler import set_credential
-from openbb_terminal.core.session.current_user import get_current_user
-from openbb_terminal.core.session.hub_model import BASE_URL
-from openbb_terminal.core.session.local_model import SESSION_FILE_PATH
+from openbb_terminal.core.session.current_user import (
+    get_current_user,
+    is_local,
+    set_credential,
+)
+from openbb_terminal.core.session.env_handler import write_to_dotenv
+from openbb_terminal.core.session.hub_model import upload_config
 from openbb_terminal.cryptocurrency.coinbase_helpers import (
     CoinbaseApiException,
     CoinbaseProAuth,
@@ -68,7 +69,6 @@ API_DICT: Dict = {
     "rh": "ROBINHOOD",
     "degiro": "DEGIRO",
     "oanda": "OANDA",
-    "openbb": "OPENBB",
     "binance": "BINANCE",
     "bitquery": "BITQUERY",
     "coinbase": "COINBASE",
@@ -90,6 +90,22 @@ API_DICT: Dict = {
 # sorting api key section by name
 API_DICT = dict(sorted(API_DICT.items()))
 
+LOCAL_KEYS = [
+    "RH_USERNAME",
+    "RH_PASSWORD",
+    "DG_USERNAME",
+    "DG_PASSWORD",
+    "DG_TOTP_SECRET",
+    "OANDA_ACCOUNT_TYPE",
+    "OANDA_ACCOUNT",
+    "OANDA_TOKEN",
+    "API_BINANCE_KEY",
+    "API_BINANCE_SECRET",
+    "API_COINBASE_KEY",
+    "API_COINBASE_SECRET",
+    "API_COINBASE_PASS_PHRASE",
+]
+
 
 class KeyStatus(str, Enum):
     """Class to handle status messages and colors"""
@@ -104,6 +120,7 @@ class KeyStatus(str, Enum):
         return self.value
 
     def colorize(self):
+        c = ""
         if self.name == self.DEFINED_TEST_FAILED.name:
             c = "red"
         elif self.name == self.NOT_DEFINED.name:
@@ -231,7 +248,7 @@ def get_keys(show: bool = False) -> pd.DataFrame:
 
     for k, _ in current_user.credentials.get_fields().items():
         field_value = current_user.credentials.get_field_value(field=k)
-        if field_value != "REPLACE_ME":
+        if field_value and field_value != "REPLACE_ME":
             current_keys[k] = field_value
 
     if current_keys:
@@ -244,6 +261,35 @@ def get_keys(show: bool = False) -> pd.DataFrame:
         return df
 
     return pd.DataFrame()
+
+
+def handle_credential(name: str, value: str, persist: bool = False):
+    """Handle credential
+
+    Parameters
+    ----------
+    name: str
+        Name of credential
+    value: str
+        Value of credential
+    persist: bool, optional
+        Write to .env file. By default, False.
+    """
+    current_user = get_current_user()
+    sync_enabled = current_user.preferences.SYNC_ENABLED
+    local_user = is_local()
+
+    set_credential(name, value)
+
+    if local_user and persist:
+        write_to_dotenv("OPENBB_" + name, value)
+    elif not local_user and sync_enabled and name not in LOCAL_KEYS:
+        upload_config(
+            key=name,
+            value=str(value),
+            type_="keys",
+            auth_header=current_user.profile.get_auth_header(),
+        )
 
 
 def set_av_key(key: str, persist: bool = False, show_output: bool = False) -> str:
@@ -271,7 +317,7 @@ def set_av_key(key: str, persist: bool = False, show_output: bool = False) -> st
     >>> openbb.keys.av(key="example_key")
     """
 
-    set_credential("API_KEY_ALPHAVANTAGE", key, persist)
+    handle_credential("API_KEY_ALPHAVANTAGE", key, persist)
     return check_av_key(show_output)
 
 
@@ -338,7 +384,7 @@ def set_fmp_key(key: str, persist: bool = False, show_output: bool = False) -> s
     >>> openbb.keys.fmp(key="example_key")
     """
 
-    set_credential("API_KEY_FINANCIALMODELINGPREP", key, persist)
+    handle_credential("API_KEY_FINANCIALMODELINGPREP", key, persist)
     return check_fmp_key(show_output)
 
 
@@ -409,7 +455,7 @@ def set_quandl_key(key: str, persist: bool = False, show_output: bool = False) -
     >>> openbb.keys.quandl(key="example_key")
     """
 
-    set_credential("API_KEY_QUANDL", key, persist)
+    handle_credential("API_KEY_QUANDL", key, persist)
     return check_quandl_key(show_output)
 
 
@@ -475,7 +521,7 @@ def set_polygon_key(key: str, persist: bool = False, show_output: bool = False) 
     >>> openbb.keys.polygon(key="example_key")
     """
 
-    set_credential("API_POLYGON_KEY", key, persist)
+    handle_credential("API_POLYGON_KEY", key, persist)
     return check_polygon_key(show_output)
 
 
@@ -544,7 +590,7 @@ def set_fred_key(key: str, persist: bool = False, show_output: bool = False) -> 
     >>> openbb.keys.fred(key="example_key")
     """
 
-    set_credential("API_FRED_KEY", key, persist)
+    handle_credential("API_FRED_KEY", key, persist)
     return check_fred_key(show_output)
 
 
@@ -612,7 +658,7 @@ def set_news_key(key: str, persist: bool = False, show_output: bool = False) -> 
     >>> openbb.keys.news(key="example_key")
     """
 
-    set_credential("API_NEWS_TOKEN", key, persist)
+    handle_credential("API_NEWS_TOKEN", key, persist)
     return check_news_key(show_output)
 
 
@@ -680,7 +726,7 @@ def set_tradier_key(key: str, persist: bool = False, show_output: bool = False) 
     >>> openbb.keys.tradier(key="example_key")
     """
 
-    set_credential("API_TRADIER_TOKEN", key, persist)
+    handle_credential("API_TRADIER_TOKEN", key, persist)
     return check_tradier_key(show_output)
 
 
@@ -753,7 +799,7 @@ def set_cmc_key(key: str, persist: bool = False, show_output: bool = False) -> s
     >>> openbb.keys.cmc(key="example_key")
     """
 
-    set_credential("API_CMC_KEY", key, persist)
+    handle_credential("API_CMC_KEY", key, persist)
     return check_cmc_key(show_output)
 
 
@@ -817,7 +863,7 @@ def set_finnhub_key(key: str, persist: bool = False, show_output: bool = False) 
     >>> openbb.keys.finnhub(key="example_key")
     """
 
-    set_credential("API_FINNHUB_KEY", key, persist)
+    handle_credential("API_FINNHUB_KEY", key, persist)
     return check_finnhub_key(show_output)
 
 
@@ -907,11 +953,11 @@ def set_reddit_key(
         )
     """
 
-    set_credential("API_REDDIT_CLIENT_ID", client_id, persist)
-    set_credential("API_REDDIT_CLIENT_SECRET", client_secret, persist)
-    set_credential("API_REDDIT_PASSWORD", password, persist)
-    set_credential("API_REDDIT_USERNAME", username, persist)
-    set_credential("API_REDDIT_USER_AGENT", useragent, persist)
+    handle_credential("API_REDDIT_CLIENT_ID", client_id, persist)
+    handle_credential("API_REDDIT_CLIENT_SECRET", client_secret, persist)
+    handle_credential("API_REDDIT_PASSWORD", password, persist)
+    handle_credential("API_REDDIT_USERNAME", username, persist)
+    handle_credential("API_REDDIT_USER_AGENT", useragent, persist)
 
     return check_reddit_key(show_output)
 
@@ -1003,7 +1049,7 @@ def set_bitquery_key(key: str, persist: bool = False, show_output: bool = False)
     >>> openbb.keys.bitquery(key="example_key")
     """
 
-    set_credential("API_BITQUERY_KEY", key, persist)
+    handle_credential("API_BITQUERY_KEY", key, persist)
     return check_bitquery_key(show_output)
 
 
@@ -1093,7 +1139,7 @@ def set_twitter_key(
         )
     """
 
-    set_credential("API_TWITTER_BEARER_TOKEN", access_token, persist)
+    handle_credential("API_TWITTER_BEARER_TOKEN", access_token, persist)
 
     return check_twitter_key(show_output)
 
@@ -1181,8 +1227,8 @@ def set_rh_key(
         )
     """
 
-    set_credential("RH_USERNAME", username, persist)
-    set_credential("RH_PASSWORD", password, persist)
+    handle_credential("RH_USERNAME", username, persist)
+    handle_credential("RH_PASSWORD", password, persist)
 
     return check_rh_key(show_output)
 
@@ -1258,9 +1304,9 @@ def set_degiro_key(
         )
     """
 
-    set_credential("DG_USERNAME", username, persist)
-    set_credential("DG_PASSWORD", password, persist)
-    set_credential("DG_TOTP_SECRET", secret, persist)
+    handle_credential("DG_USERNAME", username, persist)
+    handle_credential("DG_PASSWORD", password, persist)
+    handle_credential("DG_TOTP_SECRET", secret, persist)
 
     return check_degiro_key(show_output)
 
@@ -1356,9 +1402,9 @@ def set_oanda_key(
         )
     """
 
-    set_credential("OANDA_ACCOUNT", account, persist)
-    set_credential("OANDA_TOKEN", access_token, persist)
-    set_credential("OANDA_ACCOUNT_TYPE", account_type, persist)
+    handle_credential("OANDA_ACCOUNT", account, persist)
+    handle_credential("OANDA_TOKEN", access_token, persist)
+    handle_credential("OANDA_ACCOUNT_TYPE", account_type, persist)
 
     return check_oanda_key(show_output)
 
@@ -1443,8 +1489,8 @@ def set_binance_key(
         )
     """
 
-    set_credential("API_BINANCE_KEY", key, persist)
-    set_credential("API_BINANCE_SECRET", secret, persist)
+    handle_credential("API_BINANCE_KEY", key, persist)
+    handle_credential("API_BINANCE_SECRET", secret, persist)
 
     return check_binance_key(show_output)
 
@@ -1530,9 +1576,9 @@ def set_coinbase_key(
         )
     """
 
-    set_credential("API_COINBASE_KEY", key, persist)
-    set_credential("API_COINBASE_SECRET", secret, persist)
-    set_credential("API_COINBASE_PASS_PHRASE", passphrase, persist)
+    handle_credential("API_COINBASE_KEY", key, persist)
+    handle_credential("API_COINBASE_SECRET", secret, persist)
+    handle_credential("API_COINBASE_PASS_PHRASE", passphrase, persist)
 
     return check_coinbase_key(show_output)
 
@@ -1607,7 +1653,7 @@ def set_walert_key(key: str, persist: bool = False, show_output: bool = False) -
     >>> openbb.keys.walert(key="example_key")
     """
 
-    set_credential("API_WHALE_ALERT_KEY", key, persist)
+    handle_credential("API_WHALE_ALERT_KEY", key, persist)
     return check_walert_key(show_output)
 
 
@@ -1680,7 +1726,7 @@ def set_glassnode_key(
     >>> openbb.keys.glassnode(key="example_key")
     """
 
-    set_credential("API_GLASSNODE_KEY", key, persist)
+    handle_credential("API_GLASSNODE_KEY", key, persist)
     return check_glassnode_key(show_output)
 
 
@@ -1755,7 +1801,7 @@ def set_coinglass_key(
     >>> openbb.keys.coinglass(key="example_key")
     """
 
-    set_credential("API_COINGLASS_KEY", key, persist)
+    handle_credential("API_COINGLASS_KEY", key, persist)
     return check_coinglass_key(show_output)
 
 
@@ -1826,7 +1872,7 @@ def set_cpanic_key(key: str, persist: bool = False, show_output: bool = False) -
     >>> openbb.keys.cpanic(key="example_key")
     """
 
-    set_credential("API_CRYPTO_PANIC_KEY", key, persist)
+    handle_credential("API_CRYPTO_PANIC_KEY", key, persist)
     return check_cpanic_key(show_output)
 
 
@@ -1896,7 +1942,7 @@ def set_ethplorer_key(
     >>> openbb.keys.ethplorer(key="example_key")
     """
 
-    set_credential("API_ETHPLORER_KEY", key, persist)
+    handle_credential("API_ETHPLORER_KEY", key, persist)
     return check_ethplorer_key(show_output)
 
 
@@ -1973,8 +2019,8 @@ def set_smartstake_key(
             )
     """
 
-    set_credential("API_SMARTSTAKE_KEY", key, persist)
-    set_credential("API_SMARTSTAKE_TOKEN", access_token, persist)
+    handle_credential("API_SMARTSTAKE_KEY", key, persist)
+    handle_credential("API_SMARTSTAKE_TOKEN", access_token, persist)
     return check_smartstake_key(show_output)
 
 
@@ -2059,7 +2105,7 @@ def set_github_key(key: str, persist: bool = False, show_output: bool = False) -
     >>> openbb.keys.github(key="example_key")
     """
 
-    set_credential("API_GITHUB_KEY", key, persist)
+    handle_credential("API_GITHUB_KEY", key, persist)
     return check_github_key(show_output)
 
 
@@ -2120,7 +2166,7 @@ def set_messari_key(key: str, persist: bool = False, show_output: bool = False) 
     >>> openbb.keys.messari(key="example_key")
     """
 
-    set_credential("API_MESSARI_KEY", key, persist)
+    handle_credential("API_MESSARI_KEY", key, persist)
     return check_messari_key(show_output)
 
 
@@ -2190,7 +2236,7 @@ def set_eodhd_key(key: str, persist: bool = False, show_output: bool = False) ->
     >>> openbb.keys.eodhd(key="example_key")
     """
 
-    set_credential("API_EODHD_KEY", key, persist)
+    handle_credential("API_EODHD_KEY", key, persist)
     return check_eodhd_key(show_output)
 
 
@@ -2259,7 +2305,7 @@ def set_santiment_key(
     >>> openbb.keys.santiment(key="example_key")
     """
 
-    set_credential("API_SANTIMENT_KEY", key, persist)
+    handle_credential("API_SANTIMENT_KEY", key, persist)
     return check_santiment_key(show_output)
 
 
@@ -2339,7 +2385,7 @@ def set_shroom_key(key: str, persist: bool = False, show_output: bool = False) -
     >>> openbb.keys.shroom(key="example_key")
     """
 
-    set_credential("API_SHROOM_KEY", key, persist)
+    handle_credential("API_SHROOM_KEY", key, persist)
     return check_shroom_key(show_output)
 
 
@@ -2414,7 +2460,7 @@ def set_tokenterminal_key(
     >>> from openbb_terminal.sdk import openbb
     >>> openbb.keys.tokenterminal(key="example_key")
     """
-    set_credential("API_TOKEN_TERMINAL_KEY", key, persist)
+    handle_credential("API_TOKEN_TERMINAL_KEY", key, persist)
     return check_tokenterminal_key(show_output)
 
 
@@ -2479,7 +2525,7 @@ def set_stocksera_key(key: str, persist: bool = False, show_output: bool = False
     >>> from openbb_terminal.sdk import openbb
     >>> openbb.keys.stocksera(key="example_key")
     """
-    set_credential("API_STOCKSERA_KEY", key, persist)
+    handle_credential("API_STOCKSERA_KEY", key, persist)
     return check_stocksera_key(show_output)
 
 
@@ -2518,89 +2564,6 @@ def check_stocksera_key(show_output: bool = False):
     return str(status)
 
 
-def set_openbb_personal_access_token(
-    key: str, persist: bool = False, show_output: bool = False
-):
-    """Set OpenBB Personal Access Token.
-
-    Parameters
-    ----------
-    key: str
-        Personal Access Token
-    persist: bool, optional
-        If False, api key change will be contained to where it was changed. For example, a Jupyter notebook session.
-        If True, api key change will be global, i.e. it will affect terminal environment variables.
-        By default, False.
-    show_output: bool, optional
-        Display status string or not. By default, False.
-
-    Returns
-    -------
-    str
-        Status of key set
-
-    Examples
-    --------
-    >>> from openbb_terminal.sdk import openbb
-    >>> openbb.keys.openbb(key="example_key")
-    """
-    set_credential("OPENBB_PERSONAL_ACCESS_TOKEN", key, persist)
-    return check_openbb_personal_access_token(show_output)
-
-
-def check_openbb_personal_access_token(show_output: bool = False):
-    """Check OpenBB Personal Access Token
-
-    Returns
-    -------
-    str
-        Status of key set
-    """
-
-    current_user = get_current_user()
-
-    if current_user.credentials.OPENBB_PERSONAL_ACCESS_TOKEN == "REPLACE_ME":
-        logger.info("OpenBB Personal Access Token not defined")
-        status = KeyStatus.NOT_DEFINED
-    else:
-        try:
-            access_token = ""
-
-            # TODO: is there a better way to test the key?
-            # This requires a valid session file
-
-            if os.path.isfile(SESSION_FILE_PATH):
-                with open(SESSION_FILE_PATH) as f:
-                    access_token = json.load(f).get("access_token")
-
-            headers = {
-                "Authorization": f"Bearer {access_token}",
-                "Content-Type": "application/json",
-            }
-            response = request(
-                url=f"{BASE_URL}sdk/token", method="GET", headers=headers
-            )
-
-            token = response.json().get("token")
-
-            if (
-                response.status_code == 200
-                and token == current_user.credentials.OPENBB_PERSONAL_ACCESS_TOKEN
-            ):
-                logger.info("OpenBB Personal Access Token defined, test passed")
-                status = KeyStatus.DEFINED_TEST_PASSED
-            else:
-                logger.warning("OpenBB Personal Access Token. defined, test failed")
-                status = KeyStatus.DEFINED_TEST_FAILED
-        except requests.exceptions.RequestException:
-            logger.warning("OpenBB Personal Access Token. defined, test failed")
-            status = KeyStatus.DEFINED_TEST_FAILED
-
-    if show_output:
-        console.print(status.colorize())
-    return str(status)
-
-
 def set_intrinio_key(key: str, persist: bool = False, show_output: bool = False) -> str:
     """Set Intrinio key
 
@@ -2626,7 +2589,7 @@ def set_intrinio_key(key: str, persist: bool = False, show_output: bool = False)
     >>> openbb.keys.intrinio(key="example_key")
     """
 
-    set_credential("API_INTRINIO_KEY", key, persist)
+    handle_credential("API_INTRINIO_KEY", key, persist)
     return check_intrinio_key(show_output)
 
 
@@ -2696,7 +2659,7 @@ def set_databento_key(
     >>> openbb.keys.databento(key="example_key")
     """
 
-    set_credential("API_DATABENTO_KEY", key, persist)
+    handle_credential("API_DATABENTO_KEY", key, persist)
     return check_databento_key(show_output)
 
 

@@ -353,7 +353,6 @@ class OpenBBSDK:
             `mykeys`: Get currently set API keys.\n
             `news`: Set News key\n
             `oanda`: Set Oanda key\n
-            `openbb`: Set OpenBB Personal Access Token.\n
             `polygon`: Set Polygon key\n
             `quandl`: Set Quandl key\n
             `reddit`: Set Reddit key\n

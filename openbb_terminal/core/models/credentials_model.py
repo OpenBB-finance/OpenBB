@@ -65,9 +65,6 @@ class CredentialsModel:
     API_COINBASE_SECRET: str = "REPLACE_ME"
     API_COINBASE_PASS_PHRASE: str = "REPLACE_ME"
 
-    # Others
-    OPENBB_PERSONAL_ACCESS_TOKEN: str = "REPLACE_ME"
-
     def __repr__(self) -> str:
         """Return string representation of model."""
         dataclass_repr = ""

@@ -1,0 +1,278 @@
+---
+title: Flow
+description: opening, day, bigflow, prem, weekly, summary...
+premium: true
+commands:
+  - "/flow unu"
+  - "/flow opening"
+  - "/flow day"
+  - "/flow bigflow"
+  - "/flow prem"
+  - "/flow weekly"
+  - "/flow summary"
+  - "/flow sectors"
+  - "/flow sumexp"
+  - "/flow sumweek"
+  - "/flow sumday"
+  - "/flow sumtop"
+---
+
+# Flow
+
+## unu
+
+> Unusual Options Trades over 100k Prem. - Vol > OI
+
+```format
+/flow unu
+```
+
+---
+
+## opening
+
+> Top 20 flow by Premium for a stock with opening condition - Vol > OI
+
+```format
+/flow opening <ticker>
+```
+
+**ticker**
+
+- Ticker symbol you want to lookup
+
+Examples
+
+```
+/flow opening ticker:AMD
+```
+
+---
+
+## day
+
+> Returns the most recent flow for a stock
+
+```format
+/flow day <ticker> [expiry] [strike] [opt_type]
+```
+
+**ticker**
+
+- Ticker symbol you want to lookup
+
+**[expiry]** - _optional_
+
+- Filter last flow for the provided expiration date that happened today - YYYY-MM-DD format
+
+**[strike]** - _optional_
+
+- Filter on the strike for flow -
+
+**[opt_type]** - _optional_
+
+- Filter on option type - Can be "C" - Calls or "P" - Puts
+
+Examples
+
+```
+/flow day ticker:AMD
+```
+
+```
+/flow day ticker:AMD expiry:2022-07-29 strike:60 opt_type:Puts
+```
+
+```
+/flow day ticker:AMD expiry:2022-07-29 strike:60
+```
+
+---
+
+## bigflow
+
+> Returns the top 20 largest flow by premium for a stock
+
+```format
+/flow bigflow <ticker>
+```
+
+**ticker**
+
+- Ticker symbol you want to lookup
+
+Examples
+
+```
+/flow bigflow ticker:AMD
+```
+
+---
+
+## weekly
+
+> Top 20 flow by Premium for a stock with weekly expiration
+
+```format
+/flow weekly <ticker>
+```
+
+**ticker**
+
+- Ticker symbol you want to lookup
+
+Examples
+
+```
+/flow weekly ticker:AMD
+```
+
+---
+
+## prem
+
+> Returns a chart with sum of premium per day by call/put
+
+```format
+/flow prem <ticker>
+```
+
+**ticker**
+
+- Ticker symbol you want to lookup
+
+Examples
+
+```
+/flow prem ticker:AMD
+```
+
+---
+
+## summary
+
+> Summary of all flow by % of MarketCap
+
+```format
+/flow summary <days> <sort>
+```
+
+**days**
+
+- The number of days to look back
+
+**sort**
+
+- Field to sort by - Can be : MarketCap, Float, Total, Short Percentage
+
+Examples
+
+```
+/flow summary days:5 sort:Float
+```
+
+```
+/flow summary days:5 sort:Short Percentage
+```
+
+---
+
+## sectors
+
+> Summary of all flow by % of MarketCap by Sector
+
+```
+/flow sectors <days> <sector>
+```
+
+**days**
+
+- The number of days to look back
+
+**sector**
+
+- Sector to filter by - Basic Materials | Energy | Communication Services | Consumer Cyclical | Consumer Defensive | Financial | Healthcare | Industrials | Real Estate | Technology | Utilities
+
+Examples
+
+```
+/flow sectors days:5 sector:Energy
+```
+
+```
+/flow sectors days:2 sector:Communication Services
+```
+
+---
+
+## sumday
+
+> Graph Today's Total Premium of a stock.
+
+```format
+/flow sumday <ticker>
+```
+
+**ticker**
+
+- The ticker/symbol to look up
+
+Examples
+
+```
+/flow sumday ticker:AMD
+```
+
+---
+
+## sumweek
+
+> Graph Total Premium weekly summary of a stock.
+
+```format
+/flow sumweek <ticker>
+```
+
+**ticker**
+
+- The ticker/symbol to look up
+
+Examples
+
+```
+/flow sumweek ticker:AMD
+```
+
+---
+
+## sumexp
+
+> Flow summary by expiration date
+
+```format
+/flow sumexp <ticker> <expiry>
+```
+
+**ticker**
+
+- The ticker/symbol to look up
+
+**expiry**
+
+- The expiration date to lookup
+
+Examples
+
+```
+/flow sumexp ticker:AMD expiry:2022-07-29
+```
+
+---
+
+## sumtop
+
+> Top flow for the day Calls vs Puts by ticker
+
+```format
+/flow sumtop
+```
