@@ -667,7 +667,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 countries=["united states"],
                 start_date=datetime.datetime(2021, 1, 1, 0, 0),
                 end_date=datetime.datetime(2023, 1, 1, 0, 0),
-                units="Q",
+                quarterly=False,
                 types="real",
                 raw=False,
                 export="csv",
