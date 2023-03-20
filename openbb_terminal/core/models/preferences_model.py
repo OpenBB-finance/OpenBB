@@ -1,5 +1,5 @@
 import os
-from typing import Optional
+from typing import Literal, Optional
 
 from pydantic import NonNegativeInt, PositiveFloat, PositiveInt
 from pydantic.dataclasses import dataclass
@@ -81,7 +81,7 @@ class PreferencesModel(BaseModel):
     # STYLE
     MPL_STYLE: str = "dark"
     PMF_STYLE: str = "dark"
-    RICH_STYLE: str = "openbb_config"
+    RICH_STYLE: Literal["dark", "light", "custom"] = "dark"
     PLOT_STYLE: str = "dark"
 
     # PATHS

@@ -24,7 +24,6 @@ from openbb_terminal.core.console_styles.utils import (
 )
 from openbb_terminal.core.session.current_user import (
     get_current_user,
-    is_local,
     set_preference,
 )
 
@@ -60,15 +59,18 @@ def get_theme() -> Theme:
     builtin_styles = PACKAGE_DIRECTORY / "core" / "console_styles"
     theme = Theme()
     try:
-        if is_local():
+        if rich_style == "custom":
             user_style = get_console_style(
-                style_name=rich_style, folder=current_user.preferences.USER_STYLES
+                style_name="openbb_config", folder=current_user.preferences.USER_STYLES
             )
-        else:
-            user_style = None
 
-        if user_style:
-            theme = Theme(user_style)
+            if user_style:
+                theme = Theme(user_style)
+            else:
+                print(
+                    f"Error loading custom theme from {current_user.preferences.USER_STYLES}:"
+                )
+                print("    Ensure your file is named 'openbb_config.richstyle.json'")
         else:
             builtin_style = get_console_style(
                 style_name=rich_style, folder=builtin_styles
@@ -303,14 +305,20 @@ class ConsoleAndPanel:
     """Create a rich console to wrap the console print with a Panel"""
 
     def __init__(self, theme: Optional[Theme] = None):
-        self.console = Console(
+        self.__console = Console(
             theme=theme if theme else get_theme(), highlight=False, soft_wrap=True
         )
         self.menu_text = ""
         self.menu_path = ""
 
+    def set_console_theme(self, theme: Theme):
+        self.__console = Console(theme=theme, highlight=False, soft_wrap=True)
+
+    def reset_console(self):
+        self.__console = Console(theme=get_theme(), highlight=False, soft_wrap=True)
+
     def capture(self):
-        return self.console.capture()
+        return self.__console.capture()
 
     @staticmethod
     def filter_rich_tags(text):
@@ -346,7 +354,7 @@ class ConsoleAndPanel:
                         version = f"[param]OpenBB Terminal v{cfg.VERSION}[/param] (https://openbb.co)"
                     else:
                         version = "[param]OpenBB Terminal[/param] (https://openbb.co)"
-                    self.console.print(
+                    self.__console.print(
                         panel.Panel(
                             "\n" + kwargs["text"],
                             title=kwargs["menu"],
@@ -356,12 +364,12 @@ class ConsoleAndPanel:
                     )
 
                 else:
-                    self.console.print(kwargs["text"])
+                    self.__console.print(kwargs["text"])
             else:
                 print(self.filter_rich_tags(kwargs["text"]))
         else:
             if not os.getenv("TEST_MODE"):
-                self.console.print(*args, **kwargs)
+                self.__console.print(*args, **kwargs)
             else:
                 print(*args, **kwargs)
 
