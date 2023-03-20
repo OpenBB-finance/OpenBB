@@ -134,12 +134,18 @@ conda activate obb
 ```
 
 :::note
-Apple Silicon users should clean up some artifacts in order for the environment to work nicely with all dependencies. Do this by running:
+After you activate the new environment for the first time it is required to clean up some artifacts in order for all dependencies to work nicely.
+
+On macOS and Linux do this by running this script (copy and paste the launch code):
 
 ```shell
-find $(dirname $(dirname $(which python)))/lib/python*/site-packages \
-     -maxdepth 2 -name direct_url.json \
-     -exec rm -f {} +
+build/conda/cleanup_artifacts.sh
+```
+
+On Windows do this by running this script (copy and paste the launch code):
+
+```shell
+build/conda/cleanup_artifacts.bat
 ```
 
 :::
