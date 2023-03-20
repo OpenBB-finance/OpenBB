@@ -103,6 +103,40 @@ Alternatives to `VcXsrv` include:
 
 </details>
 
+<details><summary>Rust and GTK toolchains (Linux only)</summary>
+
+A window extension that is used to display interactive charts and tables (`pywry`) requires that you install certain dependencies
+based on the Linux distribution that you are using.
+
+<details>
+<summary>Debian-based / Ubuntu / Mint</summary>
+
+```shell
+add --commands --here
+```
+
+</details>
+
+<details>
+<summary>Arch Linux / Manjaro</summary>
+
+```shell
+add --commands --here
+```
+
+</details>
+
+<details>
+<summary>Fedora</summary>
+
+```shell
+add --commands --here
+```
+
+</details>
+
+</details>
+
 Once you have met all of these requirements, you are ready to install the OpenBB Terminal from source.
 
 ## Clone the source code
