@@ -39,7 +39,7 @@ def test_search_funds(record, term, country, pageSize, expected_columns):
 
     assert searched_funds is not None
     assert not searched_funds.empty
-    assert all([col in searched_funds.columns for col in expected_columns])
+    assert expected_columns == searched_funds.columns.tolist()
 
 
 @pytest.mark.record_http
@@ -57,7 +57,7 @@ def test_load_holdings(record, loaded_fund, holding_type, expected_columns):
 
     assert holdings is not None
     assert not holdings.empty
-    assert all([col in holdings.columns for col in expected_columns])
+    assert expected_columns == holdings.columns.tolist()
 
 
 @pytest.mark.record_http

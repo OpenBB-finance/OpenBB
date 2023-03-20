@@ -10,7 +10,7 @@ from openbb_terminal.mutual_funds import avanza_model
     "isin",
     ["LU0476876163"],
 )
-def test_get_data(record, isin):
+def test_get_data(isin):
     data = avanza_model.get_data(isin=isin)
 
     assert isinstance(data, dict)
