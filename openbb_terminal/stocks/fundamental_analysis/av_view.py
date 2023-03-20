@@ -445,6 +445,7 @@ def display_fraud(
     df = av_model.get_fraud_ratios(symbol, detail=detail)
 
     if df.empty:
+        console.print("[red]No data found[/red]")
         return
 
     df_color = df.copy()
@@ -452,7 +453,7 @@ def display_fraud(
         for column in df_color:
             df_color[column] = df_color[column].astype(str)
         df_color = df_color.apply(lambda x: av_model.replace_df(x.name, x), axis=1)
-
+    df_color = df_color.fillna("N/A")
     print_rich_table(
         df_color,
         headers=list(df_color.columns),

@@ -1,0 +1,1236 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Connection:
+      - close
+      Host:
+      - api.stlouisfed.org
+    method: GET
+    uri: https://api.stlouisfed.org/fred/series/observations?api_key=MOCK_API_KEY&series_id=CPALTT01USM659N
+  response:
+    body:
+      string: "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<observations realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" observation_start=\"1600-01-01\" observation_end=\"9999-12-31\"
+        units=\"lin\" output_type=\"1\" file_type=\"xml\" order_by=\"observation_date\"
+        sort_order=\"asc\" count=\"805\" offset=\"0\" limit=\"100000\">\n  <observation
+        realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1956-01-01\"
+        value=\".\"/>\n  <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\"
+        date=\"1956-02-01\" value=\".\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1956-03-01\" value=\".\"/>\n  <observation
+        realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1956-04-01\"
+        value=\".\"/>\n  <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\"
+        date=\"1956-05-01\" value=\".\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1956-06-01\" value=\".\"/>\n  <observation
+        realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1956-07-01\"
+        value=\".\"/>\n  <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\"
+        date=\"1956-08-01\" value=\".\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1956-09-01\" value=\".\"/>\n  <observation
+        realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1956-10-01\"
+        value=\".\"/>\n  <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\"
+        date=\"1956-11-01\" value=\".\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1956-12-01\" value=\".\"/>\n  <observation
+        realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1957-01-01\"
+        value=\".\"/>\n  <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\"
+        date=\"1957-02-01\" value=\".\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1957-03-01\" value=\".\"/>\n  <observation
+        realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1957-04-01\"
+        value=\".\"/>\n  <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\"
+        date=\"1957-05-01\" value=\".\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1957-06-01\" value=\".\"/>\n  <observation
+        realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1957-07-01\"
+        value=\".\"/>\n  <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\"
+        date=\"1957-08-01\" value=\".\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1957-09-01\" value=\".\"/>\n  <observation
+        realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1957-10-01\"
+        value=\".\"/>\n  <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\"
+        date=\"1957-11-01\" value=\".\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1957-12-01\" value=\".\"/>\n  <observation
+        realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1958-01-01\"
+        value=\".\"/>\n  <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\"
+        date=\"1958-02-01\" value=\".\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1958-03-01\" value=\".\"/>\n  <observation
+        realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1958-04-01\"
+        value=\".\"/>\n  <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\"
+        date=\"1958-05-01\" value=\".\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1958-06-01\" value=\".\"/>\n  <observation
+        realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1958-07-01\"
+        value=\".\"/>\n  <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\"
+        date=\"1958-08-01\" value=\".\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1958-09-01\" value=\".\"/>\n  <observation
+        realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1958-10-01\"
+        value=\".\"/>\n  <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\"
+        date=\"1958-11-01\" value=\".\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1958-12-01\" value=\".\"/>\n  <observation
+        realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1959-01-01\"
+        value=\".\"/>\n  <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\"
+        date=\"1959-02-01\" value=\".\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1959-03-01\" value=\".\"/>\n  <observation
+        realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1959-04-01\"
+        value=\".\"/>\n  <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\"
+        date=\"1959-05-01\" value=\".\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1959-06-01\" value=\".\"/>\n  <observation
+        realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1959-07-01\"
+        value=\".\"/>\n  <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\"
+        date=\"1959-08-01\" value=\".\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1959-09-01\" value=\".\"/>\n  <observation
+        realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1959-10-01\"
+        value=\".\"/>\n  <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\"
+        date=\"1959-11-01\" value=\".\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1959-12-01\" value=\".\"/>\n  <observation
+        realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1960-01-01\"
+        value=\"1.03448275862069\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1960-02-01\" value=\"1.73010380622838\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1960-03-01\"
+        value=\"1.73010380622838\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1960-04-01\" value=\"1.72413793103448\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1960-05-01\"
+        value=\"1.72413793103448\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1960-06-01\" value=\"1.71821305841925\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1960-07-01\"
+        value=\"1.36986301369863\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1960-08-01\" value=\"1.36986301369863\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1960-09-01\"
+        value=\"1.02389078498294\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1960-10-01\" value=\"1.36054421768708\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1960-11-01\"
+        value=\"1.36054421768708\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1960-12-01\" value=\"1.36054421768708\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1961-01-01\"
+        value=\"1.70648464163823\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1961-02-01\" value=\"1.36054421768708\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1961-03-01\"
+        value=\"1.36054421768708\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1961-04-01\" value=\"1.01694915254237\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1961-05-01\"
+        value=\"1.01694915254237\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1961-06-01\" value=\"0.675675675675676\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1961-07-01\"
+        value=\"1.35135135135135\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1961-08-01\" value=\"1.01351351351351\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1961-09-01\"
+        value=\"1.35135135135135\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1961-10-01\" value=\"0.671140939597316\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1961-11-01\"
+        value=\"0.671140939597316\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1961-12-01\" value=\"0.671140939597316\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1962-01-01\"
+        value=\"0.671140939597316\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1962-02-01\" value=\"1.00671140939597\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1962-03-01\"
+        value=\"1.00671140939597\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1962-04-01\" value=\"1.34228187919463\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1962-05-01\"
+        value=\"1.34228187919463\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1962-06-01\" value=\"1.34228187919463\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1962-07-01\"
+        value=\"1.0\"/>\n  <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\"
+        date=\"1962-08-01\" value=\"1.33779264214047\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1962-09-01\" value=\"1.33333333333333\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1962-10-01\"
+        value=\"1.33333333333333\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1962-11-01\" value=\"1.33333333333333\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1962-12-01\"
+        value=\"1.33333333333333\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1963-01-01\" value=\"1.33333333333333\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1963-02-01\"
+        value=\"0.996677740863788\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1963-03-01\" value=\"1.32890365448505\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1963-04-01\"
+        value=\"0.99337748344371\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1963-05-01\" value=\"0.99337748344371\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1963-06-01\"
+        value=\"1.32450331125828\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1963-07-01\" value=\"1.32013201320132\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1963-08-01\"
+        value=\"1.32013201320132\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1963-09-01\" value=\"0.986842105263159\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1963-10-01\"
+        value=\"1.31578947368421\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1963-11-01\" value=\"1.31578947368421\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1963-12-01\"
+        value=\"1.64473684210526\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1964-01-01\" value=\"1.64473684210526\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1964-02-01\"
+        value=\"1.64473684210526\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1964-03-01\" value=\"1.31147540983607\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1964-04-01\"
+        value=\"1.31147540983607\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1964-05-01\" value=\"1.31147540983607\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1964-06-01\"
+        value=\"1.30718954248366\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1964-07-01\" value=\"1.30293159609121\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1964-08-01\"
+        value=\"0.977198697068405\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1964-09-01\" value=\"1.30293159609121\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1964-10-01\"
+        value=\"0.974025974025975\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1964-11-01\" value=\"1.2987012987013\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1964-12-01\"
+        value=\"0.970873786407768\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1965-01-01\" value=\"0.970873786407768\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1965-02-01\"
+        value=\"0.970873786407768\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1965-03-01\" value=\"1.29449838187702\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1965-04-01\"
+        value=\"1.61812297734628\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1965-05-01\" value=\"1.61812297734628\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1965-06-01\"
+        value=\"1.93548387096774\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1965-07-01\" value=\"1.60771704180064\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1965-08-01\"
+        value=\"1.93548387096774\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1965-09-01\" value=\"1.60771704180064\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1965-10-01\"
+        value=\"1.92926045016077\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1965-11-01\" value=\"1.6025641025641\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1965-12-01\"
+        value=\"1.92307692307692\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1966-01-01\" value=\"1.92307692307692\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1966-02-01\"
+        value=\"2.56410256410257\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1966-03-01\" value=\"2.55591054313099\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1966-04-01\"
+        value=\"2.86624203821656\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1966-05-01\" value=\"2.86624203821656\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1966-06-01\"
+        value=\"2.53164556962026\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1966-07-01\" value=\"2.84810126582279\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1966-08-01\"
+        value=\"3.48101265822785\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1966-09-01\" value=\"3.48101265822785\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1966-10-01\"
+        value=\"3.78548895899054\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1966-11-01\" value=\"3.78548895899054\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1966-12-01\"
+        value=\"3.45911949685535\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1967-01-01\" value=\"3.45911949685535\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1967-02-01\"
+        value=\"2.8125\"/>\n  <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\"
+        date=\"1967-03-01\" value=\"2.80373831775701\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1967-04-01\" value=\"2.47678018575852\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1967-05-01\"
+        value=\"2.78637770897833\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1967-06-01\" value=\"2.77777777777778\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1967-07-01\"
+        value=\"2.76923076923077\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1967-08-01\" value=\"2.44648318042814\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1967-09-01\"
+        value=\"2.75229357798165\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1967-10-01\" value=\"2.43161094224924\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1967-11-01\"
+        value=\"2.7355623100304\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1967-12-01\" value=\"3.03951367781155\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1968-01-01\"
+        value=\"3.64741641337386\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1968-02-01\" value=\"3.95136778115502\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1968-03-01\"
+        value=\"3.93939393939394\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1968-04-01\" value=\"3.9274924471299\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1968-05-01\"
+        value=\"3.9156626506024\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1968-06-01\" value=\"4.20420420420419\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1968-07-01\"
+        value=\"4.49101796407184\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1968-08-01\" value=\"4.47761194029849\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1968-09-01\"
+        value=\"4.4642857142857\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1968-10-01\" value=\"4.74777448071215\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1968-11-01\"
+        value=\"4.73372781065088\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1968-12-01\" value=\"4.7197640117994\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1969-01-01\"
+        value=\"4.39882697947213\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1969-02-01\" value=\"4.6783625730994\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1969-03-01\"
+        value=\"5.2478134110787\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1969-04-01\" value=\"5.52325581395349\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1969-05-01\"
+        value=\"5.5072463768116\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1969-06-01\" value=\"5.47550432276658\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1969-07-01\"
+        value=\"5.44412607449857\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1969-08-01\" value=\"5.71428571428572\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1969-09-01\"
+        value=\"5.6980056980057\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1969-10-01\" value=\"5.6657223796034\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1969-11-01\"
+        value=\"5.93220338983051\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1969-12-01\" value=\"6.19718309859156\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1970-01-01\"
+        value=\"6.17977528089888\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1970-02-01\" value=\"6.14525139664805\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1970-03-01\"
+        value=\"5.81717451523546\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1970-04-01\" value=\"6.06060606060607\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1970-05-01\"
+        value=\"6.04395604395605\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1970-06-01\" value=\"6.01092896174864\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1970-07-01\"
+        value=\"5.97826086956522\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1970-08-01\" value=\"5.40540540540541\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1970-09-01\"
+        value=\"5.66037735849057\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1970-10-01\" value=\"5.63002680965148\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1970-11-01\"
+        value=\"5.6\"/>\n  <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\"
+        date=\"1970-12-01\" value=\"5.57029177718833\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1971-01-01\" value=\"5.2910052910053\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1971-02-01\"
+        value=\"5\"/>\n  <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\"
+        date=\"1971-03-01\" value=\"4.71204188481676\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1971-04-01\" value=\"4.15584415584416\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1971-05-01\"
+        value=\"4.40414507772021\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1971-06-01\" value=\"4.63917525773196\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1971-07-01\"
+        value=\"4.35897435897435\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1971-08-01\" value=\"4.6153846153846\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1971-09-01\"
+        value=\"4.08163265306121\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1971-10-01\" value=\"3.80710659898476\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1971-11-01\"
+        value=\"3.28282828282827\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1971-12-01\" value=\"3.26633165829145\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1972-01-01\"
+        value=\"3.26633165829145\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1972-02-01\" value=\"3.50877192982455\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1972-03-01\"
+        value=\"3.49999999999999\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1972-04-01\" value=\"3.49127182044887\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1972-05-01\"
+        value=\"3.22580645161289\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1972-06-01\" value=\"2.70935960591132\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1972-07-01\"
+        value=\"2.94840294840295\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1972-08-01\" value=\"2.94117647058824\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1972-09-01\"
+        value=\"3.18627450980392\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1972-10-01\" value=\"3.42298288508558\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1972-11-01\"
+        value=\"3.66748166259169\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1972-12-01\" value=\"3.40632603406326\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1973-01-01\"
+        value=\"3.64963503649635\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1973-02-01\" value=\"3.87409200968523\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1973-03-01\"
+        value=\"4.58937198067633\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1973-04-01\" value=\"5.06024096385543\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1973-05-01\"
+        value=\"5.52884615384616\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1973-06-01\" value=\"5.99520383693046\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1973-07-01\"
+        value=\"5.72792362768497\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1973-08-01\" value=\"7.38095238095239\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1973-09-01\"
+        value=\"7.36342042755345\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1973-10-01\" value=\"7.80141843971632\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1973-11-01\"
+        value=\"8.25471698113208\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1973-12-01\" value=\"8.70588235294118\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1974-01-01\"
+        value=\"9.38967136150236\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1974-02-01\" value=\"10.02331002331\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1974-03-01\"
+        value=\"10.392609699769\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1974-04-01\" value=\"10.0917431192661\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1974-05-01\"
+        value=\"10.7061503416856\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1974-06-01\" value=\"10.8597285067873\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1974-07-01\"
+        value=\"11.5124153498871\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1974-08-01\" value=\"10.8647450110865\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1974-09-01\"
+        value=\"11.9469026548673\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1974-10-01\" value=\"12.0614035087719\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1974-11-01\"
+        value=\"12.2004357298475\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1974-12-01\" value=\"12.3376623376623\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1975-01-01\"
+        value=\"11.8025751072961\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1975-02-01\" value=\"11.228813559322\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1975-03-01\"
+        value=\"10.2510460251046\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1975-04-01\" value=\"10.2083333333333\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1975-05-01\"
+        value=\"9.4650205761317\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1975-06-01\" value=\"9.38775510204082\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1975-07-01\"
+        value=\"9.71659919028341\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1975-08-01\" value=\"8.60000000000001\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1975-09-01\"
+        value=\"7.90513833992096\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1975-10-01\" value=\"7.43639921722114\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1975-11-01\"
+        value=\"7.37864077669904\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1975-12-01\" value=\"6.9364161849711\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1976-01-01\"
+        value=\"6.71785028790788\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1976-02-01\" value=\"6.28571428571429\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1976-03-01\"
+        value=\"6.07210626185959\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1976-04-01\" value=\"6.0491493383743\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1976-05-01\"
+        value=\"6.20300751879698\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1976-06-01\" value=\"5.97014925373133\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1976-07-01\"
+        value=\"5.35055350553504\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1976-08-01\" value=\"5.70902394106812\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1976-09-01\"
+        value=\"5.49450549450548\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1976-10-01\" value=\"5.46448087431692\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1976-11-01\"
+        value=\"4.88245931283904\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1976-12-01\" value=\"4.86486486486485\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1977-01-01\"
+        value=\"5.21582733812948\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1977-02-01\" value=\"5.91397849462364\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1977-03-01\"
+        value=\"6.44007155635061\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1977-04-01\" value=\"6.951871657754\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1977-05-01\"
+        value=\"6.72566371681417\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1977-06-01\" value=\"6.8661971830986\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1977-07-01\"
+        value=\"6.83012259194396\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1977-08-01\" value=\"6.62020905923346\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1977-09-01\"
+        value=\"6.59722222222223\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1977-10-01\" value=\"6.39032815198619\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1977-11-01\"
+        value=\"6.72413793103449\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1977-12-01\" value=\"6.70103092783506\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1978-01-01\"
+        value=\"6.83760683760684\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1978-02-01\" value=\"6.42978003384095\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1978-03-01\"
+        value=\"6.5546218487395\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1978-04-01\" value=\"6.50000000000001\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1978-05-01\"
+        value=\"6.96517412935324\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1978-06-01\" value=\"7.41350906095552\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1978-07-01\"
+        value=\"7.70491803278689\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1978-08-01\" value=\"7.84313725490197\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1978-09-01\"
+        value=\"8.30618892508144\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1978-10-01\" value=\"8.92857142857144\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1978-11-01\"
+        value=\"8.88529886914379\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1978-12-01\" value=\"9.01771336553946\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1979-01-01\"
+        value=\"9.28000000000001\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1979-02-01\" value=\"9.85691573926867\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1979-03-01\"
+        value=\"10.0946372239748\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1979-04-01\" value=\"10.4851330203443\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1979-05-01\"
+        value=\"10.8527131782946\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1979-06-01\" value=\"10.8895705521472\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1979-07-01\"
+        value=\"11.2633181126332\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1979-08-01\" value=\"11.8181818181818\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1979-09-01\"
+        value=\"12.1804511278195\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1979-10-01\" value=\"12.0715350223547\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1979-11-01\"
+        value=\"12.6112759643917\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1979-12-01\" value=\"13.2939438700148\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1980-01-01\"
+        value=\"13.909224011713\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1980-02-01\" value=\"14.1823444283647\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1980-03-01\"
+        value=\"14.756446991404\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1980-04-01\" value=\"14.7308781869689\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1980-05-01\"
+        value=\"14.4055944055944\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1980-06-01\" value=\"14.3845089903181\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1980-07-01\"
+        value=\"13.1326949384405\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1980-08-01\" value=\"12.8726287262873\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1980-09-01\"
+        value=\"12.6005361930295\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1980-10-01\" value=\"12.7659574468085\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1980-11-01\"
+        value=\"12.6482213438735\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1980-12-01\" value=\"12.51629726206\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1981-01-01\"
+        value=\"11.8251928020566\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1981-02-01\" value=\"11.4068441064639\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1981-03-01\"
+        value=\"10.4868913857678\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1981-04-01\" value=\"10.0\"/>\n  <observation
+        realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1981-05-01\"
+        value=\"9.77995110024451\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1981-06-01\" value=\"9.55259975816204\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1981-07-01\"
+        value=\"10.7617896009674\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1981-08-01\" value=\"10.8043217286915\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1981-09-01\"
+        value=\"10.952380952381\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1981-10-01\" value=\"10.1415094339623\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1981-11-01\"
+        value=\"9.59064327485381\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1981-12-01\" value=\"8.92236384704519\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1982-01-01\"
+        value=\"8.39080459770114\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1982-02-01\" value=\"7.62229806598407\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1982-03-01\"
+        value=\"6.77966101694915\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1982-04-01\" value=\"6.50953984287317\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1982-05-01\"
+        value=\"6.68151447661469\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1982-06-01\" value=\"7.06401766004414\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1982-07-01\"
+        value=\"6.44104803493449\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1982-08-01\" value=\"5.85048754062838\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1982-09-01\"
+        value=\"5.04291845493562\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1982-10-01\" value=\"5.1391862955032\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1982-11-01\"
+        value=\"4.58911419423692\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1982-12-01\" value=\"3.82978723404256\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1983-01-01\"
+        value=\"3.71155885471899\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1983-02-01\" value=\"3.48837209302326\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1983-03-01\"
+        value=\"3.5978835978836\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1983-04-01\" value=\"3.89884088514226\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1983-05-01\"
+        value=\"3.5490605427975\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1983-06-01\" value=\"2.57731958762887\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1983-07-01\"
+        value=\"2.46153846153846\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1983-08-01\" value=\"2.55885363357216\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1983-09-01\"
+        value=\"2.86006128702757\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1983-10-01\" value=\"2.85132382892057\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1983-11-01\"
+        value=\"3.26530612244898\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1983-12-01\" value=\"3.79098360655737\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1984-01-01\"
+        value=\"4.1922290388548\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1984-02-01\" value=\"4.59652706843718\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1984-03-01\"
+        value=\"4.80081716036773\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1984-04-01\" value=\"4.56389452332656\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1984-05-01\"
+        value=\"4.23387096774194\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1984-06-01\" value=\"4.22110552763818\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1984-07-01\"
+        value=\"4.2042042042042\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1984-08-01\" value=\"4.29141716566866\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1984-09-01\"
+        value=\"4.27010923535255\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1984-10-01\" value=\"4.25742574257425\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1984-11-01\"
+        value=\"4.05138339920948\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1984-12-01\" value=\"3.94866732477789\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1985-01-01\"
+        value=\"3.53287536800785\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1985-02-01\" value=\"3.515625\"/>\n  <observation
+        realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1985-03-01\"
+        value=\"3.70370370370371\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1985-04-01\" value=\"3.68574199806014\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1985-05-01\"
+        value=\"3.77176015473887\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1985-06-01\" value=\"3.76084860173579\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1985-07-01\"
+        value=\"3.55427473583095\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1985-08-01\" value=\"3.34928229665073\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1985-09-01\"
+        value=\"3.14285714285714\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1985-10-01\" value=\"3.22886989553657\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1985-11-01\"
+        value=\"3.51377018043686\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1985-12-01\" value=\"3.79867046533714\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1986-01-01\"
+        value=\"3.88625592417063\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1986-02-01\" value=\"3.1132075471698\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1986-03-01\"
+        value=\"2.25563909774436\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1986-04-01\" value=\"1.59027128157157\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1986-05-01\"
+        value=\"1.49114631873253\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1986-06-01\" value=\"1.76579925650557\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1986-07-01\"
+        value=\"1.57699443413728\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1986-08-01\" value=\"1.57407407407406\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1986-09-01\"
+        value=\"1.75438596491229\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1986-10-01\" value=\"1.47194112235511\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1986-11-01\"
+        value=\"1.28440366972477\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1986-12-01\" value=\"1.09789569990851\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1987-01-01\"
+        value=\"1.45985401459854\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1987-02-01\" value=\"2.10430009149132\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1987-03-01\"
+        value=\"3.03308823529411\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1987-04-01\" value=\"3.77532228360957\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1987-05-01\"
+        value=\"3.85674931129477\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1987-06-01\" value=\"3.65296803652968\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1987-07-01\"
+        value=\"3.9269406392694\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1987-08-01\" value=\"4.28441203281677\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1987-09-01\"
+        value=\"4.35571687840289\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1987-10-01\" value=\"4.53309156844969\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1987-11-01\"
+        value=\"4.52898550724636\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1987-12-01\" value=\"4.43438914027149\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1988-01-01\"
+        value=\"4.04676258992805\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1988-02-01\" value=\"3.94265232974909\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1988-03-01\"
+        value=\"3.92506690454951\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1988-04-01\" value=\"3.9041703637977\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1988-05-01\"
+        value=\"3.89036251105217\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1988-06-01\" value=\"3.9647577092511\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1988-07-01\"
+        value=\"4.13005272407734\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1988-08-01\" value=\"4.02097902097902\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1988-09-01\"
+        value=\"4.17391304347826\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1988-10-01\" value=\"4.24978317432784\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1988-11-01\"
+        value=\"4.24610051993069\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1988-12-01\" value=\"4.41941074523398\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1989-01-01\"
+        value=\"4.66724286949006\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1989-02-01\" value=\"4.82758620689656\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1989-03-01\"
+        value=\"4.97854077253219\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1989-04-01\" value=\"5.12382578992315\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1989-05-01\"
+        value=\"5.36170212765957\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1989-06-01\" value=\"5.16949152542374\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1989-07-01\"
+        value=\"4.97890295358649\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1989-08-01\" value=\"4.70588235294118\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1989-09-01\"
+        value=\"4.34056761268782\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1989-10-01\" value=\"4.49251247920134\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1989-11-01\"
+        value=\"4.65502909393182\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1989-12-01\" value=\"4.6473029045643\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1990-01-01\"
+        value=\"5.20231213872832\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1990-02-01\" value=\"5.26315789473685\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1990-03-01\"
+        value=\"5.233033524121\"/>\n  <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\"
+        date=\"1990-04-01\" value=\"4.71161657189277\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1990-05-01\" value=\"4.36187399030693\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1990-06-01\"
+        value=\"4.67365028203062\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1990-07-01\" value=\"4.82315112540193\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1990-08-01\"
+        value=\"5.61797752808989\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1990-09-01\" value=\"6.16\"/>\n  <observation
+        realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1990-10-01\"
+        value=\"6.28980891719745\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1990-11-01\" value=\"6.27482128673552\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1990-12-01\"
+        value=\"6.10626486915148\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1991-01-01\" value=\"5.65149136577707\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1991-02-01\"
+        value=\"5.3125\"/>\n  <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\"
+        date=\"1991-03-01\" value=\"4.89510489510491\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1991-04-01\" value=\"4.88750969743985\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1991-05-01\"
+        value=\"4.95356037151703\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1991-06-01\" value=\"4.69591993841416\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1991-07-01\"
+        value=\"4.44785276073618\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1991-08-01\" value=\"3.79939209726442\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1991-09-01\"
+        value=\"3.39110776186887\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1991-10-01\" value=\"2.92134831460675\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1991-11-01\"
+        value=\"2.98953662182362\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1991-12-01\" value=\"3.0642750373692\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1992-01-01\"
+        value=\"2.60029717682022\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1992-02-01\" value=\"2.81899109792283\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1992-03-01\"
+        value=\"3.1851851851852\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1992-04-01\" value=\"3.18047337278108\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1992-05-01\"
+        value=\"3.02359882005901\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1992-06-01\" value=\"3.08823529411763\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1992-07-01\"
+        value=\"3.15712187958885\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1992-08-01\" value=\"3.14787701317717\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1992-09-01\"
+        value=\"2.98833819241984\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1992-10-01\" value=\"3.20232896652111\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1992-11-01\"
+        value=\"3.04789550072568\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1992-12-01\" value=\"2.90065264684554\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1993-01-01\"
+        value=\"3.25850832729905\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1993-02-01\" value=\"3.24675324675326\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1993-03-01\"
+        value=\"3.08686288585784\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1993-04-01\" value=\"3.2258064516129\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1993-05-01\"
+        value=\"3.22118826055833\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1993-06-01\" value=\"2.99572039942941\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1993-07-01\"
+        value=\"2.77580071174378\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1993-08-01\" value=\"2.76792051100072\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1993-09-01\"
+        value=\"2.689313517339\"/>\n  <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\"
+        date=\"1993-10-01\" value=\"2.75035260930886\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1993-11-01\" value=\"2.67605633802819\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1993-12-01\"
+        value=\"2.74841437632136\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1994-01-01\" value=\"2.52454417952314\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1994-02-01\"
+        value=\"2.51572327044024\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1994-03-01\" value=\"2.50696378830084\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1994-04-01\"
+        value=\"2.36111111111111\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1994-05-01\" value=\"2.28848821081832\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1994-06-01\"
+        value=\"2.49307479224375\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1994-07-01\" value=\"2.77008310249306\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1994-08-01\"
+        value=\"2.90055248618783\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1994-09-01\" value=\"2.96347346657477\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1994-10-01\"
+        value=\"2.60809883321896\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1994-11-01\" value=\"2.67489711934154\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1994-12-01\"
+        value=\"2.67489711934154\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1995-01-01\" value=\"2.80437756497949\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1995-02-01\"
+        value=\"2.86298568507159\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1995-03-01\" value=\"2.85326086956522\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1995-04-01\"
+        value=\"3.05291723202172\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1995-05-01\" value=\"3.1864406779661\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1995-06-01\"
+        value=\"3.04054054054055\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1995-07-01\" value=\"2.76280323450136\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1995-08-01\"
+        value=\"2.61744966442954\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1995-09-01\" value=\"2.54350736278447\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1995-10-01\"
+        value=\"2.80936454849497\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1995-11-01\" value=\"2.60521042084169\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1995-12-01\"
+        value=\"2.53841015364063\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1996-01-01\" value=\"2.72787757817697\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1996-02-01\"
+        value=\"2.65076209410206\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1996-03-01\" value=\"2.84015852047556\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1996-04-01\"
+        value=\"2.89664252797894\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1996-05-01\" value=\"2.89093298291722\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1996-06-01\"
+        value=\"2.75409836065573\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1996-07-01\" value=\"2.95081967213114\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1996-08-01\"
+        value=\"2.87769784172662\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1996-09-01\" value=\"3.00261096605744\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1996-10-01\"
+        value=\"2.99284320104101\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1996-11-01\" value=\"3.25520833333334\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1996-12-01\"
+        value=\"3.32247557003257\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1997-01-01\" value=\"3.0440414507772\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1997-02-01\"
+        value=\"3.03421562298256\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1997-03-01\" value=\"2.7617212588311\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1997-04-01\"
+        value=\"2.49520153550862\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1997-05-01\" value=\"2.23499361430395\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1997-06-01\"
+        value=\"2.29738353541801\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1997-07-01\" value=\"2.22929936305732\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1997-08-01\"
+        value=\"2.22504767959313\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1997-09-01\" value=\"2.15462610899872\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1997-10-01\"
+        value=\"2.08464939987364\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1997-11-01\" value=\"1.82849936948297\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1997-12-01\"
+        value=\"1.70239596469106\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1998-01-01\" value=\"1.5713387806411\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1998-02-01\"
+        value=\"1.44110275689222\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1998-03-01\" value=\"1.37499999999999\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1998-04-01\"
+        value=\"1.43570536828965\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1998-05-01\" value=\"1.68644597126797\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1998-06-01\"
+        value=\"1.68434185901434\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1998-07-01\" value=\"1.6822429906542\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1998-08-01\"
+        value=\"1.61691542288557\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1998-09-01\" value=\"1.48883374689826\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1998-10-01\"
+        value=\"1.4851485148515\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1998-11-01\" value=\"1.54798761609908\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1998-12-01\"
+        value=\"1.61190328580284\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1999-01-01\" value=\"1.67079207920794\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1999-02-01\"
+        value=\"1.6059295861643\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1999-03-01\" value=\"1.72626387176327\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1999-04-01\"
+        value=\"2.27692307692307\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1999-05-01\" value=\"2.08845208845208\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1999-06-01\"
+        value=\"1.96319018404907\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1999-07-01\" value=\"2.14460784313725\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1999-08-01\"
+        value=\"2.26438188494492\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1999-09-01\" value=\"2.62836185819072\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1999-10-01\"
+        value=\"2.56097560975609\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"1999-11-01\" value=\"2.62195121951219\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"1999-12-01\"
+        value=\"2.68456375838926\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2000-01-01\" value=\"2.73889227023737\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2000-02-01\"
+        value=\"3.22188449848025\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2000-03-01\" value=\"3.75757575757575\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2000-04-01\"
+        value=\"3.06859205776174\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2000-05-01\" value=\"3.18892900120338\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2000-06-01\"
+        value=\"3.73044524669075\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2000-07-01\" value=\"3.65926814637075\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2000-08-01\"
+        value=\"3.41113105924597\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2000-09-01\" value=\"3.45443716497914\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2000-10-01\"
+        value=\"3.44827586206897\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2000-11-01\" value=\"3.44622697563873\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2000-12-01\"
+        value=\"3.38680926916221\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2001-01-01\" value=\"3.73222748815164\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2001-02-01\"
+        value=\"3.53356890459364\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2001-03-01\" value=\"2.92056074766355\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2001-04-01\"
+        value=\"3.26911850554583\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2001-05-01\" value=\"3.61516034985422\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2001-06-01\"
+        value=\"3.24825986078885\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2001-07-01\" value=\"2.7199074074074\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2001-08-01\"
+        value=\"2.7199074074074\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2001-09-01\" value=\"2.64824409902132\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2001-10-01\"
+        value=\"2.12643678160919\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2001-11-01\" value=\"1.89546237794372\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2001-12-01\"
+        value=\"1.55172413793103\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2002-01-01\" value=\"1.14220445459737\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2002-02-01\"
+        value=\"1.13765642775882\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2002-03-01\" value=\"1.47559591373441\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2002-04-01\"
+        value=\"1.63934426229508\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2002-05-01\" value=\"1.1817670230726\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2002-06-01\"
+        value=\"1.06741573033709\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2002-07-01\" value=\"1.46478873239436\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2002-08-01\"
+        value=\"1.80281690140844\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2002-09-01\" value=\"1.51430173864273\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2002-10-01\"
+        value=\"2.02588632526732\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2002-11-01\" value=\"2.19842164599775\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2002-12-01\"
+        value=\"2.37691001697794\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2003-01-01\" value=\"2.5974025974026\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2003-02-01\"
+        value=\"2.98087739032619\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2003-03-01\" value=\"3.0201342281879\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2003-04-01\"
+        value=\"2.22469410456062\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2003-05-01\" value=\"2.05784204671857\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2003-06-01\"
+        value=\"2.11228460255697\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2003-07-01\" value=\"2.10993892282067\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2003-08-01\"
+        value=\"2.15827338129497\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2003-09-01\" value=\"2.32044198895027\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2003-10-01\"
+        value=\"2.04081632653061\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2003-11-01\" value=\"1.7650303364589\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2003-12-01\"
+        value=\"1.87949143173024\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2004-01-01\" value=\"1.92625206384149\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2004-02-01\"
+        value=\"1.69306389950846\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2004-03-01\" value=\"1.73724212812162\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2004-04-01\"
+        value=\"2.28509249183896\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2004-05-01\" value=\"3.05177111716622\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2004-06-01\"
+        value=\"3.26619488296135\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2004-07-01\" value=\"2.99075584556824\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2004-08-01\"
+        value=\"2.65438786565547\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2004-09-01\" value=\"2.53779697624191\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2004-10-01\"
+        value=\"3.18918918918919\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2004-11-01\" value=\"3.52303523035231\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2004-12-01\"
+        value=\"3.25556158437331\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2005-01-01\" value=\"2.96976241900649\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2005-02-01\"
+        value=\"3.0075187969925\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2005-03-01\" value=\"3.14834578441835\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2005-04-01\"
+        value=\"3.51063829787233\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2005-05-01\" value=\"2.80274986779483\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2005-06-01\"
+        value=\"2.53031101739589\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2005-07-01\" value=\"3.16789862724393\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2005-08-01\"
+        value=\"3.64116094986808\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2005-09-01\" value=\"4.68667719852555\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2005-10-01\"
+        value=\"4.34782608695652\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2005-11-01\" value=\"3.45549738219894\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2005-12-01\"
+        value=\"3.41565948502364\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2006-01-01\" value=\"3.98531725222863\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2006-02-01\"
+        value=\"3.59749739311782\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2006-03-01\" value=\"3.3626487325401\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2006-04-01\"
+        value=\"3.54573484069888\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2006-05-01\" value=\"4.16666666666665\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2006-06-01\"
+        value=\"4.31876606683804\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2006-07-01\" value=\"4.1453428863869\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2006-08-01\"
+        value=\"3.81873727087576\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2006-09-01\" value=\"2.06237424547282\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2006-10-01\"
+        value=\"1.30522088353415\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2006-11-01\" value=\"1.97368421052632\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2006-12-01\"
+        value=\"2.54065040650407\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2007-01-01\" value=\"2.07564296520424\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2007-02-01\"
+        value=\"2.41519879214898\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2007-03-01\" value=\"2.77877877877878\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2007-04-01\"
+        value=\"2.57369727047146\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2007-05-01\" value=\"2.69086419753088\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2007-06-01\"
+        value=\"2.68703794972894\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2007-07-01\" value=\"2.35823095823096\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2007-08-01\"
+        value=\"1.97008337420303\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2007-09-01\" value=\"2.75505174963037\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2007-10-01\"
+        value=\"3.53617443012883\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2007-11-01\" value=\"4.30620347394541\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2007-12-01\"
+        value=\"4.0812685827552\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2008-01-01\" value=\"4.28029404790135\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2008-02-01\"
+        value=\"4.02655541304871\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2008-03-01\" value=\"3.98145623125168\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2008-04-01\"
+        value=\"3.93688977482752\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2008-05-01\" value=\"4.17554304180352\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2008-06-01\"
+        value=\"5.02179004761172\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2008-07-01\" value=\"5.60012290025396\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2008-08-01\"
+        value=\"5.37185511526235\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2008-09-01\" value=\"4.9369274305722\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2008-10-01\"
+        value=\"3.65518627713749\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2008-11-01\" value=\"1.06957469180737\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2008-12-01\"
+        value=\"0.0914129006455893\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2009-01-01\" value=\"0.0298465036952666\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2009-02-01\"
+        value=\"0.236191088037882\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2009-03-01\" value=\"-0.383556254917384\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2009-04-01\"
+        value=\"-0.736885715216724\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2009-05-01\" value=\"-1.28143579895861\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2009-06-01\"
+        value=\"-1.42677604368987\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2009-07-01\" value=\"-2.09716135367605\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2009-08-01\"
+        value=\"-1.48434861196061\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2009-09-01\" value=\"-1.28620596664275\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2009-10-01\"
+        value=\"-0.182848277486101\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2009-11-01\" value=\"1.83829586913028\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2009-12-01\"
+        value=\"2.72133112620585\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2010-01-01\" value=\"2.62570864295763\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2010-02-01\"
+        value=\"2.14333177814537\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2010-03-01\" value=\"2.31395944694395\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2010-04-01\"
+        value=\"2.23644719564809\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2010-05-01\" value=\"2.02098608409396\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2010-06-01\"
+        value=\"1.05334897284567\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2010-07-01\" value=\"1.23519277830146\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2010-08-01\"
+        value=\"1.1481045618392\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2010-09-01\" value=\"1.14368265815928\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2010-10-01\"
+        value=\"1.17218760552695\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2010-11-01\" value=\"1.14316091157028\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2010-12-01\"
+        value=\"1.49572352731431\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2011-01-01\" value=\"1.63184685744875\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2011-02-01\"
+        value=\"2.10758462865817\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2011-03-01\" value=\"2.68160326424087\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2011-04-01\"
+        value=\"3.16363085927646\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2011-05-01\" value=\"3.56864578463458\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2011-06-01\"
+        value=\"3.55882825224234\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2011-07-01\" value=\"3.62871598222108\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2011-08-01\"
+        value=\"3.77120817911978\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2011-09-01\" value=\"3.8683568410403\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2011-10-01\"
+        value=\"3.5251999213574\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2011-11-01\" value=\"3.39437759080085\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2011-12-01\"
+        value=\"2.96241884487108\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2012-01-01\" value=\"2.92521671215085\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2012-02-01\"
+        value=\"2.87109878043822\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2012-03-01\" value=\"2.65139819302177\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2012-04-01\"
+        value=\"2.30273981129894\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2012-05-01\" value=\"1.7042537749376\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2012-06-01\"
+        value=\"1.66399376223851\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2012-07-01\" value=\"1.40845070422536\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2012-08-01\"
+        value=\"1.69237899755015\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2012-09-01\" value=\"1.99128208066498\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2012-10-01\"
+        value=\"2.16234359887113\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2012-11-01\" value=\"1.76413384608586\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2012-12-01\"
+        value=\"1.74102236874756\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2013-01-01\" value=\"1.59486466812257\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2013-02-01\"
+        value=\"1.97792350974904\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2013-03-01\" value=\"1.47389621259677\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2013-04-01\"
+        value=\"1.06308538148945\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2013-05-01\" value=\"1.36196505885168\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2013-06-01\"
+        value=\"1.75441654537688\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2013-07-01\" value=\"1.9606816118444\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2013-08-01\"
+        value=\"1.51836755954321\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2013-09-01\" value=\"1.18492526155215\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2013-10-01\"
+        value=\"0.963612704643408\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2013-11-01\" value=\"1.23707220453391\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2013-12-01\"
+        value=\"1.50173561961839\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2014-01-01\" value=\"1.57894736842106\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2014-02-01\"
+        value=\"1.12634925010552\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2014-03-01\" value=\"1.51220287576309\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2014-04-01\"
+        value=\"1.95285789851675\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2014-05-01\" value=\"2.12711154993668\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2014-06-01\"
+        value=\"2.07234137316707\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2014-07-01\" value=\"1.9923286357643\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2014-08-01\"
+        value=\"1.69961133416282\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2014-09-01\" value=\"1.65791867571505\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2014-10-01\"
+        value=\"1.66434021563205\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2014-11-01\" value=\"1.32235518237088\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2014-12-01\"
+        value=\"0.756493269655739\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2015-01-01\" value=\"-0.0893483130696457\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2015-02-01\"
+        value=\"-0.0251298018153031\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2015-03-01\" value=\"-0.0736373908664181\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2015-04-01\"
+        value=\"-0.199517446176685\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2015-05-01\" value=\"-0.0399327448507779\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2015-06-01\"
+        value=\"0.123771203685436\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2015-07-01\" value=\"0.169569779643243\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2015-08-01\"
+        value=\"0.195079293005743\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2015-09-01\" value=\"-0.0361297478059709\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2015-10-01\"
+        value=\"0.17057443573555\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2015-11-01\" value=\"0.501797578667902\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2015-12-01\"
+        value=\"0.729519786041594\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2016-01-01\" value=\"1.37308681383098\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2016-02-01\"
+        value=\"1.01779978016546\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2016-03-01\" value=\"0.852536221142728\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2016-04-01\"
+        value=\"1.12511041889441\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2016-05-01\" value=\"1.01932255419357\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2016-06-01\"
+        value=\"0.997326494523087\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2016-07-01\" value=\"0.827138870498699\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2016-08-01\"
+        value=\"1.06287450276103\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2016-09-01\" value=\"1.46378364748158\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2016-10-01\"
+        value=\"1.63598752091762\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2016-11-01\" value=\"1.69253716250378\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2016-12-01\"
+        value=\"2.07462213296691\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2017-01-01\" value=\"2.50004220905299\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2017-02-01\"
+        value=\"2.73795817148932\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2017-03-01\" value=\"2.38061243344026\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2017-04-01\"
+        value=\"2.1996898784173\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2017-05-01\" value=\"1.87487772084135\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2017-06-01\"
+        value=\"1.63348795525647\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2017-07-01\" value=\"1.7279784563725\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2017-08-01\"
+        value=\"1.93897421205818\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2017-09-01\" value=\"2.23296386500322\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2017-10-01\"
+        value=\"2.04112870197618\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2017-11-01\" value=\"2.20258293868318\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2017-12-01\"
+        value=\"2.10908247456841\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2018-01-01\" value=\"2.07050762027518\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2018-02-01\"
+        value=\"2.21179542123865\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2018-03-01\" value=\"2.35971140397292\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2018-04-01\"
+        value=\"2.46274394333479\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2018-05-01\" value=\"2.80101171480757\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2018-06-01\"
+        value=\"2.87154783531668\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2018-07-01\" value=\"2.94951508664711\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2018-08-01\"
+        value=\"2.69918010418745\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2018-09-01\" value=\"2.27697219419899\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2018-10-01\"
+        value=\"2.52246992860703\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2018-11-01\" value=\"2.1766010321524\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2018-12-01\"
+        value=\"1.91015884863136\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2019-01-01\" value=\"1.5512351381991\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2019-02-01\"
+        value=\"1.52013526593331\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2019-03-01\" value=\"1.86252274056917\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2019-04-01\"
+        value=\"1.99643977553026\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2019-05-01\" value=\"1.79022846876639\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2019-06-01\"
+        value=\"1.64848465607624\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2019-07-01\" value=\"1.81146480639351\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2019-08-01\"
+        value=\"1.74977988942916\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2019-09-01\" value=\"1.71130451316952\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2019-10-01\"
+        value=\"1.7640429444214\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2019-11-01\" value=\"2.05127798189161\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2019-12-01\"
+        value=\"2.28512974012172\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2020-01-01\" value=\"2.48657195525045\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2020-02-01\"
+        value=\"2.33487356394594\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2020-03-01\" value=\"1.53932699191982\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2020-04-01\"
+        value=\"0.329096686336815\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2020-05-01\" value=\"0.117926370210715\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2020-06-01\"
+        value=\"0.645733047555484\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2020-07-01\" value=\"0.986081825303721\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2020-08-01\"
+        value=\"1.3096453823307\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2020-09-01\" value=\"1.37132486105647\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2020-10-01\"
+        value=\"1.18206616772747\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2020-11-01\" value=\"1.17453578426798\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2020-12-01\"
+        value=\"1.36200549471932\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2021-01-01\" value=\"1.39976974156009\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2021-02-01\"
+        value=\"1.67621521737451\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2021-03-01\" value=\"2.61976250895919\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2021-04-01\"
+        value=\"4.15969483870212\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2021-05-01\" value=\"4.99270653759447\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2021-06-01\"
+        value=\"5.39145141332134\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2021-07-01\" value=\"5.36547523938539\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2021-08-01\"
+        value=\"5.25127155487501\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2021-09-01\" value=\"5.39034885507916\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2021-10-01\"
+        value=\"6.2218689033289\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2021-11-01\" value=\"6.80900283980648\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2021-12-01\"
+        value=\"7.03640286554513\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2022-01-01\" value=\"7.47987246828913\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2022-02-01\"
+        value=\"7.87106389773928\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2022-03-01\" value=\"8.54245555484244\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2022-04-01\"
+        value=\"8.25862934088236\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2022-05-01\" value=\"8.58151154367651\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2022-06-01\"
+        value=\"9.05975796478416\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2022-07-01\" value=\"8.52481474562553\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2022-08-01\"
+        value=\"8.26269250311623\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2022-09-01\" value=\"8.20166964383362\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2022-10-01\"
+        value=\"7.7454273308049\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2022-11-01\" value=\"7.11032279419173\"/>\n
+        \ <observation realtime_start=\"2023-03-20\" realtime_end=\"2023-03-20\" date=\"2022-12-01\"
+        value=\"6.45440133141082\"/>\n  <observation realtime_start=\"2023-03-20\"
+        realtime_end=\"2023-03-20\" date=\"2023-01-01\" value=\"6.41014696885625\"/>\n</observations>\n\n\n\n"
+    headers:
+      Connection:
+      - close
+      - Transfer-Encoding
+      Content-Type:
+      - text/xml; charset=UTF-8
+      Date:
+      - Mon, 20 Mar 2023 14:47:57 GMT
+      Expires:
+      - Mon, 20 Mar 2023 14:48:57 GMT
+      Last-Modified:
+      - Wed, 15 Mar 2023 18:07:03 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      x-rate-limit-limit:
+      - '120'
+      x-rate-limit-remaining:
+      - '116'
+    status:
+      code: 200
+      message: OK
+version: 1
