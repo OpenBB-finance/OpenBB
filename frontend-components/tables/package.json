@@ -5,13 +5,16 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "vite build",
+    "build_tsc": "tsc && vite build",
     "deploy": "npm run build && mv dist/index.html ../../openbb_terminal/core/plots/table.html",
     "preview": "vite preview"
   },
   "dependencies": {
+    "@radix-ui/react-checkbox": "^1.0.3",
     "@radix-ui/react-dropdown-menu": "^2.0.4",
     "@radix-ui/react-icons": "^1.2.0",
+    "@radix-ui/react-radio-group": "^1.1.2",
     "@radix-ui/react-select": "^1.2.1",
     "@tanstack/match-sorter-utils": "^8.7.6",
     "@tanstack/react-table": "^8.7.9",

@@ -58,7 +58,7 @@ function App() {
 
   return (
     <div className="relative h-full bg-black">
-      <nav className="_header h-[70px] w-full px-6">
+      {/*<nav className="_header h-[70px] w-full px-6">
         <div className="flex gap-6 items-center h-full">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -74,7 +74,7 @@ function App() {
           </svg>
           <p className="font-bold">{data?.title ?? "Interactive Table"}</p>
         </div>
-      </nav>
+  </nav>*/}
       <DndProvider backend={HTML5Backend}>
         {transformedData && (
           <Table
