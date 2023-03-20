@@ -27,8 +27,8 @@ class PreferencesModel(BaseModel):
     # See more: https://matplotlib.org/stable/tutorials/introductory/usage.html#the-builtin-backends
     PLOT_BACKEND: Optional[str] = None
     PLOT_DPI: PositiveInt = 100
-    PLOT_HEIGHT: PositiveInt = 500
-    PLOT_WIDTH: PositiveInt = 800
+    PLOT_HEIGHT: PositiveInt = 762
+    PLOT_WIDTH: PositiveInt = 1400
     PLOT_HEIGHT_PERCENTAGE: PositiveFloat = 50.0
     PLOT_WIDTH_PERCENTAGE: PositiveFloat = 70.0
     # Whether to open plot image exports after they are created
@@ -41,14 +41,13 @@ class PreferencesModel(BaseModel):
     RETRY_WITH_LOAD: bool = False
     USE_TABULATE_DF: bool = True
     # Use interactive window to display dataframes with options to sort, filter, etc.
-    USE_INTERACTIVE_DF = True
+    USE_INTERACTIVE_DF: bool = True
     USE_CLEAR_AFTER_CMD: bool = False
     USE_COLOR: bool = True
     USE_DATETIME: bool = True
     # Enable interactive matplotlib mode: change variable name to be more descriptive and delete comment
     USE_ION: bool = True
     USE_WATERMARK: bool = True
-    # Enable command and source in the figures: change variable name to be more descriptive and delete comment
     USE_CMD_LOCATION_FIGURE: bool = True
     USE_PROMPT_TOOLKIT: bool = True
     USE_PLOT_AUTOSCALING: bool = False

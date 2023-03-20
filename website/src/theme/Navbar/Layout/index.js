@@ -8,6 +8,7 @@ import {
 import NavbarMobileSidebar from "@theme/Navbar/MobileSidebar";
 import styles from "./styles.module.css";
 import { useLocation } from "@docusaurus/router";
+import { useIFrameContext } from "../../Root";
 function NavbarBackdrop(props) {
   return (
     <div
@@ -18,6 +19,7 @@ function NavbarBackdrop(props) {
   );
 }
 export default function NavbarLayout({ children }) {
+  const { isIFrame } = useIFrameContext();
   const {
     navbar: { hideOnScroll, style },
   } = useThemeConfig();
@@ -36,6 +38,11 @@ export default function NavbarLayout({ children }) {
         "--ifm-color-primary",
         "#F5B166"
       );
+    } else if (pathname.startsWith("/bot")) {
+      document.documentElement.style.setProperty(
+        "--ifm-color-primary",
+        "#b186bb"
+      );
     } else {
     }
   }, [pathname]);
@@ -47,7 +54,11 @@ export default function NavbarLayout({ children }) {
         {
           header_docs_terminal: pathname.startsWith("/terminal"),
           header_docs_sdk: pathname.startsWith("/sdk"),
-          header_docs: !pathname.startsWith("/terminal") && !pathname.startsWith("/sdk"),
+          header_docs_bot: pathname.startsWith("/bot"),
+          header_docs:
+            !pathname.startsWith("/terminal") &&
+            !pathname.startsWith("/sdk") &&
+            !pathname.startsWith("/bot"),
         },
         "navbar",
         "navbar--fixed-top",
@@ -59,6 +70,9 @@ export default function NavbarLayout({ children }) {
           "navbar--dark": style === "dark",
           "navbar--primary": style === "primary",
           "navbar-sidebar--show": mobileSidebar.shown,
+        },
+        {
+          hidden: isIFrame,
         }
       )}
     >

@@ -232,7 +232,7 @@ def fetch_user_configs(
         return None
 
 
-def patch_user_configs(
+def upload_config(
     key: str,
     value: str,
     type_: str,
@@ -565,7 +565,7 @@ def generate_personal_access_token(
     Optional[requests.Response]
     """
 
-    url = f"{base_url}/sdk/token"
+    url = f"{base_url}sdk/token"
 
     payload = json.dumps({"days": days})
     headers = {
@@ -612,7 +612,7 @@ def get_personal_access_token(
     Optional[requests.Response]
     """
 
-    url = f"{base_url}/sdk/token"
+    url = f"{base_url}sdk/token"
 
     headers = {"Authorization": auth_header}
 
@@ -655,7 +655,7 @@ def revoke_personal_access_token(
     Optional[requests.Response]
     """
 
-    url = f"{base_url}/sdk/token"
+    url = f"{base_url}sdk/token"
 
     headers = {"Authorization": auth_header}
 

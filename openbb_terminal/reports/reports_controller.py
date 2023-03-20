@@ -196,6 +196,11 @@ class ReportController(BaseController):
 
             if ns_parser:
                 cfg.change_logging_suppress(new_value=True)
+                if report_name == "equity" and "." in ns_parser.symbol:
+                    console.print(
+                        "[red]Cannot currently handle tickers with a '.' in them[/red]\n"
+                    )
+                    return
                 parameters = vars(ns_parser)
                 parameters.pop("help")
                 reports_model.render_report(

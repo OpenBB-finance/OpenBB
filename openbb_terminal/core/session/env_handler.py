@@ -2,7 +2,7 @@
 from typing import Any, Dict, Optional, Type, TypeVar
 
 # IMPORTS THIRDPARTY
-from dotenv import dotenv_values
+from dotenv import dotenv_values, set_key
 from pydantic import ValidationError
 
 # IMPORTS INTERNAL
@@ -52,10 +52,10 @@ def load_env_to_model(env_dict: dict, model: Type[T]) -> T:
     T
         Model with environment variables.
     """
+    model_name = model.__name__.strip("Model").lower()
     try:
         return model(**env_dict)  # type: ignore
     except ValidationError as error:
-        model_name = model.__name__.strip("Model").lower()
         print(f"Error loading {model_name}:")
         for err in error.errors():
             loc = err.get("loc", None)
@@ -68,3 +68,19 @@ def load_env_to_model(env_dict: dict, model: Type[T]) -> T:
                 print(f"    {var_name}: {msg}, using default -> {default}")
 
         return model(**env_dict)  # type: ignore
+    except Exception:
+        print(f"Error loading {model_name}, using defaults.")
+        return model()  # type: ignore
+
+
+def write_to_dotenv(name: str, value: str) -> None:
+    """Write to .env file.
+
+    Parameters
+    ----------
+    name : str
+        Name of the variable.
+    value : str
+        Value of the variable.
+    """
+    set_key(str(SETTINGS_ENV_FILE), name, str(value))

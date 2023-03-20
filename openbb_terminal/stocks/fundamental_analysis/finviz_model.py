@@ -9,6 +9,7 @@ import finviz
 import pandas as pd
 
 from openbb_terminal.decorators import log_start_end
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -126,4 +127,9 @@ def get_news(symbol: str) -> List[Any]:
     List[Any]
         News
     """
-    return finviz.get_news(symbol)
+    try:
+        result = finviz.get_news(symbol)
+    except ValueError:
+        console.print(f"[red]Error getting news for {symbol}[/red]")
+        result = []
+    return result
