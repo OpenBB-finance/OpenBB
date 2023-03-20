@@ -558,8 +558,7 @@ def replace_df(name: str, row: pd.Series) -> pd.Series:
         elif name in ["Zscore", "McKee"]:
             row[i] = color_zscore_mckee(item)
         else:
-            row[i] = str(round(float(item), 2))
-
+            row[i] = str(round(float(item), 2)) if item != "nan" else "N/A"
     return row
 
 
@@ -576,6 +575,8 @@ def color_mscore(value: str) -> str:
     new_value : str
         The string formatted with rich color
     """
+    if value == "nan":
+        return "N/A"
     value_float = float(value)
     if value_float <= -2.22:
         return f"[green]{value_float:.2f}[/green]"
@@ -596,6 +597,8 @@ def color_zscore_mckee(value: str) -> str:
     new_value : str
         The string formatted with rich color
     """
+    if value == "nan":
+        return "N/A"
     value_float = float(value)
     if value_float < 0.5:
         return f"[red]{value_float:.2f}[/red]"
@@ -714,7 +717,7 @@ def get_fraud_ratios(symbol: str, detail: bool = False) -> pd.DataFrame:
                 "Zscore",
                 "Mckee",
             ]:
-                ratios[item] = "N/A"
+                ratios[item] = np.nan
         if fraud_years.empty:
             fraud_years.index = ratios.keys()
         fraud_years[df_cf.index[i]] = ratios.values()

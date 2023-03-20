@@ -358,7 +358,7 @@ from openbb_terminal.terminal_helper import is_auth_enabled
 cfg.setup_config_terminal()
 
 logger = logging.getLogger(__name__)
-theme.applyMPLstyle()
+cfg.theme.applyMPLstyle()
 \r\r\r
 """
     return "\r".join(sdk_imports.splitlines())
