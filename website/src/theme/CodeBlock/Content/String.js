@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import clsx from "clsx";
 import { useThemeConfig, usePrismTheme } from "@docusaurus/theme-common";
 import {
@@ -17,6 +17,71 @@ import Container from "@theme/CodeBlock/Container";
 import styles from "./styles.module.css";
 import { useLocation } from "react-router-dom";
 
+
+function checkIfImageLoads (url, callback) {
+  const img = new Image();
+  img.onload = function () {
+    callback(true);
+  };
+  img.onerror = function () {
+    callback(false);
+  };
+}
+
+function getImageUrl(pathname, text, setImageUrl) {
+const pathvalue = pathname.split("/")[4];
+  console.log(pathvalue)
+  const platform = pathname.split("/")[3];
+  console.log(platform)
+  var imgname = "c3m"
+
+  // TODO - Check these - make sure they all work - So far need to do a special case for these 2
+  // menus as we don't do the same thing for them as we do for the other pages
+  if ((pathvalue == "charts" || pathvalue == "general") && platform == "discord") {
+    console.log(pathvalue + " " + platform)
+    imgname = text.split(" ")[0].toLowerCase().replace("/", "");
+    console.log("here1")
+  } else if (platform == "telegram") {
+    if (pathvalue.toString() == "etfs") {
+      imgname = text.split(" ")[1].toLowerCase().replace("/", "");
+      console.log("here2")
+    }else{
+      console.log(pathvalue + " " + platform)
+      imgname = text.split(" ")[0].toLowerCase().replace("/", "");
+      console.log("here122")
+    }
+
+  } else {
+    try{
+      imgname = text.split(" ")[1].toLowerCase().replace("/", "");
+      // special case for defi - i know its not great :D
+      if (imgname == "defi") {
+        imgname = text.split(" ")[2].toLowerCase().replace("/", "");
+      }
+    } catch (e) {
+      imgname = text.split(" ")[0].toLowerCase().replace("/", "");
+    }
+  }
+
+  //console.log(platform)
+  //console.log(pathvalue)
+  //console.log(imgname)
+
+  const img5 = `https://openbb-assets.s3.amazonaws.com/${platform}/${pathvalue}/${imgname}.png`;
+  console.log("final url",img5)
+  setImageUrl(img5)
+
+  /*checkIfImageLoads(img5, function (exists) {
+    if (exists) {
+      console.log("exists")
+      setImageUrl(img5)
+    } else {
+      console.log("doesnt exist")
+      setImageUrl(null)
+    }
+  })*/
+}
+
 export default function CodeBlockString({
   children,
   className: blockClassName = "",
@@ -25,6 +90,7 @@ export default function CodeBlockString({
   showLineNumbers: showLineNumbersProp,
   language: languageProp,
 }) {
+  const [imageUrl, setImageUrl] = useState(null);
   const {
     prism: { defaultLanguage, magicComments },
   } = useThemeConfig();
@@ -52,7 +118,10 @@ export default function CodeBlockString({
   const newCode = code.replace("2022-07-29", newDate);
   const {pathname} = useLocation();
 
+  useEffect(() => {getImageUrl(pathname, newCode, setImageUrl)}, [pathname, newCode]);
+
   return (
+    <>
     <Container
       as="div"
       className={clsx(
@@ -117,6 +186,10 @@ export default function CodeBlockString({
         </div>
       </div>
     </Container>
+    {imageUrl && (
+      <img src={imageUrl} alt="example" />
+    )}
+    </>
   );
 }
 
