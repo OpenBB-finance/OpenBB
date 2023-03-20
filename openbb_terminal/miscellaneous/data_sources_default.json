@@ -458,6 +458,12 @@
     "trust": ["OECD"],
     "treasury": ["EconDB"],
     "cpi": ["FRED"],
+    "ccpi": ["OECD"],
+    "balance": ["OECD"],
+    "revenue": ["OECD"],
+    "spending": ["OECD"],
+    "trust": ["OECD"],
+    "treasury": ["EconDB"],
     "fred": ["FRED"],
     "index": ["YahooFinance"]
   },

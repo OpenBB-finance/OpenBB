@@ -74,7 +74,6 @@ class EconomyController(BaseController):
         "fred",
         "index",
         "treasury",
-        "cpi",
         "plot",
         "valuation",
         "performance",
@@ -262,9 +261,6 @@ class EconomyController(BaseController):
             }
             choices["events"]["-c"] = "--countries"
 
-            choices["cpi"]["--countries"] = {c: None for c in fred_model.CPI_COUNTRIES}
-            choices["cpi"]["-c"] = "--countries"
-
             self.choices = choices
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -341,7 +337,6 @@ class EconomyController(BaseController):
         mt.add_info("_database_")
         mt.add_cmd("macro")
         mt.add_cmd("treasury")
-        mt.add_cmd("cpi")
         mt.add_cmd("fred")
         mt.add_cmd("index")
         mt.add_raw("\n")

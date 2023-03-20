@@ -345,7 +345,7 @@ def plot_cpi(
         return print_rich_table(series.drop(["series_id"], axis=1))
 
     ylabel_dict = {
-        "growth_same": "Growth Same Period (%)",
+        "growth_same": "Growth Same Period of Previous Year (%)",
         "growth_previous": "Growth Previous Period (%)",
     }
 
@@ -364,7 +364,7 @@ def plot_cpi(
 
     for column in df.columns:
         country, frequency, units = column.split("-")
-        label = f"{str(country).replace('_', ' ').title()} ({frequency}, {units})"
+        label = f"{str(country).replace('_', ' ').title()}"
 
         fig.add_scatter(x=df.index, y=df[column].values, name=label)
 
