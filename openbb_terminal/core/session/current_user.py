@@ -11,14 +11,12 @@ from openbb_terminal.core.models import (
     ProfileModel,
     UserModel,
 )
-from openbb_terminal.core.session.env_handler import (
-    load_env_to_model,
-    reading_env,
-)
+from openbb_terminal.core.session.env_handler import read_env
+from openbb_terminal.core.session.utils import load_dict_to_model
 
-__env_dict = reading_env()
-__credentials = load_env_to_model(__env_dict, CredentialsModel)
-__preferences = load_env_to_model(__env_dict, PreferencesModel)
+__env_dict = read_env()
+__credentials = load_dict_to_model(__env_dict, CredentialsModel)
+__preferences = load_dict_to_model(__env_dict, PreferencesModel)
 
 
 __profile = ProfileModel()
@@ -69,9 +67,9 @@ def is_local() -> bool:
 
 def set_default_user():
     """Set default user."""
-    env_dict = reading_env()
-    credentials = load_env_to_model(env_dict, CredentialsModel)
-    preferences = load_env_to_model(env_dict, PreferencesModel)
+    env_dict = read_env()
+    credentials = load_dict_to_model(env_dict, CredentialsModel)
+    preferences = load_dict_to_model(env_dict, PreferencesModel)
     profile = ProfileModel()
     local_user = UserModel(  # type: ignore
         credentials=credentials,

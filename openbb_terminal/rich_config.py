@@ -15,9 +15,14 @@ from rich.text import Text
 from openbb_terminal import (
     config_terminal as cfg,
 )
-from openbb_terminal.core.config.paths import MISCELLANEOUS_DIRECTORY
-from openbb_terminal.core.plots.plotly_helper import theme
-from openbb_terminal.core.session.current_user import get_current_user
+from openbb_terminal.core.config.paths import (
+    MISCELLANEOUS_DIRECTORY,
+    PACKAGE_DIRECTORY,
+)
+from openbb_terminal.core.console_styles.utils import (
+    get_console_style,
+)
+from openbb_terminal.core.session.current_user import get_current_user, set_preference
 
 # pylint: disable=no-member,c-extension-no-member
 
@@ -25,7 +30,6 @@ from openbb_terminal.core.session.current_user import get_current_user
 # https://rich.readthedocs.io/en/stable/appendix/colors.html#appendix-colors
 # https://rich.readthedocs.io/en/latest/highlighting.html#custom-highlighters
 
-CUSTOM_THEME = Theme(theme.console_style)
 
 RICH_TAGS = [
     "[menu]",
@@ -43,6 +47,35 @@ RICH_TAGS = [
 ]
 
 USE_COLOR = True
+
+
+def get_theme() -> Theme:
+    """Get rich theme."""
+    rich_style = get_current_user().preferences.RICH_STYLE
+    print(f"Using rich style: {rich_style}")
+    builtin_styles = PACKAGE_DIRECTORY / "core" / "console_styles"
+    try:
+        user_style = get_console_style(
+            style_name=rich_style, folder=get_current_user().preferences.USER_STYLES
+        )
+        if user_style:
+            theme = Theme(user_style)
+        else:
+            builtin_style = get_console_style(
+                style_name=rich_style, folder=builtin_styles
+            )
+            if builtin_style:
+                theme = Theme(builtin_style)
+
+    except Exception as error:
+        set_preference(
+            "RICH_STYLE",
+            "dark",
+        )
+        theme = Theme(get_console_style(style_name="dark", folder=builtin_styles))
+        print(f"Error loading theme: {error}, using default -> dark")
+
+    return theme
 
 
 def translate(key: str):
@@ -261,7 +294,7 @@ class ConsoleAndPanel:
     """Create a rich console to wrap the console print with a Panel"""
 
     def __init__(self):
-        self.console = Console(theme=CUSTOM_THEME, highlight=False, soft_wrap=True)
+        self.console = Console(theme=get_theme(), highlight=False, soft_wrap=True)
         self.menu_text = ""
         self.menu_path = ""
 
