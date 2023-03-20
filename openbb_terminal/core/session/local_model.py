@@ -7,9 +7,11 @@ from openbb_terminal.core.config.paths import (
     HIST_FILE_PATH,
     SETTINGS_DIRECTORY,
 )
-from openbb_terminal.core.session.credentials_handler import set_credential
-from openbb_terminal.core.session.current_user import get_current_user
-from openbb_terminal.core.session.preferences_handler import set_preference
+from openbb_terminal.core.session.current_user import (
+    get_current_user,
+    get_local_user,
+    set_credential,
+)
 from openbb_terminal.rich_config import console
 
 SESSION_FILE_PATH = SETTINGS_DIRECTORY / "session.json"
@@ -110,38 +112,12 @@ def apply_configs(configs: dict):
     configs : dict
         The configurations.
     """
-    if configs:
-        settings = configs.get("features_settings", {})
-        sync = update_sync_flag(settings)
-        if sync:
-            if settings:
-                for k, v in settings.items():
-                    set_preference(k, v, login=True)
+    if configs and get_local_user().preferences.SYNC_ENABLED:
+        credentials = configs.get("features_keys", {}) or {}
+        for k, v in credentials.items():
+            set_credential(k, v)
 
-            keys = configs.get("features_keys", {})
-            if keys:
-                for k, v in keys.items():
-                    set_credential(k, v, login=True)
-
-
-def update_sync_flag(settings: dict) -> bool:
-    """Update the sync flag.
-
-    Parameters
-    ----------
-    settings : dict
-        The settings.
-
-    Returns
-    -------
-    bool
-        The sync flag.
-    """
-    sync = not (settings and settings.get("SYNC_ENABLED", "true").lower() == "false")
-
-    set_preference("SYNC_ENABLED", sync, login=True)
-
-    return sync
+    # TODO: apply other configs here
 
 
 def get_routine(file_name: str, folder: Optional[Path] = None) -> Optional[str]:

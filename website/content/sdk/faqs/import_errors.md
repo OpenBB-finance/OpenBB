@@ -1,7 +1,7 @@
 ---
 title: Import Errors
 sidebar_position: 2
-description: TBD
+description: Import Errors.
 keywords:
   [
     installation,
@@ -19,8 +19,9 @@ keywords:
     openbb terminal,
   ]
 ---
-
 ## Import Errors
+
+When packages not included in the OpenBB installation are installed to the same environment as the SDK, it is possible that an incompatible build of a specific library (like SciPy) has overwritten the existing and creating a conflict. In this event, try creating a new environment containing only the OpenBB dependencies.
 
 <details><summary>ModuleNotFoundError: No module named '______'</summary>
 

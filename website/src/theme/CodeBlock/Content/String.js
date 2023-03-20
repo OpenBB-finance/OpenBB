@@ -113,7 +113,6 @@ export default function CodeBlockString({
               isEnabled={wordWrap.isEnabled}
             />
           )}
-          <PlayButton text={newCode} pathname={pathname} />
           <CopyButton className={styles.codeButton} code={newCode} />
         </div>
       </div>
