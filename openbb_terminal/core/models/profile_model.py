@@ -74,3 +74,6 @@ class ProfileModel(BaseModel):
             The auth header, e.g. "Bearer <token>".
         """
         return f"{self.token_type.title()} {self.token}"
+
+    def __repr__(self) -> str:  # pylint: disable=useless-super-delegation
+        return super().__repr__()

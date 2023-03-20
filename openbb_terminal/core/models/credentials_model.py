@@ -7,7 +7,7 @@ from openbb_terminal.core.models import BaseModel
 # pylint: disable=too-many-instance-attributes, disable=no-member
 
 
-@dataclass(config=dict(validate_assignment=True))
+@dataclass(config=dict(validate_assignment=True, frozen=True))
 class CredentialsModel(BaseModel):
     """Model for credentials."""
 
@@ -68,3 +68,6 @@ class CredentialsModel(BaseModel):
 
     # Others
     OPENBB_PERSONAL_ACCESS_TOKEN: str = "REPLACE_ME"
+
+    def __repr__(self) -> str:  # pylint: disable=useless-super-delegation
+        return super().__repr__()

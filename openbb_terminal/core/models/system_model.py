@@ -21,3 +21,6 @@ class SystemModel(BaseModel):
     LOGGING_VERBOSITY: int = 20
     LOGGING_SUB_APP: str = "terminal"
     LOGGING_SUPPRESS: bool = False
+
+    def __repr__(self) -> str:  # pylint: disable=useless-super-delegation
+        return super().__repr__()
