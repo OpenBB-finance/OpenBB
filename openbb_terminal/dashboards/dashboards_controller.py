@@ -20,7 +20,7 @@ import psutil
 
 import openbb_terminal.config_terminal as cfg
 from openbb_terminal.base_helpers import load_env_vars, strtobool
-from openbb_terminal.core.config.paths import SETTINGS_ENV_FILE
+from openbb_terminal.core.config.paths import REPOSITORY_DIRECTORY, SETTINGS_ENV_FILE
 from openbb_terminal.core.plots.backend import plots_backend
 from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
@@ -58,7 +58,7 @@ class DashboardsController(BaseController):
         self.streamlit_url: Optional[str] = None
         self.processes: List[psutil.Process] = []
         self.parent_path = (
-            Path(sys.executable).parent if hasattr(sys, "frozen") else Path(os.getcwd())
+            REPOSITORY_DIRECTORY if hasattr(sys, "frozen") else Path(os.getcwd())
         )
 
         if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
@@ -414,7 +414,7 @@ def is_streamlit_activated() -> bool:
     if run_activate not in ["y", ""]:
         return _declined()
 
-    if run_activate == "":
+    if not run_activate:
         _set_key()
         return True
 

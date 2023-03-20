@@ -10,6 +10,7 @@ import pandas as pd
 
 from openbb_terminal import OpenBBFigure, theme
 from openbb_terminal.common.technical_analysis import ta_helpers
+from openbb_terminal.core.config.paths import REPOSITORY_DIRECTORY
 from openbb_terminal.core.plots.plotly_ta.base import PltTA
 from openbb_terminal.core.plots.plotly_ta.data_classes import ChartIndicators
 from openbb_terminal.rich_config import console
@@ -88,7 +89,7 @@ class PlotlyTA(PltTA):
 
     def __new__(cls, *args, **kwargs):
         """This method is overridden to create a singleton instance of the class."""
-        global PLOTLY_TA  # pylint: disable=global-statement
+        global PLOTLY_TA  # pylint: disable=global-statement # noqa
         if PLOTLY_TA is None:
             # Creates the instance of the class and loads the plugins
             # We set the global variable to the instance of the class so that
@@ -209,9 +210,7 @@ class PlotlyTA(PltTA):
     @staticmethod
     def _locate_plugins() -> None:
         """Locate all the plugins in the plugins folder"""
-        path = (
-            Path(sys.executable).parent if hasattr(sys, "frozen") else Path(os.getcwd())
-        )
+        path = REPOSITORY_DIRECTORY if hasattr(sys, "frozen") else Path(os.getcwd())
 
         # This is for debugging purposes
         if os.environ.get("DEBUG_MODE", "False").lower() == "true":
