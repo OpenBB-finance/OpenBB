@@ -1,0 +1,81 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:86.0) Gecko/20100101 Firefox/86.0
+    method: GET
+    uri: https://www.avanza.se/_api/fund-guide/guide/232950
+  response:
+    body:
+      string: !!binary |
+        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
+        m6dht9f5BdS3f/4Pykke9ksZAAA=
+    headers:
+      AVANZA_TRACE_ID:
+      - d20fb7d165150e62
+      Cache-Control:
+      - no-cache, no-store, must-revalidate, private
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Sat, 18 Mar 2023 14:36:13 GMT
+      Keep-Alive:
+      - timeout=30
+      Pragma:
+      - no-cache
+      Strict-Transport-Security:
+      - max-age=31536000
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding, User-Agent
+    status:
+      code: 200
+      message: OK
+version: 1

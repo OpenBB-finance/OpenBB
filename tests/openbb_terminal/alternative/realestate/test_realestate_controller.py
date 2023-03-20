@@ -1,20 +1,12 @@
-# IMPORTATION STANDARD
-
+"""Test the realestate controller."""
 import os
 
-# IMPORTATION THIRDPARTY
 import pytest
 
-# IMPORTATION INTERNAL
-from openbb_terminal.alternative.oss import oss_controller
+from openbb_terminal.alternative.realestate import realestate_controller
 from openbb_terminal.core.session.current_user import PreferencesModel, copy_user
 
-# pylint: disable=E1101
-# pylint: disable=W0603
-# pylint: disable=E1111
 
-
-@pytest.mark.vcr(record_mode="none")
 @pytest.mark.parametrize(
     "queue, expected",
     [
@@ -23,23 +15,20 @@ from openbb_terminal.core.session.current_user import PreferencesModel, copy_use
     ],
 )
 def test_menu_with_queue(expected, mocker, queue):
-    path_controller = "openbb_terminal.alternative.oss.oss_controller"
+    path_controller = "openbb_terminal.alternative.realestate.realestate_controller"
 
     # MOCK SWITCH
     mocker.patch(
-        target=f"{path_controller}.OSSController.switch",
+        target=f"{path_controller}.RealEstateController.switch",
         return_value=["quit"],
     )
-    result_menu = oss_controller.OSSController(queue=queue).menu()
+
+    result_menu = realestate_controller.RealEstateController(queue=queue).menu()
 
     assert result_menu == expected
 
 
-@pytest.mark.vcr(record_mode="none")
 def test_menu_without_queue_completion(mocker):
-    path_controller = "openbb_terminal.alternative.oss.oss_controller"
-
-    # ENABLE AUTO-COMPLETION : HELPER_FUNCS.MENU
     preferences = PreferencesModel(USE_PROMPT_TOOLKIT=True)
     mock_current_user = copy_user(preferences=preferences)
     mocker.patch(
@@ -53,31 +42,30 @@ def test_menu_without_queue_completion(mocker):
         target="openbb_terminal.parent_classes.session.prompt",
         return_value="quit",
     )
-
-    # DISABLE AUTO-COMPLETION : CONTROLLER.COMPLETER
     mocker.patch(
-        target=f"{path_controller}.session",
+        target="openbb_terminal.alternative.realestate.realestate_controller.session",
     )
     mocker.patch(
-        target=f"{path_controller}.session.prompt",
+        target="openbb_terminal.alternative.realestate.realestate_controller.session.prompt",
         return_value="quit",
     )
 
-    result_menu = oss_controller.OSSController(queue=None).menu()
+    result_menu = realestate_controller.RealEstateController().menu()
 
     assert result_menu == ["help"]
 
 
-@pytest.mark.vcr(record_mode="none")
 @pytest.mark.parametrize(
     "mock_input",
     ["help", "homee help", "home help", "mock"],
 )
 def test_menu_without_queue_sys_exit(mock_input, mocker):
-    path_controller = "openbb_terminal.alternative.oss.oss_controller"
+    path_controller = "openbb_terminal.alternative.realestate.realestate_controller"
 
     # DISABLE AUTO-COMPLETION
-    preferences = PreferencesModel(USE_PROMPT_TOOLKIT=True)
+    preferences = PreferencesModel(
+        USE_PROMPT_TOOLKIT=False,
+    )
     mock_current_user = copy_user(preferences=preferences)
     mocker.patch(
         target="openbb_terminal.core.session.current_user.__current_user",
@@ -92,6 +80,12 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
     mocker.patch("builtins.input", return_value=mock_input)
 
     # MOCK SWITCH
+    mocker.patch(
+        target=f"{path_controller}.RealEstateController.switch",
+        return_value=["quit"],
+    )
+
+    # MOCK SWITCH
     class SystemExitSideEffect:
         def __init__(self):
             self.first_call = True
@@ -103,24 +97,23 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
             return ["quit"]
 
     mock_switch = mocker.Mock(side_effect=SystemExitSideEffect())
+
     mocker.patch(
-        target=f"{path_controller}.OSSController.switch",
+        target=f"{path_controller}.RealEstateController.switch",
         new=mock_switch,
     )
 
-    result_menu = oss_controller.OSSController(queue=None).menu()
+    result_menu = realestate_controller.RealEstateController().menu()
 
     assert result_menu == ["help"]
 
 
-@pytest.mark.vcr(record_mode="none")
-@pytest.mark.record_stdout
+@pytest.mark.record_verify_screen
 def test_print_help():
-    controller = oss_controller.OSSController(queue=None)
+    controller = realestate_controller.RealEstateController(queue=None)
     controller.print_help()
 
 
-@pytest.mark.vcr(record_mode="none")
 @pytest.mark.parametrize(
     "an_input, expected_queue",
     [
@@ -129,35 +122,32 @@ def test_print_help():
         ("help/help", ["help", "help"]),
         ("q", ["quit"]),
         ("h", []),
-        (
-            "rs openbb-finance/openbbterminal/help",
-            ["rs openbb-finance/openbbterminal", "help"],
-        ),
+        ("home", ["quit", "quit"]),
         (
             "r",
-            ["quit", "quit", "reset", "alternative", "oss"],
+            ["quit", "quit", "reset", "alternative", "realestate"],
         ),
     ],
 )
 def test_switch(an_input, expected_queue):
-    controller = oss_controller.OSSController(queue=None)
+    controller = realestate_controller.RealEstateController(queue=None)
     queue = controller.switch(an_input=an_input)
 
     assert queue == expected_queue
 
 
-@pytest.mark.vcr(record_mode="none")
+@pytest.mark.record_verify_screen
 def test_call_cls(mocker):
     mocker.patch("os.system")
 
-    controller = oss_controller.OSSController(queue=None)
+    controller = realestate_controller.RealEstateController(queue=None)
     controller.call_cls([])
 
     assert controller.queue == []
+
     os.system.assert_called_once_with("cls||clear")
 
 
-@pytest.mark.vcr(record_mode="none")
 @pytest.mark.parametrize(
     "func, queue, expected_queue",
     [
@@ -174,55 +164,49 @@ def test_call_cls(mocker):
         (
             "call_reset",
             [],
-            ["quit", "quit", "reset", "alternative", "oss"],
+            ["quit", "quit", "reset", "alternative", "realestate"],
         ),
         (
             "call_reset",
             ["help"],
-            ["quit", "quit", "reset", "alternative", "oss", "help"],
+            ["quit", "quit", "reset", "alternative", "realestate", "help"],
         ),
     ],
 )
 def test_call_func_expect_queue(expected_queue, func, queue):
-    controller = oss_controller.OSSController(queue=queue)
+    controller = realestate_controller.RealEstateController(queue=queue)
     result = getattr(controller, func)([])
 
     assert result is None
     assert controller.queue == expected_queue
 
 
-@pytest.mark.vcr(record_mode="none")
-@pytest.mark.parametrize(
-    "tested_func, other_args, mocked_func, called_args, called_kwargs",
-    [
-        (
-            "call_tr",
-            [],
-            "github_view.display_top_repos",
-            [],
-            dict(),
-        ),
-    ],
-)
-def test_call_func(
-    tested_func, mocked_func, other_args, called_args, called_kwargs, mocker
-):
-    path_controller = "openbb_terminal.alternative.oss.oss_controller"
+@pytest.mark.record_verify_screen
+def test_quit():
+    controller = realestate_controller.RealEstateController(queue=None)
+    controller.call_quit([])
+    assert controller.queue == ["quit"]
 
-    if mocked_func:
-        mock = mocker.Mock()
-        mocker.patch(
-            target=f"{path_controller}.{mocked_func}",
-            new=mock,
-        )
 
-        controller = oss_controller.OSSController(queue=None)
-        getattr(controller, tested_func)(other_args)
+def test_call_sales():
+    controller = realestate_controller.RealEstateController(queue=None)
+    table = controller.call_sales([])
 
-        if called_args or called_kwargs:
-            mock.assert_called_once_with(*called_args, **called_kwargs)
-        else:
-            mock.assert_called_once()
-    else:
-        controller = oss_controller.OSSController(queue=None)
-        getattr(controller, tested_func)(other_args)
+    assert controller.queue == []
+    assert table is None
+
+
+def test_call_townsales():
+    controller = realestate_controller.RealEstateController(queue=None)
+    table = controller.call_townsales([])
+
+    assert controller.queue == []
+    assert table is None
+
+
+def test_call_regionstats():
+    controller = realestate_controller.RealEstateController(queue=None)
+    table = controller.call_regionstats([])
+
+    assert controller.queue == []
+    assert table is None
