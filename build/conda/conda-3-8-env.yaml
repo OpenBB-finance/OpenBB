@@ -18,8 +18,11 @@ dependencies:
   # Forecasting dependencies
   - ffmpeg
   - lightgbm ==3.3.5
+  - xgboost ==1.7.4
   # Optimization dependencies
   - cvxpy ==1.2.2
   - pip:
-    - qdldl ==0.1.5.post3
+    # Forecasting dependencies
     - catboost ==1.1.1
+    # Optimization dependencies
+    - qdldl ==0.1.5.post3
