@@ -14,6 +14,7 @@ dependencies:
   - libtiff
   # Main dependencies
   - numpy ==1.23.4
+  - charset-normalizer ==3.1.0
   # Forecasting menu dependencies
   - ffmpeg
   - lightgbm ==3.3.5
