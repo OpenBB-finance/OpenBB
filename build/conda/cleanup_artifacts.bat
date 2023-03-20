@@ -25,13 +25,13 @@ if not defined env_exists (
 set "path=!CONDA_PREFIX!"
 set "conda_prefix=%CONDA_DEFAULT_ENV%"
 if not defined conda_prefix (
-    echo The obb conda environment is not activated2
+    echo The obb conda environment is not activated
     echo Activate it by running 'conda activate obb'
     exit /b
 )
 
 if not !conda_prefix! == %CONDA_DEFAULT_ENV% (
-    echo The obb conda environment is not activated3
+    echo The obb conda environment is not activated
     echo Activate it by running 'conda activate obb'
     exit /b
 )
@@ -47,4 +47,4 @@ for /f "delims=" %%a in ('dir /b /s /a-d direct_url.json') do (del /f /q %%a)
 
 
 :: Say goodbye
-echo Done1
+echo Done
