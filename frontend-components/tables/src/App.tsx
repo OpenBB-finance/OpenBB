@@ -15,13 +15,17 @@ function App() {
   const [data, setData] = useState(
     process.env.NODE_ENV === "production" ? null : JSON.parse(rekNewsData)
   );
+  const [title, setTitle] = useState("Interactive Table");
 
   if (process.env.NODE_ENV === "production") {
     useEffect(() => {
       const interval = setInterval(() => {
         if (window.json_data) {
-          console.log(window.json_data);
-          setData(JSON.parse(window.json_data));
+          const data = JSON.parse(window.json_data);
+          setData(data);
+          if (data.title) {
+            setTitle(data.title);
+          }
           clearInterval(interval);
         }
       }, 100);
@@ -78,6 +82,7 @@ function App() {
       <DndProvider backend={HTML5Backend}>
         {transformedData && (
           <Table
+            title={title}
             data={transformedData.data}
             columns={transformedData.columns}
           />

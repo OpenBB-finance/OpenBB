@@ -38,7 +38,7 @@ import Export from "./Export";
 import Timestamp from "./Timestamp";
 import FilterColumns from "./FilterColumns";
 
-export default function Table({ data, columns }: any) {
+export default function Table({ data, columns, title }: any) {
   const [advanced, setAdvanced] = useState(false);
   const [sorting, setSorting] = useState<SortingState>([]);
   const [globalFilter, setGlobalFilter] = useState("");
@@ -359,7 +359,7 @@ export default function Table({ data, columns }: any) {
                 )}
             </table>
             <div className="_header gap-4 py-2 text-center text-xs flex items-center justify-center">
-              <p className="font-bold">{data?.title ?? "Interactive Table"}</p>
+              <p className="font-bold">{title}</p>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="64"
