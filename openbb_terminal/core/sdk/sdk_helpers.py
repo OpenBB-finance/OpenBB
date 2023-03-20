@@ -356,7 +356,7 @@ cfg.start_required_configurations()
 cfg.start_plot_backend()
 
 logger = logging.getLogger(__name__)
-theme.applyMPLstyle()
+theme.apply_style()
 \r\r\r
 """
     return "\r".join(sdk_imports.splitlines())
