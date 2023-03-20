@@ -52,8 +52,8 @@ USE_COLOR = True
 def get_theme() -> Theme:
     """Get rich theme."""
     rich_style = get_current_user().preferences.RICH_STYLE
-    print(f"Using rich style: {rich_style}")
     builtin_styles = PACKAGE_DIRECTORY / "core" / "console_styles"
+    theme = Theme()
     try:
         user_style = get_console_style(
             style_name=rich_style, folder=get_current_user().preferences.USER_STYLES
