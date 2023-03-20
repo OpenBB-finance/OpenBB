@@ -1,0 +1,231 @@
+---
+title: Charting
+description: c3m, c5m, c15m, cd, cw...
+premium: false
+commands:
+  - "/chart"
+  - "/c3m"
+  - "/c5m"
+  - "/c15m"
+  - "/cd"
+  - "/cw"
+  - "/cm"
+  - "/chartfib"
+  - "/chartsr"
+---
+
+# Charting
+
+## chart
+
+> Shows the candlestick chart for the ticker/interval provided
+
+```format
+/chart <ticker> <interval> [<past_days>]
+```
+
+**ticker**
+
+- The symbol/ticker/coin of the stock you want the chart of
+
+**interval**
+
+- The interval you want to chart - Current valid options are : 1m, 5m, 10m, 15m, 30m, 60m, 1d, 1wk, 1mo
+
+**[past_days]** - _optional_
+
+- Amount of days to show for the Interval
+
+**Examples**
+
+```
+/chart AMD 1d 10
+```
+
+```
+/chart AMD 1d
+```
+
+---
+
+## c3m
+
+> Shows an intraday 3m candlestick chart for the ticker provided
+
+```format
+/c3m <ticker>
+```
+
+**ticker**
+
+- The symbol/ticker/coin of the stock you want the chart of
+
+**[extendedhours]** - _optional_
+
+- Show the full extended hours chart from 4am to 8pm
+
+**Examples**
+
+```
+/c3m AMD
+```
+
+```
+/c3m AMD true
+```
+
+---
+
+## c5m
+
+> Shows an intraday 5m candlestick chart for the ticker/coin provided
+
+```format
+/c5m <ticker>
+```
+
+**ticker**
+
+- The symbol/ticker/coin of the ticker/coin you want the chart of
+
+**[extendedhours]** - _optional_
+
+- Show the full extended hours chart from 4am to 8pm
+
+**Examples**
+
+```
+/c5m AMD
+```
+
+```
+/c5m AMD true
+```
+
+---
+
+## c15m
+
+> Shows an intraday 15m candlestick chart for the ticker provided
+
+```format
+/c15m <ticker>
+```
+
+**ticker**
+
+- The symbol/ticker/coin of the stock you want the chart of
+
+**Examples**
+
+```
+/c15m AMD
+```
+
+---
+
+## cd
+
+> Shows a daily candlestick chart for the ticker/coin provided
+
+```format
+/cd <ticker>
+```
+
+**ticker**
+
+- The symbol/ticker/coin of the stock you want the chart of
+
+**Examples**
+
+```
+/cd AMD
+```
+
+---
+
+## cw
+
+> Shows a weekly candlestick chart for the ticker/coin provided
+
+```format
+/cw <ticker>
+```
+
+**ticker**
+
+- The symbol/ticker/coin of the stock you want the chart of
+
+**Examples**
+
+```
+/cw AMD
+```
+
+---
+
+## cm
+
+> Shows a monthly candlestick chart for the ticker/coin provided
+
+```format
+/cm <ticker>
+```
+
+**ticker**
+
+- The symbol/ticker/coin of the stock you want the chart of
+
+**Examples**
+
+```
+/cm AMD
+```
+
+---
+
+## chartfib
+
+> Plots the Fibonacci levels for the ticker provided
+
+```format
+/chartfib <ticker>
+```
+
+**ticker**
+
+- The symbol/ticker/coin of the stock you want the chartfib of
+
+**Examples**
+
+```
+/chartfib AMD
+```
+
+---
+
+## chartsr
+
+> Displays Support and Resistance Levels for the ticker provided
+
+```format
+/chartsr <ticker> **[interval]**
+```
+
+**ticker**
+
+- The symbol/ticker/coin of the stock you want the chartfib of
+
+**[interval]** - _optional_
+
+- interval in minutes for the chart. Defaults to Daily with no selection
+
+**Examples**
+
+```
+/chartsr AMC
+```
+
+```
+/chartsr AMC 1d
+```

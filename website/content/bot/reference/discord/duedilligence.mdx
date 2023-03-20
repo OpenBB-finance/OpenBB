@@ -1,0 +1,387 @@
+---
+title: Due Diligence
+description: ph, ah, shortrate, news, earnings, bio, ermove...
+premium: false
+commands:
+  - "/dd pm"
+  - "/dd ah"
+  - "/dd splits"
+  - "/dd earnings"
+  - "/dd nexter"
+  - "/dd bio"
+  - "/dd ermove"
+  - "/dd analyst"
+  - "/dd pt"
+  - "/dd est"
+  - "/dd supplier"
+  - "/dd customer"
+  - "/dd sec"
+  - "/dd insiders"
+  - "/dd arktrades"
+  - "/dd instholdings"
+  - "/dd financials"
+  - "/dd divinfo"
+  - "/dd ytd"
+---
+
+# Due Diligence
+
+## pm
+
+> Displays premarket data for a given stock ticker
+
+```format
+/dd pm <ticker>
+```
+
+**ticker**
+
+- The symbol/ticker of the stock you want the premarket info for
+
+**Examples**
+
+```
+/dd pm ticker:AMD
+```
+
+---
+
+## ah
+
+> Displays afterhours data for a given stock ticker
+
+```format
+/dd ah <ticker>
+```
+
+**ticker**
+
+- The symbol/ticker of the stock you want the afterhours info for
+
+**Examples**
+
+```
+/dd ah ticker:AMD
+```
+
+---
+
+## splits
+
+> List of recent Stock splits for a ticker
+
+**Command**
+
+```format
+/dd splits <ticker>
+```
+
+**ticker**
+
+- The symbol/ticker of the stock you want the splits for
+
+**Examples**
+
+```
+/dd splits ticker:AMD
+```
+
+---
+
+## earnings
+
+> Display Earnings that are expected to occur in the next business days. (Sorted by market cap)
+
+```format
+/dd earnings <day>
+```
+
+**day**
+
+- The Date you want to see the earnings for. Format: YYYY-MM-DD
+
+**Examples**
+
+```
+/dd earnings day:2022-07-29
+```
+
+---
+
+## nexter
+
+> Returns next Earnings Date for a stock.
+
+```format
+/dd nexter <ticker>
+```
+
+**ticker**
+
+- The symbol/ticker of the stock you want the next earnings date for
+
+**Examples**
+
+```
+/dd nexter ticker:AMD
+```
+
+---
+
+## bio
+
+> Displays a Stock's dd Info and other information.
+
+```format
+/dd bio <ticker>
+```
+
+**ticker**
+
+- The symbol/ticker of the stock you want the bio of
+
+**Examples**
+
+```
+/dd bio ticker:AMD
+```
+
+---
+
+## ermove
+
+> Display implied move for a stock based on option prices.
+
+```format
+/dd ermove <ticker>
+```
+
+**ticker**
+
+- The symbol/ticker of the stock you want the earnings move of
+
+**Examples**
+
+```
+/dd ermove ticker:AMD
+```
+
+---
+
+## analyst
+
+> Displays analyst recommendations.
+
+```format
+/dd analyst <ticker>
+```
+
+**ticker**
+
+- The symbol/ticker of the stock you want the analyst ratings for
+
+**Examples**
+
+```
+/dd analyst ticker:AMD
+```
+
+---
+
+## pt
+
+> Displays chart with price targets.
+
+```format
+/dd pt <ticker>
+```
+
+**ticker**
+
+- The symbol/ticker of the stock you want to query
+
+**Examples**
+
+```
+/dd pt ticker:AMD
+```
+
+---
+
+## est
+
+> Displays earning estimates.
+
+```format
+/dd est <ticker>
+```
+
+**ticker**
+
+- The symbol/ticker of the stock you want to query
+
+**Examples**
+
+```
+/dd est ticker:MMM
+```
+
+---
+
+## supplier
+
+> Retrieve list of suppliers for specified company
+
+```format
+/dd supplier <ticker>
+```
+
+**ticker**
+
+- The symbol/ticker of the stock you want to query
+
+**Examples**
+
+```
+/dd supplier ticker:AMD
+```
+
+---
+
+## customer
+
+> Retrieve list of customers for specified company
+
+```format
+/dd customer <ticker>
+```
+
+**ticker**
+
+- The symbol/ticker of the stock you want to query
+
+**Examples**
+
+```
+/dd customer ticker:AMD
+```
+
+---
+
+## sec
+
+> Displays recent SEC filings.
+
+```
+/dd sec <ticker>
+```
+
+**ticker**
+
+- The symbol/ticker of the stock you want to query
+
+**Examples**
+
+```
+/dd sec ticker:AMD
+```
+
+---
+
+## insiders
+
+Displays 15 latest insider transactions for given stock
+
+```format
+/dd insiders <ticker>
+```
+
+**ticker**
+
+- The symbol/ticker of the stock you want to query
+
+**Examples**
+
+```
+/dd insiders ticker:AMD
+```
+
+---
+
+## instholdings
+
+> Displays top 15 Institutional Holdings for given stock
+
+```format
+/dd instholdings <ticker>
+```
+
+**ticker**
+
+- The symbol/ticker of the stock you want to query
+
+**Examples**
+
+```
+/dd instholdings ticker:AMD
+```
+
+---
+
+## financials
+
+> Gives Total Assets, Cash, Debt, Liabilities, Rev for Company
+
+```format
+/dd financials <ticker>
+```
+
+**ticker**
+
+- The symbol/ticker of the stock you want to query
+
+**Examples**
+
+```
+/dd financials ticker:AMD
+```
+
+---
+
+## divinfo
+
+> Display dividend information for a stock.
+
+```format
+/dd divinfo <ticker>
+```
+
+**ticker**
+
+- The symbol/ticker of the stock you want to query
+
+**Examples**
+
+```
+/dd divinfo ticker:AAPL
+```
+
+---
+
+## ytd
+
+> Displays Period Performance for a stock
+
+```format
+/dd ytd <ticker>
+```
+
+**ticker**
+
+- The symbol/ticker of the stock you want to query
+
+**Examples**
+
+```
+/dd ytd ticker:AAPL
+```

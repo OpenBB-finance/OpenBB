@@ -47,6 +47,7 @@ en:
   featflags/_info_: Feature flags through environment variables
   featflags/retryload: retry misspelled commands with load first
   featflags/tab: use tabulate to print dataframes
+  featflags/interactive: open dataframes in interactive window
   featflags/cls: clear console after each command
   featflags/color: use coloring features
   featflags/promptkit: enable prompt toolkit (autocomplete and history)
@@ -155,8 +156,6 @@ en:
   stocks/options/vsurf: show 3D volatility surface
   stocks/options/grhist: plot option greek history
   stocks/options/plot: plot variables provided by the user
-  stocks/options/parity: shows whether options are above or below expected price
-  stocks/options/binom: shows the value of an option using binomial options pricing
   stocks/options/greeks: shows the greeks for a given option
   stocks/options/eodchain: gets option chain at a specific date
   stocks/options/pricing: shows options pricing and risk neutral valuation
@@ -167,12 +166,6 @@ en:
   stocks/options/screen/scr: screen data from this preset
   stocks/options/screen/_screened_tickers: Last screened tickers
   stocks/options/screen/ca: take these to comparison analysis menu
-  stocks/options/pricing/_ticker: Ticker
-  stocks/options/pricing/_expiry: Expiry
-  stocks/options/pricing/add: add an expected price to the list
-  stocks/options/pricing/rmv: remove an expected price from the list
-  stocks/options/pricing/show: show the listed of expected prices
-  stocks/options/pricing/rnval: risk neutral valuation for an option
   stocks/options/hedge/_ticker: Ticker
   stocks/options/hedge/_expiry: Expiry
   stocks/options/hedge/pick: pick the underlying asset position
@@ -747,6 +740,17 @@ en:
   etf/ta/obv: on balance volume
   etf/ta/_custom_: Custom
   etf/ta/fib: fibonacci retracement
+  economy/_country_: Country Performance
+  economy/gdp: Show nominal Gross Domestic Product (GDP)
+  economy/rgdp: Show real Gross Domestic Product (GDP)
+  economy/fgdp: Show forecasts of nominal and real Gross Domestic Product (GDP)
+  economy/debt: Show government debt-to-GDP ratio
+  economy/cpi: obtain the (harmonized) Consumer Price Index (CPI)
+  economy/ccpi: obtain components of the CPI including Food, Energy and Total
+  economy/balance: Show Government defict or surplus in capital income and expenditures
+  economy/revenue: Show Government revenue based on tax income
+  economy/spending: Show Government spending as indicator of size of government
+  economy/trust: Show Government trust based on surveys regarding confidence in the government  
   economy/_database_: Databases
   economy/_stored: Stored datasets
   economy/overview: show a market overview of either indices, bonds or currencies
@@ -757,7 +761,6 @@ en:
   economy/fred: collect macro data from FRED based on a series ID
   economy/index: find and plot any (major) index on the market
   economy/treasury: obtain U.S. treasury rates
-  economy/cpi: obtain (harmonized) Consumer Price Indices for any country
   economy/ycrv: show sovereign yield curves
   economy/spread: show bond spread matrix
   economy/events: show economic calendar
@@ -1000,7 +1003,6 @@ en:
   portfolio/var: display value at risk
   portfolio/es: display expected shortfall
   portfolio/om: display omega ratio
-  portfolio/bro/ally: Ally Invest Menu
   portfolio/bro/degiro: Degiro Menu
   portfolio/bro/rh: Robinhood Menu
   portfolio/bro/cb: Coinbase Pro Menu

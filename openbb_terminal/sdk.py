@@ -27,6 +27,7 @@ cfg.start_required_configurations()
 cfg.start_plot_backend()
 
 logger = logging.getLogger(__name__)
+cfg.theme.applyMPLstyle()
 
 
 class OpenBBSDK:
@@ -131,18 +132,28 @@ class OpenBBSDK:
 
         Attributes:
             `available_indices`: Get available indices\n
+            `balance`: General government deficit is defined as the balance of income and expenditure of government,\n
+            `balance_chart`: General government balance is defined as the balance of income and expenditure of government,\n
             `bigmac`: Display Big Mac Index for given countries\n
             `bigmac_chart`: Display Big Mac Index for given countries\n
+            `ccpi`: Inflation measured by consumer price index (CPI) is defined as the change in the prices\n
+            `ccpi_chart`: Inflation measured by consumer price index (CPI) is defined as the change in the prices\n
             `country_codes`: Get available country codes for Bigmac index\n
             `cpi`: Obtain CPI data from FRED. [Source: FRED]\n
-            `cpi_chart`: Plot CPI data. [Source: FRED]\n
+            `cpi_chart`: Inflation measured by consumer price index (CPI) is defined as the change in\n
             `currencies`: Scrape data for global currencies\n
+            `debt`: General government debt-to-GDP ratio measures the gross debt of the general\n
+            `debt_chart`: General government debt-to-GDP ratio measures the gross debt of the general\n
             `events`: Get economic calendar for countries between specified dates\n
+            `fgdp`: Real gross domestic product (GDP) is GDP given in constant prices and\n
+            `fgdp_chart`: Real gross domestic product (GDP) is GDP given in constant prices and\n
             `fred`: Get Series data. [Source: FRED]\n
             `fred_chart`: Display (multiple) series from https://fred.stlouisfed.org. [Source: FRED]\n
             `fred_notes`: Get series notes. [Source: FRED]\n
             `future`: Get futures data. [Source: Finviz]\n
             `futures`: Get futures data.\n
+            `gdp`: Gross domestic product (GDP) is the standard measure of the value added created\n
+            `gdp_chart`: Gross domestic product (GDP) is the standard measure of the value added created\n
             `get_groups`: Get group available\n
             `glbonds`: Scrape data for global bonds\n
             `index`: Get data on selected indices over time [Source: Yahoo Finance]\n
@@ -155,13 +166,21 @@ class OpenBBSDK:
             `overview`: Scrape data for market overview\n
             `perfmap`: Opens Finviz map website in a browser. [Source: Finviz]\n
             `performance`: Get group (sectors, industry or country) performance data. [Source: Finviz]\n
+            `revenue`: Governments collect revenues mainly for two purposes: to finance the goods\n
+            `revenue_chart`: Governments collect revenues mainly for two purposes: to finance the goods\n
+            `rgdp`: Gross domestic product (GDP) is the standard measure of the value added\n
+            `rgdp_chart`: Gross domestic product (GDP) is the standard measure of the value added\n
             `rtps`: Get real-time performance sector data\n
             `rtps_chart`: Display Real-Time Performance sector. [Source: AlphaVantage]\n
             `search_index`: Search indices by keyword. [Source: FinanceDatabase]\n
             `spectrum`: Display finviz spectrum in system viewer [Source: Finviz]\n
+            `spending`: General government spending provides an indication of the size\n
+            `spending_chart`: General government spending provides an indication of the size\n
             `treasury`: Get U.S. Treasury rates [Source: EconDB]\n
             `treasury_chart`: Display U.S. Treasury rates [Source: EconDB]\n
             `treasury_maturities`: Get treasury maturity options [Source: EconDB]\n
+            `trust`: Trust in government refers to the share of people who report having confidence in\n
+            `trust_chart`: Trust in government refers to the share of people who report having confidence in\n
             `usbonds`: Scrape data for us bonds\n
             `valuation`: Get group (sectors, industry or country) valuation data. [Source: Finviz]\n
         """
@@ -351,7 +370,6 @@ class OpenBBSDK:
             `mykeys`: Get currently set API keys.\n
             `news`: Set News key\n
             `oanda`: Set Oanda key\n
-            `openbb`: Set OpenBB Personal Access Token.\n
             `polygon`: Set Polygon key\n
             `quandl`: Set Quandl key\n
             `reddit`: Set Reddit key\n
