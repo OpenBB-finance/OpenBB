@@ -5,7 +5,7 @@ dependencies:
   - git
   # Build dependencies
   - pip
-  - poetry
+  - poetry ==1.4.0
   - pybind11
   - cmake
   # System dependencies
