@@ -535,7 +535,7 @@ class BuildCategoryModelClasses:
         subprocess.check_call(["black", "openbb_terminal"])  # nosec: B603, B607
 
 
-def generate_sdk(sort: bool = False) -> None:
+def generate_sdk(sort: bool = False) -> bool:
     """Generate the SDK.
 
     Parameters
@@ -544,11 +544,15 @@ def generate_sdk(sort: bool = False) -> None:
         Whether to sort the CSVs, by default False
     """
     trailmaps = get_trailmaps(sort)
+    try:
+        console.print("[yellow]Generating SDK...[/]")
+        BuildCategoryModelClasses(trailmaps).build()
+        console.print("[green]SDK Generated Successfully.[/]")
+    except Exception as e:
+        console.print(f"[red]Error generating SDK: {e}[/]")
+        return False
 
-    console.print("[yellow]Generating SDK...[/]")
-    BuildCategoryModelClasses(trailmaps).build()
-    console.print("[green]SDK Generated Successfully.[/]")
-    return
+    return True
 
 
 if __name__ == "__main__":
