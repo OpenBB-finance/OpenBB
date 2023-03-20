@@ -264,6 +264,7 @@ pyotp==2.8.0 ; python_version >= "3.8" and python_full_version != "3.9.7" and py
 pyparsing==3.0.9 ; python_version >= "3.8" and python_full_version != "3.9.7" and python_version < "3.11"
 pyprind==2.11.3 ; python_version >= "3.8" and python_full_version != "3.9.7" and python_version < "3.11"
 pyrsistent==0.19.3 ; python_version >= "3.8" and python_full_version != "3.9.7" and python_version < "3.11"
+pytest-recorder==0.1.0 ; python_version >= "3.8" and python_full_version != "3.9.7" and python_version < "3.11"
 pytest-cov==3.0.0 ; python_version >= "3.8" and python_full_version != "3.9.7" and python_version < "3.11"
 pytest-mock==3.10.0 ; python_version >= "3.8" and python_full_version != "3.9.7" and python_version < "3.11"
 pytest-recording==0.12.2 ; python_version >= "3.8" and python_full_version != "3.9.7" and python_version < "3.11"
