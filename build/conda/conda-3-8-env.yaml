@@ -24,5 +24,6 @@ dependencies:
   - pip:
     # Forecasting dependencies
     - catboost ==1.1.1
+    - xgboost ==1.7.4
     # Optimization dependencies
     - qdldl ==0.1.5.post3
