@@ -37,14 +37,14 @@ Go [here](https://docs.conda.io/en/latest/miniconda.html#latest-miniconda-instal
 
 To verify if Miniconda is installed on your system, open the command line and run the following command:
 
-```console
+```shell
 conda --version
 ```
 
 If Miniconda is installed, you should see the version number displayed, for example:
 
-```console
-conda 4.10.3
+```shell
+conda 23.1.0
 ```
 
 **NOTE for Apple Silicon Users:** Install Rosetta from the command line: `softwareupdate --install-rosetta`
@@ -57,19 +57,19 @@ conda 4.10.3
 
 To check if you have Git installed, open the command line and run the following command:
 
-```console
+```shell
 git --version
 ```
 
 You should see something like this:
 
-```console
+```shell
 git version 2.31.1
 ```
 
 If you do not have git installed, install it from `conda` by running:
 
-```console
+```shell
 conda install -c anaconda git
 ```
 
@@ -83,7 +83,7 @@ Since a WSL installation is headless by default (i.e., there is only access to a
 
 - Dynamically export the DISPLAY environment variable in WSL2:
 
-```console
+```shell
 # add to the end of ~/.bashrc file
 export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2}'):0
 # source the file
