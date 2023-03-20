@@ -9,6 +9,7 @@ from openbb_terminal import rich_config
 from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
+from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.fundamental_analysis import finviz_model
 
 logger = logging.getLogger(__name__)
@@ -28,6 +29,10 @@ def display_screen_data(
         Format to export data
     """
     fund_data = finviz_model.get_data(symbol)
+
+    if fund_data.empty:
+        console.print(f"No data found for {symbol}", style="bold red")
+        return
 
     print_rich_table(
         fund_data, title="Ticker Screener", show_index=True, export=bool(export)
