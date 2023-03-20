@@ -602,7 +602,8 @@ def get_real_gdp(
         )
 
     df = pd.read_csv(
-        f"https://stats.oecd.org/sdmx-json/data/DP_LIVE/.QGDP.TOT.{units}.Q/OECD?contentType=csv&detail=code"
+        f"https://stats.oecd.org/sdmx-json/data/DP_LIVE/.QGDP."
+        f"{'VOLIDX' if units == 'IDX' else 'TOT'}.{units}.Q/OECD?contentType=csv&detail=code"
         f"&separator=comma&csv-lang=en&startPeriod={start_date}&endPeriod={end_date}",
         index_col=5,
     )
