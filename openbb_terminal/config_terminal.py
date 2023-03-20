@@ -21,7 +21,6 @@ from openbb_terminal.core.session.current_user import get_current_user
 from .helper_classes import TerminalStyle as _TerminalStyle
 
 
-# Start the plots backend
 def start_plot_backend():
     """Starts the plot backend"""
     plots_backend().start(load_env_vars("DEBUG_MODE", strtobool, False))
@@ -103,9 +102,14 @@ def setup_logging_sub_app(sub_app: str):
     set_current_system(updated_system)
 
 
-setup_i18n()
-setup_version()
-setup_logging_app_name()
+def setup_config_terminal():
+    """Setup the config terminal"""
+    start_plot_backend()
+    start_required_configurations()
+    setup_i18n()
+    setup_version()
+    setup_logging_app_name()
+
 
 # Terminal UX section
 current_user = get_current_user()

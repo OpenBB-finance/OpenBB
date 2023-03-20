@@ -12,7 +12,7 @@ from openbb_terminal.terminal_helper import is_auth_enabled
 def main():
     sent_args = sys.argv[1:]
 
-    cfg.start_required_configurations()
+    cfg.setup_config_terminal()
 
     if "-t" in sent_args or "--test" in sent_args:
         from openbb_terminal.core.integration_tests import integration_controller
