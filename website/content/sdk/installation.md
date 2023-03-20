@@ -18,126 +18,32 @@ For users who have basic developer tools installed and are using Python through 
 pip install openbb
 ```
 
-This method is quick and easy.
+This method provides access to the data aggregation and charting functions of the OpenBB SDK. It does not provide access to the advanced features that are provided by the Portfolio Optimization and Machine Learning toolkits.
 
-If you are not sure or are a little bit technical and need to use the SDK with the Machine Learning and Portfolio Optimization toolkits we recommend following the [Full Installation instructions](#full-installation).
+If need to use the SDK with the Machine Learning and Portfolio Optimization toolkits we recommend following the [Full Installation instructions](#full-installation).
 
 ## Full Installation
 
-**Before starting the installation process, make sure the following pieces of software are installed.**
+To access the full functionality of the SDK with all the default toolkits, we recommend installing the SDK from source code [(link)](/terminal/installation/source). This will enable you to use the SDK with all the toolkits and contribute to the OpenBB project.
 
-<details><summary>Miniconda</summary>
-Miniconda is a Python environment and package manager. It is required for installing certain dependencies.
+However, if you already have [the requirements listed at the beginning of the source code installation instructions](/terminal/installation/source) installed on your system, you can alternatively install the SDK toolkits from PyPI.
 
-Go [here](https://docs.conda.io/en/latest/miniconda.html#latest-miniconda-installer-links) to find the download for your operating system or use the links below:
-
-- Apple-Silicon Systems: [Miniconda for MacOS](https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-arm64.pkg)
-- Intel-based Mac Systems: [Miniconda for MacOS](https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh)
-- Linux and WSL Systems: [Miniconda for Linux](https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh)
-- Raspberry PI Systems: [Miniconda for Raspberry PI](https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-aarch64.sh)
-- Windows Systems: [Miniconda for Windows](https://repo.anaconda.com/miniconda/Miniconda3-latest-Windows-x86_64.exe)
-
-To verify if Miniconda is installed on your system, open the command line and run the following command:
-
-```console
-conda --version
-```
-
-If Miniconda is installed, you should see the version number displayed, for example:
-
-```console
-conda 4.10.3
-```
-
-**NOTE for Apple Silicon Users:** Install Rosetta from the command line: `softwareupdate --install-rosetta`
-
-**NOTE for Windows users:** Install/update Microsoft C++ Build Tools from [here](https://visualstudio.microsoft.com/visual-cpp-build-tools/).
-
-</details>
-
-<details><summary>Git</summary>
-
-To check if you have Git installed, open the command line and run the following command:
-
-```console
-git --version
-```
-
-You should see something like this:
-
-```console
-git version 2.31.1
-```
-
-If you do not have git installed, install it from `conda` by running:
-
-```console
-conda install -c anaconda git
-```
-
-Or follow the instructions [here](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) to install it.
-
-</details>
-
-<details><summary>VcXsrv (Windows Subsystem for Linux only)</summary>
-
-Since a WSL installation is headless by default (i.e., there is only access to a terminal running a Linux distribution) there are additional steps required to display visualizations. A more detailed tutorial is found, [here](https://medium.com/@shaoyenyu/make-matplotlib-works-correctly-with-x-server-in-wsl2-9d9928b4e36a).
-
-- Dynamically export the DISPLAY environment variable in WSL2:
-
-```console
-# add to the end of ~/.bashrc file
-export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2}'):0
-# source the file
-source ~/.bashrc
-```
-
-- Download and install [VcXsrv](https://sourceforge.net/projects/vcxsrv/)
-- When running the program is important to check "Disable access control"
-
-After this, `VcXsrv` should be running successfully, and the machine is ready to proceed with the terminal installation.
-
-Alternatives to `VcXsrv` include:
-
-- [GWSL](https://opticos.github.io/gwsl/)
-- [Xming](https://xming.en.softonic.com/)
-- [Wayland](https://wayland.freedesktop.org/docs/html/)
-
-</details>
-
-Once you have met all of these requirements, you are ready to install the OpenBB SDK.
-
-## Create and activate the virtual environment
-
-Create the environment by copying the code below into the command line and agreeing to the prompts.
-
-```shell
-conda env create -n obb --file https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal/main/build/conda/conda-3-9-env.yaml
-```
-
-After the obb environment is created, activate it by entering:
-
-```shell
-conda activate obb
-```
-
-:::note
-Apple Silicon users should clean up some artifacts in order for the environment to work nicely with all dependencies. Do this by running:
-
-```shell
-find $(dirname $(dirname $(which python)))/lib/python*/site-packages \
-     -maxdepth 2 -name direct_url.json \
-     -exec rm -f {} +
-```
-
-:::
-
-## Install the OpenBB SDK
-
-Install the OpenBB SDK with the Machine Learning and Portfolio Optimization toolkits by running the following command:
+Install both ML and Portfolio Optimization toolkits with:
 
 ```shell
 pip install openbb[all]
+```
+
+Install the ML and Portfolio Optimization toolkits individually with:
+
+```shell
+pip install openbb[optimization]
+```
+
+and
+
+```shell
+pip install openbb[forecast]
 ```
 
 ## Verify Installation
