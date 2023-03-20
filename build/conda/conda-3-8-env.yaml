@@ -16,7 +16,7 @@ dependencies:
   - numpy ==1.23.4
   # Forecasting dependencies
   - ffmpeg
-  - lightgbm ==3.3.3
+  - lightgbm ==3.3.5
   # Optimization dependencies
   - cvxpy ==1.2.2
   - pip:
