@@ -9,7 +9,7 @@ interactions:
       User-Agent:
       - Python-urllib/3.10
     method: GET
-    uri: https://stats.oecd.org/sdmx-json/data/DP_LIVE/.GGNLEND.../OECD?contentType=csv&detail=code&separator=comma&csv-lang=en&startPeriod=2020-01-01&endPeriod=2022-01-31
+    uri: https://stats.oecd.org/sdmx-json/data/DP_LIVE/.GGNLEND.TOT.PC_GDP.A/OECD?contentType=csv&detail=code&separator=comma&csv-lang=en&startPeriod=2020-01-01&endPeriod=2022-01-31
   response:
     body:
       string: "\uFEFF\"LOCATION\",\"INDICATOR\",\"SUBJECT\",\"MEASURE\",\"FREQUENCY\",\"TIME\",\"Value\",\"Flag
@@ -26,11 +26,11 @@ interactions:
       Connection:
       - close
       Content-Disposition:
-      - attachment;filename=DP_LIVE_19032023121840613.csv
+      - attachment;filename=DP_LIVE_20032023095624990.csv
       Content-Type:
       - text/csv
       Date:
-      - Sun, 19 Mar 2023 11:18:40 GMT
+      - Mon, 20 Mar 2023 08:56:24 GMT
       Transfer-Encoding:
       - chunked
     status:
