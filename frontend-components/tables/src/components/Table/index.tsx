@@ -38,6 +38,20 @@ import Export from "./Export";
 import Timestamp from "./Timestamp";
 import FilterColumns from "./FilterColumns";
 
+const date = new Date();
+const formattedDate =
+  date.getFullYear() +
+  "-" +
+  (date.getMonth() + 1) +
+  "-" +
+  date.getDate() +
+  " : " +
+  date.getHours() +
+  ":" +
+  date.getMinutes() +
+  ":" +
+  date.getSeconds();
+
 export default function Table({ data, columns, title }: any) {
   const [advanced, setAdvanced] = useState(false);
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -358,8 +372,7 @@ export default function Table({ data, columns, title }: any) {
                   </tfoot>
                 )}
             </table>
-            <div className="_header gap-4 py-2 text-center text-xs flex items-center justify-center">
-              <p className="font-bold">{title}</p>
+            <div className="_header gap-4 py-2 text-center text-xs flex items-center justify-between">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="64"
@@ -372,6 +385,8 @@ export default function Table({ data, columns, title }: any) {
                   d="M61.283 3.965H33.608v27.757h25.699V19.826H37.561v-3.965H63.26V3.965h-1.977zM39.538 23.792h15.815v3.965H37.561v-3.965h1.977zM59.306 9.913v1.983H37.561V7.931h21.745v1.982zM33.606 0h-3.954v3.965H33.606V0zM25.7 3.966H0V15.86h25.7v3.965H3.953v11.896h25.7V3.966h-3.955zm0 21.808v1.983H7.907v-3.965h17.791v1.982zm0-15.86v1.982H3.953V7.931h21.745v1.982zM37.039 35.693v2.952l-.246-.246-.245-.245-.245-.247-.245-.246-.246-.246-.245-.245-.245-.247-.247-.246-.245-.246-.245-.246-.245-.246-.246-.246h-.49v3.936h.49v-3.198l.246.246.245.246.245.246.245.246.246.246.246.246.245.247.246.245.245.246.245.247.245.246.246.245.245.246h.245v-3.936h-.49zM44.938 37.17h-.491v-1.477h-2.944v3.937h3.93v-2.46h-.495zm-2.944-.246v-.739h1.962v.984h-1.962v-.245zm2.944.984v1.23h-2.944V37.66h2.944v.247zM52.835 37.17h-.49v-1.477h-2.946v3.937h3.925v-2.46h-.489zm-2.944-.246v-.739h1.963v.984h-1.965l.002-.245zm2.944.984v1.23H49.89V37.66h2.946v.247zM29.174 35.693H25.739v3.936H29.663v-.491H26.229v-.984h2.943v-.493H26.229v-1.476h3.434v-.492h-.489zM13.37 35.693H9.934v3.937h3.925v-3.937h-.49zm0 .738v2.709h-2.945v-2.955h2.943l.001.246zM21.276 35.693h-3.435v3.937h.491v-1.476h3.434v-2.461h-.49zm0 .738v1.23h-2.944v-1.476h2.944v.246z"
                 ></path>
               </svg>
+              <p className="font-bold">{title}</p>
+              <p>{formattedDate}</p>
             </div>
           </div>
           <div className="absolute -inset-1 rounded-md blur-md bg-gradient-to-br from-[#072e49]/40 via-[#0d345f]/40 to-[#0d3362]/40 z-10"></div>
