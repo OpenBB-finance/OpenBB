@@ -9,7 +9,6 @@ dependencies:
   - poetry
   - pybind11
   - cmake
-  - maturin
   # System dependencies
   - openssl =1.1.1
   - libtiff
