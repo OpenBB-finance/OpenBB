@@ -750,13 +750,12 @@ class EconomyController(BaseController):
         )
 
         parser.add_argument(
-            "-u",
-            "--units",
-            type=str,
-            dest="units",
-            help="Use either Q (quarterly) or A (annually) for units",
-            choices=["Q", "A"],
-            default="Q",
+            "-q",
+            "--quarterly",
+            action="store_true",
+            dest="quarterly",
+            help="Whether to plot quarterly results.",
+            default=False,
         )
 
         parser.add_argument(
@@ -792,7 +791,7 @@ class EconomyController(BaseController):
             oecd_view.plot_gdp_forecast(
                 countries=countries,
                 types=ns_parser.types,
-                units=ns_parser.units,
+                quarterly=ns_parser.quarterly,
                 start_date=ns_parser.start_date,
                 end_date=ns_parser.end_date,
                 raw=ns_parser.raw,

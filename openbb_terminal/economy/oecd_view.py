@@ -208,7 +208,7 @@ def plot_real_gdp(
 def plot_gdp_forecast(
     countries: Optional[List[str]],
     types: str = "real",
-    units: str = "Q",
+    quarterly: bool = False,
     start_date: str = "",
     end_date: str = "",
     raw: bool = False,
@@ -232,9 +232,8 @@ def plot_gdp_forecast(
     type: str
         Type of GDP to get data for. Either 'real' or 'nominal'.
         Default s real GDP (real).
-    units: str
-        Units to get data in. Either 'Q' or 'A.
-        Default is Quarterly (Q).
+    quarterly: bool
+        Whether to get quarterly results.
     start_date: str
         Start date of data, in YYYY-MM-DD format
     end_date: str
@@ -245,16 +244,19 @@ def plot_gdp_forecast(
     pd.DataFrame
         Dataframe with the interest rate data
     """
-    if units not in ["Q", "A"]:
-        return console.print("Use either Q (quarterly) or A (annually) for units")
     if types not in ["real", "nominal"]:
         return console.print("Use either 'real' or 'nominal' for type")
 
+    units = "Q" if quarterly else "A"
     df = oecd_model.get_gdp_forecast(countries, types, units, start_date, end_date)
 
     fig = OpenBBFigure(yaxis_title="Growth rates Compared to Previous Year (%)")
 
-    future_dates = df[df.index > str(datetime.now())]
+    future_dates = df[
+        df.index > str(datetime.now())
+        if units == "Q"
+        else df.index >= datetime.now().year
+    ]
     for country in df.columns:
         fig.add_scatter(
             x=df.index,
