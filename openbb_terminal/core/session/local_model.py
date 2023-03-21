@@ -140,13 +140,12 @@ def apply_colors(configs: dict):
     configs : dict
         The configurations.
     """
-    if configs and get_local_user().preferences.SYNC_ENABLED:
-        if get_current_user().preferences.RICH_STYLE == "custom":
-            terminal_style = configs.get("features_terminal_style", {}) or {}
-            if terminal_style:
-                user_style = terminal_style.get("theme", None)
-                user_style = {k: v.replace(" ", "") for k, v in user_style.items()}
-                console.set_console_theme(theme=Theme(user_style))
+    if configs and get_local_user().preferences.SYNC_ENABLED and get_current_user().preferences.RICH_STYLE == "custom":
+        terminal_style = configs.get("features_terminal_style", {}) or {}
+        if terminal_style:
+            user_style = terminal_style.get("theme", None)
+            user_style = {k: v.replace(" ", "") for k, v in user_style.items()}
+            console.set_console_theme(theme=Theme(user_style))
 
 
 def get_routine(file_name: str, folder: Optional[Path] = None) -> Optional[str]:

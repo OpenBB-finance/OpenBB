@@ -24,7 +24,6 @@ from openbb_terminal.core.console_styles.utils import (
 )
 from openbb_terminal.core.session.current_user import (
     get_current_user,
-    is_local,
     set_preference,
 )
 

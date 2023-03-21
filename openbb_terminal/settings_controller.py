@@ -13,6 +13,8 @@ from typing import List, Optional, Union
 # IMPORTATION THIRDPARTY
 import pytz
 
+import openbb_terminal.core.session.hub_model as Hub
+import openbb_terminal.core.session.local_model as Local
 from openbb_terminal.config_terminal import i18n_dict_location
 
 # IMPORTATION INTERNAL
@@ -37,8 +39,6 @@ from openbb_terminal.helper_funcs import (
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import MenuText, console
-import openbb_terminal.core.session.hub_model as Hub
-import openbb_terminal.core.session.local_model as Local
 
 # pylint: disable=too-many-lines,no-member,too-many-public-methods,C0302
 # pylint: disable=import-outside-toplevel
