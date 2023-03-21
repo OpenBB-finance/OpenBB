@@ -99,15 +99,14 @@ def get_valuation_data(
         # Passing Raw data to Pandas DataFrame if using interactive mode
         if get_current_user().preferences.USE_INTERACTIVE_DF:
             return df_group
-        else:
-            df_group["Market Cap"] = df_group["Market Cap"].apply(
-                lambda x: float(x.strip("B"))
-                if x.endswith("B")
-                else float(x.strip("M")) / 1000
-            )
-            df_group["Volume"] = df_group["Volume"] / 1_000_000
-            df_group = df_group.rename(columns={"Volume": "Volume [1M]"})
-            return df_group
+        df_group["Market Cap"] = df_group["Market Cap"].apply(
+            lambda x: float(x.strip("B"))
+            if x.endswith("B")
+            else float(x.strip("M")) / 1000
+        )
+        df_group["Volume"] = df_group["Volume"] / 1_000_000
+        df_group = df_group.rename(columns={"Volume": "Volume [1M]"})
+        return df_group
 
     except IndexError:
         console.print("Data not found.\n")
@@ -163,13 +162,13 @@ def get_performance_data(
         # Passing Raw data to Pandas DataFrame if using interactive mode
         if get_current_user().preferences.USE_INTERACTIVE_DF:
             return df_group
-        else:
-            df_group["Volume"] = df_group["Volume"] / 1_000_000
-            df_group["AvgVolume"] = df_group["AvgVolume"] / 1_000_000
-            df_group = df_group.rename(
-                columns={"Volume": "Volume [1M]", "AvgVolume": "AvgVolume [1M]"}
-            )
-            return df_group
+
+        df_group["Volume"] = df_group["Volume"] / 1_000_000
+        df_group["AvgVolume"] = df_group["AvgVolume"] / 1_000_000
+        df_group = df_group.rename(
+            columns={"Volume": "Volume [1M]", "AvgVolume": "AvgVolume [1M]"}
+        )
+        return df_group
 
     except IndexError:
         console.print("Data not found.\n")

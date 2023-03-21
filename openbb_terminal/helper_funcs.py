@@ -1090,15 +1090,15 @@ def lambda_financials_colored_values(val: str) -> str:
     # We don't want to do the color stuff in interactive mode
     if get_current_user().preferences.USE_INTERACTIVE_DF:
         return val
-    else:
-        if val == "N/A" or str(val) == "nan":
-            val = "[yellow]N/A[/yellow]"
-        elif sum(c.isalpha() for c in val) < 2:
-            if "%" in val and "-" in val or "%" not in val and "(" in val:
-                val = f"[red]{val}[/red]"
-            elif "%" in val:
-                val = f"[green]{val}[/green]"
-        return val
+
+    if val == "N/A" or str(val) == "nan":
+        val = "[yellow]N/A[/yellow]"
+    elif sum(c.isalpha() for c in val) < 2:
+        if "%" in val and "-" in val or "%" not in val and "(" in val:
+            val = f"[red]{val}[/red]"
+        elif "%" in val:
+            val = f"[green]{val}[/green]"
+    return val
 
 
 def check_ohlc(type_ohlc: str) -> str:
