@@ -60,12 +60,16 @@ export default function Table({ data, columns, title }: any) {
         id: column,
         header: column,
         footer: column,
-        cell: ({ row }: any) => {
+        cell: ({ row, ...otherProps }: any) => {
+          const hasIndex = row.original.hasOwnProperty("index");
           const value = row.original[column];
           const valueType = typeof value;
           const probablyDate =
             column.toLowerCase().includes("date") ||
-            column.toLowerCase() === "index";
+            column.toLowerCase() === "index" ||
+            (hasIndex &&
+              typeof row.original.index == "string" &&
+              ["date", "day"].includes(row.original.index.toLowerCase()));
           const probablyLink =
             valueType === "string" && value.startsWith("http");
 

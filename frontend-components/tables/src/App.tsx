@@ -13,7 +13,7 @@ declare global {
 
 function App() {
   const [data, setData] = useState(
-    process.env.NODE_ENV === "production" ? null : JSON.parse(initialData)
+    process.env.NODE_ENV === "production" ? null : JSON.parse(rekNewsData)
   );
   const [title, setTitle] = useState("Interactive Table");
 
