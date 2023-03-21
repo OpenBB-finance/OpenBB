@@ -373,7 +373,6 @@ def test_call_sync(mocker, other_args, sync, test_user):
     controller.call_sync(other_args=other_args)
 
     assert controller.queue == []
-    print(other_args)
 
 
 @pytest.mark.parametrize(
@@ -465,8 +464,6 @@ def test_call_list(mocker, test_user):
     controller = account_controller.AccountController(queue=None)
     path_controller = "openbb_terminal.account.account_controller"
 
-    test_user.profile.token_type = "Bearer"
-    test_user.profile.token = "123"
     mocker.patch(
         target="openbb_terminal.account.account_controller.get_current_user",
         return_value=test_user,
@@ -493,8 +490,6 @@ def test_call_upload(mocker, test_user):
     controller = account_controller.AccountController(queue=None)
     path_controller = "openbb_terminal.account.account_controller"
 
-    test_user.profile.token_type = "Bearer"
-    test_user.profile.token = "123"
     mocker.patch(
         target="openbb_terminal.account.account_controller.get_current_user",
         return_value=test_user,
@@ -533,8 +528,6 @@ def test_call_download(mocker, test_user):
     controller = account_controller.AccountController(queue=None)
     path_controller = "openbb_terminal.account.account_controller"
 
-    test_user.profile.token_type = "Bearer"
-    test_user.profile.token = "123"
     mocker.patch(
         target="openbb_terminal.account.account_controller.get_current_user",
         return_value=test_user,
@@ -623,8 +616,6 @@ def test_call_generate(mocker, monkeypatch, test_user):
         {"token": "MOCK_TOKEN"}
     ).encode("utf-8")
 
-    test_user.profile.token_type = "Bearer"
-    test_user.profile.token = "123"
     mocker.patch(
         target="openbb_terminal.account.account_controller.get_current_user",
         return_value=test_user,
@@ -657,8 +648,6 @@ def test_call_show(mocker, test_user):
         {"token": "MOCK_TOKEN"}
     ).encode("utf-8")
 
-    test_user.profile.token_type = "Bearer"
-    test_user.profile.token = "123"
     mocker.patch(
         target="openbb_terminal.account.account_controller.get_current_user",
         return_value=test_user,
