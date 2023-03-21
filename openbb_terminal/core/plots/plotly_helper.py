@@ -40,7 +40,7 @@ class TerminalStyle:
     """The class that helps with handling of style configurations.
 
     It serves styles for 2 libraries. For `Plotly` this class serves absolute paths
-    to the .pltstyle files. For `Plotly` and `Rich` this class serves custom
+    to the .pltstyle files. For `Plotly` this class serves custom
     styles as python dictionaries.
     """
 
@@ -52,9 +52,6 @@ class TerminalStyle:
     plt_styles_available: Dict[str, Path] = {}
     plt_style: str = "dark"
     plotly_template: Dict[str, Any] = {}
-
-    console_styles_available: Dict[str, Path] = {}
-    console_style: Dict[str, Any] = {}
 
     line_color: str = ""
     up_color: str = ""
@@ -69,7 +66,6 @@ class TerminalStyle:
     def __init__(
         self,
         plt_style: Optional[str] = "",
-        console_style: Optional[str] = "",
     ):
         """Initialize the class.
 
@@ -77,21 +73,9 @@ class TerminalStyle:
         ----------
         plt_style : `str`, optional
             The name of the Plotly style to use, by default ""
-        console_style : `str`, optional
-            The name of the Rich style to use, by default ""
         """
         self.plt_style = plt_style or self.plt_style
-        console_style = console_style or "dark"
         self.load_available_styles()
-
-        console_json_path = self.console_styles_available.get("dark", None)
-        for style in ["openbb_config", console_style]:
-            if style in self.console_styles_available:
-                console_json_path = self.console_styles_available[style]
-                break
-
-        if console_json_path:
-            self.console_style = self.load_json_style(console_json_path)
         self.load_style(plt_style)
 
     def apply_style(self, style: Optional[str] = "") -> None:
@@ -117,7 +101,6 @@ class TerminalStyle:
         Parses the styles/default and styles/user folders and loads style files.
         To be recognized files need to follow a naming convention:
         *.pltstyle        - plotly stylesheets
-        *.richstyle.json  - rich stylesheets
 
         Parameters
         ----------
@@ -128,8 +111,8 @@ class TerminalStyle:
             return
 
         for attr, ext in zip(
-            ["plt_styles_available", "console_styles_available"],
-            [".pltstyle.json", ".richstyle.json"],
+            ["plt_styles_available"],
+            [".pltstyle.json"],
         ):
             for file in folder.glob(f"*{ext}"):
                 getattr(self, attr)[file.name.replace(ext, "")] = file
@@ -212,9 +195,7 @@ class TerminalStyle:
         return colors
 
 
-theme = TerminalStyle(
-    get_current_user().preferences.PLOT_STYLE, get_current_user().preferences.RICH_STYLE
-)
+theme = TerminalStyle(get_current_user().preferences.PLOT_STYLE)
 theme.apply_style()
 
 
