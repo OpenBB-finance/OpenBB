@@ -659,7 +659,7 @@ class DiscoveryController(BaseController):
             action="store",
             dest="limit",
             type=check_positive,
-            default=1,
+            default=10,
             help="Limit of upcoming earnings release dates to display.",
         )
         parser.add_argument(
@@ -668,7 +668,7 @@ class DiscoveryController(BaseController):
             action="store",
             dest="n_pages",
             type=check_positive,
-            default=10,
+            default=1,
             help="Number of pages to read upcoming earnings from in Seeking Alpha website.",
         )
         if other_args and "-" not in other_args[0][0]:
