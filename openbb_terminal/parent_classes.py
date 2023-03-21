@@ -23,7 +23,6 @@ from rich.markdown import Markdown
 
 # IMPORTS INTERNAL
 from openbb_terminal.core.completer.choices import build_controller_choice_map
-from openbb_terminal.core.session.constants import REGISTER_URL
 from openbb_terminal.core.session.current_user import get_current_user, is_local
 from openbb_terminal.cryptocurrency import cryptocurrency_helpers
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
@@ -46,7 +45,11 @@ from openbb_terminal.helper_funcs import (
 from openbb_terminal.menu import session
 from openbb_terminal.rich_config import console, get_ordered_list_sources
 from openbb_terminal.stocks import stocks_helper
-from openbb_terminal.terminal_helper import is_auth_enabled, open_openbb_documentation
+from openbb_terminal.terminal_helper import (
+    is_auth_enabled,
+    open_openbb_documentation,
+    print_guest_block_msg,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -707,10 +710,7 @@ class BaseController(metaclass=ABCMeta):
                 sync = "ON" if current_user.preferences.SYNC_ENABLED is True else "OFF"
                 console.print(f"[info]sync:[/info] {sync}")
             else:
-                console.print(
-                    "[info]You are currently logged as a guest.\n"
-                    f"[info]Register: [/info][cmds]{REGISTER_URL}\n[/cmds]"
-                )
+                print_guest_block_msg()
 
     @staticmethod
     def parse_simple_args(parser: argparse.ArgumentParser, other_args: List[str]):
@@ -1027,7 +1027,9 @@ class BaseController(metaclass=ABCMeta):
                 # Process the input command
                 self.queue = self.switch(an_input)
 
-                if an_input == "logout":
+                if is_local() and an_input == "login":
+                    return ["login"]
+                if not is_local() and an_input == "logout":
                     return ["logout"]
 
             except SystemExit:
