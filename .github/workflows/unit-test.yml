@@ -82,6 +82,7 @@ jobs:
 
       - name: Setup sudo apt installs for ubuntu-latest
         run: |
+          curl --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain stable
           sudo apt-get update
           sudo apt-get install -y \
               libgtk-3-dev \
@@ -144,6 +145,7 @@ jobs:
 
       - name: Setup sudo apt installs for ubuntu-latest
         run: |
+          curl --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain stable
           sudo apt-get update
           sudo apt-get install -y \
               libgtk-3-dev \
@@ -211,6 +213,7 @@ jobs:
       - name: Setup sudo apt installs for ubuntu-latest
         if: runner.os == 'Linux'
         run: |
+          curl --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain stable
           sudo apt-get update
           sudo apt-get install -y \
               libgtk-3-dev \
@@ -276,6 +279,7 @@ jobs:
       - name: Setup sudo apt installs for ubuntu-latest
         if: runner.os == 'Linux'
         run: |
+          curl --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain stable
           sudo apt-get update
           sudo apt-get install -y \
               libgtk-3-dev \
