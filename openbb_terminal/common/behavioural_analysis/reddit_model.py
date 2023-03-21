@@ -17,12 +17,22 @@ from sklearn.feature_extraction import _stop_words
 from tqdm import tqdm
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
-from openbb_terminal.common.behavioural_analysis.reddit_helpers import find_tickers
+from openbb_terminal.common.behavioural_analysis.reddit_helpers import (
+    find_tickers,
+    get_praw_api,
+)
 from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
+reddit_requirements = [
+    "API_REDDIT_CLIENT_ID",
+    "API_REDDIT_CLIENT_SECRET",
+    "API_REDDIT_USERNAME",
+    "API_REDDIT_USER_AGENT",
+    "API_REDDIT_PASSWORD",
+]
 
 l_sub_reddits = [
     "Superstonk",
@@ -37,15 +47,7 @@ l_sub_reddits = [
 
 
 @log_start_end(log=logger)
-@check_api_key(
-    [
-        "API_REDDIT_CLIENT_ID",
-        "API_REDDIT_CLIENT_SECRET",
-        "API_REDDIT_USERNAME",
-        "API_REDDIT_USER_AGENT",
-        "API_REDDIT_PASSWORD",
-    ]
-)
+@check_api_key(reddit_requirements)
 def get_popular_tickers(
     limit: int = 10, post_limit: int = 50, subreddits: str = ""
 ) -> pd.DataFrame:
@@ -74,25 +76,7 @@ def get_popular_tickers(
     d_watchlist_tickers: dict = {}
     l_watchlist_author = []
 
-    praw_api = praw.Reddit(
-        client_id=current_user.credentials.API_REDDIT_CLIENT_ID,
-        client_secret=current_user.credentials.API_REDDIT_CLIENT_SECRET,
-        username=current_user.credentials.API_REDDIT_USERNAME,
-        user_agent=current_user.credentials.API_REDDIT_USER_AGENT,
-        password=current_user.credentials.API_REDDIT_PASSWORD,
-        check_for_updates=False,
-        comment_kind="t1",
-        message_kind="t4",
-        redditor_kind="t2",
-        submission_kind="t3",
-        subreddit_kind="t5",
-        trophy_kind="t6",
-        oauth_url="https://oauth.reddit.com",
-        reddit_url="https://www.reddit.com",
-        short_url="https://redd.it",
-        ratelimit_seconds=5,
-        timeout=16,
-    )
+    praw_api = get_praw_api(current_user)
     try:
         praw_api.user.me()
     except (Exception, ResponseException):
@@ -227,15 +211,7 @@ def get_popular_tickers(
 
 
 @log_start_end(log=logger)
-@check_api_key(
-    [
-        "API_REDDIT_CLIENT_ID",
-        "API_REDDIT_CLIENT_SECRET",
-        "API_REDDIT_USERNAME",
-        "API_REDDIT_USER_AGENT",
-        "API_REDDIT_PASSWORD",
-    ]
-)
+@check_api_key(reddit_requirements)
 def get_spac_community(
     limit: int = 10, popular: bool = False
 ) -> Tuple[pd.DataFrame, dict]:
@@ -256,25 +232,7 @@ def get_spac_community(
     """
     current_user = get_current_user()
 
-    praw_api = praw.Reddit(
-        client_id=current_user.credentials.API_REDDIT_CLIENT_ID,
-        client_secret=current_user.credentials.API_REDDIT_CLIENT_SECRET,
-        username=current_user.credentials.API_REDDIT_USERNAME,
-        user_agent=current_user.credentials.API_REDDIT_USER_AGENT,
-        password=current_user.credentials.API_REDDIT_PASSWORD,
-        check_for_updates=False,
-        comment_kind="t1",
-        message_kind="t4",
-        redditor_kind="t2",
-        submission_kind="t3",
-        subreddit_kind="t5",
-        trophy_kind="t6",
-        oauth_url="https://oauth.reddit.com",
-        reddit_url="https://www.reddit.com",
-        short_url="https://redd.it",
-        ratelimit_seconds=5,
-        timeout=16,
-    )
+    praw_api = get_praw_api(current_user)
     try:
         praw_api.user.me()
     except (Exception, ResponseException):
@@ -368,15 +326,7 @@ def get_spac_community(
 
 
 @log_start_end(log=logger)
-@check_api_key(
-    [
-        "API_REDDIT_CLIENT_ID",
-        "API_REDDIT_CLIENT_SECRET",
-        "API_REDDIT_USERNAME",
-        "API_REDDIT_USER_AGENT",
-        "API_REDDIT_PASSWORD",
-    ]
-)
+@check_api_key(reddit_requirements)
 def get_wsb_community(limit: int = 10, new: bool = False) -> pd.DataFrame:
     """Get wsb posts [Source: reddit].
 
@@ -394,26 +344,7 @@ def get_wsb_community(limit: int = 10, new: bool = False) -> pd.DataFrame:
     """
     current_user = get_current_user()
 
-    # See https://github.com/praw-dev/praw/issues/1016 regarding praw arguments
-    praw_api = praw.Reddit(
-        client_id=current_user.credentials.API_REDDIT_CLIENT_ID,
-        client_secret=current_user.credentials.API_REDDIT_CLIENT_SECRET,
-        username=current_user.credentials.API_REDDIT_USERNAME,
-        user_agent=current_user.credentials.API_REDDIT_USER_AGENT,
-        password=current_user.credentials.API_REDDIT_PASSWORD,
-        check_for_updates=False,
-        comment_kind="t1",
-        message_kind="t4",
-        redditor_kind="t2",
-        submission_kind="t3",
-        subreddit_kind="t5",
-        trophy_kind="t6",
-        oauth_url="https://oauth.reddit.com",
-        reddit_url="https://www.reddit.com",
-        short_url="https://redd.it",
-        ratelimit_seconds=5,
-        timeout=16,
-    )
+    praw_api = get_praw_api(current_user)
     try:
         praw_api.user.me()
     except (Exception, ResponseException):
@@ -479,15 +410,7 @@ def get_wsb_community(limit: int = 10, new: bool = False) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-@check_api_key(
-    [
-        "API_REDDIT_CLIENT_ID",
-        "API_REDDIT_CLIENT_SECRET",
-        "API_REDDIT_USERNAME",
-        "API_REDDIT_USER_AGENT",
-        "API_REDDIT_PASSWORD",
-    ]
-)
+@check_api_key(reddit_requirements)
 def get_due_dilligence(
     limit: int = 5, n_days: int = 3, show_all_flairs: bool = False
 ) -> pd.DataFrame:
@@ -509,25 +432,7 @@ def get_due_dilligence(
     """
     current_user = get_current_user()
 
-    praw_api = praw.Reddit(
-        client_id=current_user.credentials.API_REDDIT_CLIENT_ID,
-        client_secret=current_user.credentials.API_REDDIT_CLIENT_SECRET,
-        username=current_user.credentials.API_REDDIT_USERNAME,
-        user_agent=current_user.credentials.API_REDDIT_USER_AGENT,
-        password=current_user.credentials.API_REDDIT_PASSWORD,
-        check_for_updates=False,
-        comment_kind="t1",
-        message_kind="t4",
-        redditor_kind="t2",
-        submission_kind="t3",
-        subreddit_kind="t5",
-        trophy_kind="t6",
-        oauth_url="https://oauth.reddit.com",
-        reddit_url="https://www.reddit.com",
-        short_url="https://redd.it",
-        ratelimit_seconds=5,
-        timeout=16,
-    )
+    praw_api = get_praw_api(current_user)
     try:
         praw_api.user.me()
     except (Exception, ResponseException):
@@ -632,15 +537,7 @@ def get_due_dilligence(
 
 
 @log_start_end(log=logger)
-@check_api_key(
-    [
-        "API_REDDIT_CLIENT_ID",
-        "API_REDDIT_CLIENT_SECRET",
-        "API_REDDIT_USERNAME",
-        "API_REDDIT_USER_AGENT",
-        "API_REDDIT_PASSWORD",
-    ]
-)
+@check_api_key(reddit_requirements)
 def get_posts_about(
     symbol: str,
     limit: int = 100,
@@ -675,25 +572,7 @@ def get_posts_about(
     """
     current_user = get_current_user()
 
-    praw_api = praw.Reddit(
-        client_id=current_user.credentials.API_REDDIT_CLIENT_ID,
-        client_secret=current_user.credentials.API_REDDIT_CLIENT_SECRET,
-        username=current_user.credentials.API_REDDIT_USERNAME,
-        user_agent=current_user.credentials.API_REDDIT_USER_AGENT,
-        password=current_user.credentials.API_REDDIT_PASSWORD,
-        check_for_updates=False,
-        comment_kind="t1",
-        message_kind="t4",
-        redditor_kind="t2",
-        submission_kind="t3",
-        subreddit_kind="t5",
-        trophy_kind="t6",
-        oauth_url="https://oauth.reddit.com",
-        reddit_url="https://www.reddit.com",
-        short_url="https://redd.it",
-        ratelimit_seconds=5,
-        timeout=16,
-    )
+    praw_api = get_praw_api(current_user)
     try:
         praw_api.user.me()
     except (Exception, ResponseException):
@@ -748,15 +627,7 @@ def get_posts_about(
 
 
 @log_start_end(log=logger)
-@check_api_key(
-    [
-        "API_REDDIT_CLIENT_ID",
-        "API_REDDIT_CLIENT_SECRET",
-        "API_REDDIT_USERNAME",
-        "API_REDDIT_USER_AGENT",
-        "API_REDDIT_PASSWORD",
-    ]
-)
+@check_api_key(reddit_requirements)
 def get_comments(
     post: praw.models.reddit.submission.Submission,
 ) -> List[praw.models.reddit.comment.Comment]:
@@ -819,15 +690,7 @@ def clean_reddit_text(docs: List[str]) -> List[str]:
 
 
 @log_start_end(log=logger)
-@check_api_key(
-    [
-        "API_REDDIT_CLIENT_ID",
-        "API_REDDIT_CLIENT_SECRET",
-        "API_REDDIT_USERNAME",
-        "API_REDDIT_USER_AGENT",
-        "API_REDDIT_PASSWORD",
-    ]
-)
+@check_api_key(reddit_requirements)
 def get_sentiment(post_data: List[str]) -> float:
     """Find the sentiment of a post and related comments.
 
