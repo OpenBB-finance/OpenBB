@@ -10,7 +10,7 @@ from openbb_terminal.core.config.paths import (
 )
 from openbb_terminal.core.models.base_model import BaseModel
 
-# pylint: disable=too-many-instance-attributes, disable=no-member
+# pylint: disable=too-many-instance-attributes, disable=no-member, useless-parent-delegation
 
 
 @dataclass(config=dict(validate_assignment=True, frozen=True))
