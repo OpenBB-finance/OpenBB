@@ -1,12 +1,26 @@
 """Reddit Helpers."""
 __docformat__ = "numpy"
 
+import logging
 import re
 from typing import List
 
+import pandas as pd
 import praw
+from prawcore.exceptions import ResponseException
 
 from openbb_terminal.core.models import UserModel
+from openbb_terminal.rich_config import console
+
+logger = logging.getLogger(__name__)
+
+reddit_requirements = [
+    "API_REDDIT_CLIENT_ID",
+    "API_REDDIT_CLIENT_SECRET",
+    "API_REDDIT_USERNAME",
+    "API_REDDIT_USER_AGENT",
+    "API_REDDIT_PASSWORD",
+]
 
 
 def find_tickers(submission: praw.models.reddit.submission.Submission) -> List[str]:
@@ -69,3 +83,73 @@ def get_praw_api(current_user: UserModel) -> praw.Reddit:
         timeout=16,
     )
     return praw_api
+
+
+def has_author(submission_, authors) -> bool:
+    """Check if submission has author."""
+    return (
+        hasattr(submission_, "author")
+        and hasattr(submission_.author, "name")
+        and submission_.author.name not in authors
+    )
+
+
+def has_content(submission_) -> bool:
+    """Check if submission has text or title."""
+    return hasattr(submission_, "selftext") or hasattr(submission_, "title")
+
+
+class RedditResponses:
+    def __init__(self):
+        self.count: int = 0
+        self.tickers: dict = {}
+        self.authors: List[str] = []
+
+    def gather(self, praw_api, responses):
+        for submission in responses:
+            try:
+                # Get more information about post using PRAW api
+                submission_ = praw_api.submission(id=submission["id"])
+
+                # Ensure that the post hasn't been removed by moderator in the meanwhile,
+                # that there is a description and it's not just an image, that the flair is
+                # meaningful, and that we aren't re-considering same author's content
+
+                if (
+                    submission_ is not None
+                    and not submission_.removed_by_category
+                    and has_content(submission_)
+                    and has_author(submission_, self.authors)
+                ):
+                    l_tickers_found = find_tickers(submission_)
+
+                    if l_tickers_found:
+                        self.count += len(l_tickers_found)
+
+                        # Add another author's name to the parsed watchlists
+                        self.authors.append(submission_.author.name)
+
+                        # Lookup stock tickers within a watchlist
+                        for key in l_tickers_found:
+                            if key in self.tickers:
+                                # Increment stock ticker found
+                                self.tickers[key] += 1
+                            else:
+                                # Initialize stock ticker found
+                                self.tickers[key] = 1
+
+            except ResponseException as e:
+                logger.exception("Invalid response: %s", str(e))
+
+                if "received 401 HTTP response" in str(e):
+                    console.print("[red]Invalid API Key[/red]\n")
+                else:
+                    console.print(f"[red]Invalid response: {str(e)}[/red]\n")
+                return
+
+    def reset_count(self):
+        self.count = 0
+
+    def to_df(self) -> pd.DataFrame:
+        print(self.tickers)
+        pd.DataFrame()

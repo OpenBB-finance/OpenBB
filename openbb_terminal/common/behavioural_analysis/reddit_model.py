@@ -7,32 +7,25 @@ import warnings
 from datetime import datetime, timedelta
 from typing import List, Tuple
 
-import finviz
 import pandas as pd
 import praw
 from pmaw import PushshiftAPI
 from prawcore.exceptions import ResponseException
-from requests import HTTPError
 from sklearn.feature_extraction import _stop_words
 from tqdm import tqdm
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
 from openbb_terminal.common.behavioural_analysis.reddit_helpers import (
+    RedditResponses,
     find_tickers,
     get_praw_api,
+    reddit_requirements,
 )
 from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
-reddit_requirements = [
-    "API_REDDIT_CLIENT_ID",
-    "API_REDDIT_CLIENT_SECRET",
-    "API_REDDIT_USERNAME",
-    "API_REDDIT_USER_AGENT",
-    "API_REDDIT_PASSWORD",
-]
 
 l_sub_reddits = [
     "Superstonk",
@@ -73,8 +66,6 @@ def get_popular_tickers(
         if subreddits
         else l_sub_reddits
     )
-    d_watchlist_tickers: dict = {}
-    l_watchlist_author = []
 
     praw_api = get_praw_api(current_user)
     try:
@@ -85,6 +76,7 @@ def get_popular_tickers(
 
     pmaw_api = PushshiftAPI()
 
+    responses = RedditResponses()
     for s_sub_reddit in sub_reddit_list:
         console.print(
             f"Searching for tickers in latest {post_limit} '{s_sub_reddit}' posts"
@@ -98,116 +90,11 @@ def get_popular_tickers(
             filter=["id"],
         )
 
-        n_tickers = 0
-        for submission in submissions.responses:
-            try:
-                # Get more information about post using PRAW api
-                submission_ = praw_api.submission(id=submission["id"])
+        responses.gather(praw_api, submissions.responses)
+        console.print(f"  {responses.count} potential tickers found.")
+        responses.reset_count()
 
-                # Ensure that the post hasn't been removed by moderator in the meanwhile,
-                # that there is a description and it's not just an image, that the flair is
-                # meaningful, and that we aren't re-considering same author's content
-                def has_author(submission_) -> bool:
-                    """Check if submission has author."""
-                    return (
-                        hasattr(submission_, "author")
-                        and hasattr(submission_.author, "name")
-                        and submission_.author.name not in l_watchlist_author
-                    )
-
-                def has_content(submission_) -> bool:
-                    """Check if submission has text or title."""
-                    return hasattr(submission_, "selftext") or hasattr(
-                        submission_, "title"
-                    )
-
-                if (
-                    submission_ is not None
-                    and not submission_.removed_by_category
-                    and has_content(submission_)
-                    and has_author(submission_)
-                ):
-                    l_tickers_found = find_tickers(submission_)
-
-                    if l_tickers_found:
-                        n_tickers += len(l_tickers_found)
-
-                        # Add another author's name to the parsed watchlists
-                        l_watchlist_author.append(submission_.author.name)
-
-                        # Lookup stock tickers within a watchlist
-                        for key in l_tickers_found:
-                            if key in d_watchlist_tickers:
-                                # Increment stock ticker found
-                                d_watchlist_tickers[key] += 1
-                            else:
-                                # Initialize stock ticker found
-                                d_watchlist_tickers[key] = 1
-
-            except ResponseException as e:
-                logger.exception("Invalid response: %s", str(e))
-
-                if "received 401 HTTP response" in str(e):
-                    console.print("[red]Invalid API Key[/red]\n")
-                else:
-                    console.print(f"[red]Invalid response: {str(e)}[/red]\n")
-
-                return pd.DataFrame()
-
-        console.print(f"  {n_tickers} potential tickers found.")
-    lt_watchlist_sorted = sorted(
-        d_watchlist_tickers.items(), key=lambda item: item[1], reverse=True
-    )
-
-    if lt_watchlist_sorted:
-        n_top_stocks = 0
-        # pylint: disable=redefined-outer-name
-        popular_tickers = []
-        for t_ticker in lt_watchlist_sorted:
-            if n_top_stocks > limit:
-                break
-            try:
-                # If try doesn't trigger exception, it means that this stock exists on finviz
-                # thus we can print it.
-                stock_info = finviz.get_stock(t_ticker[0])
-                popular_tickers.append(
-                    (
-                        t_ticker[1],
-                        t_ticker[0],
-                        stock_info["Company"],
-                        stock_info["Sector"],
-                        stock_info["Price"],
-                        stock_info["Change"],
-                        stock_info["Perf Month"],
-                        f"https://finviz.com/quote.ashx?t={t_ticker[0]}",
-                    )
-                )
-                n_top_stocks += 1
-            except HTTPError as e:
-                if e.response.status_code != 404:
-                    logger.exception("Unexpected exception from Finviz: %s", str(e))
-                    console.print(f"Unexpected exception from Finviz: {e}")
-            except Exception as e:
-                logger.exception(str(e))
-                console.print(e, "\n")
-                return pd.DataFrame()
-
-        popular_tickers_df = pd.DataFrame(
-            popular_tickers,
-            columns=[
-                "Mentions",
-                "Ticker",
-                "Company",
-                "Sector",
-                "Price",
-                "Change",
-                "Perf Month",
-                "URL",
-            ],
-        )
-    else:
-        popular_tickers_df = pd.DataFrame()
-    return popular_tickers_df
+    return responses.to_df()
 
 
 @log_start_end(log=logger)
