@@ -126,7 +126,7 @@ def apply_credentials(configs: dict):
     configs : dict
         The configurations.
     """
-    if configs and get_local_user().preferences.SYNC_ENABLED:
+    if configs and get_current_user().preferences.SYNC_ENABLED:
         credentials = configs.get("features_keys", {}) or {}
         for k, v in credentials.items():
             set_credential(k, v)

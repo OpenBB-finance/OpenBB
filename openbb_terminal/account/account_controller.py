@@ -233,7 +233,7 @@ class AccountController(BaseController):
                         )
                         console.print("")
                         if i.lower() in ["y", "yes"]:
-                            Local.apply_configs(configs=configs_diff)
+                            Local.apply_credentials(configs=configs_diff)
                             console.print("[info]Done.[/info]")
                         else:
                             console.print("[info]Aborted.[/info]")
