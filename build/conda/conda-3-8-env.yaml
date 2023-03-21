@@ -6,7 +6,6 @@ dependencies:
   - git
   # Build dependencies
   - pip
-  - poetry ==1.4.0
   - pybind11
   - cmake
   # System dependencies
@@ -21,6 +20,9 @@ dependencies:
   # Optimization dependencies
   - cvxpy ==1.2.2
   - pip:
+    # Build dependencies
+    - poetry ==1.4.0
+    # Main dependencies
     - charset-normalizer ==3.1.0
     # Forecasting dependencies
     - catboost ==1.1.1
