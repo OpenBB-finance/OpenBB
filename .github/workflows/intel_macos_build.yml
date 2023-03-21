@@ -54,7 +54,7 @@ jobs:
           use-only-tar-bz2: true # Needed for caching some reason
       - name: Clean up conda artifacts
         run: |
-          build/conda/cleanup_artifacts.sh
+          find "$(dirname "$(dirname "$(which python)")")"/lib/python*/site-packages -maxdepth 2 -name direct_url.json -exec rm -f {} +
       - name: Install requirements
         run: |
           pip list
