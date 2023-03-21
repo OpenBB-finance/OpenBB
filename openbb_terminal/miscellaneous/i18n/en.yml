@@ -26,7 +26,7 @@ en:
   account/show: Shows the current Personal Access Token
   account/revoke: Revoke the Personal Access Token
   account/_info_: Cloud storage of keys
-  account/sync: Turns the cloud synchronization on/off
+  account/sync: Turns the keys synchronization on/off
   account/pull: Pull keys from cloud
   account/clear: Clear keys from cloud
   account/_routines_: Cloud storage of routines
