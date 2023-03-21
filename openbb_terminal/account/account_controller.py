@@ -20,6 +20,7 @@ from openbb_terminal.core.session.current_user import (
     is_local,
     set_preference,
 )
+from openbb_terminal.core.session.env_handler import write_to_dotenv
 from openbb_terminal.core.session.session_model import logout
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
@@ -198,10 +199,13 @@ class AccountController(BaseController):
                         name="SYNC_ENABLED",
                         value=ns_parser.sync,
                     )
+                    current_user = get_current_user()
+                    write_to_dotenv(
+                        "OPENBB_SYNC_ENABLED",
+                        str(current_user.preferences.SYNC_ENABLED),
+                    )
                     sync = (
-                        "ON"
-                        if get_current_user().preferences.SYNC_ENABLED is True
-                        else "OFF"
+                        "ON" if current_user.preferences.SYNC_ENABLED is True else "OFF"
                     )
                     console.print(f"[info]sync:[/info] {sync}")
 
