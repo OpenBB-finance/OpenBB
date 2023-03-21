@@ -145,7 +145,6 @@ def logout(
     remove_log_handlers()
     set_default_user()
     setup_logging()
-    console.reset_console()
 
     plt.close("all")
 

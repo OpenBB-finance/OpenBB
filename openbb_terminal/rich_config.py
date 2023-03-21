@@ -24,6 +24,7 @@ from openbb_terminal.core.console_styles.utils import (
 )
 from openbb_terminal.core.session.current_user import (
     get_current_user,
+    is_local,
     set_preference,
 )
 
@@ -305,6 +306,7 @@ class ConsoleAndPanel:
     """Create a rich console to wrap the console print with a Panel"""
 
     def __init__(self, theme: Optional[Theme] = None):
+        self.preferences = get_current_user().preferences
         self.__console = Console(
             theme=theme if theme else get_theme(), highlight=False, soft_wrap=True
         )
@@ -314,8 +316,10 @@ class ConsoleAndPanel:
     def set_console_theme(self, theme: Theme):
         self.__console = Console(theme=theme, highlight=False, soft_wrap=True)
 
-    def reset_console(self):
-        self.__console = Console(theme=get_theme(), highlight=False, soft_wrap=True)
+    def reload_console(self):
+        if get_current_user().preferences != self.preferences:
+            self.preferences = get_current_user().preferences
+            self.__console = Console(theme=get_theme(), highlight=False, soft_wrap=True)
 
     def capture(self):
         return self.__console.capture()
@@ -346,6 +350,8 @@ class ConsoleAndPanel:
         return text
 
     def print(self, *args, **kwargs):
+        self.reload_console()
+
         current_user = get_current_user()
         if kwargs and "text" in list(kwargs) and "menu" in list(kwargs):
             if not os.getenv("TEST_MODE"):

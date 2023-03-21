@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 # IMPORTATION STANDARD
 import argparse
+import json
 import logging
 import os
 import os.path
@@ -21,6 +22,7 @@ from openbb_terminal.core.config.paths import (
 )
 from openbb_terminal.core.session.current_user import (
     get_current_user,
+    is_local,
     set_preference,
 )
 from openbb_terminal.core.session.env_handler import write_to_dotenv
@@ -35,6 +37,8 @@ from openbb_terminal.helper_funcs import (
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import MenuText, console
+import openbb_terminal.core.session.hub_model as Hub
+import openbb_terminal.core.session.local_model as Local
 
 # pylint: disable=too-many-lines,no-member,too-many-public-methods,C0302
 # pylint: disable=import-outside-toplevel
@@ -116,8 +120,11 @@ class SettingsController(BaseController):
         mt = MenuText("settings/")
         mt.add_info("_info_")
         mt.add_raw("\n")
-        mt.add_cmd("colors")
         mt.add_setting("dt", current_user.preferences.USE_DATETIME)
+        mt.add_cmd("colors")
+        mt.add_raw("\n")
+        mt.add_param("_colors", current_user.preferences.RICH_STYLE)
+        mt.add_raw("\n")
         mt.add_cmd("flair")
         mt.add_raw("\n")
         mt.add_param("_flair", get_flair())
@@ -216,22 +223,32 @@ class SettingsController(BaseController):
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="autoscaling",
-            description="Set the use of autoscaling in the plots",
+            prog="colors",
+            description="Console style.",
         )
+        parser.add_argument(
+            "-s",
+            "--style",
+            type=str,
+            default="dark",
+            choices=["dark", "light", "custom"],
+            dest="style",
+            required="-h" not in other_args and "--help" not in other_args,
+            help="To use 'custom' option, go to https://openbb.co/customize and create your theme. Then, place the downloaded file 'openbb_config.richstyle.json' inside /OpenBBUserData/styles/user/.",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-s")
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
-            console.print(
-                "\n1. Play with the terminal coloring embedded in our website https://openbb.co/customize\n"
-            )
-            console.print("2. Once happy, click 'Download Theme'\n")
-            console.print(
-                "3. The file 'openbb_config.richstyle.json' should be downloaded\n"
-            )
-            console.print(
-                "4. Insert that config file inside /OpenBBUserData/styles/user/\n"
-            )
-            console.print("5. Close the terminal and run it again.\n")
+            self.set_and_save_preference("RICH_STYLE", ns_parser.style)
+
+            if not is_local() and ns_parser.style == "custom":
+                response = Hub.fetch_user_configs(
+                    get_current_user().profile.get_session()
+                )
+                if response:
+                    configs = json.loads(response.content)
+                    Local.apply_colors(configs)
 
     @log_start_end(log=logger)
     def call_dt(self, other_args: List[str]):
