@@ -1,13 +1,19 @@
 import clsx from "clsx";
+import { useState } from "react";
 import Select from "../Select";
 
 export default function Pagination({ table }: { table: any }) {
+  const [currentPage, setCurrentPage] = useState(10);
+  const totalRows = table.getFilteredRowModel().rows.length;
+
   return (
     <div className="flex items-center gap-8">
       <Select
-        value={table.getState().pagination.pageSize}
+        value={currentPage}
         onChange={(value) => {
-          table.setPageSize(value);
+          setCurrentPage(value);
+          if (value === `All (${totalRows})`) table.setPageSize(totalRows);
+          else table.setPageSize(value);
         }}
         labelType="row"
         label="Rows per page"
@@ -15,10 +21,12 @@ export default function Pagination({ table }: { table: any }) {
         groups={[
           {
             label: "Rows per page", // TODO: generate number automatically
-            items: [10, 20, 30, 40, 50].map((pageSize) => ({
-              label: `${pageSize}`,
-              value: pageSize,
-            })),
+            items: [10, 20, 30, 40, 50, `All (${totalRows})`].map(
+              (pageSize) => ({
+                label: `${pageSize}`,
+                value: pageSize,
+              })
+            ),
           },
         ]}
       />

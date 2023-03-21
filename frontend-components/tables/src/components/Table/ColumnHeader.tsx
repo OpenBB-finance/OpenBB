@@ -12,9 +12,14 @@ function Filter({
   table: any;
   numberOfColumns: number;
 }) {
-  const firstValue = table
+  //get all rows values
+
+  const values = table
     .getPreFilteredRowModel()
-    .flatRows[0]?.getValue(column.id);
+    .flatRows.map((row) => row.getValue(column.id));
+
+  const areAllValuesString = values.every((value) => typeof value === "string");
+  const areAllValuesNumber = values.every((value) => typeof value === "number");
 
   const columnFilterValue = column.getFilterValue();
 
@@ -38,7 +43,7 @@ function Filter({
     return (
       <div className="flex space-x-2">
         <input
-          type="date"
+          type="datetime-local"
           value={getTime((columnFilterValue as [string, string])?.[0]) ?? ""}
           onChange={(e) => {
             const value = new Date(e.target.value).getTime();
@@ -48,7 +53,7 @@ function Filter({
           className="_input"
         />
         <input
-          type="date"
+          type="datetime-local"
           value={getTime((columnFilterValue as [string, string])?.[1]) ?? ""}
           onChange={(e) => {
             const value = new Date(e.target.value).getTime();
@@ -61,47 +66,53 @@ function Filter({
     );
   }
 
-  return typeof firstValue === "number" ? (
-    <div
-      className={clsx("flex space-x-2", {
-        "flex-col": numberOfColumns > 4,
-        "flex-row": numberOfColumns <= 4,
-      })}
-    >
+  if (areAllValuesNumber) {
+    return (
+      <div
+        className={clsx("flex space-x-2", {
+          "flex-col": numberOfColumns > 4,
+          "flex-row": numberOfColumns <= 4,
+        })}
+      >
+        <input
+          type="number"
+          value={(columnFilterValue as [number, number])?.[0] ?? ""}
+          onChange={(e) =>
+            column.setFilterValue((old: [number, number]) => [
+              e.target.value,
+              old?.[1],
+            ])
+          }
+          placeholder={`Min`}
+          className="_input"
+        />
+        <input
+          type="number"
+          value={(columnFilterValue as [number, number])?.[1] ?? ""}
+          onChange={(e) =>
+            column.setFilterValue((old: [number, number]) => [
+              old?.[0],
+              e.target.value,
+            ])
+          }
+          placeholder={`Max`}
+          className="_input"
+        />
+      </div>
+    );
+  }
+  if (areAllValuesString) {
+    return (
       <input
-        type="number"
-        value={(columnFilterValue as [number, number])?.[0] ?? ""}
-        onChange={(e) =>
-          column.setFilterValue((old: [number, number]) => [
-            e.target.value,
-            old?.[1],
-          ])
-        }
-        placeholder={`Min`}
+        type="text"
+        value={(columnFilterValue ?? "") as string}
+        onChange={(e) => column.setFilterValue(e.target.value)}
+        placeholder={`Search...`}
         className="_input"
       />
-      <input
-        type="number"
-        value={(columnFilterValue as [number, number])?.[1] ?? ""}
-        onChange={(e) =>
-          column.setFilterValue((old: [number, number]) => [
-            old?.[0],
-            e.target.value,
-          ])
-        }
-        placeholder={`Max`}
-        className="_input"
-      />
-    </div>
-  ) : (
-    <input
-      type="text"
-      value={(columnFilterValue ?? "") as string}
-      onChange={(e) => column.setFilterValue(e.target.value)}
-      placeholder={`Search...`}
-      className="_input"
-    />
-  );
+    );
+  }
+  return null;
 }
 
 const reorderColumn = (
@@ -148,7 +159,7 @@ const DraggableColumnHeader: FC<{
 
   return (
     <th
-      className="h-[70px] relative"
+      className="h-[70px] relative p-4"
       colSpan={header.colSpan}
       style={{ /* width: header.getSize(),*/ opacity: isDragging ? 0.5 : 1 }}
       ref={dropRef}
@@ -211,7 +222,10 @@ const DraggableColumnHeader: FC<{
                 )}
               </div>
               {advanced && column.id !== "select" && (
-                <button ref={dragRef}>
+                <button
+                  ref={dragRef}
+                  className="text-grey-600 hover:text-white"
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="17"
@@ -220,7 +234,7 @@ const DraggableColumnHeader: FC<{
                     viewBox="0 0 17 16"
                   >
                     <path
-                      stroke="#fff"
+                      stroke="currentColor"
                       strokeLinecap="round"
                       strokeLinejoin="round"
                       d="M3.667 6l-2 2 2 2M6.333 3.333l2-2 2 2M10.333 12.667l-2 2-2-2M13 6l2 2-2 2M1.667 8H15M8.333 1.333v13.334"
