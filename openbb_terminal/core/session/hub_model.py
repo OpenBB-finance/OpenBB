@@ -310,7 +310,7 @@ def clear_user_configs(
     Optional[requests.Response]
         The response from the put request.
     """
-    data: Dict[str, dict] = {"features_keys": {}, "features_settings": {}}
+    data: Dict[str, dict] = {"features_keys": {}}
 
     try:
         response = requests.put(
