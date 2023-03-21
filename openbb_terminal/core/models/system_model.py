@@ -15,7 +15,7 @@ class SystemModel(BaseModel):
     LOGGING_AWS_ACCESS_KEY_ID: str = "REPLACE_ME"
     LOGGING_AWS_SECRET_ACCESS_KEY: str = "REPLACE_ME"
     LOGGING_COMMIT_HASH: str = "REPLACE_ME"
-    LOGGING_FREQUENCY: str = "H"  # D | H | M | S
+    LOGGING_FREQUENCY: Literal["D", "H", "M", "S"] = "H"
     LOGGING_HANDLERS: str = "file"  # stdout,stderr,noop,file
     LOGGING_ROLLING_CLOCK: bool = False
     LOGGING_VERBOSITY: int = 20
