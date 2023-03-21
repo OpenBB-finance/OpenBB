@@ -167,7 +167,7 @@ class Volatility(PltTA):
     @indicator()
     def plot_kc(self, fig: OpenBBFigure, df_ta: pd.DataFrame, inchart_index: int):
         """Adds Keltner channels to plotly figure"""
-        mamode = (self.params["kc"].get_argument_values("mamode") or "ema").lower()[0]
+        mamode = (self.params["kc"].get_argument_values("mamode") or "ema").lower()  # type: ignore
 
         if theme.plt_style == "light":
             fillcolor = "rgba(239, 103, 137, 0.05)"
@@ -202,7 +202,7 @@ class Volatility(PltTA):
         )
         kctext = (
             columns_regex(df_ta, "KCL")[0]
-            .replace(f"KCL{mamode}_", "KC")
+            .replace(f"KCL{mamode[0]}_", "KC")
             .replace("_", ",")
             .split(".")[0]
         )
