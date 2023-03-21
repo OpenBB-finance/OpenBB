@@ -1,0 +1,39 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Connection:
+      - close
+      Host:
+      - stats.oecd.org
+      User-Agent:
+      - Python-urllib/3.10
+    method: GET
+    uri: https://stats.oecd.org/sdmx-json/data/DP_LIVE/.GGREV.TOT.PC_GDP.A/OECD?contentType=csv&detail=code&separator=comma&csv-lang=en&startPeriod=2020-01-01&endPeriod=2022-01-31
+  response:
+    body:
+      string: "\uFEFF\"LOCATION\",\"INDICATOR\",\"SUBJECT\",\"MEASURE\",\"FREQUENCY\",\"TIME\",\"Value\",\"Flag
+        Codes\"\r\n\"AUS\",\"GGREV\",\"TOT\",\"PC_GDP\",\"A\",\"2020\",35.0637059169331,\r\n\"AUS\",\"GGREV\",\"TOT\",\"PC_GDP\",\"A\",\"2021\",35.4575537742562,\r\n\"AUT\",\"GGREV\",\"TOT\",\"PC_GDP\",\"A\",\"2020\",48.7321964732121,\r\n\"AUT\",\"GGREV\",\"TOT\",\"PC_GDP\",\"A\",\"2021\",50.0257331878004,\r\n\"BEL\",\"GGREV\",\"TOT\",\"PC_GDP\",\"A\",\"2020\",49.9288100745869,\r\n\"BEL\",\"GGREV\",\"TOT\",\"PC_GDP\",\"A\",\"2021\",49.9317355999742,\r\n\"CAN\",\"GGREV\",\"TOT\",\"PC_GDP\",\"A\",\"2020\",42.7124548747082,\r\n\"CAN\",\"GGREV\",\"TOT\",\"PC_GDP\",\"A\",\"2021\",42.2933689509718,\r\n\"CZE\",\"GGREV\",\"TOT\",\"PC_GDP\",\"A\",\"2020\",41.4522980817921,\r\n\"CZE\",\"GGREV\",\"TOT\",\"PC_GDP\",\"A\",\"2021\",41.4140645245147,\r\n\"DNK\",\"GGREV\",\"TOT\",\"PC_GDP\",\"A\",\"2020\",53.7510051806527,\r\n\"DNK\",\"GGREV\",\"TOT\",\"PC_GDP\",\"A\",\"2021\",54.4378296614321,\r\n\"FIN\",\"GGREV\",\"TOT\",\"PC_GDP\",\"A\",\"2020\",51.6068862954654,\r\n\"FIN\",\"GGREV\",\"TOT\",\"PC_GDP\",\"A\",\"2021\",52.8860527989822,\r\n\"FRA\",\"GGREV\",\"TOT\",\"PC_GDP\",\"A\",\"2020\",52.5051407311676,\r\n\"FRA\",\"GGREV\",\"TOT\",\"PC_GDP\",\"A\",\"2021\",52.5158444861188,\r\n\"DEU\",\"GGREV\",\"TOT\",\"PC_GDP\",\"A\",\"2020\",46.0752680278261,\r\n\"DEU\",\"GGREV\",\"TOT\",\"PC_GDP\",\"A\",\"2021\",47.5254251405567,\r\n\"GRC\",\"GGREV\",\"TOT\",\"PC_GDP\",\"A\",\"2020\",49.75819541352,\r\n\"GRC\",\"GGREV\",\"TOT\",\"PC_GDP\",\"A\",\"2021\",49.9959800686265,\r\n\"HUN\",\"GGREV\",\"TOT\",\"PC_GDP\",\"A\",\"2020\",43.5467563874122,\r\n\"HUN\",\"GGREV\",\"TOT\",\"PC_GDP\",\"A\",\"2021\",41.2747164604819,\r\n\"ISL\",\"GGREV\",\"TOT\",\"PC_GDP\",\"A\",\"2020\",41.915940875437,\r\n\"ISL\",\"GGREV\",\"TOT\",\"PC_GDP\",\"A\",\"2021\",41.2932637655607,\r\n\"IRL\",\"GGREV\",\"TOT\",\"PC_GDP\",\"A\",\"2020\",22.3127410682518,\r\n\"IRL\",\"GGREV\",\"TOT\",\"PC_GDP\",\"A\",\"2021\",23.1617890085654,\r\n\"ITA\",\"GGREV\",\"TOT\",\"PC_GDP\",\"A\",\"2020\",47.3226468116092,\r\n\"ITA\",\"GGREV\",\"TOT\",\"PC_GDP\",\"A\",\"2021\",48.10559791126,\r\n\"JPN\",\"GGREV\",\"TOT\",\"PC_GDP\",\"A\",\"2020\",37.0039904845716,\r\n\"JPN\",\"GGREV\",\"TOT\",\"PC_GDP\",\"A\",\"2021\",38.1210031029564,\r\n\"KOR\",\"GGREV\",\"TOT\",\"PC_GDP\",\"A\",\"2020\",35.437152340191,\r\n\"KOR\",\"GGREV\",\"TOT\",\"PC_GDP\",\"A\",\"2021\",37.2446900019212,\r\n\"LUX\",\"GGREV\",\"TOT\",\"PC_GDP\",\"A\",\"2020\",43.3036316658775,\r\n\"LUX\",\"GGREV\",\"TOT\",\"PC_GDP\",\"A\",\"2021\",43.682796554142,\r\n\"MEX\",\"GGREV\",\"TOT\",\"PC_GDP\",\"A\",\"2020\",24.2300325301059,\r\n\"MEX\",\"GGREV\",\"TOT\",\"PC_GDP\",\"A\",\"2021\",23.0464882256924,\r\n\"NLD\",\"GGREV\",\"TOT\",\"PC_GDP\",\"A\",\"2020\",44.1167313221097,\r\n\"NLD\",\"GGREV\",\"TOT\",\"PC_GDP\",\"A\",\"2021\",43.9939697976075,\r\n\"NOR\",\"GGREV\",\"TOT\",\"PC_GDP\",\"A\",\"2020\",55.88290402384,\r\n\"NOR\",\"GGREV\",\"TOT\",\"PC_GDP\",\"A\",\"2021\",59.2517121443827,\r\n\"POL\",\"GGREV\",\"TOT\",\"PC_GDP\",\"A\",\"2020\",41.3244886365581,\r\n\"POL\",\"GGREV\",\"TOT\",\"PC_GDP\",\"A\",\"2021\",42.3745440077319,\r\n\"PRT\",\"GGREV\",\"TOT\",\"PC_GDP\",\"A\",\"2020\",43.4244741039545,\r\n\"PRT\",\"GGREV\",\"TOT\",\"PC_GDP\",\"A\",\"2021\",44.9112578556301,\r\n\"SVK\",\"GGREV\",\"TOT\",\"PC_GDP\",\"A\",\"2020\",39.4060163901342,\r\n\"SVK\",\"GGREV\",\"TOT\",\"PC_GDP\",\"A\",\"2021\",40.8787570079716,\r\n\"ESP\",\"GGREV\",\"TOT\",\"PC_GDP\",\"A\",\"2020\",41.8225939611213,\r\n\"ESP\",\"GGREV\",\"TOT\",\"PC_GDP\",\"A\",\"2021\",43.7437543605542,\r\n\"SWE\",\"GGREV\",\"TOT\",\"PC_GDP\",\"A\",\"2020\",49.2987052990371,\r\n\"SWE\",\"GGREV\",\"TOT\",\"PC_GDP\",\"A\",\"2021\",49.3327218401916,\r\n\"CHE\",\"GGREV\",\"TOT\",\"PC_GDP\",\"A\",\"2020\",35.3933097689237,\r\n\"CHE\",\"GGREV\",\"TOT\",\"PC_GDP\",\"A\",\"2021\",35.926856737709,\r\n\"TUR\",\"GGREV\",\"TOT\",\"PC_GDP\",\"A\",\"2020\",31.2112139147756,\r\n\"GBR\",\"GGREV\",\"TOT\",\"PC_GDP\",\"A\",\"2020\",39.1216034933736,\r\n\"GBR\",\"GGREV\",\"TOT\",\"PC_GDP\",\"A\",\"2021\",40.5072401845439,\r\n\"USA\",\"GGREV\",\"TOT\",\"PC_GDP\",\"A\",\"2020\",32.4460527336659,\r\n\"USA\",\"GGREV\",\"TOT\",\"PC_GDP\",\"A\",\"2021\",32.8732947571574,\r\n\"EST\",\"GGREV\",\"TOT\",\"PC_GDP\",\"A\",\"2020\",39.4014450946765,\r\n\"EST\",\"GGREV\",\"TOT\",\"PC_GDP\",\"A\",\"2021\",39.0463797949942,\r\n\"ISR\",\"GGREV\",\"TOT\",\"PC_GDP\",\"A\",\"2020\",34.6404576463778,\r\n\"ISR\",\"GGREV\",\"TOT\",\"PC_GDP\",\"A\",\"2021\",37.1720170247333,\r\n\"SVN\",\"GGREV\",\"TOT\",\"PC_GDP\",\"A\",\"2020\",43.4364933110103,\r\n\"SVN\",\"GGREV\",\"TOT\",\"PC_GDP\",\"A\",\"2021\",44.6204982413969,\r\n\"EA\",\"GGREV\",\"TOT\",\"PC_GDP\",\"A\",\"2020\",46.4040479934748,\r\n\"EA\",\"GGREV\",\"TOT\",\"PC_GDP\",\"A\",\"2021\",47.2298633595651,\r\n\"EU\",\"GGREV\",\"TOT\",\"PC_GDP\",\"A\",\"2020\",46.1003362525467,\r\n\"EU\",\"GGREV\",\"TOT\",\"PC_GDP\",\"A\",\"2021\",46.8299844716572,\r\n\"NZL\",\"GGREV\",\"TOT\",\"PC_GDP\",\"A\",\"2020\",38.7892716794094,\r\n\"LVA\",\"GGREV\",\"TOT\",\"PC_GDP\",\"A\",\"2020\",37.8113586350057,\r\n\"LVA\",\"GGREV\",\"TOT\",\"PC_GDP\",\"A\",\"2021\",36.9885038245897,\r\n\"COL\",\"GGREV\",\"TOT\",\"PC_GDP\",\"A\",\"2020\",41.1541184257033,\r\n\"CRI\",\"GGREV\",\"TOT\",\"PC_GDP\",\"A\",\"2020\",31.7794333377488,\r\n\"CRI\",\"GGREV\",\"TOT\",\"PC_GDP\",\"A\",\"2021\",42.0076964914996,\r\n\"LTU\",\"GGREV\",\"TOT\",\"PC_GDP\",\"A\",\"2020\",35.6429156218785,\r\n\"LTU\",\"GGREV\",\"TOT\",\"PC_GDP\",\"A\",\"2021\",36.5123313093119,\r\n\"CHL\",\"GGREV\",\"TOT\",\"PC_GDP\",\"A\",\"2020\",23.0449802918704,\r\n"
+    headers:
+      Access-Control-Allow-Headers:
+      - Content-Type
+      Access-Control-Allow-Methods:
+      - POST,GET,OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - private
+      Connection:
+      - close
+      Content-Disposition:
+      - attachment;filename=DP_LIVE_20032023141556396.csv
+      Content-Type:
+      - text/csv
+      Date:
+      - Mon, 20 Mar 2023 13:15:55 GMT
+      Transfer-Encoding:
+      - chunked
+    status:
+      code: 200
+      message: OK
+version: 1

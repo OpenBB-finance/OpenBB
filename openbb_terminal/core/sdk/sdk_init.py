@@ -234,6 +234,8 @@ from openbb_terminal.economy import (
     wsj_model as economy_wsj_model,
     yfinance_model as economy_yfinance_model,
     yfinance_view as economy_yfinance_view,
+    oecd_model as economy_oecd_model,
+    oecd_view as economy_oecd_view,
 )
 
 # ETF's
