@@ -69,7 +69,8 @@ export default function Table({ data, columns, title }: any) {
             column.toLowerCase() === "index" ||
             (hasIndex &&
               typeof row.original.index == "string" &&
-              ["date", "day"].includes(row.original.index.toLowerCase()));
+              (row.original.index.toLowerCase().includes("date") ||
+                row.original.index.toLowerCase().includes("day")));
           const probablyLink =
             valueType === "string" && value.startsWith("http");
 
