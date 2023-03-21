@@ -43,6 +43,7 @@
 
 body {
   font-family: "Fira Code", monospace;
+  background-color: black;
 }
 
 /*table tbody {

@@ -17,9 +17,12 @@ function Filter({
   const values = table
     .getPreFilteredRowModel()
     .flatRows.map((row) => row.getValue(column.id));
-
-  const areAllValuesString = values.every((value) => typeof value === "string");
-  const areAllValuesNumber = values.every((value) => typeof value === "number");
+  const areAllValuesString = values.every(
+    (value) => typeof value === "string" || value === null
+  );
+  const areAllValuesNumber = values.every(
+    (value) => typeof value === "number" || value === null
+  );
 
   const columnFilterValue = column.getFilterValue();
 
@@ -41,7 +44,7 @@ function Filter({
     }
 
     return (
-      <div className="flex space-x-2">
+      <div className="flex space-x-2 h-10">
         <input
           type="datetime-local"
           value={getTime((columnFilterValue as [string, string])?.[0]) ?? ""}
@@ -69,9 +72,9 @@ function Filter({
   if (areAllValuesNumber) {
     return (
       <div
-        className={clsx("flex space-x-2", {
-          "flex-col": numberOfColumns > 4,
-          "flex-row": numberOfColumns <= 4,
+        className={clsx("flex space-x-2 h-10", {
+          "flex-col": numberOfColumns > 7,
+          "flex-row": numberOfColumns <= 7,
         })}
       >
         <input
@@ -103,16 +106,18 @@ function Filter({
   }
   if (areAllValuesString) {
     return (
-      <input
-        type="text"
-        value={(columnFilterValue ?? "") as string}
-        onChange={(e) => column.setFilterValue(e.target.value)}
-        placeholder={`Search...`}
-        className="_input"
-      />
+      <div className="h-10">
+        <input
+          type="text"
+          value={(columnFilterValue ?? "") as string}
+          onChange={(e) => column.setFilterValue(e.target.value)}
+          placeholder={`Search...`}
+          className="_input"
+        />
+      </div>
     );
   }
-  return null;
+  return <div className="h-10"></div>;
 }
 
 const reorderColumn = (

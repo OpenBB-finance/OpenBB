@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { downloadData, downloadImage } from "../../utils/utils";
 import * as RadioGroup from "@radix-ui/react-radio-group";
+import useLocalStorage from "../../utils/useLocalStorage";
 const types = ["csv", "xlsx", "png"];
 
 export default function Export({ columns, data }: { columns: any; data: any }) {
-  const [type, setType] = useState(types[0]);
+  const [type, setType] = useLocalStorage("exportType", types[0]);
 
   const onExport = () => {
     switch (type) {

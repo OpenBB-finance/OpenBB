@@ -122,6 +122,7 @@ export default function Table({ data, columns, title }: any) {
           } else if (valueType === "string") {
             return <div dangerouslySetInnerHTML={{ __html: xss(value) }} />;
           }
+          return <p>{value}</p>;
         },
       })),
     ],
