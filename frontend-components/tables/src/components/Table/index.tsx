@@ -46,9 +46,16 @@ export default function Table({ data, columns, title }: any) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [globalFilter, setGlobalFilter] = useState("");
   const [fontSize, setFontSize] = useLocalStorage("fontSize", "1");
+  const defaultVisibleColumns = columns.reduce((acc, cur, idx) => {
+    acc[cur] = idx < 12 ? true : false;
+    return acc;
+  }, {});
+  const [columnVisibility, setColumnVisibility] = useState(
+    defaultVisibleColumns
+  );
   const rtColumns = useMemo(
     () => [
-      ...columns.map((column: any) => ({
+      ...columns.map((column: any, index: number) => ({
         accessorKey: column,
         id: column,
         header: column,
@@ -155,8 +162,8 @@ export default function Table({ data, columns, title }: any) {
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     /*enableColumnResizing: true,
-    columnResizeMode: "onChange",
-    onColumnVisibilityChange: setColumnVisibility,*/
+    columnResizeMode: "onChange",*/
+    onColumnVisibilityChange: setColumnVisibility,
     onColumnOrderChange: setColumnOrder,
     onSortingChange: setSorting,
     onGlobalFilterChange: setGlobalFilter,
@@ -165,7 +172,7 @@ export default function Table({ data, columns, title }: any) {
       sorting,
       globalFilter,
       columnOrder,
-      //columnVisibility,
+      columnVisibility,
     },
   });
 
@@ -307,7 +314,9 @@ export default function Table({ data, columns, title }: any) {
                 {new Intl.DateTimeFormat("en-GB", {
                   dateStyle: "full",
                   timeStyle: "long",
-                }).format(date)}
+                })
+                  .format(date)
+                  .replace(/:\d\d /, " ")}
               </p>
             </div>
             <table
