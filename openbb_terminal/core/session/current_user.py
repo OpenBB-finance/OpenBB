@@ -67,6 +67,20 @@ def is_local() -> bool:
     return not bool(__current_user.profile.token)
 
 
+def set_default_user():
+    """Set default user."""
+    env_dict = reading_env()
+    credentials = load_env_to_model(env_dict, CredentialsModel)
+    preferences = load_env_to_model(env_dict, PreferencesModel)
+    profile = ProfileModel()
+    local_user = UserModel(  # type: ignore
+        credentials=credentials,
+        preferences=preferences,
+        profile=profile,
+    )
+    set_current_user(local_user)
+
+
 def copy_user(
     credentials: Optional[CredentialsModel] = None,
     preferences: Optional[PreferencesModel] = None,
