@@ -19,6 +19,7 @@ en:
   _configure_: Configure your own terminal
   _main_menu_: Main menu
   account/_authentication_: Authentication
+  account/login: Log in to OpenBB account
   account/logout: Log out from OpenBB account
   account/_personal_access_token_: OpenBB Personal Access Token
   account/generate: Generate a Personal Access Token
