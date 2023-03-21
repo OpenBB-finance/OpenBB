@@ -33,10 +33,7 @@ Displays Options Price History in a chart.
 ## Examples
 
 ```
-/hist AMD 2022-07-29 18 Calls 5 5
+/hist AMD 2022-07-29 70 Calls 15m 5
 ```
 
-```
-/hist AMD 2022-07-29 18 Calls 5
-```
 ---

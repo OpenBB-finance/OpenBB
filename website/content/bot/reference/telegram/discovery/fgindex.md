@@ -26,5 +26,6 @@ This command has no parameters
 
 ```
 /fgindex
-``
+```
+
 ---
