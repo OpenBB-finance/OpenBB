@@ -113,7 +113,7 @@ def apply_configs(configs: dict):
         The configurations.
     """
     set_credentials(configs)
-    set_colors(configs)
+    set_theme(configs)
 
 
 def set_credentials(configs: dict):
@@ -130,8 +130,8 @@ def set_credentials(configs: dict):
             set_credential(k, v)
 
 
-def set_colors(configs: dict):
-    """Set colors.
+def set_theme(configs: dict):
+    """Set theme.
 
     Parameters
     ----------

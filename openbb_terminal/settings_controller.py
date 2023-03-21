@@ -249,7 +249,7 @@ class SettingsController(BaseController):
                 )
                 if response:
                     configs = json.loads(response.content)
-                    Local.set_colors(configs)
+                    Local.set_theme(configs)
 
     @log_start_end(log=logger)
     def call_dt(self, other_args: List[str]):
