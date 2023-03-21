@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 
 # IMPORTS STANDARD
 import argparse
+import inspect
 import io
 import json
 import logging
@@ -29,6 +30,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import pandas.io.formats.format
+import pandas_ta as ta
 import pytz
 import requests
 import tweepy
@@ -106,7 +108,7 @@ def set_command_location(cmd_loc: str):
     cmd_loc: str
         Command location called by user
     """
-    global command_location
+    global command_location  # noqa
     command_location = cmd_loc
 
 
@@ -534,6 +536,75 @@ def check_indicators(string: str) -> List[str]:
                 f"\nInvalid choice: {s}, choose from \n    (`{'`, `'.join(choices)}`)",
             )
     return strings
+
+
+def check_indicator_parameters(args: str, _help: bool = False) -> str:
+    """Check if indicators parameters are valid."""
+    ta_cls = PlotlyTA()
+    indicators_dict: dict = {}
+
+    regex = re.compile(r"([a-zA-Z]+)\[([0-9.,]*)\]")
+    matches = regex.findall(args)
+
+    if not matches:
+        indicators = check_indicators(args)
+        args = "[],".join(indicators) + "[]"
+        matches = regex.findall(args)
+
+    if _help:
+        console.print(
+            """[yellow]To pass custom parameters to indicators:[/]
+
+    [green]Example:
+        -i macd[12,26,9],rsi[14],sma[20,50]
+        -i macd,rsi,sma (uses default parameters)
+
+    [yellow]Would pass the following to the indicators:[/]
+        [green]macd=dict(fast=12, slow=26, signal=9)
+        rsi=dict(length=14)
+        sma=dict(length=[20,50])
+
+        They must be in the same order as the function parameters.[/]\n"""
+        )
+
+    pop_keys = ["close", "high", "low", "open", "open_", "volume", "talib", "return"]
+    if matches:
+        for match in matches:
+            indicator, args = match
+
+            indicators_dict.setdefault(indicator, {})
+            if indicator in ["fib", "srlines", "demark", "clenow"]:
+                if _help:
+                    console.print(
+                        f"[yellow]{indicator}:[/]\n{'':^4}[green]Parameters: None[/]"
+                    )
+                continue
+
+            fullspec = inspect.getfullargspec(getattr(ta, indicator))
+            kwargs = list(set(fullspec.args) - set(pop_keys))
+            kwargs.sort(key=fullspec.args.index)
+
+            if _help:
+                console.print(
+                    f"[yellow]{indicator}:[/]\n{'':^4}[green]Parameters: {', '.join(kwargs)}[/]"
+                )
+
+            if indicator in ta_cls.ma_mode:
+                indicators_dict[indicator]["length"] = check_positive_list(args)
+                continue
+
+            for i, arg in enumerate(args.split(",")):
+                if arg and len(kwargs) > i:
+                    indicators_dict[indicator][kwargs[i]] = (
+                        float(arg) if "." in arg else int(arg)
+                    )
+        return json.dumps(indicators_dict)
+
+    if not matches:
+        raise argparse.ArgumentTypeError(
+            f"Invalid indicator arguments: {args}. \n Example: -i macd[12,26,9],rsi[14]"
+        )
+    return args
 
 
 def check_positive_float(value) -> float:
@@ -1938,7 +2009,7 @@ def update_news_from_tweet_to_be_displayed() -> str:
     str
         The news from tweet to be displayed
     """
-    global LAST_TWEET_NEWS_UPDATE_CHECK_TIME
+    global LAST_TWEET_NEWS_UPDATE_CHECK_TIME  # noqa
 
     news_tweet = ""
 
