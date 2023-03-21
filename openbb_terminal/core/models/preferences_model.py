@@ -81,7 +81,7 @@ class PreferencesModel(BaseModel):
     # STYLE
     MPL_STYLE: str = "dark"
     PMF_STYLE: str = "dark"
-    RICH_STYLE: Literal["dark", "light", "custom"] = "dark"
+    RICH_STYLE: Literal["dark", "custom"] = "dark"
     PLOT_STYLE: str = "dark"
     CUSTOM_RICH_STYLE: Optional[Dict] = None
 

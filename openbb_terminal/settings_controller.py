@@ -231,7 +231,7 @@ class SettingsController(BaseController):
             "--style",
             type=str,
             default="dark",
-            choices=["dark", "light", "custom"],
+            choices=["dark", "custom"],
             dest="style",
             required="-h" not in other_args and "--help" not in other_args,
             help="To use 'custom' option, go to https://openbb.co/customize and create your theme."
