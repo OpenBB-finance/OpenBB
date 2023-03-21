@@ -49,9 +49,12 @@ jobs:
           channels: conda-forge,defaults
           show-channel-urls: true
           channel-priority: flexible
-          environment-file: build/conda/conda-3-9-env-full.yaml
+          environment-file: build/conda/conda-3-10-env.yaml
           activate-environment: build_env
           use-only-tar-bz2: true # Needed for caching some reason
+      - name: Clean up conda artifacts
+        run: |
+          build/conda/clean_conda_artifacts.sh
       - name: Install requirements
         run: |
           pip list

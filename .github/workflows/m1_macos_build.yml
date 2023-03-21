@@ -49,21 +49,21 @@ jobs:
           channels: conda-forge,defaults
           show-channel-urls: true
           channel-priority: flexible
-          environment-file: build/conda/conda-3-9-env-full.yaml
+          environment-file: build/conda/conda-3-10-env.yaml
           activate-environment: build_env
           auto-activate-base: false
           use-only-tar-bz2: true # Needed for caching some reason
-
-      - name: Run Poetry
+      - name: Clean up conda artifacts
+        run: |
+          build/conda/clean_conda_artifacts.sh
+      - name: Install requirements
         run: |
           pip list
           python -m pip install -r requirements-full.txt
-
       - name: Install Specific Papermill
         run: |
           pip uninstall papermill -y
           pip install git+https://github.com/nteract/papermill.git@main
-
       # This is basically the same as build4mac.sh
       - name: Build Bundle
         run: |
@@ -153,7 +153,7 @@ jobs:
           rm -rf build/terminal
           rm -rf dist
           rm -rf DMG
-      - name: Notorize DMG
+      - name: Notarize DMG
         env:
           NOTARIZE_APPLE_ID: ${{ secrets.NOTARIZE_APPLE_ID }}
           NOTARIZE_APPLE_PWD: ${{ secrets.NOTARIZE_APPLE_PWD }}
