@@ -4,9 +4,9 @@ __docformat__ = "numpy"
 import logging
 import os
 from typing import Optional
+
 from openbb_terminal import rich_config
 from openbb_terminal.core.session.current_user import get_current_user
-
 from openbb_terminal.cryptocurrency.dataframe_helpers import (
     lambda_very_long_number_formatter,
 )

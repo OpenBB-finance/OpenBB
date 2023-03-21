@@ -8,8 +8,8 @@ from typing import List
 
 import pandas as pd
 from finvizfinance.group import performance, spectrum, valuation
-from openbb_terminal.core.session.current_user import get_current_user
 
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import get_user_agent, request
 from openbb_terminal.rich_config import console
