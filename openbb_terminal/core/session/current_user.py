@@ -1,8 +1,7 @@
 # IMPORTS STANDARD
 import dataclasses
 from copy import deepcopy
-from pathlib import Path
-from typing import Optional, Union
+from typing import Any, Optional
 
 # IMPORTS INTERNAL
 from openbb_terminal.core.models import (
@@ -101,7 +100,7 @@ def copy_user(
 
 def set_preference(
     name: str,
-    value: Union[bool, Path, str],
+    value: Any,
 ):
     """Set preference
 
@@ -109,7 +108,7 @@ def set_preference(
     ----------
     name : str
         Preference name
-    value : Union[bool, Path, str]
+    value : Any
         Preference value
     """
     current_user = get_current_user()

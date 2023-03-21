@@ -3,16 +3,14 @@ import os
 from pathlib import Path
 from typing import Optional, Union
 
-from rich.console import Theme
-
 from openbb_terminal.core.config.paths import (
     HIST_FILE_PATH,
     SETTINGS_DIRECTORY,
 )
 from openbb_terminal.core.session.current_user import (
     get_current_user,
-    get_local_user,
     set_credential,
+    set_preference,
 )
 from openbb_terminal.rich_config import console
 
@@ -114,12 +112,12 @@ def apply_configs(configs: dict):
     configs : dict
         The configurations.
     """
-    apply_credentials(configs)
-    apply_colors(configs)
+    set_credentials(configs)
+    set_colors(configs)
 
 
-def apply_credentials(configs: dict):
-    """Apply credentials.
+def set_credentials(configs: dict):
+    """Set credentials.
 
     Parameters
     ----------
@@ -132,20 +130,21 @@ def apply_credentials(configs: dict):
             set_credential(k, v)
 
 
-def apply_colors(configs: dict):
-    """Apply colors.
+def set_colors(configs: dict):
+    """Set colors.
 
     Parameters
     ----------
     configs : dict
         The configurations.
     """
-    if configs and get_current_user().preferences.RICH_STYLE == "custom":
+    if configs:
         terminal_style = configs.get("features_terminal_style", {}) or {}
         if terminal_style:
             user_style = terminal_style.get("theme", None)
-            user_style = {k: v.replace(" ", "") for k, v in user_style.items()}
-            console.set_console_theme(theme=Theme(user_style))
+            if user_style:
+                user_style = {k: v.replace(" ", "") for k, v in user_style.items()}
+                set_preference("CUSTOM_RICH_STYLE", user_style)
 
 
 def get_routine(file_name: str, folder: Optional[Path] = None) -> Optional[str]:

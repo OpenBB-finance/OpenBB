@@ -24,6 +24,7 @@ from openbb_terminal.core.console_styles.utils import (
 )
 from openbb_terminal.core.session.current_user import (
     get_current_user,
+    is_local,
     set_preference,
 )
 
@@ -54,36 +55,40 @@ USE_COLOR = True
 
 def get_theme() -> Theme:
     """Get rich theme."""
+
     current_user = get_current_user()
-    rich_style = current_user.preferences.RICH_STYLE
-    builtin_styles = PACKAGE_DIRECTORY / "core" / "console_styles"
+    rich = current_user.preferences.RICH_STYLE
+    builtin_folder = PACKAGE_DIRECTORY / "core" / "console_styles"
+    user_folder = current_user.preferences.USER_STYLES_DIRECTORY
+
     theme = Theme()
     try:
-        if rich_style == "custom":
-            user_style = get_console_style(
-                style_name="openbb_config", folder=current_user.preferences.USER_STYLES
-            )
-
-            if user_style:
-                theme = Theme(user_style)
-            else:
-                print(
-                    f"Error loading custom theme from {current_user.preferences.USER_STYLES}:"
+        if rich == "custom":
+            if is_local():
+                style = get_console_style(
+                    name="openbb_config",
+                    folder=user_folder,
                 )
-                print("    Ensure your file is named 'openbb_config.richstyle.json'")
+                set_preference("CUSTOM_RICH_STYLE", style)
+                # Update local copy of user
+                current_user = get_current_user()
+
+            custom = current_user.preferences.CUSTOM_RICH_STYLE
+            if custom:
+                theme = Theme(custom)
+            else:
+                print("Error loading custom theme.\n")
         else:
-            builtin_style = get_console_style(
-                style_name=rich_style, folder=builtin_styles
-            )
-            if builtin_style:
-                theme = Theme(builtin_style)
+            builtin = get_console_style(rich, builtin_folder)
+            if builtin:
+                theme = Theme(builtin)
 
     except Exception as error:
         set_preference(
             "RICH_STYLE",
             "dark",
         )
-        theme = Theme(get_console_style(style_name="dark", folder=builtin_styles))
+        theme = Theme(get_console_style("dark", builtin_folder))
         print(f"Error loading theme: {error}, using default -> dark")
 
     return theme
@@ -316,8 +321,9 @@ class ConsoleAndPanel:
         self.__console = Console(theme=theme, highlight=False, soft_wrap=True)
 
     def reload_console(self):
-        if get_current_user().preferences != self.preferences:
-            self.preferences = get_current_user().preferences
+        current_preferences = get_current_user().preferences
+        if current_preferences != self.preferences:
+            self.preferences = current_preferences
             self.__console = Console(theme=get_theme(), highlight=False, soft_wrap=True)
 
     def capture(self):
@@ -350,7 +356,6 @@ class ConsoleAndPanel:
 
     def print(self, *args, **kwargs):
         self.reload_console()
-
         current_user = get_current_user()
         if kwargs and "text" in list(kwargs) and "menu" in list(kwargs):
             if not os.getenv("TEST_MODE"):

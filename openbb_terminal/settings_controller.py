@@ -234,7 +234,8 @@ class SettingsController(BaseController):
             choices=["dark", "light", "custom"],
             dest="style",
             required="-h" not in other_args and "--help" not in other_args,
-            help="To use 'custom' option, go to https://openbb.co/customize and create your theme. Then, place the downloaded file 'openbb_config.richstyle.json' inside /OpenBBUserData/styles/user/.",
+            help="To use 'custom' option, go to https://openbb.co/customize and create your theme."
+            " Then, place the downloaded file 'openbb_config.richstyle.json' inside /OpenBBUserData/styles/user/.",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-s")
@@ -248,7 +249,7 @@ class SettingsController(BaseController):
                 )
                 if response:
                     configs = json.loads(response.content)
-                    Local.apply_colors(configs)
+                    Local.set_colors(configs)
 
     @log_start_end(log=logger)
     def call_dt(self, other_args: List[str]):
