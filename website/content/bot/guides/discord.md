@@ -15,8 +15,10 @@ To use OpenBB, you need to use slash commands, which are special commands that s
 
 You can type / in the chat to see a list of available slash commands for OpenBB Bot. One of the most useful slash commands is /help, which shows you all the commands and how to use them. Some of the most popular commands are:
 
-- /cd TICKER: Shows the daily chart for a given stock ticker.
-- /c3m TICKER: Shows the 3-month chart for a given stock ticker.
-- /flow TICKER: Shows the current price and other information for a given stock ticker.
+- ```/cd TICKER:AMD``` Shows the daily chart for a given stock ticker.
+- ```/c3m TICKER:AMD``` Shows the 3-month chart for a given stock ticker.
+- ```/flow TICKER:AMD``` Shows the recent options flow for the given stock ticker.
 
 That's it! You're ready to explore the market with OpenBB Discord Bot!
+
+Check out the Reference section for more commands or type ```/help``` in your chat to see what else we can do!
