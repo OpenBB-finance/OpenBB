@@ -4,9 +4,8 @@ function get_popup(data = null, popup_id = null) {
 
   if (popup_id == "title") {
     data = globals.CHART_DIV.layout;
-    let main_trace = globals.CHART_DIV.data[0];
-    let use_yaxis = "yaxis" + main_trace.yaxis.replace("y", "");
-    let use_xaxis = "xaxis" + main_trace.xaxis.replace("x", "");
+    let use_xaxis = data.xaxis ? "xaxis" : "xaxis2";
+    let use_yaxis = data.yaxis ? "yaxis" : "yaxis2";
 
     let title = "title" in data && "text" in data.title ? data.title.text : "";
     let xaxis =
