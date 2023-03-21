@@ -26,12 +26,6 @@ def start_plot_backend():
     plots_backend().start(load_env_vars("DEBUG_MODE", strtobool, False))
 
 
-def start_required_configurations():
-    """Starts the required configurations for the terminal to work"""
-    load_env_files()
-    init_userdata()
-
-
 def change_logging_suppress(new_value: bool):
     """Change the logging suppress value"""
     current_system = get_current_system()
@@ -104,8 +98,9 @@ def setup_logging_sub_app(sub_app: str):
 
 def setup_config_terminal():
     """Setup the config terminal"""
+    load_env_files()
+    init_userdata()
     start_plot_backend()
-    start_required_configurations()
     setup_i18n()
     setup_version()
     setup_logging_app_name()
