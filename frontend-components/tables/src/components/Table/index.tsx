@@ -353,7 +353,7 @@ export default function Table({ data, columns, title }: any) {
                           <td
                             key={cell.id}
                             className={clsx(
-                              "whitespace-nowrap overflow-auto truncate p-4",
+                              "whitespace-nowrap overflow-auto p-4",
                               {
                                 "bg-grey-850": idx % 2 === 0,
                                 "bg-[#202020]": idx % 2 === 1,
