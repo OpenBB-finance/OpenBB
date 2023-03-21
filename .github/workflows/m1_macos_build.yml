@@ -39,7 +39,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ~/conda_pkgs_dir
-          key: conda-macos-3-9-${{ hashFiles('build/conda/conda-3-9-env-full.yaml') }}
+          key: conda-macos-3-10-${{ hashFiles('build/conda/conda-3-10-env.yaml') }}
       # Set up miniconda using the environment yaml file within the repo
       - name: Setup Miniconda
         uses: conda-incubator/setup-miniconda@v2.2.0
