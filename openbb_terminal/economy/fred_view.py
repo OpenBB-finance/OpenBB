@@ -164,7 +164,13 @@ def plot_cpi(
     external_axes: bool = False,
     limit: int = 10,
 ) -> Union[None, OpenBBFigure]:
-    """Plot CPI data. [Source: FRED]
+    """
+    Inflation measured by consumer price index (CPI) is defined as the change in
+    the prices of a basket of goods and services that are typically purchased by
+    specific groups of households. Inflation is measured in terms of the annual
+    growth rate and in index, 2015 base year with a breakdown for food, energy
+    and total excluding food and energy. Inflation measures the erosion of living standards.
+    [Source: FRED / OECD]
 
     Parameters
     ----------
@@ -214,7 +220,7 @@ def plot_cpi(
         return print_rich_table(series.drop(["series_id"], axis=1))
 
     ylabel_dict = {
-        "growth_same": "Growth Same Period (%)",
+        "growth_same": "Growth Same Period of Previous Year (%)",
         "growth_previous": "Growth Previous Period (%)",
     }
 
@@ -233,7 +239,7 @@ def plot_cpi(
 
     for column in df.columns:
         country, frequency, units = column.split("-")
-        label = f"{str(country).replace('_', ' ').title()} ({frequency}, {units})"
+        label = f"{str(country).replace('_', ' ').title()}"
 
         fig.add_scatter(x=df.index, y=df[column].values, name=label)
 

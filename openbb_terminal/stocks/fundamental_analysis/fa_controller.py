@@ -1487,7 +1487,6 @@ class FundamentalAnalysisController(StockBaseController):
             if not self.ticker:
                 console.print(no_ticker_message)
                 return
-
             av_view.display_fraud(
                 symbol=self.ticker,
                 export=ns_parser.export,
