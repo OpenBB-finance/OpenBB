@@ -299,8 +299,8 @@ function on_submit(popup_id, on_annotation = null) {
       return;
     }
   } else if (popup_id == "title") {
-    let yaxis = data.yaxis ? "yaxis" : "yaxis2";
-    let xaxis = data.xaxis ? "xaxis" : "xaxis2";
+    let yaxis = gd.layout.yaxis ? "yaxis" : "yaxis2";
+    let xaxis = gd.layout.xaxis ? "xaxis" : "xaxis2";
 
     let to_update = { title: popup_data.title };
     to_update[xaxis + ".title"] = popup_data.xaxis;
