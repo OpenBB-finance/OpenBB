@@ -4,7 +4,7 @@ from multiprocessing import freeze_support
 # pylint:disable=unused-import,import-outside-toplevel
 import openbb_terminal.config_terminal as cfg  # noqa: F401
 import openbb_terminal.core.session.current_user as _  # noqa: F401
-from openbb_terminal.terminal_helper import is_auth_enabled
+from openbb_terminal.terminal_helper import is_auth_enabled, is_installer
 
 
 def main():
@@ -19,7 +19,7 @@ def main():
     else:
         from openbb_terminal.core.session import session_controller
 
-        if is_auth_enabled():
+        if is_auth_enabled() and ("--login" in sys.argv[1:] or is_installer()):
             session_controller.main()
         else:
             session_controller.launch_terminal()

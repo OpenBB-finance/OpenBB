@@ -18,9 +18,11 @@ from openbb_terminal.core.session.current_user import (
     get_env_dict,
     get_local_preferences,
     set_current_user,
+    set_default_user,
     set_preference,
 )
 from openbb_terminal.helper_funcs import system_clear
+from openbb_terminal.loggers import setup_logging
 from openbb_terminal.rich_config import console
 
 # pylint: disable=consider-using-f-string
@@ -141,6 +143,8 @@ def logout(
         success = False
 
     remove_log_handlers()
+    set_default_user()
+    setup_logging()
 
     plt.close("all")
 
