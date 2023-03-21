@@ -178,16 +178,20 @@ def view_historical_greeks(
     )
     fig.add_scatter(
         x=df.index,
-        y=df.price,
+        y=df.price.values,
         name="Stock Price",
         line=dict(color=theme.down_color),
+        connectgaps=True,
+        secondary_y=False,
     )
     fig.add_scatter(
         x=df.index,
-        y=df[greek.lower()],
+        y=df[greek.lower()].values,
+        connectgaps=True,
         name=greek.title(),
         line=dict(color=theme.up_color),
         yaxis="y2",
+        secondary_y=True,
     )
     fig.update_layout(
         margin=dict(t=30),
@@ -200,7 +204,6 @@ def view_historical_greeks(
             title=f"{symbol} Price",
         ),
     )
-    fig.hide_holidays()
 
     export_data(
         export,
