@@ -265,7 +265,7 @@ function on_submit(popup_id, on_annotation = null) {
 
       let clickHandler = function (eventData) {
         let x = eventData.points[0].x;
-        let yaxis = eventData.points[0].data.yaxis;
+        let yaxis = eventData.points[0].fullData.yaxis;
         let y = 0;
 
         // We need to check if the trace is a candlestick or not
