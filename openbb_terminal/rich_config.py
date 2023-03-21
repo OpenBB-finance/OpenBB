@@ -74,17 +74,19 @@ def get_theme() -> Theme:
                 current_user = get_current_user()
 
             custom = current_user.preferences.CUSTOM_RICH_STYLE
-            if not custom:
+            if custom:
+                theme = Theme(custom)
+            else:
                 raise Exception(
                     f"failed to load 'openbb_config.rich_style.json' from {user_folder}\n"
                 )
-            theme = Theme(custom)
 
         else:
             builtin = get_console_style(rich, builtin_folder)
-            if not builtin:
+            if builtin:
+                theme = Theme(builtin)
+            else:
                 print(f"Error loading style: failed to load {rich} style")
-            theme = Theme(builtin)
 
     except Exception as error:
         print(f"Error loading style: {error}, using default -> dark")
