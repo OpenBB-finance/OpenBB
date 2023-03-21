@@ -25,8 +25,10 @@ from openbb_terminal.config_terminal import LOGGING_COMMIT_HASH, VERSION
 # IMPORTATION INTERNAL
 from openbb_terminal.core.config.paths import SETTINGS_ENV_FILE
 from openbb_terminal.core.plots.backend import plots_backend
+from openbb_terminal.core.session.constants import REGISTER_URL
 from openbb_terminal.core.session.current_user import (
     get_current_user,
+    is_local,
     set_preference,
 )
 from openbb_terminal.core.session.env_handler import write_to_dotenv
@@ -236,10 +238,16 @@ def is_auth_enabled() -> bool:
         If authentication is enabled
     """
     # TODO: This function is a temporary way to block authentication
-    return (
-        str(os.getenv("OPENBB_ENABLE_AUTHENTICATION")).lower() == "true"
-        or "--login" in sys.argv[1:]
-    )
+    return str(os.getenv("OPENBB_ENABLE_AUTHENTICATION")).lower() == "true"
+
+
+def print_guest_block_msg():
+    """Block guest users from using the terminal."""
+    if is_local():
+        console.print(
+            "[info]You are currently logged as a guest.\n"
+            f"[info]Register: [/info][cmds]{REGISTER_URL}\n[/cmds]"
+        )
 
 
 def is_installer() -> bool:

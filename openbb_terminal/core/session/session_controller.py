@@ -34,7 +34,9 @@ def get_user_input() -> Tuple[str, str, bool]:
     Tuple[str, str, bool]
         The user email, password and save login option.
     """
-    console.print("[info]\nPlease enter your credentials:[/info]")
+    console.print(
+        "[info]\nPlease enter your credentials or press <ENTER> for guest mode:[/info]"
+    )
 
     s: PromptSession = PromptSession()
 
@@ -69,9 +71,8 @@ def prompt(welcome=True):
 
     while True:
         email, password, save = get_user_input()
-        if not email or not password:
-            continue
-
+        if not email:
+            return launch_terminal()
         session = create_session(email, password, save)
         if isinstance(session, dict) and session:
             return login_and_launch(session=session)
