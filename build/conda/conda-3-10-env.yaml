@@ -14,16 +14,15 @@ dependencies:
   - libtiff
   # Main dependencies
   - numpy ==1.23.4
-  - charset-normalizer ==3.1.0
   # Forecasting dependencies
   - ffmpeg
   - lightgbm ==3.3.5
   # Optimization dependencies
   - cvxpy ==1.2.2
   - pip:
+    - charset-normalizer ==3.1.0
     # Forecasting dependencies
     - catboost ==1.1.1
     - xgboost ==1.7.4
     # Optimization dependencies
     - qdldl ==0.1.5.post3
-
