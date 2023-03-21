@@ -184,15 +184,16 @@ class Momentum(PltTA):
         demark.set_index(df_ta.index, inplace=True)
 
         demark["up"] = demark.TD_SEQ_UPa.apply(
-            lambda x: f"<b>{x}</b>" if x > min_val else None
+            lambda x: f"<b>{x}</b>" if x >= min_val else None
         )
         demark["down"] = demark.TD_SEQ_DNa.apply(
-            lambda x: f"<b>{x}</b>" if x > min_val else None
+            lambda x: f"<b>{x}</b>" if x >= min_val else None
         )
 
-        # we only keep the High/Low values that are not None in up/down columns
+        # we only keep the values that are not None in up/down columns
         high = df_ta["High"][demark["up"].notnull()]
         low = df_ta["Low"][demark["down"].notnull()]
+        demark = demark[demark["up"].notnull() | demark["down"].notnull()]
 
         fig.add_scatter(
             x=low.index,
@@ -201,7 +202,7 @@ class Momentum(PltTA):
             mode="text",
             text=demark["down"],
             textposition="bottom center",
-            textfont=dict(color=theme.down_color),
+            textfont=dict(color=theme.down_color, size=14.5),
             row=1,
             col=1,
             secondary_y=self.show_volume,
@@ -213,7 +214,7 @@ class Momentum(PltTA):
             mode="text",
             text=demark["up"],
             textposition="top center",
-            textfont=dict(color=theme.up_color),
+            textfont=dict(color=theme.up_color, size=14.5),
             row=1,
             col=1,
             secondary_y=self.show_volume,

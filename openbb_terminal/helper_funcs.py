@@ -108,7 +108,7 @@ def set_command_location(cmd_loc: str):
     cmd_loc: str
         Command location called by user
     """
-    global command_location
+    global command_location  # noqa
     command_location = cmd_loc
 
 
@@ -2003,7 +2003,7 @@ def update_news_from_tweet_to_be_displayed() -> str:
     str
         The news from tweet to be displayed
     """
-    global LAST_TWEET_NEWS_UPDATE_CHECK_TIME
+    global LAST_TWEET_NEWS_UPDATE_CHECK_TIME  # noqa
 
     news_tweet = ""
 

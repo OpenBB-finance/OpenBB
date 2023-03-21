@@ -1204,6 +1204,12 @@ class OpenBBFigure(go.Figure):
         has_weekends = df_data.index.dayofweek.isin([5, 6]).any()
         rangebreaks: List[Dict[str, Any]] = []
 
+        # if weekly or monthly data, we don't need to hide gaps
+        # this prevents distortions in the plot
+        check_freq = df_data.index.to_series().diff(-5).dt.days.abs().mode().iloc[0]
+        if check_freq > 7:
+            return
+
         # We check if weekends are in the df_data
         if has_weekends:
             # We get the days including weekends

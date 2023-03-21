@@ -156,7 +156,7 @@ def special_st(text: Optional[str] = None) -> Optional[str]:
             )
             st.table(rich_to_dataframe(text))
     elif isinstance(text, str) and "[green]" in text:
-        global PAST_COVERAGE_PRINT  # pylint: disable=W0603
+        global PAST_COVERAGE_PRINT  # pylint: disable=W0603 # noqa
         PAST_COVERAGE_PRINT += re.sub(REGEX_RICH, "", text) + "<br>"
 
     return text
@@ -167,7 +167,7 @@ def mock_show(self: OpenBBFigure, *args, **kwargs):  # pylint: disable=W0613
         return self
 
     # pylint: disable=W0603
-    global EXPLAINABILITY_FIGURE
+    global EXPLAINABILITY_FIGURE  # noqa
     EXPLAINABILITY_FIGURE = self
     return self
 
@@ -309,7 +309,7 @@ class Handler:
                             ),
                         )
                 with past_cov_legend:
-                    global PAST_COVERAGE_PRINT  # pylint: disable=W0603
+                    global PAST_COVERAGE_PRINT  # pylint: disable=W0603 # noqa
                     text = PAST_COVERAGE_PRINT
                     if text != "<br>":
                         st.write(
@@ -415,7 +415,7 @@ class Handler:
 
         if forecast_button:
             # pylint: disable=W0603
-            global EXPLAINABILITY_FIGURE
+            global EXPLAINABILITY_FIGURE  # noqa
             EXPLAINABILITY_FIGURE = None
             if ticker:
                 self.handle_changes(

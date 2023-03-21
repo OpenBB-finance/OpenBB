@@ -198,7 +198,7 @@ class Handler:
 
         self.loop = loop
 
-        global MAIN_LOOP
+        global MAIN_LOOP  # noqa
         MAIN_LOOP = loop
 
     # pylint: disable=R0913
