@@ -20,17 +20,11 @@ map
 map -p 1w -t world
 bigmac
 bigmac -c USA,ESP,LVA,DEU,FRA,FIN
-ycrv
-ycrv --source FRED --date 2022-10-03 --raw
-ycrv -c united_states --source Investing
 events
 events --country united_states -s 2022-07-07 -e 2022-07-08
 events -c spain,canada
 events -n
 edebt --limit 10
-spread
-spread --group PIIGS --color binary
-spread --countries portugal,spain,italy,united states --maturity 5Y --change=True --color openbb
 rtps
 valuation
 valuation --group sector --sortby MarketCap --reverse
@@ -38,6 +32,26 @@ performance
 performance -g basic_materials -s Month -a
 spectrum
 spectrum --group consumer_defensive
+gdp
+rgdp
+fgdp
+debt
+cpi
+ccpi
+balance
+revenue
+spending
+trust
+gdp --units USD_CAP
+rgdp --units IDX
+fgdp --quarterly
+debt --start 2010-01-01 --end 2020-01-01
+cpi --units growth_same
+ccpi --perspective FOOD
+balance --countries austria,belgium,canada
+revenue --countries united_states,germany,japan
+spending --perspective ENVPROT
+trust --countries belgium --start 2010-01-01
 macro
 macro -p RGDP,CPI
 macro -p URATE -c Netherlands,Germany

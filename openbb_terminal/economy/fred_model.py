@@ -269,8 +269,8 @@ def get_aggregated_series_data(
 @check_api_key(["API_FRED_KEY"])
 def get_cpi(
     countries: list,
-    units: str = "",
-    frequency: str = "",
+    units: str = "growth_same",
+    frequency: str = "monthly",
     harmonized: bool = False,
     smart_select: bool = True,
     options: bool = False,
