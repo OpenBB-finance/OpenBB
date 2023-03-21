@@ -31,9 +31,9 @@ Displays Options Volatility Smile.
 ## Examples
 
 ```
-/smile AMD 2022-08-19
+/smile AMD 2022-07-29
 ```
 ```
-/smile AMD 2022-08-19 10 100
+/smile AMD 2022-07-29 10 100
 ```
 ---

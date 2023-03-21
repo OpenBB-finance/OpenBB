@@ -29,5 +29,7 @@ Charts top DeFi protocols
 
 ## Examples
 
-
+```
+/crypto defi chart
+```
 ---

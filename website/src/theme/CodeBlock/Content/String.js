@@ -22,7 +22,6 @@ function getImageUrl(pathname, text) {
   }
   const pathvalue = pathname.split("/")[4];
   const platform = pathname.split("/")[3];
-
   let imgname = "c3m";
   if (
     (pathvalue == "charts" || pathvalue == "general") &&
@@ -30,8 +29,9 @@ function getImageUrl(pathname, text) {
   ) {
     imgname = text.split(" ")[0].toLowerCase().replace("/", "");
   } else if (platform == "telegram") {
-    if (pathvalue.toString() == "etfs") {
-      imgname = text.split(" ")[1].toLowerCase().replace("/", "");
+    console.log(pathvalue)
+    if (pathvalue.toString() == "etf" || pathvalue.toString() == "screeners") {
+      imgname = text.split(" ")[1].toLowerCase();
     } else {
       imgname = text.split(" ")[0].toLowerCase().replace("/", "");
     }

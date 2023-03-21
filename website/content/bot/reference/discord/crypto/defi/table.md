@@ -29,5 +29,7 @@ Get top DeFi protocols
 
 ## Examples
 
-
+```
+/crypto defi table
+```
 ---
