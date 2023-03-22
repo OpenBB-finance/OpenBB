@@ -16,7 +16,7 @@ from openbb_terminal.core.models.user_model import (
 )
 from openbb_terminal.core.session.current_user import (
     get_env_dict,
-    get_local_preferences,
+    get_current_user,
     set_current_user,
     set_default_user,
     set_preference,
@@ -83,7 +83,7 @@ def login(session: dict) -> LoginStatus:
     hub_user = UserModel(  # type: ignore
         credentials=CredentialsModel(),
         profile=ProfileModel(),
-        preferences=get_local_preferences(),
+        preferences=get_current_user().preferences,
     )
     response = Hub.fetch_user_configs(session)
     if response is not None:

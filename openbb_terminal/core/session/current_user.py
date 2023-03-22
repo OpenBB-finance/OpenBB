@@ -38,19 +38,9 @@ def set_current_user(user: UserModel):
     __current_user = user
 
 
-def get_local_user() -> UserModel:
-    """Get local user."""
-    return deepcopy(__local_user)
-
-
 def get_env_dict() -> dict:
     """Get env dict."""
     return deepcopy(__env_dict)
-
-
-def get_local_preferences() -> PreferencesModel:
-    """Get preferences."""
-    return deepcopy(__preferences)  # type: ignore
 
 
 def is_local() -> bool:
