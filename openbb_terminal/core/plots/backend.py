@@ -22,9 +22,7 @@ from openbb_terminal.base_helpers import console, strtobool
 try:
     import pywry
 except ImportError:
-    from openbb_terminal.core.plots import (
-        no_import as pywry,
-    )
+    from openbb_terminal.core.plots import no_import as pywry  # pylint: disable=C0412
 
 from openbb_terminal.core.session.current_user import get_current_user
 

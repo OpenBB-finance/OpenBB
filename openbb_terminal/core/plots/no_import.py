@@ -48,7 +48,7 @@ class PyWry:
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs):  # pylint: disable=W0613
         """Dummy init to avoid import errors."""
         current_user = get_current_user()
 
@@ -66,15 +66,11 @@ class PyWry:
 
         current_user.preferences.USE_INTERACTIVE_DF = False
 
-        pass
-
-    def close(self, *args, **kwargs):
+    def close(self, *args, **kwargs):  # pylint: disable=W0613
         """Dummy method to avoid errors."""
-        pass
 
-    def start(self, debug: bool = False):
+    def start(self, debug: bool = False):  # pylint: disable=W0613
         """Dummy method to avoid errors."""
-        pass
 
     async def check_backend(self):
         """Dummy check backend method to avoid errors and revert to browser."""
