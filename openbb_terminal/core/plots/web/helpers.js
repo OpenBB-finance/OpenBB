@@ -27,7 +27,7 @@ const ICONS = {
 };
 
 function add_annotation(data, yshift, popup_data, current_text = null) {
-  let gd = globals.chartDiv;
+  let gd = globals.CHART_DIV;
   let x = data.x;
   let y = data.y;
   let yref = data.yref;
@@ -210,9 +210,8 @@ function openbbFilename(data, csv = false) {
 
   let date = new Date().toISOString().slice(0, 10).replace(/-/g, "");
   let time = new Date().toISOString().slice(11, 19).replace(/:/g, "");
-  let dateTime = date + "_" + time;
 
-  return filename + "_" + dateTime;
+  return filename + "_" + date + "_" + time;
 }
 
 function plot_text(data, popup_data, current_text = null) {
@@ -223,13 +222,10 @@ function plot_text(data, popup_data, current_text = null) {
   // data is the data from the chart
 
   console.log("plot_text");
-  let gd = globals.chartDiv;
+  let gd = globals.CHART_DIV;
   let annotations = undefined;
-  let yrange = gd.layout.yaxis.range;
-
-  if (data.yref == "y2") {
-    yrange = gd.layout.yaxis2.range;
-  }
+  let yaxis = data.yref.replace("y", "yaxis");
+  let yrange = gd.layout[yaxis].range;
   let yshift = (yrange[1] - yrange[0]) * 0.2;
 
   if (popup_data.yanchor == "below") {
@@ -241,18 +237,16 @@ function plot_text(data, popup_data, current_text = null) {
   } else {
     annotations = add_annotation(data, yshift, popup_data, current_text);
   }
+  let to_update = { annotations: annotations, dragmode: "pan" };
+  to_update[yaxis + ".type"] = "linear";
 
-  Plotly.relayout(gd, { annotations: annotations });
-  Plotly.react(gd, gd.data, gd.layout, gd.config);
-  Plotly.relayout(gd, { "yaxis.type": "linear", dragmode: "pan" });
+  Plotly.update(gd, {}, to_update);
   gd.removeAllListeners("plotly_click");
 
-  TEXT_DIV = document.getElementById("popup_text");
-  TEXT_DIV.querySelectorAll("input").forEach(function (input) {
-    if (!input.name != "addtext_color") {
+  globals.TEXT_DIV = document.getElementById("popup_text");
+  globals.TEXT_DIV.querySelectorAll("input").forEach(function (input) {
+    if (!input.name in ["addtext_color", "addtext_border"]) {
       input.value = "";
-    } else {
-      input.value = "#ffffff";
     }
   });
   closePopup();
@@ -262,7 +256,7 @@ function update_color() {
   // updates the color of the last added shape
   // this function is called when the color picker is used
   let color = globals.color_picker.querySelector("#picked_color").value;
-  let gd = globals.chartDiv;
+  let gd = globals.CHART_DIV;
 
   // we change last added shape color
   let shapes = gd.layout.shapes;
@@ -272,7 +266,7 @@ function update_color() {
   }
   let last_shape = shapes[shapes.length - 1];
   last_shape.line.color = color;
-  Plotly.relayout(gd, "shapes", shapes);
+  Plotly.update(gd, {}, { shapes: shapes });
 }
 
 function button_pressed(title, active = false) {

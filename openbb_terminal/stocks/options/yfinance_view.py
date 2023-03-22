@@ -400,5 +400,3 @@ def show_greeks(
         title=f"{symbol} Greeks",
         floatfmt=column_formatting,
     )
-
-    return None
