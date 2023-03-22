@@ -15,7 +15,6 @@ import pytz
 
 import openbb_terminal.core.session.hub_model as Hub
 import openbb_terminal.core.session.local_model as Local
-from openbb_terminal.config_terminal import i18n_dict_location
 
 # IMPORTATION INTERNAL
 from openbb_terminal.core.config.paths import (

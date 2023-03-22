@@ -12,7 +12,6 @@ from openbb_terminal.core.models import SystemModel
 from openbb_terminal.core.session.env_handler import read_env
 from openbb_terminal.core.session.utils import load_dict_to_model
 
-
 SYSTEM_FILE_PATH = SETTINGS_DIRECTORY / "system.json"
 
 
