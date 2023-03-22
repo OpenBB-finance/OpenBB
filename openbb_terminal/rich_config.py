@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import json
 import os
 from pathlib import Path
-from typing import Iterable, Optional, Tuple, Union
+from typing import Dict, Iterable, Optional, Tuple, Union
 
 import i18n
 from rich import panel
@@ -12,13 +12,7 @@ from rich.console import Console, Theme
 from rich.progress import track
 from rich.text import Text
 
-from openbb_terminal.core.config.paths import (
-    MISCELLANEOUS_DIRECTORY,
-    PACKAGE_DIRECTORY,
-)
-from openbb_terminal.core.console_styles.utils import (
-    get_console_style,
-)
+from openbb_terminal.core.config.paths import MISCELLANEOUS_DIRECTORY
 from openbb_terminal.core.session.current_system import get_current_system
 from openbb_terminal.core.session.current_user import (
     get_current_user,
@@ -51,12 +45,23 @@ RICH_TAGS = [
 USE_COLOR = True
 
 
+def get_console_style(name: str, folder: Path) -> Dict[str, str]:
+    """Get console style based on rich style."""
+    file_name = name + ".richstyle.json"
+    file = folder / file_name
+
+    if os.path.exists(file):
+        with open(file) as f:
+            return json.load(f)
+    return {}
+
+
 def get_theme() -> Theme:
     """Get rich theme."""
 
     current_user = get_current_user()
     rich = current_user.preferences.RICH_STYLE
-    builtin_folder = PACKAGE_DIRECTORY / "core" / "console_styles"
+    builtin_folder = MISCELLANEOUS_DIRECTORY / "styles" / "default"
     user_folder = current_user.preferences.USER_STYLES_DIRECTORY
 
     theme = Theme()

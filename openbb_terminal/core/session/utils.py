@@ -6,6 +6,7 @@ from openbb_terminal.core.models import BaseModel
 
 T = TypeVar("T", bound=BaseModel)
 
+
 def load_dict_to_model(dictionary: dict, model: Type[T]) -> T:
     """Load environment variables to model.
 
