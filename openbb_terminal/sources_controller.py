@@ -73,7 +73,6 @@ class SourcesController(BaseController):
                 set_sources(sources_json)
 
         self.json_doc = get_current_user().sources.sources_dict
-        print(self.json_doc)
 
         for context in self.json_doc:
             for menu in self.json_doc[context]:

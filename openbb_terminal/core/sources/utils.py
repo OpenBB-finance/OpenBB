@@ -3,11 +3,11 @@ from functools import reduce
 from typing import Any, Dict, List
 
 
-def helper_fnc(test_str, sep, value) -> Dict:
+def nested_dict(test_str, sep, value) -> Dict:
     if sep not in test_str:
         return {test_str: [value]}
     key, val = test_str.split(sep, 1)
-    return {key: helper_fnc(val, sep, value)}
+    return {key: nested_dict(val, sep, value)}
 
 
 def get_list_of_dicts(d: Dict[str, str]) -> List[Dict[str, Any]]:
@@ -25,7 +25,7 @@ def get_list_of_dicts(d: Dict[str, str]) -> List[Dict[str, Any]]:
     """
     list_of_dicts = []
     for k, v in d.items():
-        list_of_dicts.append(helper_fnc(k, "/", v))
+        list_of_dicts.append(nested_dict(k, "/", v.split(", ")))
     return list_of_dicts
 
 
