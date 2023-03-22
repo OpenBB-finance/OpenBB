@@ -34,7 +34,7 @@ def get_current_user() -> UserModel:
 
 def set_current_user(user: UserModel):
     """Set current user."""
-    global __current_user  # pylint: disable=global-statement
+    global __current_user  # pylint: disable=global-statement # noqa
     __current_user = user
 
 

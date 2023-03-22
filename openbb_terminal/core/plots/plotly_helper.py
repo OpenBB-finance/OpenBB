@@ -243,6 +243,7 @@ class OpenBBFigure(go.Figure):
             self.__dict__ = fig.__dict__
 
         self._has_secondary_y = kwargs.pop("has_secondary_y", False)
+        self._subplots_kwargs: Dict[str, Any] = kwargs.pop("subplots_kwargs", {})
         self._multi_rows = kwargs.pop("multi_rows", False)
         self._added_logscale = False
         self._date_xaxs: dict = {}
@@ -266,6 +267,16 @@ class OpenBBFigure(go.Figure):
                 height=plots_backend().HEIGHT,
                 width=plots_backend().WIDTH,
             )
+
+    @property
+    def subplots_kwargs(self):
+        """Get subplots kwargs property."""
+        return self._subplots_kwargs
+
+    @subplots_kwargs.setter
+    def subplots_kwargs(self, value):
+        """Get subplots kwargs setter."""
+        self._subplots_kwargs = value
 
     @property
     def has_subplots(self):
@@ -326,7 +337,8 @@ class OpenBBFigure(go.Figure):
         specs : `List[List[dict]]`, optional
             Subplot specs, by default `[[{}] * cols] * rows` (all subplots are the same size)
         """
-        fig = make_subplots(
+        # We save the original kwargs to store them in the figure for later use
+        subplots_kwargs = dict(
             rows=rows,
             cols=cols,
             shared_xaxes=shared_xaxes,
@@ -337,7 +349,13 @@ class OpenBBFigure(go.Figure):
             specs=specs or [[{}] * cols] * rows,
             **kwargs,
         )
-        kwargs = {"multi_rows": rows > 1}
+
+        fig = make_subplots(**subplots_kwargs)
+
+        kwargs = {
+            "multi_rows": rows > 1,
+            "subplots_kwargs": subplots_kwargs,
+        }
         if specs and any(
             spec.get("secondary_y", False) for row in specs for spec in row if spec
         ):
@@ -345,51 +363,48 @@ class OpenBBFigure(go.Figure):
 
         return cls(fig, **kwargs)
 
-    def add_trend(self, data: pd.DataFrame) -> None:
+    def add_trend(
+        self,
+        data: pd.DataFrame,
+        row: int = 1,
+        col: int = 1,
+        secondary_y: bool = False,
+        **kwargs,
+    ):
         """Add a trend line to the figure.
 
         Parameters
         ----------
         data : `pd.DataFrame`
             Data to plot
-        name : `str`
-            Name of the plot
+        row : `int`, optional
+            Row number, by default 1
+        col : `int`, optional
+            Column number, by default 1
+        secondary_y : `bool`, optional
+            Whether to plot on secondary y axis, by default None
         """
         try:
-            if "OC_High_trend" in data.columns:
-                high_trend = data.loc[
-                    data["OC_High_trend"]
-                    .idxmin() : data["OC_High_trend"]  # noqa: E203
-                    .idxmax()
-                ]
-                self.add_shape(
-                    type="line",
-                    name="High Trend",
-                    x0=high_trend.index[0],
-                    y0=high_trend["OC_High_trend"].iloc[0],
-                    x1=high_trend.index[-1],
-                    y1=high_trend["OC_High_trend"].iloc[-1],
-                    line=dict(color=theme.up_color, width=2),
-                    row=1,
-                    col=1,
-                )
-            if "OC_Low_trend" in data.columns:
-                low_trend = data.loc[
-                    data["OC_Low_trend"]
-                    .idxmin() : data["OC_Low_trend"]  # noqa: E203
-                    .idxmax()
-                ]
-                self.add_shape(
-                    type="line",
-                    name="Low Trend",
-                    x0=low_trend.index[0],
-                    y0=low_trend["OC_Low_trend"].iloc[0],
-                    x1=low_trend.index[-1],
-                    y1=low_trend["OC_Low_trend"].iloc[-1],
-                    line=dict(color=theme.down_color, width=2),
-                    row=1,
-                    col=1,
-                )
+            for column, color in zip(
+                ["OC_High_trend", "OC_Low_trend"], [theme.up_color, theme.down_color]
+            ):
+                if column in data.columns:
+                    name = column.split("_")[1].title()
+                    trend = data.copy().dropna()
+                    self.add_shape(
+                        type="line",
+                        name=f"{name} Trend",
+                        x0=trend.index[0],
+                        y0=trend[column].iloc[0],
+                        x1=trend.index[-1],
+                        y1=trend[column].iloc[-1],
+                        line=dict(color=color, width=2),
+                        row=row,
+                        col=col,
+                        secondary_y=secondary_y,
+                        **kwargs,
+                    )
+
         except Exception:
             console.print("[red]Error adding trend line[/red]")
 
@@ -770,16 +785,54 @@ class OpenBBFigure(go.Figure):
             )
         )
 
-    def add_stock_volume(
+    @staticmethod
+    def chart_volume_scaling(
+        df_volume: pd.DataFrame, range_x: int = 4
+    ) -> Dict[str, list]:
+        """Takes df_volume and returns volume_ticks, tickvals for chart volume scaling
+
+        Parameters
+        ----------
+        df_volume : pd.DataFrame
+            Dataframe of volume (e.g. df_volume = df["Volume"])
+        range_x : int, optional
+            Number to multiply volume, by default 4
+
+        Returns
+        -------
+        Dict[str, list]
+            {"range": volume_range, "ticks": tickvals}
+        """
+        df_volume = df_volume.apply(lambda x: f"{x:.1f}")
+        df_volume = pd.to_numeric(df_volume.astype(float))
+        volume_ticks = int(df_volume.max().max())
+        round_digits = -3
+        first_val = round(volume_ticks * 0.20, round_digits)
+
+        for x, y in zip([2, 5, 6, 7, 8, 9, 10], [1, 4, 5, 6, 7, 8, 9]):
+            if len(str(volume_ticks)) > x:
+                round_digits = -y
+                first_val = round(volume_ticks * 0.20, round_digits)
+
+        tickvals = [
+            floor(first_val),
+            floor(first_val * 2),
+            floor(first_val * 3),
+            floor(first_val * 4),
+        ]
+        volume_range = [0, floor(volume_ticks * range_x)]
+
+        return {"range": volume_range, "ticks": tickvals}
+
+    def add_inchart_volume(
         self,
         df_stock: pd.DataFrame,
-        close_col: str = "Close",
-        volume_col: str = "Volume",
-        row: int = 2,
-        col: int = 1,
-        secondary_y: bool = False,
+        close_col: Optional[str] = "Close",
+        volume_col: Optional[str] = "Volume",
+        row: Optional[int] = 1,
+        col: Optional[int] = 1,
     ) -> None:
-        """Add the volume of a stock to the figure.
+        """Add in-chart volume to a subplot.
 
         Parameters
         ----------
@@ -793,21 +846,43 @@ class OpenBBFigure(go.Figure):
             Row number, by default 2
         col : `int`, optional
             Column number, by default 1
-        secondary_y : `bool`, optional
-            Whether to use the secondary y axis, by default False
         """
         colors = [
             theme.down_color if row.Open < row[close_col] else theme.up_color
             for _, row in df_stock.iterrows()
         ]
+        vol_scale = self.chart_volume_scaling(df_stock[volume_col])
         self.add_bar(
             x=df_stock.index,
             y=df_stock[volume_col],
             name="Volume",
             marker_color=colors,
+            yaxis="y2",
             row=row,
             col=col,
-            secondary_y=secondary_y,
+            secondary_y=False,
+        )
+        ticksize = 14 - (self.subplots_kwargs["rows"] // 1.5)
+        self.update_layout(
+            yaxis=dict(
+                fixedrange=True,
+                side="left",
+                nticks=10,
+                range=vol_scale["range"],
+                tickvals=vol_scale["ticks"],
+                showgrid=False,
+                showline=False,
+                zeroline=False,
+                tickfont=dict(size=ticksize),
+            ),
+            yaxis2=dict(
+                autorange=True,
+                side="right",
+                fixedrange=False,
+                anchor="x",
+                layer="above traces",
+                overlaying="y",
+            ),
         )
 
     def add_legend_label(
@@ -1045,6 +1120,13 @@ class OpenBBFigure(go.Figure):
         output: Optional[List[datetime]] = None
         subplots = self.get_subplots_dict()
 
+        try:
+            false_y = list(self.select_traces(secondary_y=False))
+            true_y = list(self.select_traces(secondary_y=True))
+        except Exception:
+            false_y = []
+            true_y = []
+
         for trace in self.select_traces():
             if not hasattr(trace, "xaxis"):
                 continue
@@ -1056,9 +1138,15 @@ class OpenBBFigure(go.Figure):
                     if isinstance(x, (datetime, np.datetime64, pd.DatetimeIndex)):
                         output = trace.x
                         name = trace.name if hasattr(trace, "name") else f"{trace}"
+
+                        secondary_y: Optional[bool] = trace in true_y
+                        if trace not in (false_y + true_y):
+                            secondary_y = None
+
                         self._date_xaxs[trace.xaxis] = {
                             "yaxis": trace.yaxis,
                             "name": name,
+                            "secondary_y": secondary_y,
                         }
                         self._subplot_xdates.setdefault(row, {}).setdefault(
                             col, []
@@ -1097,6 +1185,12 @@ class OpenBBFigure(go.Figure):
         has_weekends = df_data.index.dayofweek.isin([5, 6]).any()
         rangebreaks: List[Dict[str, Any]] = []
 
+        # if weekly or monthly data, we don't need to hide gaps
+        # this prevents distortions in the plot
+        check_freq = df_data.index.to_series().diff(-5).dt.days.abs().mode().iloc[0]
+        if check_freq > 7:
+            return
+
         # We check if weekends are in the df_data
         if has_weekends:
             # We get the days including weekends
@@ -1129,15 +1223,7 @@ class OpenBBFigure(go.Figure):
                 else:
                     rangebreaks.append(dict(bounds=[15.99, 9.50], pattern="hour"))
 
-        if not self._has_secondary_y:
-            self.update_xaxes(rangebreaks=rangebreaks, row=row, col=col)
-        else:
-            for entry in self._date_xaxs.values():
-                self.update_xaxes(
-                    rangebreaks=rangebreaks,
-                    type="date",
-                    selector=dict(anchor=entry["yaxis"]),
-                )
+        self.update_xaxes(rangebreaks=rangebreaks, row=row, col=col)
 
     def hide_holidays(self, prepost: bool = False) -> None:
         """Add rangebreaks to hide holidays on the xaxis.
@@ -1385,7 +1471,7 @@ class OpenBBFigure(go.Figure):
             return
 
         margin_add = (
-            [80, 60, 85, 60, 0] if not self._has_secondary_y else [80, 50, 85, 40, 0]
+            [80, 60, 85, 60, 0] if not self._has_secondary_y else [60, 50, 85, 40, 0]
         )
 
         # We adjust margins
@@ -1481,7 +1567,7 @@ class OpenBBFigure(go.Figure):
 
         self._feature_flags_applied = True
 
-    def add_logscale_menus(self) -> None:
+    def add_logscale_menus(self, yaxis: str = "yaxis") -> None:
         """Set the menus for the figure."""
         self._added_logscale = True
         self.update_layout(
@@ -1530,12 +1616,12 @@ class OpenBBFigure(go.Figure):
                         dict(
                             label="linear   ",
                             method="relayout",
-                            args=[{"yaxis.type": "linear"}],
+                            args=[{f"{yaxis}.type": "linear"}],
                         ),
                         dict(
                             label="log",
                             method="relayout",
-                            args=[{"yaxis.type": "log"}],
+                            args=[{f"{yaxis}.type": "log"}],
                         ),
                     ],
                     y=1.07,
