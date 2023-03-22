@@ -9,7 +9,6 @@ from openbb_terminal.core.models.profile_model import ProfileModel
 class UserModel:
     """Data model for user."""
 
-    # configurations: ConfigurationsModel
     profile: ProfileModel
     credentials: CredentialsModel
     preferences: PreferencesModel
