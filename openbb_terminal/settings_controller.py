@@ -12,8 +12,6 @@ from typing import List, Optional, Union
 # IMPORTATION THIRDPARTY
 import pytz
 
-from openbb_terminal.config_terminal import i18n_dict_location
-
 # IMPORTATION INTERNAL
 from openbb_terminal.core.config.paths import (
     I18N_DICT_LOCATION,
