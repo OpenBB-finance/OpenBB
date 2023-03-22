@@ -38,7 +38,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import MenuText, console
+from openbb_terminal.rich_config import RICH_TAGS, MenuText, console
 
 # pylint: disable=too-many-lines,no-member,too-many-public-methods,C0302
 # pylint: disable=import-outside-toplevel
@@ -97,6 +97,16 @@ class SettingsController(BaseController):
             self.sort_filter += f"{tz}|"
         self.sort_filter += ")*)"
 
+        preview = ""
+        for tag in sorted(set(
+            [
+                name.replace("[", "").replace("]", "").replace("/", "")
+                for name in RICH_TAGS
+            ]
+        )):
+            preview += f"[{tag}]{tag}[/{tag}], "
+        self.PREVIEW = "[" + preview[:-2] + "]"
+
     def parse_input(self, an_input: str) -> List:
         """Parse controller input
 
@@ -121,10 +131,12 @@ class SettingsController(BaseController):
         mt.add_info("_info_")
         mt.add_raw("\n")
         mt.add_setting("dt", current_user.preferences.USE_DATETIME)
+        mt.add_raw("\n")
         mt.add_cmd("colors")
         mt.add_raw("\n")
         mt.add_param("_colors", current_user.preferences.RICH_STYLE)
-        mt.add_raw("\n")
+        mt.add_raw(f"   {self.PREVIEW}")
+        mt.add_raw("\n\n")
         mt.add_cmd("flair")
         mt.add_raw("\n")
         mt.add_param("_flair", get_flair())
