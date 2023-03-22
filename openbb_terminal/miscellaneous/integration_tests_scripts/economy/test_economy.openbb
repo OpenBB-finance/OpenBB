@@ -10,11 +10,6 @@ futures -c metals --source Finviz
 futures -c meats --source Finviz
 futures -c grains --source Finviz
 futures -c softs --source Finviz
-futures -c energy
-futures -c metals
-futures -c meats
-futures -c grains
-futures -c softs
 futures -c energy -s ticker --reverse --source Finviz
 map
 map -p 1w -t world
