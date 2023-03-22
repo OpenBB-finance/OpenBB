@@ -1,7 +1,7 @@
 # IMPORTS STANDARD
 import dataclasses
 from copy import deepcopy
-from typing import Any, Optional
+from typing import Any, Dict, Optional
 
 # IMPORTS INTERNAL
 from openbb_terminal.core.models import (
@@ -143,4 +143,18 @@ def set_credential(name: str, value: str):
     current_user = get_current_user()
     updated_credentials = dataclasses.replace(current_user.credentials, **{name: value})  # type: ignore
     updated_user = dataclasses.replace(current_user, credentials=updated_credentials)  # type: ignore
+    set_current_user(updated_user)
+
+
+def set_sources(sources: Dict):
+    """Set sources
+
+    Parameters
+    ----------
+    sources : Dict
+        Sources dict
+    """
+    current_user = get_current_user()
+    updated_sources = dataclasses.replace(current_user.sources, sources=sources)  # type: ignore
+    updated_user = dataclasses.replace(current_user, sources=updated_sources)  # type: ignore
     set_current_user(updated_user)

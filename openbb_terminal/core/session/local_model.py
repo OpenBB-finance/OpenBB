@@ -11,6 +11,7 @@ from openbb_terminal.core.session.current_user import (
     get_current_user,
     set_credential,
     set_preference,
+    set_sources,
 )
 from openbb_terminal.rich_config import console
 
@@ -112,12 +113,13 @@ def apply_configs(configs: dict):
     configs : dict
         The configurations.
     """
-    set_credentials(configs)
-    set_theme(configs)
+    set_credentials_from_hub(configs)
+    set_theme_from_hub(configs)
+    set_sources_from_hub(configs)
 
 
-def set_credentials(configs: dict):
-    """Set credentials.
+def set_credentials_from_hub(configs: dict):
+    """Set credentials from hub.
 
     Parameters
     ----------
@@ -130,8 +132,8 @@ def set_credentials(configs: dict):
             set_credential(k, v)
 
 
-def set_theme(configs: dict):
-    """Set theme.
+def set_theme_from_hub(configs: dict):
+    """Set theme from hub.
 
     Parameters
     ----------
@@ -145,6 +147,20 @@ def set_theme(configs: dict):
             if user_style:
                 user_style = {k: v.replace(" ", "") for k, v in user_style.items()}
                 set_preference("CUSTOM_RICH_STYLE", user_style)
+
+
+def set_sources_from_hub(configs: dict):
+    """Set sources from hub.
+
+    Parameters
+    ----------
+    configs : dict
+        The configurations.
+    """
+    if configs:
+        sources = configs.get("features_sources", {}) or {}
+        if sources:
+            set_sources(sources)
 
 
 def get_routine(file_name: str, folder: Optional[Path] = None) -> Optional[str]:
