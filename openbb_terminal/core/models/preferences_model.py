@@ -8,7 +8,7 @@ from openbb_terminal.core.config.paths import (
     HOME_DIRECTORY,
     USER_DATA_SOURCES_DEFAULT_FILE,
 )
-from openbb_terminal.core.models.base_model import BaseModel
+from openbb_terminal.core.models import BaseModel
 
 # pylint: disable=too-many-instance-attributes, disable=no-member, useless-parent-delegation
 
@@ -100,5 +100,5 @@ class PreferencesModel(BaseModel):
     USER_FORECAST_WHISPER_DIRECTORY = USER_DATA_DIRECTORY / "exports" / "whisper"
     USER_STYLES_DIRECTORY = USER_DATA_DIRECTORY / "styles" / "user"
 
-    def __repr__(self) -> str:
+    def __repr__(self) -> str:  # pylint: disable=useless-super-delegation
         return super().__repr__()

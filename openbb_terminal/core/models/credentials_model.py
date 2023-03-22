@@ -2,12 +2,12 @@ from typing import Optional
 
 from pydantic.dataclasses import dataclass
 
-from openbb_terminal.core.models.base_model import BaseModel
+from openbb_terminal.core.models import BaseModel
 
 # pylint: disable=too-many-instance-attributes, disable=no-member, useless-parent-delegation
 
 
-@dataclass(config=dict(validate_assignment=True))
+@dataclass(config=dict(validate_assignment=True, frozen=True))
 class CredentialsModel(BaseModel):
     """Model for credentials."""
 
