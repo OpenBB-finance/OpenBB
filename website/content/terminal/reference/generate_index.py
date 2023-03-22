@@ -1,8 +1,7 @@
 import os
-import sys
-import re
 
-# This script is used to generate the index.mdx files for the terminal reference section of the docs Copy paste the output of the
+# This script is used to generate the index.mdx files for the terminal
+# reference section of the docs Copy paste the output of the
 # .txt file into the section it generates relative to the index.mdx file -
 # TODO - we need to make Terminal behave like the other 2 menus - so we can use this
 

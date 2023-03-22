@@ -1,9 +1,8 @@
 import os
-import sys
-import re
 
-# This script is used to generate the index.mdx files for the reference section of the docs Copy paste the output of the
-# .txt file into the section it generates relative to the index.mdx file
+# This script is used to generate the index.mdx files for the reference section of the
+# docs Copy paste the output of the .txt file into the section
+# it generates relative to the index.mdx file
 
 # get the file names of all the files in a given relative path
 files_discord = os.listdir(os.path.join(os.getcwd(), "discord"))
