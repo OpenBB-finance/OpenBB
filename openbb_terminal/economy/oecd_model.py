@@ -466,6 +466,11 @@ COUNTRY_TO_CODE_TRUST = {
 }
 
 
+def no_data_message(error: str):
+    """Print message when no data available or error"""
+    console.print(f"Error getting data from OECD: [red]{error}[/red]")
+
+
 @log_start_end(log=logger)
 def get_gdp(
     countries: Optional[List[str]],
@@ -528,7 +533,7 @@ def get_gdp(
             index_col=5,
         )
     except Exception as e:
-        console.print(f"Error getting data from OECD: [red]{e}[/red]")
+        no_data_message(error=str(e))
         return df
 
     df = df.iloc[:, [0, 5]]
@@ -617,7 +622,7 @@ def get_real_gdp(
             index_col=5,
         )
     except Exception as e:
-        console.print(f"Error getting data from OECD: [red]{e}[/red]")
+        no_data_message(error=str(e))
         return df
 
     df = df.iloc[:, [0, 5]]
@@ -709,7 +714,7 @@ def get_gdp_forecast(
                 index_col=5,
             )
     except Exception as e:
-        console.print(f"Error getting data from OECD: [red]{e}[/red]")
+        no_data_message(error=str(e))
         return df
 
     df = df.iloc[:, [0, 5]]
@@ -780,11 +785,17 @@ def get_debt(
     elif isinstance(end_date, datetime):
         end_date = end_date.date()
 
-    df = pd.read_csv(
-        f"https://stats.oecd.org/sdmx-json/data/DP_LIVE/.GGDEBT.TOT.PC_GDP.A/OECD?contentType=csv&detail=code"
-        f"&separator=comma&csv-lang=en&startPeriod={start_date}&endPeriod={end_date}",
-        index_col=5,
-    )
+    df = pd.DataFrame()
+
+    try:
+        df = pd.read_csv(
+            f"https://stats.oecd.org/sdmx-json/data/DP_LIVE/.GGDEBT.TOT.PC_GDP.A/OECD?contentType=csv&detail=code"
+            f"&separator=comma&csv-lang=en&startPeriod={start_date}&endPeriod={end_date}",
+            index_col=5,
+        )
+    except Exception as e:
+        no_data_message(error=str(e))
+        return df
 
     df = df.iloc[:, [0, 5]]
 
@@ -874,11 +885,16 @@ def get_cpi(
     if units not in ["AGRWTH", "IDX2015"]:
         return console.print("Use either 'AGRWTH' or 'IDX2015' for type")
 
-    df = pd.read_csv(
-        f"https://stats.oecd.org/sdmx-json/data/DP_LIVE/.CPI.{perspective}.{units}.{frequency}/OECD?contentType=csv&detail=code"
-        f"&separator=comma&csv-lang=en&startPeriod={start_date}&endPeriod={end_date}",
-        index_col=5,
-    )
+    df = pd.DataFrame()
+    try:
+        df = pd.read_csv(
+            f"https://stats.oecd.org/sdmx-json/data/DP_LIVE/.CPI.{perspective}.{units}.{frequency}/OECD?contentType=csv&detail=code"
+            f"&separator=comma&csv-lang=en&startPeriod={start_date}&endPeriod={end_date}",
+            index_col=5,
+        )
+    except Exception as e:
+        no_data_message(error=str(e))
+        return df
 
     df = df.iloc[:, [0, 5]]
 
@@ -949,11 +965,16 @@ def get_balance(
     elif isinstance(end_date, datetime):
         end_date = end_date.date()
 
-    df = pd.read_csv(
-        f"https://stats.oecd.org/sdmx-json/data/DP_LIVE/.GGNLEND.TOT.PC_GDP.A/OECD?contentType=csv&detail=code"
-        f"&separator=comma&csv-lang=en&startPeriod={start_date}&endPeriod={end_date}",
-        index_col=5,
-    )
+    df = pd.DataFrame()
+    try:
+        df = pd.read_csv(
+            f"https://stats.oecd.org/sdmx-json/data/DP_LIVE/.GGNLEND.TOT.PC_GDP.A/OECD?contentType=csv&detail=code"
+            f"&separator=comma&csv-lang=en&startPeriod={start_date}&endPeriod={end_date}",
+            index_col=5,
+        )
+    except Exception as e:
+        no_data_message(error=str(e))
+        return df
 
     df = df.iloc[:, [0, 5]]
 
@@ -1026,11 +1047,16 @@ def get_revenue(
             "or PC_GDP (percentage of GDP) for units"
         )
 
-    df = pd.read_csv(
-        f"https://stats.oecd.org/sdmx-json/data/DP_LIVE/.GGREV.TOT.{units}.A/OECD?contentType=csv&detail=code"
-        f"&separator=comma&csv-lang=en&startPeriod={start_date}&endPeriod={end_date}",
-        index_col=5,
-    )
+    df = pd.DataFrame()
+    try:
+        df = pd.read_csv(
+            f"https://stats.oecd.org/sdmx-json/data/DP_LIVE/.GGREV.TOT.{units}.A/OECD?contentType=csv&detail=code"
+            f"&separator=comma&csv-lang=en&startPeriod={start_date}&endPeriod={end_date}",
+            index_col=5,
+        )
+    except Exception as e:
+        no_data_message(error=str(e))
+        return df
 
     df = df.iloc[:, [0, 5]]
 
@@ -1135,11 +1161,17 @@ def get_spending(
             "EDU (Education), ENVPROT (Environmental protection), GRALPUBSER (General public services), "
             "SOCPROT (Social protection), ECOAFF (Economic affairs), DEF (Defence), HEALTH (Health)"
         )
-    df = pd.read_csv(
-        f"https://stats.oecd.org/sdmx-json/data/DP_LIVE/.GGEXP.{perspective}.{units}.A/OECD?contentType=csv&detail=code"
-        f"&separator=comma&csv-lang=en&startPeriod={start_date}&endPeriod={end_date}",
-        index_col=5,
-    )
+
+    df = pd.DataFrame()
+    try:
+        df = pd.read_csv(
+            f"https://stats.oecd.org/sdmx-json/data/DP_LIVE/.GGEXP.{perspective}.{units}.A/OECD?contentType=csv&detail=code"
+            f"&separator=comma&csv-lang=en&startPeriod={start_date}&endPeriod={end_date}",
+            index_col=5,
+        )
+    except Exception as e:
+        no_data_message(error=str(e))
+        return df
 
     df = df.iloc[:, [0, 5]]
 
@@ -1202,11 +1234,16 @@ def get_trust(
     elif isinstance(end_date, datetime):
         end_date = end_date.date()
 
-    df = pd.read_csv(
-        f"https://stats.oecd.org/sdmx-json/data/DP_LIVE/.TRUSTGOV.TOT.PC.A/OECD?contentType=csv&detail=code"
-        f"&separator=comma&csv-lang=en&startPeriod={start_date}&endPeriod={end_date}",
-        index_col=5,
-    )
+    df = pd.DataFrame()
+    try:
+        df = pd.read_csv(
+            f"https://stats.oecd.org/sdmx-json/data/DP_LIVE/.TRUSTGOV.TOT.PC.A/OECD?contentType=csv&detail=code"
+            f"&separator=comma&csv-lang=en&startPeriod={start_date}&endPeriod={end_date}",
+            index_col=5,
+        )
+    except Exception as e:
+        no_data_message(error=str(e))
+        return df
 
     df = df.iloc[:, [0, 5]]
 
