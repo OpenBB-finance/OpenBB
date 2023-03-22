@@ -83,12 +83,8 @@ def login(session: dict) -> LoginStatus:
     hub_user = UserModel(  # type: ignore
         credentials=CredentialsModel(),
         profile=ProfileModel(),
-<<<<<<< HEAD
-        preferences=get_local_preferences(),
-        sources=get_current_user().sources,
-=======
         preferences=get_current_user().preferences,
->>>>>>> feature/colors
+        sources=get_current_user().sources,
     )
     response = Hub.fetch_user_configs(session)
     if response is not None:
