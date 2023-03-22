@@ -94,7 +94,7 @@ def get_popular_tickers(
         responses.validate()
         console.print(f"  {count} potential tickers found.")
 
-    return responses.to_df().head(10)
+    return responses.to_df().head(limit)
 
 
 @log_start_end(log=logger)
