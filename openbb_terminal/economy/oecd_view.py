@@ -162,48 +162,50 @@ def plot_real_gdp(
 
     df = oecd_model.get_real_gdp(countries, units, start_date, end_date)
 
-    if units == "PC_CHGPP":
-        fig = OpenBBFigure(yaxis_title="Previous Quarter (% Change)")
-    elif units == "PC_CHGPY":
-        fig = OpenBBFigure(
-            yaxis_title="Same Quarter of the Previous Year (% Change)",
-            yaxis_title_font_size=13,
+    if not df.empty:
+        if units == "PC_CHGPP":
+            fig = OpenBBFigure(yaxis_title="Previous Quarter (% Change)")
+        elif units == "PC_CHGPY":
+            fig = OpenBBFigure(
+                yaxis_title="Same Quarter of the Previous Year (% Change)",
+                yaxis_title_font_size=13,
+            )
+        else:
+            fig = OpenBBFigure(yaxis_title="Index (Base = 2015)")
+
+        for country in df.columns:
+            fig.add_scatter(
+                x=df.index,
+                y=df[country],
+                name=country.replace("_", " ").title(),
+                mode="lines",
+                line_width=2.5,
+                showlegend=True,
+            )
+
+        title = "Real Gross Domestic Product (GDP)"
+        fig.set_title(title)
+
+        if raw:
+            print_rich_table(
+                df,
+                headers=list(df.columns),
+                show_index=True,
+                title=title,
+                export=bool(export),
+            )
+
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            f"real_gdp_{units}",
+            df if units == "IDX" else df / 100,
+            sheet_name,
+            fig,
         )
-    else:
-        fig = OpenBBFigure(yaxis_title="Index (Base = 2015)")
 
-    for country in df.columns:
-        fig.add_scatter(
-            x=df.index,
-            y=df[country],
-            name=country.replace("_", " ").title(),
-            mode="lines",
-            line_width=2.5,
-            showlegend=True,
-        )
-
-    title = "Real Gross Domestic Product (GDP)"
-    fig.set_title(title)
-
-    if raw:
-        print_rich_table(
-            df,
-            headers=list(df.columns),
-            show_index=True,
-            title=title,
-            export=bool(export),
-        )
-
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        f"real_gdp_{units}",
-        df if units == "IDX" else df / 100,
-        sheet_name,
-        fig,
-    )
-
-    return fig.show(external=external_axes)
+        return fig.show(external=external_axes)
+    return None
 
 
 @log_start_end(log=logger)

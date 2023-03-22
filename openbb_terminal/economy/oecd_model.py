@@ -607,12 +607,18 @@ def get_real_gdp(
             "for units"
         )
 
-    df = pd.read_csv(
-        f"https://stats.oecd.org/sdmx-json/data/DP_LIVE/.QGDP."
-        f"{'VOLIDX' if units == 'IDX' else 'TOT'}.{units}.Q/OECD?contentType=csv&detail=code"
-        f"&separator=comma&csv-lang=en&startPeriod={start_date}&endPeriod={end_date}",
-        index_col=5,
-    )
+    df = pd.DataFrame()
+
+    try:
+        df = pd.read_csv(
+            f"https://stats.oecd.org/sdmx-json/data/DP_LIVE/.QGDP."
+            f"{'VOLIDX' if units == 'IDX' else 'TOT'}.{units}.Q/OECD?contentType=csv&detail=code"
+            f"&separator=comma&csv-lang=en&startPeriod={start_date}&endPeriod={end_date}",
+            index_col=5,
+        )
+    except Exception as e:
+        console.print(f"Error getting data from OECD: [red]{e}[/red]")
+        return df
 
     df = df.iloc[:, [0, 5]]
 
