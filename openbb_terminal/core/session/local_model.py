@@ -13,6 +13,7 @@ from openbb_terminal.core.session.current_user import (
     set_preference,
     set_sources,
 )
+from openbb_terminal.core.sources.utils import generate_sources_dict
 from openbb_terminal.rich_config import console
 
 SESSION_FILE_PATH = SETTINGS_DIRECTORY / "session.json"
@@ -160,7 +161,12 @@ def set_sources_from_hub(configs: dict):
     if configs:
         sources = configs.get("features_sources", {}) or {}
         if sources:
-            set_sources(sources)
+            try:
+                sources_dict = generate_sources_dict(sources)
+                set_sources(sources_dict)
+            except Exception:
+                console.print("[red]Failed to set sources.[/red]")
+                return
 
 
 def get_routine(file_name: str, folder: Optional[Path] = None) -> Optional[str]:
