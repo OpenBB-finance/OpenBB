@@ -1,0 +1,60 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Connection:
+      - close
+      Host:
+      - api.stlouisfed.org
+      User-Agent:
+      - Python-urllib/3.9
+    method: GET
+    uri: https://api.stlouisfed.org/fred/series/observations?series_id=TB3SMFFM&observation_start=2020-01-01&observation_end=2021-02-01&api_key=e59724f37e9be8056dccc2053fda6341
+  response:
+    body:
+      string: "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<observations realtime_start=\"2023-03-22\"
+        realtime_end=\"2023-03-22\" observation_start=\"2020-01-01\" observation_end=\"2021-02-01\"
+        units=\"lin\" output_type=\"1\" file_type=\"xml\" order_by=\"observation_date\"
+        sort_order=\"asc\" count=\"14\" offset=\"0\" limit=\"100000\">\n  <observation
+        realtime_start=\"2023-03-22\" realtime_end=\"2023-03-22\" date=\"2020-01-01\"
+        value=\"-0.03\"/>\n  <observation realtime_start=\"2023-03-22\" realtime_end=\"2023-03-22\"
+        date=\"2020-02-01\" value=\"-0.06\"/>\n  <observation realtime_start=\"2023-03-22\"
+        realtime_end=\"2023-03-22\" date=\"2020-03-01\" value=\"-0.34\"/>\n  <observation
+        realtime_start=\"2023-03-22\" realtime_end=\"2023-03-22\" date=\"2020-04-01\"
+        value=\"0.09\"/>\n  <observation realtime_start=\"2023-03-22\" realtime_end=\"2023-03-22\"
+        date=\"2020-05-01\" value=\"0.08\"/>\n  <observation realtime_start=\"2023-03-22\"
+        realtime_end=\"2023-03-22\" date=\"2020-06-01\" value=\"0.08\"/>\n  <observation
+        realtime_start=\"2023-03-22\" realtime_end=\"2023-03-22\" date=\"2020-07-01\"
+        value=\"0.04\"/>\n  <observation realtime_start=\"2023-03-22\" realtime_end=\"2023-03-22\"
+        date=\"2020-08-01\" value=\"0.01\"/>\n  <observation realtime_start=\"2023-03-22\"
+        realtime_end=\"2023-03-22\" date=\"2020-09-01\" value=\"0.02\"/>\n  <observation
+        realtime_start=\"2023-03-22\" realtime_end=\"2023-03-22\" date=\"2020-10-01\"
+        value=\"0.01\"/>\n  <observation realtime_start=\"2023-03-22\" realtime_end=\"2023-03-22\"
+        date=\"2020-11-01\" value=\"0.0\"/>\n  <observation realtime_start=\"2023-03-22\"
+        realtime_end=\"2023-03-22\" date=\"2020-12-01\" value=\"0.0\"/>\n  <observation
+        realtime_start=\"2023-03-22\" realtime_end=\"2023-03-22\" date=\"2021-01-01\"
+        value=\"-0.01\"/>\n  <observation realtime_start=\"2023-03-22\" realtime_end=\"2023-03-22\"
+        date=\"2021-02-01\" value=\"-0.04\"/>\n</observations>\n\n\n\n"
+    headers:
+      Connection:
+      - close
+      Content-Length:
+      - '1745'
+      Content-Type:
+      - text/xml; charset=UTF-8
+      Date:
+      - Wed, 22 Mar 2023 15:25:15 GMT
+      Expires:
+      - Wed, 22 Mar 2023 15:26:15 GMT
+      Last-Modified:
+      - Wed, 01 Mar 2023 22:01:03 GMT
+      Vary:
+      - Accept-Encoding
+      x-rate-limit-limit:
+      - '120'
+      x-rate-limit-remaining:
+      - '120'
+    status:
+      code: 200
+      message: OK
+version: 1

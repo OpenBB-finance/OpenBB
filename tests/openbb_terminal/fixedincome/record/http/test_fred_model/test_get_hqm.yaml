@@ -1,0 +1,506 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Connection:
+      - close
+      Host:
+      - api.stlouisfed.org
+      User-Agent:
+      - Python-urllib/3.9
+    method: GET
+    uri: https://api.stlouisfed.org/fred/series/observations?series_id=HQMCB6MT&observation_start=2023-01-31&api_key=e59724f37e9be8056dccc2053fda6341
+  response:
+    body:
+      string: "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<observations realtime_start=\"2023-03-22\"
+        realtime_end=\"2023-03-22\" observation_start=\"2023-01-31\" observation_end=\"9999-12-31\"
+        units=\"lin\" output_type=\"1\" file_type=\"xml\" order_by=\"observation_date\"
+        sort_order=\"asc\" count=\"2\" offset=\"0\" limit=\"100000\">\n  <observation
+        realtime_start=\"2023-03-22\" realtime_end=\"2023-03-22\" date=\"2023-01-01\"
+        value=\"4.93\"/>\n  <observation realtime_start=\"2023-03-22\" realtime_end=\"2023-03-22\"
+        date=\"2023-02-01\" value=\"5.18\"/>\n</observations>\n\n\n\n"
+    headers:
+      Connection:
+      - close
+      Content-Length:
+      - '517'
+      Content-Type:
+      - text/xml; charset=UTF-8
+      Date:
+      - Wed, 22 Mar 2023 15:24:10 GMT
+      Expires:
+      - Wed, 22 Mar 2023 15:25:09 GMT
+      Last-Modified:
+      - Fri, 10 Mar 2023 20:33:06 GMT
+      Vary:
+      - Accept-Encoding
+      x-rate-limit-limit:
+      - '120'
+      x-rate-limit-remaining:
+      - '120'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Connection:
+      - close
+      Host:
+      - api.stlouisfed.org
+      User-Agent:
+      - Python-urllib/3.9
+    method: GET
+    uri: https://api.stlouisfed.org/fred/series/observations?series_id=HQMCB1YR&observation_start=2023-01-31&api_key=e59724f37e9be8056dccc2053fda6341
+  response:
+    body:
+      string: "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<observations realtime_start=\"2023-03-22\"
+        realtime_end=\"2023-03-22\" observation_start=\"2023-01-31\" observation_end=\"9999-12-31\"
+        units=\"lin\" output_type=\"1\" file_type=\"xml\" order_by=\"observation_date\"
+        sort_order=\"asc\" count=\"2\" offset=\"0\" limit=\"100000\">\n  <observation
+        realtime_start=\"2023-03-22\" realtime_end=\"2023-03-22\" date=\"2023-01-01\"
+        value=\"4.89\"/>\n  <observation realtime_start=\"2023-03-22\" realtime_end=\"2023-03-22\"
+        date=\"2023-02-01\" value=\"5.15\"/>\n</observations>\n\n\n\n"
+    headers:
+      Connection:
+      - close
+      Content-Length:
+      - '517'
+      Content-Type:
+      - text/xml; charset=UTF-8
+      Date:
+      - Wed, 22 Mar 2023 15:24:10 GMT
+      Expires:
+      - Wed, 22 Mar 2023 15:25:10 GMT
+      Last-Modified:
+      - Fri, 10 Mar 2023 20:33:03 GMT
+      Vary:
+      - Accept-Encoding
+      x-rate-limit-limit:
+      - '120'
+      x-rate-limit-remaining:
+      - '119'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Connection:
+      - close
+      Host:
+      - api.stlouisfed.org
+      User-Agent:
+      - Python-urllib/3.9
+    method: GET
+    uri: https://api.stlouisfed.org/fred/series/observations?series_id=HQMCB2YR&observation_start=2023-01-31&api_key=e59724f37e9be8056dccc2053fda6341
+  response:
+    body:
+      string: "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<observations realtime_start=\"2023-03-22\"
+        realtime_end=\"2023-03-22\" observation_start=\"2023-01-31\" observation_end=\"9999-12-31\"
+        units=\"lin\" output_type=\"1\" file_type=\"xml\" order_by=\"observation_date\"
+        sort_order=\"asc\" count=\"2\" offset=\"0\" limit=\"100000\">\n  <observation
+        realtime_start=\"2023-03-22\" realtime_end=\"2023-03-22\" date=\"2023-01-01\"
+        value=\"4.81\"/>\n  <observation realtime_start=\"2023-03-22\" realtime_end=\"2023-03-22\"
+        date=\"2023-02-01\" value=\"5.07\"/>\n</observations>\n\n\n\n"
+    headers:
+      Connection:
+      - close
+      Content-Length:
+      - '517'
+      Content-Type:
+      - text/xml; charset=UTF-8
+      Date:
+      - Wed, 22 Mar 2023 15:24:10 GMT
+      Expires:
+      - Wed, 22 Mar 2023 15:25:10 GMT
+      Last-Modified:
+      - Fri, 10 Mar 2023 20:33:05 GMT
+      Vary:
+      - Accept-Encoding
+      x-rate-limit-limit:
+      - '120'
+      x-rate-limit-remaining:
+      - '118'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Connection:
+      - close
+      Host:
+      - api.stlouisfed.org
+      User-Agent:
+      - Python-urllib/3.9
+    method: GET
+    uri: https://api.stlouisfed.org/fred/series/observations?series_id=HQMCB3YR&observation_start=2023-01-31&api_key=e59724f37e9be8056dccc2053fda6341
+  response:
+    body:
+      string: "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<observations realtime_start=\"2023-03-22\"
+        realtime_end=\"2023-03-22\" observation_start=\"2023-01-31\" observation_end=\"9999-12-31\"
+        units=\"lin\" output_type=\"1\" file_type=\"xml\" order_by=\"observation_date\"
+        sort_order=\"asc\" count=\"2\" offset=\"0\" limit=\"100000\">\n  <observation
+        realtime_start=\"2023-03-22\" realtime_end=\"2023-03-22\" date=\"2023-01-01\"
+        value=\"4.7\"/>\n  <observation realtime_start=\"2023-03-22\" realtime_end=\"2023-03-22\"
+        date=\"2023-02-01\" value=\"4.95\"/>\n</observations>\n\n\n\n"
+    headers:
+      Connection:
+      - close
+      Content-Length:
+      - '516'
+      Content-Type:
+      - text/xml; charset=UTF-8
+      Date:
+      - Wed, 22 Mar 2023 15:24:11 GMT
+      Expires:
+      - Wed, 22 Mar 2023 15:25:11 GMT
+      Last-Modified:
+      - Fri, 10 Mar 2023 20:33:05 GMT
+      Vary:
+      - Accept-Encoding
+      x-rate-limit-limit:
+      - '120'
+      x-rate-limit-remaining:
+      - '117'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Connection:
+      - close
+      Host:
+      - api.stlouisfed.org
+      User-Agent:
+      - Python-urllib/3.9
+    method: GET
+    uri: https://api.stlouisfed.org/fred/series/observations?series_id=HQMCB5YR&observation_start=2023-01-31&api_key=e59724f37e9be8056dccc2053fda6341
+  response:
+    body:
+      string: "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<observations realtime_start=\"2023-03-22\"
+        realtime_end=\"2023-03-22\" observation_start=\"2023-01-31\" observation_end=\"9999-12-31\"
+        units=\"lin\" output_type=\"1\" file_type=\"xml\" order_by=\"observation_date\"
+        sort_order=\"asc\" count=\"2\" offset=\"0\" limit=\"100000\">\n  <observation
+        realtime_start=\"2023-03-22\" realtime_end=\"2023-03-22\" date=\"2023-01-01\"
+        value=\"4.6\"/>\n  <observation realtime_start=\"2023-03-22\" realtime_end=\"2023-03-22\"
+        date=\"2023-02-01\" value=\"4.82\"/>\n</observations>\n\n\n\n"
+    headers:
+      Connection:
+      - close
+      Content-Length:
+      - '516'
+      Content-Type:
+      - text/xml; charset=UTF-8
+      Date:
+      - Wed, 22 Mar 2023 15:24:11 GMT
+      Expires:
+      - Wed, 22 Mar 2023 15:25:11 GMT
+      Last-Modified:
+      - Fri, 10 Mar 2023 20:33:02 GMT
+      Vary:
+      - Accept-Encoding
+      x-rate-limit-limit:
+      - '120'
+      x-rate-limit-remaining:
+      - '116'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Connection:
+      - close
+      Host:
+      - api.stlouisfed.org
+      User-Agent:
+      - Python-urllib/3.9
+    method: GET
+    uri: https://api.stlouisfed.org/fred/series/observations?series_id=HQMCB7YR&observation_start=2023-01-31&api_key=e59724f37e9be8056dccc2053fda6341
+  response:
+    body:
+      string: "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<observations realtime_start=\"2023-03-22\"
+        realtime_end=\"2023-03-22\" observation_start=\"2023-01-31\" observation_end=\"9999-12-31\"
+        units=\"lin\" output_type=\"1\" file_type=\"xml\" order_by=\"observation_date\"
+        sort_order=\"asc\" count=\"2\" offset=\"0\" limit=\"100000\">\n  <observation
+        realtime_start=\"2023-03-22\" realtime_end=\"2023-03-22\" date=\"2023-01-01\"
+        value=\"4.72\"/>\n  <observation realtime_start=\"2023-03-22\" realtime_end=\"2023-03-22\"
+        date=\"2023-02-01\" value=\"4.91\"/>\n</observations>\n\n\n\n"
+    headers:
+      Connection:
+      - close
+      Content-Length:
+      - '517'
+      Content-Type:
+      - text/xml; charset=UTF-8
+      Date:
+      - Wed, 22 Mar 2023 15:24:11 GMT
+      Expires:
+      - Wed, 22 Mar 2023 15:25:11 GMT
+      Last-Modified:
+      - Fri, 10 Mar 2023 20:33:06 GMT
+      Vary:
+      - Accept-Encoding
+      x-rate-limit-limit:
+      - '120'
+      x-rate-limit-remaining:
+      - '115'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Connection:
+      - close
+      Host:
+      - api.stlouisfed.org
+      User-Agent:
+      - Python-urllib/3.9
+    method: GET
+    uri: https://api.stlouisfed.org/fred/series/observations?series_id=HQMCB10YR&observation_start=2023-01-31&api_key=e59724f37e9be8056dccc2053fda6341
+  response:
+    body:
+      string: "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<observations realtime_start=\"2023-03-22\"
+        realtime_end=\"2023-03-22\" observation_start=\"2023-01-31\" observation_end=\"9999-12-31\"
+        units=\"lin\" output_type=\"1\" file_type=\"xml\" order_by=\"observation_date\"
+        sort_order=\"asc\" count=\"2\" offset=\"0\" limit=\"100000\">\n  <observation
+        realtime_start=\"2023-03-22\" realtime_end=\"2023-03-22\" date=\"2023-01-01\"
+        value=\"4.98\"/>\n  <observation realtime_start=\"2023-03-22\" realtime_end=\"2023-03-22\"
+        date=\"2023-02-01\" value=\"5.13\"/>\n</observations>\n\n\n\n"
+    headers:
+      Connection:
+      - close
+      Content-Length:
+      - '517'
+      Content-Type:
+      - text/xml; charset=UTF-8
+      Date:
+      - Wed, 22 Mar 2023 15:24:12 GMT
+      Expires:
+      - Wed, 22 Mar 2023 15:25:12 GMT
+      Last-Modified:
+      - Fri, 10 Mar 2023 20:33:02 GMT
+      Vary:
+      - Accept-Encoding
+      x-rate-limit-limit:
+      - '120'
+      x-rate-limit-remaining:
+      - '114'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Connection:
+      - close
+      Host:
+      - api.stlouisfed.org
+      User-Agent:
+      - Python-urllib/3.9
+    method: GET
+    uri: https://api.stlouisfed.org/fred/series/observations?series_id=HQMCB20YR&observation_start=2023-01-31&api_key=e59724f37e9be8056dccc2053fda6341
+  response:
+    body:
+      string: "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<observations realtime_start=\"2023-03-22\"
+        realtime_end=\"2023-03-22\" observation_start=\"2023-01-31\" observation_end=\"9999-12-31\"
+        units=\"lin\" output_type=\"1\" file_type=\"xml\" order_by=\"observation_date\"
+        sort_order=\"asc\" count=\"2\" offset=\"0\" limit=\"100000\">\n  <observation
+        realtime_start=\"2023-03-22\" realtime_end=\"2023-03-22\" date=\"2023-01-01\"
+        value=\"5.02\"/>\n  <observation realtime_start=\"2023-03-22\" realtime_end=\"2023-03-22\"
+        date=\"2023-02-01\" value=\"5.14\"/>\n</observations>\n\n\n\n"
+    headers:
+      Connection:
+      - close
+      Content-Length:
+      - '517'
+      Content-Type:
+      - text/xml; charset=UTF-8
+      Date:
+      - Wed, 22 Mar 2023 15:24:12 GMT
+      Expires:
+      - Wed, 22 Mar 2023 15:25:12 GMT
+      Last-Modified:
+      - Fri, 10 Mar 2023 20:33:03 GMT
+      Vary:
+      - Accept-Encoding
+      x-rate-limit-limit:
+      - '120'
+      x-rate-limit-remaining:
+      - '113'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Connection:
+      - close
+      Host:
+      - api.stlouisfed.org
+      User-Agent:
+      - Python-urllib/3.9
+    method: GET
+    uri: https://api.stlouisfed.org/fred/series/observations?series_id=HQMCB30YR&observation_start=2023-01-31&api_key=e59724f37e9be8056dccc2053fda6341
+  response:
+    body:
+      string: "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<observations realtime_start=\"2023-03-22\"
+        realtime_end=\"2023-03-22\" observation_start=\"2023-01-31\" observation_end=\"9999-12-31\"
+        units=\"lin\" output_type=\"1\" file_type=\"xml\" order_by=\"observation_date\"
+        sort_order=\"asc\" count=\"2\" offset=\"0\" limit=\"100000\">\n  <observation
+        realtime_start=\"2023-03-22\" realtime_end=\"2023-03-22\" date=\"2023-01-01\"
+        value=\"4.88\"/>\n  <observation realtime_start=\"2023-03-22\" realtime_end=\"2023-03-22\"
+        date=\"2023-02-01\" value=\"5.0\"/>\n</observations>\n\n\n\n"
+    headers:
+      Connection:
+      - close
+      Content-Length:
+      - '516'
+      Content-Type:
+      - text/xml; charset=UTF-8
+      Date:
+      - Wed, 22 Mar 2023 15:24:12 GMT
+      Expires:
+      - Wed, 22 Mar 2023 15:25:12 GMT
+      Last-Modified:
+      - Fri, 10 Mar 2023 20:33:03 GMT
+      Vary:
+      - Accept-Encoding
+      x-rate-limit-limit:
+      - '120'
+      x-rate-limit-remaining:
+      - '112'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Connection:
+      - close
+      Host:
+      - api.stlouisfed.org
+      User-Agent:
+      - Python-urllib/3.9
+    method: GET
+    uri: https://api.stlouisfed.org/fred/series/observations?series_id=HQMCB50YR&observation_start=2023-01-31&api_key=e59724f37e9be8056dccc2053fda6341
+  response:
+    body:
+      string: "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<observations realtime_start=\"2023-03-22\"
+        realtime_end=\"2023-03-22\" observation_start=\"2023-01-31\" observation_end=\"9999-12-31\"
+        units=\"lin\" output_type=\"1\" file_type=\"xml\" order_by=\"observation_date\"
+        sort_order=\"asc\" count=\"2\" offset=\"0\" limit=\"100000\">\n  <observation
+        realtime_start=\"2023-03-22\" realtime_end=\"2023-03-22\" date=\"2023-01-01\"
+        value=\"4.79\"/>\n  <observation realtime_start=\"2023-03-22\" realtime_end=\"2023-03-22\"
+        date=\"2023-02-01\" value=\"4.91\"/>\n</observations>\n\n\n\n"
+    headers:
+      Connection:
+      - close
+      Content-Length:
+      - '517'
+      Content-Type:
+      - text/xml; charset=UTF-8
+      Date:
+      - Wed, 22 Mar 2023 15:24:13 GMT
+      Expires:
+      - Wed, 22 Mar 2023 15:25:13 GMT
+      Last-Modified:
+      - Fri, 10 Mar 2023 20:33:05 GMT
+      Vary:
+      - Accept-Encoding
+      x-rate-limit-limit:
+      - '120'
+      x-rate-limit-remaining:
+      - '111'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Connection:
+      - close
+      Host:
+      - api.stlouisfed.org
+      User-Agent:
+      - Python-urllib/3.9
+    method: GET
+    uri: https://api.stlouisfed.org/fred/series/observations?series_id=HQMCB75YR&observation_start=2023-01-31&api_key=e59724f37e9be8056dccc2053fda6341
+  response:
+    body:
+      string: "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<observations realtime_start=\"2023-03-22\"
+        realtime_end=\"2023-03-22\" observation_start=\"2023-01-31\" observation_end=\"9999-12-31\"
+        units=\"lin\" output_type=\"1\" file_type=\"xml\" order_by=\"observation_date\"
+        sort_order=\"asc\" count=\"2\" offset=\"0\" limit=\"100000\">\n  <observation
+        realtime_start=\"2023-03-22\" realtime_end=\"2023-03-22\" date=\"2023-01-01\"
+        value=\"4.75\"/>\n  <observation realtime_start=\"2023-03-22\" realtime_end=\"2023-03-22\"
+        date=\"2023-02-01\" value=\"4.86\"/>\n</observations>\n\n\n\n"
+    headers:
+      Connection:
+      - close
+      Content-Length:
+      - '517'
+      Content-Type:
+      - text/xml; charset=UTF-8
+      Date:
+      - Wed, 22 Mar 2023 15:24:13 GMT
+      Expires:
+      - Wed, 22 Mar 2023 15:25:13 GMT
+      Last-Modified:
+      - Fri, 10 Mar 2023 20:33:10 GMT
+      Vary:
+      - Accept-Encoding
+      x-rate-limit-limit:
+      - '120'
+      x-rate-limit-remaining:
+      - '110'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Connection:
+      - close
+      Host:
+      - api.stlouisfed.org
+      User-Agent:
+      - Python-urllib/3.9
+    method: GET
+    uri: https://api.stlouisfed.org/fred/series/observations?series_id=HQMCB100YR&observation_start=2023-01-31&api_key=e59724f37e9be8056dccc2053fda6341
+  response:
+    body:
+      string: "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<observations realtime_start=\"2023-03-22\"
+        realtime_end=\"2023-03-22\" observation_start=\"2023-01-31\" observation_end=\"9999-12-31\"
+        units=\"lin\" output_type=\"1\" file_type=\"xml\" order_by=\"observation_date\"
+        sort_order=\"asc\" count=\"2\" offset=\"0\" limit=\"100000\">\n  <observation
+        realtime_start=\"2023-03-22\" realtime_end=\"2023-03-22\" date=\"2023-01-01\"
+        value=\"4.72\"/>\n  <observation realtime_start=\"2023-03-22\" realtime_end=\"2023-03-22\"
+        date=\"2023-02-01\" value=\"4.83\"/>\n</observations>\n\n\n\n"
+    headers:
+      Connection:
+      - close
+      Content-Length:
+      - '517'
+      Content-Type:
+      - text/xml; charset=UTF-8
+      Date:
+      - Wed, 22 Mar 2023 15:24:13 GMT
+      Expires:
+      - Wed, 22 Mar 2023 15:25:13 GMT
+      Last-Modified:
+      - Fri, 10 Mar 2023 20:33:04 GMT
+      Vary:
+      - Accept-Encoding
+      x-rate-limit-limit:
+      - '120'
+      x-rate-limit-remaining:
+      - '109'
+    status:
+      code: 200
+      message: OK
+version: 1

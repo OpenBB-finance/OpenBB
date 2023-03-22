@@ -1,0 +1,72 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Connection:
+      - close
+      Host:
+      - api.stlouisfed.org
+      User-Agent:
+      - Python-urllib/3.9
+    method: GET
+    uri: https://api.stlouisfed.org/fred/series/observations?series_id=DGS10&observation_start=2020-01-01&observation_end=2020-02-01&api_key=e59724f37e9be8056dccc2053fda6341
+  response:
+    body:
+      string: "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<observations realtime_start=\"2023-03-22\"
+        realtime_end=\"2023-03-22\" observation_start=\"2020-01-01\" observation_end=\"2020-02-01\"
+        units=\"lin\" output_type=\"1\" file_type=\"xml\" order_by=\"observation_date\"
+        sort_order=\"asc\" count=\"23\" offset=\"0\" limit=\"100000\">\n  <observation
+        realtime_start=\"2023-03-22\" realtime_end=\"2023-03-22\" date=\"2020-01-01\"
+        value=\".\"/>\n  <observation realtime_start=\"2023-03-22\" realtime_end=\"2023-03-22\"
+        date=\"2020-01-02\" value=\"1.88\"/>\n  <observation realtime_start=\"2023-03-22\"
+        realtime_end=\"2023-03-22\" date=\"2020-01-03\" value=\"1.80\"/>\n  <observation
+        realtime_start=\"2023-03-22\" realtime_end=\"2023-03-22\" date=\"2020-01-06\"
+        value=\"1.81\"/>\n  <observation realtime_start=\"2023-03-22\" realtime_end=\"2023-03-22\"
+        date=\"2020-01-07\" value=\"1.83\"/>\n  <observation realtime_start=\"2023-03-22\"
+        realtime_end=\"2023-03-22\" date=\"2020-01-08\" value=\"1.87\"/>\n  <observation
+        realtime_start=\"2023-03-22\" realtime_end=\"2023-03-22\" date=\"2020-01-09\"
+        value=\"1.85\"/>\n  <observation realtime_start=\"2023-03-22\" realtime_end=\"2023-03-22\"
+        date=\"2020-01-10\" value=\"1.83\"/>\n  <observation realtime_start=\"2023-03-22\"
+        realtime_end=\"2023-03-22\" date=\"2020-01-13\" value=\"1.85\"/>\n  <observation
+        realtime_start=\"2023-03-22\" realtime_end=\"2023-03-22\" date=\"2020-01-14\"
+        value=\"1.82\"/>\n  <observation realtime_start=\"2023-03-22\" realtime_end=\"2023-03-22\"
+        date=\"2020-01-15\" value=\"1.79\"/>\n  <observation realtime_start=\"2023-03-22\"
+        realtime_end=\"2023-03-22\" date=\"2020-01-16\" value=\"1.81\"/>\n  <observation
+        realtime_start=\"2023-03-22\" realtime_end=\"2023-03-22\" date=\"2020-01-17\"
+        value=\"1.84\"/>\n  <observation realtime_start=\"2023-03-22\" realtime_end=\"2023-03-22\"
+        date=\"2020-01-20\" value=\".\"/>\n  <observation realtime_start=\"2023-03-22\"
+        realtime_end=\"2023-03-22\" date=\"2020-01-21\" value=\"1.78\"/>\n  <observation
+        realtime_start=\"2023-03-22\" realtime_end=\"2023-03-22\" date=\"2020-01-22\"
+        value=\"1.77\"/>\n  <observation realtime_start=\"2023-03-22\" realtime_end=\"2023-03-22\"
+        date=\"2020-01-23\" value=\"1.74\"/>\n  <observation realtime_start=\"2023-03-22\"
+        realtime_end=\"2023-03-22\" date=\"2020-01-24\" value=\"1.70\"/>\n  <observation
+        realtime_start=\"2023-03-22\" realtime_end=\"2023-03-22\" date=\"2020-01-27\"
+        value=\"1.61\"/>\n  <observation realtime_start=\"2023-03-22\" realtime_end=\"2023-03-22\"
+        date=\"2020-01-28\" value=\"1.65\"/>\n  <observation realtime_start=\"2023-03-22\"
+        realtime_end=\"2023-03-22\" date=\"2020-01-29\" value=\"1.60\"/>\n  <observation
+        realtime_start=\"2023-03-22\" realtime_end=\"2023-03-22\" date=\"2020-01-30\"
+        value=\"1.57\"/>\n  <observation realtime_start=\"2023-03-22\" realtime_end=\"2023-03-22\"
+        date=\"2020-01-31\" value=\"1.51\"/>\n</observations>\n\n\n\n"
+    headers:
+      Connection:
+      - close
+      Content-Length:
+      - '2654'
+      Content-Type:
+      - text/xml; charset=UTF-8
+      Date:
+      - Wed, 22 Mar 2023 13:13:42 GMT
+      Expires:
+      - Wed, 22 Mar 2023 13:14:42 GMT
+      Last-Modified:
+      - Tue, 21 Mar 2023 20:20:07 GMT
+      Vary:
+      - Accept-Encoding
+      x-rate-limit-limit:
+      - '120'
+      x-rate-limit-remaining:
+      - '118'
+    status:
+      code: 200
+      message: OK
+version: 1
