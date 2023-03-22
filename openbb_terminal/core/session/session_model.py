@@ -15,8 +15,8 @@ from openbb_terminal.core.models.user_model import (
     UserModel,
 )
 from openbb_terminal.core.session.current_user import (
-    get_env_dict,
     get_current_user,
+    get_env_dict,
     set_current_user,
     set_default_user,
     set_preference,
