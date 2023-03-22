@@ -98,12 +98,14 @@ class SettingsController(BaseController):
         self.sort_filter += ")*)"
 
         preview = ""
-        for tag in sorted(set(
-            [
-                name.replace("[", "").replace("]", "").replace("/", "")
-                for name in RICH_TAGS
-            ]
-        )):
+        for tag in sorted(
+            set(
+                [
+                    name.replace("[", "").replace("]", "").replace("/", "")
+                    for name in RICH_TAGS
+                ]
+            )
+        ):
             preview += f"[{tag}]{tag}[/{tag}], "
         self.PREVIEW = "[" + preview[:-2] + "]"
 
@@ -261,7 +263,7 @@ class SettingsController(BaseController):
                 )
                 if response:
                     configs = json.loads(response.content)
-                    Local.set_theme(configs)
+                    Local.set_theme_from_hub(configs)
 
     @log_start_end(log=logger)
     def call_dt(self, other_args: List[str]):

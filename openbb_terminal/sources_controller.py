@@ -103,6 +103,8 @@ class SourcesController(BaseController):
 
         console.print(text=mt.menu_text, menu="Data Sources")
 
+        print(get_current_user().sources)
+
     @log_start_end(log=logger)
     def call_get(self, other_args):
         """Process get command"""
