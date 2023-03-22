@@ -103,16 +103,16 @@ Alternatives to `VcXsrv` include:
 
 </details>
 
-<details><summary>Rust and GTK toolchains (Linux only)</summary>
+<details><summary>GTK toolchains (Linux only)</summary>
 
-A window extension that is used to display interactive charts and tables (`pywry`) requires that you install certain dependencies
+GTK is a window extension that is used to display interactive charts and tables. (`pywry`) requires that you install certain dependencies
 based on the Linux distribution that you are using.
 
 <details>
 <summary>Debian-based / Ubuntu / Mint</summary>
 
 ```shell
-add --commands --here
+sudo apt install libwebkit2gtk-4.0-dev
 ```
 
 </details>
@@ -121,7 +121,7 @@ add --commands --here
 <summary>Arch Linux / Manjaro</summary>
 
 ```shell
-add --commands --here
+sudo pacman -S webkit2gtk-4.0
 ```
 
 </details>
@@ -130,7 +130,7 @@ add --commands --here
 <summary>Fedora</summary>
 
 ```shell
-add --commands --here
+sudo dnf install gtk3-devel webkit2gtk4.0-devel
 ```
 
 </details>
