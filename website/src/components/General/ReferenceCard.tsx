@@ -12,7 +12,7 @@ export default function ReferenceCard({
 }) {
   return (
     <Link
-      className="rounded border border-grey-400 bg-black p-6 cursor-pointer relative overflow-hidden"
+      className="rounded border !no-underline border-grey-400 bg-black p-6 cursor-pointer relative overflow-hidden"
       to={url}
     >
       <p className="font-bold text-lg my-0">{title}</p>
