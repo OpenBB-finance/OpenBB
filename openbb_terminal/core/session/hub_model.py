@@ -3,13 +3,13 @@ from typing import Dict, Literal, Optional
 
 import requests
 
-import openbb_terminal.config_terminal as cfg
 from openbb_terminal.core.session.constants import (
     BASE_URL,
     CONNECTION_ERROR_MSG,
     CONNECTION_TIMEOUT_MSG,
     TIMEOUT,
 )
+from openbb_terminal.core.session.current_system import get_current_system
 from openbb_terminal.rich_config import console
 
 
@@ -368,7 +368,7 @@ def upload_routine(
         "description": description,
         "script": routine,
         "override": override,
-        "version": cfg.VERSION,
+        "version": get_current_system().VERSION,
         "public": False,
     }
 

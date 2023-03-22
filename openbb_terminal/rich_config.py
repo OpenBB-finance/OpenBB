@@ -12,9 +12,6 @@ from rich.console import Console, Theme
 from rich.progress import track
 from rich.text import Text
 
-from openbb_terminal import (
-    config_terminal as cfg,
-)
 from openbb_terminal.core.config.paths import (
     MISCELLANEOUS_DIRECTORY,
     PACKAGE_DIRECTORY,
@@ -22,6 +19,7 @@ from openbb_terminal.core.config.paths import (
 from openbb_terminal.core.console_styles.utils import (
     get_console_style,
 )
+from openbb_terminal.core.session.current_system import get_current_system
 from openbb_terminal.core.session.current_user import (
     get_current_user,
     is_local,
@@ -367,7 +365,8 @@ class ConsoleAndPanel:
             if not os.getenv("TEST_MODE"):
                 if current_user.preferences.ENABLE_RICH_PANEL:
                     if current_user.preferences.SHOW_VERSION:
-                        version = f"[param]OpenBB Terminal v{cfg.VERSION}[/param] (https://openbb.co)"
+                        version = get_current_system().VERSION
+                        version = f"[param]OpenBB Terminal v{version}[/param] (https://openbb.co)"
                     else:
                         version = "[param]OpenBB Terminal[/param] (https://openbb.co)"
                     self.__console.print(

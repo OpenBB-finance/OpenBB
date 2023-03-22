@@ -15,10 +15,10 @@ import pytz
 
 import openbb_terminal.core.session.hub_model as Hub
 import openbb_terminal.core.session.local_model as Local
-from openbb_terminal.config_terminal import i18n_dict_location
 
 # IMPORTATION INTERNAL
 from openbb_terminal.core.config.paths import (
+    I18N_DICT_LOCATION,
     SETTINGS_ENV_FILE,
     USER_DATA_SOURCES_DEFAULT_FILE,
 )
@@ -73,7 +73,7 @@ class SettingsController(BaseController):
 
     languages_available = [
         lang.strip(".yml")
-        for lang in os.listdir(i18n_dict_location)
+        for lang in os.listdir(I18N_DICT_LOCATION)
         if lang.endswith(".yml")
     ]
 

@@ -1,9 +1,12 @@
-from typing import Any
+from typing import Any, Type, TypeVar
 
 from pydantic import ValidationError
 
+from openbb_terminal.core.models import BaseModel
 
-def load_dict_to_model(dictionary: dict, model: Any) -> Any:
+T = TypeVar("T", bound=BaseModel)
+
+def load_dict_to_model(dictionary: dict, model: Type[T]) -> T:
     """Load environment variables to model.
 
     Parameters
