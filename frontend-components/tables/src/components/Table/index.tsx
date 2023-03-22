@@ -214,7 +214,7 @@ export default function Table({ data, columns, title }: any) {
           id: "max-columns",
           title: "Max 12 columns are visible by default",
           description:
-            "You can change this by clicking in advanced and then top right 'Filter' button",
+            "You can change this by clicking on advanced and then top right 'Filter' button",
           status: "info",
         }}
         open={open}

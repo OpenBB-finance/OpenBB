@@ -50,7 +50,7 @@ export default function FilterColumns({
         <DropdownMenuPrimitive.Content
           sideOffset={10}
           ref={ref}
-          className="z-50 flex flex-col gap-4 overflow-hidden bg-grey-900 border-[1.5px] border-grey-700 rounded p-3"
+          className="z-50 flex flex-col gap-4 overflow-auto bg-grey-900 border-[1.5px] border-grey-700 rounded p-3 max-h-[500px]"
         >
           <DropdownMenuPrimitive.Item>
             <label className="flex items-center gap-2">
