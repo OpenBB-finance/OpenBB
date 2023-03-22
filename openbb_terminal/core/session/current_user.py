@@ -18,7 +18,7 @@ from openbb_terminal.core.session.utils import load_dict_to_model
 __env_dict = read_env()
 __credentials = load_dict_to_model(__env_dict, CredentialsModel)
 __preferences = load_dict_to_model(__env_dict, PreferencesModel)
-__sources = SourcesModel(sources=read_sources())
+__sources = SourcesModel(sources_dict=read_sources())
 
 __profile = ProfileModel()
 __local_user = UserModel(  # type: ignore
@@ -77,7 +77,7 @@ def set_default_user():
     env_dict = read_env()
     credentials = load_dict_to_model(env_dict, CredentialsModel)
     preferences = load_dict_to_model(env_dict, PreferencesModel)
-    sources = SourcesModel(sources=read_sources())
+    sources = SourcesModel(sources_dict=read_sources())
     profile = ProfileModel()
     local_user = UserModel(  # type: ignore
         credentials=credentials,
@@ -146,15 +146,15 @@ def set_credential(name: str, value: str):
     set_current_user(updated_user)
 
 
-def set_sources(sources: Dict):
+def set_sources(sources_dict: Dict):
     """Set sources
 
     Parameters
     ----------
-    sources : Dict
+    sources_dict : Dict
         Sources dict
     """
     current_user = get_current_user()
-    updated_sources = dataclasses.replace(current_user.sources, sources=sources)  # type: ignore
+    updated_sources = dataclasses.replace(current_user.sources, sources_dict=sources_dict)  # type: ignore
     updated_user = dataclasses.replace(current_user, sources=updated_sources)  # type: ignore
     set_current_user(updated_user)

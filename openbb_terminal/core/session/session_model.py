@@ -9,7 +9,6 @@ import openbb_terminal.core.session.local_model as Local
 from openbb_terminal.base_helpers import (
     remove_log_handlers,
 )
-from openbb_terminal.core.models.sources_model import SourcesModel
 from openbb_terminal.core.models.user_model import (
     CredentialsModel,
     ProfileModel,
