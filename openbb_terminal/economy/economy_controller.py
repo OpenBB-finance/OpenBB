@@ -180,6 +180,7 @@ class EconomyController(BaseController):
         self.DATASETS: Dict[Any, pd.DataFrame] = dict()
         self.UNITS: Dict[Any, Dict[Any, Any]] = dict()
         self.FRED_TITLES: Dict = dict()
+        self.choices: Dict = dict()
 
         self.DATASETS["macro"] = pd.DataFrame()
         self.DATASETS["treasury"] = pd.DataFrame()
