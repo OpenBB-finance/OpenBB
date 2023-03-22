@@ -128,7 +128,7 @@
 
           document.getElementById("date").innerHTML = formattedDate;
           document.getElementById("title").innerHTML =
-          window.plotly_figure.layout.title ? window.plotly_figure.layout.title.text : "Interactive Chart";
+          window.plotly_figure?.layout?.title?.text ?? "Interactive Chart";
 
           CHART_DIV = document.getElementById("openbb_chart");
           CSV_DIV = document.getElementById("popup_csv");
