@@ -68,43 +68,45 @@ def plot_gdp(
 
     df = oecd_model.get_gdp(countries, units, start_date, end_date)
 
-    if units == "USD_CAP":
-        fig = OpenBBFigure(yaxis_title="US Dollars per Capita")
-    else:
-        fig = OpenBBFigure(yaxis_title="Millions of US Dollars")
+    if not df.empty:
+        if units == "USD_CAP":
+            fig = OpenBBFigure(yaxis_title="US Dollars per Capita")
+        else:
+            fig = OpenBBFigure(yaxis_title="Millions of US Dollars")
 
-    for country in df.columns:
-        fig.add_scatter(
-            x=df.index,
-            y=df[country],
-            name=country.replace("_", " ").title(),
-            mode="lines",
-            line_width=2.5,
-            showlegend=True,
-        )
+        for country in df.columns:
+            fig.add_scatter(
+                x=df.index,
+                y=df[country],
+                name=country.replace("_", " ").title(),
+                mode="lines",
+                line_width=2.5,
+                showlegend=True,
+            )
 
-    title = "Nominal Gross Domestic Product (GDP)"
-    fig.set_title(title)
+        title = "Nominal Gross Domestic Product (GDP)"
+        fig.set_title(title)
 
-    if raw:
-        print_rich_table(
+        if raw:
+            print_rich_table(
+                df,
+                headers=list(df.columns),
+                show_index=True,
+                title=title,
+                export=bool(export),
+            )
+
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            f"nominal_gdp_{units}",
             df,
-            headers=list(df.columns),
-            show_index=True,
-            title=title,
-            export=bool(export),
+            sheet_name,
+            fig,
         )
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        f"nominal_gdp_{units}",
-        df,
-        sheet_name,
-        fig,
-    )
-
-    return fig.show(external=external_axes)
+        return fig.show(external=external_axes)
+    return None
 
 
 @log_start_end(log=logger)
