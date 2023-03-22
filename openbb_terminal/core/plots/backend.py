@@ -13,12 +13,19 @@ from typing import Optional, Union
 import aiohttp
 import pandas as pd
 import plotly.graph_objects as go
-import pywry
 from packaging import version
 from reportlab.graphics import renderPDF
 from svglib.svglib import svg2rlg
 
 from openbb_terminal.base_helpers import console, strtobool
+
+try:
+    import pywry
+except ImportError:
+    from openbb_terminal.core.plots import (
+        no_import as pywry,
+    )
+
 from openbb_terminal.core.session.current_user import get_current_user
 
 try:
@@ -62,6 +69,8 @@ class Backend(pywry.PyWry):
             and not strtobool(os.environ.get("OPENBB_ENABLE_QUICK_EXIT", False))
             and current_process().name == "MainProcess"
         )
+        if pywry.__version__ == "0.0.0":
+            self.isatty = False
 
         self.WIDTH, self.HEIGHT = 1400, 762
 

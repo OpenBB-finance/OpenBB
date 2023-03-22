@@ -32,6 +32,8 @@ class PreferencesModel:
     PLOT_WIDTH_PERCENTAGE: PositiveFloat = 70.0
     # Whether to open plot image exports after they are created
     PLOT_OPEN_EXPORT: bool = False
+    # Use interactive window to display plots
+    PLOT_ENABLE_PYWRY: bool = True
 
     # FEATURE FLAGS
     SYNC_ENABLED: bool = True

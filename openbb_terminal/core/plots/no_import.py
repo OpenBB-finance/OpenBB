@@ -1,0 +1,81 @@
+import asyncio
+from typing import List
+
+import dotenv
+
+from openbb_terminal.base_helpers import console
+from openbb_terminal.core.config.paths import SETTINGS_ENV_FILE
+from openbb_terminal.core.session.current_user import get_current_user
+
+__version__ = "0.0.0"
+
+pywry_missing = """
+[red]PyWry is not installed or missing required linux dependencies.[/]
+
+[yellow]Install PyWry[/]
+[green]pip install pywry --upgrade[/]
+
+[yellow]Platform-specific notes[/]
+Here is the underlying web engine each platform uses you might need to install.
+
+[green]Linux[/]
+Pywry uses gtk-rs and its related libraries for window creation and Wry also needs WebKitGTK for WebView.
+To activate interactive plots/tables in pywry window, please make sure the following packages are installed:
+
+[yellow]Arch Linux / Manjaro:[/]
+[green]sudo pacman -S webkit2gtk-4.0[/]\n
+[yellow]Debian / Ubuntu:[/]
+[green]sudo apt install libwebkit2gtk-4.0-dev[/]\n
+[yellow]Fedora / CentOS / AlmaLinux:[/]
+[green]sudo dnf install gtk3-devel webkit2gtk4.0-devel[/]\r
+"""
+
+
+class PyWry:
+    """Dummy class to avoid import errors."""
+
+    max_retries = 0
+    outgoing: List[str] = []
+    init_engine: List[str] = []
+    daemon = True
+    debug = False
+    shell = False
+    base = None
+
+    try:
+        loop: asyncio.AbstractEventLoop = asyncio.get_event_loop()
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+
+    def __init__(self, *args, **kwargs):
+        """Dummy init to avoid import errors."""
+        current_user = get_current_user()
+
+        # If pywry is not installed or missing required linux dependencies
+        # we inform the user the required packages to install and revert
+        # plotly default behaviour to open in browser.
+        # We do this only once.
+        if current_user.preferences.PLOT_ENABLE_PYWRY:
+            console.print(pywry_missing)
+            if console.input(
+                "If you prefer to continue without interactive plots/tables, "
+                "press [green]enter[/] or [red]ctrl+c[/] to exit."
+            ):
+                dotenv.set_key(SETTINGS_ENV_FILE, "PLOT_ENABLE_PYWRY", "0")
+
+        current_user.preferences.USE_INTERACTIVE_DF = False
+
+        pass
+
+    def close(self, *args, **kwargs):
+        """Dummy method to avoid errors."""
+        pass
+
+    def start(self, debug: bool = False):
+        """Dummy method to avoid errors."""
+        pass
+
+    async def check_backend(self):
+        """Dummy check backend method to avoid errors and revert to browser."""
+        raise Exception

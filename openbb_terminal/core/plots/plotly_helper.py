@@ -270,7 +270,7 @@ class OpenBBFigure(go.Figure):
         self._feature_flags_applied = False
         self._exported = False
         self._cmd_xshift = 0
-        self._bar_width = 0.0001
+        self._bar_width = 0.2
         self._subplot_xdates: Dict[int, Dict[int, List[Any]]] = {}
 
         if xaxis := kwargs.pop("xaxis", None):
@@ -806,7 +806,7 @@ class OpenBBFigure(go.Figure):
 
     @staticmethod
     def chart_volume_scaling(
-        df_volume: pd.DataFrame, range_x: int = 4
+        df_volume: pd.DataFrame, range_x: int = 7
     ) -> Dict[str, list]:
         """Takes df_volume and returns volume_ticks, tickvals for chart volume scaling
 
@@ -815,7 +815,7 @@ class OpenBBFigure(go.Figure):
         df_volume : pd.DataFrame
             Dataframe of volume (e.g. df_volume = df["Volume"])
         range_x : int, optional
-            Number to multiply volume, by default 4
+            Number to multiply volume, by default 7
 
         Returns
         -------
@@ -879,9 +879,10 @@ class OpenBBFigure(go.Figure):
             yaxis="y2",
             row=row,
             col=col,
+            opacity=0.9,
             secondary_y=False,
         )
-        ticksize = 14 - (self.subplots_kwargs["rows"] // 1.5)
+        ticksize = 14 - (self.subplots_kwargs["rows"] // 2)
         self.update_layout(
             yaxis=dict(
                 fixedrange=True,
