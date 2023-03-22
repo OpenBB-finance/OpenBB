@@ -16,6 +16,7 @@
     "@radix-ui/react-icons": "^1.2.0",
     "@radix-ui/react-radio-group": "^1.1.2",
     "@radix-ui/react-select": "^1.2.1",
+    "@radix-ui/react-toast": "^1.1.3",
     "@tanstack/match-sorter-utils": "^8.7.6",
     "@tanstack/react-table": "^8.7.9",
     "dom-to-image": "^2.6.0",

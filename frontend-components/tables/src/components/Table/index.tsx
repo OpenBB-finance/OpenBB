@@ -1,53 +1,38 @@
 import {
-  ColumnDef,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
-  Row,
   SortingState,
   useReactTable,
 } from "@tanstack/react-table";
-import { rankItem } from "@tanstack/match-sorter-utils";
 import clsx from "clsx";
-import {
-  FC,
-  HTMLProps,
-  useEffect,
-  useMemo,
-  useReducer,
-  useRef,
-  useState,
-} from "react";
+import { useMemo, useRef, useState } from "react";
 import { useVirtual } from "react-virtual";
-import Chart from "../Chart";
 import Select from "../Select";
-import {
-  downloadData,
-  downloadImage,
-  formatNumberMagnitude,
-  fuzzyFilter,
-  isEqual,
-} from "../../utils/utils";
+import { formatNumberMagnitude, fuzzyFilter, isEqual } from "../../utils/utils";
 import DraggableColumnHeader from "./ColumnHeader";
-import IndeterminateCheckbox from "./InderterminateCheckbox";
-import DebouncedInput from "./DebouncedInput";
 import Pagination from "./Pagination";
 import Export from "./Export";
 import Timestamp from "./Timestamp";
 import FilterColumns from "./FilterColumns";
 import xss from "xss";
 import useLocalStorage from "../../utils/useLocalStorage";
+import Toast from "../Toast";
+
 const date = new Date();
+
+const MAX_COLUMNS = 12;
 
 export default function Table({ data, columns, title }: any) {
   const [advanced, setAdvanced] = useLocalStorage("advanced", false);
   const [sorting, setSorting] = useState<SortingState>([]);
   const [globalFilter, setGlobalFilter] = useState("");
   const [fontSize, setFontSize] = useLocalStorage("fontSize", "1");
+  const [open, setOpen] = useState(columns.length > MAX_COLUMNS);
   const defaultVisibleColumns = columns.reduce((acc, cur, idx) => {
-    acc[cur] = idx < 12 ? true : false;
+    acc[cur] = idx < MAX_COLUMNS ? true : false;
     return acc;
   }, {});
   const [columnVisibility, setColumnVisibility] = useState(
@@ -203,6 +188,18 @@ export default function Table({ data, columns, title }: any) {
 
   return (
     <>
+      <Toast
+        toast={{
+          id: "max-columns",
+          title: "Max 12 columns are visible by default",
+          description:
+            "You can change this by clicking in advanced and then top right 'Filter' button",
+          status: "info",
+        }}
+        open={open}
+        setOpen={setOpen}
+      />
+
       {/*dialog && (
         <>
           <div
