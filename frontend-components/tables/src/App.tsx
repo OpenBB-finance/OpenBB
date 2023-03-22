@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import Table from "./components/Table";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import { cryptoData } from "./data/mockup";
+import { cryptoData, incomeData } from "./data/mockup";
 
 declare global {
   interface Window {

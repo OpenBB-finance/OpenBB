@@ -46,16 +46,37 @@ export default function Table({ data, columns, title }: any) {
         header: column,
         footer: column,
         cell: ({ row, ...otherProps }: any) => {
-          const hasIndex = row.original.hasOwnProperty("index");
+          // figure out whether it has index or Index;
+          const indexLabel = row.original.hasOwnProperty("index")
+            ? "index"
+            : row.original.hasOwnProperty("Index")
+            ? "Index"
+            : null;
+          const indexValue = indexLabel ? row.original[indexLabel] : null;
           const value = row.original[column];
           const valueType = typeof value;
           const probablyDate =
             column.toLowerCase().includes("date") ||
             column.toLowerCase() === "index" ||
-            (hasIndex &&
-              typeof row.original.index == "string" &&
-              (row.original.index.toLowerCase().includes("date") ||
-                row.original.index.toLowerCase().includes("day")));
+            (indexValue &&
+              typeof indexValue == "string" &&
+              (indexValue.toLowerCase().includes("date") ||
+                indexValue.toLowerCase().includes("day") ||
+                indexValue.toLowerCase().includes("time") ||
+                indexValue.toLowerCase().includes("timestamp") ||
+                indexValue.toLowerCase().includes("year") ||
+                indexValue.toLowerCase().includes("month") ||
+                indexValue.toLowerCase().includes("week") ||
+                indexValue.toLowerCase().includes("hour") ||
+                indexValue.toLowerCase().includes("minute")));
+
+          console.log(
+            "probablyDate",
+            probablyDate,
+            column,
+            row.original.Index,
+            value
+          );
           const probablyLink =
             valueType === "string" && value.startsWith("http");
 
@@ -77,17 +98,17 @@ export default function Table({ data, columns, title }: any) {
             }
 
             try {
-              let dateFormatted = new Date(value);
-              // check if date is midnight UTC
+              const date = new Date(value);
+              let dateFormatted = "";
               if (
-                dateFormatted.getUTCHours() === 0 &&
-                dateFormatted.getUTCMinutes() === 0 &&
-                dateFormatted.getUTCSeconds() === 0 &&
-                dateFormatted.getMilliseconds() === 0
+                date.getUTCHours() === 0 &&
+                date.getUTCMinutes() === 0 &&
+                date.getUTCSeconds() === 0 &&
+                date.getMilliseconds() === 0
               ) {
-                dateFormatted = dateFormatted.toISOString().split("T")[0];
+                dateFormatted = date.toISOString().split("T")[0];
               } else {
-                dateFormatted = dateFormatted.toISOString();
+                dateFormatted = date.toISOString();
                 dateFormatted =
                   dateFormatted.split("T")[0] +
                   " " +

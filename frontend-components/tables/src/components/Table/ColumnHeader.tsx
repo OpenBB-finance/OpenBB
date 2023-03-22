@@ -12,11 +12,10 @@ function Filter({
   table: any;
   numberOfColumns: number;
 }) {
-  //get all rows values
-
   const values = table
     .getPreFilteredRowModel()
     .flatRows.map((row) => row.getValue(column.id));
+
   const areAllValuesString = values.every(
     (value) => typeof value === "string" || value === null
   );
@@ -24,11 +23,15 @@ function Filter({
     (value) => typeof value === "number" || value === null
   );
 
+  const valuesContainStringWithSpaces = values.some(
+    (value) => typeof value === "string" && value.includes(" ")
+  );
+
   const columnFilterValue = column.getFilterValue();
 
   const isProbablyDate =
     column.id.toLowerCase().includes("date") ||
-    column.id.toLowerCase() === "index";
+    (column.id.toLowerCase() === "index" && !valuesContainStringWithSpaces);
 
   if (isProbablyDate) {
     function getTime(value) {
