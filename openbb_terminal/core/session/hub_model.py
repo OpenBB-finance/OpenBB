@@ -1,5 +1,5 @@
 import json
-from typing import Dict, Optional
+from typing import Dict, Literal, Optional
 
 import requests
 
@@ -235,7 +235,7 @@ def fetch_user_configs(
 def upload_config(
     key: str,
     value: str,
-    type_: str,
+    type_: Literal["keys", "settings", "sources"],
     auth_header: str,
     base_url: str = BASE_URL,
     timeout: int = TIMEOUT,
@@ -248,7 +248,7 @@ def upload_config(
         The key to patch.
     value : str
         The value to patch.
-    type_ : str
+    type_ : Literal["keys", "settings"]
         The type of the patch, either "keys" or "settings".
     auth_header : str
         The authorization header, e.g. "Bearer <token>".
@@ -262,9 +262,6 @@ def upload_config(
     Optional[requests.Response]
         The response from the patch request.
     """
-    if type_ not in ["keys", "settings"]:
-        console.print("[red]\nInvalid patch type.[/red]")
-        return None
 
     data = {"key": f"features_{type_}.{key}", "value": value}
 

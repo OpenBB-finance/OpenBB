@@ -5,7 +5,7 @@ from typing import Any, Dict, List
 
 def nested_dict(test_str, sep, value) -> Dict:
     if sep not in test_str:
-        return {test_str: [value]}
+        return {test_str: value}
     key, val = test_str.split(sep, 1)
     return {key: nested_dict(val, sep, value)}
 
