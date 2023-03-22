@@ -97,17 +97,17 @@ class SettingsController(BaseController):
             self.sort_filter += f"{tz}|"
         self.sort_filter += ")*)"
 
-        preview = ""
-        for tag in sorted(
-            set(
-                [
-                    name.replace("[", "").replace("]", "").replace("/", "")
-                    for name in RICH_TAGS
-                ]
-            )
-        ):
-            preview += f"[{tag}]{tag}[/{tag}], "
-        self.PREVIEW = "[" + preview[:-2] + "]"
+        self.PREVIEW = ", ".join(
+            [
+                f"[{tag}]{tag}[/{tag}]"
+                for tag in sorted(
+                    set(
+                        name.replace("[", "").replace("]", "").replace("/", "")
+                        for name in RICH_TAGS
+                    )
+                )
+            ]
+        )
 
     def parse_input(self, an_input: str) -> List:
         """Parse controller input
