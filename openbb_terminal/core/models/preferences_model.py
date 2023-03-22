@@ -1,5 +1,5 @@
 import os
-from typing import Any, Optional
+from typing import Optional
 
 from pydantic import NonNegativeInt, PositiveFloat, PositiveInt
 from pydantic.dataclasses import dataclass
@@ -8,12 +8,13 @@ from openbb_terminal.core.config.paths import (
     HOME_DIRECTORY,
     USER_DATA_SOURCES_DEFAULT_FILE,
 )
+from openbb_terminal.core.models import BaseModel
 
 # pylint: disable=too-many-instance-attributes, disable=no-member
 
 
 @dataclass(config=dict(validate_assignment=True, frozen=True))
-class PreferencesModel:
+class PreferencesModel(BaseModel):
     """Data model for preferences."""
 
     # PLOT
@@ -97,23 +98,5 @@ class PreferencesModel:
     USER_FORECAST_MODELS_DIRECTORY = USER_DATA_DIRECTORY / "exports" / "forecast_models"
     USER_FORECAST_WHISPER_DIRECTORY = USER_DATA_DIRECTORY / "exports" / "whisper"
 
-    def __repr__(self) -> str:
-        """Return string representation of model."""
-        dataclass_repr = ""
-        for key, value in self.__dict__.items():
-            if key.startswith("_"):
-                continue
-            dataclass_repr += f"    {key}='{value}', \n"
-
-        return f"{self.__class__.__name__}(\n{dataclass_repr[:-2]}\n)"
-
-    @classmethod
-    def get_fields(cls) -> dict[str, Any]:
-        """Get dict of fields."""
-        return cls.__dataclass_fields__  # type: ignore
-
-    def get_field_value(self, field: str) -> Optional[str]:
-        """Get field value."""
-        if hasattr(self, field):
-            return getattr(self, field)
-        return None
+    def __repr__(self) -> str:  # pylint: disable=useless-super-delegation
+        return super().__repr__()

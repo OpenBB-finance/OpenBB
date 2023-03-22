@@ -9,36 +9,44 @@ interactions:
       Connection:
       - keep-alive
     method: GET
-    uri: https://seekingalpha.com/api/v3/earnings_calendar/tickers?filter%5Bselected_date%5D=2023-03-21&filter%5Bwith_rating%5D=false&filter%5Bcurrency%5D=USD
+    uri: https://seekingalpha.com/api/v3/earnings_calendar/tickers?filter%5Bselected_date%5D=2023-03-22&filter%5Bwith_rating%5D=false&filter%5Bcurrency%5D=USD
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA7VY3VLbOBh9FY1n9g6o7Vi2w53juCQlf41NB9jZYVRHJBocyZVlBobhgXq9j9AX
-        WzkwtVvURQi4tGJPjo7Od77z6c5aIYGsw7/vLLKyDq2+E1h7lrgtsXzAiFNC1xc5KjBdIX4hSH6F
-        uXwBCcHJ11rgyjq8s6qiXsvXZ8eJ/ImibfPtbHyc7IExzQ/kGr7JN4iud+tnafNWhXPB+EXzny7c
-        szguMKqw/IPdxwtWif0p4ldYWPf3e4/YYAhh6BjDy6YdeBmmOaYCTOuK5CChAnOBCN02a0ec1eVz
-        qKH9FDXHT0H7juv2zDmdz+azltQ5BSNWrOSZgOjoOYQqXlUIHbdvG5N61CX1SB59KlgJYsbLtzt3
-        B/q+3TOGOPp81jI4wqgQm+RbTcStUp5ROow+/yrQ3gsEGhrDTCaLFmbMtiWiG4LAAnFEEaYVBiss
-        hYr5Wq7ug3i+SCbPSQBqI7dDcw3E6bhh7LHwYwl3RRAFKSsQVzmAgmJPF6gbur4xxdF42eKMoqWm
-        ThWVrvQnL+z3jbEliyhuwTXnXKIcZIwVD370xlhhEPQdcybjKPpFrbxkHOXkx78URNsf3znJEYhI
-        syoqkB5Ez5uBLsmyA0DnFWZwcha1NI/kk0qhT3qUvtt7tmteSVE87IhgwdlHyepPy1e5qqKWHF0q
-        ex50zTvTl1mStUw2Tw9C1XVV7ZL37SCE5lKdTIenLc5JvSUcDW/AhGyJwCv5SzecKOjUdn/f7ruB
-        eTyZTLollWEufR/M+VciULErfllhgjD6G+InUnUVx69q+75te7a5VLNk0imk5gkMCNM9/BeQ6oTQ
-        M3bVwTj72B7+gIhLxLcVmIjV746kOHmVQlVM9oKe+bHH2bIT8GIiCMi4TNuVLpW6MQ/2w/4rzjvt
-        hKiU7Z+xWobQcZOb6U6WUqSKsK9gVddKHcd3HHNe0+mk0+xTvC0wB2lOZMAnlyTXZVdbqLKhur65
-        m55+nHfgnnpgsZFKRTmu5cyFCm01aOP1ZeKzzQtrdLbo4B3JeZFfEorfgdZQ+qpx/Z8ni05OOcdl
-        CR4mgJc4qq4PwMCDvrliB8vdTPcYowccrddATlTNsLebSDXrS9cP5GAaOubMjmfHnfY/JbNjkG0w
-        R+VOsa/Sq8pjfcf2XXNus8F43nKbyduGilTv07DkOB2Y19VJtkxboFNZUvwagbSWU5+0gbcvL983
-        T1bjYadzNa2gKEi+wfmVLkxVYSknK2muvgONXeBTR6mf5Gha1iDD+Yaygq1vVWX1JFR5mqEKQs8c
-        ZpR0emw0HF4jKtAat1gJrt4pYzu250Lz8kq+zI9b1SbX7Ao/NjBdKWj3reA1oWB+mnZuKuY3l4yv
-        QPqtRhyDGJU/o7ZOONRUhDSuMDTPBQ3iTlf4M2R5JQQPoP0XmGVgmQyTZAp6zgc7+ODabghO0iFw
-        G2U+M+zo6ty3YeC6xgXZ7Oq8Fcyfd3UA/AMXyk0xedUM5FYat3qzPchbRfMBqNlDcwH32K//fw/d
-        LTTN4ZVb+Of+P2cxn9a4FwAA
+        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
+        DxYkAAA=
     headers:
       Accept-Ranges:
       - bytes
       Age:
-      - '13705'
+      - '41341'
       Allow:
       - GET, POST, HEAD, PUT, PATCH, DELETE, OPTIONS
       Cache-Control:
@@ -48,16 +56,16 @@ interactions:
       Content-Encoding:
       - gzip
       Content-Length:
-      - '1158'
+      - '1601'
       Content-Security-Policy:
       - 'default-src https: wss: data: blob: ''unsafe-inline'' ''unsafe-eval''; report-uri
         https://seekingalpha.com/report/csp'
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Tue, 21 Mar 2023 14:27:48 GMT
+      - Wed, 22 Mar 2023 10:28:38 GMT
       ETag:
-      - W/"61b660f3e2d54dd7f13c3f08e1b7a3a0"
+      - W/"33f6b6e4391c8e9208cebcc48d4ef9dd"
       Referrer-Policy:
       - strict-origin-when-cross-origin
       Strict-Transport-Security:
@@ -67,7 +75,7 @@ interactions:
       X-Cache:
       - HIT, HIT
       X-Cache-Hits:
-      - 1, 1
+      - 3, 1
       X-Content-Type-Options:
       - nosniff
       X-Download-Options:
@@ -77,18 +85,18 @@ interactions:
       X-Permitted-Cross-Domain-Policies:
       - none
       X-Request-Id:
-      - hw7RmhMXv87c5KQX
+      - tm8sq8IsWasga-jA
       X-Runtime:
-      - '0.036434'
+      - '0.035232'
       X-Served-By:
-      - cache-bfi-kbfi7400094-BFI, cache-chi-kigq8000134-CHI
+      - cache-bfi-kbfi7400066-BFI, cache-lis1490044-LIS
       X-Timer:
-      - S1679408869.804406,VS0,VE2
+      - S1679480919.664360,VS0,VE1
       X-XSS-Protection:
       - 1; mode=block
       set-cookie:
-      - machine_cookie=7170077570495; expires=Mon, 20 Mar 2028 14:27:48 GMT; path=/;
-      - machine_cookie_ts=1679408868; expires=Mon, 20 Mar 2028 14:27:48 GMT; path=/;
+      - machine_cookie=7862617054961; expires=Tue, 21 Mar 2028 10:28:38 GMT; path=/;
+      - machine_cookie_ts=1679480918; expires=Tue, 21 Mar 2028 10:28:38 GMT; path=/;
     status:
       code: 200
       message: OK

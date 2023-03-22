@@ -17,15 +17,13 @@ import matplotlib.pyplot as plt
 # IMPORTATION THIRDPARTY
 from packaging import version
 
-from openbb_terminal import (
-    thought_of_the_day as thought,
-)
-from openbb_terminal.config_terminal import LOGGING_COMMIT_HASH, VERSION
+from openbb_terminal import thought_of_the_day as thought
 
 # IMPORTATION INTERNAL
 from openbb_terminal.core.config.paths import SETTINGS_ENV_FILE
 from openbb_terminal.core.plots.backend import plots_backend
 from openbb_terminal.core.session.constants import REGISTER_URL
+from openbb_terminal.core.session.current_system import get_current_system
 from openbb_terminal.core.session.current_user import (
     get_current_user,
     is_local,
@@ -102,7 +100,7 @@ def update_terminal():
     """Updates the terminal by running git pull in the directory.
     Runs poetry install if needed.
     """
-    if not WITH_GIT or LOGGING_COMMIT_HASH != "REPLACE_ME":
+    if not WITH_GIT or get_current_system().LOGGING_COMMIT_HASH != "REPLACE_ME":
         console.print("This feature is not available: Git dependencies not installed.")
         return 0
 
@@ -291,7 +289,7 @@ def check_for_updates() -> None:
     if r is not None and r.status_code == 200:
         latest_tag_name = r.json()["tag_name"]
         latest_version = version.parse(latest_tag_name)
-        current_version = version.parse(VERSION)
+        current_version = version.parse(get_current_system().VERSION)
 
         if check_valid_versions(latest_version, current_version):
             if current_version == latest_version:
@@ -339,7 +337,7 @@ def welcome_message():
 
     Prints first welcome message, help and a notification if updates are available.
     """
-    console.print(f"\nWelcome to OpenBB Terminal v{VERSION}")
+    console.print(f"\nWelcome to OpenBB Terminal v{get_current_system().VERSION}")
 
     if get_current_user().preferences.ENABLE_THOUGHTS_DAY:
         console.print("---------------------------------")

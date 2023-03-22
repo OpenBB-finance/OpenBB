@@ -20,12 +20,14 @@ from _pytest.mark.structures import Mark
 
 # IMPORTS INTERNAL
 from openbb_terminal import (
+    config_terminal,
     decorators,
     helper_funcs,
 )
 
 # pylint: disable=redefined-outer-name
 
+config_terminal.setup_i18n()
 
 DISPLAY_LIMIT: int = 500
 EXTENSIONS_ALLOWED: List[str] = ["csv", "json", "txt"]
