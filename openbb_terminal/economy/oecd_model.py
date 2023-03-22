@@ -693,18 +693,24 @@ def get_gdp_forecast(
     if types not in ["real", "nominal"]:
         return console.print("Use either 'real' or 'nominal' for type")
 
-    if types == "real":
-        df = pd.read_csv(
-            f"https://stats.oecd.org/sdmx-json/data/DP_LIVE/.REALGDPFORECAST.TOT.AGRWTH.{units}/OECD?contentType=csv&detail=code"
-            f"&separator=comma&csv-lang=en&startPeriod={start_date}&endPeriod={end_date}",
-            index_col=5,
-        )
-    else:
-        df = pd.read_csv(
-            f"https://stats.oecd.org/sdmx-json/data/DP_LIVE/.NOMGDPFORECAST.TOT.AGRWTH.{units}/OECD?contentType=csv&detail=code"
-            f"&separator=comma&csv-lang=en&startPeriod={start_date}&endPeriod={end_date}",
-            index_col=5,
-        )
+    df = pd.DataFrame()
+
+    try:
+        if types == "real":
+            df = pd.read_csv(
+                f"https://stats.oecd.org/sdmx-json/data/DP_LIVE/.REALGDPFORECAST.TOT.AGRWTH.{units}/OECD?contentType=csv&detail=code"
+                f"&separator=comma&csv-lang=en&startPeriod={start_date}&endPeriod={end_date}",
+                index_col=5,
+            )
+        else:
+            df = pd.read_csv(
+                f"https://stats.oecd.org/sdmx-json/data/DP_LIVE/.NOMGDPFORECAST.TOT.AGRWTH.{units}/OECD?contentType=csv&detail=code"
+                f"&separator=comma&csv-lang=en&startPeriod={start_date}&endPeriod={end_date}",
+                index_col=5,
+            )
+    except Exception as e:
+        console.print(f"Error getting data from OECD: [red]{e}[/red]")
+        return df
 
     df = df.iloc[:, [0, 5]]
 

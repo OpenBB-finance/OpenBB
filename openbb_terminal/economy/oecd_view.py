@@ -254,58 +254,60 @@ def plot_gdp_forecast(
     units = "Q" if quarterly else "A"
     df = oecd_model.get_gdp_forecast(countries, types, units, start_date, end_date)
 
-    fig = OpenBBFigure(yaxis_title="Growth rates Compared to Previous Year (%)")
+    if not df.empty:
+        fig = OpenBBFigure(yaxis_title="Growth rates Compared to Previous Year (%)")
 
-    future_dates = df[
-        df.index > str(datetime.now())
-        if units == "Q"
-        else df.index >= datetime.now().year
-    ]
-    for country in df.columns:
-        fig.add_scatter(
-            x=df.index,
-            y=df[country],
-            name=country.replace("_", " ").title(),
-            mode="lines",
-            line_width=2.5,
-            showlegend=True,
+        future_dates = df[
+            df.index > str(datetime.now())
+            if units == "Q"
+            else df.index >= datetime.now().year
+        ]
+        for country in df.columns:
+            fig.add_scatter(
+                x=df.index,
+                y=df[country],
+                name=country.replace("_", " ").title(),
+                mode="lines",
+                line_width=2.5,
+                showlegend=True,
+            )
+
+        if not future_dates.empty:
+            fig.add_vrect(
+                x0=future_dates.index[0],
+                x1=future_dates.index[-1],
+                annotation_text="Forecast",
+                fillcolor="yellow",
+                opacity=0.20,
+                line_width=0,
+            )
+
+        title = (
+            f"Forecast of {'Quarterly' if units == 'Q' else 'Annual'} "
+            f"{'Real' if types == 'real' else 'Nominal'} Gross Domestic Product (GDP)"
+        )
+        fig.set_title(title, font_size=20)
+
+        if raw:
+            print_rich_table(
+                df,
+                headers=list(df.columns),
+                show_index=True,
+                title=title,
+                export=bool(export),
+            )
+
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "forecast_gdp",
+            df / 100,
+            sheet_name,
+            fig,
         )
 
-    if not future_dates.empty:
-        fig.add_vrect(
-            x0=future_dates.index[0],
-            x1=future_dates.index[-1],
-            annotation_text="Forecast",
-            fillcolor="yellow",
-            opacity=0.20,
-            line_width=0,
-        )
-
-    title = (
-        f"Forecast of {'Quarterly' if units == 'Q' else 'Annual'} "
-        f"{'Real' if types == 'real' else 'Nominal'} Gross Domestic Product (GDP)"
-    )
-    fig.set_title(title, font_size=20)
-
-    if raw:
-        print_rich_table(
-            df,
-            headers=list(df.columns),
-            show_index=True,
-            title=title,
-            export=bool(export),
-        )
-
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "forecast_gdp",
-        df / 100,
-        sheet_name,
-        fig,
-    )
-
-    return fig.show(external=external_axes)
+        return fig.show(external=external_axes)
+    return None
 
 
 @log_start_end(log=logger)
