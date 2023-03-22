@@ -139,10 +139,6 @@ class ReportController(BaseController):
 
     @log_start_end(log=logger)
     def call_forecast(self, other_args: List[str]):
-        # if is_packaged_application():
-        #     console.print("This report is disabled for the installed version")
-        #     return
-
         try:
             # noqa: F401, E501 # pylint: disable=C0415,W0611
             import darts  # noqa # pyright: reportMissingImports=false
@@ -195,19 +191,19 @@ class ReportController(BaseController):
             ns_parser = self.parse_simple_args(parser, other_args)
 
             if ns_parser:
+                cfg.change_logging_suppress(new_value=True)
                 if report_name == "equity" and "." in ns_parser.symbol:
                     console.print(
                         "[red]Cannot currently handle tickers with a '.' in them[/red]\n"
                     )
                     return
-                cfg.LOGGING_SUPPRESS = True
                 parameters = vars(ns_parser)
                 parameters.pop("help")
                 reports_model.render_report(
                     input_path=str(reports_model.REPORTS_FOLDER / report_name),
                     args_dict=parameters,
                 )
-                cfg.LOGGING_SUPPRESS = False
+                cfg.change_logging_suppress(new_value=False)
 
         else:
             console.print("[red]Notebook not found![/red]\n")
