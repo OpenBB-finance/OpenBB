@@ -402,10 +402,8 @@ def load(
             if df_stock_candidate.empty:
                 return pd.DataFrame()
 
-            df_stock_candidate.index = (
-                pd.to_datetime(df_stock_candidate.index, utc=True)
-                .tz_convert(pytz.timezone("America/New_York"))
-                .tz_localize(None)
+            df_stock_candidate.index = pd.to_datetime(
+                df_stock_candidate.index, utc=True
             )
 
             s_start = (
@@ -472,6 +470,10 @@ def load(
                 pytz.utc.localize(s_start_dt) if s_start_dt > start_date else start_date
             )
             s_interval = f"{interval}min"
+
+        if not prepost:
+            df_stock_candidate = df_stock_candidate.between_time("9:30", "16:00")
+
         int_string = "Intraday"
 
     s_intraday = (f"Intraday {interval}min", int_string)[interval == 1440]
@@ -518,11 +520,7 @@ def display_candle(
         Flag to add high and low trends to chart
     ma: Tuple[int]
         Moving averages to add to the candle
-    asset_type_: str
-        String to include in title
-    external_axes : bool, optional
-        Whether to return the figure object or not, by default False
-    asset_type_: str
+    asset_type: str
         String to include in title
     start_date: str or datetime, optional
         Start date to get data from with. - datetime or string format (YYYY-MM-DD)
@@ -538,6 +536,8 @@ def display_candle(
         Flag to get weekly data
     monthly: bool
         Flag to get monthly data
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     raw : bool, optional
         Flag to display raw data, by default False
     yscale: str
@@ -592,14 +592,18 @@ def display_candle(
     if ma:
         kwargs["rma"] = dict(length=ma)
 
+    if data.index[-2].date() == data.index[-1].date():
+        interval = int((data.index[1] - data.index[0]).seconds / 60)
+
     data.name = f"{asset_type} {symbol}"
+
     fig = PlotlyTA.plot(data, dict(**kwargs), prepost=prepost)
 
     if add_trend:
-        fig.add_trend(data)
+        fig.add_trend(data, secondary_y=True)
 
-    fig.update_layout(yaxis=dict(title="Stock Price ($)", type=yscale))
-    fig.add_logscale_menus()
+    fig.update_layout(yaxis2=dict(title="Stock Price ($)", type=yscale))
+    fig.add_logscale_menus("yaxis2")
 
     return fig.show(external=external_axes)
 
@@ -887,10 +891,16 @@ def show_codes_polygon(ticker: str):
     r_json = r_json["results"]
     cols = ["cik", "composite_figi", "share_class_figi", "sic_code"]
     vals = [r_json[col] for col in cols]
-    polygon_df = pd.DataFrame({"codes": [c.upper() for c in cols], "vals": vals})
+    polygon_df = pd.DataFrame(
+        {"codes": [c.upper() for c in cols], "values": vals},
+        columns=["codes", "values"],
+    )
     polygon_df.codes = polygon_df.codes.apply(lambda x: x.replace("_", " "))
     print_rich_table(
-        polygon_df, show_index=False, headers=["", ""], title=f"{ticker.upper()} Codes"
+        polygon_df,
+        show_index=False,
+        headers=["code", "value"],
+        title=f"{ticker.upper()} Codes",
     )
 
 
