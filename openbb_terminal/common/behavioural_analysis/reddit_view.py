@@ -142,7 +142,7 @@ def display_popular_tickers(
     print_rich_table(
         popular_tickers_df,
         headers=list(popular_tickers_df.columns),
-        show_index=False,
+        show_index=True,
         title=f"The following TOP {limit} tickers have been mentioned",
         export=bool(export),
     )

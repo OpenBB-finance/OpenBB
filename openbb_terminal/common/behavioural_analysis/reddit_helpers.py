@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import re
+import urllib.request
 from typing import List
 
 import pandas as pd
@@ -101,11 +102,11 @@ def has_content(submission_) -> bool:
 
 class RedditResponses:
     def __init__(self):
-        self.count: int = 0
         self.tickers: dict = {}
         self.authors: List[str] = []
 
-    def gather(self, praw_api, responses):
+    def gather(self, praw_api, responses) -> int:
+        count = 0
         for submission in responses:
             try:
                 # Get more information about post using PRAW api
@@ -124,7 +125,7 @@ class RedditResponses:
                     l_tickers_found = find_tickers(submission_)
 
                     if l_tickers_found:
-                        self.count += len(l_tickers_found)
+                        count += len(l_tickers_found)
 
                         # Add another author's name to the parsed watchlists
                         self.authors.append(submission_.author.name)
@@ -145,11 +146,26 @@ class RedditResponses:
                     console.print("[red]Invalid API Key[/red]\n")
                 else:
                     console.print(f"[red]Invalid response: {str(e)}[/red]\n")
-                return
+                return 0
+        return count
 
-    def reset_count(self):
-        self.count = 0
+    def validate(
+        self,
+        url: str = "https://raw.githubusercontent.com/rreichel3/US-Stock-Symbols/main/all/all_tickers.txt",
+    ) -> None:
+        """Validate tickers."""
+        valids = []
+        with urllib.request.urlopen(url) as file:
+            for line in file:
+                new_item = line.decode("utf-8").replace("\n", "").strip()
+                valids.append(new_item)
+
+        for key in list(self.tickers.keys()):
+            if key not in valids:
+                self.tickers.pop(key)
 
     def to_df(self) -> pd.DataFrame:
-        print(self.tickers)
-        pd.DataFrame()
+        popularity = pd.DataFrame.from_dict(self.tickers, orient="index")
+        popularity.columns = ["Mentions"]
+        popularity = popularity.sort_values(by=["Mentions"], ascending=False)
+        return popularity

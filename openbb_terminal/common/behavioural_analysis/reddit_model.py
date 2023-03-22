@@ -90,11 +90,11 @@ def get_popular_tickers(
             filter=["id"],
         )
 
-        responses.gather(praw_api, submissions.responses)
-        console.print(f"  {responses.count} potential tickers found.")
-        responses.reset_count()
+        count = responses.gather(praw_api, submissions.responses)
+        responses.validate()
+        console.print(f"  {count} potential tickers found.")
 
-    return responses.to_df()
+    return responses.to_df().head(10)
 
 
 @log_start_end(log=logger)
