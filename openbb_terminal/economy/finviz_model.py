@@ -99,7 +99,8 @@ def get_valuation_data(
         # Passing Raw data to Pandas DataFrame if using interactive mode
         if get_current_user().preferences.USE_INTERACTIVE_DF:
             return df_group
-        df_group["Market Cap"] = df_group["Market Cap"].apply(
+        print(df_group.head())
+        df_group["MarketCap"] = df_group["MarketCap"].apply(
             lambda x: float(x.strip("B"))
             if x.endswith("B")
             else float(x.strip("M")) / 1000
