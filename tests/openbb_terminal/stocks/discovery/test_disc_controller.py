@@ -344,7 +344,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
         (
             "call_upcoming",
             "seeking_alpha_view.upcoming_earning_release_dates",
-            ["--n_pages=10", "--limit=5", "--export=csv"],
+            ["--pages=10", "--limit=5", "--export=csv"],
             {"num_pages": 10, "limit": 5, "export": "csv", "sheet_name": None},
         ),
     ],

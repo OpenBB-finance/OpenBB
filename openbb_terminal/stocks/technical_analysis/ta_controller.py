@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 # pylint:disable=too-many-lines,R0904,C0201,C0302
 
 import argparse
+import json
 import logging
 from datetime import datetime
 from typing import List, Optional
@@ -27,7 +28,7 @@ from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_FIGURES_ALLOWED,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
-    check_indicators,
+    check_indicator_parameters,
     check_positive,
     check_positive_list,
     valid_date,
@@ -1685,22 +1686,17 @@ class TechnicalAnalysisController(StockBaseController):
             "-i",
             "--indicators",
             dest="indicators",
-            type=check_indicators,
-            help="Indicators to plot",
+            type=check_indicator_parameters,
+            help='Indicators with optional arguments in the form of "macd[12,26,9],rsi,sma[20]"',
             required="-h" not in other_args,
-        )
-        parser.add_argument(
-            "-p",
-            "--period",
-            dest="period",
-            type=check_positive_list,
-            help="Period window moving averages",
-            default="20,50",
-            required=False,
         )
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-i")
+
+        if all(x in other_args for x in ["-h", "-i"]):
+            check_indicator_parameters(other_args[other_args.index("-i") + 1], True)
+            console.print()
 
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
@@ -1710,11 +1706,14 @@ class TechnicalAnalysisController(StockBaseController):
                 no_ticker_message()
                 return
 
+            parameters = json.loads(ns_parser.indicators)
+            ns_parser.indicators = list(parameters.keys())
+
             custom_indicators_view.plot_multiple_indicators(
                 self.stock,
                 ns_parser.indicators,
                 self.ticker,
-                ns_parser.period,
+                parameters,
                 ns_parser.export,
             )
 
