@@ -19,6 +19,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MaxAbsScaler, MinMaxScaler, Normalizer, StandardScaler
 
 from openbb_terminal import OpenBBFigure, rich_config, theme
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
@@ -341,7 +342,8 @@ def lambda_price_prediction_color(val: float) -> str:
 
 def print_pretty_prediction(df_pred: pd.DataFrame, last_price: float):
     """Print predictions"""
-    if rich_config.USE_COLOR:
+
+    if rich_config.USE_COLOR and not get_current_user().preferences.USE_INTERACTIVE_DF:
         df_pred = pd.DataFrame(df_pred)
         df_pred.columns = ["pred"]
         df_pred["pred"] = df_pred["pred"].apply(
