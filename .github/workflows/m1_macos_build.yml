@@ -95,9 +95,6 @@ jobs:
           security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k $MACOS_KEYCHAIN_PWD build.keychain
       - name: Codesign Specific Binaries
         env:
-          MACOS_CERTIFICATE: ${{ secrets.MACOS_CERTIFICATE }}
-          MACOS_CERTIFICATE_PWD: ${{ secrets.MACOS_CERTIFICATE_PWD }}
-          MACOS_KEYCHAIN_PWD: ${{ secrets.MACOS_KEYCHAIN_PWD }}
           MACOS_CODESIGN_IDENTITY: ${{ secrets.MACOS_CODESIGN_IDENTITY }}
         run: |
           echo "Code Signing SO Files"
@@ -118,7 +115,6 @@ jobs:
           /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/sklearn/.dylibs/*.dylib
           /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/scipy/.dylibs/*.dylib
           /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/xgboost/.dylibs/*.dylib
-
           echo "Code Signing Other Files"
           /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/prophet/stan_model/prophet_model.bin
           /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/prophet/stan_model/cmdstan-2.26.1/bin/diagnose
@@ -131,6 +127,7 @@ jobs:
           /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/torch/bin/torch_shm_manager
           echo "Code Sign OpenBB Executable File"
           /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/OpenBBTerminal
+          /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/OpenBBPlotsBackend
       - name: Create DMG
         run: create-dmg --volname "OpenBB Terminal" --volicon "images/dmg_volume.icns" --background "images/openbb_dmg_background.png" --icon "OpenBB Terminal" 190 250 --window-pos 190 120 --window-size 800 400 --icon-size 100 --text-size 14 --app-drop-link 600 250 --eula LICENSE --format UDZO --no-internet-enable "OpenBB Terminal".dmg DMG
       - name: Code Sign DMG Installer

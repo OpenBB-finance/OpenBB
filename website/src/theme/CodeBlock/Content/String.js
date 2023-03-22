@@ -171,14 +171,14 @@ export default function CodeBlockString({
         </div>
       </Container>
       {imageUrl && (
-        <img
-          onError={() => {
-            setImageUrl(null);
-          }}
-          src={imageUrl}
-          alt="example"
-        />
-      )}
+            <img
+              onError={() => {
+                setImageUrl(null);
+              }}
+              src={imageUrl}
+              alt="example"
+            />
+          )}
     </>
   );
 }

@@ -91,7 +91,11 @@
         // calling OpenBBMain to avoid errors
         if (typeof OpenBBMain != "undefined" && window.plotly_figure) {
           clearInterval(interval);
-          OpenBBMain(window.plotly_figure, document.getElementById("openbb_chart"));
+          CHART_DIV = document.getElementById("openbb_chart");
+          CSV_DIV = document.getElementById("popup_csv");
+          TEXT_DIV = document.getElementById("popup_text");
+          TITLE_DIV = document.getElementById("popup_title");
+          OpenBBMain(window.plotly_figure, CHART_DIV, CSV_DIV, TEXT_DIV, TITLE_DIV);
         }
       }, 20);
     </script>

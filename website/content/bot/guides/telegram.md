@@ -13,9 +13,11 @@ To use it, you need to type slash commands in the chat. A slash command starts w
 
 To see all the available commands, you can type /help in the chat. This will show you a list of commands and their descriptions. You can also tap on any command to use it directly. Some of the most popular commands are:
 
-- /cd TICKER: Shows the daily chart for a given stock ticker.
-- /c3m TICKER: Shows the 3-month chart for a given stock ticker.
-- /flow TICKER: Shows the current price and other information for a given stock ticker.
-- /c DOGE: Shows a chart for the crypto symbol provided.
+- ```/cd AMD``` Shows the daily chart for a given stock ticker.
+- ```/c3m AMD``` Shows the 3-month chart for a given stock ticker.
+- ```/flow AMD``` Shows the recent options flow for the given stock ticker.
+- ```/c DOGE``` Shows a chart for the crypto symbol provided.
 
 That's it! You're ready to use OpenBB Telegram Bot and explore the markets. Have fun!
+
+Check out the Reference section for more commands or type ```/help``` in your chat to see what else we can do!
