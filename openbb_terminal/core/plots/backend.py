@@ -383,7 +383,7 @@ if not PLOTLYJS_PATH.exists() and not JUPYTER_NOTEBOOK:
 
 def plots_backend() -> Backend:
     """Get the backend."""
-    global BACKEND  # pylint: disable=W0603
+    global BACKEND  # pylint: disable=W0603 # noqa
     if BACKEND is None:
         BACKEND = Backend()
     return BACKEND

@@ -42,11 +42,12 @@ class Overlap(PltTA):
                             connectgaps=True,
                             row=1,
                             col=1,
+                            secondary_y=self.show_volume,
                         )
                         fig.add_annotation(
                             xref="paper",
                             yref="paper",
-                            text=f"{column.replace('_', '').replace('RMA', 'MA')}",
+                            text=f"<b>{column.replace('_', '').replace('RMA', 'MA')}</b>",
                             x=0,
                             xanchor="left",
                             yshift=-inchart_index * 18,
@@ -75,6 +76,7 @@ class Overlap(PltTA):
             opacity=0.8,
             row=1,
             col=1,
+            secondary_y=self.show_volume,
         )
         fig.add_annotation(
             xref="paper",
