@@ -94,7 +94,7 @@ When using a minimal installation, enter:
 pip install -U openbb
 ```
 
-When using a an installation with toolkits, with your virtual environment activated, enter:
+When using an installation with toolkits, with your virtual environment activated, enter:
 
 ```shell
 pip install -U openbb[all]
