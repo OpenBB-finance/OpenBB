@@ -401,17 +401,13 @@ interactions:
       Content-Type:
       - text/xml; charset=UTF-8
       Date:
-      - Thu, 23 Mar 2023 15:29:44 GMT
+      - Thu, 23 Mar 2023 16:56:19 GMT
       Expires:
-      - Thu, 23 Mar 2023 15:30:44 GMT
+      - Thu, 23 Mar 2023 16:57:19 GMT
       Last-Modified:
       - Wed, 22 Mar 2023 21:01:09 GMT
       Vary:
       - Accept-Encoding
-      x-rate-limit-limit:
-      - '120'
-      x-rate-limit-remaining:
-      - '84'
     status:
       code: 200
       message: OK
