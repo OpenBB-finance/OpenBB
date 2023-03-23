@@ -2727,7 +2727,7 @@ def set_althub_key(key: str, persist: bool = False, show_output: bool = False) -
     >>> openbb.keys.althub(key="example_key")
     """
 
-    set_credential("API_ALTHUB_TOKEN", key, persist)
+    handle_credential("API_ALTHUB_TOKEN", key, persist)
     return check_althub_key(show_output)
 
 def check_althub_key(show_output: bool = False) -> str:

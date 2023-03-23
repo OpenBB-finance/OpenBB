@@ -80,5 +80,23 @@ def get_data(
         params=query_params,
     ).json()
     df = pd.DataFrame(data=response["results"])
+    df['adjusted_sentiment'] = df['adjusted_sentiment'].astype(float)
 
+    def condition(x):
+        if x >= 250:
+            return "Super Positive"
+        elif x<250 and x>0:
+            return "Positive"
+        elif x == 0:
+            return "Neutral"
+        elif x <0 and x> -250:
+            return "Negative"
+        else:
+            return "Super Negative"
+
+    sentiment = {50:"Positive",-50:"Negative",0:"Neutral"}
+
+    if not df.empty:
+        df['raw_sentiment'] = df['raw_sentiment'].map(sentiment)
+        df['adjusted_sentiment'] = df['adjusted_sentiment'].apply(condition)
     return df
