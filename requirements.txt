@@ -106,7 +106,7 @@ loguru==0.6.0 ; python_version >= "3.8" and python_full_version != "3.9.7" and p
 lxml==4.9.2 ; python_version >= "3.8" and python_full_version != "3.9.7" and python_version < "3.11"
 markupsafe==2.1.2 ; python_version >= "3.8" and python_full_version != "3.9.7" and python_version < "3.11"
 matplotlib-inline==0.1.6 ; python_version >= "3.8" and python_full_version != "3.9.7" and python_version < "3.11"
-matplotlib==3.7.1 ; python_version >= "3.8" and python_full_version != "3.9.7" and python_version < "3.11"
+matplotlib==3.7.0 ; python_version >= "3.8" and python_full_version != "3.9.7" and python_version < "3.11"
 mccabe==0.7.0 ; python_version >= "3.8" and python_full_version != "3.9.7" and python_version < "3.11"
 mistune==2.0.5 ; python_version >= "3.8" and python_full_version != "3.9.7" and python_version < "3.11"
 more-itertools==9.1.0 ; python_version >= "3.8" and python_full_version != "3.9.7" and python_version < "3.11"
