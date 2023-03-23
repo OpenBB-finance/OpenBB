@@ -37,7 +37,7 @@ def get_current_user() -> UserModel:
 
 def set_current_user(user: UserModel):
     """Set current user."""
-    global __current_user  # pylint: disable=global-statement
+    global __current_user  # pylint: disable=global-statement # noqa
     __current_user = user
 
 
@@ -65,6 +65,20 @@ def is_local() -> bool:
         True if user is guest, False otherwise.
     """
     return not bool(__current_user.profile.token)
+
+
+def set_default_user():
+    """Set default user."""
+    env_dict = reading_env()
+    credentials = load_env_to_model(env_dict, CredentialsModel)
+    preferences = load_env_to_model(env_dict, PreferencesModel)
+    profile = ProfileModel()
+    local_user = UserModel(  # type: ignore
+        credentials=credentials,
+        preferences=preferences,
+        profile=profile,
+    )
+    set_current_user(local_user)
 
 
 def copy_user(

@@ -8,6 +8,31 @@ from openbb_terminal.base_helpers import strtobool
 from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.rich_config import console
 
+__login_called = False
+
+
+def get_login_called():
+    """Get the login/logout called flag.
+
+    Returns
+    -------
+    bool
+        The login/logout called flag.
+    """
+    return __login_called
+
+
+def set_login_called(value: bool):
+    """Set the login/logout called flag.
+
+    Parameters
+    ----------
+    value : bool
+        The login/logout called flag.
+    """
+    global __login_called  # pylint: disable=global-statement
+    __login_called = value
+
 
 def get_diff(configs: dict) -> dict:
     """Show the diff between the local and remote configs.

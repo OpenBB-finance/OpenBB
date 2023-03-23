@@ -19,6 +19,7 @@ en:
   _configure_: Configure your own terminal
   _main_menu_: Main menu
   account/_authentication_: Authentication
+  account/login: Log in to OpenBB account
   account/logout: Log out from OpenBB account
   account/_personal_access_token_: OpenBB Personal Access Token
   account/generate: Generate a Personal Access Token
@@ -1074,11 +1075,10 @@ en:
   dashboards/stocks: historic stock information
   dashboards/forecast: forecasting for timeseries datasets
   dashboards/forecasting: forecasting for timeseries datasets
+  dashboards/indicators: technical analysis indicators
   dashboards/correlation: stock correlations
-  dashboards/vsurf: options volatility surface
   dashboards/chains: options chain analysis
   dashboards/shortdata: finra shortdata analysis
-  dashboards/crypto: cryptocurrency exchange rates against USD
   dashboards/futures: historical futures performance
   reports: customizable research reports through jupyter notebooks
   reports/_reports_: Build and run your custom reports or try one of our templates

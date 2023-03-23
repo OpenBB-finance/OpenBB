@@ -3097,25 +3097,6 @@ six = ">=1.10"
 urllib3 = ">=1.15"
 
 [[package]]
-name = "ipyflex"
-version = "0.2.6"
-description = "Jupyter Widget Flex Layout"
-category = "main"
-optional = false
-python-versions = ">=3.6"
-files = [
-    {file = "ipyflex-0.2.6-py2.py3-none-any.whl", hash = "sha256:3e6fa36842f101eea89dbec0317091eb6cdbbd1b75fb056f61ed574fa6c2788e"},
-    {file = "ipyflex-0.2.6.tar.gz", hash = "sha256:312ffc1fd5e19a4222055ff2761c9896c415b3c91e9c5046b637b218c72e857b"},
-]
-
-[package.dependencies]
-ipywidgets = ">=7.0.0,<9"
-
-[package.extras]
-docs = ["jupyter-sphinx", "nbsphinx", "nbsphinx-link", "pypandoc", "pytest-check-links", "recommonmark", "sphinx (>=1.5)", "sphinx-rtd-theme"]
-test = ["nbval", "pytest (>=4.6)", "pytest-cov"]
-
-[[package]]
 name = "ipykernel"
 version = "6.21.3"
 description = "IPython Kernel for Jupyter"
@@ -7557,6 +7538,8 @@ files = [
     {file = "ruamel.yaml.clib-0.2.7-cp311-cp311-macosx_10_9_universal2.whl", hash = "sha256:045e0626baf1c52e5527bd5db361bc83180faaba2ff586e763d3d5982a876a9e"},
     {file = "ruamel.yaml.clib-0.2.7-cp311-cp311-macosx_12_6_arm64.whl", hash = "sha256:721bc4ba4525f53f6a611ec0967bdcee61b31df5a56801281027a3a6d1c2daf5"},
     {file = "ruamel.yaml.clib-0.2.7-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.manylinux_2_24_x86_64.whl", hash = "sha256:41d0f1fa4c6830176eef5b276af04c89320ea616655d01327d5ce65e50575c94"},
+    {file = "ruamel.yaml.clib-0.2.7-cp311-cp311-win32.whl", hash = "sha256:f6d3d39611ac2e4f62c3128a9eed45f19a6608670c5a2f4f07f24e8de3441d38"},
+    {file = "ruamel.yaml.clib-0.2.7-cp311-cp311-win_amd64.whl", hash = "sha256:da538167284de58a52109a9b89b8f6a53ff8437dd6dc26d33b57bf6699153122"},
     {file = "ruamel.yaml.clib-0.2.7-cp36-cp36m-macosx_10_9_x86_64.whl", hash = "sha256:4b3a93bb9bc662fc1f99c5c3ea8e623d8b23ad22f861eb6fce9377ac07ad6072"},
     {file = "ruamel.yaml.clib-0.2.7-cp36-cp36m-macosx_12_0_arm64.whl", hash = "sha256:a234a20ae07e8469da311e182e70ef6b199d0fbeb6c6cc2901204dd87fb867e8"},
     {file = "ruamel.yaml.clib-0.2.7-cp36-cp36m-manylinux2014_aarch64.whl", hash = "sha256:15910ef4f3e537eea7fe45f8a5d19997479940d9196f357152a09031c5be59f3"},
@@ -10243,4 +10226,4 @@ optimization = ["Riskfolio-Lib"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8,<3.11, !=3.9.7"
-content-hash = "a82d968078d8da8fa9a73d02ac11387477a68290dc21ed7e4044046025a8365d"
+content-hash = "e08edc0c79bf18979ca7515e304a088a50dacb686cf99e01c4359a6fa75b1433"

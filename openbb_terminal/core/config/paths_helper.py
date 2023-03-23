@@ -67,7 +67,7 @@ def init_userdata():
     """
     Initializes the user data folder
     """
-    global initialized
+    global initialized  # noqa
     if not initialized:
         create_paths(dirs_list)
         create_files(dirs_files)

@@ -45,16 +45,17 @@ class SDKLogger:
         self.__check_initialize_logging()
 
     def __check_initialize_logging(self):
-        if not cfg.LOGGING_SUPPRESS:
+        if not get_current_system().LOGGING_SUPPRESS:
             self.__initialize_logging()
 
     @staticmethod
     def __initialize_logging() -> None:
         # pylint: disable=C0415
+        from openbb_terminal.config_terminal import setup_logging_sub_app
         from openbb_terminal.core.log.generation.settings_logger import log_all_settings
         from openbb_terminal.loggers import setup_logging
 
-        cfg.LOGGING_SUB_APP = "sdk"
+        setup_logging_sub_app(sub_app="sdk")
         setup_logging()
         log_all_settings()
 
@@ -240,7 +241,7 @@ class BuildCategoryModelClasses:
         if module:
             f.write("    def __init__(self):\r        super().__init__()\r")
         elif sdk_root:
-            f.write("    __version__ = cfg.VERSION\r\r")
+            f.write("    __version__ = get_current_system().VERSION\r\r")
             f.write("    def __init__(self):\r        SDKLogger()\r")
 
     def write_class_attributes(

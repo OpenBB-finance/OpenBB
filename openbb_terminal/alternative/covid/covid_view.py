@@ -160,6 +160,7 @@ def display_covid_ov(
     export: str = "",
     sheet_name: Optional[str] = None,
     plot: bool = True,
+    external_axes: bool = False,
 ) -> Union[OpenBBFigure, None]:
     """Prints table showing historical cases and deaths by country.
 
@@ -177,6 +178,8 @@ def display_covid_ov(
         Format to export data
     plot: bool
         Flag to display historical plot
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     fig = OpenBBFigure()
 
@@ -207,7 +210,7 @@ def display_covid_ov(
             fig,
         )
 
-    return fig.show(external=raw)
+    return fig.show(external=raw or external_axes)
 
 
 @log_start_end(log=logger)
