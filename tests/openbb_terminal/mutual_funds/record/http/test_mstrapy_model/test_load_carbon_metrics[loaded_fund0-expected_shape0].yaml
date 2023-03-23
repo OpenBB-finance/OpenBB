@@ -1,0 +1,60 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.28.2
+      apikey:
+      - lstzFDEOhfFNMLikKa0am9mgEKLBl49T
+    method: GET
+    uri: https://api-global.morningstar.com/sal-service/v1/fund/esg/carbonMetrics/FOUSA00L8W/data
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAI2SbUvDMBDHv4rk9RbSrg9r32mHKAwt0y+QtdcYliWSdBURv7vXdQilqwby5u5+
+        9889fZGK273RpbFtY5Q0henAcgFl1ZKcZBmN1mRxgXbSHV4qYwEjKY3SaaDgLQhjP28HkTOXxvPc
+        gxRvCIVrmq3mqa35QCigyf8/btDsBVkYLoNwuQpeWZIzho8yxubTd1wfhpajZEp5qA4y3uATP/bg
+        llsBN3cKdI3Bxjgn1f0J1KPujOrgCLrFqq5NNY7/SOg3R1nkIXlZQBrQMPDAh030zSAsHZrFeVLo
+        bLhyMJIowVaYjhU/N+P7gprk+qTUgrz/+q9cWDZehY+edBtwUmist55W9/0DojsixO8CAAA=
+    headers:
+      Accept-Encoding:
+      - gzip
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json;charset=utf-8
+      Date:
+      - Fri, 17 Mar 2023 15:19:06 GMT
+      Host:
+      - salservice.morningstar.com
+      RequestId:
+      - 17af847f-b287-435d-a24d-07ca04461a46
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - X-SAL-ContentType,Origin,Accept-Encoding
+      Via:
+      - 1.1 47b3fa796fd76d32bef114d0b8ce8cac.cloudfront.net (CloudFront), 1.1 47b3fa796fd76d32bef114d0b8ce8cac.cloudfront.net
+        (CloudFront)
+      X-Amz-Cf-Id:
+      - YWOLCwdaQZyAxo1Qk8ASFhUDh67o8Tn7xY2bDhw-1UU0yzzC7mXImA==
+      X-Amz-Cf-Pop:
+      - VIE50-C2
+      X-Cache:
+      - Miss from cloudfront
+      X-Forwarded-Port:
+      - '9001'
+      X-Forwarded-Proto:
+      - http
+    status:
+      code: 200
+      message: OK
+version: 1

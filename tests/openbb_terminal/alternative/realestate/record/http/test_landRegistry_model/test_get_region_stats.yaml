@@ -1,0 +1,46 @@
+interactions:
+- request:
+    body: query=%0A++++++++++++++++prefix+rdf%3A+%3Chttp%3A//www.w3.org/1999/02/22-rdf-syntax-ns%23%3E%0A++++++++++++++++prefix+rdfs%3A+%3Chttp%3A//www.w3.org/2000/01/rdf-schema%23%3E%0A++++++++++++++++prefix+owl%3A+%3Chttp%3A//www.w3.org/2002/07/owl%23%3E%0A++++++++++++++++prefix+xsd%3A+%3Chttp%3A//www.w3.org/2001/XMLSchema%23%3E%0A++++++++++++++++prefix+sr%3A+%3Chttp%3A//data.ordnancesurvey.co.uk/ontology/spatialrelations/%3E%0A++++++++++++++++prefix+ukhpi%3A+%3Chttp%3A//landregistry.data.gov.uk/def/ukhpi/%3E%0A++++++++++++++++prefix+lrppi%3A+%3Chttp%3A//landregistry.data.gov.uk/def/ppi/%3E%0A++++++++++++++++prefix+skos%3A+%3Chttp%3A//www.w3.org/2004/02/skos/core%23%3E%0A++++++++++++++++prefix+lrcommon%3A+%3Chttp%3A//landregistry.data.gov.uk/def/common/%3E%0A%0A++++++++++++++++SELECT++%3Fmonth+%3FavgPrice+%3FavgPriceCash+%3FtotalSalesVolume+%3FavgPriceExistingProperty%0A++++++++++++++++%3FavgPriceFirstTimeBuyer%0A++++++++++++++++%3FavgPriceDetached+%3Fhpi++%3Fdetachedhpi+%3Fnewbuildhpi%0A++++++++++++++++%7B%0A++++++++++++++++++++values+%3FrefRegion+%7B%3Chttp%3A//landregistry.data.gov.uk/id/region/kent%3E%7D%0A++++++++++++++++++++%3Fregion+ukhpi%3ArefPeriodStart+%3Fmonth+%3B%0A++++++++++++++++++++++++++++ukhpi%3AhousePriceIndex+%3Fhpi+%3B%0A++++++++++++++++++++++++++++ukhpi%3ArefRegion+%3FrefRegion+%3B%0A++++++++++++++++++++++++++++ukhpi%3AaveragePrice+%3FavgPrice+%3B%0A++++++++++++++++++++++++++++ukhpi%3AaveragePriceCash+%3FavgPriceCash+%3B%0A++++++++++++++++++++++++++++ukhpi%3AsalesVolume+%3FtotalSalesVolume+%3B%0A++++++++++++++++++++++++++++ukhpi%3AaveragePriceDetached+%3FavgPriceDetached+%3B%0A++++++++++++++++++++++++++++ukhpi%3AaveragePriceExistingProperty+%3FavgPriceExistingProperty+%3B%0A++++++++++++++++++++++++++++ukhpi%3AaveragePriceFirstTimeBuyer+%3FavgPriceFirstTimeBuyer+%3B%0A++++++++++++++++++++++++++++ukhpi%3AhousePriceIndexDetached+%3Fdetachedhpi+%3B%0A++++++++++++++++++++++++++++ukhpi%3AhousePriceIndexNewBuild+%3Fnewbuildhpi+.%0A++++++++++++++++++++%3FrefRegion+rdfs%3Alabel+%3FregionLabel+.%0A++++++++++++++++++++FILTER%28LANG%28%3FregionLabel%29+%3D+%22en%22%29.%0A++++++++++++++++++++FILTER+%28%0A++++++++++++++++++++++++%3Fmonth+%3E+%222019-01-01%22%5E%5Exsd%3Adate+%26%26%0A++++++++++++++++++++++++%3Fmonth+%3C+%222022-01-01%22%5E%5Exsd%3Adate%0A++++++++++++++++++++%29%0A%0A++++++++++++++++++++OPTIONAL+%7B%3Fregion+ukhpi%3AhousePriceIndexDetached+%3Fdetachedhpi%7D%0A++++++++++++++++++++OPTIONAL+%7B%3Fregion+ukhpi%3AhousePriceIndexNewBuild+%3Fnewbuildhpi+%7D%0A++++++++++++++++++++OPTIONAL+%7B%3Fregion+ukhpi%3AaveragePrice+%3FaveragePrice+%7D%0A++++++++++++++++%7D%0A++++++++++++++++ORDER+BY+%28%3Fmonth%29%0A++++++++++++&format=csv&output=csv&results=csv
+    headers:
+      Accept:
+      - text/csv
+      Connection:
+      - close
+      Content-Length:
+      - '2706'
+      Content-Type:
+      - application/x-www-form-urlencoded
+      Host:
+      - landregistry.data.gov.uk
+      User-Agent:
+      - sparqlwrapper 2.0.0 (rdflib.github.io/sparqlwrapper)
+    method: POST
+    uri: http://landregistry.data.gov.uk/landregistry/query
+  response:
+    body:
+      string: "month,avgPrice,avgPriceCash,totalSalesVolume,avgPriceExistingProperty,avgPriceFirstTimeBuyer,avgPriceDetached,hpi,detachedhpi,newbuildhpi\r\n2019-02-01,291516,279817,1715,288067,238726,493409,127.39,128.85,132.94\r\n2019-03-01,290914,278427,1930,287196,238133,493136,127.13,128.78,133.65\r\n2019-04-01,288935,276162,1716,285107,236693,488622,126.27,127.60,133.29\r\n2019-05-01,290551,277986,1987,287030,238125,489586,126.97,127.85,132.68\r\n2019-06-01,291179,278603,1875,287864,238608,489853,127.25,127.92,132.11\r\n2019-07-01,293279,280807,2335,289872,240482,492412,128.16,128.59,133.34\r\n2019-08-01,293695,281242,2351,290477,240442,494530,128.35,129.14,132.75\r\n2019-09-01,295667,283499,1966,292193,242156,497883,129.21,130.02,134.59\r\n2019-10-01,295889,283523,2266,292516,242123,498829,129.31,130.26,134.27\r\n2019-11-01,295493,283233,2260,292354,241902,497854,129.13,130.01,133.18\r\n2019-12-01,294250,282261,2014,291602,240808,495992,128.59,129.52,130.72\r\n2020-01-01,294384,282044,1711,291437,240868,496715,128.65,129.71,132.02\r\n2020-02-01,291909,279446,1755,288777,238812,493165,127.57,128.78,132.13\r\n2020-03-01,291604,278713,1901,288045,238494,493021,127.43,128.75,133.94\r\n2020-04-01,291705,279048,734,288100,238474,494524,127.48,129.14,134.14\r\n2020-05-01,294068,281360,938,289953,240645,498141,128.51,130.08,136.85\r\n2020-06-01,295658,282702,1412,291951,241948,500243,129.20,130.63,136.17\r\n2020-07-01,296727,283471,1742,293284,242923,500651,129.67,130.74,135.71\r\n2020-08-01,298780,285280,1734,295597,244148,504903,130.57,131.85,135.69\r\n2020-09-01,300950,287206,1911,297447,245537,510490,131.52,133.31,137.64\r\n2020-10-01,303512,290309,2453,300487,247277,516941,132.64,134.99,137.14\r\n2020-11-01,306059,292942,2454,303510,249388,521529,133.75,136.19,136.64\r\n2020-12-01,308024,295636,2811,305945,251088,524762,134.61,137.04,135.94\r\n2021-01-01,310280,297563,2239,307646,253017,528108,135.59,137.91,138.73\r\n2021-02-01,311807,299035,2769,308601,254366,530636,136.26,138.57,141.15\r\n2021-03-01,315047,301523,4063,311010,256959,536436,137.68,140.08,145.27\r\n2021-04-01,316486,302587,2504,311989,258213,539491,138.31,140.88,147.82\r\n2021-05-01,317024,302671,2159,312512,258538,540984,138.54,141.27,148.10\r\n2021-06-01,320153,305894,5149,316030,261197,545850,139.91,142.54,147.78\r\n2021-07-01,319664,305547,1247,315726,260628,545551,139.69,142.46,146.78\r\n2021-08-01,321943,307900,1938,318197,262078,551835,140.69,144.10,146.93\r\n2021-09-01,325712,311626,3770,321712,265020,559491,142.34,146.10,149.50\r\n2021-10-01,329630,315142,1377,325797,267659,570499,144.05,148.98,150.39\r\n2021-11-01,333994,319417,1918,329679,271018,579618,145.96,151.36,154.16\r\n2021-12-01,332787,318342,2007,328887,269669,579850,145.43,151.42,151.99\r\n"
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - must-revalidate,no-cache,no-store, max-age=3600
+      Connection:
+      - Close
+      Content-Length:
+      - '2692'
+      Content-Type:
+      - text/csv; charset=utf-8
+      Date:
+      - Thu, 23 Mar 2023 09:51:08 GMT
+      Expires:
+      - Thu, 23 Mar 2023 10:51:08 GMT
+      Fuseki-Request-ID:
+      - '394853'
+      Pragma:
+      - no-cache
+      Server:
+      - Apache
+    status:
+      code: 200
+      message: OK
+version: 1
