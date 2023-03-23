@@ -1,6 +1,6 @@
 ---
 title: Docker
-sidebar_position: 3
+sidebar_position: 5
 description: Installing the OpenBB Terminal via Docker supports both Windows and Unix systems (Linux + MacOS). Installation differs a bit between operating system (Windows, macOS and Linux). Please select the section matching to your OS.
 keywords:
   [
