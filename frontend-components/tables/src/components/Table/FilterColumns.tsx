@@ -29,7 +29,7 @@ export default function FilterColumns({
 
   return (
     <DropdownMenuPrimitive.Root open={open}>
-      <DropdownMenuPrimitive.Group className="flex flex-col gap-1 text-sm">
+      <DropdownMenuPrimitive.Group className="flex flex-row items-center gap-2 text-sm">
         <DropdownMenuPrimitive.Label className="whitespace-nowrap">
           {label}
         </DropdownMenuPrimitive.Label>
@@ -50,7 +50,7 @@ export default function FilterColumns({
         <DropdownMenuPrimitive.Content
           sideOffset={10}
           ref={ref}
-          className="z-50 flex flex-col gap-4 overflow-auto bg-grey-900 border-[1.5px] border-grey-700 rounded p-3 max-h-[500px]"
+          className="z-50 bg-grey-900/80 backdrop-filter backdrop-blur flex flex-col gap-4 overflow-auto border-[1.5px] border-grey-700 rounded p-3 max-h-[500px]"
         >
           <DropdownMenuPrimitive.Item>
             <label className="flex items-center gap-2">

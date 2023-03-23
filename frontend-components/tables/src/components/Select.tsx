@@ -52,7 +52,7 @@ const Select = ({
         </SelectPrimitive.Trigger>
       </SelectPrimitive.Group>
       <SelectPrimitive.Portal>
-        <SelectPrimitive.Content className="z-50 overflow-hidden bg-grey-900 border-[1.5px] border-grey-700 rounded p-3 shadow-[0px_10px_38px_-10px_rgba(22,_23,_24,_0.35),0px_10px_20px_-15px_rgba(22,_23,_24,_0.2)]">
+        <SelectPrimitive.Content className="z-50 bg-grey-900/80 backdrop-filter backdrop-blur overflow-hidden border-[1.5px] border-grey-700 rounded p-3 shadow-[0px_10px_38px_-10px_rgba(22,_23,_24,_0.35),0px_10px_20px_-15px_rgba(22,_23,_24,_0.2)]">
           <SelectPrimitive.ScrollUpButton className="flex items-center justify-center h-[25px] cursor-default">
             <ChevronUpIcon />
           </SelectPrimitive.ScrollUpButton>

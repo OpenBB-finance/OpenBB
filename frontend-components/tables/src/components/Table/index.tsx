@@ -300,8 +300,11 @@ export default function Table({ data, columns, title, source = "" }: any) {
           </div>
         </>
       )*/}
-      <div ref={tableContainerRef} className={clsx("overflow-hidden")}>
-        <div className="flex gap-2 px-6 items-end justify-between pt-4">
+      <div
+        ref={tableContainerRef}
+        className={clsx("overflow-x-hidden h-screen")}
+      >
+        <div className="bg-grey-900/70 backdrop-filter backdrop-blur flex gap-2 px-6 items-center justify-between pt-4 ">
           <div className="flex gap-10 items-center">
             <div className="flex gap-[14px]">
               <input
@@ -336,11 +339,12 @@ export default function Table({ data, columns, title, source = "" }: any) {
           {advanced && (
             <div className="flex gap-10 items-end">
               {needsReorder && (
-                <button onClick={() => resetOrder()} className="_btn h-10">
+                <button onClick={() => resetOrder()} className="_btn h-9">
                   Reset Order
                 </button>
               )}
               <Select
+                labelType="row"
                 value={fontSize}
                 onChange={setFontSize}
                 label="Font size"
@@ -385,7 +389,8 @@ export default function Table({ data, columns, title, source = "" }: any) {
             </div>
           )}
         </div>
-        <div className="relative p-6" id="table">
+        <div className="relative p-6 mb-20" id="table">
+          <div className="absolute -inset-0.5 bg-gradient-to-r rounded-md blur-md from-[#072e49]/30 via-[#0d345f]/30 to-[#0d3362]/30"></div>
           <div
             className={
               "border border-grey-200/60 bg-grey-900 rounded overflow-hidden relative z-20"
@@ -526,9 +531,8 @@ export default function Table({ data, columns, title, source = "" }: any) {
               </table>
             </div>
           </div>
-          <div className="absolute -inset-1 rounded-md blur-md bg-gradient-to-br from-[#072e49]/30 via-[#0d345f]/30 to-[#0d3362]/30"></div>
         </div>
-        <div className="flex gap-10 justify-between py-4 px-6">
+        <div className="fixed bg-grey-900/70 backdrop-filter backdrop-blur z-20 bottom-0 left-0 w-full flex gap-10 justify-between py-4 px-6">
           <Export columns={columns} data={data} />
           <div className="flex items-center gap-10">
             <Pagination table={table} />
