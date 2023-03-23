@@ -199,7 +199,7 @@ rich==12.6.0 ; python_version >= "3.8" and python_version < "3.11" and python_fu
 robin-stocks==2.1.0 ; python_version >= "3.8" and python_full_version != "3.9.7" and python_version < "3.11"
 ruamel-yaml-clib==0.2.7 ; platform_python_implementation == "CPython" and python_version < "3.11" and python_version >= "3.8" and python_full_version != "3.9.7"
 ruamel-yaml==0.17.21 ; python_version >= "3.8" and python_full_version != "3.9.7" and python_version < "3.11"
-scikit-learn==1.2.2 ; python_version >= "3.8" and python_full_version != "3.9.7" and python_version < "3.11"
+scikit-learn==1.2.1 ; python_version >= "3.8" and python_full_version != "3.9.7" and python_version < "3.11"
 scipy==1.10.1 ; python_version >= "3.8" and python_version < "3.11" and python_full_version != "3.9.7"
 screeninfo==0.6.7 ; python_version >= "3.8" and python_full_version != "3.9.7" and python_version < "3.11"
 seaborn==0.11.2 ; python_version >= "3.8" and python_full_version != "3.9.7" and python_version < "3.11"
