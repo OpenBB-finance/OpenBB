@@ -262,6 +262,9 @@ def upload_config(
     Optional[requests.Response]
         The response from the patch request.
     """
+    if type_ not in ["keys", "settings", "sources"]:
+        console.print("[red]\nInvalid patch type.[/red]")
+        return None
 
     data = {"key": f"features_{type_}.{key}", "value": value}
 
