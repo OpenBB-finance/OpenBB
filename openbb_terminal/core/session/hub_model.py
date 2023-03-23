@@ -314,7 +314,7 @@ def clear_user_configs(
 
     try:
         response = requests.put(
-            url=base_url + "terminal/user",
+            url=base_url + "user",
             headers={"Authorization": auth_header},
             json=data,
             timeout=timeout,

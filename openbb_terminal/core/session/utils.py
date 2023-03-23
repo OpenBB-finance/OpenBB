@@ -8,19 +8,19 @@ T = TypeVar("T", bound=BaseModel)
 
 
 def load_dict_to_model(dictionary: dict, model: Type[T]) -> T:
-    """Load environment variables to model.
+    """Load variables to model.
 
     Parameters
     ----------
     dictionary : dict
-        Environment variables dictionary.
-    model : Any
-        Pydantic dataclass model to validate.
+        Variables dictionary.
+    model : Type[T]
+        Model to load.
 
     Returns
     -------
-    Any
-        Pydantic dataclass model with variables.
+    T
+        Model with validated data.
     """
     model_name = model.__name__.strip("Model").lower()
     try:
