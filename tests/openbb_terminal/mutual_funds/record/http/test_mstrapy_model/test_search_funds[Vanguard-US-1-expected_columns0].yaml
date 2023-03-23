@@ -9,8 +9,8 @@ interactions:
       Connection:
       - keep-alive
       user-agent:
-      - Mozilla/5.0 (X11; U; Windows NT 6; en-US) AppleWebKit/534.12 (KHTML, like
-        Gecko) Chrome/9.0.587.0 Safari/534.12
+      - Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US) AppleWebKit/534.14 (KHTML,
+        like Gecko) Chrome/9.0.600.0 Safari/534.14
     method: GET
     uri: https://tools.morningstar.co.uk/api/rest.svc/klr5zyak8x/security/screener?page=1&pageSize=1&sortOrder=LegalName+asc&outputType=json&version=1&universeIds=FOUSA%24%24ALL&currencyId=EUR&securityDataPoints=SecId%7CTenforeId%7CLegalName&term=Vanguard
   response:
@@ -31,17 +31,17 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Fri, 17 Mar 2023 12:23:52 GMT
+      - Thu, 23 Mar 2023 18:15:36 GMT
       Set-Cookie:
-      - ASP.NET_SessionId=gmmstsaqz0r0tntu1xmymuaa; path=/; secure; HttpOnly; SameSite=None
+      - ASP.NET_SessionId=wj2y5lp0aozy4mw2s2uz5c11; path=/; secure; HttpOnly; SameSite=None
       Strict-Transport-Security:
       - max-age=7200; includeSubDomains
       Via:
-      - 1.1 eb9781eaf534229bf5ad50a1b819581a.cloudfront.net (CloudFront)
+      - 1.1 62f2a061e41be90ceddd231b5157117c.cloudfront.net (CloudFront)
       X-Amz-Cf-Id:
-      - vUi5lbRkXH0qsFMrfCyPK3upC7_1aT5IB3anRNeGqeHSaLT9gLS_Kg==
+      - 9_FcegDaDkCHBRMORFlGFy4U_BDGaKyG1R-J6a8sOZfr543xVFdoCg==
       X-Amz-Cf-Pop:
-      - BUD50-C1
+      - VIE50-P1
       X-Cache:
       - Miss from cloudfront
       p3p:
