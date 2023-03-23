@@ -73,7 +73,7 @@ def load_stock_av(
         )
         if interval == "Minute":
             df_stock_candidate: pd.DataFrame = ts.get_intraday(
-                symbol=symbol, interval=interval_min
+                symbol=symbol, interval=interval_min, outputsize="full"
             )[0]
         elif interval == "Daily":
             df_stock_candidate = ts.get_daily_adjusted(
@@ -102,15 +102,15 @@ def load_stock_av(
         console.print("No data found.")
         return pd.DataFrame()
 
-    df_stock_candidate.index = df_stock_candidate.index.tz_localize(None)
-
     df_stock_candidate.sort_index(ascending=True, inplace=True)
 
-    # Slice dataframe from the starting date YYYY-MM-DD selected
+    df_stock_candidate.index = df_stock_candidate.index.tz_localize(None)
+
     df_stock_candidate = df_stock_candidate[
-        (df_stock_candidate.index >= start_date.strftime("%Y-%m-%d"))
-        & (df_stock_candidate.index <= end_date.strftime("%Y-%m-%d"))
+        (df_stock_candidate.index >= start_date)
+        & (df_stock_candidate.index <= end_date)
     ]
+
     return df_stock_candidate
 
 
@@ -178,7 +178,7 @@ def load_stock_eodhd(
     request_url = (
         f"https://eodhistoricaldata.com/api/eod/"
         f"{symbol.upper()}?"
-        f"{start_date.strftime('%Y-%m-%d')}&"
+        f"from={start_date.strftime('%Y-%m-%d')}&"
         f"to={end_date.strftime('%Y-%m-%d')}&"
         f"period={int_}&"
         f"api_token={get_current_user().credentials.API_EODHD_KEY}&"

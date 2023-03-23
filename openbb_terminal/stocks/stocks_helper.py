@@ -388,11 +388,18 @@ def load(
             s_start_dt = datetime.utcnow() - timedelta(days=d_granularity[s_int])
             s_date_start = s_start_dt.strftime("%Y-%m-%d")
 
+            # check if the start date is the same as the end date and add 1 day to the end date
+            if end_date and start_date == end_date:
+                end_date = (end_date + timedelta(days=1)).strftime("%Y-%m-%d")
+
             df_stock_candidate = yf.download(
                 symbol,
                 start=s_date_start
                 if s_start_dt > start_date
                 else start_date.strftime("%Y-%m-%d"),
+                end=end_date
+                if end_date
+                else (datetime.now() + timedelta(days=1)).strftime("%Y-%m-%d"),
                 progress=False,
                 interval=s_int,
                 prepost=prepost,
@@ -402,9 +409,11 @@ def load(
             if df_stock_candidate.empty:
                 return pd.DataFrame()
 
-            df_stock_candidate.index = pd.to_datetime(
-                df_stock_candidate.index, utc=True
-            )
+            df_stock_candidate.index = df_stock_candidate.index.tz_convert(
+                "US/Eastern"
+            ).tz_localize(None)
+
+            s_start_dt = df_stock_candidate.index[0]
 
             s_start = (
                 pytz.utc.localize(s_start_dt) if s_start_dt > start_date else start_date
