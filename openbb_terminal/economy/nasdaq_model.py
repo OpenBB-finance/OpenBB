@@ -220,18 +220,21 @@ def get_big_mac_indices(country_codes: Optional[List[str]] = None) -> pd.DataFra
     pd.DataFrame
         Dataframe with Big Mac indices converted to USD equivalent.
     """
+    big_mac = pd.DataFrame()
 
     if country_codes is None:
         country_codes = ["USA"]
 
-    df_cols = ["Date"]
-    df_cols.extend(country_codes)
-    big_mac = pd.DataFrame(columns=df_cols)
+    dfs = []
     for country in country_codes:
         df1 = get_big_mac_index(country)
         if not df1.empty:
-            big_mac[country] = df1["dollar_price"]
-            big_mac["Date"] = df1["Date"]
-    big_mac.set_index("Date", inplace=True)
+            df1 = df1.rename(columns={"dollar_price": country})
+            df1 = df1.set_index("Date")
+            dfs.append(df1)
+    if dfs:
+        big_mac = pd.concat(dfs, axis=1)
+        big_mac = big_mac.reset_index()
+        big_mac = big_mac.set_index("Date")
 
     return big_mac
