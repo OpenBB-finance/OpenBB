@@ -18,13 +18,18 @@ from reportlab.graphics import renderPDF
 
 try:
     from pywry.core import PyWry
+
+    PYWRY_AVAILABLE = True
 except ImportError:
-    from openbb_terminal.core.plots.no_import import DummyBackend as PyWry
+    PYWRY_AVAILABLE = False
 
 from svglib.svglib import svg2rlg
 
 from openbb_terminal.base_helpers import console, strtobool
 from openbb_terminal.core.session.current_user import get_current_user
+
+if not PYWRY_AVAILABLE:
+    from openbb_terminal.core.plots.no_import import DummyBackend as PyWry  # noqa
 
 try:
     from IPython import get_ipython
