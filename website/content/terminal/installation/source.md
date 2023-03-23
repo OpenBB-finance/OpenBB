@@ -157,7 +157,7 @@ cd OpenBBTerminal
 Create the environment by copying the code below into the command line and agreeing to the prompts.
 
 ```shell
-conda env create -n obb --file build/conda/conda-3-10-env.yaml
+conda env create -n obb --file build/conda/conda-3-9-env.yaml
 ```
 
 After the obb environment is created, activate it by entering:
