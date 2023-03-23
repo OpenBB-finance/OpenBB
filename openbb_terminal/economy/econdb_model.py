@@ -553,6 +553,13 @@ def get_macro_data(
 
             df = pd.DataFrame(data["dataarray"])
 
+            if code not in df.columns:
+                console.print(
+                    f"No data available for {parameter} of {country} "
+                    f"{f'with transform method {transform}' if transform else ''}"
+                )
+                return pd.DataFrame(), "NA/NA"
+
             df = df.set_index(pd.to_datetime(df["date"]))[code] * SCALES[scale]
             df = df.sort_index().dropna()
 
@@ -735,6 +742,8 @@ def get_aggregated_macro_data(
         denomination_string = f" [{TRANSFORM[transform]}]"
     else:
         denomination_string = f" [in {denomination}]" if denomination != "Units" else ""
+
+    df_rounded = df_rounded.dropna()
 
     return (df_rounded, units, denomination_string)
 

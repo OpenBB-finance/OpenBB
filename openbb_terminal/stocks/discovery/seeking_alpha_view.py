@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
+from datetime import date
 from typing import List, Optional
 
 import pandas as pd
@@ -17,8 +18,9 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def upcoming_earning_release_dates(
-    num_pages: int = 5,
-    limit: int = 1,
+    num_pages: int = 1,
+    limit: int = 10,
+    start_date: Optional[date] = None,
     export: str = "",
     sheet_name: Optional[str] = None,
 ):
@@ -27,66 +29,36 @@ def upcoming_earning_release_dates(
     Parameters
     ----------
     num_pages: int
-        Number of pages to scrap
+        Number of pages to scrape, each page is one day
     limit: int
         Number of upcoming earnings release dates
+    start_date: Optional[date]
+        The day to start looking at earnings releases from
     export : str
         Export dataframe data to csv,json,xlsx file
     """
-    # TODO: Check why there are repeated companies
-    # TODO: Create a similar command that returns not only upcoming, but antecipated earnings
-    # i.e. companies where expectation on their returns are high
-
-    df_earnings = seeking_alpha_model.get_next_earnings(num_pages)
+    print(start_date)
+    df_earnings = seeking_alpha_model.get_next_earnings(num_pages, start_date)
 
     if df_earnings.empty:
         console.print("No upcoming earnings release dates found")
+        return
 
-    pd.set_option("display.max_colwidth", None)
-    if export:
-        l_earnings = []
-        l_earnings_dates = []
-
-    for n_days, earning_date in enumerate(df_earnings.index.unique()):
-        if n_days > (limit - 1):
-            break
-
-        # TODO: Potentially extract Market Cap for each Ticker, and sort
-        # by Market Cap. Then cut the number of tickers shown to 10 with
-        # bigger market cap. Didier attempted this with yfinance, but
-        # the computational time involved wasn't worth pursuing that solution.
-
-        df_earn = (
-            df_earnings[earning_date == df_earnings.index][["Ticker", "Name"]]
-            .dropna()
-            .drop_duplicates()
-        )
-
-        if export:
-            l_earnings_dates.append(earning_date.date())
-            l_earnings.append(df_earn)
-
-        df_earn.index = df_earn["Ticker"].values
-        df_earn.drop(columns=["Ticker"], inplace=True)
-
-        print_rich_table(
-            df_earn,
-            show_index=True,
-            headers=[f"Earnings on {earning_date.date()}"],
-            title="Upcoming Earnings Releases",
-        )
+    print_rich_table(
+        df_earnings,
+        show_index=False,
+        headers=df_earnings.columns,
+        title="Upcoming Earnings Releases",
+        export=bool(export),
+        limit=limit,
+    )
 
     if export:
-        for item in l_earnings:
-            item.reset_index(drop=True, inplace=True)
-        df_data = pd.concat(l_earnings, axis=1, ignore_index=True)
-        df_data.columns = l_earnings_dates
-
         export_data(
             export,
             os.path.dirname(os.path.abspath(__file__)),
             "upcoming",
-            df_data,
+            df_earnings,
             sheet_name,
         )
 
@@ -113,22 +85,24 @@ def news(
     if article_id == -1:
         articles = seeking_alpha_model.get_trending_list(limit)
 
-        if export:
-            df_articles = pd.DataFrame(articles)
+        df_articles = pd.DataFrame(articles)
 
-        for idx, article in enumerate(articles):
-            console.print(
-                article["publishedAt"].replace("T", " ").replace("Z", ""),
-                "-",
-                article["id"],
-                "-",
-                article["title"],
-            )
-            console.print(article["url"])
-            console.print("\n")
+        df_articles["publishedAt"] = pd.to_datetime(df_articles["publishedAt"])
 
-            if idx >= limit - 1:
-                break
+        df_news = pd.DataFrame(
+            df_articles, columns=["publishedAt", "id", "title", "url"]
+        )
+
+        # We look for a date name in the column to assume its a date on frontend side for filtering etc
+        df_news.rename(columns={"publishedAt": "publishedAtDate"}, inplace=True)
+
+        df_news = df_news.drop("id", axis=1)
+        print_rich_table(
+            df_news,
+            show_index=False,
+            export=bool(export),
+            limit=limit,
+        )
 
     # User wants to access specific article
     else:
@@ -160,7 +134,7 @@ def news(
 
 @log_start_end(log=logger)
 def display_news(
-    news_type: str = "Top-News",
+    news_type: str = "top-news",
     limit: int = 5,
     export: str = "",
     sheet_name: Optional[str] = None,
@@ -183,16 +157,17 @@ def display_news(
         console.print("No news found.", "\n")
 
     else:
-        for news_element in news_to_display:
-            console.print(
-                news_element["publishOn"]
-                + " - "
-                + news_element["id"]
-                + " - "
-                + news_element["title"]
-            )
-            console.print(news_element["url"])
-            console.print("\n")
+        df_news = pd.DataFrame(
+            news_to_display, columns=["publishOn", "id", "title", "url"]
+        )
+        df_news = df_news.drop("id", axis=1)
+        print_rich_table(
+            df_news,
+            show_index=False,
+            title=f"{news_type}",
+            export=bool(export),
+            limit=limit,
+        )
 
         export_data(
             export,

@@ -7,7 +7,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Dict, List, Union
 
-from openbb_terminal.core.config.paths import USER_DATA_DIRECTORY
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.rich_config import console
 from website.controller_doc_classes import (
     ControllerDoc,
@@ -16,7 +16,10 @@ from website.controller_doc_classes import (
 )
 
 website_path = Path(__file__).parent.absolute()
-USER_PATH = (f"{USER_DATA_DIRECTORY}", "`USER_DATA_DIRECTORY`")
+USER_PATH = (
+    f"{get_current_user().preferences.USER_DATA_DIRECTORY}",
+    "`USER_DATA_DIRECTORY`",
+)
 
 
 def existing_markdown_file_examples(
@@ -101,7 +104,7 @@ def process_cmd_parsers(ctrl: ControllerDoc) -> List[Dict[str, str]]:
                 if action.dest == "file":
                     new_desc = "File in `EXPORTS` or `CUSTOM_IMPORTS` directories"
 
-                    if (file_ext := re.compile(r"\.(\w{3,5})").findall(choices)) != []:
+                    if (file_ext := re.compile(r"\.(\w{3,5})").findall(choices)) != []:  # type: ignore
                         exts = set(file_ext)
                         ext_examples = "file_name." + ", file_name.".join(exts)
                         new_desc += f" (e.g: `{ext_examples}`)"
@@ -139,7 +142,7 @@ def process_cmd_parsers(ctrl: ControllerDoc) -> List[Dict[str, str]]:
         }
         commands.append(param)
 
-    return commands
+    return commands  # type: ignore
 
 
 def generate_markdown(
@@ -274,7 +277,7 @@ def main() -> bool:
 
                 trail = ctrl_trailmap.split(".")
 
-                terminal_ref = add_todict(terminal_ref, trail, cmd["cmd_name"], trail)
+                terminal_ref = add_todict(terminal_ref, trail, cmd["cmd_name"], trail)  # type: ignore
                 filepath = content_path / f"{'/'.join(trail)}/{cmd['cmd_name']}.md"
 
                 filepath.parent.mkdir(parents=True, exist_ok=True)

@@ -28,10 +28,15 @@ def display_quote(symbol: str, export: str = "", sheet_name: Optional[str] = Non
     quote = stocks_model.get_quote(symbol)
     if quote.empty:
         console.print("[red]Data not found[/red]\n")
-    else:
-        print_rich_table(
-            quote, headers=[""], title=f"{symbol.upper()} Quote", show_index=True
-        )
+        return
+    print_rich_table(
+        quote,
+        headers=["Value"],
+        title=f"{symbol.upper()} Quote",
+        index_name="Info",
+        show_index=True,
+        export=bool(export),
+    )
 
     export_data(
         export,

@@ -9,7 +9,7 @@ from typing import List, Optional
 
 import pandas as pd
 
-from openbb_terminal import feature_flags as obbff
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import get_user_timezone_or_invalid
@@ -62,10 +62,10 @@ class TradingHoursController(BaseController):
         self.exchange = None
 
         if ticker:
-            if ticker in self.equities:
+            if ticker in self.equities.index:
                 self.symbol = ticker
-                self.symbol_name = self.equities[ticker]["short_name"]
-                self.exchange = self.equities[ticker]["exchange"]
+                self.symbol_name = self.equities.loc[ticker]["name"]
+                self.exchange = self.equities.loc[ticker]["exchange"]
                 open_ex = get_open()
                 if self.exchange in open_ex.index:
                     self.symbol_market_open = True
@@ -78,7 +78,7 @@ class TradingHoursController(BaseController):
         self.data = pd.DataFrame()
         self.timezone = get_user_timezone_or_invalid()
 
-        if session and obbff.USE_PROMPT_TOOLKIT:
+        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices_default
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -132,9 +132,9 @@ class TradingHoursController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             self.symbol = ns_parser.symbol
-            if ns_parser.symbol in self.equities:
-                self.symbol_name = self.equities[self.symbol]["short_name"]
-                self.exchange = self.equities[self.symbol]["exchange"]
+            if ns_parser.symbol in self.equities.index:
+                self.symbol_name = self.equities.loc[self.symbol]["name"]
+                self.exchange = self.equities.loc[self.symbol]["exchange"]
                 open_ex = get_open()
                 if self.exchange in open_ex.index:
                     self.symbol_market_open = True

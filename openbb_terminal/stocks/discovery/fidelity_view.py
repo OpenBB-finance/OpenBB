@@ -9,6 +9,7 @@ from typing import Optional
 import pandas as pd
 
 from openbb_terminal import rich_config
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.stocks.discovery import fidelity_model
@@ -79,7 +80,7 @@ def orders_view(limit: int = 5, export: str = "", sheet_name: Optional[str] = No
 
     pd.set_option("display.max_colwidth", None)
 
-    if rich_config.USE_COLOR:
+    if rich_config.USE_COLOR and not get_current_user().preferences.USE_INTERACTIVE_DF:
         df_orders["Buy / Sell Ratio"] = df_orders["Buy / Sell Ratio"].apply(
             lambda_buy_sell_ratio_color_red_green
         )
@@ -94,6 +95,7 @@ def orders_view(limit: int = 5, export: str = "", sheet_name: Optional[str] = No
         headers=[x.title() for x in df_orders.columns],
         show_index=False,
         title=f"{order_header}:",
+        export=bool(export),
     )
 
     export_data(

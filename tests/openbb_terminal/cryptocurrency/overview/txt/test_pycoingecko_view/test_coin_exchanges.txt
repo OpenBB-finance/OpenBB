@@ -1,16 +1,251 @@
-     Rank Trust_Score                  Id                  Name Country Year_Established Trade_Volume_24h_BTC
-249   250         5.0  yoshi_exchange_bsc  Yoshi.exchange (BSC)    None             None             0.923042
-248   249         5.0        sphynx_brise        Sphynx (Brise)    None             None             1.080215
-247   248         5.0          solarflare            Solarflare    None             None             1.095427
-246   247         5.0            wigoswap              Wigoswap    None           2022.0             1.142818
-245   246         5.0       glide_finance         Glide Finance    None             None             1.211922
-244   245         5.0   milkyswap-milkada             MilkySwap    None           2022.0             1.233885
-243   244         5.0     elk_finance_bsc     Elk Finance (BSC)    None             None             1.251304
-242   243         5.0         sphynx_swap     Sphynx Swap (BSC)    None             None             1.278942
-241   242         5.0              crodex                Crodex    None             None             1.342047
-240   241         5.0           diffusion     Diffusion Finance    None           2022.0             1.385367
-239   240         5.0    zenlink_moonbeam    Zenlink (Moonbeam)    None             None             1.431943
-238   239         5.0              kuswap                Kuswap    None           2021.0             1.610176
-237   238         6.0      radioshack_bsc      RadioShack (BSC)    None             None             1.639109
-236   237         5.0   sushiswap_harmony   Sushiswap (Harmony)    None             None             1.761501
-235   236         5.0             pegasys               Pegasys    None             None             1.786929
+     Rank Trust_Score                           Id                           Name                 Country Year_Established Trade_Volume_24h_BTC
+249   250         5.0           yoshi_exchange_bsc           Yoshi.exchange (BSC)                    None             None             0.923042
+248   249         5.0                 sphynx_brise                 Sphynx (Brise)                    None             None             1.080215
+247   248         5.0                   solarflare                     Solarflare                    None             None             1.095427
+246   247         5.0                     wigoswap                       Wigoswap                    None           2022.0             1.142818
+245   246         5.0                glide_finance                  Glide Finance                    None             None             1.211922
+244   245         5.0            milkyswap-milkada                      MilkySwap                    None           2022.0             1.233885
+243   244         5.0              elk_finance_bsc              Elk Finance (BSC)                    None             None             1.251304
+242   243         5.0                  sphynx_swap              Sphynx Swap (BSC)                    None             None             1.278942
+241   242         5.0                       crodex                         Crodex                    None             None             1.342047
+240   241         5.0                    diffusion              Diffusion Finance                    None           2022.0             1.385367
+239   240         5.0             zenlink_moonbeam             Zenlink (Moonbeam)                    None             None             1.431943
+238   239         5.0                       kuswap                         Kuswap                    None           2021.0             1.610176
+237   238         6.0               radioshack_bsc               RadioShack (BSC)                    None             None             1.639109
+236   237         5.0            sushiswap_harmony            Sushiswap (Harmony)                    None             None             1.761501
+235   236         5.0                      pegasys                        Pegasys                    None             None             1.786929
+234   235         5.0                    kaidex_v3                      Kaidex V3                    None             None             1.820045
+233   234         5.0               baryon_network                 Baryon Network                    None             None             1.863014
+232   233         5.0           yoshi_exchange_ftm        Yoshi.exchange (Fantom)                    None             None             1.855293
+231   232         5.0                     hanbitco                       Hanbitco             South Korea           2017.0             1.924357
+230   231         5.0             tranquil_finance               Tranquil Finance                    None             None             2.395931
+229   230         5.0              polycat_finance                Polycat Finance                    None             None             2.505328
+228   229         5.0                sushiswap_bsc                Sushiswap (BSC)                    None             None             2.502282
+227   228         5.0                        saros                  Saros Finance                    None             None             2.710051
+226   227         5.0          elk_finance_polygon          Elk Finance (Polygon)                    None             None              2.82481
+225   226         5.0           muesliswap-milkada           Muesliswap (Milkada)             Switzerland           2022.0             2.874865
+224   225         5.0                      zipswap                        ZipSwap                    None           2022.0              3.01266
+223   224         4.0                     tokenomy                       Tokenomy                    None           2018.0             3.076084
+222   223         5.0                     yodeswap                       Yodeswap                    None             None             3.318642
+221   222         5.0                        swych                          SWYCH                    None             None             3.301741
+220   221         5.0               swapr_arbitrum               Swapr (Arbitrum)                    None             None             3.485807
+219   220         5.0                 btc_trade_ua                   BTC Trade UA                    None             None             3.571554
+218   219         5.0                        hydra                      Hydra DEX                    None             None             3.642919
+217   218         5.0                zenlink_astar                Zenlink (Astar)                    None             None             3.809755
+216   217         5.0                 dem_exchange                          Demex               Singapore           2020.0              3.92552
+215   216         5.0             sushiswap_fantom             Sushiswap (Fantom)                    None             None             3.963505
+214   215         5.0   kyberswap_elastic_optimism   Kyberswap Elastic (Optimism)                    None             None             4.016961
+213   214         5.0                         lif3                           LIF3                    None             None             4.119739
+212   213         5.0                   bakeryswap                     Bakeryswap                    None           2020.0             4.135895
+211   212         5.0                    probit_kr                 Probit (Korea)                    None             None             4.272687
+210   211         5.0      sushiswap_arbitrum_nova      Sushiswap (Arbitrum Nova)                    None           2022.0             4.363812
+209   210         5.0               sushiswap_xdai               Sushiswap (xDai)                    None             None             4.519536
+208   209         5.0                     makiswap                       Makiswap                    None           2021.0             5.208322
+207   208         5.0                   oolongswap                     Oolongswap                    None             None             5.315495
+206   207         5.0                   kibbleswap                     KibbleSwap                    None             None             5.671444
+205   206         5.0                   darkknight                Dark KnightSwap                    None             None              7.05114
+204   205         5.0                    wagyuswap                      WagyuSwap                    None             None            10.543995
+203   204         5.0                      ubeswap                        Ubeswap                    None             None            11.468017
+202   203         5.0                spiritswap_v2                SpiritSwap (V2)                    None           2022.0            11.618776
+201   202         5.0                       tethys                 Tethys Finance    United Arab Emirates           2021.0            12.862285
+200   201         5.0   kyberswap_elastic_arbitrum   Kyberswap Elastic (Arbitrum)                    None             None            17.345542
+199   200         5.0                defi_kingdoms                  Defi Kingdoms                    None             None             15.24063
+198   199         5.0                      protofi                        ProtoFi                    None             None             15.82699
+197   198         5.0          quickswap_dogechain          Quickswap (Dogechain)                    None           2022.0            16.635292
+196   197         5.0                      netswap                        Netswap                    None             None             17.34432
+195   196         5.0                     loopring                       Loopring  British Virgin Islands           2020.0            17.384408
+194   195         5.0                       birake                         Birake                 Estonia           2018.0            18.401796
+193   194         5.0                       swappi                         Swappi                    None             None            19.075425
+192   193         5.0            fraxswap_ethereum            Fraxswap (Ethereum)                    None             None            19.400556
+191   192         5.0                      solidly                        Solidly                    None             None            20.517083
+190   191         5.0                     arthswap                       ArthSwap                    None             None            25.852873
+189   190         5.0                   swapr_xdai                   Swapr (Xdai)                    None           2020.0            30.419847
+188   189         5.0                    solarbeam                      Solarbeam                 Estonia           2021.0            36.793336
+187   188         5.0                         dfyn                           Dfyn               Singapore           2021.0            37.597893
+186   187         5.0                     beamswap                       Beamswap                    None             None            45.036756
+185   186         5.0              hermes_protocol                Hermes Protocol                    None             None            48.300794
+184   185         5.0                    claimswap                      Claimswap                    None             None            48.965516
+183   184         5.0                   mojitoswap                     MojitoSwap                    None             None             49.15155
+182   183         5.0                   knightswap                     KnightSwap                    None           2022.0            49.433298
+181   182         5.0             tomb_swap_fantom             Tomb Swap (Fantom)                    None             None            56.811345
+180   181         5.0    defi_kingdoms_crystalvale    Defi Kingdoms (Crystalvale)                    None             None            58.045435
+179   180         5.0                     dystopia                       Dystopia                    None             None            56.318414
+178   179         5.0                   stellaswap                     StellaSwap                    None             None            61.957845
+177   178         5.0                   trisolaris                     Trisolaris                    None           2021.0            67.531125
+176   177         5.0             balancer_polygon             Balancer (Polygon)                    None             None            70.534786
+175   176         5.0                   spiritswap                     SpiritSwap                    None           2021.0             71.37122
+174   175         5.0                      coindcx                        CoinDCX               Singapore           2018.0            79.199182
+173   174         5.0  kyberswap_elastic_avalanche  Kyberswap Elastic (Avalanche)                    None             None           107.888817
+172   173         5.0          sushiswap_avalanche          Sushiswap (Avalanche)                    None           2021.0           108.279385
+171   172         5.0        sushiswap_polygon_pos        Sushiswap (Polygon POS)                    None           2021.0           120.332325
+170   171         5.0            balancer_arbitrum            Balancer (Arbitrum)                    None             None           120.472078
+169   170         5.0                   bitstorage                     BitStorage              Seychelles           2018.0            122.26639
+168   169        None                        kumex                 KuCoin Futures                    None           2019.0          2594.921582
+167   168         5.0                dodo_arbitrum                Dodo (Arbitrum)                    None             None           122.756684
+166   167         5.0                     pangolin                       Pangolin                    None           2021.0             180.9408
+165   166         5.0                       katana                         Katana                    None           2021.0           181.442419
+164   165         5.0                     mdex_bsc                       Mdex BSC               Singapore           2021.0           191.883153
+163   164         5.0                  balancer_v1                  Balancer (v1)                    None           2020.0           185.547256
+162   163         5.0                    canto_dex                      Canto Dex                    None             None             213.8832
+161   162         5.0                   beethovenx                    Beethoven X                    None           2021.0           232.705088
+160   161         5.0                   mm_finance             MMFinance (Cronos)                    None           2021.0           233.906217
+159   160         5.0                          vvs                    VVS Finance                    None           2021.0            256.05646
+158   159         5.0                    injective                          Helix                    None           2022.0            257.77277
+157   158         5.0                    shibaswap                      Shibaswap                    None           2021.0             304.8771
+156   157         4.0                      novadax                        NovaDAX                  Brazil           2018.0           319.750675
+155   156         5.0                    stormgain                      Stormgain                    None             None           408.106365
+154   155         5.0    kyberswap_elastic_polygon    Kyberswap Elastic (Polygon)                    None             None           420.592455
+153   154         5.0                         idex                           Idex                  Panama           2017.0           436.060066
+152   153         5.0              stocks_exchange                           STEX                 Estonia           2018.0           451.981399
+151   152         5.0                  toko_crypto                     TokoCrypto               Indonesia           2017.0           515.374833
+150   151         5.0                       btcbox                         BTCBOX                   Japan           2014.0           569.414962
+149   150         5.0                 dodo_polygon                 Dodo (Polygon)                    None             None           634.606018
+148   149         5.0                      c_patex                        C-Patex               Argentina             None           639.721846
+147   148         5.0           sushiswap_arbitrum       Sushiswap (Arbitrum One)                    None             None           661.917113
+146   147         5.0                     resfinex                       Resfinex  British Virgin Islands           2019.0          4036.243827
+145   146         5.0                           bw                         BW.com                    None           2017.0           718.169083
+144   145         5.0                    traderjoe                     Trader Joe                    None             None           733.462281
+143   144         5.0                         b2bx                           B2BX                 Estonia           2017.0          1108.451136
+142   143         5.0                        kanga                          Kanga                    None             None           848.196454
+141   142         5.0                       biswap                         Biswap                    None             None          1268.273832
+140   141         5.0                     tokenize                       Tokenize               Singapore           2018.0          2204.092268
+139   140         5.0                    koinbazar                      Koinbazar                   India           2020.0          2416.353941
+138   139         5.0                      coinjar               CoinJar Exchange          United Kingdom           2013.0          2462.434028
+137   138         5.0                        yobit                          YoBit                  Russia             None          5136.036387
+136   137         5.0                       vindax                         Vindax                 Vietnam           2019.0          5752.774248
+135   136         6.0              uniswap_polygon              Uniswap (Polygon)                    None           2021.0          7443.630257
+134   135         5.0               bithumb_global                      BitGlobal              Seychelles           2019.0          7686.562029
+133   134         5.0                    cointiger                      CoinTiger               Singapore           2017.0         31413.081959
+132   133         5.0                       hitbtc                         HitBTC                    None           2013.0        108420.982484
+131   132         6.0                    btcsquare                      BTCSquare                    None           2018.0             0.303019
+130   131         6.0                   coinfalcon                     Coinfalcon          United Kingdom           2017.0             0.538547
+129   130         6.0                      chainex                        ChainEX            South Africa           2018.0             0.704932
+128   129         6.0       radioshack_polygon_pos           RadioShack (Polygon)                    None             None             1.943846
+127   128         6.0                        lykke                          Lykke          United Kingdom           2015.0             8.018332
+126   127         6.0                       flybit                         Flybit             South Korea           2018.0            20.358294
+125   126         6.0                       zebpay                         ZebPay                   India           2014.0            55.278043
+124   125         6.0                    defi_swap                      DeFi Swap                    None             None            61.125083
+123   124         6.0                       bancor                    Bancor (V2)                    None             None            72.158618
+122   123         6.0                       foxbit                         Foxbit                  Brazil           2014.0            76.776714
+121   122         6.0                       wazirx                         WazirX                   India           2018.0            89.946917
+120   121         6.0                        bitci                          Bitci                  Turkey           2018.0           125.406591
+119   120         6.0                       fatbtc                         FatBTC                  Belize           2014.0           136.062589
+118   119         6.0                     coinzoom                       Coinzoom           United States           2020.0           165.023067
+117   118         6.0                        maiar                          Maiar                    None           2021.0           177.150126
+116   117         6.0                     nomiswap                       Nomiswap                    None             None           199.370206
+115   116         6.0              mercado_bitcoin                Mercado Bitcoin                  Brazil           2013.0           221.816756
+114   115         6.0                        waves                 Waves.Exchange                    None             None           221.830867
+113   114         6.0                   btcmarkets                     BTCMarkets               Australia             None           229.195768
+112   113         6.0                     bitpanda                   Bitpanda Pro                 Austria           2019.0            430.83729
+111   112         6.0                      indodax                        Indodax               Indonesia           2014.0           621.226863
+110   111         6.0                    quickswap                      Quickswap                    None           2020.0           972.900281
+109   110         6.0                    velodrome              Velodrome Finance                    None           2022.0          1015.844328
+108   109         6.0                    quipuswap                      Quipuswap                    None             None          1051.299935
+107   108         6.0                         orca                           Orca                    None             None          1269.626609
+106   107         6.0                      osmosis                        Osmosis                    None           2021.0          1314.555332
+105   106         6.0                    alterdice                      AlterDice               Singapore           2018.0          1951.924777
+104   105         6.0                     dodo_bsc                     Dodo (BSC)                    None           2021.0          1484.061544
+103   104         6.0           mango_markets_spot                  Mango Markets                    None             None          1511.212392
+102   103         6.0                        catex                          Catex                   China           2018.0          1574.658798
+101   102         6.0                       quoine                         Liquid                   Japan           2014.0          1856.780751
+100   101         6.0                    sushiswap                      Sushiswap                    None           2020.0          1989.569559
+99    100         6.0                      bitexen                        Bitexen                    None           2018.0          2889.568396
+98     99         6.0                   uniswap_v2                   Uniswap (v2)                    None           2018.0          3264.631624
+97     98         6.0             uniswap_optimism             Uniswap (Optimism)                    None             None          4142.023207
+96     97         6.0                    coincheck                      Coincheck                   Japan           2014.0          4280.793186
+95     96         6.0                       probit                  ProBit Global              Seychelles           2017.0          4403.175642
+94     95         6.0          uniswap_v3_arbitrum         Uniswap (Arbitrum One)                    None             None          4507.068652
+93     94         6.0                      bitvavo                        Bitvavo             Netherlands           2018.0          6342.338995
+92     93         6.0              pancakeswap_new               PancakeSwap (v2)                    None           2020.0          8951.492491
+91     92         6.0                        tidex                          Tidex          United Kingdom           2017.0         13045.058719
+90     91         6.0                   uniswap_v3                   Uniswap (v3)                    None           2018.0         65929.730947
+89     90         6.0                  bullish_com                        Bullish               Gibraltar           2021.0         70246.444226
+88     89         6.0                        bibox                          Bibox                 Estonia           2017.0        102073.871617
+87     88         6.0                  bitcoin_com                        FMFW.io                 Bahamas           2019.0         103512.48383
+86     87         6.0                       bigone                         BigONE              Seychelles           2017.0        129493.108632
+85     86         7.0                   delta_spot                 Delta Exchange                    None             None            36.799219
+84     85         7.0                     coindeal                       Coindeal                   Malta           2018.0            42.280529
+83     84         7.0                     coinlist                       Coinlist           United States           2020.0            55.664495
+82     83         6.0               therocktrading                 TheRockTrading                   Italy           2011.0            56.226954
+81     82         7.0                          lcx                   LCX Exchange           Liechtenstein           2020.0           154.339135
+80     81         7.0                         zaif                           Zaif                   Japan           2015.0           160.577739
+79     80         7.0                       emirex                         Emirex                 Estonia           2019.0           342.307912
+78     79         7.0                      bitazza                        Bitazza                    None           2021.0           404.218855
+77     78         7.0                       korbit                         Korbit             South Korea           2013.0           435.544866
+76     77         7.0          independent_reserve            Independent Reserve               Australia           2013.0           495.685816
+75     76         7.0                       bitbns                         BitBNS                 Estonia           2017.0          1135.166645
+74     75         7.0                    gmo_japan                      GMO Japan                   Japan             None          1257.722327
+73     74         7.0                      nominex                        Nominex              Seychelles           2019.0          1479.672824
+72     73         7.0                      oceanex                        Oceanex          Cayman Islands           2018.0           1699.78579
+71     72         7.0                       tokpie                         Tokpie               Hong Kong           2018.0          1929.711406
+70     71         7.0                          zbx                            ZBX                    None             None          1966.772856
+69     70         7.0                      bittrex                        Bittrex           United States           2014.0          2398.773232
+68     69         7.0                   cryptology                     Cryptology                 Estonia           2018.0          2583.503168
+67     68         7.0                    exmarkets                      ExMarkets  British Virgin Islands           2018.0          3384.435715
+66     67         7.0                       hotbit                         Hotbit                 Estonia             None          3527.750557
+65     66         7.0                     poloniex                       Poloniex              Seychelles           2014.0          3557.706057
+64     65         7.0                       paribu                         Paribu                  Turkey             None          5456.679628
+63     64         7.0                       bitmax              AscendEX (BitMax)               Singapore           2018.0          7378.211535
+62     63         7.0                    changelly                  Changelly PRO              Seychelles           2020.0         78450.685534
+61     62         7.0                      bit_com                        Bit.com              Seychelles           2020.0          8305.368639
+60     61         7.0                     bitforex                       Bitforex              Seychelles           2018.0           8335.97618
+59     60         7.0                      coinone                        Coinone             South Korea           2016.0          8412.075218
+58     59         7.0                         btse                           BTSE  British Virgin Islands           2018.0         18687.628547
+57     58         7.0                      bithumb                        Bithumb             South Korea           2014.0         20883.374304
+56     57         7.0                     currency                   Currency.com               Gibraltar           2019.0         29907.753932
+55     56         7.0                     coinsbit                       Coinsbit                 Estonia             None         63871.002689
+54     55         7.0                        upbit                          Upbit             South Korea           2017.0        100090.933435
+53     54         7.0                          aax                            AAX              Seychelles           2019.0         165813.51651
+52     53         7.0                           xt                         XT.COM              Seychelles           2018.0        273524.813484
+51     52         8.0                    nice_hash                       NiceHash                Slovenia             None            27.542097
+50     51         8.0                         kuna                  Kuna Exchange          United Kingdom             None            68.244379
+49     50         8.0                   coin_metro                      Coinmetro                 Estonia           2018.0           137.148955
+48     49         8.0                      bitopro                        BitoPro                  Taiwan           2018.0            285.07461
+47     48         8.0                  max_maicoin                    Max Maicoin                  Taiwan             None          1150.356331
+46     47         8.0                          cex                         CEX.IO          United Kingdom           2013.0          1214.948442
+45     46         8.0                    coinfield                      Coinfield                  Canada             None          1483.555425
+44     45         8.0                         luno                           Luno               Singapore           2013.0          1523.463236
+43     44         8.0                       kickex                         KickEX                 Estonia           2020.0          1677.928578
+42     43         8.0                       coinex                         CoinEx          United Kingdom           2017.0           1718.71722
+41     42         8.0                        bitso                          Bitso                  Mexico           2014.0          1788.731034
+40     41         8.0               blockchain_com                 Blockchain.com          United Kingdom           2012.0          2804.851551
+39     40         8.0                       bitkub                         Bitkub                Thailand           2018.0          2926.537474
+38     39         8.0                       okcoin                         Okcoin           United States           2013.0          2951.910066
+37     38         8.0                         exmo                           EXMO          United Kingdom           2013.0          3427.771261
+36     37         8.0                      bitbank                        Bitbank                   Japan           2016.0          4013.840099
+35     36         8.0                     bitflyer                       bitFlyer                   Japan           2014.0          6377.984956
+34     35         8.0                     wootrade                    WOO Network                    None           2019.0          7807.595658
+33     34         8.0                      btcturk                    BtcTurk PRO                  Turkey           2013.0          9433.453356
+32     33         8.0                     dextrade                      Dex-Trade                  Belize           2019.0         14443.168806
+31     32         8.0                     bitstamp                       Bitstamp          United Kingdom           2013.0         16259.359894
+30     31         8.0                       bitget                         Bitget               Singapore           2018.0         27361.546642
+29     30         8.0                       phemex                         Phemex               Singapore           2019.0         30416.053548
+28     29         8.0                    coinstore                      Coinstore               Singapore           2020.0         32165.283403
+27     28         8.0                      latoken                        LATOKEN          Cayman Islands           2017.0         46371.516423
+26     27         8.0                        btcex                          BTCEX                  Canada           2021.0         47564.670428
+25     26         8.0                        bingx                          BingX                    None             None          68003.68423
+24     25         8.0                        lbank                          LBank  British Virgin Islands           2017.0         72582.637875
+23     24         8.0                     whitebit                       WhiteBIT                 Estonia           2018.0         79046.696353
+22     23         8.0                       p2pb2b                         P2PB2B                 Estonia           2018.0        100837.003581
+21     22         8.0                      bitmart                        BitMart          Cayman Islands           2017.0        113724.842056
+20     21         8.0                    digifinex                      Digifinex              Seychelles           2018.0        119861.951106
+19     20         8.0                       bitrue                         Bitrue               Singapore           2018.0        123377.853568
+18     19         8.0                         bkex                           BKEX  British Virgin Islands           2018.0        135010.785934
+17     18         9.0                  bitmex_spot                         BitMEX                    None             None           118.710042
+16     17         9.0                       bilaxy                         Bilaxy                    None             None          4980.412154
+15     16         9.0                       kucoin                         KuCoin              Seychelles           2014.0         85916.765581
+14     15         9.0                       ftx_tr                         FTX TR                  Turkey             None        139774.569945
+13     14         9.0                          mxc                    MEXC Global                    None           2018.0        258068.479716
+12     13        10.0                       gemini                         Gemini           United States           2014.0          6615.439516
+11     12        10.0                   crypto_com            Crypto.com Exchange          Cayman Islands           2019.0         19917.375949
+10     11        10.0                       ftx_us                         FTX.US           United States           2020.0         20603.912069
+9      10        10.0                   binance_us                     Binance US           United States           2019.0         39782.517362
+8       9        10.0                       kraken                         Kraken           United States           2011.0         44096.918333
+7       8        10.0                     bitfinex                       Bitfinex  British Virgin Islands           2014.0         48037.709355
+6       7        10.0                        huobi                   Huobi Global              Seychelles           2013.0         49046.455566
+5       6        10.0                         gate                        Gate.io               Hong Kong             None         65909.352994
+4       5        10.0                   bybit_spot                          Bybit                    None           2018.0         95859.900953
+3       4        10.0                         gdax              Coinbase Exchange           United States           2012.0        134642.761023
+2       3        10.0                         okex                            OKX                  Belize           2013.0        143218.301919
+1       2        10.0                     ftx_spot                            FTX     Antigua and Barbuda           2019.0        156286.013644
+0       1        10.0                      binance                        Binance          Cayman Islands           2017.0       1192179.768168

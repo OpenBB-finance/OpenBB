@@ -1,0 +1,77 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.28.2
+      apikey:
+      - lstzFDEOhfFNMLikKa0am9mgEKLBl49T
+    method: GET
+    uri: https://api-global.morningstar.com/sal-service/v1/fund/esg/v1/FOUSA00L8W/data
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAMVXW0/bShD+K5HFI0R2LkDyFkwSIgEJGE7Vp2pjT8yq692cXTvURf3vZ3Z9iW+N
+        Sl+OxEO088195hvzYSUK5Eu6B2tqLSSAdW6BCm9JTKzph6WETwlj6TOoveCKbhksEh5YU54whsj4
+        jfqErZRKwIsliSFMF8JPVAHYCxnvBKMCDWoPA3swvLCdi6HzYttT89e3bdtqIL1ExYRysqWMxukz
+        iSkPG9qXNe0dBjX3lp4vJJS+QfrA49nrgysOIEEDrOlk0r+6tCdOplN3lKsPnP7Y6dB3BY+l/qlS
+        Y2cyGF8Nzi1fpy0khsm/d6RZD1TVHOpaPiWUx5Sh2rAp3mQRuBUH1nQ86ttN4APhQeb5UWgn4K8C
+        3c/1qzez7fvrL5ZJZydkRLgPRmhvMCJ78PXuCYXYuwBr7KXRVrCigNRbPRa/dbEym56xOXi6Q7WI
+        qBjkpmidAQzHQ51oURXzdrZYu7Oz+5uzM5RwEulI/yE8TIgMemPb7q14AD96syCikjCtfSz1LQSJ
+        H1PBi1AKy4+ZnXsiQ+jdMMCxPLdCJraEuXXIq9eb/5tgnXoZ2CX7UkEndkdVjOjZIfztPODIYHve
+        DFCPfAdwWXM9w+BJmGmPrpzJBANPpMR2fk7VHl9eY82SaAtS7PTAqBknLP0J2LBCo24SJ2k0Gp1b
+        v0urc6yy2qqOxXOFxOVEsJl/uk10M3Ib1tTRo92t6Jm1oSHvVDRq5daX2LohVV3oSvULdGe//hDd
+        Krcz6o+G9hgrp7o1srTyDNa7OaOhZsRy/nOe6C5mvqNeIg+QFqBfhm1N3C5hfsJINukf1pYoCDYl
+        BVWJqyxai/GagiLFcnWOa1VTbL439dQJmuyQHdWPEwz8QKXgEaaDHcksjPrDSZek5d5coVxpgstY
+        e2qiQ50I1zyXa1z1x63XptKpQ3XZfahO3o6yE9Xknqn6Xku9Mv46nYo8y7KUL8voKxiTVwl5RVZg
+        QpNjMFdhBYaBX/75NcNxrF+l/NKr8ARtVOanS7kiPmEETvHSCdnJwD5zm/83dv8UUWf3/y8OQsY1
+        d4LpS5/pKORh69tm/c068tAtBlOQdU16Dwdg3dI6B6x4jFEjgGTOPyzKD6BivQTtbwjwlivu5zfG
+        WN0RpsAI5jzEUkXmXuSvIZ5tkLdUT5Oxnr8z8e4SuRV8IZSibJEAM5+zhdwXUZRw1LjVaYh9zWiN
+        gspXEb+BXEV74scvbxiFKiXYaHgnSP1zDjI8BvGO5ZfmA1gT/DFi7DirMYEHPna8hJT1Y7AqS7XW
+        g8JYtR66281nagLskkDbYxPiS9CEseZmMZzJhT3G3ejZo6k9MIuBDWL4kfe617ertkHDC+faAJ0C
+        iFmrR/zEVDf6dnloG7j5cM/3+4fPkgDUbIuUhY32YohcYEy1AEHC4jkOkdRFyRrVQDBfvB0/VMtn
+        TiPCXrB+HW6PfIdM+wWI/n+miVkk0tuDpuI4vcfKYP+bkCWJtqzD/PJh3TL3oNeByNS4xiZ1qD0m
+        PgPS8rIhLFrTVoIbnZpPA2i58jBxNsPaNwU4ufjRz1xBWtZekJZ8XzSf17W0oz0TqZprmcKmqXKC
+        zOfLr/8AfVpZH0AOAAA=
+    headers:
+      Accept-Encoding:
+      - gzip
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json;charset=utf-8
+      Date:
+      - Sat, 18 Mar 2023 14:54:29 GMT
+      Host:
+      - salservice.morningstar.com
+      RequestId:
+      - ff462e85-166b-4c23-9c1e-5557452f5d33
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - X-SAL-ContentType,Origin,Accept-Encoding
+      Via:
+      - 1.1 639dd5dd68d7e7193120d95480cd44ca.cloudfront.net (CloudFront), 1.1 639dd5dd68d7e7193120d95480cd44ca.cloudfront.net
+        (CloudFront)
+      X-Amz-Cf-Id:
+      - Cf2Ow8mGNVVbr9mmnf-hDL0SFt3tFcWYw1HeHTVdXD9ZhwzgFikSPw==
+      X-Amz-Cf-Pop:
+      - VIE50-C2
+      X-Cache:
+      - Miss from cloudfront
+      X-Forwarded-Port:
+      - '9001'
+      X-Forwarded-Proto:
+      - http
+    status:
+      code: 200
+      message: OK
+version: 1

@@ -1,22 +1,15 @@
 """ OECD view """
 __docformat__ = "numpy"
 
+# IMPORTATION STANDARD
 import logging
 import os
-from typing import List, Optional
+from typing import Optional
 
-from matplotlib import pyplot as plt
-
-from openbb_terminal.config_plot import PLOT_DPI
-from openbb_terminal.config_terminal import theme
+from openbb_terminal import OpenBBFigure
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.fixedincome import oecd_model
-from openbb_terminal.helper_funcs import (
-    export_data,
-    is_valid_axes_count,
-    plot_autoscale,
-    print_rich_table,
-)
+from openbb_terminal.helper_funcs import export_data, print_rich_table
 
 logger = logging.getLogger(__name__)
 
@@ -33,7 +26,8 @@ def plot_treasuries(
     raw: bool = False,
     export: str = "",
     sheet_name: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
+    limit: int = 10,
 ):
     """Gets interest rates data from selected countries (3 month and 10 year)
 
@@ -68,45 +62,44 @@ def plot_treasuries(
         If True, print raw data
     export: str
         Export data to csv or excel file
-    external_axes: Optional[List[plt.Axes]]
-        External axes (1 axis is expected in the list)
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     df = oecd_model.get_treasury(short_term, long_term, forecast, start_date, end_date)
 
-    # This plot has 1 axis
-    if not external_axes:
-        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-    elif is_valid_axes_count(external_axes, 1):
-        (ax,) = external_axes
-    else:
-        return
+    fig = OpenBBFigure(yaxis_title="Yield (%)")
 
-    ax.plot(df.index, df.values, linewidth=1)
-    if short_term and long_term:
-        title = f"Short and Long Term Interest Rates {' with forecasts' if forecast else ''}"
-    elif short_term:
-        title = f"Short Term Interest Rates {' with forecasts' if forecast else ''}"
-    elif long_term:
-        title = f"Long Term Interest Rates {' with forecasts' if forecast else ''}"
-    ax.set_title(title)
+    for country in df.columns:
+        fig.add_scatter(
+            x=df.index,
+            y=df[country],
+            name=country.replace("_", " ").title(),
+            mode="lines",
+            line_width=2.5,
+            showlegend=True,
+        )
 
-    style_countries = [country.replace("_", " ").title() for country in df.columns]
-    ax.legend(style_countries)
-
-    ax.set_ylabel("Yield (%)")
-
-    theme.style_primary_axis(ax)
-
-    if external_axes is None:
-        theme.visualize_output()
+    term = (
+        "Short and Long"
+        if short_term and long_term
+        else "Long"
+        if long_term
+        else "Short"
+    )
+    title = f"{term} Term Interest Rates {' with forecasts' if forecast else ''}"
+    fig.set_title(title)
 
     if raw:
+        # was a -iloc so we need to flip the index as we use head
+        df = df.sort_index(ascending=False)
         print_rich_table(
-            df.iloc[-10:],
+            df,
             headers=list(df.columns),
             show_index=True,
             title=title,
             floatfmt=".3f",
+            export=bool(export),
+            limit=limit,
         )
 
     export_data(
@@ -115,4 +108,7 @@ def plot_treasuries(
         "treasury",
         df / 100,
         sheet_name,
+        fig,
     )
+
+    return fig.show(external=external_axes)

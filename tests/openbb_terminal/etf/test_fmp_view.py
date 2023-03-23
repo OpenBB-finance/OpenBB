@@ -22,6 +22,5 @@ def vcr_config():
     "name",
     ["VTI"],
 )
-def test_display_etf_weightings(name, mocker):
-    mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
+def test_display_etf_weightings(name):
     fmp_view.display_etf_weightings(name, raw=True, export="")

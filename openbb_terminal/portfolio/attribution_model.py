@@ -252,7 +252,7 @@ def percentage_attrib_categorizer(
 
     result["Attribution Direction [+/-]"] = direction
 
-    # 4. Attribution Sensetivity
+    # 4. Attribution Sensitivity
 
     sensitivity = []
 
@@ -323,7 +323,7 @@ def raw_attrib_categorizer(bench_df, pf_df) -> pd.DataFrame:
 
     result["Attribution Direction [+/-]"] = direction
 
-    # 4. Attribution Sensetivity
+    # 4. Attribution Sensitivity
 
     sensitivity = []
 

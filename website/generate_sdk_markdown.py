@@ -7,7 +7,7 @@ from typing import Any, Dict, Literal, Optional, Union
 
 from docstring_parser import parse
 
-from openbb_terminal.sdk_core.trailmap import Trailmap, get_trailmaps
+from openbb_terminal.core.sdk.trailmap import Trailmap, get_trailmaps
 from website.controller_doc_classes import sub_names_full as subnames
 
 website_path = Path(__file__).parent.absolute()
@@ -23,10 +23,7 @@ def get_function_meta(trailmap: Trailmap, trail_type: Literal["model", "view"]):
     path = func_attr.full_path
     func_def = func_attr.func_def
     source_code_url = (
-        "https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/"
-        + path
-        + "#L"
-        + str(line)
+        f"https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/{path}#L{line}"
     )
     function_name = trailmap.view if trail_type == "view" else trailmap.model
     params = []

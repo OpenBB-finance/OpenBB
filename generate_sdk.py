@@ -1,13 +1,14 @@
+"""Generates the sdk files from the trailmaps."""
 import os
 import re
-import subprocess
+import subprocess  # nosec: B404
 import sys
 from pathlib import Path
 from typing import Any, Dict, List, Optional, TextIO
 
+from openbb_terminal.core.sdk.sdk_helpers import get_sdk_imports_text
+from openbb_terminal.core.sdk.trailmap import Trailmap, get_trailmaps
 from openbb_terminal.rich_config import console
-from openbb_terminal.sdk_core.sdk_helpers import get_sdk_imports_text
-from openbb_terminal.sdk_core.trailmap import Trailmap, get_trailmaps
 
 REPO_ROOT = Path(__file__).parent.joinpath("openbb_terminal").resolve()
 
@@ -27,7 +28,6 @@ sub_names = {
     "po": "Portfolio Optimization",
     "qa": "Quantitative Analysis",
     "screener": "Screener",
-    "sia": "Sector Industry Analysis",
     "ta": "Technical Analysis",
     "th": "Trading Hours",
     "fa": "Fundamental Analysis",
@@ -45,34 +45,47 @@ class SDKLogger:
         self.__check_initialize_logging()
 
     def __check_initialize_logging(self):
-        if not cfg.LOGGING_SUPPRESS:
+        if not get_current_system().LOGGING_SUPPRESS:
             self.__initialize_logging()
 
     @staticmethod
     def __initialize_logging() -> None:
         # pylint: disable=C0415
+        from openbb_terminal.config_terminal import setup_logging_sub_app
         from openbb_terminal.core.log.generation.settings_logger import log_all_settings
         from openbb_terminal.loggers import setup_logging
 
-        cfg.LOGGING_SUB_APP = "sdk"
+        setup_logging_sub_app(sub_app="sdk")
         setup_logging()
         log_all_settings()
 
+    @staticmethod
+    def _try_to_login(sdk: "OpenBBSDK"):
+        if is_local() and is_auth_enabled():
+            try:
+                sdk.login()
+            except Exception:
+                pass
 
 openbb = OpenBBSDK()\r\r
 """
 
-disable_lines = "# flake8: noqa\r# pylint: disable=C0301,R0902,R0903\r"
+disable_lines = (
+    "# ######### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ######### #\r"
+    "# flake8: noqa\r# pylint: disable=C0301,R0902,R0903\r"
+)
 
 
 class BuildCategoryModelClasses:
+    """Builds the command tree for the SDK."""
+
     def __init__(self, trailmaps: List[Trailmap]) -> None:
         self.trailmaps = trailmaps
         self.categories: Dict[str, Any] = {}
         self.import_modules: Dict[str, Any] = {}
         self.root_modules: Dict[str, Any] = {}
         self.import_cat_class = (
-            "from openbb_terminal.sdk_core.sdk_helpers import Category\r"
+            "from openbb_terminal.core.sdk.sdk_helpers import Category\r"
         )
 
         for tmap in self.trailmaps:
@@ -80,22 +93,25 @@ class BuildCategoryModelClasses:
             self.categories = self.add_todict(self.categories, local, tmap)
 
         for folder in ["models", "controllers"]:
-            if not (REPO_ROOT / f"sdk_core/{folder}").exists():
-                (REPO_ROOT / f"sdk_core/{folder}").mkdir()
-            if not (REPO_ROOT / f"sdk_core/{folder}/__init__.py").exists():
-                with open(REPO_ROOT / f"sdk_core/{folder}/__init__.py", "w") as f:
+            if not (REPO_ROOT / f"core/sdk/{folder}").exists():
+                (REPO_ROOT / f"core/sdk/{folder}").mkdir()
+            if not (REPO_ROOT / f"core/sdk/{folder}/__init__.py").exists():
+                with open(REPO_ROOT / f"core/sdk/{folder}/__init__.py", "w") as f:
                     f.write(
+                        "# ######### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ######### #\r"
                         "# flake8: noqa\r# pylint: disable=unused-import,wrong-import-order\r\r"
                     )
 
-        if not (REPO_ROOT / "sdk_core/__init__.py").exists():
-            with open(REPO_ROOT / "sdk_core/__init__.py", "w") as f:
+        if not (REPO_ROOT / "core/sdk/__init__.py").exists():
+            with open(REPO_ROOT / "core/sdk/__init__.py", "w") as f:
                 f.write("")
 
     def add_todict(self, d: dict, location_path: list, tmap: Trailmap) -> dict:
-        """Adds the trailmap to the dictionary. A trailmap is a path to a function
-        in the sdk. This function creates the dictionary paths to the function."""
+        """Add the trailmap to the dictionary.
 
+        A trailmap is a path to a function in the sdk.
+        This function creates the dictionary paths to the function.
+        """
         if location_path[0] not in d:
             d[location_path[0]] = {}
 
@@ -107,36 +123,36 @@ class BuildCategoryModelClasses:
         return d
 
     def get_nested_dict(self, d: dict) -> dict:
-        """Gets the nested dictionary of the category."""
+        """Get the nested dictionary of the category."""
         nested_dict = {}
         for k, v in d.items():
             if isinstance(v, dict):
                 nested_dict[k] = self.get_nested_dict(v)
         return nested_dict
 
-    def get_subcat_fullname(self, cat: str) -> str:
-        """Gets the full category name from the shortened category name."""
+    def get_subcategory_fullname(self, cat: str) -> str:
+        """Get the full category name from the shortened category name."""
         if cat in sub_names:
             return sub_names[cat]
         return cat.title().replace(" ", "")
 
     def check_submodules(self, category: str) -> bool:
-        """Checks if a category has submodules."""
+        """Check if a category has submodules."""
         return any(isinstance(d, dict) for d in self.categories[category].values())
 
-    def write_init_imports(self, importstr: str, filestr: str) -> None:
-        """Checks if a category has submodules and adds the imports to the init file."""
-        regex = re.compile(importstr)
-        with open(REPO_ROOT / filestr) as init_file:
+    def write_init_imports(self, import_string: str, file_string: str) -> None:
+        """Check if a category has submodules and adds the imports to the init file."""
+        regex = re.compile(import_string)
+        with open(REPO_ROOT / file_string) as init_file:
             check_init = bool(regex.search(init_file.read()))
-            if not check_init:
-                with open(REPO_ROOT / filestr, "a") as init_file:
-                    init_file.write(f"{importstr}\r")
+        if not check_init:
+            with open(REPO_ROOT / file_string, "a") as init_file:
+                init_file.write(f"{import_string}\r")
 
     def write_sdk_class(
         self, category: str, f: TextIO, cls_type: Optional[str] = ""
     ) -> None:
-        """Writes the sdk class to the file.
+        """Write the sdk class to the file.
 
         Parameters
         ----------
@@ -152,13 +168,13 @@ class BuildCategoryModelClasses:
         else:
             class_name = f"{category.title()}{cls_type}"
         f.write(
-            f'class {class_name}:\r    """{self.get_subcat_fullname(category)} Module.\r'
+            f'class {class_name}:\r    """{self.get_subcategory_fullname(category)} Module.\r'
         )
 
     def write_class_property(
-        self, category: str, f: TextIO, subcat: Optional[str] = ""
+        self, category: str, f: TextIO, subcategory: Optional[str] = ""
     ) -> None:
-        """Writes the class property to the file.
+        """Write the class property to the file.
 
         Parameters
         ----------
@@ -166,18 +182,18 @@ class BuildCategoryModelClasses:
             The category name.
         f : TextIO
             The file to write to.
-        subcat : Optional[str], optional
+        subcategory : Optional[str], optional
             The subcategory name, by default None
         """
-        def_name = subcat if subcat else category
-        if subcat:
-            subcat = f" {self.get_subcat_fullname(subcat)}"
+        def_name = subcategory if subcategory else category
+        if subcategory:
+            subcategory = f" {self.get_subcategory_fullname(subcategory)}"
 
         category = sub_names.get(category, category.title())
 
         f.write(
             f"    @property\r    def {def_name}(self):\r        "
-            f'"""{category}{subcat} Submodule\r'
+            f'"""{category}{subcategory} Submodule\r'
         )
 
     def write_class_attr_docs(
@@ -186,9 +202,9 @@ class BuildCategoryModelClasses:
         f: TextIO,
         module: bool = True,
         sdk_root: bool = False,
-        trail: list = None,
+        trail: Optional[list] = None,
     ) -> None:
-        """Writes the class attribute docs to the category file.
+        """Write the class attribute docs to the category file.
 
         Parameters
         ----------
@@ -225,13 +241,13 @@ class BuildCategoryModelClasses:
         if module:
             f.write("    def __init__(self):\r        super().__init__()\r")
         elif sdk_root:
-            f.write("    __version__ = obbff.VERSION\r\r")
+            f.write("    __version__ = get_current_system().VERSION\r\r")
             f.write("    def __init__(self):\r        SDKLogger()\r")
 
     def write_class_attributes(
         self, d: dict, f: TextIO, cat: Optional[str] = None
     ) -> None:
-        """Writes the class attributes to the category file.
+        """Write the class attributes to the category file.
 
         Parameters
         ----------
@@ -271,7 +287,7 @@ class BuildCategoryModelClasses:
         f.write("\r\r")
 
     def write_category(self, category: str, d: dict, f: TextIO) -> None:
-        """Writes the category class to the file
+        """Write the category class to the file.
 
         Parameters
         ----------
@@ -282,22 +298,22 @@ class BuildCategoryModelClasses:
         f : TextIO
             The file to write to
         """
-        subname = self.get_subcat_fullname(category)
+        subcategory_name = self.get_subcategory_fullname(category)
 
-        # If this catergory has no attributes, then we don't write it to the file.
+        # If this category has no attributes, then we don't write it to the file.
         if not any(isinstance(v, Trailmap) for v in d.values()):
             return
 
         self.root_modules[category] = f"{category.title().replace(' ', '')}Root"
 
         f.write(f"class {self.root_modules[category]}(Category):\r")
-        f.write(f'    """{subname.title()} Module\r')
+        f.write(f'    """{subcategory_name.title()} Module\r')
 
         self.write_class_attr_docs(d, f, trail=[category])
         self.write_class_attributes(d, f, category)
 
     def write_nested_category(self, category: str, d: dict, f: TextIO) -> None:
-        """Writes the nested category classes.
+        """Write the nested category classes.
 
         Parameters
         ----------
@@ -311,10 +327,12 @@ class BuildCategoryModelClasses:
         for nested_category, nested_dict in d.items():
             if isinstance(nested_dict, Trailmap):
                 continue
-            subname = self.get_subcat_fullname(nested_category)
+            subcategory_name = self.get_subcategory_fullname(nested_category)
 
-            class_name = f"{category.title()}{subname.replace(' ', '')}(Category)"
-            f.write(f'class {class_name}:\r    """{subname} Module.\r')
+            class_name = (
+                f"{category.title()}{subcategory_name.replace(' ', '')}(Category)"
+            )
+            f.write(f'class {class_name}:\r    """{subcategory_name} Module.\r')
 
             self.write_nested_submodule_docs(nested_dict, f)
 
@@ -327,7 +345,7 @@ class BuildCategoryModelClasses:
     def write_submodule_doc(
         self, k: str, f: TextIO, added: bool = False, indent: bool = False
     ) -> None:
-        """Writes the submodules to the class docstring.
+        """Write the submodules to the class docstring.
 
         Parameters
         ----------
@@ -343,13 +361,13 @@ class BuildCategoryModelClasses:
         add_indent = "    " if indent else ""
         if not added:
             f.write("\r        Submodules:\r")
-        subcat_name = self.get_subcat_fullname(k)
-        f.write(f"{add_indent}        `{k}`: {subcat_name} Module\r")
+        subcategory_name = self.get_subcategory_fullname(k)
+        f.write(f"{add_indent}        `{k}`: {subcategory_name} Module\r")
 
     def write_nested_submodule_docs(
         self, nested_dict: dict, f: TextIO, indent: bool = False
     ) -> None:
-        """Writes the nested submodule docs to the class docstring.
+        """Write the nested submodule docs to the class docstring.
 
         Parameters
         ----------
@@ -361,9 +379,9 @@ class BuildCategoryModelClasses:
             Whether or not to add an indent to the docstring, by default False
         """
         added = False
-        nested_subcat = self.get_nested_dict(nested_dict)
-        if nested_subcat:
-            for k in nested_subcat:
+        nested_subcategory = self.get_nested_dict(nested_dict)
+        if nested_subcategory:
+            for k in nested_subcategory:
                 if isinstance(nested_dict[k], Trailmap):
                     continue
                 self.write_submodule_doc(k, f, added, indent)
@@ -371,8 +389,9 @@ class BuildCategoryModelClasses:
                     added = True
 
     def write_category_file(self, category: str, d: dict) -> None:
-        """Writes the category file. This is the file that contains the categories
-        and subcategories of the sdk.
+        """Write the category file.
+
+        This is the file that contains the categories and subcategories of the sdk.
 
         Parameters
         ----------
@@ -381,21 +400,21 @@ class BuildCategoryModelClasses:
         d : dict
             The category dictionary
         """
-        with open(REPO_ROOT / f"sdk_core/models/{category}_sdk_model.py", "w") as f:
+        with open(REPO_ROOT / f"core/sdk/models/{category}_sdk_model.py", "w") as f:
             import_cat_class = self.import_cat_class
             if category in self.root_modules:
                 import_cat_class = ""
                 category = self.root_modules[category]
 
             f.write(
-                f"{disable_lines}{import_cat_class}import openbb_terminal.sdk_core.sdk_init as lib\r\r\r"
+                f"{disable_lines}{import_cat_class}import openbb_terminal.core.sdk.sdk_init as lib\r\r\r"
             )
             if category not in self.root_modules and any(
                 isinstance(v, Trailmap) for v in d.values()
             ):
                 self.write_init_imports(
                     f"from .{category}_sdk_model import {category.title()}Root",
-                    "sdk_core/models/__init__.py",
+                    "core/sdk/models/__init__.py",
                 )
 
             self.write_category(category, d, f)
@@ -405,8 +424,9 @@ class BuildCategoryModelClasses:
             f.truncate()
 
     def write_sdk_controller_file(self, category: str, d: dict) -> None:
-        """Writes the sdk controller file. This is the file that contains the
-        controller classes for the sdk.
+        """Write the sdk controller file.
+
+        This is the file that contains the controller classes for the sdk.
 
         Parameters
         ----------
@@ -417,10 +437,10 @@ class BuildCategoryModelClasses:
         """
         added_init_imports = []
         with open(
-            REPO_ROOT / f"sdk_core/controllers/{category}_sdk_controller.py", "w"
+            REPO_ROOT / f"core/sdk/controllers/{category}_sdk_controller.py", "w"
         ) as f:
             f.write(
-                f"{disable_lines}from openbb_terminal.sdk_core.models "
+                f"{disable_lines}from openbb_terminal.core.sdk.models "
                 f"import {category}_sdk_model as model\r\r\r"
             )
 
@@ -429,7 +449,7 @@ class BuildCategoryModelClasses:
             ):
                 self.write_init_imports(
                     f"from .{category}_sdk_controller import {category.title()}Controller",
-                    "sdk_core/controllers/__init__.py",
+                    "core/sdk/controllers/__init__.py",
                 )
                 added_init_imports.append(category)
 
@@ -446,15 +466,17 @@ class BuildCategoryModelClasses:
                 self.write_class_attr_docs(d[subcategory], f, False)
                 f.write(
                     f"        return model.{category.title()}"
-                    f"{self.get_subcat_fullname(subcategory).replace(' ', '')}()\r\r"
+                    f"{self.get_subcategory_fullname(subcategory).replace(' ', '')}()\r\r"
                 )
 
             f.seek(f.tell() - 1, os.SEEK_SET)
             f.truncate()
 
     def write_sdk_file(self) -> None:
-        """Writes the main sdk file. This is the file that we initialize the SDK with openbb."""
+        """Write the main sdk file.
 
+        This is the file that we initialize the SDK with openbb.
+        """
         with open(REPO_ROOT / "sdk.py", "w") as f:
             f.write(
                 f'{get_sdk_imports_text()}class OpenBBSDK:\r    """OpenBB SDK Class.\r'
@@ -463,6 +485,9 @@ class BuildCategoryModelClasses:
             if root_attrs:
                 self.write_class_attr_docs(root_attrs, f, False, True)
                 self.write_class_attributes(root_attrs, f)
+                f.seek(f.tell() - 2, os.SEEK_SET)
+                f.truncate()
+                f.write("        SDKLogger._try_to_login(self)\r\r")
 
             for category in self.categories:
                 self.write_class_property(category, f)
@@ -477,12 +502,13 @@ class BuildCategoryModelClasses:
             f.write("\r".join(sdk_openbb_var.splitlines()))
 
     def build(self) -> None:
-        """Builds the SDK."""
-        for path in ["sdk_core/models", "sdk_core/controllers"]:
+        """Build the SDK."""
+        for path in ["core/sdk/models", "core/sdk/controllers"]:
             for file in (REPO_ROOT / path).glob("*.py"):
                 if file.name == "__init__.py":
                     with open(file, "w") as f:
                         f.write(
+                            "# ######### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ######### #\r"
                             "# flake8: noqa\r"
                             "# pylint: disable=unused-import,wrong-import-order\r\r"
                         )
@@ -498,19 +524,20 @@ class BuildCategoryModelClasses:
                 self.write_sdk_controller_file(category, d)
         self.write_sdk_file()
 
-        for path in ["sdk.py", "sdk_core", "sdk_core/models", "sdk_core/controllers"]:
-            for file in (REPO_ROOT / path).glob("*.py"):
+        for path in ["", "core/sdk", "core/sdk/models", "core/sdk/controllers"]:
+            pattern = "*.py" if path else "sdk.py"
+            for file in (REPO_ROOT / path).glob(pattern):
                 with open(file, "rb") as f:
                     content = f.read()
                 with open(file, "wb") as f:
                     f.write(content.replace(b"\r", b"\n"))
 
         # We run black to make sure the code is formatted correctly
-        subprocess.check_call(["black", "openbb_terminal"])
+        subprocess.check_call(["black", "openbb_terminal"])  # nosec: B603, B607
 
 
-def generate_sdk(sort: bool = False) -> None:
-    """Main function to generate the SDK.
+def generate_sdk(sort: bool = False) -> bool:
+    """Generate the SDK.
 
     Parameters
     ----------
@@ -518,11 +545,15 @@ def generate_sdk(sort: bool = False) -> None:
         Whether to sort the CSVs, by default False
     """
     trailmaps = get_trailmaps(sort)
+    try:
+        console.print("[yellow]Generating SDK...[/]")
+        BuildCategoryModelClasses(trailmaps).build()
+        console.print("[green]SDK Generated Successfully.[/]")
+    except Exception as e:
+        console.print(f"[red]Error generating SDK: {e}[/]")
+        return False
 
-    console.print("[yellow]Generating SDK...[/]")
-    BuildCategoryModelClasses(trailmaps).build()
-    console.print("[green]SDK Generated Successfully.[/]")
-    return
+    return True
 
 
 if __name__ == "__main__":

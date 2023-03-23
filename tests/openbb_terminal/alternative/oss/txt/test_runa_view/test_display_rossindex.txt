@@ -1,11 +1,11 @@
-                             GitHub      Company  Country           City Founded Raised [$M]    Language  Stars  Forks  Stars AGR [%]  Forks AGR [%]
-0             builderio/\npartytown      Builder      USA  San Francisco    2018        17.3  TypeScript   6830    158           3104          16196
-1                 tooljet/to\noljet      ToolJet    India      Bengaluru    2021         1.6  JavaScript   8856    657           1656           1034
-2                gravitl/ne\ntmaker     Netmaker      USA      Asheville    2021         0.1          Go   3546    213           1422           1532
-3  supertoken\ns/supertok\nens-core  SuperTokens    India         Mumbai    2019         1.5        Java   5343    180           1018            585
-4               safing/por\ntmaster       Safing  Austria          Baden    2017                      Go   2429     80           1016            357
-5                 medusajs/m\nedusa       Medusa  Denmark     Copenhagen    2021         1.0  JavaScript   9833    500            863           1135
-6       amplicatio\nn/amplicat\nion  Amplication   Israel       Tel Aviv    2020         6.6  TypeScript   6296    319            812            667
-7      charmbrace\nlet/soft-\nserve        Charm      USA       New York    2019         3.0          Go   1831     33            729           1784
-8            withfig/au\ntocomplete          Fig      USA  San Francisco    2020         2.4  TypeScript  14329   3425            716            486
-9         growthbook\n/growthboo\nk   GrowthBook      USA      Palo Alto    2020         0.5  TypeScript   2791    109            503            824
+                  GitHub              Company  Country           City Founded Raised [$M]    Language  Stars  Forks  Stars AGR [%]  Forks AGR [%]
+0       builderio/\nqwik              Builder      USA  San Francisco    2018        17.3  TypeScript  14134    623            968           1528
+1          novuhq/nov\nu                 Novu   Israel       Tel Aviv    2021         6.6  TypeScript  16085    982            446           1111
+2     refinedev/\nrefine               refine   Turkey       Istanbul    2022         1.0  TypeScript   6566    470            395           1017
+3    safing/por\ntmaster               Safing  Austria          Baden    2017                      Go   5958    174            345            299
+4          nhost/nhos\nt                Nhost   Sweden      Stockholm    2019         3.1  TypeScript   5460    286            300            442
+5      tooljet/to\noljet              ToolJet    India      Bengaluru    2021         1.6  JavaScript  15559   1408            256            413
+6     gravitl/ne\ntmaker             Netmaker      USA      Asheville    2021         2.3          Go   5819    398            221            384
+7  icewhalete\nch/casaos  IceWhale Technology    China       Shanghai    2020         0.4          Go   8012    534            212            552
+8        penpot/pen\npot               Penpot    Spain         Madrid    2019         8.0     Clojure  19674    895            202            225
+9      mindsdb/mi\nndsdb              MindsDB      USA       Berkeley    2017         7.9      Python  12182   1417            189            204

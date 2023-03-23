@@ -86,12 +86,34 @@ def test_load_data(func, kwargs_dict, recorder):
 @pytest.mark.parametrize(
     "func, kwargs_dict",
     [
-        ("get_series_ids", {"search_query": "unemployment rate"}),
-        ("get_series_ids", {"search_query": "gdp"}),
-        ("get_series_ids", {"search_query": "xyz"}),
+        ("get_cpi", {"countries": ["united kingdom"]}),
+        ("get_cpi", {"countries": ["united kingdom", "united_states"]}),
+        ("get_cpi", {"countries": ["united kingdom", "united_states", "belgium"]}),
+        (
+            "get_cpi",
+            {"countries": ["united kingdom", "united_states"], "frequency": "monthly"},
+        ),
+        (
+            "get_cpi",
+            {
+                "countries": ["united kingdom", "united_states"],
+                "units": "growth_previous",
+            },
+        ),
+        (
+            "get_cpi",
+            {"countries": ["united kingdom", "united_states"], "harmonized": True},
+        ),
+        (
+            "get_cpi",
+            {
+                "countries": ["united kingdom", "united_states"],
+                "units": "growth_previous",
+            },
+        ),
     ],
 )
-def test_get_series_ids(func, kwargs_dict, recorder):
+def test_get_cpi(func, kwargs_dict, recorder):
     result_df = getattr(fred_model, func)(**kwargs_dict)
 
     assert isinstance(result_df, pd.DataFrame)

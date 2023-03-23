@@ -1,1 +1,2 @@
+[info]You are already logged in.[/info]
 [info]sync:[/info] OFF

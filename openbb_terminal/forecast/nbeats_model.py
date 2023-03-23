@@ -10,7 +10,7 @@ import pandas as pd
 from darts import TimeSeries
 from darts.models import NBEATSModel
 
-from openbb_terminal.core.config.paths import USER_FORECAST_MODELS_DIRECTORY
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.forecast import helpers
 
@@ -121,6 +121,8 @@ def get_NBEATS_data(
         past_covariate_val,
     ) = helpers.past_covs(past_covariates, data, train_split, use_scalers)
 
+    current_user = get_current_user()
+
     nbeats_model = NBEATSModel(
         input_chunk_length=input_chunk_length,
         output_chunk_length=output_chunk_length,
@@ -139,7 +141,7 @@ def get_NBEATS_data(
         random_state=42,
         pl_trainer_kwargs=helpers.get_pl_kwargs(accelerator="cpu"),
         log_tensorboard=True,
-        work_dir=USER_FORECAST_MODELS_DIRECTORY,
+        work_dir=current_user.preferences.USER_FORECAST_MODELS_DIRECTORY,
     )
 
     # fit model on train series for historical forecasting
@@ -152,11 +154,16 @@ def get_NBEATS_data(
             past_covariate_train,
             past_covariate_val,
         )
+
     best_model = NBEATSModel.load_from_checkpoint(
-        model_name=model_save_name, best=True, work_dir=USER_FORECAST_MODELS_DIRECTORY
+        model_name=model_save_name,
+        best=True,
+        work_dir=current_user.preferences.USER_FORECAST_MODELS_DIRECTORY,
     )
 
-    helpers.print_tensorboard_logs(model_save_name, USER_FORECAST_MODELS_DIRECTORY)
+    helpers.print_tensorboard_logs(
+        model_save_name, str(current_user.preferences.USER_FORECAST_MODELS_DIRECTORY)
+    )
 
     # Showing historical backtesting without retraining model (too slow)
     return helpers.get_prediction(
