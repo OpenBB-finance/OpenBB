@@ -2,6 +2,7 @@
 
 # IMPORTATION THIRDPARTY
 import pytest
+from pandas import DataFrame
 
 # IMPORTATION INTERNAL
 from openbb_terminal.alternative.oss import github_model
@@ -49,3 +50,14 @@ def test_get_stars_history(repo, recorder):
 def test_get_top_repos(sortby, top, categories, recorder):
     df = github_model.get_top_repos(sortby, top, categories)
     recorder.capture(df)
+
+
+@pytest.mark.record_http
+def test_get_github_data():
+    github_model.get_github_data(url="https://api.github.com/")
+
+
+@pytest.mark.record_http
+def test_search_repos():
+    df = github_model.search_repos()
+    assert isinstance(df, DataFrame)
