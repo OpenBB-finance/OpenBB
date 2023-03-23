@@ -277,6 +277,7 @@ def print_rich_table(
     export: bool = False,
     print_to_console: bool = False,
     limit: Optional[int] = 1000,
+    source: Optional[str] = None,
 ):
     """Prepare a table from df in rich.
 
@@ -310,6 +311,8 @@ def print_rich_table(
         Whether to print the table to the console. If False and interactive mode is
         enabled, the table will be displayed in a new window. Otherwise, it will print to the
         console.
+    source: Optional[str]
+        Source of the table. If provided, it will be displayed in the header of the table.
     """
     if export:
         return
@@ -346,7 +349,7 @@ def print_rich_table(
             if col == "":
                 df_outgoing = df_outgoing.rename(columns={col: "  "})
 
-        plots_backend().send_table(df_table=df_outgoing, title=title)
+        plots_backend().send_table(df_table=df_outgoing, title=title, source=source)
         return
 
     df = df.copy() if not limit else df.copy().iloc[:limit]

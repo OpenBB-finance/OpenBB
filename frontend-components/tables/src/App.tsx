@@ -19,9 +19,10 @@ declare global {
 
 function App() {
   const [data, setData] = useState(
-    process.env.NODE_ENV === "production" ? null : JSON.parse(longIncomeData)
+    process.env.NODE_ENV === "production" ? null : JSON.parse(cryptoData)
   );
   const [title, setTitle] = useState("Interactive Table");
+  const [source, setSource] = useState("");
 
   if (process.env.NODE_ENV === "production") {
     useEffect(() => {
@@ -30,8 +31,11 @@ function App() {
           const data = JSON.parse(window.json_data);
           console.log(data);
           setData(data);
-          if (data.title) {
+          if (data.title && typeof data.title === "string") {
             setTitle(data.title);
+          }
+          if (data.source && typeof data.source === "string") {
+            setSource(data.source);
           }
           clearInterval(interval);
         }
@@ -72,6 +76,7 @@ function App() {
       <DndProvider backend={HTML5Backend}>
         {transformedData && (
           <Table
+            source={source}
             title={title}
             data={transformedData.data}
             columns={transformedData.columns}

@@ -25,8 +25,77 @@ const date = new Date();
 
 const MAX_COLUMNS = 50;
 
-export default function Table({ data, columns, title }: any) {
+function getCellWidth(row, column) {
+  try {
+    const indexLabel = row.hasOwnProperty("index")
+      ? "index"
+      : row.hasOwnProperty("Index")
+        ? "Index"
+        : null;
+    const indexValue = indexLabel ? row[indexLabel] : null;
+    const value = row[column];
+    const valueType = typeof value;
+    const probablyDate =
+      column.toLowerCase().includes("date") ||
+      column.toLowerCase() === "index" ||
+      (indexValue &&
+        typeof indexValue == "string" &&
+        (indexValue.toLowerCase().includes("date") ||
+          indexValue.toLowerCase().includes("day") ||
+          indexValue.toLowerCase().includes("time") ||
+          indexValue.toLowerCase().includes("timestamp") ||
+          indexValue.toLowerCase().includes("year") ||
+          indexValue.toLowerCase().includes("month") ||
+          indexValue.toLowerCase().includes("week") ||
+          indexValue.toLowerCase().includes("hour") ||
+          indexValue.toLowerCase().includes("minute")));
+
+    const probablyLink =
+      valueType === "string" && value.startsWith("http");
+    if (probablyLink) {
+      return value.toString().length
+    }
+    if (probablyDate) {
+      if (typeof value === "string") {
+        return value.toString().length
+      }
+      try {
+        const date = new Date(value);
+        let dateFormatted = "";
+        if (
+          date.getUTCHours() === 0 &&
+          date.getUTCMinutes() === 0 &&
+          date.getUTCSeconds() === 0 &&
+          date.getMilliseconds() === 0
+        ) {
+          dateFormatted = date.toISOString().split("T")[0];
+        } else {
+          dateFormatted = date.toISOString();
+          dateFormatted =
+            dateFormatted.split("T")[0] +
+            " " +
+            dateFormatted.split("T")[1].split(".")[0];
+        }
+
+        return dateFormatted.toString().length
+      } catch (e) {
+        return value.toString().length
+      }
+    }
+    if (valueType === "number") {
+      return value.toString().length
+    }
+    else {
+      return value.toString().length
+    }
+  } catch (e) {
+    return 0
+  }
+}
+
+export default function Table({ data, columns, title, source = "" }: any) {
   const [advanced, setAdvanced] = useLocalStorage("advanced", false);
+  const [colors, setColors] = useLocalStorage("colors", false);
   const [sorting, setSorting] = useState<SortingState>([]);
   const [globalFilter, setGlobalFilter] = useState("");
   const [fontSize, setFontSize] = useLocalStorage("fontSize", "1");
@@ -42,13 +111,11 @@ export default function Table({ data, columns, title }: any) {
 
   const getColumnWidth = (rows, accessor, headerText) => {
     const maxWidth = 400
-    const magicSpacing = 11
+    const magicSpacing = 12
     const cellLength = Math.max(
-      ...rows.map(row => (`${row[accessor].toString()}` || '').length),
-      headerText.length,
+      ...rows.map(row => getCellWidth(row, accessor)),
+      headerText.length + 5,
     )
-    console.log(cellLength)
-    console.log(Math.min(maxWidth, cellLength * magicSpacing))
     return Math.min(maxWidth, cellLength * magicSpacing)
   }
 
@@ -65,8 +132,8 @@ export default function Table({ data, columns, title }: any) {
           const indexLabel = row.original.hasOwnProperty("index")
             ? "index"
             : row.original.hasOwnProperty("Index")
-            ? "Index"
-            : null;
+              ? "Index"
+              : null;
           const indexValue = indexLabel ? row.original[indexLabel] : null;
           const value = row.original[column];
           const valueType = typeof value;
@@ -133,9 +200,10 @@ export default function Table({ data, columns, title }: any) {
             return (
               <p
                 className={clsx("whitespace-nowrap", {
-                  "text-[#16A34A]": value > 0,
-                  "text-[#F87171]": value < 0,
-                  "text-[#404040]": value === 0,
+                  "text-white": !colors,
+                  "text-[#16A34A]": value > 0 && colors,
+                  "text-[#F87171]": value < 0 && colors,
+                  "text-[#404040]": value === 0 && colors,
                 })}
               >
                 {value !== 0
@@ -152,7 +220,7 @@ export default function Table({ data, columns, title }: any) {
         },
       })),
     ],
-    [advanced]
+    [advanced, colors]
   );
 
   const [columnOrder, setColumnOrder] = useState(
@@ -172,7 +240,6 @@ export default function Table({ data, columns, title }: any) {
   const table = useReactTable({
     data,
     columns: rtColumns,
-    useGridLayout: true,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
@@ -249,6 +316,17 @@ export default function Table({ data, columns, title }: any) {
               />
               <label htmlFor="advanced">Advanced</label>
             </div>
+            {advanced && (
+              <div className="flex gap-[14px]">
+                <input
+                  id="colors"
+                  type="checkbox"
+                  checked={colors}
+                  onChange={() => setColors(!colors)}
+                />
+                <label htmlFor="colors">Colors</label>
+              </div>
+            )}
             {/*advanced && (
               <DebouncedInput
                 id="search"
@@ -337,8 +415,14 @@ export default function Table({ data, columns, title }: any) {
                   ></path>
                 </svg>
               </div>
-              <p className="font-bold w-1/3">{title}</p>
-              <p className="w-1/3 text-right">
+              <p className="font-bold w-1/3">{title}
+                {source && (
+                  <span className="font-normal text-xs">
+                    {` [Data from ${source}]`}
+                  </span>
+                )}
+              </p>
+              <p className="w-1/3 text-right text-xs">
                 {new Intl.DateTimeFormat("en-GB", {
                   dateStyle: "full",
                   timeStyle: "long",
@@ -353,9 +437,9 @@ export default function Table({ data, columns, title }: any) {
                 style={{
                   fontSize: `${Number(fontSize) * 100}%`,
                 }}
-                /*style={{
-          width: table.getCenterTotalSize(),
-        }}*/
+              /*style={{
+        width: table.getCenterTotalSize(),
+      }}*/
               >
                 <thead>
                   {table.getHeaderGroups().map((headerGroup) => (
@@ -433,9 +517,9 @@ export default function Table({ data, columns, title }: any) {
                             {header.isPlaceholder
                               ? null
                               : flexRender(
-                                  header.column.columnDef.footer,
-                                  header.getContext()
-                                )}
+                                header.column.columnDef.footer,
+                                header.getContext()
+                              )}
                           </th>
                         ))}
                       </tr>
@@ -445,7 +529,7 @@ export default function Table({ data, columns, title }: any) {
               </table>
             </div>
           </div>
-          <div className="absolute -inset-1 rounded-md blur-md bg-gradient-to-br from-[#072e49]/20 via-[#0d345f]/20 to-[#0d3362]/20"></div>
+          <div className="absolute -inset-1 rounded-md blur-md bg-gradient-to-br from-[#072e49]/30 via-[#0d345f]/30 to-[#0d3362]/30"></div>
         </div>
         <div className="flex gap-10 justify-between py-4 px-6">
           <Export columns={columns} data={data} />

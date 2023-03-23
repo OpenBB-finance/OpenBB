@@ -6,7 +6,7 @@
 
 @layer components {
   ._input {
-    @apply min-w-[80px] w-full text-sm px-2 py-1 bg-grey-900 h-[36px] border-[1.5px] border-grey-700 rounded  text-white focus:text-white focus:border-white active:border-white focus:ring-0 hover:border-white disabled:border-grey-600 font-normal;
+    @apply w-full text-xs px-2 py-1 bg-grey-900 h-[36px] border-[1.5px] border-grey-700 rounded  text-white focus:text-white focus:border-white active:border-white focus:ring-0 hover:border-white disabled:border-grey-600 font-normal;
   }
   ._btn-common {
     @apply whitespace-nowrap inline-flex w-full items-center justify-center gap-2 rounded py-2 px-6 text-center !no-underline transition duration-150 ease-out md:w-fit;
@@ -61,12 +61,6 @@ table tbody tr {
 }
 
 .resizer {
-  position: absolute;
-  right: 0;
-  top: 0;
-  height: 100%;
-  width: 5px;
-  background: rgba(255, 255, 255, 0.5);
   cursor: col-resize;
   user-select: none;
   touch-action: none;
@@ -77,7 +71,7 @@ tr {
 }
 
 .resizer.isResizing {
-  background: blue;
+  background: white;
   opacity: 1;
 }
 

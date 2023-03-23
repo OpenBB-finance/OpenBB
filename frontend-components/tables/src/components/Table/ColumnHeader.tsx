@@ -47,7 +47,7 @@ function Filter({
     }
 
     return (
-      <div className="flex space-x-2 h-10">
+      <div className="flex gap-2 h-10">
         <input
           type="datetime-local"
           value={getTime((columnFilterValue as [string, string])?.[0]) ?? ""}
@@ -75,10 +75,7 @@ function Filter({
   if (areAllValuesNumber) {
     return (
       <div
-        className={clsx("flex space-x-2 h-10", {
-          "flex-col": numberOfColumns > 7,
-          "flex-row": numberOfColumns <= 7,
-        })}
+        className="flex gap-0.5 h-10"
       >
         <input
           type="number"
@@ -90,7 +87,7 @@ function Filter({
             ])
           }
           placeholder={`Min`}
-          className="_input"
+          className="_input p-0.5"
         />
         <input
           type="number"
@@ -102,7 +99,7 @@ function Filter({
             ])
           }
           placeholder={`Max`}
-          className="_input"
+          className="_input p-0.5"
         />
       </div>
     );
@@ -172,13 +169,13 @@ const DraggableColumnHeader: FC<{
       style={{ width: header.getSize(), opacity: isDragging ? 0.5 : 1 }}
       ref={dropRef}
     >
-      <div ref={previewRef} className="space-y-2">
+      <div ref={previewRef} className="flex gap-1 flex-col">
         {header.isPlaceholder ? null : (
           <>
             <div className="font-bold uppercase text-white tracking-widest flex gap-2 whitespace-nowrap justify-between">
               <div
                 onClick={header.column.getToggleSortingHandler()}
-                className={clsx("flex gap-2", {
+                className={clsx("flex gap-1", {
                   "cursor-pointer select-none": header.column.getCanSort(),
                 })}
               >
@@ -187,7 +184,7 @@ const DraggableColumnHeader: FC<{
                   header.getContext()
                 )}
                 {header.column.getCanSort() && (
-                  <div className="flex flex-col gap-1 items-center justify-center">
+                  <div className="flex flex-col gap-0.5 items-center justify-center">
                     <button
                       className={clsx({
                         "text-[#669DCB]": header.column.getIsSorted() === "asc",
@@ -196,8 +193,8 @@ const DraggableColumnHeader: FC<{
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        width="11"
-                        height="5"
+                        width="8"
+                        height="4"
                         fill="none"
                         viewBox="0 0 11 5"
                       >
@@ -213,8 +210,8 @@ const DraggableColumnHeader: FC<{
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        width="11"
-                        height="5"
+                        width="8"
+                        height="4"
                         fill="none"
                         viewBox="0 0 11 5"
                       >
@@ -225,49 +222,25 @@ const DraggableColumnHeader: FC<{
                 )}
               </div>
               {advanced && column.id !== "select" && (
-                <div className="flex gap-2 items-center">
-                  <button
-                    ref={dragRef}
-                    className="text-grey-600 hover:text-white"
+                <button
+                  ref={dragRef}
+                  className="text-grey-600 hover:text-white"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="17"
+                    height="16"
+                    fill="none"
+                    viewBox="0 0 17 16"
                   >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="17"
-                      height="16"
-                      fill="none"
-                      viewBox="0 0 17 16"
-                    >
-                      <path
-                        stroke="currentColor"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M3.667 6l-2 2 2 2M6.333 3.333l2-2 2 2M10.333 12.667l-2 2-2-2M13 6l2 2-2 2M1.667 8H15M8.333 1.333v13.334"
-                      ></path>
-                    </svg>
-                  </button>
-                  <button
-                    className="select-none touch-none text-grey-600 hover:text-white cursor-col-resize"
-                    onMouseDown={header.getResizeHandler()}
-                    onTouchStart={header.getResizeHandler()}
-                  >
-                    <svg
+                    <path
                       stroke="currentColor"
-                      fill="none"
-                      strokeWidth={2}
-                      viewBox="0 0 24 24"
                       strokeLinecap="round"
                       strokeLinejoin="round"
-                      height="1em"
-                      width="1em"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                      <path d="M7 8l-4 4l4 4" />
-                      <path d="M17 8l4 4l-4 4" />
-                      <path d="M3 12l18 0" />
-                    </svg>
-                  </button>
-                </div>
+                      d="M3.667 6l-2 2 2 2M6.333 3.333l2-2 2 2M10.333 12.667l-2 2-2-2M13 6l2 2-2 2M1.667 8H15M8.333 1.333v13.334"
+                    ></path>
+                  </svg>
+                </button>
               )}
             </div>
             {advanced && header.column.getCanFilter() ? (
@@ -282,6 +255,12 @@ const DraggableColumnHeader: FC<{
           </>
         )}
       </div>
+      <button
+        className="resizer bg-grey-300/20 hover:bg-white absolute top-0 right-0 w-0.5 h-full"
+        onMouseDown={header.getResizeHandler()}
+        onTouchStart={header.getResizeHandler()}
+      >
+      </button>
     </th>
   );
 };
