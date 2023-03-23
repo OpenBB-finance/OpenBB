@@ -9,8 +9,8 @@ The Comparison Analysis menu provides the user with tools for comparison (simila
 
 ### How to use
 
-To add a primary ticker, or to swap it for another, enter `ticker WMT`. The command has three sources, use: `getfinnhub`, `getpolygon`
-and `getfinviz` to access the different sources. Sources may return different results.
+To add a primary ticker, or to swap it for another, enter `ticker WMT`. The command has three sources, use: `get --source finnhub`, `get --source polygon`
+and `get --source finviz` to access the different sources. Sources will likely return different results.
 
 ````
 (🦋) /stocks/ca/ $ get --source Finviz

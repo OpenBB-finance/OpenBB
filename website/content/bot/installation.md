@@ -16,7 +16,7 @@ To add the bot to your server click on one of the links for your respective plat
 
 ---
 
-# Discord - First Time Setup
+## Discord - First Time Setup
 
 A pop-up window will open, asking you to log in to your Discord account and allow the bot access.
 
@@ -34,7 +34,7 @@ Congratulations! You’ve successfully added a bot to your Discord server.
 
 ---
 
-# Telegram - First Time Setup
+## Telegram - First Time Setup
 
 After clicking on the Add to Telegram button it should open a chat with our OpenBB Bot.
 

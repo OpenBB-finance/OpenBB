@@ -1,7 +1,7 @@
 ---
 title: Installation and Updates
 sidebar_position: 1
-description: TBD
+description: Installation and Updates.
 keywords:
   [
     installation,
@@ -19,7 +19,6 @@ keywords:
     openbb terminal,
   ]
 ---
-
 ## Installation and Updates
 
 <details><summary>Do I have to use Miniconda?</summary>
