@@ -26,6 +26,9 @@ function autoScaling(eventdata, graphs) {
       };
 
       yaxis_unique.forEach((unique) => {
+        if (typeof unique != "string") {
+          return;
+        }
         let yaxis = "yaxis" + unique.replace("y", "");
         let y_candle = [];
         let y_values = [];
