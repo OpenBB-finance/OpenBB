@@ -12,7 +12,10 @@ from rich.console import Console, Theme
 from rich.progress import track
 from rich.text import Text
 
-from openbb_terminal.core.config.paths import MISCELLANEOUS_DIRECTORY
+from openbb_terminal.core.config.paths import (
+    MISCELLANEOUS_DIRECTORY,
+    USER_DATA_SOURCES_DEFAULT_FILE,
+)
 from openbb_terminal.core.session.current_system import get_current_system
 from openbb_terminal.core.session.current_user import (
     get_current_user,
@@ -195,11 +198,10 @@ def get_ordered_list_sources(command_path: str):
     current_user = get_current_user()
     try:
         # Loading in both source files: default sources and user sources
-        default_data_source = MISCELLANEOUS_DIRECTORY / "data_sources_default.json"
         user_data_source = Path(current_user.preferences.PREFERRED_DATA_SOURCE_FILE)
 
         # Opening default sources file from the repository root
-        with open(str(default_data_source)) as json_file:
+        with open(str(USER_DATA_SOURCES_DEFAULT_FILE)) as json_file:
             json_doc = json.load(json_file)
 
         # If the user has added sources to their own sources file in OpenBBUserData, then use that
