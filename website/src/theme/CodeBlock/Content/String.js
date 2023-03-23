@@ -11,7 +11,6 @@ import {
 import Highlight, { defaultProps } from "prism-react-renderer";
 import Line from "@theme/CodeBlock/Line";
 import CopyButton from "@theme/CodeBlock/CopyButton";
-import PlayButton from "@site/src/components/General/PlayButton";
 import WordWrapButton from "@theme/CodeBlock/WordWrapButton";
 import Container from "@theme/CodeBlock/Container";
 import styles from "./styles.module.css";
