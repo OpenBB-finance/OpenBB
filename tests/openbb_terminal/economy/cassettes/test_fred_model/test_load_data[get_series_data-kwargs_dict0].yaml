@@ -1149,7 +1149,7 @@ interactions:
       x-rate-limit-limit:
       - '120'
       x-rate-limit-remaining:
-      - '117'
+      - '120'
     status:
       code: 200
       message: OK

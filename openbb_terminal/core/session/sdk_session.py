@@ -14,6 +14,8 @@ from openbb_terminal.terminal_helper import print_guest_block_msg
 
 logger = logging.getLogger(__name__)
 
+logger = logging.getLogger(__name__)
+
 
 def get_session(email: str, password: str, token: str, save: bool) -> dict:
     session = dict()
