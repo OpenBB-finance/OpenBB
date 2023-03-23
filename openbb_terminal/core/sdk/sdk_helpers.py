@@ -6,7 +6,6 @@ from typing import Any, Callable, Dict, Optional
 
 import dotenv
 
-import openbb_terminal.config_terminal as cfg
 from openbb_terminal.base_helpers import load_env_vars, strtobool
 from openbb_terminal.core.config.paths import SETTINGS_ENV_FILE
 from openbb_terminal.core.sdk.sdk_init import (
@@ -15,6 +14,7 @@ from openbb_terminal.core.sdk.sdk_init import (
     OPTIMIZATION_TOOLKIT_ENABLED,
     OPTIMIZATION_TOOLKIT_WARNING,
 )
+from openbb_terminal.core.session.current_system import get_current_system
 from openbb_terminal.rich_config import console
 
 SETTINGS_ENV_FILE.parent.mkdir(parents=True, exist_ok=True)
@@ -313,7 +313,9 @@ class OperationLogger:
         )
 
     def __check_logging_conditions(self) -> bool:
-        return not cfg.LOGGING_SUPPRESS and not self.__check_last_method()
+        return (
+            not get_current_system().LOGGING_SUPPRESS and not self.__check_last_method()
+        )
 
     def __check_last_method(self) -> bool:
         current_method = {
@@ -349,11 +351,11 @@ from openbb_terminal.core.sdk import (
     controllers as ctrl,
     models as model,
 )
+from openbb_terminal.core.session.current_system import get_current_system
 from openbb_terminal.core.session.current_user import is_local
 from openbb_terminal.terminal_helper import is_auth_enabled
 
-cfg.start_required_configurations()
-cfg.start_plot_backend()
+cfg.setup_config_terminal()
 
 logger = logging.getLogger(__name__)
 cfg.theme.applyMPLstyle()

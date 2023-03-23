@@ -91,7 +91,6 @@ def __mock_parse_known_args_and_warn(
             default=sources[0],  # the first source from the list is the default
             help="Data source to select from",
         )
-    return None
 
 
 def __mock_parse_simple_args(parser: ArgumentParser, other_args: List[str]) -> None:
@@ -109,8 +108,6 @@ def __mock_parse_simple_args(parser: ArgumentParser, other_args: List[str]) -> N
         "-h", "--help", action="store_true", help="show this help message"
     )
     _ = other_args
-
-    return None
 
 
 def __get_command_func(controller, command: str):
