@@ -127,6 +127,7 @@ jobs:
           /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/torch/bin/torch_shm_manager
           echo "Code Sign OpenBB Executable File"
           /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/OpenBBTerminal
+          /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/OpenBBPlotsBackend
       - name: Create DMG
         run: create-dmg --volname "OpenBB Terminal" --volicon "images/dmg_volume.icns" --background "images/openbb_dmg_background.png" --icon "OpenBB Terminal" 190 250 --window-pos 190 120 --window-size 800 400 --icon-size 100 --text-size 14 --app-drop-link 600 250 --eula LICENSE --format UDZO --no-internet-enable "OpenBB Terminal".dmg DMG
       - name: Code Sign DMG Installer

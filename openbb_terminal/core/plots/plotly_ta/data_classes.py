@@ -55,7 +55,7 @@ class TAIndicator:
                 output = opt
         return output
 
-    def get_argument_values(self, label: str) -> List[Any]:
+    def get_argument_values(self, label: str) -> Union[List[Any], Any]:
         """Returns arguments values by label"""
         output = []
         options = self.get_args(label)
