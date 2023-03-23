@@ -347,6 +347,9 @@ class PlotlyTA(PltTA):
             row_width=[1],
             specs=[[{"secondary_y": True}]],
         )
+        cc_linewidth = (
+            0.8 if len(self.df_stock.index) > 500 else 0.9 if self.intraday else 1.1
+        )
         if candles:
             fig.add_candlestick(
                 x=self.df_stock.index,
@@ -354,6 +357,8 @@ class PlotlyTA(PltTA):
                 high=self.df_stock.High,
                 low=self.df_stock.Low,
                 close=self.df_stock.Close,
+                decreasing=dict(line=dict(width=cc_linewidth)),
+                increasing=dict(line=dict(width=cc_linewidth)),
                 name=f"{symbol} OHLC",
                 showlegend=False,
                 row=1,
