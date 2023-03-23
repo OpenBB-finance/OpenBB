@@ -115,6 +115,7 @@ def apply_configs(configs: dict):
         The configurations.
     """
     set_credentials_from_hub(configs)
+    set_preferences(configs)
     set_theme_from_hub(configs)
     set_sources_from_hub(configs)
 
@@ -133,6 +134,20 @@ def set_credentials_from_hub(configs: dict):
             set_credential(k, v)
 
 
+def set_preferences(configs: dict):
+    """Set preferences.
+
+    Parameters
+    ----------
+    configs : dict
+        The configurations.
+    """
+    if configs:
+        preferences = configs.get("features_settings", {}) or {}
+        for k, v in preferences.items():
+            set_preference(k, v)
+
+
 def set_theme_from_hub(configs: dict):
     """Set theme from hub.
 
@@ -147,7 +162,7 @@ def set_theme_from_hub(configs: dict):
             user_style = terminal_style.get("theme", None)
             if user_style:
                 user_style = {k: v.replace(" ", "") for k, v in user_style.items()}
-                set_preference("CUSTOM_RICH_STYLE", user_style)
+                set_preference("HUB_RICH_STYLE", user_style)
 
 
 def set_sources_from_hub(configs: dict):

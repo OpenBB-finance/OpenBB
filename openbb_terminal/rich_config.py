@@ -46,7 +46,20 @@ USE_COLOR = True
 
 
 def get_console_style(name: str, folder: Path) -> Dict[str, str]:
-    """Get console style based on rich style."""
+    """Get console style based on rich style.
+
+    Parameters
+    ----------
+    name : str
+        Name of style.
+    folder : Path
+        Folder to look for style in.
+
+    Returns
+    -------
+    Dict[str, str]
+        Style dictionary.
+    """
     file_name = name + ".richstyle.json"
     file = folder / file_name
 
@@ -56,50 +69,102 @@ def get_console_style(name: str, folder: Path) -> Dict[str, str]:
     return {}
 
 
+def get_custom_style(folder) -> Optional[Theme]:
+    """Get custom style.
+
+    Parameters
+    ----------
+    folder : Path
+        Folder to look for style in.
+
+    Returns
+    -------
+    Optional[Theme]
+        Theme object.
+    """
+    try:
+        if is_local():
+            style = get_console_style(
+                name="openbb_config",
+                folder=folder,
+            )
+            set_preference("CUSTOM_RICH_STYLE", style)
+
+        style_dict = get_current_user().preferences.CUSTOM_RICH_STYLE
+        if style_dict:
+            return Theme(style_dict)
+        return None
+    except Exception:
+        print(
+            "Error loading style: failed to load "
+            f"'openbb_config.rich_style.json' from {folder}, using default -> dark"
+        )
+        return None
+
+
+def get_hub_style() -> Theme:
+    """Get hub style.
+
+    Returns
+    -------
+    Theme
+        Theme object.
+    """
+    try:
+        return Theme(get_current_user().preferences.HUB_RICH_STYLE)
+    except Exception:
+        print("Error loading hub style.\n")
+        return Theme()
+
+
+def get_default_style(folder) -> Theme:
+    """Get default style.
+
+    Parameters
+    ----------
+    folder : Path
+        Folder to look for style in.
+
+    Returns
+    -------
+    Theme
+        Theme object.
+    """
+    try:
+        default = get_console_style("default", folder)
+        set_preference("RICH_STYLE", "default")
+        if default:
+            return Theme(default)
+        return Theme()
+    except Exception:
+        print("Error loading default style.\n")
+        return Theme()
+
+
 def get_theme() -> Theme:
-    """Get rich theme."""
+    """Get rich theme.
+
+    Returns
+    -------
+    Theme
+        Theme object.
+    """
 
     current_user = get_current_user()
     rich = current_user.preferences.RICH_STYLE
-    builtin_folder = MISCELLANEOUS_DIRECTORY / "styles" / "default"
+    defaults_folder = MISCELLANEOUS_DIRECTORY / "styles" / "default"
     user_folder = current_user.preferences.USER_STYLES_DIRECTORY
 
-    theme = Theme()
-    try:
-        if rich == "custom":
-            if is_local():
-                style = get_console_style(
-                    name="openbb_config",
-                    folder=user_folder,
-                )
-                set_preference("CUSTOM_RICH_STYLE", style)
-                # Update local copy of user
-                current_user = get_current_user()
-
-            custom = current_user.preferences.CUSTOM_RICH_STYLE
-            if custom:
-                theme = Theme(custom)
-            else:
-                raise Exception(
-                    f"failed to load 'openbb_config.rich_style.json' from {user_folder}\n"
-                )
-
-        else:
-            builtin = get_console_style(rich, builtin_folder)
-            if builtin:
-                theme = Theme(builtin)
-            else:
-                print(f"Error loading style: failed to load {rich} style")
-
-    except Exception as error:
-        print(f"Error loading style: {error}, using default -> dark")
-        default = get_console_style("dark", builtin_folder)
-        if default:
-            set_preference("RICH_STYLE", "dark")
-            theme = Theme(default)
-        else:
-            print("Error loading default style.\n")
-
+    if rich == "custom":
+        theme = get_custom_style(user_folder)
+        if not theme:
+            theme = get_default_style(defaults_folder)
+    elif rich == "hub":
+        theme = get_hub_style()
+    elif rich == "default":
+        theme = get_default_style(defaults_folder)
+    else:
+        theme = Theme()
     return theme
 
 

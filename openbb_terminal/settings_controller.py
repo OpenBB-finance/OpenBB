@@ -39,6 +39,7 @@ from openbb_terminal.helper_funcs import (
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import RICH_TAGS, MenuText, console
+from openbb_terminal.terminal_helper import print_guest_block_msg
 
 # pylint: disable=too-many-lines,no-member,too-many-public-methods,C0302
 # pylint: disable=import-outside-toplevel
@@ -244,8 +245,8 @@ class SettingsController(BaseController):
             "-s",
             "--style",
             type=str,
-            default="dark",
-            choices=["dark", "custom"],
+            default="default",
+            choices=["default", "custom", "hub"],
             dest="style",
             required="-h" not in other_args and "--help" not in other_args,
             help="To use 'custom' option, go to https://openbb.co/customize and create your theme."
@@ -255,15 +256,27 @@ class SettingsController(BaseController):
             other_args.insert(0, "-s")
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
-            self.set_and_save_preference("RICH_STYLE", ns_parser.style)
-
-            if not is_local() and ns_parser.style == "custom":
+            if is_local():
+                if ns_parser.style == "hub":
+                    print_guest_block_msg()
+                else:
+                    self.set_and_save_preference("RICH_STYLE", ns_parser.style)
+                    console.print("Theme updated.")
+            else:
                 response = Hub.fetch_user_configs(
                     get_current_user().profile.get_session()
                 )
                 if response:
                     configs = json.loads(response.content)
                     Local.set_theme_from_hub(configs)
+                    set_preference("RICH_STYLE", ns_parser.style)
+                    Hub.upload_config(
+                        key="RICH_STYLE",
+                        value=ns_parser.style,
+                        type_="settings",
+                        auth_header=get_current_user().profile.get_auth_header(),
+                    )
+                    console.print("Theme updated.")
 
     @log_start_end(log=logger)
     def call_dt(self, other_args: List[str]):
