@@ -9,7 +9,7 @@ interactions:
       Connection:
       - keep-alive
     method: GET
-    uri: https://seekingalpha.com/api/v3/earnings_calendar/tickers?filter%5Bselected_date%5D=2023-03-23&filter%5Bwith_rating%5D=false&filter%5Bcurrency%5D=USD
+    uri: https://seekingalpha.com/api/v3/earnings_calendar/tickers?filter%5Bselected_date%5D=2023-03-22&filter%5Bwith_rating%5D=false&filter%5Bcurrency%5D=USD
   response:
     body:
       string: !!binary |
@@ -18,7 +18,7 @@ interactions:
       Accept-Ranges:
       - bytes
       Age:
-      - '0'
+      - '3923'
       Allow:
       - GET, POST, HEAD, PUT, PATCH, DELETE, OPTIONS
       Cache-Control:
@@ -35,7 +35,7 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Thu, 23 Mar 2023 16:42:05 GMT
+      - Thu, 23 Mar 2023 17:47:28 GMT
       ETag:
       - W/"8fe32e407a1038ee38753b70e5374b3a"
       Referrer-Policy:
@@ -45,9 +45,9 @@ interactions:
       Vary:
       - User-Agent, Accept-Encoding
       X-Cache:
-      - MISS, MISS
+      - MISS, HIT
       X-Cache-Hits:
-      - 0, 0
+      - 0, 1
       X-Content-Type-Options:
       - nosniff
       X-Download-Options:
@@ -61,14 +61,14 @@ interactions:
       X-Runtime:
       - '0.011198'
       X-Served-By:
-      - cache-bfi-kbfi7400066-BFI, cache-iad-kiad7000088-IAD
+      - cache-bfi-kbfi7400066-BFI, cache-iad-kiad7000168-IAD
       X-Timer:
-      - S1679589725.147578,VS0,VE137
+      - S1679593648.189319,VS0,VE2
       X-XSS-Protection:
       - 1; mode=block
       set-cookie:
-      - machine_cookie=6591943087807; expires=Wed, 22 Mar 2028 16:42:05 GMT; path=/;
-      - machine_cookie_ts=1679589725; expires=Wed, 22 Mar 2028 16:42:05 GMT; path=/;
+      - machine_cookie=2941724868147; expires=Wed, 22 Mar 2028 17:47:28 GMT; path=/;
+      - machine_cookie_ts=1679593648; expires=Wed, 22 Mar 2028 17:47:28 GMT; path=/;
     status:
       code: 200
       message: OK
