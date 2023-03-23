@@ -6450,21 +6450,25 @@ files = [
 
 [[package]]
 name = "pywry"
-version = "0.3.6"
+version = "0.4.0"
 description = ""
 category = "main"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "pywry-0.3.6-cp310-cp310-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:cd63ef0778a424f40d98f40721f3d55821d0736ed80729db46215fb08a28b89c"},
-    {file = "pywry-0.3.6-cp310-none-win_amd64.whl", hash = "sha256:c92330959eeebd24daf16c2890d973b9a08e7660af444cc38a67de1a4cd5a587"},
-    {file = "pywry-0.3.6-cp311-cp311-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:0fb30463acac1e8e31fa90ea3a303696d5c4189b689bc8d03bfd6255bc07af56"},
-    {file = "pywry-0.3.6-cp311-none-win_amd64.whl", hash = "sha256:f7db722823dfbdb98a4fe548cdb2f42cad218c375b70dce13e8bb1f5d00de5f4"},
-    {file = "pywry-0.3.6-cp38-cp38-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:5712dfde5b964585f66dd88c1d08bc25266dc85d50c10fafc01f607cb58a1a0f"},
-    {file = "pywry-0.3.6-cp38-none-win_amd64.whl", hash = "sha256:10cebfd96689e055655512b49d62c294df25d7aa286a7e7fb7ddd7b931cd2de0"},
-    {file = "pywry-0.3.6-cp39-cp39-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:6aacd446d71b55fa74effe19c11502d4b47f4e41d6474b278ef4eb62ab38de09"},
-    {file = "pywry-0.3.6-cp39-none-win_amd64.whl", hash = "sha256:61d0d266906bd8cd8a92eada82c94a94c16c191ff93d8d6c4f1641fcfb99cb2e"},
-    {file = "pywry-0.3.6.tar.gz", hash = "sha256:40d3ce8094723e1a27e846c3a06c923c8441387c6d34874c968f4571bee46534"},
+    {file = "pywry-0.4.0-cp310-cp310-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:88362e9a001525de7a85dcbeb12c937e1756a58eec8467310ccd2d70d4f0e19b"},
+    {file = "pywry-0.4.0-cp310-cp310-manylinux_2_28_x86_64.whl", hash = "sha256:d586d08d8d76e4434c9a4ee700cc27d35965ff3d5598ce417436f06402b1703c"},
+    {file = "pywry-0.4.0-cp310-none-win_amd64.whl", hash = "sha256:7798f0163d1b87d80e4e288367a1c3da1dafa9d4642eb965beab2a54b1121df3"},
+    {file = "pywry-0.4.0-cp311-cp311-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:0ac97683c6b3cbcfd46952dc235c0799c745e6e4644cd96a5414f43f19417e04"},
+    {file = "pywry-0.4.0-cp311-cp311-manylinux_2_28_x86_64.whl", hash = "sha256:568342165c3895d2e6b69e4239a43e30f98186413dee9be5c9ace1f92298d8de"},
+    {file = "pywry-0.4.0-cp311-none-win_amd64.whl", hash = "sha256:5f465ea674e80491bf9d11d687ffb548743b5ff90bd7da4e5f57452ae303c44b"},
+    {file = "pywry-0.4.0-cp38-cp38-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:d82b31e219d291466a5c6310dca8a66edab507eb1c03e3a55075d9b8b31d7808"},
+    {file = "pywry-0.4.0-cp38-cp38-manylinux_2_28_x86_64.whl", hash = "sha256:14289e7eeab2905e7f0fadb2d5addc1487e03cd4ff6afb8011e34901464eac5a"},
+    {file = "pywry-0.4.0-cp38-none-win_amd64.whl", hash = "sha256:aff14a16ff40a10a67a0864a4264e8f6bab4cb05ded03253154b48f30a006a73"},
+    {file = "pywry-0.4.0-cp39-cp39-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:2daa51b2158ed056a4d4979834b102fa27f6e4282ca2e479b662879f677491e3"},
+    {file = "pywry-0.4.0-cp39-cp39-manylinux_2_28_x86_64.whl", hash = "sha256:f7a12e9a82e2e94c62e0747e5f02d971cd99021bb4e837cccc6c1181a50380fe"},
+    {file = "pywry-0.4.0-cp39-none-win_amd64.whl", hash = "sha256:d18934f57cebf8366b1d612b8409eeb978d500d62d63655e8232f0e40777e129"},
+    {file = "pywry-0.4.0.tar.gz", hash = "sha256:9e5d31ca8178bca2603765b0c08aea6975f2c1105d6676315efbeb55adc2b5c6"},
 ]
 
 [package.dependencies]
@@ -6472,7 +6476,7 @@ psutil = ">=5.8.0"
 websockets = ">=5.0.1"
 
 [package.extras]
-dev = ["maturin (==0.14.15)", "setuptools", "setuptools-rust", "wheel"]
+dev = ["auditwheel", "wheel"]
 
 [[package]]
 name = "pyyaml"
@@ -9719,4 +9723,4 @@ optimization = ["Riskfolio-Lib"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8,<3.11, !=3.9.7"
-content-hash = "403e3dd0a3c96ce8f246abb75a25b892e57462a2721b711093820692fe1092ff"
+content-hash = "f2c11ba746d97c105d3f2a12fbf7fd6e3feb9383175d2f69bf9910baec52b1fa"
