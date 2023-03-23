@@ -60,7 +60,6 @@ repos:
             ".secrets.baseline",
             "--exclude-files",
             "cassettes/*",
-            "record/*",
             "--exclude-files",
             "website/content/api/*",
           ]
