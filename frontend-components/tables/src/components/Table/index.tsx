@@ -111,7 +111,7 @@ export default function Table({ data, columns, title, source = "" }: any) {
     const magicSpacing = 12;
     const cellLength = Math.max(
       ...rows.map((row) => getCellWidth(row, accessor)),
-      headerText.length + 5
+      headerText.length + 8
     );
     return Math.min(maxWidth, cellLength * magicSpacing);
   };
