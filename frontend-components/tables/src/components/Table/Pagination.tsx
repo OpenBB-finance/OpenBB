@@ -1,9 +1,14 @@
 import clsx from "clsx";
 import { useState } from "react";
+import { DEFAULT_ROWS_PER_PAGE } from ".";
+import useLocalStorage from "../../utils/useLocalStorage";
 import Select from "../Select";
 
 export default function Pagination({ table }: { table: any }) {
-  const [currentPage, setCurrentPage] = useState(10);
+  const [currentPage, setCurrentPage] = useLocalStorage(
+    "rowsPerPage",
+    DEFAULT_ROWS_PER_PAGE
+  );
   const totalRows = table.getFilteredRowModel().rows.length;
 
   return (

@@ -24,6 +24,7 @@ import Toast from "../Toast";
 const date = new Date();
 
 const MAX_COLUMNS = 50;
+export const DEFAULT_ROWS_PER_PAGE = 30;
 
 function getCellWidth(row, column) {
   try {
@@ -124,8 +125,7 @@ export default function Table({ data, columns, title, source = "" }: any) {
         header: column,
         size: getColumnWidth(data, column, column),
         footer: column,
-        cell: ({ row, ...otherProps }: any) => {
-          // figure out whether it has index or Index;
+        cell: ({ row }: any) => {
           const indexLabel = row.original.hasOwnProperty("index")
             ? "index"
             : row.original.hasOwnProperty("Index")
@@ -240,7 +240,6 @@ export default function Table({ data, columns, title, source = "" }: any) {
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    /*enableColumnResizing: true,*/
     columnResizeMode: "onChange",
     onColumnVisibilityChange: setColumnVisibility,
     onColumnOrderChange: setColumnOrder,
@@ -253,24 +252,35 @@ export default function Table({ data, columns, title, source = "" }: any) {
       columnOrder,
       columnVisibility,
     },
+    initialState: {
+      pagination: {
+        pageIndex: 0,
+        pageSize: DEFAULT_ROWS_PER_PAGE,
+      },
+    },
   });
 
   const tableContainerRef = useRef<HTMLDivElement>(null);
   const { rows } = table.getRowModel();
-  const rowVirtualizer = useVirtual({
+
+  // virtualization is making a visual bug where the rows keep switching the colors, disabling it for now
+
+  /*const rowVirtualizer = useVirtual({
     parentRef: tableContainerRef,
     size: rows.length,
     overscan: 10,
   });
 
-  const { virtualItems: virtualRows, totalSize } = rowVirtualizer;
+ const { virtualItems: virtualRows, totalSize } = rowVirtualizer;
 
-  const paddingTop = virtualRows.length > 0 ? virtualRows?.[0]?.start || 0 : 0;
+ const paddingTop = virtualRows.length > 0 ? virtualRows?.[0]?.start || 0 : 0;
   const paddingBottom =
     virtualRows.length > 0
       ? totalSize - (virtualRows?.[virtualRows.length - 1]?.end || 0)
       : 0;
+*/
 
+  // also disabling generating a chart for now, will come back to it later
   //const [dialog, setDialog] = useState(null);
 
   const visibleColumns = table.getVisibleFlatColumns();
@@ -463,13 +473,13 @@ export default function Table({ data, columns, title, source = "" }: any) {
                   ))}
                 </thead>
                 <tbody>
-                  {paddingTop > 0 && (
+                  {/*paddingTop > 0 && (
                     <tr>
                       <td style={{ height: `${paddingTop}px` }}></td>
                     </tr>
-                  )}
-                  {virtualRows.map((virtualRow, idx) => {
-                    const row = rows[virtualRow.index];
+                  )*/}
+                  {table.getRowModel().rows.map((row, idx) => {
+                    //const row = rows[virtualRow.index];
                     return (
                       <tr
                         key={row.id}
@@ -500,11 +510,11 @@ export default function Table({ data, columns, title, source = "" }: any) {
                       </tr>
                     );
                   })}
-                  {paddingBottom > 0 && (
+                  {/*paddingBottom > 0 && (
                     <tr>
                       <td style={{ height: `${paddingBottom}px` }} />
                     </tr>
-                  )}
+                  )*/}
                 </tbody>
                 {rows.length > 30 && visibleColumns.length > 4 && (
                   <tfoot>
