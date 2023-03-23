@@ -42,6 +42,7 @@ def dark_pool_short_positions(
 
     dp_date = df["Date"].values[0]
     df = df.drop(columns=["Date"])
+
     df["Net Short Volume $"] = df["Net Short Volume $"] / 100_000_000
     df["Short Volume"] = df["Short Volume"] / 1_000_000
     df["Net Short Volume"] = df["Net Short Volume"] / 1_000_000
