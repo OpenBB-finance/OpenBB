@@ -9,7 +9,7 @@ interactions:
       Connection:
       - keep-alive
     method: GET
-    uri: https://seekingalpha.com/api/v3/earnings_calendar/tickers?filter%5Bselected_date%5D=2023-03-22&filter%5Bwith_rating%5D=false&filter%5Bcurrency%5D=USD
+    uri: https://seekingalpha.com/api/v3/earnings_calendar/tickers?filter%5Bselected_date%5D=2023-03-23&filter%5Bwith_rating%5D=false&filter%5Bcurrency%5D=USD
   response:
     body:
       string: !!binary |
