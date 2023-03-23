@@ -61,6 +61,8 @@ repos:
             "--exclude-files",
             "cassettes/*",
             "--exclude-files",
+            "record/*",
+            "--exclude-files",
             "website/content/api/*",
           ]
         exclude: package.lock.json
