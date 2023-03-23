@@ -31,7 +31,7 @@ To activate interactive plots/tables in pywry window, please make sure the follo
 """
 
 
-class PyWry:
+class DummyBackend:
     """Dummy class to avoid import errors."""
 
     max_retries = 0
@@ -42,15 +42,22 @@ class PyWry:
     shell = False
     base = None
 
-    def __init__(self, *args, **kwargs):  # pylint: disable=W0613
-        """Dummy init to avoid import errors."""
-        try:
-            loop: asyncio.AbstractEventLoop = asyncio.get_event_loop()
-        except RuntimeError:
-            loop = asyncio.new_event_loop()
-            asyncio.set_event_loop(loop)
+    def __new__(cls, *args, **kwargs):  # pylint: disable=W0613
+        """Create a singleton instance of the backend."""
+        if not hasattr(cls, "instance"):
+            cls.instance = super().__new__(cls)  # pylint: disable=E1120
+        return cls.instance
 
-        self.loop = loop
+    def __init__(self, daemon: bool = True, max_retries: int = 30):
+        """Dummy init to avoid import errors."""
+        self.daemon = daemon
+        self.max_retries = max_retries
+        try:
+            self.loop: asyncio.AbstractEventLoop = asyncio.get_event_loop()
+        except RuntimeError:
+            self.loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(self.loop)
+
         current_user = get_current_user()
 
         # If pywry is not installed or missing required linux dependencies
@@ -67,11 +74,11 @@ class PyWry:
 
         current_user.preferences.USE_INTERACTIVE_DF = False
 
-    def close(self, *args, **kwargs):  # pylint: disable=W0613
-        """Dummy method to avoid errors."""
+    def close(self, reset: bool = False):  # pylint: disable=W0613
+        pass
 
     def start(self, debug: bool = False):  # pylint: disable=W0613
-        """Dummy method to avoid errors."""
+        pass
 
     async def check_backend(self):
         """Dummy check backend method to avoid errors and revert to browser."""

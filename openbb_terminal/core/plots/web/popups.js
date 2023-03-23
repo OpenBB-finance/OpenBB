@@ -259,7 +259,7 @@ function on_submit(popup_id, on_annotation = null) {
           };
           plot_text(data, popup_data, popup_data.annotation.text);
         }
-        Plotly.update(gd, {}, { hovermode: "x" });
+        Plotly.update(gd, {}, { hovermode: "x unified" });
       });
 
       let clickHandler = function (eventData) {
@@ -284,7 +284,7 @@ function on_submit(popup_id, on_annotation = null) {
           yref: yaxis,
         };
         plot_text(data, popup_data);
-        Plotly.update(gd, {}, { hovermode: "x" });
+        Plotly.update(gd, {}, { hovermode: "x unified" });
       };
 
       Plotly.update(gd, {}, { dragmode: "select" });

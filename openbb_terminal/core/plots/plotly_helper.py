@@ -879,7 +879,7 @@ class OpenBBFigure(go.Figure):
             yaxis="y2",
             row=row,
             col=col,
-            opacity=0.9,
+            opacity=0.5,
             secondary_y=False,
         )
         ticksize = 14 - (self.subplots_kwargs["rows"] // 2)

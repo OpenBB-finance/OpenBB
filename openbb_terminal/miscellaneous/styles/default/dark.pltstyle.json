@@ -51,7 +51,7 @@
         "hoverlabel": {
             "align": "left"
         },
-        "hovermode": "x",
+        "hovermode": "x unified",
         "legend": {
             "bgcolor": "rgba(0, 0, 0, 0)",
             "x": 0.01,

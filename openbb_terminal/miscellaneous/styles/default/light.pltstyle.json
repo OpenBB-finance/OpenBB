@@ -736,7 +736,7 @@
         "hoverlabel": {
             "align": "left"
         },
-        "hovermode": "x",
+        "hovermode": "x unified",
         "mapbox": {
             "style": "light"
         },
