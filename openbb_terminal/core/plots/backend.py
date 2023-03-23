@@ -21,7 +21,6 @@ try:
 except ImportError:
     from openbb_terminal.core.plots.no_import import DummyBackend as PyWry
 
-
 from svglib.svglib import svg2rlg
 
 from openbb_terminal.base_helpers import console, strtobool
