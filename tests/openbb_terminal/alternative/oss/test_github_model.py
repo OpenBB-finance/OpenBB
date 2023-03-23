@@ -11,8 +11,10 @@ from openbb_terminal.alternative.oss import github_model
 @pytest.fixture(scope="module")
 def vcr_config():
     return {
-        "filter_headers": [("User-Agent", None)],
-        "filter_query_parameters": [("apikey", "MOCK_API_KEY")],
+        "filter_headers": [
+            ("User-Agent", None),
+            ("Authorization", "MOCK_AUTHORIZATION"),
+        ],
     }
 
 

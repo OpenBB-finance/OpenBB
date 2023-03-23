@@ -7,11 +7,9 @@ interactions:
       Accept-Encoding:
       - gzip, deflate
       Authorization:
-      - token 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
+      - MOCK_AUTHORIZATION
       Connection:
       - keep-alive
-      User-Agent:
-      - Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.10; rv:83.0) Gecko/20100101 Firefox/83.0
     method: GET
     uri: https://api.github.com/
   response:
@@ -32,7 +30,7 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Thu, 23 Mar 2023 11:50:54 GMT
+      - Thu, 23 Mar 2023 12:18:04 GMT
       Referrer-Policy:
       - origin-when-cross-origin, strict-origin-when-cross-origin
       Server:
@@ -48,13 +46,13 @@ interactions:
       X-GitHub-Media-Type:
       - github.v3; param=star; format=json
       X-GitHub-Request-Id:
-      - 6DED:D892:110520C1:114AB11F:641C3D1E
+      - 6D7F:09B7:122420CB:126B71D1:641C437C
       X-RateLimit-Limit:
       - '60'
       X-RateLimit-Remaining:
       - '58'
       X-RateLimit-Reset:
-      - '1679572543'
+      - '1679577233'
       X-RateLimit-Resource:
       - core
       X-RateLimit-Used:
