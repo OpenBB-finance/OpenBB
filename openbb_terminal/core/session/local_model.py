@@ -1,7 +1,7 @@
 import json
 import os
 from pathlib import Path
-from typing import Optional, Union
+from typing import List, Optional, Union
 
 from openbb_terminal.core.config.paths import (
     HIST_FILE_PATH,
@@ -113,7 +113,7 @@ def apply_configs(configs: dict):
         The configurations.
     """
     set_credentials(configs)
-    set_preferences(configs)
+    set_preferences(configs, ["PLOT_STYLE", "RICH_STYLE"])
     set_theme(configs)
 
 
@@ -131,18 +131,23 @@ def set_credentials(configs: dict):
             set_credential(k, v)
 
 
-def set_preferences(configs: dict):
+def set_preferences(configs: dict, filter_: Optional[List[str]] = None):
     """Set preferences.
 
     Parameters
     ----------
     configs : dict
         The configurations.
+    fields : Optional[List[str]]
+        The fields to set, if None, all fields will be set.
     """
     if configs:
         preferences = configs.get("features_settings", {}) or {}
         for k, v in preferences.items():
-            set_preference(k, v)
+            if not filter_:
+                set_preference(k, v)
+            elif k in filter_:
+                set_preference(k, v)
 
 
 def set_theme(configs: dict):
