@@ -21,7 +21,7 @@ interactions:
       Content-Length:
       - '0'
       Date:
-      - Thu, 23 Mar 2023 16:25:31 GMT
+      - Thu, 23 Mar 2023 17:47:41 GMT
       Location:
       - https://seekingalpha.com/api/v3/news?filter%5Bcategory%5D=market-news%3A%3ACrypto&filter%5Bsince%5D=0&filter%5Buntil%5D=0&include=author%2CprimaryTickers%2CsecondaryTickers&isMounting=true&page%5Bsize%5D=25&page%5Bnumber%5D=1
       Retry-After:
@@ -33,12 +33,12 @@ interactions:
       X-Cache-Hits:
       - '0'
       X-Served-By:
-      - cache-iad-kiad7000054-IAD
+      - cache-iad-kiad7000093-IAD
       X-Timer:
-      - S1679588732.771292,VS0,VE0
+      - S1679593661.300403,VS0,VE0
       set-cookie:
-      - machine_cookie=5210435651857; expires=Wed, 22 Mar 2028 16:25:31 GMT; path=/;
-      - machine_cookie_ts=1679588731; expires=Wed, 22 Mar 2028 16:25:31 GMT; path=/;
+      - machine_cookie=4460885400670; expires=Wed, 22 Mar 2028 17:47:41 GMT; path=/;
+      - machine_cookie_ts=1679593661; expires=Wed, 22 Mar 2028 17:47:41 GMT; path=/;
     status:
       code: 301
       message: Moved Permanently
@@ -52,16 +52,16 @@ interactions:
       Connection:
       - keep-alive
       Cookie:
-      - machine_cookie=5210435651857; machine_cookie_ts=1679588731
+      - machine_cookie=4460885400670; machine_cookie_ts=1679593661
     method: GET
     uri: https://seekingalpha.com/api/v3/news?filter%5Bcategory%5D=market-news%3A%3ACrypto&filter%5Bsince%5D=0&filter%5Buntil%5D=0&include=author%2CprimaryTickers%2CsecondaryTickers&isMounting=true&page%5Bsize%5D=25&page%5Bnumber%5D=1
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA42PTwuCQBTE732MPXjKdCNXNpAg6dAhECTosJd1tVwzlf0jSvTde4URdOo4v5l5
-        w7ujXuZojdAcVTquZdGYVAkAzBsu8XCg25F5spFmUWnI8K7bv+LJ6eMCLFttjqr+KQ2lAi+rW3FN
-        hZKd+fEF74woOfO+t5g3QRjb8GgSzi3yHRsFge8HGBNXUBq6GBe5ywnIFSU4XJIsxAFx+gg2rX2/
-        9E8B0meptEm4MuOu4VldQNUoWzxmT0epsXkbAQAA
+        H4sIAAAAAAAAA42OTwuCQBDF732MPXhq8w+6YiBB0qFDIEjQwcu4rrlmuqyrKNF3bwsj8NTtzfvN
+        mzcPVHVRzVmjEknRFqXmeI3GU7CfUpM3XG2qDq0RCHHMNY0vX6rNsu3UWdaL0FhKzbK6pbeESi7U
+        glMQipaQmr9bqTmbumwH4TwY99Ay+pAWVgHgB5gG4GDbZjkG4jnYJYR5FiG+5TJjCHXnwN8vatH3
+        H/VPUm8XXHYqBqmmQwNZzXRUyZ49Vy9SqHvZGwEAAA==
     headers:
       Accept-Ranges:
       - bytes
@@ -74,7 +74,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 23 Mar 2023 16:25:32 GMT
+      - Thu, 23 Mar 2023 17:47:41 GMT
       Vary:
       - User-Agent, Accept-Encoding
       X-Cache:
@@ -82,9 +82,9 @@ interactions:
       X-Cache-Hits:
       - 0, 0
       X-Served-By:
-      - cache-bfi-krnt7300111-BFI, cache-iad-kiad7000020-IAD
+      - cache-bfi-krnt7300111-BFI, cache-iad-kiad7000024-IAD
       X-Timer:
-      - S1679588732.112373,VS0,VE112
+      - S1679593661.359546,VS0,VE110
       transfer-encoding:
       - chunked
     status:
