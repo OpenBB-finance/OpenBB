@@ -205,7 +205,7 @@ class Backend(pywry.PyWry):
                     opener = "open" if sys.platform == "darwin" else "xdg-open"
                     subprocess.check_call([opener, export_image])  # nosec: B603
 
-    def send_table(self, df_table: pd.DataFrame, title: str = ""):
+    def send_table(self, df_table: pd.DataFrame, title: str = "", source: str = ""):
         """Send table data to the backend to be displayed in a table.
 
         Parameters
@@ -214,6 +214,8 @@ class Backend(pywry.PyWry):
             Dataframe to send to backend.
         title : str, optional
             Title to display in the window, by default ""
+        source : str, optional
+            Source of the data, by default ""
         """
         self.loop.run_until_complete(self.check_backend())
 
@@ -243,6 +245,7 @@ class Backend(pywry.PyWry):
 
         json_data = json.loads(df_table.to_json(orient="split"))
         json_data.update(dict(title=title))
+        json_data.update(dict(source=source))
 
         self.outgoing.append(
             json.dumps(
