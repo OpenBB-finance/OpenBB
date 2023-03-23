@@ -250,7 +250,8 @@ class SettingsController(BaseController):
             dest="style",
             required="-h" not in other_args and "--help" not in other_args,
             help="To use 'custom' option, go to https://openbb.co/customize and create your theme."
-            " Then, place the downloaded file 'openbb_config.richstyle.json' inside /OpenBBUserData/styles/user/.",
+            " Then, place the downloaded file 'openbb_config.richstyle.json'"
+            f" inside {get_current_user().preferences.USER_STYLES_DIRECTORY}.",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-s")
@@ -263,20 +264,21 @@ class SettingsController(BaseController):
                     self.set_and_save_preference("RICH_STYLE", ns_parser.style)
                     console.print("Theme updated.")
             else:
-                response = Hub.fetch_user_configs(
-                    get_current_user().profile.get_session()
+                set_preference("RICH_STYLE", ns_parser.style)
+                Hub.upload_config(
+                    key="RICH_STYLE",
+                    value=ns_parser.style,
+                    type_="settings",
+                    auth_header=get_current_user().profile.get_auth_header(),
                 )
-                if response:
-                    configs = json.loads(response.content)
-                    Local.set_theme_from_hub(configs)
-                    set_preference("RICH_STYLE", ns_parser.style)
-                    Hub.upload_config(
-                        key="RICH_STYLE",
-                        value=ns_parser.style,
-                        type_="settings",
-                        auth_header=get_current_user().profile.get_auth_header(),
+                if ns_parser.style == "hub":
+                    response = Hub.fetch_user_configs(
+                        get_current_user().profile.get_session()
                     )
-                    console.print("Theme updated.")
+                    if response:
+                        configs = json.loads(response.content)
+                        Local.set_theme_from_hub(configs)
+                console.print("Theme updated.")
 
     @log_start_end(log=logger)
     def call_dt(self, other_args: List[str]):
