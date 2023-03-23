@@ -6825,24 +6825,25 @@ files = [
 
 [[package]]
 name = "pywry"
-version = "0.3.7"
+version = "0.3.9"
 description = ""
 category = "main"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "pywry-0.3.7-cp310-cp310-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:b1445827bf85469c6fcb31ebdd083c054d14589f4c50fffeb35a3965ad71c528"},
-    {file = "pywry-0.3.7-cp310-cp310-manylinux_2_28_x86_64.whl", hash = "sha256:7cfbd134adb12bfa65fd1764ae2b4624f86695f2d23d441fc00465393e45c0c1"},
-    {file = "pywry-0.3.7-cp310-none-win_amd64.whl", hash = "sha256:dd6482fd8934d901d06d2a6ffbe59f4728ecd569616261ca98b5890729ba50ed"},
-    {file = "pywry-0.3.7-cp311-cp311-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:e20a6e42fd4ab05beff6a36bb6d9e3d877c22a4d93421897840cf66cb0f06a8b"},
-    {file = "pywry-0.3.7-cp311-cp311-manylinux_2_28_x86_64.whl", hash = "sha256:c0a44112b00b8f7c60a0273df687f43371b408655fe544f677fb6346f721960b"},
-    {file = "pywry-0.3.7-cp311-none-win_amd64.whl", hash = "sha256:18a77a4855c2299ac289538d0b542cca51cfe1c2b7e5656553212723b2f35365"},
-    {file = "pywry-0.3.7-cp38-cp38-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:87b15be54b6f2b2ec21415e7082a16394dde3c40ce31d38ed1e8b31b28682c2e"},
-    {file = "pywry-0.3.7-cp38-cp38-manylinux_2_28_x86_64.whl", hash = "sha256:d971d6440487e798a91b222343a3ee62fe38142b97053f805d36561901afc376"},
-    {file = "pywry-0.3.7-cp38-none-win_amd64.whl", hash = "sha256:f55f9aa865264c10ed90200857f74d1c1fecd32b8c76db0a615d3caf8e3e7e60"},
-    {file = "pywry-0.3.7-cp39-cp39-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:fa79420339b91c3d2b983bd3bb914c947bde7d739ac25101d8505a72b6bf8635"},
-    {file = "pywry-0.3.7-cp39-cp39-manylinux_2_28_x86_64.whl", hash = "sha256:e92baac1c3a4a63b2e3c65ce496c722b263e88b0973fdea92fd02a6776d17c14"},
-    {file = "pywry-0.3.7-cp39-none-win_amd64.whl", hash = "sha256:1546be2469a5e2eeb6b64c267296fc9e7d285c084ecad8328f7c96c825ccc4e3"},
+    {file = "pywry-0.3.9-cp310-cp310-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:7ffce420d84323a177565b46a4ea6bedc5fe5b3c7837415e8092dea86656e243"},
+    {file = "pywry-0.3.9-cp310-cp310-manylinux_2_28_x86_64.whl", hash = "sha256:913b1778ab375f946899d773f1714d734f0c07624bb17d627b5532171080f278"},
+    {file = "pywry-0.3.9-cp310-none-win_amd64.whl", hash = "sha256:8b4b5b65370a54db178fcd08429a07fc12b50a2564b5809ecbff1ec59549385f"},
+    {file = "pywry-0.3.9-cp311-cp311-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:a309a646060709efb8f91689b062e5d0e2e7745a9615b2f339e4cdda9562c93f"},
+    {file = "pywry-0.3.9-cp311-cp311-manylinux_2_28_x86_64.whl", hash = "sha256:c79308b4c0180e528a3b1e86b7cfaf4b85a142d9053b8376b381712afa89e4e6"},
+    {file = "pywry-0.3.9-cp311-none-win_amd64.whl", hash = "sha256:0689b70592f99eac64678bc8b645b9cb3c8657164b1140f01cef59598c96769c"},
+    {file = "pywry-0.3.9-cp38-cp38-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:a69935ed3a675efc00138ad65307e8927bdfe9044927c5c1583b374a1e741b71"},
+    {file = "pywry-0.3.9-cp38-cp38-manylinux_2_28_x86_64.whl", hash = "sha256:8b24997229af63d93de68b5211ac2c387a66907822281a0b57e0ef87377801fc"},
+    {file = "pywry-0.3.9-cp38-none-win_amd64.whl", hash = "sha256:f890a1e3733a3f5d85292ee2849cebbb69729a6de051454fc7c7a25a39cef1e2"},
+    {file = "pywry-0.3.9-cp39-cp39-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:d45e3236346025409edeaae8c53d8d67316c0b761f6cc30fb7a30dbecbb15d9f"},
+    {file = "pywry-0.3.9-cp39-cp39-manylinux_2_28_x86_64.whl", hash = "sha256:ea0cb98d68685e3bc22915badc076ec056740d204b2e265ffb9f81a4326ab25b"},
+    {file = "pywry-0.3.9-cp39-none-win_amd64.whl", hash = "sha256:e861ff1005c3be1e2bc9ca6eeaa18038cedd27643022e8587b170a8e35903c82"},
+    {file = "pywry-0.3.9.tar.gz", hash = "sha256:341f5ce4bf6acfeee01b44e6daeb9441574d79f69c2fcc48269b193de1dd1fe4"},
 ]
 
 [package.dependencies]
@@ -10182,4 +10183,4 @@ optimization = ["Riskfolio-Lib"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8,<3.11, !=3.9.7"
-content-hash = "7a46ed4d51fdd7764138660686129b964635c686f1d300ab6bcd0df6925f9230"
+content-hash = "9b10400d3913090ab0138ced3edefb850ac3ad724d6b3ed06a600509d806415a"

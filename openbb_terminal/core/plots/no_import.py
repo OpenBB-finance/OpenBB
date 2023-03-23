@@ -42,14 +42,15 @@ class PyWry:
     shell = False
     base = None
 
-    try:
-        loop: asyncio.AbstractEventLoop = asyncio.get_event_loop()
-    except RuntimeError:
-        loop = asyncio.new_event_loop()
-        asyncio.set_event_loop(loop)
-
     def __init__(self, *args, **kwargs):  # pylint: disable=W0613
         """Dummy init to avoid import errors."""
+        try:
+            loop: asyncio.AbstractEventLoop = asyncio.get_event_loop()
+        except RuntimeError:
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
+
+        self.loop = loop
         current_user = get_current_user()
 
         # If pywry is not installed or missing required linux dependencies
