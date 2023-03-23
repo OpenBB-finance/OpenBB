@@ -23,7 +23,7 @@ import Toast from "../Toast";
 
 const date = new Date();
 
-const MAX_COLUMNS = 12;
+const MAX_COLUMNS = 50;
 
 export default function Table({ data, columns, title }: any) {
   const [advanced, setAdvanced] = useLocalStorage("advanced", false);
@@ -70,13 +70,6 @@ export default function Table({ data, columns, title }: any) {
                 indexValue.toLowerCase().includes("hour") ||
                 indexValue.toLowerCase().includes("minute")));
 
-          console.log(
-            "probablyDate",
-            probablyDate,
-            column,
-            row.original.Index,
-            value
-          );
           const probablyLink =
             valueType === "string" && value.startsWith("http");
 
@@ -164,16 +157,14 @@ export default function Table({ data, columns, title }: any) {
     data,
     columns: rtColumns,
     defaultColumn: {
-      minSize: 0,
-      size: 0,
-      maxSize: 20,
+      minSize: 100,
     },
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    /*enableColumnResizing: true,
-    columnResizeMode: "onChange",*/
+    /*enableColumnResizing: true,*/
+    columnResizeMode: "onChange",
     onColumnVisibilityChange: setColumnVisibility,
     onColumnOrderChange: setColumnOrder,
     onSortingChange: setSorting,
@@ -342,99 +333,104 @@ export default function Table({ data, columns, title }: any) {
                   .replace(/:\d\d /, " ")}
               </p>
             </div>
-            <table
-              className="text-sm"
-              style={{
-                fontSize: `${Number(fontSize) * 100}%`,
-              }}
-              /*style={{
+            <div className="overflow-x-auto">
+              <table
+                className="text-sm"
+                style={{
+                  fontSize: `${Number(fontSize) * 100}%`,
+                }}
+                /*style={{
           width: table.getCenterTotalSize(),
         }}*/
-            >
-              <thead>
-                {table.getHeaderGroups().map((headerGroup) => (
-                  <tr key={headerGroup.id} className={clsx("!h-10 text-left")}>
-                    {headerGroup.headers.map((header) => {
-                      return (
-                        <DraggableColumnHeader
-                          advanced={advanced}
-                          key={header.id}
-                          header={header}
-                          table={table}
-                        />
-                      );
-                    })}
-                  </tr>
-                ))}
-              </thead>
-              <tbody>
-                {paddingTop > 0 && (
-                  <tr>
-                    <td style={{ height: `${paddingTop}px` }} />
-                  </tr>
-                )}
-                {virtualRows.map((virtualRow, idx) => {
-                  const row = rows[virtualRow.index];
-                  return (
+              >
+                <thead>
+                  {table.getHeaderGroups().map((headerGroup) => (
                     <tr
-                      key={row.id}
-                      className="!h-[64px] border-b border-grey-400"
+                      key={headerGroup.id}
+                      className={clsx("!h-10 text-left")}
                     >
-                      {row.getVisibleCells().map((cell) => {
+                      {headerGroup.headers.map((header) => {
                         return (
-                          <td
-                            key={cell.id}
-                            className={clsx(
-                              "whitespace-nowrap overflow-auto p-4",
-                              {
-                                "bg-grey-850": idx % 2 === 0,
-                                "bg-[#202020]": idx % 2 === 1,
-                              }
-                            )}
-                            /*style={{
-                          width: cell.column.getSize(),
-                        }}*/
-                          >
-                            {flexRender(
-                              cell.column.columnDef.cell,
-                              cell.getContext()
-                            )}
-                          </td>
+                          <DraggableColumnHeader
+                            advanced={advanced}
+                            key={header.id}
+                            header={header}
+                            table={table}
+                          />
                         );
                       })}
                     </tr>
-                  );
-                })}
-                {paddingBottom > 0 && (
-                  <tr>
-                    <td style={{ height: `${paddingBottom}px` }} />
-                  </tr>
-                )}
-              </tbody>
-              {rows.length > 30 && visibleColumns.length > 4 && (
-                <tfoot>
-                  {table.getFooterGroups().map((footerGroup) => (
-                    <tr key={footerGroup.id}>
-                      {footerGroup.headers.map((header) => (
-                        <th
-                          style={{ width: header.getSize() }}
-                          key={header.id}
-                          colSpan={header.colSpan}
-                          className="text-grey-500 bg-grey-850 font-normal text-left text-sm h-10"
-                        >
-                          {header.isPlaceholder
-                            ? null
-                            : flexRender(
-                                header.column.columnDef.footer,
-                                header.getContext()
-                              )}
-                        </th>
-                      ))}
-                    </tr>
                   ))}
-                </tfoot>
-              )}
-            </table>
+                </thead>
+                <tbody>
+                  {paddingTop > 0 && (
+                    <tr>
+                      <td style={{ height: `${paddingTop}px` }} />
+                    </tr>
+                  )}
+                  {virtualRows.map((virtualRow, idx) => {
+                    const row = rows[virtualRow.index];
+                    return (
+                      <tr
+                        key={row.id}
+                        className="!h-[64px] border-b border-grey-400"
+                      >
+                        {row.getVisibleCells().map((cell) => {
+                          return (
+                            <td
+                              key={cell.id}
+                              className={clsx(
+                                "whitespace-nowrap overflow-auto p-4",
+                                {
+                                  "bg-grey-850": idx % 2 === 0,
+                                  "bg-[#202020]": idx % 2 === 1,
+                                }
+                              )}
+                              style={{
+                                width: cell.column.getSize(),
+                              }}
+                            >
+                              {flexRender(
+                                cell.column.columnDef.cell,
+                                cell.getContext()
+                              )}
+                            </td>
+                          );
+                        })}
+                      </tr>
+                    );
+                  })}
+                  {paddingBottom > 0 && (
+                    <tr>
+                      <td style={{ height: `${paddingBottom}px` }} />
+                    </tr>
+                  )}
+                </tbody>
+                {rows.length > 30 && visibleColumns.length > 4 && (
+                  <tfoot>
+                    {table.getFooterGroups().map((footerGroup) => (
+                      <tr key={footerGroup.id}>
+                        {footerGroup.headers.map((header) => (
+                          <th
+                            style={{ width: header.getSize() }}
+                            key={header.id}
+                            colSpan={header.colSpan}
+                            className="text-grey-500 bg-grey-850 font-normal text-left text-sm h-10"
+                          >
+                            {header.isPlaceholder
+                              ? null
+                              : flexRender(
+                                  header.column.columnDef.footer,
+                                  header.getContext()
+                                )}
+                          </th>
+                        ))}
+                      </tr>
+                    ))}
+                  </tfoot>
+                )}
+              </table>
+            </div>
           </div>
           <div className="absolute -inset-1 rounded-md blur-md bg-gradient-to-br from-[#072e49]/20 via-[#0d345f]/20 to-[#0d3362]/20"></div>
         </div>

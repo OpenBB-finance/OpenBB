@@ -169,24 +169,19 @@ const DraggableColumnHeader: FC<{
     <th
       className="h-[70px] relative p-4"
       colSpan={header.colSpan}
-      style={{ /* width: header.getSize(),*/ opacity: isDragging ? 0.5 : 1 }}
+      style={{ width: header.getSize(), opacity: isDragging ? 0.5 : 1 }}
       ref={dropRef}
     >
       <div ref={previewRef} className="space-y-2">
         {header.isPlaceholder ? null : (
           <>
-            <div
-              {...{
-                className: clsx(
-                  "font-bold uppercase text-white tracking-widest tracking-normal flex gap-2 whitespace-nowrap justify-between",
-                  {
-                    "cursor-pointer select-none": header.column.getCanSort(),
-                  }
-                ),
-                onClick: header.column.getToggleSortingHandler(),
-              }}
-            >
-              <div className="flex gap-2">
+            <div className="font-bold uppercase text-white tracking-widest flex gap-2 whitespace-nowrap justify-between">
+              <div
+                onClick={header.column.getToggleSortingHandler()}
+                className={clsx("flex gap-2", {
+                  "cursor-pointer select-none": header.column.getCanSort(),
+                })}
+              >
                 {flexRender(
                   header.column.columnDef.header,
                   header.getContext()
@@ -230,25 +225,49 @@ const DraggableColumnHeader: FC<{
                 )}
               </div>
               {advanced && column.id !== "select" && (
-                <button
-                  ref={dragRef}
-                  className="text-grey-600 hover:text-white"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="17"
-                    height="16"
-                    fill="none"
-                    viewBox="0 0 17 16"
+                <div className="flex gap-2 items-center">
+                  <button
+                    ref={dragRef}
+                    className="text-grey-600 hover:text-white"
                   >
-                    <path
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="17"
+                      height="16"
+                      fill="none"
+                      viewBox="0 0 17 16"
+                    >
+                      <path
+                        stroke="currentColor"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M3.667 6l-2 2 2 2M6.333 3.333l2-2 2 2M10.333 12.667l-2 2-2-2M13 6l2 2-2 2M1.667 8H15M8.333 1.333v13.334"
+                      ></path>
+                    </svg>
+                  </button>
+                  <button
+                    className="select-none touch-none text-grey-600 hover:text-white cursor-col-resize"
+                    onMouseDown={header.getResizeHandler()}
+                    onTouchStart={header.getResizeHandler()}
+                  >
+                    <svg
                       stroke="currentColor"
+                      fill="none"
+                      strokeWidth={2}
+                      viewBox="0 0 24 24"
                       strokeLinecap="round"
                       strokeLinejoin="round"
-                      d="M3.667 6l-2 2 2 2M6.333 3.333l2-2 2 2M10.333 12.667l-2 2-2-2M13 6l2 2-2 2M1.667 8H15M8.333 1.333v13.334"
-                    ></path>
-                  </svg>
-                </button>
+                      height="1em"
+                      width="1em"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                      <path d="M7 8l-4 4l4 4" />
+                      <path d="M17 8l4 4l-4 4" />
+                      <path d="M3 12l18 0" />
+                    </svg>
+                  </button>
+                </div>
               )}
             </div>
             {advanced && header.column.getCanFilter() ? (
@@ -263,11 +282,6 @@ const DraggableColumnHeader: FC<{
           </>
         )}
       </div>
-      {/* <div
-          className="absolute right-0 top-0 h-full w-1 bg-blue-300 select-none touch-none hover:bg-blue-500 cursor-col-resize"
-          onMouseDown={header.getResizeHandler()}
-          onTouchStart={header.getResizeHandler()}
-              />*/}
     </th>
   );
 };
