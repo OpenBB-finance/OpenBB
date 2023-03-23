@@ -1,6 +1,6 @@
 ---
 title: Stocks
-keywords: [stocks, fundamental analysis, analysis, Behavioural, strategy, comparison, due diligence, discovery, dark pool, short, data, forecasting, fundamental, quantitative, government, forecating, ml, ai, machine learning, artificial intelligence, insider, trading, research, sector, industry, technical, trading hours, quote, market data, close, adjusted close, download, export, tools, openbb terminal]
+keywords: [stocks, fundamental analysis, analysis, Behavioural, strategy, comparison, due diligence, discovery, dark pool, short, data, forecasting, fundamental, quantitative, government, forecasting, ml, ai, machine learning, artificial intelligence, insider, trading, research, sector, industry, technical, trading hours, quote, market data, close, adjusted close, download, export, tools, openbb terminal]
 description: The Stocks menu is the high-level menu for the Public Equity asset class. It contains functions for searching and loading company market data, showing candle charts, quotes and company specifics via a large selection of sub-menus. The sub-menus break the functions down into groups based on the type of data they return. They are listed below with a short description. Refer to each sub-menu's introductory guide for a more detailed explanation of the functions within.
 ---
 
