@@ -69,8 +69,8 @@ def get_console_style(name: str, folder: Path) -> Dict[str, str]:
     return {}
 
 
-def get_custom_style(folder) -> Optional[Theme]:
-    """Get custom style.
+def get_custom_theme(folder) -> Optional[Theme]:
+    """Get custom theme.
 
     Parameters
     ----------
@@ -102,8 +102,8 @@ def get_custom_style(folder) -> Optional[Theme]:
         return None
 
 
-def get_hub_style() -> Theme:
-    """Get hub style.
+def get_hub_theme() -> Theme:
+    """Get hub theme.
 
     Returns
     -------
@@ -117,8 +117,8 @@ def get_hub_style() -> Theme:
         return Theme()
 
 
-def get_default_style(folder) -> Theme:
-    """Get default style.
+def get_default_theme(folder) -> Theme:
+    """Get default theme.
 
     Parameters
     ----------
@@ -156,13 +156,13 @@ def get_theme() -> Theme:
     user_folder = current_user.preferences.USER_STYLES_DIRECTORY
 
     if rich == "custom":
-        theme = get_custom_style(user_folder)
+        theme = get_custom_theme(user_folder)
         if not theme:
-            theme = get_default_style(defaults_folder)
+            theme = get_default_theme(defaults_folder)
     elif rich == "hub":
-        theme = get_hub_style()
+        theme = get_hub_theme()
     elif rich == "default":
-        theme = get_default_style(defaults_folder)
+        theme = get_default_theme(defaults_folder)
     else:
         theme = Theme()
     return theme
