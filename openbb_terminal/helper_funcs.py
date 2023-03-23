@@ -349,7 +349,9 @@ def print_rich_table(
             if col == "":
                 df_outgoing = df_outgoing.rename(columns={col: "  "})
 
-        plots_backend().send_table(df_table=df_outgoing, title=title, source=source)
+        plots_backend().send_table(
+            df_table=df_outgoing, title=title, source=source  # type: ignore
+        )
         return
 
     df = df.copy() if not limit else df.copy().iloc[:limit]
