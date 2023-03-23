@@ -250,7 +250,8 @@ class SettingsController(BaseController):
             dest="style",
             required="-h" not in other_args and "--help" not in other_args,
             help="To use 'custom' option, go to https://openbb.co/customize and create your theme."
-            f" Then, place the downloaded file 'openbb_config.richstyle.json' inside {get_current_user().preferences.USER_STYLES_DIRECTORY}.",
+            " Then, place the downloaded file 'openbb_config.richstyle.json'"
+            f" inside {get_current_user().preferences.USER_STYLES_DIRECTORY}.",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-s")
