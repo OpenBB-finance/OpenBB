@@ -18,7 +18,7 @@ class BaseModel:
         return f"{self.__class__.__name__}(\n{dataclass_repr[:-2]}\n)"
 
     @classmethod
-    def get_fields(cls) -> dict[str, Any]:
+    def get_fields(cls) -> dict:
         """Get dict of fields."""
         return cls.__dataclass_fields__  # type: ignore
 
