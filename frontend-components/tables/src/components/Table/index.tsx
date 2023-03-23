@@ -30,8 +30,8 @@ function getCellWidth(row, column) {
     const indexLabel = row.hasOwnProperty("index")
       ? "index"
       : row.hasOwnProperty("Index")
-        ? "Index"
-        : null;
+      ? "Index"
+      : null;
     const indexValue = indexLabel ? row[indexLabel] : null;
     const value = row[column];
     const valueType = typeof value;
@@ -50,14 +50,13 @@ function getCellWidth(row, column) {
           indexValue.toLowerCase().includes("hour") ||
           indexValue.toLowerCase().includes("minute")));
 
-    const probablyLink =
-      valueType === "string" && value.startsWith("http");
+    const probablyLink = valueType === "string" && value.startsWith("http");
     if (probablyLink) {
-      return value.toString().length
+      return value?.toString().length ?? 0;
     }
     if (probablyDate) {
       if (typeof value === "string") {
-        return value.toString().length
+        return value?.toString().length ?? 0;
       }
       try {
         const date = new Date(value);
@@ -77,19 +76,18 @@ function getCellWidth(row, column) {
             dateFormatted.split("T")[1].split(".")[0];
         }
 
-        return dateFormatted.toString().length
+        return dateFormatted?.toString().length ?? 0;
       } catch (e) {
-        return value.toString().length
+        return value?.toString().length ?? 0;
       }
     }
     if (valueType === "number") {
-      return value.toString().length
-    }
-    else {
-      return value.toString().length
+      return value?.toString().length ?? 0;
+    } else {
+      return value?.toString().length ?? 0;
     }
   } catch (e) {
-    return 0
+    return 0;
   }
 }
 
@@ -108,16 +106,15 @@ export default function Table({ data, columns, title, source = "" }: any) {
     defaultVisibleColumns
   );
 
-
   const getColumnWidth = (rows, accessor, headerText) => {
-    const maxWidth = 400
-    const magicSpacing = 12
+    const maxWidth = 400;
+    const magicSpacing = 12;
     const cellLength = Math.max(
-      ...rows.map(row => getCellWidth(row, accessor)),
-      headerText.length + 5,
-    )
-    return Math.min(maxWidth, cellLength * magicSpacing)
-  }
+      ...rows.map((row) => getCellWidth(row, accessor)),
+      headerText.length + 5
+    );
+    return Math.min(maxWidth, cellLength * magicSpacing);
+  };
 
   const rtColumns = useMemo(
     () => [
@@ -132,8 +129,8 @@ export default function Table({ data, columns, title, source = "" }: any) {
           const indexLabel = row.original.hasOwnProperty("index")
             ? "index"
             : row.original.hasOwnProperty("Index")
-              ? "Index"
-              : null;
+            ? "Index"
+            : null;
           const indexValue = indexLabel ? row.original[indexLabel] : null;
           const value = row.original[column];
           const valueType = typeof value;
@@ -235,7 +232,6 @@ export default function Table({ data, columns, title, source = "" }: any) {
     const defaultOrder = rtColumns.map((column) => column.id as string);
     return !isEqual(currentOrder, defaultOrder);
   }, [columnOrder, rtColumns]);
-
 
   const table = useReactTable({
     data,
@@ -415,7 +411,8 @@ export default function Table({ data, columns, title, source = "" }: any) {
                   ></path>
                 </svg>
               </div>
-              <p className="font-bold w-1/3">{title}
+              <p className="font-bold w-1/3">
+                {title}
                 {source && (
                   <span className="font-normal text-xs">
                     {` [Data from ${source}]`}
@@ -437,7 +434,7 @@ export default function Table({ data, columns, title, source = "" }: any) {
                 style={{
                   fontSize: `${Number(fontSize) * 100}%`,
                 }}
-              /*style={{
+                /*style={{
         width: table.getCenterTotalSize(),
       }}*/
               >
@@ -517,9 +514,9 @@ export default function Table({ data, columns, title, source = "" }: any) {
                             {header.isPlaceholder
                               ? null
                               : flexRender(
-                                header.column.columnDef.footer,
-                                header.getContext()
-                              )}
+                                  header.column.columnDef.footer,
+                                  header.getContext()
+                                )}
                           </th>
                         ))}
                       </tr>
