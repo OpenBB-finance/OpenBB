@@ -133,6 +133,7 @@ def short_interest(
         df_short_interest["% of Volume Shorted"] = df_short_interest[
             "% of Volume Shorted"
         ].apply(lambda x: f"{x/100:.2%}")
+
         df_short_interest = df_short_interest.applymap(
             lambda x: lambda_long_number_format(x)
         ).sort_index(ascending=False)

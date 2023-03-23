@@ -139,7 +139,7 @@ interactions:
       Accept-Ranges:
       - bytes
       Age:
-      - '0'
+      - '4'
       Allow:
       - GET, POST, HEAD, PUT, PATCH, DELETE, OPTIONS
       Cache-Control:
@@ -168,7 +168,7 @@ interactions:
       X-Cache:
       - HIT, MISS
       X-Cache-Hits:
-      - 0, 0
+      - 1, 0
       X-Content-Type-Options:
       - nosniff
       X-Download-Options:
