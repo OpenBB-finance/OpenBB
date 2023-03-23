@@ -1,3 +1,3 @@
-      publishedAtDate                                                        title                                                                                              url
-0 2021-12-10 01:05:18  Lucid Group secures $1.75B capital raise via notes offering  https://seekingalpha.com/news/3779005-lucid-group-secures-175b-capital-raise-via-notes-offering
-1 2021-12-10 01:00:06          AMC Entertainment CEO sells $9.65M in common shares          https://seekingalpha.com/news/3779004-amc-entertainment-ceo-sells-965m-in-common-shares
+      publishedAtDate                                                                              title                                                                                                           url
+0 2023-03-23 11:39:37            Nasdaq, S&P, Dow recover after Fed selloff as hope for rate pivot grows                                       https://seekingalpha.com/news/3950443-nasdaq-sp-dow-recover-fed-selloff
+1 2023-03-23 12:10:21  Power Integrations stock rises as analyst calls it 'main winner' of iPhone change  https://seekingalpha.com/news/3950487-power-integrations-stock-rises-analyst-calls-main-winner-iphone-change
