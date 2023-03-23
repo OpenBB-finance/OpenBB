@@ -7,8 +7,6 @@ from openbb_terminal.base_helpers import console
 from openbb_terminal.core.config.paths import SETTINGS_ENV_FILE
 from openbb_terminal.core.session.current_user import get_current_user
 
-__version__ = "0.0.0"
-
 pywry_missing = """
 [red]PyWry is not installed or missing required linux dependencies.[/]
 
@@ -33,6 +31,8 @@ To activate interactive plots/tables in pywry window, please make sure the follo
 
 class DummyBackend:
     """Dummy class to avoid import errors."""
+
+    __version__ = "0.0.0"
 
     max_retries = 0
     outgoing: List[str] = []
