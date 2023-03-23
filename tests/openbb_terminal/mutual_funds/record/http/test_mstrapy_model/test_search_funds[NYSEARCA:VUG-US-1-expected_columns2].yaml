@@ -1,0 +1,51 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      user-agent:
+      - Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.5; ko; rv:1.9.1b2) Gecko/20081201
+        Firefox/3.1b2
+    method: GET
+    uri: https://tools.morningstar.co.uk/api/rest.svc/klr5zyak8x/security/screener?page=1&pageSize=1&sortOrder=LegalName+asc&outputType=json&version=1&universeIds=FOUSA%24%24ALL&currencyId=EUR&securityDataPoints=SecId%7CTenforeId%7CLegalName&term=NYSEARCA%3AVUG
+  response:
+    body:
+      string: '{"total": 0,"page": 1,"pageSize": 1,"rows": [] }'
+    headers:
+      Access-Control-Allow-Headers:
+      - Content-Type,Accept,Origin
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - private
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '48'
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 17 Mar 2023 12:05:52 GMT
+      Set-Cookie:
+      - ASP.NET_SessionId=rbfdjleve0heyd14hez3iin3; path=/; secure; HttpOnly; SameSite=None
+      Strict-Transport-Security:
+      - max-age=7200; includeSubDomains
+      Via:
+      - 1.1 218366faeb88f6d265d2589e37ea2dac.cloudfront.net (CloudFront)
+      X-Amz-Cf-Id:
+      - wsMF6hP2IvXzVL2rbct7DPpWbQPUDHtoouMtmnNUUV_NLyVlTEF2Wg==
+      X-Amz-Cf-Pop:
+      - VIE50-C2
+      X-Cache:
+      - Miss from cloudfront
+      p3p:
+      - CP="NOI ADM DEV PSAi COM NAV OUR OTR STP IND DEM"
+    status:
+      code: 200
+      message: OK
+version: 1
