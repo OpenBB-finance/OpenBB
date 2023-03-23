@@ -6,7 +6,7 @@ from openbb_terminal.alternative.realestate import landRegistry_view
 
 
 @pytest.mark.record_verify_screen
-@pytest.mark.http
+@pytest.mark.record_http
 @pytest.mark.parametrize(
     "postcode, limit, export",
     [
@@ -20,7 +20,7 @@ def test_display_estate_sales(postcode, limit, export):
 
 
 @pytest.mark.record_verify_screen
-@pytest.mark.http
+@pytest.mark.record_http
 @pytest.mark.parametrize(
     "town, start_date, end_date, limit, export",
     [
@@ -38,7 +38,7 @@ def test_display_towns_sold_prices(town, start_date, end_date, limit, export):
 
 
 @pytest.mark.record_verify_screen
-@pytest.mark.http
+@pytest.mark.record_http
 @pytest.mark.parametrize(
     "region, start_date, end_date, export",
     [

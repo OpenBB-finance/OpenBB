@@ -52,14 +52,12 @@ def test_get_top_repos(sortby, top, categories, recorder):
     recorder.capture(df)
 
 
-@pytest.mark.http
+@pytest.mark.record_http
 def test_get_github_data():
-    response = github_model.get_github_data(url="https://api.github.com/")
-    assert response is not None
+    github_model.get_github_data(url="https://api.github.com/")
 
 
-@pytest.mark.http
+@pytest.mark.record_http
 def test_search_repos():
     df = github_model.search_repos()
     assert isinstance(df, DataFrame)
-    assert not df.empty

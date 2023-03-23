@@ -6,7 +6,7 @@ from pandas import DataFrame
 from openbb_terminal.alternative.covid import covid_model
 
 
-@pytest.mark.http
+@pytest.mark.record_http
 @pytest.mark.parametrize(
     "country",
     ["US"],
@@ -17,7 +17,7 @@ def test_get_global_cases(country):
     assert not df.empty
 
 
-@pytest.mark.http
+@pytest.mark.record_http
 @pytest.mark.parametrize(
     "country",
     ["US"],
@@ -28,7 +28,7 @@ def test_get_global_deaths(country):
     assert not df.empty
 
 
-@pytest.mark.http
+@pytest.mark.record_http
 @pytest.mark.parametrize(
     "country",
     ["US"],
