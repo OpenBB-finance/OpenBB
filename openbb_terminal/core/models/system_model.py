@@ -10,7 +10,7 @@ class SystemModel(BaseModel):
     """Data model for system variables and configurations."""
 
     # System version
-    VERSION = "2.5.1"
+    VERSION = "3.0.0rc1"
 
     # Logging section
     LOGGING_APP_NAME: str = "gst"
