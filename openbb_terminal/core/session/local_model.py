@@ -113,7 +113,8 @@ def apply_configs(configs: dict):
         The configurations.
     """
     set_credentials(configs)
-    set_preferences(configs, ["PLOT_STYLE", "RICH_STYLE"])
+    # For safety, we ensure to set only the rich style
+    set_preferences(configs, ["RICH_STYLE"])
     set_theme(configs)
 
 
