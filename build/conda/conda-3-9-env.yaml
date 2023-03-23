@@ -16,7 +16,6 @@ dependencies:
   # Forecasting dependencies
   - ffmpeg
   - lightgbm ==3.3.5
-  - xgboost ==1.7.4
   # Optimization dependencies
   - cvxpy ==1.2.2
   - pip:
