@@ -22,7 +22,7 @@ keywords:
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->
 
-This section guides you how to install the OpenBB Terminal from source code. This installation type supports both Windows, macOS and Linux systems. **Before starting the installation process, make sure the following pieces of software are installed.**
+This section guides you how to install the OpenBB Terminal from source code. This installation type supports Windows, macOS and Linux systems. **Before starting the installation process, make sure the following pieces of software are installed.**
 
 <details><summary>Miniconda</summary>
 Miniconda is a Python environment and package manager. It is required for installing certain dependencies.
@@ -105,8 +105,7 @@ Alternatives to `VcXsrv` include:
 
 <details><summary>GTK toolchains (Linux only)</summary>
 
-GTK is a window extension that is used to display interactive charts and tables. (`pywry`) requires that you install certain dependencies
-based on the Linux distribution that you are using.
+GTK is a window extension that is used to display interactive charts and tables. The library responsible for interactive charts and tables (`pywry`) requires that you install certain dependencies based on the Linux distribution that you are using.
 
 <details>
 <summary>Debian-based / Ubuntu / Mint</summary>
