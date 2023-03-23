@@ -194,7 +194,7 @@ Make sure you have completed all the previous steps. If you followed the instruc
 Install the main package of Openbb SDK with `pip`, a package manager.
 
 ```shell
-pip install openbb
+pip install openbb --no-cache-dir
 ```
 
 This method provides access to the data aggregation and charting functions of the OpenBB SDK. It does not provide access to the advanced features that are provided by the Portfolio Optimization and Machine Learning toolkits.
@@ -202,19 +202,19 @@ This method provides access to the data aggregation and charting functions of th
 The toolkits can be installed individually with:
 
 ```shell
-pip install openbb[optimization]
+pip install openbb[optimization] --no-cache-dir
 ```
 
 and
 
 ```shell
-pip install openbb[forecast]
+pip install openbb[forecast] --no-cache-dir
 ```
 
 Install all available toolkits at once with:
 
 ```shell
-pip install openbb[all]
+pip install openbb[all] --no-cache-dir
 ```
 
 ## Verify Installation
@@ -259,13 +259,13 @@ conda activate obb
 and update the package by running:
 
 ```shell
-pip install -U openbb
+pip install -U openbb --no-cache-dir
 ```
 
 When using an installation with toolkits, with your virtual environment activated, enter:
 
 ```shell
-pip install -U openbb[all]
+pip install -U openbb[all] --no-cache-dir
 ```
 
 ## Nightly Builds
@@ -274,7 +274,7 @@ OpenBB SDK is updated daily with new features and bug fixes, but some features b
 
 ```shell
 conda activate obb
-pip install -U openbb-nightly
+pip install -U openbb-nightly --no-cache-dir
 ```
 
 :::info
