@@ -19,6 +19,7 @@ from openbb_terminal.core.session.current_user import (
     is_local,
     set_preference,
 )
+from openbb_terminal.core.plots.plotly_helper import theme
 
 # pylint: disable=no-member,c-extension-no-member
 
@@ -131,7 +132,7 @@ def get_default_theme(folder) -> Theme:
         Theme object.
     """
     try:
-        default = get_console_style("default", folder)
+        default = get_console_style("dark", folder)
         set_preference("RICH_STYLE", "default")
         if default:
             return Theme(default)
@@ -383,16 +384,13 @@ class MenuText:
 class ConsoleAndPanel:
     """Create a rich console to wrap the console print with a Panel"""
 
-    def __init__(self, theme: Optional[Theme] = None):
+    def __init__(self):
         self.preferences = get_current_user().preferences
         self.__console = Console(
-            theme=theme if theme else get_theme(), highlight=False, soft_wrap=True
+            theme=Theme(theme.console_style), highlight=False, soft_wrap=True
         )
         self.menu_text = ""
         self.menu_path = ""
-
-    def set_console_theme(self, theme: Theme):
-        self.__console = Console(theme=theme, highlight=False, soft_wrap=True)
 
     def reload_console(self):
         current_preferences = get_current_user().preferences

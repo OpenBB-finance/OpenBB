@@ -53,6 +53,9 @@ class TerminalStyle:
     plt_style: str = "dark"
     plotly_template: Dict[str, Any] = {}
 
+    console_styles_available: Dict[str, Path] = {}
+    console_style: Dict[str, Any] = {}
+
     line_color: str = ""
     up_color: str = ""
     down_color: str = ""
@@ -66,6 +69,7 @@ class TerminalStyle:
     def __init__(
         self,
         plt_style: Optional[str] = "",
+        console_style: Optional[str] = "",
     ):
         """Initialize the class.
 
@@ -76,6 +80,16 @@ class TerminalStyle:
         """
         self.plt_style = plt_style or self.plt_style
         self.load_available_styles()
+        self.load_style(plt_style)
+
+        console_json_path = self.console_styles_available.get("dark", None)
+        for style in ["openbb_config", console_style]:
+            if style in self.console_styles_available:
+                console_json_path = self.console_styles_available[style]
+                break
+
+        if console_json_path:
+            self.console_style = self.load_json_style(console_json_path)
         self.load_style(plt_style)
 
     def apply_style(self, style: Optional[str] = "") -> None:
@@ -112,8 +126,8 @@ class TerminalStyle:
             return
 
         for attr, ext in zip(
-            ["plt_styles_available"],
-            [".pltstyle.json"],
+            ["plt_styles_available", "console_styles_available"],
+            [".pltstyle.json", ".richstyle.json"],
         ):
             for file in folder.glob(f"*{ext}"):
                 getattr(self, attr)[file.name.replace(ext, "")] = file
@@ -197,7 +211,9 @@ class TerminalStyle:
         return colors
 
 
-theme = TerminalStyle(get_current_user().preferences.PLOT_STYLE)
+theme = TerminalStyle(
+    get_current_user().preferences.PLOT_STYLE, get_current_user().preferences.RICH_STYLE
+)
 theme.apply_style()
 
 
