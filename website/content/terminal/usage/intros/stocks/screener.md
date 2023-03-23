@@ -3,7 +3,7 @@ title: Stock Screener
 keywords: [screen, screener, stock, stocks, historical, overview, valuation, financial, ownership, performance, technical, view, set, preset, presets, ini, scan, compare, tickers, metrics]
 description: This guide introduces the Stock Screener, within the Stocks menu, briefly explains the features, and shows examples in context.
 ---
-The Stock sScreener menu is a diverse tool for stock discovery. There are categories of statistics to use as metrics to sort the criteria defined in the preset file. The preset files are `.ini` files stored locally in the application folder: `~/OpenBBUserData/presets/stocks/screener` and they can be modified in any text editor. Get to the Stock Screener from the `Stocks` menu by typing `scr` and then pressing `enter`.
+The Stock Screener menu is a diverse tool for stock discovery. There are categories of statistics to use as metrics to sort the criteria defined in the preset file. The preset files are `.ini` files stored locally in the application folder: `~/OpenBBUserData/presets/stocks/screener` and they can be modified in any text editor. Get to the Stock Screener from the `Stocks` menu by typing `scr` and then pressing `enter`.
 
 <img width="800" alt="image" src="https://user-images.githubusercontent.com/46355364/218983524-8f86cdc8-e504-4b56-82d6-6d4e95c33c68.png"></img>
 

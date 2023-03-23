@@ -277,6 +277,7 @@ def print_rich_table(
     export: bool = False,
     print_to_console: bool = False,
     limit: Optional[int] = 1000,
+    source: Optional[str] = None,
 ):
     """Prepare a table from df in rich.
 
@@ -310,6 +311,8 @@ def print_rich_table(
         Whether to print the table to the console. If False and interactive mode is
         enabled, the table will be displayed in a new window. Otherwise, it will print to the
         console.
+    source: Optional[str]
+        Source of the table. If provided, it will be displayed in the header of the table.
     """
     if export:
         return
@@ -346,7 +349,9 @@ def print_rich_table(
             if col == "":
                 df_outgoing = df_outgoing.rename(columns={col: "  "})
 
-        plots_backend().send_table(df_table=df_outgoing, title=title)
+        plots_backend().send_table(
+            df_table=df_outgoing, title=title, source=source  # type: ignore
+        )
         return
 
     df = df.copy() if not limit else df.copy().iloc[:limit]
@@ -814,8 +819,9 @@ def us_market_holidays(years) -> list:
     return valid_holidays
 
 
-def lambda_long_number_format(num, round_decimal=3) -> str:
+def lambda_long_number_format(num, round_decimal=3) -> Union[str, int, float]:
     """Format a long number."""
+
     if isinstance(num, float):
         magnitude = 0
         while abs(num) >= 1000:
@@ -1156,6 +1162,11 @@ def patch_pandas_text_adjustment():
 
 def lambda_financials_colored_values(val: str) -> str:
     """Add a color to a value."""
+
+    # We don't want to do the color stuff in interactive mode
+    if get_current_user().preferences.USE_INTERACTIVE_DF:
+        return val
+
     if val == "N/A" or str(val) == "nan":
         val = "[yellow]N/A[/yellow]"
     elif sum(c.isalpha() for c in val) < 2:
