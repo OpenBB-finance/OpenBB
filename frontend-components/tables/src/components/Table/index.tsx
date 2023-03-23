@@ -38,12 +38,27 @@ export default function Table({ data, columns, title }: any) {
   const [columnVisibility, setColumnVisibility] = useState(
     defaultVisibleColumns
   );
+
+
+  const getColumnWidth = (rows, accessor, headerText) => {
+    const maxWidth = 400
+    const magicSpacing = 11
+    const cellLength = Math.max(
+      ...rows.map(row => (`${row[accessor].toString()}` || '').length),
+      headerText.length,
+    )
+    console.log(cellLength)
+    console.log(Math.min(maxWidth, cellLength * magicSpacing))
+    return Math.min(maxWidth, cellLength * magicSpacing)
+  }
+
   const rtColumns = useMemo(
     () => [
       ...columns.map((column: any, index: number) => ({
         accessorKey: column,
         id: column,
         header: column,
+        size: getColumnWidth(data, column, column),
         footer: column,
         cell: ({ row, ...otherProps }: any) => {
           // figure out whether it has index or Index;
@@ -153,12 +168,11 @@ export default function Table({ data, columns, title }: any) {
     return !isEqual(currentOrder, defaultOrder);
   }, [columnOrder, rtColumns]);
 
+
   const table = useReactTable({
     data,
     columns: rtColumns,
-    defaultColumn: {
-      minSize: 100,
-    },
+    useGridLayout: true,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
@@ -365,7 +379,7 @@ export default function Table({ data, columns, title }: any) {
                 <tbody>
                   {paddingTop > 0 && (
                     <tr>
-                      <td style={{ height: `${paddingTop}px` }} />
+                      <td style={{ height: `${paddingTop}px` }}></td>
                     </tr>
                   )}
                   {virtualRows.map((virtualRow, idx) => {
@@ -412,7 +426,6 @@ export default function Table({ data, columns, title }: any) {
                       <tr key={footerGroup.id}>
                         {footerGroup.headers.map((header) => (
                           <th
-                            style={{ width: header.getSize() }}
                             key={header.id}
                             colSpan={header.colSpan}
                             className="text-grey-500 bg-grey-850 font-normal text-left text-sm h-10"
