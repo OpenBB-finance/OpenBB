@@ -63,7 +63,7 @@ optional arguments:
   -e END, --end END     The ending date (format YYYY-MM-DD) of the stock (default: 2023-02-15)
   -i {1,5,15,30,60}, --interval {1,5,15,30,60}
                         Intraday stock minutes (default: 1440)
-  -p, --prepost         Pre/After market hours. Only works for 'yf' source, and intraday data (default: False)
+  -p, --prepost         Pre/After market hours. Only reflected in 'YahooFinance' intraday data. (default: False)
   -f FILEPATH, --file FILEPATH
                         Path to load custom file. (default: None)
   -m, --monthly         Load monthly data (default: False)

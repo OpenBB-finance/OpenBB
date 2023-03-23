@@ -1,0 +1,105 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - text/csv
+      Connection:
+      - close
+      Host:
+      - landregistry.data.gov.uk
+      User-Agent:
+      - sparqlwrapper 2.0.0 (rdflib.github.io/sparqlwrapper)
+    method: GET
+    uri: http://landregistry.data.gov.uk/landregistry/query?query=%0A++++++++++++++++PREFIX++lrppi%3A+%3Chttp%3A//landregistry.data.gov.uk/def/ppi/%3E%0A++++++++++++++++PREFIX++rdf%3A++%3Chttp%3A//www.w3.org/1999/02/22-rdf-syntax-ns%23%3E%0A++++++++++++++++PREFIX++owl%3A++%3Chttp%3A//www.w3.org/2002/07/owl%23%3E%0A++++++++++++++++PREFIX++lrcommon%3A+%3Chttp%3A//landregistry.data.gov.uk/def/common/%3E%0A++++++++++++++++PREFIX++xsd%3A++%3Chttp%3A//www.w3.org/2001/XMLSchema%23%3E%0A++++++++++++++++PREFIX++ukhpi%3A+%3Chttp%3A//landregistry.data.gov.uk/def/ukhpi/%3E%0A++++++++++++++++PREFIX++skos%3A+%3Chttp%3A//www.w3.org/2004/02/skos/core%23%3E%0A++++++++++++++++PREFIX++rdfs%3A+%3Chttp%3A//www.w3.org/2000/01/rdf-schema%23%3E%0A++++++++++++++++PREFIX++sr%3A+++%3Chttp%3A//data.ordnancesurvey.co.uk/ontology/spatialrelations/%3E%0A%0A++++++++++++++++SELECT++%3Fpaon+%3Fsaon+%3Fstreet+%3Ftown+%3Fcounty+%3Fpostcode+%3Famount+%3Fdate+%3Fid+%3Fcategory%0A++++++++++++++++WHERE%0A++++++++++++++++++++%7B+VALUES+%3Fpostcode+%7B+%22DA11+9NF%22+%7D%0A++++++++++++++++++++%3Faddr+++lrcommon%3Apostcode+++++%3Fpostcode+.%0A++++++++++++++++++++%3Ftransx+lrppi%3ApropertyAddress++%3Faddr+%3B%0A++++++++++++++++++++++++++++lrppi%3ApricePaid+++++++%3Famount+%3B%0A++++++++++++++++++++++++++++lrppi%3AtransactionId+%3Fid+%3B%0A++++++++++++++++++++++++++++lrppi%3AtransactionDate++%3Fdate+.%0A++++++++++++++++++++%3Ftransx+lrppi%3AtransactionCategory/skos%3AprefLabel+%3Fcategory.%0A%0A++++++++++++++++++++OPTIONAL+%7B+%3Faddr++lrcommon%3Acounty++%3Fcounty+%7D%0A++++++++++++++++++++OPTIONAL+%7B+%3Faddr++lrcommon%3Apaon++%3Fpaon+%7D%0A++++++++++++++++++++OPTIONAL+%7B+%3Faddr++lrcommon%3Asaon++%3Fsaon+%7D%0A++++++++++++++++++++OPTIONAL+%7B+%3Faddr++lrcommon%3Astreet++%3Fstreet+%7D%0A++++++++++++++++++++OPTIONAL+%7B+%3Faddr++lrcommon%3Atown++%3Ftown+%7D%0A++++++++++++++++++++%7D%0A++++++++++++++++ORDER+BY+DESC%28%3Fdate%29%0A%0A++++++++++++++++LIMIT+10%0A++++++++++++&format=csv&output=csv&results=csv
+  response:
+    body:
+      string: '<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+
+        <html><head>
+
+        <title>302 Found</title>
+
+        </head><body>
+
+        <h1>Found</h1>
+
+        <p>The document has moved <a href="https://landregistry.data.gov.uk/landregistry/query?query=%0A++++++++++++++++PREFIX++lrppi%3A+%3Chttp%3A//landregistry.data.gov.uk/def/ppi/%3E%0A++++++++++++++++PREFIX++rdf%3A++%3Chttp%3A//www.w3.org/1999/02/22-rdf-syntax-ns%23%3E%0A++++++++++++++++PREFIX++owl%3A++%3Chttp%3A//www.w3.org/2002/07/owl%23%3E%0A++++++++++++++++PREFIX++lrcommon%3A+%3Chttp%3A//landregistry.data.gov.uk/def/common/%3E%0A++++++++++++++++PREFIX++xsd%3A++%3Chttp%3A//www.w3.org/2001/XMLSchema%23%3E%0A++++++++++++++++PREFIX++ukhpi%3A+%3Chttp%3A//landregistry.data.gov.uk/def/ukhpi/%3E%0A++++++++++++++++PREFIX++skos%3A+%3Chttp%3A//www.w3.org/2004/02/skos/core%23%3E%0A++++++++++++++++PREFIX++rdfs%3A+%3Chttp%3A//www.w3.org/2000/01/rdf-schema%23%3E%0A++++++++++++++++PREFIX++sr%3A+++%3Chttp%3A//data.ordnancesurvey.co.uk/ontology/spatialrelations/%3E%0A%0A++++++++++++++++SELECT++%3Fpaon+%3Fsaon+%3Fstreet+%3Ftown+%3Fcounty+%3Fpostcode+%3Famount+%3Fdate+%3Fid+%3Fcategory%0A++++++++++++++++WHERE%0A++++++++++++++++++++%7B+VALUES+%3Fpostcode+%7B+%22DA11+9NF%22+%7D%0A++++++++++++++++++++%3Faddr+++lrcommon%3Apostcode+++++%3Fpostcode+.%0A++++++++++++++++++++%3Ftransx+lrppi%3ApropertyAddress++%3Faddr+%3B%0A++++++++++++++++++++++++++++lrppi%3ApricePaid+++++++%3Famount+%3B%0A++++++++++++++++++++++++++++lrppi%3AtransactionId+%3Fid+%3B%0A++++++++++++++++++++++++++++lrppi%3AtransactionDate++%3Fdate+.%0A++++++++++++++++++++%3Ftransx+lrppi%3AtransactionCategory/skos%3AprefLabel+%3Fcategory.%0A%0A++++++++++++++++++++OPTIONAL+%7B+%3Faddr++lrcommon%3Acounty++%3Fcounty+%7D%0A++++++++++++++++++++OPTIONAL+%7B+%3Faddr++lrcommon%3Apaon++%3Fpaon+%7D%0A++++++++++++++++++++OPTIONAL+%7B+%3Faddr++lrcommon%3Asaon++%3Fsaon+%7D%0A++++++++++++++++++++OPTIONAL+%7B+%3Faddr++lrcommon%3Astreet++%3Fstreet+%7D%0A++++++++++++++++++++OPTIONAL+%7B+%3Faddr++lrcommon%3Atown++%3Ftown+%7D%0A++++++++++++++++++++%7D%0A++++++++++++++++ORDER+BY+DESC%28%3Fdate%29%0A%0A++++++++++++++++LIMIT+10%0A++++++++++++&amp;format=csv&amp;output=csv&amp;results=csv">here</a>.</p>
+
+        </body></html>
+
+        '
+    headers:
+      Cache-Control:
+      - max-age=3600
+      Connection:
+      - Close
+      Content-Length:
+      - '2183'
+      Content-Type:
+      - text/html; charset=iso-8859-1
+      Date:
+      - Thu, 23 Mar 2023 09:51:04 GMT
+      Expires:
+      - Thu, 23 Mar 2023 10:51:04 GMT
+      Location:
+      - https://landregistry.data.gov.uk/landregistry/query?query=%0A++++++++++++++++PREFIX++lrppi%3A+%3Chttp%3A//landregistry.data.gov.uk/def/ppi/%3E%0A++++++++++++++++PREFIX++rdf%3A++%3Chttp%3A//www.w3.org/1999/02/22-rdf-syntax-ns%23%3E%0A++++++++++++++++PREFIX++owl%3A++%3Chttp%3A//www.w3.org/2002/07/owl%23%3E%0A++++++++++++++++PREFIX++lrcommon%3A+%3Chttp%3A//landregistry.data.gov.uk/def/common/%3E%0A++++++++++++++++PREFIX++xsd%3A++%3Chttp%3A//www.w3.org/2001/XMLSchema%23%3E%0A++++++++++++++++PREFIX++ukhpi%3A+%3Chttp%3A//landregistry.data.gov.uk/def/ukhpi/%3E%0A++++++++++++++++PREFIX++skos%3A+%3Chttp%3A//www.w3.org/2004/02/skos/core%23%3E%0A++++++++++++++++PREFIX++rdfs%3A+%3Chttp%3A//www.w3.org/2000/01/rdf-schema%23%3E%0A++++++++++++++++PREFIX++sr%3A+++%3Chttp%3A//data.ordnancesurvey.co.uk/ontology/spatialrelations/%3E%0A%0A++++++++++++++++SELECT++%3Fpaon+%3Fsaon+%3Fstreet+%3Ftown+%3Fcounty+%3Fpostcode+%3Famount+%3Fdate+%3Fid+%3Fcategory%0A++++++++++++++++WHERE%0A++++++++++++++++++++%7B+VALUES+%3Fpostcode+%7B+%22DA11+9NF%22+%7D%0A++++++++++++++++++++%3Faddr+++lrcommon%3Apostcode+++++%3Fpostcode+.%0A++++++++++++++++++++%3Ftransx+lrppi%3ApropertyAddress++%3Faddr+%3B%0A++++++++++++++++++++++++++++lrppi%3ApricePaid+++++++%3Famount+%3B%0A++++++++++++++++++++++++++++lrppi%3AtransactionId+%3Fid+%3B%0A++++++++++++++++++++++++++++lrppi%3AtransactionDate++%3Fdate+.%0A++++++++++++++++++++%3Ftransx+lrppi%3AtransactionCategory/skos%3AprefLabel+%3Fcategory.%0A%0A++++++++++++++++++++OPTIONAL+%7B+%3Faddr++lrcommon%3Acounty++%3Fcounty+%7D%0A++++++++++++++++++++OPTIONAL+%7B+%3Faddr++lrcommon%3Apaon++%3Fpaon+%7D%0A++++++++++++++++++++OPTIONAL+%7B+%3Faddr++lrcommon%3Asaon++%3Fsaon+%7D%0A++++++++++++++++++++OPTIONAL+%7B+%3Faddr++lrcommon%3Astreet++%3Fstreet+%7D%0A++++++++++++++++++++OPTIONAL+%7B+%3Faddr++lrcommon%3Atown++%3Ftown+%7D%0A++++++++++++++++++++%7D%0A++++++++++++++++ORDER+BY+DESC%28%3Fdate%29%0A%0A++++++++++++++++LIMIT+10%0A++++++++++++&format=csv&output=csv&results=csv
+      Server:
+      - Apache
+    status:
+      code: 302
+      message: Found
+- request:
+    body: null
+    headers:
+      Accept:
+      - text/csv
+      Connection:
+      - close
+      Host:
+      - landregistry.data.gov.uk
+      User-Agent:
+      - sparqlwrapper 2.0.0 (rdflib.github.io/sparqlwrapper)
+    method: GET
+    uri: https://landregistry.data.gov.uk/landregistry/query?query=%0A++++++++++++++++PREFIX++lrppi%3A+%3Chttp%3A//landregistry.data.gov.uk/def/ppi/%3E%0A++++++++++++++++PREFIX++rdf%3A++%3Chttp%3A//www.w3.org/1999/02/22-rdf-syntax-ns%23%3E%0A++++++++++++++++PREFIX++owl%3A++%3Chttp%3A//www.w3.org/2002/07/owl%23%3E%0A++++++++++++++++PREFIX++lrcommon%3A+%3Chttp%3A//landregistry.data.gov.uk/def/common/%3E%0A++++++++++++++++PREFIX++xsd%3A++%3Chttp%3A//www.w3.org/2001/XMLSchema%23%3E%0A++++++++++++++++PREFIX++ukhpi%3A+%3Chttp%3A//landregistry.data.gov.uk/def/ukhpi/%3E%0A++++++++++++++++PREFIX++skos%3A+%3Chttp%3A//www.w3.org/2004/02/skos/core%23%3E%0A++++++++++++++++PREFIX++rdfs%3A+%3Chttp%3A//www.w3.org/2000/01/rdf-schema%23%3E%0A++++++++++++++++PREFIX++sr%3A+++%3Chttp%3A//data.ordnancesurvey.co.uk/ontology/spatialrelations/%3E%0A%0A++++++++++++++++SELECT++%3Fpaon+%3Fsaon+%3Fstreet+%3Ftown+%3Fcounty+%3Fpostcode+%3Famount+%3Fdate+%3Fid+%3Fcategory%0A++++++++++++++++WHERE%0A++++++++++++++++++++%7B+VALUES+%3Fpostcode+%7B+%22DA11+9NF%22+%7D%0A++++++++++++++++++++%3Faddr+++lrcommon%3Apostcode+++++%3Fpostcode+.%0A++++++++++++++++++++%3Ftransx+lrppi%3ApropertyAddress++%3Faddr+%3B%0A++++++++++++++++++++++++++++lrppi%3ApricePaid+++++++%3Famount+%3B%0A++++++++++++++++++++++++++++lrppi%3AtransactionId+%3Fid+%3B%0A++++++++++++++++++++++++++++lrppi%3AtransactionDate++%3Fdate+.%0A++++++++++++++++++++%3Ftransx+lrppi%3AtransactionCategory/skos%3AprefLabel+%3Fcategory.%0A%0A++++++++++++++++++++OPTIONAL+%7B+%3Faddr++lrcommon%3Acounty++%3Fcounty+%7D%0A++++++++++++++++++++OPTIONAL+%7B+%3Faddr++lrcommon%3Apaon++%3Fpaon+%7D%0A++++++++++++++++++++OPTIONAL+%7B+%3Faddr++lrcommon%3Asaon++%3Fsaon+%7D%0A++++++++++++++++++++OPTIONAL+%7B+%3Faddr++lrcommon%3Astreet++%3Fstreet+%7D%0A++++++++++++++++++++OPTIONAL+%7B+%3Faddr++lrcommon%3Atown++%3Ftown+%7D%0A++++++++++++++++++++%7D%0A++++++++++++++++ORDER+BY+DESC%28%3Fdate%29%0A%0A++++++++++++++++LIMIT+10%0A++++++++++++&format=csv&output=csv&results=csv
+  response:
+    body:
+      string: "paon,saon,street,town,county,postcode,amount,date,id,category\r\n23,,BURCH
+        ROAD,GRAVESEND,KENT,DA11 9NF,243000,2017-01-30,49B7852A-1ACD-7921-E050-A8C063056E8D,Standard
+        price paid transaction\r\n16,,BURCH ROAD,GRAVESEND,KENT,DA11 9NF,170500,2014-05-15,62A90238-76E2-4B79-857E-E6147BA56AC2,Standard
+        price paid transaction\r\n19,,BURCH ROAD,GRAVESEND,KENT,DA11 9NF,183700,2014-02-26,20B5457F-3160-4174-95DE-EE1AD3E1A7B3,Standard
+        price paid transaction\r\n15,,BURCH ROAD,GRAVESEND,KENT,DA11 9NF,160000,2013-12-20,F58ABB76-8C16-4034-A504-6E1147079877,Standard
+        price paid transaction\r\n14,,BURCH ROAD,GRAVESEND,KENT,DA11 9NF,185000,2013-11-01,3187501E-C7E1-47DA-B42D-AE9DED7A916E,Standard
+        price paid transaction\r\n33,,BURCH ROAD,GRAVESEND,KENT,DA11 9NF,140000,2012-11-27,09156908-950C-4E1A-9562-87E842071516,Standard
+        price paid transaction\r\n28,,BURCH ROAD,GRAVESEND,KENT,DA11 9NF,185000,2008-06-06,38EFDA3F-8A51-44A7-8322-B75C6EA8ACD8,Standard
+        price paid transaction\r\n28,,BURCH ROAD,GRAVESEND,KENT,DA11 9NF,139500,2007-01-26,C9D1ADAF-36B8-425F-9EBF-CE1C43E13768,Standard
+        price paid transaction\r\n21,,BURCH ROAD,GRAVESEND,KENT,DA11 9NF,194995,2006-05-26,9944786D-79FA-4B70-80B4-BCF1FD0462B7,Standard
+        price paid transaction\r\n23,,BURCH ROAD,GRAVESEND,KENT,DA11 9NF,153250,2005-10-07,BF5E8F0B-A5D2-4DD4-A5A3-26D0B62E9027,Standard
+        price paid transaction\r\n"
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - must-revalidate,no-cache,no-store, max-age=3600
+      Connection:
+      - Close
+      Content-Length:
+      - '1333'
+      Content-Type:
+      - text/csv; charset=utf-8
+      Date:
+      - Thu, 23 Mar 2023 09:51:06 GMT
+      Expires:
+      - Thu, 23 Mar 2023 10:51:06 GMT
+      Fuseki-Request-ID:
+      - '392882'
+      Pragma:
+      - no-cache
+      Server:
+      - Apache
+      Vary:
+      - Accept,Accept-Encoding,Accept-Charset,User-Agent
+    status:
+      code: 200
+      message: OK
+version: 1
