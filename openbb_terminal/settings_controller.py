@@ -51,23 +51,24 @@ class SettingsController(BaseController):
     """Settings Controller class"""
 
     CHOICES_COMMANDS: List[str] = [
-        "dt",
         "autoscaling",
-        "dpi",
         "backend",
-        "height",
-        "width",
-        "pheight",
-        "pwidth",
-        "monitor",
-        "lang",
-        "tz",
-        "userdata",
-        "source",
-        "flair",
         "colors",
+        "dpi",
+        "dt",
+        "flair",
+        "height",
+        "lang",
+        "monitor",
+        "pheight",
+        "plotstyle",
+        "pwidth",
+        "source",
         "tbnews",
         "tweetnews",
+        "tz",
+        "userdata",
+        "width",
     ]
     PATH = "/settings/"
     CHOICES_GENERATION = True
@@ -135,11 +136,16 @@ class SettingsController(BaseController):
         mt.add_raw("\n")
         mt.add_setting("dt", current_user.preferences.USE_DATETIME)
         mt.add_raw("\n")
+        mt.add_cmd("plotstyle")
+        mt.add_raw("\n")
+        mt.add_param("_plotstyle", current_user.preferences.PLOT_STYLE)
+        mt.add_raw("\n")
         mt.add_cmd("colors")
         mt.add_raw("\n")
-        mt.add_param("_colors", current_user.preferences.RICH_STYLE)
-        mt.add_raw(f"   {self.PREVIEW}")
-        mt.add_raw("\n\n")
+        mt.add_param(
+            "_colors", f"{current_user.preferences.RICH_STYLE} -> {self.PREVIEW}"
+        )
+        mt.add_raw("\n")
         mt.add_cmd("flair")
         mt.add_raw("\n")
         mt.add_param("_flair", get_flair())
@@ -233,6 +239,21 @@ class SettingsController(BaseController):
         write_to_dotenv("OPENBB_" + name, str(value))
 
     @log_start_end(log=logger)
+    def call_dt(self, other_args: List[str]):
+        """Process dt command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="dt",
+            description="Set the use of datetime in the plots",
+        )
+        ns_parser = self.parse_simple_args(parser, other_args)
+        if ns_parser:
+            self.set_and_save_preference(
+                "USE_DATETIME", not get_current_user().preferences.USE_DATETIME
+            )
+
+    @log_start_end(log=logger)
     def call_colors(self, other_args: List[str]):
         """Process colors command"""
         parser = argparse.ArgumentParser(
@@ -245,7 +266,6 @@ class SettingsController(BaseController):
             "-s",
             "--style",
             type=str,
-            default="default",
             choices=["default", "custom", "hub"],
             dest="style",
             required="-h" not in other_args and "--help" not in other_args,
@@ -281,19 +301,38 @@ class SettingsController(BaseController):
                 console.print("Theme updated.")
 
     @log_start_end(log=logger)
-    def call_dt(self, other_args: List[str]):
-        """Process dt command"""
+    def call_plotstyle(self, other_args: List[str]):
+        """Process plotstyle command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="dt",
-            description="Set the use of datetime in the plots",
+            prog="plotstyle",
+            description="Choose plot style.",
         )
+        parser.add_argument(
+            "-s",
+            "--style",
+            type=str,
+            choices=["dark", "light"],
+            dest="style",
+            help="Choose plot style.",
+            required="-h" not in other_args and "--help" not in other_args,
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-s")
         ns_parser = self.parse_simple_args(parser, other_args)
-        if ns_parser:
-            self.set_and_save_preference(
-                "USE_DATETIME", not get_current_user().preferences.USE_DATETIME
-            )
+        if ns_parser and ns_parser.style:
+            if is_local():
+                self.set_and_save_preference("PLOT_STYLE", ns_parser.style)
+            else:
+                set_preference("PLOT_STYLE", ns_parser.style)
+                Hub.upload_config(
+                    key="PLOT_STYLE",
+                    value=ns_parser.style,
+                    type_="settings",
+                    auth_header=get_current_user().profile.get_auth_header(),
+                )
+            console.print("Plot style updated.")
 
     @log_start_end(log=logger)
     def call_source(self, other_args: List[str]):

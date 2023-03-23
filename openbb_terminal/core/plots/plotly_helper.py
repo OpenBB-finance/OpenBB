@@ -80,7 +80,8 @@ class TerminalStyle:
 
     def apply_style(self, style: Optional[str] = "") -> None:
         """Apply the style to the libraries."""
-        style = style or self.plt_style
+        if not style:
+            style = get_current_user().preferences.PLOT_STYLE
 
         if style != self.plt_style:
             self.load_style(style)
@@ -189,6 +190,7 @@ class TerminalStyle:
         list
             List of colors e.g. ["#00ACFF", "#FF0000"]
         """
+        self.apply_style()
         colors = self.plotly_template.get("layout", {}).get("colorway", PLT_COLORWAY)
         if reverse:
             colors.reverse()

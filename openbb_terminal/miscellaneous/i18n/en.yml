@@ -64,9 +64,12 @@ en:
   featflags/overwrite: whether to overwrite Excel files if they already exists
   featflags/version: whether to show the version in the bottom right corner
   featflags/tbhint: displays usage hints in the bottom toolbar
-  settings/_info_: Settings through environment variables
+  settings/_info_: Current settings
+  settings/_cmds_: Change settings
   settings/colors: set your own terminal colors
   settings/_colors: Colors
+  settings/plotstyle: set your own plot style
+  settings/_plotstyle: Plot style
   settings/autoscaling: plot autoscaling
   settings/dt: add or remove datetime from flair
   settings/flair: set the flair emoji to be used

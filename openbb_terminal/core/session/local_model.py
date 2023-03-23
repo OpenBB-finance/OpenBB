@@ -114,7 +114,7 @@ def apply_configs(configs: dict):
     """
     set_credentials(configs)
     # For safety, we ensure to set only the rich style
-    set_preferences(configs, ["RICH_STYLE"])
+    set_preferences(configs, ["RICH_STYLE", "PLOT_STYLE"])
     set_theme(configs)
 
 
@@ -148,6 +148,7 @@ def set_preferences(configs: dict, filter_: Optional[List[str]] = None):
             if not filter_:
                 set_preference(k, v)
             elif k in filter_:
+                print(preferences)
                 set_preference(k, v)
 
 
