@@ -128,6 +128,7 @@ class TerminalStyle:
         Parses the styles/default and styles/user folders and loads style files.
         To be recognized files need to follow a naming convention:
         *.pltstyle        - plotly stylesheets
+        *.richstyle.json  - rich stylesheets
 
         Parameters
         ----------
