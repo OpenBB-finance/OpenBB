@@ -10,6 +10,7 @@ from openbb_terminal.core.session.current_user import (
     PreferencesModel,
     copy_user,
 )
+from openbb_terminal.core.session import env_handler
 
 # pylint: disable=R0902,R0903,W1404,C0302
 TEST_PATH = Path(__file__).parent.resolve()
@@ -52,7 +53,7 @@ def set_naive_environment(var_name_list: List[str]) -> None:
         tmp_env.unlink(missing_ok=True)
 
     # Set new temporary .env
-    keys_model.SETTINGS_ENV_FILE = tmp_env
+    env_handler.SETTINGS_ENV_FILE = tmp_env
 
 
 # Alphavantage api is working with any key you pass, so expected is 1 with dummy keys
@@ -64,19 +65,19 @@ def set_naive_environment(var_name_list: List[str]) -> None:
     "args, persist, show_output, __expected",
     [
         (
-            ["test_key"],
+            ["test_key_1"],
             False,
             True,
             keys_model.KeyStatus.DEFINED_TEST_PASSED,
         ),
         (
-            ["test_key"],
+            ["test_key_2"],
             False,
             False,
             keys_model.KeyStatus.DEFINED_TEST_PASSED,
         ),
         (
-            ["test_key"],
+            ["test_key_3"],
             True,
             True,
             keys_model.KeyStatus.DEFINED_TEST_PASSED,
