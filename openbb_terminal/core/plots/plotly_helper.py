@@ -77,6 +77,8 @@ class TerminalStyle:
         ----------
         plt_style : `str`, optional
             The name of the Plotly style to use, by default ""
+        console_style : `str`, optional
+            The name of the Rich style to use, by default ""
         """
         self.plt_style = plt_style or self.plt_style
         self.load_available_styles()
