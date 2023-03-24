@@ -104,12 +104,7 @@ class SourcesController(BaseController):
     def print_help(self):
         """Print help"""
         mt = MenuText("sources/")
-        file = (
-            get_current_user().preferences.PREFERRED_DATA_SOURCE_FILE
-            if is_local()
-            else SOURCES_URL
-        )
-        mt.add_param("_source", file)
+        mt.add_param("_source",get_current_user().preferences.PREFERRED_DATA_SOURCE_FILE if is_local() else SOURCES_URL)
         mt.add_raw("\n")
         mt.add_info("_info_")
         mt.add_cmd("get")
