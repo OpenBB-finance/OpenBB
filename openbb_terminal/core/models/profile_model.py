@@ -2,9 +2,11 @@ from typing import Dict
 
 from pydantic.dataclasses import dataclass
 
+from openbb_terminal.core.models import BaseModel
+
 
 @dataclass(config=dict(validate_assignment=True, frozen=True))
-class ProfileModel:
+class ProfileModel(BaseModel):
     """Data model for profile."""
 
     token_type: str = ""
@@ -72,3 +74,6 @@ class ProfileModel:
             The auth header, e.g. "Bearer <token>".
         """
         return f"{self.token_type.title()} {self.token}"
+
+    def __repr__(self) -> str:  # pylint: disable=useless-super-delegation
+        return super().__repr__()

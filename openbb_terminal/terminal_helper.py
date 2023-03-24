@@ -17,15 +17,13 @@ import matplotlib.pyplot as plt
 # IMPORTATION THIRDPARTY
 from packaging import version
 
-from openbb_terminal import (
-    thought_of_the_day as thought,
-)
-from openbb_terminal.config_terminal import LOGGING_COMMIT_HASH, VERSION
+from openbb_terminal import thought_of_the_day as thought
 
 # IMPORTATION INTERNAL
 from openbb_terminal.core.config.paths import SETTINGS_ENV_FILE
 from openbb_terminal.core.plots.backend import plots_backend
 from openbb_terminal.core.session.constants import REGISTER_URL
+from openbb_terminal.core.session.current_system import get_current_system
 from openbb_terminal.core.session.current_user import (
     get_current_user,
     is_local,
@@ -102,7 +100,7 @@ def update_terminal():
     """Updates the terminal by running git pull in the directory.
     Runs poetry install if needed.
     """
-    if not WITH_GIT or LOGGING_COMMIT_HASH != "REPLACE_ME":
+    if not WITH_GIT or get_current_system().LOGGING_COMMIT_HASH != "REPLACE_ME":
         console.print("This feature is not available: Git dependencies not installed.")
         return 0
 
@@ -131,27 +129,27 @@ def update_terminal():
 
 
 def open_openbb_documentation(
-    path, url="http://localhost/app/terminal", command=None, arg_type=""
+    path, url="https://my.openbb.dev/app/terminal", command=None, arg_type=""
 ):
     """Opens the documentation page based on your current location within the terminal. Make exceptions for menus
     that are considered 'common' by adjusting the path accordingly."""
     if path == "/" and command is None:
-        path = "/how-to"
+        path = "/guides"
         command = ""
     elif "keys" in path:
-        path = "/guides?full=1&path=/quickstart/api-keys"
+        path = "/usage?full=1&path=/guides/api-keys"
         command = ""
     elif "settings" in path:
-        path = "/guides?path=/advanced/customizing-the-terminal"
+        path = "/usage?path=/guides/customizing-the-terminal"
         command = ""
     elif "featflags" in path:
-        path = "/guides?path=/advanced/customizing-the-terminal"
+        path = "/usage?path=/guides/customizing-the-terminal"
         command = ""
     elif "sources" in path:
-        path = "/guides?path=/advanced/changing-sources"
+        path = "/usage?path=/guides/changing-sources"
         command = ""
     elif "params" in path:
-        path = "/guides?path=/intros/portfolio/po"
+        path = "/usage?path=/intros/portfolio/po"
         command = ""
     else:
         if arg_type == "command":  # user passed a command name
@@ -159,32 +157,32 @@ def open_openbb_documentation(
         elif arg_type == "menu":  # user passed a menu name
             if command in ["ta", "ba", "qa"]:
                 menu = path.split("/")[-2]
-                path = f"/guides?path=/intros/common/{menu}"
+                path = f"/usage?path=/intros/common/{menu}"
             elif command == "forecast":
                 command = ""
-                path = "/guides?path=/intros/forecast"
+                path = "/usage?path=/intros/forecast"
             else:
-                path = f"/guides?path=/intros/{path}"
+                path = f"/usage?path=/intros/{path}"
         else:  # user didn't pass argument and is in a menu
             menu = path.split("/")[-2]
             path = (
-                f"/guides?path=/intros/common/{menu}"
+                f"/usage?path=/intros/common/{menu}"
                 if menu in ["ta", "ba", "qa"]
-                else f"/guides?path=/intros/{path}"
+                else f"/usage?path=/intros/{path}"
             )
 
     if command:
         if command == "keys":
-            path = "/guides?full=1&path=/quickstart/api-keys"
+            path = "/usage?full=1&path=/guides/api-keys"
             command = ""
         elif "settings" in path or "featflags" in path:
-            path = "/guides?path=/advanced/customizing-the-terminal"
+            path = "/usage?path=/guides/customizing-the-terminal"
             command = ""
         elif "sources" in path:
-            path = "/guides?path=/advanced/changing-sources"
+            path = "/usage?path=/guides/changing-sources"
             command = ""
         elif command in ["record", "stop", "exe"]:
-            path = "/guides?path=/advanced/scripts-and-routines"
+            path = "/usage?path=/guides/scripts-and-routines"
             command = ""
         elif command in [
             "intro",
@@ -195,7 +193,7 @@ def open_openbb_documentation(
             "wiki",
             "news",
         ]:
-            path = ""
+            path = "/guides"
             command = ""
         elif command in ["ta", "ba", "qa"]:
             path = f"/guides?path=/intros/common/{command}"
@@ -291,7 +289,7 @@ def check_for_updates() -> None:
     if r is not None and r.status_code == 200:
         latest_tag_name = r.json()["tag_name"]
         latest_version = version.parse(latest_tag_name)
-        current_version = version.parse(VERSION)
+        current_version = version.parse(get_current_system().VERSION)
 
         if check_valid_versions(latest_version, current_version):
             if current_version == latest_version:
@@ -339,7 +337,7 @@ def welcome_message():
 
     Prints first welcome message, help and a notification if updates are available.
     """
-    console.print(f"\nWelcome to OpenBB Terminal v{VERSION}")
+    console.print(f"\nWelcome to OpenBB Terminal v{get_current_system().VERSION}")
 
     if get_current_user().preferences.ENABLE_THOUGHTS_DAY:
         console.print("---------------------------------")

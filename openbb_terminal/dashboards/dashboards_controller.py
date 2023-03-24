@@ -58,7 +58,9 @@ class DashboardsController(BaseController):
         self.streamlit_url: Optional[str] = None
         self.processes: List[psutil.Process] = []
         self.parent_path = (
-            REPOSITORY_DIRECTORY if hasattr(sys, "frozen") else Path(os.getcwd())
+            Path(sys.executable).parent
+            if hasattr(sys, "frozen")
+            else REPOSITORY_DIRECTORY
         )
 
         if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
@@ -197,7 +199,7 @@ class DashboardsController(BaseController):
                 cmd += " --theme=dark"
 
             if ns_parser.input or response.lower() == "y" and not process_check:
-                cfg.LOGGING_SUPPRESS = True
+                cfg.change_logging_suppress(new_value=True)
                 self.processes.append(
                     psutil.Popen(
                         f"{cmd} --no-browser --port {port}"
@@ -209,7 +211,7 @@ class DashboardsController(BaseController):
                         env=os.environ,
                     )
                 )
-                cfg.LOGGING_SUPPRESS = False
+                cfg.change_logging_suppress(new_value=False)
                 atexit.register(self.kill_processes)
 
                 console.print(

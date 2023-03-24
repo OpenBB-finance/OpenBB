@@ -4,4 +4,4 @@ keywords: [user, files, openbbuserdata, presets, file, portfolio, exports, impor
 description: Common Menus in the OpenBB Terminal
 ---
 
-There are several sub-menus containing features that can be applied across all asset classes. These are grouped in the directory trees under, common.
+There are several sub-menus containing features that can be applied across different asset classes. These are grouped in the directory trees under `common/`.
