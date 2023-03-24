@@ -257,14 +257,13 @@ class SettingsController(BaseController):
     @log_start_end(log=logger)
     def call_colors(self, other_args: List[str]):
         """Process colors command"""
-        theme.load_available_styles()
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="colors",
             description="Console style.",
         )
-        # choices = list(theme.console_styles_available.keys()) + ["default", "hub"] +
+        theme.load_available_styles()
         parser.add_argument(
             "-s",
             "--style",
@@ -306,6 +305,9 @@ class SettingsController(BaseController):
     @log_start_end(log=logger)
     def call_plotstyle(self, other_args: List[str]):
         """Process plotstyle command"""
+        # TODO: Add support for any style like in colors command. Choices should be
+        #  theme.plt_styles_available. Don't forget to theme.load_available_styles(),
+        #  to allow for files in user's styles directory created after the app started.
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
