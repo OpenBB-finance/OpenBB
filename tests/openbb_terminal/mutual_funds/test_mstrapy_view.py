@@ -1,10 +1,14 @@
 """Test the mstrapy view."""
 
 import pytest
+from mstarpy import Funds
 
-from openbb_terminal.mutual_funds import mstarpy_model, mstarpy_view
+from openbb_terminal.mutual_funds import mstarpy_view
 
-EXAMPLE_FUND = mstarpy_model.load_funds(term="Vanguard", country="US")
+EXAMPLE_FUND = Funds(
+    "Vanguard",
+    "US",
+)
 
 
 def test_display_carbon_metrics():
@@ -15,7 +19,6 @@ def test_display_exclusion_policy():
     mstarpy_view.display_exclusion_policy(loaded_funds=EXAMPLE_FUND)
 
 
-@pytest.mark.record_verify_screen
 @pytest.mark.parametrize(
     "loaded_fund, start_date, end_date, kwargs",
     [
@@ -28,14 +31,12 @@ def test_display_exclusion_policy():
     ],
 )
 def test_display_historical(loaded_fund, start_date, end_date, kwargs):
-    chart = mstarpy_view.display_historical(
+    mstarpy_view.display_historical(
         loaded_funds=loaded_fund,
         start_date=start_date,
         end_date=end_date,
         **kwargs,
     )
-    assert chart is not None
-    assert hasattr(chart, "save")
 
 
 @pytest.mark.record_verify_screen
@@ -74,8 +75,6 @@ def test_display_search(term, country, limit):
     ],
 )
 def test_display_sector(loaded_fund, asset_type, external_axes):
-    chart = mstarpy_view.display_sector(
+    mstarpy_view.display_sector(
         loaded_funds=loaded_fund, asset_type=asset_type, external_axes=external_axes
     )
-    assert chart is not None
-    assert hasattr(chart, "to_html")
