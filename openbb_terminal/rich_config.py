@@ -22,6 +22,7 @@ from openbb_terminal.core.session.current_user import (
     is_local,
     set_preference,
 )
+from openbb_terminal.core.plots.plotly_helper import theme
 
 # pylint: disable=no-member,c-extension-no-member
 
@@ -46,129 +47,6 @@ RICH_TAGS = [
 ]
 
 USE_COLOR = True
-
-
-def get_console_style(name: str, folder: Path) -> Dict[str, str]:
-    """Get console style based on rich style.
-
-    Parameters
-    ----------
-    name : str
-        Name of style.
-    folder : Path
-        Folder to look for style in.
-
-    Returns
-    -------
-    Dict[str, str]
-        Style dictionary.
-    """
-    file_name = name + ".richstyle.json"
-    file = folder / file_name
-
-    if os.path.exists(file):
-        with open(file) as f:
-            return json.load(f)
-    return {}
-
-
-def get_custom_theme(folder) -> Optional[Theme]:
-    """Get custom theme.
-
-    Parameters
-    ----------
-    folder : Path
-        Folder to look for style in.
-
-    Returns
-    -------
-    Optional[Theme]
-        Theme object.
-    """
-    try:
-        if is_local():
-            style = get_console_style(
-                name="openbb_config",
-                folder=folder,
-            )
-            set_preference("CUSTOM_RICH_STYLE", style)
-
-        style_dict = get_current_user().preferences.CUSTOM_RICH_STYLE
-        if style_dict:
-            return Theme(style_dict)
-        return None
-    except Exception:
-        print(
-            "Error loading style: failed to load "
-            f"'openbb_config.rich_style.json' from {folder}, using default -> dark"
-        )
-        return None
-
-
-def get_hub_theme() -> Theme:
-    """Get hub theme.
-
-    Returns
-    -------
-    Theme
-        Theme object.
-    """
-    try:
-        return Theme(get_current_user().preferences.HUB_RICH_STYLE)
-    except Exception:
-        print("Error loading hub style.\n")
-        return Theme()
-
-
-def get_default_theme(folder) -> Theme:
-    """Get default theme.
-
-    Parameters
-    ----------
-    folder : Path
-        Folder to look for style in.
-
-    Returns
-    -------
-    Theme
-        Theme object.
-    """
-    try:
-        default = get_console_style("default", folder)
-        set_preference("RICH_STYLE", "default")
-        if default:
-            return Theme(default)
-        return Theme()
-    except Exception:
-        print("Error loading default style.\n")
-        return Theme()
-
-
-def get_theme() -> Theme:
-    """Get rich theme.
-
-    Returns
-    -------
-    Theme
-        Theme object.
-    """
-
-    current_user = get_current_user()
-    rich = current_user.preferences.RICH_STYLE
-    defaults_folder = MISCELLANEOUS_DIRECTORY / "styles" / "default"
-    user_folder = current_user.preferences.USER_STYLES_DIRECTORY
-
-    if rich == "custom":
-        theme = get_custom_theme(user_folder)
-        if not theme:
-            theme = get_default_theme(defaults_folder)
-    elif rich == "hub":
-        theme = get_hub_theme()
-    elif rich == "default":
-        theme = get_default_theme(defaults_folder)
-    else:
-        theme = Theme()
-    return theme
 
 
 def translate(key: str):
@@ -385,22 +263,22 @@ class MenuText:
 class ConsoleAndPanel:
     """Create a rich console to wrap the console print with a Panel"""
 
-    def __init__(self, theme: Optional[Theme] = None):
+    def __init__(self):
         self.preferences = get_current_user().preferences
         self.__console = Console(
-            theme=theme if theme else get_theme(), highlight=False, soft_wrap=True
+            theme=Theme(theme.console_style), highlight=False, soft_wrap=True
         )
         self.menu_text = ""
         self.menu_path = ""
-
-    def set_console_theme(self, theme: Theme):
-        self.__console = Console(theme=theme, highlight=False, soft_wrap=True)
 
     def reload_console(self):
         current_preferences = get_current_user().preferences
         if current_preferences != self.preferences:
             self.preferences = current_preferences
-            self.__console = Console(theme=get_theme(), highlight=False, soft_wrap=True)
+            theme.apply_console_style(current_preferences.RICH_STYLE)
+            self.__console = Console(
+                theme=Theme(theme.console_style), highlight=False, soft_wrap=True
+            )
 
     def capture(self):
         return self.__console.capture()

@@ -53,6 +53,9 @@ class TerminalStyle:
     plt_style: str = "dark"
     plotly_template: Dict[str, Any] = {}
 
+    console_styles_available: Dict[str, Path] = {}
+    console_style: Dict[str, Any] = {}
+
     line_color: str = ""
     up_color: str = ""
     down_color: str = ""
@@ -66,6 +69,7 @@ class TerminalStyle:
     def __init__(
         self,
         plt_style: Optional[str] = "",
+        console_style: Optional[str] = "",
     ):
         """Initialize the class.
 
@@ -77,10 +81,31 @@ class TerminalStyle:
         self.plt_style = plt_style or self.plt_style
         self.load_available_styles()
         self.load_style(plt_style)
+        self.load_style(plt_style)
+        self.apply_console_style(console_style)
+
+    def apply_console_style(self, style: Optional[str] = "") -> None:
+        """Apply the style to the console."""
+
+        if style in self.console_styles_available:
+            json_path = self.console_styles_available[style]
+        else:
+            self.load_available_styles()
+            if style in self.console_styles_available:
+                json_path = self.console_styles_available[style]
+            else:
+                console.print("Invalid console style. Using default.")
+                json_path = self.console_styles_available.get("dark", None)
+
+        if json_path:
+            self.console_style = self.load_json_style(json_path)
+        else:
+            console.print("Error loading default.")
 
     def apply_style(self, style: Optional[str] = "") -> None:
         """Apply the style to the libraries."""
-        style = style or self.plt_style
+        if not style:
+            style = get_current_user().preferences.PLOT_STYLE
 
         if style != self.plt_style:
             self.load_style(style)
@@ -111,8 +136,8 @@ class TerminalStyle:
             return
 
         for attr, ext in zip(
-            ["plt_styles_available"],
-            [".pltstyle.json"],
+            ["plt_styles_available", "console_styles_available"],
+            [".pltstyle.json", ".richstyle.json"],
         ):
             for file in folder.glob(f"*{ext}"):
                 getattr(self, attr)[file.name.replace(ext, "")] = file
@@ -127,7 +152,7 @@ class TerminalStyle:
 
         Parameters
         ----------
-        file : str
+        file : Optional[Path]
             Path to the file containing the style
 
         Returns
@@ -189,13 +214,16 @@ class TerminalStyle:
         list
             List of colors e.g. ["#00ACFF", "#FF0000"]
         """
+        self.apply_style()
         colors = self.plotly_template.get("layout", {}).get("colorway", PLT_COLORWAY)
         if reverse:
             colors.reverse()
         return colors
 
 
-theme = TerminalStyle(get_current_user().preferences.PLOT_STYLE)
+theme = TerminalStyle(
+    get_current_user().preferences.PLOT_STYLE, get_current_user().preferences.RICH_STYLE
+)
 theme.apply_style()
 
 
@@ -980,6 +1008,7 @@ class OpenBBFigure(go.Figure):
         if kwargs.pop("margin", True):
             self._adjust_margins()
 
+        theme.apply_style()
         self._apply_feature_flags()
         self._xaxis_tickformatstops()
 
@@ -1297,6 +1326,7 @@ class OpenBBFigure(go.Figure):
                 full_html=False,
             )
         )
+        theme.apply_style()
         self._apply_feature_flags()
         self._xaxis_tickformatstops()
 

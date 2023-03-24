@@ -116,8 +116,8 @@ def apply_configs(configs: dict):
     """
     set_credentials_from_hub(configs)
     # For safety, we ensure to set only the rich style
-    set_preferences(configs, ["RICH_STYLE"])
-    set_theme_from_hub(configs)
+    set_preferences(configs, ["RICH_STYLE", "PLOT_STYLE"])
+    save_theme_from_hub(configs)
     set_sources_from_hub(configs)
 
 
@@ -154,8 +154,8 @@ def set_preferences(configs: dict, filter_: Optional[List[str]] = None):
                 set_preference(k, v)
 
 
-def set_theme_from_hub(configs: dict):
-    """Set theme from hub.
+def save_theme_from_hub(configs: dict):
+    """Set theme.
 
     Parameters
     ----------
@@ -168,7 +168,12 @@ def set_theme_from_hub(configs: dict):
             user_style = terminal_style.get("theme", None)
             if user_style:
                 user_style = {k: v.replace(" ", "") for k, v in user_style.items()}
-                set_preference("HUB_RICH_STYLE", user_style)
+                with open(
+                    get_current_user().preferences.USER_STYLES_DIRECTORY
+                    / "hub.richstyle.json",
+                    "w",
+                ) as f:
+                    json.dump(user_style, f)
 
 
 def set_sources_from_hub(configs: dict):
