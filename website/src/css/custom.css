@@ -438,3 +438,7 @@ pre[class*="language-"] {
 details summary {
   cursor: pointer;
 }
+
+[data-theme="dark"] #__docusaurus {
+  background-color: #131313ff !important;
+}
