@@ -15,6 +15,7 @@ import pytz
 
 import openbb_terminal.core.session.hub_model as Hub
 import openbb_terminal.core.session.local_model as Local
+from openbb_terminal import theme
 
 # IMPORTATION INTERNAL
 from openbb_terminal.core.config.paths import (
@@ -40,7 +41,6 @@ from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import RICH_TAGS, MenuText, console
 from openbb_terminal.terminal_helper import print_guest_block_msg
-from openbb_terminal import theme
 
 # pylint: disable=too-many-lines,no-member,too-many-public-methods,C0302
 # pylint: disable=import-outside-toplevel
