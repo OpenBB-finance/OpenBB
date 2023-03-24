@@ -6,6 +6,7 @@ import pandas as pd
 import pytest
 
 from openbb_terminal import keys_model
+from openbb_terminal.core.session import env_handler
 from openbb_terminal.core.session.current_user import (
     PreferencesModel,
     copy_user,
@@ -52,7 +53,7 @@ def set_naive_environment(var_name_list: List[str]) -> None:
         tmp_env.unlink(missing_ok=True)
 
     # Set new temporary .env
-    keys_model.SETTINGS_ENV_FILE = tmp_env
+    env_handler.SETTINGS_ENV_FILE = tmp_env
 
 
 # Alphavantage api is working with any key you pass, so expected is 1 with dummy keys
