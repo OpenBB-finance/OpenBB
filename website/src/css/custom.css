@@ -196,7 +196,7 @@
   --ifm-color-primary-lighter: #32d8b4;
   --ifm-color-primary-lightest: #4fddbf;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);*/
-  --ifm-navbar-background-color: #070707ff;
+  --ifm-navbar-background-color: #131313ff;
   --docs-color-border: #2e2e2e;
   --aa-primary-color-rgb: rgba(
     var(--aa-text-color-rgb),
@@ -437,4 +437,8 @@ pre[class*="language-"] {
 
 details summary {
   cursor: pointer;
+}
+
+[data-theme="dark"] #__docusaurus {
+  background: #131313ff !important;
 }
