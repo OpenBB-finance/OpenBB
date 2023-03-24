@@ -66,13 +66,19 @@ def get_next_earnings(limit: int = 10, start: Optional[date] = None) -> DataFram
     for _ in range(0, limit):
         date_str = start.strftime("%Y-%m-%d")
         response = request(base_url + get_filters(date_str), timeout=10)
-        data = response.json()["data"]
-        cleaned_data = [x["attributes"] for x in data]
-        temp_df = pd.DataFrame.from_records(cleaned_data)
-        temp_df = temp_df.drop(columns=["sector_id"])
-        temp_df["Date"] = start
-        df_earnings = pd.concat([df_earnings, temp_df], join="outer", ignore_index=True)
-        start = start + timedelta(days=1)
+        json = response.json()
+        try:
+            data = json["data"]
+            cleaned_data = [x["attributes"] for x in data]
+            temp_df = pd.DataFrame.from_records(cleaned_data)
+            temp_df = temp_df.drop(columns=["sector_id"])
+            temp_df["Date"] = start
+            df_earnings = pd.concat(
+                [df_earnings, temp_df], join="outer", ignore_index=True
+            )
+            start = start + timedelta(days=1)
+        except KeyError:
+            pass
 
     df_earnings = df_earnings.rename(
         columns={

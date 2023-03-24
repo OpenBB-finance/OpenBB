@@ -24,7 +24,7 @@ keywords:
 
 <details><summary>How much hard drive space is required?</summary>
 
-An installation will use approximately 4GB of space.
+An installation will use approximately 4-5 GB of space, with additional storage required for optional machine learning models.
 
 </details>
 

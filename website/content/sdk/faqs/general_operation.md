@@ -1,7 +1,7 @@
 ---
-title: General operation
+title: General Operation
 sidebar_position: 3
-description: TBD
+description: General Operation and Troubleshooting.
 keywords:
   [
     installation,
@@ -20,7 +20,32 @@ keywords:
   ]
 ---
 
-## General Operation
+Both Windows and MacOS provide a "developer mode", and enabling it may help to overcome system-related issues.
+
+**MacOS**: Go to the System Settings, and under the "Privacy and Security" tab, scroll to the bottom and select the option to "Allow applications downloaded from App Store and identified developers". Then, scroll up to click on, "Developer Tools", and add `Terminal.app` and `Visual Studio Code` (or the preferred code editor) to the list of applications allowed to run software locally that does not meet the system's security policy.
+
+**Windows**: Go to the Control Panel, and under the "Privacy & Security" tab, click on, "For developers". Under this menu, turn "Developer Mode" on.
+
+From the Windows Security menu, click on the Firewall & Network Protection tab, then click on "Allow an app through firewall". If the applications below are not allowed to communicate through Windows Defender Firewall, change the settings to allow.
+
+- BranchCache
+- Hyper-V
+- VcXsrv
+- Windows Terminal
+
+<details><summary>An example code block does not work.</summary>
+
+We try to keep example code up-to-date, but sometimes a specific example is left behind. Please submit a bug report and so that we are aware of the issue. Submit a bug report [here](https://openbb.co/support)
+
+</details>
+
+<details><summary>Why does a specific menu or command not exist?</summary>
+
+It could be that you are running an outdated version in which the menu or command is not yet available. Please check the [installation guide](https://docs.openbb.co/terminal/quickstart/installation) to download the most recent release.
+
+Do note that it is also possible that the menu or command has been deprecated. If this is oversight, please reach out to us [here](https://openbb.co/support).
+
+</details>
 
 <details><summary>What is the correct format for entering dates to function variables?</summary>
 

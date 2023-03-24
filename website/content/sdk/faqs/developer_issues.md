@@ -1,7 +1,7 @@
 ---
 title: Developer Issues
 sidebar_position: 7
-description: TBD
+description: Developer Issues.
 keywords:
   [
     installation,
@@ -19,8 +19,26 @@ keywords:
     openbb terminal,
   ]
 ---
-
 ## Developer Issues
+
+<details><summary>What branch on GitHub should pull requests be submitted to?</summary>
+
+Pull requests submitted to the Main branch will not be merged, please create branches from the `develop` branch.
+
+To switch to the develop branch:
+
+```console
+git checkout develop
+```
+
+Branches must also follow the naming convention:
+
+- /feature/name_your_branch
+  - For developing functionality.
+- /hotfix/name_your_patch
+  - For bug patches.
+
+</details>
 
 <details><summary>Error: "git pull" fails because of a hot fix: cannot lock ref</summary>
 

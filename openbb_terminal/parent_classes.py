@@ -1147,7 +1147,7 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
             action="store_true",
             default=False,
             dest="prepost",
-            help="Pre/After market hours. Only works for 'yf' source, and intraday data",
+            help="Pre/After market hours. Only reflected in 'YahooFinance' intraday data.",
         )
         parser.add_argument(
             "-f",
