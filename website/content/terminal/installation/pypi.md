@@ -140,26 +140,12 @@ Once you have met all of these requirements, you are ready to set up your virtua
 
 ## Prepare the virtual environment
 
-Download the environment configuration file and the cleanup script from the OpenBB Terminal repository.
+Create the environment using a configuration file from the OpenBB Terminal repository.
 
-On Windows copy and paste these commands into your terminal/command prompt:
-
-```batch
-curl -O https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal/d19412933245b51643a9e7f2624f1d42907488f4/build/conda/conda-3-9-env.yaml
-curl -O https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal/d19412933245b51643a9e7f2624f1d42907488f4/build/conda/cleanup_artifacts.bat
-```
-
-On macOS and Linux copy and paste these commands into your terminal/command prompt:
+Copy and paste these commands into your terminal/command prompt:
 
 ```shell
-curl -O https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal/d19412933245b51643a9e7f2624f1d42907488f4/build/conda/conda-3-9-env.yaml
-curl -O https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal/d19412933245b51643a9e7f2624f1d42907488f4/build/conda/cleanup_artifacts.sh
-```
-
-Create the environment using the following command:
-
-```shell
-conda env create -n obb --file conda-3-9-env.yaml
+conda env create -n obb --file https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal/d19412933245b51643a9e7f2624f1d42907488f4/build/conda/conda-3-9-env.yaml
 ```
 
 Agree to the prompts if there are any.
