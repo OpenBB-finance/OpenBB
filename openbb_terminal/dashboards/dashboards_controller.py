@@ -58,7 +58,9 @@ class DashboardsController(BaseController):
         self.streamlit_url: Optional[str] = None
         self.processes: List[psutil.Process] = []
         self.parent_path = (
-            REPOSITORY_DIRECTORY if hasattr(sys, "frozen") else Path(os.getcwd())
+            Path(sys.executable).parent
+            if hasattr(sys, "frozen")
+            else REPOSITORY_DIRECTORY
         )
 
         if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:

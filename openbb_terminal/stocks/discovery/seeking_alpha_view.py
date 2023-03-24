@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
+from datetime import date
 from typing import List, Optional
 
 import pandas as pd
@@ -19,6 +20,7 @@ logger = logging.getLogger(__name__)
 def upcoming_earning_release_dates(
     num_pages: int = 1,
     limit: int = 10,
+    start_date: Optional[date] = None,
     export: str = "",
     sheet_name: Optional[str] = None,
 ):
@@ -30,10 +32,13 @@ def upcoming_earning_release_dates(
         Number of pages to scrape, each page is one day
     limit: int
         Number of upcoming earnings release dates
+    start_date: Optional[date]
+        The day to start looking at earnings releases from
     export : str
         Export dataframe data to csv,json,xlsx file
     """
-    df_earnings = seeking_alpha_model.get_next_earnings(num_pages)
+    print(start_date)
+    df_earnings = seeking_alpha_model.get_next_earnings(num_pages, start_date)
 
     if df_earnings.empty:
         console.print("No upcoming earnings release dates found")

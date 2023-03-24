@@ -228,7 +228,12 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
   // to make sure that the legend is not cut off
   graphs.data.forEach(function (trace) {
     if (trace.name != undefined) {
+      let name_length = trace.name.length;
       trace.name = trace.name + "         ";
+      trace.hoverlabel = {
+        namelength: name_length,
+
+      };
     }
   });
 

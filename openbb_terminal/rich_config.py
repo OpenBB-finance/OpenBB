@@ -15,6 +15,7 @@ from rich.text import Text
 from openbb_terminal.core.config.paths import (
     USER_DATA_SOURCES_DEFAULT_FILE,
 )
+)
 from openbb_terminal.core.plots.plotly_helper import theme
 from openbb_terminal.core.session.current_system import get_current_system
 from openbb_terminal.core.session.current_user import (
