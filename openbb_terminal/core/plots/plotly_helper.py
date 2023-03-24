@@ -40,7 +40,7 @@ class TerminalStyle:
     """The class that helps with handling of style configurations.
 
     It serves styles for 2 libraries. For `Plotly` this class serves absolute paths
-    to the .pltstyle files. For `Plotly` this class serves custom
+    to the .pltstyle files. For `Plotly` and `Rich` this class serves custom
     styles as python dictionaries.
     """
 
