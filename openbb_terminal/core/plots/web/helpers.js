@@ -86,9 +86,11 @@ function add_annotation(data, yshift, popup_data, current_text = null) {
 function checkFile(popup, type = false) {
   console.log("checkFile");
   let csv_file = popup.querySelector("#csv_file");
+  let csv_name = popup.querySelector("#csv_name");
   let csv_type = popup.querySelector("#csv_trace_type");
   let csv_columns = popup.querySelector("#csv_columns");
   let csv_colors = popup.querySelector("#csv_colors");
+  let csv_percent_change_div = popup.querySelector("#csv_percent_change_div");
 
   if (csv_file.files.length > 0) {
     console.log("file selected");
@@ -157,6 +159,8 @@ function checkFile(popup, type = false) {
               headers[headers_lower.indexOf("date")];
           }
         }
+
+        csv_percent_change_div.style.display = "none";
       } else {
         csv_columns.innerHTML = `
                     <label for="csv_x">X axis</label>
@@ -191,6 +195,34 @@ function checkFile(popup, type = false) {
       }
 
       csv_columns.style.display = "inline-block";
+      csv_percent_change_div.style.display = "inline-block";
+
+      // we try to guess the date and time to remove from the name of the file
+      // if "_" in the name of the file,
+      // we assume the first 2 parts or the last 2 parts are date and time
+      let filename = file.name.split(".")[0];
+      csv_name.value = filename;
+
+      try {
+        if (filename.includes("_")) {
+          let name_parts = filename.split("_");
+          let date_regex = new RegExp("^[0-9]{8}$");
+
+          if (name_parts.length > 2) {
+            // we check if the first 2 parts are date and time
+            if (date_regex.test(name_parts[0])) {
+              name_parts.splice(0, 2);
+            }
+            // we check if the last 2 parts are date and time
+            else if (date_regex.test(name_parts[name_parts.length - 2])) {
+              name_parts.splice(name_parts.length - 2, 2);
+            }
+            csv_name.value = name_parts.join("_").replace(/openbb_/g, "");
+          }
+        }
+      } catch (e) {
+        console.log(e);
+      }
     };
 
     reader.readAsText(file);

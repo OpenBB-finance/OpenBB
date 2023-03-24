@@ -192,8 +192,7 @@ function changeColor() {
     globals.color_picker = null;
   }
 }
-
-function downloadImage() {
+function uploadImage() {
   const loader = document.getElementById("loader");
   loader.classList.add("show");
   Plotly.toImage(globals.CHART_DIV, {
@@ -232,6 +231,35 @@ function downloadImage() {
       console.log(err);
       loader.classList.remove("show");
     });
+}
+
+function downloadImage() {
+  const loader = document.getElementById("loader");
+  domtoimage
+    .toPng(document.getElementById("all-your-base"))
+    .then(function (dataUrl) {
+      let img = new Image(
+        globals.CHART_DIV.clientWidth,
+        globals.CHART_DIV.clientHeight
+      );
+      img.src = dataUrl;
+      downloadURI(dataUrl, globals.filename + ".png");
+      hideModebar();
+    })
+    .catch(function (error) {
+      console.error("oops, something went wrong!", error);
+      loader.classList.remove("show");
+      hideModebar();
+    });
+}
+
+function downloadURI(uri, name) {
+  let link = document.createElement("a");
+  link.download = name;
+  link.href = uri;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
 }
 
 function downloadData(gd) {

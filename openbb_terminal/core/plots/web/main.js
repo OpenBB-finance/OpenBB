@@ -31,6 +31,7 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
       checkFile(globals.CSV_DIV, true);
     }
   );
+  globals.filename = openbbFilename(graphs);
 
   // Sets the config with the custom buttons
   CONFIG = {
@@ -38,13 +39,7 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
     responsive: true,
     displaylogo: false,
     displayModeBar: true,
-    toImageButtonOptions: {
-      format: "svg",
-      filename: openbbFilename(graphs),
-      height: globals.CHART_DIV.clientHeight,
-      width: globals.CHART_DIV.clientWidth,
-    },
-    modeBarButtonsToRemove: ["lasso2d", "select2d"],
+    modeBarButtonsToRemove: ["lasso2d", "select2d", "downloadImage"],
     modeBarButtons: [
       [
         {
@@ -54,16 +49,57 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
             downloadData(gd);
           },
         },
+        // {
+        //   name: "Upload Image (Ctrl+U)",
+        //   icon: Plotly.Icons.uploadImage,
+        //   click: function (gd) {
+        //     downloadImage();
+        //   },
+        // },
         {
-          name: "Upload Image (Ctrl+U)",
-          icon: Plotly.Icons.uploadImage,
-          click: function (gd) {
-            downloadImage();
+          name: "Download Plot",
+          icon: Plotly.Icons.camera,
+          click: function () {
+            const loader = document.getElementById("loader");
+            const saving = document.getElementById("saving");
+            setTimeout(function () {
+              saving.classList.add("show");
+              loader.classList.add("show");
+              hideModebar();
+              setTimeout(function () {
+                downloadImage();
+              }, 20);
+              setTimeout(function () {
+                saving.classList.remove("show");
+                loader.classList.remove("show");
+              }, 1000);
+            }, 20);
           },
         },
-        "toImage",
       ],
-      ["drawline", "drawopenpath", "drawcircle", "drawrect", "eraseshape"],
+      [
+        {
+          name: "Edit Color (Ctrl+E)",
+          icon: ICONS.changeColor,
+          click: function () {
+            // We need to check if the button is active or not
+            let title = "Edit Color (Ctrl+E)";
+            let button = globals.barButtons[title];
+            let active = true;
+            if (button.style.border == "transparent") {
+              active = false;
+            }
+            // We call the function that changes the border color
+            button_pressed(title, active);
+            changeColor();
+          },
+        },
+        "drawline",
+        "drawopenpath",
+        "drawcircle",
+        "drawrect",
+        "eraseshape",
+      ],
       ["zoomIn2d", "zoomOut2d", "resetScale2d", "zoom2d", "pan2d"],
       [
         {
@@ -88,22 +124,6 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
             // before opening the CSV popup
             closePopup();
             openPopup("popup_csv");
-          },
-        },
-        {
-          name: "Edit Color (Ctrl+E)",
-          icon: ICONS.changeColor,
-          click: function () {
-            // We need to check if the button is active or not
-            let title = "Edit Color (Ctrl+E)";
-            let button = globals.barButtons[title];
-            let active = true;
-            if (button.style.border == "transparent") {
-              active = false;
-            }
-            // We call the function that changes the border color
-            button_pressed(title, active);
-            changeColor();
           },
         },
         {
@@ -150,6 +170,7 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
       ],
     ],
   };
+  graphs.layout.title = "";
 
   // We make sure to fill in any missing layout properties with default values
   if (!("font" in graphs.layout)) {
@@ -232,7 +253,6 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
       trace.name = trace.name + "         ";
       trace.hoverlabel = {
         namelength: name_length,
-
       };
     }
   });
@@ -340,17 +360,21 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
   }
 }
 
+function hideModebar() {
+  const modebar = document.getElementsByClassName("modebar-container")[0];
+  if (globals.modebarHidden) {
+    modebar.style.display = "flex";
+    globals.modebarHidden = false;
+  } else {
+    modebar.style.display = "none";
+    globals.modebarHidden = true;
+  }
+}
+
 // listen to cmd+h or ctrl+h to hide the modebar
 document.addEventListener("keydown", function (event) {
   if (event.key == "h" && (event.ctrlKey || event.metaKey)) {
     event.preventDefault();
-    const modebar = document.getElementsByClassName("modebar-container")[0];
-    if (globals.modebarHidden) {
-      modebar.style.display = "flex";
-      globals.modebarHidden = false;
-    } else {
-      modebar.style.display = "none";
-      globals.modebarHidden = true;
-    }
+    hideModebar();
   }
 });

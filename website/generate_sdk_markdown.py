@@ -1,6 +1,6 @@
 import inspect
 import json
-import os
+import re
 import shutil
 from pathlib import Path
 from typing import Any, Dict, Literal, Optional, Union
@@ -11,6 +11,13 @@ from openbb_terminal.core.sdk.trailmap import Trailmap, get_trailmaps
 from website.controller_doc_classes import sub_names_full as subnames
 
 website_path = Path(__file__).parent.absolute()
+TITLE_REGEX = re.compile(r"title=\"([^\"]+)\"")
+
+reference_import = """
+import ReferenceCard from "@site/src/components/General/ReferenceCard";
+
+<ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">
+"""
 
 
 def get_function_meta(trailmap: Trailmap, trail_type: Literal["model", "view"]):
@@ -167,9 +174,15 @@ def add_todict(d: dict, location_path: list, tmap: Trailmap) -> dict:
     if len(location_path) > 1:
         add_todict(d[location_path[0]], location_path[1:], tmap)
     else:
-        d[location_path[0]][tmap.class_attr] = (
+        func = tmap.func_attrs.get("model", tmap.func_attrs.get("view", None))
+        url = (
             f"/sdk/reference/{'/'.join(tmap.location_path)}/{tmap.class_attr}"
         ).replace("//", "/")
+
+        d[location_path[0]][tmap.class_attr] = (
+            f'<ReferenceCard title="{tmap.class_attr}" description="{func.short_doc}" '
+            f'url="{url}" />'
+        )
 
     return d
 
@@ -232,10 +245,16 @@ def main() -> bool:
             if trailmap.class_attr == "index":
                 trailmap.class_attr = "index_cmd"
 
-            filepath = f"{str(content_path)}/{'/'.join(trailmap.location_path)}/{trailmap.class_attr}.md"
-            os.makedirs(os.path.dirname(filepath), exist_ok=True)
+            filepath = (
+                content_path
+                / "/".join(trailmap.location_path)
+                / f"{trailmap.class_attr}.md"
+            )
+
+            filepath.parent.mkdir(parents=True, exist_ok=True)
             with open(filepath, "w", **kwargs) as f:  # type: ignore
                 f.write(markdown)
+
         except Exception as e:
             print(
                 f"Error generating {trailmap.location_path} {trailmap.class_attr} - {e}"
@@ -247,9 +266,10 @@ def main() -> bool:
         for k, v in sorted(functions_dict.items(), key=lambda item: item[0])
     }
     index_markdown = (
-        f"# OpenBB SDK Reference\n\n{generate_index_markdown('', functions_dict, 2)}"
+        f"# OpenBB SDK Reference\n{reference_import}\n"
+        f"{generate_root_index_markdown(functions_dict)}\n</ul>"
     )
-    with open(content_path / "index.md", "w", **kwargs) as f:  # type: ignore
+    with open(content_path / "index.mdx", "w", **kwargs) as f:  # type: ignore
         f.write(index_markdown)
 
     with open(content_path / "_category_.json", "w", **kwargs) as f:  # type: ignore
@@ -259,8 +279,11 @@ def main() -> bool:
         """Generate category json"""
         fdict = {fname: get_nested_dict(functions_dict, path)}
 
-        with open(path / "index.md", "w", **kwargs) as f:  # type: ignore
-            f.write(f"# {fname}\n\n{generate_index_markdown('', fdict, 2, path)}")
+        with open(path / "index.mdx", "w", **kwargs) as f:  # type: ignore
+            f.write(
+                f"# {fname}\n{reference_import}{generate_index_markdown('', fdict, 2, path)}"
+            )
+            f.write("</ul>\n")
 
     def gen_category_recursive(nested_path: Path):
         """Generate category json recursively"""
@@ -283,12 +306,61 @@ def generate_index_markdown(
         path = Path()
     for key in d:
         if isinstance(d[key], dict):
-            if path and path.name != key and key != "":
-                markdown += f"\n{'#' * level} {key}\n"
             markdown = generate_index_markdown(markdown, d[key], level + 1, path)
         else:
-            markdown += f"- [{key}]({d[key]})\n"
+            markdown += f"{d[key]}\n"
+
     return markdown
+
+
+def generate_root_index_markdown(functions_dict: dict) -> str:
+    """Generates the root index markdown for the given dictionary."""
+    reference_dict: dict = get_root_index_dict({}, functions_dict)
+    markdown = ""
+
+    for key, nested_dict in reference_dict.items():
+        if isinstance(nested_dict, dict):
+            for subcategory in nested_dict.values():
+                if isinstance(subcategory, list) and key != "":
+                    if len(subcategory) > 10:
+                        subcategory = subcategory[:10] + ["..."]
+                    markdown += (
+                        f'<ReferenceCard title="{key}" description="{", ".join(subcategory)}" '
+                        f'url="/sdk/reference/{key}" />\n'
+                    )
+
+        if isinstance(nested_dict, list) and key == "":
+            for subcategory in functions_dict[key].values():
+                if isinstance(subcategory, str):
+                    markdown += f"{subcategory}\n"
+
+    return markdown
+
+
+def get_root_index_dict(
+    reference_dict: Dict[str, Dict[str, Dict[str, list]]],
+    d: dict,
+    root: str = "",
+) -> Dict[str, Dict[str, Dict[str, list]]]:
+    """Generates the root index dictionary for the given dictionary."""
+
+    for key in d:
+        if isinstance(d[key], dict):
+            if root == "":
+                reference_dict.setdefault(key, {})
+            reference_dict = get_root_index_dict(
+                reference_dict, d[key], root + f"{key}."
+            )
+        else:
+            nested_dict = reference_dict
+            for path in root.split("."):
+                if path in nested_dict and isinstance(nested_dict[path], dict):
+                    nested_dict = nested_dict[path]
+            nested_dict.setdefault("subcategories", []).append(
+                TITLE_REGEX.search(d[key]).group(1)
+            )
+
+    return reference_dict
 
 
 if __name__ == "__main__":

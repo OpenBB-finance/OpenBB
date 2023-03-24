@@ -15,14 +15,21 @@
       src="/{{MAIN_PATH}}/assets/plotly-2.18.2.min.js"
       type="text/javascript"
     ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js"
+      integrity="sha512-01CJ9/g7e8cUmY0DFTMcUw/ikS799FHiOA0eyHsUWfOetgbx/t6oV4otQ5zXKQyIrQGTHSmRVPIgrgLcZi/WMA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
   </head>
 
   <body>
     <!-- Plotly -->
-    <div>
+    <div id="all-your-base">
       <div
+        id="openbb_header"
         class="_header flex items-center justify-between gap-4 py-2 px-4 text-center"
-        style="z-index: 99999999999; position: fixed; width: 100%; top: 0"
+        style="z-index: 99999999999; width: 100%; top: 0"
       >
         <div class="w-1/3">
           <svg
@@ -44,7 +51,6 @@
       <div
         id="openbb_chart"
         class="plotly-graph-div"
-        style="margin-top: 10px"
       ></div>
     </div>
     <div id="loader" class="loader"></div>
@@ -74,6 +80,11 @@
 
           <div style="margin-top: 10px" id="csv_columns"><!-- Empty --></div>
           <div style="margin-top: 10px" id="csv_colors"><!-- Empty --></div>
+
+          <div style="margin-top: 10px; display: none;" id="csv_percent_change_div">
+            <input type="checkbox" id="csv_percent_change" checked />
+            <label for="csv_percent_change">Plot as percent change from first value</label>
+          </div>
 
           <div style="float: right; margin-top: 20px">
             <button
@@ -128,7 +139,7 @@
 
           document.getElementById("date").innerHTML = formattedDate;
           document.getElementById("title").innerHTML =
-          window.plotly_figure?.layout?.title?.text ?? "Interactive Chart";
+            window.plotly_figure?.layout?.title?.text ?? "Interactive Chart";
 
           CHART_DIV = document.getElementById("openbb_chart");
           CSV_DIV = document.getElementById("popup_csv");

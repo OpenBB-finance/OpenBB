@@ -1519,20 +1519,24 @@ class OpenBBFigure(go.Figure):
 
     def _set_watermark(self) -> None:
         """Set the watermark for OpenBB Terminal."""
-        self.add_annotation(
-            yref="paper",
-            xref="paper",
-            x=1,
-            y=0,
-            text="OpenBB Terminal",
-            font_size=17,
-            font_color="gray",
-            opacity=0.5,
-            xanchor="right",
-            yanchor="bottom",
-            yshift=-80,
-            xshift=40,
-        )
+        if (
+            not plots_backend().isatty
+            or not get_current_user().preferences.PLOT_ENABLE_PYWRY
+        ):
+            self.add_annotation(
+                yref="paper",
+                xref="paper",
+                x=1,
+                y=0,
+                text="OpenBB Terminal",
+                font_size=17,
+                font_color="gray",
+                opacity=0.5,
+                xanchor="right",
+                yanchor="bottom",
+                yshift=-80,
+                xshift=40,
+            )
 
     # pylint: disable=import-outside-toplevel
     def _add_cmd_source(self) -> None:

@@ -7,7 +7,7 @@ function get_popup(data = null, popup_id = null) {
     let use_xaxis = data.xaxis ? "xaxis" : "xaxis2";
     let use_yaxis = data.yaxis ? "yaxis" : "yaxis2";
 
-    let title = "title" in data && "text" in data.title ? data.title.text : "";
+    let title = globals.title;
     let xaxis =
       "title" in data[use_xaxis] && "text" in data[use_xaxis].title
         ? data[use_xaxis].title.text
@@ -21,7 +21,10 @@ function get_popup(data = null, popup_id = null) {
         <div style="display:flex; flex-direction: column; gap: 6px;">
             <div>
             <label for="title_text">Title:</label>
-            <input id="title_text" type="text" value="${title}"></input>
+            <textarea
+              id="title_text" style="width: 100%; max-width: 100%;
+              max-height: 200px; margin-top: 8px;" rows="2" cols="20"
+              value="${title}"></textarea>
             </div>
             <div>
             <label for="title_xaxis">X axis:</label>
@@ -216,6 +219,10 @@ function get_popup_data(popup_id = null) {
         x: globals.CSV_DIV.querySelector("#csv_x").value,
         y: globals.CSV_DIV.querySelector("#csv_y").value,
         color: globals.CSV_DIV.querySelector("#csv_color").value,
+        percent_change: globals.CSV_DIV.querySelector("#csv_percent_change")
+          .checked
+          ? true
+          : false,
       };
       console.log(data);
     }
@@ -341,7 +348,14 @@ function on_submit(popup_id, on_annotation = null) {
             trace.showlegend = false;
           }
         });
+
         main_trace.showlegend = true;
+        if (main_trace.xaxis == undefined) {
+          main_trace.xaxis = "x";
+        }
+        if (main_trace.yaxis == undefined) {
+          main_trace.yaxis = "y";
+        }
 
         let yaxis_id = main_trace.yaxis;
 
@@ -371,7 +385,7 @@ function on_submit(popup_id, on_annotation = null) {
         } else {
           let yaxis;
 
-          if (globals.csv_yaxis_id == null) {
+          if (globals.csv_yaxis_id == null && popup_data.percent_change) {
             let yaxes = Object.keys(gd.layout)
               .filter((k) => k.startsWith("yaxis"))
               .map((k) => gd.layout[k].title);
@@ -390,10 +404,14 @@ function on_submit(popup_id, on_annotation = null) {
               return row[popup_data.x];
             }),
             y: data.map(function (row) {
-              return (
-                (row[popup_data.y] - data[0][popup_data.y]) /
-                data[0][popup_data.y]
-              );
+              if (popup_data.percent_change) {
+                return (
+                  (row[popup_data.y] - data[0][popup_data.y]) /
+                  data[0][popup_data.y]
+                );
+              } else {
+                return row[popup_data.y];
+              }
             }),
             type: popup_data.trace_type,
             mode: "lines",
@@ -405,7 +423,7 @@ function on_submit(popup_id, on_annotation = null) {
             yaxis: globals.csv_yaxis,
           };
 
-          if (globals.added_traces.length == 0) {
+          if (globals.added_traces.length == 0 && popup_data.percent_change) {
             gd.layout[yaxis_id] = {
               overlaying: "y",
               side: "left",
@@ -417,7 +435,7 @@ function on_submit(popup_id, on_annotation = null) {
                 standoff: 0,
               },
               tickfont: { size: 14 },
-              ticksuffix: "     ",
+              ticksuffix: gd.data.length > 1 ? "     " : "",
               tickformat: ".0%",
               tickpadding: 5,
               showgrid: false,
@@ -429,7 +447,9 @@ function on_submit(popup_id, on_annotation = null) {
               autorange: true,
             };
             if (globals.cmd_src_idx != null) {
-              gd.layout.annotations[globals.cmd_src_idx].xshift -= 15;
+              gd.layout.annotations[globals.cmd_src_idx].xshift -=
+                gd.data.length > 1 ? 65 : 55;
+              gd.layout.margin.l += gd.data.length > 1 ? 65 : 75;
             }
           }
         }
