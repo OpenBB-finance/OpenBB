@@ -249,7 +249,7 @@ def upload_config(
     value : str
         The value to patch.
     type_ : Literal["keys", "settings", "sources"]
-        The type of the patch, either "keys" or "settings".
+        The type of the patch.
     auth_header : str
         The authorization header, e.g. "Bearer <token>".
     base_url : str
