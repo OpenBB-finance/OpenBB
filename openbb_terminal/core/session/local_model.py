@@ -114,7 +114,8 @@ def apply_configs(configs: dict):
     configs : dict
         The configurations.
     """
-    set_credentials_from_hub(configs)
+    if get_current_user().preferences.SYNC_ENABLED:
+        set_credentials_from_hub(configs)
     set_preferences(configs, ["RICH_STYLE", "PLOT_STYLE"])
     save_theme_from_hub(configs)
     set_sources_from_hub(configs)
@@ -128,7 +129,7 @@ def set_credentials_from_hub(configs: dict):
     configs : dict
         The configurations.
     """
-    if configs and get_current_user().preferences.SYNC_ENABLED:
+    if configs:
         credentials = configs.get("features_keys", {}) or {}
         for k, v in credentials.items():
             set_credential(k, v)
