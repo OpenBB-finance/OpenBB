@@ -34,8 +34,8 @@ const config = {
       {
         redirects: [
           {
-            from: "/terminal/guides/intros/forecasting",
-            to: "/terminal/guides/intros/forecast",
+            from: "/terminal/usage/intros/forecasting",
+            to: "/terminal/usage/intros/forecast",
           },
         ],
       },
