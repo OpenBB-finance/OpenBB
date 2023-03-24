@@ -53,7 +53,11 @@
         class="plotly-graph-div"
       ></div>
     </div>
-    <div id="loader" class="loader"></div>
+
+    <div id="saving" class="saving">
+      Saving Image <div id="loader" class="loader"></div>
+    </div>
+
 
     <!-- Popups Overlay -->
     <div id="popup_overlay" class="popup_overlay">
@@ -75,7 +79,10 @@
 
           <div style="margin-top: 10px">
             <label for="csv_name">Name of the trace</label>
-            <input type="text" id="csv_name" value="" />
+            <textarea
+            id="csv_name" style="width: 100%; max-width: 100%;
+            max-height: 200px; margin-top: 8px;" rows="2" cols="20"
+            value="" placeholder="Enter a name for the trace"></textarea>
           </div>
 
           <div style="margin-top: 10px" id="csv_columns"><!-- Empty --></div>
