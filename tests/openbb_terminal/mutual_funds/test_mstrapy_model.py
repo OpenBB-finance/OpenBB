@@ -6,7 +6,10 @@ from pandas import DataFrame
 
 from openbb_terminal.mutual_funds import mstarpy_model
 
-EXAMPLE_FUND = mstarpy_model.load_funds(term="Vanguard", country="US")
+EXAMPLE_FUND = Funds(
+    "Vanguard",
+    "US",
+)
 
 
 @pytest.mark.record_http()
