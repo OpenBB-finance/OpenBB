@@ -371,6 +371,9 @@ def test_call_sync(mocker, other_args, sync, test_user):
     mocker.patch(
         target="openbb_terminal.account.account_controller.set_preference",
     )
+    mocker.patch(
+        target="openbb_terminal.account.account_controller.write_to_dotenv",
+    )
     controller.call_sync(other_args=other_args)
 
     assert controller.queue == []
