@@ -115,7 +115,7 @@ def apply_configs(configs: dict):
         The configurations.
     """
     set_credentials_from_hub(configs)
-    set_preferences(configs, ["RICH_STYLE", "PLOT_STYLE"])
+    set_preferences_from_hub(configs, ["RICH_STYLE", "PLOT_STYLE"])
     save_theme_from_hub(configs)
     set_sources_from_hub(configs)
 
@@ -134,8 +134,8 @@ def set_credentials_from_hub(configs: dict):
             set_credential(k, v)
 
 
-def set_preferences(configs: dict, filter_: Optional[List[str]] = None):
-    """Set preferences.
+def set_preferences_from_hub(configs: dict, filter_: Optional[List[str]] = None):
+    """Set preferences from hub.
 
     Parameters
     ----------
