@@ -115,7 +115,6 @@ def apply_configs(configs: dict):
         The configurations.
     """
     set_credentials_from_hub(configs)
-    # For safety, we ensure to set only the rich style
     set_preferences(configs, ["RICH_STYLE", "PLOT_STYLE"])
     save_theme_from_hub(configs)
     set_sources_from_hub(configs)
