@@ -219,6 +219,8 @@ class SourcesController(BaseController):
         valid_sources = list()
         success = True
 
+        # TODO: Change this to be recursive and handle any number of menus
+
         # Update dictionary
         if num_menus == 1:
             if ns_parser.source not in self.json_doc[menus[0]]:
