@@ -3,7 +3,7 @@
 
 
 # Session
-from openbb_terminal.session import sdk_session
+from openbb_terminal.core.session import sdk_session
 
 # Alternative
 import openbb_terminal.alternative.hackernews_model as alt_hackernews_model
@@ -214,6 +214,7 @@ from openbb_terminal.fixedincome import (
     fred_model as fixedincome_fred_model,
     ecb_model as fixedincome_ecb_model,
     oecd_model as fixedincome_oecd_model,
+    fred_view as fixedincome_fred_view,
 )
 
 
@@ -233,6 +234,8 @@ from openbb_terminal.economy import (
     wsj_model as economy_wsj_model,
     yfinance_model as economy_yfinance_model,
     yfinance_view as economy_yfinance_view,
+    oecd_model as economy_oecd_model,
+    oecd_view as economy_oecd_view,
 )
 
 # ETF's

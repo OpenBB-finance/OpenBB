@@ -19,6 +19,7 @@ en:
   _configure_: Configure your own terminal
   _main_menu_: Main menu
   account/_authentication_: Authentication
+  account/login: Log in to OpenBB account
   account/logout: Log out from OpenBB account
   account/_personal_access_token_: OpenBB Personal Access Token
   account/generate: Generate a Personal Access Token
@@ -47,6 +48,7 @@ en:
   featflags/_info_: Feature flags through environment variables
   featflags/retryload: retry misspelled commands with load first
   featflags/tab: use tabulate to print dataframes
+  featflags/interactive: open dataframes in interactive window
   featflags/cls: clear console after each command
   featflags/color: use coloring features
   featflags/promptkit: enable prompt toolkit (autocomplete and history)
@@ -59,6 +61,8 @@ en:
   featflags/ion: interactive matplotlib mode
   featflags/watermark: watermark in figures
   featflags/cmdloc: command location displayed in figures
+  featflags/overwrite: whether to overwrite Excel files if they already exists
+  featflags/version: whether to show the version in the bottom right corner
   featflags/tbhint: displays usage hints in the bottom toolbar
   settings/_info_: Settings through environment variables
   settings/colors: set your own terminal colors
@@ -153,8 +157,6 @@ en:
   stocks/options/vsurf: show 3D volatility surface
   stocks/options/grhist: plot option greek history
   stocks/options/plot: plot variables provided by the user
-  stocks/options/parity: shows whether options are above or below expected price
-  stocks/options/binom: shows the value of an option using binomial options pricing
   stocks/options/greeks: shows the greeks for a given option
   stocks/options/eodchain: gets option chain at a specific date
   stocks/options/pricing: shows options pricing and risk neutral valuation
@@ -165,12 +167,6 @@ en:
   stocks/options/screen/scr: screen data from this preset
   stocks/options/screen/_screened_tickers: Last screened tickers
   stocks/options/screen/ca: take these to comparison analysis menu
-  stocks/options/pricing/_ticker: Ticker
-  stocks/options/pricing/_expiry: Expiry
-  stocks/options/pricing/add: add an expected price to the list
-  stocks/options/pricing/rmv: remove an expected price from the list
-  stocks/options/pricing/show: show the listed of expected prices
-  stocks/options/pricing/rnval: risk neutral valuation for an option
   stocks/options/hedge/_ticker: Ticker
   stocks/options/hedge/_expiry: Expiry
   stocks/options/hedge/pick: pick the underlying asset position
@@ -353,7 +349,7 @@ en:
   stocks/fa/load: load a specific stock ticker for analysis
   stocks/fa/_ticker: Ticker
   stocks/fa/_company_overview: Company Overview
-  stocks/fa/enterprise: company enterprise value
+  stocks/fa/mktcap: obtain the market capitalization or enterprise value
   stocks/fa/overview: financial overview of the company
   stocks/fa/divs: show historical dividends for company
   stocks/fa/splits: stock split and reverse split events since IPO
@@ -412,6 +408,7 @@ en:
   stocks/bt/rsi: buy when RSI < low and sell when RSI > high
   stocks/bt/load: load a specific stock ticker for analysis
   stocks/ta/_ticker: Ticker
+  stocks/ta/load: load a specific stock ticker for analysis
   stocks/ta/view: view historical data and trendlines
   stocks/ta/summary: technical summary report
   stocks/ta/recom: recommendation based on technical indicators
@@ -447,6 +444,7 @@ en:
   stocks/ta/obv: on balance volume
   stocks/ta/_custom_: Custom
   stocks/ta/fib: fibonacci retracement
+  stocks/ta/multi: plot multiple indicators on the same chart
   stocks/qa/load: load new ticker
   stocks/qa/pick: pick target column for analysis
   stocks/qa/_ticker: Ticker
@@ -743,6 +741,17 @@ en:
   etf/ta/obv: on balance volume
   etf/ta/_custom_: Custom
   etf/ta/fib: fibonacci retracement
+  economy/_country_: Country Performance
+  economy/gdp: Show nominal Gross Domestic Product (GDP)
+  economy/rgdp: Show real Gross Domestic Product (GDP)
+  economy/fgdp: Show forecasts of nominal and real Gross Domestic Product (GDP)
+  economy/debt: Show government debt-to-GDP ratio
+  economy/cpi: obtain the (harmonized) Consumer Price Index (CPI)
+  economy/ccpi: obtain components of the CPI including Food, Energy and Total
+  economy/balance: Show Government defict or surplus in capital income and expenditures
+  economy/revenue: Show Government revenue based on tax income
+  economy/spending: Show Government spending as indicator of size of government
+  economy/trust: Show Government trust based on surveys regarding confidence in the government
   economy/_database_: Databases
   economy/_stored: Stored datasets
   economy/overview: show a market overview of either indices, bonds or currencies
@@ -753,7 +762,6 @@ en:
   economy/fred: collect macro data from FRED based on a series ID
   economy/index: find and plot any (major) index on the market
   economy/treasury: obtain U.S. treasury rates
-  economy/cpi: obtain (harmonized) Consumer Price Indices for any country
   economy/ycrv: show sovereign yield curves
   economy/spread: show bond spread matrix
   economy/events: show economic calendar
@@ -996,7 +1004,6 @@ en:
   portfolio/var: display value at risk
   portfolio/es: display expected shortfall
   portfolio/om: display omega ratio
-  portfolio/bro/ally: Ally Invest Menu
   portfolio/bro/degiro: Degiro Menu
   portfolio/bro/rh: Robinhood Menu
   portfolio/bro/cb: Coinbase Pro Menu
@@ -1067,11 +1074,10 @@ en:
   dashboards/stocks: historic stock information
   dashboards/forecast: forecasting for timeseries datasets
   dashboards/forecasting: forecasting for timeseries datasets
+  dashboards/indicators: technical analysis indicators
   dashboards/correlation: stock correlations
-  dashboards/vsurf: options volatility surface
   dashboards/chains: options chain analysis
   dashboards/shortdata: finra shortdata analysis
-  dashboards/crypto: cryptocurrency exchange rates against USD
   dashboards/futures: historical futures performance
   reports: customizable research reports through jupyter notebooks
   reports/_reports_: Build and run your custom reports or try one of our templates
@@ -1086,6 +1092,7 @@ en:
   forecast/show: Show a portion of a loaded dataset
   forecast/plot: Plot a specific column of a loaded dataset
   forecast/clean: Clean a dataset by filling or dropping NaNs
+  forecast/setndays: Set the default number of days to forecast
   forecast/desc: Show descriptive statistics of a dataset
   forecast/corr: Plot the correlation coefficients for dataset features
   forecast/season: Plot the seasonality for a dataset column

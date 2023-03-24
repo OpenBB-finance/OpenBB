@@ -1,0 +1,52 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - Mozilla/5.0 (Windows NT 10.0; WOW64; rv:86.0) Gecko/20100101 Firefox/86.0
+    method: GET
+    uri: https://api.stlouisfed.org/fred/series?api_key=test_key&series_id=GNPCA
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAEA7Kxr8jNUShLLSrOzM+zVTLUM1BSSM1Lzk/JzEu3VSotSdO1UFKwt+OyKU4tykwt
+        LlYoSk3MKcnMTY0vLkksKrFVMjIwMtY1ACElhFxqXgqKjB2XggLUBIXMFFsld78AZ0ck9aSYpVCS
+        WZKTaqsUlJqYo+BelF9crOCXWJKZn5eYoxBQlJ9SmlyipJCfVJxaVAYWhjnU0NLIUtfAUNfAEFUa
+        5laQDFgyrSi1sDQ1L7nSVskxL680MUdJAS4UX5yRD/K1o5JCaV5mSbGtklNmTk5mfl6xQn6agnNG
+        YmZeaoqCkYGhkYJLfk5OYlExVCFMo1Nmjh5EaZ4eRJ2KkkJxamIxyP3xiSlZpcUlual5JbZKfvkl
+        CsFQiZxKBUewVGoKVtUw0/2CHZUUchKLS+JLC1ISS1IhsWCka2Cpa2SpYGBuZWJqZWqia2CqpFCQ
+        X1Cak1iUWVJpq2RooaSQl1+SCvKOq6OCY3JyfmleiYJzfkqqlYKjgYFhUAQXl5K+HZeNPjQZAGbH
+        BQD1Bq+MOQIAAA==
+    headers:
+      Accept-Ranges:
+      - bytes
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '409'
+      Content-Type:
+      - text/xml; charset=UTF-8
+      Date:
+      - Fri, 03 Mar 2023 13:05:00 GMT
+      Expires:
+      - Fri, 03 Mar 2023 13:06:00 GMT
+      Last-Modified:
+      - Thu, 29 Sep 2022 12:45:54 GMT
+      Vary:
+      - Accept-Encoding
+      x-rate-limit-limit:
+      - '120'
+      x-rate-limit-remaining:
+      - '120'
+    status:
+      code: 200
+      message: OK
+version: 1

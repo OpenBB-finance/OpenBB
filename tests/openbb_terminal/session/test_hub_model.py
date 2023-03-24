@@ -4,7 +4,7 @@ from unittest.mock import MagicMock, patch
 import pytest
 import requests
 
-from openbb_terminal.session import hub_model
+from openbb_terminal.core.session import hub_model
 
 TEST_RESPONSE = {
     "access_token": "test_token",
@@ -102,7 +102,7 @@ def test_create_session_from_token_exception(token):
 
 @pytest.mark.parametrize("auth_header, token", TEST_HEADER_TOKEN)
 def test_delete_session_success(auth_header, token):
-    with patch("requests.post") as mock_post:
+    with patch("requests.get") as mock_post:
         mock_post.return_value.status_code = 200
         response = hub_model.delete_session(auth_header, token)
         assert response.status_code == 200
@@ -117,7 +117,7 @@ def test_delete_session_success(auth_header, token):
 
 @pytest.mark.parametrize("auth_header, token", TEST_HEADER_TOKEN)
 def test_delete_session_connection_error(auth_header, token):
-    with patch("requests.post") as mock_post:
+    with patch("requests.get") as mock_post:
         mock_post.side_effect = requests.exceptions.ConnectionError
         response = hub_model.delete_session(auth_header, token)
         assert response is None
@@ -125,7 +125,7 @@ def test_delete_session_connection_error(auth_header, token):
 
 @pytest.mark.parametrize("auth_header, token", TEST_HEADER_TOKEN)
 def test_delete_session_timeout(auth_header, token):
-    with patch("requests.post") as mock_post:
+    with patch("requests.get") as mock_post:
         mock_post.side_effect = requests.exceptions.Timeout
         response = hub_model.delete_session(auth_header, token)
         assert response is None
@@ -133,7 +133,7 @@ def test_delete_session_timeout(auth_header, token):
 
 @pytest.mark.parametrize("auth_header, token", TEST_HEADER_TOKEN)
 def test_delete_session_exception(auth_header, token):
-    with patch("requests.post") as mock_post:
+    with patch("requests.get") as mock_post:
         mock_post.side_effect = Exception
         response = hub_model.delete_session(auth_header, token)
         assert response is None
@@ -185,7 +185,8 @@ def test_get_session_success():
     mock_response.json.return_value = {"session": "info"}
 
     with patch(
-        "openbb_terminal.session.hub_model.create_session", return_value=mock_response
+        "openbb_terminal.core.session.hub_model.create_session",
+        return_value=mock_response,
     ) as create_session_mock:
         result = hub_model.get_session("email", "password")
         assert result == {"session": "info"}
@@ -197,7 +198,8 @@ def test_get_session_401():
     mock_response.status_code = 401
 
     with patch(
-        "openbb_terminal.session.hub_model.create_session", return_value=mock_response
+        "openbb_terminal.core.session.hub_model.create_session",
+        return_value=mock_response,
     ) as create_session_mock:
         result = hub_model.get_session("email", "password")
         assert result == {}
@@ -209,7 +211,8 @@ def test_get_session_403():
     mock_response.status_code = 403
 
     with patch(
-        "openbb_terminal.session.hub_model.create_session", return_value=mock_response
+        "openbb_terminal.core.session.hub_model.create_session",
+        return_value=mock_response,
     ) as create_session_mock:
         result = hub_model.get_session("email", "password")
         assert result == {}
@@ -218,7 +221,7 @@ def test_get_session_403():
 
 def test_get_session_failed_to_request():
     with patch(
-        "openbb_terminal.session.hub_model.create_session", return_value=None
+        "openbb_terminal.core.session.hub_model.create_session", return_value=None
     ) as create_session_mock:
         result = hub_model.get_session("email", "password")
         assert result == {}
@@ -231,7 +234,7 @@ def test_get_session_from_token():
     mock_response.json.return_value = {"session": "info"}
 
     with patch(
-        "openbb_terminal.session.hub_model.create_session_from_token",
+        "openbb_terminal.core.session.hub_model.create_session_from_token",
         return_value=mock_response,
     ) as create_session_mock:
         result = hub_model.get_session_from_token("token")
@@ -244,7 +247,7 @@ def test_get_session_from_token_401():
     mock_response.status_code = 401
 
     with patch(
-        "openbb_terminal.session.hub_model.create_session_from_token",
+        "openbb_terminal.core.session.hub_model.create_session_from_token",
         return_value=mock_response,
     ) as create_session_mock:
         result = hub_model.get_session_from_token("token")
@@ -257,7 +260,7 @@ def test_get_session_from_token_403():
     mock_response.status_code = 403
 
     with patch(
-        "openbb_terminal.session.hub_model.create_session_from_token",
+        "openbb_terminal.core.session.hub_model.create_session_from_token",
         return_value=mock_response,
     ) as create_session_mock:
         result = hub_model.get_session_from_token("token")
@@ -267,7 +270,7 @@ def test_get_session_from_token_403():
 
 def test_get_session_from_token_failed_to_request():
     with patch(
-        "openbb_terminal.session.hub_model.create_session_from_token",
+        "openbb_terminal.core.session.hub_model.create_session_from_token",
         return_value=None,
     ) as create_session_mock:
         result = hub_model.get_session_from_token("token")
@@ -282,7 +285,8 @@ def test_fetch_user_configs_success(token_type, access_token):
     mock_response.json.return_value = {"configs": "info"}
 
     with patch(
-        "openbb_terminal.session.hub_model.requests.get", return_value=mock_response
+        "openbb_terminal.core.session.hub_model.requests.get",
+        return_value=mock_response,
     ) as requests_get_mock:
         session = {"token_type": token_type, "access_token": access_token}
         result = hub_model.fetch_user_configs(session)
@@ -356,14 +360,15 @@ def test_fetch_user_configs_exception():
         ("key", "value", "settings", "auth_header"),
     ],
 )
-def test_patch_user_configs_success(key, value, type_, auth_header):
+def test_upload_config_success(key, value, type_, auth_header):
     mock_response = MagicMock(spec=requests.Response)
     mock_response.status_code = 200
 
     with patch(
-        "openbb_terminal.session.hub_model.requests.patch", return_value=mock_response
+        "openbb_terminal.core.session.hub_model.requests.patch",
+        return_value=mock_response,
     ) as requests_patch_mock:
-        result = hub_model.patch_user_configs(key, value, type_, auth_header)
+        result = hub_model.upload_config(key, value, type_, auth_header)
 
         assert result.status_code == mock_response.status_code
         requests_patch_mock.assert_called_once()
@@ -374,14 +379,15 @@ def test_patch_user_configs_success(key, value, type_, auth_header):
         assert kwargs["timeout"] == hub_model.TIMEOUT
 
 
-def test_patch_user_configs_failure():
+def test_upload_config_failure():
     mock_response = MagicMock(spec=requests.Response)
     mock_response.status_code = 400
 
     with patch(
-        "openbb_terminal.session.hub_model.requests.patch", return_value=mock_response
+        "openbb_terminal.core.session.hub_model.requests.patch",
+        return_value=mock_response,
     ) as requests_patch_mock:
-        result = hub_model.patch_user_configs("key", "value", "keys", "auth_header")
+        result = hub_model.upload_config("key", "value", "keys", "auth_header")
 
         assert result.status_code == mock_response.status_code
         requests_patch_mock.assert_called_once()
@@ -392,13 +398,13 @@ def test_patch_user_configs_failure():
         assert kwargs["timeout"] == hub_model.TIMEOUT
 
 
-def test_patch_user_configs_connection_error():
+def test_upload_config_connection_error():
     with patch(
-        "openbb_terminal.session.hub_model.requests.patch"
+        "openbb_terminal.core.session.hub_model.requests.patch"
     ) as requests_patch_mock:
         requests_patch_mock.side_effect = requests.exceptions.ConnectionError()
 
-        result = hub_model.patch_user_configs("key", "value", "keys", "auth_header")
+        result = hub_model.upload_config("key", "value", "keys", "auth_header")
 
         assert result is None
         requests_patch_mock.assert_called_once()
@@ -409,13 +415,13 @@ def test_patch_user_configs_connection_error():
         assert kwargs["timeout"] == hub_model.TIMEOUT
 
 
-def test_patch_user_configs_timeout():
+def test_upload_config_timeout():
     with patch(
-        "openbb_terminal.session.hub_model.requests.patch"
+        "openbb_terminal.core.session.hub_model.requests.patch"
     ) as requests_patch_mock:
         requests_patch_mock.side_effect = requests.exceptions.Timeout()
 
-        result = hub_model.patch_user_configs("key", "value", "keys", "auth_header")
+        result = hub_model.upload_config("key", "value", "keys", "auth_header")
 
         assert result is None
         requests_patch_mock.assert_called_once()
@@ -426,13 +432,13 @@ def test_patch_user_configs_timeout():
         assert kwargs["timeout"] == hub_model.TIMEOUT
 
 
-def test_patch_user_configs_exception():
+def test_upload_config_exception():
     with patch(
-        "openbb_terminal.session.hub_model.requests.patch"
+        "openbb_terminal.core.session.hub_model.requests.patch"
     ) as requests_patch_mock:
         requests_patch_mock.side_effect = Exception()
 
-        result = hub_model.patch_user_configs("key", "value", "keys", "auth_header")
+        result = hub_model.upload_config("key", "value", "keys", "auth_header")
 
         assert result is None
         requests_patch_mock.assert_called_once()
@@ -448,7 +454,8 @@ def test_clear_user_configs_success():
     mock_response.status_code = 200
 
     with patch(
-        "openbb_terminal.session.hub_model.requests.put", return_value=mock_response
+        "openbb_terminal.core.session.hub_model.requests.put",
+        return_value=mock_response,
     ) as requests_put_mock:
         result = hub_model.clear_user_configs("auth_header")
 
@@ -466,7 +473,8 @@ def test_clear_user_configs_failure():
     mock_response.status_code = 400
 
     with patch(
-        "openbb_terminal.session.hub_model.requests.put", return_value=mock_response
+        "openbb_terminal.core.session.hub_model.requests.put",
+        return_value=mock_response,
     ) as requests_put_mock:
         result = hub_model.clear_user_configs("auth_header")
 
@@ -481,7 +489,7 @@ def test_clear_user_configs_failure():
 
 def test_clear_user_configs_timeout():
     with patch(
-        "openbb_terminal.session.hub_model.requests.put",
+        "openbb_terminal.core.session.hub_model.requests.put",
         side_effect=requests.exceptions.Timeout,
     ) as requests_put_mock:
         result = hub_model.clear_user_configs("auth_header")
@@ -496,7 +504,9 @@ def test_clear_user_configs_timeout():
 
 
 def test_clear_user_configs_connection_error():
-    with patch("openbb_terminal.session.hub_model.requests.put") as requests_put_mock:
+    with patch(
+        "openbb_terminal.core.session.hub_model.requests.put"
+    ) as requests_put_mock:
         requests_put_mock.side_effect = requests.exceptions.ConnectionError()
         result = hub_model.clear_user_configs("auth_header")
 
@@ -511,7 +521,7 @@ def test_clear_user_configs_connection_error():
 
 def test_clear_user_configs_exception():
     with patch(
-        "openbb_terminal.session.hub_model.requests.put", side_effect=Exception
+        "openbb_terminal.core.session.hub_model.requests.put", side_effect=Exception
     ) as requests_put_mock:
         result = hub_model.clear_user_configs("auth_header")
 
@@ -538,7 +548,8 @@ def test_upload_routine(
     mock_response.status_code = status_code
 
     with patch(
-        "openbb_terminal.session.hub_model.requests.post", return_value=mock_response
+        "openbb_terminal.core.session.hub_model.requests.post",
+        return_value=mock_response,
     ) as requests_get_mock:
         result = hub_model.upload_routine(
             auth_header=auth_header,
@@ -568,7 +579,7 @@ def test_upload_routine(
 )
 def test_upload_routine_error(side_effect):
     with patch(
-        "openbb_terminal.session.hub_model.requests.post",
+        "openbb_terminal.core.session.hub_model.requests.post",
         side_effect=side_effect,
     ):
         result = hub_model.upload_routine("auth_header", "name", "routine")
@@ -587,7 +598,8 @@ def test_download_routine(auth_header, name, base_url, timeout, status_code):
     mock_response.status_code = status_code
 
     with patch(
-        "openbb_terminal.session.hub_model.requests.get", return_value=mock_response
+        "openbb_terminal.core.session.hub_model.requests.get",
+        return_value=mock_response,
     ) as requests_get_mock:
         result = hub_model.download_routine(
             auth_header=auth_header, name=name, base_url=base_url, timeout=timeout
@@ -611,7 +623,7 @@ def test_download_routine(auth_header, name, base_url, timeout, status_code):
 )
 def test_download_routine_error(side_effect):
     with patch(
-        "openbb_terminal.session.hub_model.requests.get",
+        "openbb_terminal.core.session.hub_model.requests.get",
         side_effect=side_effect,
     ):
         result = hub_model.download_routine("auth_header", "name", "routine")
@@ -630,7 +642,8 @@ def test_delete_routine(auth_header, name, base_url, timeout, status_code):
     mock_response.status_code = status_code
 
     with patch(
-        "openbb_terminal.session.hub_model.requests.delete", return_value=mock_response
+        "openbb_terminal.core.session.hub_model.requests.delete",
+        return_value=mock_response,
     ) as requests_get_mock:
         result = hub_model.delete_routine(
             auth_header=auth_header, name=name, base_url=base_url, timeout=timeout
@@ -654,7 +667,7 @@ def test_delete_routine(auth_header, name, base_url, timeout, status_code):
 )
 def test_delete_routine_error(side_effect):
     with patch(
-        "openbb_terminal.session.hub_model.requests.delete",
+        "openbb_terminal.core.session.hub_model.requests.delete",
         side_effect=side_effect,
     ):
         result = hub_model.delete_routine("auth_header", "name")
@@ -673,7 +686,8 @@ def test_list_routines(auth_header, page, size, base_url, timeout, status_code):
     mock_response.status_code = status_code
 
     with patch(
-        "openbb_terminal.session.hub_model.requests.get", return_value=mock_response
+        "openbb_terminal.core.session.hub_model.requests.get",
+        return_value=mock_response,
     ) as requests_get_mock:
         result = hub_model.list_routines(
             auth_header=auth_header,
@@ -705,7 +719,7 @@ def test_list_routines(auth_header, page, size, base_url, timeout, status_code):
 )
 def test_list_routines_error(side_effect):
     with patch(
-        "openbb_terminal.session.hub_model.requests.get",
+        "openbb_terminal.core.session.hub_model.requests.get",
         side_effect=side_effect,
     ):
         result = hub_model.list_routines(auth_header="Bearer 123", page=1, size=10)
@@ -726,7 +740,8 @@ def test_generate_personal_access_token(
     mock_response.status_code = status_code
 
     with patch(
-        "openbb_terminal.session.hub_model.requests.put", return_value=mock_response
+        "openbb_terminal.core.session.hub_model.requests.put",
+        return_value=mock_response,
     ) as requests_put_mock:
         result = hub_model.generate_personal_access_token(
             auth_header=auth_header, base_url=base_url, timeout=timeout, days=days
@@ -735,7 +750,7 @@ def test_generate_personal_access_token(
         assert result.status_code == mock_response.status_code
         requests_put_mock.assert_called_once()
         _, kwargs = requests_put_mock.call_args
-        assert kwargs["url"] == base_url + "/sdk/token"
+        assert kwargs["url"] == base_url + "sdk/token"
         assert kwargs["headers"] == {
             "Authorization": auth_header,
             "Content-Type": "application/json",
@@ -754,7 +769,7 @@ def test_generate_personal_access_token(
 )
 def test_generate_personal_access_token_error(side_effect):
     with patch(
-        "openbb_terminal.session.hub_model.requests.put",
+        "openbb_terminal.core.session.hub_model.requests.put",
         side_effect=side_effect,
     ):
         result = hub_model.generate_personal_access_token("auth_header", 10)
@@ -773,7 +788,8 @@ def test_get_personal_access_token(auth_header, base_url, timeout, status_code):
     mock_response.status_code = status_code
 
     with patch(
-        "openbb_terminal.session.hub_model.requests.get", return_value=mock_response
+        "openbb_terminal.core.session.hub_model.requests.get",
+        return_value=mock_response,
     ) as requests_get_mock:
         result = hub_model.get_personal_access_token(
             auth_header=auth_header, base_url=base_url, timeout=timeout
@@ -782,7 +798,7 @@ def test_get_personal_access_token(auth_header, base_url, timeout, status_code):
         assert result.status_code == mock_response.status_code
         requests_get_mock.assert_called_once()
         _, kwargs = requests_get_mock.call_args
-        assert kwargs["url"] == base_url + "/sdk/token"
+        assert kwargs["url"] == base_url + "sdk/token"
         assert kwargs["headers"] == {"Authorization": auth_header}
         assert kwargs["timeout"] == timeout
 
@@ -797,7 +813,7 @@ def test_get_personal_access_token(auth_header, base_url, timeout, status_code):
 )
 def test_get_personal_access_token_error(side_effect):
     with patch(
-        "openbb_terminal.session.hub_model.requests.get",
+        "openbb_terminal.core.session.hub_model.requests.get",
         side_effect=side_effect,
     ):
         result = hub_model.get_personal_access_token("auth_header")
@@ -816,7 +832,8 @@ def test_revoke_personal_access_token(auth_header, base_url, timeout, status_cod
     mock_response.status_code = status_code
 
     with patch(
-        "openbb_terminal.session.hub_model.requests.get", return_value=mock_response
+        "openbb_terminal.core.session.hub_model.requests.get",
+        return_value=mock_response,
     ) as requests_get_mock:
         result = hub_model.get_personal_access_token(
             auth_header=auth_header, base_url=base_url, timeout=timeout
@@ -825,7 +842,7 @@ def test_revoke_personal_access_token(auth_header, base_url, timeout, status_cod
         assert result.status_code == mock_response.status_code
         requests_get_mock.assert_called_once()
         _, kwargs = requests_get_mock.call_args
-        assert kwargs["url"] == base_url + "/sdk/token"
+        assert kwargs["url"] == base_url + "sdk/token"
         assert kwargs["headers"] == {"Authorization": auth_header}
         assert kwargs["timeout"] == timeout
 
@@ -840,7 +857,7 @@ def test_revoke_personal_access_token(auth_header, base_url, timeout, status_cod
 )
 def test_revoke_personal_access_token_error(side_effect):
     with patch(
-        "openbb_terminal.session.hub_model.requests.delete",
+        "openbb_terminal.core.session.hub_model.requests.delete",
         side_effect=side_effect,
     ):
         result = hub_model.revoke_personal_access_token("auth_header")

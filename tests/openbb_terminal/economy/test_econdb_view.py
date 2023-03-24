@@ -40,16 +40,8 @@ from openbb_terminal.economy import econdb_view
     ],
 )
 def test_show_macro_data(
-    mocker,
-    parameters,
-    countries,
-    transform,
-    start_date,
-    end_date,
-    convert_currency,
-    raw,
+    parameters, countries, transform, start_date, end_date, convert_currency, raw
 ):
-    mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
     econdb_view.show_macro_data(
         parameters, countries, transform, start_date, end_date, convert_currency, raw
     )
@@ -65,10 +57,7 @@ def test_show_macro_data(
         [["average", "inflation"], ["3y", "5y"], "weekly", "2018-06-05", "2018-07-06"],
     ],
 )
-def test_show_treasuries(
-    mocker, instruments, maturities, frequency, start_date, end_date
-):
-    mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
+def test_show_treasuries(instruments, maturities, frequency, start_date, end_date):
     econdb_view.show_treasuries(
         instruments, maturities, frequency, start_date, end_date
     )

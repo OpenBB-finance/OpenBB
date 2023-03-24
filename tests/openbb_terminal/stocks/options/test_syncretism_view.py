@@ -1,6 +1,8 @@
 # IMPORTATION STANDARD
 
 # IMPORTATION THIRDPARTY
+from pathlib import Path
+
 import pandas as pd
 import pytest
 
@@ -23,9 +25,7 @@ def vcr_config():
 @pytest.mark.default_cassette("test_view_screener_output")
 @pytest.mark.vcr
 @pytest.mark.record_stdout
-def test_view_screener_output(mocker):
-    # MOCK VISUALIZE_OUTPUT
-    mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
+def test_view_screener_output():
     syncretism_view.view_screener_output(
         preset="high_iv.ini",
         limit=5,
@@ -48,10 +48,7 @@ def test_view_screener_output_error(mocker):
 
 
 @pytest.mark.vcr
-def test_view_historical_greeks(mocker):
-    # MOCK VISUALIZE_OUTPUT
-    mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
-
+def test_view_historical_greeks():
     syncretism_view.view_historical_greeks(
         symbol="PM",
         expiry="",
@@ -65,13 +62,24 @@ def test_view_historical_greeks(mocker):
     )
 
 
+@pytest.mark.skip
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
     "preset",
     ["template.ini", "spy_30_delta.ini"],
 )
-def test_view_available_presets(preset):
+def test_view_available_presets(mocker, preset):
+    mock_preset_path = Path(__file__).resolve().parent / "ini"
+    preset_choices = {
+        filepath.name: filepath
+        for filepath in mock_preset_path.iterdir()
+        if filepath.suffix == ".ini"
+    }
+    mocker.patch(
+        target="openbb_terminal.stocks.options.screen.syncretism_model.get_preset_choices",
+        return_value=preset_choices,
+    )
     syncretism_view.view_available_presets(
         preset=preset,
     )

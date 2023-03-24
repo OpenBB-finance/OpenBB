@@ -1,6 +1,6 @@
 """ Econ Controller """
 __docformat__ = "numpy"
-# pylint:disable=too-many-lines,R1710,R0904,C0415,too-many-branches,unnecessary-dict-index-lookup
+# pylint: disable=C0302 ,R1710,R0904,C0415,too-many-branches,unnecessary-dict-index-lookup
 
 import argparse
 import itertools
@@ -13,8 +13,9 @@ from datetime import (
 from typing import Any, Dict, List, Optional
 
 import pandas as pd
+from dateutil.relativedelta import relativedelta
 
-from openbb_terminal import feature_flags as obbff
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.economy import (
@@ -29,6 +30,8 @@ from openbb_terminal.economy import (
     fred_view,
     nasdaq_model,
     nasdaq_view,
+    oecd_model,
+    oecd_view,
     plot_view,
     wsj_view,
     yfinance_model,
@@ -57,11 +60,20 @@ class EconomyController(BaseController):
         "eval",
         "overview",
         "futures",
+        "gdp",
+        "rgdp",
+        "fgdp",
+        "debt",
+        "cpi",
+        "ccpi",
+        "balance",
+        "revenue",
+        "spending",
+        "trust",
         "macro",
         "fred",
         "index",
         "treasury",
-        "cpi",
         "plot",
         "valuation",
         "performance",
@@ -168,15 +180,64 @@ class EconomyController(BaseController):
         self.DATASETS: Dict[Any, pd.DataFrame] = dict()
         self.UNITS: Dict[Any, Dict[Any, Any]] = dict()
         self.FRED_TITLES: Dict = dict()
+        self.choices: Dict = dict()
 
         self.DATASETS["macro"] = pd.DataFrame()
         self.DATASETS["treasury"] = pd.DataFrame()
         self.DATASETS["fred"] = pd.DataFrame()
         self.DATASETS["index"] = pd.DataFrame()
 
-        if session and obbff.USE_PROMPT_TOOLKIT:
+        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices_default
             # This is still needed because we can't use choices and nargs separated by comma
+            choices["gdp"]["--countries"] = {
+                c: {} for c in oecd_model.COUNTRY_TO_CODE_GDP
+            }
+            choices["gdp"]["-c"] = "--countries"
+
+            choices["rgdp"]["--countries"] = {
+                c: {} for c in oecd_model.COUNTRY_TO_CODE_RGDP
+            }
+            choices["rgdp"]["-c"] = "--countries"
+
+            choices["fgdp"]["--countries"] = {
+                c: {} for c in oecd_model.COUNTRY_TO_CODE_GDP_FORECAST
+            }
+            choices["fgdp"]["-c"] = "--countries"
+
+            choices["debt"]["--countries"] = {
+                c: {} for c in oecd_model.COUNTRY_TO_CODE_DEBT
+            }
+            choices["debt"]["-c"] = "--countries"
+
+            choices["cpi"]["--countries"] = {c: None for c in fred_model.CPI_COUNTRIES}
+            choices["cpi"]["-c"] = "--countries"
+
+            choices["ccpi"]["--countries"] = {
+                c: {} for c in oecd_model.COUNTRY_TO_CODE_CPI
+            }
+            choices["ccpi"]["-c"] = "--countries"
+
+            choices["balance"]["--countries"] = {
+                c: {} for c in oecd_model.COUNTRY_TO_CODE_BALANCE
+            }
+            choices["balance"]["-c"] = "--countries"
+
+            choices["revenue"]["--countries"] = {
+                c: {} for c in oecd_model.COUNTRY_TO_CODE_REVENUE
+            }
+            choices["revenue"]["-c"] = "--countries"
+
+            choices["spending"]["--countries"] = {
+                c: {} for c in oecd_model.COUNTRY_TO_CODE_SPENDING
+            }
+            choices["spending"]["-c"] = "--countries"
+
+            choices["trust"]["--countries"] = {
+                c: {} for c in oecd_model.COUNTRY_TO_CODE_TRUST
+            }
+            choices["trust"]["-c"] = "--countries"
+
             choices["treasury"]["--type"] = {
                 c: {} for c in econdb_model.TREASURIES["instruments"]
             }
@@ -200,9 +261,6 @@ class EconomyController(BaseController):
             }
             choices["events"]["-c"] = "--countries"
 
-            choices["cpi"]["--countries"] = {c: None for c in fred_model.CPI_COUNTRIES}
-            choices["cpi"]["-c"] = "--countries"
-
             self.choices = choices
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -223,7 +281,7 @@ class EconomyController(BaseController):
         return commands
 
     def update_runtime_choices(self):
-        if session and obbff.USE_PROMPT_TOOLKIT:
+        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             if not self.fred_query.empty:
                 self.choices["fred"]["--parameter"] = {c: None for c in self.fred_query}
 
@@ -251,7 +309,7 @@ class EconomyController(BaseController):
 
     def print_help(self):
         """Print help"""
-        mt = MenuText("economy/")
+        mt = MenuText("economy/", column_sources=115)
         mt.add_cmd("overview")
         mt.add_cmd("futures")
         mt.add_cmd("map")
@@ -264,10 +322,21 @@ class EconomyController(BaseController):
         mt.add_cmd("performance")
         mt.add_cmd("spectrum")
         mt.add_raw("\n")
+        mt.add_info("_country_")
+        mt.add_cmd("gdp")
+        mt.add_cmd("rgdp")
+        mt.add_cmd("fgdp")
+        mt.add_cmd("debt")
+        mt.add_cmd("cpi")
+        mt.add_cmd("ccpi")
+        mt.add_cmd("balance")
+        mt.add_cmd("revenue")
+        mt.add_cmd("spending")
+        mt.add_cmd("trust")
+        mt.add_raw("\n")
         mt.add_info("_database_")
         mt.add_cmd("macro")
         mt.add_cmd("treasury")
-        mt.add_cmd("cpi")
         mt.add_cmd("fred")
         mt.add_cmd("index")
         mt.add_raw("\n")
@@ -505,6 +574,598 @@ class EconomyController(BaseController):
                 )
 
     @log_start_end(log=logger)
+    def call_gdp(self, other_args: List[str]):
+        """Process gdp command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="gdp",
+            description="This indicator is based on nominal GDP (also called GDP at current prices or GDP in value)"
+            " and is available in different measures: US dollars and US dollars per capita (current PPPs).",
+        )
+
+        parser.add_argument(
+            "-c",
+            "--countries",
+            type=str,
+            dest="countries",
+            help="Countries to get data for",
+            default="united_states",
+        )
+
+        parser.add_argument(
+            "-u",
+            "--units",
+            type=str,
+            dest="units",
+            help="Use either USD_CAP (US dollars per capita) or MLN_USD (millions of US dollars)",
+            choices=["USD_CAP", "MLN_USD"],
+            default="USD_CAP",
+        )
+
+        parser.add_argument(
+            "-s",
+            "--start",
+            type=valid_date,
+            help="Start date of data, in YYYY-MM-DD format",
+            dest="start_date",
+            default=(dt.now() - relativedelta(years=30)).date(),
+        )
+        parser.add_argument(
+            "-e",
+            "--end",
+            type=valid_date,
+            help="End date of data, in YYYY-MM-DD format",
+            dest="end_date",
+            default=dt.now().date(),
+        )
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
+            raw=True,
+        )
+        if ns_parser:
+            countries = (
+                list_from_str(ns_parser.countries.lower())
+                if ns_parser.countries
+                else None
+            )
+
+            oecd_view.plot_gdp(
+                countries=countries,
+                units=ns_parser.units,
+                start_date=ns_parser.start_date,
+                end_date=ns_parser.end_date,
+                raw=ns_parser.raw,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )
+
+    @log_start_end(log=logger)
+    def call_rgdp(self, other_args: List[str]):
+        """Process rgdp command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="rgdp",
+            description="This indicator is based on real GDP (also called GDP at constant prices or GDP in volume), "
+            "i.e. the developments over time are adjusted for price changes.",
+        )
+
+        parser.add_argument(
+            "-c",
+            "--countries",
+            type=str,
+            dest="countries",
+            help="Countries to get data for",
+            default="united_states",
+        )
+
+        parser.add_argument(
+            "-u",
+            "--units",
+            type=str,
+            dest="units",
+            help="Use either PC_CHGPP (percentage change previous quarter), PC_CHGPY (percentage "
+            "change from the same quarter of the previous year) or IDX (index with base at 2015) "
+            "for units",
+            choices=["PC_CHGPP", "PC_CHGPY", "IDX"],
+            default="PC_CHGPY",
+        )
+
+        parser.add_argument(
+            "-s",
+            "--start",
+            type=valid_date,
+            help="Start date of data, in YYYY-MM-DD format",
+            dest="start_date",
+            default=(dt.now() - relativedelta(years=10)).date(),
+        )
+        parser.add_argument(
+            "-e",
+            "--end",
+            type=valid_date,
+            help="End date of data, in YYYY-MM-DD format",
+            dest="end_date",
+            default=dt.now().date(),
+        )
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
+            raw=True,
+        )
+        if ns_parser:
+            countries = (
+                list_from_str(ns_parser.countries.lower())
+                if ns_parser.countries
+                else None
+            )
+
+            oecd_view.plot_real_gdp(
+                countries=countries,
+                units=ns_parser.units,
+                start_date=ns_parser.start_date,
+                end_date=ns_parser.end_date,
+                raw=ns_parser.raw,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )
+
+    @log_start_end(log=logger)
+    def call_fgdp(self, other_args: List[str]):
+        """Process fgdp command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="fgdp",
+            description="Forecast is based on an assessment of the economic climate in "
+            "individual countries and the world economy, using a combination of model-based "
+            "analyses and expert judgement. This indicator is measured in growth rates compared to previous year.",
+        )
+
+        parser.add_argument(
+            "-c",
+            "--countries",
+            type=str,
+            dest="countries",
+            help="Countries to get data for",
+            default="united_states",
+        )
+
+        parser.add_argument(
+            "-t",
+            "--types",
+            type=str,
+            dest="types",
+            help="Use either 'real' or 'nominal'",
+            choices=["real", "nominal"],
+            default="real",
+        )
+
+        parser.add_argument(
+            "-q",
+            "--quarterly",
+            action="store_true",
+            dest="quarterly",
+            help="Whether to plot quarterly results.",
+            default=False,
+        )
+
+        parser.add_argument(
+            "-s",
+            "--start",
+            type=valid_date,
+            help="Start date of data, in YYYY-MM-DD format",
+            dest="start_date",
+            default=(dt.now() - relativedelta(years=10)).date(),
+        )
+        parser.add_argument(
+            "-e",
+            "--end",
+            type=valid_date,
+            help="End date of data, in YYYY-MM-DD format",
+            dest="end_date",
+            default=(dt.now() + relativedelta(years=10)).date(),
+        )
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
+            raw=True,
+        )
+        if ns_parser:
+            countries = (
+                list_from_str(ns_parser.countries.lower())
+                if ns_parser.countries
+                else None
+            )
+
+            oecd_view.plot_gdp_forecast(
+                countries=countries,
+                types=ns_parser.types,
+                quarterly=ns_parser.quarterly,
+                start_date=ns_parser.start_date,
+                end_date=ns_parser.end_date,
+                raw=ns_parser.raw,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )
+
+    @log_start_end(log=logger)
+    def call_debt(self, other_args: List[str]):
+        """Process debt command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="debt",
+            description="General government debt-to-GDP ratio measures the gross debt of the general "
+            "government as a percentage of GDP. It is a key indicator for the sustainability of government finance.",
+        )
+
+        parser.add_argument(
+            "-c",
+            "--countries",
+            type=str,
+            dest="countries",
+            help="Countries to get data for",
+            default="united_states",
+        )
+
+        parser.add_argument(
+            "-s",
+            "--start",
+            type=valid_date,
+            help="Start date of data, in YYYY-MM-DD format",
+            dest="start_date",
+            default=(dt.now() - relativedelta(years=30)).date(),
+        )
+        parser.add_argument(
+            "-e",
+            "--end",
+            type=valid_date,
+            help="End date of data, in YYYY-MM-DD format",
+            dest="end_date",
+            default=dt.now().date(),
+        )
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
+            raw=True,
+        )
+        if ns_parser:
+            countries = (
+                list_from_str(ns_parser.countries.lower())
+                if ns_parser.countries
+                else None
+            )
+
+            oecd_view.plot_debt(
+                countries=countries,
+                start_date=ns_parser.start_date,
+                end_date=ns_parser.end_date,
+                raw=ns_parser.raw,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )
+
+    @log_start_end(log=logger)
+    def call_balance(self, other_args: List[str]):
+        """Process balance command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="balance",
+            description=" General government balance is defined as the balance of income and expenditure of government,"
+            " including capital income and capital expenditures. 'Net lending' means that government has a surplus, "
+            "and is providing financial resources to other sectors, while  'net borrowing' means that "
+            "government has a deficit, and requires financial resources from other sectors. "
+            "This indicator is measured as a percentage of GDP.",
+        )
+
+        parser.add_argument(
+            "-c",
+            "--countries",
+            type=str,
+            dest="countries",
+            help="Countries to get data for",
+            default="united_states",
+        )
+
+        parser.add_argument(
+            "-s",
+            "--start",
+            type=valid_date,
+            help="Start date of data, in YYYY-MM-DD format",
+            dest="start_date",
+            default=(dt.now() - relativedelta(years=30)).date(),
+        )
+        parser.add_argument(
+            "-e",
+            "--end",
+            type=valid_date,
+            help="End date of data, in YYYY-MM-DD format",
+            dest="end_date",
+            default=dt.now().date(),
+        )
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
+            raw=True,
+        )
+        if ns_parser:
+            countries = (
+                list_from_str(ns_parser.countries.lower())
+                if ns_parser.countries
+                else None
+            )
+
+            oecd_view.plot_balance(
+                countries=countries,
+                start_date=ns_parser.start_date,
+                end_date=ns_parser.end_date,
+                raw=ns_parser.raw,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )
+
+    @log_start_end(log=logger)
+    def call_revenue(self, other_args: List[str]):
+        """Process revenue command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="revenue",
+            description="Governments collect revenues mainly for two purposes: to finance the goods "
+            "and services they provide to citizens and businesses, and to fulfil their redistributive "
+            "role. Comparing levels of government revenues across countries provides an "
+            "indication of the importance of the government sector in the economy in "
+            "terms of available financial resources.",
+        )
+
+        parser.add_argument(
+            "-c",
+            "--countries",
+            type=str,
+            dest="countries",
+            help="Countries to get data for",
+            default="united_states",
+        )
+
+        parser.add_argument(
+            "-u",
+            "--units",
+            type=str,
+            dest="units",
+            help="Use either THND_USD_CAP (thousands of USD per capity) "
+            "or PC_GDP (percentage of GDP)",
+            choices=["PC_GDP", "THND_USD_CAP"],
+            default="PC_GDP",
+        )
+
+        parser.add_argument(
+            "-s",
+            "--start",
+            type=valid_date,
+            help="Start date of data, in YYYY-MM-DD format",
+            dest="start_date",
+            default=(dt.now() - relativedelta(years=30)).date(),
+        )
+        parser.add_argument(
+            "-e",
+            "--end",
+            type=valid_date,
+            help="End date of data, in YYYY-MM-DD format",
+            dest="end_date",
+            default=dt.now().date(),
+        )
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
+            raw=True,
+        )
+        if ns_parser:
+            countries = (
+                list_from_str(ns_parser.countries.lower())
+                if ns_parser.countries
+                else None
+            )
+
+            oecd_view.plot_revenue(
+                countries=countries,
+                units=ns_parser.units,
+                start_date=ns_parser.start_date,
+                end_date=ns_parser.end_date,
+                raw=ns_parser.raw,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )
+
+    @log_start_end(log=logger)
+    def call_spending(self, other_args: List[str]):
+        """Process spending command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="spending",
+            description="General government spending provides an indication of the size "
+            "of government across countries. The large variation in this indicator highlights "
+            "the variety of countries' approaches to delivering public goods and services "
+            "and providing social protection, not necessarily differences in resources spent",
+        )
+
+        parser.add_argument(
+            "-c",
+            "--countries",
+            type=str,
+            dest="countries",
+            help="Countries to get data for",
+            default="united_states",
+        )
+
+        parser.add_argument(
+            "-p",
+            "--perspective",
+            type=str,
+            dest="perspective",
+            help="Use either TOT (Total),  RECULTREL (Recreation, culture and religion), "
+            "HOUCOMM (Housing and community amenities), PUBORD (Public order and safety), "
+            "EDU (Education), ENVPROT (Environmental protection), GRALPUBSER (General public services), "
+            "SOCPROT (Social protection), ECOAFF (Economic affairs), DEF (Defence), HEALTH (Health)",
+            choices=[
+                "TOT",
+                "RECULTREL",
+                "HOUCOMM",
+                "PUBORD",
+                "EDU",
+                "ENVPROT",
+                "GRALPUBSER",
+                "SOCPROT",
+                "ECOAFF",
+                "DEF",
+                "HEALTH",
+            ],
+            default="TOT",
+        )
+
+        parser.add_argument(
+            "-u",
+            "--units",
+            type=str,
+            dest="units",
+            help="Use either THND_USD_CAP (thousands of USD per capity) "
+            "or PC_GDP (percentage of GDP)",
+            choices=["PC_GDP", "THND_USD_CAP"],
+            default="PC_GDP",
+        )
+
+        parser.add_argument(
+            "-s",
+            "--start",
+            type=valid_date,
+            help="Start date of data, in YYYY-MM-DD format",
+            dest="start_date",
+            default=(dt.now() - relativedelta(years=30)).date(),
+        )
+        parser.add_argument(
+            "-e",
+            "--end",
+            type=valid_date,
+            help="End date of data, in YYYY-MM-DD format",
+            dest="end_date",
+            default=dt.now().date(),
+        )
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
+            raw=True,
+        )
+        if ns_parser:
+            countries = (
+                list_from_str(ns_parser.countries.lower())
+                if ns_parser.countries
+                else None
+            )
+
+            oecd_view.plot_spending(
+                countries=countries,
+                perspective=ns_parser.perspective,
+                units=ns_parser.units,
+                start_date=ns_parser.start_date,
+                end_date=ns_parser.end_date,
+                raw=ns_parser.raw,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )
+
+    @log_start_end(log=logger)
+    def call_trust(self, other_args: List[str]):
+        """Process trust command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="trust",
+            description="Trust in government refers to the share of people who report "
+            "having confidence in the national government.",
+        )
+
+        parser.add_argument(
+            "-c",
+            "--countries",
+            type=str,
+            dest="countries",
+            help="Countries to get data for",
+            default="united_states",
+        )
+
+        parser.add_argument(
+            "-s",
+            "--start",
+            type=valid_date,
+            help="Start date of data, in YYYY-MM-DD format",
+            dest="start_date",
+            default=(dt.now() - relativedelta(years=30)).date(),
+        )
+        parser.add_argument(
+            "-e",
+            "--end",
+            type=valid_date,
+            help="End date of data, in YYYY-MM-DD format",
+            dest="end_date",
+            default=dt.now().date(),
+        )
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
+            raw=True,
+        )
+        if ns_parser:
+            countries = (
+                list_from_str(ns_parser.countries.lower())
+                if ns_parser.countries
+                else None
+            )
+
+            oecd_view.plot_trust(
+                countries=countries,
+                start_date=ns_parser.start_date,
+                end_date=ns_parser.end_date,
+                raw=ns_parser.raw,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )
+
+    @log_start_end(log=logger)
     def call_macro(self, other_args: List[str]):
         """Process macro command"""
         parser = argparse.ArgumentParser(
@@ -573,7 +1234,10 @@ class EconomyController(BaseController):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-p")
         ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED, raw=True
+            parser,
+            other_args,
+            export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,
+            raw=True,
         )
         if ns_parser:
             parameters = list_from_str(ns_parser.parameters.upper())
@@ -657,7 +1321,7 @@ class EconomyController(BaseController):
                     )
 
                     self.update_runtime_choices()
-                    if obbff.ENABLE_EXIT_AUTO_HELP:
+                    if get_current_user().preferences.ENABLE_EXIT_AUTO_HELP:
                         self.print_help()
 
     @check_api_key(["API_FRED_KEY"])
@@ -676,6 +1340,10 @@ class EconomyController(BaseController):
             dest="parameter",
             default="",
             help="Series ID of the Macro Economic data from FRED",
+            required="-h" not in other_args
+            and "--help" not in other_args
+            and "-q" not in other_args
+            and "--query" not in other_args,
         )
         parser.add_argument(
             "-s",
@@ -701,6 +1369,10 @@ class EconomyController(BaseController):
             nargs="+",
             dest="query",
             help="Query the FRED database to obtain Series IDs given the query search term.",
+            required="-h" not in other_args
+            and "--help" not in other_args
+            and "-p" not in other_args
+            and "--parameter" not in other_args,
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-p")
@@ -773,7 +1445,7 @@ class EconomyController(BaseController):
                     )
 
                     self.update_runtime_choices()
-                    if obbff.ENABLE_EXIT_AUTO_HELP:
+                    if get_current_user().preferences.ENABLE_EXIT_AUTO_HELP:
                         self.print_help()
 
                 else:
@@ -883,7 +1555,11 @@ class EconomyController(BaseController):
                 return self.queue
 
             if indices:
-                for i, index in enumerate(indices):
+                # We create a list of dataframes and a list of columns
+                # We then concatenate the dataframes and set the columns
+                dfs_indices, columns = [], []
+
+                for index in indices:
                     df = yfinance_model.get_index(
                         index,
                         interval=ns_parser.interval,
@@ -891,6 +1567,7 @@ class EconomyController(BaseController):
                         end_date=ns_parser.end_date,
                         column=ns_parser.column,
                     )
+                    dfs_indices.append(df)
 
                     if not df.empty:
                         self.DATASETS["index"][index] = df
@@ -898,26 +1575,42 @@ class EconomyController(BaseController):
                         self.stored_datasets = (
                             economy_helpers.update_stored_datasets_string(self.DATASETS)
                         )
+                        columns.append(index)
 
-                        # display only once in the last iteration
-                        if i == len(indices) - 1:
-                            yfinance_view.show_indices(
-                                indices=indices,
-                                interval=ns_parser.interval,
-                                start_date=ns_parser.start_date,
-                                end_date=ns_parser.end_date,
-                                column=ns_parser.column,
-                                raw=ns_parser.raw,
-                                export=ns_parser.export,
-                                sheet_name=" ".join(ns_parser.sheet_name)
-                                if ns_parser.sheet_name
-                                else None,
-                                returns=ns_parser.returns,
-                            )
+                # If no data is found, we print a message and return
+                if not dfs_indices:
+                    text = "Indices" if len(indices) > 1 else "Index"
+                    console.print(f"[red]No data found for the given {text}[/red]")
+                    return self.queue
 
-                            self.update_runtime_choices()
-                            if obbff.ENABLE_EXIT_AUTO_HELP:
-                                self.print_help()
+                # We concatenate the dataframes here to avoid having
+                # to regrab the data in the view
+                indices_data = pd.concat(dfs_indices, axis=1)
+                indices_data.columns = columns
+
+                # If returns are requested, we calculate them here as well
+                if ns_parser.returns:
+                    indices_data = indices_data.pct_change().dropna()
+                    indices_data = indices_data + 1
+                    indices_data = indices_data.cumprod()
+
+                yfinance_view.show_indices(
+                    indices=indices_data,
+                    interval=ns_parser.interval,
+                    start_date=ns_parser.start_date,
+                    end_date=ns_parser.end_date,
+                    column=ns_parser.column,
+                    raw=ns_parser.raw,
+                    export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
+                    returns=ns_parser.returns,
+                )
+
+                self.update_runtime_choices()
+                if get_current_user().preferences.ENABLE_EXIT_AUTO_HELP:
+                    self.print_help()
 
     @log_start_end(log=logger)
     def call_treasury(self, other_args: List[str]):
@@ -1044,7 +1737,7 @@ class EconomyController(BaseController):
                     )
 
                     self.update_runtime_choices()
-                    if obbff.ENABLE_EXIT_AUTO_HELP:
+                    if get_current_user().preferences.ENABLE_EXIT_AUTO_HELP:
                         self.print_help()
 
     @log_start_end(log=logger)
@@ -1117,7 +1810,7 @@ class EconomyController(BaseController):
             dest="start_date",
             type=valid_date,
             help="Starting date (YYYY-MM-DD) of data",
-            default="1980-01-01",
+            default=(dt.now() - relativedelta(years=30)).date(),
         )
         parser.add_argument(
             "-e",
@@ -1125,7 +1818,7 @@ class EconomyController(BaseController):
             dest="end_date",
             type=valid_date,
             help="Ending date (YYYY-MM-DD) of data",
-            default=None,
+            default=dt.now().date(),
         )
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES, raw=True
@@ -1140,6 +1833,94 @@ class EconomyController(BaseController):
                 harmonized=ns_parser.harmonized,
                 smart_select=ns_parser.smart_select,
                 options=ns_parser.options,
+                start_date=ns_parser.start_date,
+                end_date=ns_parser.end_date,
+                raw=ns_parser.raw,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )
+
+    @log_start_end(log=logger)
+    def call_ccpi(self, other_args: List[str]):
+        """Process ccpi command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="ccpi",
+            description="Inflation is measured in terms of the annual growth rate and in index, "
+            "2015 base year with a breakdown for food, energy and total excluding food and energy. "
+            "Inflation measures the erosion of living standards",
+        )
+
+        parser.add_argument(
+            "-c",
+            "--countries",
+            dest="countries",
+            type=str,
+            help="What countries you'd like to collect data for",
+            default="united_states",
+        )
+
+        parser.add_argument(
+            "-p",
+            "--perspective",
+            dest="perspective",
+            type=str,
+            help="Perspective of CPI you wish to obtain. This can be ENRG (energy), FOOD (food), "
+            "TOT (total) or TOT_FOODENRG (total excluding food and energy)",
+            default="TOT",
+            choices=["ENRG", "FOOD", "TOT", "TOT_FOODENRG"],
+        )
+
+        parser.add_argument(
+            "--frequency",
+            dest="frequency",
+            type=str,
+            help="What frequency you'd like to collect data for",
+            default="M",
+            choices=["M", "Q", "A"],
+        )
+
+        parser.add_argument(
+            "-u",
+            "--units",
+            dest="units",
+            type=str,
+            help="Units to get data in. Either 'AGRWTH' (annual growth rate) or IDX2015 (base = 2015)."
+            " Default is Annual Growth Rate (AGRWTH).",
+            default="AGRWTH",
+            choices=["AGRWTH", "IDX2015"],
+        )
+
+        parser.add_argument(
+            "-s",
+            "--start",
+            dest="start_date",
+            type=valid_date,
+            help="Starting date (YYYY-MM-DD) of data",
+            default=(dt.now() - relativedelta(years=5)).date(),
+        )
+        parser.add_argument(
+            "-e",
+            "--end",
+            dest="end_date",
+            type=valid_date,
+            help="Ending date (YYYY-MM-DD) of data",
+            default=dt.now().date(),
+        )
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES, raw=True
+        )
+        if ns_parser:
+            countries = list_from_str(ns_parser.countries)
+
+            oecd_view.plot_cpi(
+                countries=countries,
+                perspective=ns_parser.perspective,
+                frequency=ns_parser.frequency,
+                units=ns_parser.units,
                 start_date=ns_parser.start_date,
                 end_date=ns_parser.end_date,
                 raw=ns_parser.raw,
@@ -1289,7 +2070,7 @@ class EconomyController(BaseController):
         ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
-            export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
+            export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,
             limit=10,
         )
 

@@ -29,7 +29,7 @@ def display_stories(
     df = get_stories(limit)
     if not df.empty:
         df.columns = [col.capitalize() for col in df.columns]
-        print_rich_table(df, title="HackerNews Top Stories")
+        print_rich_table(df, title="HackerNews Top Stories", export=bool(export))
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),

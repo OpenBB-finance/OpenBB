@@ -1,4 +1,5 @@
 # IMPORTS STANDARD
+
 import json
 import os
 import pathlib
@@ -19,19 +20,14 @@ from _pytest.mark.structures import Mark
 
 # IMPORTS INTERNAL
 from openbb_terminal import (
+    config_terminal,
     decorators,
-    feature_flags as obbff,
     helper_funcs,
-)
-from openbb_terminal.base_helpers import (
-    load_dotenv_and_reload_configs,
-    strtobool,
 )
 
 # pylint: disable=redefined-outer-name
 
-
-load_dotenv_and_reload_configs()
+config_terminal.setup_i18n()
 
 DISPLAY_LIMIT: int = 500
 EXTENSIONS_ALLOWED: List[str] = ["csv", "json", "txt"]
@@ -42,7 +38,6 @@ EXTENSIONS_MATCHING: Dict[str, List[Type]] = {
 }
 
 os.environ["TEST_MODE"] = "True"
-obbff.ENABLE_EXIT_AUTO_HELP = strtobool("True")
 
 
 class Record:
@@ -391,6 +386,11 @@ def rewrite_expected(request: SubRequest) -> bool:
 @pytest.fixture(autouse=True)
 def mock_matplotlib(mocker):
     mocker.patch("matplotlib.pyplot.show")
+
+
+@pytest.fixture(autouse=True)
+def mock_plotly(mocker):
+    mocker.patch("plotly.io.show")
 
 
 # pylint: disable=protected-access

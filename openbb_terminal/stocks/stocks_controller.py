@@ -9,9 +9,9 @@ from typing import List, Optional
 
 import financedatabase as fd
 
-from openbb_terminal import feature_flags as obbff
 from openbb_terminal.common import feedparser_view, newsapi_view
 from openbb_terminal.common.quantitative_analysis import qa_view
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
@@ -76,9 +76,9 @@ class StocksController(StockBaseController):
     except Exception:
         country, sector, industry_group, industry = {}, {}, {}, {}
         console.print(
-            "[red]Note: Some datasets from GitHub failed to load. This means that the `search` command and "
-            "the /stocks/sia menu will not work. If other commands are failing please check your internet connection or "
-            "communicate with your IT department that certain websites are blocked.[/red] \n"
+            "[red]Note: Some datasets from GitHub failed to load. This means that the `search` command will not work. "
+            "If other commands are failing please check your internet connection or communicate with your "
+            "IT department that certain websites are blocked.[/red] \n"
         )
 
     TOB_EXCHANGES = ["BZX", "EDGX", "BYX", "EDGA"]
@@ -88,7 +88,7 @@ class StocksController(StockBaseController):
         """Construct stocks controller."""
         super().__init__(queue)
 
-        if session and obbff.USE_PROMPT_TOOLKIT:
+        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices_default
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -382,11 +382,11 @@ class StocksController(StockBaseController):
         )
         parser.add_argument(
             "-p",
-            "--plotly",
-            dest="plotly",
-            action="store_false",
-            default=True,
-            help="Flag to show interactive plotly chart",
+            "--prepost",
+            action="store_true",
+            default=False,
+            dest="prepost",
+            help="Pre/After market hours. Only works for 'yf' source, and intraday data",
         )
         parser.add_argument(
             "--sort",
@@ -446,6 +446,7 @@ class StocksController(StockBaseController):
             limit=20,
         )
         if ns_parser:
+            figure_export = None
             if ns_parser.ticker:
                 self.ticker = ns_parser.ticker
                 self.custom_load_wrapper([self.ticker])
@@ -477,14 +478,15 @@ class StocksController(StockBaseController):
                                     f"[red]{num} is not a valid moving average, must be an integer greater than 1."
                                 )
 
-                    stocks_helper.display_candle(
+                    figure_export = stocks_helper.display_candle(
                         symbol=self.ticker,
                         data=data,
-                        use_matplotlib=ns_parser.plotly,
-                        intraday=self.interval != "1440min",
                         add_trend=ns_parser.trendlines,
                         ma=mov_avgs,
+                        prepost=ns_parser.prepost,
+                        asset_type="Stock",
                         yscale="log" if ns_parser.logy else "linear",
+                        external_axes=ns_parser.is_image,
                     )
 
                 export_data(
@@ -493,6 +495,7 @@ class StocksController(StockBaseController):
                     f"{self.ticker}",
                     self.stock,
                     " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None,
+                    figure=figure_export,
                 )
             else:
                 console.print("No ticker loaded. First use 'load <ticker>'")

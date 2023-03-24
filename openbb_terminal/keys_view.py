@@ -38,6 +38,7 @@ def display_keys(
         show_index=True,
         index_name="API",
         title="Current keys",
+        export=bool(export),
     )
 
     export_data(

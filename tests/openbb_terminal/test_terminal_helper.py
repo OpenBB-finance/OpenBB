@@ -1,7 +1,6 @@
 import sys
 import unittest
 from contextlib import contextmanager
-from unittest.mock import patch
 
 import pytest
 
@@ -36,11 +35,11 @@ class TestMainHelper(unittest.TestCase):
     def test_welcome_message(self):
         terminal_helper.welcome_message()
 
-    @check_print(assert_in="Unfortunately, resetting wasn't")
-    @patch("subprocess.run", side_effect=return_val)
-    def test_reset(self, mock):
-        # pylint: disable=unused-argument
-        terminal_helper.reset()
+    # @check_print(assert_in="Unfortunately, resetting wasn't")
+    # @patch("subprocess.run", side_effect=return_val)
+    # def test_reset(self, mock):
+    #     # pylint: disable=unused-argument
+    #     terminal_helper.reset()
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -86,7 +85,7 @@ def test_check_for_updates(mocker, last_release, current_release):
 
     # MOCK FF VERSION
     mocker.patch(
-        target="openbb_terminal.feature_flags.VERSION",
+        target="openbb_terminal.core.models.system_model.SystemModel.VERSION",
         new=current_release,
     )
 

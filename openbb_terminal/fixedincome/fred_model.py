@@ -1,18 +1,22 @@
 """ FRED model """
 __docformat__ = "numpy"
 
+# IMPORTATION STANDARD
 import logging
 import os
-import pathlib
 from datetime import datetime, timedelta
+from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
+# IMPORTATION THIRDPARTY
 import certifi
+import numpy as np
 import pandas as pd
 from fredapi import Fred
 from requests import HTTPError
 
-from openbb_terminal import config_terminal as cfg
+# IMPORTATION INTERNAL
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.rich_config import console
 
@@ -21,9 +25,9 @@ from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
-ice_bofa_path = pathlib.Path(__file__).parent / "ice_bofa_indices.xlsx"
-commercial_paper_path = pathlib.Path(__file__).parent / "commercial_paper.xlsx"
-spot_rates_path = pathlib.Path(__file__).parent / "corporate_spot_rates.xlsx"
+ice_bofa_path = (Path(__file__).parent / "ice_bofa_indices.csv").resolve()
+commercial_paper_path = (Path(__file__).parent / "commercial_paper.csv").resolve()
+spot_rates_path = (Path(__file__).parent / "corporate_spot_rates.csv").resolve()
 
 YIELD_CURVE_SERIES_NOMINAL = {
     "1Month": "DGS1MO",
@@ -72,9 +76,9 @@ YIELD_CURVE_SPOT_RATES = [0.5, 1, 2, 3, 5, 7, 10, 20, 30, 50, 75, 100]
 YIELD_CURVE_REAL_RATES = [5, 7, 10, 20, 30]
 YIELD_CURVE_PAR_RATES = [2, 5, 10, 30]
 
-ice_bofa_path = pathlib.Path(__file__).parent / "ice_bofa_indices.xlsx"
-commercial_paper_path = pathlib.Path(__file__).parent / "commercial_paper.xlsx"
-spot_rates_path = pathlib.Path(__file__).parent / "corporate_spot_rates.xlsx"
+ice_bofa_path = (Path(__file__).parent / "ice_bofa_indices.csv").resolve()
+commercial_paper_path = (Path(__file__).parent / "commercial_paper.csv").resolve()
+spot_rates_path = (Path(__file__).parent / "corporate_spot_rates.csv").resolve()
 
 
 NAME_TO_ID_PROJECTION = {
@@ -162,208 +166,7 @@ MOODY_TO_OPTIONS: Dict[str, Dict] = {
     "Spread": ["treasury", "fed_funds"],  # type: ignore
 }
 SPOT_TO_OPTIONS = {
-    "Maturity": [
-        "1y",
-        "1.5y",
-        "2y",
-        "2.5y",
-        "3y",
-        "3.5y",
-        "4y",
-        "4.5y",
-        "5y",
-        "5.5y",
-        "6 y",
-        "6y",
-        "6.5y",
-        "7y",
-        "7.5y",
-        "8y",
-        "8.5y",
-        "9y",
-        "9.5y",
-        "10y",
-        "10.5y",
-        "11y",
-        "11.5y",
-        "12y",
-        "12.5y",
-        "13y",
-        "13.5y",
-        "14y",
-        "14.5y",
-        "15y",
-        "15.5y",
-        "16y",
-        "16.5y",
-        "17y",
-        "17.5y",
-        "18y",
-        "18.5y",
-        "19y",
-        "19.5y",
-        "20y",
-        "20.5y",
-        "21y",
-        "21.5y",
-        "22y",
-        "22.5y",
-        "23y",
-        "23.5y",
-        "24y",
-        "24.5y",
-        "25y",
-        "25.5y",
-        "26y",
-        "26.5y",
-        "27y",
-        "27.5y",
-        "28y",
-        "28.5y",
-        "29y",
-        "29.5y",
-        "30y",
-        "30.5y",
-        "31y",
-        "31.5y",
-        "32y",
-        "32.5y",
-        "33y",
-        "33.5y",
-        "34y",
-        "34.5y",
-        "35y",
-        "35.5y",
-        "36y",
-        "36.5y",
-        "37y",
-        "37.5y",
-        "38y",
-        "38.5y",
-        "39y",
-        "39.5y",
-        "40y",
-        "40.5y",
-        "41y",
-        "41.5y",
-        "42y",
-        "42.5y",
-        "43y",
-        "43.5y",
-        "44y",
-        "44.5y",
-        "45y",
-        "45.5y",
-        "46y",
-        "46.5y",
-        "47y",
-        "47.5y",
-        "48y",
-        "48.5y",
-        "49y",
-        "49.5y",
-        "50y",
-        "50.5y",
-        "51y",
-        "51.5y",
-        "52y",
-        "52.5y",
-        "53y",
-        "53.5y",
-        "54y",
-        "54.5y",
-        "55y",
-        "55.5y",
-        "56y",
-        "56.5y",
-        "57y",
-        "57.5y",
-        "58y",
-        "58.5y",
-        "59y",
-        "59.5y",
-        "60y",
-        "60.5y",
-        "61y",
-        "61.5y",
-        "62y",
-        "62.5y",
-        "63y",
-        "63.5y",
-        "64y",
-        "64.5y",
-        "65y",
-        "65.5y",
-        "66y",
-        "66.5y",
-        "67y",
-        "67.5y",
-        "68y",
-        "68.5y",
-        "69y",
-        "69.5y",
-        "70y",
-        "70.5y",
-        "71y",
-        "71.5y",
-        "72y",
-        "72.5y",
-        "73y",
-        "73.5y",
-        "74y",
-        "74.5y",
-        "75y",
-        "75.5y",
-        "76y",
-        "76.5y",
-        "77y",
-        "77.5y",
-        "78y",
-        "78.5y",
-        "79y",
-        "79.5y",
-        "80y",
-        "80.5y",
-        "81y",
-        "81.5y",
-        "82y",
-        "82.5y",
-        "83y",
-        "83.5y",
-        "84y",
-        "84.5y",
-        "85y",
-        "85.5y",
-        "86y",
-        "86.5y",
-        "87y",
-        "87.5y",
-        "88y",
-        "88.5y",
-        "89y",
-        "89.5y",
-        "90y",
-        "90.5y",
-        "91y",
-        "91.5y",
-        "92y",
-        "92.5y",
-        "93y",
-        "93.5y",
-        "94y",
-        "94.5y",
-        "95y",
-        "95.5y",
-        "96y",
-        "96.5y",
-        "97y",
-        "97.5y",
-        "98y",
-        "98.5y",
-        "99y",
-        "99.5y",
-        "100y",
-    ],
+    "Maturity": [f"{i}y" for i in np.arange(1, 100.5, 0.5)],
     "Category": ["spot_rate", "par_yield"],
 }
 CP_TO_OPTIONS = {
@@ -479,7 +282,7 @@ def get_series_data(
         # https://stackoverflow.com/questions/27835619/urllib-and-ssl-certificate-verify-failed-error/73270162#73270162
         os.environ["REQUESTS_CA_BUNDLE"] = certifi.where()
         os.environ["SSL_CERT_FILE"] = certifi.where()
-        fredapi_client = Fred(cfg.API_FRED_KEY)
+        fredapi_client = Fred(get_current_user().credentials.API_FRED_KEY)
         df = fredapi_client.get_series(series_id, start_date, end_date)
     # Series does not exist & invalid api keys
     except HTTPError as e:
@@ -542,7 +345,7 @@ def get_yield_curve(
     # os.environ["REQUESTS_CA_BUNDLE"] = certifi.where()
     # os.environ["SSL_CERT_FILE"] = certifi.where()
 
-    fredapi_client = Fred(cfg.API_FRED_KEY)
+    fredapi_client = Fred(get_current_user().credentials.API_FRED_KEY)
 
     df = pd.DataFrame()
 
@@ -643,7 +446,8 @@ def get_estr(
     series_id = ESTR_PARAMETER_TO_ECB_ID.get(parameter, "")
 
     return pd.DataFrame(
-        get_series_data(series_id=series_id, start_date=start_date, end_date=end_date)
+        get_series_data(series_id=series_id, start_date=start_date, end_date=end_date),
+        columns=[series_id],
     )
 
 
@@ -673,7 +477,8 @@ def get_sofr(
     series_id = SOFR_PARAMETER_TO_FRED_ID.get(parameter, "")
 
     return pd.DataFrame(
-        get_series_data(series_id=series_id, start_date=start_date, end_date=end_date)
+        get_series_data(series_id=series_id, start_date=start_date, end_date=end_date),
+        columns=[series_id],
     )
 
 
@@ -698,7 +503,8 @@ def get_sonia(
     series_id = SONIA_PARAMETER_TO_FRED_ID.get(parameter, "")
 
     return pd.DataFrame(
-        get_series_data(series_id=series_id, start_date=start_date, end_date=end_date)
+        get_series_data(series_id=series_id, start_date=start_date, end_date=end_date),
+        columns=[series_id],
     )
 
 
@@ -733,8 +539,10 @@ def get_ameribor(
     """
     series_id = AMERIBOR_PARAMETER_TO_FRED_ID.get(parameter, "")
 
-    df = get_series_data(series_id=series_id, start_date=start_date, end_date=end_date)
-    return df
+    return pd.DataFrame(
+        get_series_data(series_id=series_id, start_date=start_date, end_date=end_date),
+        columns=[series_id],
+    )
 
 
 def get_fed(
@@ -806,7 +614,8 @@ def get_fed(
         df = df.dropna()
         return df
     return pd.DataFrame(
-        get_series_data(series_id=series_id, start_date=start_date, end_date=end_date)
+        get_series_data(series_id=series_id, start_date=start_date, end_date=end_date),
+        columns=[series_id],
     )
 
 
@@ -824,7 +633,8 @@ def get_iorb(
         End date, formatted YYYY-MM-DD
     """
     return pd.DataFrame(
-        get_series_data(series_id="IORB", start_date=start_date, end_date=end_date)
+        get_series_data(series_id="IORB", start_date=start_date, end_date=end_date),
+        columns=["IORB"],
     )
 
 
@@ -870,7 +680,8 @@ def get_dwpcr(
     """
     series_id = DWPCR_PARAMETER_TO_FRED_ID[parameter]
     return pd.DataFrame(
-        get_series_data(series_id=series_id, start_date=start_date, end_date=end_date)
+        get_series_data(series_id=series_id, start_date=start_date, end_date=end_date),
+        columns=[series_id],
     )
 
 
@@ -884,7 +695,7 @@ def get_ecb(
     The Governing Council of the ECB sets the key interest rates for the euro area:
 
     - The interest rate on the main refinancing operations (MRO), which provide
-     the bulk of liquidity to the banking system.
+    the bulk of liquidity to the banking system.
     - The rate on the deposit facility, which banks may use to make overnight deposits with the Eurosystem.
     - The rate on the marginal lending facility, which offers overnight credit to banks from the Eurosystem.
 
@@ -973,7 +784,8 @@ def get_usrates(
     """
     series_id = USARATES_TO_FRED_ID[maturity][parameter]
     return pd.DataFrame(
-        get_series_data(series_id=series_id, start_date=start_date, end_date=end_date)
+        get_series_data(series_id=series_id, start_date=start_date, end_date=end_date),
+        columns=[series_id],
     )
 
 
@@ -1008,7 +820,7 @@ def get_icebofa(
     end_date: Optional[str]
         End date, formatted YYYY-MM-DD
     """
-    series = pd.read_excel(ice_bofa_path)
+    series = pd.read_csv(ice_bofa_path)
 
     if options:
         return series.drop(
@@ -1033,7 +845,6 @@ def get_icebofa(
         )
         return pd.DataFrame()
 
-    series = pd.read_excel(ice_bofa_path)
     series = series[
         (series["Type"] == data_type)
         & (series["Units"] == units)
@@ -1116,7 +927,7 @@ def get_cp(
     """
     if grade == "a2_p2" and category != "non_financial":
         category = "non_financial"
-    series = pd.read_excel(commercial_paper_path)
+    series = pd.read_csv(commercial_paper_path)
     series = series[
         (series["Maturity"] == maturity)
         & (series["Category"] == category)
@@ -1164,7 +975,7 @@ def get_spot(
     end_date: Optional[str]
         End date, formatted YYYY-MM-DD
     """
-    series = pd.read_excel(spot_rates_path)
+    series = pd.read_csv(spot_rates_path)
 
     series = series[
         (series["Maturity"].isin(maturity)) & (series["Category"].isin(category))
@@ -1235,7 +1046,7 @@ def get_tbffr(
     Parameters
     ----------
     parameter: str
-        FRED ID of TBFFR data to plot, options: ['3_month', '6_month']
+        FRED ID of TBFFR data to plot, options: ["3_month", "6_month"]
     start_date: Optional[str]
         Start date, formatted YYYY-MM-DD
     end_date: Optional[str]
@@ -1243,7 +1054,9 @@ def get_tbffr(
     """
     series_id = TBFFR_PARAMETER_TO_FRED_ID[parameter]
 
-    return pd.DataFrame(get_series_data(series_id, start_date, end_date))
+    return pd.DataFrame(
+        get_series_data(series_id, start_date, end_date), columns=[series_id]
+    )
 
 
 def get_icespread(
@@ -1298,7 +1111,9 @@ def get_ffrmc(
         End date, formatted YYYY-MM-DD
     """
     series_id = FFRMC_PARAMETER_TO_FRED_ID[parameter]
-    return pd.DataFrame(get_series_data(series_id, start_date, end_date))
+    return pd.DataFrame(
+        get_series_data(series_id, start_date, end_date), columns=[series_id]
+    )
 
 
 def get_tmc(
@@ -1315,11 +1130,13 @@ def get_tmc(
     Parameters
     ----------
     parameter: str
-        FRED ID of TMC data to plot, options: ['T10Y3M', 'T10Y3M']
+        FRED ID of TMC data to plot, options: ["T10Y3M", "T10Y3M"]
     start_date: Optional[str]
         Start date, formatted YYYY-MM-DD
     end_date: Optional[str]
         End date, formatted YYYY-MM-DD
     """
     series_id = TMC_PARAMETER_TO_FRED_ID[parameter]
-    return pd.DataFrame(get_series_data(series_id, start_date, end_date))
+    return pd.DataFrame(
+        get_series_data(series_id, start_date, end_date), columns=[series_id]
+    )

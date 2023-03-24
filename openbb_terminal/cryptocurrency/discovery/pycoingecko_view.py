@@ -5,8 +5,6 @@ import logging
 import os
 from typing import Optional
 
-from pandas.plotting import register_matplotlib_converters
-
 from openbb_terminal.cryptocurrency.dataframe_helpers import (
     lambda_very_long_number_formatter,
 )
@@ -17,7 +15,6 @@ from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
-register_matplotlib_converters()
 
 # pylint: disable=R0904, C0302
 
@@ -79,13 +76,13 @@ def display_coins(
             axis=1,
             copy=True,
         )
-        for col in ["Volume [$]", "Market Cap"]:
-            if col in df.columns:
-                df[col] = df[col].apply(lambda x: lambda_very_long_number_formatter(x))
+
         print_rich_table(
-            df.head(limit),
+            df,
             headers=list(df.columns),
             show_index=False,
+            export=bool(export),
+            limit=limit,
         )
 
         export_data(
@@ -135,9 +132,11 @@ def display_gainers(
                 df[col] = df[col].apply(lambda x: lambda_very_long_number_formatter(x))
 
         print_rich_table(
-            df.head(limit),
+            df,
             headers=list(df.columns),
             show_index=False,
+            export=bool(export),
+            limit=limit,
         )
 
         export_data(
@@ -187,9 +186,11 @@ def display_losers(
                 df[col] = df[col].apply(lambda x: lambda_very_long_number_formatter(x))
 
         print_rich_table(
-            df.head(limit),
+            df,
             headers=list(df.columns),
             show_index=False,
+            export=bool(export),
+            limit=limit,
         )
 
         export_data(
@@ -221,6 +222,7 @@ def display_trending(export: str = "", sheet_name: Optional[str] = None) -> None
             floatfmt=".4f",
             show_index=False,
             title="Trending coins on CoinGecko",
+            export=bool(export),
         )
 
         export_data(

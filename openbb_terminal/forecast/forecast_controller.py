@@ -1,11 +1,17 @@
 """Forecast Controller Module"""
 __docformat__ = "numpy"
 
-# pylint: disable=too-many-lines, too-many-branches, too-many-arguments, R0904,R0902,W0707
+# pylint: disable=C0302,too-many-branches,too-many-arguments,R0904,R0902,W0707
 # flake8: noqa
+
+# IMPORT STANDARD
 import argparse
 import logging
 from typing import Any, Dict, List, Optional
+
+# IMPORT THIRDPARTY
+import pandas as pd
+import psutil
 
 try:
     import darts
@@ -47,21 +53,13 @@ except ModuleNotFoundError:
         "pip install transformers \n"
     )
 
-import pandas as pd
-import psutil
-
 
 # ignore  pylint(ungrouped-imports)
 # pylint: disable=ungrouped-imports
 
-from openbb_terminal import feature_flags as obbff
+# IMPORT INTERNAL
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.common import common_model
-
-from openbb_terminal.core.config.paths import (
-    USER_CUSTOM_IMPORTS_DIRECTORY,
-    USER_EXPORTS_DIRECTORY,
-    USER_FORECAST_WHISPER_DIRECTORY,
-)
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 
@@ -132,6 +130,7 @@ class ForecastController(BaseController):
         "plot",
         "clean",
         "combine",
+        "setndays",
         "desc",
         "corr",
         "rename",
@@ -207,6 +206,7 @@ class ForecastController(BaseController):
         self.files_full: List[List[str]] = []
         self.datasets: Dict[str, pd.DataFrame] = dict()
         self.MINIMUM_DATA_LENGTH = 100
+        self.ndays = 5
 
         if ticker and not data.empty:
             data = data.reset_index()
@@ -243,7 +243,7 @@ class ForecastController(BaseController):
         self.torch_version = torch.__version__
         self.darts_version = darts.__version__
 
-        if session and obbff.USE_PROMPT_TOOLKIT:
+        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices_default
 
             self.choices = choices
@@ -281,7 +281,7 @@ class ForecastController(BaseController):
     def update_runtime_choices(self):
         # Load in any newly exported files
         self.DATA_FILES = forecast_model.get_default_files()
-        if session and obbff.USE_PROMPT_TOOLKIT:
+        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices_default  # type: ignore
 
             self.choices = choices
@@ -304,12 +304,14 @@ class ForecastController(BaseController):
 
     def print_help(self):
         """Print help"""
+        current_user = get_current_user()
         mt = MenuText("forecast/")
         mt.add_param("_disclaimer_", self.disclaimer)
         mt.add_raw("\n")
         mt.add_param(
             "_data_loc",
-            f"\n\t{USER_EXPORTS_DIRECTORY}\n\t{USER_CUSTOM_IMPORTS_DIRECTORY}",
+            f"\n\t{current_user.preferences.USER_EXPORTS_DIRECTORY}\n"
+            f"\t{current_user.preferences.USER_CUSTOM_IMPORTS_DIRECTORY}",
         )
         mt.add_raw("\n")
         mt.add_cmd("load")
@@ -320,6 +322,7 @@ class ForecastController(BaseController):
         mt.add_cmd("plot", self.files)
         mt.add_cmd("clean", self.files)
         mt.add_cmd("combine", self.files)
+        mt.add_cmd("setndays", self.ndays)
         mt.add_cmd("desc", self.files)
         mt.add_cmd("corr", self.files)
         mt.add_cmd("season", self.files)
@@ -481,7 +484,7 @@ class ForecastController(BaseController):
                 action="store",
                 dest="n_days",
                 type=check_positive,
-                default=5,
+                default=self.ndays,
                 help="prediction days.",
             )
         if seasonal is not None:
@@ -966,6 +969,35 @@ class ForecastController(BaseController):
             console.print(
                 f"[green]Successfully renamed {column_old} into {column_new}, in {dataset}[/green]"
             )
+
+    @log_start_end(log=logger)
+    def call_setndays(self, other_args: List[str]):
+        """Process setndays command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="setndays",
+            description="Set the number of days to forecast",
+        )
+        parser.add_argument(
+            "-n",
+            "--n-days",
+            help="Number of days to forecast",
+            dest="n_days",
+            type=check_positive,
+            default=5,
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-n")
+
+        ns_parser = self.parse_known_args_and_warn(parser, other_args, NO_EXPORT)
+
+        if ns_parser:
+            self.ndays = ns_parser.n_days
+            console.print(
+                f"[green]Number of days to forecast set to {self.ndays}[/green]"
+            )
+            self.update_runtime_choices()
 
     # Show selected dataframe on console
     @log_start_end(log=logger)
@@ -3269,6 +3301,7 @@ class ForecastController(BaseController):
                 dataset_name=ns_parser.target_dataset,
                 target_column=ns_parser.target_column,
                 train_split=ns_parser.train_split,
+                export=ns_parser.export,
                 start_date=ns_parser.s_start_date,
                 end_date=ns_parser.s_end_date,
             )
@@ -3340,7 +3373,7 @@ class ForecastController(BaseController):
             "--save",
             dest="save",
             type=str,
-            default=USER_FORECAST_WHISPER_DIRECTORY,
+            default=get_current_user().preferences.USER_FORECAST_WHISPER_DIRECTORY,
             help="Directory to save the subtitles file",
         )
 
@@ -3356,7 +3389,9 @@ class ForecastController(BaseController):
 
         if ns_parser:
             if ns_parser.save is None:
-                ns_parser.save = USER_FORECAST_WHISPER_DIRECTORY
+                ns_parser.save = (
+                    get_current_user().preferences.USER_FORECAST_WHISPER_DIRECTORY
+                )
 
             whisper_model.transcribe_and_summarize(
                 video=ns_parser.video,

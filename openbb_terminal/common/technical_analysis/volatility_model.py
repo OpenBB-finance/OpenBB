@@ -2,6 +2,7 @@
 __docformat__ = "numpy"
 
 import logging
+from typing import Optional
 
 import numpy as np
 import pandas as pd
@@ -183,7 +184,7 @@ def atr(
 def standard_deviation(
     data: pd.DataFrame,
     window: int = 30,
-    trading_periods: int = 252,
+    trading_periods: Optional[int] = None,
     is_crypto: bool = False,
     clean: bool = True,
 ) -> pd.DataFrame:
@@ -195,8 +196,8 @@ def standard_deviation(
     data : pd.DataFrame
         Dataframe of OHLC prices.
     window : int [default: 30]
-        Length of window to calculate standard deviation.
-    trading_periods : int [default: 252]
+        Length of window to calculate over.
+    trading_periods : Optional[int] [default: 252]
         Number of trading periods in a year.
     is_crypto : bool [default: False]
         If true, trading_periods is defined as 365.
@@ -218,7 +219,11 @@ def standard_deviation(
         print("Error: Window must be at least 2, defaulting to 30.")
         window = 30
 
-    trading_periods = 365 if is_crypto else 252
+    if trading_periods and is_crypto:
+        print("is_crypto is overridden by trading_periods.")
+
+    if not trading_periods:
+        trading_periods = 365 if is_crypto else 252
 
     log_return = (data["Close"] / data["Close"].shift(1)).apply(np.log)
 
@@ -236,7 +241,7 @@ def standard_deviation(
 def parkinson(
     data: pd.DataFrame,
     window: int = 30,
-    trading_periods: int = 252,
+    trading_periods: Optional[int] = None,
     is_crypto: bool = False,
     clean=True,
 ) -> pd.DataFrame:
@@ -248,8 +253,8 @@ def parkinson(
     data : pd.DataFrame
         Dataframe of OHLC prices.
     window : int [default: 30]
-        Length of window to calculate standard deviation.
-    trading_periods : int [default: 252]
+        Length of window to calculate over.
+    trading_periods : Optional[int] [default: 252]
         Number of trading periods in a year.
     is_crypto : bool [default: False]
         If true, trading_periods is defined as 365.
@@ -271,7 +276,11 @@ def parkinson(
         print("Error: Window must be at least 1, defaulting to 30.")
         window = 30
 
-    trading_periods = 365 if is_crypto else 252
+    if trading_periods and is_crypto:
+        print("is_crypto is overridden by trading_periods.")
+
+    if not trading_periods:
+        trading_periods = 365 if is_crypto else 252
 
     rs = (1.0 / (4.0 * np.log(2.0))) * (
         (data["High"] / data["Low"]).apply(np.log)
@@ -292,7 +301,7 @@ def parkinson(
 def garman_klass(
     data: pd.DataFrame,
     window: int = 30,
-    trading_periods: int = 252,
+    trading_periods: Optional[int] = None,
     is_crypto: bool = False,
     clean=True,
 ) -> pd.DataFrame:
@@ -305,8 +314,8 @@ def garman_klass(
     data : pd.DataFrame
         Dataframe of OHLC prices.
     window : int [default: 30]
-        Length of window to calculate standard deviation.
-    trading_periods : int [default: 252]
+        Length of window to calculate overn.
+    trading_periods : Optional[int] [default: 252]
         Number of trading periods in a year.
     is_crypto : bool [default: False]
         If true, trading_periods is defined as 365.
@@ -328,7 +337,11 @@ def garman_klass(
         print("Error: Window must be at least 1, defaulting to 30.")
         window = 30
 
-    trading_periods = 365 if is_crypto else 252
+    if trading_periods and is_crypto:
+        print("is_crypto is overridden by trading_periods.")
+
+    if not trading_periods:
+        trading_periods = 365 if is_crypto else 252
 
     log_hl = (data["High"] / data["Low"]).apply(np.log)
     log_co = (data["Close"] / data["Open"]).apply(np.log)
@@ -350,7 +363,7 @@ def garman_klass(
 def hodges_tompkins(
     data: pd.DataFrame,
     window: int = 30,
-    trading_periods: int = 252,
+    trading_periods: Optional[int] = None,
     is_crypto: bool = False,
     clean=True,
 ) -> pd.DataFrame:
@@ -362,8 +375,8 @@ def hodges_tompkins(
     data : pd.DataFrame
         Dataframe of OHLC prices.
     window : int [default: 30]
-        Length of window to calculate standard deviation.
-    trading_periods : int [default: 252]
+        Length of window to calculate over.
+    trading_periods : Optional[int] [default: 252]
         Number of trading periods in a year.
     is_crypto : bool [default: False]
         If true, trading_periods is defined as 365.
@@ -385,7 +398,11 @@ def hodges_tompkins(
         print("Error: Window must be at least 2, defaulting to 30.")
         window = 30
 
-    trading_periods = 365 if is_crypto else 252
+    if trading_periods and is_crypto:
+        print("is_crypto is overridden by trading_periods.")
+
+    if not trading_periods:
+        trading_periods = 365 if is_crypto else 252
 
     log_return = (data["Close"] / data["Close"].shift(1)).apply(np.log)
 
@@ -410,7 +427,7 @@ def hodges_tompkins(
 def rogers_satchell(
     data: pd.DataFrame,
     window: int = 30,
-    trading_periods: int = 252,
+    trading_periods: Optional[int] = None,
     is_crypto: bool = False,
     clean=True,
 ) -> pd.Series:
@@ -423,8 +440,8 @@ def rogers_satchell(
     data : pd.DataFrame
         Dataframe of OHLC prices.
     window : int [default: 30]
-        Length of window to calculate standard deviation.
-    trading_periods : int [default: 252]
+        Length of window to calculate over.
+    trading_periods : Optional[int] [default: 252]
         Number of trading periods in a year.
     is_crypto : bool [default: False]
         If true, trading_periods is defined as 365.
@@ -446,7 +463,11 @@ def rogers_satchell(
         print("Error: Window must be at least 1, defaulting to 30.")
         window = 30
 
-    trading_periods = 365 if is_crypto else 252
+    if trading_periods and is_crypto:
+        print("is_crypto is overridden by trading_periods.")
+
+    if not trading_periods:
+        trading_periods = 365 if is_crypto else 252
 
     log_ho = (data["High"] / data["Open"]).apply(np.log)
     log_lo = (data["Low"] / data["Open"]).apply(np.log)
@@ -468,8 +489,8 @@ def rogers_satchell(
 def yang_zhang(
     data: pd.DataFrame,
     window: int = 30,
-    trading_periods: int = 252,
-    is_crypto: bool = True,
+    trading_periods: Optional[int] = None,
+    is_crypto: bool = False,
     clean=True,
 ) -> pd.DataFrame:
     """Yang-Zhang volatility is the combination of the overnight (close-to-open volatility).
@@ -481,7 +502,7 @@ def yang_zhang(
         Dataframe of OHLC prices.
     window : int [default: 30]
         Length of window to calculate standard deviation.
-    trading_periods : int [default: 252]
+    trading_periods : Optional[int] [default: 252]
         Number of trading periods in a year.
     is_crypto : bool [default: False]
         If true, trading_periods is defined as 365.
@@ -502,7 +523,12 @@ def yang_zhang(
     if window < 2:
         print("Error: Window must be at least 2, defaulting to 30.")
         window = 30
-    trading_periods = 365 if is_crypto else 252
+
+    if trading_periods and is_crypto:
+        print("is_crypto is overridden by trading_periods.")
+
+    if not trading_periods:
+        trading_periods = 365 if is_crypto else 252
 
     log_ho = (data["High"] / data["Open"]).apply(np.log)
     log_lo = (data["Low"] / data["Open"]).apply(np.log)
