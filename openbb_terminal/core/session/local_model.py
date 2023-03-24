@@ -11,7 +11,9 @@ from openbb_terminal.core.session.current_user import (
     get_current_user,
     set_credential,
     set_preference,
+    set_sources,
 )
+from openbb_terminal.core.sources.utils import generate_sources_dict
 from openbb_terminal.rich_config import console
 
 SESSION_FILE_PATH = SETTINGS_DIRECTORY / "session.json"
@@ -112,14 +114,15 @@ def apply_configs(configs: dict):
     configs : dict
         The configurations.
     """
-    set_credentials(configs)
+    set_credentials_from_hub(configs)
     # For safety, we ensure to set only the rich style
     set_preferences(configs, ["RICH_STYLE", "PLOT_STYLE"])
-    save_theme(configs)
+    save_theme_from_hub(configs)
+    set_sources_from_hub(configs)
 
 
-def set_credentials(configs: dict):
-    """Set credentials.
+def set_credentials_from_hub(configs: dict):
+    """Set credentials from hub.
 
     Parameters
     ----------
@@ -151,8 +154,8 @@ def set_preferences(configs: dict, filter_: Optional[List[str]] = None):
                 set_preference(k, v)
 
 
-def save_theme(configs: dict):
-    """Save theme.
+def save_theme_from_hub(configs: dict):
+    """Set theme.
 
     Parameters
     ----------
@@ -171,6 +174,25 @@ def save_theme(configs: dict):
                     "w",
                 ) as f:
                     json.dump(user_style, f)
+
+
+def set_sources_from_hub(configs: dict):
+    """Set sources from hub.
+
+    Parameters
+    ----------
+    configs : dict
+        The configurations.
+    """
+    if configs:
+        sources = configs.get("features_sources", {}) or {}
+        if sources:
+            try:
+                sources_dict = generate_sources_dict(sources)
+                set_sources(sources_dict)
+            except Exception:
+                console.print("[red]Failed to set sources.[/red]")
+                return
 
 
 def get_routine(file_name: str, folder: Optional[Path] = None) -> Optional[str]:

@@ -11,8 +11,12 @@ from typing import Dict, List, Optional
 
 # IMPORTATION THIRDPARTY
 # IMPORTATION INTERNAL
-from openbb_terminal.core.config.paths import USER_DATA_SOURCES_DEFAULT_FILE
-from openbb_terminal.core.session.current_user import get_current_user
+from openbb_terminal.core.session.current_user import (
+    get_current_user,
+    is_local,
+    set_sources,
+)
+from openbb_terminal.core.session.hub_model import upload_config
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.menu import session
@@ -57,24 +61,19 @@ class SourcesController(BaseController):
 
     def load_sources_json(self):
         """Load the .json file"""
-        # Loading in both source files: default sources and user sources
-        default_data_source = USER_DATA_SOURCES_DEFAULT_FILE
-        user_data_source = Path(
-            get_current_user().preferences.PREFERRED_DATA_SOURCE_FILE
-        )
 
-        # Opening default sources file from the repository root
-        with open(str(default_data_source)) as json_file:
-            self.json_doc = json.load(json_file)
-
-        # If the user has added sources to their own sources file in OpenBBUserData, then use that
+        SOURCES_FILE = Path(get_current_user().preferences.PREFERRED_DATA_SOURCE_FILE)
         if (
-            not os.getenv("TEST_MODE")
-            and user_data_source.exists()
-            and user_data_source.stat().st_size > 0
+            is_local()
+            and not os.getenv("TEST_MODE")
+            and SOURCES_FILE.exists()
+            and SOURCES_FILE.stat().st_size > 0
         ):
-            with open(str(user_data_source)) as json_file:
-                self.json_doc = json.load(json_file)
+            with open(str(SOURCES_FILE)) as json_file:
+                sources_json = json.load(json_file)
+                set_sources(sources_json)
+
+        self.json_doc = get_current_user().sources.sources_dict
 
         for context in self.json_doc:
             for menu in self.json_doc[context]:
@@ -224,46 +223,62 @@ class SourcesController(BaseController):
                         [ns_parser.source]
                         + self.json_doc[menus[0]][menus[1]][menus[2]][menus[3]]
                     )
-
             if success:
-                try:
-                    with open(
-                        get_current_user().preferences.PREFERRED_DATA_SOURCE_FILE, "w"
-                    ) as f:
-                        json.dump(self.json_doc, f, indent=4)
-                    console.print(
-                        "[green]The data source was specified successfully.\n[/green]"
-                    )
-                    # Update dictionary so if we "get" the change is reflected
-                    for context in self.json_doc:
-                        for menu in self.json_doc[context]:
-                            if isinstance(self.json_doc[context][menu], Dict):
-                                for submenu in self.json_doc[context][menu]:
-                                    if isinstance(
-                                        self.json_doc[context][menu][submenu], Dict
-                                    ):
-                                        for subsubmenu in self.json_doc[context][menu][
-                                            submenu
-                                        ]:
+                set_sources(self.json_doc)
+                if is_local():
+                    try:
+                        with open(
+                            get_current_user().preferences.PREFERRED_DATA_SOURCE_FILE,
+                            "w",
+                        ) as f:
+                            json.dump(self.json_doc, f, indent=4)
+                        console.print(
+                            "[green]The data source was specified successfully.\n[/green]"
+                        )
+                        # Update dictionary so if we "get" the change is reflected
+                        for context in self.json_doc:
+                            for menu in self.json_doc[context]:
+                                if isinstance(self.json_doc[context][menu], Dict):
+                                    for submenu in self.json_doc[context][menu]:
+                                        if isinstance(
+                                            self.json_doc[context][menu][submenu], Dict
+                                        ):
+                                            for subsubmenu in self.json_doc[context][
+                                                menu
+                                            ][submenu]:
+                                                self.commands_with_sources[
+                                                    f"{context}_{menu}_{submenu}_{subsubmenu}"
+                                                ] = self.json_doc[context][menu][
+                                                    submenu
+                                                ][
+                                                    subsubmenu
+                                                ]
+                                        else:
                                             self.commands_with_sources[
-                                                f"{context}_{menu}_{submenu}_{subsubmenu}"
-                                            ] = self.json_doc[context][menu][submenu][
-                                                subsubmenu
-                                            ]
-                                    else:
-                                        self.commands_with_sources[
-                                            f"{context}_{menu}_{submenu}"
-                                        ] = self.json_doc[context][menu][submenu]
-                            else:
-                                self.commands_with_sources[
-                                    f"{context}_{menu}"
-                                ] = self.json_doc[context][menu]
-                except Exception as e:
-                    console.print(
-                        f"[red]Failed to write preferred data sources to file: "
-                        f"{get_current_user().preferences.PREFERRED_DATA_SOURCE_FILE}[/red]"
+                                                f"{context}_{menu}_{submenu}"
+                                            ] = self.json_doc[context][menu][submenu]
+                                else:
+                                    self.commands_with_sources[
+                                        f"{context}_{menu}"
+                                    ] = self.json_doc[context][menu]
+                    except Exception as e:
+                        console.print(
+                            f"[red]Failed to write preferred data sources to file: "
+                            f"{get_current_user().preferences.PREFERRED_DATA_SOURCE_FILE}[/red]"
+                        )
+                        console.print(f"[red]{e}[/red]")
+                else:
+                    key = str(ns_parser.cmd).replace("_", "/")
+                    valid = self.commands_with_sources[ns_parser.cmd]
+                    valid.remove(ns_parser.source)
+                    valid.insert(0, ns_parser.source)
+                    value = ",".join(valid)
+                    upload_config(
+                        key=key,
+                        value=value,
+                        type_="sources",
+                        auth_header=get_current_user().profile.get_auth_header(),
                     )
-                    console.print(f"[red]{e}[/red]")
             else:
                 console.print(
                     f"[red]The data source selected is not valid, select one from: {', '.join(valid_sources)}.\n[/red]"
