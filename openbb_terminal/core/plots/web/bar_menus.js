@@ -26,6 +26,9 @@ function autoScaling(eventdata, graphs) {
       };
 
       yaxis_unique.forEach((unique) => {
+        if (typeof unique != "string") {
+          return;
+        }
         let yaxis = "yaxis" + unique.replace("y", "");
         let y_candle = [];
         let y_values = [];
@@ -92,7 +95,7 @@ function autoScaling(eventdata, graphs) {
 
           if (is_volume) {
             if (graphs.layout[yaxis].tickvals != undefined) {
-              const range_x = 4;
+              const range_x = 7;
               let volume_ticks = org_y_max;
               let round_digits = -3;
               let first_val = Math.round(volume_ticks * 0.2, round_digits);

@@ -13,13 +13,23 @@ from typing import Optional, Union
 import aiohttp
 import pandas as pd
 import plotly.graph_objects as go
-import pywry
 from packaging import version
 from reportlab.graphics import renderPDF
+
+try:
+    from pywry.core import PyWry
+
+    PYWRY_AVAILABLE = True
+except ImportError:
+    PYWRY_AVAILABLE = False
+
 from svglib.svglib import svg2rlg
 
 from openbb_terminal.base_helpers import console, strtobool
 from openbb_terminal.core.session.current_user import get_current_user
+
+if not PYWRY_AVAILABLE:
+    from openbb_terminal.core.plots.no_import import DummyBackend as PyWry  # noqa
 
 try:
     from IPython import get_ipython
@@ -41,7 +51,7 @@ PLOTLYJS_PATH = PLOTS_CORE_PATH / "assets" / "plotly-2.18.2.min.js"
 BACKEND = None
 
 
-class Backend(pywry.PyWry):
+class Backend(PyWry):
     """Custom backend for Plotly."""
 
     def __new__(cls, *args, **kwargs):  # pylint: disable=W0613
@@ -62,6 +72,8 @@ class Backend(pywry.PyWry):
             and not strtobool(os.environ.get("OPENBB_ENABLE_QUICK_EXIT", False))
             and current_process().name == "MainProcess"
         )
+        if PyWry.__version__ == "0.0.0":
+            self.isatty = False
 
         self.WIDTH, self.HEIGHT = 1400, 762
 
@@ -70,8 +82,8 @@ class Backend(pywry.PyWry):
     def set_window_dimensions(self):
         """Set the window dimensions."""
         current_user = get_current_user()
-        width = current_user.preferences.PLOT_WIDTH or 1400
-        height = current_user.preferences.PLOT_HEIGHT or 762
+        width = current_user.preferences.PLOT_PYWRY_WIDTH or 1400
+        height = current_user.preferences.PLOT_PYWRY_HEIGHT or 762
 
         self.WIDTH, self.HEIGHT = int(width), int(height)
 
@@ -205,7 +217,7 @@ class Backend(pywry.PyWry):
                     opener = "open" if sys.platform == "darwin" else "xdg-open"
                     subprocess.check_call([opener, export_image])  # nosec: B603
 
-    def send_table(self, df_table: pd.DataFrame, title: str = ""):
+    def send_table(self, df_table: pd.DataFrame, title: str = "", source: str = ""):
         """Send table data to the backend to be displayed in a table.
 
         Parameters
@@ -214,6 +226,8 @@ class Backend(pywry.PyWry):
             Dataframe to send to backend.
         title : str, optional
             Title to display in the window, by default ""
+        source : str, optional
+            Source of the data, by default ""
         """
         self.loop.run_until_complete(self.check_backend())
 
@@ -243,6 +257,7 @@ class Backend(pywry.PyWry):
 
         json_data = json.loads(df_table.to_json(orient="split"))
         json_data.update(dict(title=title))
+        json_data.update(dict(source=source))
 
         self.outgoing.append(
             json.dumps(
@@ -330,8 +345,8 @@ class Backend(pywry.PyWry):
     async def check_backend(self):
         """Override to check if isatty."""
         if self.isatty:
-            if not hasattr(pywry, "__version__") or version.parse(
-                pywry.__version__
+            if not hasattr(PyWry, "__version__") or version.parse(
+                PyWry.__version__
             ) < version.parse("0.3.5"):
                 console.print(
                     "[bold red]Pywry version 0.3.5 or higher is required to use the "

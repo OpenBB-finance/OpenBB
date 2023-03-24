@@ -301,14 +301,13 @@ function on_submit(popup_id, on_annotation = null) {
   } else if (popup_id == "title") {
     let yaxis = gd.layout.yaxis ? "yaxis" : "yaxis2";
     let xaxis = gd.layout.xaxis ? "xaxis" : "xaxis2";
-
+    document.getElementById("title").innerHTML = popup_data.title;
     let to_update = { title: popup_data.title };
     to_update[xaxis + ".title"] = popup_data.xaxis;
     to_update[yaxis + ".title"] = popup_data.yaxis;
     to_update[yaxis + ".type"] = "linear";
 
     Plotly.update(gd, {}, to_update);
-
   } else if (popup_id == "csv") {
     console.log("got popup file");
     let popup_file = popup_data.file;
