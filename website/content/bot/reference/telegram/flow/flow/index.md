@@ -1,16 +1,16 @@
 # flow
 
-- [bigflow](/bot/reference/telegram/flow/bigflow)
-- [day](/bot/reference/telegram/flow/flow/day)
-- [open](/bot/reference/telegram/flow/flow/open)
-- [prem](/bot/reference/telegram/flow/flow/prem)
-- [unu](/bot/reference/telegram/flow/flow/unu)
-- [wk](/bot/reference/telegram/flow/flow/wk)
+import ReferenceCard from "@site/src/components/General/ReferenceCard";
 
-### flowsum
-- [day](/bot/reference/telegram/flow/flowsum/day)
-- [exp](/bot/reference/telegram/flow/flowsum/exp)
-- [top](/bot/reference/telegram/flow/flowsum/top)
-- [wk](/bot/reference/telegram/flow/flowsum/wk)
-- [sectorsflow](/bot/reference/telegram/flow/sectorsflow)
-- [summaryflow](/bot/reference/telegram/flow/summaryflow)
+<ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">
+<ReferenceCard title="day " description=" Returns the flow for a stock. /flow, /flow wk, /flow open, /flow unu, /flow prem
+" url="/bot/reference/telegram/flow/flow/day " />
+<ReferenceCard title="open " description=" Returns the opening flow for a stock. (volume > open interest on the order) /flow open
+" url="/bot/reference/telegram/flow/flow/open " />
+<ReferenceCard title="prem " description=" Returns a chart of premium for the day
+" url="/bot/reference/telegram/flow/flow/prem " />
+<ReferenceCard title="unu " description=" Returns the unusual flow for a stock (high ratio of volume to oi). /flow unu
+" url="/bot/reference/telegram/flow/flow/unu " />
+<ReferenceCard title="wk " description=" Returns the weekly flow for a stock (options expiring that Friday). /flow wk
+" url="/bot/reference/telegram/flow/flow/wk " />
+</ul>
