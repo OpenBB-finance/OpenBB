@@ -88,7 +88,7 @@ class TerminalStyle:
         """Apply the style to the console."""
 
         if style in self.console_styles_available:
-            json_path = self.console_styles_available[style]
+            json_path: Optional[Path] = self.console_styles_available[style]
         else:
             self.load_available_styles()
             if style in self.console_styles_available:
