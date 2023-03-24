@@ -18,7 +18,7 @@ from openbb_terminal.core.session.utils import load_dict_to_model
 __env_dict = read_env()
 __credentials = load_dict_to_model(__env_dict, CredentialsModel)
 __preferences = load_dict_to_model(__env_dict, PreferencesModel)
-__sources = SourcesModel(read_sources())
+__sources = SourcesModel(sources_dict=read_sources())  # type: ignore
 
 __profile = ProfileModel()
 __local_user = UserModel(  # type: ignore
