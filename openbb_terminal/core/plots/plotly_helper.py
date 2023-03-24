@@ -81,16 +81,26 @@ class TerminalStyle:
         self.plt_style = plt_style or self.plt_style
         self.load_available_styles()
         self.load_style(plt_style)
-
-        console_json_path = self.console_styles_available.get("dark", None)
-        for style in ["openbb_config", console_style]:
-            if style in self.console_styles_available:
-                console_json_path = self.console_styles_available[style]
-                break
-
-        if console_json_path:
-            self.console_style = self.load_json_style(console_json_path)
         self.load_style(plt_style)
+        self.apply_console_style(console_style)
+
+    def apply_console_style(self, style: Optional[str] = "") -> None:
+        """Apply the style to the console."""
+
+        if style in self.console_styles_available:
+            json_path = self.console_styles_available[style]
+        else:
+            self.load_available_styles()
+            if style in self.console_styles_available:
+                json_path = self.console_styles_available[style]
+            else:
+                console.print("Invalid console style. Using default.")
+                json_path = self.console_styles_available.get("dark", None)
+
+        if json_path:
+            self.console_style = self.load_json_style(json_path)
+        else:
+            console.print("Error loading default.")
 
     def apply_style(self, style: Optional[str] = "") -> None:
         """Apply the style to the libraries."""
@@ -142,7 +152,7 @@ class TerminalStyle:
 
         Parameters
         ----------
-        file : str
+        file : Optional[Path]
             Path to the file containing the style
 
         Returns

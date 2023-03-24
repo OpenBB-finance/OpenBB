@@ -40,6 +40,7 @@ from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import RICH_TAGS, MenuText, console
 from openbb_terminal.terminal_helper import print_guest_block_msg
+from openbb_terminal import theme
 
 # pylint: disable=too-many-lines,no-member,too-many-public-methods,C0302
 # pylint: disable=import-outside-toplevel
@@ -256,17 +257,19 @@ class SettingsController(BaseController):
     @log_start_end(log=logger)
     def call_colors(self, other_args: List[str]):
         """Process colors command"""
+        theme.load_available_styles()
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="colors",
             description="Console style.",
         )
+        # choices = list(theme.console_styles_available.keys()) + ["default", "hub"] +
         parser.add_argument(
             "-s",
             "--style",
             type=str,
-            choices=["default", "custom", "hub"],
+            choices=theme.console_styles_available,
             dest="style",
             required="-h" not in other_args and "--help" not in other_args,
             help="To use 'custom' option, go to https://openbb.co/customize and create your theme."
@@ -297,7 +300,7 @@ class SettingsController(BaseController):
                     )
                     if response:
                         configs = json.loads(response.content)
-                        Local.set_theme(configs)
+                        Local.save_theme(configs)
                 console.print("Theme updated.")
 
     @log_start_end(log=logger)
