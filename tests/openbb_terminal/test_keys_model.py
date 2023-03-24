@@ -6,11 +6,11 @@ import pandas as pd
 import pytest
 
 from openbb_terminal import keys_model
+from openbb_terminal.core.session import env_handler
 from openbb_terminal.core.session.current_user import (
     PreferencesModel,
     copy_user,
 )
-from openbb_terminal.core.session import env_handler
 
 # pylint: disable=R0902,R0903,W1404,C0302
 TEST_PATH = Path(__file__).parent.resolve()
