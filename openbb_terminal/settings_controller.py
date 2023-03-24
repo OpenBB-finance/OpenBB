@@ -300,7 +300,7 @@ class SettingsController(BaseController):
                     )
                     if response:
                         configs = json.loads(response.content)
-                        Local.save_theme(configs)
+                        Local.save_theme_from_hub(configs)
                 console.print("Theme updated.")
 
     @log_start_end(log=logger)
@@ -350,21 +350,33 @@ class SettingsController(BaseController):
             "-f",
             "--file",
             type=str,
-            default=str(USER_DATA_SOURCES_DEFAULT_FILE),
             dest="file",
             help="file",
+        )
+        parser.add_argument(
+            "-d",
+            "--default",
+            action="store_true",
+            dest="default",
+            help="Reset to default",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-f")
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
-            if os.path.exists(ns_parser.file):
+            if ns_parser.default:
                 self.set_and_save_preference(
-                    "PREFERRED_DATA_SOURCE_FILE", ns_parser.file
+                    "PREFERRED_DATA_SOURCE_FILE", str(USER_DATA_SOURCES_DEFAULT_FILE)
                 )
                 console.print("[green]Sources file changed successfully![/green]")
-            else:
-                console.print("[red]Couldn't find the sources file![/red]")
+            elif ns_parser.file:
+                if os.path.exists(ns_parser.file):
+                    self.set_and_save_preference(
+                        "PREFERRED_DATA_SOURCE_FILE", ns_parser.file
+                    )
+                    console.print("[green]Sources file changed successfully![/green]")
+                else:
+                    console.print("[red]Couldn't find the sources file![/red]")
 
     @log_start_end(log=logger)
     def call_autoscaling(self, other_args: List[str]):
