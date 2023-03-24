@@ -148,7 +148,6 @@ def set_preferences(configs: dict, filter_: Optional[List[str]] = None):
             if not filter_:
                 set_preference(k, v)
             elif k in filter_:
-                print(preferences)
                 set_preference(k, v)
 
 
