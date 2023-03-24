@@ -170,23 +170,6 @@ After the obb environment is created, activate it by entering:
 conda activate obb
 ```
 
-:::note
-After you activate the new environment for the first time it is required to clean up some artifacts in order for all dependencies to work nicely.
-
-On Windows do this by running this script (copy and paste the launch code):
-
-```shell
-cleanup_artifacts.bat
-```
-
-On macOS and Linux do this by running this script (copy and paste the launch code):
-
-```shell
-cleanup_artifacts.sh
-```
-
-:::
-
 ## Install the OpenBB Terminal and SDK
 
 Make sure you have completed all the previous steps. If you followed the instructions you should have a virtual environment named `obb` and this environment is activated.
