@@ -72,7 +72,7 @@ class Backend(PyWry):
             and not strtobool(os.environ.get("OPENBB_ENABLE_QUICK_EXIT", False))
             and current_process().name == "MainProcess"
         )
-        if PyWry.__version__ == "0.0.0":
+        if hasattr(PyWry, "__version__") and PyWry.__version__ == "0.0.0":
             self.isatty = False
 
         self.WIDTH, self.HEIGHT = 1400, 762
