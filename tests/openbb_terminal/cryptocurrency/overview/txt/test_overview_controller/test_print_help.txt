@@ -1,4 +1,4 @@
-    global             crypto/ov/global                                                     [CoinGecko, CoinPaprika]
+    global             global crypto market statistics                                      [CoinGecko, CoinPaprika]
     defi               global DeFi market info                                              [CoinGecko]
     stables            stablecoins                                                          [CoinGecko]
     exchanges          crypto/ov/exchanges                                                  [CoinGecko, CoinPaprika]
