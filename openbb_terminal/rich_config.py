@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import json
 import os
 from pathlib import Path
-from typing import Dict, Iterable, Optional, Tuple, Union
+from typing import Iterable, Optional, Tuple, Union
 
 import i18n
 from rich import panel
@@ -13,13 +13,11 @@ from rich.progress import track
 from rich.text import Text
 
 from openbb_terminal.core.config.paths import MISCELLANEOUS_DIRECTORY
+from openbb_terminal.core.plots.plotly_helper import theme
 from openbb_terminal.core.session.current_system import get_current_system
 from openbb_terminal.core.session.current_user import (
     get_current_user,
-    is_local,
-    set_preference,
 )
-from openbb_terminal.core.plots.plotly_helper import theme
 
 # pylint: disable=no-member,c-extension-no-member
 
