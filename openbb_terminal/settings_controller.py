@@ -23,6 +23,7 @@ from openbb_terminal.core.config.paths import (
     SETTINGS_ENV_FILE,
     USER_DATA_SOURCES_DEFAULT_FILE,
 )
+from openbb_terminal.core.session.constants import SOURCES_URL
 from openbb_terminal.core.session.current_user import (
     get_current_user,
     is_local,
@@ -202,9 +203,12 @@ class SettingsController(BaseController):
         mt.add_raw("\n")
         mt.add_cmd("source")
         mt.add_raw("\n")
-        mt.add_param(
-            "_data_source", current_user.preferences.PREFERRED_DATA_SOURCE_FILE
+        file = (
+            get_current_user().preferences.PREFERRED_DATA_SOURCE_FILE
+            if is_local()
+            else SOURCES_URL
         )
+        mt.add_param("_data_source", file)
         mt.add_raw("\n")
         mt.add_setting("tbnews", current_user.preferences.TOOLBAR_TWEET_NEWS)
         if current_user.preferences.TOOLBAR_TWEET_NEWS:

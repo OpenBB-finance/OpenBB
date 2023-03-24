@@ -43,6 +43,7 @@ en:
   defined, not tested: defined, not tested
   defined, test inconclusive: defined, test inconclusive
   sources/_info_: Get and set default data sources
+  sources/_source: Source
   sources/get: get available data sources associated with command
   sources/set: set default data source for a command
   featflags/_info_: Feature flags through environment variables
