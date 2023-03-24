@@ -65,19 +65,19 @@ def set_naive_environment(var_name_list: List[str]) -> None:
     "args, persist, show_output, __expected",
     [
         (
-            ["test_key_1"],
+            ["test_key"],
             False,
             True,
             keys_model.KeyStatus.DEFINED_TEST_PASSED,
         ),
         (
-            ["test_key_2"],
+            ["test_key"],
             False,
             False,
             keys_model.KeyStatus.DEFINED_TEST_PASSED,
         ),
         (
-            ["test_key_3"],
+            ["test_key"],
             True,
             True,
             keys_model.KeyStatus.DEFINED_TEST_PASSED,
