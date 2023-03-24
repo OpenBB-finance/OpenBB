@@ -155,7 +155,7 @@ class TerminalStyle:
 
         Parameters
         ----------
-        file : Optional[Path]
+        file : Path
             Path to the file containing the style
 
         Returns
