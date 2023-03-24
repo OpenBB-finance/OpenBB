@@ -5,7 +5,7 @@ from pydantic.dataclasses import dataclass
 
 from openbb_terminal.core.models.base_model import BaseModel
 
-# pylint: disable=too-many-instance-attributes, disable=no-member, useless-parent-delegation
+# pylint: disable=useless-parent-delegation
 
 
 @dataclass(config=dict(validate_assignment=True))
