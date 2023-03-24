@@ -751,7 +751,7 @@ en:
   economy/balance: Show Government defict or surplus in capital income and expenditures
   economy/revenue: Show Government revenue based on tax income
   economy/spending: Show Government spending as indicator of size of government
-  economy/trust: Show Government trust based on surveys regarding confidence in the government  
+  economy/trust: Show Government trust based on surveys regarding confidence in the government
   economy/_database_: Databases
   economy/_stored: Stored datasets
   economy/overview: show a market overview of either indices, bonds or currencies
@@ -1078,11 +1078,10 @@ en:
   dashboards/stocks: historic stock information
   dashboards/forecast: forecasting for timeseries datasets
   dashboards/forecasting: forecasting for timeseries datasets
+  dashboards/indicators: technical analysis indicators
   dashboards/correlation: stock correlations
-  dashboards/vsurf: options volatility surface
   dashboards/chains: options chain analysis
   dashboards/shortdata: finra shortdata analysis
-  dashboards/crypto: cryptocurrency exchange rates against USD
   dashboards/futures: historical futures performance
   reports: customizable research reports through jupyter notebooks
   reports/_reports_: Build and run your custom reports or try one of our templates
