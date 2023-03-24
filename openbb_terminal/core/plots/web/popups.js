@@ -399,6 +399,8 @@ function on_submit(popup_id, on_annotation = null) {
             gd.layout.showlegend = true;
           }
 
+          orginal_data = data;
+
           trace = {
             x: data.map(function (row) {
               return row[popup_data.x];
@@ -417,6 +419,10 @@ function on_submit(popup_id, on_annotation = null) {
             mode: "lines",
             name: popup_data.name,
             line: { color: popup_data.color },
+            customdata: data.map(function (row) {
+              return row[popup_data.y];
+            }),
+            hovertemplate: "%{customdata}<extra></extra>",
             showlegend: true,
             connectgaps: true,
             xaxis: main_trace.xaxis,
