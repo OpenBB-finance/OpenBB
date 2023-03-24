@@ -83,7 +83,6 @@ class PreferencesModel(BaseModel):
     PMF_STYLE: str = "dark"
     RICH_STYLE: str = "dark"
     PLOT_STYLE: Literal["dark", "light"] = "dark"
-    HUB_RICH_STYLE: Optional[Dict] = None
 
     # PATHS
     PREFERRED_DATA_SOURCE_FILE: str = str(USER_DATA_SOURCES_DEFAULT_FILE)
