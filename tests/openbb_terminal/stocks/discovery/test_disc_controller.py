@@ -1,6 +1,7 @@
 # IMPORTATION STANDARD
 
 import os
+from datetime import datetime
 
 # IMPORTATION THIRDPARTY
 import pytest
@@ -344,8 +345,14 @@ def test_call_func_expect_queue(expected_queue, queue, func):
         (
             "call_upcoming",
             "seeking_alpha_view.upcoming_earning_release_dates",
-            ["--pages=10", "--limit=5", "--export=csv"],
-            {"num_pages": 10, "limit": 5, "export": "csv", "sheet_name": None},
+            ["--pages=10", "--start=2023-03-22", "--limit=5", "--export=csv"],
+            {
+                "num_pages": 10,
+                "limit": 5,
+                "start_date": datetime(2023, 3, 22),
+                "export": "csv",
+                "sheet_name": None,
+            },
         ),
     ],
 )

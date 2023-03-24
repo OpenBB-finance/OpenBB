@@ -10,11 +10,12 @@ import finviz
 import pandas as pd
 import praw
 
-from openbb_terminal import OpenBBFigure
+from openbb_terminal import OpenBBFigure, rich_config
 from openbb_terminal.common.behavioural_analysis import reddit_model
 from openbb_terminal.common.behavioural_analysis.reddit_helpers import (
     reddit_requirements,
 )
+from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
@@ -94,8 +95,11 @@ def print_reddit_post(sub: tuple):
     date = sub_list[0]
     title = sub_list[3]
     link = sub_list[-1]
-    console.print(f"[yellow]{date}[/yellow] - {title}")
-    console.print(f"[blue]{link}[/blue]\n")
+
+    if rich_config.USE_COLOR and not get_current_user().preferences.USE_INTERACTIVE_DF:
+        console.print(f"[yellow]{date}[/yellow] - {title}")
+        console.print(f"[blue]{link}[/blue]\n")
+
     columns = [
         "Subreddit",
         "Flair",

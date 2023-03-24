@@ -343,12 +343,13 @@ def lambda_price_prediction_color(val: float) -> str:
 def print_pretty_prediction(df_pred: pd.DataFrame, last_price: float):
     """Print predictions"""
 
-    if rich_config.USE_COLOR and not get_current_user().preferences.USE_INTERACTIVE_DF:
+    if rich_config.USE_COLOR:
         df_pred = pd.DataFrame(df_pred)
         df_pred.columns = ["pred"]
-        df_pred["pred"] = df_pred["pred"].apply(
-            lambda x: lambda_price_prediction_color(x)
-        )
+        if not get_current_user().preferences.USE_INTERACTIVE_DF:
+            df_pred["pred"] = df_pred["pred"].apply(
+                lambda x: lambda_price_prediction_color(x)
+            )
     if check_dates(df_pred.index.to_series()):
         df_pred.index = df_pred.index.date
     print_rich_table(

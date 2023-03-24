@@ -1,21 +1,21 @@
                  Name      Chain Protocol   APY (%)  TVL ($)
-16          GRAPE-MIM  Avalanche    Beefy  747.63 %  1.057 M
-17         WBTC-cxBTC    Polygon    Beefy  385.18 %  1.543 M
-18          ETH-cxETH    Polygon    Beefy  376.93 %  1.548 M
-19     SHIT-WETH (1%)   Ethereum  Uniswap   365.2 %  2.179 M
-0            WETH-10k   Ethereum  Uniswap        NA  1.699 M
-1          Azuki-WETH   Ethereum  Uniswap        NA  1.181 M
-2         WETH-RYOSHI   Ethereum  Uniswap        NA  1.569 M
-3         Hasbro-WETH   Ethereum  Uniswap        NA  1.025 M
-4          WETH-GENIE   Ethereum  Uniswap        NA  1.770 M
-5           WETH-PRAG   Ethereum  Uniswap        NA  1.359 M
-6        APELAND-WETH   Ethereum  Uniswap        NA  1.216 M
-7           Line-WETH   Ethereum  Uniswap        NA  2.065 M
-8            USDC-CRV   Ethereum  Uniswap        NA  1.722 M
-9   USDD-USDT (0.01%)   Ethereum  Uniswap        NA  3.926 M
-10        WETH-DOODLE   Ethereum  Uniswap        NA  2.887 M
-11          HOOT-WETH   Ethereum  Uniswap        NA  1.474 M
-12       Firefox-WETH   Ethereum  Uniswap        NA  1.963 M
-13  WBTC-BBTC (0.05%)   Ethereum  Uniswap        NA  4.200 M
-14     WETH-Richemont   Ethereum  Uniswap        NA  1.631 M
-15            WETH-OP   Ethereum  Uniswap        NA  1.665 M
+16          GRAPE-MIM  Avalanche    Beefy  7.476263  1056770
+17         WBTC-cxBTC    Polygon    Beefy  3.851823  1542565
+18          ETH-cxETH    Polygon    Beefy  3.769294  1547500
+19     SHIT-WETH (1%)   Ethereum  Uniswap  3.651991  2179266
+0            WETH-10k   Ethereum  Uniswap        NA  1698882
+1          Azuki-WETH   Ethereum  Uniswap        NA  1180607
+2         WETH-RYOSHI   Ethereum  Uniswap        NA  1569332
+3         Hasbro-WETH   Ethereum  Uniswap        NA  1025188
+4          WETH-GENIE   Ethereum  Uniswap        NA  1770296
+5           WETH-PRAG   Ethereum  Uniswap        NA  1359190
+6        APELAND-WETH   Ethereum  Uniswap        NA  1216107
+7           Line-WETH   Ethereum  Uniswap        NA  2065257
+8            USDC-CRV   Ethereum  Uniswap        NA  1721977
+9   USDD-USDT (0.01%)   Ethereum  Uniswap        NA  3925917
+10        WETH-DOODLE   Ethereum  Uniswap        NA  2886965
+11          HOOT-WETH   Ethereum  Uniswap        NA  1474099
+12       Firefox-WETH   Ethereum  Uniswap        NA  1963426
+13  WBTC-BBTC (0.05%)   Ethereum  Uniswap        NA  4200389
+14     WETH-Richemont   Ethereum  Uniswap        NA  1630815
+15            WETH-OP   Ethereum  Uniswap        NA  1664803
