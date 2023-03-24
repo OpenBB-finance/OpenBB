@@ -27,6 +27,8 @@ def controller(mocker):
         target="openbb_terminal.settings_controller.set_preference",
     )
 
+    mocker.patch("openbb_terminal.settings_controller.write_to_dotenv")
+
     mocker.patch("openbb_terminal.settings_controller.session", True)
     return SettingsController()
 
