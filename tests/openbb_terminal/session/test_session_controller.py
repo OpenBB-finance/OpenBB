@@ -1,9 +1,8 @@
-from unittest.mock import patch
-from mock import MagicMock
+from unittest.mock import MagicMock, patch
 
 import pytest
-from openbb_terminal import terminal_controller
 
+from openbb_terminal import terminal_controller
 from openbb_terminal.core.session import session_controller
 
 

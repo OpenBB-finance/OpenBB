@@ -4,11 +4,7 @@ from pathlib import Path
 from unittest.mock import patch
 
 # IMPORTATION THIRDPARTY
-from openbb_terminal import (
-    config_terminal as cfg,
-)
 from openbb_terminal.account import account_model
-from openbb_terminal.core.config import paths
 
 # IMPORTATION INTERNAL
 from openbb_terminal.core.models.credentials_model import CredentialsModel

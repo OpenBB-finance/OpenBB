@@ -10,8 +10,8 @@ from openbb_terminal.core.models.user_model import (
     CredentialsModel,
     PreferencesModel,
     ProfileModel,
-    UserModel,
     SourcesModel,
+    UserModel,
 )
 from openbb_terminal.core.session import local_model
 

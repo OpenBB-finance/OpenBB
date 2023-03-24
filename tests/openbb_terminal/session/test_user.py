@@ -8,8 +8,8 @@ from openbb_terminal.core.models.user_model import (
     CredentialsModel,
     PreferencesModel,
     ProfileModel,
-    UserModel,
     SourcesModel,
+    UserModel,
 )
 
 # pylint: disable=protected-access, redefined-outer-name
