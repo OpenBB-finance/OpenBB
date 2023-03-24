@@ -318,6 +318,10 @@ def generate_root_index_markdown(functions_dict: dict) -> str:
     reference_dict: dict = get_root_index_dict({}, functions_dict)
     markdown = ""
 
+    for cmd in functions_dict[""].values():
+        if isinstance(cmd, str):
+            markdown += f"{cmd}\n"
+
     for key, nested_dict in reference_dict.items():
         if isinstance(nested_dict, dict):
             for subcategory in nested_dict.values():
@@ -328,11 +332,6 @@ def generate_root_index_markdown(functions_dict: dict) -> str:
                         f'<ReferenceCard title="{key}" description="{", ".join(subcategory)}" '
                         f'url="/sdk/reference/{key}" />\n'
                     )
-
-        if isinstance(nested_dict, list) and key == "":
-            for subcategory in functions_dict[key].values():
-                if isinstance(subcategory, str):
-                    markdown += f"{subcategory}\n"
 
     return markdown
 
