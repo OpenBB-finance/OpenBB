@@ -124,7 +124,7 @@ def generate_markdown_section(meta: Dict[str, Any]):
         markdown += "| ---- | ---- | ----------- | ------- | -------- |\n"
         for param in meta["params"]:
             description = param["doc"].replace("\n", "<br/>") if param["doc"] else ""
-            markdown += f"| {param['name']} | {param['type']} | {description} | {param['default']} | {param['optional']} |\n"  # noqa: E501
+            markdown += f"| {param['name']} | {param['type']} | {description} | {param['default']} | {param['optional']} |\n"  # noqa
         markdown += "\n\n"
     else:
         markdown += "This function does not take any parameters.\n\n"

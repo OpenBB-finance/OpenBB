@@ -233,8 +233,7 @@ function uploadImage() {
     });
 }
 
-function downloadImage() {
-  const loader = document.getElementById("loader");
+function downloadImage(loader) {
   domtoimage
     .toPng(document.getElementById("all-your-base"))
     .then(function (dataUrl) {

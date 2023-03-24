@@ -20,7 +20,8 @@ try:
     from pywry.core import PyWry
 
     PYWRY_AVAILABLE = True
-except ImportError:
+except ImportError as e:
+    print(f"\033[91m{e}\033[0m")
     PYWRY_AVAILABLE = False
 
 from svglib.svglib import svg2rlg

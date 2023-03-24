@@ -30,7 +30,7 @@ body {
   transform: translate(-50%, -50%);
   height: 100px;
   width: 200px;
-  display: flex;
+  display: none;
   justify-content: center;
   align-items: center;
   background-color: rgba(0, 0, 0, 0.7);
@@ -39,11 +39,12 @@ body {
   border: 4px solid rgba(250, 250, 250, 0.5);
   font-size: 1.5em;
   border-radius: 20px;
-  opacity: 0;
+  animation: popup 0.3s ease-in-out;
+
 }
 
 .saving.show {
-  opacity: 1;
+  display: flex;
 }
 
 .all-your-base {

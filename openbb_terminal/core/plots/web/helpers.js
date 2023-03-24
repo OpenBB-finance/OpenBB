@@ -91,6 +91,7 @@ function checkFile(popup, type = false) {
   let csv_columns = popup.querySelector("#csv_columns");
   let csv_colors = popup.querySelector("#csv_colors");
   let csv_percent_change_div = popup.querySelector("#csv_percent_change_div");
+  csv_percent_change_div.style.display = "none";
 
   if (csv_file.files.length > 0) {
     console.log("file selected");
@@ -160,7 +161,6 @@ function checkFile(popup, type = false) {
           }
         }
 
-        csv_percent_change_div.style.display = "none";
       } else {
         csv_columns.innerHTML = `
                     <label for="csv_x">X axis</label>

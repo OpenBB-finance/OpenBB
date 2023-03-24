@@ -67,7 +67,7 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
               loader.classList.add("show");
               hideModebar();
               setTimeout(function () {
-                downloadImage();
+                downloadImage(loader);
               }, 20);
               setTimeout(function () {
                 saving.classList.remove("show");
