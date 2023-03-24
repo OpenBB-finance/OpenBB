@@ -25,7 +25,7 @@ def get_list_of_dicts(d: Dict[str, str]) -> List[Dict[str, Any]]:
     """
     list_of_dicts = []
     for k, v in d.items():
-        list_of_dicts.append(nested_dict(k, "/", v.split(", ")))
+        list_of_dicts.append(nested_dict(k, "/", v.replace(" ", "").split(",")))
     return list_of_dicts
 
 
