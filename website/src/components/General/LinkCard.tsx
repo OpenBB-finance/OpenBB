@@ -6,6 +6,8 @@ import WindowsIcon from "../Icons/Windows";
 import DockerIcon from "../Icons/Docker";
 import AppleIcon from "../Icons/Apple";
 import SourceIcon from "../Icons/Source";
+import DiscordIcon from "../Icons/Discord";
+import TelegramIcon from "../Icons/Telegram";
 
 interface CardProps {
   title: string;
@@ -13,7 +15,7 @@ interface CardProps {
   className?: string;
   type?: "terminal" | "sdk" | "bot";
   url: string;
-  platform?: "windows" | "macos" | "source" | "docker";
+  platform?: "windows" | "macos" | "source" | "docker" | "discord" | "telegram";
 }
 
 export default function Card({
@@ -60,6 +62,12 @@ export default function Card({
         )}
         {platform === "docker" && (
           <DockerIcon className="w-4 h-4" />
+        )}
+        {platform === "discord" && (
+          <DiscordIcon className="w-4 h-4" />
+        )}
+        {platform === "telegram" && (
+          <TelegramIcon className="w-4 h-4" />
         )}
         {title}
         </p>
