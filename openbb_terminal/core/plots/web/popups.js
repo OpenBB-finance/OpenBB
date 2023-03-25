@@ -384,22 +384,25 @@ function on_submit(popup_id, on_annotation = null) {
           };
         } else {
           let yaxis;
+          let yaxes = Object.keys(gd.layout)
+            .filter((k) => k.startsWith("yaxis"))
+            .map((k) => gd.layout[k].title);
 
-          if (globals.csv_yaxis_id == null && popup_data.percent_change) {
-            let yaxes = Object.keys(gd.layout)
-              .filter((k) => k.startsWith("yaxis"))
-              .map((k) => gd.layout[k].title);
+          yaxis = `y${yaxes.length + 1}`;
+          yaxis_id = `yaxis${yaxes.length + 1}`;
 
-            yaxis = `y${yaxes.length + 1}`;
-            yaxis_id = `yaxis${yaxes.length + 1}`;
-
+          if (globals.csv_yaxis_id == null && popup_data.percent_change == true) {
             globals.csv_yaxis_id = yaxis_id;
             globals.csv_yaxis = yaxis;
-            gd.layout.margin.r -= 20;
+            gd.layout.margin.l -= 20;
             gd.layout.showlegend = true;
           }
 
           orginal_data = data;
+          let non_null = data.findIndex(
+            (x) => x[popup_data.y] != null && x[popup_data.y] != 0
+          );
+          console.log(`non_null: ${non_null} ${data[non_null][popup_data.y]}`);
 
           trace = {
             x: data.map(function (row) {
@@ -408,8 +411,8 @@ function on_submit(popup_id, on_annotation = null) {
             y: data.map(function (row) {
               if (popup_data.percent_change) {
                 return (
-                  (row[popup_data.y] - data[0][popup_data.y]) /
-                  data[0][popup_data.y]
+                  (row[popup_data.y] - data[non_null][popup_data.y]) /
+                  data[non_null][popup_data.y]
                 );
               } else {
                 return row[popup_data.y];
@@ -426,10 +429,10 @@ function on_submit(popup_id, on_annotation = null) {
             showlegend: true,
             connectgaps: true,
             xaxis: main_trace.xaxis,
-            yaxis: globals.csv_yaxis,
+            yaxis: popup_data.percent_change ? globals.csv_yaxis : yaxis,
           };
 
-          if (globals.added_traces.length == 0 && popup_data.percent_change) {
+          if (globals.added_traces.length == 0 && popup_data.percent_change == true) {
             gd.layout[yaxis_id] = {
               overlaying: "y",
               side: "left",
@@ -457,6 +460,34 @@ function on_submit(popup_id, on_annotation = null) {
                 gd.data.length > 1 ? 65 : 55;
               gd.layout.margin.l += gd.data.length > 1 ? 65 : 75;
             }
+          } else if (popup_data.percent_change == false) {
+            console.log(`data.length: ${gd.data.length}`);
+            gd.layout[yaxis_id] = {
+              overlaying: "y",
+              side: "left",
+              title: {
+                text: popup_data.name,
+                font: {
+                  size: 14,
+                },
+                standoff: 0,
+              },
+              tickfont: { size: 14 },
+              ticksuffix: gd.data.length > 1 ? "       " : "",
+              tickpadding: 5,
+              showgrid: false,
+              showline: false,
+              showticklabels: true,
+              zeroline: false,
+              anchor: "x",
+              type: "linear",
+              autorange: true,
+            };
+            if (globals.cmd_src_idx != null) {
+              gd.layout.annotations[globals.cmd_src_idx].xshift -=
+                globals.added_traces.length > 1 ? 65 : 45;
+              gd.layout.margin.l += globals.added_traces.length > 1 ? 50 :  45;
+            }
           }
         }
 
@@ -466,13 +497,16 @@ function on_submit(popup_id, on_annotation = null) {
 
         Plotly.addTraces(gd, trace);
 
-        gd.layout[globals.csv_yaxis_id].type = "linear";
+        if (globals.csv_yaxis_id != null) {
+          gd.layout[globals.csv_yaxis_id].type = "linear";
+        }
         Plotly.react(gd, gd.data, gd.layout);
 
         // We empty the fields and innerHTML after the plot is made
         globals.CSV_DIV.querySelector("#csv_colors").innerHTML = "";
         globals.CSV_DIV.querySelector("#csv_columns").innerHTML = "";
-        globals.CSV_DIV.querySelector("#csv_percent_change_div").style.display = "none";
+        globals.CSV_DIV.querySelector("#csv_percent_change_div").style.display =
+          "none";
 
         globals.CSV_DIV.querySelectorAll("input").forEach(function (input) {
           input.value = "";
