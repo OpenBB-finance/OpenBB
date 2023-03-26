@@ -6,7 +6,7 @@ reference_import = """import ReferenceCard from "@site/src/components/General/Re
 
 <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">
 """
-kwargs = {"encoding": "utf-8", "newline": "\n"}
+wopen_kwargs = {"encoding": "utf-8", "newline": "\n"}
 
 
 def create_cmd_cards(cmd_text: List[Dict[str, str]], url: str) -> str:
@@ -41,7 +41,7 @@ for bot in ["discord", "telegram"]:
             desc_regex = re.compile(
                 r"---\n\n# ([^\n]+)(.*)### Usage", (re.DOTALL | re.MULTILINE)
             )
-            description = desc_regex.search(file.read_text()).group(2).strip()
+            description = desc_regex.search(file.read_text()).group(2).strip()  # type: ignore
 
             cmd_dict = dict(
                 name=file.stem,
@@ -55,7 +55,7 @@ for bot in ["discord", "telegram"]:
             continue
 
         with open(
-            Path(__file__).parent / bot / rel_path / "index.mdx", "w", **kwargs
+            Path(__file__).parent / bot / rel_path / "index.mdx", "w", **wopen_kwargs  # type: ignore
         ) as subindex:
             subindex.write(f"# {folder.name}\n\n{reference_import}\n")
 
@@ -72,7 +72,7 @@ for bot in ["discord", "telegram"]:
             )
             subindex.write("</ul>\n")
 
-    with open(Path(__file__).parent / bot / "index.mdx", "w", **kwargs) as index:
+    with open(Path(__file__).parent / bot / "index.mdx", "w", **wopen_kwargs) as index:  # type: ignore
         index.write(f"# OpenBB {bot.title()} Reference\n\n{reference_import}\n")
 
         for folder in (Path(__file__).parent / bot).glob("*"):

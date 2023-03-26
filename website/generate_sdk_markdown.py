@@ -2,6 +2,7 @@ import inspect
 import json
 import shutil
 from pathlib import Path
+from textwrap import shorten
 from typing import Any, Dict, List, Literal, TextIO
 
 from docstring_parser import parse
@@ -22,7 +23,7 @@ def get_function_meta(trailmap: Trailmap, trail_type: Literal["model", "view"]):
     func_attr = trailmap.func_attrs[trail_type]
     if not func_attr.func_unwrapped:
         return None
-    doc_parsed = parse(func_attr.long_doc)
+    doc_parsed = parse(func_attr.long_doc)  # type: ignore
     line = func_attr.lineon
     path = func_attr.full_path
     func_def = func_attr.func_def
@@ -61,7 +62,10 @@ def get_function_meta(trailmap: Trailmap, trail_type: Literal["model", "view"]):
 
     for example in doc_parsed.examples:
         examples.append(
-            {"snippet": example.snippet, "description": example.description.strip()}
+            {
+                "snippet": example.snippet,
+                "description": example.description.strip(),  # type: ignore
+            }
         )
 
     return {
@@ -167,15 +171,12 @@ def create_nested_menus_card(folder: Path, url: str) -> str:
         for sub in folder.glob("**/**/*.md*")
         if sub.is_file() and sub.stem != "index"
     ]
-    if len(sub_categories) > 10:
-        sub_categories = sub_categories[:10] + ["..."]
-
-    sub_categories = ", ".join(sub_categories).replace(" ,...", "...")
+    categories = shorten(", ".join(sub_categories), width=116, placeholder="...")
     url = f"/sdk/reference/{url}/{folder.name}".replace("//", "/")
 
     index_card = f"""<ReferenceCard
         title="{folder.name}"
-        description="{sub_categories}"
+        description="{categories}"
         url="{url}"
     />\n"""
     return index_card
@@ -185,9 +186,10 @@ def create_cmd_cards(cmd_text: List[Dict[str, str]]) -> str:
     cmd_cards = ""
     for cmd in cmd_text:
         url = f"/sdk/reference/{cmd['url']}/{cmd['title']}".replace("//", "/")
+        description = shorten(cmd["description"], width=116, placeholder="...")
         cmd_cards += f"""<ReferenceCard
     title="{cmd["title"]}"
-    description="{cmd["description"]}"
+    description="{description}"
     url="{url}"
     command="true"
 />\n"""
@@ -195,7 +197,7 @@ def create_cmd_cards(cmd_text: List[Dict[str, str]]) -> str:
 
 
 def write_reference_index(
-    cmd_cards: Dict[Path, List[Dict[str, str]]],
+    reference_cards: Dict[Path, List[Dict[str, str]]],
     fname: str,
     path: Path,
     rel_path: Path,
@@ -206,10 +208,10 @@ def write_reference_index(
 
     Parameters
     ----------
-    cmd_cards : Dict[Path, List[Dict[str, str]]]
-        Dictionary of command cards to be written to the index.md file.
+    reference_cards : Dict[Path, List[Dict[str, str]]]
+        Dictionary of command cards to be written to the index.mdx file.
     fname : str
-        Name of the index.md file.
+        Name of the index.mdx file.
     path : Path
         Path to the folder to be written.
     rel_path : Path
@@ -222,7 +224,7 @@ def write_reference_index(
         if folder.is_dir():
             f.write(create_nested_menus_card(folder, "/".join(rel_path.parts)))
 
-    folder_cmd_cards = cmd_cards.get(path, {})
+    folder_cmd_cards: List[Dict[str, str]] = reference_cards.get(path, {})  # type: ignore
     if folder_cmd_cards:
         f.write(create_cmd_cards(folder_cmd_cards))
 
@@ -270,7 +272,7 @@ def main() -> bool:
             reference_cards.setdefault(filepath.parent, []).append(
                 dict(
                     title=trailmap.class_attr,
-                    description=func.short_doc,
+                    description=func.short_doc,  # type: ignore
                     url="/".join(trailmap.location_path),
                 )
             )
