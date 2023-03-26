@@ -875,10 +875,9 @@ class OpenBBFigure(go.Figure):
         col : `int`, optional
             Column number, by default 1
         """
-        colors = [
-            theme.down_color if row.Open < row[close_col] else theme.up_color
-            for _, row in df_stock.iterrows()
-        ]
+        colors = np.where(
+            df_stock.Open < df_stock[close_col], theme.up_color, theme.down_color
+        )
         vol_scale = self.chart_volume_scaling(df_stock[volume_col])
         self.add_bar(
             x=df_stock.index,
