@@ -8,11 +8,15 @@ export default function ReferenceCard({
   title,
   url,
   description,
+  command,
 }: {
   title: string;
   url: string;
   description: string;
+  command: string;
 }) {
+  // TODO: Waiting for mockup of how to display the command vs menu item
+  const something = command ? "" : "";
   const { pathname } = useLocation();
   return (
     <Link
@@ -30,7 +34,7 @@ export default function ReferenceCard({
       to={url}
     >
       <div className="absolute top-0 right-0 left-0 bottom-0 bg-gradient-to-t from-black to-transparent"></div>
-      <p className={"py-2 font-bold text-lg my-0"}>{title}</p>
+      <p className={"py-2 font-bold text-lg my-0"}>{title}{something}</p>
       {description ? (
         <p className="text-grey-200 text-xs mt-2 mb-0">{description}</p>
       ) : null}
