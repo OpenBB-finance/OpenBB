@@ -16,15 +16,15 @@ import LinkCard from "@site/src/components/General/LinkCard";
 
 <LinkCard
     type="bot"
-	title="Discord"
-	description="Discord Commands for OpenBB Bot"
+	  title="Discord"
+	  description="Discord Commands for OpenBB Bot"
     url="/bot/reference/discord"
     platform = "discord"
 />
 <LinkCard
     type="bot"
-	title="Telegram"
-	description="Telegram Commands for OpenBB Bot"
+	  title="Telegram"
+	  description="Telegram Commands for OpenBB Bot"
     url="/bot/reference/telegram"
     platform = "telegram"
 />
