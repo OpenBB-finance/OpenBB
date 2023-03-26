@@ -18,6 +18,7 @@ import matplotlib.pyplot as plt
 from packaging import version
 
 from openbb_terminal import thought_of_the_day as thought
+from openbb_terminal.config_terminal import setup_config_terminal
 
 # IMPORTATION INTERNAL
 from openbb_terminal.core.config.paths import SETTINGS_ENV_FILE
@@ -365,6 +366,8 @@ def reset(queue: Optional[List[str]] = None):
 
         # pylint: disable=import-outside-toplevel
         from openbb_terminal.terminal_controller import main
+
+        setup_config_terminal()
 
         # we run the terminal again
         main(debug, ["/".join(queue) if len(queue) > 0 else ""], module="")  # type: ignore

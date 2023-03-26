@@ -140,8 +140,8 @@ class TerminalStyle:
 
     def load_available_styles(self) -> None:
         """Load custom styles from default and user folders."""
-        self.load_available_styles_from_folder(self.DEFAULT_STYLES_LOCATION)
-        self.load_available_styles_from_folder(self.USER_STYLES_LOCATION)
+        self.load_available_styles_from_folder(self.DEFAULT_STYLES_LOCATION.resolve())
+        self.load_available_styles_from_folder(self.USER_STYLES_LOCATION.resolve())
 
     def load_json_style(self, file: Path) -> Dict[str, Any]:
         """Load style from json file.mmm
