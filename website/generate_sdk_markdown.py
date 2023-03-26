@@ -1,17 +1,14 @@
 import inspect
 import json
-import re
 import shutil
 from pathlib import Path
-from typing import Any, Dict, Literal, Optional, Union
+from typing import Any, Dict, List, Literal, TextIO
 
 from docstring_parser import parse
 
 from openbb_terminal.core.sdk.trailmap import Trailmap, get_trailmaps
-from website.controller_doc_classes import sub_names_full as subnames
 
 website_path = Path(__file__).parent.absolute()
-TITLE_REGEX = re.compile(r"title=\"([^\"]+)\"")
 
 reference_import = """
 import ReferenceCard from "@site/src/components/General/ReferenceCard";
@@ -164,64 +161,83 @@ def generate_markdown_section(meta: Dict[str, Any]):
     return markdown
 
 
-def add_todict(d: dict, location_path: list, tmap: Trailmap) -> dict:
-    """Adds the trailmap to the dictionary. A trailmap is a path to a function
-    in the sdk. This function creates the dictionary paths to the function."""
+def create_nested_menus_card(folder: Path, url: str) -> str:
+    sub_categories = [
+        sub.stem
+        for sub in folder.glob("**/**/*.md*")
+        if sub.is_file() and sub.stem != "index"
+    ]
+    if len(sub_categories) > 10:
+        sub_categories = sub_categories[:10] + ["..."]
 
-    if location_path[0] not in d:
-        d[location_path[0]] = {}
+    sub_categories = ", ".join(sub_categories).replace(" ,...", "...")
+    url = f"/sdk/reference/{url}/{folder.name}".replace("//", "/")
 
-    if len(location_path) > 1:
-        add_todict(d[location_path[0]], location_path[1:], tmap)
-    else:
-        func = tmap.func_attrs.get("model", tmap.func_attrs.get("view", None))
-        url = (
-            f"/sdk/reference/{'/'.join(tmap.location_path)}/{tmap.class_attr}"
-        ).replace("//", "/")
-
-        d[location_path[0]][tmap.class_attr] = (
-            f'<ReferenceCard title="{tmap.class_attr}" description="{func.short_doc}" '
-            f'url="{url}" />'
-        )
-
-    return d
+    index_card = f"""<ReferenceCard
+        title="{folder.name}"
+        description="{sub_categories}"
+        url="{url}"
+    />\n"""
+    return index_card
 
 
-def get_nested_dict(d: dict, path: Path) -> Union[dict, None]:
-    """Returns the nested dictionary for the given key."""
-    root, sub = path.parent.name, path.name
-
-    if sub in d:
-        return d[sub]
-    if root in d and sub in d[root]:
-        return d[root][sub]
-    for v in d.values():
-        if isinstance(v, dict):
-            item = get_nested_dict(v, path)
-            if item is not None:
-                return item
-
-    return None
+def create_cmd_cards(cmd_text: List[Dict[str, str]]) -> str:
+    cmd_cards = ""
+    for cmd in cmd_text:
+        url = f"/sdk/reference/{cmd['url']}/{cmd['title']}".replace("//", "/")
+        cmd_cards += f"""<ReferenceCard
+    title="{cmd["title"]}"
+    description="{cmd["description"]}"
+    url="{url}"
+    command="true"
+/>\n"""
+    return cmd_cards
 
 
-def get_subname(name: str) -> str:
-    """Returns the subname of the given name."""
-    if name != "reference":
-        subname = (
-            name.title() if name.lower() not in subnames else subnames[name.lower()]
-        )
-        return subname
-    return ""
+def write_reference_index(
+    cmd_cards: Dict[Path, List[Dict[str, str]]],
+    fname: str,
+    path: Path,
+    rel_path: Path,
+    f: TextIO,
+) -> None:
+    """Write to the corresponding index.mdx file for a given folder, with the
+    appropriate nested menus and command cards.
+
+    Parameters
+    ----------
+    cmd_cards : Dict[Path, List[Dict[str, str]]]
+        Dictionary of command cards to be written to the index.md file.
+    fname : str
+        Name of the index.md file.
+    path : Path
+        Path to the folder to be written.
+    rel_path : Path
+        Relative path to the folder to be written.
+    f : TextIO
+        File to write to.
+    """
+    f.write(f"# {fname}\n{reference_import}")
+    for folder in path.glob("*"):
+        if folder.is_dir():
+            f.write(create_nested_menus_card(folder, "/".join(rel_path.parts)))
+
+    folder_cmd_cards = cmd_cards.get(path, {})
+    if folder_cmd_cards:
+        f.write(create_cmd_cards(folder_cmd_cards))
+
+    f.write("</ul>\n")
 
 
 def main() -> bool:
+    """Generate markdown files for OpenBB SDK Documentation."""
     print("Loading trailmaps...")
     trailmaps = get_trailmaps()
     kwargs = {"encoding": "utf-8", "newline": "\n"}
 
     print("Generating markdown files...")
     content_path = website_path / "content/sdk/reference"
-    functions_dict: dict = {}
+    reference_cards: Dict[Path, List[Dict[str, str]]] = {}
 
     for file in content_path.glob("*"):
         if file.is_file():
@@ -233,9 +249,6 @@ def main() -> bool:
             if trailmap.location_path[0] == "root":
                 trailmap.location_path[0] = ""
 
-            functions_dict = add_todict(
-                functions_dict, trailmap.location_path, trailmap
-            )
             model_meta = (
                 get_function_meta(trailmap, "model") if trailmap.model else None
             )
@@ -250,6 +263,17 @@ def main() -> bool:
                 / "/".join(trailmap.location_path)
                 / f"{trailmap.class_attr}.md"
             )
+            func = trailmap.func_attrs.get(
+                "model", trailmap.func_attrs.get("view", None)
+            )
+
+            reference_cards.setdefault(filepath.parent, []).append(
+                dict(
+                    title=trailmap.class_attr,
+                    description=func.short_doc,
+                    url="/".join(trailmap.location_path),
+                )
+            )
 
             filepath.parent.mkdir(parents=True, exist_ok=True)
             with open(filepath, "w", **kwargs) as f:  # type: ignore
@@ -261,29 +285,21 @@ def main() -> bool:
             )
             return False
 
-    functions_dict = {
-        k: dict(sorted(v.items(), key=lambda item: item[0]))
-        for k, v in sorted(functions_dict.items(), key=lambda item: item[0])
-    }
-    index_markdown = (
-        f"# OpenBB SDK Reference\n{reference_import}\n"
-        f"{generate_root_index_markdown(functions_dict)}\n</ul>"
-    )
     with open(content_path / "index.mdx", "w", **kwargs) as f:  # type: ignore
-        f.write(index_markdown)
+        fname = "OpenBB SDK Reference"
+        rel_path = content_path.relative_to(content_path)
+        write_reference_index(reference_cards, fname, content_path, rel_path, f)
 
     with open(content_path / "_category_.json", "w", **kwargs) as f:  # type: ignore
+        """Generate category json"""
         f.write(json.dumps({"label": "SDK Reference", "position": 4}, indent=2))
 
     def gen_category_json(fname: str, path: Path):
         """Generate category json"""
-        fdict = {fname: get_nested_dict(functions_dict, path)}
 
         with open(path / "index.mdx", "w", **kwargs) as f:  # type: ignore
-            f.write(
-                f"# {fname}\n{reference_import}{generate_index_markdown('', fdict, 2, path)}"
-            )
-            f.write("</ul>\n")
+            rel_path = path.relative_to(content_path)
+            write_reference_index(reference_cards, fname, path, rel_path, f)
 
     def gen_category_recursive(nested_path: Path):
         """Generate category json recursively"""
@@ -296,70 +312,6 @@ def main() -> bool:
     print("Markdown files generated, check the functions folder")
 
     return True
-
-
-def generate_index_markdown(
-    markdown: str, d: dict, level: int, path: Optional[Path] = None
-) -> str:
-    """Generates the index markdown for the given dictionary."""
-    if path is None:
-        path = Path()
-    for key in d:
-        if isinstance(d[key], dict):
-            markdown = generate_index_markdown(markdown, d[key], level + 1, path)
-        else:
-            markdown += f"{d[key]}\n"
-
-    return markdown
-
-
-def generate_root_index_markdown(functions_dict: dict) -> str:
-    """Generates the root index markdown for the given dictionary."""
-    reference_dict: dict = get_root_index_dict({}, functions_dict)
-    markdown = ""
-
-    for cmd in functions_dict[""].values():
-        if isinstance(cmd, str):
-            markdown += f"{cmd}\n"
-
-    for key, nested_dict in reference_dict.items():
-        if isinstance(nested_dict, dict):
-            for subcategory in nested_dict.values():
-                if isinstance(subcategory, list) and key != "":
-                    if len(subcategory) > 10:
-                        subcategory = subcategory[:10] + ["..."]
-                    markdown += (
-                        f'<ReferenceCard title="{key}" description="{", ".join(subcategory)}" '
-                        f'url="/sdk/reference/{key}" />\n'
-                    )
-
-    return markdown
-
-
-def get_root_index_dict(
-    reference_dict: Dict[str, Dict[str, Dict[str, list]]],
-    d: dict,
-    root: str = "",
-) -> Dict[str, Dict[str, Dict[str, list]]]:
-    """Generates the root index dictionary for the given dictionary."""
-
-    for key in d:
-        if isinstance(d[key], dict):
-            if root == "":
-                reference_dict.setdefault(key, {})
-            reference_dict = get_root_index_dict(
-                reference_dict, d[key], root + f"{key}."
-            )
-        else:
-            nested_dict = reference_dict
-            for path in root.split("."):
-                if path in nested_dict and isinstance(nested_dict[path], dict):
-                    nested_dict = nested_dict[path]
-            nested_dict.setdefault("subcategories", []).append(
-                TITLE_REGEX.search(d[key]).group(1)
-            )
-
-    return reference_dict
 
 
 if __name__ == "__main__":

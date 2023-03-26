@@ -144,6 +144,10 @@
             .format(date)
             .replace(/:\d\d /, " ");
 
+          document
+            .querySelector('meta[name="color-scheme"]')
+            .setAttribute("content", window.plotly_figure.layout.template.layout.mapbox.style);
+
           document.getElementById("date").innerHTML = formattedDate;
           document.getElementById("title").innerHTML =
             window.plotly_figure?.layout?.title?.text ?? "Interactive Chart";

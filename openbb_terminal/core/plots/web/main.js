@@ -16,6 +16,9 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
   console.log("plotly_figure", plotly_figure);
   let graphs = plotly_figure;
 
+  const loader = document.getElementById("loader");
+  let saving = document.getElementById("saving");
+
   // We add the event listeners for csv file/type changes
   globals.CSV_DIV.querySelector("#csv_file").addEventListener(
     "change",
@@ -33,6 +36,16 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
   );
   globals.filename = openbbFilename(graphs);
 
+  const non_blocking = (func, delay) => {
+    let timeout;
+    return function () {
+      const context = this;
+      const args = arguments;
+      clearTimeout(timeout);
+      timeout = setTimeout(() => func.apply(context, args), delay);
+    };
+  };
+
   // Sets the config with the custom buttons
   CONFIG = {
     scrollZoom: true,
@@ -46,7 +59,20 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
           name: "Download Data (Ctrl+S)",
           icon: Plotly.Icons.disk,
           click: function (gd) {
-            downloadData(gd);
+            let saved_csv = document.createElement("div");
+            saved_csv.innerHTML = "Saved CSV";
+            saved_csv.classList.add("saving");
+            saved_csv.classList.add("show");
+            document.body.appendChild(saved_csv);
+            setTimeout(function () {
+              downloadData(gd);
+            }, 500);
+            setTimeout(function () {
+              saved_csv.classList.remove("show");
+              setTimeout(function () {
+                document.body.removeChild(saved_csv);
+              }, 500);
+            }, 1000);
           },
         },
         // {
@@ -62,18 +88,18 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
           click: function () {
             const loader = document.getElementById("loader");
             const saving = document.getElementById("saving");
-            setTimeout(function () {
-              saving.classList.add("show");
-              loader.classList.add("show");
-              hideModebar();
+            saving.classList.add("show");
+            loader.classList.add("show");
+            hideModebar();
+            non_blocking(function () {
+              downloadImage();
               setTimeout(function () {
-                downloadImage(loader);
-              }, 20);
-              setTimeout(function () {
-                saving.classList.remove("show");
-                loader.classList.remove("show");
-              }, 1000);
-            }, 20);
+                setTimeout(function () {
+                  saving.classList.remove("show");
+                  loader.classList.remove("show");
+                }, 50);
+              }, 25);
+            }, 2)();
           },
         },
       ],
@@ -136,20 +162,9 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
             let active = true;
             if (button.style.border == "transparent") {
               active = false;
-
-              const autoscale = (func, delay) => {
-                let timeout;
-                return function () {
-                  const context = this;
-                  const args = arguments;
-                  clearTimeout(timeout);
-                  timeout = setTimeout(() => func.apply(context, args), delay);
-                };
-              };
-
               globals.CHART_DIV.on(
                 "plotly_relayout",
-                autoscale(function (eventdata) {
+                non_blocking(function (eventdata) {
                   if (eventdata["xaxis.range[0]"] == undefined) {
                     return;
                   }
@@ -192,28 +207,6 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
       pad: 2,
     };
   }
-
-  // We setup keyboard shortcuts custom to OpenBB
-  window.document.addEventListener("keydown", function (e) {
-    if (e.ctrlKey && e.key.toLowerCase() == "t") {
-      openPopup("popup_text");
-    }
-    if (e.ctrlKey && e.key.toLowerCase() == "e") {
-      changeColor();
-    }
-    if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() == "t") {
-      openPopup("popup_title");
-    }
-    if (e.ctrlKey && e.key.toLowerCase() == "s") {
-      downloadData(globals.CHART_DIV);
-    }
-    if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() == "c") {
-      openPopup("popup_csv");
-    }
-    if (e.key == "Escape") {
-      closePopup();
-    }
-  });
 
   graphs.layout.autosize = true;
   // We set the height and width to undefined, so that plotly.js can
@@ -269,6 +262,8 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
     document.body.style.backgroundColor = "#000000";
     graphs.layout.template.layout.paper_bgcolor = "#000000";
     graphs.layout.template.layout.plot_bgcolor = "#000000";
+  } else {
+    document.body.style.backgroundColor = "#FFFFFF";
   }
 
   // We set the plot config and plot the chart
@@ -276,8 +271,8 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
   Plotly.newPlot(globals.CHART_DIV, graphs, { responsive: true });
 
   // Create global variables to for use later
-  let modebar = document.getElementsByClassName("modebar-container");
-  let modebar_buttons = modebar[0].getElementsByClassName("modebar-btn");
+  const modebar = document.getElementsByClassName("modebar-container")[0];
+  const modebar_buttons = modebar.getElementsByClassName("modebar-btn");
   globals.barButtons = {};
 
   for (let i = 0; i < modebar_buttons.length; i++) {
@@ -324,6 +319,51 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
     is_3dmesh = true;
   }
 
+  if (window.plotly_figure.layout.template.layout.mapbox.style === "light") {
+    for (const el of document.styleSheets[0].cssRules) {
+      if (el.selectorText === ".modebar-group") {
+        el.style.backgroundColor = "#FFFFFF";
+      }
+    }
+  }
+
+  function hideModebar() {
+    if (globals.modebarHidden) {
+      modebar.style.display = "flex";
+      globals.modebarHidden = false;
+    } else {
+      modebar.style.display = "none";
+      globals.modebarHidden = true;
+    }
+  }
+
+  // We setup keyboard shortcuts custom to OpenBB
+  window.document.addEventListener("keydown", function (e) {
+    if (e.key.toLowerCase() == "h" && (e.ctrlKey || e.metaKey)) {
+      e.preventDefault();
+      hideModebar();
+    }
+    if (e.ctrlKey && e.key.toLowerCase() == "t") {
+      openPopup("popup_text");
+    }
+    if (e.ctrlKey && e.key.toLowerCase() == "e") {
+      changeColor();
+    }
+    if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() == "t") {
+      openPopup("popup_title");
+    }
+    if (e.ctrlKey && e.key.toLowerCase() == "s") {
+      downloadData(globals.CHART_DIV);
+    }
+    if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() == "c") {
+      e.preventDefault();
+      openPopup("popup_csv");
+    }
+    if (e.key == "Escape") {
+      closePopup();
+    }
+  });
+
   // send a relayout event to trigger the initial zoom/bars-resize
   // check if the xaxis.range is defined
   if (
@@ -359,22 +399,3 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
     }, close_interval);
   }
 }
-
-function hideModebar() {
-  const modebar = document.getElementsByClassName("modebar-container")[0];
-  if (globals.modebarHidden) {
-    modebar.style.display = "flex";
-    globals.modebarHidden = false;
-  } else {
-    modebar.style.display = "none";
-    globals.modebarHidden = true;
-  }
-}
-
-// listen to cmd+h or ctrl+h to hide the modebar
-document.addEventListener("keydown", function (event) {
-  if (event.key == "h" && (event.ctrlKey || event.metaKey)) {
-    event.preventDefault();
-    hideModebar();
-  }
-});

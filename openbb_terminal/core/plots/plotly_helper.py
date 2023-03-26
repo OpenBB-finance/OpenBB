@@ -46,12 +46,13 @@ class TerminalStyle:
 
     DEFAULT_STYLES_LOCATION = MISCELLANEOUS_DIRECTORY / "styles" / "default"
     USER_STYLES_LOCATION = (
-        get_current_user().preferences.USER_DATA_DIRECTORY / "styles" / "user"
+        get_current_user().preferences.USER_DATA_DIRECTORY / "styles"
     )
 
     plt_styles_available: Dict[str, Path] = {}
     plt_style: str = "dark"
     plotly_template: Dict[str, Any] = {}
+    mapbox_style: str = "dark"
 
     console_styles_available: Dict[str, Path] = {}
     console_style: Dict[str, Any] = {}
@@ -110,6 +111,11 @@ class TerminalStyle:
                 return
 
             pio.templates.default = "openbb"
+            self.mapbox_style = (
+                self.plotly_template.setdefault("layout", {})
+                .setdefault("mapbox", {})
+                .setdefault("style", "dark")
+            )
 
     def load_available_styles_from_folder(self, folder: Path) -> None:
         """Load custom styles from folder.
@@ -140,7 +146,7 @@ class TerminalStyle:
         self.load_available_styles_from_folder(self.USER_STYLES_LOCATION)
 
     def load_json_style(self, file: Path) -> Dict[str, Any]:
-        """Load style from json file.
+        """Load style from json file.mmm
 
         Parameters
         ----------
@@ -165,8 +171,13 @@ class TerminalStyle:
         """
         style = style or self.plt_style
 
-        if style in self.plt_styles_available:
-            self.load_plt_style(style)
+        if style not in self.plt_styles_available:
+            console.print(
+                f"[red]Plot Style {style} not found. Using default style.[/red]",
+            )
+            style = "dark"
+
+        self.load_plt_style(style)
 
     def load_plt_style(self, style: str) -> None:
         """Load Plotly style from file.
@@ -1010,16 +1021,15 @@ class OpenBBFigure(go.Figure):
         )
 
         # Set modebar style
-        if self.layout.template.layout.mapbox.style == "dark":  # type: ignore
-            self.update_layout(  # type: ignore
-                newshape_line_color="gold",
-                modebar=dict(
-                    orientation="v",
-                    bgcolor="#2A2A2A",
-                    color="#FFFFFF",
-                    activecolor="#d1030d",
-                ),
-            )
+        self.update_layout(  # type: ignore
+            newshape_line_color="gold" if theme.mapbox_style == "dark" else "#0d0887",
+            modebar=dict(
+                orientation="v",
+                bgcolor="#2A2A2A" if theme.mapbox_style == "dark" else "gray",
+                color="#FFFFFF" if theme.mapbox_style == "dark" else "black",
+                activecolor="#d1030d" if theme.mapbox_style == "dark" else "blue",
+            ),
+        )
 
         if external or self._exported:
             return self  # type: ignore
@@ -1571,7 +1581,7 @@ class OpenBBFigure(go.Figure):
                 text=command_location,
                 textangle=-90,
                 font_size=24,
-                font_color="gray",
+                font_color="gray" if theme.mapbox_style == "dark" else "black",
                 opacity=0.5,
                 yanchor="middle",
                 xanchor="left",
@@ -1594,13 +1604,14 @@ class OpenBBFigure(go.Figure):
     def add_logscale_menus(self, yaxis: str = "yaxis") -> None:
         """Set the menus for the figure."""
         self._added_logscale = True
+        bg_color = "#000000" if theme.mapbox_style == "dark" else "#FFFFFF"  # type: ignore
+        font_color = "#FFFFFF" if theme.mapbox_style == "dark" else "#000000"  # type: ignore
         self.update_layout(
             xaxis=dict(
                 rangeslider=dict(visible=False),
                 rangeselector=dict(
-                    bgcolor="#000000",
-                    bordercolor="gold",
-                    font=dict(color="white"),
+                    bgcolor=bg_color,
+                    font=dict(color=font_color),
                     buttons=list(
                         [
                             dict(
@@ -1634,8 +1645,8 @@ class OpenBBFigure(go.Figure):
         self.update_layout(
             updatemenus=[
                 dict(
-                    bgcolor="#0f0f0f",
-                    font=dict(color="white", size=14),
+                    bgcolor=bg_color,
+                    font=dict(color=font_color, size=14),
                     buttons=[
                         dict(
                             label="linear   ",

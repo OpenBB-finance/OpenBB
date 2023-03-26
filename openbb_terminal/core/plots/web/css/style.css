@@ -40,7 +40,6 @@ body {
   font-size: 1.5em;
   border-radius: 20px;
   animation: popup 0.3s ease-in-out;
-
 }
 
 .saving.show {

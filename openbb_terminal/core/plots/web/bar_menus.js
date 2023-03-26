@@ -233,7 +233,9 @@ function uploadImage() {
     });
 }
 
-function downloadImage(loader) {
+function downloadImage() {
+  const loader = document.getElementById("loader");
+  loader.classList.add("show");
   domtoimage
     .toPng(document.getElementById("all-your-base"))
     .then(function (dataUrl) {
@@ -345,7 +347,7 @@ function downloadData(gd) {
     }
   }
 
-  let filename = openbbFilename(gd, true);
+  let filename = globals.filename;
   let blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
   if (navigator.msSaveBlob) {
     // IE 10+
