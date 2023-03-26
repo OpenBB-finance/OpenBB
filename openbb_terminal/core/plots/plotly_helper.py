@@ -45,9 +45,7 @@ class TerminalStyle:
     """
 
     DEFAULT_STYLES_LOCATION = MISCELLANEOUS_DIRECTORY / "styles" / "default"
-    USER_STYLES_LOCATION = (
-        get_current_user().preferences.USER_DATA_DIRECTORY / "styles"
-    )
+    USER_STYLES_LOCATION = get_current_user().preferences.USER_DATA_DIRECTORY / "styles"
 
     plt_styles_available: Dict[str, Path] = {}
     plt_style: str = "dark"
