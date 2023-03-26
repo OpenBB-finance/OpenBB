@@ -245,7 +245,6 @@ function downloadImage() {
       );
       img.src = dataUrl;
       downloadURI(dataUrl, globals.filename + ".png");
-      hideModebar();
     })
     .catch(function (error) {
       console.error("oops, something went wrong!", error);

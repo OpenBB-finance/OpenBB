@@ -97,6 +97,7 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
                 setTimeout(function () {
                   saving.classList.remove("show");
                   loader.classList.remove("show");
+                  hideModebar();
                 }, 50);
               }, 25);
             }, 2)();
