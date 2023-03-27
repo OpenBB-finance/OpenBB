@@ -5,6 +5,7 @@ from typing import List, Optional, Union
 
 from openbb_terminal.core.config.paths import (
     HIST_FILE_PATH,
+    MISCELLANEOUS_DIRECTORY,
     SETTINGS_DIRECTORY,
 )
 from openbb_terminal.core.session.current_user import (
@@ -168,7 +169,9 @@ def save_theme_from_hub(configs: dict):
             if user_style:
                 user_style = {k: v.replace(" ", "") for k, v in user_style.items()}
                 with open(
-                    get_current_user().preferences.USER_STYLES_DIRECTORY
+                    MISCELLANEOUS_DIRECTORY
+                    / "styles"
+                    / "user"
                     / "hub.richstyle.json",
                     "w",
                 ) as f:

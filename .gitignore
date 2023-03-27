@@ -54,7 +54,7 @@ DMG/*
 *.dmg
 
 # User stylesheets
-styles/user
+openbb_terminal/miscellaneous/styles/user
 
 # the file containing the API keys for the web version
 openbb_terminal_web/setenv
@@ -71,4 +71,3 @@ cache/
 
 # lightning logs
 lightning_logs/
-
