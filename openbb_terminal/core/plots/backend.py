@@ -258,7 +258,7 @@ class Backend(PyWry):
         width = max(int(min(sum(columnwidth) * 9.7, self.WIDTH + 100)), 800)
 
         json_data = json.loads(df_table.to_json(orient="split"))
-        json_data.update(dict(title=title, source=source))
+        json_data.update(dict(title=title, source=source or ""))
 
         self.outgoing.append(
             json.dumps(
