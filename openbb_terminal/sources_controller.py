@@ -227,7 +227,7 @@ class SourcesController(BaseController):
                     valid = self.commands_with_sources[ns_parser.cmd]
                     valid.remove(ns_parser.source)
                     valid.insert(0, ns_parser.source)
-                    value = ",".join(valid)
+                    value = ", ".join(valid)
                     upload_config(
                         key=key,
                         value=value,
