@@ -66,7 +66,8 @@ To display charts with your container, you need: VcXsrv.
 
 You can download VcXsrv here: [Download VcXsrv](https://sourceforge.net/projects/vcxsrv)
 
-When running VcXsrv program check the option: `Disable access control`
+Once downloaded you will open the program and accept all the defaults expect the below settings:
+- CHECK the option: `Disable access control` and UNCHECK the `Native opengl` command
 
 **Pull and run the container**
 
