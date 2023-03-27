@@ -68,9 +68,7 @@ class TerminalStyle:
     """
 
     DEFAULT_STYLES_LOCATION = MISCELLANEOUS_DIRECTORY / "styles" / "default"
-    USER_STYLES_LOCATION = (
-        get_current_user().preferences.USER_DATA_DIRECTORY / "styles" / "user"
-    )
+    USER_STYLES_LOCATION = get_current_user().preferences.USER_DATA_DIRECTORY / "styles"
 
     mpl_styles_available: Dict[str, str] = {}
     mpl_style: str = ""
