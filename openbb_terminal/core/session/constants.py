@@ -1,5 +1,7 @@
-REGISTER_URL = "https://my.openbb.dev/register"
 BASE_URL = "https://payments.openbb.dev/"
+REGISTER_URL = "https://my.openbb.dev/register"
+SOURCES_URL = "https://my.openbb.dev/app/terminal/datasources"
+KEYS_URL = "https://my.openbb.dev/app/terminal/apikeys"
 # BASE_URL = "http://127.0.0.1:8000/"
 TIMEOUT = 15
 

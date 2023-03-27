@@ -74,9 +74,7 @@ function Filter({
 
   if (areAllValuesNumber) {
     return (
-      <div
-        className="flex gap-0.5 h-10"
-      >
+      <div className="flex gap-0.5 h-10">
         <input
           type="number"
           value={(columnFilterValue as [number, number])?.[0] ?? ""}
@@ -172,7 +170,7 @@ const DraggableColumnHeader: FC<{
       <div ref={previewRef} className="flex gap-1 flex-col">
         {header.isPlaceholder ? null : (
           <>
-            <div className="font-bold uppercase text-white tracking-widest flex gap-2 whitespace-nowrap justify-between">
+            <div className="font-bold uppercase text-grey-700 dark:text-white tracking-widest flex gap-2 whitespace-nowrap justify-between">
               <div
                 onClick={header.column.getToggleSortingHandler()}
                 className={clsx("flex gap-1", {
@@ -224,7 +222,7 @@ const DraggableColumnHeader: FC<{
               {advanced && column.id !== "select" && (
                 <button
                   ref={dragRef}
-                  className="text-grey-600 hover:text-white"
+                  className="text-grey-600 hover:text-grey-800 dark:hover:text-white"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -256,11 +254,10 @@ const DraggableColumnHeader: FC<{
         )}
       </div>
       <button
-        className="resizer bg-grey-300/20 hover:bg-white absolute top-0 right-0 w-0.5 h-full"
+        className="resizer bg-grey-300/20 dark:hover:bg-white absolute top-0 right-0 w-0.5 h-full"
         onMouseDown={header.getResizeHandler()}
         onTouchStart={header.getResizeHandler()}
-      >
-      </button>
+      ></button>
     </th>
   );
 };
