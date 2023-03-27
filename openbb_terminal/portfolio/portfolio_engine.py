@@ -19,8 +19,8 @@ from openbb_terminal.portfolio.portfolio_helper import (
     make_equal_length,
 )
 from openbb_terminal.rich_config import console
-from openbb_terminal.terminal_helper import suppress_stdout
 from openbb_terminal.stocks.fundamental_analysis.yahoo_finance_model import get_splits
+from openbb_terminal.terminal_helper import suppress_stdout
 
 # pylint: disable=E1136,W0201,R0902,C0302
 # pylint: disable=unsupported-assignment-operation,redefined-outer-name
