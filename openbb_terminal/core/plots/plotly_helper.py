@@ -103,6 +103,11 @@ class TerminalStyle:
         style = style.lower().replace("light", "white")  # type: ignore
 
         if self.plt_style and self.plotly_template:
+
+            self.plotly_template.setdefault("layout", {}).setdefault(
+                "mapbox", {}
+            ).setdefault("style", "dark")
+
             pio.templates["openbb"] = go.layout.Template(self.plotly_template)
             if style in ["dark", "white"]:
                 pio.templates.default = f"plotly_{style}+openbb"
