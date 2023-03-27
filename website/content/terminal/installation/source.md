@@ -1,7 +1,7 @@
 ---
 title: Source
 sidebar_position: 3
-description: This section guides you a through the process of installing the OpenBB Terminal from source. This installation type supports Windows and macOS and Linux systems.
+description: This section provides steps to install the OpenBB Terminal and SDK from source. This installation type supports Windows, macOS and Linux systems.
 keywords:
   [
     installation,
@@ -22,7 +22,7 @@ keywords:
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->
 
-This section guides you how to install the OpenBB Terminal and SDK from source. This installation type supports Windows, macOS and Linux systems. **Before starting the installation process, make sure the following pieces of software are installed.**
+This section provides steps to install the OpenBB Terminal and SDK from source. This installation type supports Windows, macOS and Linux systems. **Before starting the installation process, make sure the following pieces of software are installed.**
 
 <details><summary>Miniconda</summary>
 Miniconda is a Python environment and package manager. It is required for installing certain dependencies.
@@ -35,13 +35,13 @@ Go [here](https://docs.conda.io/en/latest/miniconda.html#latest-miniconda-instal
 - Raspberry PI Systems: [Miniconda for Raspberry PI](https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-aarch64.sh)
 - Windows Systems: [Miniconda for Windows](https://repo.anaconda.com/miniconda/Miniconda3-latest-Windows-x86_64.exe)
 
-To verify if Miniconda is installed on your system, open the command line and run the following command:
+To verify if Miniconda is installed on the system, open the command line and run the following command:
 
 ```shell
 conda --version
 ```
 
-If Miniconda is installed, you should see the version number displayed, for example:
+If Miniconda is installed, a version number will be displayed, for example:
 
 ```shell
 conda 23.1.0
@@ -51,22 +51,22 @@ conda 23.1.0
 
 <details><summary>Git</summary>
 
-To check if you have Git installed, open the command line and run the following command:
+Check to verify if Git is installed by running the following command:
 
 ```shell
 git --version
 ```
 
-You should see something like this:
+Which will print something like this:
 
 ```shell
 git version 2.31.1
 ```
 
-If you do not have git installed, install it from `conda` by running:
+If Git is not installed, install it now from `conda` by running:
 
 ```shell
-conda install -c anaconda git
+conda install git
 ```
 
 Or follow the instructions [here](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) to install it.
@@ -90,15 +90,15 @@ softwareupdate --install-rosetta
 
 <details><summary>LibOMP (Apple Silicon only)</summary>
 
-Apple Silicon does not ship `libomp` by default. You will need to install it manually for some features of the ML toolkit to work. The `libomp` library can be installed from [homebrew](https://brew.sh/).
+Apple Silicon does not ship `libomp` by default. It will need to be installed manually for some features of the ML toolkit to work. The `libomp` library can be installed from [homebrew](https://brew.sh/).
 
-Check if you have homebrew installed by running the following command:
+Check if Homebrew is installed by running the following command:
 
 ```shell
 brew --version
 ```
 
-If you do not have homebrew installed, install it by running:
+If Homebrew is not installed, install it by running:
 
 ```shell
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -142,7 +142,7 @@ Alternatives to `VcXsrv` include:
 
 <details><summary>GTK toolchains (Linux only)</summary>
 
-GTK is a window extension that is used to display interactive charts and tables. The library responsible for interactive charts and tables (`pywry`) requires that you install certain dependencies based on the Linux distribution that you are using.
+GTK is a window extension that is used to display interactive charts and tables. The library responsible for interactive charts and tables (`pywry`) requires certain dependencies, based on the Linux distribution, to be installed first.
 
 <details>
 <summary>Debian-based / Ubuntu / Mint</summary>
@@ -173,7 +173,7 @@ sudo dnf install gtk3-devel webkit2gtk4.0-devel
 
 </details>
 
-Once you have met all of these requirements, you are ready to install the OpenBB Terminal and SDK from source.
+Proceed to next steps once the requirements above have been met.
 
 ## Clone the Source Code
 
@@ -204,7 +204,7 @@ conda activate obb
 ```
 
 :::note
-After you activate the new environment for the first time it is required to clean up some artifacts in order for all dependencies to work nicely.
+When the new environment is activated for the first time, it is required to clean up some artifacts in order for all dependencies to work nicely.
 
 On macOS and Linux do this by running this script (copy and paste the launch code):
 
@@ -222,7 +222,7 @@ build/conda/cleanup_artifacts.bat
 
 ## Install the OpenBB Terminal
 
-Make sure you have completed all the previous steps. If you followed the instructions you should be in the location where the OpenBB Terminal source code lives.
+Make sure to have completed all previous steps. If followed, the current working directory will be the location where the OpenBB Terminal source code lives.
 
 Install the remaining dependencies and the terminal through Poetry, a package manager.
 
@@ -236,7 +236,7 @@ For the best user experience we advise using `conda` and `poetry` for environmen
 
 For `Conda` environments, the `build/conda` folder contains multiple `.yaml` configuration files to choose from.
 
-When using other python distributions we highly recommend a virtual environment like `virtualenv` or `pyenv` for installing the terminal dependency libraries.
+When using other Python distributions we highly recommend a virtual environment like `virtualenv` or `pyenv` for installing the terminal dependency libraries.
 
 For people who prefer using "vanilla" `pip` the requirements files are found in the project root:
 
@@ -251,9 +251,9 @@ pip install -r requirements.txt
 
 The dependency tree is solved by poetry.
 
-Note: The libraries specified in the requirements files have been tested and work for the purpose of this project, however, these may be older versions. Hence, it is recommended for the user to set up a python virtual environment prior to installing these. This allows to keep dependencies required by different projects in separate places.
+Note: The libraries specified in the requirements files have been tested and work for the purpose of this project, however, these may be older versions. Hence, it is recommended for the user to set up a Python virtual environment prior to installing them. This keeps dependencies required by different projects in separate places.
 
-After installing the requirements you can install the terminal with:
+After installing the requirements, install the terminal with:
 
 ```shell
 pip install .
@@ -262,17 +262,17 @@ pip install .
 </details>
 :::
 
-Once this installation process is completed, you can start the terminal by running:
+Once this installation process is completed, start the terminal by running:
 
 ```shell
-openbb
+python terminal.py
 ```
 
-**NOTE:** When you are opening the OpenBB Terminal anew, the Python environment will need to be activated again. When using a code editor, make sure that you have the correct environment selected. This should be easy to figure out if you get an error that you are missing packages. To launch the OpenBB Terminal application in s new terminal window use the following two commands:
+**NOTE:** When the OpenBB Terminal is opened next, the Python environment will need to be activated again. When using a code editor, make sure that the correct environment is selected. This should be easy to figure out if there is an error stating that there are missing packages. To launch the OpenBB Terminal application in a new terminal window, first navigate into the folder where the source code was cloned, and then use the following two commands:
 
 ```shell
 conda activate obb
-openbb
+python terminal.py
 ```
 
 **TROUBLESHOOTING:** Having difficulty getting through the installation, or encountering errors? Reach out to our [Discord](https://discord.gg/Up2QGbMKHY) community for help.

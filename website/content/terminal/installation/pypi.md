@@ -1,7 +1,7 @@
 ---
 title: PyPI
 sidebar_position: 4
-description: This section guides you a long to install the OpenBB Terminal via Python. This installation type supports both Windows and Unix systems (Linux + MacOS).
+description: This section provides steps to install the OpenBB Terminal and SDK from PyPI. This installation type supports Windows, macOS and Linux systems.
 keywords:
   [
     installation,
@@ -22,7 +22,7 @@ keywords:
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->
 
-This section guides you how to install the OpenBB Terminal and SDK from PyPI. This installation type supports Windows, macOS and Linux systems. **Before starting the installation process, make sure the following pieces of software are installed.**
+This section provides steps to install the OpenBB Terminal and SDK from PyPI. This installation type supports Windows, macOS and Linux systems. **Before starting the installation process, make sure the following pieces of software are installed.**
 
 <details><summary>Miniconda</summary>
 Miniconda is a Python environment and package manager. It is required for installing certain dependencies.
@@ -35,13 +35,13 @@ Go [here](https://docs.conda.io/en/latest/miniconda.html#latest-miniconda-instal
 - Raspberry PI Systems: [Miniconda for Raspberry PI](https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-aarch64.sh)
 - Windows Systems: [Miniconda for Windows](https://repo.anaconda.com/miniconda/Miniconda3-latest-Windows-x86_64.exe)
 
-To verify if Miniconda is installed on your system, open the command line and run the following command:
+To verify if Miniconda is installed on the system, open the command line and run the following command:
 
 ```shell
 conda --version
 ```
 
-If Miniconda is installed, you should see the version number displayed, for example:
+If Miniconda is installed, a version number will be displayed, for example:
 
 ```shell
 conda 23.1.0
@@ -51,19 +51,19 @@ conda 23.1.0
 
 <details><summary>Git</summary>
 
-To check if you have Git installed, open the command line and run the following command:
+Check to verify if Git is installed by running the following command:
 
 ```shell
 git --version
 ```
 
-You should see something like this:
+Which will print something like this:
 
 ```shell
 git version 2.31.1
 ```
 
-If you do not have git installed, install it from `conda` by running:
+If Git is not installed, install it now from `conda` by running:
 
 ```shell
 conda install -c anaconda git
@@ -90,15 +90,15 @@ softwareupdate --install-rosetta
 
 <details><summary>LibOMP (Apple Silicon only)</summary>
 
-Apple Silicon does not ship `libomp` by default. You will need to install it manually for some features of the ML toolkit to work. The `libomp` library can be installed from [homebrew](https://brew.sh/).
+Apple Silicon does not ship `libomp` by default. It will need to be installed manually for some features of the ML toolkit to work. The `libomp` library can be installed from [homebrew](https://brew.sh/).
 
-Check if you have homebrew installed by running the following command:
+Check if Homebrew is installed by running the following command:
 
 ```shell
 brew --version
 ```
 
-If you do not have homebrew installed, install it by running:
+If Homebrew is not installed, install it by running:
 
 ```shell
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -142,7 +142,7 @@ Alternatives to `VcXsrv` include:
 
 <details><summary>GTK toolchains (Linux only)</summary>
 
-GTK is a window extension that is used to display interactive charts and tables. The library responsible for interactive charts and tables (`pywry`) requires that you install certain dependencies based on the Linux distribution that you are using.
+GTK is a window extension that is used to display interactive charts and tables. The library responsible for interactive charts and tables (`pywry`) requires certain dependencies, based on the Linux distribution, to be installed first.
 
 <details>
 <summary>Debian-based / Ubuntu / Mint</summary>
@@ -173,13 +173,13 @@ sudo dnf install gtk3-devel webkit2gtk4.0-devel
 
 </details>
 
-Once you have met all of these requirements, you are ready to set up your virtual environment for installation of the OpenBB Terminal and SDK from PyPI.
+Proceed to next steps once the requirements above have been met.
 
 ## Prepare the Virtual Environment
 
 Create the environment using a configuration file from the OpenBB Terminal repository.
 
-Copy and paste these commands into your terminal/command prompt:
+Copy and paste these commands into the terminal/command prompt:
 
 ```shell
 conda env create -n obb --file https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal/d19412933245b51643a9e7f2624f1d42907488f4/build/conda/conda-3-9-env.yaml
@@ -195,7 +195,7 @@ conda activate obb
 
 ## Install the OpenBB Terminal and SDK
 
-Make sure you have completed all the previous steps. If you followed the instructions you should have a virtual environment named `obb` and this environment is activated.
+Make sure to have completed all previous steps. If followed, there will be a virtual environment, named `obb`, and this environment is activated.
 
 Install the main package of Openbb SDK with `pip`, a package manager.
 
@@ -225,7 +225,7 @@ pip install "openbb[all]" --no-cache-dir
 
 ## Verify Installation
 
-Once this installation process is completed, you can start the terminal by running:
+Once this installation process is completed, the terminal is launched by running:
 
 ```shell
 openbb
@@ -246,7 +246,7 @@ You should see the version number displayed, for example:
 
 That's it!
 
-**NOTE:** When you are opening the OpenBB Terminal anew, the Python environment will need to be activated again. When using a code editor, make sure that you have the correct environment selected. This should be easy to figure out if you get an error that you are missing packages. To launch the OpenBB Terminal application in s new terminal window use the following two commands:
+**NOTE:** When the OpenBB Terminal is opened next, the Python environment will need to be activated again. When using a code editor, make sure that the correct environment is selected. This should be easy to figure out if there is an error stating that there are missing packages. To launch the OpenBB Terminal application in a new terminal window, first navigate into the folder where the source code was cloned, and then use the following two commands:
 
 ```shell
 conda activate obb
@@ -255,20 +255,19 @@ openbb
 
 ## Updating the OpenBB SDK Version
 
-You can upgrade the OpenBB SDK to the latest version via `pypi`.
-
-When using the terminal or SDK without toolkits, first activate your environment by running:
+Upgrade the OpenBB SDK to the latest version via `pypi`. When using the terminal or SDK without toolkits, first activate  environment by running:
 
 ```shell
 conda activate obb
 ```
-and update the package by running:
+
+and then update the package by running:
 
 ```shell
 pip install -U openbb --no-cache-dir
 ```
 
-When using an installation with toolkits, with your virtual environment activated, enter:
+When using an installation with toolkits, with the virtual environment activated, enter:
 
 ```shell
 pip install -U "openbb[all]" --no-cache-dir
@@ -284,5 +283,5 @@ pip install -U openbb-nightly --no-cache-dir
 ```
 
 :::info
-If you encounter any issues with the installation, please try installing OpenBB Terminal and SDK from source [(link)](/terminal/installation/source).
+If issues are encountered with the installation, please try installing OpenBB Terminal and SDK from source [(link)](/terminal/installation/source), or reach out to our [Discord](https://discord.gg/Up2QGbMKHY) community for help.
 :::
