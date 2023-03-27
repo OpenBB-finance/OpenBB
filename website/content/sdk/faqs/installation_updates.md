@@ -93,7 +93,7 @@ Refer to this issue on the Conda [GitHub](https://github.com/conda/conda/issues/
 
 </details>
 
-<deatils><summary>Error: Library not loaded: '/usr/local/opt/libomp/lib/libomp.dylib'</summary>
+<details><summary>Error: Library not loaded: '/usr/local/opt/libomp/lib/libomp.dylib'</summary>
 
 This error is resolved by installing libomp from Homebrew:
 
