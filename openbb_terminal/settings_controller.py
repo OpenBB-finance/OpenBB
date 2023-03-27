@@ -319,7 +319,6 @@ class SettingsController(BaseController):
             "-s",
             "--style",
             type=str,
-            choices=["dark", "light"],
             dest="style",
             help="Choose plot style.",
             required="-h" not in other_args and "--help" not in other_args,
