@@ -23,7 +23,9 @@ from plotly.subplots import make_subplots
 from scipy import stats
 
 from openbb_terminal.base_helpers import console, strtobool
-from openbb_terminal.core.config.paths import MISCELLANEOUS_DIRECTORY
+from openbb_terminal.core.config.paths import (
+    STYLES_DIRECTORY_REPO,
+)
 from openbb_terminal.core.plots.backend import PLOTLYJS_PATH, plots_backend
 from openbb_terminal.core.plots.config.openbb_styles import (
     PLT_COLORWAY,
@@ -44,10 +46,8 @@ class TerminalStyle:
     styles as python dictionaries.
     """
 
-    DEFAULT_STYLES_LOCATION = MISCELLANEOUS_DIRECTORY / "styles" / "default"
-    USER_STYLES_LOCATION = (
-        get_current_user().preferences.USER_DATA_DIRECTORY / "styles" / "user"
-    )
+    STYLES_REPO = STYLES_DIRECTORY_REPO
+    USER_STYLES_DIRECTORY = get_current_user().preferences.USER_STYLES_DIRECTORY
 
     plt_styles_available: Dict[str, Path] = {}
     plt_style: str = "dark"
@@ -81,22 +81,33 @@ class TerminalStyle:
             The name of the Rich style to use, by default ""
         """
         self.plt_style = plt_style or self.plt_style
-        console_style = console_style or "dark"
         self.load_available_styles()
-
-        console_json_path = self.console_styles_available.get("dark", None)
-        for style in ["openbb_config", console_style]:
-            if style in self.console_styles_available:
-                console_json_path = self.console_styles_available[style]
-                break
-
-        if console_json_path:
-            self.console_style = self.load_json_style(console_json_path)
         self.load_style(plt_style)
+        self.load_style(plt_style)
+        self.apply_console_style(console_style)
+
+    def apply_console_style(self, style: Optional[str] = "") -> None:
+        """Apply the style to the console."""
+
+        if style in self.console_styles_available:
+            json_path: Optional[Path] = self.console_styles_available[style]
+        else:
+            self.load_available_styles()
+            if style in self.console_styles_available:
+                json_path = self.console_styles_available[style]
+            else:
+                console.print("\nInvalid console style. Using default.")
+                json_path = self.console_styles_available.get("dark", None)
+
+        if json_path:
+            self.console_style = self.load_json_style(json_path)
+        else:
+            console.print("Error loading default.")
 
     def apply_style(self, style: Optional[str] = "") -> None:
         """Apply the style to the libraries."""
-        style = style or self.plt_style
+        if not style:
+            style = get_current_user().preferences.PLOT_STYLE
 
         if style != self.plt_style:
             self.load_style(style)
@@ -131,20 +142,20 @@ class TerminalStyle:
             ["plt_styles_available", "console_styles_available"],
             [".pltstyle.json", ".richstyle.json"],
         ):
-            for file in folder.glob(f"*{ext}"):
+            for file in folder.rglob(f"*{ext}"):
                 getattr(self, attr)[file.name.replace(ext, "")] = file
 
     def load_available_styles(self) -> None:
         """Load custom styles from default and user folders."""
-        self.load_available_styles_from_folder(self.DEFAULT_STYLES_LOCATION)
-        self.load_available_styles_from_folder(self.USER_STYLES_LOCATION)
+        self.load_available_styles_from_folder(self.STYLES_REPO)
+        self.load_available_styles_from_folder(self.USER_STYLES_DIRECTORY)
 
     def load_json_style(self, file: Path) -> Dict[str, Any]:
         """Load style from json file.
 
         Parameters
         ----------
-        file : str
+        file : Path
             Path to the file containing the style
 
         Returns
@@ -206,6 +217,7 @@ class TerminalStyle:
         list
             List of colors e.g. ["#00ACFF", "#FF0000"]
         """
+        self.apply_style()
         colors = self.plotly_template.get("layout", {}).get("colorway", PLT_COLORWAY)
         if reverse:
             colors.reverse()
@@ -1000,6 +1012,7 @@ class OpenBBFigure(go.Figure):
         if kwargs.pop("margin", True):
             self._adjust_margins()
 
+        theme.apply_style()
         self._apply_feature_flags()
         self._xaxis_tickformatstops()
 
@@ -1317,6 +1330,7 @@ class OpenBBFigure(go.Figure):
                 full_html=False,
             )
         )
+        theme.apply_style()
         self._apply_feature_flags()
         self._xaxis_tickformatstops()
 

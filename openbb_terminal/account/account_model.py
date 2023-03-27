@@ -47,16 +47,8 @@ def get_diff(configs: dict) -> dict:
     dict
         The diff.
     """
-    SETTINGS = "features_settings"
     KEYS = "features_keys"
-    configs_diff: Dict[str, Dict[str, Any]] = {SETTINGS: {}, KEYS: {}}
-
-    diff_settings = get_diff_settings(configs.get(SETTINGS, {}))
-    if diff_settings:
-        console.print("[info]Settings:[/info]")
-        for k, v in diff_settings.items():
-            configs_diff[SETTINGS][k] = v[1]
-            console.print(f"  [menu]{k}[/menu]: {v[0]} -> {v[1]}")
+    configs_diff: Dict[str, Dict[str, Any]] = {KEYS: {}}
 
     diff_keys = get_diff_keys(configs.get(KEYS, {}))
     if diff_keys:
@@ -65,38 +57,10 @@ def get_diff(configs: dict) -> dict:
             configs_diff[KEYS][k] = v[1]
             console.print(f"  [menu]{k}[/menu]: {v[0]} -> {v[1]}")
 
-    if not configs_diff[SETTINGS]:
-        configs_diff.pop(SETTINGS)
-
     if not configs_diff[KEYS]:
         configs_diff.pop(KEYS)
 
     return configs_diff
-
-
-def get_diff_settings(settings: dict) -> dict:
-    """Get the diff between the local and remote settings.
-
-    Parameters
-    ----------
-    configs : dict
-        The configs.
-
-    Returns
-    -------
-    dict
-        The diff.
-    """
-    current_user = get_current_user()
-    diff = {}
-    if settings:
-        for k, v in sorted(settings.items()):
-            if hasattr(current_user.preferences, k):
-                old, new = get_var_diff(current_user.preferences, k, v)
-                if new is not None:
-                    diff[k] = (old, new)
-
-    return diff
 
 
 def get_diff_keys(keys: dict) -> dict:

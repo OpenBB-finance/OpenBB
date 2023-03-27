@@ -1,16 +1,18 @@
 import json
 import os
 from pathlib import Path
-from typing import Optional, Union
+from typing import List, Optional, Union
 
 from openbb_terminal.core.config.paths import (
     HIST_FILE_PATH,
+    MISCELLANEOUS_DIRECTORY,
     SETTINGS_DIRECTORY,
 )
 from openbb_terminal.core.session.current_user import (
     get_current_user,
-    get_local_user,
     set_credential,
+    set_preference,
+    set_sources,
 )
 from openbb_terminal.core.session.credentials_handler import set_credential
 from openbb_terminal.core.session.current_user import get_current_user
@@ -115,12 +117,94 @@ def apply_configs(configs: dict):
     configs : dict
         The configurations.
     """
-    if configs and get_local_user().preferences.SYNC_ENABLED:
+    set_credentials_from_hub(configs)
+    set_preferences_from_hub(configs, ["RICH_STYLE", "PLOT_STYLE"])
+    save_theme_from_hub(configs)
+    set_sources_from_hub(configs)
+
+
+def set_credentials_from_hub(configs: dict):
+    """Set credentials from hub.
+
+    Parameters
+    ----------
+    configs : dict
+        The configurations.
+    """
+    if configs:
         credentials = configs.get("features_keys", {}) or {}
         for k, v in credentials.items():
             set_credential(k, v)
 
-    # TODO: apply other configs here
+
+def set_preferences_from_hub(configs: dict, fields: Optional[List[str]] = None):
+    """Set preferences from hub.
+
+    Parameters
+    ----------
+    configs : dict
+        The configurations.
+    fields : Optional[List[str]]
+        The fields to set, if None, all fields will be set.
+    """
+    if configs:
+        preferences = configs.get("features_settings", {}) or {}
+        for k, v in preferences.items():
+            if not fields:
+                set_preference(k, v)
+            elif k in fields:
+                set_preference(k, v)
+
+
+def save_theme_from_hub(configs: dict):
+    """Set theme.
+
+    Parameters
+    ----------
+    configs : dict
+        The configurations.
+    """
+    if configs:
+        terminal_style = configs.get("features_terminal_style", {}) or {}
+        if terminal_style:
+            user_style = terminal_style.get("theme", None)
+            if user_style:
+                user_style = {k: v.replace(" ", "") for k, v in user_style.items()}
+                try:
+                    with open(
+                        MISCELLANEOUS_DIRECTORY
+                        / "styles"
+                        / "user"
+                        / "hub.richstyle.json",
+                        "w",
+                    ) as f:
+                        json.dump(user_style, f)
+
+                    preferences = configs.get("features_settings", {}) or {}
+                    if "RICH_STYLE" not in preferences:
+                        set_preference("RICH_STYLE", "hub")
+
+                except Exception:
+                    console.print("[red]Failed to save theme.[/red]")
+
+
+def set_sources_from_hub(configs: dict):
+    """Set sources from hub.
+
+    Parameters
+    ----------
+    configs : dict
+        The configurations.
+    """
+    if configs:
+        sources = configs.get("features_sources", {}) or {}
+        if sources:
+            try:
+                sources_dict = generate_sources_dict(sources)
+                set_sources(sources_dict)
+            except Exception:
+                console.print("[red]Failed to set sources.[/red]")
+                return
 
 
 def get_routine(file_name: str, folder: Optional[Path] = None) -> Optional[str]:

@@ -12,6 +12,7 @@ from openbb_terminal.account import account_controller
 from openbb_terminal.core.models.user_model import (
     CredentialsModel,
     ProfileModel,
+    SourcesModel,
     UserModel,
 )
 from openbb_terminal.core.session.current_user import (
@@ -81,6 +82,7 @@ def fixture_test_user(mocker):
         profile=ProfileModel(
             token_type="Bearer", token="123", uuid="00001", email="test@email.com"
         ),
+        sources=SourcesModel(),
     )
 
 
@@ -412,8 +414,8 @@ def test_call_pull(mocker, input_value, test_user):
         target=f"{path_controller}.console.input",
         return_value=input_value,
     )
-    mock_apply_configs = mocker.patch(
-        target=f"{path_controller}.Local.apply_configs",
+    mock_set_credentials_from_hub = mocker.patch(
+        target=f"{path_controller}.Local.set_credentials_from_hub",
     )
     controller.call_pull(other_args=list())
 
@@ -421,9 +423,9 @@ def test_call_pull(mocker, input_value, test_user):
     mock_get_diff.assert_called_once_with(configs=CONFIGS)
     mock_input.assert_called_once()
     if input_value == "y":
-        mock_apply_configs.assert_called_once_with(configs=DIFF)
+        mock_set_credentials_from_hub.assert_called_once_with(configs=DIFF)
     else:
-        mock_apply_configs.assert_not_called()
+        mock_set_credentials_from_hub.assert_not_called()
     assert controller.queue == []
 
 

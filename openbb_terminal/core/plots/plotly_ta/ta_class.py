@@ -98,6 +98,7 @@ class PlotlyTA(PltTA):
             PLOTLY_TA._locate_plugins()
             PLOTLY_TA.add_plugins(PLOTLY_TA.plugins)
 
+        cls.inchart_colors = theme.get_colors()
         return PLOTLY_TA
 
     def __init__(self, *args, **kwargs):  # pylint: disable=unused-argument

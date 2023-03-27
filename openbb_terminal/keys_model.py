@@ -246,7 +246,7 @@ def get_keys(show: bool = False) -> pd.DataFrame:
     current_keys = {}
 
     for k, _ in current_user.credentials.get_fields().items():
-        field_value = current_user.credentials.get_field_value(field=k)
+        field_value = current_user.credentials.get_value(field=k)
         if field_value and field_value != "REPLACE_ME":
             current_keys[k] = field_value
 
