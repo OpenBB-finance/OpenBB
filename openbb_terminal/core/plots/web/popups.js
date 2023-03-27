@@ -535,7 +535,7 @@ function on_submit(popup_id, on_annotation = null) {
         // We empty the fields and innerHTML after the plot is made
         globals.CSV_DIV.querySelector("#csv_colors").innerHTML = "";
         globals.CSV_DIV.querySelector("#csv_columns").innerHTML = "";
-        globals.CSV_DIV.querySelector("#csv_percent_change_div").style.display =
+        globals.CSV_DIV.querySelector("#csv_scatter_options").style.display =
           "none";
 
         globals.CSV_DIV.querySelectorAll("input").forEach(function (input) {
