@@ -13,7 +13,7 @@ class SystemModel(BaseModel):
 
     # System section
     OS: str = str(platform.system())
-    PYTHON: str = str(platform.python_version())
+    PYTHON_VERSION: str = str(platform.python_version())
 
     # OpenBB section
     VERSION = "3.0.0rc1"
