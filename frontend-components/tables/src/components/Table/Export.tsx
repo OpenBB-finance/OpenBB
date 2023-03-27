@@ -32,14 +32,14 @@ export default function Export({ columns, data }: { columns: any; data: any }) {
         {types.map((key) => (
           <div key={key} className="flex items-center gap-2 cursor-pointer">
             <RadioGroup.Item
-              className="bg-black border-white border-2 w-5 h-5 rounded-full outline-none"
+              className="bg-white border-black dark:bg-black dark:border-white border-2 w-5 h-5 rounded-full outline-none"
               value={key}
               id={key}
             >
-              <RadioGroup.Indicator className="flex items-center justify-center w-full h-full relative after:content-[''] after:block after:w-[11px] after:h-[11px] after:rounded-[50%] after:bg-white" />
+              <RadioGroup.Indicator className="flex items-center justify-center w-full h-full relative after:content-[''] after:block after:w-[11px] after:h-[11px] after:rounded-[50%] dark:after:bg-white after:bg-black" />
             </RadioGroup.Item>
             <label
-              className="text-white text-sm leading-none uppercase"
+              className="text-black dark:text-white text-sm leading-none uppercase"
               htmlFor={key}
             >
               {key}
