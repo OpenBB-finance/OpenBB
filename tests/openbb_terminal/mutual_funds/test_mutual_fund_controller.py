@@ -217,7 +217,8 @@ def test_call_load(mocker):
     )
 
     controller = mutual_fund_controller.FundController(queue=None)
-    controller.call_load(["--fund", "UNH"])
+    getattr(controller, "call_load")(["--fund", "UNH"])
+
     assert controller.queue == []
 
 
@@ -252,7 +253,8 @@ def test_call_country(mocker):
     )
 
     controller = mutual_fund_controller.FundController(queue=None)
-    controller.call_country([])
+    getattr(controller, "call_country")([])
+
     assert controller.queue == []
 
 
@@ -284,7 +286,8 @@ def test_call_plot(mocker):
     )
 
     controller = mutual_fund_controller.FundController(queue=None)
-    controller.call_plot([])
+    getattr(controller, "call_plot")([])
+
     assert controller.queue == []
 
 
@@ -320,7 +323,8 @@ def test_call_sector(mocker):
     )
 
     controller = mutual_fund_controller.FundController(queue=None)
-    controller.call_sector([])
+    getattr(controller, "call_sector")([])
+
     assert controller.queue == []
 
 
@@ -355,7 +359,8 @@ def test_call_holdings(mocker):
     )
 
     controller = mutual_fund_controller.FundController(queue=None)
-    controller.call_holdings([])
+    getattr(controller, "call_holdings")([])
+
     assert controller.queue == []
 
 
@@ -390,7 +395,8 @@ def test_call_carbon(mocker):
     )
 
     controller = mutual_fund_controller.FundController(queue=None)
-    controller.call_carbon([])
+    getattr(controller, "call_carbon")([])
+
     assert controller.queue == []
 
 
