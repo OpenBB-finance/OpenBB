@@ -164,7 +164,7 @@ class TerminalStyle:
         self.load_available_styles_from_folder(self.USER_STYLES_DIRECTORY)
 
     def load_json_style(self, file: Path) -> Dict[str, Any]:
-        """Load style from json file.mmm
+        """Load style from json file.
 
         Parameters
         ----------
