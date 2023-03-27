@@ -99,6 +99,8 @@ function checkFile(popup, type = false) {
   let csv_colors = popup.querySelector("#csv_colors");
   let csv_scatter_options = popup.querySelector("#csv_scatter_options");
   csv_scatter_options.style.display = "none";
+  csv_scatter_options.querySelector("#csv_percent_change_div").style.display = "inline-block";
+
 
   if (csv_file.files.length > 0) {
     console.log("file selected");
@@ -173,6 +175,7 @@ function checkFile(popup, type = false) {
               headers[headers_lower.indexOf("date")];
           }
         }
+        globals.CSV_DIV.querySelector("#csv_percent_change_div").style.display = "none";
       } else {
         csv_columns.innerHTML = `
                     <b>Columns:</b><br>
@@ -209,8 +212,8 @@ function checkFile(popup, type = false) {
           csv_columns.querySelector("#csv_y").value =
             headers[headers_lower.indexOf("close")];
         }
-        csv_scatter_options.style.display = "inline-block";
       }
+      csv_scatter_options.style.display = "inline-block";
 
       // we try to guess the date and time to remove from the name of the file
       // if "_" in the name of the file,
