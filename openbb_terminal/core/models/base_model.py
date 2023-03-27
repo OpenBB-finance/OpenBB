@@ -22,8 +22,14 @@ class BaseModel:
         """Get dict of fields."""
         return cls.__dataclass_fields__  # type: ignore
 
-    def get_field_value(self, field: str) -> Optional[str]:
+    def get_value(self, field: str) -> Optional[Any]:
         """Get field value."""
         if hasattr(self, field):
             return getattr(self, field)
+        return None
+
+    def get_default(self, field: str) -> Optional[Any]:
+        """Get default field value."""
+        if hasattr(self, field):
+            return self.get_fields()[field].default
         return None
