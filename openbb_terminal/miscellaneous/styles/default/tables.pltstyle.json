@@ -1,10 +1,4 @@
 {
-    "line": {
-        "up_color": "#00ACFF",
-        "down_color": "#e4003a",
-        "color": "#ffed00",
-        "width": 1.5
-    },
     "data": {
         "candlestick": [
             {
@@ -52,7 +46,7 @@
             "align": "left"
         },
         "mapbox": {
-            "style": "dark"
+            "style": "light"
         },
         "hovermode": "x",
         "legend": {
@@ -65,8 +59,8 @@
                 "size": 15
             }
         },
-        "paper_bgcolor": "#000000",
-        "plot_bgcolor": "#000000",
+        "paper_bgcolor": "white",
+        "plot_bgcolor": "white",
         "xaxis": {
             "automargin": true,
             "autorange": true,

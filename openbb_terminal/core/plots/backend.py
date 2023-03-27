@@ -20,7 +20,8 @@ try:
     from pywry.core import PyWry
 
     PYWRY_AVAILABLE = True
-except ImportError:
+except ImportError as e:
+    print(f"\033[91m{e}\033[0m")
     PYWRY_AVAILABLE = False
 
 from svglib.svglib import svg2rlg
@@ -172,6 +173,7 @@ class Backend(PyWry):
         title = re.sub(
             r"<[^>]*>", "", fig.layout.title.text if fig.layout.title.text else title
         )
+        fig.layout.height += 69
 
         if export_image and isinstance(export_image, str):
             export_image = Path(export_image).resolve()
@@ -277,8 +279,7 @@ class Backend(PyWry):
         width = max(int(min(sum(columnwidth) * 9.7, self.WIDTH + 100)), 800)
 
         json_data = json.loads(df_table.to_json(orient="split"))
-        json_data.update(dict(title=title))
-        json_data.update(dict(source=source))
+        json_data.update(dict(title=title, source=source or ""))
 
         self.outgoing.append(
             json.dumps(
