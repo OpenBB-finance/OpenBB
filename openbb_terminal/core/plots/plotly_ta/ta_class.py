@@ -98,6 +98,7 @@ class PlotlyTA(PltTA):
             PLOTLY_TA._locate_plugins()
             PLOTLY_TA.add_plugins(PLOTLY_TA.plugins)
 
+        cls.inchart_colors = theme.get_colors()
         return PLOTLY_TA
 
     def __init__(self, *args, **kwargs):  # pylint: disable=unused-argument
@@ -476,7 +477,7 @@ class PlotlyTA(PltTA):
         figure.update_traces(
             selector=dict(type="scatter", mode="lines"), connectgaps=True
         )
-        figure.update_layout(showlegend=False, margin=dict(l=30))
+        figure.update_layout(showlegend=False)
         figure.hide_holidays(self.prepost)
 
         # We remove xaxis labels from all but bottom subplot, and we make sure
