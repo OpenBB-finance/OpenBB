@@ -327,17 +327,18 @@ class SettingsController(BaseController):
             other_args.insert(0, "-s")
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser and ns_parser.style:
-            if is_local():
-                self.set_and_save_preference("PLOT_STYLE", ns_parser.style)
-            else:
-                set_preference("PLOT_STYLE", ns_parser.style)
-                Hub.upload_config(
-                    key="PLOT_STYLE",
-                    value=ns_parser.style,
-                    type_="settings",
-                    auth_header=get_current_user().profile.get_auth_header(),
-                )
-            console.print("Plot style updated.")
+            self.set_and_save_preference("PLOT_STYLE", ns_parser.style)
+            # if is_local():
+            #     self.set_and_save_preference("PLOT_STYLE", ns_parser.style)
+            # else:
+            #     set_preference("PLOT_STYLE", ns_parser.style)
+            #     Hub.upload_config(
+            #         key="PLOT_STYLE",
+            #         value=ns_parser.style,
+            #         type_="settings",
+            #         auth_header=get_current_user().profile.get_auth_header(),
+            #     )
+            # console.print("Plot style updated.")
 
     @log_start_end(log=logger)
     def call_source(self, other_args: List[str]):
