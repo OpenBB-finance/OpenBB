@@ -47,10 +47,6 @@ If Miniconda is installed, you should see the version number displayed, for exam
 conda 23.1.0
 ```
 
-**NOTE for Apple Silicon Users:** Install Rosetta from the command line: `softwareupdate --install-rosetta`
-
-**NOTE for Windows users:** Install/update Microsoft C++ Build Tools from [here](https://visualstudio.microsoft.com/visual-cpp-build-tools/).
-
 </details>
 
 <details><summary>Git</summary>
@@ -74,6 +70,47 @@ conda install -c anaconda git
 ```
 
 Or follow the instructions [here](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) to install it.
+
+</details>
+
+<details><summary>Microsoft C++ Build Tools (Windows only)</summary>
+
+Use the instructions [here](https://visualstudio.microsoft.com/visual-cpp-build-tools/) to install or update Microsoft C++ Build Tools.
+
+</details>
+
+<details><summary>Rosetta2 (Apple Silicon only)</summary>
+
+Install Rosetta from the terminal with:
+```shell
+softwareupdate --install-rosetta
+```
+
+</details>
+
+<details><summary>LibOMP (Apple Silicon only)</summary>
+
+Apple Silicon does not ship `libomp` by default. You will need to install it manually for some features of the ML toolkit to work. The `libomp` library can be installed from [homebrew](https://brew.sh/).
+
+Check if you have homebrew installed by running the following command:
+
+```shell
+brew --version
+```
+
+If you do not have homebrew installed, install it by running:
+
+```shell
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+
+Or follow the instructions [here](https://brew.sh/).
+
+To install LibOMP, run the following command:
+
+```shell
+brew install libomp
+```
 
 </details>
 
@@ -209,7 +246,7 @@ You should see the version number displayed, for example:
 
 That's it!
 
-**NOTE:** When you are opening the OpenBB Terminal anew, the Python environment will need to be activated again. When using a code editor, make sure that you have the correct environment selected. This should be easy to figure out if you get an error that you are missing packages. To launch the OpenBB Tterminal application in s new terminal window use the following two commands:
+**NOTE:** When you are opening the OpenBB Terminal anew, the Python environment will need to be activated again. When using a code editor, make sure that you have the correct environment selected. This should be easy to figure out if you get an error that you are missing packages. To launch the OpenBB Terminal application in s new terminal window use the following two commands:
 
 ```shell
 conda activate obb
