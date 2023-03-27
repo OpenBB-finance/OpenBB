@@ -960,13 +960,17 @@ en:
   econometrics/plot: plot data from a dataset
   econometrics/type: change types of the columns or display their types
   econometrics/desc: show descriptive statistics of a dataset
+  econometrics/corr: Plot the correlation coefficients for dataset features
+  econometrics/season: Plot the seasonality for a dataset column
   econometrics/index: set (multi) index based on columns
   econometrics/clean: clean a dataset by filling or dropping NaNs
   econometrics/modify: combine columns of datasets and delete or rename columns
   econometrics/add: Add columns to dataset with option to use formulas
+  econometrics/eval: create new series by performing operations on loaded data
   econometrics/delete: Delete columns from dataset
   econometrics/combine: Combine columns from different datasets
   econometrics/rename: Rename column from dataset
+  econometrics/lag: Add lag to a variable by shifting a column
   econometrics/_regression_: Regression
   econometrics/_regression_tests_: Regression Tests
   econometrics/ols: fit a (multi) linear regression model
