@@ -1,3 +1,5 @@
+import platform
+import sys
 from typing import Literal
 
 from pydantic.dataclasses import dataclass
@@ -9,8 +11,13 @@ from openbb_terminal.core.models import BaseModel
 class SystemModel(BaseModel):
     """Data model for system variables and configurations."""
 
-    # System version
+    # System section
+    OS: str = str(platform.system())
+    PYTHON: str = str(platform.python_version())
+
+    # OpenBB section
     VERSION = "3.0.0rc1"
+    PACKAGED: bool = getattr(sys, "frozen", False) and hasattr(sys, "_MEIPASS")
 
     # Logging section
     LOGGING_APP_NAME: str = "gst"

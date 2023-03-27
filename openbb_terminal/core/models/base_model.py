@@ -27,3 +27,12 @@ class BaseModel:
         if hasattr(self, field):
             return getattr(self, field)
         return None
+
+    def to_dict(self) -> dict[str, Any]:
+        """Convert model to dict."""
+        d = self.__dict__.copy()
+        keys = list(d.keys())
+        for key in keys:
+            if key.startswith("_"):
+                del d[key]
+        return d
