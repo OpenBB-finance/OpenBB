@@ -10,6 +10,7 @@ from openbb_terminal.core.models.user_model import (
     CredentialsModel,
     PreferencesModel,
     ProfileModel,
+    SourcesModel,
     UserModel,
 )
 from openbb_terminal.core.session import local_model
@@ -39,6 +40,7 @@ def fixture_test_user():
         credentials=CredentialsModel(),
         preferences=PreferencesModel(),
         profile=ProfileModel(),
+        sources=SourcesModel(),
     )
 
 

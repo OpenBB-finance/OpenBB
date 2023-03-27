@@ -9,7 +9,8 @@ from openbb_terminal.core.config.paths import (
     SETTINGS_DIRECTORY,
 )
 from openbb_terminal.core.models import SystemModel
-from openbb_terminal.core.session.env_handler import load_env_to_model, reading_env
+from openbb_terminal.core.session.env_handler import read_env
+from openbb_terminal.core.session.utils import load_dict_to_model
 
 SYSTEM_FILE_PATH = SETTINGS_DIRECTORY / "system.json"
 
@@ -36,12 +37,12 @@ def handle_system(file_path: Path = SYSTEM_FILE_PATH) -> SystemModel:
             with open(file_path) as f:
                 system_data = json.load(f)
             if system_data:
-                return load_env_to_model(system_data, SystemModel)
+                return load_dict_to_model(system_data, SystemModel)
     except Exception:
         pass
 
-    __env_dict = reading_env()
-    system = load_env_to_model(__env_dict, SystemModel)
+    __env_dict = read_env()
+    system = load_dict_to_model(__env_dict, SystemModel)
     save_system(system=system, file_path=file_path)
     subscribe_delete_system_on_exit(file_path=file_path)
     return system
