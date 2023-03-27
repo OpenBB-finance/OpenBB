@@ -75,6 +75,7 @@ class ForexController(BaseController):
         if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices_default
             choices["load"].update({c: {} for c in FX_TICKERS})
+            del choices["load"]["--source"]["Oanda"]
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
