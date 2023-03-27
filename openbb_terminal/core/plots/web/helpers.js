@@ -128,19 +128,25 @@ function checkFile(popup, type = false) {
       csv_columns.innerHTML = "<b>Columns:</b><br>";
       if (csv_type.value == "candlestick") {
         option_ids = ["x", "open", "high", "low", "close"];
+        let options_select = "";
 
         for (let i = 0; i < option_ids.length; i++) {
           let header_name = option_ids[i].replace(/\b[a-z]/g, (x) =>
             x.toUpperCase()
           );
 
-          csv_columns.innerHTML += `
-                        <label for="csv_${option_ids[i]}">${header_name}</label>
-                        <select id="csv_${option_ids[i]}">
-                            ${options}
-                        </select>
-                    `;
+          options_select += `
+          <div style="display: flex; align-items: center; justify-items: space-between;">
+          <label style="width: 100px;" for="csv_${option_ids[i]}">${header_name}</label>
+          <select id="csv_${option_ids[i]}" style="width: 100%;">
+          ${options}
+          </select>
+          </div>
+          `;
         }
+        csv_columns.innerHTML += `
+        <div class="csv_column_container">${options_select}</div>
+        `;
 
         csv_colors.innerHTML = `
                     <b>Candlestick colors:</b><br><br>
@@ -160,17 +166,21 @@ function checkFile(popup, type = false) {
               headers[headers_lower.indexOf("date")];
           }
         }
-
       } else {
         csv_columns.innerHTML = `
-                    <label for="csv_x">X axis</label>
-                    <select id="csv_x">
-                        ${options}
-                    </select>
-                    <label for="csv_y">Y axis</label>
-                    <select id="csv_y">
-                        ${options}
-                    </select><br><br>
+                    <b>Columns:</b><br>
+                    <div style="margin-top: 5px; margin-bottom: 5px;">
+                      <label for="csv_x">X axis</label>
+                      <select id="csv_x">
+                          ${options}
+                      </select>
+                    </div>
+                    <div style="margin-top: 5px; margin-bottom: 5px;">
+                      <label for="csv_y">Y axis</label>
+                      <select id="csv_y">
+                          ${options}
+                      </select><br><br>
+                    </div>
                 `;
         csv_colors.innerHTML = `
                     <label for="csv_color"><b>Line color:</b></label>
@@ -194,8 +204,6 @@ function checkFile(popup, type = false) {
         }
         csv_percent_change_div.style.display = "inline-block";
       }
-
-      csv_columns.style.display = "inline-block";
 
       // we try to guess the date and time to remove from the name of the file
       // if "_" in the name of the file,
@@ -290,12 +298,13 @@ function update_color() {
   let color = globals.color_picker.querySelector("#picked_color").value;
   let gd = globals.CHART_DIV;
 
-  // we change last added shape color
+  // if there are no shapes, we remove the color picker
   let shapes = gd.layout.shapes;
   if (!shapes || shapes.length == 0) {
-    color_picker.remove();
+    globals.color_picker.remove();
     return;
   }
+  // we change last added shape color
   let last_shape = shapes[shapes.length - 1];
   last_shape.line.color = color;
   Plotly.update(gd, {}, { shapes: shapes });

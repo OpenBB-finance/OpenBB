@@ -175,6 +175,14 @@ body {
   margin-left: 135px;
 }
 
+.csv_column_container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
 .plotly-graph-div .modebar--hover .modebar-group {
   border: 2px solid #5a5a5a !important;
   border-radius: 4px;
@@ -202,6 +210,7 @@ body {
     display: block !important;
     background-color: transparent !important;
   }
+
   .modebar {
     bottom: 60px !important;
   }
@@ -366,6 +375,7 @@ body {
 .updatemenu-item-rect {
   fill-opacity: 0.5 !important;
 }
+
 .updatemenu-item-rect:hover {
   background-color: #1f1f1f !important;
 }
@@ -598,6 +608,7 @@ button {
   0% {
     transform: rotate(0deg);
   }
+
   100% {
     transform: rotate(360deg);
   }
@@ -641,9 +652,11 @@ ul li a {
 * html ul li {
   float: none;
 }
+
 * html ul li a {
   height: 1%;
 }
+
 /* End */
 
 li:hover ul {
@@ -1289,20 +1302,16 @@ video {
 
 .blur-md {
   --tw-blur: blur(12px);
-  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast)
-    var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate)
-    var(--tw-sepia) var(--tw-drop-shadow);
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
 
 ._header {
   background: #062d48;
-  background: linear-gradient(
-    90deg,
-    #062d48,
-    #0b3054 15%,
-    #0e386c 45%,
-    #0b203d 64%,
-    #06101a 82%,
-    #060709
-  );
+  background: linear-gradient(90deg,
+      #062d48,
+      #0b3054 15%,
+      #0e386c 45%,
+      #0b203d 64%,
+      #06101a 82%,
+      #060709);
 }
