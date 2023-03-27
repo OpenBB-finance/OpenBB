@@ -4,11 +4,15 @@ import { DEFAULT_ROWS_PER_PAGE } from ".";
 import useLocalStorage from "../../utils/useLocalStorage";
 import Select from "../Select";
 
-export default function Pagination({ table }: { table: any }) {
-  const [currentPage, setCurrentPage] = useLocalStorage(
-    "rowsPerPage",
-    DEFAULT_ROWS_PER_PAGE
-  );
+export default function Pagination({
+  table,
+  currentPage,
+  setCurrentPage,
+}: {
+  table: any;
+  currentPage: number;
+  setCurrentPage: (value: number) => void;
+}) {
   const totalRows = table.getFilteredRowModel().rows.length;
 
   return (
@@ -55,8 +59,8 @@ export default function Pagination({ table }: { table: any }) {
       <div>
         <button
           className={clsx("px-2", {
-            "text-grey-700": !table.getCanPreviousPage(),
-            "text-white": table.getCanPreviousPage(),
+            "text-grey-400 dark:text-grey-700": !table.getCanPreviousPage(),
+            "dark:text-white": table.getCanPreviousPage(),
           })}
           onClick={() => table.setPageIndex(0)}
           disabled={!table.getCanPreviousPage()}
@@ -65,8 +69,8 @@ export default function Pagination({ table }: { table: any }) {
         </button>
         <button
           className={clsx("px-2", {
-            "text-grey-700": !table.getCanPreviousPage(),
-            "text-white": table.getCanPreviousPage(),
+            "text-grey-400 dark:text-grey-700": !table.getCanPreviousPage(),
+            "dark:text-white": table.getCanPreviousPage(),
           })}
           onClick={() => table.previousPage()}
           disabled={!table.getCanPreviousPage()}
@@ -75,8 +79,8 @@ export default function Pagination({ table }: { table: any }) {
         </button>
         <button
           className={clsx("px-2", {
-            "text-grey-700": !table.getCanNextPage(),
-            "text-white": table.getCanNextPage(),
+            "text-grey-400 dark:text-grey-700": !table.getCanNextPage(),
+            "dark:text-white": table.getCanNextPage(),
           })}
           onClick={() => table.nextPage()}
           disabled={!table.getCanNextPage()}
@@ -85,8 +89,8 @@ export default function Pagination({ table }: { table: any }) {
         </button>
         <button
           className={clsx("px-2", {
-            "text-grey-700": !table.getCanNextPage(),
-            "text-white": table.getCanNextPage(),
+            "text-grey-400 dark:text-grey-700": !table.getCanNextPage(),
+            "dark:text-white": table.getCanNextPage(),
           })}
           onClick={() => table.setPageIndex(table.getPageCount() - 1)}
           disabled={!table.getCanNextPage()}
