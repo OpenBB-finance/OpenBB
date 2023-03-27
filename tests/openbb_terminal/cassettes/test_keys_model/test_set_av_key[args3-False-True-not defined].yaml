@@ -1,0 +1,91 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.28.2
+    method: GET
+    uri: https://www.alphavantage.co/query?apikey=1234&datatype=json&function=TIME_SERIES_INTRADAY&interval=15min&outputsize=compact&symbol=AAPL
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA6ybzW9bRRTF9/wVT16BlD7ux8ydO9lVwKJSEYjAhp1pXWopsaPELSpV/3f0XKXE
+        xsk5KE/qKpm8+vfunHM/Zvzxq2EYhsWPq91y+H65Wy7Oh4/7H+1/rOPwYvNme3O13K23m8X5sHix
+        2d0sXy8/DF9rvVpvvhm216vN2fB2/efbs+Fy+9fZ8Opye7sarm/Wr1a3w3Lzeni/vXx3tVqc/ftY
+        G4eLD1d/bC+nJz5//vPL+7/0cXi5vN0Nv6ze3Kxu365eT4tMzJ+JP7MymJzL9O/+35Tpc+5WN++X
+        +0fuP9r939dx+Ond7vrdbrhY/72alny3vbpevtrdXxTj8Ov6ajX8vt3sl/x28e0Py9vd6maz2C/6
+        9HntYr/oYnWzXt3evYXDt3bqw95fcPdqp1e3/7gho/gB0d1rmt7r3RKT/y7xcXrpXx5yYkUZP0fk
+        safU8S5I0yJrrS6+LPh0dhJM+3mpFJhBsFPs/x/s1H90ANYlk+FyLmCKuexRrtrHboBrWtMBV4hT
+        8VIuXg1zdRgvJeKliKuGM1ycwBQLTPE+TIIrkcBqDcyVrL7qHFyV4GqAy0KT4eL0pYK5CuRyzHXq
+        KYf7MLwxXLPpi+AqRLwq2odaKgVGZjDC6BMaYp1BYF0LYRyNFVibg0vmMI5sPRkwTmGGwU4tOQRL
+        I8CQwlo2pcA4iTm2RA8kMWNqKVRyaBcNLmacyEwdojWEpoHRHGVn700IlQWpMsPp2WEaU8I9FKks
+        WrfKgJEqIwp7uBmV2YzQ76VSlX2QMrMIGDJYKaoyZL2DlmVqWqjdSMhssuusEK0ga2wxQ9C8ZXPr
+        GK0yQpsMu0A0CYjmM/Qt2lrWFgyaU1Erc6AVxWhZoO9H82IMmlJRi3zcRR6IySGaB0YrpVegNfNM
+        Z9BIrSlEO1UVHqIF0UhHcwUFca3eBaMVUms1uj4ZrTIzApStNbJPdQGBRmrNYNRC4IasGK0GbGPC
+        K1OKFFJrWiFagTaiYlhrsHzUTFUqapzWilSIpo+jJTW0UliMmGqvRDXipNac2JCwm7HEaJ4CbCTC
+        K4fGaC0ZhywFRa0Ree1UhX00urLQ0hg0Rms5tgLQcuyO0GpUgJZjP7HzD4cGIe7BkAkVtHBMlogs
+        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
+    headers:
+      Allow:
+      - GET, HEAD, OPTIONS
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 7ae85fa25e1a48a6-LIS
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Cross-Origin-Opener-Policy:
+      - same-origin
+      Date:
+      - Mon, 27 Mar 2023 14:37:49 GMT
+      Referrer-Policy:
+      - same-origin
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Cookie, Origin
+      Via:
+      - 1.1 vegur
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+    status:
+      code: 200
+      message: OK
+version: 1
