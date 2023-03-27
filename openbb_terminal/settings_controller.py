@@ -21,6 +21,7 @@ from openbb_terminal import theme
 from openbb_terminal.core.config.paths import (
     I18N_DICT_LOCATION,
     SETTINGS_ENV_FILE,
+    STYLES_DIRECTORY_REPO,
     USER_DATA_SOURCES_DEFAULT_FILE,
 )
 from openbb_terminal.core.session.current_user import (
@@ -40,7 +41,6 @@ from openbb_terminal.helper_funcs import (
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import RICH_TAGS, MenuText, console
-from openbb_terminal.terminal_helper import print_guest_block_msg
 
 # pylint: disable=too-many-lines,no-member,too-many-public-methods,C0302
 # pylint: disable=import-outside-toplevel
@@ -276,18 +276,16 @@ class SettingsController(BaseController):
             required="-h" not in other_args and "--help" not in other_args,
             help="To use 'custom' option, go to https://openbb.co/customize and create your theme."
             " Then, place the downloaded file 'openbb_config.richstyle.json'"
-            f" inside {get_current_user().preferences.USER_STYLES_DIRECTORY}.",
+            f" inside {get_current_user().preferences.USER_STYLES_DIRECTORY} or "
+            f"{STYLES_DIRECTORY_REPO}.",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-s")
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
             if is_local():
-                if ns_parser.style == "hub":
-                    print_guest_block_msg()
-                else:
-                    self.set_and_save_preference("RICH_STYLE", ns_parser.style)
-                    console.print("Theme updated.")
+                self.set_and_save_preference("RICH_STYLE", ns_parser.style)
+                console.print("Theme updated.")
             else:
                 set_preference("RICH_STYLE", ns_parser.style)
                 Hub.upload_config(

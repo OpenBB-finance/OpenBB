@@ -101,7 +101,7 @@ class PreferencesModel(BaseModel):
     USER_CUSTOM_REPORTS_DIRECTORY = USER_DATA_DIRECTORY / "reports" / "custom reports"
     USER_FORECAST_MODELS_DIRECTORY = USER_DATA_DIRECTORY / "exports" / "forecast_models"
     USER_FORECAST_WHISPER_DIRECTORY = USER_DATA_DIRECTORY / "exports" / "whisper"
-    USER_STYLES_DIRECTORY = USER_DATA_DIRECTORY / "styles" / "user"
+    USER_STYLES_DIRECTORY = USER_DATA_DIRECTORY / "styles"
 
     def __repr__(self) -> str:  # pylint: disable=useless-super-delegation
         return super().__repr__()

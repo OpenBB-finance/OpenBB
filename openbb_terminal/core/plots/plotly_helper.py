@@ -23,7 +23,9 @@ from plotly.subplots import make_subplots
 from scipy import stats
 
 from openbb_terminal.base_helpers import console, strtobool
-from openbb_terminal.core.config.paths import MISCELLANEOUS_DIRECTORY
+from openbb_terminal.core.config.paths import (
+    STYLES_DIRECTORY_REPO,
+)
 from openbb_terminal.core.plots.backend import PLOTLYJS_PATH, plots_backend
 from openbb_terminal.core.plots.config.openbb_styles import (
     PLT_COLORWAY,
@@ -44,10 +46,8 @@ class TerminalStyle:
     styles as python dictionaries.
     """
 
-    DEFAULT_STYLES_LOCATION = MISCELLANEOUS_DIRECTORY / "styles" / "default"
-    USER_STYLES_LOCATION = (
-        get_current_user().preferences.USER_DATA_DIRECTORY / "styles" / "user"
-    )
+    STYLES_REPO = STYLES_DIRECTORY_REPO
+    USER_STYLES_DIRECTORY = get_current_user().preferences.USER_STYLES_DIRECTORY
 
     plt_styles_available: Dict[str, Path] = {}
     plt_style: str = "dark"
@@ -96,7 +96,7 @@ class TerminalStyle:
             if style in self.console_styles_available:
                 json_path = self.console_styles_available[style]
             else:
-                console.print("Invalid console style. Using default.")
+                console.print("\nInvalid console style. Using default.")
                 json_path = self.console_styles_available.get("dark", None)
 
         if json_path:
@@ -142,13 +142,13 @@ class TerminalStyle:
             ["plt_styles_available", "console_styles_available"],
             [".pltstyle.json", ".richstyle.json"],
         ):
-            for file in folder.glob(f"*{ext}"):
+            for file in folder.rglob(f"*{ext}"):
                 getattr(self, attr)[file.name.replace(ext, "")] = file
 
     def load_available_styles(self) -> None:
         """Load custom styles from default and user folders."""
-        self.load_available_styles_from_folder(self.DEFAULT_STYLES_LOCATION)
-        self.load_available_styles_from_folder(self.USER_STYLES_LOCATION)
+        self.load_available_styles_from_folder(self.STYLES_REPO)
+        self.load_available_styles_from_folder(self.USER_STYLES_DIRECTORY)
 
     def load_json_style(self, file: Path) -> Dict[str, Any]:
         """Load style from json file.
