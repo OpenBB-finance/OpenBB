@@ -72,7 +72,7 @@ function App() {
   const transformedData = transformData(data);
 
   return (
-    <div className="relative h-full bg-black">
+    <div className="relative h-full bg-white dark:bg-black text-black dark:text-white">
       <DndProvider backend={HTML5Backend}>
         {transformedData && (
           <Table
