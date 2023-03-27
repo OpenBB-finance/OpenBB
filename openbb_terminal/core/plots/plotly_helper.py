@@ -103,10 +103,12 @@ class TerminalStyle:
         style = style.lower().replace("light", "white")  # type: ignore
 
         if self.plt_style and self.plotly_template:
-
             self.plotly_template.setdefault("layout", {}).setdefault(
                 "mapbox", {}
             ).setdefault("style", "dark")
+            if "tables" in self.plt_styles_available:
+                tables = self.load_json_style(self.plt_styles_available["tables"])
+                pio.templates["openbb_tables"] = go.layout.Template(tables)
 
             pio.templates["openbb"] = go.layout.Template(self.plotly_template)
             if style in ["dark", "white"]:
@@ -1491,6 +1493,7 @@ class OpenBBFigure(go.Figure):
         fig.update_layout(
             height=height,
             width=width,
+            template="openbb_tables",
             margin=dict(l=0, r=0, b=0, t=0, pad=0),
             font=dict(size=14),
         )

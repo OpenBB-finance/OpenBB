@@ -391,11 +391,14 @@ function on_submit(popup_id, on_annotation = null) {
           yaxis = `y${yaxes.length + 1}`;
           yaxis_id = `yaxis${yaxes.length + 1}`;
 
-          if (globals.csv_yaxis_id == null && popup_data.percent_change == true) {
+          if (
+            globals.csv_yaxis_id == null &&
+            popup_data.percent_change == true
+          ) {
             globals.csv_yaxis_id = yaxis_id;
             globals.csv_yaxis = yaxis;
-            gd.layout.showlegend = true;
           }
+          gd.layout.showlegend = true;
 
           orginal_data = data;
           let non_null = data.findIndex(
@@ -431,7 +434,14 @@ function on_submit(popup_id, on_annotation = null) {
             yaxis: popup_data.percent_change ? globals.csv_yaxis : yaxis,
           };
 
-          if (globals.added_traces.length == 0 && popup_data.percent_change == true) {
+          if (
+            !globals.percent_yaxis_added &&
+            popup_data.percent_change == true
+          ) {
+            let ticksuffix =
+              gd.data.length > 1
+                ? "      ".repeat(globals.added_traces.length + 1)
+                : "";
             gd.layout[yaxis_id] = {
               overlaying: "y",
               side: "left",
@@ -443,10 +453,11 @@ function on_submit(popup_id, on_annotation = null) {
                 standoff: 0,
               },
               tickfont: { size: 14 },
-              ticksuffix: gd.data.length > 1 ? "     " : "",
+              ticksuffix: ticksuffix,
               tickformat: ".0%",
               tickpadding: 5,
               showgrid: false,
+              showlegend: true,
               showline: false,
               showticklabels: true,
               zeroline: false,
@@ -457,11 +468,11 @@ function on_submit(popup_id, on_annotation = null) {
             globals.percent_yaxis_added = true;
             if (globals.cmd_src_idx != null) {
               gd.layout.annotations[globals.cmd_src_idx].xshift -=
-                gd.data.length > 1 ? 40 : 50;
+                gd.data.length > 1 ? 45 : 35;
               gd.layout.margin.l += gd.data.length > 1 ? 50 : 45;
             }
           } else if (popup_data.percent_change == false) {
-            let ticksuffix = gd.data.length > 1 ? "       " : ""
+            let ticksuffix = gd.data.length > 1 ? "     " : "";
             if (globals.percent_yaxis_added) {
               ticksuffix = "      ".repeat(globals.added_traces.length + 1);
             }
@@ -483,6 +494,7 @@ function on_submit(popup_id, on_annotation = null) {
               showgrid: false,
               showline: false,
               showticklabels: true,
+              showlegend: true,
               zeroline: false,
               anchor: "x",
               type: "linear",
@@ -490,7 +502,7 @@ function on_submit(popup_id, on_annotation = null) {
             };
             if (globals.cmd_src_idx != null) {
               gd.layout.annotations[globals.cmd_src_idx].xshift -=
-              globals.added_traces.length > 1 ? 50 : 45;
+                globals.added_traces.length > 1 ? 45 : 35;
               gd.layout.margin.l += globals.added_traces.length > 1 ? 50 : 45;
             }
           }
@@ -519,7 +531,7 @@ function on_submit(popup_id, on_annotation = null) {
         globals.CSV_DIV.querySelectorAll("textarea").forEach(function (input) {
           input.value = "";
         });
-      }
+      };
 
       popup_file_reader.readAsText(file);
     }

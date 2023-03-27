@@ -192,10 +192,10 @@ function checkFile(popup, type = false) {
           csv_columns.querySelector("#csv_y").value =
             headers[headers_lower.indexOf("close")];
         }
+        csv_percent_change_div.style.display = "inline-block";
       }
 
       csv_columns.style.display = "inline-block";
-      csv_percent_change_div.style.display = "inline-block";
 
       // we try to guess the date and time to remove from the name of the file
       // if "_" in the name of the file,
