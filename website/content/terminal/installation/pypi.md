@@ -175,7 +175,7 @@ sudo dnf install gtk3-devel webkit2gtk4.0-devel
 
 Once you have met all of these requirements, you are ready to set up your virtual environment for installation of the OpenBB Terminal and SDK from PyPI.
 
-## Prepare the virtual environment
+## Prepare the Virtual Environment
 
 Create the environment using a configuration file from the OpenBB Terminal repository.
 

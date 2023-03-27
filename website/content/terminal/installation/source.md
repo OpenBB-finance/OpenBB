@@ -175,7 +175,7 @@ sudo dnf install gtk3-devel webkit2gtk4.0-devel
 
 Once you have met all of these requirements, you are ready to install the OpenBB Terminal and SDK from source.
 
-## Clone the source code
+## Clone the Source Code
 
 Clone the OpenBB Terminal source code from GitHub. This will download the source code to the current working directory.
 
@@ -189,7 +189,7 @@ Enter the directory:
 cd OpenBBTerminal
 ```
 
-## Create and activate the virtual environment
+## Create and Activate the Virtual Environment
 
 Create the environment by copying the code below into the command line and agreeing to the prompts.
 
