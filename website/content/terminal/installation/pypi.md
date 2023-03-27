@@ -208,19 +208,19 @@ This method provides access to the data aggregation and charting functions of th
 The toolkits can be installed individually with:
 
 ```shell
-pip install openbb[optimization] --no-cache-dir
+pip install "openbb[optimization]" --no-cache-dir
 ```
 
 and
 
 ```shell
-pip install openbb[forecast] --no-cache-dir
+pip install "openbb[forecast]" --no-cache-dir
 ```
 
 Install all available toolkits at once with:
 
 ```shell
-pip install openbb[all] --no-cache-dir
+pip install "openbb[all]" --no-cache-dir
 ```
 
 ## Verify Installation
@@ -271,7 +271,7 @@ pip install -U openbb --no-cache-dir
 When using an installation with toolkits, with your virtual environment activated, enter:
 
 ```shell
-pip install -U openbb[all] --no-cache-dir
+pip install -U "openbb[all]" --no-cache-dir
 ```
 
 ## Nightly Builds
