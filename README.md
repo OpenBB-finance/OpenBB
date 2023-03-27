@@ -44,7 +44,7 @@
   </p>
 
   <p align="center">
-    <a href="https://docs.openbb.co/terminal/quickstart/installation"><strong>≪  GETTING STARTED</strong></a>
+    <a href="https://docs.openbb.co/terminal/installation"><strong>≪  GETTING STARTED</strong></a>
     &nbsp · &nbsp <a href="https://github.com/OpenBB-finance/OpenBBTerminal/tree/master/CONTRIBUTING.md"><strong>CONTRIBUTING</strong></a> &nbsp · &nbsp
     <a href="https://docs.openbb.co/terminal">
     <strong>SEE FEATURES »</strong></a>
