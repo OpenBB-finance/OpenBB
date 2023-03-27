@@ -11,7 +11,13 @@ from openbb_terminal import (
     keys_model,
     keys_view,
 )
-from openbb_terminal.core.session.current_user import get_current_user
+from openbb_terminal.core.config.paths import (
+    PACKAGE_ENV_FILE,
+    REPOSITORY_ENV_FILE,
+    SETTINGS_ENV_FILE,
+)
+from openbb_terminal.core.session.constants import KEYS_URL
+from openbb_terminal.core.session.current_user import get_current_user, is_local
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import EXPORT_ONLY_RAW_DATA_ALLOWED
@@ -53,19 +59,19 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
     def check_keys_status(self) -> None:
         """Check keys status"""
         for api in optional_rich_track(self.API_LIST, desc="Checking keys status"):
-            if api == "openbb":
-                self.status_dict[api] = getattr(
-                    keys_model, "check_" + str(api) + "_personal_access_token"
-                )()
-            else:
-                self.status_dict[api] = getattr(
-                    keys_model, "check_" + str(api) + "_key"
-                )()
+            self.status_dict[api] = getattr(keys_model, "check_" + str(api) + "_key")()
 
     def print_help(self):
         """Print help"""
         self.check_keys_status()
         mt = MenuText("keys/")
+        mt.add_param(
+            "_source",
+            f"{SETTINGS_ENV_FILE}\n        {PACKAGE_ENV_FILE}\n        {REPOSITORY_ENV_FILE}"
+            if is_local()
+            else KEYS_URL,
+        )
+        mt.add_raw("\n")
         mt.add_info("_keys_")
         mt.add_raw("\n")
         mt.add_cmd("mykeys")
@@ -1165,33 +1171,5 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
             self.status_dict["databento"] = keys_model.set_databento_key(
-                key=ns_parser.key, persist=True, show_output=True
-            )
-
-    @log_start_end(log=logger)
-    def call_openbb(self, other_args: List[str]):
-        """Process openbb command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="openbb",
-            description="Set OpenBB Personal Access Token. ",
-        )
-        parser.add_argument(
-            "-k",
-            "--key",
-            type=str,
-            dest="key",
-            help="key",
-        )
-        if not other_args:
-            console.print("For your Personal Access Token, visit: https://openbb.co/")
-            return
-
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-k")
-        ns_parser = self.parse_simple_args(parser, other_args)
-        if ns_parser:
-            self.status_dict["openbb"] = keys_model.set_openbb_personal_access_token(
                 key=ns_parser.key, persist=True, show_output=True
             )

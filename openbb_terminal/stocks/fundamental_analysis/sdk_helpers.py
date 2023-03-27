@@ -27,6 +27,7 @@ def get_income_statement(
         Symbol to get income statement for
     source : str, optional
         Data source for income statement, by default "YahooFinance"
+        Sources: YahooFinance, AlphaVantage, FinancialModelingPrep, Polygon, EODHD
     quarterly : bool, optional
         Flag to get quarterly data
     ratios : bool, optional
@@ -90,6 +91,7 @@ def get_balance_sheet(
         Symbol to get balance sheet for
     source : str, optional
         Data source for balance sheet, by default "YahooFinance"
+        Sources: YahooFinance, AlphaVantage, FinancialModelingPrep, Polygon, EODHD
     quarterly : bool, optional
         Flag to get quarterly data
     ratios : bool, optional
@@ -153,6 +155,7 @@ def get_cash_flow(
         Symbol to get cash flow for
     source : str, optional
         Data source for cash flow, by default "YahooFinance"
+        Sources: YahooFinance, AlphaVantage, FinancialModelingPrep, Polygon, EODHD
     quarterly : bool, optional
         Flag to get quarterly data
     ratios : bool, optional
@@ -212,6 +215,7 @@ def earnings(
         Stock ticker
     source : str, optional
          Source to use, by default "AlphaVantage"
+         Sources: YahooFinance, AlphaVantage
     quarterly : bool, optional
         Flag to get quarterly data (AlphaVantage only), by default False.
 

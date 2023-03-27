@@ -23,6 +23,11 @@ from prompt_toolkit.formatted_text import HTML
 from prompt_toolkit.styles import Style
 from rich import panel
 
+import openbb_terminal.config_terminal as cfg
+from openbb_terminal.account.account_model import (
+    get_login_called,
+    set_login_called,
+)
 from openbb_terminal.common import feedparser_view
 from openbb_terminal.core.config.paths import (
     HOME_DIRECTORY,
@@ -32,11 +37,9 @@ from openbb_terminal.core.config.paths import (
 )
 from openbb_terminal.core.log.generation.custom_logger import log_terminal
 from openbb_terminal.core.session import session_controller
-from openbb_terminal.core.session.constants import REGISTER_URL
 from openbb_terminal.core.session.current_user import (
     get_current_user,
-    is_local,
-    set_current_user,
+    set_preference,
 )
 from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
@@ -379,14 +382,6 @@ class TerminalController(BaseController):
         """Process account command."""
         from openbb_terminal.account.account_controller import AccountController
 
-        get_current_user()
-
-        if is_local():
-            console.print(
-                "[info]You are currently logged as a guest.\n"
-                f"[info]Register: [/info][cmds]{REGISTER_URL}\n[/cmds]"
-            )
-            return
         self.queue = self.load_class(AccountController, self.queue)
 
     def call_keys(self, _):
@@ -837,9 +832,7 @@ class TerminalController(BaseController):
                         console.print(
                             f"[green]Folder '{export_path}' successfully created.[/green]"
                         )
-                    current_user = get_current_user()
-                    current_user.preferences.USER_EXPORTS_DIRECTORY = Path(export_path)
-                    set_current_user(current_user)
+                    set_preference("USER_EXPORTS_DIRECTORY", Path(export_path))
                     self.queue = self.queue[1:]
 
 
@@ -883,9 +876,7 @@ def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
             console.print(
                 f"[green]Folder '{export_path}' successfully created.[/green]"
             )
-        current_user = get_current_user()
-        current_user.preferences.USER_EXPORTS_DIRECTORY = Path(export_path)
-        set_current_user(current_user)
+        set_preference("USER_EXPORTS_DIRECTORY", Path(export_path))
 
     bootup()
     if not jobs_cmds:
@@ -1011,7 +1002,7 @@ def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
                 break
 
         try:
-            if an_input == "logout" and is_auth_enabled():
+            if an_input in "login" and get_login_called() and is_auth_enabled():
                 break
 
             # Process the input command
@@ -1057,7 +1048,8 @@ def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
                 console.print(f"[green]Replacing by '{an_input}'.[/green]")
                 t_controller.queue.insert(0, an_input)
 
-    if an_input == "logout" and is_auth_enabled():
+    if an_input in "login" and get_login_called() and is_auth_enabled():
+        set_login_called(False)
         return session_controller.main()
 
 
@@ -1235,6 +1227,8 @@ def main(
 
     if debug:
         os.environ["DEBUG_MODE"] = "true"
+
+    cfg.start_plot_backend()
 
     if isinstance(path_list, list) and path_list[0].endswith(".openbb"):
         run_routine(file=path_list[0], routines_args=routines_args)

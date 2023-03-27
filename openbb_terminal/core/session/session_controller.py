@@ -3,7 +3,6 @@ from typing import Tuple
 from prompt_toolkit import PromptSession
 
 import openbb_terminal.core.session.local_model as Local
-from openbb_terminal import terminal_controller
 from openbb_terminal.core.config.paths import PACKAGE_DIRECTORY
 from openbb_terminal.core.session.constants import REGISTER_URL
 from openbb_terminal.core.session.session_model import (
@@ -34,7 +33,9 @@ def get_user_input() -> Tuple[str, str, bool]:
     Tuple[str, str, bool]
         The user email, password and save login option.
     """
-    console.print("[info]\nPlease enter your credentials:[/info]")
+    console.print(
+        "[info]\nPlease enter your credentials or press <ENTER> for guest mode:[/info]"
+    )
 
     s: PromptSession = PromptSession()
 
@@ -69,9 +70,8 @@ def prompt(welcome=True):
 
     while True:
         email, password, save = get_user_input()
-        if not email or not password:
-            continue
-
+        if not email:
+            return launch_terminal()
         session = create_session(email, password, save)
         if isinstance(session, dict) and session:
             return login_and_launch(session=session)
@@ -79,6 +79,8 @@ def prompt(welcome=True):
 
 def launch_terminal():
     """Launch terminal"""
+    from openbb_terminal import terminal_controller
+
     terminal_controller.parse_args_and_run()
 
 

@@ -1,5 +1,5 @@
 import json
-from typing import Dict, Optional
+from typing import Dict, Literal, Optional
 
 import requests
 
@@ -9,6 +9,7 @@ from openbb_terminal.core.session.constants import (
     CONNECTION_TIMEOUT_MSG,
     TIMEOUT,
 )
+from openbb_terminal.core.session.current_system import get_current_system
 from openbb_terminal.rich_config import console
 
 
@@ -103,7 +104,7 @@ def delete_session(
         The response from the logout request.
     """
     try:
-        response = requests.post(
+        response = requests.get(
             url=base_url + "logout",
             headers={"Authorization": auth_header},
             json={"token": token},
@@ -231,10 +232,10 @@ def fetch_user_configs(
         return None
 
 
-def patch_user_configs(
+def upload_config(
     key: str,
     value: str,
-    type_: str,
+    type_: Literal["keys", "settings", "sources"],
     auth_header: str,
     base_url: str = BASE_URL,
     timeout: int = TIMEOUT,
@@ -247,8 +248,8 @@ def patch_user_configs(
         The key to patch.
     value : str
         The value to patch.
-    type_ : str
-        The type of the patch, either "keys" or "settings".
+    type_ : Literal["keys", "settings", "sources"]
+        The type of the patch.
     auth_header : str
         The authorization header, e.g. "Bearer <token>".
     base_url : str
@@ -261,7 +262,7 @@ def patch_user_configs(
     Optional[requests.Response]
         The response from the patch request.
     """
-    if type_ not in ["keys", "settings"]:
+    if type_ not in ["keys", "settings", "sources"]:
         console.print("[red]\nInvalid patch type.[/red]")
         return None
 
@@ -309,19 +310,19 @@ def clear_user_configs(
     Optional[requests.Response]
         The response from the put request.
     """
-    data: Dict[str, dict] = {"features_keys": {}, "features_settings": {}}
+    data: Dict[str, dict] = {"features_keys": {}}
 
     try:
         response = requests.put(
-            url=base_url + "terminal/user",
+            url=base_url + "user",
             headers={"Authorization": auth_header},
             json=data,
             timeout=timeout,
         )
         if response.status_code == 200:
-            console.print("[green]Cleared configurations.[/green]")
+            console.print("[green]Cleared data.[/green]")
         else:
-            console.print("[red]Failed to clear configurations.[/red]")
+            console.print("[red]Failed to clear data.[/red]")
         return response
     except requests.exceptions.ConnectionError:
         console.print(f"\n{CONNECTION_ERROR_MSG}")
@@ -330,7 +331,7 @@ def clear_user_configs(
         console.print(f"\n{CONNECTION_TIMEOUT_MSG}")
         return None
     except Exception:
-        console.print("[red]Failed to clear configurations.[/red]")
+        console.print("[red]Failed to clear data.[/red]")
         return None
 
 
@@ -370,6 +371,8 @@ def upload_routine(
         "description": description,
         "script": routine,
         "override": override,
+        "version": get_current_system().VERSION,
+        "public": False,
     }
 
     try:
@@ -562,7 +565,7 @@ def generate_personal_access_token(
     Optional[requests.Response]
     """
 
-    url = f"{base_url}/sdk/token"
+    url = f"{base_url}sdk/token"
 
     payload = json.dumps({"days": days})
     headers = {
@@ -609,7 +612,7 @@ def get_personal_access_token(
     Optional[requests.Response]
     """
 
-    url = f"{base_url}/sdk/token"
+    url = f"{base_url}sdk/token"
 
     headers = {"Authorization": auth_header}
 
@@ -652,7 +655,7 @@ def revoke_personal_access_token(
     Optional[requests.Response]
     """
 
-    url = f"{base_url}/sdk/token"
+    url = f"{base_url}sdk/token"
 
     headers = {"Authorization": auth_header}
 

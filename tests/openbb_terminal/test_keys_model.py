@@ -6,6 +6,7 @@ import pandas as pd
 import pytest
 
 from openbb_terminal import keys_model
+from openbb_terminal.core.session import env_handler
 from openbb_terminal.core.session.current_user import (
     PreferencesModel,
     copy_user,
@@ -52,7 +53,7 @@ def set_naive_environment(var_name_list: List[str]) -> None:
         tmp_env.unlink(missing_ok=True)
 
     # Set new temporary .env
-    keys_model.SETTINGS_ENV_FILE = tmp_env
+    env_handler.SETTINGS_ENV_FILE = tmp_env
 
 
 # Alphavantage api is working with any key you pass, so expected is 1 with dummy keys
@@ -1450,53 +1451,6 @@ def test_set_shroom_key(
     set_naive_environment(var_name_list)
 
     keys_model.set_shroom_key(
-        key=args[0],
-        persist=persist,
-        show_output=show_output,
-    )
-
-
-@pytest.mark.vcr
-@pytest.mark.record_stdout
-@pytest.mark.parametrize(
-    "args, persist, show_output, __expected",
-    [
-        (
-            ["test_key"],
-            False,
-            True,
-            keys_model.KeyStatus.DEFINED_TEST_FAILED,
-        ),
-        (
-            ["test_key"],
-            False,
-            False,
-            keys_model.KeyStatus.DEFINED_TEST_FAILED,
-        ),
-        (
-            ["test_key"],
-            True,
-            True,
-            keys_model.KeyStatus.DEFINED_TEST_FAILED,
-        ),
-        (
-            ["REPLACE_ME"],
-            False,
-            True,
-            keys_model.KeyStatus.NOT_DEFINED,
-        ),
-    ],
-)
-def test_set_openbb_key(
-    args: List[str], persist: bool, show_output: bool, __expected: str
-):
-    var_name_list = [
-        "OPENBB_OPENBB_PERSONAL_ACCESS_TOKEN",
-    ]
-
-    set_naive_environment(var_name_list)
-
-    keys_model.set_openbb_personal_access_token(
         key=args[0],
         persist=persist,
         show_output=show_output,

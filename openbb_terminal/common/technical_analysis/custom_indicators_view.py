@@ -99,7 +99,7 @@ def plot_multiple_indicators(
     data: pd.DataFrame,
     indicators: List[str],
     symbol: str = "",
-    window: Optional[List[int]] = None,
+    params: Optional[dict] = None,
     export: str = "",
     sheet_name: Optional[str] = None,
     external_axes: bool = False,
@@ -135,15 +135,15 @@ def plot_multiple_indicators(
     if ta_helpers.check_columns(data) is None:
         return None
 
-    if window is None:
-        window = [20, 50]
-
     indicators_dict: dict = {indicator: {} for indicator in indicators}
+    if params:
+        indicators_dict.update(params)
+
     ta = PlotlyTA()
 
     for ma in ta.ma_mode:
-        if ma in indicators_dict:
-            indicators_dict[ma] = dict(length=window)
+        if ma in indicators_dict and not indicators_dict[ma].get("length", None):
+            indicators_dict[ma] = dict(length=[20, 50])
 
     fig = ta.plot(
         data,

@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 
 # IMPORTS STANDARD
 import argparse
+import inspect
 import io
 import json
 import logging
@@ -29,6 +30,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import pandas.io.formats.format
+import pandas_ta as ta
 import pytz
 import requests
 import tweepy
@@ -106,7 +108,7 @@ def set_command_location(cmd_loc: str):
     cmd_loc: str
         Command location called by user
     """
-    global command_location
+    global command_location  # noqa
     command_location = cmd_loc
 
 
@@ -273,6 +275,9 @@ def print_rich_table(
     columns_to_auto_color: Optional[List[str]] = None,
     rows_to_auto_color: Optional[List[str]] = None,
     export: bool = False,
+    print_to_console: bool = False,
+    limit: Optional[int] = 1000,
+    source: Optional[str] = None,
 ):
     """Prepare a table from df in rich.
 
@@ -300,42 +305,81 @@ def print_rich_table(
         Rows to automatically color
     export: bool
         Whether we are exporting the table to a file. If so, we don't want to print it.
+    limit: Optional[int]
+        Limit the number of rows to show.
+    print_to_console: bool
+        Whether to print the table to the console. If False and interactive mode is
+        enabled, the table will be displayed in a new window. Otherwise, it will print to the
+        console.
+    source: Optional[str]
+        Source of the table. If provided, it will be displayed in the header of the table.
     """
     if export:
         return
 
     current_user = get_current_user()
+    enable_interactive = (
+        current_user.preferences.USE_INTERACTIVE_DF and plots_backend().isatty
+    )
+
+    def _get_headers(_headers: Union[List[str], pd.Index]) -> List[str]:
+        """Check if headers are valid and return them."""
+        output = _headers
+        if isinstance(_headers, pd.Index):
+            output = list(_headers)
+        if len(output) != len(df.columns):
+            log_and_raise(
+                ValueError("Length of headers does not match length of DataFrame")
+            )
+        return output
+
+    if enable_interactive and not print_to_console:
+        df_outgoing = df.copy()
+        # If headers are provided, use them
+        if headers is not None:
+            # We check if headers are valid
+            df_outgoing.columns = _get_headers(headers)
+
+        if show_index and index_name not in df_outgoing.columns:
+            # If index name is provided, we use it
+            df_outgoing.index.name = index_name or "Index"
+            df_outgoing = df_outgoing.reset_index()
+
+        for col in df_outgoing.columns:
+            if col == "":
+                df_outgoing = df_outgoing.rename(columns={col: "  "})
+
+        plots_backend().send_table(
+            df_table=df_outgoing, title=title, source=source  # type: ignore
+        )
+        return
+
+    df = df.copy() if not limit else df.copy().iloc[:limit]
+    if current_user.preferences.USE_COLOR and automatic_coloring:
+        if columns_to_auto_color:
+            for col in columns_to_auto_color:
+                # checks whether column exists
+                if col in df.columns:
+                    df[col] = df[col].apply(lambda x: return_colored_value(str(x)))
+        if rows_to_auto_color:
+            for row in rows_to_auto_color:
+                # checks whether row exists
+                if row in df.index:
+                    df.loc[row] = df.loc[row].apply(
+                        lambda x: return_colored_value(str(x))
+                    )
+
+        if columns_to_auto_color is None and rows_to_auto_color is None:
+            df = df.applymap(lambda x: return_colored_value(str(x)))
 
     if current_user.preferences.USE_TABULATE_DF:
         table = Table(title=title, show_lines=True, show_header=show_header)
-
-        if current_user.preferences.USE_COLOR and automatic_coloring:
-            if columns_to_auto_color:
-                for col in columns_to_auto_color:
-                    # checks whether column exists
-                    if col in df.columns:
-                        df[col] = df[col].apply(lambda x: return_colored_value(str(x)))
-            if rows_to_auto_color:
-                for row in rows_to_auto_color:
-                    # checks whether row exists
-                    if row in df.index:
-                        df.loc[row] = df.loc[row].apply(
-                            lambda x: return_colored_value(str(x))
-                        )
-
-            if columns_to_auto_color is None and rows_to_auto_color is None:
-                df = df.applymap(lambda x: return_colored_value(str(x)))
 
         if show_index:
             table.add_column(index_name)
 
         if headers is not None:
-            if isinstance(headers, pd.Index):
-                headers = list(headers)
-            if len(headers) != len(df.columns):
-                log_and_raise(
-                    ValueError("Length of headers does not match length of DataFrame")
-                )
+            headers = _get_headers(headers)
             for header in headers:
                 table.add_column(str(header))
         else:
@@ -369,23 +413,6 @@ def print_rich_table(
             table.add_row(*row_idx)
         console.print(table)
     else:
-        if current_user.preferences.USE_COLOR and automatic_coloring:
-            if columns_to_auto_color:
-                for col in columns_to_auto_color:
-                    # checks whether column exists
-                    if col in df.columns:
-                        df[col] = df[col].apply(lambda x: return_colored_value(str(x)))
-            if rows_to_auto_color:
-                for row in rows_to_auto_color:
-                    # checks whether row exists
-                    if row in df.index:
-                        df.loc[row] = df.loc[row].apply(
-                            lambda x: return_colored_value(str(x))
-                        )
-
-            if columns_to_auto_color is None and rows_to_auto_color is None:
-                df = df.applymap(lambda x: return_colored_value(str(x)))
-
         console.print(df.to_string(col_space=0))
 
 
@@ -514,6 +541,75 @@ def check_indicators(string: str) -> List[str]:
                 f"\nInvalid choice: {s}, choose from \n    (`{'`, `'.join(choices)}`)",
             )
     return strings
+
+
+def check_indicator_parameters(args: str, _help: bool = False) -> str:
+    """Check if indicators parameters are valid."""
+    ta_cls = PlotlyTA()
+    indicators_dict: dict = {}
+
+    regex = re.compile(r"([a-zA-Z]+)\[([0-9.,]*)\]")
+    matches = regex.findall(args)
+
+    if not matches:
+        indicators = check_indicators(args)
+        args = "[],".join(indicators) + "[]"
+        matches = regex.findall(args)
+
+    if _help:
+        console.print(
+            """[yellow]To pass custom parameters to indicators:[/]
+
+    [green]Example:
+        -i macd[12,26,9],rsi[14],sma[20,50]
+        -i macd,rsi,sma (uses default parameters)
+
+    [yellow]Would pass the following to the indicators:[/]
+        [green]macd=dict(fast=12, slow=26, signal=9)
+        rsi=dict(length=14)
+        sma=dict(length=[20,50])
+
+        They must be in the same order as the function parameters.[/]\n"""
+        )
+
+    pop_keys = ["close", "high", "low", "open", "open_", "volume", "talib", "return"]
+    if matches:
+        for match in matches:
+            indicator, args = match
+
+            indicators_dict.setdefault(indicator, {})
+            if indicator in ["fib", "srlines", "demark", "clenow"]:
+                if _help:
+                    console.print(
+                        f"[yellow]{indicator}:[/]\n{'':^4}[green]Parameters: None[/]"
+                    )
+                continue
+
+            fullspec = inspect.getfullargspec(getattr(ta, indicator))
+            kwargs = list(set(fullspec.args) - set(pop_keys))
+            kwargs.sort(key=fullspec.args.index)
+
+            if _help:
+                console.print(
+                    f"[yellow]{indicator}:[/]\n{'':^4}[green]Parameters: {', '.join(kwargs)}[/]"
+                )
+
+            if indicator in ta_cls.ma_mode:
+                indicators_dict[indicator]["length"] = check_positive_list(args)
+                continue
+
+            for i, arg in enumerate(args.split(",")):
+                if arg and len(kwargs) > i:
+                    indicators_dict[indicator][kwargs[i]] = (
+                        float(arg) if "." in arg else int(arg)
+                    )
+        return json.dumps(indicators_dict)
+
+    if not matches:
+        raise argparse.ArgumentTypeError(
+            f"Invalid indicator arguments: {args}. \n Example: -i macd[12,26,9],rsi[14]"
+        )
+    return args
 
 
 def check_positive_float(value) -> float:
@@ -723,8 +819,9 @@ def us_market_holidays(years) -> list:
     return valid_holidays
 
 
-def lambda_long_number_format(num, round_decimal=3) -> str:
+def lambda_long_number_format(num, round_decimal=3) -> Union[str, int, float]:
     """Format a long number."""
+
     if isinstance(num, float):
         magnitude = 0
         while abs(num) >= 1000:
@@ -1065,6 +1162,11 @@ def patch_pandas_text_adjustment():
 
 def lambda_financials_colored_values(val: str) -> str:
     """Add a color to a value."""
+
+    # We don't want to do the color stuff in interactive mode
+    if get_current_user().preferences.USE_INTERACTIVE_DF:
+        return val
+
     if val == "N/A" or str(val) == "nan":
         val = "[yellow]N/A[/yellow]"
     elif sum(c.isalpha() for c in val) < 2:
@@ -1193,27 +1295,35 @@ def str_to_bool(value) -> bool:
 
 def get_screeninfo():
     """Get screeninfo."""
-    screens = get_monitors()  # Get all available monitors
-    current_user = get_current_user()
-    if (
-        len(screens) - 1 < current_user.preferences.MONITOR
-    ):  # Check to see if chosen monitor is detected
-        monitor = 0
-        console.print(
-            f"Could not locate monitor {current_user.preferences.MONITOR}, using primary monitor."
-        )
-    else:
-        monitor = current_user.preferences.MONITOR
-    main_screen = screens[monitor]  # Choose what monitor to get
+    try:
+        screens = get_monitors()  # Get all available monitors
+    except Exception:
+        return None
 
-    return (main_screen.width, main_screen.height)
+    if screens:
+        current_user = get_current_user()
+        if (
+            len(screens) - 1 < current_user.preferences.MONITOR
+        ):  # Check to see if chosen monitor is detected
+            monitor = 0
+            console.print(
+                f"Could not locate monitor {current_user.preferences.MONITOR}, using primary monitor."
+            )
+        else:
+            monitor = current_user.preferences.MONITOR
+        main_screen = screens[monitor]  # Choose what monitor to get
+
+        return (main_screen.width, main_screen.height)
+
+    return None
 
 
 def plot_autoscale():
     """Autoscale plot."""
     current_user = get_current_user()
-    if current_user.preferences.USE_PLOT_AUTOSCALING:
-        x, y = get_screeninfo()  # Get screen size
+    screen_info = get_screeninfo()
+    if current_user.preferences.USE_PLOT_AUTOSCALING and screen_info:
+        x, y = screen_info  # Get screen size
         # account for ultrawide monitors
         if x / y > 1.5:
             x = x * 0.4
@@ -1230,9 +1340,6 @@ def plot_autoscale():
         x = current_user.preferences.PLOT_WIDTH / (current_user.preferences.PLOT_DPI)
         y = current_user.preferences.PLOT_HEIGHT / (current_user.preferences.PLOT_DPI)
     return x, y
-
-
-plots_backend().set_window_dimensions(*plot_autoscale())
 
 
 def get_last_time_market_was_open(dt):
@@ -1435,28 +1542,31 @@ def export_data(
                 # since xlsx does not support datetimes with timezones we need to remove it
                 df = remove_timezone_from_dataframe(df)
 
-                if sheet_name is None:
-                    df.to_excel(saved_path, index=True, header=True)
+                if sheet_name is None:  # noqa: SIM223
+                    df.to_excel(
+                        saved_path,
+                        index=True,
+                        header=True,
+                    )
 
+                elif saved_path.exists():
+                    with pd.ExcelWriter(
+                        saved_path,
+                        mode="a",
+                        if_sheet_exists="new",
+                        engine="openpyxl",
+                    ) as writer:
+                        df.to_excel(
+                            writer, sheet_name=sheet_name, index=True, header=True
+                        )
                 else:
-                    if saved_path.exists():
-                        with pd.ExcelWriter(
-                            saved_path,
-                            mode="a",
-                            if_sheet_exists="new",
-                            engine="openpyxl",
-                        ) as writer:
-                            df.to_excel(
-                                writer, sheet_name=sheet_name, index=True, header=True
-                            )
-                    else:
-                        with pd.ExcelWriter(
-                            saved_path,
-                            engine="openpyxl",
-                        ) as writer:
-                            df.to_excel(
-                                writer, sheet_name=sheet_name, index=True, header=True
-                            )
+                    with pd.ExcelWriter(
+                        saved_path,
+                        engine="openpyxl",
+                    ) as writer:
+                        df.to_excel(
+                            writer, sheet_name=sheet_name, index=True, header=True
+                        )
             elif saved_path.suffix in [".jpg", ".pdf", ".png", ".svg"]:
                 figure.show(export_image=saved_path, margin=margin)
             else:
@@ -1904,7 +2014,7 @@ def update_news_from_tweet_to_be_displayed() -> str:
     str
         The news from tweet to be displayed
     """
-    global LAST_TWEET_NEWS_UPDATE_CHECK_TIME
+    global LAST_TWEET_NEWS_UPDATE_CHECK_TIME  # noqa
 
     news_tweet = ""
 
@@ -1975,7 +2085,7 @@ def update_news_from_tweet_to_be_displayed() -> str:
                         url = f"https://twitter.com/x/status/{last_tweet.id_str}"
 
             # In case the handle provided doesn't exist, we skip it
-            except tweepy.errors.NotFound:
+            except (tweepy.errors.NotFound, tweepy.errors.Unauthorized):
                 pass
 
         if last_tweet_dt and news_tweet_to_use:

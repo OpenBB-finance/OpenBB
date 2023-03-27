@@ -12,6 +12,7 @@ from openbb_terminal.account import account_controller
 from openbb_terminal.core.models.user_model import (
     CredentialsModel,
     ProfileModel,
+    SourcesModel,
     UserModel,
 )
 from openbb_terminal.core.session.current_user import (
@@ -70,11 +71,18 @@ def vcr_config():
 
 
 @pytest.fixture(name="test_user")
-def fixture_test_user():
+def fixture_test_user(mocker):
+    mocker.patch(
+        "openbb_terminal.account.account_controller.is_local", return_value=False
+    )
+
     return UserModel(
         credentials=CredentialsModel(),
         preferences=PreferencesModel(),
-        profile=ProfileModel(),
+        profile=ProfileModel(
+            token_type="Bearer", token="123", uuid="00001", email="test@email.com"
+        ),
+        sources=SourcesModel(),
     )
 
 
@@ -179,8 +187,12 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
 
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.record_stdout
-def test_print_help():
+def test_print_help(mocker, test_user):
     controller = account_controller.AccountController(queue=None)
+    mocker.patch(
+        target="openbb_terminal.account.account_controller.get_current_user",
+        return_value=test_user,
+    )
     controller.print_help()
 
 
@@ -294,9 +306,14 @@ def test_call_func_no_parser(func, mocker):
     controller.parse_known_args_and_warn.assert_called_once()
 
 
-def test_call_logout(mocker):
+def test_call_logout(mocker, test_user):
     controller = account_controller.AccountController(queue=None)
     path_controller = "openbb_terminal.account.account_controller"
+
+    mocker.patch(
+        target="openbb_terminal.account.account_controller.get_current_user",
+        return_value=test_user,
+    )
 
     mock_logout = mocker.patch(
         target=f"{path_controller}.logout",
@@ -343,20 +360,23 @@ def test_call_logout(mocker):
         ),
     ],
 )
-def test_call_sync(mocker, other_args, sync):
+def test_call_sync(mocker, other_args, sync, test_user):
     controller = account_controller.AccountController(queue=None)
-
     preferences = PreferencesModel(SYNC_ENABLED=sync)
-    mock_current_user = copy_user(preferences=preferences)
+    mock_current_user = copy_user(preferences=preferences, user=test_user)
     mocker.patch(
         target="openbb_terminal.core.session.current_user.__current_user",
         new=mock_current_user,
     )
-
+    mocker.patch(
+        target="openbb_terminal.account.account_controller.set_preference",
+    )
+    mocker.patch(
+        target="openbb_terminal.account.account_controller.write_to_dotenv",
+    )
     controller.call_sync(other_args=other_args)
 
     assert controller.queue == []
-    print(other_args)
 
 
 @pytest.mark.parametrize(
@@ -396,8 +416,8 @@ def test_call_pull(mocker, input_value, test_user):
         target=f"{path_controller}.console.input",
         return_value=input_value,
     )
-    mock_apply_configs = mocker.patch(
-        target=f"{path_controller}.Local.apply_configs",
+    mock_set_credentials_from_hub = mocker.patch(
+        target=f"{path_controller}.Local.set_credentials_from_hub",
     )
     controller.call_pull(other_args=list())
 
@@ -405,9 +425,9 @@ def test_call_pull(mocker, input_value, test_user):
     mock_get_diff.assert_called_once_with(configs=CONFIGS)
     mock_input.assert_called_once()
     if input_value == "y":
-        mock_apply_configs.assert_called_once_with(configs=DIFF)
+        mock_set_credentials_from_hub.assert_called_once_with(configs=DIFF)
     else:
-        mock_apply_configs.assert_not_called()
+        mock_set_credentials_from_hub.assert_not_called()
     assert controller.queue == []
 
 
@@ -418,10 +438,13 @@ def test_call_pull(mocker, input_value, test_user):
         "n",
     ],
 )
-def test_call_clear(mocker, input_value):
+def test_call_clear(mocker, input_value, test_user):
     controller = account_controller.AccountController(queue=None)
     path_controller = "openbb_terminal.account.account_controller"
-
+    mocker.patch(
+        target="openbb_terminal.account.account_controller.get_current_user",
+        return_value=test_user,
+    )
     mock_input = mocker.patch(
         target=f"{path_controller}.console.input",
         return_value=input_value,
@@ -445,8 +468,6 @@ def test_call_list(mocker, test_user):
     controller = account_controller.AccountController(queue=None)
     path_controller = "openbb_terminal.account.account_controller"
 
-    test_user.profile.token_type = "Bearer"
-    test_user.profile.token = "123"
     mocker.patch(
         target="openbb_terminal.account.account_controller.get_current_user",
         return_value=test_user,
@@ -473,8 +494,6 @@ def test_call_upload(mocker, test_user):
     controller = account_controller.AccountController(queue=None)
     path_controller = "openbb_terminal.account.account_controller"
 
-    test_user.profile.token_type = "Bearer"
-    test_user.profile.token = "123"
     mocker.patch(
         target="openbb_terminal.account.account_controller.get_current_user",
         return_value=test_user,
@@ -513,8 +532,6 @@ def test_call_download(mocker, test_user):
     controller = account_controller.AccountController(queue=None)
     path_controller = "openbb_terminal.account.account_controller"
 
-    test_user.profile.token_type = "Bearer"
-    test_user.profile.token = "123"
     mocker.patch(
         target="openbb_terminal.account.account_controller.get_current_user",
         return_value=test_user,
@@ -603,8 +620,6 @@ def test_call_generate(mocker, monkeypatch, test_user):
         {"token": "MOCK_TOKEN"}
     ).encode("utf-8")
 
-    test_user.profile.token_type = "Bearer"
-    test_user.profile.token = "123"
     mocker.patch(
         target="openbb_terminal.account.account_controller.get_current_user",
         return_value=test_user,
@@ -618,12 +633,6 @@ def test_call_generate(mocker, monkeypatch, test_user):
     # mock user input
     mock_input = "y"
     monkeypatch.setattr(f"{path_controller}.console.input", lambda _: mock_input)
-
-    # mock save to keys
-    mocker.patch(
-        target=f"{path_controller}.keys_model.set_openbb_personal_access_token",
-        return_value=True,
-    )
 
     controller.call_generate(other_args=["--save", "--days", "30"])
 
@@ -643,8 +652,6 @@ def test_call_show(mocker, test_user):
         {"token": "MOCK_TOKEN"}
     ).encode("utf-8")
 
-    test_user.profile.token_type = "Bearer"
-    test_user.profile.token = "123"
     mocker.patch(
         target="openbb_terminal.account.account_controller.get_current_user",
         return_value=test_user,
@@ -662,8 +669,6 @@ def test_call_revoke(mocker, monkeypatch, test_user):
     controller = account_controller.AccountController(queue=None)
     path_controller = "openbb_terminal.account.account_controller"
 
-    test_user.profile.token_type = "Bearer"
-    test_user.profile.token = "123"
     mocker.patch(
         target="openbb_terminal.account.account_controller.get_current_user",
         return_value=test_user,

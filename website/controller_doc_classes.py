@@ -14,8 +14,8 @@ import pandas as pd
 from pandas.tseries.holiday import USFederalHolidayCalendar
 
 import openbb_terminal
-from openbb_terminal.base_helpers import load_dotenv_and_reload_configs
-from openbb_terminal.core.plots.backend import plots_backend
+import openbb_terminal.config_terminal as cfg
+from openbb_terminal.core.plots.backend import plots_backend  # noqa: F401
 from openbb_terminal.decorators import disable_check_api
 from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
@@ -28,10 +28,8 @@ from openbb_terminal.rich_config import console
 from openbb_terminal.sdk import openbb
 from openbb_terminal.stocks.comparison_analysis import finviz_compare_model
 
-load_dotenv_and_reload_configs()
 disable_check_api()
-plots_backend().start()
-plots_backend().isatty = True
+
 
 CRYPTO_DATA = openbb.crypto.load("BTC", to_symbol="usd", source="YahooFinance")
 ETF_DATA = openbb.etf.load("SPY")
@@ -355,7 +353,6 @@ class ControllerDoc:
                         break
 
             self.cmd_parsers[command] = fparser
-            return
 
         try:
             with patch.object(
@@ -514,6 +511,9 @@ if __name__ == "__main__":
             controller_doc = load_controllers.get_controller_doc(loaded)
             controller_doc.get_all_command_parsers()
             if run_image_exports:
+                cfg.setup_config_terminal()
+                plots_backend().start()
+                plots_backend().isatty = True
                 controller_doc.run_image_exports()
     except KeyboardInterrupt:
         sys.exit(0)

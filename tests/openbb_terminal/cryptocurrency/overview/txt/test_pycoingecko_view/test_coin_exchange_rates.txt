@@ -1,16 +1,62 @@
-    Index                         Name  Unit        Value    Type
-0       1                      Bitcoin   BTC          1.0  crypto
-1       2                        Ether   ETH       14.796  crypto
-2       3                     Litecoin   LTC      358.779  crypto
-3       4                 Bitcoin Cash   BCH      168.551  crypto
-4       5                 Binance Coin   BNB       70.969  crypto
-5       6                          EOS   EOS    15482.597  crypto
-6       7                          XRP   XRP    44585.031  crypto
-7       8                       Lumens   XLM   163468.013  crypto
-8       9                    Chainlink  LINK     2752.625  crypto
-9      10                     Polkadot   DOT     2984.971  crypto
-10     11                Yearn.finance   YFI        2.291  crypto
-11     12                    US Dollar     $    18889.034    fiat
-12     13  United Arab Emirates Dirham    DH    69379.517    fiat
-13     14               Argentine Peso     $  2737051.196    fiat
-14     15            Australian Dollar    A$    28578.863    fiat
+    Index                         Name  Unit          Value       Type
+0       1                      Bitcoin   BTC            1.0     crypto
+1       2                        Ether   ETH         14.796     crypto
+2       3                     Litecoin   LTC        358.779     crypto
+3       4                 Bitcoin Cash   BCH        168.551     crypto
+4       5                 Binance Coin   BNB         70.969     crypto
+5       6                          EOS   EOS      15482.597     crypto
+6       7                          XRP   XRP      44585.031     crypto
+7       8                       Lumens   XLM     163468.013     crypto
+8       9                    Chainlink  LINK       2752.625     crypto
+9      10                     Polkadot   DOT       2984.971     crypto
+10     11                Yearn.finance   YFI          2.291     crypto
+11     12                    US Dollar     $      18889.034       fiat
+12     13  United Arab Emirates Dirham    DH      69379.517       fiat
+13     14               Argentine Peso     $    2737051.196       fiat
+14     15            Australian Dollar    A$      28578.863       fiat
+15     16             Bangladeshi Taka     ৳    1976890.609       fiat
+16     17               Bahraini Dinar    BD       7121.487       fiat
+17     18             Bermudian Dollar     $      18889.034       fiat
+18     19                  Brazil Real    R$      97675.196       fiat
+19     20              Canadian Dollar   CA$      25471.333       fiat
+20     21                  Swiss Franc   Fr.      18474.571       fiat
+21     22                 Chilean Peso  CLP$   17694491.759       fiat
+22     23                 Chinese Yuan     ¥     133970.475       fiat
+23     24                 Czech Koruna    Kč     473187.214       fiat
+24     25                 Danish Krone   kr.      142671.52       fiat
+25     26                         Euro     €      19185.554       fiat
+26     27       British Pound Sterling     £      16756.821       fiat
+27     28             Hong Kong Dollar   HK$      148268.53       fiat
+28     29             Hungarian Forint    Ft    7817524.455       fiat
+29     30            Indonesian Rupiah    Rp  283956624.804       fiat
+30     31           Israeli New Shekel     ₪      65460.231       fiat
+31     32                 Indian Rupee     ₹    1525091.278       fiat
+32     33                 Japanese Yen     ¥    2753592.761       fiat
+33     34             South Korean Won     ₩   26652139.699       fiat
+34     35                Kuwaiti Dinar    KD       5855.978       fiat
+35     36             Sri Lankan Rupee    Rs     6853591.63       fiat
+36     37                 Burmese Kyat     K   40091089.965       fiat
+37     38                 Mexican Peso   MX$     377555.925       fiat
+38     39            Malaysian Ringgit    RM      86313.442       fiat
+39     40               Nigerian Naira     ₦    8238153.121       fiat
+40     41              Norwegian Krone    kr     195745.834       fiat
+41     42           New Zealand Dollar   NZ$      32391.784       fiat
+42     43              Philippine Peso     ₱    1104630.819       fiat
+43     44              Pakistani Rupee     ₨    4528173.744       fiat
+44     45                 Polish Zloty    zł      91660.871       fiat
+45     46                Russian Ruble     ₽    1138536.428       fiat
+46     47                  Saudi Riyal    SR      71069.481       fiat
+47     48                Swedish Krona    kr     208866.762       fiat
+48     49             Singapore Dollar    S$      26834.838       fiat
+49     50                    Thai Baht     ฿     707280.999       fiat
+50     51                 Turkish Lira     ₺     346827.225       fiat
+51     52            New Taiwan Dollar   NT$     597450.709       fiat
+52     53            Ukrainian hryvnia     ₴     705078.481       fiat
+53     54    Venezuelan bolívar fuerte  Bs.F       1891.359       fiat
+54     55              Vietnamese đồng     ₫  447877891.993       fiat
+55     56           South African Rand     R     334209.822       fiat
+56     57   IMF Special Drawing Rights   XDR      13444.799       fiat
+57     58          Silver - Troy Ounce   XAG        971.658  commodity
+58     59            Gold - Troy Ounce   XAU         11.386  commodity
+59     60                         Bits  μBTC      1000000.0     crypto
+60     61                      Satoshi  sats    100000000.0     crypto

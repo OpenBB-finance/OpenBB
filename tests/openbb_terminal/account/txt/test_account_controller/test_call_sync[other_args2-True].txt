@@ -1,2 +1,2 @@
-[info]sync:[/info] True
-['--on']
+[info]You are already logged in.[/info]
+[info]sync:[/info] ON

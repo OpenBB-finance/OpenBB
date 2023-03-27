@@ -40,12 +40,10 @@ def plot_chart(
     """
 
     fig = OpenBBFigure.create_subplots(
-        rows=2,
+        rows=1,
         cols=1,
-        shared_xaxes=True,
         vertical_spacing=0.06,
-        row_width=[0.3, 0.7],
-        subplot_titles=["", "Volume"],
+        specs=[[{"secondary_y": True}]],
     )
     fig.set_title(f"Historical {symbol} {price} {option_type.title()}")
 
@@ -55,11 +53,12 @@ def plot_chart(
         low=df.Low,
         close=df.Close,
         x=df.index,
-        name=f"OHLC {symbol}",
+        name=f"{price} {option_type.title()} OHLC",
         row=1,
         col=1,
+        secondary_y=True,
     )
-    fig.add_stock_volume(df)
+    fig.add_inchart_volume(df)
     fig.hide_holidays()
 
     return fig
@@ -119,11 +118,13 @@ def display_raw(
         fig,
     )
     print_rich_table(
-        df.head(limit),
+        df,
         headers=list(df.columns),
         show_index=True,
+        index_name="Date",
         title=f"{symbol.upper()} raw data",
         export=bool(export),
+        limit=limit,
     )
 
     return fig.show(external=external_axes)

@@ -8,12 +8,13 @@ from openbb_terminal.core.config.paths import (
     HOME_DIRECTORY,
     USER_DATA_SOURCES_DEFAULT_FILE,
 )
+from openbb_terminal.core.models import BaseModel
 
-# pylint: disable=too-many-instance-attributes
+# pylint: disable=too-many-instance-attributes, disable=no-member, useless-parent-delegation
 
 
 @dataclass(config=dict(validate_assignment=True, frozen=True))
-class PreferencesModel:
+class PreferencesModel(BaseModel):
     """Data model for preferences."""
 
     # PLOT
@@ -32,19 +33,25 @@ class PreferencesModel:
     PLOT_WIDTH_PERCENTAGE: PositiveFloat = 70.0
     # Whether to open plot image exports after they are created
     PLOT_OPEN_EXPORT: bool = False
+    # Use interactive window to display plots
+    PLOT_ENABLE_PYWRY: bool = True
+    PLOT_PYWRY_WIDTH: PositiveInt = 1400
+    PLOT_PYWRY_HEIGHT: PositiveInt = 762
 
     # FEATURE FLAGS
     SYNC_ENABLED: bool = True
     FILE_OVERWRITE: bool = False
+    SHOW_VERSION: bool = True
     RETRY_WITH_LOAD: bool = False
     USE_TABULATE_DF: bool = True
+    # Use interactive window to display dataframes with options to sort, filter, etc.
+    USE_INTERACTIVE_DF: bool = True
     USE_CLEAR_AFTER_CMD: bool = False
     USE_COLOR: bool = True
     USE_DATETIME: bool = True
     # Enable interactive matplotlib mode: change variable name to be more descriptive and delete comment
     USE_ION: bool = True
     USE_WATERMARK: bool = True
-    # Enable command and source in the figures: change variable name to be more descriptive and delete comment
     USE_CMD_LOCATION_FIGURE: bool = True
     USE_PROMPT_TOOLKIT: bool = True
     USE_PLOT_AUTOSCALING: bool = False
@@ -56,7 +63,6 @@ class PreferencesModel:
     ENABLE_RICH: bool = True
     ENABLE_RICH_PANEL: bool = True
     ENABLE_CHECK_API: bool = True
-    LOG_COLLECTION: bool = True
     TOOLBAR_HINT: bool = True
     TOOLBAR_TWEET_NEWS: bool = False
 
@@ -77,12 +83,10 @@ class PreferencesModel:
     MONITOR: NonNegativeInt = 0
 
     # STYLE
-    # Color for `view` command data.  All pyplot colors listed at:
-    # https://matplotlib.org/stable/gallery/color/named_colors.html
-    VIEW_COLOR: str = "tab:green"
     MPL_STYLE: str = "dark"
     PMF_STYLE: str = "dark"
     RICH_STYLE: str = "dark"
+    PLOT_STYLE: str = "dark"
 
     # PATHS
     PREFERRED_DATA_SOURCE_FILE: str = str(USER_DATA_SOURCES_DEFAULT_FILE)
@@ -97,13 +101,7 @@ class PreferencesModel:
     USER_CUSTOM_REPORTS_DIRECTORY = USER_DATA_DIRECTORY / "reports" / "custom reports"
     USER_FORECAST_MODELS_DIRECTORY = USER_DATA_DIRECTORY / "exports" / "forecast_models"
     USER_FORECAST_WHISPER_DIRECTORY = USER_DATA_DIRECTORY / "exports" / "whisper"
+    USER_STYLES_DIRECTORY = USER_DATA_DIRECTORY / "styles"
 
-    # @validator("VIEW_COLOR")
-    # def validate_view_color(cls, v):  # pylint: disable=no-self-argument
-    #     if v not in {
-    #         *mcolors.BASE_COLORS,
-    #         *mcolors.TABLEAU_COLORS,
-    #         *mcolors.CSS4_COLORS,
-    #         *mcolors.XKCD_COLORS,
-    #     }:
-    #         raise ValueError("Color not supported")
+    def __repr__(self) -> str:  # pylint: disable=useless-super-delegation
+        return super().__repr__()

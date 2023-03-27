@@ -127,15 +127,15 @@ def check_series_id(series_id: str) -> Tuple[bool, dict]:
 
 @log_start_end(log=logger)
 @check_api_key(["API_FRED_KEY"])
-def get_series_notes(search_query: str, limit: int = -1) -> pd.DataFrame:
+def get_series_notes(
+    search_query: str,
+) -> pd.DataFrame:
     """Get series notes. [Source: FRED]
 
     Parameters
     ----------
     search_query : str
         Text query to search on fred series notes database
-    limit : int
-        Maximum number of series notes to display
 
     Returns
     -------
@@ -176,54 +176,7 @@ def get_series_notes(search_query: str, limit: int = -1) -> pd.DataFrame:
                 else x
             )
 
-        if limit != -1:
-            df_fred = df_fred[:limit]
-
     return df_fred
-
-
-@log_start_end(log=logger)
-@check_api_key(["API_FRED_KEY"])
-def get_series_ids(search_query: str, limit: int = -1) -> pd.DataFrame:
-    """Get Series IDs. [Source: FRED]
-
-    Parameters
-    ----------
-    search_query : str
-        Text query to search on fred series notes database
-    limit : int
-        Maximum number of series IDs to output
-
-    Returns
-    -------
-    pd.Dataframe
-        Dataframe with series IDs and titles
-    """
-    fred.key(get_current_user().credentials.API_FRED_KEY)
-    d_series = fred.search(search_query)
-
-    # Cover invalid api and empty search terms
-    if "error_message" in d_series:
-        if "api_key" in d_series["error_message"]:
-            console.print("[red]Invalid API Key[/red]\n")
-        else:
-            console.print(d_series["error_message"])
-        return pd.DataFrame()
-
-    if "seriess" not in d_series:
-        return pd.DataFrame()
-
-    if not d_series["seriess"]:
-        return pd.DataFrame()
-
-    df_series = pd.DataFrame(d_series["seriess"])
-    df_series = df_series.sort_values(by=["popularity"], ascending=False)
-    if limit != -1:
-        df_series = df_series.head(limit)
-    df_series = df_series[["id", "title"]]
-    df_series.set_index("id", inplace=True)
-
-    return df_series
 
 
 @log_start_end(log=logger)
@@ -316,8 +269,8 @@ def get_aggregated_series_data(
 @check_api_key(["API_FRED_KEY"])
 def get_cpi(
     countries: list,
-    units: str = "",
-    frequency: str = "",
+    units: str = "growth_same",
+    frequency: str = "monthly",
     harmonized: bool = False,
     smart_select: bool = True,
     options: bool = False,

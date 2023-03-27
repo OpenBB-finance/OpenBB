@@ -1,2 +1,2 @@
-[info]sync:[/info] False
-['--off']
+[info]You are already logged in.[/info]
+[info]sync:[/info] OFF
