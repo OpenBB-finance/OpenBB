@@ -285,17 +285,29 @@ class PortfolioEngine:
             self.__transactions["Quantity"] = (
                 abs(self.__transactions["Quantity"]) * self.__transactions["Signal"]
             )
-            
-            # Adjust quantity and price for splits 
-            for ticker in self.__transactions["Ticker"].unique() :
-                try :
+
+            # Adjust quantity and price for splits
+            for ticker in self.__transactions["Ticker"].unique():
+                try:
                     splits_df = get_splits(ticker)
-                    if not splits_df.empty :
+                    if not splits_df.empty:
                         splits_df = splits_df.tz_localize(tz=None)
-                        for split_date in splits_df.index :
-                            self.__transactions['Quantity'] = np.where((self.__transactions['Ticker'] == ticker) & (self.__transactions['Date'] < split_date), self.__transactions['Quantity'] * splits_df.loc[split_date].values , self.__transactions['Quantity'])
-                            self.__transactions['Price'] = np.where((self.__transactions['Ticker'] == ticker) & (self.__transactions['Date'] < split_date), self.__transactions['Price'] / splits_df.loc[split_date].values , self.__transactions['Price'])
-                
+                        for split_date in splits_df.index:
+                            self.__transactions["Quantity"] = np.where(
+                                (self.__transactions["Ticker"] == ticker)
+                                & (self.__transactions["Date"] < split_date),
+                                self.__transactions["Quantity"]
+                                * splits_df.loc[split_date].values,
+                                self.__transactions["Quantity"],
+                            )
+                            self.__transactions["Price"] = np.where(
+                                (self.__transactions["Ticker"] == ticker)
+                                & (self.__transactions["Date"] < split_date),
+                                self.__transactions["Price"]
+                                / splits_df.loc[split_date].values,
+                                self.__transactions["Price"],
+                            )
+
                 except Exception:
                     console.print("\nCould not get splits adjusted")
 
