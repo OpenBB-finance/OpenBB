@@ -88,9 +88,12 @@
           <div style="margin-top: 10px" id="csv_columns"><!-- Empty --></div>
           <div style="margin-top: 10px" id="csv_colors"><!-- Empty --></div>
 
-          <div style="margin-top: 10px; display: none;" id="csv_percent_change_div">
-            <input type="checkbox" id="csv_percent_change" />
-            <label for="csv_percent_change">Plot as percent change from first value</label>
+          <div style="margin-top: 10px; display: none;" id="csv_scatter_options">
+            <input type="checkbox" id="csv_percent_change" name="csv_scatter_check" onclick="onlyOne(this)" />
+            <label for="csv_percent_change">Plot as percent change from first value</label><br />
+
+            <input type="checkbox" id="csv_same_yaxis" name="csv_scatter_check" onclick="onlyOne(this)" />
+            <label for="csv_same_yaxis">Share Y-axis</label>
           </div>
 
           <div style="float: right; margin-top: 20px">

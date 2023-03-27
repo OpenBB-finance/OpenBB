@@ -26,6 +26,13 @@ const ICONS = {
   },
 };
 
+function onlyOne(checkbox) {
+  var checkboxes = document.getElementsByName('csv_scatter_check')
+  checkboxes.forEach((item) => {
+      if (item !== checkbox) item.checked = false
+  })
+}
+
 function add_annotation(data, yshift, popup_data, current_text = null) {
   let gd = globals.CHART_DIV;
   let x = data.x;
@@ -90,8 +97,8 @@ function checkFile(popup, type = false) {
   let csv_type = popup.querySelector("#csv_trace_type");
   let csv_columns = popup.querySelector("#csv_columns");
   let csv_colors = popup.querySelector("#csv_colors");
-  let csv_percent_change_div = popup.querySelector("#csv_percent_change_div");
-  csv_percent_change_div.style.display = "none";
+  let csv_scatter_options = popup.querySelector("#csv_scatter_options");
+  csv_scatter_options.style.display = "none";
 
   if (csv_file.files.length > 0) {
     console.log("file selected");
@@ -202,7 +209,7 @@ function checkFile(popup, type = false) {
           csv_columns.querySelector("#csv_y").value =
             headers[headers_lower.indexOf("close")];
         }
-        csv_percent_change_div.style.display = "inline-block";
+        csv_scatter_options.style.display = "inline-block";
       }
 
       // we try to guess the date and time to remove from the name of the file

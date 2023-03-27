@@ -223,6 +223,9 @@ function get_popup_data(popup_id = null) {
           .checked
           ? true
           : false,
+        same_yaxis: globals.CSV_DIV.querySelector("#csv_same_yaxis").checked
+          ? true
+          : false,
       };
       console.log(data);
     }
@@ -384,20 +387,26 @@ function on_submit(popup_id, on_annotation = null) {
           };
         } else {
           let yaxis;
-          let yaxes = Object.keys(gd.layout)
-            .filter((k) => k.startsWith("yaxis"))
-            .map((k) => gd.layout[k]);
+          if (popup_data.same_yaxis == false) {
+            let yaxes = Object.keys(gd.layout)
+              .filter((k) => k.startsWith("yaxis"))
+              .map((k) => gd.layout[k]);
 
-          yaxis = `y${yaxes.length + 1}`;
-          yaxis_id = `yaxis${yaxes.length + 1}`;
-
-          if (
-            globals.csv_yaxis_id == null &&
-            popup_data.percent_change == true
-          ) {
-            globals.csv_yaxis_id = yaxis_id;
-            globals.csv_yaxis = yaxis;
+            yaxis = `y${yaxes.length + 1}`;
+            yaxis_id = `yaxis${yaxes.length + 1}`;
+            console.log(`yaxis: ${yaxis} ${yaxis_id}`);
+            if (
+              globals.csv_yaxis_id == null &&
+              popup_data.percent_change == true
+            ) {
+              globals.csv_yaxis_id = yaxis_id;
+              globals.csv_yaxis = yaxis;
+            }
+          } else {
+            yaxis = main_trace.yaxis.replace("yaxis", "y");
+            yaxis_id = main_trace.yaxis;
           }
+
           gd.layout.showlegend = true;
 
           orginal_data = data;
@@ -436,7 +445,8 @@ function on_submit(popup_id, on_annotation = null) {
 
           if (
             !globals.percent_yaxis_added &&
-            popup_data.percent_change == true
+            popup_data.percent_change == true &&
+            popup_data.same_yaxis == false
           ) {
             let ticksuffix =
               gd.data.length > 1
@@ -468,10 +478,13 @@ function on_submit(popup_id, on_annotation = null) {
             globals.percent_yaxis_added = true;
             if (globals.cmd_src_idx != null) {
               gd.layout.annotations[globals.cmd_src_idx].xshift -=
-                gd.data.length > 1 ? 45 : 35;
+                gd.data.length > 1 ? 40 : 35;
               gd.layout.margin.l += gd.data.length > 1 ? 50 : 45;
             }
-          } else if (popup_data.percent_change == false) {
+          } else if (
+            popup_data.percent_change == false &&
+            popup_data.same_yaxis == false
+          ) {
             let ticksuffix = gd.data.length > 1 ? "     " : "";
             if (globals.percent_yaxis_added) {
               ticksuffix = "      ".repeat(globals.added_traces.length + 1);
