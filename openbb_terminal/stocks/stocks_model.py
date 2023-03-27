@@ -133,6 +133,9 @@ def load_stock_yf(
             1970, 1, 2
         )  # 1 day buffer in case of timezone adjustments
 
+    # add 1 day to end_date to include the last day
+    end_date = end_date + pd.Timedelta(days=1)
+
     # Adding a dropna for weekly and monthly because these include weird NaN columns.
     df_stock_candidate = yf.download(
         symbol,
@@ -167,16 +170,26 @@ def load_stock_yf(
 
 
 def load_stock_eodhd(
-    symbol: str, start_date: datetime, end_date: datetime, weekly: bool, monthly: bool
+    symbol: str,
+    start_date: datetime,
+    end_date: datetime,
+    weekly: bool,
+    monthly: bool,
+    intraday: bool = False,
 ) -> pd.DataFrame:
+    request_url = "https://eodhistoricaldata.com/api/eod/"
+
     int_ = "d"
     if weekly:
         int_ = "w"
     elif monthly:
         int_ = "m"
+    elif intraday:
+        int_ = "1m"
+        request_url = "https://eodhistoricaldata.com/api/intraday/"
 
     request_url = (
-        f"https://eodhistoricaldata.com/api/eod/"
+        f"{request_url}"
         f"{symbol.upper()}?"
         f"from={start_date.strftime('%Y-%m-%d')}&"
         f"to={end_date.strftime('%Y-%m-%d')}&"

@@ -28,18 +28,16 @@ from openbb_terminal.helper_funcs import print_rich_table, request
 from openbb_terminal.rich_config import console
 
 # pylint: disable=unused-import
-from openbb_terminal.stocks.stock_statics import (
-    BALANCE_PLOT,  # noqa: F401
-    BALANCE_PLOT_CHOICES,  # noqa: F401
-    CANDLE_SORT,  # noqa: F401
-    CASH_PLOT,  # noqa: F401
-    CASH_PLOT_CHOICES,  # noqa: F401
-    INCOME_PLOT,  # noqa: F401
-    INCOME_PLOT_CHOICES,  # noqa: F401
-    INTERVALS,  # noqa: F401
-    SOURCES,  # noqa: F401
-    market_coverage_suffix,
-)
+from openbb_terminal.stocks.stock_statics import BALANCE_PLOT  # noqa: F401
+from openbb_terminal.stocks.stock_statics import BALANCE_PLOT_CHOICES  # noqa: F401
+from openbb_terminal.stocks.stock_statics import CANDLE_SORT  # noqa: F401
+from openbb_terminal.stocks.stock_statics import CASH_PLOT  # noqa: F401
+from openbb_terminal.stocks.stock_statics import CASH_PLOT_CHOICES  # noqa: F401
+from openbb_terminal.stocks.stock_statics import INCOME_PLOT  # noqa: F401
+from openbb_terminal.stocks.stock_statics import INCOME_PLOT_CHOICES  # noqa: F401
+from openbb_terminal.stocks.stock_statics import INTERVALS  # noqa: F401
+from openbb_terminal.stocks.stock_statics import SOURCES  # noqa: F401
+from openbb_terminal.stocks.stock_statics import market_coverage_suffix
 from openbb_terminal.stocks.stocks_model import (
     load_stock_av,
     load_stock_eodhd,
@@ -250,7 +248,7 @@ def search(
     return df
 
 
-def load(
+def load(  # pylint: disable=too-many-return-statements
     symbol: str,
     start_date: Optional[Union[datetime, str]] = None,
     interval: int = 1440,
@@ -341,9 +339,19 @@ def load(
             )
 
         elif source == "EODHD":
-            df_stock_candidate = load_stock_eodhd(
-                symbol, start_date, end_date, weekly, monthly
-            )
+            try:
+                df_stock_candidate = load_stock_eodhd(
+                    symbol,
+                    start_date,
+                    end_date,
+                    weekly,
+                    monthly,
+                )
+            except KeyError:
+                console.print(
+                    "[red]Invalid symbol for EODHD. Please check your subscription.[/red]\n"
+                )
+                return pd.DataFrame()
 
         elif source == "Polygon":
             df_stock_candidate = load_stock_polygon(
@@ -376,6 +384,9 @@ def load(
             s_start = start_date
             int_string = "Minute"
             s_interval = f"{interval}min"
+            if end_date:
+                end_date = (end_date + timedelta(days=1)).strftime("%Y-%m-%d")
+                end_date = datetime.strptime(end_date, "%Y-%m-%d")
             df_stock_candidate = load_stock_av(
                 symbol, int_string, start_date, end_date, s_interval
             )
@@ -383,23 +394,17 @@ def load(
         elif source == "YahooFinance":
             s_int = str(interval) + "m"
             s_interval = s_int + "in"
-            d_granularity = {"1m": 6, "5m": 59, "15m": 59, "30m": 59, "60m": 729}
 
-            s_start_dt = datetime.utcnow() - timedelta(days=d_granularity[s_int])
-            s_date_start = s_start_dt.strftime("%Y-%m-%d")
-
-            # check if the start date is the same as the end date and add 1 day to the end date
-            if end_date and start_date == end_date:
+            # add 1 day to end_date to include the last day
+            if end_date:
                 end_date = (end_date + timedelta(days=1)).strftime("%Y-%m-%d")
+            else:
+                end_date = (datetime.now() + timedelta(days=1)).strftime("%Y-%m-%d")
 
             df_stock_candidate = yf.download(
                 symbol,
-                start=s_date_start
-                if s_start_dt > start_date
-                else start_date.strftime("%Y-%m-%d"),
-                end=end_date
-                if end_date
-                else (datetime.now() + timedelta(days=1)).strftime("%Y-%m-%d"),
+                start=start_date.strftime("%Y-%m-%d"),
+                end=end_date,
                 progress=False,
                 interval=s_int,
                 prepost=prepost,
@@ -409,14 +414,22 @@ def load(
             if df_stock_candidate.empty:
                 return pd.DataFrame()
 
-            df_stock_candidate.index = df_stock_candidate.index.tz_convert(
-                "US/Eastern"
-            ).tz_localize(None)
+            try:
+                df_stock_candidate.index = df_stock_candidate.index.tz_convert(
+                    "US/Eastern"
+                )
+            except TypeError:
+                # This is done to resolve the unit test error
+                df_stock_candidate.index = df_stock_candidate.index.tz_localize(
+                    "US/Eastern"
+                )
 
             s_start_dt = df_stock_candidate.index[0]
 
             s_start = (
-                pytz.utc.localize(s_start_dt) if s_start_dt > start_date else start_date
+                start_date
+                if s_start_dt > start_date.astimezone(pytz.timezone("US/Eastern"))
+                else start_date
             )
 
             df_stock_candidate.index.name = "date"
@@ -479,6 +492,30 @@ def load(
                 pytz.utc.localize(s_start_dt) if s_start_dt > start_date else start_date
             )
             s_interval = f"{interval}min"
+
+        elif source == "EODHD":
+            df_stock_candidate = load_stock_eodhd(
+                symbol, start_date, end_date, weekly, monthly, intraday=True
+            )
+
+            if df_stock_candidate.empty:
+                return pd.DataFrame()
+
+            df_stock_candidate.index = df_stock_candidate.index.tz_convert(
+                "US/Eastern"
+            ).tz_localize(None)
+
+            s_start_dt = df_stock_candidate.index[0]
+
+            s_start = (
+                pytz.utc.localize(s_start_dt) if s_start_dt > start_date else start_date
+            )
+
+            s_interval = f"{interval}min"
+
+        else:
+            console.print("[red]Invalid intraday data source[/red]")
+            return pd.DataFrame()
 
         if not prepost:
             df_stock_candidate = df_stock_candidate.between_time("9:30", "16:00")
