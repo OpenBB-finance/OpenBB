@@ -386,7 +386,7 @@ function on_submit(popup_id, on_annotation = null) {
           let yaxis;
           let yaxes = Object.keys(gd.layout)
             .filter((k) => k.startsWith("yaxis"))
-            .map((k) => gd.layout[k].title);
+            .map((k) => gd.layout[k]);
 
           yaxis = `y${yaxes.length + 1}`;
           yaxis_id = `yaxis${yaxes.length + 1}`;
@@ -394,7 +394,6 @@ function on_submit(popup_id, on_annotation = null) {
           if (globals.csv_yaxis_id == null && popup_data.percent_change == true) {
             globals.csv_yaxis_id = yaxis_id;
             globals.csv_yaxis = yaxis;
-            gd.layout.margin.l -= 20;
             gd.layout.showlegend = true;
           }
 
@@ -455,12 +454,18 @@ function on_submit(popup_id, on_annotation = null) {
               type: "linear",
               autorange: true,
             };
+            globals.percent_yaxis_added = true;
             if (globals.cmd_src_idx != null) {
               gd.layout.annotations[globals.cmd_src_idx].xshift -=
-                gd.data.length > 1 ? 65 : 55;
-              gd.layout.margin.l += gd.data.length > 1 ? 65 : 75;
+                gd.data.length > 1 ? 40 : 50;
+              gd.layout.margin.l += gd.data.length > 1 ? 50 : 45;
             }
           } else if (popup_data.percent_change == false) {
+            let ticksuffix = gd.data.length > 1 ? "       " : ""
+            if (globals.percent_yaxis_added) {
+              ticksuffix = "      ".repeat(globals.added_traces.length + 1);
+            }
+
             console.log(`data.length: ${gd.data.length}`);
             gd.layout[yaxis_id] = {
               overlaying: "y",
@@ -473,7 +478,7 @@ function on_submit(popup_id, on_annotation = null) {
                 standoff: 0,
               },
               tickfont: { size: 14 },
-              ticksuffix: gd.data.length > 1 ? "       " : "",
+              ticksuffix: ticksuffix,
               tickpadding: 5,
               showgrid: false,
               showline: false,
@@ -485,8 +490,8 @@ function on_submit(popup_id, on_annotation = null) {
             };
             if (globals.cmd_src_idx != null) {
               gd.layout.annotations[globals.cmd_src_idx].xshift -=
-                globals.added_traces.length > 1 ? 65 : 45;
-              gd.layout.margin.l += globals.added_traces.length > 1 ? 50 :  45;
+              globals.added_traces.length > 1 ? 50 : 45;
+              gd.layout.margin.l += globals.added_traces.length > 1 ? 50 : 45;
             }
           }
         }
@@ -511,7 +516,11 @@ function on_submit(popup_id, on_annotation = null) {
         globals.CSV_DIV.querySelectorAll("input").forEach(function (input) {
           input.value = "";
         });
-      };
+        globals.CSV_DIV.querySelectorAll("textarea").forEach(function (input) {
+          input.value = "";
+        });
+      }
+
       popup_file_reader.readAsText(file);
     }
   }

@@ -17,7 +17,7 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
   let graphs = plotly_figure;
 
   const loader = document.getElementById("loader");
-  let saving = document.getElementById("saving");
+  const saving = document.getElementById("saving");
 
   // We add the event listeners for csv file/type changes
   globals.CSV_DIV.querySelector("#csv_file").addEventListener(
@@ -86,8 +86,6 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
           name: "Download Plot",
           icon: Plotly.Icons.camera,
           click: function () {
-            const loader = document.getElementById("loader");
-            const saving = document.getElementById("saving");
             saving.classList.add("show");
             loader.classList.add("show");
             hideModebar();

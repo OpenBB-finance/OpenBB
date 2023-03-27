@@ -1498,19 +1498,18 @@ class OpenBBFigure(go.Figure):
             return
 
         margin_add = (
-            [80, 60, 85, 60, 0] if not self._has_secondary_y else [60, 50, 85, 40, 0]
+            dict(l=80, r=60, b=85, t=60, pad=0)
+            if not self._has_secondary_y
+            else dict(l=60, r=50, b=85, t=40, pad=0)
         )
 
         # We adjust margins
         if plots_backend().isatty:
-            for key, add in zip(
-                ["l", "r", "b", "t", "pad"],
-                margin_add,
-            ):
+            for key in ["l", "r", "b", "t", "pad"]:
                 if key in self.layout.margin and self.layout.margin[key] is not None:
-                    self.layout.margin[key] += add
+                    self.layout.margin[key] += margin_add.get(key, 0)
                 else:
-                    self.layout.margin[key] = add
+                    self.layout.margin[key] = margin_add.get(key, 0)
 
         if not plots_backend().isatty:
             org_margin = self.layout.margin
@@ -1567,7 +1566,7 @@ class OpenBBFigure(go.Figure):
 
             if (yaxis2 and yaxis2.side == "left") or yaxis.side == "left":
                 title = yaxis.title.text if not yaxis2 else yaxis2.title.text
-                xshift = -110 if not title else -150
+                xshift = -110 if not title else -135
                 self.layout.margin["l"] += 60
 
             self.add_annotation(
