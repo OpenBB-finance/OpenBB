@@ -115,7 +115,6 @@ def apply_configs(configs: dict):
     configs : dict
         The configurations.
     """
-    print(configs)
     set_credentials_from_hub(configs)
     set_preferences_from_hub(configs, ["RICH_STYLE", "PLOT_STYLE"])
     save_theme_from_hub(configs)
