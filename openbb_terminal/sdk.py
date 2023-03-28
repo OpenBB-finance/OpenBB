@@ -268,7 +268,7 @@ class OpenBBSDK:
         Attributes:
             `carbon`: Search mstarpy for carbon metrics\n
             `exclusion`: Search mstarpy exclusion policy in esgData\n
-            `historical`: Display historical fund, category, index price\n
+            `historical`: Get historical fund, category, index price\n
             `historical_chart`: Display historical fund, category, index price\n
             `holdings`: Search mstarpy for holdings\n
             `load`: Search mstarpy for matching funds\n

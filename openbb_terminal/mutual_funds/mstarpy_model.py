@@ -4,8 +4,73 @@ import mstarpy
 import pandas as pd
 
 from openbb_terminal.decorators import log_start_end
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
+
+
+def get_historical(
+    loaded_funds: mstarpy.Funds,
+    start_date: str,
+    end_date: str,
+    comparison: str = "",
+) -> pd.DataFrame:
+    """Get historical fund, category, index price
+
+    Parameters
+    ----------
+    loaded_funds: mstarpy.Funds
+        class mstarpy.Funds instantiated with selected funds
+    start_date: str
+        start date of the historical data
+    end_date: str
+        end date of the historical data
+    comparison: str
+        can be index, category, both
+
+    Returns
+    -------
+    pd.DataFrame
+        Dataframe containing historical data
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> f = openbb.funds.load("Vanguard", "US")
+    >>> openbb.funds.historical(f, "2020-01-01", "2020-12-31")
+    """
+    try:
+        start_date_dt = pd.to_datetime(start_date)
+        end_date_dt = pd.to_datetime(end_date)
+        if not comparison:
+            data = loaded_funds.nav(start_date_dt, end_date_dt, frequency="daily")
+            df = pd.DataFrame(data).set_index("date")
+            df.index = pd.to_datetime(df.index)
+        else:
+            comparison_list = {
+                "index": [
+                    "fund",
+                    "index",
+                ],
+                "category": ["fund", "category"],
+                "both": ["fund", "index", "category"],
+            }
+            data = loaded_funds.historicalData()
+            df_dict = {}
+            for x in comparison_list[comparison]:
+                df_dict[x] = pd.DataFrame(data["graphData"][x]).set_index("date")
+
+            df = pd.concat(
+                list(df_dict.values())[:], axis=1, keys=list(df_dict.keys())[:]
+            )
+            df.index = pd.to_datetime(df.index)
+            df = df.loc[(df.index >= start_date_dt) & (df.index <= end_date_dt)]
+            df = (df.pct_change().fillna(0) + 1).cumprod() * 100
+            df.columns = [col[0] for col in df.columns]
+    except Exception as e:
+        console.print(f"Error: {e}")
+        return pd.DataFrame()
+    return df
 
 
 @log_start_end(log=logger)

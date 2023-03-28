@@ -272,7 +272,7 @@ funds.search,funds_mstarpy_model.search_funds,
 funds.holdings,funds_mstarpy_model.load_holdings,
 funds.exclusion,funds_mstarpy_model.load_exclusion_policy,
 funds.carbon,funds_mstarpy_model.load_carbon_metrics,
-funds.historical,funds_mstarpy_view.display_historical,funds_mstarpy_view.display_historical
+funds.historical,funds_mstarpy_model.get_historical,funds_mstarpy_view.display_historical
 funds.sector,funds_mstarpy_model.get_sector,funds_mstarpy_view.display_sector
 futures.curve,futures_yfinance_model.get_curve_futures,futures_yfinance_view.display_curve
 futures.historical,futures_sdk_model.get_historical,futures_yfinance_view.display_historical

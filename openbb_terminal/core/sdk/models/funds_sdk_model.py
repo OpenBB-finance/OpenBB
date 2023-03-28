@@ -11,7 +11,7 @@ class FundsRoot(Category):
     Attributes:
         `carbon`: Search mstarpy for carbon metrics\n
         `exclusion`: Search mstarpy exclusion policy in esgData\n
-        `historical`: Display historical fund, category, index price\n
+        `historical`: Get historical fund, category, index price\n
         `historical_chart`: Display historical fund, category, index price\n
         `holdings`: Search mstarpy for holdings\n
         `load`: Search mstarpy for matching funds\n
@@ -26,7 +26,7 @@ class FundsRoot(Category):
         super().__init__()
         self.carbon = lib.funds_mstarpy_model.load_carbon_metrics
         self.exclusion = lib.funds_mstarpy_model.load_exclusion_policy
-        self.historical = lib.funds_mstarpy_view.display_historical
+        self.historical = lib.funds_mstarpy_model.get_historical
         self.historical_chart = lib.funds_mstarpy_view.display_historical
         self.holdings = lib.funds_mstarpy_model.load_holdings
         self.load = lib.funds_mstarpy_model.load_funds

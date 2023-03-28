@@ -2,7 +2,6 @@ import logging
 from typing import Union
 
 import mstarpy
-import numpy as np
 import pandas as pd
 
 from openbb_terminal import OpenBBFigure
@@ -82,61 +81,47 @@ def display_historical(
     """
 
     title = f"Performance of {loaded_funds.name}"
-
     start_date_dt = pd.to_datetime(start_date)
     end_date_dt = pd.to_datetime(end_date)
+    df = mstarpy_model.get_historical(
+        loaded_funds, start_date_dt, end_date_dt, comparison
+    )
+
+    if df.empty:
+        return
 
     if not comparison:
-        data = loaded_funds.nav(start_date_dt, end_date_dt, frequency="daily")
         fig = OpenBBFigure(xaxis_title="Date", yaxis_title="Nav").set_title(title)
-
-        df = pd.DataFrame(data)
-        df["date"] = pd.to_datetime(df["date"])
         fig.add_scatter(
-            x=df.date,
+            x=df.index,
             y=df.nav,
             name=f"{loaded_funds.name}",
             mode="lines",
         )
 
     else:
-        data = loaded_funds.historicalData()
-        comparison_list = {
-            "index": [
-                "fund",
-                "index",
-            ],
-            "category": ["fund", "category"],
-            "both": ["fund", "index", "category"],
-        }
         fig = OpenBBFigure(xaxis_title="Date", yaxis_title="Performance (Base 100)")
-
-        for x in comparison_list[comparison]:
-            df = pd.DataFrame(data["graphData"][x])
-            df["date"] = pd.to_datetime(df["date"])
-            df = df.loc[(df["date"] >= start_date) & (df["date"] <= end_date)]
-            df["pct"] = (df["value"] / df["value"].shift(1) - 1).fillna(0)
-            df["base_100"] = 100 * np.cumprod(1 + df["pct"])
-
-            if x == "fund":
+        data = loaded_funds.historicalData()
+        for col in df.columns:
+            if col == "fund":
                 label = f"funds : {loaded_funds.name}"
             else:
-                key = f"{x}Name"
+                key = f"{col}Name"
                 if key in data:
-                    label = f"{x} : {data[key]}"
+                    label = f"{col} : {data[key]}"
                     title += f" vs {label},"
                 else:
-                    label = x
+                    label = col
 
             fig.add_scatter(
-                x=df.date,
-                y=df.base_100,
+                x=df.index,
+                y=df[col],
                 name=f"{label}",
                 mode="lines",
             )
 
-        fig.set_title(title.rstrip(","), wrap=True, wrap_width=70)
-        fig.update_layout(margin=dict(t=65))
+    fig.set_title(title.rstrip(","), wrap=True, wrap_width=70)
+    fig.update_layout(margin=dict(t=65))
 
     return fig.show(external=external_axes)
 
