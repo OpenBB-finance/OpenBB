@@ -9,6 +9,31 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
+def get_sector(loaded_funds: mstarpy.Funds, asset_type: str = "equity"):
+    """Get fund, category, index sector breakdown
+
+    Parameters
+    ----------
+    loaded_funds: mstarpy.funds
+        class mstarpy.Funds instantiated with selected funds
+    asset_type: str
+        can be equity or fixed income
+
+    Returns
+    -------
+    pd.DataFrame
+        Dataframe containing sector breakdown
+    """
+    key = "EQUITY" if asset_type == "equity" else "FIXEDINCOME"
+
+    d = loaded_funds.sector()[key]
+
+    if d:
+        return pd.DataFrame(d)
+    return pd.DataFrame()
+
+
+@log_start_end(log=logger)
 def load_carbon_metrics(loaded_funds: mstarpy.Funds) -> pd.DataFrame:
     """Search mstarpy for carbon metrics
 
@@ -19,7 +44,14 @@ def load_carbon_metrics(loaded_funds: mstarpy.Funds) -> pd.DataFrame:
 
     Returns
     -------
-        pd.DataFrame of carbon metrics
+    pd.DataFrame
+        Dataframe containing carbon metrics
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> f = openbb.funds.load("Vanguard", "US")
+    >>> openbb.funds.carbon(f)
     """
     carbonMetrics = loaded_funds.carbonMetrics()
     return pd.Series(carbonMetrics, name="carbonMetrics").reset_index()
@@ -36,7 +68,14 @@ def load_exclusion_policy(loaded_funds: mstarpy.Funds) -> pd.DataFrame:
 
     Returns
     -------
-        pd.DataFrame of exclusion policy
+    pd.DataFrame
+        Dataframe containing exclusion policy
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> f = openbb.funds.load("Vanguard", "US")
+    >>> openbb.funds.exclusion(f)
     """
     esgData = loaded_funds.esgData()
     if "sustainabilityIntentionality" in esgData:
@@ -62,7 +101,13 @@ def load_funds(
 
     Returns
     -------
-        mstarpy.Funds
+    mstarpy.Funds
+        class mstarpy.Funds instantiated with selected funds
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> f = openbb.funds.load("Vanguard", "US")
     """
     return mstarpy.Funds(term, country)
 
@@ -83,7 +128,14 @@ def load_holdings(
 
     Returns
     -------
-        pd.DataFrame of funds holdings
+    pd.DataFrame
+        Dataframe containing holdings
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> f = openbb.funds.load("Vanguard", "US")
+    >>> openbb.funds.holdings(f)
     """
     holdings = loaded_funds.holdings(holding_type)
     if holdings.empty:
@@ -114,6 +166,11 @@ def search_funds(
     -------
     pd.DataFrame
         Dataframe containing matches
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> openbb.funds.search("Vanguard", "US")
     """
     field = ["SecId", "TenforeId", "LegalName"]
     try:

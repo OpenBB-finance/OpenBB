@@ -75,12 +75,21 @@ def display_historical(
         type of comparison, can be index, category, both
     external_axes : bool, optional
         Whether to return the figure object or not, by default False
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> f = openbb.funds.load("Vanguard", "US")
+    >>> openbb.funds.historical(f)
     """
 
     title = f"Performance of {loaded_funds.name}"
 
+    start_date_dt = pd.to_datetime(start_date)
+    end_date_dt = pd.to_datetime(end_date)
+
     if not comparison:
-        data = loaded_funds.nav(start_date, end_date, frequency="daily")
+        data = loaded_funds.nav(start_date_dt, end_date_dt, frequency="daily")
         fig = OpenBBFigure(xaxis_title="Date", yaxis_title="Nav").set_title(title)
 
         df = pd.DataFrame(data)
@@ -238,41 +247,53 @@ def display_sector(
         can be equity or fixed income
     external_axes : bool, optional
         Whether to return the figure object or not, by default False
+
+    Returns
+    -------
+    fig : plotly.graph_objects.Figure
+        Plotly figure object
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> f = openbb.funds.load("Vanguard", "US")
+    >>> openbb.funds.sector_chart(f)
     """
-    key = "EQUITY" if asset_type == "equity" else "FIXEDINCOME"
 
-    d = loaded_funds.sector()[key]
-    fig = OpenBBFigure()
+    df = mstarpy_model.get_sector(loaded_funds, asset_type)
 
-    width = -0.3
+    if not df.empty:
+        fig = OpenBBFigure()
 
-    title = "Sector breakdown of"
-    for x in ["fund", "index", "category"]:
-        name = d[f"{x}Name"]
-        data = d[f"{x}Portfolio"]
+        width = -0.3
 
-        p_date = data["portfolioDate"]
-        portfolio_date = p_date[:10] if p_date else ""
-        data.pop("portfolioDate")
+        title = "Sector breakdown of"
+        for x in ["fund", "index", "category"]:
+            name = df[f"{x}Name"].iloc[0]
+            data = df[f"{x}Portfolio"].to_dict()
 
-        labels = list(data.keys())
-        values = list(data.values())
+            p_date = data["portfolioDate"]
+            portfolio_date = p_date[:10] if p_date else ""
+            data.pop("portfolioDate")
 
-        # if all values are 0, skip
-        values = [0 if v is None else v for v in values]
-        if sum(values) == 0:
-            continue
+            labels = list(data.keys())
+            values = list(data.values())
 
-        fig.add_bar(
-            x=labels,
-            y=values,
-            name=f"{x} : {name} - {portfolio_date}",
-        )
-        width += 0.3  # the width of the bars
+            # if all values are 0, skip
+            values = [0 if v is None else v for v in values]
+            if sum(values) == 0:
+                continue
 
-        title += f" {name},"
+            fig.add_bar(
+                x=labels,
+                y=values,
+                name=f"{x} : {name} - {portfolio_date}",
+            )
+            width += 0.3  # the width of the bars
 
-    fig.update_layout(margin=dict(t=45), xaxis=dict(tickangle=-15))
-    fig.set_title(title.rstrip(","), wrap=True, wrap_width=60)
+            title += f" {name},"
 
-    return fig.show(external=external_axes)
+        fig.update_layout(margin=dict(t=45), xaxis=dict(tickangle=-15))
+        fig.set_title(title.rstrip(","), wrap=True, wrap_width=60)
+
+        return fig.show(external=external_axes)
