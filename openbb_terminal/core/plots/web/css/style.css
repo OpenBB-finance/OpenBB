@@ -74,7 +74,6 @@ body {
   visibility: visible;
 }
 
-
 #changecolor {
   position: absolute;
   z-index: 9;
@@ -1312,36 +1311,15 @@ video {
       #060709);
 }
 
-/* on resize make sure header height is smaller and font size shrinks */
-@media screen and (max-width: 368px) {
-  ._header strong {
-    font-size: 1.1rem !important;
-  }
-
-  .modebar {
-    bottom: 10 !important;
-  }
-}
-
+/* on resize makes sure font size shrinks and modebar doesn't disappear */
 @media screen and (max-width: 375px) {
   ._header strong {
     font-size: 1.1rem !important;
   }
 
   .modebar {
+    transform: translate(-50%, 10%) !important;
     bottom: 60 !important;
-    transform: translate(-50%, 10%) !important;
-  }
-}
-
-@media screen and (max-height: 500px) {
-  ._header strong {
-    font-size: 1.1rem !important;
-  }
-
-  .modebar {
-    transform: translate(-50%, 10%) !important;
-    bottom: 10 !important;
   }
 }
 
@@ -1352,7 +1330,18 @@ video {
 
   .modebar {
     transform: translate(-50%, 10%) !important;
-    bottom: 10 !important;
+    bottom: 40 !important;
+  }
+}
+
+@media screen and (max-height: 500px) {
+  ._header strong {
+    font-size: 1.1rem !important;
+  }
+
+  .modebar {
+    transform: translate(-50%, 10%) !important;
+    bottom: 20 !important;
   }
 }
 
@@ -1363,6 +1352,6 @@ video {
 
   .modebar {
     transform: translate(-50%, 10%) !important;
-    bottom: 10 !important;
+    bottom: 0 !important;
   }
 }
