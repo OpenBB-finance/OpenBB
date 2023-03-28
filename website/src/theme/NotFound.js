@@ -46,7 +46,7 @@ export default function NotFound() {
               </a>
               <a
                 // TODO - add link to report problem
-                href="https://my.openbb.co/app/"
+                href="https://openbb.co/support"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="_btn-secondary"
