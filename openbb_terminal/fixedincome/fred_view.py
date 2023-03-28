@@ -1252,9 +1252,9 @@ def plot_icebofa(
         )
 
     if description:
-        for title, description_text in series[["Title", "Description"]].values:
-            console.print(f"\n[bold]{title}[/bold]")
-            console.print(description_text)
+        description_text = series[series["Title"] == title]["Description"].values
+        console.print(f"\n[bold]{title}[/bold]")
+        console.print(description_text)
 
     export_data(
         export,
