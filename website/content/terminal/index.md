@@ -74,7 +74,7 @@ Want to contribute? Check out our [CONTRIBUTING GUIDELINES](https://github.com/O
 
 ---
 
-Want to learn how to install the OpenBB Terminal? Check out our [Installation](/terminal/quickstart/installation) guide.
+Want to learn how to install the OpenBB Terminal? Check out our [Installation](/terminal/installation) guide.
 
 Want to know how to import and export data? Check out our [Data Import/Export](/terminal/usage/guides/data)
 
