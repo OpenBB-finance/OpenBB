@@ -22,7 +22,7 @@ jobs:
     strategy:
       matrix:
         items: [
-          {os: [self-hosted, macos, ARM64], name: "OpenBBM1.pkg"}
+          {os: [self-hosted, macos, ARM64], name: "OpenBBM1.pkg"},
           {os: [self-hosted, macos, x64], name: "OpenBBIntel.pkg"}
         ]
     steps:
