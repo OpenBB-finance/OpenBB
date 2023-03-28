@@ -413,6 +413,7 @@ def load(  # pylint: disable=too-many-return-statements
                 show_errors=False,
             )
             # Handle the case when start and end dates aren't explicitly set
+            # TODO: This is a temporary fix, need to find a better way to handle this
             if df_stock_candidate.empty:
                 d_granularity = {"1m": 6, "5m": 59, "15m": 59, "30m": 59, "60m": 729}
                 s_start_dt = datetime.utcnow() - timedelta(days=d_granularity[s_int])
