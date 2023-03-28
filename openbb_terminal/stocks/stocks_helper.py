@@ -410,7 +410,22 @@ def load(  # pylint: disable=too-many-return-statements
                 progress=False,
                 interval=s_int,
                 prepost=prepost,
+                show_errors=False,
             )
+            # Handle the case when start and end dates aren't explicitly set
+            if df_stock_candidate.empty:
+                d_granularity = {"1m": 6, "5m": 59, "15m": 59, "30m": 59, "60m": 729}
+                s_start_dt = datetime.utcnow() - timedelta(days=d_granularity[s_int])
+                s_date_start = s_start_dt.strftime("%Y-%m-%d")
+                df_stock_candidate = yf.download(
+                    symbol,
+                    start=s_date_start
+                    if s_start_dt > start_date
+                    else start_date.strftime("%Y-%m-%d"),
+                    progress=False,
+                    interval=s_int,
+                    prepost=prepost,
+                )
 
             # Check that loading a stock was not successful
             if df_stock_candidate.empty:
