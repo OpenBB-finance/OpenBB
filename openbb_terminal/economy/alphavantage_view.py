@@ -5,8 +5,7 @@ import logging
 import os
 from typing import Optional, Union
 
-from openbb_terminal import OpenBBFigure
-from openbb_terminal.config_terminal import theme
+from openbb_terminal import OpenBBFigure, theme
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.economy import alphavantage_model
 from openbb_terminal.helper_funcs import export_data, print_rich_table
@@ -89,6 +88,7 @@ def display_real_gdp(
     export: str = "",
     sheet_name: Optional[str] = None,
     external_axes: bool = False,
+    limit: int = 20,
 ) -> Union[OpenBBFigure, None]:
     """Display US GDP from AlphaVantage
 
@@ -134,11 +134,12 @@ def display_real_gdp(
     )
     if raw:
         print_rich_table(
-            gdp.head(20),
+            gdp,
             headers=["Date", "GDP"],
             show_index=False,
             title="US GDP",
             export=bool(export),
+            limit=limit,
         )
 
     return fig.show(external=external_axes)
@@ -152,6 +153,7 @@ def display_gdp_capita(
     export: str = "",
     sheet_name: Optional[str] = None,
     external_axes: bool = False,
+    limit: int = 20,
 ) -> Union[OpenBBFigure, None]:
     """Display US GDP per Capita from AlphaVantage
 
@@ -191,11 +193,12 @@ def display_gdp_capita(
     )
     if raw:
         print_rich_table(
-            gdp.head(20),
+            gdp,
             headers=["Date", "GDP"],
             show_index=False,
             title="US GDP Per Capita",
             export=bool(export),
+            limit=limit,
         )
 
     return fig.show(external=external_axes)
@@ -209,6 +212,7 @@ def display_inflation(
     export: str = "",
     sheet_name: Optional[str] = None,
     external_axes: bool = False,
+    limit: int = 20,
 ) -> Union[OpenBBFigure, None]:
     """Display US Inflation from AlphaVantage
 
@@ -248,11 +252,12 @@ def display_inflation(
     )
     if raw:
         print_rich_table(
-            inf.head(20),
+            inf,
             headers=["Date", "Inflation"],
             show_index=False,
             title="US Inflation",
             export=bool(export),
+            limit=limit,
         )
 
     return fig.show(external=external_axes)
@@ -267,6 +272,7 @@ def display_cpi(
     export: str = "",
     sheet_name: Optional[str] = None,
     external_axes: bool = False,
+    limit: int = 20,
 ) -> Union[OpenBBFigure, None]:
     """Display US consumer price index (CPI) from AlphaVantage
 
@@ -311,11 +317,12 @@ def display_cpi(
     )
     if raw:
         print_rich_table(
-            cpi.head(20),
+            cpi,
             headers=["Date", "CPI"],
             show_index=False,
             title="US CPI",
             export=bool(export),
+            limit=limit,
         )
 
     return fig.show(external=external_axes)
@@ -331,6 +338,7 @@ def display_treasury_yield(
     export: str = "",
     sheet_name: Optional[str] = None,
     external_axes: bool = False,
+    limit: int = 20,
 ) -> Union[OpenBBFigure, None]:
     """Display historical treasury yield for given maturity
 
@@ -375,11 +383,12 @@ def display_treasury_yield(
     )
     if raw:
         print_rich_table(
-            yld.head(20),
+            yld,
             headers=["Date", "Yield"],
             title="Historical Treasury Yield",
             show_index=False,
             export=bool(export),
+            limit=limit,
         )
 
     return fig.show(external=external_axes)
@@ -393,6 +402,7 @@ def display_unemployment(
     export: str = "",
     sheet_name: Optional[str] = None,
     external_axes: bool = False,
+    limit: int = 20,
 ) -> Union[OpenBBFigure, None]:
     """Display US unemployment AlphaVantage
 
@@ -435,11 +445,12 @@ def display_unemployment(
 
     if raw:
         print_rich_table(
-            un.head(20),
+            un,
             headers=["Date", "GDP"],
             title="US Unemployment",
             show_index=False,
             export=bool(export),
+            limit=limit,
         )
 
     return fig.show(external=external_axes)

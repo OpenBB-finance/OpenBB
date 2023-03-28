@@ -64,11 +64,12 @@ def display_news(
         df.columns = prettify_column_names(df.columns)
 
         print_rich_table(
-            df.head(limit),
+            df,
             headers=list(df.columns),
             show_index=False,
             title="Most Recent News",
             export=bool(export),
+            limit=limit,
         )
 
         export_data(

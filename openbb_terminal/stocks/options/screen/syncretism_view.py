@@ -6,8 +6,7 @@ import logging
 import os
 from typing import List, Optional, Union
 
-from openbb_terminal import OpenBBFigure
-from openbb_terminal.config_terminal import theme
+from openbb_terminal import OpenBBFigure, theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
@@ -159,13 +158,15 @@ def view_historical_greeks(
             )
 
     if raw:
+        df = df.sort_index(ascending=False)
         print_rich_table(
-            df.tail(limit),
+            df,
             headers=df.columns.tolist(),
             title="Historical Greeks",
             show_index=True,
             floatfmt=".4f",
             export=bool(export),
+            limit=limit,
         )
 
     fig = OpenBBFigure.create_subplots(
@@ -177,16 +178,20 @@ def view_historical_greeks(
     )
     fig.add_scatter(
         x=df.index,
-        y=df.price,
+        y=df.price.values,
         name="Stock Price",
         line=dict(color=theme.down_color),
+        connectgaps=True,
+        secondary_y=False,
     )
     fig.add_scatter(
         x=df.index,
-        y=df[greek.lower()],
+        y=df[greek.lower()].values,
+        connectgaps=True,
         name=greek.title(),
         line=dict(color=theme.up_color),
         yaxis="y2",
+        secondary_y=True,
     )
     fig.update_layout(
         margin=dict(t=30),
@@ -199,7 +204,6 @@ def view_historical_greeks(
             title=f"{symbol} Price",
         ),
     )
-    fig.hide_holidays()
 
     export_data(
         export,

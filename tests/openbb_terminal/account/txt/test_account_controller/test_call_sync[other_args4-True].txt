@@ -1,2 +1,2 @@
-sync is True, use --on or --off to change.
-[]
+[info]You are already logged in.[/info]
+sync is ON, use --on or --off to change.

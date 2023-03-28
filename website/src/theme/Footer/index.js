@@ -11,6 +11,7 @@ import DiscordIcon from "@site/src/components/Icons/Discord";
 import YoutubeIcon from "@site/src/components/Icons/Youtube";
 import ChevronRightIcon from "@site/src/components/Icons/ChevronRight";
 import clsx from "clsx";
+import { useIFrameContext } from "../Root";
 const nFormatter = (num, digits) => {
   const si = [
     { value: 1, symbol: "" },
@@ -38,6 +39,12 @@ function Footer() {
       .then((res) => res.json())
       .then((data) => setStars(data.stargazers_count));
   }, []);
+  const { isIFrame } = useIFrameContext();
+
+  if (isIFrame) {
+    return null;
+  }
+
   return (
     <footer className="px-4 border-t dark:border-grey-600/50 lg:px-12 py-14 bg-white dark:bg-grey-900 z-10 overflow-hidden">
       <div className="flex w-full flex-col justify-between gap-10 md:flex-row md:items-start">

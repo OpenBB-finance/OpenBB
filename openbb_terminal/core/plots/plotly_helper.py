@@ -1,5 +1,5 @@
 """Chart and style helpers for Plotly."""
-# pylint: disable=C0302,R0902
+# pylint: disable=C0302,R0902,W3301
 import json
 import os
 import textwrap
@@ -23,7 +23,9 @@ from plotly.subplots import make_subplots
 from scipy import stats
 
 from openbb_terminal.base_helpers import console, strtobool
-from openbb_terminal.core.config.paths import MISCELLANEOUS_DIRECTORY
+from openbb_terminal.core.config.paths import (
+    STYLES_DIRECTORY_REPO,
+)
 from openbb_terminal.core.plots.backend import PLOTLYJS_PATH, plots_backend
 from openbb_terminal.core.plots.config.openbb_styles import (
     PLT_COLORWAY,
@@ -44,14 +46,13 @@ class TerminalStyle:
     styles as python dictionaries.
     """
 
-    DEFAULT_STYLES_LOCATION = MISCELLANEOUS_DIRECTORY / "styles" / "default"
-    USER_STYLES_LOCATION = (
-        get_current_user().preferences.USER_DATA_DIRECTORY / "styles" / "user"
-    )
+    STYLES_REPO = STYLES_DIRECTORY_REPO
+    USER_STYLES_DIRECTORY = get_current_user().preferences.USER_STYLES_DIRECTORY
 
     plt_styles_available: Dict[str, Path] = {}
     plt_style: str = "dark"
     plotly_template: Dict[str, Any] = {}
+    mapbox_style: str = "dark"
 
     console_styles_available: Dict[str, Path] = {}
     console_style: Dict[str, Any] = {}
@@ -81,22 +82,33 @@ class TerminalStyle:
             The name of the Rich style to use, by default ""
         """
         self.plt_style = plt_style or self.plt_style
-        console_style = console_style or "dark"
         self.load_available_styles()
-
-        console_json_path = self.console_styles_available.get("dark", None)
-        for style in ["openbb_config", console_style]:
-            if style in self.console_styles_available:
-                console_json_path = self.console_styles_available[style]
-                break
-
-        if console_json_path:
-            self.console_style = self.load_json_style(console_json_path)
         self.load_style(plt_style)
+        self.load_style(plt_style)
+        self.apply_console_style(console_style)
+
+    def apply_console_style(self, style: Optional[str] = "") -> None:
+        """Apply the style to the console."""
+
+        if style in self.console_styles_available:
+            json_path: Optional[Path] = self.console_styles_available[style]
+        else:
+            self.load_available_styles()
+            if style in self.console_styles_available:
+                json_path = self.console_styles_available[style]
+            else:
+                console.print("\nInvalid console style. Using default.")
+                json_path = self.console_styles_available.get("dark", None)
+
+        if json_path:
+            self.console_style = self.load_json_style(json_path)
+        else:
+            console.print("Error loading default.")
 
     def apply_style(self, style: Optional[str] = "") -> None:
         """Apply the style to the libraries."""
-        style = style or self.plt_style
+        if not style:
+            style = get_current_user().preferences.PLOT_STYLE
 
         if style != self.plt_style:
             self.load_style(style)
@@ -104,12 +116,24 @@ class TerminalStyle:
         style = style.lower().replace("light", "white")  # type: ignore
 
         if self.plt_style and self.plotly_template:
+            self.plotly_template.setdefault("layout", {}).setdefault(
+                "mapbox", {}
+            ).setdefault("style", "dark")
+            if "tables" in self.plt_styles_available:
+                tables = self.load_json_style(self.plt_styles_available["tables"])
+                pio.templates["openbb_tables"] = go.layout.Template(tables)
+
             pio.templates["openbb"] = go.layout.Template(self.plotly_template)
             if style in ["dark", "white"]:
                 pio.templates.default = f"plotly_{style}+openbb"
                 return
 
             pio.templates.default = "openbb"
+            self.mapbox_style = (
+                self.plotly_template.setdefault("layout", {})
+                .setdefault("mapbox", {})
+                .setdefault("style", "dark")
+            )
 
     def load_available_styles_from_folder(self, folder: Path) -> None:
         """Load custom styles from folder.
@@ -131,20 +155,20 @@ class TerminalStyle:
             ["plt_styles_available", "console_styles_available"],
             [".pltstyle.json", ".richstyle.json"],
         ):
-            for file in folder.glob(f"*{ext}"):
+            for file in folder.rglob(f"*{ext}"):
                 getattr(self, attr)[file.name.replace(ext, "")] = file
 
     def load_available_styles(self) -> None:
         """Load custom styles from default and user folders."""
-        self.load_available_styles_from_folder(self.DEFAULT_STYLES_LOCATION)
-        self.load_available_styles_from_folder(self.USER_STYLES_LOCATION)
+        self.load_available_styles_from_folder(self.STYLES_REPO)
+        self.load_available_styles_from_folder(self.USER_STYLES_DIRECTORY)
 
     def load_json_style(self, file: Path) -> Dict[str, Any]:
         """Load style from json file.
 
         Parameters
         ----------
-        file : str
+        file : Path
             Path to the file containing the style
 
         Returns
@@ -165,8 +189,13 @@ class TerminalStyle:
         """
         style = style or self.plt_style
 
-        if style in self.plt_styles_available:
-            self.load_plt_style(style)
+        if style not in self.plt_styles_available:
+            console.print(
+                f"[red]Plot Style {style} not found. Using default style.[/red]",
+            )
+            style = "dark"
+
+        self.load_plt_style(style)
 
     def load_plt_style(self, style: str) -> None:
         """Load Plotly style from file.
@@ -206,13 +235,16 @@ class TerminalStyle:
         list
             List of colors e.g. ["#00ACFF", "#FF0000"]
         """
+        self.apply_style()
         colors = self.plotly_template.get("layout", {}).get("colorway", PLT_COLORWAY)
         if reverse:
             colors.reverse()
         return colors
 
 
-theme = TerminalStyle("dark", "dark")
+theme = TerminalStyle(
+    get_current_user().preferences.PLOT_STYLE, get_current_user().preferences.RICH_STYLE
+)
 theme.apply_style()
 
 
@@ -260,6 +292,7 @@ class OpenBBFigure(go.Figure):
             self.__dict__ = fig.__dict__
 
         self._has_secondary_y = kwargs.pop("has_secondary_y", False)
+        self._subplots_kwargs: Dict[str, Any] = kwargs.pop("subplots_kwargs", {})
         self._multi_rows = kwargs.pop("multi_rows", False)
         self._added_logscale = False
         self._date_xaxs: dict = {}
@@ -267,7 +300,9 @@ class OpenBBFigure(go.Figure):
         self._feature_flags_applied = False
         self._exported = False
         self._cmd_xshift = 0
-        self._bar_width = 0.0001
+        self._bar_width = 0.2
+        self._export_image: Optional[Union[Path, str]] = ""
+
         self._subplot_xdates: Dict[int, Dict[int, List[Any]]] = {}
 
         if xaxis := kwargs.pop("xaxis", None):
@@ -283,6 +318,16 @@ class OpenBBFigure(go.Figure):
                 height=plots_backend().HEIGHT,
                 width=plots_backend().WIDTH,
             )
+
+    @property
+    def subplots_kwargs(self):
+        """Get subplots kwargs property."""
+        return self._subplots_kwargs
+
+    @subplots_kwargs.setter
+    def subplots_kwargs(self, value):
+        """Get subplots kwargs setter."""
+        self._subplots_kwargs = value
 
     @property
     def has_subplots(self):
@@ -343,7 +388,8 @@ class OpenBBFigure(go.Figure):
         specs : `List[List[dict]]`, optional
             Subplot specs, by default `[[{}] * cols] * rows` (all subplots are the same size)
         """
-        fig = make_subplots(
+        # We save the original kwargs to store them in the figure for later use
+        subplots_kwargs = dict(
             rows=rows,
             cols=cols,
             shared_xaxes=shared_xaxes,
@@ -354,7 +400,13 @@ class OpenBBFigure(go.Figure):
             specs=specs or [[{}] * cols] * rows,
             **kwargs,
         )
-        kwargs = {"multi_rows": rows > 1}
+
+        fig = make_subplots(**subplots_kwargs)
+
+        kwargs = {
+            "multi_rows": rows > 1,
+            "subplots_kwargs": subplots_kwargs,
+        }
         if specs and any(
             spec.get("secondary_y", False) for row in specs for spec in row if spec
         ):
@@ -362,51 +414,48 @@ class OpenBBFigure(go.Figure):
 
         return cls(fig, **kwargs)
 
-    def add_trend(self, data: pd.DataFrame) -> None:
+    def add_trend(
+        self,
+        data: pd.DataFrame,
+        row: int = 1,
+        col: int = 1,
+        secondary_y: bool = False,
+        **kwargs,
+    ):
         """Add a trend line to the figure.
 
         Parameters
         ----------
         data : `pd.DataFrame`
             Data to plot
-        name : `str`
-            Name of the plot
+        row : `int`, optional
+            Row number, by default 1
+        col : `int`, optional
+            Column number, by default 1
+        secondary_y : `bool`, optional
+            Whether to plot on secondary y axis, by default None
         """
         try:
-            if "OC_High_trend" in data.columns:
-                high_trend = data.loc[
-                    data["OC_High_trend"]
-                    .idxmin() : data["OC_High_trend"]  # noqa: E203
-                    .idxmax()
-                ]
-                self.add_shape(
-                    type="line",
-                    name="High Trend",
-                    x0=high_trend.index[0],
-                    y0=high_trend["OC_High_trend"].iloc[0],
-                    x1=high_trend.index[-1],
-                    y1=high_trend["OC_High_trend"].iloc[-1],
-                    line=dict(color=theme.up_color, width=2),
-                    row=1,
-                    col=1,
-                )
-            if "OC_Low_trend" in data.columns:
-                low_trend = data.loc[
-                    data["OC_Low_trend"]
-                    .idxmin() : data["OC_Low_trend"]  # noqa: E203
-                    .idxmax()
-                ]
-                self.add_shape(
-                    type="line",
-                    name="Low Trend",
-                    x0=low_trend.index[0],
-                    y0=low_trend["OC_Low_trend"].iloc[0],
-                    x1=low_trend.index[-1],
-                    y1=low_trend["OC_Low_trend"].iloc[-1],
-                    line=dict(color=theme.down_color, width=2),
-                    row=1,
-                    col=1,
-                )
+            for column, color in zip(
+                ["OC_High_trend", "OC_Low_trend"], [theme.up_color, theme.down_color]
+            ):
+                if column in data.columns:
+                    name = column.split("_")[1].title()
+                    trend = data.copy().dropna()
+                    self.add_shape(
+                        type="line",
+                        name=f"{name} Trend",
+                        x0=trend.index[0],
+                        y0=trend[column].iloc[0],
+                        x1=trend.index[-1],
+                        y1=trend[column].iloc[-1],
+                        line=dict(color=color, width=2),
+                        row=row,
+                        col=col,
+                        secondary_y=secondary_y,
+                        **kwargs,
+                    )
+
         except Exception:
             console.print("[red]Error adding trend line[/red]")
 
@@ -787,16 +836,54 @@ class OpenBBFigure(go.Figure):
             )
         )
 
-    def add_stock_volume(
+    @staticmethod
+    def chart_volume_scaling(
+        df_volume: pd.DataFrame, range_x: int = 7
+    ) -> Dict[str, list]:
+        """Takes df_volume and returns volume_ticks, tickvals for chart volume scaling
+
+        Parameters
+        ----------
+        df_volume : pd.DataFrame
+            Dataframe of volume (e.g. df_volume = df["Volume"])
+        range_x : int, optional
+            Number to multiply volume, by default 7
+
+        Returns
+        -------
+        Dict[str, list]
+            {"range": volume_range, "ticks": tickvals}
+        """
+        df_volume = df_volume.apply(lambda x: f"{x:.1f}")
+        df_volume = pd.to_numeric(df_volume.astype(float))
+        volume_ticks = int(df_volume.max().max())
+        round_digits = -3
+        first_val = round(volume_ticks * 0.20, round_digits)
+
+        for x, y in zip([2, 5, 6, 7, 8, 9, 10], [1, 4, 5, 6, 7, 8, 9]):
+            if len(str(volume_ticks)) > x:
+                round_digits = -y
+                first_val = round(volume_ticks * 0.20, round_digits)
+
+        tickvals = [
+            floor(first_val),
+            floor(first_val * 2),
+            floor(first_val * 3),
+            floor(first_val * 4),
+        ]
+        volume_range = [0, floor(volume_ticks * range_x)]
+
+        return {"range": volume_range, "ticks": tickvals}
+
+    def add_inchart_volume(
         self,
         df_stock: pd.DataFrame,
-        close_col: str = "Close",
-        volume_col: str = "Volume",
-        row: int = 2,
-        col: int = 1,
-        secondary_y: bool = False,
+        close_col: Optional[str] = "Close",
+        volume_col: Optional[str] = "Volume",
+        row: Optional[int] = 1,
+        col: Optional[int] = 1,
     ) -> None:
-        """Add the volume of a stock to the figure.
+        """Add in-chart volume to a subplot.
 
         Parameters
         ----------
@@ -810,21 +897,43 @@ class OpenBBFigure(go.Figure):
             Row number, by default 2
         col : `int`, optional
             Column number, by default 1
-        secondary_y : `bool`, optional
-            Whether to use the secondary y axis, by default False
         """
-        colors = [
-            theme.down_color if row.Open < row[close_col] else theme.up_color
-            for _, row in df_stock.iterrows()
-        ]
+        colors = np.where(
+            df_stock.Open < df_stock[close_col], theme.up_color, theme.down_color
+        )
+        vol_scale = self.chart_volume_scaling(df_stock[volume_col])
         self.add_bar(
             x=df_stock.index,
             y=df_stock[volume_col],
             name="Volume",
             marker_color=colors,
+            yaxis="y2",
             row=row,
             col=col,
-            secondary_y=secondary_y,
+            opacity=0.5,
+            secondary_y=False,
+        )
+        ticksize = 14 - (self.subplots_kwargs["rows"] // 2)
+        self.update_layout(
+            yaxis=dict(
+                fixedrange=True,
+                side="left",
+                nticks=10,
+                range=vol_scale["range"],
+                tickvals=vol_scale["ticks"],
+                showgrid=False,
+                showline=False,
+                zeroline=False,
+                tickfont=dict(size=ticksize),
+            ),
+            yaxis2=dict(
+                autorange=True,
+                side="right",
+                fixedrange=False,
+                anchor="x",
+                layer="above traces",
+                overlaying="y",
+            ),
         )
 
     def add_legend_label(
@@ -913,6 +1022,7 @@ class OpenBBFigure(go.Figure):
         """
         self.cmd_xshift = kwargs.pop("cmd_xshift", self.cmd_xshift)
         self.bar_width = kwargs.pop("bar_width", self.bar_width)
+        self._export_image = export_image
 
         if export_image and not plots_backend().isatty:
             if isinstance(export_image, str):
@@ -922,6 +1032,7 @@ class OpenBBFigure(go.Figure):
         if kwargs.pop("margin", True):
             self._adjust_margins()
 
+        theme.apply_style()
         self._apply_feature_flags()
         self._xaxis_tickformatstops()
 
@@ -932,16 +1043,15 @@ class OpenBBFigure(go.Figure):
         )
 
         # Set modebar style
-        if self.layout.template.layout.mapbox.style == "dark":  # type: ignore
-            self.update_layout(  # type: ignore
-                newshape_line_color="gold",
-                modebar=dict(
-                    orientation="v",
-                    bgcolor="#2A2A2A",
-                    color="#FFFFFF",
-                    activecolor="#d1030d",
-                ),
-            )
+        self.update_layout(  # type: ignore
+            newshape_line_color="gold" if theme.mapbox_style == "dark" else "#0d0887",
+            modebar=dict(
+                orientation="v",
+                bgcolor="#2A2A2A" if theme.mapbox_style == "dark" else "gray",
+                color="#FFFFFF" if theme.mapbox_style == "dark" else "black",
+                activecolor="#d1030d" if theme.mapbox_style == "dark" else "blue",
+            ),
+        )
 
         if external or self._exported:
             return self  # type: ignore
@@ -1062,6 +1172,13 @@ class OpenBBFigure(go.Figure):
         output: Optional[List[datetime]] = None
         subplots = self.get_subplots_dict()
 
+        try:
+            false_y = list(self.select_traces(secondary_y=False))
+            true_y = list(self.select_traces(secondary_y=True))
+        except Exception:
+            false_y = []
+            true_y = []
+
         for trace in self.select_traces():
             if not hasattr(trace, "xaxis"):
                 continue
@@ -1073,9 +1190,15 @@ class OpenBBFigure(go.Figure):
                     if isinstance(x, (datetime, np.datetime64, pd.DatetimeIndex)):
                         output = trace.x
                         name = trace.name if hasattr(trace, "name") else f"{trace}"
+
+                        secondary_y: Optional[bool] = trace in true_y
+                        if trace not in (false_y + true_y):
+                            secondary_y = None
+
                         self._date_xaxs[trace.xaxis] = {
                             "yaxis": trace.yaxis,
                             "name": name,
+                            "secondary_y": secondary_y,
                         }
                         self._subplot_xdates.setdefault(row, {}).setdefault(
                             col, []
@@ -1114,6 +1237,12 @@ class OpenBBFigure(go.Figure):
         has_weekends = df_data.index.dayofweek.isin([5, 6]).any()
         rangebreaks: List[Dict[str, Any]] = []
 
+        # if weekly or monthly data, we don't need to hide gaps
+        # this prevents distortions in the plot
+        check_freq = df_data.index.to_series().diff(-5).dt.days.abs().mode().iloc[0]
+        if check_freq > 7:
+            return
+
         # We check if weekends are in the df_data
         if has_weekends:
             # We get the days including weekends
@@ -1146,15 +1275,7 @@ class OpenBBFigure(go.Figure):
                 else:
                     rangebreaks.append(dict(bounds=[15.99, 9.50], pattern="hour"))
 
-        if not self._has_secondary_y:
-            self.update_xaxes(rangebreaks=rangebreaks, row=row, col=col)
-        else:
-            for entry in self._date_xaxs.values():
-                self.update_xaxes(
-                    rangebreaks=rangebreaks,
-                    type="date",
-                    selector=dict(anchor=entry["yaxis"]),
-                )
+        self.update_xaxes(rangebreaks=rangebreaks, row=row, col=col)
 
     def hide_holidays(self, prepost: bool = False) -> None:
         """Add rangebreaks to hide holidays on the xaxis.
@@ -1228,6 +1349,7 @@ class OpenBBFigure(go.Figure):
                 full_html=False,
             )
         )
+        theme.apply_style()
         self._apply_feature_flags()
         self._xaxis_tickformatstops()
 
@@ -1390,6 +1512,7 @@ class OpenBBFigure(go.Figure):
         fig.update_layout(
             height=height,
             width=width,
+            template="openbb_tables",
             margin=dict(l=0, r=0, b=0, t=0, pad=0),
             font=dict(size=14),
         )
@@ -1402,19 +1525,18 @@ class OpenBBFigure(go.Figure):
             return
 
         margin_add = (
-            [80, 60, 85, 60, 0] if not self._has_secondary_y else [80, 50, 85, 40, 0]
+            dict(l=80, r=60, b=85, t=60, pad=0)
+            if not self._has_secondary_y
+            else dict(l=60, r=50, b=85, t=40, pad=0)
         )
 
         # We adjust margins
         if plots_backend().isatty:
-            for key, add in zip(
-                ["l", "r", "b", "t", "pad"],
-                margin_add,
-            ):
+            for key in ["l", "r", "b", "t", "pad"]:
                 if key in self.layout.margin and self.layout.margin[key] is not None:
-                    self.layout.margin[key] += add
+                    self.layout.margin[key] += margin_add.get(key, 0)
                 else:
-                    self.layout.margin[key] = add
+                    self.layout.margin[key] = margin_add.get(key, 0)
 
         if not plots_backend().isatty:
             org_margin = self.layout.margin
@@ -1430,20 +1552,25 @@ class OpenBBFigure(go.Figure):
 
     def _set_watermark(self) -> None:
         """Set the watermark for OpenBB Terminal."""
-        self.add_annotation(
-            yref="paper",
-            xref="paper",
-            x=1,
-            y=0,
-            text="OpenBB Terminal",
-            font_size=17,
-            font_color="gray",
-            opacity=0.5,
-            xanchor="right",
-            yanchor="bottom",
-            yshift=-80,
-            xshift=40,
-        )
+        if (
+            not plots_backend().isatty
+            or not get_current_user().preferences.PLOT_ENABLE_PYWRY
+            or self._export_image
+        ):
+            self.add_annotation(
+                yref="paper",
+                xref="paper",
+                x=1,
+                y=0,
+                text="OpenBB Terminal",
+                font_size=17,
+                font_color="gray",
+                opacity=0.5,
+                xanchor="right",
+                yanchor="bottom",
+                yshift=-80,
+                xshift=40,
+            )
 
     # pylint: disable=import-outside-toplevel
     def _add_cmd_source(self) -> None:
@@ -1467,7 +1594,7 @@ class OpenBBFigure(go.Figure):
 
             if (yaxis2 and yaxis2.side == "left") or yaxis.side == "left":
                 title = yaxis.title.text if not yaxis2 else yaxis2.title.text
-                xshift = -110 if not title else -150
+                xshift = -110 if not title else -135
                 self.layout.margin["l"] += 60
 
             self.add_annotation(
@@ -1478,7 +1605,7 @@ class OpenBBFigure(go.Figure):
                 text=command_location,
                 textangle=-90,
                 font_size=24,
-                font_color="gray",
+                font_color="gray" if theme.mapbox_style == "dark" else "black",
                 opacity=0.5,
                 yanchor="middle",
                 xanchor="left",
@@ -1498,16 +1625,17 @@ class OpenBBFigure(go.Figure):
 
         self._feature_flags_applied = True
 
-    def add_logscale_menus(self) -> None:
+    def add_logscale_menus(self, yaxis: str = "yaxis") -> None:
         """Set the menus for the figure."""
         self._added_logscale = True
+        bg_color = "#000000" if theme.mapbox_style == "dark" else "#FFFFFF"  # type: ignore
+        font_color = "#FFFFFF" if theme.mapbox_style == "dark" else "#000000"  # type: ignore
         self.update_layout(
             xaxis=dict(
                 rangeslider=dict(visible=False),
                 rangeselector=dict(
-                    bgcolor="#000000",
-                    bordercolor="gold",
-                    font=dict(color="white"),
+                    bgcolor=bg_color,
+                    font=dict(color=font_color),
                     buttons=list(
                         [
                             dict(
@@ -1541,18 +1669,18 @@ class OpenBBFigure(go.Figure):
         self.update_layout(
             updatemenus=[
                 dict(
-                    bgcolor="#0f0f0f",
-                    font=dict(color="white", size=14),
+                    bgcolor=bg_color,
+                    font=dict(color=font_color, size=14),
                     buttons=[
                         dict(
                             label="linear   ",
                             method="relayout",
-                            args=[{"yaxis.type": "linear"}],
+                            args=[{f"{yaxis}.type": "linear"}],
                         ),
                         dict(
                             label="log",
                             method="relayout",
-                            args=[{"yaxis.type": "log"}],
+                            args=[{f"{yaxis}.type": "log"}],
                         ),
                     ],
                     y=1.07,

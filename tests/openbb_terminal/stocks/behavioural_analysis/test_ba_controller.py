@@ -9,10 +9,7 @@ import pytest
 
 # IMPORTATION INTERNAL
 from openbb_terminal import parent_classes
-from openbb_terminal.core.session.current_user import (
-    PreferencesModel,
-    copy_user,
-)
+from openbb_terminal.core.session.current_user import PreferencesModel, copy_user
 from openbb_terminal.stocks.behavioural_analysis import ba_controller
 
 # pylint: disable=E1101
@@ -242,20 +239,6 @@ def test_call_func_expect_queue(expected_queue, queue, func):
     "tested_func, other_args, mocked_func, called_args, called_kwargs",
     [
         (
-            "call_watchlist",
-            ["--limit=2"],
-            "reddit_view.display_watchlist",
-            [],
-            dict(limit=2),
-        ),
-        (
-            "call_spac",
-            ["--limit=2"],
-            "reddit_view.display_spac",
-            [],
-            dict(limit=2),
-        ),
-        (
             "call_spacc",
             ["--limit=5", "--popular"],
             "reddit_view.display_spac_community",
@@ -400,7 +383,6 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             "reddit_view.display_due_diligence",
             [],
             dict(
-                symbol="MOCK_TICKER",
                 limit=1,
                 n_days=2,
                 show_all_flairs=True,
@@ -444,8 +426,6 @@ def test_call_func(
 @pytest.mark.parametrize(
     "func",
     [
-        "call_watchlist",
-        "call_spac",
         "call_spacc",
         "call_wsb",
         "call_popular",
@@ -495,7 +475,6 @@ def test_call_func_no_parser(func, mocker):
         "call_mentions",
         "call_messages",
         "call_bullbear",
-        "call_getdd",
     ],
 )
 def test_call_func_no_ticker(func, mocker):

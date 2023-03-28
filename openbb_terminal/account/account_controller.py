@@ -5,25 +5,30 @@ import os
 from pathlib import Path
 from typing import Dict, List, Optional
 
-from prompt_toolkit.completion import NestedCompleter
-
-from openbb_terminal import (
-    keys_model,
+from openbb_terminal.account.account_model import (
+    get_diff,
+    get_routines_info,
+    set_login_called,
 )
-from openbb_terminal.account.account_model import get_diff, get_routines_info
 from openbb_terminal.account.account_view import display_routines_list
 from openbb_terminal.core.session import (
     hub_model as Hub,
     local_model as Local,
 )
-from openbb_terminal.core.session.current_user import get_current_user, is_local
-from openbb_terminal.core.session.preferences_handler import set_preference
+from openbb_terminal.core.session.current_user import (
+    get_current_user,
+    is_local,
+    set_preference,
+)
+from openbb_terminal.core.session.env_handler import write_to_dotenv
 from openbb_terminal.core.session.session_model import logout
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import check_positive
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import MenuText, console
+from openbb_terminal.terminal_helper import print_guest_block_msg
 
 logger = logging.getLogger(__name__)
 
@@ -32,6 +37,7 @@ class AccountController(BaseController):
     """Account Controller Class"""
 
     CHOICES_COMMANDS = [
+        "login",
         "logout",
         "sync",
         "pull",
@@ -46,26 +52,29 @@ class AccountController(BaseController):
     ]
 
     PATH = "/account/"
+    CHOICES_GENERATION = True
 
     def __init__(self, queue: Optional[List[str]] = None):
+        """Constructor"""
         super().__init__(queue)
         self.ROUTINE_FILES: Dict[str, Path] = {}
         self.REMOTE_CHOICES: List[str] = []
-        self.update_runtime_choices()
+        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
+            self.choices: dict = self.choices_default
+            self.completer = NestedCompleter.from_nested_dict(self.choices)
 
     def update_runtime_choices(self):
         """Update runtime choices"""
         self.ROUTINE_FILES = self.get_routines()
         if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.controller_choices}  # type: ignore
-            choices["sync"] = {"--on": {}, "--off": {}}
-            choices["upload"]["--file"] = {c: {} for c in self.ROUTINE_FILES}
-            choices["upload"]["-f"] = choices["upload"]["--file"]
-            choices["download"]["--name"] = {c: {} for c in self.REMOTE_CHOICES}
-            choices["download"]["-n"] = choices["download"]["--name"]
-            choices["delete"]["--name"] = {c: {} for c in self.REMOTE_CHOICES}
-            choices["delete"]["-n"] = choices["delete"]["--name"]
-            self.completer = NestedCompleter.from_nested_dict(choices)
+            self.choices["upload"]["--file"].update({c: {} for c in self.ROUTINE_FILES})
+            self.choices["download"]["--name"].update(
+                {c: {} for c in self.REMOTE_CHOICES}
+            )
+            self.choices["delete"]["--name"].update(
+                {c: {} for c in self.REMOTE_CHOICES}
+            )
+            self.completer = NestedCompleter.from_nested_dict(self.choices)
 
     def get_routines(self):
         """Get routines"""
@@ -88,7 +97,6 @@ class AccountController(BaseController):
 
     def print_help(self):
         """Print help"""
-
         mt = MenuText("account/", 100)
         mt.add_info("_info_")
         mt.add_cmd("sync")
@@ -107,8 +115,26 @@ class AccountController(BaseController):
         mt.add_cmd("revoke")
         mt.add_raw("\n")
         mt.add_info("_authentication_")
+        mt.add_cmd("login")
         mt.add_cmd("logout")
+        self.update_runtime_choices()
         console.print(text=mt.menu_text, menu="Account")
+
+    @log_start_end(log=logger)
+    def call_login(self, other_args: List[str]) -> None:
+        """Process login command."""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="login",
+            description="Login into new session.",
+        )
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
+        if not is_local() and "-h" not in other_args and "--help" not in other_args:
+            console.print("[info]You are already logged in.[/info]")
+        else:
+            if ns_parser:
+                set_login_called(True)
 
     @log_start_end(log=logger)
     def call_logout(self, other_args: List[str]) -> None:
@@ -120,14 +146,18 @@ class AccountController(BaseController):
             description="Logout from current session.",
         )
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
-        if ns_parser:
-            current_user = get_current_user()
-            logout(
-                auth_header=current_user.profile.get_auth_header(),
-                token=current_user.profile.get_token(),
-                guest=is_local(),
-                cls=True,
-            )
+        if is_local() and "-h" not in other_args and "--help" not in other_args:
+            print_guest_block_msg()
+        else:
+            if ns_parser:
+                current_user = get_current_user()
+                logout(
+                    auth_header=current_user.profile.get_auth_header(),
+                    token=current_user.profile.get_token(),
+                    guest=is_local(),
+                    cls=True,
+                )
+                self.print_help()
 
     @log_start_end(log=logger)
     def call_sync(self, other_args: List[str]):
@@ -153,17 +183,31 @@ class AccountController(BaseController):
         parser.set_defaults(sync=None)
 
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
-        if ns_parser:
-            if ns_parser.sync is None:
-                sync = get_current_user().preferences.SYNC_ENABLED
-                console.print(f"sync is {sync}, use --on or --off to change.")
-            else:
-                set_preference(
-                    name="OPENBB_SYNC_ENABLED",
-                    value=ns_parser.sync,
-                )
-                sync = get_current_user().preferences.SYNC_ENABLED
-                console.print(f"[info]sync:[/info] {sync}")
+        if is_local() and "-h" not in other_args and "--help" not in other_args:
+            print_guest_block_msg()
+        else:
+            if ns_parser:
+                if ns_parser.sync is None:
+                    sync = (
+                        "ON"
+                        if get_current_user().preferences.SYNC_ENABLED is True
+                        else "OFF"
+                    )
+                    console.print(f"sync is {sync}, use --on or --off to change.")
+                else:
+                    set_preference(
+                        name="SYNC_ENABLED",
+                        value=ns_parser.sync,
+                    )
+                    current_user = get_current_user()
+                    write_to_dotenv(
+                        "OPENBB_SYNC_ENABLED",
+                        str(current_user.preferences.SYNC_ENABLED),
+                    )
+                    sync = (
+                        "ON" if current_user.preferences.SYNC_ENABLED is True else "OFF"
+                    )
+                    console.print(f"[info]sync:[/info] {sync}")
 
     @log_start_end(log=logger)
     def call_pull(self, other_args: List[str]):
@@ -175,23 +219,26 @@ class AccountController(BaseController):
             description="Pull and apply stored configurations from the cloud.",
         )
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
-        if ns_parser:
-            current_user = get_current_user()
-            response = Hub.fetch_user_configs(current_user.profile.get_session())
-            if response:
-                configs_diff = get_diff(configs=json.loads(response.content))
-                if configs_diff:
-                    i = console.input(
-                        "\nDo you want to load the configurations above? (y/n): "
-                    )
-                    console.print("")
-                    if i.lower() in ["y", "yes"]:
-                        Local.apply_configs(configs=configs_diff)
-                        console.print("[info]Done.[/info]")
+        if is_local() and "-h" not in other_args and "--help" not in other_args:
+            print_guest_block_msg()
+        else:
+            if ns_parser:
+                current_user = get_current_user()
+                response = Hub.fetch_user_configs(current_user.profile.get_session())
+                if response:
+                    configs_diff = get_diff(configs=json.loads(response.content))
+                    if configs_diff:
+                        i = console.input(
+                            "\nDo you want to load the configurations above? (y/n): "
+                        )
+                        console.print("")
+                        if i.lower() in ["y", "yes"]:
+                            Local.set_credentials_from_hub(configs=configs_diff)
+                            console.print("[info]Done.[/info]")
+                        else:
+                            console.print("[info]Aborted.[/info]")
                     else:
-                        console.print("[info]Aborted.[/info]")
-                else:
-                    console.print("[info]No changes to apply.[/info]")
+                        console.print("[info]No changes to apply.[/info]")
 
     @log_start_end(log=logger)
     def call_clear(self, other_args: List[str]):
@@ -203,18 +250,21 @@ class AccountController(BaseController):
             description="Clear stored configurations from the cloud.",
         )
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
-        if ns_parser:
-            i = console.input(
-                "[bold red]This action is irreversible![/bold red]\n"
-                "Are you sure you want to permanently delete your data? (y/n): "
-            )
-            console.print("")
-            if i.lower() in ["y", "yes"]:
-                Hub.clear_user_configs(
-                    auth_header=get_current_user().profile.get_auth_header()
+        if is_local() and "-h" not in other_args and "--help" not in other_args:
+            print_guest_block_msg()
+        else:
+            if ns_parser:
+                i = console.input(
+                    "[bold red]This action is irreversible![/bold red]\n"
+                    "Are you sure you want to permanently delete your keys? (y/n): "
                 )
-            else:
-                console.print("[info]Aborted.[/info]")
+                console.print("")
+                if i.lower() in ["y", "yes"]:
+                    Hub.clear_user_configs(
+                        auth_header=get_current_user().profile.get_auth_header()
+                    )
+                else:
+                    console.print("[info]Aborted.[/info]")
 
     @log_start_end(log=logger)
     def call_list(self, other_args: List[str]):
@@ -242,19 +292,22 @@ class AccountController(BaseController):
             help="The number of results per page.",
         )
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
-        if ns_parser:
-            response = Hub.list_routines(
-                auth_header=get_current_user().profile.get_auth_header(),
-                page=ns_parser.page,
-                size=ns_parser.size,
-            )
-            df, page, pages = get_routines_info(response)
-            if not df.empty:
-                self.REMOTE_CHOICES = list(df["name"])
-                self.update_runtime_choices()
-                display_routines_list(df, page, pages)
-            else:
-                console.print("[red]No routines found.[/red]")
+        if is_local() and "-h" not in other_args and "--help" not in other_args:
+            print_guest_block_msg()
+        else:
+            if ns_parser:
+                response = Hub.list_routines(
+                    auth_header=get_current_user().profile.get_auth_header(),
+                    page=ns_parser.page,
+                    size=ns_parser.size,
+                )
+                df, page, pages = get_routines_info(response)
+                if not df.empty:
+                    self.REMOTE_CHOICES += list(df["name"])
+                    self.update_runtime_choices()
+                    display_routines_list(df, page, pages)
+                else:
+                    console.print("[red]No routines found.[/red]")
 
     @log_start_end(log=logger)
     def call_upload(self, other_args: List[str]):
@@ -270,7 +323,9 @@ class AccountController(BaseController):
             "--file",
             type=str,
             dest="file",
-            required="-h" not in other_args,
+            required="-h" not in other_args
+            and "--help" not in other_args
+            and not is_local(),
             help="The file to be loaded",
             metavar="FILE",
             nargs="+",
@@ -293,45 +348,50 @@ class AccountController(BaseController):
             nargs="+",
         )
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
-        if ns_parser:
-            routine = Local.get_routine(file_name=" ".join(ns_parser.file))
-            if routine:
-                description = " ".join(ns_parser.description)
+        if is_local() and "-h" not in other_args and "--help" not in other_args:
+            print_guest_block_msg()
+        else:
+            if ns_parser:
+                routine = Local.get_routine(file_name=" ".join(ns_parser.file))
+                if routine:
+                    description = " ".join(ns_parser.description)
 
-                name = (
-                    " ".join(ns_parser.name)
-                    if ns_parser.name
-                    else " ".join(ns_parser.file).split(sep=".openbb", maxsplit=-1)[0]
-                )
-
-                current_user = get_current_user()
-
-                response = Hub.upload_routine(
-                    auth_header=current_user.profile.get_auth_header(),
-                    name=name,
-                    description=description,
-                    routine=routine,
-                )
-                if response is not None and response.status_code == 409:
-                    i = console.input(
-                        "A routine with the same name already exists, "
-                        "do you want to replace it? (y/n): "
+                    name = (
+                        " ".join(ns_parser.name)
+                        if ns_parser.name
+                        else " ".join(ns_parser.file).split(sep=".openbb", maxsplit=-1)[
+                            0
+                        ]
                     )
-                    console.print("")
-                    if i.lower() in ["y", "yes"]:
-                        response = Hub.upload_routine(
-                            auth_header=current_user.profile.get_auth_header(),
-                            name=name,
-                            description=description,
-                            routine=routine,
-                            override=True,
-                        )
-                    else:
-                        console.print("[info]Aborted.[/info]")
 
-                if response and response.status_code == 200:
-                    self.REMOTE_CHOICES.append(name)
-                    self.update_runtime_choices()
+                    current_user = get_current_user()
+
+                    response = Hub.upload_routine(
+                        auth_header=current_user.profile.get_auth_header(),
+                        name=name,
+                        description=description,
+                        routine=routine,
+                    )
+                    if response is not None and response.status_code == 409:
+                        i = console.input(
+                            "A routine with the same name already exists, "
+                            "do you want to replace it? (y/n): "
+                        )
+                        console.print("")
+                        if i.lower() in ["y", "yes"]:
+                            response = Hub.upload_routine(
+                                auth_header=current_user.profile.get_auth_header(),
+                                name=name,
+                                description=description,
+                                routine=routine,
+                                override=True,
+                            )
+                        else:
+                            console.print("[info]Aborted.[/info]")
+
+                    if response and response.status_code == 200:
+                        self.REMOTE_CHOICES.append(name)
+                        self.update_runtime_choices()
 
     @log_start_end(log=logger)
     def call_download(self, other_args: List[str]):
@@ -348,54 +408,61 @@ class AccountController(BaseController):
             type=str,
             dest="name",
             help="The name of the routine.",
-            required="-h" not in other_args,
+            required="-h" not in other_args
+            and "--help" not in other_args
+            and not is_local(),
             nargs="+",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-n")
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
-        if ns_parser:
-            response = Hub.download_routine(
-                auth_header=get_current_user().profile.get_auth_header(),
-                name=" ".join(ns_parser.name),
-            )
+        if is_local() and "-h" not in other_args and "--help" not in other_args:
+            print_guest_block_msg()
+        else:
+            if ns_parser:
+                response = Hub.download_routine(
+                    auth_header=get_current_user().profile.get_auth_header(),
+                    name=" ".join(ns_parser.name),
+                )
 
-            if response and response.status_code == 200:
-                data = response.json()
-                if data:
-                    name = data.get("name", "")
-                    if name:
-                        console.print(f"[info]Name:[/info] {name}")
+                if response and response.status_code == 200:
+                    data = response.json()
+                    if data:
+                        name = data.get("name", "")
+                        if name:
+                            console.print(f"[info]Name:[/info] {name}")
 
-                    description = data.get("description", "")
-                    if description:
-                        console.print(f"[info]Description:[/info] {description}")
+                        description = data.get("description", "")
+                        if description:
+                            console.print(f"[info]Description:[/info] {description}")
 
-                    script = data.get("script", "")
-                    if script:
-                        file_name = f"{name}.openbb"
-                        file_path = Local.save_routine(
-                            file_name=file_name,
-                            routine=script,
-                        )
-                        if file_path == "File already exists":
-                            i = console.input(
-                                "\nA file with the same name already exists, "
-                                "do you want to replace it? (y/n): "
+                        script = data.get("script", "")
+                        if script:
+                            file_name = f"{name}.openbb"
+                            file_path = Local.save_routine(
+                                file_name=file_name,
+                                routine=script,
                             )
-                            console.print("")
-                            if i.lower() in ["y", "yes"]:
-                                file_path = Local.save_routine(
-                                    file_name=file_name,
-                                    routine=script,
-                                    force=True,
+                            if file_path == "File already exists":
+                                i = console.input(
+                                    "\nA file with the same name already exists, "
+                                    "do you want to replace it? (y/n): "
                                 )
-                                if file_path:
-                                    console.print(f"[info]Location:[/info] {file_path}")
-                            else:
-                                console.print("[info]Aborted.[/info]")
-                        elif file_path:
-                            console.print(f"[info]Location:[/info] {file_path}")
+                                console.print("")
+                                if i.lower() in ["y", "yes"]:
+                                    file_path = Local.save_routine(
+                                        file_name=file_name,
+                                        routine=script,
+                                        force=True,
+                                    )
+                                    if file_path:
+                                        console.print(
+                                            f"[info]Location:[/info] {file_path}"
+                                        )
+                                else:
+                                    console.print("[info]Aborted.[/info]")
+                            elif file_path:
+                                console.print(f"[info]Location:[/info] {file_path}")
 
     @log_start_end(log=logger)
     def call_delete(self, other_args: List[str]):
@@ -412,34 +479,39 @@ class AccountController(BaseController):
             type=str,
             dest="name",
             help="The name of the routine",
-            required="-h" not in other_args,
+            required="-h" not in other_args
+            and "--help" not in other_args
+            and not is_local(),
             nargs="+",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-n")
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
-        if ns_parser:
-            name = " ".join(ns_parser.name)
+        if is_local() and "-h" not in other_args and "--help" not in other_args:
+            print_guest_block_msg()
+        else:
+            if ns_parser:
+                name = " ".join(ns_parser.name)
 
-            i = console.input(
-                "[bold red]This action is irreversible![/bold red]\n"
-                "Are you sure you want to delete this routine? (y/n): "
-            )
-            console.print("")
-            if i.lower() in ["y", "yes"]:
-                response = Hub.delete_routine(
-                    auth_header=get_current_user().profile.get_auth_header(),
-                    name=name,
+                i = console.input(
+                    "[bold red]This action is irreversible![/bold red]\n"
+                    "Are you sure you want to delete this routine? (y/n): "
                 )
-                if (
-                    response
-                    and response.status_code == 200
-                    and name in self.REMOTE_CHOICES
-                ):
-                    self.REMOTE_CHOICES.remove(name)
-                    self.update_runtime_choices()
-            else:
-                console.print("[info]Aborted.[/info]")
+                console.print("")
+                if i.lower() in ["y", "yes"]:
+                    response = Hub.delete_routine(
+                        auth_header=get_current_user().profile.get_auth_header(),
+                        name=name,
+                    )
+                    if (
+                        response
+                        and response.status_code == 200
+                        and name in self.REMOTE_CHOICES
+                    ):
+                        self.REMOTE_CHOICES.remove(name)
+                        self.update_runtime_choices()
+                else:
+                    console.print("[info]Aborted.[/info]")
 
     @log_start_end(log=logger)
     def call_generate(self, other_args: List[str]) -> None:
@@ -467,35 +539,27 @@ class AccountController(BaseController):
             action="store_true",
         )
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
-        if ns_parser:
-            i = console.input(
-                "[bold yellow]This will revoke any token that was previously generated."
-                "\nThis action is irreversible.[/bold yellow]"
-                "\nAre you sure you want to generate a new token? (y/n): "
-            )
-            if i.lower() not in ["y", "yes"]:
-                console.print("\n[info]Aborted.[/info]")
-                return
+        if is_local() and "-h" not in other_args and "--help" not in other_args:
+            print_guest_block_msg()
+        else:
+            if ns_parser:
+                i = console.input(
+                    "[bold yellow]This will revoke any token that was previously generated."
+                    "\nThis action is irreversible.[/bold yellow]"
+                    "\nAre you sure you want to generate a new token? (y/n): "
+                )
+                if i.lower() not in ["y", "yes"]:
+                    console.print("\n[info]Aborted.[/info]")
+                    return
 
-            response = Hub.generate_personal_access_token(
-                auth_header=get_current_user().profile.get_auth_header(),
-                days=ns_parser.days,
-            )
-            if response and response.status_code == 200:
-                token = response.json().get("token", "")
-                if token:
-                    console.print(f"\n[info]Token:[/info] {token}\n")
-
-                    save_to_keys = False
-                    if not ns_parser.save:
-                        save_to_keys = console.input(
-                            "Would you like to save the token to the keys? (y/n): "
-                        ).lower() in ["y", "yes"]
-
-                    if save_to_keys or ns_parser.save:
-                        keys_model.set_openbb_personal_access_token(
-                            key=token, persist=True, show_output=True
-                        )
+                response = Hub.generate_personal_access_token(
+                    auth_header=get_current_user().profile.get_auth_header(),
+                    days=ns_parser.days,
+                )
+                if response and response.status_code == 200:
+                    token = response.json().get("token", "")
+                    if token:
+                        console.print(f"\n[info]Token:[/info] {token}\n")
 
     @log_start_end(log=logger)
     def call_show(self, other_args: List[str]) -> None:
@@ -507,14 +571,17 @@ class AccountController(BaseController):
             description="Show your current OpenBB Personal Access Token.",
         )
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
-        if ns_parser:
-            response = Hub.get_personal_access_token(
-                auth_header=get_current_user().profile.get_auth_header()
-            )
-            if response and response.status_code == 200:
-                token = response.json().get("token", "")
-                if token:
-                    console.print(f"[info]Token:[/info] {token}")
+        if is_local() and "-h" not in other_args and "--help" not in other_args:
+            print_guest_block_msg()
+        else:
+            if ns_parser:
+                response = Hub.get_personal_access_token(
+                    auth_header=get_current_user().profile.get_auth_header()
+                )
+                if response and response.status_code == 200:
+                    token = response.json().get("token", "")
+                    if token:
+                        console.print(f"[info]Token:[/info] {token}")
 
     @log_start_end(log=logger)
     def call_revoke(self, other_args: List[str]) -> None:
@@ -526,16 +593,19 @@ class AccountController(BaseController):
             description="Revoke your current OpenBB Personal Access Token.",
         )
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
-        if ns_parser:
-            i = console.input(
-                "[bold red]This action is irreversible![/bold red]\n"
-                "Are you sure you want to revoke your token? (y/n): "
-            )
-            if i.lower() in ["y", "yes"]:
-                response = Hub.revoke_personal_access_token(
-                    auth_header=get_current_user().profile.get_auth_header()
+        if is_local() and "-h" not in other_args and "--help" not in other_args:
+            print_guest_block_msg()
+        else:
+            if ns_parser:
+                i = console.input(
+                    "[bold red]This action is irreversible![/bold red]\n"
+                    "Are you sure you want to revoke your token? (y/n): "
                 )
-                if response and response.status_code in [200, 202]:
-                    console.print("[info]Token revoked.[/info]")
-            else:
-                console.print("[info]Aborted.[/info]")
+                if i.lower() in ["y", "yes"]:
+                    response = Hub.revoke_personal_access_token(
+                        auth_header=get_current_user().profile.get_auth_header()
+                    )
+                    if response and response.status_code in [200, 202]:
+                        console.print("[info]Token revoked.[/info]")
+                else:
+                    console.print("[info]Aborted.[/info]")

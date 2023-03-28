@@ -31,8 +31,7 @@ def display_overview(symbol: str, export: str = "", sheet_name: Optional[str] = 
         return
 
     print_rich_table(
-        df_fa.drop(index=["Description"]),
-        headers=[""],
+        df_fa,
         title=f"{symbol} Overview",
         show_index=True,
         export=bool(export),
@@ -401,11 +400,12 @@ def display_earnings(
         return
 
     print_rich_table(
-        df_fa.head(limit),
+        df_fa,
         headers=list(df_fa.columns),
         show_index=False,
         title=f"{symbol} Earnings",
         export=bool(export),
+        limit=limit,
     )
 
     export_data(
@@ -444,6 +444,7 @@ def display_fraud(
     df = av_model.get_fraud_ratios(symbol, detail=detail)
 
     if df.empty:
+        console.print("[red]No data found[/red]")
         return
 
     df_color = df.copy()
@@ -451,7 +452,7 @@ def display_fraud(
         for column in df_color:
             df_color[column] = df_color[column].astype(str)
         df_color = df_color.apply(lambda x: av_model.replace_df(x.name, x), axis=1)
-
+    df_color = df_color.fillna("N/A")
     print_rich_table(
         df_color,
         headers=list(df_color.columns),

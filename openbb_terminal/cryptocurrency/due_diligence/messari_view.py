@@ -11,8 +11,7 @@ from typing import Optional, Union
 import numpy as np
 import pandas as pd
 
-from openbb_terminal import OpenBBFigure
-from openbb_terminal.config_terminal import theme
+from openbb_terminal import OpenBBFigure, theme
 from openbb_terminal.cryptocurrency import cryptocurrency_helpers
 from openbb_terminal.cryptocurrency.dataframe_helpers import prettify_paragraph
 from openbb_terminal.cryptocurrency.due_diligence.messari_model import (
@@ -77,12 +76,13 @@ def display_messari_timeseries_list(
             console.print(f"\nNo timeseries found with query {query}\n")
         else:
             print_rich_table(
-                df.head(limit),
+                df,
                 index_name="ID",
                 headers=list(df.columns),
                 show_index=True,
                 title="Messari Timeseries",
                 export=bool(export),
+                limit=limit,
             )
 
         export_data(
@@ -304,11 +304,12 @@ def display_roadmap(
 
     if not df.empty:
         print_rich_table(
-            df.head(limit),
+            df,
             headers=list(df.columns),
             show_index=False,
             title=f"{symbol} Roadmap",
             export=bool(export),
+            limit=limit,
         )
         if not fig.is_image_export(export):
             export_data(

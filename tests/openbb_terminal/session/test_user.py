@@ -8,6 +8,7 @@ from openbb_terminal.core.models.user_model import (
     CredentialsModel,
     PreferencesModel,
     ProfileModel,
+    SourcesModel,
     UserModel,
 )
 
@@ -26,16 +27,10 @@ def fixture_test_user():
         credentials=CredentialsModel(),
         preferences=PreferencesModel(),
         profile=ProfileModel(),
+        sources=SourcesModel(),
     )
     test_user.profile.load_user_info(TEST_SESSION, "test@email.com")
     return test_user
-
-
-class obbff:
-    """Mock obbff."""
-
-    USE_FLAIR = ":openbb"
-    SYNC_ENABLED = True
 
 
 def test_load_user_info(test_user):

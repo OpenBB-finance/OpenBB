@@ -26,8 +26,15 @@ const ICONS = {
   },
 };
 
+function onlyOne(checkbox) {
+  var checkboxes = document.getElementsByName('csv_scatter_check')
+  checkboxes.forEach((item) => {
+      if (item !== checkbox) item.checked = false
+  })
+}
+
 function add_annotation(data, yshift, popup_data, current_text = null) {
-  let gd = globals.chartDiv;
+  let gd = globals.CHART_DIV;
   let x = data.x;
   let y = data.y;
   let yref = data.yref;
@@ -86,9 +93,14 @@ function add_annotation(data, yshift, popup_data, current_text = null) {
 function checkFile(popup, type = false) {
   console.log("checkFile");
   let csv_file = popup.querySelector("#csv_file");
+  let csv_name = popup.querySelector("#csv_name");
   let csv_type = popup.querySelector("#csv_trace_type");
   let csv_columns = popup.querySelector("#csv_columns");
   let csv_colors = popup.querySelector("#csv_colors");
+  let csv_scatter_options = popup.querySelector("#csv_scatter_options");
+  csv_scatter_options.style.display = "none";
+  csv_scatter_options.querySelector("#csv_percent_change_div").style.display = "inline-block";
+
 
   if (csv_file.files.length > 0) {
     console.log("file selected");
@@ -125,19 +137,25 @@ function checkFile(popup, type = false) {
       csv_columns.innerHTML = "<b>Columns:</b><br>";
       if (csv_type.value == "candlestick") {
         option_ids = ["x", "open", "high", "low", "close"];
+        let options_select = "";
 
         for (let i = 0; i < option_ids.length; i++) {
           let header_name = option_ids[i].replace(/\b[a-z]/g, (x) =>
             x.toUpperCase()
           );
 
-          csv_columns.innerHTML += `
-                        <label for="csv_${option_ids[i]}">${header_name}</label>
-                        <select id="csv_${option_ids[i]}">
-                            ${options}
-                        </select>
-                    `;
+          options_select += `
+          <div style="display: flex; align-items: center; justify-items: space-between;">
+          <label style="width: 100px;" for="csv_${option_ids[i]}">${header_name}</label>
+          <select id="csv_${option_ids[i]}" style="width: 100%;">
+          ${options}
+          </select>
+          </div>
+          `;
         }
+        csv_columns.innerHTML += `
+        <div class="csv_column_container">${options_select}</div>
+        `;
 
         csv_colors.innerHTML = `
                     <b>Candlestick colors:</b><br><br>
@@ -157,16 +175,22 @@ function checkFile(popup, type = false) {
               headers[headers_lower.indexOf("date")];
           }
         }
+        globals.CSV_DIV.querySelector("#csv_percent_change_div").style.display = "none";
       } else {
         csv_columns.innerHTML = `
-                    <label for="csv_x">X axis</label>
-                    <select id="csv_x">
-                        ${options}
-                    </select>
-                    <label for="csv_y">Y axis</label>
-                    <select id="csv_y">
-                        ${options}
-                    </select><br><br>
+                    <b>Columns:</b><br>
+                    <div style="margin-top: 5px; margin-bottom: 5px;">
+                      <label for="csv_x">X axis</label>
+                      <select id="csv_x">
+                          ${options}
+                      </select>
+                    </div>
+                    <div style="margin-top: 5px; margin-bottom: 5px;">
+                      <label for="csv_y">Y axis</label>
+                      <select id="csv_y">
+                          ${options}
+                      </select><br><br>
+                    </div>
                 `;
         csv_colors.innerHTML = `
                     <label for="csv_color"><b>Line color:</b></label>
@@ -189,8 +213,34 @@ function checkFile(popup, type = false) {
             headers[headers_lower.indexOf("close")];
         }
       }
+      csv_scatter_options.style.display = "inline-block";
 
-      csv_columns.style.display = "inline-block";
+      // we try to guess the date and time to remove from the name of the file
+      // if "_" in the name of the file,
+      // we assume the first 2 parts or the last 2 parts are date and time
+      let filename = file.name.split(".")[0];
+      csv_name.value = filename;
+
+      try {
+        if (filename.includes("_")) {
+          let name_parts = filename.split("_");
+          let date_regex = new RegExp("^[0-9]{8}$");
+
+          if (name_parts.length > 2) {
+            // we check if the first 2 parts are date and time
+            if (date_regex.test(name_parts[0])) {
+              name_parts.splice(0, 2);
+            }
+            // we check if the last 2 parts are date and time
+            else if (date_regex.test(name_parts[name_parts.length - 2])) {
+              name_parts.splice(name_parts.length - 2, 2);
+            }
+            csv_name.value = name_parts.join("_").replace(/openbb_/g, "");
+          }
+        }
+      } catch (e) {
+        console.log(e);
+      }
     };
 
     reader.readAsText(file);
@@ -210,9 +260,8 @@ function openbbFilename(data, csv = false) {
 
   let date = new Date().toISOString().slice(0, 10).replace(/-/g, "");
   let time = new Date().toISOString().slice(11, 19).replace(/:/g, "");
-  let dateTime = date + "_" + time;
 
-  return filename + "_" + dateTime;
+  return filename + "_" + date + "_" + time;
 }
 
 function plot_text(data, popup_data, current_text = null) {
@@ -223,13 +272,10 @@ function plot_text(data, popup_data, current_text = null) {
   // data is the data from the chart
 
   console.log("plot_text");
-  let gd = globals.chartDiv;
+  let gd = globals.CHART_DIV;
   let annotations = undefined;
-  let yrange = gd.layout.yaxis.range;
-
-  if (data.yref == "y2") {
-    yrange = gd.layout.yaxis2.range;
-  }
+  let yaxis = data.yref.replace("y", "yaxis");
+  let yrange = gd.layout[yaxis].range;
   let yshift = (yrange[1] - yrange[0]) * 0.2;
 
   if (popup_data.yanchor == "below") {
@@ -241,18 +287,16 @@ function plot_text(data, popup_data, current_text = null) {
   } else {
     annotations = add_annotation(data, yshift, popup_data, current_text);
   }
+  let to_update = { annotations: annotations, dragmode: "pan" };
+  to_update[yaxis + ".type"] = "linear";
 
-  Plotly.relayout(gd, { annotations: annotations });
-  Plotly.react(gd, gd.data, gd.layout, gd.config);
-  Plotly.relayout(gd, { "yaxis.type": "linear", dragmode: "pan" });
+  Plotly.update(gd, {}, to_update);
   gd.removeAllListeners("plotly_click");
 
-  TEXT_DIV = document.getElementById("popup_text");
-  TEXT_DIV.querySelectorAll("input").forEach(function (input) {
-    if (!input.name != "addtext_color") {
+  globals.TEXT_DIV = document.getElementById("popup_text");
+  globals.TEXT_DIV.querySelectorAll("input").forEach(function (input) {
+    if (!input.name in ["addtext_color", "addtext_border"]) {
       input.value = "";
-    } else {
-      input.value = "#ffffff";
     }
   });
   closePopup();
@@ -262,17 +306,18 @@ function update_color() {
   // updates the color of the last added shape
   // this function is called when the color picker is used
   let color = globals.color_picker.querySelector("#picked_color").value;
-  let gd = globals.chartDiv;
+  let gd = globals.CHART_DIV;
 
-  // we change last added shape color
+  // if there are no shapes, we remove the color picker
   let shapes = gd.layout.shapes;
   if (!shapes || shapes.length == 0) {
-    color_picker.remove();
+    globals.color_picker.remove();
     return;
   }
+  // we change last added shape color
   let last_shape = shapes[shapes.length - 1];
   last_shape.line.color = color;
-  Plotly.relayout(gd, "shapes", shapes);
+  Plotly.update(gd, {}, { shapes: shapes });
 }
 
 function button_pressed(title, active = false) {

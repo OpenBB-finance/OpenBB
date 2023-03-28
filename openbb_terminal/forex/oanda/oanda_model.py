@@ -28,10 +28,13 @@ logger = logging.getLogger(__name__)
 current_user = get_current_user()
 
 if current_user.credentials.OANDA_ACCOUNT_TYPE != "REPLACE_ME":
-    client = API(
-        access_token=current_user.credentials.OANDA_TOKEN,
-        environment=current_user.credentials.OANDA_ACCOUNT_TYPE,
-    )
+    try:
+        client = API(
+            access_token=current_user.credentials.OANDA_TOKEN,
+            environment=current_user.credentials.OANDA_ACCOUNT_TYPE,
+        )
+    except KeyError:
+        client = None
 else:
     client = None
 account = current_user.credentials.OANDA_ACCOUNT

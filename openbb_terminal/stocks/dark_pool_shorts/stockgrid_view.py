@@ -42,6 +42,7 @@ def dark_pool_short_positions(
 
     dp_date = df["Date"].values[0]
     df = df.drop(columns=["Date"])
+
     df["Net Short Volume $"] = df["Net Short Volume $"] / 100_000_000
     df["Short Volume"] = df["Short Volume"] / 1_000_000
     df["Net Short Volume"] = df["Net Short Volume"] / 1_000_000
@@ -60,11 +61,12 @@ def dark_pool_short_positions(
 
     # Assuming that the datetime is the same, which from my experiments seems to be the case
     print_rich_table(
-        df.iloc[:limit],
+        df,
         headers=list(df.columns),
         show_index=False,
         title=f"Data for: {dp_date}",
         export=bool(export),
+        limit=limit,
     )
 
     export_data(
@@ -102,11 +104,12 @@ def short_interest_days_to_cover(
 
     # Assuming that the datetime is the same, which from my experiments seems to be the case
     print_rich_table(
-        df.iloc[:limit],
+        df,
         headers=list(df.columns),
         show_index=False,
         title=f"Data for: {dp_date}",
         export=bool(export),
+        limit=limit,
     )
 
     export_data(
@@ -159,11 +162,12 @@ def short_interest_volume(
 
         df.date = df.date.dt.date
         return print_rich_table(
-            df.iloc[:limit],
+            df,
             headers=list(df.columns),
             show_index=False,
             title="Price vs Short Volume",
             export=bool(export),
+            limit=limit,
         )
 
     fig = OpenBBFigure.create_subplots(
@@ -309,11 +313,12 @@ def net_short_position(
         df["dates"] = df["dates"].dt.date
 
         return print_rich_table(
-            df.iloc[:limit],
+            df,
             headers=list(df.columns),
             show_index=False,
             title="Net Short Positions",
             export=bool(export),
+            limit=limit,
         )
 
     df = df.sort_values(by=["dates"])

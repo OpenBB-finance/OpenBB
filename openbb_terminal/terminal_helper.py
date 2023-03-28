@@ -6,6 +6,7 @@ import logging
 import os
 import subprocess  # nosec
 import sys
+import webbrowser
 
 # IMPORTATION STANDARD
 from contextlib import contextmanager
@@ -16,17 +17,19 @@ import matplotlib.pyplot as plt
 # IMPORTATION THIRDPARTY
 from packaging import version
 
-from openbb_terminal import (
-    feature_flags as obbff,
-    thought_of_the_day as thought,
-)
-from openbb_terminal.config_terminal import LOGGING_COMMIT_HASH
+from openbb_terminal import thought_of_the_day as thought
 
 # IMPORTATION INTERNAL
 from openbb_terminal.core.config.paths import SETTINGS_ENV_FILE
 from openbb_terminal.core.plots.backend import plots_backend
-from openbb_terminal.core.session.current_user import get_current_user
-from openbb_terminal.core.session.preferences_handler import set_preference
+from openbb_terminal.core.session.constants import REGISTER_URL
+from openbb_terminal.core.session.current_system import get_current_system
+from openbb_terminal.core.session.current_user import (
+    get_current_user,
+    is_local,
+    set_preference,
+)
+from openbb_terminal.core.session.env_handler import write_to_dotenv
 from openbb_terminal.helper_funcs import request
 from openbb_terminal.rich_config import console
 
@@ -97,7 +100,7 @@ def update_terminal():
     """Updates the terminal by running git pull in the directory.
     Runs poetry install if needed.
     """
-    if not WITH_GIT or LOGGING_COMMIT_HASH != "REPLACE_ME":
+    if not WITH_GIT or get_current_system().LOGGING_COMMIT_HASH != "REPLACE_ME":
         console.print("This feature is not available: Git dependencies not installed.")
         return 0
 
@@ -126,60 +129,60 @@ def update_terminal():
 
 
 def open_openbb_documentation(
-    path, url="https://docs.openbb.co/terminal", command=None, arg_type=""
+    path, url="https://my.openbb.dev/app/terminal", command=None, arg_type=""
 ):
     """Opens the documentation page based on your current location within the terminal. Make exceptions for menus
     that are considered 'common' by adjusting the path accordingly."""
     if path == "/" and command is None:
-        path = "/"
+        path = "/guides"
         command = ""
     elif "keys" in path:
-        path = "/quickstart/api-keys"
+        path = "/usage?full=1&path=/guides/api-keys"
         command = ""
     elif "settings" in path:
-        path = "/guides/advanced/customizing-the-terminal"
+        path = "/usage?path=/guides/customizing-the-terminal"
         command = ""
     elif "featflags" in path:
-        path = "/guides/advanced/customizing-the-terminal"
+        path = "/usage?path=/guides/customizing-the-terminal"
         command = ""
     elif "sources" in path:
-        path = "/guides/advanced/changing-sources"
+        path = "/usage?path=/guides/changing-sources"
         command = ""
     elif "params" in path:
-        path = "/guides/intros/portfolio/po"
+        path = "/usage?path=/intros/portfolio/po"
         command = ""
     else:
         if arg_type == "command":  # user passed a command name
-            path = f"/reference/{path}"
+            path = f"/reference?path={path}"
         elif arg_type == "menu":  # user passed a menu name
             if command in ["ta", "ba", "qa"]:
                 menu = path.split("/")[-2]
-                path = f"/guides/intros/common/{menu}"
+                path = f"/usage?path=/intros/common/{menu}"
             elif command == "forecast":
                 command = ""
-                path = "/guides/intros/forecast"
+                path = "/usage?path=/intros/forecast"
             else:
-                path = f"/guides/intros/{path}"
+                path = f"/usage?path=/intros/{path}"
         else:  # user didn't pass argument and is in a menu
             menu = path.split("/")[-2]
             path = (
-                f"/guides/intros/common/{menu}"
+                f"/usage?path=/intros/common/{menu}"
                 if menu in ["ta", "ba", "qa"]
-                else f"/guides/intros/{path}"
+                else f"/usage?path=/intros/{path}"
             )
 
     if command:
         if command == "keys":
-            path = "/quickstart/api-keys"
+            path = "/usage?full=1&path=/guides/api-keys"
             command = ""
         elif "settings" in path or "featflags" in path:
-            path = "/guides/advanced/customizing-the-terminal"
+            path = "/usage?path=/guides/customizing-the-terminal"
             command = ""
         elif "sources" in path:
-            path = "/guides/advanced/changing-sources"
+            path = "/usage?path=/guides/changing-sources"
             command = ""
         elif command in ["record", "stop", "exe"]:
-            path = "/guides/advanced/scripts-and-routines"
+            path = "/usage?path=/guides/scripts-and-routines"
             command = ""
         elif command in [
             "intro",
@@ -190,10 +193,10 @@ def open_openbb_documentation(
             "wiki",
             "news",
         ]:
-            path = ""
+            path = "/guides"
             command = ""
         elif command in ["ta", "ba", "qa"]:
-            path = f"/guides/intros/common/{command}"
+            path = f"/guides?path=/intros/common/{command}"
             command = ""
 
         path += command
@@ -203,7 +206,7 @@ def open_openbb_documentation(
     if full_url[-1] == "/":
         full_url = full_url[:-1]
 
-    plots_backend().send_url(full_url)
+    webbrowser.open(full_url)
 
 
 def hide_splashscreen():
@@ -233,10 +236,17 @@ def is_auth_enabled() -> bool:
         If authentication is enabled
     """
     # TODO: This function is a temporary way to block authentication
-    return (
-        str(os.getenv("OPENBB_ENABLE_AUTHENTICATION")).lower() == "true"
-        or "--login" in sys.argv[1:]
-    )
+    return str(os.getenv("OPENBB_ENABLE_AUTHENTICATION")).lower() == "true"
+
+
+def print_guest_block_msg():
+    """Block guest users from using the terminal."""
+    if is_local():
+        console.print(
+            "[info]You are currently logged as a guest.[/info]\n"
+            "[info]Login to use this feature.[/info]\n\n"
+            f"[info]If you don't have an account, you can create one here: [/info][cmds]{REGISTER_URL}\n[/cmds]"
+        )
 
 
 def is_installer() -> bool:
@@ -266,7 +276,7 @@ def bootup():
 def check_for_updates() -> None:
     """Check if the latest version is running.
 
-    Checks github for the latest release version and compares it to obbff.VERSION.
+    Checks github for the latest release version and compares it to cfg.VERSION.
     """
     # The commit has was commented out because the terminal was crashing due to git import for multiple users
     # ({str(git.Repo('.').head.commit)[:7]})
@@ -280,7 +290,7 @@ def check_for_updates() -> None:
     if r is not None and r.status_code == 200:
         latest_tag_name = r.json()["tag_name"]
         latest_version = version.parse(latest_tag_name)
-        current_version = version.parse(obbff.VERSION)
+        current_version = version.parse(get_current_system().VERSION)
 
         if check_valid_versions(latest_version, current_version):
             if current_version == latest_version:
@@ -328,7 +338,7 @@ def welcome_message():
 
     Prints first welcome message, help and a notification if updates are available.
     """
-    console.print(f"\nWelcome to OpenBB Terminal v{obbff.VERSION}")
+    console.print(f"\nWelcome to OpenBB Terminal v{get_current_system().VERSION}")
 
     if get_current_user().preferences.ENABLE_THOUGHTS_DAY:
         console.print("---------------------------------")
@@ -412,6 +422,7 @@ def first_time_user() -> bool:
         Whether or not the user is a first time user
     """
     if SETTINGS_ENV_FILE.stat().st_size == 0:
-        set_preference("OPENBB_PREVIOUS_USE", True)
+        set_preference("PREVIOUS_USE", True)
+        write_to_dotenv("OPENBB_PREVIOUS_USE", "True")
         return True
     return False

@@ -3,22 +3,28 @@ function get_popup(data = null, popup_id = null) {
   popup_id = popup_id.replace("popup_", "");
 
   if (popup_id == "title") {
-    data = globals.chartDiv.layout;
-    let title = "title" in data && "text" in data.title ? data.title.text : "";
+    data = globals.CHART_DIV.layout;
+    let use_xaxis = data.xaxis ? "xaxis" : "xaxis2";
+    let use_yaxis = data.yaxis ? "yaxis" : "yaxis2";
+
+    let title = globals.title;
     let xaxis =
-      "title" in data.xaxis && "text" in data.xaxis.title
-        ? data.xaxis.title.text
+      "title" in data[use_xaxis] && "text" in data[use_xaxis].title
+        ? data[use_xaxis].title.text
         : "";
     let yaxis =
-      "title" in data.yaxis && "text" in data.yaxis.title
-        ? data.yaxis.title.text
+      "title" in data[use_yaxis] && "text" in data[use_yaxis].title
+        ? data[use_yaxis].title.text
         : "";
 
-    TITLE_DIV.innerHTML = `
+    globals.TITLE_DIV.innerHTML = `
         <div style="display:flex; flex-direction: column; gap: 6px;">
             <div>
             <label for="title_text">Title:</label>
-            <input id="title_text" type="text" value="${title}"></input>
+            <textarea
+              id="title_text" style="width: 100%; max-width: 100%;
+              max-height: 200px; margin-top: 8px;" rows="2" cols="20"
+              value="${title}"></textarea>
             </div>
             <div>
             <label for="title_xaxis">X axis:</label>
@@ -37,9 +43,9 @@ function get_popup(data = null, popup_id = null) {
         `;
 
     // when opening the popup, we make sure to focus on the title input
-    TITLE_DIV.style.display = "inline-block";
-    TITLE_DIV.querySelector("#title_text").focus();
-    popup = TITLE_DIV;
+    globals.TITLE_DIV.style.display = "inline-block";
+    globals.TITLE_DIV.querySelector("#title_text").focus();
+    popup = globals.TITLE_DIV;
   } else if (popup_id == "text") {
     let has_annotation = false;
     if (data == undefined) {
@@ -59,13 +65,13 @@ function get_popup(data = null, popup_id = null) {
     data.text = data.text.replace(/<br>/g, "\n");
 
     let yanchor =
-      TEXT_DIV.querySelector("#addtext_above") == null
+      globals.TEXT_DIV.querySelector("#addtext_above") == null
         ? "above"
-        : TEXT_DIV.querySelector("#addtext_above").checked
+        : globals.TEXT_DIV.querySelector("#addtext_above").checked
         ? "above"
         : "below";
 
-    TEXT_DIV.innerHTML = `
+    globals.TEXT_DIV.innerHTML = `
     <div style="margin-bottom: 20px;">
         <label for="popup_textarea"><b>Text:</b>
         <div id="popup_textarea_warning" class="popup_warning">Text is required</div></label><br>
@@ -105,7 +111,7 @@ function get_popup(data = null, popup_id = null) {
         `;
 
     if (has_annotation) {
-      TEXT_DIV.innerHTML += `
+      globals.TEXT_DIV.innerHTML += `
       <div style="float: right; margin-top: 20px;">
             <button class="_btn-tertiary" id="addtext_cancel" onclick="closePopup()">Cancel</button>
             <button class="_btn" id="addtext_delete" onclick="on_delete('text')">Delete</button>
@@ -116,29 +122,29 @@ function get_popup(data = null, popup_id = null) {
             </div>
             `;
     } else {
-      TEXT_DIV.innerHTML += `
+      globals.TEXT_DIV.innerHTML += `
       <div style="float: right; margin-top: 20px;">
-             <button class="_btn-tertiary" id="addtext_cancel" onclick="closePopup()">Cancel</button>
+            <button class="_btn-tertiary" id="addtext_cancel" onclick="closePopup()">Cancel</button>
             <button class="_btn" id="addtext_submit" onclick="on_submit('text')">Submit</button>
     </div>
             `;
 
-      if (TEXT_DIV.querySelector("#addtext_annotation") != null) {
-        TEXT_DIV.querySelector("#addtext_annotation").remove();
+      if (globals.TEXT_DIV.querySelector("#addtext_annotation") != null) {
+        globals.TEXT_DIV.querySelector("#addtext_annotation").remove();
       }
     }
 
     // when opening the popup, we make sure to focus on the textarea
-    TEXT_DIV.style.display = "inline-block";
-    TEXT_DIV.querySelector("#addtext_textarea").focus();
-    popup = TEXT_DIV;
+    globals.TEXT_DIV.style.display = "inline-block";
+    globals.TEXT_DIV.querySelector("#addtext_textarea").focus();
+    popup = globals.TEXT_DIV;
   } else if (popup_id == "csv") {
-    CSV_DIV.style.display = "inline-block";
-    popup = CSV_DIV;
+    globals.CSV_DIV.style.display = "inline-block";
+    popup = globals.CSV_DIV;
     console.log("csv");
   } else if (popup_id == "upload") {
-    TEXT_DIV.style.display = "inline-block";
-    TEXT_DIV.innerHTML = `
+    globals.TEXT_DIV.style.display = "inline-block";
+    globals.TEXT_DIV.innerHTML = `
     <div>
       <p>Media preview (you can share it on twitter):</p>
       <a style="margin-top: 10px;" href="${data.url}" target="_blank" rel="noreferrer noopener">${data.url}</a>
@@ -152,11 +158,11 @@ function get_popup(data = null, popup_id = null) {
       </div>
       </div>
       `;
-    popup = TEXT_DIV;
+    popup = globals.TEXT_DIV;
     console.log("upload");
   }
 
-  let popup_divs = [TITLE_DIV, TEXT_DIV, CSV_DIV];
+  let popup_divs = [globals.TITLE_DIV, globals.TEXT_DIV, globals.CSV_DIV];
   popup_divs.forEach(function (div) {
     if (div.id != popup.id) {
       div.style.display = "none";
@@ -173,23 +179,23 @@ function get_popup_data(popup_id = null) {
 
   if (popup_id == "title") {
     data = {
-      title: TITLE_DIV.querySelector("#title_text").value,
-      xaxis: TITLE_DIV.querySelector("#title_xaxis").value,
-      yaxis: TITLE_DIV.querySelector("#title_yaxis").value,
+      title: globals.TITLE_DIV.querySelector("#title_text").value,
+      xaxis: globals.TITLE_DIV.querySelector("#title_xaxis").value,
+      yaxis: globals.TITLE_DIV.querySelector("#title_yaxis").value,
     };
   } else if (popup_id == "text") {
     data = {
-      text: TEXT_DIV.querySelector("#addtext_textarea").value,
-      color: TEXT_DIV.querySelector("#addtext_color").value,
-      size: TEXT_DIV.querySelector("#addtext_size").value,
-      yanchor: TEXT_DIV.querySelector("#addtext_above").checked
+      text: globals.TEXT_DIV.querySelector("#addtext_textarea").value,
+      color: globals.TEXT_DIV.querySelector("#addtext_color").value,
+      size: globals.TEXT_DIV.querySelector("#addtext_size").value,
+      yanchor: globals.TEXT_DIV.querySelector("#addtext_above").checked
         ? "above"
         : "below",
-      bordercolor: TEXT_DIV.querySelector("#addtext_border").value,
+      bordercolor: globals.TEXT_DIV.querySelector("#addtext_border").value,
     };
-    if (TEXT_DIV.querySelector("#addtext_annotation") != null) {
+    if (globals.TEXT_DIV.querySelector("#addtext_annotation") != null) {
       data.annotation = JSON.parse(
-        TEXT_DIV.querySelector("#addtext_annotation").value
+        globals.TEXT_DIV.querySelector("#addtext_annotation").value
       );
     }
 
@@ -197,27 +203,37 @@ function get_popup_data(popup_id = null) {
     data.text = data.text.replace(/\n/g, "<br>");
     console.log(data);
   } else if (popup_id == "csv") {
-    let trace_type = CSV_DIV.querySelector("#csv_trace_type").value;
+    let trace_type = globals.CSV_DIV.querySelector("#csv_trace_type").value;
     if (trace_type == "candlestick") {
       data = {
-        x: CSV_DIV.querySelector("#csv_x").value,
-        open: CSV_DIV.querySelector("#csv_open").value,
-        high: CSV_DIV.querySelector("#csv_high").value,
-        low: CSV_DIV.querySelector("#csv_low").value,
-        close: CSV_DIV.querySelector("#csv_close").value,
-        increasing: CSV_DIV.querySelector("#csv_increasing").value,
-        decreasing: CSV_DIV.querySelector("#csv_decreasing").value,
+        x: globals.CSV_DIV.querySelector("#csv_x").value,
+        open: globals.CSV_DIV.querySelector("#csv_open").value,
+        high: globals.CSV_DIV.querySelector("#csv_high").value,
+        low: globals.CSV_DIV.querySelector("#csv_low").value,
+        close: globals.CSV_DIV.querySelector("#csv_close").value,
+        increasing: globals.CSV_DIV.querySelector("#csv_increasing").value,
+        decreasing: globals.CSV_DIV.querySelector("#csv_decreasing").value,
+        same_yaxis: globals.CSV_DIV.querySelector("#csv_same_yaxis").checked
+          ? true
+          : false,
       };
     } else {
       data = {
-        x: CSV_DIV.querySelector("#csv_x").value,
-        y: CSV_DIV.querySelector("#csv_y").value,
-        color: CSV_DIV.querySelector("#csv_color").value,
+        x: globals.CSV_DIV.querySelector("#csv_x").value,
+        y: globals.CSV_DIV.querySelector("#csv_y").value,
+        color: globals.CSV_DIV.querySelector("#csv_color").value,
+        percent_change: globals.CSV_DIV.querySelector("#csv_percent_change")
+          .checked
+          ? true
+          : false,
+        same_yaxis: globals.CSV_DIV.querySelector("#csv_same_yaxis").checked
+          ? true
+          : false,
       };
       console.log(data);
     }
-    data.name = CSV_DIV.querySelector("#csv_name").value;
-    data.file = CSV_DIV.querySelector("#csv_file");
+    data.name = globals.CSV_DIV.querySelector("#csv_name").value;
+    data.file = globals.CSV_DIV.querySelector("#csv_file");
     data.trace_type = trace_type;
   }
   return data;
@@ -227,8 +243,8 @@ function on_submit(popup_id, on_annotation = null) {
   // popup_id is either 'title', 'text', or 'csv' (for now)
   // and is used to determine which popup to get data from
   let popup_data = get_popup_data(popup_id);
-  let gd = globals.chartDiv;
-  Plotly.relayout(gd, "hovermode", "closest");
+  let gd = globals.CHART_DIV;
+  Plotly.update(gd, {}, { hovermode: "closest" });
 
   if (popup_id == "text") {
     if (!popup_data.text == "") {
@@ -256,12 +272,12 @@ function on_submit(popup_id, on_annotation = null) {
           };
           plot_text(data, popup_data, popup_data.annotation.text);
         }
-        Plotly.relayout(gd, "hovermode", "x");
+        Plotly.update(gd, {}, { hovermode: "x" });
       });
 
       let clickHandler = function (eventData) {
         let x = eventData.points[0].x;
-        let yaxis = eventData.points[0].data.yaxis;
+        let yaxis = eventData.points[0].fullData.yaxis;
         let y = 0;
 
         // We need to check if the trace is a candlestick or not
@@ -281,27 +297,30 @@ function on_submit(popup_id, on_annotation = null) {
           yref: yaxis,
         };
         plot_text(data, popup_data);
-        Plotly.relayout(gd, "hovermode", "x");
+        Plotly.update(gd, {}, { hovermode: "x" });
       };
 
-      Plotly.relayout(gd, { dragmode: "select" });
+      Plotly.update(gd, {}, { dragmode: "select" });
       gd.on("plotly_click", clickHandler);
     } else {
-      let textarea = TEXT_DIV.querySelector("#addtext_textarea");
+      let textarea = globals.TEXT_DIV.querySelector("#addtext_textarea");
       document.getElementById("popup_textarea_warning").style.display = "block";
       textarea.style.border = "1px solid red";
       textarea.focus();
 
-      TEXT_DIV.style.display = "inline-block";
+      globals.TEXT_DIV.style.display = "inline-block";
       return;
     }
   } else if (popup_id == "title") {
-    Plotly.relayout(gd, {
-      title: popup_data.title,
-      "xaxis.title": popup_data.xaxis,
-      "yaxis.title": popup_data.yaxis,
-      "yaxis.type": "linear",
-    });
+    let yaxis = gd.layout.yaxis ? "yaxis" : "yaxis2";
+    let xaxis = gd.layout.xaxis ? "xaxis" : "xaxis2";
+    document.getElementById("title").innerHTML = popup_data.title;
+    let to_update = { title: popup_data.title };
+    to_update[xaxis + ".title"] = popup_data.xaxis;
+    to_update[yaxis + ".title"] = popup_data.yaxis;
+    to_update[yaxis + ".type"] = "linear";
+
+    Plotly.update(gd, {}, to_update);
   } else if (popup_id == "csv") {
     console.log("got popup file");
     let popup_file = popup_data.file;
@@ -327,8 +346,44 @@ function on_submit(popup_id, on_annotation = null) {
           }
           data.push(obj);
         }
+
         // We get main plotly trace to get the x/y axis
         let main_trace = gd.data[0];
+        gd.data.forEach((trace) => {
+          if (globals.added_traces.indexOf(trace.name) == -1) {
+            trace.showlegend = false;
+          }
+        });
+
+        main_trace.showlegend = true;
+        if (main_trace.xaxis == undefined) {
+          main_trace.xaxis = "x";
+        }
+        if (main_trace.yaxis == undefined) {
+          main_trace.yaxis = "y";
+        }
+
+        let yaxis_id = main_trace.yaxis;
+        let yaxis;
+        if (popup_data.same_yaxis == false) {
+          let yaxes = Object.keys(gd.layout)
+            .filter((k) => k.startsWith("yaxis"))
+            .map((k) => gd.layout[k]);
+
+          yaxis = `y${yaxes.length + 1}`;
+          yaxis_id = `yaxis${yaxes.length + 1}`;
+          console.log(`yaxis: ${yaxis} ${yaxis_id}`);
+          if (
+            globals.csv_yaxis_id == null &&
+            popup_data.percent_change == true
+          ) {
+            globals.csv_yaxis_id = yaxis_id;
+            globals.csv_yaxis = yaxis;
+          }
+        } else {
+          yaxis = main_trace.yaxis.replace("yaxis", "y");
+          yaxis_id = main_trace.yaxis;
+        }
 
         if (popup_data.trace_type == "candlestick") {
           trace = {
@@ -351,37 +406,147 @@ function on_submit(popup_id, on_annotation = null) {
             name: popup_data.name,
             increasing: { line: { color: popup_data.increasing } },
             decreasing: { line: { color: popup_data.decreasing } },
+            showlegend: true,
+            yaxis: yaxis,
           };
         } else {
+          gd.layout.showlegend = true;
+
+          orginal_data = data;
+          let non_null = data.findIndex(
+            (x) => x[popup_data.y] != null && x[popup_data.y] != 0
+          );
+          console.log(`non_null: ${non_null} ${data[non_null][popup_data.y]}`);
+
           trace = {
             x: data.map(function (row) {
               return row[popup_data.x];
             }),
             y: data.map(function (row) {
-              return row[popup_data.y];
+              if (popup_data.percent_change) {
+                return (
+                  (row[popup_data.y] - data[non_null][popup_data.y]) /
+                  data[non_null][popup_data.y]
+                );
+              } else {
+                return row[popup_data.y];
+              }
             }),
             type: popup_data.trace_type,
             mode: "lines",
             name: popup_data.name,
             line: { color: popup_data.color },
-            xaxis: main_trace.xaxis,
-            yaxis: main_trace.yaxis,
+            customdata: data.map(function (row) {
+              return row[popup_data.y];
+            }),
+            hovertemplate: "%{customdata}<extra></extra>",
+            showlegend: true,
             connectgaps: true,
+            xaxis: main_trace.xaxis,
+            yaxis: popup_data.percent_change ? globals.csv_yaxis : yaxis,
           };
+
+          if (
+            !globals.percent_yaxis_added &&
+            popup_data.percent_change == true &&
+            popup_data.same_yaxis == false
+          ) {
+            let ticksuffix =
+              gd.data.length > 1
+                ? "      ".repeat(globals.added_traces.length + 1)
+                : "";
+            gd.layout[yaxis_id] = {
+              overlaying: "y",
+              side: "left",
+              title: {
+                text: "% Change",
+                font: {
+                  size: 14,
+                },
+                standoff: 0,
+              },
+              tickfont: { size: 14 },
+              ticksuffix: ticksuffix,
+              tickformat: ".0%",
+              tickpadding: 5,
+              showgrid: false,
+              showlegend: true,
+              showline: false,
+              showticklabels: true,
+              zeroline: false,
+              anchor: "x",
+              type: "linear",
+              autorange: true,
+            };
+            globals.percent_yaxis_added = true;
+            if (globals.cmd_src_idx != null) {
+              gd.layout.annotations[globals.cmd_src_idx].xshift -=
+                gd.data.length > 1 ? 40 : 35;
+              gd.layout.margin.l += gd.data.length > 1 ? 50 : 45;
+            }
+          }
         }
 
+        if (!popup_data.percent_change && popup_data.same_yaxis == false) {
+          let ticksuffix = gd.data.length > 1 ? "     " : "";
+          if (globals.percent_yaxis_added || globals.added_traces.length > 0) {
+            ticksuffix = "      ".repeat(globals.added_traces.length + 1);
+          }
+
+          console.log(`data.length: ${gd.data.length}`);
+          gd.layout[yaxis_id] = {
+            overlaying: "y",
+            side: "left",
+            title: {
+              text: popup_data.name,
+              font: {
+                size: 14,
+              },
+              standoff: 0,
+            },
+            tickfont: { size: 14 },
+            ticksuffix: ticksuffix,
+            tickpadding: 5,
+            showgrid: false,
+            showline: false,
+            showticklabels: true,
+            showlegend: true,
+            zeroline: false,
+            anchor: "x",
+            type: "linear",
+            autorange: true,
+          };
+          if (globals.cmd_src_idx != null) {
+            gd.layout.annotations[globals.cmd_src_idx].xshift -=
+              globals.added_traces.length > 1 ? 45 : 35;
+            gd.layout.margin.l += globals.added_traces.length > 1 ? 50 : 45;
+          }
+        }
+        console.log(trace);
+
+        globals.added_traces.push(trace.name);
+
         Plotly.addTraces(gd, trace);
-        Plotly.relayout(gd, { "yaxis.type": "linear" });
+
+        if (globals.csv_yaxis_id != null) {
+          gd.layout[globals.csv_yaxis_id].type = "linear";
+        }
         Plotly.react(gd, gd.data, gd.layout);
 
         // We empty the fields and innerHTML after the plot is made
-        CSV_DIV.querySelector("#csv_colors").innerHTML = "";
-        CSV_DIV.querySelector("#csv_columns").innerHTML = "";
+        globals.CSV_DIV.querySelector("#csv_colors").innerHTML = "";
+        globals.CSV_DIV.querySelector("#csv_columns").innerHTML = "";
+        globals.CSV_DIV.querySelector("#csv_scatter_options").style.display =
+          "none";
 
-        CSV_DIV.querySelectorAll("input").forEach(function (input) {
+        globals.CSV_DIV.querySelectorAll("input").forEach(function (input) {
+          input.value = "";
+        });
+        globals.CSV_DIV.querySelectorAll("textarea").forEach(function (input) {
           input.value = "";
         });
       };
+
       popup_file_reader.readAsText(file);
     }
   }
@@ -394,19 +559,19 @@ function on_cancel() {
 }
 
 function on_delete(popup_id) {
-  let gd = globals.chartDiv;
+  let gd = globals.CHART_DIV;
   closePopup();
 
   if (popup_id == "text") {
     let annotation = JSON.parse(
-      TEXT_DIV.querySelector("#addtext_annotation").value
+      globals.TEXT_DIV.querySelector("#addtext_annotation").value
     );
     gd.layout.annotations.splice(gd.layout.annotations.indexOf(annotation), 1);
+    gd.layout.dragmode = "pan";
 
     Plotly.react(gd, gd.data, gd.layout);
-    Plotly.relayout(gd, "dragmode", "pan");
 
-    TEXT_DIV.style.display = "none";
+    globals.TEXT_DIV.style.display = "none";
   }
 }
 
