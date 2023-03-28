@@ -78,7 +78,7 @@ def display_historical(
     --------
     >>> from openbb_terminal.sdk import openbb
     >>> f = openbb.funds.load("Vanguard", "US")
-    >>> openbb.funds.historical(f)
+    >>> openbb.funds.historical_chart(f)
     """
 
     title = f"Performance of {loaded_funds.name}"
@@ -149,10 +149,8 @@ def display_holdings(loaded_funds: mstarpy.Funds, holding_type: str = "all"):
     ----------
     loaded_funds: mstarpy.Funds
         class mstarpy.Funds instantiated with selected funds
-
     holding_type : str
         type of holdings, can be all, equity, bond, other
-
     """
 
     holdings = mstarpy_model.load_holdings(loaded_funds, holding_type)
