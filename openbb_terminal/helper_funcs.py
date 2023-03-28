@@ -51,7 +51,7 @@ from openbb_terminal.core.config.paths import HOME_DIRECTORY
 from openbb_terminal.core.plots.plotly_ta.ta_class import PlotlyTA
 
 # IMPORTS INTERNAL
-from openbb_terminal.core.session.current_user import get_current_user
+from openbb_terminal.core.session.current_user import get_current_user, set_preference
 from openbb_terminal.rich_config import console
 
 try:
@@ -68,9 +68,10 @@ try:
         # A test to ensure that the Twitter API key is correct,
         # otherwise we disable the Toolbar with Tweet News
         twitter_api.get_user(screen_name="openbb_finance")
-except tweepy.errors.Unauthorized:
+except Exception as exc:
     # Set toolbar tweet news to False because the Twitter API is not set up correctly
-    get_current_user().preferences.TOOLBAR_TWEET_NEWS = False
+    set_preference("TOOLBAR_TWEET_NEWS", False)
+    console.print(f"Error enabling tweet news: {exc}")
 
 
 logger = logging.getLogger(__name__)
@@ -1904,8 +1905,8 @@ def screenshot() -> None:
         else:
             console.print("No plots found.\n")
 
-    except Exception as e:
-        console.print(f"Cannot reach window - {e}\n")
+    except Exception as err:
+        console.print(f"Cannot reach window - {err}\n")
 
 
 def screenshot_to_canvas(shot, plot_exists: bool = False):
@@ -2133,8 +2134,8 @@ def update_news_from_tweet_to_be_displayed() -> str:
                         url = f"https://twitter.com/x/status/{last_tweet.id_str}"
 
             # In case the handle provided doesn't exist, we skip it
-            except (tweepy.errors.NotFound, tweepy.errors.Unauthorized):
-                pass
+            except Exception as e:
+                console.print(f"Error enabling tweet news: {handle} - {e}\n")
 
         if last_tweet_dt and news_tweet_to_use:
             tweet_hr = f"{last_tweet_dt.hour}"
