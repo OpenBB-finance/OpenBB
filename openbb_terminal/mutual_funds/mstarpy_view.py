@@ -23,7 +23,6 @@ def display_carbon_metrics(loaded_funds: mstarpy.Funds):
     ----------
     loaded_funds: mstarpy.Funds
         class mstarpy.Funds instantiated with selected funds
-
     """
     carbonMetrics = mstarpy_model.load_carbon_metrics(loaded_funds)
 
@@ -42,7 +41,6 @@ def display_exclusion_policy(loaded_funds: mstarpy.Funds):
     ----------
     loaded_funds: mstarpy.Funds
         class mstarpy.Funds instantiated with selected funds
-
     """
     exclusion_policy = mstarpy_model.load_exclusion_policy(loaded_funds)
 
@@ -184,10 +182,13 @@ def display_load(
     ----------
     term : str
         String that will be searched for
-
     country: str
         Country to filter on
 
+    Returns
+    -------
+    mstarpy.Funds
+        class mstarpy.Funds instantiated with selected funds
     """
     iso_country = mapping_country[country] if country else ""
     funds = mstarpy_model.load_funds(term, country=iso_country)
