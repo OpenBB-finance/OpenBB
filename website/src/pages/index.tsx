@@ -29,9 +29,9 @@ export default function Home(): JSX.Element {
                 backgroundSize: "100% 110%",
               }}
               to="/terminal"
-              className="bg-[url('/img/terminal_bg_light.png')] dark:bg-[url('/img/terminal_bg.png')] bg-no-repeat shadow-sm group !no-underline text-grey-900 dark:text-white hover:text-grey-900 dark:hover:border-white hover:border-grey-900 dark:hover:!text-white relative w-full h-[238px] max-w-full p-8 rounded flex flex-col items-start justify-start border border-grey-200 bg-white dark:bg-grey-900"
+              className="bg-[url(/img/terminal_bg_light.png)] dark:bg-[url('/img/terminal_bg.png')] bg-no-repeat shadow-sm group !no-underline text-grey-900 dark:text-white hover:text-grey-900 dark:hover:border-white hover:border-grey-600/80 dark:hover:!text-white relative w-full h-[238px] max-w-full p-8 rounded flex flex-col items-start justify-start border border-grey-300 bg-white dark:bg-grey-900"
             >
-              <h3 className="uppercase tracking-widest font-bold text-l mb-3">
+              <h3 className="uppercase tracking-widest font-bold mb-3">
                 OpenBB Terminal
               </h3>
               <p className="text-sm lg:text-base dark:text-grey-300">
@@ -39,7 +39,7 @@ export default function Home(): JSX.Element {
               </p>
               <p
                 className={clsx(
-                  "mt-auto inline-flex items-center gap-2 font-normal"
+                  "mt-auto inline-flex items-center gap-2 font-normal text-sm"
                 )}
               >
                 See more
@@ -51,9 +51,9 @@ export default function Home(): JSX.Element {
                 backgroundSize: "100% 130%",
               }}
               to="/sdk"
-              className="bg-[url('/img/sdk_bg_light.png')] dark:bg-[url('/img/sdk_bg.png')] bg-no-repeat shadow-sm group !no-underline text-grey-900 dark:text-white hover:text-grey-900 dark:hover:border-white hover:border-grey-900 dark:hover:!text-white relative w-full h-[238px] max-w-full p-8 rounded flex flex-col items-start justify-start border border-grey-200 bg-white dark:bg-grey-900"
+              className="bg-[url(/img/sdk_bg_light.png)] dark:bg-[url('/img/sdk_bg.png')] bg-no-repeat shadow-sm group !no-underline text-grey-900 dark:text-white hover:text-grey-900 dark:hover:border-white hover:border-grey-600/80 dark:hover:!text-white relative w-full h-[238px] max-w-full p-8 rounded flex flex-col items-start justify-start border border-grey-300 bg-white dark:bg-grey-900"
             >
-              <h3 className="uppercase tracking-widest font-bold text-l mb-3">
+              <h3 className="uppercase tracking-widest font-bold mb-3">
                 OpenBB SDK
               </h3>
               <p className="text-sm lg:text-base dark:text-grey-300">
@@ -61,7 +61,7 @@ export default function Home(): JSX.Element {
               </p>
               <p
                 className={clsx(
-                  "mt-auto inline-flex items-center gap-2 font-normal"
+                  "mt-auto inline-flex items-center gap-2 font-normal text-sm"
                 )}
               >
                 See more
@@ -73,9 +73,9 @@ export default function Home(): JSX.Element {
                 backgroundSize: "100% 130%",
               }}
               to="/bot"
-              className="bg-[url('/img/sdk_bot_light.png')] dark:bg-[url('/img/bot_bg.png')] bg-no-repeat shadow-sm group !no-underline text-grey-900 dark:text-white hover:text-grey-900 dark:hover:border-white hover:border-grey-900 dark:hover:!text-white relative w-full h-[238px] max-w-full p-8 rounded flex flex-col items-start justify-start border border-grey-200 bg-white dark:bg-grey-900"
+              className="bg-[url(/img/bot_bg_light.png)] dark:bg-[url('/img/bot_bg.png')] bg-no-repeat shadow-sm group !no-underline text-grey-900 dark:text-white hover:text-grey-900 dark:hover:border-white hover:border-grey-600/80 dark:hover:!text-white relative w-full h-[238px] max-w-full p-8 rounded flex flex-col items-start justify-start border border-grey-300 bg-white dark:bg-grey-900"
             >
-              <h3 className="uppercase tracking-widest font-bold text-l mb-3">
+              <h3 className="uppercase tracking-widest font-bold mb-3">
                 OpenBB Bot
               </h3>
               <p className="text-sm lg:text-base dark:text-grey-300">
@@ -84,7 +84,7 @@ export default function Home(): JSX.Element {
               </p>
               <p
                 className={clsx(
-                  "mt-auto inline-flex items-center gap-2 font-normal"
+                  "mt-auto inline-flex items-center gap-2 font-normal text-sm"
                 )}
               >
                 See more
