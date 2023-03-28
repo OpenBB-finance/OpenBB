@@ -18,6 +18,4 @@ The boot up process might take a while. Please be patient...
 "
 echo "$BOOTUP_MESSAGE"
 
-echo "HELLO"
-
 "$SCRIPTDIR"/.OpenBB/OpenBBTerminal
