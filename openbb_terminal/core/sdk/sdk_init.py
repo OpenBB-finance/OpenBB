@@ -259,8 +259,6 @@ from openbb_terminal.forex import (
 
 # Funds
 from openbb_terminal.mutual_funds import (
-    avanza_model as funds_avanza_model,
-    avanza_view as funds_avanza_view,
     mstarpy_model as funds_mstarpy_model,
     mstarpy_view as funds_mstarpy_view,
 )
