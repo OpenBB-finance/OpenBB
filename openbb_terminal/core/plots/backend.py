@@ -374,7 +374,9 @@ async def download_plotly_js():
     try:
         # we use aiohttp to download plotly.js
         # this is so we don't have to block the main thread
-        async with aiohttp.ClientSession() as session:
+        async with aiohttp.ClientSession(
+            connector=aiohttp.TCPConnector(verify_ssl=False)
+        ) as session:
             async with session.get(f"https://cdn.plot.ly/{js_filename}") as resp:
                 with open(str(PLOTLYJS_PATH), "wb") as f:
                     while True:

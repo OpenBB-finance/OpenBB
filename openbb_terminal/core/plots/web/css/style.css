@@ -597,10 +597,6 @@ button {
   width: 20px;
   height: 20px;
   animation: spin 1.5s linear infinite;
-  opacity: 0;
-}
-
-.loader.show {
   opacity: 1;
 }
 
@@ -1314,4 +1310,59 @@ video {
       #0b203d 64%,
       #06101a 82%,
       #060709);
+}
+
+/* on resize make sure header height is smaller and font size shrinks */
+@media screen and (max-width: 368px) {
+  ._header strong {
+    font-size: 1.1rem !important;
+  }
+
+  .modebar {
+    bottom: 10 !important;
+  }
+}
+
+@media screen and (max-width: 375px) {
+  ._header strong {
+    font-size: 1.1rem !important;
+  }
+
+  .modebar {
+    bottom: 60 !important;
+    transform: translate(-50%, 10%) !important;
+  }
+}
+
+@media screen and (max-height: 500px) {
+  ._header strong {
+    font-size: 1.1rem !important;
+  }
+
+  .modebar {
+    transform: translate(-50%, 10%) !important;
+    bottom: 10 !important;
+  }
+}
+
+@media screen and (max-height: 400px) {
+  ._header strong {
+    font-size: 1.1rem !important;
+  }
+
+  .modebar {
+    transform: translate(-50%, 10%) !important;
+    bottom: 10 !important;
+  }
+}
+
+@media screen and (max-height: 800px) {
+  ._header strong {
+    font-size: 1.1rem !important;
+  }
+
+  .modebar {
+    transform: translate(-50%, 10%) !important;
+    bottom: 10 !important;
+  }
 }
