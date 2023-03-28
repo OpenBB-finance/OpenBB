@@ -301,6 +301,8 @@ class OpenBBFigure(go.Figure):
         self._exported = False
         self._cmd_xshift = 0
         self._bar_width = 0.2
+        self._export_image: Optional[Union[Path, str]] = ""
+
         self._subplot_xdates: Dict[int, Dict[int, List[Any]]] = {}
 
         if xaxis := kwargs.pop("xaxis", None):
@@ -1020,6 +1022,7 @@ class OpenBBFigure(go.Figure):
         """
         self.cmd_xshift = kwargs.pop("cmd_xshift", self.cmd_xshift)
         self.bar_width = kwargs.pop("bar_width", self.bar_width)
+        self._export_image = export_image
 
         if export_image and not plots_backend().isatty:
             if isinstance(export_image, str):
@@ -1552,6 +1555,7 @@ class OpenBBFigure(go.Figure):
         if (
             not plots_backend().isatty
             or not get_current_user().preferences.PLOT_ENABLE_PYWRY
+            or self._export_image
         ):
             self.add_annotation(
                 yref="paper",
