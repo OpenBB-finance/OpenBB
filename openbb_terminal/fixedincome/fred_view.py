@@ -1232,8 +1232,10 @@ def plot_icebofa(
     if df.empty:
         title = ""
     else:
-        title = "ICE BofA Bond Benchmark Indices" if len(df.columns) > 1 else df.columns[0]
-        
+        title = (
+            "ICE BofA Bond Benchmark Indices" if len(df.columns) > 1 else df.columns[0]
+        )
+
     fig = OpenBBFigure(yaxis_title="Yield (%)" if units == "percent" else "Index")
     fig.set_title(title)
 
