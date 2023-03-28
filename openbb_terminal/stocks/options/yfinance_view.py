@@ -10,7 +10,7 @@ import numpy as np
 from scipy.spatial import Delaunay
 from scipy.stats import binom
 
-from openbb_terminal import OpenBBFigure
+from openbb_terminal import OpenBBFigure, theme
 from openbb_terminal.core.plots.config.openbb_styles import (
     PLT_3DMESH_COLORSCALE,
     PLT_3DMESH_HOVERLABEL,
@@ -95,6 +95,7 @@ def plot_plot(
     external_axes : bool, optional
         Whether to return the figure object or not, by default False
     """
+    is_smile = custom == "smile"
     convert = {
         "ltd": "lastTradeDate",
         "s": "strike",
@@ -107,7 +108,8 @@ def plot_plot(
         "oi": "openInterest",
         "iv": "impliedVolatility",
     }
-    if custom == "smile":
+
+    if is_smile:
         x = "strike"
         y = "impliedVolatility"
     else:
@@ -130,20 +132,42 @@ def plot_plot(
                 f"[red]'{y}' is not a valid option. Defaulting to `impliedVolatility`.[/red]\n"
             )
 
-    varis = op_helpers.opt_chain_cols
     chain = yfinance_model.get_option_chain(symbol, expiry)
-    values = chain.puts if put else chain.calls
 
-    x_data = values[x]
-    y_data = values[y]
+    fig = OpenBBFigure()
+    if not is_smile:
+        varis = op_helpers.opt_chain_cols
+        values = chain.puts if put else chain.calls
 
-    option = "puts" if put else "calls"
-    fig = OpenBBFigure(
-        title=f"{varis[y]['label']} vs. {varis[x]['label']} for {symbol} {option} on {expiry}",
-        xaxis_title=varis[x]["label"],
-        yaxis_title=varis[y]["label"],
-    )
-    fig.add_scatter(x=x_data, y=y_data, mode="lines+markers")
+        x_data = values[x]
+        y_data = values[y]
+
+        option = "puts" if put else "calls"
+        title = f"{varis[y]['label']} vs. {varis[x]['label']} for {symbol} {option} on {expiry}"
+        xaxis_title = varis[x]["label"]
+        yaxis_title = varis[y]["label"]
+
+        fig.add_scatter(x=x_data, y=y_data, mode="lines+markers")
+    else:
+        calls = chain.calls[chain.calls["impliedVolatility"] > 0.00002].dropna()
+        puts = chain.puts[chain.puts["impliedVolatility"] > 0.00002].dropna()
+
+        for data, name in zip([calls, puts], ["Calls", "Puts"]):
+            fig.add_scatter(
+                x=data["strike"],
+                y=data["impliedVolatility"],
+                mode="lines+markers",
+                name=name,
+                line_color=theme.up_color if name == "Calls" else theme.down_color,
+            )
+
+        title = f"Implied Volatility Smile for {symbol} on {expiry}"
+        xaxis_title = "Strike"
+        yaxis_title = "Implied Volatility"
+
+    fig.set_title(title)
+    fig.set_xaxis_title(xaxis_title)
+    fig.set_yaxis_title(yaxis_title)
 
     export_data(
         export,
