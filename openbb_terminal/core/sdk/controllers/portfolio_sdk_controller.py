@@ -10,6 +10,7 @@ class PortfolioController(model.PortfolioRoot):
     Submodules:
         `alloc`: Alloc Module
         `metric`: Metric Module
+        `po`: Portfolio Optimization Module
 
     Attributes:
         `bench`: Load benchmark into portfolio\n
@@ -83,3 +84,32 @@ class PortfolioController(model.PortfolioRoot):
         """
 
         return model.PortfolioMetric()
+
+    @property
+    def po(self):
+        """Portfolio Portfolio Optimization Submodule
+
+        Attributes:
+            `blacklitterman`: Optimize decorrelation weights\n
+            `ef`: Get Efficient Frontier\n
+            `ef_chart`: Display efficient frontier\n
+            `file`: Load portfolio optimization engine from file\n
+            `herc`: Optimize with Hierarchical Equal Risk Contribution (HERC) method.\n
+            `hrp`: Optimize with Hierarchical Risk Parity\n
+            `load`: Load portfolio optimization engine\n
+            `load_bl_views`: Load a Excel file with views for Black Litterman model.\n
+            `maxdecorr`: Optimize decorrelation weights\n
+            `maxdiv`: Optimize diversification weights\n
+            `maxret`: Optimize maximum return weights\n
+            `maxsharpe`: Optimize Sharpe ratio weights\n
+            `maxutil`: Optimize maximum utility weights\n
+            `minrisk`: Optimize minimum risk weights\n
+            `nco`: Optimize with Non-Convex Optimization (NCO) model.\n
+            `plot`: Display efficient frontier\n
+            `plot_chart`: Display efficient frontier\n
+            `relriskparity`: Optimize with Relaxed Risk Parity using the least squares approach\n
+            `riskparity`: Optimize with Risk Parity using the risk budgeting approach\n
+            `show`: Show portfolio optimization results\n
+        """
+
+        return model.PortfolioPortfolioOptimization()
