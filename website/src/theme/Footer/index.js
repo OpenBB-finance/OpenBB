@@ -46,7 +46,7 @@ function Footer() {
   }
 
   return (
-    <footer className="px-4 border-t dark:border-grey-600/50 lg:px-12 py-14 bg-white dark:bg-grey-900 z-10 overflow-hidden">
+    <footer className="px-4 border-t dark:border-grey-600/50 lg:px-12 py-14 bg-white dark:bg-grey-850 z-10 overflow-hidden">
       <div className="flex w-full flex-col justify-between gap-10 md:flex-row md:items-start">
         <div className="ml-2 mb-2 space-y-10 md:m-0">
           <Link
@@ -69,7 +69,7 @@ function Footer() {
               />
               Star us
             </span>
-            <span className="inline-flex w-[40%] items-center justify-center rounded-r-md bg-grey-900 text-grey-500">
+            <span className="inline-flex w-[40%] items-center justify-center rounded-r-md bg-grey-850 text-grey-200">
               {nFormatter(stars, 1) ?? "12.5k"}
             </span>
           </a>
