@@ -7,7 +7,6 @@ from typing import Any, Dict, List
 
 import finviz
 import pandas as pd
-import requests
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
@@ -36,7 +35,7 @@ def get_data(symbol: str) -> pd.DataFrame:
     """
     try:
         d_finviz_stock = finviz.get_stock(symbol)
-    except requests.exceptions.HTTPError:
+    except Exception:
         return pd.DataFrame()
     df_fa = pd.DataFrame.from_dict(d_finviz_stock, orient="index", columns=["Values"])
     return df_fa[df_fa.Values != "-"]
