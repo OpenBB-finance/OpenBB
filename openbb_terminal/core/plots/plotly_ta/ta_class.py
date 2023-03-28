@@ -477,7 +477,7 @@ class PlotlyTA(PltTA):
         figure.update_traces(
             selector=dict(type="scatter", mode="lines"), connectgaps=True
         )
-        figure.update_layout(showlegend=False, margin=dict(l=30))
+        figure.update_layout(showlegend=False)
         figure.hide_holidays(self.prepost)
 
         # We remove xaxis labels from all but bottom subplot, and we make sure
