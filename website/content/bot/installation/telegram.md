@@ -1,8 +1,8 @@
 ---
 title: Telegram
 sidebar_position: 1
-description: How to get started with OpenBB Telegram Bot
-keywords: [installation, install, install openbb bot, guide, instructions, how to, explanation, openbb bot, openbb, telegram]
+description: How to get started with OpenBB Bot
+keywords: [installation, install, install openbb bot, guide, how to, explanation, openbb bot, openbb, discord, telegram,]
 ---
 
 ## Telegram - First Time Setup
