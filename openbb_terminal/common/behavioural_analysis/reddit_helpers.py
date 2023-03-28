@@ -101,9 +101,11 @@ def has_content(submission_) -> bool:
 
 
 class RedditResponses:
+    tickers: dict = {}
+    authors: List[str] = []
+
     def __init__(self):
-        self.tickers: dict = {}
-        self.authors: List[str] = []
+        pass
 
     def gather(self, praw_api, responses) -> int:
         count = 0
