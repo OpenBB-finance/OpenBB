@@ -51,6 +51,9 @@
         "hoverlabel": {
             "align": "left"
         },
+        "mapbox": {
+            "style": "dark"
+        },
         "hovermode": "x",
         "legend": {
             "bgcolor": "rgba(0, 0, 0, 0)",
