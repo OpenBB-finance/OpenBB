@@ -1,8 +1,8 @@
 [info]You are already logged in.[/info]
-Cloud storage of keys, settings and feature flags:
-    sync               Turns the cloud synchronization on/off
-    pull               Pull data from cloud
-    clear              Clear data from cloud
+Cloud storage of keys:
+    sync               Turn the keys synchronization on/off
+    pull               Pull keys from cloud
+    clear              Clear keys from cloud
 
 Cloud storage of routines:
     list               List available routines

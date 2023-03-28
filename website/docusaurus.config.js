@@ -34,8 +34,8 @@ const config = {
       {
         redirects: [
           {
-            from: "/terminal/guides/intros/forecasting",
-            to: "/terminal/guides/intros/forecast",
+            from: "/terminal/usage/intros/forecasting",
+            to: "/terminal/usage/intros/forecast",
           },
         ],
       },
@@ -101,6 +101,7 @@ const config = {
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
       },
+      // TODO - Jose can you make this so we get lighter color on main view - like bot docs
       colorMode: {
         defaultMode: "dark",
         disableSwitch: false,

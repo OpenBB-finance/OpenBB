@@ -26,6 +26,9 @@ function autoScaling(eventdata, graphs) {
       };
 
       yaxis_unique.forEach((unique) => {
+        if (typeof unique != "string") {
+          return;
+        }
         let yaxis = "yaxis" + unique.replace("y", "");
         let y_candle = [];
         let y_values = [];
@@ -92,7 +95,7 @@ function autoScaling(eventdata, graphs) {
 
           if (is_volume) {
             if (graphs.layout[yaxis].tickvals != undefined) {
-              const range_x = 4;
+              const range_x = 7;
               let volume_ticks = org_y_max;
               let round_digits = -3;
               let first_val = Math.round(volume_ticks * 0.2, round_digits);
@@ -189,8 +192,7 @@ function changeColor() {
     globals.color_picker = null;
   }
 }
-
-function downloadImage() {
+function uploadImage() {
   const loader = document.getElementById("loader");
   loader.classList.add("show");
   Plotly.toImage(globals.CHART_DIV, {
@@ -229,6 +231,35 @@ function downloadImage() {
       console.log(err);
       loader.classList.remove("show");
     });
+}
+
+function downloadImage() {
+  const loader = document.getElementById("loader");
+  loader.classList.add("show");
+  domtoimage
+    .toPng(document.getElementById("all-your-base"))
+    .then(function (dataUrl) {
+      let img = new Image(
+        globals.CHART_DIV.clientWidth,
+        globals.CHART_DIV.clientHeight
+      );
+      img.src = dataUrl;
+      downloadURI(dataUrl, globals.filename + ".png");
+    })
+    .catch(function (error) {
+      console.error("oops, something went wrong!", error);
+      loader.classList.remove("show");
+      hideModebar();
+    });
+}
+
+function downloadURI(uri, name) {
+  let link = document.createElement("a");
+  link.download = name;
+  link.href = uri;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
 }
 
 function downloadData(gd) {
@@ -315,7 +346,7 @@ function downloadData(gd) {
     }
   }
 
-  let filename = openbbFilename(gd, true);
+  let filename = globals.filename;
   let blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
   if (navigator.msSaveBlob) {
     // IE 10+

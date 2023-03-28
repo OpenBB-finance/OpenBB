@@ -1,7 +1,7 @@
 ---
 title: Launching
 sidebar_position: 2
-description: TBD
+description: Errors on launch.
 keywords:
   [
     installation,
@@ -19,7 +19,6 @@ keywords:
     openbb terminal,
   ]
 ---
-
 <details><summary>Mac: Invalid CPU Type - Terminal fails to launch.</summary>
 
 This error is usually the result of a Mac M1/M2 machine which does not have Rosetta installed. Install from the system Terminal command line:

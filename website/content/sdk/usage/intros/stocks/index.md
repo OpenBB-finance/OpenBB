@@ -3,36 +3,30 @@ title: Stocks
 keywords: [stocks, fundamental analysis, analysis, Behavioural, strategy, comparison, due diligence, discovery, dark pool, short, data, forecasting, fundamental, quantitative, government, forecating, ml, ai, machine learning, artificial intelligence, insider, trading, research, sector, industry, technical, trading hours, quote, market data, close, adjusted close, download, export, tools, openbb sdk]
 description: The Stocks menu is the high-level menu for the Public Equity asset class. It contains functions for searching and loading company market data, showing candle charts, quotes and company specifics via a large selection of sub-menus. The sub-menus break the functions down into groups based on the type of data they return. They are listed below with a short description. Refer to each sub-menu's introductory guide for a more detailed explanation of the functions within.
 ---
+The Stocks module provides the functionality of the Stocks menu from the OpenBB Terminal. The list below are the SDK functions within the Stocks module and a short description:
 
-The capabilities of the Stocks menu from the OpenBB Terminal are wrapped into a powerful SDK, enabling users to work with the data in a flexible environment that can be fully customized to meet the needs of any user. Code completion and contextual help makes it easy to use. Navigating is very similar to operating the CLI Terminal Application.
+| Path                   |    Type    |                                             Description |
+| :--------------------- | :--------: | ------------------------------------------------------: |
+| openbb.stocks.ba       | Sub-Module |                                    Behavioural Analysis |
+| openbb.stocks.ca       | Sub-Module |                                     Comparison Analysis |
+| openbb.stocks.candle   |  Function  |                   OHLC + Volume + Moving Averages Chart |
+| openbb.stocks.disc     | Sub-Module |                                         Stock Discovery |
+| openbb.stocks.dps      | Sub-Module |                                     Dark Pools & Shorts |
+| openbb.stocks.fa       | Sub-Module |               Fundamental Analysis & Future Estimations |
+| openbb.stocks.gov      | Sub-Module |       US Government, Lobbying & Representative Activity |
+| openbb.stocks.ins      | Sub-Module |                 Corporate Insider Activity (SEC Form 4) |
+| openbb.stocks.load     |  Function  |                             Load Historical OHLC+V Data |
+| openbb.stocks.options  | Sub-Module |                                                 Options |
+| openbb.stocks.qa       | Sub-Module |                       Stocks-Only Quantitative Analysis |
+| openbb.stocks.quote    |  Function  | Last Price and Performance Data (FinancialModelingPrep) |
+| openbb.stocks.screener | Sub-Module |                                          Stock Screener |
+| openbb.stocks.search   |  Function  |                                             Find Stocks |
+| openbb.stocks.sia      | Sub-Module |                              Sector & Industry Analysis |
+| openbb.stocks.ta       | Sub-Module |                          Stocks-Only Technical Analysis |
+| openbb.stocks.th       | Sub-Module |                           Trading Hours (Market Status) |
+| openbb.stocks.tob      |  Function  |                                      Top of Book (CBOE) |
 
 ## How to use
-
-The list below are the SDK functions within the Stocks module and a short description:
-
-| Path                   |    Type    |                                       Description |
-| :--------------------- | :--------: | ------------------------------------------------: |
-| openbb.stocks.ba       | Sub-Module |                              Behavioural Analysis |
-| openbb.stocks.ca       | Sub-Module |                               Comparison Analysis |
-| openbb.stocks.candle   |  Function  |             OHLC + Volume + Moving Averages Chart |
-| openbb.stocks.disc     | Sub-Module |                                   Stock Discovery |
-| openbb.stocks.dps      | Sub-Module |                               Dark Pools & Shorts |
-| openbb.stocks.fa       | Sub-Module |         Fundamental Analysis & Future Estimations |
-| openbb.stocks.filings  |  Function  |                    Feed of new filings to the SEC |
-| openbb.stocks.gov      | Sub-Module | US Government, Lobbying & Representative Activity |
-| openbb.stocks.ins      | Sub-Module |           Corporate Insider Activity (SEC Form 4) |
-| openbb.stocks.load     |  Function  |                                         Load Data |
-| openbb.stocks.options  | Sub-Module |                                           Options |
-| openbb.stocks.qa       | Sub-Module |                 Stocks-Only Quantitative Analysis |
-| openbb.stocks.quote    |  Function  |                             Last Price (yFinance) |
-| openbb.stocks.screener | Sub-Module |                                    Stock Screener |
-| openbb.stocks.search   |  Function  |                                       Find Stocks |
-| openbb.stocks.sia      | Sub-Module |                        Sector & Industry Analysis |
-| openbb.stocks.ta       | Sub-Module |                    Stocks-Only Technical Analysis |
-| openbb.stocks.th       | Sub-Module |                     Trading Hours (Market Status) |
-| openbb.stocks.tob      |  Function  |                                Top of Book (CBOE) |
-
-Alternatively, contents of the menu is printed by running:
 
 ```python
 help(openbb.stocks)
@@ -48,7 +42,7 @@ The code snippets in the following section will assume that the import block con
 import pandas as pd
 from datetime import datetime
 from openbb_terminal.sdk import openbb
-%matplotlib inline
+
 ```
 
 ### Load
@@ -64,7 +58,6 @@ The first step in a workflow might be to collect historical price data. The `loa
 spy_monthly = openbb.stocks.load(
     symbol = 'SPY',
     start_date = '1990-01-01',
-    end_date = '',
     interval = 1440,
     prepost = False,
     source = 'YahooFinance',
@@ -86,7 +79,6 @@ There are source-dependent differences to the DataFrame returned. For example, c
 spy_monthly = openbb.stocks.load(
     symbol = 'SPY',
     start_date = '1990-01-01',
-    end_date = '',
     interval = 1440,
     prepost = False,
     source = 'Polygon',
@@ -136,13 +128,13 @@ Search for companies by name with the `search` function, with optional filters f
 openbb.stocks.search(sector = 'Energy', country = 'United Kingdom', query = 'oil')
 ```
 
-|     |        | long_name                       | country        | sector | industry      | exchange |
-| --: | :----- | :------------------------------ | :------------- | :----- | :------------ | -------: |
-|   0 | 3NO.F  | Nostrum Oil & Gas PLC           | United Kingdom | Energy | Oil & Gas E&P |      nan |
-|   1 | BOIL.L | Baron Oil Plc                   | United Kingdom | Energy | Oil & Gas E&P |      nan |
-|   2 | EGN.F  | Europa Oil & Gas (Holdings) plc | United Kingdom | Energy | Oil & Gas E&P |      nan |
-|   3 | EOG.L  | Europa Oil & Gas (Holdings) plc | United Kingdom | Energy | Oil & Gas E&P |      nan |
-|   4 | GHA.F  | Baron Oil Plc                   | United Kingdom | Energy | Oil & Gas E&P |      nan |
+|   |        | long_name                       | country        | sector | industry      | exchange |
+| -: | :----- | :------------------------------ | :------------- | :----- | :------------ | -------: |
+| 0 | 3NO.F  | Nostrum Oil & Gas PLC           | United Kingdom | Energy | Oil & Gas E&P |      nan |
+| 1 | BOIL.L | Baron Oil Plc                   | United Kingdom | Energy | Oil & Gas E&P |      nan |
+| 2 | EGN.F  | Europa Oil & Gas (Holdings) plc | United Kingdom | Energy | Oil & Gas E&P |      nan |
+| 3 | EOG.L  | Europa Oil & Gas (Holdings) plc | United Kingdom | Energy | Oil & Gas E&P |      nan |
+| 4 | GHA.F  | Baron Oil Plc                   | United Kingdom | Energy | Oil & Gas E&P |      nan |
 
 ...continued
 
@@ -164,20 +156,20 @@ quotes = pd.concat(quotes)
 quotes
 ```
 
-| Symbol | Name                            |  Price |   Open |   High |    Low | Previous Close | Volume     | 52 Week High | 52 Week Low | Change | Change % |
-| :----- | :------------------------------ | -----: | -----: | -----: | -----: | -------------: | :--------- | -----------: | ----------: | -----: | :------- |
-| SPY    | SPDR S&P 500                    | 399.62 | 396.66 | 400.18 | 395.92 |         398.51 | 42,786,020 |       479.98 |      348.11 |   1.11 | 0.28%    |
-| XLE    | SPDR Select Sector Fund - Energ |     94 |  92.86 |   94.7 |  92.86 |          93.13 | 14,593,450 |         94.7 |       51.66 |   0.87 | 0.93%    |
-| XLB    | Materials Select Sector SPDR    |  81.97 |  80.98 |  82.25 |   80.9 |          81.25 | 4,544,573  |        92.31 |       66.85 |   0.72 | 0.89%    |
-| XLI    | SPDR Select Sector Fund - Indus | 100.07 |  99.24 | 100.26 |  99.16 |          99.53 | 6,186,242  |       107.88 |       82.75 |   0.54 | 0.54%    |
-| XLP    | SPDR Select Sector Fund - Consu |  73.81 |  73.45 |  74.11 |  73.48 |          73.52 | 9,557,986  |        81.34 |       66.18 |   0.29 | 0.39%    |
-| XLY    | SPDR Select Sector Fund - Consu | 144.43 | 143.83 | 145.08 | 142.68 |         145.09 | 3,614,077  |       215.06 |       131.9 |  -0.66 | -0.45%   |
-| XLV    | SPDR Select Sector Fund - Healt | 134.67 | 133.53 | 134.84 | 133.53 |         133.13 | 7,913,382  |       143.42 |      118.75 |   1.54 | 1.16%    |
-| XLF    | SPDR Select Sector Fund - Finan |  35.67 |  35.77 |   35.8 |  35.54 |          35.87 | 22,587,218 |         41.7 |       29.59 |   -0.2 | -0.56%   |
-| XLK    | SPDR Select Sector Fund - Techn | 133.42 | 132.09 | 133.65 | 131.37 |         133.14 | 4,010,764  |       177.04 |      112.97 |   0.28 | 0.21%    |
-| XLC    | The Communication Services Sele |  50.44 |  49.66 |  50.56 |  49.62 |          50.02 | 3,220,128  |        81.91 |       44.86 |   0.41 | 0.83%    |
-| XLU    | SPDR Select Sector Fund - Utili |  67.91 |  68.12 |  68.49 |  67.75 |          68.08 | 6,871,930  |        78.22 |       60.35 |  -0.17 | -0.25%   |
-| XLRE   | Real Estate Select Sector SPDR  |  38.09 |  38.52 |  38.55 |  38.03 |          38.74 | 4,769,207  |        52.17 |       33.12 |  -0.65 | -1.68%   |
+|    | Symbol   | Name                                           |   Price |   Changes percentage |   Change |   Day low |   Day high |   Year high |   Year low | Market cap   |   Price avg50 |   Price avg200 | Exchange   | Volume   |   Avg volume |   Open |   Previous close |      Eps |    Pe | Earnings announcement   | Shares outstanding   |   Timestamp |
+|---:|:---------|:-----------------------------------------------|--------:|---------------------:|---------:|----------:|-----------:|------------:|-----------:|:-------------|--------------:|---------------:|:-----------|:---------|-------------:|-------:|-----------------:|---------:|------:|:------------------------|:---------------------|------------:|
+|  0 | SPY      | SPDR S&P 500 ETF Trust                         |  393.74 |               0.9616 |   3.75   |   390.08  |   394.17   |      462.07 |    348.11  | 361.367 B    |      399.841  |       392.797  | AMEX       | 88.857 M |     89590689 | 390.8  |         389.99   | 19.9365  | 19.75 |                         | 917.782 M            |  1679342401 |
+|  0 | XLE      | Energy Select Sector SPDR Fund                 |   77.7  |               2.0024 |   1.5253 |    76.1   |    78.2    |       94.71 |     65.48  | 14.485 B     |       86.6584 |        82.6697 | AMEX       | 25.791 M |     19906166 |  76.1  |          76.1747 | 10.86    |  7.15 |                         | 186.424 M            |  1679342400 |
+|  0 | XLB      | Materials Select Sector SPDR Fund              |   76.73 |               2.0581 |   1.5473 |    75.77  |    76.77   |       91.49 |     66.85  | 5.519 B      |       81.7186 |        77.8203 | AMEX       | 7.327 M  |      5830645 |  75.77 |          75.1827 |  5.16256 | 14.86 |                         | 71.924 M             |  1679342400 |
+|  0 | XLI      | Industrial Select Sector SPDR Fund             |   97.55 |               1.3242 |   1.2749 |    96.71  |    97.79   |      105.23 |     82.75  | 13.328 B     |      101.103  |        95.1877 | AMEX       | 14.078 M |     11957477 |  96.71 |          96.2751 |  4.6974  | 20.77 |                         | 136.626 M            |  1679342400 |
+|  0 | XLP      | Consumer Staples Select Sector SPDR Fund       |   72.76 |               1.386  |   0.9947 |    72.01  |    72.83   |       81.34 |     66.18  | 15.292 B     |       73.092  |        72.9574 | AMEX       | 14.127 M |     10950449 |  72.04 |          71.7653 |  2.88675 | 25.2  |                         | 210.172 M            |  1679342400 |
+|  0 | XLY      | Consumer Discretionary Select Sector SPDR Fund |  141.52 |               0.433  |   0.6102 |   139.75  |   142.39   |      192.19 |    126     | 17.018 B     |      143.901  |       146.454  | AMEX       | 5.863 M  |      5416313 | 140.74 |         140.91   |  6.27203 | 22.56 |                         | 120.253 M            |  1679342400 |
+|  0 | XLV      | Health Care Select Sector SPDR Fund            |  126.96 |               1.2675 |   1.5891 |   125.58  |   127.145  |      143.42 |    118.75  | 25.064 B     |      131.092  |       130.376  | AMEX       | 10.584 M |      8826462 | 125.58 |         125.371  |  5.92017 | 21.45 |                         | 197.415 M            |  1679342400 |
+|  0 | XLF      | Financial Select Sector SPDR Fund              |   31.17 |               1.1114 |   0.3426 |    31.025 |    31.44   |       40.01 |     29.59  | 27.537 B     |       35.4068 |        33.8593 | AMEX       | 74.917 M |     50017188 |  31.07 |          30.8274 |  2.57075 | 12.12 |                         | 883.445 M            |  1679342400 |
+|  0 | XLK      | Technology Select Sector SPDR Fund             |  143.53 |               0.2693 |   0.3855 |   141.82  |   143.7    |      163.65 |    112.97  | 39.048 B     |      136.542  |       132.924  | AMEX       | 5.924 M  |      7283266 | 142.89 |         143.145  |  5.1111  | 28.08 |                         | 272.056 M            |  1679342400 |
+|  0 | XLC      | Communication Services Select Sector SPDR Fund |   55.27 |               0.7474 |   0.41   |    54.71  |    55.41   |       71.57 |     44.86  | 0            |       54.1118 |        52.9782 | AMEX       | 7.189 M  |      6117298 |  54.91 |          54.86   |  2.87114 | 19.25 |                         | 0                    |  1679342400 |
+|  0 | XLU      | Utilities Select Sector SPDR Fund              |   67    |               0.7818 |   0.5197 |    66.56  |    67.22   |       78.22 |     60.35  | 10.939 B     |       68.0158 |        69.9207 | AMEX       | 19.265 M |     12304022 |  66.58 |          66.4803 |  2.88295 | 23.24 |                         | 163.274 M            |  1679342400 |
+|  0 | XLRE     | The Real Estate Select Sector SPDR Fund        |   36.36 |               1.0727 |   0.3859 |    35.87  |    36.4932 |       50.97 |     33.125 | 0            |       38.953  |        39.4885 | AMEX       | 4.963 M  |      6039455 |  36.06 |          35.9741 |  1.30938 | 27.77 |                         | 0                    |  1679342400 |
 
 ### TOB
 
@@ -190,74 +182,58 @@ quote_tob = bid.join(ask, lsuffix= ': Bid', rsuffix = ': Ask')
 quote_tob
 ```
 
-|     | Size: Bid | Price: Bid | Size: Ask | Price: Ask |
-| --: | --------: | ---------: | --------: | ---------: |
-|   0 |       100 |     394.85 |       100 |        395 |
-|   1 |       100 |      394.8 |       300 |     395.05 |
-|   2 |       100 |      394.7 |       100 |     395.07 |
-|   3 |       100 |     394.68 |       200 |     395.25 |
-|   4 |       100 |     394.65 |       100 |     395.29 |
+|   | Size: Bid | Price: Bid | Size: Ask | Price: Ask |
+| -: | --------: | ---------: | --------: | ---------: |
+| 0 |       100 |     394.85 |       100 |        395 |
+| 1 |       100 |      394.8 |       300 |     395.05 |
+| 2 |       100 |      394.7 |       100 |     395.07 |
+| 3 |       100 |     394.68 |       200 |     395.25 |
+| 4 |       100 |     394.65 |       100 |     395.29 |
 
 ### Filings
 
 Get the most-recent form submissions to the SEC.
 
 ```python
-filings = openbb.stocks.filings()
+filings = openbb.stocks.disc.filings()
 filings.head(3)
 ```
 
-| Date                | Ticker   |     CIK | Form Type   | Title                                           | URL                                                                                               |
-|:--------------------|:---------|--------:|:------------|:------------------------------------------------|:--------------------------------------------------------------------------------------------------|
-| 2023-01-12 14:09:25 | CYBN     | 1833141 | 6-K         | 6-K - CYBIN INC. (0001833141) (Filer)           | https://www.sec.gov/Archives/edgar/data/1833141/000162828023000949/0001628280-23-000949-index.htm |
-| 2023-01-12 13:39:25 | RYAOF    | 1038683 | 6-K         | 6-K - RYANAIR HOLDINGS PLC (0001038683) (Filer) | https://www.sec.gov/Archives/edgar/data/1038683/000165495423000350/0001654954-23-000350-index.htm |
-| 2023-01-12 13:39:25 | RYAAY    | 1038683 | 6-K         | 6-K - RYANAIR HOLDINGS PLC (0001038683) (Filer) | https://www.sec.gov/Archives/edgar/data/1038683/000165495423000350/0001654954-23-000350-index.htm |
+| Date                | Ticker   |     CIK | Form Type   | Title                                                 | URL                                                                                               |
+|:--------------------|:---------|--------:|:------------|:------------------------------------------------------|:--------------------------------------------------------------------------------------------------|
+| 2023-03-20 17:30:26 | TLGA     | 1827871 | 10-K        | 10-K - TLG Acquisition One Corp. (0001827871) (Filer) | https://www.sec.gov/Archives/edgar/data/1827871/000119312523074903/0001193125-23-074903-index.htm |
+| 2023-03-20 17:30:26 | TLGA     | 1827871 | 10-K        | 10-K - TLG Acquisition One Corp. (0001827871) (Filer) | https://www.sec.gov/Archives/edgar/data/1827871/000119312523074903/0001193125-23-074903-index.htm |
+| 2023-03-20 17:30:26 | TLGA-UN  | 1827871 | 10-K        | 10-K - TLG Acquisition One Corp. (0001827871) (Filer) | https://www.sec.gov/Archives/edgar/data/1827871/000119312523074903/0001193125-23-074903-index.htm |
+| 2023-03-20 17:30:26 | TLGA-UN  | 1827871 | 10-K        | 10-K - TLG Acquisition One Corp. (0001827871) (Filer) | https://www.sec.gov/Archives/edgar/data/1827871/000119312523074903/0001193125-23-074903-index.htm |
+| 2023-03-20 17:30:26 | TLGA-WT  | 1827871 | 10-K        | 10-K - TLG Acquisition One Corp. (0001827871) (Filer) | https://www.sec.gov/Archives/edgar/data/1827871/000119312523074903/0001193125-23-074903-index.htm |
 
-### Upcoming Earnings
-
-The upcoming earnings calendar is part of the `Discovery` sub-module. The results can be easily filtered to use as inputs for another function.
+Filter them to be from the current day only:
 
 ```python
-earnings = openbb.stocks.disc.upcoming()
-earnings.index = earnings.index.strftime('%Y-%m-%d')
-earnings_today = earnings.filter(like = datetime.now().strftime('%Y-%m-%d'), axis = 0)
-
-earnings_today.head(5)
+today = filings.filter(like = datetime.now().strftime("%Y-%m-%d"), axis = 0)
 ```
-
-| Date       | Ticker | Name                       |
-| :--------- | :----- | :------------------------- |
-| 2022-11-17 | DXLG   | Destination XL Group, Inc. |
-| 2022-11-17 | CAMT   | Camtek Ltd.                |
-| 2022-11-17 | CLBT   | Cellebrite DI Ltd.         |
-| 2022-11-17 | HAYN   | Haynes International, Inc. |
-| 2022-11-17 | ROST   | Ross Stores, Inc.          |
-
-...continued
 
 ### Screener
 
-Grab the list of filtered tickers and put them through the comparison analysis screener for valuation data:
+Grab the list of filtered tickers and put them through the comparison analysis screener and get an overview:
 
 ```python
-earnings_tickers = earnings_today['Ticker'].to_list()
-screener_results = openbb.stocks.ca.screener(similar = earnings_tickers, data_type = 'valuation')
-screener_results.sort_values(by = ['EPS next Y'], ascending = False, inplace = True)
+tickers = today['Ticker'].to_list()
+screener_results = openbb.stocks.ca.screener(similar = tickers, data_type = 'overview')
+screener_results = screener_results.sort_values(by = ['Market Cap'], ascending = False).convert_dtypes()
 
 screener_results.head(5)
 ```
 
-|     | Ticker | Market Cap |   P/E | Fwd P/E |  PEG |  P/S |   P/B |   P/C | P/FCF | EPS this Y | EPS next Y | EPS past 5Y | EPS next 5Y | Sales past 5Y | Price |  Change |      Volume |
-| --: | :----- | ---------: | ----: | ------: | ---: | ---: | ----: | ----: | ----: | ---------: | ---------: | ----------: | ----------: | ------------: | ----: | ------: | ----------: |
-|   2 | CLBT   | 8.8396e+08 |  6.18 |   31.91 | 1.21 | 3.42 | 37.31 |  8.22 |   nan |     -0.708 |     1.1111 |         nan |       0.051 |           nan |  4.85 | -0.0122 |      105214 |
-|   6 | GAMB   | 3.4528e+08 | 34.84 |   18.92 |  nan | 6.18 |  4.02 |  11.1 | 37.53 |     -0.177 |       1.04 |         nan |         nan |           nan |  9.65 |  0.0354 |       34618 |
-|  13 | STNE   |   2.85e+09 |   nan |    3.57 |  nan | 1.69 |  1.31 |  2.43 |  5.05 |     -2.513 |     0.9624 |      -0.598 |      0.2815 |         0.694 |  9.87 | -0.0573 | 9.54896e+06 |
-|   0 | AMSWA  |  5.415e+08 | 46.52 |    32.4 | 2.91 | 4.18 |  4.12 |  4.71 | 71.25 |      0.527 |     0.4318 |       -0.04 |        0.16 |         0.037 | 16.33 | -0.0337 |      126062 |
-|  14 | WWD    |    5.9e+09 | 37.68 |   27.41 | 3.66 | 2.55 |  3.11 | 59.37 | 43.51 |      -0.15 |     0.3407 |       0.023 |       0.103 |         0.021 | 98.04 |  0.0007 |      455047 |
+|     | Ticker   | Company          | Sector                 | Industry                     | Country        |   Market Cap |   P/E |   Price |   Change |   Volume |
+|----:|:---------|:-----------------|:-----------------------|:-----------------------------|:---------------|-------------:|------:|--------:|---------:|---------:|
+|  72 | NVO      | Novo Nordisk A/S | Healthcare             | Biotechnology                | Denmark        |   2.4814e+11 | 41.42 |  143.59 |   0.0298 |  1242167 |
+|  34 | EQNR     | Equinor ASA      | Energy                 | Oil & Gas Integrated         | Norway         |   8.591e+10  |  3.02 |   27.34 |   0.0096 |  4154740 |
+|  46 | GSK      | GSK plc          | Healthcare             | Drug Manufacturers - General | United Kingdom |   7.026e+10  | 12.29 |   34.93 |   0.0252 |  2973805 |
+| 105 | UBS      | UBS Group AG     | Financial              | Banks - Diversified          | Switzerland    |   6.783e+10  |  8.39 |   18.8  |   0.033  | 40598414 |
+|  83 | RELX     | RELX PLC         | Communication Services | Publishing                   | United Kingdom |   5.97e+10   | 30.52 |   31.31 |   0.0205 |   620949 |
 
-...continued
-
-Along with the variety of screeners, the OpenBB SDK can create custom screeners. For example, the most popular tickers on Stocktwits:
+This type of framework can be used to create any type of custom screener. For example, the most popular tickers on Stocktwits:
 
 ```python
 stocktwits = openbb.stocks.ba.trending()
@@ -266,18 +242,18 @@ tickers = stocktwits['Ticker'].to_list()
 stocktwits.head(10)
 ```
 
-|     | Ticker | Watchlist Count | Name                           |
-| --: | :----- | --------------: | :----------------------------- |
-|  18 | NVDA   |          409301 | NVIDIA Corp                    |
-|  12 | AMC    |          406952 | AMC Entertainment Holdings Inc |
-|   5 | WMT    |          109864 | Walmart Inc                    |
-|   6 | MRNA   |          100705 | Moderna Inc                    |
-|  21 | PFE    |           87229 | Pfizer Inc.                    |
-|   4 | DWAC   |           66122 | Digital World Acquisition Corp |
-|  29 | CSCO   |           54458 | Cisco Systems, Inc.            |
-|   0 | SAVA   |           49063 | Cassava Sciences Inc           |
-|   8 | TDOC   |           38657 | Teladoc Health Inc             |
-|  16 | PENN   |           38277 | Penn National Gaming, Inc.     |
+|    | Ticker | Watchlist Count | Name                           |
+| -: | :----- | --------------: | :----------------------------- |
+| 18 | NVDA   |          409301 | NVIDIA Corp                    |
+| 12 | AMC    |          406952 | AMC Entertainment Holdings Inc |
+|  5 | WMT    |          109864 | Walmart Inc                    |
+|  6 | MRNA   |          100705 | Moderna Inc                    |
+| 21 | PFE    |           87229 | Pfizer Inc.                    |
+|  4 | DWAC   |           66122 | Digital World Acquisition Corp |
+| 29 | CSCO   |           54458 | Cisco Systems, Inc.            |
+|  0 | SAVA   |           49063 | Cassava Sciences Inc           |
+|  8 | TDOC   |           38657 | Teladoc Health Inc             |
+| 16 | PENN   |           38277 | Penn National Gaming, Inc.     |
 
 Filter the results by market cap:
 
@@ -288,13 +264,13 @@ screener_results = screener_results.sort_values(by = ['Market Cap'], ascending =
 screener_results.head(5)
 ```
 
-|     | Ticker | Company            | Sector             | Industry                     | Country | Market Cap |   P/E |  Price |  Change |      Volume |
-| --: | :----- | :----------------- | :----------------- | :--------------------------- | :------ | ---------: | ----: | -----: | ------: | ----------: |
-|  15 | NVDA   | NVIDIA Corporation | Technology         | Semiconductors               | USA     | 3.9217e+11 | 53.53 | 163.66 |  0.0024 | 3.16641e+07 |
-|  26 | WMT    | Walmart Inc.       | Consumer Defensive | Discount Stores              | USA     |  3.864e+11 | 28.46 |  140.5 | -0.0146 | 5.33372e+06 |
-|  18 | PFE    | Pfizer Inc.        | Healthcare         | Drug Manufacturers - General | USA     | 2.6591e+11 |  9.03 |  49.36 |   0.037 | 1.07892e+07 |
-|   4 | BLK    | BlackRock, Inc.    | Financial          | Asset Management             | USA     | 1.1412e+11 | 21.34 | 747.95 | -0.0346 |      742602 |
-|  25 | TGT    | Target Corporation | Consumer Defensive | Discount Stores              | USA     |  7.566e+10 | 19.68 | 175.67 |  0.0136 | 2.45293e+06 |
+|    | Ticker | Company            | Sector             | Industry                     | Country | Market Cap |   P/E |  Price |  Change |      Volume |
+| -: | :----- | :----------------- | :----------------- | :--------------------------- | :------ | ---------: | ----: | -----: | ------: | ----------: |
+| 15 | NVDA   | NVIDIA Corporation | Technology         | Semiconductors               | USA     | 3.9217e+11 | 53.53 | 163.66 |  0.0024 | 3.16641e+07 |
+| 26 | WMT    | Walmart Inc.       | Consumer Defensive | Discount Stores              | USA     |  3.864e+11 | 28.46 |  140.5 | -0.0146 | 5.33372e+06 |
+| 18 | PFE    | Pfizer Inc.        | Healthcare         | Drug Manufacturers - General | USA     | 2.6591e+11 |  9.03 |  49.36 |   0.037 | 1.07892e+07 |
+|  4 | BLK    | BlackRock, Inc.    | Financial          | Asset Management             | USA     | 1.1412e+11 | 21.34 | 747.95 | -0.0346 |      742602 |
+| 25 | TGT    | Target Corporation | Consumer Defensive | Discount Stores              | USA     |  7.566e+10 | 19.68 | 175.67 |  0.0136 | 2.45293e+06 |
 
 ...continued
 
