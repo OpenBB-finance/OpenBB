@@ -14,7 +14,7 @@ from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.core.plots.plotly_ta.ta_class import PlotlyTA
 from openbb_terminal.rich_config import console
 
-# Supressing sdk logs
+# Suppressing sdk logs
 cfg.change_logging_suppress(new_value=True)
 
 # Import the OpenBB SDK
