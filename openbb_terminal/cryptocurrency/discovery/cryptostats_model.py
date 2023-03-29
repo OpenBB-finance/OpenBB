@@ -2,15 +2,16 @@
 __docformat__ = "numpy"
 
 import logging
+
 import pandas as pd
 
-from openbb_terminal.helper_funcs import request
-from openbb_terminal.cryptocurrency.discovery.pycoingecko_model import get_coins
 from openbb_terminal.cryptocurrency.defi.llama_model import (
-    get_defi_protocols,
     get_chains,
+    get_defi_protocols,
 )
+from openbb_terminal.cryptocurrency.discovery.pycoingecko_model import get_coins
 from openbb_terminal.decorators import log_start_end
+from openbb_terminal.helper_funcs import request
 
 logger = logging.getLogger(__name__)
 

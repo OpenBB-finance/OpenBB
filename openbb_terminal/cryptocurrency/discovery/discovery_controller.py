@@ -13,11 +13,11 @@ from openbb_terminal.cryptocurrency.discovery import (
     coinmarketcap_view,
     coinpaprika_model,
     coinpaprika_view,
+    cryptostats_view,
     dappradar_model,
     dappradar_view,
     pycoingecko_model,
     pycoingecko_view,
-    cryptostats_view,
 )
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
