@@ -445,7 +445,7 @@ def load(  # pylint: disable=too-many-return-statements
             s_start_dt = df_stock_candidate.index[0]
 
             s_start = (
-                start_date
+                s_start_dt
                 if s_start_dt > start_date.astimezone(pytz.timezone("US/Eastern"))
                 else start_date
             )
