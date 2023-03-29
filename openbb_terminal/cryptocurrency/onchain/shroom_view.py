@@ -9,8 +9,8 @@ from openbb_terminal import OpenBBFigure, theme
 from openbb_terminal.cryptocurrency.onchain.shroom_model import (
     get_daily_transactions,
     get_dapp_stats,
-    get_total_value_locked,
     get_query_data,
+    get_total_value_locked,
 )
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
