@@ -5,13 +5,13 @@ __docformat__ = "numpy"
 import argparse
 import json
 import logging
-import os
 from pathlib import Path
 from typing import Dict, List, Optional
 
 import openbb_terminal.core.session.hub_model as Hub
 import openbb_terminal.core.session.local_model as Local
 from openbb_terminal.core.session.constants import SOURCES_URL
+from openbb_terminal.core.session.current_system import get_current_system
 
 # IMPORTATION THIRDPARTY
 # IMPORTATION INTERNAL
@@ -73,7 +73,7 @@ class SourcesController(BaseController):
 
         SOURCES_FILE = Path(get_current_user().preferences.PREFERRED_DATA_SOURCE_FILE)
         if (
-            not os.getenv("TEST_MODE")
+            not get_current_system().TEST_MODE
             and SOURCES_FILE.exists()
             and SOURCES_FILE.stat().st_size > 0
         ):

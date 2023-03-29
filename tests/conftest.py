@@ -37,7 +37,7 @@ EXTENSIONS_MATCHING: Dict[str, List[Type]] = {
     "txt": [str],
 }
 
-os.environ["TEST_MODE"] = "True"
+config_terminal.change_test_mode(new_value=True)
 
 
 class Record:
