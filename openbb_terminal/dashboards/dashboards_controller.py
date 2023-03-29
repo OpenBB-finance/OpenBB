@@ -18,7 +18,6 @@ import dotenv
 import numpy as np
 import psutil
 
-import openbb_terminal.config_terminal as cfg
 from openbb_terminal.base_helpers import load_env_vars, strtobool
 from openbb_terminal.core.config.paths import REPOSITORY_DIRECTORY, SETTINGS_ENV_FILE
 from openbb_terminal.core.plots.backend import plots_backend
@@ -199,7 +198,6 @@ class DashboardsController(BaseController):
                 cmd += " --theme=dark"
 
             if ns_parser.input or response.lower() == "y" and not process_check:
-                cfg.change_logging_suppress(new_value=True)
                 self.processes.append(
                     psutil.Popen(
                         f"{cmd} --no-browser --port {port}"
@@ -211,7 +209,6 @@ class DashboardsController(BaseController):
                         env=os.environ,
                     )
                 )
-                cfg.change_logging_suppress(new_value=False)
                 atexit.register(self.kill_processes)
 
                 console.print(

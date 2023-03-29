@@ -8,7 +8,6 @@ import os
 # pylint: disable=R1732, R0912
 from typing import Any, Dict, List, Optional
 
-import openbb_terminal.config_terminal as cfg
 from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
@@ -191,7 +190,6 @@ class ReportController(BaseController):
             ns_parser = self.parse_simple_args(parser, other_args)
 
             if ns_parser:
-                cfg.change_logging_suppress(new_value=True)
                 if report_name == "equity" and "." in ns_parser.symbol:
                     console.print(
                         "[red]Cannot currently handle tickers with a '.' in them[/red]\n"
@@ -203,7 +201,6 @@ class ReportController(BaseController):
                     input_path=str(reports_model.REPORTS_FOLDER / report_name),
                     args_dict=parameters,
                 )
-                cfg.change_logging_suppress(new_value=False)
 
         else:
             console.print("[red]Notebook not found![/red]\n")
