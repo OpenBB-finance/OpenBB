@@ -49,7 +49,6 @@ def display_fees(
     if sortby:
         df = df.sort_values(sortby, ascending=ascend)
 
-
     if "One Day Fees" in df.columns:
         one_day_fees = df.pop("One Day Fees")
         df.insert(len(df.columns), "One Day Fees", one_day_fees)
