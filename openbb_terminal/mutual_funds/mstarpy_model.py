@@ -212,7 +212,7 @@ def load_holdings(
 def search_funds(
     term: str = "",
     country: str = "",
-    pageSize=10,
+    limit=10,
 ) -> pd.DataFrame:
     """Search mstarpy for matching funds
 
@@ -224,7 +224,7 @@ def search_funds(
         list of field who will be displayed
     country : str
         country where the funds is hosted
-    pageSize : int
+    limit : int
         length of results to display
 
     Returns
@@ -240,7 +240,7 @@ def search_funds(
     field = ["SecId", "TenforeId", "LegalName"]
     try:
         return pd.DataFrame(
-            mstarpy.search_funds(term, field, country=country, pageSize=pageSize)
+            mstarpy.search_funds(term, field, country=country, pageSize=limit)
         )
     except RuntimeError as e:
         logger.exception(str(e))
