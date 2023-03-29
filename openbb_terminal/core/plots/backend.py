@@ -48,7 +48,7 @@ else:
     JUPYTER_NOTEBOOK = True
 
 PLOTS_CORE_PATH = Path(__file__).parent.resolve()
-PLOTLYJS_PATH = PLOTS_CORE_PATH / "assets" / "plotly-2.18.2.min.js"
+PLOTLYJS_PATH = PLOTS_CORE_PATH / "assets" / "plotly-2.20.0.min.js"
 BACKEND = None
 
 
@@ -93,7 +93,9 @@ class Backend(PyWry):
         try:
             with open(PLOTS_CORE_PATH / "plotly.html", encoding="utf-8") as file:  # type: ignore
                 html = file.read()
-                html = html.replace("{{MAIN_PATH}}", str(PLOTS_CORE_PATH.as_uri()))
+                html = html.replace(
+                    "{{MAIN_PATH}}", str(PLOTS_CORE_PATH.as_uri())
+                ).replace("{{PLOTLYJS_PATH}}", str(PLOTLYJS_PATH.as_uri()))
 
             # We create a temporary file to inject the path to the script tag
             # This is so we don't have to modify the original file
