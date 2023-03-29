@@ -4,9 +4,6 @@ __docformat__ = "numpy"
 import logging
 import os
 
-from openbb_terminal.cryptocurrency.dataframe_helpers import (
-    lambda_long_number_format_with_type_check,
-)
 from openbb_terminal.cryptocurrency.discovery import cryptostats_model
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
@@ -52,21 +49,17 @@ def display_fees(
     if sortby:
         df = df.sort_values(sortby, ascending=ascend)
 
-    for col in ["One Day Fees", "Market Cap", "TVL"]:
-        if col in df.columns:
-            df[col] = df[col].apply(
-                lambda x: lambda_long_number_format_with_type_check(x)
-            )
 
     if "One Day Fees" in df.columns:
         one_day_fees = df.pop("One Day Fees")
         df.insert(len(df.columns), "One Day Fees", one_day_fees)
 
     print_rich_table(
-        df.iloc[:limit, :],
+        df,
         headers=list(df.columns),
         show_index=False,
         title="Crypto Fees",
+        limit=limit,
     )
 
     export_data(
