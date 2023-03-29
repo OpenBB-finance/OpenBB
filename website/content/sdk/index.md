@@ -49,11 +49,11 @@ build financial applications and reports."
 
 ### Getting Started
 
-To know more about OpenBB SDK, you can start by reading the [Installation Guide](/sdk/quickstart/installation).
+To know more about OpenBB SDK, you can start by reading the [Installation Guide](/sdk/installation).
 
 ### Using OpenBB SDK
 
-To learn how to use OpenBB SDK, you can start by reading the [Basics Guide](/sdk/guides/basics).
+To learn how to use OpenBB SDK, you can start by reading the [Basics Guide](/sdk/usage/basics).
 
 ### SDK Reference
 

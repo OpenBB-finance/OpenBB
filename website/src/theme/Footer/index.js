@@ -120,14 +120,14 @@ function Footer() {
           <p className="text-sm">{`© ${new Date().getFullYear()} OpenBB`}</p>
           <div className="_divider-x hidden h-[20px] border-[0.5px] md:block" />
           <Link
-            to="/legal/privacy-policy"
+            to="https://openbb.co/legal/privacy-policy"
             className="text-sm dark:hover:text-white"
           >
             Privacy Policy
           </Link>
           <div className="_divider-x hidden h-[20px] border-[0.5px] md:block" />
           <Link
-            to="/legal/terms-of-service"
+            to="https://openbb.co/legal/terms-of-service"
             className="text-sm dark:hover:text-white"
           >
             Terms
