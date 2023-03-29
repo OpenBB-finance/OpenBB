@@ -272,10 +272,12 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
   // We check for the dark mode
   if (graphs.layout.template.layout.mapbox.style == "dark") {
     document.body.style.backgroundColor = "#000000";
+    document.getElementById("openbb_footer").style.color = "#000000";
     graphs.layout.template.layout.paper_bgcolor = "#000000";
     graphs.layout.template.layout.plot_bgcolor = "#000000";
   } else {
     document.body.style.backgroundColor = "#FFFFFF";
+    document.getElementById("openbb_footer").style.color = "#FFFFFF";
   }
 
   // We set the plot config and plot the chart

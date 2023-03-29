@@ -47,6 +47,7 @@ body {
 }
 
 .openbb_container {
+  align-items: center;
   width: 100%;
   height: 100%;
   background-color: #000000;
@@ -195,13 +196,13 @@ body {
 
 .modebar {
   z-index: 5000 !important;
-  position: absolute !important;
-  bottom: 0px !important;
+  position: fixed !important;
+  bottom: 10px !important;
   top: auto !important;
   left: 50% !important;
   right: auto !important;
   align-items: center;
-  transform: translateX(-50%) translateY(80%) !important;
+  transform: translate(-50%, 10%) !important;
 }
 
 @media screen and (max-width: 600px) {
@@ -211,7 +212,7 @@ body {
   }
 
   .modebar {
-    bottom: 60px !important;
+    bottom: 20px !important;
   }
 }
 
@@ -1311,47 +1312,12 @@ video {
       #060709);
 }
 
-/* on resize makes sure font size shrinks and modebar doesn't disappear */
-@media screen and (max-width: 375px) {
+
+@media screen and (max-height: 1000px) and (max-width: 1100px) {
   ._header strong {
     font-size: 1.1rem !important;
   }
-
-  .modebar {
-    transform: translate(-50%, 10%) !important;
-    bottom: 60 !important;
-  }
-}
-
-@media screen and (max-height: 400px) {
-  ._header strong {
-    font-size: 1.1rem !important;
-  }
-
-  .modebar {
-    transform: translate(-50%, 10%) !important;
-    bottom: 40 !important;
-  }
-}
-
-@media screen and (max-height: 500px) {
-  ._header strong {
-    font-size: 1.1rem !important;
-  }
-
-  .modebar {
-    transform: translate(-50%, 10%) !important;
-    bottom: 20 !important;
-  }
-}
-
-@media screen and (max-height: 800px) {
-  ._header strong {
-    font-size: 1.1rem !important;
-  }
-
-  .modebar {
-    transform: translate(-50%, 10%) !important;
-    bottom: 0 !important;
+  ._header p {
+    font-size: 1.0rem !important;
   }
 }
