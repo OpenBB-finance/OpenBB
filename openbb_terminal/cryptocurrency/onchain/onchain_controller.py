@@ -22,7 +22,6 @@ from openbb_terminal.cryptocurrency.onchain import (
     ethgasstation_view,
     ethplorer_model,
     ethplorer_view,
-    shroom_model,
     shroom_view,
     whale_alert_model,
     whale_alert_view,
@@ -157,7 +156,7 @@ class OnchainController(BaseController):
             help="Query to make",
         )
 
-        if other_args and not other_args[0][0] == "-":
+        if other_args and other_args[0][0] != "-":
             other_args.insert(0, "-q")
 
         ns_parser = self.parse_known_args_and_warn(
