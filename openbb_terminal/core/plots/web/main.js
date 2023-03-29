@@ -104,7 +104,7 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
             loadingOverlay("Saving Image");
             hideModebar();
             non_blocking(function () {
-              downloadImage();
+              downloadImage(globals.filename, "png");
               setTimeout(function () {
                 setTimeout(function () {
                   loading.classList.remove("show");
@@ -394,22 +394,22 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
   if (window.save_image != undefined && window.export_image) {
     // if is_3dmesh is true, we set the close_interval to 1000
     let close_interval = is_3dmesh ? 1000 : 500;
+    hideModebar();
 
     // We get the extension of the file and check if it is valid
     let filename = window.export_image.split("/").pop();
     const extension = filename.split(".").pop().replace("jpg", "jpeg");
 
     if (["jpeg", "png", "svg"].includes(extension)) {
-      // We run Plotly.downloadImage to save the chart as an image
-      Plotly.downloadImage(globals.CHART_DIV, {
-        format: extension,
-        width: globals.CHART_DIV.clientWidth,
-        height: globals.CHART_DIV.clientHeight,
-        filename: filename.split(".")[0],
-      });
+      non_blocking(function () {
+        downloadImage(filename.split(".")[0], extension);
+        setTimeout(function () {
+          setTimeout(function () {
+            window.close();
+          }, close_interval);
+        }, close_interval);
+      }, close_interval)();
+
     }
-    setTimeout(function () {
-      window.close();
-    }, close_interval);
   }
 }
