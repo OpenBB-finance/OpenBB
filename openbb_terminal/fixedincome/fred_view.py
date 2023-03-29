@@ -1258,9 +1258,12 @@ def plot_icebofa(
         )
 
     if description and title:
-        description_text = series[series["Title"] == title]["Description"].values[0]
-        console.print(f"\n[bold]{title}[/bold]")
-        console.print(description_text)
+        for index_title in df.columns:
+            description_text = series[series["Title"] == index_title][
+                "Description"
+            ].values[0]
+            console.print(f"\n[bold]{title}[/bold]")
+            console.print(description_text)
 
     export_data(
         export,
