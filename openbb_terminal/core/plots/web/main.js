@@ -6,6 +6,30 @@ let globals = {
   cmd_src_idx: null,
 };
 
+function loadingOverlay(message) {
+  const loading = document.getElementById("loading");
+  const loading_text = document.getElementById("loading_text");
+
+  loading_text.innerHTML = message;
+  loading.classList.add("show");
+
+  let is_loaded = setInterval(function () {
+    if (loading.classList.contains("show")) {
+      clearInterval(is_loaded);
+    }
+  }, 10);
+}
+
+const non_blocking = (func, delay) => {
+  let timeout;
+  return function () {
+    const context = this;
+    const args = arguments;
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func.apply(context, args), delay);
+  };
+};
+
 function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
   // Main function that plots the graphs and initializes the bar menus
   globals.CHART_DIV = chartdiv;
@@ -16,15 +40,22 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
   console.log("plotly_figure", plotly_figure);
   let graphs = plotly_figure;
 
-  const loader = document.getElementById("loader");
-  const saving = document.getElementById("saving");
+  const loading = document.getElementById("loading");
 
   // We add the event listeners for csv file/type changes
   globals.CSV_DIV.querySelector("#csv_file").addEventListener(
     "change",
     function () {
       console.log("file changed");
-      checkFile(globals.CSV_DIV);
+      loadingOverlay("Loading CSV");
+      setTimeout(function () {
+        non_blocking(function () {
+          checkFile(globals.CSV_DIV);
+        }, 2)();
+        setTimeout(function () {
+          loading.classList.remove("show");
+        }, 200);
+      }, 1000);
     }
   );
   globals.CSV_DIV.querySelector("#csv_trace_type").addEventListener(
@@ -34,17 +65,8 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
       checkFile(globals.CSV_DIV, true);
     }
   );
-  globals.filename = openbbFilename(graphs);
 
-  const non_blocking = (func, delay) => {
-    let timeout;
-    return function () {
-      const context = this;
-      const args = arguments;
-      clearTimeout(timeout);
-      timeout = setTimeout(() => func.apply(context, args), delay);
-    };
-  };
+  globals.filename = openbbFilename(graphs);
 
   // Sets the config with the custom buttons
   CONFIG = {
@@ -59,19 +81,12 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
           name: "Download Data (Ctrl+S)",
           icon: Plotly.Icons.disk,
           click: function (gd) {
-            let saved_csv = document.createElement("div");
-            saved_csv.innerHTML = "Saved CSV";
-            saved_csv.classList.add("saving");
-            saved_csv.classList.add("show");
-            document.body.appendChild(saved_csv);
+            loadingOverlay("Saving CSV");
             setTimeout(function () {
               downloadData(gd);
             }, 500);
             setTimeout(function () {
-              saved_csv.classList.remove("show");
-              setTimeout(function () {
-                document.body.removeChild(saved_csv);
-              }, 500);
+              loading.classList.remove("show");
             }, 1000);
           },
         },
@@ -86,15 +101,13 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
           name: "Download Plot",
           icon: Plotly.Icons.camera,
           click: function () {
-            saving.classList.add("show");
-            loader.classList.add("show");
+            loadingOverlay("Saving Image");
             hideModebar();
             non_blocking(function () {
               downloadImage();
               setTimeout(function () {
                 setTimeout(function () {
-                  saving.classList.remove("show");
-                  loader.classList.remove("show");
+                  loading.classList.remove("show");
                   hideModebar();
                 }, 50);
               }, 25);
@@ -259,10 +272,12 @@ function OpenBBMain(plotly_figure, chartdiv, csvdiv, textdiv, titlediv) {
   // We check for the dark mode
   if (graphs.layout.template.layout.mapbox.style == "dark") {
     document.body.style.backgroundColor = "#000000";
+    document.getElementById("openbb_footer").style.color = "#000000";
     graphs.layout.template.layout.paper_bgcolor = "#000000";
     graphs.layout.template.layout.plot_bgcolor = "#000000";
   } else {
     document.body.style.backgroundColor = "#FFFFFF";
+    document.getElementById("openbb_footer").style.color = "#FFFFFF";
   }
 
   // We set the plot config and plot the chart
