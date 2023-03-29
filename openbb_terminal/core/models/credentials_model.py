@@ -4,7 +4,7 @@ from pydantic.dataclasses import dataclass
 
 from openbb_terminal.core.models import BaseModel
 
-# pylint: disable=too-many-instance-attributes, disable=no-member
+# pylint: disable=too-many-instance-attributes, disable=no-member, useless-parent-delegation
 
 
 @dataclass(config=dict(validate_assignment=True, frozen=True))
@@ -66,8 +66,5 @@ class CredentialsModel(BaseModel):
     API_COINBASE_SECRET: str = "REPLACE_ME"
     API_COINBASE_PASS_PHRASE: str = "REPLACE_ME"
 
-    # Others
-    OPENBB_PERSONAL_ACCESS_TOKEN: str = "REPLACE_ME"
-
-    def __repr__(self) -> str:  # pylint: disable=useless-super-delegation
+    def __repr__(self) -> str:
         return super().__repr__()

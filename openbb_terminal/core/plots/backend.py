@@ -20,7 +20,8 @@ try:
     from pywry.core import PyWry
 
     PYWRY_AVAILABLE = True
-except ImportError:
+except ImportError as e:
+    print(f"\033[91m{e}\033[0m")
     PYWRY_AVAILABLE = False
 
 from svglib.svglib import svg2rlg
@@ -47,7 +48,7 @@ else:
     JUPYTER_NOTEBOOK = True
 
 PLOTS_CORE_PATH = Path(__file__).parent.resolve()
-PLOTLYJS_PATH = PLOTS_CORE_PATH / "assets" / "plotly-2.18.2.min.js"
+PLOTLYJS_PATH = PLOTS_CORE_PATH / "assets" / "plotly-2.20.0.min.js"
 BACKEND = None
 
 
@@ -72,7 +73,7 @@ class Backend(PyWry):
             and not strtobool(os.environ.get("OPENBB_ENABLE_QUICK_EXIT", False))
             and current_process().name == "MainProcess"
         )
-        if PyWry.__version__ == "0.0.0":
+        if hasattr(PyWry, "__version__") and PyWry.__version__ == "0.0.0":
             self.isatty = False
 
         self.WIDTH, self.HEIGHT = 1400, 762
@@ -92,7 +93,9 @@ class Backend(PyWry):
         try:
             with open(PLOTS_CORE_PATH / "plotly.html", encoding="utf-8") as file:  # type: ignore
                 html = file.read()
-                html = html.replace("{{MAIN_PATH}}", str(PLOTS_CORE_PATH.as_uri()))
+                html = html.replace(
+                    "{{MAIN_PATH}}", str(PLOTS_CORE_PATH.as_uri())
+                ).replace("{{PLOTLYJS_PATH}}", str(PLOTLYJS_PATH.as_uri()))
 
             # We create a temporary file to inject the path to the script tag
             # This is so we don't have to modify the original file
@@ -172,6 +175,7 @@ class Backend(PyWry):
         title = re.sub(
             r"<[^>]*>", "", fig.layout.title.text if fig.layout.title.text else title
         )
+        fig.layout.height += 69
 
         if export_image and isinstance(export_image, str):
             export_image = Path(export_image).resolve()
@@ -256,8 +260,7 @@ class Backend(PyWry):
         width = max(int(min(sum(columnwidth) * 9.7, self.WIDTH + 100)), 800)
 
         json_data = json.loads(df_table.to_json(orient="split"))
-        json_data.update(dict(title=title))
-        json_data.update(dict(source=source))
+        json_data.update(dict(title=title, source=source or ""))
 
         self.outgoing.append(
             json.dumps(
@@ -373,7 +376,9 @@ async def download_plotly_js():
     try:
         # we use aiohttp to download plotly.js
         # this is so we don't have to block the main thread
-        async with aiohttp.ClientSession() as session:
+        async with aiohttp.ClientSession(
+            connector=aiohttp.TCPConnector(verify_ssl=False)
+        ) as session:
             async with session.get(f"https://cdn.plot.ly/{js_filename}") as resp:
                 with open(str(PLOTLYJS_PATH), "wb") as f:
                     while True:

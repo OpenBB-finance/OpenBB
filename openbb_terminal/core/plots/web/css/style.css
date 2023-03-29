@@ -22,9 +22,53 @@ body {
   overflow: hidden;
 }
 
+.saving {
+  position: absolute;
+  z-index: 9999999;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 100px;
+  width: 200px;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
+  border: 4px solid rgba(250, 250, 250, 0.5);
+  font-size: 1.5em;
+  border-radius: 20px;
+  animation: popup 0.3s ease-in-out;
+}
+
+.saving.show {
+  display: flex;
+}
+
+.openbb_container {
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background-color: #000000;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.openbb_header {
+  position: relative;
+  z-index: 99999999999;
+  text-align: center;
+  top: 0;
+  background-color: transparent;
+  box-sizing: border-box;
+}
+
 .plotly-graph-div {
   width: 100%;
-  height: 97%;
+  height: 89.6%;
+  position: relative;
   font-size: 12px;
   font-size: 1.2rem;
   font-family: "Fira Code", monospace, "Arial Black";
@@ -131,6 +175,14 @@ body {
   margin-left: 135px;
 }
 
+.csv_column_container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
 .plotly-graph-div .modebar--hover .modebar-group {
   border: 2px solid #5a5a5a !important;
   border-radius: 4px;
@@ -144,13 +196,13 @@ body {
 
 .modebar {
   z-index: 5000 !important;
-  position: absolute !important;
-  bottom: 20px !important;
+  position: fixed !important;
+  bottom: 10px !important;
   top: auto !important;
   left: 50% !important;
   right: auto !important;
   align-items: center;
-  transform: translateX(-50%) translateY(80%) !important;
+  transform: translate(-50%, 10%) !important;
 }
 
 @media screen and (max-width: 600px) {
@@ -158,8 +210,9 @@ body {
     display: block !important;
     background-color: transparent !important;
   }
+
   .modebar {
-    bottom: 60px !important;
+    bottom: 20px !important;
   }
 }
 
@@ -173,7 +226,7 @@ body {
 }
 
 .modebar-group:nth-of-type(1):after {
-  content: "Drawing Tools";
+  content: "Chart Tools";
   height: fit-content;
   width: fit-content;
   position: absolute;
@@ -322,6 +375,7 @@ body {
 .updatemenu-item-rect {
   fill-opacity: 0.5 !important;
 }
+
 .updatemenu-item-rect:hover {
   background-color: #1f1f1f !important;
 }
@@ -534,19 +588,15 @@ button {
 }
 
 .loader {
-  position: absolute;
-  bottom: 6px;
-  right: 6px;
+  position: relative;
+  bottom: 0px;
+  right: -5px;
   border: 4px solid #f3f3f3;
   border-radius: 50%;
   border-top: 4px solid #00acff;
   width: 20px;
   height: 20px;
-  animation: spin 1s linear infinite;
-  opacity: 0;
-}
-
-.loader.show {
+  animation: spin 1.5s linear infinite;
   opacity: 1;
 }
 
@@ -554,6 +604,7 @@ button {
   0% {
     transform: rotate(0deg);
   }
+
   100% {
     transform: rotate(360deg);
   }
@@ -597,9 +648,11 @@ ul li a {
 * html ul li {
   float: none;
 }
+
 * html ul li a {
   height: 1%;
 }
+
 /* End */
 
 li:hover ul {
@@ -999,7 +1052,7 @@ Make sure disabled buttons don't get the pointer cursor.
 /*
 1. Make replaced elements `display: block` by default. (https://github.com/mozdevs/cssremedy/issues/14)
 2. Add `vertical-align: middle` to align replaced elements more sensibly by default. (https://github.com/jensimmons/cssremedy/issues/14#issuecomment-634934210)
-   This can trigger a poorly considered lint error in some tools but is included by design.
+  This can trigger a poorly considered lint error in some tools but is included by design.
 */
 
 img,
@@ -1245,20 +1298,26 @@ video {
 
 .blur-md {
   --tw-blur: blur(12px);
-  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast)
-    var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate)
-    var(--tw-sepia) var(--tw-drop-shadow);
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
 
 ._header {
   background: #062d48;
-  background: linear-gradient(
-    90deg,
-    #062d48,
-    #0b3054 15%,
-    #0e386c 45%,
-    #0b203d 64%,
-    #06101a 82%,
-    #060709
-  );
+  background: linear-gradient(90deg,
+      #062d48,
+      #0b3054 15%,
+      #0e386c 45%,
+      #0b203d 64%,
+      #06101a 82%,
+      #060709);
+}
+
+
+@media screen and (max-height: 1000px) and (max-width: 1100px) {
+  ._header strong {
+    font-size: 1.1rem !important;
+  }
+  ._header p {
+    font-size: 1.0rem !important;
+  }
 }

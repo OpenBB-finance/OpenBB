@@ -462,9 +462,9 @@ def test_clear_user_configs_success():
         assert result.status_code == mock_response.status_code
         requests_put_mock.assert_called_once()
         _, kwargs = requests_put_mock.call_args
-        assert kwargs["url"] == hub_model.BASE_URL + "terminal/user"
+        assert kwargs["url"] == hub_model.BASE_URL + "user"
         assert kwargs["headers"] == {"Authorization": "auth_header"}
-        assert kwargs["json"] == {"features_keys": {}, "features_settings": {}}
+        assert kwargs["json"] == {"features_keys": {}}
         assert kwargs["timeout"] == hub_model.TIMEOUT
 
 
@@ -481,9 +481,9 @@ def test_clear_user_configs_failure():
         assert result.status_code == mock_response.status_code
         requests_put_mock.assert_called_once()
         _, kwargs = requests_put_mock.call_args
-        assert kwargs["url"] == hub_model.BASE_URL + "terminal/user"
+        assert kwargs["url"] == hub_model.BASE_URL + "user"
         assert kwargs["headers"] == {"Authorization": "auth_header"}
-        assert kwargs["json"] == {"features_keys": {}, "features_settings": {}}
+        assert kwargs["json"] == {"features_keys": {}}
         assert kwargs["timeout"] == hub_model.TIMEOUT
 
 
@@ -497,9 +497,9 @@ def test_clear_user_configs_timeout():
         assert result is None
         requests_put_mock.assert_called_once()
         _, kwargs = requests_put_mock.call_args
-        assert kwargs["url"] == hub_model.BASE_URL + "terminal/user"
+        assert kwargs["url"] == hub_model.BASE_URL + "user"
         assert kwargs["headers"] == {"Authorization": "auth_header"}
-        assert kwargs["json"] == {"features_keys": {}, "features_settings": {}}
+        assert kwargs["json"] == {"features_keys": {}}
         assert kwargs["timeout"] == hub_model.TIMEOUT
 
 
@@ -513,9 +513,9 @@ def test_clear_user_configs_connection_error():
         assert result is None
         requests_put_mock.assert_called_once()
         _, kwargs = requests_put_mock.call_args
-        assert kwargs["url"] == hub_model.BASE_URL + "terminal/user"
+        assert kwargs["url"] == hub_model.BASE_URL + "user"
         assert kwargs["headers"] == {"Authorization": "auth_header"}
-        assert kwargs["json"] == {"features_keys": {}, "features_settings": {}}
+        assert kwargs["json"] == {"features_keys": {}}
         assert kwargs["timeout"] == hub_model.TIMEOUT
 
 
@@ -528,9 +528,9 @@ def test_clear_user_configs_exception():
         assert result is None
         requests_put_mock.assert_called_once()
         _, kwargs = requests_put_mock.call_args
-        assert kwargs["url"] == hub_model.BASE_URL + "terminal/user"
+        assert kwargs["url"] == hub_model.BASE_URL + "user"
         assert kwargs["headers"] == {"Authorization": "auth_header"}
-        assert kwargs["json"] == {"features_keys": {}, "features_settings": {}}
+        assert kwargs["json"] == {"features_keys": {}}
         assert kwargs["timeout"] == hub_model.TIMEOUT
 
 

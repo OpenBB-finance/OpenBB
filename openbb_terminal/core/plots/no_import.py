@@ -5,9 +5,8 @@ import dotenv
 
 from openbb_terminal.base_helpers import console
 from openbb_terminal.core.config.paths import SETTINGS_ENV_FILE
+from openbb_terminal.core.session.current_system import get_current_system
 from openbb_terminal.core.session.current_user import get_current_user
-
-__version__ = "0.0.0"
 
 pywry_missing = """
 [red]PyWry is not installed or missing required linux dependencies.[/]
@@ -33,6 +32,8 @@ To activate interactive plots/tables in pywry window, please make sure the follo
 
 class DummyBackend:
     """Dummy class to avoid import errors."""
+
+    __version__ = "0.0.0"
 
     max_retries = 0
     outgoing: List[str] = []
@@ -64,7 +65,10 @@ class DummyBackend:
         # we inform the user the required packages to install and revert
         # plotly default behaviour to open in browser.
         # We do this only once.
-        if current_user.preferences.PLOT_ENABLE_PYWRY:
+        if (
+            current_user.preferences.PLOT_ENABLE_PYWRY
+            and get_current_system().LOGGING_SUB_APP != "sdk"
+        ):
             console.print(pywry_missing)
             if console.input(
                 "If you prefer to continue without interactive plots/tables, "

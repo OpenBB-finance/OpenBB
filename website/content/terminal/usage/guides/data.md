@@ -30,7 +30,7 @@ This folder contains all things user-created. For example:
 
 ## Exporting Files
 
-Within many of the functionalities, we offer the capability to export to Excel (xlsx and csv) or JSON. This can be demonstrated with the `--export` argument, e.g. if you wish to export to `xlsx` you would add `--export xlsx`. 
+Within many of the functionalities, we offer the capability to export to Excel (xlsx and csv) or JSON. This can be demonstrated with the `--export` argument, e.g. if you wish to export to `xlsx` you would add `--export xlsx`.
 
 For example, if you wish to download market data you can do so from the stocks menu with the following:
 

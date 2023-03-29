@@ -20,6 +20,8 @@ import FilterColumns from "./FilterColumns";
 import xss from "xss";
 import useLocalStorage from "../../utils/useLocalStorage";
 import Toast from "../Toast";
+import { MoonIcon, SunIcon } from "@radix-ui/react-icons";
+import useDarkMode from "../../utils/useDarkMode";
 
 const date = new Date();
 
@@ -93,6 +95,18 @@ function getCellWidth(row, column) {
 }
 
 export default function Table({ data, columns, title, source = "" }: any) {
+  const [colorTheme, setTheme] = useDarkMode();
+  const [darkMode, setDarkMode] = useState(
+    colorTheme === "light" ? true : false
+  );
+  const toggleDarkMode = (checked) => {
+    setTheme(colorTheme);
+    setDarkMode(checked);
+  };
+  const [currentPage, setCurrentPage] = useLocalStorage(
+    "rowsPerPage",
+    DEFAULT_ROWS_PER_PAGE
+  );
   const [advanced, setAdvanced] = useLocalStorage("advanced", false);
   const [colors, setColors] = useLocalStorage("colors", false);
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -197,7 +211,7 @@ export default function Table({ data, columns, title, source = "" }: any) {
             return (
               <p
                 className={clsx("whitespace-nowrap", {
-                  "text-white": !colors,
+                  "text-black dark:text-white": !colors,
                   "text-[#16A34A]": value > 0 && colors,
                   "text-[#F87171]": value < 0 && colors,
                   "text-[#404040]": value === 0 && colors,
@@ -255,7 +269,7 @@ export default function Table({ data, columns, title, source = "" }: any) {
     initialState: {
       pagination: {
         pageIndex: 0,
-        pageSize: DEFAULT_ROWS_PER_PAGE,
+        pageSize: currentPage,
       },
     },
   });
@@ -314,7 +328,7 @@ export default function Table({ data, columns, title, source = "" }: any) {
         ref={tableContainerRef}
         className={clsx("overflow-x-hidden h-screen")}
       >
-        <div className="bg-grey-900/70 backdrop-filter backdrop-blur flex gap-2 px-6 items-center justify-between pt-4 ">
+        <div className="bg-white/70 dark:bg-grey-900/70 backdrop-filter backdrop-blur flex gap-2 px-6 items-center justify-between pt-4 ">
           <div className="flex gap-10 items-center">
             <div className="flex gap-[14px]">
               <input
@@ -347,12 +361,23 @@ export default function Table({ data, columns, title, source = "" }: any) {
           </div>
 
           {advanced && (
-            <div className="flex gap-10 items-end">
+            <div className="flex gap-10 items-center">
               {needsReorder && (
                 <button onClick={() => resetOrder()} className="_btn h-9">
                   Reset Order
                 </button>
               )}
+              <button
+                onClick={() => {
+                  toggleDarkMode(!darkMode);
+                }}
+              >
+                {darkMode ? (
+                  <MoonIcon className="w-4 h-4" />
+                ) : (
+                  <SunIcon className="w-4 h-4" />
+                )}
+              </button>
               <Select
                 labelType="row"
                 value={fontSize}
@@ -403,11 +428,11 @@ export default function Table({ data, columns, title, source = "" }: any) {
           <div className="absolute -inset-0.5 bg-gradient-to-r rounded-md blur-md from-[#072e49]/30 via-[#0d345f]/30 to-[#0d3362]/30"></div>
           <div
             className={
-              "border border-grey-200/60 bg-grey-900 rounded overflow-hidden relative z-20"
+              "border border-grey-500/60 dark:border-grey-200/60 bg-white dark:bg-grey-900 rounded overflow-hidden relative z-20"
             }
           >
             <div
-              className="_header gap-4 py-2 text-center text-xs flex items-center justify-between px-4"
+              className="_header relative gap-4 py-2 text-center text-xs flex items-center justify-between px-4 text-white"
               style={{
                 fontSize: `${Number(fontSize) * 100}%`,
               }}
@@ -426,12 +451,10 @@ export default function Table({ data, columns, title, source = "" }: any) {
                   ></path>
                 </svg>
               </div>
-              <p className="font-bold w-1/3">
+              <p className="font-bold w-1/3 flex flex-col gap-0.5 items-center">
                 {title}
                 {source && (
-                  <span className="font-normal text-xs">
-                    {` [Data from ${source}]`}
-                  </span>
+                  <span className="font-normal text-[10px]">{`[${source}]`}</span>
                 )}
               </p>
               <p className="w-1/3 text-right text-xs">
@@ -442,6 +465,11 @@ export default function Table({ data, columns, title, source = "" }: any) {
                   .format(date)
                   .replace(/:\d\d /, " ")}
               </p>
+              {source && source.includes("*") && (
+                <p className="text-[8px] absolute bottom-0 right-4">
+                  *not affiliated
+                </p>
+              )}
             </div>
             <div className="overflow-x-auto">
               <table
@@ -492,8 +520,9 @@ export default function Table({ data, columns, title, source = "" }: any) {
                               className={clsx(
                                 "whitespace-nowrap overflow-auto p-4",
                                 {
-                                  "bg-grey-850": idx % 2 === 0,
-                                  "bg-[#202020]": idx % 2 === 1,
+                                  "bg-grey-100 dark:bg-grey-850": idx % 2 === 0,
+                                  "bg-grey-200 dark:bg-[#202020]":
+                                    idx % 2 === 1,
                                 }
                               )}
                               style={{
@@ -524,7 +553,7 @@ export default function Table({ data, columns, title, source = "" }: any) {
                           <th
                             key={header.id}
                             colSpan={header.colSpan}
-                            className="text-grey-500 bg-grey-850 font-normal text-left text-sm h-10"
+                            className="text-grey-500 bg-grey-100 dark:bg-grey-850 font-normal text-left text-sm h-10"
                           >
                             {header.isPlaceholder
                               ? null
@@ -542,10 +571,14 @@ export default function Table({ data, columns, title, source = "" }: any) {
             </div>
           </div>
         </div>
-        <div className="fixed bg-grey-900/70 backdrop-filter backdrop-blur z-20 bottom-0 left-0 w-full flex gap-10 justify-between py-4 px-6">
+        <div className="fixed bg-white/70 dark:bg-grey-900/70 backdrop-filter backdrop-blur z-20 bottom-0 left-0 w-full flex gap-10 justify-between py-4 px-6">
           <Export columns={columns} data={data} />
           <div className="flex items-center gap-10">
-            <Pagination table={table} />
+            <Pagination
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+              table={table}
+            />
             <Timestamp />
           </div>
           {/*
