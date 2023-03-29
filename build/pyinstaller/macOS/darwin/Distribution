@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<installer-script minSpecVersion="1.000000">
+    <title>__PRODUCT__</title>
+    <bundle id="1234" path="/"/>
+    <background mime-type="image/png" file="background-light.png" scaling="tofit"/>
+    <background-darkAqua mime-type="image/png" file="background.png" scaling="tofit"/>
+    <welcome file="welcome.html" mime-type="text/html" />
+    <license file="LICENSE.txt"/>
+    <options customize="never" allow-external-scripts="no"/>
+    <installation-check script="installCheck();"/>
+    <os-version min="13.1"/>
+    <script>
+function installCheck() {
+    if(!(system.compareVersions(system.version.ProductVersion, '10.6.0') >= 0)) {
+        my.result.title = 'Unable to install';
+        my.result.message = '__PRODUCT__ requires Mac OS X 10.6 or later.';
+        my.result.type = 'Fatal';
+        return false;
+    }
+    if(system.files.fileExistsAtPath('/Applications/__PRODUCT__/')) {
+        my.result.title = 'Previous Installation Detected';
+        my.result.message = 'A previous installation of __PRODUCT__ exists at /Applications/__PRODUCT__/. This installer will remove the previous installation prior to installing. Please back up any data before proceeding.';
+        my.result.type = 'Warning';
+        return false;
+    }
+    return true;
+}
+    </script>
+    <choices-outline>
+        <line choice="__PRODUCT__.pkg"/>
+    </choices-outline>
+    <choice id="__PRODUCT__.pkg" title="__PRODUCT__" description="testing" customLocationAllowAlternateVolumes="true" customLocation="/" enabled="true">
+        <pkg-ref id="__PRODUCT__.pkg">__PRODUCT__.pkg</pkg-ref>
+    </choice>
+    <pkg-ref id="__PRODUCT__.pkg">__PRODUCT__.pkg</pkg-ref>
+</installer-script>
