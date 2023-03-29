@@ -34,7 +34,7 @@ def log_all_settings(with_rollover: bool = True) -> None:
 
 def log_system() -> None:
     """Log system"""
-    logger.info("SYSTEM: %s ", json.dumps(get_current_system().asdict()))
+    logger.info("SYSTEM: %s ", json.dumps(get_current_system().to_dict()))
 
 
 def log_credentials() -> None:
@@ -59,4 +59,4 @@ def log_credentials() -> None:
 
 def log_preferences() -> None:
     """Log preferences"""
-    logger.info("PREFERENCES: %s ", json.dumps(get_current_user().preferences.asdict()))
+    logger.info("PREFERENCES: %s ", json.dumps(get_current_user().preferences.to_dict()))

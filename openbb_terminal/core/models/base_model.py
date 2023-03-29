@@ -29,7 +29,7 @@ class BaseModel:
             return getattr(self, field)
         return None
 
-    def asdict(self) -> dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Convert model to dict."""
         return dataclasses.asdict(self)
 
