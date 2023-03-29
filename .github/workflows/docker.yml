@@ -36,8 +36,14 @@ jobs:
           source build/docker/compose.env
           source build/docker/build.sh
           echo "OPENBBTERMINAL_DOCKER_POETRY_IMAGE=$OPENBBTERMINAL_DOCKER_POETRY_IMAGE" >> $GITHUB_ENV
-          
-      - name: Publishing the Docker image
+          echo "OPENBBTERMINAL_DOCKER_POETRY_IMAGE_LATEST=$OPENBBTERMINAL_DOCKER_POETRY_IMAGE_LATEST" >> $GITHUB_ENV
+
+      - name: Publishing the Docker image (release version)
         run: |
           docker push "${OPENBBTERMINAL_DOCKER_POETRY_IMAGE}"
+        if: startsWith(github.ref, 'refs/heads/main')
+
+      - name: Publishing the latest Docker image
+        run: |
+          docker push "${OPENBBTERMINAL_DOCKER_POETRY_IMAGE_LATEST}"
         if: startsWith(github.ref, 'refs/heads/main')
