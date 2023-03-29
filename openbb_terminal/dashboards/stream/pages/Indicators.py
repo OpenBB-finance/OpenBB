@@ -18,7 +18,7 @@ from openbb_terminal.rich_config import console
 cfg.change_logging_suppress(new_value=True)
 
 # Import the OpenBB SDK
-from openbb_terminal.sdk import openbb #pylint: disable=import-outside-toplevel
+from openbb_terminal.sdk import openbb  # pylint: disable=import-outside-toplevel
 
 pd.options.plotting.backend = "plotly"
 st.set_page_config(
