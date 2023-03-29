@@ -1,7 +1,7 @@
 ---
-title: Source
-sidebar_position: 3
-description: This section provides steps to install the OpenBB Terminal and SDK from source. This installation type supports Windows, macOS and Linux systems.
+title: PyPI
+sidebar_position: 4
+description: This section provides steps to install the OpenBB Terminal and SDK from PyPI. This installation type supports Windows, macOS and Linux systems.
 keywords:
   [
     installation,
@@ -22,7 +22,7 @@ keywords:
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->
 
-This section provides steps to install the OpenBB Terminal and SDK from source. This installation type supports Windows, macOS and Linux systems. **Before starting the installation process, make sure the following pieces of software are installed.**
+This section provides steps to install the OpenBB Terminal and SDK from PyPI. This installation type supports Windows, macOS and Linux systems. **Before starting the installation process, make sure the following pieces of software are installed.**
 
 <details><summary>Miniconda</summary>
 Miniconda is a Python environment and package manager. It is required for installing certain dependencies.
@@ -66,7 +66,7 @@ git version 2.31.1
 If Git is not installed, install it now from `conda` by running:
 
 ```shell
-conda install git
+conda install -c anaconda git
 ```
 
 Or follow the instructions [here](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) to install it.
@@ -175,27 +175,17 @@ sudo dnf install gtk3-devel webkit2gtk4.0-devel
 
 Proceed to next steps once the requirements above have been met.
 
-## Clone the Source Code
+## Prepare the Virtual Environment
 
-Clone the OpenBB Terminal source code from GitHub. This will download the source code to the current working directory.
+Create the environment using a configuration file from the OpenBB Terminal repository.
 
-```console
-git clone https://github.com/OpenBB-finance/OpenBBTerminal.git
-```
-
-Enter the directory:
-
-```console
-cd OpenBBTerminal
-```
-
-## Create and Activate the Virtual Environment
-
-Create the environment by copying the code below into the command line and agreeing to the prompts.
+Copy and paste these commands into the terminal/command prompt:
 
 ```shell
-conda env create -n obb --file build/conda/conda-3-9-env.yaml
+conda env create -n obb --file https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal/d19412933245b51643a9e7f2624f1d42907488f4/build/conda/conda-3-9-env.yaml
 ```
+
+Agree to the prompts if there are any.
 
 After the obb environment is created, activate it by entering:
 
@@ -203,76 +193,95 @@ After the obb environment is created, activate it by entering:
 conda activate obb
 ```
 
-:::note
-When the new environment is activated for the first time, it is required to clean up some artifacts in order for all dependencies to work nicely.
+## Install the OpenBB Terminal and SDK
 
-On macOS and Linux do this by running this script (copy and paste the launch code):
+Make sure to have completed all previous steps. If followed, there will be a virtual environment, named `obb`, and this environment is activated.
 
-```shell
-build/conda/cleanup_artifacts.sh
-```
-
-On Windows do this by running this script (copy and paste the launch code):
+Install the main package of Openbb SDK with `pip`, a package manager.
 
 ```shell
-build/conda/cleanup_artifacts.bat
+pip install openbb --no-cache-dir
 ```
 
-:::
+This method provides access to the data aggregation and charting functions of the OpenBB SDK. It does not provide access to the advanced features that are provided by the Portfolio Optimization and Machine Learning toolkits.
 
-## Install the OpenBB Terminal
-
-Make sure to have completed all previous steps. If followed, the current working directory will be the location where the OpenBB Terminal source code lives.
-
-Install the remaining dependencies and the terminal through Poetry, a package manager.
+The toolkits can be installed individually with:
 
 ```shell
-poetry install -E all
+pip install "openbb[optimization]" --no-cache-dir
 ```
-:::info
-<details><summary>Read about Conda, Poetry and Python package management</summary>
 
-For the best user experience we advise using `conda` and `poetry` for environment setup and dependency management. Conda ships binaries for packages like `numpy` so these dependencies are not built from source locally by `pip`. Poetry solves the dependency tree in a way that the dependencies of dependencies of dependencies use versions that are compatible with each other.
-
-For `Conda` environments, the `build/conda` folder contains multiple `.yaml` configuration files to choose from.
-
-When using other Python distributions we highly recommend a virtual environment like `virtualenv` or `pyenv` for installing the terminal dependency libraries.
-
-For people who prefer using "vanilla" `pip` the requirements files are found in the project root:
-
-- `requirements.txt` list main dependencies
-- `requirements-full.txt` list all the dependencies including Machine Learning and Portfolio Optimization libraries and dependencies for developers
-
-They can be installed with `pip`:
+and
 
 ```shell
-pip install -r requirements.txt
+pip install "openbb[forecast]" --no-cache-dir
 ```
 
-The dependency tree is solved by poetry.
-
-Note: The libraries specified in the requirements files have been tested and work for the purpose of this project, however, these may be older versions. Hence, it is recommended for the user to set up a Python virtual environment prior to installing them. This keeps dependencies required by different projects in separate places.
-
-After installing the requirements, install the terminal with:
+Install all available toolkits at once with:
 
 ```shell
-pip install .
+pip install "openbb[all]" --no-cache-dir
 ```
 
-</details>
-:::
+## Verify Installation
 
-Once this installation process is completed, start the terminal by running:
+Once this installation process is completed, the terminal is launched by running:
 
 ```shell
-python terminal.py
+openbb
 ```
+
+To confirm the installation of the SDK, open the Python interpreter with a `python` command, then run the following:
+
+```python
+from openbb_terminal.sdk import openbb
+openbb.__version__
+```
+
+You should see the version number displayed, for example:
+
+```python
+'2.5.1'
+```
+
+That's it!
 
 **NOTE:** When the OpenBB Terminal is opened next, the Python environment will need to be activated again. When using a code editor, make sure that the correct environment is selected. This should be easy to figure out if there is an error stating that there are missing packages. To launch the OpenBB Terminal application in a new terminal window, first navigate into the folder where the source code was cloned, and then use the following two commands:
 
 ```shell
 conda activate obb
-python terminal.py
+openbb
 ```
 
-**TROUBLESHOOTING:** Having difficulty getting through the installation, or encountering errors? Reach out to our [Discord](https://discord.gg/Up2QGbMKHY) community for help.
+## Updating the OpenBB SDK Version
+
+Upgrade the OpenBB SDK to the latest version via `pypi`. When using the terminal or SDK without toolkits, first activate  environment by running:
+
+```shell
+conda activate obb
+```
+
+and then update the package by running:
+
+```shell
+pip install -U openbb --no-cache-dir
+```
+
+When using an installation with toolkits, with the virtual environment activated, enter:
+
+```shell
+pip install -U "openbb[all]" --no-cache-dir
+```
+
+## Nightly Builds
+
+OpenBB SDK is updated daily with new features and bug fixes, but some features being worked on may be unstable. To use the same SDK version as the development team, install the nightly build with:
+
+```shell
+conda activate obb
+pip install -U openbb-nightly --no-cache-dir
+```
+
+:::info
+If issues are encountered with the installation, please try installing OpenBB Terminal and SDK from source [(link)](/terminal/installation/source), or reach out to our [Discord](https://discord.gg/Up2QGbMKHY) community for help.
+:::
