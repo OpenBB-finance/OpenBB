@@ -1,3 +1,4 @@
+import dataclasses
 from typing import Any, Optional
 
 from pydantic.dataclasses import dataclass
@@ -28,14 +29,9 @@ class BaseModel:
             return getattr(self, field)
         return None
 
-    def to_dict(self) -> dict[str, Any]:
+    def asdict(self) -> dict[str, Any]:
         """Convert model to dict."""
-        d = self.__dict__.copy()
-        keys = list(d.keys())
-        for key in keys:
-            if key.startswith("_"):
-                del d[key]
-        return d
+        return dataclasses.asdict(self)
 
     def get_default(self, field: str) -> Optional[Any]:
         """Get default field value."""
