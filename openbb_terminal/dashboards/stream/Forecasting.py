@@ -9,10 +9,16 @@ import streamlit as st
 import yfinance as yf
 from rich.table import Table
 
+import openbb_terminal.config_terminal as cfg
 from openbb_terminal.core.plots.plotly_helper import OpenBBFigure
 from openbb_terminal.forecast import helpers
 from openbb_terminal.rich_config import console
-from openbb_terminal.sdk import openbb
+
+# Supressing sdk logs
+cfg.change_logging_suppress(new_value=True)
+
+# Import the OpenBB SDK
+from openbb_terminal.sdk import openbb #pylint: disable=import-outside-toplevel
 
 st.set_page_config(
     layout="wide",
