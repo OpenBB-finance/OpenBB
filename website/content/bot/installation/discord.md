@@ -2,7 +2,7 @@
 title: Discord
 sidebar_position: 1
 description: How to get started with OpenBB Bot
-keywords: [installation, install, install openbb bot, guide, instructions, how to, explanation, openbb bot, openbb, discord, telegram,]
+keywords: [installation, install, install openbb bot, guide, how to, explanation, openbb bot, openbb, discord, telegram,]
 ---
 
 ## Discord - First Time Setup
