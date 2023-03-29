@@ -153,7 +153,7 @@ def load_exclusion_policy(loaded_funds: mstarpy.Funds) -> pd.DataFrame:
 @log_start_end(log=logger)
 def load_funds(
     term: str = "",
-    country: str = "",
+    country: str = "US",
 ) -> mstarpy.Funds:
     """Search mstarpy for matching funds
 
@@ -211,7 +211,7 @@ def load_holdings(
 @log_start_end(log=logger)
 def search_funds(
     term: str = "",
-    country: str = "US",
+    country: str = "",
     limit=10,
 ) -> pd.DataFrame:
     """Search mstarpy for matching funds
