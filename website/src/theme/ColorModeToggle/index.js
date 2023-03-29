@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import clsx from "clsx";
 import useIsBrowser from "@docusaurus/useIsBrowser";
 import { translate } from "@docusaurus/Translate";
@@ -9,10 +9,12 @@ import { useLocation } from "@docusaurus/router";
 import DiscordIcon from "@site/src/components/Icons/Discord";
 import TelegramIcon from "@site/src/components/Icons/Telegram";
 import Link from "@docusaurus/Link";
+import { useIFrameContext } from "../Root";
 function ColorModeToggle({ className, value, onChange }) {
+  const { isIFrame } = useIFrameContext();
   const { pathname } = useLocation();
-  const showBotChange =
-    pathname.startsWith("/bot/discord") || pathname.startsWith("/bot/telegram");
+  const showBotChange = false; //pathname.startsWith("/bot/discord") || pathname.startsWith("/bot/telegram");
+  // this can be used later to switch between discord and telegram commands on bot
   const isDiscord = pathname.startsWith("/bot/discord");
   const isBrowser = useIsBrowser();
   const title = translate(
@@ -37,6 +39,11 @@ function ColorModeToggle({ className, value, onChange }) {
     }
   );
   const command = pathname.split("/").pop();
+  useEffect(() => {
+    if (isIFrame) {
+      onChange("dark");
+    }
+  }, []);
   return (
     <div className="flex gap-4 mr-12 md:mr-0 ml-4">
       {showBotChange && (
