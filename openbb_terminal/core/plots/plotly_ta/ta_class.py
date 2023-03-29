@@ -133,6 +133,7 @@ class PlotlyTA(PltTA):
     def subplots(self, value: List[str]):
         self.__subplots__ = value
 
+    # pylint: disable=R0913
     def __plot__(
         self,
         df_stock: Union[pd.DataFrame, pd.Series],
