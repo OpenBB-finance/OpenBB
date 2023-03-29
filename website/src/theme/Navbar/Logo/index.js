@@ -15,7 +15,7 @@ function getLogo(type) {
     case "bot":
       return <BotLetteringLogo />;
     default:
-      return <LetteringLogo />;
+      return <LetteringLogo className="text-white" />;
   }
 }
 
