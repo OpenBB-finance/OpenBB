@@ -56,10 +56,12 @@ def display_ark_trades(
         lambda x: x.strftime("%Y-%m-%d")
     )
     print_rich_table(
-        ark_holdings.head(limit),
+        ark_holdings,
         headers=list(ark_holdings.columns),
         show_index=True,
         title="ARK Trades",
+        export=bool(export),
+        limit=limit,
     )
 
     export_data(

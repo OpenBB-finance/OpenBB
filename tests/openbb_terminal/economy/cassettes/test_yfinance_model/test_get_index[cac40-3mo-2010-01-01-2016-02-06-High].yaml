@@ -12,76 +12,53 @@ interactions:
       - Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML,
         like Gecko) Chrome/39.0.2171.95 Safari/537.36
     method: GET
-    uri: https://query2.finance.yahoo.com/v8/finance/chart/%5EFCHI?period1=1262300400&period2=1454713200&interval=3mo&includePrePost=False&events=div%2Csplits
+    uri: https://query2.finance.yahoo.com/v8/finance/chart/CAC40?range=1d&interval=1d
   response:
     body:
-      string: !!binary |
-        H4sIAAAAAAAAAO1WTW/cNhD9L3tesCSHQ3JyKxy3yaGBEbhAgcAFVK/ibLu7crXaNK6x/71vKNmi
-        nEPbWw+9aEej4XA+3rzZx9Xtp6YfVq8eV317PO0gfXhc7duhUdXtqe/bw+3D6tXq8sf3q/Xq+LD/
-        pdvh9efvLt68haL9gvOHu/Zds2+hvvpWrbaH49Cf9u1huH64V/Xbd68vf8KHj9v+OFz3zaZ93Qz4
-        ECn6lIO1a9x+d9o1/Q9N/1s7XG/Vm4shZZaU8PluP3QfPx5bxEdR7QeY/Nkd1PvF5XUVyfX0YYro
-        8tR39+03V02/Pa5eXHPVb281iujIcFqPpbjq28/b7nS82HVHfCShaIjWq3s1frM9IAK/nipTctke
-        7q7afttttGL3fas/X0d32EwJBSnxH4dS9lr1Isfzc7R/4zFb/4893nfH4d+7m1Qv3cHfphma7/vm
-        oGFuBwUK7Tuts7YCbxA/N7vt5r2+HwGuldtAx/pwxXK0j+XpHvDw+mB9OKvPh0GN982X1c157DtC
-        29/Dl/Ms0SM0u3Y+JpI8iokpkC9iJi+TgTjHk4FkoVBEsjEnKbbkQvajAXkfZTIgyxzDKGa2LhYx
-        xMB21HIgNxlEb8WPYrKW0mibkuTJIHPmyQC48gX6LljHqaAaorAfDYJLlCcDz7hhFImcldE2OMuT
-        Qci4F+KNDt9me9sMXX/UPv9+6nTQMNO3I54/ILJsNM2QkS5KuCa2yTB8IjihBEUQa5IgA7FRDaKz
-        JpBIQICqCA4KHLOSIheFtdFIZUGeo9H8n03IcTAokHPJ5XIJexOCCD9rrEvGuvpMwGRalDJmmkJj
-        Tka7hLZKLKeSh82aJGTDiDmnPEUtRCbVpsELG7QI9SvOULFsLCxSqUNgJ6iDZB98CShQdka7PNUB
-        JbDGZYTJ0wkEb0ISAC+UG1CSZHA/oDDmFCKyFMBGmKYTydRlCcQgn/DkAQ38tL37hD4htmwcfBd0
-        jUXOUTPFNC5rLdGZKFUlg4ticrLze2CT/BxnsCjaslroqfFOJKHeJVQCqBbJKUSXCoaXXMGAGDEr
-        VzylS0nI+EW+NnnjEb0ghFC64NRLXTMCdnwSkL8bzwRvFxkHBilnmhsn2cRQuWSLTs6N/apN4AWT
-        ZiCwB/IWbUQxFg4lcXUAXcJSOeg0YV5rSBFY6MUsAUORRZx3k4mOW9UcioTBcAB+esId2MzEaKfs
-        rQtG53zulU+APNcj7JBhPZAUQjBM9ZxYnw0t5h6egc05do4K3jlrSg4jCkyMYRFcmVgjkiSFmigw
-        YGFZN3DmwqAgpm4+oRMVK6D3ASNWtRqhgXvmmWOkhKGcocxZF/Tc6whqAuOOSaJTn7vdSf8KfGAl
-        g4RhBGNaQCon5Zq1OOsjxgeiLjoq6nUOLkfRE+uEFah6PQemFuyWwrresscH1SPgmHFfcZ0IBDou
-        HcSJhjg1kUgovTZgHZlIXNlQQEYUVwhduXwy4OTQ/sjFAIl63IM4COQPdlKtgFgCl5gDK/OTitan
-        WBYiRJCvlO0AkXRrqQddl9iUqgWGXNLgUaJd94diGR6N2BqqPmMzLPiX/EugpbzkAHTTROxi8VPH
-        KIIE6vH1WZxxNeK9mlRjBBzhmgonHrxk6tUAXPsls6DqznBNPhxpyUYocYUNvGOqQZUzvsHN/vlz
-        sBiqsu2ybhisWzHYvvNoYx6XacADsFiPasjgMt3wz+TmCSQ64x//fxc7h1A3E56H8uaM9jSbX5+2
-        92P98v8q/0+v8vPNWbvX9n2Hv/D4i7w7n/8CslMmJ3ANAAA=
+      string: '{"chart":{"result":null,"error":{"code":"Not Found","description":"No
+        data found, symbol may be delisted"}}}'
     headers:
       Age:
       - '0'
+      Cache-Control:
+      - max-age=0, private
       Connection:
       - keep-alive
       Expect-CT:
       - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
+      Expires:
+      - '-1'
       Referrer-Policy:
       - no-referrer-when-downgrade
       Strict-Transport-Security:
-      - max-age=15552000
+      - max-age=31536000
       X-Content-Type-Options:
       - nosniff
       X-Frame-Options:
       - SAMEORIGIN
       X-XSS-Protection:
       - 1; mode=block
-      cache-control:
-      - public, max-age=10, stale-while-revalidate=20
-      content-encoding:
-      - gzip
       content-length:
-      - '1346'
+      - '108'
       content-type:
       - application/json;charset=utf-8
       date:
-      - Mon, 21 Mar 2022 11:04:33 GMT
+      - Sat, 25 Feb 2023 13:16:52 GMT
       server:
       - ATS
       vary:
-      - Origin,Accept-Encoding
+      - Origin
       x-envoy-decorator-operation:
-      - finance-chart-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
+      - finance-chart-api--mtls-canary-production-bf1.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
-      - '4'
+      - '1'
       x-request-id:
-      - f383d400-d576-47cd-8902-b1f3cb20505a
+      - a8d68c54-a532-4f38-b85f-5c2110b4d5cd
       x-yahoo-request-id:
-      - 0ohs2v5h3gmu1
+      - 4m5lgophvk2i4
       y-rid:
-      - 0ohs2v5h3gmu1
+      - 4m5lgophvk2i4
     status:
-      code: 200
-      message: OK
+      code: 404
+      message: Not Found
 version: 1

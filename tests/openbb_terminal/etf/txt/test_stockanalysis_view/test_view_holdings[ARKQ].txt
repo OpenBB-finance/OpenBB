@@ -1,7 +1,39 @@
-                                             Name % Of Etf   Shares
-Symbol                                                             
-TSLA                                  Tesla, Inc.   10.29%   427599
-TRMB                                 Trimble Inc.    8.79%  1396770
-KTOS    Kratos Defense & Security Solutions, Inc.    7.16%  6324309
-IRDM                  Iridium Communications Inc.    6.34%  1213624
-DE                                Deere & Company    6.30%   148732
+                                              Name % Of Etf    Shares
+Symbol                                                               
+TSLA                                   Tesla, Inc.   14.48%    674579
+PATH                                   UiPath Inc.    7.48%   4605486
+TRMB                                  Trimble Inc.    7.40%   1307742
+IRDM                   Iridium Communications Inc.    7.32%   1089806
+KTOS     Kratos Defense & Security Solutions, Inc.    7.20%   5921223
+TER                                 Teradyne, Inc.    5.30%    492647
+DE                                 Deere & Company    4.62%    101342
+KMTUY                       KOMATSU LTD -SPONS ADR    4.16%   1624955
+AVAV                           AeroVironment, Inc.    3.81%    418204
+DDD                         3D Systems Corporation    2.87%   2512773
+BLDE                      Blade Air Mobility, Inc.    2.58%   5108401
+NVDA                            NVIDIA Corporation    2.35%    105928
+VLD                                   Velo3D, Inc.    2.24%   6885117
+ACHR                          Archer Aviation Inc.    2.06%   6963301
+CAT                               Caterpillar Inc.    1.94%     76402
+MG.TO                      MAGNA INTERNATIONAL INC    1.92%    322470
+GOOG                                 Alphabet Inc.    1.83%    187020
+U                              Unity Software Inc.    1.81%    447027
+ESLT.TA                          ELBIT SYSTEMS LTD    1.73%     96820
+BYDDY                   BYD CO LTD-UNSPONSORED ADR    1.62%    266097
+GM                          General Motors Company    1.58%    361979
+MKFG                Markforged Holding Corporation    1.50%  10256670
+TDY             Teledyne Technologies Incorporated    1.45%     31739
+ISRG                      Intuitive Surgical, Inc.    1.44%     57898
+VUZI                             Vuzix Corporation    1.32%   2756860
+SNPS                                Synopsys, Inc.    1.31%     34469
+ANSS                                   ANSYS, Inc.    1.25%     43861
+SSYS                                Stratasys Ltd.    1.20%    834881
+LMT                    Lockheed Martin Corporation    1.02%     19886
+RKLB                          Rocket Lab USA, Inc.    0.91%   1835135
+MTLS                                Materialise NV    0.86%    910340
+TWOU                                      2U, Inc.    0.58%    585829
+XPEV                                    XPeng Inc.    0.36%    368124
+NIU                               Niu Technologies    0.17%    339911
+N/A                      DREYFUS GOVT CASH MAN INS    0.16%   1536224
+PRLB                              Proto Labs, Inc.    0.15%     44002
+ONVO                       Organovo Holdings, Inc.    0.00%       100

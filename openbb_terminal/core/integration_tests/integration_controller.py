@@ -13,17 +13,17 @@ from multiprocessing import cpu_count
 from multiprocessing.pool import Pool
 from pathlib import Path
 from traceback import FrameSummary, extract_tb, format_list
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Callable, Dict, List, Optional, Tuple
 
 from openbb_terminal.core.config.paths import (
     MISCELLANEOUS_DIRECTORY,
     REPOSITORY_DIRECTORY,
 )
+from openbb_terminal.core.session.current_user import get_current_user, set_current_user
 from openbb_terminal.helper_funcs import check_non_negative
 from openbb_terminal.rich_config import console
 from openbb_terminal.terminal_controller import (
     insert_start_slash,
-    obbff,
     replace_dynamic,
     terminal,
 )
@@ -265,7 +265,6 @@ def run_scripts(
             else [" ".join(file_cmds)]
         )
 
-        obbff.REMEMBER_CONTEXTS = 0
         if verbose:
             terminal(file_cmds, test_mode=True)
         else:
@@ -353,6 +352,7 @@ def run_test_files(
     verbose: bool = False,
     special_arguments: Optional[Dict[str, str]] = None,
     subprocesses: Optional[int] = None,
+    ordered: bool = False,
 ) -> Tuple[int, int, Dict[str, Dict[str, Any]], float]:
     """Runs the test scripts and returns the fails dictionary
 
@@ -366,6 +366,8 @@ def run_test_files(
         The special arguments to use in the scripts
     subprocesses: Optional[int]
         The number of subprocesses to use to run the tests
+    ordered: bool
+        Multiprocessing is not ordered by default. Use this flag to run the tests in order
 
     Returns
     -------
@@ -410,8 +412,10 @@ def run_test_files(
                 if extra:
                     chunksize += 1
 
+                runner: Callable = pool.imap if ordered else pool.imap_unordered
+
                 for i, result in enumerate(
-                    pool.imap(
+                    runner(
                         partial(
                             run_test,
                             verbose=verbose,
@@ -531,6 +535,7 @@ def run_test_session(
     special_arguments: Optional[Dict[str, str]] = None,
     verbose: bool = False,
     subprocesses: Optional[int] = None,
+    ordered: bool = False,
 ):
     """Run the integration test session
 
@@ -552,11 +557,13 @@ def run_test_session(
         Whether or not to print the output of the scripts
     subprocesses
         The number of subprocesses to use to run the tests
+    ordered: bool
+        Multiprocessing is not ordered by default. Use this flag to run the tests in order.
     """
     console.print(to_section_title("integration test session starts"), style="bold")
     test_files = collect_test_files(path_list, skip_list)
     n_successes, n_failures, fails, seconds = run_test_files(
-        test_files, verbose, special_arguments, subprocesses
+        test_files, verbose, special_arguments, subprocesses, ordered
     )
     display_failures(fails)
     display_summary(fails, n_successes, n_failures, seconds)
@@ -645,6 +652,14 @@ def parse_args_and_run():
         action="store_true",
         default=False,
     )
+    parser.add_argument(
+        "-o",
+        "--ordered",
+        help="Multiprocessing is not ordered by default. Use this flag to run the tests in order.",
+        dest="ordered",
+        action="store_true",
+        default=False,
+    )
     for arg in special_arguments_values:
         parser.add_argument(
             f"--{arg}",
@@ -680,6 +695,7 @@ def parse_args_and_run():
         special_arguments=special_args_dict,
         verbose=ns_parser.verbose,
         subprocesses=ns_parser.subprocesses,
+        ordered=ns_parser.ordered,
     )
 
 
@@ -691,12 +707,14 @@ def main():
     if "--test" in sys.argv:
         sys.argv.remove("--test")
 
-    os.environ["OPENBB_ENABLE_QUICK_EXIT"] = "False"
-    os.environ["OPENBB_LOG_COLLECT"] = "False"
-    os.environ["OPENBB_USE_ION"] = "True"
-    os.environ["OPENBB_USE_PROMPT_TOOLKIT"] = "False"
+    current_user = get_current_user()
+    current_user.preferences.ENABLE_EXIT_AUTO_HELP = False
+    current_user.preferences.USE_ION = True
+    current_user.preferences.USE_PROMPT_TOOLKIT = False
+    current_user.preferences.REMEMBER_CONTEXTS = False
+    set_current_user(current_user)
     os.environ["DEBUG_MODE"] = "True"
-
+    os.environ["OPENBB_LOG_COLLECT"] = "False"
     parse_args_and_run()
 
 

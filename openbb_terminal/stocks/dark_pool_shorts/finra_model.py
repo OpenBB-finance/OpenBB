@@ -314,7 +314,7 @@ def getTickerFINRAdata(symbol: str) -> Tuple[pd.DataFrame, pd.DataFrame]:
             )
             if status_code == 200:
                 if response:
-                    d_data = response[0]
+                    d_data: dict = response[0]
                     d_data.update(d_week)
                     l_data.append(d_data)
                 else:

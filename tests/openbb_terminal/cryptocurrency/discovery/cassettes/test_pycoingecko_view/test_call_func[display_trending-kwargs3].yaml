@@ -9,26 +9,27 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - python-requests/2.28.1
+      - python-requests/2.28.2
     method: GET
     uri: https://api.coingecko.com/api/v3/search/trending
   response:
     body:
       string: !!binary |
-        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
+        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
+        5O6sVv4LAAA=
     headers:
       Access-Control-Allow-Headers:
       - Origin, X-Requested-With, Content-Type, Accept, Authorization
@@ -40,12 +41,14 @@ interactions:
       - link, per-page, total
       Access-Control-Request-Method:
       - '*'
+      Age:
+      - '37'
       Alternate-Protocol:
       - 443:npn-spdy/2
       CF-Cache-Status:
-      - EXPIRED
+      - HIT
       CF-RAY:
-      - 763611dd3aca5d2b-LIS
+      - 7a124c6d18c303e6-LIS
       Cache-Control:
       - public, max-age=120
       Connection:
@@ -55,15 +58,19 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Tue, 01 Nov 2022 16:40:01 GMT
+      - Wed, 01 Mar 2023 15:05:30 GMT
       ETag:
-      - W/"b811cab7d278d187099a533eaeccd5e5"
+      - W/"198cbfa64429ea4a4b10357d92cd157e"
       Expires:
-      - Tue, 01 Nov 2022 16:42:01 GMT
+      - Wed, 01 Mar 2023 15:07:30 GMT
       Referrer-Policy:
       - strict-origin-when-cross-origin
       Server:
       - cloudflare
+      Set-Cookie:
+      - __cf_bm=HTWey2IyV2gKWAn9kKFSWqzHmCw2._W8EFFz409tVw8-1677683130-0-Abyma/ug5ST8EuI97BsDkKSH3LCVAuvGSSokpDqeWo05o5wRtM5kdWUgPp0rpVqinlXvpjpz5ODAW1J6y4uaZRA=;
+        path=/; expires=Wed, 01-Mar-23 15:35:30 GMT; domain=.api.coingecko.com; HttpOnly;
+        Secure; SameSite=None
       Transfer-Encoding:
       - chunked
       Vary:
@@ -77,11 +84,11 @@ interactions:
       X-Permitted-Cross-Domain-Policies:
       - none
       X-Request-Id:
-      - b66484aa-98e0-48fb-a75d-f19a512f69e5
+      - 4d54777e-0e72-4933-9062-82ac971796e9
       X-Runtime:
-      - '0.033346'
+      - '0.011230'
       X-XSS-Protection:
-      - 1; mode=block
+      - '0'
     status:
       code: 200
       message: OK

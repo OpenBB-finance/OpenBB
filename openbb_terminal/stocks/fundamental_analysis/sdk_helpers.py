@@ -27,6 +27,7 @@ def get_income_statement(
         Symbol to get income statement for
     source : str, optional
         Data source for income statement, by default "YahooFinance"
+        Sources: YahooFinance, AlphaVantage, FinancialModelingPrep, Polygon, EODHD
     quarterly : bool, optional
         Flag to get quarterly data
     ratios : bool, optional
@@ -42,7 +43,7 @@ def get_income_statement(
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> income_statement = openbb.stocks.fa.income("AAPL", source="YahooFinance)
+    >>> income_statement = openbb.stocks.fa.income("AAPL", source="YahooFinance")
 
     If you have a premium AlphaVantage key, you can use the quarterly flag to get quarterly statements
     >>> quarterly_income_statement = openbb.stocks.fa.income("AAPL", source="AlphaVantage", quarterly=True)
@@ -90,6 +91,7 @@ def get_balance_sheet(
         Symbol to get balance sheet for
     source : str, optional
         Data source for balance sheet, by default "YahooFinance"
+        Sources: YahooFinance, AlphaVantage, FinancialModelingPrep, Polygon, EODHD
     quarterly : bool, optional
         Flag to get quarterly data
     ratios : bool, optional
@@ -105,7 +107,7 @@ def get_balance_sheet(
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> balance_sheet = openbb.stocks.fa.balance("AAPL", source="YahooFinance)
+    >>> balance_sheet = openbb.stocks.fa.balance("AAPL", source="YahooFinance")
 
     If you have a premium AlphaVantage key, you can use the quarterly flag to get quarterly statements
     >>> quarterly_income_statement = openbb.stocks.fa.balance("AAPL", source="AlphaVantage", quarterly=True)
@@ -153,6 +155,7 @@ def get_cash_flow(
         Symbol to get cash flow for
     source : str, optional
         Data source for cash flow, by default "YahooFinance"
+        Sources: YahooFinance, AlphaVantage, FinancialModelingPrep, Polygon, EODHD
     quarterly : bool, optional
         Flag to get quarterly data
     ratios : bool, optional
@@ -168,7 +171,7 @@ def get_cash_flow(
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> cash_flow = openbb.stocks.fa.cash("AAPL", source="YahooFinance)
+    >>> cash_flow = openbb.stocks.fa.cash("AAPL", source="YahooFinance")
 
     If you have a premium AlphaVantage key, you can use the quarterly flag to get quarterly statements
     >>> quarterly_income_statement = openbb.stocks.fa.cash("AAPL", source="AlphaVantage", quarterly=True)
@@ -212,6 +215,7 @@ def earnings(
         Stock ticker
     source : str, optional
          Source to use, by default "AlphaVantage"
+         Sources: YahooFinance, AlphaVantage
     quarterly : bool, optional
         Flag to get quarterly data (AlphaVantage only), by default False.
 
@@ -223,10 +227,10 @@ def earnings(
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> aapl_earnings = openbb.stocks.fa.earnings("AAPL", source ="YahooFinance)
+    >>> aapl_earnings = openbb.stocks.fa.earnings("AAPL", source ="YahooFinance")
 
     To obtain quarterly earnings, use the quarterly flag with AlphaVantage
-    >>> aapl_earnings = openbb.stocks.fa.metrics("earnings", source ="AlphaVantage, quarterly=True)
+    >>> aapl_earnings = openbb.stocks.fa.metrics("earnings", source ="AlphaVantage", quarterly=True)
     """
     if source == "YahooFinance":
         df = yahoo_finance_model.get_earnings_history(symbol)

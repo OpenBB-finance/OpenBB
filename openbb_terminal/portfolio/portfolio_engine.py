@@ -19,6 +19,7 @@ from openbb_terminal.portfolio.portfolio_helper import (
     make_equal_length,
 )
 from openbb_terminal.rich_config import console
+from openbb_terminal.stocks.fundamental_analysis.yahoo_finance_model import get_splits
 from openbb_terminal.terminal_helper import suppress_stdout
 
 # pylint: disable=E1136,W0201,R0902,C0302
@@ -285,6 +286,31 @@ class PortfolioEngine:
                 abs(self.__transactions["Quantity"]) * self.__transactions["Signal"]
             )
 
+            # Adjust quantity and price for splits
+            for ticker in self.__transactions["Ticker"].unique():
+                try:
+                    splits_df = get_splits(ticker)
+                    if not splits_df.empty:
+                        splits_df = splits_df.tz_localize(tz=None)
+                        for split_date in splits_df.index:
+                            self.__transactions["Quantity"] = np.where(
+                                (self.__transactions["Ticker"] == ticker)
+                                & (self.__transactions["Date"] < split_date),
+                                self.__transactions["Quantity"]
+                                * splits_df.loc[split_date].values,
+                                self.__transactions["Quantity"],
+                            )
+                            self.__transactions["Price"] = np.where(
+                                (self.__transactions["Ticker"] == ticker)
+                                & (self.__transactions["Date"] < split_date),
+                                self.__transactions["Price"]
+                                / splits_df.loc[split_date].values,
+                                self.__transactions["Price"],
+                            )
+
+                except Exception:
+                    console.print("\nCould not get splits adjusted")
+
             p_bar.n += 1
             p_bar.refresh()
 
@@ -348,7 +374,7 @@ class PortfolioEngine:
                         ] = ""
                         removed_tickers.append(item)
 
-            # Merge reformated tickers into Ticker
+            # Merge reformatted tickers into Ticker
             self.__transactions["Ticker"] = self.__transactions["yf_Ticker"].fillna(
                 self.__transactions["Ticker"]
             )

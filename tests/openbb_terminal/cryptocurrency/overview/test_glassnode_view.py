@@ -14,7 +14,6 @@ def vcr_config():
 
 
 @pytest.mark.vcr
-def test_display_btc_rainbow(mocker):
+def test_display_btc_rainbow():
     # MOCK VISUALIZE_OUTPUT
-    mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
     glassnode_view.display_btc_rainbow(start_date="2012-01-01", end_date="2022-01-08")

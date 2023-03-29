@@ -1,4 +1,6 @@
 # IMPORTATION THIRDPARTY
+from pathlib import Path
+
 import pytest
 import requests
 
@@ -54,10 +56,21 @@ def test_get_historical_greeks_invalid_status(mocker):
     assert result_df.empty
 
 
+@pytest.mark.skip
 @pytest.mark.vcr
-def test_get_screener_output(recorder):
+def test_get_screener_output(mocker, recorder):
+    mock_preset_path = Path(__file__).resolve().parent / "ini"
+    preset_choices = {
+        filepath.name: filepath
+        for filepath in mock_preset_path.iterdir()
+        if filepath.suffix == ".ini"
+    }
+    mocker.patch(
+        target="openbb_terminal.stocks.options.screen.syncretism_model.get_preset_choices",
+        return_value=preset_choices,
+    )
     result_tuple = syncretism_model.get_screener_output(
-        preset="high_IV.ini",
+        preset="high_iv.ini",
     )
     recorder.capture(result_tuple[0])
 
@@ -72,7 +85,15 @@ def test_get_screener_output_invalid_status(mocker):
     )
 
     result_tuple = syncretism_model.get_screener_output(
-        preset="high_IV.ini",
+        preset="high_iv.ini",
     )
 
     assert result_tuple[0].empty
+
+
+@pytest.mark.vcr
+def test_get_screener_output_30_delta_spy(recorder):
+    result_tuple = syncretism_model.get_screener_output(
+        preset="30_delta_spy.ini",
+    )
+    recorder.capture(result_tuple[0])

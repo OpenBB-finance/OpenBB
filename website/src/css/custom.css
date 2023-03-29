@@ -59,17 +59,23 @@
 }
 
 @layer components {
+  .card {
+    @apply w-full rounded-[4px] border border-grey-400 p-6 shadow bg-grey-900;
+  }
   .tw-transition {
     @apply transition duration-150 ease-out;
   }
   ._btn-common {
     @apply inline-flex w-full items-center justify-center gap-2 rounded py-2 px-6 text-center !no-underline transition duration-150 ease-out md:w-fit;
   }
+  ._btn-dark {
+    @apply _btn-common bg-grey-100 text-grey-800 hover:bg-white focus:outline focus:outline-2 active:bg-grey-200 hover:active:text-grey-900 disabled:bg-grey-300 disabled:text-grey-500 active:disabled:bg-grey-300 active:disabled:text-grey-500;
+  }
   ._btn {
-    @apply _btn-common bg-grey-800 text-white hover:bg-grey-600 dark:bg-grey-100 dark:text-grey-800 dark:hover:bg-white focus:outline focus:outline-2 focus:outline-grey-500 dark:active:bg-grey-200 dark:hover:active:text-grey-900 disabled:bg-grey-300 disabled:text-grey-500 active:disabled:bg-grey-300 active:disabled:text-grey-500;
+    @apply _btn-common bg-grey-800 text-white hover:text-white hover:bg-grey-600 dark:bg-grey-100 dark:text-grey-800 dark:hover:bg-white focus:outline focus:outline-2 focus:outline-grey-500 dark:active:bg-grey-200 dark:hover:active:text-grey-900 disabled:bg-grey-300 disabled:text-grey-500 active:disabled:bg-grey-300 active:disabled:text-grey-500;
   }
   ._btn-secondary {
-    @apply _btn-common border border-grey-300 text-grey-300 outline-offset-0 hover:border-white hover:text-white focus:outline focus:outline-2 focus:outline-grey-500 active:border-white active:bg-grey-800 active:text-white disabled:border-grey-500 disabled:bg-transparent disabled:text-grey-500;
+    @apply _btn-common border border-grey-300 hover:text-grey-500 hover:border-grey-500 text-grey-300 outline-offset-0 dark:hover:border-white dark:hover:text-white focus:outline focus:outline-2 focus:outline-grey-500 active:border-white active:bg-grey-800 active:text-white disabled:border-grey-500 disabled:bg-transparent disabled:text-grey-500;
   }
   ._btn-tertiary {
     @apply _btn-common bg-grey-900 text-grey-50 hover:bg-grey-800 hover:text-white focus:bg-grey-900 focus:outline focus:outline-2 focus:outline-grey-500 active:bg-grey-700 active:text-white disabled:bg-grey-500 disabled:text-grey-700;
@@ -77,6 +83,21 @@
 
   ._group-tab {
     @apply w-full flex mb-12;
+  }
+  ._modal {
+    @apply card fixed top-1/2 left-1/2 z-50 max-h-[608px] w-[90%] max-w-[568px] -translate-x-1/2 -translate-y-1/2 animate-fade-in overflow-auto bg-grey-900 p-2 duration-300 focus:outline-none md:p-10;
+  }
+  ._modal-overlay {
+    @apply bg-grey-900 opacity-60 z-40 inset-0 fixed;
+  }
+  ._modal-title {
+    @apply text-white uppercase tracking-widest text-lg font-bold;
+  }
+  .input {
+    @apply text-sm h-12 pl-4 pr-2 w-full border border-grey-600 text-white focus:text-white rounded-md focus:border-white active:border-white focus:ring-0 hover:border-white disabled:border-grey-700 py-3 bg-transparent;
+  }
+  ._floating-label {
+    @apply absolute text-sm text-grey-500 duration-300 transform -translate-y-8 scale-75 top-2 z-0 origin-[0] px-1 peer-focus:px-1 peer-focus:text-white peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:-top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-4;
   }
 }
 
@@ -142,11 +163,16 @@
   --aa-background-color-rgb: 0, 0, 0 !important;
 }
 
+.cls-1,
+.cls-2 {
+  fill: rgb(160, 160, 160) !important;
+}
+
 .DocSearch-Button {
   border-radius: 4px !important;
-  border: 1px solid #2e2e2e !important;
+  border-radius: 4px !important;
+  border: 1px solid #a2a2a2ff !important;
   background-color: #070707ff !important;
-  border-color: #a2a2a2ff !important;
 }
 
 @media (max-width: 440px) {
@@ -156,11 +182,12 @@
   }
 }
 
+/*
 .DocSearch-Button:hover {
   outline: none !important;
   border-color: white !important;
   color: white !important;
-}
+}*/
 
 [data-theme="dark"] {
   /*
@@ -223,6 +250,37 @@
     var(--ifm-color-emphasis-200) 0%,
     var(--ifm-color-emphasis-100) 100%
   );
+}
+
+.header_docs_bot {
+  background: -moz-linear-gradient(
+    90deg,
+    rgb(78, 23, 65) 0%,
+    rgb(62, 29, 78) 15%,
+    rgba(55, 29, 76, 1) 45%,
+    rgb(68, 39, 87) 64%,
+    rgb(46, 34, 65) 82%,
+    rgba(16, 9, 0, 1) 100%
+  ) !important;
+  background: -webkit-linear-gradient(
+    90deg,
+    rgb(78, 23, 65) 0%,
+    rgb(62, 29, 78) 15%,
+    rgba(55, 29, 76, 1) 45%,
+    rgb(68, 39, 87) 64%,
+    rgb(46, 34, 65) 82%,
+    rgba(16, 9, 0, 1) 100%
+  ) !important;
+  background: linear-gradient(
+    90deg,
+    rgb(78, 23, 65) 0%,
+    rgb(62, 29, 78) 15%,
+    rgba(55, 29, 76, 1) 45%,
+    rgb(68, 39, 87) 64%,
+    rgb(46, 34, 65) 82%,
+    rgba(16, 9, 0, 1) 100%
+  );
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#170806",endColorstr="#100900",GradientType=1) !important;
 }
 
 .header_docs_sdk {
@@ -382,4 +440,8 @@ pre[class*="language-"] {
 
 details summary {
   cursor: pointer;
+}
+
+[data-theme="dark"] #__docusaurus {
+  background-color: #131313ff !important;
 }

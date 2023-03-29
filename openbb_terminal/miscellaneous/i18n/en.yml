@@ -19,20 +19,22 @@ en:
   _configure_: Configure your own terminal
   _main_menu_: Main menu
   account/_authentication_: Authentication
+  account/login: Log in to OpenBB account
   account/logout: Log out from OpenBB account
   account/_personal_access_token_: OpenBB Personal Access Token
   account/generate: Generate a Personal Access Token
   account/show: Shows the current Personal Access Token
   account/revoke: Revoke the Personal Access Token
-  account/_info_: Cloud storage of keys, settings and feature flags
-  account/sync: Turns the cloud synchronization on/off
-  account/pull: Pull data from cloud
-  account/clear: Clear data from cloud
+  account/_info_: Cloud storage of keys
+  account/sync: Turn the keys synchronization on/off
+  account/pull: Pull keys from cloud
+  account/clear: Clear keys from cloud
   account/_routines_: Cloud storage of routines
   account/list: List available routines
   account/upload: Upload routine
   account/download: Download routine
   account/delete: Delete routine
+  keys/_source: Source
   keys/_keys_: This menu allows you to set your own API keys. Type 'about' for more information
   keys/mykeys: get your defined keys
   keys/_status_: Status
@@ -42,11 +44,13 @@ en:
   defined, not tested: defined, not tested
   defined, test inconclusive: defined, test inconclusive
   sources/_info_: Get and set default data sources
+  sources/_source: Source
   sources/get: get available data sources associated with command
   sources/set: set default data source for a command
   featflags/_info_: Feature flags through environment variables
   featflags/retryload: retry misspelled commands with load first
   featflags/tab: use tabulate to print dataframes
+  featflags/interactive: open dataframes in interactive window
   featflags/cls: clear console after each command
   featflags/color: use coloring features
   featflags/promptkit: enable prompt toolkit (autocomplete and history)
@@ -59,9 +63,15 @@ en:
   featflags/ion: interactive matplotlib mode
   featflags/watermark: watermark in figures
   featflags/cmdloc: command location displayed in figures
-  featflags/tbhint: displays usage hints in a bottom toolbar
-  settings/_info_: Settings through environment variables
+  featflags/overwrite: whether to overwrite Excel files if they already exists
+  featflags/version: whether to show the version in the bottom right corner
+  featflags/tbhint: displays usage hints in the bottom toolbar
+  settings/_info_: Current settings
+  settings/_cmds_: Change settings
   settings/colors: set your own terminal colors
+  settings/_colors: Colors
+  settings/plotstyle: set your own plot style
+  settings/_plotstyle: Plot style
   settings/autoscaling: plot autoscaling
   settings/dt: add or remove datetime from flair
   settings/flair: set the flair emoji to be used
@@ -89,9 +99,16 @@ en:
   settings/_timezone: Timezone
   settings/source: specify data source file
   settings/_data_source: Data sources
+  settings/tbnews: displays tweets news in the bottom toolbar
+  settings/tweetnews: tweak tweet news parameters
+  settings/_tbnu: Time (in seconds) between tweet news updates
+  settings/_tatt: Twitter accounts to track
+  settings/_nttli: Number of tweets to look into from each account
+  settings/_tk: Keywords to look for in tweets
   _toolkits_: OpenBB Toolkits
   stocks: access historical pricing data, options, sector and industry, and overall due diligence
   crypto: dive into onchain data, tokenomics, circulation supply, nfts and more
+  fixedincome: access central bank decisions, yield curves, government bonds and corporate bonds data
   etf: exchange traded funds. Historical pricing, compare holdings and screening
   economy: global macroeconomic data, e.g. futures, yield, treasury
   forex: foreign exchanges, quotes, forward rates for currency pairs and oanda integration
@@ -117,7 +134,6 @@ en:
   stocks/th: trading hours,                check open markets
   stocks/options: options menu,                 chains, open interest, greeks, parity
   stocks/disc: discover trending stocks,     map, sectors, high short interest
-  stocks/sia: sector and industry analysis, companies per sector, quick ratio per industry and country
   stocks/dps: dark pool and short data,     darkpool, short interest, ftd
   stocks/scr: screener stocks,              overview/performance, using preset filters
   stocks/ins: insider trading,              latest penny stock buys, top officer purchases
@@ -147,8 +163,6 @@ en:
   stocks/options/vsurf: show 3D volatility surface
   stocks/options/grhist: plot option greek history
   stocks/options/plot: plot variables provided by the user
-  stocks/options/parity: shows whether options are above or below expected price
-  stocks/options/binom: shows the value of an option using binomial options pricing
   stocks/options/greeks: shows the greeks for a given option
   stocks/options/eodchain: gets option chain at a specific date
   stocks/options/pricing: shows options pricing and risk neutral valuation
@@ -159,12 +173,6 @@ en:
   stocks/options/screen/scr: screen data from this preset
   stocks/options/screen/_screened_tickers: Last screened tickers
   stocks/options/screen/ca: take these to comparison analysis menu
-  stocks/options/pricing/_ticker: Ticker
-  stocks/options/pricing/_expiry: Expiry
-  stocks/options/pricing/add: add an expected price to the list
-  stocks/options/pricing/rmv: remove an expected price from the list
-  stocks/options/pricing/show: show the listed of expected prices
-  stocks/options/pricing/rnval: risk neutral valuation for an option
   stocks/options/hedge/_ticker: Ticker
   stocks/options/hedge/_expiry: Expiry
   stocks/options/hedge/pick: pick the underlying asset position
@@ -347,7 +355,7 @@ en:
   stocks/fa/load: load a specific stock ticker for analysis
   stocks/fa/_ticker: Ticker
   stocks/fa/_company_overview: Company Overview
-  stocks/fa/enterprise: company enterprise value
+  stocks/fa/mktcap: obtain the market capitalization or enterprise value
   stocks/fa/overview: financial overview of the company
   stocks/fa/divs: show historical dividends for company
   stocks/fa/splits: stock split and reverse split events since IPO
@@ -406,6 +414,7 @@ en:
   stocks/bt/rsi: buy when RSI < low and sell when RSI > high
   stocks/bt/load: load a specific stock ticker for analysis
   stocks/ta/_ticker: Ticker
+  stocks/ta/load: load a specific stock ticker for analysis
   stocks/ta/view: view historical data and trendlines
   stocks/ta/summary: technical summary report
   stocks/ta/recom: recommendation based on technical indicators
@@ -434,12 +443,14 @@ en:
   stocks/ta/donchian: donchian channels
   stocks/ta/kc: keltner channels
   stocks/ta/atr: average true range
+  stocks/ta/cones: realized volatility cones
   stocks/ta/_volume_: Volume
   stocks/ta/ad: accumulation/distribution line
   stocks/ta/adosc: chaikin oscillator
   stocks/ta/obv: on balance volume
   stocks/ta/_custom_: Custom
   stocks/ta/fib: fibonacci retracement
+  stocks/ta/multi: plot multiple indicators on the same chart
   stocks/qa/load: load new ticker
   stocks/qa/pick: pick target column for analysis
   stocks/qa/_ticker: Ticker
@@ -502,6 +513,7 @@ en:
   crypto/disc/games: top blockchain games
   crypto/disc/dapps: top decentralized apps
   crypto/disc/dex: top decentralized exchanges
+  crypto/ov/global: global crypto market statistics
   crypto/ov/defi: global DeFi market info
   crypto/ov/stables: stablecoins
   crypto/ov/exrates: coin exchange rates
@@ -638,6 +650,7 @@ en:
   crypto/ta/vwap: volume weighted average price
   crypto/ta/_momentum_: Momentum
   crypto/ta/cci: commodity channel index
+  crypto/ta/demark: Tom Demark's sequential indicator
   crypto/ta/macd: moving average convergence/divergence
   crypto/ta/rsi: relative strength index
   crypto/ta/stoch: stochastic oscillator
@@ -647,7 +660,9 @@ en:
   crypto/ta/adx: average directional movement index
   crypto/ta/aroon: aroon indicator
   crypto/ta/_volatility_: Volatility
+  crypto/ta/atr: average true range
   crypto/ta/bbands: bollinger bands
+  crypto/ta/cones: realized volatility cones
   crypto/ta/donchian: donchian channels
   crypto/ta/kc: keltner channels
   crypto/ta/_volume_: Volume
@@ -731,6 +746,17 @@ en:
   etf/ta/obv: on balance volume
   etf/ta/_custom_: Custom
   etf/ta/fib: fibonacci retracement
+  economy/_country_: Country Performance
+  economy/gdp: Show nominal Gross Domestic Product (GDP)
+  economy/rgdp: Show real Gross Domestic Product (GDP)
+  economy/fgdp: Show forecasts of nominal and real Gross Domestic Product (GDP)
+  economy/debt: Show government debt-to-GDP ratio
+  economy/cpi: obtain the (harmonized) Consumer Price Index (CPI)
+  economy/ccpi: obtain components of the CPI including Food, Energy and Total
+  economy/balance: Show Government defict or surplus in capital income and expenditures
+  economy/revenue: Show Government revenue based on tax income
+  economy/spending: Show Government spending as indicator of size of government
+  economy/trust: Show Government trust based on surveys regarding confidence in the government
   economy/_database_: Databases
   economy/_stored: Stored datasets
   economy/overview: show a market overview of either indices, bonds or currencies
@@ -776,6 +802,34 @@ en:
   economy/qa/raw: print raw data
   economy/qa/decompose: decomposition in cyclic-trend, season, and residuals of prices
   economy/qa/cusum: detects abrupt changes using cumulative sum algorithm of prices
+  fixedincome/_reference_rates_: Reference rates
+  fixedincome/estr: euro short-term rate (estr)
+  fixedincome/sofr: secured overnight financing rate (sofr)
+  fixedincome/sonia: sterling overnight index average (sonia)
+  fixedincome/ameribor: american interbank offered rate (ameribor)
+  fixedincome/_central_bank_rates_: Central bank rates
+  fixedincome/fed: effective federal funds rate
+  fixedincome/obfr: overnight bank funding rate (obfr)
+  fixedincome/iorb: interest rate on reserve balances
+  fixedincome/projection: the Federal Reserve's projection of the federal funds rate.
+  fixedincome/dwpcr: discount window primary credit rate
+  fixedincome/ecb: key ECB interest rates
+  fixedincome/_government_bonds_: Government Bonds
+  fixedincome/treasury: plot countries (including forecast) treasury rates
+  fixedincome/usrates: plot U.S. secondary market, constant maturity or inflation protected treasuries
+  fixedincome/ycrv: plot the yield curve based on constant maturity U.S. treasuries
+  fixedincome/ecbycrv: plot the yield curve based on Euro Area treasuries
+  fixedincome/_corporate_bonds_: Corporate Bonds
+  fixedincome/icebofa: display ICE BofA Corporate Indices
+  fixedincome/moody: display Moody's AAA and BAA Corporate indices
+  fixedincome/cp: display short-term, promissory notes issued by corporations
+  fixedincome/spot: display spot rates ranging from 1 year to a 100 years
+  fixedincome/hqm: display the High Quality Market (HQM) corporate yield curve
+  fixedincome/_spreads_: Spreads
+  fixedincome/icespread: display spread between ICE BofA Corporate Indices and spot treasury curve
+  fixedincome/tmc: 10-year treasury constant maturity minus selected treasury constant maturity
+  fixedincome/ffrmc: selected treasury constant maturity minus federal funds rate
+  fixedincome/tbffr: selected treasury bill minus federal funds rate
   forex/_ticker: Ticker
   forex/_from: From
   forex/_to: To
@@ -904,13 +958,17 @@ en:
   econometrics/plot: plot data from a dataset
   econometrics/type: change types of the columns or display their types
   econometrics/desc: show descriptive statistics of a dataset
+  econometrics/corr: Plot the correlation coefficients for dataset features
+  econometrics/season: Plot the seasonality for a dataset column
   econometrics/index: set (multi) index based on columns
   econometrics/clean: clean a dataset by filling or dropping NaNs
   econometrics/modify: combine columns of datasets and delete or rename columns
   econometrics/add: Add columns to dataset with option to use formulas
+  econometrics/eval: create new series by performing operations on loaded data
   econometrics/delete: Delete columns from dataset
   econometrics/combine: Combine columns from different datasets
   econometrics/rename: Rename column from dataset
+  econometrics/lag: Add lag to a variable by shifting a column
   econometrics/_regression_: Regression
   econometrics/_regression_tests_: Regression Tests
   econometrics/ols: fit a (multi) linear regression model
@@ -955,7 +1013,6 @@ en:
   portfolio/var: display value at risk
   portfolio/es: display expected shortfall
   portfolio/om: display omega ratio
-  portfolio/bro/ally: Ally Invest Menu
   portfolio/bro/degiro: Degiro Menu
   portfolio/bro/rh: Robinhood Menu
   portfolio/bro/cb: Coinbase Pro Menu
@@ -1026,11 +1083,10 @@ en:
   dashboards/stocks: historic stock information
   dashboards/forecast: forecasting for timeseries datasets
   dashboards/forecasting: forecasting for timeseries datasets
+  dashboards/indicators: technical analysis indicators
   dashboards/correlation: stock correlations
-  dashboards/vsurf: options volatility surface
   dashboards/chains: options chain analysis
   dashboards/shortdata: finra shortdata analysis
-  dashboards/crypto: cryptocurrency exchange rates against USD
   dashboards/futures: historical futures performance
   reports: customizable research reports through jupyter notebooks
   reports/_reports_: Build and run your custom reports or try one of our templates
@@ -1045,6 +1101,7 @@ en:
   forecast/show: Show a portion of a loaded dataset
   forecast/plot: Plot a specific column of a loaded dataset
   forecast/clean: Clean a dataset by filling or dropping NaNs
+  forecast/setndays: Set the default number of days to forecast
   forecast/desc: Show descriptive statistics of a dataset
   forecast/corr: Plot the correlation coefficients for dataset features
   forecast/season: Plot the seasonality for a dataset column
@@ -1083,4 +1140,6 @@ en:
   forecast/nhits: Neural Hierarchical Interpolation (feat. Past covariates)
   forecast/_anomaly_: Anomaly Detection
   forecast/anom: Quantile Anomaly Detector
+  forecast/_misc_: Miscellaneous AI Tools
+  forecast/whisper: Transcribe, translate and summarize videos
   forecast/_comingsoon_: Coming Soon

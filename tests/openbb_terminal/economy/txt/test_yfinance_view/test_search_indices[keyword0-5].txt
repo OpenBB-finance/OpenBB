@@ -1,6 +1,422 @@
-                               short_name currency     market exchange exchange timezone
-^BAPR-IV  INNOVATOR ETFS TRUST S&P 500 BU      USD  us_market      ASE               EDT
-^BAUG-IV  INNOVATOR ETFS TRUST S&P 500 BU      USD  us_market      ASE               EDT
-^BDEC-IV  INNOVATOR ETFS TRUST S&P 500 BU      USD  us_market      ASE               EDT
-^BFEB-IV  INNOVATOR S&P 500 BUFFER ETF -       USD  us_market      ASE               EDT
-^BFLY     CBOE S&P 500 Iron Butterfly Ind      USD  us_market      WCB               EDT
+                                            name currency     market exchange exchange timezone
+symbol                                                                                         
+^BAPR-IV         INNOVATOR ETFS TRUST S&P 500 BU      USD  us_market      ASE               EDT
+^BFEB-IV         INNOVATOR S&P 500 BUFFER ETF -       USD  us_market      ASE               EDT
+^BFLY            CBOE S&P 500 Iron Butterfly Ind      USD  us_market      WCB               EDT
+^BJUL-IV         Innovator S&P 500 Buffer ETF -       USD  us_market      ASE               EDT
+^BNOV-IV         INNOVATOR S&P 500 BUFFER ETF NO      USD  us_market      ASE               EDT
+^BSZ             CBOE Binary Options S&P 500 Ind      USD  us_market      WCB               EDT
+^BXMC            The CBOE S&P 500 Conditional Bu      USD  us_market      WCB               EDT
+^BXMD            CBOE S&P 500 30-Delta BuyWrite       USD  us_market      WCB               EDT
+^BXMW            CBOE S&P 500 Multi-Week BuyWrit      USD  us_market      WCB               EDT
+^CLLZ            CBOE S&P 500 Zero-Cost Put Spre      USD  us_market      WCB               EDT
+^CMBO            CBOE S&P 500 Covered Combo Inde      USD  us_market      WCB               EDT
+^CNDR             CBOE S&P 500 Iron Condor Index      USD  us_market      WCB               EDT
+^DMRL-EU         DeltaShares S&P 500 Managed Ris      USD  us_market      ASE               EDT
+^DVS                      S&P 500 DIVIDEND INDEX      USD  us_market      WCB               EDT
+^EFIV-EU         SPDR S&P 500 ESG ETF Estimated       USD  us_market      ASE               EDT
+^EFIV-IV         SPDR S&P 500 ESG ETF Intraday V      USD  us_market      ASE               EDT
+^EFIV-NV         SPDR S&P 500 ESG ETF Net Asset       USD  us_market      ASE               EDT
+^EFIV-TC         SPDR S&P 500 ESG ETF Total Cash      USD  us_market      ASE               EDT
+^EWCO-EU         Invesco S&P 500 Equal Weight Co      USD  us_market      ASE               EDT
+^GSPC                                    S&P 500      USD  us_market      SNP               EDT
+^GSPE                    S&P 500 Energy (Sector)      USD  us_market      SNP               EDT
+^HIBL-EU         Direxion Daily S&P 500 High Bet      USD  us_market      ASE               EDT
+^IVE-EU          iSHARES S&P 500 BARRA VALUE (Es      USD  us_market      ASE               EDT
+^IVE-IV          iSHARES S&P 500 BARRA VALUE (Un      USD  us_market      ASE               EDT
+^IVE-NV          iSHARES S&P 500 BARRA VALUE (Ne      USD  us_market      ASE               EDT
+^IVE-TC          iSHARES S&P 500 BARRA VALUE (To      USD  us_market      ASE               EDT
+^IVV-EU          iSHARES S&P 500 INDEX (Estimate      USD  us_market      ASE               EDT
+^IVV-IV          iSHARES S&P 500 INDEX (Underlyi      USD  us_market      ASE               EDT
+^IVV-NV          iSHARES S&P 500 INDEX (Net Asse      USD  us_market      ASE               EDT
+^IVV-TC          iSHARES S&P 500 INDEX (Total Ca      USD  us_market      ASE               EDT
+^IVW-EU          iSHARES S&P 500 BARRA GROWTH (E      USD  us_market      ASE               EDT
+^IVW-IV          iSHARES S&P 500 BARRA GROWTH (U      USD  us_market      ASE               EDT
+^IVW-NV          iSHARES S&P 500 BARRA GROWTH (N      USD  us_market      ASE               EDT
+^IVW-TC          iSHARES S&P 500 BARRA GROWTH (T      USD  us_market      ASE               EDT
+^KNG-IV          Cboe Vest S&P 500 Dividend Aris      USD  us_market      ASE               EDT
+^MNV             PowerShares S&P 500 Buy Write P      USD  us_market      ASE               EDT
+^PAPR-IV         INNOVATOR ETFS TRUST S&P 500 PW      USD  us_market      ASE               EDT
+^PFEB-IV         INNOVATOR S&P 500 POWER BUFFER       USD  us_market      ASE               EDT
+^PJAN-IV         INNOVATOR ETFS TRUST S&P 500 PO      USD  us_market      ASE               EDT
+^PJUL-IV         Innovator S&P 500 Power Buffer       USD  us_market      ASE               EDT
+^PPUT            CBOE S&P 500 5% Put Protection       USD  us_market      WCB               EDT
+^PWT              CBOE S&P 500 PutWrite TW Index      USD  us_market      WCB               EDT
+^QDIV-EU         Global X S&P 500 Quality Divide      USD  us_market      ASE               EDT
+^QMJ-EU          Direxion S&P 500 High minus Low      USD  us_market      ASE               EDT
+^RWL-EU          Invesco S&P 500 Revenue ETF Est      USD  us_market      ASE               EDT
+^RWL-IV          Invesco S&P 500 Revenue ETF Int      USD  us_market      ASE               EDT
+^RWL-NV          Invesco S&P 500 Revenue ETF Net      USD  us_market      ASE               EDT
+^RWL-TC          Invesco S&P 500 Revenue ETF Tot      USD  us_market      ASE               EDT
+^RXM             CBOE S&P 500 Risk Reversal Inde      USD  us_market      WCB               EDT
+^S5APRETR        S&P 500 Apparel Retail (Sub Ind      USD  us_market      SNP               EDT
+^SDS-IV          ProShares UltraShort S&P 500 (I      USD  us_market      ASE               EDT
+^SDS-NV          ProShares UltraShort S&P 500 (N      USD  us_market      ASE               EDT
+^SET             S&P 500 INDEX OPEN FLEX SETTLEM      USD  us_market      WCB               EDT
+^SJB-EU          UltraShort S&P 500 ProShares (E      USD  us_market      ASE               EDT
+^SJB-NV          UltraShort S&P 500 ProShares (N      USD  us_market      ASE               EDT
+^SJB-TC          UltraShort S&P 500 ProShares (T      USD  us_market      ASE               EDT
+^SMILE              The CBOE S&P 500 Smile Index      USD  us_market      WCB               EDT
+^SNPE-EU         Xtrackers S&P 500 ESG ETF Estim      USD  us_market      ASE               EDT
+^SNPE-IV         Xtrackers S&P 500 ESG ETF Intra      USD  us_market      ASE               EDT
+^SNPE-NV         Xtrackers S&P 500 ESG ETF Net A      USD  us_market      ASE               EDT
+^SNPE-TC         Xtrackers S&P 500 ESG ETF Total      USD  us_market      ASE               EDT
+^SP500-101020    S&P 500 Oil, Gas & Consumable F      USD  us_market      SNP               EDT
+^SP500-10102030  S&P 500 Oil & Gas Refining & Ma      USD  us_market      SNP               EDT
+^SP500-151010       S&P 500 Chemicals (Industry)      USD  us_market      SNP               EDT
+^SP500-15101030  S&P 500 Fertilizers & Agricultu      USD  us_market      SNP               EDT
+^SP500-15101040  S&P 500 Industrial Gases (Sub I      USD  us_market      SNP               EDT
+^SP500-15101050  S&P 500 Specialty Chemicals (Su      USD  us_market      SNP               EDT
+^SP500-151030    S&P 500 Containers & Packaging       USD  us_market      SNP               EDT
+^SP500-15103010  S&P 500 Metal & Glass Container      USD  us_market      SNP               EDT
+^SP500-15103020  S&P 500 Paper Packaging (Sub In      USD  us_market      SNP               EDT
+^SP500-201040    S&P 500 Electrical Equipment (I      USD  us_market      SNP               EDT
+^SP500-20104010  S&P 500 Electrical Components &      USD  us_market      SNP               EDT
+^SP500-201050    S&P 500 Industrial Conglomerate      USD  us_market      SNP               EDT
+^SP500-201060       S&P 500 Machinery (Industry)      USD  us_market      SNP               EDT
+^SP500-20106010  S&P 500 Construction Machinery       USD  us_market      SNP               EDT
+^SP500-20106020  S&P 500 Industrial Machinery (S      USD  us_market      SNP               EDT
+^SP500-201070    S&P 500 Trading Companies & Dis      USD  us_market      SNP               EDT
+^SP500-2020      S&P 500 - Commercial & Professi      USD  us_market      SNP               EDT
+^SP500-20201050  S&P 500 - Environmental & Facil      USD  us_market      SNP               EDT
+^SP500-20201070  S&P 500 - Diversified Support S      USD  us_market      SNP               EDT
+^SP500-202020    S&P 500 - Professional Services      USD  us_market      SNP               EDT
+^SP500-20202010  S&P 500 - Human Resource & Empl      USD  us_market      SNP               EDT
+^SP500-20202020  S&P 500 - Research & Consulting      USD  us_market      SNP               EDT
+^SP500-203010    S&P 500 Air Freight & Logistics      USD  us_market      SNP               EDT
+^SP500-203020        S&P 500 Airlines (Industry)      USD  us_market      SNP               EDT
+^SP500-20304010      S&P 500 Railroads (Sub Ind)      USD  us_market      SNP               EDT
+^SP500-20304020     S&P 500 - Trucking (Sub Ind)      USD  us_market      SNP               EDT
+^SP500-2510      S&P 500 Automobiles & Component      USD  us_market      SNP               EDT
+^SP500-251010    S&P 500 Auto Components (Indust      USD  us_market      SNP               EDT
+^SP500-25101010  S&P 500 Auto Parts & Equipment       USD  us_market      SNP               EDT
+^SP500-251020     S&P 500 Automobiles (Industry)      USD  us_market      SNP               EDT
+^SP500-25102010  S&P 500 Automobile Manufacturer      USD  us_market      SNP               EDT
+^SP500-2520      S&P 500 Consumer Durables & App      USD  us_market      SNP               EDT
+^SP500-252010    S&P 500 Household Durables (Ind      USD  us_market      SNP               EDT
+^SP500-25201020  S&P 500 Home Furnishings (Sub I      USD  us_market      SNP               EDT
+^SP500-25201030   S&P 500 Homebuilding (Sub Ind)      USD  us_market      SNP               EDT
+^SP500-25201040  S&P 500 Household Appliances (S      USD  us_market      SNP               EDT
+^SP500-25201050  S&P 500 Housewares & Specialtie      USD  us_market      SNP               EDT
+^SP500-252030    S&P 500 Textiles, Apparel & Lux      USD  us_market      SNP               EDT
+^SP500-25203010  S&P 500 Apparel, Accessories &       USD  us_market      SNP               EDT
+^SP500-25203020       S&P 500 Footwear (Sub Ind)      USD  us_market      SNP               EDT
+^SP500-25301010  S&P 500 Casinos & Gaming (Sub I      USD  us_market      SNP               EDT
+^SP500-25301020  S&P 500 Hotels, Resorts & Cruis      USD  us_market      SNP               EDT
+^SP500-25301040    S&P 500 Restaurants (Sub Ind)      USD  us_market      SNP               EDT
+^SP500-2550      S&P 500 Retailing (Industry Gro      USD  us_market      SNP               EDT
+^SP500-255010    S&P 500 Distributors (Industry)      USD  us_market      SNP               EDT
+^SP500-25501010   S&P 500 Distributors (Sub Ind)      USD  us_market      SNP               EDT
+^SP500-255030    S&P 500 Multiline Retail (Indus      USD  us_market      SNP               EDT
+^SP500-25503020  S&P 500 General Merchandise Sto      USD  us_market      SNP               EDT
+^SP500-255040    S&P 500 Specialty Retail (Indus      USD  us_market      SNP               EDT
+^SP500-25504030  S&P 500 Home Improvement Retail      USD  us_market      SNP               EDT
+^SP500-25504040  S&P 500 Specialty Stores (Sub I      USD  us_market      SNP               EDT
+^SP500-301010    S&P 500 Food & Staples Retailin      USD  us_market      SNP               EDT
+^SP500-30101010    S&P 500 Drug Retail (Sub Ind)      USD  us_market      SNP               EDT
+^SP500-30101020  S&P 500 Food Distributors (Sub       USD  us_market      SNP               EDT
+^SP500-30101040  S&P 500 HyperMarkets & Super Ce      USD  us_market      SNP               EDT
+^SP500-302010       S&P 500 Beverages (Industry)      USD  us_market      SNP               EDT
+^SP500-30201010        S&P 500 Brewers (Sub Ind)      USD  us_market      SNP               EDT
+^SP500-30201020  S&P 500 Distillers & Vintners (      USD  us_market      SNP               EDT
+^SP500-30201030    S&P 500 Soft Drinks (Sub Ind)      USD  us_market      SNP               EDT
+^SP500-30202030  S&P 500 Packaged Foods & Meats       USD  us_market      SNP               EDT
+^SP500-3020TR    S&P 500 Food Beverage & Tobacco      USD  us_market      SNP               EDT
+^SP500-35           S&P 500 Health Care (Sector)      USD  us_market      SNP               EDT
+^SP500-35101020  S&P 500 -Health Care Supplies (      USD  us_market      SNP               EDT
+^SP500-351020    S&P 500 Health Care Providers &      USD  us_market      SNP               EDT
+^SP500-35102010  S&P 500 Health Care Distributor      USD  us_market      SNP               EDT
+^SP500-35102020  S&P 500 Health Care Facilities       USD  us_market      SNP               EDT
+^SP500-352030    S&P 500 - Life Sciences Tools &      USD  us_market      SNP               EDT
+^SP500-40            S&P 500 Financials (Sector)      USD  us_market      SNP               EDT
+^SP500-40203040  S&P 500 Financial Exchanges & D      USD  us_market      SNP               EDT
+^SP500-40301010  S&P 500 Insurance Brokers (Sub       USD  us_market      SNP               EDT
+^SP500-45102010  S&P 500 IT Consulting & Other S      USD  us_market      SNP               EDT
+^SP500-45102020  S&P 500 Data Processing & Outso      USD  us_market      SNP               EDT
+^SP500-45103010  S&P 500 Application Software (S      USD  us_market      SNP               EDT
+^SP500-4520      S&P 500 Technology Hardware & E      USD  us_market      SNP               EDT
+^SP500-452020    S&P 500 Technology Hardware, St      USD  us_market      SNP               EDT
+^SP500-45203015  S&P 500 -Electronic Components       USD  us_market      SNP               EDT
+^SP500-45203030  S&P 500 Technology Distributors      USD  us_market      SNP               EDT
+^SP500-50101010  S&P 500 - Alternative Carriers       USD  us_market      SNP               EDT
+^SP500-50201010    S&P 500 Advertising (Sub Ind)      USD  us_market      SNP               EDT
+^SP500-50201020  S&P 500 - Broadcasting (Sub Ind      USD  us_market      SNP               EDT
+^SP500-50201030  S&P 500 - Cable & Satellite (Su      USD  us_market      SNP               EDT
+^SP500-50201040  S&P 500 Publishing & Printing (      USD  us_market      SNP               EDT
+^SP500-50202010  S&P 500 Movies & Entertainment       USD  us_market      SNP               EDT
+^SP500-551050    S&P 500 Independent Power and R      USD  us_market      SNP               EDT
+^SP500-55105010  S&P 500 Independent Power Produ      USD  us_market      SNP               EDT
+^SP500BDT                     S&P 500 Bond Index      USD  us_market      SNP               EDT
+^SP500DIV                 S&P 500 Dividend Index      USD  us_market      SNP               EDT
+^SP500EW-10      S&P 500 EQUAL WEIGHTED Energy (      USD  us_market      SNP               EDT
+^SP500EW-15      S&P 500 EQUAL WEIGHTED Material      USD  us_market      SNP               EDT
+^SP500EW-20      S&P 500 EQUAL WEIGHTED Industri      USD  us_market      SNP               EDT
+^SP500EW-25      S&P 500 EQUAL WEIGHTED Consumer      USD  us_market      SNP               EDT
+^SP500EW-40      S&P 500 EQUAL WEIGHTED Financia      USD  us_market      SNP               EDT
+^SP500EW-45      S&P 500 EQUAL WEIGHTED Informat      USD  us_market      SNP               EDT
+^SP500EW-50      S&P 500 EQUAL WEIGHTED Communic      USD  us_market      SNP               EDT
+^SP500EW-55      S&P 500 EQUAL WEIGHTED Utilitie      USD  us_market      SNP               EDT
+^SP500EW                  S&P 500 EQUAL WEIGHTED      USD  us_market      SNP               EDT
+^SP500FER               S&P 500 Futures Index ER      USD  us_market      SNP               EDT
+^SP500FTR               S&P 500 Futures Index TR      USD  us_market      SNP               EDT
+^SP500G                           S&P 500 Growth      USD  us_market      SNP               EDT
+^SP500GOLDH            S&P 500 Gold Hedged Index      USD  us_market      SNP               EDT
+^SP500GTR                    S&P 500 Growth (TR)      USD  us_market      SNP               EDT
+^SP500HBETA              S&P 500 High Beta Index      USD  us_market      SNP               EDT
+^SP500INV                        S&P 500 Inverse      USD  us_market      SNP               EDT
+^SP500LVOL          S&P 500 Low Volatility Index      USD  us_market      SNP               EDT
+^SP500MCN        S&P 500 Momentum Index (CAD) NT      CAD  us_market      SNP               EDT
+^SP500MCP           S&P 500 Momentum Index (CAD)      CAD  us_market      SNP               EDT
+^SP500MCT        S&P 500 Momentum Index (CAD) TR      CAD  us_market      SNP               EDT
+^SP500MUN        S&P 500 Momentum Index (US Doll      USD  us_market      SNP               EDT
+^SP500NTR                      S&P 500  (Net TR)      USD  us_market      SNP               EDT
+^SP500NTR2XL     S&P 5002 x Leverage Daily Index      USD  us_market      SNP               EDT
+^SP500NUSDER      S&P 500 Non US Dollar Index ER      USD  us_market      SNP               EDT
+^SP500NUSDTR      S&P 500 Non US Dollar Index TR      USD  us_market      SNP               EDT
+^SP500OILH              S&P 500 Oil hedged Index      USD  us_market      SNP               EDT
+^SP500PG                     S&P 500 Pure Growth      USD  us_market      SNP               EDT
+^SP500PV                      S&P 500 Pure Value      USD  us_market      SNP               EDT
+^SP500SH                   S&P 500 Shariah Index      USD  us_market      SNP               EDT
+^SP500TLIT              S&P 500 Telecom  and  IT      USD  us_market      SNP               EDT
+^SP500TR                            S&P 500 (TR)      USD  us_market      SNP               EDT
+^SP500TR2XI       S&P 5002 x Inverse Daily Index      USD  us_market      SNP               EDT
+^SP500V                            S&P 500 Value      USD  us_market      SNP               EDT
+^SP500VQDTR      S&P 500 Dynamic VEQTOR Index To      USD  us_market      SNP               EDT
+^SP500VTR                     S&P 500 Value (TR)      USD  us_market      SNP               EDT
+^SP50CTEN        S&P 500 Climate Transition Inde      EUR  us_market      SNP               EDT
+^SP50CTUN        S&P 500 Climate Transition Inde      USD  us_market      SNP               EDT
+^SP50PAEN        S&P 500 Paris-Aligned Climate I      EUR  us_market      SNP               EDT
+^SP50PAUN        S&P 500 Paris-Aligned Climate I      USD  us_market      SNP               EDT
+^SP5ESUN         S&P 500 Sustainability Screened      USD  us_market      SNP               EDT
+^SP5F3UP          S&P 500 Fossil Fuel Free Index      USD  us_market      SNP               EDT
+^SP5F3UT         S&P 500 Fossil Fuel Free Index       USD  us_market      SNP               EDT
+^SP5IGBIT        S&P 500 Investment Grade Corpor      USD  us_market      SNP               EDT
+^SP5LHBHN        S&P 500 Low Volatility High Div      GBP  us_market      SNP               EDT
+^SP5LHEHN        S&P 500 Low Volatility High Div      EUR  us_market      SNP               EDT
+^SP5LHFHN        S&P 500 Low Volatility High Div      CHF  us_market      SNP               EDT
+^SP5LR1UP        S&P 500 Low Rate-Sensitivity 10      USD  us_market      SNP               EDT
+^SP5LRUP         S&P 500 Low Rate-Sensitivity In      USD  us_market      SNP               EDT
+^SP5LVHD         S&P 500 Low Volatility High Div      USD  us_market      SNP               EDT
+^SP5LVHEN        S&P 500 Low Volatility Index NT      EUR  us_market      SNP               EDT
+^SP5LVHEP        S&P 500 Low Volatility Index (E      EUR  us_market      SNP               EDT
+^SP5LVHET        S&P 500 Low Volatility Index TR      EUR  us_market      SNP               EDT
+^SP5LVIN         S&P 500 Low Volatility Index NT      USD  us_market      SNP               EDT
+^SP5LVIT         S&P 500 Low Volatility Index TR      USD  us_market      SNP               EDT
+^SP5LVRUN        S&P 500 Low Volatility Rate Res      USD  us_market      SNP               EDT
+^SP5MAIGT        S&P 500/MarketAxess Investment       USD  us_market      SNP               EDT
+^SP5MV           S&P 500 Minimum Volatility Inde      USD  us_market      SNP               EDT
+^SP5MVN          S&P 500 Minimum Volatility Inde      USD  us_market      NYS               EDT
+^SP5NRLST        S&P 500 Real Estate (Sector) (N      USD  us_market      SNP               EDT
+^SP5RR1UP        S&P 500 High Rate-Sensitivity 1      USD  us_market      SNP               EDT
+^SP5RRUP           S&P 500 High Rate Sensitivity      USD  us_market      SNP               EDT
+^SP5RRUT         S&P 500 High Rate Sensitivity T      USD  us_market      SNP               EDT
+^SP5T5                            S&P 500 Top 50      USD  us_market      SNP               EDT
+^SP5T5T                        S&P 500 Top 50 TR      USD  us_market      SNP               EDT
+^SPAI            CBOE S&P 500 Dividend Aristocra      USD  us_market      WCB               EDT
+^SPATI           Cboe S&P 500 Dividend Aristocra      USD  us_market      WCB               EDT
+^SPBUYFUP              S&P 500 Buyback FCF Index      USD  us_market      SNP               EDT
+^SPBUYPUP               S&P 500 Buyback PE Index      USD  us_market      SNP               EDT
+^SPBUYUP                   S&P 500 Buyback Index      USD  us_market      SNP               EDT
+^SPBUYUT                S&P 500 Buyback Index TR      USD  us_market      SNP               EDT
+^SPCAREUN        S&P 500 Low Volatility Capital       USD  us_market      SNP               EDT
+^SPCATR          S&P 500 Carry Adjusted Total Re      USD  us_market      SNP               EDT
+^SPDAUDN         S&P 500 Dividend Aristocrats (N      USD  us_market      SNP               EDT
+^SPDAUDP            S&P 500 Dividend Aristocrats      USD  us_market      SNP               EDT
+^SPDAUDT         S&P 500 Dividend Aristocrats (T      USD  us_market      SNP               EDT
+^SPDGL5UT        S&P 500 Dynamic Gold Hedged Ind      USD  us_market      SNP               EDT
+^SPDLQVUN        S&P 500 Quality, Value & Moment      USD  us_market      SNP               EDT
+^SPDV5UP         S&P 500 Dividend and Free Cash       USD  us_market      SNP               EDT
+^SPDVIXE          S&P 500 Dynamic VIX Futures ER      USD  us_market      SNP               EDT
+^SPDVIXT          S&P 500 Dynamic VIX Futures TR      USD  us_market      SNP               EDT
+^SPDVXE           S&P 500 DYNAMIC VIX FUTURES ER      USD  us_market      WCB               EDT
+^SPDVXT              S&P 500 Dynamic VIX Futures      USD  us_market      WCB               EDT
+^SPEN            CBOE S&P 500 Enhanced Growth Ba      USD  us_market      WCB               EDT
+^SPEN01          CBOE S&P 500 Enhanced Growth In      USD  us_market      WCB               EDT
+^SPGP-TC         Invesco S&P 500 GARP ETF Total       USD  us_market      ASE               EDT
+^SPLG-EU         SPDR Portfolio S&P 500 ETF Esti      USD  us_market      ASE               EDT
+^SPLG-IV         SPDR Portfolio S&P 500 ETF Intr      USD  us_market      ASE               EDT
+^SPLG-NV         SPDR Portfolio S&P 500 ETF Net       USD  us_market      ASE               EDT
+^SPLG-TC         SPDR Portfolio S&P 500 ETF Tota      USD  us_market      ASE               EDT
+^SPPACSEN        S&P 500 Paris-Aligned Climate S      EUR  us_market      SNP               EDT
+^SPPACSUN        S&P 500 Paris-Aligned Climate S      USD  us_market      SNP               EDT
+^SPQVMCUN        S&P 500 QVM Multi-Factor Compos      USD  us_market      SNP               EDT
+^SPQVMLUN        S&P 500 QVML Multi-Factor Compo      USD  us_market      SNP               EDT
+^SPRI            CBOE S&P 500 Range Bound Premiu      USD  us_market      WCB               EDT
+^SPRO01          CBOE S&P 500 Buffer Protect Ind      USD  us_market      WCB               EDT
+^SPSIEUN         S&P 500 Shariah Industry Exclus      USD  us_market      SNP               EDT
+^SPSVCDN         S&P 500 Capped 35/20 Consumer D      USD  us_market      SNP               EDT
+^SPSVCN          S&P 500 Capped 35/20 Communicat      USD  us_market      SNP               EDT
+^SPSVCSN         S&P 500 Capped 35/20 Consumer S      USD  us_market      SNP               EDT
+^SPSVEN          S&P 500 Capped 35/20 Energy Ind      USD  us_market      SNP               EDT
+^SPSVFN          S&P 500 Capped 35/20 Financials      USD  us_market      SNP               EDT
+^SPSVHCN         S&P 500 Capped 35/20 Health Car      USD  us_market      SNP               EDT
+^SPSVIN          S&P 500 Capped 35/20 Industrial      USD  us_market      SNP               EDT
+^SPSVITN         S&P 500 Capped 35/20 Informatio      USD  us_market      SNP               EDT
+^SPSVMN          S&P 500 Capped 35/20 Materials       USD  us_market      SNP               EDT
+^SPSVREN         S&P 500 Capped 35/20 Real Estat      USD  us_market      SNP               EDT
+^SPSVULN         S&P 500 Capped 35/20 Utilities       USD  us_market      SNP               EDT
+^SPTST                              S&P 500 TEST      USD  us_market      WCB               EDT
+^SPUU-EU         Direxion Daily S&P 500 Bull 2X       USD  us_market      ASE               EDT
+^SPVFM1IE        S&P 500 VIX Front Month Futures      USD  us_market      SNP               EDT
+^SPVIX2ME        S&P 500 VIX Futures 2-Month Ind      USD  us_market      SNP               EDT
+^SPVIX3ME        S&P 500 VIX Futures 3-Month Ind      USD  us_market      SNP               EDT
+^SPVIX4ME        S&P 500 VIX Futures 4-Month Ind      USD  us_market      SNP               EDT
+^SPVIX6ME        S&P 500 VIX Futures 6-Month Ind      USD  us_market      SNP               EDT
+^SPVIXFTSER      S&P 500 VIX Futures Term-Struct      USD  us_market      SNP               EDT
+^SPVIXMT         S&P 500 VIX Mid-Term Index MCAP      USD  us_market      SNP               EDT
+^SPVIXMTER       S&P 500 VIX Mid-Term Index Exce      USD  us_market      SNP               EDT
+^SPVIXST         S&P 500 VIX Short-Term Index MC      USD  us_market      SNP               EDT
+^SPVIXSTER       S&P 500 VIX Short-Term Index Ex      USD  us_market      SNP               EDT
+^SPVM-EU         Invesco S&P 500 Value with Mome      USD  us_market      ASE               EDT
+^SPVQDER         S&P 500 DYNAMIC VEQTOREXCESS RE      USD  us_market      NYS               EDT
+^SPVQDTR         S&P 500 Dynamic VEQTOR Index To      USD  us_market      NYS               EDT
+^SPVQMER         S&P 500 Dynamic VEQTOR Mid-Term      USD  us_market      NYS               EDT
+^SPVQSER         S&P 500 VEQTOR Switch Index Exc      USD  us_market      SNP               EDT
+^SPVQSTR         S&P 500 VEQTOR Switch Index Tot      USD  us_market      SNP               EDT
+^SPVQXER         S&P 500 Dynamic VEQTOR X Index       USD  us_market      NYS               EDT
+^SPVXEP          S&P 500 vix futures enhanced ro      USD  us_market      WCB               EDT
+^SPVXLSP         S&P 500 VIX Futures Long/Short       USD  us_market      SNP               EDT
+^SPVXMP          S&P 500 VIX Mid-Term Index Exce      USD  us_market      NYS               EDT
+^SPVXMPI         S&P 500 VIX Mid Term Futures In      USD  us_market      SNP               EDT
+^SPVXSISP        S&P 500 VIX Short-Term Futures       USD  us_market      SNP               EDT
+^SPVXSPI         S&P 500 VIX Short Term Futures       USD  us_market      SNP               EDT
+^SPVXSTPK        S&P 500 VIX Short-Term Futures       KRW  us_market      SNP               EDT
+^SPVXSV3P        S&P 500 Constant Vega (3%) VIX       USD  us_market      SNP               EDT
+^SPVXSV6P        S&P 500 Constant Vega (6%) VIX       USD  us_market      SNP               EDT
+^SPVXTRMP        S&P 500 VIX Futures Tail Risk I      USD  us_market      SNP               EDT
+^SPVXVHMP        S&P 500 VIX Futures Short Volat      USD  us_market      SNP               EDT
+^SPVXVMP         S&P 500 VIX Futures Variable Lo      USD  us_market      SNP               EDT
+^SPX                               S&P 500 INDEX      USD  us_market      WCB               EDT
+^SPX2XLCT        S&P 500 PR 2X Leverage Carry-Fr      TWD  us_market      SNP               EDT
+^SPX2XLCU        S&P 500 PR 2X Leverage Carry-Fr      USD  us_market      SNP               EDT
+^SPX3ICUT        S&P 500 TR 3X Inverse Carry-Fre      USD  us_market      SNP               EDT
+^SPX3LCUT        S&P 500 TR 3X Leverage Carry-Fr      USD  us_market      SNP               EDT
+^SPX450UN        S&P 500 Communication Services       USD  us_market      SNP               EDT
+^SPXADF1T        S&P 500 Annual Dividend Futures      USD  us_market      SNP               EDT
+^SPXCVUN         S&P 500 Catholic Values Index (      USD  us_market      SNP               EDT
+^SPXCVUP           S&P 500 Catholic Values Index      USD  us_market      SNP               EDT
+^SPXCX2UN        S&P 500 ESG Exclusions II Index      USD  us_market      SNP               EDT
+^SPXE-EU         ProShares S&P 500 Ex-Energy ETF      USD  us_market      ASE               EDT
+^SPXEREUP        S&P 500 EQUAL WEIGHTED Real Est      USD  us_market      SNP               EDT
+^SPXESECN        S&P 500 ESG Elite Index (CHF) N      CHF  us_market      SNP               EDT
+^SPXESECP          S&P 500 ESG Elite Index (CHF)      CHF  us_market      SNP               EDT
+^SPXESECT        S&P 500 ESG Elite Index (CHF) T      CHF  us_market      SNP               EDT
+^SPXESEEN        S&P 500 ESG Elite Index (EUR) N      EUR  us_market      SNP               EDT
+^SPXESEEP          S&P 500 ESG Elite Index (EUR)      EUR  us_market      SNP               EDT
+^SPXESEET        S&P 500 ESG Elite Index (EUR) T      EUR  us_market      SNP               EDT
+^SPXESEGN        S&P 500 ESG Elite Index (GBP) N      GBP  us_market      SNP               EDT
+^SPXESEGP          S&P 500 ESG Elite Index (GBP)      GBP  us_market      SNP               EDT
+^SPXESEGT        S&P 500 ESG Elite Index (GBP) T      GBP  us_market      SNP               EDT
+^SPXESEUN        S&P 500 ESG Elite Index (USD) N      USD  us_market      SNP               EDT
+^SPXESEUP          S&P 500 ESG Elite Index (USD)      USD  us_market      SNP               EDT
+^SPXESEUT        S&P 500 ESG Elite Index (USD) T      USD  us_market      SNP               EDT
+^SPXESHCN        S&P 500 ESG Elite CHF Hedged In      CHF  us_market      SNP               EDT
+^SPXESHEN        S&P 500 ESG Elite EUR Hedged In      EUR  us_market      SNP               EDT
+^SPXESHGN        S&P 500 ESG Elite GBP Hedged In      GBP  us_market      SNP               EDT
+^SPXESUN             S&P 500 ESG Index (USD) NTR      USD  us_market      SNP               EDT
+^SPXESUP                 S&P 500 ESG Index (USD)      USD  us_market      SNP               EDT
+^SPXESUT              S&P 500 ESG Index (USD) TR      USD  us_market      SNP               EDT
+^SPXEVUN         S&P 500 Enhanced Value Net Tota      USD  us_market      SNP               EDT
+^SPXEVUP            S&P 500 Enhanced Value Index      USD  us_market      NYS               EDT
+^SPXEVUT         S&P 500 Enhanced Value Total Re      USD  us_market      SNP               EDT
+^SPXEW                    S&P 500 EQUAL WEIGHTED      USD  us_market      NYS               EDT
+^SPXEW4UP        S&P 500 Equal Weight Communicat      USD  us_market      SNP               EDT
+^SPXEWNTR           S&P 500 EQUAL WEIGHTED (NTR)      USD  us_market      SNP               EDT
+^SPXF1IUP        S&P 500 Futures Inverse Daily I      USD  us_market      SNP               EDT
+^SPXF2IP           S&P 500 Futures 2X Inverse ER      USD  us_market      SNP               EDT
+^SPXF2ITR          S&P 500 Futures 2X Inverse TR      USD  us_market      SNP               EDT
+^SPXF2LP         S&P 500 Futures 2X Leveraged ER      USD  us_market      SNP               EDT
+^SPXF2LTR        S&P 500 Futures 2X Leveraged TR      USD  us_market      SNP               EDT
+^SPXGARPP               S&P 500 GARP Index (USD)      USD  us_market      SNP               EDT
+^SPXGARPT            S&P 500 GARP Index (USD) TR      USD  us_market      SNP               EDT
+^SPXGCUP         S&P 500 Growth Capped Index (US      USD  us_market      SNP               EDT
+^SPXHAUD                         S&P 500 AUD Hdg      AUD  us_market      SNP               EDT
+^SPXHAUDN               S&P 500 AUD Hdg (Net TR)      AUD  us_market      SNP               EDT
+^SPXHAUDT                   S&P 500 AUD Hdg (TR)      AUD  us_market      SNP               EDT
+^SPXHCHFN               S&P 500 CHF Hdg (Net TR)      CHF  us_market      SNP               EDT
+^SPXHDUP             S&P 500 High Dividend Index      USD  us_market      SNP               EDT
+^SPXHKDN                    S&P 500 HKD (Net TR)      HKD  us_market      SNP               EDT
+^SPXHM10N          S&P 500 MXN Hdg 10% Tax (NTR)      MXN  us_market      SNP               EDT
+^SPXHMXNT                   S&P 500 MXN Hdg (TR)      MXN  us_market      SNP               EDT
+^SPXICT          S&P 500 PR Inverse Carry-Free D      TWD  us_market      SNP               EDT
+^SPXICU          S&P 500 PR Inverse Carry-Free D      USD  us_market      SNP               EDT
+^SPXL-EU         Direxion Daily S&P 500 Bull 3X       USD  us_market      ASE               EDT
+^SPXL3DUN        S&P 500 130/30 Inverse-Quality       USD  us_market      SNP               EDT
+^SPXL5DUN        S&P 500 150/50 Inverse-Quality       USD  us_market      SNP               EDT
+^SPXLBHEN        S&P 500 Low Volatility Target B      EUR  us_market      SNP               EDT
+^SPXLTBUN        S&P 500 Low Volatility Target B      USD  us_market      SNP               EDT
+^SPXMHCN         S&P 500 Momentum CAD Hedged Ind      CAD  us_market      SNP               EDT
+^SPXMR2           S&P 500 Managed Risk 2.0 Index      USD  us_market      SNP               EDT
+^SPXN-EU         ProShares S&P 500 Ex-Financials      USD  us_market      ASE               EDT
+^SPXN10UT        S&P 500 NTR Daily Risk Control       USD  us_market      NYS               EDT
+^SPXN15UT        S&P 500 NTR Daily Risk Control       USD  us_market      SNP               EDT
+^SPXP15UP        S&P 500 PR Daily Risk Control 1      USD  us_market      NYS               EDT
+^SPXPG                       S&P 500 Pure Growth      USD  us_market      NYS               EDT
+^SPXPGKN           S&P 500 Pure Growth NTR (KRW)      KRW  us_market      SNP               EDT
+^SPXPV                        S&P 500 Pure Value      USD  us_market      NYS               EDT
+^SPXPVKN            S&P 500 Pure Value NTR (KRW)      KRW  us_market      SNP               EDT
+^SPXQ3DUN        S&P 500 130/30 Quality 0.30% De      USD  us_market      SNP               EDT
+^SPXQ5DUN        S&P 500 150/50 Quality 0.30% De      USD  us_market      SNP               EDT
+^SPXQHDUN        S&P 500 Quality High Dividend I      USD  us_market      SNP               EDT
+^SPXQL3UN        S&P 500 130/30 Quality Index (U      USD  us_market      SNP               EDT
+^SPXQL5UN        S&P 500 150/50 Quality Index (U      USD  us_market      SNP               EDT
+^SPXQLMUN        S&P 500 QVML Multi-Factor Index      USD  us_market      SNP               EDT
+^SPXQLUP         S&P 500 Quality - Lowest Quinti      USD  us_market      SNP               EDT
+^SPXQUN          S&P 500 Quality (US Dollar) Net      USD  us_market      NYS               EDT
+^SPXQUP              S&P 500 Quality (US Dollar)      USD  us_market      NYS               EDT
+^SPXQUT          S&P 500 Quality (US Dollar) Gro      USD  us_market      SNP               EDT
+^SPXQVEHN        S&P 500 Quality, Value & Moment      EUR  us_market      SNP               EDT
+^SPXQVFHN        S&P 500 Quality, Value & Moment      CHF  us_market      SNP               EDT
+^SPXQVGHN        S&P 500 Quality, Value & Moment      GBP  us_market      SNP               EDT
+^SPXS-EU          Direxion Daily S&P 500 Bear 3X      USD  us_market      ASE               EDT
+^SPXT-EU         ProShares S&P 500 Ex-Technology      USD  us_market      ASE               EDT
+^SPXTDVUN        S&P 500 Dynamic VEQTOR Index Ne      USD  us_market      SNP               EDT
+^SPXUXEN                S&P 500 EUR Hdg (Net TR)      EUR  us_market      SNP               EDT
+^SPXV-EU         ProShares S&P 500 Ex-Health Car      USD  us_market      ASE               EDT
+^SPXVCUP         S&P 500 Value Capped Index (USD      USD  us_market      SNP               EDT
+^SPXVMOUP            S&P 500 High Momentum Value      USD  us_market      SNP               EDT
+^SPXVMOUT         S&P 500 High Momentum Value TR      USD  us_market      SNP               EDT
+^SPXXCDP         S&P 500 Ex-Consumer Discretiona      USD  us_market      SNP               EDT
+^SPXXCMUN        S&P 500 Ex-Communication Servic      USD  us_market      SNP               EDT
+^SPXXCSP             S&P 500 Ex-Consumer Staples      USD  us_market      SNP               EDT
+^SPXXEGP                       S&P 500 Ex-Energy      USD  us_market      SNP               EDT
+^SPXXFINP        S&P 500 Ex-Financials & Real Es      USD  us_market      SNP               EDT
+^SPXXFISP                  S&P 500 Ex-Financials      USD  us_market      SNP               EDT
+^SPXXHCP                  S&P 500 Ex-Health Care      USD  us_market      SNP               EDT
+^SPXXINDP                 S&P 500 Ex-Industrials      USD  us_market      SNP               EDT
+^SPXXMP                     S&P 500 Ex-Materials      USD  us_market      SNP               EDT
+^SPXXTSUN        S&P 500 Ex-Information Technolo      USD  us_market      SNP               EDT
+^SPXXUTIP                   S&P 500 Ex-Utilities      USD  us_market      SNP               EDT
+^SPYD-EU         SPDR Portfolio S&P 500 High Div      USD  us_market      ASE               EDT
+^SPYG-EU         SPDR Portfolio S&P 500 Growth E      USD  us_market      ASE               EDT
+^SPYV-EU         SPDR Portfolio S&P 500 Value ET      USD  us_market      ASE               EDT
+^SPYX-EU         SPDR S&P 500 Fossil Fuel Reserv      USD  us_market      ASE               EDT
+^SRO             S&P 500 Range Option Underlying      USD  us_market      WCB               EDT
+^UAPR-IV         INNOVATOR ETFS TRUST S&P 500 UL      USD  us_market      ASE               EDT
+^UJUL-IV         Innovator S&P 500 Ultra Buffer       USD  us_market      ASE               EDT
+^UMAR-IV         INNOVATOR S&P 500 ULTRA BUFFER       USD  us_market      ASE               EDT
+^UPRO-EU         ProShares UltraPro S&P 500 (EST      USD  us_market      ASE               EDT
+^UPRO-IV         ProShares UltraPro S&P 500 (INT      USD  us_market      ASE               EDT
+^UPRO-NV         ProShares UltraPro S&P 500 (NET      USD  us_market      ASE               EDT
+^UPRO-TC         ProShares UltraPro S&P 500 (TOT      USD  us_market      ASE               EDT
+^VAF             S&P 500 Variance Fut Sett Price      USD  us_market      WCB               EDT
+^VIX3M           CBOE S&P 500 3-Month Volatility      USD  us_market      WCB               EDT
+^VOO-EU          Vanguard S&P 500 (Estimated Cas      USD  us_market      ASE               EDT
+^VOO-IV          Vanguard S&P 500 (Intraday Valu      USD  us_market      ASE               EDT
+^VOO-TC          Vanguard S&P 500 (Total Cash Am      USD  us_market      ASE               EDT
+^VOOG-EU         Vanguard S&P 500 Growth (Estima      USD  us_market      ASE               EDT
+^VOOG-IV         Vanguard S&P 500 Growth (Intrad      USD  us_market      ASE               EDT
+^VOOG-NV         Vanguard S&P 500 Growth (Net As      USD  us_market      ASE               EDT
+^VOOG-TC         Vanguard S&P 500 Growth (Total       USD  us_market      ASE               EDT
+^VOOV-EU         Vanguard S&P 500 Value (Estimat      USD  us_market      ASE               EDT
+^VOOV-IV         Vanguard S&P 500 Value (Intrada      USD  us_market      ASE               EDT
+^VOOV-NV         Vanguard S&P 500 Value (Net Ass      USD  us_market      ASE               EDT
+^VOOV-TC         Vanguard S&P 500 Value (Total C      USD  us_market      ASE               EDT
+^VXX-IV          iPath Series B S&P 500 VIX Shor      USD  us_market      ASE               EDT
+^VXX             S&P 500 VIX Short-Term Index MC      USD  us_market      NYS               EDT
+^VXZ-IV          iPath Series B S&P 500 VIX Mid-      USD  us_market      ASE               EDT
+^VXZ             S&P 500 VIX Mid-Term Index MCAP      USD  us_market      NYS               EDT
+^WPUT            CBOE S&P 500 One-Week PutWrite       USD  us_market      WCB               EDT
+^XSP              S&P 500 MINI SPX OPTIONS INDEX      USD  us_market      WCB               EDT
+^XSR             S&P 500 MINI SPX OPTIONS INDEX       USD  us_market      WCB               EDT
+^XVZ-IV            iPath S&P 500 Dynamic VIX ETN      USD  us_market      ASE               EDT

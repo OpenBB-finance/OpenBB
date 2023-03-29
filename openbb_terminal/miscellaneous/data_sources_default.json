@@ -6,14 +6,21 @@
     "candle": [],
     "codes": ["Polygon"],
     "news": ["Feedparser", "NewsApi"],
-    "load": ["YahooFinance", "AlphaVantage", "Polygon", "EODHD", "Intrinio"],
+    "load": [
+      "YahooFinance",
+      "AlphaVantage",
+      "Polygon",
+      "EODHD",
+      "Intrinio",
+      "DataBento"
+    ],
     "th": {
-      "symbol": ["FinanceDatabase"],
       "open": ["Bursa"],
       "closed": ["Bursa"],
       "all": ["Bursa"],
       "exchange": ["Bursa"],
-      "holidays": ["PandasMarketCalendars"]
+      "holidays": ["PandasMarketCalendars"],
+      "symbol": ["FinanceDatabase"]
     },
     "options": {
       "unu": ["FDScanner"],
@@ -28,7 +35,6 @@
       "pcr": ["AlphaQuery"],
       "info": ["Barchart"],
       "chains": ["YahooFinance", "Tradier", "Nasdaq", "Intrinio"],
-      "eodchain": ["Intrinio"],
       "oi": ["YahooFinance", "Tradier", "Nasdaq"],
       "vol": ["YahooFinance", "Tradier", "Nasdaq"],
       "voi": ["YahooFinance", "Tradier", "Nasdaq"],
@@ -39,6 +45,7 @@
       "parity": ["YahooFinance"],
       "binom": ["YahooFinance"],
       "greeks": ["YahooFinance"],
+      "eodchain": ["Intrinio"],
       "pricing": {
         "add": [],
         "rmv": [],
@@ -65,7 +72,6 @@
       "active": ["YahooFinance"],
       "ulc": ["YahooFinance"],
       "asc": ["YahooFinance"],
-      "ford": ["Fidelity"],
       "arkord": ["CathiesArk"],
       "upcoming": ["SeekingAlpha"],
       "trending": ["SeekingAlpha"],
@@ -122,9 +128,6 @@
       "view": [],
       "set": [],
       "filter": ["OpenInsider"],
-      "stats": ["OpenInsider"],
-      "act": ["BusinessInsider"],
-      "lins": ["Finviz"],
       "lcb": ["OpenInsider"],
       "lpsb": ["OpenInsider"],
       "lit": ["OpenInsider"],
@@ -144,7 +147,10 @@
       "tippm": ["OpenInsider"],
       "tist": ["OpenInsider"],
       "tispw": ["OpenInsider"],
-      "tispm": ["OpenInsider"]
+      "tispm": ["OpenInsider"],
+      "stats": ["OpenInsider"],
+      "act": ["BusinessInsider"],
+      "lins": ["Finviz"]
     },
     "gov": {
       "load": ["YahooFinance", "AlphaVantage", "Polygon", "EODHD"],
@@ -164,12 +170,10 @@
       "headlines": ["FinBrain"],
       "snews": ["Finnhub"],
       "wsb": ["Reddit"],
-      "watchlist": ["Reddit"],
-      "popular": ["Reddit"],
       "spacc": ["Reddit"],
-      "spac": ["Reddit"],
-      "getdd": ["Reddit"],
       "redditsent": ["Reddit"],
+      "popular": ["Reddit"],
+      "getdd": ["Reddit"],
       "trending": ["Stocktwits"],
       "stalker": ["Stocktwits"],
       "bullbear": ["Stocktwits"],
@@ -180,11 +184,7 @@
       "regions": ["Google"],
       "interest": ["Google"],
       "queries": ["Google"],
-      "rise": ["Google"],
-      "trend": ["SentimentInvestor"],
-      "hist": ["SentimentInvestor"],
-      "jcdr": ["JimCramer"],
-      "jctr": ["JimCramer"]
+      "rise": ["Google"]
     },
     "ca": {
       "load": ["YahooFinance", "AlphaVantage", "Polygon", "EODHD"],
@@ -210,6 +210,23 @@
     },
     "fa": {
       "load": ["YahooFinance", "AlphaVantage", "Polygon", "EODHD"],
+      "enterprise": ["FinancialModelingPrep", "YahooFinance"],
+      "overview": [
+        "YahooFinance",
+        "Finviz",
+        "FinancialModelingPrep",
+        "AlphaVantage"
+      ],
+      "divs": ["YahooFinance"],
+      "splits": ["YahooFinance"],
+      "rating": ["Finviz", "FinancialModelingPrep"],
+      "rot": ["Finnhub"],
+      "score": ["FinancialModelingPrep"],
+      "warnings": ["MarketWatch"],
+      "mgmt": ["BusinessInsider"],
+      "shrs": ["YahooFinance"],
+      "supplier": ["CSIMarket"],
+      "customer": ["CSIMarket"],
       "income": [
         "FinancialModelingPrep",
         "Polygon",
@@ -241,30 +258,21 @@
       "analysis": ["Elect"],
       "score": ["FinancialModelingPrep"],
       "quote": ["FinancialModelingPrep"],
-      "enterprise": ["FinancialModelingPrep", "YahooFinance"],
+      "mktcap": ["FinancialModelingPrep", "YahooFinance"],
+      "growth": ["FinancialModelingPrep"],
       "metrics": ["FinancialModelingPrep", "AlphaVantage"],
       "ratios": ["FinancialModelingPrep"],
-      "growth": ["FinancialModelingPrep"],
-      "revfc": ["SeekingAlpha"],
-      "epsfc": ["SeekingAlpha"],
-      "warnings": ["MarketWatch"],
-      "dcf": ["StockAnalysis"],
-      "dcfc": ["FinancialModelingPrep"],
-      "info": ["YahooFinance"],
-      "shrs": ["YahooFinance"],
-      "cal": ["YahooFinance"],
-      "divs": ["YahooFinance"],
-      "splits": ["YahooFinance"],
-      "earnings": ["AlphaVantage", "YahooFinance"],
-      "fraud": ["AlphaVantage"],
       "dupont": ["AlphaVantage"],
-      "rating": ["Finviz", "FinancialModelingPrep"],
-      "rot": ["Finnhub"],
-      "pt": ["BusinessInsider"],
-      "est": ["BusinessInsider"],
+      "fraud": ["AlphaVantage"],
       "sec": ["MarketWatch", "FinancialModelingPrep"],
-      "supplier": ["CSIMarket"],
-      "customer": ["CSIMarket"]
+      "analysis": ["Elect"],
+      "earnings": ["AlphaVantage", "YahooFinance"],
+      "epsfc": ["SeekingAlpha"],
+      "revfc": ["SeekingAlpha"],
+      "est": ["BusinessInsider"],
+      "pt": ["BusinessInsider", "FinancialModelingPrep"],
+      "dcf": ["StockAnalysis"],
+      "dcfc": ["FinancialModelingPrep"]
     },
     "bt": {
       "load": ["YahooFinance", "AlphaVantage", "Polygon", "EODHD"],
@@ -272,15 +280,12 @@
     },
     "ta": {
       "load": ["YahooFinance", "AlphaVantage", "Polygon", "EODHD"],
-      "tv": ["TradingView"],
       "recom": ["TradingView"],
-      "view": ["Finviz"],
-      "summary": ["FinBrain"]
+      "summary": ["FinBrain"],
+      "tv": ["TradingView"],
+      "view": ["Finviz"]
     },
     "qa": {
-      "load": ["YahooFinance", "AlphaVantage", "Polygon", "EODHD"]
-    },
-    "pred": {
       "load": ["YahooFinance", "AlphaVantage", "Polygon", "EODHD"]
     }
   },
@@ -341,6 +346,7 @@
       "ueat": ["BitQuery"],
       "ttcp": ["BitQuery"],
       "baas": ["BitQuery"],
+      "query": ["Shroom"],
       "address": ["Ethplorer"],
       "top": ["Ethplorer"],
       "balance": ["Ethplorer"],
@@ -349,12 +355,10 @@
       "holders": ["Ethplorer"],
       "th": ["Ethplorer"],
       "prices": ["Ethplorer"],
-      "tx": ["Ethplorer"],
-      "query": ["Shroom"]
+      "tx": ["Ethplorer"]
     },
     "defi": {
       "newsletter": ["Substack"],
-      "dpi": ["DeFiPulse"],
       "vaults": ["Coindix"],
       "tokens": ["TheGraph"],
       "stats": ["TheGraph"],
@@ -365,8 +369,6 @@
       "gdapps": ["DeFiLlama"],
       "stvl": ["DeFiLlama"],
       "dtvl": ["DeFiLlama"],
-      "aterra": ["TerraEngineer"],
-      "ayr": ["TerraEngineer"],
       "sinfo": ["TerraFCD"],
       "validators": ["TerraFCD"],
       "gacc": ["TerraFCD"],
@@ -394,6 +396,7 @@
       "gov": ["Messari"],
       "basic": ["CoinPaprika"],
       "stats": ["Coinbase"],
+      "desc": ["TokenTerminal"],
       "market": ["CoinGecko"],
       "mkt": ["CoinPaprika"],
       "ex": ["CoinPaprika"],
@@ -410,6 +413,7 @@
       "ps": ["CoinPaprika"],
       "mcapdom": ["Messari"],
       "mt": ["Messari"],
+      "funot": ["TokenTerminal"],
       "team": ["Messari"],
       "inv": ["Messari"],
       "tk": ["Messari"],
@@ -422,9 +426,7 @@
       "social": ["CoinGecko"],
       "score": ["CoinGecko"],
       "dev": ["CoinGecko"],
-      "gh": ["Santiment"],
-      "desc": ["TokenTerminal"],
-      "funot": ["TokenTerminal"]
+      "gh": ["Santiment"]
     },
     "ta": {
       "load": ["YahooFinance", "CoinGecko", "CCXT"],
@@ -432,48 +434,49 @@
     },
     "qa": {
       "load": ["YahooFinance", "CoinGecko", "CCXT"]
-    },
-    "pred": {
-      "load": ["YahooFinance", "CoinGecko", "CCXT"]
     }
   },
   "etf": {
     "search": ["FinanceDatabase", "StockAnalysis"],
     "load": ["YahooFinance"],
-    "overview": ["StockAnalysis"],
-    "holdings": ["StockAnalysis"],
-    "weights": ["FinancialModelingPrep"],
-    "news": ["NewsApi"],
-    "compare": ["StockAnalysis"],
     "disc": {
       "gainers": ["WallStreetJournal"],
       "decliners": ["WallStreetJournal"],
       "active": ["WallStreetJournal"]
     },
-    "screen": {
-      "screen": ["StockAnalysis"],
-      "sbc": ["FinanceDatabase"]
-    }
+    "overview": ["StockAnalysis"],
+    "holdings": ["StockAnalysis"],
+    "weights": ["FinancialModelingPrep"],
+    "news": ["NewsApi"],
+    "compare": ["StockAnalysis"]
   },
   "economy": {
     "overview": ["WallStreetJournal"],
     "futures": ["WallStreetJournal", "Finviz"],
     "map": ["Finviz"],
     "bigmac": ["Nasdaq"],
-    "ycrv": ["FRED"],
     "events": ["Nasdaq"],
     "edebt": ["Wikipedia"],
     "rtps": ["AlphaVantage"],
     "valuation": ["Finviz"],
     "performance": ["Finviz"],
     "spectrum": ["Finviz"],
-    "macro": ["EconDB"],
+    "gdp": ["OECD"],
+    "rgdp": ["OECD"],
+    "fgdp": ["OECD"],
+    "debt": ["OECD"],
+    "cpi": ["FRED"],
+    "ccpi": ["OECD"],
+    "balance": ["OECD"],
+    "revenue": ["OECD"],
+    "spending": ["OECD"],
+    "trust": ["OECD"],
     "treasury": ["EconDB"],
     "fred": ["FRED"],
     "index": ["YahooFinance"]
   },
   "forex": {
-    "load": ["YahooFinance", "AlphaVantage", "Polygon", "Oanda"],
+    "load": ["YahooFinance", "AlphaVantage", "Polygon"],
     "quote": ["YahooFinance", "AlphaVantage"],
     "fwd": ["FXEmpire"]
   },
@@ -492,8 +495,32 @@
   },
   "futures": {
     "search": ["YahooFinance"],
-    "historical": ["YahooFinance"],
+    "historical": ["YahooFinance", "DataBento"],
     "curve": ["YahooFinance"]
+  },
+  "fixedincome": {
+    "estr": ["FRED", "ECB"],
+    "sofr": ["FRED"],
+    "sonia": ["FRED"],
+    "ameribor": ["FRED"],
+    "fed": ["FRED"],
+    "iorb": ["FRED"],
+    "projection": ["FRED"],
+    "dwpcr": ["FRED"],
+    "ecb": ["FRED"],
+    "treasury": ["OECD"],
+    "usrates": ["FRED"],
+    "ycrv": ["FRED"],
+    "ecbycrv": ["ECB"],
+    "icebofa": ["FRED"],
+    "moody": ["FRED"],
+    "spot": ["FRED"],
+    "cp": ["FRED"],
+    "hqm": ["FRED"],
+    "icespread": ["FRED"],
+    "tmc": ["FRED"],
+    "ffrmc": ["FRED"],
+    "tbffr": ["FRED"]
   },
   "portfolio": {
     "po": {

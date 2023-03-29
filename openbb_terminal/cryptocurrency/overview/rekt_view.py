@@ -64,11 +64,13 @@ def display_crypto_hacks(
             df["Date"] = df["Date"].dt.date
 
             print_rich_table(
-                df.head(limit),
+                df,
                 headers=list(df.columns),
                 floatfmt=".1f",
                 show_index=False,
                 title="Major Crypto Hacks",
+                export=bool(export),
+                limit=limit,
             )
 
             export_data(

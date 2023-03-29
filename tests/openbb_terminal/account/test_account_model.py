@@ -1,13 +1,16 @@
+# IMPORTATION STANDARD
+
 from pathlib import Path
 from unittest.mock import patch
 
-from openbb_terminal import (
-    config_plot as cfg_plot,
-    config_terminal as cfg,
-    feature_flags as obbff,
-)
+# IMPORTATION THIRDPARTY
 from openbb_terminal.account import account_model
-from openbb_terminal.core.config import paths
+
+# IMPORTATION INTERNAL
+from openbb_terminal.core.models.credentials_model import CredentialsModel
+from openbb_terminal.core.session.current_user import (
+    copy_user,
+)
 
 
 def test_get_var_diff():
@@ -41,89 +44,100 @@ def test_get_var_diff():
     assert result == (True, False)
 
 
-def test_get_diff_keys():
-    class TestObject:  # pylint: disable=too-few-public-methods
-        a = 1
-        b = 2.0
-        c = "string"
+def test_get_diff_keys(mocker):
+    credentials = CredentialsModel(
+        **{
+            "API_KEY_ALPHAVANTAGE": "key1",
+            "API_KEY_FINANCIALMODELINGPREP": "key2",
+            "API_KEY_QUANDL": "key3",
+        }
+    )
+    mock_current_user = copy_user(credentials=credentials)
+    mocker.patch(
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
+    )
 
-    test_keys = {"a": 2, "b": 3.0, "c": "new_string"}
-    with patch("openbb_terminal.account.account_model.cfg", TestObject):
-        diff = account_model.get_diff_keys(test_keys)
-        assert diff == {"a": (1, 2), "b": (2.0, 3.0), "c": ("string", "new_string")}
+    new_credentials = {
+        "API_KEY_ALPHAVANTAGE": "new_key1",
+        "API_KEY_FINANCIALMODELINGPREP": "new_key2",
+        "API_KEY_QUANDL": "new_key3",
+    }
 
-
-def test_get_diff_keys_empty_keys():
-    class TestObject:  # pylint: disable=too-few-public-methods
-        a = 1
-        b = 2.0
-        c = "string"
-
-    test_keys = {}
-    with patch("openbb_terminal.account.account_model.cfg", TestObject):
-        diff = account_model.get_diff_keys(test_keys)
-        assert not diff and isinstance(diff, dict)
-
-
-def test_get_diff_keys_same_keys():
-    class TestObject:  # pylint: disable=too-few-public-methods
-        a = 1
-        b = 2.0
-        c = "string"
-
-    test_keys = {"a": 1, "b": 2.0, "c": "string"}
-    with patch("openbb_terminal.account.account_model.cfg", TestObject):
-        diff = account_model.get_diff_keys(test_keys)
-        assert not diff and isinstance(diff, dict)
+    diff = account_model.get_diff_keys(new_credentials)
+    assert diff == {
+        "API_KEY_ALPHAVANTAGE": ("key1", "new_key1"),
+        "API_KEY_FINANCIALMODELINGPREP": ("key2", "new_key2"),
+        "API_KEY_QUANDL": ("key3", "new_key3"),
+    }
 
 
-def test_get_diff_keys_new_keys():
-    class TestObject:  # pylint: disable=too-few-public-methods
-        a = 1
-        b = 2.0
+def test_get_diff_keys_empty_keys(mocker):
+    credentials = CredentialsModel(
+        **{
+            "API_KEY_ALPHAVANTAGE": "key1",
+            "API_KEY_FINANCIALMODELINGPREP": "key2",
+            "API_KEY_QUANDL": "key3",
+        }
+    )
+    mock_current_user = copy_user(credentials=credentials)
+    mocker.patch(
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
+    )
 
-    test_keys = {"a": 1, "b": 2.0, "c": "string"}
-    with patch("openbb_terminal.account.account_model.cfg", TestObject):
-        diff = account_model.get_diff_keys(test_keys)
-        assert not diff and isinstance(diff, dict)
+    new_credentials = {}
 
-
-def test_get_diff_settings_empty_settings():
-    diff = account_model.get_diff_settings({})
+    diff = account_model.get_diff_keys(new_credentials)
     assert not diff and isinstance(diff, dict)
 
 
-def test_get_diff_settings_no_diff():
-    obbff.value = 1
-    cfg.value = 1
-    cfg_plot.value = 1
-    paths.value = 1
-    diff = account_model.get_diff_settings({"value": 1})
+def test_get_diff_keys_same_keys(mocker):
+    credentials = CredentialsModel(
+        **{
+            "API_KEY_ALPHAVANTAGE": "key1",
+            "API_KEY_FINANCIALMODELINGPREP": "key2",
+            "API_KEY_QUANDL": "key3",
+        }
+    )
+    mock_current_user = copy_user(credentials=credentials)
+    mocker.patch(
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
+    )
+
+    new_credentials = {
+        "API_KEY_ALPHAVANTAGE": "key1",
+        "API_KEY_FINANCIALMODELINGPREP": "key2",
+        "API_KEY_QUANDL": "key3",
+    }
+
+    diff = account_model.get_diff_keys(new_credentials)
+
     assert not diff and isinstance(diff, dict)
 
 
-def test_get_diff_settings_obbff_diff():
-    obbff.value = 1
-    diff = account_model.get_diff_settings({"value": 2})
-    assert diff == {"value": (1, 2)}
+def test_get_diff_keys_new_keys(mocker):
+    credentials = CredentialsModel(
+        **{
+            "API_KEY_ALPHAVANTAGE": "key1",
+            "API_KEY_FINANCIALMODELINGPREP": "key2",
+        }
+    )
+    mock_current_user = copy_user(credentials=credentials)
+    mocker.patch(
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
+    )
 
+    new_credentials = {
+        "API_KEY_ALPHAVANTAGE": "key1",
+        "API_KEY_FINANCIALMODELINGPREP": "key2",
+        "NEW_CREDENTIAL": "new",
+    }
 
-def test_get_diff_settings_cfg_diff():
-    cfg.value = 1
-    diff = account_model.get_diff_settings({"value": 2})
-    assert diff == {"value": (1, 2)}
-
-
-def test_get_diff_settings_cfg_plot_diff():
-    cfg_plot.value = 1
-    diff = account_model.get_diff_settings({"value": 2})
-    assert diff == {"value": (1, 2)}
-
-
-def test_get_diff_settings_paths_diff():
-    paths.value = 1
-    diff = account_model.get_diff_settings({"value": 2})
-    assert diff == {"value": (1, 2)}
+    diff = account_model.get_diff_keys(new_credentials)
+    assert not diff and isinstance(diff, dict)
 
 
 def test_get_diff():
@@ -132,85 +146,14 @@ def test_get_diff():
         "features_keys": {"key1": "value1"},
     }
     expected = {
-        "features_settings": {"setting1": "value1"},
         "features_keys": {"key1": "value1"},
     }
 
     with patch(
-        "openbb_terminal.account.account_model.get_diff_settings"
-    ) as mock_get_diff_settings:
-        mock_get_diff_settings.return_value = {"setting1": ("old_value", "value1")}
+        "openbb_terminal.account.account_model.get_diff_keys"
+    ) as mock_get_diff_keys:
+        mock_get_diff_keys.return_value = {"key1": ("old_value", "value1")}
 
-        with patch(
-            "openbb_terminal.account.account_model.get_diff_keys"
-        ) as mock_get_diff_keys:
-            mock_get_diff_keys.return_value = {"key1": ("old_value", "value1")}
-
-            result = account_model.get_diff(configs)
-
-    assert result == expected
-
-
-def test_get_diff_no_keys():
-    configs = {
-        "features_settings": {"setting1": "value1"},
-    }
-    expected = {
-        "features_settings": {"setting1": "value1"},
-    }
-
-    with patch(
-        "openbb_terminal.account.account_model.get_diff_settings"
-    ) as mock_get_diff_settings:
-        mock_get_diff_settings.return_value = {"setting1": ("old_value", "value1")}
-
-        with patch(
-            "openbb_terminal.account.account_model.get_diff_keys"
-        ) as mock_get_diff_keys:
-            mock_get_diff_keys.return_value = {}
-
-            result = account_model.get_diff(configs)
-
-    assert result == expected
-
-
-def test_get_diff_no_settings():
-    configs = {
-        "features_keys": {"key1": "value1"},
-    }
-    expected = {
-        "features_keys": {"key1": "value1"},
-    }
-
-    with patch(
-        "openbb_terminal.account.account_model.get_diff_settings"
-    ) as mock_get_diff_settings:
-        mock_get_diff_settings.return_value = {}
-
-        with patch(
-            "openbb_terminal.account.account_model.get_diff_keys"
-        ) as mock_get_diff_keys:
-            mock_get_diff_keys.return_value = {"key1": ("old_value", "value1")}
-
-            result = account_model.get_diff(configs)
-
-    assert result == expected
-
-
-def test_get_diff_no_settings_no_keys():
-    configs = {}
-    expected = {}
-
-    with patch(
-        "openbb_terminal.account.account_model.get_diff_settings"
-    ) as mock_get_diff_settings:
-        mock_get_diff_settings.return_value = {}
-
-        with patch(
-            "openbb_terminal.account.account_model.get_diff_keys"
-        ) as mock_get_diff_keys:
-            mock_get_diff_keys.return_value = {}
-
-            result = account_model.get_diff(configs)
+        result = account_model.get_diff(configs)
 
     assert result == expected

@@ -1,5 +1,13 @@
+# IMPORTATION STANDARD
+
+# IMPORTATION THIRDPARTY
 import pytest
 
+# IMPORTATION INTERNAL
+from openbb_terminal.core.session.current_user import (
+    PreferencesModel,
+    copy_user,
+)
 from openbb_terminal.keys_controller import KeysController
 
 controller = KeysController(menu_usage=False)
@@ -8,8 +16,21 @@ controller = KeysController(menu_usage=False)
 
 
 @pytest.fixture(autouse=True)
-def no_change_env(mocker):
-    mocker.patch("openbb_terminal.keys_model.dotenv.set_key")
+def revert_current_user(mocker):
+    mocker.patch(
+        target="openbb_terminal.keys_model.set_credential",
+    )
+    preferences = PreferencesModel(
+        ENABLE_CHECK_API=False,
+    )
+    mock_current_user = copy_user(preferences=preferences)
+    mocker.patch(
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
+    )
+    mocker.patch("openbb_terminal.keys_model.write_to_dotenv")
+
+    yield
 
 
 class MockCFG:
@@ -30,8 +51,6 @@ class MockCFG:
         self.API_REDDIT_USERNAME = kwargs.get("REDDIT_USERNAME", None)
         self.API_REDDIT_PASSWORD = kwargs.get("REDDIT_PASSWORD", None)
         self.API_REDDIT_USER_AGENT = kwargs.get("REDDIT_USER", None)
-        self.API_TWITTER_KEY = kwargs.get("TWITTER", None)
-        self.API_TWITTER_SECRET_KEY = kwargs.get("TWITTER", None)
         self.API_TWITTER_BEARER_TOKEN = kwargs.get("TWITTER", None)
         self.RH_USERNAME = kwargs.get("RH", None)
         self.RH_PASSWORD = kwargs.get("RH", None)
@@ -234,20 +253,3 @@ def test_call_tokenterminal(other):
 @pytest.mark.parametrize("other", [[], ["-k", "1234", "-t", "456"]])
 def test_call_shroom(other):
     controller.call_shroom(other)
-
-
-@pytest.mark.vcr
-@pytest.mark.parametrize("other", [[], ["-k", "1234", "-t", "456"]])
-def test_call_openbb(mocker, other):
-    # MOCK GET
-    attrs = {
-        "status_code": 200,
-        "json.return_value": {"token": "MOCK_TOKEN"},
-    }
-    mock_response = mocker.Mock(**attrs)
-    mocker.patch(
-        target="openbb_terminal.keys_model.request",
-        new=mocker.Mock(return_value=mock_response),
-    )
-
-    controller.call_openbb(other)

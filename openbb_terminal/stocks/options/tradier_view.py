@@ -4,21 +4,11 @@ __docformat__ = "numpy"
 import logging
 import os
 import warnings
-from typing import List, Optional
+from typing import Optional
 
-import matplotlib.pyplot as plt
-import mplfinance as mpf
-
-from openbb_terminal.config_terminal import theme
+from openbb_terminal import OpenBBFigure
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import (
-    export_data,
-    is_valid_axes_count,
-    lambda_long_number_format_y_axis,
-    plot_autoscale,
-    print_rich_table,
-)
-from openbb_terminal.rich_config import console
+from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.stocks.options import tradier_model
 
 logger = logging.getLogger(__name__)
@@ -37,7 +27,7 @@ def display_historical(
     chain_id: Optional[str] = None,
     export: str = "",
     sheet_name: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: bool = False,
 ):
     """Plot historical option prices
 
@@ -59,8 +49,8 @@ def display_historical(
         Format of export file
     sheet_name: str
         Optionally specify the name of the sheet to export to
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (1 axis is expected in the list), by default None
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
 
     df_hist = tradier_model.get_historical_options(
@@ -72,47 +62,36 @@ def display_historical(
             df_hist,
             headers=[x.title() for x in df_hist.columns],
             title="Historical Option Prices",
+            export=bool(export),
         )
 
     op_type = ["call", "put"][put]
 
-    candle_chart_kwargs = {
-        "type": "candle",
-        "style": theme.mpf_style,
-        "volume": True,
-        "xrotation": theme.xticks_rotation,
-        "scale_padding": {"left": 0.3, "right": 1.2, "top": 0.8, "bottom": 0.8},
-        "update_width_config": {
-            "candle_linewidth": 0.6,
-            "candle_width": 0.8,
-            "volume_linewidth": 0.8,
-            "volume_width": 0.8,
-        },
-        "datetime_format": "%Y-%b-%d",
-    }
-    if external_axes is None:
-        candle_chart_kwargs["returnfig"] = True
-        candle_chart_kwargs["figratio"] = (10, 7)
-        candle_chart_kwargs["figscale"] = 1.10
-        candle_chart_kwargs["figsize"] = plot_autoscale()
-        fig, ax = mpf.plot(df_hist, **candle_chart_kwargs)
-        fig.suptitle(
-            f"Historical {strike} {op_type.title()}",
-            x=0.055,
-            y=0.965,
-            horizontalalignment="left",
-        )
-        lambda_long_number_format_y_axis(df_hist, "volume", ax)
-        theme.visualize_output(force_tight_layout=False)
-    elif is_valid_axes_count(external_axes, 2):
-        (ax1, ax2) = external_axes
-        candle_chart_kwargs["ax"] = ax1
-        candle_chart_kwargs["volume"] = ax2
-        mpf.plot(df_hist, **candle_chart_kwargs)
-    else:
-        return
+    df_hist.columns = [x.title() for x in df_hist.columns]
 
-    console.print()
+    fig = OpenBBFigure.create_subplots(
+        rows=1,
+        cols=1,
+        specs=[[{"secondary_y": True}]],
+        vertical_spacing=0.06,
+    )
+    fig.set_title(f"Historical {symbol} {strike} {op_type.title()}")
+
+    df_hist.index = df_hist.index.astype("datetime64[ns]")
+
+    fig.add_candlestick(
+        open=df_hist["Open"],
+        high=df_hist["High"],
+        low=df_hist["Low"],
+        close=df_hist["Close"],
+        x=df_hist.index,
+        name=f"{symbol} OHLC",
+        row=1,
+        col=1,
+        secondary_y=True,
+    )
+    fig.add_inchart_volume(df_hist)
+    fig.hide_holidays()
 
     if export:
         export_data(
@@ -121,4 +100,7 @@ def display_historical(
             "hist",
             df_hist,
             sheet_name,
+            fig,
         )
+
+    return fig.show(external=external_axes)

@@ -1,4 +1,5 @@
 """OpenBB Terminal SDK."""
+# ######### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ######### #
 # flake8: noqa
 # pylint: disable=unused-import,wrong-import-order
 # pylint: disable=C0302,W0611,R0902,R0903,C0412,C0301,not-callable
@@ -6,8 +7,7 @@ import logging
 
 import openbb_terminal.config_terminal as cfg
 from openbb_terminal import helper_funcs as helper  # noqa: F401
-from openbb_terminal.base_helpers import load_dotenv_and_reload_configs
-from openbb_terminal.config_terminal import theme
+from openbb_terminal.core.plots.plotly_helper import theme  # noqa: F401
 
 from openbb_terminal.cryptocurrency.due_diligence.pycoingecko_model import Coin
 from openbb_terminal.dashboards.dashboards_controller import DashboardsController
@@ -15,19 +15,19 @@ from openbb_terminal.helper_classes import TerminalStyle  # noqa: F401
 from openbb_terminal.reports import widget_helpers as widgets  # noqa: F401
 from openbb_terminal.reports.reports_controller import ReportController
 
-import openbb_terminal.sdk_core.sdk_init as lib
-from openbb_terminal.sdk_core import (
+import openbb_terminal.core.sdk.sdk_init as lib
+from openbb_terminal.core.sdk import (
     controllers as ctrl,
     models as model,
 )
-from openbb_terminal import feature_flags as obbff
-from openbb_terminal.session.user import User
+from openbb_terminal.core.session.current_system import get_current_system
+from openbb_terminal.core.session.current_user import is_local
+from openbb_terminal.terminal_helper import is_auth_enabled
 
-if User.is_guest():
-    load_dotenv_and_reload_configs()
+cfg.setup_config_terminal()
 
 logger = logging.getLogger(__name__)
-theme.applyMPLstyle()
+cfg.theme.applyMPLstyle()
 
 
 class OpenBBSDK:
@@ -40,7 +40,7 @@ class OpenBBSDK:
         `whoami`: Display user info.\n
     """
 
-    __version__ = obbff.VERSION
+    __version__ = get_current_system().VERSION
 
     def __init__(self):
         SDKLogger()
@@ -48,6 +48,7 @@ class OpenBBSDK:
         self.logout = lib.sdk_session.logout
         self.news = lib.common_feedparser_model.get_news
         self.whoami = lib.sdk_session.whoami
+        SDKLogger._try_to_login(self)
 
     @property
     def alt(self):
@@ -131,17 +132,28 @@ class OpenBBSDK:
 
         Attributes:
             `available_indices`: Get available indices\n
+            `balance`: General government deficit is defined as the balance of income and expenditure of government,\n
+            `balance_chart`: General government balance is defined as the balance of income and expenditure of government,\n
             `bigmac`: Display Big Mac Index for given countries\n
             `bigmac_chart`: Display Big Mac Index for given countries\n
+            `ccpi`: Inflation measured by consumer price index (CPI) is defined as the change in the prices\n
+            `ccpi_chart`: Inflation measured by consumer price index (CPI) is defined as the change in the prices\n
             `country_codes`: Get available country codes for Bigmac index\n
+            `cpi`: Obtain CPI data from FRED. [Source: FRED]\n
+            `cpi_chart`: Inflation measured by consumer price index (CPI) is defined as the change in\n
             `currencies`: Scrape data for global currencies\n
+            `debt`: General government debt-to-GDP ratio measures the gross debt of the general\n
+            `debt_chart`: General government debt-to-GDP ratio measures the gross debt of the general\n
             `events`: Get economic calendar for countries between specified dates\n
+            `fgdp`: Real gross domestic product (GDP) is GDP given in constant prices and\n
+            `fgdp_chart`: Real gross domestic product (GDP) is GDP given in constant prices and\n
             `fred`: Get Series data. [Source: FRED]\n
             `fred_chart`: Display (multiple) series from https://fred.stlouisfed.org. [Source: FRED]\n
-            `fred_ids`: Get Series IDs. [Source: FRED]\n
             `fred_notes`: Get series notes. [Source: FRED]\n
             `future`: Get futures data. [Source: Finviz]\n
             `futures`: Get futures data.\n
+            `gdp`: Gross domestic product (GDP) is the standard measure of the value added created\n
+            `gdp_chart`: Gross domestic product (GDP) is the standard measure of the value added created\n
             `get_groups`: Get group available\n
             `glbonds`: Scrape data for global bonds\n
             `index`: Get data on selected indices over time [Source: Yahoo Finance]\n
@@ -154,17 +166,23 @@ class OpenBBSDK:
             `overview`: Scrape data for market overview\n
             `perfmap`: Opens Finviz map website in a browser. [Source: Finviz]\n
             `performance`: Get group (sectors, industry or country) performance data. [Source: Finviz]\n
+            `revenue`: Governments collect revenues mainly for two purposes: to finance the goods\n
+            `revenue_chart`: Governments collect revenues mainly for two purposes: to finance the goods\n
+            `rgdp`: Gross domestic product (GDP) is the standard measure of the value added\n
+            `rgdp_chart`: Gross domestic product (GDP) is the standard measure of the value added\n
             `rtps`: Get real-time performance sector data\n
             `rtps_chart`: Display Real-Time Performance sector. [Source: AlphaVantage]\n
             `search_index`: Search indices by keyword. [Source: FinanceDatabase]\n
             `spectrum`: Display finviz spectrum in system viewer [Source: Finviz]\n
+            `spending`: General government spending provides an indication of the size\n
+            `spending_chart`: General government spending provides an indication of the size\n
             `treasury`: Get U.S. Treasury rates [Source: EconDB]\n
             `treasury_chart`: Display U.S. Treasury rates [Source: EconDB]\n
             `treasury_maturities`: Get treasury maturity options [Source: EconDB]\n
+            `trust`: Trust in government refers to the share of people who report having confidence in\n
+            `trust_chart`: Trust in government refers to the share of people who report having confidence in\n
             `usbonds`: Scrape data for us bonds\n
             `valuation`: Get group (sectors, industry or country) valuation data. [Source: Finviz]\n
-            `ycrv`: Gets yield curve data from FRED\n
-            `ycrv_chart`: Display yield curve based on US Treasury rates for a specified date.\n
         """
 
         return model.EconomyRoot()
@@ -175,7 +193,6 @@ class OpenBBSDK:
 
         Submodules:
             `disc`: Discovery Module
-            `scr`: Scr Module
 
         Attributes:
             `candle`: Show candle plot of loaded ticker.\n
@@ -194,6 +211,38 @@ class OpenBBSDK:
         """
 
         return ctrl.EtfController()
+
+    @property
+    def fixedincome(self):
+        """Fixedincome Submodule
+
+        Attributes:
+            `ameribor`: Obtain data for American Interbank Offered Rate (AMERIBOR)\n
+            `cp`: Obtain Commercial Paper data\n
+            `dwpcr`: Obtain data for the Discount Window Primary Credit Rate.\n
+            `ecb`: Obtain data for ECB interest rates.\n
+            `ecbycrv`: Gets euro area yield curve data from ECB.\n
+            `estr`: Obtain data for Euro Short-Term Rate (ESTR)\n
+            `fed`: Obtain data for Effective Federal Funds Rate.\n
+            `ffrmc`: Get data for Selected Treasury Constant Maturity Minus Federal Funds Rate\n
+            `hqm`: The HQM yield curve represents the high quality corporate bond market, i.e.,\n
+            `icebofa`: Get data for ICE BofA US Corporate Bond Indices.\n
+            `icespread`: Get data for ICE BofA US Corporate Bond Spreads\n
+            `iorb`: Obtain data for Interest Rate on Reserve Balances.\n
+            `moody`: Get data for Moody Corporate Bond Index\n
+            `projection`: Obtain data for the Federal Reserve's projection of the federal funds rate.\n
+            `sofr`: Obtain data for Secured Overnight Financing Rate (SOFR)\n
+            `sonia`: Obtain data for Sterling Overnight Index Average (SONIA)\n
+            `spot`: The spot rate for any maturity is the yield on a bond that provides\n
+            `tbffr`: Get data for Selected Treasury Bill Minus Federal Funds Rate.\n
+            `tmc`: Get data for 10-Year Treasury Constant Maturity Minus Selected Treasury Constant Maturity.\n
+            `treasury`: Gets interest rates data from selected countries (3 month and 10 year)\n
+            `usrates`: Plot various treasury rates from the United States\n
+            `ycrv`: Gets yield curve data from FRED.\n
+            `ycrv_chart`: Display yield curve based on US Treasury rates for a specified date.\n
+        """
+
+        return model.FixedincomeRoot()
 
     @property
     def forecast(self):
@@ -288,7 +337,7 @@ class OpenBBSDK:
         Attributes:
             `curve`: Get curve futures [Source: Yahoo Finance]\n
             `curve_chart`: Display curve futures [Source: Yahoo Finance]\n
-            `historical`: Get historical futures [Source: Yahoo Finance]\n
+            `historical`: Get historical futures data\n
             `historical_chart`: Display historical futures [Source: Yahoo Finance]\n
             `search`: Get search futures [Source: Yahoo Finance]\n
         """
@@ -307,6 +356,7 @@ class OpenBBSDK:
             `coinbase`: Set Coinbase key\n
             `coinglass`: Set Coinglass key.\n
             `cpanic`: Set Cpanic key.\n
+            `databento`: Set DataBento key\n
             `degiro`: Set Degiro key\n
             `eodhd`: Set Eodhd key.\n
             `ethplorer`: Set Ethplorer key.\n
@@ -320,7 +370,6 @@ class OpenBBSDK:
             `mykeys`: Get currently set API keys.\n
             `news`: Set News key\n
             `oanda`: Set Oanda key\n
-            `openbb`: Set OpenBB Personal Access Token.\n
             `polygon`: Set Polygon key\n
             `quandl`: Set Quandl key\n
             `reddit`: Set Reddit key\n
@@ -442,7 +491,6 @@ class OpenBBSDK:
             `options`: Options Module
             `qa`: Quantitative Analysis Module
             `screener`: Screener Module
-            `sia`: Sector Industry Analysis Module
             `ta`: Technical Analysis Module
             `th`: Trading Hours Module
 
@@ -480,6 +528,8 @@ class OpenBBSDK:
             `cg_chart`: Plots center of gravity Indicator\n
             `clenow`: Gets the Clenow Volatility Adjusted Momentum.  this is defined as the regression coefficient on log prices\n
             `clenow_chart`: Prints table and plots clenow momentum\n
+            `cones`: Returns a DataFrame of realized volatility quantiles.\n
+            `cones_chart`: Plots the realized volatility quantiles for the loaded ticker.\n
             `demark`: Get the integer value for demark sequential indicator\n
             `demark_chart`: Plot demark sequential indicator\n
             `donchian`: Calculate Donchian Channels\n
@@ -500,7 +550,14 @@ class OpenBBSDK:
             `obv_chart`: Plots OBV technical indicator\n
             `rsi`: Relative strength index\n
             `rsi_chart`: Plots RSI Indicator\n
+            `rvol_garman_klass`: Garman-Klass volatility extends Parkinson volatility by taking into account the opening and closing price.\n
+            `rvol_hodges_tompkins`: Hodges-Tompkins volatility is a bias correction for estimation using an overlapping data sample.\n
+            `rvol_parkinson`: Parkinson volatility uses the high and low price of the day rather than just close to close prices.\n
+            `rvol_rogers_satchell`: Rogers-Satchell is an estimator for measuring the volatility with an average return not equal to zero.\n
+            `rvol_std`: Standard deviation measures how widely returns are dispersed from the average return.\n
+            `rvol_yang_zhang`: Yang-Zhang volatility is the combination of the overnight (close-to-open volatility).\n
             `sma`: Gets simple moving average (SMA) for stock\n
+            `standard_deviation`: Standard deviation measures how widely returns are dispersed from the average return.\n
             `stoch`: Stochastic oscillator\n
             `stoch_chart`: Plots stochastic oscillator signal\n
             `vwap`: Gets volume weighted average price (VWAP)\n
@@ -517,18 +574,27 @@ class SDKLogger:
         self.__check_initialize_logging()
 
     def __check_initialize_logging(self):
-        if not cfg.LOGGING_SUPPRESS:
+        if not get_current_system().LOGGING_SUPPRESS:
             self.__initialize_logging()
 
     @staticmethod
     def __initialize_logging() -> None:
         # pylint: disable=C0415
+        from openbb_terminal.config_terminal import setup_logging_sub_app
         from openbb_terminal.core.log.generation.settings_logger import log_all_settings
         from openbb_terminal.loggers import setup_logging
 
-        cfg.LOGGING_SUB_APP = "sdk"
+        setup_logging_sub_app(sub_app="sdk")
         setup_logging()
         log_all_settings()
+
+    @staticmethod
+    def _try_to_login(sdk: "OpenBBSDK"):
+        if is_local() and is_auth_enabled():
+            try:
+                sdk.login()
+            except Exception:
+                pass
 
 
 openbb = OpenBBSDK()

@@ -28,7 +28,12 @@ def display_analysis(
     analysis = eclect_us_model.get_filings_analysis(symbol)
 
     if not analysis.empty:
-        print_rich_table(analysis, title="SEC filings analysis", show_index=True)
+        print_rich_table(
+            analysis,
+            title="SEC filings analysis",
+            show_index=False,
+            export=bool(export),
+        )
         export_data(
             export,
             os.path.dirname(os.path.abspath(__file__)),

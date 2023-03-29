@@ -1,4 +1,5 @@
 # IMPORTATION STANDARD
+
 import os
 from datetime import datetime
 
@@ -6,9 +7,12 @@ from datetime import datetime
 import pandas as pd
 import pytest
 
-from openbb_terminal.stocks import stocks_helper
-
 # IMPORTATION INTERNAL
+from openbb_terminal.core.session.current_user import (
+    PreferencesModel,
+    copy_user,
+)
+from openbb_terminal.stocks import stocks_helper
 from openbb_terminal.stocks.technical_analysis import ta_controller
 
 # pylint: disable=E1101
@@ -67,9 +71,11 @@ def test_menu_without_queue_completion(mocker):
     path_controller = "openbb_terminal.stocks.technical_analysis.ta_controller"
 
     # ENABLE AUTO-COMPLETION : HELPER_FUNCS.MENU
+    preferences = PreferencesModel(USE_PROMPT_TOOLKIT=True)
+    mock_current_user = copy_user(preferences=preferences)
     mocker.patch(
-        target="openbb_terminal.feature_flags.USE_PROMPT_TOOLKIT",
-        new=True,
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
     )
     mocker.patch(
         target="openbb_terminal.parent_classes.session",
@@ -82,10 +88,11 @@ def test_menu_without_queue_completion(mocker):
     # DISABLE AUTO-COMPLETION : CONTROLLER.COMPLETER
 
     # DISABLE AUTO-COMPLETION
-    mocker.patch.object(
-        target=ta_controller.obbff,
-        attribute="USE_PROMPT_TOOLKIT",
-        new=True,
+    preferences = PreferencesModel(USE_PROMPT_TOOLKIT=True)
+    mock_current_user = copy_user(preferences=preferences)
+    mocker.patch(
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
     )
     mocker.patch(
         target=f"{path_controller}.session",
@@ -115,10 +122,11 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
     path_controller = "openbb_terminal.stocks.technical_analysis.ta_controller"
 
     # DISABLE AUTO-COMPLETION
-    mocker.patch.object(
-        target=ta_controller.obbff,
-        attribute="USE_PROMPT_TOOLKIT",
-        new=False,
+    preferences = PreferencesModel(USE_PROMPT_TOOLKIT=True)
+    mock_current_user = copy_user(preferences=preferences)
+    mocker.patch(
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
     )
     mocker.patch(
         target=f"{path_controller}.session",
@@ -157,7 +165,7 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
 
 
 @pytest.mark.vcr(record_mode="none")
-@pytest.mark.record_stdout
+# @pytest.mark.record_stdout
 @pytest.mark.parametrize(
     "start",
     [
@@ -165,7 +173,15 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
         None,
     ],
 )
-def test_print_help(start):
+def test_print_help(start, mocker):
+    preferences = PreferencesModel(
+        ENABLE_CHECK_API=False,
+    )
+    mock_current_user = copy_user(preferences=preferences)
+    mocker.patch(
+        target="openbb_terminal.core.session.current_user.__current_user",
+        new=mock_current_user,
+    )
     controller = ta_controller.TechnicalAnalysisController(
         ticker="MOCK_TICKER",
         start=start,
