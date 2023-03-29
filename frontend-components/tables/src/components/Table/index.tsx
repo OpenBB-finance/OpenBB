@@ -94,12 +94,24 @@ function getCellWidth(row, column) {
   }
 }
 
-export default function Table({ data, columns, title, source = "" }: any) {
-  const [colorTheme, setTheme] = useDarkMode();
+export default function Table({
+  data,
+  columns,
+  title,
+  source = "",
+  initialTheme,
+}: {
+  data: any[];
+  columns: any[];
+  title: string;
+  source?: string;
+  initialTheme: "light" | "dark";
+}) {
+  const [colorTheme, setTheme] = useDarkMode(initialTheme);
   const [darkMode, setDarkMode] = useState(
-    colorTheme === "light" ? true : false
+    colorTheme === "dark" ? true : false
   );
-  const toggleDarkMode = (checked) => {
+  const toggleDarkMode = (checked: boolean) => {
     setTheme(colorTheme);
     setDarkMode(checked);
   };

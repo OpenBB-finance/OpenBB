@@ -80,6 +80,13 @@ function App() {
             title={title}
             data={transformedData.data}
             columns={transformedData.columns}
+            initialTheme={
+              data.theme &&
+              typeof data.theme === "string" &&
+              data.theme === "dark"
+                ? "dark"
+                : "light"
+            }
           />
         )}
       </DndProvider>
