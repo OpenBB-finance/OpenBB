@@ -199,7 +199,7 @@ def display_search(
         Number to show
     """
     iso_country = mapping_country[country] if country else ""
-    searches = mstarpy_model.search_funds(term, country=iso_country, pageSize=limit)
+    searches = mstarpy_model.search_funds(term, country=iso_country, limit=limit)
     if searches.empty:
         console.print("No matches found.")
         return
