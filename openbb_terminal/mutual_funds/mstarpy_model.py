@@ -211,7 +211,7 @@ def load_holdings(
 @log_start_end(log=logger)
 def search_funds(
     term: str = "",
-    country: str = "",
+    country: str = "US",
     limit=10,
 ) -> pd.DataFrame:
     """Search mstarpy for matching funds
